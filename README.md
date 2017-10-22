@@ -39,13 +39,6 @@ The image combines [Apache Superset](https://superset.incubator.apache.org/index
 5. Run the image with `docker run -p 80:8088 bizops`.
 6. Go to [http://localhost](http://localhost) and log in using the credentials you entered in step 2. 
 
-### TODOS:
-
-- Mount volumes to persist postgres data.
-- Exclude sample data dashboards from the setup.py file.
-- Add some singer data pipes to populate the database with some useful data.
-- Build a superset "slice" and put it in a dashboard. 
-- Better secret management.
 
 ### License
 
