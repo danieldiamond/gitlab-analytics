@@ -1,6 +1,16 @@
-# Bizops project
+## Bizops
+
+Finance has the company wide responsibility for analytics.
 
 We want a single data warehouse and a central data model. We bring all relevant data to single storage place. Make it platform agnostic, so for example do not build it into Salesforce. We want to build data model to be used consistently across tools and teams. For example something as simple as unique customer ID, product or feature names/codes.
+
+### Cross department metrics
+
+Cross department metrics are essential to measure our [journeys](/handbook/journeys).
+
+### Operating metrics
+
+More information about our metrics definitions and review process can be found on the [operating metrics page](/handbook/finance/operating-metrics/).
 
 ### Data sources
 
@@ -27,35 +37,35 @@ We want the tools to be open source so we can ship this as a product. Also see t
 
 ### Metrics
 
-Annual Recurring Revenue (ARR) - Recurring revenue recognized in current month multiplied by 12. (Source data from Zuora)
+**Annual Recurring Revenue (ARR)** - Recurring revenue recognized in current month multiplied by 12. (Source data from Zuora)
 
-Average Sales Price (ASP) - IACV per won
+**Average Sales Price (ASP)** - IACV per won
 
-Bookings Total Contract Value (TCV) - All bookings in period (including multiyear); bookings is equal to billings with standard payment terms. (Source data from Salesforce reconciled to Zuora)
+**Bookings Total Contract Value (TCV)** - All bookings in period (including multiyear); bookings is equal to billings with standard payment terms. (Source data from Salesforce reconciled to Zuora)
 
-Bookings Annual Contract Value (ACV) - Current Period subscription bookings which will result in revenue over next 12 months. (Source data from Salesforce reconciled to Zuora)
+**Bookings Annual Contract Value (ACV)** - Current Period subscription bookings which will result in revenue over next 12 months. (Source data from Salesforce reconciled to Zuora)
 
-Bookings Incremental Annual Contract Value (IACV) - Value of new bookings from new and existing customers that will result in revenue of next 12 months. Also equals ACV less renewals. (Source data from Salesforce reconciled to Zuora)
+**Bookings Incremental Annual Contract Value (IACV)** - Value of new bookings from new and existing customers that will result in revenue of next 12 months. Also equals ACV less renewals. (Source data from Salesforce reconciled to Zuora)
 
-Churn, Net - Current period revenue from customers present 12 months prior divided by revenue from 12 months prior. (Source data from excel; Zuora expected 2017-07-01)
+**Churn, Net** - Current period revenue from customers present 12 months prior divided by revenue from 12 months prior. (Source data from excel; Zuora expected 2017-07-01)
 
-Churn, Gross (Dollar weighted) - Remaining cohorts from Actual Subscription customers active as of 12 months ago multiplied by revenue from 12 months ago divided by actual Subscription customers as of date 12 months prior multiplied by revenue from 12 months ago. (Source data from excel; Zuora expected 2017-07-01)
+**Churn, Gross (Dollar weighted)** - Remaining cohorts from Actual Subscription customers active as of 12 months ago multiplied by revenue from 12 months ago divided by actual Subscription customers as of date 12 months prior multiplied by revenue from 12 months ago. (Source data from excel; Zuora expected 2017-07-01)
 
-Customer Acquisition Cost (CAC) - Total Sales & Marketing Expense/Number of New Customers Acquired (Source Zuora and Salesforce)
+**Customer Acquisition Cost (CAC)** - Total Sales & Marketing Expense/Number of New Customers Acquired (Source Zuora and Salesforce)
 
-Rep Productivity - Current Month [Metric] /# of Reps on board for at least 90 days prior to start of period. (Source data bamboo HR)
+**Rep Productivity** - Current Month [Metric] /# of Reps on board for at least 90 days prior to start of period. (Source data bamboo HR)
 
-Magic Number - IACV for trailing three months/Sales & Marketing Spend over trailing six months. (Source data Salesforce/Zuora and Netsuite)
+**Magic Number** - IACV for trailing three months/Sales & Marketing Spend over trailing six months. (Source data Salesforce/Zuora and Netsuite)
 
-MQL - Marketing Qualified Lead (Source data Salesforce)
+**MQL** - Marketing Qualified Lead (Source data Salesforce)
 
-SQL - Sales Qualified Lead (Source data Salesforce)
+**SQL** - Sales Qualified Lead (Source data Salesforce)
 
-Cost per MQL - Marketing expense divided by # MQLs (Source data Salesforce and Netsuite)
+**Cost per MQL** - Marketing expense divided by # MQLs (Source data Salesforce and Netsuite)
 
-Sales efficiency ratio - IACV / sales (and marketing) spend
+**Sales efficiency ratio** - IACV / sales (and marketing) spend
 
-Marketing efficiency ratio - IACV / marketing spend
+**Marketing efficiency ratio** - IACV / marketing spend
 
 ### Dockerfile
 The image combines [Apache Superset](https://superset.incubator.apache.org/index.html) with a [PostgreSQL](https://www.postgresql.org/) database. It creates an image pre-configured to use a local PostgreSQL database and loads the sample data and reports. The setup.py file launches the database as well as starts the Superset service on port 8080 using [Gunicorn](http://gunicorn.org/).
