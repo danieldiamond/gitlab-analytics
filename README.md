@@ -85,6 +85,7 @@ Many of the metrics you would normally track outside of the product we collect i
 1. Mailchimp
 1. Google Analytics
 1. Discover.org
+1. Clearbit
 1. Lever
 1. GitLab version check
 1. GitLab usage ping
