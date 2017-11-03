@@ -99,10 +99,51 @@ On the other hand we're open to pragmatic solutions linking for example Salesfor
 
 We want the tools to be open source so we can ship this as a product. Also see the "Complete BizOps" Google Doc. We'll use Singer, PostgreSQL, and Superset.
 
-1. Ingestion/ETL: The open source [Singer](https://www.singer.io/) from [StitchData](https://www.stitchdata.com/). This competes with the proprietary options from them and [Fivetran](https://www.fivetran.com/), [Alooma](https://www.alooma.com/), [Segment and Looker](https://looker.com/blog/segment-and-looker), and [Snaplogic](https://www.snaplogic.com/).
+1. Ingestion/ETL: [Talend](Talend Real-Time Open Source Big Data Integration Software) for the ETL engine, along with [dbt](https://docs.getdbt.com/).
 1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
 1. Display/analytics: [Superset](https://github.com/airbnb/superset) (Apache open source, [most](https://github.com/apache/incubator-superset/pulse/monthly) [changed](https://github.com/metabase/metabase/pulse/monthly) [repository](https://github.com/getredash/redash/pulse/monthly)) instead of the open source alternative [Metabase](https://github.com/metabase/metabase) which is Clojure based and runs on the JVM or [Redash](https://redash.io/). Proprietary alternates are Looker and Tableau.
 
+## MVP Proposal
+
+For the first iteration of BizOps, we would like to ship the following:
+
+* A configurable ETL engine to retrieve data out of SFDC
+* A BI dashboard to view the ETL'd data
+* Sample dashboards to get started
+
+This would provide a basic foundation for analyzing your CRM data that is contained within SFDC.
+
+The general data flow would be SFDC->Talend->PG->Superset:
+1. SFDC credentials are available to Talend via environment variables
+1. A transformation file is in the repo, which describes which columns to retrieve and how to write them into PG
+1. Talend is executed to ETL the data into PG
+1. A Superset instance is spawned, connected to the PG DB
+1. The dashboards for Superset are stored in the repo
+
+### Phases
+
+#### Phase 1
+
+For the very first MVC, we should focus on just getting an environment established which can ETL and render data: 
+* Create a container with Talend, to be used as image for CI job
+  * Starts up, uses ENV vars to auth to SFDC, ETL's data into PG
+* Create a container with PG and Superset
+  * Is the "app" that runs as the environment 
+* Rely on the end user for the transformation files
+* Rely on the end user for the dashboard files
+
+#### Phase 2
+
+Make it more usable for GitLab data teams: 
+* Copy dashboards from the repo into Superset, to provide OOTB templates
+* Identify an easy "flow" to save modified dashboard into repo. (Cut/Paste, download file, etc.)
+
+#### Phase 3
+
+* Productize this a little more, and add steps to ease the creation of the transformation file.
+* Set up backup/restore jobs for production database
+
+## How to use
 
 ### Dockerfile
 The image combines [Apache Superset](https://superset.incubator.apache.org/index.html) with a [PostgreSQL](https://www.postgresql.org/) database. It creates an image pre-configured to use a local PostgreSQL database and loads the sample data and reports. The setup.py file launches the database as well as starts the Superset service on port 8080 using [Gunicorn](http://gunicorn.org/).
