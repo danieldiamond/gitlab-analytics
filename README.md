@@ -4,6 +4,52 @@
 Finance has the company wide responsibility for analytics.
 Examples of the types of metrics we want to track are below per department.
 
+## Premise
+* Conway's law, every functional group 
+* Based on open source tools
+* Allow many companies to add their best practices
+* Only makes sense to make as a product for everyone
+* What GitLab does for DevOps this product should do for Revenue
+* We want to sophistication of a recent public company without hiring a department of people.
+* Will disinfect and give freedom for experimentation 
+* Have examples of detection
+* Marketeer becomes trader 
+* Replace analytic tools
+* Investors will insist on this 
+* First opinionated business framework
+* Complete BizOps 
+* 100k organizations should create it together 
+* Can trivially replace other solutions when implemented
+* We're starting with the integration.
+
+### Why integrated
+
+* Because the CAC depends on many touch points across many systems.
+* Because the LTV depends on many variables.
+* Because the CAC and LTV are specific for a customer and depend on many systems.
+* Because product should inform sales efforts.
+* Because nobody can currently tell me the CAC of specific account.
+* Because nobody can currently can predict the lift in LTV of a specific action.
+
+### Examples
+
+* Show financials an ad about compliance.
+* If product shows someone just started to use CI show ads with CI information.
+* Add logo's from the same industry to an auto generated presentation
+
+### Competition & Value
+
+This should be a replacement for:
+* Marketing automation (Marketo)
+* Sales analytics (Insightsquared)
+* Customer Success automation (Gainsight)
+
+You should also be able to retire:
+* Analytics (Tableau)
+* Sales content management (Highspot/Docsend)
+
+In the beginning the software should build on some existing systems, for example the drip campaigns in Marketo.
+
 ## Cross department metrics
 
 Cross department metrics are essential to measure our [journeys](/handbook/journeys).
@@ -99,7 +145,7 @@ On the other hand we're open to pragmatic solutions linking for example Salesfor
 
 We want the tools to be open source so we can ship this as a product. Also see the "Complete BizOps" Google Doc. We'll use Singer, PostgreSQL, and Superset.
 
-1. Ingestion/ETL: [Talend](Talend Real-Time Open Source Big Data Integration Software) for the ETL engine, along with [dbt](https://docs.getdbt.com/).
+1. Ingestion/ETL: [Talend](Talend Real-Time Open Source Big Data Integration Software) for the ETL engine, along with [dbt](https://docs.getdbt.com/) for schema management.
 1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
 1. Display/analytics: [Superset](https://github.com/airbnb/superset) (Apache open source, [most](https://github.com/apache/incubator-superset/pulse/monthly) [changed](https://github.com/metabase/metabase/pulse/monthly) [repository](https://github.com/getredash/redash/pulse/monthly)) instead of the open source alternative [Metabase](https://github.com/metabase/metabase) which is Clojure based and runs on the JVM or [Redash](https://redash.io/). Proprietary alternates are Looker and Tableau.
 
