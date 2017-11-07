@@ -113,6 +113,19 @@ For the first iteration of BizOps, we would like to ship the following:
 
 This would provide a basic foundation for analyzing your CRM data that is contained within SFDC.
 
+### User Flow
+
+1. Start a new project with the BizOps template.
+1. Add salesforce app credentials as environment variables.
+1. Redeploy and look at a link that shows salesforce metadata. (can we make redeploy something that happens after setting environmental variables)
+1. Use metadata to populate transform.yml and commit to master
+1. Redeploy happens automatically and you see a insightsquared like graph.
+  1. ETL runs and outputs into PG. 
+  1. Superset is then with PG as data source, with a set of dashboards loaded from a file in the repo.
+  1. URL is set to be location of Superset 
+
+### Data Flow
+
 The general data flow would be SFDC->Talend->PG->Superset:
 1. SFDC credentials are available to Talend via environment variables
 1. A transformation file is in the repo, which describes which columns to retrieve and how to write them into PG
