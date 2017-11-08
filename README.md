@@ -1,8 +1,6 @@
 ## Bizops
 
-
-Finance has the company wide responsibility for analytics.
-Examples of the types of metrics we want to track are below per department.
+BizOps is a convention-over-configuration framework for analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps
 
 ## Premise
 * Conway's law, every functional group 
