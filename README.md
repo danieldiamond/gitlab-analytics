@@ -283,8 +283,8 @@ This would provide a basic foundation for analyzing your CRM data that is contai
 #### Priority 1
 
 For the very first MVC, we should focus on just getting an environment established which can ETL and render data: 
-* Create a container with Talend and dbt, to be used as image for CI job (Have VM today)
-  * Starts up, uses ENV vars to auth to SFDC, ETL's data into PG
+* [Create a container with Talend and dbt, to be used as image for CI job](https://gitlab.com/gitlab-org/bizops/issues/8) (Have VM today)
+  * Starts up, uses ENV vars to auth to SFDC, ETL's data into PG. Runs dbt to transform to data model.
 * Create a container with PG and Superset (Done)
   * Is the "app" that runs as the environment 
 * Rely on the end user for the "extract" (App -> PG) transformation files (our version is WIP)
