@@ -290,7 +290,7 @@ For the very first MVC, we should focus on just getting an environment establish
 * Rely on the end user for the "extract" (App -> PG) transformation files (our version is WIP)
 * Establish standard data model for required fields
 * Rely on the end user for "transform" (staging->data model) transformation (not yet started)
-* Crate the initial dashboard views based on standard model (our version not yet started)
+* Create the initial dashboard views based on standard model (our version not yet started)
 
 #### Priority 2
 
@@ -310,6 +310,11 @@ Make working with data easier
 
 * Productize this a little more, and add steps to ease the creation of the "transform" file.
 * Set up backup/restore jobs for production database
+
+#### Open questions
+
+* Should we required Marketo/Zuora data to be in SFDC, or pull from these platforms directly?
+  * Pulling only from SFDC would generalize the process if customers used other tools, but then require that the integration and data is written back to SFDC
 
 ## How to use
 
