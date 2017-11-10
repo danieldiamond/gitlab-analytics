@@ -175,7 +175,7 @@ On the other hand we're open to pragmatic solutions linking for example Salesfor
 The general data flow would be SFDC->Talend->PG->Superset:
 1. SFDC credentials are available to Talend via environment variables
 1. A transformation file is in the repo, which describes which columns to retrieve and how to write them into PG
-1. Talend is executed to ETL the data into PG
+1. Talend is executed to ELT the data into PG
 1. A Superset instance is spawned, connected to the PG DB
 1. The dashboards for Superset are stored in the repo
 
@@ -237,7 +237,7 @@ The general data flow would be SFDC->Talend->PG->Superset:
 1. Redeploy and look at a link that shows salesforce metadata. (can we make redeploy something that happens after setting environmental variables)
 1. Use metadata to populate transform.yml and commit to master
 1. Redeploy happens automatically and you see a insightsquared like graph.
-  1. ETL runs and outputs into PG. 
+  1. ELT runs and outputs into PG. 
   1. Superset is then with PG as data source, with a set of dashboards loaded from a file in the repo.
   1. URL is set to be location of Superset 
 
@@ -264,16 +264,19 @@ New actions can be programmed:
 
 We want the tools to be open source so we can ship this as a product. Also see the "Complete BizOps" Google Doc. We'll use Singer, PostgreSQL, and Superset.
 
-1. Ingestion/ETL: [Talend](Talend Real-Time Open Source Big Data Integration Software) for the ETL engine, along with [dbt](https://docs.getdbt.com/) for schema management.
+1. Ingestion/ELT: [Talend](Talend Real-Time Open Source Big Data Integration Software) for the ELT engine, although are considering [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
+1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
 1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
 1. Display/analytics: [Superset](https://github.com/airbnb/superset) (Apache open source, [most](https://github.com/apache/incubator-superset/pulse/monthly) [changed](https://github.com/metabase/metabase/pulse/monthly) [repository](https://github.com/getredash/redash/pulse/monthly)) instead of the open source alternative [Metabase](https://github.com/metabase/metabase) which is Clojure based and runs on the JVM or [Redash](https://redash.io/). Proprietary alternates are Looker and Tableau.
+1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/), to provide the initial framework for scheduling, running, and monitoring the ELT jobs. [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi) are also intended to be used as the ELT process matures.
+1. 
 
 ## MVP Proposal
 
 For the first iteration of BizOps, we would like to ship the following:
 
-* A configurable ETL engine to retrieve data out of SFDC, Zuora, (and Marketo?)
-* A BI dashboard to view the ETL'd data
+* A configurable ELT engine to retrieve data out of SFDC, Zuora, (and Marketo?)
+* A BI dashboard to view the ELT'd data
 * Sample dashboards to get started
 
 This would provide a basic foundation for analyzing your CRM data that is contained within SFDC.
@@ -282,9 +285,9 @@ This would provide a basic foundation for analyzing your CRM data that is contai
 
 #### Priority 1
 
-For the very first MVC, we should focus on just getting an environment established which can ETL and render data: 
+For the very first MVC, we should focus on just getting an environment established which can ELT and render data: 
 * [Create a container with Talend and dbt, to be used as image for CI job](https://gitlab.com/gitlab-org/bizops/issues/8) (Have VM today)
-  * Starts up, uses ENV vars to auth to SFDC, ETL's data into PG. Runs dbt to transform to data model.
+  * Starts up, uses ENV vars to auth to SFDC, ELT's data into PG. Runs dbt to transform to data model.
 * Create a container with PG and Superset (Done)
   * Is the "app" that runs as the environment 
 * Rely on the end user for the "extract" (App -> PG) transformation files (our version is WIP)
@@ -294,7 +297,7 @@ For the very first MVC, we should focus on just getting an environment establish
 
 #### Priority 2
 
-Automate & provide guide rails for ETL phase
+Automate & provide guide rails for ELT phase
 * Create script to grab SFDC objects to create a transformation KTL file automatically (to load data into staging tables)
 * Expand script to support Zuora (and Marketo?)
 * Create script to check user provided mapping file for required fields (staging field -> data model field), list missing ones
