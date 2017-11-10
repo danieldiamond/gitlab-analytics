@@ -19,9 +19,9 @@ For the MVP of BizOps, we plan to delivering the following based on [Objective #
 
 This would provide a basic foundation for analyzing your CRM data that is contained within SFDC.
 
-## Phases
+### Sprints
 
-### Priority 1
+#### Priority 1
 
 For the very first MVC, we should focus on just getting an environment established which can ELT and render data: 
 * [Create a container with Talend and dbt, to be used as image for CI job](https://gitlab.com/gitlab-org/bizops/issues/8) (Have VM today)
@@ -33,13 +33,13 @@ For the very first MVC, we should focus on just getting an environment establish
 * Rely on the end user for "transform" (staging->data model) transformation (not yet started)
 * Create the initial dashboard views based on standard model (our version not yet started)
 
-### Priority 2
+#### Priority 2
 
 Automate & provide guide rails for ELT phase
 * Create script to grab SFDC objects to create a transformation KTL file automatically (to load data into staging tables)
 * Create script to check user provided mapping file for required fields (staging field -> data model field), list missing ones
 
-### Priority 3
+#### Priority 3
 
 Make working with data easier
 
@@ -55,6 +55,20 @@ Make working with data easier
 
 * Should we required Marketo/Zuora data to be in SFDC, or pull from these platforms directly?
   * Pulling only from SFDC would generalize the process if customers used other tools, but then require that the integration and data is written back to SFDC
+
+## Metrics
+
+These are the metrics we plan to track from the sales and marketing data, per campaign:
+
+* Cost per lead = dollar spend / number of attributed leads
+* Median conversion time (from touch to IACV)
+* IACV at median conversion time (at for example 90 days after touch)
+* Estimated IACV = 2 *  IACV at median conversion time
+* CAC = cost per lead * conversion from lead to IACV
+* LTV = IACV * margin * average retention time
+* ROI = LTV / CAC
+* Need to drill down per time period, and per lead/organization.
+* Also need collateral and usage.
 
 ## User Experience
 
