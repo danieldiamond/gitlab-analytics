@@ -1,6 +1,211 @@
-## Bizops
+# Bizops
 
 BizOps is a convention-over-configuration framework for analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps
+
+## Objectives
+
+1. Provide an open source analytics and BI tool to analyze sales and marketing performance ([in progress](#development-plan))
+1. Expand into customer success insight and automation
+1. Close the feedback loop between product feature launches and sales/marketing performance
+1. Widen to include other areas of the company, like people ops and finance
+
+## Development Plan
+
+For the MVP of BizOps, we plan to delivering the following based on [Objective #1](#objectives): 
+
+* A configurable ELT engine to retrieve data out of SFDC, Zuora, and Marketo
+* A BI dashboard to view the ELT'd data
+* Sample dashboards to get started
+
+This would provide a basic foundation for analyzing your CRM data that is contained within SFDC.
+
+### Sprints
+
+#### Priority 1
+
+For the very first MVC, we should focus on just getting an environment established which can ELT and render data: 
+* [Create a container with Talend and dbt, to be used as image for CI job](https://gitlab.com/gitlab-org/bizops/issues/8) (Have VM today)
+  * Starts up, uses ENV vars to auth to SFDC/Zuora/Marketo, ELT's data into PG. Runs dbt to transform to data model.
+* Create a container with PG and Superset (Done)
+  * Is the "app" that runs as the environment 
+* Rely on the end user for the "extract" (App -> PG) transformation files (our version is WIP)
+* Establish [standard data model](https://gitlab.com/gitlab-org/bizops/issues/9) for required fields
+* Rely on the end user for "transform" (staging->data model) transformation (not yet started)
+* Create the initial dashboard views based on standard model (our version not yet started)
+
+#### Priority 2
+
+Automate & provide guide rails for ELT phase
+* Create script to grab SFDC objects to create a transformation KTL file automatically (to load data into staging tables)
+* Create script to check user provided mapping file for required fields (staging field -> data model field), list missing ones
+
+#### Priority 3
+
+Make working with data easier
+
+* Copy dashboards from the repo into Superset, to provide OOTB templates
+* Identify an easy "flow" to save modified dashboard into repo. (Cut/Paste, download file, etc.)
+
+#### Backlog
+
+* Productize this a little more, and add steps to ease the creation of the "transform" file.
+* Set up backup/restore jobs for production database
+
+#### Open questions
+
+* Should we required Marketo/Zuora data to be in SFDC, or pull from these platforms directly?
+  * Pulling only from SFDC would generalize the process if customers used other tools, but then require that the integration and data is written back to SFDC
+
+## Metrics
+
+These are the metrics we plan to track from the sales and marketing data, per campaign:
+
+* Cost per lead = dollar spend / number of attributed leads
+* Median conversion time (from touch to IACV)
+* IACV at median conversion time (at for example 90 days after touch)
+* Estimated IACV = 2 *  IACV at median conversion time
+* CAC = cost per lead * conversion from lead to IACV
+* LTV = IACV * margin * average retention time
+* ROI = LTV / CAC
+* Collateral usage
+
+For each campaign, we should also be able to review over various time periods, and per lead/organization.
+
+## User Experience
+
+### Admin Flow
+
+1. Start a new project with the BizOps template.
+1. Add salesforce app credentials as environment variables.
+1. Redeploy and look at a link that shows salesforce metadata. (can we make redeploy something that happens after setting environmental variables)
+1. Use metadata to populate transform.yml and commit to master
+1. Redeploy happens automatically and you see a insightsquared like graph.
+  1. ELT runs and outputs into PG. 
+  1. Superset is then with PG as data source, with a set of dashboards loaded from a file in the repo.
+  1. URL is set to be location of Superset 
+
+### User Flow
+
+1. Measure the relationship between audience, content, and customers.
+1. Generate variations on audience and content.
+1. Find out if these lower CAC or produce a higher LTV.
+1. Move your spend to the ones that perform better.
+1. Repeat.
+
+### Interaction Flow
+
+Both marketing, sales, and customer success people are shown:
+* Show the CAC and LTV of cohort/account/lead, what it is based on (how much / when) and the history of touchpoints.
+* Actions (automatically scheduled ones, possible manual ones) with the calculated lift in LTV of each.
+
+New actions can be programmed:
+* Can be ads, an outbound message
+* Can be triggered manually or automatic
+* Can be dependent on doing something else first (need to watch video first, etc.)
+
+## Data sources
+
+1. Salesforce
+1. Zuora
+1. Marketo
+1. Zendesk
+1. NetSuite
+1. Mailchimp
+1. Google Analytics
+1. Discover.org
+1. Clearbit
+1. Lever
+1. GitLab version check
+1. GitLab usage ping
+1. [GitLab.com](https://about.gitlab.com/handbook/engineering/workflow/#getting-data-about-gitlabcom)
+
+We want a single data warehouse and a central data model. We bring all relevant data to single storage place. Make it platform agnostic, so for example do not build it into Salesforce. We want to build data model to be used consistently across tools and teams. For example something as simple as unique customer ID, product or feature names/codes.
+
+On the other hand we're open to pragmatic solutions linking for example Salesforce and Zendesk, if there are boring solutions available we'll adopt them instead of creating our own.
+
+### Data Flow
+
+The general data flow would be SFDC->Talend->PG->Superset:
+1. SFDC credentials are available to Talend via environment variables
+1. A transformation file is in the repo, which describes which columns to retrieve and how to write them into PG
+1. Talend is executed to ELT the data into PG
+1. A Superset instance is spawned, connected to the PG DB
+1. The dashboards for Superset are stored in the repo
+
+### Table types
+
+* Staging (raw import)
+* Fact (sales lines), gets really long
+* Dimensions (slice, for examples stages), can be slowly changing with time stamps, historical role
+* Surrogate keys (integer that links a fact to a dimension) to store less bytes
+
+## Variables
+
+### Audience variables
+
+1. Tracking data
+  1. Visits to website
+  1. Clicks on links
+  1. Clicks on ads
+1. Product data, for example for GitLab
+  1. GitLab.com
+  1. Version.gitlab.com
+  1. Issue tracker of GitLab.com comments
+1. Customer data (are they a customer, did they use to be, on a trial)
+1. Lookalike data (do they match a custom audience)
+1. CRM data (Salesforce)
+1. Support data (Zendesk)
+1. General metrics (age, etc.)
+1. Interests (like DevOps, etc.)
+
+### Content variables
+
+* Message (benefit, feature)
+* Medium (video, graphic, text)
+* Creative (black and white, in your face)
+* Platform (Facebook, Google, LinkedIn, other)
+* Surface (Messenger, Whatsapp, Instagram)
+
+### Customer variables
+
+* Product (what do they buy)
+* Quantity (how much do they buy)
+* Upsell (how much do they expand)
+* Churn (how long do they stay a customer)
+
+### Marketing variables
+
+* Paid content (ads, sem)
+* Owned content marketing (website, blog, email, seo)
+* Earned content (social media shares, PR, AR)
+* DevRel marketing (meetups, conferences)
+* Event marketing (trade fairs)
+
+## Tools
+
+We want the tools to be open source so we can ship this as a product. Also see the "Complete BizOps" Google Doc. We'll use Singer, PostgreSQL, and Superset.
+
+1. Ingestion/ELT: [Talend](Talend Real-Time Open Source Big Data Integration Software) for the ELT engine, although are considering [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
+1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
+1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
+1. Display/analytics: [Superset](https://github.com/airbnb/superset) (Apache open source, [most](https://github.com/apache/incubator-superset/pulse/monthly) [changed](https://github.com/metabase/metabase/pulse/monthly) [repository](https://github.com/getredash/redash/pulse/monthly)) instead of the open source alternative [Metabase](https://github.com/metabase/metabase) which is Clojure based and runs on the JVM or [Redash](https://redash.io/). Proprietary alternates are Looker and Tableau.
+1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/), to provide the initial framework for scheduling, running, and monitoring the ELT jobs. [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi) are also intended to be used as the ELT process matures.
+
+## How to use
+
+### Dockerfile
+The image combines [Apache Superset](https://superset.incubator.apache.org/index.html) with a [PostgreSQL](https://www.postgresql.org/) database. It creates an image pre-configured to use a local PostgreSQL database and loads the sample data and reports. The setup.py file launches the database as well as starts the Superset service on port 8080 using [Gunicorn](http://gunicorn.org/).
+
+### To launch the container:
+
+1. Clone the repo and cd into it.
+2. Edit the config/bizops.conf file to enter in a username, first name, last name, email and password for the Superset administrator.
+3. Optionally, you can edit the user and password in the Dockerfile on line 35 to change the defaule postgres user/password. If you do this, you'll also need to update the SQLAlchemy url in the /config/superset_config.py file on line 21
+4. Build the image with `docker build --rm=true -t bizops .`.
+5. Run the image with `docker run -p 80:8088 bizops`.
+6. Go to [http://localhost](http://localhost) and log in using the credentials you entered in step 2. 
+
+# Why open source BizOps within GitLab?
 
 ## Premise
 * Conway's law, every functional group 
@@ -150,186 +355,6 @@ Cross department metrics are essential to measure our [journeys](/handbook/journ
 
 Many of the metrics you would normally track outside of the product we collect inside of the product so it is also useful to our self hosted users. This includes cohort analytics, conversational development analytics, and cycle time analytics.
 
-## Data sources
-
-1. Salesforce
-1. Zuora
-1. Marketo
-1. Zendesk
-1. NetSuite
-1. Mailchimp
-1. Google Analytics
-1. Discover.org
-1. Clearbit
-1. Lever
-1. GitLab version check
-1. GitLab usage ping
-1. [GitLab.com](https://about.gitlab.com/handbook/engineering/workflow/#getting-data-about-gitlabcom)
-
-We want a single data warehouse and a central data model. We bring all relevant data to single storage place. Make it platform agnostic, so for example do not build it into Salesforce. We want to build data model to be used consistently across tools and teams. For example something as simple as unique customer ID, product or feature names/codes.
-
-On the other hand we're open to pragmatic solutions linking for example Salesforce and Zendesk, if there are boring solutions available we'll adopt them instead of creating our own.
-
-### Data Flow
-
-The general data flow would be SFDC->Talend->PG->Superset:
-1. SFDC credentials are available to Talend via environment variables
-1. A transformation file is in the repo, which describes which columns to retrieve and how to write them into PG
-1. Talend is executed to ETL the data into PG
-1. A Superset instance is spawned, connected to the PG DB
-1. The dashboards for Superset are stored in the repo
-
-### Table types
-
-* Staging (raw import)
-* Fact (sales lines), gets really long
-* Dimensions (slice, for examples stages), can be slowly changing with time stamps, historical role
-* Surrogate keys (integer that links a fact to a dimension) to store less bytes
-
-## Variables
-
-### Audience variables
-
-1. Tracking data
-  1. Visits to website
-  1. Clicks on links
-  1. Clicks on ads
-1. Product data, for example for GitLab
-  1. GitLab.com
-  1. Version.gitlab.com
-  1. Issue tracker of GitLab.com comments
-1. Customer data (are they a customer, did they use to be, on a trial)
-1. Lookalike data (do they match a custom audience)
-1. CRM data (Salesforce)
-1. Support data (Zendesk)
-1. General metrics (age, etc.)
-1. Interests (like DevOps, etc.)
-
-### Content variables
-
-* Message (benefit, feature)
-* Medium (video, graphic, text)
-* Creative (black and white, in your face)
-* Platform (Facebook, Google, LinkedIn, other)
-* Surface (Messenger, Whatsapp, Instagram)
-
-### Customer variables
-
-* Product (what do they buy)
-* Quantity (how much do they buy)
-* Upsell (how much do they expand)
-* Churn (how long do they stay a customer)
-
-### Marketing variables
-
-* Paid content (ads, sem)
-* Owned content marketing (website, blog, email, seo)
-* Earned content (social media shares, PR, AR)
-* DevRel marketing (meetups, conferences)
-* Event marketing (trade fairs)
-
-## User Experience
-
-### Admin Flow
-
-1. Start a new project with the BizOps template.
-1. Add salesforce app credentials as environment variables.
-1. Redeploy and look at a link that shows salesforce metadata. (can we make redeploy something that happens after setting environmental variables)
-1. Use metadata to populate transform.yml and commit to master
-1. Redeploy happens automatically and you see a insightsquared like graph.
-  1. ETL runs and outputs into PG. 
-  1. Superset is then with PG as data source, with a set of dashboards loaded from a file in the repo.
-  1. URL is set to be location of Superset 
-
-### User Flow
-
-1. Measure the relationship between audience, content, and customers.
-1. Generate variations on audience and content.
-1. Find out if these lower CAC or produce a higher LTV.
-1. Move your spend to the ones that perform better.
-1. Repeat.
-
-### Interaction Flow
-
-Both marketing, sales, and customer success people are shown:
-* Show the CAC and LTV of cohort/account/lead, what it is based on (how much / when) and the history of touchpoints.
-* Actions (automatically scheduled ones, possible manual ones) with the calculated lift in LTV of each.
-
-New actions can be programmed:
-* Can be ads, an outbound message
-* Can be triggered manually or automatic
-* Can be dependent on doing something else first (need to watch video first, etc.)
-
-### Tools
-
-We want the tools to be open source so we can ship this as a product. Also see the "Complete BizOps" Google Doc. We'll use Singer, PostgreSQL, and Superset.
-
-1. Ingestion/ETL: [Talend](Talend Real-Time Open Source Big Data Integration Software) for the ETL engine, along with [dbt](https://docs.getdbt.com/) for schema management.
-1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
-1. Display/analytics: [Superset](https://github.com/airbnb/superset) (Apache open source, [most](https://github.com/apache/incubator-superset/pulse/monthly) [changed](https://github.com/metabase/metabase/pulse/monthly) [repository](https://github.com/getredash/redash/pulse/monthly)) instead of the open source alternative [Metabase](https://github.com/metabase/metabase) which is Clojure based and runs on the JVM or [Redash](https://redash.io/). Proprietary alternates are Looker and Tableau.
-
-## MVP Proposal
-
-For the first iteration of BizOps, we would like to ship the following:
-
-* A configurable ETL engine to retrieve data out of SFDC, Zuora, (and Marketo?)
-* A BI dashboard to view the ETL'd data
-* Sample dashboards to get started
-
-This would provide a basic foundation for analyzing your CRM data that is contained within SFDC.
-
-### Phases
-
-#### Priority 1
-
-For the very first MVC, we should focus on just getting an environment established which can ETL and render data: 
-* [Create a container with Talend and dbt, to be used as image for CI job](https://gitlab.com/gitlab-org/bizops/issues/8) (Have VM today)
-  * Starts up, uses ENV vars to auth to SFDC, ETL's data into PG. Runs dbt to transform to data model.
-* Create a container with PG and Superset (Done)
-  * Is the "app" that runs as the environment 
-* Rely on the end user for the "extract" (App -> PG) transformation files (our version is WIP)
-* Establish [standard data model](https://gitlab.com/gitlab-org/bizops/issues/9) for required fields
-* Rely on the end user for "transform" (staging->data model) transformation (not yet started)
-* Create the initial dashboard views based on standard model (our version not yet started)
-
-#### Priority 2
-
-Automate & provide guide rails for ETL phase
-* Create script to grab SFDC objects to create a transformation KTL file automatically (to load data into staging tables)
-* Expand script to support Zuora (and Marketo?)
-* Create script to check user provided mapping file for required fields (staging field -> data model field), list missing ones
-
-#### Priority 3
-
-Make working with data easier
-
-* Copy dashboards from the repo into Superset, to provide OOTB templates
-* Identify an easy "flow" to save modified dashboard into repo. (Cut/Paste, download file, etc.)
-
-#### Backlog
-
-* Productize this a little more, and add steps to ease the creation of the "transform" file.
-* Set up backup/restore jobs for production database
-
-#### Open questions
-
-* Should we required Marketo/Zuora data to be in SFDC, or pull from these platforms directly?
-  * Pulling only from SFDC would generalize the process if customers used other tools, but then require that the integration and data is written back to SFDC
-
-## How to use
-
-### Dockerfile
-The image combines [Apache Superset](https://superset.incubator.apache.org/index.html) with a [PostgreSQL](https://www.postgresql.org/) database. It creates an image pre-configured to use a local PostgreSQL database and loads the sample data and reports. The setup.py file launches the database as well as starts the Superset service on port 8080 using [Gunicorn](http://gunicorn.org/).
-
-### To launch the container:
-
-1. Clone the repo and cd into it.
-2. Edit the config/bizops.conf file to enter in a username, first name, last name, email and password for the Superset administrator.
-3. Optionally, you can edit the user and password in the Dockerfile on line 35 to change the defaule postgres user/password. If you do this, you'll also need to update the SQLAlchemy url in the /config/superset_config.py file on line 21
-4. Build the image with `docker build --rm=true -t bizops .`.
-5. Run the image with `docker run -p 80:8088 bizops`.
-6. Go to [http://localhost](http://localhost) and log in using the credentials you entered in step 2. 
-
 ## Summary
 
 * Acquire the highest LTV at the lowest CAC.
@@ -351,6 +376,6 @@ Now that you know what the levers are you can automatically generate campaigns.
 * Much of the variation should be automatically generated.
 * Customers probably need multiple touches before purchasing, so it is important to have a sequence (broad interest, features, etc.) and to get them through this pipe.
 
-## License
+# License
 
 This code is distributed under the MIT license, see the [LICENSE](LICENSE) file.
