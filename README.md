@@ -288,7 +288,7 @@ For the very first MVC, we should focus on just getting an environment establish
 * Create a container with PG and Superset (Done)
   * Is the "app" that runs as the environment 
 * Rely on the end user for the "extract" (App -> PG) transformation files (our version is WIP)
-* Establish standard data model for required fields
+* Establish [standard data model](https://gitlab.com/gitlab-org/bizops/issues/9) for required fields
 * Rely on the end user for "transform" (staging->data model) transformation (not yet started)
 * Create the initial dashboard views based on standard model (our version not yet started)
 
