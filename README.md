@@ -67,8 +67,9 @@ These are the metrics we plan to track from the sales and marketing data, per ca
 * CAC = cost per lead * conversion from lead to IACV
 * LTV = IACV * margin * average retention time
 * ROI = LTV / CAC
-* Need to drill down per time period, and per lead/organization.
-* Also need collateral and usage.
+* Collateral usage
+
+For each campaign, we should also be able to review over various time periods, and per lead/organization.
 
 ## User Experience
 
