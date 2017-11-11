@@ -183,13 +183,13 @@ The general data flow would be SFDC->Talend->PG->Superset:
 
 ## Tools
 
-We want the tools to be open source so we can ship this as a product. Also see the "Complete BizOps" Google Doc. We'll use Singer, PostgreSQL, and Superset.
+We want the tools to be open source so we can ship this as a product. 
 
-1. Ingestion/ELT: [Talend](Talend Real-Time Open Source Big Data Integration Software) for the ELT engine, although are considering [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
+1. Extract and Load (EL): [Talend](Talend Real-Time Open Source Big Data Integration Software) for the ELT engine, although are considering [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
 1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
 1. Display/analytics: [Superset](https://github.com/airbnb/superset) (Apache open source, [most](https://github.com/apache/incubator-superset/pulse/monthly) [changed](https://github.com/metabase/metabase/pulse/monthly) [repository](https://github.com/getredash/redash/pulse/monthly)) instead of the open source alternative [Metabase](https://github.com/metabase/metabase) which is Clojure based and runs on the JVM or [Redash](https://redash.io/). Proprietary alternates are Looker and Tableau.
-1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/), to provide the initial framework for scheduling, running, and monitoring the ELT jobs. [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi) are also intended to be used as the ELT process matures.
+1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) for scheduling, running, and monitoring the ELT jobs. Non-GitLab alternatives are [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi) s.
 
 ## How to use
 
