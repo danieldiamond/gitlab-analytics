@@ -11,7 +11,7 @@ BizOps is a convention-over-configuration framework for analytics, business inte
 
 ## Development Plan
 
-For the MVP of BizOps, we plan to delivering the following based on [Objective #1](#objectives): 
+For the MVP of BizOps, we plan to delivering the following based on [Objective #1](#objectives):
 
 * A configurable ELT engine to retrieve data out of SFDC, Zuora, and Marketo
 * A BI dashboard to view the ELT'd data
@@ -23,11 +23,11 @@ This would provide a basic foundation for analyzing your CRM data that is contai
 
 #### Priority 1
 
-For the very first MVC, we should focus on just getting an environment established which can ELT and render data: 
+For the very first MVC, we should focus on just getting an environment established which can ELT and render data:
 * [Create a container with Talend and dbt, to be used as image for CI job](https://gitlab.com/gitlab-org/bizops/issues/8) (Have VM today)
   * Starts up, uses ENV vars to auth to SFDC/Zuora/Marketo, ELT's data into PG. Runs dbt to transform to data model.
 * Create a container with PG and Superset (Done)
-  * Is the "app" that runs as the environment 
+  * Is the "app" that runs as the environment
 * Rely on the end user for the "extract" (App -> PG) transformation files (our version is WIP)
 * Establish [standard data model](https://gitlab.com/gitlab-org/bizops/issues/9) for required fields
 * Rely on the end user for "transform" (staging->data model) transformation (not yet started)
@@ -80,9 +80,9 @@ For each campaign, we should also be able to review over various time periods, a
 1. Redeploy and look at a link that shows salesforce metadata. (can we make redeploy something that happens after setting environmental variables)
 1. Use metadata to populate transform.yml and commit to master
 1. Redeploy happens automatically and you see a insightsquared like graph.
-  1. ELT runs and outputs into PG. 
+  1. ELT runs and outputs into PG.
   1. Superset is then with PG as data source, with a set of dashboards loaded from a file in the repo.
-  1. URL is set to be location of Superset 
+  1. URL is set to be location of Superset
 
 ### User Flow
 
@@ -183,7 +183,7 @@ The general data flow would be SFDC->Talend->PG->Superset:
 
 ## Tools
 
-We want the tools to be open source so we can ship this as a product. 
+We want the tools to be open source so we can ship this as a product.
 
 1. Extract and Load (EL): [Talend](https://www.talend.com) for the ELT engine, although are considering [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
@@ -203,25 +203,25 @@ The image combines [Apache Superset](https://superset.incubator.apache.org/index
 3. Optionally, you can edit the user and password in the Dockerfile on line 35 to change the defaule postgres user/password. If you do this, you'll also need to update the SQLAlchemy url in the /config/superset_config.py file on line 21
 4. Build the image with `docker build --rm=true -t bizops .`.
 5. Run the image with `docker run -p 80:8088 bizops`.
-6. Go to [http://localhost](http://localhost) and log in using the credentials you entered in step 2. 
+6. Go to [http://localhost](http://localhost) and log in using the credentials you entered in step 2.
 
 # Why open source BizOps within GitLab?
 
 ## Premise
-* Conway's law, every functional group 
+* Conway's law, every functional group
 * Based on open source tools
 * Allow many companies to add their best practices
 * Only makes sense to make as a product for everyone
 * What GitLab does for DevOps this product should do for Revenue
 * We want to sophistication of a recent public company without hiring a department of people.
-* Will disinfect and give freedom for experimentation 
+* Will disinfect and give freedom for experimentation
 * Have examples of detection
-* Marketeer becomes trader 
+* Marketeer becomes trader
 * Replace analytic tools
-* Investors will insist on this 
+* Investors will insist on this
 * First opinionated business framework
-* Complete BizOps 
-* 100k organizations should create it together 
+* Complete BizOps
+* 100k organizations should create it together
 * Can trivially replace other solutions when implemented
 * We're starting with the integration.
 
@@ -270,18 +270,18 @@ In the beginning the software should build on some existing systems, for example
 1. Lift testing
 1. Cross device
 1. Custom audience
-1. Three value props times three creatives. 10x difference 
-1. Can't do more than five impressions of same creative 
-1. Vertical video. Half of it subtitles so it works with the sound off. Grab in first three seconds. 
-1. Drop pixel on landing page and conversion 
+1. Three value props times three creatives. 10x difference
+1. Can't do more than five impressions of same creative
+1. Vertical video. Half of it subtitles so it works with the sound off. Grab in first three seconds.
+1. Drop pixel on landing page and conversion
 1. Product video to broad audience
-1. Solicit click with features to video viewers 
+1. Solicit click with features to video viewers
 1. Re target people that clicked
-1. Wish does well. Staged retargeting telling a story. 
-1. We should measure our cac vs iavc per channel. 
-1. Try to correlate spend with outcomes. 
+1. Wish does well. Staged retargeting telling a story.
+1. We should measure our cac vs iavc per channel.
+1. Try to correlate spend with outcomes.
 1. Tell Facebook what you want: probably conversions. Machine learning with 200k inputs
-1. Last week of the quarter you get outbid by brands spending money. 
+1. Last week of the quarter you get outbid by brands spending money.
 1. The more you spend the worse the marginal outcome.
 
 ## Cross department metrics
@@ -375,6 +375,12 @@ Now that you know what the levers are you can automatically generate campaigns.
 * You need to continually vary your call scripts, website message, drip campaigns, ads, and decks to find out what is effective.
 * Much of the variation should be automatically generated.
 * Customers probably need multiple touches before purchasing, so it is important to have a sequence (broad interest, features, etc.) and to get them through this pipe.
+
+# Contributing to BizOps
+
+We welcome contributions and improvements. The source repo for our Helm Charts can be found here: <https://gitlab.com/gitlab-org/bizops>
+
+Please see the [contribution guidelines](CONTRIBUTING.md)
 
 # License
 
