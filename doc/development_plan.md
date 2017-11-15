@@ -1,6 +1,6 @@
 # Development Plan
 
-For the MVP of BizOps, we plan to delivering the following based on [first objective](#objectives) of the project:
+For the MVP of BizOps, we plan to delivering the following based on [first objective](../#objectives) of the project:
 
 * A configurable ELT engine to retrieve data out of SFDC, Zuora, and Marketo
 * A BI dashboard to view the ELT'd data
