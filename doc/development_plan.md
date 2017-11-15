@@ -17,9 +17,9 @@ For the very first MVC, we should focus on just getting an environment establish
   * Starts up, uses ENV vars to auth to SFDC/Zuora/Marketo, ELT's data into PG. Runs dbt to transform to data model.
 * Create a container with PG and Superset (Done)
   * Is the "app" that runs as the environment
-* Rely on the end user for the "extract" (App -> PG) transformation files (our version is WIP)
-* Establish [standard data model](https://gitlab.com/gitlab-org/bizops/issues/9) for required fields
-* Rely on the end user for "transform" (staging->data model) transformation (not yet started)
+* Rely on the end user for any required configuration to extract each [Source](doc/data_sources.md), as well as managing the source's staging table schema
+* The end user is also responsible for the mapping file, used by dbt, between each Source's staging table and the [common Data Model](doc/data_model.md).
+* [Establish the common data model](https://gitlab.com/gitlab-org/bizops/issues/9) for required fields
 * Create the initial dashboard views based on standard model (our version not yet started)
 
 ### Priority 2
