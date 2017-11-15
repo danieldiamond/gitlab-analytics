@@ -227,6 +227,12 @@ Now that you know what the levers are you can automatically generate campaigns.
 * Much of the variation should be automatically generated.
 * Customers probably need multiple touches before purchasing, so it is important to have a sequence (broad interest, features, etc.) and to get them through this pipe.
 
+# Contributing to BizOps
+
+We welcome contributions and improvements. The source repo for our Helm Charts can be found here: <https://gitlab.com/gitlab-org/bizops>
+
+Please see the [contribution guidelines](CONTRIBUTING.md)
+
 # License
 
 This code is distributed under the MIT license, see the [LICENSE](LICENSE) file.
