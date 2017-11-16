@@ -32,7 +32,7 @@ To achieve this, we bring data from all [data sources](data_sources.md) to a [co
 
 We want the tools to be open source so we can ship this as a product.
 
-1. Extract and Load (EL): Combination of [Talend](https://www.talend.com) and python scripts, although are considering [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
+1. Extract and Load (EL): Combination of [Pentaho Data Integration](http://www.pentaho.com/product/data-integration) and python scripts, although are considering [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
 1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
 1. Display/analytics: [Superset](https://github.com/airbnb/superset) to visualize the [metrics](#metrics).
