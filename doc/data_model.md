@@ -17,7 +17,7 @@ In order to standardize and provide common functionality across companies, we ha
 
 ## Data Flow
 
-The general data flow would be [Source](data_sources.md)->[Extractor](#extractors)->PG Staging->dbt->PG Data Model->Superset:
+The general data flow would be [Source](data_sources.md)->[Extractor](data_sources.md#extractors)->PG Staging->dbt->PG Data Model->Superset:
 1. Credentials for each source are available to the Extractor via CI environment variables
 1. Schema: For Sprint 1, schema management and any necessarily translations will be done by hand. For Sprint 2, the extractor script will be responsible for the staging schema as well as any transformations, based on the meta data in the Source.
 1. After the schema has been updated, the extractor loads the data into the a Source's staging table in PG

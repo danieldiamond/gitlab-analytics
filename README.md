@@ -32,7 +32,7 @@ To achieve this, we bring data from all [data sources](data_sources.md) to a [co
 
 We want the tools to be open source so we can ship this as a product.
 
-1. Extract and Load (EL): Combination of [Talend](https://www.talend.com) and python scripts, although are considering [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
+1. Extract and Load (EL): Combination of [Pentaho Data Integration](http://www.pentaho.com/product/data-integration) and python scripts, although are considering [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
 1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
 1. Display/analytics: [Superset](https://github.com/airbnb/superset) to visualize the [metrics](#metrics).
@@ -72,6 +72,7 @@ There are many [additional concepts and opportunities](doc/concepts.md) to utili
 * Determining critical data like CAC and LTV depends on many touch points across many systems
 * Product should inform sales efforts, with a sales and marketing insights feedback into SDLC
 * Good products need to know more about their users and their needs, this requires a comprehensive data warehouse tracking all touch points
+* Ultimate goal of fusing product data with sales and marketing data, to deliver more impactful, actionable insights across the lifecycle
 
 ### Examples
 
@@ -80,6 +81,8 @@ The product can also harness deep insights about specific customers to improve U
 * Show financials an ad about compliance.
 * If product shows someone just started to use CI show ads with CI information.
 * Add logo's from the same industry to an auto generated presentation
+* Tie campaigns to software milestones, to determine sales & marketing lift per release
+* Integrate your marketing operations with product features, integrating your drip campaign with recent actions taken / untaken
 
 ## Competition & Value
 
@@ -96,24 +99,12 @@ In the beginning the software should build on some existing systems, for example
 
 ## Summary
 
-* Acquire the highest LTV at the lowest CAC.
-* The LTV depends on product/quantity/upsell/churn.
-* The CAC depends on many factors.
-* How you acquire a customer very likely influences the LTV.
-* The LTV can probably be predicted quickly after purchase with lookalike customers.
-You need to do bayesian logic to find out what causes people to buy.
-Bayesian logic is the next generation of multi touch attribution.
-Now that you know what the levers are you can automatically generate campaigns.
-* You generate the campaigns using:
-  * Discover.org data (largest companies)
-  * Customer data (look alikes)
-  * Product data (usage at companies)
-  * Click data (what kind of ads they click on
-* Campaigns can also involve outbound, both from SDR and AE.
-* Campaigns can be customized based on product data, industry, and other factors.
-* You need to continually vary your call scripts, website message, drip campaigns, ads, and decks to find out what is effective.
-* Much of the variation should be automatically generated.
-* Customers probably need multiple touches before purchasing, so it is important to have a sequence (broad interest, features, etc.) and to get them through this pipe.
+* Acquire the highest LTV at the lowest CAC
+* Drive better, data driven decisions across all sectors of the organization
+* The LTV can likely be predicted quickly after purchase with lookalike customers
+* Customers need multiple touches before purchasing, so it is important to have a sequence (broad interest, features, outbound, etc.) and to get them through this pipe.
+* You need to continually vary your call scripts, website message, drip campaigns, ads, and decks to find out what is effective. Customized for each user and their journey with your company.
+* Determine what causes people to buy and grow. Campaigns and product nudges need to align with these levers.
 
 # Contributing to BizOps
 
