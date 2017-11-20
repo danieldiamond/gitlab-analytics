@@ -41,7 +41,7 @@ ENV CARTE_MASTER_IS_MASTER  "Y"
 
 # Install deps
 RUN apt-get update \
-    && apt-get install -y git python \
+    && apt-get install -y git python gettext-base \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PDI
