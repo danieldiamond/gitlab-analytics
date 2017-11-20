@@ -1,0 +1,8 @@
+*/__pycache__
+*/config/environment.conf
+*/config/dbconfig.py
+*/config/mailcfg.py
+*/data-integration/system/karaf/caches/*
+*.ktr
+*.log
+*.pyc
