@@ -16,7 +16,7 @@ extract_container:
     - docker:dind
   script:
     - docker build -t extract:$CI_COMMIT_REF_NAME containers/extract
-    - docker push extract:$CI_COMMIT_REF_NAME
+    - docker push $CI_REGISTRY/extract:$CI_COMMIT_REF_NAME
 
 sfdc:
   stage: extract
