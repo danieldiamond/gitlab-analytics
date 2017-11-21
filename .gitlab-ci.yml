@@ -22,6 +22,6 @@ sfdc:
   tags:
     - analytics
   script:
-    - pwd
     - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
     - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
+    - kitchen.sh -file=elt/sfdc/sfdc_extract.kjb -level=Minimal
