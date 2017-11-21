@@ -15,7 +15,7 @@ extract_container:
   services:
     - docker:dind
   script:
-    - docker build -t extract:$CI_COMMIT_REF_NAME containers/extract
+    - docker build -t $CI_REGISTRY_IMAGE/extract:$CI_COMMIT_REF_NAME containers/extract
     - docker push $CI_REGISTRY_IMAGE/extract:$CI_COMMIT_REF_NAME
 
 sfdc:
