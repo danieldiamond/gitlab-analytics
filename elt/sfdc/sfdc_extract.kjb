@@ -313,7 +313,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${Internal.Entry.Current.Directory}/sfdc_opportunity.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/sfdc_opportunity.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -359,7 +359,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/sfdc_account.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/sfdc_account.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -395,7 +395,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/sfdc_campaign.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/sfdc_campaign.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -431,7 +431,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/sfdc_campaignmember.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/sfdc_campaignmember.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -467,7 +467,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/sfdc_contact.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/sfdc_contact.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -503,7 +503,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/sfdc_lead.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/sfdc_lead.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -539,7 +539,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/sfdc_opportunitycontactrole.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/sfdc_opportunitycontactrole.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -575,7 +575,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/user.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/user.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -611,7 +611,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/userrole.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/userrole.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -647,7 +647,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/opportunitylineitem.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/opportunitylineitem.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -683,7 +683,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/opportunitystage.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/opportunitystage.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -719,7 +719,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/pricebookentry.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/pricebookentry.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -755,7 +755,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/product2.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/product2.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -791,7 +791,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/recordtype.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/recordtype.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -827,7 +827,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/z_billingaccount.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/z_billingaccount.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -863,7 +863,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/sfdc/z_product.ktr</filename>
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/z_product.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
