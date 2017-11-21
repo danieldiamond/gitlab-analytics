@@ -8,6 +8,8 @@ before_script:
 extract_container:
   stage: build
   image: docker:latest
+  variables:
+    DOCKER_DRIVER: overlay2
   tags:
     - analytics
   services:
