@@ -58,20 +58,8 @@ RUN curl -L "$PDI_DOWNLOAD_URL" -o "/tmp/pdi-ce-$PDI_VERSION.zip" && \
 RUN rm $PDI_HOME/lib/postgresql-* && \
     curl -L "$PG_CONNECTOR_DOWNLOAD_URL" -o "$PDI_HOME/lib/postgresql-$PG_CONNECTOR_VERSION.jar"
 
-# Copy carte templates
-COPY carte*.xml "$CART_TEMPLATES/"
-
-# Copy carte healthcheck
-COPY carte-healthcheck.sh /usr/bin/carte-healthcheck
-
-# Copy entrypoint
-COPY entrypoint.sh /usr/bin/pdi-entrypoint
-
-# Run entrypoint
-ENTRYPOINT ["/usr/bin/pdi-entrypoint"]
+#Make project directory
+RUN mkdir /bizops
 
 # Workdir
-WORKDIR "$PDI_HOME"
-
-# Run Carte !
-CMD carte.sh "$PDI_PATH/carte/carte-config.xml"
+WORKDIR "/bizops"

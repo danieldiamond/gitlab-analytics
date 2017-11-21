@@ -1,0 +1,3278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transformation>
+  <info>
+    <name>user</name>
+    <description />
+    <extended_description />
+    <trans_version />
+    <trans_type>Normal</trans_type>
+    <directory>/</directory>
+    <parameters>
+    </parameters>
+    <log>
+      <trans-log-table>
+        <connection />
+        <schema />
+        <table />
+        <size_limit_lines />
+        <interval />
+        <timeout_days />
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STATUS</id>
+          <enabled>Y</enabled>
+          <name>STATUS</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+          <subject />
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+          <subject />
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+          <subject />
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+          <subject />
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+          <subject />
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+          <subject />
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>STARTDATE</id>
+          <enabled>Y</enabled>
+          <name>STARTDATE</name>
+        </field>
+        <field>
+          <id>ENDDATE</id>
+          <enabled>Y</enabled>
+          <name>ENDDATE</name>
+        </field>
+        <field>
+          <id>LOGDATE</id>
+          <enabled>Y</enabled>
+          <name>LOGDATE</name>
+        </field>
+        <field>
+          <id>DEPDATE</id>
+          <enabled>Y</enabled>
+          <name>DEPDATE</name>
+        </field>
+        <field>
+          <id>REPLAYDATE</id>
+          <enabled>Y</enabled>
+          <name>REPLAYDATE</name>
+        </field>
+        <field>
+          <id>LOG_FIELD</id>
+          <enabled>Y</enabled>
+          <name>LOG_FIELD</name>
+        </field>
+        <field>
+          <id>EXECUTING_SERVER</id>
+          <enabled>N</enabled>
+          <name>EXECUTING_SERVER</name>
+        </field>
+        <field>
+          <id>EXECUTING_USER</id>
+          <enabled>N</enabled>
+          <name>EXECUTING_USER</name>
+        </field>
+        <field>
+          <id>CLIENT</id>
+          <enabled>N</enabled>
+          <name>CLIENT</name>
+        </field>
+      </trans-log-table>
+      <perf-log-table>
+        <connection />
+        <schema />
+        <table />
+        <interval />
+        <timeout_days />
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>SEQ_NR</id>
+          <enabled>Y</enabled>
+          <name>SEQ_NR</name>
+        </field>
+        <field>
+          <id>LOGDATE</id>
+          <enabled>Y</enabled>
+          <name>LOGDATE</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STEPNAME</id>
+          <enabled>Y</enabled>
+          <name>STEPNAME</name>
+        </field>
+        <field>
+          <id>STEP_COPY</id>
+          <enabled>Y</enabled>
+          <name>STEP_COPY</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>INPUT_BUFFER_ROWS</id>
+          <enabled>Y</enabled>
+          <name>INPUT_BUFFER_ROWS</name>
+        </field>
+        <field>
+          <id>OUTPUT_BUFFER_ROWS</id>
+          <enabled>Y</enabled>
+          <name>OUTPUT_BUFFER_ROWS</name>
+        </field>
+      </perf-log-table>
+      <channel-log-table>
+        <connection />
+        <schema />
+        <table />
+        <timeout_days />
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>LOGGING_OBJECT_TYPE</id>
+          <enabled>Y</enabled>
+          <name>LOGGING_OBJECT_TYPE</name>
+        </field>
+        <field>
+          <id>OBJECT_NAME</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_NAME</name>
+        </field>
+        <field>
+          <id>OBJECT_COPY</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_COPY</name>
+        </field>
+        <field>
+          <id>REPOSITORY_DIRECTORY</id>
+          <enabled>Y</enabled>
+          <name>REPOSITORY_DIRECTORY</name>
+        </field>
+        <field>
+          <id>FILENAME</id>
+          <enabled>Y</enabled>
+          <name>FILENAME</name>
+        </field>
+        <field>
+          <id>OBJECT_ID</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_ID</name>
+        </field>
+        <field>
+          <id>OBJECT_REVISION</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_REVISION</name>
+        </field>
+        <field>
+          <id>PARENT_CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>PARENT_CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>ROOT_CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>ROOT_CHANNEL_ID</name>
+        </field>
+      </channel-log-table>
+      <step-log-table>
+        <connection />
+        <schema />
+        <table />
+        <timeout_days />
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STEPNAME</id>
+          <enabled>Y</enabled>
+          <name>STEPNAME</name>
+        </field>
+        <field>
+          <id>STEP_COPY</id>
+          <enabled>Y</enabled>
+          <name>STEP_COPY</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>LOG_FIELD</id>
+          <enabled>N</enabled>
+          <name>LOG_FIELD</name>
+        </field>
+      </step-log-table>
+      <metrics-log-table>
+        <connection />
+        <schema />
+        <table />
+        <timeout_days />
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>METRICS_DATE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_DATE</name>
+        </field>
+        <field>
+          <id>METRICS_CODE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_CODE</name>
+        </field>
+        <field>
+          <id>METRICS_DESCRIPTION</id>
+          <enabled>Y</enabled>
+          <name>METRICS_DESCRIPTION</name>
+        </field>
+        <field>
+          <id>METRICS_SUBJECT</id>
+          <enabled>Y</enabled>
+          <name>METRICS_SUBJECT</name>
+        </field>
+        <field>
+          <id>METRICS_TYPE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_TYPE</name>
+        </field>
+        <field>
+          <id>METRICS_VALUE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_VALUE</name>
+        </field>
+      </metrics-log-table>
+    </log>
+    <maxdate>
+      <connection />
+      <table />
+      <field />
+      <offset>0.0</offset>
+      <maxdiff>0.0</maxdiff>
+    </maxdate>
+    <size_rowset>10000</size_rowset>
+    <sleep_time_empty>50</sleep_time_empty>
+    <sleep_time_full>50</sleep_time_full>
+    <unique_connections>N</unique_connections>
+    <feedback_shown>Y</feedback_shown>
+    <feedback_size>50000</feedback_size>
+    <using_thread_priorities>Y</using_thread_priorities>
+    <shared_objects_file />
+    <capture_step_performance>N</capture_step_performance>
+    <step_performance_capturing_delay>1000</step_performance_capturing_delay>
+    <step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
+    <dependencies>
+    </dependencies>
+    <partitionschemas>
+    </partitionschemas>
+    <slaveservers>
+    </slaveservers>
+    <clusterschemas>
+    </clusterschemas>
+    <created_user>-</created_user>
+    <created_date>2017/11/10 21:45:05.325</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2017/11/10 21:45:05.325</modified_date>
+    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
+    <is_key_private>N</is_key_private>
+  </info>
+  <notepads>
+  </notepads>
+  <connection>
+    <name>${DB_CONN_NAME}</name>
+    <server>${DB_CONN_ADDRESS}</server>
+    <type>${DB_CONN_TYPE}</type>
+    <access>${DB_CONN_ACCESS}</access>
+    <database>${DB_CONN_DATABASE}</database>
+    <port>${DB_CONN_PORT}</port>
+    <username>${DB_CONN_USERNAME}</username>
+    <password>${DB_CONN_PASSWORD}</password>
+    <servername />
+    <data_tablespace />
+    <index_tablespace />
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>5432</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
+  <order>
+    <hop>
+      <from>Salesforce Input</from>
+      <to>Insert / Update</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <step>
+    <name>Insert / Update</name>
+    <type>InsertUpdate</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>pg</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema>sfdc</schema>
+      <table>user</table>
+      <key>
+        <name>User ID</name>
+        <field>id</field>
+        <condition>=</condition>
+        <name2 />
+      </key>
+      <value>
+        <name>username</name>
+        <rename>Username</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>suffix</name>
+        <rename>Suffix</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>division</name>
+        <rename>Division</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>department</name>
+        <rename>Department</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>title</name>
+        <rename>Title</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>street</name>
+        <rename>Street</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>city</name>
+        <rename>City</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>country</name>
+        <rename>Country</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>latitude</name>
+        <rename>Latitude</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>longitude</name>
+        <rename>Longitude</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>email</name>
+        <rename>Email</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>phone</name>
+        <rename>Phone</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>fax</name>
+        <rename>Fax</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>alias</name>
+        <rename>Alias</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>extension</name>
+        <rename>Extension</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>id</name>
+        <rename>User ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>isactive</name>
+        <rename>Active</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>lastname</name>
+        <rename>Last Name</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>firstname</name>
+        <rename>First Name</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>emailpreferencesautobcc</name>
+        <rename>AutoBcc</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>emailpreferencesautobccstayintouch</name>
+        <rename>AutoBccStayInTouch</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>geocodeaccuracy</name>
+        <rename>Geocode Accuracy</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>middlename</name>
+        <rename>Middle Name</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>name</name>
+        <rename>Full Name</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>companyname</name>
+        <rename>Company Name</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>state</name>
+        <rename>State/Province</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>postalcode</name>
+        <rename>Zip/Postal Code</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>countrycode</name>
+        <rename>Country Code</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>statecode</name>
+        <rename>State/Province Code</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>emailpreferencesstayintouchreminder</name>
+        <rename>StayInTouchReminder</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>aboutme</name>
+        <rename>About Me</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>accountid</name>
+        <rename>Account ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>contactid</name>
+        <rename>Contact ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>createdbyid</name>
+        <rename>Created By ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>createddate</name>
+        <rename>Created Date</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>callcenterid</name>
+        <rename>Call Center ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>can_change_sdr_on_account__c</name>
+        <rename>Can Change SDR on Account</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>can_change_bdr_on_lead__c</name>
+        <rename>Can Change BDR on Lead and Contact</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>can_change_lead_or_contact_owner__c</name>
+        <rename>Can Change Lead or Contact Owner</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>team__c</name>
+        <rename>Team</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>usertype</name>
+        <rename>User Type</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>profileid</name>
+        <rename>Profile ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>finance__c</name>
+        <rename>Finance</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>start_date__c</name>
+        <rename>Start Date</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>managerid</name>
+        <rename>Manager ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>employeenumber</name>
+        <rename>Employee Number</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>emailencodingkey</name>
+        <rename>Email Encoding</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>localesidkey</name>
+        <rename>Locale</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>timezonesidkey</name>
+        <rename>Time Zone</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>userroleid</name>
+        <rename>Role ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>systemmodstamp</name>
+        <rename>System Modstamp</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>lastmodifieddate</name>
+        <rename>Last Modified Date</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>lastmodifiedbyid</name>
+        <rename>Last Modified By ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>lastlogindate</name>
+        <rename>Last Login</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>lastpasswordchangedate</name>
+        <rename>Last Password Change or Reset</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>communitynickname</name>
+        <rename>Nickname</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>mobilephone</name>
+        <rename>Cell</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>offlinetrialexpirationdate</name>
+        <rename>Offline Edition Trial Expiration Date</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>offlinepdatrialexpirationdate</name>
+        <rename>Sales Anywhere Trial Expiration Date</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>delegatedapproverid</name>
+        <rename>Delegated Approver ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>mkto_si__iscachingbestbets__c</name>
+        <rename>IsCachingBestBets</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>mkto_si__iscachinganonwebactivitylist__c</name>
+        <rename>IsCachingAnonWebActivityList</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>mkto_si__iscachingemailactivitylist__c</name>
+        <rename>IsCachingEmailActivityList</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>mkto_si__iscachinggroupedwebactivitylist__c</name>
+        <rename>IsCachingGroupedWebActivityList</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>mkto_si__iscachinginterestingmomentslist__c</name>
+        <rename>IsCachingInterestingMomentsList</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>mkto_si__iscachingscoringlist__c</name>
+        <rename>IsCachingScoringList</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>mkto_si__iscachingstreamlist__c</name>
+        <rename>IsCachingStreamList</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>mkto_si__iscachingwatchlist__c</name>
+        <rename>IsCachingWatchList</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>mkto_si__iscachingwebactivitylist__c</name>
+        <rename>IsCachingWebActivityList</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>mkto_si__sales_insight_counter__c</name>
+        <rename>Marketo Sales Insight Welcome Counter</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>isportalenabled</name>
+        <rename>Is Portal Enabled</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>portalrole</name>
+        <rename>Portal Role Level</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>receivesinfoemails</name>
+        <rename>Info Emails</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>receivesadmininfoemails</name>
+        <rename>Admin Info Emails</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>isprmsuperuser</name>
+        <rename>Is Partner Super User</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>lastreferenceddate</name>
+        <rename>Last Referenced Date</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>lastvieweddate</name>
+        <rename>Last Viewed Date</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>sendername</name>
+        <rename>Email Sender Name</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>senderemail</name>
+        <rename>Email Sender Address</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>signature</name>
+        <rename>Email Signature</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>stayintouchsubject</name>
+        <rename>Stay-in-Touch Email Subject</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>stayintouchsignature</name>
+        <rename>Stay-in-Touch Email Signature</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>stayintouchnote</name>
+        <rename>Stay-in-Touch Email Note</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>languagelocalekey</name>
+        <rename>Language</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>576</xloc>
+      <yloc>320</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Salesforce Input</name>
+    <type>SalesforceInput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <targeturl>${SFDC_URL}</targeturl>
+    <username>${SFDC_USERNAME}</username>
+    <password>${SFDC_PASSWORD}</password>
+    <timeout>60000</timeout>
+    <useCompression>N</useCompression>
+    <module>User</module>
+    <condition />
+    <specifyQuery>N</specifyQuery>
+    <query />
+    <include_targeturl>N</include_targeturl>
+    <targeturl_field />
+    <include_module>N</include_module>
+    <module_field />
+    <include_rownum>N</include_rownum>
+    <include_deletion_date>N</include_deletion_date>
+    <deletion_date_field />
+    <rownum_field />
+    <include_sql>N</include_sql>
+    <sql_field />
+    <include_Timestamp>N</include_Timestamp>
+    <timestamp_field />
+    <read_from />
+    <read_to />
+    <records_filter>all</records_filter>
+    <queryAll>Y</queryAll>
+    <fields>
+      <field>
+        <name>User ID</name>
+        <field>Id</field>
+        <idlookup>Y</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Username</name>
+        <field>Username</field>
+        <idlookup>Y</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Last Name</name>
+        <field>LastName</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>First Name</name>
+        <field>FirstName</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Middle Name</name>
+        <field>MiddleName</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Suffix</name>
+        <field>Suffix</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Full Name</name>
+        <field>Name</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>121</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Company Name</name>
+        <field>CompanyName</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Division</name>
+        <field>Division</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Department</name>
+        <field>Department</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Title</name>
+        <field>Title</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Street</name>
+        <field>Street</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>City</name>
+        <field>City</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>State/Province</name>
+        <field>State</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Zip/Postal Code</name>
+        <field>PostalCode</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>20</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Country</name>
+        <field>Country</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>State/Province Code</name>
+        <field>StateCode</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>10</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Country Code</name>
+        <field>CountryCode</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>10</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Latitude</name>
+        <field>Latitude</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Longitude</name>
+        <field>Longitude</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Geocode Accuracy</name>
+        <field>GeocodeAccuracy</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Address</name>
+        <field>Address</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Email</name>
+        <field>Email</field>
+        <idlookup>Y</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>128</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>AutoBcc</name>
+        <field>EmailPreferencesAutoBcc</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>AutoBccStayInTouch</name>
+        <field>EmailPreferencesAutoBccStayInTouch</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>StayInTouchReminder</name>
+        <field>EmailPreferencesStayInTouchReminder</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Email Sender Address</name>
+        <field>SenderEmail</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Email Sender Name</name>
+        <field>SenderName</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Email Signature</name>
+        <field>Signature</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1333</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Stay-in-Touch Email Subject</name>
+        <field>StayInTouchSubject</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Stay-in-Touch Email Signature</name>
+        <field>StayInTouchSignature</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>512</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Stay-in-Touch Email Note</name>
+        <field>StayInTouchNote</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>512</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Phone</name>
+        <field>Phone</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Fax</name>
+        <field>Fax</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Cell</name>
+        <field>MobilePhone</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Alias</name>
+        <field>Alias</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>8</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Nickname</name>
+        <field>CommunityNickname</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>User Photo badge text overlay</name>
+        <field>BadgeText</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Active</name>
+        <field>IsActive</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Time Zone</name>
+        <field>TimeZoneSidKey</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Role ID</name>
+        <field>UserRoleId</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Locale</name>
+        <field>LocaleSidKey</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Info Emails</name>
+        <field>ReceivesInfoEmails</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Admin Info Emails</name>
+        <field>ReceivesAdminInfoEmails</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Email Encoding</name>
+        <field>EmailEncodingKey</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Profile ID</name>
+        <field>ProfileId</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>User Type</name>
+        <field>UserType</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Language</name>
+        <field>LanguageLocaleKey</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Employee Number</name>
+        <field>EmployeeNumber</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>20</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Delegated Approver ID</name>
+        <field>DelegatedApproverId</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Manager ID</name>
+        <field>ManagerId</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Last Login</name>
+        <field>LastLoginDate</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Last Password Change or Reset</name>
+        <field>LastPasswordChangeDate</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Created Date</name>
+        <field>CreatedDate</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Created By ID</name>
+        <field>CreatedById</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Last Modified Date</name>
+        <field>LastModifiedDate</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Last Modified By ID</name>
+        <field>LastModifiedById</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>System Modstamp</name>
+        <field>SystemModstamp</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Offline Edition Trial Expiration Date</name>
+        <field>OfflineTrialExpirationDate</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Sales Anywhere Trial Expiration Date</name>
+        <field>OfflinePdaTrialExpirationDate</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Marketing User</name>
+        <field>UserPermissionsMarketingUser</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Offline User</name>
+        <field>UserPermissionsOfflineUser</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>AvantGo User</name>
+        <field>UserPermissionsAvantgoUser</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Auto-login To Call Center</name>
+        <field>UserPermissionsCallCenterAutoLogin</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Apex Mobile User</name>
+        <field>UserPermissionsMobileUser</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Salesforce CRM Content User</name>
+        <field>UserPermissionsSFContentUser</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Force.com Flow User</name>
+        <field>UserPermissionsInteractionUser</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Service Cloud User</name>
+        <field>UserPermissionsSupportUser</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Chatter Answers User</name>
+        <field>UserPermissionsChatterAnswersUser</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Allow Forecasting</name>
+        <field>ForecastEnabled</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ActivityRemindersPopup</name>
+        <field>UserPreferencesActivityRemindersPopup</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>EventRemindersCheckboxDefault</name>
+        <field>UserPreferencesEventRemindersCheckboxDefault</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>TaskRemindersCheckboxDefault</name>
+        <field>UserPreferencesTaskRemindersCheckboxDefault</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ReminderSoundOff</name>
+        <field>UserPreferencesReminderSoundOff</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableAllFeedsEmail</name>
+        <field>UserPreferencesDisableAllFeedsEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableFollowersEmail</name>
+        <field>UserPreferencesDisableFollowersEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableProfilePostEmail</name>
+        <field>UserPreferencesDisableProfilePostEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableChangeCommentEmail</name>
+        <field>UserPreferencesDisableChangeCommentEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableLaterCommentEmail</name>
+        <field>UserPreferencesDisableLaterCommentEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisProfPostCommentEmail</name>
+        <field>UserPreferencesDisProfPostCommentEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ApexPagesDeveloperMode</name>
+        <field>UserPreferencesApexPagesDeveloperMode</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HideCSNGetChatterMobileTask</name>
+        <field>UserPreferencesHideCSNGetChatterMobileTask</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableMentionsPostEmail</name>
+        <field>UserPreferencesDisableMentionsPostEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisMentionsCommentEmail</name>
+        <field>UserPreferencesDisMentionsCommentEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HideCSNDesktopTask</name>
+        <field>UserPreferencesHideCSNDesktopTask</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HideChatterOnboardingSplash</name>
+        <field>UserPreferencesHideChatterOnboardingSplash</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HideSecondChatterOnboardingSplash</name>
+        <field>UserPreferencesHideSecondChatterOnboardingSplash</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisCommentAfterLikeEmail</name>
+        <field>UserPreferencesDisCommentAfterLikeEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableLikeEmail</name>
+        <field>UserPreferencesDisableLikeEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>SortFeedByComment</name>
+        <field>UserPreferencesSortFeedByComment</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableMessageEmail</name>
+        <field>UserPreferencesDisableMessageEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableBookmarkEmail</name>
+        <field>UserPreferencesDisableBookmarkEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableSharePostEmail</name>
+        <field>UserPreferencesDisableSharePostEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>EnableAutoSubForFeeds</name>
+        <field>UserPreferencesEnableAutoSubForFeeds</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableFileShareNotificationsForApi</name>
+        <field>UserPreferencesDisableFileShareNotificationsForApi</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowTitleToExternalUsers</name>
+        <field>UserPreferencesShowTitleToExternalUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowManagerToExternalUsers</name>
+        <field>UserPreferencesShowManagerToExternalUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowEmailToExternalUsers</name>
+        <field>UserPreferencesShowEmailToExternalUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowWorkPhoneToExternalUsers</name>
+        <field>UserPreferencesShowWorkPhoneToExternalUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowMobilePhoneToExternalUsers</name>
+        <field>UserPreferencesShowMobilePhoneToExternalUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowFaxToExternalUsers</name>
+        <field>UserPreferencesShowFaxToExternalUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowStreetAddressToExternalUsers</name>
+        <field>UserPreferencesShowStreetAddressToExternalUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowCityToExternalUsers</name>
+        <field>UserPreferencesShowCityToExternalUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowStateToExternalUsers</name>
+        <field>UserPreferencesShowStateToExternalUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowPostalCodeToExternalUsers</name>
+        <field>UserPreferencesShowPostalCodeToExternalUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowCountryToExternalUsers</name>
+        <field>UserPreferencesShowCountryToExternalUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowProfilePicToGuestUsers</name>
+        <field>UserPreferencesShowProfilePicToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowTitleToGuestUsers</name>
+        <field>UserPreferencesShowTitleToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowCityToGuestUsers</name>
+        <field>UserPreferencesShowCityToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowStateToGuestUsers</name>
+        <field>UserPreferencesShowStateToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowPostalCodeToGuestUsers</name>
+        <field>UserPreferencesShowPostalCodeToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowCountryToGuestUsers</name>
+        <field>UserPreferencesShowCountryToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HideS1BrowserUI</name>
+        <field>UserPreferencesHideS1BrowserUI</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>DisableEndorsementEmail</name>
+        <field>UserPreferencesDisableEndorsementEmail</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PathAssistantCollapsed</name>
+        <field>UserPreferencesPathAssistantCollapsed</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>CacheDiagnostics</name>
+        <field>UserPreferencesCacheDiagnostics</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowEmailToGuestUsers</name>
+        <field>UserPreferencesShowEmailToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowManagerToGuestUsers</name>
+        <field>UserPreferencesShowManagerToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowWorkPhoneToGuestUsers</name>
+        <field>UserPreferencesShowWorkPhoneToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowMobilePhoneToGuestUsers</name>
+        <field>UserPreferencesShowMobilePhoneToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowFaxToGuestUsers</name>
+        <field>UserPreferencesShowFaxToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShowStreetAddressToGuestUsers</name>
+        <field>UserPreferencesShowStreetAddressToGuestUsers</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>LightningExperiencePreferred</name>
+        <field>UserPreferencesLightningExperiencePreferred</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PreviewLightning</name>
+        <field>UserPreferencesPreviewLightning</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HideEndUserOnboardingAssistantModal</name>
+        <field>UserPreferencesHideEndUserOnboardingAssistantModal</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HideLightningMigrationModal</name>
+        <field>UserPreferencesHideLightningMigrationModal</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HideSfxWelcomeMat</name>
+        <field>UserPreferencesHideSfxWelcomeMat</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HideBiggerPhotoCallout</name>
+        <field>UserPreferencesHideBiggerPhotoCallout</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Contact ID</name>
+        <field>ContactId</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Account ID</name>
+        <field>AccountId</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Call Center ID</name>
+        <field>CallCenterId</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Extension</name>
+        <field>Extension</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Portal Role Level</name>
+        <field>PortalRole</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Is Portal Enabled</name>
+        <field>IsPortalEnabled</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>SAML Federation ID</name>
+        <field>FederationIdentifier</field>
+        <idlookup>Y</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>512</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>About Me</name>
+        <field>AboutMe</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1000</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Url for full-sized Photo</name>
+        <field>FullPhotoUrl</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1024</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Photo</name>
+        <field>SmallPhotoUrl</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1024</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Url for medium profile photo</name>
+        <field>MediumPhotoUrl</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1024</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Chatter Email Highlights Frequency</name>
+        <field>DigestFrequency</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Default Notification Frequency when Joining Groups</name>
+        <field>DefaultGroupNotificationFrequency</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Is Partner Super User</name>
+        <field>IsPrmSuperUser</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Last Viewed Date</name>
+        <field>LastViewedDate</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Last Referenced Date</name>
+        <field>LastReferencedDate</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Url for banner photo</name>
+        <field>BannerPhotoUrl</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1024</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Has Profile Photo</name>
+        <field>IsProfilePhotoActive</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Finance</name>
+        <field>finance__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>IsCachingAnonWebActivityList</name>
+        <field>mkto_si__IsCachingAnonWebActivityList__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>IsCachingBestBets</name>
+        <field>mkto_si__IsCachingBestBets__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>IsCachingEmailActivityList</name>
+        <field>mkto_si__IsCachingEmailActivityList__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>IsCachingGroupedWebActivityList</name>
+        <field>mkto_si__IsCachingGroupedWebActivityList__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>IsCachingInterestingMomentsList</name>
+        <field>mkto_si__IsCachingInterestingMomentsList__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>IsCachingScoringList</name>
+        <field>mkto_si__IsCachingScoringList__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>IsCachingStreamList</name>
+        <field>mkto_si__IsCachingStreamList__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>IsCachingWatchList</name>
+        <field>mkto_si__IsCachingWatchList__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>IsCachingWebActivityList</name>
+        <field>mkto_si__IsCachingWebActivityList__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Marketo Sales Insight Welcome Counter</name>
+        <field>mkto_si__Sales_Insight_Counter__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>4</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Team</name>
+        <field>Team__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Can Change SDR on Account</name>
+        <field>Can_Change_SDR_on_Account__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Can Change BDR on Lead and Contact</name>
+        <field>Can_Change_BDR_on_Lead__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Start Date</name>
+        <field>Start_Date__c</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Can Change Lead or Contact Owner</name>
+        <field>Can_Change_Lead_or_Contact_Owner__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>384</xloc>
+      <yloc>335</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step_error_handling>
+  </step_error_handling>
+  <slave-step-copy-partition-distribution>
+  </slave-step-copy-partition-distribution>
+  <slave_transformation>N</slave_transformation>
+</transformation>

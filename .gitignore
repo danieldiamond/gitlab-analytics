@@ -3,6 +3,5 @@
 */config/dbconfig.py
 */config/mailcfg.py
 */data-integration/system/karaf/caches/*
-*.ktr
 *.log
 *.pyc
