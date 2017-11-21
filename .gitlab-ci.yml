@@ -2,9 +2,6 @@ stages:
   - build
   - extract
 
-before_script:
-  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-
 extract_container:
   stage: build
   image: docker:latest
@@ -15,6 +12,7 @@ extract_container:
   services:
     - docker:dind
   script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker build -t $CI_REGISTRY_IMAGE/extract:$CI_COMMIT_REF_NAME containers/extract
     - docker push $CI_REGISTRY_IMAGE/extract:$CI_COMMIT_REF_NAME
 
@@ -24,5 +22,5 @@ sfdc:
   tags:
     - analytics
   script:
-    - envsubst < "/bizops/elt/config/kettle/kettle.repositories" > "$KETTLE_HOME/.kettle/kettle.properties"
+    - envsubst < "/bizops/elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
     - cp "/bizops/elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"

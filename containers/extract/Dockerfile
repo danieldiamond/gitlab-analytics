@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM openjdk:8-jre
 
 LABEL maintainer "Aloysius Lim"
 LABEL maintainer "Fabio B. Silva <fabio.bat.silva@gmail.com>"
@@ -41,7 +41,7 @@ ENV CARTE_MASTER_IS_MASTER  "Y"
 
 # Install deps
 RUN apt-get update \
-    && apt-get install -y git python gettext-base \
+    && apt-get install -y git python gettext-base libwebkitgtk-1.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PDI
