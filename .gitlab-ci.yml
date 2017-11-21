@@ -20,7 +20,7 @@ extract_container:
 
 sfdc:
   stage: extract
-  image: extract:$CI_COMMIT_REF_NAME
+  image: $CI_REGISTRY_IMAGE/extract:$CI_COMMIT_REF_NAME
   tags:
     - analytics
   script:
