@@ -22,5 +22,6 @@ sfdc:
   tags:
     - analytics
   script:
-    - envsubst < "/bizops/elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
-    - cp "/bizops/elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
+    - pwd
+    - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
+    - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
