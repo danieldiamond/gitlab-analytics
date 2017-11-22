@@ -42,7 +42,7 @@ We want the tools to be open source so we can ship this as a product.
 ## How to use
 
 We will be delivering two containers to power BizOps:
-1. The [`bizops`](#bizops-container) container, which is responsible for the data warehouse and analytics software.
+1. The [`bizops`](#bizops-container) container, which houses the data warehouse and analytics software.
 1. The [`extract`](#extract-container) container, which will run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
 
 As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
