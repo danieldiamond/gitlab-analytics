@@ -32,23 +32,27 @@ To achieve this, we bring data from all [data sources](data_sources.md) to a [co
 
 We want the tools to be open source so we can ship this as a product.
 
-1. Extract and Load (EL): Combination of [Pentaho Data Integration](http://www.pentaho.com/product/data-integration) and python scripts, although are considering [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
-  * Pentaho DI is based on the open-source [Talend](https://www.talend.com/products/data-integration/) engine, but utilizes XML for easier confiugration.
+1. Extract and Load (EL): Combination of [Pentaho Data Integration](http://www.pentaho.com/product/data-integration) and python scripts, although will consider [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
+  * Pentaho DI is based on the open-source [Talend](https://www.talend.com/products/data-integration/) engine, but utilizes XML for easier configuration.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
 1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
-1. Display/analytics: [Superset](https://github.com/airbnb/superset) to visualize the [metrics](#metrics).
+1. Display/analytics: [Metabase](https://metabase.com) to visualize the [metrics](#metrics). We evaluated [Superset](https://github.com/airbnb/superset), however it's single table limitation proved too limiting.
 1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) for scheduling, running, and monitoring the ELT jobs. Non-GitLab alternatives are [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi).
 
 ## How to use
 
-We have identified [two personas](doc/personas_flows.md):
-* An "administrator" who is reponsible for setting up the project and integrating data.
-* And "users", employees at the company who can use the dashboard to improve decision making across the organization.
+We will be delivering two containers to power BizOps:
+1. The [`bizops`](#bizops-container) container, which houses the data warehouse and analytics software.
+1. The [`extract`](#extract-container) container, which will run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
 
-### Dockerfile
-The image combines [Apache Superset](https://superset.incubator.apache.org/index.html) with a [PostgreSQL](https://www.postgresql.org/) database. It creates an image pre-configured to use a local PostgreSQL database and loads the sample data and reports. The setup.py file launches the database as well as starts the Superset service on port 8080 using [Gunicorn](http://gunicorn.org/).
+As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
 
-### To launch the container:
+### BizOps Container
+> Note this will be updated with Metabase in the near future. See [Tools](#tools) for more information.
+
+The `bizops` image combines [Apache Superset](https://superset.incubator.apache.org/index.html) with a [PostgreSQL](https://www.postgresql.org/) database. It creates an image pre-configured to use a local PostgreSQL database and loads the sample data and reports. The setup.py file launches the database as well as starts the Superset service on port 8080 using [Gunicorn](http://gunicorn.org/).
+
+#### To launch the container:
 
 1. Clone the repo and cd into it.
 2. Edit the config/bizops.conf file to enter in a username, first name, last name, email and password for the Superset administrator.
@@ -56,6 +60,14 @@ The image combines [Apache Superset](https://superset.incubator.apache.org/index
 4. Build the image with `docker build --rm=true -t bizops .`.
 5. Run the image with `docker run -p 80:8088 bizops`.
 6. Go to [http://localhost](http://localhost) and log in using the credentials you entered in step 2.
+
+### Extract Container
+
+The `extract` image includes:
+* Pentaho Data Integration with OpenJDK 8 to extract data from sfdc_contact
+* Python 2.7.13 and extraction scripts for Zuora and Marketo
+
+This image is set up to be able to run periodically to connect to the configured [data sources](doc/data_sources.md) and extract data, processing it and storing it in the data warehouse running using the [`bizops container`](#bizops-container).
 
 # Why open source BizOps within GitLab?
 
