@@ -439,7 +439,7 @@
     <name>PG</name>
     <server>${DB_CONN_ADDRESS}</server>
     <type>POSTGRESQL</type>
-    <access>${DB_CONN_ACCESS}</access>
+    <access>Native</access>
     <database>${DB_CONN_DATABASE}</database>
     <port>${DB_CONN_PORT}</port>
     <username>${DB_CONN_USERNAME}</username>
@@ -462,7 +462,7 @@
       </attribute>
       <attribute>
         <code>PORT_NUMBER</code>
-        <attribute>5432</attribute>
+        <attribute>${DB_CONN_PORT}</attribute>
       </attribute>
       <attribute>
         <code>PRESERVE_RESERVED_WORD_CASE</code>
