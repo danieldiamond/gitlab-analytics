@@ -2,6 +2,8 @@
 
 BizOps is a convention-over-configuration framework for analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
 
+Last extract: [![pipeline status](https://gitlab.com/gitlab-org/bizops/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/bizops/commits/master)
+
 ## Objectives
 
 1. Provide an open source BI tool to analyze sales and marketing performance ([in progress](#development-plan))
