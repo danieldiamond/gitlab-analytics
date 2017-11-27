@@ -11,6 +11,8 @@ extract_container:
     - analytics
   services:
     - docker:dind
+  when: manual
+  allow_failure: true
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker build -t $CI_REGISTRY_IMAGE/extract:$CI_COMMIT_REF_NAME containers/extract
