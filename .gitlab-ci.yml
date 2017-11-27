@@ -29,3 +29,14 @@ sfdc:
     - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
     - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
     - kitchen.sh -file=elt/sfdc/sfdc_extract.kjb -level=Minimal
+
+zuora:
+  variables:
+    FIXED_ZUORA_PASSWORD: $ZUORA_PASSWORD
+  stage: extract
+  image: $CI_REGISTRY_IMAGE/extract:$CI_COMMIT_REF_NAME
+  tags:
+    - analytics
+  script:
+    - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
+    - elt/zuora/zuora_export.py
