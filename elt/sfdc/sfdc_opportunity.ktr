@@ -1633,8 +1633,8 @@
         <update>Y</update>
       </value>
       <value>
-        <name>Churn_ARR__c</name>
-        <rename>Churn ARR</rename>
+        <name>Churn_ACV__c</name>
+        <rename>Churn ACV</rename>
         <update>Y</update>
       </value>
       <value>
@@ -2517,8 +2517,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Churn ARR</name>
-        <field>Churn_ARR__c</field>
+        <name>Churn ACV</name>
+        <field>Churn_ACV__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
