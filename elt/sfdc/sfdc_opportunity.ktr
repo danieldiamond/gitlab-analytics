@@ -1633,7 +1633,7 @@
         <update>Y</update>
       </value>
       <value>
-        <name>reson_for_churn__c</name>
+        <name>Churn_ARR__c</name>
         <rename>Churn ARR</rename>
         <update>Y</update>
       </value>
@@ -2518,7 +2518,7 @@
       </field>
       <field>
         <name>Churn ARR</name>
-        <field>Reson_for_Churn__c</field>
+        <field>Churn_ARR__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
