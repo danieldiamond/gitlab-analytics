@@ -3888,7 +3888,7 @@
       <method>none</method>
       <schema_name />
     </partitioning>
-    <connection>Postgres SFDC</connection>
+    <connection>PG</connection>
     <commit>100</commit>
     <update_bypassed>N</update_bypassed>
     <lookup>
