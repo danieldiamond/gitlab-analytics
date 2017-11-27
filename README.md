@@ -49,12 +49,12 @@ We will be delivering two containers to power BizOps:
 
 As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
 
-### BizOps Container
+### BizOps container
 > Note this will be updated with Metabase in the near future. See [Tools](#tools) for more information.
 
 The `bizops` image combines [Apache Superset](https://superset.incubator.apache.org/index.html) with a [PostgreSQL](https://www.postgresql.org/) database. It creates an image pre-configured to use a local PostgreSQL database and loads the sample data and reports. The setup.py file launches the database as well as starts the Superset service on port 8080 using [Gunicorn](http://gunicorn.org/).
 
-#### To launch the container:
+#### Using the BizOps container
 
 1. Clone the repo and cd into it.
 2. Edit the config/bizops.conf file to enter in a username, first name, last name, email and password for the Superset administrator.
@@ -63,7 +63,7 @@ The `bizops` image combines [Apache Superset](https://superset.incubator.apache.
 5. Run the image with `docker run -p 80:8088 bizops`.
 6. Go to [http://localhost](http://localhost) and log in using the credentials you entered in step 2.
 
-### Extract Container
+### Extract container
 
 The `extract` image includes:
 * Pentaho Data Integration 7.1 with OpenJDK 8 to extract data from SFDC
@@ -73,10 +73,12 @@ This image is set up to be able to run periodically to connect to the configured
 * SFDC
 * Zuora
 
-#### To launch the container:
+#### Using the Extract container
 > Note: Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields. This will be automated in [Sprint 2](doc/development_plan.md#sprint-2).
 
-The container is primarily built to be used in conjunction with GitLab CI, to automate and schedule the extraction of data. Together with the `.gitlab-ci.yml` file and [project variables](https://docs.gitlab.com/ce/ci/variables/README.html#protected-secret-variables), it is easy to configure. Simply set the following variables in your project ensure that the container is available. (Creating the container is currently set up as a manual job, to reduce the execution time of scheduled pipelines. This will be improved in the future.)
+The container is primarily built to be used in conjunction with GitLab CI, to automate and schedule the extraction of data. Creating the container is currently a manual job, since it changes infrequently and consumes network/compute resources. To build the container initially or after changes, simply run the `extract_container` job in the `build` stage. The subsequent `extract` stage can be cancelled and restarted once the container has finished building. This will be improved in the future.
+
+Together with the `.gitlab-ci.yml` file and [project variables](https://docs.gitlab.com/ce/ci/variables/README.html#protected-secret-variables), it is easy to configure. Simply set the following variables in your project ensure that the container is available. ()
 
 * PG_ADDRESS: IP/DNS of the Postgres server.
 * PG_PORT: Port number of the Postgres server, typically 5432.
