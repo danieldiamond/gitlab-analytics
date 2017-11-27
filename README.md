@@ -71,9 +71,10 @@ The `extract` image includes:
 
 This image is set up to be able to run periodically to connect to the configured [data sources](doc/data_sources.md) and extract data, processing it and storing it in the data warehouse running using the [`bizops container`](#bizops-container). Supported sources in current version:
 * SFDC
+* Zuora
 
 #### To launch the container:
-> Note: Most implementations of SFDC require a large number of custom fields. You will likely need to edit the SFDC Kitchen transformations to map to your custom fields. This will be automated in [Sprint 2](doc/development_plan.md#sprint-2).
+> Note: Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields. This will be automated in [Sprint 2](doc/development_plan.md#sprint-2).
 
 The container is primarily built to be used in conjunction with GitLab CI, to automate and schedule the extraction of data. Together with the `.gitlab-ci.yml` file and [project variables](https://docs.gitlab.com/ce/ci/variables/README.html#protected-secret-variables), it is easy to configure. Simply set the following variables in your project ensure that the container is available. (Creating the container is currently set up as a manual job, to reduce the execution time of scheduled pipelines. This will be improved in the future.)
 
@@ -85,6 +86,9 @@ The container is primarily built to be used in conjunction with GitLab CI, to au
 * SFDC_URL: Web service URL for your SFDC account.
 * SFDC_USERNAME: Username for authentication to SFDC.
 * SFDC_PASSWORD: Password for authentication to SFDC.
+* ZUORA_URL: Web service URL for your Zuora account.
+* ZUORA_USERNAME: Username for authentication to Zuora.
+* ZUORA_PASSWORD: Password for authentication to Zuora.
 
 # Why open source BizOps within GitLab?
 
