@@ -436,7 +436,7 @@
   <notepads>
   </notepads>
   <connection>
-    <name>${DB_CONN_NAME}</name>
+    <name>PG</name>
     <server>${DB_CONN_ADDRESS}</server>
     <type>POSTGRESQL</type>
     <access>${DB_CONN_ACCESS}</access>
