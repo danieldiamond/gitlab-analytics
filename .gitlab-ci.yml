@@ -18,7 +18,7 @@ extract_container:
 
 sfdc:
   variables:
-    FIXED_SFDC_PASSWORD=$SFDC_PASSWORD
+    FIXED_SFDC_PASSWORD: $SFDC_PASSWORD
   stage: extract
   image: $CI_REGISTRY_IMAGE/extract:$CI_COMMIT_REF_NAME
   tags:
