@@ -439,7 +439,7 @@
   <connection>
     <name>${DB_CONN_NAME}</name>
     <server>${DB_CONN_ADDRESS}</server>
-    <type>${DB_CONN_TYPE}</type>
+    <type>POSTGRESQL</type>
     <access>${DB_CONN_ACCESS}</access>
     <database>${DB_CONN_DATABASE}</database>
     <port>${DB_CONN_PORT}</port>
