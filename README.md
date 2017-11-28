@@ -74,7 +74,9 @@ This image is set up to be able to run periodically to connect to the configured
 * Zuora
 
 #### Using the Extract container
-> Note: Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields. This will be automated in [Sprint 2](doc/development_plan.md#sprint-2).
+> Notes:
+> * Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields. This will be automated in [Sprint 2](doc/development_plan.md#sprint-2).
+> * The sample Zuora python scripts have been written to support GitLab's Zuora implementation. This includes a workaround to handle some subscriptions that should have been created as a single subscription.
 
 The container is primarily built to be used in conjunction with GitLab CI, to automate and schedule the extraction of data. Creating the container is currently a manual job, since it changes infrequently and consumes network/compute resources. To build the container initially or after changes, simply run the `extract_container` job in the `build` stage. The subsequent `extract` stage can be cancelled and restarted once the container has finished building. This will be improved in the future.
 
