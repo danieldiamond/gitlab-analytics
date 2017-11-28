@@ -2,6 +2,8 @@
 
 BizOps is a convention-over-configuration framework for analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
 
+Last extract: [![pipeline status](https://gitlab.com/gitlab-org/bizops/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/bizops/commits/master)
+
 ## Objectives
 
 1. Provide an open source BI tool to analyze sales and marketing performance ([in progress](#development-plan))
@@ -47,12 +49,12 @@ We will be delivering two containers to power BizOps:
 
 As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
 
-### BizOps Container
+### BizOps container
 > Note this will be updated with Metabase in the near future. See [Tools](#tools) for more information.
 
 The `bizops` image combines [Apache Superset](https://superset.incubator.apache.org/index.html) with a [PostgreSQL](https://www.postgresql.org/) database. It creates an image pre-configured to use a local PostgreSQL database and loads the sample data and reports. The setup.py file launches the database as well as starts the Superset service on port 8080 using [Gunicorn](http://gunicorn.org/).
 
-#### To launch the container:
+#### Using the BizOps container
 
 1. Clone the repo and cd into it.
 2. Edit the config/bizops.conf file to enter in a username, first name, last name, email and password for the Superset administrator.
@@ -61,13 +63,36 @@ The `bizops` image combines [Apache Superset](https://superset.incubator.apache.
 5. Run the image with `docker run -p 80:8088 bizops`.
 6. Go to [http://localhost](http://localhost) and log in using the credentials you entered in step 2.
 
-### Extract Container
+### Extract container
 
 The `extract` image includes:
-* Pentaho Data Integration with OpenJDK 8 to extract data from sfdc_contact
+* Pentaho Data Integration 7.1 with OpenJDK 8 to extract data from SFDC
 * Python 2.7.13 and extraction scripts for Zuora and Marketo
 
-This image is set up to be able to run periodically to connect to the configured [data sources](doc/data_sources.md) and extract data, processing it and storing it in the data warehouse running using the [`bizops container`](#bizops-container).
+This image is set up to be able to run periodically to connect to the configured [data sources](doc/data_sources.md) and extract data, processing it and storing it in the data warehouse running using the [`bizops container`](#bizops-container). Supported sources in current version:
+* SFDC
+* Zuora
+
+#### Using the Extract container
+> Notes:
+> * Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields. This will be automated in [Sprint 2](doc/development_plan.md#sprint-2).
+> * The sample Zuora python scripts have been written to support GitLab's Zuora implementation. This includes a workaround to handle some subscriptions that should have been created as a single subscription.
+
+The container is primarily built to be used in conjunction with GitLab CI, to automate and schedule the extraction of data. Creating the container is currently a manual job, since it changes infrequently and consumes network/compute resources. To build the container initially or after changes, simply run the `extract_container` job in the `build` stage. The subsequent `extract` stage can be cancelled and restarted once the container has finished building. This will be improved in the future.
+
+Together with the `.gitlab-ci.yml` file and [project variables](https://docs.gitlab.com/ce/ci/variables/README.html#protected-secret-variables), it is easy to configure. Simply set the following variables in your project ensure that the container is available. ()
+
+* PG_ADDRESS: IP/DNS of the Postgres server.
+* PG_PORT: Port number of the Postgres server, typically 5432.
+* PG_DATABASE: Database name to be used for the staging tables.
+* PG_USERNAME: Username for authentication to Postgres.
+* PG_PASSWORD: Password for authentication to Postgres.
+* SFDC_URL: Web service URL for your SFDC account.
+* SFDC_USERNAME: Username for authentication to SFDC.
+* SFDC_PASSWORD: Password for authentication to SFDC.
+* ZUORA_URL: Web service URL for your Zuora account.
+* ZUORA_USERNAME: Username for authentication to Zuora.
+* ZUORA_PASSWORD: Password for authentication to Zuora.
 
 # Why open source BizOps within GitLab?
 

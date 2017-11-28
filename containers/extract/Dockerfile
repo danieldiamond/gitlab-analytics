@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM openjdk:8-jre
 
 LABEL maintainer "Aloysius Lim"
 LABEL maintainer "Fabio B. Silva <fabio.bat.silva@gmail.com>"
@@ -41,8 +41,11 @@ ENV CARTE_MASTER_IS_MASTER  "Y"
 
 # Install deps
 RUN apt-get update \
-    && apt-get install -y git python gettext-base \
+    && apt-get install -y git python python-pip gettext-base libwebkitgtk-1.0-0 \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Python deps
+RUN pip install requests psycopg2 logging ConfigParser
 
 # Install PDI
 RUN curl -L "$PDI_DOWNLOAD_URL" -o "/tmp/pdi-ce-$PDI_VERSION.zip" && \
@@ -58,20 +61,8 @@ RUN curl -L "$PDI_DOWNLOAD_URL" -o "/tmp/pdi-ce-$PDI_VERSION.zip" && \
 RUN rm $PDI_HOME/lib/postgresql-* && \
     curl -L "$PG_CONNECTOR_DOWNLOAD_URL" -o "$PDI_HOME/lib/postgresql-$PG_CONNECTOR_VERSION.jar"
 
-# Copy carte templates
-COPY carte*.xml "$CART_TEMPLATES/"
-
-# Copy carte healthcheck
-COPY carte-healthcheck.sh /usr/bin/carte-healthcheck
-
-# Copy entrypoint
-COPY entrypoint.sh /usr/bin/pdi-entrypoint
-
-# Run entrypoint
-ENTRYPOINT ["/usr/bin/pdi-entrypoint"]
+#Make project directory
+RUN mkdir /bizops
 
 # Workdir
-WORKDIR "$PDI_HOME"
-
-# Run Carte !
-CMD carte.sh "$PDI_PATH/carte/carte-config.xml"
+WORKDIR "/bizops"

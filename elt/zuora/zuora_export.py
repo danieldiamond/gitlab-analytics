@@ -102,7 +102,7 @@ def replace(fieldList):
 
 
 def writeToDb(username, password, host, database, item, r):
-    logger.debug('Writting to ' + database + ' on ' + host)
+    logger.debug('Writing to ' + database + ' on ' + host)
     reader = csv.reader(r.iter_lines(), delimiter=',', quotechar='"',
                         quoting=csv.QUOTE_ALL)
     try:

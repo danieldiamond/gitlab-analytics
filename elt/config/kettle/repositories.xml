@@ -2,9 +2,9 @@
 <repositories>
   <repository>
     <id>KettleFileRepository</id>
-    <name>docker-pentaho-di</name>
-    <description>Docker Pentaho DI Test</description>
-    <base_directory>$PDI_PATH/repo/</base_directory>
+    <name>sfdc_extract</name>
+    <description>BizOps Extract Test</description>
+    <base_directory>/bizops/elt/sfdc</base_directory>
     <read_only>N</read_only>
     <hides_hidden_files>N</hides_hidden_files>
   </repository>
