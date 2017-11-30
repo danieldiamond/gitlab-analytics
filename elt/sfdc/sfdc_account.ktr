@@ -1091,34 +1091,6 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Account Manager (Account Team)</name>
-        <field>Account_Manager_Account_Team__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Account Manager (Lookup)</name>
-        <field>Account_Manager_LU__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>18</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
         <name>Account Manager</name>
         <field>Account_Manager__c</field>
         <idlookup>N</idlookup>
@@ -3009,20 +2981,6 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Count of Cross-Sell Opps</name>
-        <field>Count_of_Cross_Sell_Opps__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
         <name>Count of New Business Won Opps</name>
         <field>Count_of_New_Business_Won_Opps__c</field>
         <idlookup>N</idlookup>
@@ -4541,11 +4499,6 @@
         <update>Y</update>
       </value>
       <value>
-        <name>count_of_cross_sell_opps__c</name>
-        <rename>Count of Cross-Sell Opps</rename>
-        <update>Y</update>
-      </value>
-      <value>
         <name>isgitlabgeocustomer__c</name>
         <rename>GitLab Geo Customer</rename>
         <update>Y</update>
@@ -4733,16 +4686,6 @@
       <value>
         <name>technology_stack__c</name>
         <rename>Technology Stack</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>account_manager_lu__c</name>
-        <rename>Account Manager (Lookup)</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>account_manager_account_team__c</name>
-        <rename>Account Manager (Account Team)</rename>
         <update>Y</update>
       </value>
       <value>
