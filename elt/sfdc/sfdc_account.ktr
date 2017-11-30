@@ -2981,20 +2981,6 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Count of Cross-Sell Opps</name>
-        <field>Count_of_Cross_Sell_Opps__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
         <name>Count of New Business Won Opps</name>
         <field>Count_of_New_Business_Won_Opps__c</field>
         <idlookup>N</idlookup>
@@ -4510,11 +4496,6 @@
       <value>
         <name>count_of_products_purchased__c</name>
         <rename>Count of Products Purchased</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>count_of_cross_sell_opps__c</name>
-        <rename>Count of Cross-Sell Opps</rename>
         <update>Y</update>
       </value>
       <value>
