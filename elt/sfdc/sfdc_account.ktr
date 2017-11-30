@@ -1091,20 +1091,6 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Account Manager (Account Team)</name>
-        <field>Account_Manager_Account_Team__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
         <name>Account Manager (Lookup)</name>
         <field>Account_Manager_LU__c</field>
         <idlookup>N</idlookup>
@@ -4738,11 +4724,6 @@
       <value>
         <name>account_manager_lu__c</name>
         <rename>Account Manager (Lookup)</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>account_manager_account_team__c</name>
-        <rename>Account Manager (Account Team)</rename>
         <update>Y</update>
       </value>
       <value>
