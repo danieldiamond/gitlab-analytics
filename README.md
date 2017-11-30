@@ -96,13 +96,13 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 
 # Why open source BizOps within GitLab?
 
-## DevOps for BI, or "BIOps"
+## Business Intelligence with DevOps
 
-CI/CD tools like GitLab CI have all of the functionality needed to setup and maintain a Business Intelligence stack within an organization. They are able to periodically run a flexible array of software, and deploy to a set of environments.
+Common CI/CD tools have all of the functionality needed to setup and maintain a Business Intelligence stack within an organization. They are able to periodically run a flexible array of software, and deploy to a set of environments.
 
 By leveraging a CI tool, there are a number of benefits:
-* "BI as Code", where the software and scripts required are checked in SCM with all attendant benefits: full version control, history, easy collaboration and reviews.
-* CI systems also provide for easy frameworks for testing ELT changes, and notifications in the event of an issue
+* "BI as Code", where the software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews.
+* CI systems also provide easy frameworks for testing ELT changes and notifications in the event of an issue
 * Automated management of the BI environment means it is easy to make alterations, re-deploy in the event of an issue or outage, as well as provision new environments for different uses like a staging server.
 
 ## Premise
