@@ -1,10 +1,21 @@
+[![pipeline status](https://gitlab.com/gitlab-org/bizops/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/bizops/commits/master)
+
 # BizOps
 
 BizOps is a convention-over-configuration framework for analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
 
-Last extract: [![pipeline status](https://gitlab.com/gitlab-org/bizops/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/bizops/commits/master)
+## Premise
+
+We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations.
+
+* Investors will insist on detailed operational metrics, for companies of all sizes
+* Democratize access to business performance, to drive better decisions across the org
+* The companies of the future will build a detailed, actionable model of each individual customer
+* Based on open source tools, 100k organizations should create the software together based on mutual best practices
 
 ## Objectives
+
+To address this need, we plan to:
 
 1. Provide an open source BI tool to analyze sales and marketing performance ([in progress](#development-plan))
 1. Expand into customer success insight and automation
@@ -17,7 +28,7 @@ BizOps is pre-alpha and under active development, focused on delivering [objecti
 
 ## Analyzing Sales & Marketing Performance
 
-As part of [objective #1](#objectives), we are targeting analytics for sales and marketing performance. We plan to track the following metrics per campaign, lead, and organization. These results will be able to reviewed over various time periods.
+As part of [objective #1](#objectives), we are targeting analytics for sales and marketing performance. We plan to track the following metrics per campaign, lead, and organization. These results will be able to reviewed over various time periods. Initially we will support single touch attribution, with support for multitouch in a [later sprint](doc/development_plan.md#backlog).
 
 * Cost per lead = dollar spend / number of attributed leads
 * Median conversion time (from touch to IACV)
@@ -96,7 +107,7 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 
 # Why open source BizOps within GitLab?
 
-## Business Intelligence with DevOps
+## Business Intelligence with DevOps, or BIOps
 
 Common CI/CD tools have all of the functionality needed to setup and maintain a Business Intelligence stack within an organization. They are able to periodically run a flexible array of software, and deploy to a set of environments.
 
@@ -104,15 +115,6 @@ By leveraging a CI tool, there are a number of benefits:
 * "BI as Code", where the software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews.
 * CI systems also provide easy frameworks for testing ELT changes and notifications in the event of an issue
 * Automated management of the BI environment means it is easy to make alterations, re-deploy in the event of an issue or outage, as well as provision new environments for different uses like a staging server.
-
-## Premise
-* [Conway's law](https://en.wikipedia.org/wiki/Conway%27s_law), in summary: "organizations are constrained to produce designs which copy their communication structures"
-* Based on open source tools, 100k organizations should create it together based on mutual best practices
-* Democratize access to business performance, drive better decisions across the org
-* All companies deserve have the business insights of a F500 org, investors will insist on this
-* The companies of the future will build a detailed, actionable model of each individual customer
-
-There are many [additional concepts and opportunities](doc/concepts.md) to utilize this data internally and externally.
 
 ## Why integrated
 

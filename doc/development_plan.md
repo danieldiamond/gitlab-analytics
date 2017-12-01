@@ -13,9 +13,9 @@ This would provide a basic foundation for analyzing your CRM data that is contai
 ### Priority 1
 
 For the very first MVC, we should focus on just getting an environment established which can ELT and render data:
-* [Create a container with Talend and dbt, to be used as image for CI job](https://gitlab.com/gitlab-org/bizops/issues/8) (Have VM today)
+* [Create a container with Pentaho DI, python, and dbt to be used as image for CI job](https://gitlab.com/gitlab-org/bizops/issues/8) (Done except for dbt)
   * Starts up, uses ENV vars to auth to SFDC/Zuora/Marketo, ELT's data into PG. Runs dbt to transform to data model.
-* Create a container with PG and Superset (Done)
+* Create a container with PG and Metabase
   * Is the "app" that runs as the environment
 * Rely on the end user for any required configuration to extract each [Source](doc/data_sources.md), as well as managing the source's staging table schema
 * The end user is also responsible for the mapping file, used by dbt, between each Source's staging table and the [common Data Model](doc/data_model.md).
@@ -32,13 +32,14 @@ Automate & provide guide rails for ELT phase
 
 Make working with data easier
 
-* Copy dashboards from the repo into Superset, to provide OOTB templates
+* Copy dashboards from the repo into Metabase, to provide OOTB templates
 * Identify an easy "flow" to save modified dashboard into repo. (Cut/Paste, download file, etc.)
 
 ### Backlog
 
 * Productize this a little more, and add steps to ease the creation of the "transform" file.
 * Set up backup/restore jobs for production database
+* Multitouch attribution
 
 ### Open questions
 
