@@ -8,16 +8,56 @@ BizOps is a convention-over-configuration framework for analytics, business inte
 
 We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations.
 
-* Investors will insist on detailed operational metrics, for companies of all sizes
-* Democratize access to business performance, to drive better decisions across the org
-* The companies of the future will build a detailed, actionable model of each individual customer
+* Investors will insist on detailed operational metrics, for companies of any size
+* Democratizing access to business performance drives better decisions across the entire organization
+* The companies of the future will build a detailed, actionable model of each individual customer. This requires knowledge of each touchpoint throughout the lifecycle.
 * Based on open source tools, 100k organizations should create the software together based on mutual best practices
+
+## Why open source BizOps within GitLab?
+
+### Business Intelligence with DevOps, or BIOps
+
+Common CI/CD tools have all of the functionality needed to setup and maintain a Business Intelligence stack within an organization. They are able to periodically run a flexible array of software, and deploy to a set of environments.
+
+By leveraging a CI tool, there are a number of benefits:
+* "BI as Code", where the software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews.
+* CI systems also provide easy frameworks for testing ELT changes and notifications in the event of an issue
+* Automated management of the BI environment means it is easy to make alterations, re-deploy in the event of an issue or outage, as well as provision new environments for different uses like a staging server.
+
+### Why integrated
+
+* Determining critical data like CAC and LTV depends on many touch points across many systems
+* Product should inform sales efforts, with a sales and marketing insights feedback into SDLC
+* Good products need to know more about their users and their needs, this requires a comprehensive data warehouse tracking all touch points
+* Ultimate goal of fusing product data with sales and marketing data, to deliver more impactful, actionable insights across the lifecycle
+
+### Competition & Value
+
+This should be a replacement for:
+* Marketing automation (Marketo)
+* Sales analytics (Insightsquared)
+* Customer Success automation (Gainsight)
+
+You should also be able to retire:
+* Analytics (Tableau)
+* Sales content management (Highspot/Docsend)
+
+In the beginning the software should build on some existing systems, for example the drip campaigns in Marketo.
+
+### Summary
+
+* Acquire the highest LTV at the lowest CAC
+* Drive better, data driven decisions across all sectors of the organization
+* The LTV can likely be predicted quickly after purchase with lookalike customers
+* Customers need multiple touches before purchasing, so it is important to have a sequence (broad interest, features, outbound, etc.) and to get them through this pipe.
+* You need to continually vary your call scripts, website message, drip campaigns, ads, and decks to find out what is effective. Customized for each user and their journey with your company.
+* Determine what causes people to buy and grow. Campaigns and product nudges need to align with these levers.
 
 ## Objectives
 
-To address this need, we plan to:
+To address these needs, the roadmap for BizOps is:
 
-1. Provide an open source BI tool to analyze sales and marketing performance ([in progress](#development-plan))
+1. Build an open source BI product to analyze sales and marketing performance ([in progress](#development-plan))
 1. Expand into customer success insight and automation
 1. Close the feedback loop between product feature launches and sales/marketing performance
 1. Widen to include other areas of the company, like people ops and finance
@@ -104,56 +144,6 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 * ZUORA_URL: Web service URL for your Zuora account.
 * ZUORA_USERNAME: Username for authentication to Zuora.
 * ZUORA_PASSWORD: Password for authentication to Zuora.
-
-# Why open source BizOps within GitLab?
-
-## Business Intelligence with DevOps, or BIOps
-
-Common CI/CD tools have all of the functionality needed to setup and maintain a Business Intelligence stack within an organization. They are able to periodically run a flexible array of software, and deploy to a set of environments.
-
-By leveraging a CI tool, there are a number of benefits:
-* "BI as Code", where the software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews.
-* CI systems also provide easy frameworks for testing ELT changes and notifications in the event of an issue
-* Automated management of the BI environment means it is easy to make alterations, re-deploy in the event of an issue or outage, as well as provision new environments for different uses like a staging server.
-
-## Why integrated
-
-* Determining critical data like CAC and LTV depends on many touch points across many systems
-* Product should inform sales efforts, with a sales and marketing insights feedback into SDLC
-* Good products need to know more about their users and their needs, this requires a comprehensive data warehouse tracking all touch points
-* Ultimate goal of fusing product data with sales and marketing data, to deliver more impactful, actionable insights across the lifecycle
-
-### Examples
-
-The product can also harness deep insights about specific customers to improve UX and LTV:
-
-* Show financials an ad about compliance.
-* If product shows someone just started to use CI show ads with CI information.
-* Add logo's from the same industry to an auto generated presentation
-* Tie campaigns to software milestones, to determine sales & marketing lift per release
-* Integrate your marketing operations with product features, integrating your drip campaign with recent actions taken / untaken
-
-## Competition & Value
-
-This should be a replacement for:
-* Marketing automation (Marketo)
-* Sales analytics (Insightsquared)
-* Customer Success automation (Gainsight)
-
-You should also be able to retire:
-* Analytics (Tableau)
-* Sales content management (Highspot/Docsend)
-
-In the beginning the software should build on some existing systems, for example the drip campaigns in Marketo.
-
-## Summary
-
-* Acquire the highest LTV at the lowest CAC
-* Drive better, data driven decisions across all sectors of the organization
-* The LTV can likely be predicted quickly after purchase with lookalike customers
-* Customers need multiple touches before purchasing, so it is important to have a sequence (broad interest, features, outbound, etc.) and to get them through this pipe.
-* You need to continually vary your call scripts, website message, drip campaigns, ads, and decks to find out what is effective. Customized for each user and their journey with your company.
-* Determine what causes people to buy and grow. Campaigns and product nudges need to align with these levers.
 
 # Contributing to BizOps
 
