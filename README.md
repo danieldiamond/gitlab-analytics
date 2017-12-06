@@ -15,6 +15,10 @@ We believe that information is the foundation of good decisions, and that compan
 
 ## Why open source BizOps within GitLab?
 
+For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers. This model is already paying dividends by providing additional insights across the SDLC process.
+
+There are key gaps however in understanding how a product is being consumed and marketed to users. By expanding a single data set to include this additional information, additional insights can be drawn across the full customer lifecycle. This can ultimately help all parts of the organization have broader perspective how their work is translating to their business goals.
+
 ### Business Intelligence with DevOps, or BIOps
 
 Common CI/CD tools have all of the functionality needed to setup and maintain a Business Intelligence stack within an organization. They are able to periodically run a flexible array of software, and deploy to a set of environments.
@@ -27,8 +31,8 @@ By leveraging a CI tool, there are a number of benefits:
 ### Why integrated
 
 * Determining critical data like CAC and LTV depends on many touch points across many systems
-* Product should inform sales efforts, with a sales and marketing insights feedback into SDLC
-* Good products need to know more about their users and their needs, this requires a comprehensive data warehouse tracking all touch points
+* Good products need to know more about their users and their needs, requiring comprehensive data warehouse tracking all touch points
+* Product usage should inform sales efforts, and sales and marketing insights need to feed back into the planning process
 * Ultimate goal of fusing product data with sales and marketing data, to deliver more impactful, actionable insights across the lifecycle
 
 ### Competition & Value
