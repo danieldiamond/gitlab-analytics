@@ -17,7 +17,7 @@ We believe that information is the foundation of good decisions, and that compan
 
 For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers. This model is already paying dividends by providing additional insights across the SDLC process.
 
-There are key gaps however in understanding how a product is being consumed and marketed to users. By expanding a single data set to include this additional information, additional insights can be drawn across the full customer lifecycle. This can ultimately help all parts of the organization have broader perspective how their work is translating to their business goals.
+There are key gaps however in understanding how a product is being consumed and marketed to users. By expanding the common data set to include marketing and sales information, additional insights can be drawn across the full customer lifecycle. This can ultimately help all parts of the organization have broader perspective how their work is translating to their business goals, and opportunities for optimization.
 
 ### Business Intelligence with DevOps, or BIOps
 
