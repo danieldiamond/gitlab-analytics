@@ -19,6 +19,8 @@ For many companies GitLab serves as the single data store for their engineering 
 
 There are key gaps however in understanding how a product is being consumed and marketed to users. By expanding the common data set to include marketing and sales information, additional insights can be drawn across the full customer lifecycle. This can ultimately help all parts of the organization have broader perspective how their work is translating to their business goals, and opportunities for optimization.
 
+Open source provides additional collaboration opportunities, working together to improve tooling and establish best practices.
+
 ### Business Intelligence with DevOps, or BIOps
 
 Common CI/CD tools have all of the functionality needed to setup and maintain a Business Intelligence stack within an organization. They are able to periodically run a flexible array of software, and deploy to a set of environments.
