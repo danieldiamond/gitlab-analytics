@@ -462,7 +462,7 @@
       </attribute>
       <attribute>
         <code>PORT_NUMBER</code>
-        <attribute>${DB_CONN_PORT}</attribute>
+        <attribute>5432</attribute>
       </attribute>
       <attribute>
         <code>PRESERVE_RESERVED_WORD_CASE</code>
@@ -511,24 +511,14 @@
       <schema>sfdc</schema>
       <table>z_product</table>
       <key>
-        <name>External Id</name>
+        <name>Record ID</name>
         <field>id</field>
         <condition>=</condition>
         <name2 />
       </key>
       <value>
-        <name>id</name>
-        <rename>External Id</rename>
-        <update>Y</update>
-      </value>
-      <value>
         <name>zuora__effectiveenddate__c</name>
         <rename>Effective End Date</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>zuora__external_id__c</name>
-        <rename>Record ID</rename>
         <update>Y</update>
       </value>
       <value>
@@ -581,6 +571,16 @@
         <rename>Created Date</rename>
         <update>Y</update>
       </value>
+      <value>
+        <name>id</name>
+        <rename>Record ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>zuora__external_id__c</name>
+        <rename>External Id</rename>
+        <update>Y</update>
+      </value>
     </lookup>
     <cluster_schema />
     <remotesteps>
@@ -612,7 +612,7 @@
     <timeout>60000</timeout>
     <useCompression>N</useCompression>
     <module>Zuora__Product__c</module>
-    <condition>SystemModStamp = LAST_N_DAYS:3</condition>
+    <condition />
     <specifyQuery>N</specifyQuery>
     <query />
     <include_targeturl>N</include_targeturl>
