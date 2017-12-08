@@ -17,9 +17,9 @@ We believe that information is the foundation of good decisions, and that compan
 
 For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers. This model is already paying dividends by providing additional insights across the SDLC process.
 
-There are key gaps however in understanding how a product is being sold and marketed to users. By expanding the common data set to include marketing and sales information, additional insights can be drawn across the full customer lifecycle. For example:
+There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer lifecycle. For example:
 * What is the change in leads & conversions after the most recent release?
-* What product areas are most correlated with conversions? Do these align with the product marketing effectiveness?
+* What product areas are most correlated with conversions? Do these align with product marketing effectiveness?
 * Are there unique usage patterns within customer segmentations?
 
 The fusion of CRM, marketing automation, billing, and product usage data will allow all parts of the organization to have a broader perspective of how their work is translating to business goals.
