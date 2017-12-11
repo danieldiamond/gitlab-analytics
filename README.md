@@ -158,9 +158,7 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 
 # Contributing to BizOps
 
-We welcome contributions and improvements. The source repo for our Helm Charts can be found here: <https://gitlab.com/gitlab-org/bizops>
-
-Please see the [contribution guidelines](CONTRIBUTING.md)
+We welcome contributions and improvements, please see the [contribution guidelines](CONTRIBUTING.md)
 
 # License
 
