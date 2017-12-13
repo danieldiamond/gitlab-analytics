@@ -142,8 +142,7 @@ This image is set up to be able to run periodically to connect to the configured
 
 The container is primarily built to be used in conjunction with GitLab CI, to automate and schedule the extraction of data. Creating the container is currently a manual job, since it changes infrequently and consumes network/compute resources. To build the container initially or after changes, simply run the `extract_container` job in the `build` stage. The subsequent `extract` stage can be cancelled and restarted once the container has finished building. This will be improved in the future.
 
-Together with the `.gitlab-ci.yml` file and [project variables](https://docs.gitlab.com/ce/ci/variables/README.html#protected-secret-variables), it is easy to configure. Simply set the following variables in your project ensure that the container is available. ()
-
+Together with the `.gitlab-ci.yml` file and [project variables](https://docs.gitlab.com/ce/ci/variables/README.html#protected-secret-variables), it is easy to configure. Simply set the following variables in your project ensure that the container is available.
 * PG_ADDRESS: IP/DNS of the Postgres server.
 * PG_PORT: Port number of the Postgres server, typically 5432.
 * PG_DATABASE: Database name to be used for the staging tables.
