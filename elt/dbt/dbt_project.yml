@@ -1,0 +1,22 @@
+name: 'gitlab_dw'
+version: '1.0'
+
+profile: 'gitlab'
+
+source-paths: ["models"]
+
+models:
+  gitlab_dw:
+      base:
+          enabled: true
+          materialized: view
+      transformed:
+          enabled: true
+          materialized: table
+
+
+on-run-end:
+    - 'CREATE INDEX idx_f_opportunity_stage ON "{{ target.schema }}".f_opportunity(opportunity_stage_id)'
+    - 'CREATE INDEX idx_f_opportunity_closedate ON "{{ target.schema }}".f_opportunity(opportunity_closedate)'
+    - 'ALTER TABLE "{{ target.schema }}".dim_opportunitystage ADD PRIMARY KEY(id)'
+    - 'GRANT SELECT ON ALL TABLES IN SCHEMA analytics TO metabase'

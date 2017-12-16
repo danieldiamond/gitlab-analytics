@@ -146,6 +146,8 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 * PG_ADDRESS: IP/DNS of the Postgres server.
 * PG_PORT: Port number of the Postgres server, typically 5432.
 * PG_DATABASE: Database name to be used for the staging tables.
+* PG_DEV_SCHEMA: Schema to use for development of dbt models.
+* PG_PROD_SCHEMA: Schema to use for production dimensional model. 
 * PG_USERNAME: Username for authentication to Postgres.
 * PG_PASSWORD: Password for authentication to Postgres.
 * SFDC_URL: Web service URL for your SFDC account.
