@@ -1,0 +1,25 @@
+config:
+    send_anonymous_usage_stats: False
+    use_colors: True
+
+gitlab:
+  outputs:
+    prod:
+      type: postgres
+      threads: 2
+      host: $PG_ADDRESS
+      port: $PG_PORT
+      user: $PG_USERNAME
+      pass: $PG_PASSWORD
+      dbname: $PG_DATABASE
+      schema: $PG_PROD_SCHEMA
+    dev:
+      type: postgres
+      threads: 2
+      host: $PG_ADDRESS
+      port: $PG_PORT
+      user: $PG_USERNAME
+      pass: $PG_PASSWORD
+      dbname: $PG_DATABASE
+      schema: $PG_DEV_SCHEMA
+  target: dev

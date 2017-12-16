@@ -1,6 +1,7 @@
 stages:
   - build
   - extract
+  - model
 
 extract_container:
   stage: build
@@ -40,3 +41,13 @@ zuora:
   script:
     - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
     - elt/zuora/zuora_export.py
+
+model:
+  stage: model
+  image: $CI_REGISTRY_IMAGE/extract:$CI_COMMIT_REF_NAME
+  tags:
+    - analytics
+  script:
+    - envsubst < "elt/config/dbt/profiles.yml" > "elt/dbt/profile/profiles.yml"
+    - cd elt/dbt
+    - dbt run --profiles-dir profile --target prod
