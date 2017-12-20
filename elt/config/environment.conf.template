@@ -8,6 +8,7 @@ user = $PG_USERNAME
 pass = $PG_PASSWORD
 host = $PG_ADDRESS
 database = $PG_DATABASE
+port = $PG_PORT
 
 
 [LOGGING]

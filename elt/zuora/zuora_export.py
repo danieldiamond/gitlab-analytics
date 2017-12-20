@@ -30,7 +30,8 @@ def getPGCreds():
     password = EnvParser.get('POSTGRES', 'pass')
     host = EnvParser.get('POSTGRES', 'host')
     database = EnvParser.get('POSTGRES', 'database')
-    return (username, password, host, database)
+    port = EnvParser.get('POSTGRES', 'port')
+    return (username, password, host, database, port)
 
 
 def getZuoraFields(item):
@@ -101,13 +102,13 @@ def replace(fieldList):
             fieldList.insert(i, None)
 
 
-def writeToDb(username, password, host, database, item, r):
+def writeToDb(username, password, host, database, item, port, r):
     logger.debug('Writing to ' + database + ' on ' + host)
     reader = csv.reader(r.iter_lines(), delimiter=',', quotechar='"',
                         quoting=csv.QUOTE_ALL)
     try:
         mydb = psycopg2.connect(host=host, user=username,
-                               password=password, dbname=database)
+                                password=password, dbname=database, port=port)
         cursor = mydb.cursor()
         cursor.execute('TRUNCATE TABLE zuora.' + item)
         count = 0
@@ -120,7 +121,8 @@ def writeToDb(username, password, host, database, item, r):
                 continue
             rowString = ', '.join('?' * len(row))
             rowString = rowString.replace("?", "%s")
-            query_string = 'INSERT INTO zuora.' + item + ' VALUES (%s)' % rowString
+            query_string = 'INSERT INTO zuora.' + item + \
+                ' VALUES (%s)' % rowString
             replace(row)
             cursor.execute(query_string, row)
             count = count + 1
@@ -139,7 +141,7 @@ def writeToDb(username, password, host, database, item, r):
 def main():
     start = time.time()
     username, password, url = getEnvironment()
-    dBuser, dBpass, host, db = getPGCreds()
+    dBuser, dBpass, host, db, port = getPGCreds()
     objList = getObjectList()
     for item in objList:
         logger.debug('Retreiving: %s', item)
@@ -167,7 +169,7 @@ def main():
         }
         r = getResults(url, username, password, headers, data)
         # writeToFile(item, r)
-        writeToDb(dBuser, dBpass, host, db, item, r)
+        writeToDb(dBuser, dBpass, host, db, item, port, r)
     end = time.time()
     totalMinutes = (end - start) / 60
     logger.debug('Completed Load in %1.1f minutes' % totalMinutes)
