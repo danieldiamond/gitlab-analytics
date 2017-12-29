@@ -1103,8 +1103,8 @@
         <update>Y</update>
       </value>
       <value>
-        <name>is_0_pre_ae_qualified__c</name>
-        <rename>Is 0-Pre AE Qualified</rename>
+        <name>Is_0_Pending_Acceptance__c</name>
+        <rename>Is 0-Pending Acceptance</rename>
         <update>Y</update>
       </value>
       <value>
@@ -1158,8 +1158,8 @@
         <update>Y</update>
       </value>
       <value>
-        <name>x0_pre_ae_qualified_date__c</name>
-        <rename>0-Pre AE Qualified Date</rename>
+        <name>X0_Pending_Acceptance_Date__c</name>
+        <rename>0-Pending Acceptance Date</rename>
         <update>Y</update>
       </value>
       <value>
@@ -1308,8 +1308,8 @@
         <update>Y</update>
       </value>
       <value>
-        <name>days_in_0_pre_ae_qualified__c</name>
-        <rename>Days in 0-Pre AE Qualified</rename>
+        <name>Days_in_0_Pending_Acceptance__c</name>
+        <rename>Days in 0-Pending Acceptance</rename>
         <update>Y</update>
       </value>
       <value>
@@ -1868,8 +1868,8 @@
         <update>Y</update>
       </value>
       <value>
-        <name>sql_iacv__c</name>
-        <rename>Sales Qualified IACV</rename>
+        <name>Initial_IACV__c</name>
+        <rename>Initial IACV</rename>
         <update>Y</update>
       </value>
       <value>
@@ -1943,8 +1943,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>0-Pre AE Qualified Date</name>
-        <field>X0_Pre_AE_Qualified_Date__c</field>
+        <name>0-Pending Acceptance Date</name>
+        <field>X0_Pending_Acceptance_Date__c</field>
         <idlookup>N</idlookup>
         <type>Date</type>
         <format>yyyy-MM-dd</format>
@@ -2895,8 +2895,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Days in 0-Pre AE Qualified</name>
-        <field>Days_in_0_Pre_AE_Qualified__c</field>
+        <name>Days in 0-Pending Acceptance</name>
+        <field>Days_in_0_Pending_Acceptance__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -3875,8 +3875,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Is 0-Pre AE Qualified</name>
-        <field>Is_0_Pre_AE_Qualified__c</field>
+        <name>Is 0-Pending Acceptance</name>
+        <field>Is_0_Pending_Acceptance__c</field>
         <idlookup>N</idlookup>
         <type>Boolean</type>
         <format />
@@ -5359,8 +5359,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Sales Qualified IACV</name>
-        <field>SQL_IACV__c</field>
+        <name>Initial IACV</name>
+        <field>Initial_IACV__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
