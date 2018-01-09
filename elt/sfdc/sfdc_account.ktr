@@ -531,11 +531,11 @@
     <queryAll>Y</queryAll>
     <fields>
       <field>
-        <name>Initial Start Date (All Accounts)</name>
-        <field>Account_Initial_Start_Date__c</field>
+        <name>Deleted</name>
+        <field>IsDeleted</field>
         <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
+        <type>Boolean</type>
+        <format />
         <currency />
         <decimal />
         <group />
@@ -559,11 +559,11 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Customer Since</name>
-        <field>Customer_Since__c</field>
+        <name>Last Modified Date</name>
+        <field>LastModifiedDate</field>
         <idlookup>N</idlookup>
         <type>Date</type>
-        <format>yyyy-MM-dd</format>
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
         <currency />
         <decimal />
         <group />
@@ -573,95 +573,11 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Entity Override</name>
-        <field>Entity_Override__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Federal Account</name>
-        <field>Federal_Account__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>GitLab.com user</name>
-        <field>GitLab_com_user__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Initial Start Date (This Account)</name>
-        <field>Initial_Start_Date__c</field>
+        <name>System Modstamp</name>
+        <field>SystemModstamp</field>
         <idlookup>N</idlookup>
         <type>Date</type>
-        <format>yyyy-MM-dd</format>
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Deleted</name>
-        <field>IsDeleted</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Partner Account</name>
-        <field>IsPartner</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Large Account</name>
-        <field>Large_Account__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
         <currency />
         <decimal />
         <group />
@@ -685,8 +601,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Last Modified Date</name>
-        <field>LastModifiedDate</field>
+        <name>Last Viewed Date</name>
+        <field>LastViewedDate</field>
         <idlookup>N</idlookup>
         <type>Date</type>
         <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
@@ -713,11 +629,319 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Last Viewed Date</name>
-        <field>LastViewedDate</field>
+        <name>Partner Account</name>
+        <field>IsPartner</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Last Sync Date</name>
+        <field>Zendesk__Last_Sync_Date__c</field>
         <idlookup>N</idlookup>
         <type>Date</type>
         <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Zendesk Support Out of Sync</name>
+        <field>Zendesk__Zendesk_OutofSync__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>createdUpdatedFlag</name>
+        <field>Zendesk__createdUpdatedFlag__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Ultimate Parent Is Current Account</name>
+        <field>Ultimate_Parent_Is_Current_Account__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Large Account</name>
+        <field>Large_Account__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Using CE</name>
+        <field>Using_CE__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>GitLab.com user</name>
+        <field>GitLab_com_user__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Infer: Last Modified</name>
+        <field>infer__Infer_Last_Modified__c</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>SLA Expiration Date</name>
+        <field>Zuora__SLAExpirationDate__c</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Temp- Duplicated Account</name>
+        <field>Temp_Duplicated_Account__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Customer Since</name>
+        <field>Customer_Since__c</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Trigger Workflow</name>
+        <field>Trigger_Workflow__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Next Renewal Date</name>
+        <field>Next_Renewal_Date__c</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Next Invoice Due Date</name>
+        <field>Next_Invoice_Due_Date__c</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Opt-Out Geo</name>
+        <field>Opt_Out_Geo__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Oldest Outstanding Invoice Due Date</name>
+        <field>Oldest_Outstanding_Invoice_Date__c</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Opt-Out File Locking</name>
+        <field>Opt_Out_File_Locking__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Initial Start Date (This Account)</name>
+        <field>Initial_Start_Date__c</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Initial Start Date (All Accounts)</name>
+        <field>Account_Initial_Start_Date__c</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Entity Override</name>
+        <field>Entity_Override__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Most Recent Expired Subscription Date</name>
+        <field>Most_Recent_Expired_Subscription_Date__c</field>
+        <idlookup>N</idlookup>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Create in Zendesk</name>
+        <field>Zendesk__Create_in_Zendesk__c</field>
+        <idlookup>N</idlookup>
+        <type>Boolean</type>
+        <format />
         <currency />
         <decimal />
         <group />
@@ -811,64 +1035,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Most Recent Expired Subscription Date</name>
-        <field>Most_Recent_Expired_Subscription_Date__c</field>
-        <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Next Invoice Due Date</name>
-        <field>Next_Invoice_Due_Date__c</field>
-        <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Next Renewal Date</name>
-        <field>Next_Renewal_Date__c</field>
-        <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Oldest Outstanding Invoice Due Date</name>
-        <field>Oldest_Outstanding_Invoice_Date__c</field>
-        <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Opt-Out File Locking</name>
-        <field>Opt_Out_File_Locking__c</field>
+        <name>Federal Account</name>
+        <field>Federal_Account__c</field>
         <idlookup>N</idlookup>
         <type>Boolean</type>
         <format />
@@ -881,218 +1049,36 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Opt-Out Geo</name>
-        <field>Opt_Out_Geo__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
+        <name>Account ID</name>
+        <field>Id</field>
+        <idlookup>Y</idlookup>
+        <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <length>-1</length>
-        <precision>-1</precision>
+        <length>18</length>
+        <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
       </field>
       <field>
-        <name>System Modstamp</name>
-        <field>SystemModstamp</field>
-        <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Temp- Duplicated Account</name>
-        <field>Temp_Duplicated_Account__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Trigger Workflow</name>
-        <field>Trigger_Workflow__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Ultimate Parent Is Current Account</name>
-        <field>Ultimate_Parent_Is_Current_Account__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Using CE</name>
-        <field>Using_CE__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Create in Zendesk</name>
-        <field>Zendesk__Create_in_Zendesk__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Last Sync Date</name>
-        <field>Zendesk__Last_Sync_Date__c</field>
-        <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Zendesk Support Out of Sync</name>
-        <field>Zendesk__Zendesk_OutofSync__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>createdUpdatedFlag</name>
-        <field>Zendesk__createdUpdatedFlag__c</field>
-        <idlookup>N</idlookup>
-        <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>SLA Expiration Date</name>
-        <field>Zuora__SLAExpirationDate__c</field>
-        <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Infer: Last Modified</name>
-        <field>infer__Infer_Last_Modified__c</field>
-        <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd'T'HH:mm:ss'.000'XXX</format>
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>ABSD Campaign</name>
-        <field>ABSD_Campaign__c</field>
+        <name>Master Record ID</name>
+        <field>MasterRecordId</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <length>50</length>
+        <length>18</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
       </field>
       <field>
-        <name>AE Comments</name>
-        <field>AE_Comments__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>32768</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Account ID (18)</name>
-        <field>Account_ID_18__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>1300</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Account Manager</name>
-        <field>Account_Manager__c</field>
+        <name>Account Name</name>
+        <field>Name</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1105,50 +1091,50 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Account Owner (Calc)</name>
-        <field>Account_Owner_Calc__c</field>
+        <name>Account Type</name>
+        <field>Type</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <length>1300</length>
+        <length>40</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Account Owner Manager Email</name>
-        <field>Account_Owner_Manager_Email__c</field>
+        <name>Record Type ID</name>
+        <field>RecordTypeId</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <length>80</length>
+        <length>18</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Account Owner Team</name>
-        <field>Account_Owner_Team__c</field>
+        <name>Parent Account ID</name>
+        <field>ParentId</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <length>1300</length>
+        <length>18</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Account Tier</name>
-        <field>Account_Tier__c</field>
+        <name>Billing Street</name>
+        <field>BillingStreet</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1156,34 +1142,6 @@
         <decimal />
         <group />
         <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Bill To Email</name>
-        <field>Bill_To_Email__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Billing Address</name>
-        <field>BillingAddress</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
@@ -1203,6 +1161,34 @@
         <repeat>N</repeat>
       </field>
       <field>
+        <name>Billing State/Province</name>
+        <field>BillingState</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Billing Zip/Postal Code</name>
+        <field>BillingPostalCode</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>20</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
         <name>Billing Country</name>
         <field>BillingCountry</field>
         <idlookup>N</idlookup>
@@ -1212,6 +1198,20 @@
         <decimal />
         <group />
         <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Billing State/Province Code</name>
+        <field>BillingStateCode</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>10</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
@@ -1245,22 +1245,50 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Billing Zip/Postal Code</name>
-        <field>BillingPostalCode</field>
+        <name>Billing Address</name>
+        <field>BillingAddress</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <length>20</length>
+        <length>0</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Billing State/Province</name>
-        <field>BillingState</field>
+        <name>Shipping Street</name>
+        <field>ShippingStreet</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Shipping City</name>
+        <field>ShippingCity</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Shipping State/Province</name>
+        <field>ShippingState</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1273,8 +1301,36 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Billing State/Province Code</name>
-        <field>BillingStateCode</field>
+        <name>Shipping Zip/Postal Code</name>
+        <field>ShippingPostalCode</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>20</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Shipping Country</name>
+        <field>ShippingCountry</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Shipping State/Province Code</name>
+        <field>ShippingStateCode</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1287,8 +1343,64 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Billing Street</name>
-        <field>BillingStreet</field>
+        <name>Shipping Country Code</name>
+        <field>ShippingCountryCode</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>10</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Shipping Geocode Accuracy</name>
+        <field>ShippingGeocodeAccuracy</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Shipping Address</name>
+        <field>ShippingAddress</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Account Phone</name>
+        <field>Phone</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Website</name>
+        <field>Website</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1301,22 +1413,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Business Development Rep (Account Team)</name>
-        <field>Business_Development_Rep_Account_Team__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Business Development Rep</name>
-        <field>Business_Development_Rep__c</field>
+        <name>Photo URL</name>
+        <field>PhotoUrl</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1329,15 +1427,57 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Company Technologies</name>
-        <field>Company_Technologies__c</field>
+        <name>Industry</name>
+        <field>Industry</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <length>32768</length>
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Employees</name>
+        <field>NumberOfEmployees</field>
+        <idlookup>N</idlookup>
+        <type>Integer</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Account Description</name>
+        <field>Description</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>32000</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Owner ID</name>
+        <field>OwnerId</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
@@ -1357,6 +1497,34 @@
         <repeat>N</repeat>
       </field>
       <field>
+        <name>Last Modified By ID</name>
+        <field>LastModifiedById</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Jigsaw Company ID</name>
+        <field>JigsawCompanyId</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>20</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
         <name>Fortune Rank</name>
         <field>DSCORGPKG__Fortune_Rank__c</field>
         <idlookup>N</idlookup>
@@ -1371,8 +1539,190 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Data Quality Description</name>
-        <field>Data_Quality_Description__c</field>
+        <name>Region</name>
+        <field>Region__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Domain Mapping</name>
+        <field>Zendesk__Domain_Mapping__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Last Sync Status</name>
+        <field>Zendesk__Last_Sync_Status__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>40</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Notes</name>
+        <field>Zendesk__Notes__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Zendesk Support Result</name>
+        <field>Zendesk__Result__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Tags</name>
+        <field>Zendesk__Tags__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>32768</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Zendesk Support Organization Id</name>
+        <field>Zendesk__Zendesk_Organization_Id__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>50</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Zendesk Support Organization</name>
+        <field>Zendesk__Zendesk_Organization__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Zendesk Support Old Tags</name>
+        <field>Zendesk__Zendesk_oldTags__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>32768</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>AE Comments</name>
+        <field>AE_Comments__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>32768</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Account Owner Team</name>
+        <field>Account_Owner_Team__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Ultimate Parent/Parent Sales Segment</name>
+        <field>UltimateParentSalesSegmentation__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Sales Segmentation Updated</name>
+        <field>Sales_Segmentation_Updated__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Parent Account Type</name>
+        <field>Parent_Account_Type__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1399,15 +1749,99 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Account Description</name>
-        <field>Description</field>
+        <name>Top List</name>
+        <field>Top_List__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <length>32000</length>
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Business Development Rep</name>
+        <field>Business_Development_Rep__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Infer: Band</name>
+        <field>infer__Infer_Band__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Infer: Hash</name>
+        <field>infer__Infer_Hash__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>128</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Infer: Rating</name>
+        <field>infer__Infer_Rating__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Solutions Architect</name>
+        <field>Solutions_Architect__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Company Technologies</name>
+        <field>Company_Technologies__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>32768</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
@@ -1427,8 +1861,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Entity Bank Information</name>
-        <field>Entity_Bank_Information__c</field>
+        <name>Account Manager</name>
+        <field>Account_Manager__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1441,8 +1875,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Entity Beneficiary Information</name>
-        <field>Entity_Beneficiary_Information__c</field>
+        <name>Active</name>
+        <field>Zuora__Active__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1455,8 +1889,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Entity Contact Information</name>
-        <field>Entity_Contact_Information__c</field>
+        <name>Customer Priority</name>
+        <field>Zuora__CustomerPriority__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1469,8 +1903,36 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Entity Legal Name</name>
-        <field>Entity_Legal_Name__c</field>
+        <name>SLA Serial Number</name>
+        <field>Zuora__SLASerialNumber__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>10</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>SLA</name>
+        <field>Zuora__SLA__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Upsell Opportunity</name>
+        <field>Zuora__UpsellOpportunity__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1497,8 +1959,176 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>GitLab Team</name>
-        <field>GitLab_Team__c</field>
+        <name>Entity Bank Information</name>
+        <field>Entity_Bank_Information__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Entity Legal Name</name>
+        <field>Entity_Legal_Name__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Entity Contact Information</name>
+        <field>Entity_Contact_Information__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Entity Beneficiary Information</name>
+        <field>Entity_Beneficiary_Information__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Partner Beneficiary Name</name>
+        <field>Partner_Beneficiary_Name__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>50</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Partner Bank Name</name>
+        <field>Partner_Bank_Name__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>50</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Partner Bank Address</name>
+        <field>Partner_Bank_Address__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Partner Account/IBAN Number</name>
+        <field>Partner_Account_IBAN_Number__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>50</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Partner Routing No/Swfit BIC Code</name>
+        <field>Partner_Routing__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>VAT/Tax ID</name>
+        <field>Partner_VAT_Tax_ID__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>50</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>SDR</name>
+        <field>SDR__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Territories Covered</name>
+        <field>Territories_Covered__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Referenceable Customer Notes</name>
+        <field>Referenceable_Customer_Notes__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -1511,9 +2141,79 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Account ID</name>
-        <field>Id</field>
-        <idlookup>Y</idlookup>
+        <name>billing</name>
+        <field>billingd__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Territory</name>
+        <field>Territory__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>50</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Referenceable Customer</name>
+        <field>Referenceable_Customer__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Products Purchased (This Account)</name>
+        <field>Products_Purchased__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Ultimate Parent Account</name>
+        <field>Ultimate_Parent_Account__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Ultimate Parent (old)</name>
+        <field>Ultimate_Parent_old__c</field>
+        <idlookup>N</idlookup>
         <type>String</type>
         <format />
         <currency />
@@ -1525,15 +2225,169 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Industry</name>
-        <field>Industry</field>
+        <name>Ultimate Parent Account ID</name>
+        <field>Ultimate_Parent_Account_ID__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <length>40</length>
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Previous Account Name</name>
+        <field>Previous_Account_Name__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Primary Contact First Name</name>
+        <field>Primary_Contact_First_Name__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Primary Contact Last Name</name>
+        <field>Primary_Contact_Last_Name__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>50</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Primary Contact Email</name>
+        <field>Primary_Contact_Email__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Primary Contact</name>
+        <field>Primary_Contact__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Primary Contact ID</name>
+        <field>Primary_Contact_ID__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>20</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Support Level</name>
+        <field>Support_Level__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Account Tier</name>
+        <field>Account_Tier__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Sub-Industry</name>
+        <field>Sub_Industry__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Account Owner Manager Email</name>
+        <field>Account_Owner_Manager_Email__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>80</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ShippingCountryCode</name>
+        <field>ShippingCountryCode__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
@@ -1553,29 +2407,225 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Jigsaw Company ID</name>
-        <field>JigsawCompanyId</field>
+        <name>Bill To Email</name>
+        <field>Bill_To_Email__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <length>20</length>
+        <length>255</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Last Modified By ID</name>
-        <field>LastModifiedById</field>
+        <name>Previous Account Owner</name>
+        <field>Previous_Account_Owner__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <length>18</length>
+        <length>50</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Account Owner (Calc)</name>
+        <field>Account_Owner_Calc__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ABSD Campaign</name>
+        <field>ABSD_Campaign__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>50</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Sales Segmentation</name>
+        <field>Sales_Segmentation__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Type Amount Close Date</name>
+        <field>Type_Amount_Close_Date__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Account ID (18)</name>
+        <field>Account_ID_18__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Sub-Region</name>
+        <field>Sub_Region__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>50</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Reseller Type</name>
+        <field>Reseller_Type__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Reseller Terms of Quotation</name>
+        <field>Reseller__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>32768</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Special Terms</name>
+        <field>Special_Terms__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>32768</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Data Quality Description</name>
+        <field>Data_Quality_Description__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Reseller Discount</name>
+        <field>Reseller_Discount__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>255</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>GitLab Team</name>
+        <field>GitLab_Team__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>32768</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>SDR (Account Team)</name>
+        <field>SDR_Account_Team__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>50</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Business Development Rep (Account Team)</name>
+        <field>Business_Development_Rep_Account_Team__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>50</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
@@ -1721,146 +2771,6 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Master Record ID</name>
-        <field>MasterRecordId</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>18</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Account Name</name>
-        <field>Name</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Employees</name>
-        <field>NumberOfEmployees</field>
-        <idlookup>N</idlookup>
-        <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Owner ID</name>
-        <field>OwnerId</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>18</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Parent Account ID</name>
-        <field>ParentId</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>18</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Parent Account Type</name>
-        <field>Parent_Account_Type__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>1300</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Partner Account/IBAN Number</name>
-        <field>Partner_Account_IBAN_Number__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Partner Bank Address</name>
-        <field>Partner_Bank_Address__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Partner Bank Name</name>
-        <field>Partner_Bank_Name__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Partner Beneficiary Name</name>
-        <field>Partner_Beneficiary_Name__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
         <name>Partner Name and Type</name>
         <field>Partner_Name_and_Type__c</field>
         <idlookup>N</idlookup>
@@ -1870,552 +2780,6 @@
         <decimal />
         <group />
         <length>1300</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Partner Routing No/Swfit BIC Code</name>
-        <field>Partner_Routing__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>VAT/Tax ID</name>
-        <field>Partner_VAT_Tax_ID__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Account Phone</name>
-        <field>Phone</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>40</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Photo URL</name>
-        <field>PhotoUrl</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Previous Account Name</name>
-        <field>Previous_Account_Name__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Previous Account Owner</name>
-        <field>Previous_Account_Owner__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Primary Contact Email</name>
-        <field>Primary_Contact_Email__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>80</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Primary Contact First Name</name>
-        <field>Primary_Contact_First_Name__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Primary Contact ID</name>
-        <field>Primary_Contact_ID__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>20</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Primary Contact Last Name</name>
-        <field>Primary_Contact_Last_Name__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Primary Contact</name>
-        <field>Primary_Contact__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>18</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Products Purchased (This Account)</name>
-        <field>Products_Purchased__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Record Type ID</name>
-        <field>RecordTypeId</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>18</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Referenceable Customer Notes</name>
-        <field>Referenceable_Customer_Notes__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>32768</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Referenceable Customer</name>
-        <field>Referenceable_Customer__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Region</name>
-        <field>Region__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Reseller Discount</name>
-        <field>Reseller_Discount__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Reseller Type</name>
-        <field>Reseller_Type__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Reseller Terms of Quotation</name>
-        <field>Reseller__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>32768</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>SDR (Account Team)</name>
-        <field>SDR_Account_Team__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>SDR</name>
-        <field>SDR__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Sales Segmentation Updated</name>
-        <field>Sales_Segmentation_Updated__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>1300</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Sales Segmentation</name>
-        <field>Sales_Segmentation__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Shipping Address</name>
-        <field>ShippingAddress</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Shipping City</name>
-        <field>ShippingCity</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>40</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Shipping Country</name>
-        <field>ShippingCountry</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>80</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Shipping Country Code</name>
-        <field>ShippingCountryCode</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>10</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>ShippingCountryCode</name>
-        <field>ShippingCountryCode__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>1300</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Shipping Geocode Accuracy</name>
-        <field>ShippingGeocodeAccuracy</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>40</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Shipping Zip/Postal Code</name>
-        <field>ShippingPostalCode</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>20</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Shipping State/Province</name>
-        <field>ShippingState</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>80</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Shipping State/Province Code</name>
-        <field>ShippingStateCode</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>10</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Shipping Street</name>
-        <field>ShippingStreet</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Solutions Architect</name>
-        <field>Solutions_Architect__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Special Terms</name>
-        <field>Special_Terms__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>32768</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Sub-Industry</name>
-        <field>Sub_Industry__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Sub-Region</name>
-        <field>Sub_Region__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Support Level (New)</name>
-        <field>Support_Level_New__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Support Level</name>
-        <field>Support_Level__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
@@ -2435,8 +2799,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Territories Covered</name>
-        <field>Territories_Covered__c</field>
+        <name>Support Level (New)</name>
+        <field>Support_Level_New__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
@@ -2444,370 +2808,6 @@
         <decimal />
         <group />
         <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Territory</name>
-        <field>Territory__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Top List</name>
-        <field>Top_List__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Account Type</name>
-        <field>Type</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>40</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Type Amount Close Date</name>
-        <field>Type_Amount_Close_Date__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Ultimate Parent Sales Segmentation</name>
-        <field>UltimateParentSalesSegmentation__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>1300</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Ultimate Parent Account ID</name>
-        <field>Ultimate_Parent_Account_ID__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>1300</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Ultimate Parent Account</name>
-        <field>Ultimate_Parent_Account__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>1300</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Ultimate Parent (old)</name>
-        <field>Ultimate_Parent_old__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>18</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Website</name>
-        <field>Website</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Domain Mapping</name>
-        <field>Zendesk__Domain_Mapping__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Last Sync Status</name>
-        <field>Zendesk__Last_Sync_Status__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>40</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Notes</name>
-        <field>Zendesk__Notes__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Zendesk Support Result</name>
-        <field>Zendesk__Result__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Tags</name>
-        <field>Zendesk__Tags__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>32768</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Zendesk Support Organization Id</name>
-        <field>Zendesk__Zendesk_Organization_Id__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>50</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Zendesk Support Organization</name>
-        <field>Zendesk__Zendesk_Organization__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Zendesk Support Old Tags</name>
-        <field>Zendesk__Zendesk_oldTags__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>32768</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Active</name>
-        <field>Zuora__Active__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Customer Priority</name>
-        <field>Zuora__CustomerPriority__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>SLA Serial Number</name>
-        <field>Zuora__SLASerialNumber__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>10</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>SLA</name>
-        <field>Zuora__SLA__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Upsell Opportunity</name>
-        <field>Zuora__UpsellOpportunity__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>255</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>billing</name>
-        <field>billingd__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>1300</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Infer: Band</name>
-        <field>infer__Infer_Band__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>1300</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Infer: Hash</name>
-        <field>infer__Infer_Hash__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>128</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Infer: Rating</name>
-        <field>infer__Infer_Rating__c</field>
-        <idlookup>N</idlookup>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>1300</length>
         <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
@@ -2841,8 +2841,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>CARR (All Child Accounts)</name>
-        <field>CARR_All_Child_Accounts__c</field>
+        <name>Shipping Latitude</name>
+        <field>ShippingLatitude</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -2855,8 +2855,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>CARR (This Account)</name>
-        <field>CARR_This_Account__c</field>
+        <name>Shipping Longitude</name>
+        <field>ShippingLongitude</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -2869,8 +2869,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>CARR (Total)</name>
-        <field>CARR_Total__c</field>
+        <name>IT Employees</name>
+        <field>DSCORGPKG__IT_Employees__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -2883,8 +2883,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>CMRR (All Child Accounts)</name>
-        <field>CMRR_All_Child_Accounts__c</field>
+        <name>Total Closed Won Amount (All-Time)</name>
+        <field>Subscription_Amount__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -2897,8 +2897,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>CMRR (This Account)</name>
-        <field>CMRR_This_Account__c</field>
+        <name>Potential Users (All Child Accounts)</name>
+        <field>Potential_Users_All_Child_Accounts__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -2911,8 +2911,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>CMRR (Total)</name>
-        <field>CMRR_Total__c</field>
+        <name>Potential EE Users (Total)</name>
+        <field>Potential_EE_Users_Total__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -2925,8 +2925,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Concurrent EE Subscriptions</name>
-        <field>Concurrent_EE_Subscriptions__c</field>
+        <name>Max for Potential EE Users</name>
+        <field>Max_for_Potential_EE_Users__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -2939,8 +2939,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Count of Active Subscription Charges</name>
-        <field>Count_of_Active_Subscription_Charges__c</field>
+        <name>Ultimate Parent Potential EE Users</name>
+        <field>UltimateParentPotentialEEUsers__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -2953,8 +2953,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Count of Active Subscriptions</name>
-        <field>Count_of_Active_Subscriptions__c</field>
+        <name>Active CE Users</name>
+        <field>Active_CE_Users__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -2967,8 +2967,78 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Count of Billing Accounts</name>
-        <field>Count_of_Billing_Accounts__c</field>
+        <name>Potential EE Users</name>
+        <field>Potential_Users__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>CE Instances</name>
+        <field>CE_Instances__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>EE Basic Customer</name>
+        <field>IsEEBasicCustomer__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Revenue</name>
+        <field>Revenue__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Infer: Score</name>
+        <field>infer__Infer_Score__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Potential EE Subscription Amount</name>
+        <field>Potential_EE_Subscription_Amount__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -3023,106 +3093,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Count of Products Purchased</name>
-        <field>Count_of_Products_Purchased__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
         <name>Count of Won Opportunities</name>
         <field>Count_of_Won_Opportunities__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>IT Employees</name>
-        <field>DSCORGPKG__IT_Employees__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Data Quality Score</name>
-        <field>Data_Quality_Score__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Days Outstanding</name>
-        <field>Days_Outstanding__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Historical Max Users</name>
-        <field>Historical_Max_Users__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>IT+TEDD</name>
-        <field>IT_TEDD__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>EE Basic Customer</name>
-        <field>IsEEBasicCustomer__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -3261,6 +3233,300 @@
         <repeat>N</repeat>
       </field>
       <field>
+        <name>Premium Support Customer</name>
+        <field>IsPremiumSupportCustomer__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Number of Licenses (This Account)</name>
+        <field>Number_of_Licenses_This_Account__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>CMRR (This Account)</name>
+        <field>CMRR_This_Account__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>CMRR (All Child Accounts)</name>
+        <field>CMRR_All_Child_Accounts__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>CMRR (Total)</name>
+        <field>CMRR_Total__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Total Invoiced</name>
+        <field>Total_Invoiced__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Total Invoiced (Paid)</name>
+        <field>Total_Invoiced_Paid__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Total Invoiced (Outstanding)</name>
+        <field>Total_Invoiced_Outstanding__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Number of Licenses (All Child Accounts)</name>
+        <field>Number_of_Licenses_All_Child_Accounts__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Number of Licenses (Total)</name>
+        <field>Number_of_Licenses_Total__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>CARR (This Account)</name>
+        <field>CARR_This_Account__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Days Outstanding</name>
+        <field>Days_Outstanding__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>CARR (All Child Accounts)</name>
+        <field>CARR_All_Child_Accounts__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>CARR (Total)</name>
+        <field>CARR_Total__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Concurrent EE Subscriptions</name>
+        <field>Concurrent_EE_Subscriptions__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Count of Active Subscriptions</name>
+        <field>Count_of_Active_Subscriptions__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>% of Licenses</name>
+        <field>of_Licenses__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Potential CARR (This Account)</name>
+        <field>Potential_CARR_This_Account__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>% of CARR</name>
+        <field>of_CARR__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Count of Active Subscription Charges</name>
+        <field>Count_of_Active_Subscription_Charges__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Count of Products Purchased</name>
+        <field>Count_of_Products_Purchased__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
         <name>Implementation Support Customer</name>
         <field>IsImplementationSupportCustomer__c</field>
         <idlookup>N</idlookup>
@@ -3275,8 +3541,64 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Premium Support Customer</name>
-        <field>IsPremiumSupportCustomer__c</field>
+        <name>ResellerPayment Term (Numeric)</name>
+        <field>PaymentTermNumeric__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>TEDD Employees</name>
+        <field>TEDD_Employees__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Count of Billing Accounts</name>
+        <field>Count_of_Billing_Accounts__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Sum of Open Renewal Opportunities</name>
+        <field>Sum_of_Open_Renewal_Opportunities__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Data Quality Score</name>
+        <field>Data_Quality_Score__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -3359,8 +3681,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>License User Count</name>
-        <field>License_User_Count__c</field>
+        <name>Historical Max Users</name>
+        <field>Historical_Max_Users__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -3387,8 +3709,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Max for Potential EE Users</name>
-        <field>Max_for_Potential_EE_Users__c</field>
+        <name>License User Count</name>
+        <field>License_User_Count__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -3401,246 +3723,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Number of Licenses (All Child Accounts)</name>
-        <field>Number_of_Licenses_All_Child_Accounts__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Number of Licenses (This Account)</name>
-        <field>Number_of_Licenses_This_Account__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Number of Licenses (Total)</name>
-        <field>Number_of_Licenses_Total__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>ResellerPayment Term (Numeric)</name>
-        <field>PaymentTermNumeric__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Potential CARR (This Account)</name>
-        <field>Potential_CARR_This_Account__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Potential EE Subscription Amount</name>
-        <field>Potential_EE_Subscription_Amount__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Potential EE Users (Total)</name>
-        <field>Potential_EE_Users_Total__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Potential Users (All Child Accounts)</name>
-        <field>Potential_Users_All_Child_Accounts__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Potential EE Users</name>
-        <field>Potential_Users__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Revenue</name>
-        <field>Revenue__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Shipping Latitude</name>
-        <field>ShippingLatitude</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Shipping Longitude</name>
-        <field>ShippingLongitude</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Total Closed Won Amount (All-Time)</name>
-        <field>Subscription_Amount__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Sum of Open Renewal Opportunities</name>
-        <field>Sum_of_Open_Renewal_Opportunities__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Support Level (Numeric)</name>
-        <field>Support_Level_Numeric__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>TEDD Employees</name>
-        <field>TEDD_Employees__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Terminus Clicks</name>
-        <field>Terminus_Clicks__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Terminus Impressions</name>
-        <field>Terminus_Impressions__c</field>
+        <name>IT+TEDD</name>
+        <field>IT_TEDD__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -3667,8 +3751,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Total Invoiced (Outstanding)</name>
-        <field>Total_Invoiced_Outstanding__c</field>
+        <name>Terminus Impressions</name>
+        <field>Terminus_Impressions__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -3681,8 +3765,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Total Invoiced (Paid)</name>
-        <field>Total_Invoiced_Paid__c</field>
+        <name>Terminus Clicks</name>
+        <field>Terminus_Clicks__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -3695,64 +3779,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Total Invoiced</name>
-        <field>Total_Invoiced__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Ultimate Parent Potential EE Users</name>
-        <field>UltimateParentPotentialEEUsers__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Infer: Score</name>
-        <field>infer__Infer_Score__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>% of CARR</name>
-        <field>of_CARR__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>% of Licenses</name>
-        <field>of_Licenses__c</field>
+        <name>Support Level (Numeric)</name>
+        <field>Support_Level_Numeric__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
@@ -4866,6 +4894,16 @@
       <value>
         <name>zuora__numberoflocations__c</name>
         <rename>Number of Locations</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>active_ce_users__c</name>
+        <rename>Active CE Users</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>ce_instances__c</name>
+        <rename>CE Instances</rename>
         <update>Y</update>
       </value>
     </lookup>
