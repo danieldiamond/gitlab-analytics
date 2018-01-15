@@ -1,0 +1,6 @@
+hostName: bizops.example.com
+
+kube-lego:
+  LEGO_EMAIL: email@example.com
+  LEGO_URL: https://acme-v01.api.letsencrypt.org/directory
+  rbac.create: true
