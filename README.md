@@ -197,6 +197,69 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 * ZUORA_USERNAME: Username for authentication to Zuora.
 * ZUORA_PASSWORD: Password for authentication to Zuora.
 
+## Internal GitLab Analytics Plan
+
+### Charter/Goals
+* Build a centralized data warehouse that can support data analysis requirements from all functional groups within the company.
+* Create a common data framework and governance practice.
+* Establish the single source of truth for company metrics.
+* Establish a change management processes for source systems.
+* Develop a Data Architecture plan (in conjunction with functional teams). 
+* Develop a roadmap for systems evolution in alignment with the Company’s data architecture plan.
+
+### GitLab Internal Analytics Architecture
+![GitLab Internal Analytics Architecture](img/WIP_ GitLab_Analytics_Architecture.jpg)
+
+#### ETL Layer
+* Since we are using Open Source tools, Pentaho DI is the industry standard when they have OOB connectors (SFDC is the primary need).
+* Java based - Will need to install their engine on a VM to process ETL jobs.
+* Where OOB connectors for Pentaho do not exist, Python scripts can be used to create the Extraction jobs. 
+* For the transformation layer needed to create the analytic data model, DBT is a good candidate. Otherwise, we’ll use standard SQL in the postgres db to accomplish the transformations. DBT is preferred as it can be version controlled through YAML files more easily than standard SQL. 
+
+#### Staging Tables
+* We’ll want to stage our data before loading it into the data warehouse. 
+* Postgres dbs are a good choice if we are not using BigQuery. 
+* Primarily used for transformation and data scrubbing prior to loading into the Data Warehouse.
+* Allows for data quality monitoring of source data.
+* Minimizes impact to production systems.
+* Ideally incremental loads (extract only what changed since the last extract). 
+* Prevents need to query production dbs impacting app performance
+
+#### Data Warehouse
+
+* Using GCP VMs with Postgres, will likely need to move to BigQuery in the future.
+* Consolidated repository of all source data - scrubbed and modeled into a format optimized for analytic workliads (Dimensional model).
+* Serves as the Single Source of Truth for reporting, analysis, and visualization applications.
+* Will need to be audited regularly back to the source.
+* Should not be generally available - will require strict access controls for direct querying not done through a controlled application such as metabase. 
+
+#### Application Server
+
+* Used for ad-hoc and scheduled offline processes
+* Python scripting for data transformation or model calculations
+* Potentially can be used as an R server in the future
+* Can be used to serve custom Highcharts or Dashing apps - must be behind Authorization. 
+* VM in the Data Warehouse environment
+
+#### Data Visualization
+
+* We’ll start with Metabase to comply with Open Source requirements. If it does not meet our needs, we can look at proprietary tools.
+* Consolidated, automatically updated, near real-time reporting on a single consistent and audited data set.
+* Allows for ad-hoc data exploration to identify trends and anomalies.
+* Executive and management dashboards for KPI updates at a glance.
+* Allows for drilling deeper into data to identify targeted business opportunities.
+* Allows us to spend more time discussing metrics that are generally available as opposed to giving updates in meetings. 
+
+### Major initiatives/Priority of Execution
+
+* Building the Extraction jobs, staging tables, and data warehouse are first priority since they are foundational to the rest of the plan.
+* Automate and create visualizations of the [GitLab metrics sheet](https://docs.google.com/spreadsheets/d/1-HjIWMwJZ9nUxc9XKXIIps3pgR_9VyocpG7YN0dCVZ4/edit#gid=692213658).
+* SAO per source
+* All of InsightSquared
+* All metrics that are in OKRs visualized
+* Marketing attribution (how many SAO per campaign)
+* Usage data
+
 # Contributing to BizOps
 
 We welcome contributions and improvements, please see the [contribution guidelines](CONTRIBUTING.md)
