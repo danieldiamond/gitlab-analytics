@@ -2,8 +2,8 @@
 
 We have identified three primary personas:
 * An administrator who is responsible for initial setup and configuration of the data sources. This person could be a developer, or a bizops person, who has the access and credentials to add new data sources for integration.
-* A user, who can be anyone in the organization. This user primarily consumes the metrics and data available within [the BI dashboard](../readme.md#tools), to help drive better decision making across the organization.
 * A BizOps engineer/analyst who is responsible for data hygiene, including changes to source data systems and proceses that populate them.  This person will either communicate changes to source data config to the administrator (above) or make the config changes themselves.  This person is also likely to define metrics and visualizations presented in [the BI dashboard](../readme.md#tools).
+* A user, who can be anyone in the organization. This user primarily consumes the metrics and data available within [the BI dashboard](../readme.md#tools), to help drive better decision making across the organization.
 
 ## Admin Flow
 
