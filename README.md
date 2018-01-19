@@ -45,13 +45,9 @@ By leveraging a CI tool, there are a number of benefits:
 ### Competition & Value
 
 This should be a replacement for:
-* Marketing automation (Marketo)
 * Sales analytics (Insightsquared)
-* Customer Success automation (Gainsight)
-
-You should also be able to retire:
+* Customer Success visibility (Gainsight)
 * Analytics (Tableau)
-* Sales content management (Highspot/Docsend)
 
 In the beginning the software should build on some existing systems, for example the drip campaigns in Marketo.
 
