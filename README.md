@@ -252,12 +252,17 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 
 ### Major initiatives/Priority of Execution
 
-* Building the Extraction jobs, staging tables, and data warehouse are first priority since they are foundational to the rest of the plan.
-* Automate and create visualizations of the [GitLab metrics sheet](https://docs.google.com/spreadsheets/d/1-HjIWMwJZ9nUxc9XKXIIps3pgR_9VyocpG7YN0dCVZ4/edit#gid=692213658).
-* SAO per source
+**Now**
+
+1. Finish foundational work - get metabase up with proper security
+2. SAO by source and by campaign
+3. CAC by channel
+
+**Next** 
+
+* Automate and create visualizations of the [GitLab metrics sheet](https://docs.google.com/spreadsheets/d/1-HjIWMwJZ9nUxc9XKXIIps3pgR_9VyocpG7YN0dCVZ4/edit#gid=692213658).  Need to further differentiate priority within this set.
 * All of InsightSquared
 * All metrics that are in OKRs visualized
-* Marketing attribution (how many SAO per campaign)
 * Usage data
 
 # Contributing to BizOps
