@@ -13,8 +13,8 @@ We believe that information is the foundation of good decisions, and that compan
 BizOps is a product within GitLab.  
 * For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers.  There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer lifecycle.
 
-BizOps is open source, and built upon open source tools.
-* Open source, especially within GitLab, provides collaboration opportunities to improve tooling, establish best practices, and move more quickly.
+BizOps is open core, and built upon open source tools.
+* Open core within GitLab provides the broadest possible access to core BizOps features while allowing GitLab to generate revenue with features critical to large enterprises.  Building on an open source toolset also provides collaboration opportunities to improve tooling, establish best practices, and move more quickly.
 
 BizOps is BI as code.
 * BizOps uses GitLab CI/CD to setup and maintain its stack, so software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews.
