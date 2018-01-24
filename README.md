@@ -6,34 +6,20 @@ BizOps is a convention-over-configuration framework for analytics, business inte
 
 ## Premise
 
-We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations.
+We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations.  BizOps provides broad, democratized access to detailed operational metrics, thereby driving better decisions and shortening decision cyle time across the entire enterprise.
 
-* Investors will insist on detailed operational metrics, for companies of any size
-* Democratizing access to business performance drives better decisions across the entire organization
-* The companies of the future will build a detailed, actionable model of each individual customer. This requires knowledge of each touchpoint throughout the lifecycle.
-* Based on open source tools, 100k organizations should create the software together based on mutual best practices
+## Approach
 
-## Why open source BizOps within GitLab?
+BizOps is a product within GitLab.  
+* For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers.  There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer lifecycle.
 
-For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers. This model is already paying dividends by providing additional insights across the SDLC process.
+BizOps is open core, and built upon open source tools.
+* Open core within GitLab provides the broadest possible access to core BizOps features while allowing GitLab to generate revenue with features critical to large enterprises.  Building on an open source toolset also provides collaboration opportunities to improve tooling, establish best practices, and move more quickly.
 
-There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer lifecycle. For example:
-* What is the change in leads & conversions after the most recent release?
-* What product areas are most correlated with conversions? Do these align with product marketing effectiveness?
-* Are there unique usage patterns within customer segmentations?
-
-The fusion of CRM, marketing automation, billing, and product usage data will allow all parts of the organization to have a broader perspective of how their work is translating to business goals.
-
-Open source then provides additional collaboration opportunities to improve tooling, establish best practices, and move more quickly.
-
-### Business Intelligence with DevOps, or BIOps
-
-Common CI/CD tools have all of the functionality needed to setup and maintain a Business Intelligence stack within an organization. They are able to periodically run a flexible array of software, and deploy to a set of environments.
-
-By leveraging a CI tool, there are a number of benefits:
-* "BI as Code", where the software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews.
-* CI systems also provide easy frameworks for testing ELT changes and notifications in the event of an issue
+BizOps is BI as code.
+* BizOps uses GitLab CI/CD to setup and maintain its stack, so software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews.
 * Automated management of the BI environment means it is easy to make alterations, re-deploy in the event of an issue or outage, as well as provision new environments for different uses like a staging server.
+
 
 ### Why integrated
 
@@ -45,13 +31,9 @@ By leveraging a CI tool, there are a number of benefits:
 ### Competition & Value
 
 This should be a replacement for:
-* Marketing automation (Marketo)
 * Sales analytics (Insightsquared)
-* Customer Success automation (Gainsight)
-
-You should also be able to retire:
+* Customer Success visibility (Gainsight)
 * Analytics (Tableau)
-* Sales content management (Highspot/Docsend)
 
 In the beginning the software should build on some existing systems, for example the drip campaigns in Marketo.
 
