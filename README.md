@@ -4,53 +4,31 @@
 
 BizOps is a convention-over-configuration framework for analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
 
-## Premise
+## Principles
 
-We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations.  BizOps provides broad, democratized access to detailed operational metrics, thereby driving better decisions and shortening decision cyle time across the entire enterprise.
+We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations. So BizOps provides broad, democratized access to detailed operational metrics, thereby driving better decisions and shortening decision cyle time across the entire enterprise.
+
+We further believe that the information a business uses to make decisions must come from all parts of that business. So BizOps joins data from multiple systems used by Sales, Marketing, Product and others, thereby providing a comprehensive view of the relationship between business activities, associated costs, and customer long-term value.
+
 
 ## Approach
 
-BizOps is a product within GitLab.  
-* For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers.  There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer lifecycle.
+### BizOps is a product within GitLab. 
+For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers. There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer lifecycle.
 
-BizOps is open core, and built upon open source tools.
-* Open core within GitLab provides the broadest possible access to core BizOps features while allowing GitLab to generate revenue with features critical to large enterprises.  Building on an open source toolset also provides collaboration opportunities to improve tooling, establish best practices, and move more quickly.
+### BizOps is open core and built upon open source tools.
+Open core within GitLab provides the broadest possible access to core BizOps features while allowing GitLab to generate revenue with features critical to large enterprises. Building on an open source toolset also provides collaboration opportunities to improve tooling, establish best practices, and move more quickly.
 
-BizOps is BI as code.
-* BizOps uses GitLab CI/CD to setup and maintain its stack, so software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews.
-* Automated management of the BI environment means it is easy to make alterations, re-deploy in the event of an issue or outage, as well as provision new environments for different uses like a staging server.
+### BizOps is BI as code.
+BizOps uses GitLab CI/CD to setup and maintain its stack, so software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews. Automated management of the BI environment means it is easy to make alterations, re-deploy in the event of an issue or outage, as well as provision new environments for different uses like a staging server.
 
+### BizOps works for GitLab first.
+We are building BizOps to solve a problem that we share with all other software companies - how to acquire the highest-value customers at the lowest cost of acquisition?  We are solving this problem for ourselves first, incorporating what we learn along the way into a product that delivers practical and quantifiable value to our customers.
 
-### Why integrated
-
-* Determining critical data like CAC and LTV depends on many touch points across many systems
-* Good products need to know more about their users and their needs, requiring comprehensive data warehouse tracking all touch points
-* Product usage should inform sales efforts, and sales and marketing insights need to feed back into the planning process
-* Ultimate goal of fusing product data with sales and marketing data, to deliver more impactful, actionable insights across the lifecycle
-
-### Competition & Value
-
-This should be a replacement for:
-* Sales analytics (Insightsquared)
-* Customer Success visibility (Gainsight)
-* Analytics (Tableau)
-
-In the beginning the software should build on some existing systems, for example the drip campaigns in Marketo.
-
-### Summary
-
-* Acquire the highest LTV at the lowest CAC
-* Drive better, data driven decisions across all sectors of the organization
-* The LTV can likely be predicted quickly after purchase with lookalike customers
-* Customers need multiple touches before purchasing, so it is important to have a sequence (broad interest, features, outbound, etc.) and to get them through this pipe.
-* You need to continually vary your call scripts, website message, drip campaigns, ads, and decks to find out what is effective. Customized for each user and their journey with your company.
-* Determine what causes people to buy and grow. Campaigns and product nudges need to align with these levers.
 
 ## Objectives
 
 ### Roadmap
-
-To address these needs, the roadmap for BizOps is:
 
 1. Build an open source BI product to analyze sales and marketing performance ([in progress](#development-plan))
 1. Expand into customer success insight and automation
@@ -93,6 +71,12 @@ To address these needs, the roadmap for BizOps is:
 * All components monitored by Infra team
 * Product marketing: pricing packaging
 
+### Competition & Value
+
+This should be a replacement for:
+* Sales analytics (Insightsquared)
+* Customer Success visibility (Gainsight)
+* Analytics (Tableau)
 
 ## Development Status
 
@@ -121,7 +105,7 @@ We want the tools to be open source so we can ship this as a product.
   * Pentaho DI is based on the open-source [Talend](https://www.talend.com/products/data-integration/) engine, but utilizes XML for easier configuration.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
 1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
-  * Some data (e.g. Slowly Changing Dimensions or pipeline status history) will be peristed with a cloud provider, while the rest will reside in the [`bizops`](#bizops-container) container.  Data chosen for persistence should not require modification as the app evolves and should be consumable by feature branches as well as production.
+  * Some data (e.g. Slowly Changing Dimensions or pipeline status history) will be peristed with a cloud provider, while the rest will reside in the [`bizops`](#bizops-container) container. Data chosen for persistence should not require modification as the app evolves and should be consumable by feature branches as well as production.
 1. Display/analytics: [Metabase](https://metabase.com) to visualize the [metrics](#metrics). We evaluated [Superset](https://github.com/airbnb/superset), however it's single table limitation proved too limiting.
 1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) for scheduling, running, and monitoring the ELT jobs. Non-GitLab alternatives are [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi).
 
@@ -242,7 +226,7 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 
 **Next** 
 
-* Automate and create visualizations of the [GitLab metrics sheet](https://docs.google.com/spreadsheets/d/1-HjIWMwJZ9nUxc9XKXIIps3pgR_9VyocpG7YN0dCVZ4/edit#gid=692213658).  Need to further differentiate priority within this set.
+* Automate and create visualizations of the [GitLab metrics sheet](https://docs.google.com/spreadsheets/d/1-HjIWMwJZ9nUxc9XKXIIps3pgR_9VyocpG7YN0dCVZ4/edit#gid=692213658). Need to further differentiate priority within this set.
 * All of InsightSquared
 * All metrics that are in OKRs visualized
 * Usage data
