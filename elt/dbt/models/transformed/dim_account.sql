@@ -4,8 +4,10 @@ with account as (
 
 SELECT row_number() OVER (
                           ORDER BY sfdc_account_id) AS id,
-       sfdc_account_id,
-       name,
-       industry,
-       type 
+       COALESCE(sfdc_account_id, 'Unknown') as sfdc_account_id,
+       COALESCE(name, 'Unknown') as name,
+       COALESCE(industry, 'Unknown') as industry,
+       COALESCE(type, 'Unknown') as type,
+       COALESCE(Sales_Segmentation__c, 'Unknown') as sales_segmentation
+
 FROM account 
