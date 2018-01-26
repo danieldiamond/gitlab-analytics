@@ -4,7 +4,7 @@ SELECT c.id,
            c.zqu__period__c AS period,
            c.zqu__quantity__c AS qty,
            CASE WHEN  sum(COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c)) OVER (PARTITION BY q.id) = 0 THEN 0 ELSE 
-           round(o.incremental_acv_2__c * (COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c) / sum(COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c)) OVER (PARTITION BY q.id)), 4) END AS iacv,
+           round(o.Incremental_ACV__c * (COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c) / sum(COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c)) OVER (PARTITION BY q.id)), 4) END AS iacv,
            c.zqu__mrr__c AS mrr
     FROM sfdc.z_quote q
     JOIN sfdc.z_quoterateplan r ON r.zqu__quote__c = q.id

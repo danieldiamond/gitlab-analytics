@@ -31,6 +31,7 @@ SELECT o.sfdc_id AS opportunity_id
        , o.closedate AS opportunity_closedate
        , COALESCE(i.product, 'Unknown') as opportunity_product
        , COALESCE(i.period, 'Unknown') as billing_period
+       , COALESCE(o.name, 'Unknown') as opportunity_name
        , i.qty as quantity
        , i.iacv
 FROM lineitems i
