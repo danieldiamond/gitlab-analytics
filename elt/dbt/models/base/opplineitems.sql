@@ -21,8 +21,8 @@ SELECT oli.id,
        oli.quantity,
        CASE
            WHEN sum(oli.totalprice) OVER (PARTITION BY o.id) = 0 THEN 0
-           WHEN i.num_line_tems > 1 THEN round(o.incremental_acv_2__c * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)), 4)
-           ELSE o.incremental_acv_2__c
+           WHEN i.num_line_tems > 1 THEN round(o.Incremental_ACV__c * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)), 4)
+           ELSE o.Incremental_ACV__c
        END AS iacv,
        0 AS mrr
 FROM sfdc.opportunitylineitem oli
