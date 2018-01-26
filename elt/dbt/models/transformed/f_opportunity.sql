@@ -24,13 +24,13 @@ SELECT o.sfdc_id AS opportunity_id
        , a.id AS account_id
        , s.id AS opportunity_stage_id
        , l.id AS lead_source_id
-       , o.type AS opportunity_type
-       , o.sales_segmentation_o__c as opportunity_sales_segmentation
+       , COALESCE(o.type, 'Unknown') AS opportunity_type
+       , COALESCE(o.sales_segmentation_o__c, 'Unknown') as opportunity_sales_segmentation
        , o.sales_qualified_date__c as sales_qualified_date
        , o.sql_source__c as sales_qualified_source
        , o.closedate AS opportunity_closedate
-       , i.product as opportunity_product
-       , i.period as billing_period
+       , COALESCE(i.product, 'Unknown') as opportunity_product
+       , COALESCE(i.period, 'Unknown') as billing_period
        , i.qty as quantity
        , i.iacv
 FROM lineitems i

@@ -4,7 +4,7 @@ with leadsource as (
 
 SELECT  row_number() OVER (
                           ORDER BY LeadSource) AS id
-        , LeadSource as Initial_Source
+        , COALESCE(LeadSource, 'Unknown') as Initial_Source
         , CASE WHEN LeadSource IN('Advertisement')
         		THEN 'Advertising'
         	   WHEN LeadSource IN('Email Request', 'Email Subscription', 'Newsletter', 'Security Newsletter')
