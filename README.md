@@ -84,16 +84,19 @@ BizOps is pre-alpha and under active development, focused on delivering [objecti
 
 ## Analyzing Sales & Marketing Performance
 
-As part of [objective #1](#objectives), we are targeting analytics for sales and marketing performance. We plan to track the following metrics per campaign, lead, and organization. These results will be able to reviewed over various time periods. Initially we will support single touch attribution, with support for multitouch in a [later sprint](doc/development_plan.md#backlog).
-
-* Cost per lead = dollar spend / number of attributed leads
-* Median conversion time (from touch to IACV)
-* IACV at median conversion time (at for example 90 days after touch)
-* Estimated IACV = 2 *  IACV at median conversion time
-* CAC = cost per lead * conversion from lead to IACV
-* LTV = IACV * margin * average retention time
-* ROI = LTV / CAC
-* Collateral usage
+As part of [objective #1](#objectives), we are targeting analytics for sales and marketing performance. We plan to track the following metrics, in order of priority. These results will be able to reviewed over various time periods. Initially we will support single touch attribution, with support for multitouch in a [later sprint](doc/development_plan.md#backlog).
+1. SAOs by source
+  1. Aggregated (SDR / BDR / AE generated / Other)
+  1. Campaign level (AWS Reinvent / etc.)
+1. SAOs by source by week and/or month
+2. Aquisition cost per SAO
+  * Cost per lead = dollar spend / number of attributed leads
+3. Estimated IACV and LTV per SAO based on history
+  * Estimated IACV = 2 *  IACV at median conversion time
+  * LTV = IACV * margin * average retention time
+4. Estimated IACV / marketing ratio.
+  * CAC = cost per lead * conversion from lead to IACV
+  * ROI = LTV / CAC
 
 To achieve this, we bring data from all [data sources](data_sources.md) to a [common data model](doc/data_model.md) so it can be used easily and consistently across tools and teams. For example something as simple as unique customer ID, product or feature names/codes.
 
