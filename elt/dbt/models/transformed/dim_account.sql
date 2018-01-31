@@ -8,6 +8,7 @@ SELECT row_number() OVER (
        COALESCE(name, 'Unknown') as name,
        COALESCE(industry, 'Unknown') as industry,
        COALESCE(type, 'Unknown') as type,
-       COALESCE(Sales_Segmentation__c, 'Unknown') as sales_segmentation
-
+       COALESCE(Sales_Segmentation__c, 'Unknown') as sales_segmentation,
+       COALESCE(ultimate_parent_Sales_Segmentation, 'Unknown') as ultimate_parent_sales_segmentation,
+       COALESCE(ultimate_parent_name, 'Unknown') as ultimate_parent_name
 FROM account 
