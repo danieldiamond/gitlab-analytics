@@ -27,6 +27,7 @@ SELECT o.sfdc_id AS opportunity_id
        , COALESCE(o.type, 'Unknown') AS opportunity_type
        , COALESCE(o.sales_segmentation_o__c, 'Unknown') as opportunity_sales_segmentation
        , o.sales_qualified_date__c as sales_qualified_date
+       , o.sales_accepted_date__c as sales_accepted_date
        , o.sql_source__c as sales_qualified_source
        , o.closedate AS opportunity_closedate
        , COALESCE(i.product, 'Unknown') as opportunity_product
