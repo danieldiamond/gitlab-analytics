@@ -5,3 +5,4 @@
 */data-integration/system/karaf/caches/*
 *.log
 *.pyc
+*.DS_Store
