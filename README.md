@@ -13,7 +13,7 @@ We further believe that the information a business uses to make decisions must c
 
 ## Approach
 
-### BizOps is a product within GitLab. 
+### BizOps is a product within GitLab.
 For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers. There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer lifecycle.
 
 ### BizOps is open core and built upon open source tools.
@@ -28,48 +28,10 @@ We are building BizOps to solve a problem that we share with all other software 
 
 ## Objectives
 
-### Roadmap
-
 1. Build an open source BI product to analyze sales and marketing performance ([in progress](#development-plan))
 1. Expand into customer success insight and automation
 1. Close the feedback loop between product feature launches and sales/marketing performance
 1. Widen to include other areas of the company, like people ops and finance
-
-### Maturity
-
-#### Alpha
- * Open source project
-   * Dedicated non-gitlab.com TLD to decouple DNS and other things
-   * Self-signed TLS certs, or self-purchased
-   * Project folder in official gitlab GCP account (desired by Google)
-   * Non-automated infrastructure (manual patching, etc.)
-   * Open source repo, contributions
-   * Advice from security leader
-   * Advice from infrastructure team
-   * No constraints on tearing down infrastructure or losing data
-   * No requirements for central monitoring of infrastructure
-   * Cloud-specific tuning (ie leveraging GCP Cloud SQL/BigQuery)
- * Internal usage
-   * Data warehouse and configurations backed up
-   * OAuth2 Proxy used for authentication with Google accounts
-
-#### Beta
-
-* tbd.gitlab.com subdomain
-* Gitlab infra supplied SSL certificates
-* Monitoring of critical systems by GitLab Infrastructure team 
-* Infrastructure automation: Docker, k8s helm
-* Champions in targeted customer organization
-* Data backups
-* No marketing
-* Cloud-agnostic
-
-#### GA
-
-* Sales can sell unlimited units without checking with PM or Engineering
-* No data loss
-* All components monitored by Infra team
-* Product marketing: pricing packaging
 
 ### Competition & Value
 
@@ -109,7 +71,7 @@ We want the tools to be open source so we can ship this as a product.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
 1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
   * Some data (e.g. Slowly Changing Dimensions or pipeline status history) will be peristed with a cloud provider, while the rest will reside in the [`bizops`](#bizops-container) container. Data chosen for persistence should not require modification as the app evolves and should be consumable by feature branches as well as production.
-1. Display/analytics: [Metabase](https://metabase.com) to visualize the [metrics](#metrics). We evaluated [Superset](https://github.com/airbnb/superset), however it's single table limitation proved too limiting.
+1. Display/analytics: [Metabase](https://metabase.com) to visualize the [metrics](#metrics). We evaluated [Superset](https://github.com/airbnb/superset), however it's single table limitation proved too limiting. See our [desired workflow](https://docs.google.com/presentation/d/e/2PACX-1vTPuXqackF1kHW-GqsDmZAxuof0IbQNQrzg9IyKPYs5Utkzae4bOeOCoLNbJ6gZ2Rj4YCDjzImTmcDV/pub?start=false&loop=false&delayms=3000&slide=id.g329fdfcfcc_0_58) for interacting with Superset.
 1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) for scheduling, running, and monitoring the ELT jobs. Non-GitLab alternatives are [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi).
 
 ## How to use
@@ -156,7 +118,7 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 * PG_PORT: Port number of the Postgres server, typically 5432.
 * PG_DATABASE: Database name to be used for the staging tables.
 * PG_DEV_SCHEMA: Schema to use for development of dbt models.
-* PG_PROD_SCHEMA: Schema to use for production dimensional model. 
+* PG_PROD_SCHEMA: Schema to use for production dimensional model.
 * PG_USERNAME: Username for authentication to Postgres.
 * PG_PASSWORD: Password for authentication to Postgres.
 * SFDC_URL: Web service URL for your SFDC account.
@@ -173,7 +135,7 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 * Create a common data framework and governance practice.
 * Establish the single source of truth for company metrics.
 * Establish a change management processes for source systems.
-* Develop a Data Architecture plan (in conjunction with functional teams). 
+* Develop a Data Architecture plan (in conjunction with functional teams).
 * Develop a roadmap for systems evolution in alignment with the Company’s data architecture plan.
 
 ### GitLab Internal Analytics Architecture
@@ -182,16 +144,16 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 #### ETL Layer
 * Since we are using Open Source tools, Pentaho DI is the industry standard when they have OOB connectors (SFDC is the primary need).
 * Java based - Will need to install their engine on a VM to process ETL jobs.
-* Where OOB connectors for Pentaho do not exist, Python scripts can be used to create the Extraction jobs. 
-* For the transformation layer needed to create the analytic data model, DBT is a good candidate. Otherwise, we’ll use standard SQL in the postgres db to accomplish the transformations. DBT is preferred as it can be version controlled through YAML files more easily than standard SQL. 
+* Where OOB connectors for Pentaho do not exist, Python scripts can be used to create the Extraction jobs.
+* For the transformation layer needed to create the analytic data model, DBT is a good candidate. Otherwise, we’ll use standard SQL in the postgres db to accomplish the transformations. DBT is preferred as it can be version controlled through YAML files more easily than standard SQL.
 
 #### Staging Tables
-* We’ll want to stage our data before loading it into the data warehouse. 
-* Postgres dbs are a good choice if we are not using BigQuery. 
+* We’ll want to stage our data before loading it into the data warehouse.
+* Postgres dbs are a good choice if we are not using BigQuery.
 * Primarily used for transformation and data scrubbing prior to loading into the Data Warehouse.
 * Allows for data quality monitoring of source data.
 * Minimizes impact to production systems.
-* Ideally incremental loads (extract only what changed since the last extract). 
+* Ideally incremental loads (extract only what changed since the last extract).
 * Prevents need to query production dbs impacting app performance
 
 #### Data Warehouse
@@ -200,14 +162,14 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 * Consolidated repository of all source data - scrubbed and modeled into a format optimized for analytic workliads (Dimensional model).
 * Serves as the Single Source of Truth for reporting, analysis, and visualization applications.
 * Will need to be audited regularly back to the source.
-* Should not be generally available - will require strict access controls for direct querying not done through a controlled application such as metabase. 
+* Should not be generally available - will require strict access controls for direct querying not done through a controlled application such as metabase.
 
 #### Application Server
 
 * Used for ad-hoc and scheduled offline processes
 * Python scripting for data transformation or model calculations
 * Potentially can be used as an R server in the future
-* Can be used to serve custom Highcharts or Dashing apps - must be behind Authorization. 
+* Can be used to serve custom Highcharts or Dashing apps - must be behind Authorization.
 * VM in the Data Warehouse environment
 
 #### Data Visualization
@@ -217,22 +179,7 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 * Allows for ad-hoc data exploration to identify trends and anomalies.
 * Executive and management dashboards for KPI updates at a glance.
 * Allows for drilling deeper into data to identify targeted business opportunities.
-* Allows us to spend more time discussing metrics that are generally available as opposed to giving updates in meetings. 
-
-### Major initiatives/Priority of Execution
-
-**Now**
-
-1. Finish foundational work - get metabase up with proper security
-2. SAO by source and by campaign
-3. CAC by channel
-
-**Next** 
-
-* Automate and create visualizations of the [GitLab metrics sheet](https://docs.google.com/spreadsheets/d/1-HjIWMwJZ9nUxc9XKXIIps3pgR_9VyocpG7YN0dCVZ4/edit#gid=692213658). Need to further differentiate priority within this set.
-* All of InsightSquared
-* All metrics that are in OKRs visualized
-* Usage data
+* Allows us to spend more time discussing metrics that are generally available as opposed to giving updates in meetings.
 
 # Contributing to BizOps
 

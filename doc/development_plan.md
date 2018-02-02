@@ -10,38 +10,23 @@ This would provide a basic foundation for analyzing your CRM data that is contai
 
 ## Sprints
 
-### Priority 1
+**Now**
 
-For the very first MVC, we should focus on just getting an environment established which can ELT and render data:
-* [Create a container with Pentaho DI, python, and dbt to be used as image for CI job](https://gitlab.com/gitlab-org/bizops/issues/8) (Done except for dbt)
-  * Starts up, uses ENV vars to auth to SFDC/Zuora/Marketo, ELT's data into PG. Runs dbt to transform to data model.
-* Create a container with PG and Metabase
-  * Is the "app" that runs as the environment
-* Rely on the end user for any required configuration to extract each [Source](doc/data_sources.md), as well as managing the source's staging table schema
-* The end user is also responsible for the mapping file, used by dbt, between each Source's staging table and the [common Data Model](doc/data_model.md).
-* [Establish the common data model](https://gitlab.com/gitlab-org/bizops/issues/9) for required fields
-* Create the initial dashboard views based on standard model (our version not yet started)
+1. Finish foundational work - get Metabase up with proper security
+1. [Enable internal teams to use Metabase on their own / create new SSOT dashboards](https://docs.google.com/presentation/d/e/2PACX-1vTPuXqackF1kHW-GqsDmZAxuof0IbQNQrzg9IyKPYs5Utkzae4bOeOCoLNbJ6gZ2Rj4YCDjzImTmcDV/pub?start=false&loop=false&delayms=3000&slide=id.g329fdfcfcc_0_58)
+1. SAO by source and by campaign
+1. CAC by channel
 
-### Priority 2
+**Next**
 
-Automate & provide guide rails for ELT phase
-* Create script to grab SFDC objects to create a transformation KTL file automatically (to load data into staging tables)
-* Create script to check user provided mapping file for required fields (staging field -> data model field), list missing ones
+* Automate and create visualizations of the [GitLab metrics sheet](https://docs.google.com/spreadsheets/d/1-HjIWMwJZ9nUxc9XKXIIps3pgR_9VyocpG7YN0dCVZ4/edit#gid=692213658). Need to further differentiate priority within this set.
+* All of InsightSquared
+* All metrics that are in OKRs visualized
 
-### Priority 3
+**Backlog**
 
-Make working with data easier
-
-* Copy dashboards from the repo into Metabase, to provide OOTB templates
+* Automate & provide guide rails for ELT phase
+  * Resilient and automated process to populate staging tables from data sources (for example, Pentaho's fragility/complexity)
+  * Create script to check user provided mapping file for required fields (staging field -> data model field), list missing ones
+* Distinguish between custom GitLab dashboards and public dashboards?
 * Identify an easy "flow" to save modified dashboard into repo. (Cut/Paste, download file, etc.)
-
-### Backlog
-
-* Productize this a little more, and add steps to ease the creation of the "transform" file.
-* Set up backup/restore jobs for production database
-* Multitouch attribution
-
-### Open questions
-
-* Should we required Marketo/Zuora data to be in SFDC, or pull from these platforms directly?
-  * Pulling only from SFDC would generalize the process if customers used other tools, but then require that the integration and data is written back to SFDC
