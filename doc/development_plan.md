@@ -28,5 +28,4 @@ This would provide a basic foundation for analyzing your CRM data that is contai
 * Automate & provide guide rails for ELT phase
   * Resilient and automated process to populate staging tables from data sources (for example, Pentaho's fragility/complexity)
   * Create script to check user provided mapping file for required fields (staging field -> data model field), list missing ones
-* Distinguish between custom GitLab dashboards and public dashboards?
 * Identify an easy "flow" to save modified dashboard into repo. (Cut/Paste, download file, etc.)
