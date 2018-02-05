@@ -120,6 +120,8 @@ We will be delivering two containers to power BizOps:
 
 As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
 
+It is expected that the BizOps project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an indiviual application at the top level of the BizOps project for inclusion/exclusion.  
+
 ### BizOps container
 > Note this will be updated with Metabase in the near future. See [Tools](#tools) for more information.
 
