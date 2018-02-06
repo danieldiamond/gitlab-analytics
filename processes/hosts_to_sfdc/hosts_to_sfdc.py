@@ -349,14 +349,14 @@ def ask_whois(ip):
     else:
         try:
             if r['network']['name'] is not None:
-                org = r['network']['name']
+                org = r['network']['name'].encode('utf-8')
         except TypeError:
             pass
             # print("Whois has no name. Updating the organization desc.")
         try:
             if r['network']['remarks'][0]['description'] is not None:
                 desc = \
-                    r['network']['remarks'][0]['description']
+                    r['network']['remarks'][0]['description'].encode('utf-8')
         except TypeError:
             pass
         #     print("Whois has no description. Updating the organization name.")
