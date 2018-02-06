@@ -1253,11 +1253,6 @@
         <update>Y</update>
       </value>
       <value>
-        <name>next_renewal_date__c</name>
-        <rename>Next Renewal Date</rename>
-        <update>Y</update>
-      </value>
-      <value>
         <name>days_until_close__c</name>
         <rename>Days Until Close</rename>
         <update>Y</update>
@@ -4389,20 +4384,6 @@
         <group />
         <length>0</length>
         <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Next Renewal Date</name>
-        <field>Next_Renewal_Date__c</field>
-        <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
       </field>
