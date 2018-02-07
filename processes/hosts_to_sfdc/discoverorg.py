@@ -12,7 +12,7 @@ dorg_pass = os.environ.get('DORG_PASSWORD')
 url_base = 'https://papi.discoverydb.com/papi/'
 
 
-def login():
+def get_token():
     """Log into the DiscoverOrg API and return an auth token."""
     data = dict(
         username=dorg_user,
@@ -29,7 +29,7 @@ def login():
 def lookup_by_domain(domain):
     """For a given domain, return the DiscoverOrg data."""
     url = url_base + 'v1/search/companies'
-    token = login()
+    token = get_token()
     header = {
         "X-AUTH-TOKEN": token,
         "Content-Type": 'application/json'

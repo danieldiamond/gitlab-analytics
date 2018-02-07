@@ -8,7 +8,7 @@ it updates it with the lastest number of GitLab CE instances and user count.
 """
 
 import datetime
-import clearbit
+from clearbit_gl import check_clearbit
 import discoverorg as dorg
 from ipwhois import IPWhois
 from sqlalchemy import *
@@ -18,12 +18,11 @@ import psycopg2
 import socket
 import tldextract
 from toolz.dicttoolz import dissoc
-from timeout import timeout
+
 import os
 
-clearbit.key = os.environ.get('CLEARBIT_API_KEY')
-host = os.environ.get('PROCESS_DB_PROD_ADDRESS')
-# host = "localhost"
+# host = os.environ.get('PROCESS_DB_PROD_ADDRESS')
+host = "localhost"
 username = os.environ.get('PROCESS_DB_PROD_USERNAME')
 password = os.environ.get('PROCESS_DB_PROD_PASSWORD')
 database = os.environ.get('PROCESS_DB_PROD_DBNAME')
@@ -34,10 +33,12 @@ db_string = 'postgresql+psycopg2://' + username + ':' + password + '@' + \
             host + '/' + database
 engine = create_engine(db_string)
 metadata = MetaData(bind=engine)
+
 clearbit_cache = Table('clearbit_cache',
                        metadata,
                        autoload=True,
                        autoload_with=engine)
+
 ip_to_url = Table('ip_to_url',
                   metadata,
                   schema='version',
@@ -45,22 +46,22 @@ ip_to_url = Table('ip_to_url',
                   autoload_with=engine)
 
 
-def in_cache(domain):
+def in_cache(domain, table):
     """Return True if domain found in cache, False if not found.
 
-    Check the local clearbit cache for a domain to see if the domain has
+    Check the specified cache for a domain to see if the domain has
     been cached in the last 30 days.
+
+    :param table: String of table name
     """
     # print("Checking cache for " + domain)
     mydb = psycopg2.connect(host=host, user=username,
                             password=password, dbname=database)
     cursor = mydb.cursor()
-    cursor.execute("SELECT * FROM clearbit_cache WHERE domain='" +
+    cursor.execute("SELECT * FROM " + table + " WHERE domain='" +
                    domain + "' AND last_update >  NOW() - INTERVAL '30 days';")
-    if cursor.rowcount == 0:
-        value = False
-    else:
-        value = True
+    domain_in_cache = False if cursor.rowcount == 0 else True
+
     mydb.commit()
     cursor.close()
     mydb.close()
@@ -68,18 +69,20 @@ def in_cache(domain):
     #     print(domain + " was found in cache. Using that value.")
     # else:
     #     print(domain + " was not found in cache.")
-    return value
+    return domain_in_cache
 
 
-def update_cache(dictlist):
-    """If we have retrieved new data from the clearbit API, we update the cache.
+def update_cache(dictlist, table):
+    """If we have retrieved new data from the relevant API, we update the cache.
 
     Does an upsert to the table using the domain as the unique key.
     Does not return a value.
+
+    :param table: SQLAlchemy Table
     """
     # print("Updating cache for " + dictlist.get("parsed_domain", ""))
 
-    stmt = postgresql.insert(clearbit_cache, bind=engine).values(
+    stmt = postgresql.insert(table, bind=engine).values(
         domain=dictlist.get("parsed_domain", ""),
         company_name=dictlist.get("company_name", ""),
         company_legalname=dictlist.get("company_legalname", ""),
@@ -110,16 +113,18 @@ def update_cache(dictlist):
     conn.close()
 
 
-def update_cache_not_found(domain):
+def update_cache_not_found(domain, table):
     """Update the cache for unknown domains.
 
     If we are unable to identify the company and obtain details,
-    we update the clearbit cache with the domain and the last updated field,
+    we update the specified cache with the domain and the last updated field,
     to prevent us from asking the API again for this domain for 30 days.
     We need to limit the number of API calls we make to these services.
+
+    :param table: SQLAlchemy table
     """
     # print("Updating cache for " + domain)
-    stmt = postgresql.insert(clearbit_cache,
+    stmt = postgresql.insert(table,
                              bind=engine).values(domain=domain,
                                                  last_update=datetime.datetime.now())
     on_update_stmt = stmt.on_conflict_do_update(
@@ -128,43 +133,6 @@ def update_cache_not_found(domain):
     conn = engine.connect()
     conn.execute(on_update_stmt)
     conn.close()
-
-
-def check_dorg(domain):
-    """Check the DiscoverOrg API for a given domain.
-
-    Identify company data based on the domain and
-    returns the results. Returns None if not found.
-    """
-    token = dorg.login()
-    response = dorg.lookup_by_domain(token, domain)
-    company = response['content']
-    return company
-
-
-@timeout(20)
-def check_clearbit(domain):
-    """Check the Clearbit API for a given domain.
-
-    Identify company data based on the domain and
-    returns the results. Returns None if not found.
-    """
-    # print("Querying Clearbit for " + domain)
-    try:
-        company = clearbit.Company.find(domain=domain, stream=True)
-    except:
-        company = None
-
-    if company is None or not company['name']:
-        try:
-            update_cache_not_found(domain)
-        except:
-            pass
-        return None
-    if not isinstance(company['name'], type(None)):
-        return company
-    else:
-        return None
 
 
 def url_parse(domain):
@@ -178,6 +146,7 @@ def url_parse(domain):
     if result.domain:
         return result.domain + '.' + result.suffix
     else:
+        # Can get an error with http://@#$^#$&*%*sfgdfg@3423
         err = "Not a valid domain"
         return err
 
@@ -224,35 +193,44 @@ def process_domain(domain):
     """
     domain = ''.join(domain).encode('utf-8')
     parsed_domain = url_parse(domain)
-    if in_cache(parsed_domain) is True:
+
+    if in_cache(parsed_domain, 'clearbit_cache') is True:
         pass
     else:
         company = check_clearbit(parsed_domain)
-        if not isinstance(company, type(None)):
+
+        if company is None:
+            # print "Error or not found for " + domain + " parsed as " + parsed_domain
+            update_cache_not_found(parsed_domain, clearbit_cache)
+
+        else:
+            # print "Updating cache for " + domain + " parsed as " + parsed_domain
             company_dict = dict(company)
             category = company_dict.get("category", {})
             metrics = company_dict.get("metrics", {})
 
-            dictlist = dict(parsed_domain=parsed_domain,
-                           company_name=company_dict.get('name', ''),
-                           company_legalname=company_dict.get('legalName', ''),
-                           company_domain=company_dict.get('domain', ''),
-                           company_site=category.get('sector', ''),
-                           company_industrygroup=category.get('industryGroup', ''),
-                           company_industry=category.get('industry', ''),
-                           company_naics=category.get('naicsCode', ''),
-                           company_desc=company_dict.get('description', ''),
-                           company_loc=company_dict.get('location', ''),
-                           company_ein=company_dict.get('identifiers', {}).get('usEIN', ''),
-                           company_emp=metrics.get('employees', ''),
-                           company_emp_range=metrics.get('employeesRange', ''),
-                           company_rev=metrics.get('annualRevenue', ''),
-                           company_estrev=metrics.get('estimatedAnnualRevenue', ''),
-                           company_type=company_dict.get('type', ''),
-                           company_phone=company_dict.get('phone', ''),
-                           company_tech=company_dict.get('tech', ''),
-                           company_index=company_dict.get('indexedAt', ''),
-                           last_update=datetime.datetime.now())
+            dictlist = dict(
+                parsed_domain=parsed_domain,
+                company_name=company_dict.get('name', ''),
+                company_legalname=company_dict.get('legalName', ''),
+                company_domain=company_dict.get('domain', ''),
+                company_site=category.get('sector', ''),
+                company_industrygroup=category.get('industryGroup', ''),
+                company_industry=category.get('industry', ''),
+                company_naics=category.get('naicsCode', ''),
+                company_desc=company_dict.get('description', ''),
+                company_loc=company_dict.get('location', ''),
+                company_ein=company_dict.get('identifiers', {}).get('usEIN', ''),
+                company_emp=metrics.get('employees', ''),
+                company_emp_range=metrics.get('employeesRange', ''),
+                company_rev=metrics.get('annualRevenue', ''),
+                company_estrev=metrics.get('estimatedAnnualRevenue', ''),
+                company_type=company_dict.get('type', ''),
+                company_phone=company_dict.get('phone', ''),
+                company_tech=company_dict.get('tech', ''),
+                company_index=company_dict.get('indexedAt', ''),
+                last_update=datetime.datetime.now()
+            )
 
             #TODO Feel like there shouldn't be this much error catching for strings
             for key in dictlist:
@@ -264,10 +242,7 @@ def process_domain(domain):
                 else:
                     dictlist[key] = str(value.encode("utf-8"))
 
-            update_cache(dictlist)
-
-        else:
-            pass
+            update_cache(dictlist, clearbit_cache)
 
 
 def get_ips():
@@ -385,7 +360,13 @@ def process_ips():
                 # print("Can't find reverse DNS for " + ip)
                 ask_whois(ip)
 
+process_domain("totallyfakeurl.taylor")
+process_domain("futurevault.com")
+process_domain("example.com")
+# print process_domain('http://209.208.3.11/admin')
+# print process_domain('http://@#$^#$&*%*sfgdfg@3423')
 
-# pprint.pprint(check_dorg('example.com'))
+
+# pprint.pprint(dorg.lookup_by_domain('example.com'))
 # process_domains()
 # process_ips()
