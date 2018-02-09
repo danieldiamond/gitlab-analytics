@@ -24,7 +24,21 @@ SELECT oli.id,
            WHEN i.num_line_tems > 1 THEN round(o.Incremental_ACV__c * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)), 4)
            ELSE o.Incremental_ACV__c
        END AS iacv,
-       0 AS mrr
+       CASE
+           WHEN sum(oli.totalprice) OVER (PARTITION BY o.id) = 0 THEN 0
+           WHEN i.num_line_tems > 1 THEN round(o.ACV__c * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)), 4)
+           ELSE o.ACV__c
+       END AS acv,
+       CASE
+           WHEN sum(oli.totalprice) OVER (PARTITION BY o.id) = 0 THEN 0
+           WHEN i.num_line_tems > 1 THEN round(o.Renewal_ACV__c * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)), 4)
+           ELSE o.Renewal_ACV__c
+       END AS renewal_acv,
+       CASE
+           WHEN sum(oli.totalprice) OVER (PARTITION BY o.id) = 0 THEN 0
+           WHEN i.num_line_tems > 1 THEN round(o.Amount * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)), 4)
+           ELSE o.Amount
+       END AS tcv
 FROM sfdc.opportunitylineitem oli
 JOIN sfdc.opportunity o ON oli.opportunityid = o.id::text
 LEFT JOIN sfdc.pricebookentry pbe ON oli.pricebookentryid = pbe.id

@@ -5,7 +5,12 @@ SELECT c.id,
            c.zqu__quantity__c AS qty,
            CASE WHEN  sum(COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c)) OVER (PARTITION BY q.id) = 0 THEN 0 ELSE 
            round(o.Incremental_ACV__c * (COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c) / sum(COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c)) OVER (PARTITION BY q.id)), 4) END AS iacv,
-           c.zqu__mrr__c AS mrr
+           CASE WHEN  sum(COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c)) OVER (PARTITION BY q.id) = 0 THEN 0 ELSE 
+           round(o.ACV__c * (COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c) / sum(COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c)) OVER (PARTITION BY q.id)), 4) END AS acv,
+           CASE WHEN  sum(COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c)) OVER (PARTITION BY q.id) = 0 THEN 0 ELSE 
+           round(o.Renewal_ACV__c * (COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c) / sum(COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c)) OVER (PARTITION BY q.id)), 4) END AS renewal_acv,
+           CASE WHEN  sum(COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c)) OVER (PARTITION BY q.id) = 0 THEN 0 ELSE 
+           round(o.Amount * (COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c) / sum(COALESCE(c.zqu__billingsubtotal__c, c.zqu__total__c)) OVER (PARTITION BY q.id)), 4) END AS tcv
     FROM sfdc.z_quote q
     JOIN sfdc.z_quoterateplan r ON r.zqu__quote__c = q.id
     JOIN sfdc.z_quoterateplancharge c ON c.zqu__quoterateplan__c = r.id
