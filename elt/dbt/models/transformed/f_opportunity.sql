@@ -35,6 +35,9 @@ SELECT o.sfdc_id AS opportunity_id
        , COALESCE(o.name, 'Unknown') as opportunity_name
        , i.qty as quantity
        , i.iacv
+       , i.renewal_acv
+       , i.acv
+       , i.tcv
 FROM lineitems i
 INNER JOIN opportunity o ON i.opportunity_id=o.sfdc_id
 INNER JOIN oppstage s ON o.stagename=s.masterlabel
