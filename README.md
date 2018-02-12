@@ -65,7 +65,7 @@ We want the tools to be open source so we can ship this as a product.
 1. Extract and Load (EL): Combination of [Pentaho Data Integration](http://www.pentaho.com/product/data-integration) and python scripts, although will consider [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
   * Pentaho DI is based on the open-source [Talend](https://www.talend.com/products/data-integration/) engine, but utilizes XML for easier configuration.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
-1. Warehouse: Any SQL based data warehouse. We recommend [PostgeSQL](https://www.postgresql.org/) and include it in the bizops pipeline. Cloud services like [BigQuery](https://cloud.google.com/bigquery/) are also supported, for increased scalability and durability.
+1. Warehouse: Any SQL based data warehouse. We recommend [PostgeSQL](https://www.postgresql.org/) and include it in the bizops pipeline. Postgres cloud services like [Google Cloud SQL](https://cloud.google.com/sql/) are also supported, for increased scalability and durability.
   * Some data (e.g. Slowly Changing Dimensions or pipeline status history) will be persisted with a cloud provider, while the rest will reside in the defined SQL data store. Data chosen for cloud persistence should not require modification as the app evolves and should be consumable by feature branches as well as production
 1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) for scheduling, running, and monitoring the ELT jobs. Non-GitLab alternatives are [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi).
 1. Visualization/Dashboard: BizOps is compatible with nearly all visualization engines, due to the SQL based data store. For example commercial products like [Looker]() or [Tableau](), as well as open-source products like [Superset](https://github.com/airbnb/superset) or [Metabase](https://metabase.com) can be used.
@@ -73,7 +73,7 @@ We want the tools to be open source so we can ship this as a product.
 ## How to use
 
 The BizOps project consists two key components:
-1. A SQL based data store, for example [PostgreSQL](https://www.postgresql.org/) or [BigQuery](https://cloud.google.com/bigquery/). We recommend using Postgres for [review apps](https://about.gitlab.com/features/review-apps/) and a more durable and scalable service for production.
+1. A SQL based data store, for example [PostgreSQL](https://www.postgresql.org/) or [Cloud SQL](https://cloud.google.com/sql/). We recommend using Postgres for [review apps](https://about.gitlab.com/features/review-apps/) and a more durable and scalable service for production.
 1. The [`extract`](#extract-container) container, which will run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
 
 As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
@@ -133,7 +133,7 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 
 #### Staging Tables
 * We’ll want to stage our data before loading it into the data warehouse.
-* Postgres db's are a good choice if we are not using BigQuery.
+* Local Postgres db's are a good choice if we are not using Cloud SQL.
 * Primarily used for transformation and data scrubbing prior to loading into the Data Warehouse.
 * Allows for data quality monitoring of source data.
 * Minimizes impact to production systems.
@@ -142,7 +142,7 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 
 #### Data Warehouse
 
-* Using GCP VMs with Postgres, will likely need to move to BigQuery in the future.
+* Using GCP VMs with Postgres, will likely need to move to Cloud SQL in the future.
 * Consolidated repository of all source data - scrubbed and modeled into a format optimized for analytic workliads (Dimensional model).
 * Serves as the Single Source of Truth for reporting, analysis, and visualization applications.
 * Will need to be audited regularly back to the source.
