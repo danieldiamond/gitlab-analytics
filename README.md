@@ -66,6 +66,7 @@ We want the tools to be open source so we can ship this as a product.
   * Pentaho DI is based on the open-source [Talend](https://www.talend.com/products/data-integration/) engine, but utilizes XML for easier configuration.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
 1. Warehouse: Any SQL based data warehouse. We recommend [PostgeSQL](https://www.postgresql.org/) and include it in the bizops pipeline. Cloud services like [BigQuery](https://cloud.google.com/bigquery/) are also supported, for increased scalability and durability.
+  * Some data (e.g. Slowly Changing Dimensions or pipeline status history) will be persisted with a cloud provider, while the rest will reside in the defined SQL data store. Data chosen for cloud persistence should not require modification as the app evolves and should be consumable by feature branches as well as production
 1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) for scheduling, running, and monitoring the ELT jobs. Non-GitLab alternatives are [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi).
 1. Visualization/Dashboard: BizOps is compatible with nearly all visualization engines, due to the SQL based data store. For example commercial products like [Looker]() or [Tableau](), as well as open-source products like [Superset](https://github.com/airbnb/superset) or [Metabase](https://metabase.com) can be used.
 
