@@ -7,6 +7,7 @@ from timeout import timeout
 from sqlalchemy import Table
 import clearbit
 from dw_setup import metadata, engine
+import caching
 
 clearbit.key = os.environ.get('CLEARBIT_API_KEY')
 
@@ -38,11 +39,10 @@ def check_clearbit(domain):
 
 
 def update_clearbit(domain):
-    import domain_processor as dp
     company = check_clearbit(domain)
 
     if company is None:
-        dp.update_cache_not_found(domain, clearbit_cache)
+        caching.update_cache_not_found(domain, clearbit_cache)
 
     else:
         company_dict = dict(company)
@@ -82,4 +82,4 @@ def update_clearbit(domain):
             else:
                 dictlist[key] = str(value.encode("utf-8"))
 
-        dp.update_cache(dictlist, clearbit_cache)
+        caching.update_cache(dictlist, clearbit_cache)
