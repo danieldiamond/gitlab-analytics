@@ -14,11 +14,10 @@ from sqlalchemy.dialects import postgresql
 import psycopg2
 import socket
 import tldextract
-from toolz.dicttoolz import dissoc
 from dw_setup import metadata, engine, host, username, password, database
 import discoverorg as dorg
 import clearbit_gl as cbit
-import urlparse
+import caching
 
 
 ip_to_url = Table('ip_to_url',
@@ -26,12 +25,6 @@ ip_to_url = Table('ip_to_url',
                   schema='version',
                   autoload=True,
                   autoload_with=engine)
-
-
-cleaned_urls = Table('cleaned_urls',
-                    metadata,
-                    autoload=True,
-                    autoload_with=engine)
 
 
 def in_cache(domain, table):
@@ -57,69 +50,6 @@ def in_cache(domain, table):
     return domain_in_cache
 
 
-def update_cache(dictlist, table):
-    """If we have retrieved new data from the relevant API, we update the cache.
-
-    Does an upsert to the table using the domain as the unique key.
-    Does not return a value.
-
-    :param table: SQLAlchemy Table
-    """
-    # print("Updating cache for " + dictlist.get("parsed_domain", ""))
-
-    stmt = postgresql.insert(table, bind=engine).values(
-        domain=dictlist.get("parsed_domain", ""),
-        company_name=dictlist.get("company_name", ""),
-        company_legalname=dictlist.get("company_legalname", ""),
-        company_domain=dictlist.get("company_domain", ""),
-        company_site=dictlist.get("company_site", ""),
-        company_industrygroup=dictlist.get("company_industrygroup", ""),
-        company_industry=dictlist.get("company_industry", ""),
-        company_naics=dictlist.get("company_naics", ""),
-        company_desc=dictlist.get("company_desc", ""),
-        company_loc=dictlist.get("company_loc", ""),
-        company_ein=dictlist.get("company_ein", ""),
-        company_emp=dictlist.get("company_emp", ""),
-        company_emp_range=dictlist.get("company_emp_range", ""),
-        company_rev=dictlist.get("company_rev", ""),
-        company_estrev=dictlist.get("company_estrev", ""),
-        company_type=dictlist.get("company_type", ""),
-        company_phone=dictlist.get("company_phone", ""),
-        company_tech=dictlist.get("company_tech", ""),
-        company_index=dictlist.get("company_index", ""),
-        last_update=dictlist.get("last_update", "")
-    )
-    on_update_stmt = stmt.on_conflict_do_update(
-        index_elements=['domain'],
-        set_=dissoc(dictlist, "parsed_domain")
-    )
-    conn = engine.connect()
-    conn.execute(on_update_stmt)
-    conn.close()
-
-
-def update_cache_not_found(domain, table):
-    """Update the cache for unknown domains.
-
-    If we are unable to identify the company and obtain details,
-    we update the specified cache with the domain and the last updated field,
-    to prevent us from asking the API again for this domain for 30 days.
-    We need to limit the number of API calls we make to these services.
-
-    :param table: SQLAlchemy table
-    """
-    # print("Updating cache for " + domain)
-    stmt = postgresql.insert(table,
-                             bind=engine).values(domain=domain,
-                                                 last_update=datetime.datetime.now())
-    on_update_stmt = stmt.on_conflict_do_update(
-        index_elements=['domain'],
-        set_=dict(last_update=datetime.datetime.now()))
-    conn = engine.connect()
-    conn.execute(on_update_stmt)
-    conn.close()
-
-
 def url_parse(host):
     """Return a domain from a url and write to the clean domain cache
 
@@ -131,52 +61,12 @@ def url_parse(host):
     if result.domain:
         clean_domain = result.domain + '.' + result.suffix
         # Always writing to DB b/c there's no external API request - might as well just update
-        write_clean_domain(host, result, clean_domain)
+        caching.write_clean_domain(host, result, clean_domain)
         return clean_domain
     else:
         # Can get an error with http://@#$^#$&*%*sfgdfg@3423
         err = "Not a valid domain"
         return err
-
-
-def write_clean_domain(raw_domain, tldextract, clean_domain, table=cleaned_urls):
-
-    print "Writing " + raw_domain + " as " + clean_domain + " to cache."
-
-    subdomain = tldextract.subdomain
-    primary_domain = tldextract.domain
-    sufffix = tldextract.suffix
-
-    stmt = postgresql.insert(table, bind=engine).values(
-        domain=raw_domain,
-        subdomain=subdomain,
-        primary_domain=primary_domain,
-        suffix=sufffix,
-        clean_domain=clean_domain,
-        last_update=datetime.datetime.now()
-    )
-    on_update_stmt = stmt.on_conflict_do_update(
-        index_elements=["domain"],
-        set_=dict(
-            subdomain=subdomain,
-            primary_domain=primary_domain,
-            suffix=sufffix,
-            clean_domain=clean_domain,
-            last_update=datetime.datetime.now())
-    )
-    conn = engine.connect()
-    conn.execute(on_update_stmt)
-    conn.close()
-
-
-def process_domains():
-    """Should probably be the __main__ function.
-
-    Gets a list of domains and processes it.
-    """
-    domain_list = get_domains()
-    for domain in domain_list:
-        process_domain(domain)
 
 
 def process_domain(domain):
@@ -202,6 +92,7 @@ def process_domain(domain):
 
     #TODO Write to cleaned version_checks
 
+
 def is_ip(host):
     """
     Returns true if domain is an IP address, otherwise false.
@@ -214,43 +105,6 @@ def is_ip(host):
         return True
     else:
         return False
-
-
-def get_ips():
-    """Return a list if IP addresses to process.
-
-    Queries the database for new IP addresses that need to be processed from
-    the version ping and usage data.
-    """
-    mydb = psycopg2.connect(host=host, user=username,
-                            password=password, dbname=database)
-    cursor = mydb.cursor()
-    cursor.execute("SELECT refer_url from version.ips")
-    result = cursor.fetchall()
-    return result
-
-
-def update_cache_whois(ip, company_name, company_address):
-    """Update the cache with whois data for a domain.
-
-    If the only data we could get for a domain was from whois,
-    update the cache with that.
-    """
-    # print("Updating cache with whois data for " + ip)
-    stmt = postgresql.insert(clearbit_cache, bind=engine).values(
-        domain=str(ip),
-        company_name=company_name,
-        company_loc=company_address,
-        last_update=datetime.datetime.now())
-    on_update_stmt = stmt.on_conflict_do_update(
-        index_elements=['domain'],
-        set_=dict(company_name=company_name,
-                  company_loc=company_address,
-                  last_update=datetime.datetime.now()))
-    conn = engine.connect()
-    conn.execute(on_update_stmt)
-    conn.close()
-    # print("Cache Updated.")
 
 
 def update_ip_to_url(ip, url):
@@ -357,7 +211,7 @@ def process_version_checks():
     mydb = psycopg2.connect(host=host, user=username,
                             password=password, dbname=database)
     cursor = mydb.cursor()
-    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(50)")
+    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(20)")
                    # "WHERE updated_at ::DATE >= (now() - '60 days'::INTERVAL)"
                    # " LIMIT 50")
     result = cursor.fetchall()
@@ -376,30 +230,3 @@ process_version_checks()
 # process_ips()
 
 
-
-
-""" 
-Get all version pings from the last 60 days
-
-% Domain Cleaning %
-Get the parsed domain
-    If IP
-        Look up reverse DNS - write to cache
-    if domain
-        cleaned domain lookup 
-            if no match:
-                clean domain and cache
-        discoverorg lookup w/ clean domain and cache
-        clearbit lookup w/ clean domain and cache
-% Domain Cleaning %
-    
-    Write a cleaned version of the version ping with standardized domains
-        
-        
-Get all usage checks from the last 60 days
-% Domain Cleaning %
-    
-    Write a cleaned version of the usage checks with standardized domains
-    
-Combine cleaned version ping and usage check into single host/ping record per the Google doc
-"""
