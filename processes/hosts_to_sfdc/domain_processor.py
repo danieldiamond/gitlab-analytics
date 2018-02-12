@@ -18,6 +18,7 @@ from toolz.dicttoolz import dissoc
 from dw_setup import metadata, engine, host, username, password, database
 import discoverorg as dorg
 import clearbit_gl as cbit
+import urlparse
 
 
 ip_to_url = Table('ip_to_url',
@@ -25,6 +26,12 @@ ip_to_url = Table('ip_to_url',
                   schema='version',
                   autoload=True,
                   autoload_with=engine)
+
+
+cleaned_urls = Table('cleaned_urls',
+                    metadata,
+                    autoload=True,
+                    autoload_with=engine)
 
 
 def in_cache(domain, table):
@@ -113,45 +120,53 @@ def update_cache_not_found(domain, table):
     conn.close()
 
 
-def url_parse(domain):
-    """Return a domain from a url.
+def url_parse(host):
+    """Return a domain from a url and write to the clean domain cache
 
-    Parses the domain and suffix from the referer_url in the version ping.
-    Returns the domain and suffix if parsed or an error sting if not.
+    :param host: the hostname to parse
+    :return: domain and suffix if parsed or an error string if not.
     """
     # print("Parsing: " + domain)
-    result = tldextract.extract(domain)
+    result = tldextract.extract(host)
     if result.domain:
-        return result.domain + '.' + result.suffix
+        clean_domain = result.domain + '.' + result.suffix
+        # Always writing to DB b/c there's no external API request - might as well just update
+        write_clean_domain(host, result, clean_domain)
+        return clean_domain
     else:
         # Can get an error with http://@#$^#$&*%*sfgdfg@3423
         err = "Not a valid domain"
         return err
 
 
-def get_sub_domain(domain):
-    """Return the subdomain from a FQDM.
+def write_clean_domain(raw_domain, tldextract, clean_domain, table=cleaned_urls):
 
-    Parses the subdomain from the referer_url in the version ping.
-    Returns the subdomain if parsed.
-    """
-    # print("Parsing subdomain:" + domain)
-    result = tldextract.extract(domain)
-    return result.subdomain
+    print "Writing " + raw_domain + " as " + clean_domain + " to cache."
 
+    subdomain = tldextract.subdomain
+    primary_domain = tldextract.domain
+    sufffix = tldextract.suffix
 
-def get_domains():
-    """Return a list of domains to process.
-
-    Queries the database for new domains that need to be parsed from
-    the version ping and usage data.
-    """
-    mydb = psycopg2.connect(host=host, user=username,
-                            password=password, dbname=database)
-    cursor = mydb.cursor()
-    cursor.execute("SELECT refer_url from version.domains")
-    result = cursor.fetchall()
-    return result
+    stmt = postgresql.insert(table, bind=engine).values(
+        domain=raw_domain,
+        subdomain=subdomain,
+        primary_domain=primary_domain,
+        suffix=sufffix,
+        clean_domain=clean_domain,
+        last_update=datetime.datetime.now()
+    )
+    on_update_stmt = stmt.on_conflict_do_update(
+        index_elements=["domain"],
+        set_=dict(
+            subdomain=subdomain,
+            primary_domain=primary_domain,
+            suffix=sufffix,
+            clean_domain=clean_domain,
+            last_update=datetime.datetime.now())
+    )
+    conn = engine.connect()
+    conn.execute(on_update_stmt)
+    conn.close()
 
 
 def process_domains():
@@ -167,26 +182,38 @@ def process_domains():
 def process_domain(domain):
     """Process a domain and update the cache with data if needed.
 
+    This should only take in processed domains.
+
     Encodes everything in utf-8, as our data is international.
     """
-    domain = ''.join(domain).encode('utf-8')
-    parsed_domain = url_parse(domain)
-    # print "Domain is " + domain + " and parsed domain is " + parsed_domain
-
-    in_cb_cache = in_cache(parsed_domain, 'clearbit_cache')
-    in_dorg_cache = in_cache(parsed_domain, 'discoverorg_cache')
+    in_cb_cache = in_cache(domain, 'clearbit_cache')
+    in_dorg_cache = in_cache(domain, 'discoverorg_cache')
 
     if in_cb_cache and in_dorg_cache:
-        # print domain + " is in both caches"
         return
 
     # Update DiscoverOrg
     if not in_dorg_cache:
-        dorg.update_discoverorg(parsed_domain)
+        dorg.update_discoverorg(domain)
 
     # Update Clearbit
     if not in_cb_cache:
-        cbit.update_clearbit(parsed_domain)
+        cbit.update_clearbit(domain )
+
+    #TODO Write to cleaned version_checks
+
+def is_ip(host):
+    """
+    Returns true if domain is an IP address, otherwise false.
+    :param host:
+    :return:
+    """
+    # parsed = urlparse.urlparse(host) # Probably don't need this extra standardization step
+    tlded =tldextract.extract(host)
+    if len(tlded.ipv4) > 0:
+        return True
+    else:
+        return False
 
 
 def get_ips():
@@ -252,60 +279,127 @@ def ask_whois(ip):
     For a given ip address, attempt to identify the company that owns it.
     """
     # print("Asking whois " + ip)
-    ip = ''.join(ip)
+    # TODO Lookup in Cleaned version ping
     org = ""
     desc = ""
+    # TODO write this to cleaned version ping
     try:
         obj = IPWhois(ip)
         r = obj.lookup_rdap()
     except:
-        # print("No one knows who " + ip + " is. Updating cache as not found.")
-        update_cache_not_found(ip)
+        print("No one knows who " + ip + " is. Updating cache as not found.")
+        # update_cache_not_found(ip)
         return
     if (r['network']['name'] == 'SHARED-ADDRESS-SPACE-RFCTBD-IANA-RESERVED'):
-        # print(ip + " is reserved IP space for ISPs. Updating as not found.")
-        update_cache_not_found(ip)
+        print(ip + " is reserved IP space for ISPs. Updating as not found.")
+        # update_cache_not_found(ip)
     else:
         try:
             if r['network']['name'] is not None:
                 org = r['network']['name'].encode('utf-8')
         except TypeError:
             pass
-            # print("Whois has no name. Updating the organization desc.")
+            print("Whois has no name. Updating the organization desc.")
         try:
             if r['network']['remarks'][0]['description'] is not None:
                 desc = \
                     r['network']['remarks'][0]['description'].encode('utf-8')
         except TypeError:
+            print("Whois has no description. Updating the organization name.")
             pass
-        #     print("Whois has no description. Updating the organization name.")
         # print("Whois " + ip + "? ARIN says it's " + org +
         #       ". Updating cache..")
-        update_cache_whois(ip, org, desc)
+        # update_cache_whois(ip, org, desc)
 
 
-def process_ips():
+def process_ips(ip_address):
     """Identify a company from an ip address.
 
     Pulls a list of IP addresses for GitLab hosts and
     cache any data that is found in the data warehouse.
     """
-    ips = get_ips()
-    for ip in ips:
-        ip = ''.join(ip)
-        if in_cache(ip):
-            continue
-        else:
-            try:
-                r = socket.gethostbyaddr(ip)
-                update_ip_to_url(ip, r[0])
-                process_domain(r[0])
-            except socket.herror:
-                # print("Can't find reverse DNS for " + ip)
-                ask_whois(ip)
+    # parsed = urlparse.urlparse(ip_address) # Probably don't need this extra clean step
+    tlded = tldextract.extract(ip_address).ipv4
+    # thinking there's no need to do a cache lookup on the IP. The cost for doing a reverse lookup is cheap
+    # I can just look up in the cleaned ping before asking WHOIS
 
+    try:
+        r = socket.gethostbyaddr(tlded)
+        dns_domain = r[0]
+        parsed_domain = url_parse(dns_domain)
+        process_domain(parsed_domain)
+
+    except socket.herror:
+        print "I would've checked WHOIS"
+        # ask_whois(tlded)
+
+
+
+def url_processor(domain_list):
+    """
+    Takes a postgres result cursor and iterats through the domains
+
+    :param domain_list:
+    :return:
+    """
+    for url in domain_list:
+        the_url = url[0]
+        print "Procssing url " + the_url
+
+        if is_ip(the_url):
+            process_ips(the_url)
+        else:
+            parsed_domain = url_parse(the_url)
+            process_domain(parsed_domain)
+
+
+def process_version_checks():
+    mydb = psycopg2.connect(host=host, user=username,
+                            password=password, dbname=database)
+    cursor = mydb.cursor()
+    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(50)")
+                   # "WHERE updated_at ::DATE >= (now() - '60 days'::INTERVAL)"
+                   # " LIMIT 50")
+    result = cursor.fetchall()
+    url_processor(result)
+
+
+process_version_checks()
+
+
+
+# url_processor([('totalasdgijasdfpj#%@',)])
+# print url_parse('totalasdgijasdfpj#%@')
 
 # pprint.pprint(dorg.lookup_by_domain('example.com'))
 # process_domains()
 # process_ips()
 
+
+
+
+""" 
+Get all version pings from the last 60 days
+
+% Domain Cleaning %
+Get the parsed domain
+    If IP
+        Look up reverse DNS - write to cache
+    if domain
+        cleaned domain lookup 
+            if no match:
+                clean domain and cache
+        discoverorg lookup w/ clean domain and cache
+        clearbit lookup w/ clean domain and cache
+% Domain Cleaning %
+    
+    Write a cleaned version of the version ping with standardized domains
+        
+        
+Get all usage checks from the last 60 days
+% Domain Cleaning %
+    
+    Write a cleaned version of the usage checks with standardized domains
+    
+Combine cleaned version ping and usage check into single host/ping record per the Google doc
+"""
