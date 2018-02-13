@@ -69,6 +69,7 @@ def update_discoverorg(domain):
 
     if company is None:
         caching.update_cache_not_found(domain, discoverorg_cache)
+        return False
     else:
         content = company.get("content", [])
         if len(content) > 0:
@@ -116,3 +117,4 @@ def update_discoverorg(domain):
                 dictlist[key] = str(value.encode("utf-8"))
 
         caching.update_cache(dictlist, discoverorg_cache)
+        return True
