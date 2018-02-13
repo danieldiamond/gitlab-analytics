@@ -14,29 +14,6 @@ cleaned_urls = Table('cleaned_urls',
                     autoload_with=engine)
 
 
-def update_cache_whois(ip, company_name, company_address):
-    """Update the cache with whois data for a domain.
-
-    If the only data we could get for a domain was from whois,
-    update the cache with that.
-    """
-    # print("Updating cache with whois data for " + ip)
-    stmt = postgresql.insert(clearbit_cache, bind=engine).values(
-        domain=str(ip),
-        company_name=company_name,
-        company_loc=company_address,
-        last_update=datetime.datetime.now())
-    on_update_stmt = stmt.on_conflict_do_update(
-        index_elements=['domain'],
-        set_=dict(company_name=company_name,
-                  company_loc=company_address,
-                  last_update=datetime.datetime.now()))
-    conn = engine.connect()
-    conn.execute(on_update_stmt)
-    conn.close()
-    # print("Cache Updated.")
-
-
 def in_cache(domain, table):
     """Return True if domain found in cache, False if not found.
 
@@ -45,7 +22,6 @@ def in_cache(domain, table):
 
     :param table: String of table name
     """
-    # print("Checking cache for " + domain)
     mydb = psycopg2.connect(host=host, user=username,
                             password=password, dbname=database)
     cursor = mydb.cursor()
@@ -61,8 +37,13 @@ def in_cache(domain, table):
 
 
 def update_whois_cache(dictlist, table):
+    """
+    Updates the whois cache
+    :param dictlist: dictionary of data to store
+    :param table: Table object
+    :return:
+    """
 
-    print "Updating WHOIS Cache", dictlist
     stmt = postgresql.insert(table, bind=engine).values(
         domain=dictlist.get("domain",""),
         name=dictlist.get("name", None),
@@ -79,6 +60,7 @@ def update_whois_cache(dictlist, table):
     conn.execute(on_update_stmt)
     conn.close()
 
+
 def update_cache(dictlist, table):
     """If we have retrieved new data from the relevant API, we update the cache.
 
@@ -87,7 +69,6 @@ def update_cache(dictlist, table):
 
     :param table: SQLAlchemy Table
     """
-    # print("Updating cache for " + dictlist.get("parsed_domain", ""))
 
     stmt = postgresql.insert(table, bind=engine).values(
         domain=dictlist.get("parsed_domain", ""),
@@ -130,7 +111,6 @@ def update_cache_not_found(domain, table):
 
     :param table: SQLAlchemy table
     """
-    # print("Updating cache for " + domain)
     stmt = postgresql.insert(table,
                              bind=engine).values(domain=domain,
                                                  last_update=datetime.datetime.now())
@@ -143,9 +123,15 @@ def update_cache_not_found(domain, table):
 
 
 def write_clean_domain(raw_domain, tldextract, clean_domain, table=cleaned_urls):
+    """
+    Writes a cleaned version of the domain to the DB
 
-    # print "Writing " + raw_domain + " as " + clean_domain + " to cache."
-
+    :param raw_domain: String of the raw domain
+    :param tldextract: tldextract object
+    :param clean_domain: Our version of the cleaned domain (domain + subdomain)
+    :param table: specified table
+    :return:
+    """
     subdomain = tldextract.subdomain
     primary_domain = tldextract.domain
     suffix = tldextract.suffix

@@ -60,6 +60,11 @@ def check_discoverorg(domain):
 
 
 def update_discoverorg(domain):
+    """
+    Check discoverorg and update cache if found.
+    :param domain: The cleaned URL to search for.
+    :return:
+    """
     company = check_discoverorg(domain)
 
     if company is None:

@@ -19,7 +19,7 @@ import caching
 import whois_gl
 
 
-def url_parse(host):
+def url_parse(host, ip=None):
     """Return a domain from a url and write to the clean domain cache
 
     :param host: the hostname to parse
@@ -31,6 +31,8 @@ def url_parse(host):
         clean_domain = result.domain + '.' + result.suffix
         # Always writing to DB b/c there's no external API request - might as well just update
         caching.write_clean_domain(host, result, clean_domain)
+        if ip is not None:
+            caching.write_clean_domain(ip, result, clean_domain)
         return clean_domain
     else:
         # Can get an error with http://@#$^#$&*%*sfgdfg@3423
@@ -82,25 +84,21 @@ def process_ips(ip_address):
     Pulls a list of IP addresses for GitLab hosts and
     cache any data that is found in the data warehouse.
     """
-    # parsed = urlparse.urlparse(ip_address) # Probably don't need this extra clean step
     tlded = tldextract.extract(ip_address).ipv4
-    # thinking there's no need to do a cache lookup on the IP. The cost for doing a reverse lookup is cheap
-    # I can just look up in the cleaned ping before asking WHOIS
-
 
     if re.search(r'172\.(1[6-9]|2[0-9]|31)\.|192\.168|10\.', tlded):
         # These are reserved for private networks.
-        print "Reserved ip."
         return
 
     try:
+        # Reverse DNS Lookup
         r = socket.gethostbyaddr(tlded)
         dns_domain = r[0]
-        parsed_domain = url_parse(dns_domain)
+        parsed_domain = url_parse(dns_domain, ip=ip_address)
         process_domain(parsed_domain)
 
     except socket.herror:
-        # print "I would've checked WHOIS"
+        # Check WHOIS
         whois_gl.ask_whois(tlded)
 
 

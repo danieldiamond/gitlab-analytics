@@ -60,4 +60,5 @@ def ask_whois(ip):
                 dictlist[key] = str(value.encode("utf-8"))
 
         update_whois_cache(dictlist, whois_cache)
-        return
+
+    return
