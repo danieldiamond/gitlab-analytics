@@ -39,6 +39,11 @@ def check_clearbit(domain):
 
 
 def update_clearbit(domain):
+    """
+    Check Clearbit and cache if found
+    :param domain: the cleaned domain to search for
+    :return:
+    """
     company = check_clearbit(domain)
 
     if company is None:
@@ -83,3 +88,5 @@ def update_clearbit(domain):
                 dictlist[key] = str(value.encode("utf-8"))
 
         caching.update_cache(dictlist, clearbit_cache)
+
+    return
