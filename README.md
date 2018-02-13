@@ -140,7 +140,7 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 
 #### Data Warehouse
 
-* Using Cloud SQLe.
+* Using Cloud SQL.
 * Consolidated repository of all source data - scrubbed and modeled into a format optimized for analytic workliads (Dimensional model).
 * Serves as the Single Source of Truth for reporting, analysis, and visualization applications.
 * Will need to be audited regularly back to the source.
