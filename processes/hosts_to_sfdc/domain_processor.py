@@ -7,47 +7,16 @@ and creates an account in SFDC for it. If the account already exists in SFDC,
 it updates it with the lastest number of GitLab CE instances and user count.
 """
 
-import datetime
 from ipwhois import IPWhois
-from sqlalchemy import Table
-from sqlalchemy.dialects import postgresql
+import re
 import psycopg2
 import socket
 import tldextract
-from dw_setup import metadata, engine, host, username, password, database
+from dw_setup import host, username, password, database
 import discoverorg as dorg
 import clearbit_gl as cbit
 import caching
-
-
-ip_to_url = Table('ip_to_url',
-                  metadata,
-                  schema='version',
-                  autoload=True,
-                  autoload_with=engine)
-
-
-def in_cache(domain, table):
-    """Return True if domain found in cache, False if not found.
-
-    Check the specified cache for a domain to see if the domain has
-    been cached in the last 30 days.
-
-    :param table: String of table name
-    """
-    # print("Checking cache for " + domain)
-    mydb = psycopg2.connect(host=host, user=username,
-                            password=password, dbname=database)
-    cursor = mydb.cursor()
-    cursor.execute("SELECT * FROM " + table + " WHERE domain='" +
-                   domain + "' AND last_update >  NOW() - INTERVAL '30 days';")
-    domain_in_cache = False if cursor.rowcount == 0 else True
-
-    mydb.commit()
-    cursor.close()
-    mydb.close()
-
-    return domain_in_cache
+import whois_gl
 
 
 def url_parse(host):
@@ -76,8 +45,8 @@ def process_domain(domain):
 
     Encodes everything in utf-8, as our data is international.
     """
-    in_cb_cache = in_cache(domain, 'clearbit_cache')
-    in_dorg_cache = in_cache(domain, 'discoverorg_cache')
+    in_cb_cache = caching.in_cache(domain, 'clearbit_cache')
+    in_dorg_cache = caching.in_cache(domain, 'discoverorg_cache')
 
     if in_cb_cache and in_dorg_cache:
         return
@@ -107,65 +76,6 @@ def is_ip(host):
         return False
 
 
-def update_ip_to_url(ip, url):
-    """Cache the results of the reverse DNS lookup.
-
-    If we were able to translate the IP to a domain,
-    update the ip_to_url cache with that value.
-    """
-    # print("Updating cache for " + ip, url)
-    stmt = postgresql.insert(ip_to_url, bind=engine).values(
-        host=ip,
-        url=url,
-        last_update=datetime.datetime.now())
-    on_update_stmt = stmt.on_conflict_do_update(
-        index_elements=['host'],
-        set_=dict(url=url,
-                  last_update=datetime.datetime.now()))
-    conn = engine.connect()
-    conn.execute(on_update_stmt)
-    conn.close()
-
-
-def ask_whois(ip):
-    """Check RDAP for whois data.
-
-    For a given ip address, attempt to identify the company that owns it.
-    """
-    # print("Asking whois " + ip)
-    # TODO Lookup in Cleaned version ping
-    org = ""
-    desc = ""
-    # TODO write this to cleaned version ping
-    try:
-        obj = IPWhois(ip)
-        r = obj.lookup_rdap()
-    except:
-        print("No one knows who " + ip + " is. Updating cache as not found.")
-        # update_cache_not_found(ip)
-        return
-    if (r['network']['name'] == 'SHARED-ADDRESS-SPACE-RFCTBD-IANA-RESERVED'):
-        print(ip + " is reserved IP space for ISPs. Updating as not found.")
-        # update_cache_not_found(ip)
-    else:
-        try:
-            if r['network']['name'] is not None:
-                org = r['network']['name'].encode('utf-8')
-        except TypeError:
-            pass
-            print("Whois has no name. Updating the organization desc.")
-        try:
-            if r['network']['remarks'][0]['description'] is not None:
-                desc = \
-                    r['network']['remarks'][0]['description'].encode('utf-8')
-        except TypeError:
-            print("Whois has no description. Updating the organization name.")
-            pass
-        # print("Whois " + ip + "? ARIN says it's " + org +
-        #       ". Updating cache..")
-        # update_cache_whois(ip, org, desc)
-
-
 def process_ips(ip_address):
     """Identify a company from an ip address.
 
@@ -177,6 +87,12 @@ def process_ips(ip_address):
     # thinking there's no need to do a cache lookup on the IP. The cost for doing a reverse lookup is cheap
     # I can just look up in the cleaned ping before asking WHOIS
 
+
+    if re.search(r'172\.(1[6-9]|2[0-9]|31)\.|192\.168|10\.', tlded):
+        # These are reserved for private networks.
+        print "Reserved ip."
+        return
+
     try:
         r = socket.gethostbyaddr(tlded)
         dns_domain = r[0]
@@ -184,8 +100,8 @@ def process_ips(ip_address):
         process_domain(parsed_domain)
 
     except socket.herror:
-        print "I would've checked WHOIS"
-        # ask_whois(tlded)
+        # print "I would've checked WHOIS"
+        whois_gl.ask_whois(tlded)
 
 
 
@@ -198,35 +114,25 @@ def url_processor(domain_list):
     """
     for url in domain_list:
         the_url = url[0]
-        print "Procssing url " + the_url
+        # print "Procssing url " + the_url
 
         if is_ip(the_url):
             process_ips(the_url)
         else:
             parsed_domain = url_parse(the_url)
-            process_domain(parsed_domain)
+            # process_domain(parsed_domain)
 
 
 def process_version_checks():
     mydb = psycopg2.connect(host=host, user=username,
                             password=password, dbname=database)
     cursor = mydb.cursor()
-    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(20)")
+    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(50)")
                    # "WHERE updated_at ::DATE >= (now() - '60 days'::INTERVAL)"
                    # " LIMIT 50")
     result = cursor.fetchall()
     url_processor(result)
 
 
-process_version_checks()
-
-
-
-# url_processor([('totalasdgijasdfpj#%@',)])
-# print url_parse('totalasdgijasdfpj#%@')
-
-# pprint.pprint(dorg.lookup_by_domain('example.com'))
-# process_domains()
-# process_ips()
-
-
+if __name__ == "__main__":
+    process_version_checks()
