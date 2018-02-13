@@ -8,6 +8,7 @@ it updates it with the lastest number of GitLab CE instances and user count.
 """
 
 from ipwhois import IPWhois
+import timeit
 import re
 import psycopg2
 import socket
@@ -47,6 +48,7 @@ def process_domain(domain):
 
     Encodes everything in utf-8, as our data is international.
     """
+    #TODO probably need their own functions as the data is different. OK for now.
     in_cb_cache = caching.in_cache(domain, 'clearbit_cache')
     in_dorg_cache = caching.in_cache(domain, 'discoverorg_cache')
 
@@ -55,13 +57,15 @@ def process_domain(domain):
 
     # Update DiscoverOrg
     if not in_dorg_cache:
-        dorg.update_discoverorg(domain)
+        written_to_dorg = dorg.update_discoverorg(domain)
+        # This will skip Clearbit if we write to Dorg
+        if written_to_dorg is True:
+            return
 
     # Update Clearbit
-    if not in_cb_cache:
-        cbit.update_clearbit(domain )
-
-    #TODO Write to cleaned version_checks
+    if not in_cb_cache and written_to_dorg is False:
+        cbit.update_clearbit(domain)
+        return
 
 
 def is_ip(host):
@@ -112,20 +116,20 @@ def url_processor(domain_list):
     """
     for url in domain_list:
         the_url = url[0]
-        # print "Procssing url " + the_url
+        print "Procssing url " + the_url
 
         if is_ip(the_url):
             process_ips(the_url)
         else:
             parsed_domain = url_parse(the_url)
-            # process_domain(parsed_domain)
+            process_domain(parsed_domain)
 
 
 def process_version_checks():
     mydb = psycopg2.connect(host=host, user=username,
                             password=password, dbname=database)
     cursor = mydb.cursor()
-    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(50)")
+    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(5)")
                    # "WHERE updated_at ::DATE >= (now() - '60 days'::INTERVAL)"
                    # " LIMIT 50")
     result = cursor.fetchall()
@@ -133,4 +137,5 @@ def process_version_checks():
 
 
 if __name__ == "__main__":
-    process_version_checks()
+    total_time = timeit.timeit("process_version_checks()", setup="from __main__ import process_version_checks", number=1)
+    print total_time
