@@ -50,7 +50,7 @@ We are targeting analytics for sales and marketing performance. We plan to track
 1. SAOs by source by week and/or month
 2. Aquisition cost per SAO
   * Cost per lead = dollar spend / number of attributed leads
-3. Estimated IACV and LTV per SAO based on history
+3. Estimated IACV and LTV per SAO based on history (can do IACV if LTV is hard to calculate)
   * Estimated IACV = 2 *  IACV at median conversion time
   * LTV = IACV * margin * average retention time
 4. Estimated IACV / marketing ratio.
