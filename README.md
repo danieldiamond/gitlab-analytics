@@ -6,10 +6,9 @@ BizOps is a convention-over-configuration framework for analytics, business inte
 
 ## Principles
 
-We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations. So BizOps provides broad, democratized access to detailed operational metrics, thereby driving better decisions and shortening decision cyle time across the entire enterprise.
+We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations. So BizOps provides broad, democratized access to detailed operational metrics, thereby driving better decisions and shortening decision cycle time across the entire enterprise.
 
 We further believe that the information a business uses to make decisions must come from all parts of that business. So BizOps joins data from multiple systems used by Sales, Marketing, Product and others, thereby providing a comprehensive view of the relationship between business activities, associated costs, and customer long-term value.
-
 
 ## Approach
 
@@ -25,7 +24,6 @@ BizOps uses GitLab CI/CD to setup and maintain its stack, so software and script
 ### BizOps works for GitLab first.
 We are building BizOps to solve a problem that we share with all other software companies - how to acquire the highest-value customers at the lowest cost of acquisition?  We are solving this problem for ourselves first, incorporating what we learn along the way into a product that delivers practical and quantifiable value to our customers.
 
-
 ## Objectives
 
 1. Build an open source BI product to analyze sales and marketing performance ([in progress](#development-plan))
@@ -36,9 +34,7 @@ We are building BizOps to solve a problem that we share with all other software 
 ### Competition & Value
 
 This should be a replacement for:
-* Sales analytics (Insightsquared)
-* Customer Success visibility (Gainsight)
-* Analytics (Tableau)
+* ELT & Data Integration: Dell Boomi, Informatica Cloud
 
 ## Development Status
 
@@ -69,34 +65,20 @@ We want the tools to be open source so we can ship this as a product.
 1. Extract and Load (EL): Combination of [Pentaho Data Integration](http://www.pentaho.com/product/data-integration) and python scripts, although will consider [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
   * Pentaho DI is based on the open-source [Talend](https://www.talend.com/products/data-integration/) engine, but utilizes XML for easier configuration.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
-1. Warehouse: [PostgeSQL](https://www.postgresql.org/), maybe later with [a column extension](https://github.com/citusdata/cstore_fdw). If people need SaaS BigQuery is nice option and [Druid](http://druid.io/) seems like a good pure column oriented database.
-  * Some data (e.g. Slowly Changing Dimensions or pipeline status history) will be peristed with a cloud provider, while the rest will reside in the [`bizops`](#bizops-container) container. Data chosen for persistence should not require modification as the app evolves and should be consumable by feature branches as well as production.
-1. Display/analytics: [Metabase](https://metabase.com) to visualize the [metrics](#metrics). We evaluated [Superset](https://github.com/airbnb/superset), however it's single table limitation proved too limiting. See our [desired workflow](https://docs.google.com/presentation/d/e/2PACX-1vTPuXqackF1kHW-GqsDmZAxuof0IbQNQrzg9IyKPYs5Utkzae4bOeOCoLNbJ6gZ2Rj4YCDjzImTmcDV/pub?start=false&loop=false&delayms=3000&slide=id.g329fdfcfcc_0_58) for interacting with Metabase.
+1. Warehouse: Any SQL based data warehouse. We recommend [PostgeSQL](https://www.postgresql.org/) and include it in the bizops pipeline. Postgres cloud services like [Google Cloud SQL](https://cloud.google.com/sql/) are also supported, for increased scalability and durability.
+  * Some data (e.g. Slowly Changing Dimensions or pipeline status history) will be persisted with a cloud provider, while the rest will reside in the defined SQL data store. Data chosen for cloud persistence should not require modification as the app evolves and should be consumable by feature branches as well as production
 1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) for scheduling, running, and monitoring the ELT jobs. Non-GitLab alternatives are [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi).
+1. Visualization/Dashboard: BizOps is compatible with nearly all visualization engines, due to the SQL based data store. For example commercial products like [Looker]() or [Tableau](), as well as open-source products like [Superset](https://github.com/airbnb/superset) or [Metabase](https://metabase.com) can be used.
 
 ## How to use
 
-We will be delivering two containers to power BizOps:
-1. The [`bizops`](#bizops-container) container, which houses the data warehouse and analytics software.
+The BizOps project consists two key components:
+1. A SQL based data store, for example [PostgreSQL](https://www.postgresql.org/) or [Cloud SQL](https://cloud.google.com/sql/). We recommend using Postgres for [review apps](https://about.gitlab.com/features/review-apps/) and a more durable and scalable service for production.
 1. The [`extract`](#extract-container) container, which will run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
 
 As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
 
 It is expected that the BizOps project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an indiviual application at the top level of the BizOps project for inclusion/exclusion.  
-
-### BizOps container
-> Note this will be updated with Metabase in the near future. See [Tools](#tools) for more information.
-
-The `bizops` image combines [Apache Superset](https://superset.incubator.apache.org/index.html) with a [PostgreSQL](https://www.postgresql.org/) database. It creates an image pre-configured to use a local PostgreSQL database and loads the sample data and reports. The setup.py file launches the database as well as starts the Superset service on port 8080 using [Gunicorn](http://gunicorn.org/).
-
-#### Using the BizOps container
-
-1. Clone the repo and cd into it.
-2. Edit the config/bizops.conf file to enter in a username, first name, last name, email and password for the Superset administrator.
-3. Optionally, you can edit the user and password in the Dockerfile on line 35 to change the defaule postgres user/password. If you do this, you'll also need to update the SQLAlchemy url in the /config/superset_config.py file on line 21
-4. Build the image with `docker build --rm=true -t bizops .`.
-5. Run the image with `docker run -p 80:8088 bizops`.
-6. Go to [http://localhost](http://localhost) and log in using the credentials you entered in step 2.
 
 ### Extract container
 
@@ -151,16 +133,16 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 
 #### Staging Tables
 * We’ll want to stage our data before loading it into the data warehouse.
-* Postgres dbs are a good choice if we are not using BigQuery.
+* Local Postgres db's are a good choice if we are not using Cloud SQL.
 * Primarily used for transformation and data scrubbing prior to loading into the Data Warehouse.
 * Allows for data quality monitoring of source data.
 * Minimizes impact to production systems.
 * Ideally incremental loads (extract only what changed since the last extract).
-* Prevents need to query production dbs impacting app performance
+* Prevents need to query production db's impacting app performance
 
 #### Data Warehouse
 
-* Using GCP VMs with Postgres, will likely need to move to BigQuery in the future.
+* Using GCP VMs with Postgres, will likely need to move to Cloud SQL in the future.
 * Consolidated repository of all source data - scrubbed and modeled into a format optimized for analytic workliads (Dimensional model).
 * Serves as the Single Source of Truth for reporting, analysis, and visualization applications.
 * Will need to be audited regularly back to the source.
@@ -176,7 +158,7 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 
 #### Data Visualization
 
-* We’ll start with Metabase to comply with Open Source requirements. If it does not meet our needs, we can look at proprietary tools.
+* We are considering commercial tools, after evaluating open source offerings.
 * Consolidated, automatically updated, near real-time reporting on a single consistent and audited data set.
 * Allows for ad-hoc data exploration to identify trends and anomalies.
 * Executive and management dashboards for KPI updates at a glance.
