@@ -6,7 +6,7 @@ profile: 'gitlab'
 source-paths: ["models"]
 
 models:
-  gitlab_dw:
+  sfdc:
       base:
           enabled: true
           materialized: view
