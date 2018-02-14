@@ -1,3 +1,20 @@
+{{
+  config({
+    "materialized":"table",
+    "post-hook": [
+       "CREATE INDEX idx_f_opportunity_stageid ON {{ this.schema }}.f_opportunity(opportunity_stage_id)",
+       "CREATE INDEX idx_f_opportunity_closedate ON {{ this.schema }}.f_opportunity(opportunity_closedate)",
+       "CREATE INDEX idx_f_opportunity_leadource ON {{ this.schema }}.f_opportunity(lead_source_id)",
+       "CREATE INDEX idx_f_opportunity_account_id ON {{ this.schema }}.f_opportunity(account_id)",
+       "ALTER TABLE {{ this.schema }}.dim_opportunitystage ADD PRIMARY KEY(id)",
+       "ALTER TABLE {{ this.schema }}.dim_leadsource ADD PRIMARY KEY(id)",
+       "ALTER TABLE {{ this.schema }}.dim_account ADD PRIMARY KEY(id)",
+       "GRANT SELECT ON ALL TABLES IN SCHEMA analytics TO metabase"
+    ]
+  })
+}}
+
+
 with lineitems as (
 		select * from {{ ref('lineitems') }}
 

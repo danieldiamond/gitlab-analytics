@@ -7,19 +7,28 @@ gitlab:
     prod:
       type: postgres
       threads: 2
-      host: $PG_ADDRESS
-      port: $PG_PORT
-      user: $PG_USERNAME
-      pass: $PG_PASSWORD
-      dbname: $PG_DATABASE
-      schema: $PG_PROD_SCHEMA
+      host: "{{ env_var('PG_ADDRESS') }}"
+      port: "{{ env_var('PG_PORT') }}"
+      user: "{{ env_var('PG_USERNAME') }}"
+      pass: "{{ env_var('PG_PASSWORD') }}"
+      dbname: "{{ env_var('PG_DATABASE') }}"
+      schema: "{{ env_var('PG_DEV_SCHEMA') }}"
     dev:
       type: postgres
       threads: 2
-      host: $PG_ADDRESS
-      port: $PG_PORT
-      user: $PG_USERNAME
-      pass: $PG_PASSWORD
-      dbname: $PG_DATABASE
-      schema: $PG_DEV_SCHEMA
+      host: "{{ env_var('PG_ADDRESS') }}"
+      port: "{{ env_var('PG_PORT') }}"
+      user: "{{ env_var('PG_USERNAME') }}"
+      pass: "{{ env_var('PG_PASSWORD') }}"
+      dbname: "{{ env_var('PG_DATABASE') }}"
+      schema: "{{ env_var('PG_DEV_SCHEMA') }}"
+    local:
+      type: postgres
+      threads: 2
+      host: localhost
+      port: "{{ env_var('PG_PORT') }}"
+      user: "{{ env_var('PG_USERNAME') }}"
+      pass: "{{ env_var('PG_PASSWORD') }}"
+      dbname: "{{ env_var('PG_DATABASE') }}"
+      schema: "{{ env_var('PG_DEV_SCHEMA') }}"
   target: dev

@@ -13,14 +13,3 @@ models:
       transformed:
           enabled: true
           materialized: table
-
-
-on-run-end:
-    - 'CREATE INDEX idx_f_opportunity_stageid ON "{{ target.schema }}".f_opportunity(opportunity_stage_id)'
-    - 'CREATE INDEX idx_f_opportunity_closedate ON "{{ target.schema }}".f_opportunity(opportunity_closedate)'
-    - 'CREATE INDEX idx_f_opportunity_leadource ON "{{ target.schema }}".f_opportunity(lead_source_id)'
-    - 'CREATE INDEX idx_f_opportunity_account_id ON "{{ target.schema }}".f_opportunity(account_id)'
-    - 'ALTER TABLE "{{ target.schema }}".dim_opportunitystage ADD PRIMARY KEY(id)'
-    - 'ALTER TABLE "{{ target.schema }}".dim_leadsource ADD PRIMARY KEY(id)'
-    - 'ALTER TABLE "{{ target.schema }}".dim_account ADD PRIMARY KEY(id)'
-    - 'GRANT SELECT ON ALL TABLES IN SCHEMA analytics TO metabase'
