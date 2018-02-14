@@ -116,7 +116,6 @@ def url_processor(domain_list):
     """
     for url in domain_list:
         the_url = url[0]
-        print "Procssing url " + the_url
 
         if is_ip(the_url):
             process_ips(the_url)
@@ -129,7 +128,7 @@ def process_version_checks():
     mydb = psycopg2.connect(host=host, user=username,
                             password=password, dbname=database)
     cursor = mydb.cursor()
-    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(5)")
+    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(10)")
                    # "WHERE updated_at ::DATE >= (now() - '60 days'::INTERVAL)"
                    # " LIMIT 50")
     result = cursor.fetchall()
@@ -137,5 +136,4 @@ def process_version_checks():
 
 
 if __name__ == "__main__":
-    total_time = timeit.timeit("process_version_checks()", setup="from __main__ import process_version_checks", number=1)
-    print total_time
+    process_version_checks()
