@@ -34,7 +34,19 @@ We are building BizOps to solve a problem that we share with all other software 
 ### Competition & Value
 
 This should be a replacement for:
-* ELT & Data Integration: Dell Boomi, Informatica Cloud
+* ELT & Data Integration: [Boomi](https://boomi.com/), [Informatica Cloud](https://www.informatica.com/products/cloud-integration/cloud-data-integration.html), [Alooma](https://www.alooma.com/)
+
+## Data Engineering Lifecycle
+
+| Stage     | OSS Selected | OSS Considered | Proprietary Offerings |
+| --------- | ------------ | -------------- | --------------------- |
+| Extract   | [Pentaho DI](http://www.pentaho.com/product/data-integration), Python | [Singer](https://www.singer.io/), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
+| Load      | [Pentaho DI](http://www.pentaho.com/product/data-integration), Python | [Singer](https://www.singer.io/), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
+| Transform | [dbt](https://www.getdbt.com/) | [Pentaho DI](http://www.pentaho.com/product/data-integration), manual SQL | [Alooma](https://www.alooma.com/) |  
+| Warehouse | [PostgreSQL](https://www.postgresql.org/) | [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax) | [Redshift](https://aws.amazon.com/redshift/), [Snowflake](https://www.snowflake.net/) |
+| Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | | 
+| Model | Out of scope | | Recommend [Looker](https://looker.com/) |
+| Visualize | Out of scope | | Recommend [Looker](https://looker.com/) |
 
 ## Development Status
 
