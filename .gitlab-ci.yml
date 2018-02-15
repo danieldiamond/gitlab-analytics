@@ -45,6 +45,10 @@ zuora:
 model:
   stage: model
   image: $CI_REGISTRY_IMAGE/extract:$CI_COMMIT_REF_NAME
+  artifacts:
+    paths:
+      - target/run/gitlab_dw/
+    expire_in: 1 day
   tags:
     - analytics
   script:
