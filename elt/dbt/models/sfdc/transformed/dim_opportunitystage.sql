@@ -1,3 +1,12 @@
+{{
+  config({
+    "materialized":"table",
+    "post-hook": [
+       "ALTER TABLE {{ this.schema }}.dim_opportunitystage ADD PRIMARY KEY(id)"
+    ]
+  })
+}}
+
 SELECT row_number() OVER (
                           ORDER BY Id) AS id,
        apiname,

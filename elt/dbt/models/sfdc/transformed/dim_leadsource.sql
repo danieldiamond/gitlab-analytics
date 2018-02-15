@@ -1,3 +1,12 @@
+{{
+  config({
+    "materialized":"table",
+    "post-hook": [
+       "ALTER TABLE {{ this.schema }}.dim_leadsource ADD PRIMARY KEY(id)"
+    ]
+  })
+}}
+
 with leadsource as (
 		select * from {{ ref('leadsource') }}
 )
