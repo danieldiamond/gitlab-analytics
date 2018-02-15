@@ -13,25 +13,25 @@ whois_cache = Table('whois_cache',
                     autoload_with=engine)
 
 
-def ask_whois(ip):
+def ask_whois(clean_ip):
     """Check RDAP for whois data.
 
     For a given ip address, attempt to identify the company that owns it.
     """
 
     try:
-        obj = IPWhois(ip)
+        obj = IPWhois(clean_ip)
         r = obj.lookup_rdap()
     except:
-        print("No one knows who " + ip + " is. Updating cache as not found.")
-        update_cache_not_found(ip, whois_cache)
+        # print("No one knows who " + ip + " is. Updating cache as not found.")
+        update_cache_not_found(clean_ip, whois_cache)
         return
 
     name = r.get('network', {}).get('name', None)
 
     if (name == 'SHARED-ADDRESS-SPACE-RFCTBD-IANA-RESERVED'):
-        print(ip + " is reserved IP space for ISPs. Updating as not found.")
-        update_cache_not_found(ip, whois_cache)
+        # print(ip + " is reserved IP space for ISPs. Updating as not found.")
+        update_cache_not_found(clean_ip, whois_cache)
         return
 
     else:
@@ -41,7 +41,7 @@ def ask_whois(ip):
         remarks = list_get(0, r.get('network',{}).get('remarks', []), {})
 
         dictlist = dict(
-            domain=ip,
+            domain=clean_ip,
             name=org,
             description=remarks.get('description', None),
             asn_description=r.get('asn_description', None),

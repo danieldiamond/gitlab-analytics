@@ -88,22 +88,24 @@ def process_ips(ip_address):
     Pulls a list of IP addresses for GitLab hosts and
     cache any data that is found in the data warehouse.
     """
-    tlded = tldextract.extract(ip_address).ipv4
+    tlded = tldextract.extract(ip_address)
+    tld_ip = tlded.ipv4
 
-    if re.search(r'172\.(1[6-9]|2[0-9]|31)\.|192\.168|10\.', tlded):
+    if re.search(r'172\.(1[6-9]|2[0-9]|31)\.|192\.168|10\.', tld_ip):
         # These are reserved for private networks.
         return
 
     try:
         # Reverse DNS Lookup
-        r = socket.gethostbyaddr(tlded)
+        r = socket.gethostbyaddr(tld_ip)
         dns_domain = r[0]
-        parsed_domain = url_parse(dns_domain, ip=ip_address)
+        parsed_domain = url_parse(dns_domain, ip=tld_ip)
         process_domain(parsed_domain)
 
     except socket.herror:
         # Check WHOIS
-        whois_gl.ask_whois(tlded)
+        caching.write_clean_domain(raw_domain=ip_address, tldextract=tlded, clean_domain=tld_ip)
+        whois_gl.ask_whois(tld_ip)
 
 
 
@@ -128,7 +130,7 @@ def process_version_checks():
     mydb = psycopg2.connect(host=host, user=username,
                             password=password, dbname=database)
     cursor = mydb.cursor()
-    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(10)")
+    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(20)")
                    # "WHERE updated_at ::DATE >= (now() - '60 days'::INTERVAL)"
                    # " LIMIT 50")
     result = cursor.fetchall()
