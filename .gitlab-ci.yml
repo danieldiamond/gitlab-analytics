@@ -48,6 +48,5 @@ model:
   tags:
     - analytics
   script:
-    - envsubst < "elt/config/dbt/profiles.yml" > "elt/dbt/profile/profiles.yml"
     - cd elt/dbt
-    - dbt run --profiles-dir profile --target prod
+    - dbt -d run --profiles-dir profile --target prod --models sfdc

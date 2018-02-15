@@ -1,3 +1,12 @@
+{{
+  config({
+    "materialized":"table",
+    "post-hook": [
+       "ALTER TABLE {{ this }} ADD PRIMARY KEY(id)"
+    ]
+  })
+}}
+
 with account as (
 		select * from {{ ref('account') }}
 )
