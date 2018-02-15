@@ -38,10 +38,10 @@ This should be a replacement for:
 
 ## Data Engineering Lifecycle
 
-| Stage     | OSS Selected | OSS Considered | Proprietary Offerings |
+| Stage     | BizOps Selected | OSS Considered | Proprietary Offerings |
 | --------- | ------------ | -------------- | --------------------- |
-| Extract   | [Pentaho DI](http://www.pentaho.com/product/data-integration), Python | [Singer](https://www.singer.io/), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
-| Load      | [Pentaho DI](http://www.pentaho.com/product/data-integration), Python | [Singer](https://www.singer.io/), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
+| Extract   | [Singer](https://www.singer.io/) Tap | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
+| Load      | [Singer](https://www.singer.io/) Target | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
 | Transform | [dbt](https://www.getdbt.com/) | [Pentaho DI](http://www.pentaho.com/product/data-integration), manual SQL | [Alooma](https://www.alooma.com/) |  
 | Warehouse | [PostgreSQL](https://www.postgresql.org/) | [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax) | [Redshift](https://aws.amazon.com/redshift/), [Snowflake](https://www.snowflake.net/) |
 | Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | | 
