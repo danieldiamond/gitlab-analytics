@@ -49,4 +49,4 @@ model:
     - analytics
   script:
     - cd elt/dbt
-    - dbt run --profiles-dir profile --target prod --models sfdc
+    - dbt -d run --profiles-dir profile --target prod --models sfdc

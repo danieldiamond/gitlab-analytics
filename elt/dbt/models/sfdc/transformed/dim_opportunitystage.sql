@@ -2,7 +2,7 @@
   config({
     "materialized":"table",
     "post-hook": [
-       "ALTER TABLE {{ this.schema }}.dim_opportunitystage ADD PRIMARY KEY(id)"
+       "ALTER TABLE {{ this }} ADD PRIMARY KEY(id)"
     ]
   })
 }}
