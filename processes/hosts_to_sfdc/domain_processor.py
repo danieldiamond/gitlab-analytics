@@ -92,6 +92,7 @@ def process_ips(ip_address):
     tld_ip = tlded.ipv4
 
     if re.search(r'172\.(1[6-9]|2[0-9]|31)\.|192\.168|10\.', tld_ip):
+
         # These are reserved for private networks.
         return
 
@@ -100,6 +101,7 @@ def process_ips(ip_address):
         r = socket.gethostbyaddr(tld_ip)
         dns_domain = r[0]
         parsed_domain = url_parse(dns_domain, ip=tld_ip)
+
         process_domain(parsed_domain)
 
     except socket.herror:
