@@ -15,6 +15,15 @@ models:
         enabled: true
         materialized: table
 
+    pings:
+      base:
+        enabled: true
+        materialized: view
+      clean:
+        enabled: true
+        materialized: table
+
 
 on-run-end:
   - 'GRANT SELECT ON ALL TABLES IN SCHEMA analytics TO metabase'
+  - 'GRANT SELECT ON ALL TABLES IN SCHEMA version TO tmurphy'
