@@ -5,7 +5,7 @@ SELECT
      max(version)                  AS gitlab_version,
      max(host_id)                  AS host_id,
      max(cast(stats AS TEXT))      AS stats,
-     sum(active_user_count)        AS active_user_count,
+     max(active_user_count)        AS active_user_count,
      count(*)                      AS usage_pings
    FROM version.usage_data
    WHERE version !~ '.*-ee'
