@@ -56,6 +56,7 @@ def process_domain(domain):
         return
 
     # Update DiscoverOrg
+    written_to_dorg = False
     if not in_dorg_cache:
         written_to_dorg = dorg.update_discoverorg(domain)
         # This will skip Clearbit if we write to Dorg
@@ -65,6 +66,8 @@ def process_domain(domain):
     # Update Clearbit
     if not in_cb_cache and written_to_dorg is False:
         cbit.update_clearbit(domain)
+        return
+    else:
         return
 
 
@@ -116,28 +119,46 @@ def url_processor(domain_list):
     Takes a postgres result cursor and iterats through the domains
 
     :param domain_list:
-    :return:
+    :return:pyt
     """
     for url in domain_list:
         the_url = url[0]
-
-        if is_ip(the_url):
-            process_ips(the_url)
-        else:
-            parsed_domain = url_parse(the_url)
-            process_domain(parsed_domain)
+        try:
+            if is_ip(the_url):
+                process_ips(the_url)
+            else:
+                parsed_domain = url_parse(the_url)
+                process_domain(parsed_domain)
+        except Exception, e:
+            # Skips error
+            continue
 
 
 def process_version_checks():
     mydb = psycopg2.connect(host=host, user=username,
                             password=password, dbname=database)
     cursor = mydb.cursor()
-    cursor.execute("SELECT referer_url FROM version.version_checks TABLESAMPLE SYSTEM_ROWS(20)")
-                   # "WHERE updated_at ::DATE >= (now() - '60 days'::INTERVAL)"
-                   # " LIMIT 50")
-    result = cursor.fetchall()
-    url_processor(result)
 
+    # Random Sample
+    # cursor.execute("SELECT coalesce(hostname, source_ip) as domain FROM version.usage_data TABLESAMPLE SYSTEM_ROWS(75)")
+
+    # Main Query
+    cursor.execute("SELECT vc.referer_url "
+                   "FROM version.version_checks AS vc "
+                   "LEFT JOIN version.version_checks_clean AS vcc "
+                   "ON vcc.referer_url = vc.referer_url "
+                   "WHERE vc.updated_at >= (now() - '60 days' :: INTERVAL) "
+                   "AND vc.gitlab_version !~ '.*ee' "
+                   "AND vcc.referer_url IS NULL "
+                   "UNION "
+                   "SELECT "
+                   "COALESCE(ud.hostname, ud.source_ip) "
+                   "FROM VERSION.usage_data AS ud "
+                   "LEFT JOIN VERSION.usage_data_clean AS udc "
+                   "ON udc.raw_domain = COALESCE(ud.hostname, ud.source_ip) "
+                   "WHERE ud.updated_at >= (now() - '60 days' :: INTERVAL) "
+                   "AND ud.version !~ '.*ee' "
+                   "AND udc.raw_domain IS NULL")
 
 if __name__ == "__main__":
     process_version_checks()

@@ -7,3 +7,5 @@
 *.pyc
 *.DS_Store
 *.idea
+Pipfile*
+tmp_log.txt
