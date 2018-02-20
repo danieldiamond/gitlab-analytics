@@ -45,8 +45,8 @@ This should be a replacement for:
 | Transform | [dbt](https://www.getdbt.com/) | [Pentaho DI](http://www.pentaho.com/product/data-integration), manual SQL | [Alooma](https://www.alooma.com/) |  
 | Warehouse | [PostgreSQL](https://www.postgresql.org/) | [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax) | [Redshift](https://aws.amazon.com/redshift/), [Snowflake](https://www.snowflake.net/) |
 | Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | | 
-| Model | Out of scope | | Recommend [Looker](https://looker.com/) |
-| Visualize | Out of scope | | Recommend [Looker](https://looker.com/) |
+| Model | Out of scope | | TBD |
+| Visualize | Out of scope | | TBD |
 
 ## Development Status
 
