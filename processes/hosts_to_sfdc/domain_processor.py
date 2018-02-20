@@ -52,7 +52,7 @@ def process_domain(domain):
     in_cb_cache = caching.in_cache(domain, 'clearbit_cache')
     in_dorg_cache = caching.in_cache(domain, 'discoverorg_cache')
 
-    if in_cb_cache and in_dorg_cache:
+    if in_cb_cache or in_dorg_cache:
         return
 
     # Update DiscoverOrg
