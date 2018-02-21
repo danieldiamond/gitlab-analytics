@@ -1,13 +1,12 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Wrapper for the Clearbit API"""
 
 import os
 import datetime
-from timeout import timeout
+from .timeout import timeout
 from sqlalchemy import Table
 import clearbit
-from dw_setup import metadata, engine
-import caching
+from .dw_setup import metadata, engine
 
 clearbit.key = os.environ.get('CLEARBIT_API_KEY')
 

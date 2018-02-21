@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """This module is a very minimal wrapper for the DiscoverOrg API."""
 
 
@@ -6,7 +6,7 @@ import os
 import datetime
 import requests
 import json
-from dw_setup import metadata, engine
+from .dw_setup import metadata, engine
 from sqlalchemy import Table
 import caching
 

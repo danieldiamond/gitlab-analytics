@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import requests
 from requests.auth import HTTPBasicAuth
 import json
 import time
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 import psycopg2
 import csv
 import logging
@@ -83,7 +83,7 @@ def getResults(url, username, password, headers, data):
 
 def writeToFile(filename, r):
     logger.debug('Writing to local file: ' + filename)
-    with open(filename + '.csv', "wb") as file:
+    with open(filename + '.csv') as file:
         file.write(r.content)
         logger.debug("Writing file: " + filename + '.csv')
         file.close()
@@ -104,7 +104,7 @@ def replace(fieldList):
 
 def writeToDb(username, password, host, database, item, port, r):
     logger.debug('Writing to ' + database + ' on ' + host)
-    reader = csv.reader(r.iter_lines(), delimiter=',', quotechar='"',
+    reader = csv.reader(r.iter_lines(decode_unicode=True), delimiter=',', quotechar='"',
                         quoting=csv.QUOTE_ALL)
     try:
         mydb = psycopg2.connect(host=host, user=username,

@@ -34,7 +34,7 @@ def address_resolver(json):
             data.get("geometry", {}).get("location_type", None)
         final['postal_code_suffix'] = data.get("postal_code_suffix", None)
         final['street_number'] = data.get('street_number', None)
-        final = {k: unicode(v).encode("utf-8") for k, v in final.iteritems()}
+        final = {k: str(v).encode("utf-8") for k, v in final.items()}
     return final
 
 
