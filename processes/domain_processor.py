@@ -11,12 +11,11 @@ import re
 import psycopg2
 import socket
 import tldextract
-from . import caching
-from . import whois_gl
-from .dw_setup import host, username, password, database
-from . import discoverorg as dorg
-from . import clearbit_gl as cbit
-
+from hosts_to_sfdc.dw_setup import host, username, password, database
+from hosts_to_sfdc import discoverorg as dorg
+from hosts_to_sfdc import clearbit_gl as cbit
+from hosts_to_sfdc import caching
+from hosts_to_sfdc import whois_gl
 
 def url_parse(host, ip=None):
     """Return a domain from a url and write to the clean domain cache
@@ -118,8 +117,10 @@ def url_processor(domain_list):
     :param domain_list: psycopg2 cursor
     :return:pyt
     """
+    print(domain_list.rowcount)
     for url in domain_list:
         the_url = url[0]
+        print(the_url)
         try:
             if is_ip(the_url):
                 process_ips(the_url)
@@ -137,24 +138,24 @@ def process_version_checks():
     cursor = mydb.cursor()
 
     # Random Sample
-    # cursor.execute("SELECT coalesce(hostname, source_ip) as domain FROM version.usage_data TABLESAMPLE SYSTEM_ROWS(75)")
+    cursor.execute("SELECT coalesce(hostname, source_ip) as domain FROM version.usage_data TABLESAMPLE SYSTEM_ROWS(75)")
 
     # Main Query
-    cursor.execute("SELECT vc.referer_url "
-                   "FROM version.version_checks AS vc "
-                     "LEFT JOIN cleaned_urls AS clean ON clean.domain = vc.referer_url "
-                   "WHERE vc.updated_at >= (now() - '60 days' :: INTERVAL) "
-                         "AND vc.gitlab_version !~ '.*ee' "
-                         "AND vc.updated_at > clean.last_update "
-                   "GROUP BY vc.referer_url "
-                   "UNION "
-                   "SELECT coalesce(ud.hostname, ud.source_ip) "
-                   "FROM version.usage_data AS ud "
-                     "LEFT JOIN cleaned_urls AS clean ON clean.domain = coalesce(ud.hostname, ud.source_ip) "
-                   "WHERE ud.updated_at >= (now() - '60 days' :: INTERVAL) "
-                         "AND ud.version !~ '.*ee' "
-                         "AND ud.updated_at > clean.last_update "
-                   "GROUP BY coalesce(ud.hostname, ud.source_ip)")
+    # cursor.execute("SELECT vc.referer_url "
+    #                "FROM version.version_checks AS vc "
+    #                  "LEFT JOIN cleaned_urls AS clean ON clean.domain = vc.referer_url "
+    #                "WHERE vc.updated_at >= (now() - '60 days' :: INTERVAL) "
+    #                      "AND vc.gitlab_version !~ '.*ee' "
+    #                      "AND vc.updated_at > clean.last_update "
+    #                "GROUP BY vc.referer_url "
+    #                "UNION "
+    #                "SELECT coalesce(ud.hostname, ud.source_ip) "
+    #                "FROM version.usage_data AS ud "
+    #                  "LEFT JOIN cleaned_urls AS clean ON clean.domain = coalesce(ud.hostname, ud.source_ip) "
+    #                "WHERE ud.updated_at >= (now() - '60 days' :: INTERVAL) "
+    #                      "AND ud.version !~ '.*ee' "
+    #                      "AND ud.updated_at > clean.last_update "
+    #                "GROUP BY coalesce(ud.hostname, ud.source_ip)")
 
     url_processor(cursor)
 

@@ -5,6 +5,7 @@ LABEL maintainer "Fabio B. Silva <fabio.bat.silva@gmail.com>"
 LABEL maintainer "Clive Zagno <clivez@gmail.com>"
 LABEL maintainer "Joshua Lambert"
 LABEL maintainer "Brian Flood"
+LABEL maintainer "Taylor A. Murphy"
 
 # Build Args
 ARG PDI_RELEASE="7.1"
@@ -51,7 +52,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python deps
-RUN pip3 install requests psycopg2 configparser dbt toolz
+RUN pip3 install requests psycopg2 configparser dbt toolz clearbit ipwhois
 
 # Install PDI
 RUN curl -L "$PDI_DOWNLOAD_URL" -o "/tmp/pdi-ce-$PDI_VERSION.zip" && \
