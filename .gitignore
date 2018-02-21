@@ -7,3 +7,5 @@
 *.pyc
 *.DS_Store
 *.idea
+Pipfile
+Pipfile.lock

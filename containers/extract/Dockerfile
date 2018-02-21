@@ -42,11 +42,16 @@ ENV CARTE_MASTER_IS_MASTER  "Y"
 
 # Install deps
 RUN apt-get update \
-    && apt-get install -y git python python-pip gettext-base libwebkitgtk-1.0-0 \
+    && apt-get install -y \
+        git \
+        python3 \
+        python3-pip \
+        gettext-base \
+        libwebkitgtk-1.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python deps
-RUN pip install requests psycopg2 logging ConfigParser dbt toolz
+RUN pip3 install requests psycopg2 configparser dbt toolz
 
 # Install PDI
 RUN curl -L "$PDI_DOWNLOAD_URL" -o "/tmp/pdi-ce-$PDI_VERSION.zip" && \

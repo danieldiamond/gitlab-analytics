@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """GitLab CE instance ping to SFDC account processor.
 
 This module is used to process an ever growing list of free GitLab instance
@@ -15,9 +15,9 @@ import psycopg2
 import socket
 import tldextract
 from toolz.dicttoolz import dissoc
-from dw_setup import metadata, engine, host, username, password, database
-import discoverorg as dorg
-import clearbit_gl as cbit
+from .dw_setup import metadata, engine, host, username, password, database
+from . import discoverorg as dorg
+from . import clearbit_gl as cbit
 
 
 ip_to_url = Table('ip_to_url',
