@@ -52,6 +52,7 @@ def process_domain(domain):
     in_cb_cache = caching.in_cache(domain, 'clearbit_cache')
     in_dorg_cache = caching.in_cache(domain, 'discoverorg_cache')
 
+# TODO confirm this is committed OR not AND
     if in_cb_cache or in_dorg_cache:
         return
 
@@ -145,20 +146,19 @@ def process_version_checks():
     # Main Query
     cursor.execute("SELECT vc.referer_url "
                    "FROM version.version_checks AS vc "
-                   "LEFT JOIN version.version_checks_clean AS vcc "
-                   "ON vcc.referer_url = vc.referer_url "
+                     "LEFT JOIN cleaned_urls AS clean ON clean.domain = vc.referer_url "
                    "WHERE vc.updated_at >= (now() - '60 days' :: INTERVAL) "
-                   "AND vc.gitlab_version !~ '.*ee' "
-                   "AND vcc.referer_url IS NULL "
+                         "AND vc.gitlab_version !~ '.*ee' "
+                         "AND vc.updated_at > clean.last_update "
+                   "GROUP BY vc.referer_url "
                    "UNION "
-                   "SELECT "
-                   "COALESCE(ud.hostname, ud.source_ip) "
-                   "FROM VERSION.usage_data AS ud "
-                   "LEFT JOIN VERSION.usage_data_clean AS udc "
-                   "ON udc.raw_domain = COALESCE(ud.hostname, ud.source_ip) "
+                   "SELECT coalesce(ud.hostname, ud.source_ip) "
+                   "FROM version.usage_data AS ud "
+                     "LEFT JOIN cleaned_urls AS clean ON clean.domain = coalesce(ud.hostname, ud.source_ip) "
                    "WHERE ud.updated_at >= (now() - '60 days' :: INTERVAL) "
-                   "AND ud.version !~ '.*ee' "
-                   "AND udc.raw_domain IS NULL")
+                         "AND ud.version !~ '.*ee' "
+                         "AND ud.updated_at > clean.last_update "
+                   "GROUP BY coalesce(ud.hostname, ud.source_ip)")
 
 if __name__ == "__main__":
     process_version_checks()
