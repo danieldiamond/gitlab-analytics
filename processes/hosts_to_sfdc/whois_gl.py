@@ -4,8 +4,8 @@ import datetime
 from ipwhois import IPWhois
 from sqlalchemy import Table
 from toolz.itertoolz import get as list_get
-from dw_setup import metadata, engine
-from caching import update_cache_not_found, update_whois_cache
+from .dw_setup import metadata, engine
+from .caching import update_cache_not_found, update_whois_cache
 
 whois_cache = Table('whois_cache',
                     metadata,

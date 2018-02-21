@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import datetime
 from sqlalchemy import Table
 from sqlalchemy.dialects import postgresql
 import psycopg2
 from toolz.dicttoolz import dissoc
-from dw_setup import metadata, engine, host, username, password, database
+from .dw_setup import metadata, engine, host, username, password, database
 
 
 cleaned_urls = Table('cleaned_urls',

@@ -8,7 +8,7 @@ import requests
 import json
 from .dw_setup import metadata, engine
 from sqlalchemy import Table
-import caching
+from . import caching
 
 dorg_key = os.environ.get('DORG_API_KEY')
 dorg_user = os.environ.get('DORG_USERNAME')

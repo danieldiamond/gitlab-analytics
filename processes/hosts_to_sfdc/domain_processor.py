@@ -7,14 +7,13 @@ and creates an account in SFDC for it. If the account already exists in SFDC,
 it updates it with the lastest number of GitLab CE instances and user count.
 """
 
-from ipwhois import IPWhois
-import timeit
 import re
 import psycopg2
 import socket
 import tldextract
-from toolz.dicttoolz import dissoc
-from .dw_setup import metadata, engine, host, username, password, database
+from . import caching
+from . import whois_gl
+from .dw_setup import host, username, password, database
 from . import discoverorg as dorg
 from . import clearbit_gl as cbit
 
@@ -51,7 +50,6 @@ def process_domain(domain):
     in_cb_cache = caching.in_cache(domain, 'clearbit_cache')
     in_dorg_cache = caching.in_cache(domain, 'discoverorg_cache')
 
-# TODO confirm this is committed OR not AND
     if in_cb_cache or in_dorg_cache:
         return
 
@@ -95,7 +93,6 @@ def process_ips(ip_address):
     tld_ip = tlded.ipv4
 
     if re.search(r'172\.(1[6-9]|2[0-9]|31)\.|192\.168|10\.', tld_ip):
-
         # These are reserved for private networks.
         return
 
@@ -118,7 +115,7 @@ def url_processor(domain_list):
     """
     Takes a postgres result cursor and iterats through the domains
 
-    :param domain_list:
+    :param domain_list: psycopg2 cursor
     :return:pyt
     """
     for url in domain_list:
@@ -129,7 +126,7 @@ def url_processor(domain_list):
             else:
                 parsed_domain = url_parse(the_url)
                 process_domain(parsed_domain)
-        except Exception, e:
+        except Exception as e:
             # Skips error
             continue
 
@@ -158,6 +155,8 @@ def process_version_checks():
                          "AND ud.version !~ '.*ee' "
                          "AND ud.updated_at > clean.last_update "
                    "GROUP BY coalesce(ud.hostname, ud.source_ip)")
+
+    url_processor(cursor)
 
 if __name__ == "__main__":
     process_version_checks()
