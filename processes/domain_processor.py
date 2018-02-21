@@ -138,24 +138,24 @@ def process_version_checks():
     cursor = mydb.cursor()
 
     # Random Sample
-    cursor.execute("SELECT coalesce(hostname, source_ip) as domain FROM version.usage_data TABLESAMPLE SYSTEM_ROWS(75)")
+    # cursor.execute("SELECT coalesce(hostname, source_ip) as domain FROM version.usage_data TABLESAMPLE SYSTEM_ROWS(75)")
 
     # Main Query
-    # cursor.execute("SELECT vc.referer_url "
-    #                "FROM version.version_checks AS vc "
-    #                  "LEFT JOIN cleaned_urls AS clean ON clean.domain = vc.referer_url "
-    #                "WHERE vc.updated_at >= (now() - '60 days' :: INTERVAL) "
-    #                      "AND vc.gitlab_version !~ '.*ee' "
-    #                      "AND vc.updated_at > clean.last_update "
-    #                "GROUP BY vc.referer_url "
-    #                "UNION "
-    #                "SELECT coalesce(ud.hostname, ud.source_ip) "
-    #                "FROM version.usage_data AS ud "
-    #                  "LEFT JOIN cleaned_urls AS clean ON clean.domain = coalesce(ud.hostname, ud.source_ip) "
-    #                "WHERE ud.updated_at >= (now() - '60 days' :: INTERVAL) "
-    #                      "AND ud.version !~ '.*ee' "
-    #                      "AND ud.updated_at > clean.last_update "
-    #                "GROUP BY coalesce(ud.hostname, ud.source_ip)")
+    cursor.execute("SELECT vc.referer_url "
+                   "FROM version.version_checks AS vc "
+                     "LEFT JOIN cleaned_urls AS clean ON clean.domain = vc.referer_url "
+                   "WHERE vc.updated_at >= (now() - '60 days' :: INTERVAL) "
+                         "AND vc.gitlab_version !~ '.*ee' "
+                         "AND vc.updated_at > clean.last_update "
+                   "GROUP BY vc.referer_url "
+                   "UNION "
+                   "SELECT coalesce(ud.hostname, ud.source_ip) "
+                   "FROM version.usage_data AS ud "
+                     "LEFT JOIN cleaned_urls AS clean ON clean.domain = coalesce(ud.hostname, ud.source_ip) "
+                   "WHERE ud.updated_at >= (now() - '60 days' :: INTERVAL) "
+                         "AND ud.version !~ '.*ee' "
+                         "AND ud.updated_at > clean.last_update "
+                   "GROUP BY coalesce(ud.hostname, ud.source_ip)")
 
     url_processor(cursor)
 
