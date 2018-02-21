@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """This module is a very minimal wrapper for the DiscoverOrg API."""
 
 
@@ -6,7 +6,7 @@ import os
 import datetime
 import requests
 import json
-from dw_setup import metadata, engine
+from .dw_setup import metadata, engine
 from sqlalchemy import Table
 
 dorg_key = os.environ.get('DORG_API_KEY')
@@ -59,7 +59,7 @@ def check_discoverorg(domain):
 
 
 def update_discoverorg(domain):
-    import domain_processor as dp
+    from . import domain_processor as dp
     company = check_discoverorg(domain)
 
     if company is None:

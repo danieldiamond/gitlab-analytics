@@ -1,12 +1,12 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Wrapper for the Clearbit API"""
 
 import os
 import datetime
-from timeout import timeout
+from .timeout import timeout
 from sqlalchemy import Table
 import clearbit
-from dw_setup import metadata, engine
+from .dw_setup import metadata, engine
 
 clearbit.key = os.environ.get('CLEARBIT_API_KEY')
 
@@ -38,7 +38,7 @@ def check_clearbit(domain):
 
 
 def update_clearbit(domain):
-    import domain_processor as dp
+    from . import domain_processor as dp
     company = check_clearbit(domain)
 
     if company is None:
