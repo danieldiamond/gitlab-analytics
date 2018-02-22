@@ -57,7 +57,7 @@ model:
 # ---------------------------------------------------------------------------
 
 .bizops: &bizops |
-  if [ -z $GCP_SERVICE_CREDS ]; then
+  if [ -n $GCP_SERVICE_CREDS ]; then
     echo $GCP_SERVICE_CREDS > /bizops/gcp_credentials.json
     cloud_sql_proxy -instances="$GCP_INSTANCE_NAME"=tcp:5432 -credential_file=/bizops/gcp_credentials.json &
   fi
