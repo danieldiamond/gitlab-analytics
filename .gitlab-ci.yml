@@ -50,6 +50,7 @@ model:
   tags:
     - analytics
   script:
+    - setup_cloudsql
     - cd elt/dbt
     - dbt -d run --profiles-dir profile --target prod --models sfdc
 
