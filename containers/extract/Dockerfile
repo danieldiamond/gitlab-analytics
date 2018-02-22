@@ -53,6 +53,10 @@ RUN apt-get update \
 # Install Python deps
 RUN pip3 install requests psycopg2 configparser dbt toolz
 
+# Install Google SQL Proxy
+RUN wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /usr/bin/cloud_sql_proxy
+RUN chmod +x /usr/bin/cloud_sql_proxy
+
 # Install PDI
 RUN curl -L "$PDI_DOWNLOAD_URL" -o "/tmp/pdi-ce-$PDI_VERSION.zip" && \
     unzip -q "/tmp/pdi-ce-$PDI_VERSION.zip" -d "$PENTAHO_DIR" && \

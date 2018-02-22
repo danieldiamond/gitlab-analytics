@@ -119,6 +119,8 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 * PG_PROD_SCHEMA: Schema to use for production dimensional model.
 * PG_USERNAME: Username for authentication to Postgres.
 * PG_PASSWORD: Password for authentication to Postgres.
+* GCP_INSTANCE_NAME: Cloud SQL Instance Name. Set if wanting to use Cloud SQL Proxy.
+* GCP_SERVICE_CREDS: GCP Service Credentials JSON. Set if wanting to use Cloud SQL Proxy.
 * SFDC_URL: Web service URL for your SFDC account.
 * SFDC_USERNAME: Username for authentication to SFDC.
 * SFDC_PASSWORD: Password for authentication to SFDC.
