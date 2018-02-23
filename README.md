@@ -33,8 +33,7 @@ We are building BizOps to solve a problem that we share with all other software 
 
 ### Competition & Value
 
-This should be a replacement for:
-* ELT & Data Integration: [Boomi](https://boomi.com/), [Informatica Cloud](https://www.informatica.com/products/cloud-integration/cloud-data-integration.html), [Alooma](https://www.alooma.com/)
+This should be a replacement for other ELT & Data Integration tools: [Boomi](https://boomi.com/), [Informatica Cloud](https://www.informatica.com/products/cloud-integration/cloud-data-integration.html), and [Alooma](https://www.alooma.com/).
 
 ## Data Engineering Lifecycle
 
@@ -45,8 +44,8 @@ This should be a replacement for:
 | Transform | [dbt](https://www.getdbt.com/) | [Pentaho DI](http://www.pentaho.com/product/data-integration), manual SQL | [Alooma](https://www.alooma.com/) |  
 | Warehouse | [PostgreSQL](https://www.postgresql.org/) | [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax) | [Redshift](https://aws.amazon.com/redshift/), [Snowflake](https://www.snowflake.net/) |
 | Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | | 
-| Model | Out of scope | | TBD |
-| Visualize | Out of scope | | TBD |
+| Model | Out of scope | | |
+| Visualize | Out of scope | | |
 
 ## Development Status
 
