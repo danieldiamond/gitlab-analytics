@@ -27,6 +27,7 @@ sfdc:
   tags:
     - analytics
   script:
+    - setup_cloudsql
     - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
     - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
     - kitchen.sh -file=elt/sfdc/sfdc_extract.kjb -level=Minimal
@@ -39,6 +40,7 @@ zuora:
   tags:
     - analytics
   script:
+    - setup_cloudsql
     - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
     - python3 elt/zuora/zuora_export.py
 
@@ -48,5 +50,21 @@ model:
   tags:
     - analytics
   script:
+    - setup_cloudsql
     - cd elt/dbt
     - dbt -d run --profiles-dir profile --target prod --models sfdc
+
+
+# ---------------------------------------------------------------------------
+
+.bizops: &bizops |
+
+  function setup_cloudsql() {
+    if [ -n "$GCP_SERVICE_CREDS" ]; then
+      echo $GCP_SERVICE_CREDS > /bizops/gcp_credentials.json
+      cloud_sql_proxy -instances="$GCP_INSTANCE_NAME"=tcp:5432 -credential_file=/bizops/gcp_credentials.json &
+    fi
+  }
+
+before_script:
+  - *bizops
