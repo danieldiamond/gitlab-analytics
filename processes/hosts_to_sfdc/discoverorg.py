@@ -8,6 +8,7 @@ import requests
 import json
 from .dw_setup import metadata, engine
 from sqlalchemy import Table
+from .caching import update_cache_not_found, update_cache
 
 dorg_key = os.environ.get('DORG_API_KEY')
 dorg_user = os.environ.get('DORG_USERNAME')
@@ -59,11 +60,16 @@ def check_discoverorg(domain):
 
 
 def update_discoverorg(domain):
-    from . import domain_processor as dp
+    """
+    Check discoverorg and update cache if found.
+    :param domain: The cleaned URL to search for.
+    :return:
+    """
     company = check_discoverorg(domain)
 
     if company is None:
-        dp.update_cache_not_found(domain, discoverorg_cache)
+        update_cache_not_found(domain, discoverorg_cache)
+        return False
     else:
         content = company.get("content", [])
         if len(content) > 0:
@@ -110,4 +116,5 @@ def update_discoverorg(domain):
             else:
                 dictlist[key] = str(value.encode("utf-8"))
 
-        dp.update_cache(dictlist, discoverorg_cache)
+        update_cache(dictlist, discoverorg_cache)
+        return True

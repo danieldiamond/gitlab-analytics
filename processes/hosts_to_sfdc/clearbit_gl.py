@@ -38,11 +38,15 @@ def check_clearbit(domain):
 
 
 def update_clearbit(domain):
-    from . import domain_processor as dp
+    """
+    Check Clearbit and cache if found
+    :param domain: the cleaned domain to search for
+    :return:
+    """
     company = check_clearbit(domain)
 
     if company is None:
-        dp.update_cache_not_found(domain, clearbit_cache)
+        caching.update_cache_not_found(domain, clearbit_cache)
 
     else:
         company_dict = dict(company)
@@ -82,4 +86,6 @@ def update_clearbit(domain):
             else:
                 dictlist[key] = str(value.encode("utf-8"))
 
-        dp.update_cache(dictlist, clearbit_cache)
+        caching.update_cache(dictlist, clearbit_cache)
+
+    return
