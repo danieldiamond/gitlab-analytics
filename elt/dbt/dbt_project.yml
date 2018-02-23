@@ -25,5 +25,4 @@ models:
 
 
 on-run-end:
-  - 'GRANT SELECT ON ALL TABLES IN SCHEMA analytics TO metabase'
   - 'GRANT SELECT ON ALL TABLES IN SCHEMA version TO tmurphy'
