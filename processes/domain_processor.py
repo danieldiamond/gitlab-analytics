@@ -117,10 +117,10 @@ def url_processor(domain_list):
     :param domain_list: psycopg2 cursor
     :return:pyt
     """
-    print(domain_list.rowcount)
+    # print(domain_list.rowcount)
     for url in domain_list:
         the_url = url[0]
-        print(the_url)
+        # print(the_url)
         try:
             if is_ip(the_url):
                 process_ips(the_url)
