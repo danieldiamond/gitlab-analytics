@@ -83,7 +83,7 @@ def getResults(url, username, password, headers, data):
 
 def writeToFile(filename, r):
     logger.debug('Writing to local file: ' + filename)
-    with open(filename + '.csv') as file:
+    with open(filename + '.csv', 'wb') as file:
         file.write(r.content)
         logger.debug("Writing file: " + filename + '.csv')
         file.close()
@@ -105,7 +105,7 @@ def replace(fieldList):
 def writeToDb(username, password, host, database, item, port, r):
     logger.debug('Writing to ' + database + ' on ' + host)
     reader = csv.reader(r.iter_lines(decode_unicode=True), delimiter=',', quotechar='"',
-                        quoting=csv.QUOTE_ALL)
+                        quoting=csv.QUOTE_MINIMAL)
     try:
         mydb = psycopg2.connect(host=host, user=username,
                                 password=password, dbname=database, port=port)
@@ -133,9 +133,31 @@ def writeToDb(username, password, host, database, item, port, r):
         mydb.close()
     except psycopg2.Error as err:
         logger.debug('Something went wrong: {}'.format(err))
-        logger.debug('Error: ' + str(row))
-
     logger.debug('Total Count: %s', count)
+
+
+def writeToDbfromFile(username, password, host, database, item, port, r):
+    logger.debug('Writing to ' + database + ' on ' + host)
+    with open(item + '.csv', 'r') as file:
+        reader = csv.reader(file, delimiter=',', quotechar='"',
+                            quoting=csv.QUOTE_MINIMAL)
+        try:
+            mydb = psycopg2.connect(host=host, user=username,
+                                    password=password, dbname=database, port=port)
+            cursor = mydb.cursor()
+            next(file)  # Skip the header row.
+            cursor.execute('TRUNCATE TABLE zuora.' + item)
+            copy = 'COPY zuora.' + item + ' FROM STDIN with csv'
+            cursor.copy_expert(file=file, sql=copy)
+            logger.debug('Complteted copying records to ' + item + ' table.')
+            mydb.commit()
+            cursor.close()
+            mydb.close()
+            file.close()
+            os.remove(item + '.csv')
+        except psycopg2.Error as err:
+            logger.debug('Something went wrong: {}'.format(err))
+
 
 
 def main():
@@ -168,8 +190,8 @@ def main():
             'Accept': 'application/json',
         }
         r = getResults(url, username, password, headers, data)
-        # writeToFile(item, r)
-        writeToDb(dBuser, dBpass, host, db, item, port, r)
+        writeToFile(item, r)
+        writeToDbfromFile(dBuser, dBpass, host, db, item, port, r)
     end = time.time()
     totalMinutes = (end - start) / 60
     logger.debug('Completed Load in %1.1f minutes' % totalMinutes)
