@@ -35,7 +35,7 @@ pings:
     - analytics
   script:
     - setup_cloudsql
-    - processes/hosts_to_sfdc/python_timecheck.sh
+    - bash processes/hosts_to_sfdc/python_timecheck.sh
 
 model:
   stage: model
@@ -46,7 +46,7 @@ model:
     - setup_cloudsql
     - cd elt/dbt
     - dbt -d run --profiles-dir profile --target prod --models sfdc
-    - dbt_timecheck.sh
+    - bash dbt_timecheck.sh
 
 
 # ---------------------------------------------------------------------------
