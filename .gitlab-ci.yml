@@ -30,7 +30,7 @@ zuora:
 
 pings:
   stage: extract
-  image: $CI_REGISTRY_IMAGE/extract:$CI_COMMIT_REF_NAME
+  image: registry.gitlab.com/bizops/bizops-elt/extract:master
   tags:
     - analytics
   script:
