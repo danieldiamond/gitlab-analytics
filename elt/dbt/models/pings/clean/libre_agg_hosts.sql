@@ -6,6 +6,9 @@ with libre as (
 SELECT
    dorg.company_name,
    dorg.company_industry,
+   CASE WHEN dorg.company_type = 'Educational'
+     THEN 'Education'
+       ELSE initcap(dorg.company_type) END AS company_type,
    CASE WHEN dorg.company_emp ~ '\d+'
      THEN company_emp :: INTEGER
    ELSE 0 END    AS employees,
@@ -22,6 +25,7 @@ UNION
 SELECT
    cbit.company_name,
    cbit.company_industry,
+   initcap(company_type),
    CASE WHEN cbit.company_emp ~ '\d+'
      THEN company_emp :: INTEGER
    ELSE 0 END AS employees,
@@ -38,6 +42,7 @@ UNION
 SELECT
    whois.name AS company_name,
    NULL       AS company_industry,
+   NULL       AS company_type,
    0          AS employees,
    libre.*,
    'WHOIS'    AS source
