@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Get's current UTC time
 H=$(date -u +%H)
