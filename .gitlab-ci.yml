@@ -28,6 +28,15 @@ zuora:
     - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
     - python3 elt/zuora/zuora_export.py
 
+pings:
+  stage: extract
+  image: registry.gitlab.com/bizops/bizops-elt/extract:master
+  tags:
+    - analytics
+  script:
+    - setup_cloudsql
+    - bash processes/hosts_to_sfdc/python_timecheck.sh
+
 model:
   stage: model
   image: registry.gitlab.com/bizops/bizops-elt/extract:master
@@ -37,6 +46,7 @@ model:
     - setup_cloudsql
     - cd elt/dbt
     - dbt -d run --profiles-dir profile --target prod --models sfdc
+    - bash dbt_timecheck.sh
 
 
 # ---------------------------------------------------------------------------

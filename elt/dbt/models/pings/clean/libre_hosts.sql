@@ -16,7 +16,8 @@ SELECT
   max(ud.active_user_count)                                AS active_user_count,
   sum(ud.usage_pings)                                      AS total_usage_pings,
   max(ud.updated_at)                                       AS updated_at,
-  'https://version.gitlab.com/servers/' || max(ud.host_id) AS version_link
+  'https://version.gitlab.com/servers/' || max(ud.host_id) AS version_link,
+  count(ud.clean_url)                                      AS hosts_count
 FROM vers_pings AS vp
   JOIN usage_pings AS ud ON ud.clean_url = vp.clean_url
 WHERE vp.updated_at >= (now() - '60 days' :: INTERVAL)
