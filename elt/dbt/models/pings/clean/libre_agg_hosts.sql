@@ -83,8 +83,10 @@ whois_joined AS (
         v.version_link,
         v.hosts_count
       FROM libre AS v
+        LEFT OUTER JOIN dorg_joined ON v.clean_url = dorg_joined.the_clean_url
         LEFT OUTER JOIN cbit_joined ON v.clean_url = cbit_joined.the_clean_url
-      WHERE cbit_joined.the_clean_url ISNULL
+             WHERE dorg_joined.the_clean_url ISNULL AND
+                   cbit_joined.the_clean_url ISNULL
     ) AS cbit_remainder
     JOIN whois_cache AS whois ON cbit_remainder.the_clean_url = whois.domain
   WHERE whois.name IS NOT NULL
