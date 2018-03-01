@@ -17,7 +17,6 @@ SELECT
  FROM
    libre
    JOIN discoverorg_cache AS dorg ON libre.clean_url = dorg.domain
-                                     AND dorg.last_update :: DATE >= (now() - '30 days' :: INTERVAL)
  WHERE dorg.company_name IS NOT NULL
 
 UNION
@@ -34,7 +33,6 @@ SELECT
  FROM
    libre
    JOIN clearbit_cache AS cbit ON libre.clean_url = cbit.domain
-                                  AND cbit.last_update :: DATE >= (now() - '30 days' :: INTERVAL)
  WHERE cbit.company_name IS NOT NULL
 
 UNION
@@ -49,5 +47,4 @@ SELECT
  FROM
    libre
    JOIN whois_cache AS whois ON libre.clean_url = whois.domain
-                                AND whois.last_update :: DATE >= (now() - '30 days' :: INTERVAL)
  WHERE whois.name IS NOT NULL

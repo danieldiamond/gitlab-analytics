@@ -4,7 +4,7 @@ with version60 as (
 
 SELECT
   curls.clean_domain  AS clean_url,
-  version60.domain       AS raw_domain,
+  version60.domain    AS raw_domain,
   id                  AS id,
   updated_at          AS updated_at,
   gitlab_version      AS gitlab_version,
