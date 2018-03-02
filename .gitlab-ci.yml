@@ -91,7 +91,7 @@ review_stop:
 
   function set_sql_instance_name() {
     if [ -n "$GCP_SERVICE_CREDS" ]; then
-      if [ "$CI_COMMIT_REF_NAME" = "master" ]
+      if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
         export GCP_INSTANCE_NAME=$GCP_PRODUCTION_INSTANCE_NAME
       else
         export GCP_INSTANCE_NAME=$CI_ENVIRONMENT_SLUG
