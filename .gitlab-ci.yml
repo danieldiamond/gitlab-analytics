@@ -1,7 +1,9 @@
 stages:
+  - review
   - build
   - extract
   - model
+  - review_stop
 
 sfdc:
   variables:
@@ -11,7 +13,8 @@ sfdc:
   tags:
     - analytics
   script:
-    - setup_cloudsql
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
     - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
     - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
     - kitchen.sh -file=elt/sfdc/sfdc_extract.kjb -level=Minimal
@@ -24,7 +27,8 @@ zuora:
   tags:
     - analytics
   script:
-    - setup_cloudsql
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
     - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
     - python3 elt/zuora/zuora_export.py
 
@@ -34,7 +38,8 @@ pings:
   tags:
     - analytics
   script:
-    - setup_cloudsql
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
     - bash processes/hosts_to_sfdc/python_timecheck.sh
 
 model:
@@ -43,20 +48,74 @@ model:
   tags:
     - analytics
   script:
-    - setup_cloudsql
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
     - cd elt/dbt
     - dbt -d run --profiles-dir profile --target prod --models sfdc
     - bash dbt_timecheck.sh
 
+review:
+  stage: review
+  image: google/cloud-sdk:latest
+  variables:
+    GIT_STRATEGY: none
+  tags:
+    - analytics
+  script:
+    - set_sql_instance_name
+    - provision_cloudsql
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    on_stop: review_stop
+  only:
+    - branches
+  except:
+    - master
+
+review_stop:
+  stage: review_stop
+  image: google/cloud-sdk:latest
+  variables:
+    GIT_STRATEGY: none
+  script: 
+    - set_sql_instance_name
+    - delete_review_cloudsql
+  when: manual
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
 
 # ---------------------------------------------------------------------------
 
 .bizops: &bizops |
 
-  function setup_cloudsql() {
+  function set_sql_instance_name() {
+    if [ -n "$GCP_SERVICE_CREDS" ]; then
+      if [ "$CI_COMMIT_REF_NAME" = "master" ]
+        export GCP_INSTANCE_NAME=$GCP_PRODUCTION_INSTANCE_NAME
+      else
+        export GCP_INSTANCE_NAME=$CI_ENVIRONMENT_SLUG
+      fi
+    fi
+  }
+
+  function provision_cloudsql() {
+    echo $GCP_SERVICE_CREDS > /bizops/gcp_credentials.json
+    gcloud auth activate-service-account --key-file=/bizops/gcp_credentials
+    gcloud sql instances clone "$GCP_PROJECT:$GCP_REGION:$GCP_PRODUCTION_INSTANCE_NAME" "$GCP_INSTANCE_NAME"
+  }
+
+  function delete_review_cloudsql() {
+    echo $GCP_SERVICE_CREDS > /bizops/gcp_credentials.json
+    gcloud auth activate-service-account --key-file=/bizops/gcp_credentials
+    # gcloud sql instances delete "$GCP_PROJECT:$GCP_REGION:$CI_ENVIRONMENT_SLUG"
+    echo "$GCP_PROJECT:$GCP_REGION:$CI_ENVIRONMENT_SLUG"
+  }
+
+  function setup_cloudsqlproxy() {
     if [ -n "$GCP_SERVICE_CREDS" ]; then
       echo $GCP_SERVICE_CREDS > /bizops/gcp_credentials.json
-      cloud_sql_proxy -instances="$GCP_INSTANCE_NAME"=tcp:5432 -credential_file=/bizops/gcp_credentials.json &
+      cloud_sql_proxy -instances="$GCP_PROJECT:$GCP_REGION:$GCP_INSTANCE_NAME"=tcp:5432 -credential_file=/bizops/gcp_credentials.json &
     fi
   }
 
