@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import datetime
+import logging
 from ipwhois import IPWhois
 from sqlalchemy import Table
 from toolz.itertoolz import get as list_get
@@ -24,6 +25,7 @@ def ask_whois(clean_ip):
         r = obj.lookup_rdap()
     except:
         # print("No one knows who " + ip + " is. Updating cache as not found.")
+        logger.debug("Not found in WHOIS. Updating Cache.")
         update_cache_not_found(clean_ip, whois_cache)
         return
 
@@ -31,6 +33,7 @@ def ask_whois(clean_ip):
 
     if (name == 'SHARED-ADDRESS-SPACE-RFCTBD-IANA-RESERVED'):
         # print(ip + " is reserved IP space for ISPs. Updating as not found.")
+        logger.debug("Reserved IP space for ISPs. Updating Cache.")
         update_cache_not_found(clean_ip, whois_cache)
         return
 
@@ -58,7 +61,13 @@ def ask_whois(clean_ip):
                 dictlist[key] = str(value)
             else:
                 dictlist[key] = str(value.encode("utf-8"))
-
+        logger.debug("Updating WHOIS Cache.")
         update_whois_cache(dictlist, whois_cache)
 
     return
+
+logging.basicConfig(format='%(asctime)s %(message)s',
+                        datefmt='%Y-%m-%d %I:%M:%S %p')
+logging.getLogger(__name__).setLevel(logging.DEBUG)
+
+logger = logging.getLogger(__name__)
