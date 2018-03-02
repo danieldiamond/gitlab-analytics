@@ -3,6 +3,7 @@ view: dim_account {
 
   dimension: id {
     primary_key: yes
+    hidden: yes
     type: number
     sql: ${TABLE}.id ;;
   }
@@ -28,6 +29,7 @@ view: dim_account {
   }
 
   dimension: sfdc_account_id {
+    hidden: yes
     type: string
     sql: ${TABLE}.sfdc_account_id ;;
   }
