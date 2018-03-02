@@ -101,15 +101,15 @@ review_stop:
 
   function provision_cloudsql() {
     if [ -n "$GCP_SERVICE_CREDS" ]; then
-      echo $GCP_SERVICE_CREDS > /bizops/gcp_credentials.json
-      gcloud auth activate-service-account --key-file=/bizops/gcp_credentials.json
+      echo $GCP_SERVICE_CREDS > gcp_credentials.json
+      gcloud auth activate-service-account --key-file=gcp_credentials.json
       gcloud sql instances clone "$GCP_PROJECT:$GCP_REGION:$GCP_PRODUCTION_INSTANCE_NAME" "$GCP_INSTANCE_NAME"
     fi
   }
 
   function delete_review_cloudsql() {
-    echo $GCP_SERVICE_CREDS > /bizops/gcp_credentials.json
-    gcloud auth activate-service-account --key-file=/bizops/gcp_credentials
+    echo $GCP_SERVICE_CREDS > gcp_credentials.json
+    gcloud auth activate-service-account --key-file=gcp_credentials
     # gcloud sql instances delete "$GCP_PROJECT:$GCP_REGION:$CI_ENVIRONMENT_SLUG"
     echo "$GCP_PROJECT:$GCP_REGION:$CI_ENVIRONMENT_SLUG"
   }
