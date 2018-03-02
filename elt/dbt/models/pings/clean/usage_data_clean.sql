@@ -4,14 +4,8 @@ with version60 as (
 
 SELECT
   curls.clean_domain  AS clean_url,
-  version60.domain    AS raw_domain,
-  id                  AS id,
-  updated_at          AS updated_at,
-  gitlab_version      AS gitlab_version,
-  host_id             AS host_id,
-  cast(stats AS JSON) AS stats,
-  active_user_count   AS active_user_count,
-  usage_pings         AS usage_pings
+  coalesce(version60.hostname, version60.source_ip) AS raw_domain,
+  version60.*
 FROM
   version60
-  JOIN cleaned_urls AS curls ON version60.domain = curls.domain
+  JOIN cleaned_urls AS curls ON coalesce(version60.hostname, version60.source_ip) = curls.domain
