@@ -3,6 +3,7 @@ view: dim_opportunitystage {
 
   dimension: id {
     primary_key: yes
+    hidden: yes
     type: number
     sql: ${TABLE}.id ;;
   }
@@ -13,6 +14,7 @@ view: dim_opportunitystage {
   }
 
   dimension: createdbyid {
+    hidden: yes
     type: string
     sql: ${TABLE}.createdbyid ;;
   }
@@ -37,11 +39,13 @@ view: dim_opportunitystage {
   }
 
   dimension: description {
+    hidden: yes
     type: string
     sql: ${TABLE}.description ;;
   }
 
   dimension: forecastcategory {
+    hidden: yes
     type: string
     sql: ${TABLE}.forecastcategory ;;
   }
@@ -52,6 +56,7 @@ view: dim_opportunitystage {
   }
 
   dimension: isactive {
+    hidden: yes
     type: yesno
     sql: ${TABLE}.isactive ;;
   }
@@ -67,6 +72,7 @@ view: dim_opportunitystage {
   }
 
   dimension: lastmodifiedbyid {
+    hidden: yes
     type: string
     sql: ${TABLE}.lastmodifiedbyid ;;
   }
@@ -86,11 +92,13 @@ view: dim_opportunitystage {
   }
 
   dimension: masterlabel {
+    label: "Stage Name"
     type: string
     sql: ${TABLE}.masterlabel ;;
   }
 
   dimension: sfdc_id {
+    hidden: yes
     type: string
     sql: ${TABLE}.sfdc_id ;;
   }
@@ -101,6 +109,7 @@ view: dim_opportunitystage {
   }
 
   dimension: systemmodstamp {
+    hidden: yes
     type: string
     sql: ${TABLE}.systemmodstamp ;;
   }
