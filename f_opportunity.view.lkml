@@ -29,7 +29,7 @@ view: f_opportunity {
     sql: ${TABLE}.lead_source_id ;;
   }
 
-  dimension_group: close {
+  dimension_group: closedate {
     type: time
     timeframes: [
       raw,
