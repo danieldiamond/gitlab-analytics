@@ -1,5 +1,6 @@
 view: dim_account {
   sql_table_name: analytics.dim_account ;;
+  label: "Salesforce Account"
 
   dimension: id {
     primary_key: yes
@@ -9,11 +10,13 @@ view: dim_account {
   }
 
   dimension: industry {
+    label: "Industry"
     type: string
     sql: ${TABLE}.industry ;;
   }
 
   dimension: is_lau {
+    label: "Is Large & Up?"
     type: yesno
     sql: ${TABLE}.is_lau ;;
   }
