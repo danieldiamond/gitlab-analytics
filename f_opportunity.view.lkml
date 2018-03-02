@@ -9,6 +9,7 @@ view: f_opportunity {
   }
 
   dimension: acv {
+    hidden: yes
     type: number
     sql: ${TABLE}.acv ;;
   }
@@ -20,6 +21,7 @@ view: f_opportunity {
 
   dimension: iacv {
     type: number
+    hidden: yes
     sql: ${TABLE}.iacv ;;
   }
 
@@ -45,11 +47,14 @@ view: f_opportunity {
   }
 
   dimension: opportunity_id {
+    label: "The 18 char SFDC Opportunity ID"
     type: string
     sql: ${TABLE}.opportunity_id ;;
   }
 
   dimension: opportunity_name {
+    label: "SFDC Opportunity Name"
+    description: "The name of the opportunity record from Salesforce."
     type: string
     sql: ${TABLE}.opportunity_name ;;
 
@@ -62,37 +67,45 @@ view: f_opportunity {
   }
 
   dimension: opportunity_product {
+    label: "Product Name"
     type: string
     sql: ${TABLE}.opportunity_product ;;
   }
 
   dimension: opportunity_sales_segmentation {
+    label: "Opportunity Sales Segmentation"
     type: string
     sql: ${TABLE}.opportunity_sales_segmentation ;;
   }
 
   dimension: opportunity_stage_id {
+    description: "The foreign key to dim_opportunitystage"
     hidden: yes
     type: number
     sql: ${TABLE}.opportunity_stage_id ;;
   }
 
   dimension: opportunity_type {
+    label: "Opportunity Type"
+    description: "The SFDC opportunity type (New, Renewal,Add-On Business)"
     type: string
     sql: ${TABLE}.opportunity_type ;;
   }
 
   dimension: quantity {
+    label: "Product Quantity"
     type: number
     sql: ${TABLE}.quantity ;;
   }
 
   dimension: renewal_acv {
+    hidden: yes
     type: number
     sql: ${TABLE}.renewal_acv ;;
   }
 
   dimension_group: sales_accepted {
+    label: "Sales Accepted Date"
     type: time
     timeframes: [
       raw,
@@ -108,6 +121,7 @@ view: f_opportunity {
   }
 
   dimension_group: sales_qualified {
+    label: "Sales Qualified Date"
     type: time
     timeframes: [
       raw,
@@ -123,21 +137,26 @@ view: f_opportunity {
   }
 
   dimension: sales_qualified_source {
+    description: "Sales Qualified Source"
     type: string
     sql: ${TABLE}.sales_qualified_source ;;
   }
 
   dimension: tcv {
+    label: "Total Contract Value"
+    hidden: yes
     type: number
     sql: ${TABLE}.tcv ;;
   }
 
   measure: number_of_opportunities {
+    label: "Count of Opportunities"
     type: count
     drill_fields: [detail*]
   }
 
   measure: total_tcv {
+    label: "Total Contract Value (TCV)"
     type: sum
     sql: ${tcv} ;;
     drill_fields: [detail*]
@@ -145,6 +164,7 @@ view: f_opportunity {
   }
 
   measure: total_acv {
+    label: "Total Annual Contract Value (ACV)"
     type: sum
     sql: ${acv} ;;
     drill_fields: [detail*]
@@ -152,6 +172,7 @@ view: f_opportunity {
     }
 
   measure: total_iacv {
+    label: "Total Incremental Annual Contract Value (IACV)"
     type: sum
     sql: ${iacv} ;;
     drill_fields: [detail*]
@@ -160,7 +181,7 @@ view: f_opportunity {
 
   set: detail {
     fields: [
-      opportunity_name, opportunity_sales_segmentation, total_iacv
+      dim_account.name, opportunity_name, opportunity_sales_segmentation, closedate_date, total_iacv, total_acv
     ]
   }
 }
