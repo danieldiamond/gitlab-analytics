@@ -99,7 +99,7 @@ review_stop:
     fi
   }
 
-  function manage_provision_cloudsql() {
+  function manage_review_cloudsql() {
     if [ -n "$GCP_SERVICE_CREDS" ]; then
       echo $GCP_SERVICE_CREDS > gcp_credentials.json
       gcloud auth activate-service-account --key-file=gcp_credentials.json
