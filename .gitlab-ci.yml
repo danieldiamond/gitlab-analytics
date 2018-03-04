@@ -94,8 +94,9 @@ review_stop:
       if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
         export GCP_INSTANCE_NAME=$GCP_PRODUCTION_INSTANCE_NAME
       else
-        export GCP_INSTANCE_NAME=$CI_ENVIRONMENT_SLUG
+        export GCP_INSTANCE_NAME=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA
       fi
+      echo "Instance name is: $GCP_INSTANCE_NAME"
     fi
   }
 
@@ -104,20 +105,13 @@ review_stop:
       echo $GCP_SERVICE_CREDS > gcp_credentials.json
       gcloud auth activate-service-account --key-file=gcp_credentials.json
 
-      # Check to see if it already exists
-      if gcloud sql instances list --project "$GCP_PROJECT" --filter "$CI_ENVIRONMENT_SLUG" | grep -q "$CI_ENVIRONMENT_SLUG"; then
-        echo "Using existing database: $CI_ENVIRONMENT_SLUG"
-      else
-        eval '$( gcloud sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$CI_ENVIRONMENT_SLUG" | sed -nr "s/.*\`(.*)\`.*/\1/p" )'
-      fi
-    fi
-  }
+      # Delete old instances for this branch
+      gcloud sql instances list --project "$GCP_PROJECT" --filter "$CI_COMMIT_REF_SLUG" | tail -n +2 | cut -d' ' -f1 | xargs -I % echo gcloud xxx instances delete --project "$GCP_PROJECT" %
 
-  function delete_review_cloudsql() {
-    echo $GCP_SERVICE_CREDS > gcp_credentials.json
-    gcloud auth activate-service-account --key-file=gcp_credentials
-    # gcloud sql instances delete --project "$GCP_PROJECT" "$CI_ENVIRONMENT_SLUG"
-    echo "$GCP_PROJECT:$GCP_REGION:$CI_ENVIRONMENT_SLUG"
+      # Clone new instance and wait for it
+      eval '$( gcloud sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$CI_ENVIRONMENT_SLUG" | sed -nr "s/.*\`(.*)\`.*/\1/p" )'
+
+    fi
   }
 
   function setup_cloudsqlproxy() {
