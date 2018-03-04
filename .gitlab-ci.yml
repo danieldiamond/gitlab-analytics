@@ -116,10 +116,12 @@ review_stop:
   }
 
   function delete_review_cloudsql() {
-    echo $GCP_SERVICE_CREDS > gcp_credentials.json
-    gcloud auth activate-service-account --key-file=gcp_credentials
-    # gcloud sql instances xxx --project "$GCP_PROJECT" "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
-    echo "$GCP_PROJECT:$GCP_REGION:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
+    if [ -n "$GCP_SERVICE_CREDS" ]; then
+      echo $GCP_SERVICE_CREDS > gcp_credentials.json
+      gcloud auth activate-service-account --key-file=gcp_credentials.json
+      # gcloud sql instances xxx --project "$GCP_PROJECT" "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
+      echo "$GCP_PROJECT:$GCP_REGION:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
+    fi
   }
 
   function setup_cloudsqlproxy() {
