@@ -63,7 +63,7 @@ review:
     - analytics
   script:
     - set_sql_instance_name
-    - provision_cloudsql
+    - manage_review_cloudsql
   environment:
     name: review/$CI_COMMIT_REF_NAME
     on_stop: review_stop
@@ -78,7 +78,6 @@ review_stop:
   variables:
     GIT_STRATEGY: none
   script: 
-    - set_sql_instance_name
     - delete_review_cloudsql
   when: manual
   environment:
@@ -100,18 +99,27 @@ review_stop:
     fi
   }
 
-  function provision_cloudsql() {
+  function manage_provision_cloudsql() {
     if [ -n "$GCP_SERVICE_CREDS" ]; then
       echo $GCP_SERVICE_CREDS > gcp_credentials.json
       gcloud auth activate-service-account --key-file=gcp_credentials.json
 
       # Delete old instances for this branch
+      echo "Cleaning up old Cloud SQL instances for this branch."
       gcloud sql instances list --project "$GCP_PROJECT" --filter "$CI_COMMIT_REF_SLUG" | tail -n +2 | cut -d' ' -f1 | xargs -I % echo gcloud xxx instances delete --project "$GCP_PROJECT" %
 
       # Clone new instance and wait for it
-      eval '$( gcloud sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$CI_ENVIRONMENT_SLUG" | sed -nr "s/.*\`(.*)\`.*/\1/p" )'
+      echo "Cloning a new Cloud SQL instance for this branch."
+      eval '$( gcloud sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA" | sed -nr "s/.*\`(.*)\`.*/\1/p" )'
 
     fi
+  }
+
+  function delete_review_cloudsql() {
+    echo $GCP_SERVICE_CREDS > gcp_credentials.json
+    gcloud auth activate-service-account --key-file=gcp_credentials
+    # gcloud sql instances xxx --project "$GCP_PROJECT" "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
+    echo "$GCP_PROJECT:$GCP_REGION:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
   }
 
   function setup_cloudsqlproxy() {
