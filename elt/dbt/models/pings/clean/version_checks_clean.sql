@@ -3,7 +3,8 @@ with version60 as (
 )
 
 SELECT
-  curls.clean_domain         AS clean_url,
+  curls.clean_domain      AS clean_url,
+  curls.clean_full_domain AS clean_full_url,
   version60.*
 FROM
   version60

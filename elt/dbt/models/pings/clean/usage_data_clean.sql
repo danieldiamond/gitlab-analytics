@@ -3,7 +3,7 @@ with version60 as (
 )
 
 SELECT
-  curls.clean_domain  AS clean_url,
+  curls.clean_domain                                AS clean_url,
   coalesce(version60.hostname, version60.source_ip) AS raw_domain,
   version60.*
 FROM

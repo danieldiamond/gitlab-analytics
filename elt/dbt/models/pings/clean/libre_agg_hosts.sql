@@ -14,6 +14,7 @@ dorg_joined AS (
       THEN company_emp :: INTEGER
     ELSE 0 :: INTEGER END               AS employees,
     lh.clean_domain                     AS the_clean_url,
+    lh.clean_full_domain                AS full_hostname,
     lh.ping_type,
     lh.raw_domain,
     lh.gitlab_version,
@@ -43,7 +44,8 @@ cbit_joined AS (
   FROM
     (
       SELECT
-        v.clean_domain AS the_clean_url,
+        v.clean_domain      AS the_clean_url,
+        v.clean_full_domain AS full_hostname,
         v.ping_type,
         v.raw_domain,
         v.gitlab_version,
@@ -73,6 +75,7 @@ whois_joined AS (
     (
       SELECT
         v.clean_domain AS the_clean_url,
+        v.clean_full_domain AS full_hostname,
         v.ping_type,
         v.raw_domain,
         v.gitlab_version,

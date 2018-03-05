@@ -12,6 +12,7 @@ vers_pings AS (
 libre_join AS (
   SELECT
     udc.clean_url          AS clean_domain,
+    udc.raw_domain         AS clean_full_domain,
     'Usage' :: TEXT        AS ping_type,
     udc.raw_domain         AS raw_domain,
     udc.version            AS gitlab_version,
@@ -30,6 +31,7 @@ libre_join AS (
 
   SELECT
     vcc.clean_url            AS clean_domain,
+    vcc.clean_full_url       AS clean_full_domain,
     'Version' :: TEXT        AS ping_type,
     vcc.referer_url          AS raw_domain,
     vcc.gitlab_version       AS gitlab_version,
@@ -45,6 +47,7 @@ libre_join AS (
 
 SELECT
   clean_domain,
+  clean_full_domain,
   ping_type,
   raw_domain,
   gitlab_version,
@@ -57,6 +60,7 @@ SELECT
   mattermost_enabled
 FROM libre_join
 GROUP BY clean_domain,
+  clean_full_domain,
   ping_type,
   raw_domain,
   gitlab_version,
