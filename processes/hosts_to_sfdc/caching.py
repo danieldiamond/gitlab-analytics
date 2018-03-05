@@ -134,6 +134,7 @@ def write_clean_domain(raw_domain, tldextract, clean_domain, table=cleaned_urls)
     subdomain = tldextract.subdomain
     primary_domain = tldextract.domain
     suffix = tldextract.suffix
+    full_domain = subdomain + '.' + primary_domain + '.' + suffix
 
     stmt = postgresql.insert(table, bind=engine).values(
         domain=raw_domain,
@@ -141,6 +142,7 @@ def write_clean_domain(raw_domain, tldextract, clean_domain, table=cleaned_urls)
         primary_domain=primary_domain,
         suffix=suffix,
         clean_domain=clean_domain,
+        clean_full_domain=full_domain,
         last_update=datetime.datetime.now()
     )
     on_update_stmt = stmt.on_conflict_do_update(
@@ -150,6 +152,7 @@ def write_clean_domain(raw_domain, tldextract, clean_domain, table=cleaned_urls)
             primary_domain=primary_domain,
             suffix=suffix,
             clean_domain=clean_domain,
+            clean_full_domain=full_domain,
             last_update=datetime.datetime.now())
     )
     conn = engine.connect()

@@ -1,24 +1,68 @@
-with usage_pings as (
-  SELECT * FROM {{ ref('usage_data_clean') }}
+WITH usage_pings AS (
+    SELECT *
+    FROM {{ ref('usage_data_clean') }}
 ),
 
-vers_pings as (
-  SELECT * FROM {{ ref('version_checks_clean') }}
+vers_pings AS (
+  SELECT *
+  FROM {{ ref('version_checks_clean') }}
+  ),
+
+  --   Combine version and usage pings together
+libre_join AS (
+  SELECT
+    udc.clean_url          AS clean_domain,
+    udc.raw_domain         AS clean_full_domain,
+    'Usage' :: TEXT        AS ping_type,
+    udc.raw_domain         AS raw_domain,
+    udc.version            AS gitlab_version,
+    udc.updated_at         AS ping_date,
+    udc.host_id            AS host_id,
+    udc.stats              AS ping_json_data,
+    udc.active_user_count  AS active_user_count,
+    udc.edition            AS gitlab_edition,
+    udc.license_id         AS license_id,
+    udc.mattermost_enabled AS mattermost_enabled
+
+
+  FROM usage_pings AS udc
+
+  UNION ALL
+
+  SELECT
+    vcc.clean_url            AS clean_domain,
+    vcc.clean_full_url       AS clean_full_domain,
+    'Version' :: TEXT        AS ping_type,
+    vcc.referer_url          AS raw_domain,
+    vcc.gitlab_version       AS gitlab_version,
+    vcc.updated_at           AS ping_date,
+    vcc.host_id              AS host_id,
+    vcc.request_data :: JSON AS ping_json_data,
+    NULL                     AS active_user_count,
+    NULL                     AS gitlab_edition,
+    NULL                     AS license_id,
+    FALSE                    AS mattermost_enabled
+  FROM vers_pings AS vcc
 )
 
 SELECT
-  ud.clean_url,
-  max(ud.gitlab_version)                                   AS usage_data_gl_version,
-  max(ud.host_id)                                          AS usage_data_host_id,
-  max(cast(vp.request_data AS TEXT))                       AS ping_data,
-  max(vp.ping_count)                                       AS version_ping_count,
-  max(cast(ud.stats AS TEXT))                              AS usage_stats,
-  max(ud.active_user_count)                                AS active_user_count,
-  sum(ud.usage_pings)                                      AS total_usage_pings,
-  max(ud.updated_at)                                       AS updated_at,
-  'https://version.gitlab.com/servers/' || max(ud.host_id) AS version_link,
-  count(ud.clean_url)                                      AS hosts_count
-FROM vers_pings AS vp
-  JOIN usage_pings AS ud ON ud.clean_url = vp.clean_url
-WHERE vp.updated_at >= (now() - '60 days' :: INTERVAL)
-GROUP BY ud.clean_url
+  clean_domain,
+  clean_full_domain,
+  ping_type,
+  raw_domain,
+  gitlab_version,
+  max(ping_date)                       AS ping_date,
+  host_id,
+  max(ping_json_data :: TEXT) :: JSON  AS ping_json_data,
+  max(active_user_count)               AS max_active_user_count,
+  max(gitlab_edition)                     gitlab_edition,
+  string_agg(license_id :: TEXT, ', ') AS license_ids,
+  mattermost_enabled
+FROM libre_join
+GROUP BY clean_domain,
+  clean_full_domain,
+  ping_type,
+  raw_domain,
+  gitlab_version,
+  host_id,
+  mattermost_enabled

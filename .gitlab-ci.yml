@@ -138,7 +138,7 @@ review_stop:
   function setup_cloudsqlproxy() {
     if [ -n "$GCP_SERVICE_CREDS" ]; then
       echo $GCP_SERVICE_CREDS > /bizops/gcp_credentials.json
-      cloud_sql_proxy -instances="$GCP_PROJECT:$GCP_REGION:$GCP_INSTANCE_NAME"=tcp:5432 -credential_file=/bizops/gcp_credentials.json &
+      cloud_sql_proxy -instances="$GCP_PROJECT:$GCP_REGION:$GCP_INSTANCE_NAME"=tcp:5432 -credential_file=/bizops/gcp_credentials.json -verbose=False &
     fi
   }
 
