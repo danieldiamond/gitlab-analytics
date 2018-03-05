@@ -4,18 +4,7 @@ with libre_agg as (
 
 SELECT
   sf.id                                                        AS Account__c,
-  coalesce(sf.website, 'www.' || lah.the_clean_url)            AS host_domain__c,
-  sf.name                                                      AS Host_Name__c,
-  CASE WHEN sf.type = 'Prospect'
-    THEN 'Prospect - CE User'
-  ELSE sf.type END                                             AS Host_Type__c,
-  sf.billingstate                                              AS Billing_State__c,
-  sf.billingcountry                                            AS Billing_Country__c,
-  coalesce(sf.Industry, lah.company_industry)                  AS Host_Industry__c,
-  coalesce(sf.numberofemployees,
-           CASE WHEN lah.employees = 0
-             THEN NULL
-           ELSE lah.employees END)                             AS Host_Employees__c,
+  lah.full_hostname                                            AS Original_Hostname__c,
   lah.ping_type                                                AS Host_Ping_Type__c,
   lah.max_active_user_count                                    AS Host_Users__c,
   lah.ping_date                                                AS Last_Ping__c,
@@ -37,18 +26,7 @@ UNION
 
 SELECT
   sf.id                                                        AS Account__c,
-  coalesce(sf.website, 'www.' || lah.the_clean_url)            AS host_domain__c,
-  sf.name                                                      AS Host_Name__c,
-  CASE WHEN sf.type = 'Prospect'
-    THEN 'Prospect - CE User'
-  ELSE sf.type END                                             AS Host_Type__c,
-  sf.billingstate                                              AS Billing_State__c,
-  sf.billingcountry                                            AS Billing_Country__c,
-  coalesce(sf.Industry, lah.company_industry)                  AS Host_Industry__c,
-  coalesce(sf.numberofemployees,
-           CASE WHEN lah.employees = 0
-             THEN NULL
-           ELSE lah.employees END)                             AS Host_Employees__c,
+  lah.full_hostname                                            AS Original_Hostname__c,
   lah.ping_type                                                AS Host_Ping_Type__c,
   lah.max_active_user_count                                    AS Host_Users__c,
   lah.ping_date                                                AS Last_Ping__c,
