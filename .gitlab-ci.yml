@@ -113,7 +113,7 @@ review_stop:
 
       # Delete old instances for this branch
       echo "Cleaning up old Cloud SQL instances for this branch."
-      gcloud sql instances list --project "$GCP_PROJECT" --filter "$CI_COMMIT_REF_SLUG" | tail -n +2 | cut -d' ' -f1 | xargs -I % echo gcloud xxx instances delete --project "$GCP_PROJECT" %
+      gcloud sql instances list --project "$GCP_PROJECT" --filter "$CI_COMMIT_REF_SLUG" | tail -n +2 | cut -d' ' -f1 | xargs -I % gcloud sql instances delete --project "$GCP_PROJECT" %
 
       # Clone new instance and wait for it
       gcloud sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA" || true | grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | head -n1 | xargs -I % gcloud beta sql operations wait --project gitlab-analysis %
@@ -127,11 +127,11 @@ review_stop:
       echo "The branch name cannot match the production EDW instance name."
       return 1;
     fi
-    
+
     if [ -n "$GCP_SERVICE_CREDS" ]; then
       echo $GCP_SERVICE_CREDS > gcp_credentials.json
       gcloud auth activate-service-account --key-file=gcp_credentials.json
-      gcloud sql instances sql --project "$GCP_PROJECT" "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
+      gcloud sql instances delete --project "$GCP_PROJECT" "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
     fi
   }
 
