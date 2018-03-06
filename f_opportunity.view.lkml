@@ -153,7 +153,8 @@ view: f_opportunity {
 
   measure: number_of_opportunities {
     label: "Count of Opportunities"
-    type: count
+    type: count_distinct
+    sql: ${opportunity_id} ;;
     drill_fields: [detail*]
   }
 
@@ -201,6 +202,36 @@ view: f_opportunity {
       field: sales_qualified_date
       value: "-NULL"
     }
+    drill_fields: [detail*]
+  }
+
+  measure: total_saos {
+    label: "Total Sales Accepted Opportunities (SAOs)"
+    type: count_distinct
+    sql:  ${opportunity_id} ;;
+    filters: {
+      field: dim_leadsource.initial_source
+      value: "-Web Direct"
+    }
+    filters: {
+      field: iacv
+      value: ">=0"
+    }
+    filters: {
+      field: iacv
+      value: ">=0"
+    }
+    filters: {
+      field: sales_accepted_date
+      value: "-NULL"
+    }
+    drill_fields: [detail*]
+  }
+
+  measure: total_quantity {
+    label: "Total Quantity"
+    type: sum
+    sql: ${quantity} ;;
     drill_fields: [detail*]
   }
 
