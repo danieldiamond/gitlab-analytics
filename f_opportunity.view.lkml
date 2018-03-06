@@ -153,7 +153,8 @@ view: f_opportunity {
 
   measure: number_of_opportunities {
     label: "Count of Opportunities"
-    type: count
+    type: count_distinct
+    sql: ${opportunity_id} ;;
     drill_fields: [detail*]
   }
 
