@@ -195,10 +195,6 @@ view: f_opportunity {
       value: ">=0"
     }
     filters: {
-      field: iacv
-      value: ">=0"
-    }
-    filters: {
       field: sales_qualified_date
       value: "-NULL"
     }
@@ -212,10 +208,6 @@ view: f_opportunity {
     filters: {
       field: dim_leadsource.initial_source
       value: "-Web Direct"
-    }
-    filters: {
-      field: iacv
-      value: ">=0"
     }
     filters: {
       field: iacv
