@@ -47,7 +47,8 @@ view: f_opportunity {
   }
 
   dimension: opportunity_id {
-    label: "The 18 char SFDC Opportunity ID"
+    label: "SFDC Opportunity ID"
+    description: "The 18 char SFDC Opportunity ID"
     type: string
     sql: ${TABLE}.opportunity_id ;;
   }
