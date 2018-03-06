@@ -32,6 +32,7 @@ view: f_opportunity {
   }
 
   dimension_group: closedate {
+    label: "Close"
     type: time
     timeframes: [
       raw,
