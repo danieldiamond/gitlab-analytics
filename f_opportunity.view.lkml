@@ -181,8 +181,8 @@ view: f_opportunity {
     value_format_name: usd
     }
 
-  measure: total_sqls {
-    label: "Total Incremental Annual Contract Value (IACV)"
+  measure: total_sqos {
+    label: "Total Sales Qualified Opportunities (SQOs)"
     type: count_distinct
     sql:  ${opportunity_id} ;;
     filters: {
@@ -202,7 +202,7 @@ view: f_opportunity {
 
   set: detail {
     fields: [
-      dim_account.name, opportunity_name, opportunity_sales_segmentation, closedate_date, total_iacv, total_acv
+      dim_account.name, opportunity_name, opportunity_sales_segmentation, opportunity_type, closedate_date, total_iacv, total_acv
     ]
   }
 }
