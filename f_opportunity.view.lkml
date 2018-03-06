@@ -197,6 +197,10 @@ view: f_opportunity {
       field: opportunity_type
       value: "New Business,Add-On Business"
     }
+    filters: {
+      field: sales_accepted_date
+      value: "-NULL"
+    }
     drill_fields: [detail*]
   }
 
