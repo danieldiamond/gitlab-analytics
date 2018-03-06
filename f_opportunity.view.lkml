@@ -2,7 +2,7 @@ view: f_opportunity {
   sql_table_name: analytics.f_opportunity ;;
 
   dimension: account_id {
-    description: "this is the foreign key to dim_account"
+    description: "This is the foreign key to dim_account"
     hidden: yes
     type: number
     sql: ${TABLE}.account_id ;;
@@ -32,6 +32,7 @@ view: f_opportunity {
   }
 
   dimension_group: closedate {
+    label: "Opportunity Close"
     type: time
     timeframes: [
       raw,
@@ -106,7 +107,7 @@ view: f_opportunity {
   }
 
   dimension_group: sales_accepted {
-    label: "Sales Accepted Date"
+    label: "Sales Accepted"
     type: time
     timeframes: [
       raw,
@@ -122,7 +123,7 @@ view: f_opportunity {
   }
 
   dimension_group: sales_qualified {
-    label: "Sales Qualified Date"
+    label: "Sales Qualified"
     type: time
     timeframes: [
       raw,
@@ -180,9 +181,32 @@ view: f_opportunity {
     value_format_name: usd
     }
 
+  measure: total_sqos {
+    label: "Total Sales Qualified Opportunities (SQOs)"
+    type: count_distinct
+    sql:  ${opportunity_id} ;;
+    filters: {
+      field: dim_leadsource.initial_source
+      value: "-Web Direct"
+    }
+    filters: {
+      field: iacv
+      value: ">=0"
+    }
+    filters: {
+      field: iacv
+      value: ">=0"
+    }
+    filters: {
+      field: sales_qualified_date
+      value: "-NULL"
+    }
+    drill_fields: [detail*]
+  }
+
   set: detail {
     fields: [
-      dim_account.name, opportunity_name, opportunity_sales_segmentation, closedate_date, total_iacv, total_acv
+      dim_account.name, opportunity_name, opportunity_sales_segmentation, opportunity_type, closedate_date, total_iacv, total_acv
     ]
   }
 }
