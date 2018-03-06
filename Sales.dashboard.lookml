@@ -51,6 +51,7 @@
     width: 24
     height: 16
     x_axis_datetime_label: "%b %y"
+    label_value_format: $0.000,," M"
   filters:
   - name: Close Date
     title: Close Date
