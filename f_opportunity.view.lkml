@@ -191,11 +191,19 @@ view: f_opportunity {
     }
     filters: {
       field: iacv
-      value: ">0"
+      value: ">=0"
     }
     filters: {
-      field: opportunity_type
-      value: "New Business,Add-On Business"
+      field: iacv
+      value: ">=0"
+    }
+    filters: {
+      field: dim_account.sales_segmentation
+      value: "Large, Strategic"
+    }
+    filters: {
+      field: dim_account.ultimate_parent_sales_segmentation
+      value: "Large, Strategic"
     }
     filters: {
       field: sales_qualified_date
