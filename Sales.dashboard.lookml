@@ -46,16 +46,28 @@
     show_silhouette: false
     totals_color: "#000000"
     hidden_series: []
+    x_axis_datetime_label: "%b %y"
+    label_value_format: $0.000,," M"
+    listen:
+      Is Large and Up?: dim_account.is_lau
     row: 0
     col: 0
     width: 24
     height: 16
-    x_axis_datetime_label: "%b %y"
-    label_value_format: $0.000,," M"
   filters:
   - name: Close Date
     title: Close Date
     type: date_filter
     default_value: 8 quarters
+    allow_multiple_values: true
+    required: false
+  - name: Is Large and Up?
+    title: Is Large and Up?
+    type: field_filter
+    default_value: ''
+    model: gitlab
+    explore: f_opportunity
+    field: dim_account.is_lau
+    listens_to_filters: []
     allow_multiple_values: true
     required: false
