@@ -204,7 +204,12 @@ view: f_opportunity {
     }
     drill_fields: [detail*]
   }
-
+  measure: total_quantity {
+    label: "Total Quantity"
+    type: sum
+    sql: ${quantity} ;;
+    drill_fields: [detail*]
+  }
   set: detail {
     fields: [
       dim_account.name, opportunity_name, opportunity_sales_segmentation, opportunity_type, closedate_date, total_iacv, total_acv
