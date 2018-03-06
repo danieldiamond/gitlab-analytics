@@ -198,10 +198,6 @@ view: f_opportunity {
       value: ">=0"
     }
     filters: {
-      field: dim_account.is_lau
-      value: "Yes"
-    }
-    filters: {
       field: sales_qualified_date
       value: "-NULL"
     }
