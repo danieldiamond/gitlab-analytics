@@ -106,7 +106,7 @@ view: f_opportunity {
   }
 
   dimension_group: sales_accepted {
-    label: "Sales Accepted Date"
+    label: "Sales Accepted"
     type: time
     timeframes: [
       raw,
@@ -122,7 +122,7 @@ view: f_opportunity {
   }
 
   dimension_group: sales_qualified {
-    label: "Sales Qualified Date"
+    label: "Sales Qualified"
     type: time
     timeframes: [
       raw,
