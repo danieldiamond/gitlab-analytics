@@ -181,6 +181,25 @@ view: f_opportunity {
     value_format_name: usd
     }
 
+  measure: total_sqls {
+    label: "Total Incremental Annual Contract Value (IACV)"
+    type: count_distinct
+    sql:  ${opportunity_id} ;;
+    filters: {
+      field: dim_leadsource.initial_source
+      value: "-Web Direct"
+    }
+    filters: {
+      field: iacv
+      value: ">0"
+    }
+    filters: {
+      field: opportunity_type
+      value: "New Business,Add-On Business"
+    }
+    drill_fields: [detail*]
+  }
+
   set: detail {
     fields: [
       dim_account.name, opportunity_name, opportunity_sales_segmentation, closedate_date, total_iacv, total_acv
