@@ -198,12 +198,8 @@ view: f_opportunity {
       value: ">=0"
     }
     filters: {
-      field: dim_account.sales_segmentation
-      value: "Large, Strategic"
-    }
-    filters: {
-      field: dim_account.ultimate_parent_sales_segmentation
-      value: "Large, Strategic"
+      field: dim_account.is_lau
+      value: "Yes"
     }
     filters: {
       field: sales_qualified_date
