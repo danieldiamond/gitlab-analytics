@@ -50,6 +50,7 @@
     col: 0
     width: 24
     height: 16
+    x_axis_datetime_label: "%b %y"
   filters:
   - name: Close Date
     title: Close Date
