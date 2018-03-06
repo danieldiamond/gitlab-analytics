@@ -2,7 +2,7 @@ view: f_opportunity {
   sql_table_name: analytics.f_opportunity ;;
 
   dimension: account_id {
-    description: "this is the foreign key to dim_account"
+    description: "This is the foreign key to dim_account"
     hidden: yes
     type: number
     sql: ${TABLE}.account_id ;;
