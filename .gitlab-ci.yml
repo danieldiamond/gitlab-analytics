@@ -80,6 +80,11 @@ review_stop:
   script: 
     - delete_review_cloudsql
   when: manual
+  allow_failure: true
+  only:
+    - branches
+  except:
+    - master
   environment:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
