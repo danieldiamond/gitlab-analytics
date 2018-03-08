@@ -7,13 +7,16 @@ import os
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 import psycopg2
+from datetime import datetime
 import itertools
+from toolz import dicttoolz
 
 
 host = os.environ.get('PROCESS_DB_PROD_ADDRESS')
 username = os.environ.get('PROCESS_DB_PROD_USERNAME')
 password = os.environ.get('PROCESS_DB_PROD_PASSWORD')
 database = os.environ.get('PROCESS_DB_PROD_DBNAME')
+
 
 # Setup sqlalchemy
 Base = declarative_base()
@@ -22,6 +25,7 @@ db_string = 'postgresql+psycopg2://' + username + ':' + password + '@' + \
 engine = create_engine(db_string)
 metadata = MetaData(bind=engine)
 
+
 # Setup SFDC
 sf_username= os.environ.get('SFDC_SBOX_USERNAME')
 sf_password= os.environ.get('SFDC_SBOX_PASSWORD')
@@ -29,6 +33,8 @@ sf_security_token= os.environ.get('SFDC_SBOX_SECURITY_TOKEN')
 
 sf = Salesforce(username=sf_username, password=sf_password, security_token=sf_security_token, sandbox=True)
 
+
+# Get SFDC Field names
 host_object = sf.Host__c.describe()
 sf_fields = [field.get("name", "Error") for field in host_object.get("fields", [])]
 
@@ -36,12 +42,15 @@ mydb = psycopg2.connect(host=host, user=username,
                             password=password, dbname=database)
 cursor = mydb.cursor()
 
+
+# Get the column names from Postgres
 db_query = "SELECT column_name FROM information_schema.columns WHERE \
             table_name='libre_sfdc_accounts'"
 
 cursor.execute(db_query)
 
 db_fields = [result[0] for result in cursor]
+
 
 # Match Postgres fields with SFDC fields
 mapping = dict()
@@ -51,66 +60,73 @@ for db_col in db_fields:
             mapping[db_col] = sf_col
 
 
-print(json.dumps(tmp_mapping, indent=2))
+# Get Hosts to Upload
+host_query = "SELECT * FROM version.libre_sfdc_accounts"
 
-# print(fields)
-# account = sf.Host__c.get('a5c5B0000000IdvQAE')
+cursor.execute(host_query)
 
-# account = sf.Host__c.describe()
-#
-# for field in account.get("fields", []):
-#     print(field.get("name", "Error"))
-
-# print(json.dumps(account, indent=2))
-
-# answer = sf.query("SELECT Id from Host__c")
-
-# for key, value in answer.items():
-#     print (key, value)
-# print(json.dumps(answer, indent=2))
-#
-# items_to_delete = []
-# for record in answer.get("records"):
-#     items_to_delete.append({"Id": record.get("Id")})
-#
-# print(items_to_delete[:2])
-#
-# results = sf.bulk.Host__c.delete(items_to_delete)
-#
-# print(results)
-
-# reader = csv.DictReader(open("/Users/tmurphy/Desktop/sandbox_sfdc_host.csv", "r"))
-#
-# dict_list = []
-# for row in reader:
-#     row['Last_Ping__c'] = row['Last_Ping__c'].split(' ')[0]
-#     row['Account__c'] = row['Account__c'][:15]
-#     dict_list.append(row)
-#
-#
-# print(dict_list[:2])
-#
-#
-# results = sf.bulk.Host__c.insert(dict_list)
-
-#
-# print(results)
+correct_column_names = [mapping.get(desc[0]) for desc in cursor.description]
 
 
-"""
-{
-"success": false,
-"created": false,
-"id": null,
-"errors": [
-{
-"message": "License Ids: data value too large: 2372824, 2753414, 3044705, 2503493, 2598739, 3145800, 2370146, 2942014, 3047557, 2485093, 2579153, 3148682, 2368879, 2750682, 3045265, 2430348, 2674042, 3141422, 2462333, 2746475, 2999129, 2465017, 2674823, 3040423, 2461045, 2802063, 3151580, 2848339, 2844168, 2849681, 2556084, 2851075, 2558768, 2649986, 2948905, 2554720, 2654064, 2946155, 2651310 (max length=255)",
-"fields": [
-"License_Ids__c"
-],
-"statusCode": "STRING_TOO_LONG",
-"extendedErrorDetails": null
-}
-]
-},
-"""
+# Match on the ID of the host record so we upsert instead of insert
+all_hosts = sf.query_all("SELECT Id, Name FROM Host__c")
+
+id_mapping=dict()
+if all_hosts.get("done") is True:
+    for result in all_hosts.get("records"):
+        id_mapping[result.get("Name", "None")] = result.get("Id", "None")
+
+
+# Generate objects to write to SFDC via bulk query
+insert_obj = []
+upsert_obj = []
+for result in cursor:
+    tmp_dict = dict(zip(correct_column_names, list(result)))
+    possible_id = id_mapping.get(tmp_dict.get('Name'), None)
+    if possible_id is not None:
+        tmp_dict["Id"] = possible_id
+    for key in tmp_dict:
+        if isinstance(tmp_dict[key], datetime):
+            tmp_dict[key] = str(tmp_dict[key].strftime("%Y-%m-%d"))
+        if tmp_dict[key] is None:
+            tmp_dict = dicttoolz.dissoc(tmp_dict, key)
+
+    if 'Id' in tmp_dict:
+        upsert_obj.append(tmp_dict)
+    else:
+        insert_obj.append(tmp_dict)
+
+print(len(upsert_obj))
+print(len(insert_obj))
+
+if len(upsert_obj) != 0:
+    upsert_results = sf.bulk.Host__c.upsert(upsert_obj, "Id")
+    print(upsert_results)
+    print("\n")
+
+if len(insert_obj) != 0:
+    insert_results = sf.bulk.Host__c.insert(insert_obj)
+    print(insert_results)
+
+
+
+def delete_all_hosts(sf_conn):
+    query = sf_conn.query("SELECT Id from Host__c")
+
+    host_count = query.get("totalSize")
+
+    if host_count == 0:
+        print("No hosts to delete.")
+        return
+
+    print("Found {} hosts to delete.".format(query.get("totalSize")))
+
+    items_to_delete = []
+    for record in query.get("records"):
+        items_to_delete.append({"Id": record.get("Id")})
+
+    results = sf_conn.bulk.Host__c.delete(items_to_delete)
+
+    print(results)
+
+# delete_all_hosts(sf)
