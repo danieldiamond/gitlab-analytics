@@ -23,7 +23,7 @@ SELECT
   max(vcc.request_data :: TEXT) :: JSON          AS ping_version_data,
   max(udc.active_user_count)                     AS active_user_count,
   max(udc.edition)                               AS gitlab_edition,
-  string_agg(udc.license_id :: TEXT, ', ')       AS license_id,
+  string_agg(DISTINCT udc.license_id :: TEXT, ', ')       AS license_id,
   max(udc.mattermost_enabled :: TEXT) :: BOOLEAN AS mattermost_enabled
 
 
