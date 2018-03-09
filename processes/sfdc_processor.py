@@ -133,7 +133,7 @@ def upload_hosts():
 
 
 def generate_accounts():
-    account_query = "SELECT * FROM version.sfdc_accounts_gen TABLESAMPLE SYSTEM_ROWS(10)"
+    account_query = "SELECT * FROM version.sfdc_accounts_gen"
     account_cursor = mydb.cursor()
     account_cursor.execute(account_query)
     logger.debug("Found %s accounts to generate.", account_cursor.rowcount)
@@ -210,8 +210,8 @@ if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s %(message)s',
                         datefmt='%Y-%m-%d %I:%M:%S %p')
     logging.getLogger(__name__).setLevel(logging.DEBUG)
-    # upload_hosts()
-    # delete_all_hosts(sf)
+    upload_hosts()
     generate_accounts()
+    # delete_all_hosts(sf)
 
 # TODO will need to keep track of errors so I can associate them with the host file
