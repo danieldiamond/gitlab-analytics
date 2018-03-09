@@ -220,6 +220,45 @@ view: f_opportunity {
     drill_fields: [detail*]
   }
 
+  measure: total_sao_iacv {
+    label: "Total Sales Accepted Opportunity (SAO) IACV"
+    type: sum
+    sql:  ${iacv} ;;
+    filters: {
+      field: dim_leadsource.initial_source
+      value: "-Web Direct"
+    }
+    filters: {
+      field: iacv
+      value: ">=0"
+    }
+    filters: {
+      field: sales_accepted_date
+      value: "-NULL"
+    }
+    drill_fields: [detail*]
+  }
+
+  measure: total_sqo_iacv {
+    label: "Total Sales Qualified Opportunity (SQO) IACV "
+    type: count_distinct
+    sql:  ${opportunity_id} ;;
+    filters: {
+      field: dim_leadsource.initial_source
+      value: "-Web Direct"
+    }
+    filters: {
+      field: iacv
+      value: ">=0"
+    }
+    filters: {
+      field: sales_qualified_date
+      value: "-NULL"
+    }
+    drill_fields: [detail*]
+  }
+
+
   measure: total_quantity {
     label: "Total Quantity"
     type: sum
