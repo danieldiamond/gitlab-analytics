@@ -132,6 +132,52 @@ def upload_hosts():
         logger.debug("No hosts to insert.")
 
 
+def generate_accounts():
+    account_query = "SELECT * FROM version.sfdc_accounts_gen TABLESAMPLE SYSTEM_ROWS(10)"
+    account_cursor = mydb.cursor()
+    account_cursor.execute(account_query)
+    logger.debug("Found %s accounts to generate.", account_cursor.rowcount)
+
+    column_mapping = generate_column_mapping('sfdc_accounts_gen', 'Account')
+    correct_column_names = [column_mapping.get(desc[0]) for desc in account_cursor.description]
+
+    #TODO Need to get the account that will create this in the future.
+    # Checks for Accounts that were created by the API user
+    sfdc_account_query = sf.bulk.Account.query("SELECT Id, Name, Website FROM Account WHERE CreatedById='00561000002rsNT'")
+
+    # Generates a unique string to compare against
+    existing_accounts = {}
+    for account in sfdc_account_query:
+        account_string = account.get("Name") + account.get("Website")
+        existing_accounts[account_string]=account.get("Id")
+
+
+    write_obj = []
+    for result in account_cursor:
+
+        # Skips host if host is already an Account
+        result_string = result[0] + result[1]
+        if existing_accounts.get(result_string, None) is not None:
+            logger.debug("Skipping host record. Already present as account %s", existing_accounts.get(result_string))
+            continue
+
+        tmp_dict = dict(zip(correct_column_names, list(result)))
+        write_obj.append(tmp_dict)
+
+    logger.debug("Generating %s accounts.", len(write_obj))
+
+    # Generate SFDC Accounts
+    account_results = sf.bulk.Account.insert(write_obj)
+
+    for result in account_results:
+        if result.get("success", True) is False:
+            logger.debug("Error on SFDC id: %s", result.get("id", None))
+            for error in result.get("errors", []):
+                new_error = dicttoolz.dissoc(error, "message")
+                logger.debug(json.dumps(new_error, indent=2))
+        else:
+            logger.debug("Generedated Account - %s", result.get("id", None))
+
 def delete_all_hosts(sf_conn):
     """
     Delete all hosts files in SFDC. Use with caution!
@@ -164,7 +210,8 @@ if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s %(message)s',
                         datefmt='%Y-%m-%d %I:%M:%S %p')
     logging.getLogger(__name__).setLevel(logging.DEBUG)
-    upload_hosts()
+    # upload_hosts()
     # delete_all_hosts(sf)
+    generate_accounts()
 
 # TODO will need to keep track of errors so I can associate them with the host file
