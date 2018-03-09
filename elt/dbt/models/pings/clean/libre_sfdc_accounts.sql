@@ -16,7 +16,7 @@ SELECT
   lah.license_id                                               AS License_Ids__c,
   lah.mattermost_enabled                                       AS Mattermost_Enabled__c,
   lah.source                                                   AS Host_Data_Source__c
-FROM sfdc_sandbox.account sf
+FROM sfdc.account sf
   INNER JOIN libre_agg AS lah
     ON lah.company_name = sf.name
 WHERE sf.isdeleted = FALSE
@@ -39,7 +39,7 @@ SELECT
   lah.license_id                                               AS License_Ids__c,
   lah.mattermost_enabled                                       AS Mattermost_Enabled__c,
   lah.source                                                   AS Host_Data_Source__c
-FROM sfdc_sandbox.account sf
+FROM sfdc.account sf
   INNER JOIN libre_agg AS lah
     ON lah.the_clean_url = regexp_replace(sf.website, '^(http(s)?\://)?www\.', '')
 WHERE sf.isdeleted = FALSE
