@@ -241,8 +241,8 @@ view: f_opportunity {
 
   measure: total_sqo_iacv {
     label: "Total Sales Qualified Opportunity (SQO) IACV "
-    type: count_distinct
-    sql:  ${opportunity_id} ;;
+    type: sum
+    sql:   ${iacv} ;;
     filters: {
       field: dim_leadsource.initial_source
       value: "-Web Direct"
