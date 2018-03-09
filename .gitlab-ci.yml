@@ -122,7 +122,7 @@ review_stop:
 
       # Clone new instance and wait for it
       echo "Cloning database..."
-      gcloud sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA" |& grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | head -n1 | xargs -I % gcloud beta sql operations wait --project "$GCP_PROJECT" % gcloud sql instances clone --project gitlab-analysis bizops review-1-2 || true |& grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | head -n1 | xargs -I % gcloud beta sql operations wait --project gitlab-analysis % || true
+      gcloud sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA" |& grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | head -n1 | xargs -I % gcloud beta sql operations wait --project "$GCP_PROJECT" % || true
 
     fi
   }
