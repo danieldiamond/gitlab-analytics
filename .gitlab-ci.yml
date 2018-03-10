@@ -18,6 +18,7 @@ sfdc:
     - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
     - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
     - kitchen.sh -file=elt/sfdc/sfdc_extract.kjb -level=Minimal
+    - stop_cloudsqlproxy
 
 zuora:
   variables:
@@ -31,6 +32,7 @@ zuora:
     - setup_cloudsqlproxy
     - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
     - python3 elt/zuora/zuora_export.py
+    - stop_cloudsqlproxy
 
 pings:
   stage: extract
@@ -41,6 +43,7 @@ pings:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - bash processes/hosts_to_sfdc/python_timecheck.sh
+    - stop_cloudsqlproxy
 
 model:
   stage: model
@@ -53,6 +56,7 @@ model:
     - cd elt/dbt
     - dbt -d run --profiles-dir profile --target prod --models sfdc
     - bash dbt_timecheck.sh
+    - stop_cloudsqlproxy
 
 review:
   stage: review
@@ -145,6 +149,12 @@ review_stop:
     if [ -n "$GCP_SERVICE_CREDS" ]; then
       echo $GCP_SERVICE_CREDS > /bizops/gcp_credentials.json
       cloud_sql_proxy -instances="$GCP_PROJECT:$GCP_REGION:$GCP_INSTANCE_NAME"=tcp:5432 -credential_file=/bizops/gcp_credentials.json -verbose=False &
+    fi
+  }
+
+  function stop_cloudsqlproxy() {
+    if [ -n "$GCP_SERVICE_CREDS" ]; then
+      kill -9 `pgrep cloud_sql_proxy`
     fi
   }
 
