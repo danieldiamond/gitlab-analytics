@@ -154,7 +154,7 @@ review_stop:
 
   function stop_cloudsqlproxy() {
     if [ -n "$GCP_SERVICE_CREDS" ]; then
-      kill -9 pgrep `cloud_sql_proxy`
+      kill -9 `pgrep cloud_sql_proxy`
     fi
   }
 
