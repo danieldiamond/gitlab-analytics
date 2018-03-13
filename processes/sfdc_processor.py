@@ -82,30 +82,27 @@ def upload_hosts():
 
 
     # Generate objects to write to SFDC via bulk query
-    insert_obj = []
     upsert_obj = []
 
     # Iterate through each host record from Postgres
     for result in host_cursor:
         tmp_dict = dict(zip(correct_column_names, list(result)))
-        possible_id = id_mapping.get(tmp_dict.get('Name'), None)
-        if possible_id is not None:
-            tmp_dict["Id"] = possible_id
+        possible_id = id_mapping.get(tmp_dict.get('Name'), "")
+        tmp_dict["Id"] = possible_id
         for key in tmp_dict:
             if isinstance(tmp_dict[key], datetime):
                 tmp_dict[key] = str(tmp_dict[key].strftime("%Y-%m-%d"))
             if tmp_dict[key] is None:
                 tmp_dict = dicttoolz.dissoc(tmp_dict, key)
-
-        if 'Id' in tmp_dict:
-            upsert_obj.append(tmp_dict)
-        else:
-            insert_obj.append(tmp_dict)
+        if len(tmp_dict.get("Id")) < 2:
+            tmp_dict = dicttoolz.dissoc(tmp_dict, "Id")
+        upsert_obj.append(tmp_dict)
 
 
     upsert_count = len(upsert_obj)
     if upsert_count != 0:
         logger.debug("%s hosts to upsert.", upsert_count)
+
         upsert_results = sf.bulk.Host__c.upsert(upsert_obj, "Id")
 
         for result in upsert_results:
@@ -117,19 +114,38 @@ def upload_hosts():
     else:
         logger.debug("No hosts to upsert.")
 
-    insert_count = len(insert_obj)
-    if insert_count != 0:
-        logger.debug("%s hosts to insert.", insert_count)
-        insert_results = sf.bulk.Host__c.insert(insert_obj)
+def bulk_error_report(bulk_query_result, success_statement):
+    for result in bulk_query_result:
+        if result.get("success", True) is False:
+            logger.debug("Error on SFDC id: %s", result.get("id", None))
+            for error in result.get("errors", []):
+                new_error = dicttoolz.dissoc(error, "message")
+                logger.debug(json.dumps(new_error, indent=2))
+        else:
+            logger.debug("%s - %s", success_statement, result.get("id", None))
 
-        for result in insert_results:
-            if result.get("success", True) is False:
-                logger.debug("Error on SFDC id: %s", result.get("id", None))
-                for error in result.get("errors", []):
-                    new_error=dicttoolz.dissoc(error, "message")
-                    logger.debug(json.dumps(new_error, indent=2))
-    else:
-        logger.debug("No hosts to insert.")
+
+def update_accounts():
+    account_query = "SELECT * FROM version.sfdc_update"
+    account_cursor = mydb.cursor()
+    account_cursor.execute(account_query)
+    logger.debug("Found %s accounts to update.", account_cursor.rowcount)
+
+    column_mapping = generate_column_mapping('sfdc_update', 'Account')
+    correct_column_names = [column_mapping.get(desc[0]) for desc in account_cursor.description]
+
+    update_obj = []
+    for result in account_cursor:
+        tmp_dict = dict(zip(correct_column_names, list(result)))
+        # Remove Name and Website because those are the most stable and we don't need to update
+        fixed_dict = dicttoolz.dissoc(tmp_dict, "Name", "Website")
+        update_obj.append(fixed_dict)
+
+    logger.debug("Updating %s Accounts.", len(update_obj))
+
+    account_results = sf.bulk.Account.update(update_obj)
+
+    bulk_error_report(account_results, "Account Updated")
 
 
 def generate_accounts():
@@ -169,14 +185,8 @@ def generate_accounts():
     # Generate SFDC Accounts
     account_results = sf.bulk.Account.insert(write_obj)
 
-    for result in account_results:
-        if result.get("success", True) is False:
-            logger.debug("Error on SFDC id: %s", result.get("id", None))
-            for error in result.get("errors", []):
-                new_error = dicttoolz.dissoc(error, "message")
-                logger.debug(json.dumps(new_error, indent=2))
-        else:
-            logger.debug("Generedated Account - %s", result.get("id", None))
+    bulk_error_report(account_results, "Generated Account")
+
 
 def delete_all_hosts(sf_conn):
     """
@@ -210,8 +220,9 @@ if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s %(message)s',
                         datefmt='%Y-%m-%d %I:%M:%S %p')
     logging.getLogger(__name__).setLevel(logging.DEBUG)
-    upload_hosts()
-    generate_accounts()
+    # upload_hosts()
+    update_accounts()
+    # generate_accounts()
     # delete_all_hosts(sf)
 
 # TODO will need to keep track of errors so I can associate them with the host file
