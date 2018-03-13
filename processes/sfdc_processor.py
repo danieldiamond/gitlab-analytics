@@ -122,7 +122,7 @@ def bulk_error_report(bulk_query_result, success_statement):
                 new_error = dicttoolz.dissoc(error, "message")
                 logger.debug(json.dumps(new_error, indent=2))
         else:
-            logger.debug("%(message)s - %(id)s", message=success_statement, id=result.get("id", None))
+            logger.debug("%s - %s", success_statement, result.get("id", None))
 
 
 def update_accounts():

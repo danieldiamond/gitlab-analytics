@@ -23,6 +23,6 @@ SELECT
   coalesce(sf.numberofemployees :: TEXT, external_combined.numberofemployees :: TEXT) AS numberofemployees,
   coalesce(sf.phone, external_combined.phone)                                    AS phone
 FROM sfdc_sandbox.account AS sf
-  LEFT JOIN external_combined ON
+  INNER JOIN external_combined ON
                                 sf.name = external_combined.name
                                 OR regexp_replace(sf.website, '^(http(s)?\://)?www\.', '') = external_combined.domain
