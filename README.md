@@ -24,12 +24,20 @@ BizOps uses GitLab CI/CD to setup and maintain its stack, so software and script
 ### BizOps works for GitLab first.
 We are building BizOps to solve a problem that we share with all other software companies - how to acquire the highest-value customers at the lowest cost of acquisition?  We are solving this problem for ourselves first, incorporating what we learn along the way into a product that delivers practical and quantifiable value to our customers.
 
-## Objectives
+## Roadmap
 
-1. Build an open source BI product to analyze sales and marketing performance ([in progress](#development-plan))
-1. Expand into customer success insight and automation
-1. Close the feedback loop between product feature launches and sales/marketing performance
-1. Widen to include other areas of the company, like people ops and finance
+BizOps is stil early in development, and focused 
+
+1. MVC
+  * Horizontal slice of ELT sources: Salesforce, Marketo, NetSuite, Zuora
+  * Data Pipeline: container, CI pipeline, review apps
+2. Data Model and Visualization
+  * Common Data Model: Conventions for common table and field names
+  * Field Mapping: Mapping of user fields to common data model, if required
+  * Visualization Sample: Documentation and samples for connecting a visualization engine
+3. Ease of use & Automation
+  * Seamless handle some schema changes, like a field rename
+  * Match user fields to common data model, without intervention
 
 ### Competition & Value
 
@@ -44,16 +52,13 @@ This should be a replacement for other ELT & Data Integration tools: [Boomi](htt
 | Transform | [dbt](https://www.getdbt.com/) | [Pentaho DI](http://www.pentaho.com/product/data-integration), manual SQL | [Alooma](https://www.alooma.com/) |  
 | Warehouse | [PostgreSQL](https://www.postgresql.org/) | [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax) | [Redshift](https://aws.amazon.com/redshift/), [Snowflake](https://www.snowflake.net/) |
 | Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | | 
+| Test | [dbt](https://www.getdbt.com/) | | [Informatica](https://marketplace.informatica.com/solutions/informatica_data_validation), [iCEDQ](https://icedq.com/), [QuerySurge](http://www.querysurge.com/) |
 | Model | Out of scope | | |
 | Visualize | Out of scope | | |
 
-## Development Status
-
-BizOps is under active development. More information and current status is available in our [development plan](doc/development_plan.md).
-
 ## Metrics
 
-We are targeting analytics for sales and marketing performance. We plan to track the following metrics, in order of priority. These results will be able to reviewed over various time periods. Initially we will support single touch attribution, with support for multitouch in a [later sprint](doc/development_plan.md#backlog).
+We are targeting analytics for sales and marketing performance first. We plan to track the following metrics, in order of priority. These results will be able to reviewed over various time periods. Initially we will support single touch attribution, with support for multitouch in a [later sprint](doc/development_plan.md#backlog).
 
 1. SAOs by source
   1. Aggregated (SDR / BDR / AE generated / Other)
@@ -67,6 +72,8 @@ We are targeting analytics for sales and marketing performance. We plan to track
 4. Estimated IACV / marketing ratio.
   * CAC = cost per lead * conversion from lead to IACV
   * ROI = LTV / CAC
+
+In the future, we plan to expand support to other areas of an organization like Customer Success, Human Resources, and Finance. 
 
 ## Data sources
 
@@ -105,7 +112,7 @@ This image is set up to be able to run periodically to connect to the configured
 
 #### Using the Extract container
 > Notes:
-> * Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields. This will be automated in [Sprint 2](doc/development_plan.md#sprint-2).
+> * Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields. 
 > * The sample Zuora python scripts have been written to support GitLab's Zuora implementation. This includes a workaround to handle some subscriptions that should have been created as a single subscription.
 
 The container is primarily built to be used in conjunction with GitLab CI, to automate and schedule the extraction of data. Creating the container is currently a manual job, since it changes infrequently and consumes network/compute resources. To build the container initially or after changes, simply run the `extract_container` job in the `build` stage. The subsequent `extract` stage can be cancelled and restarted once the container has finished building. This will be improved in the future.
