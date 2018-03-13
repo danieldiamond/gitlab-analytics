@@ -52,7 +52,7 @@ This should be a replacement for other ELT & Data Integration tools: [Boomi](htt
 | Transform | [dbt](https://www.getdbt.com/) | [Pentaho DI](http://www.pentaho.com/product/data-integration), manual SQL | [Alooma](https://www.alooma.com/) |  
 | Warehouse | [PostgreSQL](https://www.postgresql.org/) | [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax) | [Redshift](https://aws.amazon.com/redshift/), [Snowflake](https://www.snowflake.net/) |
 | Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | | 
-| Test | [dbt](https://www.getdbt.com/) | | [Informatica](https://marketplace.informatica.com/solutions/informatica_data_validation), [iCEDQ](https://icedq.com/), [QuerySurge](http://www.querysurge.com/) |
+| Test | [dbt](https://www.getdbt.com/), [Great Expectations](https://github.com/great-expectations/great_expectations), [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) | | [Informatica](https://marketplace.informatica.com/solutions/informatica_data_validation), [iCEDQ](https://icedq.com/), [QuerySurge](http://www.querysurge.com/) |
 | Model | Out of scope | | |
 | Visualize | Out of scope | | |
 
@@ -104,7 +104,7 @@ It is expected that the BizOps project will have many applications managed in th
 
 The `extract` image includes:
 * Pentaho Data Integration 7.1 with OpenJDK 8 to extract data from SFDC
-* Python 2.7.13 and extraction scripts for Zuora and Marketo
+* Python 3.5.3 and extraction scripts for Zuora and Marketo
 
 This image is set up to be able to run periodically to connect to the configured [data sources](doc/data_sources.md) and extract data, processing it and storing it in the data warehouse running using the [`bizops container`](#bizops-container). Supported sources in current version:
 * SFDC
