@@ -82,30 +82,27 @@ def upload_hosts():
 
 
     # Generate objects to write to SFDC via bulk query
-    insert_obj = []
     upsert_obj = []
 
     # Iterate through each host record from Postgres
     for result in host_cursor:
         tmp_dict = dict(zip(correct_column_names, list(result)))
-        possible_id = id_mapping.get(tmp_dict.get('Name'), None)
-        if possible_id is not None:
-            tmp_dict["Id"] = possible_id
+        possible_id = id_mapping.get(tmp_dict.get('Name'), "")
+        tmp_dict["Id"] = possible_id
         for key in tmp_dict:
             if isinstance(tmp_dict[key], datetime):
                 tmp_dict[key] = str(tmp_dict[key].strftime("%Y-%m-%d"))
             if tmp_dict[key] is None:
                 tmp_dict = dicttoolz.dissoc(tmp_dict, key)
-
-        if 'Id' in tmp_dict:
-            upsert_obj.append(tmp_dict)
-        else:
-            insert_obj.append(tmp_dict)
+        if len(tmp_dict.get("Id")) < 2:
+            tmp_dict = dicttoolz.dissoc(tmp_dict, "Id")
+        upsert_obj.append(tmp_dict)
 
 
     upsert_count = len(upsert_obj)
     if upsert_count != 0:
         logger.debug("%s hosts to upsert.", upsert_count)
+
         upsert_results = sf.bulk.Host__c.upsert(upsert_obj, "Id")
 
         for result in upsert_results:
@@ -116,20 +113,6 @@ def upload_hosts():
                     logger.debug(json.dumps(new_error, indent=2))
     else:
         logger.debug("No hosts to upsert.")
-
-    insert_count = len(insert_obj)
-    if insert_count != 0:
-        logger.debug("%s hosts to insert.", insert_count)
-        insert_results = sf.bulk.Host__c.insert(insert_obj)
-
-        for result in insert_results:
-            if result.get("success", True) is False:
-                logger.debug("Error on SFDC id: %s", result.get("id", None))
-                for error in result.get("errors", []):
-                    new_error=dicttoolz.dissoc(error, "message")
-                    logger.debug(json.dumps(new_error, indent=2))
-    else:
-        logger.debug("No hosts to insert.")
 
 
 def generate_accounts():
@@ -211,7 +194,7 @@ if __name__ == "__main__":
                         datefmt='%Y-%m-%d %I:%M:%S %p')
     logging.getLogger(__name__).setLevel(logging.DEBUG)
     upload_hosts()
-    generate_accounts()
+    # generate_accounts()
     # delete_all_hosts(sf)
 
 # TODO will need to keep track of errors so I can associate them with the host file
