@@ -2,8 +2,8 @@
 
 # Get's current UTC time
 H=$(date -u +%H)
-STARTTIME=18
-ENDTIME=22
+STARTTIME=7
+ENDTIME=10
 
 # Checks if between 7 and 10 AM UTC (1-4 AM CST)
 # 10#$H returns the hour in base 10
