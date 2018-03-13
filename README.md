@@ -26,8 +26,6 @@ We are building BizOps to solve a problem that we share with all other software 
 
 ## Roadmap
 
-BizOps is stil early in development, and focused 
-
 1. MVC
   * Horizontal slice of ELT sources: Salesforce, Marketo, NetSuite, Zuora
   * Data Pipeline: container, CI pipeline, review apps
