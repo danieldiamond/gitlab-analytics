@@ -1,14 +1,25 @@
 with libre_agg as (
   SELECT * FROM {{ ref('libre_agg_hosts') }}
-)
+),
+
+libre AS (
+  SELECT *
+  FROM {{ ref('libre_hosts') }}
+),
+
+host_data AS (
+    SELECT *
+    FROM libre
+    JOIN libre_agg ON libre.clean_domain = libre_agg.the_clean_url
+  )
 
 SELECT
   max(company_name)            AS name,
-  the_clean_url                AS website,
+  clean_domain                 AS website,
   'Prospect - CE User' :: TEXT AS type,
   '00561000000mpHTAAY' :: TEXT AS OwnerId,
   'True' :: BOOLEAN            AS using_ce__c
-FROM libre_agg AS lah
+FROM host_data AS lah
   LEFT OUTER JOIN
   (
     SELECT
@@ -16,22 +27,23 @@ FROM libre_agg AS lah
       website                                              AS original,
       regexp_replace(website, '^(http(s)?\://)?www\.', '') AS fixed
     FROM sfdc.account
-    WHERE website IS NOT NULL) AS sf
-    ON lah.the_clean_url = sf.fixed
+    WHERE website IS NOT NULL
+  ) AS sf
+    ON lah.clean_domain = sf.fixed
 WHERE sf.fixed IS NULL
-      AND the_clean_url !~ '\d+\.\d+.\d+\.\d+'
+      AND clean_domain !~ '\d+\.\d+.\d+\.\d+'
       AND lah.company_name NOT IN ('Microsoft', 'Amazon.com')
-GROUP BY the_clean_url
+GROUP BY clean_domain
 
 UNION
 
 SELECT
   max(company_name)            AS name,
-  the_clean_url                AS website,
+  clean_domain                 AS website,
   'Prospect - CE User' :: TEXT AS type,
   '00561000000mpHTAAY' :: TEXT AS OwnerId,
   'True' :: BOOLEAN            AS using_ce__c
-FROM libre_agg AS lah
+FROM host_data AS lah
   LEFT OUTER JOIN
   (
     SELECT
@@ -40,7 +52,7 @@ FROM libre_agg AS lah
     FROM sfdc.account) AS sf
     ON lah.company_name = sf.name
 WHERE sf.name IS NULL
-      AND the_clean_url !~ '\d+\.\d+.\d+\.\d+'
+      AND clean_domain !~ '\d+\.\d+.\d+\.\d+'
       AND lah.company_name NOT IN ('Microsoft', 'Amazon.com')
-GROUP BY the_clean_url
+GROUP BY clean_domain
 ORDER BY name
