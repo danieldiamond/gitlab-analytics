@@ -141,11 +141,19 @@ def update_accounts():
         fixed_dict = dicttoolz.dissoc(tmp_dict, "Name", "Website")
         update_obj.append(fixed_dict)
 
-    logger.debug("Updating %s Accounts.", len(update_obj))
+    write_count = len(update_obj)
 
-    account_results = sf.bulk.Account.update(update_obj)
 
-    bulk_error_report(account_results, "Account Updated")
+    if write_count == 0:
+        logger.debug("No accounts to update.")
+        return
+    else:
+        logger.debug("Updating %s Accounts.", write_count)
+        account_results = sf.bulk.Account.update(update_obj)
+
+        bulk_error_report(account_results, "Account Updated")
+
+    return
 
 
 def generate_accounts():
@@ -180,12 +188,19 @@ def generate_accounts():
         tmp_dict = dict(zip(correct_column_names, list(result)))
         write_obj.append(tmp_dict)
 
-    logger.debug("Generating %s accounts.", len(write_obj))
+    write_count = len(write_obj)
 
     # Generate SFDC Accounts
-    account_results = sf.bulk.Account.insert(write_obj)
+    if write_count == 0:
+        logger.debug("No accounts to generate.")
+        return
+    else:
+        logger.debug("Generating %s accounts.", write_count)
+        account_results = sf.bulk.Account.insert(write_obj)
 
-    bulk_error_report(account_results, "Generated Account")
+        bulk_error_report(account_results, "Generated Account")
+
+    return
 
 
 def delete_all_hosts(sf_conn):
