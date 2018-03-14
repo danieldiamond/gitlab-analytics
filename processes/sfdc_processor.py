@@ -216,13 +216,20 @@ def delete_all_hosts(sf_conn):
 
 logger = logging.getLogger(__name__)
 
+# TODO possibly add CLI interface
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s %(message)s',
                         datefmt='%Y-%m-%d %I:%M:%S %p')
     logging.getLogger(__name__).setLevel(logging.DEBUG)
-    # upload_hosts()
-    update_accounts()
-    # generate_accounts()
-    # delete_all_hosts(sf)
 
-# TODO will need to keep track of errors so I can associate them with the host file
+    logger.debug("Uploading hosts records")
+    upload_hosts()
+
+    logger.debug("Generating SFDC Accounts")
+    generate_accounts()
+
+    logger.debug("Updating accounts with additional data")
+    update_accounts()
+
+    # Don't run this one unless you know what you're doing!
+    # delete_all_hosts(sf)
