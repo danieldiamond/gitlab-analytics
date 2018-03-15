@@ -7,7 +7,7 @@ stages:
   - review_stop
 
 .job_template: &job_definition
-  image: registry.gitlab.com/bizops/bizops-elt/extract:master
+  image: registry.gitlab.com/bizops/bizops-elt/extract:latest
   tags:
     - analytics
 
