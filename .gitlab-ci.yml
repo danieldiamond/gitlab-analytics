@@ -53,7 +53,7 @@ dbt:
     - setup_cloudsqlproxy
     - cd elt/dbt
     - dbt -d run --profiles-dir profile --target prod --models sfdc
-    - bash dbt_timecheck.sh
+    - dbt -d run --profiles-dir profile --target version --models pings
     - stop_cloudsqlproxy
 
 sfdc_update:
