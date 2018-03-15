@@ -71,8 +71,8 @@ def upload_hosts():
     #Generate an ordered list of the correct column mappings
     correct_column_names = [column_mapping.get(desc[0]) for desc in host_cursor.description]
 
-    # Match on the ID of the host record so we upsert instead of insert
-    all_sfdc_hosts = sf.query_all("SELECT Id, Name FROM Host__c")
+    # Match on the ID of the host record so we update instead of insert
+    all_sfdc_hosts = sf.query_all("SELECT Id, Name, Account__c FROM Host__c")
 
     # Create dictionary of {"SFDC Name": "SFDC Id"}
     id_mapping=dict()
@@ -95,7 +95,11 @@ def upload_hosts():
             if tmp_dict[key] is None:
                 tmp_dict = dicttoolz.dissoc(tmp_dict, key)
         if len(tmp_dict.get("Id")) < 2:
+            # If there is no Id, it does not exist, remove the key
             tmp_dict = dicttoolz.dissoc(tmp_dict, "Id")
+        else:
+            # If there is an Id, remove the account, so we don't update that.
+            tmp_dict = dicttoolz.dissoc(tmp_dict, "Account__c")
         upsert_obj.append(tmp_dict)
 
 
@@ -141,11 +145,19 @@ def update_accounts():
         fixed_dict = dicttoolz.dissoc(tmp_dict, "Name", "Website")
         update_obj.append(fixed_dict)
 
-    logger.debug("Updating %s Accounts.", len(update_obj))
+    write_count = len(update_obj)
 
-    account_results = sf.bulk.Account.update(update_obj)
 
-    bulk_error_report(account_results, "Account Updated")
+    if write_count == 0:
+        logger.debug("No accounts to update.")
+        return
+    else:
+        logger.debug("Updating %s Accounts.", write_count)
+        account_results = sf.bulk.Account.update(update_obj)
+
+        bulk_error_report(account_results, "Account Updated")
+
+    return
 
 
 def generate_accounts():
@@ -174,18 +186,25 @@ def generate_accounts():
         # Skips host if host is already an Account
         result_string = result[0] + result[1]
         if existing_accounts.get(result_string, None) is not None:
-            logger.debug("Skipping host record. Already present as account %s", existing_accounts.get(result_string))
+            logger.debug("Skipping record. Account already present with Id: %s", existing_accounts.get(result_string))
             continue
 
         tmp_dict = dict(zip(correct_column_names, list(result)))
         write_obj.append(tmp_dict)
 
-    logger.debug("Generating %s accounts.", len(write_obj))
+    write_count = len(write_obj)
 
     # Generate SFDC Accounts
-    account_results = sf.bulk.Account.insert(write_obj)
+    if write_count == 0:
+        logger.debug("No accounts to generate.")
+        return
+    else:
+        logger.debug("Generating %s accounts.", write_count)
+        account_results = sf.bulk.Account.insert(write_obj)
 
-    bulk_error_report(account_results, "Generated Account")
+        bulk_error_report(account_results, "Generated Account")
+
+    return
 
 
 def delete_all_hosts(sf_conn):
@@ -216,13 +235,20 @@ def delete_all_hosts(sf_conn):
 
 logger = logging.getLogger(__name__)
 
+# TODO possibly add CLI interface
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s %(message)s',
                         datefmt='%Y-%m-%d %I:%M:%S %p')
     logging.getLogger(__name__).setLevel(logging.DEBUG)
-    # upload_hosts()
-    update_accounts()
-    # generate_accounts()
-    # delete_all_hosts(sf)
 
-# TODO will need to keep track of errors so I can associate them with the host file
+    logger.debug("Uploading hosts records")
+    upload_hosts()
+
+    logger.debug("Generating SFDC Accounts")
+    generate_accounts()
+
+    logger.debug("Updating accounts with additional data")
+    update_accounts()
+
+    # Don't run this one unless you know what you're doing!
+    # delete_all_hosts(sf)

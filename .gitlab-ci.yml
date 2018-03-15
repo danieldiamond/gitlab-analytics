@@ -3,15 +3,19 @@ stages:
   - build
   - extract
   - model
+  - update
   - review_stop
 
-sfdc:
+.job_template: &job_definition
+  image: registry.gitlab.com/bizops/bizops-elt/extract:latest
+  tags:
+    - analytics
+
+sfdc_extract:
   variables:
     FIXED_SFDC_PASSWORD: $SFDC_PASSWORD
   stage: extract
-  image: registry.gitlab.com/bizops/bizops-elt/extract:master
-  tags:
-    - analytics
+  <<: *job_definition
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
@@ -24,9 +28,7 @@ zuora:
   variables:
     FIXED_ZUORA_PASSWORD: $ZUORA_PASSWORD
   stage: extract
-  image: registry.gitlab.com/bizops/bizops-elt/extract:master
-  tags:
-    - analytics
+  <<: *job_definition
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
@@ -36,26 +38,31 @@ zuora:
 
 pings:
   stage: extract
-  image: registry.gitlab.com/bizops/bizops-elt/extract:master
-  tags:
-    - analytics
+  <<: *job_definition
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - bash processes/hosts_to_sfdc/python_timecheck.sh
     - stop_cloudsqlproxy
 
-model:
+dbt:
   stage: model
-  image: registry.gitlab.com/bizops/bizops-elt/extract:master
-  tags:
-    - analytics
+  <<: *job_definition
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - cd elt/dbt
     - dbt -d run --profiles-dir profile --target prod --models sfdc
-    - bash dbt_timecheck.sh
+    - dbt -d run --profiles-dir profile --target version --models pings
+    - stop_cloudsqlproxy
+
+sfdc_update:
+  stage: update
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - python3 processes/sfdc_processor.py
     - stop_cloudsqlproxy
 
 review:
