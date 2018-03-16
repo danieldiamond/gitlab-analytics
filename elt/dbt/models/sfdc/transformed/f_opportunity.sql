@@ -2,10 +2,14 @@
   config({
     "materialized":"table",
     "post-hook": [
-       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_stageid ON {{ this.schema }}.f_opportunity(opportunity_stage_id)",
-       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_closedate ON {{ this.schema }}.f_opportunity(opportunity_closedate)",
-       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_leadource ON {{ this.schema }}.f_opportunity(lead_source_id)",
-       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_account_id ON {{ this.schema }}.f_opportunity(account_id)"
+       "DROP INDEX IF EXISTS {{ this.schema }}.idx_f_opportunity_stageid",
+       "DROP INDEX IF EXISTS {{ this.schema }}.idx_f_opportunity_closedate",
+       "DROP INDEX IF EXISTS {{ this.schema }}.idx_f_opportunity_leadource",
+       "DROP INDEX IF EXISTS {{ this.schema }}.idx_f_opportunity_account_id",
+       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_stageid ON {{ this }}(opportunity_stage_id)",
+       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_closedate ON {{ this}}(opportunity_closedate)",
+       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_leadource ON {{ this }}(lead_source_id)",
+       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_account_id ON {{ this }}(account_id)"
     ]
   })
 }}
