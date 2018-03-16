@@ -26,3 +26,4 @@ models:
 
 on-run-end:
   - 'GRANT SELECT ON ALL TABLES IN SCHEMA version TO tmurphy'
+  - 'CREATE INDEX IF NOT EXISTS idx_f_opportunity_account_id ON {{ this.schema }}.f_opportunity(account_id)'
