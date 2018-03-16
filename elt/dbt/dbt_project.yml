@@ -5,6 +5,8 @@ profile: 'gitlab'
 
 source-paths: ["models"]
 
+test-paths: ["tests"]
+
 models:
   gitlab_dw:
     sfdc:

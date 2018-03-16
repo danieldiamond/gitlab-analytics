@@ -1,0 +1,10 @@
+
+libre_sfdc_accounts:
+  constraints:
+    not_null:
+      - account__c
+      - name
+      - original_hostname__c
+
+    accepted_values:
+      - {field: host_data_source__c, values: ['DiscoverOrg' ,'Clearbit', 'WHOIS']}
