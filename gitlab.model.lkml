@@ -32,3 +32,27 @@ explore: f_opportunity {
     sql_on: ${f_opportunity.opportunity_stage_id} = ${dim_opportunitystage.id} ;;
   }
 }
+
+
+explore: pipeline_change {
+  label: "Sales Pipeline Change"
+  description: "Use this explore to look at the change in pipeline over time"
+
+  always_filter: {
+    filters: {
+      field: close_date
+      value: "this month"
+    }
+
+    filters: {
+      field: date_range
+      value: "7 days ago for 7 days"
+    }
+
+    filters: {
+      field: metric_type
+      value: "ACV"
+    }
+  }
+
+}
