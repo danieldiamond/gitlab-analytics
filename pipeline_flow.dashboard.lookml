@@ -28,7 +28,7 @@
       _type_hint: number
     - table_calculation: starting
       label: Starting
-      expression: if(${pipeline_change.category} = "Starting", ${pipeline_change.total_acv},0)
+      expression: if(${pipeline_change.category} = "Starting", ${pipeline_change.total_iacv},0)
       value_format:
       value_format_name: usd_0
       _kind_hint: measure
@@ -38,7 +38,7 @@
       expression: |-
         if(${pipeline_change.category} = "Created" OR ${pipeline_change.category} = "Moved In" OR
           ${pipeline_change.category} = "Increased"
-          , ${pipeline_change.total_acv},0)
+          , ${pipeline_change.total_iacv},0)
       value_format:
       value_format_name: usd_0
       _kind_hint: measure
@@ -49,14 +49,14 @@
         if(${pipeline_change.category} = "Moved Out" OR ${pipeline_change.category} = "Decreased" OR
           ${pipeline_change.category} = "Won" OR
           ${pipeline_change.category} = "Lost"
-          , -${pipeline_change.total_acv},0)
+          , -${pipeline_change.total_iacv},0)
       value_format:
       value_format_name: usd_0
       _kind_hint: measure
       _type_hint: number
     - table_calculation: ending
       label: Ending
-      expression: if(${pipeline_change.category} = "Ending", ${pipeline_change.total_acv},0)
+      expression: if(${pipeline_change.category} = "Ending", ${pipeline_change.total_iacv},0)
       value_format:
       value_format_name: usd_0
       _kind_hint: measure
