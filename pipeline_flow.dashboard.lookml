@@ -54,7 +54,7 @@
       value_format_name: usd_0
       _kind_hint: measure
       _type_hint: number
-    - table_calculation: starting
+    - table_calculation: ending
       label: Ending
       expression: if(${pipeline_change.category} = "Ending", ${pipeline_change.total_acv},0)
       value_format:
