@@ -21,7 +21,7 @@
     dynamic_fields:
     - table_calculation: offset
       label: offset
-      expression: running_total(offset(${starting},-1)+offset(${added},-1)-${subtracted})
+      expression: if(${pipeline_change.category} = "Ending",0,running_total(offset(${starting},-1)+offset(${added},-1)-${subtracted}))
       value_format:
       value_format_name: usd_0
       _kind_hint: measure
