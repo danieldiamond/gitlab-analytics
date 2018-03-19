@@ -59,10 +59,11 @@
       expression: if(${pipeline_change.category} = "Ending", ${pipeline_change.total_acv},0)
       value_format:
       value_format_name: usd_0
+      label_color: black
       _kind_hint: measure
       _type_hint: number
     stacking: normal
-    show_value_labels: false
+    show_value_labels: true
     label_density: 25
     legend_position: center
     x_axis_gridlines: false
@@ -101,9 +102,7 @@
       added: "#0ABB45"
       subtracted: "#FC6250"
     hidden_series: []
-    label_color:
-    - transparent
-    - white
+    label_color: [transparent, black, black, black, black, black, black]
     hide_legend: true
     font_size: ''
     row: 0
