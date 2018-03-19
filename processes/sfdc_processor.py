@@ -78,7 +78,8 @@ def upload_hosts():
     id_mapping=dict()
     if all_sfdc_hosts.get("done") is True:
         for result in all_sfdc_hosts.get("records"):
-            id_mapping[result.get("Name", "None")] = result.get("Id", "None")
+            string_key = result.get("Name", "None") + result.get("Account__c", "None")
+            id_mapping[string_key] = result.get("Id", "None")
 
 
     # Generate objects to write to SFDC via bulk query
@@ -87,7 +88,8 @@ def upload_hosts():
     # Iterate through each host record from Postgres
     for result in host_cursor:
         tmp_dict = dict(zip(correct_column_names, list(result)))
-        possible_id = id_mapping.get(tmp_dict.get('Name'), "")
+        tmp_string_key = tmp_dict.get("Name", "None") + tmp_dict.get("Account__c", "None")
+        possible_id = id_mapping.get(tmp_string_key, "")
         tmp_dict["Id"] = possible_id
         for key in tmp_dict:
             if isinstance(tmp_dict[key], datetime):
@@ -101,7 +103,6 @@ def upload_hosts():
             # If there is an Id, remove the account, so we don't update that.
             tmp_dict = dicttoolz.dissoc(tmp_dict, "Account__c")
         upsert_obj.append(tmp_dict)
-
 
     upsert_count = len(upsert_obj)
     if upsert_count != 0:
