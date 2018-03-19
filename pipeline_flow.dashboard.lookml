@@ -103,7 +103,12 @@
     hidden_series: []
     label_color:
     - transparent
-    - white
+    - black
+    - black
+    - black
+    - black
+    - black
+    - black
     hide_legend: true
     font_size: ''
     row: 0
