@@ -104,6 +104,7 @@ view: pipeline_change {
         AND NEW.sales_accepted_date is not null
       AND s.IsWon=false
       AND s.IsClosed=true
+      AND os.IsClosed=false
 
       UNION ALL
 
