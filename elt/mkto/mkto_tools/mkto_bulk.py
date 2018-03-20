@@ -7,6 +7,11 @@ import requests
 from mkto_token import get_token, mk_endpoint
 
 
+def marketo_response(response):
+
+    return
+
+
 def bulk_create_job(fields, filter, data_type, format="CSV", column_header_names=None):
 
     token = get_token()
@@ -66,6 +71,49 @@ def bulk_get_export_jobs(data_type, status=None, batch_size=10):
         return "Error"
 
 
+def bulk_enqueue_job(data_type, export_id):
+
+    token = get_token()
+    if token == "Error":
+        print("No job created. Token Error.")
+        return
+
+    enqueue_url = mk_endpoint + 'bulk/v1/' + data_type + '/export/' + export_id + '/enqueue.json'
+
+    headers = {
+        "Authorization": "Bearer " + str(token),
+        "Content-Type": "application/json"
+    }
+
+    response = requests.post(enqueue_url, headers=headers)
+
+    if response.status_code == 200:
+        return response
+    else:
+        return "Error"
+
+
+def bulk_job_status(data_type, export_id):
+
+    token = get_token()
+    if token == "Error":
+        print("No job created. Token Error.")
+        return
+
+    status_url = mk_endpoint + 'bulk/v1/' + data_type + '/export/' + export_id + '/status.json'
+
+    payload = {
+        "access_token": token
+    }
+
+    response = requests.get(status_url, params=payload)
+
+    if response.status_code == 200:
+        r_json = response.json()
+        return r_json
+    else:
+        return "Error"
+
 
 if __name__ == "__main__":
     fields = [
@@ -79,4 +127,7 @@ if __name__ == "__main__":
       }
    }
     # print(bulk_create_job(fields, filter, data_type="leads"))
-    print(bulk_get_export_jobs("leads"))
+    # print(bulk_get_export_jobs("leads"))
+    print(bulk_enqueue_job("leads", 'a5be05fc-a843-4ca9-84b5-55768c9e02ac'))
+    print(json.dumps(bulk_job_status("leads", 'a5be05fc-a843-4ca9-84b5-55768c9e02ac'), indent=2))
+
