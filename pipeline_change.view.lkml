@@ -79,7 +79,7 @@ view: pipeline_change {
         OR NEW.opportunity_closedate >= {% date_end close_date %})
         AND OLD.sales_accepted_date is not null
          and NEW.opportunity_type <> 'Renewal'
-        AND {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
+        AND {% condition close_date %} OLD.opportunity_closedate {% endcondition %}
         UNION ALL
 
         SELECT 'Won' as category, '7' as order, NEW.*
