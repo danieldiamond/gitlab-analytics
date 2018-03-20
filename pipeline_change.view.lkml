@@ -101,9 +101,9 @@ view: pipeline_change {
        INNER JOIN dim_opportunitystage os on old.opportunity_stage_id=os.id
        WHERE {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
          and NEW.opportunity_type <> 'Renewal'
-        AND OLD.sales_accepted_date is not null
+        AND NEW.sales_accepted_date is not null
       AND s.IsWon=false
-      AND os.IsClosed=true
+      AND s.IsClosed=true
 
       UNION ALL
 
