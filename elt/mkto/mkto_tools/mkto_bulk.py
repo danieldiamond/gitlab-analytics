@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import time
 import json
 
 import requests
@@ -115,8 +116,66 @@ def bulk_job_status(data_type, export_id):
         return "Error"
 
 
+def bulk_get_file(data_type, export_id):
+
+    token = get_token()
+    if token == "Error":
+        print("No job created. Token Error.")
+        return
+
+    file_url = mk_endpoint + 'bulk/v1/' + data_type + '/export/' + export_id + '/file.json'
+
+    payload = {
+        "access_token": token
+    }
+
+    while True:
+        status_result = bulk_job_status(data_type, export_id)
+        job_status=status_result.get("result", [])[0].get("status")
+        if job_status == "Completed":
+            break
+        else:
+            print("Job Status is " + job_status)
+            print("Waiting for 60 seconds.")
+            time.sleep(60)
+            continue
+
+    response = requests.get(file_url, params=payload)
+
+    if response.status_code == 200:
+        with open(data_type + '.csv', mode='wb') as localfile:
+            localfile.write(response.content)
+        print("Writing File")
+        return
+    else:
+        return "Error"
+
+
+def bulk_cancel_job(data_type, export_id):
+
+    token = get_token()
+    if token == "Error":
+        print("No job created. Token Error.")
+        return
+
+    cancel_url = mk_endpoint + 'bulk/v1/' + data_type + '/export/' + export_id + '/cancel.json'
+
+    headers = {
+        "Authorization": "Bearer " + str(token),
+        "Content-Type": "application/json"
+    }
+
+    response = requests.post(cancel_url, headers=headers)
+
+    if response.status_code == 200:
+        return
+    else:
+        return "Error"
+
+
 if __name__ == "__main__":
     fields = [
+      "id",
       "firstName",
       "lastName"
    ]
@@ -126,8 +185,10 @@ if __name__ == "__main__":
          "endAt": "2017-01-31T00:00:00Z"
       }
    }
-    # print(bulk_create_job(fields, filter, data_type="leads"))
+
+    new_job = bulk_create_job(fields, filter, data_type="leads")
+    export_id = new_job.get("result", ["None"])[0].get("exportId")
     # print(bulk_get_export_jobs("leads"))
-    print(bulk_enqueue_job("leads", 'a5be05fc-a843-4ca9-84b5-55768c9e02ac'))
-    print(json.dumps(bulk_job_status("leads", 'a5be05fc-a843-4ca9-84b5-55768c9e02ac'), indent=2))
+    bulk_enqueue_job("leads", export_id)
+    bulk_get_file("leads", export_id)
 
