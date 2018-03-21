@@ -8,26 +8,6 @@ import requests
 from mkto_token import get_token, mk_endpoint
 
 
-def marketo_response(response):
-
-    return
-
-
-def bulk_filter_buider(start_date, end_date, activity_ids=None):
-
-    filter = {
-        "createdAt": {
-            "startAt": start_date,
-            "endAt": end_date
-        }
-    }
-
-    if activity_ids is not None:
-        filter["activityTypeIds"] = activity_ids
-
-    return filter
-
-
 def bulk_create_job(fields, filter, data_type, format="CSV", column_header_names=None):
 
     token = get_token()

@@ -28,8 +28,8 @@ def describe_leads():
         return "Error"
 
 
-def get_leads_fieldnames(lead_description):
-
+def get_leads_fieldnames_mkto(lead_description):
+    # For comparing what's in Marketo to what's specified in project
     field_names = []
     for item in lead_description.get("result", []):
         if "rest" not in item:
