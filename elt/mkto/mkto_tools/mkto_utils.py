@@ -6,6 +6,13 @@ from mkto_token import get_token, mk_endpoint
 import requests
 
 
+host = os.environ.get('PROCESS_DB_PROD_ADDRESS')
+username = os.environ.get('PROCESS_DB_PROD_USERNAME')
+password = os.environ.get('PROCESS_DB_PROD_PASSWORD')
+database = os.environ.get('PROCESS_DB_PROD_DBNAME')
+port = os.environ.get('PG_PORT')
+
+
 def get_fieldnames_config(item):
     myDir = os.path.dirname(os.path.abspath(__file__))
     myPath = os.path.join(myDir, '../../config', 'mktoFields.conf')
