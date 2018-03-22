@@ -7,7 +7,8 @@ import csv
 import requests
 
 from mkto_token import get_token, mk_endpoint
-from mkto_leads import get_leads_fieldnames_mkto, describe_leads
+from mkto_leads import get_leads_fieldnames_mkto, describe_leads, write_to_db_from_csv
+from mkto_utils import username, password, database, host, port
 
 
 def bulk_create_job(fields, filter, data_type, format="CSV", column_header_names=None):
@@ -131,6 +132,9 @@ def bulk_get_file(data_type, export_id):
         job_status=status_result.get("result", [])[0].get("status")
         if job_status == "Completed":
             break
+        elif job_status == "Failed":
+            print("Job Failed")
+            return
         else:
             print("Job Status is " + job_status)
             print("Waiting for 60 seconds.")
@@ -179,11 +183,11 @@ def bulk_cancel_job(data_type, export_id):
 if __name__ == "__main__":
     filter = {
       "createdAt": {
-         "startAt": "2018-01-01T00:00:00Z",
-         "endAt": "2018-02-01T00:00:00Z"
+         "startAt": "2017-10-01T00:00:00Z",
+         "endAt": "2017-11-01T00:00:00Z"
       }
    }
-
+    #
     fields = get_leads_fieldnames_mkto(describe_leads())
     new_job = bulk_create_job(fields, filter, data_type="leads")
     export_id = new_job.get("result", ["None"])[0].get("exportId")
@@ -192,3 +196,4 @@ if __name__ == "__main__":
     bulk_enqueue_job("leads", export_id)
     bulk_get_file("leads", export_id)
 
+    write_to_db_from_csv(username, password, host, database, port, "leads")
