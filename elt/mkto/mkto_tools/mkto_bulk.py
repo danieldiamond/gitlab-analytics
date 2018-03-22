@@ -2,10 +2,12 @@
 
 import time
 import json
+import csv
 
 import requests
 
 from mkto_token import get_token, mk_endpoint
+from mkto_leads import get_leads_fieldnames_mkto, describe_leads
 
 
 def bulk_create_job(fields, filter, data_type, format="CSV", column_header_names=None):
@@ -135,15 +137,21 @@ def bulk_get_file(data_type, export_id):
             time.sleep(60)
             continue
 
-    response = requests.get(file_url, params=payload)
+    with requests.Session() as s:
+        download = s.get(file_url, params=payload)
 
-    if response.status_code == 200:
-        with open(data_type + '.csv', mode='wb') as localfile:
-            localfile.write(response.content)
+        decoded_content = download.content.decode('utf-8')
+
+        cr = csv.reader(decoded_content.splitlines(), delimiter=',')
+        my_list = list(cr)
+
+    with open(file=data_type + '.csv', mode='w', newline='') as csvfile:
+        csvwriter = csv.writer(csvfile, delimiter=',',
+                                quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        for row in my_list:
+            csvwriter.writerow(row)
+
         print("Writing File")
-        return
-    else:
-        return "Error"
 
 
 def bulk_cancel_job(data_type, export_id):
@@ -169,21 +177,18 @@ def bulk_cancel_job(data_type, export_id):
 
 
 if __name__ == "__main__":
-    fields = [
-      "id",
-      "firstName",
-      "lastName"
-   ]
     filter = {
       "createdAt": {
-         "startAt": "2017-01-01T00:00:00Z",
-         "endAt": "2017-01-31T00:00:00Z"
+         "startAt": "2018-01-01T00:00:00Z",
+         "endAt": "2018-02-01T00:00:00Z"
       }
    }
 
+    fields = get_leads_fieldnames_mkto(describe_leads())
     new_job = bulk_create_job(fields, filter, data_type="leads")
     export_id = new_job.get("result", ["None"])[0].get("exportId")
-    # print(bulk_get_export_jobs("leads"))
+    print(export_id)
+    print(bulk_get_export_jobs("leads"))
     bulk_enqueue_job("leads", export_id)
     bulk_get_file("leads", export_id)
 
