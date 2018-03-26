@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 
 import os
-import datetime
+import json
+import re
 import psycopg2
 import psycopg2.sql
 import requests
-from sqlalchemy.dialects import postgresql
-from toolz.dicttoolz import dissoc
 
 from mkto_token import get_token, mk_endpoint
 
@@ -83,6 +82,72 @@ def write_to_db_from_csv(username, password, host, database, port, item):
             mydb.commit()
             cursor.close()
             mydb.close()
+            # os.remove(item + '.csv')
+        except psycopg2.Error as err:
+            print(err)
+
+
+def upsert_to_db_from_csv(username, password, host, database, port, item, primary_key):
+
+    with open(item + '.csv', 'r') as file:
+        try:
+            header = next(file).rstrip().lower()  # Get header row, remove new lines, lowercase
+
+            mydb = psycopg2.connect(host=host, user=username,
+                                    password=password, dbname=database, port=port)
+            cursor = mydb.cursor()
+
+            table_name = "sandbox.mkto_{}".format(item)
+            tmp_table_name = table_name + "_tmp"
+
+            # Create temp table
+            create_table = psycopg2.sql.SQL("CREATE TEMP TABLE {0} AS SELECT * FROM {1} LIMIT 0").format(
+                psycopg2.sql.Identifier(tmp_table_name),
+                psycopg2.sql.Identifier(table_name)
+            )
+            cursor.execute(create_table)
+            print(create_table.as_string(cursor))
+            mydb.commit()
+
+            # Import into TMP Table
+            copy_query=psycopg2.sql.SQL("COPY {0} ({1}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV").format(
+                psycopg2.sql.Identifier(tmp_table_name),
+                psycopg2.sql.SQL(', ').join(
+                    psycopg2.sql.Identifier(n) for n in header.split(',')
+                )
+            )
+            print(copy_query.as_string(cursor))
+            print("Copying File")
+            cursor.copy_expert(sql=copy_query, file=file)
+            mydb.commit()
+
+            # Update primary table
+            split_header = [col for col in header.split(',') if col != primary_key]
+            set_cols = {'.'.join([table_name, col]): '.'.join([tmp_table_name, col]) for col in split_header}
+            rep_colon = re.sub(':', '=', json.dumps(set_cols))
+            set_strings = re.sub('{|}', '', rep_colon)
+
+            update_query = psycopg2.sql.SQL("UPDATE {0} SET {1} FROM {2} WHERE {3}={4}").format(
+                psycopg2.sql.Identifier(table_name),
+                psycopg2.sql.SQL(set_strings),
+                psycopg2.sql.Identifier(tmp_table_name),
+                psycopg2.sql.Literal('.'.join([table_name, primary_key])),
+                psycopg2.sql.Literal('.'.join([tmp_table_name, primary_key]))
+            )
+            cursor.execute(update_query)
+            print(update_query.as_string(cursor))
+            mydb.commit()
+
+            # Drop temporary table
+            drop_query = psycopg2.sql.SQL("DROP TABLE {0}").format(
+                psycopg2.sql.Identifier(tmp_table_name)
+            )
+            print(drop_query.as_string(cursor))
+            cursor.execute(drop_query)
+            mydb.commit()
+            cursor.close()
+            mydb.close()
+
             # os.remove(item + '.csv')
         except psycopg2.Error as err:
             print(err)
