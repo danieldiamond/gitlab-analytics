@@ -7,12 +7,23 @@ import csv
 import requests
 
 from mkto_token import get_token, mk_endpoint
-from mkto_leads import get_leads_fieldnames_mkto, describe_leads, write_to_db_from_csv
-from mkto_utils import username, password, database, host, port
+from mkto_leads import get_leads_fieldnames_mkto, describe_leads, write_to_db_from_csv, upsert_to_db_from_csv
+from mkto_utils import username, password, database, host, port, bulk_filter_builder, get_mkto_config
 
 
-def bulk_create_job(fields, filter, data_type, format="CSV", column_header_names=None):
-
+def bulk_create_job(filter, data_type, fields=None, format="CSV", column_header_names=None):
+    """
+    Create a bulk job
+    :param filter: dictionary of filtering parameters (createdAt, fields, activityIds, etc)
+    :param data_type: "leads" or "activities"
+    :param fields: Optional list of fields to filter by
+    :param format: returns CSV file by default, other options are TSV and SSV
+    :param column_header_names: optional dictionary of preferred column header names i.e. => {
+          "firstName": "First Name",
+          "email": "Email Address"
+       }
+    :return: json data
+    """
     token = get_token()
     if token == "Error":
         print("No job created. Token Error.")
@@ -26,10 +37,12 @@ def bulk_create_job(fields, filter, data_type, format="CSV", column_header_names
     }
 
     payload = {
-        "fields": fields,
         "format": format,
         "filter": filter
     }
+
+    if fields is not None:
+        payload["fields"] = fields
 
     if column_header_names is not None:
         payload["columnHeaderNames"] = column_header_names
@@ -45,6 +58,13 @@ def bulk_create_job(fields, filter, data_type, format="CSV", column_header_names
 
 
 def bulk_get_export_jobs(data_type, status=None, batch_size=10):
+    """
+    Get a list of previous jobs
+    :param data_type: "leads" or "activities"
+    :param status: Optional filter by status
+    :param batch_size: returns 10 jobs by default
+    :return: json data
+    """
 
     token = get_token()
     if token == "Error":
@@ -71,7 +91,12 @@ def bulk_get_export_jobs(data_type, status=None, batch_size=10):
 
 
 def bulk_enqueue_job(data_type, export_id):
-
+    """
+    Enqueue a created job
+    :param data_type: "leads" or "activites"
+    :param export_id: guid
+    :return: json data
+    """
     token = get_token()
     if token == "Error":
         print("No job created. Token Error.")
@@ -93,6 +118,12 @@ def bulk_enqueue_job(data_type, export_id):
 
 
 def bulk_job_status(data_type, export_id):
+    """
+    Query for the status of a bulk job
+    :param data_type: "leads" or "activities"
+    :param export_id: guid
+    :return: json data
+    """
 
     token = get_token()
     if token == "Error":
@@ -115,7 +146,12 @@ def bulk_job_status(data_type, export_id):
 
 
 def bulk_get_file(data_type, export_id):
-
+    """
+    Download the CSV of a completed job. Can be called while job is still processsing.
+    :param data_type: "leads" or "activities"
+    :param export_id: guid
+    :return:
+    """
     token = get_token()
     if token == "Error":
         print("No job created. Token Error.")
@@ -159,6 +195,13 @@ def bulk_get_file(data_type, export_id):
 
 
 def bulk_cancel_job(data_type, export_id):
+    """
+    Cancel a currently running job.
+
+    :param data_type: "leads" or "activities"
+    :param export_id: guid
+    :return:
+    """
 
     token = get_token()
     if token == "Error":
@@ -181,15 +224,26 @@ def bulk_cancel_job(data_type, export_id):
 
 
 if __name__ == "__main__":
-    filter = {
-      "createdAt": {
-         "startAt": "2017-10-01T00:00:00Z",
-         "endAt": "2017-11-01T00:00:00Z"
-      }
-   }
-    #
-    fields = get_leads_fieldnames_mkto(describe_leads())
-    new_job = bulk_create_job(fields, filter, data_type="leads")
+
+    # Activities Bulk Load
+    activity_objects = get_mkto_config('Activities', 'objects')
+    activity_ids = [int(get_mkto_config(ob, 'id')) for ob in activity_objects.split(',')]
+    filter = bulk_filter_builder("2018-01-01T00:00:00Z", "2018-02-01T00:00:00Z", "createdAt", activity_ids)
+
+    new_job = bulk_create_job(filter, data_type="activities")
+    export_id = new_job.get("result", ["None"])[0].get("exportId")
+    print(export_id)
+    print(bulk_get_export_jobs("activities"))
+    bulk_enqueue_job("activities", export_id)
+    bulk_get_file("activities", export_id)
+
+    write_to_db_from_csv(username, password, host, database, port, "activities")
+    # upsert_to_db_from_csv(username, password, host, database, port, "activities", "marketoguid")
+
+
+    # Leads Bulk Load
+    filter = bulk_filter_builder("2018-01-01T00:00:00Z", "2018-02-01T00:00:00Z", "createdAt")
+    new_job = bulk_create_job(filter, data_type="leads")
     export_id = new_job.get("result", ["None"])[0].get("exportId")
     print(export_id)
     print(bulk_get_export_jobs("leads"))
@@ -197,3 +251,4 @@ if __name__ == "__main__":
     bulk_get_file("leads", export_id)
 
     write_to_db_from_csv(username, password, host, database, port, "leads")
+    # upsert_to_db_from_csv(username, password, host, database, port, "leads", "id")

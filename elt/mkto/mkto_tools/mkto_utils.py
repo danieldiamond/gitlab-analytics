@@ -13,19 +13,32 @@ database = os.environ.get('PROCESS_DB_PROD_DBNAME')
 port = os.environ.get('PG_PORT')
 
 
-def get_fieldnames_config(item):
+def get_mkto_config(section, field):
+    """
+    Generic function for getting marketo config info
+    :param section: The section in the INI config file
+    :param field: The key of the key/value pairs in a section
+    :return:
+    """
     myDir = os.path.dirname(os.path.abspath(__file__))
     myPath = os.path.join(myDir, '../../config', 'mktoFields.conf')
-    FieldParser = SafeConfigParser()
-    FieldParser.read(myPath)
-    fields = FieldParser.get(item, 'fields')
-    return fields
+    parser = SafeConfigParser()
+    parser.read(myPath)
+    values = parser.get(section, field)
+    return values
 
 
-def bulk_filter_builder(start_date, end_date, activity_ids=None):
-
+def bulk_filter_builder(start_date, end_date, pull_type, activity_ids=None):
+    """
+    Helper function to build the filter payload.
+    :param start_date: Time stamp of the form 2018-01-01T00:00:00Z
+    :param end_date: Time stamp of the form 2018-01-01T00:00:00Z
+    :param pull_type: Either "createdAt" or "updatedAt"
+    :param activity_ids: Optional list of activity ids
+    :return: Dictionary of filter object
+    """
     filter = {
-        "createdAt": {
+        pull_type: {
             "startAt": start_date,
             "endAt": end_date
         }

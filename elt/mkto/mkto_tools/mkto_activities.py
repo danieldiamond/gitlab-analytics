@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 
-import os
 import requests
 
 from mkto_token import get_token, mk_endpoint
-from configparser import SafeConfigParser
 
 
 def activity_types():
@@ -51,24 +49,3 @@ def activity_map():
             }
 
     return activity_dict
-
-
-def get_mkto_config(section, field):
-    """
-    Generic function for getting marketo config info
-    :param section: The section in the INI config file
-    :param field: The key of the key/value pairs in a section
-    :return:
-    """
-    myDir = os.path.dirname(os.path.abspath(__file__))
-    myPath = os.path.join(myDir, '../../config', 'mktoFields.conf')
-    parser = SafeConfigParser()
-    parser.read(myPath)
-    values = parser.get(section, field)
-    return values
-
-
-if __name__ == "__main__":
-    objects = get_mkto_config('Activities', 'objects')
-    for ob in objects.split(','):
-        print(get_mkto_config(ob, 'id'))
