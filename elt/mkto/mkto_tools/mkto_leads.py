@@ -97,11 +97,13 @@ def upsert_to_db_from_csv(username, password, host, database, port, item, primar
                                     password=password, dbname=database, port=port)
             cursor = mydb.cursor()
 
-            table_name = "sandbox.mkto_{}".format(item)
+            schema_name = "sandbox"
+            table_name = "mkto_{}".format(item)
             tmp_table_name = table_name + "_tmp"
 
             # Create temp table
-            create_table = psycopg2.sql.SQL("CREATE TEMP TABLE {0} AS SELECT * FROM {1} LIMIT 0").format(
+            create_table = psycopg2.sql.SQL("CREATE TEMP TABLE {0}.{1} AS SELECT * FROM {2} LIMIT 0").format(
+                psycopg2.sql.Identifier(schema_name),
                 psycopg2.sql.Identifier(tmp_table_name),
                 psycopg2.sql.Identifier(table_name)
             )
@@ -110,7 +112,8 @@ def upsert_to_db_from_csv(username, password, host, database, port, item, primar
             mydb.commit()
 
             # Import into TMP Table
-            copy_query=psycopg2.sql.SQL("COPY {0} ({1}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV").format(
+            copy_query=psycopg2.sql.SQL("COPY {0}.{1} ({2}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV").format(
+                psycopg2.sql.Identifier(schema_name),
                 psycopg2.sql.Identifier(tmp_table_name),
                 psycopg2.sql.SQL(', ').join(
                     psycopg2.sql.Identifier(n) for n in header.split(',')
@@ -123,23 +126,28 @@ def upsert_to_db_from_csv(username, password, host, database, port, item, primar
 
             # Update primary table
             split_header = [col for col in header.split(',') if col != primary_key]
-            set_cols = {'.'.join([table_name, col]): '.'.join([tmp_table_name, col]) for col in split_header}
+            set_cols = {col: '.'.join(['excluded', col]) for col in split_header}
             rep_colon = re.sub(':', '=', json.dumps(set_cols))
-            set_strings = re.sub('{|}', '', rep_colon)
+            rep_brace = re.sub('{|}', '', rep_colon)
+            set_strings = re.sub('\.','"."', rep_brace)
 
-            update_query = psycopg2.sql.SQL("UPDATE {0} SET {1} FROM {2} WHERE {3}={4}").format(
+            update_query = psycopg2.sql.SQL("INSERT INTO {0}.{1} ({2}) SELECT {2} FROM {0}.{3} ON CONFLICT ({4}) DO UPDATE SET {5}").format(
+                psycopg2.sql.Identifier(schema_name),
                 psycopg2.sql.Identifier(table_name),
-                psycopg2.sql.SQL(set_strings),
+                psycopg2.sql.SQL(', ').join(
+                    psycopg2.sql.Identifier(n) for n in header.split(',')
+                ),
                 psycopg2.sql.Identifier(tmp_table_name),
-                psycopg2.sql.Literal('.'.join([table_name, primary_key])),
-                psycopg2.sql.Literal('.'.join([tmp_table_name, primary_key]))
+                psycopg2.sql.Identifier(primary_key),
+                psycopg2.sql.SQL(set_strings)
             )
             cursor.execute(update_query)
             print(update_query.as_string(cursor))
             mydb.commit()
 
             # Drop temporary table
-            drop_query = psycopg2.sql.SQL("DROP TABLE {0}").format(
+            drop_query = psycopg2.sql.SQL("DROP TABLE {0}.{1}").format(
+                psycopg2.sql.Identifier(schema_name),
                 psycopg2.sql.Identifier(tmp_table_name)
             )
             print(drop_query.as_string(cursor))
