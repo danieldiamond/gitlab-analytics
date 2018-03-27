@@ -14,6 +14,26 @@ view: f_churn_history {
     sql: ${TABLE}.change ;;
   }
 
+  dimension: retention_type {
+    label: "Retention Type"
+    case: {
+      when: {
+        sql: ${current_arr} = 0 AND ${year_ago_arr} >0 ;;
+        label: "Cancellation"
+      }
+      when: {
+        sql: ${current_arr} < ${year_ago_arr} AND {current_arr} <> 0 ;;
+        label: "Downgrade"
+      }
+      when: {
+        sql: ${current_arr} > ${year_ago_arr} ;;
+        label: "Upgrade"
+      }
+      # possibly more when statements
+      else: "Retention"
+    }
+  }
+
   dimension_group: curr_end {
     type: time
     timeframes: [
@@ -139,6 +159,12 @@ view: f_churn_history {
     label: "Current Total"
     type: sum
     sql: ${current_total} ;;
+  }
+
+  measure: delta {
+    label: "Change from Year Ago"
+    type: sum
+    sql: ${TABLE}.change ;;
   }
 
   measure: net_retention {
