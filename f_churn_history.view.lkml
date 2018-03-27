@@ -145,7 +145,7 @@ view: f_churn_history {
     label: "Net Churn"
     type: number
     value_format: "#.00\%"
-    sql: 100 * ${current_total}/NULLIF(${year_ago_total},0) ;;
+    sql: 100 * ${total_current}/NULLIF(${total_year_ago},0) ;;
   }
 
 }
