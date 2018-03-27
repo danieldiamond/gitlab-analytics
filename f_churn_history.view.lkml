@@ -141,8 +141,8 @@ view: f_churn_history {
     sql: ${current_total} ;;
   }
 
-  measure: net_churn {
-    label: "Net Churn"
+  measure: net_retention {
+    label: "Net Retention"
     type: number
     value_format: "#.00\%"
     sql: 100 * ${total_current}/NULLIF(${total_year_ago},0) ;;
