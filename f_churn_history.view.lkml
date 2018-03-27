@@ -143,8 +143,9 @@ view: f_churn_history {
 
   measure: net_churn {
     label: "Net Churn"
-    type: sum
-    sql: ${current_total}/${year_ago_total} ;;
+    type: number
+    value_format: "#.00\%"
+    sql: 100 * ${current_total}/NULLIF(${year_ago_total},0) ;;
   }
 
 }
