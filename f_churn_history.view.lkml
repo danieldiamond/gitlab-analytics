@@ -22,7 +22,7 @@ view: f_churn_history {
         label: "Cancellation"
       }
       when: {
-        sql: ${current_arr} < ${year_ago_arr} AND {current_arr} <> 0 ;;
+        sql: ${current_arr} < ${year_ago_arr} AND ${current_arr} <> 0 ;;
         label: "Downgrade"
       }
       when: {
