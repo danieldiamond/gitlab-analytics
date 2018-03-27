@@ -3,12 +3,13 @@
 import time
 import json
 import csv
+import argparse
 
 import requests
 
-from mkto_token import get_token, mk_endpoint
-from mkto_leads import get_leads_fieldnames_mkto, describe_leads, write_to_db_from_csv, upsert_to_db_from_csv
-from mkto_utils import username, password, database, host, port, bulk_filter_builder, get_mkto_config
+from .mkto_token import get_token, mk_endpoint
+from .mkto_leads import get_leads_fieldnames_mkto, describe_leads, write_to_db_from_csv, upsert_to_db_from_csv
+from .mkto_utils import username, password, database, host, port, bulk_filter_builder, get_mkto_config
 
 
 def bulk_create_job(filter, data_type, fields=None, format="CSV", column_header_names=None):
@@ -223,6 +224,10 @@ def bulk_cancel_job(data_type, export_id):
         return "Error"
 
 
+def bulk_export(args):
+    print(args)
+
+
 if __name__ == "__main__":
 
     # Activities Bulk Load
@@ -242,6 +247,10 @@ if __name__ == "__main__":
 
 
     # Leads Bulk Load
+    fields = get_leads_fieldnames_mkto(describe_leads())
+    filter = bulk_filter_builder("2018-03-01T00:00:00Z", "2018-03-27T00:00:00Z", "updatedAt")
+    print(filter)
+    new_job = bulk_create_job(filter=filter, data_type="leads", fields=fields)
     filter = bulk_filter_builder("2018-01-01T00:00:00Z", "2018-02-01T00:00:00Z", "createdAt")
     new_job = bulk_create_job(filter, data_type="leads")
     export_id = new_job.get("result", ["None"])[0].get("exportId")

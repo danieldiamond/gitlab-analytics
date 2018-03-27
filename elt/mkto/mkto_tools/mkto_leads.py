@@ -7,7 +7,7 @@ import psycopg2
 import psycopg2.sql
 import requests
 
-from mkto_token import get_token, mk_endpoint
+from .mkto_token import get_token, mk_endpoint
 
 
 def describe_leads():

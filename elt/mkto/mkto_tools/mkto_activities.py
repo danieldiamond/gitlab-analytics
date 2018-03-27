@@ -2,7 +2,7 @@
 
 import requests
 
-from mkto_token import get_token, mk_endpoint
+from .mkto_token import get_token, mk_endpoint
 
 
 def activity_types():
