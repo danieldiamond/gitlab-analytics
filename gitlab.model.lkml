@@ -56,3 +56,15 @@ explore: pipeline_change {
   }
 
 }
+
+explore: f_churn_history {
+  label: "Account Churn History"
+  description: "Use this explore to look at subscription churn"
+
+  join: dim_account {
+    view_label: "Account"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${f_churn_history.id} = ${dim_account.id} ;;
+  }
+}
