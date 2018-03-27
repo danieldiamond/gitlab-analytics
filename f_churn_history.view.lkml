@@ -18,15 +18,15 @@ view: f_churn_history {
     label: "Retention Type"
     case: {
       when: {
-        sql: ${current_arr} = 0 AND ${year_ago_arr} >0 ;;
+        sql: ${current_total} = 0 AND ${year_ago_total} >0 ;;
         label: "Cancellation"
       }
       when: {
-        sql: ${current_arr} < ${year_ago_arr} AND ${current_arr} <> 0 ;;
+        sql: ${current_total} < ${year_ago_total} AND ${current_total} <> 0 ;;
         label: "Downgrade"
       }
       when: {
-        sql: ${current_arr} > ${year_ago_arr} ;;
+        sql: ${current_total} > ${year_ago_total} ;;
         label: "Upgrade"
       }
       # possibly more when statements
