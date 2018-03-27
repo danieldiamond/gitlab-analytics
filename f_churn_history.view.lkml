@@ -3,12 +3,14 @@ view: f_churn_history {
 
   dimension: id {
     primary_key: yes
+    hidden: yes
     type: string
     sql: ${TABLE}.id ;;
   }
 
   dimension: change {
     type: number
+    hidden: yes
     sql: ${TABLE}.change ;;
   }
 
@@ -118,7 +120,25 @@ view: f_churn_history {
   }
 
   measure: count {
-    type: count
+    type: count_distinct
     drill_fields: [id]
   }
+
+  measure: arr_year_ago {
+    label: "Year Ago ARR"
+    type: sum
+    sql: ${year_ago_arr} ;;
+  }
+
+  measure: total_year_ago {
+    label: "Year Ago Total"
+    type: sum
+    sql: ${year_ago_total} ;;
+  }
+  measure: total_current {
+    label: "Current Total"
+    type: sum
+    sql: ${current_total} ;;
+  }
+
 }
