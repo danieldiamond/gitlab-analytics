@@ -65,6 +65,6 @@ explore: f_churn_history {
     view_label: "Account"
     type: inner
     relationship: many_to_one
-    sql_on: ${f_churn_history.id} = ${dim_account.id} ;;
+    sql_on: ${f_churn_history.id} = ${dim_account.sfdc_account_id} ;;
   }
 }
