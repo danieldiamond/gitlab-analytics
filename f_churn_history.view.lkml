@@ -13,7 +13,29 @@ view: f_churn_history {
     hidden: yes
     sql: ${TABLE}.change ;;
   }
-
+  dimension: account_band {
+    label: "Account ACV Band"
+    case: {
+      when: {
+        sql: ${year_ago_total} <5000 ;;
+        label: "1. Under $5k"
+      }
+      when: {
+        sql: ${year_ago_total} >= 5000 AND ${year_ago_total} <50000 ;;
+        label: "2. $5k-$50k"
+      }
+      when: {
+        sql:  ${year_ago_total} >= 50000 AND ${year_ago_total} <100000  ;;
+        label: "3. $50k-$100k"
+      }
+      when: {
+        sql:  ${year_ago_total} >= 100000  ;;
+        label: "4. $100k and above"
+      }
+      # possibly more when statements
+      else: "Unknown"
+    }
+  }
   dimension: retention_type {
     label: "Retention Type"
     case: {
