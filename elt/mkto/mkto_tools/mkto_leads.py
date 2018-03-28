@@ -102,9 +102,9 @@ def upsert_to_db_from_csv(username, password, host, database, port, item, primar
             tmp_table_name = table_name + "_tmp"
 
             # Create temp table
-            create_table = psycopg2.sql.SQL("CREATE TEMP TABLE {0}.{1} AS SELECT * FROM {2} LIMIT 0").format(
-                psycopg2.sql.Identifier(schema_name),
+            create_table = psycopg2.sql.SQL("CREATE TEMP TABLE {0} AS SELECT * FROM {1}.{2} LIMIT 0").format(
                 psycopg2.sql.Identifier(tmp_table_name),
+                psycopg2.sql.Identifier(schema_name),
                 psycopg2.sql.Identifier(table_name)
             )
             cursor.execute(create_table)
@@ -113,7 +113,7 @@ def upsert_to_db_from_csv(username, password, host, database, port, item, primar
 
             # Import into TMP Table
             copy_query=psycopg2.sql.SQL("COPY {0}.{1} ({2}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV").format(
-                psycopg2.sql.Identifier(schema_name),
+                psycopg2.sql.Identifier("pg_temp"),
                 psycopg2.sql.Identifier(tmp_table_name),
                 psycopg2.sql.SQL(', ').join(
                     psycopg2.sql.Identifier(n) for n in header.split(',')
@@ -131,12 +131,13 @@ def upsert_to_db_from_csv(username, password, host, database, port, item, primar
             rep_brace = re.sub('{|}', '', rep_colon)
             set_strings = re.sub('\.','"."', rep_brace)
 
-            update_query = psycopg2.sql.SQL("INSERT INTO {0}.{1} ({2}) SELECT {2} FROM {0}.{3} ON CONFLICT ({4}) DO UPDATE SET {5}").format(
+            update_query = psycopg2.sql.SQL("INSERT INTO {0}.{1} ({2}) SELECT {2} FROM {3}.{4} ON CONFLICT ({5}) DO UPDATE SET {6}").format(
                 psycopg2.sql.Identifier(schema_name),
                 psycopg2.sql.Identifier(table_name),
                 psycopg2.sql.SQL(', ').join(
                     psycopg2.sql.Identifier(n) for n in header.split(',')
                 ),
+                psycopg2.sql.Identifier("pg_temp"),
                 psycopg2.sql.Identifier(tmp_table_name),
                 psycopg2.sql.Identifier(primary_key),
                 psycopg2.sql.SQL(set_strings)
@@ -147,7 +148,7 @@ def upsert_to_db_from_csv(username, password, host, database, port, item, primar
 
             # Drop temporary table
             drop_query = psycopg2.sql.SQL("DROP TABLE {0}.{1}").format(
-                psycopg2.sql.Identifier(schema_name),
+                psycopg2.sql.Identifier("pg_temp"),
                 psycopg2.sql.Identifier(tmp_table_name)
             )
             print(drop_query.as_string(cursor))
