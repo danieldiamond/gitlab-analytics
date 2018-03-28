@@ -3,7 +3,8 @@
 import time
 import json
 import csv
-import argparse
+import re
+import os
 
 import requests
 
@@ -225,39 +226,47 @@ def bulk_cancel_job(data_type, export_id):
 
 
 def bulk_export(args):
-    print(args)
 
+    fields = None
+    activity_ids = None
 
-if __name__ == "__main__":
+    iso_check = re.compile(r'^\d{4}-\d{2}-\d{2}')
+    if iso_check.match(args.start) is not None:
+        date_start = args.start + 'T00:00:00Z'
 
-    # Activities Bulk Load
-    activity_objects = get_mkto_config('Activities', 'objects')
-    activity_ids = [int(get_mkto_config(ob, 'id')) for ob in activity_objects.split(',')]
-    filter = bulk_filter_builder("2018-01-01T00:00:00Z", "2018-02-01T00:00:00Z", "createdAt", activity_ids)
+    if iso_check.match(args.end) is not None:
+        date_end = args.end + 'T00:00:00Z'
 
-    new_job = bulk_create_job(filter, data_type="activities")
+    if args.type == "created":
+        pull_type = "createdAt"
+
+    if args.type == "updated":
+        pull_type = "updatedAt"
+
+    if args.source == "activities":
+        # If Activities, default is to get all activity types. All fields are returned by Marketo API by default
+        activity_objects = get_mkto_config('Activities', 'objects')
+        activity_ids = [int(get_mkto_config(ob, 'id')) for ob in activity_objects.split(',')]
+        primary_key = "marketoguid"
+
+    if args.source == "leads":
+        # This is an API call to Marketo. Should probably pull from static config and periodically check for differences
+        fields = get_leads_fieldnames_mkto(describe_leads())
+        primary_key="id"
+
+    filter = bulk_filter_builder(start_date=date_start, end_date=date_end, pull_type=pull_type, activity_ids=activity_ids)
+    new_job = bulk_create_job(filter=filter, data_type=args.source, fields=fields)
+    print(json.dumps(new_job,indent=2))
     export_id = new_job.get("result", ["None"])[0].get("exportId")
-    print(export_id)
-    print(bulk_get_export_jobs("activities"))
-    bulk_enqueue_job("activities", export_id)
-    bulk_get_file("activities", export_id)
+    print("Enqueuing Job")
+    bulk_enqueue_job(args.source, export_id)
+    print("Get Results File")
+    bulk_get_file(args.source, export_id)
 
-    write_to_db_from_csv(username, password, host, database, port, "activities")
-    # upsert_to_db_from_csv(username, password, host, database, port, "activities", "marketoguid")
+    print("Upserting to Database")
+    upsert_to_db_from_csv(username, password, host, database, port, args.source, primary_key)
 
-
-    # Leads Bulk Load
-    fields = get_leads_fieldnames_mkto(describe_leads())
-    filter = bulk_filter_builder("2018-03-01T00:00:00Z", "2018-03-27T00:00:00Z", "updatedAt")
-    print(filter)
-    new_job = bulk_create_job(filter=filter, data_type="leads", fields=fields)
-    filter = bulk_filter_builder("2018-01-01T00:00:00Z", "2018-02-01T00:00:00Z", "createdAt")
-    new_job = bulk_create_job(filter, data_type="leads")
-    export_id = new_job.get("result", ["None"])[0].get("exportId")
-    print(export_id)
-    print(bulk_get_export_jobs("leads"))
-    bulk_enqueue_job("leads", export_id)
-    bulk_get_file("leads", export_id)
-
-    write_to_db_from_csv(username, password, host, database, port, "leads")
-    # upsert_to_db_from_csv(username, password, host, database, port, "leads", "id")
+    if args.nodelete is True:
+        return
+    else:
+        os.remove(args.source + ".csv")
