@@ -13,6 +13,11 @@ if __name__ == '__main__':
                         help="Specifies either created or updated. Use updated for incremental pulls. Default is created.")
     parser.add_argument('-d', dest="days", type=int, default=3,
                         help="Specify the number of preceding days from the current time to get incremental records for. Only used for lead records. Default is 3 days.")
+    parser.add_argument('-b', dest="start",
+                        help="The start date in the isoformat of 2018-01-01. This will be formatted properly downstream.")
+    parser.add_argument('-e', dest="end",
+                        help="The end date in the isoformat of 2018-02-01. This will be formatted properly downstream.")
+    parser.add_argument('--nodelete', action='store_true')
     parser.set_defaults(func=bulk_export)
     args=parser.parse_args()
     args.func(args)
