@@ -157,6 +157,5 @@ def upsert_to_db_from_csv(username, password, host, database, port, item, primar
             cursor.close()
             mydb.close()
 
-            # os.remove(item + '.csv')
         except psycopg2.Error as err:
             print(err)

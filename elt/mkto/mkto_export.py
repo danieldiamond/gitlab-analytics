@@ -17,7 +17,8 @@ if __name__ == '__main__':
                         help="The start date in the isoformat of 2018-01-01. This will be formatted properly downstream.")
     parser.add_argument('-e', dest="end",
                         help="The end date in the isoformat of 2018-02-01. This will be formatted properly downstream.")
-    parser.add_argument('--nodelete', action='store_true')
+    parser.add_argument('--nodelete', action='store_true',
+                        help="If argument is provided, the CSV file generated will not be deleted.")
     parser.set_defaults(func=bulk_export)
     args=parser.parse_args()
     args.func(args)
