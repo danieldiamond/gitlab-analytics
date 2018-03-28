@@ -258,6 +258,12 @@ view: f_opportunity {
     drill_fields: [detail*]
   }
 
+  measure: opp_renewal_acv {
+    label: "Renewal ACV"
+    type: sum
+    sql: ${TABLE}.renewal_acv ;;
+    drill_fields: [detail*]
+  }
 
   measure: total_quantity {
     label: "Total Quantity"
