@@ -47,14 +47,13 @@ pings:
 
 marketo:
   stage: extract
-  <<: #job_definition
+  <<: *job_definition
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - python3 elt/mkto/mkto_export.py -s leads -t updated -d 1
     - python3 elt/mkto/mkto_export.py -s activities -t created -d 1
     - stop_cloudsqlproxy
-
 
 dbt:
   stage: model
