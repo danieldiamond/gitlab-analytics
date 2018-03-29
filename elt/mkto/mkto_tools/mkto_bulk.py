@@ -5,6 +5,7 @@ import json
 import csv
 import re
 import os
+import datetime
 
 import requests
 
@@ -180,6 +181,8 @@ def bulk_get_file(data_type, export_id):
             continue
 
     with requests.Session() as s:
+        # TODO It's possible for the token to expire between start of function and here!
+        updated_token = get_token()
         download = s.get(file_url, params=payload)
 
         decoded_content = download.content.decode('utf-8')
@@ -231,11 +234,28 @@ def bulk_export(args):
     activity_ids = None
 
     iso_check = re.compile(r'^\d{4}-\d{2}-\d{2}')
-    if iso_check.match(args.start) is not None:
-        date_start = args.start + 'T00:00:00Z'
+    if args.start is not None:
+        try:
+            iso_check.match(args.start)
+            date_start = args.start + 'T00:00:00Z'
+        except TypeError:
+            print("Start date is not in the proper format.")
+            return
 
-    if iso_check.match(args.end) is not None:
-        date_end = args.end + 'T00:00:00Z'
+    if args.end is not None:
+        try:
+            iso_check.match(args.end)
+            date_end = args.end + 'T00:00:00Z'
+        except TypeError:
+            print("Start date is not in the proper format.")
+            return
+
+    if args.days is not None:
+        date_now = datetime.datetime.now()
+        next_day = date_now + datetime.timedelta(days=1)
+        offset = date_now - datetime.timedelta(days=args.days)
+        date_end = next_day.strftime("%Y-%m-%d") + 'T00:00:00Z'
+        date_start = offset.strftime("%Y-%m-%d") + 'T00:00:00Z'
 
     if args.type == "created":
         pull_type = "createdAt"
