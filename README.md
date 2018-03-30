@@ -91,8 +91,10 @@ We want the tools to be open source so we can ship this as a product.
 ## How to use
 
 The BizOps product consists three key components:
+
 1. A SQL based data store, for example [PostgreSQL](https://www.postgresql.org/) or [Cloud SQL](https://cloud.google.com/sql/). We recommend using Postgres for [review apps](https://about.gitlab.com/features/review-apps/) and a more durable and scalable service for production.
-1. The [`bizops-elt`](#extract-container) container, which runs on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
+1. This [`bizops`](#extract-container), which contains the ELT scripts and CI jobs to refresh the data warehouse from the [configured sources](doc/data_sources.md). Typically configured to run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
+1. The [`bizops-elt`](https://gitlab.com/bizops/bizops-elt) container, which includes the necessary dependencies for the ELT scripts. Used as the base image for the CI jobs.
 
 As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
 
