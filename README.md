@@ -49,7 +49,7 @@ This should be a replacement for other ELT & Data Integration tools: [Boomi](htt
 | Load      | [Singer](https://www.singer.io/) Target | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
 | Transform | [dbt](https://www.getdbt.com/) | [Pentaho DI](http://www.pentaho.com/product/data-integration), manual SQL | [Alooma](https://www.alooma.com/) |  
 | Warehouse | [PostgreSQL](https://www.postgresql.org/) | [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax) | [Redshift](https://aws.amazon.com/redshift/), [Snowflake](https://www.snowflake.net/) |
-| Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | | 
+| Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | |
 | Test | [dbt](https://www.getdbt.com/), [Great Expectations](https://github.com/great-expectations/great_expectations), [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) | | [Informatica](https://marketplace.informatica.com/solutions/informatica_data_validation), [iCEDQ](https://icedq.com/), [QuerySurge](http://www.querysurge.com/) |
 | Model | Out of scope | | |
 | Visualize | Out of scope | | |
@@ -71,7 +71,7 @@ We are targeting analytics for sales and marketing performance first. We plan to
   * CAC = cost per lead * conversion from lead to IACV
   * ROI = LTV / CAC
 
-In the future, we plan to expand support to other areas of an organization like Customer Success, Human Resources, and Finance. 
+In the future, we plan to expand support to other areas of an organization like Customer Success, Human Resources, and Finance.
 
 ## Data sources
 
@@ -90,47 +90,15 @@ We want the tools to be open source so we can ship this as a product.
 
 ## How to use
 
-The BizOps project consists two key components:
+The BizOps product consists three key components:
+
 1. A SQL based data store, for example [PostgreSQL](https://www.postgresql.org/) or [Cloud SQL](https://cloud.google.com/sql/). We recommend using Postgres for [review apps](https://about.gitlab.com/features/review-apps/) and a more durable and scalable service for production.
-1. The [`extract`](#extract-container) container, which will run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
+1. This [`bizops`](#extract-container), which contains the ELT scripts and CI jobs to refresh the data warehouse from the [configured sources](doc/data_sources.md). Typically configured to run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
+1. The [`bizops-elt`](https://gitlab.com/bizops/bizops-elt) container, which includes the necessary dependencies for the ELT scripts. Used as the base image for the CI jobs.
 
 As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
 
-It is expected that the BizOps project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an indiviual application at the top level of the BizOps project for inclusion/exclusion.  
-
-### Extract container
-
-The `extract` image includes:
-* Pentaho Data Integration 7.1 with OpenJDK 8 to extract data from SFDC
-* Python 3.5.3 and extraction scripts for Zuora and Marketo
-
-This image is set up to be able to run periodically to connect to the configured [data sources](doc/data_sources.md) and extract data, processing it and storing it in the data warehouse running using the [`bizops container`](#bizops-container). Supported sources in current version:
-* SFDC
-* Zuora
-
-#### Using the Extract container
-> Notes:
-> * Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields. 
-> * The sample Zuora python scripts have been written to support GitLab's Zuora implementation. This includes a workaround to handle some subscriptions that should have been created as a single subscription.
-
-The container is primarily built to be used in conjunction with GitLab CI, to automate and schedule the extraction of data. Creating the container is currently a manual job, since it changes infrequently and consumes network/compute resources. To build the container initially or after changes, simply run the `extract_container` job in the `build` stage. The subsequent `extract` stage can be cancelled and restarted once the container has finished building. This will be improved in the future.
-
-Together with the `.gitlab-ci.yml` file and [project variables](https://docs.gitlab.com/ce/ci/variables/README.html#protected-secret-variables), it is easy to configure. Simply set the following variables in your project ensure that the container is available.
-* PG_ADDRESS: IP/DNS of the Postgres server.
-* PG_PORT: Port number of the Postgres server, typically 5432.
-* PG_DATABASE: Database name to be used for the staging tables.
-* PG_DEV_SCHEMA: Schema to use for development of dbt models.
-* PG_PROD_SCHEMA: Schema to use for production dimensional model.
-* PG_USERNAME: Username for authentication to Postgres.
-* PG_PASSWORD: Password for authentication to Postgres.
-* GCP_PRODUCTION_INSTANCE_NAME: Cloud Production SQL Instance Name. Set if wanting to use Cloud SQL Proxy.
-* GCP_SERVICE_CREDS: GCP Service Credentials JSON. Set if wanting to use Cloud SQL Proxy.
-* SFDC_URL: Web service URL for your SFDC account.
-* SFDC_USERNAME: Username for authentication to SFDC.
-* SFDC_PASSWORD: Password for authentication to SFDC.
-* ZUORA_URL: Web service URL for your Zuora account.
-* ZUORA_USERNAME: Username for authentication to Zuora.
-* ZUORA_PASSWORD: Password for authentication to Zuora.
+It is expected that the BizOps project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an individual application at the top level of the BizOps project for inclusion/exclusion.  
 
 ## Internal GitLab Analytics Plan
 
