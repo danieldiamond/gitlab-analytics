@@ -72,7 +72,7 @@ sfdc_snapshot:
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
-    - python3 util/snapshot.py
+    - python3 elt/util/snapshot.py
     - stop_cloudsqlproxy
 
 review:
