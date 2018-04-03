@@ -17,7 +17,7 @@ try:
                 "snapshot_date = current_date - interval '1 day'"
     cursor.execute(check_sql)
     rs = cursor.fetchone()
-    if rs["cnt"] > 1:
+    if rs[0] > 1:
         print("Snapshot exists. Passing.")
         cursor.close()
         pass
