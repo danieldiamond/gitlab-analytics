@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 import psycopg2
-import mail
 import os
-
-alert_eml = mail.gmail['alert_eml']
 
 try:
     connect_str = "dbname=" + os.environ['PG_DATABASE'] + " user=" + \
@@ -35,4 +32,4 @@ try:
     conn.close()
 
 except Exception as e:
-    mail.send_message(alert_eml, 'There was an error snapshotting data',e)
+    print('There was an error snapshotting data', e)
