@@ -312,7 +312,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>/opt/etl/customers/customers_customer.ktr</filename>
+      <filename>${Internal.Entry.Current.Directory}/customers_customer.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
