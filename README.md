@@ -83,6 +83,7 @@ We want the tools to be open source so we can ship this as a product.
 
 1. Extract and Load (EL): Combination of [Pentaho Data Integration](http://www.pentaho.com/product/data-integration) and python scripts, although will consider [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
   * Pentaho DI is based on the open-source [Talend](https://www.talend.com/products/data-integration/) engine, but utilizes XML for easier configuration.
+  * Current plans include creating separate Extractors and Loaders that can be plugged together much like Unix command line tools.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
 1. Warehouse: Any SQL based data warehouse. We recommend [PostgeSQL](https://www.postgresql.org/) and include it in the bizops pipeline. Postgres cloud services like [Google Cloud SQL](https://cloud.google.com/sql/) are also supported, for increased scalability and durability.
 1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) for scheduling, running, and monitoring the ELT jobs. Non-GitLab alternatives are [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi).
@@ -132,7 +133,7 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 * ZUORA_USERNAME: Username for authentication to Zuora.
 * ZUORA_PASSWORD: Password for authentication to Zuora.
 
-## Internal GitLab Analytics Plan
+## GitLab Data and Analytics - Internal
 
 ### Charter/Goals
 * Build a centralized data warehouse that can support data analysis requirements from all functional groups within the company.
@@ -163,6 +164,18 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 * Serves as the Single Source of Truth for reporting, analysis, and visualization applications.
 * Will need to be audited regularly back to the source.
 * Should not be generally available - will require strict access controls for direct querying not done through a controlled application such as metabase.
+
+### DataOps
+
+#### Hosts Records Dataflow
+
+From our on-premises installations, we recieve [version and ping information](https://docs.gitlab.com/ee/user/admin_area/settings/usage_statistics.html) from the software. This data is currently imported once a day from a PostgreSQL database into our enterprise data warehouse (EDW). We use this data currently to feed into Salesforce (SFDC) to aid our sales representatives in their work.
+
+The domains from all of the pings are first cleaned by standardizing the URL using a package called [tldextract](https://github.com/john-kurkowski/tldextract). Each cleaned ping type is combined into a single host record. We make a best effort attempt to align the pings from the same version of the software. 
+
+This single host record is then enriched with data from three sources: DiscoverOrg, Clearbit, and WHOIS. If DiscoverOrg has no record of the domain we then fallback to Clearbit with WHOIS being a last resort. Each request to DiscoverOrg and Clearbit is cached locally and update no more than every 30 days. The cleaning and enrichment steps are all accomplished using Python.
+
+We then take all of the cleaned records and use dbt to make multiple transformations. The last 60 days of pings are aligned with Salesforce accounts using the account name or the account website. Based on this, tables are generated of host records to upload to SFDC. If no accounts are found, we then generate at table of accounts to create within SFDC. The next time the host data process runs, the host records will be uploaded to these newly generated SFDC accounts. We also update any SFDC accounts with DiscoverOrg and Clearbit data if any of the relevant fields are not already present in SFDC.
 
 # Contributing to BizOps
 
