@@ -1,16 +1,29 @@
 #!/usr/bin/python3
-
 import os
+import requests
+import psycopg2
+
 from configparser import SafeConfigParser
 from .mkto_token import get_token, mk_endpoint
-import requests
 
+default_db_config = {
+    'host': os.environ.get('PROCESS_DB_PROD_ADDRESS'),
+    'username': os.environ.get('PROCESS_DB_PROD_USERNAME'),
+    'password': os.environ.get('PROCESS_DB_PROD_PASSWORD'),
+    'database': os.environ.get('PROCESS_DB_PROD_DBNAME'),
+    'port': os.environ.get('PG_PORT'),
+}
 
-host = os.environ.get('PROCESS_DB_PROD_ADDRESS')
-username = os.environ.get('PROCESS_DB_PROD_USERNAME')
-password = os.environ.get('PROCESS_DB_PROD_PASSWORD')
-database = os.environ.get('PROCESS_DB_PROD_DBNAME')
-port = os.environ.get('PG_PORT')
+class db_open:
+    def __init__(self, **kwargs):
+        self.config = {**default_db_config, **kwargs}
+
+    def __enter__(self, **kwargs):
+        self.connection = psycopg2.connect(**self.config)
+        return self.connection
+
+    def __exit__(self, type, value, traceback):
+        self.connection.close()
 
 
 def get_mkto_config(section, field):

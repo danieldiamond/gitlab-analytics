@@ -1,12 +1,9 @@
 #!/usr/bin/python3
-
 import requests
-
 from .mkto_token import get_token, mk_endpoint
 
 
 def activity_types():
-
     token = get_token()
     if token == "Error":
         print("No job created. Token Error.")
@@ -29,7 +26,6 @@ def activity_types():
 
 
 def activity_map():
-
     ac_types = activity_types()
 
     activity_dict = dict()

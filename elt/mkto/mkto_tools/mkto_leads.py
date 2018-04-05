@@ -9,9 +9,11 @@ import requests
 
 from .mkto_token import get_token, mk_endpoint
 
+PG_SCHEMA = 'generated'
+PG_TABLE = 'mkto_leads'
+PRIMARY_KEY = 'id'
 
 def describe_leads():
-
     token = get_token()
     if token == "Error":
         print("No job created. Token Error.")
@@ -47,31 +49,29 @@ def get_leads_fieldnames_mkto(lead_description):
     return sorted(field_names)
 
 
-
-def write_to_db_from_csv(username, password, host, database, port, item):
+def write_to_db_from_csv(db_conn, csv_file):
     """
     Write to Postgres DB from a CSV
 
-    :param username:
-    :param password:
-    :param host:
-    :param database:
-    :param port:
-    :param item: name of CSV that you wish to write to table of same name
+    :param db_conn: psycopg2 database connection
+    :param csv_file: name of CSV that you wish to write to table of same name
     :return:
     """
-    with open(item + '.csv', 'r') as file:
+    with open(csv_file, 'r') as file:
         try:
             header = next(file).rstrip().lower()  # Get header row, remove new lines, lowercase
+            schema_name = psycopg2.sql.Identifier(PG_SCHEMA)
+            table_name = psycopg2.sql.Identifier(PG_TABLE)
 
-            mydb = psycopg2.connect(host=host, user=username,
-                                    password=password, dbname=database, port=port)
-            cursor = mydb.cursor()
-            # cursor.execute('TRUNCATE TABLE sandbox.mkto_leads')
-            print("Truncating table")
-            table_name = "sandbox.mkto_{}".format(item)
-            copy_query=psycopg2.sql.SQL("COPY {0} ({1}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV").format(
-                psycopg2.sql.Identifier(table_name),
+            cursor = db_conn.cursor()
+            #cursor.execute("TRUNCATE TABLE {}".format(table_name))
+            #print("Truncating table.")
+
+            copy_query = psycopg2.sql.SQL(
+                "COPY {0}.{1} ({2}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV"
+            ).format(
+                schema_name,
+                table_name,
                 psycopg2.sql.SQL(', ').join(
                     psycopg2.sql.Identifier(n) for n in header.split(',')
                 )
@@ -79,50 +79,52 @@ def write_to_db_from_csv(username, password, host, database, port, item):
             print(copy_query.as_string(cursor))
             print("Copying file")
             cursor.copy_expert(sql=copy_query, file=file)
-            mydb.commit()
+            db_conn.commit()
             cursor.close()
-            mydb.close()
             # os.remove(item + '.csv')
         except psycopg2.Error as err:
             print(err)
 
 
-def upsert_to_db_from_csv(username, password, host, database, port, item, primary_key):
+def upsert_to_db_from_csv(db_conn, csv_file, primary_key):
+    """
+    Upsert to Postgres DB from a CSV
 
-    with open(item + '.csv', 'r') as file:
+    :param db_conn: psycopg2 database connection
+    :param csv_file: name of CSV that you wish to write to table of same name
+    :return:
+    """
+    with open(csv_file, 'r') as file:
         try:
             header = next(file).rstrip().lower()  # Get header row, remove new lines, lowercase
+            cursor = db_conn.cursor()
 
-            mydb = psycopg2.connect(host=host, user=username,
-                                    password=password, dbname=database, port=port)
-            cursor = mydb.cursor()
-
-            schema_name = "sandbox"
-            table_name = "mkto_{}".format(item)
-            tmp_table_name = table_name + "_tmp"
+            schema_name = psycopg2.sql.Identifier(PG_SCHEMA)
+            table_name = psycopg2.sql.Identifier(PG_TABLE)
+            tmp_table_name = psycopg2.sql.Identifier(PG_TABLE + "_tmp")
 
             # Create temp table
             create_table = psycopg2.sql.SQL("CREATE TEMP TABLE {0} AS SELECT * FROM {1}.{2} LIMIT 0").format(
-                psycopg2.sql.Identifier(tmp_table_name),
-                psycopg2.sql.Identifier(schema_name),
-                psycopg2.sql.Identifier(table_name)
+                tmp_table_name,
+                schema_name,
+                table_name,
             )
             cursor.execute(create_table)
             print(create_table.as_string(cursor))
-            mydb.commit()
+            db_conn.commit()
 
             # Import into TMP Table
             copy_query=psycopg2.sql.SQL("COPY {0}.{1} ({2}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV").format(
                 psycopg2.sql.Identifier("pg_temp"),
-                psycopg2.sql.Identifier(tmp_table_name),
+                tmp_table_name,
                 psycopg2.sql.SQL(', ').join(
-                    psycopg2.sql.Identifier(n) for n in header.split(',')
-                )
+                    psycopg2.sql.Identifier(n) for n in header.split(','),
+                ),
             )
             print(copy_query.as_string(cursor))
             print("Copying File")
             cursor.copy_expert(sql=copy_query, file=file)
-            mydb.commit()
+            db_conn.commit()
 
             # Update primary table
             split_header = [col for col in header.split(',') if col != primary_key]
@@ -132,30 +134,30 @@ def upsert_to_db_from_csv(username, password, host, database, port, item, primar
             set_strings = re.sub('\.','"."', rep_brace)
 
             update_query = psycopg2.sql.SQL("INSERT INTO {0}.{1} ({2}) SELECT {2} FROM {3}.{4} ON CONFLICT ({5}) DO UPDATE SET {6}").format(
-                psycopg2.sql.Identifier(schema_name),
-                psycopg2.sql.Identifier(table_name),
+                schema_name,
+                table_name,
                 psycopg2.sql.SQL(', ').join(
                     psycopg2.sql.Identifier(n) for n in header.split(',')
                 ),
                 psycopg2.sql.Identifier("pg_temp"),
-                psycopg2.sql.Identifier(tmp_table_name),
+                tmp_table_name,
                 psycopg2.sql.Identifier(primary_key),
-                psycopg2.sql.SQL(set_strings)
+                psycopg2.sql.SQL(set_strings),
             )
             cursor.execute(update_query)
             print(update_query.as_string(cursor))
-            mydb.commit()
+            db_conn.commit()
 
             # Drop temporary table
             drop_query = psycopg2.sql.SQL("DROP TABLE {0}.{1}").format(
                 psycopg2.sql.Identifier("pg_temp"),
-                psycopg2.sql.Identifier(tmp_table_name)
+                tmp_table_name,
             )
+
             print(drop_query.as_string(cursor))
             cursor.execute(drop_query)
-            mydb.commit()
+            db_conn.commit()
             cursor.close()
-            mydb.close()
 
         except psycopg2.Error as err:
             print(err)

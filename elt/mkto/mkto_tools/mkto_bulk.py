@@ -11,7 +11,7 @@ import requests
 
 from .mkto_token import get_token, mk_endpoint
 from .mkto_leads import get_leads_fieldnames_mkto, describe_leads, write_to_db_from_csv, upsert_to_db_from_csv
-from .mkto_utils import username, password, database, host, port, bulk_filter_builder, get_mkto_config
+from .mkto_utils import db_open, bulk_filter_builder, get_mkto_config
 
 
 def bulk_create_job(filter, data_type, fields=None, format="CSV", column_header_names=None):
@@ -161,6 +161,7 @@ def bulk_get_file(data_type, export_id):
         return
 
     file_url = mk_endpoint + 'bulk/v1/' + data_type + '/export/' + export_id + '/file.json'
+    output_file = data_type + '.csv'
 
     payload = {
         "access_token": token
@@ -168,7 +169,7 @@ def bulk_get_file(data_type, export_id):
 
     while True:
         status_result = bulk_job_status(data_type, export_id)
-        job_status=status_result.get("result", [])[0].get("status")
+        job_status = status_result.get("result", [])[0].get("status")
         if job_status == "Completed":
             break
         elif job_status == "Failed":
@@ -188,11 +189,11 @@ def bulk_get_file(data_type, export_id):
         decoded_content = download.content.decode('utf-8')
 
         cr = csv.reader(decoded_content.splitlines(), delimiter=',')
-        my_list = list(cr)
+        my_list = list(cr) # TODO Can we use the reader instead of casting to list()
 
-    with open(file=data_type + '.csv', mode='w', newline='') as csvfile:
+    with open(file=output_file, mode='w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',',
-                                quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                               quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for row in my_list:
             csvwriter.writerow(row)
 
@@ -274,8 +275,10 @@ def bulk_export(args):
         fields = get_leads_fieldnames_mkto(describe_leads())
         primary_key="id"
 
+    output_file = data_type + '.csv'
     filter = bulk_filter_builder(start_date=date_start, end_date=date_end, pull_type=pull_type, activity_ids=activity_ids)
     new_job = bulk_create_job(filter=filter, data_type=args.source, fields=fields)
+
     print(json.dumps(new_job,indent=2))
     export_id = new_job.get("result", ["None"])[0].get("exportId")
     print("Enqueuing Job")
@@ -284,9 +287,11 @@ def bulk_export(args):
     bulk_get_file(args.source, export_id)
 
     print("Upserting to Database")
-    upsert_to_db_from_csv(username, password, host, database, port, args.source, primary_key)
+    if args.output == "db":
+        with db_open() as db:
+            upsert_to_db_from_csv(db, output_file, primary_key)
 
-    if args.nodelete is True:
+    if args.nodelete or args.output == "file":
         return
     else:
-        os.remove(args.source + ".csv")
+        os.remove(output_file)
