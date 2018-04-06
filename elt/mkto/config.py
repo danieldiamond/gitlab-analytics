@@ -17,11 +17,11 @@ class Password:
         return self.value
 
 
-def parser_db_conn(parser):
-    parser.add_argument('-S', '--schema', required=True,
+def parser_db_conn(parser, required=True):
+    parser.add_argument('-S', '--schema', required=required,
                         help="Database schema to use.")
 
-    parser.add_argument('-d', '--db', dest='database', required=True,
+    parser.add_argument('-d', '--db', dest='database', required=required,
                         help="Database to import the data to.")
 
     parser.add_argument('-H', '--host', default=os.getenv('PG_HOST', 'localhost'),

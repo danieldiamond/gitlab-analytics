@@ -12,10 +12,9 @@ action_map = {
 
 
 if __name__ == '__main__':
-
     parser=argparse.ArgumentParser(description="Use the Marketo Bulk Export to get Leads or Activities")
 
-    parser_db_conn(parser)
+    parser_db_conn(parser, required=False)
 
     parser.add_argument('action', choices=['export', 'describe'], default='export',
                         help="export: bulk export data into the output.\ndescribe: export the schema into a schema file.")
@@ -43,7 +42,6 @@ if __name__ == '__main__':
 
     parser.add_argument('-F', '--output-file', dest="output_file",
                         help="Specifies the output to write the output to. Implies `-o file`.")
-
 
     args=parser.parse_args()
 

@@ -5,6 +5,7 @@ import yaml
 import psycopg2
 import psycopg2.extras
 
+from typing import Sequence
 from enum import Enum
 from collections import OrderedDict, namedtuple
 from .mkto_leads import describe_leads
@@ -28,16 +29,16 @@ Column = namedtuple('Column', [
 
 
 class Schema:
-    def _key(column):
+    def _key(column: Column):
         return (column.column_name, column)
 
-    def __init__(self, columns=[]):
+    def __init__(self, columns: Sequence[Column]=[]):
         self.columns = OrderedDict(map(Schema._key, columns))
 
-    def add_column(self, column):
+    def add_column(self, column: Column):
         self.columns.insert((Schema._key(column), column))
 
-    def column_diff(self, column):
+    def column_diff(self, column: Column) -> SchemaDiff:
         if not column.column_name in self.columns:
             return SchemaDiff.COLUMN_MISSING
 
@@ -52,7 +53,7 @@ class Schema:
 :db_conn: psycopg2 db_connection
 :schema: database schema
 '''
-def db_schema(db_conn, schema):
+def db_schema(db_conn, schema) -> Schema:
     cursor = db_conn.cursor()
 
     cursor.execute("""
@@ -66,7 +67,7 @@ def db_schema(db_conn, schema):
     return Schema(columns)
 
 
-def mkto_schema(args):
+def mkto_schema(args) -> Schema:
     source = args.source
     schema = schema_func_map[args.source]()
     fields = schema['result']
@@ -78,7 +79,6 @@ def mkto_schema(args):
               )
 
     columns.sort(key=lambda c: c.column_name)
-
     return Schema(columns)
 
 
@@ -112,22 +112,6 @@ schema_func_map = {
 
 schema_primary_key = ['id']
 
-'''
-schema public:
-  owner: postgres
-  table t1:
-    columns:
-    - c1:
-        not_null: true
-        type: integer
-    - c2:
-        type: smallint
-    - c3:
-        default: 'false'
-        type: boolean
-    - c4:
-        type: text
-'''
 def schema_export(args):
     output_file = args.output_file or 'schema.yaml'
 
@@ -142,19 +126,39 @@ def schema_export(args):
         schema_mkto = mkto_schema(args)
         #yaml.dump(schema_mkto, sys.stdout)
 
+        schema_cursor = db.cursor()
         for name, col in schema_mkto.columns.items():
-            diff = schema.column_diff(col)
-            if diff == SchemaDiff.COLUMN_OK:
-                continue
-
-            print("[%s]: %s" % (name, diff))
+            schema_apply_column(schema_cursor, schema, col)
 
     # table(args.source, schema)
     # yaml.dump(output_schema, io.open(output_file, 'w'))
 
 
-def schema_apply(column):
-    pass
+'''
+Apply the schema to the current database connection
+adapting tables as it goes. Currently only supports
+adding new columns.
+
+:cursor: A database connection
+:column: the column to apply
+'''
+def schema_apply_column(db_cursor, schema: Schema, column: Column) -> SchemaDiff:
+    diff = schema.column_diff(column)
+
+    print("[%s]: %s" % (column.column_name, diff))
+
+    if diff == SchemaDiff.COLUMN_CHANGED:
+        _, dt_type = schema.column_diff(column)
+        raise InapplicableChangeError(diff, dt_type)
+
+    if diff == SchemaDiff.COLUMN_MISSING:
+        db_cursor.execute("ALTER TABLE {}.{} ADD COLUMN {} {}",
+                          column.table_schema,
+                          column.table_name,
+                          column.column_name,
+                          column.data_type)
+
+    return diff
 
 
 '''
@@ -173,7 +177,7 @@ def schema_apply(column):
     }
 },
 '''
-def column(table_name, field):
+def column(table_name, field) -> Column:
     if not 'rest' in field:
         print("REST field not found for '%s'" % field['id'])
         return None

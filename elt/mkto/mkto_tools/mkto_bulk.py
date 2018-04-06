@@ -230,7 +230,6 @@ def bulk_cancel_job(data_type, export_id):
 
 
 def bulk_export(args):
-
     fields = None
     activity_ids = None
 
@@ -275,7 +274,7 @@ def bulk_export(args):
         fields = get_leads_fieldnames_mkto(describe_leads())
         primary_key="id"
 
-    output_file = data_type + '.csv'
+    output_file = args.source + '.csv'
     filter = bulk_filter_builder(start_date=date_start, end_date=date_end, pull_type=pull_type, activity_ids=activity_ids)
     new_job = bulk_create_job(filter=filter, data_type=args.source, fields=fields)
 
@@ -286,8 +285,8 @@ def bulk_export(args):
     print("Get Results File")
     bulk_get_file(args.source, export_id)
 
-    print("Upserting to Database")
     if args.output == "db":
+        print("Upserting to Database")
         with db_open() as db:
             upsert_to_db_from_csv(db, output_file, primary_key)
 
