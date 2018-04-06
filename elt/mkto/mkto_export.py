@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-
 import argparse
 
 from mkto_tools.mkto_bulk import bulk_export
 from mkto_tools.mkto_schema import schema_export
+from config import parser_db_conn
 
 action_map = {
     'export': bulk_export,
@@ -14,6 +14,8 @@ action_map = {
 if __name__ == '__main__':
 
     parser=argparse.ArgumentParser(description="Use the Marketo Bulk Export to get Leads or Activities")
+
+    parser_db_conn(parser)
 
     parser.add_argument('action', choices=['export', 'describe'], default='export',
                         help="export: bulk export data into the output.\ndescribe: export the schema into a schema file.")
@@ -27,7 +29,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', dest="type", choices=["created", "updated"], default="created",
                         help="Specifies either created or updated. Use updated for incremental pulls. Default is created.")
 
-    parser.add_argument('-d', dest="days", type=int,
+    parser.add_argument('--days', type=int,
                         help="Specify the number of preceding days from the current time to get incremental records for. Only used for lead records.")
 
     parser.add_argument('-b', dest="start",
