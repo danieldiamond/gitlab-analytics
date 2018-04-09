@@ -150,6 +150,8 @@ Finally, we use Python to generate SFDC accounts and to upload the host records 
 
 #### Managing Roles
 
+All role definitions are in [/elt/config/pg_roles/](https://gitlab.com/bizops/bizops/tree/master/elt/config)
+
 Ideally we'd be using [pgbedrock](https://github.com/Squarespace/pgbedrock) to manage users. Since internally we are using CloudSQL, we're not able to access the superuser role which pgbedrock requires. However, the YAML format of the role definitions is convenient for reasoning about privileges and it's possible the tool could evolve to validate privileges against a given spec, so we are using the pgbedrock definition syntax to define roles here. 
 
 The `readonly` role was generated using the following commands:
