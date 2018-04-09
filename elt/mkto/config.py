@@ -21,6 +21,9 @@ def parser_db_conn(parser, required=True):
     parser.add_argument('-S', '--schema', required=required,
                         help="Database schema to use.")
 
+    parser.add_argument('-T', '--table', dest='table_name',
+                        help="Table to import the data to.")
+
     parser.add_argument('-d', '--db', dest='database', required=required,
                         help="Database to import the data to.")
 

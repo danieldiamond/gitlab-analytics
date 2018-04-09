@@ -69,19 +69,18 @@ Column = namedtuple('Column', [
 
 class Schema:
     def _key(column: Column):
-        return (column.column_name, column)
+        return ((column.table_name, column.column_name), column)
 
     def __init__(self, columns: Sequence[Column]=[]):
         self.columns = OrderedDict(map(Schema._key, columns))
 
-    def add_column(self, column: Column):
-        self.columns.insert((Schema._key(column), column))
-
     def column_diff(self, column: Column) -> SchemaDiff:
-        if not column.column_name in self.columns:
+        key, _ = Schema._key(column)
+
+        if not key in self.columns:
             return SchemaDiff.COLUMN_MISSING
 
-        db_col = self.columns[column.column_name]
+        db_col = self.columns[key]
         if column.data_type != db_col.data_type:
             return SchemaDiff.COLUMN_CHANGED
 
@@ -110,9 +109,8 @@ def mkto_schema(args) -> Schema:
     source = args.source
     schema = schema_func_map[args.source]()
     fields = schema['result']
-    table_name = "mkto_%s" % source
-    table_pkey = "%s_pkey" % table_name
-    table_def = "table %s" % table_name
+    table_name = args.table_name or "mkto_%s" % source
+    print("Table name is: %s" % table_name)
 
     columns = (column(args.schema, table_name, field) for field in fields)
     columns = list(filter(None, columns))
@@ -167,7 +165,7 @@ def schema_export(args):
                  port=args.port,
                  user=args.user,
                  password=args.password) as db:
-        schema = db_schema(db, 'generated')
+        schema = db_schema(db, args.schema)
         schema_mkto = mkto_schema(args)
 
         results = ExceptionAggregator(errors=[InapplicableChangeException])

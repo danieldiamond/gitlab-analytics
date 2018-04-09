@@ -2,16 +2,9 @@
 import argparse
 import sys
 
-from enum import Enum
 from mkto_tools.mkto_bulk import bulk_export
 from mkto_tools.mkto_schema import schema_export, SchemaException
 from config import parser_db_conn
-
-
-class ExitCode(Enum):
-    OK = 0
-    ERROR_UNKNOWN = 1
-    SCHEMA_INAPPLICABLE = 2
 
 
 action_map = {
@@ -59,7 +52,5 @@ if __name__ == '__main__':
 
     try:
         action_map[args.action](args)
-    except SchemaException as e:
-        sys.exit(ExitCode.SCHEMA_INAPPLICABLE)
-    except:
-        sys.exit(ExitCode.ERROR_UNKNOWN)
+    except SchemaException:
+        sys.exit(1)

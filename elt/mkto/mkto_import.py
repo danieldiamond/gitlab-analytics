@@ -14,7 +14,12 @@ def import_csv(args):
                  database=args.database,
                  password=args.password,
                  user=args.user) as db:
-        write_to_db_from_csv(db, args.input_file)
+
+        options = {'table_schema': args.schema}
+        if args.table_name:
+            options['table_name'] = args.table_name
+
+        write_to_db_from_csv(db, args.input_file, **options)
 
 
 def upsert_csv(args):
@@ -23,14 +28,18 @@ def upsert_csv(args):
                  database=args.database,
                  password=args.password,
                  user=args.user) as db:
-        upsert_to_db_from_csv(db, args.input_file, 'id')
+
+        options = {'table_schema': args.schema}
+        if args.table_name:
+            options['table_name'] = args.table_name
+
+        upsert_to_db_from_csv(db, args.input_file, 'id', **options)
 
 
 args_func_map = {
     'create': import_csv,
     'update': upsert_csv,
 }
-
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description="Import a CSV file into the dataware house.")
@@ -42,10 +51,6 @@ if __name__ == '__main__':
 create: import data in bulk from a CSV file.
 update: create/update data in bulk from a CSV file.
 """)
-
-    parser.add_argument('-t', '--table', dest='table_name',
-                        help="Table to import the data to.")
-
 
     parser.add_argument('-s', dest="source", choices=["activities", "leads"], required=True,
                         help="Specifies either leads or activies records.")

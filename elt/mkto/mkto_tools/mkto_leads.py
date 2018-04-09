@@ -49,7 +49,8 @@ def get_leads_fieldnames_mkto(lead_description):
     return sorted(field_names)
 
 
-def write_to_db_from_csv(db_conn, csv_file):
+def write_to_db_from_csv(db_conn, csv_file,
+                         table_schema=PG_SCHEMA, table_name=PG_TABLE):
     """
     Write to Postgres DB from a CSV
 
@@ -60,8 +61,8 @@ def write_to_db_from_csv(db_conn, csv_file):
     with open(csv_file, 'r') as file:
         try:
             header = next(file).rstrip().lower()  # Get header row, remove new lines, lowercase
-            schema_name = psycopg2.sql.Identifier(PG_SCHEMA)
-            table_name = psycopg2.sql.Identifier(PG_TABLE)
+            schema_name = psycopg2.sql.Identifier(table_schema)
+            table_name = psycopg2.sql.Identifier(table_name)
 
             cursor = db_conn.cursor()
             #cursor.execute("TRUNCATE TABLE {}".format(table_name))
@@ -86,7 +87,8 @@ def write_to_db_from_csv(db_conn, csv_file):
             print(err)
 
 
-def upsert_to_db_from_csv(db_conn, csv_file, primary_key):
+def upsert_to_db_from_csv(db_conn, csv_file, primary_key,
+                          table_schema=PG_SCHEMA, table_name=PG_TABLE):
     """
     Upsert to Postgres DB from a CSV
 
@@ -99,9 +101,9 @@ def upsert_to_db_from_csv(db_conn, csv_file, primary_key):
             header = next(file).rstrip().lower()  # Get header row, remove new lines, lowercase
             cursor = db_conn.cursor()
 
-            schema_name = psycopg2.sql.Identifier(PG_SCHEMA)
-            table_name = psycopg2.sql.Identifier(PG_TABLE)
-            tmp_table_name = psycopg2.sql.Identifier(PG_TABLE + "_tmp")
+            schema_name = psycopg2.sql.Identifier(table_schema)
+            table_name = psycopg2.sql.Identifier(table_name)
+            tmp_table_name = psycopg2.sql.Identifier(table_name + "_tmp")
 
             # Create temp table
             create_table = psycopg2.sql.SQL("CREATE TEMP TABLE {0} AS SELECT * FROM {1}.{2} LIMIT 0").format(
