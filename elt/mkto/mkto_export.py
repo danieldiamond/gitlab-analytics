@@ -1,9 +1,18 @@
 #!/usr/bin/python3
 import argparse
+import sys
 
+from enum import Enum
 from mkto_tools.mkto_bulk import bulk_export
-from mkto_tools.mkto_schema import schema_export
+from mkto_tools.mkto_schema import schema_export, SchemaException
 from config import parser_db_conn
+
+
+class ExitCode(Enum):
+    OK = 0
+    ERROR_UNKNOWN = 1
+    SCHEMA_INAPPLICABLE = 2
+
 
 action_map = {
     'export': bulk_export,
@@ -48,4 +57,9 @@ if __name__ == '__main__':
     if args.output_file is not None:
         args.output = 'file' # force file output
 
-    action_map[args.action](args)
+    try:
+        action_map[args.action](args)
+    except SchemaException as e:
+        sys.exit(ExitCode.SCHEMA_INAPPLICABLE)
+    except:
+        sys.exit(ExitCode.ERROR_UNKNOWN)

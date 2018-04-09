@@ -9,7 +9,11 @@ from config import parser_db_conn
 
 
 def import_csv(args):
-    with db_open(**args) as db:
+    with db_open(host=args.host,
+                 port=args.port,
+                 database=args.database,
+                 password=args.password,
+                 user=args.user) as db:
         write_to_db_from_csv(db, args.input_file)
 
 
@@ -31,7 +35,7 @@ args_func_map = {
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description="Import a CSV file into the dataware house.")
 
-    parser_db_conn(args)
+    parser_db_conn(parser)
 
     parser.add_argument('action', choices=['create', 'update'], default='import',
                         help="""
