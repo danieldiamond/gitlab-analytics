@@ -148,6 +148,34 @@ We then take all of the cleaned records and use dbt to make multiple transformat
 
 Finally, we use Python to generate SFDC accounts and to upload the host records to the appropriate SFDC account. We also generate any accounts necessary and update any SFDC accounts with DiscoverOrg and Clearbit data if any of the relevant fields are not already present in SFDC.
 
+#### Managing Roles
+
+All role definitions are in [/elt/config/pg_roles/](https://gitlab.com/bizops/bizops/tree/master/elt/config)
+
+Ideally we'd be using [pgbedrock](https://github.com/Squarespace/pgbedrock) to manage users. Since internally we are using CloudSQL, we're not able to access the superuser role which pgbedrock requires. However, the YAML format of the role definitions is convenient for reasoning about privileges and it's possible the tool could evolve to validate privileges against a given spec, so we are using the pgbedrock definition syntax to define roles here. 
+
+The `readonly` role was generated using the following commands:
+
+```sql
+GRANT USAGE on SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+
+GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+
+GRANT INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER on ALL TABLES IN schema sandbox to readonly;
+
+ALTER ROLE readonly LOGIN;
+```
+
+New user roles are added to the `readonly` role via:
+
+```sql
+CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE readonly;
+
+ALTER ROLE newrole LOGIN;
+```
+
+New readonly users are then given instructions via Google Drive on how to connect their computer to the CloudSQL Proxy and on how to change their password once they login.
+
 # Contributing to BizOps
 
 We welcome contributions and improvements, please see the [contribution guidelines](CONTRIBUTING.md)
