@@ -8,8 +8,9 @@ from .mkto_schema import Schema, Column, DBType
 Activity schema uses a JSON field as backend.
 '''
 def describe_schema(args) -> Schema:
+    table_name = args.table_name or 'mkto_activities'
     column = lambda column_name, data_type, is_nullable=True: Column(table_schema=args.schema,
-                                                                table_name=args.table_name,
+                                                                table_name=table_name,
                                                                 column_name=column_name,
                                                                 data_type=data_type.value,
                                                                 is_nullable=is_nullable)
