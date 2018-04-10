@@ -28,7 +28,7 @@ def action_schema_apply(args):
 
 action_map = {
     'export': bulk_export,
-    'describe': action_schema_apply,
+    'apply_schema': action_schema_apply,
 }
 
 
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     parser_db_conn(parser, required=False)
 
-    parser.add_argument('action', choices=['export', 'describe'], default='export',
+    parser.add_argument('action', choices=['export', 'apply_schema'], default='export',
                         help="export: bulk export data into the output.\ndescribe: export the schema into a schema file.")
 
     parser.add_argument('-s', dest="source", choices=["activities", "leads"], required=True,
