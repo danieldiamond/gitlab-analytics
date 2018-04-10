@@ -8,18 +8,18 @@ import psycopg2.sql
 import requests
 
 from .mkto_token import get_token, mk_endpoint
-from .mkto_schema import Schema, Column
+from .mkto_schema import Schema, Column, data_type
 
-PG_SCHEMA = 'generated'
-PG_TABLE = 'mkto_leads'
+
+PG_SCHEMA = 'mkto'
+PG_TABLE = 'leads'
 PRIMARY_KEY = 'id'
-
 
 def describe_schema(args) -> Schema:
     source = args.source
     schema = describe_leads()
     fields = schema['result']
-    table_name = args.table_name or "mkto_%s" % source
+    table_name = args.table_name or PG_TABLE
     print("Table name is: %s" % table_name)
 
     columns = (column(args.schema, table_name, field) for field in fields)
@@ -194,10 +194,14 @@ def upsert_to_db_from_csv(db_conn, csv_file, primary_key,
 },
 '''
 def column(table_schema, table_name, field) -> Column:
-    column_name = field['name'] or field.get('rest', {})['name']
+    if not 'rest' in field:
+        print("Missing 'rest' key in %s" % field)
+        return None
+
+    column_name = field['rest']['name']
     column_def = column_name.lower()
-    dt_type = data_type(column_name, field['dataType'])
-    is_pkey = column_def in schema_primary_key
+    dt_type = data_type(field['dataType'])
+    is_pkey = column_def == PRIMARY_KEY
 
     print("%s -> %s as %s" % (column_name, column_def, dt_type))
     column = Column(table_schema=table_schema,

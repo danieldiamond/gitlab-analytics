@@ -4,11 +4,15 @@ from .mkto_token import get_token, mk_endpoint
 from .mkto_schema import Schema, Column, DBType
 
 
+PG_SCHEMA = 'mkto'
+PG_TABLE = 'activities'
+PRIMARY_KEY = 'marketoguid'
+
 '''
 Activity schema uses a JSON field as backend.
 '''
 def describe_schema(args) -> Schema:
-    table_name = args.table_name or 'mkto_activities'
+    table_name = args.table_name or PG_TABLE
     column = lambda column_name, data_type, is_nullable=True: Column(table_schema=args.schema,
                                                                 table_name=table_name,
                                                                 column_name=column_name,

@@ -18,6 +18,8 @@ class Password:
 
 
 def parser_db_conn(parser, required=True):
+    current_user = os.getenv('USER')
+
     parser.add_argument('-S', '--schema', required=required,
                         help="Database schema to use.")
 
@@ -25,9 +27,10 @@ def parser_db_conn(parser, required=True):
                         help="Table to import the data to.")
 
     parser.add_argument('-d', '--db', dest='database', required=required,
+                        default=os.getenv('PG_DATABASE', current_user),
                         help="Database to import the data to.")
 
-    parser.add_argument('-H', '--host', default=os.getenv('PG_HOST', 'localhost'),
+    parser.add_argument('-H', '--host', default=os.getenv('PG_ADDRESS', 'localhost'),
                         help="Database host address.")
 
     parser.add_argument('-p', '--port', default=os.getenv('PG_PORT', 5432),

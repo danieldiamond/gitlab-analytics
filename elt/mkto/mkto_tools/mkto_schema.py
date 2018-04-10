@@ -132,8 +132,6 @@ data_types_map = {
   "float":         DBType.Double,
 }
 
-schema_primary_key = ['id']
-
 def mkto_schema(args) -> Schema:
     schema_func_map[args.source](args)
 
