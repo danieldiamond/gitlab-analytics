@@ -21,6 +21,10 @@ def import_csv(args):
 
         write_to_db_from_csv(db, args.input_file, **options)
 
+pkey_source_map = {
+    'leads': 'id',
+    'activities': 'marketoguid',
+}
 
 def upsert_csv(args):
     with db_open(host=args.host,
@@ -33,7 +37,10 @@ def upsert_csv(args):
         if args.table_name:
             options['table_name'] = args.table_name
 
-        upsert_to_db_from_csv(db, args.input_file, 'id', **options)
+        upsert_to_db_from_csv(db,
+                              args.input_file,
+                              pkey_source_map[args.source],
+                              **options)
 
 
 args_func_map = {
@@ -54,7 +61,6 @@ update: create/update data in bulk from a CSV file.
 
     parser.add_argument('-s', dest="source", choices=["activities", "leads"], required=True,
                         help="Specifies either leads or activies records.")
-
 
     parser.add_argument('input_file',
                         help="Specifies the file to import.")

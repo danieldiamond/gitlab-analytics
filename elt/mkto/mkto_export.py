@@ -3,13 +3,32 @@ import argparse
 import sys
 
 from mkto_tools.mkto_bulk import bulk_export
-from mkto_tools.mkto_schema import schema_export, SchemaException
+from mkto_tools.mkto_schema import schema_apply, SchemaException
+from mkto_tools.mkto_leads import describe_schema as describe_leads_schema
+from mkto_tools.mkto_activities import describe_schema as describe_activities_schema
+from mkto_tools.mkto_utils import db_open
 from config import parser_db_conn
+
+
+schema_func_map = {
+    'leads': describe_leads_schema,
+    'activities': describe_activities_schema,
+}
+
+def action_schema_apply(args):
+    schema = schema_func_map[args.source](args)
+
+    with db_open(database=args.database,
+                 host=args.host,
+                 port=args.port,
+                 user=args.user,
+                 password=args.password) as db:
+        schema_apply(db, schema)
 
 
 action_map = {
     'export': bulk_export,
-    'describe': schema_export,
+    'describe': action_schema_apply,
 }
 
 

@@ -8,10 +8,26 @@ import psycopg2.sql
 import requests
 
 from .mkto_token import get_token, mk_endpoint
+from .mkto_schema import Schema, Column
 
 PG_SCHEMA = 'generated'
 PG_TABLE = 'mkto_leads'
 PRIMARY_KEY = 'id'
+
+
+def describe_schema(args) -> Schema:
+    source = args.source
+    schema = describe_leads()
+    fields = schema['result']
+    table_name = args.table_name or "mkto_%s" % source
+    print("Table name is: %s" % table_name)
+
+    columns = (column(args.schema, table_name, field) for field in fields)
+    columns = list(filter(None, columns))
+    columns.sort(key=lambda c: c.column_name)
+
+    return Schema(args.schema, columns)
+
 
 def describe_leads():
     token = get_token()
@@ -20,7 +36,6 @@ def describe_leads():
         return
 
     describe_url = mk_endpoint + "/rest/v1/leads/describe.json"
-
     payload = {
         "access_token": token
     }
@@ -61,18 +76,16 @@ def write_to_db_from_csv(db_conn, csv_file,
     with open(csv_file, 'r') as file:
         try:
             header = next(file).rstrip().lower()  # Get header row, remove new lines, lowercase
-            schema_name = psycopg2.sql.Identifier(table_schema)
-            table_name = psycopg2.sql.Identifier(table_name)
+            schema = psycopg2.sql.Identifier(table_schema)
+            table = psycopg2.sql.Identifier(table_name)
 
             cursor = db_conn.cursor()
-            #cursor.execute("TRUNCATE TABLE {}".format(table_name))
-            #print("Truncating table.")
 
             copy_query = psycopg2.sql.SQL(
                 "COPY {0}.{1} ({2}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV"
             ).format(
-                schema_name,
-                table_name,
+                schema,
+                table,
                 psycopg2.sql.SQL(', ').join(
                     psycopg2.sql.Identifier(n) for n in header.split(',')
                 )
@@ -82,7 +95,6 @@ def write_to_db_from_csv(db_conn, csv_file,
             cursor.copy_expert(sql=copy_query, file=file)
             db_conn.commit()
             cursor.close()
-            # os.remove(item + '.csv')
         except psycopg2.Error as err:
             print(err)
 
@@ -101,15 +113,15 @@ def upsert_to_db_from_csv(db_conn, csv_file, primary_key,
             header = next(file).rstrip().lower()  # Get header row, remove new lines, lowercase
             cursor = db_conn.cursor()
 
-            schema_name = psycopg2.sql.Identifier(table_schema)
-            table_name = psycopg2.sql.Identifier(table_name)
-            tmp_table_name = psycopg2.sql.Identifier(table_name + "_tmp")
+            schema = psycopg2.sql.Identifier(table_schema)
+            table = psycopg2.sql.Identifier(table_name)
+            tmp_table = psycopg2.sql.Identifier(table_name + "_tmp")
 
             # Create temp table
             create_table = psycopg2.sql.SQL("CREATE TEMP TABLE {0} AS SELECT * FROM {1}.{2} LIMIT 0").format(
-                tmp_table_name,
-                schema_name,
-                table_name,
+                tmp_table,
+                schema,
+                table,
             )
             cursor.execute(create_table)
             print(create_table.as_string(cursor))
@@ -118,7 +130,7 @@ def upsert_to_db_from_csv(db_conn, csv_file, primary_key,
             # Import into TMP Table
             copy_query=psycopg2.sql.SQL("COPY {0}.{1} ({2}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV").format(
                 psycopg2.sql.Identifier("pg_temp"),
-                tmp_table_name,
+                tmp_table,
                 psycopg2.sql.SQL(', ').join(
                     psycopg2.sql.Identifier(n) for n in header.split(','),
                 ),
@@ -136,13 +148,13 @@ def upsert_to_db_from_csv(db_conn, csv_file, primary_key,
             set_strings = re.sub('\.','"."', rep_brace)
 
             update_query = psycopg2.sql.SQL("INSERT INTO {0}.{1} ({2}) SELECT {2} FROM {3}.{4} ON CONFLICT ({5}) DO UPDATE SET {6}").format(
-                schema_name,
-                table_name,
+                schema,
+                table,
                 psycopg2.sql.SQL(', ').join(
                     psycopg2.sql.Identifier(n) for n in header.split(',')
                 ),
                 psycopg2.sql.Identifier("pg_temp"),
-                tmp_table_name,
+                tmp_table,
                 psycopg2.sql.Identifier(primary_key),
                 psycopg2.sql.SQL(set_strings),
             )
@@ -153,7 +165,7 @@ def upsert_to_db_from_csv(db_conn, csv_file, primary_key,
             # Drop temporary table
             drop_query = psycopg2.sql.SQL("DROP TABLE {0}.{1}").format(
                 psycopg2.sql.Identifier("pg_temp"),
-                tmp_table_name,
+                tmp_table,
             )
 
             print(drop_query.as_string(cursor))
@@ -163,3 +175,35 @@ def upsert_to_db_from_csv(db_conn, csv_file, primary_key,
 
         except psycopg2.Error as err:
             print(err)
+
+
+'''
+{
+    "id": 2,
+    "displayName": "Company Name",
+    "dataType": "string",
+    "length": 255,
+    "rest": {
+        "name": "company",
+        "readOnly": false
+    },
+    "soap": {
+        "name": "Company",
+        "readOnly": false
+    }
+},
+'''
+def column(table_schema, table_name, field) -> Column:
+    column_name = field['name'] or field.get('rest', {})['name']
+    column_def = column_name.lower()
+    dt_type = data_type(column_name, field['dataType'])
+    is_pkey = column_def in schema_primary_key
+
+    print("%s -> %s as %s" % (column_name, column_def, dt_type))
+    column = Column(table_schema=table_schema,
+                    table_name=table_name,
+                    column_name=column_def,
+                    data_type=dt_type.value,
+                    is_nullable=not is_pkey)
+
+    return column
