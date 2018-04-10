@@ -17,20 +17,13 @@ schema_func_map = {
 
 def action_schema_apply(args):
     schema = schema_func_map[args.source](args)
-
-    with db_open(database=args.database,
-                 host=args.host,
-                 port=args.port,
-                 user=args.user,
-                 password=args.password) as db:
+    with db_open(**vars(args)) as db:
         schema_apply(db, schema)
-
 
 action_map = {
     'export': bulk_export,
     'apply_schema': action_schema_apply,
 }
-
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description="Use the Marketo Bulk Export to get Leads or Activities")

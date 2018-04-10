@@ -9,12 +9,7 @@ from config import parser_db_conn
 
 
 def import_csv(args):
-    with db_open(host=args.host,
-                 port=args.port,
-                 database=args.database,
-                 password=args.password,
-                 user=args.user) as db:
-
+    with db_open(**vars(args)) as db:
         options = {'table_schema': args.schema}
         if args.table_name:
             options['table_name'] = args.table_name
@@ -27,12 +22,7 @@ pkey_source_map = {
 }
 
 def upsert_csv(args):
-    with db_open(host=args.host,
-                 port=args.port,
-                 database=args.database,
-                 password=args.password,
-                 user=args.user) as db:
-
+    with db_open(**vars(args)) as db:
         options = {'table_schema': args.schema}
         if args.table_name:
             options['table_name'] = args.table_name
@@ -41,7 +31,6 @@ def upsert_csv(args):
                               args.input_file,
                               pkey_source_map[args.source],
                               **options)
-
 
 args_func_map = {
     'create': import_csv,

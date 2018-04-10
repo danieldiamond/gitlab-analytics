@@ -287,7 +287,7 @@ def bulk_export(args):
 
     if args.output == "db":
         print("Upserting to Database")
-        with db_open() as db:
+        with db_open(**vars(args)) as db:
             upsert_to_db_from_csv(db, output_file, primary_key)
 
     if args.nodelete or args.output == "file":

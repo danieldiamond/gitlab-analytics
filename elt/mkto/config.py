@@ -36,7 +36,7 @@ def parser_db_conn(parser, required=True):
     parser.add_argument('-p', '--port', default=os.getenv('PG_PORT', 5432),
                         help="Database port.")
 
-    parser.add_argument('-u', '--user', default=os.getenv('PG_USERNAME', os.getenv('USER')),
+    parser.add_argument('-u', '--user', default=os.getenv('PG_USERNAME', current_user),
                         help="Specifies the user to connect to the database with.")
 
     parser.add_argument('-W', '--password', type=Password, help='Specify password',
