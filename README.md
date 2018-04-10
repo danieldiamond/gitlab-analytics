@@ -169,9 +169,7 @@ ALTER ROLE readonly LOGIN;
 New roles are added to the `readonly` role via:
 
 ```sql
-CREATE ROLE newrole WITH PASSWORD 'tmppassword';
-
-GRANT readonly TO newrole;
+CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE readonly;
 
 ALTER ROLE newrole LOGIN;
 ```
