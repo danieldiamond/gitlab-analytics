@@ -166,7 +166,7 @@ GRANT INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER on ALL TABLES IN sch
 ALTER ROLE readonly LOGIN;
 ```
 
-New roles are added to the `readonly` role via:
+New user roles are added to the `readonly` role via:
 
 ```sql
 CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE readonly;
