@@ -3,7 +3,6 @@
 import os
 import requests
 
-mk_username = os.environ.get('MKTO_USER')
 mk_endpoint = os.environ.get('MKTO_ENDPOINT')
 mk_client_id = os.environ.get('MKTO_CLIENT_ID')
 mk_client_secret = os.environ.get('MKTO_CLIENT_SECRET')

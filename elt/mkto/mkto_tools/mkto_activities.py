@@ -1,19 +1,45 @@
 #!/usr/bin/python3
-
 import requests
 
-from mkto_token import get_token, mk_endpoint
+from .mkto_token import get_token, mk_endpoint
+from .mkto_schema import Schema, Column, DBType
+from config import MarketoSource
+
+
+PG_SCHEMA = 'mkto'
+PG_TABLE = str(MarketoSource.ACTIVITIES)
+PRIMARY_KEY = 'marketoguid'
+
+'''
+Activity schema uses a JSON field as backend.
+'''
+def describe_schema(args) -> Schema:
+    table_name = args.table_name or PG_TABLE
+    column = lambda column_name, data_type, is_nullable=True: Column(table_schema=args.schema,
+                                                                table_name=table_name,
+                                                                column_name=column_name,
+                                                                data_type=data_type.value,
+                                                                is_nullable=is_nullable)
+
+    return Schema(args.schema, [
+        column('marketoguid',             DBType.Integer,   False),
+        column('leadid',                  DBType.Integer,   False),
+        column('activitydate',            DBType.Date),
+        column('activitytypeid',          DBType.Integer),
+        column('campaignid',              DBType.Integer),
+        column('primaryattributevalueid', DBType.Integer),
+        column('primaryattributevalue',   DBType.String),
+        column('attributes',              DBType.JSON),
+    ])
 
 
 def activity_types():
-
     token = get_token()
     if token == "Error":
         print("No job created. Token Error.")
         return
 
     ac_type_url = mk_endpoint + "/rest/v1/activities/types.json"
-
     payload = {
         "access_token": token
     }
@@ -29,9 +55,7 @@ def activity_types():
 
 
 def activity_map():
-
     ac_types = activity_types()
-
     activity_dict = dict()
 
     for activity in ac_types.get("result"):
@@ -44,8 +68,8 @@ def activity_map():
         fields = [primary_field] + remaining_fields
 
         activity_dict[id] = {
-                "name": name,
-                "fields": fields
-            }
+            "name": name,
+            "fields": fields
+        }
 
     return activity_dict
