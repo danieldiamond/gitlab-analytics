@@ -35,7 +35,7 @@ def describe_leads():
         print("No job created. Token Error.")
         return
 
-    describe_url = mk_endpoint + "/rest/v1/leads/describe.json"
+    describe_url = f"{mk_endpoint}rest/v1/leads/describe.json"
     payload = {
         "access_token": token
     }

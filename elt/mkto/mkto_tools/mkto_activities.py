@@ -37,7 +37,7 @@ def activity_types():
         print("No job created. Token Error.")
         return
 
-    ac_type_url = mk_endpoint + "/rest/v1/activities/types.json"
+    ac_type_url = f"{mk_endpoint}rest/v1/activities/types.json"
     payload = {
         "access_token": token
     }

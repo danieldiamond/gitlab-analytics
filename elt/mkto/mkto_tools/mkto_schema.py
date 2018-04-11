@@ -172,13 +172,13 @@ def schema_apply_column(db_cursor, schema: Schema, column: Column) -> SchemaDiff
     diff = schema.column_diff(column)
 
     if diff != SchemaDiff.COLUMN_OK:
-        print("[%s]: %s" % (column.column_name, diff))
+        print(f"[{column.column_name}]: {diff}")
 
     if diff == SchemaDiff.COLUMN_CHANGED:
         raise InapplicableChangeException(diff)
 
     if diff == SchemaDiff.COLUMN_MISSING:
-        stmt = "ALTER TABLE {}.{} ADD COLUMN {} %s"
+        stmt = "ALTER TABLE {}.{} ADD COLUMN {}"
         if not column.is_nullable:
             stmt += " NOT NULL"
 

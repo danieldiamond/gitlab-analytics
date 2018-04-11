@@ -7,11 +7,11 @@ from configparser import SafeConfigParser
 from .mkto_token import get_token, mk_endpoint
 
 db_config_keys = [
-    'host',
-    'port',
-    'user',
-    'password',
-    'database',
+    "host",
+    "port",
+    "user",
+    "password",
+    "database",
 ]
 
 class db_open:
@@ -34,7 +34,7 @@ def get_mkto_config(section, field):
     :return:
     """
     myDir = os.path.dirname(os.path.abspath(__file__))
-    myPath = os.path.join(myDir, '../../config', 'mktoFields.conf')
+    myPath = os.path.join(myDir, "../../config", "mktoFields.conf")
     parser = SafeConfigParser()
     parser.read(myPath)
     values = parser.get(section, field)
@@ -70,9 +70,9 @@ def get_from_lead_db(item, item_id=None):
         print("Token Error")
         return
 
-    lead_db_url = mk_endpoint + "/rest/v1/" + item
+    lead_db_url = f"{mk_endpoint}rest/v1/{item}"
     if item_id is not None:
-        lead_db_url += '/' + str(item_id)
+        lead_db_url += f"/{item_id}"
 
     lead_db_url += ".json"
 
@@ -97,7 +97,7 @@ def get_asset(asset):
         print("Token Error")
         return
 
-    asset_url = mk_endpoint + "/rest/asset/v1/" + asset + ".json"
+    asset_url = f"{mk_endpoint}rest/asset/v1/{asset}.json"
 
     payload = {
         "access_token": token
