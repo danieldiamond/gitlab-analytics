@@ -5,8 +5,8 @@ services:
     build: .
     image: bizops/dw:dev
     environment:
-      POSTGRES_DB: dw_dev
-      POSTGRES_USER: gitlab
-      POSTGRES_PASSWORD: gitlab
+      POSTGRES_DB: $PG_DATABASE
+      POSTGRES_USER: $PG_USERNAME
+      POSTGRES_PASSWORD: $PG_PASSWORD
     ports:
       - 5432:5432
