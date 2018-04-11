@@ -20,6 +20,7 @@ def auth_headers(token, content_type="application/json"):
         "Content-Type": content_type,
     }
 
+
 def bulk_create_job(filter, data_type, fields=None, format="CSV", column_header_names=None):
     """
     Create a bulk job
@@ -259,7 +260,8 @@ def bulk_export(args):
         # If Activities, default is to get all activity types.
         # All fields are returned by Marketo API by default
         activity_objects = get_mkto_config('Activities', 'objects')
-        activity_ids = [int(get_mkto_config(ob, 'id')) for ob in activity_objects.split(',')]
+        activity_ids = [int(get_mkto_config(ob, 'id'))
+                        for ob in activity_objects.split(',')]
         primary_key = "marketoguid"
 
     if args.source == "leads":
@@ -271,7 +273,8 @@ def bulk_export(args):
                                  end_date=date_end,
                                  pull_type=pull_type,
                                  activity_ids=activity_ids)
-    new_job = bulk_create_job(filter=filter, data_type=args.source, fields=fields)
+    new_job = bulk_create_job(
+        filter=filter, data_type=args.source, fields=fields)
     print(json.dumps(new_job, indent=2))
 
     export_id = new_job.get("result", ["None"])[0].get("exportId")

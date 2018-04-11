@@ -8,16 +8,17 @@ PG_SCHEMA = 'mkto'
 PG_TABLE = 'activities'
 PRIMARY_KEY = 'marketoguid'
 
-'''
-Activity schema uses a JSON field as backend.
-'''
+
 def describe_schema(args) -> Schema:
+    """
+    Activity schema uses a JSON field as backend.
+    """
     table_name = args.table_name or PG_TABLE
     column = lambda column_name, data_type, is_nullable=True: Column(table_schema=args.schema,
-                                                                table_name=table_name,
-                                                                column_name=column_name,
-                                                                data_type=data_type.value,
-                                                                is_nullable=is_nullable)
+                                                                     table_name=table_name,
+                                                                     column_name=column_name,
+                                                                     data_type=data_type.value,
+                                                                     is_nullable=is_nullable)
 
     return Schema(args.schema, [
         column('marketoguid',             DBType.Integer,   False),
@@ -62,7 +63,8 @@ def activity_map():
         primary_field = activity.get("primaryAttribute", {}).get("name")
         if primary_field is None or primary_field == "null":
             continue
-        remaining_fields = [thing.get("name") for thing in activity.get("attributes", [])]
+        remaining_fields = [thing.get("name")
+                            for thing in activity.get("attributes", [])]
         fields = [primary_field] + remaining_fields
 
         activity_dict[id] = {

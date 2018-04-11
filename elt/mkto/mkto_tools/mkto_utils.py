@@ -14,6 +14,7 @@ db_config_keys = [
     "database",
 ]
 
+
 class db_open:
     def __init__(self, **kwargs):
         self.config = {k: kwargs[k] for k in db_config_keys}

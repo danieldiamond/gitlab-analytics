@@ -15,10 +15,12 @@ schema_func_map = {
     'activities': describe_activities_schema,
 }
 
+
 def action_schema_apply(args):
     schema = schema_func_map[args.source](args)
     with db_open(**vars(args)) as db:
         schema_apply(db, schema)
+
 
 action_map = {
     'export': bulk_export,
@@ -26,12 +28,14 @@ action_map = {
 }
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser(description="Use the Marketo Bulk Export to get Leads or Activities")
+    parser = argparse.ArgumentParser(
+        description="Use the Marketo Bulk Export to get Leads or Activities")
 
     parser_db_conn(parser, required=False)
 
     parser.add_argument('action', choices=['export', 'apply_schema'], default='export',
-                        help="export: bulk export data into the output.\ndescribe: export the schema into a schema file.")
+                        help=("export: bulk export data into the output\n"
+                              "apply_schema: apply the schema to the database."))
 
     parser.add_argument('-s', dest="source", choices=["activities", "leads"], required=True,
                         help="Specifies either leads or activies records.")
@@ -40,16 +44,21 @@ if __name__ == '__main__':
                         help="Specifies the output store for the extracted data.")
 
     parser.add_argument('-t', dest="type", choices=["created", "updated"], default="created",
-                        help="Specifies either created or updated. Use updated for incremental pulls. Default is created.")
+                        help=("Specifies either created or updated."
+                              "Use updated for incremental pulls."
+                              "Default is created."))
 
     parser.add_argument('--days', type=int,
-                        help="Specify the number of preceding days from the current time to get incremental records for. Only used for lead records.")
+                        help=("Specify the number of preceding days from the current time"
+                              "to get incremental records for. Only used for lead records."))
 
     parser.add_argument('-b', dest="start",
-                        help="The start date in the isoformat of 2018-01-01. This will be formatted properly downstream.")
+                        help=("The start date in the isoformat of 2018-01-01."
+                              "This will be formatted properly downstream."))
 
     parser.add_argument('-e', dest="end",
-                        help="The end date in the isoformat of 2018-02-01. This will be formatted properly downstream.")
+                        help=("The end date in the isoformat of 2018-02-01."
+                              "This will be formatted properly downstream."))
 
     parser.add_argument('--nodelete', action='store_true',
                         help="If argument is provided, the CSV file generated will not be deleted.")
@@ -57,10 +66,10 @@ if __name__ == '__main__':
     parser.add_argument('-F', '--output-file', dest="output_file",
                         help="Specifies the output to write the output to. Implies `-o file`.")
 
-    args=parser.parse_args()
+    args = parser.parse_args()
 
     if args.output_file is not None:
-        args.output = 'file' # force file output
+        args.output = 'file'  # force file output
 
     try:
         action_map[args.action](args)

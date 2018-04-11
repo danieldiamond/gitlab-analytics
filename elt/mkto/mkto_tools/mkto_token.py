@@ -8,6 +8,7 @@ mk_endpoint = os.environ.get('MKTO_ENDPOINT')
 mk_client_id = os.environ.get('MKTO_CLIENT_ID')
 mk_client_secret = os.environ.get('MKTO_CLIENT_SECRET')
 
+
 def get_token():
     payload = {
         "grant_type": "client_credentials",

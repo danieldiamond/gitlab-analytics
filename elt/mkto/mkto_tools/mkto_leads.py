@@ -15,6 +15,7 @@ PG_SCHEMA = 'mkto'
 PG_TABLE = 'leads'
 PRIMARY_KEY = 'id'
 
+
 def describe_schema(args) -> Schema:
     source = args.source
     schema = describe_leads()
@@ -75,7 +76,8 @@ def write_to_db_from_csv(db_conn, csv_file,
     """
     with open(csv_file, 'r') as file:
         try:
-            header = next(file).rstrip().lower()  # Get header row, remove new lines, lowercase
+            # Get header row, remove new lines, lowercase
+            header = next(file).rstrip().lower()
             schema = psycopg2.sql.Identifier(table_schema)
             table = psycopg2.sql.Identifier(table_name)
 
@@ -110,7 +112,8 @@ def upsert_to_db_from_csv(db_conn, csv_file, primary_key,
     """
     with open(csv_file, 'r') as file:
         try:
-            header = next(file).rstrip().lower()  # Get header row, remove new lines, lowercase
+            # Get header row, remove new lines, lowercase
+            header = next(file).rstrip().lower()
             cursor = db_conn.cursor()
 
             schema = psycopg2.sql.Identifier(table_schema)
@@ -128,7 +131,7 @@ def upsert_to_db_from_csv(db_conn, csv_file, primary_key,
             db_conn.commit()
 
             # Import into TMP Table
-            copy_query=psycopg2.sql.SQL("COPY {0}.{1} ({2}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV").format(
+            copy_query = psycopg2.sql.SQL("COPY {0}.{1} ({2}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV").format(
                 psycopg2.sql.Identifier("pg_temp"),
                 tmp_table,
                 psycopg2.sql.SQL(', ').join(
@@ -141,11 +144,13 @@ def upsert_to_db_from_csv(db_conn, csv_file, primary_key,
             db_conn.commit()
 
             # Update primary table
-            split_header = [col for col in header.split(',') if col != primary_key]
-            set_cols = {col: '.'.join(['excluded', col]) for col in split_header}
+            split_header = [col for col in header.split(
+                ',') if col != primary_key]
+            set_cols = {col: '.'.join(['excluded', col])
+                        for col in split_header}
             rep_colon = re.sub(':', '=', json.dumps(set_cols))
             rep_brace = re.sub('{|}', '', rep_colon)
-            set_strings = re.sub('\.','"."', rep_brace)
+            set_strings = re.sub('\.', '"."', rep_brace)
 
             update_query = psycopg2.sql.SQL("INSERT INTO {0}.{1} ({2}) SELECT {2} FROM {3}.{4} ON CONFLICT ({5}) DO UPDATE SET {6}").format(
                 schema,
@@ -177,24 +182,24 @@ def upsert_to_db_from_csv(db_conn, csv_file, primary_key,
             print(err)
 
 
-'''
-{
+def column(table_schema, table_name, field) -> Column:
+    """
+    {
     "id": 2,
     "displayName": "Company Name",
     "dataType": "string",
     "length": 255,
     "rest": {
-        "name": "company",
-        "readOnly": false
+    "name": "company",
+    "readOnly": false
     },
     "soap": {
-        "name": "Company",
-        "readOnly": false
+    "name": "Company",
+    "readOnly": false
     }
-},
-'''
-def column(table_schema, table_name, field) -> Column:
-    if not 'rest' in field:
+    },
+    """
+    if 'rest' not in field:
         print("Missing 'rest' key in %s" % field)
         return None
 

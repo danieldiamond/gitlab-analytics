@@ -16,10 +16,12 @@ def import_csv(args):
 
         write_to_db_from_csv(db, args.input_file, **options)
 
+
 pkey_source_map = {
     'leads': 'id',
     'activities': 'marketoguid',
 }
+
 
 def upsert_csv(args):
     with db_open(**vars(args)) as db:
@@ -32,13 +34,15 @@ def upsert_csv(args):
                               pkey_source_map[args.source],
                               **options)
 
+
 args_func_map = {
     'create': import_csv,
     'update': upsert_csv,
 }
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser(description="Import a CSV file into the dataware house.")
+    parser = argparse.ArgumentParser(
+        description="Import a CSV file into the dataware house.")
 
     parser_db_conn(parser)
 
@@ -54,7 +58,7 @@ update: create/update data in bulk from a CSV file.
     parser.add_argument('input_file',
                         help="Specifies the file to import.")
 
-    args=parser.parse_args()
+    args = parser.parse_args()
 
     if not args.user or not args.password:
         print("User/Password are required.")

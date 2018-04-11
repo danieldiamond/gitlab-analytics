@@ -13,11 +13,14 @@ from collections import OrderedDict, namedtuple
 class SchemaException(Exception):
     """Base exception for schema errors."""
 
+
 class InapplicableChangeException(SchemaException):
     """Raise for inapplicable schema changes."""
 
+
 class AggregateException(SchemaException):
     """Aggregate multiple sub-exceptions."""
+
     def __init__(self, exceptions: Sequence[SchemaException]):
         self.exceptions = exceptions
 
@@ -40,7 +43,8 @@ class ExceptionAggregator:
         except Exception as e:
             if self.recognize_exception(e):
                 self.failures.append((e, params))
-            else: raise e
+            else:
+                raise e
 
     def raise_aggregate(self) -> AggregateException:
         if len(self.failures):
@@ -85,7 +89,7 @@ class Schema:
     def column_diff(self, column: Column) -> SchemaDiff:
         key, _ = Schema._key(column)
 
-        if not key in self.columns:
+        if key not in self.columns:
             return SchemaDiff.COLUMN_MISSING
 
         db_col = self.columns[key]
@@ -97,11 +101,11 @@ class Schema:
         return SchemaDiff.COLUMN_OK
 
 
-'''
-:db_conn: psycopg2 db_connection
-:schema: database schema
-'''
 def db_schema(db_conn, schema) -> Schema:
+    """
+    :db_conn: psycopg2 db_connection
+    :schema: database schema
+    """
     cursor = db_conn.cursor()
 
     cursor.execute("""
@@ -116,36 +120,33 @@ def db_schema(db_conn, schema) -> Schema:
 
 
 data_types_map = {
-  "date":          DBType.Date,
-  "string":        DBType.String,
-  "phone":         DBType.String,
-  "text":          DBType.String,
-  "percent":       DBType.Double,
-  "integer":       DBType.Integer,
-  "boolean":       DBType.Boolean,
-  "lead_function": DBType.String,
-  "email":         DBType.String,
-  "datetime":      DBType.Timestamp,
-  "currency":      DBType.String,
-  "reference":     DBType.String,
-  "url":           DBType.String,
-  "float":         DBType.Double,
+    "date": DBType.Date,
+    "string": DBType.String,
+    "phone": DBType.String,
+    "text": DBType.String,
+    "percent": DBType.Double,
+    "integer": DBType.Integer,
+    "boolean": DBType.Boolean,
+    "lead_function": DBType.String,
+    "email": DBType.String,
+    "datetime": DBType.Timestamp,
+    "currency": DBType.String,
+    "reference": DBType.String,
+    "url": DBType.String,
+    "float": DBType.Double,
 }
 
-def mkto_schema(args) -> Schema:
-    schema_func_map[args.source](args)
 
-'''
-Tries to apply the schema from the Marketo API into
-upon the data warehouse.
-
-:db_conn:        psycopg2 database connection.
-:target_schema:  Schema to apply.
-
-Returns True when successful.
-'''
 def schema_apply(db_conn, target_schema: Schema):
-    success = False
+    """
+    Tries to apply the schema from the Marketo API into
+    upon the data warehouse.
+
+    :db_conn:        psycopg2 database connection.
+    :target_schema:  Schema to apply.
+
+    Returns True when successful.
+    """
     schema = db_schema(db_conn, target_schema.name)
 
     results = ExceptionAggregator(errors=[InapplicableChangeException])
@@ -160,15 +161,15 @@ def schema_apply(db_conn, target_schema: Schema):
     db_conn.commit()
 
 
-'''
-Apply the schema to the current database connection
-adapting tables as it goes. Currently only supports
-adding new columns.
-
-:cursor: A database connection
-:column: the column to apply
-'''
 def schema_apply_column(db_cursor, schema: Schema, column: Column) -> SchemaDiff:
+    """
+    Apply the schema to the current database connection
+    adapting tables as it goes. Currently only supports
+    adding new columns.
+
+    :cursor: A database connection
+    :column: the column to apply
+    """
     diff = schema.column_diff(column)
 
     if diff != SchemaDiff.COLUMN_OK:
@@ -193,11 +194,11 @@ def schema_apply_column(db_cursor, schema: Schema, column: Column) -> SchemaDiff
     return diff
 
 
-'''
-Convert Marketo data type to DBType.
-Default to DBType.String if no mapping is present.
-
-:mkto_type: Marketo data type (from API)
-'''
 def data_type(mkto_type) -> DBType:
+    """
+    Convert Marketo data type to DBType.
+    Default to DBType.String if no mapping is present.
+
+    :mkto_type: Marketo data type (from API)
+    """
     return data_types_map.get(mkto_type, DBType.String)
