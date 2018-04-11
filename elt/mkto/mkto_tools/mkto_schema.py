@@ -173,7 +173,7 @@ def schema_apply_column(db_cursor, schema: Schema, column: Column) -> SchemaDiff
     diff = schema.column_diff(column)
 
     if diff != SchemaDiff.COLUMN_OK:
-        print(f"[{column.column_name}]: {diff}")
+        print("[{}]: {}".format(column.column_name, diff))
 
     if diff == SchemaDiff.COLUMN_CHANGED:
         raise InapplicableChangeException(diff)

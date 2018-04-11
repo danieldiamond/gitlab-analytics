@@ -71,9 +71,9 @@ def get_from_lead_db(item, item_id=None):
         print("Token Error")
         return
 
-    lead_db_url = f"{mk_endpoint}rest/v1/{item}"
+    lead_db_url = "{}rest/v1/{}".format(mk_endpoint, item)
     if item_id is not None:
-        lead_db_url += f"/{item_id}"
+        lead_db_url += "/{}".format(item_id)
 
     lead_db_url += ".json"
 
@@ -98,7 +98,7 @@ def get_asset(asset):
         print("Token Error")
         return
 
-    asset_url = f"{mk_endpoint}rest/asset/v1/{asset}.json"
+    asset_url = "{}rest/asset/v1/{}.json".format(mk_endpoint, asset)
 
     payload = {
         "access_token": token

@@ -16,7 +16,7 @@ def get_token():
         "client_secret": mk_client_secret
     }
 
-    token_url = f"{mk_endpoint}identity/oauth/token"
+    token_url = "{}identity/oauth/token".format(mk_endpoint)
     response = requests.get(toekn_url, params=payload)
 
     if response.status_code == 200:

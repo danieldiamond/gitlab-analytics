@@ -16,7 +16,7 @@ from .mkto_utils import db_open, bulk_filter_builder, get_mkto_config
 
 def auth_headers(token, content_type="application/json"):
     return {
-        "Authorization": f"Bearer {token}",
+        "Authorization": "Bearer {}".format(token),
         "Content-Type": content_type,
     }
 
@@ -39,7 +39,7 @@ def bulk_create_job(filter, data_type, fields=None, format="CSV", column_header_
         print("No job created. Token Error.")
         return
 
-    create_url = f"{mk_endpoint}bulk/v1/{data_type}/export/create.json"
+    create_url = "{}bulk/v1/{}/export/create.json".format(mk_endpoint, data_type)
 
     payload = {
         "format": format,
@@ -78,7 +78,7 @@ def bulk_get_export_jobs(data_type, status=None, batch_size=10):
         print("No job created. Token Error.")
         return
 
-    export_url = f"{mk_endpoint}bulk/v1/{data_type}/export.json"
+    export_url = "{}bulk/v1/{}/export.json".format(mk_endpoint, data_type)
 
     payload = {
         "access_token": token,
@@ -109,7 +109,7 @@ def bulk_enqueue_job(data_type, export_id):
         print("No job created. Token Error.")
         return
 
-    enqueue_url = f"{mk_endpoint}bulk/v1/{data_type}/export/{export_id}/enqueue.json"
+    enqueue_url = "{}bulk/v1/{}/export/{}/enqueue.json".format(mk_endpoint, data_type, export_id)
 
     response = requests.post(enqueue_url, headers=auth_headers(token))
 
@@ -132,7 +132,7 @@ def bulk_job_status(data_type, export_id):
         print("No job created. Token Error.")
         return
 
-    status_url = f"{mk_endpoint}bulk/v1/{data_type}/export/{export_id}/status.json"
+    status_url = "{}bulk/v1/{}/export/{}/status.json".format(mk_endpoint, data_type, export_id)
 
     payload = {
         "access_token": token,
@@ -159,8 +159,8 @@ def bulk_get_file(data_type, export_id):
         print("No job created. Token Error.")
         return
 
-    file_url = f"{mk_endpoint}bulk/v1/{data_type}/export/{export_id}/file.json"
-    output_file = f"{data_type}.csv"
+    file_url = "{}bulk/v1/{}/export/{}/file.json".format(mk_endpoint, data_type, export_id)
+    output_file = "{}.csv".format(data_type)
 
     payload = {
         "access_token": token
@@ -211,7 +211,7 @@ def bulk_cancel_job(data_type, export_id):
         print("No job created. Token Error.")
         return
 
-    cancel_url = f"{mk_endpoint}bulk/v1/{data_type}/export/{export_id}/cancel.json"
+    cancel_url = "{}bulk/v1/{}/export/{}/cancel.json".format(mk_endpoint, data_type, export_id)
 
     response = requests.post(cancel_url, headers=auth_headers(token))
 
@@ -224,7 +224,7 @@ def bulk_cancel_job(data_type, export_id):
 def bulk_export(args):
     fields = None
     activity_ids = None
-    output_file = f"{args.source}.csv"
+    output_file = "{}.csv".format(args.source)
 
     iso_check = re.compile(r'^\d{4}-\d{2}-\d{2}')
     if args.start is not None:
