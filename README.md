@@ -102,7 +102,62 @@ The BizOps product consists three key components:
 
 As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
 
-It is expected that the BizOps project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an individual application at the top level of the BizOps project for inclusion/exclusion.  
+It is expected that the BizOps project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an individual application at the top level of the BizOps project for inclusion/exclusion. 
+
+### Managing API requests and limits
+
+Many of the SaaS sources have various types of API limits, typically a given quota per day. If you are nearing the limit of a given source, or are iterating frequently on your repo, you may need to implement some additional measures to manage usage.
+
+#### Reducing API usage by review apps
+
+One of the easiest ways to reduce consumption of API calls for problematic ELT sources is to make that job manual for branches other than `master`. This way when iterating on a particular branch, this job can be manually run on if it specifically needs to be tested.
+
+We don't want the job on `master` to be manual, so we will need to create two jobs. The best way to do this is to convert the existing job into a template, which can then be referenced so we don't duplicate most of the settings.
+
+For example take a sample Zuora ELT job:
+
+```yaml
+zuora:
+  stage: extract
+  image: registry.gitlab.com/bizops/bizops-elt/extract:latest
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
+    - python3 elt/zuora/zuora_export.py
+    - stop_cloudsqlproxy
+```
+
+The first thing to do would to convert this into an anchor, and preface the job name with `.` so it is ignored:
+
+```yaml
+.zuora: &zuora
+  stage: extract
+  image: registry.gitlab.com/bizops/bizops-elt/extract:latest
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
+    - python3 elt/zuora/zuora_export.py
+    - stop_cloudsqlproxy
+```
+
+Next, we can define two new jobs. One for `master` and another manual job for any review branches:
+
+```yaml
+zuora_prod:
+  <<: *zuora
+  only:
+    - master
+
+zuora_review:
+  <<: *zuora
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+```
 
 ## GitLab Data and Analytics - Internal
 
