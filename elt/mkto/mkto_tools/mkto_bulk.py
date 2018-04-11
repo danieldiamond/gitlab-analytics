@@ -226,6 +226,7 @@ def bulk_export(args):
     activity_ids = None
     output_file = "{}.csv".format(args.source)
 
+    # Validates that the date is of the format "YYYY-MM-DD".
     iso_check = re.compile(r'^\d{4}-\d{2}-\d{2}')
     if args.start is not None:
         try:
