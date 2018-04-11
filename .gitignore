@@ -8,6 +8,6 @@
 *.DS_Store
 *.idea
 *.csv
-Pipfile*
 tmp_log.txt
+.env
 

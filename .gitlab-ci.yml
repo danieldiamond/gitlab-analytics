@@ -45,6 +45,15 @@ pings:
     - bash processes/hosts_to_sfdc/python_timecheck.sh
     - stop_cloudsqlproxy
 
+marketo:
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - bash processes/mkto_processor.sh
+    - stop_cloudsqlproxy
+
 dbt:
   stage: model
   <<: *job_definition
