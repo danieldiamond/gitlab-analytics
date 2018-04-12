@@ -1,9 +1,9 @@
-readonly:
+analytics:
     can_login: no
     is_superuser: no
     privileges:
         schemas:
-            read:
+            write:
                 - analytics
                 - customers
                 - gitlab
@@ -14,10 +14,9 @@ readonly:
                 - sfdc
                 - version
                 - zuora
-            write:
                 - sandbox
         tables:
-            read:
+            write:
                 - analytics.*
                 - customers.*
                 - gitlab.*
@@ -28,5 +27,4 @@ readonly:
                 - sfdc.*
                 - version.*
                 - zuora.*
-            write:
                 - sandbox.*
