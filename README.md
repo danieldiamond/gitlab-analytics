@@ -212,24 +212,37 @@ Ideally we'd be using [pgbedrock](https://github.com/Squarespace/pgbedrock) to m
 The `readonly` role was generated using the following commands:
 
 ```sql
+CREATE ROLE readonly;
+
 GRANT USAGE on SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
 
 GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
 
 GRANT INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER on ALL TABLES IN schema sandbox to readonly;
 
-ALTER ROLE readonly LOGIN;
 ```
 
-New user roles are added to the `readonly` role via:
+The `analytics` role was generated using the following commands:
 
 ```sql
-CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE readonly;
+
+CREATE ROLE analytics;
+
+GRANT USAGE on SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+
+GRANT ALL PRIVILEGES on ALL TABLES IN SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+
+``` 
+
+New user roles are added to a specific role via:
+
+```sql
+CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE metarole;
 
 ALTER ROLE newrole LOGIN;
 ```
 
-New readonly users are then given instructions via Google Drive on how to connect their computer to the CloudSQL Proxy and on how to change their password once they login.
+New readonly and analytics users are then given instructions via Google Drive on how to connect their computer to the CloudSQL Proxy and on how to change their password once they login.
 
 # Contributing to BizOps
 
