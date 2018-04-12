@@ -8,6 +8,7 @@ stages:
   - model
   - update
   - review_stop
+  - dev_restore
 
 .job_template: &job_definition
   image: registry.gitlab.com/bizops/bizops-elt/extract:latest
@@ -175,6 +176,18 @@ review_stop:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
 
+refresh_dev:
+  stage: dev_restore
+  image: google/cloud-sdk:latest
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - refresh_dev_cloudsql
+  only:
+    - master
+  except:
+    - branches
+
 # ---------------------------------------------------------------------------
 
 .bizops: &bizops |
@@ -240,6 +253,25 @@ review_stop:
     if [ -n "$GCP_SERVICE_CREDS" ]; then
       kill -9 `pgrep cloud_sql_proxy`
     fi
+  }
+
+  function refresh_dev_cloudsql() {
+    # Get current UTC time
+    H=$(date -u +%H)
+
+    # Checks if between 4 and 7 AM UTC (11PM-2AM CST)
+    # Prod backups happen between 8-12 AM UTC (3-7 AM CST)
+    # 10#$H returns the hour in base 10
+    if (( 4 <= 10#$H && 10#$H < 7 )); then
+      if [ -n "$GCP_SERVICE_CREDS" ]; then
+        echo "Restoring dev instance from latest successful prod backup."
+        gcloud sql backups list --instance $GCP_INSTANCE_NAME | grep SUCCESSFUL | head -n 1 | cut -d' ' -f1 | xargs -I % gcloud sql backups restore % --restore-instance=$GCP_DEV_INSTANCE_NAME --backup-instance=$GCP_INSTANCE_NAME
+      fi
+    else
+        echo "Dev instance refresh not run: Only run between the hours of 4 AM UTC and 7 AM UTC"
+    fi
+
+
   }
 
 before_script:
