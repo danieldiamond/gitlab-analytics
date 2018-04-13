@@ -9,7 +9,6 @@ stages:
   - update
   - review_stop
   - dev_restore
-  - db_alter
 
 .job_template: &job_definition
   image: registry.gitlab.com/bizops/bizops-elt/extract:latest
@@ -186,10 +185,6 @@ refresh_dev:
     - refresh_dev_cloudsql
   only:
     - master
-
-update_roles:
-  stage: db_alter
-
 
 # ---------------------------------------------------------------------------
 
