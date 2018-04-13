@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "*"
+configparser = "*"
+dbt = "*"
+toolz = "*"
+clearbit = "*"
+ipwhois = "*"
+tldextract = "*"
+simple-salesforce = "*"
+SQLAlchemy = "*"
+Pyrseas = "*"
+psycopg2 = "== 2.7.4"
+
+[dev-packages]
+"flake8" = "*"
+"autopep8" = "*"
+
+[requires]
+python_version = "3.5"
