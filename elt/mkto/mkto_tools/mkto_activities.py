@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 import requests
+
 from .mkto_token import get_token, mk_endpoint
 from .mkto_schema import Schema, Column, DBType
+from config import MarketoSource
 
 
 PG_SCHEMA = 'mkto'
-PG_TABLE = 'activities'
+PG_TABLE = str(MarketoSource.ACTIVITIES)
 PRIMARY_KEY = 'marketoguid'
 
 

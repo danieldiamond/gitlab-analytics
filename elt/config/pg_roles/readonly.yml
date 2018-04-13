@@ -1,0 +1,32 @@
+readonly:
+    can_login: no
+    is_superuser: no
+    privileges:
+        schemas:
+            read:
+                - analytics
+                - customers
+                - gitlab
+                - license
+                - mkto
+                - public
+                - sandbox
+                - sfdc
+                - version
+                - zuora
+            write:
+                - sandbox
+        tables:
+            read:
+                - analytics.*
+                - customers.*
+                - gitlab.*
+                - license.*
+                - mkto.*
+                - public.*
+                - sandbox.*
+                - sfdc.*
+                - version.*
+                - zuora.*
+            write:
+                - sandbox.*

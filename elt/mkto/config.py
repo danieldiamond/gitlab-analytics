@@ -2,6 +2,19 @@ import os
 import argparse
 import getpass
 
+from enum import Enum
+
+
+class OptionEnum(Enum):
+    def __str__(self):
+        return self.value
+
+    def __eq__(self, other):
+        return self.value == other
+
+    def __hash__(self):
+        return hash(self.value)
+
 
 class Password:
     DEFAULT = 'PG_PASSWORD environment variable.'
@@ -15,6 +28,20 @@ class Password:
 
     def __str__(self):
         return self.value
+
+class ExportOutput(OptionEnum):
+    DB = "db"
+    FILE = "file"
+
+
+class ExportType(OptionEnum):
+    CREATED = "created"
+    UPDATED = "updated"
+
+
+class MarketoSource(OptionEnum):
+    LEADS = "leads"
+    ACTIVITIES = "activities"
 
 
 def parser_db_conn(parser, required=True):

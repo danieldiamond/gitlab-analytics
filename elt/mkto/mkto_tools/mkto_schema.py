@@ -179,7 +179,7 @@ def schema_apply_column(db_cursor, schema: Schema, column: Column) -> SchemaDiff
         raise InapplicableChangeException(diff)
 
     if diff == SchemaDiff.COLUMN_MISSING:
-        stmt = "ALTER TABLE {}.{} ADD COLUMN {}"
+        stmt = "ALTER TABLE {}.{} ADD COLUMN {} %s"
         if not column.is_nullable:
             stmt += " NOT NULL"
 

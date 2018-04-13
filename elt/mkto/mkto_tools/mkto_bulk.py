@@ -6,12 +6,13 @@ import csv
 import re
 import os
 import datetime
-
 import requests
 
 from .mkto_token import get_token, mk_endpoint
-from .mkto_leads import get_leads_fieldnames_mkto, describe_leads, write_to_db_from_csv, upsert_to_db_from_csv
+from .mkto_leads import get_leads_fieldnames_mkto, describe_leads, write_to_db_from_csv, upsert_to_db_from_csv, PRIMARY_KEY as LEADS_PRIMARY_KEY
+from .mkto_activities import PRIMARY_KEY as ACTIVITIES_PRIMARY_KEY
 from .mkto_utils import db_open, bulk_filter_builder, get_mkto_config
+from config import MarketoSource, ExportType, ExportOutput
 
 
 def auth_headers(token, content_type="application/json"):
@@ -19,6 +20,10 @@ def auth_headers(token, content_type="application/json"):
         "Authorization": "Bearer {}".format(token),
         "Content-Type": content_type,
     }
+
+
+FIELD_CREATED_AT = "createdAt"
+FIELD_UPDATED_AT = "updatedAt"
 
 
 def bulk_create_job(filter, data_type, fields=None, format="CSV", column_header_names=None):
@@ -251,24 +256,22 @@ def bulk_export(args):
         date_end = next_day.strftime("%Y-%m-%d") + 'T00:00:00Z'
         date_start = offset.strftime("%Y-%m-%d") + 'T00:00:00Z'
 
-    if args.type == "created":
-        pull_type = "createdAt"
+    if args.type == ExportType.CREATED:
+        pull_type = FIELD_CREATED_AT
 
-    if args.type == "updated":
-        pull_type = "updatedAt"
+    if args.type == ExportType.UPDATED:
+        pull_type = FIELD_UPDATED_AT
 
-    if args.source == "activities":
-        # If Activities, default is to get all activity types.
-        # All fields are returned by Marketo API by default
+    if args.source == MarketoSource.ACTIVITIES:
+        # If Activities, default is to get all activity types. All fields are returned by Marketo API by default
         activity_objects = get_mkto_config('Activities', 'objects')
-        activity_ids = [int(get_mkto_config(ob, 'id'))
-                        for ob in activity_objects.split(',')]
-        primary_key = "marketoguid"
+        activity_ids = [int(get_mkto_config(ob, 'id')) for ob in activity_objects.split(',')]
+        primary_key = ACTIVITIES_PRIMARY_KEY
 
-    if args.source == "leads":
+    if args.source == MarketoSource.LEADS:
         # This is an API call to Marketo. Should probably pull from static config and periodically check for differences
         fields = get_leads_fieldnames_mkto(describe_leads())
-        primary_key = "id"
+        primary_key = LEADS_PRIMARY_KEY
 
     filter = bulk_filter_builder(start_date=date_start,
                                  end_date=date_end,
@@ -285,12 +288,12 @@ def bulk_export(args):
     print("Get Results File")
     bulk_get_file(args.source, export_id)
 
-    if args.output == "db":
+    if args.output == ExportOutput.DB:
         print("Upserting to Database")
         with db_open(**vars(args)) as db:
             upsert_to_db_from_csv(db, output_file, primary_key)
 
-    if args.nodelete or args.output == "file":
+    if args.nodelete or args.output == ExportOutput.FILE:
         return
     else:
         os.remove(output_file)

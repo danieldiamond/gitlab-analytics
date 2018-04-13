@@ -9,10 +9,11 @@ import requests
 
 from .mkto_token import get_token, mk_endpoint
 from .mkto_schema import Schema, Column, data_type
+from config import MarketoSource
 
 
 PG_SCHEMA = 'mkto'
-PG_TABLE = 'leads'
+PG_TABLE = str(MarketoSource.LEADS)
 PRIMARY_KEY = 'id'
 
 
@@ -190,12 +191,12 @@ def column(table_schema, table_name, field) -> Column:
     "dataType": "string",
     "length": 255,
     "rest": {
-    "name": "company",
-    "readOnly": false
+        "name": "company",
+        "readOnly": false
     },
     "soap": {
-    "name": "Company",
-    "readOnly": false
+        "name": "Company",
+        "readOnly": false
     }
     },
     """

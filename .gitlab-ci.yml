@@ -75,6 +75,15 @@ sfdc_update:
     - python3 processes/sfdc_processor.py
     - stop_cloudsqlproxy
 
+sfdc_snapshot:
+  stage: update
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - python3 elt/util/snapshot.py
+    - stop_cloudsqlproxy
+
 review:
   stage: review
   image: google/cloud-sdk:latest

@@ -49,7 +49,7 @@ This should be a replacement for other ELT & Data Integration tools: [Boomi](htt
 | Load      | [Singer](https://www.singer.io/) Target | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
 | Transform | [dbt](https://www.getdbt.com/) | [Pentaho DI](http://www.pentaho.com/product/data-integration), manual SQL | [Alooma](https://www.alooma.com/) |  
 | Warehouse | [PostgreSQL](https://www.postgresql.org/) | [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax) | [Redshift](https://aws.amazon.com/redshift/), [Snowflake](https://www.snowflake.net/) |
-| Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | | 
+| Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | |
 | Test | [dbt](https://www.getdbt.com/), [Great Expectations](https://github.com/great-expectations/great_expectations), [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) | | [Informatica](https://marketplace.informatica.com/solutions/informatica_data_validation), [iCEDQ](https://icedq.com/), [QuerySurge](http://www.querysurge.com/) |
 | Model | Out of scope | | |
 | Visualize | Out of scope | | |
@@ -71,7 +71,7 @@ We are targeting analytics for sales and marketing performance first. We plan to
   * CAC = cost per lead * conversion from lead to IACV
   * ROI = LTV / CAC
 
-In the future, we plan to expand support to other areas of an organization like Customer Success, Human Resources, and Finance. 
+In the future, we plan to expand support to other areas of an organization like Customer Success, Human Resources, and Finance.
 
 ## Data sources
 
@@ -83,20 +83,26 @@ We want the tools to be open source so we can ship this as a product.
 
 1. Extract and Load (EL): Combination of [Pentaho Data Integration](http://www.pentaho.com/product/data-integration) and python scripts, although will consider [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
   * Pentaho DI is based on the open-source [Talend](https://www.talend.com/products/data-integration/) engine, but utilizes XML for easier configuration.
+  * Current plans include creating separate Extractors and Loaders that can be plugged together much like Unix command line tools.
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
 1. Warehouse: Any SQL based data warehouse. We recommend [PostgeSQL](https://www.postgresql.org/) and include it in the bizops pipeline. Postgres cloud services like [Google Cloud SQL](https://cloud.google.com/sql/) are also supported, for increased scalability and durability.
 1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) for scheduling, running, and monitoring the ELT jobs. Non-GitLab alternatives are [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi).
 1. Visualization/Dashboard: BizOps is compatible with nearly all visualization engines, due to the SQL based data store. For example commercial products like [Looker](https://looker.com/) or [Tableau](https://www.tableau.com/), as well as open-source products like [Superset](https://github.com/airbnb/superset) or [Metabase](https://metabase.com) can be used.
 
 ## How to use
+> Notes:
+> * Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields.
+> * The sample Zuora python scripts have been written to support GitLab's Zuora implementation. This includes a workaround to handle some subscriptions that should have been created as a single subscription.
 
-The BizOps project consists two key components:
+The BizOps product consists three key components:
+
 1. A SQL based data store, for example [PostgreSQL](https://www.postgresql.org/) or [Cloud SQL](https://cloud.google.com/sql/). We recommend using Postgres for [review apps](https://about.gitlab.com/features/review-apps/) and a more durable and scalable service for production.
-1. The [`extract`](#extract-container) container, which will run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
+1. This project, [`bizops`](https://gitlab.com/bizops/bizops), which contains the ELT scripts and CI jobs to refresh the data warehouse from the [configured sources](doc/data_sources.md). Typically configured to run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
+1. The [`bizops-elt`](https://gitlab.com/bizops/bizops-elt) container, which includes the necessary dependencies for the ELT scripts. Used as the base image for the CI jobs.
 
 As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
 
-It is expected that the BizOps project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an indiviual application at the top level of the BizOps project for inclusion/exclusion.  
+It is expected that the BizOps project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an individual application at the top level of the BizOps project for inclusion/exclusion. 
 
 ### Local environment
 
@@ -127,41 +133,62 @@ $ env $(<.env) docker-compose -f stack.yml start
 
 You should be ready to go!
 
-### Extract container
+### Managing API requests and limits
 
-The `extract` image includes:
-* Pentaho Data Integration 7.1 with OpenJDK 8 to extract data from SFDC
-* Python 3.5.3 and extraction scripts for Zuora and Marketo
+Many of the SaaS sources have various types of API limits, typically a given quota per day. If you are nearing the limit of a given source, or are iterating frequently on your repo, you may need to implement some additional measures to manage usage.
 
-This image is set up to be able to run periodically to connect to the configured [data sources](doc/data_sources.md) and extract data, processing it and storing it in the data warehouse running using the [`bizops container`](#bizops-container). Supported sources in current version:
-* SFDC
-* Zuora
+#### Reducing API usage by review apps
 
-#### Using the Extract container
-> Notes:
-> * Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields. 
-> * The sample Zuora python scripts have been written to support GitLab's Zuora implementation. This includes a workaround to handle some subscriptions that should have been created as a single subscription.
+One of the easiest ways to reduce consumption of API calls for problematic ELT sources is to make that job manual for branches other than `master`. This way when iterating on a particular branch, this job can be manually run only if it specifically needs to be tested.
 
-The container is primarily built to be used in conjunction with GitLab CI, to automate and schedule the extraction of data. Creating the container is currently a manual job, since it changes infrequently and consumes network/compute resources. To build the container initially or after changes, simply run the `extract_container` job in the `build` stage. The subsequent `extract` stage can be cancelled and restarted once the container has finished building. This will be improved in the future.
+We don't want the job on `master` to be manual, so we will need to create two jobs. The best way to do this is to convert the existing job into a template, which can then be referenced so we don't duplicate most of the settings.
 
-Together with the `.gitlab-ci.yml` file and [project variables](https://docs.gitlab.com/ce/ci/variables/README.html#protected-secret-variables), it is easy to configure. Simply set the following variables in your project ensure that the container is available.
-* PG_ADDRESS: IP/DNS of the Postgres server.
-* PG_PORT: Port number of the Postgres server, typically 5432.
-* PG_DATABASE: Database name to be used for the staging tables.
-* PG_DEV_SCHEMA: Schema to use for development of dbt models.
-* PG_PROD_SCHEMA: Schema to use for production dimensional model.
-* PG_USERNAME: Username for authentication to Postgres.
-* PG_PASSWORD: Password for authentication to Postgres.
-* GCP_PRODUCTION_INSTANCE_NAME: Cloud Production SQL Instance Name. Set if wanting to use Cloud SQL Proxy.
-* GCP_SERVICE_CREDS: GCP Service Credentials JSON. Set if wanting to use Cloud SQL Proxy.
-* SFDC_URL: Web service URL for your SFDC account.
-* SFDC_USERNAME: Username for authentication to SFDC.
-* SFDC_PASSWORD: Password for authentication to SFDC.
-* ZUORA_URL: Web service URL for your Zuora account.
-* ZUORA_USERNAME: Username for authentication to Zuora.
-* ZUORA_PASSWORD: Password for authentication to Zuora.
+For example take a sample Zuora ELT job:
 
-## Internal GitLab Analytics Plan
+```yaml
+zuora:
+  stage: extract
+  image: registry.gitlab.com/bizops/bizops-elt/extract:latest
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
+    - python3 elt/zuora/zuora_export.py
+    - stop_cloudsqlproxy
+```
+
+The first thing to do would to convert this into an anchor, and preface the job name with `.` so it is ignored:
+
+```yaml
+.zuora: &zuora
+  stage: extract
+  image: registry.gitlab.com/bizops/bizops-elt/extract:latest
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
+    - python3 elt/zuora/zuora_export.py
+    - stop_cloudsqlproxy
+```
+
+Next, we can define two new jobs. One for `master` and another manual job for any review branches:
+
+```yaml
+zuora_prod:
+  <<: *zuora
+  only:
+    - master
+
+zuora_review:
+  <<: *zuora
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+```
+
+## GitLab Data and Analytics - Internal
 
 ### Charter/Goals
 * Build a centralized data warehouse that can support data analysis requirements from all functional groups within the company.
@@ -192,6 +219,59 @@ Together with the `.gitlab-ci.yml` file and [project variables](https://docs.git
 * Serves as the Single Source of Truth for reporting, analysis, and visualization applications.
 * Will need to be audited regularly back to the source.
 * Should not be generally available - will require strict access controls for direct querying not done through a controlled application such as metabase.
+
+#### Hosts Records Dataflow
+
+From our on-premises installations, we recieve [version and ping information](https://docs.gitlab.com/ee/user/admin_area/settings/usage_statistics.html) from the software. This data is currently imported once a day from a PostgreSQL database into our enterprise data warehouse (EDW). We use this data to feed into Salesforce (SFDC) to aid our sales representatives in their work.
+
+The domains from all of the pings are first cleaned by standardizing the URL using a package called [tldextract](https://github.com/john-kurkowski/tldextract). Each cleaned ping type is combined into a single host record. We make a best effort attempt to align the pings from the same install of the software. 
+
+This single host record is then enriched with data from three sources: DiscoverOrg, Clearbit, and WHOIS. If DiscoverOrg has no record of the domain we then fallback to Clearbit, with WHOIS being a last resort. Each request to DiscoverOrg and Clearbit is cached in the database and is updated no more than every 30 days. The cleaning and enrichment steps are all accomplished using Python.
+
+We then take all of the cleaned records and use dbt to make multiple transformations. The last 60 days of pings are aligned with Salesforce accounts using the account name or the account website. Based on this, tables are generated of host records to upload to SFDC. If no accounts are found, we then generate a table of accounts to create within SFDC. 
+
+Finally, we use Python to generate SFDC accounts and to upload the host records to the appropriate SFDC account. We also generate any accounts necessary and update any SFDC accounts with DiscoverOrg and Clearbit data if any of the relevant fields are not already present in SFDC.
+
+#### Managing Roles
+
+All role definitions are in [/elt/config/pg_roles/](https://gitlab.com/bizops/bizops/tree/master/elt/config)
+
+Ideally we'd be using [pgbedrock](https://github.com/Squarespace/pgbedrock) to manage users. Since internally we are using CloudSQL, we're not able to access the superuser role which pgbedrock requires. However, the YAML format of the role definitions is convenient for reasoning about privileges and it's possible the tool could evolve to validate privileges against a given spec, so we are using the pgbedrock definition syntax to define roles here. 
+
+The `readonly` role was generated using the following commands:
+
+```sql
+CREATE ROLE readonly;
+
+GRANT USAGE on SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+
+GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+
+GRANT INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER on ALL TABLES IN schema sandbox to readonly;
+
+```
+
+The `analytics` role was generated using the following commands:
+
+```sql
+
+CREATE ROLE analytics;
+
+GRANT USAGE on SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+
+GRANT ALL PRIVILEGES on ALL TABLES IN SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+
+``` 
+
+New user roles are added to a specific role via:
+
+```sql
+CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE metarole;
+
+ALTER ROLE newrole LOGIN;
+```
+
+New readonly and analytics users are then given instructions via Google Drive on how to connect their computer to the CloudSQL Proxy and on how to change their password once they login.
 
 # Contributing to BizOps
 
