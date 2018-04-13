@@ -98,6 +98,35 @@ As development progresses, additional documentation on getting started along wit
 
 It is expected that the BizOps project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an indiviual application at the top level of the BizOps project for inclusion/exclusion.  
 
+### Local environment
+
+The local environment might differs for differents ELT process.  
+The most standard setup using Python 3.5.  
+
+You might want to customize the `.env.example` file according to your needs.
+
+```
+$ cp .env.example > .env
+```
+
+Then, create the virtualenv using `pipenv`:
+```
+$ pipenv install --skip-lock
+$ pipenv shell
+```
+
+This should install the python dependencies that the ELT process need.  
+
+A docker image is also provided to start a PostgreSQL instance for the data warehousing needs.  
+This image will use environment variables defined in the BizOps project.
+To run:
+
+```
+$ env $(<.env) docker-compose -f stack.yml start
+```
+
+You should be ready to go!
+
 ### Extract container
 
 The `extract` image includes:
