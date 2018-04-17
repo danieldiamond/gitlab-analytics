@@ -16,14 +16,16 @@ def describe_schema(args) -> Schema:
     Activity schema uses a JSON field as backend.
     """
     table_name = args.table_name or PG_TABLE
-    column = lambda column_name, data_type, is_nullable=True: Column(table_schema=args.schema,
-                                                                     table_name=table_name,
-                                                                     column_name=column_name,
-                                                                     data_type=data_type.value,
-                                                                     is_nullable=is_nullable)
+    def column(column_name, data_type, is_nullable=True, is_mapping_key=False):
+        return Column(table_schema=args.schema,
+                      table_name=table_name,
+                      column_name=column_name,
+                      data_type=data_type.value,
+                      is_nullable=is_nullable,
+                      is_mapping_key=is_mapping_key)
 
     return Schema(args.schema, [
-        column('marketoguid',             DBType.Integer,   False),
+        column('marketoguid',             DBType.Integer,   False, True),
         column('leadid',                  DBType.Integer,   False),
         column('activitydate',            DBType.Date),
         column('activitytypeid',          DBType.Integer),

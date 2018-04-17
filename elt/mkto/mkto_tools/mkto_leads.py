@@ -91,6 +91,7 @@ def column(table_schema, table_name, field) -> Column:
                     table_name=table_name,
                     column_name=column_def,
                     data_type=dt_type.value,
-                    is_nullable=not is_pkey)
+                    is_nullable=not is_pkey,
+                    is_mapping_key=is_pkey,)
 
     return column
