@@ -63,7 +63,7 @@ marketo_extract:
   only:
     - master
 
-# Manual Jobs
+# Review Jobs
 
 marketo_extract_manual:
   <<: *marketo_extract
