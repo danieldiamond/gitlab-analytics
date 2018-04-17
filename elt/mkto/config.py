@@ -1,5 +1,4 @@
 import os
-import argparse
 import getpass
 
 from enum import Enum
@@ -28,6 +27,7 @@ class Password:
 
     def __str__(self):
         return self.value
+
 
 class ExportOutput(OptionEnum):
     DB = "db"

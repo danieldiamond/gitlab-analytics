@@ -16,6 +16,7 @@ schema_func_map = {
     MarketoSource.ACTIVITIES: describe_activities_schema,
 }
 
+
 def action_schema_apply(args):
     schema = schema_func_map[args.source](args)
     with db_open(**vars(args)) as db:
@@ -39,7 +40,7 @@ class MarketoAction(Enum):
 
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser(description="Use the Marketo Bulk Export to get Leads or Activities")
+    parser = argparse.ArgumentParser(description="Use the Marketo Bulk Export to get Leads or Activities")
 
     parser_db_conn(parser, required=False)
 
@@ -90,7 +91,7 @@ if __name__ == '__main__':
                         dest="output_file",
                         help="Specifies the output to write the output to. Implies `-o file`.")
 
-    args=parser.parse_args()
+    args = parser.parse_args()
 
     if args.output_file is not None:
         args.output = 'file' # force file output

@@ -1,7 +1,3 @@
-import io
-import sys
-import json
-import yaml
 import psycopg2
 import psycopg2.extras
 
