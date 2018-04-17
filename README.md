@@ -104,6 +104,35 @@ As development progresses, additional documentation on getting started along wit
 
 It is expected that the BizOps project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an individual application at the top level of the BizOps project for inclusion/exclusion. 
 
+### Local environment
+
+The local environment might differs for differents ELT process.  
+The most standard setup using Python 3.5.  
+
+You might want to customize the `.env.example` file according to your needs.
+
+```
+$ cp .env.example > .env
+```
+
+Then, create the virtualenv using `pipenv`:
+```
+$ pipenv install --skip-lock
+$ pipenv shell
+```
+
+This should install the python dependencies that the ELT process need.  
+
+A docker image is also provided to start a PostgreSQL instance for the data warehousing needs.  
+This image will use environment variables defined in the BizOps project.
+To run:
+
+```
+$ env $(<.env) docker-compose -f stack.yml start
+```
+
+You should be ready to go!
+
 ### Managing API requests and limits
 
 Many of the SaaS sources have various types of API limits, typically a given quota per day. If you are nearing the limit of a given source, or are iterating frequently on your repo, you may need to implement some additional measures to manage usage.
