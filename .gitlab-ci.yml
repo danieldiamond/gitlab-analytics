@@ -11,6 +11,19 @@ stages:
   tags:
     - analytics
 
+.marketo_extract: &marketo_extract
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - bash processes/mkto_processor.sh
+    - stop_cloudsqlproxy
+
+# Stage: extract
+
+## Production Jobs
+
 sfdc_extract:
   variables:
     FIXED_SFDC_PASSWORD: $SFDC_PASSWORD
@@ -45,14 +58,22 @@ pings:
     - bash processes/hosts_to_sfdc/python_timecheck.sh
     - stop_cloudsqlproxy
 
-marketo:
-  stage: extract
-  <<: *job_definition
-  script:
-    - set_sql_instance_name
-    - setup_cloudsqlproxy
-    - bash processes/mkto_processor.sh
-    - stop_cloudsqlproxy
+marketo_extract:
+  <<: *marketo_extract
+  only:
+    - master
+
+## Review Jobs
+
+marketo_extract_manual:
+  <<: *marketo_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+# Stage: model
 
 dbt:
   stage: model
@@ -84,6 +105,8 @@ sfdc_snapshot:
     - python3 elt/util/snapshot.py
     - stop_cloudsqlproxy
 
+# Stage: review 
+
 review:
   stage: review
   image: google/cloud-sdk:latest
@@ -101,6 +124,8 @@ review:
     - branches
   except:
     - master
+
+# Stage: review_stop
 
 review_stop:
   stage: review_stop
