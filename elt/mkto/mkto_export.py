@@ -8,6 +8,7 @@ from mkto_tools.mkto_schema import schema_apply, SchemaException
 from mkto_tools.mkto_leads import describe_schema as describe_leads_schema
 from mkto_tools.mkto_activities import describe_schema as describe_activities_schema
 from mkto_tools.mkto_utils import db_open
+from mkto_tools.mkto_token import get_token
 from config import MarketoSource, ExportType, ExportOutput, parser_db_conn
 
 
@@ -15,6 +16,10 @@ schema_func_map = {
     MarketoSource.LEADS: describe_leads_schema,
     MarketoSource.ACTIVITIES: describe_activities_schema,
 }
+
+
+def action_token(args):
+    print(get_token())
 
 
 def action_schema_apply(args):
@@ -26,10 +31,10 @@ def action_schema_apply(args):
 class MarketoAction(Enum):
     EXPORT = ('export', bulk_export)
     APPLY_SCHEMA = ('apply_schema', action_schema_apply)
+    TOKEN = ('token', action_token)
 
     @classmethod
     def from_str(cls, name):
-        print(name)
         return cls[name.upper()]
 
     def __str__(self):
