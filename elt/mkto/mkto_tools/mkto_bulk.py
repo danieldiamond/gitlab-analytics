@@ -184,6 +184,8 @@ def bulk_get_file(data_type, export_id):
             time.sleep(60)
             continue
 
+    print("File {} available at {}".format(output_file, file_url))
+
     with requests.Session() as s:
         # TODO It's possible for the token to expire between start of function and here!
         updated_token = get_token()
@@ -290,7 +292,7 @@ def bulk_export(args):
     if args.output == ExportOutput.DB:
         print("Upserting to Database")
         with db_open(**vars(args)) as db:
-            upsert_to_db_from_csv(db, output_file, primary_key)
+            upsert_to_db_from_csv(db, output_file, primary_key=primary_key)
 
     if args.nodelete or args.output == ExportOutput.FILE:
         return
