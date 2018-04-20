@@ -182,6 +182,12 @@ view: f_churn_history {
     type: sum
     sql: ${current_total} ;;
   }
+  measure: least_arr {
+    label: "Least ARR"
+    hidden:  yes
+    type: sum
+    sql: CASE WHEN ${current_total} < ${year_ago_total} THEN ${current_total} ELSE ${year_ago_total} END ;;
+  }
 
   measure: delta {
     label: "Change from Year Ago"
@@ -194,6 +200,13 @@ view: f_churn_history {
     type: number
     value_format: "#.00\%"
     sql: 100 * ${total_current}/NULLIF(${total_year_ago},0) ;;
+  }
+
+  measure: gross_retention {
+    label: "Gross Retention"
+    type: number
+    value_format: "#.00\%"
+    sql: 100 * ${least_arr}/NULLIF(${total_year_ago},0) ;;
   }
 
 }
