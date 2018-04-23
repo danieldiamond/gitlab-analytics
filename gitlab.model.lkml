@@ -33,14 +33,6 @@ explore: f_opportunity {
   }
 }
 
-explore: usage_data_clean {
-  label: "Usage Pings"
-  description: "Usage Ping Viewier"
-
-  view_label: "Pings"
-
-}
-
 explore: pipeline_change {
   label: "Sales Pipeline Change"
   description: "Use this explore to look at the change in pipeline over time"
