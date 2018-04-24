@@ -40,6 +40,8 @@ A view may join to other views. The relationship between views is typically defi
 
 [JupyterHub](https://jupyterhub.readthedocs.io/en/latest/) - a multi-user Hub that spawns, manages, and proxies multiple instances of the single-user Jupyter notebook server. The Jupyter Notebook is an open-source web application that allows you to create and share documents that contain live code, equations, visualizations and explanatory text.
 
+![GitLab Internal Analytics Architecture](https://gitlab.com/bizops/bizops/blob/master/README.md#gitlab-internal-analytics-architecture)
+
 # License
 
 This code is distributed under the MIT license, see the [LICENSE](LICENSE.mdf) file.
