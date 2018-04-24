@@ -66,7 +66,7 @@ A view may join to other views. The relationship between views is typically defi
 
 ## Guidelines
 
-For effective development and consistency, general guidelines have been below.
+For effective development and consistency, general guidelines have been added below for reference.
 
 ### General Guidelines
 
