@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 import requests
+import config
 
 from .mkto_token import get_token, mk_endpoint
 from .mkto_schema import Schema, Column, data_type
-from config import MarketoSource
 
 
 PG_SCHEMA = 'mkto'
-PG_TABLE = str(MarketoSource.LEADS)
+PG_TABLE = 'leads'
 PRIMARY_KEY = 'id'
 
 
@@ -15,7 +15,7 @@ def describe_schema(args) -> Schema:
     source = args.source
     schema = describe_leads()
     fields = schema['result']
-    table_name = args.table_name or PG_TABLE
+    table_name = config.config_table_name(args)
     print("Table name is: %s" % table_name)
 
     columns = (column(args.schema, table_name, field) for field in fields)
