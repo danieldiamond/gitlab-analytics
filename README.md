@@ -6,6 +6,30 @@ This repository is for the storage of Looker view, model, and dashboard files. U
 
 We welcome contributions and improvements, please see the [contribution guidelines](CONTRIBUTING.md)
 
+## Getting Started
+
+The information below will get help you understand GitLab's data infrastructure and tools used to produce GitLab's internal data products and insights.
+
+## Prerequisites
+
+Users may request access to using GitLab's internal data analytic tools. Depending on the needs of a user, a user may need to request the following items to gain access to the data analytic tools.
+
+##### Required
+
+```
+ - Request access to the Looker platform
+```
+
+##### Optional
+
+```
+-
+```
+
+## GitLab Internal Analytics Architecture
+
+![GitLab Internal Analytics Architecture](https://gitlab.com/bizops/bizops/raw/master/img/WIP_%20GitLab_Analytics_Architecture.jpg)
+
 ## Core Data and Analytics Toolset
 
 ### Looker
@@ -39,6 +63,20 @@ A view may join to other views. The relationship between views is typically defi
 ### JupyterHub
 
 [JupyterHub](https://jupyterhub.readthedocs.io/en/latest/) - a multi-user Hub that spawns, manages, and proxies multiple instances of the single-user Jupyter notebook server. The Jupyter Notebook is an open-source web application that allows you to create and share documents that contain live code, equations, visualizations and explanatory text.
+
+## Guidelines
+
+For effective development and consistency, general guidelines have been added below for reference.
+
+### General Guidelines
+
+- Percentages should appear as integer values
+  - ```ex: 30% ```
+
+### Dashboards
+- Chart Titles should exist to explain the chart
+- Fields should be define based on the business, not how it is labeled in a database table
+  - ```ex: TCV or Total Contract Value, not tcv_value```
 
 # License
 
