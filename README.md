@@ -8,7 +8,7 @@ We welcome contributions and improvements, please see the [contribution guidelin
 
 ## Getting Started
 
-The instructions below will get help you understand GitLab's data infrastructure and tools used to produce GitLab's internal data products and insights.
+The information below will get help you understand GitLab's data infrastructure and tools used to produce GitLab's internal data products and insights.
 
 ## Prerequisites
 
@@ -63,6 +63,20 @@ A view may join to other views. The relationship between views is typically defi
 ### JupyterHub
 
 [JupyterHub](https://jupyterhub.readthedocs.io/en/latest/) - a multi-user Hub that spawns, manages, and proxies multiple instances of the single-user Jupyter notebook server. The Jupyter Notebook is an open-source web application that allows you to create and share documents that contain live code, equations, visualizations and explanatory text.
+
+## Guidelines
+
+For effective development and consistency, general guidelines have been below.
+
+### General Guidelines
+
+- Percentages should appear as integer values
+  - ```ex: 30% ```
+
+### Dashboards
+- Chart Titles should exist to explain the chart
+- Fields should be define based on the business, not how it is labeled in a database table
+  - ```ex: TCV or Total Contract Value, not tcv_value```
 
 # License
 
