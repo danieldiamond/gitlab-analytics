@@ -1,35 +1,18 @@
 #!/usr/bin/python3
 import sys
 import argparse
-import mkto_tools.mkto_leads as leads
-import mkto_tools.mkto_activities as activities
 
 from mkto_tools.mkto_bulk import write_to_db_from_csv, upsert_to_db_from_csv
 from mkto_tools.mkto_utils import db_open
-from config import MarketoSource, parser_db_conn
-
-
-table_name_source_map = {
-    MarketoSource.LEADS: leads.PG_TABLE,
-    MarketoSource.ACTIVITIES: activities.PG_TABLE,
-}
-
-
-pkey_source_map = {
-    MarketoSource.LEADS: leads.PRIMARY_KEY,
-    MarketoSource.ACTIVITIES: activities.PRIMARY_KEY,
-}
+from config import config_table_name, config_primary_key, parser_db_conn
 
 
 def import_csv(args):
     with db_open(**vars(args)) as db:
         options = {
             'table_schema': args.schema,
-            'table_name': table_name_source_map[args.source],
+            'table_name': config_table_name(args),
         }
-
-        if args.table_name:
-            options['table_name'] = args.table_name
 
         write_to_db_from_csv(db, args.input_file, **options)
 
@@ -38,12 +21,9 @@ def upsert_csv(args):
     with db_open(**vars(args)) as db:
         options = {
             'table_schema': args.schema,
-            'table_name': table_name_source_map[args.source],
-            'primary_key': pkey_source_map[args.source],
+            'table_name': config_table_name(args),
+            'primary_key': config_primary_key(args),
         }
-
-        if args.table_name:
-            options['table_name'] = args.table_name
 
         upsert_to_db_from_csv(db, args.input_file, **options)
 

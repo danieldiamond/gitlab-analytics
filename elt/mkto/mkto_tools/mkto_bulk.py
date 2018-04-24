@@ -6,12 +6,12 @@ import os
 import datetime
 import requests
 import psycopg2
+import psycopg2.sql
 
 from .mkto_token import get_token, mk_endpoint
-from .mkto_leads import get_leads_fieldnames_mkto, describe_leads, PRIMARY_KEY as LEADS_PRIMARY_KEY
-from .mkto_activities import PRIMARY_KEY as ACTIVITIES_PRIMARY_KEY
+from .mkto_leads import get_leads_fieldnames_mkto, describe_leads
 from .mkto_utils import db_open, bulk_filter_builder, get_mkto_config
-from config import MarketoSource, ExportType, ExportOutput
+from config import MarketoSource, ExportType, ExportOutput, config_table_name, config_primary_key
 
 
 FIELD_CREATED_AT = "createdAt"
@@ -267,12 +267,10 @@ def bulk_export(args):
         # If Activities, default is to get all activity types. All fields are returned by Marketo API by default
         activity_objects = get_mkto_config('Activities', 'objects')
         activity_ids = [int(get_mkto_config(ob, 'id')) for ob in activity_objects.split(',')]
-        primary_key = ACTIVITIES_PRIMARY_KEY
 
     if args.source == MarketoSource.LEADS:
         # This is an API call to Marketo. Should probably pull from static config and periodically check for differences
         fields = get_leads_fieldnames_mkto(describe_leads())
-        primary_key = LEADS_PRIMARY_KEY
 
     filter = bulk_filter_builder(start_date=date_start,
                                  end_date=date_end,
@@ -290,9 +288,15 @@ def bulk_export(args):
     bulk_get_file(args.source, export_id)
 
     if args.output == ExportOutput.DB:
+        options = {
+            'table_schema': args.schema,
+            'table_name': config_table_name(args),
+            'primary_key': config_primary_key(args),
+        }
+
         print("Upserting to Database")
         with db_open(**vars(args)) as db:
-            upsert_to_db_from_csv(db, output_file, primary_key=primary_key)
+            upsert_to_db_from_csv(db, output_file, **options)
 
     if args.nodelete or args.output == ExportOutput.FILE:
         return

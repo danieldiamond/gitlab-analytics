@@ -7,7 +7,7 @@ python3 elt/mkto/mkto_export.py -s leads \
 if [ $? -eq 0 ]; then
     echo "Schema updated, importing leads..."
     python3 elt/mkto/mkto_export.py -s leads \
-               --t updated \
+               -t updated \
                --days 1 \
                --schema mkto \
                export
@@ -23,7 +23,7 @@ python3 elt/mkto/mkto_export.py -s activities \
 
 if [ $? -eq 0 ]; then
     python3 elt/mkto/mkto_export.py -s activities \
-                   --t updated \
+                   -t updated \
                    --days 1 \
                    --schema mkto \
                    export

@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 import requests
+import config
 
 from .mkto_token import get_token, mk_endpoint
 from .mkto_schema import Schema, Column, DBType
-from config import MarketoSource
 
 
 PG_SCHEMA = 'mkto'
-PG_TABLE = str(MarketoSource.ACTIVITIES)
+PG_TABLE = 'activities'
 PRIMARY_KEY = 'marketoguid'
 
 
@@ -15,7 +15,7 @@ def describe_schema(args) -> Schema:
     """
     Activity schema uses a JSON field as backend.
     """
-    table_name = args.table_name or PG_TABLE
+    table_name = config.config_table_name(args)
     def column(column_name, data_type, is_nullable=True, is_mapping_key=False):
         return Column(table_schema=args.schema,
                       table_name=table_name,
