@@ -78,6 +78,29 @@ For effective development and consistency, general guidelines have been added be
 - Fields should be define based on the business, not how it is labeled in a database table
   - ```ex: TCV or Total Contract Value, not tcv_value```
 
+## Best Practices
+
+### Looker
+
+- Make mulitple small explores intead of one big one
+- Design each explore to answer a specific set of questions. Single-view explores are fine!
+- 5 to 6 view joins should be the limit. Otherwise, the underlying data may need to be modeled more effectively
+- Only include specific fields that answer the question needed for analysis. Do not include fields that won't be used
+- Don't use full outer joins
+- Don’t use many-to-many joins
+
+
+## Resources
+- [Looker Documentation](https://docs.looker.com)
+- [Fishtown Analytics Blog](https://blog.fishtownanalytics.com)
+- [Data Science Roundup Newsletter](http://roundup.fishtownanalytics.com/)
+- [Mode Analytics Blog](https://blog.modeanalytics.com/)
+- [Looker Blog](https://looker.com/blog)
+- [Periscope Data Blog](https://www.periscopedata.com/blog)
+- [Yhat Blog](http://blog.yhat.com/)
+- [Wes McKinney Blog](http://wesmckinney.com/archives.html)
+
+
 # License
 
 This code is distributed under the MIT license, see the [LICENSE](LICENSE.mdf) file.
