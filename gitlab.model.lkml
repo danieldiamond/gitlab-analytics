@@ -79,3 +79,9 @@ explore: f_acct_churn_history {
     sql_on: ${f_acct_churn_history.id} = ${dim_account.sfdc_account_id} ;;
   }
 }
+
+explore: usage_data {
+  group_label: "version.gitlab.com"
+  label: "Usage Data"
+  description: "Usage Data"
+}
