@@ -18,3 +18,9 @@ label: "finance"
 #     sql_on: ${users.id} = ${orders.user_id} ;;
 #   }
 # }
+
+explore: product_subscription {
+  from: zuora_product
+  label: "Testing Product"
+  description: "This is a test to see how this model renders"
+}
