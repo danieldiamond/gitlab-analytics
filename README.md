@@ -27,13 +27,14 @@ We are building BizOps to solve a problem that we share with all other software 
 ## Roadmap
 
 1. MVC
-  * Horizontal slice of ELT sources: Salesforce, Marketo, NetSuite, Zuora
-  * Data Pipeline: container, CI pipeline, review apps
+  * [Horizontal slice of ELT sources](https://gitlab.com/bizops/bizops/issues?scope=all&utf8=✓&state=opened&label_name[]=elt): Salesforce, Marketo, NetSuite, Zuora, etc.
+  * [Data Pipeline](https://gitlab.com/bizops/bizops/issues?label_name[]=pipeline): container, CI pipeline, review apps
 2. Data Model and Visualization
-  * Common Data Model: Conventions for common table and field names
-  * Field Mapping: Mapping of user fields to common data model, if required
-  * Visualization Sample: Documentation and samples for connecting a visualization engine
-3. Ease of use & Automation
+  * [Common Data Model](https://gitlab.com/bizops/bizops/issues?label_name[]=data-model): Conventions for common table and field names
+  * [Field Mapping](https://gitlab.com/bizops/bizops/issues/121): Mapping of user fields to common data model, if required
+  * [Visualization Sample](https://gitlab.com/bizops/bizops/issues/122): Documentation and samples for connecting a visualization engine
+  * [JupyterHub deployment](https://gitlab.com/bizops/jupyter-hub): Easily deploy JupyterHub for data exploration
+3. [Ease of use & Automation](https://gitlab.com/bizops/bizops/issues?label_name%5B%5D=ease-of-use)
   * Seamless handle some schema changes, like a field rename
   * Match user fields to common data model, without intervention
 
