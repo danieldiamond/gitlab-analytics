@@ -79,3 +79,7 @@ explore: f_acct_churn_history {
     sql_on: ${f_acct_churn_history.id} = ${dim_account.sfdc_account_id} ;;
   }
 }
+
+explore: fake_quotas {
+  label: "Quota Attainment"
+  }
