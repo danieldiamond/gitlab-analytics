@@ -89,6 +89,10 @@ For effective development and consistency, general guidelines have been added be
 - Don't use full outer joins
 - Don’t use many-to-many joins
 
+#### Spaces
+There are two primary spaces from a user perspective: "Shared" and your personal space named after your user. Access these via the "Browse" dropdown. It is strongly recommended that you initially develop all looks and dashboards in your personal space first and then move or copy them to a relevant sub-space within the "Shared" space when they're ready.
+
+The Shared space should be for looks and dashboards that you want for your team or for the whole company. Do not create dashboards or looks within the top-level Shared space - alwyays put them in a subspace of Shared. Think of "Shared" as the root folder and each sub-space as a folder within root. Each subspace can have as many sub-spaces as a team wants. Initially, there will be a subspace within shared for each functional group and we can iterate from there.
 
 ## Resources
 - [Looker Documentation](https://docs.looker.com)
