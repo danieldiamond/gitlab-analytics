@@ -3,7 +3,7 @@ import requests
 import config
 
 from .mkto_token import get_token, mk_endpoint
-from .mkto_schema import Schema, Column, DBType
+from elt.schema import Schema, Column, DBType
 
 
 PG_SCHEMA = 'mkto'

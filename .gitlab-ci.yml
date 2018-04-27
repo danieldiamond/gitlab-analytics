@@ -1,3 +1,6 @@
+variables:
+  PYTHONPATH: "/bizops/bizops/elt/shared_modules/:$PYTHONPATH"
+
 stages:
   - review
   - build
@@ -18,6 +21,16 @@ stages:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - bash processes/mkto_processor.sh
+    - stop_cloudsqlproxy
+
+.zendesk_extract: &zendesk_extract
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - python3 elt/zendesk/src --schema zendesk apply_schema
+    - python3 elt/zendesk/src --schema zendesk --days=1 export
     - stop_cloudsqlproxy
 
 # Stage: extract
@@ -63,10 +76,23 @@ marketo_extract:
   only:
     - master
 
+zendesk_extract:
+  <<: *zendesk_extract
+  only:
+    - master
+
 ## Review Jobs
 
 marketo_extract_manual:
   <<: *marketo_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+zendesk_extract_manual:
+  <<: *zendesk_extract
   only:
     - branches
   except:

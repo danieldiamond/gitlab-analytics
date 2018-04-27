@@ -2,9 +2,10 @@
 import sys
 import argparse
 
+from elt.utils import db_open
+from elt.cli import parser_db_conn
 from mkto_tools.mkto_bulk import write_to_db_from_csv, upsert_to_db_from_csv
-from mkto_tools.mkto_utils import db_open
-from config import config_table_name, config_primary_key, parser_db_conn
+from config import config_table_name, config_primary_key
 
 
 def import_csv(args):
