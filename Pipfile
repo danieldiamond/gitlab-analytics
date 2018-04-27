@@ -14,7 +14,9 @@ tldextract = "*"
 simple-salesforce = "*"
 SQLAlchemy = "*"
 Pyrseas = "*"
-psycopg2 = "== 2.7.4"
+"psycopg2" = "==2.7.4"
+"ae7a3bd" = {path = "./elt/shared_modules", editable = true}
+"d32390c" = {path = "./elt/shared_modules", editable = true}
 
 [dev-packages]
 "flake8" = "*"

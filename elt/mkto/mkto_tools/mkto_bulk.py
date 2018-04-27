@@ -8,10 +8,13 @@ import requests
 import psycopg2
 import psycopg2.sql
 
+from elt.utils import db_open
+from elt.cli import ExportOutput, DateWindow
+from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
 from .mkto_token import get_token, mk_endpoint
 from .mkto_leads import get_leads_fieldnames_mkto, describe_leads
-from .mkto_utils import db_open, bulk_filter_builder, get_mkto_config
-from config import MarketoSource, ExportType, ExportOutput, config_table_name, config_primary_key
+from .mkto_utils import bulk_filter_builder, get_mkto_config
+from config import MarketoSource, ExportType, config_table_name, config_primary_key
 
 
 FIELD_CREATED_AT = "createdAt"
@@ -232,30 +235,12 @@ def bulk_export(args):
     activity_ids = None
     output_file = "{}.csv".format(args.source)
 
-    # Validates that the date is of the format "YYYY-MM-DD".
-    iso_check = re.compile(r'^\d{4}-\d{2}-\d{2}')
-    if args.start is not None:
-        try:
-            iso_check.match(args.start)
-            date_start = args.start + 'T00:00:00Z'
-        except TypeError:
-            print("Start date is not in the proper format.")
-            return
-
-    if args.end is not None:
-        try:
-            iso_check.match(args.end)
-            date_end = args.end + 'T00:00:00Z'
-        except TypeError:
-            print("Start date is not in the proper format.")
-            return
-
-    if args.days is not None:
-        date_now = datetime.datetime.now()
-        next_day = date_now + datetime.timedelta(days=1)
-        offset = date_now - datetime.timedelta(days=args.days)
-        date_end = next_day.strftime("%Y-%m-%d") + 'T00:00:00Z'
-        date_start = offset.strftime("%Y-%m-%d") + 'T00:00:00Z'
+    try:
+        window = DateWindow(args, formatter=lambda t: t.isoformat() + 'Z')
+        (date_start, date_end) = window.formatted_range()
+    except TypeError:
+        print("Start date is not in the proper format.")
+        return
 
     if args.type == ExportType.CREATED:
         pull_type = FIELD_CREATED_AT
@@ -302,123 +287,3 @@ def bulk_export(args):
         return
     else:
         os.remove(output_file)
-
-
-def write_to_db_from_csv(db_conn, csv_file, *,
-                         table_schema,
-                         table_name):
-    """
-    Write to Postgres DB from a CSV
-
-    :param db_conn: psycopg2 database connection
-    :param csv_file: name of CSV that you wish to write to table of same name
-    :return:
-    """
-    with open(csv_file, 'r') as file:
-        try:
-            # Get header row, remove new lines, lowercase
-            header = next(file).rstrip().lower()
-            schema = psycopg2.sql.Identifier(table_schema)
-            table = psycopg2.sql.Identifier(table_name)
-
-            cursor = db_conn.cursor()
-
-            copy_query = psycopg2.sql.SQL(
-                "COPY {0}.{1} ({2}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV"
-            ).format(
-                schema,
-                table,
-                psycopg2.sql.SQL(', ').join(
-                    psycopg2.sql.Identifier(n) for n in header.split(',')
-                )
-            )
-            print(copy_query.as_string(cursor))
-            print("Copying file")
-            cursor.copy_expert(sql=copy_query, file=file)
-            db_conn.commit()
-            cursor.close()
-        except psycopg2.Error as err:
-            print(err)
-
-
-def upsert_to_db_from_csv(db_conn, csv_file, *,
-                          primary_key,
-                          table_schema,
-                          table_name):
-    """
-    Upsert to Postgres DB from a CSV
-
-    :param db_conn: psycopg2 database connection
-    :param csv_file: name of CSV that you wish to write to table of same name
-    :return:
-    """
-    with open(csv_file, 'r') as file:
-        try:
-            # Get header row, remove new lines, lowercase
-            header = next(file).rstrip().lower()
-            cursor = db_conn.cursor()
-
-            schema = psycopg2.sql.Identifier(table_schema)
-            table = psycopg2.sql.Identifier(table_name)
-            tmp_table = psycopg2.sql.Identifier(table_name + "_tmp")
-
-            # Create temp table
-            create_table = psycopg2.sql.SQL("CREATE TEMP TABLE {0} AS SELECT * FROM {1}.{2} LIMIT 0").format(
-                tmp_table,
-                schema,
-                table,
-            )
-            cursor.execute(create_table)
-            print(create_table.as_string(cursor))
-            db_conn.commit()
-
-            # Import into TMP Table
-            copy_query = psycopg2.sql.SQL("COPY {0}.{1} ({2}) FROM STDIN WITH DELIMITER AS ',' NULL AS 'null' CSV").format(
-                psycopg2.sql.Identifier("pg_temp"),
-                tmp_table,
-                psycopg2.sql.SQL(', ').join(
-                    psycopg2.sql.Identifier(n) for n in header.split(','),
-                ),
-            )
-            print(copy_query.as_string(cursor))
-            print("Copying File")
-            cursor.copy_expert(sql=copy_query, file=file)
-            db_conn.commit()
-
-            # Update primary table
-            split_header = [col for col in header.split(
-                ',') if col != primary_key]
-            set_cols = {col: '.'.join(['excluded', col])
-                        for col in split_header}
-            rep_colon = re.sub(':', '=', json.dumps(set_cols))
-            rep_brace = re.sub('{|}', '', rep_colon)
-            set_strings = re.sub('\.', '"."', rep_brace)
-
-            update_query = psycopg2.sql.SQL("INSERT INTO {0}.{1} ({2}) SELECT {2} FROM {3}.{4} ON CONFLICT ({5}) DO UPDATE SET {6}").format(
-                schema,
-                table,
-                psycopg2.sql.SQL(', ').join(
-                    psycopg2.sql.Identifier(n) for n in header.split(',')
-                ),
-                psycopg2.sql.Identifier("pg_temp"),
-                tmp_table,
-                psycopg2.sql.Identifier(primary_key),
-                psycopg2.sql.SQL(set_strings),
-            )
-            cursor.execute(update_query)
-            print(update_query.as_string(cursor))
-            db_conn.commit()
-
-            # Drop temporary table
-            drop_query = psycopg2.sql.SQL("DROP TABLE {0}.{1}").format(
-                psycopg2.sql.Identifier("pg_temp"),
-                tmp_table,
-            )
-
-            print(drop_query.as_string(cursor))
-            cursor.execute(drop_query)
-            db_conn.commit()
-            cursor.close()
-
-        except psycopg2.Error as err:
-            print(err)

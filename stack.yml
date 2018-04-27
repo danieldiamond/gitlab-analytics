@@ -10,3 +10,10 @@ services:
       POSTGRES_PASSWORD: $PG_PASSWORD
     ports:
       - 5432:5432
+  elt:
+    container_name: bizops-elt
+    image: registry.gitlab.com/bizops/bizops-elt/extract:latest
+    volumes:
+      - .:/bizops
+    depends_on:
+      - db

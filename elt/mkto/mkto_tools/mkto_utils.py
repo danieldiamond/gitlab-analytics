@@ -6,26 +6,6 @@ import psycopg2
 from configparser import SafeConfigParser
 from .mkto_token import get_token, mk_endpoint
 
-db_config_keys = [
-    "host",
-    "port",
-    "user",
-    "password",
-    "database",
-]
-
-
-class db_open:
-    def __init__(self, **kwargs):
-        self.config = {k: kwargs[k] for k in db_config_keys}
-
-    def __enter__(self, **kwargs):
-        self.connection = psycopg2.connect(**self.config)
-        return self.connection
-
-    def __exit__(self, type, value, traceback):
-        self.connection.close()
-
 
 def get_mkto_config(section, field):
     """
