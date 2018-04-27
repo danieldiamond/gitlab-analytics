@@ -24,3 +24,9 @@ explore: product_subscription {
   label: "Testing Product"
   description: "This is a test to see how this model renders"
 }
+
+explore: bookings {
+  from: sfdc_opportunity
+  label: "Bookings"
+  description: "Bookings Metrics (ex: TCV, IACV)"
+}
