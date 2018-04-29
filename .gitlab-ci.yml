@@ -25,6 +25,7 @@ stages:
 
 .zendesk_extract: &zendesk_extract
   stage: extract
+  allow_failure: true
   <<: *job_definition
   script:
     - set_sql_instance_name
