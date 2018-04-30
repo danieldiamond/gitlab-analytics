@@ -180,7 +180,10 @@ review_stop:
       if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
         export GCP_INSTANCE_NAME=$GCP_PRODUCTION_INSTANCE_NAME
       else
-        export GCP_INSTANCE_NAME=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA
+        # 95 (max) - 7 (sha) - 2 (`-`) = 86 
+        SLUG_LENGTH=$(( 86 - ${#CI_PROJECT_NAME} ))
+        export GCP_INSTANCE_REF_SLUG=$CI_PROJECT_NAME-${CI_COMMIT_REF_SLUG:0:$SLUG_LENGTH}
+        export GCP_INSTANCE_NAME=$GCP_INSTANCE_REF_SLUG-${CI_COMMIT_SHA:0:7}
       fi
       echo "Instance name is: $GCP_INSTANCE_NAME"
     fi
@@ -188,11 +191,10 @@ review_stop:
 
   function manage_review_cloudsql() {
     # Check to see if branch name equals the production EDW instance name
-    if [ "$CI_COMMIT_REF_NAME" =  "$GCP_PRODUCTION_INSTANCE_NAME" ]; then
+    if [ "$GCP_INSTANCE_NAME" = "$GCP_PRODUCTION_INSTANCE_NAME" ]; then
       echo "The branch name cannot match the production EDW instance name."
       return 1;
     fi
-
 
     if [ -n "$GCP_SERVICE_CREDS" ]; then
       echo $GCP_SERVICE_CREDS > gcp_credentials.json
@@ -200,18 +202,18 @@ review_stop:
 
       # Delete old instances for this branch
       echo "Cleaning up old Cloud SQL instances for this branch."
-      gcloud sql instances list --project "$GCP_PROJECT" --filter "$CI_COMMIT_REF_SLUG" | tail -n +2 | cut -d' ' -f1 | xargs -I % gcloud sql instances delete --project "$GCP_PROJECT" %
+      gcloud sql instances list --project "$GCP_PROJECT" --filter "$GCP_INSTANCE_REF_SLUG" | tail -n +2 | cut -d' ' -f1 | xargs -I % gcloud sql instances delete --project "$GCP_PROJECT" %
 
       # Clone new instance and wait for it
       echo "Cloning database..."
-      gcloud sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA" |& grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | head -n1 | xargs -I % gcloud beta sql operations wait --project "$GCP_PROJECT" % || true
+      gcloud sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$GCP_INSTANCE_NAME" |& grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | head -n1 | xargs -I % gcloud beta sql operations wait --project "$GCP_PROJECT" % || true
 
     fi
   }
 
   function delete_review_cloudsql() {
     # Check to see if branch name equals the production EDW instance name
-    if [ "$CI_COMMIT_REF_NAME" =  "$GCP_PRODUCTION_INSTANCE_NAME" ]; then
+    if [ "$GCP_INSTANCE_NAME" = "$GCP_PRODUCTION_INSTANCE_NAME" ]; then
       echo "The branch name cannot match the production EDW instance name."
       return 1;
     fi
@@ -219,7 +221,7 @@ review_stop:
     if [ -n "$GCP_SERVICE_CREDS" ]; then
       echo $GCP_SERVICE_CREDS > gcp_credentials.json
       gcloud auth activate-service-account --key-file=gcp_credentials.json
-      gcloud sql instances delete --project "$GCP_PROJECT" "$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA"
+      gcloud sql instances delete --project "$GCP_PROJECT" "$GCP_INSTANCE_NAME"
     fi
   }
 
