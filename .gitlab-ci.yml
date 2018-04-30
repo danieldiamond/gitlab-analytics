@@ -175,15 +175,15 @@ review_stop:
 
 .bizops: &bizops |
 
-  export CI_COMMIT_SHORT_REF_SLUG=${CI_COMMIT_REF_SLUG:0:32}
-  export CI_COMMIT_SHORT_SHA=${CI_COMMIT_SHA:0:7}
-
   function set_sql_instance_name() {
     if [ -n "$GCP_SERVICE_CREDS" ]; then
       if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
         export GCP_INSTANCE_NAME=$GCP_PRODUCTION_INSTANCE_NAME
       else
-        export GCP_INSTANCE_NAME=$CI_COMMIT_SHORT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+        # 95 (max) - 7 (sha) - 2 (`-`) = 86 
+        SLUG_LENGTH=$(( 86 - ${#CI_PROJECT_NAME} ))
+        export GCP_INSTANCE_REF_SLUG=$CI_PROJECT_NAME-${CI_COMMIT_REF_SLUG:0:$SLUG_LENGTH}
+        export GCP_INSTANCE_NAME=$GCP_INSTANCE_REF_SLUG-${CI_COMMIT_SHA:0:7}
       fi
       echo "Instance name is: $GCP_INSTANCE_NAME"
     fi
@@ -202,7 +202,7 @@ review_stop:
 
       # Delete old instances for this branch
       echo "Cleaning up old Cloud SQL instances for this branch."
-      gcloud sql instances list --project "$GCP_PROJECT" --filter "$CI_COMMIT_SHORT_REF_SLUG" | tail -n +2 | cut -d' ' -f1 | xargs -I % gcloud sql instances delete --project "$GCP_PROJECT" %
+      gcloud sql instances list --project "$GCP_PROJECT" --filter "$GCP_INSTANCE_REF_SLUG" | tail -n +2 | cut -d' ' -f1 | xargs -I % gcloud sql instances delete --project "$GCP_PROJECT" %
 
       # Clone new instance and wait for it
       echo "Cloning database..."
