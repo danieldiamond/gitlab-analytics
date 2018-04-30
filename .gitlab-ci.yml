@@ -56,7 +56,6 @@ zuora:
   variables:
     FIXED_ZUORA_PASSWORD: $ZUORA_PASSWORD
   stage: extract
-  retry: 1
   <<: *job_definition
   script:
     - set_sql_instance_name
