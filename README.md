@@ -269,11 +269,11 @@ New user roles are added to a specific role via:
 
 ```sql
 CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE metarole;
-
-ALTER ROLE newrole LOGIN;
 ```
 
 New readonly and analytics users are then given instructions via Google Drive on how to connect their computer to the CloudSQL Proxy and on how to change their password once they login.
+
+By default, roles cannot login to the main production instance of the data warehouse. When the role is created, an admin will change the login permission and then have the user login and change their password on the production instance. Then the user will login to the dev instance and set the password the same. The admin will then set the role on the production instance to NOLOGIN. This will ensure at the next sync that the roles are properly set. 
 
 # Contributing to BizOps
 
