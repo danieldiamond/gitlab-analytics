@@ -1,5 +1,5 @@
 jschatz:
-    can_login: yes
+    can_login: no
     is_superuser: no
     member_of:
         - analytics
