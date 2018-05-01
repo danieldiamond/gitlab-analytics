@@ -1,8 +1,8 @@
 import argparse
 import schema.ticket as ticket
 
-from elt.cli import parser_db_conn, parser_date_window, parser_output
-from elt.utils import db_open
+from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
+from elt.utils import db_open, setup_logging
 from elt.schema import schema_apply
 from export import extract
 from enum import Enum
@@ -24,7 +24,6 @@ class Action(Enum):
 
     @classmethod
     def from_str(cls, name):
-        print(name)
         return cls[name.upper()]
 
     def __str__(self):
@@ -41,6 +40,7 @@ def parse():
     parser_db_conn(parser)
     parser_date_window(parser)
     parser_output(parser)
+    parser_logging(parser)
 
     parser.add_argument('action',
                         type=Action.from_str,
@@ -54,6 +54,7 @@ def parse():
 
 def main():
     args = parse()
+    setup_logging(args)
     args.action(args)
 
 

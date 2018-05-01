@@ -4,6 +4,7 @@ import json
 import functools
 import csv
 import asyncio
+import logging
 
 from tempfile import NamedTemporaryFile
 from datetime import datetime
@@ -45,7 +46,7 @@ async def import_file(args, exporter):
                                       table_name=ticket.table_name(args),
                                       table_schema=args.schema)
     except GeneratorExit:
-        print("Import finished.")
+        logging.info("Import finished.")
 
 
 def export_file(args, start_time, end_time):
@@ -75,13 +76,13 @@ def export_file(args, start_time, end_time):
 
         with NamedTemporaryFile(mode="w", delete=not args.nodelete) as f:
             f.write(json.dumps(envelope))
-            print("Wrote response at {}".format(f.name))
+            logging.info("Wrote response at {}".format(f.name))
 
         try:
             schema = ticket.describe_schema(args)
             yield flatten_csv(args, schema, envelope['tickets'])
         except AggregateException as e:
-            [print(ex) for ex in e.exceptions]
+            [logging.error(ex) for ex in e.exceptions]
 
 
 def flatten_csv(args, schema, entries):

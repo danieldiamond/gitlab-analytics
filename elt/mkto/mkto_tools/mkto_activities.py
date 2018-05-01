@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import requests
 import config
+import logging
 
 from .mkto_token import get_token, mk_endpoint
 from elt.schema import Schema, Column, DBType
@@ -39,7 +40,7 @@ def describe_schema(args) -> Schema:
 def activity_types():
     token = get_token()
     if token == "Error":
-        print("No job created. Token Error.")
+        logging.info("No job created. Token Error.")
         return
 
     ac_type_url = "{}rest/v1/activities/types.json".format(mk_endpoint)

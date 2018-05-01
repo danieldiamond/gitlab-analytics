@@ -2,6 +2,7 @@
 import os
 import requests
 import psycopg2
+import logging
 
 from configparser import SafeConfigParser
 from .mkto_token import get_token, mk_endpoint
@@ -48,7 +49,7 @@ def get_from_lead_db(item, item_id=None):
     # Designed for getting campaigns and lists, with an optional Id for each.
     token = get_token()
     if token == "Error":
-        print("Token Error")
+        logging.error("Token Error")
         return
 
     lead_db_url = "{}rest/v1/{}".format(mk_endpoint, item)
@@ -75,7 +76,7 @@ def get_asset(asset):
     # For getting programs, primarily
     token = get_token()
     if token == "Error":
-        print("Token Error")
+        logging.error("Token Error")
         return
 
     asset_url = "{}rest/asset/v1/{}.json".format(mk_endpoint, asset)

@@ -5,6 +5,7 @@ import re
 import os
 import datetime
 import requests
+import logging
 import psycopg2
 import psycopg2.sql
 
@@ -43,7 +44,7 @@ def bulk_create_job(filter, data_type, fields=None, format="CSV", column_header_
     """
     token = get_token()
     if token == "Error":
-        print("No job created. Token Error.")
+        logging.info("No job created. Token Error.")
         return
 
     create_url = "{}bulk/v1/{}/export/create.json".format(mk_endpoint, data_type)
@@ -82,7 +83,7 @@ def bulk_get_export_jobs(data_type, status=None, batch_size=10):
 
     token = get_token()
     if token == "Error":
-        print("No job created. Token Error.")
+        logging.info("No job created. Token Error.")
         return
 
     export_url = "{}bulk/v1/{}/export.json".format(mk_endpoint, data_type)
@@ -113,7 +114,7 @@ def bulk_enqueue_job(data_type, export_id):
     """
     token = get_token()
     if token == "Error":
-        print("No job created. Token Error.")
+        logging.info("No job created. Token Error.")
         return
 
     enqueue_url = "{}bulk/v1/{}/export/{}/enqueue.json".format(mk_endpoint, data_type, export_id)
@@ -136,7 +137,7 @@ def bulk_job_status(data_type, export_id):
 
     token = get_token()
     if token == "Error":
-        print("No job created. Token Error.")
+        logging.info("No job created. Token Error.")
         return
 
     status_url = "{}bulk/v1/{}/export/{}/status.json".format(mk_endpoint, data_type, export_id)
@@ -163,7 +164,7 @@ def bulk_get_file(data_type, export_id):
     """
     token = get_token()
     if token == "Error":
-        print("No job created. Token Error.")
+        logging.info("No job created. Token Error.")
         return
 
     file_url = "{}bulk/v1/{}/export/{}/file.json".format(mk_endpoint, data_type, export_id)
@@ -179,15 +180,15 @@ def bulk_get_file(data_type, export_id):
         if job_status == "Completed":
             break
         elif job_status == "Failed":
-            print("Job Failed")
+            logging.info("Job Failed")
             return
         else:
-            print("Job Status is " + job_status)
-            print("Waiting for 60 seconds.")
+            logging.info("Job Status is " + job_status)
+            logging.info("Waiting for 60 seconds.")
             time.sleep(60)
             continue
 
-    print("File {} available at {}".format(output_file, file_url))
+    logging.info("File {} available at {}".format(output_file, file_url))
 
     with requests.Session() as s:
         # TODO It's possible for the token to expire between start of function and here!
@@ -203,7 +204,7 @@ def bulk_get_file(data_type, export_id):
         for row in cr:
             csvwriter.writerow(row)
 
-        print("Writing File")
+        logging.info("Writing File")
 
 
 def bulk_cancel_job(data_type, export_id):
@@ -217,7 +218,7 @@ def bulk_cancel_job(data_type, export_id):
 
     token = get_token()
     if token == "Error":
-        print("No job created. Token Error.")
+        logging.info("No job created. Token Error.")
         return
 
     cancel_url = "{}bulk/v1/{}/export/{}/cancel.json".format(mk_endpoint, data_type, export_id)
@@ -239,7 +240,7 @@ def bulk_export(args):
         window = DateWindow(args, formatter=lambda t: t.isoformat() + 'Z')
         (date_start, date_end) = window.formatted_range()
     except TypeError:
-        print("Start date is not in the proper format.")
+        print("Start/End date is not in the proper format.")
         return
 
     if args.type == ExportType.CREATED:
@@ -263,13 +264,13 @@ def bulk_export(args):
                                  activity_ids=activity_ids)
     new_job = bulk_create_job(
         filter=filter, data_type=args.source, fields=fields)
-    print(json.dumps(new_job, indent=2))
+    logging.debug(json.dumps(new_job, indent=2))
 
     export_id = new_job.get("result", ["None"])[0].get("exportId")
-    print("Enqueuing Job")
+    logging.info("Enqueuing Job")
     bulk_enqueue_job(args.source, export_id)
 
-    print("Get Results File")
+    logging.info("Get Results File")
     bulk_get_file(args.source, export_id)
 
     if args.output == ExportOutput.DB:
@@ -279,7 +280,7 @@ def bulk_export(args):
             'primary_key': config_primary_key(args),
         }
 
-        print("Upserting to Database")
+        logging.info("Upserting to Database")
         with db_open(**vars(args)) as db:
             upsert_to_db_from_csv(db, output_file, **options)
 
