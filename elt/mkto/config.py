@@ -1,4 +1,7 @@
 import os
+import mkto_tools.mkto_leads
+import mkto_tools.mkto_activities
+
 
 from elt.cli import OptionEnum
 
