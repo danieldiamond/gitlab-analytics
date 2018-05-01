@@ -51,77 +51,92 @@ view: usage_data {
 
   # Projects
 
+  dimension: projects_count {
+    type: number
+    sql: (${TABLE}.stats->'projects')::text::numeric ;;
+  }
+
   measure: average_projects_per_user {
     type: average
-    sql: (${TABLE}.stats->'projects')::text::numeric / ${active_user_count} ;;
+    sql: ${projects_count} / ${active_user_count} ;;
   }
 
   measure: percentile80_projects_per_user {
     type: percentile
     percentile: 80
-    sql: (${TABLE}.stats->'projects')::text::numeric / ${active_user_count} ;;
+    sql: ${projects_count} / ${active_user_count} ;;
   }
 
   measure: percentile90_projects_per_user {
     type: percentile
     percentile: 90
-    sql: (${TABLE}.stats->'projects')::text::numeric / ${active_user_count} ;;
+    sql: ${projects_count} / ${active_user_count} ;;
   }
 
   measure: percentile99_projects_per_user {
     type: percentile
     percentile: 99
-    sql: (${TABLE}.stats->'projects')::text::numeric / ${active_user_count} ;;
+    sql: ${projects_count} / ${active_user_count} ;;
   }
 
   # Issues
 
-  measure: average_issues_per_user {
+  dimension: issues_count {
     type: number
-    sql: (${TABLE}.stats->'issues')::text::numeric / ${active_user_count} ;;
+    sql: (${TABLE}.stats->'issues')::text::numeric ;;
+  }
+
+  measure: average_issues_per_user {
+    type: average
+    sql: ${issues_count} / ${active_user_count} ;;
   }
 
   measure: percentile80_issues_per_user {
     type: percentile
     percentile: 80
-    sql: (${TABLE}.stats->'issues')::text::numeric / ${active_user_count} ;;
+    sql: ${issues_count} / ${active_user_count} ;;
   }
 
   measure: percentile90_issues_per_user {
     type: percentile
     percentile: 90
-    sql: (${TABLE}.stats->'issues')::text::numeric / ${active_user_count} ;;
+    sql: ${issues_count} / ${active_user_count} ;;
   }
 
   measure: percentile99_issues_per_user {
     type: percentile
     percentile: 99
-    sql: (${TABLE}.stats->'issues')::text::numeric / ${active_user_count} ;;
+    sql: ${issues_count} / ${active_user_count} ;;
   }
 
   # Merge requests
 
+  dimension: merge_requests_count {
+    type: number
+    sql: (${TABLE}.stats->'merge_requests')::text::numeric ;;
+  }
+
   measure: average_merge_requests_per_user {
     type: average
-    sql: (${TABLE}.stats->'merge_requests')::text::numeric / ${active_user_count} ;;
+    sql: ${merge_requests_count} / ${active_user_count} ;;
   }
 
   measure: percentile80_merge_requests_per_user {
     type: percentile
     percentile: 80
-    sql: (${TABLE}.stats->'merge_requests')::text::numeric / ${active_user_count} ;;
+    sql: ${merge_requests_count} / ${active_user_count} ;;
   }
 
   measure: percentile90_merge_requests_per_user {
     type: percentile
     percentile: 90
-    sql: (${TABLE}.stats->'merge_requests')::text::numeric / ${active_user_count} ;;
+    sql: ${merge_requests_count} / ${active_user_count} ;;
   }
 
   measure: percentile99_merge_requests_per_user {
     type: percentile
     percentile: 99
-    sql: (${TABLE}.stats->'merge_requests')::text::numeric / ${active_user_count} ;;
+    sql: ${merge_requests_count} / ${active_user_count} ;;
   }
 
 }
