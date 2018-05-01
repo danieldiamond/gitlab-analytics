@@ -10,4 +10,4 @@
 *.csv
 tmp_log.txt
 .env
-
+.vscode/
