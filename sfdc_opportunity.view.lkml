@@ -51,36 +51,42 @@ view: sfdc_opportunity {
     description: "total contract value"
     type: sum
     sql: ${TABLE}.amount ;;
+    value_format: "$#,##0"
   }
 #
   measure: renewal_amt {
     description: "Renewal Amount"
     type: sum
     sql: ${TABLE}.renewal_amount__c ;;
+    value_format: "$#,##0"
   }
 #
   measure: renewal_acv {
     description: "Renewal ACV"
     type: sum
     sql: ${TABLE}.renewal_acv__c ;;
+    value_format: "$#,##0"
   }
 #
   measure: acv {
     description: "Annual contract value"
     type: sum
     sql: ${TABLE}.acv__c ;;
+    value_format: "$#,##0"
   }
 #
   measure: iacv {
     description: "Incremental annual contract value"
     type: sum
     sql: ${TABLE}.incremental_acv__c ;;
+    value_format: "$#,##0"
   }
 #
   measure: nrv {
     description: "Non recurring value (ex:proserv, training)"
     type: sum
     sql: ${TABLE}.nrv__c ;;
+    value_format: "$#,##0"
   }
 
 }
