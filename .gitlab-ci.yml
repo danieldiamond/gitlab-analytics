@@ -2,6 +2,7 @@ variables:
   PYTHONPATH: "/bizops/bizops/elt/shared_modules/:$PYTHONPATH"
 
 stages:
+  - dev_refresh
   - review
   - build
   - extract
@@ -13,6 +14,11 @@ stages:
   image: registry.gitlab.com/bizops/bizops-elt/extract:latest
   tags:
     - analytics
+
+.job_housekeeping: &job_housekeeping
+  image: registry.gitlab.com/bizops/bizops-elt/extract:cloud-sdk
+  tags:
+    - housekeeping
 
 .marketo_extract: &marketo_extract
   stage: extract
@@ -175,12 +181,57 @@ review_stop:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
 
+refresh_dev: &refresh_dev
+  <<: *job_housekeeping
+  stage: dev_refresh
+  variables:
+    GCP_INSTANCE_NAME: $GCP_PRODUCTION_INSTANCE_NAME
+    GIT_STRATEGY: clone # TODO make the script part of the container
+  script:
+    - refresh_dev_cloudsql
+    - setup_cloudsqlproxy $GCP_DEV_INSTANCE_NAME
+    - python3 ci_scripts/grant_roles_dev_cloudsql.py
+    - stop_cloudsqlproxy
+  only:
+    - master
+
+force_refresh_dev:
+  <<: *refresh_dev
+  variables:
+    GCP_INSTANCE_NAME: $GCP_PRODUCTION_INSTANCE_NAME
+    GIT_STRATEGY: clone # TODO make the script part of the container
+    GIT_DEPTH: 1
+    FORCE: "true"
+  only:
+    - branches
+    - master
+  when: manual
+
+
 # ---------------------------------------------------------------------------
 
 .bizops: &bizops |
 
-  function set_sql_instance_name() {
+  function auth_gcloud() {
+    if [ ${GCP_AUTH:=1} = 0 ]; then
+      # already authenticated
+      return $GCP_AUTH
+    fi
+
     if [ -n "$GCP_SERVICE_CREDS" ]; then
+      echo $GCP_SERVICE_CREDS > gcp_credentials.json
+      gcloud auth activate-service-account --key-file=gcp_credentials.json
+      export GCP_AUTH=0
+    else
+      echo "No credentials provided."
+      export GCP_AUTH=1
+    fi
+    
+    return $GCP_AUTH
+  }
+
+  function set_sql_instance_name() {
+    if auth_gcloud; then
       if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
         export GCP_INSTANCE_NAME=$GCP_PRODUCTION_INSTANCE_NAME
       else
@@ -200,10 +251,7 @@ review_stop:
       return 1;
     fi
 
-    if [ -n "$GCP_SERVICE_CREDS" ]; then
-      echo $GCP_SERVICE_CREDS > gcp_credentials.json
-      gcloud auth activate-service-account --key-file=gcp_credentials.json
-
+    if auth_gcloud; then
       # Delete old instances for this branch
       echo "Cleaning up old Cloud SQL instances for this branch."
       gcloud sql instances list --project "$GCP_PROJECT" --filter "$GCP_INSTANCE_REF_SLUG" | tail -n +2 | cut -d' ' -f1 | xargs -I % gcloud sql instances delete --project "$GCP_PROJECT" %
@@ -222,25 +270,40 @@ review_stop:
       return 1;
     fi
 
-    if [ -n "$GCP_SERVICE_CREDS" ]; then
-      echo $GCP_SERVICE_CREDS > gcp_credentials.json
-      gcloud auth activate-service-account --key-file=gcp_credentials.json
+    if auth_gcloud; then
       gcloud sql instances delete --project "$GCP_PROJECT" "$GCP_INSTANCE_NAME"
     fi
   }
 
   function setup_cloudsqlproxy() {
-    if [ -n "$GCP_SERVICE_CREDS" ]; then
-      echo $GCP_SERVICE_CREDS > /bizops/gcp_credentials.json
-      cloud_sql_proxy -instances="$GCP_PROJECT:$GCP_REGION:$GCP_INSTANCE_NAME"=tcp:5432 -credential_file=/bizops/gcp_credentials.json -verbose=False &
+    INSTANCE_NAME=${1:-$GCP_INSTANCE_NAME}
+    if auth_gcloud; then
+      cloud_sql_proxy -instances="$GCP_PROJECT:$GCP_REGION:$INSTANCE_NAME"=tcp:5432 -credential_file=gcp_credentials.json -verbose=False &
     fi
   }
 
   function stop_cloudsqlproxy() {
-    if [ -n "$GCP_SERVICE_CREDS" ]; then
-      kill -9 `pgrep cloud_sql_proxy`
+    kill -9 `pgrep cloud_sql_proxy`
+  }
+
+  function refresh_dev_cloudsql() {
+    # Get current UTC time
+    H=$(date -u +%H)
+
+    # Checks if between 4 and 7 AM UTC (11PM-2AM CST)
+    # Prod backups happen between 8-12 AM UTC (3-7 AM CST)
+    # 10#$H returns the hour in base 10
+    if [ "$FORCE" = "true" ] || (( 4 <= 10#$H && 10#$H < 7 )); then
+      if auth_gcloud; then
+        echo "Restoring dev instance from latest successful prod backup."
+        gcloud config set project "$GCP_PROJECT"
+        gcloud sql backups list --instance $GCP_INSTANCE_NAME | grep SUCCESSFUL | head -n 1 | cut -d' ' -f1 | xargs -I % gcloud sql backups restore % --restore-instance=$GCP_DEV_INSTANCE_NAME --backup-instance=$GCP_INSTANCE_NAME
+      fi
+    else
+        echo "Dev instance refresh not run: Only run between the hours of 4 AM UTC and 7 AM UTC"
     fi
   }
+
 
 before_script:
   - *bizops
