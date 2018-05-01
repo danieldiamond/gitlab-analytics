@@ -2,7 +2,7 @@ variables:
   PYTHONPATH: "/bizops/bizops/elt/shared_modules/:$PYTHONPATH"
 
 stages:
-  - dev_restore
+  - dev_refresh
   - review
   - build
   - extract
@@ -183,7 +183,7 @@ review_stop:
 
 refresh_dev: &refresh_dev
   <<: *job_housekeeping
-  stage: dev_restore
+  stage: dev_refresh
   variables:
     GCP_INSTANCE_NAME: $GCP_PRODUCTION_INSTANCE_NAME
     GIT_STRATEGY: clone # TODO make the script part of the container
@@ -214,7 +214,7 @@ force_refresh_dev:
 
   function auth_gcloud() {
     if [ ${GCP_AUTH:=1} = 0 ]; then
-      # already authentified
+      # already authenticated
       return $GCP_AUTH
     fi
 
