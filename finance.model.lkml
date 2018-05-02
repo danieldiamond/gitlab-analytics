@@ -30,7 +30,7 @@ explore: zuora_invoice {
   join: zuora_account {
     type: inner
     relationship: one_to_one
-    sql_on: ${zuora_invoice.id} = ${zuora_account.id} ;;
+    sql_on: ${zuora_invoice.accountid} = ${zuora_account.id} ;;
 
   }
 }

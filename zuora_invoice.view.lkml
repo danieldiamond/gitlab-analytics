@@ -9,6 +9,12 @@ view: zuora_invoice {
     sql: ${TABLE}.id ;;
   }
   #
+  dimension: accountid {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.accountid ;;
+  }
+  #
   dimension: duedate {
     description: "Invoice Due Date"
     type: date
