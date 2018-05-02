@@ -18,15 +18,19 @@ label: "finance"
 #     sql_on: ${users.id} = ${orders.user_id} ;;
 #   }
 # }
-
-explore: product_subscription {
-  from: zuora_product
-  label: "Testing Product"
-  description: "This is a test to see how this model renders"
-}
-
 explore: bookings {
   from: sfdc_opportunity
   label: "Bookings"
   description: "Bookings Metrics (ex: TCV, IACV)"
+}
+#
+explore: zuora_invoice {
+  label: "A/R Aging"
+  description: "A/R Oustanding"
+  join: zuora_account {
+    type: inner
+    relationship: one_to_one
+    sql_on: ${zuora_invoice.id} = ${zuora_account.id} ;;
+
+  }
 }
