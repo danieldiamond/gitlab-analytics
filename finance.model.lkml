@@ -24,8 +24,8 @@ explore: bookings {
   description: "Bookings Metrics (ex: TCV, IACV)"
 }
 #
-explore: zuora_invoice {
+explore: invoicing {
+  from:  zuora_ar
   label: "A/R Aging"
   description: "A/R Oustanding"
-  from:  zuora_ar
 }
