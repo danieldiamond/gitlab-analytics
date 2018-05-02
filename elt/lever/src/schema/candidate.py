@@ -25,9 +25,11 @@ def describe_schema(args) -> Schema:
     return Schema(table_schema, [
         column("id",                     DBType.String, is_mapping_key=True),
         column("stage_id",               DBType.String),
-        column("createdAt",              DBType.Date),
-        column("archivedAt",             DBType.Date),
+        column("stage_text",             DBType.String),
+        column("created_at",             DBType.Timestamp),
+        column("archived_at",            DBType.Timestamp),
         column("archive_reason_id",      DBType.String),
+        column("archive_reason_text",    DBType.String),
     ])
 
 
