@@ -68,4 +68,10 @@ view: zuora_invoice {
     type: sum
     sql: ${TABLE}.balance ;;
   }
+  #
+  measure: invoice {
+    description: "Count Distinct Invoices"
+    type: count_distinct
+    sql: ${TABLE}.invoicenumber ;;
+  }
 }
