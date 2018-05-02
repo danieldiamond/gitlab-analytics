@@ -27,10 +27,5 @@ explore: bookings {
 explore: zuora_invoice {
   label: "A/R Aging"
   description: "A/R Oustanding"
-  join: zuora_account {
-    type: inner
-    relationship: one_to_one
-    sql_on: ${zuora_invoice.accountid} = ${zuora_account.id} ;;
-
-  }
+  from:  zuora_ar
 }
