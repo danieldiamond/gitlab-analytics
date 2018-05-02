@@ -21,6 +21,12 @@ view: zuora_invoice {
     sql: ${TABLE}.duedate ;;
   }
   #
+  dimension: status {
+    description: "Invoice Status"
+    type: string
+    sql: ${TABLE}.status ;;
+  }
+  #
   dimension: invoicenumber {
     description: "Invoice Number"
     type: string
