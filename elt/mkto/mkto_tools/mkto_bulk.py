@@ -239,8 +239,8 @@ def bulk_export(args):
     try:
         window = DateWindow(args, formatter=lambda t: t.isoformat() + 'Z')
         (date_start, date_end) = window.formatted_range()
-    except TypeError:
-        print("Start/End date is not in the proper format.")
+    except TypeError as e:
+        print("Start/End date is not in the proper format: {}".format(e))
         return
 
     if args.type == ExportType.CREATED:

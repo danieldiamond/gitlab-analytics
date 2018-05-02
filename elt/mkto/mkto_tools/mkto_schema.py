@@ -1,5 +1,6 @@
 from elt.schema import DBType
 
+
 data_types_map = {
     "date": DBType.Date,
     "string": DBType.String,

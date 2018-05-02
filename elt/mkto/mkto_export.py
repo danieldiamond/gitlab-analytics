@@ -2,7 +2,8 @@ import argparse
 import sys
 
 from enum import Enum
-from elt.schema import schema_apply, SchemaException
+from elt.schema import schema_apply
+from elt.error import SchemaError
 from elt.utils import db_open, setup_logging
 from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
 from mkto_tools.mkto_bulk import bulk_export
@@ -76,7 +77,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     setup_logging(args)
 
-    try:
-        args.action(args)
-    except SchemaException:
-        sys.exit(1)
+    args.action(args)
