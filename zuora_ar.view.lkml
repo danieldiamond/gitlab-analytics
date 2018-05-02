@@ -67,6 +67,7 @@ view: zuora_ar {
   measure: invoice_cnt {
     description: "Count from Customer"
     type: count_distinct
+    drill_fields: [customer,acct_num,invoice,balance]
     sql: ${TABLE}.invoice ;;
   }
 
