@@ -24,7 +24,7 @@ view: zuora_invoice {
   dimension: days_overdue {
     description: "Days Overdue on Invoice"
     type: number
-    sql: EXTRACT(DAY FROM i.duedate - CURRENT_DATE)*-1 ;;
+    sql: EXTRACT(DAY FROM ${TABLE}.duedate - CURRENT_DATE)*-1 ;;
   }
   #
   dimension: day_range {
