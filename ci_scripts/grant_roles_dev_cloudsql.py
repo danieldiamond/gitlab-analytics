@@ -90,16 +90,13 @@ def db_config():
 def main():
     in_login_roles = partial(member_of, (Roles.READONLY, Roles.ANALYTICS))
 
-    try:
-        db = psycopg2.connect(**db_config())
+    with psycopg2.connect(**db_config()) as db:
         with db.cursor() as cursor:
             users_in_login_roles = filter(in_login_roles, list_users(cursor))
             applied_roles = map(partial(apply_role, cursor), users_in_login_roles)
 
             for role, result in applied_roles:
                 print("Added LOGIN {} → {}.".format(role, result))
-    finally:
-        db.close()
 
 
 if __name__ == "__main__":
