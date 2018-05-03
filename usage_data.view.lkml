@@ -27,6 +27,7 @@ view: usage_data {
   }
 
   measure: average_users {
+    group_label: "Average Group"
     type: average
     sql: ${active_user_count} ;;
   }
@@ -60,6 +61,7 @@ view: usage_data {
   }
 
   measure: average_projects_per_user {
+    group_label: "Average Group"
     type: average
     sql: ${projects_count} / ${active_user_count} ;;
   }
@@ -93,6 +95,7 @@ view: usage_data {
   }
 
   measure: average_issues_per_user {
+    group_label: "Average Group"
     type: average
     sql: ${issues_count} / ${active_user_count} ;;
   }
@@ -126,6 +129,7 @@ view: usage_data {
   }
 
   measure: average_merge_requests_per_user {
+    group_label: "Average Group"
     type: average
     sql: ${merge_requests_count} / ${active_user_count} ;;
   }
