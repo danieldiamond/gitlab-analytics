@@ -1,7 +1,6 @@
 view: sfdc_opportunity {
   sql_table_name: sfdc.opportunity;;
   # # Define your dimensions and measures here, like this:
-  #
   dimension: id {
     primary_key: yes
     hidden: yes
@@ -10,6 +9,7 @@ view: sfdc_opportunity {
   }
   #
   dimension: isdeleted {
+    label: "Is Deleted"
     description: "Filter out corrupt data"
     type: yesno
     sql: ${TABLE}.isdeleted ;;
@@ -29,6 +29,7 @@ view: sfdc_opportunity {
   #
   dimension_group: closedate {
     description: "The date when an opportunity was closed"
+    label: "Close"
     type: time
     convert_tz: no
     timeframes: [date, week, month, year]
@@ -48,7 +49,7 @@ view: sfdc_opportunity {
   }
 #
   measure: tcv {
-    description: "total contract value"
+    label: "TCV - Total Contract Value"
     type: sum
     sql: ${TABLE}.amount ;;
     value_format: "$#,##0"
@@ -62,28 +63,29 @@ view: sfdc_opportunity {
   }
 #
   measure: renewal_acv {
-    description: "Renewal ACV"
+    label: "Renewal ACV"
     type: sum
     sql: ${TABLE}.renewal_acv__c ;;
     value_format: "$#,##0"
   }
 #
   measure: acv {
-    description: "Annual contract value"
+    label: "ACV - Annual contract value"
     type: sum
     sql: ${TABLE}.acv__c ;;
     value_format: "$#,##0"
   }
 #
   measure: iacv {
-    description: "Incremental annual contract value"
+    label: "IACV - Incremental annual contract value"
     type: sum
     sql: ${TABLE}.incremental_acv__c ;;
     value_format: "$#,##0"
   }
 #
   measure: nrv {
-    description: "Non recurring value (ex:proserv, training)"
+    label: "NRV - Non Recurring Value"
+    description: "Example: proserv, training, etc."
     type: sum
     sql: ${TABLE}.nrv__c ;;
     value_format: "$#,##0"

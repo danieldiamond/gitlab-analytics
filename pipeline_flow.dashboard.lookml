@@ -4,7 +4,7 @@
   elements:
   - title: Pipeline Analysis
     name: Pipeline Analysis
-    model: gitlab
+    model: sales
     explore: pipeline_change
     type: looker_column
     fields:
@@ -117,7 +117,7 @@
     title: Metric Type
     type: field_filter
     default_value: IACV
-    model: gitlab
+    model: sales
     explore: pipeline_change
     field: pipeline_change.metric_type
     listens_to_filters: []
