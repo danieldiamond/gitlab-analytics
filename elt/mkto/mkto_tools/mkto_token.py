@@ -2,6 +2,8 @@
 import os
 import requests
 
+from elt.error import ExtractError
+
 
 mk_endpoint = os.environ.get('MKTO_ENDPOINT')
 mk_client_id = os.environ.get('MKTO_CLIENT_ID')
@@ -23,4 +25,4 @@ def get_token():
         token = r_json.get("access_token", None)
         return token
     else:
-        return "Error"
+        raise ExtractError("Cannot fetch access token: {}".format(response.body))

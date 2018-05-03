@@ -4,8 +4,22 @@ import requests
 import psycopg2
 import logging
 
+from elt.error import ExtractError
 from configparser import SafeConfigParser
 from .mkto_token import get_token, mk_endpoint
+
+
+def handle_marketo_response(response):
+    if response.status_code != 200:
+        raise ExtractError("Received HTTP {} from endpoint.".format(response.status_code))
+
+    parsed = response.json()
+    if parsed.get("success", False):
+        return parsed
+
+    formatted_errors = ["\t{}-{}".format(err['code'], err['message']) for error in parsed.get("errors", [])]
+    raise ExtractError("Endpoint returned errors:\n{}.".format("\n".join(errors)))
+
 
 
 def get_mkto_config(section, field):
@@ -47,11 +61,6 @@ def bulk_filter_builder(start_date, end_date, pull_type, activity_ids=None):
 
 def get_from_lead_db(item, item_id=None):
     # Designed for getting campaigns and lists, with an optional Id for each.
-    token = get_token()
-    if token == "Error":
-        logging.error("Token Error")
-        return
-
     lead_db_url = "{}rest/v1/{}".format(mk_endpoint, item)
     if item_id is not None:
         lead_db_url += "/{}".format(item_id)
@@ -59,37 +68,20 @@ def get_from_lead_db(item, item_id=None):
     lead_db_url += ".json"
 
     payload = {
-        "access_token": token
+        "access_token": get_token(),
     }
 
     response = requests.get(lead_db_url, params=payload)
-
-    if response.status_code == 200:
-        r_json = response.json()
-        if r_json.get("success") is True:
-            return r_json
-    else:
-        return "Error"
+    handle_marketo_response(response)
 
 
 def get_asset(asset):
     # For getting programs, primarily
-    token = get_token()
-    if token == "Error":
-        logging.error("Token Error")
-        return
-
     asset_url = "{}rest/asset/v1/{}.json".format(mk_endpoint, asset)
 
     payload = {
-        "access_token": token
+        "access_token": get_token(),
     }
 
     response = requests.get(asset_url, params=payload)
-
-    if response.status_code == 200:
-        r_json = response.json()
-        if r_json.get("success") is True:
-            return r_json
-    else:
-        return "Error"
+    handle_marketo_response(response)

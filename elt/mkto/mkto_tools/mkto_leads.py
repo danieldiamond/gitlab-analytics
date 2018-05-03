@@ -5,6 +5,7 @@ import logging
 
 from .mkto_token import get_token, mk_endpoint
 from .mkto_schema import data_type
+from .mkto_utils import handle_marketo_response
 from elt.schema import Schema, Column
 
 
@@ -28,24 +29,13 @@ def describe_schema(args) -> Schema:
 
 
 def describe_leads():
-    token = get_token()
-    if token == "Error":
-        logging.info("No job created. Token Error.")
-        return
-
     describe_url = "{}rest/v1/leads/describe.json".format(mk_endpoint)
     payload = {
-        "access_token": token
+        "access_token": get_token(),
     }
 
     response = requests.get(describe_url, params=payload)
-
-    if response.status_code == 200:
-        r_json = response.json()
-        if r_json.get("success") is True:
-            return r_json
-    else:
-        return "Error"
+    handle_marketo_response(response)
 
 
 def get_leads_fieldnames_mkto(lead_description):
