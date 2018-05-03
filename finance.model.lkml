@@ -22,6 +22,21 @@ explore: bookings {
   from: sfdc_opportunity
   label: "Bookings"
   description: "Bookings Metrics (ex: TCV, IACV)"
+  always_filter: {
+    filters: {
+      field: isdeleted
+      value: "No"
+    }
+    filters: {
+      field: sale_stage
+      value: "Closed Won"
+    }
+    filters: {
+      field: subscription_type
+      value: "-Reseller"
+    }
+  }
+
 }
 #
 explore: invoicing {
