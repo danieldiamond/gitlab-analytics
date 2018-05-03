@@ -49,6 +49,10 @@ def parse():
                         help=("export: bulk export data into the output.\n"
                               "apply_schema: export the schema into a schema file."))
 
+    parser.add_argument('--only_offers',
+                        action='store_true',
+                        help="Only export candidates that received an offer.")
+
     return parser.parse_args()
 
 

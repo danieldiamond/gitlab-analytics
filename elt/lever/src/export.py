@@ -94,6 +94,9 @@ def export_file(args, start_time, end_time):
             # Add an offset in case we are not at the first page
             payload['offset'] = envelope['next']
 
+        if args.only_offers:
+            payload['stage_id'] = 'offer'
+
         return requests.get(candidates_url,
                             params=payload,
                             auth=get_auth())
