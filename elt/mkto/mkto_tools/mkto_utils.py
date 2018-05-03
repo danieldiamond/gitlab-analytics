@@ -17,8 +17,8 @@ def handle_marketo_response(response):
     if parsed.get("success", False):
         return parsed
 
-    formatted_errors = ["\t{}-{}".format(err['code'], err['message']) for error in parsed.get("errors", [])]
-    raise ExtractError("Endpoint returned errors:\n{}.".format("\n".join(errors)))
+    formatted_errors = ["\t{}-{}".format(error['code'], error['message']) for error in parsed.get("errors", [])]
+    raise ExtractError("\n{}".format("\n".join(formatted_errors)))
 
 
 

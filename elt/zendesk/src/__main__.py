@@ -4,6 +4,7 @@ import schema.ticket as ticket
 from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
 from elt.utils import db_open, setup_logging
 from elt.schema import schema_apply
+from elt.error import with_error_exit_code
 from export import extract
 from enum import Enum
 
@@ -51,11 +52,13 @@ def parse():
 
     return parser.parse_args()
 
-
-def main():
-    args = parse()
-    setup_logging(args)
+@with_error_exit_code
+def execute(args):
     args.action(args)
 
+def main(args):
+    args = parse()
+    setup_logging(args)
+    execute(args)
 
 main()
