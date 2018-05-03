@@ -53,43 +53,19 @@ async def import_file(args, exporter):
 def export_file(args, start_time, end_time):
     envelope = None
 
-    def transform_candidates_response(envelope):
-        # Flatten and transform the response we get from the Lever API
-        #   to a representation useful for storing it to the datawarehouse
-        # The Lever API expands some of the results we want in included sub-structures
-        # This method extracts what is needed, renames the attributes
-        #   converts the timestamp format provided by Lever to a proper datetime and
-        #   returns a flat result for all data entries
-        flat_envelope = {
-            "hasNext": envelope['hasNext'],
-            "data": []
+    def get_stages(offset=None):
+        stages_url = "{}/stages".format(ENDPOINT)
+
+        payload = {
+            "limit": 100,
+            "offset": offset,
         }
 
-        if envelope['hasNext']:
-            # Next attribute is only there when a result has next page
-            flat_envelope['next'] = envelope['next']
+        api_response = requests.get(stages_url,
+                                params=payload,
+                                auth=get_auth()).json()
 
-        for entry in envelope['data']:
-            flat_entry = {
-                "id": entry['id'],
-                "stage_id": entry['stage']['id'],
-                "stage_text": entry['stage']['text'],
-                "created_at": datetime.fromtimestamp(entry['createdAt'] / 1000).isoformat(),
-            }
-
-            if entry['archived'] is not None:
-                flat_entry["archived_at"] = \
-                  datetime.fromtimestamp(entry['archived']['archivedAt'] / 1000).isoformat()
-                flat_entry["archive_reason_id"] = entry['archived']['reason']['id']
-                flat_entry["archive_reason_text"] = entry['archived']['reason']['text']
-            else:
-                flat_entry["archived_at"] = None
-                flat_entry["archive_reason_id"] = None
-                flat_entry["archive_reason_text"] = None
-
-            flat_envelope['data'].append(flat_entry)
-
-        return flat_envelope
+        return {x['id']: x['text'] for x in api_response['data']}
 
 
     def get_candidates(envelope):
@@ -100,7 +76,10 @@ def export_file(args, start_time, end_time):
         candidates_url = "{}/candidates".format(ENDPOINT)
 
         # Only include the required fields
-        candidates_included_fields = ['id', 'stage', 'createdAt', 'archived']
+        candidates_included_fields = [
+            'id', 'stage', 'createdAt', 'archived',
+            'stageChanges', 'sources', 'origin', 'applications'
+        ]
         candidates_expanded_fields = ['archived', 'stage']
 
         payload = {
@@ -118,6 +97,62 @@ def export_file(args, start_time, end_time):
         return requests.get(candidates_url,
                             params=payload,
                             auth=get_auth())
+
+
+    def transform_candidates_response(envelope):
+        # Flatten and transform the response we get from the Lever API
+        #   to a representation useful for storing it to the datawarehouse
+        # The Lever API expands some of the results we want in included sub-structures
+        # This method extracts what is needed, renames the attributes
+        #   converts the timestamp format provided by Lever to a proper datetime and
+        #   returns a flat result for all data entries
+        stages = get_stages()
+
+        flat_envelope = {
+            "hasNext": envelope['hasNext'],
+            "data": []
+        }
+
+        if envelope['hasNext']:
+            # Next attribute is only there when a result has next page
+            flat_envelope['next'] = envelope['next']
+
+        for entry in envelope['data']:
+            flat_entry = {
+                "id": entry['id'],
+                "stage_id": entry['stage']['id'],
+                "stage_text": entry['stage']['text'],
+                "created_at": datetime.fromtimestamp(entry['createdAt'] / 1000).isoformat(),
+                "origin": entry['origin'],
+                "sources": entry['sources'],
+                "applications": entry['applications'],
+                "pipeline_stage_ids": [],
+                "pipeline_stage_names": [],
+                "pipeline_stage_timestamps": [],
+            }
+
+            if entry['stageChanges'] is not None:
+                for stage in entry['stageChanges']:
+                    flat_entry["pipeline_stage_ids"].append(stage['toStageId'])
+                    flat_entry["pipeline_stage_names"].append(stages.get(stage['toStageId'], None))
+                    flat_entry["pipeline_stage_timestamps"].append(
+                        datetime.fromtimestamp(stage['updatedAt'] / 1000).isoformat()
+                        )
+
+            if entry['archived'] is not None:
+                flat_entry["archived_at"] = \
+                  datetime.fromtimestamp(entry['archived']['archivedAt'] / 1000).isoformat()
+                flat_entry["archive_reason_id"] = entry['archived']['reason']['id']
+                flat_entry["archive_reason_text"] = entry['archived']['reason']['text']
+            else:
+                flat_entry["archived_at"] = None
+                flat_entry["archive_reason_id"] = None
+                flat_entry["archive_reason_text"] = None
+
+            flat_envelope['data'].append(flat_entry)
+
+        return flat_envelope
+
 
     def finished(envelope):
         if envelope is None: return False

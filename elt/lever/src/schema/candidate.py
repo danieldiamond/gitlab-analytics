@@ -23,13 +23,19 @@ def describe_schema(args) -> Schema:
 
     # Let's start with a minimal candidate schema, with no personal info
     return Schema(table_schema, [
-        column("id",                     DBType.String, is_mapping_key=True),
-        column("stage_id",               DBType.String),
-        column("stage_text",             DBType.String),
-        column("created_at",             DBType.Timestamp),
-        column("archived_at",            DBType.Timestamp),
-        column("archive_reason_id",      DBType.String),
-        column("archive_reason_text",    DBType.String),
+        column("id",                        DBType.String, is_mapping_key=True),
+        column("stage_id",                  DBType.String),
+        column("stage_text",                DBType.String),
+        column("created_at",                DBType.Timestamp),
+        column("archived_at",               DBType.Timestamp),
+        column("archive_reason_id",         DBType.String),
+        column("archive_reason_text",       DBType.String),
+        column("origin",                    DBType.String),
+        column("sources",                   DBType.ArrayOfString),
+        column("applications",              DBType.ArrayOfString),
+        column("pipeline_stage_ids",        DBType.ArrayOfString),
+        column("pipeline_stage_names",      DBType.ArrayOfString),
+        column("pipeline_stage_timestamps", DBType.ArrayOfString),
     ])
 
 
