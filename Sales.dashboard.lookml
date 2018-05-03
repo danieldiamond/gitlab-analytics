@@ -4,7 +4,7 @@
   elements:
   - title: IACV by Segment by Month
     name: IACV by Segment by Month
-    model: gitlab
+    model: sales
     explore: f_opportunity
     type: looker_column
     fields:
@@ -65,7 +65,7 @@
     title: Is Large and Up?
     type: field_filter
     default_value: ''
-    model: gitlab
+    model: sales
     explore: f_opportunity
     field: dim_account.is_lau
     listens_to_filters: []
