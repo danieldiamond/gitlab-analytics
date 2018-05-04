@@ -222,6 +222,16 @@ zuora_review:
 * Will need to be audited regularly back to the source.
 * Should not be generally available - will require strict access controls for direct querying not done through a controlled application such as metabase.
 
+#### Accessing the Data Warehouse
+If it's determined you need direct access to the data warehouse outside of Looker or JupyterHub, these are the steps required to make that happen.
+
+* Verify your Google account is associated with the `gitlab-analysis` project, it should have the `Cloud SQL Client` role.
+* Set up your local machine with the [gcloud SDK](https://cloud.google.com/sdk/docs/).
+* Run `gcloud config set project gitlab-analysis`
+* Run `gcloud auth application-default login`
+* Connect to cloudsqlproxy `./cloud_sql_proxy -instances=gitlab-analysis:us-west1:dev-bizops=tcp:5432`
+* Connect to the Data Warehouse using your username and password on 127.0.0.1:5432 in your favorite tool.
+
 #### Hosts Records Dataflow
 
 From our on-premises installations, we recieve [version and ping information](https://docs.gitlab.com/ee/user/admin_area/settings/usage_statistics.html) from the software. This data is currently imported once a day from a PostgreSQL database into our enterprise data warehouse (EDW). We use this data to feed into Salesforce (SFDC) to aid our sales representatives in their work.
