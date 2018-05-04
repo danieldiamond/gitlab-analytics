@@ -52,9 +52,9 @@ This should be a replacement for other ELT & Data Integration tools: [Boomi](htt
 | Warehouse | [PostgreSQL](https://www.postgresql.org/) | [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax) | [Redshift](https://aws.amazon.com/redshift/), [Snowflake](https://www.snowflake.net/) |
 | Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | |
 | Test | [dbt](https://www.getdbt.com/), [Great Expectations](https://github.com/great-expectations/great_expectations), [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) | | [Informatica](https://marketplace.informatica.com/solutions/informatica_data_validation), [iCEDQ](https://icedq.com/), [QuerySurge](http://www.querysurge.com/) |
-| Model | Out of scope | | |
-| Visualize | Out of scope | | |
-| Exploration | [JupyterHub](https://github.com/jupyterhub/jupyterhub) | | |
+| Explore | [JupyterHub](https://github.com/jupyterhub/jupyterhub) | [Metabase](https://www.metabase.com/) | [Nurch](https://www.nurtch.com/), [Datadog notebooks](https://www.datadoghq.com/blog/data-driven-notebooks/) |
+| Modeling | Not selected yet | None found | [LookML](https://looker.com/platform/data-modeling) |
+| Visualize | Not selected yet | [D3.js](https://d3js.org/) | [Looker](https://looker.com/) |
 
 ## Metrics
 
