@@ -140,7 +140,7 @@ def export_file(args, start_time, end_time):
                     flat_entry["pipeline_stage_names"].append(stages.get(stage['toStageId'], None))
                     flat_entry["pipeline_stage_timestamps"].append(
                         datetime.fromtimestamp(stage['updatedAt'] / 1000).isoformat()
-                        )
+                    )
 
             if entry['archived'] is not None:
                 flat_entry["archived_at"] = \

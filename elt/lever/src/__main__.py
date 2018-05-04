@@ -24,7 +24,6 @@ class Action(Enum):
 
     @classmethod
     def from_str(cls, name):
-        print(name)
         return cls[name.upper()]
 
     def __str__(self):
