@@ -136,6 +136,23 @@ def db_schema(db_conn, schema_name) -> Schema:
     return Schema(schema_name, columns)
 
 
+def ensure_schema_exists(db_conn, schema_name):
+    """
+    Make sure that the given schema_name exists in the database
+    If not, create it
+
+    :db_conn: psycopg2 db_connection
+    :schema: database schema
+    """
+    cursor = db_conn.cursor()
+
+    create_schema = psycopg2.sql.SQL("CREATE SCHEMA IF NOT EXISTS {0}").format(
+        psycopg2.sql.Identifier(schema_name)
+    )
+    cursor.execute(create_schema)
+    db_conn.commit()
+
+
 def schema_apply(db_conn, target_schema: Schema):
     """
     Tries to apply the schema from the Marketo API into
@@ -146,6 +163,8 @@ def schema_apply(db_conn, target_schema: Schema):
 
     Returns True when successful.
     """
+    ensure_schema_exists(db_conn, target_schema.name)
+
     schema = db_schema(db_conn, target_schema.name)
 
     results = ExceptionAggregator(errors=[InapplicableChangeException])
