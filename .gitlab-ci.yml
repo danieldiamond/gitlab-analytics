@@ -40,6 +40,18 @@ stages:
     - python3 elt/zendesk/src --schema zendesk --days=1 export
     - stop_cloudsqlproxy
 
+.lever_extract: &lever_extract
+  stage: extract
+  allow_failure: true
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - python3 elt/lever/src --schema lever apply_schema
+    - python3 elt/lever/src --schema lever --days=7 export
+    - python3 elt/lever/src --schema lever --days=365 --only_offers export
+    - stop_cloudsqlproxy
+
 # Stage: extract
 
 ## Production Jobs
@@ -91,6 +103,12 @@ zendesk_extract:
   only:
     - master
 
+lever_extract:
+  <<: *lever_extract
+  retry: 1
+  only:
+    - master
+
 ## Review Jobs
 
 marketo_extract_manual:
@@ -103,6 +121,15 @@ marketo_extract_manual:
 
 zendesk_extract_manual:
   <<: *zendesk_extract
+  retry: 1
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+lever_extract_manual:
+  <<: *lever_extract
   retry: 1
   only:
     - branches
