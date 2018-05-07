@@ -56,7 +56,7 @@ def parse():
 def execute(args):
     args.action(args)
 
-def main(args):
+def main():
     args = parse()
     setup_logging(args)
     execute(args)
