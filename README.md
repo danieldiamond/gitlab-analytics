@@ -223,14 +223,16 @@ zuora_review:
 * Should not be generally available - will require strict access controls for direct querying not done through a controlled application such as metabase.
 
 #### Accessing the Data Warehouse
-If it's determined you need direct access to the data warehouse outside of Looker or JupyterHub, these are the steps required to make that happen.
+If you want direct access to the data warehouse (outside of Looker or JupyterHub), follow these steps.
 
+* Request an account (username and password) from Taylor Murphy or Joshua Lambert through Slack.
 * Verify your Google account is associated with the `gitlab-analysis` project, it should have the `Cloud SQL Client` role.
-* Set up your local machine with the [gcloud SDK](https://cloud.google.com/sdk/docs/).
+* Set up your local machine by installing the [gcloud SDK](https://cloud.google.com/sdk/docs/).
 * Run `gcloud config set project gitlab-analysis`
 * Run `gcloud auth application-default login`
 * Connect to cloudsqlproxy `./cloud_sql_proxy -instances=gitlab-analysis:us-west1:dev-bizops=tcp:5432`
-* Connect to the Data Warehouse using your username and password on 127.0.0.1:5432 in your favorite tool.
+* Connect to the Data Warehouse through the terminal (a separate tab) with `psql "host=127.0.0.1 sslmode=disable dbname=dw_production user=<username>`
+* Alternatively, use your favorite database tool with `host=127.0.0.1` and `dbname=dw_production`
 
 #### Hosts Records Dataflow
 
