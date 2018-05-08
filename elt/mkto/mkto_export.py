@@ -2,9 +2,10 @@ import argparse
 import sys
 
 from enum import Enum
-from elt.schema import schema_apply, SchemaException
-from elt.utils import db_open
-from elt.cli import parser_db_conn, parser_date_window, parser_output
+from elt.schema import schema_apply
+from elt.error import with_error_exit_code
+from elt.utils import db_open, setup_logging
+from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
 from mkto_tools.mkto_bulk import bulk_export
 from mkto_tools.mkto_leads import describe_schema as describe_leads_schema
 from mkto_tools.mkto_activities import describe_schema as describe_activities_schema
@@ -44,12 +45,18 @@ class MarketoAction(Enum):
         return self.value[1](args)
 
 
+@with_error_exit_code
+def execute(args):
+    args.action(args)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Use the Marketo Bulk Export to get Leads or Activities")
 
     parser_db_conn(parser, required=False)
     parser_date_window(parser)
     parser_output(parser)
+    parser_logging(parser)
 
     parser.add_argument('action',
                         type=MarketoAction.from_str,
@@ -73,8 +80,6 @@ if __name__ == '__main__':
                         help="Specifies either created or updated. Use updated for incremental pulls. Default is created.")
 
     args = parser.parse_args()
+    setup_logging(args)
 
-    try:
-        args.action(args)
-    except SchemaException:
-        sys.exit(1)
+    execute(args)

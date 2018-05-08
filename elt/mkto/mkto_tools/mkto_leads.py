@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 import requests
 import config
+import logging
 
 from .mkto_token import get_token, mk_endpoint
 from .mkto_schema import data_type
+from .mkto_utils import handle_marketo_response
 from elt.schema import Schema, Column
 
 
@@ -17,7 +19,7 @@ def describe_schema(args) -> Schema:
     schema = describe_leads()
     fields = schema['result']
     table_name = config.config_table_name(args)
-    print("Table name is: %s" % table_name)
+    logging.debug("Table name is: %s" % table_name)
 
     columns = (column(args.schema, table_name, field) for field in fields)
     columns = list(filter(None, columns))
@@ -27,24 +29,13 @@ def describe_schema(args) -> Schema:
 
 
 def describe_leads():
-    token = get_token()
-    if token == "Error":
-        print("No job created. Token Error.")
-        return
-
     describe_url = "{}rest/v1/leads/describe.json".format(mk_endpoint)
     payload = {
-        "access_token": token
+        "access_token": get_token(),
     }
 
     response = requests.get(describe_url, params=payload)
-
-    if response.status_code == 200:
-        r_json = response.json()
-        if r_json.get("success") is True:
-            return r_json
-    else:
-        return "Error"
+    handle_marketo_response(response)
 
 
 def get_leads_fieldnames_mkto(lead_description):
@@ -79,7 +70,7 @@ def column(table_schema, table_name, field) -> Column:
     },
     """
     if 'rest' not in field:
-        print("Missing 'rest' key in %s" % field)
+        logging.warning("Missing 'rest' key in %s" % field)
         return None
 
     column_name = field['rest']['name']
@@ -87,7 +78,7 @@ def column(table_schema, table_name, field) -> Column:
     dt_type = data_type(field['dataType'])
     is_pkey = column_def == PRIMARY_KEY
 
-    print("%s -> %s as %s" % (column_name, column_def, dt_type))
+    logging.debug("%s -> %s as %s" % (column_name, column_def, dt_type))
     column = Column(table_schema=table_schema,
                     table_name=table_name,
                     column_name=column_def,
