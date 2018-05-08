@@ -108,6 +108,8 @@ It is expected that the BizOps project will have many applications managed in th
 
 ### Local environment
 
+#### On the host machine
+
 The local environment might differs for differents ELT process.  
 The most standard setup using Python 3.5.  
 
@@ -125,12 +127,23 @@ $ pipenv shell
 
 This should install the python dependencies that the ELT process need.  
 
-A docker image is also provided to start a PostgreSQL instance for the data warehousing needs.  
-This image will use environment variables defined in the BizOps project.
+#### Using the docker stack
+
+A docker-compose configuration is also provided to start:
+
+  - a PostgreSQL instance (bizops-dw) for the data warehousing needs
+  - a Python3 container with the 
+  
+These containers will use environment variables defined in the BizOps project.
 To run:
 
 ```
-$ env $(<.env) docker-compose -f stack.yml start
+$ docker-compose up -d
+$ docker-compose exec elt pipenv shell
+Loading .env environment variables…
+Spawning environment shell (/bin/bash). Use 'exit' to leave.
+source /root/.local/share/virtualenvs/bizops-YMzVKlMq/bin/activate
+(bizops-YMzVKlMq) root@b9951069d9cf:/bizops#
 ```
 
 You should be ready to go!

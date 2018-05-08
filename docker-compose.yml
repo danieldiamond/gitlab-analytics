@@ -2,8 +2,8 @@ version: '3.1'
 services:
   db:
     container_name: bizops-dw
-    build: .
-    image: bizops/dw:dev
+    build: docker/warehouse
+    image: bizops/dw:devenv
     environment:
       POSTGRES_DB: $PG_DATABASE
       POSTGRES_USER: $PG_USERNAME
@@ -12,7 +12,10 @@ services:
       - 5432:5432
   elt:
     container_name: bizops-elt
-    image: registry.gitlab.com/bizops/bizops-elt/extract:latest
+    build: docker/elt
+    image: registry.gitlab.com/bizops/bizops-elt/extract:devenv
+    command: tail -f /dev/null # keep running
+    # command: pipenv shell
     volumes:
       - .:/bizops
     depends_on:
