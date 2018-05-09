@@ -4,13 +4,15 @@ import json
 import functools
 import csv
 import asyncio
+import logging
 
 from tempfile import NamedTemporaryFile
 from datetime import datetime
 from requests.auth import HTTPBasicAuth
 from elt.cli import DateWindow
 from elt.utils import compose, db_open
-from elt.schema import DBType, Schema, ExceptionAggregator, AggregateException
+from elt.error import ExceptionAggregator, Error
+from elt.schema import DBType, Schema
 from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
 import schema.candidate as candidate
 
@@ -47,7 +49,7 @@ async def import_file(args, exporter):
                                       table_name=candidate.table_name(args),
                                       table_schema=args.schema)
     except GeneratorExit:
-        print("Import finished.")
+        logging.info("Import finished.")
 
 
 def export_file(args, start_time, end_time):
@@ -172,13 +174,14 @@ def export_file(args, start_time, end_time):
 
         with NamedTemporaryFile(mode="w", delete=not args.nodelete) as f:
             f.write(json.dumps(envelope))
-            print("Wrote response at {}".format(f.name))
+            logging.info("Wrote response at {}".format(f.name))
 
         try:
             schema = candidate.describe_schema(args)
             yield flatten_csv(args, schema, envelope['data'])
-        except AggregateException as e:
-            [print(ex) for ex in e.exceptions]
+        except Error as e:
+            logging.error(e)
+            raise e
 
 
 def flatten_csv(args, schema, entries):
@@ -202,8 +205,7 @@ def flatten_csv(args, schema, entries):
 
 def flatten(schema: Schema, table_name, entry):
     flat = {}
-
-    results = ExceptionAggregator(errors=[KeyError])
+    results = ExceptionAggregator(KeyError)
 
     for k, v in entry.items():
         column_key = (table_name, k)
