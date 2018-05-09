@@ -1208,6 +1208,11 @@
         <update>Y</update>
       </value>
       <value>
+        <name>ultimate_parent_sales_segment_o__c</name>
+        <rename>Ultimate Parent Sales Segment (O)</rename>
+        <update>Y</update>
+      </value>
+      <value>
         <name>opportunity__c</name>
         <rename>Opportunity</rename>
         <update>Y</update>
@@ -5594,6 +5599,20 @@
       <field>
         <name>Type Amount Close Date</name>
         <field>Type_Amount_Close_Date__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Ultimate Parent Sales Segment (O)</name>
+        <field>Ultimate_Parent_Sales_Segment_o__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
