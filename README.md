@@ -25,6 +25,21 @@ Users may request access to using GitLab's internal data analytic tools. Dependi
 ```
 -
 ```
+​
+## Department Spaces, Dashboards & Looks
+							
+[Engineering](https://gitlab.looker.com/spaces/24)|[Finance ](https://gitlab.looker.com/spaces/16)|[Investor ](https://gitlab.looker.com/spaces/20)|[Marketing ]|[PeopleOps ]|[Product ](https://gitlab.looker.com/spaces/18)|[Sales ](https://gitlab.looker.com/spaces/28)|[Support ]
+-- | -- | -- | -- | -- | -- | -- | -- |
+[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()
+[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()
+||||||||
+[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()
+[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()
+||||||||
+
+### GitLab Looker Help
+- Slack - #analytics
+
 
 ## GitLab Internal Analytics Architecture
 
