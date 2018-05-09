@@ -95,6 +95,11 @@ For effective development and consistency, general guidelines have been added be
 
 ## Best Practices
 
+### dbt
+
+- Watch [this video (GitLab internal)](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) on how to use dbt
+- Use dbt for as much modeling as possible - see this [blog post](https://blog.fishtownanalytics.com/how-do-you-decide-what-to-model-in-dbt-vs-lookml-dca4c79e2304) from Fishtown Analytics.
+
 ### Looker
 
 - Make mulitple small explores intead of one big one
