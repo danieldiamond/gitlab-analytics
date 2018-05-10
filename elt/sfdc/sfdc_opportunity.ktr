@@ -5612,7 +5612,7 @@
       </field>
       <field>
         <name>Ultimate Parent Sales Segment (O)</name>
-        <field>Ultimate_Parent_Sales_Segment_o__c</field>
+        <field>Ultimate_Parent_Sales_Segment_O__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
