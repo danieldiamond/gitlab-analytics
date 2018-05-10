@@ -65,6 +65,12 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters')::text::numeric ;;
   }
 
+  measure: clusters_total {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_count} ;;
+  }
+
   dimension: clusters_enabled_count {
     type: number
     sql: (${TABLE}.stats->'clusters_enabled')::text::numeric ;;
@@ -75,9 +81,21 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters_platforms_gke')::text::numeric ;;
   }
 
+  measure: clusters_gke_total {
+    group_label: "Clusters - GKE: Total"
+    type: sum
+    sql: ${clusters_platforms_gke} ;;
+  }
+
   dimension: clusters_platforms_existing {
     type: number
     sql: (${TABLE}.stats->'clusters_platforms_user')::text::numeric ;;
+  }
+
+  measure: clusters_existing_total {
+    group_label: "Clusters - Existing: Total"
+    type: sum
+    sql: ${clusters_platforms_existing} ;;
   }
 
   dimension: clusters_helm_deployed {
