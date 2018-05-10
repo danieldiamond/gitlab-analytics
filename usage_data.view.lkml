@@ -82,7 +82,7 @@ view: usage_data {
   }
 
   measure: clusters_gke_total {
-    group_label: "Clusters - GKE: Total"
+    group_label: "Clusters: Total"
     type: sum
     sql: ${clusters_platforms_gke} ;;
   }
@@ -93,7 +93,7 @@ view: usage_data {
   }
 
   measure: clusters_existing_total {
-    group_label: "Clusters - Existing: Total"
+    group_label: "Clusters: Total"
     type: sum
     sql: ${clusters_platforms_existing} ;;
   }
@@ -103,9 +103,21 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters_applications_helm')::text::numeric ;;
   }
 
+  measure: clusters_helm_total {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_helm_deployed} ;;
+  }
+
   dimension: clusters_ingress_deployed {
     type: number
     sql: (${TABLE}.stats->'clusters_applications_ingress')::text::numeric ;;
+  }
+
+  measure: clusters_ingress_total {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_ingress_deployed} ;;
   }
 
   dimension: clusters_prometheus_deployed {
@@ -113,9 +125,21 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters_applications_prometheus')::text::numeric ;;
   }
 
+  measure: clusters_prometheus_total {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_prometheus_deployed} ;;
+  }
+
   dimension: clusters_runner_deployed {
     type: number
     sql: (${TABLE}.stats->'clusters_applications_runner')::text::numeric ;;
+  }
+
+  measure: clusters_runner_total {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_runner_deployed} ;;
   }
 
   dimension: ci_builds {
