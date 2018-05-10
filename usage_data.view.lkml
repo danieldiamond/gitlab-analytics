@@ -65,15 +65,21 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters')::text::numeric ;;
   }
 
-  measure: clusters_total {
+  measure: clusters {
     group_label: "Clusters: Total"
     type: sum
     sql: ${clusters_count} ;;
   }
 
-  dimension: clusters_enabled_count {
+  dimension: clusters_enabled {
     type: number
     sql: (${TABLE}.stats->'clusters_enabled')::text::numeric ;;
+  }
+
+  measure: enabled_clusters {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_enabled} ;;
   }
 
   dimension: clusters_platforms_gke {
@@ -81,7 +87,7 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters_platforms_gke')::text::numeric ;;
   }
 
-  measure: clusters_gke_total {
+  measure: gke_clusters {
     group_label: "Clusters: Total"
     type: sum
     sql: ${clusters_platforms_gke} ;;
@@ -92,7 +98,7 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters_platforms_user')::text::numeric ;;
   }
 
-  measure: clusters_existing_total {
+  measure: existing_clusters {
     group_label: "Clusters: Total"
     type: sum
     sql: ${clusters_platforms_existing} ;;
@@ -103,7 +109,7 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters_applications_helm')::text::numeric ;;
   }
 
-  measure: clusters_helm_total {
+  measure: helm_deployed {
     group_label: "Clusters: Total"
     type: sum
     sql: ${clusters_helm_deployed} ;;
@@ -114,7 +120,7 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters_applications_ingress')::text::numeric ;;
   }
 
-  measure: clusters_ingress_total {
+  measure: ingress_deployed {
     group_label: "Clusters: Total"
     type: sum
     sql: ${clusters_ingress_deployed} ;;
@@ -125,7 +131,7 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters_applications_prometheus')::text::numeric ;;
   }
 
-  measure: clusters_prometheus_total {
+  measure: prometheus_deployed {
     group_label: "Clusters: Total"
     type: sum
     sql: ${clusters_prometheus_deployed} ;;
@@ -136,7 +142,7 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters_applications_runner')::text::numeric ;;
   }
 
-  measure: clusters_runner_total {
+  measure: runner_deployed {
     group_label: "Clusters: Total"
     type: sum
     sql: ${clusters_runner_deployed} ;;
