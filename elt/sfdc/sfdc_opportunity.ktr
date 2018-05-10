@@ -1303,11 +1303,6 @@
         <update>Y</update>
       </value>
       <value>
-        <name>incremental_acv_services__c</name>
-        <rename>Incremental ACV (Services)</rename>
-        <update>Y</update>
-      </value>
-      <value>
         <name>Days_in_0_Pending_Acceptance__c</name>
         <rename>Days in 0-Pending Acceptance</rename>
         <update>Y</update>
@@ -3569,20 +3564,6 @@
       <field>
         <name>Incremental ACV (Licenses)</name>
         <field>Incremental_ACV_Licenses__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Incremental ACV (Services)</name>
-        <field>Incremental_ACV_Services__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
