@@ -7,6 +7,11 @@ view: usage_data {
     sql: ${TABLE}.created_at ;;
   }
 
+  dimension: created_at_week {
+    type: date_week
+    sql: ${TABLE}.created_at ;;
+  }
+
   # UUID
 
   dimension: uuid {
