@@ -2,13 +2,14 @@ view: usage_data {
   sql_table_name: version.usage_data ;;
   label: "Usage Data"
 
-  dimension: created_at_month {
-    type: date_month
+  dimension_group: timeframe {
+    type: time
+    timeframes: [date, week, month]
     sql: ${TABLE}.created_at ;;
   }
 
-  dimension: created_at_week {
-    type: date_week
+  dimension: created_at_month {
+    type: date_month
     sql: ${TABLE}.created_at ;;
   }
 
