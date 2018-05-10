@@ -60,6 +60,46 @@ view: usage_data {
     sql: (${TABLE}.stats->'projects')::text::numeric ;;
   }
 
+  dimension: clusters_count {
+    type: number
+    sql: (${TABLE}.stats->'clusters')::text::numeric ;;
+  }
+
+  dimension: clusters_enabled_count {
+    type: number
+    sql: (${TABLE}.stats->'clusters_enabled')::text::numeric ;;
+  }
+
+  dimension: clusters_platforms_gke {
+    type: number
+    sql: (${TABLE}.stats->'clusters_platforms_gke')::text::numeric ;;
+  }
+
+  dimension: clusters_platforms_user {
+    type: number
+    sql: (${TABLE}.stats->'clusters_platforms_user')::text::numeric ;;
+  }
+
+  dimension: clusters_applications_helm {
+    type: number
+    sql: (${TABLE}.stats->'clusters_applications_helm')::text::numeric ;;
+  }
+
+  dimension: clusters_applications_ingress {
+    type: number
+    sql: (${TABLE}.stats->'clusters_applications_ingress')::text::numeric ;;
+  }
+
+  dimension: clusters_applications_prometheus {
+    type: number
+    sql: (${TABLE}.stats->'clusters_applications_prometheus')::text::numeric ;;
+  }
+
+  dimension: clusters_applications_runner {
+    type: number
+    sql: (${TABLE}.stats->'clusters_applications_runner')::text::numeric ;;
+  }
+
   measure: average_projects_per_user {
     group_label: "Average Group"
     type: average
