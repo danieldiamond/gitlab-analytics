@@ -1208,6 +1208,11 @@
         <update>Y</update>
       </value>
       <value>
+        <name>ultimate_parent_sales_segment_o__c</name>
+        <rename>Ultimate Parent Sales Segment (O)</rename>
+        <update>Y</update>
+      </value>
+      <value>
         <name>opportunity__c</name>
         <rename>Opportunity</rename>
         <update>Y</update>
@@ -1258,11 +1263,6 @@
         <update>Y</update>
       </value>
       <value>
-        <name>incremental_acv_training__c</name>
-        <rename>Incremental ACV (Training)</rename>
-        <update>Y</update>
-      </value>
-      <value>
         <name>sales_qualified_fiscal_period__c</name>
         <rename>Sales Qualified Fiscal Period</rename>
         <update>Y</update>
@@ -1295,11 +1295,6 @@
       <value>
         <name>incremental_acv_licenses__c</name>
         <rename>Incremental ACV (Licenses)</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>incremental_acv_services__c</name>
-        <rename>Incremental ACV (Services)</rename>
         <update>Y</update>
       </value>
       <value>
@@ -3576,34 +3571,6 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Incremental ACV (Services)</name>
-        <field>Incremental_ACV_Services__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Incremental ACV (Training)</name>
-        <field>Incremental_ACV_Training__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
         <name>Incremental ACV 2</name>
         <field>Incremental_ACV_2__c</field>
         <idlookup>N</idlookup>
@@ -5594,6 +5561,20 @@
       <field>
         <name>Type Amount Close Date</name>
         <field>Type_Amount_Close_Date__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>1300</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Ultimate Parent Sales Segment (O)</name>
+        <field>Ultimate_Parent_Sales_Segment_O__c</field>
         <idlookup>N</idlookup>
         <type>String</type>
         <format />
