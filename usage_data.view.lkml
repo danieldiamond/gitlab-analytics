@@ -75,29 +75,49 @@ view: usage_data {
     sql: (${TABLE}.stats->'clusters_platforms_gke')::text::numeric ;;
   }
 
-  dimension: clusters_platforms_user {
+  dimension: clusters_platforms_existing {
     type: number
     sql: (${TABLE}.stats->'clusters_platforms_user')::text::numeric ;;
   }
 
-  dimension: clusters_applications_helm {
+  dimension: clusters_helm_deployed {
     type: number
     sql: (${TABLE}.stats->'clusters_applications_helm')::text::numeric ;;
   }
 
-  dimension: clusters_applications_ingress {
+  dimension: clusters_ingress_deployed {
     type: number
     sql: (${TABLE}.stats->'clusters_applications_ingress')::text::numeric ;;
   }
 
-  dimension: clusters_applications_prometheus {
+  dimension: clusters_prometheus_deployed {
     type: number
     sql: (${TABLE}.stats->'clusters_applications_prometheus')::text::numeric ;;
   }
 
-  dimension: clusters_applications_runner {
+  dimension: clusters_runner_deployed {
     type: number
     sql: (${TABLE}.stats->'clusters_applications_runner')::text::numeric ;;
+  }
+
+  dimension: ci_builds {
+    type: number
+    sql: (${TABLE}.stats->'ci_builds')::text::numeric ;;
+  }
+
+  dimension: ci_deployments {
+    type: number
+    sql: (${TABLE}.stats->'deployments')::text::numeric ;;
+  }
+
+  dimension: ci_internal_pipelines {
+    type: number
+    sql: (${TABLE}.stats->'ci_internal_pipelines')::text::numeric ;;
+  }
+
+  dimension: ci_external_pipelines {
+    type: number
+    sql: (${TABLE}.stats->'ci_external_pipelines')::text::numeric ;;
   }
 
   measure: average_projects_per_user {
