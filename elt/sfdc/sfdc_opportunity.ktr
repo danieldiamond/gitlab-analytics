@@ -1263,11 +1263,6 @@
         <update>Y</update>
       </value>
       <value>
-        <name>incremental_acv_training__c</name>
-        <rename>Incremental ACV (Training)</rename>
-        <update>Y</update>
-      </value>
-      <value>
         <name>sales_qualified_fiscal_period__c</name>
         <rename>Sales Qualified Fiscal Period</rename>
         <update>Y</update>
@@ -3564,20 +3559,6 @@
       <field>
         <name>Incremental ACV (Licenses)</name>
         <field>Incremental_ACV_Licenses__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Incremental ACV (Training)</name>
-        <field>Incremental_ACV_Training__c</field>
         <idlookup>N</idlookup>
         <type>Number</type>
         <format />
