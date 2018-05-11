@@ -26,7 +26,7 @@ stages:
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
-    - using_proxy bash processes/mkto_processor.sh
+    - bash processes/mkto_processor.sh
     - stop_cloudsqlproxy
 
 .zendesk_extract: &zendesk_extract
@@ -36,8 +36,8 @@ stages:
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
-    - using_proxy python3 elt/zendesk/src --schema zendesk apply_schema
-    - using_proxy python3 elt/zendesk/src --schema zendesk --days=1 export
+    - python3 elt/zendesk/src --schema zendesk apply_schema
+    - python3 elt/zendesk/src --schema zendesk --days=1 export
     - stop_cloudsqlproxy
 
 .lever_extract: &lever_extract
@@ -47,9 +47,9 @@ stages:
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
-    - using_proxy python3 elt/lever/src --schema lever apply_schema
-    - using_proxy python3 elt/lever/src --schema lever --days=7 export
-    - using_proxy python3 elt/lever/src --schema lever --days=365 --only_offers export
+    - python3 elt/lever/src --schema lever apply_schema
+    - python3 elt/lever/src --schema lever --days=7 export
+    - python3 elt/lever/src --schema lever --days=365 --only_offers export
     - stop_cloudsqlproxy
 
 # Stage: extract
@@ -67,7 +67,7 @@ sfdc_extract:
     - setup_cloudsqlproxy
     - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
     - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
-    - using_proxy kitchen.sh -file=elt/sfdc/sfdc_extract.kjb -level=Minimal
+    - kitchen.sh -file=elt/sfdc/sfdc_extract.kjb -level=Minimal
     - stop_cloudsqlproxy
 
 zuora:
@@ -79,7 +79,7 @@ zuora:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
-    - using_proxy python3 elt/zuora/zuora_export.py
+    - python3 elt/zuora/zuora_export.py
     - stop_cloudsqlproxy
 
 pings:
@@ -89,7 +89,7 @@ pings:
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
-    - using_proxy bash processes/hosts_to_sfdc/python_timecheck.sh
+    - bash processes/hosts_to_sfdc/python_timecheck.sh
     - stop_cloudsqlproxy
 
 marketo_extract:
@@ -146,9 +146,9 @@ dbt:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - cd elt/dbt
-    - using_proxy dbt -d run --profiles-dir profile --target prod --models sfdc
-    - using_proxy dbt -d run --profiles-dir profile --target version --models pings
-    - using_proxy dbt -d test --profiles-dir profile
+    - dbt -d run --profiles-dir profile --target prod --models sfdc
+    - dbt -d run --profiles-dir profile --target version --models pings
+    - dbt -d test --profiles-dir profile
     - stop_cloudsqlproxy
 
 sfdc_update:
@@ -157,7 +157,7 @@ sfdc_update:
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
-    - using_proxy python3 processes/sfdc_processor.py
+    - python3 processes/sfdc_processor.py
     - stop_cloudsqlproxy
 
 sfdc_snapshot:
@@ -166,7 +166,7 @@ sfdc_snapshot:
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
-    - using_proxy python3 elt/util/snapshot.py
+    - python3 elt/util/snapshot.py
     - stop_cloudsqlproxy
 
 # Stage: review 
@@ -217,7 +217,7 @@ refresh_dev: &refresh_dev
   script:
     - refresh_dev_cloudsql
     - setup_cloudsqlproxy $GCP_DEV_INSTANCE_NAME
-    - using_proxy python3 ci_scripts/grant_roles_dev_cloudsql.py
+    - python3 ci_scripts/grant_roles_dev_cloudsql.py
     - stop_cloudsqlproxy
   only:
     - master
@@ -307,10 +307,6 @@ force_refresh_dev:
     if auth_gcloud; then
       cloud_sql_proxy -instances="$GCP_PROJECT:$GCP_REGION:$INSTANCE_NAME"=tcp:5432 -credential_file=gcp_credentials.json -verbose=False &
     fi
-  }
-
-  function using_proxy() {
-    ci_scripts/wait-for-it.sh localhost:5432 -q -s --timeout=60 -- $*
   }
 
   function stop_cloudsqlproxy() {
