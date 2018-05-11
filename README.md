@@ -49,14 +49,17 @@ This should be a replacement for other ELT & Data Integration tools: [Boomi](htt
 | Stage     | BizOps selected | OSS considered but not selected | Proprietary alternatives |
 | --------- | ------------ | -------------- | --------------------- |
 | Model | [dbt](https://blog.fishtownanalytics.com/how-do-you-decide-what-to-model-in-dbt-vs-lookml-dca4c79e2304) | Python scripts | [LookML](https://looker.com/platform/data-modeling), [Matillion](http://www.stephenlevin.co/data-modeling-layer-startup-analytics-dbt-vs-matillion-vs-lookml/) |
-| Test | [dbt](https://www.getdbt.com/) | [Great Expectations](https://github.com/great-expectations/great_expectations), [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) | [Informatica](https://marketplace.informatica.com/solutions/informatica_data_validation), [iCEDQ](https://icedq.com/), [QuerySurge](http://www.querysurge.com/) |
 | Extract   | [Singer](https://www.singer.io/) Tap, Python scripts | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
 | Load      | [Singer](https://www.singer.io/) Target, Python scripts | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
 | Transform | [dbt](https://www.getdbt.com/), Python scripts | Stored procedures, [Pentaho DI](http://www.pentaho.com/product/data-integration) | [Alooma](https://www.alooma.com/) |  
-| Warehouse | [PostgreSQL](https://www.postgresql.org/) | [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax) | [Redshift](https://aws.amazon.com/redshift/), [Snowflake](https://www.snowflake.net/) |
 | Analyze | [Superset](https://superset.incubator.apache.org/) | [D3.js](https://d3js.org/) | [Looker](https://looker.com/), [Periscope](https://www.periscopedata.com/) |
 | Notebook | [JupyterHub](https://github.com/jupyterhub/jupyterhub) | [Metabase](https://www.metabase.com/) | [Nurch](https://www.nurtch.com/), [Datadog notebooks](https://www.datadoghq.com/blog/data-driven-notebooks/) |
 | Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | [Fivetran](https://fivetran.com/) |
+
+For now we use [PostgreSQL](https://www.postgresql.org/) as the warehouse but we're open to support [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax), [Redshift](https://aws.amazon.com/redshift/), and [Snowflake](https://www.snowflake.net/) |
+
+We use dbt for testing too, instead of [Great Expectations](https://github.com/great-expectations/great_expectations), [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) or closed source things options as [Informatica](https://marketplace.informatica.com/solutions/informatica_data_validation), [iCEDQ](https://icedq.com/), and [QuerySurge](http://www.querysurge.com/).
+
 
 ## Metrics
 
