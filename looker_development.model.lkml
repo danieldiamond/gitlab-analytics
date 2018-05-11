@@ -36,3 +36,10 @@ explore: f_opportunity {
     sql_on: ${f_opportunity.opportunity_id} = ${sfdc_opportunity.id} ;;
   }
 }
+
+
+explore: sao {
+  from:  sfdc_sao
+  label: "SAOs"
+  description: "List of SAOs"
+}
