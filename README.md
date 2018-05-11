@@ -1,8 +1,10 @@
 [![pipeline status](https://gitlab.com/gitlab-org/bizops/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/bizops/commits/master)
 
-# BizOps
+# Meltano
 
-BizOps is a convention-over-configuration framework for analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
+Meltano is a convention-over-configuration framework for analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
+
+Meltano stands for Model, Extract, Load, Transform, Analyze, Notebook, and Orchestration.
 
 ## Principles
 
