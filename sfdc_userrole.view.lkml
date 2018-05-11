@@ -1,4 +1,5 @@
 view: userrole {
+  # This is a raw view on top of SFDC.userrole object
   label: "SFDC User Role"
   sql_table_name: sfdc.userrole ;;
 
