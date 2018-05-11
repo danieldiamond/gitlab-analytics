@@ -2,6 +2,12 @@ view: usage_data {
   sql_table_name: version.usage_data ;;
   label: "Usage Data"
 
+  dimension_group: timeframe {
+    type: time
+    timeframes: [date, week, month]
+    sql: ${TABLE}.created_at ;;
+  }
+
   dimension: created_at_month {
     type: date_month
     sql: ${TABLE}.created_at ;;
@@ -58,6 +64,114 @@ view: usage_data {
   dimension: projects_count {
     type: number
     sql: (${TABLE}.stats->'projects')::text::numeric ;;
+  }
+
+  dimension: clusters_count {
+    type: number
+    sql: (${TABLE}.stats->'clusters')::text::numeric ;;
+  }
+
+  measure: clusters {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_count} ;;
+  }
+
+  dimension: clusters_enabled {
+    type: number
+    sql: (${TABLE}.stats->'clusters_enabled')::text::numeric ;;
+  }
+
+  measure: enabled_clusters {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_enabled} ;;
+  }
+
+  dimension: clusters_platforms_gke {
+    type: number
+    sql: (${TABLE}.stats->'clusters_platforms_gke')::text::numeric ;;
+  }
+
+  measure: gke_clusters {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_platforms_gke} ;;
+  }
+
+  dimension: clusters_platforms_existing {
+    type: number
+    sql: (${TABLE}.stats->'clusters_platforms_user')::text::numeric ;;
+  }
+
+  measure: existing_clusters {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_platforms_existing} ;;
+  }
+
+  dimension: clusters_helm_deployed {
+    type: number
+    sql: (${TABLE}.stats->'clusters_applications_helm')::text::numeric ;;
+  }
+
+  measure: helm_deployed {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_helm_deployed} ;;
+  }
+
+  dimension: clusters_ingress_deployed {
+    type: number
+    sql: (${TABLE}.stats->'clusters_applications_ingress')::text::numeric ;;
+  }
+
+  measure: ingress_deployed {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_ingress_deployed} ;;
+  }
+
+  dimension: clusters_prometheus_deployed {
+    type: number
+    sql: (${TABLE}.stats->'clusters_applications_prometheus')::text::numeric ;;
+  }
+
+  measure: prometheus_deployed {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_prometheus_deployed} ;;
+  }
+
+  dimension: clusters_runner_deployed {
+    type: number
+    sql: (${TABLE}.stats->'clusters_applications_runner')::text::numeric ;;
+  }
+
+  measure: runner_deployed {
+    group_label: "Clusters: Total"
+    type: sum
+    sql: ${clusters_runner_deployed} ;;
+  }
+
+  dimension: ci_builds {
+    type: number
+    sql: (${TABLE}.stats->'ci_builds')::text::numeric ;;
+  }
+
+  dimension: ci_deployments {
+    type: number
+    sql: (${TABLE}.stats->'deployments')::text::numeric ;;
+  }
+
+  dimension: ci_internal_pipelines {
+    type: number
+    sql: (${TABLE}.stats->'ci_internal_pipelines')::text::numeric ;;
+  }
+
+  dimension: ci_external_pipelines {
+    type: number
+    sql: (${TABLE}.stats->'ci_external_pipelines')::text::numeric ;;
   }
 
   measure: average_projects_per_user {

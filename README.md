@@ -25,6 +25,21 @@ Users may request access to using GitLab's internal data analytic tools. Dependi
 ```
 -
 ```
+​
+## Department Spaces, Dashboards & Looks
+							
+[Engineering](https://gitlab.looker.com/spaces/24)|[Finance ](https://gitlab.looker.com/spaces/16)|[Investor ](https://gitlab.looker.com/spaces/20)|[Marketing ]|[PeopleOps ]|[Product ](https://gitlab.looker.com/spaces/18)|[Sales ](https://gitlab.looker.com/spaces/28)|[Support ]
+-- | -- | -- | -- | -- | -- | -- | -- |
+[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()
+[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()
+||||||||
+[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()
+[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()
+||||||||
+
+### GitLab Looker Help
+- Slack - #analytics
+
 
 ## GitLab Internal Analytics Architecture
 
@@ -79,6 +94,11 @@ For effective development and consistency, general guidelines have been added be
   - ```ex: TCV or Total Contract Value, not tcv_value```
 
 ## Best Practices
+
+### dbt
+
+- Watch [this video (GitLab internal)](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) on how to use dbt
+- Use dbt for as much modeling as possible - see this [blog post](https://blog.fishtownanalytics.com/how-do-you-decide-what-to-model-in-dbt-vs-lookml-dca4c79e2304) from Fishtown Analytics.
 
 ### Looker
 
