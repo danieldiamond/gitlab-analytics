@@ -4,7 +4,7 @@ import sys
 from enum import Enum
 from elt.schema import schema_apply
 from elt.error import with_error_exit_code
-from elt.utils import db_open, setup_logging
+from elt.utils import db_open, setup_elt
 from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
 from mkto_tools.mkto_bulk import bulk_export
 from mkto_tools.mkto_leads import describe_schema as describe_leads_schema
@@ -80,6 +80,6 @@ if __name__ == '__main__':
                         help="Specifies either created or updated. Use updated for incremental pulls. Default is created.")
 
     args = parser.parse_args()
-    setup_logging(args)
+    setup_elt(args)
 
     execute(args)
