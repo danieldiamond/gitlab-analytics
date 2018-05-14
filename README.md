@@ -12,20 +12,15 @@ The information below will get help you understand GitLab's data infrastructure 
 
 ## Prerequisites
 
-Users may request access to using GitLab's internal data analytic tools. Depending on the needs of a user, a user may need to request the following items to gain access to the data analytic tools.
+All GitLab employees have access to our Looker instance. We do not use Google Authentication so each person will need to request access. This can be done in bulk by making an issue in this project and including the following:
 
-##### Required
-
-```
- - Request access to the Looker platform
-```
-
-##### Optional
-
-```
--
-```
+   * Email addresses to be added
+   * Functional Group (Sales, Finance, Engineering, etc.) for each user
+   * Whether Developer or View-Only Access is required
+   * Assign the issue to @tayloramurphy
+   * Add the Looker label
 ​
+
 ## Department Spaces, Dashboards & Looks
 							
 [Engineering](https://gitlab.looker.com/spaces/24)|[Finance ](https://gitlab.looker.com/spaces/16)|[Investor ](https://gitlab.looker.com/spaces/20)|[Marketing ]|[PeopleOps ]|[Product ](https://gitlab.looker.com/spaces/18)|[Sales ](https://gitlab.looker.com/spaces/28)|[Support ]
