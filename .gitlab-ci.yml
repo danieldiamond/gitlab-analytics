@@ -16,7 +16,7 @@ stages:
     - analytics
 
 .job_housekeeping: &job_housekeeping
-  image: registry.gitlab.com/meltano/meltano-elt/extract:cloud-sdk
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   tags:
     - housekeeping
 
