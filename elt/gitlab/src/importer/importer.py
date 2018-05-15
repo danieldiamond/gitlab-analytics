@@ -1,42 +1,46 @@
 import os, urllib.request, json, csv
+from .utils import download_file, is_csv_file
+from .processor import Processor
+from .schema import Schema
 
 class Importer:
-  def __init__(self, cb):
+  def __init__(self, args, cb):
     self.file_list = []
+    self.args = args
     self.csv_list = []
     self.cb = cb
     self._currentFile = 0;
-    self.download_file("file_list.json", self.loaded_elt_files)
+    self.schema_file = ""
+    self.processor = Processor(args)
+    self.schema = None
+    print("Looking for GitLab CSV files...")
+    download_file("file_list.json", self.set_file_lists)
 
-  def loaded_elt_files(self, url):
-    self.set_file_list(url)
-    self.cb(self)
+  def set_file_lists(self, file_path):
+    with open(file_path, 'r') as file_list:
+      # get file list
+      self.file_list = json.load(file_list)
+      # get csv only files
+      self.csv_list = [i for i in self.file_list if self.is_csv_file(i)]
+      print("Downloading the following CSV files:{:s}".format(", ".join(self.csv_list)))
+      # call callback for downloading of csvs
+      # self.cb(self)
 
-  def download_file(self, path, cb):
-    with urllib.request.urlopen("{:s}/{:s}".format(os.getenv('GITLAB_ELT_FILES'), path)) as url:
-      cb(url)
-
-  def is_csv_file(self, file_name):
-    file_extension = os.path.splitext(file_name)[1]
-    return file_extension == ".csv"
-
-  def set_file_list(self, url):
-    self.file_list = json.loads(url.read().decode())
-    self.csv_list = [i for i in self.file_list if self.is_csv_file(i)]
+  def parse_schema(self, local_file_path):
+    self.schema = Schema(local_file_path)
 
   def download_csvs(self):
     filename, file_extension = os.path.splitext(self.file_list[0])
     csvs_length = len(self.csv_list) - 1
     
-    def download_csv(url):
-      if url != None:
-        pass
-        # csv.reader(url.read().decode())
+    def download_csv(local_file_path):
+      if local_file_path != None:
+        self.processor.process_csv(local_file_path)
       if self._currentFile < csvs_length:
         path = self.csv_list[self._currentFile]
         self._currentFile += 1
         print("({:d}/{:d}) Downloading {:s}".format(self._currentFile, csvs_length, path))
-        self.download_file(path, download_csv)
+        download_file(path, download_csv)
       else:
         print("Finished downloading CSVs")
 
