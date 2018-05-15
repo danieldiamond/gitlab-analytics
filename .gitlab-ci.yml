@@ -197,6 +197,7 @@ review_stop:
   variables:
     GIT_STRATEGY: none
   script: 
+    - set_sql_instance_name
     - delete_review_cloudsql
   when: manual
   allow_failure: true
