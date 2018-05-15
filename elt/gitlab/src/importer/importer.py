@@ -1,7 +1,6 @@
 import os, urllib.request, json, csv
 from .utils import download_file, is_csv_file
 from .processor import Processor
-from .schema import Schema
 
 class Importer:
   def __init__(self, args, cb):
@@ -10,9 +9,7 @@ class Importer:
     self.csv_list = []
     self.cb = cb
     self._currentFile = 0;
-    self.schema_file = ""
     self.processor = Processor(args)
-    self.schema = None
     print("Looking for GitLab CSV files...")
     download_file("file_list.json", self.set_file_lists)
 
@@ -21,13 +18,10 @@ class Importer:
       # get file list
       self.file_list = json.load(file_list)
       # get csv only files
-      self.csv_list = [i for i in self.file_list if self.is_csv_file(i)]
+      self.csv_list = [i for i in self.file_list if is_csv_file(i)]
       print("Downloading the following CSV files:{:s}".format(", ".join(self.csv_list)))
       # call callback for downloading of csvs
-      # self.cb(self)
-
-  def parse_schema(self, local_file_path):
-    self.schema = Schema(local_file_path)
+      self.cb(self)
 
   def download_csvs(self):
     filename, file_extension = os.path.splitext(self.file_list[0])

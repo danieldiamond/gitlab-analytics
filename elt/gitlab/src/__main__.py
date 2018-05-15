@@ -2,6 +2,7 @@ import argparse
 from importer import Importer
 from importer import schema
 from enum import Enum
+from elt.schema import schema_apply
 from elt.cli import parser_db_conn, parser_output
 from elt.utils import db_open
 
@@ -14,10 +15,8 @@ def action_export(args):
 
 
 def action_schema_apply(args):
-  print(schema)
-    # schema = ticket.describe_schema(args)
-    # with db_open(**vars(args)) as db:
-    #     schema_apply(db, schema)
+  with db_open(**vars(args)) as db:
+    schema_apply(db, schema.describe_schema())
 
 
 class Action(Enum):
