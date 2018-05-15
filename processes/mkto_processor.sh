@@ -12,7 +12,7 @@ if [ $? -eq 0 ]; then
                --schema mkto \
                export
 
-    echo "Leads update completed."
+    echo "Leads import completed."
 else
     echo "Failed to update leads schema."
 fi
@@ -23,12 +23,12 @@ python3 elt/mkto/mkto_export.py -s activities \
 
 if [ $? -eq 0 ]; then
     python3 elt/mkto/mkto_export.py -s activities \
-                   -t updated \
+                   -t created \
                    --days 1 \
                    --schema mkto \
                    export
 
-    echo "Activities update completed."
+    echo "Activities import completed."
 else
     echo "Failed to update activities schema."
 fi
