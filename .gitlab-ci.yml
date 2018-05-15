@@ -11,12 +11,12 @@ stages:
   - review_stop
 
 .job_template: &job_definition
-  image: registry.gitlab.com/bizops/bizops-elt/extract:latest
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   tags:
     - analytics
 
 .job_housekeeping: &job_housekeeping
-  image: registry.gitlab.com/bizops/bizops-elt/extract:cloud-sdk
+  image: registry.gitlab.com/meltano/meltano-elt/extract:cloud-sdk
   tags:
     - housekeeping
 
