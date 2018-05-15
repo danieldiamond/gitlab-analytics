@@ -3,12 +3,11 @@ from importer import Importer
 from importer import schema
 from enum import Enum
 from elt.schema import schema_apply
-from elt.cli import parser_db_conn, parser_output
-from elt.utils import db_open
+from elt.cli import parser_db_conn, parser_output, parser_logging
+from elt.utils import db_open, setup_logging
 
 def finished_download(importer):
   importer.download_csvs()
-  processor.import_csv()
 
 def action_export(args):
   Importer(args, finished_download)
@@ -41,6 +40,7 @@ def parse():
 
     parser_db_conn(parser)
     parser_output(parser)
+    parser_logging(parser)
 
     parser.add_argument('action',
                         type=Action.from_str,
@@ -53,6 +53,7 @@ def parse():
 
 def main():
   args = parse()
+  setup_logging(args)
   args.action(args)
 
 main()
