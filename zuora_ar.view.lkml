@@ -1,7 +1,9 @@
 view: zuora_ar {
   derived_table: {
     sql:
-        SELECT zuora_account.name,
+        SELECT zuora_account.entity__c AS entity,
+               COALESCE(zuora_contact_bill.workemail,zuora_contact_sold.workemail) AS email,
+               zuora_account.name,
                zuora_account.accountnumber,
                zuora_account.currency,
                CASE
@@ -13,13 +15,38 @@ view: zuora_ar {
                END AS day_range,
                COALESCE(zuora_invoice.balance,0) AS balance,
                zuora_invoice.invoicenumber AS invoice,
-               zuora_invoice.duedate
+               zuora_invoice.duedate as duedate
         FROM zuora.invoice AS zuora_invoice
         INNER JOIN zuora.account AS zuora_account
           ON zuora_invoice.accountid = zuora_account.id
+        LEFT JOIN zuora.contact AS zuora_contact_bill
+          ON zuora_contact_bill.id = zuora_account.billtocontact
+        LEFT JOIN zuora.contact AS zuora_contact_sold
+          ON zuora_contact_sold.id = zuora_account.soldtocontactid
         WHERE (zuora_invoice.status = 'Posted')
         AND   zuora_invoice.balance > 0
         ;;
+  }
+  #
+  dimension: send_email {
+    sql: name ;;
+    html: <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ email._value }}&cc=apiaseczna@gitlab.com&subject=Invoice - 90 Days Past Due?&body=Hi, %0D%0DThe invoice referenced below is 90 past due. In order to keep your GitLab account open.....%0D%0D{{invoice._value}}%0D%0DThanks!%0DGitLab Accounting" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" width="16" height="16"/>
+          <a>
+          {{ linked_value }}
+          ;;
+  }
+  #
+  dimension: entity {
+    description: "GitLab Entity"
+    type: string
+    sql: ${TABLE}.entity ;;
+  }
+  #
+  dimension: email {
+    description: "Customer Email"
+    type: string
+    sql: ${TABLE}.email ;;
   }
   #
   dimension: day_range {
@@ -37,6 +64,7 @@ view: zuora_ar {
   dimension: customer {
     description: "Customer"
     type: string
+    drill_fields: [send_email]
     sql: ${TABLE}.name ;;
   }
   #
@@ -67,7 +95,7 @@ view: zuora_ar {
   measure: invoice_cnt {
     description: "Count from Customer"
     type: count_distinct
-    drill_fields: [customer,acct_num,invoice,duedate,balance]
+    drill_fields: [entity,customer,acct_num,invoice,duedate,balance]
     sql: ${TABLE}.invoice ;;
   }
 
