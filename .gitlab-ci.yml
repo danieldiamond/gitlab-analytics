@@ -1,5 +1,5 @@
 variables:
-  PYTHONPATH: "/meltano/meltano/elt/shared_modules/:$PYTHONPATH"
+  PYTHONPATH: "/bizops/bizops/elt/shared_modules/:$PYTHONPATH"
 
 stages:
   - dev_refresh
@@ -238,7 +238,7 @@ force_refresh_dev:
 
 # ---------------------------------------------------------------------------
 
-.meltano: &meltano |
+.bizops: &bizops |
 
   function auth_gcloud() {
     if [ ${GCP_AUTH:=1} = 0 ]; then
@@ -334,4 +334,4 @@ force_refresh_dev:
 
 
 before_script:
-  - *meltano
+  - *bizops

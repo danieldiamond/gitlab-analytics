@@ -72,7 +72,7 @@ def get_from_lead_db(item, item_id=None):
     }
 
     response = requests.get(lead_db_url, params=payload)
-    return handle_marketo_response(response)
+    handle_marketo_response(response)
 
 
 def get_asset(asset):
@@ -84,4 +84,4 @@ def get_asset(asset):
     }
 
     response = requests.get(asset_url, params=payload)
-    return handle_marketo_response(response)
+    handle_marketo_response(response)
