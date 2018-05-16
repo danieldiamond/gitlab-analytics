@@ -305,6 +305,13 @@ New readonly and analytics users are then given instructions via Google Drive on
 
 By default, roles cannot login to the main production instance of the data warehouse. When the role is created, an admin will change the login permission and then have the user login and change their password on the production instance. Then the user will login to the dev instance and set the password the same. The admin will then set the role on the production instance to NOLOGIN. This will ensure at the next sync that the roles are properly set. 
 
+### Accessing peered VPC's
+
+Some of the GitLab specific ELT's connect to databases which are in peered GCP projects, such as the usage ping. To allow connections, a few actions have been taken:
+1. The Kubernetes cluster where the runner executes has been setup to use [IP aliasing](https://cloud.google.com/kubernetes-engine/docs/how-to/ip-aliases), so each pod gets a real routable IP within GCP.
+1. A [VPC peering relationship](https://cloud.google.com/vpc/docs/vpc-peering) has been established between the two projects and their networks.
+1. A firewall rule has been created in the upstream project to allow access from the runner Kubernetes cluster's pod subnet.
+
 # Contributing to Meltano
 
 We welcome contributions and improvements, please see the [contribution guidelines](CONTRIBUTING.md)
