@@ -35,7 +35,7 @@ def describe_leads():
     }
 
     response = requests.get(describe_url, params=payload)
-    return handle_marketo_response(response)
+    handle_marketo_response(response)
 
 
 def get_leads_fieldnames_mkto(lead_description):
