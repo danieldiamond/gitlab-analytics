@@ -1,5 +1,5 @@
 joshua:
-    can_login: no
+    can_login: yes
     is_superuser: no
     member_of:
-        - analytics
+        - readonly
