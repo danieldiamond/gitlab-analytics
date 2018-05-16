@@ -1,9 +1,9 @@
-connection: "production_dw"
+connection: "dev-bizops"
 
-include: "usage_data.view.lkml"
+include: "usage_*.view.lkml"
 label: "product"
 
 explore: usage_data {
   label: "Usage Data"
-  description: "Usage Data"
+  description: "All dimensions are counts of that feature for a given instance."
 }
