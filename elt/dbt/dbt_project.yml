@@ -21,11 +21,13 @@ models:
       base:
         enabled: true
         materialized: view
+        usage_data_unpacked:
+          materialized: incremental
+          sql_where: 'TRUE'
       clean:
         enabled: true
         materialized: table
 
 
 on-run-end:
-  - 'GRANT SELECT ON ALL TABLES IN SCHEMA version TO tmurphy'
   - 'SELECT  zuora.calc_churn()'
