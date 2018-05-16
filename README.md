@@ -275,9 +275,9 @@ The `readonly` role was generated using the following commands:
 ```sql
 CREATE ROLE readonly;
 
-GRANT USAGE on SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
 
-GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
 
 GRANT INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER on ALL TABLES IN schema sandbox to readonly;
 
@@ -289,9 +289,9 @@ The `analytics` role was generated using the following commands:
 
 CREATE ROLE analytics;
 
-GRANT USAGE on SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
 
-GRANT ALL PRIVILEGES on ALL TABLES IN SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+GRANT ALL PRIVILEGES on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
 
 ``` 
 
