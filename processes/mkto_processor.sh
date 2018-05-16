@@ -1,14 +1,16 @@
 #!/bin/bash
 
 function job_exit() {
-    if [[ $JOB_EXIT = 0 ]]; then
-        export $JOB_EXIT=$1
+    if [[ ${JOB_EXIT:=0} = 0 ]]; then
+        export JOB_EXIT=$1
+    else
+        export JOB_EXIT=$JOB_EXIT
     fi
 
     return $JOB_EXIT
 }
 
-job_exit 1 # success per default
+job_exit 0 # success per default
 
 python3 elt/mkto/mkto_export.py -s leads \
                --schema mkto \
