@@ -1,5 +1,5 @@
 variables:
-  PYTHONPATH: "/bizops/bizops/elt/shared_modules/:$PYTHONPATH"
+  PYTHONPATH: "/bizops/meltano/elt/shared_modules/:$PYTHONPATH"
 
 stages:
   - dev_refresh
