@@ -252,6 +252,7 @@ view: usage_data {
 
   measure: gke_clusters {
     group_label: "Clusters: Total"
+    label: "GKE Clusters"
     type: sum
     sql: ${clusters_platforms_gke} ;;
   }
