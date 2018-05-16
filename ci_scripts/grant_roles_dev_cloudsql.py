@@ -68,7 +68,10 @@ def apply_role(cursor, user: User):
     role_identifier = psycopg2.sql.Identifier(user.name)
     try:
         cursor.execute(
-            SQL("ALTER ROLE {} LOGIN").format(role_identifier)
+            SQL("REVOKE {} FROM {} ").format(Roles.READONLY, role_identifier)
+        )
+        cursor.execute(
+            SQL("GRANT {} TO {} ").format(Roles.ANALYTICS, role_identifier)
         )
     except psycopg2.Error as e:
         result = e.pgerror
@@ -87,15 +90,15 @@ def db_config():
 
 
 def main():
-    in_login_roles = partial(member_of, (Roles.READONLY, Roles.ANALYTICS))
+    readonly_roles = partial(member_of, (Roles.READONLY))
 
     with psycopg2.connect(**db_config()) as db:
         with db.cursor() as cursor:
-            users_in_login_roles = filter(in_login_roles, list_users(cursor))
-            applied_roles = map(partial(apply_role, cursor), users_in_login_roles)
+            users_in_readonly = filter(readonly_roles, list_users(cursor))
+            applied_roles = map(partial(apply_role, cursor), users_in_readonly)
 
             for role, result in applied_roles:
-                print("Added LOGIN {} → {}.".format(role, result))
+                print("Changed role to analytics for {} → {}.".format(role, result))
 
 
 if __name__ == "__main__":
