@@ -1,4 +1,4 @@
-FROM registry.gitlab.com/bizops/bizops-elt/extract:latest
+FROM registry.gitlab.com/meltano/meltano-elt/extract:latest
 
 ENV SHELL=/bin/bash
 WORKDIR /bizops
