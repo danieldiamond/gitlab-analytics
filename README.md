@@ -2,10 +2,6 @@
 
 This repository is for the storage of Looker view, model, and dashboard files. Use the issue tracker to request new data visualizations, suggest improvements to exisiting ones, report errors in underlying data, or request new data sources and features.
 
-# Contributing to BizOps
-
-We welcome contributions and improvements, please see the [contribution guidelines](CONTRIBUTING.md)
-
 ## Getting Started
 
 The information below will get help you understand GitLab's data infrastructure and tools used to produce GitLab's internal data products and insights.
@@ -38,7 +34,7 @@ All GitLab employees have access to our Looker instance. We do not use Google Au
 
 ## GitLab Internal Analytics Architecture
 
-![GitLab Internal Analytics Architecture](https://gitlab.com/bizops/bizops/raw/master/img/WIP_%20GitLab_Analytics_Architecture.jpg)
+![GitLab Internal Analytics Architecture](https://gitlab.com/meltano/meltano/raw/master/img/WIP_%20GitLab_Analytics_Architecture.jpg)
 
 ## Core Data and Analytics Toolset
 
