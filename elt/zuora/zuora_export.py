@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 import requests
-from requests.auth import HTTPBasicAuth
 import json
 import time
-from configparser import SafeConfigParser
+import datetime
 import psycopg2
 import csv
 import logging
 import os
+
+from configparser import SafeConfigParser
+from requests.auth import HTTPBasicAuth
 
 
 def getEnvironment():
@@ -53,40 +55,59 @@ def getObjectList():
     objList = obj.split(",")
     return objList
 
-
-def getResults(url, username, password, headers, data):
+def create_extract_job(url, username, password, headers, data):
     r = requests.post(
         url, auth=HTTPBasicAuth(username, password),
         headers=headers, data=data, stream=True)
-    result = json.loads(r.text)                    # add error handling
+    # TODO: add error handling
+    result = json.loads(r.text)
     job_id = result['id']
-    headers = {
-        'Accept': 'application/json',
+
+    job = Job('com.zuroa.meltano', payload={
+        'id': job_id,
+        'url': url,
+        'zuroa_state': 'query',
+        'data': data
+    })
+    job.transit(State.RUNNING)
+    job.started_at = datetime.datetime.utcnow()
+
+    return job
+
+
+def load_extract_job(job, job_id, username, password):
+    params = {
+        'auth': HTTPBasicAuth(username, password),
+        'headers': {'Accept': 'application/json'},
     }
+
     url = url + 'jobs/' + job_id
     result = ''
     while True:
-        r = requests.get(
-            url, auth=HTTPBasicAuth(username, password), headers=headers)
-        result = json.loads(r.text)
+        res = requests.get(url, **params)
+        result = json.loads(res.text)
         time.sleep(5)
-        if result['batches'][0]['status'] == 'completed':
-            logger.debug(result['batches'][0]['status'])
+        status = result['batches'][0]['status']
+        logger.debug(status)
+        job.payload['zuora_state'] = status
+        if status == 'completed':
             break
-    logger.debug("File ID: " + result['batches'][0]['fileId'])
+
+    # expect to only have 1 batch
     file_id = result['batches'][0]['fileId']
-    url = 'https://www.zuora.com/apps/api/' + 'file/' + file_id
-    r = requests.get(url, auth=HTTPBasicAuth(username, password),
-                     headers=headers)
-    return r
+    logger.debug("File ID: " + file_id)
+    job.payload['zuora_state'] = 'load'
+    job.payload['file_id'] = file_id
+
+    url = "https://www.zuora.com/apps/api/file/{}".format(file_id)
+    return requests.get(url, **params)
 
 
-def writeToFile(filename, r):
-    logger.debug('Writing to local file: ' + filename)
-    with open(filename + '.csv', 'wb') as file:
-        file.write(r.content)
-        logger.debug("Writing file: " + filename + '.csv')
-        file.close()
+def writeToFile(item, res):
+    filename = "{}.csv".format(item)
+    with open(filename, 'wb') as file:
+        logger.debug('Writing to local file: ' + filename)
+        file.write(res.content)
 
 
 def replace(fieldList):
@@ -102,41 +123,7 @@ def replace(fieldList):
             fieldList.insert(i, None)
 
 
-def writeToDb(username, password, host, database, item, port, r):
-    logger.debug('Writing to ' + database + ' on ' + host)
-    reader = csv.reader(r.iter_lines(decode_unicode=True), delimiter=',', quotechar='"',
-                        quoting=csv.QUOTE_MINIMAL)
-    try:
-        mydb = psycopg2.connect(host=host, user=username,
-                                password=password, dbname=database, port=port)
-        cursor = mydb.cursor()
-        cursor.execute('TRUNCATE TABLE zuora.' + item)
-        count = 0
-        firstLine = True
-        for row in reader:
-            if firstLine:
-                firstLine = False
-                continue
-            if len(row) == 0:
-                continue
-            rowString = ', '.join('?' * len(row))
-            rowString = rowString.replace("?", "%s")
-            query_string = 'INSERT INTO zuora.' + item + \
-                ' VALUES (%s)' % rowString
-            replace(row)
-            cursor.execute(query_string, row)
-            count = count + 1
-            if count % 10000 == 0:
-                logger.debug('Inserting: %s records into %s', count, database)
-        mydb.commit()
-        cursor.close()
-        mydb.close()
-    except psycopg2.Error as err:
-        logger.debug('Something went wrong: {}'.format(err))
-    logger.debug('Total Count: %s', count)
-
-
-def writeToDbfromFile(username, password, host, database, item, port, r):
+def writeToDbFromFile(item, username, password, host, database, port):
     logger.debug('Writing to ' + database + ' on ' + host)
     with open(item + '.csv', 'r') as file:
         reader = csv.reader(file, delimiter=',', quotechar='"',
@@ -159,42 +146,53 @@ def writeToDbfromFile(username, password, host, database, item, port, r):
             logger.debug('Something went wrong: {}'.format(err))
 
 
-
 def main():
     start = time.time()
-    username, password, url = getEnvironment()
-    dBuser, dBpass, host, db, port = getPGCreds()
-    objList = getObjectList()
-    for item in objList:
-        logger.debug('Retreiving: %s', item)
-        query = "Select " + getZuoraFields(item) + " FROM " + item
-        # query = "Select * from " + item  # TESTING
-        logger.debug('Executing Query:  ' + query)
-        data = json.dumps({
-            "format": "csv",
-            "version": "1.2",
-            "name": "Sample",
-            "encrypted": "none",
-            "useQueryLabels": "true",
-            "queries": [
-                {
-                    "name": item,
-                    "query": query,
-                    "type": "zoqlexport",
-                    "apiVersion": "88.0"
-                }
-            ]
-        })
-        headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        }
-        r = getResults(url, username, password, headers, data)
-        writeToFile(item, r)
-        writeToDbfromFile(dBuser, dBpass, host, db, item, port, r)
+    for item in getObjectList():
+        import_item(item)
     end = time.time()
     totalMinutes = (end - start) / 60
     logger.debug('Completed Load in %1.1f minutes' % totalMinutes)
+
+
+def zuroa_query_params(item):
+    logger.debug('Executing Query:  ' + query)
+    username, password, url = getEnvironment()
+    query = "Select " + getZuoraFields(item) + " FROM " + item
+    # TODO: add Partner ID + Project ID to have incremental
+    data = json.dumps({
+        "format": "csv",
+        "version": "1.2",
+        "name": "Meltano",
+        "encrypted": "none",
+        "useQueryLabels": "true",
+        "queries": [
+            {
+                "name": item,
+                "query": query,
+                "type": "zoqlexport",
+                "apiVersion": "88.0"
+            }
+        ]
+    })
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    }
+
+    return (headers, data)
+
+
+def import_item(item):
+    logger.debug('Retreiving: %s', item)
+    dBuser, dBpass, host, db, port = getPGCreds()
+
+    headers, data = zuroa_query_params(item)
+    job = create_extract_job(url, username, password, headers, data)
+    file = load_extract_job(job, job.payload['id'], username, password)
+
+    writeToFile(item, file)
+    writeToDbFromFile(item, dBuser, dBpass, host, db, port)
 
 
 logger = logging.getLogger(__name__)
