@@ -82,6 +82,16 @@ zuora:
     - python3 elt/zuora/zuora_export.py
     - stop_cloudsqlproxy
 
+pings_extract:
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
+    - bash elt/util/run_daily_etl.sh
+    - stop_cloudsqlproxy
+
 pings:
   stage: extract
   retry: 1
