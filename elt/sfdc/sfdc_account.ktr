@@ -3275,20 +3275,6 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Total Invoiced (Outstanding)</name>
-        <field>Total_Invoiced_Outstanding__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
         <name>Number of Licenses (All Child Accounts)</name>
         <field>Number_of_Licenses_All_Child_Accounts__c</field>
         <idlookup>N</idlookup>
@@ -4548,11 +4534,6 @@
       <value>
         <name>previous_account_name__c</name>
         <rename>Previous Account Name</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>total_invoiced_outstanding__c</name>
-        <rename>Total Invoiced (Outstanding)</rename>
         <update>Y</update>
       </value>
       <value>
