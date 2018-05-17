@@ -2,7 +2,8 @@ import argparse
 import schema.ticket as ticket
 
 from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
-from elt.utils import db_open, setup_logging
+from elt.utils import setup_logging, setup_db
+from elt.db import db_open
 from elt.schema import schema_apply
 from elt.error import with_error_exit_code
 from export import extract
@@ -15,7 +16,7 @@ def action_export(args):
 
 def action_schema_apply(args):
     schema = ticket.describe_schema(args)
-    with db_open(**vars(args)) as db:
+    with db_open() as db:
         schema_apply(db, schema)
 
 
@@ -59,6 +60,7 @@ def execute(args):
 def main():
     args = parse()
     setup_logging(args)
+    setup_db(args)
     execute(args)
 
 main()

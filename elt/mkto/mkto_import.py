@@ -2,14 +2,14 @@
 import sys
 import argparse
 
-from elt.utils import db_open
+from elt.db import db_open
 from elt.cli import parser_db_conn
 from mkto_tools.mkto_bulk import write_to_db_from_csv, upsert_to_db_from_csv
 from config import config_table_name, config_primary_key
 
 
 def import_csv(args):
-    with db_open(**vars(args)) as db:
+    with db_open() as db:
         options = {
             'table_schema': args.schema,
             'table_name': config_table_name(args),
@@ -20,7 +20,7 @@ def import_csv(args):
 
 
 def upsert_csv(args):
-    with db_open(**vars(args)) as db:
+    with db_open() as db:
         options = {
             'table_schema': args.schema,
             'table_name': config_table_name(args),
