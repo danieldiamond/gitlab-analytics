@@ -493,8 +493,8 @@
     <access>Native</access>
     <database>${LICENSE_DB_NAME}</database>
     <port>${DB_CONN_PORT}</port>
-    <username>{LICENSE_DB_USER}</username>
-    <password>{LICENSE_DB_PASS}</password>
+    <username>${LICENSE_DB_USER}</username>
+    <password>${LICENSE_DB_PASS}</password>
     <servername />
     <data_tablespace />
     <index_tablespace />
