@@ -3275,20 +3275,6 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Total Invoiced</name>
-        <field>Total_Invoiced__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
         <name>Total Invoiced (Paid)</name>
         <field>Total_Invoiced_Paid__c</field>
         <idlookup>N</idlookup>
@@ -4581,11 +4567,6 @@
       <value>
         <name>total_invoiced_paid__c</name>
         <rename>Total Invoiced (Paid)</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>total_invoiced__c</name>
-        <rename>Total Invoiced</rename>
         <update>Y</update>
       </value>
       <value>
