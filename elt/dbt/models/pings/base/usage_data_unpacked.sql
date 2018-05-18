@@ -8,6 +8,27 @@ SELECT
   mattermost_enabled,
   uuid,
   edition,
+  CASE
+    WHEN version ~ 'ee'
+      THEN 'EE'
+    ELSE 'CE' END                                                   AS main_edition,
+  CASE
+--     Comes from https://gitlab.com/gitlab-org/gitlab-ee/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154
+    WHEN edition ~ 'CE'
+      THEN 'Core'
+    WHEN edition ~ 'EES'
+      THEN 'Starter'
+    WHEN edition ~ 'EEP'
+      THEN 'Premium'
+    WHEN edition ~ 'EEU'
+      THEN 'Ultimate'
+    WHEN edition ~ 'EE Free'
+      THEN 'Core'
+    WHEN edition ~ 'EE'
+      THEN 'Starter'
+    ELSE null END                                                  AS edition_type,
+  trim(TRAILING '.' FROM (regexp_matches(version, '(\d{1,2}\.\d{1,2}\.)')) [1])
+                                                                   AS major_version,
   hostname,
   host_id,
   (stats -> 'auto_devops_disabled') :: TEXT :: NUMERIC             AS auto_devops_disabled,
