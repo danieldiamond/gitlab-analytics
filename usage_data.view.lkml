@@ -4,8 +4,15 @@ view: usage_data {
 
   dimension_group: timeframe {
     type: time
-    timeframes: [date, week, month]
+    timeframes: [week, month]
     sql: ${TABLE}.created_at ;;
+  }
+
+  dimension: host_id {
+    label: "Host ID"
+    hidden: yes
+    type: number
+    sql: ${TABLE}.host_id ;;
   }
 
   dimension: hostname {
@@ -17,8 +24,42 @@ view: usage_data {
   dimension: version {
     label: "GitLab Version"
     type:  string
-    full_suggestions: yes
     sql:  ${TABLE}.version ;;
+  }
+
+  dimension: major_version {
+    label: "GitLab Version - Major.Minor"
+    type: string
+    full_suggestions: yes
+    sql: ${TABLE}.major_version ;;
+  }
+
+  dimension: main_edition {
+    label: "GitLab Edition - CE or EE"
+    type: string
+    full_suggestions: yes
+    sql: ${TABLE}.main_edition ;;
+  }
+
+  dimension: edition_type {
+    label: "GitLab Edition Type"
+    description: "Core, Starter, Premium, or Ultimate"
+    full_suggestions: yes
+    type: string
+    sql: ${TABLE}.edition_type ;;
+  }
+
+  dimension: edition {
+    label: "GitLab Edition"
+    type: string
+    full_suggestions: yes
+    sql: ${TABLE}.edition ;;
+  }
+
+  measure: gitlab_version {
+    type: count_distinct
+    sql: ${version} ;;
+    drill_fields: [version]
   }
 
   dimension: mattermost_enabled {
@@ -160,15 +201,15 @@ view: usage_data {
   }
 
   measure: average_users {
-    group_label: "Averages"
-    label: "Users per Instance"
+    group_label: "Averages per Instance"
+    label: "Users per Instance - Avg"
     type: average
     sql: ${active_user_count} ;;
   }
 
   measure: percentile80_users {
     group_label: "80th Percentile Group"
-    label: "Users per Instance"
+    label: "Users per Instance - 80th %"
     type: percentile
     percentile: 80
     sql: ${active_user_count} ;;
@@ -176,7 +217,7 @@ view: usage_data {
 
   measure: percentile90_users {
     group_label: "90th Percentile Group"
-    label: "Users per Instance"
+    label: "Users per Instance - 90th %"
     type: percentile
     percentile: 90
     sql: ${active_user_count} ;;
@@ -184,7 +225,7 @@ view: usage_data {
 
   measure: percentile99_users {
     group_label: "99th Percentile Group"
-    label: "Users per Instance"
+    label: "Users per Instance - 99th %"
     type: percentile
     percentile: 99
     sql: ${active_user_count} ;;
@@ -274,7 +315,7 @@ view: usage_data {
     group_label: "Clusters"
     label: "Helm Deployed"
     type: number
-    sql: ${TABLE}clusters_applications_helm ;;
+    sql: ${TABLE}.clusters_applications_helm ;;
   }
 
   measure: helm_deployed {
@@ -390,15 +431,15 @@ view: usage_data {
   # Projects
 
   measure: average_projects_per_user {
-    group_label: "Averages"
-    label: "Projects per User"
+    group_label: "Averages per User"
+    label: "Projects per User - Avg"
     type: average
     sql: ${projects_count} / ${active_user_count} ;;
   }
 
   measure: percentile80_projects_per_user {
     group_label: "80th Percentile Group"
-    label: "Projects per User"
+    label: "Projects per User - 80th %"
     type: percentile
     percentile: 80
     sql: ${projects_count} / ${active_user_count} ;;
@@ -406,7 +447,7 @@ view: usage_data {
 
   measure: percentile90_projects_per_user {
     group_label: "90th Percentile Group"
-    label: "Projects per User"
+    label: "Projects per User - 90th %"
     type: percentile
     percentile: 90
     sql: ${projects_count} / ${active_user_count} ;;
@@ -414,7 +455,7 @@ view: usage_data {
 
   measure: percentile99_projects_per_user {
     group_label: "99th Percentile Group"
-    label: "Projects per User"
+    label: "Projects per User - 99th %"
     type: percentile
     percentile: 99
     sql: ${projects_count} / ${active_user_count} ;;
@@ -430,15 +471,15 @@ view: usage_data {
 
   measure: average_issues_per_user {
 
-    group_label: "Averages"
-    label: "Issues per User"
+    group_label: "Averages per User"
+    label: "Issues per User - Avg"
     type: average
     sql: ${issues_count} / ${active_user_count} ;;
   }
 
   measure: percentile80_issues_per_user {
     group_label: "80th Percentile Group"
-    label: "Issues per User"
+    label: "Issues per User - 80th %"
     type: percentile
     percentile: 80
     sql: ${issues_count} / ${active_user_count} ;;
@@ -446,7 +487,7 @@ view: usage_data {
 
   measure: percentile90_issues_per_user {
     group_label: "90th Percentile Group"
-    label: "Issues per User"
+    label: "Issues per User - 90th %"
     type: percentile
     percentile: 90
     sql: ${issues_count} / ${active_user_count} ;;
@@ -454,7 +495,7 @@ view: usage_data {
 
   measure: percentile99_issues_per_user {
     group_label: "99th Percentile Group"
-    label: "Issues per User"
+    label: "Issues per User - 99th %"
     type: percentile
     percentile: 99
     sql: ${issues_count} / ${active_user_count} ;;
@@ -469,15 +510,15 @@ view: usage_data {
   }
 
   measure: average_merge_requests_per_user {
-    group_label: "Averages"
-    label: "Merge Requests per User"
+    group_label: "Averages per User"
+    label: "Merge Requests per User - Avg"
     type: average
     sql: ${merge_requests_count} / ${active_user_count} ;;
   }
 
   measure: percentile80_merge_requests_per_user {
     group_label: "80th Percentile Group"
-    label: "Merge Requests per User"
+    label: "Merge Requests per User - 80th %"
     type: percentile
     percentile: 80
     sql: ${merge_requests_count} / ${active_user_count} ;;
@@ -485,7 +526,7 @@ view: usage_data {
 
   measure: percentile90_merge_requests_per_user {
     group_label: "90th Percentile Group"
-    label: "Merge Requests per User"
+    label: "Merge Requests per User - 90th %"
     type: percentile
     percentile: 90
     sql: ${merge_requests_count} / ${active_user_count} ;;
@@ -493,7 +534,7 @@ view: usage_data {
 
   measure: percentile99_merge_requests_per_user {
     group_label: "99th Percentile Group"
-    label: "Merge Requests per User"
+    label: "Merge Requests per User - 99th %"
     type: percentile
     percentile: 99
     sql: ${merge_requests_count} / ${active_user_count} ;;

@@ -1,4 +1,4 @@
-connection: "dev-bizops"
+connection: "production_dw"
 
 include: "usage_*.view.lkml"
 label: "product"
