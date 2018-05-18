@@ -273,11 +273,15 @@ The `readonly` role was generated using the following commands:
 ```sql
 CREATE ROLE readonly;
 
-GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
 
-GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
 
-GRANT INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER on ALL TABLES IN schema sandbox to readonly;
+-- Ensures all future tables are available to the role
+ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora 
+  GRANT SELECT ON TABLES TO readonly;
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA sandbox TO readonly;
 
 ```
 
@@ -287,9 +291,15 @@ The `analytics` role was generated using the following commands:
 
 CREATE ROLE analytics;
 
-GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
 
-GRANT ALL PRIVILEGES on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+
+-- Ensures all future tables are available to the role
+ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora 
+  GRANT SELECT ON TABLES TO analytics;
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA analytics, public, sandbox TO analytics;
 
 ``` 
 
@@ -301,7 +311,9 @@ CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE metarole;
 
 New readonly and analytics users are then given instructions via Google Drive on how to connect their computer to the CloudSQL Proxy and on how to change their password once they login.
 
-By default, roles cannot login to the main production instance of the data warehouse. When the role is created, an admin will change the login permission and then have the user login and change their password on the production instance. Then the user will login to the dev instance and set the password the same. The admin will then set the role on the production instance to NOLOGIN. This will ensure at the next sync that the roles are properly set. 
+By default, roles can login to the main production instance of the data warehouse. Any password updates will propagate to `dev-bizops` and review instances when they are next refreshed.
+
+Both readonly and analytics roles are not able to alter data in load only schemas. Currently, analytics, public, and sandbox are the only schemas which the `analytics` role can fully manipulate. Both roles have the ability to select from all schemas and tables. 
 
 ### Accessing peered VPCs
 
