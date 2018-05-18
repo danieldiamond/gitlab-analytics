@@ -3,28 +3,40 @@ analytics:
     is_superuser: no
     privileges:
         schemas:
-            write:
+            read:
                 - analytics
                 - customers
                 - gitlab
+                - historical
+                - lever
                 - license
                 - mkto
                 - public
                 - sandbox
                 - sfdc
                 - version
+                - zendesk
                 - zuora
+            write:
+                - analytics
+                - public
                 - sandbox
         tables:
-            write:
+            read:
                 - analytics.*
                 - customers.*
                 - gitlab.*
+                - historical.*
+                - lever.*
                 - license.*
                 - mkto.*
                 - public.*
                 - sandbox.*
                 - sfdc.*
                 - version.*
+                - zendesk.*
                 - zuora.*
+            write:
+                - analytics.*
+                - public.*
                 - sandbox.*
