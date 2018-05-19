@@ -90,7 +90,7 @@ It is important to be cognizant of the personally identifiable information which
 
 We recommend the following best practices:
 1. Avoid extracting any personally identifable information in the first place. For example, consider extracting only company names from your CRM and avoid extracting individual contact details.
-1. If it is important to collect data about individual users, for example to learn more about user behavior, anonymize the data prior to writing it into the data warehouse.
+1. If it is important to collect data about individual users, for example to learn more about user behavior, pseudonymize the data prior to writing it into the data warehouse.
 1. Consider how you are persisting any PII data, and it's impact on compliance requirements like GDPR.
 
 ## Tools
