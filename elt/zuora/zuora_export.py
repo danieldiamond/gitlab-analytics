@@ -198,9 +198,9 @@ if __name__ == '__main__':
     logging.getLogger(__name__).setLevel(logging.DEBUG)
 
     setup_db()
-
-    schema = describe_schema()
     with db_open() as db:
-       schema_apply(db, schema)
+        schema_apply(db, Job.describe_schema())
+        schema_apply(db, describe_schema())
+        print("apply schema")
 
     main()
