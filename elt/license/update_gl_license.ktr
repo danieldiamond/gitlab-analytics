@@ -582,7 +582,7 @@
     </partitioning>
     <connection>restore_license</connection>
     <sql>SELECT *
-FROM add_ons WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
+FROM add_ons WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'
 </sql>
     <limit>0</limit>
     <lookup />
@@ -616,7 +616,7 @@ FROM add_ons WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
     <connection>restore_license</connection>
     <sql>SELECT *
 FROM granted_add_ons
-where updated_at >= CURRENT_TIMESTAMP - interval '30 day'
+where updated_at >= CURRENT_TIMESTAMP - interval '10 day'
 </sql>
     <limit>0</limit>
     <lookup />
@@ -649,7 +649,7 @@ where updated_at >= CURRENT_TIMESTAMP - interval '30 day'
     </partitioning>
     <connection>restore_license</connection>
     <sql>SELECT *
-FROM licenses where updated_at >= CURRENT_TIMESTAMP - interval '30 day'
+FROM licenses where updated_at >= CURRENT_TIMESTAMP - interval '10 day'
 </sql>
     <limit>0</limit>
     <lookup />
@@ -683,7 +683,7 @@ FROM licenses where updated_at >= CURRENT_TIMESTAMP - interval '30 day'
     <connection>restore_license</connection>
     <sql>SELECT *
 FROM plans
-WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'</sql>
+WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'</sql>
     <limit>0</limit>
     <lookup />
     <execute_each_row>N</execute_each_row>
@@ -715,7 +715,7 @@ WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'</sql>
     </partitioning>
     <connection>restore_license</connection>
     <sql>SELECT *
-FROM users where updated_at >= CURRENT_TIMESTAMP - interval '30 day'
+FROM users where updated_at >= CURRENT_TIMESTAMP - interval '10 day'
 </sql>
     <limit>0</limit>
     <lookup />

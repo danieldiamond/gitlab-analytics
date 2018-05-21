@@ -611,7 +611,7 @@
     <connection>restore_version</connection>
     <sql>SELECT *
 FROM conversational_development_indices
-WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
+WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'
 </sql>
     <limit>0</limit>
     <lookup />
@@ -645,7 +645,7 @@ WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
     <connection>restore_version</connection>
     <sql>SELECT *
 FROM fortune_companies
-WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
+WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'
 </sql>
     <limit>0</limit>
     <lookup />
@@ -679,7 +679,7 @@ WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
     <connection>restore_version</connection>
     <sql>SELECT *
 FROM hosts
-WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'</sql>
+WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'</sql>
     <limit>0</limit>
     <lookup />
     <execute_each_row>N</execute_each_row>
@@ -712,7 +712,7 @@ WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'</sql>
     <connection>restore_version</connection>
     <sql>SELECT *
 FROM licenses
-WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
+WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'
 </sql>
     <limit>0</limit>
     <lookup />
@@ -779,7 +779,7 @@ FROM schema_migrations
     <connection>restore_version</connection>
     <sql>SELECT *
 FROM usage_data
-WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
+WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'
 </sql>
     <limit>0</limit>
     <lookup />
@@ -813,7 +813,7 @@ WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
     <connection>restore_version</connection>
     <sql>SELECT *
 FROM users
-WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
+WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'
 </sql>
     <limit>0</limit>
     <lookup />
@@ -847,7 +847,7 @@ WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
     <connection>restore_version</connection>
     <sql>SELECT *
 FROM version_checks
-WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
+WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'
 </sql>
     <limit>0</limit>
     <lookup />
@@ -881,7 +881,7 @@ WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'
     <connection>restore_version</connection>
     <sql>SELECT *
 FROM versions
-WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'</sql>
+WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'</sql>
     <limit>0</limit>
     <lookup />
     <execute_each_row>N</execute_each_row>
@@ -914,7 +914,7 @@ WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'</sql>
     <connection>restore_version</connection>
     <sql>SELECT *
 FROM web_hooks
-WHERE updated_at >= CURRENT_TIMESTAMP - interval '30 day'</sql>
+WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'</sql>
     <limit>0</limit>
     <lookup />
     <execute_each_row>N</execute_each_row>
