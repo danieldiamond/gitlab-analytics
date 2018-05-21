@@ -1,5 +1,7 @@
 [![pipeline status](https://gitlab.com/gitlab-org/meltano/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/meltano/commits/master)
 
+[Google Doc](https://docs.google.com/document/d/1nayKquFLL8DN3h8mnLo3pVZsEKyPcBgQm2mqc5GggPA)
+
 # Meltano
 
 Meltano is a convention-over-configuration framework for analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
