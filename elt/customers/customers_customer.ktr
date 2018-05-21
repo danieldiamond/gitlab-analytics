@@ -589,7 +589,7 @@
       <schema_name />
     </partitioning>
     <connection>restore-customers</connection>
-    <sql>SELECT * FROM customers WHERE updated_at >= CURRENT_TIMESTAMP - INTERVAL '30 day';
+    <sql>SELECT * FROM customers WHERE updated_at >= CURRENT_TIMESTAMP - INTERVAL '10 day';
 </sql>
     <limit>0</limit>
     <lookup />
@@ -621,7 +621,7 @@
       <schema_name />
     </partitioning>
     <connection>restore-customers</connection>
-    <sql>SELECT * FROM eula_requests WHERE updated_at >= CURRENT_TIMESTAMP -  INTERVAL '30 day';
+    <sql>SELECT * FROM eula_requests WHERE updated_at >= CURRENT_TIMESTAMP -  INTERVAL '10 day';
 </sql>
     <limit>0</limit>
     <lookup />
@@ -686,7 +686,7 @@ FROM versions
       <schema_name />
     </partitioning>
     <connection>restore-customers</connection>
-    <sql>SELECT * FROM admins WHERE updated_at >= CURRENT_TIMESTAMP -  INTERVAL '30 day';</sql>
+    <sql>SELECT * FROM admins WHERE updated_at >= CURRENT_TIMESTAMP -  INTERVAL '10 day';</sql>
     <limit>0</limit>
     <lookup />
     <execute_each_row>N</execute_each_row>
@@ -719,7 +719,7 @@ FROM versions
     <connection>restore-customers</connection>
     <sql>SELECT *
 FROM orders WHERE updated_at >= 
-CURRENT_TIMESTAMP -  INTERVAL '30 day';
+CURRENT_TIMESTAMP -  INTERVAL '10 day';
 </sql>
     <limit>0</limit>
     <lookup />
