@@ -1068,6 +1068,11 @@
         <update>Y</update>
       </value>
       <value>
+        <name>opportunity_owner__c</name>
+        <rename>Opportunity Owner</rename>
+        <update>Y</update>
+      </value>
+      <value>
         <name>opportunity_term_override__c</name>
         <rename>Opportunity Term Override</rename>
         <update>Y</update>
@@ -4491,6 +4496,20 @@
         <group />
         <length>0</length>
         <precision>3</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Opportunity Owner</name>
+        <field>Opportunity_Owner__c</field>
+        <idlookup>Y</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
       </field>
