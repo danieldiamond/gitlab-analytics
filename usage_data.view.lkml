@@ -41,8 +41,8 @@ view: usage_data {
     sql: ${TABLE}.main_edition ;;
   }
 
-  dimension: edition_type {
-    label: "GitLab Edition Type"
+  dimension: tier {
+    label: "GitLab Tier"
     description: "Core, Starter, Premium, or Ultimate"
     full_suggestions: yes
     type: string
