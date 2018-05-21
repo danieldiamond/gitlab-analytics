@@ -1,6 +1,6 @@
 [![pipeline status](https://gitlab.com/gitlab-org/meltano/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/meltano/commits/master)
 
-[Google Doc](https://docs.google.com/document/d/1nayKquFLL8DN3h8mnLo3pVZsEKyPcBgQm2mqc5GggPA)
+[Meeting Agenda](https://docs.google.com/document/d/1nayKquFLL8DN3h8mnLo3pVZsEKyPcBgQm2mqc5GggPA)
 
 # Meltano
 
