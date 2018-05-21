@@ -18,11 +18,15 @@ def process_object(item):
     return [column(item, field) for field in getZuoraFields(item)]
 
 
+def field_column_name(field) -> str:
+    return field.lower().replace(".", "")
+
+
 def column(item, field) -> Column:
     """
     For now let's output only string fields
     """
-    column_name = field.lower().replace(".", "")
+    column_name = field_column_name(field)
     is_pkey = column_name == PRIMARY_KEY
     #table_name = item.split('.')[1:]
 

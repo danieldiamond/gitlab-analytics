@@ -1,4 +1,5 @@
 import os
+import re
 
 from configparser import SafeConfigParser
 
@@ -32,7 +33,7 @@ def getZuoraFields(item):
     myPath = os.path.join(myDir, '../config', 'zuoraFields.conf')
     FieldParser = SafeConfigParser()
     FieldParser.read(myPath)
-    fields = FieldParser.get(item, 'fields').split(', ')
+    fields = re.split(r'\s*,\s*', FieldParser.get(item, 'fields'))
     return fields
 
 

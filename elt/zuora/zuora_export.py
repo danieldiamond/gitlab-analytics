@@ -7,6 +7,7 @@ import psycopg2
 import csv
 import logging
 import os
+import io
 
 from requests.auth import HTTPBasicAuth
 from elt.job import Job, State
@@ -14,7 +15,8 @@ from elt.utils import compose, setup_db
 from elt.db import DB
 from elt.process import write_to_db_from_csv, create_tmp_table, update_set_stmt
 from elt.schema import schema_apply
-from schema import describe_schema
+from elt.error import ExtractError
+from schema import describe_schema, field_column_name
 from config import getEnvironment, getPGCreds, getZuoraFields, getObjectList
 
 
@@ -36,6 +38,9 @@ def create_extract_job(item):
         headers=headers, data=data, stream=True)
     # TODO: add error handling
     result = res.json()
+    if result['status'] == 'error':
+        raise ExtractError(result['message'])
+
     job_id = result['id']
 
     job = Job(elt_uri='com.zuroa.meltano:1',
@@ -85,9 +90,32 @@ def load_extract_job(job, job_id):
 
 def writeToFile(item, res):
     filename = "{}.csv".format(item)
-    with open(filename, 'wb') as file:
-        logger.debug('Writing to local file: ' + filename)
-        file.write(res.content)
+    fields = [field_column_name(field) for field in getZuoraFields(item)]
+
+    def rename_fields(row):
+        renamed = dict()
+        for col, val in row.items():
+            column_name = col.replace("{}.".format(item), "")
+            column_name = column_name.replace(".", "")
+            column_name = column_name.lower()
+
+            renamed[column_name] = val
+
+        return renamed
+
+    with open(filename, 'w') as file:
+        buf = io.StringIO(res.text)
+        dr = csv.DictReader(buf, delimiter=',')
+        dw = csv.DictWriter(file,
+                            delimiter=',',
+                            fieldnames=fields,
+                            extrasaction='ignore')
+
+        # write the file back ignoring the fields that are not in our schema
+        dw.writeheader()
+        for row in dr:
+            dw.writerow(rename_fields(row))
+
     return filename
 
 
@@ -111,27 +139,20 @@ def db_write_full(item):
     with open(item + '.csv', 'r') as file, \
         DB.open() as mydb, \
         mydb.cursor() as cursor:
-        reader = csv.reader(file, delimiter=',', quotechar='"',
-                            quoting=csv.QUOTE_MINIMAL)
 
-        header = next(file).rstrip().replace("{}.".format(item), "").lower()
         cursor.execute('TRUNCATE TABLE zuora.' + item)
+        columns = [field_column_name(field) for field in getZuoraFields(item)]
 
-        column = compose(
-            psycopg2.sql.Identifier,
-            lambda h: h.replace(".", "")
-        )
-
-        columns = map(column, header.split(','))
-
-        copy = psycopg2.sql.SQL("COPY zuora.{} ({}) FROM STDIN with csv").format(
+        copy = psycopg2.sql.SQL("COPY zuora.{} ({}) FROM STDIN WITH(FORMAT csv, HEADER true)").format(
             psycopg2.sql.Identifier(item.lower()),
-            psycopg2.sql.SQL(', ').join(columns),
+            psycopg2.sql.SQL(', ').join(map(psycopg2.sql.Identifier, columns)),
         )
+        print(copy.as_string(cursor))
+
         cursor.copy_expert(file=file, sql=copy)
         logger.debug('Complteted copying records to ' + item + ' table.')
 
-    os.remove(item + '.csv')
+    #os.remove(item + '.csv')
 
 
 def db_write_incremental(item):
@@ -153,18 +174,12 @@ def db_write_incremental(item):
         reader = csv.reader(file, delimiter=',', quotechar='"',
                             quoting=csv.QUOTE_MINIMAL)
 
-        header = next(file).rstrip().replace("{}.".format(item), "").lower()
-        column = compose(
-            psycopg2.sql.Identifier,
-            lambda h: h.replace(".", "")
-        )
-
-        columns = header.split(',')
+        columns = [field_column_name(field) for field in getZuoraFields(item)]
 
         # load tmp table
-        copy = psycopg2.sql.SQL("COPY pg_temp.{} ({}) FROM STDIN with csv").format(
+        copy = psycopg2.sql.SQL("COPY pg_temp.{} ({}) FROM STDIN WITH (FORMAT csv, HEADER true)").format(
             tmp_table,
-            psycopg2.sql.SQL(', ').join(map(column, columns)),
+            psycopg2.sql.SQL(', ').join(map(psycopg2.sql.Identifier, columns)),
         )
         cursor.copy_expert(file=file, sql=copy)
 
@@ -173,7 +188,7 @@ def db_write_incremental(item):
         update_query = psycopg2.sql.SQL("INSERT INTO {0}.{1} ({2}) SELECT {2} FROM {3}.{4} ON CONFLICT ({5}) DO UPDATE SET {6}").format(
             schema,
             table,
-            psycopg2.sql.SQL(', ').join(map(column, columns)),
+            psycopg2.sql.SQL(', ').join(map(psycopg2.sql.Identifier, columns)),
             psycopg2.sql.Identifier("pg_temp"),
             tmp_table,
             psycopg2.sql.Identifier(primary_key),
@@ -188,14 +203,14 @@ def db_write_incremental(item):
             psycopg2.sql.Identifier("pg_temp"),
             tmp_table,
         )
+        mydb.commit()
 
         logger.info('Completed copying records to ' + item + ' table.')
     os.remove(item + '.csv')
 
 
 def zuroa_query_params(item):
-    query = "Select " + ', '.join(getZuoraFields(item)) + " FROM " + item + " LIMIT 100"
-    logger.debug('Executing Query:  ' + query)
+    query = "Select " + ', '.join(getZuoraFields(item)) + " FROM " + item + " LIMIT 10"
     # TODO: add Partner ID + Project ID to have incremental
     data = json.dumps({
         "format": "csv",
