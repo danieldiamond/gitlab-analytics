@@ -22,8 +22,8 @@ def column(item, field) -> Column:
     """
     For now let's output only string fields
     """
-    is_pkey = field == PRIMARY_KEY
     column_name = field.lower().replace(".", "")
+    is_pkey = column_name == PRIMARY_KEY
     #table_name = item.split('.')[1:]
 
     return Column(table_name=item.lower(),
