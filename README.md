@@ -84,6 +84,15 @@ In the future, we plan to expand support to other areas of an organization like 
 
 To achieve this, we bring data from all [data sources](data_sources.md) to a [common data model](doc/data_model.md) so it can be used easily and consistently across tools and teams. For example something as simple as unique customer ID, product or feature names/codes.
 
+### Personally Identifiable Information
+
+It is important to be cognizant of the personally identifiable information which is extracted into the data warehouse. Warehouses are at their best when they are leveraged across many parts of the organization, and therefore it is hard to predict which users will ultimately have access and how each user will treat the data.
+
+We recommend the following best practices:
+1. Avoid extracting any personally identifable information in the first place. For example, consider extracting only company names from your CRM and avoid extracting individual contact details.
+1. If it is important to collect data about individual users, for example to learn more about user behavior, pseudonymize the data prior to writing it into the data warehouse.
+1. Consider how you are persisting any PII data, and it's impact on compliance requirements like GDPR.
+
 ## Tools
 
 We want the tools to be open source so we can ship this as a product.
