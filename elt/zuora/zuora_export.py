@@ -16,7 +16,7 @@ from elt.db import DB
 from elt.process import write_to_db_from_csv, create_tmp_table, update_set_stmt
 from elt.schema import schema_apply
 from elt.error import Error, ExtractError
-from schema import describe_schema, field_column_name
+from schema import PG_SCHEMA, describe_schema, field_column_name
 from config import JOB_VERSION, environment, getPGCreds, getZuoraFields, getObjectList
 
 
@@ -195,7 +195,8 @@ def db_write_full(item):
         cursor.execute('TRUNCATE TABLE zuora.' + item)
         columns = [field_column_name(field) for field in getZuoraFields(item)]
 
-        copy = psycopg2.sql.SQL("COPY zuora.{} ({}) FROM STDIN WITH(FORMAT csv, HEADER true)").format(
+        copy = psycopg2.sql.SQL("COPY {}.{} ({}) FROM STDIN WITH(FORMAT csv, HEADER true)").format(
+            psycopg2.sql.Identifier(PG_SCHEMA),
             psycopg2.sql.Identifier(item.lower()),
             psycopg2.sql.SQL(', ').join(map(psycopg2.sql.Identifier, columns)),
         )
@@ -217,9 +218,9 @@ def db_write_incremental(item):
 
         primary_key = 'id'
         table_name = item.lower()
-        tmp_table_name = create_tmp_table(mydb, 'zuora', table_name)
+        tmp_table_name = create_tmp_table(mydb, PG_SCHEMA, table_name)
 
-        schema = psycopg2.sql.Identifier('zuora')
+        schema = psycopg2.sql.Identifier(PG_SCHEMA)
         table = psycopg2.sql.Identifier(table_name)
         tmp_table = psycopg2.sql.Identifier(tmp_table_name)
 
@@ -354,7 +355,6 @@ def main():
     for item in getObjectList():
         for job in item_jobs(item):
             import_job(job, item)
-        break
 
     end = time.time()
 
@@ -371,6 +371,5 @@ if __name__ == '__main__':
     with DB.open() as db:
         schema_apply(db, Job.describe_schema())
         schema_apply(db, describe_schema())
-        print("apply schema")
 
     main()

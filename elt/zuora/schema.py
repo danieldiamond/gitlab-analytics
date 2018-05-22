@@ -5,7 +5,7 @@ from functools import partial
 from config import getObjectList, getZuoraFields
 
 
-PG_SCHEMA = 'zuora'
+PG_SCHEMA = 'zuora_incremental'
 PRIMARY_KEY = 'id'
 
 
