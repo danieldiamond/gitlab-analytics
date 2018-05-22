@@ -84,7 +84,7 @@ In the future, we plan to expand support to other areas of an organization like 
 
 ## Data sources
 
-To achieve this, we bring data from all [data sources](data_sources.md) to a [common data model](doc/data_model.md) so it can be used easily and consistently across tools and teams. For example something as simple as unique customer ID, product or feature names/codes.
+To achieve this, we bring data from all [data sources](data_sources.md) to a [common data model](doc/data_model.md) (that can and likely will be different for every organization) so it can be used easily and consistently across tools and teams. For example something as simple as unique customer ID, product or feature names/codes.
 
 ### Personally Identifiable Information
 
