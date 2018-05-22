@@ -58,7 +58,7 @@ def recover_jobs(item):
 
 
 def item_elt_uri(item):
-    return "com.zuora.meltano:{}:{}".format(JOB_VERSION, slugify(item))
+    return "com.meltano.zuora:{}:{}".format(JOB_VERSION, slugify(item))
 
 
 def create_extract_job(job, item):
