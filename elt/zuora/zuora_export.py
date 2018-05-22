@@ -186,30 +186,35 @@ def replace(fieldList):
 
 def db_write_full(item):
     _, _, host, db, _ = getPGCreds()
+    columns = [field_column_name(field) for field in getZuoraFields(item)]
 
     logging.info("[Restore] Writing to {}/{}".format(host, db))
     with open(item + '.csv', 'r') as file, \
         DB.open() as mydb, \
         mydb.cursor() as cursor:
 
-        cursor.execute('TRUNCATE TABLE zuora.' + item)
-        columns = [field_column_name(field) for field in getZuoraFields(item)]
+        truncate = psycopg2.sql.SQL("TRUNCATE TABLE {}.{}").format(
+            psycopg2.sql.Identifier(PG_SCHEMA),
+            psycopg2.sql.Identifier(item.lower()),
+        )
 
         copy = psycopg2.sql.SQL("COPY {}.{} ({}) FROM STDIN WITH(FORMAT csv, HEADER true)").format(
             psycopg2.sql.Identifier(PG_SCHEMA),
             psycopg2.sql.Identifier(item.lower()),
             psycopg2.sql.SQL(', ').join(map(psycopg2.sql.Identifier, columns)),
         )
-        print(copy.as_string(cursor))
 
+        cursor.execute(truncate)
         cursor.copy_expert(file=file, sql=copy)
         logging.info('Complteted copying records to ' + item + ' table.')
 
-    #os.remove(item + '.csv')
+    os.remove(item + '.csv')
 
 
 def db_write_incremental(item):
     _, _, host, db, _ = getPGCreds()
+    columns = [field_column_name(field) for field in getZuoraFields(item)]
+    update_columns = [col for col in columns if col != primary_key]
 
     logging.info("[Update] Writing to {}/{}".format(host, db))
     with open(item + '.csv', 'r') as file, \
@@ -227,17 +232,15 @@ def db_write_incremental(item):
         reader = csv.reader(file, delimiter=',', quotechar='"',
                             quoting=csv.QUOTE_MINIMAL)
 
-        columns = [field_column_name(field) for field in getZuoraFields(item)]
-
         # load tmp table
         copy = psycopg2.sql.SQL("COPY pg_temp.{} ({}) FROM STDIN WITH (FORMAT csv, HEADER true)").format(
             tmp_table,
             psycopg2.sql.SQL(', ').join(map(psycopg2.sql.Identifier, columns)),
         )
+
         cursor.copy_expert(file=file, sql=copy)
 
         # upsert from tmp table
-        update_columns = [col for col in columns if col != primary_key]
         update_query = psycopg2.sql.SQL("INSERT INTO {0}.{1} ({2}) SELECT {2} FROM {3}.{4} ON CONFLICT ({5}) DO UPDATE SET {6}").format(
             schema,
             table,
@@ -247,18 +250,18 @@ def db_write_incremental(item):
             psycopg2.sql.Identifier(primary_key),
             psycopg2.sql.SQL(update_set_stmt(update_columns)),
         )
-        print(update_query.as_string(cursor))
-        cursor.execute(update_query)
-        mydb.commit()
 
         # Drop temporary table
         drop_query = psycopg2.sql.SQL("DROP TABLE {0}.{1}").format(
             psycopg2.sql.Identifier("pg_temp"),
             tmp_table,
         )
+
+        cursor.execute(update_query)
+        cursor.execute(drop_query)
         mydb.commit()
 
-        logging.info('Completed copying records to ' + item + ' table.')
+        logging.info("Completed copying records to {} table.".format(item))
     os.remove(item + '.csv')
 
 
