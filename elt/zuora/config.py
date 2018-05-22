@@ -4,15 +4,19 @@ import re
 from configparser import SafeConfigParser
 
 
-def getEnvironment():
+def parse_environment():
     myDir = os.path.dirname(os.path.abspath(__file__))
     myPath = os.path.join(myDir, '../config', 'environment.conf')
     EnvParser = SafeConfigParser()
     EnvParser.read(myPath)
-    username = EnvParser.get('ZUORA', 'username')
-    password = EnvParser.get('ZUORA', 'password')
-    url = EnvParser.get('ZUORA', 'url')
-    return(username, password, url)
+
+    return {
+        'username': EnvParser.get('ZUORA', 'username'),
+        'password': EnvParser.get('ZUORA', 'password'),
+        'url': EnvParser.get('ZUORA', 'url'),
+        'partner_id': EnvParser.get('ZUORA', 'partner_id'),
+        'project_id': EnvParser.get('ZUORA', 'project_id'),
+    }
 
 
 def getPGCreds():
@@ -46,3 +50,6 @@ def getObjectList():
     obj = obj.replace(" ", "")
     objList = obj.split(",")
     return objList
+
+
+environment = parse_environment()

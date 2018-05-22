@@ -15,66 +15,105 @@ from elt.utils import compose, setup_db
 from elt.db import DB
 from elt.process import write_to_db_from_csv, create_tmp_table, update_set_stmt
 from elt.schema import schema_apply
-from elt.error import ExtractError
+from elt.error import Error, ExtractError
 from schema import describe_schema, field_column_name
-from config import getEnvironment, getPGCreds, getZuoraFields, getObjectList
+from config import environment, getPGCreds, getZuoraFields, getObjectList
 
 
-def recover_jobs():
+def item_jobs(item):
+    """
+    Yields import jobs for a specific item from the following sources:
+      - Previous failed jobs
+      - Zuora API incremental job
+    """
+    for job in recover_jobs(item):
+        logging.info("Recovering failed job {}".format(job))
+        yield job
+
+    # creating the incremental job to send in the pipeline
+    job = Job(elt_uri=item_elt_uri(item),
+              payload={
+                  'zuora_state': 'init',
+              })
+
+    logging.info("Retrieving incremental job for {}.".format(item))
+    yield job
+
+
+def recover_jobs(item):
     with DB.session() as session:
-        failed_jobs = session.query(Job).filter_by(state=State.FAIL).all()
-        for f in failed_jobs:
-            logging.error(f.payload.get('zuroa_state', ''))
-            logging.error(f.payload.get('file_id', ''))
-            logging.error(f.payload.get('exception', ''))
+        elt_uri = item_elt_uri(item)
+        failed_jobs = session.query(Job).filter_by(state=State.FAIL,
+                                                   elt_uri=elt_uri).all()
+
+    logging.info("Found {} failed job for {}.".format(len(failed_jobs), elt_uri))
+    return failed_jobs
 
 
-def create_extract_job(item):
-    username, password, url = getEnvironment()
-    headers, data = zuroa_query_params(item)
+def item_elt_uri(item):
+    return "com.zuora.meltano:1:{}".format(item)
 
-    res = requests.post(
-        url, auth=HTTPBasicAuth(username, password),
-        headers=headers, data=data, stream=True)
+
+def create_extract_job(job, item):
+    if job.payload['zuora_state'] != 'init':
+        return
+
+    url = environment['url']
+    headers, data = zuora_query_params(item)
+
+    job.transit(State.RUNNING)
+    job.started_at = datetime.datetime.utcnow()
+    job.payload.update({
+        'query': data
+    })
+    Job.save(job)
+
+    res = requests.post(url,
+                        auth=HTTPBasicAuth(environment['username'], environment['password']),
+                        headers=headers,
+                        data=data,
+                        stream=True)
+
     # TODO: add error handling
+    raise ExtractError("This error is crafted.")
+
     result = res.json()
     if result['status'] == 'error':
         raise ExtractError(result['message'])
 
     job_id = result['id']
-
-    job = Job(elt_uri='com.zuroa.meltano:1',
-              payload={
-                  'id': job_id,
-                  'url': url,
-                  'zuroa_state': 'query',
-                  'http_response': result,
-                  'query': data,
-              })
-    job.transit(State.RUNNING)
-    job.started_at = datetime.datetime.utcnow()
+    job.payload.update({
+        'id': job_id,
+        'url': url,
+        'zuora_state': 'query',
+        'http_response': result,
+    })
     Job.save(job)
 
     return job
 
 
 def load_extract_job(job, job_id):
-    username, password, url = getEnvironment()
+    if job.payload['zuora_state'] != 'query':
+        return
+
     params = {
-        'auth': HTTPBasicAuth(username, password),
+        'auth': HTTPBasicAuth(environment['username'],
+                              environment['password']),
         'headers': {'Accept': 'application/json'},
     }
 
-    url = url + 'jobs/' + job_id
-    result = ''
+    url = "/".join((environment['url'], "jobs", job_id))
+    result = ""
     while True:
         res = requests.get(url, **params)
-        result = json.loads(res.text)
-        time.sleep(5)
+        result = res.json()
         status = result['batches'][0]['status']
-        logger.debug(status)
+
+        job.payload['http_response'] = result
         job.payload['zuora_state'] = status
         Job.save(job)
+        time.sleep(5)
         if status == 'completed':
             break
 
@@ -84,13 +123,21 @@ def load_extract_job(job, job_id):
     job.payload['file_id'] = file_id
     Job.save(job)
 
-    url = "https://www.zuora.com/apps/api/file/{}".format(file_id)
-    return requests.get(url, **params)
+    return job
 
 
-def writeToFile(item, res):
+def download_file(item, file_id):
+    params = {
+        'auth': HTTPBasicAuth(environment['username'],
+                              environment['password']),
+        'headers': {'Accept': 'application/json'},
+    }
+
     filename = "{}.csv".format(item)
     fields = [field_column_name(field) for field in getZuoraFields(item)]
+
+    url = "https://www.zuora.com/apps/api/file/{}".format(file_id)
+    res = requests.get(url, **params)
 
     def rename_fields(row):
         renamed = dict()
@@ -118,7 +165,6 @@ def writeToFile(item, res):
 
     return filename
 
-
 def replace(fieldList):
     for i, v in enumerate(fieldList):
         if v.upper() == 'TRUE':
@@ -135,7 +181,7 @@ def replace(fieldList):
 def db_write_full(item):
     _, _, host, db, _ = getPGCreds()
 
-    logger.debug("Writing to {}/{}".format(host, db))
+    logger.debug("[Restore] Writing to {}/{}".format(host, db))
     with open(item + '.csv', 'r') as file, \
         DB.open() as mydb, \
         mydb.cursor() as cursor:
@@ -158,7 +204,7 @@ def db_write_full(item):
 def db_write_incremental(item):
     _, _, host, db, _ = getPGCreds()
 
-    logger.debug("Writing to {}/{}".format(host, db))
+    logger.debug("[Update] Writing to {}/{}".format(host, db))
     with open(item + '.csv', 'r') as file, \
         DB.open() as mydb, \
         mydb.cursor() as cursor:
@@ -209,7 +255,28 @@ def db_write_incremental(item):
     os.remove(item + '.csv')
 
 
-def zuroa_query_params(item):
+def db_write(job, item):
+    if job.payload['zuora_state'] != 'completed':
+        return
+
+    http_response = job.payload['http_response']
+
+    # TODO: process multiple batch
+    batch = http_response['batches'][0]
+
+    if batch['status'] != 'completed':
+        return
+
+    if batch.get('recordCount', 0) == 0:
+        return
+
+    if batch.get('full', False):
+        db_write_full(item)
+    else:
+        db_write_incremental(item)
+
+
+def zuora_query_params(item):
     query = "Select " + ', '.join(getZuoraFields(item)) + " FROM " + item + " LIMIT 10"
     # TODO: add Partner ID + Project ID to have incremental
     data = json.dumps({
@@ -218,6 +285,8 @@ def zuroa_query_params(item):
         "name": "Meltano",
         "encrypted": "none",
         "useQueryLabels": "true",
+        "partner": environment['partner_id'],
+        "project": environment['project_id'],
         "queries": [
             {
                 "name": item,
@@ -235,22 +304,25 @@ def zuroa_query_params(item):
     return (headers, data)
 
 
-def import_item(item):
-    logger.debug('Retreiving: %s', item)
+def import_job(job, item):
+    """
+    Job pipeline:
+      - Create an extract job
+      - Wait for the extract job to be completed
+      - Download the extracted file
+      - Write it in the database
 
-    _, _, url = getEnvironment()
-    headers, data = zuroa_query_params(item)
-
-    job = create_extract_job(item)
-    file = load_extract_job(job, job.payload['id'])
-
+    Any exception caught here will change the job's state to `FAIL`
+    set the `exception` key to the exception message.
+    """
     try:
-        filename = writeToFile(item, file)
-        with DB.open() as db:
-            db_write_incremental(item)
+        create_extract_job(job, item)
+        load_extract_job(job, job.payload['id'])
+        filename = download_file(item, job.payload['file_id'])
+        db_write(job, item)
 
         job.transit(State.SUCCESS)
-    except psycopg2.Error as err:
+    except (Error, psycopg2.Error) as err:
         logger.debug('Something went wrong: {}'.format(err))
         job.transit(State.FAIL)
         job.payload['exception'] = str(err)
@@ -263,9 +335,10 @@ def import_item(item):
 def main():
     start = time.time()
 
-    recover_jobs()
     for item in getObjectList():
-        import_item(item)
+        for job in item_jobs(item):
+            import_job(job, item)
+
     end = time.time()
 
     totalMinutes = (end - start) / 60
@@ -275,7 +348,6 @@ def main():
 logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
-
     logging.basicConfig(format='%(asctime)s %(message)s',
                         datefmt='%m/%d/%Y %I:%M:%S %p')
     logging.getLogger(__name__).setLevel(logging.DEBUG)
