@@ -11,13 +11,20 @@ import io
 
 from requests.auth import HTTPBasicAuth
 from elt.job import Job, State
-from elt.utils import compose, setup_db
+from elt.utils import compose, slugify, setup_db
 from elt.db import DB
 from elt.process import write_to_db_from_csv, create_tmp_table, update_set_stmt
 from elt.schema import schema_apply
 from elt.error import Error, ExtractError
 from schema import describe_schema, field_column_name
-from config import environment, getPGCreds, getZuoraFields, getObjectList
+from config import JOB_VERSION, environment, getPGCreds, getZuoraFields, getObjectList
+
+
+class DownloadError(Error):
+    """Happens when a file cannot be downloaded from the Zuora endpoint."""
+    def __init__(self, message, fatal=False):
+        super().__init__(message)
+        self.fatal = fatal
 
 
 def item_jobs(item):
@@ -51,7 +58,7 @@ def recover_jobs(item):
 
 
 def item_elt_uri(item):
-    return "com.zuora.meltano:1:{}".format(item)
+    return "com.zuora.meltano:{}:{}".format(JOB_VERSION, slugify(item))
 
 
 def create_extract_job(job, item):
@@ -61,7 +68,6 @@ def create_extract_job(job, item):
     url = environment['url']
     headers, data = zuora_query_params(item)
 
-    job.transit(State.RUNNING)
     job.started_at = datetime.datetime.utcnow()
     job.payload.update({
         'query': data
@@ -73,9 +79,6 @@ def create_extract_job(job, item):
                         headers=headers,
                         data=data,
                         stream=True)
-
-    # TODO: add error handling
-    raise ExtractError("This error is crafted.")
 
     result = res.json()
     if result['status'] == 'error':
@@ -115,13 +118,12 @@ def load_extract_job(job, job_id):
         Job.save(job)
         time.sleep(5)
         if status == 'completed':
+            # expect to only have 1 batch
+            file_id = result['batches'][0]['fileId']
+            logging.info("File ID: " + file_id)
+            job.payload['file_id'] = file_id
+            Job.save(job)
             break
-
-    # expect to only have 1 batch
-    file_id = result['batches'][0]['fileId']
-    logger.debug("File ID: " + file_id)
-    job.payload['file_id'] = file_id
-    Job.save(job)
 
     return job
 
@@ -138,6 +140,10 @@ def download_file(item, file_id):
 
     url = "https://www.zuora.com/apps/api/file/{}".format(file_id)
     res = requests.get(url, **params)
+
+    if res.status_code != requests.codes.ok:
+        raise DownloadError("Unable to download the file at {}.".format(url),
+                            fatal=res.status_code == requests.codes.not_found)
 
     def rename_fields(row):
         renamed = dict()
@@ -181,7 +187,7 @@ def replace(fieldList):
 def db_write_full(item):
     _, _, host, db, _ = getPGCreds()
 
-    logger.debug("[Restore] Writing to {}/{}".format(host, db))
+    logging.info("[Restore] Writing to {}/{}".format(host, db))
     with open(item + '.csv', 'r') as file, \
         DB.open() as mydb, \
         mydb.cursor() as cursor:
@@ -196,7 +202,7 @@ def db_write_full(item):
         print(copy.as_string(cursor))
 
         cursor.copy_expert(file=file, sql=copy)
-        logger.debug('Complteted copying records to ' + item + ' table.')
+        logging.info('Complteted copying records to ' + item + ' table.')
 
     #os.remove(item + '.csv')
 
@@ -204,7 +210,7 @@ def db_write_full(item):
 def db_write_incremental(item):
     _, _, host, db, _ = getPGCreds()
 
-    logger.debug("[Update] Writing to {}/{}".format(host, db))
+    logging.info("[Update] Writing to {}/{}".format(host, db))
     with open(item + '.csv', 'r') as file, \
         DB.open() as mydb, \
         mydb.cursor() as cursor:
@@ -251,7 +257,7 @@ def db_write_incremental(item):
         )
         mydb.commit()
 
-        logger.info('Completed copying records to ' + item + ' table.')
+        logging.info('Completed copying records to ' + item + ' table.')
     os.remove(item + '.csv')
 
 
@@ -271,18 +277,19 @@ def db_write(job, item):
         return
 
     if batch.get('full', False):
+        logging.warn("Response contains all records - full restore.")
         db_write_full(item)
     else:
         db_write_incremental(item)
 
 
 def zuora_query_params(item):
-    query = "Select " + ', '.join(getZuoraFields(item)) + " FROM " + item + " LIMIT 10"
+    query = "Select " + ', '.join(getZuoraFields(item)) + " FROM " + item
     # TODO: add Partner ID + Project ID to have incremental
     data = json.dumps({
         "format": "csv",
         "version": "1.2",
-        "name": "Meltano",
+        "name": item_elt_uri(item),
         "encrypted": "none",
         "useQueryLabels": "true",
         "partner": environment['partner_id'],
@@ -316,16 +323,25 @@ def import_job(job, item):
     set the `exception` key to the exception message.
     """
     try:
+        job.transit(State.RUNNING)
+        Job.save(job)
+
         create_extract_job(job, item)
         load_extract_job(job, job.payload['id'])
         filename = download_file(item, job.payload['file_id'])
         db_write(job, item)
 
         job.transit(State.SUCCESS)
-    except (Error, psycopg2.Error) as err:
-        logger.debug('Something went wrong: {}'.format(err))
-        job.transit(State.FAIL)
+    except DownloadError as download_err:
         job.payload['exception'] = str(err)
+
+        next_state = State.DEAD if download_err.fatal else State.FAIL
+        job.transit(next_state)
+    except (Error, psycopg2.Error) as err:
+        job.payload['exception'] = str(err)
+        job.transit(State.FAIL)
+
+        logging.error('Something went wrong: {}'.format(err))
     finally:
         job.ended_at = datetime.datetime.utcnow()
 
@@ -338,19 +354,18 @@ def main():
     for item in getObjectList():
         for job in item_jobs(item):
             import_job(job, item)
+        break
 
     end = time.time()
 
     totalMinutes = (end - start) / 60
-    logger.debug('Completed Load in %1.1f minutes' % totalMinutes)
+    logging.info('Completed Load in %1.1f minutes' % totalMinutes)
 
-
-logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(message)s',
-                        datefmt='%m/%d/%Y %I:%M:%S %p')
-    logging.getLogger(__name__).setLevel(logging.DEBUG)
+                        datefmt='%m/%d/%Y %I:%M:%S %p',
+                        level=logging.INFO)
 
     setup_db()
     with DB.open() as db:

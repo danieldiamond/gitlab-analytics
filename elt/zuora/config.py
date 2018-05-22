@@ -4,6 +4,9 @@ import re
 from configparser import SafeConfigParser
 
 
+JOB_VERSION = 1
+
+
 def parse_environment():
     myDir = os.path.dirname(os.path.abspath(__file__))
     myPath = os.path.join(myDir, '../config', 'environment.conf')
