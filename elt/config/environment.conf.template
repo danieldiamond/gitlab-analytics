@@ -1,6 +1,6 @@
 [ZUORA]
 username   = $ZUORA_USERNAME
-password   = $ZUORA_PASSWORD
+password   = $FIXED_ZUORA_PASSWORD
 url        = $ZUORA_URL
 partner_id = $ZUORA_PARTNER_ID
 project_id = $ZUORA_PROJECT_ID
