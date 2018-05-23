@@ -8,6 +8,7 @@ import csv
 import logging
 import os
 import io
+import sys
 
 from requests.auth import HTTPBasicAuth
 from elt.job import Job, State
@@ -371,6 +372,7 @@ if __name__ == '__main__':
                         level=logging.INFO)
 
     setup_db()
+
     with DB.open() as db:
         schema_apply(db, Job.describe_schema())
         schema_apply(db, describe_schema())
