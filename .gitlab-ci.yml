@@ -273,10 +273,10 @@ force_refresh_dev:
       if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
         export GCP_INSTANCE_NAME=$GCP_PRODUCTION_INSTANCE_NAME
       else
-        # 95 (max) - 7 (sha) - 2 (`-`) = 86 
-        SLUG_LENGTH=$(( 86 - ${#CI_PROJECT_NAME} ))
+        # 95 (max) - 10 (job_id) - 2 (`-`) = 83 
+        SLUG_LENGTH=$(( 83 - ${#CI_PROJECT_NAME} ))
         export GCP_INSTANCE_REF_SLUG=$CI_PROJECT_NAME-${CI_COMMIT_REF_SLUG:0:$SLUG_LENGTH}
-        export GCP_INSTANCE_NAME=$GCP_INSTANCE_REF_SLUG-${CI_JOB_ID:0:7}
+        export GCP_INSTANCE_NAME=$GCP_INSTANCE_REF_SLUG-${CI_JOB_ID:0:10}
       fi
       echo "Instance name is: $GCP_INSTANCE_NAME"
     fi
