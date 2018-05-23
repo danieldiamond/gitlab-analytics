@@ -1,5 +1,5 @@
 variables:
-  PYTHONPATH: "/bizops/bizops/elt/shared_modules/:$PYTHONPATH"
+  PYTHONPATH: "/meltano/meltano/elt/shared_modules/:$PYTHONPATH"
 
 stages:
   - dev_refresh
@@ -11,12 +11,12 @@ stages:
   - review_stop
 
 .job_template: &job_definition
-  image: registry.gitlab.com/bizops/bizops-elt/extract:latest
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   tags:
     - analytics
 
 .job_housekeeping: &job_housekeeping
-  image: registry.gitlab.com/bizops/bizops-elt/extract:cloud-sdk
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   tags:
     - housekeeping
 
@@ -80,6 +80,16 @@ zuora:
     - setup_cloudsqlproxy
     - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
     - using_proxy python3 elt/zuora/zuora_export.py
+    - stop_cloudsqlproxy
+
+pings_extract:
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
+    - bash elt/util/run_daily_etl.sh
     - stop_cloudsqlproxy
 
 pings:
@@ -197,6 +207,7 @@ review_stop:
   variables:
     GIT_STRATEGY: none
   script: 
+    - set_sql_instance_name
     - delete_review_cloudsql
   when: manual
   allow_failure: true
@@ -237,7 +248,7 @@ force_refresh_dev:
 
 # ---------------------------------------------------------------------------
 
-.bizops: &bizops |
+.meltano: &meltano |
 
   function auth_gcloud() {
     if [ ${GCP_AUTH:=1} = 0 ]; then
@@ -337,4 +348,4 @@ force_refresh_dev:
 
 
 before_script:
-  - *bizops
+  - *meltano

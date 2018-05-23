@@ -825,39 +825,11 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Next Invoice Due Date</name>
-        <field>Next_Invoice_Due_Date__c</field>
-        <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
         <name>Opt-Out Geo</name>
         <field>Opt_Out_Geo__c</field>
         <idlookup>N</idlookup>
         <type>Boolean</type>
         <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Oldest Outstanding Invoice Due Date</name>
-        <field>Oldest_Outstanding_Invoice_Date__c</field>
-        <idlookup>N</idlookup>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
         <currency />
         <decimal />
         <group />
@@ -3303,48 +3275,6 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>Total Invoiced</name>
-        <field>Total_Invoiced__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Total Invoiced (Paid)</name>
-        <field>Total_Invoiced_Paid__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Total Invoiced (Outstanding)</name>
-        <field>Total_Invoiced_Outstanding__c</field>
-        <idlookup>N</idlookup>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>0</length>
-        <precision>18</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
         <name>Number of Licenses (All Child Accounts)</name>
         <field>Number_of_Licenses_All_Child_Accounts__c</field>
         <idlookup>N</idlookup>
@@ -4467,11 +4397,6 @@
         <update>Y</update>
       </value>
       <value>
-        <name>oldest_outstanding_invoice_date__c</name>
-        <rename>Oldest Outstanding Invoice Due Date</rename>
-        <update>Y</update>
-      </value>
-      <value>
         <name>products_purchased__c</name>
         <rename>Products Purchased (This Account)</rename>
         <update>Y</update>
@@ -4612,21 +4537,6 @@
         <update>Y</update>
       </value>
       <value>
-        <name>total_invoiced_paid__c</name>
-        <rename>Total Invoiced (Paid)</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>total_invoiced__c</name>
-        <rename>Total Invoiced</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>total_invoiced_outstanding__c</name>
-        <rename>Total Invoiced (Outstanding)</rename>
-        <update>Y</update>
-      </value>
-      <value>
         <name>territory__c</name>
         <rename>Territory</rename>
         <update>Y</update>
@@ -4634,11 +4544,6 @@
       <value>
         <name>tedd_employees__c</name>
         <rename>TEDD Employees</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>next_invoice_due_date__c</name>
-        <rename>Next Invoice Due Date</rename>
         <update>Y</update>
       </value>
       <value>

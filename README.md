@@ -1,42 +1,44 @@
-[![pipeline status](https://gitlab.com/gitlab-org/bizops/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/bizops/commits/master)
+[![pipeline status](https://gitlab.com/gitlab-org/meltano/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/meltano/commits/master)
+
+[Meeting Agenda](https://docs.google.com/document/d/1nayKquFLL8DN3h8mnLo3pVZsEKyPcBgQm2mqc5GggPA)
 
 # Meltano
 
 Meltano is a convention-over-configuration framework for analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
 
-Meltano stands for the [steps of the data engineering life-cycle](#data-engineering-lifecycle): Model, Extract, Load, Transform, Analyze, Notebooks, and Orchestrate.
+Meltano stands for the [steps of the data engineering life-cycle](#data-engineering-lifecycle): Model, Extract, Load, Transform, Analyze, Notebook, and Orchestrate.
 
 ## Principles
 
-We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations. So BizOps provides broad, democratized access to detailed operational metrics, thereby driving better decisions and shortening decision cycle time across the entire enterprise.
+We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations. So Meltano provides broad, democratized access to detailed operational metrics, thereby driving better decisions and shortening decision cycle time across the entire enterprise.
 
-We further believe that the information a business uses to make decisions must come from all parts of that business. So BizOps joins data from multiple systems used by Sales, Marketing, Product and others, thereby providing a comprehensive view of the relationship between business activities, associated costs, and customer long-term value.
+In addition, believe that the information a business uses to make decisions must come from all parts of that business. Meltano joins data from multiple systems used by Sales, Marketing, Product and others, thereby providing a comprehensive view of the relationship between business activities, associated costs, and customer long-term value.
 
 ## Approach
 
-### BizOps is a product within GitLab.
+### Meltano is a product within GitLab.
 For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers. There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer lifecycle.
 
-### BizOps is open core and built upon open source tools.
-Open core within GitLab provides the broadest possible access to core BizOps features while allowing GitLab to generate revenue with features critical to large enterprises. Building on an open source toolset also provides collaboration opportunities to improve tooling, establish best practices, and move more quickly.
+### Meltano is open core and built upon open source tools.
+Open core within GitLab provides the broadest possible access to core Meltano features while allowing GitLab to generate revenue with features critical to large enterprises. Building on an open source toolset also provides collaboration opportunities to improve tooling, establish best practices, and move more quickly.
 
-### BizOps is BI as code.
-BizOps uses GitLab CI/CD to setup and maintain its stack, so software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews. Automated management of the BI environment means it is easy to make alterations, re-deploy in the event of an issue or outage, as well as provision new environments for different uses like a staging server.
+### Meltano is BI as code.
+Meltano uses GitLab CI/CD to setup and maintain its stack, so software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews. Automated management of the BI environment means it is easy to make alterations, re-deploy in the event of an issue or outage, as well as provision new environments for different uses like a staging server.
 
-### BizOps works for GitLab first.
-We are building BizOps to solve a problem that we share with all other software companies - how to acquire the highest-value customers at the lowest cost of acquisition?  We are solving this problem for ourselves first, incorporating what we learn along the way into a product that delivers practical and quantifiable value to our customers.
+### Meltano works for GitLab first.
+We are building Meltano to solve a problem that we share with all other software companies - how to acquire the highest-value customers at the lowest cost of acquisition?  We are solving this problem for ourselves first, incorporating what we learn along the way into a product that delivers practical and quantifiable value to our customers.
 
 ## Roadmap
 
 1. MVC
-  * [Horizontal slice of ELT sources](https://gitlab.com/bizops/bizops/issues?scope=all&utf8=✓&state=opened&label_name[]=elt): Salesforce, Marketo, NetSuite, Zuora, etc.
-  * [Data Pipeline](https://gitlab.com/bizops/bizops/issues?label_name[]=pipeline): container, CI pipeline, review apps
+  * [Horizontal slice of ELT sources](https://gitlab.com/meltano/meltano/issues?scope=all&utf8=✓&state=opened&label_name[]=elt): Salesforce, Marketo, NetSuite, Zuora, etc.
+  * [Data Pipeline](https://gitlab.com/meltano/meltano/issues?label_name[]=pipeline): container, CI pipeline, review apps
 2. Data Model and Visualization
-  * [Common Data Model](https://gitlab.com/bizops/bizops/issues?label_name[]=data-model): Conventions for common table and field names
-  * [Field Mapping](https://gitlab.com/bizops/bizops/issues/121): Mapping of user fields to common data model, if required
-  * [Visualization Sample](https://gitlab.com/bizops/bizops/issues/122): Documentation and samples for connecting a visualization engine
-  * [JupyterHub deployment](https://gitlab.com/bizops/jupyter-hub): Easily deploy JupyterHub for data exploration
-3. [Ease of use & Automation](https://gitlab.com/bizops/bizops/issues?label_name%5B%5D=ease-of-use)
+  * [Common Data Model](https://gitlab.com/meltano/meltano/issues?label_name[]=data-model): Conventions for common table and field names (but it allows you to make it organization specific)
+  * [Field Mapping](https://gitlab.com/meltano/meltano/issues/121): Mapping of user fields to common data model, if required
+  * [Visualization Sample](https://gitlab.com/meltano/meltano/issues/122): Documentation and samples for connecting a visualization engine
+  * [JupyterHub deployment](https://gitlab.com/meltano/jupyter-hub): Easily deploy JupyterHub for data exploration
+3. [Ease of use & Automation](https://gitlab.com/meltano/meltano/issues?label_name%5B%5D=ease-of-use)
   * Seamless handle some schema changes, like a field rename
   * Match user fields to common data model, without intervention
 
@@ -46,14 +48,14 @@ This should be a replacement for other ELT & Data Integration tools: [Boomi](htt
 
 ## Data Engineering Lifecycle
 
-| Stage     | BizOps selected | OSS considered but not selected | Proprietary alternatives |
+| Stage     | Meltano selected | OSS considered but not selected | Proprietary alternatives |
 | --------- | ------------ | -------------- | --------------------- |
 | Model | [dbt](https://blog.fishtownanalytics.com/how-do-you-decide-what-to-model-in-dbt-vs-lookml-dca4c79e2304) | Python scripts | [LookML](https://looker.com/platform/data-modeling), [Matillion](http://www.stephenlevin.co/data-modeling-layer-startup-analytics-dbt-vs-matillion-vs-lookml/) |
 | Extract   | [Singer](https://www.singer.io/) Tap, Python scripts | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
 | Load      | [Singer](https://www.singer.io/) Target, Python scripts | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
 | Transform | [dbt](https://www.getdbt.com/), Python scripts | Stored procedures, [Pentaho DI](http://www.pentaho.com/product/data-integration) | [Alooma](https://www.alooma.com/) |  
 | Analyze | [Superset](https://superset.incubator.apache.org/) | [D3.js](https://d3js.org/) | [Looker](https://looker.com/), [Periscope](https://www.periscopedata.com/) |
-| Notebooks | [JupyterHub](https://github.com/jupyterhub/jupyterhub) | [Metabase](https://www.metabase.com/) | [Nurch](https://www.nurtch.com/), [Datadog notebooks](https://www.datadoghq.com/blog/data-driven-notebooks/) |
+| Notebooks | [JupyterHub](https://github.com/jupyterhub/jupyterhub) | [Metabase](https://www.metabase.com/) | [Nurtch](https://www.nurtch.com/), [Datadog notebooks](https://www.datadoghq.com/blog/data-driven-notebooks/) |
 | Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | [Fivetran](https://fivetran.com/) |
 
 For now we use [PostgreSQL](https://www.postgresql.org/) as the warehouse but we're open to support others such as [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax), [Redshift](https://aws.amazon.com/redshift/), and [Snowflake](https://www.snowflake.net/).
@@ -82,34 +84,41 @@ In the future, we plan to expand support to other areas of an organization like 
 
 ## Data sources
 
-To achieve this, we bring data from all [data sources](data_sources.md) to a [common data model](doc/data_model.md) so it can be used easily and consistently across tools and teams. For example something as simple as unique customer ID, product or feature names/codes.
+To achieve this, we bring data from all [data sources](data_sources.md) to a [common data model](doc/data_model.md) (that can and likely will be different for every organization) so it can be used easily and consistently across tools and teams. For example something as simple as unique customer ID, product or feature names/codes.
+
+### Personally Identifiable Information
+
+It is important to be cognizant of the personally identifiable information which is extracted into the data warehouse. Warehouses are at their best when they are leveraged across many parts of the organization, and therefore it is hard to predict which users will ultimately have access and how each user will treat the data.
+
+We recommend the following best practices:
+1. Avoid extracting any personally identifable information in the first place. For example, consider extracting only company names from your CRM and avoid extracting individual contact details.
+1. If it is important to collect data about individual users, for example to learn more about user behavior, pseudonymize the data prior to writing it into the data warehouse.
+1. Consider how you are persisting any PII data, and it's impact on compliance requirements like GDPR.
 
 ## Tools
 
 We want the tools to be open source so we can ship this as a product.
 
-1. Extract and Load (EL): Combination of [Pentaho Data Integration](http://www.pentaho.com/product/data-integration) and python scripts, although will consider [Singer](https://www.singer.io/) once it supports Salesforce and PostgreSQL.
-  * Pentaho DI is based on the open-source [Talend](https://www.talend.com/products/data-integration/) engine, but utilizes XML for easier configuration.
-  * Current plans include creating separate Extractors and Loaders that can be plugged together much like Unix command line tools.
+1. Extract and Load (EL): Python scripts, [Singer taps](https://www.singer.io/).
 1. Transformation: [dbt](https://docs.getdbt.com/) to handle transforming the raw data into a normalized data model within PG.
-1. Warehouse: Any SQL based data warehouse. We recommend [PostgeSQL](https://www.postgresql.org/) and include it in the bizops pipeline. Postgres cloud services like [Google Cloud SQL](https://cloud.google.com/sql/) are also supported, for increased scalability and durability.
-1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) for scheduling, running, and monitoring the ELT jobs. In the future, [DAG](https://gitlab.com/gitlab-org/gitlab-ce/issues/41947) support will be added. Non-GitLab alternatives are [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi).
-1. Visualization/Dashboard: BizOps is compatible with nearly all visualization engines, due to the SQL based data store. For example commercial products like [Looker](https://looker.com/) or [Tableau](https://www.tableau.com/), as well as open-source products like [Superset](https://github.com/airbnb/superset) or [Metabase](https://metabase.com) can be used.
+1. Warehouse: Any SQL based data warehouse. We recommend [PostgeSQL](https://www.postgresql.org/) and include it in the Meltano pipeline. Postgres cloud services like [Google Cloud SQL](https://cloud.google.com/sql/) are also supported, for increased scalability and durability.
+1. Orchestration/Monitoring: [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) for scheduling, running, and monitoring the ELT jobs. In the future, [DAG](https://gitlab.com/gitlab-org/gitlab-ce/issues/41947) support will be added. Non-GitLab alternatives are [Airflow](https://airflow.incubator.apache.org) or [Luigi](https://github.com/spotify/luigi). GitLab CI can handle 1000's of distributed runners to run for example Python scripts.
+1. Visualization/Dashboard: Meltano is compatible with nearly all visualization engines, due to the SQL based data store. For example commercial products like [Looker](https://looker.com/) or [Tableau](https://www.tableau.com/), as well as open-source products like [Superset](https://github.com/airbnb/superset) or [Metabase](https://metabase.com) can be used.
 
 ## How to use
 > Notes:
 > * Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields.
 > * The sample Zuora python scripts have been written to support GitLab's Zuora implementation. This includes a workaround to handle some subscriptions that should have been created as a single subscription.
 
-The BizOps product consists three key components:
+The Meltano product consists three key components:
 
 1. A SQL based data store, for example [PostgreSQL](https://www.postgresql.org/) or [Cloud SQL](https://cloud.google.com/sql/). We recommend using Postgres for [review apps](https://about.gitlab.com/features/review-apps/) and a more durable and scalable service for production.
-1. This project, [`bizops`](https://gitlab.com/bizops/bizops), which contains the ELT scripts and CI jobs to refresh the data warehouse from the [configured sources](doc/data_sources.md). Typically configured to run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
-1. The [`bizops-elt`](https://gitlab.com/bizops/bizops-elt) container, which includes the necessary dependencies for the ELT scripts. Used as the base image for the CI jobs.
+1. This project, [`meltano`](https://gitlab.com/meltano/meltano), which contains the ELT scripts and CI jobs to refresh the data warehouse from the [configured sources](doc/data_sources.md). Typically configured to run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
+1. The [`meltano-elt`](https://gitlab.com/meltano/meltano-elt) container, which includes the necessary dependencies for the ELT scripts. Used as the base image for the CI jobs.
 
 As development progresses, additional documentation on getting started along with example configuration and CI scripts will become available.
 
-It is expected that the BizOps project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an individual application at the top level of the BizOps project for inclusion/exclusion. 
+It is expected that the Meltano project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an individual application at the top level of the Meltano project for inclusion/exclusion. 
 
 ### Local environment
 
@@ -139,7 +148,7 @@ A docker-compose configuration is also provided to start:
   - a PostgreSQL instance (bizops-dw) for the data warehousing needs
   - a Python3 container with the 
   
-These containers will use environment variables defined in the BizOps project.
+These containers will use environment variables defined in the Meltano project.
 To run:
 
 ```
@@ -168,7 +177,7 @@ For example take a sample Zuora ELT job:
 ```yaml
 zuora:
   stage: extract
-  image: registry.gitlab.com/bizops/bizops-elt/extract:latest
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
@@ -182,7 +191,7 @@ The first thing to do would to convert this into an anchor, and preface the job 
 ```yaml
 .zuora: &zuora
   stage: extract
-  image: registry.gitlab.com/bizops/bizops-elt/extract:latest
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
@@ -266,7 +275,7 @@ Finally, we use Python to generate SFDC accounts and to upload the host records 
 
 #### Managing Roles
 
-All role definitions are in [/elt/config/pg_roles/](https://gitlab.com/bizops/bizops/tree/master/elt/config)
+All role definitions are in [/elt/config/pg_roles/](https://gitlab.com/meltano/meltano/tree/master/elt/config)
 
 Ideally we'd be using [pgbedrock](https://github.com/Squarespace/pgbedrock) to manage users. Since internally we are using CloudSQL, we're not able to access the superuser role which pgbedrock requires. However, the YAML format of the role definitions is convenient for reasoning about privileges and it's possible the tool could evolve to validate privileges against a given spec, so we are using the pgbedrock definition syntax to define roles here. 
 
@@ -275,11 +284,15 @@ The `readonly` role was generated using the following commands:
 ```sql
 CREATE ROLE readonly;
 
-GRANT USAGE on SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
 
-GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
 
-GRANT INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER on ALL TABLES IN schema sandbox to readonly;
+-- Ensures all future tables are available to the role
+ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora 
+  GRANT SELECT ON TABLES TO readonly;
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA sandbox TO readonly;
 
 ```
 
@@ -289,9 +302,15 @@ The `analytics` role was generated using the following commands:
 
 CREATE ROLE analytics;
 
-GRANT USAGE on SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
 
-GRANT ALL PRIVILEGES on ALL TABLES IN SCHEMA analytics, customers, gitlab, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+
+-- Ensures all future tables are available to the role
+ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora 
+  GRANT SELECT ON TABLES TO analytics;
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA analytics, public, sandbox TO analytics;
 
 ``` 
 
@@ -303,9 +322,18 @@ CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE metarole;
 
 New readonly and analytics users are then given instructions via Google Drive on how to connect their computer to the CloudSQL Proxy and on how to change their password once they login.
 
-By default, roles cannot login to the main production instance of the data warehouse. When the role is created, an admin will change the login permission and then have the user login and change their password on the production instance. Then the user will login to the dev instance and set the password the same. The admin will then set the role on the production instance to NOLOGIN. This will ensure at the next sync that the roles are properly set. 
+By default, roles can login to the main production instance of the data warehouse. Any password updates will propagate to `dev-bizops` and review instances when they are next refreshed.
 
-# Contributing to BizOps
+Both readonly and analytics roles are not able to alter data in load only schemas. Currently, analytics, public, and sandbox are the only schemas which the `analytics` role can fully manipulate. Both roles have the ability to select from all schemas and tables. 
+
+### Accessing peered VPCs
+
+Some of the GitLab specific ELTs connect to databases which are in peered GCP projects, such as the usage ping. To allow connections, a few actions have been taken:
+1. The Kubernetes cluster where the runner executes has been setup to use [IP aliasing](https://cloud.google.com/kubernetes-engine/docs/how-to/ip-aliases), so each pod gets a real routable IP within GCP.
+1. A [VPC peering relationship](https://cloud.google.com/vpc/docs/vpc-peering) has been established between the two projects and their networks.
+1. A firewall rule has been created in the upstream project to allow access from the runner Kubernetes cluster's pod subnet.
+
+# Contributing to Meltano
 
 We welcome contributions and improvements, please see the [contribution guidelines](CONTRIBUTING.md)
 

@@ -17,6 +17,8 @@ Pyrseas = "*"
 "psycopg2" = "==2.7.4"
 "ae7a3bd" = {path = "./elt/shared_modules", editable = true}
 "d32390c" = {path = "./elt/shared_modules", editable = true}
+lxml = "*"
+zeep = "*"
 
 [dev-packages]
 "flake8" = "*"

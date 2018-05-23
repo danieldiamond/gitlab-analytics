@@ -7,12 +7,15 @@ readonly:
                 - analytics
                 - customers
                 - gitlab
+                - historical
+                - lever
                 - license
                 - mkto
                 - public
                 - sandbox
                 - sfdc
                 - version
+                - zendesk
                 - zuora
             write:
                 - sandbox
@@ -21,12 +24,15 @@ readonly:
                 - analytics.*
                 - customers.*
                 - gitlab.*
+                - historical.*
+                - lever.*
                 - license.*
                 - mkto.*
                 - public.*
                 - sandbox.*
                 - sfdc.*
                 - version.*
+                - zendesk.*
                 - zuora.*
             write:
                 - sandbox.*

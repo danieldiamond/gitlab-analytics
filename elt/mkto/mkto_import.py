@@ -13,6 +13,7 @@ def import_csv(args):
         options = {
             'table_schema': args.schema,
             'table_name': config_table_name(args),
+            'primary_key': config_primary_key(args),
         }
 
         write_to_db_from_csv(db, args.input_file, **options)
