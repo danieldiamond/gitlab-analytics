@@ -43,11 +43,11 @@ All GitLab employees have access to our Looker instance. We do not use Google Au
 [Looker](https://docs.looker.com) is a business intelligence software and big data analytics platform that helps users explore, analyze and share real-time business analytics easily.
 
 #### Training Sessions
-[Looker Codev Training 1](https://drive.google.com/file/d/1sKHbARpIfHKGpTChuqZSagnfh8Vt7_ml/view?usp=sharing)
-[Looker Codev Training 2](https://drive.google.com/file/d/1wNM-xnkDOBXce-M0cX16pkiFjsf3woma/view?usp=sharing)
-[Looker Codev Training 3](https://drive.google.com/file/d/1bKBtrCGxVRwXpYuYMXoD4XAqM1lzgdqL/view?usp=sharing)
-[Looker Codev Training 4](https://drive.google.com/file/d/1xZbXVG85tA388r57QpRPR4-eLi54ixhL/view?usp=sharing)
-[Looker Business User Training](https://drive.google.com/file/d/19RzwdtRDNWvDL7W81_CfjX6sWDo_nP2w/view?usp=sharing)
+* [Looker Codev Training 1](https://drive.google.com/file/d/1sKHbARpIfHKGpTChuqZSagnfh8Vt7_ml/view?usp=sharing)
+* [Looker Codev Training 2](https://drive.google.com/file/d/1wNM-xnkDOBXce-M0cX16pkiFjsf3woma/view?usp=sharing)
+* [Looker Codev Training 3](https://drive.google.com/file/d/1bKBtrCGxVRwXpYuYMXoD4XAqM1lzgdqL/view?usp=sharing)
+* [Looker Codev Training 4](https://drive.google.com/file/d/1xZbXVG85tA388r57QpRPR4-eLi54ixhL/view?usp=sharing)
+* [Looker Business User Training](https://drive.google.com/file/d/19RzwdtRDNWvDL7W81_CfjX6sWDo_nP2w/view?usp=sharing)
 
 #### Core Looker Definitions & Structure
 
