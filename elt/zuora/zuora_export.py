@@ -13,7 +13,7 @@ from requests.auth import HTTPBasicAuth
 from elt.job import Job, State
 from elt.utils import compose, slugify, setup_db
 from elt.db import DB
-from elt.process import write_to_db_from_csv, create_tmp_table, update_set_stmt
+from elt.process import create_tmp_table, update_set_stmt
 from elt.schema import schema_apply
 from elt.error import Error, ExtractError
 from schema import PG_SCHEMA, describe_schema, field_column_name
@@ -116,7 +116,6 @@ def load_extract_job(job, job_id):
         job.payload['http_response'] = result
         job.payload['zuora_state'] = status
         Job.save(job)
-        time.sleep(5)
         if status == 'completed':
             # expect to only have 1 batch
             file_id = result['batches'][0]['fileId']
@@ -124,6 +123,7 @@ def load_extract_job(job, job_id):
             job.payload['file_id'] = file_id
             Job.save(job)
             break
+        time.sleep(5)
 
     return job
 
