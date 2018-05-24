@@ -51,6 +51,7 @@ SELECT o.sfdc_id AS opportunity_id
        , COALESCE(i.product, 'Unknown') as opportunity_product
        , COALESCE(i.period, 'Unknown') as billing_period
        , COALESCE(o.name, 'Unknown') as opportunity_name
+       , o.ownerid
        , i.qty as quantity
        , i.iacv
        , i.renewal_acv
