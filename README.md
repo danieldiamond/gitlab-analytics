@@ -273,6 +273,19 @@ We then take all of the cleaned records and use dbt to make multiple transformat
 
 Finally, we use Python to generate SFDC accounts and to upload the host records to the appropriate SFDC account. We also generate any accounts necessary and update any SFDC accounts with DiscoverOrg and Clearbit data if any of the relevant fields are not already present in SFDC.
 
+#### Updating SFDC Extract
+As of 2018-05-24:
+
+If removing a field from the extract, delete the fields from the `.ktr` file, similar to what was done in [this commit](https://gitlab.com/meltano/meltano/commit/0a76c160816d2505105eb4c2642b6b82ca9b1350).
+
+If adding a field, take the following steps:
+
+* Add to the appropriate `.ktr` file for the given object, similar to what was done [here](https://gitlab.com/meltano/meltano/commit/6b89bb592ee2389f91ebcb86102028ab87bb77d9)
+* Add the column to the appropriate table in the database (requires access to `gitlab` user)
+* Update all of the objects from SFDC because the database will have `null` for every row
+  * Use Pentaho Data Integration locally to run the job based on query condition of `Your_added_field__c != null`
+* Check for any snapshots of that table, if they exist, add the column to the tables as well.
+
 #### Managing Roles
 
 All role definitions are in [/elt/config/pg_roles/](https://gitlab.com/meltano/meltano/tree/master/elt/config)
