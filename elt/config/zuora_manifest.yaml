@@ -7,7 +7,7 @@ account:
   balance: numeric
   batch: text
   billcycleday: integer
-  billtocontact: text
+  billtocontactid: text
   communicationprofileid: text
   conversionrate__c: text
   createdbyid: text
@@ -37,6 +37,7 @@ account:
   taxexemptcertificatetype: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  account_id_mapping_key: id
 accountingcode:
   category: text
   createdbyid: text
@@ -50,6 +51,7 @@ accountingcode:
   type: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  accountingcode_id_mapping_key: id
 accountingperiod:
   createdbyid: text
   createddate: timestamp without time zone
@@ -61,50 +63,7 @@ accountingperiod:
   status: text
   updatedbyid: text
   updateddate: timestamp without time zone
-acct_churn:
-  curr_end_date: date
-  curr_start_date: date
-  current_arr: numeric
-  current_mrr: numeric
-  id: character varying
-  name: text
-  year_ago_arr: numeric
-  year_ago_end_date: date
-  year_ago_mrr: numeric
-  year_ago_start_date: date
-acct_churn_2017:
-  curr_end_date: date
-  curr_start_date: date
-  current_arr: numeric
-  current_mrr: numeric
-  id: character varying
-  name: text
-  year_ago_arr: numeric
-  year_ago_end_date: date
-  year_ago_mrr: numeric
-  year_ago_start_date: date
-acct_churn_feb2018:
-  curr_end_date: date
-  curr_start_date: date
-  current_arr: numeric
-  current_mrr: numeric
-  id: character varying
-  name: text
-  year_ago_arr: numeric
-  year_ago_end_date: date
-  year_ago_mrr: numeric
-  year_ago_start_date: date
-acct_churn_jan2018:
-  curr_end_date: date
-  curr_start_date: date
-  current_arr: numeric
-  current_mrr: numeric
-  id: character varying
-  name: text
-  year_ago_arr: numeric
-  year_ago_end_date: date
-  year_ago_mrr: numeric
-  year_ago_start_date: date
+  accountingperiod_id_mapping_key: id
 amendment:
   autorenew: boolean
   code: text
@@ -127,96 +86,7 @@ amendment:
   type: text
   updatedbyid: text
   updateddate: timestamp without time zone
-churn_discounts:
-  curr_discount_amount: numeric
-  curr_discount_multiplier: numeric
-  sub_name: text
-  year_ago_discount_amount: numeric
-  year_ago_discount_multiplier: numeric
-churn_final:
-  accountname: character varying
-  change: numeric
-  curr_end_date: date
-  curr_start_date: date
-  current_arr: numeric
-  current_mrr: numeric
-  current_total: numeric
-  current_trueup: numeric
-  subscriptionname: text
-  year_ago_arr: numeric
-  year_ago_end_date: date
-  year_ago_mrr: numeric
-  year_ago_start_date: date
-  year_ago_total: numeric
-  year_ago_trueup: numeric
-churn_final_acct:
-  change: numeric
-  curr_end_date: date
-  curr_start_date: date
-  current_arr: numeric
-  current_mrr: numeric
-  current_total: numeric
-  current_trueup: numeric
-  id: character varying
-  name: text
-  year_ago_arr: numeric
-  year_ago_end_date: date
-  year_ago_mrr: numeric
-  year_ago_start_date: date
-  year_ago_total: numeric
-  year_ago_trueup: numeric
-churn_final_acct_2017:
-  change: numeric
-  curr_end_date: date
-  curr_start_date: date
-  current_arr: numeric
-  current_mrr: numeric
-  current_total: numeric
-  current_trueup: numeric
-  id: character varying
-  name: text
-  year_ago_arr: numeric
-  year_ago_end_date: date
-  year_ago_mrr: numeric
-  year_ago_start_date: date
-  year_ago_total: numeric
-  year_ago_trueup: numeric
-churn_trueup:
-  current_trueup: numeric
-  current_trueup_new: numeric
-  subscriptionname: text
-  year_ago_trueup: numeric
-  year_ago_trueup_new: numeric
-churn_trueup_acct:
-  current_trueup: numeric
-  current_trueup_new: numeric
-  id: character varying
-  year_ago_trueup: numeric
-  year_ago_trueup_new: numeric
-churn_trueup_acct_2017:
-  current_trueup: numeric
-  current_trueup_new: numeric
-  id: character varying
-  year_ago_trueup: numeric
-  year_ago_trueup_new: numeric
-churn_trueup_acct_feb2018:
-  current_trueup: numeric
-  current_trueup_new: numeric
-  id: character varying
-  year_ago_trueup: numeric
-  year_ago_trueup_new: numeric
-churn_trueup_acct_jan2018:
-  current_trueup: numeric
-  current_trueup_new: numeric
-  id: character varying
-  year_ago_trueup: numeric
-  year_ago_trueup_new: numeric
-cohort_mrr:
-  account_id: character varying
-  current_mrr: numeric
-  min_start_date: date
-  period: date
-  sub_start_date: date
+  amendment_id_mapping_key: id
 communicationprofile:
   createdbyid: text
   createddate: timestamp without time zone
@@ -225,6 +95,7 @@ communicationprofile:
   profilename: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  communicationprofile_id_mapping_key: id
 contact:
   accountid: text
   address1: text
@@ -252,6 +123,7 @@ contact:
   updateddate: timestamp without time zone
   workemail: text
   workphone: text
+  contact_id_mapping_key: id
 creditbalanceadjustment:
   accountid: text
   accountingcode: text
@@ -280,6 +152,7 @@ creditbalanceadjustment:
   type: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  creditbalanceadjustment_id_mapping_key: id
 invoice:
   accountid: text
   adjustmentamount: numeric
@@ -320,6 +193,7 @@ invoice:
   transferredtoaccounting: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  invoice_id_mapping_key: id
 invoiceadjustment:
   accountid: character varying
   accountingcode: character varying
@@ -340,6 +214,7 @@ invoiceadjustment:
   type: character varying
   updatedbyid: character varying
   updateddate: timestamp without time zone
+  invoiceadjustment_id_mapping_key: id
 invoiceitem:
   accountingcode: character varying
   accountingperiodid: character varying
@@ -375,6 +250,7 @@ invoiceitem:
   uom: character varying
   updatedbyid: character varying
   updateddate: timestamp without time zone
+  invoiceitem_id_mapping_key: id
 invoiceitemadjustment:
   accountid: text
   accountingcode: text
@@ -408,6 +284,7 @@ invoiceitemadjustment:
   type: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  invoiceitemadjustment_id_mapping_key: id
 invoicepayment:
   amount: numeric
   createdbyid: text
@@ -425,6 +302,7 @@ invoicepayment:
   refundamount: numeric
   updatedbyid: text
   updateddate: timestamp without time zone
+  invoicepayment_id_mapping_key: id
 payment:
   accountid: text
   accountingcode: text
@@ -467,6 +345,7 @@ payment:
   type: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  payment_id_mapping_key: id
 product:
   allowfeaturechanges: text
   category: text
@@ -480,6 +359,7 @@ product:
   sku: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  product_id_mapping_key: id
 productrateplan:
   createdbyid: text
   createddate: timestamp without time zone
@@ -491,6 +371,7 @@ productrateplan:
   productid: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  productrateplan_id_mapping_key: id
 productrateplancharge:
   accountingcode: text
   applydiscountto: text
@@ -535,6 +416,7 @@ productrateplancharge:
   uptoperiods: integer
   usediscountspecificaccountingcode: boolean
   usetenantdefaultforpricechange: boolean
+  productrateplancharge_id_mapping_key: id
 productrateplanchargetier:
   active: boolean
   createdbyid: text
@@ -553,6 +435,7 @@ productrateplanchargetier:
   tier: integer
   updatedbyid: text
   updateddate: timestamp without time zone
+  productrateplanchargetier_id_mapping_key: id
 rateplan:
   amendmentid: text
   amendmenttype: text
@@ -564,6 +447,7 @@ rateplan:
   subscriptionid: character varying
   updatedbyid: text
   updateddate: timestamp without time zone
+  rateplan_id_mapping_key: id
 rateplancharge:
   accountingcode: text
   applydiscountto: text
@@ -625,6 +509,7 @@ rateplancharge:
   uptoperiods: integer
   uptoperiodstype: text
   version: integer
+  rateplancharge_id_mapping_key: id
 rateplanchargetier:
   createdbyid: text
   createddate: timestamp without time zone
@@ -642,6 +527,7 @@ rateplanchargetier:
   tier: integer
   updatedbyid: text
   updateddate: timestamp without time zone
+  rateplanchargetier_id_mapping_key: id
 refund:
   accountid: text
   accountingcode: text
@@ -681,6 +567,7 @@ refund:
   type: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  refund_id_mapping_key: id
 refundinvoicepayment:
   createdbyid: text
   createddate: timestamp without time zone
@@ -698,6 +585,7 @@ refundinvoicepayment:
   refundid: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  refundinvoicepayment_id_mapping_key: id
 revenuechargesummaryitem:
   accountid: text
   accountingperiodid: text
@@ -720,6 +608,7 @@ revenuechargesummaryitem:
   subscriptionid: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  revenuechargesummaryitem_id_mapping_key: id
 revenueeventitem:
   accountid: text
   accountingperiodid: text
@@ -749,6 +638,7 @@ revenueeventitem:
   subscriptionid: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  revenueeventitem_id_mapping_key: id
 revenueeventiteminvoiceitem:
   accountid: text
   accountingperiodid: text
@@ -780,6 +670,7 @@ revenueeventiteminvoiceitem:
   subscriptionid: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  revenueeventiteminvoiceitem_id_mapping_key: id
 revenueeventiteminvoiceitemadjustment:
   accountid: text
   accountingperiodid: text
@@ -812,6 +703,7 @@ revenueeventiteminvoiceitemadjustment:
   subscriptionid: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  revenueeventiteminvoiceitemadjustment_id_mapping_key: id
 revenuescheduleinvoiceitem:
   amount: numeric
   createdbyid: text
@@ -833,6 +725,7 @@ revenuescheduleinvoiceitem:
   undistributedamount: numeric
   updatedbyid: text
   updateddate: timestamp without time zone
+  revenuescheduleinvoiceitem_id_mapping_key: id
 revenuescheduleinvoiceitemadjustment:
   amount: numeric
   id: text
@@ -840,6 +733,7 @@ revenuescheduleinvoiceitemadjustment:
   number: text
   transactionnumber: text
   updateddate: timestamp without time zone
+  revenuescheduleinvoiceitemadjustment_id_mapping_key: id
 revenuescheduleitem:
   accountid: text
   accountingperiodid: text
@@ -872,6 +766,7 @@ revenuescheduleitem:
   subscriptionid: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  revenuescheduleitem_id_mapping_key: id
 revenuescheduleiteminvoiceitem:
   accountid: text
   accountingperiodid: text
@@ -906,6 +801,7 @@ revenuescheduleiteminvoiceitem:
   subscriptionid: text
   updatedbyid: text
   updateddate: timestamp without time zone
+  revenuescheduleiteminvoiceitem_id_mapping_key: id
 revenuescheduleiteminvoiceitemadjustment:
   accountid: text
   accountingperiodid: text
@@ -941,17 +837,7 @@ revenuescheduleiteminvoiceitemadjustment:
   subscriptionid: text
   updatedbyid: text
   updateddate: timestamp without time zone
-sub_churn:
-  accountname: character varying
-  curr_end_date: date
-  curr_start_date: date
-  current_arr: numeric
-  current_mrr: numeric
-  subscriptionname: text
-  year_ago_arr: numeric
-  year_ago_end_date: date
-  year_ago_mrr: numeric
-  year_ago_start_date: date
+  revenuescheduleiteminvoiceitemadjustment_id_mapping_key: id
 subscription:
   accountid: text
   autorenew: boolean
@@ -1001,95 +887,4 @@ subscription:
   updatedbyid: text
   updateddate: timestamp without time zone
   version: integer
-user:
-  aboutme: text
-  accountid: text
-  alias: text
-  badgetext: text
-  callcenterid: text
-  can_change_bdr_on_lead__c: boolean
-  can_change_lead_or_contact_owner__c: boolean
-  can_change_sdr_on_account__c: boolean
-  city: text
-  communitynickname: text
-  companyname: text
-  contactid: text
-  country: text
-  countrycode: text
-  createdbyid: text
-  createddate: timestamp without time zone
-  defaultgroupnotificationfrequency: text
-  delegatedapproverid: text
-  department: text
-  digestfrequency: text
-  division: text
-  email: text
-  emailencodingkey: text
-  emailpreferencesautobcc: boolean
-  emailpreferencesautobccstayintouch: boolean
-  emailpreferencesstayintouchreminder: boolean
-  employeenumber: text
-  extension: text
-  fax: text
-  federationidentifier: text
-  finance__c: text
-  firstname: text
-  forecastenabled: boolean
-  geocodeaccuracy: text
-  id: text
-  isactive: boolean
-  isextindicatorvisible: boolean
-  isportalenabled: boolean
-  isprmsuperuser: boolean
-  isprofilephotoactive: boolean
-  languagelocalekey: text
-  lastlogindate: timestamp without time zone
-  lastmodifiedbyid: text
-  lastmodifieddate: timestamp without time zone
-  lastname: text
-  lastpasswordchangedate: timestamp without time zone
-  lastreferenceddate: timestamp without time zone
-  lastvieweddate: timestamp without time zone
-  latitude: text
-  localesidkey: text
-  longitude: text
-  managerid: text
-  middlename: text
-  mkto_si__iscachinganonwebactivitylist__c: boolean
-  mkto_si__iscachingbestbets__c: boolean
-  mkto_si__iscachingemailactivitylist__c: boolean
-  mkto_si__iscachinggroupedwebactivitylist__c: boolean
-  mkto_si__iscachinginterestingmomentslist__c: boolean
-  mkto_si__iscachingscoringlist__c: boolean
-  mkto_si__iscachingstreamlist__c: boolean
-  mkto_si__iscachingwatchlist__c: boolean
-  mkto_si__iscachingwebactivitylist__c: boolean
-  mkto_si__sales_insight_counter__c: numeric
-  mobilephone: text
-  name: text
-  offlinepdatrialexpirationdate: date
-  offlinetrialexpirationdate: date
-  phone: text
-  portalrole: text
-  postalcode: text
-  profileid: text
-  receivesadmininfoemails: boolean
-  receivesinfoemails: boolean
-  senderemail: text
-  sendername: text
-  signature: text
-  start_date__c: date
-  state: text
-  statecode: text
-  stayintouchnote: text
-  stayintouchsignature: text
-  stayintouchsubject: text
-  street: text
-  suffix: text
-  systemmodstamp: timestamp without time zone
-  team__c: text
-  timezonesidkey: text
-  title: text
-  username: text
-  userroleid: text
-  usertype: text
+  subscription_id_mapping_key: id
