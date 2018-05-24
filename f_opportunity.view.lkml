@@ -14,6 +14,12 @@ view: f_opportunity {
     sql: ${TABLE}.acv ;;
   }
 
+  dimension: ownerid {
+    hidden: yes
+    type: string
+    sql:${TABLE}.ownerid ;;
+  }
+
   dimension: billing_period {
     type: string
     sql: ${TABLE}.billing_period ;;
@@ -263,6 +269,7 @@ view: f_opportunity {
     type: sum
     sql: ${TABLE}.renewal_acv ;;
     drill_fields: [detail*]
+    value_format_name: usd
   }
 
   measure: total_quantity {

@@ -34,31 +34,9 @@ view: dim_opportunitystage {
   }
 
   dimension: defaultprobability {
+    label: "Default Probability"
     type: number
     sql: ${TABLE}.defaultprobability ;;
-  }
-
-  dimension: description {
-    hidden: yes
-    type: string
-    sql: ${TABLE}.description ;;
-  }
-
-  dimension: forecastcategory {
-    hidden: yes
-    type: string
-    sql: ${TABLE}.forecastcategory ;;
-  }
-
-  dimension: forecastcategoryname {
-    type: string
-    sql: ${TABLE}.forecastcategoryname ;;
-  }
-
-  dimension: isactive {
-    hidden: yes
-    type: yesno
-    sql: ${TABLE}.isactive ;;
   }
 
   dimension: isclosed {
@@ -92,9 +70,16 @@ view: dim_opportunitystage {
   }
 
   dimension: masterlabel {
-    label: "Stage Name"
+    hidden: yes
     type: string
     sql: ${TABLE}.masterlabel ;;
+  }
+
+  dimension: mapped_stage {
+    full_suggestions: yes
+    label: "Stage Name"
+    type: string
+    sql: ${TABLE}.mapped_stage ;;
   }
 
   dimension: sfdc_id {
@@ -114,8 +99,4 @@ view: dim_opportunitystage {
     sql: ${TABLE}.systemmodstamp ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: [id, forecastcategoryname, apiname]
-  }
 }
