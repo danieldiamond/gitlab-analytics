@@ -181,7 +181,7 @@ sfdc_snapshot:
 
 # Stage: review 
 
-review:
+review: &review
   stage: review
   image: google/cloud-sdk:latest
   variables:
@@ -198,6 +198,13 @@ review:
     - branches
   except:
     - master
+
+review_refresh:
+  <<: *review
+  variables:
+    GIT_STRATEGY: none
+    FORCE: "true"
+  when: manual
 
 # Stage: review_stop
 
@@ -268,36 +275,70 @@ force_refresh_dev:
     return $GCP_AUTH
   }
 
+  function find_sql_instance() {
+    if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
+      return $GCP_PRODUCTION_INSTANCE_NAME
+    fi
+  
+    if auth_gcloud; then
+      INSTANCE=$(gcloud sql instances list --project "$GCP_PROJECT" | \
+                 grep "$GCP_INSTANCE_REF_SLUG" | \
+                 tail -n1 | \
+                 cut -d' ' -f1)
+      INSTANCE_EXISTS=${PIPESTATUS[1]}
+
+      if $INSTANCE_EXISTS && [ -n "$INSTANCE" ]; then
+        return "$INSTANCE"
+      fi
+    fi
+  }
+
   function set_sql_instance_name() {
     if auth_gcloud; then
-      if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
-        export GCP_INSTANCE_NAME=$GCP_PRODUCTION_INSTANCE_NAME
-      else
-        # 95 (max) - 10 (job_id) - 2 (`-`) = 83 
-        SLUG_LENGTH=$(( 83 - ${#CI_PROJECT_NAME} ))
-        export GCP_INSTANCE_REF_SLUG=$CI_PROJECT_NAME-${CI_COMMIT_REF_SLUG:0:$SLUG_LENGTH}
-        export GCP_INSTANCE_NAME=$GCP_INSTANCE_REF_SLUG-${CI_JOB_ID:0:10}
-      fi
+      # 95 (max) - 10 (job_id) - 2 (`-`) = 83 
+      SLUG_LENGTH=$(( 83 - ${#CI_PROJECT_NAME} ))
+      export GCP_INSTANCE_REF_SLUG=$CI_PROJECT_NAME-${CI_COMMIT_REF_SLUG:0:$SLUG_LENGTH}
+      export JOB_GCP_INSTANCE_NAME=$GCP_INSTANCE_REF_SLUG-${CI_JOB_ID:0:10}
+      export GCP_INSTANCE_NAME=$(find_sql_instance)
       echo "Instance name is: $GCP_INSTANCE_NAME"
     fi
+  }
+
+  function gloud_exec {
+    OPTIONS="--project \"$GCP_PROJECT\""
+    gcloud $* " $OPTIONS" |& grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | head -n1
+
+    return ${PIPESTATUS[0]}
   }
 
   function manage_review_cloudsql() {
     # Check to see if branch name equals the production EDW instance name
     if [ "$GCP_INSTANCE_NAME" = "$GCP_PRODUCTION_INSTANCE_NAME" ]; then
       echo "The branch name cannot match the production EDW instance name."
-      return 1;
+      return 1
     fi
 
     if auth_gcloud; then
-      # Delete old instances for this branch
-      echo "Cleaning up old Cloud SQL instances for this branch."
-      gcloud sql instances list --project "$GCP_PROJECT" --filter "$GCP_INSTANCE_REF_SLUG" | tail -n +2 | cut -d' ' -f1 | xargs -I % gcloud sql instances delete --project "$GCP_PROJECT" %
+      if [ -n "$GCP_INSTANCE_NAME" ]; then # instance exists
+        if [ "$FORCE" = "true" ]; then
+          # delete the old instances
+          echo "Cleaning up old Cloud SQL instances for this branch."
+          gcloud sql instances list --project "$GCP_PROJECT" --filter "$GCP_INSTANCE_REF_SLUG" | \
+          xargs -I % gcloud_exec sql instances delete % | \
+          xargs -I % gcloud_exec beta sql operations wait %
+          echo "Instances cleaned-up."
+        else
+          echo "Instance is available at $GCP_INSTANCE_NAME"
+          return 0
+        fi
+      fi
 
       # Clone new instance and wait for it
       echo "Cloning database..."
-      gcloud sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$GCP_INSTANCE_NAME" |& grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | head -n1 | xargs -I % gcloud beta sql operations wait --project "$GCP_PROJECT" % || true
+      gcloud_exec sql instances clone "$GCP_PRODUCTION_INSTANCE_NAME" "$JOB_GCP_INSTANCE_NAME" | \
+      xargs -I % gcloud_exec beta sql operations wait % || true
 
+      export GCP_INSTANCE_NAME=$JOB_GCP_INSTANCE_NAME
     fi
   }
 
@@ -325,7 +366,7 @@ force_refresh_dev:
   }
 
   function stop_cloudsqlproxy() {
-    kill -9 `pgrep cloud_sql_proxy`
+    kill -9 $(pgrep cloud_sql_proxy)
   }
 
   function refresh_dev_cloudsql() {
@@ -339,7 +380,7 @@ force_refresh_dev:
       if auth_gcloud; then
         echo "Restoring dev instance from latest successful prod backup."
         gcloud config set project "$GCP_PROJECT"
-        gcloud sql backups list --instance $GCP_INSTANCE_NAME | grep SUCCESSFUL | head -n 1 | cut -d' ' -f1 | xargs -I % gcloud sql backups restore % --restore-instance=$GCP_DEV_INSTANCE_NAME --backup-instance=$GCP_INSTANCE_NAME
+        gcloud sql backups list --instance "$GCP_INSTANCE_NAME" | grep SUCCESSFUL | head -n 1 | cut -d' ' -f1 | xargs -I % gcloud sql backups restore % --restore-instance="$GCP_DEV_INSTANCE_NAME" --backup-instance="$GCP_INSTANCE_NAME"
       fi
     else
         echo "Dev instance refresh not run: Only run between the hours of 4 AM UTC and 7 AM UTC"
