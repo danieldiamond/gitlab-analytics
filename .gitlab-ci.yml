@@ -277,7 +277,8 @@ force_refresh_dev:
 
   function find_sql_instance() {
     if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
-      return $GCP_PRODUCTION_INSTANCE_NAME
+      export GCP_INSTANCE_NAME=$GCP_PRODUCTION_INSTANCE_NAME
+      return 0
     fi
   
     if auth_gcloud; then
@@ -288,8 +289,11 @@ force_refresh_dev:
       INSTANCE_EXISTS=${PIPESTATUS[1]}
 
       if $INSTANCE_EXISTS && [ -n "$INSTANCE" ]; then
-        return "$INSTANCE"
+        export GCP_INSTANCE_NAME="$INSTANCE"
+        return 0
       fi
+
+      return 1
     fi
   }
 
@@ -299,12 +303,14 @@ force_refresh_dev:
       SLUG_LENGTH=$(( 83 - ${#CI_PROJECT_NAME} ))
       export GCP_INSTANCE_REF_SLUG=$CI_PROJECT_NAME-${CI_COMMIT_REF_SLUG:0:$SLUG_LENGTH}
       export JOB_GCP_INSTANCE_NAME=$GCP_INSTANCE_REF_SLUG-${CI_JOB_ID:0:10}
-      export GCP_INSTANCE_NAME=$(find_sql_instance)
-      echo "Instance name is: $GCP_INSTANCE_NAME"
+
+      if find_sql_instance; then
+        echo "Found instance with name: $GCP_INSTANCE_NAME"
+      fi
     fi
   }
 
-  function gloud_exec {
+  function gcloud_exec() {
     OPTIONS="--project \"$GCP_PROJECT\""
     gcloud $* " $OPTIONS" |& grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | head -n1
 
