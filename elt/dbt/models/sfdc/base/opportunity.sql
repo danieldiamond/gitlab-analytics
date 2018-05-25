@@ -27,6 +27,7 @@ SELECT
   WHEN incremental_acv__c > 100000
     THEN TRUE
   ELSE FALSE END AS over_100k,
-  push_counter__c
+  push_counter__c,
+  lastactivitydate -- will need to be replaced
 FROM sfdc.opportunity
 WHERE isdeleted = FALSE

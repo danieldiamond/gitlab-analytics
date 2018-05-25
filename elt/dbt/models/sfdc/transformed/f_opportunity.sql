@@ -57,6 +57,7 @@ SELECT o.sfdc_id AS opportunity_id
             THEN TRUE
           ELSE FALSE
          END AS is_risky
+       , o.lastactivitydate
        , i.qty AS quantity
        , i.iacv
        , i.renewal_acv
