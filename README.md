@@ -1,7 +1,5 @@
 [![pipeline status](https://gitlab.com/gitlab-org/meltano/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/meltano/commits/master)
 
-[Meeting Agenda](https://docs.google.com/document/d/1nayKquFLL8DN3h8mnLo3pVZsEKyPcBgQm2mqc5GggPA)
-
 # Meltano
 
 Meltano is an open source convention-over-configuration product for data engineering, analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
@@ -13,6 +11,10 @@ Meltano stands for the [steps of the data engineering life-cycle](#data-engineer
 We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations. So Meltano provides broad, democratized access to detailed operational metrics, thereby driving better decisions and shortening decision cycle time across the entire enterprise.
 
 In addition, believe that the information a business uses to make decisions must come from all parts of that business. Meltano joins data from multiple systems used by Sales, Marketing, Product and others, thereby providing a comprehensive view of the relationship between business activities, associated costs, and customer long-term value.
+
+## Weekly Meeting Agenda
+
+[Weekly Meeting Agenda](https://docs.google.com/document/d/1nayKquFLL8DN3h8mnLo3pVZsEKyPcBgQm2mqc5GggPA)
 
 ## Approach
 
