@@ -310,11 +310,13 @@ force_refresh_dev:
     fi
   }
 
-  function gcloud_exec() {
-    OPTIONS="--project \"$GCP_PROJECT\""
-    gcloud $* " $OPTIONS" |& grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | head -n1
+  function gcloud_wait() {
+    gcloud $* |& \
+    grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | \
+    head -n1 | \
+    xargs -I % gcloud beta $1 operations wait %
 
-    return ${PIPESTATUS[0]}
+    return ${PIPESTATUS[3]}
   }
 
   function manage_review_cloudsql() {
@@ -330,8 +332,7 @@ force_refresh_dev:
           # delete the old instances
           echo "Cleaning up old Cloud SQL instances for this branch."
           gcloud sql instances list --project "$GCP_PROJECT" --filter "$GCP_INSTANCE_REF_SLUG" | \
-          xargs -I % gcloud_exec sql instances delete % | \
-          xargs -I % gcloud_exec beta sql operations wait %
+          xargs -I % gcloud_wait sql instances delete --project "$GPC_PROJECT"
           echo "Instances cleaned-up."
         else
           echo "Instance is available at $GCP_INSTANCE_NAME"
@@ -339,12 +340,11 @@ force_refresh_dev:
         fi
       fi
 
+      export GCP_INSTANCE_NAME=$JOB_GCP_INSTANCE_NAME
+
       # Clone new instance and wait for it
       echo "Cloning database..."
-      gcloud_exec sql instances clone "$GCP_PRODUCTION_INSTANCE_NAME" "$JOB_GCP_INSTANCE_NAME" | \
-      xargs -I % gcloud_exec beta sql operations wait % || true
-
-      export GCP_INSTANCE_NAME=$JOB_GCP_INSTANCE_NAME
+      gcloud_wait sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$JOB_GCP_INSTANCE_NAME"
     fi
   }
 
@@ -356,7 +356,7 @@ force_refresh_dev:
     fi
 
     if auth_gcloud; then
-      gcloud sql instances delete --project "$GCP_PROJECT" "$GCP_INSTANCE_NAME"
+      gcloud_wait sql instances delete --project "$GCP_PROJECT" "$GCP_INSTANCE_NAME"
     fi
   }
 
