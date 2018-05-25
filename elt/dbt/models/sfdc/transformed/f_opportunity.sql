@@ -52,7 +52,13 @@ SELECT o.sfdc_id AS opportunity_id
        , COALESCE(i.period, 'Unknown') as billing_period
        , COALESCE(o.name, 'Unknown') as opportunity_name
        , o.ownerid
-       , i.qty as quantity
+       , CASE
+          WHEN (o.days_in_stage > 30 OR o.over_100k IS TRUE OR o.push_counter__c > 0)
+            THEN TRUE
+          ELSE FALSE
+         END AS is_risky
+       , o.lastactivitydate
+       , i.qty AS quantity
        , i.iacv
        , i.renewal_acv
        , i.acv
