@@ -319,7 +319,7 @@ force_refresh_dev:
         echo "Awaiting for operation $OPERATION_ID."
         gcloud beta $1 operations wait "$OPERATION_ID"
     else
-      echo "Cannot fetch OPERATION_ID, make sure to pass the `--async` options to gcloud."
+      echo "Cannot fetch OPERATION_ID, make sure to pass the `--async` option to gcloud."
       return 1
     fi
 
@@ -341,7 +341,7 @@ force_refresh_dev:
           IFS=$'\n'
           for instance in $(gcloud sql instances list --project "$GCP_PROJECT" --filter "$GCP_INSTANCE_REF_SLUG" | tail -n +2 | cut -d' ' -f1); do
             echo "Deleting instance $instance."
-            yes | gcloud sql instances delete --async --project "$GCP_PROJECT" "$instance"
+            gcloud sql instances delete --async --quiet --project "$GCP_PROJECT" "$instance"
           done
         else
           echo "Instance is available at $GCP_INSTANCE_NAME"
@@ -355,6 +355,8 @@ force_refresh_dev:
       echo "Cloning new instance $GCP_INSTANCE_NAME."
       gcloud_wait sql instances clone --async --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$JOB_GCP_INSTANCE_NAME"
     fi
+
+    return 0
   }
 
   function delete_review_cloudsql() {
