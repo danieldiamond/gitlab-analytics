@@ -316,7 +316,7 @@ force_refresh_dev:
                   cut -d' ' -f2) # name: <operation_id>
 
     if [ -n "$OPERATION_ID" ]; then
-        echo "Awaiting for operation $OPERATION_ID."
+        echo "Waiting for operation $OPERATION_ID."
         gcloud beta $1 operations wait "$OPERATION_ID"
     else
       echo "Cannot fetch OPERATION_ID, make sure to pass the `--async` option to gcloud."
