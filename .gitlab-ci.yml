@@ -331,8 +331,10 @@ force_refresh_dev:
         if [ "$FORCE" = "true" ]; then
           # delete the old instances
           echo "Cleaning up old Cloud SQL instances for this branch."
-          gcloud sql instances list --project "$GCP_PROJECT" --filter "$GCP_INSTANCE_REF_SLUG" | \
-          xargs -I % gcloud_wait sql instances delete --project "$GPC_PROJECT"
+          IFS=$'\n'
+          for instance in $(gcloud sql instances list --project "$GCP_PROJECT" --filter "$GCP_INSTANCE_REF_SLUG" | tail -n +2 | cut -d' ' -f1); do
+            gcloud_wait sql instances delete --project "$GPC_PROJECT" "$instance"
+          done
           echo "Instances cleaned-up."
         else
           echo "Instance is available at $GCP_INSTANCE_NAME"
