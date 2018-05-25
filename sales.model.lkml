@@ -31,6 +31,13 @@ explore: f_opportunity {
     relationship: many_to_one
     sql_on: ${f_opportunity.opportunity_stage_id} = ${dim_opportunitystage.id} ;;
   }
+
+  join: sfdc_user {
+    view_label: "Users"
+    type: inner
+    relationship: one_to_one
+    sql_on: ${f_opportunity.ownerid} = ${sfdc_user.id} ;;
+  }
 }
 
 explore: pipeline_change {

@@ -1,29 +1,12 @@
-view: user {
-  # This is a raw view on sfdc.user.
-  sql_table_name: sfdc."user" ;;
+view: sfdc_user {
+  sql_table_name: analytics."users" ;;
   label: "SFDC User"
 
   dimension: id {
     primary_key: yes
+    hidden: yes
     type: string
     sql: ${TABLE}.id ;;
-  }
-
-  dimension: alias {
-    type: string
-    sql: ${TABLE}.alias ;;
-  }
-
-  dimension: communitynickname {
-    label: "Nickname"
-    type: string
-    sql: ${TABLE}.communitynickname ;;
-  }
-
-  dimension: companyname {
-    label: "Company Name"
-    type: string
-    sql: ${TABLE}.companyname ;;
   }
 
   dimension: department {
@@ -31,10 +14,9 @@ view: user {
     sql: ${TABLE}.department ;;
   }
 
-  dimension: managerid {
-    label: "Manager ID"
+  dimension: manager_name {
     type: string
-    sql: ${TABLE}.managerid ;;
+    sql: ${TABLE}.manager_name ;;
   }
 
   dimension: name {
@@ -42,22 +24,14 @@ view: user {
     sql: ${TABLE}.name ;;
   }
 
-  dimension: profileid {
-    label: "Profile ID"
+  dimension: email {
     type: string
-    sql: ${TABLE}.profileid ;;
+    sql: ${TABLE}.email ;;
   }
 
-  dimension: team__c {
-    label: "Team"
+  dimension: team {
     type: string
-    sql: ${TABLE}.team__c ;;
-  }
-
-  dimension: timezonesidkey {
-    label: "Time Zone"
-    type: string
-    sql: ${TABLE}.timezonesidkey ;;
+    sql: ${TABLE}.team ;;
   }
 
   dimension: title {
@@ -65,20 +39,14 @@ view: user {
     sql: ${TABLE}.title ;;
   }
 
-  dimension: username {
+  dimension: role_name {
     type: string
-    sql: ${TABLE}.username ;;
+    sql:  ${TABLE}.role_name ;;
   }
 
-  dimension: userroleid {
-    label: "User Role ID"
-    type: string
-    sql: ${TABLE}.userroleid ;;
-  }
-
-  dimension: usertype {
-    label: "User Type"
-    type: string
-    sql: ${TABLE}.usertype ;;
+  dimension: manager_id {
+    hidden: yes
+    type:  string
+    sql: ${TABLE}.manager_id ;;
   }
 }
