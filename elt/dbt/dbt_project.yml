@@ -28,6 +28,7 @@ models:
         enabled: true
         materialized: table
 
-
-on-run-end:
-  - 'SELECT  zuora.calc_churn()'
+    zuora:
+      base:
+        enabled: true
+        materialized: table

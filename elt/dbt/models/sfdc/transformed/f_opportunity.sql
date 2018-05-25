@@ -25,16 +25,16 @@ oppstage as (
 ),
 
 opportunity as (
-	select * from {{ ref('opportunity') }}
+	  select * from {{ ref('opportunity') }}
 
 ),
 
 leadsource as (
-       select * from {{ ref('dim_leadsource') }}
+    select * from {{ ref('dim_leadsource') }}
 ),
 
 account as (
-       select * from {{ ref('dim_account') }}
+    select * from {{ ref('dim_account') }}
 )
 
 SELECT o.sfdc_id AS opportunity_id
@@ -51,6 +51,7 @@ SELECT o.sfdc_id AS opportunity_id
        , COALESCE(i.product, 'Unknown') as opportunity_product
        , COALESCE(i.period, 'Unknown') as billing_period
        , COALESCE(o.name, 'Unknown') as opportunity_name
+       , o.ownerid
        , i.qty as quantity
        , i.iacv
        , i.renewal_acv

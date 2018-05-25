@@ -5,15 +5,15 @@
 }}
 
 with ss_opportunity as (
-	select * from {{ ref('snapshot_opportunity') }}
-	),
+	  select * from {{ ref('snapshot_opportunity') }}
+),
 
 leadsource as (
-       select * from {{ ref('dim_leadsource') }}
+    select * from {{ ref('dim_leadsource') }}
 ),
 
 account as (
-       select * from {{ ref('dim_account') }}
+    select * from {{ ref('dim_account') }}
 ),
 
 oppstage as (
@@ -23,7 +23,6 @@ oppstage as (
 
 curr_snapshot as (
 		select * from {{ ref('f_opportunity') }}
-
 )
 
 SELECT o.sfdc_opportunity_id AS opportunity_id
