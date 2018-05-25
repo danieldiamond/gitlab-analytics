@@ -311,15 +311,19 @@ force_refresh_dev:
   }
 
   function gcloud_wait() {
-    OPERATION_ID=$(gcloud $* |& \
-                  grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | \
-                  head -n1)
+    OPERATION_ID=$(gcloud $* | \
+                  grep "^name: " | \
+                  cut -d' ' -f2) # name: <operation_id>
 
     if [ -n "$OPERATION_ID" ]; then
         echo "Awaiting for operation $OPERATION_ID."
         gcloud beta $1 operations wait "$OPERATION_ID"
+    else
+      echo "Cannot fetch OPERATION_ID, make sure to pass the `--async` options to gcloud."
+      return 1
     fi
-    return $?
+
+    return 0
   }
 
   function manage_review_cloudsql() {
@@ -337,9 +341,8 @@ force_refresh_dev:
           IFS=$'\n'
           for instance in $(gcloud sql instances list --project "$GCP_PROJECT" --filter "$GCP_INSTANCE_REF_SLUG" | tail -n +2 | cut -d' ' -f1); do
             echo "Deleting instance $instance."
-            yes | gcloud sql instances delete --project "$GPC_PROJECT" "$instance"
+            yes | gcloud sql instances delete --async --project "$GCP_PROJECT" "$instance"
           done
-          echo "Instances cleaned-up."
         else
           echo "Instance is available at $GCP_INSTANCE_NAME"
           return 0
@@ -349,8 +352,8 @@ force_refresh_dev:
       export GCP_INSTANCE_NAME=$JOB_GCP_INSTANCE_NAME
 
       # Clone new instance and wait for it
-      echo "Cloning database..."
-      gcloud_wait sql instances clone --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$JOB_GCP_INSTANCE_NAME"
+      echo "Cloning new instance $GCP_INSTANCE_NAME."
+      gcloud_wait sql instances clone --async --project "$GCP_PROJECT" "$GCP_PRODUCTION_INSTANCE_NAME" "$JOB_GCP_INSTANCE_NAME"
     fi
   }
 
@@ -362,7 +365,7 @@ force_refresh_dev:
     fi
 
     if auth_gcloud; then
-      yes | gcloud sql instances delete --project "$GCP_PROJECT" "$GCP_INSTANCE_NAME"
+      gcloud sql instances delete --async --project "$GCP_PROJECT" "$GCP_INSTANCE_NAME"
     fi
   }
 
