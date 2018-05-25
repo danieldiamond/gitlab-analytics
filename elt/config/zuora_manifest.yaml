@@ -397,6 +397,7 @@ productrateplancharge:
   numberofperiod: integer
   overagecalculationoption: text
   overageunusedcreditoption: text
+  overageunusedunitscreditoption: text
   pricechangeoption: text
   priceincreasepercentage: text
   productrateplanid: text
@@ -443,6 +444,7 @@ rateplan:
   createddate: timestamp without time zone
   id: character varying
   name: character varying
+  productid: text
   productrateplanid: text
   subscriptionid: character varying
   updatedbyid: text
@@ -696,7 +698,7 @@ revenueeventiteminvoiceitemadjustment:
   rateplanid: text
   recognizedrevenueaccountingcodeid: text
   revenuechargesummaryid: text
-  revenueeventiteminvoiceitemadjustmentid: text
+  revenueeventinvoiceitemadjustmentid: text
   revenueeventtypeid: text
   revenuescheduleinvoiceitemadjustmentid: text
   soldtocontactid: text
@@ -753,7 +755,7 @@ revenuescheduleitem:
   ext6: text
   ext7: text
   id: text
-  parrentaccountid: text
+  parentaccountid: text
   productid: text
   productrateplanchargeid: text
   productrateplanid: text
@@ -788,7 +790,7 @@ revenuescheduleiteminvoiceitem:
   id: text
   invoiceid: text
   invoiceitemid: text
-  parrentaccountid: text
+  parentaccountid: text
   productid: text
   productrateplanchargeid: text
   productrateplanid: text
@@ -823,8 +825,9 @@ revenuescheduleiteminvoiceitemadjustment:
   id: text
   invoiceid: text
   invoiceitemid: text
+  invoiceitemadjustmentid: text
   iteminvoiceitemadjustmentid: text
-  parrentaccountid: text
+  parentaccountid: text
   productid: text
   productrateplanchargeid: text
   productrateplanid: text
