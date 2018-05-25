@@ -52,6 +52,17 @@ stages:
     - using_proxy python3 elt/lever/src --schema lever --days=365 --only_offers export
     - stop_cloudsqlproxy
 
+.netsuite_extract: &netsuite_extract
+  stage: extract
+  allow_failure: true
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy python3 elt/netsuite/src/ --schema netsuite apply_schema
+    - using_proxy python3 elt/netsuite/src/ --schema netsuite export --days 3
+    - stop_cloudsqlproxy
+
 # Stage: extract
 
 ## Production Jobs
@@ -119,6 +130,12 @@ lever_extract:
   only:
     - master
 
+netsuite_extract:
+  <<: *netsuite_extract
+  retry: 1
+  only:
+    - master
+
 ## Review Jobs
 
 marketo_extract_manual:
@@ -140,6 +157,15 @@ zendesk_extract_manual:
 
 lever_extract_manual:
   <<: *lever_extract
+  retry: 1
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+netsuite_extract_manual:
+  <<: *netsuite_extract
   retry: 1
   only:
     - branches
