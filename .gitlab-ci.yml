@@ -315,8 +315,10 @@ force_refresh_dev:
                   grep -E -o '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}' | \
                   head -n1)
 
-    echo "Awaiting for operation $OPERATION_ID."
-    gcloud beta $1 operations wait "$OPERATION_ID"
+    if [ -n "$OPERATION_ID" ]; then
+        echo "Awaiting for operation $OPERATION_ID."
+        gcloud beta $1 operations wait "$OPERATION_ID"
+    fi
     return $?
   }
 
@@ -335,7 +337,7 @@ force_refresh_dev:
           IFS=$'\n'
           for instance in $(gcloud sql instances list --project "$GCP_PROJECT" --filter "$GCP_INSTANCE_REF_SLUG" | tail -n +2 | cut -d' ' -f1); do
             echo "Deleting instance $instance."
-            gcloud_wait sql instances delete --project "$GPC_PROJECT" "$instance"
+            yes | gcloud sql instances delete --project "$GPC_PROJECT" "$instance"
           done
           echo "Instances cleaned-up."
         else
@@ -356,11 +358,11 @@ force_refresh_dev:
     # Check to see if branch name equals the production EDW instance name
     if [ "$GCP_INSTANCE_NAME" = "$GCP_PRODUCTION_INSTANCE_NAME" ]; then
       echo "The branch name cannot match the production EDW instance name."
-      return 1;
+      return 1
     fi
 
     if auth_gcloud; then
-      gcloud_wait sql instances delete --project "$GCP_PROJECT" "$GCP_INSTANCE_NAME"
+      yes | gcloud sql instances delete --project "$GCP_PROJECT" "$GCP_INSTANCE_NAME"
     fi
   }
 
