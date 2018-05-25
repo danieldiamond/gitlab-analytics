@@ -25,16 +25,16 @@ oppstage as (
 ),
 
 opportunity as (
-	select * from {{ ref('opportunity') }}
+	  select * from {{ ref('opportunity') }}
 
 ),
 
 leadsource as (
-       select * from {{ ref('dim_leadsource') }}
+    select * from {{ ref('dim_leadsource') }}
 ),
 
 account as (
-       select * from {{ ref('dim_account') }}
+    select * from {{ ref('dim_account') }}
 )
 
 SELECT o.sfdc_id AS opportunity_id
