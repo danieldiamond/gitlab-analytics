@@ -29,7 +29,8 @@ class SchemaDiff(Enum):
     COLUMN_OK = 1
     COLUMN_CHANGED = 2
     COLUMN_MISSING = 3
-    TABLE_MISSING = 4
+    COLUMN_MAPPING_KEY_MISSING = 4
+    TABLE_MISSING = 5
 
 
 Column = namedtuple('Column', [
@@ -43,16 +44,22 @@ Column = namedtuple('Column', [
 
 
 class Schema:
+    def mapping_key_name(column: Column):
+        return "{}_{}_mapping_key".format(column.table_name,
+                                          column.column_name)
+
     def table_key(column: Column):
         return column.table_name
 
     def column_key(column: Column):
         return (column.table_name, column.column_name)
 
-    def __init__(self, name, columns: Sequence[Column] = []):
+    def __init__(self, name, columns: Sequence[Column] = [],
+                 primary_key_name='__row_id'):
         self.name = name
         self.tables = set()
         self.columns = OrderedDict()
+        self.primary_key_name = primary_key_name
 
         for column in columns:
             self.tables.add(Schema.table_key(column))
@@ -69,11 +76,16 @@ class Schema:
             return {SchemaDiff.TABLE_MISSING, SchemaDiff.COLUMN_MISSING}
 
         if column_key not in self.columns:
-            return {SchemaDiff.COLUMN_MISSING}
+            diffs = {SchemaDiff.COLUMN_MISSING}
+            if column.is_mapping_key: diffs.add(SchemaDiff.COLUMN_MAPPING_KEY_MISSING)
+            return diffs
 
         db_col = self.columns[column_key]
-        if column.data_type != db_col.data_type \
-          or column.is_nullable != db_col.is_nullable:
+
+        if column.is_mapping_key and not db_col.is_mapping_key:
+            return {SchemaDiff.COLUMN_MAPPING_KEY_MISSING}
+
+        if column.data_type != db_col.data_type:
             return {SchemaDiff.COLUMN_CHANGED}
 
         return {SchemaDiff.COLUMN_OK}
@@ -87,9 +99,18 @@ def db_schema(db_conn, schema_name) -> Schema:
     cursor = db_conn.cursor()
 
     cursor.execute("""
-    SELECT table_schema, table_name, column_name, udt_name::regtype as data_type, is_nullable = 'YES', NULL as is_mapping_key
-    FROM information_schema.columns
-    WHERE table_schema = %s
+    SELECT c.table_schema,
+           c.table_name,
+           c.column_name,
+           c.udt_name::regtype as data_type,
+           is_nullable = 'YES',
+           (SELECT true FROM information_schema.table_constraints tc
+            WHERE tc.constraint_name = format('%%s_%%s_mapping_key', c.table_name, c.column_name)
+            AND tc.table_name = c.table_name
+            AND tc.table_schema = c.table_schema) as is_mapping_key
+    FROM information_schema.columns c
+    WHERE c.table_schema = %s
+    AND c.column_name != '__row_id'
     ORDER BY ordinal_position;
     """, (schema_name,))
 
@@ -132,7 +153,11 @@ def schema_apply(db_conn, target_schema: Schema):
     schema_cursor = db_conn.cursor()
 
     for name, col in target_schema.columns.items():
-        results.call(schema_apply_column, schema_cursor, schema, col)
+        results.call(schema_apply_column,
+                     schema_cursor,
+                     schema,
+                     target_schema,
+                     col)
 
     results.raise_aggregate()
 
@@ -140,15 +165,21 @@ def schema_apply(db_conn, target_schema: Schema):
     db_conn.commit()
 
 
-def schema_apply_column(db_cursor, schema: Schema, column: Column) -> Set[SchemaDiff]:
+def schema_apply_column(db_cursor,
+                        schema: Schema,
+                        target_schema: Schema,
+                        column: Column) -> Set[SchemaDiff]:
     """
     Apply the schema to the current database connection
     adapting tables as it goes. Currently only supports
     adding new columns.
 
     :cursor: A database connection
+    :schema: Source schema (database)
+    :target_schema: Target schema (to apply)
     :column: the column to apply
     """
+
     diff = schema.column_diff(column)
     identifier = (
         psycopg2.sql.Identifier(column.table_schema),
@@ -159,11 +190,12 @@ def schema_apply_column(db_cursor, schema: Schema, column: Column) -> Set[Schema
         logging.debug("[{}]: {}".format(column.column_name, diff))
 
     if SchemaDiff.COLUMN_CHANGED in diff:
-        raise InapplicableChangeError(diff)
+        raise InapplicableChangeError("{}: {}".format(column, diff))
 
     if SchemaDiff.TABLE_MISSING in diff:
-        stmt = "CREATE TABLE {}.{} (__row_id SERIAL PRIMARY KEY)"
-        sql = psycopg2.sql.SQL(stmt).format(*identifier)
+        stmt = "CREATE TABLE {}.{} ({} SERIAL PRIMARY KEY)"
+        sql = psycopg2.sql.SQL(stmt).format(*identifier,
+                                            psycopg2.sql.Identifier(target_schema.primary_key_name))
         db_cursor.execute(sql)
         schema.add_table(column)
 
@@ -178,16 +210,13 @@ def schema_apply_column(db_cursor, schema: Schema, column: Column) -> Set[Schema
         )
         db_cursor.execute(sql)
 
-        if column.is_mapping_key:
-            constraint = "{table}_{column}_mapping_key".format(table=column.table_name,
-                                                               column=column.column_name)
-
-            stmt = "ALTER TABLE {}.{} ADD CONSTRAINT {} UNIQUE ({})"
-            sql = psycopg2.sql.SQL(stmt).format(
-                *identifier,
-                psycopg2.sql.Identifier(constraint),
-                psycopg2.sql.Identifier(column.column_name),
-            )
-            db_cursor.execute(sql)
+    if SchemaDiff.COLUMN_MAPPING_KEY_MISSING in diff:
+        stmt = "ALTER TABLE {}.{} ADD CONSTRAINT {} UNIQUE ({})"
+        sql = psycopg2.sql.SQL(stmt).format(
+            *identifier,
+            psycopg2.sql.Identifier(Schema.mapping_key_name(column)),
+            psycopg2.sql.Identifier(column.column_name),
+        )
+        db_cursor.execute(sql)
 
     return diff

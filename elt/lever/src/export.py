@@ -10,7 +10,8 @@ from tempfile import NamedTemporaryFile
 from datetime import datetime
 from requests.auth import HTTPBasicAuth
 from elt.cli import DateWindow
-from elt.utils import compose, db_open
+from elt.utils import compose
+from elt.db import db_open
 from elt.error import ExceptionAggregator, Error
 from elt.schema import DBType, Schema
 from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
@@ -43,7 +44,7 @@ def extract(args):
 async def import_file(args, exporter):
     try:
         for csv_file in exporter:
-            with db_open(**vars(args)) as db:
+            with db_open() as db:
                 upsert_to_db_from_csv(db, csv_file,
                                       primary_key=candidate.PRIMARY_KEY,
                                       table_name=candidate.table_name(args),

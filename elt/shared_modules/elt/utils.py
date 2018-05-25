@@ -1,29 +1,10 @@
 import sys
 import psycopg2
 import logging
+import re
 
 from functools import reduce
-
-
-db_config_keys = [
-    "host",
-    "port",
-    "user",
-    "password",
-    "database",
-]
-
-
-class db_open:
-    def __init__(self, **kwargs):
-        self.config = {k: kwargs[k] for k in db_config_keys}
-
-    def __enter__(self, **kwargs):
-        self.connection = psycopg2.connect(**self.config)
-        return self.connection
-
-    def __exit__(self, type, value, traceback):
-        self.connection.close()
+from elt.db import DB
 
 
 # from https://github.com/jonathanj/compose/blob/master/compose.py
@@ -38,6 +19,50 @@ def compose(*fs):
     """
     return reduce(lambda f, g: lambda x: f(g(x)), fs, lambda x: x)
 
+# from http://www.dolphmathews.com/2012/09/slugify-string-in-python.html
+def slugify(s):
+    """
+    Simplifies ugly strings into something URL-friendly.
+    >>> print slugify("[Some] _ Article's Title--")
+    some-articles-title
+    """
+
+    # "[Some] _ Article's Title--"
+    # "[some] _ article's title--"
+    s = s.lower()
+
+    # "[some] _ article's_title--"
+    # "[some]___article's_title__"
+    for c in [' ', '-', '.', '/']:
+        s = s.replace(c, '_')
+
+    # "[some]___article's_title__"
+    # "some___articles_title__"
+    s = re.sub('\W', '', s)
+
+    # "some___articles_title__"
+    # "some   articles title  "
+    s = s.replace('_', ' ')
+
+    # "some   articles title  "
+    # "some articles title "
+    s = re.sub('\s+', ' ', s)
+
+    # "some articles title "
+    # "some articles title"
+    s = s.strip()
+
+    # "some articles title"
+    # "some-articles-title"
+    s = s.replace(' ', '-')
+
+    return s
+
+def setup_db(args=None):
+    if args is None:
+        DB.setup()
+    else:
+        DB.setup(**vars(args))
 
 def setup_logging(args):
     logging.basicConfig(stream=sys.stdout,

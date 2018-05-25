@@ -7,7 +7,8 @@ import logging
 from tempfile import NamedTemporaryFile
 from datetime import datetime
 from elt.cli import DateWindow
-from elt.utils import compose, db_open
+from elt.db import db_open
+from elt.utils import compose
 from elt.error import ExceptionAggregator, Error
 from elt.schema import DBType, Schema
 from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
@@ -43,7 +44,7 @@ def extract(args):
 async def import_file(args, exporter):
     try:
         for export_result in exporter:
-            with db_open(**vars(args)) as db:
+            with db_open() as db:
                 logging.info("- Importing {}".format(export_result['entity'].name_plural))
                 upsert_to_db_from_csv(db, export_result['file'],
                                       primary_key=export_result['entity'].schema.PRIMARY_KEY,

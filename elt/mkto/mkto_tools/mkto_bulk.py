@@ -10,7 +10,7 @@ import psycopg2
 import psycopg2.sql
 
 from elt.error import ExtractError
-from elt.utils import db_open
+from elt.db import db_open
 from elt.cli import ExportOutput, DateWindow
 from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
 from .mkto_token import get_token, mk_endpoint
@@ -229,7 +229,7 @@ def bulk_export(args):
         }
 
         logging.info("Upserting to Database")
-        with db_open(**vars(args)) as db:
+        with db_open() as db:
             upsert_to_db_from_csv(db, output_file, **options)
 
     if args.nodelete or args.output == ExportOutput.FILE:
