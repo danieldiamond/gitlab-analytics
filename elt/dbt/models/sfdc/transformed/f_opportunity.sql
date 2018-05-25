@@ -57,6 +57,7 @@ SELECT o.sfdc_id AS opportunity_id
             THEN TRUE
           ELSE FALSE
          END AS is_risky
+       , o.days_in_stage
        , o.lastactivitydate
        , i.qty AS quantity
        , i.iacv
