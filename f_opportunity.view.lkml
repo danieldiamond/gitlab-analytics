@@ -20,6 +20,22 @@ view: f_opportunity {
     sql:${TABLE}.ownerid ;;
   }
 
+  dimension: days_in_stage {
+    type: number
+    sql: ${TABLE}.days_in_stage ;;
+  }
+
+  dimension: risk_level {
+    label: "Is Risky"
+    type: yesno
+    sql: ${TABLE}.is_risky ;;
+  }
+
+  dimension: last_activity{
+    type: date
+    sql: ${TABLE}.lastactivitydate ;;
+  }
+
   dimension: billing_period {
     type: string
     sql: ${TABLE}.billing_period ;;
