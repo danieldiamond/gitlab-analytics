@@ -1,10 +1,15 @@
 import os
 import requests
 import json
+import logging
+import time
 
 from zeep import Client
 from zeep.cache import SqliteCache
 from zeep.transports import Transport
+from zeep.exceptions  import Fault
+
+from elt.error import Error
 
 from .account import Account
 from .currency import Currency
@@ -62,6 +67,9 @@ class NetsuiteClient:
         # Create the SearchMoreRequest type that will be used for paging by all calls
         self.SearchMoreRequest = self.messages_namespace.SearchMoreRequest
 
+        # Number of failed_login attempts
+        self.failed_login_attempts = 0
+
 
     def data_center_aware_host_url(self):
         """
@@ -112,11 +120,32 @@ class NetsuiteClient:
 
 
     def login(self):
-        login = self.client.service.login(passport=self.passport,
-                    _soapheaders={'applicationInfo': self.app_info})
+        try:
+            login = self.client.service.login(passport=self.passport,
+                        _soapheaders={'applicationInfo': self.app_info})
 
-        return login.status
+            self.failed_login_attempts = 0
 
+            return login.status
+        except Fault as err:
+            self.failed_login_attempts += 1
+
+            # Handle concurrent request errors
+            if self.failed_login_attempts < 20 \
+              and ('exceededConcurrentRequestLimitFault' in err.detail[0].tag \
+                   or 'exceededRequestLimitFault' in err.detail[0].tag):
+                # NetSuite blocked us due to not allowed concurrent connections
+                # Wait for 30 seconds and retry
+                logging.info("Login was blocked due to concurrent request limit.")
+                logging.info("({}) Sleeping for 30 seconds and trying again.".format(
+                                    self.failed_login_attempts)
+                )
+
+                time.sleep(30)
+                return self.login()
+
+            # Otherwise, report the error and exit
+            raise Error("NetSuite login failed: {}".format(err))
 
     def get_record_by_type(self, type, internal_id):
         """
@@ -239,7 +268,7 @@ class NetsuiteClient:
         return self.client.type_factory(namespace)
 
 
-    def export_supported_entities(self):
+    def export_supported_entities(self, only_transactions=False):
         """
         Return a list of initialized objects of main entities
 
@@ -254,17 +283,18 @@ class NetsuiteClient:
         """
         entities = []
 
-        currency = Currency(self)
-        entities.append(currency)
+        if only_transactions == False:
+            currency = Currency(self)
+            entities.append(currency)
 
-        department = Department(self)
-        entities.append(department)
+            department = Department(self)
+            entities.append(department)
 
-        subsidiary = Subsidiary(self)
-        entities.append(subsidiary)
+            subsidiary = Subsidiary(self)
+            entities.append(subsidiary)
 
-        account = Account(self)
-        entities.append(account)
+            account = Account(self)
+            entities.append(account)
 
         transaction = Transaction(self)
         entities.append(transaction)

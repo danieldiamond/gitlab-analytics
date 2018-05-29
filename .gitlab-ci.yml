@@ -61,6 +61,8 @@ stages:
     - setup_cloudsqlproxy
     - using_proxy python3 elt/netsuite/src/ --schema netsuite apply_schema
     - using_proxy python3 elt/netsuite/src/ --schema netsuite export --days 3
+    - using_proxy python3 elt/netsuite/src/ --schema netsuite extract_type --days 3
+    - using_proxy python3 elt/netsuite/src/ --schema netsuite backlog --days 15
     - stop_cloudsqlproxy
 
 # Stage: extract
@@ -135,6 +137,19 @@ netsuite_extract:
   retry: 1
   only:
     - master
+
+netsuite_backlog_manual:
+  stage: extract
+  allow_failure: true
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy python3 elt/netsuite/src/ --schema netsuite backlog --days 30
+    - stop_cloudsqlproxy
+  retry: 1
+  when: manual
+
 
 ## Review Jobs
 

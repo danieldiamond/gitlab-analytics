@@ -1,7 +1,7 @@
 from elt.schema import Schema, Column, DBType
 
-from .transaction_config import TRANSACTION_TYPES, COLUMN_MAPPINGS, RELATED_ENTITIES
-import schema.utils as utils
+from schema.transaction_config import TRANSACTION_TYPES, COLUMN_MAPPINGS, RELATED_ENTITIES
+from schema.utils import columns_from_mappings
 
 PG_SCHEMA = 'netsuite'
 PG_TABLE = 'transactions'
@@ -24,9 +24,12 @@ def describe_schema(args) -> Schema:
                       is_mapping_key=is_mapping_key)
 
     return Schema(table_schema,
-        [ column("internal_id", DBType.Long, is_mapping_key=True) ]  \
-        + utils.columns_from_mappings(column, COLUMN_MAPPINGS)  \
-        + [ column("imported_at", DBType.Timestamp) ]
+        [
+          column("internal_id",      DBType.Long, is_mapping_key=True),
+          column("transaction_type", DBType.String),
+        ]  \
+        + columns_from_mappings(column, COLUMN_MAPPINGS)  \
+        + [ column("imported_at",    DBType.Timestamp) ]
     )
 
 

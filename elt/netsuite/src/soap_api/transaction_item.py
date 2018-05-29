@@ -3,7 +3,7 @@ import json
 import datetime
 
 import schema.transaction_item as transaction_item_schema
-import soap_api.utils as utils
+from soap_api.utils import fetch_attribute
 
 class TransactionItem:
     """
@@ -46,7 +46,7 @@ class TransactionItem:
             # Iterate through all the attributes defined in schema.COLUMN_MAPPINGS
             #  and map each 'in' attribute to the 'out' attribute(s)
             for column_map in self.schema.COLUMN_MAPPINGS:
-                extraction_result = utils.fetch_attribute(self, record, column_map)
+                extraction_result = fetch_attribute(self, record, column_map)
 
                 # Only keep the attributes for Support Entities
                 # No nested attributes inside other nested attributes supported

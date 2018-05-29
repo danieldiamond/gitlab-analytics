@@ -251,8 +251,6 @@ def merge_transform_results(list1, list2):
             list1[index]['data'].extend(tr['data'])
 
 
-# Temporary function that will be removed when all entities that were
-#  stored as JSON move to their own tables
 def fetch_entity_list_as_json(parent_entity, record, entity_name):
     """
     Extract a full list of entities (entity_name) from a record

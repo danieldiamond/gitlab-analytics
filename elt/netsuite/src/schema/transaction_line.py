@@ -1,6 +1,6 @@
 from elt.schema import Schema, Column, DBType
 
-import schema.utils as utils
+from schema.utils import columns_from_mappings
 
 PG_SCHEMA = 'netsuite'
 PG_TABLE = 'transaction_lines'
@@ -27,7 +27,7 @@ def describe_schema(args) -> Schema:
           column("unique_id",      DBType.String, is_mapping_key=True),
           column("transaction_id", DBType.Long),
         ] \
-        + utils.columns_from_mappings(column, COLUMN_MAPPINGS)  \
+        + columns_from_mappings(column, COLUMN_MAPPINGS)  \
         + [ column("imported_at",  DBType.Timestamp) ]
     )
 

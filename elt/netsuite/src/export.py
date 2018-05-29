@@ -16,36 +16,32 @@ from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
 from soap_api.netsuite_soap_client import NetsuiteClient
 
 
-def extract(args):
+def extract(args, entities_to_export):
     window = DateWindow(args, formatter=datetime.date)
+    start_time, end_time = window.formatted_range()
 
-    # Initialize the SOAP client and fetc the wsdl
-    client = NetsuiteClient()
+    logging.info("NetSuit Extract Started")
+    logging.info("Date interval = [{},{}]".format(start_time, end_time))
 
-    # Login
-    if client.login():
-        loop = asyncio.get_event_loop()
+    loop = asyncio.get_event_loop()
 
-        # Export All supported entities
-        supported_entities = client.export_supported_entities()
+    # Export data for the provided entities
+    for entity in entities_to_export:
+        logging.info("+ Extracting {}".format(entity.name_plural))
+        exporter = export_file(args, entity, start_time, end_time)
+        importer = import_file(args, exporter)
 
-        for entity in supported_entities:
-            logging.info("Extracting {}".format(entity.name_plural))
-            exporter = export_file(args, entity, *window.formatted_range())
-            importer = import_file(args, exporter)
+        loop.run_until_complete(importer)
 
-            loop.run_until_complete(importer)
+    loop.close()
 
-        loop.close()
-    else:
-        logging.info("Could NOT login to NetSuite")
 
 @asyncio.coroutine
 async def import_file(args, exporter):
     try:
         for export_result in exporter:
             with db_open() as db:
-                logging.info("- Importing {}".format(export_result['entity'].name_plural))
+                logging.info(" - Importing {}".format(export_result['entity'].name_plural))
                 upsert_to_db_from_csv(db, export_result['file'],
                                       primary_key=export_result['entity'].schema.PRIMARY_KEY,
                                       table_name=export_result['entity'].schema.table_name(args),
