@@ -1,1 +1,0 @@
-select * from sandbox.d_date
