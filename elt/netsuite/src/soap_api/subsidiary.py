@@ -3,7 +3,7 @@ import json
 import datetime
 
 import schema.subsidiary as subsidiary_schema
-import soap_api.utils as utils
+from soap_api.utils import fetch_attribute, merge_transform_results
 
 class Subsidiary:
     schema = subsidiary_schema
@@ -94,17 +94,17 @@ class Subsidiary:
             #  and map each 'in' attribute to the 'out' attribute(s)
             for column_map in self.schema.COLUMN_MAPPINGS:
                 # Extract the attributes and data for the given attribute
-                extraction_result = utils.fetch_attribute(self, record, column_map)
+                extraction_result = fetch_attribute(self, record, column_map)
 
                 # Add the attributes to this entity's record
                 flat_record.update( extraction_result['attributes'] )
 
                 # Add the related_entities returned to the rest of the related_entities
-                utils.merge_transform_results(related_entities, extraction_result['related_entities'])
+                merge_transform_results(related_entities, extraction_result['related_entities'])
 
             flat_records.append(flat_record)
 
         # Merge the Current entity's results with the related_entities and return the result
-        utils.merge_transform_results(related_entities, [{'entity': Subsidiary, 'data': flat_records}])
+        merge_transform_results(related_entities, [{'entity': Subsidiary, 'data': flat_records}])
 
         return related_entities

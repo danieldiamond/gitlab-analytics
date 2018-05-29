@@ -3,7 +3,7 @@ import json
 import datetime
 
 import schema.transaction as transaction_schema
-import soap_api.utils as utils
+from soap_api.utils import fetch_attribute, merge_transform_results
 
 class Transaction:
     schema = transaction_schema
@@ -116,6 +116,7 @@ class Transaction:
         for record in records:
             flat_record = {
                 "internal_id": record['internalId'],
+                "transaction_type": None,
 
                 "imported_at": datetime.datetime.now().isoformat(),
             }
@@ -124,17 +125,78 @@ class Transaction:
             #  and map each 'in' attribute to the 'out' attribute(s)
             for column_map in self.schema.COLUMN_MAPPINGS:
                 # Extract the attributes and data for the given attribute
-                extraction_result = utils.fetch_attribute(self, record, column_map)
+                extraction_result = fetch_attribute(self, record, column_map)
 
                 # Add the attributes to this entity's record
                 flat_record.update( extraction_result['attributes'] )
 
                 # Add the related_entities returned to the rest of the related_entities
-                utils.merge_transform_results(related_entities, extraction_result['related_entities'])
+                merge_transform_results(related_entities, extraction_result['related_entities'])
 
             flat_records.append(flat_record)
 
         # Merge the Current entity's results with the related_entities and return the result
-        utils.merge_transform_results(related_entities, [{'entity': Transaction, 'data': flat_records}])
+        merge_transform_results(related_entities, [{'entity': Transaction, 'data': flat_records}])
 
         return related_entities
+
+
+    def extract_type(self, start_time=None, end_time=None, searchResult=None):
+        """
+        Only extract the Transaction {internalId, type} for a given date interval
+
+        Used for getting the Transaction Type for Transactions fetched without
+         column restrictions specified (it is not returned by default)
+        """
+        result = None
+
+        # This is a special search operation that needs the returnSearchColumns
+        #  set to true.
+        # Update the settings only during this operation and set them back when you are done.
+        old_returnSearchColumns = self.client.search_preferences['returnSearchColumns']
+        self.client.search_preferences['returnSearchColumns'] = True
+
+        if searchResult is None:
+            # New search - Set the TransactionSearchAdvanced params
+            TransactionSearch = self.sales_transactions_namespace.TransactionSearchAdvanced
+
+            if start_time is not None and end_time is not None:
+                transaction_search = TransactionSearch(
+                    columns={
+                        'basic': {
+                          'internalId' : {},
+                          'type' : {},
+                        }
+                    },
+
+                    criteria={
+                        'basic': {
+                            'lastModifiedDate': {
+                              'operator': 'within',
+                              'searchValue': start_time,
+                              'searchValue2': end_time,
+                            },
+                            'type': {
+                              'operator': 'anyOf',
+                              'searchValue': self.schema.TRANSACTION_TYPES,
+                            },
+                        }
+                    }
+                )
+            else:
+                # Do not permit Extracting Types over all records
+                return None
+
+            result = self.client.search_incremental(transaction_search)
+        elif searchResult.status.isSuccess \
+          and searchResult.pageIndex is not None \
+          and searchResult.totalPages is not None \
+          and searchResult.pageIndex < searchResult.totalPages:
+            # There are more pages to be fetched
+            result = self.client.search_more(searchResult)
+        else:
+            # Search has finished
+            result = None
+
+        self.client.search_preferences['returnSearchColumns'] = old_returnSearchColumns
+        return result
