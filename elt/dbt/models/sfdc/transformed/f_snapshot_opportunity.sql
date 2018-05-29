@@ -49,6 +49,7 @@ INNER JOIN account a on o.accountId=a.sfdc_account_id
 
 UNION 
 
+-- This gets the opps for the current day b/c there is no snapshot
 SELECT opportunity_id,
        CURRENT_TIMESTAMP as snapshot_date,
        account_id,
@@ -65,7 +66,7 @@ SELECT opportunity_id,
        SUM(renewal_acv) renewal_acv,
        SUM(acv) acv,
        SUM(tcv) tcv
-FROM sandbox.f_opportunity
+FROM analytics.f_opportunity
 GROUP BY opportunity_id,
          account_id,
          opportunity_stage_id,
