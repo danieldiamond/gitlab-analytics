@@ -64,6 +64,8 @@ For now we use [PostgreSQL](https://www.postgresql.org/) as the warehouse but we
 
 We use dbt for testing too, instead of [Great Expectations](https://github.com/great-expectations/great_expectations), [Hypothesis](https://hypothesis.readthedocs.io/en/latest/), or closed source options such as [Informatica](https://marketplace.informatica.com/solutions/informatica_data_validation), [iCEDQ](https://icedq.com/), and [QuerySurge](http://www.querysurge.com/).
 
+At GitLab we're using Looker instead of Superset, for sure for the rest of 2018.
+If we switch we'll want to make sure that most of the functionality can be replicated in Superset, and the switch will be gradual.
 
 ## Metrics
 
