@@ -28,12 +28,19 @@ view: zuora_ar {
         ;;
   }
   #
+  dimension: 90_days_open_invoices {
+    hidden: yes
+    type:  string
+    sql: ${beyond_90days_open_invoices.list_of_open_invoices} ;;
+
+  }
+
   dimension: send_email {
-    sql: name ;;
-    html: <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ email._value }}&cc=apiaseczna@gitlab.com&subject=Invoice - 90 Days Past Due?&body=Hi, %0D%0DThe invoice referenced below is 90 past due. In order to keep your GitLab account open.....%0D%0D{{invoice._value}}%0D%0DThanks!%0DGitLab Accounting" target="_blank">
+    hidden: yes
+    sql: ${acct_num} ;;
+    html: <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ email._value }}&cc=apiaseczna@gitlab.com&subject=Invoice-90 Days Past Due?&body=Hi, %0D%0DThe invoice referenced below is 90 past due. In order to keep your GitLab account open.....%0D%0D{{90_days_open_invoices._value}}%0D%0DThanks!%0DGitLab Accounting" target="_blank">
           <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" width="16" height="16"/>
-          <a>
-          {{ linked_value }}
+          <a> Click icon to email {{ email._value }}
           ;;
   }
   #
@@ -64,7 +71,7 @@ view: zuora_ar {
   dimension: customer {
     description: "Customer"
     type: string
-    drill_fields: [send_email]
+    #drill_fields: [drill_1*]
     sql: ${TABLE}.name ;;
   }
   #
@@ -90,13 +97,22 @@ view: zuora_ar {
     description: "Balance due from Customer"
     type: sum
     sql: ${TABLE}.balance ;;
+    drill_fields: [entity,customer,acct_num,90_days_open_invoices,send_email,balance]
   }
   #
   measure: invoice_cnt {
     description: "Count from Customer"
     type: count_distinct
-    drill_fields: [entity,customer,acct_num,invoice,duedate,balance]
+    drill_fields: [entity,customer,acct_num,duedate,balance]
     sql: ${TABLE}.invoice ;;
   }
+
+  measure: count {
+    type: count
+  }
+
+#   set: drill_1 {
+#     fields: [send_email]
+#   }
 
 }
