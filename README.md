@@ -55,7 +55,7 @@ All GitLab employees have access to our Looker instance. We do not use Google Au
 
 **LookML Project** - A LookML project is a collection of LookML files that describe a set of related models, explores, views, and LookML dashboards.
 
-By convention, LookML code is segregated into three types of files: model files, view files, and dashboard files. In new LookML, these fields have the following extensions: .model.lkml, .view.lkml, and .dashboard.lookml, respectively.
+By convention, LookML code is segregated into three types of files: model files, view files, and dashboard files. In new LookML, these files have the following extensions: .model.lkml, .view.lkml, and .dashboard.lookml, respectively.
 
 **Model** - A model is a customized portal into the database, designed to provide intuitive data exploration for specific business users. Multiple models can exist for the same database connection in a single LookML project. Each model can expose different data to different users. For example, sales agents need different data than company executives, and so you would probably develop two models to offer views of the database appropriate for each user. A model, in turn, is essentially metadata about the source database.
 

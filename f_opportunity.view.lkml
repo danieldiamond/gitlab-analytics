@@ -204,6 +204,12 @@ view: f_opportunity {
     value_format_name: usd
     }
 
+  measure: weighted_iacv {
+    label: "Total Weighted IACV"
+    type: sum
+    sql:${iacv}* (${dim_opportunitystage.defaultprobability}/100) ;;
+  }
+
   measure: total_sqos {
     label: "Total Sales Qualified Opportunities (SQOs)"
     type: count_distinct
