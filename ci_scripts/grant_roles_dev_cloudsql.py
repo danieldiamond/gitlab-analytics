@@ -66,12 +66,19 @@ def apply_role(cursor, user: User):
     """
     result = 'OK'
     role_identifier = psycopg2.sql.Identifier(user.name)
+
     try:
         cursor.execute(
-            SQL("REVOKE {} FROM {} ").format(Roles.READONLY, role_identifier)
+            psycopg2.sql.SQL("REVOKE {} FROM {}").format(
+                psycopg2.sql.Identifier(Roles.READONLY.value),
+                role_identifier
+            )
         )
         cursor.execute(
-            SQL("GRANT {} TO {} ").format(Roles.ANALYTICS, role_identifier)
+            psycopg2.sql.SQL("GRANT {} TO {}").format(
+                psycopg2.sql.Identifier(Roles.ANALYTICS.value),
+                role_identifier
+            )
         )
     except psycopg2.Error as e:
         result = e.pgerror
@@ -90,7 +97,7 @@ def db_config():
 
 
 def main():
-    readonly_roles = partial(member_of, (Roles.READONLY))
+    readonly_roles = partial(member_of, [Roles.READONLY])
 
     with psycopg2.connect(**db_config()) as db:
         with db.cursor() as cursor:
