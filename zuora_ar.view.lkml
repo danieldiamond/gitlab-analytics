@@ -3,6 +3,7 @@ view: zuora_ar {
     sql:
         SELECT zuora_account.entity__c AS entity,
                COALESCE(zuora_contact_bill.workemail,zuora_contact_sold.workemail) AS email,
+               COALESCE(zuora_contact_sold.firstname,zuora_contact_bill.firstname) AS owner,
                zuora_account.name,
                zuora_account.accountnumber,
                zuora_account.currency,
@@ -38,7 +39,7 @@ view: zuora_ar {
   dimension: send_email {
     hidden: yes
     sql: ${acct_num} ;;
-    html: <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ email._value }}&cc=art@gitlab.com&su={{customer._value}} invoice(s) are overdue&body=Hi,
+    html: <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ email._value }}&cc=art@gitlab.com&su={{customer._value}} invoice(s) are overdue&body=Hi {{owner._value}},
                    %0D%0DI am reaching out to let you know that the GitLab invoice(s) below are 90 days overdue.
                    %0D%0DThe current balance of the invoice(s) amount to {{balance._rendered_value}}
                    %0D%0DIf you have not already done so, please take a moment to make the payment today.
@@ -98,6 +99,12 @@ view: zuora_ar {
     description: "Due Date of Invoice"
     type: string
     sql: ${TABLE}.duedate ;;
+  }
+  #
+  dimension: owner {
+    description: "Customer Name"
+    type: string
+    sql: ${TABLE}.owner ;;
   }
   #
   measure: balance {
