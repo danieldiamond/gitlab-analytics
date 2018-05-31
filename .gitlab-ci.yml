@@ -2,8 +2,8 @@ variables:
   PYTHONPATH: "/meltano/meltano/elt/shared_modules/:$PYTHONPATH"
 
 stages:
-  - dev_refresh
   - review
+  - setup
   - build
   - extract
   - model
@@ -202,6 +202,8 @@ dbt:
     - dbt -d run --profiles-dir profile --target prod --models zuora
     - dbt -d test --profiles-dir profile
     - stop_cloudsqlproxy
+  
+# Stage: update 
 
 sfdc_update:
   stage: update
@@ -220,7 +222,7 @@ sfdc_snapshot:
     - setup_cloudsqlproxy
     - using_proxy python3 elt/util/snapshot.py
     - stop_cloudsqlproxy
-
+  
 # Stage: review 
 
 review: &review
@@ -268,16 +270,18 @@ review_stop:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
 
+# Stage: setup
+
 refresh_dev: &refresh_dev
   <<: *job_housekeeping
-  stage: dev_refresh
+  stage: setup
   variables:
     GCP_INSTANCE_NAME: $GCP_PRODUCTION_INSTANCE_NAME
     GIT_STRATEGY: clone # TODO make the script part of the container
   script:
     - refresh_dev_cloudsql
     - setup_cloudsqlproxy $GCP_DEV_INSTANCE_NAME
-    - using_proxy python3 ci_scripts/grant_roles_dev_cloudsql.py
+    - using_proxy python3 ci_scripts/grant_roles.py
     - stop_cloudsqlproxy
   only:
     - master
@@ -289,11 +293,24 @@ force_refresh_dev:
     GIT_STRATEGY: clone # TODO make the script part of the container
     GIT_DEPTH: 1
     FORCE: "true"
-  only:
-    - branches
-    - master
   when: manual
 
+update_db: &update_db
+  <<: *job_housekeeping
+  stage: setup
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy python3 ci_scripts/grant_roles.py
+    - stop_cloudsqlproxy    
+  only:
+    - branches
+  except:
+    - master
+
+force_update_db:
+  <<: *update_db
+  when: manual
 
 # ---------------------------------------------------------------------------
 
