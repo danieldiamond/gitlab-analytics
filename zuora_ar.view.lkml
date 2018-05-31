@@ -39,7 +39,7 @@ view: zuora_ar {
   dimension: send_email {
     hidden: yes
     sql: ${acct_num} ;;
-    html: <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ email._value }}&cc=art@gitlab.com&su={{customer._value}} invoice(s) are overdue&body=Hi {{owner._value}},
+    html: <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ email._value }}&cc=ar@gitlab.com&su={{customer._value}} invoice(s) are overdue&body=Hi {{owner._value}},
                    %0D%0DI am reaching out to let you know that the GitLab invoice(s) below are 90 days overdue.
                    %0D%0DThe current balance of the invoice(s) amount to {{balance._rendered_value}}
                    %0D%0DIf you have not already done so, please take a moment to make the payment today.
