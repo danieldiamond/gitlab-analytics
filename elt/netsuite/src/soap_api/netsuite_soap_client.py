@@ -3,11 +3,14 @@ import requests
 import json
 import logging
 import time
+import functools
 
 from zeep import Client
 from zeep.cache import SqliteCache
 from zeep.transports import Transport
-from zeep.exceptions  import Fault
+from zeep.exceptions import Fault
+
+from requests.exceptions import HTTPError, ConnectTimeout
 
 from elt.error import Error
 
@@ -67,8 +70,8 @@ class NetsuiteClient:
         # Create the SearchMoreRequest type that will be used for paging by all calls
         self.SearchMoreRequest = self.messages_namespace.SearchMoreRequest
 
-        # Number of failed_login attempts
-        self.failed_login_attempts = 0
+        # Number of failed API requests
+        self.failed_api_requests = 0
 
 
     def data_center_aware_host_url(self):
@@ -90,7 +93,13 @@ class NetsuiteClient:
             # If that failed, go the more slow SOAP way
             client = self.netsuite_soap_client(not_data_center_aware=True)
 
-            response = client.service.getDataCenterUrls(os.getenv("NETSUITE_ACCOUNT"))
+            fpartial = functools.partial(
+                           client.service.getDataCenterUrls,
+                           os.getenv("NETSUITE_ACCOUNT"),
+                       )
+
+            response = self.api_call_with_retry(fpartial)
+
 
             if response.body.getDataCenterUrlsResult.status.isSuccess:
                 ns_host = response.body.getDataCenterUrlsResult.dataCenterUrls.webservicesDomain
@@ -116,36 +125,25 @@ class NetsuiteClient:
                     NS_HOST=ns_host,
                     NS_ENDPOINT=os.getenv("NETSUITE_ENDPOINT")
                 )
-        return Client(wsdl, transport=transport)
+
+        fpartial = functools.partial(Client, wsdl, transport=transport)
+
+        client = self.api_call_with_retry(fpartial)
+
+        return client
 
 
     def login(self):
-        try:
-            login = self.client.service.login(passport=self.passport,
-                        _soapheaders={'applicationInfo': self.app_info})
+        fpartial = functools.partial(
+            self.client.service.login,
+            passport=self.passport,
+            _soapheaders={'applicationInfo': self.app_info},
+        )
 
-            self.failed_login_attempts = 0
+        login = self.api_call_with_retry(fpartial)
 
-            return login.status
-        except Fault as err:
-            self.failed_login_attempts += 1
+        return login.status
 
-            # Handle concurrent request errors
-            if self.failed_login_attempts < 20 \
-              and ('exceededConcurrentRequestLimitFault' in err.detail[0].tag \
-                   or 'exceededRequestLimitFault' in err.detail[0].tag):
-                # NetSuite blocked us due to not allowed concurrent connections
-                # Wait for 30 seconds and retry
-                logging.info("Login was blocked due to concurrent request limit.")
-                logging.info("({}) Sleeping for 30 seconds and trying again.".format(
-                                    self.failed_login_attempts)
-                )
-
-                time.sleep(30)
-                return self.login()
-
-            # Otherwise, report the error and exit
-            raise Error("NetSuite login failed: {}".format(err))
 
     def get_record_by_type(self, type, internal_id):
         """
@@ -154,12 +152,18 @@ class NetsuiteClient:
         Returns the record or NONE
         """
         record = self.RecordRef(internalId=internal_id, type=type)
-        response = self.client.service.get(record,
+
+        fpartial = functools.partial(
+            self.client.service.get,
+            record,
             _soapheaders={
                 'applicationInfo': self.app_info,
                 'passport': self.passport,
-            }
+            },
         )
+
+        response = self.api_call_with_retry(fpartial)
+
         r = response.body.readResponse
         if r.status.isSuccess:
             return r.record
@@ -176,14 +180,17 @@ class NetsuiteClient:
 
         The SearchResult envelope is returned (so that status, pageIndex, etc are included)
         """
-        result = self.client.service.search(
+        fpartial = functools.partial(
+            self.client.service.search,
             searchRecord=search_record,
             _soapheaders={
                 'searchPreferences': self.search_preferences,
                 'applicationInfo': self.app_info,
                 'passport': self.passport,
-            }
+            },
         )
+
+        result = self.api_call_with_retry(fpartial)
 
         return result.body.searchResult
 
@@ -196,15 +203,18 @@ class NetsuiteClient:
 
         The SearchResult envelope is returned (so that status, pageIndex, etc are included)
         """
-        result = self.client.service.searchMoreWithId(
+        fpartial = functools.partial(
+            self.client.service.searchMoreWithId,
             searchId=searchResult.searchId,
             pageIndex=searchResult.pageIndex+1,
             _soapheaders={
                 'searchPreferences': self.search_preferences,
                 'applicationInfo': self.app_info,
                 'passport': self.passport,
-            }
+            },
         )
+
+        result = self.api_call_with_retry(fpartial)
 
         return result.body.searchResult
 
@@ -247,13 +257,16 @@ class NetsuiteClient:
 
         The getAllResult envelope is returned so that status and totalRecords are included
         """
-        response = self.client.service.getAll(
+        fpartial = functools.partial(
+            self.client.service.getAll,
             record=get_all_record_type,
             _soapheaders={
                 'applicationInfo': self.app_info,
                 'passport': self.passport,
-            }
+            },
         )
+
+        response = self.api_call_with_retry(fpartial)
 
         return response.body.getAllResult
 
@@ -346,3 +359,53 @@ class NetsuiteClient:
             return classes[class_name]
         else:
             return None
+
+
+    def api_call_with_retry(self, partial_function):
+        sleep_seconds = 30
+        max_retries = 20
+
+        try:
+            result = partial_function()
+
+            self.failed_api_requests = 0
+
+            return result
+        except (HTTPError, ConnectTimeout) as err:
+            # Handle HTTP And ConnectTimeout errors
+            self.failed_api_requests += 1
+
+            if self.failed_api_requests < max_retries:
+                logging.info("Error during API Request: {}".format(err))
+                logging.info("({}) Sleeping for {} seconds and trying again.".format(
+                                        self.failed_api_requests,
+                                        sleep_seconds
+                                    )
+                )
+
+                time.sleep(sleep_seconds)
+                return self.api_call_with_retry(partial_function)
+
+            # Otherwise, report the error and exit
+            raise Error("NetSuite Call failed: {}".format(err))
+        except Fault as err:
+            # Handle NetSuite Supported errors
+            self.failed_api_requests += 1
+
+            if self.failed_api_requests < max_retries \
+              and ('exceededConcurrentRequestLimitFault' in err.detail[0].tag \
+                   or 'exceededRequestLimitFault' in err.detail[0].tag):
+                # NetSuite blocked us due to not allowed concurrent connections
+                # Wait for the predefined amount of seconds and retry
+                logging.info("API Request was blocked due to concurrent request limit.")
+                logging.info("({}) Sleeping for {} seconds and trying again.".format(
+                                        self.failed_api_requests,
+                                        sleep_seconds
+                                    )
+                )
+
+                time.sleep(sleep_seconds)
+                return self.api_call_with_retry(partial_function)
+
+            # Otherwise, report the error and exit
+            raise Error("NetSuite Call failed: {}".format(err))
