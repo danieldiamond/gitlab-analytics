@@ -3,6 +3,7 @@ view: zuora_ar {
     sql:
         SELECT zuora_account.entity__c AS entity,
                COALESCE(zuora_contact_bill.workemail,zuora_contact_sold.workemail) AS email,
+               COALESCE(zuora_contact_sold.firstname,zuora_contact_bill.firstname) AS owner,
                zuora_account.name,
                zuora_account.accountnumber,
                zuora_account.currency,
@@ -28,12 +29,26 @@ view: zuora_ar {
         ;;
   }
   #
+  dimension: 90_days_open_invoices {
+    #hidden: yes
+    type:  string
+    sql: ${beyond_90days_open_invoices.list_of_open_invoices} ;;
+
+  }
+
   dimension: send_email {
-    sql: name ;;
-    html: <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ email._value }}&cc=apiaseczna@gitlab.com&subject=Invoice - 90 Days Past Due?&body=Hi, %0D%0DThe invoice referenced below is 90 past due. In order to keep your GitLab account open.....%0D%0D{{invoice._value}}%0D%0DThanks!%0DGitLab Accounting" target="_blank">
+    hidden: yes
+    sql: ${acct_num} ;;
+    html: <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ email._value }}&cc=ar@gitlab.com&su={{customer._value}} invoice(s) are overdue&body=Hi {{owner._value}},
+                   %0D%0DI am reaching out to let you know that the GitLab invoice(s) below are 90 days overdue.
+                   %0D%0DThe current balance of the invoice(s) amount to {{balance._rendered_value}}
+                   %0D%0DIf you have not already done so, please take a moment to make the payment today.
+                   %0D%0DThe invoice can be paid via wire transfer or credit card.
+                   %0D%0DWe look forward to receiving your payment.
+                   %0D%0D{{90_days_open_invoices._value}}
+                   %0D%0DThank you," target="_blank">
           <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" width="16" height="16"/>
-          <a>
-          {{ linked_value }}
+          <a> Click icon to email
           ;;
   }
   #
@@ -64,7 +79,7 @@ view: zuora_ar {
   dimension: customer {
     description: "Customer"
     type: string
-    drill_fields: [send_email]
+    #drill_fields: [drill_1*]
     sql: ${TABLE}.name ;;
   }
   #
@@ -86,17 +101,29 @@ view: zuora_ar {
     sql: ${TABLE}.duedate ;;
   }
   #
+  dimension: owner {
+    description: "Customer Name"
+    type: string
+    sql: ${TABLE}.owner ;;
+  }
+  #
   measure: balance {
     description: "Balance due from Customer"
     type: sum
+    value_format: "$#,##0"
     sql: ${TABLE}.balance ;;
+    drill_fields: [entity,customer,acct_num,90_days_open_invoices,send_email,balance]
   }
   #
   measure: invoice_cnt {
     description: "Count from Customer"
     type: count_distinct
-    drill_fields: [entity,customer,acct_num,invoice,duedate,balance]
+    drill_fields: [entity,customer,acct_num,duedate,balance]
     sql: ${TABLE}.invoice ;;
+  }
+
+  measure: count {
+    type: count
   }
 
 }

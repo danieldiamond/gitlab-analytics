@@ -40,7 +40,16 @@ explore: bookings {
 }
 #
 explore: invoicing {
+  view_label: "Invoicing"
   from:  zuora_ar
   label: "A/R Aging"
   description: "A/R Oustanding"
+
+  join: beyond_90days_open_invoices {
+  fields: []
+  view_label: "Invoicing"
+  sql_on:     ${invoicing.customer} = ${beyond_90days_open_invoices.name}
+          AND ${invoicing.day_range} = ${beyond_90days_open_invoices.day_range};;
+  relationship: many_to_one
+  }
 }
