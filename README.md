@@ -6,6 +6,18 @@ Meltano is an open source convention-over-configuration product for data enginee
 
 Meltano stands for the [steps of the data engineering life-cycle](#data-engineering-lifecycle): Model, Extract, Load, Transform, Analyze, Notebook, and Orchestrate.
 
+## Data Engineering Lifecycle
+
+| Stage     | Meltano selected | OSS considered but not selected | Proprietary alternatives |
+| --------- | ------------ | -------------- | --------------------- |
+| Model | [dbt](https://blog.fishtownanalytics.com/how-do-you-decide-what-to-model-in-dbt-vs-lookml-dca4c79e2304) | Python scripts | [LookML](https://looker.com/platform/data-modeling), [Matillion](http://www.stephenlevin.co/data-modeling-layer-startup-analytics-dbt-vs-matillion-vs-lookml/) |
+| Extract   | [Singer](https://www.singer.io/) Tap, Python scripts | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
+| Load      | [Singer](https://www.singer.io/) Target, Python scripts | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
+| Transform | [dbt](https://www.getdbt.com/), Python scripts | Stored procedures, [Pentaho DI](http://www.pentaho.com/product/data-integration) | [Alooma](https://www.alooma.com/) |  
+| Analyze | [Superset](https://superset.incubator.apache.org/) | [D3.js](https://d3js.org/) | [Looker](https://looker.com/), [Periscope](https://www.periscopedata.com/) |
+| Notebooks | [JupyterHub](https://github.com/jupyterhub/jupyterhub) | [Metabase](https://www.metabase.com/) | [Nurtch](https://www.nurtch.com/), [Datadog notebooks](https://www.datadoghq.com/blog/data-driven-notebooks/) |
+| Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | [Fivetran](https://fivetran.com/) |
+
 ## Principles
 
 We believe that information is the foundation of good decisions, and that companies of all sizes deserve insights into their operations. So Meltano provides broad, democratized access to detailed operational metrics, thereby driving better decisions and shortening decision cycle time across the entire enterprise.
@@ -48,17 +60,7 @@ We are building Meltano to solve a problem that we share with all other software
 
 This should be a replacement for other ELT & Data Integration tools: [Boomi](https://boomi.com/), [Informatica Cloud](https://www.informatica.com/products/cloud-integration/cloud-data-integration.html), and [Alooma](https://www.alooma.com/).
 
-## Data Engineering Lifecycle
-
-| Stage     | Meltano selected | OSS considered but not selected | Proprietary alternatives |
-| --------- | ------------ | -------------- | --------------------- |
-| Model | [dbt](https://blog.fishtownanalytics.com/how-do-you-decide-what-to-model-in-dbt-vs-lookml-dca4c79e2304) | Python scripts | [LookML](https://looker.com/platform/data-modeling), [Matillion](http://www.stephenlevin.co/data-modeling-layer-startup-analytics-dbt-vs-matillion-vs-lookml/) |
-| Extract   | [Singer](https://www.singer.io/) Tap, Python scripts | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
-| Load      | [Singer](https://www.singer.io/) Target, Python scripts | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
-| Transform | [dbt](https://www.getdbt.com/), Python scripts | Stored procedures, [Pentaho DI](http://www.pentaho.com/product/data-integration) | [Alooma](https://www.alooma.com/) |  
-| Analyze | [Superset](https://superset.incubator.apache.org/) | [D3.js](https://d3js.org/) | [Looker](https://looker.com/), [Periscope](https://www.periscopedata.com/) |
-| Notebooks | [JupyterHub](https://github.com/jupyterhub/jupyterhub) | [Metabase](https://www.metabase.com/) | [Nurtch](https://www.nurtch.com/), [Datadog notebooks](https://www.datadoghq.com/blog/data-driven-notebooks/) |
-| Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | [Fivetran](https://fivetran.com/) |
+## At GitLab
 
 For now we use [PostgreSQL](https://www.postgresql.org/) as the warehouse but we're open to support others such as [MariaDB AX](https://mariadb.com/products/solutions/olap-database-ax), [Redshift](https://aws.amazon.com/redshift/), [MemSQL](https://www.memsql.com/), and [Snowflake](https://www.snowflake.net/).
 
