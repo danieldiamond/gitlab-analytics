@@ -13,7 +13,7 @@ Meltano stands for the [steps of the data engineering life-cycle](#data-engineer
 | Model | [dbt](https://blog.fishtownanalytics.com/how-do-you-decide-what-to-model-in-dbt-vs-lookml-dca4c79e2304) | Python scripts | [LookML](https://looker.com/platform/data-modeling), [Matillion](http://www.stephenlevin.co/data-modeling-layer-startup-analytics-dbt-vs-matillion-vs-lookml/) |
 | Extract   | Meltano Extract | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
 | Load      | Meltano Load | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/) | [Alooma](https://www.alooma.com/) |
-| Transform | [dbt](https://www.getdbt.com/), Python scripts | Stored procedures, [Pentaho DI](http://www.pentaho.com/product/data-integration) | [Alooma](https://www.alooma.com/) |  
+| Transform | [dbt](https://www.getdbt.com/) | Stored procedures, [Pentaho DI](http://www.pentaho.com/product/data-integration) | [Alooma](https://www.alooma.com/) |  
 | Analyze | [Superset](https://superset.incubator.apache.org/) | [D3.js](https://d3js.org/) | [Looker](https://looker.com/), [Periscope](https://www.periscopedata.com/) |
 | Notebooks | [JupyterHub](https://github.com/jupyterhub/jupyterhub) | [Metabase](https://www.metabase.com/) | [Nurtch](https://www.nurtch.com/), [Datadog notebooks](https://www.datadoghq.com/blog/data-driven-notebooks/) |
 | Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | [Fivetran](https://fivetran.com/) |
