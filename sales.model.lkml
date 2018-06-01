@@ -38,6 +38,13 @@ explore: f_opportunity {
     relationship: one_to_one
     sql_on: ${f_opportunity.ownerid} = ${sfdc_user.id} ;;
   }
+
+  join: dim_date {
+    view_label: "Close Date Info"
+    type: full_outer
+    relationship: one_to_one
+    sql_on: ${f_opportunity.closedate_date}=${dim_date.date_actual_date} ;;
+  }
 }
 
 explore: pipeline_change {
