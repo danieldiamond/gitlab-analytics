@@ -127,6 +127,44 @@ As development progresses, additional documentation on getting started along wit
 
 It is expected that the Meltano project will have many applications managed in the top level of the project. Some or parts of these applications could be useful to many organizations, and some may only be useful within GitLab. We have no plans on weighing the popularity of an individual application at the top level of the Meltano project for inclusion/exclusion. 
 
+### Meltano Extract
+
+_Meltano Extract is under development, consider it a moving target: API breakage are frequent and spontaneous._
+
+To satisfy our data integration needs, we started working on custom EL scripts, creating the Meltano fuse `meltano-extract-common` python module. 
+
+Features include:
+
+  - Automatic schema creation
+  - Automatic schema mutation
+  - Fields whitelisting
+  - Fields pseudonymization
+  - Job logging (recovery)
+  - CLI configuration
+  - REST data source
+  - SOAP data source
+  - SQL data source
+  
+Currently we are using this tool to extract data from the following data sources:
+  
+  - Zendesk
+  - Zuora
+  - NetSuite
+  - Marketo
+  - Lever
+  
+#### Architecture
+
+The `meltano-extract-common` is currently only a set of tools to help build EL scripts. It enforces very little structure on how the process should be handled.
+
+EL scripts should describe the `Schema` or the data source they try to integrate data from. This schema can then be applied to the data warehouse, if possible.
+
+EL scripts are responsible for extracting data that complies for the specified configuration options (incremental, full) and save them to an intermediary format (currently CSV).
+
+Then, using PostgreSQL `COPY FROM ...`, EL scripts should insert/upsert into the backend (warehouse).
+
+Job logging can also be provided to make the run persistent and recoverable.
+
 ### Local environment
 
 #### On the host machine
