@@ -9,6 +9,7 @@ view: dim_opportunitystage {
   }
 
   dimension: apiname {
+    label: "API Name"
     type: string
     sql: ${TABLE}.apiname ;;
   }
@@ -20,6 +21,7 @@ view: dim_opportunitystage {
   }
 
   dimension_group: createddate {
+    label: "Created"
     type: time
     timeframes: [
       raw,
@@ -40,11 +42,13 @@ view: dim_opportunitystage {
   }
 
   dimension: isclosed {
+    label: "Is Closed"
     type: yesno
     sql: ${TABLE}.isclosed ;;
   }
 
   dimension: iswon {
+    label: "Is Won"
     type: yesno
     sql: ${TABLE}.iswon ;;
   }
@@ -56,6 +60,7 @@ view: dim_opportunitystage {
   }
 
   dimension_group: lastmodifieddate {
+    label: "Last Modified"
     type: time
     timeframes: [
       raw,
@@ -89,6 +94,7 @@ view: dim_opportunitystage {
   }
 
   dimension: sortorder {
+    label: "Sort Order"
     type: number
     sql: ${TABLE}.sortorder ;;
   }
