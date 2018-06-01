@@ -170,9 +170,13 @@ Job logging can also be provided to make the run persistent and recoverable.
 Right now Meltano Load is part of the code of [Meltano Extract](#meltano-extract).
 We're planning on splitting it into a separate piece of code.
 
-## Python scripts
+### Python scripts
 
 Some transformations can't be done with DBT like API calls.
+
+### Stored procedures
+
+We don't use stored procedures because it is hard to version control it.
 
 ### Local environment
 
