@@ -165,6 +165,11 @@ Then, using PostgreSQL `COPY FROM ...`, EL scripts should insert/upsert into the
 
 Job logging can also be provided to make the run persistent and recoverable.
 
+### Meltano Load
+
+Right now Meltano Load is part of the code of [Meltano Extract](#meltano-extract).
+We're planning on splitting it into a separate piece of code.
+
 ### Local environment
 
 #### On the host machine
