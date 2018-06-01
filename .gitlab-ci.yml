@@ -65,11 +65,39 @@ stages:
     - using_proxy python3 elt/netsuite/src/ --schema netsuite backlog --days 15
     - stop_cloudsqlproxy
 
-# Stage: extract
+.zuora_extract: &zuora_extract
+  variables:
+    FIXED_ZUORA_PASSWORD: $ZUORA_PASSWORD
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
+    - using_proxy python3 elt/zuora/zuora_export.py
+    - stop_cloudsqlproxy
+  
+.pings_extract: &pings_extract 
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
+    - bash elt/util/run_daily_etl.sh
+    - stop_cloudsqlproxy
 
-## Production Jobs
-
-sfdc_extract:
+.domains_extract: &domains_extract
+  stage: extract
+  retry: 1
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy bash processes/hosts_to_sfdc/python_timecheck.sh
+    - stop_cloudsqlproxy
+  
+.sfdc_extract: &sfdc_extract
   variables:
     FIXED_SFDC_PASSWORD: $SFDC_PASSWORD
   stage: extract
@@ -83,56 +111,48 @@ sfdc_extract:
     - using_proxy kitchen.sh -file=elt/sfdc/sfdc_extract.kjb -level=Minimal
     - stop_cloudsqlproxy
 
-zuora:
-  variables:
-    FIXED_ZUORA_PASSWORD: $ZUORA_PASSWORD
-  stage: extract
-  <<: *job_definition
-  script:
-    - set_sql_instance_name
-    - setup_cloudsqlproxy
-    - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
-    - using_proxy python3 elt/zuora/zuora_export.py
-    - stop_cloudsqlproxy
+# Stage: extract
 
-pings_extract:
-  stage: extract
-  <<: *job_definition
-  script:
-    - set_sql_instance_name
-    - setup_cloudsqlproxy
-    - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
-    - bash elt/util/run_daily_etl.sh
-    - stop_cloudsqlproxy
+## Production Jobs
+
+sfdc:
+  <<: *sfdc_extract
+  only:
+    - master
+
+zuora:
+  <<: *zuora_extract
+  only:
+    - master
 
 pings:
-  stage: extract
-  retry: 1
-  <<: *job_definition
-  script:
-    - set_sql_instance_name
-    - setup_cloudsqlproxy
-    - using_proxy bash processes/hosts_to_sfdc/python_timecheck.sh
-    - stop_cloudsqlproxy
+  <<: *pings_extract
+  only:
+    - master
 
-marketo_extract:
+domains:
+  <<: *domains_extract
+  only:
+    - master
+
+marketo:
   <<: *marketo_extract
   only:
     - master
 
-zendesk_extract:
+zendesk:
   <<: *zendesk_extract
   retry: 1
   only:
     - master
 
-lever_extract:
+lever:
   <<: *lever_extract
   retry: 1
   only:
     - master
 
-netsuite_extract:
+netsuite:
   <<: *netsuite_extract
   retry: 1
   only:
@@ -153,7 +173,39 @@ netsuite_backlog_manual:
 
 ## Review Jobs
 
-marketo_extract_manual:
+sfdc_manual:
+  <<: *sfdc_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+zuora_manual:
+  <<: *zuora_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+pings_manual:
+  <<: *pings_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+domains_manual:
+  <<: *domains_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+marketo_manual:
   <<: *marketo_extract
   only:
     - branches
@@ -161,7 +213,7 @@ marketo_extract_manual:
     - master
   when: manual
 
-zendesk_extract_manual:
+zendesk_manual:
   <<: *zendesk_extract
   retry: 1
   only:
@@ -170,7 +222,7 @@ zendesk_extract_manual:
     - master
   when: manual
 
-lever_extract_manual:
+lever_manual:
   <<: *lever_extract
   retry: 1
   only:
@@ -179,7 +231,7 @@ lever_extract_manual:
     - master
   when: manual
 
-netsuite_extract_manual:
+netsuite_manual:
   <<: *netsuite_extract
   retry: 1
   only:
