@@ -13,7 +13,7 @@ Meltano stands for the [steps of the data science life-cycle](#data-engineering-
 | Model | [dbt](https://blog.fishtownanalytics.com/how-do-you-decide-what-to-model-in-dbt-vs-lookml-dca4c79e2304) | Python scripts | [LookML](https://looker.com/platform/data-modeling), [Matillion](http://www.stephenlevin.co/data-modeling-layer-startup-analytics-dbt-vs-matillion-vs-lookml/) |
 | Extract   | [Meltano Extract](#meltano-extract) | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/), [Singer Tap](https://www.singer.io/#taps) | [Alooma](https://www.alooma.com/) |
 | Load      | [Meltano Load](#meltano-load) | [Pentaho DI](http://www.pentaho.com/product/data-integration), [Talend](https://www.talend.com/), [Singer Target](https://www.singer.io/#targets) | [Alooma](https://www.alooma.com/) |
-| Transform | [dbt](https://www.getdbt.com/) | Stored procedures, [Pentaho DI](http://www.pentaho.com/product/data-integration) | [Alooma](https://www.alooma.com/) |  
+| Transform | [dbt](https://www.getdbt.com/), [Python scripts](#python-scripts) | Stored procedures, [Pentaho DI](http://www.pentaho.com/product/data-integration) | [Alooma](https://www.alooma.com/) |  
 | Analyze | [Superset](https://superset.incubator.apache.org/) | [D3.js](https://d3js.org/) | [Looker](https://looker.com/), [Periscope](https://www.periscopedata.com/) |
 | Notebooks | [JupyterHub](https://github.com/jupyterhub/jupyterhub) | [Metabase](https://www.metabase.com/) | [Nurtch](https://www.nurtch.com/), [Datadog notebooks](https://www.datadoghq.com/blog/data-driven-notebooks/) |
 | Orchestrate | [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/) | [Luigi](https://github.com/spotify/luigi), [Airflow](https://airflow.apache.org/) | [Fivetran](https://fivetran.com/) |
@@ -169,6 +169,10 @@ Job logging can also be provided to make the run persistent and recoverable.
 
 Right now Meltano Load is part of the code of [Meltano Extract](#meltano-extract).
 We're planning on splitting it into a separate piece of code.
+
+## Python scripts
+
+Some transformations can't be done with DBT like API calls.
 
 ### Local environment
 
