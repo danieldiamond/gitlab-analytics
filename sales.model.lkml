@@ -61,6 +61,13 @@ explore: pipeline_change {
     }
   }
 
+  join: dim_opportunitystage {
+    view_label: "Opportunity Stage"
+    type: inner
+    relationship: one_to_one
+    sql_on: ${pipeline_change.opportunity_stage_id} = ${dim_opportunitystage.id} ;;
+  }
+
 }
 
 explore: f_churn_history {
