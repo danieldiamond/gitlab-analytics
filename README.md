@@ -4,9 +4,9 @@
 
 Meltano is an open source convention-over-configuration product for data engineering, analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
 
-Meltano stands for the [steps of the data engineering life-cycle](#data-engineering-lifecycle): Model, Extract, Load, Transform, Analyze, Notebook, and Orchestrate.
+Meltano stands for the [steps of the data science life-cycle](#data-engineering-lifecycle): Model, Extract, Load, Transform, Analyze, Notebook, and Orchestrate.
 
-## Data Engineering Lifecycle
+## Data Science Lifecycle
 
 | Stage     | Meltano selected | OSS considered but not selected | Proprietary alternatives |
 | --------- | ------------ | -------------- | --------------------- |
