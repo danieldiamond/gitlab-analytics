@@ -47,11 +47,53 @@ explore: f_opportunity {
   }
 }
 
+explore: f_snapshot_opportunity {
+  label: "Historical Opportunities"
+  description: "Start here for questions around Sales data"
+
+  view_label: "Opportunity"
+
+  join: dim_account {
+    view_label: "Account"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${f_snapshot_opportunity.account_id} = ${dim_account.id} ;;
+  }
+
+  join: dim_leadsource {
+    view_label: "Lead Source"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${f_snapshot_opportunity.lead_source_id} = ${dim_leadsource.id} ;;
+  }
+
+  join: dim_opportunitystage {
+    view_label: "Opportunity Stage"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${f_snapshot_opportunity.opportunity_stage_id} = ${dim_opportunitystage.id} ;;
+  }
+
+#   join: sfdc_user {
+#     view_label: "Users"
+#     type: inner
+#     relationship: one_to_one
+#     sql_on: ${f_snapshot_opportunity.ownerid} = ${sfdc_user.id} ;;
+#   }
+
+  join: dim_date {
+    view_label: "Close Date Info"
+    type: full_outer
+    relationship: one_to_one
+    sql_on: ${f_snapshot_opportunity.opportunity_closedate}=${dim_date.date_actual_date} ;;
+  }
+}
+
 explore: pipeline_change {
   label: "Sales Pipeline Change"
   description: "Use this explore to look at the change in pipeline over time"
 
-  always_filter: {
+  conditionally_filter: {
     filters: {
       field: close_date
       value: "this month"
