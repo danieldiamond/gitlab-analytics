@@ -289,16 +289,6 @@ zuora_review:
 
 ![GitLab Internal Analytics Architecture](img/WIP_ GitLab_Analytics_Architecture.jpg)
 
-#### Staging Tables
-
-* We’ll want to stage our data before loading it into the data warehouse.
-* Local Postgres db's are a good choice if we are not using Cloud SQL.
-* Primarily used for transformation and data scrubbing prior to loading into the Data Warehouse.
-* Allows for data quality monitoring of source data.
-* Minimizes impact to production systems.
-* Ideally incremental loads (extract only what changed since the last extract).
-* Prevents need to query production db's impacting app performance
-
 #### Data Warehouse
 
 * Using Cloud SQL.
