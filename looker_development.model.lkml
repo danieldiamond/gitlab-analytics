@@ -1,4 +1,4 @@
-connection: "dev-bizops"
+connection: "production_dw"
 
 include: "*.view.lkml"         # include all views in this project
 
@@ -49,4 +49,9 @@ explore: sao {
   from:  sfdc_sao
   label: "SAOs"
   description: "List of SAOs"
+}
+
+explore: events {
+  from: events
+  label: "Snowplow Events"
 }
