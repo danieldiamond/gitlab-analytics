@@ -32,10 +32,6 @@ All GitLab employees have access to our Looker instance. We do not use Google Au
 - Slack - #analytics
 
 
-## GitLab Internal Analytics Architecture
-
-![GitLab Internal Analytics Architecture](https://gitlab.com/meltano/meltano/raw/master/img/WIP_%20GitLab_Analytics_Architecture.jpg)
-
 ## Core Data and Analytics Toolset
 
 ### Looker
@@ -47,6 +43,7 @@ All GitLab employees have access to our Looker instance. We do not use Google Au
 * [Looker Codev Training 2](https://drive.google.com/file/d/1wNM-xnkDOBXce-M0cX16pkiFjsf3woma/view?usp=sharing)
 * [Looker Codev Training 3](https://drive.google.com/file/d/1bKBtrCGxVRwXpYuYMXoD4XAqM1lzgdqL/view?usp=sharing)
 * [Looker Codev Training 4](https://drive.google.com/file/d/1xZbXVG85tA388r57QpRPR4-eLi54ixhL/view?usp=sharing)
+* [Looker Codev Training 5](https://drive.google.com/file/d/1RS3ALTjxh8VaNwt-q94Wbv_OYibsPzeR/view?usp=sharing)
 * [Looker Business User Training](https://drive.google.com/file/d/19RzwdtRDNWvDL7W81_CfjX6sWDo_nP2w/view?usp=sharing)
 
 #### Core Looker Definitions & Structure
