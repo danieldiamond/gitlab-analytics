@@ -4,20 +4,6 @@ include: "*.view.lkml"         # include all views in this project
 #include: "*.dashboard.lookml"  # include all dashboards in this project
 label: "finance"
 
-# # Select the views that should be a part of this model,
-# # and define the joins that connect them together.
-#
-# explore: order_items {
-#   join: orders {
-#     relationship: many_to_one
-#     sql_on: ${orders.id} = ${order_items.order_id} ;;
-#   }
-#
-#   join: users {
-#     relationship: many_to_one
-#     sql_on: ${users.id} = ${orders.user_id} ;;
-#   }
-# }
 explore: bookings {
   from: sfdc_opportunity
   label: "Bookings"
@@ -52,4 +38,15 @@ explore: invoicing {
           AND ${invoicing.day_range} = ${beyond_90days_open_invoices.day_range};;
   relationship: many_to_one
   }
+}
+
+explore: customers_and_arr {
+  from: zuora_current_arr
+  label: "Current ARR & Customers"
+}
+
+explore: pipeline {
+  from: sfdc_pipeline
+  label: "Sales Pipeline"
+  description: "Pipeline Opportunities"
 }
