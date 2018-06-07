@@ -50,3 +50,9 @@ explore: pipeline {
   label: "Sales Pipeline"
   description: "Pipeline Opportunities"
 }
+
+explore: closed_deals {
+  from: sfdc_closed_deals_acv
+  label: "Closed Deals"
+  description: "Closed Deals & ACV/New Customer"
+}
