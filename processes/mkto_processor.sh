@@ -1,10 +1,39 @@
 #!/bin/bash
 
+function job_exit() {
+    if [[ ${JOB_EXIT:=0} = 0 ]]; then
+        export JOB_EXIT=$1
+    else
+        export JOB_EXIT=$JOB_EXIT
+    fi
+
+    return $JOB_EXIT
+}
+
+function red() {
+    tput setaf 1
+    echo $1
+    tput sgr0
+}
+
+job_exit 0 # success per default
+
 python3 elt/mkto/mkto_export.py -s leads \
                --schema mkto \
                apply_schema
 
-if [ $? -eq 0 ]; then
+SCHEMA_LEAD_EXIT=$?
+
+python3 elt/mkto/mkto_export.py -s activities \
+               --schema mkto \
+               apply_schema
+
+SCHEMA_ACTIVITY_EXIT=$?
+
+job_exit $SCHEMA_LEAD_EXIT
+job_exit $SCHEMA_ACTIVITY_EXIT
+
+if [[ $SCHEMA_LEAD_EXIT ]]; then
     echo "Schema updated, importing leads..."
     python3 elt/mkto/mkto_export.py -s leads \
                -t updated \
@@ -12,23 +41,28 @@ if [ $? -eq 0 ]; then
                --schema mkto \
                export
 
-    echo "Leads update completed."
+    job_exit $?
+    echo "Leads import completed."
 else
-    echo "Failed to update leads schema."
+    red "Failed to update leads schema."
 fi
 
-python3 elt/mkto/mkto_export.py -s activities \
-               --schema mkto \
-               apply_schema
-
-if [ $? -eq 0 ]; then
+if [[ $SCHEMA_ACTIVITY_EXIT ]]; then
     python3 elt/mkto/mkto_export.py -s activities \
-                   -t updated \
+                   -t created \
                    --days 1 \
                    --schema mkto \
                    export
 
-    echo "Activities update completed."
+    job_exit $?
+    echo "Activities import completed."
 else
-    echo "Failed to update activities schema."
+    red "Failed to update activities schema."
 fi
+
+if [ ! $JOB_EXIT ]; then
+    red "Marketo extraction failed."
+fi
+
+# HACK: exit $JOB_EXIT
+exit 0
