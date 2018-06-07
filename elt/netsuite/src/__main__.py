@@ -37,9 +37,13 @@ def action_export(args):
 
     # Login
     if client.login():
+        # Extract data for all supported Entities
         entities_to_export = client.export_supported_entities()
 
         extract(args, entities_to_export)
+
+        # Extract the Transaction type and update the stored Transactions
+        extract_transaction_type(args)
     else:
         logging.info("Could NOT login to NetSuite - Script Failed")
 
@@ -60,7 +64,7 @@ def action_backlog(args):
     # Set the backlog range
     date_range = transaction_backlog(args)
 
-    if date_range is not None:
+    if date_range:
         args.days = None
         args.start = date_range[0].isoformat()
         args.end  = date_range[1].isoformat()
@@ -81,7 +85,8 @@ def action_backlog(args):
             logging.info("Transaction BackLog completed Successfully")
         else:
             logging.info("Could NOT login to NetSuite - Script Failed")
-
+    else:
+        logging.info("Transaction BackLog completed Successfully: No more data to fetch")
 
 def action_test(args):
     """

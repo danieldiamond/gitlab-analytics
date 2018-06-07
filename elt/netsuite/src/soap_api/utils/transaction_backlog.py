@@ -1,3 +1,4 @@
+import os
 import logging
 import psycopg2
 import psycopg2.sql
@@ -28,6 +29,10 @@ def transaction_backlog(args):
     """
     logging.info("Fetching Transaction BackLog")
 
+    # Earliest last_modified_date for transactions in NetSuite
+    # Used in order to stop the back filling job from going further back in time
+    earliest_date_to_check = os.getenv('NETSUITE_EARLIEST_DATE')
+
     if args.days is None or int(args.days) <= 0:
         logging.info("This operation needs the --days option in order to run")
         logging.info("Missing arguments - aborting backlog")
@@ -56,10 +61,15 @@ def transaction_backlog(args):
             logging.info("No data fetched yet - aborting backlog")
             return None
 
-        end_time = result[0].date() + datetime.timedelta(days=1)
-        start_time = result[0].date() - days
+        last_modified_date = result[0].date()
 
-        return (start_time, end_time)
+        if last_modified_date.isoformat() <= earliest_date_to_check:
+            # We have fetched everything - No need to keep on making requests
+            return None
+        else:
+            end_time = last_modified_date + datetime.timedelta(days=1)
+            start_time = last_modified_date - days
+            return (start_time, end_time)
     except psycopg2.Error as err:
         logging.info("No schema created yet - aborting backlog")
         return None
