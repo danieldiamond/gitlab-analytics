@@ -379,6 +379,8 @@ New user roles are added to a specific role via:
 
 ```sql
 CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE metarole;
+
+ALTER ROLE newrole WITH LOGIN;
 ```
 
 New readonly and analytics users are then given instructions via Google Drive on how to connect their computer to the CloudSQL Proxy and on how to change their password once they login.
