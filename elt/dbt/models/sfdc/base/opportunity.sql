@@ -6,6 +6,7 @@ SELECT
   TYPE,
   closedate,
   sql_source__c,
+  competitors__c,
   sales_segmentation_o__c,
   sales_qualified_date__c,
   sales_accepted_date__c,

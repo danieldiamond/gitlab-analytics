@@ -59,6 +59,7 @@ SELECT o.sfdc_id AS opportunity_id
          END AS is_risky
        , o.days_in_stage
        , o.lastactivitydate
+       , o.competitors__C
        , i.qty AS quantity
        , i.iacv
        , i.renewal_acv
