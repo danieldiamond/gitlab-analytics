@@ -144,7 +144,8 @@ zendesk:
   retry: 1
   only:
     - master
-
+  when: manual
+  
 lever:
   <<: *lever_extract
   retry: 1
@@ -156,7 +157,6 @@ netsuite:
   retry: 1
   only:
     - master
-  when: manual
 
 netsuite_backlog_manual:
   stage: extract
