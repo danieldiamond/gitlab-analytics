@@ -41,6 +41,24 @@ view: f_opportunity {
     sql: ${TABLE}.billing_period ;;
   }
 
+  dimension: competitor_unpacked {
+    label: "Competitors - Unpacked"
+    description: "Warning! This will cause double counting of opportunities and values because the opportunity is copied for each competitor listed!"
+    type: string
+    sql: unnest(string_to_array(${TABLE}.competitors__c, ';')) ;;
+    # drill_fields: [detail*]
+    link: {
+      label: "Explore from here"
+      url: "https://gitlab.looker.com/explore/sales/f_opportunity?f[f_opportunity.closedate_date]={{ _filters['f_opportunity.closedate_date'] | url_encode }}&f[dim_opportunitystage.mapped_stage]={{ _filters['dim_opportunitystage.mapped_stage'] | url_encode }}&f[dim_opportunitystage.isclosed]={{ _filters['dim_opportunitystage.isclosed'] | url_encode }}&f[f_opportunity.competitors]=%25{{ value }}%25&fields=f_opportunity.opportunity_name,f_opportunity.opportunity_type,dim_opportunitystage.mapped_stage,f_opportunity.iacv"
+    }
+  }
+
+  dimension: competitors {
+    label: "Competitors List"
+    type: string
+    sql: ${TABLE}.competitors__c ;;
+  }
+
   dimension: iacv {
     type: number
     hidden: yes
