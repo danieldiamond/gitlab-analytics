@@ -176,7 +176,7 @@ Some transformations can't be done with DBT like API calls.
 
 ### Stored procedures
 
-We don't use stored procedures because it is hard to version control it.
+We don't use stored procedures because they are hard to keep under version control.
 
 ### Local environment
 
