@@ -210,7 +210,7 @@ view: pipeline_change {
     order_by_field: order
     link: {
       label: "Explore from here"
-      url: "https://gitlab.looker.com/explore/sales/pipeline_change?f[pipeline_change.category]={{ pipeline_change.category }}&f[pipeline_change.close_date]={{ _filters['pipeline_change.close_date'] | url_encode }}&f[pipeline_change.date_range]={{ _filters['pipeline_change.date_range'] | url_encode }}&f[pipeline_change.metric_type]={{ _filters['pipeline_change.metric_type'] | url_encode }}&fields=pipeline_change.opportunity_name,pipeline_change.opportunity_type,dim_opportunitystage.mapped_stage,pipeline_change.iacv"
+      url: "https://gitlab.looker.com/explore/sales/pipeline_change?f[pipeline_change.category]={{ pipeline_change.category }}&f[pipeline_change.close_date]={{ _filters['pipeline_change.close_date'] | url_encode }}&f[pipeline_change.date_range]={{ _filters['pipeline_change.date_range'] | url_encode }}&f[pipeline_change.metric_type]={{ _filters['pipeline_change.metric_type'] | url_encode }}&fields=pipeline_change.opportunity_name,pipeline_change.opportunity_type,dim_opportunitystage.mapped_stage,pipeline_change.total_iacv"
     }
   }
 
