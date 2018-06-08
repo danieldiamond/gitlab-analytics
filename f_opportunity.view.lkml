@@ -49,7 +49,7 @@ view: f_opportunity {
     # drill_fields: [detail*]
     link: {
       label: "Explore from here"
-      url: "https://gitlab.looker.com/explore/sales/f_opportunity?f[f_opportunity.closedate_date]={{ _filters['f_opportunity.closedate_date'] | url_encode }}&f[dim_opportunitystage.mapped_stage]={{ _filters['dim_opportunitystage.mapped_stage'] | url_encode }}&f[dim_opportunitystage.isclosed]={{ _filters['dim_opportunitystage.isclosed'] | url_encode }}&f[f_opportunity.competitors]=%25{{ value }}%25&fields=f_opportunity.opportunity_name,f_opportunity.opportunity_type,dim_opportunitystage.mapped_stage,f_opportunity.iacv"
+      url: "https://gitlab.looker.com/explore/sales/f_opportunity?f[f_opportunity.closedate_date]={{ _filters['f_opportunity.closedate_date'] | url_encode }}&f[dim_opportunitystage.mapped_stage]={{ _filters['dim_opportunitystage.mapped_stage'] | url_encode }}&f[dim_opportunitystage.isclosed]={{ _filters['dim_opportunitystage.isclosed'] | url_encode }}&f[f_opportunity.competitors]=%25{{ value }}%25&fields=f_opportunity.opportunity_name,f_opportunity.opportunity_type,dim_opportunitystage.mapped_stage,f_opportunity.total_iacv"
     }
   }
 
