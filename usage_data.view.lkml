@@ -293,7 +293,7 @@ view: usage_data {
 
   measure: gke_clusters {
     group_label: "Clusters: Total"
-    label: "GKE Clusters"
+    label: "GitLab Provisioned Clusters"
     type: sum
     sql: ${clusters_platforms_gke} ;;
   }
@@ -307,6 +307,7 @@ view: usage_data {
 
   measure: existing_clusters {
     group_label: "Clusters: Total"
+    label: "Existing Clusters"
     type: sum
     sql: ${clusters_platforms_existing} ;;
   }
