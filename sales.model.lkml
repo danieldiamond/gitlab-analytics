@@ -33,7 +33,7 @@ explore: f_opportunity {
   }
 
   join: sfdc_user {
-    view_label: "Users"
+    view_label: "Opportunity Owner"
     type: inner
     relationship: one_to_one
     sql_on: ${f_opportunity.ownerid} = ${sfdc_user.id} ;;
@@ -74,12 +74,12 @@ explore: f_snapshot_opportunity {
     sql_on: ${f_snapshot_opportunity.opportunity_stage_id} = ${dim_opportunitystage.id} ;;
   }
 
-#   join: sfdc_user {
-#     view_label: "Users"
-#     type: inner
-#     relationship: one_to_one
-#     sql_on: ${f_snapshot_opportunity.ownerid} = ${sfdc_user.id} ;;
-#   }
+  join: sfdc_user {
+    view_label: "Users"
+    type: inner
+    relationship: one_to_one
+    sql_on: ${f_snapshot_opportunity.ownerid} = ${sfdc_user.id} ;;
+  }
 
   join: dim_date {
     view_label: "Close Date Info"
@@ -117,6 +117,12 @@ explore: pipeline_change {
     sql_on: ${pipeline_change.opportunity_stage_id} = ${dim_opportunitystage.id} ;;
   }
 
+  join: sfdc_user {
+    view_label: "Opportunity Owner"
+    type: inner
+    relationship: one_to_one
+    sql_on: ${pipeline_change.ownerid} = ${sfdc_user.id} ;;
+  }
 }
 
 explore: f_churn_history {

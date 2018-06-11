@@ -72,7 +72,7 @@ view: f_opportunity {
   }
 
   dimension_group: closedate {
-    label: "Opportunity Close"
+    label: "Close"
     type: time
     timeframes: [
       raw,
@@ -88,14 +88,14 @@ view: f_opportunity {
   }
 
   dimension: opportunity_id {
-    label: "SFDC Opportunity ID"
+    label: "ID"
     description: "The 18 char SFDC Opportunity ID"
     type: string
     sql: ${TABLE}.opportunity_id ;;
   }
 
   dimension: opportunity_name {
-    label: "SFDC Opportunity Name"
+    label: "Name"
     description: "The name of the opportunity record from Salesforce."
     type: string
     sql: ${TABLE}.opportunity_name ;;
@@ -115,7 +115,7 @@ view: f_opportunity {
   }
 
   dimension: opportunity_sales_segmentation {
-    label: "Opportunity Sales Segmentation"
+    label: "Sales Segmentation"
     type: string
     sql: ${TABLE}.opportunity_sales_segmentation ;;
   }
@@ -128,7 +128,7 @@ view: f_opportunity {
   }
 
   dimension: opportunity_type {
-    label: "Opportunity Type"
+    label: "Type"
     description: "The SFDC opportunity type (New, Renewal,Add-On Business)"
     type: string
     sql: ${TABLE}.opportunity_type ;;

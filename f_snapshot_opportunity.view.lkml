@@ -11,13 +11,21 @@ view: f_snapshot_opportunity {
   }
 
   dimension: account_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.account_id ;;
   }
 
   dimension: lead_source_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.lead_source_id ;;
+  }
+
+  dimension: ownerid {
+    hidden: yes
+    type: string
+    sql:${TABLE}.ownerid ;;
   }
 
   dimension: opportunity_closedate {
@@ -65,42 +73,31 @@ view: f_snapshot_opportunity {
     type: unquoted
   }
 
-#   dimension: agg_metric {
-#     label: "Timespan"
-#     description: "Use the Agg Metric filter to choose"
-#     type: number
-#     sql: CASE
-#           WHEN {% parameter agg_span %} = 'Daily' THEN ${opportunity_closedate}
-#           WHEN {% parameter agg_span %} = 'Week' THEN ${opportunity_closedate}
-# --          WHEN {% parameter agg_span %} = 'Renewal ACV' THEN ${total_renewal_acv}
-#           --WHEN {% parameter agg_span %} = 'TCV' THEN ${total_tcv}
-#         END ;;
-#     label_from_parameter: agg_span
-#   }
-
-
-
   dimension: opportunity_id {
     type: string
     sql: ${TABLE}.opportunity_id ;;
   }
 
   dimension: opportunity_name {
+    label: "Name"
     type: string
     sql: ${TABLE}.opportunity_name ;;
   }
 
   dimension: opportunity_sales_segmentation {
+    label: "Sales Segmentation"
     type: string
     sql: ${TABLE}.opportunity_sales_segmentation ;;
   }
 
   dimension: opportunity_stage_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.opportunity_stage_id ;;
   }
 
   dimension: opportunity_type {
+    label: "Type"
     type: string
     sql: ${TABLE}.opportunity_type ;;
   }
