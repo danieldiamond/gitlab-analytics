@@ -41,6 +41,7 @@ SELECT o.sfdc_opportunity_id AS opportunity_id
        , o.Renewal_ACV
        , o.acv
        , o.tcv
+       , o.ownerid
 FROM  ss_opportunity o 
 INNER JOIN oppstage s ON o.stagename=s.masterlabel
 INNER JOIN leadsource l on o.leadsource=l.Initial_Source
@@ -65,7 +66,8 @@ SELECT opportunity_id,
        SUM(iacv) iacv,
        SUM(renewal_acv) renewal_acv,
        SUM(acv) acv,
-       SUM(tcv) tcv
+       SUM(tcv) tcv,
+       ownerid
 FROM analytics.f_opportunity
 GROUP BY opportunity_id,
          account_id,
@@ -77,5 +79,6 @@ GROUP BY opportunity_id,
          sales_accepted_date,
          sales_qualified_source,
          opportunity_closedate,
-         opportunity_name
+         opportunity_name,
+         ownerid
 
