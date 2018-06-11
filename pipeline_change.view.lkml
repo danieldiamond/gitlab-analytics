@@ -220,6 +220,7 @@ view: pipeline_change {
   }
 
   dimension: opportunity_id {
+    hidden: yes
     type: string
     sql: ${TABLE}.opportunity_id ;;
   }
@@ -231,28 +232,39 @@ view: pipeline_change {
   }
 
   dimension: account_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.account_id ;;
   }
 
   dimension: opportunity_stage_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.opportunity_stage_id ;;
   }
 
   dimension: lead_source_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.lead_source_id ;;
   }
 
   dimension: opportunity_type {
+    label: "Type"
     type: string
     sql: ${TABLE}.opportunity_type ;;
   }
 
   dimension: opportunity_sales_segmentation {
+    label: "Sales Segmentation"
     type: string
     sql: ${TABLE}.opportunity_sales_segmentation ;;
+  }
+
+  dimension: ownerid {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.ownerid ;;
   }
 
   dimension_group: sales_qualified {
@@ -273,12 +285,14 @@ view: pipeline_change {
   }
 
   dimension_group: opportunity_close {
+    label: "Close"
     type: time
     timeframes: [raw, date]
     sql: ${TABLE}.opportunity_closedate ;;
   }
 
   dimension: opportunity_name {
+    label: "Name"
     type: string
     sql: ${TABLE}.opportunity_name ;;
 
@@ -314,8 +328,6 @@ view: pipeline_change {
     type: number
     sql: ${TABLE}.tcv ;;
   }
-
-
 
 
   parameter: metric_type {
@@ -391,8 +403,6 @@ view: pipeline_change {
   measure: count {
     type: count
   }
-
-
 
   set: detail {
     fields: [
