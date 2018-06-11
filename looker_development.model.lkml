@@ -50,8 +50,3 @@ explore: sao {
   label: "SAOs"
   description: "List of SAOs"
 }
-
-explore: events {
-  from: events
-  label: "Snowplow Events"
-}
