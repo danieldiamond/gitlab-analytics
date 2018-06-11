@@ -123,6 +123,7 @@ zuora:
   <<: *zuora_extract
   only:
     - master
+  when: manual
 
 pings:
   <<: *pings_extract
