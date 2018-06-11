@@ -400,6 +400,10 @@ Some of the GitLab specific ELTs connect to databases which are in peered GCP pr
 
 We welcome contributions and improvements, please see the [contribution guidelines](CONTRIBUTING.md)
 
+## Needs Attention
+
+Issues labeled [Danger Will Robinson](https://gitlab.com/groups/meltano/-/issues?label_name%5B%5D=danger+will+robinson) are created for developers to stop everything, and work on this issue right now. 
+
 # License
 
 This code is distributed under the MIT license, see the [LICENSE](LICENSE) file.
