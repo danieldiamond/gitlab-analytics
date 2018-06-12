@@ -305,7 +305,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>48</xloc>
-      <yloc>1024</yloc>
+      <yloc>1018</yloc>
     </entry>
     <entry>
       <name>opportunity_extract</name>
@@ -351,7 +351,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>848</xloc>
-      <yloc>1024</yloc>
+      <yloc>1076</yloc>
     </entry>
     <entry>
       <name>acount_extract</name>
@@ -387,7 +387,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>96</yloc>
+      <yloc>90</yloc>
     </entry>
     <entry>
       <name>campaign_extract</name>
@@ -423,7 +423,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>160</yloc>
+      <yloc>148</yloc>
     </entry>
     <entry>
       <name>campaignmember</name>
@@ -459,7 +459,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>224</yloc>
+      <yloc>206</yloc>
     </entry>
     <entry>
       <name>contact</name>
@@ -495,7 +495,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>288</yloc>
+      <yloc>264</yloc>
     </entry>
     <entry>
       <name>Leads</name>
@@ -531,7 +531,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>368</yloc>
+      <yloc>322</yloc>
     </entry>
     <entry>
       <name>OppotunityContactRole</name>
@@ -567,7 +567,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>432</yloc>
+      <yloc>380</yloc>
     </entry>
     <entry>
       <name>User</name>
@@ -603,7 +603,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>496</yloc>
+      <yloc>438</yloc>
     </entry>
     <entry>
       <name>UserRole</name>
@@ -639,7 +639,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>560</yloc>
+      <yloc>496</yloc>
     </entry>
     <entry>
       <name>opportunitylineitem</name>
@@ -675,7 +675,43 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>624</yloc>
+      <yloc>554</yloc>
+    </entry>
+    <entry>
+      <name>opportunityhistory</name>
+      <description />
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id />
+      <filename>${CI_PROJECT_DIR}/elt/sfdc/opportunityhistory.ktr</filename>
+      <transname />
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile />
+      <logext />
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name />
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <logging_remote_work>N</logging_remote_work>
+      <run_configuration>Pentaho local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>288</xloc>
+      <yloc>612</yloc>
     </entry>
     <entry>
       <name>opportunitystage</name>
@@ -711,7 +747,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>688</yloc>
+      <yloc>670</yloc>
     </entry>
     <entry>
       <name>pricebookentry</name>
@@ -747,7 +783,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>752</yloc>
+      <yloc>728</yloc>
     </entry>
     <entry>
       <name>Product2</name>
@@ -783,7 +819,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>816</yloc>
+      <yloc>786</yloc>
     </entry>
     <entry>
       <name>recordtype</name>
@@ -819,7 +855,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>880</yloc>
+      <yloc>844</yloc>
     </entry>
     <entry>
       <name>z_billingaccount</name>
@@ -855,7 +891,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>944</yloc>
+      <yloc>902</yloc>
     </entry>
     <entry>
       <name>z_product</name>
@@ -891,7 +927,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>1008</yloc>
+      <yloc>960</yloc>
     </entry>
     <entry>
       <name>Quote</name>
@@ -927,7 +963,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>1088</yloc>
+      <yloc>1134</yloc>
     </entry>
     <entry>
       <name>QuoteRatePlans</name>
@@ -963,7 +999,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>1152</yloc>
+      <yloc>1192</yloc>
     </entry>
     <entry>
       <name>QuoteRatePlanCharge</name>
@@ -999,7 +1035,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>1216</yloc>
+      <yloc>1250</yloc>
     </entry>
     <entry>
       <name>Subscription</name>
@@ -1035,7 +1071,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>1280</yloc>
+      <yloc>1308</yloc>
     </entry>
     <entry>
       <name>propductrateplan</name>
@@ -1071,7 +1107,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>1344</yloc>
+      <yloc>1366</yloc>
     </entry>
     <entry>
       <name>productrateplancharge</name>
@@ -1107,7 +1143,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>288</xloc>
-      <yloc>1408</yloc>
+      <yloc>1424</yloc>
     </entry>
     <entry>
       <name>productrateplanchargetier</name>
@@ -1143,7 +1179,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>304</xloc>
-      <yloc>1488</yloc>
+      <yloc>1482</yloc>
     </entry>
     <entry>
       <name>SubscriptionProductCharge</name>
@@ -1179,7 +1215,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>304</xloc>
-      <yloc>1552</yloc>
+      <yloc>1540</yloc>
     </entry>
     <entry>
       <name>z_zproduct</name>
@@ -1215,7 +1251,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>304</xloc>
-      <yloc>1616</yloc>
+      <yloc>1598</yloc>
     </entry>
   </entries>
   <hops>
@@ -1392,6 +1428,24 @@
     </hop>
     <hop>
       <from>opportunitylineitem</from>
+      <to>Success</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>START</from>
+      <to>opportunityhistory</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>opportunityhistory</from>
       <to>Success</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
