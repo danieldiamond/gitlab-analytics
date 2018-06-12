@@ -12,7 +12,7 @@ from requests.auth import HTTPBasicAuth
 from elt.cli import DateWindow
 from elt.utils import compose
 from elt.db import db_open
-from elt.error import ExceptionAggregator, Error
+from elt.error import ExceptionAggregator, SchemaError
 from elt.schema import DBType, Schema
 from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
 import schema.ticket as ticket
@@ -83,9 +83,8 @@ def export_file(args, start_time, end_time):
         try:
             schema = ticket.describe_schema(args)
             yield flatten_csv(args, schema, envelope['tickets'])
-        except Error as e:
-            logging.error(e)
-            raise e
+        except SchemaError as e:
+            logging.warn(e)
 
 
 def flatten_csv(args, schema, entries):
@@ -109,11 +108,14 @@ def flatten_csv(args, schema, entries):
 
 def flatten(schema: Schema, table_name, entry):
     flat = {}
-    results = ExceptionAggregator(KeyError)
+    results = ExceptionAggregator(SchemaError)
 
     for k, v in entry.items():
         column_key = (table_name, k)
-        db_type = results.call(schema.columns.__getitem__, column_key).data_type
+        column = results.call(schema.__getitem__, column_key)
+
+        if not column: continue
+        db_type = column.data_type
         flat[k] = flatten_value(db_type, v)
         # print("{} -[{}]-> {}".format(v, db_type, flat[k]))
 
