@@ -509,7 +509,7 @@
     <password>${SFDC_PASSWORD}</password>
     <timeout>60000</timeout>
     <useCompression>N</useCompression>
-    <module>OpportunityHistory</module>
+    <condition>SystemModStamp = LAST_N_DAYS:3</condition>
     <condition />
     <specifyQuery>N</specifyQuery>
     <query />
