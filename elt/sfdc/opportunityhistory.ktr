@@ -430,7 +430,7 @@
     <created_date>2018/06/12 08:33:20.358</created_date>
     <modified_user>-</modified_user>
     <modified_date>2018/06/12 08:33:20.358</modified_date>
-    <key_for_session_key />
+    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
@@ -494,6 +494,103 @@
     </hop>
   </order>
   <step>
+    <name>Insert / Update</name>
+    <type>InsertUpdate</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>PG</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema>sfdc</schema>
+      <table>opportunityhistory</table>
+      <key>
+        <name>Opportunity History ID</name>
+        <field>id</field>
+        <condition>=</condition>
+        <name2 />
+      </key>
+      <value>
+        <name>isdeleted</name>
+        <rename>Deleted</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>systemmodstamp</name>
+        <rename>System Modstamp</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>forecastcategory</name>
+        <rename>To ForecastCategory</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>probability</name>
+        <rename>Probability</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>closedate</name>
+        <rename>Close Date</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>amount</name>
+        <rename>Amount</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>expectedrevenue</name>
+        <rename>Expected Revenue</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>stagename</name>
+        <rename>Stage Name</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>createddate</name>
+        <rename>Created Date</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>createdbyid</name>
+        <rename>Created By ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>opportunityid</name>
+        <rename>Opportunity ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>id</name>
+        <rename>Opportunity History ID</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>416</xloc>
+      <yloc>144</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Salesforce Input</name>
     <type>SalesforceInput</type>
     <description />
@@ -504,13 +601,13 @@
       <method>none</method>
       <schema_name />
     </partitioning>
-     <targeturl>${SFDC_URL}</targeturl>
+    <targeturl>${SFDC_URL}</targeturl>
     <username>${SFDC_USERNAME}</username>
     <password>${SFDC_PASSWORD}</password>
     <timeout>60000</timeout>
     <useCompression>N</useCompression>
+    <module>OpportunityHistory</module>
     <condition>SystemModStamp = LAST_N_DAYS:3</condition>
-    <condition />
     <specifyQuery>N</specifyQuery>
     <query />
     <include_targeturl>N</include_targeturl>
@@ -710,103 +807,6 @@
     <GUI>
       <xloc>208</xloc>
       <yloc>128</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Insert / Update</name>
-    <type>InsertUpdate</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <connection>Data Warehouse</connection>
-    <commit>100</commit>
-    <update_bypassed>N</update_bypassed>
-    <lookup>
-      <schema>sfdc</schema>
-      <table>opportunityhistory</table>
-      <key>
-        <name>Opportunity History ID</name>
-        <field>id</field>
-        <condition>=</condition>
-        <name2 />
-      </key>
-      <value>
-        <name>isdeleted</name>
-        <rename>Deleted</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>systemmodstamp</name>
-        <rename>System Modstamp</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>forecastcategory</name>
-        <rename>To ForecastCategory</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>probability</name>
-        <rename>Probability</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>closedate</name>
-        <rename>Close Date</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>amount</name>
-        <rename>Amount</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>expectedrevenue</name>
-        <rename>Expected Revenue</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>stagename</name>
-        <rename>Stage Name</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>createddate</name>
-        <rename>Created Date</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>createdbyid</name>
-        <rename>Created By ID</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>opportunityid</name>
-        <rename>Opportunity ID</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>id</name>
-        <rename>Opportunity History ID</rename>
-        <update>Y</update>
-      </value>
-    </lookup>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>416</xloc>
-      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
