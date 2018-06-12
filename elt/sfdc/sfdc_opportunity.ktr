@@ -1033,6 +1033,11 @@
         <update>Y</update>
       </value>
       <value>
+        <name>professional_services_value__c</name>
+        <rename>Professional Services Value</rename>
+        <update>Y</update>
+      </value>
+      <value>
         <name>first_12_months__c</name>
         <rename>First 12 Months</rename>
         <update>Y</update>
@@ -4790,6 +4795,20 @@
         <group />
         <length>1300</length>
         <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Professional Services Value</name>
+        <field>Professional_Services_Value__c</field>
+        <idlookup>N</idlookup>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>0</length>
+        <precision>18</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
       </field>
