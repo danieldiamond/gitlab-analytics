@@ -56,6 +56,18 @@ We are building Meltano to solve a problem that we share with all other software
   * Seamless handle some schema changes, like a field rename
   * Match user fields to common data model, without intervention
 
+## Data security and privacy
+
+When using Meltano, like any data science tool, it is imoprtant to consider the security and privacy implications.
+
+* Meltano expects the required credentials for each extractor to be stored as a project variable. Project members with the role Master or Owner will be able to see these in plaintext, as well as any instance wide administrators. If you are using GitLab.com, this includes select GitLab employees responsible for the service.
+  * Support for KMS systems is being considered for a future release.
+* Because these variables are passed to GitLab CI jobs, it is possible to accidentally or maliciously compromise them. 
+  * For example a developer who normally cannot see the variables in project settings, could accidentally print the environment variables when debugging a CI job, causing them to be readable by a wider audience than intended.
+  * Similarly it is possible for a malicious developer to utilize the variables to extract data from a source, then send it to an unauthorized destination.
+  * These risks can be mitigated by restricting the production variables to only protected branches, so code is reviewed before it is able run with access to the credentials.
+* When designing your data warehouse, consider any relevant laws and regulations, like GDPR. For example, historical data being retained as part of a snapshot could present challenges in the event a user requests to be forgotten.
+
 ### Competition & Value
 
 This should be a replacement for other ELT & Data Integration tools: [Boomi](https://boomi.com/), [Informatica Cloud](https://www.informatica.com/products/cloud-integration/cloud-data-integration.html), and [Alooma](https://www.alooma.com/).
@@ -69,6 +81,14 @@ We use dbt for testing too, instead of [Great Expectations](https://github.com/g
 At GitLab we're using Looker instead of Superset, for sure for the rest of 2018.
 If we switch we'll want to make sure that most of the functionality can be replicated in Superset, and the switch will be gradual.
 For now try to keep as much functionality as possible in DBT instead of Looker.
+
+### Meltano data security and privacy at GitLab
+
+We take user security and privacy seriously at GitLab. We internally use Meltano to learn about how users interact with GitLab.com, build a better product, and efficiently run our organization. We adhere to the following guidelines:
+
+1. GitLab employees have access to the data warehouse and can see pseudonymized data. In some cases due to public projects, it is possible to tie a pseudonymized account to a public account. It is not possible to learn the private projects a user is working on or contents of their communications.
+1. We will never release the pseudonymized data set publicly, in the event it is possible to reverse engineer unintended content.
+1. Select GitLab employees have administrative access to GitLab.com, and the credentials used for our extractors. As [noted above](#data-security-and-privacy), developers on the Meltano project could maliciously emit credentials into a job log, however the logs are not publicly available.
 
 ## Metrics
 
