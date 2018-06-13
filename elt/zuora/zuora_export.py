@@ -11,7 +11,6 @@ import io
 import sys
 
 from requests.auth import HTTPBasicAuth
-from sqlalchemy import desc
 from elt.job import Job, State
 from elt.utils import compose, slugify, setup_db
 from elt.db import DB
@@ -19,7 +18,7 @@ from elt.process import create_tmp_table, update_set_stmt
 from elt.schema import schema_apply
 from elt.error import Error, ExtractError
 from schema import PG_SCHEMA, describe_schema, field_column_name
-from config import JOB_VERSION, DATE_MIN, environment, getPGCreds, getZuoraFields, getObjectList
+from config import JOB_VERSION, environment, getPGCreds, getZuoraFields, getObjectList
 
 
 class DownloadError(Error):
@@ -57,26 +56,6 @@ def recover_jobs(item):
 
     logging.info("Found {} failed job for {}.".format(len(failed_jobs), elt_uri))
     return failed_jobs
-
-
-def item_incremental_time(item):
-    with DB.session() as session:
-        elt_uri = item_elt_uri(item)
-        last_job = session.query(Job).filter_by(state=State.SUCCESS, elt_uri=elt_uri) \
-                                     .order_by(desc(Job.started_at)) \
-                                     .first()
-
-    import pdb; pdb.set_trace()
-    date = job_start_date(last_job) or DATE_MIN
-    return date.strftime("%Y-%m-%d %H:%M:%S")
-
-
-def job_start_date(job):
-    raw_date = job.payload.get('http_response', {}).get('startTime')
-
-    if not raw_date: return None
-
-    return datetime.datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%S%z")
 
 
 def item_elt_uri(item):
@@ -145,7 +124,7 @@ def load_extract_job(job, job_id):
             job.payload['file_id'] = file_id
             Job.save(job)
             break
-        time.sleep(30)
+        time.sleep(5)
 
     return job
 
@@ -228,7 +207,7 @@ def db_write_full(item):
 
         cursor.execute(truncate)
         cursor.copy_expert(file=file, sql=copy)
-        logging.info('Completed copying records to ' + item + ' table.')
+        logging.info('Complteted copying records to ' + item + ' table.')
 
     os.remove(item + '.csv')
 
@@ -283,7 +262,7 @@ def db_write_incremental(item):
         cursor.execute(drop_query)
         mydb.commit()
 
-        logging.info("Completed updating records to {} table.".format(item))
+        logging.info("Completed copying records to {} table.".format(item))
     os.remove(item + '.csv')
 
 
@@ -320,7 +299,6 @@ def zuora_query_params(item):
         "useQueryLabels": "true",
         "partner": environment['partner_id'],
         "project": environment['project_id'],
-        "incrementalTime": item_incremental_time(item),
         "queries": [
             {
                 "name": item,

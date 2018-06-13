@@ -2,11 +2,9 @@ import os
 import re
 
 from configparser import SafeConfigParser
-from datetime import datetime
 
 
 JOB_VERSION = 1
-DATE_MIN = datetime(2013, 1, 1)
 
 
 def parse_environment():
