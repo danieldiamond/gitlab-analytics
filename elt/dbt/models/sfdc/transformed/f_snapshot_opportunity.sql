@@ -68,7 +68,7 @@ SELECT opportunity_id,
        SUM(acv) acv,
        SUM(tcv) tcv,
        ownerid
-FROM analytics.f_opportunity
+FROM curr_snapshot
 GROUP BY opportunity_id,
          account_id,
          opportunity_stage_id,
