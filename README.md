@@ -58,9 +58,9 @@ We are building Meltano to solve a problem that we share with all other software
 
 ## Data security and privacy
 
-When using Meltano, like any data science tool, it is imoprtant to consider the security and privacy implications.
+When using Meltano, like any data science tool, it is important to consider the security and privacy implications.
 
-* Meltano expects the required credentials for each extractor to be stored as a project variable. Project members with the role `Master` or `Owner` will be able to see these in plaintext, as well as any instance wide administrators. If you are using GitLab.com, this includes select GitLab employees responsible for the service.
+* Meltano expects the required credentials for each extractor to be stored as a project variable. Project members with the role [`Maintainer` or `Owner`](https://docs.gitlab.com/ee/user/permissions.html#project-members-permissions) will be able to see these in plaintext, as well as any instance wide administrators. If you are using GitLab.com, this includes select GitLab employees responsible for the service.
   * Support for KMS systems is being considered for a future release.
 * Because these variables are passed to GitLab CI jobs, it is possible to accidentally or maliciously compromise them. 
   * For example a developer who normally cannot see the variables in project settings, could accidentally print the environment variables when debugging a CI job, causing them to be readable by a wider audience than intended.
