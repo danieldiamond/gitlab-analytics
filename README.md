@@ -406,7 +406,7 @@ At Gitlab we use dbt for data transformation, as referenced in "Tools" above. Wh
 - Reviewers should have 48 hours to complete a review, so plan ahead with the end of your sprint.
 - When possible, questions/problems should be discussed with your reviewer before MR time. MR time is by definition the worst possible time to have to make meaningful changes to your models, because you’ve already done all of the work!
 
-## Model Configuration
+#### Model Configuration
 
 - Model-specific attributes (like sort/dist keys) should be specified in the model.
 - If a particular configuration applies to all models in a directory, it should be specified in the project.
