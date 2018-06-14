@@ -23,6 +23,14 @@ dim_leadsource:
         unique:
             - id
 
+dim_opphistory:
+    constraints:
+        not_null:
+            - id
+            - opportunity_id
+        unique:
+            - id
+
 f_opportunity:
     constraints:
         not_null:
@@ -89,7 +97,15 @@ quotelineitems:
             - id
             - opportunity_id
         unique:
-            - id 
+            - id
+
+sfdc_opportunityhistory:
+    constraints:
+        not_null:
+            - id
+            - opportunity_id
+        unique:
+            - id
 
 snapshot_opportunity:
     constraints:
