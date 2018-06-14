@@ -253,7 +253,7 @@ dbt:
     - dbt -d run --profiles-dir profile --target prod --models sfdc
     - dbt -d run --profiles-dir profile --target version --models pings
     - dbt -d run --profiles-dir profile --target prod --models zuora
-    - dbt -d test --profiles-dir profile
+    - dbt -d test --profiles-dir profile --target prod --models sfdc
     - stop_cloudsqlproxy
   
 # Stage: update 
