@@ -1,5 +1,5 @@
 WITH opphistory AS (
-		SELECT * FROM {{ ref('opportunityhistory') }}
+		SELECT * FROM {{ ref('sfdc_opportunityhistory') }}
 ),
 
 stages AS (
@@ -8,7 +8,7 @@ stages AS (
 
 SELECT
     o.*,
-   s.mapped_stage
+    s.mapped_stage
 FROM opphistory o
 JOIN stages s
 ON o.stagename = s.masterlabel
