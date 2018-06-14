@@ -3,3 +3,6 @@ wwright:
     is_superuser: no
     member_of:
         - readonly
+    owns:
+        schemas:
+          - wwright_scratch
