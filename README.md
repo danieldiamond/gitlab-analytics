@@ -188,7 +188,7 @@ The most standard setup using Python 3.5.
 You might want to customize the `.env.example` file according to your needs.
 
 ```
-$ cp .env.example > .env
+$ cp .env.example .env
 ```
 
 Then, create the virtualenv using `pipenv`:
