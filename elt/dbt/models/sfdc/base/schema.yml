@@ -1,0 +1,110 @@
+account: 
+    constraints: 
+        not_null: 
+            - sfdc_account_id
+            - type
+        unique:
+            - sfdc_account_id
+
+dim_account:
+    constraints:
+        not_null:
+            - id
+            - sfdc_account_id
+            - type
+        unique:
+            - id
+            - sfdc_account_id
+
+dim_leadsource:
+    constraints:
+        not_null:
+            - id
+        unique:
+            - id
+
+f_opportunity:
+    constraints:
+        not_null:
+            - opportunity_id
+            - account_id
+            - opportunity_stage_id
+            - lead_source_id
+            - ownerid
+
+f_snapshot_opportunity:
+    constraints:
+        not_null:
+            - opportunity_id
+            - snapshot_date
+            - account_id
+            - opportunity_stage_id
+            - lead_source_id
+            - ownerid    
+
+#leadsource: no tests here because this is a essentially a list
+
+lineitems: 
+    constraints:
+        not_null:
+            - id
+            - opportunity_id
+        unique:
+            - id 
+
+mapped_stages:
+    constraints:
+        not_null:
+            - id
+        unique:
+            - id 
+
+nolineitems:
+    constraints:
+        not_null:
+            - id
+            - opportunity_id
+        unique:
+            - id 
+
+opplineitems:
+    constraints:
+        not_null:
+            - id
+            - opportunity_id
+        unique:
+            - id 
+
+opportunity:
+    constraints:
+        not_null:
+            - sfdc_id
+            - ownerid
+        unique:
+            - sfdc_id
+
+quotelineitems:
+    constraints:
+        not_null:
+            - id
+            - opportunity_id
+        unique:
+            - id 
+
+snapshot_opportunity:
+    constraints:
+        not_null:
+            - sfdc_opportunity_id
+            - snapshot_date
+            - ownerid    
+
+users:
+    constraints:
+        not_null:
+            - id
+            - name
+            - email
+            - manager_id
+            - manager_name
+        unique:
+            - id
