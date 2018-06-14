@@ -12,7 +12,7 @@ from requests.auth import HTTPBasicAuth
 from elt.cli import DateWindow
 from elt.utils import compose
 from elt.db import db_open
-from elt.error import ExceptionAggregator, Error
+from elt.error import ExceptionAggregator, Error, ExtractError
 from elt.schema import DBType, Schema
 from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
 import schema.candidate as candidate
@@ -20,7 +20,7 @@ import schema.candidate as candidate
 # Lever API details: https://hire.lever.co/developer/documentation
 USER = os.getenv("LEVER_API_KEY")
 TOKEN = ''
-ENDPOINT = "https://api.lever.co/v1/"
+ENDPOINT = "https://api.lever.co/v1"
 PAGE_SIZE = 100
 
 
@@ -64,9 +64,13 @@ def export_file(args, start_time, end_time):
             "offset": offset,
         }
 
-        api_response = requests.get(stages_url,
-                                params=payload,
-                                auth=get_auth()).json()
+        api_response = handle_lever_response(
+                         requests.get(
+                            stages_url,
+                            params=payload,
+                            auth=get_auth()
+                         )
+                       )
 
         return {x['id']: x['text'] for x in api_response['data']}
 
@@ -100,9 +104,9 @@ def export_file(args, start_time, end_time):
         if args.only_offers:
             payload['stage_id'] = 'offer'
 
-        return requests.get(candidates_url,
-                            params=payload,
-                            auth=get_auth())
+        return handle_lever_response(
+                 requests.get(candidates_url, params=payload, auth=get_auth())
+               )
 
 
     def transform_candidates_response(envelope):
@@ -166,10 +170,11 @@ def export_file(args, start_time, end_time):
         return envelope['hasNext'] == False
 
     while not finished(envelope):
-        api_response = get_candidates(envelope).json()
+        api_response = get_candidates(envelope)
 
-        # ToDo: Do some Error Code checking that everything is OK
-        #        and that this is a valid response with data inside it
+        if len(api_response['data']) == 0:
+            # No more data to fetch
+            break
 
         envelope = transform_candidates_response(api_response)
 
@@ -183,6 +188,19 @@ def export_file(args, start_time, end_time):
         except Error as e:
             logging.error(e)
             raise e
+
+
+def handle_lever_response(response):
+    if response.status_code != 200:
+        logging.error("Received HTTP {} from endpoint.".format(response.status_code))
+        logging.error("Error: {}".format(response.json()))
+        raise ExtractError("Received HTTP {} from endpoint.".format(response.status_code))
+
+    parsed = response.json()
+    if 'data' in parsed:
+        return parsed
+
+    raise ExtractError("Lever Error: {}".format(parsed))
 
 
 def flatten_csv(args, schema, entries):
