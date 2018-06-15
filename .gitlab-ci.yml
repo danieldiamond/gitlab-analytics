@@ -37,7 +37,7 @@ stages:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/zendesk/src --schema zendesk apply_schema
-    - using_proxy python3 elt/zendesk/src --schema zendesk --days=1 export
+    - using_proxy python3 elt/zendesk/src --schema zendesk --days=10 export
     - stop_cloudsqlproxy
 
 .lever_extract: &lever_extract
@@ -123,7 +123,6 @@ zuora:
   <<: *zuora_extract
   only:
     - master
-  when: manual
 
 pings:
   <<: *pings_extract
@@ -145,7 +144,6 @@ zendesk:
   retry: 1
   only:
     - master
-  when: manual
   
 lever:
   <<: *lever_extract
