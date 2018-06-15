@@ -27,7 +27,7 @@ dim_opphistory:
     constraints:
         not_null:
             - id
-            - opportunity_id
+            - opportunityid
         unique:
             - id
 
