@@ -103,7 +103,7 @@ sfdc_opportunityhistory:
     constraints:
         not_null:
             - id
-            - opportunity_id
+            - opportunityid
         unique:
             - id
 
