@@ -132,18 +132,6 @@ explore: pipeline_change {
   }
 }
 
-# explore: dim_opphistory {
-#   view_label: "Opportunity History"
-
-#   join: sfdc_user {
-#     view_label: "Users"
-#     type: inner
-#     relationship: one_to_one
-#     sql_on: ${dim_opphistory.ownerid} = ${sfdc_user.id} ;;
-#   }
-
-# }
-
 explore: f_churn_history {
   label: "Parent Account Churn History"
   description: "Use this explore to look at parent subscription churn"
