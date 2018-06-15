@@ -25,6 +25,16 @@ view: f_opportunity {
     sql: ${TABLE}.days_in_stage ;;
   }
 
+  dimension: deal_size {
+    type: string
+    sql: ${TABLE}.deal_size ;;
+  }
+
+  dimension: is_won {
+    type: yesno
+    sql: ${TABLE}.is_won ;;
+  }
+
   dimension: risk_level {
     label: "Is Risky"
     type: yesno
