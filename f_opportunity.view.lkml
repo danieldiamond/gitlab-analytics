@@ -28,6 +28,7 @@ view: f_opportunity {
   dimension: deal_size {
     type: string
     sql: ${TABLE}.deal_size ;;
+    drill_fields: [opportunity_name]
   }
 
   dimension: is_won {
