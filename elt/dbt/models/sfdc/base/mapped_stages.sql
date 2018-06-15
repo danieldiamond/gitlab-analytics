@@ -36,5 +36,6 @@ SELECT
     THEN '7-Closed'
   ELSE
     'Unmapped'
-  END AS mapped_stage
+  END AS mapped_stage,
+  iswon AS is_won
 FROM sfdc.opportunitystage
