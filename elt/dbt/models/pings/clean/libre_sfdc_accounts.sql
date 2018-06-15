@@ -32,6 +32,7 @@ FROM sfdc.account sf
   INNER JOIN host_data AS host
     ON host.company_name = sf.name
 WHERE sf.isdeleted = FALSE
+      AND sf.type != 'Customer'
       AND (host.active_user_count != sf.active_ce_users__c OR sf.active_ce_users__c IS NULL)
       AND sf.name NOT IN ('Microsoft', 'Amazon.com')
 
@@ -55,5 +56,6 @@ FROM sfdc.account sf
   INNER JOIN host_data AS host
     ON host.clean_domain = regexp_replace(sf.website, '^(http(s)?\://)?www\.', '')
 WHERE sf.isdeleted = FALSE
+      AND sf.type != 'Customer'
       AND (host.active_user_count != sf.active_ce_users__c OR sf.active_ce_users__c IS NULL)
       AND sf.name NOT IN ('Microsoft', 'Amazon.com')

@@ -11,12 +11,12 @@ from toolz import dicttoolz
 from hosts_to_sfdc.dw_setup import host, username, password, database
 
 
-sf_username= os.environ.get('SFDC_USERNAME')
-sf_password= os.environ.get('SFDC_PASSWORD')
+sf_username= os.environ.get('SBOX_USERNAME')
+sf_password= os.environ.get('SBOX_PASSWORD')
 # Empty string b/c we're storing the password with the security token
 sf_security_token= ''
 
-sf = Salesforce(username=sf_username, password=sf_password, security_token=sf_security_token, sandbox=True)
+sf = Salesforce(username=sf_username, password=sf_password, security_token=sf_security_token, sandbox=False)
 
 mydb = psycopg2.connect(host=host, user=username,
                             password=password, dbname=database)
@@ -173,6 +173,7 @@ def generate_accounts():
 
     # Checks for Accounts that were created by the API user
     # This is the meltano, formerly bflood user
+    # Could also filter by  AND AccountSource='CE Download'
     sfdc_account_query = sf.bulk.Account.query("SELECT Id, Name, Website FROM Account WHERE CreatedById='00561000002rDx1'")
 
     # Generates a unique string to compare against
