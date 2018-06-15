@@ -11,10 +11,9 @@ from toolz import dicttoolz
 from hosts_to_sfdc.dw_setup import host, username, password, database
 
 
-sf_username= os.environ.get('SBOX_USERNAME')
-sf_password= os.environ.get('SBOX_PASSWORD')
-# Empty string b/c we're storing the password with the security token
-sf_security_token= ''
+sf_username= os.environ.get('SFDC_USERNAME')
+sf_password= os.environ.get('SFDC_PASSWORD_NOTOKEN')
+sf_security_token= os.environ.get('SFDC_SECURITY_TOKEN')
 
 sf = Salesforce(username=sf_username, password=sf_password, security_token=sf_security_token, sandbox=False)
 
