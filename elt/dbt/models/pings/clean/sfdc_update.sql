@@ -7,8 +7,8 @@ WITH external_combined AS (
       coalesce(dorg.company_emp, cbit.company_emp)           AS numberofemployees,
       coalesce(dorg.company_phone, cbit.company_phone)       AS phone
     FROM
-      discoverorg_cache AS dorg
-      FULL OUTER JOIN clearbit_cache AS cbit
+      public.discoverorg_cache AS dorg
+      FULL OUTER JOIN public.clearbit_cache AS cbit
         ON dorg.domain = cbit.domain
     WHERE
       dorg.company_name IS NOT NULL AND cbit.company_name IS NOT NULL
@@ -22,7 +22,7 @@ SELECT
   coalesce(sf.description, external_combined.description)                             AS description,
   coalesce(sf.numberofemployees :: TEXT, external_combined.numberofemployees :: TEXT) AS numberofemployees,
   coalesce(sf.phone, external_combined.phone)                                    AS phone
-FROM sfdc_sandbox.account AS sf
+FROM sfdc.account AS sf
   INNER JOIN external_combined ON
                                 sf.name = external_combined.name
                                 OR regexp_replace(sf.website, '^(http(s)?\://)?www\.', '') = external_combined.domain

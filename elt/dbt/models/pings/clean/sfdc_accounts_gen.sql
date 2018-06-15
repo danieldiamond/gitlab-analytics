@@ -28,9 +28,11 @@ host files (uniquely identified by the clean_domain) where there is no name matc
     (
       SELECT
         id,
-        name
+        name,
+        type
       FROM sfdc.account) AS sf
       ON lah.company_name = sf.name
+      AND sf.type != 'Customer'
   WHERE sf.name IS NULL
         AND clean_domain !~ '\d+\.\d+.\d+\.\d+'
         AND lah.company_name NOT IN ('Microsoft', 'Amazon.com')
@@ -45,19 +47,22 @@ SELECT
   max(name)                    AS name,
   website                      AS website,
   'Prospect - CE User' :: TEXT AS type,
-  '00561000000mpHTAAY' :: TEXT AS OwnerId,
-  'True' :: BOOLEAN            AS using_ce__c
+  '00561000000mpHTAAY' :: TEXT AS ownerid,
+  'True' :: BOOLEAN            AS using_ce__c,
+  'CE Download' :: TEXT        AS accountsource
 FROM name_match AS lah
 LEFT OUTER JOIN
   (
     SELECT
       sfdc.id,
+      sfdc.type,
       sfdc.website                                              AS original,
       regexp_replace(sfdc.website, '^(http(s)?\://)?www\.', '') AS fixed
     FROM sfdc.account AS sfdc
     WHERE website IS NOT NULL
   ) AS sf
     ON lah.website = sf.fixed
+    AND sf.type != 'Customer'
 WHERE sf.fixed IS NULL
       AND website !~ '\d+\.\d+.\d+\.\d+'
       AND lah.name NOT IN ('Microsoft', 'Amazon.com')
