@@ -65,6 +65,8 @@ SELECT o.sfdc_id AS opportunity_id
        , i.renewal_acv
        , i.acv
        , i.tcv
+       , o.deal_size
+       , o.is_won
 FROM lineitems i
 INNER JOIN opportunity o ON i.opportunity_id=o.sfdc_id
 INNER JOIN oppstage s ON o.stagename=s.masterlabel

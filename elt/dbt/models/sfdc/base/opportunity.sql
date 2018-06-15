@@ -1,5 +1,9 @@
+WITH stages AS (
+        SELECT * FROM {{ ref('mapped_stages') }}
+)
+
 SELECT
-  id             AS sfdc_id,
+  o.id             AS sfdc_id,
   accountid,
   stagename,
   leadsource,
@@ -28,7 +32,19 @@ SELECT
   WHEN incremental_acv__c > 100000
     THEN TRUE
   ELSE FALSE END AS over_100k,
+  CASE WHEN
+    incremental_acv_2__c :: DECIMAL < 5000
+    THEN '1 - Small (<5k)'
+  WHEN incremental_acv_2__c :: DECIMAL >= 5000 AND incremental_acv_2__c :: DECIMAL < 25000
+    THEN '2 - Medium (5k - 25k)'
+  WHEN incremental_acv_2__c :: DECIMAL >= 25000 AND incremental_acv_2__c :: DECIMAL < 100000
+    THEN '3 - Big (25k - 100k)'
+  WHEN incremental_acv_2__c :: DECIMAL >= 100000
+    THEN '4 - Jumbo (>100k)'
+  ELSE '5 - Unknown' END                                          AS deal_size,
   push_counter__c,
+  s.is_won,
   lastactivitydate -- will need to be replaced
-FROM sfdc.opportunity
-WHERE isdeleted = FALSE
+FROM sfdc.opportunity o
+INNER JOIN stages s ON o.stagename=s.masterlabel
+WHERE o.isdeleted = FALSE

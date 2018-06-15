@@ -26,10 +26,8 @@ dim_leadsource:
 dim_opphistory:
     constraints:
         not_null:
-            - id
             - opportunityid
-        unique:
-            - id
+
 
 f_opportunity:
     constraints:
@@ -120,7 +118,5 @@ users:
             - id
             - name
             - email
-            - manager_id
-            - manager_name
         unique:
             - id
