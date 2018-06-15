@@ -37,7 +37,7 @@ stages:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/zendesk/src --schema zendesk apply_schema
-    - using_proxy python3 elt/zendesk/src --schema zendesk --days=10 export
+    - using_proxy python3 elt/zendesk/src --schema zendesk --days=1 export
     - stop_cloudsqlproxy
 
 .lever_extract: &lever_extract
