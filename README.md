@@ -18,15 +18,17 @@ All GitLab employees have access to our Looker instance. We do not use Google Au
 ​
 
 ## Department Spaces, Dashboards & Looks
-							
-[Engineering](https://gitlab.looker.com/spaces/24)|[Finance ](https://gitlab.looker.com/spaces/16)|[Investor ](https://gitlab.looker.com/spaces/20)|[Marketing ]|[PeopleOps ]|[Product ](https://gitlab.looker.com/spaces/18)|[Sales ](https://gitlab.looker.com/spaces/28)|[Support ]
--- | -- | -- | -- | -- | -- | -- | -- |
-[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()|[Dashboard 1]()
-[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()|[Dashboard 2]()
-||||||||
-[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()|[Look 1]()
-[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()|[Look 2]()
-||||||||
+
+Functional Group|Dashboards|Looks|
+-- | -- | -- |							
+[Engineering](https://gitlab.looker.com/spaces/24)|[Dashboard 1]()|[Look 1]()|
+[Finance ](https://gitlab.looker.com/spaces/16)|[Dashboard 1]()|[Look 1]()|
+[Investor ](https://gitlab.looker.com/spaces/20)|[Dashboard 1]()|[Look 1]()|
+[Marketing ]|[Dashboard 1]()|[Look 1]()|
+[PeopleOps ]|[Dashboard 1]()|[Look 1]()|
+[Product ](https://gitlab.looker.com/spaces/18)|[Dashboard 1]()|[Look 1]()|
+[Sales ](https://gitlab.looker.com/spaces/28)|<ul><li>[Sales Forecast](https://gitlab.looker.com/dashboards/25)</li><li>[Sales Metrics](https://gitlab.looker.com/dashboards/28)</li><li>[Sales Rep & Manager 1:1](https://gitlab.looker.com/dashboards/29)</li></ul>|
+[Support |[Dashboard 1]()|[Look 1]()|
 
 ### GitLab Looker Help
 - Slack - #analytics
@@ -103,6 +105,15 @@ For effective development and consistency, general guidelines have been added be
 - Only include specific fields that answer the question needed for analysis. Do not include fields that won't be used
 - Don't use full outer joins
 - Don’t use many-to-many joins
+- Default colors are `#4b4ba3, #7c7ccc, #e05842, #fca121, #2e87e0, #37b96d, #707070, #bababa, #494C5` based on the GitLab [style guide](https://design.gitlab.com/styles/colors).
+- Max of 2 decimal places for numbers
+- `$#,##0` is an appropriate format for most dollar values.
+- Each dashboard should only be focused on one time frame and a date filter should apply to every visualization equally. 
+- A visualization looking at historical data, for example by month, should not include the present month (because it's not a comparison of apples to apples). 
+- Allow the consumer of a visualization to do some work but not so much that it would dissuade them from consuming the visualization. Reduce clutter/labels where their presence will be redundant (e.g. where the Y axis already has numbers, it may be redundant to also label it "Count of X").
+- Definitions should be established and then applied to dashboard/looks/explores equally everywhere. Definitions should be done at the upper-most level, so that business-logic changes in the future do not need to be maintained in multiple places.
+- Comparisons of bookings values should be against Plan (Company-approved plan), Target (Goal based on industry benchmarks), or Forecast (Approved forecast, if different from Plan.)
+
 
 #### Spaces
 There are two primary spaces from a user perspective: "Shared" and your personal space named after your user. Access these via the "Browse" dropdown. It is strongly recommended that you initially develop all looks and dashboards in your personal space first and then move or copy them to a relevant sub-space within the "Shared" space when they're ready.
