@@ -49,4 +49,9 @@ view: sfdc_user {
     type:  string
     sql: ${TABLE}.manager_id ;;
   }
+
+  dimension: employee_tags {
+    type: string
+    sql: ${TABLE}.employee_tags ;;
+  }
 }

@@ -45,6 +45,13 @@ explore: f_opportunity {
     relationship: one_to_one
     sql_on: ${f_opportunity.closedate_date}=${dim_date.date_actual_date} ;;
   }
+
+  join: dim_opphistory {
+    view_label: "Stage History"
+    type: inner
+    relationship: one_to_many
+    sql_on: ${f_opportunity.opportunity_id}=${dim_opphistory.opportunityid} ;;
+  }
 }
 
 explore: f_snapshot_opportunity {
@@ -124,6 +131,18 @@ explore: pipeline_change {
     sql_on: ${pipeline_change.ownerid} = ${sfdc_user.id} ;;
   }
 }
+
+# explore: dim_opphistory {
+#   view_label: "Opportunity History"
+
+#   join: sfdc_user {
+#     view_label: "Users"
+#     type: inner
+#     relationship: one_to_one
+#     sql_on: ${dim_opphistory.ownerid} = ${sfdc_user.id} ;;
+#   }
+
+# }
 
 explore: f_churn_history {
   label: "Parent Account Churn History"
