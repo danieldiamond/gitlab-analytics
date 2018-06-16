@@ -24,9 +24,11 @@ We believe that information is the foundation of good decisions, and that compan
 
 In addition, believe that the information a business uses to make decisions must come from all parts of that business. Meltano joins data from multiple systems used by Sales, Marketing, Product and others, thereby providing a comprehensive view of the relationship between business activities, associated costs, and customer long-term value.
 
-## Meeting Agenda
+## Media
 
-[Meeting Agenda](https://docs.google.com/document/d/1nayKquFLL8DN3h8mnLo3pVZsEKyPcBgQm2mqc5GggPA)
+- [Google Docs Meeting Agenda](https://docs.google.com/document/d/1nayKquFLL8DN3h8mnLo3pVZsEKyPcBgQm2mqc5GggPA)
+- [Youtube Channel](https://www.youtube.com/channel/UCmp7zJAZEC7I_n9BEydH8XQ/videos)
+- [Issue board](https://gitlab.com/meltano/meltano/boards/528368?=)
 
 ## Approach
 
