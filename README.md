@@ -292,7 +292,7 @@ zuora_review:
 #### Data Warehouse
 
 * Using Cloud SQL.
-* Consolidated repository of all source data - scrubbed and modeled into a format optimized for analytic workliads (Dimensional model).
+* Consolidated repository of all source data - scrubbed and modeled into a format optimized for analytic workloads (Dimensional model).
 * Serves as the Single Source of Truth for reporting, analysis, and visualization applications.
 * Will need to be audited regularly back to the source.
 * Should not be generally available - will require strict access controls for direct querying not done through a controlled application such as metabase.
