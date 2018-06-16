@@ -32,17 +32,22 @@ In addition, believe that the information a business uses to make decisions must
 
 ## Approach
 
-### Meltano is a product within GitLab.
-For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers. There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer lifecycle.
+### Meltano is the market (data science) lifecycle, just like GitLab is the product (DevOps) lifecycle.
 
-### Meltano is open core and built upon open source tools.
-Open core within GitLab provides the broadest possible access to core Meltano features while allowing GitLab to generate revenue with features critical to large enterprises. Building on an open source toolset also provides collaboration opportunities to improve tooling, establish best practices, and move more quickly.
+For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers. There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer lifecycle. This evolution is as follows:
 
-### Meltano is BI as code.
+1. Business intelligence, this is the current state of the project.
+2. Data science, add more machine learning (ML) and Artificial Intelligence (AI)
+3. Market lifecycle, the complete go-to-market lifecycle with the user/customer jouney.
+
+### Meltano is business intelligence (BI) as code.
 Meltano uses GitLab CI/CD to setup and maintain its stack, so software and scripts required are checked into SCM with the attendant benefits: full version control, history, easy collaboration and reviews. Automated management of the BI environment means it is easy to make alterations, re-deploy in the event of an issue or outage, as well as provision new environments for different uses like a staging server.
 
-### Meltano works for GitLab first.
-We are building Meltano to solve a problem that we share with all other software companies - how to acquire the highest-value customers at the lowest cost of acquisition?  We are solving this problem for ourselves first, incorporating what we learn along the way into a product that delivers practical and quantifiable value to our customers.
+### Evolution from an internal project, to a community, to open core
+
+1. We are building Meltano to solve a problem that GitLab share with all other software companies - how to acquire the highest-value customers at the lowest cost of acquisition?  We are solving this problem for ourselves first, incorporating what we learn along the way into a product that delivers practical and quantifiable value to our customers.
+2. Next we'll focus on building a community around Meltano with more users and regular contributiors to the code base.
+3. Right now Meltano is completely open source. After we have a community we'll introduce propietary features to have a sustainable business model to do quality control, marketing, security, dependency upgrades, and performance improvements. We'll always be good [stewards similar to GitLab](https://about.gitlab.com/stewardship/).
 
 ## Roadmap
 
