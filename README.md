@@ -1,5 +1,8 @@
 [![pipeline status](https://gitlab.com/meltano/meltano/badges/master/pipeline.svg)](https://gitlab.com/meltano/meltano/commits/master)
 
+[Keynote PDF](https://drive.google.com/open?id=1oNiCtHkorYKq19kx8CwGr8Z7QCjVQiOj)  
+[Keynote](https://drive.google.com/open?id=1WmleHjP41nsxszGV50ionZKx-b2X3PvF)
+
 # Meltano
 
 Meltano is an open source convention-over-configuration product for data engineering, analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
