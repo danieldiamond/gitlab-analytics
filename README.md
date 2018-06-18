@@ -375,12 +375,12 @@ The `readonly` role was generated using the following commands:
 ```sql
 CREATE ROLE readonly;
 
-GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora to readonly;
 
-GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to readonly;
+GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora to readonly;
 
 -- Ensures all future tables are available to the role
-ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora 
+ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora 
   GRANT SELECT ON TABLES TO readonly;
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA sandbox TO readonly;
@@ -393,12 +393,12 @@ The `analytics` role was generated using the following commands:
 
 CREATE ROLE analytics;
 
-GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+GRANT USAGE on SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora to analytics;
 
-GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora to analytics;
+GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora to analytics;
 
 -- Ensures all future tables are available to the role
-ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, version, zuora 
+ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, customers, gitlab, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora 
   GRANT SELECT ON TABLES TO analytics;
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA analytics, public, sandbox TO analytics;
