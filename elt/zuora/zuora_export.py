@@ -64,7 +64,7 @@ def item_incremental_time(item):
 
     if INCREMENTAL_DATE is not None:
         logging.info("ZUORA_INCREMENTAL_DATE_OVERRIDE is set: {}".format(INCREMENTAL_DATE))
-        return INCREMENTAL_DATE.strftime(FORMAT)
+        return INCREMENTAL_DATE
 
     with DB.session() as session:
         elt_uri = item_elt_uri(item)
