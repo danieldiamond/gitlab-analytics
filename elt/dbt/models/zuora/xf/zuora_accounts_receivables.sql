@@ -14,7 +14,7 @@ WITH zuora_invoice_base AS (
 ), zuora_invoice AS(
 
 	SELECT *, 
-		DATE_PART('day', due_date - CURRENT_DATE) as days_until_due
+		abs(DATE_PART('day', due_date - CURRENT_DATE)) as days_until_due
 	FROM zuora_invoice_base
 
 )
