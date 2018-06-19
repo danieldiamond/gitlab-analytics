@@ -1,0 +1,6 @@
+zuora_accounts_receivables:
+	constraints:
+		not_null:
+			- invoice_id
+		unique:
+			- invoice_id
