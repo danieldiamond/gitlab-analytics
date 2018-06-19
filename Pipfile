@@ -24,6 +24,7 @@ Pyrseas = "*"
 "d32390c" = {path = "./elt/shared_modules", editable = true}
 lxml = "*"
 zeep = "*"
+google-cloud-storage = "*"
 
 [dev-packages]
 "flake8" = "*"
