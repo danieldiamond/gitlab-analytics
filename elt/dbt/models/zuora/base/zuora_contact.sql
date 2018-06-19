@@ -27,7 +27,7 @@ WITH source AS (
 		fax,
 		homephone as home_phone,
 		mobilephone as mobile_phone,
-		personalemail as personal_email
+		personalemail as personal_email,
 		description,
 
 

@@ -1,24 +1,24 @@
 zuora_account:
-	constraints:
-		not_null:
-			- account_id
-			- account_name
-		unique:
-			- account_id
-			- account_name
+    constraints:
+        not_null:
+            - account_id
+            - account_name
+        unique:
+            - account_id
+            - account_name
 
 zuora_contact:
-	constraints:
-		not_null:
-			- contact_id
-			- account_id
-		unique:
-			- contact_id
+    constraints:
+        not_null:
+            - contact_id
+            - account_id
+        unique:
+            - contact_id
 
 zuora_invoice:
-	constraints:
-		not_null:
-			- invoice_id
-			- account_id
-		unique:
-			- invoice_id
+    constraints:
+        not_null:
+            - invoice_id
+            - account_id
+        unique:
+            - invoice_id

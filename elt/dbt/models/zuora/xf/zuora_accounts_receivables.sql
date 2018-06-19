@@ -14,15 +14,15 @@ WITH zuora_invoice_base AS (
 ), zuora_invoice AS(
 
 	SELECT *, 
-		DATE_PART('day', duedate - CURRENT_DATE) as 
+		DATE_PART('day', due_date - CURRENT_DATE) as days_until_due
 	FROM zuora_invoice_base
 
 )
 
 
 SELECT zuora_account.entity,
-       COALESCE(zuora_contact_bill.workemail,zuora_contact_sold.workemail) AS email,
-       COALESCE(zuora_contact_sold.firstname,zuora_contact_bill.firstname) AS owner,
+       COALESCE(zuora_contact_bill.work_email,zuora_contact_sold.work_email) AS email,
+       COALESCE(zuora_contact_sold.first_name,zuora_contact_bill.first_name) AS owner,
        zuora_account.account_name,
        zuora_account.account_number,
        zuora_account.currency,
@@ -42,12 +42,8 @@ SELECT zuora_account.entity,
 
 FROM zuora_invoice
 INNER JOIN zuora_account
-  ON zuora_invoice.accountid = zuora_account.id
-LEFT JOIN zuora.contact AS zuora_contact_bill
-  ON zuora_contact_bill.id = zuora_account.billtocontact -- I don't really love this method, but it works. 
-LEFT JOIN zuora.contact AS zuora_contact_sold
-  ON zuora_contact_sold.id = zuora_account.soldtocontactid
-
-
-WHERE (zuora_invoice.status = 'Posted')
-AND   zuora_invoice.balance > 0
+  ON zuora_invoice.account_id = zuora_account.account_id
+LEFT JOIN zuora_contact AS zuora_contact_bill
+  ON zuora_contact_bill.contact_id = zuora_account.bill_to_contact_id -- I don't really love this method, but it works. 
+LEFT JOIN zuora_contact AS zuora_contact_sold
+  ON zuora_contact_sold.contact_id = zuora_account.sold_to_contact_id
