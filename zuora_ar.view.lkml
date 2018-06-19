@@ -63,7 +63,7 @@ view: zuora_ar {
     sql: ${TABLE}.currency ;;
   }
   #
-  dimension: acct_num {
+  dimension: account_number {
     description: "Acct # of Customer"
     type: string
     sql: ${TABLE}.account_number ;;
@@ -86,13 +86,13 @@ view: zuora_ar {
     type: sum
     value_format: "$#,##0"
     sql: ${TABLE}.balance ;;
-    drill_fields: [entity,customer,acct_num,90_days_open_invoices,send_email,balance]
+    drill_fields: [entity,customer,account_number,90_days_open_invoices,send_email,balance]
   }
   #
   measure: invoice_cnt {
     description: "Count from Customer"
     type: count_distinct
-    drill_fields: [entity,customer,acct_num,duedate,balance]
+    drill_fields: [entity,customer,account_number,duedate,balance]
     sql: ${TABLE}.invoice ;;
   }
 
