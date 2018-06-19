@@ -19,7 +19,7 @@ from elt.process import create_tmp_table, update_set_stmt
 from elt.schema import schema_apply
 from elt.error import Error, ExtractError
 from schema import PG_SCHEMA, describe_schema, field_column_name
-from config import JOB_VERSION, DATE_MIN, environment, getPGCreds, getZuoraFields, getObjectList
+from config import JOB_VERSION, DATE_MIN, INCREMENTAL_DATE, environment, getPGCreds, getZuoraFields, getObjectList
 
 
 class DownloadError(Error):
@@ -60,6 +60,12 @@ def recover_jobs(item):
 
 
 def item_incremental_time(item):
+    FORMAT = "%Y-%m-%d %H:%M:%S"
+
+    if INCREMENTAL_DATE is not None:
+        logging.info("ZUORA_INCREMENTAL_DATE_OVERRIDE is set: {}".format(INCREMENTAL_DATE))
+        return INCREMENTAL_DATE
+
     with DB.session() as session:
         elt_uri = item_elt_uri(item)
         last_job = session.query(Job).filter_by(state=State.SUCCESS, elt_uri=elt_uri) \
@@ -67,15 +73,17 @@ def item_incremental_time(item):
                                      .first()
 
     date = job_start_date(last_job) or DATE_MIN
-    return date.strftime("%Y-%m-%d %H:%M:%S")
+    return date.strftime(FORMAT)
 
 
 def job_start_date(job):
-    raw_date = job.payload.get('http_response', {}).get('startTime')
+    if not job: return None
 
-    if not raw_date: return None
-
-    return datetime.datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%S%z")
+    try:
+        raw_date = job.payload.get('http_response', {}).get('startTime')
+        return datetime.datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%S%z")
+    except:
+        return None
 
 
 def item_elt_uri(item):
@@ -192,6 +200,7 @@ def download_file(item, file_id):
 
     return filename
 
+
 def replace(fieldList):
     for i, v in enumerate(fieldList):
         if v.upper() == 'TRUE':
@@ -205,35 +214,9 @@ def replace(fieldList):
             fieldList.insert(i, None)
 
 
-def db_write_full(item):
-    _, _, host, db, _ = getPGCreds()
-    columns = [field_column_name(field) for field in getZuoraFields(item)]
-
-    logging.info("[Restore] Writing to {}/{}".format(host, db))
-    with open(item + '.csv', 'r') as file, \
-        DB.open() as mydb, \
-        mydb.cursor() as cursor:
-
-        truncate = psycopg2.sql.SQL("TRUNCATE TABLE {}.{}").format(
-            psycopg2.sql.Identifier(PG_SCHEMA),
-            psycopg2.sql.Identifier(item.lower()),
-        )
-
-        copy = psycopg2.sql.SQL("COPY {}.{} ({}) FROM STDIN WITH(FORMAT csv, HEADER true)").format(
-            psycopg2.sql.Identifier(PG_SCHEMA),
-            psycopg2.sql.Identifier(item.lower()),
-            psycopg2.sql.SQL(', ').join(map(psycopg2.sql.Identifier, columns)),
-        )
-
-        cursor.execute(truncate)
-        cursor.copy_expert(file=file, sql=copy)
-        logging.info('Completed copying records to ' + item + ' table.')
-
-    os.remove(item + '.csv')
-
-
 def db_write_incremental(item):
     _, _, host, db, _ = getPGCreds()
+    primary_key = 'id'
     columns = [field_column_name(field) for field in getZuoraFields(item)]
     update_columns = [col for col in columns if col != primary_key]
 
@@ -242,7 +225,6 @@ def db_write_incremental(item):
         DB.open() as mydb, \
         mydb.cursor() as cursor:
 
-        primary_key = 'id'
         table_name = item.lower()
         tmp_table_name = create_tmp_table(mydb, PG_SCHEMA, table_name)
 
@@ -282,7 +264,7 @@ def db_write_incremental(item):
         cursor.execute(drop_query)
         mydb.commit()
 
-        logging.info("Completed updating records to {} table.".format(item))
+        logging.info("Completed copying records to {} table.".format(item))
     os.remove(item + '.csv')
 
 
@@ -301,11 +283,7 @@ def db_write(job, item):
     if batch.get('recordCount', 0) == 0:
         return
 
-    if batch.get('full', False):
-        logging.warn("Response contains all records - full restore.")
-        db_write_full(item)
-    else:
-        db_write_incremental(item)
+    db_write_incremental(item)
 
 
 def zuora_query_params(item):
