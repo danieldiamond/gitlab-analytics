@@ -77,11 +77,13 @@ def item_incremental_time(item):
 
 
 def job_start_date(job):
-    raw_date = job.payload.get('http_response', {}).get('startTime')
+    if not job: return None
 
-    if not raw_date: return None
-
-    return datetime.datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%S%z")
+    try:
+        raw_date = job.payload.get('http_response', {}).get('startTime')
+        return datetime.datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%S%z")
+    except:
+        return None
 
 
 def item_elt_uri(item):
@@ -214,6 +216,7 @@ def replace(fieldList):
 
 def db_write_incremental(item):
     _, _, host, db, _ = getPGCreds()
+    primary_key = 'id'
     columns = [field_column_name(field) for field in getZuoraFields(item)]
     update_columns = [col for col in columns if col != primary_key]
 
@@ -222,7 +225,6 @@ def db_write_incremental(item):
         DB.open() as mydb, \
         mydb.cursor() as cursor:
 
-        primary_key = 'id'
         table_name = item.lower()
         tmp_table_name = create_tmp_table(mydb, PG_SCHEMA, table_name)
 
