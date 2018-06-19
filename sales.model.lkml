@@ -52,6 +52,11 @@ explore: f_opportunity {
     relationship: one_to_many
     sql_on: ${f_opportunity.opportunity_id}=${dim_opphistory.opportunityid} ;;
   }
+
+  join: bookings_goal {
+    relationship: many_to_one
+    sql_on: ${f_opportunity.closedate_date}=${bookings_goal.goal_month} ;;
+  }
 }
 
 explore: f_snapshot_opportunity {
