@@ -19,7 +19,7 @@ from elt.process import create_tmp_table, update_set_stmt
 from elt.schema import schema_apply
 from elt.error import Error, ExtractError
 from schema import PG_SCHEMA, describe_schema, field_column_name
-from config import JOB_VERSION, DATE_MIN, environment, getPGCreds, getZuoraFields, getObjectList
+from config import JOB_VERSION, DATE_MIN, INCREMENTAL_DATE, environment, getPGCreds, getZuoraFields, getObjectList
 
 
 class DownloadError(Error):
