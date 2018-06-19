@@ -60,6 +60,12 @@ def recover_jobs(item):
 
 
 def item_incremental_time(item):
+    FORMAT = "%Y-%m-%d %H:%M:%S"
+
+    if INCREMENTAL_DATE is not None:
+        logging.info("ZUORA_INCREMENTAL_DATE_OVERRIDE is set: {}".format(INCREMENTAL_DATE))
+        return INCREMENTAL_DATE.strftime(FORMAT)
+
     with DB.session() as session:
         elt_uri = item_elt_uri(item)
         last_job = session.query(Job).filter_by(state=State.SUCCESS, elt_uri=elt_uri) \
@@ -67,7 +73,7 @@ def item_incremental_time(item):
                                      .first()
 
     date = job_start_date(last_job) or DATE_MIN
-    return date.strftime("%Y-%m-%d %H:%M:%S")
+    return date.strftime(FORMAT)
 
 
 def job_start_date(job):
@@ -192,6 +198,7 @@ def download_file(item, file_id):
 
     return filename
 
+
 def replace(fieldList):
     for i, v in enumerate(fieldList):
         if v.upper() == 'TRUE':
@@ -203,33 +210,6 @@ def replace(fieldList):
         if v == '':
             fieldList.pop(i)
             fieldList.insert(i, None)
-
-
-def db_write_full(item):
-    _, _, host, db, _ = getPGCreds()
-    columns = [field_column_name(field) for field in getZuoraFields(item)]
-
-    logging.info("[Restore] Writing to {}/{}".format(host, db))
-    with open(item + '.csv', 'r') as file, \
-        DB.open() as mydb, \
-        mydb.cursor() as cursor:
-
-        truncate = psycopg2.sql.SQL("TRUNCATE TABLE {}.{}").format(
-            psycopg2.sql.Identifier(PG_SCHEMA),
-            psycopg2.sql.Identifier(item.lower()),
-        )
-
-        copy = psycopg2.sql.SQL("COPY {}.{} ({}) FROM STDIN WITH(FORMAT csv, HEADER true)").format(
-            psycopg2.sql.Identifier(PG_SCHEMA),
-            psycopg2.sql.Identifier(item.lower()),
-            psycopg2.sql.SQL(', ').join(map(psycopg2.sql.Identifier, columns)),
-        )
-
-        cursor.execute(truncate)
-        cursor.copy_expert(file=file, sql=copy)
-        logging.info('Completed copying records to ' + item + ' table.')
-
-    os.remove(item + '.csv')
 
 
 def db_write_incremental(item):
@@ -282,7 +262,7 @@ def db_write_incremental(item):
         cursor.execute(drop_query)
         mydb.commit()
 
-        logging.info("Completed updating records to {} table.".format(item))
+        logging.info("Completed copying records to {} table.".format(item))
     os.remove(item + '.csv')
 
 
@@ -301,11 +281,7 @@ def db_write(job, item):
     if batch.get('recordCount', 0) == 0:
         return
 
-    if batch.get('full', False):
-        logging.warn("Response contains all records - full restore.")
-        db_write_full(item)
-    else:
-        db_write_incremental(item)
+    db_write_incremental(item)
 
 
 def zuora_query_params(item):

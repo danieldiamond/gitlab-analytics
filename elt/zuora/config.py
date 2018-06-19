@@ -5,8 +5,9 @@ from configparser import SafeConfigParser
 from datetime import datetime
 
 
-JOB_VERSION = 1
+JOB_VERSION = 2
 DATE_MIN = datetime(2013, 1, 1)
+INCREMENTAL_DATE = os.getenv('ZUORA_INCREMENTAL_DATE_OVERRIDE')
 
 
 def parse_environment():
