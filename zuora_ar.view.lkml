@@ -1,33 +1,7 @@
 view: zuora_ar {
-  derived_table: {
-    sql:
-        SELECT zuora_account.entity__c AS entity,
-               COALESCE(zuora_contact_bill.workemail,zuora_contact_sold.workemail) AS email,
-               COALESCE(zuora_contact_sold.firstname,zuora_contact_bill.firstname) AS owner,
-               zuora_account.name,
-               zuora_account.accountnumber,
-               zuora_account.currency,
-               CASE
-                 WHEN (EXTRACT(DAY FROM zuora_invoice.duedate - CURRENT_DATE)*-1) < 30 THEN '1: <30'
-                 WHEN (EXTRACT(DAY FROM zuora_invoice.duedate - CURRENT_DATE)*-1) >= 30 AND (EXTRACT(DAY FROM zuora_invoice.duedate - CURRENT_DATE)*-1) <= 60 THEN '2: 30-60'
-                 WHEN (EXTRACT(DAY FROM zuora_invoice.duedate - CURRENT_DATE)*-1) >= 61 AND (EXTRACT(DAY FROM zuora_invoice.duedate - CURRENT_DATE)*-1) <= 90 THEN '3: 61-90'
-                 WHEN (EXTRACT(DAY FROM zuora_invoice.duedate - CURRENT_DATE)*-1) >= 91 THEN '4: >90'
-                 ELSE 'Unknown'
-               END AS day_range,
-               COALESCE(zuora_invoice.balance,0) AS balance,
-               zuora_invoice.invoicenumber AS invoice,
-               zuora_invoice.duedate as duedate
-        FROM zuora.invoice AS zuora_invoice
-        INNER JOIN zuora.account AS zuora_account
-          ON zuora_invoice.accountid = zuora_account.id
-        LEFT JOIN zuora.contact AS zuora_contact_bill
-          ON zuora_contact_bill.id = zuora_account.billtocontact
-        LEFT JOIN zuora.contact AS zuora_contact_sold
-          ON zuora_contact_sold.id = zuora_account.soldtocontactid
-        WHERE (zuora_invoice.status = 'Posted')
-        AND   zuora_invoice.balance > 0
-        ;;
-  }
+  sql_table_name: analytics.zuora_accounts_receivables ;;
+  label: "Zuora Accounts Receivables"
+
   #
   dimension: 90_days_open_invoices {
     #hidden: yes
@@ -38,7 +12,7 @@ view: zuora_ar {
 
   dimension: send_email {
     hidden: yes
-    sql: ${acct_num} ;;
+    sql: ${account_number} ;;
     html: <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ email._value }}&cc=ar@gitlab.com&su={{customer._value}} invoice(s) are overdue&body=Hi {{owner._value}},
                    %0D%0DI am reaching out to let you know that the GitLab invoice(s) below are 90 days overdue.
                    %0D%0DThe current balance of the invoice(s) amount to {{balance._rendered_value}}
@@ -67,7 +41,7 @@ view: zuora_ar {
   dimension: day_range {
     description: "Account Number of Zuora Customer"
     type: string
-    sql: ${TABLE}.day_range ;;
+    sql: ${TABLE}.range_until_due ;;
   }
   #
   dimension: invoice {
@@ -80,7 +54,7 @@ view: zuora_ar {
     description: "Customer"
     type: string
     #drill_fields: [drill_1*]
-    sql: ${TABLE}.name ;;
+    sql: ${TABLE}.account_name ;;
   }
   #
   dimension: currency {
@@ -92,13 +66,13 @@ view: zuora_ar {
   dimension: acct_num {
     description: "Acct # of Customer"
     type: string
-    sql: ${TABLE}.accountnumber ;;
+    sql: ${TABLE}.account_number ;;
   }
   #
   dimension: duedate {
     description: "Due Date of Invoice"
     type: string
-    sql: ${TABLE}.duedate ;;
+    sql: ${TABLE}.due_date ;;
   }
   #
   dimension: owner {
