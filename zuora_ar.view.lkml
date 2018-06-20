@@ -3,10 +3,10 @@ view: zuora_ar {
   label: "Zuora Accounts Receivables"
 
   #
-  dimension: 90_days_open_invoices {
+  dimension: 30_days_open_invoices {
     #hidden: yes
     type:  string
-    sql: ${beyond_90days_open_invoices.list_of_open_invoices} ;;
+    sql: ${beyond_30days_open_invoices.list_of_open_invoices} ;;
 
   }
 
@@ -91,7 +91,7 @@ view: zuora_ar {
     description: "Balance due from Customer"
     type: string
     sql: ${TABLE}.balance ;;
-    drill_fields: [entity,customer,account_number,90_days_open_invoices,send_email,balance]
+    drill_fields: [entity,customer,account_number,30_days_open_invoices,send_email,balance]
   }
   #
   measure: balance_sum {
@@ -99,7 +99,7 @@ view: zuora_ar {
     type: sum
     value_format: "$#,##0"
     sql: ${TABLE}.balance ;;
-    drill_fields: [entity,customer,account_number,90_days_open_invoices,send_email,balance]
+    drill_fields: [entity,customer,account_number,30_days_open_invoices,send_email,balance]
   }
   #
   measure: invoice_cnt {
