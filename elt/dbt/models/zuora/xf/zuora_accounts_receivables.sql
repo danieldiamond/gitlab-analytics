@@ -1,7 +1,9 @@
 -- this can't be an incremental model because of the day_range calculation
 WITH zuora_invoice_base AS (
 
-	SELECT * FROM {{ref('zuora_invoice')}}
+	SELECT * 
+  FROM {{ref('zuora_invoice')}}
+  WHERE due_date < CURRENT_DATE
 
 ), zuora_account AS (
 
@@ -14,7 +16,7 @@ WITH zuora_invoice_base AS (
 ), zuora_invoice AS(
 
 	SELECT *, 
-		abs(DATE_PART('day', due_date - CURRENT_DATE)) as days_until_due
+		abs(DATE_PART('day', due_date - CURRENT_DATE)) as days_overdue
 	FROM zuora_invoice_base
 
 )
@@ -28,12 +30,12 @@ SELECT zuora_account.entity,
        zuora_account.currency,
 
        CASE
-         WHEN days_until_due < 30 THEN '1: <30'
-         WHEN days_until_due >= 30 AND days_until_due <= 60 THEN '2: 30-60'
-         WHEN days_until_due >= 61 AND days_until_due <= 90 THEN '3: 61-90'
-         WHEN days_until_due >= 91 THEN '4: >90'
+         WHEN days_overdue < 30 THEN '1: <30'
+         WHEN days_overdue >= 30 AND days_overdue <= 60 THEN '2: 30-60'
+         WHEN days_overdue >= 61 AND days_overdue <= 90 THEN '3: 61-90'
+         WHEN days_overdue >= 91 THEN '4: >90'
          ELSE 'Unknown'
-       END AS range_until_due,
+       END AS range_since_due_date,
 
        COALESCE(zuora_invoice.balance,0) AS balance,
 
