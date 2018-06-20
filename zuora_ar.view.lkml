@@ -14,12 +14,12 @@ view: zuora_ar {
     hidden: yes
     sql: ${account_number} ;;
     html: <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ email._value }}&cc=ar@gitlab.com&su={{customer._value}} invoice(s) are overdue&body=Hi {{owner._value}},
-                   %0D%0DI am reaching out to let you know that the GitLab invoice(s) below are 90 days overdue.
-                   %0D%0DThe current balance of the invoice(s) amount to {{balance._rendered_value}}
+                   %0D%0DI am reaching out to let you know that the GitLab invoice(s) below are 30 days overdue.
+                   %0D%0DThe current balance of the invoice(s) amount to {{balance._rendered_value}}.
                    %0D%0DIf you have not already done so, please take a moment to make the payment today.
                    %0D%0DThe invoice can be paid via wire transfer or credit card.
                    %0D%0DWe look forward to receiving your payment.
-                   %0D%0D{{90_days_open_invoices._value}}
+                   %0D%0D{{30_days_open_invoices._value}}
                    %0D%0DThank you," target="_blank">
           <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" width="16" height="16"/>
           <a> Click icon to email
