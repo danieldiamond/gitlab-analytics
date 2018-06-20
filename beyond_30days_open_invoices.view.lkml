@@ -1,4 +1,4 @@
-view: beyond_90days_open_invoices {
+view: beyond_30days_open_invoices {
   derived_table: {
     sql: with oi as
         (Select zuora_account.name,
@@ -13,7 +13,7 @@ view: beyond_90days_open_invoices {
         from zuora.invoice as zuora_invoice
         inner join zuora.account as zuora_account
           on zuora_invoice.accountid = zuora_account.id
-        where (EXTRACT(DAY FROM zuora_invoice.duedate - CURRENT_DATE)*-1) >= 91
+        where (EXTRACT(DAY FROM zuora_invoice.duedate - CURRENT_DATE)*-1) >= 31
         --group by  zuora_account.name,day_range,invoice
       )
       Select oi.name,day_range ,max(oi.openinvoices) as list_of_open_invoices from oi

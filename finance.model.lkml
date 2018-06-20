@@ -31,11 +31,11 @@ explore: invoicing {
   label: "A/R Aging"
   description: "A/R Oustanding"
 
-  join: beyond_90days_open_invoices {
+  join: beyond_30days_open_invoices {
   fields: []
   view_label: "Invoicing"
-  sql_on:     ${invoicing.customer} = ${beyond_90days_open_invoices.name}
-          AND ${invoicing.day_range} = ${beyond_90days_open_invoices.day_range};;
+  sql_on:     ${invoicing.customer} = ${beyond_30days_open_invoices.name}
+          AND ${invoicing.day_range} = ${beyond_30days_open_invoices.day_range};;
   relationship: many_to_one
   }
 }
