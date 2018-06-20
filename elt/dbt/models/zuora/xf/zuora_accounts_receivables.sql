@@ -37,6 +37,7 @@ SELECT zuora_account.entity,
 
        COALESCE(zuora_invoice.balance,0) AS balance,
 
+       zuora_invoice.status as invoice_status,
        zuora_invoice.invoice_number AS invoice,
        zuora_invoice.due_date as due_date
 
