@@ -89,7 +89,7 @@ view: zuora_ar {
   #
   dimension: balance {
     description: "Balance due from Customer"
-    type: string
+    type: number
     sql: ${TABLE}.balance ;;
     drill_fields: [entity,customer,account_number,30_days_open_invoices,send_email,balance]
   }
