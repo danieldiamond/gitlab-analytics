@@ -41,7 +41,7 @@ view: zuora_ar {
   dimension: day_range {
     description: "Account Number of Zuora Customer"
     type: string
-    sql: ${TABLE}.range_until_due ;;
+    sql: ${TABLE}.range_since_due_date ;;
   }
   #
   dimension: invoice {
@@ -87,8 +87,15 @@ view: zuora_ar {
     sql: ${TABLE}.owner ;;
   }
   #
-  measure: balance {
+  dimension: balance {
     description: "Balance due from Customer"
+    type: string
+    sql: ${TABLE}.balance ;;
+    drill_fields: [entity,customer,account_number,90_days_open_invoices,send_email,balance]
+  }
+  #
+  measure: balance_sum {
+    description: "Sum of Balance due from Customer"
     type: sum
     value_format: "$#,##0"
     sql: ${TABLE}.balance ;;
