@@ -5,7 +5,7 @@ from .fetcher import Fetcher
 
 def download_file(file_path, cb):
     fetcher = Fetcher()
-    prefix = fetcher.latest_prefix
+    prefix = fetcher.prefix
 
     import pdb; pdb.set_trace()
 

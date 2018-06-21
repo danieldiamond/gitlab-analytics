@@ -1,14 +1,18 @@
 import yaml, json
 
-from .utils import download_file, is_yml_file
 from elt.schema import Schema, Column, DBType
+from .utils import download_file, is_yml_file
+from importer.fetcher import Fetcher
 
 
 PG_SCHEMA = 'gitlab'
 PRIMARY_KEY = 'id'
 
 def describe_schema():
-    return download_file("file_list.json", set_file_lists)
+    fetcher = Fetcher()
+    schema_file = fetcher.fetch_schema()
+    return parse_schema_file(schema_file)
+
 
 def set_file_lists(file_path):
     with open(file_path, 'r') as file_list:
@@ -18,15 +22,16 @@ def set_file_lists(file_path):
         # send schema file to parse
         return download_file(schema_file, open_yaml_file)
 
-def open_yaml_file(local_schema_file):
-    with open(local_schema_file, 'r') as stream:
-        return parse_yaml_file(yaml.load(stream))
 
-def parse_yaml_file(yaml_dict):
+def parse_schema_file(schema_file):
+    with open(schema_file, 'r') as stream:
+        raw_schema = yaml.load(stream)
+
     columns = []
-    for table, table_data in yaml_dict.items():
+    for table, table_data in raw_schema.items():
+        mapping_key = table_data['gl_mapping_key']
         for column, data_type in table_data.items():
-            is_pkey = data_type == PRIMARY_KEY
+            is_pkey = column == mapping_key
             if column == 'gl_mapping_key':
                 continue
 

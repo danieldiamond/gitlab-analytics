@@ -1,21 +1,30 @@
 import argparse
-from importer import Importer
-from importer import schema
+import asyncio
+
+from importer import Importer, schema
+from importer.fetcher import Fetcher
 from enum import Enum
 from elt.schema import schema_apply
 from elt.cli import parser_db_conn, parser_output, parser_logging
 from elt.utils import db_open, setup_logging
 
+
 def finished_download(importer):
-  importer.download_csvs()
+    importer.download_csvs()
 
 def action_export(args):
-  Importer(args, finished_download)
+    importer = Importer(args)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(importer.import_all())
+    loop.close()
 
 
 def action_schema_apply(args):
-  with db_open(**vars(args)) as db:
-    schema_apply(db, schema.describe_schema())
+    with db_open(**vars(args)) as db:
+        s = schema.describe_schema()
+        import pdb; pdb.set_trace()
+        schema_apply(db, s)
 
 
 class Action(Enum):
