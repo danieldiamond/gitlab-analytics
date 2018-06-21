@@ -6,14 +6,12 @@ from importer.fetcher import Fetcher
 from enum import Enum
 from elt.schema import schema_apply
 from elt.cli import parser_db_conn, parser_output, parser_logging
-from elt.utils import db_open, setup_logging
+from elt.db import db_open
+from elt.utils import setup_logging, setup_db
 
-
-def finished_download(importer):
-    importer.download_csvs()
 
 def action_export(args):
-    importer = Importer(args)
+    importer = Importer(args, schema.describe_schema())
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(importer.import_all())
@@ -21,10 +19,8 @@ def action_export(args):
 
 
 def action_schema_apply(args):
-    with db_open(**vars(args)) as db:
-        s = schema.describe_schema()
-        import pdb; pdb.set_trace()
-        schema_apply(db, s)
+    with db_open() as db:
+        schema_apply(db, schema.describe_schema())
 
 
 class Action(Enum):
@@ -62,6 +58,7 @@ def parse():
 
 def main():
   args = parse()
+  setup_db(args)
   setup_logging(args)
   args.action(args)
 

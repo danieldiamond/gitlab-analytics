@@ -147,6 +147,17 @@
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_about_gitlab apply_schema"
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_about_gitlab --days=7 export"
 
+.gitlab_extract: &gitlab_extract
+  stage: extract
+  retry: 1
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy python elt/gitlab/src -S gitlab apply_schema
+    - using_proxy python elt/gitlab/src -S gitlab export
+    - stop_cloudsqlproxy
+
 # ---------------------------------------------------------------------------
 
 # Stages
@@ -444,6 +455,14 @@ zendesk_manual:
 
 zuora_manual:
   <<: *zuora_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+gitlab_manual:
+  <<: *gitlab_extract
   only:
     - branches
   except:

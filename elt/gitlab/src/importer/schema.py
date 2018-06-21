@@ -1,6 +1,6 @@
 import yaml, json
 
-from elt.schema import Schema, Column, DBType
+from elt.schema import Schema, Column, DBType, tables
 from .utils import download_file, is_yml_file
 from importer.fetcher import Fetcher
 

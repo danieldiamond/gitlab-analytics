@@ -119,6 +119,52 @@ def csv_to_temp_table(db_conn, csv_path, *,
         return tmp_table_name
 
 
+def overwrite_to_db_from_csv(db_conn, csv_file, *,
+                          table_schema,
+                          table_name,
+                          csv_options={}):
+    """
+    Insert to Postgres DB from a CSV.
+
+    The source table will be flushed before insertion.
+    """
+    try:
+        csv = open(csv_file, 'r')
+        cursor = db_conn.cursor()
+
+        # Get header row, remove new lines, lowercase
+        header = read_header(csv)
+        schema, table = identifiers(table_schema, table_name)
+
+        # flush the table
+        truncate_query = psycopg2.sql.SQL(
+            "TRUNCATE TABLE {}.{}"
+        ).format(schema, table)
+
+        # insert into table
+        copy_query = psycopg2.sql.SQL(
+            "COPY {0}.{1} ({2}) FROM STDIN WITH (%s)" % csv_options_stmt(**csv_options)
+        ).format(
+            schema,
+            table,
+            psycopg2.sql.SQL(', ').join(identifiers(*header.split(',')))
+        )
+
+        logging.debug(truncate_query.as_string(cursor))
+        cursor.execute(truncate_query)
+
+        logging.debug(copy_query.as_string(cursor))
+        logging.info("Copying file")
+        cursor.copy_expert(sql=copy_query, file=csv)
+
+        db_conn.commit()
+    except psycopg2.Error as err:
+        logging.error(err)
+    finally:
+        csv.close()
+        if cursor: cursor.close()
+
+
 def upsert_to_db_from_csv(db_conn, csv_path, *,
                          primary_key,
                          table_schema,
@@ -166,7 +212,7 @@ def integrate_csv(db_conn, csv_path, *,
                   csv_options={},
                   update_action="NOTHING"):
     """
-    Upsert to Postgres DB from a CSV
+    Upsert to Postgres DB from a CSV.
 
     :param db_conn: psycopg2 database connection
     :param csv_path: name of CSV that you wish to write to table of same name

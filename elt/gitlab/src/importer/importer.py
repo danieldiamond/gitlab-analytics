@@ -5,60 +5,29 @@ import logging
 import gzip
 import shutil
 
-
-from elt.utils import db_open, compose
-from elt.process import write_to_db_from_csv
+from elt.db import db_open
+from elt.utils import compose
+from elt.process import upsert_to_db_from_csv, overwrite_to_db_from_csv
+from elt.schema import Schema, mapping_keys
 from .utils import download_file, is_csv_file
 from .fetcher import Fetcher
 
 
 class Importer:
-    THREADS = 10
+    THREADS = 5
 
-    def __init__(self, args):
+    def __init__(self, args, schema: Schema):
         self.file_list = []
         self.args = args
         self.csv_list = []
         self._currentFile = 0;
         self.fetcher = Fetcher()
-
-    def fetch_file_list(self):
-        prefix = self.fetcher.prefix
-
-        logging.info("Looking for GitLab CSV files...")
-        set_file_lists(download_file("file_list.json"))
-
-    def set_file_lists(self, file_path):
-        with open(file_path, 'r') as file_list:
-            # get file list
-            self.file_list = json.load(file_list)
-            # get csv only files
-            self.csv_list = [i for i in self.file_list if is_csv_file(i)]
-            logging.info("Downloading the following CSV files:{:s}".format(", ".join(self.csv_list)))
-            # call callback for downloading of csvs
-
-
-    def download_csvs(self):
-        filename, file_extension = os.path.splitext(self.file_list[0])
-        csvs_length = len(self.csv_list) - 1
-
-        def download_csv(local_file_path):
-            if local_file_path != None:
-                self.processor.process_csv(local_file_path)
-
-            if self._currentFile < csvs_length:
-                path = self.csv_list[self._currentFile]
-                self._currentFile += 1
-                logging.info("({:d}/{:d}) Downloading {:s}".format(self._currentFile, csvs_length, path))
-                download_file(path, download_csv)
-            else:
-                logging.info("Finished downloading CSVs")
-
-        download_csv(None)
+        self.mapping_keys = mapping_keys(schema)
 
 
     def decompress_file(self, file_path):
         if not file_path.endswith(".gz"):
+            logging.warn("file extension is not .gz, skipping")
             return file_path
 
         # path.csv.gz -> path.csv
@@ -79,12 +48,16 @@ class Importer:
         # path.csv -> path
         table_name = os.path.splitext(os.path.basename(file_path))[0]
 
-        with db_open(**vars(self.args)) as db:
-            write_to_db_from_csv(db,
-                                 file_path,
-                                 table_schema=self.args.schema,
-                                 table_name=table_name,
-                                 primary_key='id')
+        with db_open() as db:
+            options = {
+                'table_schema': self.args.schema,
+                'table_name': table_name,
+            }
+            if table_name in self.mapping_keys:
+                upsert_to_db_from_csv(db, file_path, **options,
+                                      primary_key=self.mapping_keys[table_name])
+            else:
+                overwrite_to_db_from_csv(db, file_path, **options)
 
 
     async def import_all(self):
@@ -96,8 +69,7 @@ class Importer:
             max_workers=self.THREADS,
         )
 
-        process_blob = compose(self.process_file,
-                               self.decompress_file,
+        process_blob = compose(self.decompress_file,
                                self.fetcher.download)
 
         tasks = [
@@ -105,4 +77,5 @@ class Importer:
             for blob in self.fetcher.fetch_files()
         ]
 
-        await asyncio.gather(*tasks)
+        files = await asyncio.gather(*tasks)
+        return [self.process_file(f) for f in files]

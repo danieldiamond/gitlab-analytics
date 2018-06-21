@@ -52,7 +52,8 @@ class Fetcher:
 
 
     def fetch_files(self):
-        return self.bucket.list_blobs(prefix=self.prefix)
+        return filter(lambda blob: blob.name.endswith(".csv.gz"),
+                      self.bucket.list_blobs(prefix=self.prefix))
 
 
     def fetch_file(self, filename):
