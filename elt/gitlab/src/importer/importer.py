@@ -14,7 +14,7 @@ from .schema import describe_schema
 
 
 class Importer:
-    THREADS = os.getenv("GITLAB_THREADS", 5)
+    THREADS = int(os.getenv("GITLAB_THREADS", 5))
 
     def __init__(self, args):
         self.args = args
