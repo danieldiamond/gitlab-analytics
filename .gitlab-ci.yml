@@ -154,8 +154,8 @@
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
-    - using_proxy python elt/gitlab/src -S gitlab apply_schema
-    - using_proxy python elt/gitlab/src -S gitlab export
+    - using_proxy python3 elt/gitlab/src -S gitlab-gdk apply_schema
+    - using_proxy python3 elt/gitlab/src -S gitlab-gdk export
     - stop_cloudsqlproxy
 
 # ---------------------------------------------------------------------------
