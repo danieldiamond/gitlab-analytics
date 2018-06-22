@@ -1,27 +1,18 @@
 import yaml, json
 
 from elt.schema import Schema, Column, DBType, tables
-from .utils import download_file, is_yml_file
 from importer.fetcher import Fetcher
 
 
 PG_SCHEMA = 'gitlab'
 PRIMARY_KEY = 'id'
 
+
 def describe_schema(args):
     fetcher = Fetcher(project=args.project,
                       bucket=args.bucket)
     schema_file = fetcher.fetch_schema()
     return parse_schema_file(args.schema, schema_file)
-
-
-def set_file_lists(file_path):
-    with open(file_path, 'r') as file_list:
-        file_list_dict = json.load(file_list)
-        # get schema file
-        schema_file = [i for i in file_list_dict if is_yml_file(i)][0]
-        # send schema file to parse
-        return download_file(schema_file, open_yaml_file)
 
 
 def parse_schema_file(schema_name: str, schema_file):

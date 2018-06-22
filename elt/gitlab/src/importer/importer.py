@@ -9,21 +9,18 @@ from elt.db import db_open
 from elt.utils import compose
 from elt.process import upsert_to_db_from_csv, overwrite_to_db_from_csv
 from elt.schema import Schema, mapping_keys
-from .utils import download_file, is_csv_file
 from .fetcher import Fetcher
+from .schema import describe_schema
 
 
 class Importer:
     THREADS = os.getenv("GITLAB_THREADS", 5)
 
-    def __init__(self, args, schema: Schema):
-        self.file_list = []
+    def __init__(self, args):
         self.args = args
-        self.csv_list = []
-        self._currentFile = 0;
         self.fetcher = Fetcher(project=args.project,
                                bucket=args.bucket)
-        self.mapping_keys = mapping_keys(schema)
+        self.mapping_keys = mapping_keys(describe_schema(args))
 
 
     def decompress_file(self, file_path):

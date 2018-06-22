@@ -1,3 +1,4 @@
+import os
 import argparse
 import asyncio
 
@@ -11,7 +12,7 @@ from elt.utils import setup_logging, setup_db
 
 
 def action_export(args):
-    importer = Importer(args, schema.describe_schema())
+    importer = Importer(args)
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(importer.import_all())
@@ -20,7 +21,7 @@ def action_export(args):
 
 def action_schema_apply(args):
     with db_open() as db:
-        target_schema = schema.describe_schema(args.schema)
+        target_schema = schema.describe_schema(args)
         schema_apply(db, target_schema)
 
 
@@ -49,15 +50,11 @@ def parse():
     parser_logging(parser)
 
     parser.add_argument("--project",
-                        type=str,
                         default=os.getenv("GCP_PROJECT"),
-                        required=True,
                         help="GCP Project where the bucket is located.")
 
     parser.add_argument("--bucket",
-                        type=str,
                         default=os.getenv("GITLAB_BUCKET"),
-                        required=True,
                         help="GCS bucket name fetch CSV files from.")
 
     parser.add_argument('action',
