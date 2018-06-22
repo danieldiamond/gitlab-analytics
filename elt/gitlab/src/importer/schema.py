@@ -8,10 +8,10 @@ from importer.fetcher import Fetcher
 PG_SCHEMA = 'gitlab'
 PRIMARY_KEY = 'id'
 
-def describe_schema():
+def describe_schema(schema_name=PG_SCHEMA):
     fetcher = Fetcher()
     schema_file = fetcher.fetch_schema()
-    return parse_schema_file(schema_file)
+    return parse_schema_file(schema_name, schema_file)
 
 
 def set_file_lists(file_path):
@@ -23,7 +23,7 @@ def set_file_lists(file_path):
         return download_file(schema_file, open_yaml_file)
 
 
-def parse_schema_file(schema_file):
+def parse_schema_file(schema_name: str, schema_file):
     with open(schema_file, 'r') as stream:
         raw_schema = yaml.load(stream)
 
@@ -35,7 +35,7 @@ def parse_schema_file(schema_file):
             if column == 'gl_mapping_key':
                 continue
 
-            column = Column(table_schema=PG_SCHEMA,
+            column = Column(table_schema=schema_name,
                             table_name=table,
                             column_name=column,
                             data_type=data_type,
@@ -43,4 +43,4 @@ def parse_schema_file(schema_file):
                             is_mapping_key=is_pkey)
             columns.append(column)
 
-    return Schema(PG_SCHEMA, columns)
+    return Schema(schema_name, columns)

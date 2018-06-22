@@ -20,7 +20,8 @@ def action_export(args):
 
 def action_schema_apply(args):
     with db_open() as db:
-        schema_apply(db, schema.describe_schema())
+        target_schema = schema.describe_schema(args.schema)
+        schema_apply(db, target_schema)
 
 
 class Action(Enum):
