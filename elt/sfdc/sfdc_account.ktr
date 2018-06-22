@@ -1021,6 +1021,20 @@
         <repeat>N</repeat>
       </field>
       <field>
+        <name>Product Category</name>
+        <field>Product_Category__c</field>
+        <idlookup>Y</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>18</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
         <name>Account ID</name>
         <field>Id</field>
         <idlookup>Y</idlookup>
@@ -3839,6 +3853,11 @@
       <value>
         <name>shippingcity</name>
         <rename>Shipping City</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>product_category__c</name>
+        <rename>Product Category</rename>
         <update>Y</update>
       </value>
       <value>
