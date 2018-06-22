@@ -56,3 +56,9 @@ explore: closed_deals {
   label: "Closed Deals"
   description: "Closed Deals & ACV/New Customer"
 }
+
+explore: total_employees {
+  from: historical_headcount
+  label: "Total Employees"
+  description: "Total Employees"
+}
