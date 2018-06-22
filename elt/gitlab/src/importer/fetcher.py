@@ -15,18 +15,11 @@ def list_gcs_directories(bucket):
     return prefixes
 
 class Fetcher:
-    def __init__(self, output_path=None):
-        self.client = client.Client(project="gitlab-analysis")
-        self._bucket = None
+    def __init__(self, project=None, bucket=None, output_path=None):
+        self.client = client.Client(project=project)
+        self.bucket = self.client.get_bucket(bucket)
         self._prefix = None
         self.output_path = output_path or os.path.join("/tmp", "gitlab-elt")
-
-    @property
-    def bucket(self):
-        if not self._bucket:
-            self._bucket = self.client.get_bucket("gitlab-elt")
-
-        return self._bucket
 
     @property
     def prefix(self):

@@ -48,6 +48,18 @@ def parse():
     parser_output(parser)
     parser_logging(parser)
 
+    parser.add_argument("--project",
+                        type=str,
+                        default=os.getenv("GCP_PROJECT"),
+                        required=True,
+                        help="GCP Project where the bucket is located.")
+
+    parser.add_argument("--bucket",
+                        type=str,
+                        default=os.getenv("GITLAB_BUCKET"),
+                        required=True,
+                        help="GCS bucket name fetch CSV files from.")
+
     parser.add_argument('action',
                         type=Action.from_str,
                         choices=list(Action),

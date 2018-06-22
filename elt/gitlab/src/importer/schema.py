@@ -8,10 +8,11 @@ from importer.fetcher import Fetcher
 PG_SCHEMA = 'gitlab'
 PRIMARY_KEY = 'id'
 
-def describe_schema(schema_name=PG_SCHEMA):
-    fetcher = Fetcher()
+def describe_schema(args):
+    fetcher = Fetcher(project=args.project,
+                      bucket=args.bucket)
     schema_file = fetcher.fetch_schema()
-    return parse_schema_file(schema_name, schema_file)
+    return parse_schema_file(args.schema, schema_file)
 
 
 def set_file_lists(file_path):

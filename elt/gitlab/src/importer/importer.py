@@ -14,14 +14,15 @@ from .fetcher import Fetcher
 
 
 class Importer:
-    THREADS = 5
+    THREADS = os.getenv("GITLAB_THREADS", 5)
 
     def __init__(self, args, schema: Schema):
         self.file_list = []
         self.args = args
         self.csv_list = []
         self._currentFile = 0;
-        self.fetcher = Fetcher()
+        self.fetcher = Fetcher(project=args.project,
+                               bucket=args.bucket)
         self.mapping_keys = mapping_keys(schema)
 
 
