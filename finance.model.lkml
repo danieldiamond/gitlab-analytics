@@ -62,3 +62,9 @@ explore: total_employees {
   label: "Total Employees"
   description: "Total Employees"
 }
+
+explore: corp_metrics {
+  from: historical_metrics
+  label: "Corporate Metrics"
+  description: "Corporate Metrics"
+}
