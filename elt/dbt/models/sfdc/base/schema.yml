@@ -97,6 +97,23 @@ quotelineitems:
         unique:
             - id
 
+sfdc_account:
+    constraints:
+        not_null:
+            - account_id
+            - account_name
+        unique:
+            - account_id
+
+sfdc_opportunity:
+    constraints:
+        not_null:
+            - opportunity_id
+            - account_id
+            - opportunity_name
+        unique:
+            - opportunity_id
+
 sfdc_opportunityhistory:
     constraints:
         not_null:

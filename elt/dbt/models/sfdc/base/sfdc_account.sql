@@ -7,7 +7,7 @@ WITH source AS (
 
 	SELECT 
 		id as account_id, 
-		
+		name as account_name,
 		-- keys
 		
 
