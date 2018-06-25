@@ -4,3 +4,8 @@ zuora_accounts_receivables:
             - invoice_id
         unique:
             - invoice_id
+
+zuora_current_arr:
+    constraints:
+        not_null:
+            - current_arr
