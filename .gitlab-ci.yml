@@ -75,8 +75,8 @@ stages:
     - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
     - using_proxy python3 elt/zuora/zuora_export.py
     - stop_cloudsqlproxy
-  
-.pings_extract: &pings_extract 
+
+.pings_extract: &pings_extract
   stage: extract
   <<: *job_definition
   script:
@@ -95,7 +95,7 @@ stages:
     - setup_cloudsqlproxy
     - using_proxy bash processes/hosts_to_sfdc/python_timecheck.sh
     - stop_cloudsqlproxy
-  
+
 .sfdc_extract: &sfdc_extract
   variables:
     FIXED_SFDC_PASSWORD: $SFDC_PASSWORD
@@ -109,6 +109,30 @@ stages:
     - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
     - using_proxy kitchen.sh -file=elt/sfdc/sfdc_extract.kjb -level=Minimal
     - stop_cloudsqlproxy
+
+
+.stripe_extract_githost: &stripe_extract_githost
+  stage: extract
+  allow_failure: true
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy python3 elt/stripe/src --schema stripe_githost apply_schema
+    - using_proxy python3 elt/stripe/src --schema stripe_githost --days=7 export
+    - stop_cloudsqlproxy
+
+.stripe_extract_about_gitlab: &stripe_extract_about_gitlab
+  stage: extract
+  allow_failure: true
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy python3 elt/stripe/src --schema stripe_about_gitlab apply_schema
+    - using_proxy python3 elt/stripe/src --schema stripe_about_gitlab --days=7 export
+    - stop_cloudsqlproxy
+
 
 # Stage: extract
 
@@ -144,7 +168,7 @@ zendesk:
   retry: 1
   only:
     - master
-  
+
 lever:
   <<: *lever_extract
   retry: 1
@@ -169,6 +193,21 @@ netsuite_backlog_manual:
   retry: 1
   when: manual
 
+stripe_extract_about_gitlab_manual:
+  variables:
+    ABOUT_GITLAB_STRIPE_API_KEY_SK: $ABOUT_GITLAB_STRIPE_API_KEY_SK
+  <<: *job_definition
+  retry: 1
+  only:
+    - master
+
+stripe_extract_githost_manual:
+  variables:
+    GITHOST_STRIPE_API_KEY_SK: $GITHOST_STRIPE_API_KEY_SK
+  <<: *job_definition
+  retry: 1
+  only:
+    - master
 
 ## Review Jobs
 
@@ -239,6 +278,23 @@ netsuite_manual:
     - master
   when: manual
 
+stripe_extract_githost_manual:
+  <<: *stripe_extract_githost
+  retry: 1
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+stripe_extract_about_gitlab_manual:
+  <<: *stripe_extract_about_gitlab
+  retry: 1
+  only:
+    - branches
+  except:
+    - master
+  when: manual
 # Stage: model
 
 dbt:
@@ -253,8 +309,8 @@ dbt:
     - dbt -d run --profiles-dir profile --target prod --models zuora
     - dbt -d test --profiles-dir profile --target prod --models sfdc
     - stop_cloudsqlproxy
-  
-# Stage: update 
+
+# Stage: update
 
 sfdc_update:
   stage: update
@@ -273,8 +329,8 @@ sfdc_snapshot:
     - setup_cloudsqlproxy
     - using_proxy python3 elt/util/snapshot.py
     - stop_cloudsqlproxy
-  
-# Stage: review 
+
+# Stage: review
 
 review: &review
   stage: review
@@ -308,7 +364,7 @@ review_stop:
   image: google/cloud-sdk:latest
   variables:
     GIT_STRATEGY: none
-  script: 
+  script:
     - set_sql_instance_name
     - delete_review_cloudsql
   when: manual
@@ -353,7 +409,7 @@ update_db: &update_db
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 ci_scripts/grant_roles.py
-    - stop_cloudsqlproxy    
+    - stop_cloudsqlproxy
   only:
     - branches
   except:
@@ -381,7 +437,7 @@ force_update_db:
       echo "No credentials provided."
       export GCP_AUTH=1
     fi
-    
+
     return $GCP_AUTH
   }
 
@@ -390,7 +446,7 @@ force_update_db:
       export GCP_INSTANCE_NAME=$GCP_PRODUCTION_INSTANCE_NAME
       return 0
     fi
-  
+
     if auth_gcloud; then
       INSTANCE=$(gcloud sql instances list --project "$GCP_PROJECT" | \
                  grep "$GCP_INSTANCE_REF_SLUG" | \
@@ -409,7 +465,7 @@ force_update_db:
 
   function set_sql_instance_name() {
     if auth_gcloud; then
-      # 95 (max) - 10 (job_id) - 2 (`-`) = 83 
+      # 95 (max) - 10 (job_id) - 2 (`-`) = 83
       SLUG_LENGTH=$(( 83 - ${#CI_PROJECT_NAME} ))
       export GCP_INSTANCE_REF_SLUG=$CI_PROJECT_NAME-${CI_COMMIT_REF_SLUG:0:$SLUG_LENGTH}
       export JOB_GCP_INSTANCE_NAME=$GCP_INSTANCE_REF_SLUG-${CI_JOB_ID:0:10}
