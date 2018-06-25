@@ -1259,7 +1259,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename />
+      <filename> ${CI_PROJECT_DIR}/elt/sfdc/accounthistory.ktr </filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -1279,7 +1279,7 @@
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <run_configuration />
+      <run_configuration>Pentaho local</run_configuration>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
