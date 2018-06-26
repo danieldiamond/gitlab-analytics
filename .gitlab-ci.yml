@@ -76,16 +76,6 @@ stages:
     - using_proxy python3 elt/zuora/zuora_export.py
     - stop_cloudsqlproxy
 
-.pings_extract: &pings_extract
-  stage: extract
-  <<: *job_definition
-  script:
-    - set_sql_instance_name
-    - setup_cloudsqlproxy
-    - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
-    - bash elt/util/run_daily_etl.sh
-    - stop_cloudsqlproxy
-
 .domains_extract: &domains_extract
   stage: extract
   retry: 1
@@ -149,7 +139,14 @@ zuora:
     - master
 
 pings:
-  <<: *pings_extract
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy python3 elt/pings/src apply_schema --db_manifest version --run_after 2 --run_before 5
+    - using_proxy python3 elt/pings/src export --db_manifest version --days 2 --run_after 2 --run_before 5
+    - stop_cloudsqlproxy
   only:
     - master
 
@@ -228,11 +225,33 @@ zuora_manual:
   when: manual
 
 pings_manual:
-  <<: *pings_extract
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy python3 elt/pings/src apply_schema --db_manifest version
+    - using_proxy python3 elt/pings/src export --db_manifest version --days 10
+    - stop_cloudsqlproxy
   only:
     - branches
   except:
     - master
+  when: manual
+
+pings_30_days_manual:
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy python3 elt/pings/src apply_schema --db_manifest version
+    - using_proxy python3 elt/pings/src export --db_manifest version --days 30
+    - stop_cloudsqlproxy
+  only:
+    - master
+  except:
+    - branches
   when: manual
 
 domains_manual:
