@@ -1,4 +1,4 @@
-view: sfdc_sao {
+view: sfdc_sales_accepted_opportunity {
   sql_table_name: analytics.sfdc_sales_accepted_opportunity ;;
   label: "Salesforce Sales Accepted Opportunity"
   #
