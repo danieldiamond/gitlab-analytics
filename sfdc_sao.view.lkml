@@ -1,61 +1,11 @@
 view: sfdc_sao {
-  derived_table: {
-    sql:
-        SELECT 'Mid-Market' AS opp_segment,
-               a.name AS account_name,
-               o.name AS opp_name,
-               o.sales_accepted_date__c AS sales_accepted_date,
-               o.sql_source__c AS gen_type,
-               COALESCE(o.sales_segmentation_o__c,'Unknown') AS sales_segment,
-               ultimate_parent_sales_segment_o__c AS parent_segment,
-               stagename,
-               o.leadsource,
-               o.type,
-               o.amount AS tcv,
-               o.incremental_acv__c AS iacv
-        FROM sfdc.opportunity o
-          LEFT JOIN sfdc.account a ON a.id = o.accountid
-        WHERE (o.TYPE IN ('New Business','Add-On Business') OR o.TYPE IS NULL)
-        AND   (o.sales_segmentation_o__c = 'Mid-Market' OR o.ultimate_parent_sales_segment_o__c = 'Mid-Market')
-        AND   o.sales_segmentation_o__c NOT IN ('Large','Strategic')
-        AND   (o.ultimate_parent_sales_segment_o__c NOT IN ('Large','Strategic') OR o.ultimate_parent_sales_segment_o__c IS NULL)
-        AND   (stagename NOT IN ('00-Pre Opportunity','9-Unqualified','10-Duplicate'))
-        AND   amount >= 0
-        AND   (o.isdeleted IS FALSE)
-        AND   o.leadsource != 'Web Direct'
-
-        UNION ALL
-
-        SELECT CASE WHEN (sales_segmentation_o__c = 'Large' OR ultimate_parent_sales_segment_o__c = 'Large') THEN 'Large'
-                ELSE 'Strategic'
-               END AS opp_segment,
-               a.name AS account_name,
-               o.name AS opp_name,
-               o.sales_accepted_date__c AS sales_accepted_date,
-               o.sql_source__c AS gen_type,
-               COALESCE(o.sales_segmentation_o__c,'Unknown') AS sales_segment,
-               ultimate_parent_sales_segment_o__c AS parent_segment,
-               stagename,
-               o.leadsource,
-               o.type,
-               o.amount AS tcv,
-               o.incremental_acv__c AS iacv
-        FROM sfdc.opportunity o
-          LEFT JOIN sfdc.account a ON a.id = o.accountid
-        WHERE (o.TYPE IN ('New Business','Add-On Business') OR o.TYPE IS NULL)
-        AND   (o.sales_segmentation_o__c IN ('Large','Strategic') OR o.ultimate_parent_sales_segment_o__c IN ('Large','Strategic'))
-        AND   (stagename NOT IN ('00-Pre Opportunity','9-Unqualified','10-Duplicate'))
-        AND   amount >= 0
-        AND   (o.isdeleted IS FALSE)
-        AND   o.leadsource != 'Web Direct'
-
-        ORDER BY sales_accepted_date DESC;;
-  }
+  sql_table_name: analytics.sfdc_sales_accepted_opportunity ;;
+  label: "Salesforce Sales Accepted Opportunity"
   #
   dimension: opp_segment {
-    description: "Opp Segment"
+    description: "Opportunity Segment"
     type: string
-    sql: ${TABLE}.opp_segment ;;
+    sql: ${TABLE}.opportunity_segment ;;
   }
   dimension: customer {
     description: "Customer"
@@ -64,9 +14,9 @@ view: sfdc_sao {
   }
   #
   dimension: opportunity {
-    description: "Opp Name"
+    description: "Oppportunity Name"
     type: string
-    sql: ${TABLE}.opp_name ;;
+    sql: ${TABLE}.opportunity_name ;;
   }
   #
   dimension: acct_num {
@@ -78,7 +28,7 @@ view: sfdc_sao {
   dimension: lead_type {
     description: "Lead Type"
     type: string
-    sql: ${TABLE}.gen_type ;;
+    sql: ${TABLE}.generated_source ;;
   }
   #
   dimension: sales_segment {
@@ -102,13 +52,13 @@ view: sfdc_sao {
   dimension: leadsource {
     description: "Source of Lead"
     type: string
-    sql: ${TABLE}.leadsource ;;
+    sql: ${TABLE}.lead_source ;;
   }
   #
   dimension: type {
     description: "Deal Type"
     type: string
-    sql: ${TABLE}.type ;;
+    sql: ${TABLE}.sales_type ;;
   }
   #
   dimension_group: sales_accepted_date {
@@ -130,13 +80,13 @@ view: sfdc_sao {
   measure: tcv {
     description: "TCV"
     type: sum
-    sql: ${TABLE}.tcv ;;
+    sql: ${TABLE}.total_contract_value ;;
   }
   #
   measure: iacv {
     description: "IACV"
     type: sum
-    sql: ${TABLE}.iacv ;;
+    sql: ${TABLE}.incremental_acv ;;
   }
   #
   measure: segment_cnt {
