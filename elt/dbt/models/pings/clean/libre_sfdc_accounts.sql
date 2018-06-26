@@ -43,7 +43,7 @@ SELECT
   host.clean_full_domain                                        AS Name,
   host.raw_domain                                               AS Original_Hostname__c,
   host.active_user_count                                        AS Host_Users__c,
-  host.installation_type                                        AS Installation_Type__c
+  host.installation_type                                        AS Installation_Type__c,
   host.ping_date                                                AS Last_Ping__c,
   host.ping_usage_data :: TEXT                                  AS Raw_Usage_Stats__c,
   host.ping_version_data :: TEXT                                AS Raw_Version_Stats__c,
