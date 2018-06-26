@@ -97,7 +97,6 @@ licenses:
     created_at: timestamp without time zone
     updated_at: timestamp without time zone
     active_users_count: integer
-    installation_type: character varying
     historical_max_users_count: integer
     last_ping_received_at: timestamp without time zone
     version: character varying
@@ -127,6 +126,7 @@ usage_data:
     source_ip: character varying
     version: character varying
     active_user_count: integer
+    installation_type: character varying
     historical_max_users: integer
     license_user_count: integer
     license_starts_at: timestamp without time zone
