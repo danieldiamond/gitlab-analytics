@@ -97,7 +97,7 @@ licenses:
     created_at: timestamp without time zone
     updated_at: timestamp without time zone
     active_users_count: integer
-    installation_type: string
+    installation_type: character varying
     historical_max_users_count: integer
     last_ping_received_at: timestamp without time zone
     version: character varying
