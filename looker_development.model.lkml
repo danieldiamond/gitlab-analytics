@@ -46,7 +46,7 @@ explore: f_opportunity {
 
 
 explore: sao {
-  from:  sfdc_sao
-  label: "SAOs"
+  from:  sfdc_sales_accepted_opportunity
+  label: "Sales Accepted Opportunities"
   description: "List of SAOs"
 }
