@@ -250,8 +250,6 @@ pings_30_days_manual:
     - stop_cloudsqlproxy
   only:
     - master
-  except:
-    - branches
   when: manual
 
 domains_manual:
