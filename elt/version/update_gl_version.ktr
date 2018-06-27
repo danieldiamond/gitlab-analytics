@@ -1363,6 +1363,11 @@ WHERE updated_at >= CURRENT_TIMESTAMP - interval '10 day'</sql>
         <update>Y</update>
       </value>
       <value>
+        <name>installation_type</name>
+        <rename>installation_type</rename>
+        <update>Y</update>
+      </value>
+      <value>
         <name>historical_max_users_count</name>
         <rename>historical_max_users_count</rename>
         <update>Y</update>
