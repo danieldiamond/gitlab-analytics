@@ -1,8 +1,5 @@
 [![pipeline status](https://gitlab.com/meltano/meltano/badges/master/pipeline.svg)](https://gitlab.com/meltano/meltano/commits/master)
 
-[Keynote PDF](https://drive.google.com/open?id=1oNiCtHkorYKq19kx8CwGr8Z7QCjVQiOj)  
-[Keynote](https://drive.google.com/open?id=1WmleHjP41nsxszGV50ionZKx-b2X3PvF)
-
 # Meltano
 
 Meltano is an open source convention-over-configuration product for [data ops](https://en.wikipedia.org/wiki/DataOps), data engineering, analytics, business intelligence, and data science. It leverages open source software and software development best practices including version control, CI, CD, and review apps.
@@ -32,6 +29,8 @@ In addition, believe that the information a business uses to make decisions must
 - [Google Docs Meeting Agenda](https://docs.google.com/document/d/1nayKquFLL8DN3h8mnLo3pVZsEKyPcBgQm2mqc5GggPA)
 - [Youtube Channel](https://www.youtube.com/channel/UCmp7zJAZEC7I_n9BEydH8XQ/videos)
 - [Issue board](https://gitlab.com/meltano/meltano/boards/528368?=)
+- [Functional Group Update (PDF format)](https://drive.google.com/open?id=1oNiCtHkorYKq19kx8CwGr8Z7QCjVQiOj)  
+- [Functional Group Update (Keynote format)](https://drive.google.com/open?id=1WmleHjP41nsxszGV50ionZKx-b2X3PvF)
 
 ## Approach
 
