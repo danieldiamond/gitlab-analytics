@@ -78,3 +78,4 @@ FROM version.usage_data
 {% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
     WHERE created_at > (SELECT max(created_at) FROM {{ this }})
 {% endif %}
+

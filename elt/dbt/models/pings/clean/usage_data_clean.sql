@@ -1,5 +1,5 @@
 with usage60 as (
-  SELECT * FROM {{ ref('last60usagepings') }}
+  SELECT * FROM {{ ref('pings_last_60_usage_pings') }}
 )
 
 SELECT
@@ -9,3 +9,4 @@ SELECT
 FROM
   usage60
   JOIN public.cleaned_urls AS curls ON coalesce(usage60.hostname, usage60.source_ip) = curls.domain
+
