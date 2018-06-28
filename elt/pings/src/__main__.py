@@ -48,9 +48,10 @@ def parse():
     parser.add_argument(
         '--days',
         type=int,
-        default=10,
         help=("Specify the number of preceding days from the current time "
-              "to get incremental records for (default=10).")
+              "to get incremental records for (default=10). "
+              "If not provided and ENV var PINGS_BACKFILL_DAYS is set, then "
+              "it is used instead of the default value.")
     )
 
     parser.add_argument(
@@ -125,13 +126,24 @@ def main():
     args = parse()
     setup_logging(args)
 
+    # If environment var PINGS_BACKFILL_DAYS is set and no --days is provided
+    #  then use it as the days param for the extractor
+    backfill_days = os.getenv("PINGS_BACKFILL_DAYS")
 
+    if args.days is None:
+        if backfill_days and int(backfill_days) > 0:
+            args.days = int(backfill_days)
+        else:
+            args.days = 10
+
+    # If run_after and run_before arguments are provided, only run the
+    #  extractor in the provided time window
     utc_hour = (datetime.utcnow()).hour
 
     if args.run_after and args.run_before \
       and not (args.run_after < utc_hour < args.run_before) :
         logging.info(
-            'The extract Pings ELT will not run: Only runs between'
+            'The Pings Extractor will not run: Only runs between'
             ' the hours of {}:00 UTC and {}:00 UTC.'.format(args.run_after,args.run_before)
         )
         return

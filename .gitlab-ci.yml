@@ -239,14 +239,14 @@ pings_manual:
     - master
   when: manual
 
-pings_30_days_manual:
+pings_backfill:
   stage: extract
   <<: *job_definition
   script:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/pings/src apply_schema --db_manifest version
-    - using_proxy python3 elt/pings/src export --db_manifest version --days 30
+    - using_proxy python3 elt/pings/src export --db_manifest version
     - stop_cloudsqlproxy
   only:
     - master
