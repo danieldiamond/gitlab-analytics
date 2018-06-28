@@ -26,3 +26,4 @@ FROM sfdc.account AS sf
   INNER JOIN external_combined ON
                                 sf.name = external_combined.name
                                 OR regexp_replace(sf.website, '^(http(s)?\://)?www\.', '') = external_combined.domain
+

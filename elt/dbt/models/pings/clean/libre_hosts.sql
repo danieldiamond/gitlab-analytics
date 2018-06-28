@@ -36,3 +36,4 @@ FROM usage_pings AS udc
 GROUP BY
   clean_domain,
   clean_full_domain
+

@@ -69,3 +69,4 @@ UNION
 SELECT *
 FROM whois_joined
 ORDER BY the_clean_url
+

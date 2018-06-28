@@ -69,3 +69,4 @@ WHERE sf.fixed IS NULL
 GROUP BY website
 
 ORDER BY name
+

@@ -61,3 +61,4 @@ WHERE sf.isdeleted = FALSE
       AND sf.type != 'Customer'
       AND (host.active_user_count != sf.active_ce_users__c OR sf.active_ce_users__c IS NULL)
       AND sf.name NOT IN ('Microsoft', 'Amazon.com')
+

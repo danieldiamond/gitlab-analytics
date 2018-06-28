@@ -1,5 +1,5 @@
 with version60 as (
-  SELECT * FROM {{ ref('last60versionpings') }}
+  SELECT * FROM {{ ref('pings_last_60_version_pings') }}
 )
 
 SELECT
@@ -9,6 +9,4 @@ SELECT
 FROM
   version60
   JOIN public.cleaned_urls AS curls ON version60.referer_url = curls.domain
-
-
 
