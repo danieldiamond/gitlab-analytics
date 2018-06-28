@@ -1,4 +1,4 @@
-view: beyond_30days_open_invoices {
+view: zuora_invoices_beyond_30days {
   sql_table_name: analytics.zuora_invoices_beyond_30days ;;
 
 
