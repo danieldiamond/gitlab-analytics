@@ -34,7 +34,7 @@ explore: invoicing {
   join: beyond_30days_open_invoices {
   fields: []
   view_label: "Invoicing"
-  sql_on:     ${invoicing.customer} = ${beyond_30days_open_invoices.name}
+  sql_on:     ${invoicing.customer} = ${beyond_30days_open_invoices.account_name}
           AND ${invoicing.day_range} = ${beyond_30days_open_invoices.day_range};;
   relationship: many_to_one
   }
