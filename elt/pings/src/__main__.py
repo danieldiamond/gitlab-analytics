@@ -13,15 +13,19 @@ from db_extractor import DBExtractor
 
 
 def action_export(args):
-    logging.info("Exporting Ping Data for the past {} days.".format(args.days))
-    client = DBExtractor(args.db_manifest, int(args.days))
+    logging.info("Exporting {} Data for the past {} days.".format(
+            args.db_manifest,
+            args.days,
+        )
+    )
+    client = DBExtractor(args.db_manifest, args.days)
     client.export()
     logging.info("Export completed Successfully.")
 
 
 def action_schema_apply(args):
     logging.info("Applying Schema")
-    client = DBExtractor(args.db_manifest, int(args.days))
+    client = DBExtractor(args.db_manifest, args.days)
     client.schema_apply()
 
 
@@ -43,15 +47,11 @@ def parse():
     parser = argparse.ArgumentParser(
         description="Extract Ping data (Version/CI Stats/Customers/Licenses).")
 
-    parser_logging(parser)
-
     parser.add_argument(
-        '--days',
-        type=int,
-        help=("Specify the number of preceding days from the current time "
-              "to get incremental records for (default=10). "
-              "If not provided and ENV var PINGS_BACKFILL_DAYS is set, then "
-              "it is used instead of the default value.")
+        '--db_manifest',
+        required=True,
+        choices=['version', 'ci_stats'],
+        help="Which DB manifest to use to get the export list."
     )
 
     parser.add_argument(
@@ -69,11 +69,15 @@ def parse():
     )
 
     parser.add_argument(
-        '--db_manifest',
-        required=True,
-        choices=['version', 'ci_stats'],
-        help="Which DB manifest to use to get the export list."
+        '--days',
+        type=int,
+        help=("Specify the number of preceding days from the current time "
+              "to get incremental records for (default=10). "
+              "If not provided and ENV var PINGS_BACKFILL_DAYS is set, then "
+              "it is used instead of the default value.")
     )
+
+    parser_logging(parser)
 
     parser.add_argument(
         'action',
