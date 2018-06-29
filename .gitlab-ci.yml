@@ -335,7 +335,7 @@ dbt_refresh:
     - setup_cloudsqlproxy
     - cd elt/dbt
     - dbt -d run --profiles-dir profile --target prod --models sfdc --full-refresh
-    - dbt -d run --profiles-dir profile --target version --models pings --full-refresh
+    - dbt -d run --profiles-dir profile --target prod --models pings --full-refresh
     - dbt -d run --profiles-dir profile --target prod --models zuora --full-refresh
     - dbt -d test --profiles-dir profile --target prod --models sfdc
     - stop_cloudsqlproxy
