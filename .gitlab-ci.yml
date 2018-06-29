@@ -28,6 +28,9 @@ stages:
     - setup_cloudsqlproxy
     - using_proxy bash processes/mkto_processor.sh
     - stop_cloudsqlproxy
+  except:
+    variables:
+      - $EXTRACT_SKIP =~ /all|marketo/
 
 .zendesk_extract: &zendesk_extract
   stage: extract
@@ -39,6 +42,9 @@ stages:
     - using_proxy python3 elt/zendesk/src --schema zendesk apply_schema
     - using_proxy python3 elt/zendesk/src --schema zendesk --days=1 export
     - stop_cloudsqlproxy
+  except:
+    variables:
+      - $EXTRACT_SKIP =~ /all|zendesk/
 
 .lever_extract: &lever_extract
   stage: extract
@@ -51,6 +57,9 @@ stages:
     - using_proxy python3 elt/lever/src --schema lever --days=7 export
     - using_proxy python3 elt/lever/src --schema lever --days=365 --only_offers export
     - stop_cloudsqlproxy
+  except:
+    variables:
+      - $EXTRACT_SKIP =~ /all|lever/
 
 .netsuite_extract: &netsuite_extract
   stage: extract
@@ -63,6 +72,9 @@ stages:
     - using_proxy python3 elt/netsuite/src/ --schema netsuite export --days 3
     - using_proxy python3 elt/netsuite/src/ --schema netsuite backlog --days 15
     - stop_cloudsqlproxy
+  except:
+    variables:
+      - $EXTRACT_SKIP =~ /all|netsuite/
 
 .zuora_extract: &zuora_extract
   variables:
@@ -75,6 +87,9 @@ stages:
     - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
     - using_proxy python3 elt/zuora/zuora_export.py
     - stop_cloudsqlproxy
+  except:
+    variables:
+      - $EXTRACT_SKIP =~ /all|zuora/
 
 .domains_extract: &domains_extract
   stage: extract
@@ -85,6 +100,9 @@ stages:
     - setup_cloudsqlproxy
     - using_proxy bash processes/hosts_to_sfdc/python_timecheck.sh
     - stop_cloudsqlproxy
+  except:
+    variables:
+      - $EXTRACT_SKIP =~ /all|domains/
 
 .sfdc_extract: &sfdc_extract
   variables:
@@ -99,7 +117,9 @@ stages:
     - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
     - using_proxy kitchen.sh -file=elt/sfdc/sfdc_extract.kjb -level=Minimal
     - stop_cloudsqlproxy
-
+  except:
+    variables:
+      - $EXTRACT_SKIP =~ /all|sfdc/
 
 .stripe_extract_githost: &stripe_extract_githost
   stage: extract
@@ -111,6 +131,9 @@ stages:
     - using_proxy python3 elt/stripe/src --schema stripe_githost apply_schema
     - using_proxy python3 elt/stripe/src --schema stripe_githost --days=7 export
     - stop_cloudsqlproxy
+  except:
+    variables:
+      - $EXTRACT_SKIP =~ /all|stripe_githost/
 
 .stripe_extract_about_gitlab: &stripe_extract_about_gitlab
   stage: extract
@@ -122,7 +145,9 @@ stages:
     - using_proxy python3 elt/stripe/src --schema stripe_about_gitlab apply_schema
     - using_proxy python3 elt/stripe/src --schema stripe_about_gitlab --days=7 export
     - stop_cloudsqlproxy
-
+  except:
+    variables:
+      - $EXTRACT_SKIP =~ /all|stripe_gitlab/
 
 # Stage: extract
 
@@ -351,6 +376,9 @@ sfdc_update:
     - setup_cloudsqlproxy
     - using_proxy python3 processes/sfdc_processor.py
     - stop_cloudsqlproxy
+  except:
+    variables:
+      - $UPDATE_SKIP =~ /all|sfdc_update/
 
 sfdc_snapshot:
   stage: update
@@ -360,6 +388,9 @@ sfdc_snapshot:
     - setup_cloudsqlproxy
     - using_proxy python3 elt/util/snapshot.py
     - stop_cloudsqlproxy
+  except:
+    variables:
+      - $UPDATE_SKIP =~ /all|sfdc_snapshot/
 
 # Stage: review
 

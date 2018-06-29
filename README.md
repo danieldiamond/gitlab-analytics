@@ -306,6 +306,13 @@ zuora_review:
   when: manual
 ```
 
+## Pipeline configuration
+
+Data integration stages are configurable using `Project variables` for the CI/CD pipeline. The following variables may help you control what needs to run:
+
+  - `EXTRACT_SKIP`: either `all` (to skip the `extract` stage) or job names, like `marketo,zendesk,zuora` to be skipped from the pipeline.
+  - `UPDATE_SKIP`: either `all` (to skip the `update` stage) or job names, like `sfdc_update`.
+
 ## GitLab Data and Analytics - Internal
 
 ### Charter/Goals
