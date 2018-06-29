@@ -51,6 +51,7 @@ stages:
   allow_failure: true
   <<: *job_definition
   script:
+    - python3 ci_scripts/check_ci_cd_vars.py --file elt/lever/src/config/required_ci_cd_vars.yaml
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/lever/src --schema lever apply_schema
@@ -66,6 +67,7 @@ stages:
   allow_failure: true
   <<: *job_definition
   script:
+    - python3 ci_scripts/check_ci_cd_vars.py --file elt/netsuite/src/config/required_ci_cd_vars.yaml
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/netsuite/src/ --schema netsuite apply_schema
@@ -208,6 +210,7 @@ netsuite_backlog_manual:
   allow_failure: true
   <<: *job_definition
   script:
+    - python3 ci_scripts/check_ci_cd_vars.py --file elt/netsuite/src/config/required_ci_cd_vars.yaml
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/netsuite/src/ --schema netsuite backlog --days 60
