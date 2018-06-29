@@ -1,5 +1,5 @@
 view: usage_data {
-  sql_table_name: version.usage_data_unpacked ;;
+  sql_table_name: analytics.pings_usage_data_unpacked ;;
   label: "Usage Data"
 
   dimension_group: timeframe {
@@ -189,6 +189,69 @@ view: usage_data {
     label: "Distinct UUID Count"
     type: count_distinct
     sql: ${uuid} ;;
+  }
+
+  # Installation type
+  dimension: installation_type {
+    label: "Installation types"
+    description: "Installation method types"
+    type: string
+    sql: ${TABLE}.installation_type ;;
+  }
+
+  measure: installation_type_omnibus {
+    group_label: "Installation methods"
+    label: "Omnibus"
+    type: count
+    drill_fields: [installation_type]
+    filters: {
+      field: installation_type
+      value: "omnibus-gitlab"
+    }
+  }
+
+  measure: installation_type_omnibus_docker {
+    group_label: "Installation methods"
+    label: "Omnibus Docker"
+    type: count
+    drill_fields: [installation_type]
+    filters: {
+      field: installation_type
+      value: "gitlab-docker"
+    }
+  }
+
+  measure: installation_type_cng {
+    group_label: "Installation methods"
+    label: "CNG Image"
+    type: count
+    drill_fields: [installation_type]
+    filters: {
+      field: installation_type
+      value: "gitlab-cloud-native-image"
+    }
+  }
+
+  measure: installation_type_source {
+    group_label: "Installation methods"
+    label: "Source"
+    type: count
+    drill_fields: [installation_type]
+    filters: {
+      field: installation_type
+      value: "source"
+    }
+  }
+
+  measure: installation_type_gitlab_chart {
+    group_label: "Installation methods"
+    label: "GitLab Chart"
+    type: count
+    drill_fields: [installation_type]
+    filters: {
+      field: installation_type
+      value: "gitlab-helm-chart"
+    }
   }
 
   # Active users
