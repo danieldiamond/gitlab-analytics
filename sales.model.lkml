@@ -57,6 +57,11 @@ explore: f_opportunity {
     relationship: many_to_one
     sql_on: ${f_opportunity.closedate_date}=${bookings_goal.goal_month} ;;
   }
+
+  join: historical_sales_quota_xf {
+    relationship: many_to_one
+    sql_on: ${f_opportunity.ownerid} = ${historical_sales_quota_xf.account_owner_id} ;;
+  }
 }
 
 explore: f_snapshot_opportunity {
