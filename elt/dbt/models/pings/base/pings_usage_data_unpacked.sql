@@ -4,7 +4,6 @@ SELECT
   version,
   installation_type,
   active_user_count,
-  license_md5,
   created_at,
   mattermost_enabled,
   uuid,
