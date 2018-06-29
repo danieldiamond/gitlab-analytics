@@ -6,7 +6,7 @@ view: zuora_ar {
   dimension: 30_days_open_invoices {
     #hidden: yes
     type:  string
-    sql: ${beyond_30days_open_invoices.list_of_open_invoices} ;;
+    sql: ${zuora_invoices_beyond_30days.list_of_open_invoices} ;;
 
   }
 
