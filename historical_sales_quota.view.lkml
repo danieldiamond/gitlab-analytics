@@ -6,7 +6,6 @@ view: historical_sales_quota {
     sql: ${TABLE}.account_owner ;;
   }
 
-
   dimension: adjusted_start_date {
     type: string
     sql: ${TABLE}.adjusted_start_date ;;
