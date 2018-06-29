@@ -31,6 +31,7 @@ view: historical_sales_quota_xf {
   dimension_group: quota_month {
     type: time
     timeframes: [
+      date,
       month,
       quarter,
       year
@@ -38,6 +39,12 @@ view: historical_sales_quota_xf {
     convert_tz: no
     datatype: date
     sql: ${TABLE}.quota_month ;;
+  }
+
+  dimension: months_since_adjusted_start_date {
+    type: number
+    sql: (DATE_PART('year', date_trunc('month', ${f_opportunity.closedate_date}::date)) - DATE_PART('year', ${historical_sales_quota.adjusted_start_date_date}::date)) * 12 +
+              (DATE_PART('month', date_trunc('month', ${f_opportunity.closedate_date}::date)) - DATE_PART('month', ${historical_sales_quota.adjusted_start_date_date}::date)) ;;
   }
 
   measure: count {

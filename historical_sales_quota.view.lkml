@@ -6,9 +6,17 @@ view: historical_sales_quota {
     sql: ${TABLE}.account_owner ;;
   }
 
-  dimension: adjusted_start_date {
-    type: string
-    sql: ${TABLE}.adjusted_start_date ;;
+  dimension_group: adjusted_start_date {
+    type: time
+    timeframes: [
+      date,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.adjusted_start_date::date ;;
   }
 
   measure: count {
