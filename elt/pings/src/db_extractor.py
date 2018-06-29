@@ -166,35 +166,39 @@ class DBExtractor:
                 int(time.time()),
             )
 
-            with import_db.open() as db, \
-                 db.cursor(
+            with import_db.open() as import_connection:
+
+                # Make the import cursor readonly
+                import_connection.set_session(readonly=True)
+
+                with import_connection.cursor(
                     cursor_unique_name,
                     cursor_factory=psycopg2.extras.DictCursor
-                 ) as import_cursor:
+                ) as import_cursor:
 
-                # Number of rows to fetch from the backend at each network roundtrip
-                # Increased to 50K from the default 2K in order to balance between
-                #  performance and stable excecution.
-                import_cursor.itersize = 50000
-
-                # generate the export query with only the target columns
-                #  selected (filter out unwanted or PII)
-                query = DBExtractor.filter_query(
-                            table_info['import_query'],
-                            target_columns
-                        )
-
-                import_cursor.execute(query)
-
-                insert_query = DBExtractor.generate_insert_query(table_info, target_columns)
-
-                insert_template = DBExtractor.generate_template(table_info['export_table_schema'])
-
-                # One connection per table in order to commit between
-                #  exporting different tables
-                with export_db.open() as dw, dw.cursor() as export_cursor:
+                    # track iterations and total rows exported for logging them
                     iteration_no = 0
                     total_rows_exported = 0
+
+                    # Number of rows to fetch from the backend at each network roundtrip
+                    # Increased to 50K from the default 2K in order to balance between
+                    #  performance and stable excecution.
+                    import_cursor.itersize = 50000
+
+                    # generate the export query with only the target columns
+                    #  selected (filter out unwanted or PII)
+                    query = DBExtractor.filter_query(
+                                table_info['import_query'],
+                                target_columns
+                            )
+
+                    # Prepare the insert query template to be used in the loop
+                    insert_query = DBExtractor.generate_insert_query(table_info, target_columns)
+
+                    insert_template = DBExtractor.generate_template(table_info['export_table_schema'])
+
+                    # Execute the query and start fetching the data in 50K batches
+                    import_cursor.execute(query)
 
                     result = import_cursor.fetchmany(50000)
 
@@ -207,13 +211,17 @@ class DBExtractor:
                             )
                         )
 
-                        psycopg2.extras.execute_values (
-                            export_cursor,
-                            insert_query,
-                            result,
-                            template='({})'.format(insert_template),
-                            page_size=50000,
-                        )
+                        # One connection per iteration in order to commit every 50K
+                        #  records fetched and be able to handle imported tables
+                        #  with more than a million records in the result
+                        with export_db.open() as dw, dw.cursor() as export_cursor:
+                            psycopg2.extras.execute_values (
+                                export_cursor,
+                                insert_query,
+                                result,
+                                template='({})'.format(insert_template),
+                                page_size=50000,
+                            )
 
                         result = import_cursor.fetchmany(50000)
 
