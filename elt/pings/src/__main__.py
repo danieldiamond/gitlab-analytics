@@ -2,6 +2,8 @@ import os
 import logging
 import argparse
 
+from psycopg2 import OperationalError
+
 from enum import Enum
 from datetime import datetime
 
@@ -19,9 +21,19 @@ def action_export(args):
         )
     )
     client = DBExtractor(args.db_manifest, args.days)
-    client.export()
-    logging.info("Export completed Successfully.")
 
+    try:
+        client.export()
+        logging.info("Export completed Successfully.")
+    except OperationalError as err:
+        # Connections to the Version DB are refused once per day around 06:00
+        # Don't fail the job if that's the case, just log the error and complete it
+        if args.db_manifest == 'version' \
+          and 'Connection refused' in str(err):
+            logging.info("Export skipped due to Connection to Version DB refused.")
+            logging.info("Error: {}".format(err))
+        else:
+            raise Error("DBExtractor.export() failed: {}".format(err))
 
 def action_schema_apply(args):
     logging.info("Applying Schema")
@@ -95,38 +107,7 @@ def parse():
 def execute(args):
     args.action(args)
 
-
-def check_ci_cd_vars():
-    # Temporary check - will be replaced by MR !205
-    CI_CD_VARS_REQUIRED = [
-      "PG_ADDRESS",
-      "PG_PORT",
-      "PG_DATABASE",
-      "PG_USERNAME",
-      "PG_PASSWORD",
-      "VERSION_DB_USER",
-      "VERSION_DB_HOST",
-      "VERSION_DB_NAME",
-      "CI_STATS_DB_USER",
-      "CI_STATS_DB_HOST",
-      "CI_STATS_DB_NAME",
-    ]
-
-    missing_params = 0
-
-    for var in CI_CD_VARS_REQUIRED:
-        param_value = os.getenv(var)
-
-        if param_value is None or param_value == "":
-            logging.error("Param {} is missing!".format(var))
-            missing_params += 1
-
-    if missing_params > 0:
-        raise Error('Missing {} Required CI/CD variables.'.format(missing_params))
-
-
 def main():
-    check_ci_cd_vars()
     args = parse()
     setup_logging(args)
 

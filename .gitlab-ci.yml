@@ -169,6 +169,7 @@ pings:
   stage: extract
   <<: *job_definition
   script:
+    - python3 ci_scripts/check_ci_cd_vars.py --file elt/pings/src/config/required_vars_pings.yaml
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/pings/src apply_schema --db_manifest version
@@ -181,6 +182,7 @@ ci_stats:
   stage: extract
   <<: *job_definition
   script:
+    - python3 ci_scripts/check_ci_cd_vars.py --file elt/pings/src/config/required_vars_ci_stats.yaml
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/pings/src apply_schema --db_manifest ci_stats
@@ -268,6 +270,7 @@ pings_manual:
   stage: extract
   <<: *job_definition
   script:
+    - python3 ci_scripts/check_ci_cd_vars.py --file elt/pings/src/config/required_vars_pings.yaml
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/pings/src apply_schema --db_manifest version
@@ -283,6 +286,7 @@ pings_backfill:
   stage: extract
   <<: *job_definition
   script:
+    - python3 ci_scripts/check_ci_cd_vars.py --file elt/pings/src/config/required_vars_pings.yaml
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/pings/src apply_schema --db_manifest version
@@ -296,6 +300,7 @@ ci_stats_manual:
   stage: extract
   <<: *job_definition
   script:
+    - python3 ci_scripts/check_ci_cd_vars.py --file elt/pings/src/config/required_vars_ci_stats.yaml
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/pings/src apply_schema --db_manifest ci_stats
