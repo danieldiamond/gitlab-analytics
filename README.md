@@ -40,6 +40,9 @@ Functional Group|Dashboards|Looks|
 
 [Looker](https://docs.looker.com) is a business intelligence software and big data analytics platform that helps users explore, analyze and share real-time business analytics easily.
 
+### Adding Users
+* All GitLab Employees should be a part of their respective team group as well as the `GitLab Employee` group.
+
 #### Training Sessions
 * [Looker Codev Training 1](https://drive.google.com/file/d/1sKHbARpIfHKGpTChuqZSagnfh8Vt7_ml/view?usp=sharing)
 * [Looker Codev Training 2](https://drive.google.com/file/d/1wNM-xnkDOBXce-M0cX16pkiFjsf3woma/view?usp=sharing)
