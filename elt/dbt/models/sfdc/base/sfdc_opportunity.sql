@@ -11,7 +11,7 @@ WITH source AS (
 		-- keys
 		accountid as account_id,
 
-		-- l;ogistical info
+		-- logistical info
 		name as opportunity_name,
 		opportunity_owner__c as owner,
 		engagement_type__c as sales_path,
@@ -25,6 +25,7 @@ WITH source AS (
 
 		-- opp info
 		acv_2__c as acv,
+		incremental_acv_2__c as forecasted_iacv,
 		incremental_acv__c as incremental_acv,
 		sales_segmentation_o__c as segment,
 		amount as total_contract_value,
