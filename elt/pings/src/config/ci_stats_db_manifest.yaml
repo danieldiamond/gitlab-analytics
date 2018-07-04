@@ -5,7 +5,7 @@ spec_profiling_results:
            status, exception, query_count, query_time, request_count, request_time, 
            created_at, updated_at, branch
     FROM spec_profiling_results
-    WHERE updated_at >= CURRENT_TIMESTAMP - interval '{days} day'
+    WHERE updated_at >= CURRENT_TIMESTAMP - interval '{hours} hour'
   export_db: EXPORT_DB
   export_schema: 'ci_stats'
   export_table: 'spec_profiling_results'

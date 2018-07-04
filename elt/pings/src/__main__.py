@@ -15,12 +15,20 @@ from db_extractor import DBExtractor
 
 
 def action_export(args):
-    logging.info("Exporting {} Data for the past {} days.".format(
-            args.db_manifest,
-            args.days,
+    if args.db_manifest == 'ci_stats':
+        logging.info("Exporting {} Data for the past {} hours.".format(
+                args.db_manifest,
+                args.hours,
+            )
         )
-    )
-    client = DBExtractor(args.db_manifest, args.days)
+    else:
+        logging.info("Exporting {} Data for the past {} days.".format(
+                args.db_manifest,
+                args.days,
+            )
+        )
+
+    client = DBExtractor(args.db_manifest, args.days, args.hours)
 
     try:
         client.export()
@@ -37,7 +45,7 @@ def action_export(args):
 
 def action_schema_apply(args):
     logging.info("Applying Schema")
-    client = DBExtractor(args.db_manifest, args.days)
+    client = DBExtractor(args.db_manifest, args.days, args.hours)
     client.schema_apply()
 
 
@@ -87,6 +95,16 @@ def parse():
               "to get incremental records for (default=10). "
               "If not provided and ENV var PINGS_BACKFILL_DAYS is set, then "
               "it is used instead of the default value.")
+    )
+
+    parser.add_argument(
+        '--hours',
+        type=int,
+        choices=range(1, 24),
+        default=8,
+        help=("Specify the number of preceding hours from the current time "
+              "to get incremental records for (default=12). "
+              "For special extractors with lots of results (like the ci_stats one).")
     )
 
     parser_logging(parser)
