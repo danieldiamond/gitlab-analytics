@@ -17,12 +17,17 @@ class DBExtractor:
     JOB_VERSION = 1
     DATE_MIN = datetime(2013, 1, 1)
 
-    def __init__(self, db_manifest, days_to_run=None):
-        # Days in the past the extractor will fetch
+    def __init__(self, db_manifest, days_to_run=None, hours_to_run=None):
+        # Days/Hours in the past the extractor will fetch
         if days_to_run and int(days_to_run) > 0:
             self.days_to_run = int(days_to_run)
         else:
             self.days_to_run = 10
+
+        if hours_to_run and int(hours_to_run) > 0:
+            self.hours_to_run = int(hours_to_run)
+        else:
+            self.hours_to_run = 8
 
         # Connection settings for each DB used
         self.db_env_parser = self.get_db_environment()
@@ -79,7 +84,11 @@ class DBExtractor:
                 table_info = {}
 
                 table_info['import_db'] = table_data['import_db']
-                table_info['import_query'] = (table_data['import_query'].format(days=self.days_to_run)).strip()
+                table_info['import_query'] = (table_data['import_query'].format(
+                                                    days=self.days_to_run,
+                                                    hours=self.hours_to_run,
+                                                )
+                                             ).strip()
                 table_info['export_db'] = table_data['export_db']
                 table_info['export_schema'] = table_data['export_schema']
                 table_info['export_table'] = table_data['export_table']
@@ -181,9 +190,9 @@ class DBExtractor:
                     total_rows_exported = 0
 
                     # Number of rows to fetch from the backend at each network roundtrip
-                    # Increased to 50K from the default 2K in order to balance between
+                    # Increased to 5K from the default 2K in order to balance between
                     #  performance and stable excecution.
-                    import_cursor.itersize = 50000
+                    import_cursor.itersize = 5000
 
                     # generate the export query with only the target columns
                     #  selected (filter out unwanted or PII)
@@ -200,12 +209,12 @@ class DBExtractor:
                     # Execute the query and start fetching the data in 50K batches
                     import_cursor.execute(query)
 
-                    result = import_cursor.fetchmany(50000)
+                    result = import_cursor.fetchmany(5000)
 
                     while result:
                         iteration_no += 1
                         total_rows_exported += import_cursor.rowcount
-                        logging.info('    iteration #{0:3} | {1:8} total rows'.format(
+                        logging.info('    iteration #{0:4} | {1:8} total rows'.format(
                                 iteration_no,
                                 total_rows_exported
                             )
@@ -220,10 +229,10 @@ class DBExtractor:
                                 insert_query,
                                 result,
                                 template='({})'.format(insert_template),
-                                page_size=50000,
+                                page_size=5000,
                             )
 
-                        result = import_cursor.fetchmany(50000)
+                        result = import_cursor.fetchmany(5000)
 
 
     def target_columns(schema):

@@ -180,13 +180,14 @@ pings:
 
 ci_stats:
   stage: extract
+  allow_failure: true
   <<: *job_definition
   script:
     - python3 ci_scripts/check_ci_cd_vars.py --file elt/pings/src/config/required_vars_ci_stats.yaml
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/pings/src apply_schema --db_manifest ci_stats
-    - using_proxy python3 elt/pings/src export --db_manifest ci_stats --days 1
+    - using_proxy python3 elt/pings/src export --db_manifest ci_stats --hours 8
     - stop_cloudsqlproxy
   only:
     - master
@@ -304,7 +305,7 @@ ci_stats_manual:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/pings/src apply_schema --db_manifest ci_stats
-    - using_proxy python3 elt/pings/src export --db_manifest ci_stats --days 1
+    - using_proxy python3 elt/pings/src export --db_manifest ci_stats --hours 8
     - stop_cloudsqlproxy
   only:
     - branches
