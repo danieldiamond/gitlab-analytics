@@ -382,10 +382,8 @@ dbt:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - cd elt/dbt
-    - dbt -d run --profiles-dir profile --target prod --models sfdc
-    - dbt -d run --profiles-dir profile --target prod --models pings
-    - dbt -d run --profiles-dir profile --target prod --models zuora
-    - dbt -d test --profiles-dir profile --target prod --models sfdc
+    - dbt -d run --profiles-dir profile --target prod 
+    - dbt -d test --profiles-dir profile --target prod 
     - stop_cloudsqlproxy
 
 dbt_refresh:
@@ -395,10 +393,8 @@ dbt_refresh:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - cd elt/dbt
-    - dbt -d run --profiles-dir profile --target prod --models sfdc --full-refresh
-    - dbt -d run --profiles-dir profile --target prod --models pings --full-refresh
-    - dbt -d run --profiles-dir profile --target prod --models zuora --full-refresh
-    - dbt -d test --profiles-dir profile --target prod --models sfdc
+    - dbt -d run --profiles-dir profile --target prod --full-refresh
+    - dbt -d test --profiles-dir profile --target prod 
     - stop_cloudsqlproxy
   when: manual
 

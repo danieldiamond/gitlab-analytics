@@ -23,6 +23,7 @@ WITH zuora_invoice_base AS (
 
 
 SELECT zuora_account.entity,
+       zuora_invoice.invoice_id,
        COALESCE(zuora_contact_bill.work_email,zuora_contact_sold.work_email) AS email,
        COALESCE(zuora_contact_sold.first_name,zuora_contact_bill.first_name) AS owner,
        zuora_account.account_name,
