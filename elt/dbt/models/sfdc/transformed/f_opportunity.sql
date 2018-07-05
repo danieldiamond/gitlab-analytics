@@ -48,6 +48,7 @@ SELECT o.sfdc_id AS opportunity_id
        , o.sales_accepted_date__c as sales_accepted_date
        , o.sql_source__c as sales_qualified_source
        , o.closedate AS opportunity_closedate
+       , o.created_date AS opportunity_created_date
        , COALESCE(i.product, 'Unknown') as opportunity_product
        , COALESCE(i.period, 'Unknown') as billing_period
        , COALESCE(o.name, 'Unknown') as opportunity_name
