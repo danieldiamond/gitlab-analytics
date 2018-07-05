@@ -8,6 +8,7 @@ SELECT
   stagename,
   leadsource,
   TYPE,
+  createddate AS created_date,
   closedate,
   sql_source__c,
   competitors__c,
