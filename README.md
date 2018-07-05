@@ -183,6 +183,7 @@ Currently we are using this tool to extract data from the following data sources
   - NetSuite
   - Marketo
   - Lever
+  - Google Sheets/CSV
   
 #### Architecture
 
@@ -312,6 +313,30 @@ Data integration stages are configurable using `Project variables` for the CI/CD
 
   - `EXTRACT_SKIP`: either `all` (to skip the `extract` stage) or job names, like `marketo,zendesk,zuora` to be skipped from the pipeline.
   - `UPDATE_SKIP`: either `all` (to skip the `update` stage) or job names, like `sfdc_update`.
+
+## Spreadsheet Loader Utility
+
+Spreadsheets can be loaded into the DW using `elt/util/spreadsheet_loader.py`. Local CSV files can be loaded as well as spreadsheets in Google Sheets.
+A file will only be loaded if there has been a change between the current and existing data in the DW.
+
+Loading a CSV:
+
+  - Start the cloud sql proxy
+  - The naming format for the file must be `<schema>.<table>.csv`. This pattern is required and will be used to create/update the table in the DW.
+  - Run the command `python3 elt/util/spreadsheet_loader.py csv <path>/<to>/<csv>/<file_name>.csv` Multiple paths can be used, use spaces to separate.
+  - Logging from the script will tell you table successes/failures and the number of rows uploaded to each table.
+
+
+Loading a Google Sheet:
+
+  - Share the sheet with the required service account (if being used in automated CI, use the runner service account)
+  - The file will be located and loaded based on its name. The names of the sheets shared with the runner must be unique and in the `<schema>.<table>` format
+  - Run the command `python3 elt/util/spreadsheet_loader.py sheet <file_name>` Multiple names can be used, use spaces to separate.
+  - Logging from the script will tell you table successes/failures and the number of rows uploaded to each table.
+
+Further Usage Help:
+
+  - Run the following command(s) for additional usage info `python3 elt/util/spreadsheet_loader.py <csv|sheet> -- --help`
 
 ## GitLab Data and Analytics - Internal
 
