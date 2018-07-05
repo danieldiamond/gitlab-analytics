@@ -1,38 +1,16 @@
 view: sfdc_pipeline {
-  derived_table: {
-    sql:
-        SELECT o.type,
-               o.stagename,
-               o.closedate,
-               o.opportunity_owner__c AS owner,
-               o.name,
-               SUM(incremental_acv_2__c) AS forecasted_iacv,
-               COUNT(*) AS opps
-        FROM sfdc.opportunity o
-        WHERE closedate >= DATE_TRUNC('month',CURRENT_DATE)
-        AND   TYPE!= 'Reseller'
-        AND   stagename IN ('0-Pending Acceptance','1-Discovery','2-Scoping',
-                            '3-Technical Evaluation','4-Proposal','5-Negotiating',
-                            '6-Awaiting Signature')
-        AND   (o.isdeleted IS FALSE)
-        GROUP BY 1,
-                 2,
-                 3,
-                 4,
-                 5
-        ;;
-  }
+  sql_table_name: analytics.sfdc_pipeline ;;
   #
   dimension: type {
     description: "Opportunity Type"
     type: string
-    sql: ${TABLE}.type ;;
+    sql: ${TABLE}.sales_type ;;
   }
   #
   dimension: stagename {
     description: "Opportunity Stage"
     type: string
-    sql: ${TABLE}.stagename ;;
+    sql: ${TABLE}.stage_name ;;
   }
   #
   dimension: owner {
@@ -45,7 +23,7 @@ view: sfdc_pipeline {
   dimension: name {
     description: "Opportunity Name"
     type: string
-    sql: ${TABLE}.name ;;
+    sql: ${TABLE}.opportunity_name ;;
   }
   dimension_group: closedate {
     description: "The date when an opportunity was closed"
@@ -53,7 +31,7 @@ view: sfdc_pipeline {
     type: time
     convert_tz: no
     timeframes: [date, week, month, year]
-    sql: ${TABLE}.closedate ;;
+    sql: ${TABLE}.close_date ;;
   }
   #
   measure: forecasted_iacv {
