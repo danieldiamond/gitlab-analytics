@@ -58,13 +58,6 @@ lineitems:
         unique:
             - id 
 
-mapped_stages:
-    constraints:
-        not_null:
-            - id
-        unique:
-            - id 
-
 nolineitems:
     constraints:
         not_null:
@@ -121,6 +114,15 @@ sfdc_opportunityhistory:
             - opportunityid
         unique:
             - id
+
+sfdc_opportunitystage:
+    constraints:
+        not_null:
+            - stage_id
+            - sfdc_id
+        unique:
+            - stage_id
+            - sfdc_id
 
 snapshot_opportunity:
     constraints:
