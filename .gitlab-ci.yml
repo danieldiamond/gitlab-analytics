@@ -192,6 +192,31 @@ ci_stats:
   only:
     - master
 
+spreadsheet_loader_manual:
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - sleep 20
+    - pip3 install -U pyasn1-modules
+    - python3 elt/util/spreadsheet_loader.py sheet historical.sales_quota
+    - stop_cloudsqlproxy
+  when: manual
+
+spreadsheet_loader:
+  stage: extract
+  <<: *job_definition
+  script:
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - sleep 20
+    - pip3 install -U pyasn1-modules
+    - python3 elt/util/spreadsheet_loader.py sheet historical.sales_quota
+    - stop_cloudsqlproxy
+  only:
+    - master
+
 domains:
   <<: *domains_extract
   only:
