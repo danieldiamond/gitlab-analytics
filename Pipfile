@@ -4,15 +4,19 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+gpread = "*"
+oauth2client = "*"
 requests = "*"
 configparser = "*"
 dbt = "*"
+fire = "*"
 toolz = "*"
 clearbit = "*"
 ipwhois = "*"
 tldextract = "*"
 simple-salesforce = "*"
 SQLAlchemy = "*"
+pandas = "*"
 Pyrseas = "*"
 "psycopg2" = "==2.7.4"
 "ae7a3bd" = {path = "./elt/shared_modules", editable = true}
