@@ -98,6 +98,22 @@ view: f_opportunity {
     sql: ${TABLE}.opportunity_closedate ;;
   }
 
+  dimension_group: created_date {
+    label: "Created"
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.opportunity_created_date ;;
+  }
+
   dimension: opportunity_id {
     label: "ID"
     description: "The 18 char SFDC Opportunity ID"

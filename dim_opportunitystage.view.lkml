@@ -5,37 +5,42 @@ view: dim_opportunitystage {
     primary_key: yes
     hidden: yes
     type: number
-    sql: ${TABLE}.id ;;
+    sql: ${TABLE}.stage_id ;;
   }
 
   dimension: defaultprobability {
     label: "Default Probability"
     type: number
-    sql: ${TABLE}.defaultprobability ;;
+    sql: ${TABLE}.default_probability ;;
   }
 
   dimension: isactive {
     label: "Is Active"
     type: yesno
-    sql: ${TABLE}.isactive ;;
+    sql: ${TABLE}.is_active ;;
   }
 
   dimension: isclosed {
     label: "Is Closed"
     type: yesno
-    sql: ${TABLE}.isclosed ;;
+    sql: ${TABLE}.is_closed ;;
   }
 
   dimension: iswon {
     label: "Is Won"
     type: yesno
-    sql: ${TABLE}.iswon ;;
+    sql: ${TABLE}.is_won ;;
   }
 
   dimension: masterlabel {
     hidden: yes
     type: string
-    sql: ${TABLE}.masterlabel ;;
+    sql: ${TABLE}.primary_label ;;
+  }
+
+  dimension: stage_state {
+    type: string
+    sql: ${TABLE}.stage_state ;;
   }
 
   dimension: mapped_stage {

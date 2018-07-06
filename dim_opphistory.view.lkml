@@ -27,6 +27,13 @@ view: dim_opphistory {
     value_format: "0.#"
   }
 
+  measure: sum_stage_days {
+    label: "Total Days"
+    type:  sum
+    sql: ${days_in_stage} ;;
+    value_format: "0.#"
+  }
+
   measure: count_of_opps {
     type: count_distinct
     sql: ${opportunityid} ;;
