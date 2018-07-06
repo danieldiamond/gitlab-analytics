@@ -1,5 +1,5 @@
 WITH stages AS (
-        SELECT * FROM {{ ref('mapped_stages') }}
+        SELECT * FROM {{ ref('sfdc_opportunitystage') }}
 )
 
 SELECT
@@ -47,5 +47,5 @@ SELECT
   s.is_won,
   lastactivitydate -- will need to be replaced
 FROM sfdc.opportunity o
-INNER JOIN stages s ON o.stagename=s.masterlabel
+INNER JOIN stages s ON o.stagename=s.primary_label
 WHERE o.isdeleted = FALSE

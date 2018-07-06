@@ -39,7 +39,7 @@ account as (
 
 SELECT o.sfdc_id AS opportunity_id
        , a.id AS account_id
-       , s.id AS opportunity_stage_id
+       , s.stage_id AS opportunity_stage_id
        , l.id AS lead_source_id
        , o.weighted_iacv__c AS weighted_iacv
        , COALESCE(o.type, 'Unknown') AS opportunity_type
@@ -70,6 +70,6 @@ SELECT o.sfdc_id AS opportunity_id
        , o.is_won
 FROM lineitems i
 INNER JOIN opportunity o ON i.opportunity_id=o.sfdc_id
-INNER JOIN oppstage s ON o.stagename=s.masterlabel
+INNER JOIN oppstage s ON o.stagename=s.primary_label
 INNER JOIN leadsource l on o.leadsource=l.Initial_Source
 INNER JOIN account a on o.accountId=a.sfdc_account_id

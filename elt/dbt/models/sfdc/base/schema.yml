@@ -28,6 +28,15 @@ dim_opphistory:
         not_null:
             - opportunityid
 
+dim_opportunitystage:
+    constraints:
+        not_null:
+            - stage_id
+            - sfdc_id
+        unique:
+            - stage_id
+            - sfdc_id
+
 
 f_opportunity:
     constraints:
@@ -55,13 +64,6 @@ lineitems:
         not_null:
             - id
             - opportunity_id
-        unique:
-            - id 
-
-mapped_stages:
-    constraints:
-        not_null:
-            - id
         unique:
             - id 
 
@@ -121,6 +123,15 @@ sfdc_opportunityhistory:
             - opportunityid
         unique:
             - id
+
+sfdc_opportunitystage:
+    constraints:
+        not_null:
+            - stage_id
+            - sfdc_id
+        unique:
+            - stage_id
+            - sfdc_id
 
 snapshot_opportunity:
     constraints:

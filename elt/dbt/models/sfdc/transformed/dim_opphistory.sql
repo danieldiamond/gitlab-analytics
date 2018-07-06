@@ -3,7 +3,7 @@ WITH opphistory AS (
 ),
 
 stages AS (
-        SELECT * FROM {{ ref('mapped_stages') }}
+        SELECT * FROM {{ ref('sfdc_opportunitystage') }}
 ),
 
 all_stages AS (
@@ -23,7 +23,7 @@ agg_days AS (
         sum(days_in_stage) AS days_in_stage
        FROM opphistory oh
        JOIN stages s
-       ON oh.stagename = s.masterlabel
+       ON oh.stagename = s.primary_label
        GROUP BY 1, 2
 )
 

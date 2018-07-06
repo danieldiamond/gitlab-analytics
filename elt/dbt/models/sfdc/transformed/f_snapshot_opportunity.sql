@@ -28,7 +28,7 @@ curr_snapshot as (
 SELECT o.sfdc_opportunity_id AS opportunity_id
 	   , o.snapshot_date AS snapshot_date
        , a.id AS account_id
-       , s.id AS opportunity_stage_id
+       , s.stage_id AS opportunity_stage_id
        , l.id AS lead_source_id
        , COALESCE(o.type, 'Unknown') AS opportunity_type
        , COALESCE(o.sales_segmentation_o__c, 'Unknown') as opportunity_sales_segmentation
@@ -43,7 +43,7 @@ SELECT o.sfdc_opportunity_id AS opportunity_id
        , o.tcv
        , o.ownerid
 FROM  ss_opportunity o 
-INNER JOIN oppstage s ON o.stagename=s.masterlabel
+INNER JOIN oppstage s ON o.stagename=s.primary_label
 INNER JOIN leadsource l on o.leadsource=l.Initial_Source
 INNER JOIN account a on o.accountId=a.sfdc_account_id
 
