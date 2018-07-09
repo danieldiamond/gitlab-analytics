@@ -3,19 +3,10 @@ WITH source AS (
 	SELECT *
 	FROM sfdc.opportunitystage
 
-), renamed AS(
+), mapped_stages AS (
 
-	SELECT 
-        row_number()
-          OVER (
-            ORDER BY id )       AS stage_id,
-
-        -- keys
-        id                      AS sfdc_id,
-
-        -- logistical info
-        -- apiname equals masterlabel as of 2018-05-24
-        masterlabel             AS primary_label,
+    SELECT
+        id,
         CASE
           WHEN id = '01J6100000Jf6oDEAR' -- 0-Pending Acceptance
             THEN '0-Pending Acceptance'
@@ -51,7 +42,37 @@ WITH source AS (
             THEN '7-Closed'
           ELSE
             'Unmapped'
-        END                     AS mapped_stage,
+        END                     AS mapped_stage
+        FROM source
+
+)
+
+, renamed AS(
+
+	SELECT
+        row_number()
+          OVER (
+            ORDER BY id )       AS stage_id,
+
+        -- keys
+        id                      AS sfdc_id,
+
+        -- logistical info
+        -- apiname equals masterlabel as of 2018-05-24
+        masterlabel             AS primary_label,
+        m.mapped_stage          AS mapped_stage,
+        CASE
+          WHEN m.mapped_stage IN ('1-Discovery','2-Scoping','3-Technical Evaluation')
+            THEN 'Pipeline'
+          WHEN m.mapped_stage IN ('4-Proposal')
+            THEN 'Best Case'
+          WHEN m.mapped_stage IN ('5-Negotiating','6-Awaiting Signature')
+            THEN 'Commit'
+          WHEN m.mapped_stage IN ('7-Closed')
+            THEN 'Closed'
+          ELSE
+            'Unmapped'
+        END                     AS pipeline_state,
         defaultprobability      AS default_probability,
         isactive                AS is_active,
         isclosed                AS is_closed,
@@ -68,6 +89,7 @@ WITH source AS (
         END                     AS stage_state
 
 	FROM source
+	JOIN mapped_stages m ON m.id = source.id
 
 )
 
