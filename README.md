@@ -148,7 +148,7 @@ We want the tools to be open source so we can ship this as a product.
 > * Most implementations of SFDC, and to a lesser degree Zuora, require custom fields. You will likely need to edit the transformations to map to your custom fields.
 > * The sample Zuora python scripts have been written to support GitLab's Zuora implementation. This includes a workaround to handle some subscriptions that should have been created as a single subscription.
 
-The Meltano product consists three key components:
+The Meltano product consists of three key components:
 
 1. A SQL based data store, for example [PostgreSQL](https://www.postgresql.org/) or [Cloud SQL](https://cloud.google.com/sql/). We recommend using Postgres for [review apps](https://about.gitlab.com/features/review-apps/) and a more durable and scalable service for production.
 1. This project, [`meltano`](https://gitlab.com/meltano/meltano), which contains the ELT scripts and CI jobs to refresh the data warehouse from the [configured sources](doc/data_sources.md). Typically configured to run on a [scheduled CI job](https://docs.gitlab.com/ce/user/project/pipelines/schedules.html) to refresh the data warehouse from the configured sources.
@@ -176,7 +176,7 @@ Features include:
   - SOAP data source
   - SQL data source
   
-Currently we are using this tool to extract data from the following data sources:
+Currently we are using these tools to extract data from the following data sources:
   
   - Zendesk
   - Zuora
@@ -214,10 +214,10 @@ We don't use stored procedures because they are hard to keep under version contr
 
 #### On the host machine
 
-The local environment might differs for differents ELT process.  
-The most standard setup using Python 3.5.  
+The local environment might differ for different ELT processes.
+The most standard setup uses Python 3.5.
 
-You might want to customize the `.env.example` file according to your needs.
+Customize the `.env.example` file according to your needs.
 
 ```
 $ cp .env.example .env
@@ -229,7 +229,7 @@ $ pipenv install --skip-lock
 $ pipenv shell
 ```
 
-This should install the python dependencies that the ELT process need.  
+This installs the python dependencies that the ELT process needs.
 
 #### Using the docker stack
 
@@ -316,7 +316,7 @@ Data integration stages are configurable using `Project variables` for the CI/CD
 
 ## Spreadsheet Loader Utility
 
-Spreadsheets can be loaded into the DW using `elt/util/spreadsheet_loader.py`. Local CSV files can be loaded as well as spreadsheets in Google Sheets.
+Spreadsheets can be loaded into the DW (Data Warehouse) using `elt/util/spreadsheet_loader.py`. Local CSV files can be loaded as well as spreadsheets in Google Sheets.
 A file will only be loaded if there has been a change between the current and existing data in the DW.
 
 Loading a CSV:
@@ -500,7 +500,7 @@ At Gitlab we use dbt for data transformation, as referenced in "Tools" above. Wh
 
 - TBD
 
-#### CTEs
+#### CTEs (Common Table Expressions)
 
 - All `{{ ref('...') }}` statements should be placed in CTEs at the top of the file.
 - Where performance permits, CTEs should perform a single, logical unit of work.
@@ -584,7 +584,7 @@ HAVING count(*) > 1
 
 #### Testing
 
-- Every model should be tested in a schema.yml file
+- Every model should be tested in a `schema.yml` file
 - At minimum, unique, not nullable fields, and foreign key constraints should be tested (if applicable)
 - The output of dbt test should be pasted into MRs
 - Any failing tests should be fixed or explained prior to requesting a review
