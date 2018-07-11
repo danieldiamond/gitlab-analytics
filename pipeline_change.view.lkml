@@ -3,14 +3,14 @@ view: pipeline_change {
     sql: WITH NEW AS
         (SELECT *
          FROM analytics.f_snapshot_opportunity a
-         INNER JOIN dim_opportunitystage s ON a.opportunity_stage_id=s.id
+         INNER JOIN dim_opportunitystage s ON a.opportunity_stage_id=s.stage_id
          WHERE date(snapshot_date) = {% date_end date_range %}
           AND s.mapped_stage != 'Unmapped'),
 
          OLD AS
         (SELECT *
          FROM analytics.f_snapshot_opportunity a
-         INNER JOIN dim_opportunitystage os ON a.opportunity_stage_id=os.id
+         INNER JOIN dim_opportunitystage os ON a.opportunity_stage_id=os.stage_id
          WHERE date(snapshot_date) = {% date_start date_range %}
           AND os.mapped_stage != 'Unmapped')
 
@@ -19,13 +19,12 @@ view: pipeline_change {
         '1' AS order,
         OLD.*
       FROM OLD
-      JOIN dim_opportunitystage os ON OLD.opportunity_stage_id=os.id
       WHERE (OLD.sales_accepted_date < {% date_start date_range %}
             OR old.sales_accepted_date ISNULL
             OR old.opportunity_closedate= {% date_start date_range %})
         AND {% condition close_date %} opportunity_closedate {% endcondition %}
-        AND os.isclosed=FALSE
-        AND os.mapped_stage != '0-Pending Acceptance'
+        AND old.is_closed=FALSE
+        AND old.mapped_stage != '0-Pending Acceptance'
 
       UNION ALL
 
@@ -34,14 +33,13 @@ view: pipeline_change {
         '2' as order,
         NEW.*
       FROM NEW
-      INNER JOIN dim_opportunitystage s ON NEW.opportunity_stage_id=s.id
       WHERE NEW.sales_accepted_date >= {% date_start date_range %}
         AND NEW.sales_accepted_date <= {% date_end date_range %}
         AND {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
         AND (
-              s.isclosed=false
+              NEW.is_closed=false
               OR
-              (s.isclosed=true AND s.iswon = true)
+              (NEW.is_closed=true AND NEW.is_won = true)
             )
 
       UNION ALL
@@ -52,23 +50,21 @@ view: pipeline_change {
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
-      FULL JOIN dim_opportunitystage s ON NEW.opportunity_stage_id=s.id
-      FULL JOIN dim_opportunitystage os ON OLD.opportunity_stage_id=os.id
       WHERE {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
         AND NEW.sales_accepted_date ISNULL
         AND NEW.opportunity_closedate >= {% date_start date_range %}
         AND
             (
-              (OLD.opportunity_name ISNULL AND (os.mapped_stage != '0-Pending Acceptance' OR os.mapped_stage ISNULL) AND s.isclosed=false)
+              (OLD.opportunity_name ISNULL AND (OLD.mapped_stage != '0-Pending Acceptance' OR OLD.mapped_stage ISNULL) AND NEW.is_closed=false AND NEW.mapped_stage != '0-Pending Acceptance')
               OR
-              (os.mapped_stage = '0-Pending Acceptance' AND s.isclosed=true)
+              (OLD.mapped_stage = '0-Pending Acceptance' AND NEW.is_closed=true)
               OR
-              (os.mapped_stage= '0-Pending Acceptance' AND s.mapped_stage
+              (OLD.mapped_stage = '0-Pending Acceptance' AND NEW.mapped_stage
                   IN ('1-Discovery','2-Scoping','3-Technical Evaluation','4-Propoasl','5-Negotiating','6-Awaiting Signature'))
               OR
-              (OLD.opportunity_name ISNULL and s.isclosed=true AND s.iswon=true)
+              (OLD.opportunity_name ISNULL and NEW.is_closed=true AND NEW.is_won=true)
               OR
-              (NEW.opportunity_closedate = {% date_start date_range %} and s.isclosed=true AND s.iswon=true)
+              (NEW.opportunity_closedate = {% date_start date_range %} and NEW.is_closed=true AND NEW.is_won=true)
             )
 
       UNION ALL
@@ -79,11 +75,10 @@ view: pipeline_change {
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
-      INNER JOIN dim_opportunitystage os ON OLD.opportunity_stage_id=os.id
       WHERE ( OLD.opportunity_closedate < {% date_start close_date %}
         OR OLD.opportunity_closedate >= {% date_end close_date %} )
         AND {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
-        AND os.mapped_stage != '0-Pending Acceptance'
+        AND OLD.mapped_stage != '0-Pending Acceptance'
 
       UNION ALL
 
@@ -93,13 +88,12 @@ view: pipeline_change {
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
-      INNER JOIN dim_opportunitystage os on old.opportunity_stage_id=os.id
       WHERE ( OLD.opportunity_closedate >= {% date_start close_date %}
         AND OLD.opportunity_closedate < {% date_end close_date %})
         AND {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
         AND NEW.iacv > old.iacv
-        AND os.isclosed=false
-        AND os.mapped_stage != '0-Pending Acceptance'
+        AND OLD.is_closed=false
+        AND OLD.mapped_stage != '0-Pending Acceptance'
 
       UNION ALL
 
@@ -109,13 +103,12 @@ view: pipeline_change {
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
-      INNER JOIN dim_opportunitystage os on old.opportunity_stage_id=os.id
       WHERE ( OLD.opportunity_closedate >= {% date_start close_date %}
         AND OLD.opportunity_closedate < {% date_end close_date %})
         AND {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
-        AND NEW.iacv < old.iacv
-        AND os.isclosed=false
-        AND os.mapped_stage != '0-Pending Acceptance'
+        AND NEW.iacv < OLD.iacv
+        AND OLD.is_closed=false
+        AND OLD.mapped_stage != '0-Pending Acceptance'
 
       UNION ALL
 
@@ -125,12 +118,11 @@ view: pipeline_change {
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
-      INNER JOIN dim_opportunitystage os ON old.opportunity_stage_id=os.id
       WHERE ( NEW.opportunity_closedate < {% date_start close_date %}
         OR NEW.opportunity_closedate >= {% date_end close_date %})
         AND {% condition close_date %} OLD.opportunity_closedate {% endcondition %}
-        AND os.isclosed=false
-        AND os.mapped_stage != '0-Pending Acceptance'
+        AND OLD.is_closed=false
+        AND OLD.mapped_stage != '0-Pending Acceptance'
 
       UNION ALL
 
@@ -140,11 +132,9 @@ view: pipeline_change {
           NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
-      FULL JOIN dim_opportunitystage s ON new.opportunity_stage_id=s.id
-      FULL JOIN dim_opportunitystage os ON old.opportunity_stage_id=os.id
       WHERE {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
-        AND s.IsWon=true
-        AND (os.IsClosed=false OR NEW.opportunity_closedate = {% date_start date_range %})
+        AND NEW.is_won=true
+        AND (OLD.is_closed=false OR NEW.opportunity_closedate = {% date_start date_range %})
         AND NEW.opportunity_closedate >= {% date_start date_range %}
 
       UNION ALL
@@ -155,9 +145,8 @@ view: pipeline_change {
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
-      INNER JOIN dim_opportunitystage s ON new.opportunity_stage_id=s.id
       WHERE {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
-        AND s.iswon = true
+        AND NEW.is_won = true
         AND OLD.opportunity_name ISNULL
         AND NEW.opportunity_closedate >= {% date_start date_range %}
 
@@ -169,13 +158,11 @@ view: pipeline_change {
         NEW.*
       FROM NEW
       INNER JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
-      INNER JOIN dim_opportunitystage s ON new.opportunity_stage_id=s.id
-      INNER JOIN dim_opportunitystage os ON old.opportunity_stage_id=os.id
       WHERE {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
-        AND s.IsWon=false
-        AND s.IsClosed=true
-        AND os.IsClosed=false
-        AND os.id != '33' --duplicates
+        AND NEW.is_won=false
+        AND NEW.is_closed=true
+        AND OLD.is_closed=false
+        AND OLD.stage_id != '33' --duplicates
 
       UNION ALL
 
@@ -184,12 +171,9 @@ view: pipeline_change {
         '9' as order,
         NEW.*
       FROM NEW
-      INNER JOIN dim_opportunitystage s ON NEW.opportunity_stage_id = s.id
---       AND opportunity_closedate >= {% date_start close_date %}
---      AND opportunity_closedate < {% date_end close_date %}
       WHERE {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
-        AND s.isclosed=FALSE
-        ANd s.mapped_stage != '0-Pending Acceptance'
+        AND NEW.is_closed=FALSE
+        ANd NEW.mapped_stage != '0-Pending Acceptance'
        ;;
   }
 
@@ -220,7 +204,7 @@ view: pipeline_change {
   }
 
   dimension: opportunity_id {
-    hidden: yes
+#     hidden: yes
     type: string
     sql: ${TABLE}.opportunity_id ;;
   }
