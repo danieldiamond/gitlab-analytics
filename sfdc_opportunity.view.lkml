@@ -1,30 +1,52 @@
 view: sfdc_opportunity {
-  sql_table_name: sfdc.opportunity;;
+  sql_table_name: analytics.sfdc_opportunity;;
   # # Define your dimensions and measures here, like this:
   dimension: id {
     primary_key: yes
     hidden: yes
     type: string
-    sql: ${TABLE}.id ;;
+    sql: ${TABLE}.opportunity_id ;;
+  }
+
+  dimension: owner_id {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.owner_id ;;
   }
   #
-  dimension: isdeleted {
-    label: "Is Deleted"
-    description: "Filter out corrupt data"
-    type: yesno
-    sql: ${TABLE}.isdeleted ;;
-  }
+#   dimension: isdeleted {
+#     label: "Is Deleted"
+#     description: "Filter out corrupt data"
+#     type: yesno
+#     sql: ${TABLE}.is_deleted ;;
+#   }
   #
   dimension: subscription_type {
     description: "Sale type based on subscription"
     type: string
-    sql: ${TABLE}.TYPE ;;
+    sql: ${TABLE}.sales_type ;;
+  }
+
+  dimension: opportunity_name {
+    type: string
+    sql: ${TABLE}.opportunity_name ;;
+  }
+
+  dimension: deal_size {
+    type: string
+    sql: ${TABLE}.deal_size ;;
+    drill_fields: [opportunity_name]
+  }
+
+  dimension: is_won {
+    type: yesno
+    sql: ${TABLE}.is_won ;;
   }
   #
   dimension: sale_stage {
     description: "Stage in which a sale is in"
     type: string
-    sql: ${TABLE}.stagename ;;
+    sql: ${TABLE}.stage_name ;;
   }
   #
   dimension_group: closedate {
@@ -33,53 +55,53 @@ view: sfdc_opportunity {
     type: time
     convert_tz: no
     timeframes: [date, week, month, year]
-    sql: ${TABLE}.closedate ;;
+    sql: ${TABLE}.close_date ;;
   }
   #
   dimension: sale_type {
     description: "Sales assisted or web direct sale"
     type: string
-    sql: ${TABLE}.engagement_type__c ;;
+    sql: ${TABLE}.sales_path ;;
   }
   #
   dimension: products {
     description: "Product that is tied to opportunity"
     type: string
-    sql: ${TABLE}.products_purchased__c ;;
+    sql: ${TABLE}.products_purchased ;;
   }
-#
+
   measure: tcv {
     label: "TCV - Total Contract Value"
     type: sum
-    sql: ${TABLE}.amount ;;
+    sql: ${TABLE}.total_contract_value ;;
     value_format: "$#,##0"
   }
 #
   measure: renewal_amt {
     description: "Renewal Amount"
     type: sum
-    sql: ${TABLE}.renewal_amount__c ;;
+    sql: ${TABLE}.renewal_amount ;;
     value_format: "$#,##0"
   }
 #
   measure: renewal_acv {
     label: "Renewal ACV"
     type: sum
-    sql: ${TABLE}.renewal_acv__c ;;
+    sql: ${TABLE}.renewal_acv ;;
     value_format: "$#,##0"
   }
 #
   measure: acv {
     label: "ACV - Annual contract value"
     type: sum
-    sql: ${TABLE}.acv__c ;;
+    sql: ${TABLE}.acv ;;
     value_format: "$#,##0"
   }
 #
   measure: iacv {
     label: "IACV - Incremental annual contract value"
     type: sum
-    sql: ${TABLE}.incremental_acv__c ;;
+    sql: ${TABLE}.incremental_acv ;;
     value_format: "$#,##0"
   }
 #
@@ -87,7 +109,7 @@ view: sfdc_opportunity {
     label: "NRV - Non Recurring Value"
     description: "Example: proserv, training, etc."
     type: sum
-    sql: ${TABLE}.nrv__c ;;
+    sql: ${TABLE}.nrv ;;
     value_format: "$#,##0"
   }
 
