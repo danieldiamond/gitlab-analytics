@@ -141,11 +141,22 @@ def ensure_schema_exists(db_conn, schema_name):
     :schema: database schema
     """
     cursor = db_conn.cursor()
+    schema_identifier = psycopg2.sql.Identifier(schema_name)
 
-    create_schema = psycopg2.sql.SQL("CREATE SCHEMA IF NOT EXISTS {0}").format(
-        psycopg2.sql.Identifier(schema_name)
-    )
+    create_schema = psycopg2.sql.SQL("CREATE SCHEMA IF NOT EXISTS {}").format(schema_identifier)
     cursor.execute(create_schema)
+
+    group_identifiers = psycopg2.sql.SQL(",").join(
+        map(psycopg2.sql.Identifier, ("readonly", "analytics"))
+    )
+
+    grant_select_schema = psycopg2.sql.SQL("ALTER DEFAULT PRIVILEGES IN SCHEMA {} GRANT SELECT ON TABLES TO {}").format(schema_identifier, group_identifiers)
+
+    grant_usage_schema = psycopg2.sql.SQL("GRANT USAGE ON SCHEMA {} TO {}").format(schema_identifier, group_identifiers)
+
+    cursor.execute(grant_select_schema)
+    cursor.execute(grant_usage_schema)
+
     db_conn.commit()
 
 
