@@ -58,6 +58,7 @@ WITH source AS (
 
 	FROM source
 	WHERE accountid IS NOT NULL
+	AND isdeleted = FALSE
 
 )
 
