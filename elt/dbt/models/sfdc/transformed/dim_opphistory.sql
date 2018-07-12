@@ -31,10 +31,10 @@ agg_days AS (
 SELECT
     a.opportunityid,
     a.mapped_stage,
---    Have to make it a small value so that averages are calculated "properly"
+--    Each opp has a row for each stage, but gets no credit if it was never in the stage.
     CASE
-        WHEN o.days_in_stage=0 THEN 0.00001
-       ELSE coalesce(o.days_in_stage, 0.00001) END AS days_in_stage
+        WHEN o.days_in_stage=0 THEN NULL
+       ELSE coalesce(o.days_in_stage, NULL) END AS days_in_stage
 FROM all_stages a
 FULL OUTER JOIN agg_days o
   ON a.opportunityid=o.opportunityid
