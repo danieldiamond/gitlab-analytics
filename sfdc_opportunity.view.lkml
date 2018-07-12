@@ -77,7 +77,7 @@ view: sfdc_opportunity {
   dimension: sale_type {
     description: "Sales assisted or web direct sale"
     type: string
-    sql: ${TABLE}.sales_path ;;
+    sql: ${TABLE}.sales_type ;;
   }
   #
   dimension: products {
