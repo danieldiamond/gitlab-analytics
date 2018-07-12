@@ -13,6 +13,13 @@ view: sfdc_opportunity {
     type: string
     sql: ${TABLE}.owner_id ;;
   }
+
+  dimension: stage_id {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.opportunity_stage_id ;;
+  }
+
   #
 #   dimension: isdeleted {
 #     label: "Is Deleted"
@@ -56,6 +63,15 @@ view: sfdc_opportunity {
     convert_tz: no
     timeframes: [date, week, month, year]
     sql: ${TABLE}.close_date ;;
+  }
+
+  dimension_group: createddate {
+    description: "The date when an opportunity was created"
+    label: "Created"
+    type: time
+    convert_tz: no
+    timeframes: [date, week, month, year]
+    sql: ${TABLE}.created_date ;;
   }
   #
   dimension: sale_type {

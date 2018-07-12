@@ -71,6 +71,33 @@ explore: f_opportunity {
 
 }
 
+explore: sfdc_opportunity {
+  label: "Sales w/ Single Opportunity View"
+  view_label: "Opportunity"
+
+  join: dim_opphistory {
+    view_label: "Stage History"
+#     type: inner
+    relationship: one_to_one
+    sql_on: ${sfdc_opportunity.id}=${dim_opphistory.opportunityid} ;;
+  }
+
+  join: sfdc_user {
+    view_label: "Opportunity Owner"
+    type: inner
+    relationship: one_to_one
+    sql_on: ${sfdc_opportunity.owner_id} = ${sfdc_user.id} ;;
+  }
+
+  join: dim_opportunitystage {
+    view_label: "Opportunity Stage"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${sfdc_opportunity.stage_id} = ${dim_opportunitystage.id} ;;
+  }
+
+}
+
 explore: f_snapshot_opportunity {
   label: "Historical Opportunities"
   description: "Start here for questions around Sales data"

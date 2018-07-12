@@ -54,4 +54,9 @@ view: sfdc_user {
     type: string
     sql: ${TABLE}.employee_tags ;;
   }
+
+  dimension: is_active {
+    type: yesno
+    sql: ${TABLE}.is_active ;;
+  }
 }
