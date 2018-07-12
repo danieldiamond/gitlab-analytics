@@ -3,7 +3,13 @@ WITH source AS (
 	SELECT *
 	FROM sfdc.opportunity
 
-), renamed AS(
+),
+
+    stages AS (
+        SELECT * FROM {{ ref('sfdc_opportunitystage') }}
+),
+
+    renamed AS(
 
 	SELECT 
 		id as opportunity_id, 
@@ -60,7 +66,15 @@ WITH source AS (
 	WHERE accountid IS NOT NULL
 	AND isdeleted = FALSE
 
+),
+
+    layered AS (
+        SELECT
+            renamed.*,
+            s.is_won AS is_won
+        FROM renamed
+        INNER JOIN stages s on renamed.stage_name = s.primary_label
 )
 
 SELECT *
-FROM renamed
+FROM layered
