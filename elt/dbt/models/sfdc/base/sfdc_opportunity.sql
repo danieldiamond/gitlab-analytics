@@ -27,6 +27,7 @@ WITH source AS (
 		(initcap(ultimate_parent_sales_segment_o__c)) as parent_segment,
 		type as sales_type,
 		closedate as close_date,
+		createddate as created_date,
 		stagename as stage_name,
 		sales_accepted_date__c as sales_accepted_date,
 
@@ -71,7 +72,8 @@ WITH source AS (
     layered AS (
         SELECT
             renamed.*,
-            s.is_won AS is_won
+            s.is_won AS is_won,
+            s.stage_id as opportunity_stage_id
         FROM renamed
         INNER JOIN stages s on renamed.stage_name = s.primary_label
 )
