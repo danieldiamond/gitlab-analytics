@@ -37,6 +37,12 @@ view: sfdc_opportunity {
   dimension: opportunity_name {
     type: string
     sql: ${TABLE}.opportunity_name ;;
+
+    link: {
+      label: "Salesforce Opportunity"
+      url: "https://na34.salesforce.com/{{ sfdc_opportunity.id._value }}"
+      icon_url: "https://c1.sfdcstatic.com/etc/designs/sfdc-www/en_us/favicon.ico"
+    }
   }
 
   dimension: deal_size {
