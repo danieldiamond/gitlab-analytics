@@ -27,7 +27,7 @@ WITH source AS (
           WHEN id = '01J6100000Ip3TrEAJ' -- 3-Tehcnical Evaluation
             THEN '3-Technical Evaluation'
           WHEN id = '01J6100000Ip3UBEAZ' -- 4-Proposal
-            THEN '4-Propoasl'
+            THEN '4-Proposal'
           WHEN id = '01J6100000B8YLZEA3' -- Negotiating
             THEN '5-Negotiating'
           WHEN id = '01J6100000IoytuEAB' -- 5-Negotiating
@@ -52,10 +52,10 @@ WITH source AS (
 	SELECT
         row_number()
           OVER (
-            ORDER BY id )       AS stage_id,
+            ORDER BY source.id )       AS stage_id,
 
         -- keys
-        id                      AS sfdc_id,
+        source.id                      AS sfdc_id,
 
         -- logistical info
         -- apiname equals masterlabel as of 2018-05-24
