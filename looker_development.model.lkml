@@ -50,3 +50,23 @@ explore: sao {
   label: "Sales Accepted Opportunities"
   description: "List of SAOs"
 }
+
+explore: sfdc_opportunity {
+  label: "Sales w/ Single Opp"
+  view_label: "Opportunity"
+
+  join: dim_opphistory {
+    view_label: "Stage History"
+#     type: inner
+    relationship: one_to_one
+    sql_on: ${sfdc_opportunity.id}=${dim_opphistory.opportunityid} ;;
+  }
+
+  join: sfdc_user {
+    view_label: "Opportunity Owner"
+    type: inner
+    relationship: one_to_one
+    sql_on: ${sfdc_opportunity.owner_id} = ${sfdc_user.id} ;;
+  }
+
+}
