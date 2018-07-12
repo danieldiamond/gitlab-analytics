@@ -8,7 +8,9 @@ SELECT
   u2.name   AS manager_name,
   u2.id     AS manager_id,
   r.name    AS role_name,
+  u.isactive AS is_active,
   CASE
+    -- Active Employees
      WHEN u.id='005610000024KxAAAU' THEN 'Large/Strategic;Account Executive;US East'
      WHEN u.id='005610000024TeRAAU' THEN 'Large/Strategic;Account Executive;US West'
      WHEN u.id='00561000002421SAAQ' THEN 'Channel'
@@ -75,8 +77,18 @@ SELECT
      WHEN u.id='00561000002rqfpAAA' THEN 'Large/Strategic;Account Executive;US East'
      WHEN u.id='00561000002rs9RAAQ' THEN 'Large/Strategic;Account Executive;Channel'
      WHEN u.id='0056100000248nDAAQ' THEN 'Channel'
+     -- Inactive Employees
+     WHEN u.id='005610000023GCNAA2' THEN 'SDR'
+     WHEN u.id='00561000001kBdoAAE' THEN 'Other'
+     WHEN u.id='00561000001k60HAAQ' THEN 'Mid-Market;Account Executive;EMEA'
+     WHEN u.id='005610000023zixAAA' THEN 'Large/Strategic;Account Executive;US West'
+     WHEN u.id='00561000000hjosAAA' THEN 'Mid-Market;Account Executive;US West'
+     WHEN u.id='00561000002TRvzAAG' THEN 'SDR'
+     WHEN u.id='005610000023KIoAAM' THEN 'SDR'
+     WHEN u.id='00561000002rKYrAAM' THEN 'SDR'
+     WHEN u.id='005610000024L83AAE' THEN 'SDR'
+     WHEN u.id='005610000024L7yAAE' THEN 'Large/Strategic;Account Executive;US East'
      ELSE NULL END AS employee_tags
 FROM sfdc.user u
   FULL OUTER JOIN sfdc.userrole r ON userroleid = r.id
   FULL OUTER JOIN sfdc.user u2 ON u2.id = u.managerid
-WHERE u.isactive = TRUE
