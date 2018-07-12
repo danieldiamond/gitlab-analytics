@@ -25,7 +25,7 @@ view: historical_sales_quota_xf {
 
   measure: quota {
     type: sum
-    sql: ${TABLE}.quota ;;
+    sql: CASE WHEN ${TABLE}.quota = 'N/A' THEN NULL ELSE ${TABLE}.quota::float8 END ;;
   }
 
   dimension_group: quota_month {
