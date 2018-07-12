@@ -7,22 +7,20 @@ view: dim_opphistory {
     sql: ${TABLE}.opportunityid ;;
   }
 
-  dimension: days_in_stage {
-    # hidden: yes
-    type: number
-    sql: NULLIF(${TABLE}.days_in_stage,0) ;;
-  }
-
   dimension: stagename {
     label: "Stage Name"
     type: string
     sql: ${TABLE}.mapped_stage ;;
   }
 
+  dimension: days_in_stage {
+    type: number
+    sql:${TABLE}.days_in_stage ;;
+  }
+
   measure: avg_stage_days {
     label: "Average of Days in Stage"
     type: average
-    # sql: NULLIF(${days_in_stage}, 0) ;;
     sql: ${days_in_stage} ;;
     value_format: "0.#"
   }

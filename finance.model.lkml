@@ -10,10 +10,6 @@ explore: bookings {
   description: "Bookings Metrics (ex: TCV, IACV)"
   always_filter: {
     filters: {
-      field: isdeleted
-      value: "No"
-    }
-    filters: {
       field: sale_stage
       value: "Closed Won"
     }

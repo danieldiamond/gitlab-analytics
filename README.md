@@ -19,8 +19,10 @@ All GitLab employees have access to our Looker instance. We do not use Google Au
 
 ## Department Spaces, Dashboards & Looks
 
+### Primary Corporate Dashboard https://gitlab.looker.com/dashboards/15
+
 Functional Group|Dashboards|Looks|
--- | -- | -- |							
+-- | -- | -- |			
 [Engineering](https://gitlab.looker.com/spaces/24)|[Dashboard 1]()|[Look 1]()|
 [Finance ](https://gitlab.looker.com/spaces/16)|[Dashboard 1]()|[Look 1]()|
 [Investor ](https://gitlab.looker.com/spaces/20)|[Dashboard 1]()|[Look 1]()|
