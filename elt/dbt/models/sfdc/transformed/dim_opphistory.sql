@@ -33,8 +33,8 @@ SELECT
     a.mapped_stage,
 --    Each opp has a row for each stage, but gets no credit if it was never in the stage.
     CASE
-        WHEN o.days_in_stage=0 THEN NULL
-       ELSE coalesce(o.days_in_stage, NULL) END AS days_in_stage
+        WHEN o.days_in_stage=0 THEN 0.0001
+       ELSE coalesce(o.days_in_stage, 0.0001) END AS days_in_stage
 FROM all_stages a
 FULL OUTER JOIN agg_days o
   ON a.opportunityid=o.opportunityid
