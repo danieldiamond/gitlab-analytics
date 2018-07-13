@@ -1,5 +1,5 @@
 view: sfdc_user {
-  sql_table_name: analytics."users" ;;
+  sql_table_name: analytics.users ;;
   label: "SFDC User"
 
   dimension: id {

@@ -35,7 +35,7 @@ explore: f_opportunity {
   join: sfdc_user {
     view_label: "Opportunity Owner"
     type: inner
-    relationship: one_to_one
+    relationship: many_to_one
     sql_on: ${f_opportunity.ownerid} = ${sfdc_user.id} ;;
   }
 
@@ -77,15 +77,15 @@ explore: sfdc_opportunity {
 
   join: dim_opphistory {
     view_label: "Stage History"
-#     type: inner
-    relationship: one_to_one
+    type: inner
+    relationship: one_to_many
     sql_on: ${sfdc_opportunity.id}=${dim_opphistory.opportunityid} ;;
   }
 
   join: sfdc_user {
     view_label: "Opportunity Owner"
     type: inner
-    relationship: one_to_one
+    relationship: many_to_one
     sql_on: ${sfdc_opportunity.owner_id} = ${sfdc_user.id} ;;
   }
 
