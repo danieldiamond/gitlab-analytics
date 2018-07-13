@@ -10,5 +10,9 @@ WITH base AS (
 
 SELECT
   *,
-  coalesce(extract(EPOCH FROM time_in_stage) / (3600 * 24), 0) AS days_in_stage
+  CASE
+    WHEN time_in_stage IS NULL
+        THEN 0.0001
+    ELSE
+        coalesce(extract(EPOCH FROM time_in_stage) / (3600 * 24), 0) END AS days_in_stage
 FROM base
