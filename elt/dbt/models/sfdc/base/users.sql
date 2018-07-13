@@ -90,5 +90,5 @@ SELECT
      WHEN u.id='005610000024L7yAAE' THEN 'Large/Strategic;Account Executive;US East'
      ELSE NULL END AS employee_tags
 FROM sfdc.user u
-  FULL OUTER JOIN sfdc.userrole r ON userroleid = r.id
-  FULL OUTER JOIN sfdc.user u2 ON u2.id = u.managerid
+  LEFT OUTER JOIN sfdc.userrole r ON userroleid = r.id
+  LEFT OUTER JOIN sfdc.user u2 ON u2.id = u.managerid
