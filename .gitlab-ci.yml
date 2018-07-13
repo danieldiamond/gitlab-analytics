@@ -131,7 +131,7 @@ stages:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/stripe/src --schema stripe_githost apply_schema
-    - using_proxy python3 elt/stripe/src --schema stripe_githost --days=7 export
+    - using_proxy python3 elt/stripe/src --schema stripe_githost --days=360 export
     - stop_cloudsqlproxy
   except:
     variables:
@@ -145,7 +145,7 @@ stages:
     - set_sql_instance_name
     - setup_cloudsqlproxy
     - using_proxy python3 elt/stripe/src --schema stripe_about_gitlab apply_schema
-    - using_proxy python3 elt/stripe/src --schema stripe_about_gitlab --days=7 export
+    - using_proxy python3 elt/stripe/src --schema stripe_about_gitlab --days=360 export
     - stop_cloudsqlproxy
   except:
     variables:
@@ -155,13 +155,39 @@ stages:
 
 ## Production Jobs
 
-sfdc:
-  <<: *sfdc_extract
+ci_stats:
+  stage: extract
+  allow_failure: true
+  <<: *job_definition
+  script:
+    - python3 ci_scripts/check_ci_cd_vars.py --file elt/pings/src/config/required_vars_ci_stats.yaml
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy python3 elt/pings/src apply_schema --db_manifest ci_stats
+    - using_proxy python3 elt/pings/src export --db_manifest ci_stats --hours 8
+    - stop_cloudsqlproxy
   only:
     - master
 
-zuora:
-  <<: *zuora_extract
+domains:
+  <<: *domains_extract
+  only:
+    - master
+
+lever:
+  <<: *lever_extract
+  retry: 1
+  only:
+    - master
+
+marketo:
+  <<: *marketo_extract
+  only:
+    - master
+
+netsuite:
+  <<: *netsuite_extract
+  retry: 1
   only:
     - master
 
@@ -178,17 +204,20 @@ pings:
   only:
     - master
 
-ci_stats:
-  stage: extract
-  allow_failure: true
-  <<: *job_definition
-  script:
-    - python3 ci_scripts/check_ci_cd_vars.py --file elt/pings/src/config/required_vars_ci_stats.yaml
-    - set_sql_instance_name
-    - setup_cloudsqlproxy
-    - using_proxy python3 elt/pings/src apply_schema --db_manifest ci_stats
-    - using_proxy python3 elt/pings/src export --db_manifest ci_stats --hours 8
-    - stop_cloudsqlproxy
+sfdc:
+  <<: *sfdc_extract
+  only:
+    - master
+
+stripe_githost:
+  <<: *stripe_extract_githost
+  retry: 1
+  only:
+    - master
+
+stripe_about_gitlab:
+  <<: *stripe_extract_about_gitlab
+  retry: 1
   only:
     - master
 
@@ -217,64 +246,18 @@ spreadsheet_loader:
   only:
     - master
 
-domains:
-  <<: *domains_extract
-  only:
-    - master
-
-marketo:
-  <<: *marketo_extract
-  only:
-    - master
-
 zendesk:
   <<: *zendesk_extract
   retry: 1
   only:
     - master
 
-lever:
-  <<: *lever_extract
-  retry: 1
+zuora:
+  <<: *zuora_extract
   only:
     - master
 
-netsuite:
-  <<: *netsuite_extract
-  retry: 1
-  only:
-    - master
-
-netsuite_backlog_manual:
-  stage: extract
-  allow_failure: true
-  <<: *job_definition
-  script:
-    - python3 ci_scripts/check_ci_cd_vars.py --file elt/netsuite/src/config/required_ci_cd_vars.yaml
-    - set_sql_instance_name
-    - setup_cloudsqlproxy
-    - using_proxy python3 elt/netsuite/src/ --schema netsuite backlog --days 60
-    - stop_cloudsqlproxy
-  retry: 1
-  when: manual
-
-stripe_extract_about_gitlab_manual:
-  variables:
-    ABOUT_GITLAB_STRIPE_API_KEY_SK: $ABOUT_GITLAB_STRIPE_API_KEY_SK
-  <<: *job_definition
-  retry: 1
-  only:
-    - master
-
-stripe_extract_githost_manual:
-  variables:
-    GITHOST_STRIPE_API_KEY_SK: $GITHOST_STRIPE_API_KEY_SK
-  <<: *job_definition
-  retry: 1
-  only:
-    - master
-
-## Review Jobs
+## Review / Manual Jobs
 
 sfdc_manual:
   <<: *sfdc_extract
@@ -398,6 +381,7 @@ stripe_extract_about_gitlab_manual:
   except:
     - master
   when: manual
+
 # Stage: model
 
 dbt:
