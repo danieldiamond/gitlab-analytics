@@ -9,5 +9,5 @@ setup(
     author_email='meltano@gitlab.com',
     url='https://gitlab.com/meltano/meltano',
     packages=['meltano.elt.stripe'],
-    package_dir={'meltano.elt.meltano_extract_stripe': 'src'},
+    package_dir={'meltano.elt.stripe': 'src'},
 )

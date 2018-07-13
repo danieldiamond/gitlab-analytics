@@ -125,7 +125,7 @@ class Extractor:
         for page in self.get_all_w_pagination(endpoint_uri=CHARGES_LIST_URI, schema=Charge):
             for charge in page:
                 transformed_charge = self.transform(charge, Charge)
-                session.add(
+                session.merge(
                     Charge(**transformed_charge)
                 )
             session.commit()
@@ -133,7 +133,7 @@ class Extractor:
         for page in self.get_all_w_pagination(endpoint_uri=CUSTOMERS_LIST_URI, schema=Customer):
             for customer in page:
                 transformed_customer = self.transform(customer, Customer)
-                session.add(
+                session.merge(
                     Customer(**transformed_customer)
                 )
             session.commit()
@@ -141,7 +141,7 @@ class Extractor:
         for page in self.get_all_w_pagination(endpoint_uri=DISPUTES_LIST_URI, schema=Dispute):
             for dispute in page:
                 transformed_dispute = self.transform(dispute, Dispute)
-                session.add(
+                session.merge(
                     Dispute(**transformed_dispute)
                 )
             session.commit()
@@ -149,7 +149,7 @@ class Extractor:
         for page in self.get_all_w_pagination(endpoint_uri=PRODUCTS_LIST_URI, schema=Product):
             for product in page:
                 transformed_product = self.transform(product, Product)
-                session.add(
+                session.merge(
                     Product(**transformed_product)
                 )
             session.commit()
@@ -157,7 +157,7 @@ class Extractor:
         for page in self.get_all_w_pagination(endpoint_uri=REFUNDS_LIST_URI, schema=Refund):
             for refund in page:
                 transformed_refund = self.transform(refund, Refund)
-                session.add(
+                session.merge(
                     Refund(**transformed_refund)
                 )
             session.commit()
