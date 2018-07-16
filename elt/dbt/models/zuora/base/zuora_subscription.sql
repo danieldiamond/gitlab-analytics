@@ -13,10 +13,10 @@ WITH source AS (
 		creatoraccountid as creator_account_id,
 		creatorinvoiceownerid as creator_invoice_owner_id,
 		invoiceownerid as invoice_owner_id,
-		opportunityid__c as opportunity_id,
+		opportunityid__c as sfdc_opportunity_id,
 		originalid as original_id,
 		previoussubscriptionid as previous_subscription_id,
-		recurlyid__c as recurly_id,
+		recurlyid__c as sfdc_recurly_id,
 		cpqbundlejsonid__qt as cpq_bundle_json_id,
 		
 		-- info
@@ -28,8 +28,8 @@ WITH source AS (
 		isinvoiceseparate as is_invoice_separate,
 		currentterm as current_term,
 		currenttermperiodtype as current_term_period_type,
-		clickthrougheularequired__c as click_through_eula_required,
-		endcustomerdetails__c as end_customer_details,
+		clickthrougheularequired__c as sfdc_click_through_eula_required,
+		endcustomerdetails__c as sfdc_end_customer_details,
 
 		--key_dates
 		cancelleddate as cancelled_date,
@@ -47,15 +47,15 @@ WITH source AS (
 
 		--foreign synced info
 		opportunityname__qt as opportunity_name,
-		purchase_order__c as purchase_order,
-		purchaseorder__c as purchase_order_,
+		purchase_order__c as sfdc_purchase_order,
+		purchaseorder__c as sfdc_purchase_order_,
 		quotebusinesstype__qt as quote_business_type,
 		quotenumber__qt as quote_number,
 		quotetype__qt as quote_type,
 
 		--renewal info
 		renewalsetting as renewal_setting,
-		renewal_subscription__c__c as renewal_subscription,
+		renewal_subscription__c__c as sfdc_renewal_subscription,
 		renewalterm as renewal_term,
 		renewaltermperiodtype as renewal_term_period_type,
 

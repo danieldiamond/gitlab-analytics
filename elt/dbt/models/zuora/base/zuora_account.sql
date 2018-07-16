@@ -23,16 +23,16 @@ WITH source AS (
 		name as account_name,
 		notes as account_notes,
 		purchaseordernumber as purchase_order_number,
-		accountcode__c as account_code,
+		accountcode__c as sfdc_account_code,
 		status, 
-		entity__c as entity,
+		entity__c as sfdc_entity,
 
 		autopay as auto_pay,
 		balance as balance,
 		creditbalance as credit_balance,
 		billcycleday as bill_cycle_day,
 		currency as currency,
-		conversionrate__c as conversion_rate,
+		conversionrate__c as sfdc_conversion_rate,
 		paymentterm as payment_term,
 
 		allowinvoiceedit as allow_invoice_edit,
@@ -45,7 +45,7 @@ WITH source AS (
 		salesrepname as sales_rep_name,
 		additionalemailaddresses as additional_email_addresses,
 		billtocontact as bill_to_contact,
-		parent__c as parent,
+		parent__c as sfdc_parent,
 
 
 		-- financial info
