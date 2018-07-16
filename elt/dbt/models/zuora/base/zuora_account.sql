@@ -43,7 +43,9 @@ WITH source AS (
 
 		customerservicerepname as customer_service_rep_name,
 		salesrepname as sales_rep_name,
-
+		additionalemailaddresses as additional_email_addresses,
+		billtocontact as bill_to_contact,
+		parent__c as parent,
 
 
 		-- financial info
