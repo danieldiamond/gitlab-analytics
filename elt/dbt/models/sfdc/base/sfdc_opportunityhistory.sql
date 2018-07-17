@@ -1,25 +1,18 @@
-WITH max_date AS (
+WITH base AS (
     SELECT
-      opportunityid,
-      max(systemmodstamp) AS max_time
+      *,
+      lead(createddate)
+      OVER (
+        PARTITION BY opportunityid
+        ORDER BY createddate ) - opportunityhistory.createddate AS time_in_stage
     FROM sfdc.opportunityhistory
-    GROUP BY opportunityid
-),
-
-    max_amount AS (
-    /* This ensures we're getting the amount from the last action on the opp*/
-      SELECT
-        max(oh.amount) AS amount,
-        oh.opportunityid
-      FROM max_date d
-        JOIN sfdc.opportunityhistory oh ON d.opportunityid = oh.opportunityid
-                                           AND d.max_time = oh.systemmodstamp
-      GROUP BY oh.opportunityid
-  )
+)
 
 SELECT
-  oh.*,
-  (date_part('day', oh.systemmodstamp - oh.createddate) * 24 +
-     date_part('hour', oh.systemmodstamp - oh.createddate)) / 24.0 AS days_in_stage
-FROM sfdc.opportunityhistory oh
-  JOIN max_amount ma ON oh.opportunityid = ma.opportunityid
+  *,
+  CASE
+    WHEN time_in_stage IS NULL OR extract(EPOCH FROM time_in_stage) / (3600 * 24) = 0
+        THEN 0.0001
+    ELSE
+        coalesce(extract(EPOCH FROM time_in_stage) / (3600 * 24), 0.0001) END AS days_in_stage
+FROM base

@@ -9,6 +9,11 @@ test-paths: ["tests"]
 
 models:
   gitlab_dw:
+    date:
+      base:
+        enabled: true
+        materialized: view
+
     sfdc:
       base:
         enabled: true

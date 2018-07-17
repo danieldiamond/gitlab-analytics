@@ -3,7 +3,7 @@ import psycopg2
 import psycopg2.sql
 import psycopg2.extras
 
-from typing import Sequence, Callable, Set
+from typing import Sequence, Callable, Set, Union
 from enum import Enum
 from collections import OrderedDict, namedtuple
 from elt.error import ExceptionAggregator, SchemaError, InapplicableChangeError
@@ -44,6 +44,8 @@ Column = namedtuple('Column', [
 
 
 class Schema:
+    Basis = Union[str, 'Schema']
+
     @staticmethod
     def mapping_key_name(column: Column):
         return "{}_{}_mapping_key".format(column.table_name,
@@ -56,6 +58,13 @@ class Schema:
     @staticmethod
     def column_key(column: Column):
         return (column.table_name, column.column_name)
+
+    @classmethod
+    def extend(cls, schema_or_name: Basis):
+        if isinstance(schema_or_name, Schema):
+            return schema_or_name
+
+        return Schema(schema_or_name)
 
     def __init__(self, name, columns: Sequence[Column] = [],
                  primary_key_name='__row_id'):
@@ -70,6 +79,11 @@ class Schema:
 
     def add_table(self, column: Column):
         self.tables.add(Schema.table_key(column))
+
+    def add_column(self, column: Column):
+        self.add_table(column)
+        # TODO: raise on onverwrite?
+        self.columns[Schema.column_key(column)] = column
 
     def column_diff(self, column: Column) -> Set[SchemaDiff]:
         table_key = Schema.table_key(column)
@@ -141,11 +155,22 @@ def ensure_schema_exists(db_conn, schema_name):
     :schema: database schema
     """
     cursor = db_conn.cursor()
+    schema_identifier = psycopg2.sql.Identifier(schema_name)
 
-    create_schema = psycopg2.sql.SQL("CREATE SCHEMA IF NOT EXISTS {0}").format(
-        psycopg2.sql.Identifier(schema_name)
-    )
+    create_schema = psycopg2.sql.SQL("CREATE SCHEMA IF NOT EXISTS {}").format(schema_identifier)
     cursor.execute(create_schema)
+
+    group_identifiers = psycopg2.sql.SQL(",").join(
+        map(psycopg2.sql.Identifier, ("readonly", "analytics"))
+    )
+
+    grant_select_schema = psycopg2.sql.SQL("ALTER DEFAULT PRIVILEGES IN SCHEMA {} GRANT SELECT ON TABLES TO {}").format(schema_identifier, group_identifiers)
+
+    grant_usage_schema = psycopg2.sql.SQL("GRANT USAGE ON SCHEMA {} TO {}").format(schema_identifier, group_identifiers)
+
+    cursor.execute(grant_select_schema)
+    cursor.execute(grant_usage_schema)
+
     db_conn.commit()
 
 

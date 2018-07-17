@@ -142,9 +142,5 @@ snapshot_opportunity:
 
 users:
     constraints:
-        not_null:
-            - id
-            - name
-            - email
         unique:
             - id

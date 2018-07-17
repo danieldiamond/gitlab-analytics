@@ -13,6 +13,7 @@ WITH source AS (
 		-- invoice metadata
 		duedate as due_date,
 		invoicenumber as invoice_number,
+		invoicedate as invoice_date,
 		status as status,
 
 		lastemailsentdate as last_email_sent_date,
@@ -35,12 +36,14 @@ WITH source AS (
 		refundamount as refund_amount,
 		taxamount as tax_amount,
 		taxexemptamount as tax_exempt_amount,
+		comments,
 
-		-- ext1, ext2, ext3, ext4, ext5
+		-- ext1, ext2, ext3, ... ext9
 
 		-- metadata
 		createdbyid as created_by_id,
 		createddate as created_date,
+		postedby as posted_by,
 		source as source,
 		source as source_id,
 		updatedbyid as updated_by_id,
