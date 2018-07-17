@@ -177,6 +177,33 @@ stages:
 
 ## Production Jobs
 
+sfdc:
+  <<: *sfdc_extract
+  only:
+    - master
+
+zuora:
+  <<: *zuora_extract
+  only:
+    - master
+
+pings:
+  stage: extract
+  <<: *job_definition
+  script:
+    - python3 ci_scripts/check_ci_cd_vars.py --file elt/pings/src/config/required_vars_pings.yaml
+    - set_sql_instance_name
+    - setup_cloudsqlproxy
+    - using_proxy python3 elt/pings/src apply_schema --db_manifest version
+    - using_proxy python3 elt/pings/src export --db_manifest version --days 1
+    - using_proxy python3 elt/pings/src apply_schema --db_manifest customers
+    - using_proxy python3 elt/pings/src export --db_manifest customers --days 1
+    - using_proxy python3 elt/pings/src apply_schema --db_manifest license
+    - using_proxy python3 elt/pings/src export --db_manifest license --days 1
+    - stop_cloudsqlproxy
+  only:
+    - master
+
 ci_stats:
   stage: extract
   allow_failure: true
@@ -303,6 +330,10 @@ pings_manual:
     - python3 ci_scripts/check_ci_cd_vars.py --file elt/pings/src/config/required_vars_pings.yaml
     - set_sql_instance_name
     - setup_cloudsqlproxy
+    - using_proxy python3 elt/pings/src apply_schema --db_manifest customers
+    - using_proxy python3 elt/pings/src export --db_manifest customers --days 10
+    - using_proxy python3 elt/pings/src apply_schema --db_manifest license
+    - using_proxy python3 elt/pings/src export --db_manifest license --days 10
     - using_proxy python3 elt/pings/src apply_schema --db_manifest version
     - using_proxy python3 elt/pings/src export --db_manifest version --days 10
     - stop_cloudsqlproxy
@@ -321,6 +352,10 @@ pings_backfill:
     - setup_cloudsqlproxy
     - using_proxy python3 elt/pings/src apply_schema --db_manifest version
     - using_proxy python3 elt/pings/src export --db_manifest version
+    - using_proxy python3 elt/pings/src apply_schema --db_manifest customers
+    - using_proxy python3 elt/pings/src export --db_manifest customers
+    - using_proxy python3 elt/pings/src apply_schema --db_manifest license
+    - using_proxy python3 elt/pings/src export --db_manifest license
     - stop_cloudsqlproxy
   only:
     - master

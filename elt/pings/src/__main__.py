@@ -70,7 +70,7 @@ def parse():
     parser.add_argument(
         '--db_manifest',
         required=True,
-        choices=['version', 'ci_stats'],
+        choices=['version', 'customers', 'license', 'ci_stats'],
         help="Which DB manifest to use to get the export list."
     )
 
