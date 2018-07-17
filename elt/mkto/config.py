@@ -35,3 +35,11 @@ def config_primary_key(args):
     }
 
     return pkey_source_map[args.source]
+
+def config_integrate(args):
+    return {
+        'table_schema': args.schema,
+        'table_name': config_table_name(args),
+        'primary_key': config_primary_key(args),
+        'csv_options': { 'NULL': "'null'" }
+    }

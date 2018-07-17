@@ -14,7 +14,7 @@ from elt.utils import compose
 from elt.db import db_open
 from elt.error import ExceptionAggregator, SchemaError
 from elt.schema import DBType, Schema
-from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
+from elt.process import upsert_to_db_from_csv
 import schema.ticket as ticket
 
 
@@ -46,7 +46,11 @@ async def import_file(args, exporter):
                 upsert_to_db_from_csv(db, csv_file,
                                       primary_key=ticket.PRIMARY_KEY,
                                       table_name=ticket.table_name(args),
-                                      table_schema=args.schema)
+                                      table_schema=args.schema,
+                                      csv_options={
+                                          'NULL': "'null'",
+                                          'FORCE_NULL': "({columns})",
+                                      })
     except GeneratorExit:
         logging.info("Import finished.")
 

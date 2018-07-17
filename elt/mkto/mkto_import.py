@@ -2,37 +2,23 @@
 import sys
 import argparse
 
+from functools import partial
 from elt.db import db_open
 from elt.cli import parser_db_conn
-from mkto_tools.mkto_bulk import write_to_db_from_csv, upsert_to_db_from_csv
-from config import config_table_name, config_primary_key
+from elt.process import integrate_csv
+from config import config_table_name, config_primary_key, config_integrate
 
 
-def import_csv(args):
+def integrate(args, **kwargs):
     with db_open() as db:
-        options = {
-            'table_schema': args.schema,
-            'table_name': config_table_name(args),
-            'primary_key': config_primary_key(args),
-        }
-
-        write_to_db_from_csv(db, args.input_file, **options)
-
-
-def upsert_csv(args):
-    with db_open() as db:
-        options = {
-            'table_schema': args.schema,
-            'table_name': config_table_name(args),
-            'primary_key': config_primary_key(args),
-        }
-
-        upsert_to_db_from_csv(db, args.input_file, **options)
-
+        integrate_csv(db,
+                      args.input_file,
+                      **config_integrate(args),
+                      **kwargs)
 
 args_func_map = {
-    'create': import_csv,
-    'update': upsert_csv,
+    'create': integrate,
+    'update': partial(integrate, update_action="UPDATE"),
 }
 
 if __name__ == '__main__':

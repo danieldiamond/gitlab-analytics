@@ -14,8 +14,9 @@ from elt.utils import compose
 from elt.db import db_open
 from elt.error import ExceptionAggregator, Error, ExtractError
 from elt.schema import DBType, Schema
-from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
+from elt.process import upsert_to_db_from_csv
 import schema.candidate as candidate
+
 
 # Lever API details: https://hire.lever.co/developer/documentation
 USER = os.getenv("LEVER_API_KEY")
@@ -48,7 +49,11 @@ async def import_file(args, exporter):
                 upsert_to_db_from_csv(db, csv_file,
                                       primary_key=candidate.PRIMARY_KEY,
                                       table_name=candidate.table_name(args),
-                                      table_schema=args.schema)
+                                      table_schema=args.schema,
+                                      csv_options={
+                                          'NULL': "'null'",
+                                          'FORCE_NULL': "({columns})",
+                                      })
     except GeneratorExit:
         logging.info("Import finished.")
 
