@@ -12,7 +12,7 @@ import psycopg2.sql
 from elt.error import ExtractError
 from elt.db import db_open
 from elt.cli import ExportOutput, DateWindow
-from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
+from elt.process import upsert_to_db_from_csv
 from .mkto_token import get_token, mk_endpoint
 from .mkto_leads import get_leads_fieldnames_mkto, describe_leads
 from .mkto_utils import bulk_filter_builder, get_mkto_config, handle_marketo_response
@@ -222,11 +222,7 @@ def bulk_export(args):
     bulk_get_file(args.source, export_id)
 
     if args.output == ExportOutput.DB:
-        options = {
-            'table_schema': args.schema,
-            'table_name': config_table_name(args),
-            'primary_key': config_primary_key(args),
-        }
+        options = config_integrate(args)
 
         logging.info("Upserting to Database")
         with db_open() as db:

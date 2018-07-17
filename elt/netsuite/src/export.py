@@ -11,7 +11,7 @@ from elt.db import db_open
 from elt.utils import compose
 from elt.error import ExceptionAggregator, Error
 from elt.schema import DBType, Schema
-from elt.process import write_to_db_from_csv, upsert_to_db_from_csv
+from elt.process import upsert_to_db_from_csv
 
 from soap_api.netsuite_soap_client import NetsuiteClient
 
@@ -45,7 +45,11 @@ async def import_file(args, exporter):
                 upsert_to_db_from_csv(db, export_result['file'],
                                       primary_key=export_result['entity'].schema.PRIMARY_KEY,
                                       table_name=export_result['entity'].schema.table_name(args),
-                                      table_schema=args.schema)
+                                      table_schema=args.schema,
+                                      csv_options={
+                                          'NULL': "'null'",
+                                          'FORCE_NULL': "({columns})",
+                                      })
     except GeneratorExit:
         logging.info("Import finished.")
 
