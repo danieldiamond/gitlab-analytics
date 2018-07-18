@@ -62,7 +62,7 @@ view: historical_metrics {
   measure: com_availability {
     description: "GitLab.com Availability"
     type: sum
-    value_format: "00.00%"
+    value_format: "0.00\%"
     sql: ${TABLE}.com_availability ;;
   }
 
