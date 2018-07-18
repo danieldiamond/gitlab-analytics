@@ -1,13 +1,13 @@
 view: historical_metrics {
   # # You can specify the table name if it's different from the view name:
-  sql_table_name: historical.metrics ;;
+  sql_table_name: analytics.historical_metrics ;;
   #
   # Define your dimensions and measures here, like this:
   dimension: id {
     type: number
     hidden: yes
     primary_key: yes
-    sql: ${TABLE}.id ;;
+    sql: ${TABLE}.primary_key ;;
   }
 
   dimension_group: date {
@@ -21,7 +21,7 @@ view: historical_metrics {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}.date ;;
+    sql: ${TABLE}.month_of ;;
   }
 
   measure: revenue {
@@ -56,7 +56,7 @@ view: historical_metrics {
     description: "Total Self Hosted Core Instances"
     type: sum
     value_format: "#,##0"
-    sql: ${TABLE}.core_self_host ;;
+    sql: ${TABLE}.active_core_hosts ;;
   }
 
   measure: com_availability {
@@ -77,7 +77,7 @@ view: historical_metrics {
     description: "GitLab.com Active Users Over 30 Days"
     type: sum
     value_format: "#,##0"
-    sql: ${TABLE}.com_active_users_thirty ;;
+    sql: ${TABLE}.com_active_30_day_users ;;
   }
 
   measure: com_projects {
@@ -126,14 +126,14 @@ view: historical_metrics {
     description: "Cash Remaining In Months"
     type: sum
     value_format: "#,##0"
-    sql: ${TABLE}.cash_remaining_in_months ;;
+    sql: ${TABLE}.cash_remaining ;;
   }
 
   measure: rep_prod {
     description: "Rep Productivity"
     type: sum
     value_format: "$#,##0"
-    sql: ${TABLE}.rep_prod ;;
+    sql: ${TABLE}.rep_prod_annualized ;;
   }
 
   measure: cac {
@@ -154,7 +154,7 @@ view: historical_metrics {
     description: "LTV to CAC Ratio"
     type: sum
     value_format: "#,##0.0"
-    sql: ${TABLE}.ltv_to_cac_ratio ;;
+    sql: ${TABLE}.ltv_to_cac ;;
   }
 
   measure: cac_ratio {
