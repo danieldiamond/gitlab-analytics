@@ -8,7 +8,7 @@ WITH source AS (
 
 	SELECT uniquekey as primary_key,
 			month::date as month_of,
-			regexp_replace(total_revenue, '-?[^a-zA-Z0-9\.-]+', '','g')::float as total_revenue,
+			regexp_replace(total_revenue, '[^a-zA-Z0-9\.-]+', '','g')::float as total_revenue,
 			regexp_replace(licensed_users, '[^a-zA-Z0-9\.-]+', '','g')::float as licensed_users,
 			regexp_replace(rev_per_user, '[^a-zA-Z0-9\.-]+', '','g')::float  as revenue_per_user,
 			regexp_replace(com_paid_users,'[^a-zA-Z0-9\.-]+', '','g')::float as com_paid_users,
