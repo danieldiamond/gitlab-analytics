@@ -1,13 +1,13 @@
 view: historical_headcount {
   # # You can specify the table name if it's different from the view name:
-  sql_table_name: historical.headcount ;;
+  sql_table_name: analytics.historical_headcount ;;
   #
   # Define your dimensions and measures here, like this:
   dimension: id {
     type: number
     hidden: yes
     primary_key: yes
-    sql: ${TABLE}.id ;;
+    sql: ${TABLE}.prinmary_key ;;
   }
 
   dimension_group: date {
@@ -21,7 +21,7 @@ view: historical_headcount {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}.date ;;
+    sql: ${TABLE}.month_of ;;
   }
 
   dimension: function {
@@ -35,6 +35,6 @@ view: historical_headcount {
     type: sum
     value_format: "#,##0"
     drill_fields: [function,total_employees]
-    sql: ${TABLE}.employee_cnt ;;
+    sql: ${TABLE}.employee_count ;;
   }
 }
