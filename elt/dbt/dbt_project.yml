@@ -46,3 +46,6 @@ models:
       base:
         enabled: true
         materialized: table
+
+on-run-start:
+    - '{{create_udfs()}}'
