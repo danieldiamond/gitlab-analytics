@@ -9,7 +9,7 @@ WITH source AS (
 		id                      as account_id,
 		name                    as account_name,
 		-- keys
-		sfdc.id15to18(
+		{{this.schema}}.id15to18(
               substring(
                   regexp_replace(ultimate_parent_account__c,
                                 '_HL_ENCODED_/|<a\s+href="/', '')
