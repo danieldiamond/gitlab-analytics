@@ -36,6 +36,16 @@ view: f_opportunity {
     sql: ${TABLE}.is_won ;;
   }
 
+  dimension: reason_for_loss {
+    type: string
+    sql: ${TABLE}.reason_for_loss ;;
+  }
+
+  dimension: reason_for_loss_details {
+    type: string
+    sql: ${TABLE}.reason_for_loss_details ;;
+  }
+
   dimension: risk_level {
     label: "Is Risky"
     type: yesno

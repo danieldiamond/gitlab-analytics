@@ -40,6 +40,16 @@ view: dim_account {
     sql: ${TABLE}.sales_segmentation ;;
   }
 
+  dimension: health_score {
+    type: string
+    sql: ${TABLE}.health_score ;;
+  }
+
+  dimension: health_score_reasons {
+    type: string
+    sql: ${TABLE}.health_score_reasons ;;
+  }
+
   dimension: sfdc_account_id {
     description: "This is the Salesforce account Id."
     hidden: yes
