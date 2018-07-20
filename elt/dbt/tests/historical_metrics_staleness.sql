@@ -11,4 +11,4 @@ SELECT max(updated_at)::date FROM {{ref('historical_metrics')}}
 
 select *
 from maxdate 
-WHERE last_update_diff >= '3'
+WHERE last_update_diff >= '30'
