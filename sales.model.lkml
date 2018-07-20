@@ -174,6 +174,13 @@ explore: pipeline_change {
     relationship: one_to_one
     sql_on: ${pipeline_change.ownerid} = ${sfdc_user.id} ;;
   }
+
+  join: dim_leadsource {
+    view_label: "Lead Source"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${pipeline_change.lead_source_id} = ${dim_leadsource.id} ;;
+  }
 }
 
 explore: f_churn_history {

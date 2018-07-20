@@ -43,8 +43,15 @@ view: f_opportunity {
   }
 
   dimension: last_activity{
+    label: "Last Activity Date"
     type: date
     sql: ${TABLE}.lastactivitydate ;;
+  }
+
+  dimension: last_activity_days {
+    label: "Last Activity - Days Since"
+    type: number
+    sql: date_part('day', now() - ${last_activity}) ;;
   }
 
   dimension: billing_period {
@@ -226,7 +233,7 @@ view: f_opportunity {
   }
 
   measure: total_tcv {
-    label: "Total Contract Value (TCV)"
+    label: "Contract Value (TCV)"
     type: sum
     sql: ${tcv} ;;
     drill_fields: [detail*]
@@ -234,7 +241,7 @@ view: f_opportunity {
   }
 
   measure: total_acv {
-    label: "Total Annual Contract Value (ACV)"
+    label: "Annual Contract Value (ACV)"
     type: sum
     sql: ${acv} ;;
     drill_fields: [detail*]
@@ -242,7 +249,7 @@ view: f_opportunity {
     }
 
   measure: total_iacv {
-    label: "Total Incremental Annual Contract Value (IACV)"
+    label: "Incremental Annual Contract Value (IACV)"
     type: sum
     sql: ${iacv} ;;
     drill_fields: [detail*]
@@ -250,7 +257,7 @@ view: f_opportunity {
     }
 
   measure: weighted_iacv {
-    label: "Total Weighted IACV"
+    label: "Weighted IACV"
     type: sum
     sql:${iacv}* (${dim_opportunitystage.defaultprobability}/100) ;;
   }
