@@ -55,6 +55,16 @@ view: sfdc_opportunity {
     type: yesno
     sql: ${TABLE}.is_won ;;
   }
+
+  dimension: reason_for_loss {
+    type: string
+    sql: ${TABLE}.reason_for_loss ;;
+  }
+
+  dimension: reason_for_loss_details {
+    type: string
+    sql: ${TABLE}.reason_for_loss_details ;;
+  }
   #
   dimension: sale_stage {
     description: "Stage in which a sale is in"
