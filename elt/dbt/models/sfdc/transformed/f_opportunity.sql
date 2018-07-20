@@ -52,6 +52,8 @@ SELECT o.sfdc_id AS opportunity_id
        , COALESCE(i.product, 'Unknown') as opportunity_product
        , COALESCE(i.period, 'Unknown') as billing_period
        , COALESCE(o.name, 'Unknown') as opportunity_name
+       , o.reason_for_loss
+       , o.reason_for_loss_details
        , o.ownerid
        , CASE
           WHEN (o.days_in_stage > 30 OR o.over_100k IS TRUE OR o.push_counter__c > 0)

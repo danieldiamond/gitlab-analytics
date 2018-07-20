@@ -37,6 +37,8 @@ SELECT o.sfdc_opportunity_id AS opportunity_id
        , o.sql_source__c as sales_qualified_source
        , o.closedate AS opportunity_closedate
        , COALESCE(o.name, 'Unknown') as opportunity_name
+       , o.reason_for_loss
+       , o.reason_for_loss_details
        , o.iacv
        , o.Renewal_ACV
        , o.acv
@@ -63,6 +65,8 @@ SELECT opportunity_id,
        sales_qualified_source,
        opportunity_closedate,
        opportunity_name,
+       reason_for_loss,
+       reason_for_loss_details,
        SUM(iacv) iacv,
        SUM(renewal_acv) renewal_acv,
        SUM(acv) acv,
@@ -80,5 +84,7 @@ GROUP BY opportunity_id,
          sales_qualified_source,
          opportunity_closedate,
          opportunity_name,
+         reason_for_loss,
+         reason_for_loss_details,
          ownerid
 
