@@ -4,15 +4,19 @@ view: pipeline_change {
         (SELECT *
          FROM analytics.f_snapshot_opportunity a
          INNER JOIN dim_opportunitystage s ON a.opportunity_stage_id=s.stage_id
-         WHERE date(snapshot_date) = {% date_end date_range %}
-          AND s.mapped_stage != 'Unmapped'),
+         WHERE
+              date(snapshot_date) = {% date_end date_range %}
+          AND s.mapped_stage != 'Unmapped'
+          ),
 
          OLD AS
         (SELECT *
          FROM analytics.f_snapshot_opportunity a
          INNER JOIN dim_opportunitystage os ON a.opportunity_stage_id=os.stage_id
-         WHERE date(snapshot_date) = {% date_start date_range %}
-          AND os.mapped_stage != 'Unmapped')
+         WHERE
+              date(snapshot_date) = {% date_start date_range %}
+          AND os.mapped_stage != 'Unmapped'
+          )
 
       SELECT
         'Starting' AS category,
@@ -183,6 +187,7 @@ view: pipeline_change {
         AND NEW.is_closed=true
         AND OLD.is_closed=false
         AND OLD.stage_id != '33' --duplicates
+        AND NEW.reason_for_loss != 'Merged into another opportunity'
 
       UNION ALL
 
