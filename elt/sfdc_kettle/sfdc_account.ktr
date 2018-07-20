@@ -510,7 +510,7 @@
     <timeout>60000</timeout>
     <useCompression>N</useCompression>
     <module>Account</module>
-    <condition>SystemModStamp = LAST_N_DAYS:3</condition>
+    <condition />
     <specifyQuery>N</specifyQuery>
     <query />
     <include_targeturl>N</include_targeturl>
