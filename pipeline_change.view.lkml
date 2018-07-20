@@ -17,6 +17,8 @@ view: pipeline_change {
       SELECT
         'Starting' AS category,
         '1' AS order,
+        NULL::date as previous_close_date,
+        NULL::float as previous_iacv,
         OLD.*
       FROM OLD
       WHERE (OLD.sales_accepted_date < {% date_start date_range %}
@@ -31,6 +33,8 @@ view: pipeline_change {
       SELECT
         'Created' as category ,
         '2' as order,
+        NULL::date as previous_close_date,
+        NULL::float as previous_iacv,
         NEW.*
       FROM NEW
       WHERE NEW.sales_accepted_date >= {% date_start date_range %}
@@ -47,6 +51,8 @@ view: pipeline_change {
       SELECT
         'Created' As category ,
         '2' AS order,
+        NULL::date as previous_close_date,
+        NULL::float as previous_iacv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -72,6 +78,8 @@ view: pipeline_change {
       SELECT
         'Moved In' AS category,
         '3' AS order,
+        OLD.opportunity_closedate as previous_close_date,
+        NULL::float as previous_iacv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -85,6 +93,8 @@ view: pipeline_change {
       SELECT
         'Increased' AS category,
         '4' AS order,
+        NULL::date as previous_close_date,
+        OLD.iacv as previous_iacv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -100,6 +110,8 @@ view: pipeline_change {
       SELECT
         'Decreased' AS category,
         '6' AS order,
+        NULL::date as previous_close_date,
+        OLD.iacv as previous_iacv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -115,6 +127,8 @@ view: pipeline_change {
       SELECT
         'Moved Out' AS category,
         '5' AS order,
+        OLD.opportunity_closedate as previous_close_date,
+        NULL::float as previous_iacv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -129,6 +143,8 @@ view: pipeline_change {
       SELECT
           'Won' AS category,
           '7' AS order,
+          NULL::date as previous_close_date,
+          NULL::float as previous_iacv,
           NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -142,6 +158,8 @@ view: pipeline_change {
       SELECT
         'Won' AS category,
         '7' AS order,
+        NULL::date as previous_close_date,
+        NULL::float as previous_iacv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -155,6 +173,8 @@ view: pipeline_change {
       SELECT
         'Lost' AS category,
         '8' AS order,
+        NULL::date as previous_close_date,
+        NULL::float as previous_iacv,
         NEW.*
       FROM NEW
       INNER JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -169,6 +189,8 @@ view: pipeline_change {
        SELECT
         'Ending' as category,
         '9' as order,
+        NULL::date as previous_close_date,
+        NULL::float as previous_iacv,
         NEW.*
       FROM NEW
       WHERE {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
@@ -233,6 +255,17 @@ view: pipeline_change {
     sql: ${TABLE}.lead_source_id ;;
   }
 
+  dimension: reason_for_loss {
+    type: string
+    sql: ${TABLE}.reason_for_loss ;;
+  }
+
+  dimension: reason_for_loss_details {
+    label: "Reason for Loss - Details"
+    type: string
+    sql: ${TABLE}.reason_for_loss_details ;;
+  }
+
   dimension: opportunity_type {
     label: "Type"
     type: string
@@ -273,6 +306,13 @@ view: pipeline_change {
     type: time
     timeframes: [raw, date]
     sql: ${TABLE}.opportunity_closedate ;;
+  }
+
+  dimension_group: prev_opportunity_close {
+    label: "Previous Close"
+    type: time
+    timeframes: [raw, date]
+    sql: ${TABLE}.previous_close_date ;;
   }
 
   dimension: opportunity_name {
@@ -321,7 +361,6 @@ view: pipeline_change {
     allowed_value: { value: "Renewal ACV" }
     allowed_value: { value: "TCV" }
     default_value: "IACV"
-
   }
 
   measure: acv_metric {
@@ -337,6 +376,12 @@ view: pipeline_change {
     label_from_parameter: metric_type
     value_format_name: usd
     drill_fields: [detail*]
+  }
+
+  measure: prev_iacv {
+    label: "Previous IACV"
+    type: sum
+    sql: ${TABLE}.previous_iacv ;;
   }
 
 
