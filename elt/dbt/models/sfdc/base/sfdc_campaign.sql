@@ -59,3 +59,31 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+
+
+--- excluded columns
+--lean data:
+
+--leandata__back_dated__c as ,
+--leandata__rep_lt_attribution__c as ,
+--leandata__rep_lt_bookings_attribution__c as ,
+--leandata__rep_lt_generated_attribution__c as ,
+--leandata__rep_lt_generated_bookings_attribution__c as ,
+--leandata__rep_mt_accelerated_attribution__c as ,
+--leandata__rep_mt_accelerated_bookings_attr__c as ,
+--leandata__rep_mt_generated_attribution__c as ,
+--leandata__rep_mt_generated_bookings_attribution__c as ,
+--leandata__reporting_average_days_to_close__c as ,
+--leandata__reporting_bookings_attribution__c as ,
+--leandata__reporting_campaign_member_totals__c as ,
+--leandata__reporting_cost__c as ,
+--leandata__reporting_ft_attribution_amount__c as ,
+--leandata__reporting_ft_bookings_attribution__c as ,
+--leandata__reporting_lift__c as ,
+--leandata__reporting_mt_attribution_amount__c as ,
+--leandata__reporting_num_target_campaign_members__c as ,
+--leandata__reporting_number_of_campaign_members__c as ,
+--leandata__reporting_number_of_opportunities__c as ,
+--leandata__reporting_number_of_touches__c as ,
+--leandata__reporting_on_target__c as ,
+--leandata__reporting_opportunity_close_rate__c as ,
