@@ -24,7 +24,7 @@ view: sfdc_closed_deals_acv {
   dimension: segment {
     description: "Segment"
     type: string
-    sql: ${TABLE}.segment ;;
+    sql: ${TABLE}.account_segment ;;
   }
   dimension_group: closedate {
     description: "The date when an opportunity was closed"
