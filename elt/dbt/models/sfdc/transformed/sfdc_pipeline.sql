@@ -1,7 +1,7 @@
 with sfdc_opportunity as (
 
   SELECT *
-  FROM {{ref('sfdc_opportunity')}}
+  FROM {{ref('sfdc_opportunity_xf')}}
 )
 
 SELECT sales_type,

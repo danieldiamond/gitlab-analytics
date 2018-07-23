@@ -1,6 +1,6 @@
 WITH sfdc_opportunity as (
 
-  SELECT * FROM {{ref('sfdc_opportunity')}}
+  SELECT * FROM {{ref('sfdc_opportunity_xf')}}
 
 ), sfdc_account as (
 
