@@ -14,7 +14,7 @@ WITH sfdc_opportunity as (
            sfdc_opportunity.owner,
            sfdc_opportunity.sales_path,
            sfdc_opportunity.acv,
-           sfdc_account.segment,
+           sfdc_account.account_segment,
            sfdc_opportunity.closed_deals
     FROM sfdc_opportunity 
       INNER JOIN sfdc_account  
