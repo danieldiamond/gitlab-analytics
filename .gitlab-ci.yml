@@ -1,5 +1,5 @@
 variables:
-  PYTHONPATH: "/meltano/meltano/elt/shared_modules/:$PYTHONPATH"
+  PYTHONPATH: "/meltano/analytics/elt/shared_modules/:$PYTHONPATH"
 
 stages:
   - review
