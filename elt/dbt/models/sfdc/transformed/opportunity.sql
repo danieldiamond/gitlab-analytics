@@ -15,6 +15,8 @@ SELECT
   sales_segmentation_o__c,
   sales_qualified_date__c,
   sales_accepted_date__c,
+  reason_for_lost__c as reason_for_loss,
+  reason_for_lost_details__c as reason_for_loss_details,
   name,
   ownerid,
   weighted_iacv__c,

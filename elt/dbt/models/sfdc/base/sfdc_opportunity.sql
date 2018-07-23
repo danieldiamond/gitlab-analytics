@@ -43,6 +43,8 @@ WITH source AS (
 		amount as total_contract_value,
 		leadsource as lead_source,
 		products_purchased__c AS products_purchased,
+		reason_for_lost__c as reason_for_loss,
+        reason_for_lost_details__c as reason_for_loss_details,
 		CASE WHEN
             incremental_acv_2__c :: DECIMAL < 5000
             THEN '1 - Small (<5k)'

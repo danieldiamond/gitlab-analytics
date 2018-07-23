@@ -15,7 +15,7 @@ from sqlalchemy import desc
 from elt.job import Job, State
 from elt.utils import compose, slugify, setup_db
 from elt.db import DB
-from elt.process import create_tmp_table, update_set_stmt
+from elt.process import integrate_csv
 from elt.schema import schema_apply
 from elt.error import Error, ExtractError
 from schema import PG_SCHEMA, describe_schema, field_column_name
@@ -216,56 +216,21 @@ def replace(fieldList):
 
 def db_write_incremental(item):
     _, _, host, db, _ = getPGCreds()
-    primary_key = 'id'
-    columns = [field_column_name(field) for field in getZuoraFields(item)]
-    update_columns = [col for col in columns if col != primary_key]
+    #primary_key = 'id'
+    #columns = [field_column_name(field) for field in getZuoraFields(item)]
+    #update_columns = [col for col in columns if col != primary_key]
 
+    csv_file_name = ".".join((item, "csv"))
     logging.info("[Update] Writing to {}/{}".format(host, db))
-    with open(item + '.csv', 'r') as file, \
-        DB.open() as mydb, \
-        mydb.cursor() as cursor:
-
-        table_name = item.lower()
-        tmp_table_name = create_tmp_table(mydb, PG_SCHEMA, table_name)
-
-        schema = psycopg2.sql.Identifier(PG_SCHEMA)
-        table = psycopg2.sql.Identifier(table_name)
-        tmp_table = psycopg2.sql.Identifier(tmp_table_name)
-
-        reader = csv.reader(file, delimiter=',', quotechar='"',
-                            quoting=csv.QUOTE_MINIMAL)
-
-        # load tmp table
-        copy = psycopg2.sql.SQL("COPY pg_temp.{} ({}) FROM STDIN WITH (FORMAT csv, HEADER true)").format(
-            tmp_table,
-            psycopg2.sql.SQL(', ').join(map(psycopg2.sql.Identifier, columns)),
-        )
-
-        cursor.copy_expert(file=file, sql=copy)
-
-        # upsert from tmp table
-        update_query = psycopg2.sql.SQL("INSERT INTO {0}.{1} ({2}) SELECT {2} FROM {3}.{4} ON CONFLICT ({5}) DO UPDATE SET {6}").format(
-            schema,
-            table,
-            psycopg2.sql.SQL(', ').join(map(psycopg2.sql.Identifier, columns)),
-            psycopg2.sql.Identifier("pg_temp"),
-            tmp_table,
-            psycopg2.sql.Identifier(primary_key),
-            psycopg2.sql.SQL(update_set_stmt(update_columns)),
-        )
-
-        # Drop temporary table
-        drop_query = psycopg2.sql.SQL("DROP TABLE {0}.{1}").format(
-            psycopg2.sql.Identifier("pg_temp"),
-            tmp_table,
-        )
-
-        cursor.execute(update_query)
-        cursor.execute(drop_query)
-        mydb.commit()
-
+    with DB.open() as db:
+        integrate_csv(db, csv_file_name,
+                    table_name=item.lower(),
+                    table_schema=PG_SCHEMA,
+                    primary_key='id',
+                    csv_options={'HEADER': 'true'},
+                    update_action="UPDATE")
         logging.info("Completed copying records to {} table.".format(item))
-    os.remove(item + '.csv')
+    os.remove(csv_file_name)
 
 
 def db_write(job, item):
@@ -368,7 +333,7 @@ def main():
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(message)s',
                         datefmt='%m/%d/%Y %I:%M:%S %p',
-                        level=logging.DEBUG)
+                        level=logging.INFO)
 
     setup_db()
 

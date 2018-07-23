@@ -14,7 +14,7 @@ try:
     # create cursor
     cursor = conn.cursor()
     check_sql = "SELECT count(*) as cnt FROM sfdc_derived.ss_opportunity where " +\
-                "snapshot_date = current_date - interval '1 day'"
+                "snapshot_date::date = (current_date at time zone 'US/Pacific' - interval '1 day')::date"
     cursor.execute(check_sql)
     rs = cursor.fetchone()
     if rs[0] > 1:
@@ -24,7 +24,7 @@ try:
     else:
         print("No snapshot found. Creating one.")
         cursor = conn.cursor()
-        sql = "INSERT INTO sfdc_derived.ss_opportunity SELECT current_date - interval '1 day', " + \
+        sql = "INSERT INTO sfdc_derived.ss_opportunity SELECT (current_date at time zone 'US/Pacific' - interval '1 day')::date, " + \
               "o.* FROM sfdc.opportunity o WHERE isdeleted=FALSE"
         cursor.execute(sql)
         conn.commit()

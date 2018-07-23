@@ -3779,6 +3779,34 @@
         <repeat>N</repeat>
       </field>
       <field>
+        <name>Health Score</name>
+        <field>Health__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>4099</length>
+        <precision>5</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Health Score Reasons</name>
+        <field>Health_Score_Reasons__c</field>
+        <idlookup>N</idlookup>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>32768</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
         <name>Technology Stack</name>
         <field>Technology_Stack__c</field>
         <idlookup>N</idlookup>
@@ -4703,6 +4731,16 @@
       <value>
         <name>reference_type__c</name>
         <rename>Reference Type</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>health__c</name>
+        <rename>Health Score</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>health_score_reasons__c</name>
+        <rename>Health Score Reasons</rename>
         <update>Y</update>
       </value>
       <value>
