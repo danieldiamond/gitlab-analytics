@@ -107,6 +107,14 @@ sfdc_account:
         unique:
             - account_id
 
+sfdc_campaign:
+    constraints:
+        not_null:
+            - campaign_id
+            - campaign_name
+        unique:
+            - campaign_id
+
 sfdc_opportunity:
     constraints:
         not_null:

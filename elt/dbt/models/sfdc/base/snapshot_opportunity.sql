@@ -1,3 +1,11 @@
+with ss_opportunity as (
+
+       SELECT *
+       FROM sfdc_derived.ss_opportunity
+       WHERE isdeleted=FALSE
+
+)
+
 SELECT id AS sfdc_opportunity_id,
        snapshot_date,
        accountid,
@@ -17,5 +25,6 @@ SELECT id AS sfdc_opportunity_id,
        ACV__c as ACV,
        Renewal_ACV__c as Renewal_ACV,
        Amount as TCV
-FROM sfdc_derived.ss_opportunity
-WHERE isdeleted=FALSE
+       
+FROM ss_opportunity
+

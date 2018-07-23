@@ -1,6 +1,6 @@
 WITH opportunity AS (
 
-  SELECT * FROM {{ref('sfdc_opportunity')}}
+  SELECT * FROM {{ref('sfdc_opportunity_xf')}}
 
 ), account AS (
 

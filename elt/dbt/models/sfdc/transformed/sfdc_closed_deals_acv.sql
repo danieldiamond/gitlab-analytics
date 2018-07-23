@@ -1,6 +1,6 @@
 WITH sfdc_opportunity as (
 
-  SELECT * FROM {{ref('sfdc_opportunity')}}
+  SELECT * FROM {{ref('sfdc_opportunity_xf')}}
 
 ), sfdc_account as (
 
@@ -14,7 +14,7 @@ WITH sfdc_opportunity as (
            sfdc_opportunity.owner,
            sfdc_opportunity.sales_path,
            sfdc_opportunity.acv,
-           sfdc_account.segment,
+           sfdc_account.account_segment,
            sfdc_opportunity.closed_deals
     FROM sfdc_opportunity 
       INNER JOIN sfdc_account  
@@ -28,7 +28,7 @@ WITH sfdc_opportunity as (
 SELECT owner, 
        sales_path,
        sales_type,
-       segment, 
+       account_segment, 
        close_date,
        SUM(acv) AS acv,
        SUM(closed_deals) AS closed_deals
