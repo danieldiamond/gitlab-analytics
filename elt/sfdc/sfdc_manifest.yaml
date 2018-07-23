@@ -652,6 +652,8 @@ account:
   federal_account__c: boolean
   gitlab_team__c: character varying
   gitlab_com_user__c: boolean
+  health__c: character varying
+  health_score_reasons__c: character varying
   historical_max_users__c: real
   it_tedd__c: real
   id: character varying
