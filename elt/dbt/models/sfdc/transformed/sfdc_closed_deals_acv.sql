@@ -28,7 +28,7 @@ WITH sfdc_opportunity as (
 SELECT owner, 
        sales_path,
        sales_type,
-       segment, 
+       account_segment, 
        close_date,
        SUM(acv) AS acv,
        SUM(closed_deals) AS closed_deals
