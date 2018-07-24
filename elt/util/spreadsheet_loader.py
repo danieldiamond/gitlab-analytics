@@ -1,4 +1,6 @@
+from logging import exception, info, basicConfig
 from os import environ as env
+import sys
 from time import time
 from typing import Dict, List
 from yaml import load
@@ -46,17 +48,17 @@ def dw_uploader(engine: Engine, table: str, schema: str,
             existing_table = (pd.read_sql_table(table, engine, schema)
                                 .drop('updated_at', axis=1))
             if existing_table.equals(data):
-                print('Table has not changed. Aborting upload.')
+                info('Table has not changed. Aborting upload.')
                 return False
             engine.connect().execute('drop table {}.{} cascade'.format(schema, table))
         data['updated_at'] = time()
         data.to_sql(name=table,con=engine,schema=schema,index=False)
-        print('Successfully loaded {} rows into {}.{}'.format(data.shape[0],
+        info('Successfully loaded {} rows into {}.{}'.format(data.shape[0],
                                                           schema, table))
         return True
     except Exception as e:
-        print(repr(e))
-        print('Failed to load {}.{}'.format(schema, table))
+        info(repr(e))
+        info('Failed to load {}.{}'.format(schema, table))
         return False
 
 
@@ -81,7 +83,7 @@ def csv_loader(*paths: List[str], conn_dict: Dict[str,str] = None)  -> None:
         try:
             sheet_df =  pd.read_csv(path)
         except FileNotFoundError:
-            print('File {} not found.'.format(path))
+            info('File {} not found.'.format(path))
             continue
         dw_uploader(engine, table, schema, sheet_df)
 
@@ -115,16 +117,17 @@ def sheet_loader(*sheets: List[str], gapi_keyfile: str = None,
         try:
             sheet = gc.open(sheet_name).sheet1.get_all_values()
         except SpreadsheetNotFound:
-            print('Sheet {} not found.'.format(sheet_name))
+            info('Sheet {} not found.'.format(sheet_name))
             continue
         sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
         dw_uploader(engine, table, schema, sheet_df)
 
 
 if __name__ == "__main__":
+    basicConfig(stream=sys.stdout, level=20)
     Fire({
         'csv': csv_loader,
         'sheet': sheet_loader,
     })
-    print('Done.')
+    info('Done.')
 
