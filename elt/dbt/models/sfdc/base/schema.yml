@@ -123,6 +123,14 @@ sfdc_contact:
         unique:
             - contact_id
 
+sfdc_lead:
+    constraints:
+        not_null:
+            - lead_id
+            - lead_name
+        unique:
+            - lead_id
+
 sfdc_opportunity:
     constraints:
         not_null:
