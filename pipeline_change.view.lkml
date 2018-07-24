@@ -22,7 +22,10 @@ view: pipeline_change {
         'Starting' AS category,
         '1' AS order,
         NULL::date as previous_close_date,
-        NULL::float as previous_iacv,
+        0.0::float as previous_iacv,
+        0.0::float as previous_acv,
+        0.0::float as previous_tcv,
+        0.0::float as previous_renewal_acv,
         OLD.*
       FROM OLD
       WHERE (OLD.sales_accepted_date < {% date_start date_range %}
@@ -38,7 +41,10 @@ view: pipeline_change {
         'Created' as category ,
         '2' as order,
         NULL::date as previous_close_date,
-        NULL::float as previous_iacv,
+        0.0::float as previous_iacv,
+        0.0::float as previous_acv,
+        0.0::float as previous_tcv,
+        0.0::float as previous_renewal_acv,
         NEW.*
       FROM NEW
       WHERE NEW.sales_accepted_date >= {% date_start date_range %}
@@ -56,7 +62,10 @@ view: pipeline_change {
         'Created' As category ,
         '2' AS order,
         NULL::date as previous_close_date,
-        NULL::float as previous_iacv,
+        0.0::float as previous_iacv,
+        0.0::float as previous_acv,
+        0.0::float as previous_tcv,
+        0.0::float as previous_renewal_acv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -83,7 +92,10 @@ view: pipeline_change {
         'Moved In' AS category,
         '3' AS order,
         OLD.opportunity_closedate as previous_close_date,
-        NULL::float as previous_iacv,
+        0.0::float as previous_iacv,
+        0.0::float as previous_acv,
+        0.0::float as previous_tcv,
+        0.0::float as previous_renewal_acv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -99,6 +111,9 @@ view: pipeline_change {
         '4' AS order,
         NULL::date as previous_close_date,
         OLD.iacv as previous_iacv,
+        OLD.acv as previous_acv,
+        OLD.tcv as previous_tcv,
+        OLD.renewal_acv as previous_renewal_acv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -116,6 +131,9 @@ view: pipeline_change {
         '6' AS order,
         NULL::date as previous_close_date,
         OLD.iacv as previous_iacv,
+        OLD.acv as previous_acv,
+        OLD.tcv as previous_tcv,
+        OLD.renewal_acv as previous_renewal_acv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -132,7 +150,10 @@ view: pipeline_change {
         'Moved Out' AS category,
         '5' AS order,
         OLD.opportunity_closedate as previous_close_date,
-        NULL::float as previous_iacv,
+        0.0::float as previous_iacv,
+        0.0::float as previous_acv,
+        0.0::float as previous_tcv,
+        0.0::float as previous_renewal_acv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -148,7 +169,10 @@ view: pipeline_change {
           'Won' AS category,
           '7' AS order,
           NULL::date as previous_close_date,
-          NULL::float as previous_iacv,
+          0.0::float as previous_iacv,
+          0.0::float as previous_acv,
+          0.0::float as previous_tcv,
+          0.0::float as previous_renewal_acv,
           NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -163,7 +187,10 @@ view: pipeline_change {
         'Won' AS category,
         '7' AS order,
         NULL::date as previous_close_date,
-        NULL::float as previous_iacv,
+        0.0::float as previous_iacv,
+        0.0::float as previous_acv,
+        0.0::float as previous_tcv,
+        0.0::float as previous_renewal_acv,
         NEW.*
       FROM NEW
       FULL JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -178,7 +205,10 @@ view: pipeline_change {
         'Lost' AS category,
         '8' AS order,
         NULL::date as previous_close_date,
-        NULL::float as previous_iacv,
+        0.0::float as previous_iacv,
+        0.0::float as previous_acv,
+        0.0::float as previous_tcv,
+        0.0::float as previous_renewal_acv,
         NEW.*
       FROM NEW
       INNER JOIN OLD ON OLD.opportunity_id=NEW.opportunity_id
@@ -195,7 +225,10 @@ view: pipeline_change {
         'Ending' as category,
         '9' as order,
         NULL::date as previous_close_date,
-        NULL::float as previous_iacv,
+        0.0::float as previous_iacv,
+        0.0::float as previous_acv,
+        0.0::float as previous_tcv,
+        0.0::float as previous_renewal_acv,
         NEW.*
       FROM NEW
       WHERE {% condition close_date %} NEW.opportunity_closedate {% endcondition %}
@@ -219,6 +252,7 @@ view: pipeline_change {
     type: string
     sql: ${TABLE}.category ;;
     order_by_field: order
+    suggestions: ["Starting", "Created","Moved In", "Increased","Decreased","Moved Out","Won","Lost"]
     link: {
       label: "Explore from here"
       url: "https://gitlab.looker.com/explore/sales/pipeline_change?f[pipeline_change.category]={{ pipeline_change.category }}&f[pipeline_change.close_date]={{ _filters['pipeline_change.close_date'] | url_encode }}&f[pipeline_change.date_range]={{ _filters['pipeline_change.date_range'] | url_encode }}&f[pipeline_change.metric_type]={{ _filters['pipeline_change.metric_type'] | url_encode }}&fields=pipeline_change.opportunity_name,pipeline_change.opportunity_type,dim_opportunitystage.mapped_stage,pipeline_change.total_iacv"
@@ -358,6 +392,34 @@ view: pipeline_change {
     sql: ${TABLE}.tcv ;;
   }
 
+  measure: sum_iacv {
+    group_label: "Current Values"
+    label: "Current IACV"
+    type: sum
+    sql: ${TABLE}.iacv ;;
+  }
+
+  measure: sum_renewal_acv {
+    group_label: "Current Values"
+    label: "Current Renewal ACV"
+    type: sum
+    sql: ${TABLE}.renewal_acv ;;
+  }
+
+  measure: sum_acv {
+    group_label: "Current Values"
+    label: "Current ACV"
+    type: sum
+    sql: ${TABLE}.acv ;;
+  }
+
+  measure: sum_tcv {
+    group_label: "Current Values"
+    label: "Current TCV"
+    type: sum
+    sql: ${TABLE}.tcv ;;
+  }
+
 
   parameter: metric_type {
     description: "Choose which ACV type to measure"
@@ -383,31 +445,82 @@ view: pipeline_change {
     drill_fields: [detail*]
   }
 
-  measure: prev_iacv {
+  dimension: prev_iacv {
+    label: "Previous IACV"
+    hidden: yes
+    type: number
+    sql: ${TABLE}.previous_iacv ;;
+  }
+
+  dimension: prev_tcv {
+    label: "Previous TCV"
+    hidden: yes
+    type: number
+    sql: ${TABLE}.previous_tcv ;;
+  }
+
+  dimension: prev_acv {
+    label: "Previous ACV"
+    hidden: yes
+    type: number
+    sql: ${TABLE}.previous_acv ;;
+  }
+
+  dimension: prev_renewal {
+    label: "Previous Renewal ACV"
+    hidden: yes
+    type: number
+    sql: ${TABLE}.previous_renewal_acv ;;
+  }
+
+  measure: sum_prev_iacv {
+    group_label: "Previous Values"
     label: "Previous IACV"
     type: sum
     sql: ${TABLE}.previous_iacv ;;
   }
 
+  measure: sum_prev_tcv {
+    group_label: "Previous Values"
+    label: "Previous TCV"
+    type: sum
+    sql: ${TABLE}.previous_tcv ;;
+  }
+
+  measure: sum_prev_acv {
+    group_label: "Previous Values"
+    label: "Previous ACV"
+    type: sum
+    sql: ${TABLE}.previous_acv ;;
+  }
+
+  measure: sum_prev_renewal {
+    group_label: "Previous Values"
+    label: "Previous Renewal ACV"
+    type: sum
+    sql: ${TABLE}.previous_renewal_acv ;;
+  }
 
   measure: total_acv {
     hidden: yes
     label: "Total ACV"
     type: sum
     sql: CASE
-          WHEN ${category} IN ('Starting', 'Created', 'Moved In', 'Increased', 'Ending') THEN ${acv}
-          WHEN ${category} IN ('Moved Out', 'Decreased', 'Won', 'Lost') THEN -1.0*${acv}
+          WHEN ${category} IN ('Starting', 'Created', 'Moved In', 'Ending') THEN ${acv}
+          WHEN ${category} IN ('Increased','Decreased') THEN ${acv} - ${prev_acv}
+          WHEN ${category} IN ('Moved Out', 'Won', 'Lost') THEN -1.0*${acv}
         END ;;
     value_format_name: usd
   }
 
   measure: total_iacv {
     hidden: yes
-    label: "Total IACV"
+    label: "IACV Change"
     type: sum
     sql: CASE
-          WHEN ${category} IN ('Starting', 'Created', 'Moved In', 'Increased', 'Ending') THEN ${iacv}
-          WHEN ${category} IN ('Moved Out', 'Decreased', 'Won', 'Lost') THEN -1.0*${iacv}
+          WHEN ${category} IN ('Starting', 'Created', 'Moved In', 'Ending') THEN ${iacv} - ${prev_iacv}
+          WHEN ${category} IN ('Increased','Decreased') THEN ${iacv} - ${prev_iacv}
+          WHEN ${category} IN ('Moved Out', 'Won', 'Lost') THEN -1.0*${iacv} - ${prev_iacv}
         END ;;
     value_format_name: usd
   }
@@ -417,8 +530,9 @@ view: pipeline_change {
     label: "Total Renewal ACV"
     type: sum
     sql: CASE
-          WHEN ${category} IN ('Starting', 'Created', 'Moved In', 'Increased', 'Ending') THEN ${renewal_acv}
-          WHEN ${category} IN ('Moved Out', 'Decreased', 'Won', 'Lost') THEN -1.0*${renewal_acv}
+          WHEN ${category} IN ('Starting', 'Created', 'Moved In', 'Ending') THEN ${renewal_acv}
+          WHEN ${category} IN ('Increased','Decreased') THEN ${renewal_acv} - ${prev_renewal}
+          WHEN ${category} IN ('Moved Out', 'Won', 'Lost') THEN -1.0*${renewal_acv}
         END ;;
     value_format_name: usd
   }
@@ -428,8 +542,9 @@ view: pipeline_change {
     label: "Total TCV"
     type: sum
     sql: CASE
-          WHEN ${category} IN ('Starting', 'Created', 'Moved In', 'Increased', 'Ending') THEN ${tcv}
-          WHEN ${category} IN ('Moved Out', 'Decreased', 'Won', 'Lost') THEN -1.0*${tcv}
+          WHEN ${category} IN ('Starting', 'Created', 'Moved In', 'Ending') THEN ${tcv}
+          WHEN ${category} IN ('Increased','Decreased') THEN ${tcv} - ${prev_tcv}
+          WHEN ${category} IN ('Moved Out', 'Won', 'Lost') THEN -1.0*${tcv}
         END ;;
     value_format_name: usd
   }
