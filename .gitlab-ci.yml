@@ -230,7 +230,10 @@ refresh_dev: &refresh_dev
     - ci_helpers.py refresh_dev_instance
     - ci_helpers.py use_proxy "python3 ci_scripts/grant_roles.py"
   only:
-    - master
+    refs:
+      - master
+    variables:
+      - $REFRESH_DEV
 
 force_refresh_dev:
   <<: *refresh_dev
