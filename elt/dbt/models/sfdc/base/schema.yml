@@ -148,6 +148,14 @@ sfdc_opportunityhistory:
         unique:
             - id
 
+sfdc_opportunity_line_item:
+    constraints:
+        not_null:
+            - opportunity_line_item_id
+            - opportunity_line_item_name
+        unique:
+            - opportunity_line_item_id
+
 sfdc_opportunitystage:
     constraints:
         not_null:
@@ -163,6 +171,7 @@ sfdc_task:
             - task_id
         unique:
             - task_id
+
 
 snapshot_opportunity:
     constraints:
