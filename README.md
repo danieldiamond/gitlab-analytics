@@ -6,6 +6,16 @@ Meltano is an open source convention-over-configuration product for [data ops](h
 
 Meltano stands for the [steps of the data science life-cycle](#data-engineering-lifecycle): Model, Extract, Load, Transform, Analyze, Notebook, and Orchestrate.
 
+## Responsibilities
+
+### Stages
+
+During development of the Meltano framework, it will be considered a work in progress. There may be parts that are not perfect. During this time we will be in Stage 1. Once we determine we are stable enough, independently usable, and user ready it will be moved to Stage 2. 
+
+During Stage 1 the Meltano team will be responsible for failed pipelines. During Stage 2, the data team will be responsible for failed pipelines.  
+
+We are working towards a product that will function without the programmers who wrote it.
+
 ## Data Science Lifecycle
 
 | Stage     | Meltano selected | OSS considered but not selected | Proprietary alternatives |
@@ -36,7 +46,7 @@ In addition, believe that the information a business uses to make decisions must
 
 ### Meltano is the market (data science) lifecycle, just like GitLab is the product (DevOps) lifecycle.
 
-For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers. There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer lifecycle. This evolution is as follows:
+For many companies GitLab serves as the single data store for their engineering organization, shepherding their ideas all the way through to delivering them to customers. There are key gaps however in understanding the effectiveness of sales and marketing. By expanding the common data store to include go to market information, additional insights can be drawn across the customer life-cycle. This evolution is as follows:
 
 1. Business intelligence, this is the current state of the project.
 2. Data science, add more machine learning (ML) and Artificial Intelligence (AI)
@@ -51,7 +61,7 @@ Meltano uses GitLab CI/CD to setup and maintain its stack, so software and scrip
 2. Next we'll focus on building a community around Meltano with more users and regular contributiors to the code base.
 3. Right now Meltano is completely open source. After we have a community we'll introduce propietary features to have a sustainable business model to do quality control, marketing, security, dependency upgrades, and performance improvements. We'll always be good [stewards similar to GitLab](https://about.gitlab.com/stewardship/).
 
-## Roadmap
+## Road Map
 
 1. MVC
   * [Horizontal slice of ELT sources](https://gitlab.com/meltano/meltano/issues?scope=all&utf8=✓&state=opened&label_name[]=elt): Salesforce, Marketo, NetSuite, Zuora, etc.
@@ -103,13 +113,13 @@ We take user security and privacy seriously at GitLab. We internally use Meltano
 
 ## Metrics
 
-We are targeting analytics for sales and marketing performance first. We plan to track the following metrics, in order of priority. These results will be able to reviewed over various time periods. Initially we will support single touch attribution, with support for multitouch in a [later sprint](doc/development_plan.md#backlog).
+We are targeting analytics for sales and marketing performance first. We plan to track the following metrics, in order of priority. These results will be able to reviewed over various time periods. Initially we will support single touch attribution, with support for multi-touch in a [later sprint](doc/development_plan.md#backlog).
 
 1. SAOs by source
   1. Aggregated (SDR / BDR / AE generated / Other)
   1. Campaign level (AWS Reinvent / etc.)
 1. SAOs by source by week and/or month
-2. Aquisition cost per SAO
+2. Acquisition cost per SAO
   * Cost per lead = dollar spend / number of attributed leads
 3. Estimated IACV and LTV per SAO based on history (can do IACV if LTV is hard to calculate)
   * Estimated IACV = 2 *  IACV at median conversion time
@@ -129,8 +139,8 @@ To achieve this, we bring data from all [data sources](data_sources.md) to a [co
 It is important to be cognizant of the personally identifiable information which is extracted into the data warehouse. Warehouses are at their best when they are leveraged across many parts of the organization, and therefore it is hard to predict which users will ultimately have access and how each user will treat the data.
 
 We recommend the following best practices:
-1. Avoid extracting any personally identifable information in the first place. For example, consider extracting only company names from your CRM and avoid extracting individual contact details.
-1. If it is important to collect data about individual users, for example to learn more about user behavior, pseudonymize the data prior to writing it into the data warehouse.
+1. Avoid extracting any personally identifiable information in the first place. For example, consider extracting only company names from your CRM and avoid extracting individual contact details.
+1. If it is important to collect data about individual users, for example to learn more about user behavior, pseudoanonymize the data prior to writing it into the data warehouse.
 1. Consider how you are persisting any PII data, and it's impact on compliance requirements like GDPR.
 
 ## Tools
@@ -168,8 +178,8 @@ Features include:
 
   - Automatic schema creation
   - Automatic schema mutation
-  - Fields whitelisting
-  - Fields pseudonymization
+  - Fields white-listing
+  - Fields pseudoanonymization
   - Job logging (recovery)
   - CLI configuration
   - REST data source
