@@ -445,21 +445,6 @@ view: pipeline_change {
     drill_fields: [detail*]
   }
 
-#   measure: prev_acv_metric {
-#     label: "Previous ACV Metric"
-#     description: "use the metric type filter to choose which ACV to measure"
-#     type: number
-#     sql: CASE
-#           WHEN {% parameter metric_type %} = 'ACV' THEN ${total_acv}
-#           WHEN {% parameter metric_type %} = 'IACV' THEN ${total_iacv}
-#           WHEN {% parameter metric_type %} = 'Renewal ACV' THEN ${total_renewal_acv}
-#           WHEN {% parameter metric_type %} = 'TCV' THEN ${total_tcv}
-#         END ;;
-#     label_from_parameter: metric_type
-#     value_format_name: usd
-#     drill_fields: [detail*]
-#   }
-
   dimension: prev_iacv {
     label: "Previous IACV"
     hidden: yes
