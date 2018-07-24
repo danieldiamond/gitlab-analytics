@@ -503,7 +503,7 @@ view: pipeline_change {
 
   measure: total_acv {
     hidden: yes
-    label: "Total ACV"
+    label: "ACV Change"
     type: sum
     sql: CASE
           WHEN ${category} IN ('Starting', 'Created', 'Moved In', 'Ending') THEN ${acv}
@@ -527,7 +527,7 @@ view: pipeline_change {
 
   measure: total_renewal_acv {
     hidden: yes
-    label: "Total Renewal ACV"
+    label: "Renewal ACV Change"
     type: sum
     sql: CASE
           WHEN ${category} IN ('Starting', 'Created', 'Moved In', 'Ending') THEN ${renewal_acv}
@@ -539,7 +539,7 @@ view: pipeline_change {
 
   measure: total_tcv {
     hidden: yes
-    label: "Total TCV"
+    label: "TCV Change"
     type: sum
     sql: CASE
           WHEN ${category} IN ('Starting', 'Created', 'Moved In', 'Ending') THEN ${tcv}
