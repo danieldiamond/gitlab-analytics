@@ -109,7 +109,7 @@ view: pipeline_change {
       SELECT
         'Increased' AS category,
         '4' AS order,
-        OLD.opportunity_closedate as previous_close_date,
+        NULL::date as previous_close_date,
         OLD.iacv as previous_iacv,
         OLD.acv as previous_acv,
         OLD.tcv as previous_tcv,
@@ -129,7 +129,7 @@ view: pipeline_change {
       SELECT
         'Decreased' AS category,
         '6' AS order,
-        OLD.opportunity_closedate as previous_close_date,
+        NULL::date as previous_close_date,
         OLD.iacv as previous_iacv,
         OLD.acv as previous_acv,
         OLD.tcv as previous_tcv,
@@ -168,7 +168,7 @@ view: pipeline_change {
       SELECT
           'Won' AS category,
           '7' AS order,
-          OLD.opportunity_closedate as previous_close_date,
+          NULL::date as previous_close_date,
           0.0::float as previous_iacv,
           0.0::float as previous_acv,
           0.0::float as previous_tcv,
@@ -186,7 +186,7 @@ view: pipeline_change {
       SELECT
         'Won' AS category,
         '7' AS order,
-        OLD.opportunity_closedate as previous_close_date,
+        NULL::date as previous_close_date,
         0.0::float as previous_iacv,
         0.0::float as previous_acv,
         0.0::float as previous_tcv,
@@ -204,7 +204,7 @@ view: pipeline_change {
       SELECT
         'Lost' AS category,
         '8' AS order,
-        OLD.opportunity_closedate as previous_close_date,
+        NULL::date as previous_close_date,
         0.0::float as previous_iacv,
         0.0::float as previous_acv,
         0.0::float as previous_tcv,
