@@ -14,7 +14,7 @@ During development of the Meltano framework, it will be considered a work in pro
 
 During Stage 1 the Meltano team will be responsible for failed pipelines. During Stage 2, the data team will be responsible for failed pipelines.  
 
-We working towards a product that will function without the programmers who wrote it.
+We are working towards a product that will function without the programmers who wrote it.
 
 ## Data Science Lifecycle
 
