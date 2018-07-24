@@ -115,6 +115,22 @@ sfdc_campaign:
         unique:
             - campaign_id
 
+sfdc_contact:
+    constraints:
+        not_null:
+            - contact_id
+            - contact_name
+        unique:
+            - contact_id
+
+sfdc_lead:
+    constraints:
+        not_null:
+            - lead_id
+            - lead_name
+        unique:
+            - lead_id
+
 sfdc_opportunity:
     constraints:
         not_null:
@@ -132,6 +148,14 @@ sfdc_opportunityhistory:
         unique:
             - id
 
+sfdc_opportunity_line_item:
+    constraints:
+        not_null:
+            - opportunity_line_item_id
+            - opportunity_line_item_name
+        unique:
+            - opportunity_line_item_id
+
 sfdc_opportunitystage:
     constraints:
         not_null:
@@ -140,6 +164,14 @@ sfdc_opportunitystage:
         unique:
             - stage_id
             - sfdc_id
+
+sfdc_task:
+    constraints:
+        not_null:
+            - task_id
+        unique:
+            - task_id
+
 
 snapshot_opportunity:
     constraints:
