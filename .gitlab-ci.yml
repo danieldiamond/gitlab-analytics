@@ -17,9 +17,6 @@
   <<: *job_definition
   script:
     - ci_helpers.py use_proxy "bash processes/mkto_processor.sh"
-  except:
-    variables:
-      - $EXTRACT_SKIP =~ /all|marketo/
 
 .zendesk_extract: &zendesk_extract
   stage: extract
@@ -28,9 +25,6 @@
   script:
     - ci_helpers.py use_proxy "python3 elt/zendesk/src --schema zendesk apply_schema"
     - ci_helpers.py use_proxy "python3 elt/zendesk/src --schema zendesk --days=1 export"
-  except:
-    variables:
-      - $EXTRACT_SKIP =~ /all|zendesk/
 
 .lever_extract: &lever_extract
   stage: extract
@@ -41,9 +35,6 @@
     - ci_helpers.py use_proxy "python3 elt/lever/src --schema lever apply_schema"
     - ci_helpers.py use_proxy "python3 elt/lever/src --schema lever --days=7 export"
     - ci_helpers.py use_proxy "python3 elt/lever/src --schema lever --days=365 --only_offers export"
-  except:
-    variables:
-      - $EXTRACT_SKIP =~ /all|lever/
 
 .ci_stats: &ci_stats
   stage: extract
@@ -63,9 +54,6 @@
     - ci_helpers.py use_proxy "python3 elt/netsuite/src/ --schema netsuite apply_schema"
     - ci_helpers.py use_proxy "python3 elt/netsuite/src/ --schema netsuite export --days 3"
     - ci_helpers.py use_proxy "python3 elt/netsuite/src/ --schema netsuite backlog --days 15"
-  except:
-    variables:
-      - $EXTRACT_SKIP =~ /all|netsuite/
 
 .netsuite_backlog: &netsuite_backlog
   stage: extract
@@ -86,9 +74,6 @@
     - ci_helpers.py use_proxy "python3 elt/pings/src export --db_manifest customers --days 1"
     - ci_helpers.py use_proxy "python3 elt/pings/src apply_schema --db_manifest license"
     - ci_helpers.py use_proxy "python3 elt/pings/src export --db_manifest license --days 1"
-  except:
-    variables:
-      - $EXTRACT_SKIP =~ /all|netsuite/
 
 .pings_backfill: &pings_backfill
   stage: extract
@@ -113,9 +98,6 @@
   script:
     - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
     - ci_helpers.py use_proxy "python3 elt/zuora/zuora_export.py"
-  except:
-    variables:
-      - $EXTRACT_SKIP =~ /all|zuora/
 
 .sfdc_extract: &sfdc_extract
   variables:
@@ -127,34 +109,23 @@
     - pip3 install salesforce-bulk # TODO: add me to the container
     - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema salesforce apply_schema"
     - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema salesforce export"
-  except:
-    variables:
-      - $EXTRACT_SKIP =~ /all|sfdc/
 
 # DEPRECATED
 .sfdc_kettle_extract: &sfdc_kettle_extract
   variables:
     FIXED_SFDC_PASSWORD: $SFDC_PASSWORD
   stage: extract
-  retry: 1
   <<: *job_definition
   script:
     - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
     - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
     - ci_helpers.py use_proxy "kitchen.sh -file=elt/sfdc_kettle/sfdc_extract.kjb -level=Minimal"
-  except:
-    variables:
-      - $EXTRACT_SKIP =~ /all|sfdc/
 
 .domains_extract: &domains_extract
   stage: extract
-  retry: 1
   <<: *job_definition
   script:
     - ci_helpers.py use_proxy "bash processes/hosts_to_sfdc/python_timecheck.sh"
-  except:
-    variables:
-      - $EXTRACT_SKIP =~ /all|domains/
 
 .stripe_extract_githost: &stripe_extract_githost
   variables:
@@ -165,9 +136,6 @@
   script:
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_githost apply_schema"
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_githost --days=7 export"
-  except:
-    variables:
-      - $EXTRACT_SKIP =~ /all|stripe_githost/
 
 .stripe_extract_about_gitlab: &stripe_extract_about_gitlab
   variables:
@@ -178,9 +146,6 @@
   script:
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_about_gitlab apply_schema"
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_about_gitlab --days=7 export"
-  except:
-    variables:
-      - $EXTRACT_SKIP =~ /all|stripe_gitlab/
 
 # ---------------------------------------------------------------------------
 
@@ -260,126 +225,118 @@ force_update_db:
 # Stage: extract
 ## Production Jobs
 
-zuora:
-  <<: *zuora_extract
+ci_stats:
+  stage: extract
+  <<: *ci_stats
   only:
-    - master
+    refs:
+      - master
+    variables:
+      - $CI_STATS
+
+domains:
+  <<: *domains_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $DOMAINS
+
+lever:
+  <<: *lever_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $LEVER
+
+marketo:
+  <<: *marketo_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $MARKETO
+
+netsuite:
+  <<: *netsuite_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $NETSUITE
 
 pings:
   stage: extract
   <<: *pings_extract
   only:
-    - master
-
-pings_backfill:
-  stage: extract
-  <<: *pings_backfill
-  only:
-    - master
-  when: manual
-
-stripe_githost:
-  <<: *stripe_extract_githost
-  retry: 1
-  only:
-    - master
-  when: manual
-
-ci_stats:
-  stage: extract
-  allow_failure: true
-  <<: *ci_stats
-  only:
-    - master
+    refs:
+      - master
+    variables:
+      - $PINGS
 
 sfdc:
   <<: *sfdc_extract
-  retry: 1
   only:
-    - master
+    refs:
+      - master
+    variables:
+      - $SFDC
 
 sfdc_kettle:
   <<: *sfdc_kettle_extract
-  retry: 1
   only:
-    - master
+    refs:
+      - master
+    variables:
+      - $SFDC_KETTLE
 
 spreadsheet_extract:
   stage: extract
   <<: *spreadsheet_extract
   only:
-    - master
+    refs:
+      - master
+    variables:
+      - $SPREADSHEET
 
-domains:
-  <<: *domains_extract
+stripe_about_gitlab:
+  <<: *stripe_extract_about_gitlab
   only:
-    - master
+    refs:
+      - master
+    variables:
+      - $STRIPE_ABOUT_GITLAB
 
-marketo:
-  <<: *marketo_extract
+stripe_githost:
+  <<: *stripe_extract_githost
   only:
-    - master
+    refs:
+      - master
+    variables:
+      - $STRIPE_GITHOST
 
 zendesk:
   <<: *zendesk_extract
-  retry: 1
   only:
-    - master
+    refs:
+      - master
+    variables:
+      - $ZENDESK
 
-lever:
-  <<: *lever_extract
-  retry: 1
-  only:
-    - master
-
-netsuite:
-  <<: *netsuite_extract
-  retry: 1
-  only:
-    - master
-
-## Review Jobs
-
-sfdc_manual:
-  <<: *sfdc_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-netsuite_backlog_manual:
-  stage: extract
-  allow_failure: true
-  <<: *netsuite_backlog
-  retry: 1
-  when: manual
-
-zuora_manual:
+zuora:
   <<: *zuora_extract
   only:
-    - branches
-  except:
-    - master
-  when: manual
+    refs:
+      - master
+    variables:
+      - $ZUORA
+
+## Review Jobs
 
 ci_stats_manual:
   stage: extract
   <<: *ci_stats
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-spreadsheet_extract_manual:
-  stage: extract
-  <<: *spreadsheet_extract
-  when: manual
-
-pings_manual:
-  stage: extract
-  <<: *pings_extract
   only:
     - branches
   except:
@@ -394,6 +351,14 @@ domains_manual:
     - master
   when: manual
 
+lever_manual:
+  <<: *lever_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
 marketo_manual:
   <<: *marketo_extract
   only:
@@ -402,54 +367,38 @@ marketo_manual:
     - master
   when: manual
 
-zendesk_manual:
-  <<: *zendesk_extract
-  retry: 1
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-lever_manual:
-  <<: *lever_extract
-  retry: 1
-  only:
-    - branches
-  except:
-    - master
+netsuite_backlog_manual:
+  stage: extract
+  allow_failure: true
+  <<: *netsuite_backlog
   when: manual
 
 netsuite_manual:
   <<: *netsuite_extract
-  retry: 1
   only:
     - branches
   except:
     - master
   when: manual
 
-stripe_extract_githost_manual:
-  <<: *stripe_extract_githost
-  retry: 1
+pings_manual:
+  stage: extract
+  <<: *pings_extract
   only:
     - branches
   except:
     - master
   when: manual
 
-stripe_extract_about_gitlab_manual:
-  <<: *stripe_extract_about_gitlab
-  retry: 1
+pings_backfill:
+  stage: extract
+  <<: *pings_backfill
   only:
-    - branches
-  except:
     - master
   when: manual
 
 sfdc_manual:
   <<: *sfdc_extract
-  retry: 1
   only:
     - branches
   except:
@@ -458,7 +407,43 @@ sfdc_manual:
 
 sfdc_kettle_manual:
   <<: *sfdc_kettle_extract
-  retry: 1
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+spreadsheet_extract_manual:
+  stage: extract
+  <<: *spreadsheet_extract
+  when: manual
+
+stripe_extract_about_gitlab_manual:
+  <<: *stripe_extract_about_gitlab
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+stripe_extract_githost_manual:
+  <<: *stripe_extract_githost
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+zendesk_manual:
+  <<: *zendesk_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+zuora_manual:
+  <<: *zuora_extract
   only:
     - branches
   except:
@@ -474,6 +459,23 @@ dbt:
     - cd elt/dbt
     - ci_helpers.py use_proxy "dbt -d run --profiles-dir profile --target prod"
     - ci_helpers.py use_proxy "dbt -d test --profiles-dir profile --target prod"
+  only:
+    refs:
+      - master
+    variables:
+      - $DBT
+
+dbt_review:
+  stage: model
+  <<: *job_definition
+  script:
+    - cd elt/dbt
+    - ci_helpers.py use_proxy "dbt -d run --profiles-dir profile --target prod"
+    - ci_helpers.py use_proxy "dbt -d test --profiles-dir profile --target prod"
+  only:
+    refs:
+      - branches
+  when: manual
 
 dbt_refresh:
   stage: model
@@ -491,19 +493,42 @@ sfdc_update:
   <<: *job_definition
   script:
     - ci_helpers.py use_proxy "python3 processes/sfdc_processor.py"
-  except:
+  only:
+    refs:
+      - master
     variables:
-      - $UPDATE_SKIP =~ /all|sfdc_update/
+      - $SFDC_UPDATE
 
 sfdc_snapshot:
   stage: update
   <<: *job_definition
   script:
     - ci_helpers.py use_proxy "python3 elt/util/snapshot.py"
-  except:
+  only:
+    refs:
+      - master
     variables:
-      - $UPDATE_SKIP =~ /all|sfdc_snapshot/
+      - $SFDC_SNAPSHOT
 
+sfdc_update_manual:
+  stage: update
+  <<: *job_definition
+  script:
+    - ci_helpers.py use_proxy "python3 processes/sfdc_processor.py"
+  only:
+    refs:
+      - branches
+  when: manual
+
+sfdc_snapshot_manual:
+  stage: update
+  <<: *job_definition
+  script:
+    - ci_helpers.py use_proxy "python3 elt/util/snapshot.py"
+  only:
+    refs:
+      - branches
+  when: manual
 
 # Stage: review_stop
 
