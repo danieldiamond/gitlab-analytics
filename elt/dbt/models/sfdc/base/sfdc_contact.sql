@@ -74,7 +74,7 @@ WITH source AS (
 		lastvieweddate as last_viewed_date,
 		lastmodifiedbyid as last_modified_by_id,
 		lastmodifieddate as last_modified_date,
-		systemmodstamp,
+		systemmodstamp
 
 
 	FROM source

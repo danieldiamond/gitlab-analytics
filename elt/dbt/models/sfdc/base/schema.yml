@@ -115,6 +115,14 @@ sfdc_campaign:
         unique:
             - campaign_id
 
+sfdc_contact:
+    constraints:
+        not_null:
+            - contact_id
+            - contact_name
+        unique:
+            - contact_id
+
 sfdc_opportunity:
     constraints:
         not_null:
