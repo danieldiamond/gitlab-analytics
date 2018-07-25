@@ -38,7 +38,31 @@ WITH source AS (
             THEN '6-Awaiting Signature'
           WHEN id = '01J6100000JfUIpEAN' -- 6-Awaiting Signature
             THEN '6-Awaiting Signature'
-          WHEN isclosed IS TRUE
+          WHEN id = '01J6100000HgmS8EAJ' -- Unqualified
+            THEN 'Unqualified'
+          WHEN id = '01J6100000Ip3UQEAZ' -- 8-Unqualified
+            THEN 'Unqualified'
+          WHEN id = '01J6100000JfUIzEAN' -- 9-Unqualified
+            THEN 'Unqualified'
+          WHEN id = '01J6100000HwI0VEAV' -- Duplicate
+            THEN 'Duplicate'
+          WHEN id = '01J6100000IozN6EAJ' -- 9-Duplicate
+            THEN 'Duplicate'
+          WHEN id = '01J6100000JfUJ4EAN' -- 10-Duplicate
+            THEN 'Duplicate'
+          WHEN id = '01J61000003F97oEAC' -- Closed Lost
+            THEN '7-Closed'
+          WHEN id = '01J61000003F97wEAC' -- Close Won
+            THEN '7-Closed'
+          WHEN id = '01J6100000Ioyu4EAB' -- 6-Closed Won
+            THEN '7-Closed'
+          WHEN id = '01J6100000IozN1EAJ' -- 8-Closed Lost
+            THEN '7-Closed'
+          WHEN id = '01J6100000Ip3ULEAZ' -- 7-Closed Lost
+            THEN '7-Closed'
+          WHEN id = '01J6100000JfUIuEAN' -- 7-Closed Won
+            THEN '7-Closed'
+          WHEN id = '01J6100000JJdPCEA1' -- 00-Pre-Opportunity
             THEN '7-Closed'
           ELSE
             'Unmapped'
