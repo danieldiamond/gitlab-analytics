@@ -172,6 +172,19 @@ sfdc_task:
         unique:
             - task_id
 
+sfdc_user_roles:
+    constraints:
+        not_null:
+            - id
+        unique:
+            - id
+
+sfdc_users:
+    constraints:
+        not_null:
+            - id
+        unique:
+            - id
 
 snapshot_opportunity:
     constraints:
@@ -180,7 +193,3 @@ snapshot_opportunity:
             - snapshot_date
             - ownerid    
 
-users:
-    constraints:
-        unique:
-            - id
