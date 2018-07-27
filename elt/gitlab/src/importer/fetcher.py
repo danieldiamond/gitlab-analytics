@@ -3,6 +3,7 @@ import logging
 
 from elt.error import ExtractError
 from google.cloud.storage import client
+from google.cloud.storage.bucket import Bucket
 
 
 def list_gcs_directories(bucket):
@@ -17,7 +18,8 @@ def list_gcs_directories(bucket):
 class Fetcher:
     def __init__(self, project=None, bucket=None, output_path=None):
         self.client = client.Client(project=project)
-        self.bucket = self.client.get_bucket(bucket)
+        # HACK: using self.client.get_bucket(bucket) raises 403
+        self.bucket = Bucket(self.client, name=bucket)
         self._prefix = None
         self.output_path = output_path or os.path.join("/tmp", "gitlab-elt")
 

@@ -1,26 +1,65 @@
 import os
 import argparse
 import asyncio
+import logging
 
+from enum import Enum
+from datetime import datetime
+from sqlalchemy import desc
 from importer import Importer, schema
 from importer.fetcher import Fetcher
-from enum import Enum
 from elt.schema import schema_apply
 from elt.cli import parser_db_conn, parser_output, parser_logging
-from elt.db import db_open
+from elt.job import Job, State
+from elt.db import DB
 from elt.utils import setup_logging, setup_db
 
+GITLAB_ELT_URI = "com.meltano.gitlab:1:*"
 
 def action_export(args):
-    importer = Importer(args)
+    fetcher = Fetcher(project=args.project,
+                      bucket=args.bucket)
+
+    with DB.session() as session:
+        last_job = session.query(Job).filter(Job.state != State.FAIL,
+                                             Job.elt_uri == GITLAB_ELT_URI) \
+                                     .order_by(desc(Job.started_at)) \
+                                     .first()
+        latest_completed_prefix = last_job and last_job.payload['prefix']
+
+    latest_prefix = fetcher.latest_prefix()
+    # latest_prefix = None
+
+    if latest_prefix == latest_completed_prefix:
+        logging.info("Export '{}' has already been imported, aborting".format(latest_prefix))
+        exit(0)
+
+    job = Job(elt_uri=GITLAB_ELT_URI,
+              state=State.RUNNING,
+              started_at=datetime.utcnow(),
+              payload={'prefix': latest_prefix})
+
+    Job.save(job)
+
+    importer = Importer(args, fetcher=fetcher)
 
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(importer.import_all())
+    imported_prefix = loop.run_until_complete(importer.import_all())
+
+    if imported_prefix:
+        job.transit(State.SUCCESS)
+        job.payload['prefix'] = imported_prefix
+    else:
+        job.transit(State.FAIL)
+
+    job.ended_at = datetime.utcnow()
+    Job.save(job)
+
     loop.close()
 
 
 def action_schema_apply(args):
-    with db_open() as db:
+    with DB.db_open() as db:
         target_schema = schema.describe_schema(args)
         schema_apply(db, target_schema)
 
