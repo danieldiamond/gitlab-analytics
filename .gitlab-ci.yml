@@ -152,11 +152,8 @@
   retry: 1
   <<: *job_definition
   script:
-    - set_sql_instance_name
-    - setup_cloudsqlproxy
-    - using_proxy python3 elt/gitlab/src -S gitlab-gdk apply_schema
-    - using_proxy python3 elt/gitlab/src -S gitlab-gdk export
-    - stop_cloudsqlproxy
+    - ci_helpers.py use_proxy "python3 elt/gitlab/src -S gitlab apply_schema"
+    - ci_helpers.py use_proxy "python3 elt/gitlab/src -S gitlab export"
 
 # ---------------------------------------------------------------------------
 
@@ -252,6 +249,14 @@ domains:
       - master
     variables:
       - $DOMAINS
+
+gitlab:
+  <<: *gitlab_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $GITLAB
 
 lever:
   <<: *lever_extract
@@ -362,6 +367,14 @@ domains_manual:
     - master
   when: manual
 
+gitlab_manual:
+  <<: *gitlab_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
 lever_manual:
   <<: *lever_extract
   only:
@@ -455,14 +468,6 @@ zendesk_manual:
 
 zuora_manual:
   <<: *zuora_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-gitlab_manual:
-  <<: *gitlab_extract
   only:
     - branches
   except:
