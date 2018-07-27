@@ -1,4 +1,4 @@
-import yaml, json
+import yaml, json, re
 
 from elt.schema import Schema, Column, DBType, tables
 from importer.fetcher import Fetcher
@@ -24,6 +24,8 @@ def parse_schema_file(schema_name: str, schema_file):
         mapping_key = table_data.get('gl_mapping_key')
         for column, data_type in table_data.items():
             is_pkey = column == mapping_key
+            data_type = re.sub(r"\(.*\)", "", data_type)
+
             if column == 'gl_mapping_key':
                 continue
 
