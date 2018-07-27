@@ -9,7 +9,7 @@ from sqlalchemy import desc
 from importer import Importer, schema
 from importer.fetcher import Fetcher
 from elt.schema import schema_apply
-from elt.error import InapplicableChangeError
+from elt.error import InapplicableChangeError, with_error_exit_code
 from elt.cli import parser_db_conn, parser_output, parser_logging
 from elt.job import Job, State
 from elt.db import DB
@@ -17,6 +17,7 @@ from elt.utils import setup_logging, setup_db
 
 
 GITLAB_ELT_URI = "com.meltano.gitlab:1:*"
+FORCE=bool(os.getenv('GITLAB_FORCE', False))
 
 
 def action_export(args):
@@ -33,9 +34,10 @@ def action_export(args):
     latest_prefix = fetcher.latest_prefix()
     # latest_prefix = None
 
-    if latest_prefix == latest_completed_prefix:
-        logging.info("Export '{}' has already been imported, aborting".format(latest_prefix))
-        exit(0)
+    if not FORCE and \
+      latest_prefix == latest_completed_prefix:
+            logging.info("Export '{}' has already been imported, aborting".format(latest_prefix))
+            exit(0)
 
     job = Job(elt_uri=GITLAB_ELT_URI,
               state=State.RUNNING,
@@ -58,6 +60,7 @@ def action_export(args):
     except:
         logging.exception("Import has failed")
         job.transit(State.FAIL)
+        raise
     finally:
         job.ended_at = datetime.utcnow()
         Job.save(job)
@@ -73,6 +76,7 @@ def action_schema_apply(args):
         for subex in e.exceptions:
             logging.debug(subex)
         logging.error("Schema could not be applied.")
+        raise e
 
 
 class Action(Enum):
@@ -116,10 +120,13 @@ def parse():
 
     return parser.parse_args()
 
+
+@with_error_exit_code
 def main():
   args = parse()
   setup_db(args)
   setup_logging(args)
   args.action(args)
+
 
 main()
