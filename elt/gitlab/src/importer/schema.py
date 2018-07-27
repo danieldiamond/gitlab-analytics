@@ -21,7 +21,7 @@ def parse_schema_file(schema_name: str, schema_file):
 
     columns = []
     for table, table_data in raw_schema.items():
-        mapping_key = table_data['gl_mapping_key']
+        mapping_key = table_data.get('gl_mapping_key')
         for column, data_type in table_data.items():
             is_pkey = column == mapping_key
             if column == 'gl_mapping_key':
