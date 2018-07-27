@@ -1,4 +1,5 @@
 import os, urllib.request, json, csv
+import io
 import asyncio
 import concurrent.futures
 import logging
@@ -8,7 +9,7 @@ import shutil
 from concurrent.futures import FIRST_EXCEPTION
 from elt.db import db_open
 from elt.utils import compose
-from elt.process import upsert_to_db_from_csv, overwrite_to_db_from_csv
+from elt.process import integrate_csv_file, overwrite_to_db_from_csv_file
 from elt.schema import Schema, mapping_keys
 from .fetcher import Fetcher
 from .schema import describe_schema
@@ -31,9 +32,10 @@ class Importer:
         Supports gzip (.gz) file using `gzip.open`
         """
         if file_path.endswith(".gz"):
-            return gzip.open(file_path, 'r')
-        else:
-            return open(file_path, 'r')
+            # the `gzip.open` function do not implement the `text` mode
+            return io.TextIOWrapper(gzip.open(file_path))
+
+        return open(file_path)
 
 
     def process_file(self, file_path):
@@ -43,15 +45,16 @@ class Importer:
         table_name, *_exts = os.path.basename(file_path).split(".")
 
         try:
-            with open_file(file_path) as file, \
-                 db_open() as db:
+            file = self.open_file(file_path)
+            with db_open() as db:
                 options = {
                     'table_schema': self.args.schema,
                     'table_name': table_name,
                 }
                 if table_name in self.mapping_keys:
-                    upsert_to_db_from_csv_file(db, file, **options,
-                                               primary_key=self.mapping_keys[table_name])
+                    integrate_csv_file(db, file, **options,
+                                      primary_key=self.mapping_keys[table_name],
+                                      update_action="UPDATE")
                 else:
                     overwrite_to_db_from_csv_file(db, file, **options)
         finally:
@@ -83,7 +86,9 @@ class Importer:
 
         for task in done:
             try:
-                logging.info("Import completed: {}".format(task.result()))
+                file_path = task.result()
+                self.process_file(file_path)
+                logging.info("Import completed: {}".format(file_path))
             except Exception as err:
                 logging.exception("Import failed.")
                 return

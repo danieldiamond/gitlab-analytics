@@ -17,7 +17,7 @@ from elt.utils import setup_logging, setup_db
 
 
 GITLAB_ELT_URI = "com.meltano.gitlab:1:*"
-FORCE=bool(os.getenv('GITLAB_FORCE', False))
+GITLAB_CHECK_JOB=bool(os.getenv('GITLAB_CHECK_JOB', False))
 
 
 def action_export(args):
@@ -34,7 +34,7 @@ def action_export(args):
     latest_prefix = fetcher.latest_prefix()
     # latest_prefix = None
 
-    if not FORCE and \
+    if GITLAB_CHECK_JOB and \
       latest_prefix == latest_completed_prefix:
             logging.info("Export '{}' has already been imported, aborting".format(latest_prefix))
             exit(0)
