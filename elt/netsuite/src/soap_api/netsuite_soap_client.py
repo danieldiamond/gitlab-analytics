@@ -16,6 +16,7 @@ from elt.error import Error
 
 from .account import Account
 from .currency import Currency
+from .customer import Customer
 from .department import Department
 from .subsidiary import Subsidiary
 from .transaction import Transaction
@@ -23,6 +24,7 @@ from .expense import Expense
 from .transaction_item import TransactionItem
 from .application import Application
 from .transaction_line import TransactionLine
+from .vendor import Vendor
 
 class NetsuiteClient:
     def __init__(self):
@@ -297,8 +299,14 @@ class NetsuiteClient:
         entities = []
 
         if only_transactions == False:
+            account = Account(self)
+            entities.append(account)
+
             currency = Currency(self)
             entities.append(currency)
+
+            customer = Customer(self)
+            entities.append(customer)
 
             department = Department(self)
             entities.append(department)
@@ -306,8 +314,8 @@ class NetsuiteClient:
             subsidiary = Subsidiary(self)
             entities.append(subsidiary)
 
-            account = Account(self)
-            entities.append(account)
+            vendor = Vendor(self)
+            entities.append(vendor)
 
         transaction = Transaction(self)
         entities.append(transaction)
@@ -323,15 +331,17 @@ class NetsuiteClient:
          the schema of all supported entities (both top level and support ones)
         """
         entities = [
-            Currency,
-            Department,
-            Subsidiary,
             Account,
-            Transaction,
-            Expense,
-            TransactionItem,
             Application,
+            Currency,
+            Customer,
+            Department,
+            Expense,
+            Subsidiary,
+            Transaction,
+            TransactionItem,
             TransactionLine,
+            Vendor,
         ]
 
         return entities
@@ -344,15 +354,17 @@ class NetsuiteClient:
         Return None if the Entity / Class name is not supported
         """
         classes = {
-            'Currency': Currency,
-            'Department': Department,
-            'Subsidiary': Subsidiary,
             'Account': Account,
-            'Transaction': Transaction,
-            'Expense': Expense,
-            'TransactionItem': TransactionItem,
             'Application': Application,
+            'Currency': Currency,
+            'Customer': Customer,
+            'Department': Department,
+            'Expense': Expense,
+            'Subsidiary': Subsidiary,
+            'Transaction': Transaction,
+            'TransactionItem': TransactionItem,
             'TransactionLine': TransactionLine,
+            'Vendor': Vendor,
         }
 
         if class_name in classes:
