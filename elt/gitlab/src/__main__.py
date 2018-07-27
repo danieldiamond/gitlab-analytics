@@ -9,12 +9,15 @@ from sqlalchemy import desc
 from importer import Importer, schema
 from importer.fetcher import Fetcher
 from elt.schema import schema_apply
+from elt.error import InapplicableChangeError
 from elt.cli import parser_db_conn, parser_output, parser_logging
 from elt.job import Job, State
 from elt.db import DB
 from elt.utils import setup_logging, setup_db
 
+
 GITLAB_ELT_URI = "com.meltano.gitlab:1:*"
+
 
 def action_export(args):
     fetcher = Fetcher(project=args.project,
@@ -40,28 +43,36 @@ def action_export(args):
               payload={'prefix': latest_prefix})
 
     Job.save(job)
-
-    importer = Importer(args, fetcher=fetcher)
-
     loop = asyncio.get_event_loop()
-    imported_prefix = loop.run_until_complete(importer.import_all())
 
-    if imported_prefix:
-        job.transit(State.SUCCESS)
-        job.payload['prefix'] = imported_prefix
-    else:
+    try:
+        importer = Importer(args, fetcher=fetcher)
+        imported_prefix = loop.run_until_complete(importer.import_all())
+
+        if imported_prefix:
+            job.transit(State.SUCCESS)
+            job.payload['prefix'] = imported_prefix
+        else:
+            job.transit(State.FAIL)
+
+    except:
+        logging.exception("Import has failed")
         job.transit(State.FAIL)
-
-    job.ended_at = datetime.utcnow()
-    Job.save(job)
-
-    loop.close()
+    finally:
+        job.ended_at = datetime.utcnow()
+        Job.save(job)
+        loop.close()
 
 
 def action_schema_apply(args):
-    with DB.db_open() as db:
-        target_schema = schema.describe_schema(args)
-        schema_apply(db, target_schema)
+    try:
+        with DB.open() as db:
+            target_schema = schema.describe_schema(args)
+            schema_apply(db, target_schema)
+    except InapplicableChangeError as e:
+        for subex in e.exceptions:
+            logging.debug(subex)
+        logging.error("Schema could not be applied.")
 
 
 class Action(Enum):
