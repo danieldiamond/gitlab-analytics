@@ -857,6 +857,7 @@ subscription:
   currenttermperiodtype: text
   endcustomerdetails__c: text
   excludefromanalysis__c: boolean
+  exclude_from_renewal_report__c__c: text
   id: text
   initialterm: integer
   initialtermperiodtype: text
