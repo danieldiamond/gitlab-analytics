@@ -7,6 +7,10 @@ source-paths: ["models"]
 
 test-paths: ["tests"]
 
+on-run-end:
+    - grant usage on schema {{ target.schema }} to looker
+    - grant select on all tables in schema {{ target.schema }} to looker
+
 models:
   gitlab_dw:
     date:
