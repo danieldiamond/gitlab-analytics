@@ -7,7 +7,7 @@ import gzip
 import shutil
 
 from concurrent.futures import FIRST_EXCEPTION
-from elt.db import db_open
+from elt.db import DB
 from elt.utils import compose
 from elt.process import integrate_csv_file, overwrite_to_db_from_csv_file
 from elt.schema import Schema, mapping_keys
@@ -16,7 +16,7 @@ from .schema import describe_schema
 
 
 class Importer:
-    THREADS = int(os.getenv("GITLAB_THREADS", 5))
+    THREADS = int(os.getenv("GITLAB_THREADS", 10))
 
     def __init__(self, args, fetcher=None):
         self.args = args
@@ -46,7 +46,7 @@ class Importer:
 
         try:
             file = self.open_file(file_path)
-            with db_open() as db:
+            with DB.default.open() as db:
                 options = {
                     'table_schema': self.args.schema,
                     'table_name': table_name,
@@ -61,6 +61,8 @@ class Importer:
             file.close()
             os.remove(file.name)
 
+        return table_name
+
 
     async def import_all(self):
         """
@@ -74,8 +76,11 @@ class Importer:
             max_workers=self.THREADS,
         )
 
+        process = compose(self.process_file,
+                          self.fetcher.download)
+
         tasks = [
-            loop.run_in_executor(executor, self.fetcher.download, blob)
+            loop.run_in_executor(executor, process, blob)
             for blob in self.fetcher.fetch_files()
         ]
 
@@ -86,9 +91,7 @@ class Importer:
 
         for task in done:
             try:
-                file_path = task.result()
-                self.process_file(file_path)
-                logging.info("Import completed: {}".format(file_path))
+                logging.info("Import completed for {}".format(task.result()))
             except Exception as err:
                 logging.exception("Import failed.")
                 return

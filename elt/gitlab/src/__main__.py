@@ -12,7 +12,7 @@ from elt.schema import schema_apply
 from elt.error import InapplicableChangeError, with_error_exit_code
 from elt.cli import parser_db_conn, parser_output, parser_logging
 from elt.job import Job, State
-from elt.db import DB
+from elt.db import DB, db_open
 from elt.utils import setup_logging, setup_db
 
 
@@ -24,7 +24,7 @@ def action_export(args):
     fetcher = Fetcher(project=args.project,
                       bucket=args.bucket)
 
-    with DB.session() as session:
+    with DB.default.session() as session:
         last_job = session.query(Job).filter(Job.state != State.FAIL,
                                              Job.elt_uri == GITLAB_ELT_URI) \
                                      .order_by(desc(Job.started_at)) \
@@ -69,7 +69,7 @@ def action_export(args):
 
 def action_schema_apply(args):
     try:
-        with DB.open() as db:
+        with DB.default.open() as db:
             target_schema = schema.describe_schema(args)
             schema_apply(db, target_schema)
     except InapplicableChangeError as e:

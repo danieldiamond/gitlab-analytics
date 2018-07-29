@@ -1,13 +1,15 @@
 import os
 import pytest
 import psycopg2
-import psycopg2.sql as sql
 import logging
+import psycopg2.sql as sql
 
-from elt.db import DB, Session
 from sqlalchemy import MetaData
+from elt.db import DB
+
 
 logging.basicConfig(level=logging.INFO)
+
 
 @pytest.fixture(scope='session')
 def db_setup(request):
@@ -19,22 +21,25 @@ def db_setup(request):
         'password': os.getenv("PG_PASSWORD"),
     }
     DB.setup(**args)
-    truncate_tables(DB.engine(), schema='meltano')
+    truncate_tables(DB.default.engine, schema='meltano')
+
 
 @pytest.fixture(scope='function')
 def db(request, db_setup):
-    connection = DB.connect()
+    connection = DB.default.open()
 
     def teardown():
-        truncate_tables(DB.engine(), schema='meltano')
+        truncate_tables(DB.default.engine, schema='meltano')
 
     request.addfinalizer(teardown)
     return connection
 
+
 @pytest.fixture(scope='function')
 def session(request, db):
     """Creates a new database session for a test."""
-    return Session()
+    return DB.default.session()
+
 
 def truncate_tables(engine, schema):
     # delete all table data (but keep tables)
