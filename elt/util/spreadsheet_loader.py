@@ -48,7 +48,7 @@ def dw_uploader(engine: Engine, table: str, schema: str,
             existing_table = (pd.read_sql_table(table, engine, schema)
                                 .drop('updated_at', axis=1))
             if existing_table.equals(data):
-                info('Table has not changed. Aborting upload.')
+                info('Table "{}" has not changed. Aborting upload.'.format(table))
                 return False
             engine.connect().execute('drop table {}.{} cascade'.format(schema, table))
         data['updated_at'] = time()
@@ -118,7 +118,7 @@ def sheet_loader(*sheets: List[str], gapi_keyfile: str = None,
             sheet = gc.open(sheet_name).sheet1.get_all_values()
         except SpreadsheetNotFound:
             info('Sheet {} not found.'.format(sheet_name))
-            continue
+            raise
         sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
         dw_uploader(engine, table, schema, sheet_df)
 
