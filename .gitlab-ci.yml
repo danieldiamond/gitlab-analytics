@@ -154,6 +154,8 @@
   script:
     - ci_helpers.py use_proxy "python3 elt/gitlab/src -S gitlab apply_schema"
     - ci_helpers.py use_proxy "python3 elt/gitlab/src -S gitlab export"
+  tags:
+    - long-running # TODO: make it faster
 
 # ---------------------------------------------------------------------------
 
