@@ -35,6 +35,7 @@ models:
         pings_usage_data_month:
           materialized: incremental
           sql_where: 'TRUE'
+          unique_key: 'unique_key'
 
 
     zuora:

@@ -1,3 +1,7 @@
+WITH usage_data AS (
+    SELECT * FROM {{ ref('pings_usage_data') }}
+)
+
 SELECT
   id,
   source_ip,
@@ -75,8 +79,7 @@ SELECT
   (stats -> 'todos') :: TEXT :: NUMERIC                            AS todos,
   (stats -> 'uploads') :: TEXT :: NUMERIC                          AS uploads,
   (stats -> 'web_hooks') :: TEXT :: NUMERIC                        AS web_hooks
-FROM version.usage_data
+FROM usage_data
 {% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
     WHERE created_at > (SELECT max(created_at) FROM {{ this }})
 {% endif %}
-
