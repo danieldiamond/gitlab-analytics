@@ -4,6 +4,16 @@ pings_usage_data:
     not_null:
       - uuid
 
+pings_usage_data_boolean:
+  constraints:
+    unique:
+      -unique_key
+
+    not_null:
+      - unique_key
+      - uuid
+      - created_at
+
 pings_usage_data_month:
   constraints:
     unique:
