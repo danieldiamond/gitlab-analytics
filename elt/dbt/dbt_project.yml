@@ -7,6 +7,9 @@ source-paths: ["models"]
 
 test-paths: ["tests"]
 
+on-run-start:
+    - '{{create_udfs()}}'
+
 on-run-end:
     - grant usage on schema {{ target.schema }} to looker
     - grant select on all tables in schema {{ target.schema }} to looker
@@ -47,5 +50,3 @@ models:
         enabled: true
         materialized: table
 
-on-run-start:
-    - '{{create_udfs()}}'
