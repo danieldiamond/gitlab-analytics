@@ -1,5 +1,5 @@
 {% macro sfdc_id_15_to_18() %}
-CREATE FUNCTION {{target.schema}}.id15to18(inputid text)
+CREATE OR REPLACE FUNCTION {{target.schema}}.id15to18(inputid text)
   RETURNS text
 IMMUTABLE
 LANGUAGE plpgsql
