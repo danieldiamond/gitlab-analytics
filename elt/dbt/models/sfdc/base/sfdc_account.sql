@@ -6,8 +6,8 @@ WITH source AS (
 ), renamed AS(
 
 	SELECT 
-		id as account_id, 
-		name as account_name,
+		id                      as account_id,
+		name                    as account_name,
 		-- keys
 		account_id_18__c as account_id_18,
 		masterrecordid as master_record_id,
@@ -40,7 +40,13 @@ WITH source AS (
 
 
 		-- info
-		sfdc.id15to18(substring(ultimate_parent_account__c,11, 15)) as ultimate_parent_account,
+		{{this.schema}}.id15to18(
+              substring(
+                  regexp_replace(ultimate_parent_account__c,
+                                '_HL_ENCODED_/|<a\s+href="/', '')
+                  , 1
+                  , 15)
+          )                     as ultimate_parent_account_id,
 		type as account_type,
 		industry,
 		product_category__c as product_category,
@@ -83,6 +89,7 @@ WITH source AS (
 
 	FROM source
 	WHERE id IS NOT NULL
+	AND isdeleted = FALSE
 
 )
 
