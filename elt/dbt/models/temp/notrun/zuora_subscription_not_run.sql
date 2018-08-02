@@ -1,3 +1,4 @@
+SELECT 1
 /*SELECT sa.id as SFDC_accountid,
 	     pa.id as SFDC_parentaccountId,
 	     s.id as subscriptionid,
