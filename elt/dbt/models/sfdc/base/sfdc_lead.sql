@@ -22,12 +22,8 @@ WITH source AS (
 
 
 		--lead info
-		isconverted as is_converted, 
+		isconverted as is_converted,
 		converteddate as converted_date,
-		firstname as first_name,
-		lastname as last_name,
-		email as email,
-		mobilephone as mobile_phone,
 		title as title,
 		donotcall as is_do_not_call,
 		hasoptedoutofemail as has_opted_out_email,

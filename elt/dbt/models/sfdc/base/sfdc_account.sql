@@ -26,7 +26,7 @@ WITH source AS (
 		--account_manager_account_team__c as account_manager_account_team ## Why are these all null?
 		--account_manager_lu__c
 		account_owner_calc__c as account_owner,
-		account_owner_manager_email__c as account_owner_manager,
+		-- account_owner_manager_email__c as account_owner_manager,
 		account_owner_team__c as account_owner_team,
 		business_development_rep__c as business_development_rep,
 		business_development_rep_account_team__c as business_development_rep_team,
@@ -36,7 +36,7 @@ WITH source AS (
 		solutions_architect__c as solutions_architect,
 
 		--key people outside
-		bill_to_email__c as bill_to_email,
+		-- bill_to_email__c as bill_to_email,
 
 
 		-- info
@@ -62,7 +62,6 @@ WITH source AS (
 		count_of_active_subscription_charges__c as count_active_subscription_charges,
 		count_of_active_subscriptions__c as count_active_subscriptions,
 		count_of_billing_accounts__c as count_billing_accounts,
-		count_of_cross_sell_opps__c as count_cross_sell_opportunities,
 		count_of_new_business_won_opps__c as count_of_new_business_won_opportunities,
 		count_of_open_renewal_opportunities__c as count_open_renewal_opportunities,
 		count_of_opportunities__c as count_opportunities,
@@ -84,7 +83,6 @@ WITH source AS (
 		lastreferenceddate as last_referenced_date,
 		lastvieweddate as last_viewed_date,
 		systemmodstamp
-		
 
 
 	FROM source

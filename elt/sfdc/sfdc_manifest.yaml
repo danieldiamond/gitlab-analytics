@@ -135,6 +135,19 @@ opportunitylineitem:
   ticket_group_numeric__c: real
   totalprice: real
   unitprice: real
+opportunityhistory:
+  id: character varying
+  opportunityid: character varying
+  createdbyid: character varying
+  createddate: timestamp without time zone
+  stagename: character varying
+  amount: character varying
+  expectedrevenue: character varying
+  closedate: date
+  probability: character varying
+  forecastcategory: character varying
+  systemmodstamp: timestamp without time zone
+  isdeleted: boolean
 zqu__quote__c:
   click_through_eula_contract_language__c: character varying
   click_through_eula_test__c: character varying
@@ -468,6 +481,8 @@ contact:
   domain__c: character varying
   ee_trial_end_date__c: date
   ee_trial_start_date__c: date
+  emailbounceddate: timestamp without time zone
+  emailbouncedreason: character varying
   githost_other_response__c: character varying
   githost_response_status__c: character varying
   gitlabcom_user_id__c: character varying
@@ -504,6 +519,7 @@ contact:
   mailingstatecode: character varying
   mailingstreet: character varying
   masterrecordid: character varying
+  mobilephone: character varying
   name: character varying
   outbound_bdr__c: character varying
   outreach_stage__c: character varying
@@ -735,6 +751,7 @@ account:
   primary_contact_id__c: character varying
   primary_contact__c: character varying
   products_purchased__c: character varying
+  product_category__c:  character varying
   recordtypeid: character varying
   reference_type__c: character varying
   referenceable_customer_notes__c: character varying
@@ -786,6 +803,7 @@ account:
   ultimateparentsalessegmentation__c: character varying
   ultimate_parent_account_id__c: character varying
   ultimate_parent_account__c: character varying
+  ultimate_parent_account_id__c: character varying
   ultimate_parent_is_current_account__c: boolean
   ultimate_parent_old__c: character varying
   using_ce__c: boolean
@@ -1049,9 +1067,9 @@ opportunity:
   authorized_reseller_opportunity__c: boolean
   auto_renew__c: boolean
   auto_renewal__c: boolean
-  awaiting_approval_stage__c: real
+  awaiting_approval_stage__c: integer
   bdr_lu__c: character varying
-  bdr_qualified_stage__c: real
+  bdr_qualified_stage__c: integer
   booking_category__c: character varying
   business_development_rep__c: character varying
   business_problems_to_solve__c: character varying
@@ -1071,36 +1089,36 @@ opportunity:
   competitive_awareness__c: character varying
   competitors__c: character varying
   converted_from_ce__c: boolean
-  count_of_quotes__c: real
-  count_of_active_ee_subscriptions__c: real
-  count_of_primary_contacts__c: real
-  count_of_products__c: real
-  count_of_quotes_to_z_billing__c: real
-  count_of_quotes_with_invoice_owner__c: real
-  count_of_signed_agreements__c: real
+  count_of_quotes__c: integer
+  count_of_active_ee_subscriptions__c: integer
+  count_of_primary_contacts__c: integer
+  count_of_products__c: integer
+  count_of_quotes_to_z_billing__c: integer
+  count_of_quotes_with_invoice_owner__c: integer
+  count_of_signed_agreements__c: integer
   create_renewal_opportunity__c: boolean
   createdbyid: character varying
   createddate: timestamp without time zone
   created_month__c: date
   currently_using_ce__c: boolean
   data_quality_description__c: character varying
-  data_quality_score__c: real
-  days_since_customer__c: real
-  days_until_close__c: real
-  days_in_0_pending_acceptance__c: real
-  days_in_1_discovery__c: real
-  days_in_2_scoping__c: real
-  days_in_3_technical_evaluation__c: real
-  days_in_4_proposal__c: real
-  days_in_5_negotiating__c: real
+  data_quality_score__c: integer
+  days_since_customer__c: integer
+  days_until_close__c: integer
+  days_in_0_pending_acceptance__c: integer
+  days_in_1_discovery__c: integer
+  days_in_2_scoping__c: integer
+  days_in_3_technical_evaluation__c: integer
+  days_in_4_proposal__c: integer
+  days_in_5_negotiating__c: integer
   dec_criteria_tech_vendor_financial__c: character varying
   dec_process_define_validation_approval__c: character varying
   decision_criteria__c: character varying
   decision_making_process__c: character varying
   delta_amount__c: real
   description: character varying
-  developing_stage__c: real
-  discovery_stage__c: real
+  developing_stage__c: integer
+  discovery_stage__c: integer
   does_not_require_approval__c: boolean
   don_t_send_slack_notification__c: boolean
   ee_trial_start_date__c: date
@@ -1120,15 +1138,15 @@ opportunity:
   forecastcategory: character varying
   forecastcategoryname: character varying
   full_circle_count__c: boolean
-  full_circle_velocity__c: real
+  full_circle_velocity__c: integer
   funding__c: character varying
   hasopenactivity: boolean
   hasopportunitylineitem: boolean
   hasoverduetask: boolean
   how_are_you_solving_these_problems_today__c: character varying
   how_are_you_using_gitlab__c: character varying
-  how_large_is_your_group__c: real
-  how_many_seats_are_they_interested_in__c: real
+  how_large_is_your_group__c: integer
+  how_many_seats_are_they_interested_in__c: integer
   id: character varying
   identify_pain__c: character varying
   impact_due_to_business_problems__c: character varying
@@ -1140,7 +1158,7 @@ opportunity:
   incremental_amount_2__c: real
   incremental_amount__c: real
   initial_iacv__c: real
-  initial_term__c: real
+  initial_term__c: integer
   interested_in_gitlab_ee__c: character varying
   interested_in_hosted_solution__c: boolean
   internal_champion__c: character varying
@@ -1165,19 +1183,19 @@ opportunity:
   is_8_unqualified__c: boolean
   is_9_duplicate__c: boolean
   is_there_a_meeting_set_with_an_ae_to_dis__c: character varying
-  lastactivitydate: date
+  lastactivitydate: timestamp without time zone
   lastmodifiedbyid: character varying
   lastmodifieddate: timestamp without time zone
   lastreferenceddate: timestamp without time zone
   lastvieweddate: timestamp without time zone
   leadsource: character varying
   lead_activity_type__c: character varying
-  leandata__days_in_stage__c: real
-  leandata__days_to_close__c: real
+  leandata__days_in_stage__c: integer
+  leandata__days_to_close__c: integer
   leandata__ordernumber__c: character varying
   leandata__reporting_last_run_date__c: timestamp without time zone
   leandata__reporting_opportunity_source__c: character varying
-  leandata__reporting_total_marketing_touches__c: real
+  leandata__reporting_total_marketing_touches__c: integer
   leandata__reporting_won_number__c: character varying
   legacy_sql_new_biz__c: boolean
   lost_amount__c: real
@@ -1185,7 +1203,7 @@ opportunity:
   mrr2__c: real
   mrr_override__c: real
   mrr__c: real
-  max_ticket_group_from_products_numeric__c: real
+  max_ticket_group_from_products_numeric__c: integer
   metrics__c: character varying
   missing_features__c: character varying
   multiyear_renewal__c: boolean
@@ -1193,19 +1211,19 @@ opportunity:
   null_date__c: date
   name: character varying
   need_to_buy__c: character varying
-  negotiating_stage__c: real
+  negotiating_stage__c: integer
   nextstep: character varying
-  number_of_pushes__c: real
+  number_of_pushes__c: integer
   online_purchase__c: boolean
   open_amount__c: real
-  opportunity_age__c: real
+  opportunity_age__c: integer
   opportunity_closed__c: boolean
   opportunity_id_mapping_key: id
   opportunity_owner__c: character varying
-  opportunity_term_new__c: real
-  opportunity_term_override__c: real
-  opportunity_term__c: real
-  opportunity__c: real
+  opportunity_term_new__c: integer
+  opportunity_term_override__c: integer
+  opportunity_term__c: integer
+  opportunity__c: integer
   ownerid: character varying
   owner_account_type__c: character varying
   poc_end_date__c: date
@@ -1214,7 +1232,7 @@ opportunity:
   poc_success_criteria__c: character varying
   partners__c: character varying
   paymentupdateddate__c: timestamp without time zone
-  present_solution_stage__c: real
+  present_solution_stage__c: integer
   pricebook2id: character varying
   probability: real
   product_details__c: character varying
@@ -1224,7 +1242,7 @@ opportunity:
   projections_total__c: real
   proof_of_concept_poc_status__c: character varying
   purchasing_procurement_process__c: character varying
-  push_counter__c: real
+  push_counter__c: integer
   qualification_notes__c: character varying
   quote_amount__c: real
   reason_for_lost_details__c: character varying
@@ -1241,7 +1259,7 @@ opportunity:
   renewal_amount__c: real
   renewal_mrr__c: real
   renewal_notification__c: boolean
-  renewal_term__c: real
+  renewal_term__c: integer
   role_prospect_plays_in_evaluation__c: character varying
   sdr_lu__c: character varying
   sdr__c: character varying
@@ -1312,7 +1330,7 @@ opportunity:
   infer__infer_score__c: real
   infer__infer_won_amount__c: real
   mkto_si__marketoanalyzer__c: character varying
-  of_users_on_ce__c: real
+  of_users_on_ce__c: integer
   zqu__currentgenerators__c: character varying
   zqu__deliveryinstallationstatus__c: character varying
   zqu__maincompetitors__c: character varying
@@ -1609,6 +1627,65 @@ userrole:
   rollupdescription: character varying
   systemmodstamp: timestamp without time zone
   userrole_id_mapping_key: id
+zuora__customeraccount__c:
+  id: character varying
+  isdeleted: boolean
+  name: character varying
+  createddate: timestamp without time zone
+  createdbyid: character varying
+  lastmodifieddate: timestamp without time zone
+  lastmodifiedbyid: character varying
+  systemmodstamp: timestamp without time zone
+  lastactivitydate: date
+  zuora__account__c: character varying
+  zuora__accountnumber__c: character varying
+  zuora__autopay__c: boolean
+  zuora__balance__c: real
+  zuora__batch__c: character varying
+  zuora__billcycleday__c: character varying
+  zuora__billtoaddress1__c: character varying
+  zuora__billtoaddress2__c: character varying
+  zuora__billtocity__c: character varying
+  zuora__billtocountry__c: character varying
+  zuora__billtofax__c: character varying
+  zuora__billtoid__c: character varying
+  zuora__billtoname__c: character varying
+  zuora__billtopostalcode__c: character varying
+  zuora__billtostate__c: character varying
+  zuora__billtoworkemail__c: character varying
+  zuora__billtoworkphone__c: character varying
+  zuora__creditbalance__c: real
+  zuora__creditcardexpiration__c: character varying
+  zuora__creditcardnumber__c: character varying
+  zuora__creditcardtype__c: character varying
+  zuora__creditcard_expiration__c: character varying
+  zuora__creditcard_number__c: character varying
+  zuora__credit_balance__c: real
+  zuora__currency__c: character varying
+  zuora__customerservicerepname__c: character varying
+  zuora__defaultpaymentmethod__c: character varying
+  zuora__default_payment_method__c: character varying
+  zuora__external_id__c: character varying
+  zuora__is_crm_id_change_processed__c: boolean
+  zuora__lastinvoicedate__c: date
+  zuora__mrr__c: real
+  zuora__parent__c: character varying
+  zuora__paymentmethodtype__c: character varying
+  zuora__paymentmethod_type__c: character varying
+  zuora__paymentterm__c: character varying
+  zuora__payment_term_formula__c: character varying
+  zuora__payment_term__c: character varying
+  zuora__purchaseordernumber__c: character varying
+  zuora__salesrepname__c: character varying
+  zuora__soldtoid__c: character varying
+  zuora__soldtoname__c: character varying
+  zuora__status__c: character varying
+  zuora__zuora_id__c: character varying
+  account_type__c: character varying
+  account_id__c: character varying
+  sales_segmentation__c: character varying
+  potential_ee_users__c: real
+  employees__c: real
 zuora__product__c:
   createdbyid: character varying
   createddate: timestamp without time zone
