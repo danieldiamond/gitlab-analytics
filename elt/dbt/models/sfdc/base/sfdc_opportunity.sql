@@ -26,6 +26,7 @@ WITH source AS (
 		closedate as close_date,
 		createddate as created_date,
 		stagename as stage_name,
+		products_purchased__c as product,
 		current_date - greatest(
 		      x0_pending_acceptance_date__c,
 		      x1_discovery_date__c,
