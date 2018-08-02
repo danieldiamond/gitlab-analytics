@@ -107,19 +107,8 @@
   <<: *job_definition
   script:
     - pip3 install salesforce-bulk # TODO: add me to the container
-    - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema salesforce apply_schema"
-    - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema salesforce export"
-
-# DEPRECATED
-.sfdc_kettle_extract: &sfdc_kettle_extract
-  variables:
-    FIXED_SFDC_PASSWORD: $SFDC_PASSWORD
-  stage: extract
-  <<: *job_definition
-  script:
-    - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
-    - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
-    - ci_helpers.py use_proxy "kitchen.sh -file=elt/sfdc_kettle/sfdc_extract.kjb -level=Minimal"
+    - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema sfdc apply_schema"
+    - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema sfdc export"
 
 .domains_extract: &domains_extract
   stage: extract
@@ -283,14 +272,6 @@ sfdc:
     variables:
       - $SFDC
 
-sfdc_kettle:
-  <<: *sfdc_kettle_extract
-  only:
-    refs:
-      - master
-    variables:
-      - $SFDC_KETTLE
-
 spreadsheet_extract:
   stage: extract
   <<: *spreadsheet_extract
@@ -399,14 +380,6 @@ pings_backfill:
 
 sfdc_manual:
   <<: *sfdc_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-sfdc_kettle_manual:
-  <<: *sfdc_kettle_extract
   only:
     - branches
   except:
