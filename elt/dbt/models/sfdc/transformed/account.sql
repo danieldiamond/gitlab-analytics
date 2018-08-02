@@ -3,7 +3,7 @@ SELECT a.id AS sfdc_account_id,
        a.industry,
        a.TYPE,
        a.Sales_Segmentation__c,
-       sfdc.id15to18(substring(a.ultimate_parent_account__c,11, 15)) AS ultimate_parent_account__c,
+       {{this.schema}}.id15to18(substring(a.ultimate_parent_account__c,11, 15)) AS ultimate_parent_account__c,
        p.Sales_Segmentation__c AS ultimate_parent_Sales_Segmentation,
        p.name AS ultimate_parent_name,
        CASE
