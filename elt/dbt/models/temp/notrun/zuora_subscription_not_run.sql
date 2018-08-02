@@ -1,4 +1,4 @@
-SELECT sa.id as SFDC_accountid,
+/*SELECT sa.id as SFDC_accountid,
 	     pa.id as SFDC_parentaccountId,
 	     s.id as subscriptionid,
        s.accountid as billingaccountid,
@@ -45,4 +45,4 @@ JOIN zuora.account a ON s.accountid = a.id::text
      JOIN sfdc.account pa ON sfdc.id15to18("substring"(sa.ultimate_parent_account__c, 11, 15)) = pa.id::text
 	 JOIN zuora.productrateplan pr on r.productrateplanid=pr.id
 	 JOIN zuora.product p on pr.productid=p.id
-where (excludefromanalysis__c is null or excludefromanalysis__c=false) and s.status<>'Expired' 
+where (excludefromanalysis__c is null or excludefromanalysis__c=false) and s.status<>'Expired' */

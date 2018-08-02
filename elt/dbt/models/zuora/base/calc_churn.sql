@@ -1,4 +1,4 @@
-{{
+/*{{
   config({
     "materialized":"table",
     "post-hook": [
@@ -10,4 +10,4 @@
 
 SELECT rolname
 FROM pg_roles
-LIMIT 1
+LIMIT 1*/
