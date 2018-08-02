@@ -19,7 +19,11 @@ WITH sfdc_opportunity AS (
         lead_source.initial_source as lead_source_name,
         lead_source.initial_source_type as lead_source_type,
         sfdc_opportunitystage.is_won AS is_won,
-        sfdc_opportunitystage.stage_id as opportunity_stage_id,
+        sfdc_opportunitystage.default_probability as stage_default_probability,
+        sfdc_opportunitystage.is_active as stage_is_active,
+        sfdc_opportunitystage.is_closed as stage_is_closed,
+        sfdc_opportunitystage.stage_state as stage_state,
+        sfdc_opportunitystage.mapped_stage as mapped_stage,
         CASE 
           WHEN (sfdc_opportunity.days_in_stage > 30 
           	OR sfdc_opportunity.incremental_acv > 100000 
