@@ -23,5 +23,5 @@ SELECT row_number() OVER (
        Is_LAU,
        health_score,
        health_score_reasons,
-       technical_account_manager_id
+       technical_account_manager
 FROM account 
