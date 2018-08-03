@@ -1090,7 +1090,7 @@ opportunity:
   competitors__c: character varying
   converted_from_ce__c: boolean
   count_of_quotes__c: integer
-  count_of_active_ee_subscriptions__c: integer
+  count_of_active_ee_subscriptions__c: real
   count_of_primary_contacts__c: integer
   count_of_products__c: integer
   count_of_quotes_to_z_billing__c: integer
