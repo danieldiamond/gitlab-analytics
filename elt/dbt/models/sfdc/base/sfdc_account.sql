@@ -34,6 +34,7 @@ WITH source AS (
 		sdr__c as sales_development_rep,
 		sdr_account_team__c as sales_development_rep_team,
 		solutions_architect__c as solutions_architect,
+		technical_account_manager_lu__c as technical_account_manager_id, -- lookup on user
 
 		--key people outside
 		-- bill_to_email__c as bill_to_email,
@@ -51,6 +52,7 @@ WITH source AS (
 		industry,
 		product_category__c as product_category,
 		customer_since__c::date as customer_since_date,
+		sales_segmentation_new__c as new_account_segment,
 		sales_segmentation__c as account_segment, -- I would this be called account_segment or sales_segment, but I think this is a breaking change
 
 		--present state info
@@ -70,6 +72,7 @@ WITH source AS (
 		concurrent_ee_subscriptions__c as count_concurrent_ee_subscriptions,
 		ce_instances__c as count_ce_instances,
 		active_ce_users__c as count_active_ce_users,
+		number_of_open_opportunities__c                 as count_open_opportunities,
 		using_ce__c as count_using_ce,
 
 

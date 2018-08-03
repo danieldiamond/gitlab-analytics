@@ -12,7 +12,8 @@ SELECT a.id AS sfdc_account_id,
            ELSE FALSE
        END AS Is_LAU,
        a.health__c as health_score,
-       a.health_score_reasons__c as health_score_reasons
+       a.health_score_reasons__c as health_score_reasons,
+       a.technical_account_manager_lu__c as technical_account_manager_id
 FROM sfdc.account a
 LEFT OUTER JOIN sfdc.account p ON {{this.schema}}.id15to18(substring(a.ultimate_parent_account__c,11, 15))=p.id
 WHERE a.isdeleted=FALSE

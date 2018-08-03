@@ -22,5 +22,6 @@ SELECT row_number() OVER (
        COALESCE(ultimate_parent_name, 'Unknown') as ultimate_parent_name,
        Is_LAU,
        health_score,
-       health_score_reasons
+       health_score_reasons,
+       technical_account_manager_id
 FROM account 
