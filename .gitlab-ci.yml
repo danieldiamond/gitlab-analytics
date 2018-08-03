@@ -20,7 +20,6 @@
 
 .zendesk_extract: &zendesk_extract
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - ci_helpers.py use_proxy "python3 elt/zendesk/src --schema zendesk apply_schema"
@@ -28,7 +27,6 @@
 
 .lever_extract: &lever_extract
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - check_ci_cd_vars.py --file elt/lever/src/config/required_ci_cd_vars.yaml
@@ -38,7 +36,6 @@
 
 .ci_stats: &ci_stats
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - check_ci_cd_vars.py --file elt/pings/src/config/required_vars_ci_stats.yaml
@@ -47,7 +44,6 @@
 
 .netsuite_extract: &netsuite_extract
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - check_ci_cd_vars.py --file elt/netsuite/src/config/required_ci_cd_vars.yaml
@@ -57,7 +53,6 @@
 
 .netsuite_backlog: &netsuite_backlog
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - check_ci_cd_vars.py --file elt/netsuite/src/config/required_ci_cd_vars.yaml
@@ -103,7 +98,6 @@
   variables:
     FIXED_SFDC_PASSWORD: $SFDC_PASSWORD_NOTOKEN
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - pip3 install salesforce-bulk # TODO: add me to the container
@@ -120,7 +114,6 @@
   variables:
     GITHOST_STRIPE_API_KEY_SK: $GITHOST_STRIPE_API_KEY_SK
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_githost apply_schema"
@@ -130,7 +123,6 @@
   variables:
     ABOUT_GITLAB_STRIPE_API_KEY_SK: $ABOUT_GITLAB_STRIPE_API_KEY_SK
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_about_gitlab apply_schema"
@@ -350,7 +342,6 @@ marketo_manual:
 
 netsuite_backlog_manual:
   stage: extract
-  allow_failure: true
   <<: *netsuite_backlog
   when: manual
 
