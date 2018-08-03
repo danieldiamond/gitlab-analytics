@@ -88,7 +88,7 @@
   <<: *job_definition
   script:
     - pip3 install -U pyasn1-modules
-    - ci_helpers.py use_proxy "python3 elt/util/spreadsheet_loader.py sheet historical.sales_quota historical.headcount historical.metrics"
+    - ci_helpers.py use_proxy "python3 elt/util/spreadsheet_loader.py sheet historical.sales_quota.sales_quota historical.headcount.headcount historical.metrics.metrics"
 
 .zuora_extract: &zuora_extract
   variables:

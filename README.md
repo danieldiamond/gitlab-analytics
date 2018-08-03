@@ -344,12 +344,13 @@ Loading a CSV:
 Loading a Google Sheet:
 
   - Share the sheet with the required service account (if being used in automated CI, use the runner service account)
-  - The file will be located and loaded based on its name. The names of the sheets shared with the runner must be unique and in the `<schema>.<table>` format
-  - Run the command `python3 elt/util/spreadsheet_loader.py sheet <file_name>` Multiple names can be used, use spaces to separate.
+  - The file will be located and loaded based on its name. The names of the sheets shared with the runner must be unique and in the `<schema>.<file_name>.<sheet_mame>` format
+  - Run the command `python3 elt/util/spreadsheet_loader.py sheet <name>` Multiple names can be used, use spaces to separate.
   - Logging from the script will tell you table successes/failures and the number of rows uploaded to each table.
 
 Further Usage Help:
 
+  - See the CI file (spreadsheet_extractor job) for real world example of usage
   - Run the following command(s) for additional usage info `python3 elt/util/spreadsheet_loader.py <csv|sheet> -- --help`
 
 ## GitLab Data and Analytics - Internal
