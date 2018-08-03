@@ -1211,7 +1211,7 @@ opportunity:
   null_date__c: date
   name: character varying
   need_to_buy__c: character varying
-  negotiating_stage__c: integer
+  negotiating_stage__c: real
   nextstep: character varying
   number_of_pushes__c: integer
   online_purchase__c: boolean
