@@ -788,6 +788,7 @@ account:
   support_level__c: character varying
   systemmodstamp: timestamp without time zone
   tedd_employees__c: real
+  technical_account_manager_lu__c: character varying
   technology_stack__c: character varying
   temp_duplicated_account__c: boolean
   terminus_clicks__c: real
@@ -1208,6 +1209,7 @@ opportunity:
   legacy_sql_new_biz__c: boolean
   lost_amount__c: real
   max_ticket_group_from_products_numeric__c: real
+  merged_opportunity__c: character varying
   metrics__c: character varying
   missing_features__c: character varying
   mkto_si__marketoanalyzer__c: character varying
@@ -1301,6 +1303,8 @@ opportunity:
   type_amount_close_date__c: character varying
   ultimate_parent_sales_segment_o__c: character varying
   unqualified_amount__c: real
+  upside_iacv__c: real
+  upside_swing_deal_iacv__c: real
   verbal_commitment_stage__c: real
   vertical_market_qualification__c: character varying
   web_portal_purchase__c: boolean
