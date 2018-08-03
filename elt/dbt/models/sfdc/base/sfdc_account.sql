@@ -15,7 +15,7 @@ WITH source AS (
 		parentid as parent_id,
 		primary_contact_id__c as primary_contact_id,
 		recordtypeid as record_type_id,
-		ultimate_parent_account_id__c as utimate_parent_id,
+		ultimate_parent_account__c as utimate_parent_id,
 		partner_vat_tax_id__c as partner_vat_tax_id,
 
 		-- key people GL side
