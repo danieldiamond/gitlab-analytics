@@ -47,7 +47,9 @@ SELECT
   ELSE '5 - Unknown' END                                          AS deal_size,
   push_counter__c,
   s.is_won,
-  lastactivitydate -- will need to be replaced
+  lastactivitydate, -- will need to be replaced
+  o.upside_iacv__c as upside_iacv,
+  o.upside_swing_deal_iacv__c as upside_swing_deal_iacv
 FROM sfdc.opportunity o
 INNER JOIN stages s ON o.stagename=s.primary_label
 WHERE o.isdeleted = FALSE

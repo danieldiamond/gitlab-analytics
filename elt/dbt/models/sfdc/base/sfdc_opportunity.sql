@@ -26,6 +26,7 @@ WITH source AS (
 		createddate as created_date,
 		stagename as stage_name,
 		sales_accepted_date__c as sales_accepted_date,
+		merged_opportunity__c                                   as merged_opportunity_id,
 
 		-- opp info
 		acv_2__c as acv,
@@ -41,6 +42,8 @@ WITH source AS (
 		products_purchased__c AS products_purchased,
 		reason_for_lost__c as reason_for_loss,
         reason_for_lost_details__c as reason_for_loss_details,
+        upside_iacv__c                                          as upside_iacv,
+        upside_swing_deal_iacv__c                               as upside_swing_deal_iacv,
 		CASE WHEN
             incremental_acv_2__c :: DECIMAL < 5000
             THEN '1 - Small (<5k)'
