@@ -319,11 +319,11 @@ try:
               "o.fiscalquarter," + \
               "o.iswon," + \
               "o.channel_manager__c," + \
-              "o.channel_partner_iacv_override__c " + \
-              "o.upside_iacv__c " + \
-              "o.upside_swing_deal_iacv__c " + \
-              "o.merged_opportunity__c " + \
-              "o.sales_segmentation_new__c " + \
+              "o.channel_partner_iacv_override__c," + \
+              "o.upside_iacv__c," + \
+              "o.upside_swing_deal_iacv__c," + \
+              "o.merged_opportunity__c," + \
+              "o.sales_segmentation_new__c," + \
               "o.number_of_open_opportunities__c " + \
               "FROM sfdc.opportunity o WHERE isdeleted=FALSE"
         cursor.execute(sql)
