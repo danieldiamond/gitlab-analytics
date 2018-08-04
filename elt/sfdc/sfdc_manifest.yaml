@@ -766,6 +766,7 @@ account:
   sdr__c: character varying
   sales_segmentation_updated__c: character varying
   sales_segmentation__c: character varying
+  sales_segmentation_new__c: character varying
   shippingcity: character varying
   shippingcountry: character varying
   shippingcountrycode: character varying
