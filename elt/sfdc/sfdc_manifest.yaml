@@ -730,6 +730,7 @@ account:
   number_of_licenses_all_child_accounts__c: real
   number_of_licenses_this_account__c: real
   number_of_licenses_total__c: real
+  number_of_open_opportunities__c: real
   opt_out_file_locking__c: boolean
   opt_out_geo__c: boolean
   ownerid: character varying
@@ -766,6 +767,7 @@ account:
   sdr__c: character varying
   sales_segmentation_updated__c: character varying
   sales_segmentation__c: character varying
+  sales_segmentation_new__c: character varying
   shippingcity: character varying
   shippingcountry: character varying
   shippingcountrycode: character varying
