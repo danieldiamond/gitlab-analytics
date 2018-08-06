@@ -165,13 +165,6 @@ sfdc_opportunitystage:
             - stage_id
             - sfdc_id
 
-sfdc_task:
-    constraints:
-        not_null:
-            - task_id
-        unique:
-            - task_id
-
 sfdc_user_roles:
     constraints:
         not_null:
@@ -192,4 +185,3 @@ snapshot_opportunity:
             - sfdc_opportunity_id
             - snapshot_date
             - ownerid    
-

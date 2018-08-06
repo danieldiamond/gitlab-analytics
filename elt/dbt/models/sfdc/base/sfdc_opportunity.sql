@@ -40,6 +40,7 @@ WITH source AS (
 		  ) :: DATE + 1  AS days_in_stage,
 		sales_accepted_date__c as sales_accepted_date,
 		sales_qualified_date__c as sales_qualified_date,
+		merged_opportunity__c as merged_opportunity_id,
 
 		-- opp info
 		acv_2__c as acv,
@@ -58,6 +59,8 @@ WITH source AS (
 		reason_for_lost__c as reason_for_loss,
         reason_for_lost_details__c as reason_for_loss_details,
         push_counter__c as pushed_count,
+        upside_iacv__c as upside_iacv,
+        upside_swing_deal_iacv__c as upside_swing_deal_iacv,
 		CASE WHEN
             incremental_acv_2__c :: DECIMAL < 5000
             THEN '1 - Small (<5k)'
@@ -67,7 +70,7 @@ WITH source AS (
             THEN '3 - Big (25k - 100k)'
           WHEN incremental_acv_2__c :: DECIMAL >= 100000
             THEN '4 - Jumbo (>100k)'
-          ELSE '5 - Unknown' END                                          AS deal_size,
+          ELSE '5 - Unknown' END AS deal_size,
 		
 		
 		CASE WHEN acv_2__c >= 0 THEN 1

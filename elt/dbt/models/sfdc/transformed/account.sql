@@ -3,7 +3,7 @@ SELECT a.id AS sfdc_account_id,
        a.industry,
        a.TYPE,
        a.Sales_Segmentation__c,
-       sfdc.id15to18(substring(a.ultimate_parent_account__c,11, 15)) AS ultimate_parent_account__c,
+       {{this.schema}}.id15to18(substring(a.ultimate_parent_account__c,11, 15)) AS ultimate_parent_account__c,
        p.Sales_Segmentation__c AS ultimate_parent_Sales_Segmentation,
        p.name AS ultimate_parent_name,
        CASE
@@ -12,7 +12,9 @@ SELECT a.id AS sfdc_account_id,
            ELSE FALSE
        END AS Is_LAU,
        a.health__c as health_score,
-       a.health_score_reasons__c as health_score_reasons
+       a.health_score_reasons__c as health_score_reasons,
+       u.name as technical_account_manager
 FROM sfdc.account a
-LEFT OUTER JOIN sfdc.account p ON sfdc.id15to18(substring(a.ultimate_parent_account__c,11, 15))=p.id
+LEFT OUTER JOIN sfdc.account p ON {{this.schema}}.id15to18(substring(a.ultimate_parent_account__c,11, 15))=p.id
+INNER JOIN sfdc.user u on u.id = a.technical_account_manager_lu__c
 WHERE a.isdeleted=FALSE

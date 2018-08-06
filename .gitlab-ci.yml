@@ -20,7 +20,6 @@
 
 .zendesk_extract: &zendesk_extract
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - ci_helpers.py use_proxy "python3 elt/zendesk/src --schema zendesk apply_schema"
@@ -28,7 +27,6 @@
 
 .lever_extract: &lever_extract
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - check_ci_cd_vars.py --file elt/lever/src/config/required_ci_cd_vars.yaml
@@ -38,7 +36,6 @@
 
 .ci_stats: &ci_stats
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - check_ci_cd_vars.py --file elt/pings/src/config/required_vars_ci_stats.yaml
@@ -47,7 +44,6 @@
 
 .netsuite_extract: &netsuite_extract
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - check_ci_cd_vars.py --file elt/netsuite/src/config/required_ci_cd_vars.yaml
@@ -57,7 +53,6 @@
 
 .netsuite_backlog: &netsuite_backlog
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - check_ci_cd_vars.py --file elt/netsuite/src/config/required_ci_cd_vars.yaml
@@ -88,7 +83,7 @@
   <<: *job_definition
   script:
     - pip3 install -U pyasn1-modules
-    - ci_helpers.py use_proxy "python3 elt/util/spreadsheet_loader.py sheet historical.sales_quota historical.headcount historical.metrics"
+    - ci_helpers.py use_proxy "python3 elt/util/spreadsheet_loader.py sheet historical.sales_quota.sales_quota historical.headcount.headcount historical.metrics.metrics"
 
 .zuora_extract: &zuora_extract
   variables:
@@ -103,23 +98,11 @@
   variables:
     FIXED_SFDC_PASSWORD: $SFDC_PASSWORD_NOTOKEN
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - pip3 install salesforce-bulk # TODO: add me to the container
-    - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema salesforce apply_schema"
-    - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema salesforce export"
-
-# DEPRECATED
-.sfdc_kettle_extract: &sfdc_kettle_extract
-  variables:
-    FIXED_SFDC_PASSWORD: $SFDC_PASSWORD
-  stage: extract
-  <<: *job_definition
-  script:
-    - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
-    - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
-    - ci_helpers.py use_proxy "kitchen.sh -file=elt/sfdc_kettle/sfdc_extract.kjb -level=Minimal"
+    - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema sfdc apply_schema"
+    - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema sfdc export"
 
 .domains_extract: &domains_extract
   stage: extract
@@ -131,7 +114,6 @@
   variables:
     GITHOST_STRIPE_API_KEY_SK: $GITHOST_STRIPE_API_KEY_SK
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_githost apply_schema"
@@ -141,7 +123,6 @@
   variables:
     ABOUT_GITLAB_STRIPE_API_KEY_SK: $ABOUT_GITLAB_STRIPE_API_KEY_SK
   stage: extract
-  allow_failure: true
   <<: *job_definition
   script:
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_about_gitlab apply_schema"
@@ -283,14 +264,6 @@ sfdc:
     variables:
       - $SFDC
 
-sfdc_kettle:
-  <<: *sfdc_kettle_extract
-  only:
-    refs:
-      - master
-    variables:
-      - $SFDC_KETTLE
-
 spreadsheet_extract:
   stage: extract
   <<: *spreadsheet_extract
@@ -369,7 +342,6 @@ marketo_manual:
 
 netsuite_backlog_manual:
   stage: extract
-  allow_failure: true
   <<: *netsuite_backlog
   when: manual
 
@@ -399,14 +371,6 @@ pings_backfill:
 
 sfdc_manual:
   <<: *sfdc_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-sfdc_kettle_manual:
-  <<: *sfdc_kettle_extract
   only:
     - branches
   except:
@@ -559,3 +523,31 @@ variables:
 before_script:
   - export PATH="$CI_PROJECT_DIR/ci_scripts/:$PATH"
   - export PYTHONPATH="$CI_PROJECT_DIR/elt/shared_modules/:$PYTHONPATH"
+
+
+# DEPRECATED
+.sfdc_kettle_extract: &sfdc_kettle_extract
+  variables:
+    FIXED_SFDC_PASSWORD: $SFDC_PASSWORD
+  stage: extract
+  <<: *job_definition
+  script:
+    - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
+    - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
+    - ci_helpers.py use_proxy "kitchen.sh -file=elt/sfdc_kettle/sfdc_extract.kjb -level=Minimal"
+
+sfdc_kettle:
+  <<: *sfdc_kettle_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $SFDC_KETTLE
+
+sfdc_kettle_manual:
+  <<: *sfdc_kettle_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual

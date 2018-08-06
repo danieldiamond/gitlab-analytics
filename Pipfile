@@ -24,6 +24,7 @@ Pyrseas = "*"
 "d32390c" = {path = "./elt/shared_modules", editable = true}
 lxml = "*"
 zeep = "*"
+meltano-extract-common = {editable = true, path = "./elt/shared_modules"}
 
 [dev-packages]
 "flake8" = "*"

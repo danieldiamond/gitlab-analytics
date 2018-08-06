@@ -20,8 +20,7 @@ SELECT
   coalesce(sf.website, external_combined.domain)                                      AS website,
   coalesce(sf.industry, external_combined.industry)                                   AS industry,
   coalesce(sf.description, external_combined.description)                             AS description,
-  coalesce(sf.numberofemployees :: TEXT, external_combined.numberofemployees :: TEXT) AS numberofemployees,
-  coalesce(sf.phone, external_combined.phone)                                    AS phone
+  coalesce(sf.numberofemployees :: TEXT, external_combined.numberofemployees :: TEXT) AS numberofemployees
 FROM sfdc.account AS sf
   INNER JOIN external_combined ON
                                 sf.name = external_combined.name
