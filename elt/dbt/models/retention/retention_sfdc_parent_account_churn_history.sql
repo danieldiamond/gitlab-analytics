@@ -1,3 +1,3 @@
 
 
-{{ retention_sfdc_parent_account_churn_history(12) }}
+{{ retention_sfdc_parent_account_churn_history_calc(12) }}

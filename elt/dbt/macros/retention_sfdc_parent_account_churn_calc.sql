@@ -1,4 +1,4 @@
-{% macro zuora_sfdc_parent_account_churn_calc(n) %}
+{% macro retention_sfdc_parent_account_churn_calc(n) %}
 
 -- This replaces the
 
@@ -31,7 +31,7 @@ WITH zuora_subs AS (
 
     current_subs AS (
       SELECT *
-      FROM {{ ref('zuora_current_subscriptions_parent_account') }}
+      FROM {{ ref('retention_sfdc_parent_account_current_subscriptions') }}
   )
 
 

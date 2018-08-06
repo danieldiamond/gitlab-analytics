@@ -1,13 +1,13 @@
-{% macro zuora_sfdc_f_churn_history(n) %}
+{% macro retention_sfdc_parent_account_churn_history_calc(n) %}
 
 WITH acct_churn AS (
     SELECT *
-    FROM {{ ref('zuora_sfdc_parent_account_churn') }}
+    FROM {{ ref('retention_sfdc_parent_account_churn') }}
 ),
 
     trueups AS (
         SELECT *
-        FROM {{ ref('zuora_sfdc_parent_account_trueup') }}
+        FROM {{ ref('retention_sfdc_parent_account_trueup') }}
 
     )
 

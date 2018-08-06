@@ -26,7 +26,7 @@ WITH zuora_subs AS (
 
     acct_churn AS  (
       SELECT *
-      FROM {{ ref('zuora_sfdc_parent_account_churn') }}
+      FROM {{ ref('retention_sfdc_parent_account_churn') }}
     )
 
 

@@ -44,6 +44,9 @@ models:
           sql_where: 'TRUE'
           unique_key: 'unique_key'
 
+    retention:
+      enabled: true
+      materialized: table
 
     zuora:
       base:
