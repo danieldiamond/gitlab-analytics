@@ -8,3 +8,11 @@ users:
     constraints:
         unique:
             - id
+
+sfdc_accounts_xf:
+    constraints:
+        not_null:
+            - account_id
+            - account_name
+        unique:
+            - account_id
