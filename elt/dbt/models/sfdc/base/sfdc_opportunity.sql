@@ -22,7 +22,7 @@ WITH source AS (
 		sql_source__c as generated_source,
 		COALESCE((initcap(sales_segmentation_o__c)), 'Unknown') as sales_segment,
 		(initcap(ultimate_parent_sales_segment_o__c)) as parent_segment,
-		type as opportunity_type,
+		type as sales_type,
 		closedate as close_date,
 		createddate as created_date,
 		stagename as stage_name,

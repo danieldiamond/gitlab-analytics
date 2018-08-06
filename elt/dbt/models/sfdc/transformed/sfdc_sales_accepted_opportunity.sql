@@ -17,14 +17,14 @@ WITH opportunity AS (
        opportunity.parent_segment,
        opportunity.stage_name,
        opportunity.lead_source,
-       opportunity.opportunity_type as sales_type,
+       opportunity.sales_type,
        opportunity.total_contract_value,
        opportunity.incremental_acv
   FROM opportunity
     LEFT JOIN account
     ON account.account_id = opportunity.account_id
-  WHERE (opportunity.opportunity_type IN ('New Business','Add-On Business') 
-              OR opportunity.opportunity_type IS NULL)
+  WHERE (opportunity.sales_type IN ('New Business','Add-On Business') 
+              OR opportunity.sales_type IS NULL)
   AND   (opportunity.sales_segment = 'Mid-Market' 
               OR opportunity.parent_segment = 'Mid-Market')
   AND   opportunity.sales_segment NOT IN ('Large','Strategic')
@@ -49,14 +49,14 @@ WITH opportunity AS (
          opportunity.parent_segment,
          opportunity.stage_name,
          opportunity.lead_source,
-         opportunity.opportunity_type as sales_type,
+         opportunity.sales_type,
          opportunity.total_contract_value,
          opportunity.incremental_acv
   FROM opportunity 
     LEFT JOIN account  
         ON account.account_id = opportunity.account_id
-  WHERE (opportunity.opportunity_type IN ('New Business','Add-On Business') 
-              OR opportunity.opportunity_type IS NULL)
+  WHERE (opportunity.sales_type IN ('New Business','Add-On Business') 
+              OR opportunity.sales_type IS NULL)
   AND   (opportunity.sales_segment IN ('Large','Strategic') 
               OR opportunity.parent_segment IN ('Large','Strategic'))
   AND   (opportunity.stage_name NOT IN ('00-Pre Opportunity','9-Unqualified','10-Duplicate'))

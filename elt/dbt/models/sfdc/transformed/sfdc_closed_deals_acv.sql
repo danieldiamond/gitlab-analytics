@@ -8,7 +8,7 @@ WITH sfdc_opportunity as (
 
 ), joined as (
 
-    SELECT sfdc_opportunity.opportunity_type as sales_type,
+    SELECT sfdc_opportunity.sales_type,
            sfdc_opportunity.close_date,
            sfdc_opportunity.opportunity_id,
            sfdc_opportunity.owner,
@@ -19,7 +19,7 @@ WITH sfdc_opportunity as (
     FROM sfdc_opportunity 
       INNER JOIN sfdc_account  
       ON sfdc_account.account_id = sfdc_opportunity.account_id
-    WHERE sfdc_opportunity.opportunity_type!= 'Reseller'
+    WHERE sfdc_opportunity.sales_type!= 'Reseller'
     AND   sfdc_opportunity.stage_name IN ('Closed Won')
     AND  (sfdc_opportunity.is_deleted IS FALSE)
 

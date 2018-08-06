@@ -4,7 +4,7 @@ with sfdc_opportunity as (
   FROM {{ref('sfdc_opportunity_xf')}}
 )
 
-SELECT opportunity_type as sales_type,
+SELECT sales_type,
        stage_name,
        close_date,
        owner,
@@ -15,7 +15,7 @@ SELECT opportunity_type as sales_type,
 FROM sfdc_opportunity 
 
 WHERE close_date >= DATE_TRUNC('month',CURRENT_DATE)
-AND   opportunity_type != 'Reseller'
+AND   sales_type != 'Reseller'
 AND   stage_name IN ('0-Pending Acceptance','1-Discovery','2-Scoping',
                     '3-Technical Evaluation','4-Proposal','5-Negotiating',
                     '6-Awaiting Signature')
