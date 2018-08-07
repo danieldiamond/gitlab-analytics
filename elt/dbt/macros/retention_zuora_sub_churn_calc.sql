@@ -28,6 +28,7 @@ WITH zuora_subs AS (
       SELECT
         s.subscription_id,
         s.subscription_name,
+        coalesce(o.account_id, s.account_id)    AS account_id,
         min(c.effective_start_date)             AS year_ago_start_date,
         max(c.effective_end_date)               AS year_ago_end_date,
         sum(c.mrr)                              AS year_ago_mrr,
@@ -46,6 +47,7 @@ WITH zuora_subs AS (
       GROUP BY
         s.subscription_id,
         s.subscription_name,
+        coalesce(o.account_id, s.account_id),
         o.current_mrr,
         o.current_arr,
         COALESCE(o.amount, (0) :: NUMERIC),

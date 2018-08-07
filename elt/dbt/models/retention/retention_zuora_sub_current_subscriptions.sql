@@ -17,6 +17,7 @@ WITH zuora_subs AS (
 
   SELECT
     s_1.subscription_id,
+    s_1.account_id,
     min(s_1.term_start_date)     AS curr_start_date,
     max(s_1.term_end_date)       AS curr_end_date,
     sum(c_1.mrr)                 AS current_mrr,
@@ -27,4 +28,4 @@ WITH zuora_subs AS (
     JOIN zuora_rateplancharge c_1   ON c_1.rate_plan_id :: TEXT = r_1.rate_plan_id :: TEXT
   WHERE c_1.effective_start_date <= current_date
         AND (c_1.effective_end_date > current_date OR c_1.effective_end_date IS NULL)
-  GROUP BY 1
+  GROUP BY 1,2
