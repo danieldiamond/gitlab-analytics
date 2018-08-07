@@ -16,5 +16,5 @@ SELECT a.id AS sfdc_account_id,
        u.name as technical_account_manager
 FROM sfdc.account a
 LEFT OUTER JOIN sfdc.account p ON {{this.schema}}.id15to18(substring(a.ultimate_parent_account__c,11, 15))=p.id
-INNER JOIN sfdc.user u on u.id = a.technical_account_manager_lu__c
+LEFT OUTER JOIN sfdc.user u on u.id = a.technical_account_manager_lu__c
 WHERE a.isdeleted=FALSE
