@@ -1,5 +1,5 @@
 
-retention_sfdc_parent_acount_churn:
+retention_sfdc_parent_account_churn:
   constraints:
     not_null:
       - account_id
@@ -20,7 +20,7 @@ retention_sfdc_parent_account_trueup:
     not_null:
       - account_id
 
-retention_zuora_subchurn:
+retention_zuora_sub_churn:
   constraints:
     not_null:
       - subscription_id
@@ -31,7 +31,7 @@ retention_zuora_sub_churn_history:
       - subscription_id
       - period
 
-retetion_szuora_subcurrent_subscriptions:
+retetion_szuora_sub_current_subscriptions:
   constraints:
     not_null:
       - subscription_id
