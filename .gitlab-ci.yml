@@ -429,7 +429,7 @@ dbt:
     variables:
       - $DBT
 
-dbt_review:
+dbt_run:
   stage: model
   <<: *job_definition
   script:
@@ -441,7 +441,7 @@ dbt_review:
       - branches
   when: manual
 
-dbt_refresh:
+dbt_full_refresh:
   stage: model
   <<: *job_definition
   script:
@@ -523,31 +523,3 @@ variables:
 before_script:
   - export PATH="$CI_PROJECT_DIR/ci_scripts/:$PATH"
   - export PYTHONPATH="$CI_PROJECT_DIR/elt/shared_modules/:$PYTHONPATH"
-
-
-# DEPRECATED
-.sfdc_kettle_extract: &sfdc_kettle_extract
-  variables:
-    FIXED_SFDC_PASSWORD: $SFDC_PASSWORD
-  stage: extract
-  <<: *job_definition
-  script:
-    - envsubst < "elt/config/kettle/kettle.properties" > "$KETTLE_HOME/.kettle/kettle.properties"
-    - cp "elt/config/kettle/repositories.xml" "$KETTLE_HOME/.kettle/repositories.xml"
-    - ci_helpers.py use_proxy "kitchen.sh -file=elt/sfdc_kettle/sfdc_extract.kjb -level=Minimal"
-
-sfdc_kettle:
-  <<: *sfdc_kettle_extract
-  only:
-    refs:
-      - master
-    variables:
-      - $SFDC_KETTLE
-
-sfdc_kettle_manual:
-  <<: *sfdc_kettle_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
