@@ -50,6 +50,17 @@ netsuite_departments:
         unique:
         - department_id
 
+netsuite_expenses:
+    constraints:
+        not_null:
+        - expense_id
+        - transaction_id
+        - transaction_line
+        - account_id
+        - account_name
+        unique: 
+        - expense_id
+
 netsuite_subsidiaries:
     constraints: 
         not_null: 
