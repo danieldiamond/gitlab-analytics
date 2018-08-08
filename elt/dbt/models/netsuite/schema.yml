@@ -31,6 +31,16 @@ netsuite_subsidiaries:
         - subsidiary_id
         - subsidiary_name
 
+netsuite_transaction_lines:
+    constraints: 
+        not_null: 
+        - transaction_line_id
+        - transaction_id
+        - transaction_line
+        - account_id
+        - account_name
+        unique:
+        - transaction_line_id
 
 netsuite_vendors:
     constraints: 
