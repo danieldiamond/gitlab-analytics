@@ -1,5 +1,7 @@
 {% macro retention_sfdc_parent_account_churn_history_cte_calc(the_month) %}
 
+    {% set current_month = get_month_diff_from_current_date(the_month) %}
+
 
     current_subs_{{ the_month }} AS (
       SELECT
@@ -13,11 +15,10 @@
         JOIN zuora_accts a_1            ON s_1.account_id = a_1.account_id :: TEXT
         JOIN zuora_rateplan r_1         ON r_1.subscription_id :: TEXT = s_1.subscription_id
         JOIN zuora_rateplancharge c_1   ON c_1.rate_plan_id :: TEXT = r_1.rate_plan_id :: TEXT
-        JOIN zuora_accts ba_1           ON a_1.account_id :: TEXT = ba_1.account_id
-        JOIN sfdc_acct sa_1             ON ba_1.crm_id = sa_1.account_id :: TEXT
+        JOIN sfdc_acct sa_1             ON a_1.crm_id = sa_1.account_id :: TEXT
         JOIN sfdc_acct pa_1             ON sa_1.ultimate_parent_account_id = pa_1.account_id :: TEXT
-      WHERE c_1.effective_start_date <= (date_trunc('month', current_date::DATE) - '{{ the_month }} month'::INTERVAL - '1 day'::INTERVAL)
-            AND (c_1.effective_end_date > (date_trunc('month', current_date::DATE) - '{{ the_month }} month'::INTERVAL - '1 day'::INTERVAL) OR c_1.effective_end_date IS NULL)
+      WHERE c_1.effective_start_date <= '{{ current_month }}'::DATE
+            AND (c_1.effective_end_date > '{{ current_month }}'::DATE OR c_1.effective_end_date IS NULL)
       GROUP BY pa_1.account_id
     ),
 
@@ -37,12 +38,11 @@
         JOIN zuora_accts a ON s.account_id = a.account_id :: TEXT
         JOIN zuora_rateplan r ON r.subscription_id :: TEXT = s.subscription_id
         JOIN zuora_rateplancharge c ON c.rate_plan_id :: TEXT = r.rate_plan_id :: TEXT
-        JOIN zuora_accts ba ON a.account_id :: TEXT = ba.account_id
-        JOIN sfdc_acct sa ON ba.crm_id = sa.account_id :: TEXT
+        JOIN sfdc_acct sa ON a.crm_id = sa.account_id :: TEXT
         JOIN sfdc_acct pa ON sa.ultimate_parent_account_id = pa.account_id :: TEXT
         LEFT JOIN current_subs_{{ the_month }} o ON o.account_id :: TEXT = pa.account_id :: TEXT
-      WHERE c.effective_start_date <= (date_trunc('month', current_date::DATE) - '{{ the_month }} month'::INTERVAL - '1 day'::INTERVAL - '1 year'::INTERVAL) AND
-            (c.effective_end_date > (date_trunc('month', current_date::DATE) -'{{ the_month }} month'::INTERVAL - '1 day'::INTERVAL - '1 year'::INTERVAL)
+      WHERE c.effective_start_date <= '{{ current_month }}'::DATE - '1 year'::INTERVAL AND
+            (c.effective_end_date > '{{ current_month }}'::DATE - '1 year'::INTERVAL
                 OR c.effective_end_date IS NULL)
       GROUP BY
         pa.account_id,
@@ -87,8 +87,7 @@
         JOIN zuora_accts a ON s.account_id = a.account_id :: TEXT
         JOIN zuora_rateplan r ON r.subscription_id :: TEXT = s.subscription_id
         JOIN zuora_rateplancharge c ON c.rate_plan_id :: TEXT = r.rate_plan_id :: TEXT
-        JOIN zuora_accts ba ON a.account_id :: TEXT = ba.account_id
-        JOIN sfdc_acct sa ON ba.crm_id = sa.account_id :: TEXT
+        JOIN sfdc_acct sa ON a.crm_id = sa.account_id :: TEXT
         JOIN sfdc_acct pa ON sa.ultimate_parent_account_id = pa.account_id :: TEXT
         JOIN acct_churn_{{ the_month }} z ON z.account_id :: TEXT = pa.account_id :: TEXT
       WHERE r.rate_plan_name :: TEXT = 'Trueup' :: TEXT
