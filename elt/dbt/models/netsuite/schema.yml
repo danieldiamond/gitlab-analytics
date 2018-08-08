@@ -1,0 +1,10 @@
+netsuite_accounts:
+    constraints: 
+        not_null: 
+        - internal_account_id
+        - account_name
+        - account_type
+        unique:
+        - internal_account_id
+        - account_name
+
