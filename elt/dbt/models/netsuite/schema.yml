@@ -20,6 +20,17 @@ netsuite_currencies:
         - currency_name
         - currency_symbol
 
+netsuite_subsidiaries:
+    constraints: 
+        not_null: 
+        - subsidiary_id
+        - subsidiary_name
+        - currency
+        - country
+        unique:
+        - subsidiary_id
+        - subsidiary_name
+
 
 netsuite_vendors:
     constraints: 
@@ -29,4 +40,5 @@ netsuite_vendors:
         unique:
         - internal_vendor_id
         - entity_name
+
 
