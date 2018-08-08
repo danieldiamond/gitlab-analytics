@@ -1,17 +1,6 @@
-{% macro retention_sfdc_parent_account_churn_history_calc(n) %}
 
-WITH acct_churn AS (
-    SELECT *
-    FROM {{ ref('retention_sfdc_parent_account_churn') }}
-),
+{% macro retention_zuora_subscription_churn_history_select_calc(the_month) %}
 
-    trueups AS (
-        SELECT *
-        FROM {{ ref('retention_sfdc_parent_account_trueup') }}
-
-    )
-
-{% for the_month in range(0, n + 1) %}
         SELECT
           date_part('year', current_date - '{{ the_month }} month'::INTERVAL) || '/M' ||
           CASE
@@ -19,7 +8,9 @@ WITH acct_churn AS (
                 THEN '0' || date_part('month', current_date - '{{ the_month }} month'::INTERVAL) :: TEXT
             ELSE date_part('month', current_date - '{{ the_month }} month'::INTERVAL) :: TEXT
                 END                            AS period,
+          s.subscription_id,
           s.account_id,
+          s.crm_id,
           s.year_ago_start_date,
           s.year_ago_end_date,
           s.year_ago_mrr,
@@ -33,17 +24,7 @@ WITH acct_churn AS (
           COALESCE(t.current_trueup, 0 :: NUMERIC)                                                                                AS current_trueup,
           round(COALESCE(t.current_trueup, 0 :: NUMERIC) + s.current_arr, 2)                                                      AS current_total,
           COALESCE(t.current_trueup, 0 :: NUMERIC) + s.current_arr - (COALESCE(t.year_ago_trueup, 0 :: NUMERIC) + s.year_ago_arr) AS change
-        FROM acct_churn s
-          LEFT JOIN trueups t ON t.account_id :: TEXT = s.account_id :: TEXT
-
-    {% if  the_month != n %}
-
-            UNION ALL
-
-        {% else %}
-
-        {%- endif -%}
-
-     {% endfor %}
+        FROM acct_churn_linked_{{ the_month }} s
+          LEFT JOIN trueups_{{ the_month }} t ON t.subscription_id :: TEXT = s.subscription_id:: TEXT
 
 {% endmacro %}
