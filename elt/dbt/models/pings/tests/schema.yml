@@ -7,7 +7,7 @@ pings_usage_data:
 pings_usage_data_boolean:
   constraints:
     unique:
-      -unique_key
+      - unique_key
 
     not_null:
       - unique_key

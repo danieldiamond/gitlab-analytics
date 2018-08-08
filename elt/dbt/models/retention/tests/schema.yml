@@ -1,42 +1,12 @@
 
-retention_sfdc_parent_account_churn:
-  constraints:
-    not_null:
-      - account_id
-
 retention_sfdc_parent_account_churn_history:
   constraints:
     not_null:
       - account_id
       - period
 
-retetion_sfdc_parent_account_current_subscriptions:
-  constraints:
-    not_null:
-      - account_id
-
-retention_sfdc_parent_account_trueup:
-  constraints:
-    not_null:
-      - account_id
-
-retention_zuora_sub_churn:
-  constraints:
-    not_null:
-      - subscription_id
-
-retention_zuora_sub_churn_history:
+retention_zuora_subscription_churn_history:
   constraints:
     not_null:
       - subscription_id
       - period
-
-retetion_szuora_sub_current_subscriptions:
-  constraints:
-    not_null:
-      - subscription_id
-
-retention_zuora_sub_trueup:
-  constraints:
-    not_null:
-      - subscription_id

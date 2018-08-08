@@ -1,5 +1,7 @@
 {% macro retention_zuora_subscription_churn_history_cte_calc(the_month) %}
 
+    {% set current_month = get_month_diff_from_current_date(the_month) %}
+
     current_subs_{{ the_month }} AS (
       SELECT
         s_1.subscription_id,
@@ -12,8 +14,8 @@
       FROM zuora_subs s_1
         JOIN zuora_rateplan r_1         ON r_1.subscription_id :: TEXT = s_1.subscription_id
         JOIN zuora_rateplancharge c_1   ON c_1.rate_plan_id :: TEXT = r_1.rate_plan_id :: TEXT
-      WHERE c_1.effective_start_date <= (date_trunc('month', current_date::DATE) - '{{ the_month }} month'::INTERVAL - '1 day'::INTERVAL)
-            AND (c_1.effective_end_date > (date_trunc('month', current_date::DATE) - '{{ the_month }} month'::INTERVAL - '1 day'::INTERVAL) OR c_1.effective_end_date IS NULL)
+      WHERE c_1.effective_start_date <= '{{ current_month }}'::DATE
+            AND (c_1.effective_end_date > '{{ current_month }}'::DATE OR c_1.effective_end_date IS NULL)
       GROUP BY 1,2
     ),
 
@@ -34,8 +36,8 @@
         JOIN zuora_rateplan r ON r.subscription_id :: TEXT = s.subscription_id
         JOIN zuora_rateplancharge c ON c.rate_plan_id :: TEXT = r.rate_plan_id :: TEXT
         LEFT JOIN current_subs_{{ the_month }} o ON o.subscription_id :: TEXT = s.subscription_id:: TEXT
-      WHERE c.effective_start_date <= (date_trunc('month', current_date::DATE) - '{{ the_month }} month'::INTERVAL - '1 day'::INTERVAL - '1 year'::INTERVAL) AND
-            (c.effective_end_date > (date_trunc('month', current_date::DATE) -'{{ the_month }} month'::INTERVAL - '1 day'::INTERVAL - '1 year'::INTERVAL)
+      WHERE c.effective_start_date <= '{{ current_month }}'::DATE - '1 year'::INTERVAL AND
+            (c.effective_end_date > '{{ current_month }}'::DATE - '1 year'::INTERVAL
                 OR c.effective_end_date IS NULL)
       GROUP BY
         s.subscription_id,
