@@ -8,6 +8,18 @@ netsuite_accounts:
         - internal_account_id
         - account_name
 
+netsuite_currencies:
+    constraints: 
+        not_null: 
+        - currency_id
+        - currency_name
+        - currency_symbol
+        - exchange_rate
+        unique:
+        - currency_id
+        - currency_name
+        - currency_symbol
+
 
 netsuite_vendors:
     constraints: 

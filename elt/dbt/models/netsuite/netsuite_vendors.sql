@@ -1,5 +1,9 @@
+{#
+-- Netsuite Docs: http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2016_1/schema/record/vendor.html
+#}
+
 with base as (
-	
+
 		SELECT *
 		FROM netsuite.vendors
 
