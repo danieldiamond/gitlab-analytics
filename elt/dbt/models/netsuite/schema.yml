@@ -8,3 +8,13 @@ netsuite_accounts:
         - internal_account_id
         - account_name
 
+
+netsuite_vendors:
+    constraints: 
+        not_null: 
+        - internal_vendor_id
+        - entity_name
+        unique:
+        - internal_vendor_id
+        - entity_name
+
