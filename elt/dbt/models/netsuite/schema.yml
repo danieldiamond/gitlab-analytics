@@ -42,6 +42,14 @@ netsuite_customers:
         - customer_id
         - entity_name
 
+netsuite_departments:
+    constraints:
+        not_null:
+        - department_id
+        - department_name
+        unique:
+        - department_id
+
 netsuite_subsidiaries:
     constraints: 
         not_null: 
