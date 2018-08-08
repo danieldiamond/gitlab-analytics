@@ -8,6 +8,19 @@ netsuite_accounts:
         - internal_account_id
         - account_name
 
+netsuite_applications:
+    constraints:
+        not_null:
+        - application_id
+        - transaction_id
+        - transaction_line
+        - application_amount
+        - doc_id
+        - application_type
+        unique:
+        - application_id
+
+
 netsuite_currencies:
     constraints: 
         not_null: 
@@ -19,6 +32,15 @@ netsuite_currencies:
         - currency_id
         - currency_name
         - currency_symbol
+
+netsuite_customers:
+    constraints: 
+        not_null: 
+        - customer_id
+        - entity_name
+        unique:
+        - customer_id
+        - entity_name
 
 netsuite_subsidiaries:
     constraints: 
