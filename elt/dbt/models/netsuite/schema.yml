@@ -94,6 +94,14 @@ netsuite_transaction_lines:
         unique:
         - transaction_line_id
 
+netsuite_transactions:
+    constraints:
+        not_null:
+        - transaction_id
+        - transaction_date
+        unique:
+        - transaction_id
+
 netsuite_vendors:
     constraints: 
         not_null: 
