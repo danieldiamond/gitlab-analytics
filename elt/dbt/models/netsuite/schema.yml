@@ -72,6 +72,17 @@ netsuite_subsidiaries:
         - subsidiary_id
         - subsidiary_name
 
+netsuite_transaction_items:
+    constraints:
+        not_null:
+        - transaction_item_id
+        - transaction_id
+        - transaction_line
+        - item_id
+        - item_name
+        unique:
+        - transaction_item_id
+
 netsuite_transaction_lines:
     constraints: 
         not_null: 
