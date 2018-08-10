@@ -28,7 +28,7 @@ WITH zuora_subs AS (
 
     {% for the_month in range(0, n + 1) %}
 
-        {{ retention_sfdc_parent_account_churn_history_cte_calc(the_month) }}
+        {{ retention_sfdc_child_account_churn_history_cte_calc(the_month) }}
 
         {% if  the_month != n %}
 
@@ -43,7 +43,7 @@ WITH zuora_subs AS (
 
     {% for the_month in range(0, n + 1) %}
 
-        {{ retention_sfdc_parent_account_churn_history_select_calc(the_month) }}
+        {{ retention_sfdc_child_account_churn_history_select_calc(the_month) }}
 
         {% if  the_month != n %}
 
