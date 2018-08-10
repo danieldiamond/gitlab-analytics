@@ -6,10 +6,10 @@ WITH source AS (
 ), renamed AS (
 
 
-	SELECT uniquekey as primary_key,
+	SELECT uniquekey::integer as primary_key,
 			month::date as month_of,
 			function as function,
-			employee_cnt as employee_count,
+			employee_cnt::integer as employee_count,
 			
 			--metadata
 			TIMESTAMP 'epoch' + updated_at * INTERVAL '1 second' as updated_at
