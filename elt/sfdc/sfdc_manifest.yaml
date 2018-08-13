@@ -1296,6 +1296,7 @@ opportunity:
   start_date__c: date
   sub_region_o__c: character varying
   subscription_start_date__c: date
+  swing_deal__c: boolean
   syncedquoteid: character varying
   systemmodstamp: timestamp without time zone
   term_end_date__c: date
