@@ -28,7 +28,7 @@ SELECT joined.*,
            WHEN ultimate_parent_account_segment IN('Large', 'Strategic')
                 OR account_segment IN('Large', 'Strategic') THEN TRUE
            ELSE FALSE
-       END AS is_large_and_up
+       END AS is_large_and_up,
       CASE
            WHEN ultimate_parent_account_segment_new IN('Large', 'Strategic')
                 OR new_account_segment IN('Large', 'Strategic') THEN TRUE

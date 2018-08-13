@@ -14,7 +14,7 @@ SELECT a.id AS sfdc_account_id,
        a.health__c as health_score,
        a.health_score_reasons__c as health_score_reasons,
        u.name as technical_account_manager,
-       a.sales_segmentation_new__c as new_sales_segmentation
+       a.sales_segmentation_new__c as new_sales_segmentation,
        a.number_of_open_opportunities__c as count_open_opportunities
 FROM sfdc.account a
 LEFT OUTER JOIN sfdc.account p ON {{this.schema}}.id15to18(substring(a.ultimate_parent_account__c,11, 15))=p.id
