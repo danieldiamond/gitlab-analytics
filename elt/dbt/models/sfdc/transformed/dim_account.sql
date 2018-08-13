@@ -23,5 +23,7 @@ SELECT row_number() OVER (
        Is_LAU,
        health_score,
        health_score_reasons,
-       technical_account_manager
+       technical_account_manager,
+       new_sales_segmentation,
+       count_open_opportunities
 FROM account 

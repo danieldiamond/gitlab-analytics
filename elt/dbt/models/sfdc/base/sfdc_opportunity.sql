@@ -61,6 +61,7 @@ WITH source AS (
         push_counter__c as pushed_count,
         upside_iacv__c as upside_iacv,
         upside_swing_deal_iacv__c as upside_swing_deal_iacv,
+        swing_deal__c as is_swing_deal,
 		CASE WHEN
             incremental_acv_2__c :: DECIMAL < 5000
             THEN '1 - Small (<5k)'
