@@ -3,7 +3,7 @@ import psycopg2
 import psycopg2.sql
 
 from elt.cli import DateWindow
-from elt.db import db_open
+from elt.db import DB
 from datetime import datetime
 
 from soap_api.netsuite_soap_client import NetsuiteClient
@@ -50,7 +50,7 @@ def extract_transaction_type(args):
         schema = psycopg2.sql.Identifier(args.schema)
         table = psycopg2.sql.Identifier(Transaction.schema.table_name(args))
 
-        with db_open() as db:
+        with DB.default.open() as db:
             cursor = db.cursor()
             update_query = psycopg2.sql.SQL("""
                     UPDATE {0}.{1}

@@ -3,7 +3,7 @@ import asyncio
 
 from elt.cli import ActionEnum, parser_db_conn, parser_date_window, parser_output, parser_logging
 from elt.utils import setup_logging, setup_db
-from elt.db import db_open
+from elt.db import DB
 from elt.schema import schema_apply
 from elt.error import with_error_exit_code
 from schema import describe_schema
@@ -18,7 +18,7 @@ def action_export(args):
 
 def action_schema_apply(args):
     schema = describe_schema(args)
-    with db_open() as db:
+    with DB.default.open() as db:
         schema_apply(db, schema)
 
 
