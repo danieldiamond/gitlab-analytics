@@ -1,6 +1,6 @@
 with quotelineitems as (
     SELECT opportunity_id
-           FROM {{ ref('quotelineitems') }} 
+           FROM {{ ref('quotelineitems') }}
 ),
 
 count_of_opp_items as(
@@ -21,22 +21,22 @@ SELECT oli.id,
        oli.quantity,
        CASE
            WHEN sum(oli.totalprice) OVER (PARTITION BY o.id) = 0 THEN 0
-           WHEN i.num_line_tems > 1 THEN round(o.Incremental_ACV__c * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)), 4)
+           WHEN i.num_line_tems > 1 THEN round((o.Incremental_ACV__c * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)))::numeric, 4)
            ELSE o.Incremental_ACV__c
        END AS iacv,
        CASE
            WHEN sum(oli.totalprice) OVER (PARTITION BY o.id) = 0 THEN 0
-           WHEN i.num_line_tems > 1 THEN round(o.ACV__c * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)), 4)
+           WHEN i.num_line_tems > 1 THEN round((o.ACV__c * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)))::numeric, 4)
            ELSE o.ACV__c
        END AS acv,
        CASE
            WHEN sum(oli.totalprice) OVER (PARTITION BY o.id) = 0 THEN 0
-           WHEN i.num_line_tems > 1 THEN round(o.Renewal_ACV__c * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)), 4)
+           WHEN i.num_line_tems > 1 THEN round((o.Renewal_ACV__c * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)))::numeric, 4)
            ELSE o.Renewal_ACV__c
        END AS renewal_acv,
        CASE
            WHEN sum(oli.totalprice) OVER (PARTITION BY o.id) = 0 THEN 0
-           WHEN i.num_line_tems > 1 THEN round(o.Amount * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)), 4)
+           WHEN i.num_line_tems > 1 THEN round((o.Amount * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)))::numeric, 4)
            ELSE o.Amount
        END AS tcv
 FROM sfdc.opportunitylineitem oli
@@ -48,7 +48,7 @@ WHERE o.isdeleted = FALSE
   AND oli.isdeleted = FALSE
   AND NOT (o.id::text IN
              (SELECT opportunity_id
-              FROM quotelineitems)) 
+              FROM quotelineitems))
   )
 
 select * from opplineitems

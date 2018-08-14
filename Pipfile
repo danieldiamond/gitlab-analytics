@@ -25,6 +25,7 @@ Pyrseas = "*"
 lxml = "*"
 zeep = "*"
 google-cloud-storage = ">=1.10.0"
+meltano-extract-common = {editable = true, path = "./elt/shared_modules"}
 
 [dev-packages]
 "flake8" = "*"

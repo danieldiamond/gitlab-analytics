@@ -70,6 +70,10 @@ SELECT o.sfdc_id AS opportunity_id
        , i.tcv
        , o.deal_size
        , o.is_won
+       , o.upside_iacv
+       , o.upside_swing_deal_iacv
+       , o.is_swing_deal
+       , o.merged_opportunity_id
 FROM lineitems i
 INNER JOIN opportunity o ON i.opportunity_id=o.sfdc_id
 INNER JOIN oppstage s ON o.stagename=s.primary_label

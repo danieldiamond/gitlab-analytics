@@ -1,15 +1,63 @@
 #!/usr/bin/env python3
 
+import json
 import sys
+import time
 import pandas as pd
+import requests as r
 
 from atexit import register
-from functools import partial
+from functools import partial, wraps
 from logging import info, error, basicConfig
 from os import environ as env, remove
 from subprocess import run, PIPE, Popen, _active, _cleanup
 from typing import Tuple
 from fire import Fire
+
+
+def retry_or_notify(exceptions, tries: int=4, backoff: int=2):
+    """
+    Retry calling the decorated function using an exponential backoff,
+    if all attempts fail then send a slack notification.
+
+    Args:
+        exceptions: The exception to check. may be a tuple of
+            exceptions to check.
+        tries: Number of times to try (not retry) before giving up.
+        backoff: Backoff multiplier (e.g. value of 2 will double the delay
+            each retry).
+    """
+    tries = int(env.get('MELT_CI_RETRIES', tries))
+    backoff = int(env.get('MELT_CI_BACKOFF', backoff))
+    def deco_retry(f):
+
+        @wraps(f)
+        def f_retry(*args, **kwargs):
+
+            for attempt in range(1, tries + 1):
+                mdelay = attempt * backoff
+                try:
+                    return f(*args, **kwargs)
+                except exceptions as e:
+                    msg = '{}, Attempt: {}, Retrying in {} seconds...'.format(e, attempt, mdelay)
+                    error(msg)
+                    time.sleep(mdelay)
+                    continue
+            else:
+                if env['CI_COMMIT_REF_NAME'] == 'master':
+                    job_msg = 'Job Failed: {} -- {}'.format(env['CI_JOB_NAME'], env['CI_JOB_URL'])
+                    stage_msg = 'Stage: {}'.format(env['CI_JOB_STAGE'])
+                    pipeline_msg = 'Pipeline: {}'.format(env['CI_PIPELINE_URL'])
+                    triggered_msg = 'Triggered: {}'.format(env['CI_PIPELINE_SOURCE'])
+                    command_msg = 'Command: {}'.format(*args)
+                    slack_payload = {'text': "\n".join([job_msg, stage_msg,
+                                                        pipeline_msg, triggered_msg,
+                                                        command_msg])}
+                    r.post(env['SLACK_WEBHOOK_URL'], data=json.dumps(slack_payload))
+            return f(*args, **kwargs)
+
+        return f_retry  # true decorator
+    return deco_retry
 
 
 @register
@@ -115,7 +163,8 @@ def async_run(command: str, instance: str) -> None:
     return
 
 
-def use_cloudsqlproxy(command: str=None) -> None:
+@retry_or_notify(Exception)
+def use_cloudsqlproxy(command: str) -> None:
     """
     Execute a command while running the cloud sql proxy in the background.
     """
@@ -128,16 +177,9 @@ def use_cloudsqlproxy(command: str=None) -> None:
                                              instance_name),
                       shell=True)
 
-    # Make sure the proxy hasn't failed before running the command
-    if sql_proxy.poll():
-        error('The proxy has failed.')
-        sys.exit(1)
     info('Proxy is running.')
-    try:
-        run(command, shell=True, check=True)
-    except:
-        error('Sub command failed.')
-        sys.exit(1)
+    run(command, shell=True, check=True)
+
     return
 
 

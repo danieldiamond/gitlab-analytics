@@ -1,5 +1,9 @@
 WITH stages AS (
         SELECT * FROM {{ ref('sfdc_opportunitystage') }}
+),
+
+opps as (
+    SELECT * FROM sfdc.opportunity
 )
 
 SELECT
@@ -47,7 +51,11 @@ SELECT
   ELSE '5 - Unknown' END                                          AS deal_size,
   push_counter__c,
   s.is_won,
-  lastactivitydate -- will need to be replaced
-FROM sfdc.opportunity o
+  lastactivitydate, -- will need to be replaced
+  o.upside_iacv__c as upside_iacv,
+  o.upside_swing_deal_iacv__c as upside_swing_deal_iacv,
+  o.swing_deal__c as is_swing_deal,
+  o.merged_opportunity__c as merged_opportunity_id
+FROM opps o
 INNER JOIN stages s ON o.stagename=s.primary_label
 WHERE o.isdeleted = FALSE

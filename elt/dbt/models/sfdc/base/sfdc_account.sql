@@ -6,8 +6,8 @@ WITH source AS (
 ), renamed AS(
 
 	SELECT 
-		id as account_id, 
-		name as account_name,
+		id                      as account_id,
+		name                    as account_name,
 		-- keys
 		account_id_18__c as account_id_18,
 		masterrecordid as master_record_id,
@@ -15,7 +15,7 @@ WITH source AS (
 		parentid as parent_id,
 		primary_contact_id__c as primary_contact_id,
 		recordtypeid as record_type_id,
-		ultimate_parent_id__c as utimate_parent_id,
+		ultimate_parent_account_id__c as utimate_parent_id,
 		partner_vat_tax_id__c as partner_vat_tax_id,
 
 		-- key people GL side
@@ -26,7 +26,7 @@ WITH source AS (
 		--account_manager_account_team__c as account_manager_account_team ## Why are these all null?
 		--account_manager_lu__c
 		account_owner_calc__c as account_owner,
-		account_owner_manager_email__c as account_owner_manager,
+		-- account_owner_manager_email__c as account_owner_manager,
 		account_owner_team__c as account_owner_team,
 		business_development_rep__c as business_development_rep,
 		business_development_rep_account_team__c as business_development_rep_team,
@@ -34,17 +34,25 @@ WITH source AS (
 		sdr__c as sales_development_rep,
 		sdr_account_team__c as sales_development_rep_team,
 		solutions_architect__c as solutions_architect,
+		technical_account_manager_lu__c as technical_account_manager_id, -- lookup on user
 
 		--key people outside
-		bill_to_email__c as bill_to_email,
+		-- bill_to_email__c as bill_to_email,
 
 
 		-- info
-		sfdc.id15to18(substring(ultimate_parent_account__c,11, 15)) as ultimate_parent_account,
+		{{this.schema}}.id15to18(
+              substring(
+                  regexp_replace(ultimate_parent_account__c,
+                                '_HL_ENCODED_/|<a\s+href="/', '')
+                  , 1
+                  , 15)
+          )                     as ultimate_parent_account_id,
 		type as account_type,
 		industry,
 		product_category__c as product_category,
 		customer_since__c::date as customer_since_date,
+		sales_segmentation_new__c as new_account_segment,
 		sales_segmentation__c as account_segment, -- I would this be called account_segment or sales_segment, but I think this is a breaking change
 
 		--present state info
@@ -56,7 +64,6 @@ WITH source AS (
 		count_of_active_subscription_charges__c as count_active_subscription_charges,
 		count_of_active_subscriptions__c as count_active_subscriptions,
 		count_of_billing_accounts__c as count_billing_accounts,
-		count_of_cross_sell_opps__c as count_cross_sell_opportunities,
 		count_of_new_business_won_opps__c as count_of_new_business_won_opportunities,
 		count_of_open_renewal_opportunities__c as count_open_renewal_opportunities,
 		count_of_opportunities__c as count_opportunities,
@@ -65,6 +72,7 @@ WITH source AS (
 		concurrent_ee_subscriptions__c as count_concurrent_ee_subscriptions,
 		ce_instances__c as count_ce_instances,
 		active_ce_users__c as count_active_ce_users,
+		number_of_open_opportunities__c                 as count_open_opportunities,
 		using_ce__c as count_using_ce,
 
 
@@ -78,11 +86,11 @@ WITH source AS (
 		lastreferenceddate as last_referenced_date,
 		lastvieweddate as last_viewed_date,
 		systemmodstamp
-		
 
 
 	FROM source
 	WHERE id IS NOT NULL
+	AND isdeleted = FALSE
 
 )
 

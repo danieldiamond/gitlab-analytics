@@ -22,8 +22,6 @@ WITH source AS (
 		title as contact_title,
 		role__c as contact_role,
 		mobilephone as mobile_phone,
-		email,
-		phone,
 		person_score__c as person_score,
 
 		department as department,
