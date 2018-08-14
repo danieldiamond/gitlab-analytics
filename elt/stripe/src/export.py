@@ -19,9 +19,8 @@ PRODUCTS_LIST_URI = '/products'
 REFUNDS_LIST_URI = '/refunds'
 
 DB.setup()
-engine = DB.engine()
-Session = sessionmaker(bind=engine)
-session = Session()
+engine = DB.default.engine
+session = DB.default.create_session()
 
 auth = get_basic_auth(os.getenv(api_key_name), '')
 

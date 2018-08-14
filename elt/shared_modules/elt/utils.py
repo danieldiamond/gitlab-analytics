@@ -70,7 +70,7 @@ def setup_db(args=None):
 
 def setup_logging(args):
     logging.basicConfig(stream=sys.stdout,
-                        format="[%(levelname)s][%(asctime)s] %(message)s",
+                        format="[%(threadName)10s][%(levelname)s][%(asctime)s] %(message)s",
                         level=int(args.log_level))
 
 

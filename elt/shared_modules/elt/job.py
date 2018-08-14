@@ -1,16 +1,16 @@
 import psycopg2
 import json
-import sqlalchemy.types as types
 import logging
+import sqlalchemy.types as types
 
-from psycopg2.sql import Identifier, SQL, Placeholder
 from enum import Enum
 from functools import partial
+from psycopg2.sql import Identifier, SQL, Placeholder
+from sqlalchemy import inspect, Column
+from sqlalchemy.ext.mutable import MutableDict
 from elt.db import DB, SystemModel
 from elt.schema import Schema, Column as SchemaColumn, DBType
 from elt.error import Error
-from sqlalchemy import inspect, Column
-from sqlalchemy.ext.mutable import MutableDict
 
 
 PG_SCHEMA = 'meltano'
@@ -54,9 +54,11 @@ class Job(SystemModel):
     ended_at = Column(types.DateTime)
     payload = Column(MutableDict.as_mutable(types.JSON))
 
+
     def __init__(self, **kwargs):
         kwargs['state'] = kwargs.get('state', State.IDLE)
         super().__init__(**kwargs)
+
 
     def transit(self, state: State) -> (State, State):
         transition = (self.state, state)
@@ -71,9 +73,11 @@ class Job(SystemModel):
         logging.debug("Job {} → {}.".format(self, state))
         return transition
 
+
     def __repr__(self):
         return "<Job(id='%s', elt_uri='%s', state='%s')>" % (
             self.id, self.elt_uri, self.state)
+
 
     def describe_schema() -> Schema:
         def job_column(name, data_type, is_nullable=False):
@@ -92,6 +96,7 @@ class Job(SystemModel):
             job_column('payload', DBType.JSON, is_nullable=True),
         ], primary_key_name='id')
 
+
     def save(job):
-        with DB.session() as session:
+        with DB.default.session() as session:
             session.add(job)

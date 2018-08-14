@@ -50,7 +50,7 @@ def item_jobs(item):
 
 
 def recover_jobs(item):
-    with DB.session() as session:
+    with DB.default.session() as session:
         elt_uri = item_elt_uri(item)
         failed_jobs = session.query(Job).filter_by(state=State.FAIL,
                                                    elt_uri=elt_uri).all()
@@ -66,7 +66,7 @@ def item_incremental_time(item):
         logging.info("ZUORA_INCREMENTAL_DATE_OVERRIDE is set: {}".format(INCREMENTAL_DATE))
         return INCREMENTAL_DATE
 
-    with DB.session() as session:
+    with DB.default.session() as session:
         elt_uri = item_elt_uri(item)
         last_job = session.query(Job).filter_by(state=State.SUCCESS, elt_uri=elt_uri) \
                                      .order_by(desc(Job.started_at)) \
@@ -222,7 +222,7 @@ def db_write_incremental(item):
 
     csv_file_name = ".".join((item, "csv"))
     logging.info("[Update] Writing to {}/{}".format(host, db))
-    with DB.open() as db:
+    with DB.default.open() as db:
         integrate_csv(db, csv_file_name,
                     table_name=item.lower(),
                     table_schema=PG_SCHEMA,
@@ -337,7 +337,7 @@ if __name__ == '__main__':
 
     setup_db()
 
-    with DB.open() as db:
+    with DB.default.open() as db:
         schema_apply(db, Job.describe_schema())
         schema_apply(db, describe_schema())
 

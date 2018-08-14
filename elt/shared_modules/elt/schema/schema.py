@@ -14,9 +14,13 @@ class DBType(str, Enum):
     String = 'character varying'
     Double = 'real'
     Integer = 'integer'
+    SmallInteger = 'smallint'
+    BinaryString = 'bytea'
+    Text = 'text'
     Long = 'bigint'
     Boolean = 'boolean'
     Timestamp = 'timestamp without time zone'
+    TimestampTZ = 'timestamp with time zone'
     JSON = 'json'
     ArrayOfInteger = Integer + '[]'
     ArrayOfLong = Long + '[]'
@@ -226,10 +230,10 @@ def schema_apply_column(db_cursor,
     )
 
     if SchemaDiff.COLUMN_OK in diff:
-        logging.debug("[{}]: {}".format(column.column_name, diff))
+        logging.debug("[{}.{}]: {}".format(column.table_name, column.column_name, diff))
 
     if SchemaDiff.COLUMN_CHANGED in diff:
-        raise InapplicableChangeError("{}: {}".format(column, diff))
+        raise InapplicableChangeError("[{}.{}]: cannot apply {}".format(column.table_name, column.column_name, diff))
 
     if SchemaDiff.TABLE_MISSING in diff:
         stmt = "CREATE TABLE {}.{} ({} SERIAL PRIMARY KEY)"

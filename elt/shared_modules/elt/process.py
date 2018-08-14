@@ -6,6 +6,7 @@ import logging
 
 
 def read_header(file):
+    file.seek(0)
     return next(file).rstrip().lower().replace('"', '')
 
 
@@ -90,8 +91,18 @@ def csv_to_temp_table(db_conn, csv_path, *,
                       table_schema,
                       table_name,
                       csv_options={}):
-    with open(csv_path, 'r') as csv_file, \
-         db_conn.cursor() as cursor:
+    with open(csv_path, 'r') as csv_file:
+        csv_file_to_temp_table(db_conn, csv_file,
+                               table_schema=table_schema,
+                               table_name=table_name,
+                               csv_options=csv_options)
+
+
+def csv_file_to_temp_table(db_conn, csv_file, *,
+                           table_schema,
+                           table_name,
+                           csv_options={}):
+    with db_conn.cursor() as cursor:
         header = read_header(csv_file)
         tmp_table_name = create_tmp_table(db_conn,
                                           table_schema,
@@ -117,6 +128,50 @@ def csv_to_temp_table(db_conn, csv_path, *,
         db_conn.commit()
 
         return tmp_table_name
+
+
+def overwrite_to_db_from_csv_file(db_conn, csv_file, *,
+                                  table_schema,
+                                  table_name,
+                                  csv_options={}):
+    """
+    Insert to Postgres DB from a CSV.
+
+    The source table will be flushed before insertion.
+    """
+    try:
+        cursor = db_conn.cursor()
+
+        # Get header row, remove new lines, lowercase
+        header = read_header(csv_file)
+        schema, table = identifiers(table_schema, table_name)
+
+        # flush the table
+        truncate_query = psycopg2.sql.SQL(
+            "TRUNCATE TABLE {}.{}"
+        ).format(schema, table)
+
+        # insert into table
+        copy_query = psycopg2.sql.SQL(
+            "COPY {0}.{1} ({2}) FROM STDIN WITH (%s)" % csv_options_stmt(**csv_options)
+        ).format(
+            schema,
+            table,
+            psycopg2.sql.SQL(', ').join(identifiers(*header.split(',')))
+        )
+
+        logging.debug(truncate_query.as_string(cursor))
+        cursor.execute(truncate_query)
+
+        logging.debug(copy_query.as_string(cursor))
+        logging.info("Copying file")
+        cursor.copy_expert(sql=copy_query, file=csv_file)
+
+        db_conn.commit()
+    except psycopg2.Error as err:
+        logging.error(err)
+    finally:
+        if cursor: cursor.close()
 
 
 def upsert_to_db_from_csv(db_conn, csv_path, *,
@@ -172,20 +227,33 @@ def integrate_csv(db_conn, csv_path, *,
     :param csv_path: name of CSV that you wish to write to table of same name
     :return:
     """
+    logging.info("Importing {} as {}...".format(csv_path, table_name))
+    with open(csv_path, 'r') as csv_file:
+        return integrate_csv_file(db_conn, csv_file,
+                                  table_schema=table_schema,
+                                  table_name=table_name,
+                                  primary_key=primary_key,
+                                  csv_options=csv_options,
+                                  update_action="NOTHING")
+
+
+def integrate_csv_file(db_conn, csv_file, *,
+                       primary_key,
+                       table_schema,
+                       table_name,
+                       csv_options={},
+                       update_action="NOTHING"):
     try:
-        logging.info("Importing {} as {}...".format(csv_path, table_name))
-        tmp_table_name = csv_to_temp_table(db_conn, csv_path,
-                                            table_schema=table_schema,
-                                            table_name=table_name,
-                                            csv_options=csv_options)
+        tmp_table_name = csv_file_to_temp_table(db_conn, csv_file,
+                                                table_schema=table_schema,
+                                                table_name=table_name,
+                                                csv_options=csv_options)
 
-        with open(csv_path, 'r') as csv_file:
-            header = read_header(csv_file)
-
+        header = read_header(csv_file)
         schema, tmp_schema, table, tmp_table = identifiers(table_schema,
-                                                            "pg_temp",
-                                                            table_name,
-                                                            tmp_table_name)
+                                                           "pg_temp",
+                                                           table_name,
+                                                           tmp_table_name)
 
         update_columns = [col for col in header.split(',') if col != primary_key]
         query_stmt = """

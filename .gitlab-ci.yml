@@ -128,6 +128,14 @@
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_about_gitlab apply_schema"
     - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_about_gitlab --days=7 export"
 
+.gitlab_extract: &gitlab_extract
+  stage: extract
+  retry: 1
+  <<: *job_definition
+  script:
+    - ci_helpers.py use_proxy "python3 elt/gitlab/src -S gitlab apply_schema"
+    - ci_helpers.py use_proxy "python3 elt/gitlab/src -S gitlab export"
+
 # ---------------------------------------------------------------------------
 
 # Stages
@@ -222,6 +230,14 @@ domains:
       - master
     variables:
       - $DOMAINS
+
+gitlab:
+  <<: *gitlab_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $GITLAB
 
 lever:
   <<: *lever_extract
@@ -318,6 +334,14 @@ ci_stats_manual:
 
 domains_manual:
   <<: *domains_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+gitlab_manual:
+  <<: *gitlab_extract
   only:
     - branches
   except:
