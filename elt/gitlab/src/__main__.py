@@ -12,7 +12,7 @@ from elt.schema import schema_apply
 from elt.error import InapplicableChangeError, with_error_exit_code
 from elt.cli import parser_db_conn, parser_output, parser_logging
 from elt.job import Job, State
-from elt.db import DB, db_open
+from elt.db import DB
 from elt.utils import setup_logging, setup_db
 
 

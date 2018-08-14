@@ -4,7 +4,7 @@ import psycopg2
 import psycopg2.sql
 import datetime
 
-from elt.db import db_open
+from elt.db import DB
 
 from soap_api.transaction import Transaction
 
@@ -45,7 +45,7 @@ def transaction_backlog(args):
         schema = psycopg2.sql.Identifier(args.schema)
         table = psycopg2.sql.Identifier(Transaction.schema.table_name(args))
 
-        with db_open() as db:
+        with DB.default.open() as db:
             cur = db.cursor()
             query = psycopg2.sql.SQL("""
                     SELECT MIN(last_modified_date)

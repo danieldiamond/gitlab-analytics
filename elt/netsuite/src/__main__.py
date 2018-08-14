@@ -8,7 +8,7 @@ from soap_api.utils.transaction_backlog import transaction_backlog
 
 from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
 from elt.utils import setup_logging, setup_db
-from elt.db import db_open
+from elt.db import DB
 from elt.schema import schema_apply
 from elt.error import with_error_exit_code
 from export import extract
@@ -21,7 +21,7 @@ def action_schema_apply(args):
     """
     supported_entity_classes = NetsuiteClient.supported_entity_classes()
 
-    with db_open() as db:
+    with DB.default.open() as db:
         for entity in supported_entity_classes:
             schema = entity.schema.describe_schema(args)
             schema_apply(db, schema)

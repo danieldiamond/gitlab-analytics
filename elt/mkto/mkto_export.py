@@ -5,7 +5,7 @@ from enum import Enum
 from elt.schema import schema_apply
 from elt.error import with_error_exit_code
 from elt.utils import setup_logging, setup_db
-from elt.db import db_open
+from elt.db import DB
 from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
 from mkto_tools.mkto_bulk import bulk_export
 from mkto_tools.mkto_leads import describe_schema as describe_leads_schema
@@ -26,7 +26,7 @@ def action_token(args):
 
 def action_schema_apply(args):
     schema = schema_func_map[args.source](args)
-    with db_open() as db:
+    with DB.default.open() as db:
         schema_apply(db, schema)
 
 

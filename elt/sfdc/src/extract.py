@@ -7,7 +7,7 @@ import logging
 
 from elt.schema import Schema
 from elt.process import upsert_to_db_from_csv
-from elt.db import db_open
+from elt.db import DB
 from salesforce_bulk import SalesforceBulk
 from config import config
 
@@ -109,7 +109,7 @@ class Extractor:
 
 
 
-        with db_open() as db:
+        with DB.default.open() as db:
             upsert_to_db_from_csv(db, file_path,
                                   table_schema=self.args.schema,
                                   table_name=entity_name,
