@@ -70,7 +70,8 @@ WITH source AS (
 	        '2c92a0fc5f33da20015f43ee78875ec2', -- Wilson Test
 	        '2c92a0ff6446d76201644739829d1e33', -- Test DE
 	        '2c92a0ff605102760160529eb44f287e', -- Wilson TEST
-	        '2c92a0fd55767b97015579b5185d2a6e'  -- Payment Gateway Testing
+	        '2c92a0fd55767b97015579b5185d2a6e', -- Payment Gateway Testing
+	        '2c92a0fe6477df2e0164888d62fc5628'  -- Timostestcompany
 	    )
 
 )
