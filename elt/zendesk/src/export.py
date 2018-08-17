@@ -3,7 +3,6 @@ import requests
 import json
 import functools
 import csv
-import asyncio
 import logging
 
 from tempfile import NamedTemporaryFile
@@ -15,9 +14,22 @@ from elt.db import DB
 from elt.error import ExceptionAggregator, SchemaError
 from elt.schema import DBType, Schema
 from elt.process import upsert_to_db_from_csv
+
+import schema.brand as brand
+import schema.group as group
+import schema.group_membership as group_membership
+import schema.organization as organization
+import schema.organization_membership as organization_membership
+import schema.tag as tag # doesn't work
 import schema.ticket as ticket
+import schema.ticket_event as ticket_event # doesn't work
+import schema.ticket_field as ticket_field # doesn't work
+import schema.user as user
 
-
+# ticket_event is excluded due to a nested JSON issue
+SCHEMAS = [ticket, group, group_membership,
+           organization, organization_membership,
+           brand, user]
 USER = "{}/token".format(os.getenv("ZENDESK_EMAIL"))
 TOKEN = os.getenv("ZENDESK_API_TOKEN")
 ENDPOINT = os.getenv("ZENDESK_ENDPOINT")
@@ -30,22 +42,18 @@ def get_auth():
 
 def extract(args):
     window = DateWindow(args, formatter=datetime.timestamp)
-    exporter = export_file(args, *window.formatted_range())
-    importer = import_file(args, exporter)
-
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(importer)
-    loop.close()
+    for schema in SCHEMAS:
+        exporter = export_file(args, schema, *window.formatted_range())
+        importer = import_file(args, exporter, schema)
 
 
-@asyncio.coroutine
-async def import_file(args, exporter):
+def import_file(args, exporter, schema):
     try:
         for csv_file in exporter:
             with DB.default.open() as db:
                 upsert_to_db_from_csv(db, csv_file,
-                                      primary_key=ticket.PRIMARY_KEY,
-                                      table_name=ticket.table_name(args),
+                                      primary_key=schema.PRIMARY_KEY,
+                                      table_name=schema.table_name(args),
                                       table_schema=args.schema,
                                       csv_options={
                                           'NULL': "'null'",
@@ -55,11 +63,10 @@ async def import_file(args, exporter):
         logging.info("Import finished.")
 
 
-def export_file(args, start_time, end_time):
+def export_file(args, schema, start_time, end_time):
     envelope = None
 
-    def get_tickets(envelope):
-        tickets_url = "{}/incremental/tickets.json".format(ENDPOINT)
+    def get_incremental_response(envelope, schema):
         payload = {
             "start_time": start_time,
         }
@@ -67,39 +74,64 @@ def export_file(args, start_time, end_time):
         if envelope is not None:
             payload['start_time'] = envelope['end_time']
 
-        return requests.get(tickets_url,
+        return requests.get(schema.URL.format(ENDPOINT),
                             params=payload,
                             auth=get_auth())
 
-    def finished(envelope):
+
+    def get_response(envelope, schema):
+
+        if envelope is not None:
+            url = envelope['next_page']
+        else:
+            url = schema.URL.format(ENDPOINT)
+
+        return requests.get(url,
+                            auth=get_auth())
+
+
+    def finished(envelope, schema):
         if envelope is None: return False
 
-        return envelope['count'] < PAGE_SIZE and \
-          envelope['end_time'] <= end_time
+        if schema.incremental:
+            return envelope['count'] < PAGE_SIZE and \
+              envelope['end_time'] <= end_time
+        else:
+            return envelope['next_page'] is None
 
-    while not finished(envelope):
-        envelope = get_tickets(envelope).json()
+    record_count = 0
+    while not finished(envelope, schema):
+        if schema.incremental:
+            envelope = get_incremental_response(envelope, schema).json()
+        if not schema.incremental:
+            envelope = get_response(envelope, schema).json()
+        record_count += len(envelope[schema.table_name(args)])
+        remaining_count = envelope['count']
+        logging_msg = 'Object: {} | Records Exported: {} | Records Remaining: {}'
+        logging.info(logging_msg.format(schema.table_name(args),
+                                        record_count,
+                                        remaining_count - record_count))
 
         with NamedTemporaryFile(mode="w", delete=not args.nodelete) as f:
             f.write(json.dumps(envelope))
             logging.info("Wrote response at {}".format(f.name))
 
         try:
-            schema = ticket.describe_schema(args)
-            yield flatten_csv(args, schema, envelope['tickets'])
+            schema_description = schema.describe_schema(args)
+            yield flatten_csv(args, schema_description, schema, envelope[schema.table_name(args)])
         except SchemaError as e:
-            logging.warn(e)
+            raise(e)
 
 
-def flatten_csv(args, schema, entries):
+def flatten_csv(args, schema_description, schema, entries):
     """
     Flatten a list of objects according to the specfified schema.
 
     Returns the output filename
     """
-    table_name = ticket.table_name(args)
-    output_file = args.output_file or "tickets-{}.csv".format(datetime.utcnow().timestamp())
-    flatten_entry = functools.partial(flatten, schema, table_name)
+    table_name = schema.table_name(args)
+    output_file = args.output_file or "{}-{}.csv".format(table_name, datetime.utcnow().timestamp())
+    flatten_entry = functools.partial(flatten, schema_description, table_name)
 
     header = entries[0]
     with open(output_file, 'w') as csv_file:

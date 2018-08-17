@@ -1,5 +1,4 @@
 import argparse
-import schema.ticket as ticket
 
 from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
 from elt.utils import setup_logging, setup_db
@@ -9,15 +8,36 @@ from elt.error import with_error_exit_code
 from export import extract
 from enum import Enum
 
+import schema.brand as brand
+import schema.group as group
+import schema.group_membership as group_membership
+import schema.organization as organization
+import schema.organization_membership as organization_membership
+import schema.tag as tag
+import schema.ticket as ticket
+import schema.ticket_event as ticket_event
+import schema.ticket_field as ticket_field
+import schema.user as user
+
 
 def action_export(args):
     extract(args)
 
 
 def action_schema_apply(args):
-    schema = ticket.describe_schema(args)
+    schemas = [ticket.describe_schema(args),
+               ticket_event.describe_schema(args),
+               ticket_field.describe_schema(args),
+               tag.describe_schema(args),
+               group.describe_schema(args),
+               group_membership.describe_schema(args),
+               user.describe_schema(args),
+               organization.describe_schema(args),
+               organization_membership.describe_schema(args),
+               brand.describe_schema(args),]
     with DB.default.open() as db:
-        schema_apply(db, schema)
+        for schema in schemas:
+            schema_apply(db, schema)
 
 
 class Action(Enum):
@@ -37,7 +57,7 @@ class Action(Enum):
 
 def parse():
     parser = argparse.ArgumentParser(
-        description="Use the Zendesk Ticket API to retrieve ticket data.")
+        description="Use the Zendesk API to retrieve ticket data.")
 
     parser_db_conn(parser)
     parser_date_window(parser)
