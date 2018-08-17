@@ -4,6 +4,8 @@ from elt.schema import Schema, Column, DBType
 PG_SCHEMA = 'zendesk'
 PG_TABLE = 'tickets'
 PRIMARY_KEY = 'id' # TODO: confirm
+URL = "{}/incremental/tickets.json"
+incremental = True
 
 
 def describe_schema(args) -> Schema:
@@ -56,6 +58,7 @@ def describe_schema(args) -> Schema:
         column("ticket_form_id",         DBType.Long),
         column("brand_id",               DBType.Long),
         column("allow_channelback",      DBType.Boolean),
+        column("allow_attachments",      DBType.Boolean),
         column("is_public",              DBType.Boolean),
         column("created_at",             DBType.Date),
         column("updated_at",             DBType.Date),
