@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-gpread = "*"
+
 oauth2client = "*"
 requests = "*"
 configparser = "*"
@@ -20,12 +20,11 @@ SQLAlchemy = "*"
 pandas = "*"
 Pyrseas = "*"
 "psycopg2" = "==2.7.4"
-"ae7a3bd" = {path = "./elt/shared_modules", editable = true}
-"d32390c" = {path = "./elt/shared_modules", editable = true}
+
 lxml = "*"
 zeep = "*"
 google-cloud-storage = ">=1.10.0"
-meltano-extract-common = {editable = true, path = "./elt/shared_modules"}
+
 
 [dev-packages]
 "flake8" = "*"
