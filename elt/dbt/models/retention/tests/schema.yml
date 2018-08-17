@@ -11,6 +11,12 @@ retention_sfdc_child_account_churn_history:
       - account_id
       - period
 
+retention_zuora_account_churn_history:
+  constraints:
+    not_null:
+      - account_id
+      - period
+
 retention_zuora_subscription_churn_history:
   constraints:
     not_null:
