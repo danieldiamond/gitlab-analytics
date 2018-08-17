@@ -524,8 +524,9 @@ review_stop:
   stage: review_stop
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: NONE
   script:
+    - git clone $CI_REPOSITORY_URL
     - ci_helpers.py delete_instance
   when: manual
   allow_failure: true
