@@ -383,7 +383,7 @@ If you want direct access to the data warehouse (outside of Looker or JupyterHub
 * Set up your local machine by installing the [gcloud SDK](https://cloud.google.com/sdk/docs/).
 * Run `gcloud config set project gitlab-analysis`
 * Run `gcloud auth application-default login`
-* CloudSQL Instances: `bizops` is the master production node, `bizops-replica-1` is the production read-replica, `dev-bizops` is the nightly refreshed dev instance
+* CloudSQL Instances: `analytics` is the master production node, `analytics-replica` is the production read-replica and `meltano` is the nightly refreshed dev instance
 * Connect to cloudsqlproxy `./cloud_sql_proxy -instances=gitlab-analysis:us-west1:<instance_name>=tcp:5432`
 * Connect to the Data Warehouse through the terminal (a separate tab) with `psql "host=127.0.0.1 sslmode=disable dbname=dw_production user=<username>`
 * Alternatively, use your favorite database tool with `host=127.0.0.1` and `dbname=dw_production`
