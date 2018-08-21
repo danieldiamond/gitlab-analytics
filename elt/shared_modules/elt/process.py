@@ -234,7 +234,7 @@ def integrate_csv(db_conn, csv_path, *,
                                   table_name=table_name,
                                   primary_key=primary_key,
                                   csv_options=csv_options,
-                                  update_action="NOTHING")
+                                  update_action=update_action)
 
 
 def integrate_csv_file(db_conn, csv_file, *,
