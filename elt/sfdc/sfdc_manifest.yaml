@@ -853,6 +853,26 @@ opportunitycontactrole:
   opportunityid: character varying
   role: character varying
   systemmodstamp: timestamp without time zone
+executive_business_review__c:
+  id: character varying
+  executive_business_review__c_id_mapping_key: id
+  createdbyid: character varying
+  lastmodifiedbyid: character varying
+  ownerid: character varying
+  name: character varying
+  ebr_account__c: character varying
+  ebr_action_items_takeaways__c: character varying
+  ebr_date__c: timestamp without time zone
+  ebr_notes__c: character varying
+  ebr_number__c: real
+  ebr_outcome__c: character varying
+  ebr_quarter__c: character varying
+  ebr_status__c: character varying
+  ebr_success__c: character varying
+  ebr_summary__c: character varying
+  first_date_success_updated__c: timestamp without time zone
+  quarter_end_date__c: timestamp without time zone
+  quarter_start_date__c: timestamp without time zone
 lead:
   bdr_lu__c: character varying
   bdr_text__c: character varying
