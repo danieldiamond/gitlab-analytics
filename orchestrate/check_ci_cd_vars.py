@@ -5,9 +5,9 @@ import yaml
 import logging
 import argparse
 
-from extract.utils import setup_logging
-from extract.cli import parser_logging
-from extract.error import Error
+from .extract.utils import setup_logging
+from .extract.cli import parser_logging
+from .extract.error import Error
 
 def process_config_file(config_file):
     """
