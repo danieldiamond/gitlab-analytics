@@ -547,4 +547,4 @@ variables:
 
 before_script:
   - export PATH="$CI_PROJECT_DIR/orchestrate/:$PATH"
-  - export PYTHONPATH="$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
+  - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
