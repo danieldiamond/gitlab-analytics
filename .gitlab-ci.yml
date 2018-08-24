@@ -16,7 +16,7 @@
   stage: extract
   <<: *job_definition
   script:
-    - ci_helpers.py use_proxy "bash processes/mkto_processor.sh"
+    - ci_helpers.py use_proxy "bash transform/mkto_processor.sh"
 
 .zendesk_extract: &zendesk_extract
   stage: extract
@@ -108,7 +108,7 @@
   stage: extract
   <<: *job_definition
   script:
-    - ci_helpers.py use_proxy "bash processes/hosts_to_sfdc/python_timecheck.sh"
+    - ci_helpers.py use_proxy "bash transform/hosts_to_sfdc/python_timecheck.sh"
 
 .stripe_extract_githost: &stripe_extract_githost
   variables:
@@ -444,7 +444,7 @@ dbt:
   stage: model
   <<: *job_definition
   script:
-    - cd elt/dbt
+    - cd transform/dbt
     - ci_helpers.py use_proxy "dbt -d run --profiles-dir profile --target prod"
     - ci_helpers.py use_proxy "dbt -d test --profiles-dir profile --target prod"
   only:
@@ -457,7 +457,7 @@ dbt_run:
   stage: model
   <<: *job_definition
   script:
-    - cd elt/dbt
+    - cd transform/dbt
     - ci_helpers.py use_proxy "dbt -d run --profiles-dir profile --target prod"
     - ci_helpers.py use_proxy "dbt -d test --profiles-dir profile --target prod"
   only:
@@ -469,7 +469,7 @@ dbt_full_refresh:
   stage: model
   <<: *job_definition
   script:
-    - cd elt/dbt
+    - cd transform/dbt
     - ci_helpers.py use_proxy "dbt -d run --profiles-dir profile --target prod --full-refresh"
     - ci_helpers.py use_proxy "dbt -d test --profiles-dir profile --target prod"
   when: manual
@@ -480,7 +480,7 @@ sfdc_update:
   stage: update
   <<: *job_definition
   script:
-    - ci_helpers.py use_proxy "python3 processes/sfdc_processor.py"
+    - ci_helpers.py use_proxy "python3 transform/sfdc_processor.py"
   only:
     refs:
       - master
@@ -502,7 +502,7 @@ sfdc_update_manual:
   stage: update
   <<: *job_definition
   script:
-    - ci_helpers.py use_proxy "python3 processes/sfdc_processor.py"
+    - ci_helpers.py use_proxy "python3 transform/sfdc_processor.py"
   only:
     refs:
       - branches
