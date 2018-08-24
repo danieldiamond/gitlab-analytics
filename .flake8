@@ -4,7 +4,7 @@ exclude =
     .git,
     __pycache__,
     doc,
-    img,
+    images,
     output,
     charts,
 max-complexity = 10

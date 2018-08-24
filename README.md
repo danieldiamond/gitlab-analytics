@@ -101,7 +101,7 @@ Planned:
 
 ### Data and Analytics Architecture
 
-![Data and Analytics Architecture](img/WIP_ GitLab_Analytics_Architecture.jpg)
+![Data and Analytics Architecture](images/WIP_ GitLab_Analytics_Architecture.jpg)
 
 #### Our Stack
 
