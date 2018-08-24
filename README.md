@@ -10,7 +10,7 @@
 
 ## Data and Analytics at GitLab
 
-This is the primary repository of the Data & Analytics team at GitLab. We are hosting it within the [Meltano group](https://gitlab.com/meltano/) because we have a close relationship with them: e are the first customers of Meltano and find it valuable to be close, while still keeping the code bases separate. 
+This is the primary repository of the Data & Analytics team at GitLab. We are hosting it within the [Meltano group](https://gitlab.com/meltano/) because we have a close relationship with them: we are the first customers of Meltano and find it valuable to be close, while still keeping the code bases separate. 
 
 The Data & Analytics team is a part of the Finance organization within GitLab, but we serve the entire company. We do this by maintaining a data warehouse where information from all business operations is stored and managed for analysis.
 
