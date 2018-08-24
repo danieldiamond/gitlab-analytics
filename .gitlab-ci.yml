@@ -182,7 +182,7 @@ refresh_dev: &refresh_dev
     GIT_STRATEGY: clone
   script:
     - ci_helpers.py refresh_dev_instance
-    - ci_helpers.py use_proxy "python3 ci_scripts/grant_roles.py"
+    - ci_helpers.py use_proxy "python3 orchestrate/grant_roles.py"
   only:
     refs:
       - master
@@ -201,7 +201,7 @@ update_db: &update_db
   <<: *job_housekeeping
   stage: setup
   script:
-    - ci_helpers.py use_proxy "python3 ci_scripts/grant_roles.py"
+    - ci_helpers.py use_proxy "python3 orchestrate/grant_roles.py"
   only:
     - branches
   except:
@@ -546,5 +546,5 @@ variables:
   PYTHONPATH: "$CI_PROJECT_DIR/elt/shared_modules/:$PYTHONPATH"
 
 before_script:
-  - export PATH="$CI_PROJECT_DIR/ci_scripts/:$PATH"
+  - export PATH="$CI_PROJECT_DIR/orchestrate/:$PATH"
   - export PYTHONPATH="$CI_PROJECT_DIR/elt/shared_modules/:$PYTHONPATH"
