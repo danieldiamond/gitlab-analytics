@@ -543,7 +543,7 @@ review_stop:
 # Global definitions
 
 variables:
-  PYTHONPATH: "$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
+  PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
 
 before_script:
   - export PATH="$CI_PROJECT_DIR/orchestrate/:$PATH"
