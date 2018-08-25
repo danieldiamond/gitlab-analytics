@@ -5,7 +5,7 @@ import logging
 import psycopg2.sql as sql
 
 from sqlalchemy import MetaData
-from extract.db import DB
+from elt.db import DB
 
 
 logging.basicConfig(level=logging.INFO)

@@ -5,9 +5,9 @@ import yaml
 import logging
 import argparse
 
-from analytics.extract.utils import setup_logging
-from analytics.extract.cli import parser_logging
-from analytics.extract.error import Error
+from shared_modules.elt.utils import setup_logging
+from shared_modules.elt.cli import parser_logging
+from shared_modules.elt.error import Error
 
 def process_config_file(config_file):
     """

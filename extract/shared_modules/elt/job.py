@@ -8,9 +8,9 @@ from functools import partial
 from psycopg2.sql import Identifier, SQL, Placeholder
 from sqlalchemy import inspect, Column
 from sqlalchemy.ext.mutable import MutableDict
-from extract.db import DB, SystemModel
-from extract.schema import Schema, Column as SchemaColumn, DBType
-from extract.error import Error
+from elt.db import DB, SystemModel
+from elt.schema import Schema, Column as SchemaColumn, DBType
+from elt.error import Error
 
 
 PG_SCHEMA = 'meltano'

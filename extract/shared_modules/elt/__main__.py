@@ -2,9 +2,9 @@ import argparse
 import sys
 
 from enum import Enum
-from extract.cli import ActionEnum, OptionEnum, parser_logging
-from extract.utils import setup_logging
-from extract.schema.serializers import serializer_for
+from elt.cli import ActionEnum, OptionEnum, parser_logging
+from elt.utils import setup_logging
+from elt.schema.serializers import serializer_for
 
 
 def action_convert(args):

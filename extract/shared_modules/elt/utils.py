@@ -5,7 +5,7 @@ import logging
 from requests.auth import HTTPBasicAuth
 from functools import reduce
 
-from extract.db import DB
+from elt.db import DB
 
 
 # from https://github.com/jonathanj/compose/blob/master/compose.py

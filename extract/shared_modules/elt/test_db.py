@@ -1,4 +1,4 @@
-from extract.db import DB
+from elt.db import DB
 
 
 def test_connect():

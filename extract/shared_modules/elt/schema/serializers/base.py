@@ -2,7 +2,7 @@ import abc
 
 from typing.io import TextIO
 from typing import Union
-from extract.schema import Schema
+from elt.schema import Schema
 
 
 class Serializer:

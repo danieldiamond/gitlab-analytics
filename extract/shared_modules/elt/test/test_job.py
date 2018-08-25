@@ -1,7 +1,7 @@
 import pytest
 
-from extract.db import DB
-from extract.job import Job, State
+from elt.db import DB
+from elt.job import Job, State
 from datetime import datetime
 
 def sample_job(payload={}):

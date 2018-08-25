@@ -1,4 +1,4 @@
-from extract.schema.serializers.kettle import KettleSerializer
+from elt.schema.serializers.kettle import KettleSerializer
 
 
 def test_config():

@@ -1,7 +1,7 @@
 import logging
 
 from xml.etree import ElementTree
-from extract.schema import Schema, Column, DBType
+from elt.schema import Schema, Column, DBType
 from .base import Serializer
 
 

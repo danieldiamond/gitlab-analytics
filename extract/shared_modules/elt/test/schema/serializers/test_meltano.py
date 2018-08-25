@@ -1,7 +1,7 @@
 from functools import partial
 from itertools import chain
-from extract.schema import Schema, DBType, Column
-from extract.schema.serializers.meltano import MeltanoSerializer
+from elt.schema import Schema, DBType, Column
+from elt.schema.serializers.meltano import MeltanoSerializer
 
 
 def sample_schema(table_names=()):
