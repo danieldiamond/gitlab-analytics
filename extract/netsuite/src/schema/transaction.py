@@ -1,4 +1,4 @@
-from extract.schema import Schema, Column, DBType
+from shared_modules.elt.schema import Schema, Column, DBType
 
 from schema.transaction_config import TRANSACTION_TYPES, COLUMN_MAPPINGS, RELATED_ENTITIES
 from schema.utils import columns_from_mappings

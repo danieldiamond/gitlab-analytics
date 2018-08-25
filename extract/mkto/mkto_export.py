@@ -2,11 +2,11 @@ import argparse
 import sys
 
 from enum import Enum
-from extract.schema import schema_apply
-from extract.error import with_error_exit_code
-from extract.utils import setup_logging, setup_db
-from extract.db import DB
-from extract.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
+from shared_modules.elt.schema import schema_apply
+from shared_modules.elt.error import with_error_exit_code
+from shared_modules.elt.utils import setup_logging, setup_db
+from shared_modules.elt.db import DB
+from shared_modules.elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
 from mkto_tools.mkto_bulk import bulk_export
 from mkto_tools.mkto_leads import describe_schema as describe_leads_schema
 from mkto_tools.mkto_activities import describe_schema as describe_activities_schema

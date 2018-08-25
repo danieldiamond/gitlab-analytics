@@ -2,8 +2,8 @@ import logging
 import psycopg2
 import psycopg2.sql
 
-from extract.cli import DateWindow
-from extract.db import DB
+from shared_modules.elt.cli import DateWindow
+from shared_modules.elt.db import DB
 from datetime import datetime
 
 from soap_api.netsuite_soap_client import NetsuiteClient

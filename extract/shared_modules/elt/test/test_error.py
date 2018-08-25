@@ -1,4 +1,4 @@
-import elt.error
+import shared_modules.elt.error
 import logging
 
 
@@ -7,7 +7,7 @@ def do_raise(error_type, *args):
 
 
 def test_aggregate_default():
-    aggregator = extract.error.ExceptionAggregator(Exception)
+    aggregator = shared_modules.elt.error.ExceptionAggregator(Exception)
 
     for i in range(0, 10):
         aggregator.call(do_raise, Exception, "Error {}".format(i))
@@ -19,11 +19,11 @@ def test_aggregate_default():
 
 
 def test_aggregate_custom():
-    @extract.error.aggregate
-    class CustomError(extract.error.Error):
+    @shared_modules.elt.error.aggregate
+    class CustomError(shared_modules.elt.error.Error):
         pass
 
-    aggregator = extract.error.ExceptionAggregator(CustomError)
+    aggregator = shared_modules.elt.error.ExceptionAggregator(CustomError)
 
     for i in range(0, 10):
         aggregator.call(do_raise, CustomError, "Error {}".format(i))
@@ -32,7 +32,7 @@ def test_aggregate_custom():
         aggregator.raise_aggregate()
     except CustomError as custom:
         logging.info(str(custom))
-    except extract.error.Error as err:
-        raise "Catched by the extract.error.Error clause."
+    except shared_modules.elt.error.Error as err:
+        raise "Catched by the shared_modules.elt.error.Error clause."
     except Exception as e:
         raise "Catched by the Exception clause."

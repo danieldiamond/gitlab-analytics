@@ -5,9 +5,9 @@ import concurrent.futures
 import time
 import logging
 
-from extract.schema import Schema
-from extract.process import upsert_to_db_from_csv
-from extract.db import DB
+from shared_modules.elt.schema import Schema
+from shared_modules.elt.process import upsert_to_db_from_csv
+from shared_modules.elt.db import DB
 from salesforce_bulk import SalesforceBulk
 from config import config
 

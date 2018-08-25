@@ -1,6 +1,6 @@
 import yaml, json, re
 
-from extract.schema import Schema, Column, DBType, tables
+from shared_modules.elt.schema import Schema, Column, DBType, tables
 from importer.fetcher import Fetcher
 
 

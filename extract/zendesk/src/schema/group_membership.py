@@ -1,4 +1,4 @@
-from extract.schema import Schema, Column, DBType
+from shared_modules.elt.schema import Schema, Column, DBType
 
 
 PG_SCHEMA = 'zendesk'

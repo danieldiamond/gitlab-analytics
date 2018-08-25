@@ -7,10 +7,10 @@ import gzip
 import shutil
 
 from concurrent.futures import FIRST_EXCEPTION
-from extract.db import DB
-from extract.utils import compose
-from extract.process import integrate_csv_file, overwrite_to_db_from_csv_file
-from extract.schema import Schema, mapping_keys
+from shared_modules.elt.db import DB
+from shared_modules.elt.utils import compose
+from shared_modules.elt.process import integrate_csv_file, overwrite_to_db_from_csv_file
+from shared_modules.elt.schema import Schema, mapping_keys
 from .fetcher import Fetcher
 from .schema import describe_schema
 

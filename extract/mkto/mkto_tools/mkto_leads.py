@@ -6,7 +6,7 @@ import logging
 from .mkto_token import get_token, mk_endpoint
 from .mkto_schema import data_type
 from .mkto_utils import handle_marketo_response
-from extract.schema import Schema, Column
+from shared_modules.elt.schema import Schema, Column
 
 
 PG_SCHEMA = 'mkto'

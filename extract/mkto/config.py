@@ -1,7 +1,7 @@
 import mkto_tools.mkto_leads
 import mkto_tools.mkto_activities
 
-from extract.cli import OptionEnum
+from shared_modules.elt.cli import OptionEnum
 
 
 class MarketoSource(OptionEnum):

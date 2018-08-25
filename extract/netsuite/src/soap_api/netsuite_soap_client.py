@@ -12,7 +12,7 @@ from zeep.exceptions import Fault
 
 from requests.exceptions import HTTPError, ConnectTimeout
 
-from extract.error import Error
+from shared_modules.elt.error import Error
 
 from .account import Account
 from .currency import Currency

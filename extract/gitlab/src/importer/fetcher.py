@@ -1,7 +1,7 @@
 import os.path
 import logging
 
-from extract.error import ExtractError
+from shared_modules.elt.error import ExtractError
 from google.cloud.storage import client
 from google.cloud.storage.bucket import Bucket
 

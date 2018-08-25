@@ -1,11 +1,11 @@
 import argparse
 import asyncio
 
-from extract.cli import ActionEnum, parser_db_conn, parser_date_window, parser_output, parser_logging
-from extract.utils import setup_logging, setup_db
-from extract.db import DB
-from extract.schema import schema_apply
-from extract.error import with_error_exit_code
+from shared_modules.elt.cli import ActionEnum, parser_db_conn, parser_date_window, parser_output, parser_logging
+from shared_modules.elt.utils import setup_logging, setup_db
+from shared_modules.elt.db import DB
+from shared_modules.elt.schema import schema_apply
+from shared_modules.elt.error import with_error_exit_code
 from schema import describe_schema
 from enum import Enum
 from extract import Extractor
