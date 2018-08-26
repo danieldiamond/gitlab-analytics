@@ -1,4 +1,4 @@
-from shared_modules.elt.schema import Schema, Column, DBType
+from elt.schema import Schema, Column, DBType
 
 from schema.utils import columns_from_mappings
 

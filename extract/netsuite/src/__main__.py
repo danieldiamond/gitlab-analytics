@@ -6,11 +6,11 @@ from soap_api.test import test_client
 from soap_api.utils.extract_transaction_type import extract_transaction_type
 from soap_api.utils.transaction_backlog import transaction_backlog
 
-from shared_modules.elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
-from shared_modules.elt.utils import setup_logging, setup_db
-from shared_modules.elt.db import DB
-from shared_modules.elt.schema import schema_apply
-from shared_modules.elt.error import with_error_exit_code
+from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
+from elt.utils import setup_logging, setup_db
+from elt.db import DB
+from elt.schema import schema_apply
+from elt.error import with_error_exit_code
 from export import extract
 from enum import Enum
 

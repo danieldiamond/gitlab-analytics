@@ -4,7 +4,7 @@ import psycopg2
 import psycopg2.sql
 import datetime
 
-from shared_modules.elt.db import DB
+from elt.db import DB
 
 from soap_api.transaction import Transaction
 
