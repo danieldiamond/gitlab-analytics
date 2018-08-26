@@ -8,6 +8,6 @@ setup(
     author='Meltano',
     author_email='meltano@gitlab.com',
     url='https://gitlab.com/meltano/meltano',
-    packages=['meltano.elt.stripe'],
-    package_dir={'meltano.elt.stripe': 'src'},
+    packages=['meltano.extract.stripe'],
+    package_dir={'meltano.extract.stripe': 'src'},
 )

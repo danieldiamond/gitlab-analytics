@@ -55,7 +55,7 @@ You can test locally that all variables have been set correctly:
 1. Run the NetSuite Extractor Test
 
    ```
-   python3 elt/netsuite/src/ --schema netsuite test
+   python3 extract/netsuite/src/ --schema netsuite test
    ```
 
 The result should be to successfully fetch the NetSuite WSDL, login to the provided account and fetch data using various modes:
@@ -98,13 +98,13 @@ If the master pipeline runs as a scheduled pipeline every couple of hours, the n
 You can check the options available to NetSuite Extractor by running:
 
 ```
-python3 elt/netsuite/src/ --help
+python3 extract/netsuite/src/ --help
 ```
 
 In order to create the default data warehouse schema and the intermediary tables that the extracted NetSuite data will be brought into:
 
 ```
-python3 elt/netsuite/src/ --schema netsuite apply_schema
+python3 extract/netsuite/src/ --schema netsuite apply_schema
 ```
 
 The same holds in case an extended schema is defined and the existing schema must be updated. _(In all the examples provided, we assume that the schema used is called `netsuite`)_
@@ -113,7 +113,7 @@ The same holds in case an extended schema is defined and the existing schema mus
 In order to fetch all support entities (e.g. currencies, departments, accounts, etc) and transactions updated during the past N days:
 
 ```
-python3 elt/netsuite/src/ --schema netsuite export --days N
+python3 extract/netsuite/src/ --schema netsuite export --days N
 ```
 
 We fetch Transactions by using the lastModifiedDate attribute, in order to be consistent while incrementally loading data and not miss any update. If you want to use a different approach, please check the [How to Update the NetSuite Extractor](#how-to-update-the-netsuite-extractor) section.
@@ -123,7 +123,7 @@ The `export` action fetches all support entities and then Transactions of **all*
 In order to fetch all support entities and transactions updated during a specific date interval:
 
 ```
-python3 elt/netsuite/src/ --schema netsuite export -b START_DATE -e END_DATE
+python3 extract/netsuite/src/ --schema netsuite export -b START_DATE -e END_DATE
 ```
 
 Where START_DATE, END_DATE are dates in isoformat (YYYY-MM-DD), e.g. `-b 2018-02-26 -e 2018-05-10`. END_DATE is not inclusive, so `-b 2018-02-26 -e 2018-02-27` will only bring transactions last updated at 2018-02-26.
@@ -132,15 +132,15 @@ Where START_DATE, END_DATE are dates in isoformat (YYYY-MM-DD), e.g. `-b 2018-02
 In order to load not already fetched transactions, starting from the earliest lastModifiedDate in the Data Warehouse and going back for N days:
 
 ```
-python3 elt/netsuite/src/ --schema netsuite backlog --days N
+python3 extract/netsuite/src/ --schema netsuite backlog --days N
 ```
 
 
 Finally, the `extract_type` action fetches the type of each Transaction and updates already fetched Transactions. It is provided only as a recovery operation in case an export job fails in the middle of fetching Transactions and before setting their type.
 
 ```
-python3 elt/netsuite/src/ --schema netsuite extract_type --days N
-python3 elt/netsuite/src/ --schema netsuite extract_type -b START_DATE -e END_DATE
+python3 extract/netsuite/src/ --schema netsuite extract_type --days N
+python3 extract/netsuite/src/ --schema netsuite extract_type -b START_DATE -e END_DATE
 ```
 
 ## Implementation Details
@@ -334,7 +334,7 @@ Check the [Schema Browser](http://www.netsuite.com/help/helpcenter/en_US/srbrows
 You can start from scratch or work based on the code of a similar entity:
 
 ```
-cp elt/netsuite/src/schema/department.py elt/netsuite/src/schema/xxxxxx.py
+cp extract/netsuite/src/schema/department.py extract/netsuite/src/schema/xxxxxx.py
 ```
 
 All the columns to be supported must be added in the COLUMN_MAPPINGS list, together with their Data Type.
@@ -345,7 +345,7 @@ All the columns to be supported must be added in the COLUMN_MAPPINGS list, toget
 A simple Entity with a similar extraction mechanism is a good point to start. For example Department is the simplest one that uses the search and searchMoreWithId calls:
 
 ```
-cp elt/netsuite/src/soap_api/department.py elt/netsuite/src/soap_api/xxxxxx.py
+cp extract/netsuite/src/soap_api/department.py extract/netsuite/src/soap_api/xxxxxx.py
 ```
 
 Add any specific namespaces, types and business logic required for the newly introduced Entity
@@ -390,7 +390,7 @@ NetSuite Extractor can fetch almost all types of Transactions also available in 
 
 In the following subsections, the Entities fetched from NetSuite are described. We assume that the schema used is `netsuite`. 
 
-The schema for the intermediary table in the Data Warehouse and the transformation rules used in order to map the extracted data to that schema can be found for each entity in the related schema definition file under `/elt/netsuite/src/schema/` (e.g. schema/department.py for departments).
+The schema for the intermediary table in the Data Warehouse and the transformation rules used in order to map the extracted data to that schema can be found for each entity in the related schema definition file under `/extract/netsuite/src/schema/` (e.g. schema/department.py for departments).
 
 The tables for all entities have at least the `(internal_id, external_id)` for each record and an `imported_at` timestamp for marking the last time the record was imported/updated.
 

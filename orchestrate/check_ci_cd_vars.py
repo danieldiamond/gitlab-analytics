@@ -5,9 +5,9 @@ import yaml
 import logging
 import argparse
 
-from elt.utils import setup_logging
-from elt.cli import parser_logging
-from elt.error import Error
+from shared_modules.elt.utils import setup_logging
+from shared_modules.elt.cli import parser_logging
+from shared_modules.elt.error import Error
 
 def process_config_file(config_file):
     """

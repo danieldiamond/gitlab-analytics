@@ -18,13 +18,13 @@ function red() {
 
 job_exit 0 # success per default
 
-python3 elt/mkto/mkto_export.py -s leads \
+python3 extract/mkto/mkto_export.py -s leads \
                --schema mkto \
                apply_schema
 
 SCHEMA_LEAD_EXIT=$?
 
-python3 elt/mkto/mkto_export.py -s activities \
+python3 extract/mkto/mkto_export.py -s activities \
                --schema mkto \
                apply_schema
 
@@ -35,7 +35,7 @@ job_exit $SCHEMA_ACTIVITY_EXIT
 
 if [[ $SCHEMA_LEAD_EXIT ]]; then
     echo "Schema updated, importing leads..."
-    python3 elt/mkto/mkto_export.py -s leads \
+    python3 extract/mkto/mkto_export.py -s leads \
                -t updated \
                --days 1 \
                --schema mkto \
@@ -48,7 +48,7 @@ else
 fi
 
 if [[ $SCHEMA_ACTIVITY_EXIT ]]; then
-    python3 elt/mkto/mkto_export.py -s activities \
+    python3 extract/mkto/mkto_export.py -s activities \
                    -t created \
                    --days 1 \
                    --schema mkto \

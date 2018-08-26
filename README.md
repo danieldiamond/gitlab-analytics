@@ -122,7 +122,7 @@ We use GitLab to operate and manage the analytics function. Everything starts wi
 
 #### Updating SFDC Extract
 
-See the [README](/elt/sfdc/README.md) for the SFDC Extractor.
+See the [README](/extract/sfdc/README.md) for the SFDC Extractor.
 
 ### Storage
 
@@ -148,7 +148,7 @@ If you want direct access to the data warehouse (outside of Looker or JupyterHub
 
 #### Managing Roles
 
-All role definitions are in [/elt/config/pg_roles/](https://gitlab.com/meltano/meltano/tree/master/elt/config)
+All role definitions are in [/extract/config/pg_roles/](https://gitlab.com/meltano/meltano/tree/master/extract/config)
 
 Ideally we'd be using [pgbedrock](https://github.com/Squarespace/pgbedrock) to manage users. Since internally we are using CloudSQL, we're not able to access the superuser role which pgbedrock requires. However, the YAML format of the role definitions is convenient for reasoning about privileges and it's possible the tool could evolve to validate privileges against a given spec, so we are using the pgbedrock definition syntax to define roles here. 
 
