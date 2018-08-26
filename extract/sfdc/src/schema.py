@@ -1,5 +1,5 @@
-from shared_modules.elt.schema import Schema
-from shared_modules.elt.schema.serializers import MeltanoSerializer
+from elt.schema import Schema
+from elt.schema.serializers import MeltanoSerializer
 from config import manifest_file_path
 
 
