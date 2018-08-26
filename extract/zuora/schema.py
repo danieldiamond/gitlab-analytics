@@ -1,8 +1,8 @@
 import os
 
-from shared_modules.elt.schema import Schema, DBType, Column
-from shared_modules.elt.schema.serializers.meltano import MeltanoSerializer
-from shared_modules.elt.utils import compose
+from elt.schema import Schema, DBType, Column
+from elt.schema.serializers.meltano import MeltanoSerializer
+from elt.utils import compose
 from itertools import chain
 from functools import partial
 from config import getObjectList, getZuoraFields

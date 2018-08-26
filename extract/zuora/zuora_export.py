@@ -12,12 +12,12 @@ import sys
 
 from requests.auth import HTTPBasicAuth
 from sqlalchemy import desc
-from shared_modules.elt.job import Job, State
-from shared_modules.elt.utils import compose, slugify, setup_db
-from shared_modules.elt.db import DB
-from shared_modules.elt.process import integrate_csv
-from shared_modules.elt.schema import schema_apply
-from shared_modules.elt.error import Error, ExtractError
+from elt.job import Job, State
+from elt.utils import compose, slugify, setup_db
+from elt.db import DB
+from elt.process import integrate_csv
+from elt.schema import schema_apply
+from elt.error import Error, ExtractError
 from schema import PG_SCHEMA, describe_schema, field_column_name
 from config import JOB_VERSION, DATE_MIN, INCREMENTAL_DATE, environment, getPGCreds, getZuoraFields, getObjectList
 
