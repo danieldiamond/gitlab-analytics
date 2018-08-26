@@ -9,10 +9,10 @@ import logging
 import psycopg2
 import psycopg2.sql
 
-from shared_modules.elt.error import ExtractError
-from shared_modules.elt.db import DB
-from shared_modules.elt.cli import ExportOutput, DateWindow
-from shared_modules.elt.process import upsert_to_db_from_csv
+from elt.error import ExtractError
+from elt.db import DB
+from elt.cli import ExportOutput, DateWindow
+from elt.process import upsert_to_db_from_csv
 from .mkto_token import get_token, mk_endpoint
 from .mkto_leads import get_leads_fieldnames_mkto, describe_leads
 from .mkto_utils import bulk_filter_builder, get_mkto_config, handle_marketo_response

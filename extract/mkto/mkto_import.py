@@ -3,9 +3,9 @@ import sys
 import argparse
 
 from functools import partial
-from shared_modules.elt.db import DB
-from shared_modules.elt.cli import parser_db_conn
-from shared_modules.elt.process import integrate_csv
+from elt.db import DB
+from elt.cli import parser_db_conn
+from elt.process import integrate_csv
 from config import config_table_name, config_primary_key, config_integrate
 
 

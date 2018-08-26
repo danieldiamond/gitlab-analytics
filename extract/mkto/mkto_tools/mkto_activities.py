@@ -4,7 +4,7 @@ import config
 import logging
 
 from .mkto_token import get_token, mk_endpoint
-from shared_modules.elt.schema import Schema, Column, DBType
+from elt.schema import Schema, Column, DBType
 
 
 PG_SCHEMA = 'mkto'

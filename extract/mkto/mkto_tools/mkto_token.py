@@ -2,7 +2,7 @@
 import os
 import requests
 
-from shared_modules.elt.error import ExtractError
+from elt.error import ExtractError
 
 
 mk_endpoint = os.environ.get('MKTO_ENDPOINT')

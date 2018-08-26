@@ -1,4 +1,4 @@
-from shared_modules.elt.schema import DBType
+from elt.schema import DBType
 
 
 data_types_map = {

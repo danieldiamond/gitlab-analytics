@@ -4,7 +4,7 @@ import requests
 import psycopg2
 import logging
 
-from shared_modules.elt.error import ExtractError
+from elt.error import ExtractError
 from configparser import SafeConfigParser
 from .mkto_token import get_token, mk_endpoint
 

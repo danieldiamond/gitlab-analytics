@@ -9,12 +9,12 @@ import logging
 from tempfile import NamedTemporaryFile
 from datetime import datetime
 from requests.auth import HTTPBasicAuth
-from shared_modules.elt.cli import DateWindow
-from shared_modules.elt.utils import compose
-from shared_modules.elt.db import DB
-from shared_modules.elt.error import ExceptionAggregator, Error, ExtractError
-from shared_modules.elt.schema import DBType, Schema
-from shared_modules.elt.process import upsert_to_db_from_csv
+from elt.cli import DateWindow
+from elt.utils import compose
+from elt.db import DB
+from elt.error import ExceptionAggregator, Error, ExtractError
+from elt.schema import DBType, Schema
+from elt.process import upsert_to_db_from_csv
 import schema.candidate as candidate
 
 
