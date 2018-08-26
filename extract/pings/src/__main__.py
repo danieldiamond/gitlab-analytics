@@ -7,9 +7,9 @@ from psycopg2 import OperationalError
 from enum import Enum
 from datetime import datetime
 
-from shared_modules.elt.error import with_error_exit_code, Error
-from shared_modules.elt.utils import setup_logging
-from shared_modules.elt.cli import parser_logging
+from elt.error import with_error_exit_code, Error
+from elt.utils import setup_logging
+from elt.cli import parser_logging
 
 from db_extractor import DBExtractor
 

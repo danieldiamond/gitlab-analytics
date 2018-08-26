@@ -8,8 +8,8 @@ import time
 from configparser import ConfigParser
 from datetime import datetime
 
-from shared_modules.elt.schema import Schema, Column, schema_apply
-from shared_modules.elt.job import Job, State
+from elt.schema import Schema, Column, schema_apply
+from elt.job import Job, State
 
 from utils.db import DB
 
