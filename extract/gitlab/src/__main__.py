@@ -8,12 +8,12 @@ from datetime import datetime
 from sqlalchemy import desc
 from importer import Importer, schema
 from importer.fetcher import Fetcher
-from shared_modules.elt.schema import schema_apply
-from shared_modules.elt.error import InapplicableChangeError, with_error_exit_code
-from shared_modules.elt.cli import parser_db_conn, parser_output, parser_logging
-from shared_modules.elt.job import Job, State
-from shared_modules.elt.db import DB
-from shared_modules.elt.utils import setup_logging, setup_db
+from elt.schema import schema_apply
+from elt.error import InapplicableChangeError, with_error_exit_code
+from elt.cli import parser_db_conn, parser_output, parser_logging
+from elt.job import Job, State
+from elt.db import DB
+from elt.utils import setup_logging, setup_db
 
 
 GITLAB_ELT_URI = "com.meltano.gitlab:1:*"
