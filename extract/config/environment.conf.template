@@ -14,6 +14,6 @@ port     = $PG_PORT
 
 [LOGGING]
 loggerName   = zuora_export
-fileName     = $CI_PROJECT_DIR/elt/logs/zuora_export.log
+fileName     = $CI_PROJECT_DIR/extract/logs/zuora_export.log
 fileLevel    = DEBUG
 consoleLevel = DEBUG

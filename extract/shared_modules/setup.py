@@ -7,7 +7,7 @@ setup(name='meltano-extract-common',
       author='Micaël Bergeron',
       author_email='mbergeron@gitlab.com',
       url='https://gitlab.com/meltano/meltano',
-      packages=['elt'],
+      packages=['extract'],
       install_requires=[
           "configparser",
           "SQLAlchemy",

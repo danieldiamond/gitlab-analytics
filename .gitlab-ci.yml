@@ -22,68 +22,68 @@
   stage: extract
   <<: *job_definition
   script:
-    - ci_helpers.py use_proxy "python3 elt/zendesk/src --schema zendesk apply_schema"
-    - ci_helpers.py use_proxy "python3 elt/zendesk/src --schema zendesk --days=1 export"
+    - ci_helpers.py use_proxy "python3 extract/zendesk/src --schema zendesk apply_schema"
+    - ci_helpers.py use_proxy "python3 extract/zendesk/src --schema zendesk --days=1 export"
 
 .lever_extract: &lever_extract
   stage: extract
   <<: *job_definition
   script:
-    - check_ci_cd_vars.py --file elt/lever/src/config/required_ci_cd_vars.yaml
-    - ci_helpers.py use_proxy "python3 elt/lever/src --schema lever apply_schema"
-    - ci_helpers.py use_proxy "python3 elt/lever/src --schema lever --days=7 export"
-    - ci_helpers.py use_proxy "python3 elt/lever/src --schema lever --days=365 --only_offers export"
+    - check_ci_cd_vars.py --file extract/lever/src/config/required_ci_cd_vars.yaml
+    - ci_helpers.py use_proxy "python3 extract/lever/src --schema lever apply_schema"
+    - ci_helpers.py use_proxy "python3 extract/lever/src --schema lever --days=7 export"
+    - ci_helpers.py use_proxy "python3 extract/lever/src --schema lever --days=365 --only_offers export"
 
 .ci_stats: &ci_stats
   stage: extract
   <<: *job_definition
   script:
-    - check_ci_cd_vars.py --file elt/pings/src/config/required_vars_ci_stats.yaml
-    - ci_helpers.py use_proxy "python3 elt/pings/src apply_schema --db_manifest ci_stats"
-    - ci_helpers.py use_proxy "python3 elt/pings/src export --db_manifest ci_stats --hours 8"
+    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_ci_stats.yaml
+    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest ci_stats"
+    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest ci_stats --hours 8"
 
 .netsuite_extract: &netsuite_extract
   stage: extract
   <<: *job_definition
   script:
-    - check_ci_cd_vars.py --file elt/netsuite/src/config/required_ci_cd_vars.yaml
-    - ci_helpers.py use_proxy "python3 elt/netsuite/src/ --schema netsuite apply_schema"
-    - ci_helpers.py use_proxy "python3 elt/netsuite/src/ --schema netsuite export --days 3"
-    - ci_helpers.py use_proxy "python3 elt/netsuite/src/ --schema netsuite backlog --days 15"
+    - check_ci_cd_vars.py --file extract/netsuite/src/config/required_ci_cd_vars.yaml
+    - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite apply_schema"
+    - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite export --days 3"
+    - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite backlog --days 15"
 
 .netsuite_backlog: &netsuite_backlog
   stage: extract
   <<: *job_definition
   script:
-    - check_ci_cd_vars.py --file elt/netsuite/src/config/required_ci_cd_vars.yaml
-    - ci_helpers.py use_proxy "python3 elt/netsuite/src/ --schema netsuite backlog --days 60"
+    - check_ci_cd_vars.py --file extract/netsuite/src/config/required_ci_cd_vars.yaml
+    - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite backlog --days 60"
 
 .pings_extract: &pings_extract
   stage: extract
   <<: *job_definition
   script:
-    - check_ci_cd_vars.py --file elt/pings/src/config/required_vars_pings.yaml
-    - ci_helpers.py use_proxy "python3 elt/pings/src apply_schema --db_manifest version"
-    - ci_helpers.py use_proxy "python3 elt/pings/src export --db_manifest version --days 1"
-    - ci_helpers.py use_proxy "python3 elt/pings/src apply_schema --db_manifest customers"
-    - ci_helpers.py use_proxy "python3 elt/pings/src export --db_manifest customers --days 1"
-    - ci_helpers.py use_proxy "python3 elt/pings/src apply_schema --db_manifest license"
-    - ci_helpers.py use_proxy "python3 elt/pings/src export --db_manifest license --days 1"
+    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_pings.yaml
+    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest version"
+    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest version --days 1"
+    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest customers"
+    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest customers --days 1"
+    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest license"
+    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest license --days 1"
 
 .pings_backfill: &pings_backfill
   stage: extract
   <<: *job_definition
   script:
-    - check_ci_cd_vars.py --file elt/pings/src/config/required_vars_pings.yaml
-    - ci_helpers.py use_proxy "python3 elt/pings/src apply_schema --db_manifest version"
-    - ci_helpers.py use_proxy "python3 elt/pings/src export --db_manifest version"
+    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_pings.yaml
+    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest version"
+    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest version"
 
 .spreadsheet_extract: &spreadsheet_extract
   stage: extract
   <<: *job_definition
   script:
     - pip3 install -U pyasn1-modules
-    - ci_helpers.py use_proxy "python3 elt/util/spreadsheet_loader.py sheet historical.sales_quota.sales_quota historical.headcount.headcount historical.metrics.metrics"
+    - ci_helpers.py use_proxy "python3 extract/util/spreadsheet_loader.py sheet historical.sales_quota.sales_quota historical.headcount.headcount historical.metrics.metrics"
 
 .zuora_extract: &zuora_extract
   variables:
@@ -91,8 +91,8 @@
   stage: extract
   <<: *job_definition
   script:
-    - envsubst < "elt/config/environment.conf.template" > "elt/config/environment.conf"
-    - ci_helpers.py use_proxy "python3 elt/zuora/zuora_export.py"
+    - envsubst < "extract/config/environment.conf.template" > "extract/config/environment.conf"
+    - ci_helpers.py use_proxy "python3 extract/zuora/zuora_export.py"
 
 .sfdc_extract: &sfdc_extract
   variables:
@@ -101,8 +101,8 @@
   <<: *job_definition
   script:
     - pip3 install salesforce-bulk # TODO: add me to the container
-    - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema sfdc apply_schema"
-    - ci_helpers.py use_proxy "python3 elt/sfdc/src/ --schema sfdc export"
+    - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc apply_schema"
+    - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc export"
 
 .domains_extract: &domains_extract
   stage: extract
@@ -116,8 +116,8 @@
   stage: extract
   <<: *job_definition
   script:
-    - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_githost apply_schema"
-    - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_githost --days=7 export"
+    - ci_helpers.py use_proxy "python3 extract/stripe/src --schema stripe_githost apply_schema"
+    - ci_helpers.py use_proxy "python3 extract/stripe/src --schema stripe_githost --days=7 export"
 
 .stripe_extract_about_gitlab: &stripe_extract_about_gitlab
   variables:
@@ -125,16 +125,16 @@
   stage: extract
   <<: *job_definition
   script:
-    - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_about_gitlab apply_schema"
-    - ci_helpers.py use_proxy "python3 elt/stripe/src --schema stripe_about_gitlab --days=7 export"
+    - ci_helpers.py use_proxy "python3 extract/stripe/src --schema stripe_about_gitlab apply_schema"
+    - ci_helpers.py use_proxy "python3 extract/stripe/src --schema stripe_about_gitlab --days=7 export"
 
 .gitlab_extract: &gitlab_extract
   stage: extract
   retry: 1
   <<: *job_definition
   script:
-    - ci_helpers.py use_proxy "python3 elt/gitlab/src -S gitlab apply_schema"
-    - ci_helpers.py use_proxy "python3 elt/gitlab/src -S gitlab export"
+    - ci_helpers.py use_proxy "python3 extract/gitlab/src -S gitlab apply_schema"
+    - ci_helpers.py use_proxy "python3 extract/gitlab/src -S gitlab export"
 
 # ---------------------------------------------------------------------------
 
@@ -491,7 +491,7 @@ sfdc_snapshot:
   stage: update
   <<: *job_definition
   script:
-    - ci_helpers.py use_proxy "python3 elt/util/snapshot.py"
+    - ci_helpers.py use_proxy "python3 extract/util/snapshot.py"
   only:
     refs:
       - master
@@ -512,7 +512,7 @@ sfdc_snapshot_manual:
   stage: update
   <<: *job_definition
   script:
-    - ci_helpers.py use_proxy "python3 elt/util/snapshot.py"
+    - ci_helpers.py use_proxy "python3 extract/util/snapshot.py"
   only:
     refs:
       - branches
@@ -543,8 +543,8 @@ review_stop:
 # Global definitions
 
 variables:
-  PYTHONPATH: "$CI_PROJECT_DIR/elt/shared_modules/:$PYTHONPATH"
+  PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
 
 before_script:
   - export PATH="$CI_PROJECT_DIR/orchestrate/:$PATH"
-  - export PYTHONPATH="$CI_PROJECT_DIR/elt/shared_modules/:$PYTHONPATH"
+  - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
