@@ -6,8 +6,8 @@ import requests
 from sqlalchemy.orm import sessionmaker
 
 from __main__ import api_key_name
-from shared_modules.elt.db import DB
-from shared_modules.elt.utils import get_basic_auth
+from elt.db import DB
+from elt.utils import get_basic_auth
 from schema import Charge, Customer, Dispute, Product, Refund
 
 PAGE_SIZE = 100

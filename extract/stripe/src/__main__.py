@@ -2,15 +2,15 @@ import argparse
 
 from sqlalchemy import DDL, event
 
-from shared_modules.elt.cli import (
+from elt.cli import (
     parser_db_conn,
     parser_date_window,
     parser_output,
     parser_logging,
     DateWindow,
 )
-from shared_modules.elt.utils import setup_logging, setup_db
-from shared_modules.elt.error import with_error_exit_code
+from elt.utils import setup_logging, setup_db
+from elt.error import with_error_exit_code
 
 
 def action_schema_apply():
