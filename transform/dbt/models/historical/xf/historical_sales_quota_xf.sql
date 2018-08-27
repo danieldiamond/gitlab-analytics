@@ -227,14 +227,18 @@ with agent_mapping as (
 
 ), final as (
 
-SELECT quota_month,
+SELECT md5(quota_month||account_owner) as sales_quota_id,
+		quota_month,
 		account_owner,
 		"january_2017" as quota
 FROM unioned
 
 )
 
-SELECT *
+SELECT sales_quota_id,
+		quota_month,
+		account_owner,
+		quota as quota_amount
 FROM final
 LEFT JOIN agent_mapping
 ON UPPER(final.account_owner) = UPPER(agent_mapping.account_owner_name)
