@@ -2,7 +2,7 @@
 
 # Quick Links
 * Meltano Repo - https://gitlab.com/meltano/meltano/
-* Looker Instance - https://gilab.looker.com
+* Looker Instance - https://gitlab.looker.com
 * Looker Repo - https://gitlab.com/meltano/looker/
 * JupyterHub Link - 
 * Snowflake Web UI - https://gitlab.snowflakecomputing.com
