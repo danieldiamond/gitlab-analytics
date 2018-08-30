@@ -4,7 +4,7 @@
 * Meltano Repo - https://gitlab.com/meltano/meltano/
 * Looker Instance - https://gitlab.looker.com
 * Looker Repo - https://gitlab.com/meltano/looker/
-* JupyterHub Link - 
+* JupyterHub Link - https://hub.gitlab-bizops.com/hub/home
 * Snowflake Web UI - https://gitlab.snowflakecomputing.com
 
 
@@ -52,22 +52,27 @@ Some of our beliefs are:
 Like the rest of the company, we set quarterly objectives and key results. These are available on our company OKR page.
 
 ## Media
-* [Taylor explains Pentaho Data Integration](https://drive.google.com/open?id=1OD7QQ2aD-4LWL-ExM8WAyyeuBm2bTRa6) (GitLab internal because of credentials being viewable.)
+* [Taylor explains Pentaho Data Integration](https://drive.google.com/open?id=1OD7QQ2aD-4LWL-ExM8WAyyeuBm2bTRa6) (GitLab internal)
 
-* Zendesk Explainer
+* [Tom Cooney explains Zendesk](https://drive.google.com/open?id=1oExE1ZM5IkXcq1hJIPouxlXSiafhRRua) (GitLab internal)
 
-* Customer Success Explainer
+* [Luca Williams explains Customer Success Dashboards](https://drive.google.com/open?id=1FsgvELNmQ0ADEC1hFEKhWNA1OnH-INOJ) (GitLab internal)
 
-* dbt explainer
+* [Art Nasser explains Netsuite and Campaign Data](https://drive.google.com/open?id=1KUMa8zICI9_jQDqdyN7mGSWSLdw97h5-) (GitLab internal)
 
-* Views on Vue Podcast with Jacob Schatz and Taylor Murphy
+* [Courtland Smith explains Marekting Dashboard needs](https://drive.google.com/open?id=1bjKWRdfUgcn0GfyB2rS3qdr_8nbRYAZu) (GitLab internal)
 
-* Taylor's talk at the 2018 Nashville Analytics Summit
+* [Taylor explains dbt](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) (GitLab internal)
 
-* Airflow Podcast with Thomas
+* Views on Vue Podcast with Jacob Schatz and Taylor Murphy - Commin Soon
 
-* GitLab blog post about Meltano and follow-up
-  * Hacker News Discussion
+* Taylor's talk at the 2018 Nashville Analytics Summit - Coming Soon
+
+* [Pain Points by the Airflow Podcast with @tlapiana](https://soundcloud.com/the-airflow-podcast/pain-points)
+
+* GitLab blog post about Meltano - https://news.ycombinator.com/item?id=17667399
+  * Livestream chat with Sid and HN user slap_shot - https://www.youtube.com/watch?v=F8tEDq3K_pE
+  * Follow-up blog post to original Meltano post - https://about.gitlab.com/2018/08/07/meltano-follow-up/
 
 
 
