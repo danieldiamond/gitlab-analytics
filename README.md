@@ -60,11 +60,11 @@ Like the rest of the company, we set quarterly objectives and key results. These
 
 * [Art Nasser explains Netsuite and Campaign Data](https://drive.google.com/open?id=1KUMa8zICI9_jQDqdyN7mGSWSLdw97h5-) (GitLab internal)
 
-* [Courtland Smith explains Marekting Dashboard needs](https://drive.google.com/open?id=1bjKWRdfUgcn0GfyB2rS3qdr_8nbRYAZu) (GitLab internal)
+* [Courtland Smith explains Marketing Dashboard needs](https://drive.google.com/open?id=1bjKWRdfUgcn0GfyB2rS3qdr_8nbRYAZu) (GitLab internal)
 
 * [Taylor explains dbt](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) (GitLab internal)
 
-* Views on Vue Podcast with Jacob Schatz and Taylor Murphy - Commin Soon
+* Views on Vue Podcast with Jacob Schatz and Taylor Murphy - Coming Soon
 
 * Taylor's talk at the 2018 Nashville Analytics Summit - Coming Soon
 

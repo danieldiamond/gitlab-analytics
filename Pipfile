@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-
 oauth2client = "*"
 requests = "*"
 configparser = "*"
@@ -20,11 +19,9 @@ SQLAlchemy = "*"
 pandas = "*"
 Pyrseas = "*"
 "psycopg2" = "==2.7.4"
-
 lxml = "*"
 zeep = "*"
 google-cloud-storage = ">=1.10.0"
-
 
 [dev-packages]
 "flake8" = "*"
