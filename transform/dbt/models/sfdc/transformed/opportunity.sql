@@ -16,6 +16,7 @@ SELECT
   closedate,
   sql_source__c,
   competitors__c,
+  solutions_to_be_replaced__c as solutions_to_be_replaced,
   sales_segmentation_o__c,
   sales_qualified_date__c,
   sales_accepted_date__c,
