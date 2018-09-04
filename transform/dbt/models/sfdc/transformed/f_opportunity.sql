@@ -63,6 +63,7 @@ SELECT o.sfdc_id AS opportunity_id
        , o.days_in_stage
        , o.lastactivitydate
        , o.competitors__C
+       , o.solutions_to_be_replaced
        , i.qty AS quantity
        , i.iacv
        , i.renewal_acv
