@@ -8,8 +8,11 @@ WITH sfdc_opportunity AS (
 
 ), lead_source AS (
 
-
 	SELECT * FROM {{ref('dim_leadsource')}}
+
+), sfdc_users AS (
+
+   SELECT * FROM {{ref('users')}}
 
 ), layered AS (
 
@@ -24,6 +27,14 @@ WITH sfdc_opportunity AS (
         sfdc_opportunitystage.is_closed as stage_is_closed,
         sfdc_opportunitystage.stage_state as stage_state,
         sfdc_opportunitystage.mapped_stage as mapped_stage,
+        sfdc_users.name as opportunity_owner,
+        sfdc_users.team as opportunity_owner_team,
+        sfdc_users.manager_name as opportunity_owner_manager,
+        sfdc_users.department as opportunity_owner_department,
+        sfdc_users.title as opportunity_owner_title,
+        sfdc_users.role_name as opportunity_owner_role,
+        sfdc_users.employee_tags as opportunity_owner_tags,
+
         CASE 
           WHEN (sfdc_opportunity.days_in_stage > 30 
           	OR sfdc_opportunity.incremental_acv > 100000 
@@ -34,6 +45,7 @@ WITH sfdc_opportunity AS (
     FROM sfdc_opportunity
     INNER JOIN sfdc_opportunitystage on sfdc_opportunity.stage_name = sfdc_opportunitystage.primary_label
     INNER JOIN lead_source on sfdc_opportunity.lead_source = lead_source.Initial_Source
+    LEFT JOIN sfdc_users ON sfdc_opportunity.owner_id = sfdc_users.id
 
 )
 
