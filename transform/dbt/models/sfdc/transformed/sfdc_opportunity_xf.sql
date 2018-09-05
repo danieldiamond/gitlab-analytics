@@ -18,6 +18,7 @@ WITH sfdc_opportunity AS (
 
     SELECT
         sfdc_opportunity.*,
+        md5((date_trunc('month', sfdc_opportunity.close_date)::date)||sfdc_users.name) as sales_quota_id,
         lead_source.id as lead_source_id,
         lead_source.initial_source as lead_source_name,
         lead_source.initial_source_type as lead_source_type,
@@ -34,7 +35,6 @@ WITH sfdc_opportunity AS (
         sfdc_users.title as opportunity_owner_title,
         sfdc_users.role_name as opportunity_owner_role,
         sfdc_users.employee_tags as opportunity_owner_tags,
-
         CASE 
           WHEN (sfdc_opportunity.days_in_stage > 30 
           	OR sfdc_opportunity.incremental_acv > 100000 
