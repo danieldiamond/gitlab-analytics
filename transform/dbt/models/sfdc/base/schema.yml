@@ -123,6 +123,17 @@ sfdc_contact:
         unique:
             - contact_id
 
+sfdc_executive_business_review:
+    constraints:
+        not_null:
+            - ebr_id
+            - ebr_name
+            - ebr_date
+            - account_id
+            - owner_id
+        unique:
+            - ebr_id
+
 sfdc_lead:
     constraints:
         not_null:
@@ -164,6 +175,15 @@ sfdc_opportunitystage:
         unique:
             - stage_id
             - sfdc_id
+
+sfdc_record_type:
+    constraints:
+        not_null:
+            - record_type_id
+            - record_type_name
+            - modifying_object_type
+        unique: 
+            - record_type_id
 
 sfdc_user_roles:
     constraints:
