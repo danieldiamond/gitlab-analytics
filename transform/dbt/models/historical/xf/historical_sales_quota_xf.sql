@@ -227,7 +227,7 @@ with agent_mapping as (
 
 ), final as (
 
-SELECT md5(quota_month||account_owner) as sales_quota_id,
+SELECT md5(quota_month||UPPER(account_owner)) as sales_quota_id,
 		quota_month,
 		account_owner,
 		"january_2017" as quota
