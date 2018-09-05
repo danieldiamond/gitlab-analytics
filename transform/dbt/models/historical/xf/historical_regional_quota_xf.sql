@@ -6,21 +6,21 @@ with base as (
 ), emea as (
 
 	SELECT month_of,
-			'emea'::varchar as team, 
+			'EMEA'::varchar as team, 
 			emea as quota
 	FROM base
 
 ), public_sector as (
 
 	SELECT month_of,
-			'public_sector'::varchar as team, 
+			'Public Sector'::varchar as team, 
 			public_sector as quota
 	FROM base
 
 ), us_east as (
 
 	SELECT month_of,
-			'us_east'::varchar as team, 
+			'US East'::varchar as team, 
 			us_east as quota
 	FROM base
 
@@ -34,21 +34,21 @@ with base as (
 ), us_west as (
 
 	SELECT month_of,
-			'us_west'::varchar as team, 
+			'US West'::varchar as team, 
 			us_west as quota
 	FROM base
 
 ), apac as (
 
 	SELECT month_of,
-			'apac'::varchar as team, 
+			'APAC'::varchar as team, 
 			apac as quota
 	FROM base
 
 ), channel as (
 
 	SELECT month_of,
-			'channel'::varchar as team, 
+			'Channel'::varchar as team, 
 			channel as quota
 	FROM base
 
@@ -84,3 +84,8 @@ SELECT md5(month_of||team) as region_quota_id,
   		team as region,
   		quota
 FROM unioned
+
+--Other
+--North America
+--Web Direct
+
