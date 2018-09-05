@@ -79,7 +79,7 @@ SELECT * FROM self_serve
 
 )
 
-SELECT (month_of||UPPER(team)) as region_quota_id,
+SELECT md5(month_of||UPPER(team)) as region_quota_id,
 		month_of as quota_month,
   		team as region,
   		quota
