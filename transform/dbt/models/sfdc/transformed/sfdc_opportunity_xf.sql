@@ -19,6 +19,7 @@ WITH sfdc_opportunity AS (
     SELECT
         sfdc_opportunity.*,
         md5((date_trunc('month', sfdc_opportunity.close_date)::date)||UPPER(sfdc_users.name)) as sales_quota_id,
+        md5((date_trunc('month', sfdc_opportunity.close_date)::date)||UPPER(sfdc_users.team)) as region_quota_id,
         lead_source.id as lead_source_id,
         lead_source.initial_source as lead_source_name,
         lead_source.initial_source_type as lead_source_type,
