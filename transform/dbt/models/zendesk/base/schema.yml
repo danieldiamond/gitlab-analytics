@@ -29,7 +29,6 @@ zendesk_organizations:
         not_null:
             - organization_id
             - organization_name
-            - sfdc_account_id
         unique: 
             - organization_id
 
@@ -39,7 +38,6 @@ zendesk_tickets:
             - ticket_id
             - requester_id
             - submitter_id
-            - ticket_form_id
             - brand_id
         unique: 
             - ticket_id
@@ -48,7 +46,6 @@ zendesk_users:
     constraints:
         not_null:
             - user_id
-            - email
             - name
         unique:
             - user_id
