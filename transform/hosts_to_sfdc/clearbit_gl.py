@@ -16,6 +16,20 @@ clearbit_cache = Table('clearbit_cache',
                        autoload_with=engine)
 
 
+def string_converter(dictlist):
+    """
+    Convert everything to strings.
+    """
+
+    for key, value in dictlist.items():
+            try:
+                dictlist[key] = str(value.encode("utf-8"))
+            except:
+                dictlist[key] = str(value)
+
+    return dictlist
+
+
 @timeout(20)
 def check_clearbit(domain):
     """Check the Clearbit API for a given domain.
@@ -76,16 +90,6 @@ def update_clearbit(domain):
             last_update=datetime.datetime.now()
         )
 
-        # TODO Feel like there shouldn't be this much error catching for strings
-        for key in dictlist:
-            value = dictlist[key]
-            if value is None:
-                dictlist[key] = ""
-            elif key == "last_update" or isinstance(value, list) or isinstance(value, int):
-                dictlist[key] = str(value)
-            else:
-                dictlist[key] = str(value.encode("utf-8"))
-
-        caching.update_cache(dictlist, clearbit_cache)
+        caching.update_cache(string_converter(dictlist), clearbit_cache)
 
     return

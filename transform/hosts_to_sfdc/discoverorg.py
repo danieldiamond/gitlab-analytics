@@ -21,6 +21,20 @@ discoverorg_cache = Table('discoverorg_cache',
                        autoload_with=engine)
 
 
+def string_converter(dictlist):
+    """
+    Convert everything to strings.
+    """
+
+    for key, value in dictlist.items():
+            try:
+                dictlist[key] = str(value.encode("utf-8"))
+            except:
+                dictlist[key] = str(value)
+
+    return dictlist
+
+
 def get_dorg_token():
     """Log into the DiscoverOrg API and return an auth token."""
     data = dict(
@@ -106,15 +120,5 @@ def update_discoverorg(domain):
             last_update=datetime.datetime.now()
         )
 
-        # TODO Feel like there shouldn't be this much error catching for strings
-        for key in dictlist:
-            value = dictlist[key]
-            if value is None:
-                dictlist[key] = ""
-            elif key == "last_update" or isinstance(value, list) or isinstance(value, int):
-                dictlist[key] = str(value)
-            else:
-                dictlist[key] = str(value.encode("utf-8"))
-
-        update_cache(dictlist, discoverorg_cache)
+        update_cache(string_converter(dictlist), discoverorg_cache)
         return True
