@@ -8,16 +8,16 @@ WITH source AS (
     renamed AS(
 
 	SELECT
-				 id        as organization_membership_id,
-			-- keys
-				 user_id,
-				 organization_id,
-			-- logistical info
-				 "default" as is_default,
-			-- metadata
-				 url       as organization_membership_url,
-				 created_at,
-				 updated_at
+		 id        as organization_membership_id,
+	-- keys
+		 user_id,
+		 organization_id,
+	-- logistical info
+		 "default" as is_default,
+	-- metadata
+		 url       as organization_membership_url,
+		 created_at,
+		 updated_at
 
     FROM source
 
