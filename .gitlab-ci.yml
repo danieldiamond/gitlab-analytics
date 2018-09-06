@@ -78,6 +78,22 @@
     - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest version"
     - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest version"
 
+.gitlab_profiler_extract: &gitlab_profiler_extract
+  stage: extract
+  <<: *job_definition
+  script:
+    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_gitlab_profiler.yaml
+    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest gitlab_profiler"
+    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest gitlab_profiler --days 15"
+
+.gitlab_profiler_backfill: &gitlab_profiler_backfill
+  stage: extract
+  <<: *job_definition
+  script:
+    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_gitlab_profiler.yaml
+    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest gitlab_profiler"
+    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest gitlab_profiler --days 3600"
+
 .spreadsheet_extract: &spreadsheet_extract
   stage: extract
   <<: *job_definition
@@ -272,6 +288,15 @@ pings:
     variables:
       - $PINGS
 
+gitlab_profiler:
+  stage: extract
+  <<: *gitlab_profiler_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $GITLAB_PROFILER
+
 sfdc:
   <<: *sfdc_extract
   only:
@@ -389,6 +414,22 @@ pings_manual:
 pings_backfill:
   stage: extract
   <<: *pings_backfill
+  only:
+    - master
+  when: manual
+
+gitlab_profiler_manual:
+  stage: extract
+  <<: *gitlab_profiler_backfill
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+gitlab_profiler_backfill:
+  stage: extract
+  <<: *gitlab_profiler_backfill
   only:
     - master
   when: manual
