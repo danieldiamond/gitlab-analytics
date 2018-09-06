@@ -31,7 +31,7 @@ WITH source AS (
 			"2017-09-01" as september_2017,    
 			"2017-10-01" as october_2017,    
 			"2017-11-01" as november_2017,    
-			"2017-12-01" as december,    
+			"2017-12-01" as december_2017,
 			"2017_ytd" as ytd_2017,
 			"2017_actual_quotas" as actual_quotas_2017,
 			"2018_fte_quota" as fte_quota_2018,    
