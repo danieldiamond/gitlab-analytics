@@ -1,0 +1,51 @@
+zendesk_group_memberships: 
+    constraints: 
+        not_null: 
+            - group_membership_id
+            - user_id
+            - group_id
+        unique:
+            - group_membership_id
+
+zendesk_groups: 
+    constraints: 
+        not_null: 
+            - group_id
+            - group_name
+        unique:
+            - group_id
+
+zendesk_organization_memberships:
+    constraints:
+        not_null:
+            - organization_membership_id
+            - user_id
+            - organization_id 
+        unique:
+            - organization_membership_id
+
+zendesk_organizations:
+    constraints:
+        not_null:
+            - organization_id
+            - organization_name
+        unique: 
+            - organization_id
+
+zendesk_tickets:
+    constraints:
+        not_null:
+            - ticket_id
+            - requester_id
+            - submitter_id
+            - brand_id
+        unique: 
+            - ticket_id
+
+zendesk_users:
+    constraints:
+        not_null:
+            - user_id
+            - name
+        unique:
+            - user_id
