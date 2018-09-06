@@ -64,6 +64,8 @@ Like the rest of the company, we set quarterly objectives and key results. These
 
 * [Taylor explains dbt](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) (GitLab internal)
 
+* [Looker Customer Success team shares how the Looker at Looker](https://drive.google.com/file/d/1w__Jqh9UKliPdQNNcd3KpQfp93Q1SuJb/view?usp=sharing)
+
 * Views on Vue Podcast with Jacob Schatz and Taylor Murphy - Coming Soon
 
 * Taylor's talk at the 2018 Nashville Analytics Summit - Coming Soon
