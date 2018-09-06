@@ -14,6 +14,20 @@ whois_cache = Table('whois_cache',
                     autoload_with=engine)
 
 
+def string_converter(dictlist):
+    """
+    Convert everything to strings.
+    """
+
+    for key, value in dictlist.items():
+            try:
+                dictlist[key] = str(value.encode("utf-8"))
+            except:
+                dictlist[key] = str(value)
+
+    return dictlist
+
+
 def ask_whois(clean_ip):
     """Check RDAP for whois data.
 
@@ -52,17 +66,8 @@ def ask_whois(clean_ip):
             last_update=datetime.datetime.now()
         )
 
-        # TODO Feel like there shouldn't be this much error catching for strings
-        for key in dictlist:
-            value = dictlist[key]
-            if value is None:
-                pass
-            elif key == "last_update" or isinstance(value, list) or isinstance(value, int):
-                dictlist[key] = str(value)
-            else:
-                dictlist[key] = str(value.encode("utf-8"))
         logger.debug("Updating WHOIS Cache.")
-        update_whois_cache(dictlist, whois_cache)
+        update_whois_cache(string_converter(dictlist), whois_cache)
 
     return
 
