@@ -66,7 +66,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
 
 * [dbt docs intro with Drew Banin from Fishtown Analytics](https://www.youtube.com/watch?v=bqIBNvA9xjo)
 
-* [Keep it SQL Stupid, a talk from DataEngConf explaining dbt](https://www.youtube.com/watch?v=9VNh11qSfAo)
+* [Keep it SQL Stupid, a talk by Connor McArthur of Fishtown Analytics at DataEngConf explaining dbt](https://www.youtube.com/watch?v=9VNh11qSfAo)
 
 * [Looker Customer Success team shares how the Looker at Looker](https://drive.google.com/file/d/1w__Jqh9UKliPdQNNcd3KpQfp93Q1SuJb/view?usp=sharing)
 
