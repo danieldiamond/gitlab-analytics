@@ -1,4 +1,4 @@
-[![pipeline status](https://gitlab.com/meltano/analytics/badges/master/pipeline.svg)](https://gitlab.com/meltano/analytics/commits/master)
+l[![pipeline status](https://gitlab.com/meltano/analytics/badges/master/pipeline.svg)](https://gitlab.com/meltano/analytics/commits/master)
 
 # Quick Links
 * Meltano Repo - https://gitlab.com/meltano/meltano/
@@ -6,7 +6,7 @@
 * Looker Repo - https://gitlab.com/meltano/looker/
 * JupyterHub Link - https://hub.gitlab-bizops.com/hub/home
 * Snowflake Web UI - https://gitlab.snowflakecomputing.com
-
+* [Machine Learning Resources](https://drive.google.com/drive/folders/1sOXWW-FujwKU2T-auG7KPR9h6xqDRx0z?usp=sharing) (GitLab Internal)
 
 ## Data and Analytics at GitLab
 
