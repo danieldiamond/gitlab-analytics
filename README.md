@@ -1,4 +1,4 @@
-[![pipeline status](https://gitlab.com/meltano/analytics/badges/master/pipeline.svg)](https://gitlab.com/meltano/analytics/commits/master)
+l[![pipeline status](https://gitlab.com/meltano/analytics/badges/master/pipeline.svg)](https://gitlab.com/meltano/analytics/commits/master)
 
 # Quick Links
 * Meltano Repo - https://gitlab.com/meltano/meltano/
@@ -6,7 +6,7 @@
 * Looker Repo - https://gitlab.com/meltano/looker/
 * JupyterHub Link - https://hub.gitlab-bizops.com/hub/home
 * Snowflake Web UI - https://gitlab.snowflakecomputing.com
-
+* [Machine Learning Resources](https://drive.google.com/drive/folders/1sOXWW-FujwKU2T-auG7KPR9h6xqDRx0z?usp=sharing) (GitLab Internal)
 
 ## Data and Analytics at GitLab
 
@@ -39,13 +39,13 @@ We will work closely with the Meltano team and the broader analytics community t
 
 Some of our beliefs are:
 
-* Everything can and should be defined in code
-* Everything can and should be version controlled
-* Data Engineers, Data Analysts, and Data Scientists can and should integrate best practices from DevOps into their workflow
+* Everything can and should be defined in code.
+* Everything can and should be version controlled.
+* Data Engineers, Data Analysts, and Data Scientists can and should integrate best practices from DevOps into their workflow.
 * It is possible to serve the business while having a high-quality, maintainable code base.
 * Analytics, and the code that supports it, can and should be open source.
 * There can be a single source of truth for every analytic question within a company.
-* Data team managers serve their team and not themselves
+* Data team managers serve their team and not themselves.
 
 ## Priorities
 
@@ -64,7 +64,9 @@ Like the rest of the company, we set quarterly objectives and key results. These
 
 * [Taylor explains dbt](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) (GitLab internal)
 
-* [dbt docs intro with Drew from Fisthwon](https://www.youtube.com/watch?v=bqIBNvA9xjo)
+* [dbt docs intro with Drew Banin from Fishtown Analytics](https://www.youtube.com/watch?v=bqIBNvA9xjo)
+
+* [Keep it SQL Stupid, a talk by Connor McArthur of Fishtown Analytics at DataEngConf explaining dbt](https://www.youtube.com/watch?v=9VNh11qSfAo)
 
 * [Looker Customer Success team shares how the Looker at Looker](https://drive.google.com/file/d/1w__Jqh9UKliPdQNNcd3KpQfp93Q1SuJb/view?usp=sharing)
 
@@ -355,6 +357,19 @@ WHERE field_1 = ‘abc’
 GROUP BY 1, 2, 3
 HAVING count(*) > 1
 ```
+
+##### Data Grip Configuration
+
+You can change your formatting preferences in Data Grip by going to Preferences > Editor > Code Style > HTML.
+You should have:
+
+* Use tab character: unchecked
+* Tab size: 4
+* Indent: 4
+* Continuation indent: 8
+* Keep indents on empty lines: unchecked
+
+You can use `Command + Option + L` to format your file.
 
 ##### Testing
 
