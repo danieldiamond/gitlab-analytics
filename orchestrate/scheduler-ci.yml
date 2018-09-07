@@ -7,6 +7,9 @@
     MELT_JOBS_HOME: /orchestrate/tests/jobs/
   tags:
     - housekeeping
+  except:
+    refs:
+      - master
 
 # Build
 
@@ -22,9 +25,9 @@ build_orchestrate:
     - mkdir -p /root/.docker
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /root/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR/orchestrate --dockerfile $CI_PROJECT_DIR/orchestrate/Dockerfile --destination $CI_REGISTRY_IMAGE/orchestrate:$CI_COMMIT_REF_SLUG
-  only:
+  except:
     refs:
-      - branches
+      - master
   when: manual
 
 # Builds the orchestrate container as latest on master
@@ -42,6 +45,9 @@ publish_orchestrate:
   only:
     refs:
       - master
+  except:
+    refs:
+      - schedules
 
 # Stage: test
 
@@ -51,9 +57,6 @@ run_orchestrate: &run_orchestrate
   script:
     - echo $MELT_JOBS_HOME
     - python /orchestrate/orchestrate/cli.py scheduler
-  only:
-    refs:
-      - branches
   when: manual
 
 run_orchestrate_tests: &run_orchestrate_tests
