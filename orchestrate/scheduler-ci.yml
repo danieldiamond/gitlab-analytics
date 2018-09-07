@@ -1,0 +1,92 @@
+# Job templates
+
+.orchestrate_branch: &orchestrate_branch
+  image: registry.gitlab.com/meltano/analytics/orchestrate:$CI_COMMIT_REF_SLUG
+  variables:
+    GIT_STRATEGY: none
+    MELT_JOBS_HOME: /orchestrate/tests/jobs/
+  tags:
+    - housekeeping
+
+# Build
+
+# Builds the orchestrate container for use in testing on branches
+build_orchestrate:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  tags:
+    - housekeeping
+  script:
+    - mkdir -p /root/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /root/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR/orchestrate --dockerfile $CI_PROJECT_DIR/orchestrate/Dockerfile --destination $CI_REGISTRY_IMAGE/orchestrate:$CI_COMMIT_REF_SLUG
+  only:
+    refs:
+      - branches
+  when: manual
+
+# Builds the orchestrate container as latest on master
+publish_orchestrate:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  tags:
+    - housekeeping
+  script:
+    - mkdir -p /root/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /root/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR/orchestrate --dockerfile $CI_PROJECT_DIR/orchestrate/Dockerfile --destination $CI_REGISTRY_IMAGE/orchestrate:latest
+  only:
+    refs:
+      - master
+
+# Stage: test
+
+run_orchestrate: &run_orchestrate
+  <<: *orchestrate_branch
+  stage: test
+  script:
+    - echo $MELT_JOBS_HOME
+    - python /orchestrate/orchestrate/cli.py scheduler
+  only:
+    refs:
+      - branches
+  when: manual
+
+run_orchestrate_tests: &run_orchestrate_tests
+  <<: *orchestrate_branch
+  stage: test
+  script:
+    - PYTHONPATH=/orchestrate/orchestrate pytest /orchestrate -vv
+  when: manual
+
+var_test: &var_test
+  <<: *orchestrate_branch
+  stage: test
+  script:
+    - echo "test passed"
+  only:
+    variables:
+      - $TEST_PIPELINE
+
+failing_test: &failing_test
+  <<: *orchestrate_branch
+  stage: test
+  script:
+    - exit 1
+  only:
+    variables:
+      - $TEST_FAILED_JOB
+
+sleeping_test: &sleeping_test
+  <<: *orchestrate_branch
+  stage: test
+  script:
+    - sleep 60
+  only:
+    variables:
+      - $TEST_SLEEPING_JOB
+

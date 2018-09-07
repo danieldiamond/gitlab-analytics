@@ -1,0 +1,5 @@
+schedule: '*/1 * * * *'
+pipeline_name: 'test_failing_job'
+num_retries: 2
+variables:
+  TEST_FAILED_JOB: 'true'

@@ -12,6 +12,14 @@
   tags:
     - housekeeping
 
+.orchestrate: &orchestrate
+  image: registry.gitlab.com/meltano/analytics/orchestrate:latest
+  variables:
+    GIT_STRATEGY: clone
+    MELT_JOBS_HOME: jobs/
+  tags:
+    - analytics
+
 .marketo_extract: &marketo_extract
   stage: extract
   <<: *job_definition
@@ -155,13 +163,35 @@
 # ---------------------------------------------------------------------------
 
 # Stages
+# Note some jobs come from glocal 'include' statements
 stages:
+  - build
+  - test
   - review
   - setup
+  - orchestrate
   - extract
   - model
   - update
   - review_stop
+
+# Build
+
+# Test
+
+# Orchestrate
+
+orchestrate: &orchestrate
+  <<: *orchestrate
+  stage: orchestrate
+  script:
+    - echo $MELT_JOBS_HOME
+    - python /orchestrate/orchestrate/cli.py scheduler
+  only:
+    refs:
+      - master
+    variables:
+      - $ORCHESTRATE
 
 # Stage: review
 
@@ -181,6 +211,7 @@ review: &review
     - branches
   except:
     - master
+    - $TEST_PIPELINE
 
 review_refresh:
   <<: *review
@@ -222,6 +253,7 @@ update_db: &update_db
     - branches
   except:
     - master
+    - $TEST_PIPELINE
 
 force_update_db:
   <<: *update_db
@@ -582,6 +614,8 @@ review_stop:
 #--------------------------------------------------------------------------
 
 # Global definitions
+
+include: "/orchestrate/scheduler-ci.yml"
 
 variables:
   PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
