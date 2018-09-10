@@ -27,7 +27,7 @@ WITH source AS (
   poc_milestone_in_collaboration_project__c as link_to_gitlab_milestone,
   poc_type__c                               as poc_type,
   result__c                                 as poc_result,
-  status__c                                 as poc_result,
+  status__c                                 as poc_status,
   success_criteria__c                       as success_criteria,
   unsuccessful_reason__c                    as unsuccessful_reason,
 
