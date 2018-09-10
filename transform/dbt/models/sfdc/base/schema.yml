@@ -185,6 +185,16 @@ sfdc_record_type:
         unique: 
             - record_type_id
 
+sfdc_proof_of_concept:
+    constraints:
+        not_null:
+            - poc_id
+            - account_id
+            - opportunity_id
+            - poc_status
+        unique:
+            - poc_id
+
 sfdc_user_roles:
     constraints:
         not_null:
