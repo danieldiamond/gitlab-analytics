@@ -188,12 +188,12 @@ sfdc_record_type:
 sfdc_proof_of_concept:
     constraints:
         not_null:
-            - id
+            - poc_id
             - account_id
             - opportunity_id
             - poc_status
         unique:
-            - id
+            - poc_id
 
 sfdc_user_roles:
     constraints:
