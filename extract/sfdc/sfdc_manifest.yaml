@@ -1072,7 +1072,6 @@ proof_of_concept__c:
   lastmodifiedbyid: character varying
   lastmodifieddate: timestamp without time zone
   name: character varying
-  one__c: real
   opportunity__c: character varying
   poc_close_date__c: timestamp without time zone
   poc_length__c: real
