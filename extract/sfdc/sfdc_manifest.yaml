@@ -1062,6 +1062,31 @@ product2:
   zqu__syncstatus__c: character varying
   zqu__type__c: character varying
   zqu__zuoraid__c: character varying
+proof_of_concept__c:
+  account__c: character varying
+  createdbyid: character varying
+  createddate: timestamp without time zone
+  decline_reason__c: character varying
+  general_notes__c: character varying
+  id: character varying
+  lastmodifiedbyid: character varying
+  lastmodifieddate: timestamp without time zone
+  name: character varying
+  one__c: real
+  opportunity__c: character varying
+  poc_close_date__c: timestamp without time zone
+  poc_length__c: real
+  poc_milestone_in_collaboration_project__c: character varying
+  poc_owner__c: character varying
+  poc_start_date__c: timestamp without time zone
+  poc_type__c: character varying
+  proof_of_concept__c_id_mapping_key: id
+  result__c: character varying
+  solutions_architect__c: character varying
+  status__c: character varying
+  success_criteria__c: character varying
+  technical_account_manager__c: character varying
+  unsuccessful_reason__c: character varying
 recordtype:
   businessprocessid: character varying
   createdbyid: character varying
