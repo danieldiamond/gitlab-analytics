@@ -1,4 +1,4 @@
-## SheetLoad - Spreadsheet Loader Utility
+## SheetLoad - Spreadsheet & CSV Loader Utility
 
 <img src="https://gitlab.com/meltano/analytics/uploads/d90d572dbc2b1b2c32ce987d581314da/sheetload_logo.png" alt="SheetLoadLogo" width="600"/>
 
