@@ -6,6 +6,7 @@ WITH usage_data AS (
 )
 
 SELECT
+  id                                                                          AS ping_id,
   md5(usage_data.uuid || date_trunc('month', usage_data.created_at)::date)    AS unique_key,
   uuid                                                                        AS uuid,
   DATE_TRUNC('month', created_at)                                             AS created_at,
