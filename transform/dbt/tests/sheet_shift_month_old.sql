@@ -19,4 +19,4 @@ with base as (
 
 select *
 from maxdate 
-WHERE last_update_diff >= '30' 
+WHERE last_update_diff >= '36' 
