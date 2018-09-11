@@ -15,4 +15,13 @@ sfdc_accounts_xf:
             - account_id
             - account_name
         unique:
+
+sfdc_proof_of_concept_xf:
+    constraints:
+        not_null:
+            - poc_id
             - account_id
+            - opportunity_id
+            - poc_status
+        unique:
+            - poc_id
