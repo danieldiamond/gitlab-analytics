@@ -203,3 +203,37 @@ versions:
     created_at: timestamp without time zone
     updated_at: timestamp without time zone
   export_table_primary_key: id
+avg_cycle_analytics:
+  import_db: VERSION_DB
+  import_query: >
+    SELECT *
+    FROM avg_cycle_analytics
+  export_db: EXPORT_DB
+  export_schema: 'version'
+  export_table: 'avg_cycle_analytics'
+  export_table_schema:
+    id: integer
+    usage_data_id: integer
+    total: integer
+    issue_average: integer
+    issue_sd: integer
+    issue_missing: integer
+    plan_average: integer
+    plan_sd: integer
+    plan_missing: integer
+    code_average: integer
+    code_sd: integer
+    code_missing: integer
+    test_average: integer
+    test_sd: integer
+    test_missing: integer
+    review_average: integer
+    review_sd: integer
+    review_missing: integer
+    staging_average: integer
+    staging_sd: integer
+    staging_missing: integer
+    production_average: integer
+    production_sd: integer
+    production_missing: integer
+  export_table_primary_key: id

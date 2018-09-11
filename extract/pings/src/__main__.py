@@ -48,10 +48,46 @@ def action_schema_apply(args):
     client = DBExtractor(args.db_manifest, args.days, args.hours)
     client.schema_apply()
 
+def action_discover_schema(args):
+    logging.info("Fetching Schema of DBs defined in {}".format(args.db_manifest))
+
+    client = DBExtractor(args.db_manifest, args.days, args.hours)
+    schemas = client.schema_discover()
+
+    for schema in schemas:
+        print('\n - - - - - - \n')
+        print("DB Name: {}".format(schema['db_name']))
+        print("Default (connection) schema: {}".format(schema['default_schema']))
+
+        current_catalog = ''
+        current_schema = ''
+        current_table = ''
+
+        for table in schema['tables']:
+            if table['table_catalog'] != current_catalog:
+                current_catalog = table['table_catalog']
+                print("\nCatalog: {}".format(table['table_catalog']))
+
+            if table['table_schema'] != current_schema:
+                current_schema = table['table_schema']
+                print("\n > Schema: {}".format(table['table_schema']))
+
+            if table['table_name'] != current_table:
+                current_table = table['table_name']
+                print("\n  - Table: {}.{}\n".format(table['table_schema'], table['table_name']))
+
+            print("      {}: {} {}".format(
+                    table['column_name'],
+                    table['data_type'],
+                    '' if table['is_nullable']=='YES' else '(NOT NULL)'
+                )
+            )
+
 
 class Action(Enum):
     EXPORT = ('export', action_export)
     APPLY_SCHEMA = ('apply_schema', action_schema_apply)
+    DISCOVER_SCHEMA = ('discover_schema', action_discover_schema)
 
     @classmethod
     def from_str(cls, name):
@@ -76,6 +112,7 @@ def parse():
                     'license',
                     'ci_stats',
                     'gitlab_profiler',
+                    'test',
                 ],
         help="Which DB manifest to use to get the export list."
     )
@@ -121,7 +158,8 @@ def parse():
         choices=list(Action),
         default=Action.EXPORT,
         help=("export: export data into the Data Warehouse.\n"
-              "apply_schema: create or update the schema in the DW.")
+              "apply_schema: create or update the schema in the DW.\n"
+              "discover_schema: fetch the schema of the DBs in db_manifest.")
     )
 
     return parser.parse_args()

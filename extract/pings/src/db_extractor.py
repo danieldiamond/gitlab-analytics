@@ -140,6 +140,49 @@ class DBExtractor:
         return import_dbs
 
 
+    def schema_discover(self):
+        """
+        For all the (Import) DBs referenced in the DB Manifest,
+         fetch and return the available info on the table schemas:
+         {table_catalog, table_schema, table_name, column_name, ... }
+
+        Returns list of {'db_name':, 'default_schema':, 'tables':}
+        """
+        schemas = []
+
+        import_dbs = self.prepare_db_connections()
+
+        for db_name, import_db in import_dbs.items():
+            with import_db.open() as con:
+                with con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+                    schema_info = {'db_name': db_name, 'default_schema': None, }
+
+                    query = psycopg2.sql.SQL("select current_schema()")
+
+                    cur.execute(query)
+                    result = cur.fetchone()
+                    if result is not None:
+                        schema_info['default_schema'] = result[0]
+
+                    query = psycopg2.sql.SQL("""
+                        SELECT table_catalog, table_schema, table_name,
+                               ordinal_position, column_name, data_type,
+                               is_nullable
+                        FROM information_schema.columns
+                        WHERE table_schema != 'pg_catalog'
+                              AND table_schema != 'information_schema'
+                        ORDER BY table_catalog, table_schema, table_name,
+                                 ordinal_position, column_name
+                    """)
+
+                    cur.execute(query)
+                    schema_info['tables'] = cur.fetchall()
+
+                    schemas.append(schema_info)
+
+        return schemas
+
+
     def export(self):
         """
         Export the data for each table defined in self.tables and import them
