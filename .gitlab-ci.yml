@@ -630,7 +630,7 @@ review_stop:
     GIT_STRATEGY: none
   script:
     - git clone $CI_REPOSITORY_URL
-    - ci_helpers.py delete_instance
+    - analytics/orchestration/ci_helpers.py delete_instance
   when: manual
   allow_failure: true
   only:
