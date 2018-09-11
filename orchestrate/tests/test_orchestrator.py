@@ -36,25 +36,3 @@ class TestPipelineManager:
 
         assert was_success
 
-
-class TestCancelRunningJobs:
-    async def test_no_running_jobs(self):
-        was_success = await cancel_running_jobs(env['CI_PIPELINE_TOKEN'],
-                                                env['CI_PROJECT_ID'],
-                                                job_name='scheduler')
-        assert was_success
-
-
-    async def test_one_running_job(self):
-        # create a pipeline that runs the sleeping jobs
-        response, status = await create_pipeline(env['CI_PIPELINE_TOKEN'],
-                                                 env['CI_PROJECT_ID'],
-                                                 env['CI_COMMIT_REF_NAME'],
-                                                 [{'key': 'TEST_SLEEPING_JOB',
-                                                   'value': 'true'}])
-        assert status == 201
-
-        was_success = await cancel_running_jobs(env['CI_PIPELINE_TOKEN'],
-                                                env['CI_PROJECT_ID'],
-                                                job_name='sleeping_test')
-        assert was_success

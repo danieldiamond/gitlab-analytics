@@ -1,0 +1,5 @@
+schedule: '* */24 * * *'
+pipeline_name: 'sheetloader'
+num_retries: 0
+variables:
+  SHEETLOAD: 'true'
