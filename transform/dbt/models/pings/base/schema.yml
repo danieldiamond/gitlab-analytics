@@ -1,4 +1,4 @@
-account:
+pings_avg_cycle_analytics:
     constraints:
         not_null:
             - ping_id
