@@ -165,6 +165,21 @@
     - ci_helpers.py use_proxy "python3 extract/gitlab/src -S gitlab apply_schema"
     - ci_helpers.py use_proxy "python3 extract/gitlab/src -S gitlab export"
 
+.discover_gitlab_dbs_schema: &discover_gitlab_dbs_schema
+  stage: extract
+  <<: *job_definition
+  script:
+    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_ci_stats.yaml
+    - ci_helpers.py use_proxy "python3 extract/pings/src discover_schema --db_manifest ci_stats"
+  
+    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_pings.yaml
+    - ci_helpers.py use_proxy "python3 extract/pings/src discover_schema --db_manifest version"
+    - ci_helpers.py use_proxy "python3 extract/pings/src discover_schema --db_manifest customers"
+    - ci_helpers.py use_proxy "python3 extract/pings/src discover_schema --db_manifest license"
+  
+    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_gitlab_profiler.yaml
+    - ci_helpers.py use_proxy "python3 extract/pings/src discover_schema --db_manifest gitlab_profiler"
+
 # ---------------------------------------------------------------------------
 
 # Stages
@@ -468,6 +483,15 @@ gitlab_profiler_backfill:
   stage: extract
   <<: *gitlab_profiler_backfill
   only:
+    - master
+  when: manual
+
+discover_gitlab_dbs_schema_manual:
+  stage: extract
+  <<: *discover_gitlab_dbs_schema
+  only:
+    - branches
+  except:
     - master
   when: manual
 
