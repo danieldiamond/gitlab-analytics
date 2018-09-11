@@ -6,7 +6,7 @@ WITH source AS (
 ), renamed AS (
 
 SELECT 
-  	"Bookings_at_Quota"::date 	as month_of,
+  	"Bookings_at_Plan"::date 	as month_of,
   	"EMEA_"                   	as emea,
   	"Public_Sector" 		as public_sector,
 	"US_East" 			as us_east,
