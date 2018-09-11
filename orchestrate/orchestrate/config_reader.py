@@ -30,4 +30,8 @@ def format_job_vars(raw_vars: Dict[str, str]) -> List[Dict]:
     injected pipeline variables.
     """
 
-    return [{'key': k, 'value': v} for k, v in raw_vars.items()]
+    ## TODO: Stop this hard-coded madness
+    hardcoded_vars = {'ORCHESTRATE_JOB': 'true'}
+    inject_vars = {**raw_vars, **hardcoded_vars}
+
+    return [{'key': k, 'value': v} for k, v in inject_vars.items()]

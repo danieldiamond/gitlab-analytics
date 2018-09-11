@@ -1,0 +1,5 @@
+schedule: '*/10 * * * *'
+pipeline_name: 'spreadsheet_extractor'
+num_retries: 0
+variables:
+  SPREADSHEET: 'true'

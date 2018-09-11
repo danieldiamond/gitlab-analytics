@@ -5,6 +5,8 @@ class TestFormatJobVars:
         raw_vars = {'Spreadsheet': 'true'}
         formatted_vars = format_job_vars(raw_vars)
         correct_vars = [{'key': 'Spreadsheet',
+                         'value': 'true'},
+                        {'key': 'ORCHESTRATE_JOB',
                          'value': 'true'}]
 
         assert formatted_vars == correct_vars
@@ -17,6 +19,8 @@ class TestFormatJobVars:
         correct_vars = [{'key': 'Spreadsheet',
                          'value': 'true'},
                         {'key': 'DBT',
+                         'value': 'true'},
+                        {'key': 'ORCHESTRATE_JOB',
                          'value': 'true'}]
 
         assert formatted_vars == correct_vars

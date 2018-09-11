@@ -102,7 +102,7 @@
     - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest gitlab_profiler"
     - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest gitlab_profiler --days 3600"
 
-.spreadsheet_extract: &spreadsheet_extract
+.sheetload: &sheetload
   stage: extract
   <<: *job_definition
   script:
@@ -201,7 +201,7 @@ stages:
 
 # Orchestrate
 
-orchestrate: &orchestrate
+orchestrate:
   <<: *orchestrate
   stage: orchestrate
   script:
@@ -210,8 +210,9 @@ orchestrate: &orchestrate
   only:
     refs:
       - master
+  except:
     variables:
-      - $ORCHESTRATE
+      - $ORCHESTRATE_JOB
 
 # Stage: review
 
@@ -357,14 +358,14 @@ sfdc:
     variables:
       - $SFDC
 
-spreadsheet_extract:
+sheetload:
   stage: extract
-  <<: *spreadsheet_extract
+  <<: *sheetload
   only:
     refs:
       - master
     variables:
-      - $SPREADSHEET
+      - $SHEETLOAD
 
 stripe_about_gitlab:
   <<: *stripe_extract_about_gitlab
@@ -503,9 +504,9 @@ sfdc_manual:
     - master
   when: manual
 
-spreadsheet_extract_manual:
+sheetload_manual:
   stage: extract
-  <<: *spreadsheet_extract
+  <<: *sheetload
   when: manual
 
 stripe_extract_about_gitlab_manual:

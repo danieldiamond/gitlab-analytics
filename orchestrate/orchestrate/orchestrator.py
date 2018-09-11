@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import logging
 from os import environ as env, getenv
 import sys
@@ -14,6 +15,9 @@ from ci_response_helpers import find_failed_job, find_job_by_name_and_scope
 from config_reader import config_paths, config_parser, format_job_vars
 from scheduler_config import scheduler
 
+
+# Create the event loop
+loop = asyncio.get_event_loop()
 
 # Set logging defaults
 logging.basicConfig(stream=sys.stdout, level=20)
@@ -49,6 +53,7 @@ async def pipeline_manager(env_vars: Dict[str, str], job_vars: Dict[str, str],
     Manage running, monitoring and retrying pipelines and jobs.
     """
 
+    logging.info('Running Pipeline: {}'.format(pipeline_name))
     API_TOKEN = env_vars['CI_PIPELINE_TOKEN']
     PROJECT_ID = env_vars['CI_PROJECT_ID']
 
@@ -96,39 +101,89 @@ def job_adder(env_vars: Dict[str, str]):
         logging.info('Added job to scheduler: {}'.format(job['pipeline_name']))
 
 
-async def cancel_running_jobs(api_token: str, project_id: str,
-                        job_name: str) -> bool:
+def string_to_datetime(time_string: str):
     """
-    Find all jobs with a certain name and shut them down.
+    Convert a string timestamp in the GitLab CI format to a datetime object.
     """
 
-    scope = ['running', 'pending']
-    response, _ = await list_project_jobs(api_token, project_id, scope)
-    job_list = response
+    date_format = '%Y-%m-%dT%H:%M:%S.%f'
+    return datetime.datetime.strptime(time_string[:-1], date_format)
 
-    running_schedulers = find_job_by_name_and_scope(job_list, job_name, scope)
 
-    # cancel the jobs and get a list of the status_codes
-    status_codes = {(await job_operations(api_token, project_id, job_id, 'cancel'))[1]
-                    for job_id in running_schedulers}
+async def get_start_time(api_token, project_id, job_id: str=''):
+    """
+    If a job_id exists, use it to look up the start time of the job. Otherwise,
+    just return the current time.
+    """
 
-    # return true if all jobs returned a 200 code, false otherwise
-    if status_codes == {201} or status_codes == set():
+    if job_id == '':
+        return datetime.datetime.now()
+
+    job_metadata, _ = await job_operations(api_token, project_id, job_id)
+    start_time = job_metadata['created_at']
+    return string_to_datetime(start_time)
+
+
+async def check_for_new_instances(api_token, project_id,
+                                  job_name: str, start_time) -> bool:
+    """
+    Using a start_time and a job_name, continually check to see if a new
+    instance has been created and is running. If so, return True.
+    """
+
+    scope = ['running']
+
+    job_list, _ = await list_project_jobs(api_token, project_id, scope)
+    new_instances = [job['id'] for job in job_list
+                     if job['name'] == job_name
+                     and string_to_datetime(job['created_at']) > start_time]
+    if new_instances != []:
         return True
-    else:
-        return False
+
+
+async def instance_shutoff(api_token, project_id,
+                           job_name: str, job_id: str) -> None:
+    """
+    Get the created_at time of the current job instance and use that to
+    continually check for newer instances of the same job. If a newer
+    instance is found, gracefully shutdown the scheduler and wait for the
+    jobs to finish.
+    """
+
+    logging.info('Watching for new instances...')
+    start_time = await get_start_time(api_token, project_id, job_id)
+
+
+    while True:
+        await asyncio.sleep(10)
+        shutoff_signal = await check_for_new_instances(api_token, project_id,
+                                                   job_name, start_time)
+        if shutoff_signal:
+            break
+
+    # Gracefully shutdown the scheduler and the event loop
+    logging.info('Newer instance found. Shutting down the scheduler...')
+    scheduler.shutdown()
+    logging.info('Scheduler gracefully shut down.')
+    loop.stop()
 
 
 def run_scheduler():
-    # shutdown any existing scheduler instances
-    cancel_running_jobs(env['CI_PIPELINE_TOKEN'],
-                        env['CI_PROJECT_ID'],
-                        job_name='scheduler')
+    # Add the instance_shutoff future to the loop when it starts
+    job_name = 'orchestrate' if env['CI_COMMIT_REF_NAME'] == 'master' else 'test_orchestrate'
+    asyncio.ensure_future(instance_shutoff(env['CI_PIPELINE_TOKEN'],
+                                           env['CI_PROJECT_ID'],
+                                           job_name,
+                                           env['CI_JOB_ID']),
+                          loop=loop)
+
+    # Add Orchestrate jobs, start the scheduler and run the event loop
     job_adder(env.copy())
     scheduler.start()
 
     try:
-        asyncio.get_event_loop().run_forever()
+        logging.info('Starting the event loop...')
+        loop.run_forever()
     except (KeyboardInterrupt, SystemExit):
         pass
 
