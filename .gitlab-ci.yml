@@ -16,7 +16,7 @@
   image: registry.gitlab.com/meltano/analytics/orchestrate:latest
   variables:
     GIT_STRATEGY: clone
-    MELT_JOBS_HOME: jobs/
+    MELT_JOBS_HOME: orchestrate_jobs/
   tags:
     - analytics
 
