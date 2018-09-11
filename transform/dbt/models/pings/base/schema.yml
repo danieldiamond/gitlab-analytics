@@ -1,0 +1,8 @@
+account:
+    constraints:
+        not_null:
+            - ping_id
+            - id
+        unique:
+            - ping_id
+            - id
