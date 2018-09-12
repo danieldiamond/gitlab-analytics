@@ -6,10 +6,10 @@ WITH usage_data AS (
 )
 
 SELECT
-  id                                                                          AS ping_id,
   md5(usage_data.uuid || date_trunc('month', usage_data.created_at)::date)    AS unique_key,
   uuid                                                                        AS uuid,
   DATE_TRUNC('month', created_at)                                             AS created_at,
+  max(id)                                                                     AS ping_id,
   max(edition)                                                                AS edition,
   max(auto_devops_disabled)                                                   AS auto_devops_disabled,
   max(auto_devops_enabled)                                                    AS auto_devops_enabled,
@@ -56,5 +56,5 @@ SELECT
   max(uploads)                                                                AS uploads,
   max(web_hooks)                                                              AS web_hooks
 FROM usage_data
-GROUP BY 1, 2, 3, 4
+GROUP BY 1, 2, 3
 
