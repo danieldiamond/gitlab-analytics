@@ -56,5 +56,5 @@ SELECT
   max(uploads)                                                                AS uploads,
   max(web_hooks)                                                              AS web_hooks
 FROM usage_data
-GROUP BY 1, 2, 3
+GROUP BY 1, 2, 3, 4
 
