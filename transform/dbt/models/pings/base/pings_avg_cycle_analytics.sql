@@ -9,7 +9,7 @@ WITH source AS (
 
     SELECT
     -- id
-		id,
+    id,
     usage_data_id  AS ping_id,
 
     -- data
@@ -17,6 +17,7 @@ WITH source AS (
     code_missing,
     code_sd,
 
+    issue_average,
     issue_missing,
     issue_sd,
 
