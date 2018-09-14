@@ -3,13 +3,18 @@ import logging
 from os import environ
 import sys
 
-required_env_vars = ['MELT_JOBS_HOME', 'CI_PIPELINE_TOKEN',
-                     'CI_COMMIT_REF_NAME', 'CI_PROJECT_ID']
+required_env_vars = {'jobs_path': 'MELT_JOBS_HOME',
+                     'api_token': 'CI_PIPELINE_TOKEN',
+                     'branch_name': 'CI_COMMIT_REF_NAME',
+                     'job_id': 'CI_JOB_ID',
+                     'project_id': 'CI_PROJECT_ID'}
 
+# env_vars gets imported into the CLI as a neat way to handle all of the vars
+env_vars = {}
 missing_vars = []
-for var in required_env_vars:
+for name, var_name in required_env_vars.items():
     try:
-        environ[var]
+        env_vars[name] = environ[var_name]
     except KeyError:
         missing_vars += [var]
         pass
