@@ -54,25 +54,24 @@ WITH source AS (
 		account_tier__c as account_tier,
 		customer_since__c::date as customer_since_date,
 		carr_total__c 															as carr_total,
-		next_renewal_date__c as next_renewal_date,
-		license_user_count__c as licensed_user_count,
-		license_utilization__c as license_utilization,
+		next_renewal_date__c 												as next_renewal_date,
+		license_utilization__c 											as license_utilization,
 		products_purchased__c 											as products_purchased,
-		sales_segmentation_new__c as new_account_segment,
-		sales_segmentation__c as account_segment, -- I would this be called account_segment or sales_segment, but I think this is a breaking change
+		sales_segmentation_new__c 									as new_account_segment,
+		sales_segmentation__c 											as account_segment, -- I would this be called account_segment or sales_segment, but I think this is a breaking change
 		support_level__c 														as support_level,
-		support_level_new__c 												as support_level_new,
 		support_level_numeric__c 										as support_level_numeric,
 
 		--present state info
-		health__c as health_score,
-		health_score_reasons__c as health_score_explained,
+		health__c 																	as health_score,
+		health_score_reasons__c 										as health_score_explained,
 
 
 		-- opportunity metrics
 		count_of_active_subscription_charges__c as count_active_subscription_charges,
 		count_of_active_subscriptions__c as count_active_subscriptions,
 		count_of_billing_accounts__c as count_billing_accounts,
+		license_user_count__c 											as count_licensed_users,
 		count_of_new_business_won_opps__c as count_of_new_business_won_opportunities,
 		count_of_open_renewal_opportunities__c as count_open_renewal_opportunities,
 		count_of_opportunities__c as count_opportunities,
@@ -81,7 +80,7 @@ WITH source AS (
 		concurrent_ee_subscriptions__c as count_concurrent_ee_subscriptions,
 		ce_instances__c as count_ce_instances,
 		active_ce_users__c as count_active_ce_users,
-		number_of_open_opportunities__c                 as count_open_opportunities,
+		number_of_open_opportunities__c             as count_open_opportunities,
 		using_ce__c as count_using_ce,
 
 
