@@ -33,9 +33,9 @@ WITH source AS (
 			gross_burn_rate::decimal 						as gross_burn_rate,
 			cap_consumption::decimal 						as capital_consumption,
 			sclau::decimal 											as sclau,
-			csat::decimal 									as csat,
-			on_prem_sla::decimal                            as on_prem_sla,
-			sub_sla::decimal                                as sub_sla
+			csat::decimal 											as csat,
+			on_prem_sla::decimal                as on_prem_sla,
+			sub_sla::decimal                    as sub_sla,
 			
 			--metadata
 			TIMESTAMP 'epoch' + updated_at * INTERVAL '1 second' as updated_at
