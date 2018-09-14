@@ -29,7 +29,7 @@ WITH source AS (
 		-- account_owner_manager_email__c as account_owner_manager,
 		account_owner_team__c as account_owner_team,
 		business_development_rep__c as business_development_rep,
-		business_development_rep_account_team__c as business_development_rep_team,
+		business_development_rep_account_team__c 	as business_development_rep_team,
 		dedicated_service_engineer__c as dedicated_service_engineer,
 		sdr__c as sales_development_rep,
 		sdr_account_team__c as sales_development_rep_team,
@@ -51,9 +51,18 @@ WITH source AS (
 		type as account_type,
 		industry,
 		product_category__c as product_category,
+		account_tier__c as account_tier,
 		customer_since__c::date as customer_since_date,
+		carr_total__c 															as carr_total,
+		next_renewal_date__c as next_renewal_date,
+		license_user_count__c as licensed_user_count,
+		license_utilization__c as license_utilization,
+		products_purchased__c 											as products_purchased,
 		sales_segmentation_new__c as new_account_segment,
 		sales_segmentation__c as account_segment, -- I would this be called account_segment or sales_segment, but I think this is a breaking change
+		support_level__c 														as support_level,
+		support_level_new__c 												as support_level_new,
+		support_level_numeric__c 										as support_level_numeric,
 
 		--present state info
 		health__c as health_score,
@@ -160,11 +169,9 @@ FROM renamed
 ----- other columns
 --absd_campaign__c
 --account_initial_start_date__c
---account_tier__c
 --ae_comments__c
 --carr_all_child_accounts__c
 --carr_this_account__c
---carr_total__c
 --cmrr_all_child_accounts__c
 --cmrr_this_account__c
 --cmrr_total__c
@@ -195,8 +202,6 @@ FROM renamed
 --ispremiumsupportcustomer__c
 --it_tedd__c
 --large_account__c
---license_user_count__c
---license_utilization__c
 --manual_support_upgrade__c
 --most_recent_expired_subscription_date__c
 --next_invoice_due_date__c
@@ -230,7 +235,6 @@ FROM renamed
 --primary_contact_email__c
 --primary_contact_first_name__c
 --primary_contact_last_name__c
---products_purchased__c
 --reference_type__c
 --referenceable_customer__c
 --referenceable_customer_notes__c
@@ -244,9 +248,6 @@ FROM renamed
 --sub_region__c
 --subscription_amount__c
 --sum_of_open_renewal_opportunities__c
---support_level__c
---support_level_new__c
---support_level_numeric__c
 --technology_stack__c
 --tedd_employees__c
 --temp_duplicated_account__c
