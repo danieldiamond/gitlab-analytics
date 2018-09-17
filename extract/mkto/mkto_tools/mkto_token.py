@@ -25,4 +25,4 @@ def get_token():
         token = r_json.get("access_token", None)
         return token
     else:
-        raise ExtractError("Cannot fetch access token: {}".format(response.body))
+        raise ExtractError("Cannot fetch access token: {}".format(response))
