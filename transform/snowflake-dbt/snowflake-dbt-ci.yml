@@ -1,0 +1,67 @@
+.snowflake_load: &snowflake_load
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  stage: extract
+  before_script:
+    - cd transform/util/
+    - pip3 install -U snowflake-sqlalchemy
+  tags:
+    - analytics
+
+.snowflake_dbt_jobs: &snowflake_dbt_jobs
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  stage: model
+  before_script:
+    - cd transform/snowflake-dbt/
+  tags:
+    - analytics
+
+# Load
+
+snowflake_load:
+  <<: *snowflake_load
+  script:
+    - python3 execute_copy.py
+  only:
+    refs:
+      - master
+    variables:
+      - $SNOWFLAKE_LOAD
+
+snowflake_load_run:
+  <<: *snowflake_load
+  script:
+    - python3 execute_copy.py
+  when: manual
+
+# Model
+
+dbt_snowflake:
+  <<: *snowflake_dbt_jobs
+  script:
+    - dbt -d deps --profiles-dir profile
+    - dbt -d run --profiles-dir profile --target prod
+    - dbt -d test --profiles-dir profile --target prod
+  only:
+    refs:
+      - master
+    variables:
+      - $DBT
+
+dbt_snowflake_run:
+  <<: *snowflake_dbt_jobs
+  script:
+    - dbt -d deps --profiles-dir profile
+    - dbt -d run --profiles-dir profile --target prod
+    - dbt -d test --profiles-dir profile --target prod
+  only:
+    refs:
+      - branches
+  when: manual
+
+dbt_snowflake_full_refresh:
+  <<: *snowflake_dbt_jobs
+  script:
+    - dbt -d deps --profiles-dir profile
+    - dbt -d run --profiles-dir profile --target prod --full-refresh
+    - dbt -d test --profiles-dir profile --target prod
+  when: manual

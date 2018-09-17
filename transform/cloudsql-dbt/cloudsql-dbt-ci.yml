@@ -1,0 +1,38 @@
+.cloudsql_dbt_jobs: &cloudsql_dbt_jobs
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  before_script:
+    - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
+    - cd transform/cloudsql-dbt
+  tags:
+    - analytics
+
+dbt:
+  stage: model
+  <<: *cloudsql_dbt_jobs
+  script:
+    - ci_helpers.py use_proxy "dbt -d run --profiles-dir profile --target prod"
+    - ci_helpers.py use_proxy "dbt -d test --profiles-dir profile --target prod"
+  only:
+    refs:
+      - master
+    variables:
+      - $DBT
+
+dbt_run:
+  stage: model
+  <<: *cloudsql_dbt_jobs
+  script:
+    - ci_helpers.py use_proxy "dbt -d run --profiles-dir profile --target prod"
+    - ci_helpers.py use_proxy "dbt -d test --profiles-dir profile --target prod"
+  only:
+    refs:
+      - branches
+  when: manual
+
+dbt_full_refresh:
+  stage: model
+  <<: *cloudsql_dbt_jobs
+  script:
+    - ci_helpers.py use_proxy "dbt -d run --profiles-dir profile --target prod --full-refresh"
+    - ci_helpers.py use_proxy "dbt -d test --profiles-dir profile --target prod"
+  when: manual

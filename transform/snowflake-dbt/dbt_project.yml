@@ -1,0 +1,47 @@
+name: 'gitlab_snowflake'
+version: '1.0'
+
+profile: 'gitlab-snowflake'
+
+source-paths: ["models"]
+test-paths: ["tests"]
+data-paths: ["data"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+    - "target"
+    - "dbt_modules"
+
+quoting:
+    identifier: false
+    schema: false
+
+on-run-start:
+    - "{{resume_warehouse(var('resume_warehouse', false), var('warehouse_name'))}}"
+
+on-run-end:
+    - grant usage on schema {{ target.schema }} to role reporter
+    - grant select on all tables in schema {{ target.schema }} to role reporter
+    - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
+
+models:
+    vars:
+        warehouse_name: 'transforming'
+    snowplow:
+        vars:
+          'snowplow:use_fivetran_interface': false
+          'snowplow:events': "{{ref('unnested_events')}}"
+          'snowplow:context:web_page': "{{ref('web_page')}}"
+          'snowplow:context:performance_timing': false
+          'snowplow:context:useragent': false
+          'snowplow:timezone': 'America/New_York'
+          'snowplow:page_ping_frequency': 30
+          'snowplow:app_ids': ['gitlab']
+        base:
+          materialized: ephemeral
+          optional:
+            enabled: false
+        page_views:
+          optional:
+            enabled: false
