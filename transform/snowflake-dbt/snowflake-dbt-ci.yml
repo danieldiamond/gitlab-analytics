@@ -45,7 +45,7 @@ dbt_snowflake:
     refs:
       - master
     variables:
-      - $DBT
+      - $SNOWFLAKE_DBT
 
 dbt_snowflake_run:
   <<: *snowflake_dbt_jobs

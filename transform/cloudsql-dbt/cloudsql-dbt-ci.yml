@@ -16,7 +16,7 @@ dbt:
     refs:
       - master
     variables:
-      - $DBT
+      - $CLOUDSQL_DBT
 
 dbt_run:
   stage: model
