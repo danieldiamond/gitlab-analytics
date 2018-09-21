@@ -1,4 +1,4 @@
-l[![pipeline status](https://gitlab.com/meltano/analytics/badges/master/pipeline.svg)](https://gitlab.com/meltano/analytics/commits/master)
+[![pipeline status](https://gitlab.com/meltano/analytics/badges/master/pipeline.svg)](https://gitlab.com/meltano/analytics/commits/master)
 
 # Quick Links
 * Meltano Repo - https://gitlab.com/meltano/meltano/
