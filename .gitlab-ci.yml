@@ -47,9 +47,17 @@ include:
 orchestrate:
   <<: *orchestrate
   stage: orchestrate
+  variables:
+    CLOUD_SDK_REPO: "cloud-sdk-stretch"
   script:
+    - wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /usr/bin/cloud_sql_proxy
+    - chmod +x /usr/bin/cloud_sql_proxy
+    - echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    - curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+    - apt-get update && apt-get install -y google-cloud-sdk
+    - pip install pandas requests
     - echo $MELT_JOBS_HOME
-    - python /orchestrate/orchestrate/cli.py scheduler
+    - ci_helpers.py use_proxy "orchestrate scheduler"
   only:
     refs:
       - master

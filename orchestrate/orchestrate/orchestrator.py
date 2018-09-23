@@ -7,10 +7,10 @@ from typing import List, Dict
 import aiohttp
 from apscheduler.triggers.cron import CronTrigger
 
-from ci_api_wrappers import CIApiWrapper
-from ci_response_helpers import find_failed_job, find_job_by_name_and_scope
-from config_reader import config_paths, config_parser, format_job_vars
-from scheduler_config import scheduler
+from .ci_api_wrappers import CIApiWrapper
+from .ci_response_helpers import find_failed_job, find_job_by_name_and_scope
+from .config_reader import config_paths, config_parser, format_job_vars
+from .scheduler_config import scheduler
 
 
 # Create the event loop
@@ -86,14 +86,26 @@ def job_adder(config: Dict[str, str]):
     job_configs = config_parser(config_paths(jobs_dir))
 
     for job in job_configs:
-        scheduler.add_job(pipeline_manager,
-                          args=(config.copy(),
-                                job['variables'],
-                                job['pipeline_name'],
-                                job['num_retries']),
-                          trigger=CronTrigger.from_crontab(job['schedule']),
-                          id=job['pipeline_name'])
-        logging.info('Added job to scheduler: {}'.format(job['pipeline_name']))
+        job_object = scheduler.get_job(job['pipeline_name'])
+        # If the job already exists update it with the current values
+        if job_object is not None:
+            logging.info('Job exists. Updating existing job...')
+            job_object.modify(args=(config.copy(),
+                                    job['variables'],
+                                    job['pipeline_name'],
+                                    job['num_retries']))
+            job_object.reschedule(trigger=CronTrigger.from_crontab(job['schedule']))
+        else:
+            # Create a new job with these configuration values
+            logging.info('Job doesn\'t exist, adding it...')
+            scheduler.add_job(pipeline_manager,
+                              args=(config.copy(),
+                                    job['variables'],
+                                    job['pipeline_name'],
+                                    job['num_retries']),
+                              trigger=CronTrigger.from_crontab(job['schedule']),
+                              id=job['pipeline_name'],
+                              name=job['pipeline_name'])
 
 
 def string_to_datetime(time_string: str):
@@ -166,16 +178,17 @@ async def instance_shutoff(api_token, project_id,
 
 def run_scheduler(config: Dict):
     # Add the instance_shutoff future to the loop when it starts
-    job_name = 'orchestrate' if config['branch_name'] == 'master' else 'test_orchestrate'
-    asyncio.ensure_future(instance_shutoff(config['api_token'],
-                                           config['project_id'],
-                                           job_name,
-                                           config['job_id']),
-                          loop=loop)
+    if config.get('orchestrator_mode') != 'standalone':
+        job_name = 'orchestrate' if config['branch_name'] == 'master' else 'test_orchestrate'
+        asyncio.ensure_future(instance_shutoff(config['api_token'],
+                                               config['project_id'],
+                                               job_name,
+                                               config['job_id']),
+                              loop=loop)
 
     # Add Orchestrate jobs, start the scheduler and run the event loop
-    job_adder(config.copy())
     scheduler.start()
+    job_adder(config.copy())
 
     try:
         logging.info('Starting the event loop...')
