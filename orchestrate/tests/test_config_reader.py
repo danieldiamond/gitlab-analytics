@@ -1,4 +1,4 @@
-from config_reader import *
+from orchestrate.config_reader import *
 
 class TestFormatJobVars:
     def test_single_format_job_vars(self):

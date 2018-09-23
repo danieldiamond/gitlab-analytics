@@ -11,12 +11,26 @@ variables:
     TEST_PIPELINE: 'true'
 ```
 
+`scheduler` is a cron expression defining how often the job should be run.  
+`pipeline_name` is just the internal name for the job used in things like logging.  
+`variables` is  an array of key-value pairs that will be passed into the CI pipeline when it is triggered.  
+  
 The job will be parsed and added to the scheduler on startup. The scheduler is unable to add jobs on the fly as it does not watch the jobs dir for changes.  
 The scheduler makes full use of asyncio, so in theory it would take hundreds of jobs per minute to start slowing down the scheduler.  
 
 #### Usage  
-The easiest way to run the scheduler is to download the image `registry.gitlab.com/meltano/analytics/orchestrate:latest` and run the command:  
-`python /orchestrate/orchestrate/cli.py scheduler`
+The easiest way to run the scheduler is to clone the repo and run `docker-compose up`. This will spin up the scheduler as well as a postgres database to be used as a persistent jobstore. It will import the required env vars from the shell that ran it. 
+
+#### Testing
+The scheduler has a test suite that can be run with `make test`. Some of the tests do make assumptions about certain env vars being present, 
+and it will create actual CI pipelines via the API during integration tests. The scheduler-ci.yml will have to be included in your primary ci file
+with the proper stages existing as well, with the build names.  
+
+To run a simplified version of the tests that skip all integration tests (no api calls are made), run `make test-quick`
+
+#### Environment Variables
+A list of required variables can be found in `orchestrate/env_var_checker.py`. The CLI module imports this module which ensures all required env vars exist. If any are missing, it will list them and exit with a non-zero exit status.
+
 
 #### Handling multiple Orchestrate Instances
 Orchestrate is designed to only have one instance running at a time. That means that there should only be

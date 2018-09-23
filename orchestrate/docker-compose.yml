@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+  orchestrator:
+    build: .
+    environment:
+      - SCHED_CONN_STRING=postgresql://root:password@database:5432/orchestrator
+      - MELT_JOBS_HOME=/orchestrate/examples/example_jobs/
+      - ORCHESTRATOR_MODE=standalone
+      - CI_PIPELINE_TOKEN
+      - CI_COMMIT_REF_NAME
+      - CI_PROJECT_ID
+      - CI_JOB_ID
+    command: ["orchestrate", "scheduler"]
+    volumes:
+      - .:/orchestrate
+    depends_on:
+      - database
+
+  database:
+    image: "postgres:9.3-alpine"
+    environment:
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD": "password"
+      POSTGRES_DB: "orchestrator"
+    ports:
+      - "5432:5432"

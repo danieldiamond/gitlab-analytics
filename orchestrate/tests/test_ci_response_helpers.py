@@ -1,4 +1,4 @@
-from ci_response_helpers import *
+from orchestrate.ci_response_helpers import *
 
 class TestFailedJobFinder:
     def test_find_existent_failed_job(self):

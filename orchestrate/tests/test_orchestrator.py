@@ -3,8 +3,8 @@ from os import environ as env
 import aiohttp
 import pytest
 
-from orchestrator import *
-from ci_api_wrappers import CIApiWrapper
+from orchestrate.orchestrator import *
+from orchestrate.ci_api_wrappers import CIApiWrapper
 
 
 # All test coroutines will be treated as marked

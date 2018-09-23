@@ -50,21 +50,29 @@ publish_orchestrate:
 
 # Stage: test
 
-test_orchestrate: &test_orchestrate
+run_orchestrate_examples: &test_orchestrate
   <<: *orchestrate_branch
   stage: test
   variables:
+    CLOUD_SDK_REPO: "cloud-sdk-stretch"
     MELT_JOBS_HOME: /orchestrate/examples/example_jobs/
   script:
+    - wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /usr/bin/cloud_sql_proxy
+    - chmod +x /usr/bin/cloud_sql_proxy
+    - echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    - curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+    - apt-get update && apt-get install -y google-cloud-sdk
+    - pip install pandas requests
     - echo $MELT_JOBS_HOME
-    - python /orchestrate/orchestrate/cli.py scheduler
+    - ci_helpers.py use_proxy "orchestrate scheduler"
   when: manual
 
-run_orchestrate_tests: &run_orchestrate_tests
+test_orchestrate: &run_orchestrate_tests
   <<: *orchestrate_branch
   stage: test
   script:
-    - PYTHONPATH=/orchestrate/orchestrate pytest /orchestrate -vv
+    - cd /orchestrate
+    - pytest -vv
   when: manual
 
 var_test: &var_test

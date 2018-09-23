@@ -1,4 +1,4 @@
-from ci_api_wrappers import CIApiWrapper
+from orchestrate.ci_api_wrappers import CIApiWrapper
 from os import environ as env
 import time
 
