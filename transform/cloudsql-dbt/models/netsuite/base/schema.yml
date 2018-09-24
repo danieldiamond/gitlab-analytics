@@ -55,7 +55,6 @@ netsuite_expenses:
         not_null:
         - expense_id
         - transaction_id
-        - transaction_line
         - account_id
         - account_name
         unique: 
