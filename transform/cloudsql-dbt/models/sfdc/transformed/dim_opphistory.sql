@@ -29,6 +29,7 @@ agg_days AS (
 
 -- Gets ALL mapped stages and the appropriate value from the calculation
 SELECT
+    md5(a.opportunityid||a.mapped_stage)          AS dim_opphistory_id,
     a.opportunityid,
     a.mapped_stage,
 --    Each opp has a row for each stage, but gets no credit if it was never in the stage.
@@ -39,4 +40,4 @@ FROM all_stages a
 FULL OUTER JOIN agg_days o
   ON a.opportunityid=o.opportunityid
      AND a.mapped_stage=o.mapped_stage
-GROUP BY 1, 2, 3
+GROUP BY 1, 2, 3, 4
