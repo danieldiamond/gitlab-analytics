@@ -164,7 +164,7 @@ def overwrite_to_db_from_csv_file(db_conn, csv_file, *,
         cursor.execute(truncate_query)
 
         logging.debug(copy_query.as_string(cursor))
-        logging.info("Copying file")
+        logging.debug("Copying file")
         cursor.copy_expert(sql=copy_query, file=csv_file)
 
         db_conn.commit()
@@ -227,7 +227,7 @@ def integrate_csv(db_conn, csv_path, *,
     :param csv_path: name of CSV that you wish to write to table of same name
     :return:
     """
-    logging.info("Importing {} as {}...".format(csv_path, table_name))
+    logging.debug("Importing {} as {}...".format(csv_path, table_name))
     with open(csv_path, 'r') as csv_file:
         return integrate_csv_file(db_conn, csv_file,
                                   table_schema=table_schema,

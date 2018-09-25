@@ -42,9 +42,7 @@ def session(request, db):
 
 
 def truncate_tables(engine, schema):
-    # delete all table data (but keep tables)
-    # we do cleanup before test 'cause if previous test errored,
-    # DB can contain dust
+    # delete all table data (but keep tables) between tests
     con = engine.connect()
     trans = con.begin()
     con.execute("SET session_replication_role TO 'replica';")

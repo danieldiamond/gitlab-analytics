@@ -8,16 +8,7 @@ from elt.error import with_error_exit_code
 from export import extract
 from enum import Enum
 
-import schema.brand as brand
-import schema.group as group
-import schema.group_membership as group_membership
-import schema.organization as organization
-import schema.organization_membership as organization_membership
-import schema.tag as tag
-import schema.ticket as ticket
-import schema.ticket_event as ticket_event
-import schema.ticket_field as ticket_field
-import schema.user as user
+import schema.auto as auto_schema
 
 
 def action_export(args):
@@ -25,19 +16,9 @@ def action_export(args):
 
 
 def action_schema_apply(args):
-    schemas = [ticket.describe_schema(args),
-               ticket_event.describe_schema(args),
-               ticket_field.describe_schema(args),
-               tag.describe_schema(args),
-               group.describe_schema(args),
-               group_membership.describe_schema(args),
-               user.describe_schema(args),
-               organization.describe_schema(args),
-               organization_membership.describe_schema(args),
-               brand.describe_schema(args),]
     with DB.default.open() as db:
-        for schema in schemas:
-            schema_apply(db, schema)
+        schema = auto_schema.describe_schema(args)
+        schema_apply(db, schema)
 
 
 class Action(Enum):
