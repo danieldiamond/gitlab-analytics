@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(name='meltano-extract-common',
       version='0.1.0-alpha0',
@@ -7,7 +7,7 @@ setup(name='meltano-extract-common',
       author='Micaël Bergeron',
       author_email='mbergeron@gitlab.com',
       url='https://gitlab.com/meltano/meltano',
-      packages=['extract'],
+      packages=find_packages(),
       install_requires=[
           "configparser",
           "SQLAlchemy",

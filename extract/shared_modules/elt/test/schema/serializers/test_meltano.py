@@ -58,3 +58,4 @@ def test_idempotent():
     schema2 = MeltanoSerializer(schema.name).loads(serializer.dumps()).schema
 
     assert(len(schema.tables) == len(schema2.tables))
+    assert(len(schema.columns) == len(schema2.columns))

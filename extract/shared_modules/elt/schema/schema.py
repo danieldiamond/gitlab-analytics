@@ -89,6 +89,11 @@ class Schema:
         # TODO: raise on onverwrite?
         self.columns[Schema.column_key(column)] = column
 
+    def table_columns(self, table_name):
+        return map(lambda c: c.column_name,
+                  filter(lambda c: c.table_name == table_name,
+                  self.columns.values()))
+
     def column_diff(self, column: Column) -> Set[SchemaDiff]:
         table_key = Schema.table_key(column)
         column_key = Schema.column_key(column)

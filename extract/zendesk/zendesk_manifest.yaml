@@ -1,0 +1,144 @@
+tickets:
+  allow_attachments: boolean
+  allow_channelback: boolean
+  assignee_id: bigint
+  brand_id: bigint
+  collaborator_ids: bigint[]
+  collaborators: character varying[]
+  created_at: date
+  custom_fields: json
+  description: character varying
+  due_at: date
+  email_cc_ids: bigint[]
+  external_id: character varying
+  fields: json
+  follower_ids: bigint[]
+  followup_ids: bigint[]
+  forum_topic_id: bigint
+  generated_timestamp: bigint
+  group_id: bigint
+  has_incidents: boolean
+  id: bigint
+  is_public: boolean
+  macro_ids: bigint[]
+  organization_id: bigint
+  priority: character varying
+  problem_id: bigint
+  raw_subject: character varying
+  recipient: character varying
+  requester_id: bigint
+  satisfaction_rating: json
+  sharing_agreement_ids: bigint[]
+  status: character varying
+  subject: character varying
+  submitter_id: bigint
+  tags: character varying[]
+  ticket_form_id: bigint
+  tickets_id_mapping_key: id
+  type: character varying
+  updated_at: date
+  url: character varying
+  via: json
+  via_followup_source_id: bigint
+groups:
+  created_at: date
+  deleted: boolean
+  groups_id_mapping_key: id
+  id: bigint
+  name: character varying
+  updated_at: date
+  url: character varying
+group_memberships:
+  created_at: date
+  default: boolean
+  group_id: character varying
+  group_memberships_id_mapping_key: id
+  id: bigint
+  updated_at: date
+  url: character varying
+  user_id: character varying
+organizations:
+  created_at: date
+  details: character varying
+  domain_names: character varying[]
+  external_id: character varying
+  group_id: bigint
+  id: bigint
+  name: character varying
+  notes: character varying
+  organization_fields: json
+  organizations_id_mapping_key: id
+  shared_comments: boolean
+  shared_tickets: boolean
+  tags: character varying[]
+  updated_at: date
+  deleted_at: date
+  url: character varying
+organization_memberships:
+  created_at: date
+  default: boolean
+  id: bigint
+  organization_id: character varying
+  organization_memberships_id_mapping_key: id
+  updated_at: date
+  url: character varying
+  user_id: character varying
+brands:
+  active: boolean
+  brand_url: character varying
+  brands_id_mapping_key: id
+  created_at: date
+  default: boolean
+  has_help_center: boolean
+  help_center_state: character varying
+  host_mapping: character varying
+  id: bigint
+  is_deleted: boolean
+  logo: json
+  name: character varying
+  signature_template: character varying
+  subdomain: character varying
+  ticket_form_ids: bigint[]
+  updated_at: date
+  url: character varying
+users:
+  active: boolean
+  alias: character varying
+  chat_only: boolean
+  created_at: date
+  custom_role_id: bigint
+  default_group_id: bigint
+  details: character varying
+  email: character varying
+  external_id: character varying
+  id: bigint
+  last_login_at: date
+  locale: character varying
+  locale_id: bigint
+  moderator: boolean
+  name: character varying
+  notes: character varying
+  only_private_comments: boolean
+  organization_id: bigint
+  phone: character varying
+  photo: json
+  report_csv: boolean
+  restricted_agent: boolean
+  role: character varying
+  role_type: bigint
+  shared: boolean
+  shared_agent: boolean
+  shared_phone_number: boolean
+  signature: character varying
+  suspended: boolean
+  tags: character varying[]
+  ticket_restriction: character varying
+  time_zone: character varying
+  two_factor_auth_enabled: boolean
+  updated_at: date
+  url: character varying
+  user_fields: json
+  users_id_mapping_key: id
+  verified: boolean
+  iana_time_zone: character varying
+  permanently_deleted: boolean
