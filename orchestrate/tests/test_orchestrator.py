@@ -1,3 +1,4 @@
+import datetime
 from os import environ as env
 
 import aiohttp
@@ -35,14 +36,22 @@ class TestJobManager:
 
 class TestPipelineManager:
     async def test_passing_pipeline(self):
+        # create a pipeline with injected variables
+        was_success = await pipeline_manager(config.copy(),
+                                             {'key': 'TEST_PIPELINE',
+                                              'value': 'true'},
+                                              'test_pipeline',
+                                             2)
+
+        assert was_success
+
+class TestGetStartTime:
+    async def test_existing_job(self):
         async with aiohttp.ClientSession() as session:
             ci_api = CIApiWrapper(api_token, session, project_id)
-            # create a pipeline with injected variables
-            was_success = await pipeline_manager(config.copy(),
-                                                 {'key': 'TEST_PIPELINE',
-                                                  'value': 'true'},
-                                                  'test_pipeline',
-                                                 2)
-
-            assert was_success
+            # get the start_time of an old job
+            job_id = "101922395"
+            start_time = await get_start_time(ci_api, job_id)
+            assert_start_time = datetime.datetime(2018,9,26,17,23,47,510000)
+            assert start_time == assert_start_time
 

@@ -1,6 +1,6 @@
 FROM python:3.7
 
-ENV ORCHESTRATOR_MODE=live
+ENV ORCHESTRATOR_MODE=production
 
 WORKDIR /orchestrate
 

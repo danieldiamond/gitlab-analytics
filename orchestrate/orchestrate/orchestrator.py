@@ -17,7 +17,7 @@ from .scheduler_config import scheduler
 loop = asyncio.get_event_loop()
 
 # Set logging defaults
-logging.basicConfig(stream=sys.stdout, level=20)
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger('apscheduler').setLevel(logging.DEBUG)
 
 
@@ -117,7 +117,7 @@ def string_to_datetime(time_string: str):
     return datetime.datetime.strptime(time_string[:-1], date_format)
 
 
-async def get_start_time(api_token, project_id, job_id: str=''):
+async def get_start_time(ci_api: CIApiWrapper, job_id: str=''):
     """
     If a job_id exists, use it to look up the start time of the job. Otherwise,
     just return the current time.
@@ -131,7 +131,7 @@ async def get_start_time(api_token, project_id, job_id: str=''):
     return string_to_datetime(start_time)
 
 
-async def check_for_new_instances(ci_api, job_name: str, start_time) -> bool:
+async def check_for_new_instances(ci_api: CIApiWrapper, job_name: str, start_time) -> bool:
     """
     Using a start_time and a job_name, continually check to see if a new
     instance has been created and is running. If so, return True.
@@ -178,8 +178,9 @@ async def instance_shutoff(api_token, project_id,
 
 def run_scheduler(config: Dict):
     # Add the instance_shutoff future to the loop when it starts
+    print(f'Orchestrator is running in {config.get("orchestrator_mode")} mode')
     if config.get('orchestrator_mode') != 'standalone':
-        job_name = 'orchestrate' if config['branch_name'] == 'master' else 'test_orchestrate'
+        job_name = 'orchestrate' if config['branch_name'] == 'master' else 'run_orchestrate_examples'
         asyncio.ensure_future(instance_shutoff(config['api_token'],
                                                config['project_id'],
                                                job_name,
