@@ -72,7 +72,7 @@ test_orchestrate: &run_orchestrate_tests
   stage: test
   script:
     - cd /orchestrate
-    - pytest -vv
+    - pytest tests/ -vv
   when: manual
 
 var_test: &var_test

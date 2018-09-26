@@ -5,9 +5,9 @@ services:
   orchestrator:
     build: .
     environment:
+      - PYTHONUNBUFFERED=1
       - SCHED_CONN_STRING=postgresql://root:password@database:5432/orchestrator
       - MELT_JOBS_HOME=/orchestrate/examples/example_jobs/
-      - ORCHESTRATOR_MODE=standalone
       - CI_PIPELINE_TOKEN
       - CI_COMMIT_REF_NAME
       - CI_PROJECT_ID
