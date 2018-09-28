@@ -18,6 +18,18 @@
     - ci_helpers.py use_proxy "python3 extract/zendesk/src --schema zendesk apply_schema"
     - ci_helpers.py use_proxy "python3 extract/zendesk/src --schema zendesk --days=1 export"
 
+.zendesk_singer_extract: &zendesk_singer_extract
+  stage: extract
+  <<: *extract_definition
+  image: registry.gitlab.com/meltano/meltano/singer_runner:latest
+  entrypoint: [""]
+  variables:
+    - PG_SCHEMA: $PG_PROD_SCHEMA
+  script:
+    - check_ci_cd_vars.py --file extract/singer/required_ci_cd_vars.yaml
+    - check_ci_cd_vars.py --file load/singer/required_ci_cd_vars.yaml
+    - ci_helpers.py use_proxy "meltano-singer.py tap-zendesk target-postgres"
+
 .lever_extract: &lever_extract
   stage: extract
   <<: *extract_definition
@@ -271,6 +283,14 @@ zendesk:
     variables:
       - $ZENDESK
 
+zendesk:
+  <<: *zendesk_singer_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $ZENDESK
+
 zuora:
   <<: *zuora_extract
   only:
@@ -407,6 +427,14 @@ stripe_extract_githost_manual:
 
 zendesk_manual:
   <<: *zendesk_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+zendesk_singer_manual:
+  <<: *zendesk_singer_extract
   only:
     - branches
   except:
