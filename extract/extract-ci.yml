@@ -21,10 +21,11 @@
 .zendesk_singer_extract: &zendesk_singer_extract
   stage: extract
   <<: *extract_definition
-  image: registry.gitlab.com/meltano/meltano/singer_runner:latest
-  entrypoint: [""]
+  image:
+    name: registry.gitlab.com/meltano/meltano/singer_runner:latest
+    entrypoint: [""]
   variables:
-    - PG_SCHEMA: $PG_PROD_SCHEMA
+    PG_SCHEMA: zendesk_singer
   script:
     - check_ci_cd_vars.py --file extract/singer/required_ci_cd_vars.yaml
     - check_ci_cd_vars.py --file load/singer/required_ci_cd_vars.yaml
