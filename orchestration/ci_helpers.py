@@ -133,7 +133,7 @@ def set_sql_instance() -> Tuple[str, str, str]:
     gcp_instance_ref_slug = '{}-{}'.format(env['CI_PROJECT_NAME'],
                                        env['CI_COMMIT_REF_SLUG'][0:slug_length])
     job_gcp_instance_name = '{}-{}'.format(gcp_instance_ref_slug,
-                                           env['CI_JOB_ID'])
+                                           env['CI_JOB_ID'][:8])
 
     instance_name = find_sql_instance(gcp_instance_ref_slug)
     info('Found instance with name: {}'.format(instance_name))
