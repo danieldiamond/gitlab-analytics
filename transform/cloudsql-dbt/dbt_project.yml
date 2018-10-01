@@ -33,9 +33,16 @@ models:
       base:
         enabled: true
         materialized: view
+        pings_usage_data_unpacked:
+          materialized: incremental
+          sql_where: 'TRUE'
       clean:
         enabled: true
         materialized: table
+        pings_usage_data_month:
+          materialized: incremental
+          sql_where: 'TRUE'
+          unique_key: 'unique_key'
 
     retention:
       enabled: true
