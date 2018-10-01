@@ -31,6 +31,9 @@ snowflake_load_run:
   <<: *snowflake_load
   script:
     - python3 execute_copy.py
+  only:
+    refs:
+      - master
   when: manual
 
 # Model
@@ -56,6 +59,8 @@ dbt_snowflake_run:
   only:
     refs:
       - branches
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
   when: manual
 
 dbt_snowflake_full_refresh:
@@ -64,4 +69,21 @@ dbt_snowflake_full_refresh:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod --full-refresh
     - dbt -d test --profiles-dir profile --target prod
+  only:
+    refs:
+      - master
   when: manual
+
+dbt_snowflake_run_full_refresh:
+  <<: *snowflake_dbt_jobs
+  script:
+    - dbt -d deps --profiles-dir profile
+    - dbt -d run --profiles-dir profile --target prod --full-refresh
+    - dbt -d test --profiles-dir profile --target prod
+  only:
+    refs:
+      - branches
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
+  when: manual
+

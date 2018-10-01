@@ -11,7 +11,7 @@ gitlab-snowflake:
       user: "{{ env_var('SF_USER') }}"
       password: "{{ env_var('SF_PASSWORD') }}"
       role: "{{ env_var('SF_ROLE') }}"
-      database: "{{ env_var('SF_DATABASE') }}"
+      database: '"{{ env_var("SF_DATABASE") }}"'
       warehouse: "{{ env_var('SF_WAREHOUSE') }}"
       schema: "{{ env_var('SF_PROD_SCHEMA') }}"
   target: prod

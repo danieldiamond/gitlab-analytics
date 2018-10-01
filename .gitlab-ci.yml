@@ -65,7 +65,7 @@ orchestrate:
 
 # Stage: review
 
-review: &review
+cloudsql_review: &cloudsql_review
   stage: review
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   variables:
@@ -83,10 +83,37 @@ review: &review
     - master
     - $TEST_PIPELINE
 
-review_refresh:
-  <<: *review
+cloudsql_review_refresh:
+  <<: *cloudsql_review
   variables:
     FORCE: "true"
+  when: manual
+
+snowflake_review: &snowflake_review
+  stage: review
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  variables:
+    GIT_STRATEGY: clone
+    SF_DATABASE: $CI_COMMIT_REF_NAME
+  tags:
+    - analytics
+  script:
+    - pip3 install -U snowflake-sqlalchemy
+    - manage_snowflake.py manage_clones
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    on_stop: review_stop
+  only:
+    - branches
+  except:
+    - master
+    - $TEST_PIPELINE
+
+snowflake_review_refresh:
+  <<: *snowflake_review
+  script:
+    - pip3 install -U snowflake-sqlalchemy
+    - manage_snowflake.py manage_clones --force
   when: manual
 
 # Stage: setup
@@ -184,6 +211,7 @@ review_stop:
   script:
     - git clone $CI_REPOSITORY_URL
     - analytics/orchestration/ci_helpers.py delete_instance
+    - analytics/orchestration/manage_snowflake.py delete_clone
   when: manual
   allow_failure: true
   only:
@@ -205,3 +233,4 @@ variables:
 before_script:
   - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
   - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
+
