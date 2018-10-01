@@ -1,3 +1,11 @@
+{{
+  config(
+    materialized='incremental',
+    sql_where='created_at > (SELECT max(created_at) FROM {{ this }})',
+    unique_key='id'
+  )
+}}
+
 WITH usage_data AS (
     SELECT * FROM {{ ref('pings_usage_data') }}
 )
@@ -80,6 +88,3 @@ SELECT
   (stats -> 'uploads') :: TEXT :: NUMERIC                          AS uploads,
   (stats -> 'web_hooks') :: TEXT :: NUMERIC                        AS web_hooks
 FROM usage_data
-{% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
-    WHERE created_at > (SELECT max(created_at) FROM {{ this }})
-{% endif %}
