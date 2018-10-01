@@ -66,13 +66,15 @@ Like the rest of the company, we set quarterly objectives and key results. These
 
 * [dbt docs intro with Drew Banin from Fishtown Analytics](https://www.youtube.com/watch?v=bqIBNvA9xjo)
 
-* [Keep it SQL Stupid, a talk by Connor McArthur of Fishtown Analytics at DataEngConf explaining dbt](https://www.youtube.com/watch?v=9VNh11qSfAo)
+* [Keep it SQL Stupid, a talk by Connor McArthur of Fishtown Analytics at DataEngConf SF '18 explaining dbt](https://www.youtube.com/watch?v=9VNh11qSfAo)
 
 * [Looker Customer Success team shares how the Looker at Looker](https://drive.google.com/file/d/1w__Jqh9UKliPdQNNcd3KpQfp93Q1SuJb/view?usp=sharing)
 
-* Views on Vue Podcast with Jacob Schatz and Taylor Murphy - Coming Soon
+* [Views on Vue Podcast with Jacob Schatz and Taylor Murphy](https://devchat.tv/views-on-vue/vov-030-how-we-use-vue-in-data-science-with-jacob-schatz-taylor-murphy-gitlab-team/)
 
 * Taylor's talk at the 2018 Nashville Analytics Summit - Coming Soon
+
+* Emilie's talk on Digital Analytics - Coming Soon
 
 * [Pain Points by the Airflow Podcast with @tlapiana](https://soundcloud.com/the-airflow-podcast/pain-points)
 
