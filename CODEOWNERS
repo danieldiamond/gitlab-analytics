@@ -1,0 +1,13 @@
+# https://gitlab.com/help/user/project/code_owners
+
+# Default codeowner
+* @tayloramurphy @emilie @tlapiana
+
+# Ending a path in a `/` will specify the code owners for every file
+# nested in that directory, on any level
+/extract/ @tlapiana @tayloramurphy
+/load/ @tayloramurphy
+/orchestrate/ @tlapiana
+/orchestrate_jobs/ @tlapiana
+/orchestration/ @tlapiana
+/transform/ @tayloramurphy @emilie
