@@ -91,18 +91,6 @@ akaemmerle:
     member_of:
         - readonly
 
-azamai:
-    can_login: yes
-    is_superuser: no
-    member_of:
-        - readonly
-
-bflood:
-    can_login: yes
-    is_superuser: no
-    member_of:
-        - readonly
-
 dgruesso:
     can_login: yes
     is_superuser: no
@@ -129,6 +117,9 @@ iroussos:
     is_superuser: no
     member_of:
         - readonly
+    owns:
+        schemas:
+          - iroussos_scratch
 
 jobv:
     can_login: yes
