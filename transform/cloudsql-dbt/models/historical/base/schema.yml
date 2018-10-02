@@ -11,3 +11,10 @@ historical_headcount:
             - primary_key
         unique:
             - primary_key
+
+historical_sales_weekly_forecast:
+    constraints:
+        not_null:
+            - primary_key
+        unique:
+            - primary_key
