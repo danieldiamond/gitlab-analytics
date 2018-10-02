@@ -14,6 +14,11 @@ WITH sfdc_opportunity AS (
 
     SELECT * FROM {{ref('users')}}
 
+), sfdc_record_type as (
+
+     SELECT *
+     FROM {{ ref('sfdc_record_type') }}    
+
 ), layered AS (
 
     SELECT
@@ -37,6 +42,11 @@ WITH sfdc_opportunity AS (
         sfdc_users.title                                                                        as opportunity_owner_title,
         sfdc_users.role_name                                                                    as opportunity_owner_role,
         sfdc_users.employee_tags                                                                as opportunity_owner_tags,
+        sfdc_record_type.record_type_name,
+        sfdc_record_type.business_process_id,
+        sfdc_record_type.record_type_label,
+        sfdc_record_type.record_type_description,
+        sfdc_record_type.record_type_modifying_object_type,
         CASE WHEN (sfdc_opportunity.days_in_stage > 30
           	OR sfdc_opportunity.incremental_acv > 100000 
           	OR sfdc_opportunity.pushed_count > 0)
@@ -47,6 +57,7 @@ WITH sfdc_opportunity AS (
     INNER JOIN sfdc_opportunitystage on sfdc_opportunity.stage_name = sfdc_opportunitystage.primary_label
     INNER JOIN lead_source on sfdc_opportunity.lead_source = lead_source.Initial_Source
     LEFT JOIN sfdc_users ON sfdc_opportunity.owner_id = sfdc_users.id
+    LEFT JOIN sfdc_record_type ON sfdc_opportunity.record_type_id = sfdc_record_type.record_type_id
 
 )
 

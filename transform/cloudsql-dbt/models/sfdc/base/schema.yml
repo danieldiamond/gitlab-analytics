@@ -181,7 +181,6 @@ sfdc_record_type:
         not_null:
             - record_type_id
             - record_type_name
-            - modifying_object_type
         unique: 
             - record_type_id
 
