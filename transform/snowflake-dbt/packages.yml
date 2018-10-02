@@ -1,5 +1,4 @@
 
 packages:
   - git: https://github.com/fishtown-analytics/snowplow.git
-    revision: support-snowflake-and-bq
- 
+    revision: 0.5.2
