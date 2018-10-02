@@ -108,6 +108,5 @@ netsuite_vendors:
         - entity_name
         unique:
         - internal_vendor_id
-        - entity_name
 
 
