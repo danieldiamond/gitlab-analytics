@@ -1,3 +1,11 @@
+{{
+  config(
+    materialized='incremental',
+    sql_where='TRUE',
+    unique_key='event_id'
+  )
+}}
+
 SELECT
     nullif(JSONTEXT['app_id']::string,'') AS app_id,
     nullif(JSONTEXT['base_currency']::string,'') AS base_currency,
@@ -130,8 +138,12 @@ SELECT
     nullif(JSONTEXT['useragent']::string,'') AS useragent,
     nullif(JSONTEXT['v_collector']::string,'') AS v_collector,
     nullif(JSONTEXT['v_etl']::string,'') AS v_etl,
-    nullif(JSONTEXT['v_tracker']::string,'') AS v_tracker
+    nullif(JSONTEXT['v_tracker']::string,'') AS v_tracker,
+    uploaded_at
 FROM RAW.SNOWPLOW.EVENTS
 WHERE JSONTEXT['app_id']::string IS NOT NULL
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'http://localhost:%'
+{% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
+AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
+{% endif %}
