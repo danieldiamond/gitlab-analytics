@@ -5,6 +5,7 @@ WITH usage_month AS (
 
 SELECT
      DISTINCT *,
+     (assignee_lists > 0)::int                         AS assignee_lists_active,
      (auto_devops_disabled > 0)::int                   AS auto_devops_disabled_active,
      (auto_devops_enabled > 0)::int                    AS auto_devops_enabled_active,
      (boards > 0)::int                                 AS boards_active,
@@ -34,9 +35,11 @@ SELECT
      (issues > 0)::int                                 AS issues_active,
      (keys > 0)::int                                   AS keys_active,
      (labels > 0)::int                                 AS labels_active,
+     (label_lists > 0)::int                            AS label_lists_active,
      (lfs_objects > 0)::int                            AS lfs_objects_active,
      (merge_requests > 0)::int                         AS merge_requests_active,
      (milestones > 0)::int                             AS milestones_active,
+     (milestone_lists > 0)::int                        AS milestone_lists_active,
      (notes > 0)::int                                  AS notes_active,
      (pages_domains > 0)::int                          AS pages_domains_active,
      (projects_prometheus_active > 0)::int             AS projects_prometheus_active_active,
