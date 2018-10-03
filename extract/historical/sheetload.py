@@ -59,7 +59,7 @@ def dw_uploader(engine: Engine, table: str, schema: str,
     except Exception as e:
         info(repr(e))
         info('Failed to load {}.{}'.format(schema, table))
-        return False
+        raise
 
 
 def csv_loader(*paths: List[str], conn_dict: Dict[str,str] = None)  -> None:
