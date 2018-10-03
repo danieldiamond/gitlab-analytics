@@ -1,3 +1,11 @@
+{{
+  config(
+    materialized='incremental',
+    sql_where='TRUE',
+    unique_key='id'
+  )
+}}
+
 WITH usage_data AS (
     SELECT * FROM {{ ref('pings_usage_data_unpacked') }}
     {% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
