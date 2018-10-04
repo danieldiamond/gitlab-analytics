@@ -8,7 +8,7 @@ WITH goals AS (
 
 	SELECT *,
 			'performance'::varchar as metric_type
-	FROM {{ref('historical_ccodashboard_goals')}}
+	FROM {{ref('historical_ccodashboard_metrics')}}
 
 ), unioned AS (
 
