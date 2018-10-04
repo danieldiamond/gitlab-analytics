@@ -7,6 +7,10 @@ with base as (
   SELECT max(to_timestamp(updated_at)::date), 'metrics' FROM historical.metrics
   UNION ALL
   SELECT max(to_timestamp(updated_at)::date), 'regional_quotas' FROM historical.transposed
+  UNION ALL
+  SELECT max(to_timestamp(updated_at)::date), 'ccodashboard_goals' FROM historical.ccodashboard_goals
+  UNION ALL
+  SELECT max(to_timestamp(updated_at)::date), 'ccodashboard_metrics' FROM historical.ccodashboard_historical
 
 
 ),  maxdate as (
