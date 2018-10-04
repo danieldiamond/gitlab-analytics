@@ -8,8 +8,8 @@ WITH goals AS (
 
 	SELECT 
 			*,
-			'performance'::varchar as metric_type
-	FROM {{ref('historical_ccodashboard_metrics')}}
+			'actuals'::varchar as metric_type
+	FROM {{ref('historical_ccodashboard_actuals')}}
 
 ), unioned AS (
 

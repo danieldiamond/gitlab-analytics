@@ -12,7 +12,7 @@ with base as (
   UNION ALL
   SELECT max(to_timestamp(updated_at)::date), 'ccodashboard_goals' FROM historical.ccodashboard_goals
   UNION ALL
-  SELECT max(to_timestamp(updated_at)::date), 'ccodashboard_metrics' FROM historical.ccodashboard_historical
+  SELECT max(to_timestamp(updated_at)::date), 'ccodashboard_actuals' FROM historical.ccodashboard_actuals
 
 
 ),  maxdate as (

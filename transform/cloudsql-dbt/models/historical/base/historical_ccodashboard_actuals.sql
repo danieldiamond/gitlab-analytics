@@ -11,7 +11,7 @@ WITH source AS (
 			candidates_per_vacancy,
 			declined_candidate_score,
 			vacancies_with_recruiting
-	FROM historical.ccodashboard_historical
+	FROM historical.ccodashboard_actuals
 
 )
 
