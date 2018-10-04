@@ -6,7 +6,8 @@ WITH goals AS (
 
 ), metrics AS (
 
-	SELECT *,
+	SELECT 
+			*,
 			'performance'::varchar as metric_type
 	FROM {{ref('historical_ccodashboard_metrics')}}
 
@@ -18,5 +19,6 @@ WITH goals AS (
 
 )
 
-SELECT *
+SELECT md5(month_of::varchar||metric_type) as primary_key,
+		*
 FROM unioned
