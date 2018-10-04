@@ -17,5 +17,5 @@ SELECT
   uploaded_at
 FROM RAW.SNOWPLOW.EVENTS
 {% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
-AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
+WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
 {% endif %}
