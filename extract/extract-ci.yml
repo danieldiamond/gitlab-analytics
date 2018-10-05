@@ -30,8 +30,8 @@
     TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target-postgres
   script:
     - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
-    - check_ci_cd_vars.py --file extract/singer/required_ci_cd_vars.yaml
-    - check_ci_cd_vars.py --file load/singer/required_ci_cd_vars.yaml
+    # - check_ci_cd_vars.py --file extract/singer/required_ci_cd_vars.yaml
+    # - check_ci_cd_vars.py --file load/singer/required_ci_cd_vars.yaml
     - ci_helpers.py use_proxy "meltano-singer.py tap-zendesk target-postgres"
   artifacts:
     paths:
