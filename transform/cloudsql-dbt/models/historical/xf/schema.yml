@@ -1,3 +1,10 @@
+cco_dashboard:
+    constraints:
+        not_null:
+            - primary_key
+        unique:
+            - primary_key
+
 historical_regional_quota_xf:
     constraints:
         not_null:
