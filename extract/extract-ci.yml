@@ -98,9 +98,7 @@
           historical.metrics.metrics
           historical.regional_quotas.transposed
           historical.google_referrals.google_referrals
-          historical.sales_weekly_forecast.sales_weekly_forecast
-          historical.ccodashboard.ccodashboard_actuals
-          historical.ccodashboard.ccodashboard_goals"
+          historical.sales_weekly_forecast.sales_weekly_forecast"
 
 .zuora_extract: &zuora_extract
   variables:

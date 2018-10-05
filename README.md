@@ -7,7 +7,6 @@
 * JupyterHub Link - https://hub.gitlab-bizops.com/hub/home
 * Snowflake Web UI - https://gitlab.snowflakecomputing.com
 * [Machine Learning Resources](https://drive.google.com/drive/folders/1sOXWW-FujwKU2T-auG7KPR9h6xqDRx0z?usp=sharing) (GitLab Internal)
-* [Email Address to Share Sheetloaded Doc with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
 
 ## Data and Analytics at GitLab
 
