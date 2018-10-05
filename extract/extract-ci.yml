@@ -22,14 +22,21 @@
   stage: extract
   <<: *extract_definition
   image:
-    name: registry.gitlab.com/meltano/meltano/singer_runner:latest
+    name: registry.gitlab.com/meltano/meltano/singer_runner:a514416168b530a484859ec687a93ea2a65ec861
     entrypoint: [""]
   variables:
     PG_SCHEMA: zendesk_singer
+    TAP_OUTPUT: $SINGER_RUN_DIR/tap-zendesk.out
+    TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target-postgres
   script:
     - check_ci_cd_vars.py --file extract/singer/required_ci_cd_vars.yaml
     - check_ci_cd_vars.py --file load/singer/required_ci_cd_vars.yaml
     - ci_helpers.py use_proxy "meltano-singer.py tap-zendesk target-postgres"
+  artifacts:
+    paths:
+      - $SINGER_RUN_DIR/tap-zendesk.out
+      - $SINGER_RUN_DIR/target-postgres/
+    expire_in: 1 week
 
 .lever_extract: &lever_extract
   stage: extract
