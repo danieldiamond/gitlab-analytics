@@ -2,7 +2,7 @@
   config(
     materialized='incremental',
     sql_where='TRUE',
-    unique_key='id'
+    unique_key='unique_key'
   )
 }}
 
