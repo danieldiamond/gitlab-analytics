@@ -35,3 +35,12 @@ dbt_full_refresh:
     - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod --full-refresh"
     - ci_helpers.py use_proxy "dbt test --profiles-dir profile --target prod"
   when: manual
+
+mr_tests:
+  stage: model
+  <<: *cloudsql_dbt_jobs
+  script:
+    - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod --full-refresh"
+    - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod"
+    - ci_helpers.py use_proxy "dbt test --profiles-dir profile --target prod"
+  when: manual
