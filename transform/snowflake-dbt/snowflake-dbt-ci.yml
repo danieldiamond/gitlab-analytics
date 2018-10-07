@@ -69,4 +69,27 @@ dbt_snowflake_full_refresh:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod --full-refresh
     - dbt -d test --profiles-dir profile --target prod
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
+  when: manual
+
+dbt_snowflake_full_refresh:
+  <<: *snowflake_dbt_jobs
+  script:
+    - dbt -d deps --profiles-dir profile
+    - dbt -d run --profiles-dir profile --target prod --full-refresh
+    - dbt -d test --profiles-dir profile --target prod
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
+  when: manual
+
+mr_dbt_req:
+  <<: *snowflake_dbt_jobs
+  script:
+    - dbt -d deps --profiles-dir profile
+    - dbt -d run --profiles-dir profile --target prod --full-refresh
+    - dbt -d run --profiles-dir profile --target prod 
+    - dbt -d test --profiles-dir profile --target prod
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
   when: manual
