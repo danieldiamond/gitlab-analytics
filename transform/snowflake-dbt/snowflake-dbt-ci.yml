@@ -83,7 +83,7 @@ dbt_snowflake_full_refresh:
     SF_DATABASE: $CI_COMMIT_REF_NAME
   when: manual
 
-mr_dbt_req:
+snowflake_mr_dbt:
   <<: *snowflake_dbt_jobs
   script:
     - dbt -d deps --profiles-dir profile
