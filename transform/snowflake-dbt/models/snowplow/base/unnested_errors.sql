@@ -1,8 +1,7 @@
 {{
   config(
     materialized='incremental',
-    sql_where='TRUE',
-    unique_key='event_id'
+    sql_where='TRUE'
   )
 }}
 
