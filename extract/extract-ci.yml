@@ -98,7 +98,19 @@
           historical.metrics.metrics
           historical.regional_quotas.transposed
           historical.google_referrals.google_referrals
-          historical.sales_weekly_forecast.sales_weekly_forecast"
+          historical.sales_weekly_forecast.sales_weekly_forecast
+          historical.ccodashboard.ccodashboard_actuals
+          historical.ccodashboard.ccodashboard_goals
+          historical.crodashboard.crodashboard_actuals
+          historical.crodashboard.crodashboard_goals
+          historical.cfodashboard.cfodashboard_actuals
+          historical.cfodashboard.cfodashboard_goals
+          historical.vpedashboard.vpedashboard_actuals
+          historical.vpedashboard.vpedashboard_goals
+          historical.cmodashboard.cmodashboard_actuals
+          historical.cmodashboard.cmodashboard_goals
+          historical.alliancesdashboard.alliancesdashboard_actuals
+          historical.alliancesdashboard.alliancesdashboard_goals"
 
 .zuora_extract: &zuora_extract
   variables:
