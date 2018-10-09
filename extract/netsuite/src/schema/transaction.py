@@ -1,7 +1,7 @@
 from elt.schema import Schema, Column, DBType
 
-from schema.transaction_config import TRANSACTION_TYPES, COLUMN_MAPPINGS, RELATED_ENTITIES
-from schema.utils import columns_from_mappings
+from netsuite.src.schema.transaction_config import TRANSACTION_TYPES, COLUMN_MAPPINGS, RELATED_ENTITIES
+from netsuite.src.schema.utils import columns_from_mappings
 
 PG_SCHEMA = 'netsuite'
 PG_TABLE = 'transactions'

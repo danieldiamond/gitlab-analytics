@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 import requests
-import config
 import logging
 
-from .mkto_token import get_token, mk_endpoint
-from .mkto_schema import data_type
-from .mkto_utils import handle_marketo_response
+from mkto.mkto_tools.mkto_token import get_token, mk_endpoint
+from mkto.mkto_tools.mkto_schema import data_type
+from mkto.mkto_tools.mkto_utils import handle_marketo_response
 from elt.schema import Schema, Column
 
 
@@ -15,10 +14,13 @@ PRIMARY_KEY = 'id'
 
 
 def describe_schema(args) -> Schema:
+    # Required in order to fix the circular dependency issue in Python 3.5.3
+    from mkto.config import config_table_name
+
     source = args.source
     schema = describe_leads()
     fields = schema['result']
-    table_name = config.config_table_name(args)
+    table_name = config_table_name(args)
     logging.debug("Table name is: %s" % table_name)
 
     columns = (column(args.schema, table_name, field) for field in fields)

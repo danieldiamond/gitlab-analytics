@@ -1,6 +1,6 @@
 from elt.schema import Schema, Column, DBType
 
-from schema.utils import columns_from_mappings
+from netsuite.src.schema.utils import columns_from_mappings
 
 PG_SCHEMA = 'netsuite'
 PG_TABLE = 'expenses'

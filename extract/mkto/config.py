@@ -1,5 +1,5 @@
-import mkto_tools.mkto_leads
-import mkto_tools.mkto_activities
+import mkto.mkto_tools.mkto_leads as mkto_leads
+import mkto.mkto_tools.mkto_activities as mkto_activities
 
 from elt.cli import OptionEnum
 
@@ -21,8 +21,8 @@ class MarketoSource(OptionEnum):
 
 def config_table_name(args):
     table_name_source_map = {
-        MarketoSource.LEADS: mkto_tools.mkto_leads.PG_TABLE,
-        MarketoSource.ACTIVITIES: mkto_tools.mkto_activities.PG_TABLE,
+        MarketoSource.LEADS: mkto_leads.PG_TABLE,
+        MarketoSource.ACTIVITIES: mkto_activities.PG_TABLE,
     }
 
     return args.table_name or table_name_source_map[args.source]
@@ -30,8 +30,8 @@ def config_table_name(args):
 
 def config_primary_key(args):
     pkey_source_map = {
-        MarketoSource.LEADS: mkto_tools.mkto_leads.PRIMARY_KEY,
-        MarketoSource.ACTIVITIES: mkto_tools.mkto_activities.PRIMARY_KEY,
+        MarketoSource.LEADS: mkto_leads.PRIMARY_KEY,
+        MarketoSource.ACTIVITIES: mkto_activities.PRIMARY_KEY,
     }
 
     return pkey_source_map[args.source]

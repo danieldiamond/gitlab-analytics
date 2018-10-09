@@ -433,3 +433,16 @@ zuora_manual:
   except:
     - master
   when: manual
+
+
+# Stage: test
+
+.test_job_template: &test_job_template
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+
+run_tests_manual:
+  stage: test
+  <<: *test_job_template
+  script:
+    - ci_helpers.py use_proxy "pytest -vv"
+  when: manual

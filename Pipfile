@@ -22,11 +22,11 @@ Pyrseas = "*"
 lxml = "*"
 zeep = "*"
 google-cloud-storage = ">=1.10.0"
+pytest = "*"
 
 [dev-packages]
 "flake8" = "*"
 "autopep8" = "*"
-pytest = "*"
 
 [requires]
 python_version = "3.7"

@@ -42,12 +42,12 @@ def test_dumps():
 
 def test_loads():
     yaml_schema = """
-entity01:
-  id: integer
-  long: bigint
-  text: text
-  entity01_long_mapping_key: long
-"""
+      entity01:
+        id: integer
+        long: bigint
+        text: text
+        entity01_long_mapping_key: long
+    """
     schema = MeltanoSerializer('yaml').loads(yaml_schema).schema
     assert(len(schema.columns.values()) == 3)
 

@@ -14,17 +14,17 @@ from requests.exceptions import HTTPError, ConnectTimeout
 
 from shared_modules.elt.error import Error
 
-from .account import Account
-from .currency import Currency
-from .customer import Customer
-from .department import Department
-from .subsidiary import Subsidiary
-from .transaction import Transaction
-from .expense import Expense
-from .transaction_item import TransactionItem
-from .application import Application
-from .transaction_line import TransactionLine
-from .vendor import Vendor
+from netsuite.src.soap_api.account import Account
+from netsuite.src.soap_api.currency import Currency
+from netsuite.src.soap_api.customer import Customer
+from netsuite.src.soap_api.department import Department
+from netsuite.src.soap_api.subsidiary import Subsidiary
+from netsuite.src.soap_api.transaction import Transaction
+from netsuite.src.soap_api.expense import Expense
+from netsuite.src.soap_api.transaction_item import TransactionItem
+from netsuite.src.soap_api.application import Application
+from netsuite.src.soap_api.transaction_line import TransactionLine
+from netsuite.src.soap_api.vendor import Vendor
 
 class NetsuiteClient:
     def __init__(self):

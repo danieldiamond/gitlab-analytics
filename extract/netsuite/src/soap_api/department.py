@@ -2,8 +2,8 @@ import os
 import json
 import datetime
 
-import schema.department as department_schema
-from soap_api.utils import fetch_attribute, merge_transform_results
+import netsuite.src.schema.department as department_schema
+from netsuite.src.soap_api.utils import fetch_attribute, merge_transform_results
 
 class Department:
     schema = department_schema

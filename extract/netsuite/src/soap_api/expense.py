@@ -2,8 +2,8 @@ import os
 import json
 import datetime
 
-import schema.expense as expense_schema
-from soap_api.utils import fetch_attribute
+import netsuite.src.schema.expense as expense_schema
+from netsuite.src.soap_api.utils import fetch_attribute
 
 class Expense:
     """

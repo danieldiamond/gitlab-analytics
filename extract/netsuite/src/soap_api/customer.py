@@ -2,8 +2,8 @@ import os
 import json
 import datetime
 
-import schema.customer as customer_schema
-from soap_api.utils import fetch_attribute, merge_transform_results
+import netsuite.src.schema.customer as customer_schema
+from netsuite.src.soap_api.utils import fetch_attribute, merge_transform_results
 
 class Customer:
     schema = customer_schema
