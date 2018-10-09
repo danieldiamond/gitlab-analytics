@@ -6,7 +6,7 @@ import logging
 
 from elt.error import ExtractError
 from configparser import SafeConfigParser
-from .mkto_token import get_token, mk_endpoint
+from mkto.mkto_tools.mkto_token import get_token, mk_endpoint
 
 
 def handle_marketo_response(response):

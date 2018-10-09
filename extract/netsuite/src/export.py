@@ -13,7 +13,7 @@ from elt.error import ExceptionAggregator, Error
 from elt.schema import DBType, Schema
 from elt.process import upsert_to_db_from_csv
 
-from soap_api.netsuite_soap_client import NetsuiteClient
+from netsuite.src.soap_api.netsuite_soap_client import NetsuiteClient
 
 
 def extract(args, entities_to_export):

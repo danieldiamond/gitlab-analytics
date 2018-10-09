@@ -6,7 +6,7 @@ import datetime
 
 from elt.db import DB
 
-from soap_api.transaction import Transaction
+from netsuite.src.soap_api.transaction import Transaction
 
 
 def transaction_backlog(args):

@@ -2,12 +2,13 @@ import logging
 import psycopg2
 import psycopg2.sql
 
-from elt.cli import DateWindow
-from elt.db import DB
 from datetime import datetime
 
-from soap_api.netsuite_soap_client import NetsuiteClient
-from soap_api.transaction import Transaction
+from elt.cli import DateWindow
+from elt.db import DB
+
+from netsuite.src.soap_api.netsuite_soap_client import NetsuiteClient
+from netsuite.src.soap_api.transaction import Transaction
 
 
 def extract_transaction_type(args):

@@ -2,8 +2,8 @@ import os
 import json
 import datetime
 
-import schema.application as application_schema
-from soap_api.utils import fetch_attribute
+import netsuite.src.schema.application as application_schema
+from netsuite.src.soap_api.utils import fetch_attribute
 
 class Application:
     """

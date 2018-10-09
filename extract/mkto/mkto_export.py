@@ -7,11 +7,11 @@ from elt.error import with_error_exit_code
 from elt.utils import setup_logging, setup_db
 from elt.db import DB
 from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
-from mkto_tools.mkto_bulk import bulk_export
-from mkto_tools.mkto_leads import describe_schema as describe_leads_schema
-from mkto_tools.mkto_activities import describe_schema as describe_activities_schema
-from mkto_tools.mkto_token import get_token
-from config import MarketoSource, ExportType
+from mkto.mkto_tools.mkto_bulk import bulk_export
+from mkto.mkto_tools.mkto_leads import describe_schema as describe_leads_schema
+from mkto.mkto_tools.mkto_activities import describe_schema as describe_activities_schema
+from mkto.mkto_tools.mkto_token import get_token
+from mkto.config import MarketoSource, ExportType
 
 
 schema_func_map = {

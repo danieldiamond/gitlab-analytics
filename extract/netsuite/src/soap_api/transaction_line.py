@@ -2,8 +2,8 @@ import os
 import json
 import datetime
 
-import schema.transaction_line as transaction_line_schema
-from soap_api.utils import fetch_attribute
+import netsuite.src.schema.transaction_line as transaction_line_schema
+from netsuite.src.soap_api.utils import fetch_attribute
 
 class TransactionLine:
     """

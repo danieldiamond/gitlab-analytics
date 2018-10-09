@@ -1,18 +1,18 @@
 import argparse
 import logging
-
-from soap_api.netsuite_soap_client import NetsuiteClient
-from soap_api.test import test_client
-from soap_api.utils.extract_transaction_type import extract_transaction_type
-from soap_api.utils.transaction_backlog import transaction_backlog
+from enum import Enum
 
 from elt.cli import parser_db_conn, parser_date_window, parser_output, parser_logging
 from elt.utils import setup_logging, setup_db
 from elt.db import DB
 from elt.schema import schema_apply
 from elt.error import with_error_exit_code
-from export import extract
-from enum import Enum
+
+from netsuite.src.export import extract
+from netsuite.src.soap_api.netsuite_soap_client import NetsuiteClient
+from netsuite.src.soap_api.test import test_client
+from netsuite.src.soap_api.utils.extract_transaction_type import extract_transaction_type
+from netsuite.src.soap_api.utils.transaction_backlog import transaction_backlog
 
 
 def action_schema_apply(args):

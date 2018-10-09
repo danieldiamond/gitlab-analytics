@@ -6,7 +6,7 @@ from functools import partial
 from elt.db import DB
 from elt.cli import parser_db_conn
 from elt.process import integrate_csv
-from config import config_table_name, config_primary_key, config_integrate
+from mkto.config import config_table_name, config_primary_key, config_integrate
 
 
 def integrate(args, **kwargs):

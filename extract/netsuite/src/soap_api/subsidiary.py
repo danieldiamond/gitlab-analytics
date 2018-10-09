@@ -2,8 +2,8 @@ import os
 import json
 import datetime
 
-import schema.subsidiary as subsidiary_schema
-from soap_api.utils import fetch_attribute, merge_transform_results
+import netsuite.src.schema.subsidiary as subsidiary_schema
+from netsuite.src.soap_api.utils import fetch_attribute, merge_transform_results
 
 class Subsidiary:
     schema = subsidiary_schema

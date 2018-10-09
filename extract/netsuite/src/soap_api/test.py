@@ -1,6 +1,6 @@
-from .netsuite_soap_client import NetsuiteClient
-from .currency import Currency
-from .department import Department
+from netsuite.src.soap_api.netsuite_soap_client import NetsuiteClient
+from netsuite.src.soap_api.currency import Currency
+from netsuite.src.soap_api.department import Department
 
 def test_client(args):
     # Test the NetsuiteClient Class

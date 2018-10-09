@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 import requests
-import config
 import logging
 
-from .mkto_token import get_token, mk_endpoint
+from mkto.mkto_tools.mkto_token import get_token, mk_endpoint
 from elt.schema import Schema, Column, DBType
 
 
@@ -16,7 +15,11 @@ def describe_schema(args) -> Schema:
     """
     Activity schema uses a JSON field as backend.
     """
-    table_name = config.config_table_name(args)
+
+    # Required in order to fix the circular dependency issue in Python 3.5.3
+    from mkto.config import config_table_name
+
+    table_name = config_table_name(args)
     def column(column_name, data_type, is_nullable=True, is_mapping_key=False):
         return Column(table_schema=args.schema,
                       table_name=table_name,
