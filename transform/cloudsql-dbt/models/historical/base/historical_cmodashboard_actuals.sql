@@ -1,6 +1,7 @@
 WITH source AS (
 
 	SELECT 
+		  md5(month_of::varchar) as pk,
 		  month_of::date,
 		  "pipe-to-spend",
 		  sclau,

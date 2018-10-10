@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT 
-		  month_of::date,
+		  md5(month_of::varchar) as pk,
 		  active_gitlab_installations,
 		  active_users_aws,
 		  active_users_gcp,
