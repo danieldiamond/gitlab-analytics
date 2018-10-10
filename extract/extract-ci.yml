@@ -22,7 +22,7 @@
   stage: extract
   <<: *extract_definition
   image:
-    name: registry.gitlab.com/meltano/meltano/singer_runner:6ff8ca4aed8ae437d141a45dacca3497b99d6706
+    name: registry.gitlab.com/meltano/meltano/singer_runner:083db664274ba6182e4e856b39d7a45817279aac
     entrypoint: [""]
   variables:
     PG_SCHEMA: zendesk_singer
