@@ -170,11 +170,12 @@ sfdc_update:
     variables:
       - $SFDC_UPDATE
 
-sfdc_snapshot:
+sfdc_snapshot: &sfdc_snapshot
   stage: update
   <<: *job_definition
   script:
-    - ci_helpers.py use_proxy "python3 extract/util/snapshot.py"
+    - ci_helpers.py use_proxy "python3 extract/util/snapshot_opportunity.py"
+    - ci_helpers.py use_proxy "python3 extract/util/snapshot_account.py"
   only:
     refs:
       - master
@@ -193,9 +194,7 @@ sfdc_update_manual:
 
 sfdc_snapshot_manual:
   stage: update
-  <<: *job_definition
-  script:
-    - ci_helpers.py use_proxy "python3 extract/util/snapshot.py"
+  <<: *sfdc_snapshot
   only:
     refs:
       - branches
