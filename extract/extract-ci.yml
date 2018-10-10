@@ -28,13 +28,17 @@
     PG_SCHEMA: zendesk_singer
     TAP_OUTPUT: $SINGER_RUN_DIR/tap-zendesk.out
     TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target-postgres
+  before_script: []
   script:
     - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
     # - check_ci_cd_vars.py --file extract/singer/required_ci_cd_vars.yaml
     # - check_ci_cd_vars.py --file load/singer/required_ci_cd_vars.yaml
     # overwrite the sample fields configuration
     - cp extract/zendesk/tap.properties.json /etc/singer/tap/tap-zendesk.properties.json
-    - ci_helpers.py use_proxy "source /venvs/meltano/bin/activate; meltano extract zendesk_singer tap-zendesk --loader_name=target-postgres"
+    - pip list
+    - /venvs/meltano/bin/pip list
+    - . /venvs/meltano/bin/activate; meltano --help
+    - ci_helpers.py use_proxy "/venvs/meltano/bin/meltano extract zendesk_singer tap-zendesk --loader_name=target-postgres"
   artifacts:
     paths:
       - $SINGER_RUN_DIR/tap-zendesk.out
