@@ -34,7 +34,6 @@
     # - check_ci_cd_vars.py --file load/singer/required_ci_cd_vars.yaml
     # overwrite the sample fields configuration
     - cp extract/zendesk/tap.properties.json /etc/singer/tap/tap-zendesk.properties.json
-    - /venvs/meltano/bin/pip install /meltano[cli]
     - /venvs/meltano/bin/pip list
     - ci_helpers.py use_proxy "meltano extract zendesk_singer tap-zendesk --loader_name=target-postgres"
   artifacts:
