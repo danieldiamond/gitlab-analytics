@@ -1,17 +1,17 @@
 WITH source AS (
 
-	SELECT 
-		  month_of::date,
-		  days_to_hire,
-		  "NPS_average" as nps_average,
-		  "Onboarding_eNPS" as onboarding_enps,
-		  low_rent_percentage,
-		  average_rent_index,
-		  monthly_turnover_ratio,
-		  ytd_turnover_ratio,
-		  candidates_per_vacancy,
-		  declined_candidate_score,
-		  vacancies_with_recruiting
+	SELECT md5(month_of :: varchar)                       as pk,
+				 month_of :: date,
+				 nullif(days_to_hire, '') :: float              as days_to_hire,
+				 nullif("NPS_average", '') :: float             as nps_average,
+				 nullif("Onboarding_eNPS", '') :: float         as onboarding_enps,
+				 nullif(low_rent_percentage, '') :: float       as low_rent_percentage,
+				 nullif(average_rent_index, '') :: float        as average_rent_index,
+				 nullif(monthly_turnover_ratio, '') :: float    as monthly_turnover_ratio,
+				 nullif(ytd_turnover_ratio, '') :: float        as ytd_turnover_ratio,
+				 nullif(candidates_per_vacancy, '') :: float    as candidates_per_vacancy,
+				 nullif(declined_candidate_score, '') :: float  as declined_candidate_score,
+				 nullif(vacancies_with_recruiting, '') :: float as vacancies_with_recruiting
 	FROM historical.ccodashboard_actuals
 )
 
