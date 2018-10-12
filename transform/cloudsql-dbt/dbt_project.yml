@@ -44,5 +44,8 @@ models:
     zuora:
       base:
         enabled: true
+        materialized: view
+      xf:
+        enabled: true
         materialized: table
 
