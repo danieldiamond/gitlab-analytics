@@ -31,12 +31,14 @@ WITH source AS (
 		-- info
 		effectivestartdate              as effective_start_date,
 		effectiveenddate                as effective_end_date,
+		date_trunc('month', effectivestartdate)::DATE 											as effective_start_month,
+  	(date_trunc('month', effectiveenddate) - '1 month'::INTERVAL)::DATE as effective_end_month,
 		enddatecondition                as end_date_condition,
 
 		mrr,
 		quantity                        as quantity,
 		tcv,
-		uom,
+		uom															as unit_of_measure,
 
 		accountingcode                  as accounting_code,
 		applydiscountto                 as apply_discount_to,
@@ -50,8 +52,8 @@ WITH source AS (
 		chargetype                      as charge_type,
 		description                     as description,
 		discountlevel                   as discount_level,
-		dmrc                            as dmrc,
-		dtcv                            as dtcv,
+		dmrc                            as delta_mrc, -- delta monthly recurring charge
+		dtcv                            as delta_tcv, -- delta total contract value
 
 		islastsegment                   as is_last_segment,
 		listpricebase                   as list_price_base,

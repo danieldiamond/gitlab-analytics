@@ -1,13 +1,15 @@
 [[source]]
+
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
+
 [packages]
-oauth2client = "*"
+
+"oauth2client" = "*"
 requests = "*"
 configparser = "*"
-dbt = "*"
 fire = "*"
 toolz = "*"
 clearbit = "*"
@@ -15,18 +17,22 @@ ipwhois = "*"
 tldextract = "*"
 simple-salesforce = "*"
 salesforce-bulk = "==2.1.0"
-SQLAlchemy = "*"
+sqlalchemy = "*"
 pandas = "*"
-Pyrseas = "*"
+pyrseas = "*"
 "psycopg2" = ">=2.7.4"
 lxml = "*"
 zeep = "*"
 google-cloud-storage = ">=1.10.0"
-pytest = "*"
+dbt = "*"
+
 
 [dev-packages]
+
 "flake8" = "*"
 "autopep8" = "*"
 
+
 [requires]
+
 python_version = "3.7"
