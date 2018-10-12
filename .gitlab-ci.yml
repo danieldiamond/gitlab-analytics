@@ -207,10 +207,12 @@ review_stop:
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   variables:
     GIT_STRATEGY: none
+    SF_DATABASE: $CI_COMMIT_REF_NAME
   script:
     - git clone $CI_REPOSITORY_URL
-    - analytics/orchestration/ci_helpers.py delete_instance
+    - pip3 install -U snowflake-sqlalchemy
     - analytics/orchestration/manage_snowflake.py delete_clone
+    - analytics/orchestration/ci_helpers.py delete_instance
   when: manual
   allow_failure: true
   only:
@@ -220,6 +222,8 @@ review_stop:
   environment:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
+  tags:
+    - housekeeping
 
 #--------------------------------------------------------------------------
 
