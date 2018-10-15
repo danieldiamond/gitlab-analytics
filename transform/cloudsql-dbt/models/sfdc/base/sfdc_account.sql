@@ -1,106 +1,110 @@
 WITH source AS (
 
-	SELECT *
-	FROM sfdc.account
+    SELECT *
+    FROM sfdc.account
 
-), renamed AS(
+), renamed AS (
 
-	SELECT 
-		id											as account_id,
-		name										as account_name,
-		-- keys
-		account_id_18__c							as account_id_18,
-		masterrecordid								as master_record_id,
-		ownerid 									as owner_id,
-		parentid									as parent_id,
-		primary_contact_id__c						as primary_contact_id,
-		recordtypeid								as record_type_id,
-		ultimate_parent_account_id__c				as utimate_parent_id,
-		partner_vat_tax_id__c						as partner_vat_tax_id,
+    SELECT
+      id                                       AS account_id,
+      name                                     AS account_name,
+      -- keys
+      account_id_18__c                         AS account_id_18,
+      masterrecordid                           AS master_record_id,
+      ownerid                                  AS owner_id,
+      parentid                                 AS parent_id,
+      primary_contact_id__c                    AS primary_contact_id,
+      recordtypeid                             AS record_type_id,
+      ultimate_parent_account_id__c            AS utimate_parent_id,
+      partner_vat_tax_id__c                    AS partner_vat_tax_id,
 
-		-- key people GL side
-		entity__c									as gitlab_entity,
-		federal_account__c							as federal_account, --boolean
-		gitlab_com_user__c							as gitlab_com_user, --boolean
-		account_manager__c							as account_manager,
-		--account_manager_account_team__c as account_manager_account_team ## Why are these all null?
-		--account_manager_lu__c
-		account_owner_calc__c						as account_owner,
-		-- account_owner_manager_email__c as account_owner_manager,
-		account_owner_team__c						as account_owner_team,
-		business_development_rep__c					as business_development_rep,
-		business_development_rep_account_team__c	as business_development_rep_team,
-		dedicated_service_engineer__c				as dedicated_service_engineer,
-		sdr__c										as sales_development_rep,
-		sdr_account_team__c							as sales_development_rep_team,
-		solutions_architect__c						as solutions_architect,
-		technical_account_manager_lu__c				as technical_account_manager_id, -- lookup on user
+      -- key people GL side
+      entity__c                                AS gitlab_entity,
+      federal_account__c                       AS federal_account,
+      --boolean
+      gitlab_com_user__c                       AS gitlab_com_user,
+      --boolean
+      account_manager__c                       AS account_manager,
+      --account_manager_account_team__c as account_manager_account_team ## Why are these all null?
+      --account_manager_lu__c
+      account_owner_calc__c                    AS account_owner,
+      -- account_owner_manager_email__c as account_owner_manager,
+      account_owner_team__c                    AS account_owner_team,
+      business_development_rep__c              AS business_development_rep,
+      business_development_rep_account_team__c AS business_development_rep_team,
+      dedicated_service_engineer__c            AS dedicated_service_engineer,
+      sdr__c                                   AS sales_development_rep,
+      sdr_account_team__c                      AS sales_development_rep_team,
+      solutions_architect__c                   AS solutions_architect,
+      technical_account_manager_lu__c          AS technical_account_manager_id,
+      -- lookup on user
 
-		--key people outside
-		-- bill_to_email__c as bill_to_email,
-
-
-		-- info
-		{{this.schema}}.id15to18(
-              substring(
-                  regexp_replace(ultimate_parent_account__c,
-                                '_HL_ENCODED_/|<a\s+href="/', '')
-                  , 1
-                  , 15)
-          )											as ultimate_parent_account_id,
-		type										as account_type,
-		industry,
-		product_category__c							as product_category,
-		account_tier__c								as account_tier,
-		customer_since__c::date						as customer_since_date,
-		carr_total__c								as carr_total,
-		next_renewal_date__c						as next_renewal_date,
-		license_utilization__c						as license_utilization,
-		products_purchased__c						as products_purchased,
-		region__c									as account_region,
-		sub_region__c								as account_sub_region,
-		sales_segmentation_new__c					as new_account_segment,
-		sales_segmentation__c						as account_segment, -- I would this be called account_segment or sales_segment, but I think this is a breaking change
-		support_level__c							as support_level,
-		support_level_numeric__c					as support_level_numeric,
-
-		--present state info
-		health__c									as health_score,
-		health_score_reasons__c						as health_score_explained,
+      --key people outside
+      -- bill_to_email__c as bill_to_email,
 
 
-		-- opportunity metrics
-		count_of_active_subscription_charges__c		as count_active_subscription_charges,
-		count_of_active_subscriptions__c			as count_active_subscriptions,
-		count_of_billing_accounts__c				as count_billing_accounts,
-		license_user_count__c						as count_licensed_users,
-		count_of_new_business_won_opps__c			as count_of_new_business_won_opportunities,
-		count_of_open_renewal_opportunities__c		as count_open_renewal_opportunities,
-		count_of_opportunities__c					as count_opportunities,
-		count_of_products_purchased__c				as count_products_purchased,
-		count_of_won_opportunities__c				as count_won_opportunities,
-		concurrent_ee_subscriptions__c				as count_concurrent_ee_subscriptions,
-		ce_instances__c								as count_ce_instances,
-		active_ce_users__c							as count_active_ce_users,
-		number_of_open_opportunities__c				as count_open_opportunities,
-		using_ce__c									as count_using_ce,
+    --   info
+      		{{this.schema}}.id15to18(
+                    substring(
+                        regexp_replace(ultimate_parent_account__c,
+                                      '_HL_ENCODED_/|<a\s+href="/', '')
+                        , 1
+                        , 15)
+                )							   AS ultimate_parent_account_id,
+      type                                     AS account_type,
+      industry,
+      product_category__c                      AS product_category,
+      account_tier__c                          AS account_tier,
+      customer_since__c :: DATE                AS customer_since_date,
+      carr_total__c                            AS carr_total,
+      next_renewal_date__c                     AS next_renewal_date,
+      license_utilization__c                   AS license_utilization,
+      products_purchased__c                    AS products_purchased,
+      region__c                                AS account_region,
+      sub_region__c                            AS account_sub_region,
+      sales_segmentation_new__c                AS new_account_segment,
+      sales_segmentation__c                    AS account_segment,
+      -- I would this be called account_segment or sales_segment, but I think this is a breaking change
+      support_level__c                         AS support_level,
+      support_level_numeric__c                 AS support_level_numeric,
+
+      --present state info
+      health__c                                AS health_score,
+      health_score_reasons__c                  AS health_score_explained,
 
 
-		-- metadata
-		createdbyid									as created_by_id,
-		createddate									as created_date,
-		isdeleted									as is_deleted,
-		lastmodifiedbyid							as last_modified_by_id,
-		lastmodifieddate							as last_modified_date,
-		lastactivitydate							as last_activity_date,
-		lastreferenceddate							as last_referenced_date,
-		lastvieweddate								as last_viewed_date,
-		systemmodstamp
+      -- opportunity metrics
+      count_of_active_subscription_charges__c  AS count_active_subscription_charges,
+      count_of_active_subscriptions__c         AS count_active_subscriptions,
+      count_of_billing_accounts__c             AS count_billing_accounts,
+      license_user_count__c                    AS count_licensed_users,
+      count_of_new_business_won_opps__c        AS count_of_new_business_won_opportunities,
+      count_of_open_renewal_opportunities__c   AS count_open_renewal_opportunities,
+      count_of_opportunities__c                AS count_opportunities,
+      count_of_products_purchased__c           AS count_products_purchased,
+      count_of_won_opportunities__c            AS count_won_opportunities,
+      concurrent_ee_subscriptions__c           AS count_concurrent_ee_subscriptions,
+      ce_instances__c                          AS count_ce_instances,
+      active_ce_users__c                       AS count_active_ce_users,
+      number_of_open_opportunities__c          AS count_open_opportunities,
+      using_ce__c                              AS count_using_ce,
 
 
-	FROM source
-	WHERE id IS NOT NULL
-	AND isdeleted = FALSE
+      -- metadata
+      createdbyid                              AS created_by_id,
+      createddate                              AS created_date,
+      isdeleted                                AS is_deleted,
+      lastmodifiedbyid                         AS last_modified_by_id,
+      lastmodifieddate                         AS last_modified_date,
+      lastactivitydate                         AS last_activity_date,
+      lastreferenceddate                       AS last_referenced_date,
+      lastvieweddate                           AS last_viewed_date,
+      systemmodstamp
+
+
+    FROM source
+    WHERE id IS NOT NULL
+          AND isdeleted = FALSE
 
 )
 
