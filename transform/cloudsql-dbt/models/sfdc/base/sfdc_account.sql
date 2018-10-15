@@ -43,7 +43,7 @@ WITH source AS (
       -- bill_to_email__c as bill_to_email,
 
 
-      info
+    --   info
       		{{this.schema}}.id15to18(
                     substring(
                         regexp_replace(ultimate_parent_account__c,
