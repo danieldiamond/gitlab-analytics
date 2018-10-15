@@ -12,22 +12,15 @@
   tags:
     - housekeeping
 
-.orchestrate: &orchestrate
-  image: registry.gitlab.com/meltano/analytics/orchestrate:latest
-  tags:
-    - analytics
-
-
 # ---------------------------------------------------------------------------
 
 # Stages
 # Note some jobs come from global 'include' statements
 stages:
-  - build # /orchestrate/scheduler-ci.yml
-  - test # /orchestreate/scheduler-ci.yml
+  - build # Not in use
+  - test # Not in use
   - review
   - setup
-  - orchestrate
   - extract # extract/extract-ci.yml
   - model # transform/cloudsql-dbt/cloudsql-dbt-ci.ym transform/snowflake-dbt/snowflake-dbt-ci.yml
   - update
@@ -37,31 +30,6 @@ include:
   - "extract/extract-ci.yml"
   - "transform/cloudsql-dbt/cloudsql-dbt-ci.yml"
   - "transform/snowflake-dbt/snowflake-dbt-ci.yml"
-  - "/orchestrate/scheduler-ci.yml"
-
-# Orchestrate
-
-orchestrate:
-  <<: *orchestrate
-  stage: orchestrate
-  variables:
-    CLOUD_SDK_REPO: "cloud-sdk-stretch"
-    MELT_JOBS_HOME: orchestrate_jobs/
-  script:
-    - wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /usr/bin/cloud_sql_proxy
-    - chmod +x /usr/bin/cloud_sql_proxy
-    - echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-    - curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-    - apt-get update && apt-get install -y google-cloud-sdk
-    - pip install pandas requests
-    - echo $MELT_JOBS_HOME
-    - ci_helpers.py use_proxy "orchestrate scheduler"
-  only:
-    refs:
-      - master
-  except:
-    variables:
-      - $ORCHESTRATE_JOB
 
 # Stage: review
 
