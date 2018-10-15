@@ -1,5 +1,0 @@
-schedule: '*/3 * * * *'
-pipeline_name: 'passing_job'
-num_retries: 0
-variables:
-  TEST_PIPELINE: 'true'

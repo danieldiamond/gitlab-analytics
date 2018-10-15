@@ -1,5 +1,0 @@
-schedule: '*/6 * * * *'
-pipeline_name: 'sleeping_job'
-num_retries: 0
-variables:
-  TEST_SLEEPING_JOB: 'true'
