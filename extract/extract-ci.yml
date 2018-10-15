@@ -18,6 +18,31 @@
     - ci_helpers.py use_proxy "python3 extract/zendesk/src --schema zendesk apply_schema"
     - ci_helpers.py use_proxy "python3 extract/zendesk/src --schema zendesk --days=1 export"
 
+.zendesk_singer_extract: &zendesk_singer_extract
+  stage: extract
+  <<: *extract_definition
+  image:
+    name: registry.gitlab.com/meltano/meltano/singer_runner:latest
+    entrypoint: [""]
+  variables:
+    PG_SCHEMA: zendesk_singer
+    SINGER_RUN_DIR: /run/singer
+    TAP_OUTPUT: $SINGER_RUN_DIR/tap-zendesk.out
+    TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target-postgres
+  script:
+    - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
+    # - check_ci_cd_vars.py --file extract/singer/required_ci_cd_vars.yaml
+    # - check_ci_cd_vars.py --file load/singer/required_ci_cd_vars.yaml
+    # overwrite the sample fields configuration
+    - cp extract/zendesk/tap.properties.json /etc/singer/tap/tap-zendesk.properties.json
+    # - ci_helpers.py use_proxy "meltano schema create $PG_SCHEMA readonly analytics"
+    - ci_helpers.py use_proxy "meltano extract zendesk_singer tap-zendesk --loader_name=target-postgres"
+  artifacts:
+    paths:
+      - $SINGER_RUN_DIR/tap-zendesk.out
+      - $SINGER_RUN_DIR/target-postgres/
+    expire_in: 1 week
+
 .lever_extract: &lever_extract
   stage: extract
   <<: *extract_definition
@@ -284,6 +309,14 @@ zendesk:
     variables:
       - $ZENDESK
 
+zendesk:
+  <<: *zendesk_singer_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $ZENDESK
+
 zuora:
   <<: *zuora_extract
   only:
@@ -420,6 +453,14 @@ stripe_extract_githost_manual:
 
 zendesk_manual:
   <<: *zendesk_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+zendesk_singer_manual:
+  <<: *zendesk_singer_extract
   only:
     - branches
   except:
