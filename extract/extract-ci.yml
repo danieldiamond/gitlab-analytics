@@ -61,7 +61,8 @@
     MELTANO_EXTRACTOR: tap-zendesk
     MELTANO_LOADER: target-snowflake
   script:
-    - meltano extract $CI_JOB_NAME tap-zendesk --loader_name=target-snowflake
+    - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
+    - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME tap-zendesk --loader_name=target-snowflake"
 
 .lever_extract: &lever_extract
   stage: extract
