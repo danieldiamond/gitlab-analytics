@@ -12,8 +12,8 @@ from sqlalchemy import create_engine
 # Set logging defaults
 logging.basicConfig(stream=sys.stdout, level=20)
 
-class SnowflakeManager(object):
 
+class SnowflakeManager(object):
     def __init__(self, config_vars: Dict):
         self.engine = create_engine(
                         URL(user=config_vars['SF_USER'],
@@ -21,7 +21,10 @@ class SnowflakeManager(object):
                             account=config_vars['SF_ACCOUNT'],
                             role='SYSADMIN',
                             warehouse='LOADING'))
-        self.database = config_vars['SF_DATABASE']
+
+        # Snowflake database name should be in CAPS
+        # see https://gitlab.com/meltano/analytics/issues/491
+        self.database = config_vars['SF_DATABASE'].upper()
 
     def manage_clones(self, force: bool=False) -> None:
         """
@@ -31,7 +34,12 @@ class SnowflakeManager(object):
         # Queries for database cloning
         create_query = """create or replace database "{0}" clone analytics;""".format(self.database)
         grant_query = """grant ownership on database "{0}" to transformer;""".format(self.database)
-        queries = [create_query, grant_query]
+        grant_roles_transformer = """grant create schema, usage "{0}" to transformer""".format(self.database)
+        grant_roles_loader = """grant create schema, usage "{0}" to loader""".format(self.database)
+        queries = [create_query,
+                   grant_query,
+                   grant_roles_transformer,
+                   grant_roles_loader]
 
         # if force is false, check if the database exists
         if force:
@@ -84,4 +92,3 @@ class SnowflakeManager(object):
 if __name__ == "__main__":
     snowflake_manager = SnowflakeManager(env.copy())
     Fire(snowflake_manager)
-
