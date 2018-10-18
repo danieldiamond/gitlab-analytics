@@ -5,6 +5,12 @@
   tags:
     - analytics
 
+.meltano_config: &meltano_default_variables
+  SINGER_RUN_DIR: /run/singer
+  TAP_OUTPUT: $SINGER_RUN_DIR/tap-zendesk.out
+  TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target-postgres
+  MELTANO_JOB_ID: $CI_JOB_NAME
+
 .marketo_extract: &marketo_extract
   stage: extract
   <<: *extract_definition
@@ -25,10 +31,10 @@
     name: registry.gitlab.com/meltano/meltano/singer_runner:latest
     entrypoint: [""]
   variables:
+    <<: *meltano_default_variables
     PG_SCHEMA: zendesk_singer
-    SINGER_RUN_DIR: /run/singer
-    TAP_OUTPUT: $SINGER_RUN_DIR/tap-zendesk.out
-    TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target-postgres
+    MELTANO_EXTRACTOR: tap-zendesk
+    MELTANO_LOADER: target-postgres
   script:
     - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
     # - check_ci_cd_vars.py --file extract/singer/required_ci_cd_vars.yaml
@@ -38,12 +44,20 @@
     # - cp path/to/properties.json /etc/singer/tap/tap-zendesk.properties.json
     #
     # - ci_helpers.py use_proxy "meltano schema create $PG_SCHEMA readonly analytics"
-    - ci_helpers.py use_proxy "meltano extract zendesk_singer tap-zendesk --loader_name=target-postgres"
+    - ci_helpers.py use_proxy "meltano extract $MELTANO_JOB_ID $MELTANO_EXTRACTOR --loader_name=$MELTANO_LOADER"
   artifacts:
     paths:
       - /run/singer/tap-zendesk.out
       - /run/singer/target-postgres/
     expire_in: 1 week
+
+.zendesk_singer_snowflake_extract: &zendesk_singer_snowflake_extract
+  <<: *zendesk_singer_extract
+  variables:
+    <<: *meltano_default_variables
+    SF_SCHEMA: ZENDESK
+    MELTANO_EXTRACTOR: tap-zendesk
+    MELTANO_LOADER: target-snowflake
 
 .lever_extract: &lever_extract
   stage: extract
@@ -319,6 +333,14 @@ zendesk:
     variables:
       - $ZENDESK
 
+zendesk_snowflake:
+  <<: *zendesk_singer_snowflake_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $ZENDESK
+
 zuora:
   <<: *zuora_extract
   only:
@@ -463,6 +485,15 @@ zendesk_manual:
 
 zendesk_singer_manual:
   <<: *zendesk_singer_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+zendesk_singer_snowflake_manual:
+  <<: *zendesk_singer_snowflake_extract
+  variables:
   only:
     - branches
   except:
