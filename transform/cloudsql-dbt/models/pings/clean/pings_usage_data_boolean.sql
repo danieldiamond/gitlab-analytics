@@ -52,7 +52,7 @@ SELECT
      (pages_domains > 0)::int                               AS pages_domains_active,
      (projects > 0)::int                                    AS projects_active,
      (projects_imported_from_github > 0)::int               AS projects_imported_from_github_active,
-     (projects_jira_active > 0)::int                        AS projects_jira_active,
+     (projects_jira_active > 0)::int                        AS projects_jira_active_active,
      (projects_mirrored_with_pipelines_enabled > 0)::int    AS projects_mirrored_with_pipelines_enabled_active,
      (projects_prometheus_active > 0)::int                  AS projects_prometheus_active_active,
      (projects_reporting_ci_cd_back_to_github > 0)::int     AS projects_reporting_ci_cd_back_to_github_active,
