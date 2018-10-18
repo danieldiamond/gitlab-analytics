@@ -34,8 +34,8 @@ class SnowflakeManager(object):
         # Queries for database cloning
         create_query = """create or replace database "{0}" clone analytics;""".format(self.database)
         grant_query = """grant ownership on database "{0}" to transformer;""".format(self.database)
-        grant_roles_transformer = """grant create schema, usage "{0}" to transformer""".format(self.database)
-        grant_roles_loader = """grant create schema, usage "{0}" to loader""".format(self.database)
+        grant_roles_transformer = """grant create schema, usage on database "{0}" to transformer""".format(self.database)
+        grant_roles_loader = """grant create schema, usage on database "{0}" to loader""".format(self.database)
         queries = [create_query,
                    grant_query,
                    grant_roles_transformer,
