@@ -66,6 +66,7 @@ snowflake_review: &snowflake_review
   tags:
     - analytics
   script:
+    - export SF_DATABASE="${SF_DATABASE^^}"  # capitalize the database name
     - pip3 install -U snowflake-sqlalchemy
     - manage_snowflake.py manage_clones
   environment:
@@ -177,6 +178,7 @@ review_stop:
     GIT_STRATEGY: none
     SF_DATABASE: $CI_COMMIT_REF_NAME
   script:
+    - export SF_DATABASE="${SF_DATABASE^^}"  # capitalize the database name
     - git clone $CI_REPOSITORY_URL
     - pip3 install -U snowflake-sqlalchemy
     - analytics/orchestration/manage_snowflake.py delete_clone
