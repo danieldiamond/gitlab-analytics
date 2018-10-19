@@ -7,8 +7,8 @@
 
 .meltano_config: &meltano_default_variables
   SINGER_RUN_DIR: /run/singer
-  TAP_OUTPUT: $SINGER_RUN_DIR/tap-zendesk.out
-  TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target-postgres
+  TAP_OUTPUT: $SINGER_RUN_DIR/tap.out
+  TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target.rejected
   MELTANO_JOB_ID: $CI_JOB_NAME
 
 .marketo_extract: &marketo_extract
@@ -44,26 +44,20 @@
     # - cp path/to/properties.json /etc/singer/tap/tap-zendesk.properties.json
     #
     # - ci_helpers.py use_proxy "meltano schema create $PG_SCHEMA readonly analytics"
-    - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME tap-zendesk --loader_name=target-postgres"
+    - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME $MELTANO_EXTRACTOR --loader_name=MELTANO_LOADER"
   artifacts:
     paths:
-      - /run/singer/tap-zendesk.out
-      - /run/singer/target-postgres/
+      - /run/singer/tap.out
+      - /run/singer/target.rejected/
     expire_in: 1 week
 
 .zendesk_singer_snowflake_extract: &zendesk_singer_snowflake_extract
   <<: *zendesk_singer_extract
   variables:
-    CI_DEBUG_TRACE: "true"
-    SINGER_RUN_DIR: /run/singer
-    TAP_OUTPUT: $SINGER_RUN_DIR/tap-zendesk.out
-    TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target-postgres
+    <<: *meltano_default_variables
     SF_SCHEMA: ZENDESK
     MELTANO_EXTRACTOR: tap-zendesk
     MELTANO_LOADER: target-snowflake
-  script:
-    - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
-    - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME tap-zendesk --loader_name=target-snowflake"
 
 .lever_extract: &lever_extract
   stage: extract
@@ -499,7 +493,6 @@ zendesk_singer_manual:
 
 zendesk_singer_snowflake_manual:
   <<: *zendesk_singer_snowflake_extract
-  variables:
   only:
     - branches
   except:
