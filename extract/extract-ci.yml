@@ -58,7 +58,7 @@
     <<: *meltano_default_variables
     ZENDESK_START_DATE: "2018-10-01T00:00:00Z"
     SF_SCHEMA: TAP_ZENDESK # must be in CAPS
-    # SF_DATABASE: ADD-ZENDESK_SNOWFLAKE
+    SF_DATABASE: $CI_COMMIT_REF_NAME
     MELTANO_EXTRACTOR: tap-zendesk
     MELTANO_LOADER: target-snowflake
   script:
