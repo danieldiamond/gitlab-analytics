@@ -883,6 +883,7 @@ opportunity:
   sales_qualified__c: boolean
   sales_qualified_date__c: date
   sales_qualified_fiscal_period__c: character varying
+  sales_segmentation_o__c: character varying
   sales_segmentation_employees_o__c: character varying
   sdr__c: character varying
   sdr_lu__c: character varying
@@ -907,6 +908,7 @@ opportunity:
   trigger_workflow__c: boolean
   type: character varying
   type_amount_close_date__c: character varying
+  ultimate_parent_sales_segment_o__c: character varying
   ultimate_parent_sales_segment_emp_o__c: character varying
   unqualified_amount__c: real
   upside_iacv__c: real
