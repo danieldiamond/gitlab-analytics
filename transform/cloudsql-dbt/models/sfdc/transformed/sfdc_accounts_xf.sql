@@ -17,8 +17,7 @@ with sfdc_account as (
 
      SELECT account_name as ultimate_parent_account_name,
             account_id as ultimate_parent_account_id,
-            account_segment as ultimate_parent_account_segment,
-            new_account_segment as ultimate_parent_account_segment_new
+            account_segment as ultimate_parent_account_segment
      FROM {{ref('sfdc_account')}}
 
 ), joined as (
@@ -28,7 +27,6 @@ with sfdc_account as (
         sfdc_users.name            as technical_account_manager,
     		parent_account.ultimate_parent_account_name, 
     		parent_account.ultimate_parent_account_segment,
-    		parent_account.ultimate_parent_account_segment_new,
         sfdc_record_type.record_type_name,
         sfdc_record_type.business_process_id,
         sfdc_record_type.record_type_label,
