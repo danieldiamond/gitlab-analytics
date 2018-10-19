@@ -62,9 +62,7 @@ WITH source AS (
       products_purchased__c                    AS products_purchased,
       region__c                                AS account_region,
       sub_region__c                            AS account_sub_region,
-      sales_segmentation_new__c                AS new_account_segment,
-      sales_segmentation__c                    AS account_segment,
-      -- I would this be called account_segment or sales_segment, but I think this is a breaking change
+      sales_segmentation_new__c                AS account_segment,
       support_level__c                         AS support_level,
       support_level_numeric__c                 AS support_level_numeric,
 

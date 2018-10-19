@@ -198,6 +198,8 @@ account:
   ultimate_parent_account_id__c: character varying
   ultimate_parent_is_current_account__c: boolean
   ultimate_parent_old__c: character varying
+  ultimate_parent_sales_segment_emp_text__c: character varying
+  ultimate_parent_sales_segment_employees__c: character varying
   using_ce__c: boolean
   website: character varying
   zendesk__create_in_zendesk__c: boolean
@@ -881,7 +883,7 @@ opportunity:
   sales_qualified__c: boolean
   sales_qualified_date__c: date
   sales_qualified_fiscal_period__c: character varying
-  sales_segmentation_o__c: character varying
+  sales_segmentation_employees_o__c: character varying
   sdr__c: character varying
   sdr_lu__c: character varying
   second_owner_insight_squared__c: character varying
@@ -905,7 +907,7 @@ opportunity:
   trigger_workflow__c: boolean
   type: character varying
   type_amount_close_date__c: character varying
-  ultimate_parent_sales_segment_o__c: character varying
+  ultimate_parent_sales_segment_emp_o__c: character varying
   unqualified_amount__c: real
   upside_iacv__c: real
   upside_swing_deal_iacv__c: real

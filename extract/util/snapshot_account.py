@@ -253,7 +253,9 @@ try:
              "a.account_initial_start_date__c, " + \
              "a.technical_account_manager_lu__c, " + \
              "a.sales_segmentation_new__c, " + \
-             "a.number_of_open_opportunities__c " + \
+             "a.number_of_open_opportunities__c, " + \
+             "a.ultimate_parent_sales_segment_emp_text__c, " + \
+             "a.ultimate_parent_sales_segment_employees__c " + \
               "FROM sfdc.account a WHERE isdeleted=FALSE"
         cursor.execute(sql)
         conn.commit()
