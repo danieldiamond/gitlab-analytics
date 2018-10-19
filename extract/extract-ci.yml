@@ -59,10 +59,16 @@
     SF_DATABASE: ADD-ZENDESK_SNOWFLAKE
     MELTANO_EXTRACTOR: tap-zendesk
     MELTANO_LOADER: target-snowflake
+    SF_PASSWORD: "REDACTED"
   script:
+    - echo "Connecting to $SF_USER@$SF_ACCOUNT/$SF_DATABASE/$SF_SCHEMA"
     - export SF_DATABASE=${SF_DATABASE^^} # database name must be in CAPS
     - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
     - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME $MELTANO_EXTRACTOR --loader_name=$MELTANO_LOADER"
+  artifacts:
+    paths:
+      - /run/singer
+    expire_in: 1 hour
 
 .lever_extract: &lever_extract
   stage: extract
