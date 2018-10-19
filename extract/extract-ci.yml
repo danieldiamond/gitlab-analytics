@@ -56,6 +56,7 @@
   variables:
     <<: *meltano_default_variables
     SF_SCHEMA: ZENDESK # must be in CAPS
+    SF_DATABASE: ADD-ZENDESK_SNOWFLAKE
     MELTANO_EXTRACTOR: tap-zendesk
     MELTANO_LOADER: target-snowflake
   script:
