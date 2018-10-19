@@ -21,9 +21,12 @@ WITH source AS (
         opportunity_owner__c        AS owner,
         engagement_type__c          AS sales_path,
         sql_source__c               AS generated_source,
-        COALESCE((initcap(sales_segmentation_employees_o__c)), 'Unknown')
-                                    AS sales_segment,
-        (initcap(ultimate_parent_sales_segment_emp_o__c))
+        COALESCE(
+            initcap(
+                COALESCE(sales_segmentation_employees_o__c, sales_segmentation_o__c)
+                ), 'Unknown')       AS sales_segment,
+        initcap(
+            COALESCE(ultimate_parent_sales_segment_emp_o__c, ultimate_parent_sales_segment_o__c))
                                     AS parent_segment,
         type                        AS sales_type,
         closedate                   AS close_date,

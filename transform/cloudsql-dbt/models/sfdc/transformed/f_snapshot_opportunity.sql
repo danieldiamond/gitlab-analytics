@@ -31,7 +31,8 @@ SELECT o.sfdc_opportunity_id AS opportunity_id
        , s.stage_id AS opportunity_stage_id
        , l.id AS lead_source_id
        , COALESCE(o.type, 'Unknown') AS opportunity_type
-       , COALESCE(o.sales_segmentation_employees_o__c, 'Unknown') as opportunity_sales_segmentation
+       , COALESCE(COALESCE(o.sales_segmentation_employees_o__c, o.sales_segmentation_o__c),
+                         'Unknown') as opportunity_sales_segmentation
        , o.sales_qualified_date__c as sales_qualified_date
        , o.sales_accepted_date__c as sales_accepted_date
        , o.sql_source__c as sales_qualified_source

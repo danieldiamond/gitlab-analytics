@@ -258,7 +258,7 @@ try:
               "o.sales_qualified_date__c," + \
               "o.sales_qualified_fiscal_period__c," + \
               "o.sql_source__c," + \
-              "null," + \
+              "o.sales_segmentation_o__c," + \
               "o.sdr__c," + \
               "o.second_owner_insight_squared__c," + \
               "o.software_development_methodology_state__c," + \
@@ -302,7 +302,7 @@ try:
               "o.xactly_incremental_amount__c," + \
               "o.xactly_invoice_paid_date__c," + \
               "o.initial_iacv__c," + \
-              "null," + \
+              "o.ultimate_parent_sales_segment_o__c," + \
               "o.opportunity_owner__c," + \
               "null," + \
               "o.__row_id," + \
