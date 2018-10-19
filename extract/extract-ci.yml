@@ -44,7 +44,7 @@
     # - cp path/to/properties.json /etc/singer/tap/tap-zendesk.properties.json
     #
     # - ci_helpers.py use_proxy "meltano schema create $PG_SCHEMA readonly analytics"
-    - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME $MELTANO_EXTRACTOR --loader_name=MELTANO_LOADER"
+    - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME $MELTANO_EXTRACTOR --loader_name=$MELTANO_LOADER"
   artifacts:
     paths:
       - /run/singer/tap.out
