@@ -322,7 +322,9 @@ try:
               "o.channel_partner_iacv_override__c," + \
               "o.upside_iacv__c," + \
               "o.upside_swing_deal_iacv__c," + \
-              "o.merged_opportunity__c " + \
+              "o.merged_opportunity__c, " + \
+              "o.sales_segmentation_employees_o__c, " + \
+              "o.ultimate_parent_sales_segment_emp_o__c " + \
               "FROM sfdc.opportunity o WHERE isdeleted=FALSE"
         cursor.execute(sql)
         conn.commit()
