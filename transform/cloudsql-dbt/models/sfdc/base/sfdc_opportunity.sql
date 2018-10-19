@@ -25,7 +25,7 @@ WITH source AS (
             initcap(
                 COALESCE(sales_segmentation_employees_o__c, sales_segmentation_o__c)
                 ), 'Unknown')       AS sales_segment,
-        (initcap
+        initcap(
             COALESCE(ultimate_parent_sales_segment_emp_o__c, ultimate_parent_sales_segment_o__c))
                                     AS parent_segment,
         type                        AS sales_type,
