@@ -55,9 +55,13 @@
   <<: *zendesk_singer_extract
   variables:
     <<: *meltano_default_variables
-    SF_SCHEMA: ZENDESK
+    SF_SCHEMA: ZENDESK # must be in CAPS
     MELTANO_EXTRACTOR: tap-zendesk
     MELTANO_LOADER: target-snowflake
+  script:
+    - export SF_DATABASE=${SF_DATABASE^^} # database name must be in CAPS
+    - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
+    - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME $MELTANO_EXTRACTOR --loader_name=$MELTANO_LOADER"
 
 .lever_extract: &lever_extract
   stage: extract
