@@ -57,7 +57,7 @@
   variables:
     <<: *meltano_default_variables
     ZENDESK_START_DATE: "2018-10-01T00:00:00Z"
-    SF_SCHEMA: ZENDESK # must be in CAPS
+    SF_SCHEMA: TAP_ZENDESK # must be in CAPS
     # SF_DATABASE: ADD-ZENDESK_SNOWFLAKE
     MELTANO_EXTRACTOR: tap-zendesk
     MELTANO_LOADER: target-snowflake
