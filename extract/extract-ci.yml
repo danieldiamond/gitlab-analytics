@@ -54,6 +54,7 @@
 .zendesk_singer_snowflake_extract: &zendesk_singer_snowflake_extract
   <<: *zendesk_singer_extract
   variables:
+    CI_DEBUG_TRACE: "true"
     SINGER_RUN_DIR: /run/singer
     TAP_OUTPUT: $SINGER_RUN_DIR/tap-zendesk.out
     TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target-postgres
