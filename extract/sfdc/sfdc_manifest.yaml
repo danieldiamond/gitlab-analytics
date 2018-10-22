@@ -188,6 +188,7 @@ account:
   territories_covered__c: character varying
   territory__c: character varying
   top_list__c: character varying
+  total_account_value__c: real
   trigger_workflow__c: boolean
   type: character varying
   type_amount_close_date__c: character varying

@@ -61,6 +61,7 @@ WITH source AS (
       license_utilization__c                   AS license_utilization,
       products_purchased__c                    AS products_purchased,
       region__c                                AS account_region,
+      total_account_value__c                   AS total_account_value,
       sub_region__c                            AS account_sub_region,
       sales_segmentation_new__c                AS account_segment,
       support_level__c                         AS support_level,
