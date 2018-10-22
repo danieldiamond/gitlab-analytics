@@ -18,6 +18,7 @@ from netsuite.src.soap_api.account import Account
 from netsuite.src.soap_api.currency import Currency
 from netsuite.src.soap_api.customer import Customer
 from netsuite.src.soap_api.department import Department
+from netsuite.src.soap_api.budget import Budget
 from netsuite.src.soap_api.subsidiary import Subsidiary
 from netsuite.src.soap_api.transaction import Transaction
 from netsuite.src.soap_api.expense import Expense
@@ -302,6 +303,9 @@ class NetsuiteClient:
             account = Account(self)
             entities.append(account)
 
+            budget = Budget(self)
+            entities.append(budget)
+
             currency = Currency(self)
             entities.append(currency)
 
@@ -333,6 +337,7 @@ class NetsuiteClient:
         entities = [
             Account,
             Application,
+            Budget,
             Currency,
             Customer,
             Department,
@@ -356,6 +361,7 @@ class NetsuiteClient:
         classes = {
             'Account': Account,
             'Application': Application,
+            'Budget': Budget,
             'Currency': Currency,
             'Customer': Customer,
             'Department': Department,
