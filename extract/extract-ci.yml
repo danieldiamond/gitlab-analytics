@@ -28,7 +28,7 @@
   stage: extract
   <<: *extract_definition
   image:
-    name: registry.gitlab.com/meltano/meltano/singer_runner:add-snowflake
+    name: registry.gitlab.com/meltano/meltano/singer_runner:latest
     entrypoint: [""]
   variables:
     <<: *meltano_default_variables
