@@ -60,33 +60,65 @@ def action_backlog(args):
     """
     Go back in time and fetch transactions not already fetched.
     """
-
-    # Set the backlog range
-    date_range = transaction_backlog(args)
-
-    if date_range:
-        args.days = None
-        args.start = date_range[0].isoformat()
-        args.end  = date_range[1].isoformat()
+    if args.backfill_entity is not None and args.backfill_entity == 'currency_rate':
+        # BackFill ALL the Currency Rates
+        if args.days is None or int(args.days) <= 0:
+            logging.info("This operation needs the --days option in order to run")
+            logging.info("Missing arguments - aborting backlog")
+            return None
 
         # Initialize the SOAP client and fetch the wsdl
         client = NetsuiteClient()
 
         # Login
         if client.login():
-            # Run the export script ONLY for Transactions
-            entities_to_export = client.export_supported_entities(only_transactions=True)
 
+            # Run the export script ONLY for Currency Rates
+            entity_class = client.supported_entity_class_factory('CurrencyRate')
+            if entity_class is None:
+                logging.info("Could NOT fetch a CurrencyRate object - Script Failed")
+                return None
+
+            supported_entity_classes = [entity_class]
+            with DB.default.open() as db:
+                for entity in supported_entity_classes:
+                    schema = entity.schema.describe_schema(args)
+                    schema_apply(db, schema)
+
+            entities_to_export = [entity_class(client)]
             extract(args, entities_to_export)
 
-            # Run the extract transaction type script for the same date interval
-            extract_transaction_type(args)
-
-            logging.info("Transaction BackLog completed Successfully")
+            logging.info("Currency Rate BackLog completed Successfully")
         else:
             logging.info("Could NOT login to NetSuite - Script Failed")
     else:
-        logging.info("Transaction BackLog completed Successfully: No more data to fetch")
+        # BackFill the transactions
+        # Set the backlog range
+        date_range = transaction_backlog(args)
+
+        if date_range:
+            args.days = None
+            args.start = date_range[0].isoformat()
+            args.end  = date_range[1].isoformat()
+
+            # Initialize the SOAP client and fetch the wsdl
+            client = NetsuiteClient()
+
+            # Login
+            if client.login():
+                # Run the export script ONLY for Transactions
+                entities_to_export = client.export_supported_entities(only_transactions=True)
+
+                extract(args, entities_to_export)
+
+                # Run the extract transaction type script for the same date interval
+                extract_transaction_type(args)
+
+                logging.info("Transaction BackLog completed Successfully")
+            else:
+                logging.info("Could NOT login to NetSuite - Script Failed")
+        else:
+            logging.info("Transaction BackLog completed Successfully: No more data to fetch")
 
 def action_test(args):
     """
@@ -134,6 +166,10 @@ def parse():
                               "test: test the netsuite client.\n"
                               "extract_type: extract the type for fetched Transactions.\n"
                               "backlog: fetch transactions not already fetched (requires --days arg)."))
+
+    parser.add_argument('--backfill-entity', dest='backfill_entity',
+                        help="Entity to be backfilled when the backlog option is selected.")
+
 
     return parser.parse_args()
 

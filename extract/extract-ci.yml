@@ -78,6 +78,14 @@
     - check_ci_cd_vars.py --file extract/netsuite/src/config/required_ci_cd_vars.yaml
     - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite backlog --days 60"
 
+.netsuite_currency_rate_backfill: &netsuite_currency_rate_backfill
+  stage: extract
+  <<: *extract_definition
+  script:
+    - check_ci_cd_vars.py --file extract/netsuite/src/config/required_ci_cd_vars.yaml
+    - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite backlog --backfill-entity currency_rate --days 1460"
+
+
 .pings_extract: &pings_extract
   stage: extract
   <<: *extract_definition
@@ -373,6 +381,11 @@ marketo_manual:
 netsuite_backlog_manual:
   stage: extract
   <<: *netsuite_backlog
+  when: manual
+
+netsuite_currency_rate_backfill_manual:
+  stage: extract
+  <<: *netsuite_currency_rate_backfill
   when: manual
 
 netsuite_manual:
