@@ -17,43 +17,12 @@
   script:
     - ci_helpers.py use_proxy "bash extract/mkto/mkto_processor.sh"
 
-.zendesk_extract: &zendesk_extract
-  stage: extract
-  <<: *extract_definition
-  script:
-    - ci_helpers.py use_proxy "python3 extract/zendesk/src --schema zendesk apply_schema"
-    - ci_helpers.py use_proxy "python3 extract/zendesk/src --schema zendesk --days=1 export"
-
-.zendesk_singer_extract: &zendesk_singer_extract
+.zendesk_extract: &zendesk_singer_extract
   stage: extract
   <<: *extract_definition
   image:
     name: registry.gitlab.com/meltano/meltano/singer_runner:latest
     entrypoint: [""]
-  variables:
-    <<: *meltano_default_variables
-    ZENDESK_START_DATE: "2018-10-01T00:00:00Z"
-    PG_SCHEMA: zendesk_singer
-    MELTANO_EXTRACTOR: tap-zendesk
-    MELTANO_LOADER: target-postgres
-  script:
-    - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
-    # - check_ci_cd_vars.py --file extract/singer/required_ci_cd_vars.yaml
-    # - check_ci_cd_vars.py --file load/singer/required_ci_cd_vars.yaml
-    #
-    # NOTE: to overwrite the sample fields configuration
-    # - cp path/to/properties.json /etc/singer/tap/tap-zendesk.properties.json
-    #
-    # - ci_helpers.py use_proxy "meltano schema create $PG_SCHEMA readonly analytics"
-    - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME $MELTANO_EXTRACTOR --loader_name=$MELTANO_LOADER"
-  artifacts:
-    paths:
-      - /run/singer/tap.out
-      - /run/singer/target.rejected/
-    expire_in: 1 week
-
-.zendesk_singer_snowflake_extract: &zendesk_singer_snowflake_extract
-  <<: *zendesk_singer_extract
   variables:
     <<: *meltano_default_variables
     ZENDESK_START_DATE: "2018-10-01T00:00:00Z"
@@ -333,22 +302,6 @@ zendesk:
     variables:
       - $ZENDESK
 
-zendesk:
-  <<: *zendesk_singer_extract
-  only:
-    refs:
-      - master
-    variables:
-      - $ZENDESK
-
-zendesk_snowflake:
-  <<: *zendesk_singer_snowflake_extract
-  only:
-    refs:
-      - master
-    variables:
-      - $ZENDESK
-
 zuora:
   <<: *zuora_extract
   only:
@@ -485,22 +438,6 @@ stripe_extract_githost_manual:
 
 zendesk_manual:
   <<: *zendesk_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-zendesk_singer_manual:
-  <<: *zendesk_singer_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-zendesk_singer_snowflake_manual:
-  <<: *zendesk_singer_snowflake_extract
   only:
     - branches
   except:
