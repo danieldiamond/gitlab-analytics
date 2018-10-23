@@ -44,7 +44,14 @@ SELECT
   EXTRACT(dayofyear FROM datum)                             AS day_of_year,
   DATEDIFF(week, DATE_TRUNC('month', datum), datum) + 1     AS week_of_month,
   EXTRACT(week FROM datum)                                  AS week_of_year,
-  EXTRACT(weekiso FROM datum)                               AS week_of_year_iso,
+  -- snowflake WEEKISO doesn't properly return guaranteed two digit weeks
+  YEAROFWEEKISO(datum)
+    || CASE
+      WHEN LENGTH(WEEKISO(datum)) = 1
+        THEN CONCAT('-W0', WEEKISO(datum))
+      ELSE CONCAT('-W', WEEKISO(datum))
+    END
+    || CONCAT('-', DAYOFWEEKISO(datum))                     AS week_of_year_iso,
   EXTRACT(month FROM datum)                                 AS month_actual,
   -- https://docs.snowflake.net/manuals/sql-reference/functions/monthname.html#monthname
   CASE

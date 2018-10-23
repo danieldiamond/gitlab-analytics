@@ -10,13 +10,16 @@
 .snowflake_dbt_jobs: &snowflake_dbt_jobs
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   stage: model
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
   before_script:
     - cd transform/snowflake-dbt/
+    - export SF_DATABASE="${SF_DATABASE^^}"
+    - echo $SF_DATABASE
   tags:
     - analytics
 
 # Load
-
 snowflake_load:
   <<: *snowflake_load
   script:
@@ -27,7 +30,7 @@ snowflake_load:
     variables:
       - $SNOWFLAKE_LOAD
 
-snowflake_load_run:
+snowflake_load_manual:
   <<: *snowflake_load
   script:
     - python3 execute_copy.py
@@ -37,7 +40,6 @@ snowflake_load_run:
   when: manual
 
 # Model
-
 dbt_snowflake:
   <<: *snowflake_dbt_jobs
   script:
@@ -59,8 +61,6 @@ dbt_snowflake_run:
   only:
     refs:
       - branches
-  variables:
-    SF_DATABASE: $CI_COMMIT_REF_NAME
   when: manual
 
 dbt_snowflake_full_refresh:
@@ -69,8 +69,6 @@ dbt_snowflake_full_refresh:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod --full-refresh
     - dbt -d test --profiles-dir profile --target prod
-  variables:
-    SF_DATABASE: $CI_COMMIT_REF_NAME
   when: manual
 
 dbt_snowflake_full_refresh:
@@ -79,8 +77,6 @@ dbt_snowflake_full_refresh:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod --full-refresh
     - dbt -d test --profiles-dir profile --target prod
-  variables:
-    SF_DATABASE: $CI_COMMIT_REF_NAME
   when: manual
 
 snowflake_mr_dbt:
@@ -88,8 +84,6 @@ snowflake_mr_dbt:
   script:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod --full-refresh
-    - dbt -d run --profiles-dir profile --target prod 
+    - dbt -d run --profiles-dir profile --target prod
     - dbt -d test --profiles-dir profile --target prod
-  variables:
-    SF_DATABASE: $CI_COMMIT_REF_NAME
   when: manual
