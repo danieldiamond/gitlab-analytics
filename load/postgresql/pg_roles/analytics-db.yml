@@ -181,6 +181,15 @@ tmurphy:
         schemas:
           - tmurphy_scratch
 
+tszuromi:
+    can_login: yes
+    is_superuser: no
+    member_of:
+        - readonly
+    owns:
+        schemas:
+            - tszuromi_scratch
+
 victorwu:
     can_login: yes
     is_superuser: no
