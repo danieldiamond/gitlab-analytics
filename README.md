@@ -207,6 +207,9 @@ New user roles are added to a specific role via:
 CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE metarole;
 
 ALTER ROLE newrole WITH LOGIN;
+
+-- create a scratch schema for the user if necessary
+CREATE SCHEMA newrole_scratch AUTHORIZATION newrole;
 ```
 
 New readonly and analytics users are then given instructions via Google Drive on how to connect their computer to the CloudSQL Proxy and on how to change their password once they login.
