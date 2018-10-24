@@ -227,6 +227,16 @@ tmurphy:
             - tmurphy_scratch
 
 
+tszuromi:
+    type: user
+    can_login: yes
+    member_of:
+        - reporter
+    owns:
+        schemas:
+            - tszuromi_scratch
+
+
 # Warehouse
 
 admin:
