@@ -26,6 +26,9 @@ on-run-end:
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
 
 models:
+    logging:
+      pre-hook: "{{ logging.log_model_start_event() }}"
+      post-hook: "{{ logging.log_model_end_event() }}"
     vars:
         warehouse_name: 'transforming'
     date:
