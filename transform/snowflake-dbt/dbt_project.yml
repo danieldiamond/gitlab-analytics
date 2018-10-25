@@ -32,9 +32,9 @@ models:
     vars:
         warehouse_name: 'transforming'
     date:
-        base:
-          enabled: true
-          materialized: table
+      base:
+        enabled: true
+        materialized: table
     snowplow:
         vars:
           'snowplow:use_fivetran_interface': false
