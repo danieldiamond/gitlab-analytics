@@ -112,3 +112,4 @@ SELECT
   ELSE FALSE
   END                                                       AS weekend_indr
 FROM sequence_gen
+

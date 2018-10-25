@@ -52,7 +52,7 @@ dbt_snowflake:
     variables:
       - $SNOWFLAKE_DBT
 
-dbt_snowflake_run:
+dbt_snowflake_manual:
   <<: *snowflake_dbt_jobs
   script:
     - dbt -d deps --profiles-dir profile
