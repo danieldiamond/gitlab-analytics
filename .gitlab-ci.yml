@@ -24,6 +24,7 @@ stages:
   - extract # extract/extract-ci.yml
   - model # transform/cloudsql-dbt/cloudsql-dbt-ci.ym transform/snowflake-dbt/snowflake-dbt-ci.yml
   - update
+  - publish
   - review_stop
 
 include:
@@ -167,6 +168,40 @@ sfdc_snapshot_manual:
     refs:
       - branches
   when: manual
+
+# Stage: publish
+
+.pages_job_template: &pages_job_template
+  stage: publish
+  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
+  script:
+    - export SF_DATABASE="${SF_DATABASE^^}"
+    - echo $SF_DATABASE
+    - generate_dbt_docs.sh
+  artifacts:
+    paths:
+    - public
+  tags:
+    - analytics
+
+pages:
+  <<: *pages_job_template
+  only:
+    refs:
+      - master
+    variables:
+      - $DEPLOY_DBT_PAGES
+
+test_dbt_pages:
+  <<: *pages_job_template
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
 
 # Stage: review_stop
 

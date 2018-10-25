@@ -10,7 +10,9 @@ dbt:
   stage: model
   <<: *cloudsql_dbt_jobs
   script:
+    - ci_helpers.py use_proxy "dbt deps --profiles-dir profile"
     - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod"
+    - ci_helpers.py use_proxy "dbt test --profiles-dir profile --target prod"
   only:
     refs:
       - master
@@ -21,6 +23,7 @@ dbt_run:
   stage: model
   <<: *cloudsql_dbt_jobs
   script:
+    - ci_helpers.py use_proxy "dbt deps --profiles-dir profile"
     - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod"
     - ci_helpers.py use_proxy "dbt test --profiles-dir profile --target prod"
   only:
@@ -32,6 +35,7 @@ dbt_full_refresh:
   stage: model
   <<: *cloudsql_dbt_jobs
   script:
+    - ci_helpers.py use_proxy "dbt deps --profiles-dir profile"
     - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod --full-refresh"
     - ci_helpers.py use_proxy "dbt test --profiles-dir profile --target prod"
   when: manual
@@ -40,6 +44,7 @@ cloudsql_mr_dbt:
   stage: model
   <<: *cloudsql_dbt_jobs
   script:
+    - ci_helpers.py use_proxy "dbt deps --profiles-dir profile"
     - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod --full-refresh"
     - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod"
     - ci_helpers.py use_proxy "dbt test --profiles-dir profile --target prod"

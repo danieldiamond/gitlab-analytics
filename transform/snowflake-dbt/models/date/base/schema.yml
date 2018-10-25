@@ -1,0 +1,10 @@
+version: 2
+
+models:
+    - name: date_details
+      description: base view for dates
+      columns:
+          - name: date_actual
+            tests:
+               - not_null
+               - unique

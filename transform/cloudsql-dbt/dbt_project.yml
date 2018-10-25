@@ -15,6 +15,10 @@ on-run-end:
     - grant select on all tables in schema {{ target.schema }} to looker
 
 models:
+  logging:
+    pre-hook: "{{ logging.log_model_start_event() }}"
+    post-hook: "{{ logging.log_model_end_event() }}"
+
   gitlab_dw:
     date:
       base:
