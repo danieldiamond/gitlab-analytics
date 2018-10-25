@@ -177,8 +177,6 @@ sfdc_snapshot_manual:
   variables:
     SF_DATABASE: $CI_COMMIT_REF_NAME
   script:
-    - export SF_DATABASE="${SF_DATABASE^^}"
-    - echo $SF_DATABASE
     - generate_dbt_docs.sh
   artifacts:
     paths:
