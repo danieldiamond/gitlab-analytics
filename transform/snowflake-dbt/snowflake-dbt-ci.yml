@@ -45,7 +45,7 @@ dbt_snowflake:
   script:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod
-    - dbt -d test --profiles-dir profile --target prod
+    #- dbt -d test --profiles-dir profile --target prod
   only:
     refs:
       - master
@@ -57,7 +57,7 @@ dbt_snowflake_manual:
   script:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod
-    - dbt -d test --profiles-dir profile --target prod
+    #- dbt -d test --profiles-dir profile --target prod
   only:
     refs:
       - branches
@@ -68,7 +68,7 @@ dbt_snowflake_full_refresh:
   script:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod --full-refresh
-    - dbt -d test --profiles-dir profile --target prod
+    #- dbt -d test --profiles-dir profile --target prod
   when: manual
 
 dbt_snowflake_full_refresh:
@@ -76,7 +76,7 @@ dbt_snowflake_full_refresh:
   script:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod --full-refresh
-    - dbt -d test --profiles-dir profile --target prod
+    #- dbt -d test --profiles-dir profile --target prod
   when: manual
 
 snowflake_mr_dbt:
@@ -85,5 +85,5 @@ snowflake_mr_dbt:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod --full-refresh
     - dbt -d run --profiles-dir profile --target prod
-    - dbt -d test --profiles-dir profile --target prod
+    #- dbt -d test --profiles-dir profile --target prod
   when: manual
