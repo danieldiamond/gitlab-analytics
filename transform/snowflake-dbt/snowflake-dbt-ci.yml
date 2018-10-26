@@ -45,38 +45,32 @@ dbt_snowflake:
   script:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod
-    #- dbt -d test --profiles-dir profile --target prod
   only:
     refs:
       - master
     variables:
       - $SNOWFLAKE_DBT
 
-dbt_snowflake_manual:
+dbt_snowflake_manual: &dbt_snowflake_manual
   <<: *snowflake_dbt_jobs
   script:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod
-    #- dbt -d test --profiles-dir profile --target prod
   only:
     refs:
       - branches
   when: manual
 
-dbt_snowflake_full_refresh:
-  <<: *snowflake_dbt_jobs
+dbt_snowflake_tests_manual:
+  <<: *dbt_snowflake_manual
   script:
-    - dbt -d deps --profiles-dir profile
-    - dbt -d run --profiles-dir profile --target prod --full-refresh
-    #- dbt -d test --profiles-dir profile --target prod
-  when: manual
+    - dbt -d test --profiles-dir profile --target prod
 
 dbt_snowflake_full_refresh:
   <<: *snowflake_dbt_jobs
   script:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod --full-refresh
-    #- dbt -d test --profiles-dir profile --target prod
   when: manual
 
 snowflake_mr_dbt:
@@ -85,5 +79,22 @@ snowflake_mr_dbt:
     - dbt -d deps --profiles-dir profile
     - dbt -d run --profiles-dir profile --target prod --full-refresh
     - dbt -d run --profiles-dir profile --target prod
-    #- dbt -d test --profiles-dir profile --target prod
   when: manual
+
+# Model tests
+dbt_snowflake_tests_manual:
+  <<: *dbt_snowflake_manual
+  stage: model_tests
+  script:
+    - dbt -d test --profiles-dir profile --target prod
+
+dbt_snowflake_tests:
+  <<: *snowflake_dbt_jobs
+  stage: model_tests
+  script:
+    - dbt -d test --profiles-dir profile --target prod
+  only:
+    refs:
+      - master
+    variables:
+      - $SNOWFLAKE_DBT_TESTS

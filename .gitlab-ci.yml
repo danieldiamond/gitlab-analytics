@@ -22,7 +22,8 @@ stages:
   - review
   - setup
   - extract # extract/extract-ci.yml
-  - model # transform/cloudsql-dbt/cloudsql-dbt-ci.ym transform/snowflake-dbt/snowflake-dbt-ci.yml
+  - model # transform/cloudsql-dbt/cloudsql-dbt-ci.yml transform/snowflake-dbt/snowflake-dbt-ci.yml
+  - model_tests # transform/cloudsql-dbt/cloudsql-dbt-ci.yml transform/snowflake-dbt/snowflake-dbt-ci.yml
   - update
   - publish
   - review_stop

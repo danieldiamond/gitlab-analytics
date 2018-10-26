@@ -6,26 +6,20 @@
   tags:
     - analytics
 
-dbt:
+dbt_cloudsql: &dbt_cloudsql
   stage: model
   <<: *cloudsql_dbt_jobs
   script:
     - ci_helpers.py use_proxy "dbt deps --profiles-dir profile"
     - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod"
-    - ci_helpers.py use_proxy "dbt test --profiles-dir profile --target prod"
   only:
     refs:
       - master
     variables:
       - $CLOUDSQL_DBT
 
-dbt_run:
-  stage: model
-  <<: *cloudsql_dbt_jobs
-  script:
-    - ci_helpers.py use_proxy "dbt deps --profiles-dir profile"
-    - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod"
-    - ci_helpers.py use_proxy "dbt test --profiles-dir profile --target prod"
+dbt_cloudsql_manual:
+  <<: *dbt_cloudsql
   only:
     refs:
       - branches
@@ -37,7 +31,6 @@ dbt_full_refresh:
   script:
     - ci_helpers.py use_proxy "dbt deps --profiles-dir profile"
     - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod --full-refresh"
-    - ci_helpers.py use_proxy "dbt test --profiles-dir profile --target prod"
   when: manual
 
 cloudsql_mr_dbt:
@@ -48,4 +41,23 @@ cloudsql_mr_dbt:
     - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod --full-refresh"
     - ci_helpers.py use_proxy "dbt run --profiles-dir profile --target prod"
     - ci_helpers.py use_proxy "dbt test --profiles-dir profile --target prod"
+  when: manual
+
+# Model Tests
+dbt_cloudsql_tests: &dbt_cloudsql_tests
+  stage: model_tests
+  <<: *cloudsql_dbt_jobs
+  script:
+    - ci_helpers.py use_proxy "dbt test --profiles-dir profile --target prod"
+  only:
+    refs:
+      - master
+    variables:
+      - $CLOUDSQL_DBT_TESTS
+
+dbt_cloudsql_tests_manual:
+  <<: *dbt_cloudsql_tests
+  only:
+    refs:
+      - branches
   when: manual
