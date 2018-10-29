@@ -51,6 +51,7 @@ SELECT
       zuora_rpc.effective_start_date,
       zuora_rpc.effective_end_date,
       zuora_subs.cohort_month,
+      zuora_subs.cohort_quarter,
       zuora_rpc.unit_of_measure,
       zuora_rpc.quantity
     FROM zuora_accts

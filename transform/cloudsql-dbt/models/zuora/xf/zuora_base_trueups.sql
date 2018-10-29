@@ -58,11 +58,12 @@ WITH zuora_accts AS (
     SELECT
       account_number,
       cohort_month,
+      cohort_quarter,
       subscription_name,
       subscription_name_slugify,
       subscription_slug_for_counting
     FROM {{ ref('zuora_base_mrr') }}
-    GROUP BY 1, 2, 3, 4, 5
+    GROUP BY 1, 2, 3, 4, 5, 6
 
 ),
 
@@ -89,6 +90,7 @@ SELECT
   mr.subscription_name_slugify,
   mr.subscription_slug_for_counting,
   mr.cohort_month,
+  mr.cohort_quarter,
   t.trueup_month,
   t.charge_name,
   t.service_start_date,

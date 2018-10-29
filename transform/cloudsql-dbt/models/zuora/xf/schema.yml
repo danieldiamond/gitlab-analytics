@@ -1,6 +1,8 @@
 version: 2
 
 models:
+    - name: sub_mrr_agg
+      description: '{{ doc("sub_mrr_agg") }}'
     - name: zuora_base_mrr
       description: '{{ doc("zuora_base_mrr") }}'
       columns:
@@ -8,8 +10,6 @@ models:
             description: Monthly recurring revenue
             tests:
                 - not_null
-
-
     - name: zuora_base_mrr_amortized
       description: '{{ doc("zuora_base_mrr_amortized") }}'
       columns:
@@ -17,13 +17,10 @@ models:
             description: Monthly recurring revenue
             tests:
                 - not_null
-
           - name: mrr_month
             description: The month the MRR is to be applied to
             tests:
                 - not_null
-
-
     - name: zuora_base_trueups
       description: '{{ doc("zuora_base_trueups") }}'
       columns:
@@ -33,16 +30,35 @@ models:
                 - not_null
                 - accepted_values:
                         values: ['Trueup','Trueup Credit']
-
-
     - name: zuora_mrr_totals
       description: '{{ doc("zuora_mrr_totals") }}'
       columns:
+          - name: account_number
+            description: '{{ doc("zuora_mrr_totals_col_account_number") }}'
+          - name: subscription_name_slugify
+            description: '{{ doc("zuora_mrr_totals_col_subscription_name_slugify") }}'
+          - name: subscription_name
+            description: '{{ doc("zuora_mrr_totals_col_subscription_name") }}'
+          - name: subscription_slug_for_counting
+            description: '{{ doc("zuora_mrr_totals_col_subscription_slug_for_counting") }}'
+          - name: mrr_month
+            description: '{{ doc("zuora_mrr_totals_col_mrr_month") }}'
+          - name: cohort_month
+            description: '{{ doc("zuora_mrr_totals_col_cohort_month") }}'
+          - name: cohort_quarter
+            description: '{{ doc("zuora_mrr_totals_col_cohort_quarter") }}'
+          - name: months_since_cohort_start
+            description: '{{ doc("zuora_mrr_totals_col_months_since_cohort_start") }}'
+          - name: mrr_type    
+            description: '{{ doc("zuora_mrr_totals_col_mrr_type") }}'
           - name: mrr
+            description: '{{ doc("zuora_mrr_totals_col_mrr") }}'
             tests:
                 - not_null
-
-
+          - name: mrr_12mo_ago
+            description: '{{ doc("zuora_mrr_totals_col_mrr_12mo_ago") }}'
+          - name: quarters_since_cohort_start
+            description: '{{ doc("zuora_mrr_totals_col_quarters_since_cohort_start") }}'
     - name: zuora_subscription_xf
       description: '{{ doc("zuora_subscription_xf") }}'
       columns:
@@ -51,25 +67,19 @@ models:
                 - not_null
                 - accepted_values:
                         values: ['1']
-
           - name: subscription_id
             tests:
                 - not_null
                 - unique
-
           - name: subscription_slug_for_counting
             description: The field used for counting the number of subscriptions. Used instead of subscription_name_slugify because of the linkage to renewal subscriptions.
             tests:
                 - not_null
-
           - name: subscription_status
             tests:
                 - not_null
                 - accepted_values:
                         values: ['Active','Cancelled']
-
-
-
     - name: zuora_accounts_receivables
       description: Zuora accounts receivable
       columns:
@@ -77,39 +87,30 @@ models:
             tests:
                 - not_null
                 - unique
-
-
     - name: zuora_current_arr
       description: Zuora current ARR
       columns:
           - name: current_arr
             tests:
                 - not_null
-
-
     - name: zuora_scheduled_renewals
       description: Zuora scheduled renewals
       columns:
           - name: account_name
             tests:
                 - not_null
-
           - name: account_number
             tests:
                 - not_null
-
           - name: subscription_name
             tests:
                 - not_null
-
           - name: subscription_end_date
             tests:
                 - not_null
-
           - name: rate_plan_name
             tests:
                 - not_null
-
           - name: term
             tests:
                 - not_null

@@ -25,6 +25,7 @@ WITH zuora_mrr AS (
            effective_start_date,
            effective_end_date,
            cohort_month,
+           cohort_quarter,
            unit_of_measure,
            quantity
     FROM zuora_mrr b
