@@ -6,7 +6,6 @@ netsuite_accounts:
         - account_type
         unique:
         - internal_account_id
-        - account_name
 
 netsuite_applications:
     constraints:
