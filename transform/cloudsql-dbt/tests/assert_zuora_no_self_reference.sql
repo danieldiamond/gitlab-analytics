@@ -2,5 +2,5 @@
 
 SELECT
     *
-FROM { { ref('zuora_subscription_xf') } }
+FROM {{ ref('zuora_subscription_xf') }}
 WHERE zuora_renewal_subscription_name_slugify = subscription_name_slugify

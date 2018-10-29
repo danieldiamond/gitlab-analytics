@@ -1,3 +1,14 @@
+{{
+  config({
+    "materialized":"table",
+    "post-hook": [
+       "DROP INDEX IF EXISTS {{ this.schema }}.index_zuora_mrr_totals_account_number",
+       "CREATE INDEX IF NOT EXISTS index_zuora_mrr_totals_account_number ON {{ this }}(account_number)"
+    ]
+  })
+}}
+
+
 WITH base_mrr AS (
 
     SELECT *
@@ -21,8 +32,8 @@ WITH base_mrr AS (
       subscription_slug_for_counting,
       trueup_month AS mrr_month,
       cohort_month,
-      date_part('year', age(trueup_month :: TIMESTAMP, cohort_month :: TIMESTAMP)) * 12 +
-      date_part('month', age(trueup_month :: TIMESTAMP, cohort_month :: TIMESTAMP)) as months_since_cohort_start,
+      cohort_quarter,
+      {{ month_diff('cohort_month ', 'trueup_month') }} as months_since_cohort_start,
       charge_name AS mrr_type,
       mrr
     FROM trueup_mrr
@@ -36,13 +47,17 @@ WITH base_mrr AS (
       subscription_slug_for_counting,
       mrr_month,
       cohort_month,
-      date_part('year', age(mrr_month :: TIMESTAMP, cohort_month :: TIMESTAMP)) * 12 +
-      date_part('month', age(mrr_month :: TIMESTAMP, cohort_month :: TIMESTAMP)) as months_since_cohort_start,
+      cohort_quarter,
+      {{ month_diff('cohort_month ', 'mrr_month') }} as months_since_cohort_start,
       rate_plan_charge_name AS mrr_type,
       mrr
     FROM base_mrr
 
   )
 
-SELECT *
+SELECT *, 
+        CASE WHEN mrr_type != 'Trueup' THEN (lag(mrr, 12) over (partition by subscription_slug_for_counting
+         order by mrr_month)) ELSE NULL END as mrr_12mo_ago,
+        {{ quarters_diff('cohort_quarter', 'mrr_month') }} as quarters_since_cohort_start
+
 FROM mrr_combined
