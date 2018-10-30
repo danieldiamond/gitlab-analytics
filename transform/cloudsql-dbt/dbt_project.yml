@@ -13,6 +13,10 @@ on-run-start:
 on-run-end:
     - grant usage on schema {{ target.schema }} to looker
     - grant select on all tables in schema {{ target.schema }} to looker
+    - grant select on all views in schema {{ target.schema to looker }}
+    - grant usage on schema analytics_meta to looker
+    - grant select on all tables in schema analytics_meta to looker
+    - grant select on all views in schema analytics_meta to looker
 
 models:
   logging:
