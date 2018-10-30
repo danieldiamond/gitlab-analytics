@@ -7,6 +7,7 @@ with ss_opportunity as (
 )
 
 SELECT id AS sfdc_opportunity_id,
+       recordtypeid AS record_type_id,
        snapshot_date,
        accountid,
        stagename,
