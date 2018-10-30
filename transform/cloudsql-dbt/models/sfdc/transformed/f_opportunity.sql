@@ -41,6 +41,7 @@ SELECT o.sfdc_id AS opportunity_id
        , a.id AS account_id
        , s.stage_id AS opportunity_stage_id
        , l.id AS lead_source_id
+       , o.record_type_id
        , o.weighted_iacv__c AS weighted_iacv
        , COALESCE(o.type, 'Unknown') AS opportunity_type
        , COALESCE(o.sales_segmentation_o__c, 'Unknown') as opportunity_sales_segmentation
