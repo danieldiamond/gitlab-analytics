@@ -26,7 +26,8 @@ curr_snapshot as (
 )
 
 SELECT o.sfdc_opportunity_id AS opportunity_id
-	   , o.snapshot_date AS snapshot_date
+       , o.record_type_id 
+	     , o.snapshot_date AS snapshot_date
        , a.id AS account_id
        , s.stage_id AS opportunity_stage_id
        , l.id AS lead_source_id
@@ -55,6 +56,7 @@ UNION
 
 -- This gets the opps for the current day b/c there is no snapshot
 SELECT opportunity_id,
+       record_type_id,
        CURRENT_TIMESTAMP as snapshot_date,
        account_id,
        opportunity_stage_id,
@@ -75,6 +77,7 @@ SELECT opportunity_id,
        ownerid
 FROM curr_snapshot
 GROUP BY opportunity_id,
+         record_type_id,
          account_id,
          opportunity_stage_id,
          lead_source_id,

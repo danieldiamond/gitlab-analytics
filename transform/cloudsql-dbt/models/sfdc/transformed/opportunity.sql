@@ -9,6 +9,7 @@ opps as (
 SELECT
   o.id             AS sfdc_id,
   accountid,
+  recordtypeid AS record_type_id,
   stagename,
   leadsource,
   TYPE,
