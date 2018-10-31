@@ -171,15 +171,16 @@ The `readonly` role was generated using the following commands:
 ```sql
 CREATE ROLE readonly;
 
-GRANT USAGE on SCHEMA analytics, customers, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to readonly;
+GRANT USAGE on SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to readonly;
 
-GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to readonly;
+GRANT SELECT on ALL TABLES IN SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to readonly;
 
 -- Ensures all future tables are available to the role
-ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, customers, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost 
+ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost 
   GRANT SELECT ON TABLES TO readonly;
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA sandbox TO readonly;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA meta TO readonly;
 
 ```
 
@@ -189,15 +190,15 @@ The `analytics` role was generated using the following commands:
 
 CREATE ROLE analytics;
 
-GRANT USAGE on SCHEMA analytics, customers, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to analytics;
+GRANT USAGE on SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to analytics;
 
-GRANT SELECT on ALL TABLES IN SCHEMA analytics, customers, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to analytics;
+GRANT SELECT on ALL TABLES IN SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to analytics;
 
 -- Ensures all future tables are available to the role
-ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, customers, historical, lever, license, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost
+ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost
   GRANT SELECT ON TABLES TO analytics;
 
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA analytics, public, sandbox TO analytics;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA analytics, analytics_meta, meta, public, sandbox TO analytics;
 
 ``` 
 
