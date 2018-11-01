@@ -1,8 +1,22 @@
-pings_avg_cycle_analytics:
-    constraints:
-        not_null:
-            - ping_id
-            - id
-        unique:
-            - ping_id
-            - id
+version: 2
+
+models:
+    - name: pings_avg_cycle_analytics
+      description: Ping data from self-hosted users.
+      columns:
+          - name: ping_id
+            tests:
+                - not_null
+                - unique
+          - name: id
+            tests:
+                - not_null
+                - unique
+
+    - name: ci_stats_profiling
+      description: CI Stats data from spec profiling reports.
+      columns:
+          - name: id
+            tests:
+                - not_null
+                - unique
