@@ -159,10 +159,10 @@
 
 .sfdc_extract_meltano: &sfdc_meltano_extract
   stage: extract
-  image:
-    name: registry.gitlab.com/meltano/meltano/runner:7934a6b2e10a5eb26cf58a785908de9209385562
-    entrypoint: [""]
   <<: *extract_definition
+  image:
+    name: registry.gitlab.com/meltano/meltano/runner:58cfc6349ba4b5769b79c3f218464eee65f253de
+    entrypoint: [""]
   variables:
     <<: *meltano_default_variables
     MELTANO_EXTRACTOR: tap-salesforce
@@ -175,7 +175,7 @@
     - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
     - echo "Connecting to $SF_USER@$SF_ACCOUNT/$SF_DATABASE/$SF_SCHEMA"
   script:
-    - pip list
+    - pip3 list
     - meltano install
     - meltano add extractor $MELTANO_EXTRACTOR
     - meltano add loader $MELTANO_LOADER
