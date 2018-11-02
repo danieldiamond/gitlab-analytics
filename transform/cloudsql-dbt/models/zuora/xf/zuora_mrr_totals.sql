@@ -35,6 +35,7 @@ WITH base_mrr AS (
       cohort_quarter,
       {{ month_diff('cohort_month ', 'trueup_month') }} as months_since_cohort_start,
       charge_name AS mrr_type,
+      null as quantity,
       mrr
     FROM trueup_mrr
 
@@ -50,6 +51,7 @@ WITH base_mrr AS (
       cohort_quarter,
       {{ month_diff('cohort_month ', 'mrr_month') }} as months_since_cohort_start,
       rate_plan_charge_name AS mrr_type,
+      quantity,
       mrr
     FROM base_mrr
 
