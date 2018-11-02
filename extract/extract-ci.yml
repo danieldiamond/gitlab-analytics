@@ -157,6 +157,30 @@
     - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc apply_schema"
     - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc export"
 
+.sfdc_extract_meltano: &sfdc_meltano_extract
+  stage: extract
+  image:
+    name: registry.gitlab.com/meltano/meltano/runner:7934a6b2e10a5eb26cf58a785908de9209385562
+    entrypoint: [""]
+  <<: *extract_definition
+  variables:
+    <<: *meltano_default_variables
+    MELTANO_EXTRACTOR: tap-salesforce
+    MELTANO_LOADER: target-snowflake
+    SFDC_START_DATE: "2018-10-01T00:00:00Z"
+    SFDC_PASSWORD: $SFDC_PASSWORD_NOTOKEN
+    SF_SCHEMA: SALESFORCE # must be in CAPS
+    SF_DATABASE: $CI_COMMIT_REF_NAME
+  script:
+    - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
+    - echo "Connecting to $SF_USER@$SF_ACCOUNT/$SF_DATABASE/$SF_SCHEMA"
+  script:
+    - pip list
+    - meltano install
+    - meltano add extractor $MELTANO_EXTRACTOR
+    - meltano add loader $MELTANO_LOADER
+    - ci_helpers.py use_proxy "meltano elt sfdc_snowflake --extractor $MELTANO_EXTRACTOR --loader $MELTANO_LOADER --transform skip"
+
 .domains_extract: &domains_extract
   stage: extract
   <<: *extract_definition
@@ -276,7 +300,7 @@ sfdc:
       - master
     variables:
       - $SFDC
-
+      
 sheetload:
   stage: extract
   <<: *sheetload
@@ -422,6 +446,14 @@ discover_gitlab_dbs_schema_manual:
 
 sfdc_manual:
   <<: *sfdc_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+sfdc_meltano_manual:
+  <<: *sfdc_meltano_extract
   only:
     - branches
   except:
