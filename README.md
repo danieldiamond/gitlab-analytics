@@ -83,6 +83,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
   * Livestream chat with Sid and HN user slap_shot - https://www.youtube.com/watch?v=F8tEDq3K_pE
   * Follow-up blog post to original Meltano post - https://about.gitlab.com/2018/08/07/meltano-follow-up/
 
+* [DevOps for AI](https://www.youtube.com/watch?v=HwZlGQuCTj4)
 
 
 
