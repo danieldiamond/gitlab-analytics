@@ -25,11 +25,19 @@
     - meltano install
     - ci_helpers.py use_proxy "meltano elt $MELTANO_JOB_ID --extractor $MELTANO_EXTRACTOR --loader $MELTANO_LOADER --transform skip"
 
-.marketo_extract: &marketo_extract
-  stage: extract
-  <<: *extract_definition
-  script:
-    - ci_helpers.py use_proxy "bash extract/mkto/mkto_processor.sh"
+.marketo_extract_meltano: &marketo_extract_meltano
+  <<: *meltano_extract_job
+  variables:
+    <<: *meltano_default_variables
+    MELTANO_EXTRACTOR: tap-marketo
+    MELTANO_LOADER: target-snowflake
+    MARKETO_START_TIME: "2018-10-01T00:00:00Z"
+    MARKETO_CLIENT_ID: $MKTO_CLIENT_ID
+    MARKETO_CLIENT_SECRET: $MKTO_CLIENT_SECRET
+    MARKETO_CLIENT_ENDPOINT: "$MKTO_ENDPOINT/rest"
+    MARKETO_CLIENT_IDENTITY: "$MKTO_ENDPOINT/identity"
+    SF_DATABASE: $CI_COMMIT_REF_NAME
+    SF_SCHEMA: MARKETO # must be in CAPS
 
 .zendesk_meltano_extract: &zendesk_meltano_extract
   stage: extract
@@ -294,7 +302,7 @@ gitlab_profiler:
       - $GITLAB_PROFILER
 
 marketo:
-  <<: *marketo_extract
+  <<: *marketo_extract_meltano
   only:
     refs:
       - master
@@ -416,7 +424,7 @@ gitlab_manual:
   when: manual
 
 marketo_manual:
-  <<: *marketo_extract
+  <<: *marketo_extract_meltano
   only:
     - branches
   except:
