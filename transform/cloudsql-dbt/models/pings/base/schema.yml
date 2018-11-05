@@ -20,3 +20,14 @@ models:
             tests:
                 - not_null
                 - unique
+
+    - name: pings_version_checks
+      description: Ping version data from self-managed instances
+      columns:
+          - name: id
+            tests:
+                - not_null
+                - unique
+          - name: host_id
+            tests:
+                - not_null
