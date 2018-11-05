@@ -172,14 +172,13 @@
     SF_SCHEMA: SALESFORCE # must be in CAPS
     SF_DATABASE: $CI_COMMIT_REF_NAME
   script:
+    - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
     - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
     - echo "Connecting to $SF_USER@$SF_ACCOUNT/$SF_DATABASE/$SF_SCHEMA"
-  script:
-    - pip3 list
     - meltano install
     - meltano add extractor $MELTANO_EXTRACTOR
     - meltano add loader $MELTANO_LOADER
-    - ci_helpers.py use_proxy "meltano elt sfdc_snowflake --extractor $MELTANO_EXTRACTOR --loader $MELTANO_LOADER --transform skip"
+    - ci_helpers.py use_proxy "meltano elt $MELTANO_JOB_ID --extractor $MELTANO_EXTRACTOR --loader $MELTANO_LOADER --transform skip"
 
 .domains_extract: &domains_extract
   stage: extract
