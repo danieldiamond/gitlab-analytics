@@ -1,7 +1,7 @@
 with mrr_totals_levelled as ( 
 
 	SELECT *
-	FROM {{ref('zuora_mrr_totals_levelled')}}
+	FROM {{ref('mrr_totals_levelled')}}
 	WHERE ultimate_parent_account_id IS NOT NULL
 
 ), grouped as (

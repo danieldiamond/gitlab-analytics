@@ -46,7 +46,7 @@ SELECT *,
       {{ quarters_diff('zuora_account_cohort_month', 'mrr_month') }} as quarters_since_zuora_account_cohort_start,
       {{ month_diff('sfdc_account_cohort_month', 'mrr_month') }} as months_since_sfdc_account_cohort_start,
       {{ quarters_diff('sfdc_account_cohort_month', 'mrr_month') }} as quarters_since_sfdc_account_cohort_start,
-      {{ month_diff('parent_account_cohort_month', 'mrr_month') }} as months_since_parent_cohort_start,
-      {{ quarters_diff('parent_account_cohort_month', 'mrr_month') }} as quarters_since_parent_cohort_start
+      {{ month_diff('parent_account_cohort_month', 'mrr_month') }} as months_since_parent_account_cohort_start,
+      {{ quarters_diff('parent_account_cohort_month', 'mrr_month') }} as quarters_since_parent_account_cohort_start
 
 FROM joined
