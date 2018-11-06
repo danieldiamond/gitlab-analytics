@@ -1,9 +1,14 @@
 version: 2 
 
 models:
-  - name: zuora_mrr_totals_levelled
+  - name: mrr_totals_levelled
     description: '{{ doc("mrr_totals_levelled") }}'
     columns:
+        - name: sub_rpc_mrr_id
+          description: "The Primary Key for this table"
+          tests:
+              - not_null
+              - unique
         - name: account_number
           description: '{{ doc("zuora_mrr_totals_col_account_number") }}'
         - name: subscription_name_slugify

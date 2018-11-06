@@ -12,8 +12,8 @@ with mrr_totals_levelled as (
 	       parent_account_cohort_month,
 	       parent_account_cohort_quarter,
 	       mrr_month,
-	       months_since_parent_cohort_start,
-	       quarters_since_parent_cohort_start,
+	       months_since_parent_account_cohort_start,
+	       quarters_since_parent_account_cohort_start,
 	       sum(mrr) as mrr
 	FROM mrr_totals_levelled
 	GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
