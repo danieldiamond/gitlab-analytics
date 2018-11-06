@@ -34,7 +34,7 @@ WITH zuora_accts AS (
 
 )
 
-SELECT
+SELECT md5(zuora_rpc.rate_plan_charge_id||zuora_subs.subscription_id) as unique_key,
       zuora_accts.account_number,
       zuora_subs.subscription_name,
       zuora_subs.subscription_name_slugify,

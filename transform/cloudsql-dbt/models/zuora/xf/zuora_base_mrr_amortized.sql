@@ -10,7 +10,8 @@ WITH zuora_mrr AS (
 
 ), amortized_mrr AS (
 
-    SELECT account_number,
+    SELECT unique_key,
+           account_number,
            subscription_name,
            subscription_name_slugify,
            subscription_slug_for_counting,
