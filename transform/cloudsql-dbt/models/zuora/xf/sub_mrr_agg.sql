@@ -1,7 +1,7 @@
 with mrr_totals as (
 
 	SELECT *
-	FROM {{ref('zuora_mrr_totals_levelled')}}
+	FROM {{ref('mrr_totals_levelled')}}
 )
 
 SELECT mrr_month,

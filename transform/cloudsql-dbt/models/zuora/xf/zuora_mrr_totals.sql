@@ -26,14 +26,15 @@ WITH base_mrr AS (
     mrr_combined AS (
 
     SELECT
+      unique_key as sub_rpc_id,
       account_number,
       subscription_name_slugify,
       subscription_name,
       subscription_slug_for_counting,
       trueup_month AS mrr_month,
-      cohort_month,
-      cohort_quarter,
-      {{ month_diff('cohort_month ', 'trueup_month') }} as months_since_cohort_start,
+      cohort_month AS zuora_subscription_cohort_month,
+      cohort_quarter AS zuora_subscription_cohort_quarter,
+      {{ month_diff('cohort_month ', 'trueup_month') }} as months_since_zuora_subscription_cohort_start,
       charge_name AS mrr_type,
       null as quantity,
       mrr
@@ -42,14 +43,15 @@ WITH base_mrr AS (
     UNION ALL
 
     SELECT
+      unique_key as sub_rpc_id,
       account_number,
       subscription_name_slugify,
       subscription_name,
       subscription_slug_for_counting,
       mrr_month,
-      cohort_month,
-      cohort_quarter,
-      {{ month_diff('cohort_month ', 'mrr_month') }} as months_since_cohort_start,
+      cohort_month AS zuora_subscription_cohort_month,
+      cohort_quarter AS zuora_subscription_cohort_quarter,
+      {{ month_diff('cohort_month ', 'mrr_month') }} as months_since_zuora_subscription_cohort_start,
       rate_plan_charge_name AS mrr_type,
       quantity,
       mrr
@@ -60,6 +62,6 @@ WITH base_mrr AS (
 SELECT *, 
         CASE WHEN mrr_type != 'Trueup' THEN (lag(mrr, 12) over (partition by subscription_slug_for_counting
          order by mrr_month)) ELSE NULL END as mrr_12mo_ago,
-        {{ quarters_diff('cohort_quarter', 'mrr_month') }} as quarters_since_cohort_start
+        {{ quarters_diff('zuora_subscription_cohort_quarter', 'mrr_month') }} as quarters_since_zuora_subscription_cohort_start
 
 FROM mrr_combined
