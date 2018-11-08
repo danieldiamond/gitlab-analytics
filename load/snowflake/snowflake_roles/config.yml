@@ -200,6 +200,14 @@ iroussos:
         schemas:
             - iroussos_scratch
 
+target_snowflake:
+    type: user
+    can_login: yes
+    member_of:
+        - loader
+    owns:
+        schemas:
+            - target_snowflake
 
 tlapiana:
     type: user
