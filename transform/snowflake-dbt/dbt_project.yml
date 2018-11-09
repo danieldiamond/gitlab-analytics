@@ -56,3 +56,12 @@ models:
         page_views:
           optional:
             enabled: false
+
+    gitlab_snowflake:
+      gitter:
+        base:
+          enabled: true
+          materialized: view
+        transformed:
+          enabled: true
+          materialized: table
