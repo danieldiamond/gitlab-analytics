@@ -55,4 +55,3 @@ models:
       xf:
         enabled: true
         materialized: table
-
