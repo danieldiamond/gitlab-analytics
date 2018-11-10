@@ -43,8 +43,6 @@ account:
   customer_since__c: date
   dscorgpkg__fortune_rank__c: character varying
   dscorgpkg__it_employees__c: real
-  data_quality_description__c: character varying
-  data_quality_score__c: real
   days_outstanding__c: real
   dedicated_service_engineer__c: character varying
   description: character varying
@@ -224,11 +222,6 @@ account:
   zuora__sla__c: character varying
   zuora__upsellopportunity__c: character varying
   billingd__c: character varying
-  infer__infer_band__c: character varying
-  infer__infer_hash__c: character varying
-  infer__infer_last_modified__c: timestamp without time zone
-  infer__infer_rating__c: character varying
-  infer__infer_score__c: real
   of_carr__c: real
   of_licenses__c: real
 campaign:
@@ -240,8 +233,6 @@ campaign:
   campaign_id_mapping_key: id
   createdbyid: character varying
   createddate: timestamp without time zone
-  data_quality_description__c: character varying
-  data_quality_score__c: real
   description: character varying
   enddate: date
   expectedresponse: real
@@ -330,8 +321,6 @@ contact:
   contact_status__c: character varying
   createdbyid: character varying
   createddate: timestamp without time zone
-  data_quality_description__c: character varying
-  data_quality_score__c: real
   department: character varying
   digital_ocean_promo_code__c: character varying
   donotcall: boolean
@@ -397,11 +386,6 @@ contact:
   web_form__c: character varying
   x30_day_opt_out__c: boolean
   zendesk__create_in_zendesk__c: boolean
-  infer__infer_band__c: character varying
-  infer__infer_hash__c: character varying
-  infer__infer_last_modified__c: timestamp without time zone
-  infer__infer_rating__c: character varying
-  infer__infer_score__c: real
   mkto71_acquisition_date__c: timestamp without time zone
   mkto71_acquisition_program_id__c: real
   mkto71_acquisition_program__c: character varying
@@ -475,8 +459,6 @@ lead:
   countrycode: character varying
   createdbyid: character varying
   createddate: timestamp without time zone
-  data_quality_description__c: character varying
-  data_quality_score__c: real
   donotcall: boolean
   ee_trial_end_date__c: date
   ee_trial_start_date__c: date
@@ -609,16 +591,6 @@ lead:
   x30_day_opt_out__c: boolean
   zendesk__create_in_zendesk__c: boolean
   if_svn_why_looking_to_move_to_git__c: character varying
-  infer__infer_band__c: character varying
-  infer__infer_converted_to_opp__c: boolean
-  infer__infer_created_month__c: character varying
-  infer__infer_good_lead__c: boolean
-  infer__infer_hash__c: character varying
-  infer__infer_is_open__c: boolean
-  infer__infer_last_modified__c: timestamp without time zone
-  infer__infer_lead_age__c: real
-  infer__infer_rating__c: character varying
-  infer__infer_score__c: real
   mkto2__inferred_city__c: character varying
   mkto2__inferred_company__c: character varying
   mkto2__inferred_country__c: character varying
@@ -709,8 +681,6 @@ opportunity:
   createdbyid: character varying
   createddate: timestamp without time zone
   currently_using_ce__c: boolean
-  data_quality_description__c: character varying
-  data_quality_score__c: real
   days_in_0_pending_acceptance__c: real
   days_in_1_discovery__c: real
   days_in_2_scoping__c: real
@@ -745,8 +715,6 @@ opportunity:
   fiscalyear: bigint
   forecastcategory: character varying
   forecastcategoryname: character varying
-  full_circle_count__c: boolean
-  full_circle_velocity__c: real
   funding__c: character varying
   hasopenactivity: boolean
   hasopportunitylineitem: boolean
@@ -766,12 +734,6 @@ opportunity:
   incremental_amount_2__c: real
   incremental_amount__c: real
   incremental_arr__c: real
-  infer__infer_band__c: character varying
-  infer__infer_hash__c: character varying
-  infer__infer_last_modified__c: timestamp without time zone
-  infer__infer_rating__c: character varying
-  infer__infer_score__c: real
-  infer__infer_won_amount__c: real
   initial_iacv__c: real
   initial_term__c: real
   interested_in_gitlab_ee__c: character varying
@@ -1106,6 +1068,27 @@ recordtype:
   recordtype_id_mapping_key: id
   sobjecttype: character varying
   systemmodstamp: timestamp without time zone
+statement_of_work__c:
+  collaboration_project__c: character varying
+  completed_date__c: timestamp without time zone
+  createdbyid: character varying
+  createddate: timestamp without time zone
+  general_notes__c: character varying
+  go_live_date__c: timestamp without time zone
+  id: character varying
+  kick_off_date__c: timestamp without time zone
+  lastmodifiedbyid: character varying
+  lastmodifieddate: timestamp without time zone
+  name: character varying
+  opportunity__c: character varying
+  owner__c: character varying
+  percentcomplete__c: real
+  professional_services_package__c: character varying
+  signed_acceptance_from_customer__c: boolean
+  sow_link__c: character varying
+  statement_of_work__c_id_mapping_key: id
+  status__c: character varying
+  success_criteria__c: character varying
 user:
   aboutme: character varying
   accountid: character varying

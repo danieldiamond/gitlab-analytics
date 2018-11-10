@@ -26,6 +26,13 @@ sfdc_proof_of_concept_xf:
         unique:
             - poc_id
 
+sfdc_statement_of_work_xf:
+    constraints:
+        not_null:
+            - statement_of_work_id
+        unique:
+            - statement_of_work_id
+
 users:
     constraints:
         unique:

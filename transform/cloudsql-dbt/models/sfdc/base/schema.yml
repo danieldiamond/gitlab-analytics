@@ -194,6 +194,15 @@ sfdc_proof_of_concept:
         unique:
             - poc_id
 
+sfdc_statement_of_work:
+    constraints:
+        not_null:
+            - opportunity_id
+            - owner_id
+            - statement_of_work_id
+        unique:
+            - statement_of_work_id
+
 sfdc_user_roles:
     constraints:
         not_null:
