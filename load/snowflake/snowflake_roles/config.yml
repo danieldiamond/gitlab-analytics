@@ -6,6 +6,9 @@ raw:
 analytics:
     type: database
 
+snowflake:
+    type: database
+
 
 # Roles
 
@@ -116,12 +119,15 @@ reporter:
         databases:
             read:
                 - analytics
+                - snowflake
         schemas:
             read:
                 - analytics.*
+                - snowflake.account_usage
         tables:
             read:
                 - analytics.*.*
+                - snowflake.account_usage.*
 
 transformer:
     type: role
