@@ -8,7 +8,7 @@
 
 WITH active_instances AS (
     SELECT
-      host_id,
+      host_id::text,
       gitlab_version AS version,
       created_at,
       'version_ping' AS ping_type
@@ -19,7 +19,7 @@ WITH active_instances AS (
 
     UNION
     SELECT
-      host_id,
+      coalesce(host_id::text, uuid) as host_id,
       version,
       created_at,
       'usage_ping' AS ping_type

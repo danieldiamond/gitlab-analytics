@@ -5,9 +5,5 @@ models:
       description: instaces checked for new version or send a usage ping
       columns:
           - name: host_id
-            tests:
-                - not_null
           - name: ping_type
             description: an instance checked for new version or send a usage ping
-            tests:
-                - not_null
