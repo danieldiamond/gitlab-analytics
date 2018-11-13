@@ -16,7 +16,7 @@
   stage: extract
   <<: *extract_definition
   image:
-    name: registry.gitlab.com/meltano/meltano/runner
+    name: registry.gitlab.com/meltano/meltano/runner:bc2ead1146c017a4ad12c88d65f19dd968a23d8b
     entrypoint: [""]
   script:
     - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
@@ -34,8 +34,8 @@
     MARKETO_START_TIME: "2018-10-01T00:00:00Z"
     MARKETO_CLIENT_ID: $MKTO_CLIENT_ID
     MARKETO_CLIENT_SECRET: $MKTO_CLIENT_SECRET
-    MARKETO_CLIENT_ENDPOINT: "$MKTO_ENDPOINT/rest"
-    MARKETO_CLIENT_IDENTITY: "$MKTO_ENDPOINT/identity"
+    MARKETO_ENDPOINT: "$MKTO_ENDPOINT/rest"
+    MARKETO_IDENTITY: "$MKTO_ENDPOINT/identity"
     SF_DATABASE: $CI_COMMIT_REF_NAME
     SF_SCHEMA: MARKETO # must be in CAPS
 
