@@ -181,6 +181,12 @@ gitlab-ci:
         - sysadmin
         - transformer
 
+jurbanc:
+    type: user
+    can_login: yes
+    member_of:
+        - securityadmin
+
 looker:
     type: user
     can_login: yes
