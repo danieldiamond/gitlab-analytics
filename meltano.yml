@@ -1,0 +1,29 @@
+extractors:
+- config:
+    api_token: $ZENDESK_API_TOKEN
+    email: $ZENDESK_EMAIL
+    start_date: $ZENDESK_START_DATE
+    subdomain: $ZENDESK_SUBDOMAIN
+  name: tap-zendesk
+  pip_url: tap-zendesk
+- config:
+    api_type: BULK
+    client_id: $SFDC_CLIENT_ID
+    password: $SFDC_PASSWORD
+    security_token: $SFDC_SECURITY_TOKEN
+    select_fields_by_default: true
+    start_date: $SFDC_START_DATE
+    username: $SFDC_USERNAME
+  name: tap-salesforce
+  pip_url: git+https://github.com/meltano/tap-salesforce.git@add-password-auth
+loaders:
+- config:
+    account: $SF_ACCOUNT
+    database: $SF_DATABASE
+    password: $SF_PASSWORD
+    role: $SF_ROLE
+    schema: $SF_SCHEMA
+    username: $SF_USER
+    warehouse: $SF_WAREHOUSE
+  name: target-snowflake
+  pip_url: git+https://gitlab.com/meltano/target-snowflake.git
