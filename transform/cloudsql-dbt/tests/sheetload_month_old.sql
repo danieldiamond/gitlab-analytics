@@ -4,7 +4,7 @@ with base as (
   UNION ALL
   SELECT max(to_timestamp(updated_at)::date), 'headcount' FROM historical.headcount
   UNION ALL
-  SELECT max(to_timestamp(updated_at)::date), 'metrics' FROM historical.metrics
+  SELECT max(to_timestamp(updated_at)::date), 'metrics' FROM historical.metrics 
   UNION ALL
   SELECT max(to_timestamp(updated_at)::date), 'regional_quotas' FROM historical.transposed
   UNION ALL
