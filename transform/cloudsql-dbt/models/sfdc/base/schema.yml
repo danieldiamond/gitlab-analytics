@@ -198,7 +198,6 @@ sfdc_statement_of_work:
     constraints:
         not_null:
             - opportunity_id
-            - owner_id
             - statement_of_work_id
         unique:
             - statement_of_work_id
