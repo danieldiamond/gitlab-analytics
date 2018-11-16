@@ -193,6 +193,13 @@ roles:
             schemas:
                 - analytics.iroussos_scratch
 
+    - jurbanc:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.jurbanc_scratch
+        
     - target_snowflake:
         warehouses:
             - reporting
@@ -265,7 +272,8 @@ users:
         member_of:
             - securityadmin
             - sysadmin
-    
+            - jurbanc
+
     - target_snowflake:
         can_login: yes
         member_of:
