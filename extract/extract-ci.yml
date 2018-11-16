@@ -157,7 +157,7 @@
     - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc apply_schema"
     - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc export"
 
-.sfdc_extract_meltano: &sfdc_meltano_extract
+.sfdc_extract_meltano: &sfdc_extract_meltano
   stage: extract
   <<: *extract_definition
   image:
@@ -251,6 +251,14 @@ gitlab:
     variables:
       - $GITLAB
 
+gitlab_profiler:
+  <<: *gitlab_profiler_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $GITLAB_PROFILER
+
 lever:
   <<: *lever_extract
   only:
@@ -284,14 +292,6 @@ pings:
     variables:
       - $PINGS
 
-gitlab_profiler:
-  <<: *gitlab_profiler_extract
-  only:
-    refs:
-      - master
-    variables:
-      - $GITLAB_PROFILER
-
 sfdc:
   <<: *sfdc_extract
   only:
@@ -299,7 +299,15 @@ sfdc:
       - master
     variables:
       - $SFDC
-      
+
+sfdc_snowflake:
+  <<: *sfdc_extract_meltano
+  only:
+    refs:
+      - master
+    variables:
+      - $SFDC_MELTANO
+
 sheetload:
   stage: extract
   <<: *sheetload
@@ -451,8 +459,8 @@ sfdc_manual:
     - master
   when: manual
 
-sfdc_meltano_manual:
-  <<: *sfdc_meltano_extract
+sfdc_snowflake_manual:
+  <<: *sfdc_extract_meltano
   only:
     - branches
   except:
