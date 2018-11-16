@@ -591,11 +591,6 @@ lead:
   x30_day_opt_out__c: boolean
   zendesk__create_in_zendesk__c: boolean
   if_svn_why_looking_to_move_to_git__c: character varying
-  mkto2__inferred_city__c: character varying
-  mkto2__inferred_company__c: character varying
-  mkto2__inferred_country__c: character varying
-  mkto2__inferred_state_region__c: character varying
-  mkto2__lead_score__c: real
   mkto71_acquisition_date__c: timestamp without time zone
   mkto71_acquisition_program_id__c: real
   mkto71_acquisition_program__c: character varying
