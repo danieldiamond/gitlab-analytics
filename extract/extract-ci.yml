@@ -17,7 +17,7 @@
   script:
     - ci_helpers.py use_proxy "bash extract/mkto/mkto_processor.sh"
 
-.zendesk_extract: &zendesk_extract
+.zendesk_meltano_extract: &zendesk_meltano_extract
   stage: extract
   <<: *extract_definition
   image:
@@ -333,13 +333,13 @@ stripe_githost:
     variables:
       - $STRIPE_GITHOST
 
-zendesk:
-  <<: *zendesk_extract
+zendesk_snowflake:
+  <<: *zendesk_meltano_extract
   only:
     refs:
       - master
     variables:
-      - $ZENDESK
+      - $ZENDESK_MELTANO
 
 zuora:
   <<: *zuora_extract
@@ -352,7 +352,6 @@ zuora:
 ## Review Jobs
 
 ci_stats_manual:
-  stage: extract
   <<: *ci_stats
   only:
     - branches
@@ -488,8 +487,8 @@ stripe_extract_githost_manual:
     - master
   when: manual
 
-zendesk_manual:
-  <<: *zendesk_extract
+zendesk_snowflake_manual:
+  <<: *zendesk_meltano_extract
   only:
     - branches
   except:
