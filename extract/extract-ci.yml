@@ -36,15 +36,6 @@
     - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
     - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME $MELTANO_EXTRACTOR --loader_name=$MELTANO_LOADER"
 
-.lever_extract: &lever_extract
-  stage: extract
-  <<: *extract_definition
-  script:
-    - check_ci_cd_vars.py --file extract/lever/src/config/required_ci_cd_vars.yaml
-    - ci_helpers.py use_proxy "python3 extract/lever/src --schema lever apply_schema"
-    - ci_helpers.py use_proxy "python3 extract/lever/src --schema lever --days=7 export"
-    - ci_helpers.py use_proxy "python3 extract/lever/src --schema lever --days=365 --only_offers export"
-
 .ci_stats: &ci_stats
   stage: extract
   <<: *extract_definition
@@ -259,14 +250,6 @@ gitlab_profiler:
     variables:
       - $GITLAB_PROFILER
 
-lever:
-  <<: *lever_extract
-  only:
-    refs:
-      - master
-    variables:
-      - $LEVER
-
 marketo:
   <<: *marketo_extract
   only:
@@ -369,14 +352,6 @@ domains_manual:
 
 gitlab_manual:
   <<: *gitlab_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-lever_manual:
-  <<: *lever_extract
   only:
     - branches
   except:
