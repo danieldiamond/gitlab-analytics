@@ -704,6 +704,8 @@ opportunity:
   exclude_won_loss_analysis_is__c: boolean
   expected_amount__c: real
   expected_close_date__c: date
+  expected_number_of_users__c: real
+  expected_product__c: character varying
   first_12_months__c: boolean
   fiscal: character varying
   fiscalquarter: bigint

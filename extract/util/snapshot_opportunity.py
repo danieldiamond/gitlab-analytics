@@ -324,7 +324,9 @@ try:
               "o.upside_swing_deal_iacv__c," + \
               "o.merged_opportunity__c, " + \
               "o.sales_segmentation_employees_o__c, " + \
-              "o.ultimate_parent_sales_segment_emp_o__c " + \
+              "o.ultimate_parent_sales_segment_emp_o__c, " + \
+              "o.expected_number_of_users__c, " + \
+              "o.expected_product__c " + \
               "FROM sfdc.opportunity o WHERE isdeleted=FALSE"
         cursor.execute(sql)
         conn.commit()
