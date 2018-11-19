@@ -1,6 +1,6 @@
 [![pipeline status](https://gitlab.com/meltano/analytics/badges/master/pipeline.svg)](https://gitlab.com/meltano/analytics/commits/master)
 
-# Quick Links
+## Quick Links
 * Meltano Repo - https://gitlab.com/meltano/meltano/
 * Looker Instance - https://gitlab.looker.com
 * Looker Repo - https://gitlab.com/meltano/looker/
@@ -67,24 +67,29 @@ Like the rest of the company, we set quarterly objectives and key results. These
 
 * [dbt docs intro with Drew Banin from Fishtown Analytics](https://www.youtube.com/watch?v=bqIBNvA9xjo)
 
-* [Keep it SQL Stupid, a talk by Connor McArthur of Fishtown Analytics at DataEngConf SF '18 explaining dbt](https://www.youtube.com/watch?v=9VNh11qSfAo)
-
 * [Looker Customer Success team shares how the Looker at Looker](https://drive.google.com/file/d/1w__Jqh9UKliPdQNNcd3KpQfp93Q1SuJb/view?usp=sharing)
-
-* [Views on Vue Podcast with Jacob Schatz and Taylor Murphy](https://devchat.tv/views-on-vue/vov-030-how-we-use-vue-in-data-science-with-jacob-schatz-taylor-murphy-gitlab-team/)
 
 * Taylor's talk at the 2018 Nashville Analytics Summit - Coming Soon
 
-* Emilie's talk on Digital Analytics - Coming Soon
-
-* [Pain Points by the Airflow Podcast with @tlapiana](https://soundcloud.com/the-airflow-podcast/pain-points)
+* Thomas's talk at the 2018 DataEngConf in NYC - Coming Soon
 
 * GitLab blog post about Meltano - https://news.ycombinator.com/item?id=17667399
   * Livestream chat with Sid and HN user slap_shot - https://www.youtube.com/watch?v=F8tEDq3K_pE
   * Follow-up blog post to original Meltano post - https://about.gitlab.com/2018/08/07/meltano-follow-up/
 
-* [DevOps for AI](https://www.youtube.com/watch?v=HwZlGQuCTj4)
+## Recommended Reading, Listening, Watching
 
+* [The AI Hierarchy of Needs](https://hackernoon.com/the-ai-hierarchy-of-needs-18f111fcc007)
+* [Data Meta Metrics](https://caitlinhudon.com/2017/11/14/data-meta-metrics/)
+* [Engineers Shouldn’t Write ETL](https://multithreaded.stitchfix.com/blog/2016/03/16/engineers-shouldnt-write-etl/)
+* [The Startup Founder’s Guide to Analytics](https://thinkgrowth.org/the-startup-founders-guide-to-analytics-1d2176f20ac1)
+* [Functional Data Engineering — a modern paradigm for batch data processing](https://medium.com/@maximebeauchemin/functional-data-engineering-a-modern-paradigm-for-batch-data-processing-2327ec32c42a)
+* [Keep it SQL Stupid, a talk by Connor McArthur of Fishtown Analytics at DataEngConf SF '18 explaining dbt](https://www.youtube.com/watch?v=9VNh11qSfAo)
+* [Views on Vue Podcast with Jacob Schatz and Taylor Murphy](https://devchat.tv/views-on-vue/vov-030-how-we-use-vue-in-data-science-with-jacob-schatz-taylor-murphy-gitlab-team/)
+* [Pain Points by the Airflow Podcast with @tlapiana](https://soundcloud.com/the-airflow-podcast/pain-points)
+* [DevOps for AI](https://www.youtube.com/watch?v=HwZlGQuCTj4)
+* [What Can Data Scientists Learn from DveOps](https://redmonk.com/dberkholz/2012/11/06/what-can-data-scientists-learn-from-devops/)
+* [One Analyst's Guide for Going from Good to Great](https://blog.fishtownanalytics.com/one-analysts-guide-for-going-from-good-to-great-6697e67e37d9)
 
 
 ## Data sources
