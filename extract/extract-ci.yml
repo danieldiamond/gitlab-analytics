@@ -10,6 +10,9 @@
   TAP_OUTPUT: $SINGER_RUN_DIR/tap.out
   TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target.rejected
   MELTANO_JOB_ID: $CI_JOB_NAME
+  SF_DATABASE: $CI_COMMIT_REF_NAME
+  SF_ROLE: LOADER
+  SF_WAREHOUSE: LOADING
 
 .marketo_extract: &marketo_extract
   stage: extract
@@ -25,11 +28,10 @@
     entrypoint: [""]
   variables:
     <<: *meltano_default_variables
-    ZENDESK_START_DATE: "2018-10-01T00:00:00Z"
-    SF_SCHEMA: TAP_ZENDESK # must be in CAPS
-    SF_DATABASE: $CI_COMMIT_REF_NAME
     MELTANO_EXTRACTOR: tap-zendesk
     MELTANO_LOADER: target-snowflake
+    ZENDESK_START_DATE: "2018-10-01T00:00:00Z"
+    SF_SCHEMA: TAP_ZENDESK # must be in CAPS
   script:
     - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
     - echo "Connecting to $SF_USER@$SF_ACCOUNT/$SF_DATABASE/$SF_SCHEMA"
@@ -161,14 +163,11 @@
     SFDC_START_DATE: "2018-10-01T00:00:00Z"
     SFDC_PASSWORD: $SFDC_PASSWORD_NOTOKEN
     SF_SCHEMA: SALESFORCE # must be in CAPS
-    SF_DATABASE: $CI_COMMIT_REF_NAME
   script:
     - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
     - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
     - echo "Connecting to $SF_USER@$SF_ACCOUNT/$SF_DATABASE/$SF_SCHEMA"
     - meltano install
-    - meltano add extractor $MELTANO_EXTRACTOR
-    - meltano add loader $MELTANO_LOADER
     - ci_helpers.py use_proxy "meltano elt $MELTANO_JOB_ID --extractor $MELTANO_EXTRACTOR --loader $MELTANO_LOADER --transform skip"
 
 .domains_extract: &domains_extract
