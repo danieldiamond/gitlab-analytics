@@ -77,7 +77,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
   * Livestream chat with Sid and HN user slap_shot - https://www.youtube.com/watch?v=F8tEDq3K_pE
   * Follow-up blog post to original Meltano post - https://about.gitlab.com/2018/08/07/meltano-follow-up/
 
-## Recommended Reading, Listening, and/or Watching
+## Recommended Reading, Listening, Watching
 
 * [The AI Hierarchy of Needs](https://hackernoon.com/the-ai-hierarchy-of-needs-18f111fcc007)
 * [Data Meta Metrics](https://caitlinhudon.com/2017/11/14/data-meta-metrics/)
@@ -88,6 +88,8 @@ Like the rest of the company, we set quarterly objectives and key results. These
 * [Views on Vue Podcast with Jacob Schatz and Taylor Murphy](https://devchat.tv/views-on-vue/vov-030-how-we-use-vue-in-data-science-with-jacob-schatz-taylor-murphy-gitlab-team/)
 * [Pain Points by the Airflow Podcast with @tlapiana](https://soundcloud.com/the-airflow-podcast/pain-points)
 * [DevOps for AI](https://www.youtube.com/watch?v=HwZlGQuCTj4)
+* [What Can Data Scientists Learn from DveOps](https://redmonk.com/dberkholz/2012/11/06/what-can-data-scientists-learn-from-devops/)
+* [One Analyst's Guide for Going from Good to Great](https://blog.fishtownanalytics.com/one-analysts-guide-for-going-from-good-to-great-6697e67e37d9)
 
 
 ## Data sources
