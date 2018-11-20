@@ -1,7 +1,7 @@
 with zuora_base_mrr_amortized as (
      SELECT * FROM {{ref('zuora_base_mrr_amortized')}}
 ), zuora_base_trueups as (
-    SELECT * FROM {{ref('zuora_base_trueups')
+    SELECT * FROM {{ref('zuora_base_trueups')}}
 ), zuora_mrr_totals as (
     SELECT * FROM {{ref('zuora_mrr_totals')}}
 ), mrr_totals_levelled as (
