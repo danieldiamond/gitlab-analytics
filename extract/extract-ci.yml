@@ -29,7 +29,7 @@
 # =======
 # Marketo
 # =======
-.variables: &marketo_extract__variables
+.variables: &marketo_extract_meltano__variables
   <<: *meltano_extract_job__variables
   MELTANO_EXTRACTOR: tap-marketo
   MELTANO_LOADER: target-snowflake
@@ -41,9 +41,15 @@
   SF_DATABASE: $CI_COMMIT_REF_NAME
   SF_SCHEMA: MARKETO # must be in CAPS
 
-.marketo_extract: &marketo_extract
+.marketo_extract_meltano: &marketo_extract_meltano
   <<: *meltano_extract_job
-  variables: *marketo_extract__variables
+  variables: *marketo_extract_meltano__variables
+
+.marketo_extract: &marketo_extract
+  stage: extract
+  <<: *extract_definition
+  script:
+    - ci_helpers.py use_proxy "bash extract/mkto/mkto_processor.sh"
 
 .zendesk_meltano_extract: &zendesk_meltano_extract
   stage: extract
@@ -309,8 +315,16 @@ gitlab_profiler:
 
 marketo:
   <<: *marketo_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $MARKETO
+
+marketo_snowflake:
+  <<: *marketo_extract_meltano
   variables:
-    <<: *marketo_extract__variables
+    <<: *marketo_extract_meltano__variables
     SF_DATABASE: RAW
   only:
     refs:
@@ -434,6 +448,14 @@ gitlab_manual:
 
 marketo_manual:
   <<: *marketo_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+marketo_snowflake_manual:
+  <<: *marketo_extract_meltano
   only:
     - branches
   except:
