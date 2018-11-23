@@ -5,7 +5,7 @@
   tags:
     - analytics
 
-.meltano_config: &meltano_default_variables
+.variables: &meltano_extract__variables
   SINGER_RUN_DIR: /run/singer
   TAP_OUTPUT: $SINGER_RUN_DIR/tap.out
   TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target.rejected
@@ -27,7 +27,7 @@
     name: registry.gitlab.com/meltano/meltano/singer_runner:0.0.1
     entrypoint: [""]
   variables:
-    <<: *meltano_default_variables
+    <<: *meltano_extract__variables
     MELTANO_EXTRACTOR: tap-zendesk
     MELTANO_LOADER: target-snowflake
     ZENDESK_START_DATE: "2018-10-01T00:00:00Z"
@@ -68,7 +68,6 @@
   script:
     - check_ci_cd_vars.py --file extract/netsuite/src/config/required_ci_cd_vars.yaml
     - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite backlog --backfill-entity currency_rate --days 1460"
-
 
 .pings_extract: &pings_extract
   stage: extract
@@ -150,19 +149,25 @@
     - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc apply_schema"
     - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc export"
 
+# ==========
+# Salesforce
+# ==========
+.variables: &sfdc_extract_meltano__variables
+  <<: *meltano_extract__variables
+  MELTANO_EXTRACTOR: tap-salesforce
+  MELTANO_LOADER: target-snowflake
+  SFDC_START_DATE: "2018-10-01T00:00:00Z"
+  SFDC_PASSWORD: $SFDC_PASSWORD_NOTOKEN
+  SF_SCHEMA: SALESFORCE # must be in CAPS
+  SF_DATABASE: $CI_COMMIT_REF_NAME
+
 .sfdc_extract_meltano: &sfdc_extract_meltano
   stage: extract
   <<: *extract_definition
+  variables: *sfdc_extract_meltano__variables
   image:
     name: registry.gitlab.com/meltano/meltano/runner:58cfc6349ba4b5769b79c3f218464eee65f253de
     entrypoint: [""]
-  variables:
-    <<: *meltano_default_variables
-    MELTANO_EXTRACTOR: tap-salesforce
-    MELTANO_LOADER: target-snowflake
-    SFDC_START_DATE: "2018-10-01T00:00:00Z"
-    SFDC_PASSWORD: $SFDC_PASSWORD_NOTOKEN
-    SF_SCHEMA: SALESFORCE # must be in CAPS
   script:
     - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
     - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
@@ -284,6 +289,9 @@ sfdc:
 
 sfdc_snowflake:
   <<: *sfdc_extract_meltano
+  variables:
+    <<: *sfdc_extract_meltano__variables
+    SF_DATABASE: RAW
   only:
     refs:
       - master
