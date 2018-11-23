@@ -205,7 +205,7 @@
 # Salesforce
 # ==========
 .variables: &sfdc_extract_meltano__variables
-  <<: *meltano_extract__variables
+  <<: *meltano_extract_job__variables
   MELTANO_EXTRACTOR: tap-salesforce
   MELTANO_LOADER: target-snowflake
   SFDC_START_DATE: "2018-10-01T00:00:00Z"
