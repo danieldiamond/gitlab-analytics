@@ -5,14 +5,25 @@
   tags:
     - analytics
 
-.variables: &meltano_extract__variables
+.variables: &meltano_extract_job__variables
   SINGER_RUN_DIR: /run/singer
-  TAP_OUTPUT: $SINGER_RUN_DIR/tap.out
   TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target.rejected
   MELTANO_JOB_ID: $CI_JOB_NAME
-  SF_DATABASE: $CI_COMMIT_REF_NAME
   SF_ROLE: LOADER
   SF_WAREHOUSE: LOADING
+
+.meltano_extract_job: &meltano_extract_job
+  stage: extract
+  <<: *extract_definition
+  image:
+    name: registry.gitlab.com/meltano/meltano/runner
+    entrypoint: [""]
+  script:
+    - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
+    - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
+    - echo "Connecting to $SF_USER@$SF_ACCOUNT/$SF_DATABASE/$SF_SCHEMA"
+    - meltano install
+    - ci_helpers.py use_proxy "meltano elt $MELTANO_JOB_ID --extractor $MELTANO_EXTRACTOR --loader $MELTANO_LOADER --transform skip"
 
 .marketo_extract: &marketo_extract
   stage: extract
@@ -27,7 +38,7 @@
     name: registry.gitlab.com/meltano/meltano/singer_runner:0.0.1
     entrypoint: [""]
   variables:
-    <<: *meltano_extract__variables
+    <<: *meltano_extract_job__variables
     MELTANO_EXTRACTOR: tap-zendesk
     MELTANO_LOADER: target-snowflake
     ZENDESK_START_DATE: "2018-10-01T00:00:00Z"
@@ -130,6 +141,16 @@
           historical.alliancesdashboard.alliancesdashboard_actuals
           historical.alliancesdashboard.alliancesdashboard_goals"
 
+# =====
+# Zuora
+# =====
+.variables: &zuora_extract__variables
+  <<: *meltano_extract_job__variables
+  MELTANO_EXTRACTOR: tap-zuora
+  MELTANO_LOADER: target-snowflake
+  ZUORA_START_DATE: "2018-10-01T00:00:00Z"
+  SF_SCHEMA: ZUORA # must be in CAPS
+
 .zuora_extract: &zuora_extract
   variables:
     FIXED_ZUORA_PASSWORD: $ZUORA_PASSWORD
@@ -138,6 +159,17 @@
   script:
     - envsubst < "extract/config/environment.conf.template" > "extract/config/environment.conf"
     - ci_helpers.py use_proxy "python3 extract/zuora/zuora_export.py"
+
+.zuora_extract_meltano: &zuora_extract_meltano
+  <<: *meltano_extract_job
+  image:
+    name: registry.gitlab.com/meltano/meltano/runner:bc2ead1146c017a4ad12c88d65f19dd968a23d8b
+    entrypoint: [""]
+  variables: *zuora_extract__variables
+  artifacts:
+    paths:
+      - .meltano/run/tap-zuora/tap.properties.json
+      - .meltano/run/tap-zuora/state.json
 
 .sfdc_extract: &sfdc_extract
   variables:
@@ -168,6 +200,13 @@
   image:
     name: registry.gitlab.com/meltano/meltano/runner:58cfc6349ba4b5769b79c3f218464eee65f253de
     entrypoint: [""]
+  variables:
+    <<: *meltano_extract_job__variables
+    MELTANO_EXTRACTOR: tap-salesforce
+    MELTANO_LOADER: target-snowflake
+    SFDC_START_DATE: "2018-10-01T00:00:00Z"
+    SFDC_PASSWORD: $SFDC_PASSWORD_NOTOKEN
+    SF_SCHEMA: SALESFORCE # must be in CAPS
   script:
     - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
     - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
@@ -339,6 +378,17 @@ zuora:
     variables:
       - $ZUORA
 
+zuora_snowflake:
+  <<: *zuora_extract_meltano
+  variables:
+    <<: *zuora_extract__variables
+    SF_DATABASE: RAW
+  only:
+    refs:
+      - master
+    variables:
+      - $ZUORA
+
 ## Review Jobs
 
 ci_stats_manual:
@@ -479,6 +529,14 @@ zendesk_snowflake_manual:
 
 zuora_manual:
   <<: *zuora_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+zuora_snowflake_manual:
+  <<: *zuora_extract_meltano
   only:
     - branches
   except:
