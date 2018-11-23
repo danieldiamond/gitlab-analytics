@@ -15,8 +15,9 @@
 .meltano_extract_job: &meltano_extract_job
   stage: extract
   <<: *extract_definition
+  variables: *meltano_extract_job__variables
   image:
-    name: registry.gitlab.com/meltano/meltano/runner
+    name: registry.gitlab.com/meltano/meltano/runner:bc2ead1146c017a4ad12c88d65f19dd968a23d8b
     entrypoint: [""]
   script:
     - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
@@ -24,6 +25,25 @@
     - echo "Connecting to $SF_USER@$SF_ACCOUNT/$SF_DATABASE/$SF_SCHEMA"
     - meltano install
     - ci_helpers.py use_proxy "meltano elt $MELTANO_JOB_ID --extractor $MELTANO_EXTRACTOR --loader $MELTANO_LOADER --transform skip"
+
+# =======
+# Marketo
+# =======
+.variables: &marketo_extract_meltano__variables
+  <<: *meltano_extract_job__variables
+  MELTANO_EXTRACTOR: tap-marketo
+  MELTANO_LOADER: target-snowflake
+  MARKETO_START_TIME: "2018-10-01T00:00:00Z"
+  MARKETO_CLIENT_ID: $MKTO_CLIENT_ID
+  MARKETO_CLIENT_SECRET: $MKTO_CLIENT_SECRET
+  MARKETO_ENDPOINT: "$MKTO_ENDPOINT/rest"
+  MARKETO_IDENTITY: "$MKTO_ENDPOINT/identity"
+  SF_DATABASE: $CI_COMMIT_REF_NAME
+  SF_SCHEMA: MARKETO # must be in CAPS
+
+.marketo_extract_meltano: &marketo_extract_meltano
+  <<: *meltano_extract_job
+  variables: *marketo_extract_meltano__variables
 
 .marketo_extract: &marketo_extract
   stage: extract
@@ -185,7 +205,7 @@
 # Salesforce
 # ==========
 .variables: &sfdc_extract_meltano__variables
-  <<: *meltano_extract__variables
+  <<: *meltano_extract_job__variables
   MELTANO_EXTRACTOR: tap-salesforce
   MELTANO_LOADER: target-snowflake
   SFDC_START_DATE: "2018-10-01T00:00:00Z"
@@ -295,6 +315,17 @@ gitlab_profiler:
 
 marketo:
   <<: *marketo_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $MARKETO
+
+marketo_snowflake:
+  <<: *marketo_extract_meltano
+  variables:
+    <<: *marketo_extract_meltano__variables
+    SF_DATABASE: RAW
   only:
     refs:
       - master
@@ -417,6 +448,14 @@ gitlab_manual:
 
 marketo_manual:
   <<: *marketo_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+marketo_snowflake_manual:
+  <<: *marketo_extract_meltano
   only:
     - branches
   except:

@@ -25,6 +25,14 @@ extractors:
     username: $ZUORA_USERNAME
   name: tap-zuora
   pip_url: tap-zuora
+- config:
+    client_id: $MARKETO_CLIENT_ID
+    client_secret: $MARKETO_CLIENT_SECRET
+    endpoint: $MARKETO_ENDPOINT
+    identity: $MARKETO_IDENTITY
+    start_time: $MARKETO_START_TIME
+  name: tap-marketo
+  pip_url: git+https://gitlab.com/meltano/tap-marketo.git
 loaders:
 - config:
     account: $SF_ACCOUNT
