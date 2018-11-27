@@ -3,6 +3,8 @@
   before_script:
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
     - cd transform/cloudsql-dbt
+  variables:
+    MELT_CI_RETRIES: 0
   tags:
     - analytics
 
