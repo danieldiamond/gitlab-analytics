@@ -9,7 +9,7 @@ with zuora_base_mrr_amortized as (
 ), unioned as (
      SELECT mrr_month, mrr::float FROM zuora_base_mrr_amortized
      UNION ALL
-     SELECT trueup_month, charge_amount::float FROM zuora_base_trueups
+     SELECT trueup_month, mrr::float FROM zuora_base_trueups
 ), sum_zuora_base as (
     SELECT mrr_month, sum(mrr) as sum_zuora_base
     FROM unioned
