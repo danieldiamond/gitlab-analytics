@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 
 import json
-import sys
-import time
 import pandas as pd
 import requests as r
+import sys
+import time
 
 from atexit import register
+from fire import Fire
 from functools import partial, wraps
 from logging import info, error, basicConfig
 from os import environ as env, remove
 from subprocess import run, PIPE, Popen, _active, _cleanup
 from typing import Tuple
-from fire import Fire
 
 
-def retry_or_notify(exceptions, tries: int=4, backoff: int=2):
+def retry_or_notify(exceptions, tries: int = 4, backoff: int = 2):
     """
     Retry calling the decorated function using an exponential backoff,
     if all attempts fail then send a slack notification.
@@ -27,36 +27,49 @@ def retry_or_notify(exceptions, tries: int=4, backoff: int=2):
         backoff: Backoff multiplier (e.g. value of 2 will double the delay
             each retry).
     """
-    tries = int(env.get('MELT_CI_RETRIES', tries))
-    backoff = int(env.get('MELT_CI_BACKOFF', backoff))
-    def deco_retry(f):
+    tries = int(env.get("MELT_CI_RETRIES", tries))
+    backoff = int(env.get("MELT_CI_BACKOFF", backoff))
 
+    def deco_retry(f):
         @wraps(f)
         def f_retry(*args, **kwargs):
 
-            for attempt in range(1, tries + 1):
+            for attempt in range(1, tries + 2):
                 mdelay = attempt * backoff
                 try:
                     return f(*args, **kwargs)
                 except exceptions as e:
-                    msg = '{}, Attempt: {}, Retrying in {} seconds...'.format(e, attempt, mdelay)
+                    msg = "{}, Attempt: {}, Retrying in {} seconds...".format(
+                        e, attempt, mdelay
+                    )
                     error(msg)
                     time.sleep(mdelay)
                     continue
             else:
-                if env['CI_COMMIT_REF_NAME'] == 'master':
-                    job_msg = 'Job Failed: {} -- {}'.format(env['CI_JOB_NAME'], env['CI_JOB_URL'])
-                    stage_msg = 'Stage: {}'.format(env['CI_JOB_STAGE'])
-                    pipeline_msg = 'Pipeline: {}'.format(env['CI_PIPELINE_URL'])
-                    triggered_msg = 'Triggered: {}'.format(env['CI_PIPELINE_SOURCE'])
-                    command_msg = 'Command: {}'.format(*args)
-                    slack_payload = {'text': "\n".join([job_msg, stage_msg,
-                                                        pipeline_msg, triggered_msg,
-                                                        command_msg])}
-                    r.post(env['SLACK_WEBHOOK_URL'], data=json.dumps(slack_payload))
+                if env["CI_COMMIT_REF_NAME"] == "master":
+                    job_msg = "Job Failed: {} -- {}".format(
+                        env["CI_JOB_NAME"], env["CI_JOB_URL"]
+                    )
+                    stage_msg = "Stage: {}".format(env["CI_JOB_STAGE"])
+                    pipeline_msg = "Pipeline: {}".format(env["CI_PIPELINE_URL"])
+                    triggered_msg = "Triggered: {}".format(env["CI_PIPELINE_SOURCE"])
+                    command_msg = "Command: {}".format(*args)
+                    slack_payload = {
+                        "text": "\n".join(
+                            [
+                                job_msg,
+                                stage_msg,
+                                pipeline_msg,
+                                triggered_msg,
+                                command_msg,
+                            ]
+                        )
+                    }
+                    r.post(env["SLACK_WEBHOOK_URL"], data=json.dumps(slack_payload))
             return f(*args, **kwargs)
 
         return f_retry  # true decorator
+
     return deco_retry
 
 
@@ -70,11 +83,11 @@ def exit_cleanup():
         proc.kill()
         proc.communicate()
     _cleanup()
-    run('kill -9 $(pgrep cloud_sql_proxy)', shell=True, stderr=PIPE)
+    run("kill -9 $(pgrep cloud_sql_proxy)", shell=True, stderr=PIPE)
     if not _active:
-        info('Processes cleaned up.')
+        info("Processes cleaned up.")
     else:
-        error('Sub processes could not be cleaned up.')
+        error("Sub processes could not be cleaned up.")
 
 
 def auth_gcloud(bash) -> None:
@@ -83,18 +96,18 @@ def auth_gcloud(bash) -> None:
     """
 
     try:
-        with open('gcp_credentials.json', 'w') as file:
-            file.write(env['GCP_SERVICE_CREDS'])
+        with open("gcp_credentials.json", "w") as file:
+            file.write(env["GCP_SERVICE_CREDS"])
 
-        bash('gcloud auth activate-service-account --key-file=gcp_credentials.json')
+        bash("gcloud auth activate-service-account --key-file=gcp_credentials.json")
     except IOError:
-        error('Could not store GCP creds as a json file.')
+        error("Could not store GCP creds as a json file.")
         sys.exit(1)
     except:
-        error('Could not authenticate service account.')
+        error("Could not authenticate service account.")
         sys.exit(1)
 
-    info('Account successfully authenticated.')
+    info("Account successfully authenticated.")
 
 
 def find_sql_instance(gcp_instance_ref_slug) -> str:
@@ -102,22 +115,24 @@ def find_sql_instance(gcp_instance_ref_slug) -> str:
     Find the gcp instance with the same ref slug, don't worry about the ID.
     """
 
-    if env['CI_COMMIT_REF_NAME'] == 'master':
-        return env['GCP_PRODUCTION_INSTANCE_NAME']
+    if env["CI_COMMIT_REF_NAME"] == "master":
+        return env["GCP_PRODUCTION_INSTANCE_NAME"]
 
-    instance_list_raw = run('gcloud sql instances list --project {}'.format(env['GCP_PROJECT']),
-                            stdout=PIPE,
-                            shell=True,
-                            check=True).stdout
+    instance_list_raw = run(
+        "gcloud sql instances list --project {}".format(env["GCP_PROJECT"]),
+        stdout=PIPE,
+        shell=True,
+        check=True,
+    ).stdout
     try:
-        [instance_name] = [instance_name
-                           for instance_row
-                           in instance_list_raw.decode("utf-8").split(' ')
-                           for instance_name
-                           in instance_row.split('\n')
-                           if gcp_instance_ref_slug in instance_name] or [None]
+        [instance_name] = [
+            instance_name
+            for instance_row in instance_list_raw.decode("utf-8").split(" ")
+            for instance_name in instance_row.split("\n")
+            if gcp_instance_ref_slug in instance_name
+        ] or [None]
     except:
-        info('No instance found.')
+        info("No instance found.")
     return instance_name
 
 
@@ -129,14 +144,14 @@ def set_sql_instance() -> Tuple[str, str, str]:
     job_id and the two hyphens and that leaves 83 characters for the name.
     """
 
-    slug_length = 83 - len(env['CI_PROJECT_NAME'])
-    gcp_instance_ref_slug = '{}-{}'.format(env['CI_PROJECT_NAME'],
-                                       env['CI_COMMIT_REF_SLUG'][0:slug_length])
-    job_gcp_instance_name = '{}-{}'.format(gcp_instance_ref_slug,
-                                           env['CI_JOB_ID'][:8])
+    slug_length = 83 - len(env["CI_PROJECT_NAME"])
+    gcp_instance_ref_slug = "{}-{}".format(
+        env["CI_PROJECT_NAME"], env["CI_COMMIT_REF_SLUG"][0:slug_length]
+    )
+    job_gcp_instance_name = "{}-{}".format(gcp_instance_ref_slug, env["CI_JOB_ID"][:8])
 
     instance_name = find_sql_instance(gcp_instance_ref_slug)
-    info('Found instance with name: {}'.format(instance_name))
+    info("Found instance with name: {}".format(instance_name))
     return instance_name, job_gcp_instance_name, gcp_instance_ref_slug
 
 
@@ -145,17 +160,37 @@ def async_run(command: str, instance: str) -> None:
     Run gcloud commands using the async flag and waiting for them to finish/fail.
     """
 
-    info('Running command using async: {}'.format(command))
-    run(command + ' --async', shell=True, check=True, stdout=PIPE)
+    info("Running command using async: {}".format(command))
+    run(command + " --async", shell=True, check=True, stdout=PIPE)
     # Returns bytes with newlines, assume the first operation id is correct
-    operation = run("gcloud sql operations list --instance='{}' --filter='status!=DONE' --format='value(name)'".format(instance),
-                    shell=True, check=True, stdout=PIPE).stdout.decode('utf-8').rstrip()
-    info('Pending Operation: {}'.format(operation))
-    info('Waiting for operation to finish/fail...')
+    operation = (
+        run(
+            "gcloud sql operations list --instance='{}' --filter='status!=DONE' --format='value(name)'".format(
+                instance
+            ),
+            shell=True,
+            check=True,
+            stdout=PIPE,
+        )
+        .stdout.decode("utf-8")
+        .rstrip()
+    )
+    info("Pending Operation: {}".format(operation))
+    info("Waiting for operation to finish/fail...")
     while True:
-        status = run('sleep 10; gcloud sql operations describe "{}" --format="value(status)"'.format(operation),
-                     shell=True, check=True, stdout=PIPE).stdout.decode('utf-8').rstrip()
-        if status == 'DONE':
+        status = (
+            run(
+                'sleep 10; gcloud sql operations describe "{}" --format="value(status)"'.format(
+                    operation
+                ),
+                shell=True,
+                check=True,
+                stdout=PIPE,
+            )
+            .stdout.decode("utf-8")
+            .rstrip()
+        )
+        if status == "DONE":
             info(status)
             break
         else:
@@ -171,13 +206,13 @@ def use_cloudsqlproxy(command: str) -> None:
 
     # Get the instance name and start the proxy
     instance_name, *_ = set_sql_instance()
-    sql_proxy_command = 'cloud_sql_proxy -instances={}:{}:{}=tcp:5432 -credential_file=gcp_credentials.json -verbose=False'
-    sql_proxy = Popen(sql_proxy_command.format(env['GCP_PROJECT'],
-                                             env['GCP_REGION'],
-                                             instance_name),
-                      shell=True)
+    sql_proxy_command = "cloud_sql_proxy -instances={}:{}:{}=tcp:5432 -credential_file=gcp_credentials.json -verbose=False"
+    sql_proxy = Popen(
+        sql_proxy_command.format(env["GCP_PROJECT"], env["GCP_REGION"], instance_name),
+        shell=True,
+    )
 
-    info('Proxy is running.')
+    info("Proxy is running.")
     run(command, shell=True, check=True)
 
     return
@@ -191,15 +226,19 @@ def delete_review_cloudsql() -> None:
     # Set the instance name and make sure it exists and isn't master
     instance_name, *_ = set_sql_instance()
     if not instance_name:
-        error('This instance does not exist. Call manage_instances to create one.')
+        error("This instance does not exist. Call manage_instances to create one.")
         sys.exit(1)
-    if instance_name == env['GCP_PRODUCTION_INSTANCE_NAME']:
-        info('The branch name cannot match the production EDW instance name.')
+    if instance_name == env["GCP_PRODUCTION_INSTANCE_NAME"]:
+        info("The branch name cannot match the production EDW instance name.")
+        sys.exit(1)
 
     delete_instance_command = 'gcloud sql instances delete -q --project "{}" "{}"'
-    run(delete_instance_command.format(env['GCP_PROJECT'], instance_name),
-        shell=True, check=True)
-    info('Instance Deleted.')
+    run(
+        delete_instance_command.format(env["GCP_PROJECT"], instance_name),
+        shell=True,
+        check=True,
+    )
+    info("Instance Deleted.")
     return
 
 
@@ -211,35 +250,45 @@ def manage_review_cloudsql() -> None:
     instance_name, job_gcp_instance_name, gcp_instance_ref_slug = set_sql_instance()
 
     # Check if script should force delete related instances
-    if instance_name and env.get('FORCE') == 'true':
-        info('Cleaning up old sql instances.')
-        list_instances_command = 'gcloud sql instances list --project {} --filter {}'
-        instance_list_raw = run(list_instances_command.format(env['GCP_PROJECT'],
-                                                              gcp_instance_ref_slug),
-                                shell=True, check=True, stdout=PIPE).stdout
-        instance_list = [instance_name
-                         for instance_row
-                         in instance_list_raw.decode("utf-8").split(' ')
-                         for instance_name
-                         in instance_row.split('\n')
-                         if env['CI_PROJECT_NAME'] in instance_name]
-        delete_instance_command = 'gcloud sql instances delete -q --project {} {}'
+    if instance_name and env.get("FORCE") == "true":
+        info("Cleaning up old sql instances.")
+        list_instances_command = "gcloud sql instances list --project {} --filter {}"
+        instance_list_raw = run(
+            list_instances_command.format(env["GCP_PROJECT"], gcp_instance_ref_slug),
+            shell=True,
+            check=True,
+            stdout=PIPE,
+        ).stdout
+        instance_list = [
+            instance_name
+            for instance_row in instance_list_raw.decode("utf-8").split(" ")
+            for instance_name in instance_row.split("\n")
+            if env["CI_PROJECT_NAME"] in instance_name
+        ]
+        delete_instance_command = "gcloud sql instances delete -q --project {} {}"
         for instance in instance_list:
-            info('Deleting instance: {}'.format(instance))
-            run(delete_instance_command.format(env['GCP_PROJECT'], instance),
-                shell=True, check=True)
+            info("Deleting instance: {}".format(instance))
+            run(
+                delete_instance_command.format(env["GCP_PROJECT"], instance),
+                shell=True,
+                check=True,
+            )
     # If not forcing deletion and there is an instance, echo the name
     elif instance_name:
-        info('Instance is available at: {}'.format(instance_name))
+        info("Instance is available at: {}".format(instance_name))
         return
 
     # If no instance existed or force deleted, create a new instance
-    info('Cloning new instance {}'.format(job_gcp_instance_name))
+    info("Cloning new instance {}".format(job_gcp_instance_name))
     clone_instance_command = 'gcloud sql instances clone -q --project "{}" "{}" "{}"'
-    async_run(clone_instance_command.format(env['GCP_PROJECT'],
-                                            env['GCP_PRODUCTION_INSTANCE_NAME'],
-                                            job_gcp_instance_name),
-              job_gcp_instance_name)
+    async_run(
+        clone_instance_command.format(
+            env["GCP_PROJECT"],
+            env["GCP_PRODUCTION_INSTANCE_NAME"],
+            job_gcp_instance_name,
+        ),
+        job_gcp_instance_name,
+    )
     return
 
 
@@ -248,41 +297,56 @@ def refresh_dev_cloudsql():
     Update the dev instance.
     """
 
-    info('Restoring the dev instance from the latest successful prod backup.')
+    info("Restoring the dev instance from the latest successful prod backup.")
 
     # Dump  a list of recent backups into a txt file
-    run('gcloud config set project {}'.format(env['GCP_PROJECT']),
-        shell=True, check=True)
+    run(
+        "gcloud config set project {}".format(env["GCP_PROJECT"]),
+        shell=True,
+        check=True,
+    )
 
-    backup_list_filename = 'backup_list.txt'
-    run('gcloud sql backups list --instance {} > {}'.format(env['GCP_PRODUCTION_INSTANCE_NAME'],
-                                                            backup_list_filename),
-        shell=True, check=True, stdout=PIPE).stdout
+    backup_list_filename = "backup_list.txt"
+    run(
+        "gcloud sql backups list --instance {} > {}".format(
+            env["GCP_PRODUCTION_INSTANCE_NAME"], backup_list_filename
+        ),
+        shell=True,
+        check=True,
+        stdout=PIPE,
+    ).stdout
 
     # Get the most recent successful backup ID
-    backup_df = pd.read_table('backup_list.txt', delim_whitespace=True).query('STATUS == "SUCCESSFUL"')
-    backup_df['WINDOW_START_TIME'] = pd.to_datetime(backup_df['WINDOW_START_TIME'])
-    newest_backup = backup_df['WINDOW_START_TIME'].max()
-    [backup_id] = backup_df.query('WINDOW_START_TIME == @newest_backup')['ID']
+    backup_df = pd.read_table("backup_list.txt", delim_whitespace=True).query(
+        'STATUS == "SUCCESSFUL"'
+    )
+    backup_df["WINDOW_START_TIME"] = pd.to_datetime(backup_df["WINDOW_START_TIME"])
+    newest_backup = backup_df["WINDOW_START_TIME"].max()
+    [backup_id] = backup_df.query("WINDOW_START_TIME == @newest_backup")["ID"]
     remove(backup_list_filename)
 
     # Trigger the dev instance refresh
     instance_refresh_command = 'gcloud sql backups restore {} -q --restore-instance="{}" --backup-instance="{}"'
-    run(instance_refresh_command.format(backup_id,
-                                        env['GCP_DEV_INSTANCE_NAME'],
-                                        env['GCP_PRODUCTION_INSTANCE_NAME']),
-        shell=True, check=True)
+    run(
+        instance_refresh_command.format(
+            backup_id, env["GCP_DEV_INSTANCE_NAME"], env["GCP_PRODUCTION_INSTANCE_NAME"]
+        ),
+        shell=True,
+        check=True,
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Do some setup before running any Fire functions
     basicConfig(stream=sys.stdout, level=20)
     bash = partial(run, shell=True, check=True)
     auth_gcloud(bash)
-    Fire({
-        'get_sql_instance': set_sql_instance,
-        'use_proxy': use_cloudsqlproxy,
-        'manage_instances': manage_review_cloudsql,
-        'delete_instance': delete_review_cloudsql,
-        'refresh_dev_instance': refresh_dev_cloudsql
-    })
+    Fire(
+        {
+            "get_sql_instance": set_sql_instance,
+            "use_proxy": use_cloudsqlproxy,
+            "manage_instances": manage_review_cloudsql,
+            "delete_instance": delete_review_cloudsql,
+            "refresh_dev_instance": refresh_dev_cloudsql,
+        }
+    )
