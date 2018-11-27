@@ -206,6 +206,8 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, analytics_meta, customers, histori
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA analytics, analytics_meta, meta, public, sandbox TO analytics;
 
+GRANT CREATE on DATABASE dw_production to analytics;
+
 ``` 
 
 New user roles are added to a specific role via:
