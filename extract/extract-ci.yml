@@ -139,7 +139,10 @@
 .version_db_extract: &version_db_extract
   stage: extract
   <<: *extract_definition
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
   script:
+    - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
     - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
     - extract/postgres/generate_venvs.sh
     - ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/version/config.json --discover"
@@ -147,7 +150,10 @@
 .customers_db_extract: &customers_db_extract
   stage: extract
   <<: *extract_definition
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
   script:
+    - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
     - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
     - extract/postgres/generate_venvs.sh
     - ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/customers/config.json --discover"
@@ -155,7 +161,10 @@
 .license_db_extract: &license_db_extract
   stage: extract
   <<: *extract_definition
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
   script:
+    - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
     - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
     - extract/postgres/generate_venvs.sh
     - ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/license/config.json --discover"
@@ -163,7 +172,10 @@
 .ci_stats_db_extract: &ci_stats_db_extract
   stage: extract
   <<: *extract_definition
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
   script:
+    - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
     - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
     - extract/postgres/generate_venvs.sh
     - ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/ci_stats/config.json --discover"
@@ -171,7 +183,10 @@
 .gitlab_profiler_db_extract: &gitlab_profiler_db_extract
   stage: extract
   <<: *extract_definition
+  variables:
+    SF_DATABASE: $CI_COMMIT_REF_NAME
   script:
+    - export SF_DATABASE="${SF_DATABASE^^}" # database name must be in CAPS
     - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
     - extract/postgres/generate_venvs.sh
     - ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/gitlab_profiler/config.json --discover"

@@ -6,7 +6,6 @@ Required:
   - PG_PASSWORD
 
   - SF_ACCOUNT
-  - SF_DATABASE
   - SF_USER
   - SF_PASSWORD
   - SF_ROLE
