@@ -70,7 +70,7 @@ WITH zuora_accts AS (
 
     trueups as (
 
-      SELECT md5(rpc.rate_plan_charge_id||s.subscription_id) as unique_key,
+      SELECT 
              s.subscription_name,
              s.subscription_name_slugify,
              ii.trueup_month,
@@ -86,7 +86,7 @@ WITH zuora_accts AS (
   )
 
 SELECT
-  t.unique_key,
+  
   mr.account_number,
   mr.subscription_name,
   mr.subscription_name_slugify,

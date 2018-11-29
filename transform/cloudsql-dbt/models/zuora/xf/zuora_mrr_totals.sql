@@ -26,7 +26,6 @@ WITH base_mrr AS (
     mrr_combined AS (
 
     SELECT
-      unique_key as sub_rpc_id,
       account_number,
       subscription_name_slugify,
       subscription_name,
@@ -43,7 +42,7 @@ WITH base_mrr AS (
     UNION ALL
 
     SELECT
-      unique_key as sub_rpc_id,
+      
       account_number,
       subscription_name_slugify,
       subscription_name,
