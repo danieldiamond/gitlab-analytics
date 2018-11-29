@@ -1,0 +1,2 @@
+#!/bin/bash
+ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/${EXPORT_DATABASE}/config.json -p extract/postgres/config/tap_postgres/${EXPORT_DATABASE}/catalog.json -s extract/postgres/config/tap_postgres/${EXPORT_DATABASE}/state.json | venvs/target-snowflake/bin/target-snowflake -c extract/postgres/config/target_snowflake/config.json"
