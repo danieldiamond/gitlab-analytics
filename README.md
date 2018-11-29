@@ -164,6 +164,41 @@ Here are the proper steps for provisioning a new use and user role:
   * GRANT OWNERSHIP ON schema eburke_scratch TO ROLE eburke;
 * Document in Snowflake config.yml permissions file
 
+##### Project variables
+
+Our current implementation uses the following project variables:
+
+  - SNOWFLAKE_USER
+  - SNOWFLAKE_ACCOUNT
+  - SNOWFLAKE_PASSWORD
+  
+> `LOAD` flavor is used by the Extract & Load process
+
+  - SNOWFLAKE_LOAD_DATABASE
+  - SNOWFLAKE_LOAD_ROLE
+  - SNOWFLAKE_LOAD_WAREHOUSE
+  
+> `TRANSFORM` flavor is used by the Transform process
+
+  - SNOWFLAKE_TRANSFORM_ROLE
+  - SNOWFLAKE_TRANSFORM_DATABASE
+  - SNOWFLAKE_TRANSFORM_WAREHOUSE
+
+> `ADMIN` flavor for housekeeping tasks (like setting up review instances)
+
+  - SNOWFLAKE_ADMIN_ROLE
+
+<div class="panel panel-warning">
+The following variables are set at the job level dependending on the running environment **and should not set in the project settings**.
+{: .panel-heading}
+<div class="panel-body">
+  - SNOWFLAKE_DATABASE
+  - SNOWFLAKE_ROLE
+  - SNOWFLAKE_WAREHOUSE
+</div>
+</div>
+
+
 #### Google Cloud SQL
 
 [Cloud SQL](https://cloud.google.com/sql/docs/postgres/) - is a fully-managed database service that makes it easy to set up, maintain, manage, and administer GitLab's PostgreSQL relational databases on Google Cloud Platform.
