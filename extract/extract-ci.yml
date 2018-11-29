@@ -136,23 +136,45 @@
     - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest gitlab_profiler"
     - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest gitlab_profiler --days 3600"
 
-.postgres_extract: &postgres_extract
+.version_db_extract: &version_db_extract
   stage: extract
   <<: *extract_definition
   script:
     - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
     - extract/postgres/generate_venvs.sh
-
-version_db_extract_manual:
-  stage: extract
-  <<: *postgres_extract
-  script:
     - ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/version/config.json --discover"
-  only:
-    - branches
-  except:
-    - master
-  when: manual
+
+.customers_db_extract: &customers_db_extract
+  stage: extract
+  <<: *extract_definition
+  script:
+    - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
+    - extract/postgres/generate_venvs.sh
+    - ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/customers/config.json --discover"
+
+.license_db_extract: &license_db_extract
+  stage: extract
+  <<: *extract_definition
+  script:
+    - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
+    - extract/postgres/generate_venvs.sh
+    - ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/license/config.json --discover"
+
+.ci_stats_db_extract: &ci_stats_db_extract
+  stage: extract
+  <<: *extract_definition
+  script:
+    - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
+    - extract/postgres/generate_venvs.sh
+    - ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/ci_stats/config.json --discover"
+
+.gitlab_profiler_db_extract: &gitlab_profiler_db_extract
+  stage: extract
+  <<: *extract_definition
+  script:
+    - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
+    - extract/postgres/generate_venvs.sh
+    - ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/gitlab_profiler/config.json --discover"
 
 .sheetload: &sheetload
   stage: extract
@@ -533,6 +555,51 @@ gitlab_profiler_backfill:
 discover_gitlab_dbs_schema_manual:
   stage: extract
   <<: *discover_gitlab_dbs_schema
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+version_db_extract_manual:
+  stage: extract
+  <<: *version_db_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+customers_db_extract_manual:
+  stage: extract
+  <<: *customers_db_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+license_db_extract_manual:
+  stage: extract
+  <<: *license_db_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+ci_stats_db_extract_manual:
+  stage: extract
+  <<: *ci_stats_db_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+gitlab_profiler_db_extract_manual:
+  stage: extract
+  <<: *gitlab_profiler_db_extract
   only:
     - branches
   except:
