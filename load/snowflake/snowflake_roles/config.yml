@@ -161,6 +161,13 @@ roles:
                     - analytics.*.*
 
     # User Roles
+    - acarella:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.acarella_scratch
+
     - eburke:
         warehouses:
             - reporting
@@ -199,7 +206,14 @@ roles:
         owns:
             schemas:
                 - analytics.jurbanc_scratch
-        
+
+     - ssichak:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.ssichak_scratch
+
     - target_snowflake:
         warehouses:
             - reporting
@@ -230,6 +244,13 @@ roles:
 
 # Users
 users:
+    - acarella:
+        can_login: yes
+        member_of:
+            - securityadmin
+            - sysadmin
+            - acarella
+
     - eburke:
         can_login: yes
         member_of:
@@ -273,6 +294,13 @@ users:
             - securityadmin
             - sysadmin
             - jurbanc
+
+    - ssichak:
+        can_login: yes
+        member_of:
+            - securityadmin
+            - sysadmin
+            - ssichak
 
     - target_snowflake:
         can_login: yes

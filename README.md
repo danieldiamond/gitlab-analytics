@@ -149,6 +149,21 @@ See the [README](/extract/sfdc/README.md) for the SFDC Extractor.
 #### Snowflake
 Snowflake is a cloud data warehouse. It separates storage from compute making it easy to scale analytics up and down as needed.
 
+#### Managing Roles for Snowflake
+
+Here are the proper steps for provisioning a new use and user role:
+
+* Login and switch to securityadmin role
+* Create role for user (`eburke` for example)
+* Grant role to sysadmin
+* Create user (`ebukre`)
+* Grant user role to new user
+* Create user_scratch schema in ANALYTICS as SYSADMIN
+  * CREATE SCHEMA eburke_scratch;
+* Grant ownership of scratch schema to user role
+  * GRANT OWNERSHIP ON schema eburke_scratch TO ROLE eburke;
+* Document in Snowflake config.yml permissions file
+
 #### Google Cloud SQL
 
 [Cloud SQL](https://cloud.google.com/sql/docs/postgres/) - is a fully-managed database service that makes it easy to set up, maintain, manage, and administer GitLab's PostgreSQL relational databases on Google Cloud Platform.
@@ -166,7 +181,7 @@ If you want direct access to the data warehouse (outside of Looker or JupyterHub
 * Connect to the Data Warehouse through the terminal (a separate tab) with `psql "host=127.0.0.1 sslmode=disable dbname=dw_production user=<username>`
 * Alternatively, use your favorite database tool with `host=127.0.0.1` and `dbname=dw_production`
 
-#### Managing Roles
+#### Managing Roles for CloudSQL
 
 All role definitions are in [/extract/config/pg_roles/](https://gitlab.com/meltano/meltano/tree/master/extract/config)
 
