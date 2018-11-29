@@ -1,5 +1,5 @@
 #!/bin/bash
-apt-get install python3-venv
+apt-get -y install python3-venv
 
 mkdir -p venvs
 
