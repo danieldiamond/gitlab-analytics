@@ -166,6 +166,9 @@ def generate_accounts():
     account_cursor = mydb.cursor()
     account_cursor.execute(account_query)
     logger.debug("Found %s accounts to generate.", account_cursor.rowcount)
+    if account_cursor.rowcount == 0:
+        logger.debug("No accounts to generate.")
+        return
 
     column_mapping = generate_column_mapping('sfdc_accounts_gen', 'Account')
     correct_column_names = [column_mapping.get(desc[0]) for desc in account_cursor.description]

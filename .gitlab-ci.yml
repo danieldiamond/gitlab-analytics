@@ -132,6 +132,8 @@ force_update_db:
 sfdc_update:
   stage: update
   <<: *job_definition
+  variables:
+    MELT_CI_RETRIES: 0
   script:
     - ci_helpers.py use_proxy "python3 transform/sfdc_processor.py"
   only:
