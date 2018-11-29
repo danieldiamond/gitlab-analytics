@@ -136,6 +136,24 @@
     - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest gitlab_profiler"
     - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest gitlab_profiler --days 3600"
 
+.postgres_extract: &postgres_extract
+  stage: extract
+  <<: *extract_definition
+  script:
+    - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
+    - extract/postgres/generate_venvs.sh
+
+version_db_extract_manual:
+  stage: extract
+  <<: *postgres_extract
+  script:
+    - ci_helpers.py use_proxy "venvs/tap-postgres/bin/tap-postgres -c extract/postgres/config/tap_postgres/version/config.json --discover"
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
 .sheetload: &sheetload
   stage: extract
   <<: *extract_definition
