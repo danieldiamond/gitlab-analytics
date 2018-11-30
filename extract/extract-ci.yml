@@ -100,7 +100,7 @@
     entrypoint: [""]  
   script:
     - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
-    - export SNOWFLAKE_CI_JOB_DB="${SNOWFLAKE_CI_JOB_DB^^}" # database name must be in CAPS
+    - export SNOWFLAKE_DATABASE="${SNOWFLAKE_DATABASE^^}" # database name must be in CAPS
     - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
     - meltano install
     - python3 extract/postgres --import_db $EXPORT_DATABASE
@@ -285,7 +285,7 @@ version_db:
   stage: extract
   <<: *postgres_db_extract
   variables:
-    SNOWFLAKE_CI_JOB_DB: RAW
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "version"
   only:
     refs:
@@ -297,7 +297,7 @@ customers_db:
   stage: extract
   <<: *postgres_db_extract
   variables:
-    SNOWFLAKE_CI_JOB_DB: RAW
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "customers"
   only:
     refs:
@@ -309,7 +309,7 @@ license_db:
   stage: extract
   <<: *postgres_db_extract
   variables:
-    SNOWFLAKE_CI_JOB_DB: RAW
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "license"
   only:
     refs:
@@ -321,7 +321,7 @@ ci_stats_db:
   stage: extract
   <<: *postgres_db_extract
   variables:
-    SNOWFLAKE_CI_JOB_DB: RAW
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "ci_stats"
   only:
     refs:
@@ -333,7 +333,7 @@ gitlab_profiler_db:
   stage: extract
   <<: *postgres_db_extract
   variables:
-    SNOWFLAKE_CI_JOB_DB: RAW
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "gitlab_profiler"
   only:
     refs:
@@ -468,7 +468,7 @@ version_db_manual:
   stage: extract
   <<: *postgres_db_extract
   variables:
-    SNOWFLAKE_CI_JOB_DB: $CI_COMMIT_REF_NAME
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
     EXPORT_DATABASE: "version"
   only:
     - branches
@@ -480,7 +480,7 @@ customers_db_manual:
   stage: extract
   <<: *postgres_db_extract
   variables:
-    SNOWFLAKE_CI_JOB_DB: $CI_COMMIT_REF_NAME
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
     EXPORT_DATABASE: "customers"
   only:
     - branches
@@ -492,7 +492,7 @@ license_db_manual:
   stage: extract
   <<: *postgres_db_extract
   variables:
-    SNOWFLAKE_CI_JOB_DB: $CI_COMMIT_REF_NAME
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
     EXPORT_DATABASE: "license"
   only:
     - branches
@@ -504,7 +504,7 @@ ci_stats_db_manual:
   stage: extract
   <<: *postgres_db_extract
   variables:
-    SNOWFLAKE_CI_JOB_DB: $CI_COMMIT_REF_NAME
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
     EXPORT_DATABASE: "ci_stats"
   only:
     - branches
@@ -516,7 +516,7 @@ gitlab_profiler_db_manual:
   stage: extract
   <<: *postgres_db_extract
   variables:
-    SNOWFLAKE_CI_JOB_DB: $CI_COMMIT_REF_NAME
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
     EXPORT_DATABASE: "gitlab_profiler"
   only:
     - branches
