@@ -54,7 +54,7 @@ def parse():
     parser.add_argument(
         '--hours',
         type=int,
-        choices=range(1, 24),
+        choices=range(0, 24),
         default=0,
         help=("Specify the number of preceding hours from the current time "
               "to get incremental records for (default=0). "
@@ -106,7 +106,7 @@ def generate_target_configs(env_parser, schema):
         'password': os.path.expandvars(env_parser.get(target_name, 'password')),
         'role': os.path.expandvars(env_parser.get(target_name, 'role')),
         'warehouse': os.path.expandvars(env_parser.get(target_name, 'warehouse')),
-        'batch_size': 20000,
+        'batch_size': 10000,
     }
 
     config_file = os.path.join(myDir, 'config', target_name, 'config.json')
