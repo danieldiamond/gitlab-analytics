@@ -98,7 +98,7 @@ WITH base_mrr AS (
       mrr,
       null::float as mrr_12mo_ago
     FROM uniqueified
-    WHERE mrr_month::date - zuora_subscription_cohort_month::date <= 365
+    WHERE mrr_month::date - zuora_subscription_cohort_month::date <= 364
 
 
 ), unioned as (
