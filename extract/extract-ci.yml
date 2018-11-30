@@ -160,10 +160,10 @@
           historical.cmodashboard.cmodashboard_goals
           historical.alliancesdashboard.alliancesdashboard_actuals
           historical.alliancesdashboard.alliancesdashboard_goals
-          interviewing_data.data.hired_candidates
-          interviewing_data.data.interviewers_and_scores
-          interviewing_data.data.list_of_interviewers
-          interviewing_data.data.performance_of_hires"
+          historical.interviewing_data.hired_candidates
+          historical.interviewing_data.interviewers_and_scores
+          historical.interviewing_data.list_of_interviewers
+          historical.interviewing_data.performance_of_hires"
 
 # =====
 # Zuora
