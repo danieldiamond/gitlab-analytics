@@ -69,14 +69,6 @@
     - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
     - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME $MELTANO_EXTRACTOR --loader_name=$MELTANO_LOADER"
 
-.ci_stats: &ci_stats
-  stage: extract
-  <<: *extract_definition
-  script:
-    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_ci_stats.yaml
-    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest ci_stats"
-    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest ci_stats --hours 8"
-
 .netsuite_extract: &netsuite_extract
   stage: extract
   <<: *extract_definition
@@ -99,42 +91,6 @@
   script:
     - check_ci_cd_vars.py --file extract/netsuite/src/config/required_ci_cd_vars.yaml
     - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite backlog --backfill-entity currency_rate --days 1460"
-
-.pings_extract: &pings_extract
-  stage: extract
-  <<: *extract_definition
-  script:
-    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_pings.yaml
-    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest version"
-    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest version --days 1"
-    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest customers"
-    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest customers --days 1"
-    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest license"
-    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest license --days 1"
-
-.pings_backfill: &pings_backfill
-  stage: extract
-  <<: *extract_definition
-  script:
-    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_pings.yaml
-    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest version"
-    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest version"
-
-.gitlab_profiler_extract: &gitlab_profiler_extract
-  stage: extract
-  <<: *extract_definition
-  script:
-    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_gitlab_profiler.yaml
-    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest gitlab_profiler"
-    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest gitlab_profiler --days 15"
-
-.gitlab_profiler_backfill: &gitlab_profiler_backfill
-  stage: extract
-  <<: *extract_definition
-  script:
-    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_gitlab_profiler.yaml
-    - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest gitlab_profiler"
-    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest gitlab_profiler --days 3600"
 
 .postgres_db_extract: &postgres_db_extract
   stage: extract
@@ -280,28 +236,7 @@
     - ci_helpers.py use_proxy "python3 extract/gitlab/src -S gitlab apply_schema"
     - ci_helpers.py use_proxy "python3 extract/gitlab/src -S gitlab export"
 
-.discover_gitlab_dbs_schema: &discover_gitlab_dbs_schema
-  stage: extract
-  <<: *extract_definition
-  script:
-    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_ci_stats.yaml
-    - ci_helpers.py use_proxy "python3 extract/pings/src discover_schema --db_manifest ci_stats"
-    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_pings.yaml
-    - ci_helpers.py use_proxy "python3 extract/pings/src discover_schema --db_manifest version"
-    - ci_helpers.py use_proxy "python3 extract/pings/src discover_schema --db_manifest customers"
-    - ci_helpers.py use_proxy "python3 extract/pings/src discover_schema --db_manifest license"
-    - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_gitlab_profiler.yaml
-    - ci_helpers.py use_proxy "python3 extract/pings/src discover_schema --db_manifest gitlab_profiler"
-
 ## Production Jobs
-
-ci_stats:
-  <<: *ci_stats
-  only:
-    refs:
-      - master
-    variables:
-      - $CI_STATS
 
 domains:
   <<: *domains_extract
@@ -318,14 +253,6 @@ gitlab:
       - master
     variables:
       - $GITLAB
-
-gitlab_profiler:
-  <<: *gitlab_profiler_extract
-  only:
-    refs:
-      - master
-    variables:
-      - $GITLAB_PROFILER
 
 marketo:
   <<: *marketo_extract
@@ -354,14 +281,65 @@ netsuite:
     variables:
       - $NETSUITE
 
-pings:
+version_db:
   stage: extract
-  <<: *pings_extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_CI_JOB_DB: RAW
+    EXPORT_DATABASE: "version"
   only:
     refs:
       - master
     variables:
       - $PINGS
+
+customers_db:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_CI_JOB_DB: RAW
+    EXPORT_DATABASE: "customers"
+  only:
+    refs:
+      - master
+    variables:
+      - $PINGS
+
+license_db:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_CI_JOB_DB: RAW
+    EXPORT_DATABASE: "license"
+  only:
+    refs:
+      - master
+    variables:
+      - $PINGS
+
+ci_stats_db:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_CI_JOB_DB: RAW
+    EXPORT_DATABASE: "ci_stats"
+  only:
+    refs:
+      - master
+    variables:
+      - $CI_STATS
+
+gitlab_profiler_db:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_CI_JOB_DB: RAW
+    EXPORT_DATABASE: "gitlab_profiler"
+  only:
+    refs:
+      - master
+    variables:
+      - $GITLAB_PROFILER
 
 sfdc:
   <<: *sfdc_extract
@@ -436,14 +414,6 @@ zuora_snowflake:
 
 ## Review Jobs
 
-ci_stats_manual:
-  <<: *ci_stats
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
 domains_manual:
   <<: *domains_extract
   only:
@@ -494,48 +464,7 @@ netsuite_manual:
     - master
   when: manual
 
-pings_manual:
-  stage: extract
-  <<: *pings_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-pings_backfill:
-  stage: extract
-  <<: *pings_backfill
-  only:
-    - master
-  when: manual
-
-gitlab_profiler_manual:
-  stage: extract
-  <<: *gitlab_profiler_backfill
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-gitlab_profiler_backfill:
-  stage: extract
-  <<: *gitlab_profiler_backfill
-  only:
-    - master
-  when: manual
-
-discover_gitlab_dbs_schema_manual:
-  stage: extract
-  <<: *discover_gitlab_dbs_schema
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-version_db_extract_manual:
+version_db_manual:
   stage: extract
   <<: *postgres_db_extract
   variables:
@@ -547,7 +476,7 @@ version_db_extract_manual:
     - master
   when: manual
 
-customers_db_extract_manual:
+customers_db_manual:
   stage: extract
   <<: *postgres_db_extract
   variables:
@@ -559,7 +488,7 @@ customers_db_extract_manual:
     - master
   when: manual
 
-license_db_extract_manual:
+license_db_manual:
   stage: extract
   <<: *postgres_db_extract
   variables:
@@ -571,7 +500,7 @@ license_db_extract_manual:
     - master
   when: manual
 
-ci_stats_db_extract_manual:
+ci_stats_db_manual:
   stage: extract
   <<: *postgres_db_extract
   variables:
@@ -583,7 +512,7 @@ ci_stats_db_extract_manual:
     - master
   when: manual
 
-gitlab_profiler_db_extract_manual:
+gitlab_profiler_db_manual:
   stage: extract
   <<: *postgres_db_extract
   variables:
