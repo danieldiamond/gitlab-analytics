@@ -9,7 +9,6 @@ WITH zuora_subs AS (
             version
           ORDER BY updated_date DESC ) AS sub_row
     FROM {{ ref('zuora_subscription') }}
-     WHERE subscription_status IN ('Active', 'Cancelled')
      /*
       The partition deduplicates the subscriptions when there are
       more than one version at the same time.
@@ -17,9 +16,13 @@ WITH zuora_subs AS (
       an example.
      */
 
-),
+), zuora_subs_fixed AS (
 
-    renewal_subs AS (
+  SELECT * 
+  FROM zuora_subs
+  WHERE subscription_status IN ('Active', 'Cancelled')
+
+), renewal_subs AS (
 
     SELECT
       zuora_renewal_subscription_name_slugify               AS renewal_subscription_slug,
@@ -29,36 +32,38 @@ WITH zuora_subs AS (
                     PARTITION BY
                       zuora_renewal_subscription_name_slugify
                     ORDER BY contract_effective_date ASC )  AS renewal_row
-    FROM zuora_subs
+    FROM zuora_subs_fixed
     WHERE zuora_renewal_subscription_name_slugify IS NOT NULL
       AND sub_row = 1
 
 )
 
 SELECT
-  zuora_subs.*,
+  zuora_subs_fixed.*,
 
-  coalesce(parent_subscription_slug, zuora_subs.subscription_name_slugify) AS subscription_slug_for_counting,
+  coalesce(parent_subscription_slug, zuora_subs_fixed.subscription_name_slugify) AS subscription_slug_for_counting,
   -- Dates
-  date_trunc('month', zuora_subs.subscription_start_date) :: DATE                         AS subscription_start_month,
-  (date_trunc('month', zuora_subs.subscription_end_date) - '1 month' :: INTERVAL) :: DATE AS subscription_end_month,
+  date_trunc('month', zuora_subs_fixed.subscription_start_date) :: DATE                         AS subscription_start_month,
+  (date_trunc('month', zuora_subs_fixed.subscription_end_date) - '1 month' :: INTERVAL) :: DATE AS subscription_end_month,
 
   -- This properly links a subscription to its renewal so that future subscriptions inherit the proper cohorts.
   CASE
-    WHEN zuora_subs.contract_effective_date < renewal_subs.renewal_contract_start_date
-      THEN date_trunc('month', zuora_subs.contract_effective_date) :: DATE
-    ELSE date_trunc('month', coalesce(renewal_subs.renewal_contract_start_date,zuora_subs.contract_effective_date)) :: DATE END        AS cohort_month,
+    WHEN zuora_subs_fixed.contract_effective_date < renewal_subs.renewal_contract_start_date
+      THEN date_trunc('month', zuora_subs_fixed.contract_effective_date) :: DATE
+    ELSE date_trunc('month', coalesce(renewal_subs.renewal_contract_start_date,zuora_subs_fixed.contract_effective_date)) :: DATE END        AS cohort_month,
 
   CASE
-    WHEN zuora_subs.contract_effective_date < renewal_subs.renewal_contract_start_date
-      THEN date_trunc('quarter', zuora_subs.contract_effective_date) :: DATE
-    ELSE date_trunc('quarter', coalesce(renewal_subs.renewal_contract_start_date,zuora_subs.contract_effective_date)) :: DATE END      AS cohort_quarter,
+    WHEN zuora_subs_fixed.contract_effective_date < renewal_subs.renewal_contract_start_date
+      THEN date_trunc('quarter', zuora_subs_fixed.contract_effective_date) :: DATE
+    ELSE date_trunc('quarter', coalesce(renewal_subs.renewal_contract_start_date,zuora_subs_fixed.contract_effective_date)) :: DATE END      AS cohort_quarter,
 
   CASE
-    WHEN zuora_subs.contract_effective_date < renewal_subs.renewal_contract_start_date
-      THEN date_trunc('year', zuora_subs.contract_effective_date) :: DATE
-    ELSE date_trunc('year', coalesce(renewal_subs.renewal_contract_start_date,zuora_subs.contract_effective_date)) :: DATE END         AS cohort_year
+    WHEN zuora_subs_fixed.contract_effective_date < renewal_subs.renewal_contract_start_date
+      THEN date_trunc('year', zuora_subs_fixed.contract_effective_date) :: DATE
+    ELSE date_trunc('year', coalesce(renewal_subs.renewal_contract_start_date,zuora_subs_fixed.contract_effective_date)) :: DATE END         AS cohort_year
 
-FROM zuora_subs
-  LEFT JOIN renewal_subs ON renewal_subs.renewal_subscription_slug = zuora_subs.subscription_name_slugify
-  WHERE zuora_subs.sub_row = 1 AND (renewal_subs.renewal_row = 1 OR renewal_subs.renewal_row is NULL)
+FROM zuora_subs_fixed
+  LEFT JOIN renewal_subs ON renewal_subs.renewal_subscription_slug = zuora_subs_fixed.subscription_name_slugify
+  WHERE 
+    zuora_subs_fixed.sub_row = 1 
+    AND (renewal_subs.renewal_row = 1 OR renewal_subs.renewal_row is NULL)

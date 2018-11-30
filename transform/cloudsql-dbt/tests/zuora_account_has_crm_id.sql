@@ -26,5 +26,5 @@ with zuora_mrr_totals as (
 
 SELECT account_id,account_name
 FROM joined
-WHERE ultimate_parent_account_id IS NULL
+WHERE crm_id IS NULL
 GROUP BY 1, 2
