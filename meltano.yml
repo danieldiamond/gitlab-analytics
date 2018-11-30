@@ -33,6 +33,8 @@ extractors:
     start_time: $MARKETO_START_TIME
   name: tap-marketo
   pip_url: git+https://gitlab.com/meltano/tap-marketo.git
+- name: tap-postgres
+  pip_url: tap-postgres
 loaders:
 - config:
     account: $SF_ACCOUNT
