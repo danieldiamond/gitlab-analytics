@@ -56,11 +56,58 @@ WITH base_mrr AS (
       mrr
     FROM base_mrr
 
-  )
+  ), uniqueified as (
 
-SELECT *, 
-        CASE WHEN mrr_type != 'Trueup' THEN (lag(mrr, 12) over (partition by subscription_slug_for_counting
-         order by mrr_month)) ELSE NULL END as mrr_12mo_ago,
-        {{ quarters_diff('zuora_subscription_cohort_quarter', 'mrr_month') }} as quarters_since_zuora_subscription_cohort_start
+    SELECT max(account_number) as account_number,
+            max(subscription_name_slugify) as subscription_name_slugify,
+            max(subscription_name) as subscription_name,
+            subscription_slug_for_counting,
+            mrr_month,
+            min(zuora_subscription_cohort_month) as zuora_subscription_cohort_month,
+            min(zuora_subscription_cohort_quarter) as zuora_subscription_cohort_quarter,
+            max(months_since_zuora_subscription_cohort_start) as months_since_zuora_subscription_cohort_start,
+            --mrr_type,
+            --quantity,
+            sum(mrr) as mrr 
+    FROM mrr_combined
+    GROUP BY 4, 5
 
-FROM mrr_combined
+), subs_with_retention_values as (
+
+    SELECT
+      last_year.subscription_slug_for_counting,
+      (last_year.mrr_month + INTERVAL '12 month')::date as mrr_month,
+      last_year.zuora_subscription_cohort_month,
+      last_year.zuora_subscription_cohort_quarter,
+      (last_year.months_since_zuora_subscription_cohort_start + 12) as months_since_zuora_subscription_cohort_start,
+      current.mrr as mrr,
+      last_year.mrr::float as mrr_12mo_ago
+    FROM uniqueified as last_year --12 months ago
+    LEFT JOIN uniqueified as current --now
+    ON last_year.subscription_slug_for_counting = current.subscription_slug_for_counting
+    AND (last_year.mrr_month + INTERVAL '12 month')::date = current.mrr_month
+
+), first_12months as (
+
+    SELECT
+      subscription_slug_for_counting,
+      mrr_month,
+      zuora_subscription_cohort_month,
+      zuora_subscription_cohort_quarter,
+      months_since_zuora_subscription_cohort_start,
+      mrr,
+      null::float as mrr_12mo_ago
+    FROM uniqueified
+    WHERE months_since_zuora_subscription_cohort_start < 12
+
+
+), unioned as (
+
+    SELECT * FROM subs_with_retention_values
+    UNION ALL
+    SELECT * FROM first_12months
+
+)
+
+SELECT *
+FROM unioned
