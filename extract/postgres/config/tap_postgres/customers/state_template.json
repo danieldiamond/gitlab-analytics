@@ -5,21 +5,21 @@
 		{
 		 "last_replication_method": "INCREMENTAL", 
 		 "replication_key": "updated_at", 
-	     "replication_key_value": "{$START_DATE}"
+	     "replication_key_value": "$START_DATE"
 	    }, 
 
 	    "customers_gitlab_com_production-public-versions": 
 	    {
 	     "last_replication_method": "INCREMENTAL", 
 	 	 "replication_key": "created_at", 
-	 	 "replication_key_value": "{$START_DATE}"
+	 	 "replication_key_value": "$START_DATE"
 	 	}, 
 
 	 	"customers_gitlab_com_production-public-orders": 
 	 	{
 	 	 "last_replication_method": "INCREMENTAL", 
 	 	 "replication_key": "updated_at", 
-	 	 "replication_key_value": "{$START_DATE}"
+	 	 "replication_key_value": "$START_DATE"
 	 	}
 	}, 
 

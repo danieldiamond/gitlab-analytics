@@ -119,12 +119,14 @@ def generate_tap_postgres_state(db_name, start_datetime):
     state_file = os.path.join(myDir, 'config', 'tap_postgres', db_name, 'state.json')
 
     with open(state_template_file, 'r') as in_fp:
-        state=' '.join(
+        state=os.path.expandvars(
+                ' '.join(
                         in_fp.read().
-                        replace('{$START_DATE}', start_datetime).
+                        replace('$START_DATE', start_datetime).
                         replace('\n', ' ').
                         split()
-                      )
+                    )
+            )
         with open(state_file, 'w') as out_fp:
             out_fp.write(state)
 
@@ -155,11 +157,7 @@ def main():
         )
         return
 
-    now = datetime.now(timezone.utc).replace(microsecond=0)
-    start_datetime = now - timedelta(days=args.days, hours=args.hours)
-
-    generate_tap_postgres_state(args.import_db, start_datetime.isoformat())
-
+    # Auto-generate the config file for the requested (args.import_db) database
     myDir = os.path.dirname(os.path.abspath(__file__))
     db_environment = os.path.join(myDir, 'config', 'db_environment.conf')
     db_env_parser = ConfigParser()
@@ -167,6 +165,13 @@ def main():
 
     generate_tap_postgres_config(db_env_parser, args.import_db)
 
+    # Auto-generate the statefile by using the state_template for the requested DB
+    now = datetime.now(timezone.utc).replace(microsecond=0)
+    start_datetime = now - timedelta(days=args.days, hours=args.hours)
+
+    generate_tap_postgres_state(args.import_db, start_datetime.isoformat())
+
+    # Auto-generate the config file for the supported Targets
     generate_target_configs(db_env_parser, args.import_db)
 
 if __name__ == '__main__':

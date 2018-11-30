@@ -5,7 +5,7 @@
 		{
 		 "last_replication_method": "INCREMENTAL", 
 		 "replication_key": "updated_at", 
-		 "replication_key_value": "{$START_DATE}"
+		 "replication_key_value": "$START_DATE"
 		}
 	}, 
 	
