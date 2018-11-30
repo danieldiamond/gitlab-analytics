@@ -74,8 +74,12 @@ WITH base_mrr AS (
       last_year.subscription_name,
       last_year.subscription_slug_for_counting,
       (last_year.mrr_month + INTERVAL '12 month')::date as mrr_month,
-      last_year.zuora_subscription_cohort_month,
-      last_year.zuora_subscription_cohort_quarter,
+      (CASE WHEN last_year.zuora_subscription_cohort_month < current.zuora_subscription_cohort_month
+                 THEN last_year.zuora_subscription_cohort_month 
+                 ELSE current.zuora_subscription_cohort_month END) AS zuora_subscription_cohort_month,
+      (CASE WHEN last_year.zuora_subscription_cohort_quarter < current.zuora_subscription_cohort_quarter
+                 THEN last_year.zuora_subscription_cohort_quarter 
+                 ELSE current.zuora_subscription_cohort_quarter END) AS zuora_subscription_cohort_quarter,
       --(last_year.months_since_zuora_subscription_cohort_start + 12) as months_since_zuora_subscription_cohort_start,
       current.mrr as mrr,
       last_year.mrr::float as mrr_12mo_ago
