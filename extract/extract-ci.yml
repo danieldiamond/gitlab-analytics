@@ -103,7 +103,7 @@
     - export SNOWFLAKE_DATABASE="${SNOWFLAKE_DATABASE^^}" # database name must be in CAPS
     - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
     - meltano install
-    - python3 extract/postgres --import_db $EXPORT_DATABASE
+    - python3 extract/postgres --import_db $EXPORT_DATABASE --days $DAYS --hours $HOURS
     - extract/postgres/run_custom_tap_target.sh
 
 .sheetload: &sheetload
@@ -287,6 +287,8 @@ version_db:
   variables:
     SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "version"
+    DAYS: 1
+    HOURS: 0
   only:
     refs:
       - master
@@ -299,6 +301,8 @@ customers_db:
   variables:
     SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "customers"
+    DAYS: 1
+    HOURS: 0
   only:
     refs:
       - master
@@ -311,6 +315,8 @@ license_db:
   variables:
     SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "license"
+    DAYS: 1
+    HOURS: 0
   only:
     refs:
       - master
@@ -323,6 +329,8 @@ ci_stats_db:
   variables:
     SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "ci_stats"
+    DAYS: 0
+    HOURS: 8
   only:
     refs:
       - master
@@ -335,6 +343,8 @@ gitlab_profiler_db:
   variables:
     SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "gitlab_profiler"
+    DAYS: 15
+    HOURS: 0
   only:
     refs:
       - master
@@ -470,6 +480,8 @@ version_db_manual:
   variables:
     SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
     EXPORT_DATABASE: "version"
+    DAYS: 1
+    HOURS: 0
   only:
     - branches
   except:
@@ -482,6 +494,8 @@ customers_db_manual:
   variables:
     SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
     EXPORT_DATABASE: "customers"
+    DAYS: 1
+    HOURS: 0
   only:
     - branches
   except:
@@ -494,6 +508,8 @@ license_db_manual:
   variables:
     SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
     EXPORT_DATABASE: "license"
+    DAYS: 1
+    HOURS: 0
   only:
     - branches
   except:
@@ -506,6 +522,8 @@ ci_stats_db_manual:
   variables:
     SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
     EXPORT_DATABASE: "ci_stats"
+    DAYS: 0
+    HOURS: 8
   only:
     - branches
   except:
@@ -518,6 +536,8 @@ gitlab_profiler_db_manual:
   variables:
     SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
     EXPORT_DATABASE: "gitlab_profiler"
+    DAYS: 15
+    HOURS: 0
   only:
     - branches
   except:

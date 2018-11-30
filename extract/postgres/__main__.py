@@ -4,7 +4,7 @@ import logging
 import os
 
 from configparser import ConfigParser
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 from elt.error import with_error_exit_code
 from elt.utils import setup_logging
@@ -46,7 +46,7 @@ def parse():
         '--days',
         type=int,
         help=("Specify the number of preceding days from the current time "
-              "to get incremental records for (default=10). "
+              "to get incremental records for (default=0). "
               "If not provided and ENV var PINGS_BACKFILL_DAYS is set, then "
               "it is used instead of the default value.")
     )
@@ -55,9 +55,9 @@ def parse():
         '--hours',
         type=int,
         choices=range(1, 24),
-        default=8,
+        default=0,
         help=("Specify the number of preceding hours from the current time "
-              "to get incremental records for (default=12). "
+              "to get incremental records for (default=0). "
               "For special extractors with lots of results (like the ci_stats one).")
     )
 
@@ -106,11 +106,27 @@ def generate_target_configs(env_parser, schema):
         'password': os.path.expandvars(env_parser.get(target_name, 'password')),
         'role': os.path.expandvars(env_parser.get(target_name, 'role')),
         'warehouse': os.path.expandvars(env_parser.get(target_name, 'warehouse')),
+        'batch_size': 20000,
     }
 
     config_file = os.path.join(myDir, 'config', target_name, 'config.json')
     with open(config_file, 'w') as fp:
         json.dump(config, fp)
+
+def generate_tap_postgres_state(db_name, start_datetime):
+    myDir = os.path.dirname(os.path.abspath(__file__))
+    state_template_file = os.path.join(myDir, 'config', 'tap_postgres', db_name, 'state_template.json')
+    state_file = os.path.join(myDir, 'config', 'tap_postgres', db_name, 'state.json')
+
+    with open(state_template_file, 'r') as in_fp:
+        state=' '.join(
+                        in_fp.read().
+                        replace('{$START_DATE}', start_datetime).
+                        replace('\n', ' ').
+                        split()
+                      )
+        with open(state_file, 'w') as out_fp:
+            out_fp.write(state)
 
 @with_error_exit_code
 def main():
@@ -125,7 +141,7 @@ def main():
         if backfill_days and int(backfill_days) > 0:
             args.days = int(backfill_days)
         else:
-            args.days = 10
+            args.days = 0
 
     # If run_after and run_before arguments are provided, only run the
     #  extractor in the provided time window
@@ -134,11 +150,15 @@ def main():
     if args.run_after and args.run_before \
       and not (args.run_after < utc_hour < args.run_before) :
         logging.info(
-            'The Pings Extractor will not run: Only runs between'
+            'The Postgres Extractor will not run: Only runs between'
             ' the hours of {}:00 UTC and {}:00 UTC.'.format(args.run_after,args.run_before)
         )
         return
 
+    now = datetime.now(timezone.utc).replace(microsecond=0)
+    start_datetime = now - timedelta(days=args.days, hours=args.hours)
+
+    generate_tap_postgres_state(args.import_db, start_datetime.isoformat())
 
     myDir = os.path.dirname(os.path.abspath(__file__))
     db_environment = os.path.join(myDir, 'config', 'db_environment.conf')

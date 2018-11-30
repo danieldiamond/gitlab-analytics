@@ -552,7 +552,8 @@
             "schema-name": "public",
             "database-name": "version_gitlab_com_production",
             "selected": true,
-            "replication-method": "FULL_TABLE"
+            "replication-key": "id",
+            "replication-method": "INCREMENTAL"
           }
         },
         {

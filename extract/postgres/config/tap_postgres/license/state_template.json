@@ -1,0 +1,40 @@
+{
+	"bookmarks": 
+	{
+		"license_gitlab_com_production-public-plans": 
+		{
+		 "last_replication_method": "INCREMENTAL", 
+		 "replication_key": "updated_at", 
+		 "replication_key_value": "{$START_DATE}"
+		}, 
+
+		"license_gitlab_com_production-public-licenses": 
+		{
+		 "last_replication_method": "INCREMENTAL", 
+		 "replication_key": "updated_at", 
+		 "replication_key_value": "{$START_DATE}"
+		}, 
+
+		"license_gitlab_com_production-public-add_ons": 
+		{
+		 "last_replication_method": "INCREMENTAL", 
+		 "replication_key": "updated_at", 
+		 "replication_key_value": "{$START_DATE}"
+		}, 
+
+		"license_gitlab_com_production-public-users": 
+		{
+		 "last_replication_method": "INCREMENTAL", 
+		 "replication_key": "updated_at", 
+		 "replication_key_value": "{$START_DATE}"
+		}, 
+
+		"license_gitlab_com_production-public-granted_add_ons": 
+		{
+		 "last_replication_method": "INCREMENTAL", 
+		 "replication_key": "updated_at", 
+		 "replication_key_value": "{$START_DATE}"
+		}
+	}, 
+	"currently_syncing": null
+}

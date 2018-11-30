@@ -1,0 +1,12 @@
+{
+	"bookmarks": 
+	{
+		"gitlab_profiler-public-request_stats": 
+		{
+		 "last_replication_method": "INCREMENTAL", 
+		 "replication_key": "created_at", 
+		 "replication_key_value": "{$START_DATE}"
+		}
+	}, 
+	"currently_syncing": null
+}
