@@ -224,6 +224,16 @@ account:
   billingd__c: character varying
   of_carr__c: real
   of_licenses__c: real
+bizible2__bizible_attribution_touchpoint__c:
+  bizible2__bizible_attribution_touchpoint__c_id_mapping_key: id
+  bizible2__count_custom_model__c: real
+  bizible2__marketing_channel__c: character varying
+  bizible2__marketing_channel_path__c: character varying
+  bizible2__medium__c: character varying
+  bizible2__opportunity__c: character varying
+  bizible2__sf_campaign__c: character varying
+  bizible2__touchpoint_source__c: character varying
+  id: character varying
 campaign:
   actualcost: real
   amountallopportunities: real
