@@ -107,6 +107,15 @@ sfdc_account:
         unique:
             - account_id
 
+sfdc_bizible_attribution_touchpoint:
+    constraints:
+        not_null:
+            - touchpoint_id
+            - opportunity_id
+            - campaign_id
+        unique:
+            - touchpoint_id
+
 sfdc_campaign:
     constraints:
         not_null:
