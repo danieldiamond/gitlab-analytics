@@ -84,30 +84,26 @@ WITH base_mrr AS (
     ON last_year.subscription_slug_for_counting = current.subscription_slug_for_counting
     AND (last_year.mrr_month + INTERVAL '12 month')::date = current.mrr_month
 
-), first_12months as (
+), excluded as (
 
     SELECT
-      account_number,
-      subscription_name_slugify,
-      subscription_name,
-      subscription_slug_for_counting,
-      mrr_month,
-      zuora_subscription_cohort_month,
-      zuora_subscription_cohort_quarter,
-      --months_since_zuora_subscription_cohort_start,
-      mrr,
+      uniqueified.*,
       null::float as mrr_12mo_ago
-    FROM uniqueified
-    WHERE mrr_month::date - zuora_subscription_cohort_month::date <= 365
+    FROM subs_with_retention_values
+    RIGHT JOIN uniqueified
+    ON uniqueified.subscription_slug_for_counting = subs_with_retention_values.subscription_slug_for_counting
+    AND uniqueified.mrr_month = subs_with_retention_values.mrr_month
+    WHERE subs_with_retention_values.subscription_slug_for_counting IS NULL
+     AND subs_with_retention_values.mrr_month IS NULL
 
 
 ), unioned as (
 
-    SELECT * FROM subs_with_retention_values
+    SELECT * FROM subs_with_retention_values 
     UNION ALL
-    SELECT * FROM first_12months
+    SELECT * FROM excluded 
 
 )
 
-SELECT *
-FROM unioned
+SELECT sum(mrr)
+FROM mrr_combined
