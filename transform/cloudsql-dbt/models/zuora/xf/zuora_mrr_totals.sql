@@ -105,5 +105,5 @@ WITH base_mrr AS (
 
 )
 
-SELECT sum(mrr)
-FROM mrr_combined
+SELECT *
+FROM unioned
