@@ -106,4 +106,8 @@ WITH base_mrr AS (
 )
 
 SELECT *
+      --months_since_zuora_subscription_cohort_start
+      --mrr_type
+      --quantity
+      --quarters_since_zuora
 FROM unioned
