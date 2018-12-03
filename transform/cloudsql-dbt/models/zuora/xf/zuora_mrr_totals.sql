@@ -54,14 +54,16 @@ WITH base_mrr AS (
 
   ), uniqueified as (
 
-    SELECT max(account_number) as account_number,
-            max(subscription_name_slugify) as subscription_name_slugify,
-            max(subscription_name) as subscription_name,
+    SELECT FIRST_VALUE(account_number) OVER (PARTITION BY subscription_name_slugify
+              ORDER BY mrr_month ASC ) AS account_number,
+            FIRST_VALUE(subscription_name_slugify) OVER (PARTITION BY subscription_name_slugify
+              ORDER BY mrr_month ASC ) AS subscription_name_slugify,
+            FIRST_VALUE(subscription_name) OVER (PARTITION BY subscription_name_slugify
+              ORDER BY mrr_month ASC ) AS subscription_name,
             subscription_slug_for_counting,
             mrr_month,
             min(zuora_subscription_cohort_month) as zuora_subscription_cohort_month,
             min(zuora_subscription_cohort_quarter) as zuora_subscription_cohort_quarter,
-            --max(months_since_zuora_subscription_cohort_start) as months_since_zuora_subscription_cohort_start,
             sum(mrr) as mrr 
     FROM mrr_combined
     GROUP BY 4, 5
@@ -105,9 +107,7 @@ WITH base_mrr AS (
 
 )
 
-SELECT *
-      --months_since_zuora_subscription_cohort_start
-      --mrr_type
-      --quantity
-      --quarters_since_zuora
+SELECT *, 
+      {{ month_diff('zuora_subscription_cohort_month ', 'mrr_month') }} as months_since_zuora_subscription_cohort_start,
+      {{ quarters_diff('zuora_subscription_cohort_quarter', 'mrr_month') }} as quarters_since_zuora_subscription_cohort_start
 FROM unioned
