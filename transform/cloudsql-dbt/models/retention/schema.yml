@@ -24,8 +24,6 @@ models:
           description: '{{ doc("zuora_mrr_totals_col_mrr_type") }}'
         - name: mrr
           description: '{{ doc("zuora_mrr_totals_col_mrr") }}'
-          tests:
-              - not_null
         - name: mrr_12mo_ago
           description: '{{ doc("zuora_mrr_totals_col_mrr_12mo_ago") }}'
         - name: ultimate_parent_account_id
