@@ -17,6 +17,7 @@ from shared_modules.elt.error import Error
 from netsuite.src.soap_api.account import Account
 from netsuite.src.soap_api.currency import Currency
 from netsuite.src.soap_api.currency_rate import CurrencyRate
+from netsuite.src.soap_api.consolidated_exchange_rate import ConsolidatedExchangeRate
 from netsuite.src.soap_api.customer import Customer
 from netsuite.src.soap_api.department import Department
 from netsuite.src.soap_api.budget import Budget
@@ -313,6 +314,9 @@ class NetsuiteClient:
             currency_rate = CurrencyRate(self)
             entities.append(currency_rate)
 
+            consolidated_exchange_rate = ConsolidatedExchangeRate(self)
+            entities.append(consolidated_exchange_rate)
+
             customer = Customer(self)
             entities.append(customer)
 
@@ -344,6 +348,7 @@ class NetsuiteClient:
             Budget,
             Currency,
             CurrencyRate,
+            ConsolidatedExchangeRate,
             Customer,
             Department,
             Expense,
@@ -369,6 +374,7 @@ class NetsuiteClient:
             'Budget': Budget,
             'Currency': Currency,
             'CurrencyRate': CurrencyRate,
+            'ConsolidatedExchangeRate': ConsolidatedExchangeRate,
             'Customer': Customer,
             'Department': Department,
             'Expense': Expense,
