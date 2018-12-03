@@ -294,7 +294,7 @@ version_db:
     refs:
       - master
     variables:
-      - $PINGS
+      - $VERSION_DB_EXTRACTION
 
 customers_db:
   stage: extract
@@ -308,7 +308,7 @@ customers_db:
     refs:
       - master
     variables:
-      - $PINGS
+      - $CUSTOMERS_DB_EXTRACTION
 
 license_db:
   stage: extract
@@ -322,7 +322,7 @@ license_db:
     refs:
       - master
     variables:
-      - $PINGS
+      - $LICENSE_DB_EXTRACTION
 
 ci_stats_db:
   stage: extract
@@ -336,7 +336,7 @@ ci_stats_db:
     refs:
       - master
     variables:
-      - $CI_STATS
+      - $CI_STATS_DB_EXTRACTION
 
 gitlab_profiler_db:
   stage: extract
@@ -350,7 +350,7 @@ gitlab_profiler_db:
     refs:
       - master
     variables:
-      - $GITLAB_PROFILER
+      - $GITLAB_PROFILER_DB_EXTRACTION
 
 sfdc:
   <<: *sfdc_extract
