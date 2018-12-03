@@ -66,7 +66,7 @@ WITH base_mrr AS (
             min(zuora_subscription_cohort_quarter) as zuora_subscription_cohort_quarter,
             sum(mrr) as mrr 
     FROM mrr_combined
-    GROUP BY 4, 5
+    GROUP BY 1, 2, 3, 4, 5
 
 ), subs_with_retention_values as (
 
