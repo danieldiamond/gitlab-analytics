@@ -23,7 +23,7 @@ WITH base_mrr AS (
 
   ),
 
-    mrr_combined AS (
+    mrr_combined AS ( --union the two tables
 
     SELECT
       account_number,
@@ -33,7 +33,6 @@ WITH base_mrr AS (
       trueup_month AS mrr_month,
       cohort_month AS zuora_subscription_cohort_month,
       cohort_quarter AS zuora_subscription_cohort_quarter,
-      --{{ month_diff('cohort_month ', 'trueup_month') }} as months_since_zuora_subscription_cohort_start,
       mrr
     FROM trueup_mrr
 
@@ -48,11 +47,10 @@ WITH base_mrr AS (
       mrr_month,
       cohort_month AS zuora_subscription_cohort_month,
       cohort_quarter AS zuora_subscription_cohort_quarter,
-      --{{ month_diff('cohort_month ', 'mrr_month') }} as months_since_zuora_subscription_cohort_start,
       mrr
     FROM base_mrr
 
-  ), uniqueified as (
+  ), uniqueified as ( -- one row per sub slug for counting x mrr_month combo, with first of other values
 
     SELECT FIRST_VALUE(account_number) OVER (PARTITION BY subscription_name_slugify
               ORDER BY mrr_month ASC ) AS account_number,
@@ -68,7 +66,7 @@ WITH base_mrr AS (
     FROM mrr_combined
     GROUP BY account_number, subscription_name_slugify, subscription_name, 4, 5
 
-), subs_with_retention_values as (
+), subs_with_retention_values as ( --12 months ago to current (dynamically)
 
     SELECT
       last_year.account_number,
@@ -86,7 +84,7 @@ WITH base_mrr AS (
     ON last_year.subscription_slug_for_counting = current.subscription_slug_for_counting
     AND (last_year.mrr_month + INTERVAL '12 month')::date = current.mrr_month
 
-), excluded as (
+), excluded as ( --prep list of accounts that were excluded from subs_with_retention_values
 
     SELECT
       uniqueified.*,
@@ -99,7 +97,7 @@ WITH base_mrr AS (
      AND subs_with_retention_values.mrr_month IS NULL
 
 
-), unioned as (
+), unioned as ( -- union 
 
     SELECT * FROM subs_with_retention_values 
     UNION ALL
@@ -107,7 +105,7 @@ WITH base_mrr AS (
 
 )
 
-SELECT *, 
+SELECT *, -- calculate new values
       {{ month_diff('zuora_subscription_cohort_month ', 'mrr_month') }} as months_since_zuora_subscription_cohort_start,
       {{ quarters_diff('zuora_subscription_cohort_quarter', 'mrr_month') }} as quarters_since_zuora_subscription_cohort_start
 FROM unioned
