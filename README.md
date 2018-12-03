@@ -168,32 +168,30 @@ Here are the proper steps for provisioning a new use and user role:
 
 Our current implementation uses the following project variables:
 
-  - SNOWFLAKE_USER
   - SNOWFLAKE_ACCOUNT
-  - SNOWFLAKE_PASSWORD
+  - SNOWFLAKE_REPORT_WAREHOUSE
+  - SNOWFLAKE_{FLAVOR}_USER
+  - SNOWFLAKE_{FLAVOR}_PASSWORD
+  - SNOWFLAKE_{FLAVOR}_DATABASE
+  - SNOWFLAKE_{FLAVOR}_ROLE
+  - SNOWFLAKE_{FLAVOR}_WAREHOUSE
   
-> `LOAD` flavor is used by the Extract & Load process
+The following flavors are defined:
 
-  - SNOWFLAKE_LOAD_DATABASE
-  - SNOWFLAKE_LOAD_ROLE
-  - SNOWFLAKE_LOAD_WAREHOUSE
-  
-> `TRANSFORM` flavor is used by the Transform process
-
-  - SNOWFLAKE_TRANSFORM_ROLE
-  - SNOWFLAKE_TRANSFORM_DATABASE
-  - SNOWFLAKE_TRANSFORM_WAREHOUSE
-
-> `ADMIN` flavor for housekeeping tasks (like setting up review instances)
-
-  - SNOWFLAKE_ADMIN_ROLE
+  - `LOAD` flavor is used by the Extract & Load process
+  - `TRANSFORM` flavor is used by the Transform process
+  - `TEST` flavor for testing using Snowflake
+  - `PERMISSION` flavor for the permission bot
+  - `SYSADMIN` flavor for housekeeping tasks (like setting up review instances). This flavor doesn't define `SNOWFLAKE_SYSADMIN_DATABASE` and `SNOWFLAKE_SYSADMIN_WAREHOUSE`.
 
 <div class="panel panel-warning">
 The following variables are set at the job level dependending on the running environment **and should not set in the project settings**.
 {: .panel-heading}
 <div class="panel-body">
-  - SNOWFLAKE_DATABASE
+  - SNOWFLAKE_USER
+  - SNOWFLAKE_PASSWORD
   - SNOWFLAKE_ROLE
+  - SNOWFLAKE_DATABASE
   - SNOWFLAKE_WAREHOUSE
 </div>
 </div>
