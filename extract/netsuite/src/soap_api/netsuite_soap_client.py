@@ -15,6 +15,7 @@ from requests.exceptions import HTTPError, ConnectTimeout
 from shared_modules.elt.error import Error
 
 from netsuite.src.soap_api.account import Account
+from netsuite.src.soap_api.accounting_period import AccountingPeriod
 from netsuite.src.soap_api.currency import Currency
 from netsuite.src.soap_api.currency_rate import CurrencyRate
 from netsuite.src.soap_api.consolidated_exchange_rate import ConsolidatedExchangeRate
@@ -305,6 +306,9 @@ class NetsuiteClient:
             account = Account(self)
             entities.append(account)
 
+            accounting_period = AccountingPeriod(self)
+            entities.append(accounting_period)
+
             budget = Budget(self)
             entities.append(budget)
 
@@ -344,6 +348,7 @@ class NetsuiteClient:
         """
         entities = [
             Account,
+            AccountingPeriod,
             Application,
             Budget,
             Currency,
@@ -370,6 +375,7 @@ class NetsuiteClient:
         """
         classes = {
             'Account': Account,
+            'AccountingPeriod': AccountingPeriod,
             'Application': Application,
             'Budget': Budget,
             'Currency': Currency,
