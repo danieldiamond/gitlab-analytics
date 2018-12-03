@@ -64,7 +64,7 @@ snowflake_review: &snowflake_review
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   variables:
     GIT_STRATEGY: clone
-    SF_DATABASE: $CI_COMMIT_REF_NAME
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
   tags:
     - analytics
   script:
@@ -74,10 +74,20 @@ snowflake_review: &snowflake_review
     name: review/$CI_COMMIT_REF_NAME
     on_stop: review_stop
   only:
-    - branches
+    refs:
+      - branches
+    variables:
+      - $SNOWFLAKE_SYSADMIN_ROLE
+      - $SNOWFLAKE_LOAD_WAREHOUSE
+      - $SNOWFLAKE_LOAD_DATABASE       # make sure the guard works
+      - $SNOWFLAKE_TRANSFORM_DATABASE  # make sure the guard works
   except:
-    - master
-    - $TEST_PIPELINE
+    refs:
+      - master
+    variables:
+      - $SNOWFLAKE_DATABASE == $SNOWFLAKE_LOAD_DATABASE
+      - $SNOWFLAKE_DATABASE == $SNOWFLAKE_TRANSFORM_DATABASE
+      - $TEST_PIPELINE
 
 snowflake_review_refresh:
   <<: *snowflake_review
@@ -174,11 +184,18 @@ sfdc_snapshot_manual:
 
 # Stage: publish
 
+# ======
+# Pages
+# ======
+.variables: &pages_job__variables
+  SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
+  SNOWFLAKE_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
+  SNOWFLAKE_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE
+
 .pages_job_template: &pages_job_template
   stage: publish
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
-  variables:
-    SF_DATABASE: $CI_COMMIT_REF_NAME
+  variables: *pages_job__variables
   script:
     - generate_dbt_docs.sh
   artifacts:
@@ -189,6 +206,9 @@ sfdc_snapshot_manual:
 
 pages:
   <<: *pages_job_template
+  variables:
+    <<: *pages_job__variables
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_TRANSFORM_DATABASE
   only:
     refs:
       - master
@@ -211,7 +231,7 @@ review_stop:
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   variables:
     GIT_STRATEGY: none
-    SF_DATABASE: $CI_COMMIT_REF_NAME
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
   script:
     - git clone $CI_REPOSITORY_URL
     - pip3 install -U snowflake-sqlalchemy
@@ -220,9 +240,19 @@ review_stop:
   when: manual
   allow_failure: true
   only:
-    - branches
+    refs:
+      - branches
+    variables:
+      - $SNOWFLAKE_SYSADMIN_ROLE
+      - $SNOWFLAKE_LOAD_WAREHOUSE
+      - $SNOWFLAKE_LOAD_DATABASE       # make sure the guard works
+      - $SNOWFLAKE_TRANSFORM_DATABASE  # make sure the guard works
   except:
-    - master
+    refs:
+      - master
+    variables:
+      - $SNOWFLAKE_DATABASE == $SNOWFLAKE_LOAD_DATABASE
+      - $SNOWFLAKE_DATABASE == $SNOWFLAKE_TRANSFORM_DATABASE
   environment:
     name: review/$CI_COMMIT_REF_NAME
     action: stop

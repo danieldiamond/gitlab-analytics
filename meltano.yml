@@ -35,12 +35,12 @@ extractors:
   pip_url: git+https://gitlab.com/meltano/tap-marketo.git
 loaders:
 - config:
-    account: $SF_ACCOUNT
-    database: $SF_DATABASE
-    password: $SF_PASSWORD
-    role: $SF_ROLE
-    schema: $SF_SCHEMA
-    username: $SF_USER
-    warehouse: $SF_WAREHOUSE
+    account: $SNOWFLAKE_ACCOUNT
+    database: $SNOWFLAKE_DATABASE
+    password: $SNOWFLAKE_PASSWORD
+    role: $SNOWFLAKE_ROLE
+    schema: $SNOWFLAKE_SCHEMA
+    username: $SNOWFLAKE_USER
+    warehouse: $SNOWFLAKE_WAREHOUSE
   name: target-snowflake
   pip_url: git+https://gitlab.com/meltano/target-snowflake.git

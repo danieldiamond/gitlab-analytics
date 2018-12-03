@@ -16,15 +16,15 @@ logging.basicConfig(stream=sys.stdout, level=20)
 class SnowflakeManager(object):
     def __init__(self, config_vars: Dict):
         self.engine = create_engine(
-                        URL(user=config_vars['SF_USER'],
-                            password=config_vars['SF_PASSWORD'],
-                            account=config_vars['SF_ACCOUNT'],
-                            role='SYSADMIN',
-                            warehouse='LOADING'))
+                        URL(user=config_vars['SNOWFLAKE_USER'],
+                            password=config_vars['SNOWFLAKE_PASSWORD'],
+                            account=config_vars['SNOWFLAKE_ACCOUNT'],
+                            role=config_vars['SNOWFLAKE_SYSADMIN_ROLE'],
+                            warehouse=config_vars['SNOWFLAKE_LOAD_WAREHOUSE']))
 
         # Snowflake database name should be in CAPS
         # see https://gitlab.com/meltano/analytics/issues/491
-        self.database = config_vars['SF_DATABASE'].upper()
+        self.database = config_vars['SNOWFLAKE_DATABASE'].upper()
 
     def manage_clones(self, force: bool=False) -> None:
         """
@@ -32,10 +32,10 @@ class SnowflakeManager(object):
         """
 
         # Queries for database cloning
-        create_query = """create or replace database "{0}" clone analytics;""".format(self.database)
-        grant_query = """grant ownership on database "{0}" to transformer;""".format(self.database)
-        grant_roles_transformer = """grant create schema, usage on database "{0}" to transformer""".format(self.database)
-        grant_roles_loader = """grant create schema, usage on database "{0}" to loader""".format(self.database)
+        create_query = """create or replace database "{0}" clone ANALYTICS;""".format(self.database)
+        grant_query = """grant ownership on database "{0}" to TRANSFORMER;""".format(self.database)
+        grant_roles_loader = """grant create schema, usage on database "{0}" to LOADER""".format(self.database)
+        grant_roles_transformer = """grant create schema, usage on database "{0}" to TRANSFORMER""".format(self.database)
         queries = [create_query,
                    grant_query,
                    grant_roles_transformer,

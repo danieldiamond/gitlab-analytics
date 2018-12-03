@@ -8,13 +8,8 @@ mkdir -p $CI_PROJECT_DIR/public/dbt/cloudsql
 cd target
 cp *.json *.html graph.gpickle $CI_PROJECT_DIR/public/dbt/cloudsql/
 
-export SF_DATABASE="${SF_DATABASE^^}"
-
-if [ "$SF_DATABASE" == "MASTER" ]; then
-   export SF_DATABASE="ANALYTICS"
-fi
-
-echo "SF_DATABASE = $SF_DATABASE"
+export SNOWFLAKE_DATABASE="${SNOWFLAKE_DATABASE^^}"
+echo "SNOWFLAKE_DATABASE = $SNOWFLAKE_DATABASE"
 
 cd $CI_PROJECT_DIR/transform/snowflake-dbt/
 dbt deps --profiles-dir profile
