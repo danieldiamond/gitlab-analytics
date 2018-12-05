@@ -477,7 +477,7 @@ zuora:
     refs:
       - master
     variables:
-      - $ZUORA
+      - $ZUORA_CLOUDSQL
 
 zuora_snowflake:
   <<: *zuora_extract_meltano
@@ -488,7 +488,7 @@ zuora_snowflake:
     refs:
       - master
     variables:
-      - $ZUORA
+      - $ZUORA_SNOWFLAKE
 
 ## Review Jobs
 
