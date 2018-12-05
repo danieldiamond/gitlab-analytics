@@ -1,0 +1,840 @@
+{
+  "streams": [
+    {
+      "metadata": [
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "timestamp without time zone",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "current_sign_in_at"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "character varying",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "zuora_account_id"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "boolean",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "billable"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "timestamp without time zone",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "updated_at"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "integer",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "sign_in_count"
+          ]
+        },
+        {
+          "metadata": {
+            "table-key-properties": [
+              "id"
+            ],
+            "is-view": false,
+            "row-count": 16774,
+            "schema-name": "public",
+            "database-name": "customers_gitlab_com_production",     
+            "selected": true,
+            "replication-key": "updated_at",
+            "replication-method": "INCREMENTAL"
+          },
+          "breadcrumb": []
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "timestamp without time zone",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "timestamp without time zone",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "last_sign_in_at"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "integer",
+            "inclusion": "automatic"
+          },
+          "breadcrumb": [
+            "properties",
+            "id"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "character varying",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "salesforce_account_id"
+          ]
+        }
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "billable": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "zuora_account_id": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "current_sign_in_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "salesforce_account_id": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "updated_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "last_sign_in_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "sign_in_count": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          }
+        },
+        "definitions": {
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            },
+            "format": "date-time"
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "stream": "customers",
+      "table_name": "customers",
+      "tap_stream_id": "customers_gitlab_com_production-public-customers"
+    },
+    {
+      "metadata": [
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "character varying",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "whodunnit"
+          ]
+        },
+        {
+          "metadata": {
+            "table-key-properties": [
+              "id"
+            ],
+            "is-view": false,
+            "row-count": 25108,
+            "schema-name": "public",
+            "database-name": "customers_gitlab_com_production",     
+            "selected": true,
+            "replication-key": "created_at",
+            "replication-method": "INCREMENTAL"
+          },
+          "breadcrumb": []
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "text",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "object"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "character varying",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "item_type"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "text",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "object_changes"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "integer",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "item_id"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "timestamp without time zone",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "integer",
+            "inclusion": "automatic"
+          },
+          "breadcrumb": [
+            "properties",
+            "id"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "character varying",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "event"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "integer",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "transaction_id"
+          ]
+        }
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "whodunnit": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "object": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "event": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "created_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "object_changes": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "item_type": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "transaction_id": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "item_id": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          }
+        },
+        "definitions": {
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            },
+            "format": "date-time"
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "stream": "versions",
+      "table_name": "versions",
+      "tap_stream_id": "customers_gitlab_com_production-public-versions"
+    },
+    {
+      "metadata": [
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "integer",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "quantity"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "character varying",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "gl_namespace_id"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "character varying",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "product_rate_plan_id"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "character varying",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "subscription_name"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "integer",
+            "inclusion": "automatic"
+          },
+          "breadcrumb": [
+            "properties",
+            "id"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "timestamp without time zone",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "updated_at"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "integer",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "customer_id"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "character varying",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "amendment_type"
+          ]
+        },
+        {
+          "metadata": {
+            "table-key-properties": [
+              "id"
+            ],
+            "is-view": false,
+            "row-count": 10538,
+            "schema-name": "public",
+            "database-name": "customers_gitlab_com_production",     
+            "selected": true,
+            "replication-key": "updated_at",
+            "replication-method": "INCREMENTAL"
+          },
+          "breadcrumb": []
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "character varying",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "gl_namespace_name"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "boolean",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "trial"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "timestamp without time zone",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "date",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "end_date"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "character varying",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "subscription_id"
+          ]
+        },
+        {
+          "metadata": {
+            "selected-by-default": true,
+            "sql-datatype": "date",
+            "inclusion": "available"
+          },
+          "breadcrumb": [
+            "properties",
+            "start_date"
+          ]
+        }
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "gl_namespace_id": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "product_rate_plan_id": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "customer_id": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "trial": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "updated_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "end_date": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "quantity": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "subscription_name": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "amendment_type": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "gl_namespace_name": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "subscription_id": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "start_date": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          }
+        },
+        "definitions": {
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            },
+            "format": "date-time"
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "stream": "orders",
+      "table_name": "orders",
+      "tap_stream_id": "customers_gitlab_com_production-public-orders"
+    }
+  ]
+}

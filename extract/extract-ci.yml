@@ -136,6 +136,20 @@
     - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest gitlab_profiler"
     - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest gitlab_profiler --days 3600"
 
+.postgres_db_extract: &postgres_db_extract
+  stage: extract
+  <<: *extract_definition
+  image:
+    name: registry.gitlab.com/meltano/meltano/runner:v0.1.4
+    entrypoint: [""]  
+  script:
+    - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
+    - export SNOWFLAKE_DATABASE="${SNOWFLAKE_DATABASE^^}" # database name must be in CAPS
+    - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
+    - meltano install
+    - python3 extract/postgres --import_db $EXPORT_DATABASE --days $DAYS --hours $HOURS
+    - extract/postgres/run_custom_tap_target.sh
+
 .sheetload: &sheetload
   stage: extract
   <<: *extract_definition
@@ -334,6 +348,77 @@ pings:
     variables:
       - $PINGS
 
+version_db:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
+    EXPORT_DATABASE: "version"
+    DAYS: 1
+    HOURS: 0
+    AVG_CYCLE_ANALYTICS_ID: 1
+  only:
+    refs:
+      - master
+    variables:
+      - $VERSION_DB_EXTRACTION
+
+customers_db:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
+    EXPORT_DATABASE: "customers"
+    DAYS: 1
+    HOURS: 0
+  only:
+    refs:
+      - master
+    variables:
+      - $CUSTOMERS_DB_EXTRACTION
+
+license_db:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
+    EXPORT_DATABASE: "license"
+    DAYS: 1
+    HOURS: 0
+  only:
+    refs:
+      - master
+    variables:
+      - $LICENSE_DB_EXTRACTION
+
+ci_stats_db:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
+    EXPORT_DATABASE: "ci_stats"
+    DAYS: 0
+    HOURS: 8
+  only:
+    refs:
+      - master
+    variables:
+      - $CI_STATS_DB_EXTRACTION
+
+gitlab_profiler_db:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
+    EXPORT_DATABASE: "gitlab_profiler"
+    DAYS: 15
+    HOURS: 0
+  only:
+    refs:
+      - master
+    variables:
+      - $GITLAB_PROFILER_DB_EXTRACTION
+
 sfdc:
   <<: *sfdc_extract
   only:
@@ -500,6 +585,77 @@ gitlab_profiler_backfill:
 discover_gitlab_dbs_schema_manual:
   stage: extract
   <<: *discover_gitlab_dbs_schema
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+version_db_manual:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
+    EXPORT_DATABASE: "version"
+    DAYS: 1
+    HOURS: 0
+    AVG_CYCLE_ANALYTICS_ID: 1341780
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+customers_db_manual:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
+    EXPORT_DATABASE: "customers"
+    DAYS: 1
+    HOURS: 0
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+license_db_manual:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
+    EXPORT_DATABASE: "license"
+    DAYS: 1
+    HOURS: 0
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+ci_stats_db_manual:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
+    EXPORT_DATABASE: "ci_stats"
+    DAYS: 0
+    HOURS: 8
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+gitlab_profiler_db_manual:
+  stage: extract
+  <<: *postgres_db_extract
+  variables:
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
+    EXPORT_DATABASE: "gitlab_profiler"
+    DAYS: 15
+    HOURS: 0
   only:
     - branches
   except:
