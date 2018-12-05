@@ -15,7 +15,7 @@ extractors:
     start_date: $SFDC_START_DATE
     username: $SFDC_USERNAME
   name: tap-salesforce
-  pip_url: git+https://github.com/meltano/tap-salesforce.git@add-password-auth
+  pip_url: git+https://gitlab.com/meltano/tap-salesforce.git@add-password-auth
 - config:
     api_token: $ZUORA_API_TOKEN
     api_type: AQuA
