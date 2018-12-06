@@ -23,7 +23,7 @@
   script:
     - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
     - export SNOWFLAKE_DATABASE="${SNOWFLAKE_DATABASE^^}" # database name must be in CAPS
-    - echo "Connecting to $SNOWFLAKE_USER@$SNOWFLAKE_ACCOUNT/$SNOWFLAKE_DATABASE/$SNOWFLAKE_SCHEMA"
+    - echo "Connecting to $SNOWFLAKE_USER[$SNOWFLAKE_ROLE]@$SNOWFLAKE_ACCOUNT/$SNOWFLAKE_DATABASE/$SNOWFLAKE_SCHEMA"
     - meltano install
     - ci_helpers.py use_proxy "meltano elt $MELTANO_JOB_ID --extractor $MELTANO_EXTRACTOR --loader $MELTANO_LOADER --transform skip"
 
