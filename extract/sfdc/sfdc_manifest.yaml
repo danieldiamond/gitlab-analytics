@@ -451,6 +451,7 @@ executive_business_review__c:
   first_date_success_updated__c: timestamp without time zone
   quarter_end_date__c: timestamp without time zone
   quarter_start_date__c: timestamp without time zone
+  isdeleted: boolean
 lead:
   bdr_lu__c: character varying
   bdr_text__c: character varying
