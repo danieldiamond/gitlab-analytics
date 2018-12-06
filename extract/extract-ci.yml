@@ -9,6 +9,8 @@
   SINGER_RUN_DIR: /run/singer
   TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target.rejected
   MELTANO_JOB_ID: $CI_JOB_NAME
+  SNOWFLAKE_USER: $SNOWFLAKE_LOAD_USER
+  SNOWFLAKE_PASSWORD: $SNOWFLAKE_LOAD_PASSWORD
   SNOWFLAKE_ROLE: $SNOWFLAKE_LOAD_ROLE
   SNOWFLAKE_WAREHOUSE: $SNOWFLAKE_LOAD_WAREHOUSE
   SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME  # review database
@@ -51,23 +53,23 @@
   script:
     - ci_helpers.py use_proxy "bash extract/mkto/mkto_processor.sh"
 
-.zendesk_meltano_extract: &zendesk_meltano_extract
+# =======
+# Zendesk
+# =======
+.variables: &zendesk_extract__variables
+  <<: *meltano_extract_job__variables
+  MELTANO_EXTRACTOR: tap-zendesk
+  MELTANO_LOADER: target-snowflake
+  ZENDESK_START_DATE: "2018-10-01T00:00:00Z"
+  SNOWFLAKE_SCHEMA: TAP_ZENDESK # must be in CAPS
+
+.zendesk_extract: &zendesk_extract
   stage: extract
-  <<: *extract_definition
+  <<: *meltano_extract_job
+  variables: *zendesk_extract__variables
   image:
-    name: registry.gitlab.com/meltano/meltano/singer_runner:0.0.1
+    name: registry.gitlab.com/meltano/meltano/runner:v0.2.1
     entrypoint: [""]
-  variables:
-    <<: *meltano_extract_job__variables
-    MELTANO_EXTRACTOR: tap-zendesk
-    MELTANO_LOADER: target-snowflake
-    ZENDESK_START_DATE: "2018-10-01T00:00:00Z"
-    SNOWFLAKE_SCHEMA: TAP_ZENDESK # must be in CAPS
-  script:
-    - export SNOWFLAKE_DATABASE="${SNOWFLAKE_DATABASE^^}" # database name must be in CAPS
-    - echo "Connecting to $SNOWFLAKE_USER@$SNOWFLAKE_ACCOUNT/$SNOWFLAKE_DATABASE/$SNOWFLAKE_SCHEMA"
-    - pip install -r orchestration/requirements.txt # TODO: add this to `meltano/meltano/runner`
-    - ci_helpers.py use_proxy "meltano extract $CI_JOB_NAME $MELTANO_EXTRACTOR --loader_name=$MELTANO_LOADER"
 
 .ci_stats: &ci_stats
   stage: extract
@@ -464,12 +466,15 @@ stripe_githost:
       - $STRIPE_GITHOST
 
 zendesk_snowflake:
-  <<: *zendesk_meltano_extract
+  <<: *zendesk_extract
+  variables:
+    <<: *zendesk_extract__variables
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
   only:
     refs:
       - master
     variables:
-      - $ZENDESK_MELTANO
+      - $ZENDESK
 
 zuora:
   <<: *zuora_extract
@@ -700,7 +705,7 @@ stripe_extract_githost_manual:
   when: manual
 
 zendesk_snowflake_manual:
-  <<: *zendesk_meltano_extract
+  <<: *zendesk_extract
   only:
     - branches
   except:
