@@ -1,9 +1,10 @@
-.snowflake_load: &snowflake_load
+.snowplow_load: &snowplow_load
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   stage: extract
   before_script:
     - cd transform/util/
-    - pip3 install -U snowflake-sqlalchemy
+    - pip3 install snowflake-sqlalchemy
+    - pip3 install -U keyrings.alt
   tags:
     - analytics
 
@@ -20,23 +21,24 @@
     - analytics
 
 # Load
-snowflake_load:
-  <<: *snowflake_load
+snowplow_load:
+  <<: *snowplow_load
   script:
     - python3 execute_copy.py
   only:
     refs:
       - master
     variables:
-      - $SNOWFLAKE_LOAD
+      - $SNOWPLOW_LOAD
 
-snowflake_load_manual:
-  <<: *snowflake_load
+snowplow_load_manual:
+  <<: *snowplow_load
   script:
+    - pip3 install -U keyrings.alt
     - python3 execute_copy.py
   only:
     refs:
-      - master
+      - branches
   when: manual
 
 # Model
