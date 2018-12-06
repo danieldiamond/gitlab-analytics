@@ -68,7 +68,8 @@ snowflake_review: &snowflake_review
   tags:
     - analytics
   script:
-    - pip3 install -U snowflake-sqlalchemy
+    - pip3 install snowflake-sqlalchemy
+    - pip3 install -U keyrings.alt
     - manage_snowflake.py manage_clones
   environment:
     name: review/$CI_COMMIT_REF_NAME
