@@ -181,6 +181,20 @@ roles:
         owns:
             schemas:
                 - analytics.eeastwood_scratch
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.gitter
+                write:
+                    - raw.gitter
+            tables:
+                read:
+                    - raw.gitter.*
+                write:
+                    - raw.gitter.*
 
     - gitlab-ci:
         warehouses:
@@ -261,7 +275,7 @@ users:
     - eeastwood:
         can_login: yes
         member_of:
-            - transformer
+            - reporter
             - eeastwood
 
     - gitlab-ci:
