@@ -28,6 +28,8 @@ WITH source AS (
 
 	FROM source
 
+	WHERE isdeleted IS FALSE
+
 )
 
 SELECT *

@@ -88,8 +88,9 @@ Like the rest of the company, we set quarterly objectives and key results. These
 * [Views on Vue Podcast with Jacob Schatz and Taylor Murphy](https://devchat.tv/views-on-vue/vov-030-how-we-use-vue-in-data-science-with-jacob-schatz-taylor-murphy-gitlab-team/)
 * [Pain Points by the Airflow Podcast with @tlapiana](https://soundcloud.com/the-airflow-podcast/pain-points)
 * [DevOps for AI](https://www.youtube.com/watch?v=HwZlGQuCTj4)
-* [What Can Data Scientists Learn from DveOps](https://redmonk.com/dberkholz/2012/11/06/what-can-data-scientists-learn-from-devops/)
+* [What Can Data Scientists Learn from DevOps](https://redmonk.com/dberkholz/2012/11/06/what-can-data-scientists-learn-from-devops/)
 * [One Analyst's Guide for Going from Good to Great](https://blog.fishtownanalytics.com/one-analysts-guide-for-going-from-good-to-great-6697e67e37d9)
+* The Value of Data: [Part 1](https://www.codingvc.com/the-value-of-data-part-1-using-data-as-a-competitive-advantage), [Part 2](https://www.codingvc.com/the-value-of-data-part-2-building-valuable-datasets), [Part 3](https://www.codingvc.com/the-value-of-data-part-3-data-business-models)
 
 
 ## Data sources
@@ -149,6 +150,54 @@ See the [README](/extract/sfdc/README.md) for the SFDC Extractor.
 #### Snowflake
 Snowflake is a cloud data warehouse. It separates storage from compute making it easy to scale analytics up and down as needed.
 
+#### Managing Roles for Snowflake
+
+Here are the proper steps for provisioning a new use and user role:
+
+* Login and switch to securityadmin role
+* Create role for user (`eburke` for example)
+* Grant role to sysadmin
+* Create user (`ebukre`)
+* Grant user role to new user
+* Create user_scratch schema in ANALYTICS as SYSADMIN
+  * CREATE SCHEMA eburke_scratch;
+* Grant ownership of scratch schema to user role
+  * GRANT OWNERSHIP ON schema eburke_scratch TO ROLE eburke;
+* Document in Snowflake config.yml permissions file
+
+##### Project variables
+
+Our current implementation uses the following project variables:
+
+  - SNOWFLAKE_ACCOUNT
+  - SNOWFLAKE_REPORT_WAREHOUSE
+  - SNOWFLAKE_{FLAVOR}_USER
+  - SNOWFLAKE_{FLAVOR}_PASSWORD
+  - SNOWFLAKE_{FLAVOR}_DATABASE
+  - SNOWFLAKE_{FLAVOR}_ROLE
+  - SNOWFLAKE_{FLAVOR}_WAREHOUSE
+  
+The following flavors are defined:
+
+  - `LOAD` flavor is used by the Extract & Load process
+  - `TRANSFORM` flavor is used by the Transform process
+  - `TEST` flavor for testing using Snowflake
+  - `PERMISSION` flavor for the permission bot
+  - `SYSADMIN` flavor for housekeeping tasks (like setting up review instances). This flavor doesn't define `SNOWFLAKE_SYSADMIN_DATABASE` and `SNOWFLAKE_SYSADMIN_WAREHOUSE`.
+
+<div class="panel panel-warning">
+The following variables are set at the job level dependending on the running environment **and should not set in the project settings**.
+{: .panel-heading}
+<div class="panel-body">
+  - SNOWFLAKE_USER
+  - SNOWFLAKE_PASSWORD
+  - SNOWFLAKE_ROLE
+  - SNOWFLAKE_DATABASE
+  - SNOWFLAKE_WAREHOUSE
+</div>
+</div>
+
+
 #### Google Cloud SQL
 
 [Cloud SQL](https://cloud.google.com/sql/docs/postgres/) - is a fully-managed database service that makes it easy to set up, maintain, manage, and administer GitLab's PostgreSQL relational databases on Google Cloud Platform.
@@ -166,7 +215,7 @@ If you want direct access to the data warehouse (outside of Looker or JupyterHub
 * Connect to the Data Warehouse through the terminal (a separate tab) with `psql "host=127.0.0.1 sslmode=disable dbname=dw_production user=<username>`
 * Alternatively, use your favorite database tool with `host=127.0.0.1` and `dbname=dw_production`
 
-#### Managing Roles
+#### Managing Roles for CloudSQL
 
 All role definitions are in [/extract/config/pg_roles/](https://gitlab.com/meltano/meltano/tree/master/extract/config)
 
@@ -205,6 +254,8 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, analytics_meta, customers, histori
   GRANT SELECT ON TABLES TO analytics;
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA analytics, analytics_meta, meta, public, sandbox TO analytics;
+
+GRANT CREATE on DATABASE dw_production to analytics;
 
 ``` 
 

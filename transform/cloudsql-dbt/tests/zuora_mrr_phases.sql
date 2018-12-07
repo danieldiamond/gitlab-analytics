@@ -33,4 +33,3 @@ FULL OUTER JOIN sum_mrr_totals
 FULL OUTER JOIN sum_mrr_totals_levelled
     ON sum_zuora_base.mrr_month = sum_mrr_totals_levelled.mrr_month
 WHERE (sum_mrr_totals != sum_mrr_totals_levelled)
-OR (abs(sum_mrr_totals_levelled - sum_zuora_base) > 1)

@@ -4,11 +4,6 @@ models:
   - name: mrr_totals_levelled
     description: '{{ doc("mrr_totals_levelled") }}'
     columns:
-        - name: sub_rpc_mrr_id
-          description: "The Primary Key for this table"
-          tests:
-              - not_null
-              - unique
         - name: account_number
           description: '{{ doc("zuora_mrr_totals_col_account_number") }}'
         - name: subscription_name_slugify
@@ -29,8 +24,6 @@ models:
           description: '{{ doc("zuora_mrr_totals_col_mrr_type") }}'
         - name: mrr
           description: '{{ doc("zuora_mrr_totals_col_mrr") }}'
-          tests:
-              - not_null
         - name: mrr_12mo_ago
           description: '{{ doc("zuora_mrr_totals_col_mrr_12mo_ago") }}'
         - name: ultimate_parent_account_id

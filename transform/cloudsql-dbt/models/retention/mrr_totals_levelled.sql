@@ -12,7 +12,7 @@ with zuora_mrr_totals as (
 
 ), joined as (
 
-    SELECT md5(sub_rpc_id||(mrr_month :: varchar)) as sub_rpc_mrr_id,
+    SELECT 
            zuora_mrr_totals.*,
            zuora_account.account_id AS zuora_account_id,
            zuora_account.account_name AS zuora_account_name,

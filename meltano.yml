@@ -15,7 +15,7 @@ extractors:
     start_date: $SFDC_START_DATE
     username: $SFDC_USERNAME
   name: tap-salesforce
-  pip_url: git+https://github.com/meltano/tap-salesforce.git@add-password-auth
+  pip_url: git+https://gitlab.com/meltano/tap-salesforce.git@add-password-auth
 - config:
     api_token: $ZUORA_API_TOKEN
     api_type: AQuA
@@ -33,14 +33,16 @@ extractors:
     start_time: $MARKETO_START_TIME
   name: tap-marketo
   pip_url: git+https://gitlab.com/meltano/tap-marketo.git
+- name: tap-postgres
+  pip_url: tap-postgres
 loaders:
 - config:
-    account: $SF_ACCOUNT
-    database: $SF_DATABASE
-    password: $SF_PASSWORD
-    role: $SF_ROLE
-    schema: $SF_SCHEMA
-    username: $SF_USER
-    warehouse: $SF_WAREHOUSE
+    account: $SNOWFLAKE_ACCOUNT
+    database: $SNOWFLAKE_DATABASE
+    password: $SNOWFLAKE_PASSWORD
+    role: $SNOWFLAKE_ROLE
+    schema: $SNOWFLAKE_SCHEMA
+    username: $SNOWFLAKE_USER
+    warehouse: $SNOWFLAKE_WAREHOUSE
   name: target-snowflake
   pip_url: git+https://gitlab.com/meltano/target-snowflake.git

@@ -1,0 +1,3414 @@
+{
+  "streams": [
+    {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "vulnerable": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "created_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          }
+        },
+        "definitions": {
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "format": "date-time",
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            }
+          },
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "tap_stream_id": "version_gitlab_com_production-public-versions",
+      "table_name": "versions",
+      "stream": "versions",
+      "metadata": [
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "row-count": 354,
+            "is-view": false,
+            "table-key-properties": [
+              "id"
+            ],
+            "schema-name": "public",
+            "database-name": "version_gitlab_com_production",
+            "selected": true,
+            "replication-key": "updated_at",
+            "replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "updated_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "vulnerable"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "version"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "automatic"
+          }
+        }
+      ]
+    },
+    {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "test_missing": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "issue_sd": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "issue_average": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "total": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "plan_missing": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "code_sd": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "staging_average": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "code_missing": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "staging_missing": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "plan_average": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "production_sd": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "plan_sd": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "test_average": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "staging_sd": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "review_missing": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "review_sd": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "usage_data_id": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "review_average": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "production_missing": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "code_average": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "test_sd": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "issue_missing": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "production_average": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          }
+        },
+        "definitions": {
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "format": "date-time",
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            }
+          },
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "tap_stream_id": "version_gitlab_com_production-public-avg_cycle_analytics",
+      "table_name": "avg_cycle_analytics",
+      "stream": "avg_cycle_analytics",
+      "metadata": [
+        {
+          "breadcrumb": [
+            "properties",
+            "plan_missing"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "code_missing"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "review_average"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "staging_average"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "production_average"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "plan_average"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "review_missing"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "issue_sd"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "code_sd"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "row-count": 1272875,
+            "is-view": false,
+            "table-key-properties": [
+              "id"
+            ],
+            "schema-name": "public",
+            "database-name": "version_gitlab_com_production",
+            "selected": true,
+            "replication-key": "id",
+            "replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "test_sd"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "review_sd"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "plan_sd"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "code_average"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "staging_sd"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "automatic"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "usage_data_id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "staging_missing"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "total"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "production_missing"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "test_missing"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "issue_missing"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "test_average"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "production_sd"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "issue_average"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        }
+      ]
+    },
+    {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "starts_on": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "active_users_count": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "version": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "user_count": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "updated_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "last_ping_received_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "company": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "add_ons": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "created_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "expires_on": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "historical_max_users_count": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          }
+        },
+        "definitions": {
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "format": "date-time",
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            }
+          },
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "tap_stream_id": "version_gitlab_com_production-public-licenses",
+      "table_name": "licenses",
+      "stream": "licenses",
+      "metadata": [
+        {
+          "breadcrumb": [
+            "properties",
+            "expires_on"
+          ],
+          "metadata": {
+            "sql-datatype": "date",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "add_ons"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "user_count"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "version"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "company"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "automatic"
+          }
+        },
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "row-count": 6768350,
+            "is-view": false,
+            "table-key-properties": [
+              "id"
+            ],
+            "schema-name": "public",
+            "database-name": "version_gitlab_com_production",
+            "selected": true,
+            "replication-key": "updated_at",
+            "replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "updated_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "starts_on"
+          ],
+          "metadata": {
+            "sql-datatype": "date",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "active_users_count"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "last_ping_received_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "historical_max_users_count"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        }
+      ]
+    },
+    {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "rank": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "company": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "created_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "domain": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        },
+        "definitions": {
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "format": "date-time",
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            }
+          },
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "tap_stream_id": "version_gitlab_com_production-public-fortune_companies",
+      "table_name": "fortune_companies",
+      "stream": "fortune_companies",
+      "metadata": [
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "row-count": 995,
+            "is-view": false,
+            "table-key-properties": [
+              "id"
+            ],
+            "schema-name": "public",
+            "database-name": "version_gitlab_com_production",
+            "selected": true,
+            "replication-key": "updated_at",
+            "replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "updated_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "domain"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "rank"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "company"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "automatic"
+          }
+        }
+      ]
+    },
+    {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "container_registry_enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "host_id": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "active_user_count": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "stats": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "updated_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "uuid": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "edition": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "mattermost_enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "git_version": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "historical_max_users": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "license_user_count": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "license_trial": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "geo_enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "created_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "signup_enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "gitlab_pages_enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "gitlab_shared_runners_enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "omniauth_enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "source_ip": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "license_restricted_user_count": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "installation_type": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "version": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "license_add_ons": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "elasticsearch_enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "gitlab_pages_version": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "license_expires_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "counts": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "source_license_id": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "database_version": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "gravatar_enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "license_id": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "reply_by_email_enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "recorded_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "license_starts_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "database_adapter": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "ldap_enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "hostname": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        },
+        "definitions": {
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "format": "date-time",
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            }
+          },
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "tap_stream_id": "version_gitlab_com_production-public-usage_data",
+      "table_name": "usage_data",
+      "stream": "usage_data",
+      "metadata": [
+        {
+          "breadcrumb": [
+            "properties",
+            "gitlab_shared_runners_enabled"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "automatic"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "active_user_count"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "license_restricted_user_count"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "license_user_count"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "stats"
+          ],
+          "metadata": {
+            "sql-datatype": "json",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "source_license_id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "license_expires_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "license_trial"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "container_registry_enabled"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "license_starts_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "source_ip"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "gravatar_enabled"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "updated_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "recorded_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "elasticsearch_enabled"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "counts"
+          ],
+          "metadata": {
+            "sql-datatype": "text",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "historical_max_users"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "edition"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "database_adapter"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "ldap_enabled"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "gitlab_pages_enabled"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "reply_by_email_enabled"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "version"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "omniauth_enabled"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "license_id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "uuid"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "geo_enabled"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "row-count": 6984555,
+            "is-view": false,
+            "table-key-properties": [
+              "id"
+            ],
+            "schema-name": "public",
+            "database-name": "version_gitlab_com_production",
+            "selected": true,
+            "replication-key": "updated_at",
+            "replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "gitlab_pages_version"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "host_id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "git_version"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "license_add_ons"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "installation_type"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "signup_enabled"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "hostname"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "database_version"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "mattermost_enabled"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        }
+      ]
+    },
+    {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "instance_projects_prometheus_active": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "percentage_issues": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "leader_environments": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "instance_environments": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "leader_ci_pipelines": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "updated_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "leader_service_desk_issues": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "instance_service_desk_issues": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "percentage_environments": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "instance_milestones": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "instance_ci_pipelines": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "percentage_notes": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "percentage_deployments": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "created_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "leader_milestones": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "percentage_ci_pipelines": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "percentage_projects_prometheus_active": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "percentage_merge_requests": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "leader_deployments": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "leader_notes": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "leader_boards": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "usage_data_id": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "percentage_boards": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "percentage_service_desk_issues": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "instance_merge_requests": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "leader_projects_prometheus_active": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "instance_issues": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "instance_boards": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "leader_issues": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "instance_deployments": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "percentage_milestones": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "instance_notes": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "leader_merge_requests": {
+            "type": [
+              "null",
+              "number"
+            ]
+          }
+        },
+        "definitions": {
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "format": "date-time",
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            }
+          },
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "tap_stream_id": "version_gitlab_com_production-public-conversational_development_indices",
+      "table_name": "conversational_development_indices",
+      "stream": "conversational_development_indices",
+      "metadata": [
+        {
+          "breadcrumb": [
+            "properties",
+            "leader_notes"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "percentage_environments"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "leader_milestones"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "instance_issues"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "leader_boards"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "leader_service_desk_issues"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "instance_ci_pipelines"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "leader_ci_pipelines"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "percentage_ci_pipelines"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "percentage_deployments"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "updated_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "leader_issues"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "percentage_merge_requests"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "leader_environments"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "instance_service_desk_issues"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "instance_milestones"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "percentage_boards"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "leader_projects_prometheus_active"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "instance_merge_requests"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "leader_merge_requests"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "instance_environments"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "instance_projects_prometheus_active"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "percentage_milestones"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "percentage_notes"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "automatic"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "instance_boards"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "percentage_projects_prometheus_active"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "usage_data_id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "instance_notes"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "row-count": 5168610,
+            "is-view": false,
+            "table-key-properties": [
+              "id"
+            ],
+            "schema-name": "public",
+            "database-name": "version_gitlab_com_production",
+            "selected": true,
+            "replication-key": "updated_at",
+            "replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "percentage_service_desk_issues"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "leader_deployments"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "percentage_issues"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "instance_deployments"
+          ],
+          "metadata": {
+            "sql-datatype": "double precision",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        }
+      ]
+    },
+    {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "gitlab_version": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "referer_url": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "host_id": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "request_data": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "updated_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          }
+        },
+        "definitions": {
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "format": "date-time",
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            }
+          },
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "tap_stream_id": "version_gitlab_com_production-public-version_checks",
+      "table_name": "version_checks",
+      "stream": "version_checks",
+      "metadata": [
+        {
+          "breadcrumb": [
+            "properties",
+            "referer_url"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "row-count": 36045492,
+            "is-view": false,
+            "table-key-properties": [
+              "id"
+            ],
+            "schema-name": "public",
+            "database-name": "version_gitlab_com_production",
+            "selected": true,
+            "replication-key": "updated_at",
+            "replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "updated_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "host_id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "automatic"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "request_data"
+          ],
+          "metadata": {
+            "sql-datatype": "text",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "gitlab_version"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        }
+      ]
+    },
+    {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "current_sign_in_ip": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "email": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "unlock_token": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "updated_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "last_sign_in_ip": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "uid": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "provider": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "sign_in_count": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "current_sign_in_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "locked_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "created_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "last_sign_in_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "failed_attempts": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          }
+        },
+        "definitions": {
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "format": "date-time",
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            }
+          },
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "tap_stream_id": "version_gitlab_com_production-public-users",
+      "table_name": "users",
+      "stream": "users",
+      "metadata": [
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "automatic"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "locked_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "current_sign_in_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "last_sign_in_ip"
+          ],
+          "metadata": {
+            "sql-datatype": "inet",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "failed_attempts"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "last_sign_in_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "current_sign_in_ip"
+          ],
+          "metadata": {
+            "sql-datatype": "inet",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "row-count": 253,
+            "is-view": false,
+            "table-key-properties": [
+              "id"
+            ],
+            "schema-name": "public",
+            "database-name": "version_gitlab_com_production",
+            "selected": true,
+            "replication-key": "updated_at",
+            "replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "updated_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "provider"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "uid"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "email"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "sign_in_count"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        }
+      ]
+    },
+    {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "in_salesforce": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "fortune_rank": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          },
+          "created_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "star": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "updated_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "id": {
+            "type": [
+              "integer"
+            ],
+            "maximum": 2147483647,
+            "minimum": -2147483648
+          }
+        },
+        "definitions": {
+          "sdc_recursive_timestamp_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "format": "date-time",
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_timestamp_array"
+            }
+          },
+          "sdc_recursive_integer_array": {
+            "type": [
+              "null",
+              "integer",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_integer_array"
+            }
+          },
+          "sdc_recursive_number_array": {
+            "type": [
+              "null",
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_number_array"
+            }
+          },
+          "sdc_recursive_string_array": {
+            "type": [
+              "null",
+              "string",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_string_array"
+            }
+          },
+          "sdc_recursive_boolean_array": {
+            "type": [
+              "null",
+              "boolean",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_boolean_array"
+            }
+          },
+          "sdc_recursive_object_array": {
+            "type": [
+              "null",
+              "object",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/definitions/sdc_recursive_object_array"
+            }
+          }
+        }
+      },
+      "tap_stream_id": "version_gitlab_com_production-public-hosts",
+      "table_name": "hosts",
+      "stream": "hosts",
+      "metadata": [
+        {
+          "breadcrumb": [],
+          "metadata": {
+            "row-count": 670895,
+            "is-view": false,
+            "table-key-properties": [
+              "id"
+            ],
+            "schema-name": "public",
+            "database-name": "version_gitlab_com_production",
+            "selected": true,
+            "replication-key": "updated_at",
+            "replication-method": "INCREMENTAL"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "in_salesforce"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "updated_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "fortune_rank"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "created_at"
+          ],
+          "metadata": {
+            "sql-datatype": "timestamp without time zone",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "id"
+          ],
+          "metadata": {
+            "sql-datatype": "integer",
+            "selected-by-default": true,
+            "inclusion": "automatic"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "star"
+          ],
+          "metadata": {
+            "sql-datatype": "boolean",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "url"
+          ],
+          "metadata": {
+            "sql-datatype": "character varying",
+            "selected-by-default": true,
+            "inclusion": "available"
+          }
+        }
+      ]
+    }
+  ]
+}
