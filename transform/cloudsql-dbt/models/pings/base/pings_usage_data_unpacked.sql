@@ -65,6 +65,7 @@ SELECT
   (stats -> 'clusters_platforms_gke') :: TEXT :: NUMERIC                    AS clusters_platforms_gke,
   (stats -> 'clusters_platforms_user') :: TEXT :: NUMERIC                   AS clusters_platforms_user,
   (stats -> 'container_scanning_jobs') :: TEXT :: NUMERIC                   AS container_scanning_jobs,
+  (stats -> 'dast_jobs') :: TEXT :: NUMERIC                                 AS dast_jobs,
   (stats -> 'dependency_scanning_jobs') :: TEXT :: NUMERIC                  AS dependency_scanning_jobs,
   (stats -> 'deploy_keys') :: TEXT :: NUMERIC                               AS deploy_keys,
   (stats -> 'deployments') :: TEXT :: NUMERIC                               AS deployments,
