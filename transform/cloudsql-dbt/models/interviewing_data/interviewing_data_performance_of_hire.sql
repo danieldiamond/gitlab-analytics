@@ -1,2 +1,2 @@
 SELECT *
-FROM interviewing_data.performance_of_hire
+FROM historical.performance_of_hires
