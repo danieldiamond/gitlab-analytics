@@ -46,6 +46,7 @@ journal_entries AS (
             t.currency_name         AS transaction_currency_name,
             t.exchange_rate,
             e.account_name,
+            LEFT (e.account_name,4) AS account_code,
             t.entity_name           AS entity,
             c.currency_name,
             ap.posting_period_id,
@@ -63,7 +64,7 @@ journal_entries AS (
           WHERE
           (LEFT (e.account_name,4) BETWEEN '5000' AND '6999' AND LEFT (e.account_name,4) != '5079')
                 AND t.entity_name NOT IN ('American Express', 'Comerica Commercial Card Srvc')
-          GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+          GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 
         )
 
@@ -76,6 +77,7 @@ SELECT
     e.transaction_currency_name,
     e.exchange_rate,
     e.account_name,
+    e.account_code,
     e.entity,
     e.currency_name,
     e.posting_period_id,
