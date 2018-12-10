@@ -36,6 +36,14 @@ models:
         enabled: true
         materialized: table
 
+    netsuite:
+      base:
+        enabled: true
+        materialized: view
+      xf:
+        enabled: true
+        materialized: table
+
     pings:
       base:
         enabled: true

@@ -175,7 +175,8 @@
           historical.cmodashboard.cmodashboard_actuals
           historical.cmodashboard.cmodashboard_goals
           historical.alliancesdashboard.alliancesdashboard_actuals
-          historical.alliancesdashboard.alliancesdashboard_goals"
+          historical.alliancesdashboard.alliancesdashboard_goals
+          historical.marketing_pipe_to_spend_headcount.marketing_pipe_to_spend_headcount"
 
 # =====
 # Zuora

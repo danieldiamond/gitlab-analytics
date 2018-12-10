@@ -43,6 +43,7 @@ with base as (
           --created_from_name
           posting_period_id,
           posting_period_name,
+          to_date(posting_period_name, 'Mon YYYY') 	AS period_date,
           --opportunity_id
           --opportunity_name
           department_id,
@@ -55,8 +56,8 @@ with base as (
           --location_name
           subsidiary_id,
           subsidiary_name,
-          currency_ref_id,
-          currency_ref_name,
+          currency_ref_id AS currency_id,
+          currency_ref_name AS currency_name,
           due_date,
           --discount_date
           --discount_amount
