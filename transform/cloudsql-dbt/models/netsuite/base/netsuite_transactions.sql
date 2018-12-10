@@ -55,8 +55,8 @@ with base as (
           --location_name
           subsidiary_id,
           subsidiary_name,
-          currency_ref_id,
-          currency_ref_name,
+          currency_ref_id AS currency_id,
+          currency_ref_name AS currency_name,
           due_date,
           --discount_date
           --discount_amount

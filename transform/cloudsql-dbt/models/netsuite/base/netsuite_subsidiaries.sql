@@ -11,10 +11,11 @@ with base as (
 
 ), renamed as (
 
-		SELECT internal_id as subsidiary_id,
-           name as subsidiary_name,
-           currency,
-           country
+		SELECT
+			internal_id 	as subsidiary_id,
+           	name 			as subsidiary_name,
+           	currency,
+           	country
     FROM base
 
 )
