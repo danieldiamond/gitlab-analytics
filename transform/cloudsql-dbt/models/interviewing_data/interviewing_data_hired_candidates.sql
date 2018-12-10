@@ -3,13 +3,11 @@ with source as (
 	FROM historical.hired_candidates 
 ), cleaned as (
 
-SELECT candidate_name,
+SELECT row_number() OVER (),
+		md5(UPPER(candidate_name)) as candidate_id,
+		candidate_name,
 		status,
 		termination,
-		promotion,
-		experience_factor,
-		discretionary_bonus,
-		pip,
 		{{ unnest('interviewer_names') }} as interviewer_names,
 		{{ unnest('interview_score') }} as interviewer_score,
 		CASE WHEN interviewer_names LIKE '%,%' THEN True
@@ -18,8 +16,6 @@ SELECT candidate_name,
 		interview_date::date as interview_date,
 		row_number() OVER (PARTITION BY candidate_name
               ORDER BY interview_date ASC ) AS interview_step,
-		forms_completed,
-		forms_expected,
 		candidate_owner_name,
 		schedule as scheduler,
 		posting_title, 
