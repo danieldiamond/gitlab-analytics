@@ -43,6 +43,7 @@ with base as (
           --created_from_name
           posting_period_id,
           posting_period_name,
+          to_date(posting_period_name, 'Mon YYYY') 	AS period_date,
           --opportunity_id
           --opportunity_name
           department_id,
