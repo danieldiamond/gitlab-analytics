@@ -6,7 +6,7 @@ with interviewing_data_hired_candidates as (
 ), interview_data_hired_candidates_with_performance as (
 
 	SELECT *
-	FROM {{ref('interview_data_hired_candidates_with_performance')}}
+	FROM {{ref('interviewing_data_hired_candidates_with_performance')}}
 
 ), candidates as (
 

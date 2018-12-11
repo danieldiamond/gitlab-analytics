@@ -3,7 +3,7 @@
 {% set bonus_types_mapping = [('discretionary_bonuses', "'Discretionary Bonus'"), ('marketing_prize_bonuses', "'Marketing Prize'"), ('merit_lump_sum_bonuses', "'Merit Lump Sum Award'"), ('quarterly_bonuses', "'Quarterly Bonus'"), ('referral_bonuses', "'Referral Bonus'"), ('signing_bonuses', "'Signing bonus'"), ('summit_prize_bonuses', "'Summit Prize Bonus'")] %}
 {% set compensation_change_types = ['commission_increase_compensation_change', 'performance_compensation_change', 'merit_administration_compensation_change', 'merit_increase_compensation_change', 'promotion_compensation_change'] %}
 {% set compensation_change_types_mapping = [('commission_increase_compensation_change',  "'Salary and Commission/Bonus Increase'"), ('performance_compensation_change', "'Performance'"), ('merit_administration_compensation_change', "'Merit Administration'"), ('merit_increase_compensation_change', "'Merit Increase'"), ('promotion_compensation_change', "'Promotion'")] %}
-
+ 
 with hired_candidates as (
 
     SELECT distinct candidate_name, status, termination, candidate_average_score
