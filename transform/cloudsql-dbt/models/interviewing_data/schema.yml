@@ -6,9 +6,6 @@ models:
       columns:
           - name: row_number
             description: "This is a unique row number per row."
-            tests:
-                - unique
-                - not_null
           - name: candidate_id
             description: '{{doc("candidate_id_col")}}'
           - name: candidate_name
