@@ -1,159 +1,137 @@
 version: 2
 
 models:
-  - name: interviewing_data_hired_candidates
-    description: '{{ doc("interviewing_data_hired_candidates") }}'
-    columns:
-      - name: row_number
-        description: "This is a unique row number per row."
-        tests:
-            - unique
-            - not_null
-      - name: candidate_id
-        description: '{{doc("candidate_id_col")}}'
-      - name: candidate_name
-        description: '{{doc("candidate_name_col")}}'
-      - name: status
-        description: '{{doc("status_col")}}'
-      - name: termination
-        description: '{{doc("termination_col")}}'
-      - name: interviewer_names
-        description: '{{doc("interviewer_names_col")}}'
-      - name: interviewer_score
-        description: '{{doc("interviewer_scores_col")}}'
-      - name: is_many_to_one_interview
-        description: '{{doc("is_many_to_one_interview_col")}}' 
-      - name: candidate_origin
-        description: "How was the candidate brought into the fold?"
-      - name: interview_date
-        description: "When was the interview conducted?"
-      - name: interview_step
-        description: "What 'step' of the interview is a candidate in? This is a number generated from the beginning of the process, but there is no finite end."
-      - name: candidate_owner_name
-        description: "The Recruiter"
-      - name: scheduler
-        description: "The Scheduler"
-      - name: posting_title
-        description: "The Role Title"
-      - name: posting_hiring_manager_name
-        description: "The Hiring Manger"
-      - name: candidate_average_score
-        description: '{{doc("candidate_score_col")}}'
-
-models:
-  - name: interviewing_data_interviewers_and_scores
-    description: '{{doc("interviewing_data_interviewers_and_scores")}}'
-    columns:
-    - name: interviewer
-      description: "The GitLab team member conducting the interview"
-    - name: total_number_of_interviews
-      description: "Total Number of Interviews Conducted"
-    - name: strong_no_hire
-      description: "Number of 'Strong No Hire' or 1s rewarded"
-    - name: no_hire
-      description: "Number of 'No Hire' or 2s rewarded"
-    - name: hire
-      description: "Number of 'Hires' or 3s rewarded"
-    - name: strong_hire
-      description: "Number of 'Strong Hires' or 4s rewarded"
-    - name: positive_responses
-      description: "Positive Responses are 'Hire's or 'Strong Hire's"
-    - name: negative_responses
-      description: "Negative Responses are 'No Hire's or 'Strong No Hire's"
-    - name: avg_time_to_complete_in_minutes
-      description: "Average Time to Complete Feedback Forms in Minutes"
-
-models:
-  - name: interviewing_data_performance_of_hire
-    description: '{{doc("interviewing_data_performance_of_hire")}}'
-    columns:
-    - names: full_name
-      description: "Name of person receiving reward"
-    - names: hire_date
-      description: "Hire Date"
-    - names: job_title
-      description: "Current Job Title"
-    - names: reporting_to
-      description: "Reporting Manager"
-    - names: employment
-      description: "Date of Change of Employment Status"
-    - names: employment_status
-      description: "Current Employment Status"
-    - names: fte
-      description: "(Value is not used)"
-    - names: termination
-      description:'{{doc("termination_col")}}'
-    - names: termination_reason
-      description: "Reason for Termination"
-    - names: eligible_for_rehire
-      description: "If candidates are eligible for rehire, post-termination"
-    - names: employment_status_comment
-      description: "Comment on Current Employment Status"
-    - names: compensation_change_reason
-      description: "Compensation Change Reason"
-    - names: compensation_comments
-      description: "Comments on Compensation Change"
-    - names: bonus_date
-      description: "Date Bonus Awarded"
-    - names: bonus_amount
-      description: "Amount of Bonus"
-    - names: bonus_amount_currency_code
-      description: "Currency of Bonus"
-    - names: bonus_type
-      description: "Bonus Types include Discretionary, Referral, Signing, and others"
-    - names: bonus_comments
-      description: ""
-    - names: effective_date
-      description: "Date changes go into effect"
-    - names: experience_factor
-      description: '{{doc("experience_factor_col")}}'
-    - names: comment
-      description: ""
-
-models:
-  - name: interviewing_data_hired_candidates_with_performance
-    description: '{{doc("interview_data_hired_candidates_with_performance")}}'
-    columns:
-    - name: candidate_name
-      description: '{{doc("candidate_name_col")}}'
-    - name: candidate_id
-      description: '{{doc("candidate_id_col")}}'
-    - name: status
-      description: '{{doc("status_col")}}'
-    - name: termination
-      description: '{{doc("termination_col")}}'
-    - name: candidate_score
-      description: '{{doc("candidate_score_col")}}'
-    - name: received_discretionary_bonus
-      description: "Whether or not an employee has received a Discretionary Bonus"
-    - name: received_marketing_prize_bonus
-      description:"Whether or not an employee has received a Marketing Prize Bonus"
-    - name: received_merit_lump_sum_bonus
-      description: "Whether or not an employee has received a Merit Lump Sum Bonus"
-    - name: received_quarterly_bonus
-      description: "Whether or not an employee has received a Quarterly Bonus"
-    - name: received_referral_bonus
-      description: "Whether or not an employee has received a Referral Bonus"
-    - name: received_signing_bonus
-      description: "Whether or not an employee has received a Signing Bonus"
-    - name: received_summit_prize_bonus
-      description: "Whether or not an employee has received a Summit Prize"
-    - name: received_any_bonus
-      description: "Whether or not an employee has received any of the aformentioned bonuses"
-    - name: experience_factor
-      description: '{{doc("experience_factor_col")}}'
-
-models:
-  - name: interviewing_data_interviewers_of_target_candidate
-    description: '{{doc("interviewing_data_interviewers_of_target_candidate")}}'
-    columns:
-    - name: candidate_id
-      description: '{{doc("candidate_id_col")}}'
-    - name: interviewer_names
-      description: '{{doc("interviewer_names_col")}}'
-    - name: interviewer_score
-      description: '{{doc("interviewer_scores_col")}}'
-    - name: is_many_to_one_interview
-      description: '{{doc("is_many_to_one_interview_col")}}' 
-    - name: criteria
-      description: "This column indicates whether the candidate was Terminated, Received a Raise, or Received a Bonus"
+    - name: interviewing_data_hired_candidates
+      description: '{{ doc("interviewing_data_hired_candidates") }}'
+      columns:
+          - name: row_number
+            description: "This is a unique row number per row."
+            tests:
+                - unique
+                - not_null
+          - name: candidate_id
+            description: '{{doc("candidate_id_col")}}'
+          - name: candidate_name
+            description: '{{doc("candidate_name_col")}}'
+          - name: status
+            description: '{{doc("status_col")}}'
+          - name: termination
+            description: '{{doc("termination_col")}}'
+          - name: interviewer_names
+            description: '{{doc("interviewer_names_col")}}'
+          - name: interviewer_score
+            description: '{{doc("interviewer_scores_col")}}'
+          - name: is_many_to_one_interview
+            description: '{{doc("is_many_to_one_interview_col")}}' 
+          - name: candidate_origin
+            description: "How was the candidate brought into the fold?"
+          - name: interview_date
+            description: "When was the interview conducted?"
+          - name: interview_step
+            description: "What 'step' of the interview is a candidate in? This is a number generated from the beginning of the process, but there is no finite end."
+          - name: candidate_owner_name
+            description: "The Recruiter"
+          - name: scheduler
+            description: "The Scheduler"
+          - name: posting_title
+            description: "The Role Title"
+          - name: posting_hiring_manager_name
+            description: "The Hiring Manger"
+          - name: candidate_average_score
+            description: '{{doc("candidate_score_col")}}'
+    - name: interviewing_data_interviewers_and_scores
+      description: '{{doc("interviewing_data_interviewers_and_scores")}}'
+      columns:
+          - name: interviewer
+            description: "The GitLab team member conducting the interview"
+          - name: total_number_of_interviews
+            description: "Total Number of Interviews Conducted"
+          - name: strong_no_hire
+            description: "Number of 'Strong No Hire' or 1s rewarded"
+          - name: no_hire
+            description: "Number of 'No Hire' or 2s rewarded"
+          - name: hire
+            description: "Number of 'Hires' or 3s rewarded"
+          - name: strong_hire
+            description: "Number of 'Strong Hires' or 4s rewarded"
+          - name: positive_responses
+            description: "Positive Responses are 'Hire's or 'Strong Hire's"
+          - name: negative_responses
+            description: "Negative Responses are 'No Hire's or 'Strong No Hire's"
+          - name: avg_time_to_complete_in_minutes
+            description: "Average Time to Complete Feedback Forms in Minutes"
+    - name: interviewing_data_performance_of_hire
+      description: '{{doc("interviewing_data_performance_of_hire")}}'
+      columns:
+          - name: full_name
+            description: "Name of person receiving reward"
+          - name: hire_date
+            description: "Hire Date"
+          - name: job_title
+            description: "Current Job Title"
+          - name: reporting_to
+            description: "Reporting Manager"
+          - name: employment
+            description: "Date of Change of Employment Status"
+          - name: employment_status
+            description: "Current Employment Status"
+          - name: fte
+            description: "(Value is not used)"
+          - name: termination
+            description: '{{doc("termination_col")}}'
+          - name: termination_reason
+            description: "Reason for Termination"
+          - name: eligible_for_rehire
+            description: "If candidates are eligible for rehire, post-termination"
+          - name: employment_status_comment
+            description: "Comment on Current Employment Status"
+          - name: compensation_change_reason
+            description: "Compensation Change Reason"
+          - name: compensation_comments
+            description: "Comments on Compensation Change"
+          - name: bonus_date
+            description: "Date Bonus Awarded"
+          - name: bonus_amount
+            description: "Amount of Bonus"
+          - name: bonus_amount_currency_code
+            description: "Currency of Bonus"
+          - name: bonus_type
+            description: "Bonus Types include Discretionary, Referral, Signing, and others"
+          - name: bonus_comments
+            description: ""
+          - name: effective_date
+            description: "Date changes go into effect"
+          - name: experience_factor
+            description: '{{doc("experience_factor_col")}}'
+          - name: comment
+            description: ""
+    - name: interviewing_data_hired_candidates_with_performance
+      description: '{{ doc("interview_data_hired_candidates_with_performance") }}'
+      columns:
+          - name: candidate_name
+            description: '{{doc("candidate_name_col")}}'
+          - name: candidate_id
+            description: '{{doc("candidate_id_col")}}'
+          - name: status
+            description: '{{doc("status_col")}}'
+          - name: termination
+            description: '{{doc("termination_col")}}'
+          - name: candidate_score
+            description: '{{doc("candidate_score_col")}}'
+          - name: received_any_bonus
+            description: "Whether or not an employee has received any bonuses"
+          - name: experience_factor
+            description: '{{doc("experience_factor_col")}}'
+    - name: interviewing_data_interviewers_of_target_candidate
+      description: '{{doc("interviewing_data_interviewers_of_target_candidate")}}'
+      columns:
+          - name: candidate_id
+            description: '{{doc("candidate_id_col")}}'
+          - name: interviewer_names
+            description: '{{doc("interviewer_names_col")}}'
+          - name: interviewer_score
+            description: '{{doc("interviewer_scores_col")}}'
+          - name: is_many_to_one_interview
+            description: '{{doc("is_many_to_one_interview_col")}}' 
+          - name: criteria
+            description: 'This column indicates whether the candidate was Terminated, Received a Raise, or Received a Bonus'
