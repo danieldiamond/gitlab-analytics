@@ -12,6 +12,8 @@ This data set indicates changes in compensation on a number of a different facto
 
 {% docs interview_data_hired_candidates_with_performance %}
 This model joins the candidates current status with his or her accolades, if any. 
+
+Future iterations of this analysis can take advantage of the way the jinja here has been written by updating bonus types in the lists set in the top. This will auto-generate new CTEs, columns, and joins appropriately.
 {% enddocs %}
 
 {% docs interviewing_data_interviewers_of_target_candidate %}
