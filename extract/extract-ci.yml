@@ -178,7 +178,8 @@
           historical.alliancesdashboard.alliancesdashboard_goals
           historical.interviewing_data.hired_candidates
           historical.interviewing_data.interviewers_and_scores
-          historical.interviewing_data.performance_of_hires"
+          historical.interviewing_data.performance_of_hires
+          historical.marketing_pipe_to_spend_headcount.marketing_pipe_to_spend_headcount"
 
 # =====
 # Zuora
