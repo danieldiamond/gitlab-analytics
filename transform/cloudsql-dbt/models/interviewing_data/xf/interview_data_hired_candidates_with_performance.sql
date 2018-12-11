@@ -1,85 +1,43 @@
+{% set set_to_true = "IS NOT NULL THEN True END" %}
+{% set bonus_types = ['discretionary_bonuses','marketing_prize_bonuses', 'merit_lump_sum_bonuses','quarterly_bonuses','referral_bonuses','signing_bonuses','summit_prize_bonuses'] %}
+{% set bonus_types_mapping = [('discretionary_bonuses', "'Discretionary Bonus'"), ('marketing_prize_bonuses', "'Marketing Prize'"), ('merit_lump_sum_bonuses', "'Merit Lump Sum Award'"), ('quarterly_bonuses', "'Quarterly Bonus'"), ('referral_bonuses', "'Referral Bonus'"), ('signing_bonuses', "'Signing bonus'"), ('summit_prize_bonuses', "'Summit Prize Bonus'")] %}
+{% set compensation_change_types = ['commission_increase_compensation_change', 'performance_compensation_change', 'merit_administration_compensation_change', 'merit_increase_compensation_change', 'promotion_compensation_change'] %}
+{% set compensation_change_types_mapping = [('commission_increase_compensation_change',  "'Salary and Commission/Bonus Increase'"), ('performance_compensation_change', "'Performance'"), ('merit_administration_compensation_change', "'Merit Administration'"), ('merit_increase_compensation_change', "'Merit Increase'"), ('promotion_compensation_change', "'Promotion'")] %}
+
 with hired_candidates as (
 
-     SELECT distinct candidate_name, status, termination, candidate_average_score
-     FROM {{ref('interviewing_data_hired_candidates')}}
+    SELECT distinct candidate_name, status, termination, candidate_average_score
+    FROM {{ref('interviewing_data_hired_candidates')}}
 
-    ), discretionary_bonuses as (
+    ), interviewing_data_performance_of_hire as (
 
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE bonus_type = 'Discretionary Bonus'
+    SELECT *
+    FROM {{ref('interviewing_data_performance_of_hire')}}
 
-    ), marketing_prize_bonuses as (
+{% for bonus_type in bonus_types_mapping -%}
 
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE bonus_type = 'Marketing Prize'
+    ), {{bonus_type[0]}}  as (
 
-    ), merit_lump_sum_bonuses as (
+     SELECT distinct full_name, bonus_type
+     FROM interviewing_data_performance_of_hire
+     WHERE bonus_type = {{bonus_type[1]}}
 
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE bonus_type = 'Merit Lump Sum Award'
+{% endfor -%}
 
-    ), quarterly_bonuses as (
+{% for compensation_change_type in compensation_change_types_mapping -%}
 
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE bonus_type = 'Quarterly Bonus'
+    ), {{compensation_change_type[0]}}  as (
 
-    ), referral_bonuses as (
+     SELECT distinct full_name, bonus_type
+     FROM interviewing_data_performance_of_hire
+     WHERE bonus_type = {{compensation_change_type[1]}}
 
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE bonus_type = 'Referral Bonus'
-
-    ), signing_bonuses as (
-
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE bonus_type = 'Signing bonus'
-
-
-    ), summit_prize_bonuses as (
-
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE bonus_type = 'Summit Prize Bonus'
-
-    ), commission_increase_compensation_change as (
-
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE compensation_change_reason = 'Salary and Commission/Bonus Increase'
-
-    ), performance_compensation_change as (
-
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE compensation_change_reason = 'Performance'
-
-    ), merit_administration_compensation_change as (
-
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE compensation_change_reason = 'Merit Administration'
-
-    ), merit_increase_compensation_change as (
-
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE compensation_change_reason = 'Merit Increase'
-
-    ), promotion_compensation_change as (
-
-     SELECT distinct full_name
-     FROM {{ref('interviewing_data_performance_of_hire')}}
-     WHERE compensation_change_reason = 'Promotion'     
+{% endfor -%}
 
     ), experience_factor as (
 
      SELECT full_name, experience_factor
-     FROM {{ref('interviewing_data_performance_of_hire')}}
+     FROM interviewing_data_performance_of_hire
      WHERE experience_factor != ''
      GROUP BY 1, 2
 
@@ -90,47 +48,29 @@ SELECT hired_candidates.candidate_name,
         hired_candidates.status, 
         hired_candidates.termination,
         hired_candidates.candidate_average_score as candidate_score,
-       CASE WHEN discretionary_bonuses.full_name IS NOT NULL THEN True END as received_discretionary_bonus,
-       CASE WHEN marketing_prize_bonuses.full_name IS NOT NULL THEN True END as received_marketing_prize_bonus,
-       CASE WHEN merit_lump_sum_bonuses.full_name IS NOT NULL THEN True END as received_merit_lump_sum_bonus,
-       CASE WHEN quarterly_bonuses.full_name IS NOT NULL THEN True END as received_quarterly_bonus,
-       CASE WHEN referral_bonuses.full_name IS NOT NULL THEN True END as received_referral_bonus,
-       CASE WHEN signing_bonuses.full_name IS NOT NULL THEN True END as received_signing_bonus,
-       CASE WHEN summit_prize_bonuses.full_name IS NOT NULL THEN True END as received_summit_prize_bonus,
-       CASE WHEN (discretionary_bonuses.full_name IS NOT NULL OR marketing_prize_bonuses.full_name IS NOT NULL
-        OR merit_lump_sum_bonuses.full_name IS NOT NULL OR quarterly_bonuses.full_name IS NOT NULL 
-        OR referral_bonuses.full_name IS NOT NULL OR signing_bonuses.full_name IS NOT NULL 
-        OR summit_prize_bonuses.full_name IS NOT NULL) THEN True END as received_any_bonus,
-       CASE WHEN commission_increase_compensation_change.full_name IS NOT NULL THEN True END as received_commission_increase_compensation_change,
-       CASE WHEN performance_compensation_change.full_name IS NOT NULL THEN True END as received_performance_compensation_change,
-       CASE WHEN merit_administration_compensation_change.full_name IS NOT NULL THEN True END as received_merit_administration_compensation_change,
-       CASE WHEN merit_increase_compensation_change.full_name IS NOT NULL THEN True END as received_merit_increase_compensation_change,
-       CASE WHEN promotion_compensation_change.full_name IS NOT NULL THEN True END as received_promotion_compensation_change,
-       experience_factor
+        {% for bonus_type in bonus_types -%}
+        CASE WHEN {{bonus_type}}.full_name {{ set_to_true }} as received_{{bonus_type}},
+        {% endfor -%}
+        CASE WHEN ( {% for bonus_type in bonus_types -%}
+                        {{bonus_type}}.full_name IS NOT NULL 
+                        {%- if not loop.last %} OR {%- endif %}
+                    {% endfor -%} ) THEN True END as received_any_bonus,
+        {% for compensation_change_type in compensation_change_types -%}
+        CASE WHEN {{compensation_change_type}}.full_name {{ set_to_true }} as received_{{compensation_change_type}},
+        {% endfor -%}
+        CASE WHEN ( {% for compensation_change_type in compensation_change_types -%}
+                        {{compensation_change_type}}.full_name IS NOT NULL 
+                        {%- if not loop.last %} OR {%- endif %}
+                    {% endfor -%} ) THEN True END as received_positive_compensation_change,
+        experience_factor
 FROM hired_candidates
-LEFT JOIN discretionary_bonuses
-    ON UPPER(discretionary_bonuses.full_name) = UPPER(hired_candidates.candidate_name)
-LEFT JOIN marketing_prize_bonuses
-    ON UPPER(marketing_prize_bonuses.full_name) = UPPER(hired_candidates.candidate_name)
-LEFT JOIN merit_lump_sum_bonuses
-    ON UPPER(merit_lump_sum_bonuses.full_name) = UPPER(hired_candidates.candidate_name)
-LEFT JOIN quarterly_bonuses
-    ON UPPER(quarterly_bonuses.full_name) = UPPER(hired_candidates.candidate_name)
-LEFT JOIN referral_bonuses
-    ON UPPER(referral_bonuses.full_name) = UPPER(hired_candidates.candidate_name)
-LEFT JOIN signing_bonuses
-    ON UPPER(signing_bonuses.full_name) = UPPER(hired_candidates.candidate_name)
-LEFT JOIN summit_prize_bonuses
-    ON UPPER(summit_prize_bonuses.full_name) = UPPER(hired_candidates.candidate_name)
-LEFT JOIN commission_increase_compensation_change
-    ON UPPER(commission_increase_compensation_change.full_name) = UPPER(hired_candidates.candidate_name)
-LEFT JOIN performance_compensation_change
-    ON UPPER(performance_compensation_change.full_name) = UPPER(hired_candidates.candidate_name)
-LEFT JOIN merit_administration_compensation_change
-    ON UPPER(merit_administration_compensation_change.full_name) = UPPER(hired_candidates.candidate_name)
-LEFT JOIN merit_increase_compensation_change
-    ON UPPER(merit_increase_compensation_change.full_name) = UPPER(hired_candidates.candidate_name)
-LEFT JOIN promotion_compensation_change
-    ON UPPER(promotion_compensation_change.full_name) = UPPER(hired_candidates.candidate_name)
+{% for bonus_type in bonus_types -%}
+LEFT JOIN {{bonus_type}}
+    ON UPPER({{bonus_type}}.full_name) = UPPER(hired_candidates.candidate_name)
+{% endfor -%}
+{% for compensation_change_type in compensation_change_types -%}
+LEFT JOIN {{compensation_change_type}}
+    ON UPPER({{compensation_change_type}}.full_name) = UPPER(hired_candidates.candidate_name)
+{% endfor -%}
 LEFT JOIN experience_factor
     ON UPPER(experience_factor.full_name) = UPPER(hired_candidates.candidate_name)
