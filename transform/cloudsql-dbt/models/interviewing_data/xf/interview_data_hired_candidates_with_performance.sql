@@ -46,6 +46,36 @@ with hired_candidates as (
      FROM {{ref('interviewing_data_performance_of_hire')}}
      WHERE bonus_type = 'Summit Prize Bonus'
 
+    ), commission_increase_compensation_change as (
+
+     SELECT distinct full_name
+     FROM {{ref('interviewing_data_performance_of_hire')}}
+     WHERE compensation_change_reason = 'Salary and Commission/Bonus Increase'
+
+    ), performance_compensation_change as (
+
+     SELECT distinct full_name
+     FROM {{ref('interviewing_data_performance_of_hire')}}
+     WHERE compensation_change_reason = 'Performance'
+
+    ), merit_administration_compensation_change as (
+
+     SELECT distinct full_name
+     FROM {{ref('interviewing_data_performance_of_hire')}}
+     WHERE compensation_change_reason = 'Merit Administration'
+
+    ), merit_increase_compensation_change as (
+
+     SELECT distinct full_name
+     FROM {{ref('interviewing_data_performance_of_hire')}}
+     WHERE compensation_change_reason = 'Merit Increase'
+
+    ), promotion_compensation_change as (
+
+     SELECT distinct full_name
+     FROM {{ref('interviewing_data_performance_of_hire')}}
+     WHERE compensation_change_reason = 'Promotion'     
+
     ), experience_factor as (
 
      SELECT full_name, experience_factor
@@ -71,6 +101,11 @@ SELECT hired_candidates.candidate_name,
         OR merit_lump_sum_bonuses.full_name IS NOT NULL OR quarterly_bonuses.full_name IS NOT NULL 
         OR referral_bonuses.full_name IS NOT NULL OR signing_bonuses.full_name IS NOT NULL 
         OR summit_prize_bonuses.full_name IS NOT NULL) THEN True END as received_any_bonus,
+       CASE WHEN commission_increase_compensation_change.full_name IS NOT NULL THEN True END as received_commission_increase_compensation_change,
+       CASE WHEN performance_compensation_change.full_name IS NOT NULL THEN True END as received_performance_compensation_change,
+       CASE WHEN merit_administration_compensation_change.full_name IS NOT NULL THEN True END as received_merit_administration_compensation_change,
+       CASE WHEN merit_increase_compensation_change.full_name IS NOT NULL THEN True END as received_merit_increase_compensation_change,
+       CASE WHEN promotion_compensation_change.full_name IS NOT NULL THEN True END as received_promotion_compensation_change,
        experience_factor
 FROM hired_candidates
 LEFT JOIN discretionary_bonuses
@@ -87,5 +122,15 @@ LEFT JOIN signing_bonuses
     ON UPPER(signing_bonuses.full_name) = UPPER(hired_candidates.candidate_name)
 LEFT JOIN summit_prize_bonuses
     ON UPPER(summit_prize_bonuses.full_name) = UPPER(hired_candidates.candidate_name)
+LEFT JOIN commission_increase_compensation_change
+    ON UPPER(commission_increase_compensation_change.full_name) = UPPER(hired_candidates.candidate_name)
+LEFT JOIN performance_compensation_change
+    ON UPPER(performance_compensation_change.full_name) = UPPER(hired_candidates.candidate_name)
+LEFT JOIN merit_administration_compensation_change
+    ON UPPER(merit_administration_compensation_change.full_name) = UPPER(hired_candidates.candidate_name)
+LEFT JOIN merit_increase_compensation_change
+    ON UPPER(merit_increase_compensation_change.full_name) = UPPER(hired_candidates.candidate_name)
+LEFT JOIN promotion_compensation_change
+    ON UPPER(promotion_compensation_change.full_name) = UPPER(hired_candidates.candidate_name)
 LEFT JOIN experience_factor
     ON UPPER(experience_factor.full_name) = UPPER(hired_candidates.candidate_name)
