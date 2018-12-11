@@ -30,7 +30,7 @@ with hired_candidates as (
 
      SELECT distinct full_name, bonus_type
      FROM interviewing_data_performance_of_hire
-     WHERE bonus_type = {{compensation_change_type[1]}}
+     WHERE compensation_change_reason = {{compensation_change_type[1]}}
 
 {% endfor -%}
 
