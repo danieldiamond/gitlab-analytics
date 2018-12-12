@@ -4,3 +4,4 @@
 
 {%- endmacro -%}
 
+{# input "Jane Doe, John Smith"; output "Jane Doe" "John Smith" on separate lines #}
