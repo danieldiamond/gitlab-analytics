@@ -1,5 +1,5 @@
 {% docs interviewing_data_hired_candidates %}
-This base model take the raw data which has one interview per row and denests it to be one interviewer per interview per row. It also calculates the interview step (see column description) and whether or not the interview is a many-to-one interview.
+This base model take the raw data which has one interview per row and unnests it to be one interviewer per interview per row. It also calculates the interview step (see column description) and whether or not the interview is a many-to-one interview.
 {% enddocs %}
 
 {% docs interviewing_data_interviewers_and_scores %}
@@ -37,7 +37,7 @@ This model isolates interviewers who have interviewed candidates who have receiv
 {% enddocs %}
 
 {% docs candidate_id_col %}
-"An hashed version of the candidates name is used to generate a candidate ID."
+"A hashed version of the candidates name is used to generate a candidate ID."
 {% enddocs %}
 
 {% docs candidate_name_col %}
