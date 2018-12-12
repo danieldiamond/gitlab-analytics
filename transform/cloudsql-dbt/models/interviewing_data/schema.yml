@@ -95,13 +95,13 @@ models:
           - name: bonus_type
             description: "Bonus Types include Discretionary, Referral, Signing, and others"
           - name: bonus_comments
-            description: ""
+            description: "Comments on the Bonus"
           - name: effective_date
             description: "Date changes go into effect"
           - name: experience_factor
             description: '{{doc("experience_factor_col")}}'
           - name: comment
-            description: ""
+            description: "General Comments"
     - name: interviewing_data_hired_candidates_with_performance
       description: '{{ doc("interview_data_hired_candidates_with_performance") }}'
       columns:
