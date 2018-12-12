@@ -18,7 +18,7 @@ SELECT o.id,
        o.ACV__c as ACV,
        o.Renewal_ACV__c as Renewal_ACV,
        Amount as TCV
-FROM sfdc.opportunity o
+FROM raw.salesforce_stitch.opportunity o
 WHERE o.isdeleted = FALSE
   AND NOT (o.id::text IN
              (SELECT opportunity_id

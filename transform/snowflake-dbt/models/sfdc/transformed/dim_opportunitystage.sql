@@ -1,9 +1,6 @@
 {{
   config({
-    "materialized":"table",
-    "post-hook": [
-       "ALTER TABLE {{ this }} ADD PRIMARY KEY(stage_id)"
-    ]
+    "materialized":"table"
   })
 }}
 

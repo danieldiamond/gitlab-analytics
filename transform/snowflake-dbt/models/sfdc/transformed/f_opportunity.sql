@@ -1,16 +1,6 @@
 {{
   config({
-    "materialized":"table",
-    "post-hook": [
-       "DROP INDEX IF EXISTS {{ this.schema }}.idx_f_opportunity_stageid",
-       "DROP INDEX IF EXISTS {{ this.schema }}.idx_f_opportunity_closedate",
-       "DROP INDEX IF EXISTS {{ this.schema }}.idx_f_opportunity_leadource",
-       "DROP INDEX IF EXISTS {{ this.schema }}.idx_f_opportunity_account_id",
-       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_stageid ON {{ this }}(opportunity_stage_id)",
-       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_closedate ON {{ this}}(opportunity_closedate)",
-       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_leadource ON {{ this }}(lead_source_id)",
-       "CREATE INDEX IF NOT EXISTS idx_f_opportunity_account_id ON {{ this }}(account_id)"
-    ]
+    "materialized":"table"
   })
 }}
 

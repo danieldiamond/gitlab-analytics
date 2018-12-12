@@ -1,5 +1,18 @@
-SELECT distinct LeadSource from sfdc.opportunity where isdeleted='false' and LeadSource is not null
+SELECT distinct LeadSource 
+FROM raw.salesforce_stitch.opportunity 
+WHERE isdeleted='false' 
+AND LeadSource IS NOT NULL
+
 UNION  
-SELECT distinct LeadSource from sfdc.lead where isdeleted='false' and LeadSource is not null
+
+SELECT distinct LeadSource 
+FROM raw.salesforce_stitch.lead 
+WHERE isdeleted='false' 
+AND LeadSource IS NOT NULL
+
 UNION
-SELECT distinct LeadSource from sfdc.contact where isdeleted='false' and LeadSource is not null
+
+SELECT distinct LeadSource 
+FROM raw.salesforce_stitch.contact 
+WHERE isdeleted='false' 
+AND LeadSource IS NOT NULL

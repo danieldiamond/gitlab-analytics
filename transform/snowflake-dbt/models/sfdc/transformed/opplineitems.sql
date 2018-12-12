@@ -7,7 +7,7 @@ count_of_opp_items as(
 
     SELECT oli.opportunityid,
            count(*) AS num_line_tems
-    FROM sfdc.opportunitylineitem oli
+    FROM raw.salesforce_stitch.opportunitylineitem oli
     WHERE oli.isdeleted = FALSE
     GROUP BY oli.opportunityid
 ),
@@ -39,10 +39,10 @@ SELECT oli.id,
            WHEN i.num_line_tems > 1 THEN round((o.Amount * (oli.totalprice / sum(oli.totalprice) OVER (PARTITION BY o.id)))::numeric, 4)
            ELSE o.Amount
        END AS tcv
-FROM sfdc.opportunitylineitem oli
-JOIN sfdc.opportunity o ON oli.opportunityid = o.id::text
-LEFT JOIN sfdc.pricebookentry pbe ON oli.pricebookentryid = pbe.id
-LEFT JOIN sfdc.product2 p ON pbe.product2id = p.id
+FROM raw.salesforce_stitch.opportunitylineitem oli
+JOIN raw.salesforce_stitch.opportunity o ON oli.opportunityid = o.id::text
+LEFT JOIN raw.salesforce_stitch.pricebookentry pbe ON oli.pricebookentryid = pbe.id
+LEFT JOIN raw.salesforce_stitch.product2 p ON pbe.product2id = p.id
 JOIN count_of_opp_items i ON i.opportunityid = o.id::text
 WHERE o.isdeleted = FALSE
   AND oli.isdeleted = FALSE
