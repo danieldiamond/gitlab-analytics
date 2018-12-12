@@ -15,8 +15,8 @@ SELECT c.id,
     JOIN raw.salesforce_stitch.zqu__quoterateplan__c r ON r.zqu__quote__c = q.id
     JOIN raw.salesforce_stitch.zqu__quoterateplancharge__c c ON c.zqu__quoterateplan__c = r.id
     JOIN raw.salesforce_stitch.zqu__productrateplan__c pr ON r.zqu__productrateplan__c = pr.id
-    JOIN sfdc.zqu__zproduct__c p ON pr.zqu__zproduct__c = p.id
-    JOIN sfdc.opportunity o ON q.opportunity_id__c = o.id::text
+    JOIN raw.salesforce_stitch.zqu__zproduct__c p ON pr.zqu__zproduct__c = p.id
+    JOIN raw.salesforce_stitch.opportunity o ON q.opportunity_id__c = o.id::text
     WHERE q.isdeleted = FALSE
       AND r.isdeleted = FALSE
       AND c.isdeleted = FALSE
