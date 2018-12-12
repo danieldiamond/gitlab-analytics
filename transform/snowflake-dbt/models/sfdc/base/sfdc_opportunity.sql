@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM sfdc.opportunity
+    FROM raw.salesforce_stitch.opportunity
 
 ),
 
@@ -33,17 +33,17 @@ WITH source AS (
         createddate                 AS created_date,
         stagename                   AS stage_name,
         products_purchased__c       AS product,
-        current_date - greatest(
+        datediff(days, current_date, (greatest(
             x0_pending_acceptance_date__c,
             x1_discovery_date__c,
             x2_scoping_date__c,
             x3_technical_evaluation_date__c,
             x4_proposal_date__c,
             x5_negotiating_date__c,
-            x6_closed_won_date__c,
-            x7_closed_lost_date__c,
-            x8_unqualified_date__c
-        ) :: DATE + 1               AS days_in_stage,
+            --x6_closed_won_date__c,
+            x7_closed_lost_date__c--,
+            --x8_unqualified_date__c
+        )::DATE)) + 1               AS days_in_stage,
         sales_accepted_date__c      AS sales_accepted_date,
         sales_qualified_date__c     AS sales_qualified_date,
         merged_opportunity__c       AS merged_opportunity_id,
@@ -92,7 +92,7 @@ WITH source AS (
         -- metadata
         isdeleted                   AS is_deleted,
         lastactivitydate            AS last_activity_date,
-        date_part('day', now() - lastactivitydate)
+        datediff(days, lastactivitydate::date, CURRENT_DATE)
                                     AS days_since_last_activity
 
 

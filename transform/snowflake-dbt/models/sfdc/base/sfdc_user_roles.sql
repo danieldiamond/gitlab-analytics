@@ -1,1 +1,2 @@
-SELECT * FROM sfdc.userrole
+SELECT * 
+FROM raw.salesforce_stitch.userrole

@@ -1,9 +1,9 @@
 WITH source AS (
 
 	SELECT *
-	FROM sfdc.executive_business_review__c
+	FROM raw.salesforce_stitch.executive_business_review__c
 
-), renamed AS(
+), renamed AS (
 
 	SELECT
 		 id                            as ebr_id,
@@ -28,7 +28,7 @@ WITH source AS (
 
 	FROM source
 
-	WHERE isdeleted IS FALSE
+	WHERE isdeleted = FALSE
 
 )
 

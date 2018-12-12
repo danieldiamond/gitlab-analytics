@@ -1,104 +1,3 @@
-account: 
-    constraints: 
-        not_null: 
-            - sfdc_account_id
-            - type
-        unique:
-            - sfdc_account_id
-
-dim_account:
-    constraints:
-        not_null:
-            - id
-            - sfdc_account_id
-            - type
-        unique:
-            - id
-            - sfdc_account_id
-
-dim_leadsource:
-    constraints:
-        not_null:
-            - id
-        unique:
-            - id
-
-dim_opphistory:
-    constraints:
-        not_null:
-            - opportunityid
-
-dim_opportunitystage:
-    constraints:
-        not_null:
-            - stage_id
-            - sfdc_id
-        unique:
-            - stage_id
-            - sfdc_id
-
-
-f_opportunity:
-    constraints:
-        not_null:
-            - opportunity_id
-            - account_id
-            - opportunity_stage_id
-            - lead_source_id
-            - ownerid
-
-f_snapshot_opportunity:
-    constraints:
-        not_null:
-            - opportunity_id
-            - snapshot_date
-            - account_id
-            - opportunity_stage_id
-            - lead_source_id
-            - ownerid    
-
-#leadsource: no tests here because this is a essentially a list
-
-lineitems: 
-    constraints:
-        not_null:
-            - id
-            - opportunity_id
-        unique:
-            - id 
-
-nolineitems:
-    constraints:
-        not_null:
-            - id
-            - opportunity_id
-        unique:
-            - id 
-
-opplineitems:
-    constraints:
-        not_null:
-            - id
-            - opportunity_id
-        unique:
-            - id 
-
-opportunity:
-    constraints:
-        not_null:
-            - sfdc_id
-            - ownerid
-        unique:
-            - sfdc_id
-
-quotelineitems:
-    constraints:
-        not_null:
-            - id
-            - opportunity_id
-        unique:
-            - id
-
 sfdc_account:
     constraints:
         not_null:
@@ -159,14 +58,6 @@ sfdc_opportunity:
         unique:
             - opportunity_id
 
-sfdc_opportunityhistory:
-    constraints:
-        not_null:
-            - id
-            - opportunityid
-        unique:
-            - id
-
 sfdc_opportunity_line_item:
     constraints:
         not_null:
@@ -174,6 +65,14 @@ sfdc_opportunity_line_item:
             - opportunity_line_item_name
         unique:
             - opportunity_line_item_id
+
+sfdc_opportunityhistory:
+    constraints:
+        not_null:
+            - id
+            - opportunityid
+        unique:
+            - id
 
 sfdc_opportunitystage:
     constraints:
@@ -222,11 +121,4 @@ sfdc_users:
         not_null:
             - id
         unique:
-            - id
-
-snapshot_opportunity:
-    constraints:
-        not_null:
-            - sfdc_opportunity_id
-            - snapshot_date
-            - ownerid    
+            - id  

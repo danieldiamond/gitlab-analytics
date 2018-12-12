@@ -1,1 +1,2 @@
-SELECT * FROM sfdc.user
+SELECT * 
+FROM raw.salesforce_stitch.user

@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM sfdc.statement_of_work__c
+    FROM raw.salesforce_stitch.statement_of_work__c
 
 ), renamed AS (
 
@@ -17,15 +17,15 @@ WITH source AS (
       go_live_date__c                    AS go_live_date,
 
     -- Info
-      general_notes__c                   AS general_notes,
+      --general_notes__c                   AS general_notes,
       name                               AS statement_of_work_name,
-      collaboration_project__c           AS collaboration_project,
+      --collaboration_project__c           AS collaboration_project,
       percentcomplete__c                 AS percent_complete,
-      professional_services_package__c   AS professional_services_package,
+      --professional_services_package__c   AS professional_services_package,
       signed_acceptance_from_customer__c AS signed_acceptance_from_customer,
-      sow_link__c                        AS statement_of_work_link,
+      --sow_link__c                        AS statement_of_work_link,
       status__c                          AS status,
-      success_criteria__c                AS success_criteria,
+      --success_criteria__c                AS success_criteria,
 
     -- metadata
       createdbyid                        AS created_by_id,

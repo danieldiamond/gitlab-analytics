@@ -1,7 +1,7 @@
 WITH source AS (
 
   SELECT *
-  FROM sfdc.proof_of_concept__c
+  FROM raw.salesforce_stitch.proof_of_concept__c
 
 ), renamed AS (
 

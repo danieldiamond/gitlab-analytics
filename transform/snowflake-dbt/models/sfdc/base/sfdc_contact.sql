@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM sfdc.contact
+	FROM raw.salesforce_stitch.contact
 
 ), renamed AS(
 
@@ -34,8 +34,8 @@ WITH source AS (
 		emailbounceddate as email_bounced_date,
 		emailbouncedreason as email_bounced_reason,
 
-		data_quality_score__c as data_quality_score,
-		data_quality_description__c as data_quality_description,
+		--data_quality_score__c as data_quality_score,
+		--data_quality_description__c as data_quality_description,
 
 		mailingstreet as mailing_address,
 		mailingcity as mailing_city,
@@ -65,18 +65,17 @@ WITH source AS (
 		-- metadata
 		createdbyid as created_by_id,
 		createddate as created_date,
-		lastreferenceddate as last_referenced_date,
 		lastactivitydate as last_activity_date,
 		lastcurequestdate as last_cu_request_date,
 		lastcuupdatedate as last_cu_update_date,
-		lastvieweddate as last_viewed_date,
 		lastmodifiedbyid as last_modified_by_id,
 		lastmodifieddate as last_modified_date,
 		systemmodstamp
 
 
 	FROM source
-	WHERE isdeleted IS FALSE
+	WHERE isdeleted =
+	 FALSE
 
 )
 

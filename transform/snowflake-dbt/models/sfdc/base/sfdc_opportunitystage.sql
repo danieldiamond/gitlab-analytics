@@ -1,7 +1,7 @@
 WITH source AS ( 
 
 	SELECT *
-	FROM sfdc.opportunitystage
+	FROM raw.salesforce_stitch.opportunitystage
 
 ), mapped_stages AS (
 

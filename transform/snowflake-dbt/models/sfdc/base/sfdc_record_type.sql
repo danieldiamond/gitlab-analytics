@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM sfdc.recordtype
+	FROM raw.salesforce_stitch.recordtype
 
 ), renamed AS(
 

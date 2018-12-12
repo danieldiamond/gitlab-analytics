@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM sfdc.campaign
+	FROM raw.salesforce_stitch.campaign
 
 ), renamed AS(
 
@@ -20,8 +20,8 @@ WITH source AS (
 		parentid as campaign_parent_id,
 
 		--info
-		data_quality_description__c as data_quality_description,
-		data_quality_score__c as data_quality_score,
+		--data_quality_description__c as data_quality_description,
+		--data_quality_score__c as data_quality_score,
 		description as description,
 
 		--projections
@@ -47,13 +47,11 @@ WITH source AS (
 		createdbyid as created_by_id,
 		lastmodifiedbyid as last_modified_by_id,
 		lastmodifieddate as last_modified_date,
-		lastreferenceddate as last_referenced_date,
-		lastvieweddate as last_viewed_date,
 		lastactivitydate as last_activity_date,
 		systemmodstamp
 
 	FROM source
-	WHERE isdeleted IS FALSE
+	WHERE isdeleted = FALSE
 
 )
 

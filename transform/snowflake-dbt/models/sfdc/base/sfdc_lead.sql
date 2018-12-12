@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM sfdc.lead
+	FROM raw.salesforce_stitch.lead
 
 ), renamed AS(
 
@@ -51,8 +51,8 @@ WITH source AS (
 		region__c as region,
 		largeaccount__c as is_large_account,
 		outreach_stage__c as outreach_stage,
-		data_quality_score__c as data_quality_score,
-		data_quality_description__c as data_quality_score_description,
+		--data_quality_score__c as data_quality_score,
+		--data_quality_description__c as data_quality_score_description,
 		interested_in_gitlab_ee__c as is_interested_gitlab_ee,
 		interested_in_hosted_solution__c as is_interested_in_hosted,
 
@@ -73,13 +73,11 @@ WITH source AS (
 		lastactivitydate as last_activity_date,
 		lastmodifiedbyid as last_modified_id,
 		lastmodifieddate as last_modified_date,
- 		lastreferenceddate as last_referenced_date,
-		lastvieweddate as last_viewed_date,
 		systemmodstamp
 
 
 	FROM source
-	WHERE isdeleted IS FALSE
+	WHERE isdeleted = FALSE
 
 )
 

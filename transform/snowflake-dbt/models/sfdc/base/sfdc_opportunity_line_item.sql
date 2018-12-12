@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM sfdc.opportunitylineitem
+	FROM raw.salesforce_stitch.opportunitylineitem
 
 ), renamed AS(
 
