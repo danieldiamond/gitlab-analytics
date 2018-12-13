@@ -1,8 +1,3 @@
-{% docs sub_mrr_agg %}
-
-This model aggregates net retention and gross retention by month. It was separated from `zuora_mrr_totals` because Looker doesn't support conditonal filtering on measures, which is needed since we filter out accounts that did not exist a year ago before aggregating. 
-
-{% enddocs %}
 
 {% docs zuora_base_mrr %}
 
@@ -47,6 +42,12 @@ The final select statement then allocates the trueup according to what's listed 
 {% docs zuora_mrr_totals %}
 
 This model unions the base charges and the trueup charges together. For each month we calculate the number of months between the start of the cohort and the current month. This enables the data to be easily filtered in Looker so you can look across multiple cohorts and limit the months into the future to the same number. This value should never be less than 0.
+
+The trickiest part of this model is the creation of the `mrr_12mo_ago` value. At one glance we want to see the current MRR value for any given subscription and its status 12 months ago. This is so that we can easily and reliable calculate retention on the database side, instead of relying on the BI tool for dynamic calculations. We can now add a `CASE WHEN` statement to indicate retention type at the subscription-level. (We have not done that because we calculate retention type at three different levels.) 
+
+After unioning the base charges and true up charges, we dedupe the data to see only one row per subscription (`subscription_slug_for_counting`) per month (`mrr_month`). For the other identifying values (`account_number`, `subscription_name`, etc.) we just take the first value. 
+
+This deduped CTE allows us to compare to the same period 12 months prior. In this process, we lose the first 12 months of any subscription, which are re-collected in the `excluded` CTE. Those are unioned together to have a fully encompassed data set. 
 
 {% enddocs %}
 
