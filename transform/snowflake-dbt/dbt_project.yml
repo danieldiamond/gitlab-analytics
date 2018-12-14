@@ -19,6 +19,7 @@ quoting:
 
 on-run-start:
     - "{{resume_warehouse(var('resume_warehouse', false), var('warehouse_name'))}}"
+    - '{{create_udfs()}}'
 
 on-run-end:
     - grant usage on schema {{ target.schema }} to role reporter
