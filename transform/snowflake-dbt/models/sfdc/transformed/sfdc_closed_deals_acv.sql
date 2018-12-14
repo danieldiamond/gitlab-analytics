@@ -21,7 +21,7 @@ WITH sfdc_opportunity as (
       ON sfdc_account.account_id = sfdc_opportunity.account_id
     WHERE sfdc_opportunity.sales_type!= 'Reseller'
     AND   sfdc_opportunity.stage_name IN ('Closed Won')
-    AND  (sfdc_opportunity.is_deleted IS FALSE)
+    AND  sfdc_opportunity.is_deleted = FALSE
 
 )
 

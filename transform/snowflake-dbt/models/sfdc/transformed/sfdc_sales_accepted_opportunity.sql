@@ -32,7 +32,7 @@ WITH opportunity AS (
               OR opportunity.parent_segment IS NULL)
   AND   (opportunity.stage_name NOT IN ('00-Pre Opportunity','9-Unqualified','10-Duplicate'))
   AND   opportunity.total_contract_value >= 0
-  AND   (opportunity.is_deleted IS FALSE)
+  AND   (opportunity.is_deleted = FALSE)
   AND   opportunity.lead_source != 'Web Direct'
 
 ), large_strategic as (
@@ -61,7 +61,7 @@ WITH opportunity AS (
               OR opportunity.parent_segment IN ('Large','Strategic'))
   AND   (opportunity.stage_name NOT IN ('00-Pre Opportunity','9-Unqualified','10-Duplicate'))
   AND   opportunity.total_contract_value >= 0
-  AND   (opportunity.is_deleted IS FALSE)
+  AND   (opportunity.is_deleted = FALSE)
   AND   opportunity.lead_source != 'Web Direct'
 
 ), unioned as (

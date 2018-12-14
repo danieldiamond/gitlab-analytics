@@ -3,7 +3,7 @@ WITH stages AS (
 ),
 
 opps as (
-    SELECT * FROM sfdc.opportunity
+    SELECT * FROM raw.salesforce_stitch.opportunity
 )
 
 SELECT
@@ -26,17 +26,17 @@ SELECT
   name,
   ownerid,
   weighted_iacv__c,
-  current_date - greatest(
+  datediff(days, greatest(
       x0_pending_acceptance_date__c,
       x1_discovery_date__c,
       x2_scoping_date__c,
       x3_technical_evaluation_date__c,
       x4_proposal_date__c,
       x5_negotiating_date__c,
-      x6_closed_won_date__c,
-      x7_closed_lost_date__c,
-      x8_unqualified_date__c
-  ) :: DATE + 1  AS days_in_stage,
+      --x6_closed_won_date__c,
+      x7_closed_lost_date__c--,
+      --x8_unqualified_date__c
+  ), CURRENT_DATE)  AS days_in_stage,
   CASE
   WHEN incremental_acv__c > 100000
     THEN TRUE
