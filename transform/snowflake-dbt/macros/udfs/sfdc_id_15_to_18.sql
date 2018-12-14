@@ -1,5 +1,5 @@
 {% macro sfdc_id_15_to_18() %}
-CREATE OR REPLACE FUNCTION id15to18(input_id string)
+CREATE OR REPLACE FUNCTION id15to18("input_id" string)
   RETURNS string
   LANGUAGE JAVASCRIPT
   AS '
