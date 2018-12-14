@@ -44,13 +44,9 @@ WITH source AS (
 
 
     --   info
-      		{{this.schema}}.id15to18(
-                    substring(
-                        regexp_replace(ultimate_parent_account__c,
-                                      '_HL_ENCODED_/|<a\s+href="/', '')
-                        , 1
-                        , 15)
-                )							   AS ultimate_parent_account_id,
+      {{target.schema}}.id15to18(substring(regexp_replace(ultimate_parent_account__c,
+                     '_HL_ENCODED_/|<a\\s+href="/', ''), 0, 15))							   
+                                               AS ultimate_parent_account_id,
       type                                     AS account_type,
       industry,
       product_category__c                      AS product_category,
