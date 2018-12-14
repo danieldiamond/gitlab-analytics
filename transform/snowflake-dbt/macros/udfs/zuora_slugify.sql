@@ -1,5 +1,5 @@
 {% macro zuora_slugify() %}
-CREATE OR REPLACE FUNCTION zuora_slugify("input_text" text)
+CREATE OR REPLACE FUNCTION {{target.schema}}.zuora_slugify("input_text" text)
   RETURNS TEXT
 AS $$
   WITH   replace_chars AS (
