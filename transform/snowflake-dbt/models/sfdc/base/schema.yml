@@ -10,7 +10,6 @@ sfdc_bizible_attribution_touchpoint:
     constraints:
         not_null:
             - touchpoint_id
-            - campaign_id
         unique:
             - touchpoint_id
 
