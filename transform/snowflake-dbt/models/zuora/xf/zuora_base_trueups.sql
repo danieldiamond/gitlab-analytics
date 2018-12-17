@@ -23,7 +23,7 @@ WITH zuora_accts AS (
 
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge') }}
-    WHERE rate_plan_charge_name ~ 'Trueup'
+    WHERE rate_plan_charge_name LIKE '%Trueup%'
 
 ),
 
@@ -49,7 +49,7 @@ WITH zuora_accts AS (
       *,
       date_trunc('month', service_start_date) :: DATE   AS trueup_month -- use current month
     FROM {{ ref('zuora_invoice_item') }}
-    WHERE charge_name ~ 'Trueup'
+    WHERE charge_name LIKE '%Trueup%'
 
 ),
 

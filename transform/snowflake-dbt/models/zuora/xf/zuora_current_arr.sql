@@ -25,7 +25,7 @@ with subscription as (
           ON rate_plan.subscription_id::TEXT = subscription.subscription_id
         JOIN rate_plan_charge 
           ON rate_plan_charge.rate_plan_id::TEXT = rate_plan.rate_plan_id::TEXT
-      WHERE (subscription.subscription_status <> ALL (ARRAY['Draft'::TEXT,'Expired'::TEXT]))
+      WHERE (subscription.subscription_status NOT IN ('Draft','Expired')) --DOUBLE CHECK THIS
       AND   rate_plan_charge.effective_start_date <= CURRENT_DATE
       AND   (rate_plan_charge.effective_end_date > CURRENT_DATE 
           OR rate_plan_charge.effective_end_date IS NULL)

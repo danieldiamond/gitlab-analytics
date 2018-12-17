@@ -9,7 +9,7 @@ WITH source AS (
 	SELECT
 		id                                  		as subscription_id,
 		name                                		as subscription_name,
-	  {{ target.schema }}.zuora_slugify(name)	as subscription_name_slugify,
+	  	{{zuora_slugify("name")}}					as subscription_name_slugify,
 		--keys
 		accountid                           		as account_id,
 		creatoraccountid                    		as creator_account_id,
@@ -50,7 +50,7 @@ WITH source AS (
 		--foreign synced info
 		opportunityname__qt                 		as opportunity_name,
 		purchase_order__c                   		as sfdc_purchase_order,
-		purchaseorder__c                    		as sfdc_purchase_order_,
+		--purchaseorder__c                    		as sfdc_purchase_order_,
 		quotebusinesstype__qt               		as quote_business_type,
 		quotenumber__qt                     		as quote_number,
 		quotetype__qt                       		as quote_type,
@@ -58,8 +58,7 @@ WITH source AS (
 		--renewal info
 		renewalsetting                      		as renewal_setting,
 		renewal_subscription__c__c          		as zuora_renewal_subscription_name,
-	  {{ target.schema }}.zuora_slugify(renewal_subscription__c__c)
-																						as zuora_renewal_subscription_name_slugify,
+	  	{{zuora_slugify("renewal_subscription__c__c")}}	as zuora_renewal_subscription_name_slugify,
 		renewalterm                         		as renewal_term,
 		renewaltermperiodtype               		as renewal_term_period_type,
 		exclude_from_renewal_report__c__c   		as exclude_from_renewal_report,

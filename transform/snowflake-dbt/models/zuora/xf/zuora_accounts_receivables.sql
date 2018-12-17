@@ -16,7 +16,7 @@ WITH zuora_invoice_base AS (
 ), zuora_invoice AS(
 
 	SELECT *, 
-		abs(DATE_PART('day', due_date - CURRENT_DATE)) as days_overdue
+    abs(datediff('day', CURRENT_DATE, due_date)) as days_overdue
 	FROM zuora_invoice_base
 
 )

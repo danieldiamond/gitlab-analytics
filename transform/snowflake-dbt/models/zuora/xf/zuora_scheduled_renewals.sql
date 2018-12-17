@@ -28,16 +28,18 @@ WITH zuora_subs AS (
       SELECT *
       FROM {{ ref('zuora_rate_plan_charge') }}
       WHERE
-        is_last_segment IS TRUE
+        is_last_segment = TRUE
 
   ),
 
      combined AS (
         SELECT
-          a.*,
+          a.account_name,
+          a.account_number,
+          a.crm_id,
           s.*,
-          r.*,
-          rp.*,
+          r.rate_plan_name,
+          rp.mrr,
           CASE
           WHEN s.initial_term < 12
             THEN ROW_NUMBER()

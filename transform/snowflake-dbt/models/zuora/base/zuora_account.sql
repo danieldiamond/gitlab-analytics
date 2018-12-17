@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM zuora.account
+	FROM raw.zuora_stitch.account
 
 ), renamed AS(
 
@@ -9,7 +9,7 @@ WITH source AS (
 		id                              as account_id,
 		-- keys
 		communicationprofileid          as communication_profile_id,
-		{{this.schema}}.id15to18(crmid) as crm_id,
+		{{target.schema}}.id15to18(crmid) as crm_id,
 		defaultpaymentmethodid          as default_payment_method_id,
 		invoicetemplateid               as invoice_template_id,
 		parentid                        as parent_id,
@@ -44,7 +44,7 @@ WITH source AS (
 		customerservicerepname          as customer_service_rep_name,
 		salesrepname                    as sales_rep_name,
 		additionalemailaddresses        as additional_email_addresses,
-		billtocontact                   as bill_to_contact,
+		--billtocontact                   as bill_to_contact,
 		parent__c                       as sfdc_parent,
 
 
