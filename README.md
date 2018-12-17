@@ -53,8 +53,6 @@ Some of our beliefs are:
 Like the rest of the company, we set quarterly objectives and key results. These are available on our company OKR page.
 
 ## Media
-* [Taylor explains Pentaho Data Integration](https://drive.google.com/open?id=1OD7QQ2aD-4LWL-ExM8WAyyeuBm2bTRa6) (GitLab internal)
-
 * [Tom Cooney explains Zendesk](https://drive.google.com/open?id=1oExE1ZM5IkXcq1hJIPouxlXSiafhRRua) (GitLab internal)
 
 * [Luca Williams explains Customer Success Dashboards](https://drive.google.com/open?id=1FsgvELNmQ0ADEC1hFEKhWNA1OnH-INOJ) (GitLab internal)
@@ -131,8 +129,8 @@ We use GitLab to operate and manage the analytics function. Everything starts wi
 
 |Stage|Tool|
 |:-|:-:|
-|Extraction|Meltano|
-|Loading|Meltano|
+|Extraction|Stitch and Meltano|
+|Loading|Stitch and Meltano|
 |Orchestration|GitLab CI|
 |Storage|Cloud SQL (PostgreSQL) and Snowflake|
 |Transformations|dbt and Python scripts|
@@ -142,9 +140,14 @@ We use GitLab to operate and manage the analytics function. Everything starts wi
 
 ### Extractors
 
-#### Updating SFDC Extract
+#### Stitch
 
-See the [README](/extract/sfdc/README.md) for the SFDC Extractor.
+We are loading multiple data sources through Stitch:
+*  Marketo - 12 hour intervals - Backfilled from January 1, 2013
+*  Netsuite - 30 minute intervals - Backfilled from January 1, 2013
+*  SFDC - 1 hour intervals - Backfilled from January 1, 2013
+*  Zendesk - 1 hour intervals - Backfilled from January 1, 2013
+*  Zuora - 30 minute intervals - Backfilled from January 1, 2013
 
 ### Storage
 

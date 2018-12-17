@@ -10,11 +10,13 @@ import gspread
 from gspread.exceptions import SpreadsheetNotFound
 from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
+from snowflake.sqlalchemy import URL as snowflake_URL
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
 
+SHEETLOAD_SCHEMA = 'historical'
 
-def engine_factory(args: Dict[str, str]) -> Engine:
+def postgres_engine_factory(args: Dict[str, str]) -> Engine:
     """
     Create a database engine from a dictionary of database info.
     """
@@ -30,6 +32,23 @@ def engine_factory(args: Dict[str, str]) -> Engine:
                                                        db_address,
                                                        db_port,
                                                        db_database)
+
+    return create_engine(conn_string)
+
+
+def snowflake_engine_factory(args: Dict[str, str]) -> Engine:
+    """
+    Create a database engine from a dictionary of database info.
+    """
+
+    conn_string = snowflake_URL(
+            user = args['SNOWFLAKE_LOAD_USER'],
+            password = args['SNOWFLAKE_PASSWORD'],
+            account = args['SNOWFLAKE_ACCOUNT'],
+            database = args['SNOWFLAKE_LOAD_DATABASE'],
+            warehouse = args['SNOWFLAKE_LOAD_WAREHOUSE'],
+            role = args["SNOWFLAKE_LOAD_ROLE"]
+    )
 
     return create_engine(conn_string)
 
@@ -88,23 +107,32 @@ def csv_loader(*paths: List[str], conn_dict: Dict[str,str] = None)  -> None:
         dw_uploader(engine, table, schema, sheet_df)
 
 
-def sheet_loader(*sheets: List[str], gapi_keyfile: str = None,
+def sheet_loader(sheet_file: str, destination: str, gapi_keyfile: str = None,
                  conn_dict: Dict[str, str] = None) -> None:
     """
     Load data from a google sheet into a DataFrame and pass it to dw_uploader.
     The sheet must have been shared with the google service account of the runner.
 
     Loader expects the name of the sheet to be:
-    <schema>.<table>
+    <sheet_name>.<tab>
+    The tab name will become the table name.
 
     Column names can not contain parentheses. Spaces and slashes will be
     replaced with underscores.
 
-    Sheets is a list that is separated spaces. i.e.:
-    python spreadsheet_loader.py sheet <name_1> <name_2> <name_3> ...
+    Sheets is a newline delimited txt fileseparated spaces.
+
+    python spreadsheet_loader.py sheets <file_name> <snowflake|postgres>
     """
 
-    engine = engine_factory(conn_dict or env)
+    with open(sheet_file, 'r') as file:
+        sheets = file.read().splitlines()
+
+    # This dictionary determines what engine gets created
+    engine_dict = {'postgres': postgres_engine_factory,
+                   'snowflake': snowflake_engine_factory}
+
+    engine = engine_dict[destination](conn_dict or env)
     # Get the credentials for sheets and the database engine
     scope = ['https://spreadsheets.google.com/feeds',
              'https://www.googleapis.com/auth/drive']
@@ -114,21 +142,30 @@ def sheet_loader(*sheets: List[str], gapi_keyfile: str = None,
 
     for sheet_info in sheets:
         # Sheet here refers to the name of the sheet file, table is the actual sheet name
-        schema, sheet_file, table = sheet_info.split('.')
+        sheet_file, table = sheet_info.split('.')
         try:
-            sheet = gc.open(schema + '.' + sheet_file).worksheet(table).get_all_values()
+            sheet = gc.open(SHEETLOAD_SCHEMA + '.' + sheet_file).worksheet(table).get_all_values()
         except SpreadsheetNotFound:
             info('Sheet {} not found.'.format(sheet_info))
             raise
         sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
-        dw_uploader(engine, table, schema, sheet_df)
+        dw_uploader(engine, table, SHEETLOAD_SCHEMA, sheet_df)
+
+    if destination == 'snowflake':
+        try:
+            query = 'grant select on all tables in schema raw.historical to role transformer'
+            connection = engine.connect()
+            connection.execute(query)
+        finally:
+            connection.close()
+        info('Permissions granted.')
 
 
 if __name__ == "__main__":
     basicConfig(stream=sys.stdout, level=20)
     Fire({
         'csv': csv_loader,
-        'sheet': sheet_loader,
+        'sheets': sheet_loader,
     })
     info('Done.')
 

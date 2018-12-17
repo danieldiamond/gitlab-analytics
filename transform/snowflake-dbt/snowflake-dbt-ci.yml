@@ -12,11 +12,11 @@
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   stage: model
   variables:
-    SF_DATABASE: $CI_COMMIT_REF_NAME
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
   before_script:
     - cd transform/snowflake-dbt/
-    - export SF_DATABASE="${SF_DATABASE^^}"
-    - echo $SF_DATABASE
+    - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}"; fi
+    - echo $SNOWFLAKE_TRANSFORM_DATABASE
   tags:
     - analytics
 
