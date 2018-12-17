@@ -1,0 +1,147 @@
+account: 
+    constraints: 
+        not_null: 
+            - sfdc_account_id
+            - type
+        unique:
+            - sfdc_account_id
+
+dim_account:
+    constraints:
+        not_null:
+            - id
+            - sfdc_account_id
+            - type
+        unique:
+            - id
+            - sfdc_account_id
+
+dim_leadsource:
+    constraints:
+        not_null:
+            - id
+        unique:
+            - id
+
+dim_opphistory:
+    constraints:
+        not_null:
+            - opportunityid
+
+dim_opportunitystage:
+    constraints:
+        not_null:
+            - stage_id
+            - sfdc_id
+        unique:
+            - stage_id
+            - sfdc_id
+
+
+f_opportunity:
+    constraints:
+        not_null:
+            - opportunity_id
+            - account_id
+            - opportunity_stage_id
+            - lead_source_id
+            - ownerid
+
+f_snapshot_opportunity:
+    constraints:
+        not_null:
+            - opportunity_id
+            - snapshot_date
+            - account_id
+            - opportunity_stage_id
+            - lead_source_id
+            - ownerid    
+
+#leadsource: no tests here because this is a essentially a list
+
+lineitems: 
+    constraints:
+        not_null:
+            - id
+            - opportunity_id
+        unique:
+            - id 
+
+nolineitems:
+    constraints:
+        not_null:
+            - id
+            - opportunity_id
+        unique:
+            - id 
+
+opplineitems:
+    constraints:
+        not_null:
+            - id
+            - opportunity_id
+        unique:
+            - id 
+
+opportunity:
+    constraints:
+        not_null:
+            - sfdc_id
+            - ownerid
+        unique:
+            - sfdc_id
+
+quotelineitems:
+    constraints:
+        not_null:
+            - id
+            - opportunity_id
+        unique:
+            - id
+            
+dim_opphistory:
+    constraints:
+        not_null:
+            - dim_opphistory_id
+
+sfdc_sales_accepted_opportunity:
+    constraints:
+        not_null:
+            - opportunity_segment
+            - opportunity_name
+
+sfdc_accounts_xf:
+    constraints:
+        not_null:
+            - account_id
+            - account_name
+        unique:
+
+sfdc_bizible_attribution_touchpoint_xf:
+    constraints:
+        not_null:
+            - touchpoint_id
+        unique:
+            - touchpoint_id
+
+sfdc_proof_of_concept_xf:
+    constraints:
+        not_null:
+            - poc_id
+            - account_id
+            - opportunity_id
+            - poc_status
+        unique:
+            - poc_id
+
+sfdc_statement_of_work_xf:
+    constraints:
+        not_null:
+            - statement_of_work_id
+        unique:
+            - statement_of_work_id
+
+users:
+    constraints:
+        unique:
+            - id
