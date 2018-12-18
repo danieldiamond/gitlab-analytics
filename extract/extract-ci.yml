@@ -29,48 +29,6 @@
     - meltano install
     - ci_helpers.py use_proxy "meltano elt $MELTANO_JOB_ID --extractor $MELTANO_EXTRACTOR --loader $MELTANO_LOADER --transform skip"
 
-# =======
-# Marketo
-# =======
-.variables: &marketo_extract_meltano__variables
-  <<: *meltano_extract_job__variables
-  MELTANO_EXTRACTOR: tap-marketo
-  MELTANO_LOADER: target-snowflake
-  MARKETO_START_TIME: "2018-10-01T00:00:00Z"
-  MARKETO_CLIENT_ID: $MKTO_CLIENT_ID
-  MARKETO_CLIENT_SECRET: $MKTO_CLIENT_SECRET
-  MARKETO_ENDPOINT: "$MKTO_ENDPOINT/rest"
-  MARKETO_IDENTITY: "$MKTO_ENDPOINT/identity"
-  SNOWFLAKE_SCHEMA: MARKETO # must be in CAPS
-
-.marketo_extract_meltano: &marketo_extract_meltano
-  <<: *meltano_extract_job
-  variables: *marketo_extract_meltano__variables
-
-.marketo_extract: &marketo_extract
-  stage: extract
-  <<: *extract_definition
-  script:
-    - ci_helpers.py use_proxy "bash extract/mkto/mkto_processor.sh"
-
-# =======
-# Zendesk
-# =======
-.variables: &zendesk_extract__variables
-  <<: *meltano_extract_job__variables
-  MELTANO_EXTRACTOR: tap-zendesk
-  MELTANO_LOADER: target-snowflake
-  ZENDESK_START_DATE: "2018-10-01T00:00:00Z"
-  SNOWFLAKE_SCHEMA: TAP_ZENDESK # must be in CAPS
-
-.zendesk_extract: &zendesk_extract
-  stage: extract
-  <<: *meltano_extract_job
-  variables: *zendesk_extract__variables
-  image:
-    name: registry.gitlab.com/meltano/meltano/runner:v0.2.1
-    entrypoint: [""]
-
 .ci_stats: &ci_stats
   stage: extract
   <<: *extract_definition
@@ -169,16 +127,6 @@
     - cd extract/historical/
     - python3 sheetload.py sheets sheets.txt snowflake
 
-# =====
-# Zuora
-# =====
-.variables: &zuora_extract__variables
-  <<: *meltano_extract_job__variables
-  MELTANO_EXTRACTOR: tap-zuora
-  MELTANO_LOADER: target-snowflake
-  ZUORA_START_DATE: "2018-10-01T00:00:00Z"
-  SNOWFLAKE_SCHEMA: ZUORA # must be in CAPS
-
 .zuora_extract: &zuora_extract
   variables:
     FIXED_ZUORA_PASSWORD: $ZUORA_PASSWORD
@@ -187,17 +135,6 @@
   script:
     - envsubst < "extract/config/environment.conf.template" > "extract/config/environment.conf"
     - ci_helpers.py use_proxy "python3 extract/zuora/zuora_export.py"
-
-.zuora_extract_meltano: &zuora_extract_meltano
-  <<: *meltano_extract_job
-  image:
-    name: registry.gitlab.com/meltano/meltano/runner:bc2ead1146c017a4ad12c88d65f19dd968a23d8b
-    entrypoint: [""]
-  variables: *zuora_extract__variables
-  artifacts:
-    paths:
-      - .meltano/run/tap-zuora/tap.properties.json
-      - .meltano/run/tap-zuora/state.json
 
 .sfdc_extract: &sfdc_extract
   variables:
@@ -208,24 +145,6 @@
     - pip3 install salesforce-bulk # TODO: add me to the container
     - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc apply_schema"
     - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc export"
-
-# ==========
-# Salesforce
-# ==========
-.variables: &sfdc_extract_meltano__variables
-  <<: *meltano_extract_job__variables
-  MELTANO_EXTRACTOR: tap-salesforce
-  MELTANO_LOADER: target-snowflake
-  SFDC_START_DATE: "2018-10-01T00:00:00Z"
-  SFDC_PASSWORD: $SFDC_PASSWORD_NOTOKEN
-  SNOWFLAKE_SCHEMA: SALESFORCE # must be in CAPS
-
-.sfdc_extract_meltano: &sfdc_extract_meltano
-  <<: *meltano_extract_job
-  variables: *sfdc_extract_meltano__variables
-  image:
-    name: registry.gitlab.com/meltano/meltano/runner:58cfc6349ba4b5769b79c3f218464eee65f253de
-    entrypoint: [""]
 
 .domains_extract: &domains_extract
   stage: extract
@@ -305,25 +224,6 @@ gitlab_profiler:
       - master
     variables:
       - $GITLAB_PROFILER
-
-marketo:
-  <<: *marketo_extract
-  only:
-    refs:
-      - master
-    variables:
-      - $MARKETO
-
-marketo_snowflake:
-  <<: *marketo_extract_meltano
-  variables:
-    <<: *marketo_extract_meltano__variables
-    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
-  only:
-    refs:
-      - master
-    variables:
-      - $MARKETO
 
 netsuite:
   <<: *netsuite_extract
@@ -421,17 +321,6 @@ sfdc:
     variables:
       - $SFDC
 
-sfdc_snowflake:
-  <<: *sfdc_extract_meltano
-  variables:
-    <<: *sfdc_extract_meltano__variables
-    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
-  only:
-    refs:
-      - master
-    variables:
-      - $SFDC_MELTANO
-
 sheetload_cloudsql:
   stage: extract
   <<: *sheetload_cloudsql
@@ -466,17 +355,6 @@ stripe_githost:
     variables:
       - $STRIPE_GITHOST
 
-zendesk_snowflake:
-  <<: *zendesk_extract
-  variables:
-    <<: *zendesk_extract__variables
-    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
-  only:
-    refs:
-      - master
-    variables:
-      - $ZENDESK
-
 zuora:
   <<: *zuora_extract
   only:
@@ -484,17 +362,6 @@ zuora:
       - master
     variables:
       - $ZUORA_CLOUDSQL
-
-zuora_snowflake:
-  <<: *zuora_extract_meltano
-  variables:
-    <<: *zuora_extract__variables
-    SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
-  only:
-    refs:
-      - master
-    variables:
-      - $ZUORA_SNOWFLAKE
 
 ## Review Jobs
 
@@ -516,22 +383,6 @@ domains_manual:
 
 gitlab_manual:
   <<: *gitlab_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-marketo_manual:
-  <<: *marketo_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-marketo_snowflake_manual:
-  <<: *marketo_extract_meltano
   only:
     - branches
   except:
@@ -676,14 +527,6 @@ sfdc_manual:
     - master
   when: manual
 
-sfdc_snowflake_manual:
-  <<: *sfdc_extract_meltano
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
 sheetload_cloudsql_manual:
   stage: extract
   <<: *sheetload_cloudsql
@@ -710,14 +553,6 @@ stripe_extract_githost_manual:
     - master
   when: manual
 
-zendesk_snowflake_manual:
-  <<: *zendesk_extract
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
 zuora_manual:
   <<: *zuora_extract
   only:
@@ -725,15 +560,6 @@ zuora_manual:
   except:
     - master
   when: manual
-
-zuora_snowflake_manual:
-  <<: *zuora_extract_meltano
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
 
 # Stage: test
 
