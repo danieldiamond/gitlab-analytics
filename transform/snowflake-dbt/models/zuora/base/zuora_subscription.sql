@@ -71,7 +71,7 @@ WITH source AS (
 
 
 	FROM source
-	WHERE (excludefromanalysis__c = FALSE OR excludefromanalysis__c IS NULL)
+	WHERE excludefromanalysis__c IN ('False', '')
 
 )
 

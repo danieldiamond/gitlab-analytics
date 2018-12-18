@@ -34,7 +34,7 @@ WITH zuora_accts AS (
 
 )
 
-SELECT md5(zuora_rpc.rate_plan_charge_id||zuora_subs.subscription_id) as unique_key,
+SELECT 
       zuora_accts.account_number,
       zuora_subs.subscription_name,
       zuora_subs.subscription_name_slugify,
@@ -42,11 +42,11 @@ SELECT md5(zuora_rpc.rate_plan_charge_id||zuora_subs.subscription_id) as unique_
       zuora_rp.rate_plan_name,
       zuora_rpc.rate_plan_charge_name,
       zuora_rpc.mrr,
-      date_trunc('month', zuora_subs.subscription_start_date) :: DATE AS sub_start_month,
-      dateadd(month, -1, zuora_subs.subscription_end_date)            AS sub_end_month,
-      date_trunc('month', zuora_rpc.effective_start_date) :: DATE     AS effective_start_month,
-      dateadd(month, -1, zuora_rpc.effective_end_date)::date          AS effective_end_month,
-      datediff(month, zuora_rpc.effective_start_date, zuora_rpc.effective_end_date) AS month_interval,
+      date_trunc('month', zuora_subs.subscription_start_date::date) AS sub_start_month,
+      dateadd(month, -1, zuora_subs.subscription_end_date::date)    AS sub_end_month,
+      date_trunc('month', zuora_rpc.effective_start_date::date)     AS effective_start_month,
+      dateadd(month, -1, zuora_rpc.effective_end_date::date)        AS effective_end_month,
+      datediff(month, zuora_rpc.effective_start_date::date, zuora_rpc.effective_end_date::date) AS month_interval,
       zuora_rpc.effective_start_date,
       zuora_rpc.effective_end_date,
       zuora_subs.cohort_month,
@@ -61,13 +61,13 @@ SELECT md5(zuora_rpc.rate_plan_charge_id||zuora_subs.subscription_id) as unique_
 --      -- The following lines remove rate plan charges that are less than 1 month but not if they're on or span the last day of the month
         AND NOT
                 (
-                    date_trunc('month', zuora_rpc.effective_end_date) :: DATE =
-                    date_trunc('month', zuora_rpc.effective_start_date) :: DATE
+                    date_trunc('month', zuora_rpc.effective_end_date::date)::date =
+                    date_trunc('month', zuora_rpc.effective_start_date::date)::date
                       AND
                     (
-                        zuora_rpc.effective_start_date NOT IN (SELECT last_day_of_month FROM date_table)
+                        zuora_rpc.effective_start_date::date NOT IN (SELECT last_day_of_month FROM date_table)
                           OR
-                        zuora_rpc.effective_end_date NOT IN (SELECT last_day_of_month FROM date_table)
+                        zuora_rpc.effective_end_date::date NOT IN (SELECT last_day_of_month FROM date_table)
 
                     )
                 )
