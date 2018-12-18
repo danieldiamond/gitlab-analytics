@@ -7,6 +7,7 @@ WITH zuora_mrr AS (
 
      SELECT *
      FROM {{ ref('date_details') }}
+     WHERE day_of_month = 1
 
 ), amortized_mrr AS (
 
@@ -29,13 +30,11 @@ WITH zuora_mrr AS (
            cohort_quarter,
            unit_of_measure,
            quantity
-    FROM zuora_mrr b
-           LEFT JOIN LATERAL (
-        SELECT date_actual
-        FROM date_table d
-        WHERE day_of_month = 1
-          AND d.date_actual BETWEEN b.effective_start_month AND b.effective_end_month
-        ) m on TRUE
+  FROM zuora_mrr b
+  LEFT JOIN date_table d
+  ON d.date_actual >= b.effective_start_month
+  AND d.date_actual <= b.effective_end_month
+  
 
 )
 
@@ -48,12 +47,6 @@ SELECT
        rate_plan_charge_name,
        sum(mrr) as mrr,
        mrr_month,
-       --sub_start_month,
-       --sub_end_month,
-       --effective_start_month,
-       --effective_end_month,
-       --effective_start_date,
-       --effective_end_date,
        cohort_month,
        cohort_quarter,
        unit_of_measure,

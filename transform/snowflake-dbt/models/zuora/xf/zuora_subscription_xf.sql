@@ -1,4 +1,4 @@
-WITH zuora_subs AS (
+WITH zuora_subscription AS (
 
     SELECT
         *,
@@ -19,7 +19,7 @@ WITH zuora_subs AS (
 ), zuora_subs_fixed AS (
 
   SELECT * 
-  FROM zuora_subs
+  FROM zuora_subscription
   WHERE subscription_status IN ('Active', 'Cancelled')
 
 ), renewal_subs AS (
