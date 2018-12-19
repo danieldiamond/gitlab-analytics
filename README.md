@@ -159,9 +159,12 @@ Snowflake is a cloud data warehouse. It separates storage from compute making it
 Here are the proper steps for provisioning a new use and user role:
 
 * Login and switch to securityadmin role
-* Create role for user (`eburke` for example)
-* Grant role to sysadmin
-* Create user (`ebukre`)
+* Create user (`EBURKE`)
+  * Create a password using https://passwordsgenerator.net/
+  * Click next and fill in additional info. Make Login Name and Display name match user name (all caps).
+  * Do not set any defaults.
+  * Send to person using https://onetimesecret.com/
+* Create role for user (`EBURKE` for example) with SYSADMIN as the parent role (this grants the role to sysadmin)
 * Grant user role to new user
 * Create user_scratch schema in ANALYTICS as SYSADMIN
   * CREATE SCHEMA eburke_scratch;

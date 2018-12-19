@@ -168,6 +168,13 @@ roles:
             schemas:
                 - analytics.acarella_scratch
 
+    - dtang:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.dtang_scratch
+
     - eburke:
         warehouses:
             - reporting
@@ -264,6 +271,12 @@ users:
             - securityadmin
             - sysadmin
             - acarella
+
+    - dtang:
+        can_login: yes
+        member_of:
+            - reporter
+            - dtang
 
     - eburke:
         can_login: yes
