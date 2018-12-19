@@ -137,7 +137,35 @@ force_update_db:
   <<: *update_db
   when: manual
 
+.snowflake_permissions: &snowflake_permissions
+  stage: setup
+  <<: *job_definition
+  image:
+    name: registry.gitlab.com/meltano/meltano/runner:v0.3.0
+    entrypoint: [""]
+  script:
+    - meltano permissions grant load/snowflake/snowflake_roles/config.yml --db snowflake $DRY
 
+permission_bot_snowflake_dry:
+  <<: *snowflake_permissions
+  variables:
+    DRY: "--dry"
+  only:
+    refs:
+      - master
+    variables:
+      - $PERMISSION_BOT_SNOWFLAKE
+
+permission_bot_snowflake_dry_manual:
+  <<: *snowflake_permissions
+  variables:
+    DRY: "--dry"
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+  
 # Stage: update
 
 sfdc_update:
