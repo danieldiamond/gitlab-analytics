@@ -315,9 +315,9 @@ with base as (
           --interco_transaction_name
           apply_list, -- this is json
           line_list, -- this is json
-          item_list, -- this is json
-          expense_list, -- this is json
-          custom_field_list -- this is json
+          item_list -- this is json
+          --expense_list, -- this is json dropped for security
+          --custom_field_list -- this is json dropped for security
 
     FROM base
 
@@ -325,6 +325,4 @@ with base as (
 
 SELECT *
 FROM renamed
-
-
 

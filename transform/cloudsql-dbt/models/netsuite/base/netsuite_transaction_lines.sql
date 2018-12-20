@@ -23,8 +23,14 @@ with base as (
 				department_id,
 				department_name,
 				entity_id,
-				entity_name,
-				memo,
+				CASE
+				  WHEN account_name ~ 'Contract'
+					THEN substring(md5(entity_name),16)
+				  ELSE entity_name END AS entity_name,
+				CASE
+				  WHEN account_name ~ 'Contract'
+					THEN substring(md5(memo),16)
+				  ELSE memo END AS memo,
 				--amortization_end_date
 				--amortization_residual
 				--amortization_sched_id

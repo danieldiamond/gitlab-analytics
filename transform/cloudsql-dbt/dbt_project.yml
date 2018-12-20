@@ -39,6 +39,10 @@ models:
         enabled: true
         materialized: table
 
+    pipe2spend:
+      enabled: true
+      materialized: table
+
     retention:
       enabled: true
       materialized: table

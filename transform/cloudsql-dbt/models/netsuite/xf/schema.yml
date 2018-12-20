@@ -1,0 +1,110 @@
+version: 2
+
+models:
+    - name: netsuite_journal_entries
+      description: '{{ doc("netsuite_journal_entries") }}'
+      columns:
+          - name: transaction_type
+            description: '{{ doc("netsuite_entries_col_transaction_type") }}'
+          - name: transaction_date
+            description: '{{ doc("netsuite_entries_col_transaction_date") }}'
+          - name: period_date
+            description: '{{ doc("netsuite_entries_col_period_date") }}'
+          - name: subsidiary_id
+            description: '{{ doc("netsuite_entries_col_subsidiary_id") }}'
+          - name: subsidiary_name
+            description: '{{ doc("netsuite_entries_col_subsidiary_name") }}'
+          - name: exchange_rate
+            description: '{{ doc("netsuite_entries_col_exchange_rate") }}'
+          - name: account_name
+            description: '{{ doc("netsuite_entries_col_account_name") }}'
+          - name: account_code
+            description: '{{ doc("netsuite_entries_col_account_code") }}'
+          - name: entity
+            description: '{{ doc("netsuite_entries_col_entity") }}'
+          - name: currency_name
+            description: '{{ doc("netsuite_entries_col_currency_name") }}'
+          - name: posting_period_id
+            description: '{{ doc("netsuite_entries_col_posting_period_id") }}'
+          - name: department_name
+            description: '{{ doc("netsuite_entries_col_department_name") }}'
+          - name: parent_deparment_name
+            description: '{{ doc("netsuite_entries_col_parent_deparment_name") }}'
+          - name: debit_amount
+            description: '{{ doc("netsuite_entries_col_debit_amount") }}'
+          - name: credit_amount
+            description: '{{ doc("netsuite_entries_col_credit_amount") }}'
+          - name: consolidated_exchange
+            description: '{{ doc("netsuite_entries_col_consolidated_exchange") }}'
+
+    - name: netsuite_non_journal_entries
+      description: '{{ doc("netsuite_non_journal_entries") }}'
+      columns:
+          - name: transaction_type
+            description: '{{ doc("netsuite_entries_col_transaction_type") }}'
+          - name: transaction_date
+            description: '{{ doc("netsuite_entries_col_transaction_date") }}'
+          - name: period_date
+            description: '{{ doc("netsuite_entries_col_period_date") }}'
+          - name: subsidiary_id
+            description: '{{ doc("netsuite_entries_col_subsidiary_id") }}'
+          - name: subsidiary_name
+            description: '{{ doc("netsuite_entries_col_subsidiary_name") }}'
+          - name: exchange_rate
+            description: '{{ doc("netsuite_entries_col_exchange_rate") }}'
+          - name: account_name
+            description: '{{ doc("netsuite_entries_col_account_name") }}'
+          - name: account_code
+            description: '{{ doc("netsuite_entries_col_account_code") }}'
+          - name: entity
+            description: '{{ doc("netsuite_entries_col_entity") }}'
+          - name: currency_name
+            description: '{{ doc("netsuite_entries_col_currency_name") }}'
+          - name: posting_period_id
+            description: '{{ doc("netsuite_entries_col_posting_period_id") }}'
+          - name: department_name
+            description: '{{ doc("netsuite_entries_col_department_name") }}'
+          - name: parent_deparment_name
+            description: '{{ doc("netsuite_entries_col_parent_deparment_name") }}'
+          - name: debit_amount
+            description: '{{ doc("netsuite_entries_col_debit_amount") }}'
+          - name: credit_amount
+            description: '{{ doc("netsuite_entries_col_credit_amount") }}'
+          - name: consolidated_exchange
+            description: '{{ doc("netsuite_entries_col_consolidated_exchange") }}'
+
+    - name: netsuite_general_ledger
+      description: '{{ doc("netsuite_general_ledger") }}'
+      columns:
+          - name: transaction_type
+            description: '{{ doc("netsuite_entries_col_transaction_type") }}'
+          - name: transaction_date
+            description: '{{ doc("netsuite_entries_col_transaction_date") }}'
+          - name: period_date
+            description: '{{ doc("netsuite_entries_col_period_date") }}'
+          - name: subsidiary_id
+            description: '{{ doc("netsuite_entries_col_subsidiary_id") }}'
+          - name: subsidiary_name
+            description: '{{ doc("netsuite_entries_col_subsidiary_name") }}'
+          - name: exchange_rate
+            description: '{{ doc("netsuite_entries_col_exchange_rate") }}'
+          - name: account_name
+            description: '{{ doc("netsuite_entries_col_account_name") }}'
+          - name: account_code
+            description: '{{ doc("netsuite_entries_col_account_code") }}'
+          - name: entity
+            description: '{{ doc("netsuite_entries_col_entity") }}'
+          - name: currency_name
+            description: '{{ doc("netsuite_entries_col_currency_name") }}'
+          - name: posting_period_id
+            description: '{{ doc("netsuite_entries_col_posting_period_id") }}'
+          - name: department_name
+            description: '{{ doc("netsuite_entries_col_department_name") }}'
+          - name: parent_deparment_name
+            description: '{{ doc("netsuite_entries_col_parent_deparment_name") }}'
+          - name: debit_amount
+            description: '{{ doc("netsuite_entries_col_debit_amount") }}'
+          - name: credit_amount
+            description: '{{ doc("netsuite_entries_col_credit_amount") }}'
+          - name: consolidated_exchange
+            description: '{{ doc("netsuite_entries_col_consolidated_exchange") }}'
