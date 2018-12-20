@@ -19,10 +19,10 @@ WITH opps AS (
               THEN 'Google Adwords'
         WHEN marketing_channel_path IN ('Email.Other', 'Email.Newsletter','Email.Outreach')
           THEN 'Email'
-        WHEN marketing_channel_path IN ('Field Event','Partners.Google','Brand.Corporate Event','Conference')
+        WHEN marketing_channel_path IN ('Field Event','Partners.Google','Brand.Corporate Event','Conference','Speaking Session')
                   OR (medium = 'Field Event (old)' AND marketing_channel_path = 'Other')
           THEN 'Field Event'
-        WHEN marketing_channel_path IN ('Paid Social.Facebook','Paid Social.LinkedIn','Paid Social.Twitter','Paid Social.YouTube','Speaking Session')
+        WHEN marketing_channel_path IN ('Paid Social.Facebook','Paid Social.LinkedIn','Paid Social.Twitter','Paid Social.YouTube')
           THEN 'Paid Social'
         WHEN marketing_channel_path IN ('Social.Facebook','Social.LinkedIn','Social.Twitter','Social.YouTube')
           THEN 'Social'
