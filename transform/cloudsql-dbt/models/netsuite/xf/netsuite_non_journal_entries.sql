@@ -35,7 +35,7 @@ consolidated_exchange_rates AS (
      FROM {{ref('netsuite_consolidated_exchange_rates')}}
         ),
 
-journal_entries AS (
+non_journal_entries AS (
 
     SELECT
             t.transaction_type,
@@ -47,7 +47,10 @@ journal_entries AS (
             t.exchange_rate,
             e.account_name,
             LEFT (e.account_name,4) AS account_code,
-            t.entity_name           AS entity,
+            CASE
+              WHEN e.account_name ~ 'Contract'
+                THEN substring(md5(t.entity_name),16)
+              ELSE t.entity_name END AS entity,
             c.currency_name,
             ap.posting_period_id,
             d.department_name,
@@ -90,7 +93,7 @@ SELECT
         THEN exchange_rate * e.credit_amount
     ELSE e.credit_amount END            AS credit_amount,
     COALESCE(r.average_rate, 1)         AS consolidated_exchange
-FROM journal_entries e
+FROM non_journal_entries e
   LEFT JOIN consolidated_exchange_rates r
     ON CAST(r.posting_period_id AS INTEGER) = e.posting_period_id
        AND CAST(r.from_subsidiary_id AS INT) = e.subsidiary_id

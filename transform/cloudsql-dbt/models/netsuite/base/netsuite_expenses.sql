@@ -21,7 +21,10 @@ with base as (
             department_name,
             category_id,
             category_name,
-            memo,
+            CASE
+              WHEN account_name ~ 'Contract'
+               THEN substring(md5(memo),16)
+              ELSE memo END AS memo,
             COALESCE(tax1_amt, tax_amount) as tax_amount,
             tax_code_id,
             tax_code_name,
