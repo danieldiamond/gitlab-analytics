@@ -1,0 +1,2 @@
+SELECT *
+FROM raw.gcloud_postgres_stitch.public_clearbit_cache

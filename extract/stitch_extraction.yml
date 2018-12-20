@@ -1,3 +1,5 @@
+public: 
+    cleaned_urls
 sfdc:
     zqu__quote__c 
     zqu__quoterateplan__c
