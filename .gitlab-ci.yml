@@ -137,6 +137,47 @@ force_update_db:
   <<: *update_db
   when: manual
 
+.snowflake_permissions: &snowflake_permissions
+  stage: setup
+  <<: *job_definition
+  image:
+    name: registry.gitlab.com/meltano/meltano/runner:v0.3.0
+    entrypoint: [""]
+  script:
+    - check_ci_cd_vars.py --file load/snowflake/required_ci_cd_vars.yaml
+    - meltano permissions grant load/snowflake/snowflake_roles/config.yml --db snowflake $DRY
+
+permission_bot_snowflake_dry:
+  <<: *snowflake_permissions
+  variables:
+    DRY: "--dry"
+    PERMISSION_BOT_USER: $SNOWFLAKE_PERMISSION_USER
+    PERMISSION_BOT_PASSWORD: $SNOWFLAKE_PERMISSION_PASSWORD
+    PERMISSION_BOT_ACCOUNT: $SNOWFLAKE_ACCOUNT
+    PERMISSION_BOT_DATABASE: $SNOWFLAKE_PERMISSION_DATABASE
+    PERMISSION_BOT_ROLE: $SNOWFLAKE_PERMISSION_ROLE
+    PERMISSION_BOT_WAREHOUSE: $SNOWFLAKE_PERMISSION_WAREHOUSE
+  only:
+    refs:
+      - master
+    variables:
+      - $PERMISSION_BOT_SNOWFLAKE
+
+permission_bot_snowflake_dry_manual:
+  <<: *snowflake_permissions
+  variables:
+    DRY: "--dry"
+    PERMISSION_BOT_USER: $SNOWFLAKE_PERMISSION_USER
+    PERMISSION_BOT_PASSWORD: $SNOWFLAKE_PERMISSION_PASSWORD
+    PERMISSION_BOT_ACCOUNT: $SNOWFLAKE_ACCOUNT
+    PERMISSION_BOT_DATABASE: $SNOWFLAKE_PERMISSION_DATABASE
+    PERMISSION_BOT_ROLE: $SNOWFLAKE_PERMISSION_ROLE
+    PERMISSION_BOT_WAREHOUSE: $SNOWFLAKE_PERMISSION_WAREHOUSE
+  only:
+    - branches
+  except:
+    - master
+  when: manual
 
 # Stage: update
 

@@ -1,3 +1,5 @@
+version: "1.0"
+
 # Databases
 databases:
     - analytics:
@@ -228,7 +230,7 @@ roles:
             schemas:
                 - analytics.jurbanc_scratch
 
-     - ssichak:
+    - ssichak:
         warehouses:
             - reporting
         owns:
