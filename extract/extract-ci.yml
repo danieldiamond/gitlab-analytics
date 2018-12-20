@@ -66,11 +66,11 @@
   script:
     - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_pings.yaml
     - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest version"
-    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest version --days 90"
+    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest version --days 2"
     - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest customers"
-    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest customers --days 90"
+    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest customers --days 2"
     - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest license"
-    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest license --days 90"
+    - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest license --days 2"
 
 .pings_backfill: &pings_backfill
   stage: extract
