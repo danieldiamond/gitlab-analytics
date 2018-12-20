@@ -13,7 +13,7 @@ WITH opps AS (
       date_trunc('month',opps.sales_qualified_date)                 AS sales_qualified_month,
       touches.*,
       CASE
-        WHEN touchpoint_id ILIKE 'a6061000000CeS0' -- Specific touchpoing overrides
+        WHEN touchpoint_id ILIKE 'a6061000000CeS0%' -- Specific touchpoing overrides
               THEN 'Field Event'
         WHEN marketing_channel_path = 'CPC.AdWords'
               THEN 'Google Adwords'
