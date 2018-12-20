@@ -13,6 +13,8 @@ WITH opps AS (
       date_trunc('month',opps.sales_qualified_date)                 AS sales_qualified_month,
       touches.*,
       CASE
+        WHEN touchpoint_id ILIKE 'a6061000000CeS0%' -- Specific touchpoing overrides
+              THEN 'Field Event'
         WHEN marketing_channel_path = 'CPC.AdWords'
               THEN 'Google Adwords'
         WHEN marketing_channel_path IN ('Email.Other', 'Email.Newsletter','Email.Outreach')
@@ -20,7 +22,7 @@ WITH opps AS (
         WHEN marketing_channel_path IN ('Field Event','Partners.Google','Brand.Corporate Event','Conference')
                   OR (medium = 'Field Event (old)' AND marketing_channel_path = 'Other')
           THEN 'Field Event'
-        WHEN marketing_channel_path IN ('Paid Social.Facebook','Paid Social.LinkedIn','Paid Social.Twitter','Paid Social.YouTube')
+        WHEN marketing_channel_path IN ('Paid Social.Facebook','Paid Social.LinkedIn','Paid Social.Twitter','Paid Social.YouTube','Speaking Session')
           THEN 'Paid Social'
         WHEN marketing_channel_path IN ('Social.Facebook','Social.LinkedIn','Social.Twitter','Social.YouTube')
           THEN 'Social'
@@ -31,7 +33,7 @@ WITH opps AS (
         WHEN marketing_channel_path = 'Marketing Site.Organic'
                   OR (medium = 'Marketing Site' AND marketing_channel_path = 'NULL')
           THEN 'Organic Search'
-        WHEN marketing_channel_path IN ('Sponsorship','Speaking Session')
+        WHEN marketing_channel_path IN ('Sponsorship')
           THEN 'Paid Sponsorship'
         ELSE 'Unknown'
               END                                                   AS pipe_name,
