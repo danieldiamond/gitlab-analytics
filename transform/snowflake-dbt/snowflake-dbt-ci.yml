@@ -45,8 +45,8 @@ snowplow_load_manual:
 dbt_snowflake:
   <<: *snowflake_dbt_jobs
   script:
-    - dbt -d deps --profiles-dir profile
-    - dbt -d run --profiles-dir profile --target prod
+    - dbt deps --profiles-dir profile
+    - dbt run --profiles-dir profile --target prod
   only:
     refs:
       - master
@@ -56,8 +56,8 @@ dbt_snowflake:
 dbt_snowflake_manual: &dbt_snowflake_manual
   <<: *snowflake_dbt_jobs
   script:
-    - dbt -d deps --profiles-dir profile
-    - dbt -d run --profiles-dir profile --target prod
+    - dbt deps --profiles-dir profile
+    - dbt run --profiles-dir profile --target prod
   only:
     refs:
       - branches
@@ -66,21 +66,21 @@ dbt_snowflake_manual: &dbt_snowflake_manual
 dbt_snowflake_tests_manual:
   <<: *dbt_snowflake_manual
   script:
-    - dbt -d test --profiles-dir profile --target prod
+    - dbt test --profiles-dir profile --target prod
 
 dbt_snowflake_full_refresh:
   <<: *snowflake_dbt_jobs
   script:
-    - dbt -d deps --profiles-dir profile
-    - dbt -d run --profiles-dir profile --target prod --full-refresh
+    - dbt deps --profiles-dir profile
+    - dbt run --profiles-dir profile --target prod --full-refresh
   when: manual
 
 snowflake_mr_dbt:
   <<: *snowflake_dbt_jobs
   script:
-    - dbt -d deps --profiles-dir profile
-    - dbt -d run --profiles-dir profile --target prod --full-refresh
-    - dbt -d run --profiles-dir profile --target prod
+    - dbt deps --profiles-dir profile
+    - dbt run --profiles-dir profile --target prod --full-refresh
+    - dbt run --profiles-dir profile --target prod
   when: manual
 
 # Model tests
@@ -88,13 +88,13 @@ dbt_snowflake_tests_manual:
   <<: *dbt_snowflake_manual
   stage: model_tests
   script:
-    - dbt -d test --profiles-dir profile --target prod
+    - dbt test --profiles-dir profile --target prod
 
 dbt_snowflake_tests:
   <<: *snowflake_dbt_jobs
   stage: model_tests
   script:
-    - dbt -d test --profiles-dir profile --target prod
+    - dbt test --profiles-dir profile --target prod
   only:
     refs:
       - master
