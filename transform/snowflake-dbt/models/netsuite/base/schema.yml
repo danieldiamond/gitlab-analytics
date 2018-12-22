@@ -1,0 +1,182 @@
+version: 2
+
+models:
+    - name: netsuite_accounting_periods
+      columns:
+          - name: posting_period_id
+            tests:
+                - not_null
+
+    - name: netsuite_accounts
+      columns:
+          - name: internal_account_id
+            tests:
+                - not_null
+                - unique
+          - name: account_name
+            tests:
+                - not_null
+          - name: account_type
+            tests:
+                - not_null
+
+    - name: netsuite_applications
+      columns:
+          - name: application_id
+            tests:
+                - not_null
+                - unique
+          - name: transaction_id
+            tests:
+                - not_null
+          - name: transaction_line
+            tests:
+                - not_null
+          - name: application_amount
+            tests:
+                - not_null
+          - name: doc_id
+            tests:
+                - not_null
+          - name: application_type
+            tests:
+                - not_null
+
+    - name: netsuite_consolidated_exchange_rates
+      columns:
+          - name: internal_id
+            tests:
+                - not_null
+                - unique
+
+    - name: netsuite_currencies
+      columns:
+          - name: currency_id
+            tests:
+                - not_null
+                - unique
+          - name: currency_name
+            tests:
+                - not_null
+                - unique
+          - name: currency_symbol
+            tests:
+                - not_null
+                - unique
+          - name: exchange_rate
+            tests:
+                - not_null
+
+    - name: netsuite_customers
+      columns:
+          - name: customer_id
+            tests:
+                - not_null
+                - unique
+          - name: entity_name
+            tests:
+                - not_null
+                - unique
+
+    - name: netsuite_departments
+      columns:
+          - name: department_id
+            tests:
+                - not_null
+                - unique
+          - name: department_name
+            tests:
+                - not_null
+
+    - name: netsuite_expenses
+      description: '{{ doc("netsuite_expenses") }}'
+      columns:
+          - name: expense_id
+            tests:
+                - not_null
+                - unique
+          - name: transaction_id
+            tests:
+                - not_null
+          - name: account_id
+            tests:
+                - not_null
+          - name: account_name
+            tests:
+                - not_null
+
+    - name: netsuite_subsidiaries
+      columns:
+          - name: subsidiary_id
+            tests:
+                - not_null
+                - unique
+          - name: subsidiary_name
+            tests:
+                - not_null
+                - unique
+          - name: currency
+            tests:
+                - not_null
+          - name: country
+            tests:
+                - not_null
+
+    - name: netsuite_transaction_items
+      columns:
+          - name: transaction_item_id
+            tests:
+                - not_null
+                - unique
+          - name: transaction_id
+            tests:
+                - not_null
+          - name: transaction_line
+            tests:
+                - not_null
+          - name: item_id
+            tests:
+                - not_null
+          - name: item_name
+            tests:
+                - not_null
+
+    - name: netsuite_transaction_lines
+      description: '{{ doc("netsuite_transaction_lines") }}'
+      columns:
+          - name: transaction_line_id
+            tests:
+                - not_null
+                - unique
+          - name: transaction_id
+            tests:
+                - not_null
+          - name: transaction_line
+            tests:
+                - not_null
+          - name: account_id
+            tests:
+                - not_null
+          - name: account_name
+            tests:
+                - not_null
+
+    - name: netsuite_transactions
+      columns:
+          - name: transaction_id
+            tests:
+                - not_null
+                - unique
+          - name: transaction_date
+            tests:
+                - not_null
+
+    - name: netsuite_vendors
+      columns:
+          - name: internal_vendor_id
+            tests:
+                - not_null
+                - unique
+          - name: entity_name
+            tests:
+                - not_null

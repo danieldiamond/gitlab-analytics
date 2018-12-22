@@ -7,10 +7,10 @@ WITH source AS (
 
 
 	SELECT
-       date_month::DATE,
+       date_month::DATE as date_month,
 	   pipe,
-       headcount::REAL,
-       salary_per_month::REAL
+       headcount::REAL as headcount,
+       salary_per_month::REAL as salary_per_month
 	FROM source
 
 )
