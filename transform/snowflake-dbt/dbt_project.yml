@@ -36,10 +36,6 @@ models:
       post-hook: "{{ logging.log_model_end_event() }}"
     vars:
         warehouse_name: 'transforming'
-    date:
-      base:
-        enabled: true
-        materialized: table
     snowplow:
         vars:
           'snowplow:use_fivetran_interface': false
@@ -59,10 +55,18 @@ models:
             enabled: false
 
     gitlab_snowflake:
+      date:
+        base:
+          enabled: true
+          materialized: table
       gitter:
         base:
           enabled: true
           materialized: view
         transformed:
+          enabled: true
+          materialized: table
+      zuora:
+        xf:
           enabled: true
           materialized: table
