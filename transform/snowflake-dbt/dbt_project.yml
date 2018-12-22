@@ -36,6 +36,7 @@ models:
       post-hook: "{{ logging.log_model_end_event() }}"
     vars:
         warehouse_name: 'transforming'
+
     snowplow:
         vars:
           'snowplow:use_fivetran_interface': false
@@ -55,10 +56,12 @@ models:
             enabled: false
 
     gitlab_snowflake:
+        
       date:
         base:
           enabled: true
           materialized: table
+
       gitter:
         base:
           enabled: true
@@ -66,6 +69,30 @@ models:
         transformed:
           enabled: true
           materialized: table
+
+      netsuite:
+        xf:
+          enabled: true
+          materialized: table
+
+      pings:
+        clean:
+          enabled: true
+          materialized: table
+
+      pipe2spend:
+        enabled: true
+        materialized: table
+
+      retention:
+        enabled: true
+        materialized: table
+
+      sfdc:
+        transformed:
+          enabled: true
+          materialized: table
+
       zuora:
         xf:
           enabled: true
