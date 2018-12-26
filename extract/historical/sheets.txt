@@ -11,6 +11,9 @@ crodashboard.crodashboard_goals
 google_referrals.google_referrals
 headcount.headcount
 iacv_monthly_goals.iacv_monthly_goals
+interviewing_data.hired_candidates
+interviewing_data.interviewers_and_scores
+interviewing_data.performance_of_hires
 marketing_pipe_to_spend_headcount.marketing_pipe_to_spend_headcount
 metrics.metrics
 regional_quotas.transposed
