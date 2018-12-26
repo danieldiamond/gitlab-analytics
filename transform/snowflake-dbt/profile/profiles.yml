@@ -6,7 +6,7 @@ gitlab-snowflake:
   outputs:
     prod:
       type: snowflake
-      threads: 4
+      threads: 16
       account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
       user: "{{ env_var('SNOWFLAKE_USER') }}"
       password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
