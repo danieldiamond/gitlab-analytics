@@ -43,10 +43,10 @@ with zuora_mrr_totals as (
 )
 
 SELECT *,
-      datediff(month,'zuora_account_cohort_month', 'mrr_month') as months_since_zuora_account_cohort_start,
-      datediff(quarter,'zuora_account_cohort_month ', 'mrr_month') as quarters_since_zuora_account_cohort_start,
-      datediff(month,'sfdc_account_cohort_month', 'mrr_month') as months_since_sfdc_account_cohort_start,
-      datediff(quarter,'sfdc_account_cohort_month', 'mrr_month') as quarters_since_sfdc_account_cohort_start,
-      datediff(month,'parent_account_cohort_month', 'mrr_month') as months_since_parent_account_cohort_start,
-      datediff(quarter,'parent_account_cohort_month', 'mrr_month') as quarters_since_parent_account_cohort_start
+      datediff(month, zuora_account_cohort_month, mrr_month) as months_since_zuora_account_cohort_start,
+      datediff(quarter, zuora_account_cohort_month, mrr_month) as quarters_since_zuora_account_cohort_start,
+      datediff(month, sfdc_account_cohort_month, mrr_month) as months_since_sfdc_account_cohort_start,
+      datediff(quarter, sfdc_account_cohort_month, mrr_month) as quarters_since_sfdc_account_cohort_start,
+      datediff(month, parent_account_cohort_month, mrr_month) as months_since_parent_account_cohort_start,
+      datediff(quarter, parent_account_cohort_month, mrr_month) as quarters_since_parent_account_cohort_start
 FROM joined
