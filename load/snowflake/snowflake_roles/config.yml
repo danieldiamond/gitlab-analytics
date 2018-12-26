@@ -371,4 +371,5 @@ warehouses:
         size: x-small
 
     - transforming:
-        size: x-small
+        size: x-large
+        
