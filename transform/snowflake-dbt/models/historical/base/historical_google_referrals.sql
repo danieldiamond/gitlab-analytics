@@ -7,11 +7,11 @@ WITH source AS (
 
 
 	SELECT
-       date_week::DATE,
-		   eligible_upgrades::INTEGER,
-       trials_referred::INTEGER,
-       upgrade_revenue::INTEGER,
-       trial_revenue::INTEGER
+       date_week::DATE as date_week,
+	   eligible_upgrades::INTEGER as eligible_upgrades,
+       trials_referred::INTEGER as trials_referred,
+       upgrade_revenue::INTEGER as upgrade_revenue,
+       trial_revenue::INTEGER as trial_revenue
 	FROM source
 
 )

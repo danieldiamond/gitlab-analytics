@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT md5(month_of :: varchar)                       as pk,
-				 month_of :: date,
+				 month_of :: date 								as month_of,
 				 nullif(days_to_hire, '') :: float              as days_to_hire,
 				 nullif("NPS_average", '') :: float             as nps_average,
 				 nullif("Onboarding_eNPS", '') :: float         as onboarding_enps,

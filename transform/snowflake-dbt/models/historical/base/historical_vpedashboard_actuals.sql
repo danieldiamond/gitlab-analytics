@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT md5(month_of :: varchar)                     as pk,
-				 month_of :: date,
+				 month_of :: date 							  as month_of,
 				 nullif(support_sla, '') :: float             as support_sla,
 				 nullif(support_csat, '') :: float            as support_csat,
 				 nullif(mr_per_release, '') :: float          as mr_per_release,
