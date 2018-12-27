@@ -234,6 +234,7 @@ bizible2__bizible_attribution_touchpoint__c:
   bizible2__sf_campaign__c: character varying
   bizible2__touchpoint_source__c: character varying
   id: character varying
+  isdeleted: boolean
 campaign:
   actualcost: real
   amountallopportunities: real
