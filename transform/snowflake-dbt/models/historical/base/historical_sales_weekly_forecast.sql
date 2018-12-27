@@ -8,7 +8,7 @@ WITH source AS (
 
 	SELECT 	"Week"::date as week_of,
          	"Model"::varchar as model,
-					NULLIF(trim("IACV"),'')::numeric as iacv
+			NULLIF(trim("IACV"),'')::numeric as iacv
 	FROM source
 
 )

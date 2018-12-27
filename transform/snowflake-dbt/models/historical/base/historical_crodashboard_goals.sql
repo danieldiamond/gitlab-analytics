@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT md5(month_of :: varchar)                  as pk,
-				 month_of :: date,
+				 month_of :: date         				   as month_of,
 				 nullif(ramped_reps_on_quota, '') :: float as ramped_reps_on_quota
 	FROM raw.historical.crodashboard_goals
 )
