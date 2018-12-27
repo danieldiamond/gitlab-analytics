@@ -16,7 +16,7 @@ WITH opps AS (
         WHEN touchpoint_id ILIKE 'a6061000000CeS0%' -- Specific touchpoing overrides
               THEN 'Field Event'
         WHEN marketing_channel_path = 'CPC.AdWords'
-              THEN 'Google Adwords'
+              THEN 'Google AdWords'
         WHEN marketing_channel_path IN ('Email.Other', 'Email.Newsletter','Email.Outreach')
           THEN 'Email'
         WHEN marketing_channel_path IN ('Field Event','Partners.Google','Brand.Corporate Event','Conference','Speaking Session')

@@ -26,7 +26,7 @@ demand_advertising_spend AS (
         period_date::DATE         AS month,
         CASE
           WHEN entity in ('Google','ROI DNA, Inc.','Shanghai Dragonsoft Digital Technology,Co.,LTD')
-            THEN 'Google Adwords'
+            THEN 'Google AdWords'
           WHEN entity in ('Terminus Software, Inc')
             THEN 'Terminus'
           WHEN entity in ('Facebook US','Linked In')
@@ -72,7 +72,7 @@ SELECT
     h.month,
     h.pipe_name,
     CASE
-      WHEN h.pipe_name IN ('Google Adwords','Paid Sponsorship','Paid Social','Field Event','Terminus')
+      WHEN lower(h.pipe_name) IN ('google adwords','oaid sponsorship','paid social','field event','terminus')
         THEN 'Paid'
       ELSE 'Organic' END    AS pipe_type,
     coalesce(p.pipe_iacv,0) AS pipe_iacv,
@@ -81,5 +81,5 @@ SELECT
     coalesce(j.spend, 0)    AS spend,
     coalesce(p.pipe_iacv/(h.salary_per_month::integer + coalesce(j.spend,0)),0) as pipe_to_spend
 FROM headcount h
-  LEFT JOIN pipe p ON p.month = h.month AND trim(p.pipe_name) = trim(h.pipe_name)
-  LEFT JOIN joined_spend j ON h.month = (j.month + '3 month'::interval)::date AND trim(h.pipe_name) = trim(j.pipe_name)
+  LEFT JOIN pipe p ON p.month = h.month AND trim(lower(p.pipe_name)) = trim(lower(h.pipe_name))
+  LEFT JOIN joined_spend j ON h.month = (j.month + '3 month'::interval)::date AND trim(lower(h.pipe_name)) = trim(lower(j.pipe_name))
