@@ -12,8 +12,8 @@ with base as (
   UNION ALL
   --SELECT max(to_timestamp(updated_at)::date), 'ccodashboard_actuals' FROM historical.ccodashboard_actuals
   --UNION ALL
-  --SELECT max(to_timestamp(updated_at)::date), 'crodashboard_actuals' FROM historical.crodashboard_actuals
-  --UNION ALL
+  SELECT max(to_timestamp(updated_at)::date), 'crodashboard_actuals' FROM historical.crodashboard_actuals
+  UNION ALL
   SELECT max(to_timestamp(updated_at)::date), 'cfodashboard_actuals' FROM historical.cfodashboard_actuals
   UNION ALL
   SELECT max(to_timestamp(updated_at)::date), 'vpedashboard_actuals' FROM historical.vpedashboard_actuals
