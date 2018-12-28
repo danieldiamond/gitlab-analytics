@@ -39,7 +39,7 @@ SELECT
     WHEN edition LIKE '%EE%'
       THEN 'Starter'
     ELSE null END             AS edition_type,
-  SPLIT_PART(version, '.', 1) AS major_version,
+  concat(concat(SPLIT_PART(version, '.', 1), '.'), SPLIT_PART(version, '.', 2)) AS major_version,
   hostname,
   host_id,
   (stats_used['assignee_lists']::numeric) AS assignee_lists,
