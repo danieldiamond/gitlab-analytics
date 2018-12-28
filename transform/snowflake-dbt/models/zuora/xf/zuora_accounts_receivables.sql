@@ -3,7 +3,7 @@ WITH zuora_invoice_base AS (
 
 	SELECT * 
   FROM {{ref('zuora_invoice')}}
-  WHERE due_date < CURRENT_DATE
+  WHERE date_trunc(day, due_date)::DATE < CURRENT_DATE
 
 ), zuora_account AS (
 
