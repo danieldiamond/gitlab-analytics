@@ -248,7 +248,7 @@ version_db:
   variables:
     SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "version"
-    DAYS: 1
+    DAYS: 90
     HOURS: 0
     AVG_CYCLE_ANALYTICS_ID: 1
   only:
@@ -263,7 +263,7 @@ customers_db:
   variables:
     SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "customers"
-    DAYS: 1
+    DAYS: 90
     HOURS: 0
   only:
     refs:
@@ -277,7 +277,7 @@ license_db:
   variables:
     SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "license"
-    DAYS: 1
+    DAYS: 90
     HOURS: 0
   only:
     refs:
@@ -291,8 +291,8 @@ ci_stats_db:
   variables:
     SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "ci_stats"
-    DAYS: 0
-    HOURS: 8
+    DAYS: 90
+    HOURS: 0
   only:
     refs:
       - master
@@ -305,7 +305,7 @@ gitlab_profiler_db:
   variables:
     SNOWFLAKE_DATABASE: $SNOWFLAKE_LOAD_DATABASE
     EXPORT_DATABASE: "gitlab_profiler"
-    DAYS: 15
+    DAYS: 90
     HOURS: 0
   only:
     refs:
