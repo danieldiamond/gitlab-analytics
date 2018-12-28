@@ -72,7 +72,7 @@ SELECT
     h.month,
     h.pipe_name,
     CASE
-      WHEN lower(h.pipe_name) IN ('google adwords','oaid sponsorship','paid social','field event','terminus')
+      WHEN lower(h.pipe_name) IN ('google adwords','paid sponsorship','paid social','field event','terminus')
         THEN 'Paid'
       ELSE 'Organic' END    AS pipe_type,
     coalesce(p.pipe_iacv,0) AS pipe_iacv,
