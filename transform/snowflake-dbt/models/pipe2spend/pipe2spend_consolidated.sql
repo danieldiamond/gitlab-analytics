@@ -79,7 +79,12 @@ SELECT
     h.headcount,
     h.salary_per_month,
     coalesce(j.spend, 0)    AS spend,
-    coalesce(p.pipe_iacv/(h.salary_per_month::integer + coalesce(j.spend,0)),0) as pipe_to_spend
+    coalesce(
+        p.pipe_iacv/
+        nullif(
+            (h.salary_per_month::integer + coalesce(j.spend,0))
+            ,0)
+        ,0)                 AS pipe_to_spend
 FROM headcount h
   LEFT JOIN pipe p ON p.month = h.month AND trim(lower(p.pipe_name)) = trim(lower(h.pipe_name))
   LEFT JOIN joined_spend j ON h.month = (j.month + INTERVAL '3 month')::date AND trim(lower(h.pipe_name)) = trim(lower(j.pipe_name))
