@@ -94,6 +94,7 @@ WITH source AS (
       lastactivitydate                         AS last_activity_date,
       lastreferenceddate                       AS last_referenced_date,
       lastvieweddate                           AS last_viewed_date,
+      convert_timezone('America/Los_Angeles',convert_timezone('UTC',current_timestamp())) AS _last_dbt_run,
       systemmodstamp
 
 

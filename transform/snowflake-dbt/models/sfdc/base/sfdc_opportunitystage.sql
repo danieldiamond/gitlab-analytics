@@ -76,7 +76,7 @@ WITH source AS (
 	SELECT
         row_number()
           OVER (
-            ORDER BY source.id )       AS stage_id,
+            ORDER BY lower( source.id ))       AS stage_id,
 
         -- keys
         source.id                      AS sfdc_id,

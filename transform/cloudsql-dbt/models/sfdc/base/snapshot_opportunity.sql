@@ -27,6 +27,6 @@ SELECT id AS sfdc_opportunity_id,
        ACV__c as ACV,
        Renewal_ACV__c as Renewal_ACV,
        Amount as TCV
-       
+
 FROM ss_opportunity
 
