@@ -42,22 +42,35 @@ snowplow_load_manual:
   when: manual
 
 # Model
-dbt_snowflake:
+dbt_snowflake: &dbt_snowflake
   <<: *snowflake_dbt_jobs
   script:
-    - dbt deps --profiles-dir profile
-    - dbt run --profiles-dir profile --target prod
+    - dbt deps --profiles-dir profile # install packages
+    - dbt run --profiles-dir profile --target prod --exclude snapshots # run without snapshot models
   only:
     refs:
       - master
     variables:
       - $SNOWFLAKE_DBT
 
-dbt_snowflake_manual: &dbt_snowflake_manual
+dbt_snowflake_archive: &dbt_snowflake_archive
   <<: *snowflake_dbt_jobs
   script:
-    - dbt deps --profiles-dir profile
-    - dbt run --profiles-dir profile --target prod
+    - dbt archive --profiles-dir profile --target prod # archive tables that snapshot models need
+    - dbt run --profiles-dir profile --target prod --models snapshots # update models that rely on archives
+  only:
+    refs:
+      - master
+    variables:
+      - $SNOWFLAKE_DBT_ARCHIVE
+
+dbt_snowflake_manual: &dbt_snowflake_manual
+  <<: *dbt_snowflake
+  script:
+    - dbt deps --profiles-dir profile # install packages
+    - dbt run --profiles-dir profile --target prod --exclude snapshots # run without snapshot models
+    - dbt archive --profiles-dir profile --target prod # archive tables that snapshot models need
+    - dbt run --profiles-dir profile --target prod --models snapshots # update models that rely on archives
   only:
     refs:
       - branches
