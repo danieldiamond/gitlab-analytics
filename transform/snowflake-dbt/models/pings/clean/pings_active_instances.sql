@@ -27,6 +27,11 @@ WITH active_instances AS (
     {% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
         WHERE created_at >= DATE_TRUNC('month', CURRENT_DATE)
     {% endif %}
+),
+active_instances_w_first_ping AS (
+ SELECT *,
+  min(date_trunc('day', created_at)) OVER (PARTITION BY host_id ORDER BY created_at) as first_ping_at_date
+ FROM active_instances
 )
 
 SELECT
@@ -34,6 +39,7 @@ SELECT
   host_id,
   version,
   DATE_TRUNC('day', created_at) AS created_at_date,
+  first_ping_at_date,
   ping_type
-FROM active_instances
-GROUP BY 1,2,3,4,5
+FROM active_instances_w_first_ping
+GROUP BY 1,2,3,4,5,6
