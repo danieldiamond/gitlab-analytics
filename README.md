@@ -69,7 +69,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
 
 * Taylor's talk at the 2018 Nashville Analytics Summit - Coming Soon
 
-* Thomas's talk at the 2018 DataEngConf in NYC - Coming Soon
+* [How Data Teams Do More With Less By Adopting Software Engineering Best Practices - Thomas's talk at the 2018 DataEngConf in NYC](https://www.youtube.com/watch?v=eu623QBwakc)
 
 * GitLab blog post about Meltano - https://news.ycombinator.com/item?id=17667399
   * Livestream chat with Sid and HN user slap_shot - https://www.youtube.com/watch?v=F8tEDq3K_pE
@@ -90,6 +90,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
 * [One Analyst's Guide for Going from Good to Great](https://blog.fishtownanalytics.com/one-analysts-guide-for-going-from-good-to-great-6697e67e37d9)
 * The Value of Data: [Part 1](https://www.codingvc.com/the-value-of-data-part-1-using-data-as-a-competitive-advantage), [Part 2](https://www.codingvc.com/the-value-of-data-part-2-building-valuable-datasets), [Part 3](https://www.codingvc.com/the-value-of-data-part-3-data-business-models)
 * [Building a Data Practice](https://www.locallyoptimistic.com/post/building-a-data-practice/)
+* [Does my Startup Data Team Need a Data Engineer](https://blog.fishtownanalytics.com/does-my-startup-data-team-need-a-data-engineer-b6f4d68d7da9)
 
 
 ## Data sources
