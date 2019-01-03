@@ -719,9 +719,6 @@ opportunity:
   expected_number_of_users__c: real
   expected_product__c: character varying
   first_12_months__c: boolean
-  fiscal: character varying
-  fiscalquarter: bigint
-  fiscalyear: bigint
   forecastcategory: character varying
   forecastcategoryname: character varying
   funding__c: character varying
