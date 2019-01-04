@@ -1,3 +1,0 @@
-packages:
-  - git: https://github.com/fishtown-analytics/dbt-event-logging.git
-    revision: 0.1.5
