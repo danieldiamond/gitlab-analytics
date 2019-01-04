@@ -78,6 +78,15 @@ models:
                 - not_null
                 - unique
 
+    - name: netsuite_deleted
+      columns:
+          - name: internal_id
+            tests:
+                - not_null
+          - name: deleted_timestamp
+            tests:
+                - not_null
+
     - name: netsuite_departments
       columns:
           - name: department_id
