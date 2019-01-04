@@ -310,13 +310,13 @@ try:
               "o.acv_test__c," + \
               "o.does_not_require_approval__c," + \
               "o.channel_partner_close_date_override__c," + \
-              "o.fiscal," + \
+              "null," + \
               "o.mrr2__c," + \
               "o.account_id__c," + \
               "o.zqu__zuoraconfig__c," + \
-              "o.fiscalyear," + \
+              "null," + \
               "o.account_id_18__c," + \
-              "o.fiscalquarter," + \
+              "null," + \
               "o.iswon," + \
               "o.channel_manager__c," + \
               "o.channel_partner_iacv_override__c," + \
