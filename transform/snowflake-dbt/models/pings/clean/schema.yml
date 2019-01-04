@@ -7,3 +7,5 @@ models:
           - name: host_id
           - name: ping_type
             description: an instance checked for new version or send a usage ping
+    - name: pings_usage_data_mom_change
+      description: '{{ doc("pings_usage_data_mom_change") }}'
