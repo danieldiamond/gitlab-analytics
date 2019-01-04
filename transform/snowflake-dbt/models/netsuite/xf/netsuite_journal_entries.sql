@@ -1,7 +1,7 @@
 WITH transactions AS (
 
      SELECT *
-     FROM {{ref('netsuite_transactions')}}
+     FROM {{ref('netsuite_transactions_xf')}}
 
 ),
 

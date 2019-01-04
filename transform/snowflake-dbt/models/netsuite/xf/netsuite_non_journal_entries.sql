@@ -7,7 +7,7 @@ WITH expenses AS (
 
 transactions AS (
      SELECT *
-     FROM {{ref('netsuite_transactions')}}
+     FROM {{ref('netsuite_transactions_xf')}}
         ),
 
 currencies AS (
@@ -66,7 +66,6 @@ non_journal_entries AS (
 
           WHERE
           (LEFT (e.account_name,4) BETWEEN '5000' AND '6999' AND LEFT (e.account_name,4) != '5079')
-                AND t.entity_name NOT IN ('American Express', 'Comerica Commercial Card Srvc')
           GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 
         )

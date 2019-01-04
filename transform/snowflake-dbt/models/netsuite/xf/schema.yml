@@ -108,3 +108,13 @@ models:
             description: '{{ doc("netsuite_entries_col_credit_amount") }}'
           - name: consolidated_exchange
             description: '{{ doc("netsuite_entries_col_consolidated_exchange") }}'
+
+    -   name: netsuite_transactions_xf
+        columns:
+            -   name: transaction_id
+                tests:
+                    - not_null
+                    - unique
+            -   name: transaction_date
+                tests:
+                    - not_null
