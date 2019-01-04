@@ -22,15 +22,14 @@ stages:
   - review
   - setup
   - extract # extract/extract-ci.yml
-  - model # transform/cloudsql-dbt/cloudsql-dbt-ci.yml transform/snowflake-dbt/snowflake-dbt-ci.yml
-  - model_tests # transform/cloudsql-dbt/cloudsql-dbt-ci.yml transform/snowflake-dbt/snowflake-dbt-ci.yml
+  - model #  transform/snowflake-dbt/snowflake-dbt-ci.yml
+  - model_tests #  transform/snowflake-dbt/snowflake-dbt-ci.yml
   - update
   - publish
   - review_stop
 
 include:
   - "extract/extract-ci.yml"
-  - "transform/cloudsql-dbt/cloudsql-dbt-ci.yml"
   - "transform/snowflake-dbt/snowflake-dbt-ci.yml"
 
 # Stage: review
@@ -49,9 +48,7 @@ cloudsql_review: &cloudsql_review
     on_stop: review_stop
   only:
     - branches
-  except:
-    - master
-    - $TEST_PIPELINE
+  when: manual
 
 cloudsql_review_refresh:
   <<: *cloudsql_review
@@ -99,29 +96,6 @@ snowflake_review_refresh:
 
 # Stage: setup
 
-refresh_dev: &refresh_dev
-  <<: *job_housekeeping
-  stage: setup
-  variables:
-    GCP_INSTANCE_NAME: $GCP_PRODUCTION_INSTANCE_NAME
-    GIT_STRATEGY: clone
-  script:
-    - ci_helpers.py refresh_dev_instance
-    - ci_helpers.py use_proxy "python3 orchestration/grant_roles.py"
-  only:
-    refs:
-      - master
-    variables:
-      - $REFRESH_DEV
-
-force_refresh_dev:
-  <<: *refresh_dev
-  variables:
-    GCP_INSTANCE_NAME: $GCP_PRODUCTION_INSTANCE_NAME
-    GIT_DEPTH: 1
-    FORCE: "true"
-  when: manual
-
 update_db: &update_db
   <<: *job_housekeeping
   stage: setup
@@ -129,12 +103,6 @@ update_db: &update_db
     - ci_helpers.py use_proxy "python3 orchestration/grant_roles.py"
   only:
     - branches
-  except:
-    - master
-    - $TEST_PIPELINE
-
-force_update_db:
-  <<: *update_db
   when: manual
 
 .snowflake_permissions: &snowflake_permissions
@@ -181,19 +149,6 @@ permission_bot_snowflake_dry_manual:
 
 # Stage: update
 
-sfdc_update:
-  stage: update
-  <<: *job_definition
-  variables:
-    MELT_CI_RETRIES: 0
-  script:
-    - ci_helpers.py use_proxy "python3 transform/sfdc_processor.py"
-  only:
-    refs:
-      - master
-    variables:
-      - $SFDC_UPDATE
-
 sfdc_snapshot: &sfdc_snapshot
   stage: update
   <<: *job_definition
@@ -206,16 +161,6 @@ sfdc_snapshot: &sfdc_snapshot
     variables:
       - $SFDC_SNAPSHOT
 
-sfdc_update_manual:
-  stage: update
-  <<: *job_definition
-  script:
-    - ci_helpers.py use_proxy "python3 transform/sfdc_processor.py"
-  only:
-    refs:
-      - branches
-  when: manual
-
 sfdc_snapshot_manual:
   stage: update
   <<: *sfdc_snapshot
@@ -223,6 +168,7 @@ sfdc_snapshot_manual:
     refs:
       - branches
   when: manual
+
 
 # Stage: publish
 
@@ -278,7 +224,6 @@ review_stop:
     - git clone $CI_REPOSITORY_URL
     - pip3 install -U snowflake-sqlalchemy
     - analytics/orchestration/manage_snowflake.py delete_clone
-    - analytics/orchestration/ci_helpers.py delete_instance
   when: manual
   allow_failure: true
   only:

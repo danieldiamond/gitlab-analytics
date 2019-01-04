@@ -101,7 +101,7 @@
   <<: *extract_definition
   image:
     name: registry.gitlab.com/meltano/meltano/runner:v0.1.4
-    entrypoint: [""]  
+    entrypoint: [""]
   script:
     - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
     - export SNOWFLAKE_DATABASE="${SNOWFLAKE_DATABASE^^}" # database name must be in CAPS
@@ -109,14 +109,6 @@
     - meltano install
     - python3 extract/postgres --import_db $EXPORT_DATABASE --days $DAYS --hours $HOURS
     - extract/postgres/run_custom_tap_target.sh
-
-.sheetload_cloudsql: &sheetload_cloudsql
-  stage: extract
-  <<: *extract_definition
-  script:
-    - pip3 install -U pyasn1-modules
-    - cd extract/historical/
-    - ci_helpers.py use_proxy "python3 sheetload.py sheets sheets.txt postgres"
 
 .sheetload_snowflake: &sheetload_snowflake
   stage: extract
@@ -126,15 +118,6 @@
     - pip3 install -U snowflake-sqlalchemy
     - cd extract/historical/
     - python3 sheetload.py sheets sheets.txt snowflake
-
-.zuora_extract: &zuora_extract
-  variables:
-    FIXED_ZUORA_PASSWORD: $ZUORA_PASSWORD
-  stage: extract
-  <<: *extract_definition
-  script:
-    - envsubst < "extract/config/environment.conf.template" > "extract/config/environment.conf"
-    - ci_helpers.py use_proxy "python3 extract/zuora/zuora_export.py"
 
 .sfdc_extract: &sfdc_extract
   variables:
@@ -151,24 +134,6 @@
   <<: *extract_definition
   script:
     - ci_helpers.py use_proxy "bash transform/hosts_to_sfdc/python_timecheck.sh"
-
-.stripe_extract_githost: &stripe_extract_githost
-  variables:
-    GITHOST_STRIPE_API_KEY_SK: $GITHOST_STRIPE_API_KEY_SK
-  stage: extract
-  <<: *extract_definition
-  script:
-    - ci_helpers.py use_proxy "python3 extract/stripe/src --schema stripe_githost apply_schema"
-    - ci_helpers.py use_proxy "python3 extract/stripe/src --schema stripe_githost --days=7 export"
-
-.stripe_extract_about_gitlab: &stripe_extract_about_gitlab
-  variables:
-    ABOUT_GITLAB_STRIPE_API_KEY_SK: $ABOUT_GITLAB_STRIPE_API_KEY_SK
-  stage: extract
-  <<: *extract_definition
-  script:
-    - ci_helpers.py use_proxy "python3 extract/stripe/src --schema stripe_about_gitlab apply_schema"
-    - ci_helpers.py use_proxy "python3 extract/stripe/src --schema stripe_about_gitlab --days=7 export"
 
 .gitlab_extract: &gitlab_extract
   stage: extract
@@ -321,15 +286,6 @@ sfdc:
     variables:
       - $SFDC
 
-sheetload_cloudsql:
-  stage: extract
-  <<: *sheetload_cloudsql
-  only:
-    refs:
-      - master
-    variables:
-      - $SHEETLOAD
-
 sheetload_snowflake:
   stage: extract
   <<: *sheetload_snowflake
@@ -338,30 +294,6 @@ sheetload_snowflake:
       - master
     variables:
       - $SHEETLOAD_SNOWFLAKE
-
-stripe_about_gitlab:
-  <<: *stripe_extract_about_gitlab
-  only:
-    refs:
-      - master
-    variables:
-      - $STRIPE_ABOUT_GITLAB
-
-stripe_githost:
-  <<: *stripe_extract_githost
-  only:
-    refs:
-      - master
-    variables:
-      - $STRIPE_GITHOST
-
-zuora:
-  <<: *zuora_extract
-  only:
-    refs:
-      - master
-    variables:
-      - $ZUORA_CLOUDSQL
 
 ## Review Jobs
 
@@ -527,38 +459,9 @@ sfdc_manual:
     - master
   when: manual
 
-sheetload_cloudsql_manual:
-  stage: extract
-  <<: *sheetload_cloudsql
-  when: manual
-
 sheetload_snowflake_manual:
   stage: extract
   <<: *sheetload_snowflake
-  when: manual
-
-stripe_extract_about_gitlab_manual:
-  <<: *stripe_extract_about_gitlab
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-stripe_extract_githost_manual:
-  <<: *stripe_extract_githost
-  only:
-    - branches
-  except:
-    - master
-  when: manual
-
-zuora_manual:
-  <<: *zuora_extract
-  only:
-    - branches
-  except:
-    - master
   when: manual
 
 # Stage: test
@@ -566,9 +469,3 @@ zuora_manual:
 .test_job_template: &test_job_template
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
 
-run_tests_manual:
-  stage: test
-  <<: *test_job_template
-  script:
-    - ci_helpers.py use_proxy "pytest -vv"
-  when: manual
