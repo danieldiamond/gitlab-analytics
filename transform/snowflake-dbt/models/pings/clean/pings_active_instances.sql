@@ -40,6 +40,7 @@ SELECT
   version,
   DATE_TRUNC('day', created_at) AS created_at_date,
   first_ping_at_date,
-  ping_type
+  ping_type,
+  datediff(month, first_ping_at_date, created_at) as months_since_first_ping
 FROM active_instances_w_first_ping
-GROUP BY 1,2,3,4,5,6
+GROUP BY 1,2,3,4,5,6,7
