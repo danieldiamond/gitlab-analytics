@@ -70,6 +70,9 @@ models:
             enabled: false
 
     gitlab_snowflake:
+      enabled: true
+      materialized: view
+
       date:
         base:
           enabled: true
