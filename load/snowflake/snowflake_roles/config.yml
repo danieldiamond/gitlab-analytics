@@ -264,6 +264,19 @@ roles:
         owns:
             schemas:
                 - analytics.tszuromi_scratch
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.gcloud_postgres_stitch
+                    - raw.version_db
+            tables:
+                read:
+                    - raw.gcloud_postgres_stitch.version_usage_data
+                    - raw.gcloud_postgres_stitch.version_version_checks
+                    - raw.version_db.*
 
 # Users
 users:
