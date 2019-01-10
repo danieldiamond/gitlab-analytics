@@ -149,6 +149,28 @@ permission_bot_snowflake_dry_manual:
 
 # Stage: update
 
+# Takes data from dbt models, enriches it and uploads it back to SFDC.
+# Also responsible for the tables in the sfdc_updates schema
+sfdc_update: &sfdc_update
+  stage: update
+  <<: *job_definition
+  script:
+    - python3 transform/sfdc_processor.py upload_hosts
+    - python3 transform/sfdc_processor.py generate_accounts
+    - python3 transform/sfdc_processor.py update_accounts
+  only:
+    refs:
+      - master
+    variables:
+      - $SFDC_UPDATE
+
+sfdc_update_manual:
+  <<: *sfdc_update
+  only:
+    refs:
+      - branches
+  when: manual
+
 sfdc_snapshot: &sfdc_snapshot
   stage: update
   <<: *job_definition
@@ -168,7 +190,6 @@ sfdc_snapshot_manual:
     refs:
       - branches
   when: manual
-
 
 # Stage: publish
 

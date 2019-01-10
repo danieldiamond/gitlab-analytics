@@ -1,27 +1,54 @@
 #!/usr/bin/python3
 
-import os
 import json
 import logging
+import os
+import sys
 from datetime import datetime
 
-import psycopg2
+import pandas as pd
+import snowflake.connector
+from fire import Fire
 from simple_salesforce import Salesforce
+from snowflake.connector import Connect
 from toolz import dicttoolz
+from typing import Dict, List
+
 from hosts_to_sfdc.dw_setup import host, username, password, database
 
 
-sf_username= os.environ.get('SFDC_USERNAME')
-sf_password= os.environ.get('SFDC_PASSWORD_NOTOKEN')
-sf_security_token= os.environ.get('SFDC_SECURITY_TOKEN')
+def salesforce_factory(config_dict: Dict) -> Salesforce:
+    """
+    Generate a salesforce connection object from config values.
+    """
 
-sf = Salesforce(username=sf_username, password=sf_password, security_token=sf_security_token, sandbox=False)
+    sf_username = config_dict['SFDC_USERNAME']
+    sf_password = config_dict['SFDC_PASSWORD']
+    sf_security_token = config_dict['SFDC_SECURITY_TOKEN']
 
-mydb = psycopg2.connect(host=host, user=username,
-                            password=password, dbname=database)
-cursor = mydb.cursor()
+    sf = Salesforce(username=sf_username, password=sf_password, security_token=sf_security_token, sandbox=False)
 
-def get_sfdc_fieldnames(object_name):
+    return sf
+
+
+def snowflake_connection_factory(config_dict: Dict) -> Connect:
+    """
+    Generate a snowflake engine based on a dict.
+    """
+
+    mydb = snowflake.connector.connect(
+        account = config_dict['SNOWFLAKE_ACCOUNT'],
+        user = config_dict['SNOWFLAKE_TRANSFORM_USER'],
+        password = config_dict['SNOWFLAKE_PASSWORD'],
+        database = config_dict['SNOWFLAKE_TRANSFORM_DATABASE'],
+        schema = 'SFDC_UPDATE',
+        warehouse = config_dict['SNOWFLAKE_TRANSFORM_WAREHOUSE'],
+        role = config_dict['SNOWFLAKE_TRANSFORM_ROLE'],
+    )
+    return mydb
+
+
+def get_sfdc_fieldnames(object_name, sf):
     sfdc_object = getattr(sf, object_name).describe()
 
     sf_fields = [field.get("name", "Error") for field in sfdc_object.get("fields", [])]
@@ -29,44 +56,51 @@ def get_sfdc_fieldnames(object_name):
     return sf_fields
 
 
-# Match Postgres fields with SFDC fields
-def generate_column_mapping(postgres_table, sfdc_object):
+def generate_column_mapping(postgres_table: str, sfdc_object: str,
+                            sf: Salesforce, mydb: Connect) -> Dict:
     """
     Returns a dictionary mapping the postgres column name to the sfdc object name
     :param postgres_table:
     :param sfdc_object:
     :return:
     """
-    db_query = "SELECT column_name FROM information_schema.columns WHERE table_name = %s"
-    logger.debug("Executing query %s", cursor.mogrify(db_query, (postgres_table,)))
-    col_cursor=mydb.cursor()
-    col_cursor.execute(db_query, (postgres_table,))
+    db_query = "SELECT column_name FROM information_schema.columns WHERE table_name = '{}'".format(postgres_table.upper())
+    logging.info("Executing query {}".format(db_query))
+    col_cursor = mydb.cursor()
+    col_cursor.execute(db_query)
 
     db_fields = [result[0] for result in col_cursor]
-    sf_fields = get_sfdc_fieldnames(sfdc_object)
+    sf_fields = get_sfdc_fieldnames(sfdc_object, sf)
 
     mapping = dict()
 
     for db_col in db_fields:
         for sf_col in sf_fields:
-            if db_col == sf_col.lower():
+            if db_col.lower() == sf_col.lower():
                 mapping[db_col] = sf_col
 
     return mapping
 
 
 # Get Hosts to Upload
-def upload_hosts():
+def upload_hosts(config_dict=None) -> None:
     """
     Funciton that gets all host records, checks them against what exists in
     SFDC, upserts if they exist and inserts if they don't.
-    :return:
     """
-    host_query = "SELECT * FROM version.libre_sfdc_accounts"
+
+    config_dict = config_dict or os.environ.copy()
+    mydb = snowflake_connection_factory(config_dict)
+    sf = salesforce_factory(config_dict)
+    logging.info("Uploading hosts records")
+
+    host_query = "SELECT * FROM analytics.libre_sfdc_accounts"
     host_cursor = mydb.cursor()
     host_cursor.execute(host_query)
 
-    column_mapping = generate_column_mapping('libre_sfdc_accounts', 'Host__c')
+    column_mapping = generate_column_mapping('libre_sfdc_accounts',
+                                             'Host__c', sf,
+                                              mydb)
 
     #Generate an ordered list of the correct column mappings
     correct_column_names = [column_mapping.get(desc[0]) for desc in host_cursor.description]
@@ -106,37 +140,49 @@ def upload_hosts():
 
     upsert_count = len(upsert_obj)
     if upsert_count != 0:
-        logger.debug("%s hosts to upsert.", upsert_count)
+        logging.info("%s hosts to upsert.", upsert_count)
 
         upsert_results = sf.bulk.Host__c.upsert(upsert_obj, "Id")
 
         for result in upsert_results:
             if result.get("success", True) is False:
-                logger.debug("Error on SFDC id: %s", result.get("id", None))
+                logging.info("Error on SFDC id: %s", result.get("id", None))
                 for error in result.get("errors", []):
                     new_error=dicttoolz.dissoc(error, "message")
-                    logger.debug(json.dumps(new_error, indent=2))
+                    logging.info(json.dumps(new_error, indent=2))
+        logging.info("Hosts upsert completed.")
     else:
-        logger.debug("No hosts to upsert.")
+        logging.info("No hosts to upsert.")
+    return
+
 
 def bulk_error_report(bulk_query_result, success_statement):
     for result in bulk_query_result:
         if result.get("success", True) is False:
-            logger.debug("Error on SFDC id: %s", result.get("id", None))
+            logging.info("Error on SFDC id: %s", result.get("id", None))
             for error in result.get("errors", []):
                 new_error = dicttoolz.dissoc(error, "message")
-                logger.debug(json.dumps(new_error, indent=2))
+                logging.info(json.dumps(new_error, indent=2))
         else:
-            logger.debug("%s - %s", success_statement, result.get("id", None))
+            logging.info("%s - %s", success_statement, result.get("id", None))
 
 
-def update_accounts():
-    account_query = "SELECT * FROM version.sfdc_update"
+def update_accounts(config_dict=None) -> None:
+    """
+    Update Accounts in SFDC that already exist.
+    """
+
+    config_dict = config_dict or os.environ.copy()
+    mydb = snowflake_connection_factory(config_dict)
+    sf = salesforce_factory(config_dict)
+    logging.info("Updating accounts with additional data")
+
+    account_query = "SELECT * FROM analytics.sfdc_update"
     account_cursor = mydb.cursor()
     account_cursor.execute(account_query)
-    logger.debug("Found %s accounts to update.", account_cursor.rowcount)
+    logging.info("Found %s accounts to update.", account_cursor.rowcount)
 
-    column_mapping = generate_column_mapping('sfdc_update', 'Account')
+    column_mapping = generate_column_mapping('sfdc_update', 'Account', sf, mydb)
     correct_column_names = [column_mapping.get(desc[0]) for desc in account_cursor.description]
 
     update_obj = []
@@ -150,10 +196,10 @@ def update_accounts():
 
 
     if write_count == 0:
-        logger.debug("No accounts to update.")
+        logging.info("No accounts to update.")
         return
     else:
-        logger.debug("Updating %s Accounts.", write_count)
+        logging.info("Updating %s Accounts.", write_count)
         account_results = sf.bulk.Account.update(update_obj)
 
         bulk_error_report(account_results, "Account Updated")
@@ -161,16 +207,25 @@ def update_accounts():
     return
 
 
-def generate_accounts():
-    account_query = "SELECT * FROM version.sfdc_accounts_gen"
+def generate_accounts(config_dict=None) -> None:
+    """
+    Generate account records and upload to salesforce.
+    """
+
+    config_dict = config_dict or os.environ.copy()
+    mydb = snowflake_connection_factory(config_dict)
+    sf = salesforce_factory(config_dict)
+    logging.info("Generating SFDC Accounts.")
+
+    account_query = "SELECT * FROM analytics.sfdc_accounts_gen"
     account_cursor = mydb.cursor()
     account_cursor.execute(account_query)
-    logger.debug("Found %s accounts to generate.", account_cursor.rowcount)
+    logging.info("Found %s accounts to generate.", account_cursor.rowcount)
     if account_cursor.rowcount == 0:
-        logger.debug("No accounts to generate.")
+        logging.info("No accounts to generate.")
         return
 
-    column_mapping = generate_column_mapping('sfdc_accounts_gen', 'Account')
+    column_mapping = generate_column_mapping('sfdc_accounts_gen', 'Account', sf, mydb)
     correct_column_names = [column_mapping.get(desc[0]) for desc in account_cursor.description]
 
     # Checks for Accounts that were created by the API user
@@ -181,7 +236,7 @@ def generate_accounts():
     # Generates a unique string to compare against
     existing_accounts = {}
     for account in sfdc_account_query:
-        account_string = account.get("Name") + account.get("Website")
+        account_string = account.get("Name") + str(account.get("Website"))
         existing_accounts[account_string]=account.get("Id")
 
 
@@ -191,7 +246,7 @@ def generate_accounts():
         # Skips host if host is already an Account
         result_string = result[0] + result[1]
         if existing_accounts.get(result_string, None) is not None:
-            logger.debug("Skipping record. Account already present with Id: %s", existing_accounts.get(result_string))
+            logging.info("Skipping record. Account already present with Id: %s", existing_accounts.get(result_string))
             continue
 
         tmp_dict = dict(zip(correct_column_names, list(result)))
@@ -201,14 +256,14 @@ def generate_accounts():
 
     # Generate SFDC Accounts
     if write_count == 0:
-        logger.debug("No accounts to generate.")
+        logging.info("No accounts to generate.")
         return
     else:
-        logger.debug("Generating %s accounts.", write_count)
+        logging.info("Generating %s accounts.", write_count)
         account_results = sf.bulk.Account.insert(write_obj)
-
         bulk_error_report(account_results, "Generated Account")
 
+    logging.info('Account Generation Complete.')
     return
 
 
@@ -223,10 +278,10 @@ def delete_all_hosts(sf_conn):
     host_count = query.get("totalSize")
 
     if host_count == 0:
-        logger.debug("No hosts to delete.")
+        logging.info("No hosts to delete.")
         return
 
-    logger.debug("Found %s hosts to delete.", query.get("totalSize"))
+    logging.info("Found %s hosts to delete.", query.get("totalSize"))
 
     items_to_delete = []
     for record in query.get("records"):
@@ -237,23 +292,22 @@ def delete_all_hosts(sf_conn):
     print(results)
 
 
-
-logger = logging.getLogger(__name__)
-
-# TODO possibly add CLI interface
 if __name__ == "__main__":
+    # Set logging params
     logging.basicConfig(format='%(asctime)s %(message)s',
-                        datefmt='%Y-%m-%d %I:%M:%S %p')
+                        datefmt='%Y-%m-%d %I:%M:%S %p',
+                        level=logging.INFO)
     logging.getLogger(__name__).setLevel(logging.DEBUG)
 
-    logger.debug("Uploading hosts records")
-    upload_hosts()
+    # Get engines and connections
+    config_dict = os.environ.copy()
+    mydb = snowflake_connection_factory(config_dict)
+    sf = salesforce_factory(config_dict)
+    logging.info("Updating accounts with additional data")
 
-    logger.debug("Generating SFDC Accounts")
-    generate_accounts()
-
-    logger.debug("Updating accounts with additional data")
-    update_accounts()
-
-    # Don't run this one unless you know what you're doing!
-    # delete_all_hosts(sf)
+    Fire({
+        'upload_hosts': upload_hosts,
+        'generate_accounts': generate_accounts,
+        'update_accounts': update_accounts,
+        'delete_all_hosts': delete_all_hosts,
+    })
