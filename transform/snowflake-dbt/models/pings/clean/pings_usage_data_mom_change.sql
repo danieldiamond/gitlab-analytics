@@ -46,6 +46,7 @@ WITH pings_mom_change AS (
     {{ mom_change_count('gcp_clusters') }} ,
     {{ mom_change_count('geo_nodes') }} ,
     {{ mom_change_count('groups') }} ,
+    {{ mom_is_used('groups') }} ,
     {{ mom_change_count('in_review_folder') }} ,
     {{ mom_change_count('issues') }} ,
     {{ mom_change_count('keys') }} ,
