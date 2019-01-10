@@ -21,7 +21,7 @@ Our data stack looks roughly like this:
 
 As you read in the handbook, we currently use Stitch and Meltano for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool and Looker as our business intelligence/data visualization tool. The bulk of your projects and tasks will be in dbt and Looker, so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources. 
 
-- [ ] Download a SQL development tool that is compatible with Snowflake, such as [SQLWorkbench/J](http://sql-workbench.net) or [DataGrip](https://www.jetbrains.com/datagrip/). If you're interested in DataGrip, follow the [instructions to get a JetBrains license in the handbook](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains).
+- [ ] Download a SQL development tool that is compatible with Snowflake, such as [SQLWorkbench/J](http://sql-workbench.net) or [DataGrip](https://www.jetbrains.com/datagrip/). If you're interested in DataGrip, follow the [instructions to get a JetBrains license in the handbook](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains). Snowflake also has a Web UI that some people prefer, to each their own.
 
 ## dbt
 
@@ -46,8 +46,8 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 
 
 ## Misc
-- [ ] Familiarize yourself with the [Meltano project](https://gitlab.com/meltano/meltano), especially the [elt folder](https://gitlab.com/meltano/meltano/tree/master/elt)
-- [ ] Get setup with Python 3.5.3 and [pipenv](https://docs.pipenv.org/) locally
+- [ ] Familiarize yourself with the Stitch UI, as this is mostly the source of truth for what data we are loading. An email will have been sent with info on how to get logged in.
+- [ ] Get setup with Python locally. I suggest using the [Anaconda distribution](https://www.anaconda.com/download/#macos) as it will come pre-packaged with most everything we use.
 - [ ] Familiarize yourself with GitLab CI https://docs.gitlab.com/ee/ci/quick_start/ and our running pipelines
 
 
