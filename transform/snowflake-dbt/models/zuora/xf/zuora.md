@@ -24,8 +24,6 @@ For the purposes of counting, we care about what was in effect on the very last 
 
 This table amortizes the monthly charges over the time span that the rate plan charge was in effect. A rate plan charge is only in effect if it was in effect for the last day of the month. 
 
-This uses a lateral join on the date table to find the months between the effective start and end months for the rate plan charge. Per the [PostgreSQL docs](https://www.postgresql.org/docs/9.6/static/functions-comparison.html) a BETWEEN x AND y is equivalent to a >= x AND a <= y
-
 
 {% enddocs %}
 
