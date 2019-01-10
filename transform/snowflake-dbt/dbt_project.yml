@@ -112,6 +112,5 @@ models:
           materialized: table
 
       zuora:
-        xf:
-          enabled: true
-          materialized: table
+        enabled: true
+        materialized: table
