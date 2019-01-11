@@ -1,19 +1,16 @@
-[![pipeline status](https://gitlab.com/meltano/analytics/badges/master/pipeline.svg)](https://gitlab.com/meltano/analytics/commits/master)
+[![pipeline status](https://gitlab.com/gitlab-data/analytics/badges/master/pipeline.svg)](https://gitlab.com/gitlab-data/analytics/commits/master)
 
 ## Quick Links
-* Meltano Repo - https://gitlab.com/meltano/meltano/
 * Looker Instance - https://gitlab.looker.com
-* Looker Repo - https://gitlab.com/meltano/looker/
+* Looker Repo - https://gitlab.com/gitlab-data/looker/
 * JupyterHub Link - https://hub.gitlab-bizops.com/hub/home
 * Snowflake Web UI - https://gitlab.snowflakecomputing.com
 * [Machine Learning Resources](https://drive.google.com/drive/folders/1sOXWW-FujwKU2T-auG7KPR9h6xqDRx0z?usp=sharing) (GitLab Internal)
 * [Email Address to Share Sheetloaded Doc with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
 
-## Data and Analytics at GitLab
+## GitLab Data Team
 
-This is the primary repository of the Data & Analytics team at GitLab. We are hosting it within the [Meltano group](https://gitlab.com/meltano/) because we have a close relationship with them: we are the first customers of Meltano and find it valuable to be close, while still keeping the code bases separate. 
-
-The Data & Analytics team is a part of the Finance organization within GitLab, but we serve the entire company. We do this by maintaining a data warehouse where information from all business operations is stored and managed for analysis.
+This is the primary repository of the Data Team at GitLab. The Data Team is a part of the Finance organization within GitLab, but we serve the entire company. We do this by maintaining a data warehouse where information from all business operations is stored and managed for analysis.
 
 Our charter and goals are as follows:
 
@@ -26,7 +23,7 @@ Our charter and goals are as follows:
 
 ## Principles
 
-The Data & Analytics team at GitLab is working to establish a world-class analytics function by utilizing the tools of DevOps in combination with the core values of GitLab. We believe that data teams have much to learn from DevOps. We will work to model good software development best practices and integrate them into our data management and analytics. 
+The Data Team at GitLab is working to establish a world-class analytics function by utilizing the tools of DevOps in combination with the core values of GitLab. We believe that data teams have much to learn from DevOps. We will work to model good software development best practices and integrate them into our data management and analytics. 
 
 A typical data team has members who fall along a spectrum of skills and focus. For now, the analytics function at GitLab has Data Engineers, Data Analysts, and eventually Data Scientists. 
 
@@ -120,9 +117,9 @@ Planned:
 * Greenhouse
 
 
-### Data and Analytics Architecture
+### Data Team Architecture
 
-![Data and Analytics Architecture](images/WIP_ GitLab_Analytics_Architecture.jpg)
+![Data Team Architecture](images/WIP_ GitLab_Analytics_Architecture.jpg)
 
 #### Our Stack
 
@@ -204,85 +201,6 @@ The following variables are set at the job level dependending on the running env
   - SNOWFLAKE_WAREHOUSE
 </div>
 </div>
-
-
-#### Google Cloud SQL
-
-[Cloud SQL](https://cloud.google.com/sql/docs/postgres/) - is a fully-managed database service that makes it easy to set up, maintain, manage, and administer GitLab's PostgreSQL relational databases on Google Cloud Platform.
-
-#### Accessing the Data Warehouse
-If you want direct access to the data warehouse (outside of Looker or JupyterHub), follow these steps.
-
-* Make an issue is this project requesting an account and assign it to either Taylor Murphy (tayloramurphy) or Thomas La Piana (tlapiana).
-* Verify your Google account is associated with the `gitlab-analysis` project, it should have the `Cloud SQL Client` role.
-* Set up your local machine by installing the [gcloud SDK](https://cloud.google.com/sdk/docs/).
-* Run `gcloud config set project gitlab-analysis`
-* Run `gcloud auth application-default login`
-* CloudSQL Instances: `analytics` is the master production node, `analytics-replica` is the production read-replica, `meltano` is the nightly refreshed dev instance
-* Connect to cloudsqlproxy `./cloud_sql_proxy -instances=gitlab-analysis:us-west1:<instance_name>=tcp:5432`
-* Connect to the Data Warehouse through the terminal (a separate tab) with `psql "host=127.0.0.1 sslmode=disable dbname=dw_production user=<username>`
-* Alternatively, use your favorite database tool with `host=127.0.0.1` and `dbname=dw_production`
-
-#### Managing Roles for CloudSQL
-
-All role definitions are in [/extract/config/pg_roles/](https://gitlab.com/meltano/meltano/tree/master/extract/config)
-
-Ideally we'd be using [pgbedrock](https://github.com/Squarespace/pgbedrock) to manage users. Since internally we are using CloudSQL, we're not able to access the superuser role which pgbedrock requires. However, the YAML format of the role definitions is convenient for reasoning about privileges and it's possible the tool could evolve to validate privileges against a given spec, so we are using the pgbedrock definition syntax to define roles here. 
-
-The `readonly` role was generated using the following commands:
-
-```sql
-CREATE ROLE readonly;
-
-GRANT USAGE on SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to readonly;
-
-GRANT SELECT on ALL TABLES IN SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to readonly;
-
--- Ensures all future tables are available to the role
-ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost 
-  GRANT SELECT ON TABLES TO readonly;
-
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA sandbox TO readonly;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA meta TO readonly;
-
-```
-
-The `analytics` role was generated using the following commands:
-
-```sql
-
-CREATE ROLE analytics;
-
-GRANT USAGE on SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to analytics;
-
-GRANT SELECT on ALL TABLES IN SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost to analytics;
-
--- Ensures all future tables are available to the role
-ALTER DEFAULT PRIVILEGES IN SCHEMA analytics, analytics_meta, customers, historical, lever, license, meta, mkto, public, sandbox, sfdc, sfdc_derived, version, zuora, stripe_about_gitlab, stripe_githost
-  GRANT SELECT ON TABLES TO analytics;
-
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA analytics, analytics_meta, meta, public, sandbox TO analytics;
-
-GRANT CREATE on DATABASE dw_production to analytics;
-
-``` 
-
-New user roles are added to a specific role via:
-
-```sql
-CREATE ROLE newrole WITH PASSWORD 'tmppassword' IN ROLE metarole;
-
-ALTER ROLE newrole WITH LOGIN;
-
--- create a scratch schema for the user if necessary
-CREATE SCHEMA newrole_scratch AUTHORIZATION newrole;
-```
-
-New readonly and analytics users are then given instructions via Google Drive on how to connect their computer to the CloudSQL Proxy and on how to change their password once they login.
-
-By default, roles can login to the main production instance of the data warehouse. Any password updates will propagate to `dev-bizops` and review instances when they are next refreshed.
-
-Both readonly and analytics roles are not able to alter data in load only schemas. Currently, analytics, public, and sandbox are the only schemas which the `analytics` role can fully manipulate. Both roles have the ability to select from all schemas and tables. 
 
 ### Accessing peered VPCs
 
@@ -487,7 +405,7 @@ We use Looker as our analysis and visualization tool. Please see the README in t
 - [WTF Visualizations](http://viz.wtf/)
 
 
-## Contributing to Data & Analytics
+## Contributing to the Data Team project
 
 We welcome contributions and improvements, please see the [contribution guidelines](CONTRIBUTING.md).
 
