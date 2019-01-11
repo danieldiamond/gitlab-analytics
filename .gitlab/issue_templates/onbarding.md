@@ -1,17 +1,17 @@
 ## Tools & Access
 
-Goal: To help bring you, our new data analyst, up to speed in the GitLab data team's analytics stack as efficiently as possible, without sacrificing quality for speed. 
+Goal: To help bring you, our new data analyst, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed. 
 
 
 - [ ] Manager: Add to Analytics API user.
 - [ ] Manager: Add to Stitch. 
 - [ ] Manager: Add Developer access to Looker.
-- [ ] Manager: Add to Snowflake [following Readme Process](https://gitlab.com/meltano/analytics#managing-roles-for-snowflake). 
+- [ ] Manager: Add to Snowflake [following Readme Process](https://gitlab.com/gitlab-data/analytics#managing-roles-for-snowflake). 
 
 WELCOME TO THE TEAM. WE'RE SO EXCITED TO HAVE YOU. 
 
 - [ ] Read the following pages of the handbook in their entirety. 
-   - [ ] [Data & Analytics](https://about.gitlab.com/handbook/business-ops/data-and-analytics/index.html)
+   - [ ] [Data Team](https://about.gitlab.com/handbook/business-ops/data-team/index.html)
    - [ ] [Business Operations](https://about.gitlab.com/handbook/business-ops/)
    - [ ] [Data Quality Process](https://about.gitlab.com/handbook/business-ops/data-quality-process/)
 - [ ] Watch @tlapiana's [talk at DataEngConf](https://www.youtube.com/watch?v=eu623QBwakc) that gives a phenomenal overview of how the team works.
@@ -28,12 +28,12 @@ As you read in the handbook, we currently use Stitch and Meltano for extracting 
 - [ ] Familiarize yourself with [dbt](https://www.getdbt.com/), which we use for transformations in the data warehouse, as it gives us a way to source control the SQL. 
 - [ ] [This article](https://blog.fishtownanalytics.com/what-exactly-is-dbt-47ba57309068) talks about the what/why.
 - [ ] [This tutorial](https://docs.getdbt.com/docs/introduction) should help get you up and running. Do not hesitate to ask for help configuring your `profiles.yml` file. 
-- [ ] Read [how we use dbt](https://gitlab.com/meltano/analytics#dbt), especially our coding conventions.
+- [ ] Read [how we use dbt](https://gitlab.com/gitlab-data/analytics#dbt), especially our coding conventions.
 - [ ] [Official Docs](https://docs.getdbt.com)
-- [ ] We use dbt to maintain [our own internal documentation](https://meltano.gitlab.io/analytics/dbt/snowflake/#!/model/model.gitlab_dw.zuora_mrr_totals) on the data transformations we have in place. This is a public link. I suggest bookmarking it. 
+- [ ] We use dbt to maintain [our own internal documentation](https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/model/model.gitlab_dw.zuora_mrr_totals) on the data transformations we have in place. This is a public link. I suggest bookmarking it. 
 
 Snowflake SQL is probably not that different from the dialects of SQL you're already familiar with, but here are a couple of resources to point you in the right direction:
-- [ ] [Differences we found while transition from Postgres to Snowflake](https://gitlab.com/meltano/analytics/issues/645)
+- [ ] [Differences we found while transition from Postgres to Snowflake](https://gitlab.com/gitlab-data/analytics/issues/645)
 - [ ] [How Compatible are Redshift and Snowflake’s SQL Syntaxes?](https://medium.com/@jthandy/how-compatible-are-redshift-and-snowflakes-sql-syntaxes-c2103a43ae84)
 - [ ] [Snowflake Functions](https://docs.snowflake.net/manuals/sql-reference/functions-all.html)
 
