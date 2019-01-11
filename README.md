@@ -460,6 +460,32 @@ We use Looker as our analysis and visualization tool. Please see the README in t
 
 [JupyterHub](https://jupyterhub.readthedocs.io/en/latest/) - a multi-user Hub that spawns, manages, and proxies multiple instances of the single-user Jupyter notebook server. The Jupyter Notebook is an open-source web application that allows you to create and share documents that contain live code, equations, visualizations and explanatory text.
 
+#### Data Resources
+- [Looker Documentation](https://docs.looker.com)
+- [Fishtown Analytics Blog](https://blog.fishtownanalytics.com)
+- [Data Science Roundup Newsletter](http://roundup.fishtownanalytics.com/)
+- [Mode Analytics Blog](https://blog.modeanalytics.com/)
+- [Looker Blog](https://looker.com/blog)
+- [Periscope Data Blog](https://www.periscopedata.com/blog)
+- [Yhat Blog](http://blog.yhat.com/)
+- [Wes McKinney Blog](http://wesmckinney.com/archives.html)
+- [MBA Mondays](https://avc.com/archive/#mba_mondays_archive)
+
+
+#### Data Visualization Resources
+- [Storytelling with Data](http://storytellingwithdata.com/)
+- [Eager Eyes](https://eagereyes.org/)
+- [FiveThirtyEight's DataLab](https://fivethirtyeight.com/features/)
+- [Flowing Data](https://flowingdata.com/)
+- [The Functional Art](http://www.thefunctionalart.com/)
+- [PolicyViz](https://policyviz.com/)
+- [JunkCharts](https://junkcharts.typepad.com/)
+- [Make a Powerful Point](http://makeapowerfulpoint.com/)
+- [Perceptual Edge](https://perceptualedge.com/)
+- [VizWiz](http://www.vizwiz.com/)
+- [Visualising Data](http://www.visualisingdata.com/)
+- [WTF Visualizations](http://viz.wtf/)
+
 
 ## Contributing to Data & Analytics
 
