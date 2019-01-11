@@ -22,7 +22,7 @@ Our data stack looks roughly like this:
 As you read in the handbook, we currently use Stitch and Meltano for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool and Looker as our business intelligence/data visualization tool. The bulk of your projects and tasks will be in dbt and Looker, so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources. 
 
 - [ ] Download a SQL development tool that is compatible with Snowflake, such as [SQLWorkbench/J](http://sql-workbench.net) or [DataGrip](https://www.jetbrains.com/datagrip/). If you're interested in DataGrip, follow the [instructions to get a JetBrains license in the handbook](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains). Snowflake also has a Web UI that some people prefer, to each their own.
-
+   - [ ] If you're using Snowflake, you need to make a change to your configuration. Go to `Help > Edit Custom VM Options ...`. Then add the line `-Duser.timezone=UTC`.
 ## dbt
 
 - [ ] Familiarize yourself with [dbt](https://www.getdbt.com/), which we use for transformations in the data warehouse, as it gives us a way to source control the SQL. 
@@ -43,6 +43,13 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 - [ ] Make an account on training.looker.com. There are four courses. Please take all four, independent of your familiarity with Looker. 
 - [ ] [Additional GitLab training resources on Looker](https://gitlab.com/gitlab-data/looker/#training-sessions-gitlab-internal).
 - [ ] Watch [Creating Explores Your End Users Love](https://www.youtube.com/watch?v=16N2UMAlzco)
+- [ ] Add a [custom user attribute](https://gitlab.looker.com/admin/user_attributes) for "sandbox_schema" to refer to your sandbox dbt schema.
+- [ ] [Looker Codev Training 1](https://drive.google.com/file/d/1sKHbARpIfHKGpTChuqZSagnfh8Vt7_ml/view?usp=sharing)
+- [ ] [Looker Codev Training 2](https://drive.google.com/file/d/1wNM-xnkDOBXce-M0cX16pkiFjsf3woma/view?usp=sharing)
+- [ ] [Looker Codev Training 3](https://drive.google.com/file/d/1bKBtrCGxVRwXpYuYMXoD4XAqM1lzgdqL/view?usp=sharing)
+- [ ] [Looker Codev Training 4](https://drive.google.com/file/d/1xZbXVG85tA388r57QpRPR4-eLi54ixhL/view?usp=sharing)
+- [ ] [Looker Codev Training 5](https://drive.google.com/file/d/1RS3ALTjxh8VaNwt-q94Wbv_OYibsPzeR/view?usp=sharing)
+- [ ] [Looker Business User Training](https://drive.google.com/file/d/19RzwdtRDNWvDL7W81_CfjX6sWDo_nP2w/view?usp=sharing)
 
 
 ## Misc
