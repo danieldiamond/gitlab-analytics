@@ -1,7 +1,6 @@
 {{
   config(
     materialized='incremental',
-    sql_where='TRUE',
     unique_key='event_id'
   )
 }}
@@ -144,6 +143,6 @@ FROM RAW.SNOWPLOW.EVENTS
 WHERE JSONTEXT['app_id']::string IS NOT NULL
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'http://localhost:%'
-{% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
+{% if is_incremental() %}
 AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
 {% endif %}

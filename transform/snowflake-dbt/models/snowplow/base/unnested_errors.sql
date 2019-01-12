@@ -1,7 +1,6 @@
 {{
   config(
-    materialized='incremental',
-    sql_where='TRUE'
+    materialized='incremental'
   )
 }}
 
@@ -15,6 +14,6 @@ SELECT
   JSONTEXT['rawData'::string] AS rawData,
   uploaded_at
 FROM RAW.SNOWPLOW.EVENTS
-{% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
+{% if is_incremental() %}
 WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
 {% endif %}

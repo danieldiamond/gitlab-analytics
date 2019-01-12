@@ -1,7 +1,6 @@
 {{
   config(
     materialized='incremental',
-    sql_where='TRUE',
     unique_key='unique_key'
   )
 }}
@@ -81,7 +80,7 @@ WITH pings_mom_change AS (
     {{ mom_change_count('uploads') }} ,
     {{ mom_change_count('web_hooks') }}
   FROM {{ ref("pings_usage_data_month") }}
-  {% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
+  {% if is_incremental() %}
       WHERE created_at >= DATE_TRUNC('month', CURRENT_DATE) - interval '1 month'
   {% endif %}
 )
