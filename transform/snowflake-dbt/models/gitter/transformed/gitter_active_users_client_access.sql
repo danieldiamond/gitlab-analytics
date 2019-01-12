@@ -5,7 +5,6 @@
 {{
   config(
     materialized='incremental',
-    sql_where='TRUE',
     unique_key='unique_key'
   )
 }}
@@ -32,7 +31,7 @@ left join daily_use
   and wd.date_actual < daily_use.activity_date + interval '30 day'
 where year(wd.date_actual) >= 2013 and wd.date_actual < dateadd(year, 1, date_trunc('year', current_date()))
 -- Incremental: Only transform this current months data
-{% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
+{% if is_incremental() %}
   and daily_use.activity_date >= DATE_TRUNC('month', CURRENT_DATE)
 {% endif %}
 group by 1, 2, 3

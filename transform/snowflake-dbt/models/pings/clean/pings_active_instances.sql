@@ -1,7 +1,6 @@
 {{
   config(
     materialized='incremental',
-    sql_where='TRUE',
     unique_key='unique_key'
   )
 }}
@@ -13,7 +12,7 @@ WITH active_instances AS (
       created_at,
       'version_ping' AS ping_type
     FROM {{ ref("pings_version_checks") }}
-    {% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
+    {% if is_incremental() %}
         WHERE created_at >= DATE_TRUNC('month', CURRENT_DATE)
     {% endif %}
 
@@ -24,7 +23,7 @@ WITH active_instances AS (
       created_at,
       'usage_ping' AS ping_type
     FROM {{ ref("pings_usage_data") }}
-    {% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
+    {% if is_incremental() %}
         WHERE created_at >= DATE_TRUNC('month', CURRENT_DATE)
     {% endif %}
 ),

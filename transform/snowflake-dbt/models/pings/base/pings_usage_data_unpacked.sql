@@ -1,7 +1,6 @@
 {{
   config(
     materialized='incremental',
-    sql_where='TRUE',
     unique_key='id'
   )
 }}
@@ -107,6 +106,6 @@ SELECT
   (stats_used['uploads']::numeric)                                   AS uploads,
   (stats_used['web_hooks']::numeric)                                 AS web_hooks
 FROM usage_data
-{% if adapter.already_exists(this.schema, this.table) and not flags.FULL_REFRESH %}
+{% if is_incremental() %}
     WHERE created_at > (SELECT max(created_at) FROM {{ this }})
 {% endif %}
