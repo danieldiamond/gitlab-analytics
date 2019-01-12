@@ -1,6 +1,7 @@
 [![pipeline status](https://gitlab.com/gitlab-data/analytics/badges/master/pipeline.svg)](https://gitlab.com/gitlab-data/analytics/commits/master)
 
 ## Quick Links
+* Epics Roadmap - https://gitlab.com/groups/gitlab-data/-/roadmap?layout=MONTHS&sort=start_date_asc
 * Looker Instance - https://gitlab.looker.com
 * Looker Repo - https://gitlab.com/gitlab-data/looker/
 * JupyterHub Link - https://hub.gitlab-bizops.com/hub/home

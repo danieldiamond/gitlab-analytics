@@ -80,6 +80,10 @@ snowflake_review: &snowflake_review
       - $SNOWFLAKE_LOAD_DATABASE       # make sure the guard works
       - $SNOWFLAKE_TRANSFORM_DATABASE  # make sure the guard works
   except:
+    changes:
+      - README.md
+      - LICENSE
+      - CODEOWNERS
     refs:
       - master
     variables:
@@ -256,6 +260,10 @@ review_stop:
       - $SNOWFLAKE_LOAD_DATABASE       # make sure the guard works
       - $SNOWFLAKE_TRANSFORM_DATABASE  # make sure the guard works
   except:
+    changes:
+      - README.md
+      - LICENSE
+      - CODEOWNERS
     refs:
       - master
     variables:
