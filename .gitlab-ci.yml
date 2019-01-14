@@ -34,6 +34,7 @@ include:
 
 # Stage: review
 
+# Set up a new instance in CloudSQL for testing in MRs
 cloudsql_review: &cloudsql_review
   stage: review
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
@@ -50,12 +51,14 @@ cloudsql_review: &cloudsql_review
     - branches
   when: manual
 
+# Force the re-creation of the CloudSQL instance for testing in MRs
 cloudsql_review_refresh:
   <<: *cloudsql_review
   variables:
     FORCE: "true"
   when: manual
 
+# Clone the ANALYTICS database in Snowflake for use in MRs
 snowflake_review: &snowflake_review
   stage: review
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
@@ -91,6 +94,7 @@ snowflake_review: &snowflake_review
       - $SNOWFLAKE_DATABASE == $SNOWFLAKE_TRANSFORM_DATABASE
       - $TEST_PIPELINE
 
+# Force re-clone the ANALYTICS database in Snowflake for use in MRs
 snowflake_review_refresh:
   <<: *snowflake_review
   script:
@@ -100,6 +104,7 @@ snowflake_review_refresh:
 
 # Stage: setup
 
+# Make sure that permissions are properly set in the CloudSQL instance for MRs
 update_db: &update_db
   <<: *job_housekeeping
   stage: setup
@@ -109,6 +114,7 @@ update_db: &update_db
     - branches
   when: manual
 
+# Job template for applying pre-determined Snowflake permissions 
 .snowflake_permissions: &snowflake_permissions
   stage: setup
   <<: *job_definition
@@ -119,6 +125,7 @@ update_db: &update_db
     - check_ci_cd_vars.py --file load/snowflake/required_ci_cd_vars.yaml
     - meltano permissions grant load/snowflake/snowflake_roles/config.yml --db snowflake $DRY
 
+# Dry Run for applying the pre-determined Snowflake permissions
 permission_bot_snowflake_dry:
   <<: *snowflake_permissions
   variables:
@@ -135,6 +142,7 @@ permission_bot_snowflake_dry:
     variables:
       - $PERMISSION_BOT_SNOWFLAKE
 
+# Manual version of permission_bot_snowflake_dry
 permission_bot_snowflake_dry_manual:
   <<: *snowflake_permissions
   variables:
@@ -168,6 +176,7 @@ sfdc_update: &sfdc_update
     variables:
       - $SFDC_UPDATE
 
+# Manual version of sfdc_update
 sfdc_update_manual:
   <<: *sfdc_update
   only:
@@ -175,6 +184,7 @@ sfdc_update_manual:
       - branches
   when: manual
 
+# Semi-deprecated job that does a manual, full copy of the SFDC opportunity and account tables
 sfdc_snapshot: &sfdc_snapshot
   stage: update
   <<: *job_definition
@@ -187,6 +197,7 @@ sfdc_snapshot: &sfdc_snapshot
     variables:
       - $SFDC_SNAPSHOT
 
+# Manual version of sfdc_snapshot
 sfdc_snapshot_manual:
   stage: update
   <<: *sfdc_snapshot
@@ -200,11 +211,14 @@ sfdc_snapshot_manual:
 # ======
 # Pages
 # ======
+
+# Define some variables for use in other Pages jobs
 .variables: &pages_job__variables
   SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
   SNOWFLAKE_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
   SNOWFLAKE_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE
 
+# Job template for use in the Pages publishing jobs
 .pages_job_template: &pages_job_template
   stage: publish
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
@@ -217,6 +231,7 @@ sfdc_snapshot_manual:
   tags:
     - analytics
 
+# Run the script to generate the dbt docs and stand them up in gitlab pages
 pages:
   <<: *pages_job_template
   variables:
@@ -228,6 +243,7 @@ pages:
     variables:
       - $DEPLOY_DBT_PAGES
 
+# Manual, dry-run version of the pages job
 test_dbt_pages:
   <<: *pages_job_template
   only:
@@ -239,6 +255,7 @@ test_dbt_pages:
 
 # Stage: review_stop
 
+# Delete the Snowflake cloned database used for MRs
 review_stop:
   stage: review_stop
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
@@ -279,10 +296,11 @@ review_stop:
 
 # Global definitions
 
-
+# Global variables
 variables:
   PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
 
+# Global before_script
 before_script:
   - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
   - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
