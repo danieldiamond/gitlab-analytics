@@ -299,7 +299,7 @@ users:
         member_of:
             - sysadmin
             - transformer
-            - eburke        
+            - amrvaljevich        
 
     - dtang:
         can_login: yes
