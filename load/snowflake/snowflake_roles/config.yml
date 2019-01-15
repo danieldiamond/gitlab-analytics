@@ -170,6 +170,13 @@ roles:
             schemas:
                 - analytics.acarella_scratch
 
+    - amrvaljevich:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.amrvaljevich_scratch
+
     - dtang:
         warehouses:
             - reporting
@@ -286,6 +293,12 @@ users:
             - securityadmin
             - sysadmin
             - acarella
+
+    - amrvaljevich:
+        can_login: yes
+            - sysadmin
+            - transformer
+            - eburke        
 
     - dtang:
         can_login: yes
