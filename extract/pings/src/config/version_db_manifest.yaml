@@ -212,8 +212,8 @@ avg_cycle_analytics:
   export_schema: 'version'
   export_table: 'avg_cycle_analytics'
   export_table_schema:
-    id: integer
-    usage_data_id: integer
+    id: bigint
+    usage_data_id: bigint
     total: integer
     issue_average: integer
     issue_sd: integer
