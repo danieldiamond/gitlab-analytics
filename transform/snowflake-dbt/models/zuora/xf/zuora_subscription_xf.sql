@@ -44,7 +44,7 @@ SELECT
   coalesce(parent_subscription_slug, zuora_subs_fixed.subscription_name_slugify) AS subscription_slug_for_counting,
   -- Dates
   date_trunc('month', zuora_subs_fixed.subscription_start_date) :: DATE                         AS subscription_start_month,
-  dateadd('month', -1, zuora_subs_fixed.subscription_end_date)::DATE AS subscription_end_month,
+  date_trunc('month', dateadd('day', -1, zuora_subs_fixed.subscription_end_date))::DATE AS subscription_end_month,
 
   -- This properly links a subscription to its renewal so that future subscriptions inherit the proper cohorts.
   CASE
