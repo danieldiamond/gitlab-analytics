@@ -116,7 +116,7 @@
   script:
     - pip3 install -U pyasn1-modules
     - pip3 install -U snowflake-sqlalchemy
-    - cd extract/historical/
+    - cd extract/sheetload/
     - python3 sheetload.py sheets sheets.txt snowflake
 
 .sfdc_extract: &sfdc_extract

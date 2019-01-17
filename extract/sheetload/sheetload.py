@@ -14,7 +14,7 @@ from snowflake.sqlalchemy import URL as snowflake_URL
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
 
-SHEETLOAD_SCHEMA = 'historical'
+SHEETLOAD_SCHEMA = 'sheetload'
 
 def postgres_engine_factory(args: Dict[str, str]) -> Engine:
     """
@@ -153,7 +153,7 @@ def sheet_loader(sheet_file: str, destination: str, gapi_keyfile: str = None,
 
     if destination == 'snowflake':
         try:
-            query = 'grant select on all tables in schema raw.historical to role transformer'
+            query = 'grant select on all tables in schema raw.{} to role transformer'.format(SHEETLOAD_SCHEMA)
             connection = engine.connect()
             connection.execute(query)
         finally:
