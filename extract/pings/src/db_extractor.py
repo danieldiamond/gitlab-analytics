@@ -187,6 +187,8 @@ class DBExtractor:
         """
         Export the data for each table defined in self.tables and import them
         in EXPORT_DB
+
+        Note: import_db is the db the data is coming from, export_db is the db the data is going to. export_db is the DW
         """
 
         # Fetch jason strings as strings in order to easily store them back
