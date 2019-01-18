@@ -41,11 +41,11 @@ WITH base_mrr AS (
 
   ), uniqueified as ( -- one row per sub slug for counting x mrr_month combo, with first of other values
 
-    SELECT FIRST_VALUE(account_number) OVER (PARTITION BY subscription_name_slugify
+    SELECT FIRST_VALUE(account_number) OVER (PARTITION BY subscription_slug_for_counting
               ORDER BY mrr_month ASC ) AS account_number,
-            FIRST_VALUE(subscription_name_slugify) OVER (PARTITION BY subscription_name_slugify
+            FIRST_VALUE(subscription_name_slugify) OVER (PARTITION BY subscription_slug_for_counting
               ORDER BY mrr_month ASC ) AS subscription_name_slugify,
-            FIRST_VALUE(subscription_name) OVER (PARTITION BY subscription_name_slugify
+            FIRST_VALUE(subscription_name) OVER (PARTITION BY subscription_slug_for_counting
               ORDER BY mrr_month ASC ) AS subscription_name,
             subscription_slug_for_counting,
             mrr_month,

@@ -1,8 +1,6 @@
 version: 2
 
 models:
-    - name: sub_mrr_agg
-      description: '{{ doc("sub_mrr_agg") }}'
     - name: zuora_base_mrr
       description: '{{ doc("zuora_base_mrr") }}'
       columns:
