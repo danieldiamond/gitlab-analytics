@@ -1,9 +1,3 @@
-{% docs sub_mrr_agg %}
-
-This model aggregates net retention and gross retention by month. It was separated from `zuora_mrr_totals` because Looker doesn't support conditonal filtering on measures, which is needed since we filter out accounts that did not exist a year ago before aggregating. 
-
-{% enddocs %}
-
 {% docs zuora_base_mrr %}
 
 This model generates an entry for each unique charge associated with a subscription. The specific information about what is happening with a subscription is stored with the rate plan charge. That RPC is part of a Rate Plan, which is then linked to a subscription. There can be multiple rate plans and charges per subscription. The effective start and end dates define the time period that a charge is effective.
