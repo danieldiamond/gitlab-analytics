@@ -230,6 +230,13 @@ roles:
             schemas:
                 - analytics.iroussos_scratch
 
+    - jsalazar:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.jsalazar_scratch
+    
     - jurbanc:
         warehouses:
             - reporting
@@ -344,6 +351,13 @@ users:
             - sysadmin
             - iroussos
     
+    - jsalazar:
+        can_login: yes
+        member_of:
+            - securityadmin
+            - sysadmin
+            - jsalazar
+
     - jurbanc:
         can_login: yes
         member_of:
