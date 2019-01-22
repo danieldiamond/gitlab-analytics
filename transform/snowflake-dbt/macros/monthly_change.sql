@@ -1,4 +1,4 @@
-{%- macro mom_change_count(column) -%}
+{%- macro monthly_change(column) -%}
 
     CASE
       WHEN {{ column }} - lag({{ column }}) OVER (PARTITION BY uuid ORDER BY created_at) >= 0
