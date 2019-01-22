@@ -9,7 +9,7 @@ analytics:
                 - analytics
                 - customers
                 - gitlab
-                - historical
+                - sheetload
                 - lever
                 - license
                 - mkto
@@ -28,7 +28,7 @@ analytics:
                 - analytics.*
                 - customers.*
                 - gitlab.*
-                - historical.*
+                - sheetload.*
                 - lever.*
                 - license.*
                 - mkto.*
@@ -52,7 +52,7 @@ readonly:
                 - analytics
                 - customers
                 - gitlab
-                - historical
+                - sheetload
                 - lever
                 - license
                 - mkto
@@ -69,7 +69,7 @@ readonly:
                 - analytics.*
                 - customers.*
                 - gitlab.*
-                - historical.*
+                - sheetload.*
                 - lever.*
                 - license.*
                 - mkto.*
@@ -204,7 +204,7 @@ wwright:
     privileges:
         schemas:
             write:
-                - historical
+                - sheetload
     owns:
         schemas:
           - wwright_scratch

@@ -1,0 +1,20 @@
+sheetload_metrics:
+    constraints:
+        not_null:
+            - primary_key
+        unique:
+            - primary_key
+
+sheetload_headcount:
+    constraints:
+        not_null:
+            - primary_key
+        unique:
+            - primary_key
+
+sheetload_sales_weekly_forecast:
+    constraints:
+        not_null:
+            - primary_key
+        unique:
+            - primary_key

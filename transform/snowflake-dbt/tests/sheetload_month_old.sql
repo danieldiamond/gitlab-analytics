@@ -1,16 +1,16 @@
 {% set find_max_date = "max(DATEADD(S, updated_at, '1970-01-01')::date) as max_date" %}
 
-{% set table_names = [('sales_quota', 'raw.historical.sales_quota'),
-                      ('headcount', 'raw.historical.headcount'),
-                      ('metrics', 'raw.historical.metrics'),
-                      ('regional_quotas', 'raw.historical.transposed'),
-                      ('sales_weekly_forecast', 'raw.historical.sales_weekly_forecast'),
-                      ('ccodashboard_actuals', 'raw.historical.ccodashboard_actuals'),
-                      ('crodashboard_actuals', 'raw.historical.crodashboard_actuals'),
-                      ('cfodashboard_actuals', 'raw.historical.cfodashboard_actuals'),
-                      ('vpedashboard_actuals', 'raw.historical.vpedashboard_actuals'),
-                      ('cmodashboard_actuals', 'raw.historical.cmodashboard_actuals'),
-                      ('alliancesdashboard_actuals', 'raw.historical.alliancesdashboard_actuals')]%}
+{% set table_names = [('sales_quota', 'raw.sheetload.sales_quota'),
+                      ('headcount', 'raw.sheetload.headcount'),
+                      ('metrics', 'raw.sheetload.metrics'),
+                      ('regional_quotas', 'raw.sheetload.transposed'),
+                      ('sales_weekly_forecast', 'raw.sheetload.sales_weekly_forecast'),
+                      ('ccodashboard_actuals', 'raw.sheetload.ccodashboard_actuals'),
+                      ('crodashboard_actuals', 'raw.sheetload.crodashboard_actuals'),
+                      ('cfodashboard_actuals', 'raw.sheetload.cfodashboard_actuals'),
+                      ('vpedashboard_actuals', 'raw.sheetload.vpedashboard_actuals'),
+                      ('cmodashboard_actuals', 'raw.sheetload.cmodashboard_actuals'),
+                      ('alliancesdashboard_actuals', 'raw.sheetload.alliancesdashboard_actuals')]%}
 
 with base as (
 {% for table_name in table_names -%}
