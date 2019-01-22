@@ -93,7 +93,9 @@ snowflake_mr_dbt:
   script:
     - dbt deps --profiles-dir profile
     - dbt run --profiles-dir profile --target prod --full-refresh
+    - dbt test --profiles-dir profile --target prod
     - dbt run --profiles-dir profile --target prod
+    - dbt test --profiles-dir profile --target prod
   when: manual
 
 # Model tests
@@ -101,6 +103,7 @@ dbt_snowflake_tests_manual:
   <<: *dbt_snowflake_manual
   stage: model_tests
   script:
+    - dbt deps --profiles-dir profile
     - dbt test --profiles-dir profile --target prod
 
 dbt_snowflake_tests:
