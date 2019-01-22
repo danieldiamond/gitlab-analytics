@@ -83,7 +83,7 @@ models:
           enabled: true
           materialized: table
 
-      historical:
+      sheetload:
         xf:
           enabled: true
           materialized: table

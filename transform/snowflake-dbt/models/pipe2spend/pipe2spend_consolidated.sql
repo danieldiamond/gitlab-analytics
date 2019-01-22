@@ -4,7 +4,7 @@ WITH headcount AS (
         pipe            AS pipe_name,
         headcount,
         salary_per_month
-    FROM {{ref('historical_marketing_pipe_to_spend_headcount')}}
+    FROM {{ref('sheetload_marketing_pipe_to_spend_headcount')}}
 ),
 
 pipe AS (

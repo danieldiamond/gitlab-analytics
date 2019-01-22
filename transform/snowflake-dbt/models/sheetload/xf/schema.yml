@@ -1,0 +1,13 @@
+sheetload_regional_quota_xf:
+    constraints:
+        not_null:
+            - region_quota_id
+        unique:
+            - region_quota_id
+
+sheetload_sales_quota_xf:
+    constraints:
+        not_null:
+            - sales_quota_id
+        unique:
+            - sales_quota_id
