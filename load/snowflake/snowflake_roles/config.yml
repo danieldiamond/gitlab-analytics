@@ -292,6 +292,13 @@ roles:
                     - raw.gcloud_postgres_stitch.version_version_checks
                     - raw.version_db.*
 
+    - wwright:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.wwright_scratch
+
 # Users
 users:
     - acarella:
@@ -402,6 +409,12 @@ users:
             - reporter
             - tszuromi
 
+    - wwright:
+        can_login: yes
+        member_of:
+            - engineer
+            - transformer
+            - wwright
 
 # Warehouses
 warehouses:
