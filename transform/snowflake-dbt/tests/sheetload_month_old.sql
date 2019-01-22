@@ -1,4 +1,4 @@
-{% set find_max_date = "max(DATEADD(S, updated_at, '1970-01-01')::date) as max_date" %}
+{% set find_max_date = "max(DATEADD(S, _updated_at, '1970-01-01')::date) as max_date" %}
 
 {% set table_names = [('sales_quota', 'raw.sheetload.sales_quota'),
                       ('headcount', 'raw.sheetload.headcount'),
