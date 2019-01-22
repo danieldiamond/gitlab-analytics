@@ -1,6 +1,8 @@
 [![pipeline status](https://gitlab.com/gitlab-data/analytics/badges/master/pipeline.svg)](https://gitlab.com/gitlab-data/analytics/commits/master)
 
 ## Quick Links
+* Data Team Handbook - https://about.gitlab.com/handbook/business-ops/data-team/#-quick-links
+* dbt Docs - https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview
 * Epics Roadmap - https://gitlab.com/groups/gitlab-data/-/roadmap?layout=MONTHS&sort=start_date_asc
 * Looker Instance - https://gitlab.looker.com
 * Looker Repo - https://gitlab.com/gitlab-data/looker/
