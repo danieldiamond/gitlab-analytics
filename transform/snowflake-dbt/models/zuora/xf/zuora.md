@@ -58,7 +58,7 @@ This function is used to simplify Zuora subscriptions names. Subscription names,
 
 
 
-{% docs zuora_subscription_xf %}
+{% docs zuora_subscription_intermediate %}
 
 This table is the transformed table for Zuora subscriptions.
 

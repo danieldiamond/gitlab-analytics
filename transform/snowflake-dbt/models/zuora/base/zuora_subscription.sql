@@ -4,7 +4,7 @@ WITH source AS (
 	FROM raw.zuora_stitch.subscription
 
 
-), renamed AS(
+), renamed AS (
 
 	SELECT
 		id                                  		as subscription_id,

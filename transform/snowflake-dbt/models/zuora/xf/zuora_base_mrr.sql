@@ -39,6 +39,7 @@ SELECT
       zuora_subscriptions_xf.subscription_name,
       zuora_subscriptions_xf.subscription_name_slugify,
       zuora_subscriptions_xf.subscription_slug_for_counting,
+      zuora_subscriptions_xf.lineage,
       zuora_rp.rate_plan_name,
       zuora_rpc.rate_plan_charge_name,
       zuora_rpc.mrr,
