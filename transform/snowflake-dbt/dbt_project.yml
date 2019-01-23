@@ -62,7 +62,7 @@ models:
           'snowplow:page_ping_frequency': 30
           'snowplow:app_ids': ['gitlab']
         base:
-          materialized: ephemeral
+          materialized: view
           optional:
             enabled: false
         page_views:
