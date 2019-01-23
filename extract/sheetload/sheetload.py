@@ -65,12 +65,12 @@ def dw_uploader(engine: Engine, table: str, schema: str,
     try:
         if engine.has_table(table, schema):
             existing_table = (pd.read_sql_table(table, engine, schema)
-                                .drop('updated_at', axis=1))
+                                .drop('_updated_at', axis=1))
             if existing_table.equals(data):
                 info('Table "{}" has not changed. Aborting upload.'.format(table))
                 return False
             engine.connect().execute('drop table {}.{} cascade'.format(schema, table))
-        data['updated_at'] = time()
+        data['_updated_at'] = time()
         data.to_sql(name=table,con=engine,schema=schema,index=False)
         info('Successfully loaded {} rows into {}.{}'.format(data.shape[0],
                                                           schema, table))
