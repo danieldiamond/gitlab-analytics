@@ -5,6 +5,7 @@
   )
 }}
 
+with base as (
 SELECT
     nullif(JSONTEXT['app_id']::string,'') AS app_id,
     nullif(JSONTEXT['base_currency']::string,'') AS base_currency,
@@ -146,3 +147,16 @@ AND lower(JSONTEXT['page_url']::string) NOT LIKE 'http://localhost:%'
 {% if is_incremental() %}
 AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
 {% endif %}
+{{ dbt_utils.group_by(n=133) }}
+
+), events_to_ignore as (
+
+    SELECT event_id
+    FROM base
+    GROUP BY 1
+    HAVING count (*) > 1
+) 
+
+SELECT * 
+FROM base
+WHERE event_id NOT IN (SELECT * FROM events_to_ignore)
