@@ -16,6 +16,7 @@ WITH zuora_mrr AS (
            subscription_name,
            subscription_name_slugify,
            subscription_slug_for_counting,
+           lineage,
            rate_plan_name,
            rate_plan_charge_name,
            mrr,
@@ -43,6 +44,7 @@ SELECT
        subscription_name,
        subscription_name_slugify,
        subscription_slug_for_counting,
+       lineage,
        rate_plan_name,
        rate_plan_charge_name,
        sum(mrr) as mrr,
@@ -53,4 +55,4 @@ SELECT
        sum(quantity) as quantity
 FROM amortized_mrr
 WHERE mrr_month IS NOT NULL
-GROUP BY 1, 2, 3, 4, 5, 6, 8, 9, 10, 11
+GROUP BY 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12

@@ -1,6 +1,13 @@
 version: 2
 
 models:
+    - name: zuora_accounts_receivables
+      description: Zuora accounts receivable
+      columns:
+          - name: invoice_id
+            tests:
+                - not_null
+                - unique
     - name: zuora_base_mrr
       description: '{{ doc("zuora_base_mrr") }}'
       columns:
@@ -8,6 +15,8 @@ models:
             description: Monthly recurring revenue
             tests:
                 - not_null
+          - name: lineage
+            description: "All the subscriptions subsquent to the primary subscription, separated by commas."
     - name: zuora_base_mrr_amortized
       description: '{{ doc("zuora_base_mrr_amortized") }}'
       columns:
@@ -19,6 +28,8 @@ models:
             description: The month the MRR is to be applied to
             tests:
                 - not_null
+          - name: lineage
+            description: "All the subscriptions subsquent to the primary subscription, separated by commas."
     - name: zuora_base_trueups
       description: '{{ doc("zuora_base_trueups") }}'
       columns:
@@ -28,6 +39,14 @@ models:
                 - not_null
                 - accepted_values:
                         values: ['Trueup','Trueup Credit']
+          - name: lineage
+            description: "All the subscriptions subsquent to the primary subscription, separated by commas."
+    - name: zuora_current_arr
+      description: Zuora current ARR
+      columns:
+          - name: current_arr
+            tests:
+                - not_null
     - name: zuora_mrr_totals
       description: '{{ doc("zuora_mrr_totals") }}'
       columns:
@@ -65,40 +84,8 @@ models:
             description: '{{ doc("zuora_mrr_totals_col_mrr_12mo_ago") }}'
           - name: quarters_since_cohort_start
             description: '{{ doc("zuora_mrr_totals_col_quarters_since_cohort_start") }}'
-    - name: zuora_subscription_xf
-      description: '{{ doc("zuora_subscription_xf") }}'
-      columns:
-          - name: sub_row
-            tests:
-                - not_null
-                - accepted_values:
-                        values: ['1']
-          - name: subscription_id
-            tests:
-                - not_null
-                - unique
-          - name: subscription_slug_for_counting
-            description: The field used for counting the number of subscriptions. Used instead of subscription_name_slugify because of the linkage to renewal subscriptions.
-            tests:
-                - not_null
-          - name: subscription_status
-            tests:
-                - not_null
-                - accepted_values:
-                        values: ['Active','Cancelled']
-    - name: zuora_accounts_receivables
-      description: Zuora accounts receivable
-      columns:
-          - name: invoice_id
-            tests:
-                - not_null
-                - unique
-    - name: zuora_current_arr
-      description: Zuora current ARR
-      columns:
-          - name: current_arr
-            tests:
-                - not_null
+          - name: lineage
+            description: "All the subscriptions subsquent to the primary subscription, separated by commas."
     - name: zuora_scheduled_renewals
       description: Zuora scheduled renewals
       columns:
@@ -120,4 +107,54 @@ models:
           - name: term
             tests:
                 - not_null
+    - name: zuora_subscription_intermediate
+      description: '{{ doc("zuora_subscription_intermediate") }}'
+      columns:
+          - name: sub_row
+            tests:
+                - not_null
+                - accepted_values:
+                        values: ['1']
+          - name: subscription_id
+            tests:
+                - not_null
+                - unique
+          - name: subscription_slug_for_counting
+            description: The field used for counting the number of subscriptions. Used instead of subscription_name_slugify because of the linkage to renewal subscriptions.
+            tests:
+                - not_null
+          - name: subscription_status
+            tests:
+                - not_null
+                - accepted_values:
+                        values: ['Active','Cancelled']
+    - name: zuora_subscription_lineage
+      description: Connects a subscription to all of the subscriptions in its lineage 
+      columns: 
+          - name: subscription_name_slugify
+            description: '{{ doc("zuora_mrr_totals_col_subscription_name_slugify") }}'
+            tests:
+              - not_null
+              - unique
+          - name: lineage
+            description: "All the subscriptions subsquent to the primary subscription, separated by commas."
+    - name: zuora_subscription_xf
+      description: This models takes the `zuora_subscription_intermediate` model and joins it to the `zuora_subscription_lineage` model. The end result is every subscription is linked to its lineage (or null).
+      columns:
+          - name: sub_row
+            tests:
+                - not_null
+                - accepted_values:
+                        values: ['1']
+          - name: subscription_id
+            tests:
+                - not_null
+                - unique
+          - name: subscription_status
+            tests:
+                - not_null
+                - accepted_values:
+                        values: ['Active','Cancelled']
+          - name: lineage
+            description: "All the subscriptions subsquent to the primary subscription, separated by commas."
 
