@@ -3,12 +3,12 @@
 # Job Templates
 
 .job_template: &job_definition
-  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  image: registry.gitlab.com/gitlab-data/data-image:latest
   tags:
     - analytics
 
 .job_housekeeping: &job_housekeeping
-  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  image: registry.gitlab.com/gitlab-data/data-image:latest
   tags:
     - housekeeping
 
@@ -37,7 +37,7 @@ include:
 # Set up a new instance in CloudSQL for testing in MRs
 cloudsql_review: &cloudsql_review
   stage: review
-  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  image: registry.gitlab.com/gitlab-data/data-image:latest
   variables:
     GIT_STRATEGY: clone
   tags:
@@ -61,15 +61,13 @@ cloudsql_review_refresh:
 # Clone the ANALYTICS database in Snowflake for use in MRs
 snowflake_review: &snowflake_review
   stage: review
-  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  image: registry.gitlab.com/gitlab-data/data-image:latest
   variables:
     GIT_STRATEGY: clone
     SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
   tags:
     - analytics
   script:
-    - pip3 install snowflake-sqlalchemy
-    - pip3 install -U keyrings.alt
     - manage_snowflake.py manage_clones
   environment:
     name: review/$CI_COMMIT_REF_NAME
@@ -98,7 +96,6 @@ snowflake_review: &snowflake_review
 snowflake_review_refresh:
   <<: *snowflake_review
   script:
-    - pip3 install -U snowflake-sqlalchemy
     - manage_snowflake.py manage_clones --force
   when: manual
 
@@ -258,13 +255,12 @@ test_dbt_pages:
 # Delete the Snowflake cloned database used for MRs
 review_stop:
   stage: review_stop
-  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  image: registry.gitlab.com/gitlab-data/data-image:latest
   variables:
     GIT_STRATEGY: none
     SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
   script:
     - git clone $CI_REPOSITORY_URL
-    - pip3 install -U snowflake-sqlalchemy
     - analytics/orchestration/manage_snowflake.py delete_clone
   when: manual
   allow_failure: true

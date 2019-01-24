@@ -1,7 +1,7 @@
 # Job definitions
 #
 .job_template: &extract_definition
-  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  image: registry.gitlab.com/gitlab-data/data-image:latest
   tags:
     - analytics
 
@@ -117,8 +117,6 @@
   stage: extract
   <<: *extract_definition
   script:
-    - pip3 install -U pyasn1-modules
-    - pip3 install -U snowflake-sqlalchemy
     - cd extract/sheetload/
     - python3 sheetload.py sheets sheets.txt snowflake
 
@@ -470,5 +468,5 @@ sheetload_snowflake_manual:
 # Stage: test
 
 .test_job_template: &test_job_template
-  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  image: registry.gitlab.com/gitlab-data/data-image:latest
 
