@@ -27,5 +27,4 @@ with zuora_mrr_totals as (
 SELECT account_id,account_name
 FROM joined
 WHERE crm_id IS NULL
-AND account_id != '2c92a0fc55a0dc530155c01a0820074f'
 GROUP BY 1, 2
