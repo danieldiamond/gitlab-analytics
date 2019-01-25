@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+
+# This script copies files from our s3 stage into our raw snowplow tables
+
 import logging
 from os import environ as env
 import sys
