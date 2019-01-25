@@ -4,13 +4,17 @@
 
 .job_template: &job_definition
   image: registry.gitlab.com/gitlab-data/data-image:latest
+  variables:
+    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
+  before_script:
+    - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
+    - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
+    - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_LOAD_DATABASE="RAW"; else export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW"; fi
+    - echo $SNOWFLAKE_LOAD_DATABASE
+    - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
+    - echo $SNOWFLAKE_TRANSFORM_DATABASE
   tags:
     - analytics
-
-.job_housekeeping: &job_housekeeping
-  image: registry.gitlab.com/gitlab-data/data-image:latest
-  tags:
-    - housekeeping
 
 # ---------------------------------------------------------------------------
 
@@ -42,6 +46,9 @@ cloudsql_review: &cloudsql_review
     GIT_STRATEGY: clone
   tags:
     - analytics
+  before_script:
+    - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
+    - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
   script:
     - ci_helpers.py manage_instances
   environment:
@@ -67,6 +74,9 @@ snowflake_review: &snowflake_review
     SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
   tags:
     - analytics
+  before_script:
+    - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
+    - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
   script:
     - manage_snowflake.py manage_clones
   environment:
@@ -103,7 +113,7 @@ snowflake_review_refresh:
 
 # Make sure that permissions are properly set in the CloudSQL instance for MRs
 update_db: &update_db
-  <<: *job_housekeeping
+  <<: *job_definition
   stage: setup
   script:
     - ci_helpers.py use_proxy "python3 orchestration/grant_roles.py"
@@ -220,6 +230,9 @@ sfdc_snapshot_manual:
   stage: publish
   image: registry.gitlab.com/meltano/meltano-elt/extract:latest
   variables: *pages_job__variables
+  before_script:
+    - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
+    - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
   script:
     - generate_dbt_docs.sh
   artifacts:
@@ -295,9 +308,4 @@ review_stop:
 # Global variables
 variables:
   PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
-
-# Global before_script
-before_script:
-  - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
-  - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
 

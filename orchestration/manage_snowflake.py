@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import logging
-from os import environ as env
 import sys
+from os import environ as env
 from typing import Dict
 
 from fire import Fire
@@ -24,7 +24,8 @@ class SnowflakeManager(object):
 
         # Snowflake database name should be in CAPS
         # see https://gitlab.com/meltano/analytics/issues/491
-        self.database = config_vars['SNOWFLAKE_DATABASE'].upper()
+        self.analytics_database = "{}_ANALYTICS".format(config_vars['SNOWFLAKE_DATABASE'].upper())
+        self.raw_database = "{}_RAW".format(config_vars['SNOWFLAKE_DATABASE'].upper())
 
     def manage_clones(self, force: bool=False) -> None:
         """
@@ -32,14 +33,26 @@ class SnowflakeManager(object):
         """
 
         # Queries for database cloning
-        create_query = """create or replace database "{0}" clone ANALYTICS;""".format(self.database)
-        grant_query = """grant ownership on database "{0}" to TRANSFORMER;""".format(self.database)
-        grant_roles_loader = """grant create schema, usage on database "{0}" to LOADER""".format(self.database)
-        grant_roles_transformer = """grant create schema, usage on database "{0}" to TRANSFORMER""".format(self.database)
-        queries = [create_query,
-                   grant_query,
-                   grant_roles_transformer,
-                   grant_roles_loader]
+        create_analytics_query = """create or replace database "{0}" clone ANALYTICS;"""
+        grant_analytics_query = """grant ownership on database "{0}" to TRANSFORMER;"""
+
+        create_raw_query = """create or replace database "{0}" clone RAW;"""
+        grant_raw_query = """grant ownership on database "{0}" to LOADER;"""
+
+        grant_roles_loader = """grant create schema, usage on database "{0}" to LOADER"""
+        grant_roles_transformer = """grant create schema, usage on database "{0}" to TRANSFORMER"""
+
+        # Put all of the queries in a list and format them
+        queries = [
+                create_analytics_query.format(self.analytics_database),
+                grant_analytics_query.format(self.analytics_database),
+                grant_roles_transformer.format(self.analytics_database),
+                grant_roles_loader.format(self.analytics_database),
+                create_raw_query.format(self.raw_database),
+                grant_raw_query.format(self.raw_database),
+                grant_roles_transformer.format(self.raw_database),
+                grant_roles_loader.format(self.raw_database),
+        ]
 
         # if force is false, check if the database exists
         if force:
@@ -48,13 +61,15 @@ class SnowflakeManager(object):
         else:
             try:
                 logging.info('Checking if DB exists...')
-                query = 'use database "{}";'.format(self.database)
+                analytics_query = 'use database "{}";'.format(self.analytics_database)
+                raw_query = 'use database "{}";'.format(self.raw_database)
                 connection = self.engine.connect()
-                connection.execute(query)
-                logging.info('DB exists...')
+                connection.execute(analytics_query)
+                connection.execute(raw_query)
+                logging.info('DBs exist...')
                 db_exists = True
             except:
-                logging.info('DB does not exist...')
+                logging.info('At least one DB does not exist...')
                 db_exists = False
             finally:
                 connection.close()
@@ -62,7 +77,7 @@ class SnowflakeManager(object):
 
         # If the DB doesn't exist or --force is true, create or replace the db
         if not db_exists:
-            logging.info('Creating or replacing DB')
+            logging.info('Creating or replacing DBs')
             try:
                 for query in queries:
                     logging.info('Executing Query: {}'.format(query))
@@ -77,18 +92,21 @@ class SnowflakeManager(object):
         """
         Delete a clone.
         """
-        query = 'drop database "{}";'.format(self.database)
+        db_list = [self.analytics_database, self.raw_database]
 
-        try:
-            logging.info('Executing Query: {}'.format(query))
-            connection = self.engine.connect()
-            [result] = connection.execute(query).fetchone()
-            logging.info('Query Result: {}'.format(result))
-        finally:
-            connection.close()
-            self.engine.dispose()
+        for db in db_list:
+            query = 'drop database "{}";'.format(db)
+            try:
+                logging.info('Executing Query: {}'.format(query))
+                connection = self.engine.connect()
+                [result] = connection.execute(query).fetchone()
+                logging.info('Query Result: {}'.format(result))
+            finally:
+                connection.close()
+                self.engine.dispose()
 
 
 if __name__ == "__main__":
     snowflake_manager = SnowflakeManager(env.copy())
     Fire(snowflake_manager)
+
