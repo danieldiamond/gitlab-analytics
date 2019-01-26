@@ -3,7 +3,6 @@ WITH source AS (
 	SELECT *
 	FROM raw.zuora_stitch.rateplan
 
-
 ), renamed AS(
 
 	SELECT
@@ -24,7 +23,7 @@ WITH source AS (
 		createddate         as created_date
 
 	FROM source
-	
+	WHERE deleted = FALSE
 
 )
 

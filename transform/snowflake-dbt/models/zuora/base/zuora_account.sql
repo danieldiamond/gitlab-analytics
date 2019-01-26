@@ -59,7 +59,10 @@ WITH source AS (
 
 
 	FROM source
-	WHERE id not in
+	WHERE
+		deleted = FALSE
+		 AND
+		id NOT IN
 	-- Removes test accounts from Zuora
 	    (
 	        '2c92a008643512650164430b9c562527', -- WILSON GMBH TEST ACCOUNT

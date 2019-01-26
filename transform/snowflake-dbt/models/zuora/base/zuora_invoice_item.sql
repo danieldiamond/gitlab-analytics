@@ -44,7 +44,7 @@ WITH source AS (
       updateddate            AS updated_date
 
     FROM source
-
+    WHERE deleted = FALSE
 )
 
 SELECT *

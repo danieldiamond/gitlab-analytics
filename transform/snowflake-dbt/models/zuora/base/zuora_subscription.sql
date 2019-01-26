@@ -3,7 +3,6 @@ WITH source AS (
 	SELECT *
 	FROM raw.zuora_stitch.subscription
 
-
 ), renamed AS (
 
 	SELECT
@@ -71,7 +70,10 @@ WITH source AS (
 
 
 	FROM source
-	WHERE excludefromanalysis__c IN ('False', '')
+	WHERE
+		deleted = FALSE
+		AND
+		excludefromanalysis__c IN ('False', '')
 
 )
 

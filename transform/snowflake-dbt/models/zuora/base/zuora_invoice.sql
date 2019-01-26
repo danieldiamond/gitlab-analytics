@@ -50,6 +50,7 @@ WITH source AS (
 		updateddate as updated_date
 
 	FROM source
+ 	WHERE deleted = FALSE
 
 )
 
