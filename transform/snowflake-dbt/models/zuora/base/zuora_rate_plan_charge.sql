@@ -12,7 +12,6 @@ WITH source AS (
 	SELECT *
 	FROM raw.zuora_stitch.rateplancharge
 
-
 ), renamed AS(
 
 	SELECT
@@ -80,7 +79,7 @@ WITH source AS (
 		updateddate                     as updated_date
 
 	FROM source
-	
+	WHERE deleted = FALSE
 
 )
 
