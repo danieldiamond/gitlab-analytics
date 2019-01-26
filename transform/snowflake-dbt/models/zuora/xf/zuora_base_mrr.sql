@@ -43,6 +43,7 @@ SELECT
       zuora_rp.rate_plan_name,
       zuora_rpc.rate_plan_charge_name,
       zuora_rpc.mrr,
+      zuora_rpc.tcv,
       date_trunc('month', zuora_subscriptions_xf.subscription_start_date::date) AS sub_start_month,
       date_trunc('month', dateadd(day, -1, zuora_subscriptions_xf.subscription_end_date::date))    AS sub_end_month,
       date_trunc('month', zuora_rpc.effective_start_date::date)     AS effective_start_month,
@@ -58,7 +59,10 @@ SELECT
       LEFT JOIN zuora_subscriptions_xf ON zuora_accts.account_id = zuora_subscriptions_xf.account_id
       LEFT JOIN zuora_rp ON zuora_rp.subscription_id = zuora_subscriptions_xf.subscription_id
       LEFT JOIN zuora_rpc ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
-      WHERE zuora_rpc.mrr > 0
+      WHERE
+        zuora_rpc.mrr > 0
+        AND
+        zuora_rpc.tcv > 0
 --      -- The following lines remove rate plan charges that are less than 1 month but not if they're on or span the last day of the month
         AND NOT
                 (
