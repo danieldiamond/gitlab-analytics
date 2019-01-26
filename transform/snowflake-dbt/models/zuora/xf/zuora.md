@@ -2,7 +2,7 @@
 
 This model generates an entry for each unique charge associated with a subscription. The specific information about what is happening with a subscription is stored with the rate plan charge. That RPC is part of a Rate Plan, which is then linked to a subscription. There can be multiple rate plans and charges per subscription. The effective start and end dates define the time period that a charge is effective.
 
-We only care about charges that were more than $0.
+We only care about charges that have both Monthly Recurring Revenue (MRR) > $0 and Total Contract Value (TCV) > $0.
 
 The other WHERE filter is intended to capture only the rate plan charge that is valid at the end of the month. For example, if there is a rate plan charge that starts March 15, 2017 and goes to June 10, 2017, then that charge would be counted for the months of March, April, and May. June is not counted because a different charge would be in effect on the last day of the month. The filter specifically does not include charges that have a start and end date in the same month as long as neither of those dates happen ON the last day of the month.
 
