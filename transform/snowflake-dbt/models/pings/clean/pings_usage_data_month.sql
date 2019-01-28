@@ -48,6 +48,7 @@ WITH usage_data AS (
       max(edition_type)                                                           AS edition_type,
       max(environments)                                                           AS environments,
       max(epics)                                                                  AS epics,
+      max(epics_deepest_relationship_level)                                       AS epics_deepest_relationship_level,      
       max(gcp_clusters)                                                           AS gcp_clusters,
       max(geo_nodes)                                                              AS geo_nodes,
       max(groups)                                                                 AS groups,
