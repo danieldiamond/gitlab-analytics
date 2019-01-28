@@ -95,6 +95,16 @@ snowflake_mr_dbt:
     - dbt test --profiles-dir profile --target prod
   when: manual
 
+snowflake_mr_dbt_exclude_snowplow:
+  <<: *snowflake_dbt_jobs
+  script:
+    - dbt deps --profiles-dir profile
+    - dbt run --profiles-dir profile --target prod --full-refresh --exclude snowplow
+    - dbt test --profiles-dir profile --target prod --exclude snowplow
+    - dbt run --profiles-dir profile --target prod --exclude snowplow
+    - dbt test --profiles-dir profile --target prod --exclude snowplow
+  when: manual
+
 # Model tests
 dbt_snowflake_tests_manual:
   <<: *dbt_snowflake_manual
