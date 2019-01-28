@@ -36,22 +36,26 @@ on-run-start:
     - "{{create_udfs()}}"
 
 on-run-end:
-    - grant usage on schema {{ target.schema }} to role reporter
-    - grant select on all tables in schema {{ target.schema }} to role reporter
-    - grant select on all views in schema {{ target.schema }} to role reporter
-    - grant usage on schema {{ target.schema }}_meta to role reporter
-    - grant select on all tables in schema {{ target.schema }}_meta to role reporter
-    - grant select on all views in schema {{ target.schema }}_meta to role reporter
+    - "grant usage on schema {{ target.schema }} to role reporter"
+    - "grant select on all tables in schema {{ target.schema }} to role reporter"
+    - "grant select on all views in schema {{ target.schema }} to role reporter"
+    - "grant usage on schema {{ target.schema }}_meta to role reporter"
+    - "grant select on all tables in schema {{ target.schema }}_meta to role reporter"
+    - "grant select on all views in schema {{ target.schema }}_meta to role reporter"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
 
 models:
     logging:
       pre-hook: "{{ logging.log_model_start_event() }}"
-      post-hook: "{{ logging.log_model_end_event() }}"
+      post-hook: 
+        - "{{ logging.log_model_end_event() }}"
+        - "grant select on {{this}} to role reporter"
+
     vars:
         warehouse_name: 'transforming'
 
     snowplow:
+        post-hook: "grant select on {{this}} to role reporter"
         vars:
           'snowplow:use_fivetran_interface': false
           'snowplow:events': "{{ref('unnested_events')}}"
@@ -70,6 +74,7 @@ models:
             enabled: false
 
     gitlab_snowflake:
+      post-hook: "grant select on {{this}} to role reporter"
       enabled: true
       materialized: view
 
