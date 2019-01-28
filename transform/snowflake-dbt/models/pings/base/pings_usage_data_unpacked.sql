@@ -69,6 +69,7 @@ SELECT
   (stats_used['deployments']::numeric)                               AS deployments,
   (stats_used['environments']::numeric)                              AS environments,
   (stats_used['epics']::numeric)                                     AS epics,
+  (stats_used['epics_deepest_relationship_level']::numeric)          AS epics_deepest_relationship_level,  
   (stats_used['gcp_clusters']::numeric)                              AS gcp_clusters,
   (stats_used['geo_nodes']::numeric)                                 AS geo_nodes,
   (stats_used['groups']::numeric)                                    AS groups,
