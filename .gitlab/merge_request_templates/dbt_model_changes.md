@@ -24,6 +24,12 @@ Please include links to any related MRs and/or issues.
 
 ## Testing
 
-```
+<details>
+<summary> dbt test results </summary>
+
+<pre><code>
+
 Paste the results of dbt test here, including the command.
-```
+
+</code></pre>
+</details>
