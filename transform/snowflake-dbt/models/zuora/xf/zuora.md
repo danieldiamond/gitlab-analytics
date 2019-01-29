@@ -60,8 +60,6 @@ This function is used to simplify Zuora subscriptions names. Subscription names,
 
 {% docs zuora_subscription_intermediate %}
 
-This table is the transformed table for Zuora subscriptions.
-
 The `zuora_subs` CTE de-duplicates Zuora subscriptions. Zuora keeps track of different versions of a subscription via the field "version". However, it's possible for there to be multiple version of a single Zuora version. The data with account_id = '2c92a0fc55a0dc530155c01a026806bd' in the base zuora_subscription table exemplifies this. There are multiple rows with a version of 4. The CTE adds a row number based on the updated_date where a value of 1 means it's the newest version of that version. It also filters subscriptions down to those that have either "Active" or "Cancelled" statuses since those are the only ones that we care about.
 
 The `renewal_subs` CTE creates a lookup table for renewal subscriptions, their parent, and the earliest contract start date. The `contract_effective_date` field was found to be the best identifier for a subscriptions cohort, hence why we're finding the earliest relevant one here. The renewal_row is generated because there are instances where multiple subscriptions point to the same renewal. We generally will want the oldest one for info like cohort date.
@@ -69,5 +67,104 @@ The `renewal_subs` CTE creates a lookup table for renewal subscriptions, their p
 The final select statement creates a new field specifically for counting subscriptions and generates appropriate cohort dates. Because we want to count renewal subscriptions as part of their parent, we have the slug for counting so that we don't artificially inflate numbers. It also pickes the most recent version of a subscription.
 
 The subscription_end_month calculation is taken as the previous month for a few reasons. Technically, on Zuora's side, the effective end date stored in the database the day _after_ the subscription ended. (More info here https://community.zuora.com/t5/Subscriptions/How-to-get-ALL-the-products-per-active-subscription/td-p/2224) By subtracting the month, we're guaranteed to get the correct month for an end date. If in the DB it ends 7/31, then in reality that is the day before and is therefore not in effect for the month of July (because it has to be in effect on the last day to be in force for that month). If the end date is 8/1, then it is in effect for the month of July and we're making the proper calculation. 
+
+{% enddocs %}
+
+{% docs zuora_subscription_lineage %}
+
+Connects a subscription to all of the subscriptions in its lineage. To understand more about a subscription's relationship to others, please see [the handbook](https://about.gitlab.com/handbook/finance/zuora-sub-data/)
+
+{% enddocs %}
+
+{% docs zuora_subscription_parentage_start %}
+This is the first part of a two-part model. (It is in two parts because of memory constraints.)
+
+The `flattened` CTE takes the data from lineage, which starts in the following state: 
+
+
+|SUBSCRIPTION_NAME_SLUGIFY|LINEAGE|
+|:-:|:-:|
+|a-s00011816|a-s00011817,a-s00011818|
+|a-s00011817|a-s00011818|
+|a-s00003063|a-s00011816,a-s00011817,a-s00011818|
+
+
+This flattens them to be be in one-per row. Rxample: 
+
+|SUBSCRIPTION_NAME_SLUGIFY|SUBSCRIPTIONS_IN_LINEAGE|CHILD_INDEX|
+|:-:|:-:|:-:|
+|a-s00011817|a-s00011818|0|
+|a-s00011816|a-s00011817|0|
+|a-s00011816|a-s00011818|1|
+|a-s00003063|a-s00011816|0|
+|a-s00003063|a-s00011817|1|
+
+Then we identify the version of the `subscriptions_in_lineage` with the max depth (in the `find_max_depth` CTE) and join it to the `flattened` CTE in the `with_parents` CTE. This allows us to identify the ultimate parent subscription in any given subscription. 
+
+For this series of subscriptions, the transformation result is:
+
+|ULTIMATE_PARENT_SUB|CHILD_SUB|DEPTH|
+|:-:|:-:|:-:|
+|a-s00003063|a-s00011816|0|
+|a-s00003063|a-s00011817|1|
+|a-s00003063|a-s00011818|2|
+
+Of note here is that parent accounts _only_ appear in the parents column. `a-s00003063` does not appear linked to itself. (We correct for this in `subscriptions_xf` when introducing the `subscription_slug_for_counting` value and coalescing it with the slug.)
+
+In the final CTE `finalish`, we join to intermediate to retreive the cohort dates before joining to `subscription_intermediate` in `subscription_xf`.
+
+The end result of those same subscriptions:
+
+|ULTIMATE_PARENT_SUB|CHILD_SUB|COHORT_MONTH|COHORT_QUARTER|COHORT_YEAR|
+|:-:|:-:|:-:|:-:|:-:|
+|a-s00003063|a-s00011816|2014-08-01|2014-07-01|2014-01-01|
+|a-s00003063|a-s00011817|2014-08-01|2014-07-01|2014-01-01|
+|a-s00003063|a-s00011818|2014-08-01|2014-07-01|2014-01-01|
+
+This transformation process does not handle the consolidation of subscriptions, though, which is what `zuora_subscription_parentage_finish` picks up.
+
+{% enddocs %}
+
+{% docs zuora_subscription_parentage_finish %}
+
+This is the second part of a two-part model. (It is in two parts because of memory constraints.) For the first part, please checkout the docs for zuora_subscription_parentage_start.
+
+Some accounts are not a direct renewal, they are the consolidation of many subscriptions into one. While the lineage model is build to accomodate these well, simply flattening the model produces one parent for many children accounts, for example:
+
+|ULTIMATE_PARENT_SUB|CHILD_SUB|COHORT_MONTH|COHORT_QUARTER|COHORT_YEAR|
+|:-:|:-:|:-:|:-:|:-:|
+|a-s00003114|a-s00005209|2016-01-01|2016-01-01|2016-01-01|
+|a-s00003873|a-s00005209|2017-01-01|2017-01-01|2017-01-01|
+
+Since the whole point of ultimate parent is to understand cohorts, this poses a problem (not just for fan outs when joining) because it is inaccurate.
+
+The `new_base` CTE identifies all affected subscriptions, while `consolidated_parents` and `deduped_parents` find the oldest version of the subscription. 
+
+This produces 
+
+|ULTIMATE_PARENT_SUB|CHILD_SUB|COHORT_MONTH|COHORT_QUARTER|COHORT_YEAR|
+|:-:|:-:|:-:|:-:|:-:|
+|a-s00003114|a-s00005209|2016-01-01|2016-01-01|2016-01-01|
+
+but drops the subscriptions that are not the ultimate parent but had not previously been identified as children, in this case `a-s00003873`.
+
+The first part of the `unioned` CTE isolates these subscriptions, naming them children of the newly-minted ultimate parent subscription (really just the oldest in a collection of related subscriptions), producing
+
+|ULTIMATE_PARENT_SUB|CHILD_SUB|COHORT_MONTH|COHORT_QUARTER|COHORT_YEAR|
+|:-:|:-:|:-:|:-:|:-:|
+|a-s00003114|a-s00003873|2016-01-01|2016-01-01|2016-01-01|
+|a-s00003114|a-s00003873|2016-01-01|2016-01-01|2016-01-01|
+
+
+It unions this to the results of `deduped_consolidations` and all original base table where the subscriptions were not affected by consolidations. Finally we deduplicate one more time.  
+
+The final result:
+
+|ULTIMATE_PARENT_SUB|CHILD_SUB|COHORT_MONTH|COHORT_QUARTER|COHORT_YEAR|
+|:-:|:-:|:-:|:-:|:-:|
+|a-s00003114|a-s00009998|2016-01-01|2016-01-01|2016-01-01|
+|a-s00003114|a-s00003873|2016-01-01|2016-01-01|2016-01-01|
+|a-s00003114|a-s00005209|2016-01-01|2016-01-01|2016-01-01|
+
 
 {% enddocs %}

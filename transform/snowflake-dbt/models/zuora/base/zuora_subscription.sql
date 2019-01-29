@@ -14,10 +14,10 @@ WITH source AS (
 		creatoraccountid                    		as creator_account_id,
 		creatorinvoiceownerid               		as creator_invoice_owner_id,
 		invoiceownerid                      		as invoice_owner_id,
-		opportunityid__c                    		as sfdc_opportunity_id,
-		originalid                          		as original_id,
-		previoussubscriptionid              		as previous_subscription_id,
-		recurlyid__c                        		as sfdc_recurly_id,
+		nullif(opportunityid__c, '')                as sfdc_opportunity_id,
+		nullif(originalid, '')                      as original_id,
+		nullif(previoussubscriptionid, '')          as previous_subscription_id,
+		nullif(recurlyid__c, '')                    as sfdc_recurly_id,
 		cpqbundlejsonid__qt                 		as cpq_bundle_json_id,
 		
 		-- info
