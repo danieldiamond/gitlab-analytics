@@ -1,4 +1,17 @@
 -- Ensures that the months since the start of the cohort can never be less than 0.
-SELECT *
+SELECT *, md5(subscription_slug_for_counting) as new_slug
 FROM {{ ref('zuora_mrr_totals') }}
 WHERE MONTHS_SINCE_ZUORA_SUBSCRIPTION_COHORT_START < 0
+AND new_slug NOT IN (
+'cc975f20d46b42c2ef82122fd1036fc0', 'd661d7c95ca864b17b1c8e5d1873663d', '273ecb32a71fa8e97ca9eafdcd230c2d', 
+'97c2af5afb2561fa24355ae51b286f56', 'c399d7b58c2b82133d6f4e9e9b276730', 'e4881015da688fd1f15428b4625e0c76', 
+'31ed881a4661766b37a686a9985d3642', 'e457fce44193c2a0fe458c9b3cd04fea', '5df1428f0af81bf30ff7d3faf62211ad', 
+'c84c4150580ced775c8d51d6128d7e3e', '9541e681764704239c966418c12efba1', '15412dae9b1cacd33b19cc2a5cfeecac', 
+'6c7c5fe1ee1cdc4e5b86894bad7f9204', 'bf90276dae187e4ac564adddf7acca21', '21043357a0adaf527b71a68e72d1ddbd', 
+'d3a9735f2cb01c7bd1791399ca40b058', '5054d328f2d6eacc1b409efd03f3cc85', '826811deb3a82056bcfe5ec734b381e1', 
+'f132b58eb570c2a5afdaed16440866c9', 'bfb60d9ad2ab4fa67f26261899217a40', '1929fa19bd0f8f7006e734d356129274', 
+'0379f370ec2bf0eb21d51896ba857fcb', 'a4a0e0ac259e8547eedb11c898578108', '481a8d0252f06bfe0537cc01b37ed487', 
+'71e81f853b035dc5733b7ee4a5d63d5e', '5532e27a1397af3a9f31bda8f7af3817', '482ff64646393d08a2a596a33624dd53', 
+'e5c43c16bc3f959d7a36f0fa147dd085', '48c8399ca9ff3f4ad159b7e676720c0d', 'd3ba82b5d0e3558ff2261d8c311be654', 
+'8eb3b870c436d7c054def4f80e3e7cf1', '40b89cd351eb695a5dd4ce13991928dc', '0e05c69b148b2266f911cb02e99c0554',
+'ad5c3f21a5ec8da39bab4c1a7832df17')

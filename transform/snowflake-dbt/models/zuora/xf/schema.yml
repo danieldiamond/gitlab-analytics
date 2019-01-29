@@ -119,17 +119,13 @@ models:
             tests:
                 - not_null
                 - unique
-          - name: subscription_slug_for_counting
-            description: The field used for counting the number of subscriptions. Used instead of subscription_name_slugify because of the linkage to renewal subscriptions.
-            tests:
-                - not_null
           - name: subscription_status
             tests:
                 - not_null
                 - accepted_values:
                         values: ['Active','Cancelled']
     - name: zuora_subscription_lineage
-      description: Connects a subscription to all of the subscriptions in its lineage 
+      description:  '{{doc("zuora_subscription_lineage")}}'
       columns: 
           - name: subscription_name_slugify
             description: '{{ doc("zuora_mrr_totals_col_subscription_name_slugify") }}'
@@ -138,6 +134,27 @@ models:
               - unique
           - name: lineage
             description: "All the subscriptions subsquent to the primary subscription, separated by commas."
+    - name: zuora_subscription_parentage_finish
+      description: '{{ doc("zuora_subscription_parentage_finish") }}'
+      columns:
+          - name: ultimate_parent_sub
+            tests:
+              - not_null
+          - name: child_sub
+            tests:
+              - not_null
+              - unique
+          - name: cohort_month
+            tests:
+              - not_null
+          - name: cohort_quarter
+            tests:
+              - not_null
+          - name: cohort_year
+            tests:
+              - not_null
+    - name: zuora_subscription_parentage_start
+      description: '{{doc("zuora_subscription_parentage_start")}}'
     - name: zuora_subscription_xf
       description: This models takes the `zuora_subscription_intermediate` model and joins it to the `zuora_subscription_lineage` model. The end result is every subscription is linked to its lineage (or null).
       columns:
