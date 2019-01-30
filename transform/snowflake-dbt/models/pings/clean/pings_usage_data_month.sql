@@ -32,6 +32,7 @@ WITH usage_data AS (
       max(clusters)                                                               AS clusters,
       max(clusters_applications_helm)                                             AS clusters_applications_helm,
       max(clusters_applications_ingress)                                          AS clusters_applications_ingress,
+      max(clusters_applications_knative)                                          AS clusters_applications_knative,
       max(clusters_applications_prometheus)                                       AS clusters_applications_prometheus,
       max(clusters_applications_runner)                                           AS clusters_applications_runner,
       max(clusters_disabled)                                                      AS clusters_disabled,

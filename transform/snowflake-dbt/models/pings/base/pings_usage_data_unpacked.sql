@@ -56,6 +56,7 @@ SELECT
   (stats_used['clusters']::numeric)                                  AS clusters,
   (stats_used['clusters_applications_helm']::numeric)                AS clusters_applications_helm,
   (stats_used['clusters_applications_ingress']::numeric)             AS clusters_applications_ingress,
+  (stats_used['clusters_applications_knative']::numeric)             AS clusters_applications_knative,
   (stats_used['clusters_applications_prometheus']::numeric)          AS clusters_applications_prometheus,
   (stats_used['clusters_applications_runner']::numeric)              AS clusters_applications_runner,
   (stats_used['clusters_disabled']::numeric)                         AS clusters_disabled,

@@ -22,6 +22,7 @@ SELECT
      {{ case_when_boolean_int("clusters") }} AS clusters_active,
      {{ case_when_boolean_int("clusters_applications_helm") }} AS clusters_applications_helm_active,
      {{ case_when_boolean_int("clusters_applications_ingress") }} AS clusters_applications_ingress_active,
+     {{ case_when_boolean_int("clusters_applications_knative") }} AS clusters_applications_knative_active,
      {{ case_when_boolean_int("clusters_applications_prometheus") }} AS clusters_applications_prometheus_active,
      {{ case_when_boolean_int("clusters_applications_runner") }} AS clusters_applications_runner_active,
      {{ case_when_boolean_int("clusters_disabled") }} AS clusters_disabled_active,

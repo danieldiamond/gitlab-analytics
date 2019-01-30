@@ -29,6 +29,7 @@ WITH pings_mom_change AS (
     {{ monthly_change('clusters') }} ,
     {{ monthly_is_used('clusters_applications_helm') }} ,
     {{ monthly_is_used('clusters_applications_ingress') }} ,
+    {{ monthly_is_used('clusters_applications_knative') }} ,
     {{ monthly_is_used('clusters_applications_prometheus') }} ,
     {{ monthly_is_used('clusters_applications_runner') }} ,
     {{ monthly_is_used('clusters_disabled') }} ,
