@@ -174,4 +174,13 @@ models:
                         values: ['Active','Cancelled']
           - name: lineage
             description: "All the subscriptions subsquent to the primary subscription, separated by commas."
+          - name: cohort_month
+            tests:
+                - not_null
+          - name: cohort_quarter
+            tests:
+                - not_null
+          - name: cohort_year
+            tests:
+                - not_null
 

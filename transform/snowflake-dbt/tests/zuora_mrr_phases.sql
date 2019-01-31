@@ -1,3 +1,8 @@
+-- This test compares MRR at different points of the analysis and makes sure they are all equal. 
+-- Because of how MRR is calculated it is necessary that this test be *perfect* for the past months. 
+-- While this doesn't track changes over time, there are fluctuations in the future introduces by 
+-- the changing ways of how we're calculating MRR.
+
 with zuora_base_mrr_amortized as (
      SELECT * FROM {{ref('zuora_base_mrr_amortized')}}
 ), zuora_base_trueups as (
@@ -33,3 +38,4 @@ FULL OUTER JOIN sum_mrr_totals
 FULL OUTER JOIN sum_mrr_totals_levelled
     ON sum_zuora_base.mrr_month = sum_mrr_totals_levelled.mrr_month
 WHERE (sum_mrr_totals - sum_mrr_totals_levelled) > 1
+AND sum_zuora_base.mrr_month < date_trunc('month',current_date)

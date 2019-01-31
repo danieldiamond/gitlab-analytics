@@ -1,4 +1,5 @@
-{% set partition_statement = "OVER ( PARTITION BY child_sub ORDER BY cohort_month)" %}
+{% set partition_statement = "OVER ( PARTITION BY child_sub ORDER BY cohort_month, ultimate_parent_sub)" %} 
+                      -- we have this second "order by" in case of two parents having the same cohort month.
 
 with base as (
 
