@@ -12,30 +12,6 @@
   tags:
     - analytics
 
-.variables: &meltano_extract_job__variables
-  SINGER_RUN_DIR: /run/singer
-  TARGET_REJECTED_DIR: $SINGER_RUN_DIR/target.rejected
-  MELTANO_JOB_ID: $CI_JOB_NAME
-  SNOWFLAKE_USER: $SNOWFLAKE_LOAD_USER
-  SNOWFLAKE_PASSWORD: $SNOWFLAKE_LOAD_PASSWORD
-  SNOWFLAKE_ROLE: $SNOWFLAKE_LOAD_ROLE
-  SNOWFLAKE_WAREHOUSE: $SNOWFLAKE_LOAD_WAREHOUSE
-  SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME  # review database
-
-.meltano_extract_job: &meltano_extract_job
-  stage: extract
-  <<: *extract_definition
-  variables: *meltano_extract_job__variables
-  image:
-    name: registry.gitlab.com/meltano/meltano/runner:bc2ead1146c017a4ad12c88d65f19dd968a23d8b
-    entrypoint: [""]
-  script:
-    - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
-    - export SNOWFLAKE_DATABASE="${SNOWFLAKE_LOAD_DATABASE}" # database name must be in CAPS
-    - echo "Connecting to $SNOWFLAKE_USER[$SNOWFLAKE_ROLE]@$SNOWFLAKE_ACCOUNT/$SNOWFLAKE_DATABASE/$SNOWFLAKE_SCHEMA"
-    - meltano install
-    - ci_helpers.py use_proxy "meltano elt $MELTANO_JOB_ID --extractor $MELTANO_EXTRACTOR --loader $MELTANO_LOADER --transform skip"
-
 .ci_stats: &ci_stats
   stage: extract
   <<: *extract_definition
@@ -43,6 +19,52 @@
     - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_ci_stats.yaml
     - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest ci_stats"
     - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest ci_stats --hours 8"
+
+# =========================
+## Postgres Extract Section
+# =========================
+
+.ci_stats_db_extract: &ci_stats_db_extract
+  stage: extract
+  <<: *extract_definition
+  script:
+    - cd extract/postgres/
+    - export HOURS=8 # how far back to load data
+    - python tap_postgres/tap_postgres.py tap manifests/ci_stats_db_manifest.yaml
+
+.customers_db_extract: &customers_db_extract
+  stage: extract
+  <<: *extract_definition
+  script:
+    - cd extract/postgres/
+    - export HOURS=8 # how far back to load data
+    - python tap_postgres/tap_postgres.py tap manifests/customers_db_manifest.yaml
+
+.gitlab_profiler_db_extract: &gitlab_profiler_db_extract
+  stage: extract
+  <<: *extract_definition
+  script:
+    - cd extract/postgres/
+    - export HOURS=8 # how far back to load data
+    - python tap_postgres/tap_postgres.py tap manifests/gitlab_profiler_db_manifest.yaml
+
+.license_db_extract: &license_db_extract
+  stage: extract
+  <<: *extract_definition
+  script:
+    - cd extract/postgres/
+    - export HOURS=8 # how far back to load data
+    - python tap_postgres/tap_postgres.py tap manifests/license_db_manifest.yaml
+
+.version_db_extract: &version_db_extract
+  stage: extract
+  <<: *extract_definition
+  script:
+    - cd extract/postgres/
+    - export HOURS=8 # how far back to load data
+    - python tap_postgres/tap_postgres.py tap manifests/version_db_manifest.yaml
+
+# =========================
 
 .netsuite_extract: &netsuite_extract
   stage: extract
@@ -105,20 +127,6 @@
     - check_ci_cd_vars.py --file extract/pings/src/config/required_vars_gitlab_profiler.yaml
     - ci_helpers.py use_proxy "python3 extract/pings/src apply_schema --db_manifest gitlab_profiler"
     - ci_helpers.py use_proxy "python3 extract/pings/src export --db_manifest gitlab_profiler --days 3600"
-
-.postgres_db_extract: &postgres_db_extract
-  stage: extract
-  <<: *extract_definition
-  image:
-    name: registry.gitlab.com/meltano/meltano/runner:v0.1.4
-    entrypoint: [""]
-  script:
-    - pip3 install -r orchestration/requirements.txt # required by `ci_helpers`
-    - export SNOWFLAKE_DATABASE="${SNOWFLAKE_LOAD_DATABASE}" # database name must be in CAPS
-    - check_ci_cd_vars.py --file extract/postgres/config/required_vars.yaml
-    - meltano install
-    - python3 extract/postgres --import_db $EXPORT_DATABASE --days $DAYS --hours $HOURS
-    - extract/postgres/run_custom_tap_target.sh
 
 .sheetload_snowflake: &sheetload_snowflake
   stage: extract
@@ -217,11 +225,9 @@ pings:
 
 version_db:
   stage: extract
-  <<: *postgres_db_extract
+  <<: *version_db_extract
   variables:
-    EXPORT_DATABASE: "version"
     DAYS: 1
-    HOURS: 0
     AVG_CYCLE_ANALYTICS_ID: 1
   only:
     refs:
@@ -231,11 +237,9 @@ version_db:
 
 customers_db:
   stage: extract
-  <<: *postgres_db_extract
+  <<: *customers_db_extract
   variables:
-    EXPORT_DATABASE: "customers"
     DAYS: 1
-    HOURS: 0
   only:
     refs:
       - master
@@ -244,11 +248,9 @@ customers_db:
 
 license_db:
   stage: extract
-  <<: *postgres_db_extract
+  <<: *license_db_extract
   variables:
-    EXPORT_DATABASE: "license"
     DAYS: 1
-    HOURS: 0
   only:
     refs:
       - master
@@ -257,10 +259,8 @@ license_db:
 
 ci_stats_db:
   stage: extract
-  <<: *postgres_db_extract
+  <<: *ci_stats_db_extract
   variables:
-    EXPORT_DATABASE: "ci_stats"
-    DAYS: 0
     HOURS: 8
   only:
     refs:
@@ -270,11 +270,9 @@ ci_stats_db:
 
 gitlab_profiler_db:
   stage: extract
-  <<: *postgres_db_extract
+  <<: *gitlab_profiler_db_extract
   variables:
-    EXPORT_DATABASE: "gitlab_profiler"
     DAYS: 15
-    HOURS: 0
   only:
     refs:
       - master
@@ -385,11 +383,9 @@ discover_gitlab_dbs_schema_manual:
 
 version_db_manual:
   stage: extract
-  <<: *postgres_db_extract
+  <<: *version_db_extract
   variables:
-    EXPORT_DATABASE: "version"
     DAYS: 1
-    HOURS: 0
     AVG_CYCLE_ANALYTICS_ID: 1341780
   only:
     - branches
@@ -399,11 +395,9 @@ version_db_manual:
 
 customers_db_manual:
   stage: extract
-  <<: *postgres_db_extract
+  <<: *customers_db_extract
   variables:
-    EXPORT_DATABASE: "customers"
     DAYS: 1
-    HOURS: 0
   only:
     - branches
   except:
@@ -412,11 +406,9 @@ customers_db_manual:
 
 license_db_manual:
   stage: extract
-  <<: *postgres_db_extract
+  <<: *license_db_extract
   variables:
-    EXPORT_DATABASE: "license"
     DAYS: 1
-    HOURS: 0
   only:
     - branches
   except:
@@ -425,10 +417,8 @@ license_db_manual:
 
 ci_stats_db_manual:
   stage: extract
-  <<: *postgres_db_extract
+  <<: *ci_stats_db_extract
   variables:
-    EXPORT_DATABASE: "ci_stats"
-    DAYS: 0
     HOURS: 8
   only:
     - branches
@@ -438,11 +428,9 @@ ci_stats_db_manual:
 
 gitlab_profiler_db_manual:
   stage: extract
-  <<: *postgres_db_extract
+  <<: *gitlab_profiler_db_extract
   variables:
-    EXPORT_DATABASE: "gitlab_profiler"
     DAYS: 15
-    HOURS: 0
   only:
     - branches
   except:

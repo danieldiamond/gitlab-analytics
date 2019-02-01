@@ -1,0 +1,72 @@
+connection_info:
+  user: CUSTOMER_DB_USER
+  pass: CUSTOMER_DB_PASS
+  host: CUSTOMER_DB_HOST
+  database: CUSTOMER_DB_NAME
+  port: PG_PORT
+tables:
+  customers:
+    import_db: CUSTOMERS_DB
+    import_query: >
+      SELECT
+      id,
+      zuora_account_id,
+      salesforce_account_id,
+      billable,
+      sign_in_count,
+      current_sign_in_at,
+      last_sign_in_at,
+      created_at,
+      updated_at
+      FROM customers
+      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+    export_db: EXPORT_DB
+    export_schema: 'customers'
+    export_table: 'customers'
+    export_table_primary_key: id
+  orders:
+    import_db: CUSTOMERS_DB
+    import_query: >
+      SELECT
+      id,
+      customer_id,
+      product_rate_plan_id,
+      subscription_id,
+      subscription_name,
+      start_date,
+      end_date,
+      quantity,
+      created_at,
+      updated_at
+      FROM orders
+      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+    export_db: EXPORT_DB
+    export_schema: 'customers'
+    export_table: 'orders'
+    export_table_primary_key: id
+  versions:
+    import_db: CUSTOMERS_DB
+    import_query: >
+      SELECT
+      id,
+      item_type,
+      item_id,
+      event,
+      transaction_id,
+      created_at
+      FROM versions
+      WHERE created_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+    export_db: EXPORT_DB
+    export_schema: 'customers'
+    export_table: 'versions'
+    export_table_primary_key: id
+  schema_migrations:
+    import_db: CUSTOMERS_DB
+    import_query: >
+      SELECT
+      version
+      FROM schema_migrations
+    export_db: EXPORT_DB
+    export_schema: 'customers'
+    export_table: 'schema_migrations'
+    export_table_primary_key: version
