@@ -29,7 +29,6 @@
   <<: *extract_definition
   script:
     - cd extract/postgres/
-    - export HOURS=8 # how far back to load data
     - python tap_postgres/tap_postgres.py tap manifests/ci_stats_db_manifest.yaml
 
 .customers_db_extract: &customers_db_extract
@@ -37,7 +36,6 @@
   <<: *extract_definition
   script:
     - cd extract/postgres/
-    - export HOURS=8 # how far back to load data
     - python tap_postgres/tap_postgres.py tap manifests/customers_db_manifest.yaml
 
 .gitlab_profiler_db_extract: &gitlab_profiler_db_extract
@@ -45,7 +43,6 @@
   <<: *extract_definition
   script:
     - cd extract/postgres/
-    - export HOURS=8 # how far back to load data
     - python tap_postgres/tap_postgres.py tap manifests/gitlab_profiler_db_manifest.yaml
 
 .license_db_extract: &license_db_extract
@@ -53,7 +50,6 @@
   <<: *extract_definition
   script:
     - cd extract/postgres/
-    - export HOURS=8 # how far back to load data
     - python tap_postgres/tap_postgres.py tap manifests/license_db_manifest.yaml
 
 .version_db_extract: &version_db_extract
@@ -61,7 +57,6 @@
   <<: *extract_definition
   script:
     - cd extract/postgres/
-    - export HOURS=8 # how far back to load data
     - python tap_postgres/tap_postgres.py tap manifests/version_db_manifest.yaml
 
 # =========================
