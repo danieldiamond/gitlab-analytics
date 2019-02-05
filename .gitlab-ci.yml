@@ -4,8 +4,6 @@
 
 .job_template: &job_definition
   image: registry.gitlab.com/gitlab-data/data-image:latest
-  variables:
-    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
   before_script:
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
     - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
@@ -71,7 +69,6 @@ snowflake_review: &snowflake_review
   image: registry.gitlab.com/gitlab-data/data-image:latest
   variables:
     GIT_STRATEGY: clone
-    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
   tags:
     - analytics
   before_script:
@@ -221,7 +218,6 @@ sfdc_snapshot_manual:
 
 # Define some variables for use in other Pages jobs
 .variables: &pages_job__variables
-  SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
   SNOWFLAKE_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
   SNOWFLAKE_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE
 
@@ -271,7 +267,6 @@ review_stop:
   image: registry.gitlab.com/gitlab-data/data-image:latest
   variables:
     GIT_STRATEGY: none
-    SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
   script:
     - git clone $CI_REPOSITORY_URL
     - analytics/orchestration/manage_snowflake.py delete_clone
@@ -308,4 +303,5 @@ review_stop:
 # Global variables
 variables:
   PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
+  SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
 
