@@ -28,5 +28,5 @@ SELECT account_id,account_name
 FROM joined
 WHERE crm_id IS NULL
 GROUP BY 1, 2
--- temporary filtering of broken zuora account, issue #861
-HAVING account_id != '2c92a00868939eae0168950183e03b49'
+-- temporary filtering of broken zuora account, issue #891
+HAVING account_id != '2c92a0fd68a2d8a30168bedca57856fb'
