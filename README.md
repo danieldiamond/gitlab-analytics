@@ -271,6 +271,7 @@ Since we don't have a linter, it is *our collective responsibility* to enforce t
 
 - An `id` or `name` value should always be prefixed by what it is identifying or naming, e.g. `account_id` and `account_name`. Where possible, it should also be prefixed with the data source, e.g. `sfdc_account_id`, to avoid ambiguity. 
 - All field names should be snake-cased. 
+- Boolean field namesshould start with `has_`, `is_`, or `does_`.
 
 ##### CTEs (Common Table Expressions)
 
