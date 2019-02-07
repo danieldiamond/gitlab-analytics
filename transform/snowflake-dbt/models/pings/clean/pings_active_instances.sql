@@ -1,10 +1,3 @@
-{{
-  config(
-    materialized='incremental',
-    unique_key='unique_key'
-  )
-}}
-
 WITH active_instances AS (
     SELECT
       to_varchar(host_id) as host_id,
@@ -12,10 +5,6 @@ WITH active_instances AS (
       created_at,
       'version_ping' AS ping_type
     FROM {{ ref("pings_version_checks") }}
-    {% if is_incremental() %}
-        WHERE created_at >= DATE_TRUNC('month', CURRENT_DATE)
-    {% endif %}
-
     UNION ALL
     SELECT
       coalesce(to_varchar(host_id), to_varchar(uuid)) as host_id,
@@ -23,9 +12,6 @@ WITH active_instances AS (
       created_at,
       'usage_ping' AS ping_type
     FROM {{ ref("pings_usage_data") }}
-    {% if is_incremental() %}
-        WHERE created_at >= DATE_TRUNC('month', CURRENT_DATE)
-    {% endif %}
 ),
 active_instances_w_first_ping AS (
  SELECT *,
@@ -34,7 +20,6 @@ active_instances_w_first_ping AS (
 )
 
 SELECT
-  md5(host_id || version || date_trunc('day', created_at)::date || ping_type) AS unique_key,
   host_id,
   version,
   DATE_TRUNC('day', created_at) AS created_at_date,
@@ -42,4 +27,4 @@ SELECT
   ping_type,
   datediff(month, first_ping_at_date, created_at) as months_since_first_ping
 FROM active_instances_w_first_ping
-GROUP BY 1,2,3,4,5,6,7
+GROUP BY 1,2,3,4,5,6
