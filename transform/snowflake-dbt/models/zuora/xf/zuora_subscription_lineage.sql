@@ -11,7 +11,7 @@ with source as (
 
 	SELECT a.subscription_name_slugify, a.zuora_renewal_subscription_name_slugify,
 	       b.zuora_renewal_subscription_name_slugify as two,
-	      (a.zuora_renewal_subscription_name_slugify {{ next_in_lineage }} as lineage
+	       (a.subscription_name_slugify||ifnull(nullif(','|| nvl((a.zuora_renewal_subscription_name_slugify {{ next_in_lineage }} , ''), ','), '')) as lineage
 	FROM source a
 	LEFT JOIN source as b
 	ON a.zuora_renewal_subscription_name_slugify = b.subscription_name_slugify

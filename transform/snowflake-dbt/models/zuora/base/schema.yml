@@ -11,6 +11,8 @@ models:
           - name: account_name
             tests:
                 - not_null
+          - name: crm_id
+
     - name: zuora_contact
       description: Base model for Zuora contacts
       columns:
