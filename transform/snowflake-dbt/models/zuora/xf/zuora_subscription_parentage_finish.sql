@@ -50,13 +50,19 @@ with base as (
   
   SELECT *
   FROM base
-  WHERE child_sub NOT IN (SELECT child_sub 
-                          FROM base 
-                          GROUP BY 1 
-                          HAVING count (*)> 1)
+  WHERE child_sub NOT IN (SELECT child_sub FROM new_base)
+
+), fix_consolidations as (
+
+  SELECT first_value(ultimate_parent_sub) {{ partition_statement }} as ultimate_parent_sub,
+         child_sub,
+         min(cohort_month) {{ partition_statement }} as cohort_month,
+         min(cohort_quarter) {{ partition_statement }} as cohort_quarter,
+         min(cohort_year) {{ partition_statement }} as cohort_year
+  FROM unioned
 
 )
 
 SELECT *
-FROM unioned
+FROM fix_consolidations
 GROUP BY 1, 2, 3, 4, 5

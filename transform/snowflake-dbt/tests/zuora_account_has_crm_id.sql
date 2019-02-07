@@ -10,11 +10,16 @@ with zuora_mrr_totals as (
 
     SELECT * FROM {{ref('sfdc_accounts_xf')}}
 
+), sfdc_deleted_accounts as (
+    
+    SELECT * FROM {{ref('sfdc_deleted_accounts')}}
+
 ), joined as (
 
-    SELECT zuora_account.account_id,
+    SELECT zuora_account.account_id     as zuora_account_id,
            zuora_account.account_name,
            zuora_account.crm_id,
+           sfdc_accounts_xf.account_id  as sfdc_account_id,
            sfdc_accounts_xf.ultimate_parent_account_id
     FROM zuora_mrr_totals
     LEFT JOIN zuora_account
@@ -22,11 +27,18 @@ with zuora_mrr_totals as (
     LEFT JOIN sfdc_accounts_xf
         ON sfdc_accounts_xf.account_id = zuora_account.crm_id
 
+), final as (
+
+    SELECT zuora_account_id, 
+            account_name, 
+            crm_id, 
+            coalesce(joined.sfdc_account_id, sfdc_master_record_id) as sfdc_account_id
+    FROM joined
+    LEFT JOIN sfdc_deleted_accounts
+    ON crm_id = sfdc_deleted_accounts.sfdc_account_id
 )
 
-SELECT account_id,account_name
-FROM joined
-WHERE crm_id IS NULL
-GROUP BY 1, 2
--- temporary filtering of broken zuora account, issue #891
-HAVING account_id != '2c92a0fd68a2d8a30168bedca57856fb'
+SELECT *
+FROM final
+WHERE sfdc_account_id IS NULL
+GROUP BY 1, 2, 3, 4

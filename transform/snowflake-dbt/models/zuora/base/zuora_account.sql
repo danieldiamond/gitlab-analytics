@@ -3,6 +3,7 @@ WITH source AS (
 	SELECT *
 	FROM raw.zuora_stitch.account
 
+
 ), renamed AS(
 
 	SELECT 
@@ -78,6 +79,7 @@ WITH source AS (
 	        '2c92a0fe55a0e4a50155a3a50d7b3de6', -- Wilson Lau 
 	        '2c92a0ff55a0e4910155a36b51e0389c'  -- Wilson - Colorado
 	    )
+	    
 
 )
 
