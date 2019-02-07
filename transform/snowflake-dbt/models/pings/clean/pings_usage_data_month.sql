@@ -96,7 +96,11 @@ SELECT
   CASE WHEN next_month.next_unique_key IS NOT NULL
           THEN FALSE
        ELSE TRUE
-  END AS churned_next_month
+  END AS churned_next_month,
+  CASE WHEN this_month.uuid = 'ea8bf810-1d6f-4a6a-b4fd-93e8cbd8b57f'
+          THEN 'SaaS'
+       ELSE 'Self-Hosted'
+  END AS ping_source
 FROM usage_data_month_base this_month
 LEFT JOIN usage_data_month_base next_month
   ON this_month.next_unique_key = next_month.unique_key
