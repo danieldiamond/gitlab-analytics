@@ -31,7 +31,7 @@ demand_advertising_spend AS (
             THEN 'Terminus'
           WHEN entity in ('Facebook US','Linked In')
             THEN 'Paid Social'
-          WHEN entity in ('DZone, Inc.', 'BLUESNAP INC')
+          WHEN entity in ('DZone, Inc.', 'BLUESNAP INC', 'D2 Emerge LLC')
             THEN 'Paid Sponsorship'
           ELSE 'Unknown' END
                             AS pipe_name,

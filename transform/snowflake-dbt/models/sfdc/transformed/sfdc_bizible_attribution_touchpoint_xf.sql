@@ -13,7 +13,7 @@ WITH opps AS (
       date_trunc('month',opps.sales_qualified_date)                 AS sales_qualified_month,
       touches.*,
       CASE
-        WHEN touchpoint_id ILIKE 'a6061000000CeS0%' -- Specific touchpoing overrides
+        WHEN touchpoint_id ILIKE 'a6061000000CeS0%' -- Specific touchpoint overrides
           THEN 'Field Event'
         WHEN marketing_channel_path = 'CPC.AdWords'
           THEN 'Google AdWords'
@@ -26,12 +26,20 @@ WITH opps AS (
           THEN 'Paid Social'
         WHEN marketing_channel_path IN ('Social.Facebook','Social.LinkedIn','Social.Twitter','Social.YouTube')
           THEN 'Social'
-        WHEN marketing_channel_path = 'Marketing Site.Web Referral'
+        WHEN marketing_channel_path IN ('Marketing Site.Web Referral','Web Referral')
           THEN 'Web Referral'
-        WHEN marketing_channel_path = 'Marketing Site.Web Direct'
+        WHEN marketing_channel_path in ('Marketing Site.Web Direct', 'Web Direct')
+              -- Added to Web Direct
+              OR campaign_id in (
+                                '701610000008ciRAAQ', -- Trial - GitLab.com
+                                '70161000000VwZbAAK', -- Trial - Self-hosted
+                                '70161000000VwZgAAK', -- Trial - SaaS
+                                '70161000000CnSLAA0', -- 20181218_DevOpsVirtual
+                                '701610000008cDYAAY'  -- 2018_MovingToGitLab
+                                )
           THEN 'Web Direct'
-        WHEN marketing_channel_path = 'Marketing Site.Organic'
-                  OR (medium = 'Marketing Site' AND marketing_channel_path = 'NULL')
+        WHEN marketing_channel_path LIKE 'Organic Search.%'
+              OR marketing_channel_path = 'Marketing Site.Organic'
           THEN 'Organic Search'
         WHEN marketing_channel_path IN ('Sponsorship')
           THEN 'Paid Sponsorship'
