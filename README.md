@@ -269,7 +269,7 @@ Since we don't have a linter, it is *our collective responsibility* to enforce t
 
 ##### Field Naming Conventions
 
-- An `id` or `name` value should always be prefixed by what it is identifying or naming, e.g. `account_id` and `account_name`. Where possible, it should also be prefixed with the data source, e.g. `sfdc_account_id`, to avoid ambiguity. 
+- An `id` or `name` value should always be prefixed by what it is identifying or naming, e.g. `account_id` and `account_name`. When joining to any data from a different source, it should also be prefixed with the data source, e.g. `sfdc_account_id`, to avoid ambiguity. 
 - All field names should be snake-cased. 
 - Boolean field namesshould start with `has_`, `is_`, or `does_`.
 
@@ -283,7 +283,7 @@ Since we don't have a linter, it is *our collective responsibility* to enforce t
 - CTEs should be formatted as follows:
 
 ``` sql
-WITH events AS (
+WITH events AS ( -- think of these select statements as your import statements.
 
   ...
 
@@ -293,7 +293,7 @@ WITH events AS (
 
 )
 
-SELECT * 
+SELECT * -- you should always aim to "select * from final" for your last model
 FROM filtered_events
 ```
 
@@ -310,6 +310,7 @@ FROM filtered_events
 - Be explicit when joining, e.g. use `LEFT JOIN` instead of `JOIN`. (Default joins are `INNER`)
 - **Never** use `USING` in joins. It will produce inaccurate results. 
 - Prefer `UNION ALL` to `UNION`.
+- Prefer `NULLIF` TO `NVL`. 
 - Consider performance. Understand the difference between `LIKE` vs `ILIKE`, `IS` vs `=`, and `NOT` vs `!` vs `<>`. Use appropriately.
 - Familiarize yourself with [the DRY Principal](https://docs.getdbt.com/docs/design-patterns). Leverage jinja and macros. If you type the same line twice, it needs to be maintained in two places. 
 - *DO NOT OPTIMIZE FOR A SMALLER NUMBER OF LINES OF CODE. NEWLINES ARE CHEAP. BRAIN TIME IS EXPENSIVE.*
