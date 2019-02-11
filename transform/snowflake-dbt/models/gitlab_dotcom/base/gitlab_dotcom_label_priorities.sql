@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.gitlab_dotcom.label_priorities
+	FROM {{ var("database") }}.gitlab_dotcom.label_priorities
 
 ), renamed AS (
 

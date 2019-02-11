@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.gitlab_dotcom.merge_requests_closing_issues
+	FROM {{ var("database") }}.gitlab_dotcom.merge_requests_closing_issues
 
 ), renamed AS (
 

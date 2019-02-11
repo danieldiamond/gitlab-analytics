@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT DISTINCT user_id, issue_id
-	FROM raw.gitlab_dotcom.issue_assignees
+	FROM {{ var("database") }}.gitlab_dotcom.issue_assignees
 
 ), renamed AS (
 

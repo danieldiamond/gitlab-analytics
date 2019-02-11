@@ -1,2 +1,2 @@
 SELECT *
-FROM raw.gcloud_postgres_stitch.version_version_checks
+FROM {{ var("database") }}.gcloud_postgres_stitch.version_version_checks

@@ -1,7 +1,7 @@
 with source as (
 
   select *
-  from RAW.GITTER.GITTER_CLIENT_ACCESS_EVENTS
+  from {{ var("database") }}.GITTER.GITTER_CLIENT_ACCESS_EVENTS
 
 ), renamed as (
 

@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.sheetload.headcount
+	FROM {{ var("database") }}.sheetload.headcount
 
 ), renamed AS (
 

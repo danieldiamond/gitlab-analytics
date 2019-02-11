@@ -1,6 +1,6 @@
 with base as (
 		SELECT *
-		FROM raw.gcloud_postgres_stitch.netsuite_accounting_periods
+		FROM {{ var("database") }}.gcloud_postgres_stitch.netsuite_accounting_periods
 
 ), renamed as (
 

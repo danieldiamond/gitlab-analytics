@@ -1,6 +1,6 @@
 with source as (
 	SELECT *
-	FROM raw.historical.hired_candidates 
+	FROM {{ var("database") }}.historical.hired_candidates 
 
 ), cleaned as (
 

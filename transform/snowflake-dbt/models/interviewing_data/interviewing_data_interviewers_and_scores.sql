@@ -1,7 +1,7 @@
 with source as (
 
 	SELECT *
-	FROM raw.historical.interviewers_and_scores 
+	FROM {{ var("database") }}.historical.interviewers_and_scores 
 
 ), renamed as (
 

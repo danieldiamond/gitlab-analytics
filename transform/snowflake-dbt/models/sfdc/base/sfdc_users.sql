@@ -1,2 +1,2 @@
 SELECT * 
-FROM raw.salesforce_stitch.user
+FROM {{ var("database") }}.salesforce_stitch.user

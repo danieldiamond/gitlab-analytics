@@ -3,7 +3,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.gitlab_dotcom.namespaces
+	FROM {{ var("database") }}.gitlab_dotcom.namespaces
 
 ), renamed AS (
 

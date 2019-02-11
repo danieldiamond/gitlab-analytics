@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.sheetload.sales_quota
+	FROM {{ var("database") }}.sheetload.sales_quota
 
 ), renamed AS (
 

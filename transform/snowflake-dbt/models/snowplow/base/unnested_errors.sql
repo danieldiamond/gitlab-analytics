@@ -13,7 +13,7 @@ SELECT
   JSONTEXT['lambdaArn']::string AS lambdaArn,
   JSONTEXT['rawData'::string] AS rawData,
   uploaded_at
-FROM RAW.SNOWPLOW.EVENTS
+FROM {{ var("database") }}.SNOWPLOW.EVENTS
 {% if is_incremental() %}
 WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
 {% endif %}

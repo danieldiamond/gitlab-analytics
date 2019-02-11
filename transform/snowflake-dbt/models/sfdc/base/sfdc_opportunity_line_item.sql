@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.salesforce_stitch.opportunitylineitem
+	FROM {{ var("database") }}.salesforce_stitch.opportunitylineitem
 
 ), renamed AS(
 

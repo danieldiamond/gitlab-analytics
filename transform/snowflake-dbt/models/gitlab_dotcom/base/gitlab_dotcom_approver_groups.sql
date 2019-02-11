@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.gitlab_dotcom.approver_groups
+	FROM {{ var("database") }}.gitlab_dotcom.approver_groups
 
 ), renamed AS (
 

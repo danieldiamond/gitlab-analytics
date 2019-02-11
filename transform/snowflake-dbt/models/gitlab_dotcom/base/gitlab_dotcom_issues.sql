@@ -5,7 +5,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.gitlab_dotcom.issues
+	FROM {{ var("database") }}.gitlab_dotcom.issues
 
 ),
 private_projects AS (

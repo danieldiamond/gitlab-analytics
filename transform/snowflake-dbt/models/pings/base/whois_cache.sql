@@ -1,2 +1,2 @@
 SELECT *
-FROM raw.gcloud_postgres_stitch.public_whois_cache
+FROM {{ var("database") }}.gcloud_postgres_stitch.public_whois_cache

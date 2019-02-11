@@ -6,7 +6,7 @@ WITH source AS (
                nullif(active_users_aws, '') :: float            as active_users_aws,
                nullif(active_users_gcp, '') :: float            as active_users_gcp,
                nullif(active_users_azure, '') :: float          as active_users_azure
-        FROM raw.sheetload.alliancesdashboard_actuals
+        FROM {{ var("database") }}.sheetload.alliancesdashboard_actuals
   )
 
 SELECT *

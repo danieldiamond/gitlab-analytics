@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.gitlab_dotcom.merge_request_diffs
+	FROM {{ var("database") }}.gitlab_dotcom.merge_request_diffs
 
 
 ), renamed AS (

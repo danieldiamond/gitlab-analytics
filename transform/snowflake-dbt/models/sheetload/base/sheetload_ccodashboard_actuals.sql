@@ -12,7 +12,7 @@ WITH source AS (
 				 nullif(candidates_per_vacancy, '') :: float    as candidates_per_vacancy,
 				 nullif(declined_candidate_score, '') :: float  as declined_candidate_score,
 				 nullif(vacancies_with_recruiting, '') :: float as vacancies_with_recruiting
-	FROM raw.sheetload.ccodashboard_actuals
+	FROM {{ var("database") }}.sheetload.ccodashboard_actuals
 )
 
 SELECT *

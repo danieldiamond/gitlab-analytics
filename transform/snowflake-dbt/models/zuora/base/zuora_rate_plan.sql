@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.zuora_stitch.rateplan
+	FROM {{ var("database") }}.zuora_stitch.rateplan
 
 ), renamed AS(
 

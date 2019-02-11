@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.sheetload.marketing_pipe_to_spend_headcount
+	FROM {{ var("database") }}.sheetload.marketing_pipe_to_spend_headcount
 
 ), renamed AS (
 

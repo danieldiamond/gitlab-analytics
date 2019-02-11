@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.gitlab_dotcom.namespace_statistics
+	FROM {{ var("database") }}.gitlab_dotcom.namespace_statistics
 
 ), renamed AS (
 

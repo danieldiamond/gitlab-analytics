@@ -5,7 +5,7 @@
 with base as (
 
     SELECT *
-    FROM raw.gcloud_postgres_stitch.netsuite_departments
+    FROM {{ var("database") }}.gcloud_postgres_stitch.netsuite_departments
 
 ), renamed as (
 

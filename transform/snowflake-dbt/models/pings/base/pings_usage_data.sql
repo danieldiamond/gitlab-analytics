@@ -1,7 +1,7 @@
 WITH source as (
 
     SELECT *
-    FROM raw.gcloud_postgres_stitch.version_usage_data
+    FROM {{ var("database") }}.gcloud_postgres_stitch.version_usage_data
 )
 
 SELECT *, parse_json(stats) as stats_used

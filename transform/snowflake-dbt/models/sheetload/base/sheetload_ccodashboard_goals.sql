@@ -11,7 +11,7 @@ WITH source AS (
 				 nullif(vacancies_with_recruiting, '') :: float as vacancies_with_recruiting,
 				 nullif(new_hire_avg_score, '') :: float        as new_hire_avg_score,
 				 nullif(turnover_ratio, '') :: float            as turnover_ratio
-	FROM raw.sheetload.ccodashboard_goals
+	FROM {{ var("database") }}.sheetload.ccodashboard_goals
 )
 
 SELECT *

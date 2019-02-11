@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.sheetload.sales_weekly_forecast
+	FROM {{ var("database") }}.sheetload.sales_weekly_forecast
 
 ), renamed AS (
 
