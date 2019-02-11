@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.sheetload.transposed
+	FROM {{ var("database") }}.sheetload.transposed
 
 ), renamed AS (
 

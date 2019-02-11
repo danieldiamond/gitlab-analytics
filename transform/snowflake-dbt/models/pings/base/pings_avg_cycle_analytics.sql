@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.version_db.avg_cycle_analytics
+	FROM {{ var("database") }}.version_db.avg_cycle_analytics
 
 ),
 

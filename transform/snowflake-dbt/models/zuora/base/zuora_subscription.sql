@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.zuora_stitch.subscription
+	FROM {{ var("database") }}.zuora_stitch.subscription
 
 ), renamed AS (
 

@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.salesforce_stitch.campaign
+	FROM {{ var("database") }}.salesforce_stitch.campaign
 
 ), renamed AS(
 

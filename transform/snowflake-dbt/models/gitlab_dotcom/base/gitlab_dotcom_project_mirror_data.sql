@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.gitlab_dotcom.project_mirror_data
+	FROM {{ var("database") }}.gitlab_dotcom.project_mirror_data
 
 
 ), renamed AS (

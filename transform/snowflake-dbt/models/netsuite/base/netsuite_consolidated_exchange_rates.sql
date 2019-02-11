@@ -1,6 +1,6 @@
 with base as (
 		SELECT *
-		FROM raw.gcloud_postgres_stitch.netsuite_consolidated_exchange_rates
+		FROM {{ var("database") }}.gcloud_postgres_stitch.netsuite_consolidated_exchange_rates
 
 ), renamed as (
 

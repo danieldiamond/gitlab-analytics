@@ -10,7 +10,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.zuora_stitch.rateplancharge
+	FROM {{ var("database") }}.zuora_stitch.rateplancharge
 
 ), renamed AS(
 

@@ -1,6 +1,6 @@
 WITH base AS (
     SELECT *
-    FROM raw.netsuite_stitch.netsuite_deleted
+    FROM {{ var("database") }}.netsuite_stitch.netsuite_deleted
 
 ), renamed AS (
 

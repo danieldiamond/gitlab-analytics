@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.gitlab_dotcom.epic_metrics
+	FROM {{ var("database") }}.gitlab_dotcom.epic_metrics
 
 ), renamed AS (
 

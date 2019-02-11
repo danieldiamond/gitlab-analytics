@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.sheetload.google_referrals
+	FROM {{ var("database") }}.sheetload.google_referrals
 
 ), renamed AS (
 

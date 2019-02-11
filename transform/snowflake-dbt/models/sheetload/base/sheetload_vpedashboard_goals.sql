@@ -9,7 +9,7 @@ WITH source AS (
 		  nullif(uptime_gitlab, '')::float as uptime_gitlab,
 		  nullif(performance_gitlab, '')::float as performance_gitlab,
 		  nullif(days_security_issue_fix, '')::float as days_security_issue_fix
-	FROM raw.sheetload.vpedashboard_goals
+	FROM {{ var("database") }}.sheetload.vpedashboard_goals
 )
 
 SELECT *

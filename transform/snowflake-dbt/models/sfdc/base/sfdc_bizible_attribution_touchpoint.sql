@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.salesforce_stitch.bizible2__bizible_attribution_touchpoint__c
+	FROM {{ var("database") }}.salesforce_stitch.bizible2__bizible_attribution_touchpoint__c
 
 ), renamed AS (
 

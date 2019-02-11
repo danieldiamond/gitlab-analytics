@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.sheetload.sfdc_agent_mapping
+	FROM {{ var("database") }}.sheetload.sfdc_agent_mapping
 
 ), renamed AS (
 

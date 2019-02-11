@@ -1,7 +1,7 @@
 WITH base AS (
   
     SELECT *
-    FROM raw.salesforce_stitch.opportunityhistory
+    FROM {{ var("database") }}.salesforce_stitch.opportunityhistory
 )
 
 SELECT  *,

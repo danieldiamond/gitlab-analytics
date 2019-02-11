@@ -140,7 +140,7 @@ SELECT
     nullif(JSONTEXT['v_etl']::string,'') AS v_etl,
     nullif(JSONTEXT['v_tracker']::string,'') AS v_tracker,
     uploaded_at
-FROM RAW.SNOWPLOW.EVENTS
+FROM {{ var("database") }}.SNOWPLOW.EVENTS
 WHERE JSONTEXT['app_id']::string IS NOT NULL
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'http://localhost:%'

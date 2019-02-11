@@ -11,7 +11,7 @@ WITH source AS (
 				 nullif(unique_hosts, '') :: float      as unique_hosts,
 				 nullif(active_users, '') :: float      as active_users,
 				 nullif(downloads, '') :: float         as downloads
-	FROM raw.sheetload.cmodashboard_actuals
+	FROM {{ var("database") }}.sheetload.cmodashboard_actuals
 )
 
 SELECT *

@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT DISTINCT user_id, project_id, access_level
-	FROM raw.gitlab_dotcom.project_authorizations
+	FROM {{ var("database") }}.gitlab_dotcom.project_authorizations
 
 ), renamed AS (
 

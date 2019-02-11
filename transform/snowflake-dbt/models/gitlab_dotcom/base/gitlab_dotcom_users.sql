@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.gitlab_dotcom.users
+	FROM {{ var("database") }}.gitlab_dotcom.users
 
 ), renamed AS (
 

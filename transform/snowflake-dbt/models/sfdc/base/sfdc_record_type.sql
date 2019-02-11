@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.salesforce_stitch.recordtype
+	FROM {{ var("database") }}.salesforce_stitch.recordtype
 
 ), renamed AS(
 

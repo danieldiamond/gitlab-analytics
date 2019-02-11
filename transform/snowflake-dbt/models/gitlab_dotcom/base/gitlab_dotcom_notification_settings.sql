@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.gitlab_dotcom.notification_settings
+	FROM {{ var("database") }}.gitlab_dotcom.notification_settings
 
 ), renamed AS (
 

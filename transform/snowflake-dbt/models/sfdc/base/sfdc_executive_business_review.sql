@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.salesforce_stitch.executive_business_review__c
+	FROM {{ var("database") }}.salesforce_stitch.executive_business_review__c
 
 ), renamed AS (
 

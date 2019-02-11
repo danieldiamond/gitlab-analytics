@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM raw.sheetload.iacv_monthly_goals
+	FROM {{ var("database") }}.sheetload.iacv_monthly_goals
 
 ), renamed AS (
 
