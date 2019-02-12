@@ -1,0 +1,8 @@
+idna==2.7
+mypy
+pandas==0.23.4
+psycopg2-binary==2.7.5
+singer-python==5.0.15
+snowflake-sqlalchemy==1.1.6
+target-stitch==1.8.1
+zeep

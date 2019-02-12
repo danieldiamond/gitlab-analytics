@@ -5,16 +5,15 @@ import datetime
 import netsuite.src.schema.currency as currency_schema
 from netsuite.src.soap_api.utils import fetch_attribute, merge_transform_results
 
+
 class Currency:
     schema = currency_schema
-    name = 'currency'
-    name_plural = 'currencies'
-
+    name = "currency"
+    name_plural = "currencies"
 
     def __init__(self, netsuite_soap_client):
         # The core soap client used to make all the requests
         self.client = netsuite_soap_client
-
 
     def extract(self):
         """
@@ -24,10 +23,9 @@ class Currency:
         """
         GetAllRecordType = self.client.core_types_namespace.GetAllRecordType
 
-        currency_record_type = GetAllRecordType('currency')
+        currency_record_type = GetAllRecordType("currency")
 
         return self.client.get_all(currency_record_type)
-
 
     def extract_incremental(self, start_time=None, end_time=None, searchResult=None):
         """
@@ -46,7 +44,6 @@ class Currency:
         else:
             # Search has finished
             return None
-
 
     def transform(self, records):
         """
@@ -71,8 +68,7 @@ class Currency:
 
         for record in records:
             flat_record = {
-                "internal_id": record['internalId'],
-
+                "internal_id": record["internalId"],
                 "imported_at": datetime.datetime.now().isoformat(),
             }
 
@@ -83,14 +79,18 @@ class Currency:
                 extraction_result = fetch_attribute(self, record, column_map)
 
                 # Add the attributes to this entity's record
-                flat_record.update( extraction_result['attributes'] )
+                flat_record.update(extraction_result["attributes"])
 
                 # Add the related_entities returned to the rest of the related_entities
-                merge_transform_results(related_entities, extraction_result['related_entities'])
+                merge_transform_results(
+                    related_entities, extraction_result["related_entities"]
+                )
 
             flat_records.append(flat_record)
 
         # Merge the Current entity's results with the related_entities and return the result
-        merge_transform_results(related_entities, [{'entity': Currency, 'data': flat_records}])
+        merge_transform_results(
+            related_entities, [{"entity": Currency, "data": flat_records}]
+        )
 
         return related_entities

@@ -5,22 +5,21 @@ import datetime
 import netsuite.src.schema.budget as budget_schema
 from netsuite.src.soap_api.utils import fetch_attribute, merge_transform_results
 
+
 class Budget:
     schema = budget_schema
-    name = 'budget'
-    name_plural = 'budgets'
-
+    name = "budget"
+    name_plural = "budgets"
 
     def __init__(self, netsuite_soap_client):
         # The core soap client used to make all the requests
         self.client = netsuite_soap_client
 
         self.financial_namespace = self.client.type_factory(
-                'urn:financial_{}.transactions.webservices.netsuite.com'.format(
-                    os.getenv("NETSUITE_ENDPOINT")
-                )
+            "urn:financial_{}.transactions.webservices.netsuite.com".format(
+                os.getenv("NETSUITE_ENDPOINT")
             )
-
+        )
 
     def extract(self):
         """
@@ -32,7 +31,6 @@ class Budget:
         budget_search = BudgetSearchAdvanced()
 
         return self.client.fetch_all_records_for_type(budget_search)
-
 
     def extract_incremental(self, start_time=None, end_time=None, searchResult=None):
         """
@@ -51,16 +49,17 @@ class Budget:
             budget_search = BudgetSearchAdvanced()
 
             return self.client.search_incremental(budget_search)
-        elif searchResult.status.isSuccess \
-          and searchResult.pageIndex is not None \
-          and searchResult.totalPages is not None \
-          and searchResult.pageIndex < searchResult.totalPages:
+        elif (
+            searchResult.status.isSuccess
+            and searchResult.pageIndex is not None
+            and searchResult.totalPages is not None
+            and searchResult.pageIndex < searchResult.totalPages
+        ):
             # There are more pages to be fetched
             return self.client.search_more(searchResult)
         else:
             # Search has finished
             return None
-
 
     def transform(self, records):
         """
@@ -85,8 +84,7 @@ class Budget:
 
         for record in records:
             flat_record = {
-                "internal_id": record['internalId'],
-
+                "internal_id": record["internalId"],
                 "imported_at": datetime.datetime.now().isoformat(),
             }
 
@@ -97,14 +95,18 @@ class Budget:
                 extraction_result = fetch_attribute(self, record, column_map)
 
                 # Add the attributes to this entity's record
-                flat_record.update( extraction_result['attributes'] )
+                flat_record.update(extraction_result["attributes"])
 
                 # Add the related_entities returned to the rest of the related_entities
-                merge_transform_results(related_entities, extraction_result['related_entities'])
+                merge_transform_results(
+                    related_entities, extraction_result["related_entities"]
+                )
 
             flat_records.append(flat_record)
 
         # Merge the Current entity's results with the related_entities and return the result
-        merge_transform_results(related_entities, [{'entity': Budget, 'data': flat_records}])
+        merge_transform_results(
+            related_entities, [{"entity": Budget, "data": flat_records}]
+        )
 
         return related_entities

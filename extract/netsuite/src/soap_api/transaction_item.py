@@ -5,6 +5,7 @@ import datetime
 import netsuite.src.schema.transaction_item as transaction_item_schema
 from netsuite.src.soap_api.utils import fetch_attribute
 
+
 class TransactionItem:
     """
     Support Enity Class for handling and storing TransactionItem Lists
@@ -18,9 +19,8 @@ class TransactionItem:
     """
 
     schema = transaction_item_schema
-    name = 'transaction_item'
-    name_plural = 'transaction_items'
-
+    name = "transaction_item"
+    name_plural = "transaction_items"
 
     def transform(self, records, parent_id):
         """
@@ -38,7 +38,7 @@ class TransactionItem:
 
         for record in records:
             flat_record = {
-                "unique_id": "{}.{}".format(parent_id, record['line']),
+                "unique_id": "{}.{}".format(parent_id, record["line"]),
                 "transaction_id": parent_id,
                 "imported_at": datetime.datetime.now().isoformat(),
             }
@@ -50,8 +50,8 @@ class TransactionItem:
 
                 # Only keep the attributes for Support Entities
                 # No nested attributes inside other nested attributes supported
-                flat_record.update( extraction_result['attributes'] )
+                flat_record.update(extraction_result["attributes"])
 
             flat_records.append(flat_record)
 
-        return [{'entity': TransactionItem, 'data': flat_records}]
+        return [{"entity": TransactionItem, "data": flat_records}]

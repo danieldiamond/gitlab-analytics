@@ -5,6 +5,7 @@ import datetime
 import netsuite.src.schema.expense as expense_schema
 from netsuite.src.soap_api.utils import fetch_attribute
 
+
 class Expense:
     """
     Support Enity Class for handling and storing Expense Lists
@@ -18,9 +19,8 @@ class Expense:
     """
 
     schema = expense_schema
-    name = 'expense'
-    name_plural = 'expenses'
-
+    name = "expense"
+    name_plural = "expenses"
 
     def transform(self, records, parent_id):
         """
@@ -38,7 +38,7 @@ class Expense:
 
         for record in records:
             flat_record = {
-                "unique_id": "{}.{}".format(parent_id, record['line']),
+                "unique_id": "{}.{}".format(parent_id, record["line"]),
                 "transaction_id": parent_id,
                 "imported_at": datetime.datetime.now().isoformat(),
             }
@@ -50,8 +50,8 @@ class Expense:
 
                 # Only keep the attributes for Support Entities
                 # No nested attributes inside other nested attributes supported
-                flat_record.update( extraction_result['attributes'] )
+                flat_record.update(extraction_result["attributes"])
 
             flat_records.append(flat_record)
 
-        return [{'entity': Expense, 'data': flat_records}]
+        return [{"entity": Expense, "data": flat_records}]
