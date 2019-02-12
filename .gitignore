@@ -16,3 +16,5 @@ gapi_keyfile.json
 gcp_credentials.json
 .pytest_cache
 .meltano/
+*.egg-info
+config.json

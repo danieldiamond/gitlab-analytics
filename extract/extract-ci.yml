@@ -3,6 +3,7 @@
 .job_template: &extract_definition
   image: registry.gitlab.com/gitlab-data/data-image:latest
   before_script:
+    - echo $STITCH_CONFIG > stitch_config.json
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
     - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
     - echo $SNOWFLAKE_DATABASE
@@ -64,24 +65,39 @@
   stage: extract
   <<: *extract_definition
   script:
-    - check_ci_cd_vars.py --file extract/netsuite/src/config/required_ci_cd_vars.yaml
-    - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite apply_schema"
-    - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite export --days 3"
-    - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite backlog --days 15"
+    - python extract/netsuite/src/ --schema netsuite export --days 1 | target-stitch -c stitch_config.json
+    - python extract/netsuite/src/ --schema netsuite backlog --days 15 | target-stitch -c stitch_config.json
 
 .netsuite_backlog: &netsuite_backlog
   stage: extract
   <<: *extract_definition
   script:
-    - check_ci_cd_vars.py --file extract/netsuite/src/config/required_ci_cd_vars.yaml
-    - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite backlog --days 60"
+    - python extract/netsuite/src/ --schema netsuite backlog --days 60 | target-stitch -c stitch_config.json
 
 .netsuite_currency_rate_backfill: &netsuite_currency_rate_backfill
   stage: extract
   <<: *extract_definition
   script:
-    - check_ci_cd_vars.py --file extract/netsuite/src/config/required_ci_cd_vars.yaml
-    - ci_helpers.py use_proxy "python3 extract/netsuite/src/ --schema netsuite backlog --backfill-entity currency_rate --days 1460"
+    - python extract/netsuite/src/ --schema netsuite backlog --backfill-entity currency_rate --days 1460 | target-stitch -c stitch_config.json
+
+.netsuite_extract_legacy: &netsuite_extract_legacy
+  stage: extract
+  <<: *extract_definition
+  script:
+    - ci_helpers.py use_proxy "python3 extract/netsuite_legacy/src/ --schema netsuite export --days 3"
+    - ci_helpers.py use_proxy "python3 extract/netsuite_legacy/src/ --schema netsuite backlog --days 15"
+
+.netsuite_backlog_legacy: &netsuite_backlog_legacy
+  stage: extract
+  <<: *extract_definition
+  script:
+    - ci_helpers.py use_proxy "python3 extract/netsuite_legacy/src/ --schema netsuite backlog --days 60"
+
+.netsuite_currency_rate_backfill_legacy: &netsuite_currency_rate_backfill_legacy
+  stage: extract
+  <<: *extract_definition
+  script:
+    - ci_helpers.py use_proxy "python3 extract/netsuite_legacy/src/ --schema netsuite backlog --backfill-entity currency_rate --days 1460"
 
 .pings_extract: &pings_extract
   stage: extract
@@ -202,6 +218,14 @@ gitlab_profiler:
 
 netsuite:
   <<: *netsuite_extract
+  only:
+    refs:
+      - master
+    variables:
+      - $NETSUITE_STITCH
+
+netsuite_legacy:
+  <<: *netsuite_extract_legacy
   only:
     refs:
       - master
@@ -328,6 +352,24 @@ netsuite_currency_rate_backfill_manual:
 
 netsuite_manual:
   <<: *netsuite_extract
+  only:
+    - branches
+  except:
+    - master
+  when: manual
+
+netsuite_backlog_legacy_manual:
+  stage: extract
+  <<: *netsuite_backlog_legacy
+  when: manual
+
+netsuite_currency_rate_backfill_legacy_manual:
+  stage: extract
+  <<: *netsuite_currency_rate_backfill_legacy
+  when: manual
+
+netsuite_legacy_manual:
+  <<: *netsuite_extract_legacy
   only:
     - branches
   except:

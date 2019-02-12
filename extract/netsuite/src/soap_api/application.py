@@ -5,6 +5,7 @@ import datetime
 import netsuite.src.schema.application as application_schema
 from netsuite.src.soap_api.utils import fetch_attribute
 
+
 class Application:
     """
     Support Enity Class for handling and storing Application Lists
@@ -18,9 +19,8 @@ class Application:
     """
 
     schema = application_schema
-    name = 'application'
-    name_plural = 'applications'
-
+    name = "application"
+    name_plural = "applications"
 
     def transform(self, records, parent_id):
         """
@@ -40,8 +40,7 @@ class Application:
             flat_record = {
                 # Unfortunately, line numbers always return as 0 for applications
                 # Generating a pretty unique key
-                "unique_id": "{}.{}.{}".format(parent_id, record['doc'], record['due']),
-
+                "unique_id": "{}.{}.{}".format(parent_id, record["doc"], record["due"]),
                 "transaction_id": parent_id,
                 "imported_at": datetime.datetime.now().isoformat(),
             }
@@ -53,8 +52,8 @@ class Application:
 
                 # Only keep the attributes for Support Entities
                 # No nested attributes inside other nested attributes supported
-                flat_record.update( extraction_result['attributes'] )
+                flat_record.update(extraction_result["attributes"])
 
             flat_records.append(flat_record)
 
-        return [{'entity': Application, 'data': flat_records}]
+        return [{"entity": Application, "data": flat_records}]

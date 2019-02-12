@@ -5,22 +5,21 @@ import datetime
 import netsuite.src.schema.transaction as transaction_schema
 from netsuite.src.soap_api.utils import fetch_attribute, merge_transform_results
 
+
 class Transaction:
     schema = transaction_schema
-    name = 'transaction'
-    name_plural = 'transactions'
-
+    name = "transaction"
+    name_plural = "transactions"
 
     def __init__(self, netsuite_soap_client):
         # The core soap client used to make all the requests
         self.client = netsuite_soap_client
 
         self.sales_transactions_namespace = self.client.type_factory(
-                'urn:sales_{}.transactions.webservices.netsuite.com'.format(
-                    os.getenv("NETSUITE_ENDPOINT")
-                )
+            "urn:sales_{}.transactions.webservices.netsuite.com".format(
+                os.getenv("NETSUITE_ENDPOINT")
             )
-
+        )
 
     def transaction_search_params(self, start_time=None, end_time=None):
         TransactionSearch = self.sales_transactions_namespace.TransactionSearchAdvanced
@@ -28,15 +27,15 @@ class Transaction:
         if start_time is not None and end_time is not None:
             return TransactionSearch(
                 criteria={
-                    'basic': {
-                        'lastModifiedDate': {
-                          'operator': 'within',
-                          'searchValue': start_time,
-                          'searchValue2': end_time,
+                    "basic": {
+                        "lastModifiedDate": {
+                            "operator": "within",
+                            "searchValue": start_time,
+                            "searchValue2": end_time,
                         },
-                        'type': {
-                          'operator': 'anyOf',
-                          'searchValue': self.schema.TRANSACTION_TYPES,
+                        "type": {
+                            "operator": "anyOf",
+                            "searchValue": self.schema.TRANSACTION_TYPES,
                         },
                     }
                 }
@@ -44,15 +43,14 @@ class Transaction:
         else:
             return TransactionSearch(
                 criteria={
-                    'basic': {
-                        'type': {
-                          'operator': 'anyOf',
-                          'searchValue': self.schema.TRANSACTION_TYPES,
-                        },
+                    "basic": {
+                        "type": {
+                            "operator": "anyOf",
+                            "searchValue": self.schema.TRANSACTION_TYPES,
+                        }
                     }
                 }
             )
-
 
     def extract(self):
         """
@@ -63,7 +61,6 @@ class Transaction:
         transaction_search = self.transaction_search_params()
 
         return self.client.fetch_all_records_for_type(transaction_search)
-
 
     def extract_incremental(self, start_time=None, end_time=None, searchResult=None):
         """
@@ -81,16 +78,17 @@ class Transaction:
             transaction_search = self.transaction_search_params(start_time, end_time)
 
             return self.client.search_incremental(transaction_search)
-        elif searchResult.status.isSuccess \
-          and searchResult.pageIndex is not None \
-          and searchResult.totalPages is not None \
-          and searchResult.pageIndex < searchResult.totalPages:
+        elif (
+            searchResult.status.isSuccess
+            and searchResult.pageIndex is not None
+            and searchResult.totalPages is not None
+            and searchResult.pageIndex < searchResult.totalPages
+        ):
             # There are more pages to be fetched
             return self.client.search_more(searchResult)
         else:
             # Search has finished
             return None
-
 
     def transform(self, records):
         """
@@ -115,9 +113,8 @@ class Transaction:
 
         for record in records:
             flat_record = {
-                "internal_id": record['internalId'],
+                "internal_id": record["internalId"],
                 "transaction_type": None,
-
                 "imported_at": datetime.datetime.now().isoformat(),
             }
 
@@ -128,18 +125,21 @@ class Transaction:
                 extraction_result = fetch_attribute(self, record, column_map)
 
                 # Add the attributes to this entity's record
-                flat_record.update( extraction_result['attributes'] )
+                flat_record.update(extraction_result["attributes"])
 
                 # Add the related_entities returned to the rest of the related_entities
-                merge_transform_results(related_entities, extraction_result['related_entities'])
+                merge_transform_results(
+                    related_entities, extraction_result["related_entities"]
+                )
 
             flat_records.append(flat_record)
 
         # Merge the Current entity's results with the related_entities and return the result
-        merge_transform_results(related_entities, [{'entity': Transaction, 'data': flat_records}])
+        merge_transform_results(
+            related_entities, [{"entity": Transaction, "data": flat_records}]
+        )
 
         return related_entities
-
 
     def extract_type(self, start_time=None, end_time=None, searchResult=None):
         """
@@ -153,50 +153,48 @@ class Transaction:
         # This is a special search operation that needs the returnSearchColumns
         #  set to true.
         # Update the settings only during this operation and set them back when you are done.
-        old_returnSearchColumns = self.client.search_preferences['returnSearchColumns']
-        self.client.search_preferences['returnSearchColumns'] = True
+        old_returnSearchColumns = self.client.search_preferences["returnSearchColumns"]
+        self.client.search_preferences["returnSearchColumns"] = True
 
         if searchResult is None:
             # New search - Set the TransactionSearchAdvanced params
-            TransactionSearch = self.sales_transactions_namespace.TransactionSearchAdvanced
+            TransactionSearch = (
+                self.sales_transactions_namespace.TransactionSearchAdvanced
+            )
 
             if start_time is not None and end_time is not None:
                 transaction_search = TransactionSearch(
-                    columns={
-                        'basic': {
-                          'internalId' : {},
-                          'type' : {},
+                    columns={"basic": {"internalId": {}, "type": {}}},
+                    criteria={
+                        "basic": {
+                            "lastModifiedDate": {
+                                "operator": "within",
+                                "searchValue": start_time,
+                                "searchValue2": end_time,
+                            },
+                            "type": {
+                                "operator": "anyOf",
+                                "searchValue": self.schema.TRANSACTION_TYPES,
+                            },
                         }
                     },
-
-                    criteria={
-                        'basic': {
-                            'lastModifiedDate': {
-                              'operator': 'within',
-                              'searchValue': start_time,
-                              'searchValue2': end_time,
-                            },
-                            'type': {
-                              'operator': 'anyOf',
-                              'searchValue': self.schema.TRANSACTION_TYPES,
-                            },
-                        }
-                    }
                 )
             else:
                 # Do not permit Extracting Types over all records
                 return None
 
             result = self.client.search_incremental(transaction_search)
-        elif searchResult.status.isSuccess \
-          and searchResult.pageIndex is not None \
-          and searchResult.totalPages is not None \
-          and searchResult.pageIndex < searchResult.totalPages:
+        elif (
+            searchResult.status.isSuccess
+            and searchResult.pageIndex is not None
+            and searchResult.totalPages is not None
+            and searchResult.pageIndex < searchResult.totalPages
+        ):
             # There are more pages to be fetched
             result = self.client.search_more(searchResult)
         else:
             # Search has finished
             result = None
 
-        self.client.search_preferences['returnSearchColumns'] = old_returnSearchColumns
+        self.client.search_preferences["returnSearchColumns"] = old_returnSearchColumns
         return result

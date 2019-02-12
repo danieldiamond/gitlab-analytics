@@ -1,12 +1,33 @@
-import os
-import logging
-import psycopg2
-import psycopg2.sql
 import datetime
+import logging
+import os
+import sys
 
-from elt.db import DB
+import pandas as pd
+from snowflake.sqlalchemy import URL as snowflake_URL
+from sqlalchemy import create_engine
+from sqlalchemy.engine.base import Engine
+from typing import Dict
 
-from netsuite.src.soap_api.transaction import Transaction
+SCHEMA = "TARGET_STITCH"
+TABLE = "NETSUITE_TRANSACTIONS"
+
+
+def snowflake_engine_factory(args: Dict[str, str]) -> Engine:
+    """
+    Create a database engine from a dictionary of database info.
+    """
+
+    conn_string = snowflake_URL(
+        user=args["SNOWFLAKE_LOAD_USER"],
+        password=args["SNOWFLAKE_PASSWORD"],
+        account=args["SNOWFLAKE_ACCOUNT"],
+        database=args["SNOWFLAKE_LOAD_DATABASE"],
+        warehouse=args["SNOWFLAKE_LOAD_WAREHOUSE"],
+        role=args["SNOWFLAKE_LOAD_ROLE"],
+    )
+
+    return create_engine(conn_string)
 
 
 def transaction_backlog(args):
@@ -31,7 +52,8 @@ def transaction_backlog(args):
 
     # Earliest last_modified_date for transactions in NetSuite
     # Used in order to stop the back filling job from going further back in time
-    earliest_date_to_check = os.getenv('NETSUITE_EARLIEST_DATE')
+    env = os.environ.copy()
+    earliest_date_to_check = env["NETSUITE_EARLIEST_DATE"]
 
     if args.days is None or int(args.days) <= 0:
         logging.info("This operation needs the --days option in order to run")
@@ -41,36 +63,30 @@ def transaction_backlog(args):
     days = datetime.timedelta(days=args.days)
 
     # Fetch the earliest last_modified_date stored in the Transaction Table
-    try:
-        schema = psycopg2.sql.Identifier(args.schema)
-        table = psycopg2.sql.Identifier(Transaction.schema.table_name(args))
+    schema = SCHEMA
+    table = TABLE
 
-        with DB.default.open() as db:
-            cur = db.cursor()
-            query = psycopg2.sql.SQL("""
-                    SELECT MIN(last_modified_date)
-                    FROM {0}.{1}
-            """).format(schema, table)
+    engine = snowflake_engine_factory(env)
+    query = (
+        f"SELECT MIN(last_modified_date) as last_modified_date FROM {schema}.{table}"
+    )
+    query_df = pd.read_sql(sql=query, con=engine)
 
-            cur.execute(query)
-            result = cur.fetchone()
+    [result] = query_df.values[0]
+    result = datetime.datetime.strptime(result, "%Y-%m-%dT%H:%M:%S%z")
 
-        if result is None or result[0] is None:
-            # No data yet fetched -
-            # Let the regular extraction run at least once
-            logging.info("No data fetched yet - aborting backlog")
-            return None
-
-        last_modified_date = result[0].date()
-
-        if last_modified_date.isoformat() <= earliest_date_to_check:
-            # We have fetched everything - No need to keep on making requests
-            return None
-        else:
-            end_time = last_modified_date + datetime.timedelta(days=1)
-            start_time = last_modified_date - days
-            return (start_time, end_time)
-    except psycopg2.Error as err:
-        logging.info("No schema created yet - aborting backlog")
+    if result is None:
+        # No data yet fetched -
+        # Let the regular extraction run at least once
+        logging.info("No data fetched yet - aborting backlog")
         return None
 
+    last_modified_date = result.date()
+
+    if last_modified_date.isoformat() <= earliest_date_to_check:
+        # We have fetched everything - No need to keep on making requests
+        return None
+    else:
+        end_time = last_modified_date + datetime.timedelta(days=1)
+        start_time = last_modified_date - days
+        return (start_time, end_time)

@@ -5,27 +5,27 @@ import datetime
 import netsuite.src.schema.consolidated_exchange_rate as consolidated_exchange_rate_schema
 from netsuite.src.soap_api.utils import fetch_attribute, merge_transform_results
 
+
 class ConsolidatedExchangeRate:
     schema = consolidated_exchange_rate_schema
-    name = 'consolidated_exchange_rate'
-    name_plural = 'consolidated_exchange_rates'
-
+    name = "consolidated_exchange_rate"
+    name_plural = "consolidated_exchange_rates"
 
     def __init__(self, netsuite_soap_client):
         # The core soap client used to make all the requests
         self.client = netsuite_soap_client
 
         self.accounting_namespace = self.client.type_factory(
-                'urn:accounting_{}.lists.webservices.netsuite.com'.format(
-                    os.getenv("NETSUITE_ENDPOINT")
-                )
+            "urn:accounting_{}.lists.webservices.netsuite.com".format(
+                os.getenv("NETSUITE_ENDPOINT")
             )
-
+        )
 
     def search_params(self, start_time=None, end_time=None):
-        ConsolidatedExchangeRateSearch = self.accounting_namespace.ConsolidatedExchangeRateSearch
+        ConsolidatedExchangeRateSearch = (
+            self.accounting_namespace.ConsolidatedExchangeRateSearch
+        )
         return ConsolidatedExchangeRateSearch()
-
 
     def extract(self):
         """
@@ -36,7 +36,6 @@ class ConsolidatedExchangeRate:
         consolidated_exchange_rate_search = self.search_params()
 
         return self.client.fetch_all_records_for_type(consolidated_exchange_rate_search)
-
 
     def extract_incremental(self, start_time=None, end_time=None, searchResult=None):
         """
@@ -54,16 +53,17 @@ class ConsolidatedExchangeRate:
             consolidated_exchange_rate_search = self.search_params(start_time, end_time)
 
             return self.client.search_incremental(consolidated_exchange_rate_search)
-        elif searchResult.status.isSuccess \
-          and searchResult.pageIndex is not None \
-          and searchResult.totalPages is not None \
-          and searchResult.pageIndex < searchResult.totalPages:
+        elif (
+            searchResult.status.isSuccess
+            and searchResult.pageIndex is not None
+            and searchResult.totalPages is not None
+            and searchResult.pageIndex < searchResult.totalPages
+        ):
             # There are more pages to be fetched
             return self.client.search_more(searchResult)
         else:
             # Search has finished
             return None
-
 
     def transform(self, records):
         """
@@ -88,8 +88,7 @@ class ConsolidatedExchangeRate:
 
         for record in records:
             flat_record = {
-                "internal_id": record['internalId'],
-
+                "internal_id": record["internalId"],
                 "imported_at": datetime.datetime.now().isoformat(),
             }
 
@@ -100,14 +99,19 @@ class ConsolidatedExchangeRate:
                 extraction_result = fetch_attribute(self, record, column_map)
 
                 # Add the attributes to this entity's record
-                flat_record.update( extraction_result['attributes'] )
+                flat_record.update(extraction_result["attributes"])
 
                 # Add the related_entities returned to the rest of the related_entities
-                merge_transform_results(related_entities, extraction_result['related_entities'])
+                merge_transform_results(
+                    related_entities, extraction_result["related_entities"]
+                )
 
             flat_records.append(flat_record)
 
         # Merge the Current entity's results with the related_entities and return the result
-        merge_transform_results(related_entities, [{'entity': ConsolidatedExchangeRate, 'data': flat_records}])
+        merge_transform_results(
+            related_entities,
+            [{"entity": ConsolidatedExchangeRate, "data": flat_records}],
+        )
 
         return related_entities
