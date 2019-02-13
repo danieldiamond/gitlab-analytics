@@ -22,4 +22,3 @@ LEFT JOIN base as other
 ON a.zuora_renewal_subscription_name_slugify = other.subscription_name_slugify
 WHERE other.subscription_name_slugify IS NOT NULL
 AND (age_start_dates < 0 OR age_end_date_to_start_date > 366)
-LIMIT 0
