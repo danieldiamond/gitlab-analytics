@@ -3,10 +3,10 @@
                   'parent_account_id'] %}
 
 with base as (
-    SELECT subscription_slug_for_counting as zuora_subscription_id,
+    SELECT oldest_subscription_in_cohort as zuora_subscription_id,
             ultimate_parent_account_id as parent_account_id,
           {{ dbt_utils.star(from=ref('mrr_totals_levelled'), 
-            except=["subscription_slug_for_counting", "ultimate_parent_account_id"]) }}
+            except=["oldest_subscription_in_cohort", "ultimate_parent_account_id"]) }}
     FROM {{ref('mrr_totals_levelled')}}
 
 {% for level in levels -%} 

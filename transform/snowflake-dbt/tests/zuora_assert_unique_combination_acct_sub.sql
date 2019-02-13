@@ -6,7 +6,7 @@ WITH combo AS (
       cohort_month,
       subscription_name,
       subscription_name_slugify,
-      subscription_slug_for_counting
+      oldest_subscription_in_cohort
     FROM {{ ref('zuora_base_mrr') }}
     GROUP BY 1, 2, 3, 4, 5
 )

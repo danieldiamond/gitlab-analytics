@@ -51,7 +51,7 @@ with mrr_totals_levelled AS (
 ), joined as (
 
       SELECT finals.subscription_name as zuora_subscription_name,
-             finals.subscription_slug_for_counting as zuora_subscription_id,
+             finals.oldest_subscription_in_cohort as zuora_subscription_id,
              mapping.sfdc_account_id as salesforce_account_id,
              dateadd('year', 1, finals.mrr_month) AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
              finals.mrr as original_mrr,

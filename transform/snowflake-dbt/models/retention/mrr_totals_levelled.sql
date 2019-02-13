@@ -43,7 +43,7 @@ with zuora_mrr_totals as (
            replace_sfdc_account_id_with_master_record_id.account_number as zuora_account_number,
            replace_sfdc_account_id_with_master_record_id.subscription_name_slugify,
            replace_sfdc_account_id_with_master_record_id.subscription_name,
-           replace_sfdc_account_id_with_master_record_id.subscription_slug_for_counting,
+           replace_sfdc_account_id_with_master_record_id.oldest_subscription_in_cohort,
            replace_sfdc_account_id_with_master_record_id.lineage,
            replace_sfdc_account_id_with_master_record_id.mrr_month,
            replace_sfdc_account_id_with_master_record_id.zuora_subscription_cohort_month,

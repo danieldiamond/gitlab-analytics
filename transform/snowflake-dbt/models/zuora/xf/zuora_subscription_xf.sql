@@ -14,7 +14,7 @@ with zuora_subscription_intermediate as (
 
 SELECT zuora_subscription_intermediate.*, 
         zuora_subscription_lineage.lineage,
-        coalesce(zuora_subscription_parentage.ultimate_parent_sub,zuora_subscription_intermediate.subscription_name_slugify) AS subscription_slug_for_counting,
+        coalesce(zuora_subscription_parentage.ultimate_parent_sub,zuora_subscription_intermediate.subscription_name_slugify) AS oldest_subscription_in_cohort,
         coalesce(zuora_subscription_parentage.cohort_month, zuora_subscription_intermediate.subscription_month) as cohort_month,
         coalesce(zuora_subscription_parentage.cohort_quarter,zuora_subscription_intermediate.subscription_quarter) as cohort_quarter,
         coalesce(zuora_subscription_parentage.cohort_year, zuora_subscription_intermediate.subscription_year) as cohort_year

@@ -62,7 +62,7 @@ models:
             description: '{{ doc("zuora_mrr_totals_col_subscription_name") }}'
             tests:
                 - not_null
-          - name: subscription_slug_for_counting
+          - name: oldest_subscription_in_cohort
             description: '{{ doc("zuora_mrr_totals_col_subscription_slug_for_counting") }}'
             tests:
                 - not_null

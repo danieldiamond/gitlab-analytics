@@ -44,7 +44,7 @@ with flattening as (
 SELECT
   zuora_subs_fixed.*,
   -- Dates
-  date_trunc('month', zuora_subs_fixed.subscription_start_date) :: DATE                 AS subscription_start_month,
+  date_trunc('month', zuora_subs_fixed.subscription_start_date) :: DATE AS subscription_start_month,
   date_trunc('month', dateadd('day', -1, zuora_subs_fixed.subscription_end_date))::DATE AS subscription_end_month,
   date_trunc('month', zuora_subs_fixed.contract_effective_date)::date AS subscription_month,
   date_trunc('quarter', zuora_subs_fixed.contract_effective_date)::date AS subscription_quarter,
