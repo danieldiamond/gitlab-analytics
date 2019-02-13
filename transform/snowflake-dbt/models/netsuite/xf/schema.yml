@@ -118,3 +118,6 @@ models:
             -   name: transaction_date
                 tests:
                     - not_null
+            -   name: period_date
+                tests:
+                    - not_null
