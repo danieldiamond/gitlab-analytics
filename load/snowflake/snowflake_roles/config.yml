@@ -169,7 +169,6 @@ roles:
         owns:
             schemas:
                 - analytics.acarella_scratch
-                - analytics.acarella_scratch_meta
 
     - amrvaljevich:
         warehouses:
@@ -185,7 +184,6 @@ roles:
         owns:
             schemas:
                 - analytics.dtang_scratch
-                - analytics.dtang_scratch_meta
 
     - eburke:
         warehouses:
@@ -201,7 +199,6 @@ roles:
         owns:
             schemas:
                 - analytics.eeastwood_scratch
-                - analytics.eeastwood_scratch_meta
         privileges:
             databases:
                 read:
@@ -234,7 +231,6 @@ roles:
         owns:
             schemas:
                 - analytics.iroussos_scratch
-                - analytics.iroussos_scratch_meta
 
     - jsalazar:
         warehouses:
@@ -242,7 +238,6 @@ roles:
         owns:
             schemas:
                 - analytics.jsalazar_scratch
-                - analytics.jsalazar_scratch_meta
     
     - jurbanc:
         warehouses:
@@ -250,7 +245,6 @@ roles:
         owns:
             schemas:
                 - analytics.jurbanc_scratch
-                - analytics.jurbanc_scratch_meta
 
     - ssichak:
         warehouses:
@@ -258,7 +252,6 @@ roles:
         owns:
             schemas:
                 - analytics.ssichak_scratch
-                - analytics.ssichak_scratch_meta
 
     - target_snowflake:
         warehouses:
@@ -273,7 +266,6 @@ roles:
         owns:
             schemas:
                 - analytics.tlapiana_scratch
-                - analytics.tlapiana_scratch_meta
 
     - tmurphy:
         warehouses:
@@ -289,7 +281,6 @@ roles:
         owns:
             schemas:
                 - analytics.tszuromi_scratch
-                - analytics.tszuromi_scratch_meta
         privileges:
             databases:
                 read:
@@ -310,7 +301,6 @@ roles:
         owns:
             schemas:
                 - analytics.wwright_scratch
-                - analytics.wwright_scratch_meta
 
 # Users
 users:
