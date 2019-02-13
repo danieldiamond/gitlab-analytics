@@ -1,70 +1,51 @@
-{% set next_in_lineage = "||ifnull(nullif((','||nvl(b.zuora_renewal_subscription_name_slugify, '')), ','), ''))" %}
+WITH RECURSIVE zuora_sub (base_slug, renewal_slug, parent_slug, lineage, children_count) AS (
 
-with source as (
+	SELECT
+    subscription_name_slugify                                                        AS base_slug,
+    zuora_renewal_subscription_name_slugify                                          AS renewal_slug,
+    subscription_name_slugify                                                        AS parent_slug,
+    IFF(zuora_renewal_subscription_name_slugify IS NULL,
+        subscription_name_slugify,
+        subscription_name_slugify || ',' || zuora_renewal_subscription_name_slugify) AS lineage,
+    2                                                                                AS children_count
+  FROM {{ref('zuora_subscription_intermediate')}}
 
-	SELECT subscription_name,
-			subscription_name_slugify,
-			zuora_renewal_subscription_name_slugify as zuora_renewal_subscription_name_slugify
-	FROM {{ref('zuora_subscription_intermediate')}} 
+  UNION ALL
 
-), level_1 as (
+  SELECT
+    iter.subscription_name_slugify                                                       AS base_slug,
+    iter.zuora_renewal_subscription_name_slugify                                         AS renewal_slug,
+    anchor.parent_slug                                                                     AS parent_slug,
+    anchor.lineage || ',' || iter.zuora_renewal_subscription_name_slugify                   AS lineage,
+    iff(iter.zuora_renewal_subscription_name_slugify IS NULL, 0, anchor.children_count + 1) AS children_count
+  FROM zuora_sub anchor
+    JOIN {{ref('zuora_subscription_intermediate')}} iter
+      ON anchor.renewal_slug = iter.subscription_name_slugify
+),
 
-	SELECT a.subscription_name_slugify, a.zuora_renewal_subscription_name_slugify,
-	       b.zuora_renewal_subscription_name_slugify as two,
-	       (a.subscription_name_slugify||ifnull(nullif(','|| nvl((a.zuora_renewal_subscription_name_slugify {{ next_in_lineage }} , ''), ','), '')) as lineage
-	FROM source a
-	LEFT JOIN source as b
-	ON a.zuora_renewal_subscription_name_slugify = b.subscription_name_slugify
+pull_full_lineage AS (
 
-), level_2 as (
+  SELECT
+	parent_slug,
+	base_slug,
+	renewal_slug,
+	first_value(lineage)
+		OVER (
+		  PARTITION BY parent_slug
+		  ORDER BY children_count DESC
+			) 			AS lineage,
+	children_count
+  FROM zuora_sub
 
-	SELECT a.subscription_name_slugify, a.zuora_renewal_subscription_name_slugify,
-	       b.zuora_renewal_subscription_name_slugify as two,
-	      (a.lineage {{ next_in_lineage }} as lineage
-	FROM level_1 as a
-	LEFT JOIN source as b
-	ON a.two = b.subscription_name_slugify
+),
 
-), level_3 as (
+deduped AS (
 
-	SELECT a.subscription_name_slugify, a.zuora_renewal_subscription_name_slugify,
-	       b.zuora_renewal_subscription_name_slugify as two,
-	      (a.lineage {{ next_in_lineage }} as lineage
-	FROM level_2 as a
-	LEFT JOIN source as b
-	ON a.two = b.subscription_name_slugify
-
-), level_4 as (
-
-	SELECT a.subscription_name_slugify, a.zuora_renewal_subscription_name_slugify,
-	       b.zuora_renewal_subscription_name_slugify as two,
-	      (a.lineage {{ next_in_lineage }} as lineage
-	FROM level_3 as a
-	LEFT JOIN source as b
-	ON a.two = b.subscription_name_slugify
-
-), level_5 as (
-
-	SELECT a.subscription_name_slugify, a.zuora_renewal_subscription_name_slugify,
-	       b.zuora_renewal_subscription_name_slugify as two,
-	      (a.lineage {{ next_in_lineage }} as lineage
-	FROM level_4 as a
-	LEFT JOIN source as b
-	ON a.two = b.subscription_name_slugify
-
-), level_6 as (
-
-	SELECT a.subscription_name_slugify,  -- note that the final depth here only produces two columns!
-			(a.lineage {{ next_in_lineage }} as lineage
-	FROM level_5 as a
-	LEFT JOIN source as b
-	ON a.two = b.subscription_name_slugify
-
-), deduped as (
-
-	SELECT *
-	FROM level_6
-	GROUP BY 1, 2
+    SELECT
+      parent_slug AS subscription_name_slugify,
+      lineage
+    FROM pull_full_lineage
+    GROUP BY 1, 2
 
 )
 

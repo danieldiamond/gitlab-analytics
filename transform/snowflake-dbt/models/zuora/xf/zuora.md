@@ -75,6 +75,12 @@ The subscription_end_month calculation is taken as the previous month for a few 
 
 Connects a subscription to all of the subscriptions in its lineage. To understand more about a subscription's relationship to others, please see [the handbook](https://about.gitlab.com/handbook/finance/zuora-sub-data/)
 
+This model uses the recursive CTE function generate the lineage. The anchor query pulls from the subscription intermediate table and sets up the initial lineage. If there is a renewal subscription then it will continue to the next part of the CTE, but if there are no renewals then the recursive clause will return no additional results.
+
+The recursive clause joins the renewal slug from the anchor clause to the subscription slug of the next iteration of the recursive clause. We're keeping track of the parent slug as the "root" for the initial recursion (this is the "ultimate parent" of the lineage). Within the recursive clause we're checking if there are any further renewals before setting the child count.
+
+The next CTE takes the full union of the results and finds the longest lineage for every parent slug based on the children_count. This CTE is overexpressive and could most likely be simplified with the deduplication CTE. The final dedupe CTE returns a single value for every root and it's full downstream lineage.
+
 {% enddocs %}
 
 {% docs zuora_subscription_parentage_start %}
