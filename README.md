@@ -261,6 +261,7 @@ Since we don't have a linter, it is *our collective responsibility* to enforce t
 ##### Base Models
 
 - Only base models should select from source tables.
+- Base models should not select from the `raw` database directly. Instead, they should reference `{{ var("database") }}`.
 - Only a single base model should be able to select from a given source table.
 - Base models should be placed in a `base/` directory.
 - Base models should perform all necessary data type casting, using the `::` sytax when casting (You accomplish the same thing with fewer characters, and it presents as cleaner).
