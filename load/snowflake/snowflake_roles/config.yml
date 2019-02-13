@@ -178,6 +178,14 @@ roles:
                 - analytics.amrvaljevich_scratch
                 - analytics.amrvaljevich_scratch_meta
 
+    - crichards:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.crichards_scratch
+                - analytics.crichards_scratch_meta
+
     - dtang:
         warehouses:
             - reporting
@@ -317,6 +325,13 @@ users:
             - sysadmin
             - transformer
             - amrvaljevich        
+
+    - crichards:
+        can_login: yes
+        member_of:
+            - sysadmin
+            - transformer
+            - crichards 
 
     - dtang:
         can_login: yes
