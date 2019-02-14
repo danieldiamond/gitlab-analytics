@@ -124,6 +124,15 @@ models:
                 - not_null
                 - accepted_values:
                         values: ['Active','Cancelled']
+    - name: zuora_subscription_pre_lineage
+      description:  '{{doc("zuora_subscription_pre_lineage")}}'
+      columns:
+          - name: subscription_name_slugify
+            description: '{{ doc("zuora_mrr_totals_col_subscription_name_slugify") }}'
+            tests:
+              - not_null
+          - name: lineage
+            description: "Primary subscription and its immediate children, separated by commas."
     - name: zuora_subscription_lineage
       description:  '{{doc("zuora_subscription_lineage")}}'
       columns: 

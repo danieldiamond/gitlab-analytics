@@ -1,13 +1,12 @@
--- this test checks for renewal dates to be older than subscription start dates. 
-
--- I've commented this test out because it FAILS. 
+-- this test checks for renewal dates to be older than subscription start dates.
 
 with base as (
     SELECT 	subscription_name_slugify,
-    		zuora_renewal_subscription_name_slugify,
+    		renewal.value::string AS zuora_renewal_subscription_name_slugify,
     		subscription_start_date,
     		subscription_end_date
-		FROM {{ref('zuora_subscription')}}
+		FROM {{ref('zuora_subscription')}},
+			 LATERAL flatten(input => zuora_renewal_subscription_name_slugify, OUTER => TRUE) renewal
     WHERE subscription_status IN ('Active', 'Cancelled')
     )
 SELECT 	a.subscription_name_slugify,
