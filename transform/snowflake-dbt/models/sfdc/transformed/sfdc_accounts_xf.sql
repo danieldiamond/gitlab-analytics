@@ -13,6 +13,11 @@ with sfdc_account as (
      SELECT *
      FROM {{ ref('sfdc_record_type') }}     
 
+), sfdc_account_deal_size_segmentation as (
+
+    SELECT *
+    FROM {{ref('sfdc_account_deal_size_segmentation')}}
+
 ), parent_account as (
 
      SELECT account_name as ultimate_parent_account_name,
@@ -24,29 +29,29 @@ with sfdc_account as (
 
     SELECT
         sfdc_account.*,
-        sfdc_users.name            as technical_account_manager,
+        sfdc_users.name as technical_account_manager,
     		parent_account.ultimate_parent_account_name, 
     		parent_account.ultimate_parent_account_segment,
         sfdc_record_type.record_type_name,
         sfdc_record_type.business_process_id,
         sfdc_record_type.record_type_label,
         sfdc_record_type.record_type_description,
-        sfdc_record_type.record_type_modifying_object_type
+        sfdc_record_type.record_type_modifying_object_type,
+        sfdc_account_deal_size_segmentation.deal_size,
+        CASE WHEN ultimate_parent_account_segment IN('Large', 'Strategic')
+                OR account_segment IN('Large', 'Strategic') THEN TRUE
+           ELSE FALSE END AS is_large_and_up
     FROM sfdc_account
 	LEFT JOIN parent_account
     ON sfdc_account.ultimate_parent_account_id = parent_account.ultimate_parent_account_id
-  LEFT OUTER JOIN sfdc_users
+    LEFT OUTER JOIN sfdc_users
     ON sfdc_account.technical_account_manager_id = sfdc_users.id
-  LEFT JOIN sfdc_record_type
+    LEFT JOIN sfdc_record_type
     ON sfdc_account.record_type_id = sfdc_record_type.record_type_id
+    LEFT JOIN sfdc_account_deal_size_segmentation
+    ON sfdc_account.account_id = sfdc_account_deal_size_segmentation.account_id
 
 )
 
-SELECT joined.*,
-      CASE
-           WHEN ultimate_parent_account_segment IN('Large', 'Strategic')
-                OR account_segment IN('Large', 'Strategic') THEN TRUE
-           ELSE FALSE
-       END AS is_large_and_up
-       
+SELECT joined.*
 FROM joined

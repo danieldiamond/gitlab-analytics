@@ -109,7 +109,15 @@ sfdc_sales_accepted_opportunity:
         not_null:
             - opportunity_segment
             - opportunity_name
-
+sfdc_account_deal_size_segmentation:
+    constraints:
+        not_null:
+            - account_id
+            - close_date
+            - deal_size
+        unique:
+            - account_id
+            
 sfdc_accounts_xf:
     constraints:
         not_null:
