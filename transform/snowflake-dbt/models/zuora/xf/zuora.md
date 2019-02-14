@@ -44,21 +44,6 @@ This model unions the base charges and the trueup charges together. For each mon
 {% enddocs %}
 
 
-{% docs zuora_subscription %}
-
-This table is the base table for Zuora subscriptions.
-
-It removes all subscriptions that are marked as "Exclude from Analysis". It also creates a slug of the subscription name and the renewal subscription name (if it exists) using the user-defined function (UDF) "zuora_slugify".
-
-There is a test specifically to validate this.
-
-#### Zuora Slugify UDF
-This function is used to simplify Zuora subscriptions names. Subscription names, by default, are unique. However, they can have basically any character they want in them, including arbitrary amounts of whitespace. The original idea was to truly slugify the name but that wasn't unique enough across subscriptions. We did have an issue where links to renewal subscriptions were not being copied correctly. Creating a slug that simply replaces most characters with hyphens maintained uniqueness but made it easier to reason about how the data was incorrectly formatted. It in the end it may not be wholly necessary, but from a programming perspective it is a bit easier to reason about.
-
-{% enddocs %}
-
-
-
 {% docs zuora_subscription_intermediate %}
 
 The `zuora_subs` CTE de-duplicates Zuora subscriptions. Zuora keeps track of different versions of a subscription via the field "version". However, it's possible for there to be multiple version of a single Zuora version. The data with account_id = '2c92a0fc55a0dc530155c01a026806bd' in the base zuora_subscription table exemplifies this. There are multiple rows with a version of 4. The CTE adds a row number based on the updated_date where a value of 1 means it's the newest version of that version. It also filters subscriptions down to those that have either "Active" or "Cancelled" statuses since those are the only ones that we care about.
@@ -69,6 +54,11 @@ The final select statement creates a new field specifically for counting subscri
 
 The subscription_end_month calculation is taken as the previous month for a few reasons. Technically, on Zuora's side, the effective end date stored in the database the day _after_ the subscription ended. (More info here https://community.zuora.com/t5/Subscriptions/How-to-get-ALL-the-products-per-active-subscription/td-p/2224) By subtracting the month, we're guaranteed to get the correct month for an end date. If in the DB it ends 7/31, then in reality that is the day before and is therefore not in effect for the month of July (because it has to be in effect on the last day to be in force for that month). If the end date is 8/1, then it is in effect for the month of July and we're making the proper calculation. 
 
+{% enddocs %}
+
+{% docs zuora_subscription_pre_lineage %}
+
+This model flattens the intermediate model based on the array in the renewal slug field set in the base subscription model. Lineage is initially set here as the values in the parent slug and any renewal slugs. The OUTER => TRUE setting is like doing an outer join and will return rows even if the renewal slug is null.  
 {% enddocs %}
 
 {% docs zuora_subscription_lineage %}

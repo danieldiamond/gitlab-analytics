@@ -1,25 +1,25 @@
 WITH RECURSIVE zuora_sub (base_slug, renewal_slug, parent_slug, lineage, children_count) AS (
 
 	SELECT
-    subscription_name_slugify                                                        AS base_slug,
-    zuora_renewal_subscription_name_slugify                                          AS renewal_slug,
-    subscription_name_slugify                                                        AS parent_slug,
-    IFF(zuora_renewal_subscription_name_slugify IS NULL,
-        subscription_name_slugify,
-        subscription_name_slugify || ',' || zuora_renewal_subscription_name_slugify) AS lineage,
-    2                                                                                AS children_count
-  FROM {{ref('zuora_subscription_intermediate')}}
+    subscription_name_slugify              	AS base_slug,
+    zuora_renewal_subscription_name_slugify	AS renewal_slug,
+    subscription_name_slugify              	AS parent_slug,
+    lineage 								AS lineage,
+    2     									AS children_count
+  FROM {{ref('zuora_subscription_pre_lineage')}}
 
   UNION ALL
 
   SELECT
-    iter.subscription_name_slugify                                                       AS base_slug,
-    iter.zuora_renewal_subscription_name_slugify                                         AS renewal_slug,
-    anchor.parent_slug                                                                     AS parent_slug,
-    anchor.lineage || ',' || iter.zuora_renewal_subscription_name_slugify                   AS lineage,
-    iff(iter.zuora_renewal_subscription_name_slugify IS NULL, 0, anchor.children_count + 1) AS children_count
+    iter.subscription_name_slugify											AS base_slug,
+    iter.zuora_renewal_subscription_name_slugify							AS renewal_slug,
+    anchor.parent_slug														AS parent_slug,
+    anchor.lineage || ',' || iter.zuora_renewal_subscription_name_slugify 	AS lineage,
+    iff(iter.zuora_renewal_subscription_name_slugify IS NULL,
+		0,
+		anchor.children_count + 1) 											AS children_count
   FROM zuora_sub anchor
-    JOIN {{ref('zuora_subscription_intermediate')}} iter
+    JOIN {{ref('zuora_subscription_pre_lineage')}} iter
       ON anchor.renewal_slug = iter.subscription_name_slugify
 ),
 

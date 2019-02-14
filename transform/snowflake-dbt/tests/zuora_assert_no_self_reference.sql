@@ -2,5 +2,6 @@
 
 SELECT
     *
-FROM {{ ref('zuora_subscription_xf') }}
-WHERE zuora_renewal_subscription_name_slugify = subscription_name_slugify
+FROM {{ ref('zuora_subscription_xf') }},
+    LATERAL flatten(input => zuora_renewal_subscription_name_slugify, OUTER => TRUE) renewal
+WHERE renewal.value :: STRING = subscription_name_slugify

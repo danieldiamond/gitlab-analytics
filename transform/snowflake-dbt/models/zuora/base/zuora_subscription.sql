@@ -57,7 +57,9 @@ WITH source AS (
 		--renewal info
 		renewalsetting                      		as renewal_setting,
 		renewal_subscription__c__c          		as zuora_renewal_subscription_name,
-	  	nullif({{zuora_slugify("renewal_subscription__c__c")}}, '')	as zuora_renewal_subscription_name_slugify,
+
+		split(nullif({{zuora_slugify("renewal_subscription__c__c")}}, ''), '|')
+													as zuora_renewal_subscription_name_slugify,
 		renewalterm                         		as renewal_term,
 		renewaltermperiodtype               		as renewal_term_period_type,
 		exclude_from_renewal_report__c__c   		as exclude_from_renewal_report,
