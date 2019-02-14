@@ -76,19 +76,7 @@ WITH source AS (
         upside_swing_deal_iacv__c   AS upside_swing_deal_iacv,
         --swing_deal__c 							as is_swing_deal,
         swing_deal__c               AS is_swing_deal,
-        CASE WHEN
-          incremental_acv_2__c :: DECIMAL < 5000
-          THEN '1 - Small (<5k)'
-        WHEN incremental_acv_2__c :: DECIMAL >= 5000 AND incremental_acv_2__c :: DECIMAL < 25000
-          THEN '2 - Medium (5k - 25k)'
-        WHEN incremental_acv_2__c :: DECIMAL >= 25000 AND incremental_acv_2__c :: DECIMAL < 100000
-          THEN '3 - Big (25k - 100k)'
-        WHEN incremental_acv_2__c :: DECIMAL >= 100000
-          THEN '4 - Jumbo (>100k)'
-        ELSE '5 - Unknown'
-        END                         AS deal_size,
-
-
+        {{sfdc_deal_size('incremental_acv_2__c', 'deal_size')}},
         CASE WHEN acv_2__c >= 0
           THEN 1
         ELSE 0
