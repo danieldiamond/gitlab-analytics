@@ -87,26 +87,38 @@ models:
           - name: lineage
             description: "All the subscriptions subsquent to the primary subscription, separated by commas."
     - name: zuora_scheduled_renewals
-      description: Zuora scheduled renewals
+      description: Zuora Scheduled Renewals
       columns:
-          - name: account_name
+          - name: account_name 
             tests:
                 - not_null
           - name: account_number
             tests:
                 - not_null
-          - name: subscription_name
+          - name: rate_plan_charge_name
             tests:
                 - not_null
-          - name: subscription_end_date
+          - name: rate_plan_charge_number
             tests:
                 - not_null
-          - name: rate_plan_name
+          - name: currency
             tests:
                 - not_null
-          - name: term
+          - name: effective_start_date
             tests:
                 - not_null
+          - name: effective_end_date
+            tests:
+                - not_null
+          - name: subscription_start_date
+            tests:
+                - not_null
+          - name: mrr
+            tests:
+                - not_null
+          - name: arr
+            tests:
+                - not_null                
     - name: zuora_subscription_intermediate
       description: '{{ doc("zuora_subscription_intermediate") }}'
       columns:

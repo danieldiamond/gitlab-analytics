@@ -47,7 +47,7 @@ WITH source AS (
 		billingperiodalignment          as billing_period_alignment,
 		chargedthroughdate              as charged_through_date,
 		chargemodel                     as charge_model,
-		chargenumber                    as charge_number,
+		chargenumber                    as rate_plan_charge_number,
 		chargetype                      as charge_type,
 		description                     as description,
 		discountlevel                   as discount_level,

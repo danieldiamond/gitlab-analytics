@@ -1,66 +1,22 @@
-
-WITH zuora_subs AS (
+WITH zuora_base_mrr AS (
 
     SELECT *
-    FROM {{ ref('zuora_subscription') }}
-    WHERE
-        subscription_status = 'Active'
-    AND (lower(exclude_from_renewal_report) != 'yes' OR exclude_from_renewal_report IS NULL)
+    FROM {{ ref('zuora_base_mrr') }}
 
-),
+)
 
-    zuora_accts AS (
-
-      SELECT *
-      FROM {{ ref('zuora_account') }}
-
-  ),
-
-    zuora_rateplan AS (
-
-      SELECT *
-      FROM {{ ref('zuora_rate_plan') }}
-
-  ),
-
-    zuora_rateplancharge AS (
-
-      SELECT *
-      FROM {{ ref('zuora_rate_plan_charge') }}
-      WHERE
-        is_last_segment = TRUE
-
-  ),
-
-     combined AS (
-        SELECT
-          a.account_name,
-          a.account_number,
-          a.crm_id,
-          s.*,
-          r.rate_plan_name,
-          rp.mrr,
-          CASE
-          WHEN s.initial_term < 12
-            THEN ROW_NUMBER()
-            OVER (
-              PARTITION BY a.account_name
-              ORDER BY s.subscription_end_date ASC )
-          ELSE 1
-          END     AS row_multiplier
-        FROM zuora_accts a
-          JOIN zuora_subs s ON s.account_id = a.account_id
-          JOIN zuora_rateplan r ON r.subscription_id = s.subscription_id
-          JOIN zuora_rateplancharge rp ON r.rate_plan_id = rp.rate_plan_id
-    )
-
-SELECT
-  account_name,
-  account_number,
-  crm_id,
-  subscription_name,
-  subscription_end_date,
-  rate_plan_name,
-  mrr,
-  row_multiplier * initial_term AS term
-FROM combined
+SELECT account_number,
+        account_name,
+        rate_plan_charge_name,
+        rate_plan_charge_number,
+        currency,
+        effective_start_date,
+        effective_end_date,
+        subscription_start_date,
+        exclude_from_renewal_report,
+        mrr,
+        mrr * 12 as arr
+FROM zuora_base_mrr
+WHERE subscription_status = 'Active'
+AND EXCLUDE_FROM_RENEWAL_REPORT != 'Yes'
+AND date_trunc('year', effective_end_date)::DATE = date_trunc('year', CURRENT_DATE)::DATE
