@@ -85,3 +85,5 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+-- temporary filter while finance corrects issue
+WHERE account_id != '2c92a0fe68c470da0168ecec08131600'
