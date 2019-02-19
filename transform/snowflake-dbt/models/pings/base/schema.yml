@@ -13,14 +13,6 @@ models:
                 - not_null
                 - unique
 
-    - name: ci_stats_profiling
-      description: CI Stats data from spec profiling reports.
-      columns:
-          - name: id
-            tests:
-                - not_null
-                - unique
-
     - name: pings_version_checks
       description: Ping version data from self-managed instances
       columns:
