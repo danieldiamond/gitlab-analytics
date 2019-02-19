@@ -31,6 +31,11 @@ archive:
           updated_at: _last_dbt_run::timestamp_ntz
           unique_key: opportunity_id
 
+        - source_table: sfdc_users
+          target_table: sfdc_users_archived
+          updated_at: _last_dbt_run::timestamp_ntz
+          unique_key: user_id_18__c
+
 on-run-start:
     - "{{resume_warehouse(var('resume_warehouse', false), var('warehouse_name'))}}"
     - "{{create_udfs()}}"
