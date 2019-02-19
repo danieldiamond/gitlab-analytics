@@ -1,20 +1,20 @@
-sheetload_metrics:
-    constraints:
-        not_null:
-            - primary_key
-        unique:
-            - primary_key
-
-sheetload_headcount:
-    constraints:
-        not_null:
-            - primary_key
-        unique:
-            - primary_key
-
-sheetload_sales_weekly_forecast:
-    constraints:
-        not_null:
-            - primary_key
-        unique:
-            - primary_key
+version: 2
+models:
+- name: sheetload_metrics
+  columns:
+  - name: primary_key
+    tests:
+    - not_null
+    - unique
+- name: sheetload_headcount
+  columns:
+  - name: primary_key
+    tests:
+    - not_null
+    - unique
+- name: sheetload_sales_weekly_forecast
+  columns:
+  - name: primary_key
+    tests:
+    - not_null
+    - unique
