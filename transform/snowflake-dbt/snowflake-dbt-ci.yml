@@ -1,5 +1,5 @@
 .snowplow_load: &snowplow_load
-  image: registry.gitlab.com/gitlab-data/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   stage: extract
   before_script:
     - cd transform/util/
@@ -7,7 +7,7 @@
     - analytics
 
 .snowflake_dbt_jobs: &snowflake_dbt_jobs
-  image: registry.gitlab.com/gitlab-data/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   stage: model
   before_script:
     - cd transform/snowflake-dbt/

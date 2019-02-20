@@ -1,7 +1,7 @@
 # Job definitions
 #
 .job_template: &extract_definition
-  image: registry.gitlab.com/gitlab-data/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   before_script:
     - echo $STITCH_CONFIG > stitch_config.json
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
@@ -489,5 +489,5 @@ sheetload_snowflake_manual:
 # Stage: test
 
 .test_job_template: &test_job_template
-  image: registry.gitlab.com/gitlab-data/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
 
