@@ -9,7 +9,8 @@ Goal: To help bring you, our new data analyst, up to speed in the GitLab Data Te
 - [ ] Manager: Invite to `data-team` channel on Slack.
 - [ ] Manager: Add to Snowflake [following Readme Process](https://gitlab.com/gitlab-data/analytics#managing-roles-for-snowflake). 
 - [ ] Manager: Add [future grant](https://docs.snowflake.net/manuals/sql-reference/sql/grant-privilege.html) to analytics schema to user with `grant select on future tables in schema analytics to user [username]`. You will need to be using the `sysadmin` [role](https://docs.snowflake.net/manuals/user-guide/security-access-control-configure.html#assigning-future-grants-on-objects).
-- [ ] Manager: Inform new hire what his/her/they scratch schema will be called. Do not create the schema, as this will lead to conflicts when dbt runs. 
+- [ ] Manager: Inform new hire what his/her/they scratch schema will be called. **Do not create the schema**, as this will lead to conflicts when dbt runs. 
+- [ ] Manager: Invite to SheetLoad folder in gdrive (but not the interviewing data sheet).
 - [ ] Manager: Invite to Milestone Planning, Milestone Grooming, and DataOps Meetings. Ping appropriate person to get new hire added to Finance team meetings.
 - [ ] Manager: Update issue with one or two Good First Issues. 
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate.
@@ -26,6 +27,8 @@ WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 - [ ] Watch @tlapiana's [talk at DataEngConf](https://www.youtube.com/watch?v=eu623QBwakc) that gives a phenomenal overview of how the team works.
 - [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
 - [ ] We suggest installing [iTerm2](http://iterm2.com) for use, over the Terminal. No pressure though.
+- [ ] Get setup with Python locally. We suggest using the [Anaconda distribution](https://www.anaconda.com/download/#macos) as it will come pre-packaged with most everything we use.
+
 
 Our data stack looks roughly like this:
 <img src = "https://cdn-images-1.medium.com/max/2000/1*BogoeTTK1OXFU1hPfUyCFw.png">
@@ -115,19 +118,24 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 
 ## Misc
 - [ ] Familiarize yourself with the [Stitch](http://stitchdata.com) UI, as this is mostly the source of truth for what data we are loading. An email will have been sent with info on how to get logged in.
-- [ ] Get setup with Python locally. We suggest using the [Anaconda distribution](https://www.anaconda.com/download/#macos) as it will come pre-packaged with most everything we use.
 - [ ] Familiarize yourself with GitLab CI https://docs.gitlab.com/ee/ci/quick_start/ and our running pipelines.
 - [ ] Consider joining [Locally Optimistic slack](https://www.locallyoptimistic.com/community/)
  (Not required, but recommended).
 - [ ] Consider subscribing to the [Data Science Roundup](http://roundup.fishtownanalytics.com) (Not required, but recommended).
 - [ ] There are many Slack channels organized around interests, such as `#fitlab`, `#bookclub`, and `#woodworking`. There are also many organized by location (these all start with `#loc_`). This is a great way to connect to GitLabbers outside of the team. Join some that are relevant to your interests, if you'd like. 
+- [ ] Familiarize yourself with [SheetLoad](https://about.gitlab.com/handbook/business-ops/data-team/#using-sheetload).
 
 ## GitLab.com aka "Dot Com" (Product)
 This data comes from our GitLab.com SaaS product.
 - [ ] Become familiar with the [API docs](https://gitlab.com/gitlab-org/gitlab-ee/tree/master/doc/api).
 
+## Marketo
+- [ ] [Coming soon]
+- [ ] For access to Marketo, you will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request).
+
 ## Netsuite (Accounting)
 - [ ] [Coming soon]
+- [ ] For access to Netsuite, you will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request).
 
 ## Pings (Product)
 This data comes from the usage ping that comes with a GitLab installation.
@@ -143,12 +151,16 @@ This data comes from the usage ping that comes with a GitLab installation.
 - [ ] To familiarize yourself with the Salesforce data model, take [Data Modeling](https://trailhead.salesforce.com/trails/force_com_admin_beginner/modules/data_modeling).
 - [ ] You can review the general data model in [this reference](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/data_model.htm). Pay particular attention to the [Sales Objects](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_erd_majors.htm).
 - [ ] To familiarize yourself with the Salesforce APIs, take [Intro to SFDC APIs](https://trailhead.salesforce.com/trails/force_com_dev_intermediate/modules/api_basics).
+- [ ] For access to SFDC, you will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request).
 
 ## Snowplow (Product)
 [Snowplow](https://snowplowanalytics.com) is an open source web analytics collector. 
 - [ ] To understand how this is implemented at GitLab read [Feature Implementation](https://about.gitlab.com/handbook/product/feature-instrumentation/#instrumentation-for-gitlabcom).
 - [ ] Familiarize yourself with the [Snowplow Open Source documentation](https://github.com/snowplow/snowplow).
 - [ ] We use the [Snowplow dbt package](https://hub.getdbt.com/fishtown-analytics/snowplow/latest/) on our models. Their documentation does show up in our dbt docs.
+
+## Zendesk
+- [ ] For access to Zendesk, you will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request).
 
 ## Zuora (Finance, Billing SSOT)
 - [ ] Become familiar with Zuora.
@@ -158,6 +170,7 @@ This data comes from the usage ping that comes with a GitLab installation.
 - [ ] [Data Model inside Zuora](https://knowledgecenter.zuora.com/BB_Introducing_Z_Business/D_Zuora_Business_Objects_Relationship).
 - [ ] [Definitions of Objects](https://knowledgecenter.zuora.com/CD_Reporting/D_Data_Sources_and_Exports/AB_Data_Source_Availability).
 - [ ] [Zuora Subscription Data Management](https://about.gitlab.com/handbook/finance/zuora-sub-data/).
+- [ ] For access to Zuora, you will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request).
 
 ### Metrics and Methods
 - [ ] Read through [SaaS Metrics 2.0](http://www.forentrepreneurs.com/saas-metrics-2/) to get a good understanding of general SaaS metrics.
