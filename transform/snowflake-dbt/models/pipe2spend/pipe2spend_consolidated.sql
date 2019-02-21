@@ -10,13 +10,13 @@ WITH headcount AS (
 pipe AS (
 
     SELECT
-        sales_qualified_month::DATE   AS month,
+        coalesce(sales_qualified_month, sales_accepted_month, close_month)::DATE  AS month,
         pipe_name,
-        sum(iacv_full_path)     AS pipe_iacv
+        sum(iacv_full_path)                                 AS pipe_iacv
     FROM {{ref('sfdc_bizible_attribution_touchpoint_xf')}}
     WHERE sales_type in ('New Business', 'Add-On Business')
       AND lead_source != 'Web Direct'
-      AND sales_qualified_month > '2018-06-01'
+      AND month > '2018-06-01'
     GROUP BY 1, 2
 ),
 

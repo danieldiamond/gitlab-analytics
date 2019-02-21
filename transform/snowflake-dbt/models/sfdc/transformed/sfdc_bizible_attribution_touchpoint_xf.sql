@@ -10,7 +10,9 @@ WITH opps AS (
 
 
     SELECT
-      date_trunc('month',opps.sales_qualified_date)                 AS sales_qualified_month,
+      date_trunc('month', opps.sales_accepted_date) AS sales_accepted_month,
+      date_trunc('month', opps.sales_qualified_date)                 AS sales_qualified_month,
+      date_trunc('month', opps.close_date) as close_month,
       touches.*,
       CASE
         WHEN touchpoint_id ILIKE 'a6061000000CeS0%' -- Specific touchpoint overrides
@@ -47,6 +49,7 @@ WITH opps AS (
               END                                                   AS pipe_name,
       opps.incremental_acv * touches.attribution_percent_full_path  AS iacv_full_path,
       opps.sales_type,
-      opps.lead_source
+      opps.lead_source,
+      opps.record_type_label
     FROM opps
       JOIN touches ON touches.opportunity_id = opps.opportunity_id
