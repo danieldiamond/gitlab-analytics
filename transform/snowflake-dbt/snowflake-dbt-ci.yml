@@ -49,6 +49,17 @@ dbt_snowflake: &dbt_snowflake
     variables:
       - $SNOWFLAKE_DBT
 
+dbt_snowflake_full_refresh: &dbt_snowflake
+  <<: *snowflake_dbt_jobs
+  script:
+    - dbt deps --profiles-dir profile # install packages
+    - dbt run --profiles-dir profile --target prod --full-refresh
+  only:
+    refs:
+      - master
+    variables:
+      - $SNOWFLAKE_DBT_FULL
+
 dbt_snowflake_archive: &dbt_snowflake_archive
   <<: *snowflake_dbt_jobs
   script:
