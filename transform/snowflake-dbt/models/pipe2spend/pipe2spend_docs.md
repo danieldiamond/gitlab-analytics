@@ -1,7 +1,7 @@
 {% docs pipe2spend_consolidated %}
 This is the consolidated view of Pipe to Spend. Each row represents the pipe to spend for a single month for a specific pipe type. In looker the Pipe to Spend is counting when rows are aggregated, but the pipe to spend for the single row is pre-calculated in case it is needed. 
 
-The pipe CTE filters by New Business and Add-On Business. It also removes sources that are "Web Direct". This is because source came through the web portal, which is often free version of the site, but it really means it was not sales-assisted. It also filters to have June 2018 because Bizible was started in July.
+The pipe CTE filters by New Business and Add-On Business. It also removes sources that are "Web Direct". This is because source came through the web portal, which is often the free version of the site, but it really means it was not sales-assisted. It also filters to have June 2018 because Bizible was started in July. We coalesce sales qualified, sales accepted, and close data months together because there were some upstream data integrity issues where the sales accepted and sales qualified dates weren't being set. This ensures that the opportunity IACV is still being included in the pipe and Marketing gets credit for what they're supposed to. 
 
 The demand_advertising_spend CTE is where the spend attribution occurs. Any attribution not specified will appear as unknown and will need to be allocated in a new MR. It also filters for the 6120 account code and for amounts after March 2018. Since the spend from 3 months prior is applied for pipe to spend, we only care about spend 3 months from when the attribution was started (July 2018), which is April 2018.
 
