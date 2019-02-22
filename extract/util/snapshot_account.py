@@ -127,7 +127,7 @@ try:
              "a.carr_total__c, " + \
              "a.count_of_opportunities__c, " + \
              "a.business_development_rep__c, " + \
-             "a.ultimate_parent_old__c, " + \
+             "null, " + \
              "a.leandata__scenario_3_owner__c, " + \
              "a.isgithoststartupcustomer__c, " + \
              "a.potential_carr_this_account__c, " + \
@@ -200,7 +200,7 @@ try:
              "a.shippingcountry, " + \
              "a.createdbyid, " + \
              "a.paymenttermnumeric__c, " + \
-             "a.temp_duplicated_account__c, " + \
+             "null, " + \
              "a.ultimate_parent_is_current_account__c, " + \
              "a.lastvieweddate, " + \
              "a.solutions_architect__c, " + \
