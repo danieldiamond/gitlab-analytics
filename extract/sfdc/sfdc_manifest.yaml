@@ -178,7 +178,6 @@ account:
   tedd_employees__c: real
   technical_account_manager_lu__c: character varying
   technology_stack__c: character varying
-  temp_duplicated_account__c: boolean
   terminus_clicks__c: real
   terminus_impressions__c: real
   terminus_spend__c: real
@@ -196,7 +195,6 @@ account:
   ultimate_parent_account__c: character varying
   ultimate_parent_account_id__c: character varying
   ultimate_parent_is_current_account__c: boolean
-  ultimate_parent_old__c: character varying
   ultimate_parent_sales_segment_emp_text__c: character varying
   ultimate_parent_sales_segment_employees__c: character varying
   using_ce__c: boolean
