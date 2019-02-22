@@ -5,10 +5,12 @@ Goal: To help bring you, our new data analyst, up to speed in the GitLab Data Te
 - [ ] Manager: Add to Analytics API user.
 - [ ] Manager: Add to Stitch. 
 - [ ] Manager: Add Developer access to Looker.
-- [ ] Manager: Add to `@datateam` alias on Slack.
+- [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
+- [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
 - [ ] Manager: Invite to `data-team` channel on Slack.
+- [ ] Manager: Add to daily Geekbot standup
 - [ ] Manager: Add to Snowflake [following Readme Process](https://gitlab.com/gitlab-data/analytics#managing-roles-for-snowflake). 
-- [ ] Manager: Add [future grant](https://docs.snowflake.net/manuals/sql-reference/sql/grant-privilege.html) to analytics schema to user with `grant select on future tables in schema analytics to user [username]`. You will need to be using the `sysadmin` [role](https://docs.snowflake.net/manuals/user-guide/security-access-control-configure.html#assigning-future-grants-on-objects).
+- [ ] Manager: Add [future grant](https://docs.snowflake.net/manuals/sql-reference/sql/grant-privilege.html) to analytics schema to user with `grant select on future tables in schema analytics to role [username]`. You will need to be using the `sysadmin` [role](https://docs.snowflake.net/manuals/user-guide/security-access-control-configure.html#assigning-future-grants-on-objects).
 - [ ] Manager: Inform new hire what his/her/they scratch schema will be called. **Do not create the schema**, as this will lead to conflicts when dbt runs. 
 - [ ] Manager: Invite to SheetLoad folder in gdrive (but not the interviewing data sheet).
 - [ ] Manager: Invite to Milestone Planning, Milestone Grooming, and DataOps Meetings. Ping appropriate person to get new hire added to Finance team meetings.
@@ -20,8 +22,9 @@ WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 - [ ] Read (skim) through this full issue, just so you have a sense of what's coming. 
 - [ ] Join the following channels on Slack: `analytics`, `analytics-pipelines`, and `business-operations`.
 - [ ] Schedule a recurring monthly skip level meeting with the Director of Business Operations.
-- [ ] Read the following pages of the handbook in their entirety. 
-   - [ ] [Data Team](https://about.gitlab.com/handbook/business-ops/data-team/index.html)
+- [ ] Schedule a coffee chat with each member of the team. These should be in addition to the ones you do with other GitLab team members.
+- [ ] Read the following pages of the handbook in their entirety. Bookmark them as you should soon be making MR's to improve our documentation!
+   - [ ] [Data Team](https://about.gitlab.com/handbook/business-ops/data-team/)
    - [ ] [Business Operations](https://about.gitlab.com/handbook/business-ops/)
    - [ ] [Data Quality Process](https://about.gitlab.com/handbook/business-ops/data-quality-process/)
 - [ ] Watch @tlapiana's [talk at DataEngConf](https://www.youtube.com/watch?v=eu623QBwakc) that gives a phenomenal overview of how the team works.
@@ -36,16 +39,17 @@ Our data stack looks roughly like this:
 As you read in the handbook, we currently use Stitch and Meltano for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool and Looker as our business intelligence/data visualization tool. The bulk of your projects and tasks will be in dbt and Looker, so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources. 
 
 ## Connecting to Snowflake
+- [ ] Follow the instructions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
 - [ ] Download a SQL development tool that is compatible with Snowflake, such as [SQLWorkbench/J](http://sql-workbench.net) or [DataGrip](https://www.jetbrains.com/datagrip/). If you're interested in DataGrip, follow the [instructions to get a JetBrains license in the handbook](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains). Alternatively, Snowflake has a Web UI for querying the data warehouse that can be found under [Worksheets](https://gitlab.snowflakecomputing.com/console#/internal/worksheet).
    - [ ] If using the Snowflake Web UI, update your role to `TRANSFORMER`, warehouse to `TRANSFORMING`, and database to `ANALYTICS`. The schema does not matter because your query will reference the schema. 
    - [ ] If using DataGrip, you may need to download the [Driver](https://docs.snowflake.net/manuals/user-guide/jdbc-download.html#downloading-the-driver).
-   - [ ] If using DataGrip with Snowflake, you need to make a change to your configuration. Go to `Help > Edit Custom VM Options ...`. Then add the line `-Duser.timezone=UTC`.
-   - [ ] This template may be useful as you're configuring the DataGrip connection to Snowflake `jdbc:snowflake://{account:param}.snowflakecomputing.com/?{password}[&db={Database:param}][&schema={Schema:param}][&warehouse={Warehouse:param}][&role={Role:param}]`
+   - [ ] This template may be useful as you're configuring the DataGrip connection to Snowflake `jdbc:snowflake://{account:param}.snowflakecomputing.com/?{password}[&db={Database:param}][&warehouse={Warehouse:param}][&role={Role:param}]` We recommend not setting your schema so you can select from the many options.
 
 ## dbt
 
 ### What is dbt?
 - [ ] Familiarize yourself with [dbt](https://www.getdbt.com/), which we use for transformations in the data warehouse, as it gives us a way to source control the SQL. 
+- [ ] Refer to http://jinja.pocoo.org/docs/2.10/templates/ as a resource for understanding Jinja which is used extensively in dbt.
 - [ ] [This article](https://blog.fishtownanalytics.com/what-exactly-is-dbt-47ba57309068) talks about the what/why.
 - [ ] [This introduction](https://docs.getdbt.com/docs/introduction) should help get you understand what dbt is.
 - [ ] Read [how we use dbt](https://gitlab.com/gitlab-data/analytics#dbt), especially our coding conventions.
