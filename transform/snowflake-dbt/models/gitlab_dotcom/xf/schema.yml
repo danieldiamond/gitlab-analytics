@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: gitlab_dotcom_merge_requests_xf
+    description: '{{ doc("gitlab_dotcom_merge_requests_xf") }}'
+    columns:
+      - name: merge_request_id
+        tests:
+          - not_null
+      - name: is_community_contributor_related
+        description: Merge Request has 'community contribution' tag, and is on a project in the gitlab.org namespace.
+
+  - name: gitlab_dotcom_issues_xf
+    description: '{{ doc("gitlab_dotcom_issues_xf") }}'
+    columns:
+      - name: issue_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_labels_xf
+    description: '{{ doc("gitlab_dotcom_labels_xf") }}'
+    columns:
+      - name: label_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_users_xf
+    description: '{{ doc("gitlab_dotcom_users_xf") }}'
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+          - unique
+      - name: days_active
+        description: days between user creation and last activity
+      - name: account_age_cohort
+        description: cohorting of time between last dbt run and user creation date.
