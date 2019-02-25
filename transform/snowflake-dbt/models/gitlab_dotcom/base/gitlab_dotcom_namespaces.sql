@@ -18,7 +18,7 @@ WITH source AS (
       END                                                             as namespace_{{field}},
       {% endfor %}
       owner_id :: integer                                             as owner_id,
-      type,
+      type                                                            as namespace_type,
       IFF(avatar IS NULL, FALSE, TRUE)                                as has_avatar,
       created_at :: timestamp                                         as namespace_created_at,
       updated_at :: timestamp                                         as namespace_updated_at,

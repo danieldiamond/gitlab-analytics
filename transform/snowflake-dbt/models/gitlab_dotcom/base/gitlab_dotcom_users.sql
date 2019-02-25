@@ -47,7 +47,7 @@ WITH source AS (
       -- note // hidden for privacy
       TRY_CAST(otp_grace_period_started_at as timestamp)                 as otp_grace_period_started_at,
       external :: boolean                                                as is_external_user,
-      -- organization // hidden for privacy
+      organization                                                       as organization,
       auditor :: boolean                                                 as auditor,
       require_two_factor_authentication_from_group :: boolean            as does_require_two_factor_authentication_from_group,
       two_factor_grace_period :: integer                                 as two_factor_grace_period,
