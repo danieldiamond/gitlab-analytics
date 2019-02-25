@@ -233,6 +233,10 @@ roles:
             schemas:
                 - analytics.looker_scratch
 
+    - looker_reporter:
+        warehouses:
+            - reporting
+
     - iroussos:
         warehouses:
             - reporting
@@ -366,6 +370,12 @@ users:
         member_of:
             - reporter
             - looker
+
+    - looker_reporter:
+        can_login: yes
+        member_of:
+            - reporter
+            - looker_reporter
 
     - iroussos:
         can_login: yes
