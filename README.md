@@ -119,8 +119,6 @@ Planned:
 
 ### Data Team Architecture
 
-![Data Team Architecture](images/WIP_ GitLab_Analytics_Architecture.jpg)
-
 #### Our Stack
 
 We use GitLab to operate and manage the analytics function. Everything starts with an issue. Changes are implemented via merge requests, including changes to our pipelines, extraction, loading, transformations, and parts of our analytics.
