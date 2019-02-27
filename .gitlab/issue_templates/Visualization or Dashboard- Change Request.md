@@ -1,7 +1,5 @@
 <!---
-This issue is for visualization related issues within Looker.
-
-Here is an example of an excellent visualization issue https://gitlab.com/bizops/looker/issues/37
+This issue is for visualization related issues within our BI tool.
 ---->
 
 #### What is the original Looker dashboard/Look link? 
@@ -47,4 +45,4 @@ Example: I'd like to be able to dig into the specific opportunity details (owner
 
 #### Any caveats or details that may be helpful?
 
-/label ~Looker ~"Data Team" 
+/label ~Reporting ~"Data Team" 
