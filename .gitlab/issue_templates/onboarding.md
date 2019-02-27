@@ -4,7 +4,6 @@ Goal: To help bring you, our new data analyst, up to speed in the GitLab Data Te
 
 - [ ] Manager: Add to Analytics API user.
 - [ ] Manager: Add to Stitch. 
-- [ ] Manager: Add Developer access to Looker.
 - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
 - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
 - [ ] Manager: Invite to `data-team` channel on Slack.
@@ -36,7 +35,7 @@ WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 Our data stack looks roughly like this:
 <img src = "https://cdn-images-1.medium.com/max/2000/1*BogoeTTK1OXFU1hPfUyCFw.png">
 
-As you read in the handbook, we currently use Stitch and Meltano for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool and Looker as our business intelligence/data visualization tool. The bulk of your projects and tasks will be in dbt and Looker, so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources. 
+As you read in the handbook, we currently use Stitch and Meltano for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool. The bulk of your projects and tasks will be in dbt , so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources. 
 
 ## Connecting to Snowflake
 - [ ] Follow the instructions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
@@ -106,20 +105,6 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 - [ ] [Differences we found while transition from Postgres to Snowflake](https://gitlab.com/gitlab-data/analytics/issues/645)
 - [ ] [How Compatible are Redshift and Snowflake’s SQL Syntaxes?](https://medium.com/@jthandy/how-compatible-are-redshift-and-snowflakes-sql-syntaxes-c2103a43ae84)
 - [ ] [Snowflake Functions](https://docs.snowflake.net/manuals/sql-reference/functions-all.html)
-
-## Looker
-- [ ] Read our Looker [Readme](https://gitlab.com/gitlab-data/looker/blob/master/README.md).
-- [ ] Make an account on [training.looker.com](training.looker.com). There are four courses. Please take all four, independent of your familiarity with Looker. 
-- [ ] [Additional GitLab training resources on Looker](https://gitlab.com/gitlab-data/looker/#training-sessions-gitlab-internal).
-- [ ] Watch [Creating Explores Your End Users Love](https://www.youtube.com/watch?v=16N2UMAlzco)
-- [ ] Add a [custom user attribute](https://gitlab.looker.com/admin/user_attributes) for "sandbox_schema" to refer to your sandbox dbt schema.
-- [ ] Add a [custom user attribute](https://gitlab.looker.com/admin/user_attributes) for "database_user" to refer to `looker`.
-- [ ] [Looker Codev Training 1](https://drive.google.com/file/d/1sKHbARpIfHKGpTChuqZSagnfh8Vt7_ml/view?usp=sharing)
-- [ ] [Looker Codev Training 2](https://drive.google.com/file/d/1wNM-xnkDOBXce-M0cX16pkiFjsf3woma/view?usp=sharing)
-- [ ] [Looker Codev Training 3](https://drive.google.com/file/d/1bKBtrCGxVRwXpYuYMXoD4XAqM1lzgdqL/view?usp=sharing)
-- [ ] [Looker Codev Training 4](https://drive.google.com/file/d/1xZbXVG85tA388r57QpRPR4-eLi54ixhL/view?usp=sharing)
-- [ ] [Looker Codev Training 5](https://drive.google.com/file/d/1RS3ALTjxh8VaNwt-q94Wbv_OYibsPzeR/view?usp=sharing)
-- [ ] [Looker Business User Training](https://drive.google.com/file/d/19RzwdtRDNWvDL7W81_CfjX6sWDo_nP2w/view?usp=sharing)
 
 ## Misc
 - [ ] Familiarize yourself with the [Stitch](http://stitchdata.com) UI, as this is mostly the source of truth for what data we are loading. An email will have been sent with info on how to get logged in.
@@ -192,7 +177,6 @@ None of these are required, but bookmarking these links will make life at GitLab
 - [ ] [dbt Docs](https://docs.getdbt.com)
 - [ ] [dbt Discourse](http://discourse.getdbt.com)
 - [ ] [GitLab's dbt Documentation](https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview)
-- [ ] [Looker Discourse](https://discourse.looker.com)
 
 ## Good First Issues:
 - [ ] [Replace]
