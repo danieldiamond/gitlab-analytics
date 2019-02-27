@@ -19,8 +19,6 @@
 # Stages
 # Note some jobs come from global 'include' statements
 stages:
-  - build # Not in use
-  - test # Not in use
   - review
   - setup
   - extract # extract/extract-ci.yml
@@ -118,7 +116,7 @@ update_db: &update_db
     - branches
   when: manual
 
-# Job template for applying pre-determined Snowflake permissions 
+# Job template for applying pre-determined Snowflake permissions
 .snowflake_permissions: &snowflake_permissions
   stage: setup
   <<: *job_definition
@@ -224,7 +222,7 @@ sfdc_snapshot_manual:
 # Job template for use in the Pages publishing jobs
 .pages_job_template: &pages_job_template
   stage: publish
-  image: registry.gitlab.com/meltano/meltano-elt/extract:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   variables: *pages_job__variables
   before_script:
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
