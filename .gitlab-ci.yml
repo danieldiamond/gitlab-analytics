@@ -302,4 +302,5 @@ review_stop:
 variables:
   PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
   SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
+  AIRFLOW__CORE__DAGS_FOLDER: $CI_PROJECT_DIR/dags
 

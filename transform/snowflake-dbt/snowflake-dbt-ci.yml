@@ -14,6 +14,7 @@
     - echo $SNOWFLAKE_DATABASE
     - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
     - echo $SNOWFLAKE_TRANSFORM_DATABASE
+    - export $NAMESPACE="testing"
   tags:
     - analytics
 
@@ -27,6 +28,16 @@ snowplow_load:
       - master
     variables:
       - $SNOWPLOW_LOAD
+
+snowplow_load_airflow:
+  <<: *snowplow_load
+  image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
+  script:
+    - airflow backfill snowflake_load
+  only:
+    refs:
+      - branches
+  when: manual
 
 snowplow_load_manual:
   <<: *snowplow_load
