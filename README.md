@@ -4,8 +4,6 @@
 * Data Team Handbook - https://about.gitlab.com/handbook/business-ops/data-team/#-quick-links
 * dbt Docs - https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview
 * Epics Roadmap - https://gitlab.com/groups/gitlab-data/-/roadmap?layout=MONTHS&sort=start_date_asc
-* Looker Instance - https://gitlab.looker.com
-* Looker Repo - https://gitlab.com/gitlab-data/looker/
 * JupyterHub Link - https://hub.gitlab-bizops.com/hub/home
 * Snowflake Web UI - https://gitlab.snowflakecomputing.com
 * [Machine Learning Resources](https://drive.google.com/drive/folders/1sOXWW-FujwKU2T-auG7KPR9h6xqDRx0z?usp=sharing) (GitLab Internal)
@@ -64,8 +62,6 @@ Like the rest of the company, we set quarterly objectives and key results. These
 * [Taylor explains dbt](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) (GitLab internal)
 
 * [dbt docs intro with Drew Banin from Fishtown Analytics](https://www.youtube.com/watch?v=bqIBNvA9xjo)
-
-* [Looker Customer Success team shares how the Looker at Looker](https://drive.google.com/file/d/1w__Jqh9UKliPdQNNcd3KpQfp93Q1SuJb/view?usp=sharing)
 
 * Taylor's talk at the 2018 Nashville Analytics Summit - Coming Soon
 
@@ -136,7 +132,7 @@ We use GitLab to operate and manage the analytics function. Everything starts wi
 |Orchestration|GitLab CI|
 |Storage|Cloud SQL (PostgreSQL) and Snowflake|
 |Transformations|dbt and Python scripts|
-|Analysis|Python and Looker|
+|Analysis| TBD |
 
 ## Documentation
 
@@ -371,21 +367,15 @@ You can use `Command + Option + L` to format your file.
 
 ### Analysis
 
-#### Looker
-
-We use Looker as our analysis and visualization tool. Please see the README in the [looker project](https://gitlab.com/meltano/looker/) for more information.
-
 #### JupyterHub
 
 [JupyterHub](https://jupyterhub.readthedocs.io/en/latest/) - a multi-user Hub that spawns, manages, and proxies multiple instances of the single-user Jupyter notebook server. The Jupyter Notebook is an open-source web application that allows you to create and share documents that contain live code, equations, visualizations and explanatory text.
 
 #### Data Resources
-- [Looker Documentation](https://docs.looker.com)
 - [Fishtown Analytics Blog](https://blog.fishtownanalytics.com)
 - [Data Science Roundup Newsletter](http://roundup.fishtownanalytics.com/)
 - [Silota](http://www.silota.com/docs/recipes/)
 - [Mode Analytics Blog](https://blog.modeanalytics.com/)
-- [Looker Blog](https://looker.com/blog)
 - [Periscope Data Blog](https://www.periscopedata.com/blog)
 - [Yhat Blog](http://blog.yhat.com/)
 - [Wes McKinney Blog](http://wesmckinney.com/archives.html)
