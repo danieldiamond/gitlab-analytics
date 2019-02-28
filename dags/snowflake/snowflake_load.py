@@ -26,6 +26,7 @@ dag = DAG(
 snowflake_load = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id='snowflake_load',
+    name='snowflake_load',
     cmds=['/bin/bash', '-c'],
     arguments=[container_cmd],
     namespace=env['NAMESPACE'],
