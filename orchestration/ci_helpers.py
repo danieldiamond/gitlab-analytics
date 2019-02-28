@@ -15,7 +15,7 @@ from subprocess import run, PIPE, Popen, _active, _cleanup
 from typing import Tuple
 
 
-def retry_or_notify(exceptions, tries: int = 4, backoff: int = 2):
+def retry_or_notify(exceptions, tries: int = 1, backoff: int = 2):
     """
     Retry calling the decorated function using an exponential backoff,
     if all attempts fail then send a slack notification.
