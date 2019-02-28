@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
-from airflow.contrib.operators import KubernetesOperator
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 env = os.environ.copy()
 
@@ -23,7 +23,7 @@ container_cmd = """
 dag = DAG(
     'snowflake_load', default_args=default_args, schedule_interval=timedelta(days=1))
 
-snowflake_load = KubernetesOperator(
+snowflake_load = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id='snowflake_load',
     cmds=['/bin/bash', '-c'],
