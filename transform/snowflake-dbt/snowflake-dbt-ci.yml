@@ -33,7 +33,7 @@ snowplow_load_airflow:
   <<: *snowplow_load
   image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
   script:
-    - ci_helpers.py use_proxy "airflow clear snowflake_load -c"
+    - ci_helpers.py use_proxy "airflow clear -c snowflake_load"
     - ci_helpers.py use_proxy "airflow trigger_dag snowflake_load -e 2019-01-01"
   only:
     refs:
