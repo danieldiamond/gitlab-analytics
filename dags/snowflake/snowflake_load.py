@@ -9,7 +9,7 @@ env = os.environ.copy()
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2019, 02, 22),
+    'start_date': datetime(2019, 1, 1),
     'retries': 1,
     'catchup': False,
     'retry_delay': timedelta(minutes=5),
