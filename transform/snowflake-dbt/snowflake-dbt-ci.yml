@@ -33,7 +33,7 @@ snowplow_load_airflow:
   <<: *snowplow_load
   image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
   script:
-    - airflow backfill snowflake_load
+    - ci_helpers.py use_proxy "airflow backfill snowflake_load 2019-01-01"
   only:
     refs:
       - branches
