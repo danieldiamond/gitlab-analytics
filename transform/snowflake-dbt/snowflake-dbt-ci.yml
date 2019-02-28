@@ -15,7 +15,6 @@
     - echo $SNOWFLAKE_DATABASE
     - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
     - echo $SNOWFLAKE_TRANSFORM_DATABASE
-    - export $NAMESPACE="testing"
   tags:
     - analytics
 

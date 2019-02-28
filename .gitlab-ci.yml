@@ -302,4 +302,7 @@ review_stop:
 variables:
   PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
   SNOWFLAKE_DATABASE: "$CI_COMMIT_REF_NAME"
+  NAMESPACE: "testing"
+  AIRFLOW__CORE__DAGS_FOLDER: "${CI_PROJECT_DIR}/dags"
+  AIRFLOW__CORE__SQL_ALCHEMY_CONN: "postgresql://${PG_USERNAME}:${PG_PASSWORD}@${PG_ADDRESS}:${PG_PORT}/airflow_test"
 
