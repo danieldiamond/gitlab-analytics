@@ -19,9 +19,9 @@ query = """copy into raw.snowplow.events (jsontext)
                 on_error='skip_file';"""
 
 engine = create_engine(
-            URL(user=env['SF_USER'],
-                password=env['SF_PASSWORD'],
-                account=env['SF_ACCOUNT'],
+            URL(user=env['SNOWLFAKE_LOAD_USER'],
+                password=env['SNOWFLAKE_LOAD_PASSWORD'],
+                account=env['SNOWFLAKE_ACCOUNT'],
                 role='LOADER',
                 warehouse='LOADING'))
 
