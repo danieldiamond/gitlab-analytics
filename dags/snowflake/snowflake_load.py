@@ -40,6 +40,7 @@ snowflake_load = KubernetesPodOperator(
     arguments=[container_cmd],
     namespace=env['NAMESPACE'],
     get_logs=True,
+    is_delete_operator_pod=True,
     in_cluster= False if env['IN_CLUSTER'] == "False" else True,
     dag=dag,
 )
