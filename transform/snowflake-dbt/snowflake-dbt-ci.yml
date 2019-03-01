@@ -29,16 +29,6 @@ snowplow_load:
     variables:
       - $SNOWPLOW_LOAD
 
-snowplow_load_airflow:
-  <<: *snowplow_load
-  image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
-  script:
-    - ci_helpers.py use_proxy "airflow run -f -int snowflake_load snowflake_load 2019-01-01"
-  only:
-    refs:
-      - branches
-  when: manual
-
 snowplow_load_manual:
   <<: *snowplow_load
   script:
