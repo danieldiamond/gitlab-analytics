@@ -6,7 +6,7 @@ with sfdc_statement_of_work AS (
 
 ), sfdc_users AS (
 
-    SELECT * FROM {{ref('users')}}
+    SELECT * FROM {{ref('sfdc_users_xf')}}
 
 )
 

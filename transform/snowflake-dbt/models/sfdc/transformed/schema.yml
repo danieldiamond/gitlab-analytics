@@ -2,33 +2,6 @@ version: 2
 
 models:
 
-  - name: account
-    columns:
-      - name: sfdc_account_id
-        tests:
-          - not_null
-          - unique
-      - name: sfdc_account_id
-        tests:
-            - not_null
-
-  - name: dim_account
-    columns:
-      - name: id
-        tests:
-          - not_null
-          - unique
-      - name: sfdc_account_id
-        tests:
-          - not_null
-          - unique
-          - relationships:
-                to: ref('account')
-                field: sfdc_account_id
-      - name: type
-        tests:
-            - not_null
-
   - name: dim_leadsource
     columns:
       - name: id
@@ -36,104 +9,16 @@ models:
           - not_null
           - unique
 
-  - name: dim_opphistory
-    columns:
-      - name: opportunityid
-        tests:
-          - not_null
-
-  - name: dim_opportunitystage
-    columns:
-      - name: stage_id
-        tests:
-          - not_null
-          - unique
-
-  - name: f_opportunity
-    columns:
-      - name: opportunity_id
-        tests:
-          - not_null
-      - name: account_id
-        tests:
-          - not_null
-      - name: opportunity_stage_id
-        tests:
-          - not_null
-          - relationships:
-              to: ref('dim_opportunitystage')
-              field: stage_id
-      - name: lead_source_id
-        tests:
-          - not_null
-      - name: ownerid
-        tests:
-          - not_null
-
 #leadsource: no tests here because this is a essentially a list
-
-  - name: lineitems
-    columns:
-      - name: id
-        tests:
-          - not_null
-          - unique
-      - name: opportunity_id
-        tests:
-          - not_null
-
-  - name: nolineitems
-    columns:
-      - name: id
-        tests:
-          - not_null
-          - unique
-      - name: opportunity_id
-        tests:
-          - not_null
-
-  - name: opplineitems
-    columns:
-      - name: id
-        tests:
-          - not_null
-          - unique
-      - name: opportunity_id
-        tests:
-          - not_null
-
-  - name: opportunity
-    columns:
-      - name: sfdc_id
-        tests:
-          - not_null
-          - unique
-      - name: ownerid
-        tests:
-          - not_null
-
-  - name: quotelineitems
-    columns:
-      - name: id
-        tests:
-          - not_null
-          - unique
-      - name: opportunity_id
-        tests:
-          - not_null
 
   - name: sfdc_accounts_xf
     columns:
       - name: account_id
         tests:
           - not_null
-          - relationships:
-              to: ref('account')
-              field: sfdc_account_id
       - name: account_name
         tests:
           - not_null
-
   - name: sfdc_account_deal_size_segmentation
     columns:
       - name: account_id
@@ -146,66 +31,56 @@ models:
       - name: deal_size
         tests:
           - not_null
-
   - name: sfdc_bizible_attribution_touchpoint_xf
     columns:
       - name: touchpoint_id
         tests:
           - not_null
           - unique
-
   - name: sfdc_campaign_xf
     columns:
       - name: campaign_id
         tests:
           - not_null
           - unique
-
   - name: sfdc_closed_deals_acv
     columns:
       - name: owner
         tests:
           - not_null
-
   - name: sfdc_competitors_to_be_replaced
     columns:
       - name: opportunity_id
         tests:
           - not_null
-
   - name: sfdc_contact_xf
     columns:
       - name: contact_id
         tests:
           - not_null
           - unique
-
   - name: sfdc_executive_business_review_xf
     columns:
       - name: owner_id
         tests:
           - not_null
-
   - name: sfdc_lead_xf
     columns:
       - name: lead_id
         tests:
           - not_null
           - unique
-
   - name: sfdc_opportunity_xf
     columns:
       - name: opportunity_id
         tests:
           - not_null
           - unique
-
   - name: sfdc_pipeline
     columns:
       - name: owner
         tests:
           - not_null
-
   - name: sfdc_proof_of_concept_xf
     columns:
       - name: poc_id
@@ -216,8 +91,8 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('account')
-              field: sfdc_account_id
+              to: ref('sfdc_account')
+              field: account_id
       - name: opportunity_id
         tests:
           - not_null
@@ -227,8 +102,6 @@ models:
       - name: poc_status
         tests:
           - not_null
-
-
   - name: sfdc_sales_accepted_opportunity
     columns:
       - name: opportunity_name
@@ -237,15 +110,13 @@ models:
       - name: account_name
         tests:
           - not_null
-
   - name: sfdc_statement_of_work_xf
     columns:
       - name: statement_of_work_id
         tests:
           - not_null
           - unique
-
-  - name: users
+  - name: sfdc_users_xf
     columns:
       - name: id
         tests:

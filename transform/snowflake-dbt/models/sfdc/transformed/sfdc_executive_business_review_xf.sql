@@ -4,7 +4,7 @@ with sfdc_executive_business_review AS (
 
 ), sfdc_users AS (
 
-    SELECT * FROM {{ref('users')}}
+    SELECT * FROM {{ref('sfdc_users_xf')}}
 
 )
 
