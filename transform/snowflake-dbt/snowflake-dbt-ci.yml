@@ -64,6 +64,7 @@ dbt_snowflake_archive: &dbt_snowflake_archive
   <<: *snowflake_dbt_jobs
   script:
     - dbt archive --profiles-dir profile --target prod # archive tables that snapshot models need
+    - dbt deps --profiles-dir profile # install packages
     - dbt run --profiles-dir profile --target prod --models snapshots # update models that rely on archives
   only:
     refs:
