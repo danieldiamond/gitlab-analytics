@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 with merge_requests as (
 
     SELECT * FROM {{ref('gitlab_dotcom_merge_requests')}}

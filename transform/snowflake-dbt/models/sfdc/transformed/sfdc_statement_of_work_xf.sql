@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 with sfdc_statement_of_work AS (
 
 	SELECT * FROM {{ref('sfdc_statement_of_work')}}

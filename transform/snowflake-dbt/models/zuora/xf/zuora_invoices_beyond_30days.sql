@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 {%
 set age_of_invoice = "datediff(day, zuora_invoice.due_date, CURRENT_DATE)"
 %}

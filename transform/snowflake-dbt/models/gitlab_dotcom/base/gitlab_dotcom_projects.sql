@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 {% set sensitive_fields = ['description', 'import_source','issues_template','build_coverage_regex'] %}
 
 {% set fields_to_mask = ['name', 'path','import_url','merge_requests_template'] %}

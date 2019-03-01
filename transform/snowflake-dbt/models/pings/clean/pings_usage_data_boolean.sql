@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH usage_month AS (
 
     SELECT * FROM {{ ref('pings_usage_data_month') }}

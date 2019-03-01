@@ -41,46 +41,40 @@ on-run-start:
     - "{{create_udfs()}}"
 
 on-run-end:
-    - "grant usage on schema {{ target.schema }} to role reporter"
-    - "grant select on all tables in schema {{ target.schema }} to role reporter"
-    - "grant select on all views in schema {{ target.schema }} to role reporter"
-    - "grant usage on schema {{ target.schema }} to role bi_reporter"
-    - "grant select on all tables in schema {{ target.schema }} to role bi_reporter"
-    - "grant select on all views in schema {{ target.schema }} to role bi_reporter"    
-    - "grant usage on schema {{ target.schema }}_meta to role reporter"
-    - "grant select on all tables in schema {{ target.schema }}_meta to role reporter"
-    - "grant select on all views in schema {{ target.schema }}_meta to role reporter"
+    - "{{grant_usage_to_schemas(schema_name, rolename)}}"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
 
 models:
+    pre-hook: "{{ logging.log_model_start_event() }}"
+    post-hook: "{{ logging.log_model_end_event() }}"
     vars: 
-        database: 'raw'
-        warehouse_name: 'transforming'
+      database: 'raw'
+      warehouse_name: 'transforming'
 
     logging:
-      pre-hook: "{{ logging.log_model_start_event() }}"
+      schema: analytics_meta
       post-hook: 
-        - "{{ logging.log_model_end_event() }}"
-        - "grant select on {{this}} to role reporter"
+        - "grant select on {{this}} to role bi_reporter"
 
     snowplow:
-        post-hook: "grant select on {{this}} to role reporter"
-        vars:
-          'snowplow:use_fivetran_interface': false
-          'snowplow:events': "{{ref('unnested_events')}}"
-          'snowplow:context:web_page': "{{ref('web_page')}}"
-          'snowplow:context:performance_timing': false
-          'snowplow:context:useragent': false
-          'snowplow:timezone': 'America/New_York'
-          'snowplow:page_ping_frequency': 30
-          'snowplow:app_ids': ['gitlab']
-        base:
-          materialized: view
-          optional:
-            enabled: false
-        page_views:
-          optional:
-            enabled: false
+      schema: analytics
+      post-hook: "grant select on {{this}} to role reporter"
+      vars:
+        'snowplow:use_fivetran_interface': false
+        'snowplow:events': "{{ref('unnested_events')}}"
+        'snowplow:context:web_page': "{{ref('web_page')}}"
+        'snowplow:context:performance_timing': false
+        'snowplow:context:useragent': false
+        'snowplow:timezone': 'America/New_York'
+        'snowplow:page_ping_frequency': 30
+        'snowplow:app_ids': ['gitlab']
+      base:
+        materialized: view
+        optional:
+          enabled: false
+      page_views:
+        optional:
+          enabled: false
 
     gitlab_snowflake:
       post-hook: "grant select on {{this}} to role reporter"

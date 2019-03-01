@@ -15,4 +15,3 @@ gitlab-snowflake:
       warehouse: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
       schema: "{{ env_var('SNOWFLAKE_TRANSFORM_SCHEMA') }}"
   target: prod
-

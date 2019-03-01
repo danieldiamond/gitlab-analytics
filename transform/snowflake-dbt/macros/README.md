@@ -35,6 +35,24 @@ Usage:
 Used in:
 - dbt_project.yml
 
+## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/generate_custom_schema.sql))
+This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema suffixed with `_staging` (e.g. `emilie_scratch_staging` and `analytics_staging`). For tagged models, the output is dependent on the target. It is `emilie_scratch_analytics` on dev and `analytics` on prod. 
+Usage: 
+```
+{{ config(schema='analytics') }}
+```
+Used in: 
+- all models surfaced in our BI tool.
+
+## Grants ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/grant_usage_to_schema.sql))
+This macro...
+Usage:
+```
+on-run-end:
+ - "{{ grant_usage_to_schemas(schemas, user) }}"
+```
+Used in:
+- dbt_project.yml
 
 ## Monthly Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/monthly_change.sql))
 This macro calculates differences for each consecutive usage ping by uuid.

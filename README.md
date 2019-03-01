@@ -299,6 +299,7 @@ FROM filtered_events
 - Lines of SQL should be no longer than 80 characters.
 - Field names should all be lowercased.
 - Function names should all be capitalized.
+- Macros should be named the same as their file names.
 - The `AS` keyword should be used when projecting a field or table name.
 - Fields should be stated before aggregates / window functions.
 - Ordering and grouping by a number (eg. group by 1, 2) is preferred.

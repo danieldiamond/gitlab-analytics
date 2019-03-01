@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 with actuals as (
 
 	SELECT * FROM {{ref('sheetload_alliancesdashboard_actuals')}}

@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH opps AS (
     SELECT *
     FROM {{ref('sfdc_opportunity_xf')}}

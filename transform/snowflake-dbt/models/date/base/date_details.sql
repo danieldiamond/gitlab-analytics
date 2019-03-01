@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH sequence_gen AS (
   -- https://docs.snowflake.net/manuals/sql-reference/functions/seq1.html#seq1-seq2-seq4-seq8
     SELECT

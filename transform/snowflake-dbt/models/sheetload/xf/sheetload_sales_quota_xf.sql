@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 with agent_mapping as (
 
     SELECT *

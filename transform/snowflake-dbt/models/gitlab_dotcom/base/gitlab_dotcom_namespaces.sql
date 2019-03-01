@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 {% set fields_to_mask = ['name', 'path'] %}
 
 WITH source AS (
