@@ -103,5 +103,7 @@ SELECT
      ELSE NULL END AS employee_tags
 
 FROM users
-LEFT OUTER JOIN user_role ON users.userroleid = user_role.id
-LEFT OUTER JOIN users as manager ON manager.id = users.managerid
+LEFT OUTER JOIN user_role 
+ON users.userroleid = user_role.id
+LEFT OUTER JOIN users as manager 
+ON manager.id = users.managerid
