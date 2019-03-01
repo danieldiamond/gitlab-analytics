@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 with sfdc_account as (
 
      SELECT * 

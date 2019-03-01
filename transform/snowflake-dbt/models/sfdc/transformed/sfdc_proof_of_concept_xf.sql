@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH sfdc_poc AS (
 
   SELECT * FROM {{ ref('sfdc_proof_of_concept') }}

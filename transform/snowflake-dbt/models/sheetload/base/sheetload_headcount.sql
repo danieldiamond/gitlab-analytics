@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH source AS (
 
 	SELECT *

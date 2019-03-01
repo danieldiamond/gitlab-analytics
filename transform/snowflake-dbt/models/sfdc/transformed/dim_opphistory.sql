@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH opphistory AS (
 		SELECT * FROM {{ ref('sfdc_opportunityhistory') }}
 ),

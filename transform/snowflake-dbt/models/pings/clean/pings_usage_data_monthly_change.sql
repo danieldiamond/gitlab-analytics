@@ -1,7 +1,8 @@
 {{
   config(
     materialized='incremental',
-    unique_key='unique_key'
+    unique_key='unique_key',
+    schema='analytics'
   )
 }}
 

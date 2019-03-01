@@ -16,7 +16,7 @@ Describe the solution.
 - [ ] Field names should all be lowercased.
 - [ ] Function names should all be capitalized.
 - [ ] Every model should be tested AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable ([Docs](https://docs.getdbt.com/docs/testing-and-documentation)).
-- [ ] Any new macros have been documented in the macro README.
+- [ ] Any new macros follow the naming convention (file name matches macro name) and have been documented in the macro README.
 - [ ] The output of dbt test should be pasted into MRs.
 
 ## Related Links

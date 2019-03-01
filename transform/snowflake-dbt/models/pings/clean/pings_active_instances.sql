@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH active_instances AS (
     SELECT
       to_varchar(host_id) as host_id,

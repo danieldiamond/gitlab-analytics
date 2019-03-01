@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH sfdc_campaign AS (
 
 	SELECT *

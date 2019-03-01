@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 with users as (
 
     SELECT * FROM {{ref('sfdc_users')}}

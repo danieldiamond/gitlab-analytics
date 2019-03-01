@@ -1,3 +1,4 @@
+{{ config(schema='analytics') }}
 {% set fields_to_mask = ['title', 'description'] %}
 
 with issues as (

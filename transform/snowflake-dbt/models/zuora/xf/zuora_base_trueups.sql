@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH zuora_accts AS (
 
     SELECT *

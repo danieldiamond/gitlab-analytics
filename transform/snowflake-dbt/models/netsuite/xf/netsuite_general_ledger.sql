@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH journal_entries AS (
     SELECT *
     FROM {{ref('netsuite_journal_entries')}}

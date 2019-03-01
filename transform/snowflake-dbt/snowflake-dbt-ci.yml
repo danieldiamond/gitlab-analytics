@@ -98,6 +98,7 @@ dbt_snowflake_full_refresh:
 snowflake_mr_dbt:
   <<: *snowflake_dbt_jobs
   script:
+    - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
     - dbt run --profiles-dir profile --target prod --full-refresh
     - dbt test --profiles-dir profile --target prod
@@ -108,6 +109,7 @@ snowflake_mr_dbt:
 snowflake_mr_dbt_exclude_snowplow:
   <<: *snowflake_dbt_jobs
   script:
+    - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
     - dbt run --profiles-dir profile --target prod --full-refresh --exclude snowplow
     - dbt test --profiles-dir profile --target prod --exclude snowplow

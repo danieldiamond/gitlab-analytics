@@ -1,7 +1,8 @@
 {{
-  config({
-    "materialized":"table"
-  })
+  config(
+    materialized ='table',
+    schema='analytics'
+  )
 }}
 
 with leadsource as (

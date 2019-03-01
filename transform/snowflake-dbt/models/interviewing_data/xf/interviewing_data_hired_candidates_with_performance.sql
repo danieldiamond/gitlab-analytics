@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 {% set set_to_true = "IS NOT NULL THEN True END" %}
 
 {% set bonus_types = ['discretionary_bonuses',

@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 with zuora_mrr_totals as (
 
     SELECT * FROM {{ref('zuora_mrr_totals')}}

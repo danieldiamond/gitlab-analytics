@@ -1,3 +1,4 @@
+{{ config(schema='analytics') }}
 -- this can't be an incremental model because of the day_range calculation
 WITH zuora_invoice_base AS (
 

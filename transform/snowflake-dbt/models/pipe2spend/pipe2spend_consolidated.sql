@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH headcount AS (
     SELECT
         date_month      AS month,

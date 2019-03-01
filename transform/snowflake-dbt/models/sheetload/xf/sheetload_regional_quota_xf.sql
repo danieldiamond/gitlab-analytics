@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 with base as ( 
 
   SELECT *

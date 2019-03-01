@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 with users as (SELECT
   *,
   TIMESTAMPDIFF(DAYS, user_created_at, last_activity_on)                                      as days_active,

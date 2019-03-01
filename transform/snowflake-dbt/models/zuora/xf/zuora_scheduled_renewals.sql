@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH zuora_base_mrr AS (
 
     SELECT *
