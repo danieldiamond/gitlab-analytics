@@ -3,13 +3,19 @@ services:
     webserver:
         image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
         restart: always
-        depends_on:
-          - postgres
         ports:
           - "8080:8080"
         env_file:
           - airflow.env
-        command: bash -c "airflow initdb ; airflow webserver"
+        environment:
+          AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/analytics/dags/
+          NAMESPACE: testing
+        command: bash -c "airflow webserver"
+        volumes:
+          - type: bind
+            source: .
+            target: /usr/local/airflow/analytics
+            read_only: True
         healthcheck:
             test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
             interval: 30s
@@ -21,7 +27,15 @@ services:
         restart: always
         env_file:
           - airflow.env
+        environment:
+          AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/analytics/dags/
+          NAMESPACE: testing
         command: bash -c "airflow scheduler"
+        volumes:
+          - type: bind
+            source: .
+            target: /usr/local/airflow/analytics
+            read_only: True
         healthcheck:
             test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-scheduler.pid ]"]
             interval: 30s

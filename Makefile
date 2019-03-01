@@ -1,19 +1,26 @@
 .PHONY: build
 
-IMAGE := airflow-image:test
+IMAGE := analytics_webserver_1
 
 help:
 	@echo "\n \
-	**These are the supported commands** \n \
-	compose: spins up an airflow-deployment and mounts the analytics repo. \n"
+	**List of Makefile commands** \n \
+	attach: attaches a shell to airflow deployment in docker-compose.yml \n \
+	cleanup: deep docker cleanup, frees up space and gets rid of old containers/images \n \
+	compose: spins up an airflow deployment in the background and mounts the analytics repo. \n \
+	teardown: stops all running containers and removes them \n"
 
 compose:
 	@echo "Composing airflow..."
-	@docker-compose up
+	@docker-compose up -d
 
-attach:
-	@echo "Attaching to the running Webserver container..."
-	@docker exec -ti something
+teardown:
+	@echo "Tearing down docker containers..."
+	@docker-compose down
+
+attach: compose
+	@echo "Attaching to the Webserver container..."
+	@docker exec -ti ${IMAGE} /bin/bash
 
 cleanup:
 	@echo "Cleaning things up..."
