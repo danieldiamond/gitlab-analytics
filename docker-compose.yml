@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+    webserver:
+        image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
+        restart: always
+        depends_on:
+          - postgres
+        ports:
+          - "8080:8080"
+        env_file:
+          - airflow.env
+        command: bash -c "airflow initdb ; airflow webserver"
+        healthcheck:
+            test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+            interval: 30s
+            timeout: 30s
+            retries: 3
+
+    scheduler:
+        image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
+        restart: always
+        env_file:
+          - airflow.env
+        command: bash -c "airflow scheduler"
+        healthcheck:
+            test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-scheduler.pid ]"]
+            interval: 30s
+            timeout: 30s
+            retries: 3
+
