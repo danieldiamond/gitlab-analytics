@@ -12,6 +12,9 @@ services:
           NAMESPACE: testing
         command: bash -c "airflow webserver"
         volumes:
+          - type: volume
+            source: airflow_logs
+            target: /usr/local/airflow/logs
           - type: bind
             source: .
             target: /usr/local/airflow/analytics
@@ -25,6 +28,8 @@ services:
     scheduler:
         image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
         restart: always
+        ports:
+          - "8793:8793"
         env_file:
           - airflow.env
         environment:
@@ -32,6 +37,9 @@ services:
           NAMESPACE: testing
         command: bash -c "airflow scheduler"
         volumes:
+          - type: volume
+            source: airflow_logs
+            target: /usr/local/airflow/logs
           - type: bind
             source: .
             target: /usr/local/airflow/analytics
@@ -42,3 +50,5 @@ services:
             timeout: 30s
             retries: 3
 
+volumes:
+  airflow_logs:
