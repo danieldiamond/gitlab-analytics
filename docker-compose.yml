@@ -10,8 +10,17 @@ services:
         environment:
           AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/analytics/dags/
           NAMESPACE: testing
+          IN_CLUSTER: "False"
+          GOOGLE_APPLICATION_CREDENTIALS: /root/gcp_service_creds.json
         command: bash -c "airflow webserver"
         volumes:
+          - type: bind
+            source: ${KUBECONFIG}
+            target: /root/.kube/config
+          - type: bind
+            source: ${GOOGLE_APPLICATION_CREDENTIALS}
+            target: /root/gcp_service_creds.json
+            read_only: True
           - type: volume
             source: airflow_logs
             target: /usr/local/airflow/logs
@@ -35,8 +44,17 @@ services:
         environment:
           AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/analytics/dags/
           NAMESPACE: testing
+          IN_CLUSTER: "False"
+          GOOGLE_APPLICATION_CREDENTIALS: /root/gcp_service_creds.json
         command: bash -c "airflow scheduler"
         volumes:
+          - type: bind
+            source: ${KUBECONFIG}
+            target: /root/.kube/config
+          - type: bind
+            source: ${GOOGLE_APPLICATION_CREDENTIALS}
+            target: /root/gcp_service_creds.json
+            read_only: True
           - type: volume
             source: airflow_logs
             target: /usr/local/airflow/logs

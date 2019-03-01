@@ -25,13 +25,13 @@ dag = DAG(
 
 snowflake_load = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
-    task_id='snowflake_load',
-    name='snowflake_load',
+    task_id='snowflake-load',
+    name='snowflake-load',
     cmds=['/bin/bash', '-c'],
     arguments=[container_cmd],
     namespace=env['NAMESPACE'],
     get_logs=True,
-    in_cluster=True,
+    in_cluster= False if env['IN_CLUSTER'] == "False" else True,
     dag=dag,
 )
 
