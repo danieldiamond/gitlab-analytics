@@ -160,6 +160,7 @@ The flow from code change to testing in Airflow should look like this (this assu
 5. Once the job is finished, you can navigate to the DAG/Task instance to review the logs.
 
 Because we don't currently need to worry about storing long-term logs for our MRs, all local Airflow instances proxy to the same database (`airflow test`), we do not spin up a new postgres db for every MR/local instance of Airflow.
+There is also a `make help` command that describes what commands exist and what they do.
 
 #### Requirements for using Airflow in the MR workflow
 
