@@ -27,9 +27,11 @@ container_cmd = f"""
     python analytics/transform/util/execute_copy.py
 """
 
+# Create the DAG
 dag = DAG(
     'snowflake_load', default_args=default_args, schedule_interval=timedelta(days=1))
 
+# Task 1
 snowflake_load = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id='snowflake-load',
