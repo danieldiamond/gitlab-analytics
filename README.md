@@ -156,7 +156,7 @@ The flow from code change to testing in Airflow should look like this (this assu
 1. Commit and push your code to the remote branch.
 2. Run `make attach` to spin up airflow and attach a shell to one of the containers
 3. Open a web browser and navigate to `localhost:8080` to see your own local webserver
-4. In the airflow shell, run a command to trigger the DAG/Task you want to test, for example `airflow run snowflake_load snowflake-load 2019-01-01`
+4. In the airflow shell, run a command to trigger the DAG/Task you want to test, for example `airflow run snowflake_load snowflake-load 2019-01-01` (as configured in the docker-compose file, all kube pods will be created in the `testing` namespace)
 5. Once the job is finished, you can navigate to the DAG/Task instance to review the logs.
 
 Because we don't currently need to worry about storing long-term logs for our MRs, all local Airflow instances proxy to the same database (`airflow test`), we do not spin up a new postgres db for every MR/local instance of Airflow.
