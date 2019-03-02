@@ -2,16 +2,19 @@ version: '3.7'
 services:
     webserver:
         image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
-        restart: always
+        restart: "no"
         ports:
           - "8080:8080"
-        env_file:
-          - airflow.env
+        depends_on:
+          - proxy
         environment:
+          AIRFLOW__CORE__SQL_ALCHEMY_CONN: ${AIRFLOW__CORE__SQL_ALCHEMY_CONN}
+          AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
           AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/analytics/dags/
           NAMESPACE: testing
           IN_CLUSTER: "False"
           GOOGLE_APPLICATION_CREDENTIALS: /root/gcp_service_creds.json
+          GIT_BRANCH: ${GIT_BRANCH}
         command: bash -c "airflow webserver"
         volumes:
           - type: bind
@@ -28,24 +31,22 @@ services:
             source: .
             target: /usr/local/airflow/analytics
             read_only: True
-        healthcheck:
-            test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
-            interval: 30s
-            timeout: 30s
-            retries: 3
 
     scheduler:
         image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
-        restart: always
+        restart: "no"
         ports:
           - "8793:8793"
-        env_file:
-          - airflow.env
+        depends_on:
+          - proxy
         environment:
+          AIRFLOW__CORE__SQL_ALCHEMY_CONN: ${AIRFLOW__CORE__SQL_ALCHEMY_CONN}
+          AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
           AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/analytics/dags/
           NAMESPACE: testing
           IN_CLUSTER: "False"
           GOOGLE_APPLICATION_CREDENTIALS: /root/gcp_service_creds.json
+          GIT_BRANCH: ${GIT_BRANCH}
         command: bash -c "airflow scheduler"
         volumes:
           - type: bind
@@ -62,11 +63,20 @@ services:
             source: .
             target: /usr/local/airflow/analytics
             read_only: True
-        healthcheck:
-            test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-scheduler.pid ]"]
-            interval: 30s
-            timeout: 30s
-            retries: 3
+
+    proxy:
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances=gitlab-analysis:us-west1:analytics=tcp:0.0.0.0:5432",
+                  "-credential_file=/root/gcp_service_creds.json"]
+        ports:
+          - 5432:5432
+        volumes:
+          - type: bind
+            source: ${GOOGLE_APPLICATION_CREDENTIALS}
+            target: /root/gcp_service_creds.json
+            read_only: True
+
 
 volumes:
   airflow_logs:

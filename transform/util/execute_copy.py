@@ -19,7 +19,7 @@ query = """copy into raw.snowplow.events (jsontext)
                 on_error='skip_file';"""
 
 engine = create_engine(
-            URL(user=env['SNOWLFAKE_LOAD_USER'],
+            URL(user=env['SNOWFLAKE_LOAD_USER'],
                 password=env['SNOWFLAKE_LOAD_PASSWORD'],
                 account=env['SNOWFLAKE_ACCOUNT'],
                 role='LOADER',

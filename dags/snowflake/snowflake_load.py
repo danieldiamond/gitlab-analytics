@@ -5,11 +5,13 @@ from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.contrib.kubernetes.secret import Secret
 
+# Load the env vars into a dict and set Secrets
 env = os.environ.copy()
 SNOWFLAKE_LOAD_USER = Secret('env', 'SNOWFLAKE_LOAD_USER', 'airflow', 'SNOWFLAKE_LOAD_USER')
 SNOWFLAKE_LOAD_PASSWORD = Secret('env', 'SNOWFLAKE_LOAD_PASSWORD', 'airflow', 'SNOWFLAKE_LOAD_PASSWORD')
 SNOWFLAKE_ACCOUNT = Secret('env', 'SNOWFLAKE_ACCOUNT', 'airflow', 'SNOWFLAKE_ACCOUNT')
 
+# Default arguments for the DAG
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -19,8 +21,9 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 
-container_cmd = """
-    git clone https://gitlab.com/gitlab-data/analytics.git ;
+# Set the command for the container
+container_cmd = f"""
+    git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1;
     python analytics/transform/util/execute_copy.py
 """
 
