@@ -28,7 +28,7 @@ compose:
 init:
 	@echo "Initializing the Airflow DB..."
 	@docker-compose up -d db
-	@sleep 10
+	@sleep 5
 	@docker-compose run scheduler airflow initdb
 	@docker-compose down
 
