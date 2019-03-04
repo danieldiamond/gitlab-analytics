@@ -8,7 +8,8 @@ help:
 	attach: attaches a shell to airflow deployment in docker-compose.yml. \n \
 	cleanup: WARNING: DELETES DB VOLUME, frees up space and gets rid of old containers/images. \n \
 	compose: spins up an airflow deployment in the background and mounts the analytics repo. \n \
-	init: initializes a new Airflow db, required on a fresh db. \n"
+	init: initializes a new Airflow db, required on a fresh db. \n \
+	set-branch: prints a command for the user to run that will set their GIT_BRANCH env var. \n"
 
 attach: compose
 	@echo "Attaching to the Webserver container..."
