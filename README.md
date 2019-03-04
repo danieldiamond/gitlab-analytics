@@ -154,12 +154,12 @@ To facilitate the easier use of Airflow locally while still testing properly run
 The flow from code change to testing in Airflow should look like this (this assumes there is already a DAG for that task):
 
 1. Commit and push your code to the remote branch.
+2. Run `make init` to spin up the postgres db container and init the Airflow tables
 2. Run `make attach` to spin up airflow and attach a shell to one of the containers
 3. Open a web browser and navigate to `localhost:8080` to see your own local webserver
 4. In the airflow shell, run a command to trigger the DAG/Task you want to test, for example `airflow run snowflake_load snowflake-load 2019-01-01` (as configured in the docker-compose file, all kube pods will be created in the `testing` namespace)
 5. Once the job is finished, you can navigate to the DAG/Task instance to review the logs.
 
-Because we don't currently need to worry about storing long-term logs for our MRs, all local Airflow instances proxy to the same database (`airflow test`), we do not spin up a new postgres db for every MR/local instance of Airflow.
 There is also a `make help` command that describes what commands exist and what they do.
 
 #### Requirements for using Airflow in the MR workflow
@@ -169,8 +169,6 @@ The docker-compose file needs to read from a `.env` file when it generates the c
 ```
 KUBECONFIG=
 GOOGLE_APPLICATION_CREDENTIALS=
-AIRFLOW__CORE__SQL_ALCHEMY_CONN=
-AIRFLOW__CORE__FERNET_KEYE=
 ```
 
 As long as those are set, the docker-compose file will correctly configure all permissions.
