@@ -11,6 +11,7 @@
 *.csv.gz
 tmp_log.txt
 .env
+*.env
 .vscode/
 gapi_keyfile.json
 gcp_credentials.json

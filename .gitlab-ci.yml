@@ -301,5 +301,5 @@ review_stop:
 # Global variables
 variables:
   PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
-  SNOWFLAKE_DATABASE: $CI_COMMIT_REF_NAME
+  SNOWFLAKE_DATABASE: "$CI_COMMIT_REF_NAME"
 

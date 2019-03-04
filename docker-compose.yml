@@ -1,0 +1,79 @@
+version: '3.7'
+services:
+    webserver:
+        image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
+        restart: always
+        ports:
+          - "8080:8080"
+        depends_on:
+          - db
+          - scheduler
+        environment:
+          AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/analytics/dags/
+          NAMESPACE: testing
+          IN_CLUSTER: "False"
+          GOOGLE_APPLICATION_CREDENTIALS: /root/gcp_service_creds.json
+          GIT_BRANCH: ${GIT_BRANCH}
+          AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql://postgres:postgres@db
+        command: bash -c "airflow webserver"
+        volumes:
+          - type: bind
+            source: ${KUBECONFIG}
+            target: /root/.kube/config
+          - type: bind
+            source: ${GOOGLE_APPLICATION_CREDENTIALS}
+            target: /root/gcp_service_creds.json
+            read_only: True
+          - type: volume
+            source: airflow_logs
+            target: /usr/local/airflow/logs
+          - type: bind
+            source: .
+            target: /usr/local/airflow/analytics
+            read_only: True
+
+    scheduler:
+        image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
+        restart: always
+        ports:
+          - "8793:8793"
+        depends_on:
+          - db
+        environment:
+          AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/analytics/dags/
+          NAMESPACE: testing
+          IN_CLUSTER: "False"
+          GOOGLE_APPLICATION_CREDENTIALS: /root/gcp_service_creds.json
+          GIT_BRANCH: ${GIT_BRANCH}
+          AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql://postgres:postgres@db
+        command: bash -c "airflow scheduler"
+        volumes:
+          - type: bind
+            source: ${KUBECONFIG}
+            target: /root/.kube/config
+          - type: bind
+            source: ${GOOGLE_APPLICATION_CREDENTIALS}
+            target: /root/gcp_service_creds.json
+            read_only: True
+          - type: volume
+            source: airflow_logs
+            target: /usr/local/airflow/logs
+          - type: bind
+            source: .
+            target: /usr/local/airflow/analytics
+            read_only: True
+
+    db:
+      image: postgres:9.6
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_PORT: 5432
+      ports:
+        - "5432:5432"
+      volumes:
+        - pgdata:/var/lib/postgresql/data
+
+volumes:
+  airflow_logs:
+  pgdata:

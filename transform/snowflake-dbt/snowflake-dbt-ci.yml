@@ -3,6 +3,7 @@
   stage: extract
   before_script:
     - cd transform/util/
+    - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
   tags:
     - analytics
 

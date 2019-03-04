@@ -125,14 +125,53 @@ We use GitLab to operate and manage the analytics function. Everything starts wi
 
 |Stage|Tool|
 |:-|:-:|
-|Extraction|Stitch and Meltano|
-|Loading|Stitch and Meltano|
-|Orchestration|GitLab CI|
+|Extraction|Stitch and Custom|
+|Loading|Stitch and Custom|
+|Orchestration|Airflow and GitLab CI|
 |Storage|Cloud SQL (PostgreSQL) and Snowflake|
 |Transformations|dbt and Python scripts|
 |Analysis| TBD |
 
 ## Documentation
+
+### Airflow
+
+We use Airflow for Orchesetration, and this includes testing in MRs. The following is the new MR workflow that includes testing with Airflow.
+
+#### Airflow in Production
+
+All DAGs are created using the `KubernetesPodOperator`, so the airflow pod itself has minimal dependencies and doesn't need to be restarted unless a major infrastructure change takes place.
+There are 4 containers running in the current Airflow deployment:
+
+1. A sidecar container checks the repo activity feed for any merges to master. If there was one, the sidecar will reclone the repo so that Airflow runs the freshest DAGs.
+2. The Airflow scheduler
+3. The Airflow webserver
+4. A cloudsql proxy that allows Airflow to connect to our cloudsql instance
+
+#### Airflow in MRs
+
+To facilitate the easier use of Airflow locally while still testing properly running our DAGs in Kubernetes, we use docker-compose to spin up local Airflow instances that then have the ability to run their DAG in Kubernetes using the KubernetesPodOperator.
+The flow from code change to testing in Airflow should look like this (this assumes there is already a DAG for that task):
+
+1. Commit and push your code to the remote branch.
+2. Run `make init` to spin up the postgres db container and init the Airflow tables
+2. Run `make attach` to spin up airflow and attach a shell to one of the containers
+3. Open a web browser and navigate to `localhost:8080` to see your own local webserver
+4. In the airflow shell, run a command to trigger the DAG/Task you want to test, for example `airflow run snowflake_load snowflake-load 2019-01-01` (as configured in the docker-compose file, all kube pods will be created in the `testing` namespace)
+5. Once the job is finished, you can navigate to the DAG/Task instance to review the logs.
+
+There is also a `make help` command that describes what commands exist and what they do.
+
+#### Requirements for using Airflow in the MR workflow
+
+The docker-compose file needs to read from a `.env` file when it generates the config to spin up Airflow. The `.env` file requires the following variables:
+
+```
+KUBECONFIG=
+GOOGLE_APPLICATION_CREDENTIALS=
+```
+
+As long as those are set, the docker-compose file will correctly configure all permissions.
 
 ### Extractors
 
