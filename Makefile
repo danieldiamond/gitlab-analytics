@@ -12,6 +12,7 @@ help:
 
 attach: compose
 	@echo "Attaching to the Webserver container..."
+	@sleep 5
 	@docker exec -ti ${IMAGE} /bin/bash
 
 cleanup:
