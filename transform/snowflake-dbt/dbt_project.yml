@@ -91,6 +91,11 @@ models:
           enabled: true
           materialized: table
 
+      gitlab_dotcom:
+        xf:
+          enabled: true
+          materialized: table
+
       sheetload:
         xf:
           enabled: true
