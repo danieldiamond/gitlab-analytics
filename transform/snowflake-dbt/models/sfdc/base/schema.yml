@@ -169,6 +169,23 @@ models:
           tests:
               - not_null
 
+  - name: sfdc_snapshot_opportunity
+    description: A table containing snapshotted historical data of the sfdc_opportunity table
+    columns:
+        - name: sfdc_opportunity_id
+          description: This is a unique identifier for the event
+          tests:
+              - not_null
+        - name: snapshot_date
+          description: "The date this  occurred in America/Los_Angeles time (eg. 2018-01-01)"
+          tests:
+              - not_null
+        - name: owner_id
+          description: The ID of the user who recorded the event
+          tests:
+              - not_null
+
+
   - name: sfdc_statement_of_work
     description: base model for SFDC Statements of Work
     columns:
