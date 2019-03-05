@@ -11,6 +11,17 @@ models:
         tests:
           - not_null
 
+  - name: sfdc_activity
+    description: The base model for SFDC Activities
+    columns:
+      - name: activity_id
+        tests:
+          - not_null
+          - unique
+      - name: activity_owner
+        tests:
+          - not_null
+
   - name: sfdc_bizible_attribution_touchpoint
     description: base model for Bizible attribution touch points that are pushed into SFDC
     columns:
@@ -35,6 +46,14 @@ models:
         - name: campaign_name
           tests:
               - not_null
+
+  - name: sfdc_campaign_member
+    description: The base model for SFDC Campaign Members
+    columns:
+        - name: campaign_member_id
+          tests:
+              - not_null
+              - unique
 
   - name: sfdc_contact
     description: base model for SFDC Contacts

@@ -102,6 +102,8 @@ snowflake_review_refresh:
   <<: *snowflake_review
   script:
     - manage_snowflake.py manage_clones --force
+  only:
+    - branches
   when: manual
 
 # Stage: setup
