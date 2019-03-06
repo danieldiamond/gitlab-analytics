@@ -18,7 +18,7 @@ quoting:
     schema: false
 
 archive:
-    - source_schema: analytics
+    - source_schema: analytics_staging
       target_schema: dbt_archive
       tables:
         - source_table: sfdc_account
