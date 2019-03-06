@@ -79,7 +79,7 @@ with raw_ss_opportunity as (
 
       FROM raw_legacy_ss_opportunity
       WHERE sub_row = 1
-      AND snapshot_date::date < '2019-01-01'::date
+      AND snapshot_date::date < '2019-03-07'::date
 
 )
 
