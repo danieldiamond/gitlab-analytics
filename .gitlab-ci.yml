@@ -90,6 +90,7 @@ snowflake_review: &snowflake_review
       - README.md
       - LICENSE
       - CODEOWNERS
+      - .gitlab/*
     refs:
       - master
     variables:

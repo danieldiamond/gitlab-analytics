@@ -1,13 +1,16 @@
 ## Issue
 
-Describe the Issue
-
+Link the Issue this MR closes
 
 ## Solution
 
 Describe the solution.
 
-## Checklist
+### Related Links
+
+Please include links to any related MRs and/or issues.
+
+## Submitter Checklist
 
 - [ ] This MR follows the coding conventions laid out in the [style guide](https://gitlab.com/meltano/meltano#dbt-coding-conventions).
 - [ ] Model-specific attributes (like sort/dist keys) should be specified in the model.
@@ -19,9 +22,6 @@ Describe the solution.
 - [ ] Any new macros follow the naming convention (file name matches macro name) and have been documented in the macro README.
 - [ ] The output of dbt test should be pasted into MRs.
 
-## Related Links
-
-Please include links to any related MRs and/or issues.
 
 ## Testing
 
@@ -34,3 +34,15 @@ Paste the results of dbt test here, including the command.
 
 </code></pre>
 </details>
+
+## All MRs Checklist
+* [ ]  Label hygiene on issue
+* [ ]  Pipelines pass
+* [ ]  This MR is ready for final review and merge.
+* [ ]  Assigned to reviewer
+
+## Reviewer Checklist
+* [ ]  Check before setting to merge
+
+## Further changes requested
+* [ ]  AUTHOR: Uncheck all boxes before taking further action. 
