@@ -76,6 +76,10 @@ models:
         tests:
           - not_null
           - unique
+      - name: owner_id
+        description: The SFDC ID of opportunity owner.
+        tests:
+            - not_null
   - name: sfdc_pipeline
     columns:
       - name: owner
@@ -110,6 +114,21 @@ models:
       - name: account_name
         tests:
           - not_null
+  - name: sfdc_snapshot_opportunity
+    description: A table containing snapshotted historical data of the sfdc_opportunity table. There should be a single snapshot of the entire table for every day.
+    columns:
+        - name: sfdc_opportunity_id
+          description: The ID of the SFDC opportunity. Unique within a given day.
+          tests:
+              - not_null
+        - name: snapshot_date
+          description: "The date the snapshot occurred in America/Los_Angeles time (eg. 2018-01-01)"
+          tests:
+              - not_null
+        - name: owner_id
+          description: The SFDC ID of opportunity owner.
+          tests:
+              - not_null
   - name: sfdc_snapshot_opportunity_xf
     columns:
       - name: opportunity_id
