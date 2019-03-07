@@ -1,5 +1,5 @@
 version: 2
-models:
+models: 
   - name: sfdc_account
     description: base model for SFDC Accounts
     columns:
@@ -10,18 +10,18 @@ models:
       - name: account_name
         tests:
           - not_null
-
-  - name: sfdc_activity
-    description: The base model for SFDC Activities
+  - name: sfdc_account_archived
+    description: "This is the base model for the archived version of SFDC accounts. It is deduped."
     columns:
-      - name: activity_id
+      - name: unique_identifier
         tests:
           - not_null
           - unique
-      - name: activity_owner
-        tests:
-          - not_null
-
+    tests:  
+      - dbt_utils.recency:
+          datepart: day
+          field: dbt_last_updated_timestamp
+          interval: 1
   - name: sfdc_bizible_attribution_touchpoint
     description: base model for Bizible attribution touch points that are pushed into SFDC
     columns:
@@ -35,7 +35,6 @@ models:
               - relationships:
                     to: ref('sfdc_campaign')
                     field: campaign_id
-
   - name: sfdc_campaign
     description: base model for SFDC Campaigns
     columns:
@@ -46,7 +45,6 @@ models:
         - name: campaign_name
           tests:
               - not_null
-
   - name: sfdc_campaign_member
     description: The base model for SFDC Campaign Members
     columns:
@@ -54,7 +52,6 @@ models:
           tests:
               - not_null
               - unique
-
   - name: sfdc_contact
     description: base model for SFDC Contacts
     columns:
@@ -65,7 +62,6 @@ models:
         - name: contact_name
           tests:
               - not_null
-
   - name: sfdc_executive_business_review
     description: base model for SFDC Executive Business Reviews
     columns:
@@ -88,7 +84,6 @@ models:
         - name: ebr_name
           tests:
               - not_null
-
   - name: sfdc_lead
     description: base model for SFDC Leads
     columns:
@@ -99,7 +94,6 @@ models:
         - name: lead_name
           tests:
               - not_null
-
   - name: sfdc_opportunity
     description: base model for SFDC Opportunities
     columns:
@@ -119,7 +113,18 @@ models:
               - relationships:
                     to: ref('sfdc_opportunitystage')
                     field: primary_label
-
+  - name: sfdc_opportunity_archived
+    description: "This is the base model for the archived version of SFDC opportunities. It is deduped."
+    columns:
+      - name: unique_identifier
+        tests:
+          - not_null
+          - unique
+    tests:  
+      - dbt_utils.recency:
+          datepart: day
+          field: dbt_last_updated_timestamp
+          interval: 1
   - name: sfdc_opportunity_line_item
     description: base model for SFDC Opportunity Line Items
     columns:
@@ -130,7 +135,6 @@ models:
         - name: opportunity_line_item_name
           tests:
               - not_null
-
   - name: sfdc_opportunityhistory
     description: base model for SFDC Opportunity History
     columns:
@@ -141,7 +145,6 @@ models:
         - name: opportunityid
           tests:
               - not_null
-
   - name: sfdc_opportunitystage
     description: base model for SFDC Opportunity Stages
     columns:
@@ -153,7 +156,6 @@ models:
           tests:
               - not_null
               - unique
-
   - name: sfdc_record_type
     description: base model for SFDC Record Types
     columns:
@@ -164,7 +166,6 @@ models:
         - name: record_type_name
           tests:
               - not_null
-
   - name: sfdc_proof_of_concept
     description: base model for SFDC Proof of Concept
     columns:
@@ -187,24 +188,6 @@ models:
         - name: poc_status
           tests:
               - not_null
-
-  - name: sfdc_snapshot_opportunity
-    description: A table containing snapshotted historical data of the sfdc_opportunity table
-    columns:
-        - name: sfdc_opportunity_id
-          description: This is a unique identifier for the event
-          tests:
-              - not_null
-        - name: snapshot_date
-          description: "The date this  occurred in America/Los_Angeles time (eg. 2018-01-01)"
-          tests:
-              - not_null
-        - name: owner_id
-          description: The ID of the user who recorded the event
-          tests:
-              - not_null
-
-
   - name: sfdc_statement_of_work
     description: base model for SFDC Statements of Work
     columns:
@@ -218,7 +201,6 @@ models:
               - relationships:
                     to: ref('sfdc_opportunity')
                     field: opportunity_id
-
   - name: sfdc_user_roles
     description: base model for SFDC User Roles
     columns:
@@ -234,3 +216,15 @@ models:
           tests:
               - not_null
               - unique
+  - name: sfdc_users_archived
+    description: "This is the base model for the archived version of SFDC users. It is deduped."
+    columns:
+      - name: unique_identifier
+        tests:
+          - not_null
+          - unique
+    tests:  
+      - dbt_utils.recency:
+          datepart: day
+          field: dbt_last_updated_timestamp
+          interval: 1
