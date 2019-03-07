@@ -64,14 +64,25 @@ dbt_snowflake_full_refresh: &dbt_snowflake
 dbt_snowflake_archive: &dbt_snowflake_archive
   <<: *snowflake_dbt_jobs
   script:
-    - dbt archive --profiles-dir profile --target prod # archive tables that snapshot models need
     - dbt deps --profiles-dir profile # install packages
+    - dbt archive --profiles-dir profile --target prod # archive tables that snapshot models need
     - dbt run --profiles-dir profile --target prod --models snapshots # update models that rely on archives
   only:
     refs:
       - master
     variables:
       - $SNOWFLAKE_DBT_ARCHIVE
+
+dbt_snowflake_archive_manual: &dbt_snowflake_archive_manual
+  <<: *snowflake_dbt_jobs
+  script:
+    - dbt deps --profiles-dir profile # install packages
+    - dbt archive --profiles-dir profile --target prod # archive tables that snapshot models need
+    - dbt run --profiles-dir profile --target prod --models snapshots # update models that rely on archives
+  only:
+    refs:
+      - branches
+  when: manual
 
 dbt_snowflake_manual: &dbt_snowflake_manual
   <<: *dbt_snowflake

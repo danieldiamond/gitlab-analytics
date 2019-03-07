@@ -1,7 +1,7 @@
 {{ config(schema='analytics') }}
 
 with ss_opportunity as (
-	SELECT * FROM {{ ref('sfdc_snapshot_opportunity') }}
+  SELECT * FROM {{ ref('sfdc_snapshot_opportunity') }}
 ),
 
 account as (
