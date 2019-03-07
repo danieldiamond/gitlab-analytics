@@ -3,8 +3,8 @@ with raw_ss_opportunity as (
        -- This table has multiple entires for each day
        -- Join on the date but then only get the latest timestamp for that day
        SELECT opp1.*
-       FROM {{ref('sfdc_opportunity_archived')}} opp1
-       LEFT JOIN {{ref('sfdc_opportunity_archived')}} opp2
+       FROM dbt_archive.sfdc_opportunity_archived opp1
+       LEFT JOIN dbt_archive.sfdc_opportunity_archived opp2
          ON opp1.opportunity_id = opp2.opportunity_id
          AND opp1._last_dbt_run::date = opp2._last_dbt_run::date
          AND opp1._last_dbt_run > opp2._last_dbt_run
@@ -81,16 +81,12 @@ with raw_ss_opportunity as (
       WHERE sub_row = 1
       AND snapshot_date::date < '2019-03-07'::date
 
-), unioned as (
-
-    SELECT *
-    FROM ss_opportunity
-
-    UNION
-
-    SELECT *
-    FROM legacy_ss_opportunity
 )
 
-SELECT * 
-FROM unioned
+SELECT *
+FROM ss_opportunity
+
+UNION
+
+SELECT *
+FROM legacy_ss_opportunity
