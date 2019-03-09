@@ -260,34 +260,30 @@ We then take all of the cleaned records and use dbt to make multiple transformat
 
 Finally, we use Python to generate SFDC accounts and to upload the host records to the appropriate SFDC account. We also generate any accounts necessary and update any SFDC accounts with DiscoverOrg, Clearbit, and WHOIS data if any of the relevant fields are not already present in SFDC.
 
-#### dbt (and SQL) Style Guide
+##### Policy & Procedure 
+ 
+- Reviewers should have 48 hours to complete a review, so plan ahead with the end of the milestone. 
+- When possible, questions/problems should be discussed with your reviewer before MR time. MR time is by definition the worst possible time to have to make meaningful changes to your models, because you’ve already done all of the work! 
 
+## SQL Style Guide 
+
+**Since we don't have a linter, it is *our collective responsibility* to enforce this Style Guide.))  Some of the below comments apply to dbt which is the bulk of the SQL we write. 
+
+#### dbt
 At Gitlab, we use dbt (data build tool) for data transformation. What follows are the conventions we use internally. *Inspired by [Fishtown Analytics](https://github.com/fishtown-analytics/corp/blob/master/dbt_coding_conventions.md)*
-
-Since we don't have a linter, it is *our collective responsibility* to enforce this Style Guide. 
-
-#### Useful Links
-- Watch [this video (GitLab internal)](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) on how to use dbt
-- Use dbt for as much modeling as possible - see this [blog post](https://blog.fishtownanalytics.com/how-do-you-decide-what-to-model-in-dbt-vs-lookml-dca4c79e2304) from Fishtown Analytics.
-
-
-##### Policy & Procedure
-
-- Reviewers should have 48 hours to complete a review, so plan ahead with the end of the milestone.
-- When possible, questions/problems should be discussed with your reviewer before MR time. MR time is by definition the worst possible time to have to make meaningful changes to your models, because you’ve already done all of the work!
+- Watch [this video (GitLab internal)](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) on how to use dbt 
+- Use dbt for as much modeling as possible - see this [blog post](https://blog.fishtownanalytics.com/how-do-you-decide-what-to-model-in-dbt-vs-lookml-dca4c79e2304) from Fishtown Analytics
 
 ##### Model Configuration
 
-- Model-specific attributes (like sort/dist keys) should be specified in the model.
+- Model-specific attributes (like materializations) should be specified in the model.
 - If a particular configuration applies to all models in a directory, it should be specified in the project.
 - In-model configurations should be specified like this:
 
-```python
+```
 {{
   config(
-    materialized = ’table’,
-    sort = ’id’,
-    dist = ’id’
+    materialized = ’table’
   )
 }}
 ```
@@ -304,16 +300,17 @@ Since we don't have a linter, it is *our collective responsibility* to enforce t
 
 ##### Field Naming Conventions
 
-- An `id` or `name` value should always be prefixed by what it is identifying or naming, e.g. `account_id` and `account_name`. When joining to any data from a different source, it should also be prefixed with the data source, e.g. `sfdc_account_id`, to avoid ambiguity. 
-- All field names should be snake-cased. 
-- Boolean field namesshould start with `has_`, `is_`, or `does_`.
-
+- An `id` or `name` value should always be prefixed by what it is identifying or naming, e.g. `account_id` and `account_name`, when represenating the primary value. Only in the `JOIN`s is it essential to be more explicit.
+- When joining to any data from a different source, a field should be prefixed with the data source, e.g. `sfdc_account_id`, to avoid ambiguity. An example: In the `sfdc_account` model, you may have `account_id` and `account_
+- All field names should be [snake-cased](https://en.wikipedia.org/wiki/Snake_case).
+- Boolean field names should start with `has_`, `is_`, or `does_`.
+ 
 ##### CTEs (Common Table Expressions)
 
 - All `{{ ref('...') }}` statements should be placed in CTEs at the top of the file. (Think of these as import statements.)
 - Where performance permits, CTEs should perform a single, logical unit of work.
 - CTE names should be as verbose as needed to convey what they do.
-- CTEs with confusing or noteable logic should be commented in file and documented in dbt docs. 
+- CTEs with confusing or noteable logic should be commented in file and documented in dbt docs.
 - CTEs that are duplicated across models should be pulled out into their own models.
 - CTEs should be formatted as follows:
 
@@ -326,62 +323,95 @@ WITH events AS ( -- think of these select statements as your import statements.
 
   ...
 
-)
+) 
 
 SELECT * -- you should always aim to "select * from final" for your last model
 FROM filtered_events
 ```
 
 ##### Style Guide
-
-- Indents should be four spaces (except for predicates, which should line up with the `where` keyword).
-- Lines of SQL should be no longer than 80 characters.
-- Field names should all be lowercased.
-- Function names should all be capitalized.
-- Macros should be named the same as their file names.
-- The `AS` keyword should be used when projecting a field or table name.
-- Fields should be stated before aggregates / window functions.
-- Ordering and grouping by a number (eg. group by 1, 2) is preferred.
-- Prefer `WHERE` to `HAVING` when either would suffice.
-- Be explicit when joining, e.g. use `LEFT JOIN` instead of `JOIN`. (Default joins are `INNER`)
-- **Never** use `USING` in joins. It will produce inaccurate results. 
-- Prefer `UNION ALL` to `UNION`.
-- Prefer `NULLIF` TO `NVL`. 
-- Consider performance. Understand the difference between `LIKE` vs `ILIKE`, `IS` vs `=`, and `NOT` vs `!` vs `<>`. Use appropriately.
-- Familiarize yourself with [the DRY Principal](https://docs.getdbt.com/docs/design-patterns). Leverage jinja and macros. If you type the same line twice, it needs to be maintained in two places. 
-- *DO NOT OPTIMIZE FOR A SMALLER NUMBER OF LINES OF CODE. NEWLINES ARE CHEAP. BRAIN TIME IS EXPENSIVE.*
-
-##### Example Code
-```sql
-with my_data as (
-
-    SELECT *  FROM {{ ref('my_data') }}
-
-), some_cte as (
-
-    SELECT * FROM {{ ref('some_cte') }}
-
-)
-
-SELECT [distinct]
-      field_1,
-      field_2,
-      field_3,
-      CASE WHEN cancellation_date is null and expiration_date is not null then expiration_date
-          WHEN cancellation_date is null then start_date+7
-          ELSE cancellation_date
-      END AS cancellation_date
-      SUM(field_4),
-      MAX(field_5)
-FROM my_data
-LEFT JOIN some_cte 
-ON my_data.id = some_cte.id 
-WHERE field_1 = ‘abc’
-  AND (field_2 = ‘def’ OR field_2 = ‘ghi’)
-GROUP BY 1, 2, 3
-HAVING count(*) > 1
-
+ 
+- Indents should be four spaces (except for predicates, which should line up with the `WHERE` keyword). 
+- Lines of SQL should be no longer than 80 characters. 
+- Field names should all be lowercased. 
+- Function names should all be capitalized. 
+- The `AS` keyword should be used when projecting a field or table name. 
+- Fields should be stated before aggregates / window functions. 
+- Ordering and grouping by a number (eg. group by 1, 2) is preferred. 
+- Prefer `WHERE` to `HAVING` when either would suffice. 
+- Be explicit when joining, e.g. use `LEFT JOIN` instead of `JOIN`. (Default joins are `INNER`) 
+- Follow the following convention for `JOIN`s
 ```
+FROM source
+  LEFT JOIN other_source on source.id = other_source.id
+```
+not
+```  
+FROM source
+  LEFT JOIN other_source on other_source.id = source.id
+```
+- **Never** use `USING` in joins. It will produce inaccurate results.  
+- Prefer `UNION ALL` to `UNION`. 
+- Prefer `NULLIF` TO `NVL`.  
+- Prefer `IFF` to a single line `CASE WHEN` statement.
+- Consider performance. Understand the difference between `LIKE` vs `ILIKE`, `IS` vs `=`, and `NOT` vs `!` vs `<>`. Use appropriately. 
+- Familiarize yourself with [the DRY Principal](https://docs.getdbt.com/docs/design-patterns). Leverage jinja, macros, and CTEs. If you type the same line twice, it needs to be maintained in two places. 
+- *DO NOT OPTIMIZE FOR A SMALLER NUMBER OF LINES OF CODE. NEWLINES ARE CHEAP. BRAIN TIME IS EXPENSIVE.* 
+ 
+##### Example Code 
+```sql 
+with my_data as ( 
+ 
+    SELECT *  FROM {{ ref('my_data') }} 
+ 
+), some_cte as ( 
+ 
+    SELECT * FROM {{ ref('some_cte') }} 
+ 
+) 
+ 
+SELECT [distinct] 
+      field_1, 
+      field_2, 
+      field_3, 
+      CASE WHEN cancellation_date IS NULL AND expiration_date IS NOT NULL 
+            THEN expiration_date 
+          WHEN cancellation_date IS NULL 
+            THEN start_date+7 
+          ELSE cancellation_date 
+          END AS cancellation_date 
+      SUM(field_4), 
+      MAX(field_5) 
+FROM my_data 
+LEFT JOIN some_cte  
+ON my_data.id = some_cte.id  
+WHERE field_1 = ‘abc’ 
+  AND (field_2 = ‘def’ OR field_2 = ‘ghi’) 
+GROUP BY 1, 2, 3 
+HAVING count(*) > 1 
+ 
+``` 
+
+##### Testing
+- Every model should be tested in a `schema.yml` file
+- At minimum, unique, not nullable fields, and foreign key constraints should be tested (if applicable)
+- The output of dbt test should be pasted into MRs
+- Any failing tests should be fixed or explained prior to requesting a review
+
+##### Query Naming Convention
+Follow the naming convention of `analysis type, data source (in alpha order, if multiple), thing, aggregation` (e.g. `retention_sfdc_zuora_customer_count.sql`)
+
+##### Commenting
+
+* When making single line comments in a model use the `--` syntax.
+* When making multi-line comments in a model us the `/*  */` syntax.
+* dbt model comments should live in the model documentation.
+* Calculations made in SQL should have a brief description of what's going on and a link to the handbook defining the metric (and how it's calculated)
+* Instead of leaving `TODO` comments, create new issues for improvement.
+
+## Python Style Guide
+
+[more to come]
 
 ##### Data Grip Configuration
 
@@ -395,13 +425,6 @@ You should have:
 * Keep indents on empty lines: unchecked
 
 You can use `Command + Option + L` to format your file.
-
-##### Testing
-
-- Every model should be tested in a `schema.yml` file
-- At minimum, unique, not nullable fields, and foreign key constraints should be tested (if applicable)
-- The output of dbt test should be pasted into MRs
-- Any failing tests should be fixed or explained prior to requesting a review
 
 ### Analysis
 

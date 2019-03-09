@@ -27,6 +27,7 @@ WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
    - [ ] [Business Operations](https://about.gitlab.com/handbook/business-ops/)
    - [ ] [Data Quality Process](https://about.gitlab.com/handbook/business-ops/data-quality-process/)
 - [ ] Watch @tlapiana's [talk at DataEngConf](https://www.youtube.com/watch?v=eu623QBwakc) that gives a phenomenal overview of how the team works.
+- [ ] Watch [this great talk](https://www.youtube.com/watch?v=prcz0ubTAAg) on what Analytics is 
 - [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
 - [ ] We suggest installing [iTerm2](http://iterm2.com) for use, over the Terminal. No pressure though.
 - [ ] Get setup with Python locally. We suggest using the [Anaconda distribution](https://www.anaconda.com/download/#macos) as it will come pre-packaged with most everything we use.
