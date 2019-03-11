@@ -1,7 +1,6 @@
 {% set find_max_date = "max(DATEADD(S, _updated_at, '1970-01-01')::date) as max_date" %}
 
-{% set table_names = [('sales_quota', 'raw.sheetload.sales_quota'),
-                      ('headcount', 'raw.sheetload.headcount'),
+{% set table_names = [('headcount', 'raw.sheetload.headcount'),
                       ('metrics', 'raw.sheetload.metrics'),
                       ('regional_quotas', 'raw.sheetload.transposed'),
                       ('sales_weekly_forecast', 'raw.sheetload.sales_weekly_forecast'),
@@ -11,6 +10,7 @@
                       ('vpedashboard_actuals', 'raw.sheetload.vpedashboard_actuals'),
                       ('cmodashboard_actuals', 'raw.sheetload.cmodashboard_actuals'),
                       ('alliancesdashboard_actuals', 'raw.sheetload.alliancesdashboard_actuals')]%}
+--('sales_quota', 'raw.sheetload.sales_quota')
 
 with base as (
 {% for table_name in table_names -%}
