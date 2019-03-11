@@ -308,6 +308,7 @@ At Gitlab, we use dbt (data build tool) for data transformation. What follows ar
 ##### CTEs (Common Table Expressions)
 
 - All `{{ ref('...') }}` statements should be placed in CTEs at the top of the file. (Think of these as import statements.)
+  - This does not imply all CTE's that have a `{{ ref('...') }}` should be `SELECT *` only. It is ok to do additional manipulations in a CTE with a `ref` if it makes sense for the model.
 - Where performance permits, CTEs should perform a single, logical unit of work.
 - CTE names should be as verbose as needed to convey what they do.
 - CTEs with confusing or noteable logic should be commented in file and documented in dbt docs.
@@ -358,39 +359,43 @@ FROM source
 - Familiarize yourself with [the DRY Principal](https://docs.getdbt.com/docs/design-patterns). Leverage jinja, macros, and CTEs. If you type the same line twice, it needs to be maintained in two places. 
 - *DO NOT OPTIMIZE FOR A SMALLER NUMBER OF LINES OF CODE. NEWLINES ARE CHEAP. BRAIN TIME IS EXPENSIVE.* 
  
-##### Example Code 
-```sql 
-with my_data as ( 
- 
-    SELECT *  FROM {{ ref('my_data') }} 
- 
-), some_cte as ( 
- 
-    SELECT * FROM {{ ref('some_cte') }} 
- 
-) 
- 
-SELECT [distinct] 
-      field_1, 
-      field_2, 
-      field_3, 
-      CASE WHEN cancellation_date IS NULL AND expiration_date IS NOT NULL 
-            THEN expiration_date 
-          WHEN cancellation_date IS NULL 
-            THEN start_date+7 
-          ELSE cancellation_date 
-          END AS cancellation_date 
-      SUM(field_4), 
-      MAX(field_5) 
-FROM my_data 
-LEFT JOIN some_cte  
-ON my_data.id = some_cte.id  
-WHERE field_1 = ‘abc’ 
-  AND (field_2 = ‘def’ OR field_2 = ‘ghi’) 
-GROUP BY 1, 2, 3 
-HAVING count(*) > 1 
- 
-``` 
+
+##### Example Code
+```sql
+with my_data as (
+
+    SELECT *  FROM {{ ref('my_data') }}
+    WHERE filter = 'my_filter'
+
+), some_cte as (
+
+    SELECT * FROM {{ ref('some_cte') }}
+
+)
+
+SELECT [distinct]
+      field_1       AS detailed_field_1,
+      field_2       AS detailed_field_2,
+      detailed_field_3,
+      CASE 
+        WHEN cancellation_date IS NULL AND expiration_date IS NOT NULL
+          THEN expiration_date
+        WHEN cancellation_date IS NULL
+          THEN start_date+7
+        ELSE cancellation_date
+      END           AS cancellation_date
+      SUM(field_4)  AS field_4_sum,
+      MAX(field_5)  AS field_5_max
+FROM my_data
+LEFT JOIN some_cte 
+  ON my_data.id = some_cte.id 
+WHERE field_1 = ‘abc’
+  AND (field_2 = ‘def’ OR field_2 = ‘ghi’)
+GROUP BY 1, 2, 3, 4
+HAVING count(*) > 1
+ORDER BY 4
+DESC
+```
 
 ##### Testing
 - Every model should be tested in a `schema.yml` file
