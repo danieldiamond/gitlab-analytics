@@ -22,30 +22,6 @@ Our charter and goals are as follows:
 * Develop a Data Architecture plan (in conjunction with functional teams).
 * Develop a roadmap for systems evolution in alignment with the Company’s data architecture plan.
 
-## Principles
-
-The Data Team at GitLab is working to establish a world-class analytics function by utilizing the tools of DevOps in combination with the core values of GitLab. We believe that data teams have much to learn from DevOps. We will work to model good software development best practices and integrate them into our data management and analytics. 
-
-A typical data team has members who fall along a spectrum of skills and focus. For now, the analytics function at GitLab has Data Engineers, Data Analysts, and eventually Data Scientists. 
-
-Data Engineers on our team are essentially software engineers who have a particular focus on data movement and orchestration. The transition to DevOps is typically easier for them because much of their work is done using the command line and scripting languages such as Bash and Python. One challenge in particular are data pipelines. Most pipelines are not well tested, data movement is not typically idempotent, and auditability of history is challenging. 
-
-Data Analysts are further from DevOps practices than Data Engineers. Most analysts use SQL for their analytics and queries, with Python or R a close second. In the past, data queries and transformations may have been done by custom tooling or software written by other companies. These tools and approaches share similar traits in that they're likely not version controlled, there are probably few tests around them, and they are difficult to maintain at scale. 
-
-Data Scientists are probably furthest from integrating DevOps practices into their work. Much of their work is done in tools like Jupyter Notebooks or R Studio. Those who do machine learning create models that are not typically version controlled. Data management and accessibility is also a concern as well. 
-
-We will work closely with the Meltano team and the broader analytics community to find solutions to these challenges. Some of the solutions may be cultural in nature, and we aim to be a model for other organizations of how a world-class Data and Analytics team can utilize the best of DevOps for all Data Operations.
-
-Some of our beliefs are:
-
-* Everything can and should be defined in code.
-* Everything can and should be version controlled.
-* Data Engineers, Data Analysts, and Data Scientists can and should integrate best practices from DevOps into their workflow.
-* It is possible to serve the business while having a high-quality, maintainable code base.
-* Analytics, and the code that supports it, can and should be open source.
-* There can be a single source of truth for every analytic question within a company.
-* Data team managers serve their team and not themselves.
-
 ## Priorities
 
 Like the rest of the company, we set quarterly objectives and key results. These are available on our company OKR page.
@@ -89,49 +65,6 @@ Like the rest of the company, we set quarterly objectives and key results. These
 * [Does my Startup Data Team Need a Data Engineer](https://blog.fishtownanalytics.com/does-my-startup-data-team-need-a-data-engineer-b6f4d68d7da9)
 * [Data Science is different now](https://veekaybee.github.io/2019/02/13/data-science-is-different/) (Note: this is why GitLab doesn't have a Data Scientist yet.)
 
-
-## Data sources
-
-Current as of 2018-Q3:
-
-* Clearbit
-* DiscoverOrg
-* GitLab.com Database
-* Internal Google Sheets
-* Lever
-* Marketo
-* Netsuite
-* Salesforce
-* Snowplow Events
-* Stripe
-* Usage/Version Pings
-* Zendesk
-* Zuora
-
-Planned:
-
-* AWS Billing
-* BambooHR
-* Fastly Billing
-* GCP Billing
-* Greenhouse
-
-
-### Data Team Architecture
-
-#### Our Stack
-
-We use GitLab to operate and manage the analytics function. Everything starts with an issue. Changes are implemented via merge requests, including changes to our pipelines, extraction, loading, transformations, and parts of our analytics.
-
-|Stage|Tool|
-|:-|:-:|
-|Extraction|Stitch and Custom|
-|Loading|Stitch and Custom|
-|Orchestration|Airflow and GitLab CI|
-|Storage|Cloud SQL (PostgreSQL) and Snowflake|
-|Transformations|dbt and Python scripts|
-|Analysis| TBD |
-
 ## Documentation
 
 ### Airflow
@@ -173,40 +106,6 @@ GOOGLE_APPLICATION_CREDENTIALS=
 
 As long as those are set, the docker-compose file will correctly configure all permissions.
 
-### Extractors
-
-#### Stitch
-
-We are loading multiple data sources through Stitch:
-*  Marketo - 12 hour intervals - Backfilled from January 1, 2013
-*  Netsuite - 30 minute intervals - Backfilled from January 1, 2013
-*  SFDC - 1 hour intervals - Backfilled from January 1, 2013
-*  Zendesk - 1 hour intervals - Backfilled from January 1, 2013
-*  Zuora - 30 minute intervals - Backfilled from January 1, 2013
-
-### Storage
-
-#### Snowflake
-Snowflake is a cloud data warehouse. It separates storage from compute making it easy to scale analytics up and down as needed.
-
-#### Managing Roles for Snowflake
-
-Here are the proper steps for provisioning a new use and user role:
-
-* Login and switch to securityadmin role
-* Create user (`EBURKE`)
-  * Create a password using https://passwordsgenerator.net/
-  * Click next and fill in additional info. Make Login Name and Display name match user name (all caps).
-  * Do not set any defaults.
-  * Send to person using https://onetimesecret.com/
-* Create role for user (`EBURKE` for example) with SYSADMIN as the parent role (this grants the role to sysadmin)
-* Grant user role to new user
-* Create user_scratch schema in ANALYTICS as SYSADMIN
-  * CREATE SCHEMA eburke_scratch;
-* Grant ownership of scratch schema to user role
-  * GRANT OWNERSHIP ON schema eburke_scratch TO ROLE eburke;
-* Document in Snowflake config.yml permissions file
-
 ##### Project variables
 
 Our current implementation uses the following project variables:
@@ -246,8 +145,6 @@ Some of the GitLab specific ELTs connect to databases which are in peered GCP pr
 1. A [VPC peering relationship](https://cloud.google.com/vpc/docs/vpc-peering) has been established between the two projects and their networks.
 1. A firewall rule has been created in the upstream project to allow access from the runner Kubernetes cluster's pod subnet.
 
-### Transformations
-
 #### Hosts Records Dataflow
 
 From our on-premises installations, we recieve [version and ping information](https://docs.gitlab.com/ee/user/admin_area/settings/usage_statistics.html) from the software. This data is currently imported once a day from a PostgreSQL database into our enterprise data warehouse (EDW). We use this data to feed into Salesforce (SFDC) to aid our sales representatives in their work.
@@ -259,160 +156,6 @@ This single host record is then enriched with data from three sources: DiscoverO
 We then take all of the cleaned records and use dbt to make multiple transformations. The last 60 days of pings are aligned with Salesforce accounts using the account name or the account website. Based on this, tables are generated of host records to upload to SFDC. If no accounts are found, we then generate a table of accounts to create within SFDC. 
 
 Finally, we use Python to generate SFDC accounts and to upload the host records to the appropriate SFDC account. We also generate any accounts necessary and update any SFDC accounts with DiscoverOrg, Clearbit, and WHOIS data if any of the relevant fields are not already present in SFDC.
-
-##### Policy & Procedure 
- 
-- Reviewers should have 48 hours to complete a review, so plan ahead with the end of the milestone. 
-- When possible, questions/problems should be discussed with your reviewer before MR time. MR time is by definition the worst possible time to have to make meaningful changes to your models, because you’ve already done all of the work! 
-
-## SQL Style Guide 
-
-**Since we don't have a linter, it is *our collective responsibility* to enforce this Style Guide.))  Some of the below comments apply to dbt which is the bulk of the SQL we write. 
-
-#### dbt
-At Gitlab, we use dbt (data build tool) for data transformation. What follows are the conventions we use internally. *Inspired by [Fishtown Analytics](https://github.com/fishtown-analytics/corp/blob/master/dbt_coding_conventions.md)*
-- Watch [this video (GitLab internal)](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) on how to use dbt 
-- Use dbt for as much modeling as possible - see this [blog post](https://blog.fishtownanalytics.com/how-do-you-decide-what-to-model-in-dbt-vs-lookml-dca4c79e2304) from Fishtown Analytics
-
-##### Model Configuration
-
-- Model-specific attributes (like materializations) should be specified in the model.
-- If a particular configuration applies to all models in a directory, it should be specified in the project.
-- In-model configurations should be specified like this:
-
-```
-{{
-  config(
-    materialized = ’table’
-  )
-}}
-```
-
-##### Base Models
-
-- Only base models should select from source tables.
-- Base models should not select from the `raw` database directly. Instead, they should reference `{{ var("database") }}`.
-- Only a single base model should be able to select from a given source table.
-- Base models should be placed in a `base/` directory.
-- Base models should perform all necessary data type casting, using the `::` sytax when casting (You accomplish the same thing with fewer characters, and it presents as cleaner).
-- Base models should perform all field naming to force field names to conform to standard field naming conventions.
-- Source fields that use reserved words must be renamed in base models.
-
-##### Field Naming Conventions
-
-- An `id` or `name` value should always be prefixed by what it is identifying or naming, e.g. `account_id` and `account_name`, when represenating the primary value. Only in the `JOIN`s is it essential to be more explicit.
-- When joining to any data from a different source, a field should be prefixed with the data source, e.g. `sfdc_account_id`, to avoid ambiguity. An example: In the `sfdc_account` model, you may have `account_id` and `account_
-- All field names should be [snake-cased](https://en.wikipedia.org/wiki/Snake_case).
-- Boolean field names should start with `has_`, `is_`, or `does_`.
- 
-##### CTEs (Common Table Expressions)
-
-- All `{{ ref('...') }}` statements should be placed in CTEs at the top of the file. (Think of these as import statements.)
-  - This does not imply all CTE's that have a `{{ ref('...') }}` should be `SELECT *` only. It is ok to do additional manipulations in a CTE with a `ref` if it makes sense for the model.
-- Where performance permits, CTEs should perform a single, logical unit of work.
-- CTE names should be as verbose as needed to convey what they do.
-- CTEs with confusing or noteable logic should be commented in file and documented in dbt docs.
-- CTEs that are duplicated across models should be pulled out into their own models.
-- CTEs should be formatted as follows:
-
-``` sql
-WITH events AS ( -- think of these select statements as your import statements.
-
-  ...
-
-), filtered_events AS ( -- CTE comments go here
-
-  ...
-
-) 
-
-SELECT * -- you should always aim to "select * from final" for your last model
-FROM filtered_events
-```
-
-##### Style Guide
- 
-- Indents should be four spaces (except for predicates, which should line up with the `WHERE` keyword). 
-- Lines of SQL should be no longer than 80 characters. 
-- Field names should all be lowercased. 
-- Function names should all be capitalized. 
-- The `AS` keyword should be used when projecting a field or table name. 
-- Fields should be stated before aggregates / window functions. 
-- Ordering and grouping by a number (eg. group by 1, 2) is preferred. 
-- Prefer `WHERE` to `HAVING` when either would suffice. 
-- Be explicit when joining, e.g. use `LEFT JOIN` instead of `JOIN`. (Default joins are `INNER`) 
-- Follow the following convention for `JOIN`s
-```
-FROM source
-  LEFT JOIN other_source on source.id = other_source.id
-```
-not
-```  
-FROM source
-  LEFT JOIN other_source on other_source.id = source.id
-```
-- **Never** use `USING` in joins. It will produce inaccurate results.  
-- Prefer `UNION ALL` to `UNION`. 
-- Prefer `NULLIF` TO `NVL`.  
-- Prefer `IFF` to a single line `CASE WHEN` statement.
-- Consider performance. Understand the difference between `LIKE` vs `ILIKE`, `IS` vs `=`, and `NOT` vs `!` vs `<>`. Use appropriately. 
-- Familiarize yourself with [the DRY Principal](https://docs.getdbt.com/docs/design-patterns). Leverage jinja, macros, and CTEs. If you type the same line twice, it needs to be maintained in two places. 
-- *DO NOT OPTIMIZE FOR A SMALLER NUMBER OF LINES OF CODE. NEWLINES ARE CHEAP. BRAIN TIME IS EXPENSIVE.* 
- 
-
-##### Example Code
-```sql
-with my_data as (
-
-    SELECT *  FROM {{ ref('my_data') }}
-    WHERE filter = 'my_filter'
-
-), some_cte as (
-
-    SELECT * FROM {{ ref('some_cte') }}
-
-)
-
-SELECT [distinct]
-      field_1       AS detailed_field_1,
-      field_2       AS detailed_field_2,
-      detailed_field_3,
-      CASE 
-        WHEN cancellation_date IS NULL AND expiration_date IS NOT NULL
-          THEN expiration_date
-        WHEN cancellation_date IS NULL
-          THEN start_date+7
-        ELSE cancellation_date
-      END           AS cancellation_date
-      SUM(field_4)  AS field_4_sum,
-      MAX(field_5)  AS field_5_max
-FROM my_data
-LEFT JOIN some_cte 
-  ON my_data.id = some_cte.id 
-WHERE field_1 = ‘abc’
-  AND (field_2 = ‘def’ OR field_2 = ‘ghi’)
-GROUP BY 1, 2, 3, 4
-HAVING count(*) > 1
-ORDER BY 4
-DESC
-```
-
-##### Testing
-- Every model should be tested in a `schema.yml` file
-- At minimum, unique, not nullable fields, and foreign key constraints should be tested (if applicable)
-- The output of dbt test should be pasted into MRs
-- Any failing tests should be fixed or explained prior to requesting a review
-
-##### Query Naming Convention
-Follow the naming convention of `analysis type, data source (in alpha order, if multiple), thing, aggregation` (e.g. `retention_sfdc_zuora_customer_count.sql`)
-
-##### Commenting
-
-* When making single line comments in a model use the `--` syntax.
-* When making multi-line comments in a model us the `/*  */` syntax.
-* dbt model comments should live in the model documentation.
-* Calculations made in SQL should have a brief description of what's going on and a link to the handbook defining the metric (and how it's calculated)
-* Instead of leaving `TODO` comments, create new issues for improvement.
 
 ## Python Style Guide
 
@@ -430,12 +173,6 @@ You should have:
 * Keep indents on empty lines: unchecked
 
 You can use `Command + Option + L` to format your file.
-
-### Analysis
-
-#### JupyterHub
-
-[JupyterHub](https://jupyterhub.readthedocs.io/en/latest/) - a multi-user Hub that spawns, manages, and proxies multiple instances of the single-user Jupyter notebook server. The Jupyter Notebook is an open-source web application that allows you to create and share documents that contain live code, equations, visualizations and explanatory text.
 
 #### Data Resources
 - [Fishtown Analytics Blog](https://blog.fishtownanalytics.com)
