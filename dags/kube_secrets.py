@@ -1,0 +1,144 @@
+from airflow.contrib.kubernetes.secret import Secret
+
+# GCP Related
+GCP_SERVICE_CREDS = Secret(
+    "env", "GCP_SERVICE_CREDS", "airflow", "cloudsql-credentials"
+)
+GCP_PROJECT = Secret("env", "GCP_PROJECT", "airflow", "GCP_PROJECT")
+GCP_REGION = Secret("env", "GCP_REGION", "airflow", "GCP_REGION")
+GCP_PRODUCTION_INSTANCE_NAME = Secret(
+    "env", "GCP_PRODUCTION_INSTANCE_NAME", "airflow", "GCP_PRODUCTION_INSTANCE"
+)
+
+# Stitch
+STITCH_CONFIG = Secret("volume", "/secrets", "airflow", "STITCH_CONFIG")
+
+# Postgres
+PG_USERNAME = Secret("env", "PG_USERNAME", "airflow", "PG_USERNAME")
+PG_ADDRESS = Secret("env", "PG_ADDRESS", "airflow", "PG_ADDRESS")
+PG_PASSWORD = Secret("env", "PG_PASSWORD", "airflow", "PG_PASSWORD")
+PG_DATABASE = Secret("env", "PG_DATABASE", "airflow", "PG_DATABASE")
+PG_PORT = Secret("env", "PG_PORT", "airflow", "PG_PORT")
+
+# Netsuite
+NETSUITE_ACCOUNT = Secret("env", "NETSUITE_ACCOUNT", "airflow", "NETSUITE_ACCOUNT")
+NETSUITE_APPID = Secret("env", "NETSUITE_APPID", "airflow", "NETSUITE_APP_ID")
+NETSUITE_EARLIEST_DATE = Secret(
+    "env", "NETSUITE_EARLIEST_DATE", "airflow", "NETSUITE_EARLIEST_DATE"
+)
+NETSUITE_EMAIL = Secret("env", "NETSUITE_EMAIL", "airflow", "NETSUITE_EMAIL")
+NETSUITE_ENDPOINT = Secret("env", "NETSUITE_ENDPOINT", "airflow", "NETSUITE_ENDPOINT")
+NETSUITE_HOST = Secret("env", "NETSUITE_HOST", "airflow", "NETSUITE_HOST")
+NETSUITE_PASSWORD = Secret("env", "NETSUITE_PASSWORD", "airflow", "NETSUITE_PASSWORD")
+NETSUITE_ROLE = Secret("env", "NETSUITE_ROLE", "airflow", "NETSUITE_ROLE")
+
+# Version DB
+VERSION_DB_USER = Secret("env", "VERSION_DB_USER", "airflow", "VERSION_DB_USER")
+VERSION_DB_PASS = Secret("env", "VERSION_DB_PASS", "airflow", "VERSION_DB_PASS")
+VERSION_DB_HOST = Secret("env", "VERSION_DB_HOST", "airflow", "VERSION_DB_HOST")
+VERSION_DB_NAME = Secret("env", "VERSION_DB_NAME", "airflow", "VERSION_DB_NAME")
+
+# Customers DB
+CUSTOMER_DB_USER = Secret("env", "CUSTOMER_DB_USER", "airflow", "CUSTOMER_DB_USER")
+CUSTOMER_DB_PASS = Secret("env", "CUSTOMER_DB_PASS", "airflow", "CUSTOMER_DB_PASS")
+CUSTOMER_DB_HOST = Secret("env", "CUSTOMER_DB_HOST", "airflow", "CUSTOMER_DB_HOST")
+CUSTOMER_DB_NAME = Secret("env", "CUSTOMER_DB_NAME", "airflow", "CUSTOMER_DB_NAME")
+
+# License DB
+LICENSE_DB_USER = Secret("env", "LICENSE_DB_USER", "airflow", "LICENSE_DB_USER")
+LICENSE_DB_PASS = Secret("env", "LICENSE_DB_PASS", "airflow", "LICENSE_DB_PASS")
+LICENSE_DB_HOST = Secret("env", "LICENSE_DB_HOST", "airflow", "LICENSE_DB_HOST")
+LICENSE_DB_NAME = Secret("env", "LICENSE_DB_NAME", "airflow", "LICENSE_DB_NAME")
+
+# GitLab Profiler DB
+GITLAB_PROFILER_DB_USER = Secret(
+    "env", "GITLAB_PROFILER_DB_USER", "airflow", "GITLAB_PROFILER_DB_USER"
+)
+GITLAB_PROFILER_DB_PASS = Secret(
+    "env", "GITLAB_PROFILER_DB_PASS", "airflow", "GITLAB_PROFILER_DB_PASS"
+)
+GITLAB_PROFILER_DB_HOST = Secret(
+    "env", "GITLAB_PROFILER_DB_HOST", "airflow", "GITLAB_PROFILER_DB_HOST"
+)
+GITLAB_PROFILER_DB_NAME = Secret(
+    "env", "GITLAB_PROFILER_DB_NAME", "airflow", "GITLAB_PROFILER_DB_NAME"
+)
+
+# CI Stats DB
+CI_STATS_DB_USER = Secret("env", "CI_STATS_DB_USER", "airflow", "CI_STATS_DB_USER")
+CI_STATS_DB_PASS = Secret("env", "CI_STATS_DB_PASS", "airflow", "CI_STATS_DB_PASS")
+CI_STATS_DB_HOST = Secret("env", "CI_STATS_DB_HOST", "airflow", "CI_STATS_DB_HOST")
+CI_STATS_DB_NAME = Secret("env", "CI_STATS_DB_NAME", "airflow", "CI_STATS_DB_NAME")
+
+# SFDC
+SFDC_PASSWORD = Secret("env", "SFDC_PASSWORD", "airflow", "SFDC_PASSWORD")
+SFDC_SECURITY_TOKEN = Secret(
+    "env", "SFDC_SECURITY_TOKEN", "airflow", "SFDC_SECURITY_TOKEN"
+)
+SFDC_USERNAME = Secret("env", "SFDC_USERNAME", "airflow", "SFDC_USERNAME")
+SFDC_THREADS = Secret("env", "SFDC_THREADS", "airflow", "SFDC_THREADS")
+
+# Snowflake Generic
+SNOWFLAKE_ACCOUNT = Secret("env", "SNOWFLAKE_ACCOUNT", "airflow", "SNOWFLAKE_ACCOUNT")
+SNOWFLAKE_PASSWORD = Secret(
+    "env", "SNOWFLAKE_PASSWORD", "airflow", "SNOWFLAKE_PASSWORD"
+)
+
+# Snowflake Load
+SNOWFLAKE_LOAD_DATABASE = Secret(
+    "env", "SNOWFLAKE_LOAD_DATABASE", "airflow", "SNOWFLAKE_LOAD_DATABASE"
+)
+SNOWFLAKE_LOAD_ROLE = Secret(
+    "env", "SNOWFLAKE_LOAD_ROLE", "airflow", "SNOWFLAKE_LOAD_ROLE"
+)
+SNOWFLAKE_LOAD_PASSWORD = Secret(
+    "env", "SNOWFLAKE_LOAD_PASSWORD", "airflow", "SNOWFLAKE_LOAD_PASSWORD"
+)
+SNOWFLAKE_LOAD_USER = Secret(
+    "env", "SNOWFLAKE_LOAD_USER", "airflow", "SNOWFLAKE_LOAD_USER"
+)
+SNOWFLAKE_LOAD_WAREHOUSE = Secret(
+    "env", "SNOWFLAKE_LOAD_WAREHOUSE", "airflow", "SNOWFLAKE_LOAD_WAREHOUSE"
+)
+
+# Snowflake Transform
+SNOWFLAKE_TRANSFORM_ROLE = Secret(
+    "env", "SNOWFLAKE_TRANSFORM_ROLE", "airflow", "SNOWFLAKE_TRANSFORM_ROLE"
+)
+SNOWFLAKE_TRANSFORM_SCHEMA = Secret(
+    "env", "SNOWFLAKE_TRANSFORM_SCHEMA", "airflow", "SNOWFLAKE_TRANSFORM_SCHEMA"
+)
+SNOWFLAKE_TRANSFORM_USER = Secret(
+    "env", "SNOWFLAKE_TRANSFORM_USER", "airflow", "SNOWFLAKE_TRANSFORM_USER"
+)
+SNOWFLAKE_TRANSFORM_WAREHOUSE = Secret(
+    "env", "SNOWFLAKE_TRANSFORM_WAREHOUSE", "airflow", "SNOWFLAKE_TRANSFORM_WAREHOUSE"
+)
+SNOWFLAKE_USER = Secret("env", "SNOWFLAKE_USER", "airflow", "SNOWFLAKE_USER")
+
+# Permission Bot
+PERMISSION_BOT_USER = Secret(
+    "env", "PERMISSION_BOT_USER", "airflow", "SNOWFLAKE_PERMISSION_USER"
+)
+PERMISSION_BOT_PASSWORD = Secret(
+    "env", "PERMISSION_BOT_PASSWORD", "airflow", "SNOWFLAKE_PERMISSION_PASSWORD"
+)
+PERMISSION_BOT_ACCOUNT = Secret(
+    "env", "PERMISSION_BOT_ACCOUNT", "airflow", "SNOWFLAKE_ACCOUNT"
+)
+PERMISSION_BOT_DATABASE = Secret(
+    "env", "PERMISSION_BOT_DATABASE", "airflow", "SNOWFLAKE_PERMISSION_DATABASE"
+)
+PERMISSION_BOT_ROLE = Secret(
+    "env", "PERMISSION_BOT_ROLE", "airflow", "SNOWFLAKE_PERMISSION_ROLE"
+)
+PERMISSION_BOT_WAREHOUSE = Secret(
+    "env", "PERMISSION_BOT_WAREHOUSE", "airflow", "SNOWFLAKE_PERMISSION_WAREHOUSE"
+)
+
+# Domains
+DORG_API_KEY = Secret("env", "DORG_API_KEY", "airflow", "DORG_API_KEY")
+DORG_USERNAME = Secret("env", "DORG_USERNAME", "airflow", "DORG_USERNAME")
+DORG_PASSWORD = Secret("env", "DORG_PASSWORD", "airflow", "DORG_PASSWORD")
+GMAPS_API_KEY = Secret("env", "GMAPS_API_KEY", "airflow", "GMAPS_API_KEY")
+CLEARBIT_API_KEY = Secret("env", "CLEARBIT_API_KEY", "airflow", "CLEARBIT_API_KEY")

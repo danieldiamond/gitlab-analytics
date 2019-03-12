@@ -1,7 +1,6 @@
 #!/bin/bash
 
-export SNOWFLAKE_DATABASE="${SNOWFLAKE_DATABASE^^}"
-echo "SNOWFLAKE_DATABASE = $SNOWFLAKE_DATABASE"
+echo "SNOWFLAKE_DATABASE = $SNOWFLAKE_TRANSFORM_DATABASE"
 
 cd $CI_PROJECT_DIR/transform/snowflake-dbt/
 dbt deps --profiles-dir profile

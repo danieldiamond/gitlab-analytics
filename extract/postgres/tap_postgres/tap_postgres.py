@@ -66,7 +66,9 @@ def postgres_engine_factory(
     port = env[connection_dict["port"]]
 
     # Inject the values to create the engine
-    return create_engine(f"postgresql://{user}:{password}@{host}:{port}/{database}")
+    engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/{database}")
+    logging.info(engine)
+    return engine
 
 
 def main(*file_paths: List[str]) -> None:
