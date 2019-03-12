@@ -1,5 +1,6 @@
 #!/bin/sh
 
+## TODO: rewrite this hot mess to use airflow conditionals/scheduling
 # Get's current UTC time
 H=$(date -u +%H)
 STARTTIME=7

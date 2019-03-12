@@ -35,3 +35,7 @@ init:
 set-branch:
 	@echo "Run this command to properly set your GIT_BRANCH env var:"
 	@echo "export GIT_BRANCH=$$(git symbolic-ref --short HEAD)"
+
+lint-dags:
+	@echo lintings the dags/ dir...
+	@black dags/

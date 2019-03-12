@@ -166,6 +166,7 @@ def sheet_loader(sheet_file: str, destination: str, gapi_keyfile: str = None,
                    'snowflake': snowflake_engine_factory}
 
     engine = engine_dict[destination](conn_dict or env)
+    info(engine)
     # Get the credentials for sheets and the database engine
     scope = ['https://spreadsheets.google.com/feeds',
              'https://www.googleapis.com/auth/drive']
