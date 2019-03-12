@@ -113,7 +113,7 @@ def csv_loader(*paths: List[str], destination: str,
     replaced with underscores.
 
     Paths is a list that is separated spaces. i.e.:
-    python spreadsheet_loader.py csv <path_1> <path_2> ... <snowflake|postgres>
+    python sheetload.py csv <path_1> <path_2> ... <snowflake|postgres>
     """
 
     # Determine what engine gets created
@@ -192,6 +192,7 @@ def sheet_loader(sheet_file: str, destination: str, gapi_keyfile: str = None,
             connection.execute(query)
         finally:
             connection.close()
+            engine.dispose()
         info('Permissions granted.')
 
     return
