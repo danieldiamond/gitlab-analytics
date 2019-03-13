@@ -1,16 +1,6 @@
 version: 2
 
 models:
-
-  - name: dim_leadsource
-    columns:
-      - name: id
-        tests:
-          - not_null
-          - unique
-
-#leadsource: no tests here because this is a essentially a list
-
   - name: sfdc_accounts_xf
     columns:
       - name: account_id
@@ -62,6 +52,18 @@ models:
   - name: sfdc_executive_business_review_xf
     columns:
       - name: owner_id
+        tests:
+          - not_null
+  - name: sfdc_lead_source
+    columns:
+      - name: lead_source_id
+        tests:
+          - not_null
+          - unique
+      - name: initial_source
+        tests:
+          - not_null
+      - name: initial_source_type
         tests:
           - not_null
   - name: sfdc_lead_xf
