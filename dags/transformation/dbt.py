@@ -7,6 +7,7 @@ from airflow.operators.python_operator import BranchPythonOperator
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 from kube_secrets import *
+from common_utils import slack_failed_task
 
 
 # Load the env vars into a dict and set Secrets
@@ -21,12 +22,13 @@ pod_env_vars = {
 
 # Default arguments for the DAG
 default_args = {
-    "owner": "airflow",
-    "depends_on_past": False,
-    "start_date": datetime(2019, 1, 1),
-    "retries": 1,
     "catchup": False,
+    "depends_on_past": False,
+    "on_failure_callback": slack_failed_task,
+    "owner": "airflow",
+    "retries": 1,
     "retry_delay": timedelta(minutes=1),
+    "start_date": datetime(2019, 1, 1),
 }
 
 # Create the DAG
