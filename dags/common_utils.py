@@ -17,10 +17,10 @@ def slack_failed_task(context):
         *TASK_ID*: {context['task_instance_key_str']}
     """
     failed_alert = SlackAPIPostOperator(
-        task_id='slack_failed',
+        task_id="slack_failed",
         channel="#analytics-pipelines",
-        token=os.environ['SLACK_API_TOKEN'],
+        token=os.environ["SLACK_API_TOKEN"],
         text=msg_text,
-        username='Airflow',
+        username="Airflow",
     )
     return failed_alert.execute()
