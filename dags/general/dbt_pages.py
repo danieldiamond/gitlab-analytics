@@ -13,7 +13,7 @@ env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {
     "CI_PROJECT_DIR": "/analytics",
-    "SNOWFLAKE_TRANSFORM_DATABASE": RAW
+    "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
     if GIT_BRANCH == "master"
     else f"{GIT_BRANCH}_ANALYTICS",
 }

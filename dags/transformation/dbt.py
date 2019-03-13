@@ -14,8 +14,8 @@ from common_utils import slack_failed_task
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {
-    "SNOWFLAKE_LOAD_DATABASE": RAW if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
-    "SNOWFLAKE_TRANSFORM_DATABASE": RAW
+    "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
+    "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
     if GIT_BRANCH == "master"
     else f"{GIT_BRANCH}_ANALYTICS",
 }
