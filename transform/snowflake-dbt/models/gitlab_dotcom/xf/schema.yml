@@ -35,3 +35,25 @@ models:
         description: days between user creation and last activity
       - name: account_age_cohort
         description: cohorting of time between last dbt run and user creation date.
+  - name: gitlab_dotcom_retention_cohorts
+    description: '{{ doc("gitlab_dotcom_retention_cohorts") }}'
+    columns:
+        - name: cohort_key
+          description: md5 of cohort date and cohort period in other to provide a unique key
+          tests:
+            - not_null
+            - unique
+        - name: cohort_date
+          description: Users are cohorted based on the month their account was created on gitlab.com.
+          tests:
+            - not_null
+        - name: period
+          description: Length in months of activity period, using the difference between `created_at` and `last_activity_on`.
+          tests:
+            - not_null
+        - name: active_in_period_distinct_count
+          description: Count of distinct Users active on this period.
+        - name: base_cohort_count
+          description: Size of the original cohort.
+        - name: retention
+          description: Calculated as `active_in_period_distinct_count` / `base_cohort_count`.

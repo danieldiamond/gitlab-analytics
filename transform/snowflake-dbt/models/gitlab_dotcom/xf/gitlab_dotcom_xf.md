@@ -60,3 +60,15 @@ The CTE does this by comparing the time of the dbt run with `created_at` in the 
 Also a definition is made for account activity time, by comparing `created_at` with `last_activity_on`
 
 {% enddocs %}
+
+{% docs gitlab_dotcom_retention_cohorts%}
+
+This table produces monthly retention rates by monthly signup cohort. 
+
+The `cohorting` CTE establishes how long the user was active by comparing `created_at` with `last_activity_on` and marking this length of activity in months. 
+
+The final result is determined by merging the `cohorting` table to itself when activity length = 0 so that we have the based size of the cohort, then take the rate from members active in each period of activity.
+
+
+
+{% enddocs %}
