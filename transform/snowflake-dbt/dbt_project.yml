@@ -127,3 +127,7 @@ models:
       zuora:
         enabled: true
         materialized: table
+
+      zendesk:
+        enabled: true
+        materialized: table
