@@ -15,7 +15,7 @@ Please include links to any related MRs and/or issues.
 - [ ] This MR follows the coding conventions laid out in the [style guide](https://gitlab.com/meltano/meltano#dbt-coding-conventions)
 
 #### Structure
-- [ ] Model-specific attributes (like sort/dist keys) should be specified in the model
+- [ ] Model-specific attributes (like custom schemas and materializations) should be specified in the model
 - [ ] Only base models are used to reference source tables/views
 - [ ] All `{{ ref('...') }}` statements should be placed in CTEs at the top of the file
 
