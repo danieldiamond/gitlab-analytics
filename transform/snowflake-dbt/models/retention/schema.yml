@@ -79,7 +79,7 @@ models:
         #  description: '{{ doc("sfdc_accounts_xf_col_ultimate_parent_account_name") }}'
         #  tests:
         #      - not_null
-        - name: sub_row
+        - name: sub_row 
           description: "The number of the subscription for the ultimate parent account, in order from the parent account's original cohort month. Ultimate parent accounts with multiple subscriptions starting in the same cohort month are given sequential numbers."
           tests:
               - not_null
