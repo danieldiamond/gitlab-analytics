@@ -65,20 +65,20 @@ models:
         - name: zuora_account_name
           tests:
               - not_null
-        - name: sfdc_account_id 
-          tests:
-              - not_null
-        - name: sfdc_account_name 
-          tests:
-              - not_null
-        - name: ultimate_parent_account_id
-          description: '{{ doc("sfdc_accounts_xf_col_ultimate_parent_account_id") }}'
-          tests:
-              - not_null
-        - name: ultimate_parent_account_name
-          description: '{{ doc("sfdc_accounts_xf_col_ultimate_parent_account_name") }}'
-          tests:
-              - not_null
+        #- name: sfdc_account_id 
+        #  tests:
+        #      - not_null
+        #- name: sfdc_account_name 
+        #  tests:
+        #      - not_null
+        #- name: ultimate_parent_account_id
+        #  description: '{{ doc("sfdc_accounts_xf_col_ultimate_parent_account_id") }}'
+        #  tests:
+        #      - not_null
+        #- name: ultimate_parent_account_name
+        #  description: '{{ doc("sfdc_accounts_xf_col_ultimate_parent_account_name") }}'
+        #  tests:
+        #      - not_null
         - name: sub_row
           description: "The number of the subscription for the ultimate parent account, in order from the parent account's original cohort month. Ultimate parent accounts with multiple subscriptions starting in the same cohort month are given sequential numbers."
           tests:
