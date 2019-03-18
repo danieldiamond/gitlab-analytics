@@ -61,7 +61,7 @@ cloudsql_review_refresh:
     FORCE: "true"
   when: manual
 
-# Clone the ANALYTICS database in Snowflake for use in MRs
+# Clone the ANALYTICS and RAW databases in Snowflake for use in MRs
 snowflake_review: &snowflake_review
   stage: review
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
@@ -97,8 +97,9 @@ snowflake_review: &snowflake_review
       - $SNOWFLAKE_DATABASE == $SNOWFLAKE_LOAD_DATABASE
       - $SNOWFLAKE_DATABASE == $SNOWFLAKE_TRANSFORM_DATABASE
       - $TEST_PIPELINE
+  when: manual
 
-# Force re-clone the ANALYTICS database in Snowflake for use in MRs
+# Force re-clone the ANALYTICS and RAW databases in Snowflake for use in MRs
 snowflake_review_refresh:
   <<: *snowflake_review
   script:
