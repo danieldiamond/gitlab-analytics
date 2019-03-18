@@ -1,5 +1,10 @@
 with usage60 as (
-  SELECT * FROM {{ ref('pings_last_60_usage_pings') }}
+
+  SELECT * FROM {{ ref('pings_usage_data') }}
+  WHERE updated_at::DATE >= dateadd(day, -60, CURRENT_DATE)
+  AND version NOT LIKE '%ee'
+  AND version NOT LIKE '%pre'
+
 )
 
 SELECT

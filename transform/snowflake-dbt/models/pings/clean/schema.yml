@@ -1,11 +1,62 @@
 version: 2
 
 models:
+    - name: libre_sfdc_accounts
+      columns:
+          - name: account__c
+            tests:
+                - not_null
+          - name: host_data_source__c
+            tests:
+                - accepted_values:
+                    values:
+                    - DiscoverOrg
+                    - Clearbit
+                    - WHOIS
+          - name: name
+            tests:
+                - not_null
+          - name: original_hostname__c
+            tests:
+                - not_null
     - name: pings_active_instances
       description: instaces checked for new version or send a usage ping
       columns:
           - name: host_id
           - name: ping_type
             description: an instance checked for new version or send a usage ping
+    - name: pings_usage_data_boolean
+      columns:
+          - name: created_at
+            tests:
+                - not_null
+          - name: unique_key
+            tests:
+                - not_null
+          - name: uuid
+            tests:
+                - not_null
+    - name: pings_usage_data_month
+      columns:
+          - name: created_at
+            tests:
+                - not_null
+          - name: unique_key
+            tests:
+                - not_null
+          - name: uuid
+            tests:
+                - not_null
+    - name: pings_usage_data_unpacked
+      columns:
+          - name: main_edition
+            tests:
+                - accepted_values:
+                    values:
+                        - EE
+                        - CE
+          - name: uuid
+            tests:
+                - not_null
     - name: pings_usage_data_mom_change
       description: '{{ doc("pings_usage_data_mom_change") }}'

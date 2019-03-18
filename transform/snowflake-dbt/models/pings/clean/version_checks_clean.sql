@@ -1,5 +1,10 @@
 with version60 as (
-  SELECT * FROM {{ ref('pings_last_60_version_pings') }}
+	
+  SELECT * FROM {{ ref('pings_version_checks') }}
+  WHERE updated_at::DATE >= dateadd(day, -60, CURRENT_DATE)
+  AND gitlab_version NOT LIKE '%ee'
+  AND gitlab_version NOT LIKE '%pre'
+
 )
 
 SELECT
