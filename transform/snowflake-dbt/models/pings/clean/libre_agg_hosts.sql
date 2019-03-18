@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH libre AS (
     SELECT *
     FROM {{ ref('libre_hosts') }}

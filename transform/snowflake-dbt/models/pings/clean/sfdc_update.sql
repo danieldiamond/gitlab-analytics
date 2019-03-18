@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH external_combined AS (
     SELECT
       coalesce(dorg.domain, cbit.domain)                     AS domain,

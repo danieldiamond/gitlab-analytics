@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 with libre_agg as (
   SELECT * FROM {{ ref('libre_agg_hosts') }}
 ),

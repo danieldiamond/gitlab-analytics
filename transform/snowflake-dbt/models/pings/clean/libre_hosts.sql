@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 WITH usage_pings AS (
     SELECT *
     FROM {{ ref('usage_data_clean') }}
