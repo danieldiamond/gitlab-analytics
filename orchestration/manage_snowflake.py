@@ -78,15 +78,15 @@ class SnowflakeManager(object):
         # If the DB doesn't exist or --force is true, create or replace the db
         if not db_exists:
             logging.info('Creating or replacing DBs')
-            try:
-                for query in queries:
+            for query in queries:
+                try:
                     logging.info('Executing Query: {}'.format(query))
                     connection = self.engine.connect()
                     [result] = connection.execute(query).fetchone()
                     logging.info('Query Result: {}'.format(result))
-            finally:
-                connection.close()
-                self.engine.dispose()
+                finally:
+                    connection.close()
+                    self.engine.dispose()
 
     def delete_clone(self):
         """
