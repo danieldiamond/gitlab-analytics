@@ -266,10 +266,13 @@ snowplow_load >> branching_dbt_run
 # Branching for run/archive
 branching_dbt_run >> dbt_run
 branching_dbt_run >> dbt_full_refresh
-dbt_run >> dbt_test
-dbt_full_refresh >> dbt_test
+dbt_run >> sfdc_update
+dbt_full_refresh >> sfdc_update
 #
-dbt_test >> sfdc_update >> branching_dbt_archive
+sfdc_update >> branching_dbt_archive
 # Branching for dbt_archive
 branching_dbt_archive >> dbt_archive
 branching_dbt_archive >> skip_dbt_archive
+#
+dbt_archive >> dbt_test
+skip_dbt_archive >> dbt_test
