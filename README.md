@@ -4,7 +4,6 @@
 * Data Team Handbook - https://about.gitlab.com/handbook/business-ops/data-team/#-quick-links
 * dbt Docs - https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview
 * Epics Roadmap - https://gitlab.com/groups/gitlab-data/-/roadmap?layout=MONTHS&sort=start_date_asc
-* JupyterHub Link - https://hub.gitlab-bizops.com/hub/home
 * Snowflake Web UI - https://gitlab.snowflakecomputing.com
 * [Machine Learning Resources](https://drive.google.com/drive/folders/1sOXWW-FujwKU2T-auG7KPR9h6xqDRx0z?usp=sharing) (GitLab Internal)
 * [Email Address to Share Sheetloaded Doc with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
