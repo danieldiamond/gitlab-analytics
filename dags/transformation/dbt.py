@@ -29,6 +29,7 @@ default_args = {
     "retries": 1,
     "retry_delay": timedelta(minutes=1),
     "start_date": datetime(2019, 1, 1),
+    "trigger_rule": "none_failed",
 }
 
 # Create the DAG
@@ -64,9 +65,9 @@ def dbt_archive_or_none(timestamp: datetime) -> str:
     """
     print(timestamp.hour)
     if timestamp.hour % 6 == 0 or timestamp.hour == 0:
-        return "dbt_archive"
+        return "dbt-archive"
     else:
-        return "dummy"
+        return "skip-dbt-archive"
 
 
 # Set the git command for the containers
