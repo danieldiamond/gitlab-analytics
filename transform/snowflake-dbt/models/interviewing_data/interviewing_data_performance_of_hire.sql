@@ -1,2 +1,2 @@
 SELECT *
-FROM {{ var("database") }}.historical.performance_of_hires
+FROM {{ var("database") }}.sheetload.performance_of_hires
