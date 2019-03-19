@@ -3,7 +3,7 @@
 with source as (
 
 	SELECT *
-	FROM {{ var("database") }}.historical.interviewers_and_scores 
+	FROM {{ var("database") }}.sheetload.interviewers_and_scores 
 
 ), renamed as (
 

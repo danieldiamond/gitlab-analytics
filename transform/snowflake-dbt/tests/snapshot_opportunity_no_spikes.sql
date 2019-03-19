@@ -4,14 +4,14 @@
 with latest_snapshot as (
   
   select max(snapshot_date) as max_snapshot_date, count(*) as current_row_count 
-  from analytics.f_snapshot_opportunity
-  where snapshot_date = (select max(snapshot_date) from analytics.snapshot_opportunity)
+  from analytics.sfdc_snapshot_opportunity_xf
+  where snapshot_date = (select max(snapshot_date) from analytics_staging.sfdc_snapshot_opportunity)
   
 ), second_latest_snapshot as (
 
   select snapshot_date as second_max_snapshot_date, count(*) as previous_row_count
-  from analytics.f_snapshot_opportunity
-  where snapshot_date = (select dateadd('day', -1, max(snapshot_date)) from analytics.snapshot_opportunity)
+  from analytics.sfdc_snapshot_opportunity_xf
+  where snapshot_date = (select dateadd('day', -1, max(snapshot_date)) from analytics_staging.sfdc_snapshot_opportunity)
   group by 1
 
 )
