@@ -39,9 +39,7 @@ container_cmd = f"""
 
 # Create the DAG
 dag = DAG(
-    "customers_db_extract",
-    default_args=default_args,
-    schedule_interval=timedelta(hours=3),
+    "customers_db_extract", default_args=default_args, schedule_interval="0 */3 * * *"
 )
 
 # Task 1

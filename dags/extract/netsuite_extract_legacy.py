@@ -34,7 +34,7 @@ default_args = {
 dag = DAG(
     "netsuite_extract_legacy",
     default_args=default_args,
-    schedule_interval=timedelta(hours=2),
+    schedule_interval="0 */2 * * *",
 )
 
 # SFDC Extract

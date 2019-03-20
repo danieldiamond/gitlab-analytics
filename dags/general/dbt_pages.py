@@ -36,7 +36,7 @@ container_cmd = f"""
 """
 
 # Create the DAG
-dag = DAG("dbt_pages", default_args=default_args, schedule_interval=timedelta(days=1))
+dag = DAG("dbt_pages", default_args=default_args, schedule_interval="0 0 */1 * *")
 
 # Task 1
 snowflake_load = KubernetesPodOperator(
