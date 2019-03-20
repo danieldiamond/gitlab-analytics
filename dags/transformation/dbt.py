@@ -28,12 +28,12 @@ default_args = {
     "owner": "airflow",
     "retries": 1,
     "retry_delay": timedelta(minutes=1),
-    "start_date": datetime(2019, 1, 1),
+    "start_date": datetime(2019, 1, 1, 0, 0, 0),
     "trigger_rule": "none_failed",
 }
 
 # Create the DAG
-dag = DAG("dbt", default_args=default_args, schedule_interval=timedelta(hours=6))
+dag = DAG("dbt", default_args=default_args, schedule_interval="0 */6 * * *")
 
 # BranchPythonOperator functions
 def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:

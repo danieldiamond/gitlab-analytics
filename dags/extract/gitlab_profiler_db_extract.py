@@ -41,7 +41,7 @@ container_cmd = f"""
 dag = DAG(
     "gitlab_profiler_db_extract",
     default_args=default_args,
-    schedule_interval=timedelta(hours=3),
+    schedule_interval="0 */3 * * *",
 )
 
 # Task 1
