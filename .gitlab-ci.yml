@@ -97,6 +97,9 @@ snowflake_review: &snowflake_review
       - $SNOWFLAKE_DATABASE == $SNOWFLAKE_LOAD_DATABASE
       - $SNOWFLAKE_DATABASE == $SNOWFLAKE_TRANSFORM_DATABASE
       - $TEST_PIPELINE
+  
+snowflake_review_manual: &snowflake_review_manual
+  <<: *snowflake_review
   when: manual
 
 # Force re-clone the ANALYTICS and RAW databases in Snowflake for use in MRs
