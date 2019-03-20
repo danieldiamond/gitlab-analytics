@@ -1,5 +1,5 @@
 {% docs current_arr_segmentation_all_levels %}
-This model recognizes that there are three levels of analysis: Zuora Subscription, SFDC Account, and SFDC Ultimate Parent Account. It calculates the MRR for the most recent completed month for which a customer was active. We use the MRR value to calculate ARR. Finally, we use ARR to segment into four categories.
+This model recognizes that there are three levels of analysis: Zuora Subscription, SFDC Account, and SFDC Ultimate Parent Account. It calculates the MRR for the most recent completed month for which a customer was active. We use the MRR value to calculate ARR. Finally, we use ARR to segment into four categories. We also rank ARR to create a customer rank. 
 
 {% enddocs %}
 

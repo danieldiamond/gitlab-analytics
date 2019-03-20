@@ -8,12 +8,28 @@ models:
           description: "Subcription Slug, SFDC Account ID, or SFDC Ultimate Parent Account ID"
           tests:
               - not_null
+        - name: level_
+          description: "Subcription, SFDC Account, or SFDC Ultimate Parent Account"
+          tests:
+              - not_null
+              - accepted_values:
+                      values: ['zuora_subscription_id', 'sfdc_account_id', 'parent_account_id']
+        - name: arr
+          description: "Annual Recurring Revenue (MRR * 12) for most recent month for which this is MRR that is not in the future."
+          tests:
+              - not_null
         - name: arr_segmentation
           description: "ARR Segmentation"
           tests:
               - not_null
               - accepted_values:
                       values: ['5K to 50K', 'Under 5K', '50K to 100K','100K to 500K', '500K to 1M','1M and above']
+        - name: rank_segmentation
+          description: "Customer Rank Segmentation"
+          tests:
+              - not_null
+              - accepted_values:
+                      values: ['First 25 Customer', '26 - 50 Customer', '51 - 100 Customer', '101 - 500 Customer', '501 - 1000 Customer', '1001 - 5000 Customer', '5000+ Customer']
 
   - name: mrr_totals_levelled
     description: '{{ doc("mrr_totals_levelled") }}'
