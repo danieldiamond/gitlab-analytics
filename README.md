@@ -105,6 +105,11 @@ GOOGLE_APPLICATION_CREDENTIALS=
 
 As long as those are set, the docker-compose file will correctly configure all permissions.
 
+#### Video Walk Throughs
+
+* [Airflow pt 1](https://drive.google.com/open?id=1S03mMINXJFXekeixcJS2tN4T62qYchej)
+* [Airflow pt 2](https://drive.google.com/open?id=1zZGtSZIvSwHvhu2sEgGm4LjvbLim5KME)
+
 ##### Project variables
 
 Our current implementation uses the following project variables:
