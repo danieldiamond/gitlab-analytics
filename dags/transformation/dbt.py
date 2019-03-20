@@ -45,9 +45,12 @@ def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
     for the DAG, then run a full_refresh. This ensures only one full_refresh is
     run every week.
     """
+
+    ## TODO: make this not hardcoded
+    SCHEDULE_INTERVAL_HOURS = 6
     current_weekday = timestamp.isoweekday()
     current_seconds = timestamp.hour * 3600
-    dag_interval = dag.schedule_interval.total_seconds()
+    dag_interval = SCHEDULE_INTERVAL_HOURS * 3600
 
     # run a full-refresh once per week (on sunday early AM)
     if current_weekday == 7 and dag_interval >= current_seconds:
