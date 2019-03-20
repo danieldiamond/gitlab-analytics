@@ -1,12 +1,29 @@
-WITH RECURSIVE zuora_sub (base_slug, renewal_slug, parent_slug, lineage, children_count) AS (
+WITH RECURSIVE
 
-	SELECT
+flattening AS (
+
+  SELECT
+	{{ dbt_utils.star(from=ref('zuora_subscription_intermediate'), except=["ZUORA_RENEWAL_SUBSCRIPTION_NAME_SLUGIFY"]) }},
+
+    IFF(array_to_string(ZUORA_RENEWAL_SUBSCRIPTION_NAME_SLUGIFY,',') IS NULL,
+    subscription_name_slugify,
+    subscription_name_slugify || ',' || array_to_string(ZUORA_RENEWAL_SUBSCRIPTION_NAME_SLUGIFY,','))
+     							AS lineage,
+    renewal.value::string 		AS ZUORA_RENEWAL_SUBSCRIPTION_NAME_SLUGIFY
+  FROM {{ref('zuora_subscription_intermediate')}},
+    LATERAL flatten(input => zuora_renewal_subscription_name_slugify, OUTER => TRUE) renewal
+
+),
+
+zuora_sub (base_slug, renewal_slug, parent_slug, lineage, children_count) AS (
+
+  SELECT
     subscription_name_slugify              	AS base_slug,
     zuora_renewal_subscription_name_slugify	AS renewal_slug,
     subscription_name_slugify              	AS parent_slug,
     lineage 								AS lineage,
     2     									AS children_count
-  FROM {{ref('zuora_subscription_pre_lineage')}}
+  FROM flattening
 
   UNION ALL
 
@@ -19,8 +36,9 @@ WITH RECURSIVE zuora_sub (base_slug, renewal_slug, parent_slug, lineage, childre
 		0,
 		anchor.children_count + 1) 											AS children_count
   FROM zuora_sub anchor
-    JOIN {{ref('zuora_subscription_pre_lineage')}} iter
-      ON anchor.renewal_slug = iter.subscription_name_slugify
+  JOIN flattening iter
+    ON anchor.renewal_slug = iter.subscription_name_slugify
+
 ),
 
 pull_full_lineage AS (
