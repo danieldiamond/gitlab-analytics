@@ -284,26 +284,6 @@ roles:
                 - analytics.tmurphy_scratch
                 - analytics.tmurphy_scratch_meta
 
-    - tszuromi:
-        warehouses:
-            - reporting
-        owns:
-            schemas:
-                - analytics.tszuromi_scratch
-        privileges:
-            databases:
-                read:
-                    - raw
-            schemas:
-                read:
-                    - raw.gcloud_postgres_stitch
-                    - raw.version_db
-            tables:
-                read:
-                    - raw.gcloud_postgres_stitch.version_usage_data
-                    - raw.gcloud_postgres_stitch.version_version_checks
-                    - raw.version_db.*
-
     - wwright:
         warehouses:
             - reporting
@@ -421,12 +401,6 @@ users:
             - sysadmin
             - transformer
             - tmurphy
-
-    - tszuromi:
-        can_login: yes
-        member_of:
-            - reporter
-            - tszuromi
 
     - wwright:
         can_login: yes
