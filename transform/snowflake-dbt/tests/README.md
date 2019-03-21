@@ -66,6 +66,25 @@ Steps to Resolve:
 * Step 5: Once finance has confirmed that the account has been updated, create a MR to remove the filter
 
 
+### Test: zuora_assert_single_ult_parent
+Error Example:
+```
+Failure in test zuora_assert_single_ult_parent (tests/data_test/zuora_assert_single_ult_parent.sql)
+  Got 1 results, expected 0.
+
+  compiled SQL at target/compiled/gitlab_snowflake/data_test/zuora_assert_single_ult_parent.sql
+```
+
+Steps to Resolve:
+
+* Step 1: Follow the general checklist
+* Step 2: Create an issue in finance asking for the Zuora account and subscription linkages to be reviewed. 
+    * If the data on the Zuora end is fine, then bring in Sales people to review Salesforce data.
+* Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
+* Step 4: Filter out the zuora subscription in the test based on the md5 has of the `ultimate_parent_sub` name
+* Step 5: Once finance has confirmed that the accounts and subscriptions have been updated, create a MR to remove the filter
+
+
 ## Schema Tests
 
 ### Model: snowplow
