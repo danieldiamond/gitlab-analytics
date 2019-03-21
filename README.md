@@ -161,10 +161,6 @@ We then take all of the cleaned records and use dbt to make multiple transformat
 
 Finally, we use Python to generate SFDC accounts and to upload the host records to the appropriate SFDC account. We also generate any accounts necessary and update any SFDC accounts with DiscoverOrg, Clearbit, and WHOIS data if any of the relevant fields are not already present in SFDC.
 
-## Python Style Guide
-
-[more to come]
-
 ##### Data Grip Configuration
 
 You can change your formatting preferences in Data Grip by going to Preferences > Editor > Code Style > HTML.
