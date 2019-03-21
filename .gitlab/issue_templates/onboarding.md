@@ -151,7 +151,8 @@ This data comes from the usage ping that comes with a GitLab installation.
 - [ ] We use the [Snowplow dbt package](https://hub.getdbt.com/fishtown-analytics/snowplow/latest/) on our models. Their documentation does show up in our dbt docs.
 
 ## Zendesk
-- [ ] For access to Zendesk, you will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request).
+- [ ] For access to Zendesk, please follow the instructions in the [handbook](https://about.gitlab.com/handbook/support/internal-support/#light-agent-zendesk-accounts-available-for-all-gitlab-staff)
+
 
 ## Zuora (Finance, Billing SSOT)
 - [ ] Become familiar with Zuora.
