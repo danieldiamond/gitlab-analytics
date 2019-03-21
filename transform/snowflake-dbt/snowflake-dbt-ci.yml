@@ -15,6 +15,8 @@
     - echo $SNOWFLAKE_DATABASE
     - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
     - echo $SNOWFLAKE_TRANSFORM_DATABASE
+    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XS_WAREHOUSE
+    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
   tags:
     - analytics
 
@@ -39,7 +41,7 @@ snowplow_load_manual:
   when: manual
 
 # Model
-dbt_snowflake: &dbt_snowflake
+.dbt_snowflake: &dbt_snowflake
   <<: *snowflake_dbt_jobs
   script:
     - dbt deps --profiles-dir profile # install packages
@@ -50,9 +52,10 @@ dbt_snowflake: &dbt_snowflake
     variables:
       - $SNOWFLAKE_DBT
 
-dbt_snowflake_full_refresh: &dbt_snowflake
+.dbt_snowflake_full_refresh: &dbt_snowflake
   <<: *snowflake_dbt_jobs
   script:
+    - export CURRENT_DBT_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
     - dbt deps --profiles-dir profile # install packages
     - dbt run --profiles-dir profile --target prod --full-refresh
   only:
@@ -61,85 +64,122 @@ dbt_snowflake_full_refresh: &dbt_snowflake
     variables:
       - $SNOWFLAKE_DBT_FULL
 
-dbt_snowflake_archive: &dbt_snowflake_archive
+.dbt_snowflake_archive_script: &dbt_snowflake_archive_script
   <<: *snowflake_dbt_jobs
   script:
     - dbt deps --profiles-dir profile # install packages
     - dbt archive --profiles-dir profile --target prod # archive tables that snapshot models need
     - dbt run --profiles-dir profile --target prod --models snapshots # update models that rely on archives
+
+.dbt_snowflake_archive: &dbt_snowflake_archive
+  <<: *dbt_snowflake_archive_script
   only:
     refs:
       - master
     variables:
       - $SNOWFLAKE_DBT_ARCHIVE
 
-dbt_snowflake_archive_manual: &dbt_snowflake_archive_manual
-  <<: *snowflake_dbt_jobs
-  script:
-    - dbt deps --profiles-dir profile # install packages
-    - dbt archive --profiles-dir profile --target prod # archive tables that snapshot models need
-    - dbt run --profiles-dir profile --target prod --models snapshots # update models that rely on archives
+mr_dbt_archive_manual: &mr_dbt_archive_manual
+  <<: *dbt_snowflake_archive_script
   only:
-    refs:
-      - branches
+    - branches
   when: manual
 
-dbt_snowflake_manual: &dbt_snowflake_manual
-  <<: *dbt_snowflake
-  script:
-    - dbt deps --profiles-dir profile # install packages
-    - dbt run --profiles-dir profile --target prod --exclude snapshots # run without snapshot models
-    - dbt archive --profiles-dir profile --target prod # archive tables that snapshot models need
-    - dbt run --profiles-dir profile --target prod --models snapshots # update models that rely on archives
-  only:
-    refs:
-      - branches
-  when: manual
-
-dbt_snowflake_tests_manual:
-  <<: *dbt_snowflake_manual
-  script:
-    - dbt deps --profiles-dir profile
-    - dbt test --profiles-dir profile --target prod
-
-dbt_snowflake_full_refresh:
+.dbt_snowflake_full_refresh: &dbt_snowflake_full_refresh
   <<: *snowflake_dbt_jobs
   script:
+    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
+    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - dbt deps --profiles-dir profile
     - dbt run --profiles-dir profile --target prod --full-refresh
   when: manual
 
-snowflake_mr_dbt:
+mr_dbt_all: &mr_dbt_all
   <<: *snowflake_dbt_jobs
   script:
+    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
+    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
     - dbt run --profiles-dir profile --target prod --full-refresh
     - dbt test --profiles-dir profile --target prod
     - dbt run --profiles-dir profile --target prod
     - dbt test --profiles-dir profile --target prod
+  only:
+    - branches
   when: manual
 
-snowflake_mr_dbt_exclude_snowplow:
+mr_dbt_exclude_product: &mr_dbt_exclude_product
   <<: *snowflake_dbt_jobs
   script:
     - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
-    - dbt run --profiles-dir profile --target prod --full-refresh --exclude snowplow
-    - dbt test --profiles-dir profile --target prod --exclude snowplow
-    - dbt run --profiles-dir profile --target prod --exclude snowplow
-    - dbt test --profiles-dir profile --target prod --exclude snowplow
+    - dbt run --profiles-dir profile --target prod --full-refresh --exclude snowplow pings gitlab_dotcom
+    - dbt test --profiles-dir profile --target prod --exclude snowplow pings gitlab_dotcom
+    - dbt run --profiles-dir profile --target prod --exclude snowplow pings gitlab_dotcom
+    - dbt test --profiles-dir profile --target prod --exclude snowplow pings gitlab_dotcom
+  only:
+    - branches
+  when: manual
+
+mr_dbt_snowplow: &mr_dbt_snowplow
+  <<: *snowflake_dbt_jobs
+  script:
+    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_TRANSFORM_XL_WAREHOUSE
+    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
+    - python3 macro_name_check.py
+    - dbt deps --profiles-dir profile
+    - dbt run --profiles-dir profile --target prod --full-refresh --models snowplow
+    - dbt test --profiles-dir profile --target prod --models snowplow
+    - dbt run --profiles-dir profile --target prod --models snowplow
+    - dbt test --profiles-dir profile --target prod --models snowplow
+  only:
+    - branches
+  when: manual
+
+mr_dbt_gitlab_dotcom: &mr_dbt_gitlab_dotcom
+  <<: *snowflake_dbt_jobs
+  script:
+    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
+    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
+    - python3 macro_name_check.py
+    - dbt deps --profiles-dir profile
+    - dbt run --profiles-dir profile --target prod --full-refresh --models gitlab_dotcom
+    - dbt test --profiles-dir profile --target prod --models gitlab_dotcom
+    - dbt run --profiles-dir profile --target prod --models gitlab_dotcom
+    - dbt test --profiles-dir profile --target prod --models gitlab_dotcom
+  only:
+    - branches
+  when: manual
+
+
+mr_dbt_pings: &mr_dbt_pings
+  <<: *snowflake_dbt_jobs
+  script:
+    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
+    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
+    - python3 macro_name_check.py
+    - dbt deps --profiles-dir profile
+    - dbt run --profiles-dir profile --target prod --full-refresh --models pings
+    - dbt test --profiles-dir profile --target prod --models pings
+    - dbt run --profiles-dir profile --target prod --models pings
+    - dbt test --profiles-dir profile --target prod --models pings
+  only:
+    - branches
   when: manual
 
 # Model tests
-dbt_snowflake_tests_manual:
-  <<: *dbt_snowflake_manual
+mr_dbt_tests_manual:
+  <<: *snowflake_dbt_jobs
   stage: model_tests
   script:
     - dbt deps --profiles-dir profile
     - dbt test --profiles-dir profile --target prod
+  only:
+    - branches
+  when: manual
 
-dbt_snowflake_tests:
+.dbt_snowflake_tests:
   <<: *snowflake_dbt_jobs
   stage: model_tests
   script:
