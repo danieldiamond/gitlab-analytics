@@ -26,6 +26,12 @@ Our charter and goals are as follows:
 Like the rest of the company, we set quarterly objectives and key results. These are available on our company OKR page.
 
 ## Media
+* [How Data Teams Do More With Less By Adopting Software Engineering Best Practices - Thomas's talk at the 2018 DataEngConf in NYC](https://www.youtube.com/watch?v=eu623QBwakc)
+
+* [Taylor explains dbt](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) (GitLab internal)
+
+* [dbt docs intro with Drew Banin from Fishtown Analytics](https://www.youtube.com/watch?v=bqIBNvA9xjo)
+
 * [Tom Cooney explains Zendesk](https://drive.google.com/open?id=1oExE1ZM5IkXcq1hJIPouxlXSiafhRRua) (GitLab internal)
 
 * [Luca Williams explains Customer Success Dashboards](https://drive.google.com/open?id=1FsgvELNmQ0ADEC1hFEKhWNA1OnH-INOJ) (GitLab internal)
@@ -34,13 +40,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
 
 * [Courtland Smith explains Marketing Dashboard needs](https://drive.google.com/open?id=1bjKWRdfUgcn0GfyB2rS3qdr_8nbRYAZu) (GitLab internal)
 
-* [Taylor explains dbt](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) (GitLab internal)
-
-* [dbt docs intro with Drew Banin from Fishtown Analytics](https://www.youtube.com/watch?v=bqIBNvA9xjo)
-
 * Taylor's talk at the 2018 Nashville Analytics Summit - Coming Soon
-
-* [How Data Teams Do More With Less By Adopting Software Engineering Best Practices - Thomas's talk at the 2018 DataEngConf in NYC](https://www.youtube.com/watch?v=eu623QBwakc)
 
 * GitLab blog post about Meltano - https://news.ycombinator.com/item?id=17667399
   * Livestream chat with Sid and HN user slap_shot - https://www.youtube.com/watch?v=F8tEDq3K_pE
