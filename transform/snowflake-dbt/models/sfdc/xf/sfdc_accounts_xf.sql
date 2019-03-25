@@ -1,39 +1,39 @@
 {{ config(schema='analytics') }}
 
-with sfdc_account as (
+with sfdc_account AS (
 
      SELECT * 
      FROM {{ref('sfdc_account')}}
 
-), sfdc_users as (
+), sfdc_users AS (
 
      SELECT *
      FROM {{ ref('sfdc_users') }}
 
-), sfdc_record_type as (
+), sfdc_record_type AS (
 
      SELECT *
      FROM {{ ref('sfdc_record_type') }}     
 
-), sfdc_account_deal_size_segmentation as (
+), sfdc_account_deal_size_segmentation AS (
 
     SELECT *
     FROM {{ref('sfdc_account_deal_size_segmentation')}}
 
-), parent_account as (
+), parent_account AS (
 
-     SELECT account_name as ultimate_parent_account_name,
-            account_id as ultimate_parent_account_id,
-            account_segment as ultimate_parent_account_segment
+     SELECT account_name AS ultimate_parent_account_name,
+            account_id AS ultimate_parent_account_id,
+            account_segment AS ultimate_parent_account_segment
      FROM {{ref('sfdc_account')}}
 
-), joined as (
+), joined AS (
 
     SELECT
         sfdc_account.*,
-        sfdc_users.name as technical_account_manager,
-    		parent_account.ultimate_parent_account_name, 
-    		parent_account.ultimate_parent_account_segment,
+        sfdc_users.name AS technical_account_manager,
+            parent_account.ultimate_parent_account_name, 
+            parent_account.ultimate_parent_account_segment,
         sfdc_record_type.record_type_name,
         sfdc_record_type.business_process_id,
         sfdc_record_type.record_type_label,
@@ -44,7 +44,7 @@ with sfdc_account as (
                 OR account_segment IN('Large', 'Strategic') THEN TRUE
            ELSE FALSE END AS is_large_and_up
     FROM sfdc_account
-	LEFT JOIN parent_account
+    LEFT JOIN parent_account
     ON sfdc_account.ultimate_parent_account_id = parent_account.ultimate_parent_account_id
     LEFT OUTER JOIN sfdc_users
     ON sfdc_account.technical_account_manager_id = sfdc_users.id
@@ -55,5 +55,5 @@ with sfdc_account as (
 
 )
 
-SELECT joined.*
+SELECT *
 FROM joined

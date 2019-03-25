@@ -6,7 +6,7 @@ WITH sfdc_opportunity AS (
 
 ), sfdc_opportunitystage AS (
 
-    SELECT * FROM {{ref('sfdc_opportunitystage')}}
+    SELECT * FROM {{ref('sfdc_opportunity_stage')}}
 
 ), sfdc_lead_source AS (
 
@@ -50,8 +50,8 @@ WITH sfdc_opportunity AS (
         sfdc_record_type.record_type_description,
         sfdc_record_type.record_type_modifying_object_type,
         CASE WHEN (sfdc_opportunity.days_in_stage > 30
-          	OR sfdc_opportunity.incremental_acv > 100000 
-          	OR sfdc_opportunity.pushed_count > 0)
+            OR sfdc_opportunity.incremental_acv > 100000 
+            OR sfdc_opportunity.pushed_count > 0)
             THEN TRUE
           ELSE FALSE
          END                                                                                        AS is_risky

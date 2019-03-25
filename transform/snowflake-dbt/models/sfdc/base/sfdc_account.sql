@@ -27,31 +27,20 @@ WITH source AS (
       -- key people GL side
       entity__c                                AS gitlab_entity,
       federal_account__c                       AS federal_account,
-      --boolean
       gitlab_com_user__c                       AS gitlab_com_user,
-      --boolean
       account_manager__c                       AS account_manager,
-      --account_manager_account_team__c as account_manager_account_team ## Why are these all null?
-      --account_manager_lu__c
       account_owner_calc__c                    AS account_owner,
-      -- account_owner_manager_email__c as account_owner_manager,
       account_owner_team__c                    AS account_owner_team,
       business_development_rep__c              AS business_development_rep,
-      --business_development_rep_account_team__c AS business_development_rep_team,
       dedicated_service_engineer__c            AS dedicated_service_engineer,
       sdr__c                                   AS sales_development_rep,
       sdr_account_team__c                      AS sales_development_rep_team,
       solutions_architect__c                   AS solutions_architect,
       technical_account_manager_lu__c          AS technical_account_manager_id,
-      -- lookup on user
-
-      --key people outside
-      -- bill_to_email__c as bill_to_email,
-
 
     --   info
       {{target.schema}}_staging.id15to18(substring(regexp_replace(ultimate_parent_account__c,
-                     '_HL_ENCODED_/|<a\\s+href="/', ''), 0, 15))							   
+                     '_HL_ENCODED_/|<a\\s+href="/', ''), 0, 15))                 
                                                AS ultimate_parent_account_id,
       type                                     AS account_type,
       industry,
@@ -106,7 +95,7 @@ WITH source AS (
 
     FROM source
     WHERE id IS NOT NULL
-          AND isdeleted = FALSE
+    AND isdeleted = FALSE
 
 )
 
