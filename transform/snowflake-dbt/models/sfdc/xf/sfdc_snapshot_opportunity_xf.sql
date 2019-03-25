@@ -2,14 +2,14 @@
 
 with ss_opportunity as (
   SELECT * FROM {{ ref('sfdc_snapshot_opportunity') }}
-),
 
-account as (
+), account as (
+
     SELECT * FROM {{ ref('sfdc_account') }}
-),
 
-oppstage as (
-    SELECT * FROM {{ ref('sfdc_opportunitystage') }}
+),oppstage as (
+
+    SELECT * FROM {{ ref('sfdc_opportunity_stage') }}
 ),
 
 transformed as (

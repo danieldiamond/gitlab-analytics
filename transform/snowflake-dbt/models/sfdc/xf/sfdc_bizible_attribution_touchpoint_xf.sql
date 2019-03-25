@@ -1,15 +1,16 @@
 {{ config(schema='analytics') }}
 
 WITH opps AS (
+
     SELECT *
     FROM {{ref('sfdc_opportunity_xf')}}
-),
 
-    touches AS (
+), touches AS (
+
       SELECT *
       FROM {{ref('sfdc_bizible_attribution_touchpoint')}}
-  )
 
+), final AS (
 
     SELECT
       date_trunc('month', opps.sales_accepted_date) AS sales_accepted_month,
@@ -54,4 +55,10 @@ WITH opps AS (
       opps.lead_source,
       opps.record_type_label
     FROM opps
-      JOIN touches ON touches.opportunity_id = opps.opportunity_id
+    INNER JOIN touches 
+    ON touches.opportunity_id = opps.opportunity_id
+
+)
+
+SELECT * 
+FROM final

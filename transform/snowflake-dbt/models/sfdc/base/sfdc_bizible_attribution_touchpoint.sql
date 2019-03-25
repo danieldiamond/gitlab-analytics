@@ -1,7 +1,7 @@
 WITH source AS (
 
-	SELECT *
-	FROM {{ var("database") }}.salesforce_stitch.bizible2__bizible_attribution_touchpoint__c
+  SELECT *
+  FROM {{ var("database") }}.salesforce_stitch.bizible2__bizible_attribution_touchpoint__c
 
 ), renamed AS (
 
@@ -18,7 +18,7 @@ WITH source AS (
 
 
     FROM source
-	WHERE isdeleted = FALSE
+  WHERE isdeleted = FALSE
 
 )
 

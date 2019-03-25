@@ -1,7 +1,7 @@
 WITH source AS ( 
 
-	SELECT *
-	FROM {{ var("database") }}.salesforce_stitch.opportunitystage
+  SELECT *
+  FROM {{ var("database") }}.salesforce_stitch.opportunitystage
 
 ), mapped_stages AS (
 
@@ -69,22 +69,18 @@ WITH source AS (
         END                     AS mapped_stage
         FROM source
 
-)
+), renamed AS(
 
-, renamed AS(
-
-	SELECT
-        row_number()
-          OVER (
-            ORDER BY lower( source.id ))       AS stage_id,
+  SELECT
+        row_number() OVER (ORDER BY lower(source.id)) AS stage_id,
 
         -- keys
-        source.id                      AS sfdc_id,
+        source.id                       AS sfdc_id,
 
         -- logistical info
         -- apiname equals masterlabel as of 2018-05-24
-        masterlabel             AS primary_label,
-        m.mapped_stage          AS mapped_stage,
+        masterlabel                     AS primary_label,
+        m.mapped_stage                  AS mapped_stage,
         CASE
           WHEN m.mapped_stage IN ('1-Discovery','2-Scoping','3-Technical Evaluation')
             THEN 'Pipeline'
@@ -96,11 +92,11 @@ WITH source AS (
             THEN 'Closed'
           ELSE
             'Unmapped'
-        END                     AS pipeline_state,
-        defaultprobability      AS default_probability,
-        isactive                AS is_active,
-        isclosed                AS is_closed,
-        iswon                   AS is_won,
+        END                             AS pipeline_state,
+        defaultprobability              AS default_probability,
+        isactive                        AS is_active,
+        isclosed                        AS is_closed,
+        iswon                           AS is_won,
         CASE
           WHEN isclosed = TRUE AND iswon = TRUE
             THEN 'Won'
@@ -110,10 +106,11 @@ WITH source AS (
             THEN 'Open'
           ELSE
             'Unknown'
-        END                     AS stage_state
+        END                             AS stage_state
 
-	FROM source
-	JOIN mapped_stages m ON m.id = source.id
+  FROM source
+  JOIN mapped_stages m 
+  ON m.id = source.id
 
 )
 

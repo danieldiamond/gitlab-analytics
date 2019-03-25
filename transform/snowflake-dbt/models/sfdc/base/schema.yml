@@ -111,7 +111,7 @@ models:
           tests:
               - not_null
               - relationships:
-                    to: ref('sfdc_opportunitystage')
+                    to: ref('sfdc_opportunity_stage')
                     field: primary_label
   - name: sfdc_opportunity_archived
     description: "This is the base model for the archived version of SFDC opportunities. It is deduped."
@@ -135,7 +135,7 @@ models:
         - name: opportunity_line_item_name
           tests:
               - not_null
-  - name: sfdc_opportunityhistory
+  - name: sfdc_opportunity_history
     description: base model for SFDC Opportunity History
     columns:
         - name: id
@@ -145,7 +145,7 @@ models:
         - name: opportunityid
           tests:
               - not_null
-  - name: sfdc_opportunitystage
+  - name: sfdc_opportunity_stage
     description: base model for SFDC Opportunity Stages
     columns:
         - name: sfdc_id
