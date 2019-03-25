@@ -128,17 +128,46 @@ roles:
                     - snowflake
             schemas:
                 read:
-                    - analytics.*
+                    - analytics.analytics
+                    - analytics.analytics_meta
                     - snowflake.account_usage
 
             tables:
                 read:
-                    - analytics.*.*
+                    - analytics.analytics.*
+                    - analytics.analytics_meta.*
+                    - snowflake.account_usage.*
+
+    - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema 
+        warehouses:
+            - reporting
+        privileges:
+            databases:
+                read:
+                    - analytics
+                    - snowflake
+            schemas:
+                read:
+                    - analytics.analytics ##TODO:add sensitive schema
+                    - analytics.analytics_meta
+                    - snowflake.account_usage
+
+            tables:
+                read:
+                    - analytics.analytics.*
+                    - analytics.analytics_meta.*
                     - snowflake.account_usage.*
 
     - transformer:
         warehouses:
+            - analyst_xl
+            - analyst_xs
+            - merge_request_xl
+            - merge_request_xs
             - transforming
+            - transforming_s
+            - transforming_xl
+            - transforming_xs
         owns:
             schemas:
                 - analytics.*
@@ -226,14 +255,6 @@ roles:
         warehouses:
             - reporting
 
-    - looker:
-        warehouses:
-            - reporting
-
-    - bi_reporter:
-        warehouses:
-            - reporting
-
     - iroussos:
         warehouses:
             - reporting
@@ -254,6 +275,14 @@ roles:
         owns:
             schemas:
                 - analytics.jurbanc_scratch
+                
+    - periscope:
+        warehouses: 
+            - reporting
+    
+    - periscope_sensitive:
+        warehouses:
+            - reporting
 
     - ssichak:
         warehouses:
@@ -342,12 +371,6 @@ users:
             - transformer
             - gitlab-ci
 
-    - looker:
-        can_login: yes
-        member_of:
-            - reporter
-            - looker
-
     - iroussos:
         can_login: yes
         member_of:
@@ -370,6 +393,18 @@ users:
             - securityadmin
             - sysadmin
             - jurbanc
+            
+    - periscope:
+        can_login: yes
+        member_of:
+            - reporter
+            - periscope
+
+    - periscope_sensitive:
+        can_login: yes
+        member_of:
+            - reporter_sensitive
+            - periscope_sensitive            
 
     - ssichak:
         can_login: yes
@@ -411,7 +446,25 @@ users:
 
 # Warehouses
 warehouses:
+    - analyst_xl:
+        size: x-large
+    
+    - analyst_xs:
+        size: x-small
+
+    - engineer_xl:
+        size: x-large
+    
+    - engineer_xs:
+        size: x-small
+
     - loading:
+        size: x-small
+
+    - merge_request_xl:
+        size: x-large
+    
+    - merge_request_xs:
         size: x-small
 
     - reporting:
@@ -419,4 +472,13 @@ warehouses:
 
     - transforming:
         size: x-large
+
+    - transforming_s:
+        size: small
+
+    - transforming_xl:
+        size: x-large
+    
+    - transforming_xs:
+        size: x-small
         
