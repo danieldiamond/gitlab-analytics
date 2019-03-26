@@ -63,6 +63,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
 * [Building a Data Practice](https://www.locallyoptimistic.com/post/building-a-data-practice/)
 * [Does my Startup Data Team Need a Data Engineer](https://blog.fishtownanalytics.com/does-my-startup-data-team-need-a-data-engineer-b6f4d68d7da9)
 * [Data Science is different now](https://veekaybee.github.io/2019/02/13/data-science-is-different/) (Note: this is why GitLab doesn't have a Data Scientist yet.)
+* [Resources Written by dbt Community Members](https://discourse.getdbt.com/t/resources-written-by-community-members/276)
 
 ## Documentation
 
