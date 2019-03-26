@@ -1,3 +1,5 @@
+{{ config(schema='analytics') }}
+
 {% set names = ['pings_version_checks_version', 'pings_version_checks_tappg'] %}
 
 with {% for name in names %} {{name}} as (
