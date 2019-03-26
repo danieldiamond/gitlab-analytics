@@ -274,8 +274,8 @@ roles:
             - reporting
         owns:
             schemas:
-                - analytics.jurbanc_scratch
-                
+                - analytics.jurbanc_scratch              
+
     - periscope:
         warehouses: 
             - reporting
@@ -283,6 +283,10 @@ roles:
     - periscope_sensitive:
         warehouses:
             - reporting
+
+    - redash:
+        warehouses: 
+            - reporting  
 
     - ssichak:
         warehouses:
@@ -405,6 +409,12 @@ users:
         member_of:
             - reporter_sensitive
             - periscope_sensitive            
+
+    - redash:
+        can_login: yes
+        member_of:
+            - reporter
+            - redash
 
     - ssichak:
         can_login: yes

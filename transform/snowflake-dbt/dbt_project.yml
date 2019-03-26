@@ -54,7 +54,7 @@ models:
     logging:
       schema: analytics_meta
       post-hook:
-        - "grant select on {{this}} to role bi_reporter"
+        - "grant select on {{this}} to role reporter"
 
     snowplow:
       schema: analytics
