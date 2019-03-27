@@ -41,7 +41,7 @@ As you read in the handbook, we currently use Stitch and Meltano for extracting 
 ## Connecting to Snowflake
 - [ ] Follow the instructions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
 - [ ] Download a SQL development tool that is compatible with Snowflake, such as [SQLWorkbench/J](http://sql-workbench.net) or [DataGrip](https://www.jetbrains.com/datagrip/). If you're interested in DataGrip, follow the [instructions to get a JetBrains license in the handbook](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains). Alternatively, Snowflake has a Web UI for querying the data warehouse that can be found under [Worksheets](https://gitlab.snowflakecomputing.com/console#/internal/worksheet).
-   - [ ] If using the Snowflake Web UI, update your role to `TRANSFORMER`, warehouse to `TRANSFORMING`, and database to `ANALYTICS`. The schema does not matter because your query will reference the schema. 
+   - [ ] If using the Snowflake Web UI, update your role to `TRANSFORMER`, warehouse to `ANALYST_XS`, and database to `ANALYTICS`. The schema does not matter because your query will reference the schema. 
    - [ ] If using DataGrip, you may need to download the [Driver](https://docs.snowflake.net/manuals/user-guide/jdbc-download.html#downloading-the-driver).
    - [ ] This template may be useful as you're configuring the DataGrip connection to Snowflake `jdbc:snowflake://{account:param}.snowflakecomputing.com/?{password}[&db={Database:param}][&warehouse={Warehouse:param}][&role={Role:param}]` We recommend not setting your schema so you can select from the many options.
 
@@ -81,7 +81,7 @@ gitlab-snowflake:
       password: %%YOUR PASSWORD%%
       role: TRANSFORMER
       database: ANALYTICS
-      warehouse: TRANSFORMING
+      warehouse: ANALYST_XS
       schema: %%YOUR SCRATCH%%
 ```
 - All dbt commands need to be run within the analytics project, specifically you must be in `analytics/transform/snowflake-dbt` or below. 
