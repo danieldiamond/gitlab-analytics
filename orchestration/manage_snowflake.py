@@ -25,7 +25,7 @@ class SnowflakeManager(object):
         # Snowflake database name should be in CAPS
         # see https://gitlab.com/meltano/analytics/issues/491
         self.analytics_database = "{}_ANALYTICS".format(config_vars['SNOWFLAKE_DATABASE'].upper())
-        self.raw_database = "{}_RAW".format(config_vars['SNOWFLAKE_DATABASE'].upper())
+        # self.raw_database = "{}_RAW".format(config_vars['SNOWFLAKE_DATABASE'].upper())
 
     def manage_clones(self, force: bool=False) -> None:
         """
@@ -36,8 +36,8 @@ class SnowflakeManager(object):
         create_analytics_query = """create or replace database "{0}" clone ANALYTICS;"""
         grant_analytics_query = """grant ownership on database "{0}" to TRANSFORMER;"""
 
-        create_raw_query = """create or replace database "{0}" clone RAW;"""
-        grant_raw_query = """grant ownership on database "{0}" to LOADER;"""
+        # create_raw_query = """create or replace database "{0}" clone RAW;"""
+        # grant_raw_query = """grant ownership on database "{0}" to LOADER;"""
 
         grant_roles_loader = """grant create schema, usage on database "{0}" to LOADER"""
         grant_roles_transformer = """grant create schema, usage on database "{0}" to TRANSFORMER"""
@@ -48,10 +48,10 @@ class SnowflakeManager(object):
                 grant_analytics_query.format(self.analytics_database),
                 grant_roles_transformer.format(self.analytics_database),
                 grant_roles_loader.format(self.analytics_database),
-                create_raw_query.format(self.raw_database),
-                grant_raw_query.format(self.raw_database),
-                grant_roles_transformer.format(self.raw_database),
-                grant_roles_loader.format(self.raw_database),
+                # create_raw_query.format(self.raw_database),
+                # grant_raw_query.format(self.raw_database),
+                # grant_roles_transformer.format(self.raw_database),
+                # grant_roles_loader.format(self.raw_database),
         ]
 
         # if force is false, check if the database exists
@@ -62,10 +62,10 @@ class SnowflakeManager(object):
             try:
                 logging.info('Checking if DB exists...')
                 analytics_query = 'use database "{}";'.format(self.analytics_database)
-                raw_query = 'use database "{}";'.format(self.raw_database)
+                # raw_query = 'use database "{}";'.format(self.raw_database)
                 connection = self.engine.connect()
                 connection.execute(analytics_query)
-                connection.execute(raw_query)
+                # connection.execute(raw_query)
                 logging.info('DBs exist...')
                 db_exists = True
             except:
@@ -92,7 +92,10 @@ class SnowflakeManager(object):
         """
         Delete a clone.
         """
-        db_list = [self.analytics_database, self.raw_database]
+        db_list = [
+            self.analytics_database,
+            # self.raw_database
+        ]
 
         for db in db_list:
             query = 'drop database "{}";'.format(db)
