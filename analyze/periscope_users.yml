@@ -2,13 +2,18 @@ admins:
     - Emilie Schario
     - Taylor Murphy
 
-sql:
+editors:
+    - all admins
     - Alex Mrvaljevich
     - Cathy Richards
     - Robert Kohnke
     - Thomas LaPiana
 
 users:
+    - all editors
     - Jeremy Watson
     - Joshua Lambert
     - Victor Wu
+
+access to gl_sensitive space:
+    - all admins
