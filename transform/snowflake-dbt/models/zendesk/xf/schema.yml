@@ -1,0 +1,73 @@
+version: 2
+
+models:
+    - name: zendesk_ticket_csat
+      description: This is the model for customer satisfaction.
+      columns:
+          - name: organization_id
+            description: This is the organization id.
+            tests:
+              - not_null
+          - name: organization_market_segment
+            description: This is the organization market segment.
+            tests:
+              - not_null
+          - name: ticket_status
+            description: This is the ticket open/close status.
+            tests:
+              - not_null
+          - name: satisfaction_rating_score
+            description: This is the ticket satisfaction rating status.
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['offered', 'good', 'bad']
+          - name: date_created
+            description: This is the ticket date created time stamp.
+            tests:
+              - not_null
+
+
+    - name: zendesk_ticket_time_sla
+      description: This is the model for ticket time to resolution.
+      columns:
+          - name: organization_id
+            description: ticket organization id.
+            tests:
+              - not_null
+          - name: sfdc_id
+            description: This is the corresponding Salesforce ID.
+            tests:
+              - not_null
+          - name: ticket_status
+            description: This is the ticket status.
+            tests:
+              - not_null
+          - name: creation_date
+            description: This is the ticket creation date.
+            tests:
+              - not_null
+          - name: solved_date
+            description: This is the ticket solved date.
+            tests:
+              - not_null
+          - name: total_replies
+            description: This is the ticket total number of replies.
+            tests:
+              - not_null
+          - name: first_resolution_time_in_minutes_during_business_hours
+            description: This is the ticket first resolution time in minutes during business hours.
+            tests:
+              - not_null
+          - name: full_resolution_time_in_minutes_during_business_hours
+            description: This is the ticket final resolution time in minutes during business hours.
+            tests:
+              - not_null
+          - name: first_resolution_time_in_minutes_during_calendar_hours
+            description: This is the ticket first resolution time in minutes during calendar hours.
+            tests:
+              - not_null
+          - name: full_resolution_time_in_minutes_during_calendar_hours
+            description: This is the ticket final resolution time in minutes during calendar hours.
+            tests:
+              - not_null
