@@ -15,7 +15,7 @@ renamed as (
         --fields
         name,
         organization_fields:aar                 as arr,
-        organization_fields:market_segment      as market_segment,
+        organization_fields:market_segment      as organization_market_segment,
         organization_fields:salesforce_id       as sfdc_id,
 
         
