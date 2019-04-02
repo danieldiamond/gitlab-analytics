@@ -86,14 +86,17 @@ models:
           enabled: true
           materialized: table
 
+      dbt_logging:
+        enabled: false
+
       gitter:
         transformed:
-          enabled: true
+          enabled: false
           materialized: table
 
       gitlab_dotcom:
         xf:
-          enabled: true
+          enabled: false
           materialized: table
 
       sheetload:
@@ -125,9 +128,10 @@ models:
           materialized: table
 
       zuora:
-        enabled: true
-        materialized: table
+        xf:
+          enabled: true
+          materialized: table
 
       zendesk:
         enabled: true
-        materialized: table
+        materialized: view
