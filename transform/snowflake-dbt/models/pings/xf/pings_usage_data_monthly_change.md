@@ -8,5 +8,4 @@ The following macros used:
 
 * monthly_change - Using the change suffix, calculating differences for each consecutive usage ping by uuid
 * monthly_is_used - Adding the is_used suffix, keep the counts that show the given feature has been enabled or not
-
 {% enddocs %}

@@ -3,10 +3,11 @@
 with {% for name in names %} {{name}} as (
     SELECT *
     FROM {{ref(name)}}
+
 ), {%- endfor -%} unioned as (
 
 {%- for name in names -%} 
-    SELECT * 
+    SELECT *
     FROM {{name}}
     {% if not loop.last %} UNION ALL {% endif %}
 {%- endfor -%}

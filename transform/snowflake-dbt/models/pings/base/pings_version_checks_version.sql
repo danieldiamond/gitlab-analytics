@@ -1,18 +1,20 @@
 with source as (
 
-	SELECT *
-	FROM {{ var("database") }}.gcloud_postgres_stitch.version_version_checks
+  SELECT * 
+  FROM {{ var("database") }}.gcloud_postgres_stitch.version_version_checks
 
 ), renamed as (
 
-	SELECT created_at,
-			gitlab_version,
-			host_id,
-			id,
-			referer_url,
-			request_data,
-			updated_at
-	FROM source
+  SELECT  id,
+          host_id,
+
+          created_at,
+          updated_at,
+
+          gitlab_version,
+          referer_url,
+          request_data
+  FROM source
 )
 
 SELECT * 

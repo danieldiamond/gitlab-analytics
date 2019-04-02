@@ -3,11 +3,13 @@
 with {% for name in names %} {{name}} as (
     SELECT *
     FROM {{ref(name)}}
+    WHERE hostname != 'staging.gitlab.com'
 ), {%- endfor -%} unioned as (
 
 {%- for name in names -%} 
-    SELECT * 
+    SELECT *
     FROM {{name}}
+    WHERE hostname != 'staging.gitlab.com'
     {% if not loop.last %} UNION ALL {% endif %}
 {%- endfor -%}
 
