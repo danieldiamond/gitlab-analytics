@@ -1,9 +1,8 @@
 version: 2
 
 models:
-    - name: cleaned_urls
-    - name: clearbit_cache
-    - name: discoverorg_cache
+    - name: ping_stat_to_stage_mapping
+      description: mapping of metrics in the pings data to a stage. The data for this base model must be populated using `dbt seed`
     - name: pings_avg_cycle_analytics_tappg
       description: '{{ doc("tappg_model") }}'
     - name: pings_avg_cycle_analytics_version
@@ -16,4 +15,3 @@ models:
       description: '{{ doc("tappg_model") }}'
     - name: pings_version_checks_version
       description: '{{ doc("version_model") }}'
-    - name: whois_cache

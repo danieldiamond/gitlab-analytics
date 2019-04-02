@@ -1,0 +1,21 @@
+version: 2
+
+models:
+    - name: libre_sfdc_accounts
+      columns:
+          - name: account__c
+            tests:
+                - not_null
+          - name: host_data_source__c
+            tests:
+                - accepted_values:
+                    values:
+                    - DiscoverOrg
+                    - Clearbit
+                    - WHOIS
+          - name: name
+            tests:
+                - not_null
+          - name: original_hostname__c
+            tests:
+                - not_null

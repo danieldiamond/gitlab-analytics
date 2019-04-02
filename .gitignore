@@ -8,6 +8,7 @@
 *.DS_Store
 *.idea
 *.csv
+!ping_metrics_to_stage_mapping_data.csv
 *.csv.gz
 tmp_log.txt
 */*.env
