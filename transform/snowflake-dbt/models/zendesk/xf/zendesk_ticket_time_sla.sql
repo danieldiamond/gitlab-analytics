@@ -5,6 +5,7 @@ WITH zendesk_tickets AS (
   SELECT *
   FROM {{ref('zendesk_tickets')}}
   WHERE zendesk_tickets.ticket_status  = 'closed'
+  AND zendesk_tickets.ticket_priority IS NOT NULL
 
 ), zendesk_ticket_metrics AS (
 
@@ -20,7 +21,9 @@ WITH zendesk_tickets AS (
 
 
 
-SELECT  zendesk_tickets.organization_id,                                                 
+SELECT  zendesk_tickets.ticket_id,
+        zendesk_tickets.ticket_priority,
+        zendesk_tickets.organization_id,                                                 
         zendesk_organizations.sfdc_id,                                                  
         zendesk_tickets.ticket_status,                                                   
         zendesk_ticket_metrics.creation_date,                                             

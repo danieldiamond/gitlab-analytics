@@ -31,8 +31,16 @@ models:
     - name: zendesk_ticket_time_sla
       description: This is the model for ticket time to resolution.
       columns:
+          - name: ticket_id
+            description: This is the ticket id.
+            tests:
+              - unique
+          - name: ticket_priority
+            description: This is the ticket priority.
+            tests:
+              - not_null
           - name: organization_id
-            description: ticket organization id.
+            description: This is the ticket organization id.
             tests:
               - not_null
           - name: sfdc_id
