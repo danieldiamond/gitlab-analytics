@@ -63,7 +63,15 @@ WITH source AS (
         renewal_amount__c           AS renewal_amount,
         renewal_acv__c              AS renewal_acv,
         nrv__c                      AS nrv,
-        sales_segmentation_o__c     AS segment,
+        CASE
+          WHEN sales_segmentation_o__c ='Large' THEN 'Large'
+          WHEN sales_segmentation_o__c ='strategic' THEN 'Strategic'
+		      WHEN sales_segmentation_o__c ='Strategic' THEN 'Strategic'
+          WHEN sales_segmentation_o__c ='SMB' THEN 'SMB'
+		      WHEN sales_segmentation_o__c ='Mid-market' THEN 'Mid-Market'
+          WHEN sales_segmentation_o__c ='mid-market' THEN 'Mid-Market'
+          WHEN sales_segmentation_o__c ='Unknown' THEN 'Unknown'
+        ELSE NULL END               AS segment,
         amount                      AS total_contract_value,
         leadsource                  AS lead_source,
         products_purchased__c       AS products_purchased,
