@@ -27,5 +27,14 @@ renamed as (
     
 )
 
-SELECT * 
+SELECT organization_id,
+    arr,
+    sfdc_id,
+    CASE
+        WHEN organization_market_segment ='unknown' THEN 'Unknown'
+        WHEN organization_market_segment ='smb' THEN 'SMB'
+        WHEN organization_market_segment ='mid-market' THEN 'Mid-Market'
+        WHEN organization_market_segment ='strategic' THEN 'Strategic'
+        WHEN organization_market_segment ='large' THEN 'Large'
+    ELSE NULL END                               as organization_market_segment
 FROM renamed
