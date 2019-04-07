@@ -6,14 +6,7 @@
 
 WITH source AS (
 
-    SELECT *,
-      COALESCE(
-            initcap(
-                COALESCE(sales_segmentation_employees_o__c, sales_segmentation_o__c)
-                ), 'Unknown')       AS sales_segment,
-        initcap(
-            COALESCE(ultimate_parent_sales_segment_emp_o__c, ultimate_parent_sales_segment_o__c))
-                                    AS parent_segment
+    SELECT *
     FROM {{ var("database") }}.salesforce_stitch.opportunity
 
 ),
@@ -34,20 +27,8 @@ WITH source AS (
         opportunity_owner__c        AS owner,
         engagement_type__c          AS sales_path,
         sql_source__c               AS generated_source,
-        CASE
-          WHEN sales_segment ='Large' THEN 'Large'
-		      WHEN sales_segment ='Strategic' THEN 'Strategic'
-          WHEN sales_segment ='Smb' THEN 'SMB'
-		      WHEN sales_segment ='Mid-market' THEN 'Mid-Market'
-          WHEN sales_segment ='Unknown' THEN 'Unknown'
-        ELSE NULL END               AS sales_segment,
-        CASE
-          WHEN parent_segment ='Large' THEN 'Large'
-		      WHEN parent_segment ='Strategic' THEN 'Strategic'
-          WHEN parent_segment ='Smb' THEN 'SMB'
-		      WHEN parent_segment ='Mid-market' THEN 'Mid-Market'
-          WHEN parent_segment ='Unknown' THEN 'Unknown'
-        ELSE NULL END               AS parent_segment,
+        {{ sfdc_rename_segment(sales_segmentation_employees_o__c, sales_segmentation_o__c) }} AS sales_segment,
+        {{ sfdc_rename_segment(ultimate_parent_sales_segment_emp_o__c, ultimate_parent_sales_segment_o__c) }} AS parent_segment,
         type                        AS sales_type,
         closedate                   AS close_date,
         createddate                 AS created_date,
@@ -77,15 +58,7 @@ WITH source AS (
         renewal_amount__c           AS renewal_amount,
         renewal_acv__c              AS renewal_acv,
         nrv__c                      AS nrv,
-        CASE
-          WHEN sales_segmentation_o__c ='Large' THEN 'Large'
-          WHEN sales_segmentation_o__c ='strategic' THEN 'Strategic'
-		      WHEN sales_segmentation_o__c ='Strategic' THEN 'Strategic'
-          WHEN sales_segmentation_o__c ='SMB' THEN 'SMB'
-		      WHEN sales_segmentation_o__c ='Mid-market' THEN 'Mid-Market'
-          WHEN sales_segmentation_o__c ='mid-market' THEN 'Mid-Market'
-          WHEN sales_segmentation_o__c ='Unknown' THEN 'Unknown'
-        ELSE NULL END               AS segment,
+        {{ rename_market_segment('sales_segmentation_o__c') }} as segment,
         amount                      AS total_contract_value,
         leadsource                  AS lead_source,
         products_purchased__c       AS products_purchased,
