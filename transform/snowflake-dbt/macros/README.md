@@ -114,3 +114,13 @@ Usage:
 ```
 Used in:
 - zuora_subscription.sql
+
+
+## SFDC Rename Segment ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc_rename_segment))
+This macro coalesces two market segment columns and replaces the return value with a given cleaned up value.
+Usage:
+```
+{{sfdc_rename_segment("column_1", "column_2")}}
+```
+Used in:
+- sfdc_opportunity.sql 
