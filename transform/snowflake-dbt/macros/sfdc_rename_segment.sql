@@ -8,7 +8,6 @@
       WHEN (contains(COALESCE({{ column_1 }}, {{ column_2 }}, 'Unknown'), 'Unknown')) THEN 'Unknown'
       WHEN (contains(COALESCE({{ column_1 }}, {{ column_2 }}, 'Unknown'), 'Mid-Market')) THEN 'Mid-Market'
       WHEN (contains(COALESCE({{ column_1 }}, {{ column_2 }}, 'Unknown'), 'Mid-market')) THEN 'Mid-Market'
-
   END
 
 {%- endmacro -%}
