@@ -58,7 +58,6 @@ WITH source AS (
         renewal_amount__c           AS renewal_amount,
         renewal_acv__c              AS renewal_acv,
         nrv__c                      AS nrv,
-        {{ rename_market_segment('sales_segmentation_o__c') }} as segment,
         amount                      AS total_contract_value,
         leadsource                  AS lead_source,
         products_purchased__c       AS products_purchased,
