@@ -97,6 +97,7 @@ dbt_run_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile # install packages &&
+    dbt seed --profiles-dir profile --target prod # seed data from csv &&
     dbt run --profiles-dir profile --target prod --exclude snapshots # run without snapshot models
 """
 dbt_run = KubernetesPodOperator(
@@ -126,6 +127,7 @@ dbt_full_refresh_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile &&
+    dbt seed --profiles-dir profile --target prod # seed data from csv &&
     dbt run --profiles-dir profile --target prod --full-refresh
 """
 dbt_full_refresh = KubernetesPodOperator(
@@ -185,6 +187,7 @@ dbt_test_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile # install packages &&
+    dbt seed --profiles-dir profile --target prod # seed data from csv &&
     dbt test --profiles-dir profile --target prod
 """
 dbt_test = KubernetesPodOperator(
