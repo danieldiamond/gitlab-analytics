@@ -33,7 +33,7 @@ default_args = {
 }
 
 # Create the DAG
-dag = DAG("dbt", default_args=default_args, schedule_interval="0 */6 * * *")
+dag = DAG("dbt", default_args=default_args, schedule_interval="0 */8 * * *")
 
 # BranchPythonOperator functions
 def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
@@ -47,7 +47,7 @@ def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
     """
 
     ## TODO: make this not hardcoded
-    SCHEDULE_INTERVAL_HOURS = 6
+    SCHEDULE_INTERVAL_HOURS = 8
     current_weekday = timestamp.isoweekday()
     current_seconds = timestamp.hour * 3600
     dag_interval = SCHEDULE_INTERVAL_HOURS * 3600
@@ -67,7 +67,7 @@ def dbt_archive_or_none(timestamp: datetime) -> str:
     It is set to run every 6th hour.
     """
     print(timestamp.hour)
-    if timestamp.hour % 6 == 0 or timestamp.hour == 0:
+    if timestamp.hour % 8 == 0 or timestamp.hour == 0:
         return "dbt-archive"
     else:
         return "skip-dbt-archive"
