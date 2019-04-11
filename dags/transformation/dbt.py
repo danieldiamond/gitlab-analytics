@@ -92,13 +92,16 @@ branching_dbt_archive = BranchPythonOperator(
 # Dummy task for dbt-archive
 skip_dbt_archive = DummyOperator(task_id="skip-dbt-archive", dag=dag)
 
+# Warehouse variable declaration
+xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
+
 # dbt-run
 dbt_run_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile # install packages &&
-    dbt seed --profiles-dir profile --target prod --vars '{warehouse_name: transforming_xs}' # seed data from csv &&
-    dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars '{warehouse_name: transforming_xs}' # run on small warehouse w/o product data or snapshots &&
+    dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
+    dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse} # run on small warehouse w/o product data or snapshots &&
     dbt run --profiles-dir profile --target prod --model tag:product # run product data on large warehouse
 """
 dbt_run = KubernetesPodOperator(
@@ -128,7 +131,7 @@ dbt_full_refresh_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile &&
-    dbt seed --profiles-dir profile --target prod --vars '{warehouse_name: transforming_xs}' # seed data from csv &&
+    dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt run --profiles-dir profile --target prod --full-refresh
 """
 dbt_full_refresh = KubernetesPodOperator(
@@ -158,8 +161,8 @@ dbt_archive_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile &&
-    dbt archive --profiles-dir profile --target prod --vars '{warehouse_name: transforming_xs}' &&
-    dbt run --profiles-dir profile --target prod --models snapshots --vars '{warehouse_name: transforming_xs}'
+    dbt archive --profiles-dir profile --target prod --vars {xs_warehouse} &&
+    dbt run --profiles-dir profile --target prod --models snapshots --vars {xs_warehouse}
 """
 dbt_archive = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
@@ -188,8 +191,8 @@ dbt_test_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile # install packages &&
-    dbt seed --profiles-dir profile --target prod --vars '{warehouse_name: transforming_xs}' # seed data from csv &&
-    dbt test --profiles-dir profile --target prod --vars '{warehouse_name: transforming_xs}'
+    dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
+    dbt test --profiles-dir profile --target prod --vars {xs_warehouse}
 """
 dbt_test = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
