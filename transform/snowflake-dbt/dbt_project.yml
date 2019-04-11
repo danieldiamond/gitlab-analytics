@@ -58,6 +58,7 @@ models:
 
     snowplow:
       schema: analytics
+      tags: ["product"]
       post-hook: "grant select on {{this}} to role reporter"
       vars:
         'snowplow:use_fivetran_interface': false
@@ -95,6 +96,7 @@ models:
           materialized: table
 
       gitlab_dotcom:
+        tags: ["product"]
         xf:
           enabled: false
           materialized: table
@@ -110,6 +112,7 @@ models:
           materialized: table
 
       pings:
+        tags: ["product"]
         xf:
           enabled: true
           materialized: table

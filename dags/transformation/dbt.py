@@ -97,8 +97,9 @@ dbt_run_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile # install packages &&
-    dbt seed --profiles-dir profile --target prod # seed data from csv &&
-    dbt run --profiles-dir profile --target prod --exclude snapshots # run without snapshot models
+    dbt seed --profiles-dir profile --target prod --vars '{warehouse_name: transforming_xs}' # seed data from csv &&
+    dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars '{warehouse_name: transforming_xs}' # run on small warehouse w/o product data or snapshots &&
+    dbt run --profiles-dir profile --target prod --model tag:product # run product data on large warehouse
 """
 dbt_run = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
@@ -127,7 +128,7 @@ dbt_full_refresh_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile &&
-    dbt seed --profiles-dir profile --target prod # seed data from csv &&
+    dbt seed --profiles-dir profile --target prod --vars '{warehouse_name: transforming_xs}' # seed data from csv &&
     dbt run --profiles-dir profile --target prod --full-refresh
 """
 dbt_full_refresh = KubernetesPodOperator(
@@ -157,8 +158,8 @@ dbt_archive_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile &&
-    dbt archive --profiles-dir profile --target prod &&
-    dbt run --profiles-dir profile --target prod --models snapshots
+    dbt archive --profiles-dir profile --target prod --vars '{warehouse_name: transforming_xs}' &&
+    dbt run --profiles-dir profile --target prod --models snapshots --vars '{warehouse_name: transforming_xs}'
 """
 dbt_archive = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
@@ -187,8 +188,8 @@ dbt_test_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile # install packages &&
-    dbt seed --profiles-dir profile --target prod # seed data from csv &&
-    dbt test --profiles-dir profile --target prod
+    dbt seed --profiles-dir profile --target prod --vars '{warehouse_name: transforming_xs}' # seed data from csv &&
+    dbt test --profiles-dir profile --target prod --vars '{warehouse_name: transforming_xs}'
 """
 dbt_test = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
