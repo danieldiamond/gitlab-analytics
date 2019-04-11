@@ -25,6 +25,9 @@ WITH source AS (
         -- logistical info
 
         opportunity_owner__c        AS owner,
+        owner_team_o__c             AS opportunity_owner_team,
+        account_owner__c            AS opportunity_owner_manager,
+        sales_market__c             AS opportunity_owner_department,
         engagement_type__c          AS sales_path,
         sql_source__c               AS generated_source,
         COALESCE(
