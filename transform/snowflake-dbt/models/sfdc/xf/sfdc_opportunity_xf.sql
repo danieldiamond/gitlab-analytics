@@ -43,7 +43,6 @@ WITH sfdc_opportunity AS (
         sfdc_users_xf.department                                                                    AS opportunity_owner_department,
         sfdc_users_xf.title                                                                         AS opportunity_owner_title,
         sfdc_users_xf.role_name                                                                     AS opportunity_owner_role,
-        sfdc_users_xf.employee_tags                                                                 AS opportunity_owner_tags,
         sfdc_record_type.record_type_name,
         sfdc_record_type.business_process_id,
         sfdc_record_type.record_type_label,
