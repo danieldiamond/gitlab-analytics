@@ -18,10 +18,6 @@ WITH zuora_accts AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge') }}
 
-), date_table AS (
-
-     SELECT last_day_of_month
-     FROM {{ ref('date_details') }}
 
 ), base_mrr AS (
 

@@ -5,57 +5,36 @@ WITH zuora_accts AS (
     SELECT *
     FROM {{ ref('zuora_account') }}
 
-),
-
-    zuora_subs AS (
+),    zuora_subs AS (
 
     SELECT *
     FROM {{ ref('zuora_subscription') }}
 
-),
-
-    zuora_rp AS (
+), zuora_rp AS (
 
     SELECT *
     FROM {{ ref('zuora_rate_plan') }}
 
-),
-
-    zuora_rpc AS (
+), zuora_rpc AS (
 
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge') }}
     WHERE rate_plan_charge_name LIKE '%Trueup%'
 
-),
-
-    zuora_i AS (
+), zuora_i AS (
 
     SELECT *
     FROM {{ ref('zuora_invoice') }}
     WHERE status = 'Posted' -- posted is important!
 
-),
+), zuora_ii AS (
 
-    date_table AS (
-
-     SELECT
-      last_day_of_month
-     FROM {{ ref('date_details') }}
-
-),
-
-    zuora_ii AS (
-
-    SELECT
-      *,
-      date_trunc('month', service_start_date) :: DATE   AS trueup_month -- use current month
+    SELECT *,
+          date_trunc('month', service_start_date) :: DATE   AS trueup_month -- use current month
     FROM {{ ref('zuora_invoice_item') }}
     WHERE charge_name LIKE '%Trueup%'
 
-),
-
-     sub_months AS (
+), sub_months AS (
 
     SELECT
       account_number,
@@ -68,10 +47,7 @@ WITH zuora_accts AS (
     FROM {{ ref('zuora_base_mrr') }}
     GROUP BY 1, 2, 3, 4, 5, 6, 7
 
-),
-
-
-    trueups as (
+), trueups as (
 
       SELECT 
              s.subscription_name,
