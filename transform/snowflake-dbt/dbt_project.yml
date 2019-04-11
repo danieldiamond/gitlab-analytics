@@ -91,14 +91,14 @@ models:
         enabled: false
 
       gitter:
+        enabled: false
         transformed:
-          enabled: false
           materialized: table
 
       gitlab_dotcom:
         tags: ["product"]
+        enabled: false
         xf:
-          enabled: false
           materialized: table
 
       sheetload:
