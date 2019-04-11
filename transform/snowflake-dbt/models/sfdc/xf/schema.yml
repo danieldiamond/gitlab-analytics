@@ -82,6 +82,14 @@ models:
         description: The SFDC ID of opportunity owner.
         tests:
             - not_null
+      - name: sales_segment
+        tests:
+          - accepted_values:
+              values: ['SMB', 'Mid-Market', 'Strategic', 'Large', 'Unknown']
+      - name: parent_segment
+        tests:
+          - accepted_values:
+              values: ['SMB', 'Mid-Market', 'Strategic', 'Large', 'Unknown']
   - name: sfdc_pipeline
     columns:
       - name: owner
