@@ -116,11 +116,12 @@ Used in:
 - zuora_subscription.sql
 
 
-## SFDC Rename Segment ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc_rename_segment))
-This macro coalesces two market segment columns and replaces the return value with a given cleaned up value.
+## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sales_segment_cleaning))
+This macro applies proper formatting to sales segment data with the end result being one of SMB, Mid-Market, Strategic, Large or Unknown.
 Usage:
 ```
-{{sfdc_rename_segment("column_1", "column_2")}}
+{{sales_segment_cleaning("column_1")}}
 ```
 Used in:
 - sfdc_opportunity.sql 
+- zendesk_organizations.sql
