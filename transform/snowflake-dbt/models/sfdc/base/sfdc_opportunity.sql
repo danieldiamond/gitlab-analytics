@@ -27,12 +27,9 @@ WITH source AS (
         opportunity_owner__c        AS owner,
         engagement_type__c          AS sales_path,
         sql_source__c               AS generated_source,
-        COALESCE(
-            initcap(
-                COALESCE(sales_segmentation_employees_o__c, sales_segmentation_o__c)
-                ), 'Unknown')       AS sales_segment,
-        initcap(
-            COALESCE(ultimate_parent_sales_segment_emp_o__c, ultimate_parent_sales_segment_o__c))
+        COALESCE({{ sales_segment_cleaning('sales_segmentation_employees_o__c') }}, {{ sales_segment_cleaning('sales_segmentation_o__c') }} )
+                                    AS sales_segment,
+        COALESCE({{ sales_segment_cleaning('ultimate_parent_sales_segment_emp_o__c') }}, {{ sales_segment_cleaning('ultimate_parent_sales_segment_o__c') }} )
                                     AS parent_segment,
         type                        AS sales_type,
         closedate                   AS close_date,
@@ -63,7 +60,6 @@ WITH source AS (
         renewal_amount__c           AS renewal_amount,
         renewal_acv__c              AS renewal_acv,
         nrv__c                      AS nrv,
-        sales_segmentation_o__c     AS segment,
         amount                      AS total_contract_value,
         leadsource                  AS lead_source,
         products_purchased__c       AS products_purchased,

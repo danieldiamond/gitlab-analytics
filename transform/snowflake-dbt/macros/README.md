@@ -114,3 +114,14 @@ Usage:
 ```
 Used in:
 - zuora_subscription.sql
+
+
+## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sales_segment_cleaning))
+This macro applies proper formatting to sales segment data with the end result being one of SMB, Mid-Market, Strategic, Large or Unknown.
+Usage:
+```
+{{sales_segment_cleaning("column_1")}}
+```
+Used in:
+- sfdc_opportunity.sql 
+- zendesk_organizations.sql
