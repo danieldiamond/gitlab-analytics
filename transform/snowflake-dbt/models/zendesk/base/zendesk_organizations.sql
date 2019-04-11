@@ -30,5 +30,5 @@ renamed as (
 SELECT organization_id,
     arr,
     sfdc_id,
-    {{ sfdc_rename_segment('organization_market_segment', 'organization_market_segment') }} AS organization_market_segment
+    {{ sales_segment_cleaning('organization_market_segment') }} AS organization_market_segment
 FROM renamed
