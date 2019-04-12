@@ -1,5 +1,7 @@
 {{ config(schema='analytics') }}
 {% set fields_to_mask = ['title', 'description'] %}
+{% set gitlab_namespaces = (6543,9970,4347861) %}
+
 
 with issues as (
 
@@ -11,7 +13,9 @@ with issues as (
 
 ), label_links as (
 
-    SELECT * FROM all_label_links where target_type = 'Issue'
+    SELECT *
+    FROM all_label_links
+    WHERE target_type = 'Issue'
 
 ), all_labels as (
 
@@ -21,88 +25,81 @@ with issues as (
 
     SELECT
       issue_id,
-      ARRAY_AGG(lower(masked_label_title)) WITHIN GROUP (ORDER BY issue_id asc) as agg_label
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY issue_id ASC) AS agg_label
 
     FROM issues
-      LEFT JOIN label_links on issues.issue_id = label_links.target_id
-      LEFT JOIN all_labels on label_links.label_id = all_labels.label_id
+      LEFT JOIN label_links ON issues.issue_id = label_links.target_id
+      LEFT JOIN all_labels ON label_links.label_id = all_labels.label_id
     GROUP BY issue_id
 
-), all_projects as (
+), projects as (
 
-    SELECT * from {{ref('gitlab_dotcom_projects')}}
+    SELECT project_id,
+           namespace_id,
+           visibility_level
+    FROM {{ref('gitlab_dotcom_projects')}}
 
-), gitlab_org_projects as (
+), joined as (
 
-    SELECT project_id FROM all_projects where namespace_id = 9970
+    SELECT issues.issue_id,
+           author_id,
+           issues.project_id,
+           milestone_id,
+           updated_by_id,
+           last_edited_by_id,
+           moved_to_id,
+           issue_created_at,
+           issue_updated_at,
+           last_edited_at,
+           closed_at,
+           namespace_id,
+           visibility_level
 
-), private_projects AS (
+           {% for field in fields_to_mask %}
+           CASE
+             WHEN is_confidential = TRUE AND namespace_id NOT IN {{gitlab_namespaces}} THEN 'confidential - masked'
+             WHEN visibility_level != 'public' AND namespace_id NOT IN {{gitlab_namespaces}} THEN 'private/internal - masked'
+             ELSE {{field}}
+           END                                                         AS issue_{{field}},
+           {% endfor %}
 
-  SELECT
-     project_id,
-    'not-public' as visibility
-  FROM all_projects
-  WHERE visibility_level != 'public'
+           CASE
+             WHEN namespace_id = 9970
+               AND ARRAY_CONTAINS('community contribution'::variant, agg_label)
+               THEN TRUE
+             ELSE FALSE
+           END AS is_community_contributor_related,
 
-),  joined as (
+           CASE
+             WHEN ARRAY_CONTAINS('s1'::variant, agg_label) THEN 'severity 1'
+             WHEN ARRAY_CONTAINS('s2'::variant, agg_label) THEN 'severity 2'
+             WHEN ARRAY_CONTAINS('s3'::variant, agg_label) THEN 'severity 3'
+             WHEN ARRAY_CONTAINS('s4'::variant, agg_label) THEN 'severity 4'
+             ELSE 'undefined'
+           END as severity_tag,
 
-    SELECT
-      issues.issue_id,
-      author_id,
-      issues.project_id,
-      milestone_id,
-      updated_by_id,
-      last_edited_by_id,
-      moved_to_id,
-      issue_created_at,
-      issue_updated_at,
-      last_edited_at,
-      closed_at,
-      is_confidential,
+           CASE
+             WHEN ARRAY_CONTAINS('p1'::variant, agg_label) THEN 'priority 1'
+             WHEN ARRAY_CONTAINS('p2'::variant, agg_label) THEN 'priority 2'
+             WHEN ARRAY_CONTAINS('p3'::variant, agg_label) THEN 'priority 3'
+             WHEN ARRAY_CONTAINS('p4'::variant, agg_label) THEN 'priority 4'
+             ELSE 'undefined'
+           END AS priority_tag,
 
-      {% for field in fields_to_mask %}
-      CASE
-        WHEN is_confidential = TRUE THEN 'confidential issue - content masked'
-        WHEN private_projects.visibility = 'not-public' THEN 'private/internal project - content masked'
-        ELSE {{field}}
-      END                                                         as issue_{{field}},
-      {% endfor %}
-
-      CASE
-        WHEN issues.project_id IN (select * from gitlab_org_projects)
-          AND ARRAY_CONTAINS('community contribution'::variant, agg_label)
-          THEN TRUE
-        ELSE FALSE
-      END as is_community_contributor_related,
-
-      CASE
-        WHEN ARRAY_CONTAINS('s1'::variant, agg_label) THEN 'severity 1'
-        WHEN ARRAY_CONTAINS('s2'::variant, agg_label) THEN 'severity 2'
-        WHEN ARRAY_CONTAINS('s3'::variant, agg_label) THEN 'severity 3'
-        WHEN ARRAY_CONTAINS('s4'::variant, agg_label) THEN 'severity 4'
-        ELSE 'undefined'
-      END as severity_tag,
-
-      CASE
-        WHEN ARRAY_CONTAINS('p1'::variant, agg_label) THEN 'priority 1'
-        WHEN ARRAY_CONTAINS('p2'::variant, agg_label) THEN 'priority 2'
-        WHEN ARRAY_CONTAINS('p3'::variant, agg_label) THEN 'priority 3'
-        WHEN ARRAY_CONTAINS('p4'::variant, agg_label) THEN 'priority 4'
-        ELSE 'undefined'
-      END as priority_tag,
-
-      state,
-      weight,
-      due_date,
-      lock_version,
-      time_estimate,
-      has_discussion_locked,
-      issues_last_updated_at,
-      ARRAY_TO_STRING(agg_label,'|') as masked_label_title
+           state,
+           weight,
+           due_date,
+           lock_version,
+           time_estimate,
+           has_discussion_locked,
+           issues_last_updated_at,
+           ARRAY_TO_STRING(agg_label,'|') AS masked_label_title
 
     FROM issues
-      LEFT JOIN agg_labels on issues.issue_id = agg_labels.issue_id
-      LEFT JOIN private_projects on issues.project_id = private_projects.project_id
+      LEFT JOIN agg_labels
+        ON issues.issue_id = agg_labels.issue_id
+      LEFT JOIN projects
+        ON issues.project_id = projects.project_id
 )
 
 SELECT * from joined

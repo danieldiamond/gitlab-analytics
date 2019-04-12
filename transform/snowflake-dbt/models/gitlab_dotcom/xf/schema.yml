@@ -16,6 +16,10 @@ models:
       - name: issue_id
         tests:
           - not_null
+      - name: issue_title
+        description: '{{ doc("xf_visibility_documentation") }}'
+      - name: issue_description
+        description: '{{ doc("xf_visibility_documentation") }}'
 
   - name: gitlab_dotcom_labels_xf
     description: '{{ doc("gitlab_dotcom_labels_xf") }}'
@@ -23,6 +27,8 @@ models:
       - name: label_id
         tests:
           - not_null
+      - name: masked_label_title
+        description: '{{ doc("xf_visibility_documentation") }}'
 
   - name: gitlab_dotcom_users_xf
     description: '{{ doc("gitlab_dotcom_users_xf") }}'
