@@ -10,6 +10,8 @@ models:
               - not_null
           - name: organization_market_segment
             description: This is the organization market segment.
+            tests:
+              - not_null
           - name: ticket_status
             description: This is the ticket open/close status.
             tests:
