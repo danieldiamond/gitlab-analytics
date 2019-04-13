@@ -24,7 +24,7 @@ WITH source AS (
 
         -- logistical info
 
-        opportunity_owner__c        AS owner,
+        opportunity_owner__c        AS opportunity_owner,
         owner_team_o__c             AS opportunity_owner_team,
         account_owner__c            AS opportunity_owner_manager,
         sales_market__c             AS opportunity_owner_department,
