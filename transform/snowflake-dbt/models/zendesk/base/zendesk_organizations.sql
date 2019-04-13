@@ -10,13 +10,13 @@ renamed as (
     SELECT
         
         --ids
-        id                                      AS organization_id,
+        id                                      as organization_id,
         
         --fields
         name,
-        organization_fields:aar                 AS arr,
-        organization_fields:market_segment      AS organization_market_segment,
-        organization_fields:salesforce_id       AS sfdc_id,
+        organization_fields:aar                 as arr,
+        organization_fields:market_segment      as organization_market_segment,
+        organization_fields:salesforce_id       as sfdc_id,
 
         
         --dates
@@ -27,8 +27,5 @@ renamed as (
     
 )
 
-SELECT organization_id,
-    arr,
-    sfdc_id,
-    {{ sales_segment_cleaning('organization_market_segment') }} AS organization_market_segment
+SELECT * 
 FROM renamed
