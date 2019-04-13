@@ -35,7 +35,7 @@ models:
           - unique
   - name: sfdc_closed_deals_acv
     columns:
-      - name: owner
+      - name: opportunity_owner
         tests:
           - not_null
   - name: sfdc_competitors_to_be_replaced
@@ -84,7 +84,7 @@ models:
             - not_null
   - name: sfdc_pipeline
     columns:
-      - name: owner
+      - name: opportunity_owner
         tests:
           - not_null
   - name: sfdc_proof_of_concept_xf
