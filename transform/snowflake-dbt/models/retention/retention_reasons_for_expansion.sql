@@ -1,97 +1,88 @@
-WITH the_agg AS (
-    SELECT
-      subscription_name_slugify,
-      oldest_subscription_in_cohort,
-      rate_plan_name,
-      mrr,
-      mrr_month,
-      unit_of_measure,
-      quantity,
-      CASE  WHEN lower(rate_plan_name) LIKE 'githost%' THEN 'GitHost'
-            WHEN rate_plan_name IN ('#movingtogitlab', 'File Locking', 'Payment Gateway Test', 'Time Tracking', 'Training Workshop') THEN 'Other'
-            WHEN lower(rate_plan_name) LIKE 'gitlab geo%' THEN 'Other'
-            WHEN lower(rate_plan_name) LIKE 'basic%' THEN 'Basic'
-            WHEN lower(rate_plan_name) LIKE 'bronze%' THEN 'Bronze'
-            WHEN lower(rate_plan_name) LIKE 'ci runner%' THEN 'Other'
-            WHEN lower(rate_plan_name) LIKE 'discount%' THEN 'Other'
-            WHEN lower(rate_plan_name) LIKE '%premium%' THEN 'Premium'
-            WHEN lower(rate_plan_name) LIKE '%starter%' THEN 'Starter'
-            WHEN lower(rate_plan_name) LIKE '%ultimate%' THEN 'Ultimate'
-            WHEN lower(rate_plan_name) LIKE 'gitlab enterprise edition%' THEN 'Starter'
-            WHEN rate_plan_name IN ('GitLab Service Package', 'Implementation Services Quick Start', 'Implementation Support', 'Support Package') THEN 'Support'
-            WHEN lower(rate_plan_name) LIKE 'gold%' THEN 'Gold'
-            WHEN rate_plan_name = 'Pivotal Cloud Foundry Tile for GitLab EE' THEN 'Starter'
-            WHEN lower(rate_plan_name) LIKE 'plus%' THEN 'Plus'
-            WHEN lower(rate_plan_name) LIKE 'premium%' THEN 'Premium'
-            WHEN lower(rate_plan_name) LIKE 'silver%' THEN 'Silver'
-            WHEN lower(rate_plan_name) LIKE 'standard%' THEN 'Standard'
-            WHEN rate_plan_name = 'Trueup' THEN 'Trueup'
-      ELSE 'Other' END AS clean_name
-    FROM analytics_staging.zuora_base_mrr_amortized
+{{ config(schema='analytics') }}
+
+with raw_mrr_totals_levelled AS (
+
+       SELECT * FROM {{ref('mrr_totals_levelled')}}
+
+), mrr_totals_levelled AS (
+
+      SELECT subscription_name, 
+              subscription_name_slugify,
+              sfdc_account_id,
+              oldest_subscription_in_cohort,
+              lineage,
+              mrr_month,
+              zuora_subscription_cohort_month,
+              zuora_subscription_cohort_quarter,
+              months_since_zuora_subscription_cohort_start,
+              quarters_since_zuora_subscription_cohort_start,
+              array_agg(DISTINCT product_category) WITHIN GROUP (ORDER BY product_category ASC) AS product_category,
+              array_agg(DISTINCT UNIT_OF_MEASURE) WITHIN GROUP (ORDER BY unit_of_measure ASC) AS unit_of_measure,
+              sum(quantity) as quantity,
+              sum(mrr) as mrr
+      FROM raw_mrr_totals_levelled
+      {{ dbt_utils.group_by(n=10) }}
+
+), list AS ( --get all the subscription + their lineage + the month we're looking for MRR for (12 month in the future)
+
+       SELECT subscription_name_slugify AS original_sub,
+                     c.value::string AS subscriptions_in_lineage,
+                     mrr_month as original_mrr_month,
+                     dateadd('year', 1, mrr_month) AS retention_month
+       FROM mrr_totals_levelled,
+       lateral flatten(input =>split(lineage, ',')) C
+       {{ dbt_utils.group_by(n=4) }}
+
+), retention_subs AS ( --find which of those subscriptions are real and group them by their sub you're comparing to.
+
+       SELECT original_sub,
+               product_category as original_product_category,
+               retention_month,
+               original_mrr_month,
+               unit_of_measure as original_unit_of_measure,
+               sum(quantity) as original_quantity,
+               sum(mrr) AS retention_mrr
+       FROM list
+       INNER JOIN mrr_totals_levelled 
+       ON retention_month = mrr_month
+       AND subscriptions_in_lineage = subscription_name_slugify
+       {{ dbt_utils.group_by(n=5) }}
+
+), finals AS (
+
+       SELECT mrr_totals_levelled.*, retention_subs.*,
+              CASE WHEN retention_subs.original_product_category = mrr_totals_levelled.product_category AND retention_subs.original_quantity < mrr_totals_levelled.quantity 
+                    THEN 'Seat Expansion'
+                   WHEN (retention_subs.original_product_category = mrr_totals_levelled.product_category AND retention_subs.original_quantity = mrr_totals_levelled.quantity 
+                    OR retention_subs.original_product_category = mrr_totals_levelled.product_category AND retention_subs.original_quantity > mrr_totals_levelled.quantity) 
+                   THEN 'Discount/Price Change'
+                   WHEN retention_subs.original_product_category != mrr_totals_levelled.product_category AND retention_subs.original_quantity = mrr_totals_levelled.quantity 
+                    THEN 'Product Change'
+                   WHEN retention_subs.original_product_category != mrr_totals_levelled.product_category AND retention_subs.original_quantity != mrr_totals_levelled.quantity 
+                    THEN 'Product Change/Seat Change Mix'
+                ELSE 'Unknown' END AS expansion_type
+       FROM mrr_totals_levelled
+       LEFT JOIN retention_subs
+       ON subscription_name_slugify = original_sub
+       AND retention_subs.original_mrr_month = mrr_totals_levelled.mrr_month
+       WHERE mrr_totals_levelled.mrr > retention_subs.retention_mrr
+
+), joined as (
+
+      SELECT subscription_name as zuora_subscription_name,
+             oldest_subscription_in_cohort as zuora_subscription_id,
+             dateadd('year', 1, mrr_month) AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
+             expansion_type,
+             original_product_category,
+             product_category,
+             original_quantity,
+             quantity,
+             original_unit_of_measure,
+             unit_of_measure
+      FROM finals
+
 )
 
-  , grouping AS (
-    SELECT
-      oldest_subscription_in_cohort,
-      MRR_MONTH,
-      array_agg(DISTINCT RATE_PLAN_NAME) WITHIN GROUP (ORDER BY rate_plan_name ASC) AS rpn,
-      sum(MRR) AS mrr,
-      array_agg(DISTINCT UNIT_OF_MEASURE) WITHIN GROUP (ORDER BY unit_of_measure ASC) AS uom,
-      sum(QUANTITY) AS quantity,
-      array_agg(DISTINCT clean_name) WITHIN GROUP (ORDER BY clean_name ASC) AS clean,
-      array_agg(DISTINCT subscription_name_slugify) WITHIN GROUP (ORDER BY SUBSCRIPTION_NAME_SLUGIFY ASC) AS sub_count
-    FROM the_agg
-    GROUP BY 1, 2
-    ORDER BY 1
-)
-
-  , the_old AS (
-
-    SELECT *
-    FROM grouping
-    WHERE MRR_MONTH = '2017-07-01'
-)
-
-  , the_new AS (
-
-    SELECT *
-    FROM grouping
-    WHERE MRR_MONTH = '2018-07-01'
-)
-
-  , changes AS (
-    SELECT
-      the_old.*,
-      the_new.MRR_MONTH  AS new_mrr_month,
-      the_new.rpn        AS new_rpn,
-      the_new.mrr        AS new_mrr,
-      the_new.uom        AS new_uom,
-      the_new.quantity   AS new_quantity,
-      the_new.clean      AS new_clean,
-      the_new.sub_count  AS new_sub_count,
-      CASE
-      WHEN the_old.clean = the_new.clean AND the_old.quantity < the_new.quantity
-        THEN 'Seat Expansion'
-      WHEN
-        (the_old.clean = the_new.clean AND the_old.quantity = the_new.quantity
-         OR
-         the_old.clean = the_new.clean AND the_old.quantity > the_new.quantity)
-        THEN 'Discount/Price Change'
-      WHEN the_old.clean != the_new.clean AND the_old.quantity = the_new.quantity
-        THEN 'Product Change'
-      WHEN the_old.clean != the_new.clean AND the_old.quantity != the_new.quantity
-        THEN 'Product Change/Seat Change Mix'
-      ELSE 'Unknown' END AS reason
-    FROM the_old
-      LEFT JOIN the_new ON the_old.SUBSCRIPTION_SLUG_FOR_COUNTING = the_new.SUBSCRIPTION_SLUG_FOR_COUNTING
-    WHERE the_new.mrr > the_old.mrr
-)
-
-SELECT
---   *
-  reason,
-  count(*),
-  round(count(*)/ sum(count(*)) over() * 100, 1) as percent
-FROM changes
-GROUP BY 1
-order by 1
+SELECT *
+FROM joined
+WHERE retention_month <= dateadd(month, -1, CURRENT_DATE)
