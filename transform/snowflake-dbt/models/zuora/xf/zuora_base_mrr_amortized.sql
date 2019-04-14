@@ -47,15 +47,15 @@ SELECT
        lineage,
        rate_plan_name,
        rate_plan_charge_name,
-       sum(mrr) as mrr,
        mrr_month,
        cohort_month,
        cohort_quarter,
        unit_of_measure,
+       sum(mrr) as mrr,
        sum(quantity) as quantity
 FROM amortized_mrr
 WHERE mrr_month IS NOT NULL
-GROUP BY 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12
+{{ dbt_utils.group_by(n=11) }}
 
 ), final as (
 

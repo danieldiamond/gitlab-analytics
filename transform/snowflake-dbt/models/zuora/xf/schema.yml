@@ -20,6 +20,28 @@ models:
     - name: zuora_base_mrr_amortized
       description: '{{ doc("zuora_base_mrr_amortized") }}'
       columns:
+          - name: account_number
+            tests:
+                - not_null
+          - name: subscription_name
+            tests:
+                - not_null
+          - name: subscription_name_slugify
+            tests:
+                - not_null
+          - name: oldest_subscription_in_cohort
+            tests:
+                - not_null
+          - name: lineage
+            description: "All the subscriptions subsquent to the primary subscription, separated by commas."
+            tests:
+                - not_null
+          - name: rate_plan_name
+            tests:
+                - not_null
+          - name: rate_plan_charge_name
+            tests:
+                - not_null
           - name: mrr
             description: Monthly recurring revenue
             tests:
@@ -28,8 +50,23 @@ models:
             description: The month the MRR is to be applied to
             tests:
                 - not_null
-          - name: lineage
-            description: "All the subscriptions subsquent to the primary subscription, separated by commas."
+          - name: cohort_month
+            tests:
+                - not_null
+          - name: cohort_quarter
+            tests:
+                - not_null
+          - name: unit_of_measure
+            tests:
+                - not_null
+          - name: quantity
+            tests:
+                - not_null
+          - name: product_category
+            description: Product category is based on the rate plan name.
+            tests:
+              - accepted_values:
+                      values: ['GitHost', 'Other', 'Gold', 'Basic', 'Bronze', 'Premium', 'Starter', 'Ultimate', 'Support', 'Plus', 'Silver', 'Standard', 'Trueup']
     - name: zuora_base_trueups
       description: '{{ doc("zuora_base_trueups") }}'
       columns:

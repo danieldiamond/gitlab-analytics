@@ -19,6 +19,7 @@ The final WHERE filter validates that only charges that were in force at the end
 
 This table amortizes the monthly charges over the time span that the rate plan charge was in effect. A rate plan charge is only in effect if it was in effect for the last day of the month. 
 
+It then classifies the product category that was purchased based on the rate plan name. 
 
 {% enddocs %}
 
