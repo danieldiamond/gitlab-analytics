@@ -1,4 +1,4 @@
-WITH base_mrr AS (
+WITH base_mrr AS ( 
 
     SELECT * FROM {{ ref('zuora_base_mrr_amortized') }}
 
@@ -16,7 +16,8 @@ WITH base_mrr AS (
           trueup_month AS mrr_month,
           cohort_month AS zuora_subscription_cohort_month,
           cohort_quarter AS zuora_subscription_cohort_quarter,
-          mrr
+          mrr, 
+          null AS product_category
     FROM trueup_mrr
 
     UNION ALL
@@ -29,12 +30,14 @@ WITH base_mrr AS (
           mrr_month,
           cohort_month AS zuora_subscription_cohort_month,
           cohort_quarter AS zuora_subscription_cohort_quarter,
-          mrr
+          mrr,
+          product_category
     FROM base_mrr
 
-), uniqueified as ( -- one row per sub slug for counting x mrr_month combo, with first of other values
+), uniqueified as ( -- one row per sub slug for counting x product_category x mrr_month combo, with first of other values
 
-    SELECT account_number,
+    SELECT {{ dbt_utils.surrogate_key('mrr_month', 'subscription_name_slugify', 'product_category') }} as primary_key,
+          account_number,
           subscription_name_slugify,
           subscription_name,
           oldest_subscription_in_cohort,
@@ -42,9 +45,10 @@ WITH base_mrr AS (
           mrr_month,
           zuora_subscription_cohort_month,
           zuora_subscription_cohort_quarter,
+          product_category,
           sum(mrr) as mrr
     FROM mrr_combined
-    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 
 ) 
 

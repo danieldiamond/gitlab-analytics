@@ -55,12 +55,11 @@ with zuora_mrr_totals as (
            replace_sfdc_account_id_with_master_record_id.quarters_since_zuora_subscription_cohort_start,
            replace_sfdc_account_id_with_master_record_id.zuora_account_id,
            replace_sfdc_account_id_with_master_record_id.zuora_account_name,
+           replace_sfdc_account_id_with_master_record_id.product_category,
            sfdc_accounts_xf.account_id AS sfdc_account_id,
            sfdc_accounts_xf.account_name AS sfdc_account_name,
            sfdc_accounts_xf.ultimate_parent_account_id,
            sfdc_accounts_xf.ultimate_parent_account_name,
-           row_number() OVER ( PARTITION BY ultimate_parent_account_id
-              ORDER BY zuora_subscription_cohort_month DESC )               AS sub_row,
            min(zuora_subscription_cohort_month) OVER (
               PARTITION BY zuora_account_id)                                AS zuora_account_cohort_month,
            min(zuora_subscription_cohort_quarter) OVER (

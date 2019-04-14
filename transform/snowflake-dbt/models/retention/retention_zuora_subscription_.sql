@@ -1,8 +1,24 @@
 {{ config(schema='analytics') }}
 
-with mrr_totals_levelled AS (
+with raw_mrr_totals_levelled AS (
 
        SELECT * FROM {{ref('mrr_totals_levelled')}}
+
+), mrr_totals_levelled AS (
+
+      SELECT subscription_name, 
+              subscription_name_slugify,
+              sfdc_account_id,
+              oldest_subscription_in_cohort,
+              lineage,
+              mrr_month,
+              zuora_subscription_cohort_month,
+              zuora_subscription_cohort_quarter,
+              months_since_zuora_subscription_cohort_start,
+              quarters_since_zuora_subscription_cohort_start,
+              sum(mrr) as mrr
+      FROM raw_mrr_totals_levelled
+      {{ dbt_utils.group_by(n=10) }}
 
 ), current_arr_segmentation_all_levels AS (
 
@@ -13,7 +29,7 @@ with mrr_totals_levelled AS (
       
        SELECT  subscription_name, sfdc_account_id
        FROM mrr_totals_levelled
-       GROUP BY 1, 2
+       {{ dbt_utils.group_by(n=2) }}
 
 ), list AS ( --get all the subscription + their lineage + the month we're looking for MRR for (12 month in the future)
 
@@ -23,7 +39,7 @@ with mrr_totals_levelled AS (
                      dateadd('year', 1, mrr_month) AS retention_month
        FROM mrr_totals_levelled,
        lateral flatten(input =>split(lineage, ',')) C
-       GROUP BY 1, 2, 3, 4
+       {{ dbt_utils.group_by(n=4) }}
 
 ), retention_subs AS ( --find which of those subscriptions are real and group them by their sub you're comparing to.
 
@@ -35,7 +51,7 @@ with mrr_totals_levelled AS (
        INNER JOIN mrr_totals_levelled AS subs
        ON retention_month = mrr_month
        AND subscriptions_in_lineage = subscription_name_slugify
-       GROUP BY 1, 2, 3
+       {{ dbt_utils.group_by(n=3) }}
 
 ), finals AS (
 
@@ -43,7 +59,7 @@ with mrr_totals_levelled AS (
               CASE WHEN net_retention_mrr > 0 
                   THEN least(net_retention_mrr, mrr)
                   ELSE 0 END AS gross_retention_mrr,
-              retention_month,
+              retention_month, 
               mrr_totals_levelled.*
        FROM mrr_totals_levelled
        LEFT JOIN retention_subs
