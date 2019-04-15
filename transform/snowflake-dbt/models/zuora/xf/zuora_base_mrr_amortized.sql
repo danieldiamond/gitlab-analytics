@@ -20,7 +20,7 @@ WITH zuora_mrr AS (
            rate_plan_name,
            rate_plan_charge_name,
            mrr,
-           date_actual as mrr_month,
+           date_actual AS mrr_month,
            sub_start_month,
            sub_end_month,
            effective_start_month,
@@ -51,8 +51,8 @@ SELECT
        cohort_month,
        cohort_quarter,
        unit_of_measure,
-       sum(mrr) as mrr,
-       sum(quantity) as quantity
+       sum(mrr)       AS mrr,
+       sum(quantity)  AS quantity
 FROM amortized_mrr
 WHERE mrr_month IS NOT NULL
 {{ dbt_utils.group_by(n=11) }}
