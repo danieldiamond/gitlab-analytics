@@ -1,4 +1,8 @@
-{{ config(schema='analytics') }}
+{{ config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter"
+    })
+}}
 
 with interviewing_data_hired_candidates as (
 

@@ -1,4 +1,8 @@
-{{ config(schema='analytics') }}
+{{ config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter"
+    })
+}}
 
 with libre_agg as (
   SELECT * FROM {{ ref('libre_agg_hosts') }}
