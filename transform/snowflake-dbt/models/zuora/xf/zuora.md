@@ -19,6 +19,7 @@ The final WHERE filter validates that only charges that were in force at the end
 
 This table amortizes the monthly charges over the time span that the rate plan charge was in effect. A rate plan charge is only in effect if it was in effect for the last day of the month. 
 
+It then classifies the product category that was purchased based on the rate plan name. 
 
 {% enddocs %}
 
@@ -39,7 +40,9 @@ The final select statement then allocates the trueup according to what's listed 
 
 {% docs zuora_mrr_totals %}
 
-This model unions the base charges and the trueup charges together. For each month we calculate the number of months between the start of the cohort and the current month. This enables the data to be easily filtered in Looker so you can look across multiple cohorts and limit the months into the future to the same number. This value should never be less than 0.
+This model unions the base charges and the trueup charges together. For each month we calculate the number of months between the start of the cohort and the current month. This enables the data to be easily filtered in the BI tool so you can look across multiple cohorts and limit the months into the future to the same number. This value should never be less than 0.
+
+We then aggregate the data into one row per Month for each unique (subscription || product || unit of measurement) combination. At this time, this is the most granular value (even more than subscription) and will be the foundation for calculation retention by product.
 
 {% enddocs %}
 

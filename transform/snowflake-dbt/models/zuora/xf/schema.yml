@@ -20,6 +20,28 @@ models:
     - name: zuora_base_mrr_amortized
       description: '{{ doc("zuora_base_mrr_amortized") }}'
       columns:
+          - name: account_number
+            tests:
+                - not_null
+          - name: subscription_name
+            tests:
+                - not_null
+          - name: subscription_name_slugify
+            tests:
+                - not_null
+          - name: oldest_subscription_in_cohort
+            tests:
+                - not_null
+          - name: lineage
+            description: "All the subscriptions subsquent to the primary subscription, separated by commas."
+            tests:
+                - not_null
+          - name: rate_plan_name
+            tests:
+                - not_null
+          - name: rate_plan_charge_name
+            tests:
+                - not_null
           - name: mrr
             description: Monthly recurring revenue
             tests:
@@ -28,8 +50,23 @@ models:
             description: The month the MRR is to be applied to
             tests:
                 - not_null
-          - name: lineage
-            description: "All the subscriptions subsquent to the primary subscription, separated by commas."
+          - name: cohort_month
+            tests:
+                - not_null
+          - name: cohort_quarter
+            tests:
+                - not_null
+          - name: unit_of_measure
+            tests:
+                - not_null
+          - name: quantity
+            tests:
+                - not_null
+          - name: product_category
+            description: Product category is based on the rate plan name.
+            tests:
+              - accepted_values:
+                      values: ['GitHost', 'Other', 'Gold', 'Basic', 'Bronze', 'Premium', 'Starter', 'Ultimate', 'Support', 'Plus', 'Silver', 'Standard', 'Trueup']
     - name: zuora_base_trueups
       description: '{{ doc("zuora_base_trueups") }}'
       columns:
@@ -50,6 +87,10 @@ models:
     - name: zuora_mrr_totals
       description: '{{ doc("zuora_mrr_totals") }}'
       columns:
+          - name: primary_key
+            tests:
+                - not_null
+                - unique
           - name: account_number
             description: '{{ doc("zuora_mrr_totals_col_account_number") }}'
             tests:
@@ -66,26 +107,37 @@ models:
             description: '{{ doc("zuora_mrr_totals_col_subscription_slug_for_counting") }}'
             tests:
                 - not_null
+          - name: lineage
+            tests:
+                - not_null
           - name: mrr_month
             description: '{{ doc("zuora_mrr_totals_col_mrr_month") }}'
             tests:
                 - not_null
-          - name: cohort_month
+            tests:
+                - not_null
+          - name: zuora_subscription_cohort_month
             description: '{{ doc("zuora_mrr_totals_col_cohort_month") }}'
-          - name: cohort_quarter
+            tests:
+                - not_null
+          - name: zuora_subscription_cohort_quarter
             description: '{{ doc("zuora_mrr_totals_col_cohort_quarter") }}'
-          - name: months_since_cohort_start
-            description: '{{ doc("zuora_mrr_totals_col_months_since_cohort_start") }}'
-          - name: mrr_type    
-            description: '{{ doc("zuora_mrr_totals_col_mrr_type") }}'
+            tests:
+                - not_null
+          - name: product_category
+          - name: unit_of_measure
           - name: mrr
             description: '{{ doc("zuora_mrr_totals_col_mrr") }}'
-          - name: mrr_12mo_ago
-            description: '{{ doc("zuora_mrr_totals_col_mrr_12mo_ago") }}'
-          - name: quarters_since_cohort_start
+            tests:
+                - not_null
+          - name: months_since_zuora_subscription_cohort_start
+            description: '{{ doc("zuora_mrr_totals_col_months_since_cohort_start") }}'
+            tests:
+                - not_null
+          - name: quarters_since_zuora_subscription_cohort_start
             description: '{{ doc("zuora_mrr_totals_col_quarters_since_cohort_start") }}'
-          - name: lineage
-            description: "All the subscriptions subsquent to the primary subscription, separated by commas."
+            tests:
+                - not_null
     - name: zuora_scheduled_renewals
       description: Zuora Scheduled Renewals
       columns:
