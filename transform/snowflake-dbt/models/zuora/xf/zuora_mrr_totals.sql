@@ -17,7 +17,7 @@ WITH base_mrr AS (
           cohort_month    AS zuora_subscription_cohort_month,
           cohort_quarter  AS zuora_subscription_cohort_quarter,
           mrr, 
-          null            AS product_category,
+          'Trueup'        AS product_category,
           null            AS unit_of_measure,
           null            AS quantity
     FROM trueup_mrr
