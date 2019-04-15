@@ -33,9 +33,9 @@ with raw_mrr_totals_levelled AS (
 
 ), list AS ( --get all the subscription + their lineage + the month we're looking for MRR for (12 month in the future)
 
-       SELECT subscription_name_slugify AS original_sub,
-                     c.value::string AS subscriptions_in_lineage,
-                     mrr_month as original_mrr_month,
+       SELECT subscription_name_slugify   AS original_sub,
+                     c.value::string      AS subscriptions_in_lineage,
+                     mrr_month            AS original_mrr_month,
                      dateadd('year', 1, mrr_month) AS retention_month
        FROM mrr_totals_levelled,
        lateral flatten(input =>split(lineage, ',')) C
@@ -68,11 +68,11 @@ with raw_mrr_totals_levelled AS (
 
 ), joined as (
 
-      SELECT finals.subscription_name as zuora_subscription_name,
-             finals.oldest_subscription_in_cohort as zuora_subscription_id,
-             mapping.sfdc_account_id as salesforce_account_id,
+      SELECT finals.subscription_name             AS zuora_subscription_name,
+             finals.oldest_subscription_in_cohort AS zuora_subscription_id,
+             mapping.sfdc_account_id              AS salesforce_account_id,
              dateadd('year', 1, finals.mrr_month) AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
-             finals.mrr as original_mrr,
+             finals.mrr                           AS original_mrr,
              finals.net_retention_mrr,
              finals.gross_retention_mrr,
              finals.zuora_subscription_cohort_month,

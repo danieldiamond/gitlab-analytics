@@ -25,9 +25,9 @@ with raw_mrr_totals_levelled AS (
 
 ), list AS ( --get all the subscription + their lineage + the month we're looking for MRR for (12 month in the future)
 
-       SELECT subscription_name_slugify AS original_sub,
-                     c.value::string AS subscriptions_in_lineage,
-                     mrr_month as original_mrr_month,
+       SELECT subscription_name_slugify   AS original_sub,
+                     c.value::string      AS subscriptions_in_lineage,
+                     mrr_month            AS original_mrr_month,
                      dateadd('year', 1, mrr_month) AS retention_month
        FROM mrr_totals_levelled,
        lateral flatten(input =>split(lineage, ',')) C
@@ -36,12 +36,12 @@ with raw_mrr_totals_levelled AS (
 ), retention_subs AS ( --find which of those subscriptions are real and group them by their sub you're comparing to.
 
        SELECT original_sub,
-               product_category as original_product_category,
+               product_category   AS original_product_category,
                retention_month,
                original_mrr_month,
-               unit_of_measure as original_unit_of_measure,
-               sum(quantity) as original_quantity,
-               sum(mrr) AS retention_mrr
+               unit_of_measure    AS original_unit_of_measure,
+               sum(quantity)      AS original_quantity,
+               sum(mrr)           AS retention_mrr
        FROM list
        INNER JOIN mrr_totals_levelled 
        ON retention_month = mrr_month
@@ -69,9 +69,9 @@ with raw_mrr_totals_levelled AS (
 
 ), joined as (
 
-      SELECT subscription_name as zuora_subscription_name,
-             oldest_subscription_in_cohort as zuora_subscription_id,
-             dateadd('year', 1, mrr_month) AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
+      SELECT subscription_name              AS zuora_subscription_name,
+             oldest_subscription_in_cohort  AS zuora_subscription_id,
+             dateadd('year', 1, mrr_month)  AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
              expansion_type,
              original_product_category,
              product_category,

@@ -1,23 +1,22 @@
 {{ config(schema='analytics') }}
 
-with zuora_mrr_totals as (
+with zuora_mrr_totals AS (
 
     SELECT * FROM {{ref('zuora_mrr_totals')}}
-    
 
-), zuora_account as (
+), zuora_account AS (
 
     SELECT * FROM {{ref('zuora_account')}}
 
-), sfdc_accounts_xf as (
+), sfdc_accounts_xf AS (
 
     SELECT * FROM {{ref('sfdc_accounts_xf')}}
 
-), sfdc_deleted_accounts as (
+), sfdc_deleted_accounts AS (
 
     SELECT * FROM {{ref('sfdc_deleted_accounts')}}
 
-), initial_join_to_sfdc as (
+), initial_join_to_sfdc AS (
 
     SELECT
            zuora_mrr_totals.*,
@@ -27,13 +26,13 @@ with zuora_mrr_totals as (
            sfdc_accounts_xf.account_id as sfdc_account_id_int
     FROM zuora_mrr_totals
     LEFT JOIN zuora_account
-        ON zuora_account.account_number = zuora_mrr_totals.account_number
+    ON zuora_account.account_number = zuora_mrr_totals.account_number
     LEFT JOIN sfdc_accounts_xf
-        ON sfdc_accounts_xf.account_id = zuora_account.crm_id
+    ON sfdc_accounts_xf.account_id = zuora_account.crm_id
 
-), replace_sfdc_account_id_with_master_record_id as (
+), replace_sfdc_account_id_with_master_record_id AS (
 
-    SELECT coalesce(initial_join_to_sfdc.sfdc_account_id_int, sfdc_master_record_id) as sfdc_account_id, 
+    SELECT coalesce(initial_join_to_sfdc.sfdc_account_id_int, sfdc_master_record_id) AS sfdc_account_id, 
           initial_join_to_sfdc.*
     FROM initial_join_to_sfdc
     LEFT JOIN sfdc_deleted_accounts
@@ -42,7 +41,7 @@ with zuora_mrr_totals as (
 ), joined as (
 
     SELECT 
-           replace_sfdc_account_id_with_master_record_id.account_number as zuora_account_number,
+           replace_sfdc_account_id_with_master_record_id.account_number   AS zuora_account_number,
            replace_sfdc_account_id_with_master_record_id.subscription_name_slugify,
            replace_sfdc_account_id_with_master_record_id.subscription_name,
            replace_sfdc_account_id_with_master_record_id.oldest_subscription_in_cohort,
@@ -58,8 +57,8 @@ with zuora_mrr_totals as (
            replace_sfdc_account_id_with_master_record_id.product_category,
            replace_sfdc_account_id_with_master_record_id.unit_of_measure,
            replace_sfdc_account_id_with_master_record_id.quantity,
-           sfdc_accounts_xf.account_id AS sfdc_account_id,
-           sfdc_accounts_xf.account_name AS sfdc_account_name,
+           sfdc_accounts_xf.account_id                                      AS sfdc_account_id,
+           sfdc_accounts_xf.account_name                                    AS sfdc_account_name,
            sfdc_accounts_xf.ultimate_parent_account_id,
            sfdc_accounts_xf.ultimate_parent_account_name,
            min(zuora_subscription_cohort_month) OVER (
@@ -76,7 +75,7 @@ with zuora_mrr_totals as (
               PARTITION BY ultimate_parent_account_id)                      AS parent_account_cohort_quarter
     FROM replace_sfdc_account_id_with_master_record_id
     LEFT JOIN sfdc_accounts_xf
-        ON sfdc_accounts_xf.account_id = replace_sfdc_account_id_with_master_record_id.sfdc_account_id
+    ON sfdc_accounts_xf.account_id = replace_sfdc_account_id_with_master_record_id.sfdc_account_id
 
 )
 
