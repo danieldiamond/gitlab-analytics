@@ -9,7 +9,7 @@ renamed as (
 
     SELECT
         --ids
-        id                          as ticket_id,
+        id                                              AS ticket_id,
         organization_id,
         assignee_id,
         brand_id,
@@ -18,18 +18,19 @@ renamed as (
         submitter_id,
         
         --fields
-        status                      as ticket_status,
-        priority                    as ticket_priority,
-        subject                     as ticket_subject,
-        recipient                   as ticket_recipient,
-        'type'                      as ticket_type,
-        url                         as api_url,
+        status                                          AS ticket_status,
+        priority                                        AS ticket_priority,
+        subject                                         AS ticket_subject,
+        recipient                                       AS ticket_recipient,
+        'type'                                          AS ticket_type,
+        url                                             AS api_url,
         -- added ':score'
-        satisfaction_rating:score   as satisfaction_rating_score, 
+        REPLACE(satisfaction_rating:score, '"', '')     AS satisfaction_rating_score,
+
         
         --dates
-        created_at                  as date_created,
-        updated_at                  as date_updated
+        created_at                                      AS date_created,
+        updated_at                                      AS date_updated
         
     FROM source
     
