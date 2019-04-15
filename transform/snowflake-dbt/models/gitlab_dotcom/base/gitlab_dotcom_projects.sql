@@ -1,4 +1,8 @@
-{{ config(schema='analytics') }}
+{{ config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter"
+    })
+}}
 
 {% set sensitive_fields = ['description', 'import_source','issues_template','build_coverage_regex','name', 'path','import_url','merge_requests_template'] %}
 {% set gitlab_namespaces = (6543,9970,4347861) %}

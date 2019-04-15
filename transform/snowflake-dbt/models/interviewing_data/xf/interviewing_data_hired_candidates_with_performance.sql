@@ -1,4 +1,8 @@
-{{ config(schema='analytics') }}
+{{ config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter"
+    })
+}}
 
 {% set set_to_true = "IS NOT NULL THEN True END" %}
 

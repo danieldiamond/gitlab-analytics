@@ -1,4 +1,8 @@
-{{ config(schema='analytics') }}
+{{ config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter"
+    })
+}}
 
 {% set fields_to_mask = ['name', 'path'] %}
 {% set gitlab_namespaces = (6543,9970,4347861) %}

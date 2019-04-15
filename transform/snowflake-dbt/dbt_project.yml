@@ -78,7 +78,6 @@ models:
           enabled: false
 
     gitlab_snowflake:
-      post-hook: "grant select on {{this}} to role reporter"
       enabled: true
       materialized: view
 
@@ -124,6 +123,10 @@ models:
       retention:
         enabled: true
         materialized: table
+
+      snowplow:
+        tags: ["product"]
+        enabled: true
 
       sfdc:
         xf:
