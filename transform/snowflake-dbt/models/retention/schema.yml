@@ -184,7 +184,36 @@ models:
               - not_null
               - accepted_values:
                       values: ['5K to 50K', 'Under 5K', '50K to 100K','100K to 500K', '500K to 1M','1M and above']
-
+  - name: retention_reasons_for_expansion
+    description: '{{ doc("retention_reasons_for_expansion") }}'
+    columns:
+        - name: zuora_subscription_name
+          tests:
+            - not_null
+        - name: zuora_subscription_id
+          tests:
+            - not_null
+        - name: retention_month
+          tests:
+            - not_null
+        - name: expansion_type
+          tests:
+            - not_null
+            - accepted_values:
+                    values: ['Seat Expansion', 'Discount/Price Change', 'Product Change', 'Product Change/Seat Change Mix', 'Unknown']
+        - name: original_product_category
+        - name: product_category
+          description: Product category is based on the rate plan name.
+          tests:
+            - not_null
+        - name: original_quantity
+        - name: quantity
+          tests:
+            - not_null
+        - name: original_unit_of_measure
+        - name: unit_of_measure
+          tests:
+            - not_null
   - name: retention_sfdc_account_
     description: '{{ doc("retention_sfdc_account_") }}'
     columns: 

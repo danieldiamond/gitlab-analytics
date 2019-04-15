@@ -21,6 +21,10 @@ This models is very similar to `retention_zuora_subscription`, but adjusted for 
 The `list` CTE does exactly that aggregation over `mrr_totals_levelled` creating 1 row per month per parent account. The `retention_subs` CTE joins `list` onto itself to isolate all parent accounts that have MRR that also exist 12 months in the future. The `finals` CTE creates the net retention and gross retention MRR values that will be compared to the original MRR value (MRR 12 months prior to the retention month). Finally we join the culled list of columns to to the ARR Segmentation calculated in the `current_arr_segmentation` model and limit the analysis to completed months. 
 {% enddocs %}
 
+{% docs retention_reasons_for_expansion %}
+This model is based on the principles for retention outlined in the zuora_subscription analysis but comparing product category and number of units. The notable difference from previous versions of this analysis is that we are using the principles of subscription lineage, instead of the oldest subscription in cohort value. 
+{% enddocs %}
+
 {% docs retention_zuora_subscription_ %}
 
 This model is to be used for calculated retention at all levels of analysis for the GitLab organization. 
