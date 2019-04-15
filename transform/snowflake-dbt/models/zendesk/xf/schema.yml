@@ -27,55 +27,78 @@ models:
             tests:
               - not_null
 
-
-    - name: zendesk_ticket_time_sla
-      description: This is the model for ticket time to resolution.
+models:
+    - name: zendesk_tickets_xf
+      description: This model contains meta information on each ticket such as client information, ticket metrics, and whether or not the SLA was met. The operating metric can be found [here](https://about.gitlab.com/handbook/finance/operating-metrics/#service-level-agreement-sla). SLA's can be found [here](https://about.gitlab.com/support/).
       columns:
           - name: ticket_id
             description: This is the ticket id.
             tests:
-              - unique
+              - not_null
+          - name: organization_id
+            description: This is the organization id.
+            tests:
+              - not_null
           - name: ticket_priority
             description: This is the ticket priority.
             tests:
               - not_null
-          - name: organization_id
-            description: This is the ticket organization id.
-            tests:
-              - not_null
-          - name: sfdc_id
-            description: This is the corresponding Salesforce ID.
-            tests:
-              - not_null
-          - name: ticket_status
-            description: This is the ticket status.
-            tests:
-              - not_null
-          - name: creation_date
-            description: This is the ticket creation date.
-            tests:
-              - not_null
-          - name: solved_date
-            description: This is the ticket solved date.
-            tests:
-              - not_null
-          - name: total_replies
-            description: This is the ticket total number of replies.
-            tests:
-              - not_null
-          - name: first_resolution_time_in_minutes_during_business_hours
-            description: This is the ticket first resolution time in minutes during business hours.
-            tests:
-              - not_null
-          - name: full_resolution_time_in_minutes_during_business_hours
-            description: This is the ticket final resolution time in minutes during business hours.
+          - name: ticket_recipient
+            description: This is the ticket recipient email
+          - name: satisfaction_rating_score
+            description: This is the ticket satisfaction rating status.
             tests:
               - not_null
           - name: first_resolution_time_in_minutes_during_calendar_hours
-            description: This is the ticket first resolution time in minutes during calendar hours.
+            description: This is the resolution time in minutes for the first resolution. 
             tests:
               - not_null
           - name: full_resolution_time_in_minutes_during_calendar_hours
-            description: This is the ticket final resolution time in minutes during calendar hours.
+            description: This is the resolution time in minutes for the final resolution. 
             tests:
               - not_null
+          - name: reopens
+            description: This is the number of times a ticket was reopened.
+            tests:
+              - not_null
+          - name: total_replies
+            description: This is the number of times a ticket was replied to.
+            tests:
+              - not_null  
+          - name: reply_time_in_minutes_during_calendar_hours
+            description: This is the number of minutes elapsed until the first reply.
+            tests:
+              - not_null                      
+          - name: creation_date
+            description: This is the date the ticket was created.
+            tests:
+              - not_null      
+          - name: arr
+            description: This is the ARR for the given ticket.
+            tests:
+              - not_null  
+          - name: sfdc_id
+            description: This is the SFDC ID for the given ticket customer.
+          - name: first_reply_time
+            description: This is a record of the first reply time based on first public reply, first resolution or final resolution.
+            tests:
+              - not_null 
+          - name: day_of_week_submitted
+            description: This is the day of the week in which the ticket was submitted.
+            tests:
+              - not_null 
+          - name: hour_submitted
+            description: This is the hour of the day when the ticket was submitted.
+            tests:
+              - not_null 
+          - name: day_end
+            description: This is a timestamp for the end of the 24 hour period.
+            tests:
+              - not_null 
+          - name: minutes_before_day_end
+            description: This is the amount of time that elapsed before the end of the 24 hour period.
+            tests:
+              - not_null 
+          - name: sla_status
+            description: '{{ doc("zendesk_ticket_sla") }}'
+
