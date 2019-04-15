@@ -40,7 +40,7 @@ WITH base_mrr AS (
 
 ), uniqueified as ( -- one row per sub slug for counting x product_category x mrr_month combo, with first of other values
 
-    SELECT {{ dbt_utils.surrogate_key('mrr_month', 'subscription_name_slugify', 'product_category') }} as primary_key,
+    SELECT {{ dbt_utils.surrogate_key('mrr_month', 'subscription_name_slugify', 'product_category', 'unit_of_measure') }} as primary_key,
           account_number,
           subscription_name_slugify,
           subscription_name,
