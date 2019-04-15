@@ -10,7 +10,7 @@ with sfdc_opportunity as (
     SELECT sales_type,
            stage_name,
            close_date,
-           owner,
+           opportunity_owner,
            opportunity_name,
            SUM(forecasted_iacv) AS forecasted_iacv,
            COUNT(*) AS opps

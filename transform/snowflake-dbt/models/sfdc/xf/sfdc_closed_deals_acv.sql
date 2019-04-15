@@ -13,7 +13,7 @@ WITH sfdc_opportunity as (
     SELECT sfdc_opportunity.sales_type,
            sfdc_opportunity.close_date,
            sfdc_opportunity.opportunity_id,
-           sfdc_opportunity.owner,
+           sfdc_opportunity.opportunity_owner,
            sfdc_opportunity.sales_path,
            sfdc_opportunity.acv,
            sfdc_account.account_segment,
@@ -27,7 +27,7 @@ WITH sfdc_opportunity as (
 
 ), final as (
 
-    SELECT owner, 
+    SELECT opportunity_owner, 
            sales_path,
            sales_type,
            account_segment, 
