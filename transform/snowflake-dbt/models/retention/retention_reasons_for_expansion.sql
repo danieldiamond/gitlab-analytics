@@ -60,6 +60,8 @@ with raw_mrr_totals_levelled AS (
                     THEN 'Product Change'
                    WHEN retention_subs.original_product_category != mrr_totals_levelled.product_category AND retention_subs.original_quantity != mrr_totals_levelled.quantity 
                     THEN 'Product Change/Seat Change Mix'
+                   WHEN array_to_string(mrr_totals_levelled.product_category, '') LIKE '%Trueup%' OR array_to_string(retention_subs.original_product_category, '') LIKE '%Trueup%'
+                    THEN 'Seat Expansion' 
                 ELSE 'Unknown' END AS expansion_type
        FROM mrr_totals_levelled
        LEFT JOIN retention_subs
