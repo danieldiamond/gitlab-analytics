@@ -160,3 +160,6 @@ AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
 SELECT * 
 FROM base
 WHERE event_id NOT IN (SELECT * FROM events_to_ignore)
+{% if target.name == "ci" %}
+and collector_tstamp > dateadd(day, -8, current_date)
+{% endif  %}

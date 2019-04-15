@@ -93,8 +93,8 @@ mr_dbt_archive_manual: &mr_dbt_archive_manual
     - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --full-refresh
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --full-refresh
   when: manual
 
 mr_dbt_all: &mr_dbt_all
@@ -104,12 +104,12 @@ mr_dbt_all: &mr_dbt_all
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --full-refresh
-    - dbt test --profiles-dir profile --target prod
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod
-    - dbt test --profiles-dir profile --target prod
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --full-refresh
+    - dbt test --profiles-dir profile --target ci
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci
+    - dbt test --profiles-dir profile --target ci
   only:
     - branches
   when: manual
@@ -119,12 +119,12 @@ mr_dbt_exclude_product: &mr_dbt_exclude_product
   script:
     - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --full-refresh --exclude tag:product
-    - dbt test --profiles-dir profile --target prod --exclude tag:product
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --exclude tag:product
-    - dbt test --profiles-dir profile --target prod --exclude tag:product
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --full-refresh --exclude tag:product
+    - dbt test --profiles-dir profile --target ci --exclude tag:product
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --exclude tag:product
+    - dbt test --profiles-dir profile --target ci --exclude tag:product
   only:
     - branches
   when: manual
@@ -136,12 +136,12 @@ mr_dbt_snowplow: &mr_dbt_snowplow
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --full-refresh --models snowplow
-    - dbt test --profiles-dir profile --target prod --models snowplow
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --models snowplow
-    - dbt test --profiles-dir profile --target prod --models snowplow
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --full-refresh --models snowplow
+    - dbt test --profiles-dir profile --target ci --models snowplow
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --models snowplow
+    - dbt test --profiles-dir profile --target ci --models snowplow
   only:
     - branches
   when: manual
@@ -153,12 +153,12 @@ mr_dbt_gitlab_dotcom: &mr_dbt_gitlab_dotcom
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --full-refresh --models gitlab_dotcom
-    - dbt test --profiles-dir profile --target prod --models gitlab_dotcom
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --models gitlab_dotcom
-    - dbt test --profiles-dir profile --target prod --models gitlab_dotcom
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --full-refresh --models gitlab_dotcom
+    - dbt test --profiles-dir profile --target ci --models gitlab_dotcom
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --models gitlab_dotcom
+    - dbt test --profiles-dir profile --target ci --models gitlab_dotcom
   only:
     - branches
   when: manual
@@ -171,12 +171,12 @@ mr_dbt_pings: &mr_dbt_pings
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --full-refresh --models pings
-    - dbt test --profiles-dir profile --target prod --models pings
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --models pings
-    - dbt test --profiles-dir profile --target prod --models pings
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --full-refresh --models pings
+    - dbt test --profiles-dir profile --target ci --models pings
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --models pings
+    - dbt test --profiles-dir profile --target ci --models pings
   only:
     - branches
   when: manual

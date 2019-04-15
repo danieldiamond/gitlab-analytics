@@ -14,6 +14,10 @@ SELECT
   JSONTEXT['rawData'::string] AS rawData,
   uploaded_at
 FROM {{ var("database") }}.SNOWPLOW.EVENTS
+WHERE 1 = 1
 {% if is_incremental() %}
-WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
+AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
 {% endif %}
+{% if target.name == "ci" %}
+AND arrivalTimestamp > dateadd(day, -8, current_date)
+{% endif  %}
