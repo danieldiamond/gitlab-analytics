@@ -18,3 +18,6 @@ with {% for name in names %} {{name}} as (
 SELECT * 
 FROM unioned
 {{ dbt_utils.group_by(n=7) }}
+{% if target.name == "ci" %}
+where created_at > dateadd(day, -8, current_date)
+{% endif  %}
