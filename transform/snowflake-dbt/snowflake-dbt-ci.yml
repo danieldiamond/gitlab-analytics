@@ -93,8 +93,8 @@ mr_dbt_archive_manual: &mr_dbt_archive_manual
     - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --full-refresh
+    - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --full-refresh
   when: manual
 
 mr_dbt_all: &mr_dbt_all
@@ -142,6 +142,20 @@ mr_dbt_snowplow: &mr_dbt_snowplow
     - dbt seed --profiles-dir profile --target ci #seed data from csv
     - dbt run --profiles-dir profile --target ci --models snowplow
     - dbt test --profiles-dir profile --target ci --models snowplow
+  only:
+    - branches
+  when: manual
+
+  dbt_snowplow: &dbt_snowplow
+  <<: *snowflake_dbt_jobs
+  script:
+    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_TRANSFORM_XL_WAREHOUSE
+    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
+    - python3 macro_name_check.py
+    - dbt deps --profiles-dir profile
+    - dbt seed --profiles-dir profile --target prod #seed data from csv
+    - dbt run --profiles-dir profile --target prod --full-refresh --models snowplow
+    - dbt test --profiles-dir profile --target prod --models snowplow
   only:
     - branches
   when: manual
