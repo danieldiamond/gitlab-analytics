@@ -146,7 +146,7 @@ mr_dbt_snowplow: &mr_dbt_snowplow
     - branches
   when: manual
 
-  dbt_snowplow: &dbt_snowplow
+prod_dbt_snowplow_full_refresh:
   <<: *snowflake_dbt_jobs
   script:
     - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_TRANSFORM_XL_WAREHOUSE
@@ -157,7 +157,7 @@ mr_dbt_snowplow: &mr_dbt_snowplow
     - dbt run --profiles-dir profile --target prod --full-refresh --models snowplow
     - dbt test --profiles-dir profile --target prod --models snowplow
   only:
-    - branches
+    - master
   when: manual
 
 mr_dbt_gitlab_dotcom: &mr_dbt_gitlab_dotcom
