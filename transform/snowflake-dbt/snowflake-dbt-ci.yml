@@ -93,8 +93,8 @@ mr_dbt_archive_manual: &mr_dbt_archive_manual
     - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target ci #seed data from csv
-    - dbt run --profiles-dir profile --target ci --full-refresh
+    - dbt seed --profiles-dir profile --target prod #seed data from csv
+    - dbt run --profiles-dir profile --target prod --full-refresh
   when: manual
 
 mr_dbt_all: &mr_dbt_all
