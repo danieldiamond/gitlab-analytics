@@ -41,7 +41,7 @@ with raw_mrr_totals_levelled AS (
                original_mrr_month,
                unit_of_measure    AS original_unit_of_measure,
                sum(quantity)      AS original_quantity,
-               sum(mrr)           AS retention_mrr
+               sum(mrr)           AS original_mrr
        FROM list
        INNER JOIN mrr_totals_levelled 
        ON retention_month = mrr_month
@@ -67,7 +67,7 @@ with raw_mrr_totals_levelled AS (
        LEFT JOIN retention_subs
        ON subscription_name_slugify = original_sub
        AND retention_subs.original_mrr_month = mrr_totals_levelled.mrr_month
-       WHERE mrr_totals_levelled.mrr > retention_subs.retention_mrr
+       WHERE mrr_totals_levelled.mrr > retention_subs.original_mrr
 
 ), joined as (
 
@@ -80,7 +80,9 @@ with raw_mrr_totals_levelled AS (
              original_quantity,
              quantity,
              original_unit_of_measure,
-             unit_of_measure
+             unit_of_measure,
+             original_mrr,
+             mrr
       FROM finals
 
 )
