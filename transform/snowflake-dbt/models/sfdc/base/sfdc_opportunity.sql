@@ -30,12 +30,9 @@ WITH source AS (
         sales_market__c             AS opportunity_owner_department,
         engagement_type__c          AS sales_path,
         sql_source__c               AS generated_source,
-        COALESCE(
-            initcap(
-                COALESCE(sales_segmentation_employees_o__c, sales_segmentation_o__c)
-                ), 'Unknown')       AS sales_segment,
-        initcap(
-            COALESCE(ultimate_parent_sales_segment_emp_o__c, ultimate_parent_sales_segment_o__c))
+        COALESCE({{ sales_segment_cleaning('sales_segmentation_employees_o__c') }}, {{ sales_segment_cleaning('sales_segmentation_o__c') }}, 'Unknown' )
+                                    AS sales_segment,
+        COALESCE({{ sales_segment_cleaning('ultimate_parent_sales_segment_emp_o__c') }}, {{ sales_segment_cleaning('ultimate_parent_sales_segment_o__c') }} ) 
                                     AS parent_segment,
         type                        AS sales_type,
         closedate                   AS close_date,
