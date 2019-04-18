@@ -3,6 +3,7 @@
 with raw_mrr_totals_levelled AS (
 
        SELECT * FROM {{ref('mrr_totals_levelled')}}
+       WHERE product_category != 'Trueup'
 
 ), mrr_totals_levelled AS (
 

@@ -214,6 +214,8 @@ models:
         - name: unit_of_measure
           tests:
             - not_null
+        - name: original_mrr
+        - name: mrr
   - name: retention_sfdc_account_
     description: '{{ doc("retention_sfdc_account_") }}'
     columns: 
