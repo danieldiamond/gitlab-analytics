@@ -161,3 +161,9 @@ models:
         tests:
           - not_null
           - unique
+  - name: f_sfdc_snapshot_opportunity_xf
+    columns:
+      - name: opportunity_id
+        description: This is a unique identifier for the event
+        tests:
+          - not_null
