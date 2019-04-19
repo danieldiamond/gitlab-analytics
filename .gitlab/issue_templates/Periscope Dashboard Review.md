@@ -24,7 +24,7 @@ If urgent, please detail why.
   - [ ] Labels and Points Allocated
 
 * Review Items
-   * [ ] SQL and Python meet style guide
+   * [ ] SQL and Python formatted using automatic formatter
    * [ ] Filters, if relevant
    * [ ] Drill Down Linked, if relevant
    * [ ] Overview/KPI/Top Level Metrics cross-linked
@@ -34,7 +34,7 @@ If urgent, please detail why.
    * [ ] Viz Titles changed to Autofit
    * [ ] Axes labeled, if relevant
    * [ ] Numbers (Currencies, Percents, Decimal Places, etc) cleaned, if relevant
-   * [ ] Chart description updated for each chart, linking to Metrics definitions where possible
+   * [ ] Chart description for each chart, linking to Metrics definitions where possible
    * [ ] Legend is clear
 
 /label ~Reporting ~Periscope ~Review
