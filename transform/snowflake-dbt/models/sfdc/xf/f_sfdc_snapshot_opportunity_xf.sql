@@ -4,9 +4,9 @@
     })
 }}
 
-with ss_opportunity AS (
+WITH ss_opportunity AS (
 
-  SELECT * FROM {{ ref('sfdc_snapshot_opportunity') }}
+    SELECT * FROM {{ ref('sfdc_snapshot_opportunity') }}
 
 ), account AS (
 
@@ -18,7 +18,7 @@ with ss_opportunity AS (
 
 ), leadsource AS (
 
-    SELECT * FROM {{ ref('dim_leadsource') }}
+    SELECT * FROM {{ ref('sfdc_lead_source') }} 
 )
 
 SELECT ss_opportunity.sfdc_opportunity_id                       AS opportunity_id,
