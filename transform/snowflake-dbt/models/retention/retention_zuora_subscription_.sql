@@ -83,7 +83,7 @@ with raw_mrr_totals_levelled AS (
              finals.zuora_subscription_cohort_quarter,
              finals.months_since_zuora_subscription_cohort_start,
              finals.quarters_since_zuora_subscription_cohort_start,
-             {{churn_type()}}
+             {{ churn_type('original_mrr', 'net_retention_mrr') }}
       FROM finals
       LEFT JOIN mapping
       ON mapping.subscription_name = finals.subscription_name
