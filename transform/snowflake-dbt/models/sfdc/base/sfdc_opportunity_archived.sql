@@ -8,7 +8,7 @@ with source as (
             "scd_id" as unique_identifier,
             "dbt_updated_at" as dbt_last_updated_timestamp
     FROM source
-    {{ dbt_utils.group_by(n=50) }}
+    {{ dbt_utils.group_by(n=53) }}
 
 )
 
