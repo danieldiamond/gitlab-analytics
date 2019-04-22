@@ -1,3 +1,10 @@
+{{ config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter"
+    })
+}}
+
+
 WITH source AS (
 
     SELECT *

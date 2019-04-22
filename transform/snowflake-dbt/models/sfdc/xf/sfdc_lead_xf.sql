@@ -1,3 +1,9 @@
+{{ config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter"
+    })
+}}
+
 with sfdc_lead as (
 
      SELECT * 
