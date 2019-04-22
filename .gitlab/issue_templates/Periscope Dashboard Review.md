@@ -16,7 +16,7 @@
 
 If urgent, please detail why.
 
-### Reviewer Checklist
+### Submitter Checklist
 
 * Housekeeping
   - [ ] Assigned to a member of the data team
@@ -37,6 +37,19 @@ If urgent, please detail why.
    * [ ] Chart description for each chart, linking to Metrics definitions where possible
    * [ ] Legend is clear
 
+### Reviewer Checklist
+* Review Items
+   * [ ] SQL and Python formatted using automatic formatter
+   * [ ] Filters, if relevant
+   * [ ] Drill Down Linked, if relevant
+   * [ ] Overview/KPI/Top Level Metrics cross-linked
+   * [ ] Section Label before more granular metrics
+   * [ ] Tags added
+   * [ ] Permissions reviewed
+   * [ ] Viz Titles changed to Autofit
+   * [ ] Axes labeled, if relevant
+   * [ ] Numbers (Currencies, Percents, Decimal Places, etc) cleaned, if relevant
+   * [ ] Chart description for each chart, linking to Metrics definitions where possible
+   * [ ] Legend is clear
+
 /label ~Reporting ~Periscope ~Review
-/weight 2
-@gitlab-data
