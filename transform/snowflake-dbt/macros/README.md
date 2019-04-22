@@ -17,11 +17,13 @@ Used in:
 - pings_usage_data_boolean.sql
 
 ## Churn Type ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/churn_type.sql))
+This macro compares MRR values and buckets them into retention categories.
 Usage:
 ```
-{{churn_type()}}
+{{ churn_type(original_mrr, new_mrr) }}
 ```
 Used in:
+- retention_reasons_For_retention.sql
 - retention_parent_account_.sql
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql

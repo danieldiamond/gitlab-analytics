@@ -61,7 +61,7 @@ with mrr_totals_levelled AS (
                sfdc_account_cohort_quarter,
                datediff(month, sfdc_account_cohort_month, original_mrr_month) as months_since_sfdc_account_cohort_start,
                datediff(quarter, sfdc_account_cohort_quarter, original_mrr_month) as quarters_since_sfdc_account_cohort_start,
-               {{churn_type()}}
+               {{ churn_type('original_mrr', 'net_retention_mrr') }}
         FROM finals
         LEFT JOIN mrr_totals_levelled
         ON finals.sfdc_account_id = mrr_totals_levelled.sfdc_account_id

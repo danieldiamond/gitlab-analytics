@@ -62,7 +62,7 @@ SELECT finals.ultimate_parent_account_id as parent_account_id,
        parent_account_cohort_quarter,
        datediff(month, parent_account_cohort_month, original_mrr_month) as months_since_parent_account_cohort_start,
        datediff(quarter, parent_account_cohort_quarter, original_mrr_month) as quarters_since_parent_account_cohort_start,
-       {{churn_type()}}
+       {{ churn_type('original_mrr', 'net_retention_mrr') }}
 FROM finals
 LEFT JOIN mrr_totals_levelled
 ON finals.ultimate_parent_account_id = mrr_totals_levelled.ultimate_parent_account_id
