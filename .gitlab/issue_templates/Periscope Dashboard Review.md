@@ -38,10 +38,6 @@ If urgent, please detail why.
    * [ ] Legend is clear
 
 ### Reviewer Checklist
-
-* Housekeeping
-  - [ ] Check Labels and Points Allocated
-
 * Review Items
    * [ ] SQL and Python formatted using automatic formatter
    * [ ] Filters, if relevant
@@ -57,5 +53,3 @@ If urgent, please detail why.
    * [ ] Legend is clear
 
 /label ~Reporting ~Periscope ~Review
-/weight 2
-@gitlab-data
