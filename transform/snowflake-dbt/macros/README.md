@@ -46,30 +46,6 @@ Usage:
 Used in: 
 - all models surfaced in our BI tool.
 
-## Get Pings JSON Keys ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/get_pings_json_keys.sql))
-This macro gets the path and field name for each stat pushed to pings `stats_used`
-
-Usage:
-```
-{{get_pings_json_keys()}}
-```
-
-After running this macro, the data is available using
-
-```load_result('stats_used')['data'] ```
-
-which will results an array of tuples with value 0 being the JSON path and value 1 being the field name to use. 
-
-The end result will look something like 
-
-```[('operation_dashboard.default', 'operation_dashboard_default), ('ci_pipeline_config_auto_devops', 'ci_pipeline_config_auto_devops')...]```
-
-Used in:
-- pings_usage_data_unpacked.sql
-- pings_usage_data_monthly_change.sql
-- pings_data_month.sql
-- pings_usage_data_boolean.sql
-
 ## Grants ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/grant_usage_to_schema.sql))
 This macro...
 Usage:

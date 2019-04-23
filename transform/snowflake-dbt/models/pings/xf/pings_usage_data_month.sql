@@ -1,6 +1,4 @@
--- depends_on: {{ ref('pings_usage_data') }}
-
-{{get_pings_json_keys()}}
+{% set ping_list = dbt_utils.get_column_values(table=ref('pings_list'), column='full_ping_name', max_records=1000) %}
 
 
 WITH usage_data as (
@@ -19,8 +17,8 @@ WITH usage_data as (
             max(main_edition)                                                                                AS main_edition,
             max(edition_type)                                                                                AS edition_type,
 
-            {%- for row in load_result('stats_used')['data'] -%}
-            max({{row[1]}})                                                                                  AS {{row[1]}} {{ "," if not loop.last }}
+            {% for ping_name in ping_list %}
+            max({{ping_name}})                                                                               AS {{ping_name}} {{ "," if not loop.last }}
             {%- endfor -%}
 
     FROM usage_data

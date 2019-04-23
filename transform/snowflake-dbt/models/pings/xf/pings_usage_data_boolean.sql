@@ -1,6 +1,10 @@
--- depends_on: {{ ref('pings_usage_data') }}
+{{ config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter"
+    })
+}}
 
-{{get_pings_json_keys()}}
+{% set ping_list = dbt_utils.get_column_values(table=ref('pings_list'), column='full_ping_name', max_records=1000) %}
 
 WITH usage_month as (
 
@@ -9,7 +13,9 @@ WITH usage_month as (
 )
 
 SELECT  DISTINCT *,
-        {%- for row in load_result('stats_used')['data'] -%}
-        {{ case_when_boolean_int(row[1]) }}                                       AS {{row[1]}}_active {{ "," if not loop.last }}
-        {%- endfor -%}
+
+        {% for ping_name in ping_list %}
+        {{ case_when_boolean_int( ping_name ) }}                                       AS {{ping_name}}_active {{ "," if not loop.last }}
+        {% endfor %}
+   
 FROM usage_month
