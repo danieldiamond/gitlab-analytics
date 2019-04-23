@@ -1,21 +1,24 @@
--- depends_on: {{ ref('pings_usage_data') }}
+{{ config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter"
+    })
+}}
 
-{{get_pings_json_keys()}}
+{% set ping_list = dbt_utils.get_column_values(table=ref('pings_list'), column='full_ping_name', max_records=1000) %}
 
 WITH pings_mom_change as (
 
   SELECT  md5(uuid || created_at)             AS unique_key,
           uuid                                AS uuid,
+          created_at                          AS created_at,
           edition                             AS edition,
           main_edition                        AS main_edition,
           edition_type                        AS edition_type,
+          {% for ping_name in ping_list %}
+          {{ monthly_change(ping_name) }} {{ "," if not loop.last }}
+          {% endfor %}
 
-          {%- for row in load_result('stats_used')['data'] -%}
-          {{ monthly_change(row[1]) }},
-          {%- endfor -%}
 
-          {{ monthly_change('active_user_count') }},
-          created_at                          AS created_at
   FROM {{ ref("pings_usage_data_month") }}
 
 )

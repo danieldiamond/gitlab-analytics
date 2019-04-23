@@ -1,7 +1,7 @@
 with retention_reasons_for_expansion AS (
 
 	SELECT *
-	FROM {{ref('retention_reasons_for_expansion')}}
+	FROM {{ref('retention_reasons_for_retention')}}
 
 )
 
