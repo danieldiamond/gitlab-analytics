@@ -316,6 +316,27 @@ roles:
             schemas:
                 - analytics.tmurphy_scratch
                 - analytics.tmurphy_scratch_meta
+    
+    - valexieva:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.valexieva_scratch
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.gitlab_dotcom
+                write:
+                    - raw.gitlab_dotcom
+            tables:
+                read:
+                    - raw.gitlab_dotcom.*
+                write:
+                    - raw.gitlab_dotcom.*
 
     - wwright:
         warehouses:
@@ -447,6 +468,12 @@ users:
             - transformer
             - tmurphy
 
+    - valexieva:
+        can_login: yes
+        member_of:
+            - reporter
+            - valexieva
+
     - wwright:
         can_login: yes
         member_of:
@@ -485,6 +512,9 @@ warehouses:
 
     - transforming_s:
         size: small
+
+    - transforming_l:
+        size: large
 
     - transforming_xl:
         size: x-large
