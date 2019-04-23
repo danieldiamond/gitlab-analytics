@@ -32,7 +32,7 @@ WITH source AS (
 		notes                           as account_notes,
 		purchaseordernumber             as purchase_order_number,
 		accountcode__c                  as sfdc_account_code,
-		status, 
+		status,
 		entity__c                       as sfdc_entity,
 
 		autopay                         as auto_pay,
@@ -92,16 +92,3 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-WHERE account_id NOT IN ('2c92a00769766db10169786750386ba5',
-'2c92a0ff69767b5f01697728415d3bc0',
-'2c92a0fe69766de10169786cabaf7204',
-'2c92a0fe69766de801697983c8124958',
-'2c92a00869767b10016978ea05df0231',
-'2c92a00869767b100169774ada3c6b67',
-'2c92a0ff69767b4b016979911794126b',
-'2c92a0fe69766de801697787c5176525',
-'2c92a00869767b18016978764f3c3bb9',
-'2c92a0ff69767b5f01697988a9c94dac',
-'2c92a0fe69766de801697824e9712e81',
-'2c92a0fe69766de101697963cb2976e6'
-) -- https://gitlab.com/gitlab-com/finance/issues/435
