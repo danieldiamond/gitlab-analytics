@@ -34,7 +34,7 @@ SELECT ss_opportunity.sfdc_opportunity_id                       AS opportunity_i
        ss_opportunity.reason_for_loss,
        ss_opportunity.reason_for_loss_details,
        ss_opportunity.incremental_acv                           AS iacv,
-       ss_opportunity.renewal_acv                               AS Renewal_ACV,
+       ss_opportunity.renewal_acv                               AS renewal_acv,
        ss_opportunity.acv,
        ss_opportunity.total_contract_value                      AS tcv,
        ss_opportunity.owner_id                                  AS ownerid,
@@ -45,6 +45,6 @@ FROM ss_opportunity
 INNER JOIN oppstage 
     ON ss_opportunity.stage_name = oppstage.primary_label
 INNER JOIN leadsource 
-    ON ss_opportunity.lead_source = leadsource.Initial_Source
+    ON ss_opportunity.lead_source = leadsource.initial_source
 INNER JOIN account 
     ON ss_opportunity.account_id = account.account_id
