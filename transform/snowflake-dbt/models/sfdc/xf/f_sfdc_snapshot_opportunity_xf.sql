@@ -38,13 +38,13 @@ SELECT ss_opportunity.sfdc_opportunity_id                       AS opportunity_i
        ss_opportunity.acv,
        ss_opportunity.total_contract_value                      AS tcv,
        ss_opportunity.owner_id                                  AS ownerid,
-       account.id                                               AS account_id,
+       account.account_id                                       AS account_id,
        oppstage.stage_id                                        AS opportunity_stage_id,
-       leadsource.id                                            AS lead_source_id
+       leadsource.lead_source_id                                AS lead_source_id
 FROM ss_opportunity
 INNER JOIN oppstage 
     ON ss_opportunity.stage_name = oppstage.primary_label
 INNER JOIN leadsource 
     ON ss_opportunity.lead_source = leadsource.Initial_Source
 INNER JOIN account 
-    ON ss_opportunity.account_id = account.sfdc_account_id
+    ON ss_opportunity.account_id = account.account_id
