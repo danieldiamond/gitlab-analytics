@@ -167,3 +167,12 @@ models:
         description: This is a unique identifier for the event
         tests:
           - not_null
+      - name: snapshot_date
+        description: "The date this  occurred in America/Los_Angeles time (eg. 2018-01-01)"
+        tests:
+          - not_null
+      - name: ownerid
+        description: The ID of the user who recorded the event
+        tests:
+          - not_null
+
