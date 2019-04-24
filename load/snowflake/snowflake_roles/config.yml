@@ -127,10 +127,22 @@ roles:
                     - raw
             schemas:
                 read:
+                    - raw.ci_stats_db
+                    - raw.customers_db
                     - raw.gitlab_dotcom
+                    - raw.gitlab_profiler_db
+                    - raw.license_db
+                    - raw.snowplow
+                    - raw.version_db
             tables:
                 read:
+                    - raw.ci_stats_db.*
+                    - raw.customers_db.*
                     - raw.gitlab_dotcom.*
+                    - raw.gitlab_profiler_db.*
+                    - raw.license_db.*
+                    - raw.snowplow.*
+                    - raw.version_db.*
 
     - reporter:
         warehouses:
