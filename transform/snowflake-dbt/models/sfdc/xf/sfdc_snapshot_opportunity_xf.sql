@@ -4,42 +4,52 @@
     })
 }}
 
-with ss_opportunity as (
-  SELECT * FROM {{ ref('sfdc_snapshot_opportunity') }}
+with ss_opportunity AS (
 
-), account as (
+    SELECT * FROM {{ ref('sfdc_snapshot_opportunity') }}
+
+), account AS (
 
     SELECT * FROM {{ ref('sfdc_account') }}
 
-),oppstage as (
+), oppstage AS (
 
     SELECT * FROM {{ ref('sfdc_opportunity_stage') }}
+
+), leadsource AS (
+
+    SELECT * FROM {{ ref('sfdc_lead_source') }} 
 ),
 
-transformed as (
+transformed AS (
 
-        SELECT o.sfdc_opportunity_id                   AS opportunity_id,
-               o.record_type_id,
-               o.snapshot_date :: date                 AS snapshot_date,
-               a.account_id                            AS account_id,
-               s.stage_id                              AS opportunity_stage_id,
-               COALESCE(o.sales_type, 'Unknown')       AS opportunity_type,
-               o.sales_segment                         AS opportunity_sales_segmenation,
-               o.sales_qualified_date :: date          AS sales_qualified_date,
-               o.sales_accepted_date :: date           AS sales_accepted_date,
-               o.generated_source                      AS sales_qualified_source,
-               o.close_date :: date                    AS opportunity_closedate,
-               COALESCE(o.opportunity_name, 'Unknown') AS opportunity_name,
-               o.reason_for_loss,
-               o.reason_for_loss_details,
-               o.incremental_acv                       AS iacv,
-               o.renewal_acv                           AS renewal_acv,
-               o.acv,
-               o.total_contract_value                  AS tcv,
-               o.owner_id                              AS ownerid
-        FROM ss_opportunity o
-          INNER JOIN oppstage s ON o.stage_name = s.primary_label
-          INNER JOIN account a ON o.account_id = a.account_id
+    SELECT ss_opportunity.sfdc_opportunity_id                   AS opportunity_id,
+           ss_opportunity.record_type_id,
+           ss_opportunity.snapshot_date :: date                 AS snapshot_date,
+           account.account_id                                   AS account_id,
+           oppstage.stage_id                                    AS opportunity_stage_id,
+           COALESCE(o.sales_type, 'Unknown')                    AS opportunity_type,
+           ss_opportunity.sales_segment                         AS opportunity_sales_segmenation,
+           ss_opportunity.sales_qualified_date :: date          AS sales_qualified_date,
+           ss_opportunity.sales_accepted_date :: date           AS sales_accepted_date,
+           ss_opportunity.generated_source                      AS sales_qualified_source,
+           ss_opportunity.close_date :: date                    AS opportunity_closedate,
+           COALESCE(o.opportunity_name, 'Unknown')              AS opportunity_name,
+           ss_opportunity.reason_for_loss,
+           ss_opportunity.reason_for_loss_details,
+           ss_opportunity.incremental_acv                       AS iacv,
+           ss_opportunity.renewal_acv                           AS renewal_acv,
+           ss_opportunity.acv,
+           ss_opportunity.total_contract_value                  AS tcv,
+           ss_opportunity.owner_id                              AS ownerid,
+           leadsource.lead_source_id                            AS lead_source_id
+    FROM ss_opportunity
+    INNER JOIN oppstage 
+      ON ss_opportunity.stage_name = oppstage.primary_label
+    INNER JOIN account 
+      ON ss_opportunity.account_id = account.account_id
+    INNER JOIN leadsource 
+      ON ss_opportunity.lead_source = leadsource.initial_source
 
  )
 
