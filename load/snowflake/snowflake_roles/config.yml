@@ -118,6 +118,20 @@ roles:
                     - raw.*.*
                     - testing_db.*.*
 
+    - product_manager:
+        warehouse:
+            - reporting
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.gitlab_dotcom
+            tables:
+                read:
+                    - raw.gitlab_dotcom.*
+
     - reporter:
         warehouses:
             - reporting
@@ -471,6 +485,7 @@ users:
     - valexieva:
         can_login: yes
         member_of:
+            - product_manager
             - reporter
             - valexieva
 
