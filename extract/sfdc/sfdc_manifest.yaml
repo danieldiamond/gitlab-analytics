@@ -480,9 +480,6 @@ lead:
   how_many_seats_are_they_interested_in_pu__c: real
   id: character varying
   industry: character varying
-  infer_web_direct_fit_score__c: real
-  infer_web_direct_hash__c: character varying
-  infer_web_direct_last_modified__c: timestamp without time zone
   instance_uuid__c: character varying
   interested_in_gitlab_ee__c: character varying
   interested_in_hosted_solution__c: boolean
@@ -589,7 +586,6 @@ lead:
   where_are_you_in_your__c: character varying
   where_is_the_budget_for_this_coming_from__c: character varying
   who_is_the_decision_maker_for_gitlab__c: character varying
-  zendesk__create_in_zendesk__c: boolean
   if_svn_why_looking_to_move_to_git__c: character varying
   mkto71_acquisition_date__c: timestamp without time zone
   mkto71_acquisition_program_id__c: real
