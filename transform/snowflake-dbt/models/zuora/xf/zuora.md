@@ -23,14 +23,29 @@ It then classifies the product category that was purchased based on the rate pla
 
 {% enddocs %}
 
+{% docs zuora_base_invoice_details %}
+
+This table defines each invoice charge. Charges come from invoice items which are part of Invoices. Invoices must be "Posted".
+
+The CTE `sub_months` pulls the unique combination of account number, cohort month, and the subscription identifiers so that the linkage to the charge can be made. This works as-is because of the upfront work on the subscription modeling to de-duplicate the data and account for renewals. Every subscription name is by default unique, so the slug should be as well. 
+
+The `charges` CTE is specifically crafted according to the data needs. The first join is INNER because we only want the charges that return a valid Invoice (e.g. we don't want a null invoice_id). The remainder are LEFT JOINS because we want to maintain all of the valid invoice item charges.
+
+{% enddocs %}
+
+
+{% docs zuora_base_ci_minutes %}
+
+This table defines each CI minutes charge. The appropriate charge name is "1,000 CI Minutes".
+
+CI minutes are not currently assigned to MRR.
+
+{% enddocs %}
+
 
 {% docs zuora_base_trueups %}
 
-This table defines each trueup charge. Trueups come from invoice items which are part of Invoices. The appropriate charge name for a trueup is either "Trueup" or "Trueup Credit" (which has a negative value). Invoices must be "Posted".
-
-The CTE `sub_months` pulls the unique combination of account number, cohort month, and the subscription identifiers so that the linkage to the Trueup can be made. This works as-is because of the upfront work on the subscription modeling to de-duplicate the data and account for renewals. Every subscription name is by default unique, so the slug should be as well. 
-
-The `trueups` CTE is specifically crafted according to the data needs. The first join is INNER because we only want the charges that return a valid Invoice (e.g. we don't want a null invoice_number). The remained are LEFT JOINS because we want to maintain all of the valid invoice item charges.
+This table defines each trueup charge. The appropriate charge name for a trueup is either "Trueup" or "Trueup Credit" (which has a negative value). 
 
 The final select statement then allocates the trueup according to what's listed in the [operating metrics](https://about.gitlab.com/handbook/finance/operating-metrics/#annual-recurring-revenue-arr) in our handbook  Simply put, the charge_amount for the trueup is divided by 12 and applied to the MRR for the month the trueup occurred (see also [Trueup Pricing](https://about.gitlab.com/handbook/product/pricing/#true-up-pricing)). 
 

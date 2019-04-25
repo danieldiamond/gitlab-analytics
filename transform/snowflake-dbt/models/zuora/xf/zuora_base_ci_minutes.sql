@@ -9,7 +9,7 @@ WITH invoice_details AS (
 
     SELECT *
     FROM {{ ref('zuora_base_invoice_details') }}
-    WHERE charge_name ILIKE '%Trueup%'
+    WHERE lower(charge_name) LIKE '%1,000 ci minutes%' -- Could switch to SKU
 
 )
 
@@ -22,9 +22,13 @@ SELECT
   lineage,
   cohort_month,
   cohort_quarter,
-  service_month                 AS trueup_month,
+  service_month,
   charge_name,
   service_start_date,
   charge_amount,
-  charge_amount/12              AS mrr
+  charge_date,
+  unit_of_measure,
+  unit_price,
+  quantity,
+  sku
 FROM invoice_details
