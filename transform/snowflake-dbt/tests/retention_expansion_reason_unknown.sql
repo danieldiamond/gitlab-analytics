@@ -1,10 +1,5 @@
-with retention_reasons_for_expansion AS (
-
-	SELECT *
-	FROM {{ref('retention_reasons_for_retention')}}
-
-)
+-- Fail if there are Unkown reasons for retention, positive or negative.
 
 SELECT *
-FROM retention_reasons_for_expansion
-WHERE expansion_type = 'Unknown'
+FROM {{ref('retention_reasons_for_retention')}}
+WHERE churn_type = 'Unknown'
