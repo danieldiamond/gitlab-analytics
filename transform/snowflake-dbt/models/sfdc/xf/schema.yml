@@ -149,6 +149,10 @@ models:
         description: "The date this occurred in America/Los_Angeles time (eg. 2018-01-01)"
         tests:
           - not_null
+      - name: ownerid
+        description: The ID of the user who recorded the event
+        tests:
+          - not_null
   - name: sfdc_statement_of_work_xf
     columns:
       - name: statement_of_work_id
@@ -161,3 +165,5 @@ models:
         tests:
           - not_null
           - unique
+
+
