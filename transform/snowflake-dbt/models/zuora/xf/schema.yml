@@ -67,6 +67,17 @@ models:
             tests:
               - accepted_values:
                       values: ['GitHost', 'Other', 'Gold', 'Basic', 'Bronze', 'Premium', 'Starter', 'Ultimate', 'Support', 'Plus', 'Silver', 'Standard', 'Trueup']
+    - name: zuora_base_invoice_details
+      description: '{{ doc("zuora_base_invoice_details") }}'
+    - name: zuora_base_ci_minutes
+      description: '{{ doc("zuora_base_ci_minutes") }}'
+      columns:
+          -   name: charge_name
+              description: The CI charge
+              tests:
+                  - not_null
+                  -   accepted_values:
+                          values: ['1,000 CI Minutes']
     - name: zuora_base_trueups
       description: '{{ doc("zuora_base_trueups") }}'
       columns:
