@@ -36,6 +36,7 @@ If urgent, please detail why.
    * [ ] Numbers (Currencies, Percents, Decimal Places, etc) cleaned, if relevant
    * [ ] Chart description for each chart, linking to Metrics definitions where possible
    * [ ] Legend is clear
+   * [ ] MR created to add to Periscope Directory
 
 ### Reviewer Checklist
 * Review Items
@@ -51,5 +52,6 @@ If urgent, please detail why.
    * [ ] Numbers (Currencies, Percents, Decimal Places, etc) cleaned, if relevant
    * [ ] Chart description for each chart, linking to Metrics definitions where possible
    * [ ] Legend is clear
+   * [ ] Merged into Periscope Directory
 
 /label ~Reporting ~Periscope ~Review
