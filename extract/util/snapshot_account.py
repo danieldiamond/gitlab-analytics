@@ -76,7 +76,7 @@ try:
              "a.support_level_new__c, " + \
              "a.entity_beneficiary_information__c, " + \
              "a.billingcountrycode, " + \
-             "a.terminus_clicks__c, " + \
+             "null, " + \
              "a.iseepluscustomer__c, " + \
              "a.billingstreet, " + \
              "a.reseller_type__c, " + \
@@ -108,7 +108,7 @@ try:
              "a.sdr__c, " + \
              "a.shippingpostalcode, " + \
              "a.isgithostdevelopercustomer__c, " + \
-             "a.terminus_velocity_level__c, " + \
+             "null, " + \
              "a.recordtypeid, " + \
              "a.previous_account_owner__c, " + \
              "a.numberofemployees, " + \
@@ -164,7 +164,7 @@ try:
              "a.lastmodifiedbyid, " + \
              "a.products_purchased__c, " + \
              "a.isdeleted, " + \
-             "a.terminus_impressions__c, " + \
+             "null, " + \
              "a.support_level_numeric__c, " + \
              "a.createddate, " + \
              "a.isgitlabgeocustomer__c, " + \
@@ -219,7 +219,7 @@ try:
              "a.of_carr__c, " + \
              "a.territories_covered__c, " + \
              "a.support_level__c, " + \
-             "a.terminus_spend__c, " + \
+             "null, " + \
              "a.region__c, " + \
              "a.leandata__ld_emaildomain__c, " + \
              "a.shippingcountrycode, " + \
