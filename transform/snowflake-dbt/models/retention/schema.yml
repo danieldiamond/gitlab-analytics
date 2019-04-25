@@ -196,26 +196,21 @@ models:
         - name: retention_month
           tests:
             - not_null
-        - name: expansion_type
+        - name: churn_type
           tests:
             - not_null
             - accepted_values:
-                    values: ['Seat Expansion', 'Discount/Price Change', 'Product Change', 'Product Change/Seat Change Mix', 'Unknown']
+                    values: ['Seat Expansion', 'Discount/Price Change', 'Product Change', 'Product Change/Seat Change Mix','Downgraded','Cancelled', 'Unknown']
         - name: original_product_category
-        - name: product_category
+        - name: retention_product_category
           description: Product category is based on the rate plan name.
-          tests:
-            - not_null
         - name: original_quantity
-        - name: quantity
-          tests:
-            - not_null
+        - name: retention_quantity
         - name: original_unit_of_measure
-        - name: unit_of_measure
-          tests:
-            - not_null
+        - name: retention_unit_of_measure
         - name: original_mrr
-        - name: mrr
+        - name: retention_mrr
+
   - name: retention_sfdc_account_
     description: '{{ doc("retention_sfdc_account_") }}'
     columns: 
