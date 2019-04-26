@@ -1,17 +1,21 @@
+## Copying bash_rc
+echo "Copying bashrc file.."
+curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/make_life_easier.sh > ~/.bashrc
+echo "Copied successfully!"
+
 ## install homebrew
 echo "Installing Homebrew.."
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 echo "Homebrew successfully installed"
 
-## install git 
+## install git
 echo "Installing git.."
 brew install git
 echo "git successfully installed"
 
 ## install git completion
 echo "Installing git completion.."
-curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > ~/git-completion.bash
-echo 'source ~/git-completion.bash' >> ~/.bash_profile
+curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > ~/.git-completion.bash
 echo "git completion successfully installed"
 
 ## install iterm2
@@ -36,7 +40,6 @@ echo "Installing Atom.."
 brew cask install atom
 ## this might ask you for your password
 atom --version
-echo 'export EDITOR="atom --wait"' >> ~/.bash_profile
 echo "Atom successfully installed"
 
 ## install bash completion
@@ -46,10 +49,7 @@ echo "bash completion successfully installed"
 
 ## update terminal prompt
 echo "Updating terminal prompt.."
-echo 'GIT_PS1_SHOWDIRTYSTATE=1' >> ~/.bash_profile
-echo 'GIT_PS1_SHOWUNTRACKEDFILES=1' >> ~/.bash_profile
-curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh >> ~/git-prompt.sh
-echo 'source ~/git-prompt.sh' >> ~/.bash_profile
+curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh >> ~/.git-prompt.sh
 echo "Terminal prompt successfully updated"
 
 ## create global gitignore
@@ -59,12 +59,6 @@ touch ~/.gitignore
 echo '.DS_Store' >> ~/.gitignore
 echo '.idea' >> ~/.gitignore
 echo "Global gitignore created"
-
-## add functions to bash_rc
-echo "Copying functions to make life easier.."
-curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/sample_profiles.yml > ~/.bash_rc
-source ~/.bash_rc
-echo "Functions successfully copied"
 
 ## install the repo
 echo "Installing the analytics repo.."
@@ -76,10 +70,11 @@ echo "Analytics repo successfully installed"
 ## install goto
 echo "Installing goto.."
 brew install goto
+touch ~/.inputrc
 echo -e "\$include /etc/inputrc\nset colored-completion-prefix on" >> ~/.inputrc
 echo "goto successfully installed.. Adding alias for analytics.."
 cd ~/repos/analytics
-goto -r analytics .
+goto -r analytics ~/repos/analytics
 echo "analytics goto alias successfully added"
 ## you can now type "goto analytics" and you're in the right place
 ## gl_open is now an alias to open this on gitlab.com
@@ -92,7 +87,7 @@ brew install dbt
 echo "dbt successfully installed.. Printing version.."
 dbt --version
 echo "Seting up dbt profile.."
-mkdir ~/.dbt 
+mkdir ~/.dbt
 touch ~/.dbt/profiles.yml
 curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/sample_profiles.yml >> ~/.dbt/profiles.yml
 echo "dbt profile created.. You will need to edit this file later."
@@ -101,11 +96,8 @@ echo "dbt profile created.. You will need to edit this file later."
 ## install the dbt completion script
 echo "Installing dbt completion script.."
 curl https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash > ~/.dbt-completion.bash
-echo 'source ~/.dbt-completion.bash' >> ~/.bash_profile
 echo "dbt completion script successfully installed"
 
 echo 'source ~/.bashrc' >> ~/.bash_profile
 
-source ~/.bash_profile
-
-echo "Onboarding script run successfully."
+echo "Onboarding script run successfully!"
