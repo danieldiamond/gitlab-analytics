@@ -1,0 +1,13 @@
+gitlab-snowflake: 
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      threads: 8
+      account: gitlab
+      user: %%YOUR USER%%
+      password: %%YOUR PASSWORD%%
+      role: TRANSFORMER
+      database: ANALYTICS
+      warehouse: ANALYST_XS
+      schema: %%YOUR SCRATCH%%
