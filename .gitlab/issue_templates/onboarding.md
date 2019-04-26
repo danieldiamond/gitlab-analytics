@@ -4,6 +4,7 @@ Goal: To help bring you, our new data analyst, up to speed in the GitLab Data Te
 
 - [ ] Manager: Add to Analytics API user.
 - [ ] Manager: Add to Stitch. 
+- [ ] Manager: Add to Periscope.
 - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
 - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
 - [ ] Manager: Invite to `data-team` channel on Slack.
@@ -19,17 +20,29 @@ Goal: To help bring you, our new data analyst, up to speed in the GitLab Data Te
 WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
 - [ ] Read (skim) through this full issue, just so you have a sense of what's coming. 
-- [ ] Join the following channels on Slack: `analytics`, `analytics-pipelines`, and `business-operations`.
+- [ ] Join the following channels on Slack: `data`, `data-lounge`, `analytics-pipelines`, and `business-operations`.
 - [ ] Schedule a recurring monthly skip level meeting with the Director of Business Operations.
 - [ ] Schedule a coffee chat with each member of the team. These should be in addition to the ones you do with other GitLab team members.
 - [ ] Read the following pages of the handbook in their entirety. Bookmark them as you should soon be making MR's to improve our documentation!
    - [ ] [Data Team](https://about.gitlab.com/handbook/business-ops/data-team/)
    - [ ] [Business Operations](https://about.gitlab.com/handbook/business-ops/)
    - [ ] [Data Quality Process](https://about.gitlab.com/handbook/business-ops/data-quality-process/)
+   - [ ] [Periscope Directory](https://about.gitlab.com/handbook/business-ops/data-team/periscope-directory/)
 - [ ] Watch @tlapiana's [talk at DataEngConf](https://www.youtube.com/watch?v=eu623QBwakc) that gives a phenomenal overview of how the team works.
 - [ ] Watch [this great talk](https://www.youtube.com/watch?v=prcz0ubTAAg) on what Analytics is 
 - [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
-- [ ] We suggest installing [iTerm2](http://iterm2.com) for use, over the Terminal. No pressure though.
+
+**Getting your computer set up locally**
+- [ ] Open your computer's built-in terminal app. Run the following:
+```
+curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/onboarding_script.sh > ~/onboarding_script.sh
+bash ~/onboarding_script.sh
+rm ~/onboarding_script.sh
+```
+   * This may take a while, and it might ask you for your password (multiple times) before it's done. 
+   * This will download iTerm2 and set up atom as your text editor. 
+   * You will be able to `goto analytics` from anywhere to go to the analytics repo locally. 
+   * You will be able to `gl_open` from anywhere within analytics to open the repo in the UI.
 - [ ] Get setup with Python locally. We suggest using the [Anaconda distribution](https://www.anaconda.com/download/#macos) as it will come pre-packaged with most everything we use.
 
 
@@ -66,27 +79,10 @@ As you read in the handbook, we currently use Stitch and Meltano for extracting 
 
 
 ### Getting Set up with dbt locally
-- [ ] Install dbt via [Homebrew](https://brew.sh) with `brew tap fishtown-analytics/dbt` and `brew install dbt`.
-- [ ] Run `dbt --version` to know you've successfully installed dbt. 
-- [ ] In your root directory, please run `mkdir .dbt`. Then create a `profiles.yml` file that looks as follow:
-```  
-gitlab-snowflake: 
-  target: dev
-  outputs:
-    dev:
-      type: snowflake
-      threads: 8
-      account: gitlab
-      user: %%YOUR USER%%
-      password: %%YOUR PASSWORD%%
-      role: TRANSFORMER
-      database: ANALYTICS
-      warehouse: ANALYST_XS
-      schema: %%YOUR SCRATCH%%
-```
-- All dbt commands need to be run within the analytics project, specifically you must be in `analytics/transform/snowflake-dbt` or below. 
+- All dbt commands need to be run within the analytics project (which you can get to my typing `goto analytics` from anywhere on your Mac, specifically you must be in `analytics/transform/snowflake-dbt` or below. 
+- [ ] From the command line run `atom ~.dbt/profiles.yml` and update this file with your info.
 - [ ] Run `dbt compile` to know that your connection has been successful, you are in the correct location, and everything will run smoothly. 
-- [ ] When you are ready to start working with dbt start by running `dbt deps` and doing a `dbt run`. This will take some time (estimate 1 hour, though it could be longer) the first time it runs. 
+- [ ] When you are ready to start working with dbt start by running `dbt deps` and doing a `dbt run --exclude snowplow`. This will take some time (estimate 1 hour, though it could be longer) the first time it runs. 
 
 Here is your dbt commands cheat sheet:
  * `dbt compile` - compiles all models
@@ -100,6 +96,9 @@ Here is your dbt commands cheat sheet:
  * `dbt test` - will run custom data tests and schema tests; TIP: `dbt test` takes the same `--model` and `--exclude` syntax referenced for `dbt run`
  * `dbt docs generate` - will generate files for docs
  * `dbt docs serve` - will serve the dbt docs locally
+ * `dbt_run_changed` - a function we've added to your computer that only runs models that have changed
+ * `cycle_logs` - a function we've added to your computer to clear out the dbt logs
+ * `open_dbt_docs` - a function we've added to your computer to open a local version of dbt docs (reflective of your branch) in one command
 
 ## Snowflake SQL
 Snowflake SQL is probably not that different from the dialects of SQL you're already familiar with, but here are a couple of resources to point you in the right direction:
