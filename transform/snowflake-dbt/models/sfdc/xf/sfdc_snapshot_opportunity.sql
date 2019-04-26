@@ -13,9 +13,9 @@ with raw_ss_opportunity as (
 
 ), ss_opportunity as (
 
-      SELECT opportunity_id AS sfdc_opportunity_id,
+      SELECT opportunity_id                             AS sfdc_opportunity_id,
              record_type_id,
-             _last_dbt_run::date AS snapshot_date,
+             _last_dbt_run::date                        AS snapshot_date,
              account_id,
              stage_name,
              lead_source,
@@ -33,11 +33,11 @@ with raw_ss_opportunity as (
              acv,
              renewal_acv,
              total_contract_value,
-             'stitch' AS origin --denote that these rows come from stitch
+             'stitch'                                   AS origin --denote that these rows come from stitch
 
       FROM raw_ss_opportunity
 
-), raw_legacy_ss_opportunity as (
+), raw_legacy_ss_opportunity AS (
 
       SELECT
       *,
@@ -46,42 +46,42 @@ with raw_ss_opportunity as (
         PARTITION BY
           id,
           snapshot_date
-        ORDER BY snapshot_date DESC ) AS sub_row
+        ORDER BY snapshot_date DESC )                   AS sub_row
     FROM "RAW"."GCLOUD_POSTGRES_STITCH"."SFDC_DERIVED_SS_OPPORTUNITY"
     WHERE isdeleted=False
 
-), legacy_ss_opportunity as (
+), legacy_ss_opportunity AS (
 
-      SELECT id AS sfdc_opportunity_id,
-             recordtypeid AS record_type_id,
-             snapshot_date::date AS snapshot_date,
-             accountid AS account_id,
-             stagename AS stage_name,
-             leadsource AS lead_source,
-             TYPE as sales_type,
-             closedate AS close_date,
-             sql_source__c AS generated_source,
+      SELECT id                                         AS sfdc_opportunity_id,
+             recordtypeid                               AS record_type_id,
+             snapshot_date::date                        AS snapshot_date,
+             accountid                                  AS account_id,
+             stagename                                  AS stage_name,
+             leadsource                                 AS lead_source,
+             TYPE                                       AS sales_type,
+             closedate                                  AS close_date,
+             sql_source__c                              AS generated_source,
               COALESCE(
                   initcap(
                       COALESCE(sales_segmentation_employees_o__c, sales_segmentation_o__c)
-                      ), 'Unknown')       AS sales_segment,
-             sales_qualified_date__c AS sales_qualified_date,
-             sales_accepted_date__c AS sales_accepted_date,
-             reason_for_lost__c AS reason_for_loss,
-             reason_for_lost_details__c AS reason_for_loss_details,
-             name AS opportunity_name,
-             ownerid AS owner_id,
-             Incremental_ACV__c AS incremental_acv,
-             ACV__c AS acv,
-             Renewal_ACV__c AS renewal_acv,
-             Amount AS total_contract_value,
-             'legacy' AS origin --denote that these rows were loaded from cloudsql and the legacy sfdc extractor
+                      ), 'Unknown')                     AS sales_segment,
+             sales_qualified_date__c                    AS sales_qualified_date,
+             sales_accepted_date__c                     AS sales_accepted_date,
+             reason_for_lost__c                         AS reason_for_loss,
+             reason_for_lost_details__c                 AS reason_for_loss_details,
+             name                                       AS opportunity_name,
+             ownerid                                    AS owner_id,
+             Incremental_ACV__c                         AS incremental_acv,
+             ACV__c                                     AS acv,
+             Renewal_ACV__c                             AS renewal_acv,
+             Amount                                     AS total_contract_value,
+             'legacy'                                   AS origin --denote that these rows were loaded from cloudsql and the legacy sfdc extractor
 
       FROM raw_legacy_ss_opportunity
       WHERE sub_row = 1
-      AND snapshot_date::date < '2019-03-07'::date
+      AND snapshot_date::date < '2019-01-02'::date
 
-), unioned as (
+), unioned AS (
 
     SELECT *
     FROM ss_opportunity
