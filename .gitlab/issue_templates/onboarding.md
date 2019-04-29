@@ -9,8 +9,7 @@ Goal: To help bring you, our new data analyst, up to speed in the GitLab Data Te
 - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
 - [ ] Manager: Invite to `data-team` channel on Slack.
 - [ ] Manager: Add to daily Geekbot standup
-- [ ] Manager: Add to Snowflake [following Readme Process](https://gitlab.com/gitlab-data/analytics#managing-roles-for-snowflake). 
-- [ ] Manager: Add [future grant](https://docs.snowflake.net/manuals/sql-reference/sql/grant-privilege.html) to analytics schema to user with `grant select on future tables in schema analytics to role [username]`. You will need to be using the `sysadmin` [role](https://docs.snowflake.net/manuals/user-guide/security-access-control-configure.html#assigning-future-grants-on-objects).
+- [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access). 
 - [ ] Manager: Inform new hire what his/her/they scratch schema will be called. **Do not create the schema**, as this will lead to conflicts when dbt runs. 
 - [ ] Manager: Invite to SheetLoad folder in gdrive (but not the interviewing data sheet).
 - [ ] Manager: Invite to Milestone Planning, Milestone Grooming, and DataOps Meetings. Ping appropriate person to get new hire added to Finance team meetings.
