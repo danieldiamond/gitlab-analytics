@@ -222,15 +222,16 @@ sfdc_snapshot_manual:
 # ======
 
 # Define some variables for use in other Pages jobs
-.variables: &pages_job__variables
-  SNOWFLAKE_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
-  SNOWFLAKE_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE
+
 
 # Job template for use in the Pages publishing jobs
 .pages_job_template: &pages_job_template
   stage: publish
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
-  variables: *pages_job__variables
+  variables:
+    SNOWFLAKE_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
+    SNOWFLAKE_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE
+    SNOWFLAKE_DATABASE: $SNOWFLAKE_TRANSFORM_DATABASE
   before_script:
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
     - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
@@ -245,23 +246,12 @@ sfdc_snapshot_manual:
 # Run the script to generate the dbt docs and stand them up in gitlab pages
 pages:
   <<: *pages_job_template
-  variables:
-    <<: *pages_job__variables
-    SNOWFLAKE_DATABASE: $SNOWFLAKE_TRANSFORM_DATABASE
   only:
     refs:
       - master
     variables:
       - $DEPLOY_DBT_PAGES
 
-# Manual, dry-run version of the pages job
-test_dbt_pages:
-  <<: *pages_job_template
-  only:
-    - branches
-  except:
-    - master
-  when: manual
 
 
 # Stage: review_stop
