@@ -32,6 +32,8 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.account_id,
         sfdc_opportunity.owner_id,
         sfdc_opportunity.record_type_id,
+        sfdc_opportunity.opportunity_business_development_representative,
+        sfdc_opportunity.opportunity_sales_development_representative,
         sfdc_opportunity.sales_path,
         sfdc_opportunity.generated_source,
         sfdc_opportunity.sales_segment,
