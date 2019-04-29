@@ -30,6 +30,8 @@ WITH source AS (
         sales_market__c             AS opportunity_owner_department,
         engagement_type__c          AS sales_path,
         sql_source__c               AS generated_source,
+        SDR_LU__c                   AS opportunity_sales_development_representative, 
+        BDR_LU__c                   AS opportunity_business_development_representative,
         COALESCE({{ sales_segment_cleaning('sales_segmentation_employees_o__c') }}, {{ sales_segment_cleaning('sales_segmentation_o__c') }}, 'Unknown' )
                                     AS sales_segment,
         COALESCE({{ sales_segment_cleaning('ultimate_parent_sales_segment_emp_o__c') }}, {{ sales_segment_cleaning('ultimate_parent_sales_segment_o__c') }} ) 
