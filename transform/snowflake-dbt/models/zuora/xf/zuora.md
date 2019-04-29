@@ -4,11 +4,11 @@ This model generates an entry for each unique charge associated with a subscript
 
 We only care about charges that have both Monthly Recurring Revenue (MRR) > $0 and Total Contract Value (TCV) > $0.
 
-For the purposes of applying MRR to months, we only care about what rate plan charge was in effect on the very last day of the month. The effective_end_date calculation is taken as the previous month for the following reason: technically, on Zuora's side, the effective end date stored in the database is the day _after_ the subscription ended. (More info here https://community.zuora.com/t5/Subscriptions/How-to-get-ALL-the-products-per-active-subscription/td-p/2224) Another way to think about it is that the effective end date is the first day of the renewal. By subtracting the month, we're guaranteed to get the correct month for an end date. If in the DB it ends 7/31, then in reality that is the day before (7/30) and is therefore not in effect for the month of July (because it has to be in effect on the last day to be in force for that month). If the end date is 8/1, then it is in effect for the month of July and we're making the proper calculation by subtracting 1 month. 
+For the purposes of applying MRR to months, we only care about what rate plan charge was in effect on the very last day of the month. The effective_end_date calculation is taken as the previous month for the following reason: technically, on Zuora's side, the effective end date stored in the database is the day _after_ the subscription ended. (More info here https://community.zuora.com/t5/Subscriptions/How-to-get-ALL-the-products-per-active-subscription/td-p/2224) Another way to think about it is that the effective end date is the first day of the renewal. By subtracting the month, we're guaranteed to get the correct month for an end date. If in the DB it ends 7/31, then in reality that is the day before (7/30) and is therefore not in effect for the month of July (because it has to be in effect on the last day to be in force for that month). If the end date is 8/1, then it is in effect for the month of July and we're making the proper calculation by subtracting 1 month.
 
-To reiterate, if there is a rate plan charge that starts 2017-03-15Å and goes to 2017-06-10, then that charge would be counted for the months of March, April, and May. June is not counted because a different charge would be in effect on the last day of the month. 
+To reiterate, if there is a rate plan charge that starts 2017-03-15Å and goes to 2017-06-10, then that charge would be counted for the months of March, April, and May. June is not counted because a different charge would be in effect on the last day of the month.
 
-Another example: if the effective start and end dates of the charge occurred from 2018-08-02 to 2018-08-15, that would be completely dropped. If it occurred from 2018-08-16 to 2018-08-31, that would also be dropped because the charge was not in force on the last day of the month. If it occurred from 2018-08-30 to 2018-09-02, then that would be in force for the month of August. 
+Another example: if the effective start and end dates of the charge occurred from 2018-08-02 to 2018-08-15, that would be completely dropped. If it occurred from 2018-08-16 to 2018-08-31, that would also be dropped because the charge was not in force on the last day of the month. If it occurred from 2018-08-30 to 2018-09-02, then that would be in force for the month of August.
 
 The final WHERE filter validates that only charges that were in force at the end of the month are selected. Using the 2018-08-16 to 2018-08-31 example, the effective start and end months would be 2018-08-01 and 2018-07-01 which would result in a datediff value of -1 and would be filtered out.
 
@@ -19,15 +19,13 @@ The final WHERE filter validates that only charges that were in force at the end
 
 This table amortizes the monthly charges over the time span that the rate plan charge was in effect. A rate plan charge is only in effect if it was in effect for the last day of the month. 
 
-It then classifies the product category that was purchased based on the rate plan name. 
-
 {% enddocs %}
 
 {% docs zuora_base_invoice_details %}
 
 This table defines each invoice charge. Charges come from invoice items which are part of Invoices. Invoices must be "Posted".
 
-The CTE `sub_months` pulls the unique combination of account number, cohort month, and the subscription identifiers so that the linkage to the charge can be made. This works as-is because of the upfront work on the subscription modeling to de-duplicate the data and account for renewals. Every subscription name is by default unique, so the slug should be as well. 
+The CTE `sub_months` pulls the unique combination of account number, cohort month, and the subscription identifiers so that the linkage to the charge can be made. This works as-is because of the upfront work on the subscription modeling to de-duplicate the data and account for renewals. Every subscription name is by default unique, so the slug should be as well.
 
 The `charges` CTE is specifically crafted according to the data needs. The first join is INNER because we only want the charges that return a valid Invoice (e.g. we don't want a null invoice_id). The remainder are LEFT JOINS because we want to maintain all of the valid invoice item charges.
 
@@ -45,9 +43,9 @@ CI minutes are not currently assigned to MRR.
 
 {% docs zuora_base_trueups %}
 
-This table defines each trueup charge. The appropriate charge name for a trueup is either "Trueup" or "Trueup Credit" (which has a negative value). 
+This table defines each trueup charge. The appropriate charge name for a trueup is either "Trueup" or "Trueup Credit" (which has a negative value).
 
-The final select statement then allocates the trueup according to what's listed in the [operating metrics](https://about.gitlab.com/handbook/finance/operating-metrics/#annual-recurring-revenue-arr) in our handbook  Simply put, the charge_amount for the trueup is divided by 12 and applied to the MRR for the month the trueup occurred (see also [Trueup Pricing](https://about.gitlab.com/handbook/product/pricing/#true-up-pricing)). 
+The final select statement then allocates the trueup according to what's listed in the [operating metrics](https://about.gitlab.com/handbook/finance/operating-metrics/#annual-recurring-revenue-arr) in our handbook  Simply put, the charge_amount for the trueup is divided by 12 and applied to the MRR for the month the trueup occurred (see also [Trueup Pricing](https://about.gitlab.com/handbook/product/pricing/#true-up-pricing)).
 
 
 {% enddocs %}
@@ -70,7 +68,7 @@ The `renewal_subs` CTE creates a lookup table for renewal subscriptions, their p
 
 The final select statement creates a new field specifically for counting subscriptions and generates appropriate cohort dates. Because we want to count renewal subscriptions as part of their parent, we have the slug for counting so that we don't artificially inflate numbers. It also pickes the most recent version of a subscription.
 
-The subscription_end_month calculation is taken as the previous month for a few reasons. Technically, on Zuora's side, the effective end date stored in the database the day _after_ the subscription ended. (More info here https://community.zuora.com/t5/Subscriptions/How-to-get-ALL-the-products-per-active-subscription/td-p/2224) By subtracting the month, we're guaranteed to get the correct month for an end date. If in the DB it ends 7/31, then in reality that is the day before and is therefore not in effect for the month of July (because it has to be in effect on the last day to be in force for that month). If the end date is 8/1, then it is in effect for the month of July and we're making the proper calculation. 
+The subscription_end_month calculation is taken as the previous month for a few reasons. Technically, on Zuora's side, the effective end date stored in the database the day _after_ the subscription ended. (More info here https://community.zuora.com/t5/Subscriptions/How-to-get-ALL-the-products-per-active-subscription/td-p/2224) By subtracting the month, we're guaranteed to get the correct month for an end date. If in the DB it ends 7/31, then in reality that is the day before and is therefore not in effect for the month of July (because it has to be in effect on the last day to be in force for that month). If the end date is 8/1, then it is in effect for the month of July and we're making the proper calculation.
 
 {% enddocs %}
 
@@ -91,7 +89,7 @@ The next CTE takes the full union of the results and finds the longest lineage f
 {% docs zuora_subscription_parentage_start %}
 This is the first part of a two-part model. (It is in two parts because of memory constraints.)
 
-The `flattened` CTE takes the data from lineage, which starts in the following state: 
+The `flattened` CTE takes the data from lineage, which starts in the following state:
 
 
 |SUBSCRIPTION_NAME_SLUGIFY|LINEAGE|
@@ -101,7 +99,7 @@ The `flattened` CTE takes the data from lineage, which starts in the following s
 |a-s00003063|a-s00011816,a-s00011817,a-s00011818|
 
 
-This flattens them to be be in one-per row. Rxample: 
+This flattens them to be be in one-per row. Rxample:
 
 |SUBSCRIPTION_NAME_SLUGIFY|SUBSCRIPTIONS_IN_LINEAGE|CHILD_INDEX|
 |:-:|:-:|:-:|
@@ -111,7 +109,7 @@ This flattens them to be be in one-per row. Rxample:
 |a-s00003063|a-s00011816|0|
 |a-s00003063|a-s00011817|1|
 
-Then we identify the version of the `subscriptions_in_lineage` with the max depth (in the `find_max_depth` CTE) and join it to the `flattened` CTE in the `with_parents` CTE. This allows us to identify the ultimate parent subscription in any given subscription. 
+Then we identify the version of the `subscriptions_in_lineage` with the max depth (in the `find_max_depth` CTE) and join it to the `flattened` CTE in the `with_parents` CTE. This allows us to identify the ultimate parent subscription in any given subscription.
 
 For this series of subscriptions, the transformation result is:
 
@@ -150,9 +148,9 @@ Some accounts are not a direct renewal, they are the consolidation of many subsc
 
 Since the whole point of ultimate parent is to understand cohorts, this poses a problem (not just for fan outs when joining) because it is inaccurate.
 
-The `new_base` CTE identifies all affected subscriptions, while `consolidated_parents` and `deduped_parents` find the oldest version of the subscription. 
+The `new_base` CTE identifies all affected subscriptions, while `consolidated_parents` and `deduped_parents` find the oldest version of the subscription.
 
-This produces 
+This produces
 
 |ULTIMATE_PARENT_SUB|CHILD_SUB|COHORT_MONTH|COHORT_QUARTER|COHORT_YEAR|
 |:-:|:-:|:-:|:-:|:-:|

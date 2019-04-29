@@ -32,6 +32,7 @@ WITH zuora_accts AS (
            zuora_subscriptions_xf.subscription_status,
            zuora_subscriptions_xf.exclude_from_renewal_report,
            zuora_rp.rate_plan_name,
+           zuora_rp.product_category,
            zuora_rpc.rate_plan_charge_name,
            zuora_rpc.rate_plan_charge_number,
            zuora_rpc.mrr,
