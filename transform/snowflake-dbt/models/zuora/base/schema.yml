@@ -12,7 +12,6 @@ models:
             tests:
                 - not_null
           - name: crm_id
-
     - name: zuora_contact
       description: Base model for Zuora contacts
       columns:
@@ -43,6 +42,11 @@ models:
             tests:
                 - not_null
                 - unique
+          - name: product_category
+            description: Product category is based on the rate plan name.
+            tests:
+              - accepted_values:
+                      values: ['GitHost', 'Other', 'Gold', 'Basic', 'Bronze', 'Premium', 'Starter', 'Ultimate', 'Support', 'Plus', 'Silver', 'Standard', 'Trueup']
     - name: zuora_rate_plan_charge
       description: Base model for Zuora Rate Plan Charges
       columns:

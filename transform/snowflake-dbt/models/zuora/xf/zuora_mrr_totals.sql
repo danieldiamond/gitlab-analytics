@@ -16,7 +16,7 @@ WITH base_mrr AS (
           trueup_month    AS mrr_month,
           cohort_month    AS zuora_subscription_cohort_month,
           cohort_quarter  AS zuora_subscription_cohort_quarter,
-          mrr, 
+          mrr,
           'Trueup'        AS product_category,
           null            AS unit_of_measure,
           null            AS quantity
@@ -56,9 +56,9 @@ WITH base_mrr AS (
     FROM mrr_combined
     {{ dbt_utils.group_by(n=11) }}
 
-) 
+)
 
-SELECT *, -- calculate new values 
+SELECT *, -- calculate new values
       datediff(month,zuora_subscription_cohort_month, mrr_month)      AS months_since_zuora_subscription_cohort_start,
       datediff(quarter, zuora_subscription_cohort_quarter, mrr_month) AS quarters_since_zuora_subscription_cohort_start
 FROM uniqueified
