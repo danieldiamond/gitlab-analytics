@@ -277,6 +277,14 @@ roles:
                 write:
                     - raw.gitter.*
 
+    - ekastelein:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.ekastelein_scratch
+                - analytics.ekastelein_scratch_meta
+
     - gitlab-ci:
         warehouses:
             - reporting
@@ -412,6 +420,13 @@ users:
         member_of:
             - reporter
             - eeastwood
+
+    - ekastelein:
+        can_login: yes
+        member_of:
+            - sysadmin
+            - transformer
+            - eburke
 
     - gitlab-ci:
         can_login: yes
