@@ -98,6 +98,11 @@ echo "Installing dbt completion script.."
 curl https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash > ~/.dbt-completion.bash
 echo "dbt completion script successfully installed"
 
+## install anaconda
+brew cask install anaconda
+echo "export PATH=/usr/local/anaconda3/bin:"$PATH"" >> ~/.bash_profile
+echo "conda installed succesfully"
+
 echo 'source ~/.bashrc' >> ~/.bash_profile
 
 echo "Onboarding script run successfully"
