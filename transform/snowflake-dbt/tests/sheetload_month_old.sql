@@ -2,15 +2,16 @@
 
 {% set table_names = [('headcount', 'raw.sheetload.headcount'),
                       ('metrics', 'raw.sheetload.metrics'),
-                      ('regional_quotas', 'raw.sheetload.transposed'),
-                      ('sales_weekly_forecast', 'raw.sheetload.sales_weekly_forecast'),
-                      ('ccodashboard_actuals', 'raw.sheetload.ccodashboard_actuals'),
-                      ('crodashboard_actuals', 'raw.sheetload.crodashboard_actuals'),
-                      ('cfodashboard_actuals', 'raw.sheetload.cfodashboard_actuals'),
-                      ('vpedashboard_actuals', 'raw.sheetload.vpedashboard_actuals'),
-                      ('cmodashboard_actuals', 'raw.sheetload.cmodashboard_actuals'),
-                      ('alliancesdashboard_actuals', 'raw.sheetload.alliancesdashboard_actuals')]%}
---('sales_quota', 'raw.sheetload.sales_quota')
+                      ('sales_quotas_region_by_month', 'raw.sheetload.sales_quotas_region_by_month'),
+                      ('sales_quotas_region_by_fq', 'raw.sheetload.sales_quotas_region_by_fq'),
+                      ('sales_ramp_time_by_month', 'raw.sheetload.sales_ramp_time_by_month'),
+                      ('sales_ramp_time_by_tenure', 'raw.sheetload.sales_ramp_time_by_tenure'),
+                      ('sales_quotas', 'raw.sheetload.sales_quotas'),
+                      ('sales_rep_productivity_all', 'raw.sheetload.sales_rep_productivity_all'),
+                      ('sales_rep_productivity_sal', 'raw.sheetload.sales_rep_productivity_sal'),
+                      ('sales_rep_productivity_mm_ae', 'raw.sheetload.sales_rep_productivity_mm_ae'),
+                      ('sales_rep_productivity_smb_ae', 'raw.sheetload.sales_rep_productivity_smb_ae')
+                      ] %}
 
 with base as (
 {% for table_name in table_names -%}

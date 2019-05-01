@@ -112,4 +112,3 @@ class SnowflakeManager(object):
 if __name__ == "__main__":
     snowflake_manager = SnowflakeManager(env.copy())
     Fire(snowflake_manager)
-
