@@ -100,11 +100,6 @@ models:
         xf:
           materialized: table
 
-      sheetload:
-        xf:
-          enabled: true
-          materialized: table
-
       netsuite:
         xf:
           enabled: true
