@@ -1,7 +1,7 @@
 ## Copying bash_rc
 echo "Copying bashrc file.."
 curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/make_life_easier.sh > ~/.bashrc
-echo "Copied successfully!"
+echo "Copied successfully"
 
 ## install homebrew
 echo "Installing Homebrew.."
@@ -98,6 +98,12 @@ echo "Installing dbt completion script.."
 curl https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash > ~/.dbt-completion.bash
 echo "dbt completion script successfully installed"
 
+## install anaconda
+echo "Installing anaconda.."
+brew cask install anaconda
+echo "export PATH=/usr/local/anaconda3/bin:"$PATH"" >> ~/.bash_profile
+echo "anaconda installed succesfully"
+
 echo 'source ~/.bashrc' >> ~/.bash_profile
 
-echo "Onboarding script run successfully!"
+echo "Onboarding script run successfully"

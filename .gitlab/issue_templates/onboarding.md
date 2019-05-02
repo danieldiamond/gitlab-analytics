@@ -39,11 +39,13 @@ bash ~/onboarding_script.sh
 rm ~/onboarding_script.sh
 ```
    * This may take a while, and it might ask you for your password (multiple times) before it's done. 
+   * Make sure that you have [created your SSH keys](https://docs.gitlab.com/ee/gitlab-basics/create-your-ssh-keys.html) prior to running this.
+      * You can check this by typing `ssh -T git@gitlab.com` into your terminal which should return "Welcome to GitLab, " + your_username
    * This will download iTerm2 and set up atom as your text editor. 
-   * You will be able to `goto analytics` from anywhere to go to the analytics repo locally. 
-   * You will be able to `gl_open` from anywhere within analytics to open the repo in the UI.
-- [ ] Get setup with Python locally. We suggest using the [Anaconda distribution](https://www.anaconda.com/download/#macos) as it will come pre-packaged with most everything we use.
-
+   * You will be able to `goto analytics` from anywhere to go to the analytics repo locally (you will have to open a new terminal window for `goto` to start working.) 
+   * You will be able to `gl_open` from anywhere within analytics to open the repo in the UI. 
+   * Your default python version should now be python 3. 
+      * Typing `which python` into a new terminal window should now return `/usr/local/anaconda3/bin/python`
 
 Our data stack looks roughly like this:
 <img src = "https://cdn-images-1.medium.com/max/2000/1*BogoeTTK1OXFU1hPfUyCFw.png">
