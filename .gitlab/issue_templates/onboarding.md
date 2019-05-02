@@ -45,7 +45,7 @@ rm ~/onboarding_script.sh
    * You will be able to `goto analytics` from anywhere to go to the analytics repo locally (you will have to open a new terminal window for `goto` to start working.) 
    * You will be able to `gl_open` from anywhere within analytics to open the repo in the UI. 
    * Your default python version should now be python 3. 
-      * You can confirm this by typing `python` into a new terminal window and you should see Python 3.*.*` on the first line and "Anaconda, Inc" on the second line. 
+      * Typing `which python` into a new terminal window should now return `/usr/local/anaconda3/bin/python`
 
 Our data stack looks roughly like this:
 <img src = "https://cdn-images-1.medium.com/max/2000/1*BogoeTTK1OXFU1hPfUyCFw.png">
