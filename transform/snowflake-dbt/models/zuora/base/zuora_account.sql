@@ -92,3 +92,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+WHERE account_id != '2c92a00e6a6bd63a016a72f8ddb927de'
