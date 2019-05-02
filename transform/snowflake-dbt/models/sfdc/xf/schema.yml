@@ -117,7 +117,7 @@ models:
         tests:
           - not_null
   - name: sfdc_reason_for_loss_unpacked
-    colummns:
+    columns:
       - name: opportunity_id
         tests:
           - not_null
