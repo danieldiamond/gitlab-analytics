@@ -4,13 +4,13 @@ with source as (
 
 ), final AS (
 
-    SELECT *, 
+    SELECT *,
             "scd_id" as unique_identifier,
             "dbt_updated_at" as dbt_last_updated_timestamp
     FROM source
-    {{ dbt_utils.group_by(n=53) }}
+    {{ dbt_utils.group_by(n=56) }}
 
 )
 
-SELECT * 
+SELECT *
 FROM final
