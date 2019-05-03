@@ -50,6 +50,21 @@ LICENSE_DB_PASS = Secret("env", "LICENSE_DB_PASS", "airflow", "LICENSE_DB_PASS")
 LICENSE_DB_HOST = Secret("env", "LICENSE_DB_HOST", "airflow", "LICENSE_DB_HOST")
 LICENSE_DB_NAME = Secret("env", "LICENSE_DB_NAME", "airflow", "LICENSE_DB_NAME")
 
+
+# GitLab Profiler DB
+GITLAB_COM_DB_USER = Secret(
+    "env", "GITLAB_COM_DB_USER", "airflow", "GITLAB_COM_DB_USER"
+)
+GITLAB_COM_DB_PASS = Secret(
+    "env", "GITLAB_COM_DB_PASS", "airflow", "GITLAB_COM_DB_PASS"
+)
+GITLAB_COM_DB_HOST = Secret(
+    "env", "GITLAB_COM_DB_HOST", "airflow", "GITLAB_COM_DB_HOST"
+)
+GITLAB_COM_DB_NAME = Secret(
+    "env", "GITLAB_COM_DB_NAME", "airflow", "GITLAB_COM_DB_NAME"
+)
+
 # GitLab Profiler DB
 GITLAB_PROFILER_DB_USER = Secret(
     "env", "GITLAB_PROFILER_DB_USER", "airflow", "GITLAB_PROFILER_DB_USER"
