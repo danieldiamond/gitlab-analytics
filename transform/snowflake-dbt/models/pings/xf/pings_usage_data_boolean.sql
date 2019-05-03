@@ -16,6 +16,6 @@ SELECT  DISTINCT *,
 
         {% for ping_name in ping_list %}
         {{ case_when_boolean_int( ping_name ) }}                                       AS {{ping_name}}_active {{ "," if not loop.last }}
-        {% endfor %}
+        {% endfor %} 
    
 FROM usage_month
