@@ -9,11 +9,12 @@
 WITH pings_mom_change as (
 
   SELECT  md5(uuid || created_at)             AS unique_key,
-          uuid                                AS uuid,
-          created_at                          AS created_at,
-          edition                             AS edition,
-          main_edition                        AS main_edition,
-          edition_type                        AS edition_type,
+          uuid,
+          created_at,
+          ping_source,
+          edition,
+          main_edition,
+          edition_type,
           {% for ping_name in ping_list %}
           {{ monthly_change(ping_name) }} {{ "," if not loop.last }}
           {% endfor %}
