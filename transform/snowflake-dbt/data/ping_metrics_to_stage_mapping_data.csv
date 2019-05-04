@@ -6,6 +6,12 @@ keys,unassigned
 observations,unassigned
 uploads,unassigned
 in_review_folder,unassigned
+failed_deployments,unassigned
+operations_dashboard_default_dashboard,unassigned
+operations_dashboard_users_with_projects_added,unassigned
+projects_enforcing_code_owner_approval,unassigned
+projects_with_error_tracking_enabled,unassigned
+successful_deployments,unassigned
 assignee_lists,plan
 auto_devops_disabled,configure
 auto_devops_enabled,configure
