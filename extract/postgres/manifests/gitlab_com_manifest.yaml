@@ -29,6 +29,21 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'approver_groups'
     export_table_primary_key: id
+  audit_events:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id,
+      , author_id
+      , type
+      , entity_id
+      , entity_type
+      , details
+      , created_at
+      , updated_at
+      FROM audit_events
+    export_schema: 'gitlab_com'
+    export_table: 'audit_events'
+    export_table_primary_key: id
   board_assignees:
     import_db: GITLAB_DB
     import_query: >
