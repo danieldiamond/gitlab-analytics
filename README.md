@@ -181,7 +181,6 @@ You can use `Command + Option + L` to format your file.
 
 #### Data Resources
 - [Fishtown Analytics Blog](https://blog.fishtownanalytics.com)
-- [Data Science Roundup Newsletter](http://roundup.fishtownanalytics.com/)
 - [Silota](http://www.silota.com/docs/recipes/)
 - [Mode Analytics Blog](https://blog.modeanalytics.com/)
 - [Periscope Data Blog](https://www.periscopedata.com/blog)
@@ -189,6 +188,13 @@ You can use `Command + Option + L` to format your file.
 - [Wes McKinney Blog](http://wesmckinney.com/archives.html)
 - [MBA Mondays](https://avc.com/archive/#mba_mondays_archive)
 
+#### Data Newsletters
+- [Data Science Roundup Newsletter](http://roundup.fishtownanalytics.com/)
+- [SF Data](http://weekly.sfdata.io/)
+- [Data is Plural](https://tinyletter.com/data-is-plural)
+- [DataEng Weekly](http://dataengweekly.com/)
+- [Data Elixir](https://dataelixir.com/)
+- [Data Science Weekly](https://www.datascienceweekly.org/)
 
 #### Data Visualization Resources
 - [Storytelling with Data](http://storytellingwithdata.com/)
@@ -203,6 +209,7 @@ You can use `Command + Option + L` to format your file.
 - [VizWiz](http://www.vizwiz.com/)
 - [Visualising Data](http://www.visualisingdata.com/)
 - [WTF Visualizations](http://viz.wtf/)
+- [The Pudding](https://pudding.cool/)
 
 
 ## Contributing to the Data Team project
