@@ -13,6 +13,7 @@ Goal: To help bring you, our new data analyst, up to speed in the GitLab Data Te
 - [ ] Manager: Inform new hire what his/her/they scratch schema will be called. **Do not create the schema**, as this will lead to conflicts when dbt runs. 
 - [ ] Manager: Invite to SheetLoad folder in gdrive (but not the interviewing data sheet).
 - [ ] Manager: Invite to Milestone Planning, Milestone Grooming, and DataOps Meetings. Ping appropriate person to get new hire added to Finance team meetings.
+- [ ] Manager: Add to [dbt test coverage rotation](https://about.gitlab.com/handbook/business-ops/data-team/#dbt-test-coverage-rotation)
 - [ ] Manager: Update issue with one or two Good First Issues. 
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate.
 
