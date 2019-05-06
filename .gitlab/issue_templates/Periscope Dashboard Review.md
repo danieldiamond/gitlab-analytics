@@ -29,6 +29,7 @@ If urgent, please detail why.
    * [ ] SQL formatted using automatic formatter
    * [ ] Python / R reviewed for content, formatting, and necessity 
    * [ ] Filters, if relevant
+   * [ ] Current month (in-progress) numbers and historical numbers are in separate charts
    * [ ] Drill Down Linked, if relevant
    * [ ] Overview/KPI/Top Level Metrics cross-linked
    * [ ] Section Label before more granular metrics
@@ -47,6 +48,7 @@ If urgent, please detail why.
    * [ ] SQL formatted using automatic formatter
    * [ ] Python / R reviewed for content, formatting, and necessity 
    * [ ] Filters, if relevant
+   * [ ] Current month (in-progress) numbers and historical numbers are in separate charts
    * [ ] Drill Down Linked, if relevant
    * [ ] Overview/KPI/Top Level Metrics cross-linked
    * [ ] Section Label before more granular metrics
