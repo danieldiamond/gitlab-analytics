@@ -15,34 +15,30 @@ def slack_failed_task(context):
     try_number = context['task_instance'].try_number - 1
     most_recent_log = f"{task_logs_dir}/{try_number}.log"
 
+    # Read the log file and get the last 30 lines, then join them with a newline
     with open(most_recent_log, 'r') as task_log:
-        logs = task_log.read()
+        logs = "\n".join(task_log.readlines()[-30:])
+
+    dag_name = context['dag'].dag_id
+    task_name = context['task'].task_id
+    execution_date = str(context['execution_date'])
+    task_instance = str(context['task_instance_key_str'])
 
     attachment=[
         {
             "color": "#FF0000",
-            "fallback": "An Airflow DAG has failed.",
+            "fallback": "An Airflow DAG has failed!",
             "text": logs,
             "title": "Logs:",
             "fields": [
                 {
-                    "title": "DAG",
-                    "value": context['dag'].dag_id,
-                    "short": True
-                },
-                {
-                    "title": "Task",
-                    "value": context['task'].task_id,
-                    "short": True
-                },
-                {
                     "title": "Timestamp",
-                    "value": str(context['execution_date']),
+                    "value": execution_date,
                     "short": True
                 },
                 {
                     "title": "Task ID",
-                    "value": str(context['task_instance_key_str']),
+                    "value": task_instance,
                     "short": False
                 }
             ]
@@ -54,7 +50,7 @@ def slack_failed_task(context):
         attachments=attachment,
         channel="#analytics-pipelines",
         task_id="slack_failed",
-        text="DAG Failed!",
+        text=f"DAG: *{dag_name}* failed on task: *{task_name}*!",
         token=os.environ["SLACK_API_TOKEN"],
         username="Airflow",
     )
