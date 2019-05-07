@@ -1,6 +1,8 @@
 ## Issue
-
+<!---
 Link the Issue this MR closes
+--->
+Closes #
 
 ## Solution
 

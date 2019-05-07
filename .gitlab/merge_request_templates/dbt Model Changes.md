@@ -1,6 +1,8 @@
 ## Issue
-
+<!---
 Link the Issue this MR closes
+--->
+Closes #
 
 ## Solution
 
@@ -45,6 +47,25 @@ Paste the results of dbt test here, including the command.
 * [ ]  Pipelines pass
 * [ ]  This MR is ready for final review and merge.
 * [ ]  Assigned to reviewer
+
+<details>
+<summary> Which job do I run? </summary>
+
+These are scoped to the `ci` target. This target selects a subset of data for the snowplow and pings datasets.
+
+Stage: model
+* **mr_dbt_archive_manual**: For changes to dbt archive
+* **mr_dbt_all**: Runs all models
+* **mr_dbt_exclude_product**: Excludes models with the `product` tag. Use this for every other data source.
+* **mr_dbt_snowplow**: Just runs snowplow data
+* **mr_dbt_gitlab_dotcom**: Just runs GitLab.com data
+* **mr_dbt_pings**: Just runs usage / version ping data
+
+Stage: model_tests
+* **mr_dbt_tests_manual**: Runs all of the tests
+  * Note: it is not necessary to to run this job if you've run any of the model stage jobs as tests are included.
+
+</details>
 
 ## Reviewer Checklist
 * [ ]  Check before setting to merge
