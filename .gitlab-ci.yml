@@ -25,7 +25,7 @@ stages:
   - model #  transform/snowflake-dbt/snowflake-dbt-ci.yml
   - model_tests #  transform/snowflake-dbt/snowflake-dbt-ci.yml
   - update
-  - publish
+  - publish # for dbt docs
   - review_stop
 
 include:
