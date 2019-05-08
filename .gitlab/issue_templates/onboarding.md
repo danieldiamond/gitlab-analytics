@@ -57,7 +57,7 @@ As you read in the handbook, we currently use Stitch and Meltano for extracting 
 ## Connecting to Snowflake
 - [ ] Follow the instructions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
 - [ ] Download a SQL development tool that is compatible with Snowflake, such as [SQLWorkbench/J](http://sql-workbench.net) or [DataGrip](https://www.jetbrains.com/datagrip/). If you're interested in DataGrip, follow the [instructions to get a JetBrains license in the handbook](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains). Alternatively, Snowflake has a Web UI for querying the data warehouse that can be found under [Worksheets](https://gitlab.snowflakecomputing.com/console#/internal/worksheet).
-   - [ ] If using the Snowflake Web UI, update your role to `TRANSFORMER`, warehouse to `ANALYST_XS`, and database to `ANALYTICS`. The schema does not matter because your query will reference the schema.
+   - [ ] If using the Snowflake Web UI, update your role to `TRANSFORMER`, warehouse to `ANALYST_XS`, and database to `ANALYTICS` (located in the top right corner of the worksheet UI). The schema does not matter because your query will reference the schema.
    - [ ] If using DataGrip, you may need to download the [Driver](https://docs.snowflake.net/manuals/user-guide/jdbc-download.html#downloading-the-driver).
    - [ ] This template may be useful as you're configuring the DataGrip connection to Snowflake `jdbc:snowflake://{account:param}.snowflakecomputing.com/?{password}[&db={Database:param}][&warehouse={Warehouse:param}][&role={Role:param}]` We recommend not setting your schema so you can select from the many options.
 
@@ -68,7 +68,7 @@ As you read in the handbook, we currently use Stitch and Meltano for extracting 
 - [ ] Refer to http://jinja.pocoo.org/docs/2.10/templates/ as a resource for understanding Jinja which is used extensively in dbt.
 - [ ] [This article](https://blog.fishtownanalytics.com/what-exactly-is-dbt-47ba57309068) talks about the what/why.
 - [ ] [This introduction](https://docs.getdbt.com/docs/introduction) should help get you understand what dbt is.
-- [ ] Read [how we use dbt](https://gitlab.com/gitlab-data/analytics#dbt), especially our coding conventions.
+- [ ] Read [how we use dbt](https://about.gitlab.com/handbook/business-ops/data-team/#-transformation) and our [SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/).
 - [ ] Watch [video](https://drive.google.com/file/d/1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn/view) of Taylor introducing Chase to dbt.
 - [ ] Peruse the [Official Docs](https://docs.getdbt.com).
 - [ ] In addition to using dbt to manage our transformations, we use dbt to maintain [our own internal documentation](https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview) on those data transformations. This is a public link. We suggest bookmarking it.
@@ -83,7 +83,7 @@ As you read in the handbook, we currently use Stitch and Meltano for extracting 
 
 ### Getting Set up with dbt locally
 - All dbt commands need to be run within the analytics project (which you can get to my typing `goto analytics` from anywhere on your Mac, specifically you must be in `analytics/transform/snowflake-dbt` or below.
-- [ ] From the command line run `atom ~.dbt/profiles.yml` and update this file with your info.
+- [ ] From the command line run `atom ~/.dbt/profiles.yml` and update this file with your info.
 - [ ] Run `dbt compile` to know that your connection has been successful, you are in the correct location, and everything will run smoothly.
 - [ ] When you are ready to start working with dbt start by running `dbt deps` and doing a `dbt run --exclude snowplow`. This will take some time (estimate 1 hour, though it could be longer) the first time it runs.
 
@@ -134,8 +134,9 @@ This data comes from our GitLab.com SaaS product.
 This data comes from the usage ping that comes with a GitLab installation.
 - [ ] Read about the [usage ping](https://docs.gitlab.com/ee/user/admin_area/settings/usage_statistics.html).
 - [ ] To understand how this is implemented at GitLab read [Feature Implementation](https://about.gitlab.com/handbook/product/feature-instrumentation/#instrumentation-for-gitlabcom).
+- [ ] Read the product vision for [telemetry](https://about.gitlab.com/direction/fulfillment/telemetry/).
 - [ ] There is not great documentation on the usage ping, but you can get a sense from looking at the `usage.rb` file for [GitLab CE](https://gitlab.com/gitlab-org/gitlab-ee/blob/master/lib/gitlab/usage_data.rb).
-- [ ] It might be helpful to look at [issues related to the usage pings (telemetry)](https://gitlab.com/groups/gitlab-org/-/issues?scope=all&utf8=✓&state=all&search=~telemetry).
+- [ ] It might be helpful to look at issues related to the usage pings (telemetry) [here](https://gitlab.com/gitlab-org/telemetry/issues) and [here](https://gitlab.com/groups/gitlab-org/-/issues?scope=all&utf8=✓&state=all&search=~telemetry).
 - [ ] Watch the [pings brain dump session](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view).
 
 ## Salesforce (Sales, Marketing, Finance)
@@ -164,7 +165,7 @@ This data comes from the usage ping that comes with a GitLab installation.
 - [ ] [Data Model from Zuora for Salesforce](https://knowledgecenter.zuora.com/CA_Commerce/A_Zuora_CPQ/A2_Zuora4Salesforce_Object_Model).
 - [ ] [Data Model inside Zuora](https://knowledgecenter.zuora.com/BB_Introducing_Z_Business/D_Zuora_Business_Objects_Relationship).
 - [ ] [Definitions of Objects](https://knowledgecenter.zuora.com/CD_Reporting/D_Data_Sources_and_Exports/AB_Data_Source_Availability).
-- [ ] [Zuora Subscription Data Management](https://about.gitlab.com/handbook/finance/zuora-sub-data/).
+- [ ] [Zuora Subscription Data Management](https://about.gitlab.com/handbook/finance/accounting/#zuora-subscription-data-management).
 - [ ] For access to Zuora, you will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request).
 
 ### Metrics and Methods
