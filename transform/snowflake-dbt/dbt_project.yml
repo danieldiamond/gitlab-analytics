@@ -123,6 +123,14 @@ models:
         tags: ["product"]
         enabled: true
 
+      snowflake:
+        base:
+          enabled: true
+          materialized: table
+        xf:
+          enabled: true
+          materialized: table
+
       sfdc:
         xf:
           enabled: true
