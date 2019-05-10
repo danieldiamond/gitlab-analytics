@@ -20,6 +20,7 @@ tables:
       license_expires_at,
       license_add_ons,
       license_restricted_user_count,
+      license_md5,
       recorded_at,
       created_at,
       updated_at,
