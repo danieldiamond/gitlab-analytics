@@ -40,3 +40,7 @@ set-branch:
 lint-dags:
 	@echo lintings the dags/ dir...
 	@black dags/
+
+lint-orchestration:
+	@echo linting the orchestration scripts...
+	@black orchestration/
