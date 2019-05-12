@@ -9,6 +9,7 @@ from shared_modules.elt.utils import setup_logging
 from shared_modules.elt.cli import parser_logging
 from shared_modules.elt.error import Error
 
+
 def process_config_file(config_file):
     """
     Read the config file provided and check if all Required CI/CD variables are present.
@@ -28,24 +29,20 @@ def process_config_file(config_file):
     missing_params = 0
 
     myDir = os.path.dirname(os.path.abspath(__file__))
-    file = os.path.join(
-                    myDir,
-                    '..',
-                    config_file,
-                  )
+    file = os.path.join(myDir, "..", config_file)
 
-    with open(file, 'r') as f:
+    with open(file, "r") as f:
         yaml_str = yaml.load(f.read())
 
-        if 'Required' not in yaml_str:
-            raise Error('Missing Required entry in config_file')
+        if "Required" not in yaml_str:
+            raise Error("Missing Required entry in config_file")
 
-        for var in yaml_str['Required']:
-          param_value = os.getenv(var)
+        for var in yaml_str["Required"]:
+            param_value = os.getenv(var)
 
-          if param_value is None or param_value == "":
-              logging.error("Param {} is missing!".format(var))
-              missing_params += 1
+            if param_value is None or param_value == "":
+                logging.error("Param {} is missing!".format(var))
+                missing_params += 1
 
     return missing_params
 
@@ -53,26 +50,29 @@ def process_config_file(config_file):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Use a yaml config file to check if all required"
-                    " CI/CD variables are set.")
+        " CI/CD variables are set."
+    )
 
     parser_logging(parser)
 
     parser.add_argument(
-        '--file',
+        "--file",
         required=True,
         help="The yaml config file to be used. The file's path must"
-             " be relative to the project's root"
+        " be relative to the project's root",
     )
 
     args = parser.parse_args()
     setup_logging(args)
 
-    logging.info("Checking existance of required CI/CD variables"
-                 " defined in: {}".format(args.file))
+    logging.info(
+        "Checking existance of required CI/CD variables"
+        " defined in: {}".format(args.file)
+    )
 
     missing_params = process_config_file(args.file)
 
     if missing_params > 0:
-        raise Error('Missing {} Required CI/CD variables.'.format(missing_params))
+        raise Error("Missing {} Required CI/CD variables.".format(missing_params))
 
     logging.info("Success: All required CI/CD variables are defined.")

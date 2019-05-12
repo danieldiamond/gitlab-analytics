@@ -9,10 +9,10 @@ from functools import partial
 
 
 class Roles(str, Enum):
-    CLOUDSQLSUPERUSER = 'cloudsqlsuperuser'
-    ANALYTICS = 'analytics'
-    READONLY = 'readonly'
-    LOOKER = 'looker'
+    CLOUDSQLSUPERUSER = "cloudsqlsuperuser"
+    ANALYTICS = "analytics"
+    READONLY = "readonly"
+    LOOKER = "looker"
 
 
 class User:
@@ -37,7 +37,7 @@ def list_users(cursor):
     Returns the current roles
     """
     cursor.execute(
-    """
+        """
     SELECT
         r.rolname AS name,
         r.rolcanlogin AS login,
@@ -48,7 +48,8 @@ def list_users(cursor):
         WHERE m.member = r.oid
         ) AS memberof
     FROM pg_catalog.pg_roles r
-    """)
+    """
+    )
 
     return map(User.create, cursor.fetchall())
 
@@ -64,20 +65,18 @@ def apply_role(cursor, user: User):
     """
     Apply the login to the user
     """
-    result = 'OK'
+    result = "OK"
     role_identifier = psycopg2.sql.Identifier(user.name)
 
     try:
         cursor.execute(
             psycopg2.sql.SQL("REVOKE {} FROM {}").format(
-                psycopg2.sql.Identifier(Roles.READONLY.value),
-                role_identifier
+                psycopg2.sql.Identifier(Roles.READONLY.value), role_identifier
             )
         )
         cursor.execute(
             psycopg2.sql.SQL("GRANT {} TO {}").format(
-                psycopg2.sql.Identifier(Roles.ANALYTICS.value),
-                role_identifier
+                psycopg2.sql.Identifier(Roles.ANALYTICS.value), role_identifier
             )
         )
     except psycopg2.Error as e:
@@ -88,11 +87,11 @@ def apply_role(cursor, user: User):
 
 def db_config():
     return {
-        'host': os.getenv('PG_ADDRESS'),
-        'port': os.getenv('PG_PORT'),
-        'database': os.getenv('PG_DATABASE'),
-        'user': os.getenv('PG_USERNAME'),
-        'password': os.getenv('PG_PASSWORD'),
+        "host": os.getenv("PG_ADDRESS"),
+        "port": os.getenv("PG_PORT"),
+        "database": os.getenv("PG_DATABASE"),
+        "user": os.getenv("PG_USERNAME"),
+        "password": os.getenv("PG_PASSWORD"),
     }
 
 

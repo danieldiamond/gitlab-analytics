@@ -61,8 +61,8 @@ cloudsql_review_refresh:
     FORCE: "true"
   when: manual
 
-# Clone the ANALYTICS and RAW databases in Snowflake for use in MRs
-snowflake_review: &snowflake_review
+# Clone the ANALYTICS database in Snowflake for use in MRs
+snowflake_review_analytics: &snowflake_review_analytics
   stage: review
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   variables:
@@ -73,7 +73,7 @@ snowflake_review: &snowflake_review
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
     - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
   script:
-    - manage_snowflake.py manage_clones
+    - manage_snowflake.py manage_clones --database analytics
   environment:
     name: review/$CI_COMMIT_REF_NAME
     on_stop: review_stop
@@ -97,18 +97,19 @@ snowflake_review: &snowflake_review
       - $SNOWFLAKE_DATABASE == $SNOWFLAKE_LOAD_DATABASE
       - $SNOWFLAKE_DATABASE == $SNOWFLAKE_TRANSFORM_DATABASE
       - $TEST_PIPELINE
-  
-snowflake_review_manual: &snowflake_review_manual
-  <<: *snowflake_review
+
+snowflake_review_raw:
+  <<: *snowflake_review_analytics
+  script:
+    - manage_snowflake.py manage_clones --database raw
   when: manual
 
 # Force re-clone the ANALYTICS and RAW databases in Snowflake for use in MRs
 snowflake_review_refresh:
-  <<: *snowflake_review
+  <<: *snowflake_review_analytics
   script:
-    - manage_snowflake.py manage_clones --force
-  only:
-    - branches
+    - manage_snowflake.py manage_clones --force --database analytics
+    - manage_snowflake.py manage_clones --force --database raw
   when: manual
 
 # Stage: setup
