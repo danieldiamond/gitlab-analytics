@@ -5,7 +5,7 @@
   before_script:
     - echo $STITCH_CONFIG > stitch_config.json
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
-    - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
+    - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$CI_PROJECT_DIR/orchestration/:$PYTHONPATH"
     - echo $SNOWFLAKE_DATABASE
     - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_LOAD_DATABASE="RAW"; else export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW"; fi
     - echo $SNOWFLAKE_LOAD_DATABASE
