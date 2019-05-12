@@ -12,7 +12,8 @@ from common_utils import slack_failed_task
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {
-    "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW"
+    "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
+    "CI_PROJECT_DIR": "/analytics",
 }
 
 # Default arguments for the DAG
@@ -29,6 +30,7 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
+    export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/sheetload/ &&
     python3 sheetload.py sheets sheets.txt snowflake
 """
