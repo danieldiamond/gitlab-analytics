@@ -130,7 +130,7 @@ mr_dbt_exclude_product: &mr_dbt_exclude_product
 mr_dbt_snowplow: &mr_dbt_snowplow
   <<: *snowflake_dbt_jobs
   script:
-    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_TRANSFORM_XL_WAREHOUSE
+    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
@@ -146,7 +146,7 @@ mr_dbt_snowplow: &mr_dbt_snowplow
 prod_dbt_snowplow_full_refresh:
   <<: *snowflake_dbt_jobs
   script:
-    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_TRANSFORM_XL_WAREHOUSE
+    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
