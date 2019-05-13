@@ -14,9 +14,9 @@ clean-targets:
     - "dbt_modules"
 
 quoting:
-  database: true
-  identifier: false
-  schema: false
+    database: true
+    identifier: false
+    schema: false
 
 archive:
     - source_schema: analytics_staging

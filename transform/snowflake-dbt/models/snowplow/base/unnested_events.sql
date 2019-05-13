@@ -140,7 +140,7 @@ SELECT
     nullif(JSONTEXT['v_etl']::string,'') AS v_etl,
     nullif(JSONTEXT['v_tracker']::string,'') AS v_tracker,
     uploaded_at
-FROM {{ var("database") }}.SNOWPLOW.EVENTS
+FROM {{ source('snowplow', 'events') }}
 WHERE JSONTEXT['app_id']::string IS NOT NULL
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'http://localhost:%'
@@ -155,9 +155,9 @@ AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
     FROM base
     GROUP BY 1
     HAVING count (*) > 1
-) 
+)
 
-SELECT * 
+SELECT *
 FROM base
 WHERE event_id NOT IN (SELECT * FROM events_to_ignore)
 {% if target.name == "ci" %}
