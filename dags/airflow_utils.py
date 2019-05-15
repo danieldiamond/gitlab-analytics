@@ -1,6 +1,8 @@
 # This file contains common operators/functions to be used across multiple DAGs
+import functools
 import os
 
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.slack_operator import SlackAPIPostOperator
 
 
@@ -55,3 +57,23 @@ def slack_failed_task(context):
         username="Airflow",
     )
     return failed_alert.execute()
+
+
+def partialclass(existing_class, *args, **kwargs):
+    """
+    Partially init a class.
+    """
+
+    class NewClass(existing_class):
+        __init__ = functools.partialmethod(existing_class.__init__, *args, **kwargs)
+    return NewClass
+
+
+CustomKubePodOperator = partialclass(
+        existing_class=KubernetesPodOperator,
+        get_logs=True,
+        image_pull_policy="Always",
+        in_cluster=False if os.environ["IN_CLUSTER"] == "False" else True,
+        is_delete_operator_pod=True,
+        namespace=os.environ["NAMESPACE"],
+)

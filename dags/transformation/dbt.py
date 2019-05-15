@@ -4,10 +4,9 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import BranchPythonOperator
-from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 from kube_secrets import *
-from common_utils import slack_failed_task
+from airflow_utils import slack_failed_task, CustomKubePodOperator
 
 
 # Load the env vars into a dict and set Secrets
@@ -104,7 +103,7 @@ dbt_run_cmd = f"""
     dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse} # run on small warehouse w/o product data or snapshots &&
     dbt run --profiles-dir profile --target prod --model tag:product # run product data on large warehouse
 """
-dbt_run = KubernetesPodOperator(
+dbt_run = CustomKubePodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="dbt-run",
     name="dbt-run",
@@ -119,10 +118,6 @@ dbt_run = KubernetesPodOperator(
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[dbt_run_cmd],
-    namespace=env["NAMESPACE"],
-    get_logs=True,
-    is_delete_operator_pod=True,
-    in_cluster=False if env["IN_CLUSTER"] == "False" else True,
     dag=dag,
 )
 
@@ -134,7 +129,7 @@ dbt_full_refresh_cmd = f"""
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt run --profiles-dir profile --target prod --full-refresh
 """
-dbt_full_refresh = KubernetesPodOperator(
+dbt_full_refresh = CustomKubePodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="dbt-full-refresh",
     name="dbt-full-refresh",
@@ -149,10 +144,6 @@ dbt_full_refresh = KubernetesPodOperator(
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[dbt_full_refresh_cmd],
-    namespace=env["NAMESPACE"],
-    get_logs=True,
-    is_delete_operator_pod=True,
-    in_cluster=False if env["IN_CLUSTER"] == "False" else True,
     dag=dag,
 )
 
@@ -164,7 +155,7 @@ dbt_archive_cmd = f"""
     dbt archive --profiles-dir profile --target prod --vars {xs_warehouse} &&
     dbt run --profiles-dir profile --target prod --models snapshots --vars {xs_warehouse}
 """
-dbt_archive = KubernetesPodOperator(
+dbt_archive = CustomKubePodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="dbt-archive",
     name="dbt-archive",
@@ -179,10 +170,6 @@ dbt_archive = KubernetesPodOperator(
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[dbt_archive_cmd],
-    namespace=env["NAMESPACE"],
-    get_logs=True,
-    is_delete_operator_pod=True,
-    in_cluster=False if env["IN_CLUSTER"] == "False" else True,
     dag=dag,
 )
 
@@ -194,7 +181,7 @@ dbt_test_cmd = f"""
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt test --profiles-dir profile --target prod --vars {xs_warehouse}
 """
-dbt_test = KubernetesPodOperator(
+dbt_test = CustomKubePodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="dbt-test",
     name="dbt-test",
@@ -210,10 +197,6 @@ dbt_test = KubernetesPodOperator(
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[dbt_test_cmd],
-    namespace=env["NAMESPACE"],
-    get_logs=True,
-    is_delete_operator_pod=True,
-    in_cluster=False if env["IN_CLUSTER"] == "False" else True,
     dag=dag,
 )
 
@@ -224,7 +207,7 @@ sfdc_update_cmd = f"""
     python3 analytics/transform/sfdc_processor.py generate_accounts &&
     python3 analytics/transform/sfdc_processor.py update_accounts
 """
-sfdc_update = KubernetesPodOperator(
+sfdc_update = CustomKubePodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="sfdc-update",
     name="sfdc-update",
@@ -246,10 +229,6 @@ sfdc_update = KubernetesPodOperator(
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[sfdc_update_cmd],
-    namespace=env["NAMESPACE"],
-    get_logs=True,
-    is_delete_operator_pod=True,
-    in_cluster=False if env["IN_CLUSTER"] == "False" else True,
     dag=dag,
 )
 
@@ -258,17 +237,13 @@ snowplow_load_cmd = f"""
     {git_cmd} &&
     python analytics/transform/util/execute_copy.py
 """
-snowplow_load = KubernetesPodOperator(
+snowplow_load = CustomKubePodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="snowplow-load",
     name="snowplow-load",
     secrets=[SNOWFLAKE_LOAD_USER, SNOWFLAKE_LOAD_PASSWORD, SNOWFLAKE_ACCOUNT],
     cmds=["/bin/bash", "-c"],
     arguments=[snowplow_load_cmd],
-    namespace=env["NAMESPACE"],
-    get_logs=True,
-    is_delete_operator_pod=True,
-    in_cluster=False if env["IN_CLUSTER"] == "False" else True,
     dag=dag,
 )
 

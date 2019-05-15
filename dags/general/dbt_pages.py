@@ -2,10 +2,9 @@ import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
-from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 from kube_secrets import *
-from common_utils import slack_failed_task
+from airflow_utils import slack_failed_task, CustomKubePodOperator
 
 
 # Load the env vars into a dict and set Secrets
@@ -39,7 +38,7 @@ container_cmd = f"""
 dag = DAG("dbt_pages", default_args=default_args, schedule_interval="0 0 */1 * *")
 
 # Task 1
-snowflake_load = KubernetesPodOperator(
+snowflake_load = CustomKubePodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="dbt-pages",
     name="dbt-pages",
@@ -54,9 +53,5 @@ snowflake_load = KubernetesPodOperator(
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[container_cmd],
-    namespace=env["NAMESPACE"],
-    get_logs=True,
-    is_delete_operator_pod=True,
-    in_cluster=False if env["IN_CLUSTER"] == "False" else True,
     dag=dag,
 )
