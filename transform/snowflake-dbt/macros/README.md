@@ -1,5 +1,5 @@
 ## Alter Warehouse ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/alter_warehouse.sql))
-This macro turns on or off a Snowflake warehouse. 
+This macro turns on or off a Snowflake warehouse.
 Usage:
 ```
 {{resume_warehouse(var('resume_warehouse', false), var('warehouse_name'))}}
@@ -13,7 +13,7 @@ Usage:
 ```
 {{ case_when_boolean_int("assignee_lists") }} AS assignee_lists_active
 ```
-Used in: 
+Used in:
 - pings_usage_data_boolean.sql
 
 ## Churn Type ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/churn_type.sql))
@@ -38,12 +38,12 @@ Used in:
 - dbt_project.yml
 
 ## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/generate_custom_schema.sql))
-This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema suffixed with `_staging` (e.g. `emilie_scratch_staging` and `analytics_staging`). For tagged models, the output is dependent on the target. It is `emilie_scratch_analytics` on dev and `analytics` on prod. 
-Usage: 
+This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema suffixed with `_staging` (e.g. `emilie_scratch_staging` and `analytics_staging`). For tagged models, the output is dependent on the target. It is `emilie_scratch_analytics` on dev and `analytics` on prod.
+Usage:
 ```
 {{ config(schema='analytics') }}
 ```
-Used in: 
+Used in:
 - all models surfaced in our BI tool.
 
 ## Grants ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/grant_usage_to_schema.sql))
@@ -74,6 +74,26 @@ Usage:
 Used in:
 - pings_usage_data_monthly_change.sql
 
+## Product Category([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/product_category.sql))
+This macro maps SKUs to their product categories.
+Usage:
+```
+{{product__category('rate_plan_name')}}
+```
+Used in:
+- sfdc_opportunity.sql
+- zuora_rate_plan.sql
+
+## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sales_segment_cleaning))
+This macro applies proper formatting to sales segment data with the end result being one of SMB, Mid-Market, Strategic, Large or Unknown.
+Usage:
+```
+{{sales_segment_cleaning("column_1")}}
+```
+Used in:
+- sfdc_opportunity.sql
+- zendesk_organizations.sql
+
 ## SFDC Deal Size ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc_deal_size.sql))
 This macro buckets a unit into a deal size (Small, Medium, Big, or Jumbo) based on an inputted value.
 Usage:
@@ -92,14 +112,3 @@ Usage:
 ```
 Used in:
 - zuora_subscription.sql
-
-
-## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sales_segment_cleaning))
-This macro applies proper formatting to sales segment data with the end result being one of SMB, Mid-Market, Strategic, Large or Unknown.
-Usage:
-```
-{{sales_segment_cleaning("column_1")}}
-```
-Used in:
-- sfdc_opportunity.sql 
-- zendesk_organizations.sql

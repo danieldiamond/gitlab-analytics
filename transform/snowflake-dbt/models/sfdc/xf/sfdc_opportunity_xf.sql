@@ -4,7 +4,7 @@
     })
 }}
 
-WITH sfdc_opportunity AS ( 
+WITH sfdc_opportunity AS (
 
     SELECT * FROM {{ref('sfdc_opportunity')}}
 
@@ -23,7 +23,7 @@ WITH sfdc_opportunity AS (
 ), sfdc_record_type AS (
 
      SELECT *
-     FROM {{ ref('sfdc_record_type') }}    
+     FROM {{ ref('sfdc_record_type') }}
 
 ), layered AS (
 
@@ -43,6 +43,7 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.created_date,
         sfdc_opportunity.stage_name,
         sfdc_opportunity.product,
+        sfdc_opportunity.product_category,
         sfdc_opportunity.days_in_stage,
         sfdc_opportunity.sales_accepted_date,
         sfdc_opportunity.sales_qualified_date,
@@ -95,19 +96,19 @@ WITH sfdc_opportunity AS (
         sfdc_record_type.record_type_description,
         sfdc_record_type.record_type_modifying_object_type,
         CASE WHEN (sfdc_opportunity.days_in_stage > 30
-            OR sfdc_opportunity.incremental_acv > 100000 
+            OR sfdc_opportunity.incremental_acv > 100000
             OR sfdc_opportunity.pushed_count > 0)
             THEN TRUE
           ELSE FALSE
          END                                                                                        AS is_risky
     FROM sfdc_opportunity
-    INNER JOIN sfdc_opportunitystage 
+    INNER JOIN sfdc_opportunitystage
         ON sfdc_opportunity.stage_name = sfdc_opportunitystage.primary_label
-    LEFT JOIN sfdc_lead_source 
+    LEFT JOIN sfdc_lead_source
         ON sfdc_opportunity.lead_source = sfdc_lead_source.initial_source
-    LEFT JOIN sfdc_users_xf 
+    LEFT JOIN sfdc_users_xf
         ON sfdc_opportunity.owner_id = sfdc_users_xf.id
-    LEFT JOIN sfdc_record_type 
+    LEFT JOIN sfdc_record_type
         ON sfdc_opportunity.record_type_id = sfdc_record_type.record_type_id
 
 )
