@@ -2,10 +2,9 @@ import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
-from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 from kube_secrets import *
-from common_utils import slack_failed_task
+from airflow_utils import slack_failed_task, CustomKubePodOperator
 
 
 # Load the env vars into a dict and set Secrets
@@ -37,7 +36,7 @@ netsuite_extract_cmd = f"""
     python extract/netsuite/src/ --schema netsuite export --days 1 | target-stitch -c /secrets/STITCH_CONFIG &&
     python extract/netsuite/src/ --schema netsuite backlog --days 15 | target-stitch -c /secrets/STITCH_CONFIG
 """
-netsuite_extract = KubernetesPodOperator(
+netsuite_extract = CustomKubePodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="netsuite-extract",
     name="netsuite-extract",
@@ -62,9 +61,5 @@ netsuite_extract = KubernetesPodOperator(
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[netsuite_extract_cmd],
-    namespace=env["NAMESPACE"],
-    get_logs=True,
-    is_delete_operator_pod=True,
-    in_cluster=False if env["IN_CLUSTER"] == "False" else True,
     dag=dag,
 )
