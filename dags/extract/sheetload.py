@@ -11,7 +11,7 @@ from airflow_utils import slack_failed_task, CustomKubePodOperator
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {
-    "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
+    "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH.upper()}_RAW",
     "CI_PROJECT_DIR": "/analytics",
 }
 
