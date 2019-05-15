@@ -12,3 +12,10 @@ models:
     tests:
     - not_null
     - unique
+- name: sheetload_planned_values
+  description: Planned values for multiple metrics as defined by Finance Team via Chase
+  columns:
+    - name: primary_key
+      tests:
+      - not_null
+      - unique
