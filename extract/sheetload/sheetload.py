@@ -94,13 +94,12 @@ def csv_loader(
     """
 
     # Determine what engine gets created
-    engine_dict = {
-        "postgres": postgres_engine_factory,
-        "snowflake": snowflake_engine_factory,
-    }
+    if destination == "postgres":
+        engine = postgres_engine_factory(conn_dict or env)
+    if destination == "snowflake":
+        engine = snowflake_engine_factory(conn_dict or env, "LOADER")
 
-    engine = engine_dict[destination](conn_dict or env)
-    compression = compression or "infer"
+    compression = compression or 'infer'
     # Extract the schema and the table name from the file name
     for path in paths:
         schema, table = path.split("/")[-1].split(".")[0:2]
@@ -141,13 +140,12 @@ def sheet_loader(
     with open(sheet_file, "r") as file:
         sheets = file.read().splitlines()
 
-    # This dictionary determines what engine gets created
-    engine_dict = {
-        "postgres": postgres_engine_factory,
-        "snowflake": snowflake_engine_factory,
-    }
+    # Build the correct engine
+    if destination == "postgres":
+        engine = postgres_engine_factory(conn_dict or env)
+    if destination == "snowflake":
+        engine = snowflake_engine_factory(conn_dict or env, "LOADER")
 
-    engine = engine_dict[destination](conn_dict or env)
     info(engine)
     # Get the credentials for sheets and the database engine
     scope = [
@@ -215,11 +213,10 @@ def gcs_loader(
     chunk_iter = 0
 
     # Determine what engine gets created
-    engine_dict = {
-        "postgres": postgres_engine_factory,
-        "snowflake": snowflake_engine_factory,
-    }
-    engine = engine_dict[destination](conn_dict or env)
+    if destination == "postgres":
+        engine = postgres_engine_factory(conn_dict or env)
+    if destination == "snowflake":
+        engine = snowflake_engine_factory(conn_dict or env, "LOADER")
 
     # Get the gcloud storage client and authenticate
     scope = ["https://www.googleapis.com/auth/cloud-platform"]
