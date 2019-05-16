@@ -23,18 +23,40 @@ def postgres_engine_factory(args: Dict[str, str]) -> Engine:
     return create_engine(conn_string)
 
 
-def snowflake_engine_factory(args: Dict[str, str]) -> Engine:
+def snowflake_engine_factory(args: Dict[str, str], role: str) -> Engine:
     """
     Create a database engine from a dictionary of database info.
     """
 
+    # Figure out which vars to grab
+    role_dict = {
+            "SYSADMIN": {
+                "USER": "SNOWFLAKE_USER",
+                "PASSWORD": "SNOWFLAKE_PASSWORD",
+                "ACCOUNT": "SNOWFLAKE_ACCOUNT",
+                "DATABASE": "SNOWFLAKE_LOAD_DATABASE",
+                "WAREHOUSE": "SNOWFLAKE_LOAD_WAREHOUSE",
+                "ROLE": "SYSADMIN",
+            },
+            "LOADER": {
+                "USER": "SNOWFLAKE_LOAD_USER",
+                "PASSWORD": "SNOWFLAKE_LOAD_PASSWORD",
+                "ACCOUNT": "SNOWFLAKE_ACCOUNT",
+                "DATABASE": "SNOWFLAKE_LOAD_DATABASE",
+                "WAREHOUSE": "SNOWFLAKE_LOAD_WAREHOUSE",
+                "ROLE": "LOADER",
+            },
+    }
+
+    vars_dict = role_dict[role]
+
     conn_string = snowflake_URL(
-        user=args["SNOWFLAKE_LOAD_USER"],
-        password=args["SNOWFLAKE_PASSWORD"],
-        account=args["SNOWFLAKE_ACCOUNT"],
-        database=args["SNOWFLAKE_LOAD_DATABASE"],
-        warehouse=args["SNOWFLAKE_LOAD_WAREHOUSE"],
-        role=args["SNOWFLAKE_LOAD_ROLE"],
+        user = args[ vars_dict["USER"] ],
+        password = args[ vars_dict["PASSWORD"] ],
+        account = args[ vars_dict["ACCOUNT"] ],
+        database = args[ vars_dict["DATABASE"] ],
+        warehouse = args[ vars_dict["WAREHOUSE"] ],
+        role = vars_dict["ROLE"], # Don't need to do a lookup on this one
     )
 
     return create_engine(conn_string)
