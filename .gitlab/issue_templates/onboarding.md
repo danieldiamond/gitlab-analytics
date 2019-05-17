@@ -1,6 +1,6 @@
 ## Tools & Access
 
-Goal: To help bring you, our new data analyst, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed.
+Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed.
 
 - [ ] Manager: Add to Analytics API user.
 - [ ] Manager: Add to Stitch.
@@ -15,13 +15,13 @@ Goal: To help bring you, our new data analyst, up to speed in the GitLab Data Te
 - [ ] Manager: Invite to SheetLoad folder in gdrive (but not the interviewing data sheet).
 - [ ] Manager: Invite to Milestone Planning, Milestone Grooming, and DataOps Meetings. Ping appropriate person to get new hire added to Finance team meetings.
 - [ ] Manager: Add to [dbt test coverage rotation](https://about.gitlab.com/handbook/business-ops/data-team/#dbt-test-coverage-rotation)
-- [ ] Manager: Update issue with one or two Good First Issues. 
+- [ ] Manager: Update issue with one or two Good First Issues.
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate.
 
 WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
 - [ ] Read (skim) through this full issue, just so you have a sense of what's coming.
-- [ ] Join the following channels on Slack: `data`, `data-lounge`, `analytics-pipelines`, and `business-operations`.
+- [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `analytics-pipelines`, and `business-operations`.
 - [ ] Schedule a recurring monthly skip level meeting with the Director of Business Operations.
 - [ ] Schedule a coffee chat with each member of the team. These should be in addition to the ones you do with other GitLab team members.
 - [ ] Read the following pages of the handbook in their entirety. Bookmark them as you should soon be making MR's to improve our documentation!
