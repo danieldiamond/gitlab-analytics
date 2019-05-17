@@ -8,6 +8,17 @@ models:
           - name: ping_type
             description: an instance checked for new version or send a usage ping
 
+    - name: pings_latest_version_ping_per_host_and_month
+      description: This model includes only the lastest version ping for every host for each month in which they sent a version ping.
+      columns:
+          - name: ping_id
+            tests:
+                - not_null
+                - unique
+          - name: host_id
+            tests:
+                - not_null
+
     - name: pings_usage_data_boolean
       description: converts all ping values to either 0 or 1 in order to determine if a feature has *ever* been used
       columns:
