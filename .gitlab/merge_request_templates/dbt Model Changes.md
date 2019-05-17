@@ -14,7 +14,7 @@ Please include links to any related MRs and/or issues.
 
 ## Submitter Checklist
 
-- [ ] This MR follows the coding conventions laid out in the [style guide](https://gitlab.com/meltano/meltano#dbt-coding-conventions)
+- [ ] This MR follows the coding conventions laid out in the [style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
 
 #### Structure
 - [ ] Model-specific attributes (like custom schemas and materializations) should be specified in the model
@@ -51,7 +51,9 @@ Paste the results of dbt test here, including the command.
 <details>
 <summary> Which job do I run? </summary>
 
-These are scoped to the `ci` target. This target selects a subset of data for the snowplow and pings datasets.
+> As part of a DBT Model Change MR, you need to trigger a pipeline job to test that your changes won't break anything in production. To trigger these jobs, go to the "Pipelines" tab at the bottom of this MR and click on the appropriate stage (model or model_tests).
+
+These jobs are scoped to the `ci` target. This target selects a subset of data for the snowplow and pings datasets.
 
 Stage: model
 * **mr_dbt_archive_manual**: For changes to dbt archive
@@ -63,7 +65,7 @@ Stage: model
 
 Stage: model_tests
 * **mr_dbt_tests_manual**: Runs all of the tests
-  * Note: it is not necessary to to run this job if you've run any of the model stage jobs as tests are included.
+  * Note: it is not necessary to run this job if you've run any of the model stage jobs as tests are included.
 
 </details>
 
