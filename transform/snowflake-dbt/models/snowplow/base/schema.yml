@@ -26,3 +26,14 @@ sources:
           - name: uploaded_at
             tests:
               - not_null
+      - name: events_sample
+        description: This is a 1 to 7 day sample of the main event data used for development and CI validation.
+        identifier: events_sample
+        columns:
+          - name: json_text
+            tests:
+              - not_null
+          - name: uploaded_at
+            tests:
+              - not_null
+
