@@ -75,6 +75,7 @@ The final select statement does no additional transformation, except for anchori
 The final result for this subscription is:
 
 |RETENTION_MONTH|ORIGINAL_MRR|GROSS_RETENTION_MRR|NET_RETENTION_MRR|
+|------|------|------|------|
 |2017-01-01|408.333333333|0|0|
 |2017-02-01|408.333333333|0|0|
 |2017-03-01|408.333333333|0|0|
