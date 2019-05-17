@@ -140,14 +140,25 @@ SELECT
     nullif(JSONTEXT['v_etl']::string,'') AS v_etl,
     nullif(JSONTEXT['v_tracker']::string,'') AS v_tracker,
     uploaded_at
+{% if target.name not in ("prod") -%}
+
+FROM {{ source('snowplow', 'events_sample') }}
+
+{%- else %}
+
 FROM {{ source('snowplow', 'events') }}
+
+{%- endif %}
+
 WHERE JSONTEXT['app_id']::string IS NOT NULL
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'http://localhost:%'
+
 {% if is_incremental() %}
-AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
+    AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
 {% endif %}
-{{ dbt_utils.group_by(n=133) }}
+
+{{- dbt_utils.group_by(n=133) -}}
 
 ), events_to_ignore as (
 
@@ -160,6 +171,3 @@ AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
 SELECT *
 FROM base
 WHERE event_id NOT IN (SELECT * FROM events_to_ignore)
-{% if target.name == "ci" %}
-and collector_tstamp > dateadd(day, -8, current_date)
-{% endif  %}
