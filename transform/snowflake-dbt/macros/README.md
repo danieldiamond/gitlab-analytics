@@ -104,6 +104,15 @@ Used in:
 - sfdc_opportunity.sql
 - sfdc_account_deal_size_segmentation.sql
 
+## Unpack Unstructured Events ([Source]())
+This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.
+Usage:
+```
+{{ unpack_unstructured_event(change_form, 'change_form', 'cf') }}
+```
+Used in:
+- snowplow_unnested_events.sql
+
 ## Zuora Slugify ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora_slugify.sql))
 This macro replaces replaces any combination of whitespace and 2 pipes with a single pipe (important for renewal subscriptions) and it replaces all non alphanumeric characters with dashes and casts it to lowercases as well. The end result of using this macro on data like "A-S00003830 || A-S00013333" is "a-s00003830|a-s00013333".
 Usage:
