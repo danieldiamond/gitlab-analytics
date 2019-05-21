@@ -1,0 +1,12 @@
+version: 2
+models:
+- name: engineering_pulse_survey
+  description: This model aggregates the engineering pulse survey data into one table for reporting purposes.
+  columns:
+  - name: response_id
+    tests:
+    - not_null
+    - unique
+  - name: survey_id
+    tests:
+    - not_null
