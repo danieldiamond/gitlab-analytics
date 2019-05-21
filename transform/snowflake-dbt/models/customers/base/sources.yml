@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: customers
+    database: RAW
+    schema: tap_postgres
+    tables:
+      - name: customers_db_customers
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null
+          - name: sign_in_count
+            tests:
+              - not_null
+      - name: customers_db_orders
+        columns:
+          - name: id
+            tests:
+              - not_null
