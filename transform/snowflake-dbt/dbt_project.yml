@@ -83,6 +83,11 @@ models:
       enabled: true
       materialized: view
 
+      customers:
+        base:
+          enabled: true
+          materialized: table
+
       date:
         base:
           enabled: true
