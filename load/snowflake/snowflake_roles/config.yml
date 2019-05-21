@@ -133,6 +133,7 @@ roles:
                     - raw.gitlab_profiler_db
                     - raw.license_db
                     - raw.snowplow
+                    - raw.tap_postgres
                     - raw.version_db
             tables:
                 read:
@@ -142,6 +143,7 @@ roles:
                     - raw.gitlab_profiler_db.*
                     - raw.license_db.*
                     - raw.snowplow.*
+                    - raw.tap_postgres.*
                     - raw.version_db.*
 
     - reporter:
