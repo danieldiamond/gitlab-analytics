@@ -90,24 +90,33 @@ To facilitate the easier use of Airflow locally while still testing properly run
 The flow from code change to testing in Airflow should look like this (this assumes there is already a DAG for that task):
 
 1. Commit and push your code to the remote branch.
-2. Run `make set-branch`. This will spit out an environment variable you need to set for your branch. 
-2. Run `make init-airflow` to spin up the postgres db container and init the Airflow tables. You will get an error if Docker is not running.
-3. Run `make airflow` to spin up Airflow and attach a shell to one of the containers
-4. Open a web browser and navigate to `localhost:8080` to see your own local webserver
-5. In the airflow shell, run a command to trigger the DAG/Task you want to test, for example `airflow run snowflake_load snowflake-load 2019-01-01` (as configured in the docker-compose file, all kube pods will be created in the `testing` namespace). Or if you want to run an entire DAG (for instance the `dbt` DAG to test the branching logic), the command would be something like `airflow backfill dbt -s 2019-01-01T00:00:00 -e 2019-01-01T00:00:00`.
-6. Once the job is finished, you can navigate to the DAG/Task instance to review the logs.
+1. Run `make set-branch`. This will spit out an environment variable you need to set for your branch.
+    * Example `export GIT_BRANCH=1324-add-airflow-dag-to-create-event_sample-table`
+1. Run `make init-airflow` to spin up the postgres db container and init the Airflow tables. You will get an error if Docker is not running. 
+1. Run `make airflow` to spin up Airflow and attach a shell to one of the containers
+1. Open a web browser and navigate to `localhost:8080` to see your own local webserver
+1. In the airflow shell, run a command to trigger the DAG/Task you want to test, for example `airflow run snowflake_load snowflake-load 2019-01-01` (as configured in the docker-compose file, all kube pods will be created in the `testing` namespace). Or if you want to run an entire DAG (for instance the `dbt` DAG to test the branching logic), the command would be something like `airflow backfill dbt -s 2019-01-01T00:00:00 -e 2019-01-01T00:00:00`.
+1. Once the job is finished, you can navigate to the DAG/Task instance to review the logs.
 
 There is also a `make help` command that describes what commands exist and what they do.
 
-#### Variable Requirements for using Airflow in the MR workflow
+Some gotchas:
+
+* Ensure you have the latest version of Docker. This will prevent errors like `ERROR: Version in “./docker-compose.yml” is unsupported.`
+* If you're calling a new python script in your dag, ensure the file is executable by running `chmod +x your_python_file.py`. This will avoid permission denied errors.
+
+#### Requirements for using Airflow in the MR workflow
+
+The docker-compose file needs to read from a `.env` file when it generates the config to spin up Airflow. The `.env` file requires the following variables:
 
 ```
-KUBECONFIG
-GOOGLE_APPLICATION_CREDENTIALS
-GIT_BRANCH
+KUBECONFIG=/Users/tmurphy/.kube/config
+GOOGLE_APPLICATION_CREDENTIALS=/Users/tmurphy/Projects/GitLab/gcloud_service_creds.json
+GIT_BRANCH=1234-some-branch
 ```
 
-As long as those are set, the docker-compose file will correctly configure all permissions.
+As long as those are set, the docker-compose file will correctly configure all permissions. These variables are paths to the directory where the credentials are set and should be overriden with the values specific to your system.
+
 
 #### Video Walk Throughs
 
