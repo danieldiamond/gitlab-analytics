@@ -91,21 +91,20 @@ The flow from code change to testing in Airflow should look like this (this assu
 
 1. Commit and push your code to the remote branch.
 2. Run `make set-branch`. This will spit out an environment variable you need to set for your branch. 
-2. Run `make init` to spin up the postgres db container and init the Airflow tables. You will get an error if Docker is not running. 
-3. Run `make attach` to spin up Airflow and attach a shell to one of the containers
+2. Run `make init-airflow` to spin up the postgres db container and init the Airflow tables. You will get an error if Docker is not running.
+3. Run `make airflow` to spin up Airflow and attach a shell to one of the containers
 4. Open a web browser and navigate to `localhost:8080` to see your own local webserver
 5. In the airflow shell, run a command to trigger the DAG/Task you want to test, for example `airflow run snowflake_load snowflake-load 2019-01-01` (as configured in the docker-compose file, all kube pods will be created in the `testing` namespace). Or if you want to run an entire DAG (for instance the `dbt` DAG to test the branching logic), the command would be something like `airflow backfill dbt -s 2019-01-01T00:00:00 -e 2019-01-01T00:00:00`.
 6. Once the job is finished, you can navigate to the DAG/Task instance to review the logs.
 
 There is also a `make help` command that describes what commands exist and what they do.
 
-#### Requirements for using Airflow in the MR workflow
-
-The docker-compose file needs to read from a `.env` file when it generates the config to spin up Airflow. The `.env` file requires the following variables:
+#### Variable Requirements for using Airflow in the MR workflow
 
 ```
-KUBECONFIG=
-GOOGLE_APPLICATION_CREDENTIALS=
+KUBECONFIG
+GOOGLE_APPLICATION_CREDENTIALS
+GIT_BRANCH
 ```
 
 As long as those are set, the docker-compose file will correctly configure all permissions.

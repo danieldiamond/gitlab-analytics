@@ -1,20 +1,20 @@
 version: '3.7'
 services:
-    webserver:
+    airflow_webserver:
         image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
         restart: always
         ports:
           - "8080:8080"
         depends_on:
-          - db
-          - scheduler
+          - airflow_db
+          - airflow_scheduler
         environment:
           AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/analytics/dags/
           NAMESPACE: testing
           IN_CLUSTER: "False"
           GOOGLE_APPLICATION_CREDENTIALS: /root/gcp_service_creds.json
           GIT_BRANCH: ${GIT_BRANCH}
-          AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql://postgres:postgres@db
+          AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql://postgres:postgres@airflow_db
         command: bash -c "airflow webserver"
         volumes:
           - type: bind
@@ -32,20 +32,20 @@ services:
             target: /usr/local/airflow/analytics
             read_only: True
 
-    scheduler:
+    airflow_scheduler:
         image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
         restart: always
         ports:
           - "8793:8793"
         depends_on:
-          - db
+          - airflow_db
         environment:
           AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/analytics/dags/
           NAMESPACE: testing
           IN_CLUSTER: "False"
           GOOGLE_APPLICATION_CREDENTIALS: /root/gcp_service_creds.json
           GIT_BRANCH: ${GIT_BRANCH}
-          AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql://postgres:postgres@db
+          AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql://postgres:postgres@airflow_db
         command: bash -c "airflow scheduler"
         volumes:
           - type: bind
@@ -63,7 +63,7 @@ services:
             target: /usr/local/airflow/analytics
             read_only: True
 
-    db:
+    airflow_db:
       image: postgres:9.6
       environment:
         POSTGRES_USER: postgres
@@ -73,6 +73,24 @@ services:
         - "5432:5432"
       volumes:
         - pgdata:/var/lib/postgresql/data
+
+    data_image:
+      image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+      restart: always
+      environment:
+        SNOWFLAKE_ACCOUNT: $SNOWFLAKE_ACCOUNT
+        SNOWFLAKE_USER: $SNOWFLAKE_USER
+        SNOWFLAKE_PASSWORD: $SNOWFLAKE_PASSWORD
+        SNOWFLAKE_TRANSFORM_DATABASE: $SNOWFLAKE_TRANSFORM_DATABASE
+        SNOWFLAKE_TRANSFORM_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
+        SNOWFLAKE_TRANSFORM_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE
+        SNOWFLAKE_TRANSFORM_SCHEMA: $SNOWFLAKE_TRANSFORM_SCHEMA
+      command: bash -c "/bin/bash"
+      working_dir: /usr/local/analytics/transform/snowflake-dbt/
+      volumes:
+        - type: bind
+          source: .
+          target: /usr/local/analytics
 
 volumes:
   airflow_logs:
