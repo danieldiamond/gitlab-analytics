@@ -172,7 +172,6 @@ account:
   subscription_amount__c: real
   sum_of_open_renewal_opportunities__c: real
   support_level_new__c: character varying
-  support_level_numeric__c: real
   support_level__c: character varying
   systemmodstamp: timestamp without time zone
   tedd_employees__c: real
@@ -186,7 +185,6 @@ account:
   type: character varying
   type_amount_close_date__c: character varying
   ultimateparentpotentialeeusers__c: real
-  ultimateparentsalessegmentation__c: character varying
   ultimate_parent_account_id__c: character varying
   ultimate_parent_account__c: character varying
   ultimate_parent_account_id__c: character varying
