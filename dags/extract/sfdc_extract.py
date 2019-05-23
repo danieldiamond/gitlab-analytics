@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, CustomKubePodOperator
+from airflow_utils import slack_failed_task, gitlab_defaults
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 
 # Load the env vars into a dict and set Secrets
@@ -41,7 +42,8 @@ sfdc_extract_cmd = f"""
     ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc apply_schema" &&
     ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc export"
 """
-sfdc_extract = CustomKubePodOperator(
+sfdc_extract = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="sfdc-extract",
     name="sfdc-db-extract",
@@ -72,7 +74,8 @@ sfdc_snapshot_cmd = f"""
     python orchestration/ci_helpers.py use_proxy "python3 extract/util/snapshot_opportunity.py" &&
     python orchestration/ci_helpers.py use_proxy "python3 extract/util/snapshot_account.py"
 """
-sfdc_snapshot = CustomKubePodOperator(
+sfdc_snapshot = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="sfdc-snapshot",
     name="sfdc-snapshot",

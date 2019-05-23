@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, CustomKubePodOperator
+from airflow_utils import slack_failed_task, gitlab_defaults
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 
 # Load the env vars into a dict and set Secrets
@@ -35,7 +36,8 @@ drop_cmd = f"""
 dag = DAG("snowplow_event_sample", default_args=default_args, schedule_interval="0 21 * * 5")
 
 # Task 1
-clean_clones = CustomKubePodOperator(
+clean_clones = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="snowplow-event-sample",
     name="snowplow-event-sample",

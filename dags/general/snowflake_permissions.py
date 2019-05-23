@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, CustomKubePodOperator
+from airflow_utils import slack_failed_task, gitlab_defaults
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 
 # Load the env vars into a dict and set Secrets
@@ -34,7 +35,8 @@ dag = DAG(
 )
 
 # Task 1
-snowflake_load = CustomKubePodOperator(
+snowflake_load = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/meltano/meltano/runner:v0.3.0",
     task_id="snowflake-permissions",
     name="snowflake-permissions",

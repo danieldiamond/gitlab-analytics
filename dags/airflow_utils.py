@@ -2,7 +2,6 @@
 import functools
 import os
 
-from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.slack_operator import SlackAPIPostOperator
 
 
@@ -49,20 +48,8 @@ def slack_failed_task(context):
     )
     return failed_alert.execute()
 
-
-def partialclass(existing_class, *args, **kwargs):
-    """
-    Partially init a class.
-    """
-
-    class NewClass(existing_class):
-        __init__ = functools.partialmethod(existing_class.__init__, *args, **kwargs)
-
-    return NewClass
-
-
-CustomKubePodOperator = partialclass(
-    existing_class=KubernetesPodOperator,
+# GitLab default settings for all DAGs
+gitlab_defaults = dict(
     get_logs=True,
     image_pull_policy="Always",
     in_cluster=False if os.environ["IN_CLUSTER"] == "False" else True,
