@@ -165,7 +165,7 @@ try:
              "a.products_purchased__c, " + \
              "a.isdeleted, " + \
              "null, " + \
-             "a.support_level_numeric__c, " + \
+             "null, " + \
              "a.createddate, " + \
              "a.isgitlabgeocustomer__c, " + \
              "a.zendesk__tags__c, " + \
@@ -192,7 +192,7 @@ try:
              "a.zendesk__last_sync_status__c, " + \
              "a.leandata__tag__c, " + \
              "a.gitlab_team__c, " + \
-             "a.ultimateparentsalessegmentation__c, " + \
+             "null, " + \
              "a.license_user_count__c, " + \
              "a.systemmodstamp, " + \
              "a.infer__infer_hash__c, " + \
