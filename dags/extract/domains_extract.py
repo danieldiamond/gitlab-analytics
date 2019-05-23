@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, CustomKubePodOperator
+from airflow_utils import slack_failed_task, gitlab_defaults
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 
 # Load the env vars into a dict and set Secrets
@@ -38,7 +39,8 @@ domains_extract_cmd = f"""
     cd analytics/ &&
     orchestration/ci_helpers.py use_proxy "bash transform/hosts_to_sfdc/python_timecheck.sh"
 """
-domains_extract = CustomKubePodOperator(
+domains_extract = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="domains-extract",
     name="domains-extract",

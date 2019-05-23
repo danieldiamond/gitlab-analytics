@@ -6,7 +6,8 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import BranchPythonOperator
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, CustomKubePodOperator
+from airflow_utils import slack_failed_task, gitlab_defaults
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 
 # Load the env vars into a dict and set Secrets
@@ -103,7 +104,8 @@ dbt_run_cmd = f"""
     dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse} # run on small warehouse w/o product data or snapshots &&
     dbt run --profiles-dir profile --target prod --model tag:product # run product data on large warehouse
 """
-dbt_run = CustomKubePodOperator(
+dbt_run = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="dbt-run",
     name="dbt-run",
@@ -129,7 +131,8 @@ dbt_full_refresh_cmd = f"""
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt run --profiles-dir profile --target prod --full-refresh
 """
-dbt_full_refresh = CustomKubePodOperator(
+dbt_full_refresh = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="dbt-full-refresh",
     name="dbt-full-refresh",
@@ -155,7 +158,8 @@ dbt_archive_cmd = f"""
     dbt archive --profiles-dir profile --target prod --vars {xs_warehouse} &&
     dbt run --profiles-dir profile --target prod --models snapshots --vars {xs_warehouse}
 """
-dbt_archive = CustomKubePodOperator(
+dbt_archive = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="dbt-archive",
     name="dbt-archive",
@@ -181,7 +185,8 @@ dbt_test_cmd = f"""
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt test --profiles-dir profile --target prod --vars {xs_warehouse}
 """
-dbt_test = CustomKubePodOperator(
+dbt_test = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="dbt-test",
     name="dbt-test",
@@ -207,7 +212,8 @@ sfdc_update_cmd = f"""
     python3 analytics/transform/sfdc_processor.py generate_accounts &&
     python3 analytics/transform/sfdc_processor.py update_accounts
 """
-sfdc_update = CustomKubePodOperator(
+sfdc_update = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="sfdc-update",
     name="sfdc-update",
@@ -237,7 +243,8 @@ snowplow_load_cmd = f"""
     {git_cmd} &&
     python analytics/transform/util/execute_copy.py
 """
-snowplow_load = CustomKubePodOperator(
+snowplow_load = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="snowplow-load",
     name="snowplow-load",

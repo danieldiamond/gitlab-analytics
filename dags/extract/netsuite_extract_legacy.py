@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, CustomKubePodOperator
+from airflow_utils import slack_failed_task, gitlab_defaults
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 
 # Load the env vars into a dict and set Secrets
@@ -45,7 +46,8 @@ netsuite_extract_legacy_cmd = f"""
     ci_helpers.py use_proxy "python3 extract/netsuite_legacy/src/ --schema netsuite export --days 3" &&
     ci_helpers.py use_proxy "python3 extract/netsuite_legacy/src/ --schema netsuite backlog --days 15"
 """
-netsuite_extract_legacy = CustomKubePodOperator(
+netsuite_extract_legacy = KubernetesPodOperator(
+    **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="netsuite-extract-legacy",
     name="netsuite-extract-legacy",
