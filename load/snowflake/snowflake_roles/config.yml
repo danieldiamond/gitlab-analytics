@@ -124,9 +124,11 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.*
                     - raw.ci_stats_db
                     - raw.customers_db
                     - raw.gitlab_dotcom
@@ -137,6 +139,7 @@ roles:
                     - raw.version_db
             tables:
                 read:
+                    - analytics.*
                     - raw.ci_stats_db.*
                     - raw.customers_db.*
                     - raw.gitlab_dotcom.*
@@ -311,6 +314,13 @@ roles:
         owns:
             schemas:
                 - analytics.jurbanc_scratch              
+  
+    - jwatson:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.jwatson_scratch
 
     - periscope:
         warehouses: 
@@ -359,20 +369,6 @@ roles:
         owns:
             schemas:
                 - analytics.valexieva_scratch
-        privileges:
-            databases:
-                read:
-                    - raw
-            schemas:
-                read:
-                    - raw.gitlab_dotcom
-                write:
-                    - raw.gitlab_dotcom
-            tables:
-                read:
-                    - raw.gitlab_dotcom.*
-                write:
-                    - raw.gitlab_dotcom.*
 
     - wwright:
         warehouses:
@@ -461,7 +457,14 @@ users:
             - securityadmin
             - sysadmin
             - jurbanc
-            
+    
+    - jwatson:
+        can_login: yes
+        member_of:
+            - product_manager
+            - reporter
+            - jwatson      
+    
     - periscope:
         can_login: yes
         member_of:
