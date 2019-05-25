@@ -196,6 +196,15 @@ You can use `Command + Option + L` to format your file.
 - [Wes McKinney Blog](http://wesmckinney.com/archives.html)
 - [MBA Mondays](https://avc.com/archive/#mba_mondays_archive)
 
+#### SQL Learning Resources
+- [Mode SQL Tutorial](https://mode.com/sql-tutorial/introduction-to-sql/)
+- [Codecademy](https://www.codecademy.com/learn/learn-sql)
+- [DataQuest](https://www.dataquest.io/course/sql-fundamentals/)
+- [Khan Academy](https://www.khanacademy.org/computing/computer-programming/sql)
+
+- [HackerRank (Exercises)](https://www.hackerrank.com/domains/sql?filters%5Bstatus%5D%5B%5D=unsolved&badge_type=sql)
+- [Udacity](https://www.udacity.com/course/intro-to-relational-databases--ud197)
+
 #### Data Newsletters
 - [Data Science Roundup Newsletter](http://roundup.fishtownanalytics.com/)
 - [SF Data](http://weekly.sfdata.io/)
