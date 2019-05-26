@@ -1,0 +1,97 @@
+bugsCharts:
+  title: 'Charts for Bugs'
+  charts:
+    - title: Monthly Bugs Created (bar)
+      type: bar
+      query:
+        issuable_type: issue
+        issuable_state: opened
+        filter_labels:
+          - bug
+        group_by: month
+        period_limit: 24
+    - title: Weekly Bugs By Severity (stacked bar)
+      type: stacked-bar
+      query:
+        issuable_type: issue
+        issuable_state: opened
+        filter_labels:
+          - bug
+        collection_labels:
+          - P1
+          - P2
+          - P3
+          - P4
+        group_by: week
+        period_limit: 104
+    - title: Weekly Bugs By Severity (stacked bar)
+      type: stacked-bar
+      query:
+        issuable_type: issue
+        issuable_state: closed
+        filter_labels:
+          - bug
+        collection_labels:
+          - P1
+          - P2
+          - P3
+          - P4
+        group_by: week
+        period_limit: 104
+
+reportingCharts:
+  title: 'Reporting Issues Opened'
+  charts:
+    - title: Reporting Issues opened by week
+      type: bar
+      query:
+        issuable_type: issue
+        issuable_state: opened
+        filter_labels:
+          - Reporting
+          - Periscope
+          - Looker
+        group_by: week
+        period_limit: 24
+  title: 'Reporting Issues Closed'
+  charts:
+    - title: Reporting Issues opened by week
+      type: bar
+      query:
+        issuable_type: issue
+        issuable_state: closed
+        filter_labels:
+          - Reporting
+          - Periscope
+          - Looker
+        group_by: week
+        period_limit: 24
+    - title: Reporting Issues by Team
+      type: stacked-bar
+      query:
+        issuable_type: issue
+        issuable_state: opened
+        filter_labels:
+          - Reporting
+          - Periscope
+          - Looker
+        collection_labels:
+          - Community
+          - Corporate
+          - Customer Success
+          - Customer Support
+          - Data Team
+          - Engineering
+          - Finance
+          - Gitter-team
+          - Growth
+          - Legal
+          - Marketing
+          - Meltano
+          - PeopleOps
+          - Product
+          - Sales
+          - Security
+          - team:Alliances
+        group_by: week
+        period_limit: 104
