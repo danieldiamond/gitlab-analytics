@@ -50,8 +50,6 @@ reportingCharts:
         issuable_state: opened
         filter_labels:
           - Reporting
-          - Periscope
-          - Looker
         group_by: week
         period_limit: 24
     - title: Reporting Issues opened by week
@@ -61,8 +59,6 @@ reportingCharts:
         issuable_state: closed
         filter_labels:
           - Reporting
-          - Periscope
-          - Looker
         group_by: week
         period_limit: 24
     - title: Reporting Issues by Team
@@ -72,8 +68,6 @@ reportingCharts:
         issuable_state: opened
         filter_labels:
           - Reporting
-          - Periscope
-          - Looker
         collection_labels:
           - Community
           - Corporate
