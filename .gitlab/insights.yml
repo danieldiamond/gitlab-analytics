@@ -1,44 +1,45 @@
-bugsCharts:
-  title: 'Charts for Bugs'
+issues:
+  title: Issues Dashboard
   charts:
-    - title: Monthly Bugs Created (bar)
+    - title: Bugs created per month by Priority
+      type: stacked-bar
+      query:
+        issuable_type: issue
+        filter_labels:
+          - bug
+        collection_labels:
+          - priority::1
+          - priority::2
+          - priority::3
+          - priority::4
+        group_by: month
+    - title: Bugs created per month by Severity
+      type: stacked-bar
+      query:
+        issuable_type: issue
+        filter_labels:
+          - bug
+        collection_labels:
+          - severity::1
+          - severity::2
+          - severity::3
+          - severity::4
+        group_by: month
+mergeRequests:
+  title: Merge Requests Dashboard
+  charts:
+    - title: Merge Requests merged per week
       type: bar
       query:
-        issuable_type: issue
-        issuable_state: opened
-        filter_labels:
-          - bug
+        issuable_type: merge_request
+        issuable_state: merged
+        group_by: week
+    - title: Merge Requests merged per month
+      type: bar
+      query:
+        issuable_type: merge_request
+        issuable_state: merged
         group_by: month
-        period_limit: 24
-    - title: Weekly Bugs By Severity (stacked bar)
-      type: stacked-bar
-      query:
-        issuable_type: issue
-        issuable_state: opened
-        filter_labels:
-          - bug
-        collection_labels:
-          - P1
-          - P2
-          - P3
-          - P4
-        group_by: week
-        period_limit: 104
-    - title: Weekly Bugs By Severity (stacked bar)
-      type: stacked-bar
-      query:
-        issuable_type: issue
-        issuable_state: closed
-        filter_labels:
-          - bug
-        collection_labels:
-          - P1
-          - P2
-          - P3
-          - P4
-        group_by: week
-        period_limit: 104
-
 reportingCharts:
   title: 'Reporting Issues Opened'
   charts:
@@ -53,8 +54,6 @@ reportingCharts:
           - Looker
         group_by: week
         period_limit: 24
-  title: 'Reporting Issues Closed'
-  charts:
     - title: Reporting Issues opened by week
       type: bar
       query:
