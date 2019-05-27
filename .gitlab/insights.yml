@@ -52,7 +52,7 @@ reportingCharts:
           - Reporting
         group_by: week
         period_limit: 24
-    - title: Reporting Issues opened by week
+    - title: Reporting Issues closed by week
       type: bar
       query:
         issuable_type: issue
