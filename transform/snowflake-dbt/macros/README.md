@@ -93,6 +93,7 @@ Usage:
 Used in:
 - sfdc_opportunity.sql
 - zendesk_organizations.sql
+- sfdc_lead.sql
 
 ## SFDC Deal Size ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc_deal_size.sql))
 This macro buckets a unit into a deal size (Small, Medium, Big, or Jumbo) based on an inputted value.
