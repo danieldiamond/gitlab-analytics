@@ -1,5 +1,5 @@
 version: 2
-models: 
+models:
   - name: sfdc_account
     description: base model for SFDC Accounts
     columns:
@@ -17,7 +17,7 @@ models:
         tests:
           - not_null
           - unique
-    tests:  
+    tests:
       - dbt_utils.recency:
           datepart: day
           field: dbt_last_updated_timestamp
@@ -94,6 +94,8 @@ models:
         - name: lead_name
           tests:
               - not_null
+        - name: sales_segmentation
+          description: "Company size of the lead"
   - name: sfdc_opportunity
     description: base model for SFDC Opportunities
     columns:
@@ -120,7 +122,7 @@ models:
         tests:
           - not_null
           - unique
-    tests:  
+    tests:
       - dbt_utils.recency:
           datepart: day
           field: dbt_last_updated_timestamp
@@ -223,7 +225,7 @@ models:
         tests:
           - not_null
           - unique
-    tests:  
+    tests:
       - dbt_utils.recency:
           datepart: day
           field: dbt_last_updated_timestamp
