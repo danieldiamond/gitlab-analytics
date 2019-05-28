@@ -23,7 +23,7 @@ models:
           field: dbt_last_updated_timestamp
           interval: 1
   - name: sfdc_bizible_attribution_touchpoint
-    description: base model for Bizible attribution touch points that are pushed into SFDC
+    description: Attribution touchpoints are on opportunities.
     columns:
         - name: touchpoint_id
           tests:
@@ -35,6 +35,13 @@ models:
               - relationships:
                     to: ref('sfdc_campaign')
                     field: campaign_id
+  - name: sfdc_bizible_touchpoint
+    description: Touch points are on leads and contacts. 
+    columns: 
+        - name: bizible_touchpoint_id
+          tests:
+              - unique
+              - not_null
   - name: sfdc_campaign
     description: base model for SFDC Campaigns
     columns:
