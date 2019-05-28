@@ -58,7 +58,7 @@ with issues as (
            last_edited_at,
            closed_at,
            namespace_id,
-           visibility_level
+           visibility_level,
 
            {% for field in fields_to_mask %}
            CASE
