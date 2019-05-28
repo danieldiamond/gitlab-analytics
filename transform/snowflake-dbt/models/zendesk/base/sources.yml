@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: zendesk
+    database: RAW
+    schema: zendesk_stitch
+    loader: Stitch
+    loaded_at_field: _sdc_batched_at
+
+    freshness:
+      warn_after: {count: 8, period: hour}
+
+    tables: 
+      - name: organizations
+        description: '{{ doc("zendesk_org_desc") }}'
+      - name: ticket_metrics
+        description: '{{ doc("zendesk_ticket_metrics_desc") }}'
+      - name: tickets
+        description: '{{ doc("zendesk_tickets_desc") }}'
+      - name: users
+        description: '{{ doc("zendesk_users_desc") }}'
