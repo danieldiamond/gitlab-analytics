@@ -192,16 +192,17 @@ You can use `Command + Option + L` to format your file.
 - [Silota](http://www.silota.com/docs/recipes/)
 - [Mode Analytics Blog](https://blog.modeanalytics.com/)
 - [Periscope Data Blog](https://www.periscopedata.com/blog)
-- [Yhat Blog](http://blog.yhat.com/)
 - [Wes McKinney Blog](http://wesmckinney.com/archives.html)
 - [MBA Mondays](https://avc.com/archive/#mba_mondays_archive)
+- [Multithreaded](https://multithreaded.stitchfix.com/)
+- [Calogica](https://calogica.com/blog)
+- [Airbnb](https://airbnb.io)
 
 #### SQL Learning Resources
 - [Mode SQL Tutorial](https://mode.com/sql-tutorial/introduction-to-sql/)
 - [Codecademy](https://www.codecademy.com/learn/learn-sql)
 - [DataQuest](https://www.dataquest.io/course/sql-fundamentals/)
 - [Khan Academy](https://www.khanacademy.org/computing/computer-programming/sql)
-
 - [HackerRank (Exercises)](https://www.hackerrank.com/domains/sql?filters%5Bstatus%5D%5B%5D=unsolved&badge_type=sql)
 - [Udacity](https://www.udacity.com/course/intro-to-relational-databases--ud197)
 
@@ -212,6 +213,7 @@ You can use `Command + Option + L` to format your file.
 - [DataEng Weekly](http://dataengweekly.com/)
 - [Data Elixir](https://dataelixir.com/)
 - [Data Science Weekly](https://www.datascienceweekly.org/)
+- [Normcore Tech](https://vicki.substack.com)
 
 #### Data Visualization Resources
 - [Storytelling with Data](http://storytellingwithdata.com/)
@@ -227,7 +229,7 @@ You can use `Command + Option + L` to format your file.
 - [Visualising Data](http://www.visualisingdata.com/)
 - [WTF Visualizations](http://viz.wtf/)
 - [The Pudding](https://pudding.cool/)
-
+- [Makeover Monday](http://www.makeovermonday.co.uk)
 
 ## Contributing to the Data Team project
 
