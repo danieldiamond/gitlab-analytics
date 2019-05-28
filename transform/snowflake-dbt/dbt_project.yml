@@ -108,8 +108,8 @@ models:
           materialized: table
 
       netsuite:
+        enabled: false
         xf:
-          enabled: true
           materialized: table
 
       pings:
@@ -119,7 +119,7 @@ models:
           materialized: table
 
       pipe2spend:
-        enabled: true
+        enabled: false
         materialized: table
 
       retention:
