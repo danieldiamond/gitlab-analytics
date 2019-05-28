@@ -32,7 +32,7 @@ tables:
   audit_events:
     import_db: GITLAB_DB
     import_query: >
-      SELECT id,
+      SELECT id
       , author_id
       , type
       , entity_id
