@@ -1,16 +1,17 @@
 with source as (
 
     SELECT * 
-    FROM {{ var("database") }}.zendesk_stitch.users
+    FROM {{ source('zendesk', 'users') }}
+
     
 ),
 
-renamed AS (
+renamed as (
     
     SELECT
         
         --ids
-        id                      as user_id,
+        id                                                                                  AS user_id,
         
         -- removed external_id,
         organization_id,
@@ -26,7 +27,8 @@ renamed AS (
         created_at,
         last_login_at,
         updated_at
-        
+
+
     FROM source
 
 )
