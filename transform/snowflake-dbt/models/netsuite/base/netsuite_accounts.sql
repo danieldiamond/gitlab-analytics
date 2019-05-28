@@ -5,7 +5,7 @@
 
 with base as (
 		SELECT *
-		FROM {{ var("database") }}.netsuite_stitch.netsuite_account
+		FROM {{ var("database") }}.netsuite_stitch.account
 
 ), renamed as (
 
@@ -58,5 +58,3 @@ with base as (
 
 SELECT *
 FROM renamed
-
-
