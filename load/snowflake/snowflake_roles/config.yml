@@ -85,6 +85,27 @@ roles:
                     - raw.*.*
                     - analytics.*.*
 
+    - intern:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - analytics
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.*
+                write:
+                    - analytics.*
+            tables:
+                read:
+                    - analytics.*.*
+                write:
+                    - analytics.*.*
+
     - loader:
         warehouses:
             - loading
@@ -268,6 +289,14 @@ roles:
                 - analytics.emilie_scratch
                 - analytics.emilie_scratch_meta
 
+    - ehannon:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.ehannon_scratch
+                - analytics.ehannon_scratch_meta
+
     - eeastwood:
         warehouses:
             - reporting
@@ -438,6 +467,13 @@ users:
         member_of:
             - reporter
             - eeastwood
+
+    - ehannon:
+        can_login: yes
+        member_of:
+            - reporter
+            - intern
+            - ehannon
 
     - ekastelein:
         can_login: yes
