@@ -48,6 +48,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
 
 * Data Source Overviews:
    * [Pings](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view)
+   * [Salesforce](https://youtu.be/KwG3ylzWWWo)
 
 ## Recommended Reading, Listening, Watching
 
