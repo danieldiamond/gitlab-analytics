@@ -1,7 +1,8 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ var("database") }}.zuora_stitch.invoiceitem
+    FROM {{ source('zuora', 'invoiceitem') }}
+
 
 ), renamed AS (
 
@@ -42,6 +43,7 @@ WITH source AS (
       createddate            AS created_date,
       updatedbyid            AS updated_by_id,
       updateddate            AS updated_date
+
 
     FROM source
     WHERE deleted = FALSE

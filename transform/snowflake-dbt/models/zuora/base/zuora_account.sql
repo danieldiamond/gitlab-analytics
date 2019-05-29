@@ -8,63 +8,63 @@
 WITH source AS (
 
 	SELECT *
-	FROM {{ var("database") }}.zuora_stitch.account
+    FROM {{ source('zuora', 'account') }}
+
 
 
 ), renamed AS(
 
-	SELECT
-		id                              as account_id,
+	SELECT 
+		id                              					   AS account_id,
 		-- keys
-		communicationprofileid          as communication_profile_id,
-		nullif({{target.schema}}_staging.id15to18(crmid), '') as crm_id,
-		defaultpaymentmethodid          as default_payment_method_id,
-		invoicetemplateid               as invoice_template_id,
-		parentid                        as parent_id,
-		soldtocontactid                 as sold_to_contact_id,
-		billtocontactid                 as bill_to_contact_id,
-		taxexemptcertificateid          as tax_exempt_certificate_id,
-		taxexemptcertificatetype        as tax_exempt_certificate_type,
+		communicationprofileid                                 AS communication_profile_id,
+		nullif({{target.schema}}_staging.id15to18(crmid), '')  AS crm_id,
+		defaultpaymentmethodid                                 AS default_payment_method_id,
+		invoicetemplateid               					   AS invoice_template_id,
+		parentid                                               AS parent_id,
+		soldtocontactid                                        AS sold_to_contact_id,
+		billtocontactid                                        AS bill_to_contact_id,
+		taxexemptcertificateid                                 AS tax_exempt_certificate_id,
+		taxexemptcertificatetype                               AS tax_exempt_certificate_type,
 
 		-- account info
-		accountnumber                   as account_number,
-		name                            as account_name,
-		notes                           as account_notes,
-		purchaseordernumber             as purchase_order_number,
-		accountcode__c                  as sfdc_account_code,
+		accountnumber                                          AS account_number,
+		name                                                   AS account_name,
+		notes                                                  AS account_notes,
+		purchaseordernumber                                    AS purchase_order_number,
+		accountcode__c                                         AS sfdc_account_code,
 		status,
-		entity__c                       as sfdc_entity,
+		entity__c                                              AS sfdc_entity,
 
-		autopay                         as auto_pay,
-		balance                         as balance,
-		creditbalance                   as credit_balance,
-		billcycleday                    as bill_cycle_day,
-		currency                        as currency,
-		conversionrate__c               as sfdc_conversion_rate,
-		paymentterm                     as payment_term,
+		autopay                                                AS auto_pay,
+		balance                                                AS balance,
+		creditbalance                                          AS credit_balance,
+		billcycleday                                           AS bill_cycle_day,
+		currency                                               AS currency,
+		conversionrate__c                                      AS sfdc_conversion_rate,
+		paymentterm                                            AS payment_term,
 
-		allowinvoiceedit                as allow_invoice_edit,
+		allowinvoiceedit                                       AS allow_invoice_edit,
 		batch,
-		invoicedeliveryprefsemail       as invoice_delivery_prefs_email,
-		invoicedeliveryprefsprint       as invoice_delivery_prefs_print,
-		paymentgateway                  as payment_gateway,
+		invoicedeliveryprefsemail                              AS invoice_delivery_prefs_email,
+		invoicedeliveryprefsprint                              AS invoice_delivery_prefs_print,
+		paymentgateway                                         AS payment_gateway,
 
-		customerservicerepname          as customer_service_rep_name,
-		salesrepname                    as sales_rep_name,
-		additionalemailaddresses        as additional_email_addresses,
+		customerservicerepname                                 AS customer_service_rep_name,
+		salesrepname                                           AS sales_rep_name,
+		additionalemailaddresses                               AS additional_email_addresses,
 		--billtocontact                   as bill_to_contact,
-		parent__c                       as sfdc_parent,
+		parent__c                                              AS sfdc_parent,
 
 
 		-- financial info
-		lastinvoicedate                 as last_invoice_date,
+		lastinvoicedate                                        AS last_invoice_date,
 
 		-- metadata
-		createdbyid                     as created_by_id,
-		createddate                     as created_date,
-		updatedbyid                     as updated_by_id,
-		updateddate                     as updated_date
-
+		createdbyid                                            AS created_by_id,
+		createddate                                            AS created_date,
+		updatedbyid                                            AS updated_by_id,
+		updateddate                                            AS updated_date
 
 	FROM source
 	WHERE
