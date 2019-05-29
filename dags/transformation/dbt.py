@@ -183,7 +183,7 @@ dbt_test_cmd = f"""
     cd analytics/transform/snowflake-dbt/ &&
     dbt deps --profiles-dir profile # install packages &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
-    dbt test --profiles-dir profile --target prod --vars {xs_warehouse}
+    dbt test --profiles-dir profile --target prod --vars {xs_warehouse} --exclude snowplow
 """
 dbt_test = KubernetesPodOperator(
     **gitlab_defaults,
