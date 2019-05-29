@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: zuora
+    database: RAW
+    schema: zuora_stitch
+    loader: Stitch
+    loaded_at_field: _sdc_batched_at
+
+    freshness:
+      warn_after: {count: 8, period: hour}
+
+    tables: 
+      - name: account
+        description: '{{ doc("zuora_account_source") }}'
+      - name: contact
+        description: '{{ doc("zuora_contact_source") }}'
+      - name: invoiceitem
+        description: '{{ doc("zuora_invoice_item_source") }}'
+      - name: invoice
+        description: '{{ doc("zuora_invoice_source") }}'
+      - name: rateplancharge
+        description: '{{ doc("zuora_rateplan_charge_source") }}'
+      - name: rateplan
+        description: '{{ doc("zuora_rateplan_source") }}'
+      - name: subscription
+        description: '{{ doc("zuora_subscription_source") }}'
+
