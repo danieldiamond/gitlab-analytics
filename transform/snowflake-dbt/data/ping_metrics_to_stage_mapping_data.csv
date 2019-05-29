@@ -57,7 +57,6 @@ milestone_lists,plan
 milestones,plan
 notes,plan
 observations,ignored
-operations_dashboard,monitor
 operations_dashboard_default_dashboard,monitor
 operations_dashboard_users_with_projects_added,monitor
 pages_domains,release

@@ -85,6 +85,22 @@ Steps to Resolve:
 * Step 5: Once finance has confirmed that the accounts and subscriptions have been updated, create a MR to remove the filter
 
 
+### Test: uncategorized_pings
+This test checks that the list of unique ping metrics that we receive, `pings_list`, matches the ping metrics that we have categorized in the static CSV, `ping_metrics_to_stage_mapping_data`. This test will fail when these two sources get out of sync in either direction.
+
+Error Example: 
+```
+Database Error in model pings_usage_data_monthly_change_by_stage (models/pings/xf/pings_usage_data_monthly_change_by_stage.sql)
+  000904 (42000): 018c7f13-0141-8466-0000-289d05dda8ae: SQL compilation error: error line 397 at position 24
+  invalid identifier 'PINGS.OPERATIONS_DASHBOARD_DEFAULT_DASHBOARD_CHANGE'
+  compiled SQL at target/compiled/gitlab_snowflake/pings/xf/pings_usage_data_monthly_change_by_stage.sql
+```
+
+Steps to Resolve:
+
+* Step 1: Follow the general checklist
+* Step 2: Check that the rows of [ping_metrics_to_stage.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv) match the ping names in `analytics_staging.pings_list`. If `pings_list` has more rows than the CSV, the pings data has likely changed and the CSV may need to be updated to reflect that.
+
 ## Schema Tests
 
 ### Model: snowplow

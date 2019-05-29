@@ -105,6 +105,14 @@ Used in:
 - sfdc_opportunity.sql
 - sfdc_account_deal_size_segmentation.sql
 
+## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/stage_mapping.sql))
+This macro takes in a product stage name, such as 'Verify', and returns a SQL aggregation statement that sums the number of users using that stage, based on the ping data. Product metrics are mapped to stages using the [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
+```
+{{ stage_mapping( 'Verify' ) }} 
+```
+Used in:
+- pings_usage_data_monthly_change_by_stage.sql
+
 ## Unpack Unstructured Events ([Source]())
 This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.
 Usage:
