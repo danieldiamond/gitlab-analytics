@@ -147,7 +147,7 @@ This data comes from the usage ping that comes with a GitLab installation.
 - [ ] You can review the general data model in [this reference](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/data_model.htm). Pay particular attention to the [Sales Objects](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_erd_majors.htm).
 - [ ] To familiarize yourself with the Salesforce APIs, take [Intro to SFDC APIs](https://trailhead.salesforce.com/trails/force_com_dev_intermediate/modules/api_basics).
 - [ ] For access to SFDC, you will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request).
-- [ ] Watch the [salesforce brain dump session](https://youtu.be/KwG3ylzWWWo).
+- [ ] Watch the [SalesForce brain dump session](https://youtu.be/KwG3ylzWWWo).
 
 ## Snowplow (Product)
 [Snowplow](https://snowplowanalytics.com) is an open source web analytics collector.
