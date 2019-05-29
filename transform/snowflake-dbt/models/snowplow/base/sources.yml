@@ -20,7 +20,7 @@ sources:
       - name: events
         identifier: events
         columns:
-          - name: json_text
+          - name: jsontext
             tests:
               - not_null
           - name: uploaded_at
@@ -30,7 +30,7 @@ sources:
         description: This is a 1 to 7 day sample of the main event data used for development and CI validation. Previously, we had a filter based on the event date for development querying. This sample provides significant performance gains primarily by scanning a smaller table than the full primary table.
         identifier: events_sample
         columns:
-          - name: json_text
+          - name: jsontext
             tests:
               - not_null
           - name: uploaded_at
