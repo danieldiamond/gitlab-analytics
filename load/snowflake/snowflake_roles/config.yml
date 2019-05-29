@@ -230,6 +230,13 @@ roles:
             schemas:
                 - analytics.acarella_scratch
 
+    - agroleau:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.agroleau_scratch
+
     - amrvaljevich:
         warehouses:
             - reporting
@@ -322,6 +329,13 @@ roles:
             schemas:
                 - analytics.jwatson_scratch
 
+    - mrodriguez:
+        warehouses:
+            - reporting
+        owns:
+            schemas:
+                - analytics.mrodriguez_scratch
+
     - periscope:
         warehouses: 
             - reporting
@@ -385,6 +399,12 @@ users:
             - securityadmin
             - sysadmin
             - acarella
+
+    - agroleau:
+        can_login: yes
+        member_of:
+            - reporter
+            - agroleau
 
     - amrvaljevich:
         can_login: yes
@@ -464,6 +484,12 @@ users:
             - product_manager
             - reporter
             - jwatson      
+
+    - mrodriguez:
+        can_login: yes
+        member_of:
+            - reporter
+            - mrodriguez  
     
     - periscope:
         can_login: yes
