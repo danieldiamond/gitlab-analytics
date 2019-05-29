@@ -12,9 +12,10 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Add to daily Geekbot standup
 - [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access).
 - [ ] Manager: Inform new hire what his/her/they scratch schema will be called. **Do not create the schema**, as this will lead to conflicts when dbt runs.
-- [ ] Manager: Invite to SheetLoad folder in gdrive (but not the interviewing data sheet).
-- [ ] Manager: Invite to Milestone Planning, Milestone Grooming, and DataOps Meetings. Ping appropriate person to get new hire added to Finance team meetings.
-- [ ] Manager: Add to [dbt test coverage rotation](https://about.gitlab.com/handbook/business-ops/data-team/#dbt-test-coverage-rotation)
+- [ ] Manager: Invite to SheetLoad folder in gdrive.
+- [ ] Manager: Add to data team calendar as a calendar admin.
+- [ ] Manager: Ping appropriate person to get new hire added to Finance team meetings.
+- [ ] Manager: Add to [dbt test coverage rotation](https://about.gitlab.com/handbook/business-ops/data-team/#-team-roles)
 - [ ] Manager: Update issue with one or two Good First Issues.
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate.
 
@@ -22,7 +23,8 @@ WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
 - [ ] Read (skim) through this full issue, just so you have a sense of what's coming.
 - [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `analytics-pipelines`, and `business-operations`.
-- [ ] Schedule a recurring monthly skip level meeting with the Director of Business Operations.
+- [ ] Schedule a recurring fortnightly 1:1 meeting with the Director of Business Operations.
+- [ ] Invite yourself to the to Milestone Planning/Grooming and DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar. 
 - [ ] Schedule a coffee chat with each member of the team. These should be in addition to the ones you do with other GitLab team members.
 - [ ] Read the following pages of the handbook in their entirety. Bookmark them as you should soon be making MR's to improve our documentation!
    - [ ] [Data Team](https://about.gitlab.com/handbook/business-ops/data-team/)
