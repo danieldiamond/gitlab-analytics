@@ -1,10 +1,3 @@
-{{ config({
-    "schema": "sensitive",
-    "post-hook": "grant select on {{this}} to role reporter_sensitive"
-    })
-}}
-
-
 WITH source AS (
 
 	SELECT *
@@ -14,7 +7,7 @@ WITH source AS (
 
 ), renamed AS(
 
-	SELECT 
+	SELECT
 		id                              					   AS account_id,
 		-- keys
 		communicationprofileid                                 AS communication_profile_id,
