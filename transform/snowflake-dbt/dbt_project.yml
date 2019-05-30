@@ -118,6 +118,11 @@ models:
           enabled: true
           materialized: table
 
+      pings_to_sfdc:
+        tags: ["product"]
+        enabled: true
+        materialized: table
+
       pipe2spend:
         enabled: false
         materialized: table
