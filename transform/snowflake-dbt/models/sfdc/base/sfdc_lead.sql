@@ -1,7 +1,9 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ var("database") }}.salesforce_stitch.lead
+    FROM {{ source('salesforce', 'lead') }}
+
+
 
 ), renamed AS(
 

@@ -8,7 +8,8 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ var("database") }}.salesforce_stitch.recordtype
+    FROM {{ source('salesforce', 'record_type') }}
+
 
 ), renamed AS (
 

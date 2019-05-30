@@ -7,7 +7,8 @@
 WITH source AS (
 
   SELECT *
-  FROM {{ var("database") }}.salesforce_stitch.bizible2__bizible_touchpoint__c
+  FROM {{ source('salesforce', 'bizible_touchpoint') }}
+
 
 ), renamed AS (
 

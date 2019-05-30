@@ -7,7 +7,8 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ var("database") }}.salesforce_stitch.opportunity
+    FROM {{ source('salesforce', 'opportunity') }}
+
 
 ),
 
