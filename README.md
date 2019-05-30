@@ -215,6 +215,7 @@ You can use `Command + Option + L` to format your file.
 - [Data Elixir](https://dataelixir.com/)
 - [Data Science Weekly](https://www.datascienceweekly.org/)
 - [Normcore Tech](https://vicki.substack.com)
+- [The Carpentries](https://carpentries.topicbox.com/latest)
 
 #### Data Visualization Resources
 - [Storytelling with Data](http://storytellingwithdata.com/)
