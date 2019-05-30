@@ -1,7 +1,10 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ var("database") }}.salesforce_stitch.task
+    FROM {{ source('salesforce', 'task') }}
+
+
+
 
 ), renamed AS(
 

@@ -1,51 +1,53 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ var("database") }}.salesforce_stitch.campaign
+    FROM {{ source('salesforce', 'campaign') }}
+
+
 
 ), renamed AS(
 
     SELECT
-        id as campaign_id,
-        name as campaign_name,
-        isactive as is_active,
-        startdate as start_date,
-        enddate as end_date,
-        status as status,
-        type as type,
+        id                                                                 AS campaign_id,
+        name                                                                AS campaign_name,
+        isactive                                                            AS is_active,
+        startdate                                                           AS start_date,
+        enddate                                                             AS end_date,
+        status                                                              AS status,
+        type                                                                AS type,
 
         --keys
-        campaignmemberrecordtypeid as campaign_member_record_type_id,
-        ownerid as campaign_owner_id,
-        parentid as campaign_parent_id,
+        campaignmemberrecordtypeid                                          AS campaign_member_record_type_id,
+        ownerid                                                             AS campaign_owner_id,
+        parentid                                                            AS campaign_parent_id,
 
         --info
-        description as description,
+        description                                                         AS description,
 
         --projections
-        budgetedcost as budgeted_cost,
-        expectedresponse as expected_response,
-        expectedrevenue as expected_revenue,
+        budgetedcost                                                        AS budgeted_cost,
+        expectedresponse                                                    AS expected_response,
+        expectedrevenue                                                     AS expected_revenue,
 
         --results
-        actualcost as actual_cost,
-        amountallopportunities as amount_all_opportunities,
-        amountwonopportunities as amount_won_opportunities,
-        numberofcontacts as count_contacts,
-        numberofconvertedleads as count_converted_leads,
-        numberofleads as count_leads,
-        numberofopportunities as count_opportunities,
-        numberofresponses as count_responses,
-        numberofwonopportunities as count_won_opportunities,
-        numbersent as count_sent,
+        actualcost                                                          AS actual_cost,
+        amountallopportunities                                              AS amount_all_opportunities,
+        amountwonopportunities                                              AS amount_won_opportunities,
+        numberofcontacts                                                    AS count_contacts,
+        numberofconvertedleads                                              AS count_converted_leads,
+        numberofleads                                                       AS count_leads,
+        numberofopportunities                                               AS count_opportunities,
+        numberofresponses                                                   AS count_responses,
+        numberofwonopportunities                                            AS count_won_opportunities,
+        numbersent                                                          AS count_sent,
 
 
         --metadata
-        createddate as created_date,
-        createdbyid as created_by_id,
-        lastmodifiedbyid as last_modified_by_id,
-        lastmodifieddate as last_modified_date,
-        lastactivitydate as last_activity_date,
+        createddate                                                         AS created_date,
+        createdbyid                                                         AS created_by_id,
+        lastmodifiedbyid                                                    AS last_modified_by_id,
+        lastmodifieddate                                                    AS last_modified_date,
+        lastactivitydate                                                    AS last_activity_date,
         systemmodstamp
 
     FROM source

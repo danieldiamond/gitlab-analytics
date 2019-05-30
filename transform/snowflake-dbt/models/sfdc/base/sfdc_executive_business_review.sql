@@ -8,7 +8,9 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ var("database") }}.salesforce_stitch.executive_business_review__c
+    FROM {{ source('salesforce', 'executive_business_review') }}
+
+
 
 ), renamed AS (
 

@@ -1,7 +1,10 @@
 WITH source AS (
 
   SELECT *
-  FROM {{ var("database") }}.salesforce_stitch.proof_of_concept__c
+  FROM {{ source('salesforce', 'proof_of_concept') }}
+
+
+
 
 ), renamed AS (
 

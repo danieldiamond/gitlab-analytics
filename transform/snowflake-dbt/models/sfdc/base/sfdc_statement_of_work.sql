@@ -1,7 +1,8 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ var("database") }}.salesforce_stitch.statement_of_work__c
+    FROM {{ source('salesforce', 'statement_of_work') }}
+
 
 ), renamed AS (
 

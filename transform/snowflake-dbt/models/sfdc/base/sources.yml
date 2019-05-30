@@ -1,0 +1,78 @@
+version: 2
+
+sources:
+  - name: salesforce
+    database: raw
+    schema: salesforce_stitch
+    loader: Stitch
+    loaded_at_field: _sdc_batched_at
+
+    freshness:
+        warn_after: {count: 8, period: hour}
+
+    tables: 
+      - name: account
+        description: '{{ doc("sfdc_account_source") }}'
+      - name: bizible_attribution_touchpoint
+        identifier: bizible2__bizible_attribution_touchpoint__c
+        description: '{{ doc("sfdc_bizible_source") }}'
+      - name: bizible_touchpoint
+        identifier: bizible2__bizible_touchpoint__c
+        description: '{{ doc("sfdc_bizible_source") }}'
+      - name: campaign        
+        description: '{{ doc("sfdc_campaign_source") }}'
+      - name: campaign_member
+        identifier: campaignmember
+        description: '{{ doc("sfdc_campaignmember_source") }}'
+      - name: contact         
+        description: '{{ doc("sfdc_contact_source") }}'
+      - name: executive_business_review 
+        identifier: executive_business_review         
+        description: '{{ doc("sfdc_execbus_source") }}'
+      - name: lead         
+        description: '{{ doc("sfdc_lead_source") }}'
+      - name: opportunity_history
+        identifier: opportunityhistory          
+        description: '{{ doc("sfdc_opphistory_source") }}'
+      - name: opportunity_line_item
+        identifier: opportunitylineitem      
+        description: '{{ doc("sfdc_oppline_source") }}'
+      - name: opportunity_stage
+        identifier: opportunitystage         
+        description: '{{ doc("sfdc_oppstage_source") }}'
+      - name: opportunity         
+        description: '{{ doc("sfdc_opp_source") }}'
+      - name: proof_of_concept
+        identifier: proof_of_concept__c     
+        description: '{{ doc("sfdc_poc_source") }}'
+      - name: record_type
+        identifier: recordtype         
+        description: '{{ doc("sfdc_recordtype_source") }}'
+      - name: statement_of_work
+        identifier: statement_of_work__c      
+        description: '{{ doc("sfdc_sow_source") }}'
+      - name: task         
+        description: '{{ doc("sfdc_task_source") }}'
+      - name: user_role
+        identifier: userrole          
+        description: '{{ doc("sfdc_userrole_source") }}'
+      - name: user         
+        description: '{{ doc("sfdc_user_source") }}'
+
+  - name: salesforce_archive
+    database: analytics
+    schema: dbt_archive
+    loader: Stitch
+    loaded_at_field: _last_dbt_run
+
+    freshness:
+        warn_after: {count: 8, period: hour}
+
+    tables: 
+      - name: sfdc_account_archived
+        description: '{{ doc("sfdc_acct_arch_source") }}'
+      - name: sfdc_opportunity_archived
+        description: '{{ doc("sfdc_opp_arch_source") }}'
+      - name: sfdc_users_archived
+        description: '{{ doc("sfdc_users_arch_source") }}'
+

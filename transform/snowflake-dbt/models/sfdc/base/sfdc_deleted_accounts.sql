@@ -1,7 +1,10 @@
 with source as (
 
     SELECT *
-    FROM {{ var("database") }}.salesforce_stitch.account
+    FROM {{ source('salesforce', 'account') }}
+
+
+
 
 ), renamed as (
 

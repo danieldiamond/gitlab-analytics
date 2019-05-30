@@ -1,7 +1,9 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ var("database") }}.salesforce_stitch.contact
+    FROM {{ source('salesforce', 'contact') }}
+
+
 
 ), renamed AS(
 

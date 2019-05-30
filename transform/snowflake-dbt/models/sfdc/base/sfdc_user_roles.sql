@@ -1,7 +1,7 @@
 with base as (
 
     SELECT * 
-    FROM {{ var("database") }}.salesforce_stitch.userrole
+    FROM {{ source('salesforce', 'user_role') }}
 
 )
 
