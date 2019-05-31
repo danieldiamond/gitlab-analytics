@@ -25,5 +25,7 @@ sources:
       - name: currency_rate
         identifier: currencyrate
       - name: customer
+      - name: deleted
+      - name: department
 
 
