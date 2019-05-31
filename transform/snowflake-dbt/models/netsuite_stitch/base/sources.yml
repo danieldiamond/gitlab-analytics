@@ -20,5 +20,8 @@ sources:
       - name: account
       - name: accounting_periods
         identifier: accountingperiod
+      - name: consolidated_exchange_rate
+        identifier: consolidatedexchangerate
       - name: currency_rate
         identifier: currencyrate
+
