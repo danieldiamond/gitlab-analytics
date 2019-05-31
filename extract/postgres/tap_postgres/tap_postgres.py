@@ -54,11 +54,18 @@ def query_results_generator(query: str, engine: Engine) -> pd.DataFrame:
     return query_df_iterator
 
 
-def main(*file_paths: List[str], incremental_only: bool=False)  -> None:
+def main(
+    *file_paths: List[str], incremental_only: bool = False, scd_only: bool = False
+) -> None:
     """
     Read data from a postgres DB and write it to stdout following the
     Singer spec.
     """
+
+    # Make sure that only one of the flags is set
+    if incremental_only and scd_only:
+        logging.info("Only one 'only' flag can be used at a time")
+        sys.exit()
 
     # Set vars
     env = os.environ.copy()
@@ -83,26 +90,28 @@ def main(*file_paths: List[str], incremental_only: bool=False)  -> None:
 
             # Format the query
             raw_query = table_dict["import_query"]
-            query = raw_query.format(**env)
-            logging.info(query)
 
             # Check for incremental mode and skip queries that don't use execution date (non-incremental)
             if incremental_only and "{EXECUTION_DATE}" not in raw_query:
                 results_chunker = []
+            elif scd_only and "{EXECUTION_DATE}" in raw_query:
+                results_chunker = []
             else:
+                query = raw_query.format(**env)
+                logging.info(query)
                 results_chunker = query_results_generator(
-                        query=query, engine=postgres_engine
-            )
+                    query=query, engine=postgres_engine
+                )
 
             chunk_counter = 0
             for chunk_df in results_chunker:
                 row_count = chunk_df.shape[0]
                 logging.info(f"Uploading {row_count} records to snowflake...")
 
-                chunk_df['_uploaded_at'] = time() # Add an uploaded_at column
+                chunk_df["_uploaded_at"] = time()  # Add an uploaded_at column
                 chunk_df = chunk_df.applymap(
-                        lambda x: x if not isinstance(x, dict) else str(x)
-                ) # convert dict to str to avoid snowflake errors
+                    lambda x: x if not isinstance(x, dict) else str(x)
+                )  # convert dict to str to avoid snowflake errors
                 chunk_df.to_sql(
                     name=table_name,
                     con=snowflake_engine,
