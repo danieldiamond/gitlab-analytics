@@ -28,5 +28,5 @@ sources:
       - name: deleted
       - name: department
       - name: subsidiary
-
-
+      - name: transaction
+      - name: vendor
