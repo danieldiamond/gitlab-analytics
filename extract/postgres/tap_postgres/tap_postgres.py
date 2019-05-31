@@ -7,9 +7,30 @@ from typing import Dict, List
 
 import pandas as pd
 from fire import Fire
-from snowflake.sqlalchemy import URL as snowflake_URL
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
+
+from common_utils import snowflake_engine_factory
+
+
+def postgres_engine_factory(
+    connection_dict: Dict[str, str], env: Dict[str, str]
+) -> Engine:
+    """
+    Create a postgres engine to be used by pandas.
+    """
+
+    # Set the Vars
+    user = env[connection_dict["user"]]
+    password = env[connection_dict["pass"]]
+    host = env[connection_dict["host"]]
+    database = env[connection_dict["database"]]
+    port = env[connection_dict["port"]]
+
+    # Inject the values to create the engine
+    engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/{database}")
+    logging.info(engine)
+    return engine
 
 
 def manifest_reader(file_path: str) -> Dict[str, Dict]:
@@ -33,45 +54,7 @@ def query_results_generator(query: str, engine: Engine) -> pd.DataFrame:
     return query_df_iterator
 
 
-def snowflake_engine_factory(args: Dict[str, str]) -> Engine:
-    """
-    Create a database engine from a dictionary of database info.
-    """
-
-    # Use snowflake_URL to assist in generating the string
-    conn_string = snowflake_URL(
-        user=args["SNOWFLAKE_LOAD_USER"],
-        password=args["SNOWFLAKE_PASSWORD"],
-        account=args["SNOWFLAKE_ACCOUNT"],
-        database=args["SNOWFLAKE_LOAD_DATABASE"],
-        warehouse=args["SNOWFLAKE_LOAD_WAREHOUSE"],
-        role=args["SNOWFLAKE_LOAD_ROLE"],
-    )
-
-    return create_engine(conn_string)
-
-
-def postgres_engine_factory(
-    connection_dict: Dict[str, str], env: Dict[str, str]
-) -> Engine:
-    """
-    Create a postgres engine to be used by pandas.
-    """
-
-    # Set the Vars
-    user = env[connection_dict["user"]]
-    password = env[connection_dict["pass"]]
-    host = env[connection_dict["host"]]
-    database = env[connection_dict["database"]]
-    port = env[connection_dict["port"]]
-
-    # Inject the values to create the engine
-    engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/{database}")
-    logging.info(engine)
-    return engine
-
-
-def main(*file_paths: List[str]) -> None:
+def main(*file_paths: List[str], incremental_only: bool=False)  -> None:
     """
     Read data from a postgres DB and write it to stdout following the
     Singer spec.
@@ -90,7 +73,8 @@ def main(*file_paths: List[str]) -> None:
         logging.info("Creating database engines...")
         connection_dict = manifest_dict["connection_info"]
         postgres_engine = postgres_engine_factory(connection_dict, env)
-        snowflake_engine = snowflake_engine_factory(env)
+        snowflake_engine = snowflake_engine_factory(env, "LOADER")
+        logging.info(snowflake_engine)
 
         for table in manifest_dict["tables"]:
             logging.info(f"Querying for table: {table}")
@@ -100,9 +84,14 @@ def main(*file_paths: List[str]) -> None:
             # Format the query
             raw_query = table_dict["import_query"]
             query = raw_query.format(**env)
+            logging.info(query)
 
-            results_chunker = query_results_generator(
-                query=query, engine=postgres_engine
+            # Check for incremental mode and skip queries that don't use execution date (non-incremental)
+            if incremental_only and "{EXECUTION_DATE}" not in raw_query:
+                results_chunker = []
+            else:
+                results_chunker = query_results_generator(
+                        query=query, engine=postgres_engine
             )
 
             chunk_counter = 0
