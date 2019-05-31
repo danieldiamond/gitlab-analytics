@@ -24,4 +24,6 @@ sources:
         identifier: consolidatedexchangerate
       - name: currency_rate
         identifier: currencyrate
+      - name: customer
+
 
