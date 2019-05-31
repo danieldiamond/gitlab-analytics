@@ -18,3 +18,5 @@ sources:
 
     tables:
       - name: account
+      - name: accounting_periods
+        identifier: accountingperiod

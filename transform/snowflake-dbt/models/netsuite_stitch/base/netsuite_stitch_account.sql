@@ -1,4 +1,4 @@
-with source AS (
+WITH source AS (
 
     SELECT *
     FROM {{ source('netsuite_stitch', 'account') }}
