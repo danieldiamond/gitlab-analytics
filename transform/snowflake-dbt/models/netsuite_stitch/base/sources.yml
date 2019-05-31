@@ -20,3 +20,5 @@ sources:
       - name: account
       - name: accounting_periods
         identifier: accountingperiod
+      - name: currency_rate
+        identifier: currencyrate
