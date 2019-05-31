@@ -12,11 +12,12 @@ from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOpera
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {
+    "CI_PROJECT_DIR": "/analytics",
+    "HOURS": "8",
     "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
     "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
     if GIT_BRANCH == "master"
     else f"{GIT_BRANCH}_ANALYTICS",
-    "HOURS": "8",
 }
 
 # Default arguments for the DAG
@@ -33,6 +34,7 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
+    export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/postgres/ &&
     python tap_postgres/tap_postgres.py tap manifests/ci_stats_db_manifest.yaml
 """
@@ -55,9 +57,8 @@ ci_stats_db_extract = KubernetesPodOperator(
         CI_STATS_DB_NAME,
         PG_PORT,
         SNOWFLAKE_LOAD_USER,
-        SNOWFLAKE_PASSWORD,
+        SNOWFLAKE_LOAD_PASSWORD,
         SNOWFLAKE_ACCOUNT,
-        SNOWFLAKE_LOAD_DATABASE,
         SNOWFLAKE_LOAD_WAREHOUSE,
         SNOWFLAKE_LOAD_ROLE,
     ],
