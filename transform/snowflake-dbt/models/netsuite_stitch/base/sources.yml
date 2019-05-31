@@ -27,5 +27,6 @@ sources:
       - name: customer
       - name: deleted
       - name: department
+      - name: subsidiary
 
 
