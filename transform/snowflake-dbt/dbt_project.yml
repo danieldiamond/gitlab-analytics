@@ -109,11 +109,15 @@ models:
 
       netsuite_fivetran:
         enabled: true
+        base:
+          materialized: table
         xf:
           materialized: table
 
       netsuite_stitch:
         enabled: true
+        base:
+          materialized: table
         xf:
           materialized: table
 
