@@ -75,8 +75,8 @@ models:
               - not_null      
           - name: arr
             description: This is the ARR for the given ticket.
-            tests:
-              - not_null  
+#            tests:
+#              - not_null
           - name: sfdc_id
             description: This is the SFDC ID for the given ticket customer.
           - name: first_reply_time
