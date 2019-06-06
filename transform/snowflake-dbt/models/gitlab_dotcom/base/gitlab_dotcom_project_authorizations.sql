@@ -1,7 +1,14 @@
+-- disabled model until the data starts flowing in (the source table is missing from tap_postgres)
+{{
+  config(
+    enabled = false
+  )
+}}
+
 WITH source AS (
 
 	SELECT DISTINCT user_id, project_id, access_level
-	FROM {{ var("database") }}.gitlab_dotcom.project_authorizations
+  FROM {{ source('gitlab_dotcom', 'project_authorizations') }}
 
 ), renamed AS (
 
@@ -14,4 +21,7 @@ WITH source AS (
 
     FROM source
 
-) SELECT * from renamed
+)
+
+SELECT DISTINCT *
+FROM renamed

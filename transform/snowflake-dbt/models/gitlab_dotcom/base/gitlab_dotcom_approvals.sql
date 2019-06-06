@@ -1,8 +1,7 @@
 WITH source AS (
 
-	SELECT *
-	FROM {{ var("database") }}.gitlab_dotcom.approvals
-
+	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) as rank_in_key
+  FROM {{ source('gitlab_dotcom', 'approvals') }}
 
 ), renamed AS (
 
@@ -14,6 +13,7 @@ WITH source AS (
       updated_at :: timestamp           as approval_updated_at
 
     FROM source
+    WHERE rank_in_key = 1
 
 )
 

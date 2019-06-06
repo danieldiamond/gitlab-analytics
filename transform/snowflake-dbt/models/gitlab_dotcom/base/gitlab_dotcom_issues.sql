@@ -1,7 +1,7 @@
 WITH source AS (
 
-	SELECT *
-	FROM {{ var("database") }}.gitlab_dotcom.issues
+	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) as rank_in_key
+  FROM {{ source('gitlab_dotcom', 'issues') }}
 
 ), renamed AS (
 
@@ -10,27 +10,26 @@ WITH source AS (
       id :: integer                                               as issue_id,
       author_id :: integer                                        as author_id,
       source.project_id :: integer                                as project_id,
-      TRY_CAST(milestone_id as integer)                           as milestone_id,
-      TRY_CAST(updated_by_id as integer)                          as updated_by_id,
-      TRY_CAST(last_edited_by_id as integer)                      as last_edited_by_id,
-      TRY_CAST(moved_to_id as integer)                            as moved_to_id,
+      milestone_id :: integer                                     as milestone_id,
+      updated_by_id :: integer                                    as updated_by_id,
+      last_edited_by_id :: integer                                as last_edited_by_id,
+      moved_to_id :: integer                                      as moved_to_id,
       created_at :: timestamp                                     as issue_created_at,
       updated_at :: timestamp                                     as issue_updated_at,
-      TRY_CAST(last_edited_at as timestamp)                       as last_edited_at,
-      TRY_CAST(closed_at as timestamp)                            as closed_at,
+      last_edited_at :: timestamp                                 as last_edited_at,
+      closed_at :: timestamp                                      as closed_at,
       confidential :: boolean                                     as is_confidential,
       title,
       description,
       state,
-      TRY_CAST(weight as number)                                  as weight,
-      TRY_CAST(due_date as date)                                  as due_date,
-      TRY_CAST(lock_version as number)                            as lock_version,
-      TRY_CAST(time_estimate as number)                           as time_estimate,
-      TRY_CAST(discussion_locked as boolean)                      as has_discussion_locked,
-      TO_TIMESTAMP(_updated_at :: integer)                        as issues_last_updated_at
+      weight :: number                                            as weight,
+      due_date :: date                                            as due_date,
+      lock_version :: number                                      as lock_version,
+      time_estimate :: number                                     as time_estimate,
+      discussion_locked :: boolean                                as has_discussion_locked
 
     FROM source
-
+    WHERE rank_in_key = 1
 
 )
 
