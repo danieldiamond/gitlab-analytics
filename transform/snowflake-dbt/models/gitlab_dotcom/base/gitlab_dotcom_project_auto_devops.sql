@@ -1,7 +1,7 @@
 WITH source AS (
 
-	SELECT *
-	FROM {{ var("database") }}.gitlab_dotcom.project_auto_devops
+	SELECT *, ROW_NUMBER() OVER (PARTITION BY project_id ORDER BY _uploaded_at DESC) as rank_in_key
+  FROM {{ source('gitlab_dotcom', 'project_auto_devops') }}
 
 ), renamed AS (
 
@@ -10,10 +10,11 @@ WITH source AS (
       project_id :: integer              as project_id,
       created_at :: timestamp            as project_auto_devops_created_at,
       updated_at :: timestamp            as project_auto_devops_updated_at,
-      enabled :: boolean                 as has_auto_devops_enabled
+      enabled :: boolean                 as has_auto_devops_enabled,
+      domain
 
     FROM source
-
+    WHERE rank_in_key = 1
 )
 
 SELECT *

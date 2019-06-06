@@ -1,7 +1,7 @@
 WITH source AS (
 
-	SELECT *
-	FROM {{ var("database") }}.gitlab_dotcom.namespace_statistics
+	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) as rank_in_key
+  FROM {{ source('gitlab_dotcom', 'namespace_statistics') }}
 
 ), renamed AS (
 
@@ -13,7 +13,7 @@ WITH source AS (
       shared_runners_seconds_last_reset :: timestamp     as shared_runners_seconds_last_reset
 
     FROM source
-
+    WHERE rank_in_key = 1
 
 )
 

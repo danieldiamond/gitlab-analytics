@@ -97,7 +97,6 @@ with issues as (
            lock_version,
            time_estimate,
            has_discussion_locked,
-           issues_last_updated_at,
            ARRAY_TO_STRING(agg_label,'|') AS masked_label_title
 
     FROM issues

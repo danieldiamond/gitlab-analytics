@@ -9,8 +9,8 @@
 
 with source as (
 
-  SELECT *
-  FROM {{ var("database") }}.gitlab_dotcom.namespaces
+	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) as rank_in_key
+  FROM {{ source('gitlab_dotcom', 'namespaces') }}
 
 ), renamed as (
 
@@ -39,20 +39,20 @@ with source as (
             END                                                             AS visibility_level,
             ldap_sync_status,
             ldap_sync_error,
-            TRY_CAST(ldap_sync_last_update_at AS timestamp)                 AS ldap_sync_last_update_at,
-            TRY_CAST(ldap_sync_last_successful_update_at AS timestamp)      AS ldap_sync_last_successful_update_at,
-            TRY_CAST(ldap_sync_last_sync_at AS timestamp)                   AS ldap_sync_last_sync_at,
-            TRY_CAST(lfs_enabled AS boolean)                                AS lfs_enabled,
-            TRY_CAST(parent_id AS integer)                                  AS parent_id,
+            ldap_sync_last_update_at::timestamp                             AS ldap_sync_last_update_at,
+            ldap_sync_last_successful_update_at::timestamp                  AS ldap_sync_last_successful_update_at,
+            ldap_sync_last_sync_at::timestamp                               AS ldap_sync_last_sync_at,
+            lfs_enabled::boolean                                            AS lfs_enabled,
+            parent_id::integer                                              AS parent_id,
             shared_runners_minutes_limit :: number                          AS shared_runners_minutes_limit,
-            TRY_CAST(repository_size_limit AS number)                       AS repository_size_limit,
+            repository_size_limit::number                                   AS repository_size_limit,
             require_two_factor_authentication :: boolean                    AS does_require_two_factor_authentication,
             two_factor_grace_period :: number                               AS two_factor_grace_period,
             plan_id :: integer                                              AS plan_id,
-            TRY_CAST(project_creation_level as integer)                     AS project_creation_level
+            project_creation_level::integer                                 AS project_creation_level
 
     FROM source
-
+    WHERE rank_in_key = 1
 
 )
 
