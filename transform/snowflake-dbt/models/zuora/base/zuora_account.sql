@@ -85,4 +85,3 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-WHERE account_id != '2c92a0086ac71af9016ac743a961541f'
