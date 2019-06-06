@@ -11,7 +11,6 @@ WITH zendesk_tickets AS (
   WHERE NOT zendesk_tickets.satisfaction_rating_score = 'unoffered' 
   AND NOT zendesk_tickets.satisfaction_rating_score = 'offered'
 
-
 ), zendesk_org AS (
 
   SELECT *
@@ -26,6 +25,8 @@ SELECT  zendesk_org.organization_id,
         zendesk_tickets.ticket_status,                            
         zendesk_tickets.satisfaction_rating_score,
         zendesk_tickets.date_created
+
 FROM zendesk_tickets
 INNER JOIN zendesk_org
   ON zendesk_tickets.organization_id = zendesk_org.organization_id
+
