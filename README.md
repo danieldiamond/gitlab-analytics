@@ -105,6 +105,7 @@ Some gotchas:
 
 * Ensure you have the latest version of Docker. This will prevent errors like `ERROR: Version in “./docker-compose.yml” is unsupported.`
 * If you're calling a new python script in your dag, ensure the file is executable by running `chmod +x your_python_file.py`. This will avoid permission denied errors.
+* Ensure that any new secrets added in your dag are also in `kube_secrets.py`. This is the source of truth for which secrets Airflow uses. THe actual secret value isn't stored in this file, just the pointers.
 
 #### Requirements for using Airflow in the MR workflow
 
