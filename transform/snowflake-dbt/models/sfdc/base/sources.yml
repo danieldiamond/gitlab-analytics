@@ -27,7 +27,7 @@ sources:
       - name: contact         
         description: '{{ doc("sfdc_contact_source") }}'
       - name: executive_business_review 
-        identifier: executive_business_review         
+        identifier: executive_business_review__c        
         description: '{{ doc("sfdc_execbus_source") }}'
       - name: lead         
         description: '{{ doc("sfdc_lead_source") }}'
