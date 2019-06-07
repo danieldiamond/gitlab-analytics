@@ -30,7 +30,7 @@ SELECT  id,
         active_user_count,
         historical_max_users,
 
-        parse_json(stats) as stats_used
+        parse_json(counts) as stats_used
 FROM source
 WHERE uuid IS NOT NULL
   AND created_at >= '2019-01-20'
