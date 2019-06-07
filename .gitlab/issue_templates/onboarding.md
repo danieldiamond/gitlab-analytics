@@ -4,6 +4,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 
 - [ ] Manager: Add to Analytics API user.
 - [ ] Manager: Add to Stitch.
+- [ ] Manager: Add to Fivetran.
 - [ ] Manager: Add to Periscope.
 - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
 - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
