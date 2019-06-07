@@ -1,5 +1,8 @@
 from airflow.contrib.kubernetes.secret import Secret
 
+# BambooHR
+BAMBOOHR_API_TOKEN = Secret("env", "BAMBOOHR_API_TOKEN", "airflow", "BAMBOOHR_API_TOKEN")
+
 # GCP Related
 GCP_SERVICE_CREDS = Secret(
     "env", "GCP_SERVICE_CREDS", "airflow", "cloudsql-credentials"
