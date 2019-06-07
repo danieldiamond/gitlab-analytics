@@ -63,6 +63,11 @@ WITH source AS (
         matched_account_top_list__c AS matched_account_top_list,
         mql_date__c                 AS marketo_qualified_lead_date,
         mql_datetime__c             AS marketo_qualified_lead_datetime,
+        inquiry_datetime__c         AS inquiry_datetime,
+        accepted_datetime__c        AS accepted_datetime,
+        qualifying_datetime__c      AS qualifying_datetime,
+        qualified_datetime__c       AS qualified_datetime,
+        unqualified_datetime__c     AS unqualified_datetime,
         {{ sales_segment_cleaning('sales_segmentation__c') }} AS sales_segmentation,
 
         --gitlab internal

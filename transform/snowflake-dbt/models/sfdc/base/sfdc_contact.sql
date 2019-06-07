@@ -57,6 +57,11 @@ WITH source AS (
         account_type__c             AS account_type,
         mql_timestamp__c            AS marketo_qualified_lead_timestamp,
         mql_datetime__c             AS marketo_qualified_lead_datetime,
+        inquiry_datetime__c         AS inquiry_datetime,
+        accepted_datetime__c        AS accepted_datetime,
+        qualifying_datetime__c      AS qualifying_datetime,
+        qualified_datetime__c       AS qualified_datetime,
+        unqualified_datetime__c     AS unqualified_datetime,
         mkto_si__last_interesting_moment__c 
                                     AS marketo_last_interesting_moment,
         mkto_si__last_interesting_moment_date__c 
