@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: bamboohr
+    database: raw
+    schema: bamboohr
+    loader: Airflow
+    loaded_at_field: uploaded_at
+
+    freshness:
+      warn_after: {count: 24, period: hour}
+
+    tables: 
+      - name: directory
+
