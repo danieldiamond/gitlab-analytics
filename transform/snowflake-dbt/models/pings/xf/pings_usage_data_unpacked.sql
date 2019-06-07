@@ -23,7 +23,7 @@ SELECT  id,
         uuid,
         CASE WHEN uuid = 'ea8bf810-1d6f-4a6a-b4fd-93e8cbd8b57f'
                 THEN 'SaaS'
-             ELSE 'Self-Hosted'
+             ELSE 'Self-Managed'
         END AS ping_source,
         edition,
         concat(concat(SPLIT_PART(version, '.', 1), '.'), SPLIT_PART(version, '.', 2))   AS major_version,

@@ -41,7 +41,7 @@ WITH opps AS (
               -- Added to Web Direct
               OR campaign_id in (
                                 '701610000008ciRAAQ', -- Trial - GitLab.com
-                                '70161000000VwZbAAK', -- Trial - Self-hosted
+                                '70161000000VwZbAAK', -- Trial - Self-Managed
                                 '70161000000VwZgAAK', -- Trial - SaaS
                                 '70161000000CnSLAA0', -- 20181218_DevOpsVirtual
                                 '701610000008cDYAAY'  -- 2018_MovingToGitLab
