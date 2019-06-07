@@ -7,7 +7,7 @@ models:
             tests:
                 - not_null
     - name: pings_avg_cycle_analytics
-      description: Ping data from self-hosted users.
+      description: Ping data from Self-Managed users.
       columns:
           - name: ping_id
             tests:
