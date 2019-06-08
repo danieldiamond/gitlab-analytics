@@ -60,6 +60,7 @@ observations,ignored
 operations_dashboard_default_dashboard,monitor
 operations_dashboard_users_with_projects_added,monitor
 pages_domains,release
+pool_repositories,create
 project_clusters_disabled,configure
 project_clusters_enabled,configure
 projects,plan
