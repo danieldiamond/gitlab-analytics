@@ -33,15 +33,20 @@ def extract_transaction_type(args):
         # Fetch all the transaction types for the given date intervall
         response = entity.extract_type(start_time, end_time)
 
-        while response is not None and response.status.isSuccess \
-          and response.searchRowList is not None:
+        while (
+            response is not None
+            and response.status.isSuccess
+            and response.searchRowList is not None
+        ):
 
-            #records = response.recordList.record
+            # records = response.recordList.record
             records = response.searchRowList.searchRow
 
             for record in records:
-                internal_id = record['basic']['internalId'][0]['searchValue']['internalId']
-                trans_type = record['basic']['type'][0]['searchValue']
+                internal_id = record["basic"]["internalId"][0]["searchValue"][
+                    "internalId"
+                ]
+                trans_type = record["basic"]["type"][0]["searchValue"]
 
                 transaction_types[internal_id] = trans_type
 
@@ -53,21 +58,21 @@ def extract_transaction_type(args):
 
         with DB.default.open() as db:
             cursor = db.cursor()
-            update_query = psycopg2.sql.SQL("""
+            update_query = psycopg2.sql.SQL(
+                """
                     UPDATE {0}.{1}
                     SET transaction_type = data.transaction_type
                     FROM (VALUES %s) AS data (internal_id, transaction_type)
                     WHERE {0}.{1}.internal_id = data.internal_id
-            """).format(
-                schema,
-                table,
-            )
+            """
+            ).format(schema, table)
 
-            psycopg2.extras.execute_values(cursor,
+            psycopg2.extras.execute_values(
+                cursor,
                 update_query.as_string(db),
-                [(int(id),type) for id, type in transaction_types.items() ],
+                [(int(id), type) for id, type in transaction_types.items()],
                 template=None,
-                page_size=100
+                page_size=100,
             )
 
         logging.info("Extraction of Transaction Types completed Successfully")

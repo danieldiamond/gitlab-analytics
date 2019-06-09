@@ -13,7 +13,7 @@ def main(engine: Engine) -> None:
     Create the events_sample table with 5M max rows
     """
 
-    logging.info('Running create statement ...')
+    logging.info("Running create statement ...")
 
     create_query = """
     CREATE OR REPLACE
@@ -29,10 +29,7 @@ def main(engine: Engine) -> None:
     GRANT SELECT ON TABLE snowplow.events_sample TO role transformer;
     """
 
-    query_list = [
-        create_query,
-        grant_query
-    ]
+    query_list = [create_query, grant_query]
 
     for query in query_list:
 
@@ -50,15 +47,15 @@ def main(engine: Engine) -> None:
     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=20)
-    logging.info('Starting script...')
+    logging.info("Starting script...")
 
-    logging.info('Creating engine...')
+    logging.info("Creating engine...")
     config_dict = env.copy()
     engine = snowflake_engine_factory(config_dict, "SYSADMIN")
-    logging.info(f'Engine Created: {engine}')
+    logging.info(f"Engine Created: {engine}")
 
-    logging.info('Prepping to create table...')
+    logging.info("Prepping to create table...")
     main(engine)
-    logging.info('Table created successfully!')
+    logging.info("Table created successfully!")

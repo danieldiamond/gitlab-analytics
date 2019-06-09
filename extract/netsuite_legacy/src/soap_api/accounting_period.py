@@ -5,27 +5,25 @@ import datetime
 import netsuite_legacy.src.schema.accounting_period as accounting_period_schema
 from netsuite_legacy.src.soap_api.utils import fetch_attribute, merge_transform_results
 
+
 class AccountingPeriod:
     schema = accounting_period_schema
-    name = 'accounting_period'
-    name_plural = 'accounting_periods'
-
+    name = "accounting_period"
+    name_plural = "accounting_periods"
 
     def __init__(self, netsuite_soap_client):
         # The core soap client used to make all the requests
         self.client = netsuite_soap_client
 
         self.accounting_namespace = self.client.type_factory(
-                'urn:accounting_{}.lists.webservices.netsuite.com'.format(
-                    os.getenv("NETSUITE_ENDPOINT")
-                )
+            "urn:accounting_{}.lists.webservices.netsuite.com".format(
+                os.getenv("NETSUITE_ENDPOINT")
             )
-
+        )
 
     def search_params(self, start_time=None, end_time=None):
         AccountingPeriodSearch = self.accounting_namespace.AccountingPeriodSearch
         return AccountingPeriodSearch()
-
 
     def extract(self):
         """
@@ -36,7 +34,6 @@ class AccountingPeriod:
         accounting_period_search = self.search_params()
 
         return self.client.fetch_all_records_for_type(accounting_period_search)
-
 
     def extract_incremental(self, start_time=None, end_time=None, searchResult=None):
         """
@@ -54,16 +51,17 @@ class AccountingPeriod:
             accounting_period_search = self.search_params(start_time, end_time)
 
             return self.client.search_incremental(accounting_period_search)
-        elif searchResult.status.isSuccess \
-          and searchResult.pageIndex is not None \
-          and searchResult.totalPages is not None \
-          and searchResult.pageIndex < searchResult.totalPages:
+        elif (
+            searchResult.status.isSuccess
+            and searchResult.pageIndex is not None
+            and searchResult.totalPages is not None
+            and searchResult.pageIndex < searchResult.totalPages
+        ):
             # There are more pages to be fetched
             return self.client.search_more(searchResult)
         else:
             # Search has finished
             return None
-
 
     def transform(self, records):
         """
@@ -88,8 +86,7 @@ class AccountingPeriod:
 
         for record in records:
             flat_record = {
-                "internal_id": record['internalId'],
-
+                "internal_id": record["internalId"],
                 "imported_at": datetime.datetime.now().isoformat(),
             }
 
@@ -100,14 +97,18 @@ class AccountingPeriod:
                 extraction_result = fetch_attribute(self, record, column_map)
 
                 # Add the attributes to this entity's record
-                flat_record.update( extraction_result['attributes'] )
+                flat_record.update(extraction_result["attributes"])
 
                 # Add the related_entities returned to the rest of the related_entities
-                merge_transform_results(related_entities, extraction_result['related_entities'])
+                merge_transform_results(
+                    related_entities, extraction_result["related_entities"]
+                )
 
             flat_records.append(flat_record)
 
         # Merge the Current entity's results with the related_entities and return the result
-        merge_transform_results(related_entities, [{'entity': AccountingPeriod, 'data': flat_records}])
+        merge_transform_results(
+            related_entities, [{"entity": AccountingPeriod, "data": flat_records}]
+        )
 
         return related_entities

@@ -28,7 +28,9 @@ default_args = {
 }
 
 # Create the DAG
-dag = DAG("dbt_snowplow_full_refresh", default_args=default_args, schedule_interval=None)
+dag = DAG(
+    "dbt_snowplow_full_refresh", default_args=default_args, schedule_interval=None
+)
 
 
 # Set the git command for the containers

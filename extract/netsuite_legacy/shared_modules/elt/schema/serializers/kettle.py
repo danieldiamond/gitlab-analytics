@@ -6,11 +6,11 @@ from .base import Serializer
 
 
 data_type_map = {
-    'String': DBType.String,
-    'Number': DBType.Double,
-    'Boolean': DBType.Boolean,
-    'Date': DBType.Date,
-    'Integer': DBType.Long,
+    "String": DBType.String,
+    "Number": DBType.Double,
+    "Boolean": DBType.Boolean,
+    "Date": DBType.Date,
+    "Integer": DBType.Long,
 }
 
 
@@ -22,23 +22,21 @@ class KettleSerializer(Serializer):
         table_name = sfdc_input_step.find("module").text
 
         for field in sfdc_input_step.iterfind("fields/field"):
-            self.schema.add_column(
-                self.field_column(table_name, field)
-            )
+            self.schema.add_column(self.field_column(table_name, field))
 
         return self
-
 
     def field_column(self, table_name, element):
         is_mapping_key = element.find("idlookup").text == "Y"
 
-        return Column(table_schema=self.schema.name,
-                    table_name=table_name,
-                    column_name=element.find("field").text,
-                    data_type=self.field_data_type(element).value,
-                    is_nullable=not is_mapping_key,
-                    is_mapping_key=is_mapping_key)
-
+        return Column(
+            table_schema=self.schema.name,
+            table_name=table_name,
+            column_name=element.find("field").text,
+            data_type=self.field_data_type(element).value,
+            is_nullable=not is_mapping_key,
+            is_mapping_key=is_mapping_key,
+        )
 
     def field_data_type(self, element):
         raw_type = element.find("type").text

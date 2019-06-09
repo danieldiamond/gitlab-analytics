@@ -19,16 +19,19 @@ query = """copy into raw.snowplow.events (jsontext)
                 on_error='skip_file';"""
 
 engine = create_engine(
-            URL(user=env['SNOWFLAKE_LOAD_USER'],
-                password=env['SNOWFLAKE_LOAD_PASSWORD'],
-                account=env['SNOWFLAKE_ACCOUNT'],
-                role='LOADER',
-                warehouse='LOADING'))
+    URL(
+        user=env["SNOWFLAKE_LOAD_USER"],
+        password=env["SNOWFLAKE_LOAD_PASSWORD"],
+        account=env["SNOWFLAKE_ACCOUNT"],
+        role="LOADER",
+        warehouse="LOADING",
+    )
+)
 
 # Test the connection and print the version
 try:
     connection = engine.connect()
-    results = connection.execute('select current_version()').fetchone()
+    results = connection.execute("select current_version()").fetchone()
     logging.info(results[0])
 finally:
     connection.close()
@@ -38,8 +41,7 @@ finally:
 try:
     connection = engine.connect()
     result = connection.execute(query).rowcount
-    logging.info('Rows Loaded: {}'.format(result))
+    logging.info("Rows Loaded: {}".format(result))
 finally:
     connection.close()
     engine.dispose()
-

@@ -31,7 +31,7 @@ def transaction_backlog(args):
 
     # Earliest last_modified_date for transactions in NetSuite
     # Used in order to stop the back filling job from going further back in time
-    earliest_date_to_check = os.getenv('NETSUITE_EARLIEST_DATE')
+    earliest_date_to_check = os.getenv("NETSUITE_EARLIEST_DATE")
 
     if args.days is None or int(args.days) <= 0:
         logging.info("This operation needs the --days option in order to run")
@@ -47,10 +47,12 @@ def transaction_backlog(args):
 
         with DB.default.open() as db:
             cur = db.cursor()
-            query = psycopg2.sql.SQL("""
+            query = psycopg2.sql.SQL(
+                """
                     SELECT MIN(last_modified_date)
                     FROM {0}.{1}
-            """).format(schema, table)
+            """
+            ).format(schema, table)
 
             cur.execute(query)
             result = cur.fetchone()
@@ -73,4 +75,3 @@ def transaction_backlog(args):
     except psycopg2.Error as err:
         logging.info("No schema created yet - aborting backlog")
         return None
-

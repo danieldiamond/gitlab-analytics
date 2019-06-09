@@ -10,23 +10,23 @@ from elt.error import ExceptionAggregator, SchemaError, InapplicableChangeError
 
 
 class DBType(str, Enum):
-    Date = 'date'
-    String = 'character varying'
-    Double = 'real'
-    Integer = 'integer'
-    SmallInteger = 'smallint'
-    BinaryString = 'bytea'
-    Text = 'text'
-    Long = 'bigint'
-    Boolean = 'boolean'
-    Timestamp = 'timestamp without time zone'
-    TimestampTZ = 'timestamp with time zone'
-    JSON = 'json'
-    ArrayOfInteger = Integer + '[]'
-    ArrayOfLong = Long + '[]'
-    ArrayOfString = String + '[]'
-    UUID = 'UUID'
-    ArrayOfUUID = UUID + '[]'
+    Date = "date"
+    String = "character varying"
+    Double = "real"
+    Integer = "integer"
+    SmallInteger = "smallint"
+    BinaryString = "bytea"
+    Text = "text"
+    Long = "bigint"
+    Boolean = "boolean"
+    Timestamp = "timestamp without time zone"
+    TimestampTZ = "timestamp with time zone"
+    JSON = "json"
+    ArrayOfInteger = Integer + "[]"
+    ArrayOfLong = Long + "[]"
+    ArrayOfString = String + "[]"
+    UUID = "UUID"
+    ArrayOfUUID = UUID + "[]"
 
 
 class SchemaDiff(Enum):
@@ -37,23 +37,25 @@ class SchemaDiff(Enum):
     TABLE_MISSING = 5
 
 
-Column = namedtuple('Column', [
-    'table_schema',
-    'table_name',
-    'column_name',
-    'data_type',
-    'is_nullable',
-    'is_mapping_key',
-])
+Column = namedtuple(
+    "Column",
+    [
+        "table_schema",
+        "table_name",
+        "column_name",
+        "data_type",
+        "is_nullable",
+        "is_mapping_key",
+    ],
+)
 
 
 class Schema:
-    Basis = Union[str, 'Schema']
+    Basis = Union[str, "Schema"]
 
     @staticmethod
     def mapping_key_name(column: Column):
-        return "{}_{}_mapping_key".format(column.table_name,
-                                          column.column_name)
+        return "{}_{}_mapping_key".format(column.table_name, column.column_name)
 
     @staticmethod
     def table_key(column: Column):
@@ -70,8 +72,9 @@ class Schema:
 
         return Schema(schema_or_name)
 
-    def __init__(self, name, columns: Sequence[Column] = [],
-                 primary_key_name='__row_id'):
+    def __init__(
+        self, name, columns: Sequence[Column] = [], primary_key_name="__row_id"
+    ):
         self.name = name
         self.tables = set()
         self.columns = OrderedDict()
@@ -90,9 +93,10 @@ class Schema:
         self.columns[Schema.column_key(column)] = column
 
     def table_columns(self, table_name):
-        return map(lambda c: c.column_name,
-                  filter(lambda c: c.table_name == table_name,
-                  self.columns.values()))
+        return map(
+            lambda c: c.column_name,
+            filter(lambda c: c.table_name == table_name, self.columns.values()),
+        )
 
     def column_diff(self, column: Column) -> Set[SchemaDiff]:
         table_key = Schema.table_key(column)
@@ -100,15 +104,18 @@ class Schema:
 
         if table_key not in self.tables:
             if column.is_mapping_key:
-                return {SchemaDiff.TABLE_MISSING,
-                        SchemaDiff.COLUMN_MISSING,
-                        SchemaDiff.COLUMN_MAPPING_KEY_MISSING}
+                return {
+                    SchemaDiff.TABLE_MISSING,
+                    SchemaDiff.COLUMN_MISSING,
+                    SchemaDiff.COLUMN_MAPPING_KEY_MISSING,
+                }
             else:
                 return {SchemaDiff.TABLE_MISSING, SchemaDiff.COLUMN_MISSING}
 
         if column_key not in self.columns:
             diffs = {SchemaDiff.COLUMN_MISSING}
-            if column.is_mapping_key: diffs.add(SchemaDiff.COLUMN_MAPPING_KEY_MISSING)
+            if column.is_mapping_key:
+                diffs.add(SchemaDiff.COLUMN_MAPPING_KEY_MISSING)
             return diffs
 
         db_col = self.columns[column_key]
@@ -135,7 +142,8 @@ def db_schema(db_conn, schema_name) -> Schema:
     """
     cursor = db_conn.cursor()
 
-    cursor.execute("""
+    cursor.execute(
+        """
     SELECT c.table_schema,
            c.table_name,
            c.column_name,
@@ -149,7 +157,9 @@ def db_schema(db_conn, schema_name) -> Schema:
     WHERE c.table_schema = %s
     AND c.column_name != '__row_id'
     ORDER BY ordinal_position;
-    """, (schema_name,))
+    """,
+        (schema_name,),
+    )
 
     columns = map(Column._make, cursor.fetchall())
     return Schema(schema_name, columns)
@@ -166,16 +176,22 @@ def ensure_schema_exists(db_conn, schema_name):
     cursor = db_conn.cursor()
     schema_identifier = psycopg2.sql.Identifier(schema_name)
 
-    create_schema = psycopg2.sql.SQL("CREATE SCHEMA IF NOT EXISTS {}").format(schema_identifier)
+    create_schema = psycopg2.sql.SQL("CREATE SCHEMA IF NOT EXISTS {}").format(
+        schema_identifier
+    )
     cursor.execute(create_schema)
 
     group_identifiers = psycopg2.sql.SQL(",").join(
         map(psycopg2.sql.Identifier, ("readonly", "analytics"))
     )
 
-    grant_select_schema = psycopg2.sql.SQL("ALTER DEFAULT PRIVILEGES IN SCHEMA {} GRANT SELECT ON TABLES TO {}").format(schema_identifier, group_identifiers)
+    grant_select_schema = psycopg2.sql.SQL(
+        "ALTER DEFAULT PRIVILEGES IN SCHEMA {} GRANT SELECT ON TABLES TO {}"
+    ).format(schema_identifier, group_identifiers)
 
-    grant_usage_schema = psycopg2.sql.SQL("GRANT USAGE ON SCHEMA {} TO {}").format(schema_identifier, group_identifiers)
+    grant_usage_schema = psycopg2.sql.SQL("GRANT USAGE ON SCHEMA {} TO {}").format(
+        schema_identifier, group_identifiers
+    )
 
     cursor.execute(grant_select_schema)
     cursor.execute(grant_usage_schema)
@@ -201,11 +217,7 @@ def schema_apply(db_conn, target_schema: Schema):
     schema_cursor = db_conn.cursor()
 
     for name, col in target_schema.columns.items():
-        results.call(schema_apply_column,
-                     schema_cursor,
-                     schema,
-                     target_schema,
-                     col)
+        results.call(schema_apply_column, schema_cursor, schema, target_schema, col)
 
     results.raise_aggregate()
 
@@ -213,10 +225,9 @@ def schema_apply(db_conn, target_schema: Schema):
     db_conn.commit()
 
 
-def schema_apply_column(db_cursor,
-                        schema: Schema,
-                        target_schema: Schema,
-                        column: Column) -> Set[SchemaDiff]:
+def schema_apply_column(
+    db_cursor, schema: Schema, target_schema: Schema, column: Column
+) -> Set[SchemaDiff]:
     """
     Apply the schema to the current database connection
     adapting tables as it goes. Currently only supports
@@ -238,12 +249,17 @@ def schema_apply_column(db_cursor,
         logging.debug("[{}.{}]: {}".format(column.table_name, column.column_name, diff))
 
     if SchemaDiff.COLUMN_CHANGED in diff:
-        raise InapplicableChangeError("[{}.{}]: cannot apply {}".format(column.table_name, column.column_name, diff))
+        raise InapplicableChangeError(
+            "[{}.{}]: cannot apply {}".format(
+                column.table_name, column.column_name, diff
+            )
+        )
 
     if SchemaDiff.TABLE_MISSING in diff:
         stmt = "CREATE TABLE {}.{} ({} SERIAL PRIMARY KEY)"
-        sql = psycopg2.sql.SQL(stmt).format(*identifier,
-                                            psycopg2.sql.Identifier(target_schema.primary_key_name))
+        sql = psycopg2.sql.SQL(stmt).format(
+            *identifier, psycopg2.sql.Identifier(target_schema.primary_key_name)
+        )
         db_cursor.execute(sql)
         schema.add_table(column)
 
@@ -253,8 +269,7 @@ def schema_apply_column(db_cursor,
             stmt += " NOT NULL"
 
         sql = psycopg2.sql.SQL(stmt % column.data_type).format(
-            *identifier,
-            psycopg2.sql.Identifier(column.column_name),
+            *identifier, psycopg2.sql.Identifier(column.column_name)
         )
         db_cursor.execute(sql)
 

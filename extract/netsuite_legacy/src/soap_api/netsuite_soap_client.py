@@ -18,7 +18,9 @@ from netsuite_legacy.src.soap_api.account import Account
 from netsuite_legacy.src.soap_api.accounting_period import AccountingPeriod
 from netsuite_legacy.src.soap_api.currency import Currency
 from netsuite_legacy.src.soap_api.currency_rate import CurrencyRate
-from netsuite_legacy.src.soap_api.consolidated_exchange_rate import ConsolidatedExchangeRate
+from netsuite_legacy.src.soap_api.consolidated_exchange_rate import (
+    ConsolidatedExchangeRate,
+)
 from netsuite_legacy.src.soap_api.customer import Customer
 from netsuite_legacy.src.soap_api.department import Department
 from netsuite_legacy.src.soap_api.budget import Budget
@@ -30,6 +32,7 @@ from netsuite_legacy.src.soap_api.application import Application
 from netsuite_legacy.src.soap_api.transaction_line import TransactionLine
 from netsuite_legacy.src.soap_api.vendor import Vendor
 
+
 class NetsuiteClient:
     def __init__(self):
         # The core soap client used to make all the requests
@@ -37,40 +40,42 @@ class NetsuiteClient:
 
         # Create a type factory for important namespaces used all over the place
         self.core_namespace = self.client.type_factory(
-                'urn:core_{}.platform.webservices.netsuite.com'.format(
-                    os.getenv("NETSUITE_ENDPOINT")
-                )
+            "urn:core_{}.platform.webservices.netsuite.com".format(
+                os.getenv("NETSUITE_ENDPOINT")
             )
+        )
 
         self.core_types_namespace = self.client.type_factory(
-                'urn:types.core_{}.platform.webservices.netsuite.com'.format(
-                    os.getenv("NETSUITE_ENDPOINT")
-                )
+            "urn:types.core_{}.platform.webservices.netsuite.com".format(
+                os.getenv("NETSUITE_ENDPOINT")
             )
+        )
 
         self.messages_namespace = self.client.type_factory(
-                'urn:messages_{}.platform.webservices.netsuite.com'.format(
-                    os.getenv("NETSUITE_ENDPOINT")
-                )
+            "urn:messages_{}.platform.webservices.netsuite.com".format(
+                os.getenv("NETSUITE_ENDPOINT")
             )
+        )
 
         # Create a RecordRef type --> used for almost all calls
         self.RecordRef = self.core_namespace.RecordRef
 
         # Create the passport and app_info credentials used in all calls
         role = self.RecordRef(internalId=os.getenv("NETSUITE_ROLE"))
-        self.passport = self.core_namespace.Passport(email=os.getenv("NETSUITE_EMAIL"),
-                        password=os.getenv("NETSUITE_PASSWORD"),
-                        account=os.getenv("NETSUITE_ACCOUNT"),
-                        role=role)
+        self.passport = self.core_namespace.Passport(
+            email=os.getenv("NETSUITE_EMAIL"),
+            password=os.getenv("NETSUITE_PASSWORD"),
+            account=os.getenv("NETSUITE_ACCOUNT"),
+            role=role,
+        )
 
-        self.app_info = self.messages_namespace.ApplicationInfo(applicationId=os.getenv("NETSUITE_APPID"))
+        self.app_info = self.messages_namespace.ApplicationInfo(
+            applicationId=os.getenv("NETSUITE_APPID")
+        )
 
         # Create the search preferences for all calls
         self.search_preferences = self.messages_namespace.SearchPreferences(
-            bodyFieldsOnly=False,
-            returnSearchColumns=False,
-            pageSize=100
+            bodyFieldsOnly=False, returnSearchColumns=False, pageSize=100
         )
 
         # Create the SearchMoreRequest type that will be used for paging by all calls
@@ -78,7 +83,6 @@ class NetsuiteClient:
 
         # Number of failed API requests
         self.failed_api_requests = 0
-
 
     def data_center_aware_host_url(self):
         """
@@ -89,32 +93,31 @@ class NetsuiteClient:
 
         # Let's first try a quick lookup using the REST API
         get_datacenters_url = "https://rest.netsuite.com/rest/datacenterurls?account={}".format(
-                                os.getenv("NETSUITE_ACCOUNT")
-                              )
+            os.getenv("NETSUITE_ACCOUNT")
+        )
         response = requests.get(get_datacenters_url).json()
 
         try:
-            ns_host = response['webservicesDomain']
+            ns_host = response["webservicesDomain"]
         except KeyError:
             # If that failed, go the more slow SOAP way
             client = self.netsuite_soap_client(not_data_center_aware=True)
 
             fpartial = functools.partial(
-                           client.service.getDataCenterUrls,
-                           os.getenv("NETSUITE_ACCOUNT"),
-                       )
+                client.service.getDataCenterUrls, os.getenv("NETSUITE_ACCOUNT")
+            )
 
             response = self.api_call_with_retry(fpartial)
 
-
             if response.body.getDataCenterUrlsResult.status.isSuccess:
-                ns_host = response.body.getDataCenterUrlsResult.dataCenterUrls.webservicesDomain
+                ns_host = (
+                    response.body.getDataCenterUrlsResult.dataCenterUrls.webservicesDomain
+                )
             else:
                 # if everything else failed, just use whatever is set for the project
-                ns_host = NS_HOST=os.getenv("NETSUITE_HOST")
+                ns_host = NS_HOST = os.getenv("NETSUITE_HOST")
 
         return ns_host
-
 
     def netsuite_soap_client(self, not_data_center_aware=False):
         if not_data_center_aware:
@@ -124,13 +127,12 @@ class NetsuiteClient:
 
         # enable cache for a day
         # useful for development and in case of background runners in the future
-        cache = SqliteCache(timeout=60*60*24)
+        cache = SqliteCache(timeout=60 * 60 * 24)
         transport = Transport(cache=cache)
 
         wsdl = "{NS_HOST}/wsdl/v{NS_ENDPOINT}_0/netsuite.wsdl".format(
-                    NS_HOST=ns_host,
-                    NS_ENDPOINT=os.getenv("NETSUITE_ENDPOINT")
-                )
+            NS_HOST=ns_host, NS_ENDPOINT=os.getenv("NETSUITE_ENDPOINT")
+        )
 
         fpartial = functools.partial(Client, wsdl, transport=transport)
 
@@ -138,18 +140,16 @@ class NetsuiteClient:
 
         return client
 
-
     def login(self):
         fpartial = functools.partial(
             self.client.service.login,
             passport=self.passport,
-            _soapheaders={'applicationInfo': self.app_info},
+            _soapheaders={"applicationInfo": self.app_info},
         )
 
         login = self.api_call_with_retry(fpartial)
 
         return login.status
-
 
     def get_record_by_type(self, type, internal_id):
         """
@@ -162,10 +162,7 @@ class NetsuiteClient:
         fpartial = functools.partial(
             self.client.service.get,
             record,
-            _soapheaders={
-                'applicationInfo': self.app_info,
-                'passport': self.passport,
-            },
+            _soapheaders={"applicationInfo": self.app_info, "passport": self.passport},
         )
 
         response = self.api_call_with_retry(fpartial)
@@ -190,9 +187,9 @@ class NetsuiteClient:
             self.client.service.search,
             searchRecord=search_record,
             _soapheaders={
-                'searchPreferences': self.search_preferences,
-                'applicationInfo': self.app_info,
-                'passport': self.passport,
+                "searchPreferences": self.search_preferences,
+                "applicationInfo": self.app_info,
+                "passport": self.passport,
             },
         )
 
@@ -212,18 +209,17 @@ class NetsuiteClient:
         fpartial = functools.partial(
             self.client.service.searchMoreWithId,
             searchId=searchResult.searchId,
-            pageIndex=searchResult.pageIndex+1,
+            pageIndex=searchResult.pageIndex + 1,
             _soapheaders={
-                'searchPreferences': self.search_preferences,
-                'applicationInfo': self.app_info,
-                'passport': self.passport,
+                "searchPreferences": self.search_preferences,
+                "applicationInfo": self.app_info,
+                "passport": self.passport,
             },
         )
 
         result = self.api_call_with_retry(fpartial)
 
         return result.body.searchResult
-
 
     def fetch_all_records_for_type(self, search_record):
         """
@@ -242,9 +238,11 @@ class NetsuiteClient:
         while searchResult.status.isSuccess:
             records.extend(searchResult.recordList.record)
 
-            if searchResult.pageIndex is None \
-              or searchResult.totalPages is None \
-              or searchResult.pageIndex >= searchResult.totalPages:
+            if (
+                searchResult.pageIndex is None
+                or searchResult.totalPages is None
+                or searchResult.pageIndex >= searchResult.totalPages
+            ):
                 # NO more pages
                 break
             else:
@@ -252,7 +250,6 @@ class NetsuiteClient:
                 searchResult = self.search_more(searchResult)
 
         return records
-
 
     def get_all(self, get_all_record_type):
         """
@@ -266,16 +263,12 @@ class NetsuiteClient:
         fpartial = functools.partial(
             self.client.service.getAll,
             record=get_all_record_type,
-            _soapheaders={
-                'applicationInfo': self.app_info,
-                'passport': self.passport,
-            },
+            _soapheaders={"applicationInfo": self.app_info, "passport": self.passport},
         )
 
         response = self.api_call_with_retry(fpartial)
 
         return response.body.getAllResult
-
 
     def type_factory(self, namespace):
         """
@@ -285,7 +278,6 @@ class NetsuiteClient:
         instead of the ugly Class.client.client.type_factory(namespace)
         """
         return self.client.type_factory(namespace)
-
 
     def export_supported_entities(self, only_transactions=False):
         """
@@ -338,7 +330,6 @@ class NetsuiteClient:
 
         return entities
 
-
     def supported_entity_classes():
         """
         Return a list of Classes for all the Entities to be stored in the DW
@@ -366,7 +357,6 @@ class NetsuiteClient:
 
         return entities
 
-
     def supported_entity_class_factory(self, class_name):
         """
         Given an Entity's class name return the Entity's Class
@@ -374,28 +364,27 @@ class NetsuiteClient:
         Return None if the Entity / Class name is not supported
         """
         classes = {
-            'Account': Account,
-            'AccountingPeriod': AccountingPeriod,
-            'Application': Application,
-            'Budget': Budget,
-            'Currency': Currency,
-            'CurrencyRate': CurrencyRate,
-            'ConsolidatedExchangeRate': ConsolidatedExchangeRate,
-            'Customer': Customer,
-            'Department': Department,
-            'Expense': Expense,
-            'Subsidiary': Subsidiary,
-            'Transaction': Transaction,
-            'TransactionItem': TransactionItem,
-            'TransactionLine': TransactionLine,
-            'Vendor': Vendor,
+            "Account": Account,
+            "AccountingPeriod": AccountingPeriod,
+            "Application": Application,
+            "Budget": Budget,
+            "Currency": Currency,
+            "CurrencyRate": CurrencyRate,
+            "ConsolidatedExchangeRate": ConsolidatedExchangeRate,
+            "Customer": Customer,
+            "Department": Department,
+            "Expense": Expense,
+            "Subsidiary": Subsidiary,
+            "Transaction": Transaction,
+            "TransactionItem": TransactionItem,
+            "TransactionLine": TransactionLine,
+            "Vendor": Vendor,
         }
 
         if class_name in classes:
             return classes[class_name]
         else:
             return None
-
 
     def api_call_with_retry(self, partial_function):
         sleep_seconds = 30
@@ -413,10 +402,10 @@ class NetsuiteClient:
 
             if self.failed_api_requests < max_retries:
                 logging.info("Error during API Request: {}".format(err))
-                logging.info("({}) Sleeping for {} seconds and trying again.".format(
-                                        self.failed_api_requests,
-                                        sleep_seconds
-                                    )
+                logging.info(
+                    "({}) Sleeping for {} seconds and trying again.".format(
+                        self.failed_api_requests, sleep_seconds
+                    )
                 )
 
                 time.sleep(sleep_seconds)
@@ -428,16 +417,17 @@ class NetsuiteClient:
             # Handle NetSuite Supported errors
             self.failed_api_requests += 1
 
-            if self.failed_api_requests < max_retries \
-              and ('exceededConcurrentRequestLimitFault' in err.detail[0].tag \
-                   or 'exceededRequestLimitFault' in err.detail[0].tag):
+            if self.failed_api_requests < max_retries and (
+                "exceededConcurrentRequestLimitFault" in err.detail[0].tag
+                or "exceededRequestLimitFault" in err.detail[0].tag
+            ):
                 # NetSuite blocked us due to not allowed concurrent connections
                 # Wait for the predefined amount of seconds and retry
                 logging.info("API Request was blocked due to concurrent request limit.")
-                logging.info("({}) Sleeping for {} seconds and trying again.".format(
-                                        self.failed_api_requests,
-                                        sleep_seconds
-                                    )
+                logging.info(
+                    "({}) Sleeping for {} seconds and trying again.".format(
+                        self.failed_api_requests, sleep_seconds
+                    )
                 )
 
                 time.sleep(sleep_seconds)

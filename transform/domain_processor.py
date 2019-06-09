@@ -18,6 +18,7 @@ from hosts_to_sfdc import clearbit_gl as cbit
 from hosts_to_sfdc import caching
 from hosts_to_sfdc import whois_gl
 
+
 def url_parse(host, ip=None):
     """Return a domain from a url and write to the clean domain cache
 
@@ -27,7 +28,7 @@ def url_parse(host, ip=None):
     # print("Parsing: " + domain)
     result = tldextract.extract(host)
     if result.domain:
-        clean_domain = result.domain + '.' + result.suffix
+        clean_domain = result.domain + "." + result.suffix
         # Always writing to DB b/c there's no external API request - might as well just update
         logger.debug("Writing clean domain/IP to cache.")
         caching.write_clean_domain(host, result, clean_domain)
@@ -47,12 +48,14 @@ def process_domain(domain):
 
     Encodes everything in utf-8, as our data is international.
     """
-    #TODO probably need their own functions as the data is different. OK for now.
-    in_cb_cache = caching.in_cache(domain, 'clearbit_cache')
-    in_dorg_cache = caching.in_cache(domain, 'discoverorg_cache')
+    # TODO probably need their own functions as the data is different. OK for now.
+    in_cb_cache = caching.in_cache(domain, "clearbit_cache")
+    in_dorg_cache = caching.in_cache(domain, "discoverorg_cache")
 
     if in_cb_cache or in_dorg_cache:
-        cache_string = "Domain is either in DiscoverOrg Cache ({0}) or Clearbit Cache ({1}). Skipping.".format(str(in_dorg_cache), str(in_cb_cache))
+        cache_string = "Domain is either in DiscoverOrg Cache ({0}) or Clearbit Cache ({1}). Skipping.".format(
+            str(in_dorg_cache), str(in_cb_cache)
+        )
         logger.debug(cache_string)
         return
 
@@ -81,7 +84,7 @@ def is_ip(host):
     :return:
     """
     # parsed = urlparse.urlparse(host) # Probably don't need this extra standardization step
-    tlded =tldextract.extract(host)
+    tlded = tldextract.extract(host)
     if len(tlded.ipv4) > 0:
         return True
     else:
@@ -97,7 +100,7 @@ def process_ips(ip_address):
     tlded = tldextract.extract(ip_address)
     tld_ip = tlded.ipv4
 
-    if re.search(r'172\.(1[6-9]|2[0-9]|31)\.|192\.168|10\.', tld_ip):
+    if re.search(r"172\.(1[6-9]|2[0-9]|31)\.|192\.168|10\.", tld_ip):
         # These are reserved for private networks.
         logger.debug("Domain is reserved for a private network. Skipping")
         return
@@ -113,9 +116,10 @@ def process_ips(ip_address):
     except socket.herror:
         # Check WHOIS
         logger.debug("No URL found for IP address. Checking WHOIS.")
-        caching.write_clean_domain(raw_domain=ip_address, tldextract=tlded, clean_domain=tld_ip)
+        caching.write_clean_domain(
+            raw_domain=ip_address, tldextract=tlded, clean_domain=tld_ip
+        )
         whois_gl.ask_whois(tld_ip)
-
 
 
 def url_processor(domain_list):
@@ -129,7 +133,9 @@ def url_processor(domain_list):
     logger.debug("Found %s domains to parse.", domain_count)
     for counter, url in enumerate(domain_list):
         the_url = url[0]
-        count_string = "Processing domain {0} of {1}".format(str(counter+1), str(domain_count))
+        count_string = "Processing domain {0} of {1}".format(
+            str(counter + 1), str(domain_count)
+        )
         logger.debug(count_string)
         # print(the_url)
         try:
@@ -146,8 +152,9 @@ def url_processor(domain_list):
 
 
 def process_version_checks():
-    mydb = psycopg2.connect(host=host, user=username,
-                            password=password, dbname=database)
+    mydb = psycopg2.connect(
+        host=host, user=username, password=password, dbname=database
+    )
     cursor = mydb.cursor()
 
     # Random Sample
@@ -175,10 +182,12 @@ def process_version_checks():
 
     url_processor(cursor)
 
+
 logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
-    logging.basicConfig(format='%(asctime)s %(message)s',
-                        datefmt='%Y-%m-%d %I:%M:%S %p')
+    logging.basicConfig(
+        format="%(asctime)s %(message)s", datefmt="%Y-%m-%d %I:%M:%S %p"
+    )
     logging.getLogger(__name__).setLevel(logging.DEBUG)
     process_version_checks()

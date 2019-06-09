@@ -17,21 +17,15 @@ class MeltanoSerializer(Serializer):
             in_table = partial(col_in_table, table)
             table_columns = list(filter(in_table, schema.columns.values()))
 
-            column_defs = {
-                col.column_name: col.data_type \
-                for col in table_columns
-            }
+            column_defs = {col.column_name: col.data_type for col in table_columns}
 
             mapping_keys = {
-                Schema.mapping_key_name(col): col.column_name \
-                for col in table_columns \
+                Schema.mapping_key_name(col): col.column_name
+                for col in table_columns
                 if col.is_mapping_key
             }
 
-            yield {table: {
-                **column_defs,
-                **mapping_keys,
-            }}
+            yield {table: {**column_defs, **mapping_keys}}
 
     def dumps(self) -> str:
         schema_def = dict()
@@ -53,12 +47,14 @@ class MeltanoSerializer(Serializer):
                 mapping_key = "{}_{}_mapping_key".format(table, column)
                 is_mapping_key = mapping_key in table_data
 
-                column = Column(table_schema=self.schema.name,
-                                table_name=table,
-                                column_name=column,
-                                data_type=data_type,
-                                is_nullable=not is_mapping_key,
-                                is_mapping_key=is_mapping_key)
+                column = Column(
+                    table_schema=self.schema.name,
+                    table_name=table,
+                    column_name=column,
+                    data_type=data_type,
+                    is_nullable=not is_mapping_key,
+                    is_mapping_key=is_mapping_key,
+                )
 
                 self.schema.add_column(column)
 

@@ -27,7 +27,7 @@ class Extractor:
         """
         Returns a salesforce-bulk connection.
         """
-        return SalesforceBulk(**self.config['connection'])
+        return SalesforceBulk(**self.config["connection"])
 
     def entities(self):
         entities = {}
@@ -41,25 +41,21 @@ class Extractor:
 
         return entities
 
-
     def extract(self):
         loop = asyncio.get_event_loop()
         executor = concurrent.futures.ThreadPoolExecutor(
-            max_workers=self.config['threads']
+            max_workers=self.config["threads"]
         )
 
         tasks = [
-            loop.run_in_executor(executor, self.extract_entity, name, attrs) \
+            loop.run_in_executor(executor, self.extract_entity, name, attrs)
             for name, attrs in self.entities().items()
         ]
 
-        files = loop.run_until_complete(
-            asyncio.gather(*tasks)
-        )
+        files = loop.run_until_complete(asyncio.gather(*tasks))
 
         for entity_name, file_path in files:
             self.process_batch_file(entity_name, file_path)
-
 
     def extract_entity(self, entity_name, entity_attrs) -> str:
         """
@@ -68,21 +64,19 @@ class Extractor:
         client = self.connect()
 
         logging.info("Creating job for {}...".format(entity_name))
-        job = client.create_query_job(entity_name,
-                                      contentType='CSV',
-                                      concurrency='Parallel')
+        job = client.create_query_job(
+            entity_name, contentType="CSV", concurrency="Parallel"
+        )
 
         try:
-            batch = client.query(job, "select {} from {}".format(
-                ",".join(entity_attrs),
-                entity_name,
-            ))
-            logging.info("Batch {} created for {}.".format(batch,
-                                                           entity_name))
+            batch = client.query(
+                job, "select {} from {}".format(",".join(entity_attrs), entity_name)
+            )
+            logging.info("Batch {} created for {}.".format(batch, entity_name))
         except Exception as err:
-            logging.error("Error creating batch {} for {}: {}".format(batch,
-                                                                         entity_name,
-                                                                         err))
+            logging.error(
+                "Error creating batch {} for {}: {}".format(batch, entity_name, err)
+            )
 
         client.close_job(job)
 
@@ -98,26 +92,26 @@ class Extractor:
 
             return (entity_name, file_path)
         except Exception as err:
-            logging.error("Error downloading batch {} for {}: {}".format(batch,
-                                                                         entity_name,
-                                                                         err),
-                              exc_info=True)
+            logging.error(
+                "Error downloading batch {} for {}: {}".format(batch, entity_name, err),
+                exc_info=True,
+            )
 
     def process_batch_file(self, entity_name, file_path):
-        logging.info("Processing {} for {:s}".format(file_path,
-                                                     entity_name))
-
-
+        logging.info("Processing {} for {:s}".format(file_path, entity_name))
 
         with DB.default.open() as db:
-            upsert_to_db_from_csv(db, file_path,
-                                  table_schema=self.args.schema,
-                                  table_name=entity_name,
-                                  csv_options={
-                                      'null': "''",
-                                      'force_null': "({columns})", # HACK: as long as we use CSV
-                                  },
-                                  primary_key='id')
+            upsert_to_db_from_csv(
+                db,
+                file_path,
+                table_schema=self.args.schema,
+                table_name=entity_name,
+                csv_options={
+                    "null": "''",
+                    "force_null": "({columns})",  # HACK: as long as we use CSV
+                },
+                primary_key="id",
+            )
 
     def download_batch_results(self, results):
         with tempfile.NamedTemporaryFile(delete=False) as out:

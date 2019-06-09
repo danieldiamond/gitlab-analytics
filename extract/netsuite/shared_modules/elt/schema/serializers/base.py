@@ -13,10 +13,10 @@ class Serializer:
     def schema(self):
         return self._schema
 
-    def loads(self, raw: str) -> 'Serializer':
+    def loads(self, raw: str) -> "Serializer":
         raise NotImplementedError
 
-    def load(self, reader: TextIO) -> 'Serializer':
+    def load(self, reader: TextIO) -> "Serializer":
         return self.loads(reader.read())
 
     def dumps(self) -> str:

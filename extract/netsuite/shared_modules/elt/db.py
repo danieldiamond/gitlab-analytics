@@ -15,7 +15,7 @@ def engine_uri(**db_config):
     return "postgresql://{user}:{password}@{host}:{port}/{database}".format(**db_config)
 
 
-SystemModel = declarative_base(metadata=MetaData(schema='meltano'))
+SystemModel = declarative_base(metadata=MetaData(schema="meltano"))
 
 
 class MetaDB(type):
@@ -29,11 +29,11 @@ class MetaDB(type):
 
 class DB(metaclass=MetaDB):
     db_config = {
-        'host': os.getenv('PG_ADDRESS', 'localhost'),
-        'port': os.getenv('PG_PORT', 5432),
-        'user': os.getenv('PG_USERNAME', os.getenv('USER')),
-        'password': os.getenv('PG_PASSWORD'),
-        'database': os.getenv('PG_DATABASE'),
+        "host": os.getenv("PG_ADDRESS", "localhost"),
+        "port": os.getenv("PG_PORT", 5432),
+        "user": os.getenv("PG_USERNAME", os.getenv("USER")),
+        "password": os.getenv("PG_PASSWORD"),
+        "database": os.getenv("PG_DATABASE"),
     }
 
     @classmethod
@@ -41,9 +41,9 @@ class DB(metaclass=MetaDB):
         """
         Store the DB connection parameters and create a default engine.
         """
-        cls.db_config.update({k: kwargs[k] \
-                              for k in cls.db_config.keys() \
-                              if k in kwargs})
+        cls.db_config.update(
+            {k: kwargs[k] for k in cls.db_config.keys() if k in kwargs}
+        )
 
         # use connection pooling for all connections
         pool.manage(psycopg2)
@@ -51,43 +51,37 @@ class DB(metaclass=MetaDB):
 
         cls._default = default_db
 
-
     @classmethod
     def close(cls):
         """
         Close the default engine
         """
-        if self.default: cls.default.close()
-
+        if self.default:
+            cls.default.close()
 
     @property
     def engine(self):
         return self._engine
 
-
     def __init__(self):
         self._engine = create_engine(engine_uri(**self.db_config))
         self._session_cls = scoped_session(sessionmaker(bind=self.engine))
 
-
     def create_connection(self):
         return psycopg2.connect(**self.db_config)
-
 
     def create_session(self):
         return self._session_cls()
 
-
     def open(self):
         return db_open(self)
-
 
     def session(self):
         return session_open(self)
 
-
     def close(self):
-        if self.engine: self.engine.dispose()
+        if self.engine:
+            self.engine.dispose()
 
 
 @contextlib.contextmanager
