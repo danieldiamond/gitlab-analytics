@@ -25,30 +25,30 @@ default_args = {
     "depends_on_past": False,
     "on_failure_callback": slack_failed_task,
     "owner": "airflow",
-    "retries": 1,
-    "retry_delay": timedelta(minutes=1),
-    "start_date": datetime(2019, 5, 30),
+    "retries": 0,
+    "retry_delay": timedelta(minutes=3),
+    "start_date": datetime(2019, 5, 31),
 }
 
 # Set the command for the container
-container_cmd = f"""
+sync_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/postgres/ &&
-    python tap_postgres/tap_postgres.py tap manifests/gitlab_com_manifest.yaml --scd_only
+    python tap_postgres/tap_postgres.py tap manifests/gitlab_com_manifest.yaml --sync
 """
 
 # Create the DAG
 dag = DAG(
-    "gitlab_com_db_scd_extract", default_args=default_args, schedule_interval="0 */6 * * *"
+    "gitlab_com_db_sync", default_args=default_args, schedule_interval="0 2 */1 * *"
 )
 
 # Task 1
-gitlab_com_db_scd_extract = KubernetesPodOperator(
+gitlab_com_db_sync_extract = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
-    task_id="gitlab-com-db-scd-extract",
-    name="gitlab-com-db-scd-extract",
+    task_id="gitlab-com-db-sync",
+    name="gitlab-com-db-sync",
     secrets=[
         GITLAB_COM_DB_USER,
         GITLAB_COM_DB_PASS,
@@ -63,6 +63,37 @@ gitlab_com_db_scd_extract = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
-    arguments=[container_cmd],
+    arguments=[sync_cmd],
+    dag=dag,
+)
+
+# Set the command for the task
+scd_cmd = f"""
+    git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
+    export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
+    cd analytics/extract/postgres/ &&
+    python tap_postgres/tap_postgres.py tap manifests/gitlab_com_manifest.yaml --scd_only
+"""
+# Task 2
+gitlab_com_db_scd_extract = KubernetesPodOperator(
+    **gitlab_defaults,
+    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    task_id="gitlab-com-db-scd",
+    name="gitlab-com-db-scd",
+    secrets=[
+        GITLAB_COM_DB_USER,
+        GITLAB_COM_DB_PASS,
+        GITLAB_COM_DB_HOST,
+        GITLAB_COM_DB_NAME,
+        PG_PORT,
+        SNOWFLAKE_LOAD_USER,
+        SNOWFLAKE_LOAD_PASSWORD,
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_LOAD_WAREHOUSE,
+        SNOWFLAKE_LOAD_ROLE,
+    ],
+    env_vars=pod_env_vars,
+    cmds=["/bin/bash", "-c"],
+    arguments=[scd_cmd],
     dag=dag,
 )

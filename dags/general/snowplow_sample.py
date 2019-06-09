@@ -33,7 +33,9 @@ drop_cmd = f"""
 """
 
 # Create the DAG
-dag = DAG("snowplow_event_sample", default_args=default_args, schedule_interval="0 21 * * 5")
+dag = DAG(
+    "snowplow_event_sample", default_args=default_args, schedule_interval="0 21 * * 5"
+)
 
 # Task 1
 clean_clones = KubernetesPodOperator(
