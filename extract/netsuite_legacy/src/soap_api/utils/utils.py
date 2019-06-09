@@ -41,41 +41,45 @@ def fetch_attribute(parent_entity, record, column_map):
     result = {}
 
     # Simple Data types that can be trivially extracted with minimal effort
-    if  column_map['type'] == 'Integer' \
-      or column_map['type'] == 'Long' \
-      or column_map['type'] == 'Double' \
-      or column_map['type'] == 'Boolean' \
-      or column_map['type'] == 'String':
-        if column_map['in'] in record:
-            result[ column_map['out'] ] = record[ column_map['in'] ]
+    if (
+        column_map["type"] == "Integer"
+        or column_map["type"] == "Long"
+        or column_map["type"] == "Double"
+        or column_map["type"] == "Boolean"
+        or column_map["type"] == "String"
+    ):
+        if column_map["in"] in record:
+            result[column_map["out"]] = record[column_map["in"]]
         else:
-            result[ column_map['out'] ] = None
+            result[column_map["out"]] = None
 
-    elif  column_map['type'] == 'Timestamp':
-        if column_map['in'] in record and record[ column_map['in'] ] is not None:
-            result[ column_map['out'] ] = record[ column_map['in'] ].isoformat()
+    elif column_map["type"] == "Timestamp":
+        if column_map["in"] in record and record[column_map["in"]] is not None:
+            result[column_map["out"]] = record[column_map["in"]].isoformat()
         else:
-            result[ column_map['out'] ] = None
+            result[column_map["out"]] = None
 
-    elif  column_map['type'] == 'JSON':
-        result[ column_map['out'] ] = json.dumps(record[ column_map['in'] ])
+    elif column_map["type"] == "JSON":
+        result[column_map["out"]] = json.dumps(record[column_map["in"]])
 
-    elif  column_map['type'] == 'JSON_MANUAL':
+    elif column_map["type"] == "JSON_MANUAL":
         # Do Nothing --> We'll manually curate and import the JSON
         #  attributes in the transform function
-        result[ column_map['out'] ] = None
+        result[column_map["out"]] = None
 
     # Complex Types specific to NetSuite
-    elif  column_map['type'] == 'ENTITY_LIST_AS_JSON':
+    elif column_map["type"] == "ENTITY_LIST_AS_JSON":
         # only fetch the support entity's records and store them as Json
-        result[ column_map['out'] ] = fetch_entity_list_as_json(parent_entity, record, column_map['in'])
+        result[column_map["out"]] = fetch_entity_list_as_json(
+            parent_entity, record, column_map["in"]
+        )
 
-    elif  column_map['type'] == 'ENTITY_LIST':
+    elif column_map["type"] == "ENTITY_LIST":
         # fetch the support entity's records
-        transform_results = fetch_entity_list(parent_entity, record, column_map['in'])
+        transform_results = fetch_entity_list(parent_entity, record, column_map["in"])
 
         if transform_results is None or len(transform_results) == 0:
-            result[ column_map['out'] ] = None
+            result[column_map["out"]] = None
         else:
             # add them to the related entities list so that they are:
             #  returned back to the transform operation
@@ -84,102 +88,115 @@ def fetch_attribute(parent_entity, record, column_map):
             related_entities.extend(transform_results)
 
             # Also store them as JSON in the parent Entity's table for reference
-            entity_list_records = transform_results[0]['data']
+            entity_list_records = transform_results[0]["data"]
 
             # This is going to be used in JSON, so throw away attributes with none values
-            #tmp_field = {k: v for k, v in tmp_field.items() if v is not None}
+            # tmp_field = {k: v for k, v in tmp_field.items() if v is not None}
 
             # store them as Json
-            result[ column_map['out'] ] = json.dumps(entity_list_records)
+            result[column_map["out"]] = json.dumps(entity_list_records)
 
-
-    elif  column_map['type'] == 'RecordRef':
-        if column_map['in'] in record and record[ column_map['in'] ] is not None:
-            result[column_map['out'] + '_id'] = record[ column_map['in'] ]['internalId']
-            result[column_map['out'] + '_name'] = record[ column_map['in'] ]['name']
+    elif column_map["type"] == "RecordRef":
+        if column_map["in"] in record and record[column_map["in"]] is not None:
+            result[column_map["out"] + "_id"] = record[column_map["in"]]["internalId"]
+            result[column_map["out"] + "_name"] = record[column_map["in"]]["name"]
         else:
-            result[column_map['out'] + '_id'] = None
-            result[column_map['out'] + '_name'] = None
+            result[column_map["out"] + "_id"] = None
+            result[column_map["out"] + "_name"] = None
 
-    elif  column_map['type'] == 'Address':
-        if column_map['in'] in record and record[column_map['in']] is not None:
-            result[column_map['out'] + "_id"] = record[column_map['in']]['internalId']
-            result[column_map['out'] + "_country"] = record[column_map['in']]['country']
-            result[column_map['out'] + "_addressee"] = record[column_map['in']]['addressee']
-            result[column_map['out'] + "_addr_phone"] = record[column_map['in']]['addrPhone']
-            result[column_map['out'] + "_addr1"] = record[column_map['in']]['addr1']
-            result[column_map['out'] + "_addr2"] = record[column_map['in']]['addr2']
-            result[column_map['out'] + "_addr3"] = record[column_map['in']]['addr3']
-            result[column_map['out'] + "_city"] = record[column_map['in']]['city']
-            result[column_map['out'] + "_state"] = record[column_map['in']]['state']
-            result[column_map['out'] + "_zip"] = record[column_map['in']]['zip']
-            result[column_map['out'] + "_addr_text"] = record[column_map['in']]['addrText']
-            result[column_map['out'] + "_override"] = record[column_map['in']]['override']
+    elif column_map["type"] == "Address":
+        if column_map["in"] in record and record[column_map["in"]] is not None:
+            result[column_map["out"] + "_id"] = record[column_map["in"]]["internalId"]
+            result[column_map["out"] + "_country"] = record[column_map["in"]]["country"]
+            result[column_map["out"] + "_addressee"] = record[column_map["in"]][
+                "addressee"
+            ]
+            result[column_map["out"] + "_addr_phone"] = record[column_map["in"]][
+                "addrPhone"
+            ]
+            result[column_map["out"] + "_addr1"] = record[column_map["in"]]["addr1"]
+            result[column_map["out"] + "_addr2"] = record[column_map["in"]]["addr2"]
+            result[column_map["out"] + "_addr3"] = record[column_map["in"]]["addr3"]
+            result[column_map["out"] + "_city"] = record[column_map["in"]]["city"]
+            result[column_map["out"] + "_state"] = record[column_map["in"]]["state"]
+            result[column_map["out"] + "_zip"] = record[column_map["in"]]["zip"]
+            result[column_map["out"] + "_addr_text"] = record[column_map["in"]][
+                "addrText"
+            ]
+            result[column_map["out"] + "_override"] = record[column_map["in"]][
+                "override"
+            ]
         else:
-            result[column_map['out'] + "_id"] = None
-            result[column_map['out'] + "_country"] = None
-            result[column_map['out'] + "_addressee"] = None
-            result[column_map['out'] + "_addr_phone"] = None
-            result[column_map['out'] + "_addr1"] = None
-            result[column_map['out'] + "_addr2"] = None
-            result[column_map['out'] + "_addr3"] = None
-            result[column_map['out'] + "_city"] = None
-            result[column_map['out'] + "_state"] = None
-            result[column_map['out'] + "_zip"] = None
-            result[column_map['out'] + "_addr_text"] = None
-            result[column_map['out'] + "_override"] = None
+            result[column_map["out"] + "_id"] = None
+            result[column_map["out"] + "_country"] = None
+            result[column_map["out"] + "_addressee"] = None
+            result[column_map["out"] + "_addr_phone"] = None
+            result[column_map["out"] + "_addr1"] = None
+            result[column_map["out"] + "_addr2"] = None
+            result[column_map["out"] + "_addr3"] = None
+            result[column_map["out"] + "_city"] = None
+            result[column_map["out"] + "_state"] = None
+            result[column_map["out"] + "_zip"] = None
+            result[column_map["out"] + "_addr_text"] = None
+            result[column_map["out"] + "_override"] = None
 
-    elif  column_map['type'] == 'SubCurrency':
-        if column_map['in'] in record and record[ column_map['in'] ] is not None:
-            result[ column_map['out'] ] = record[ column_map['in'] ]['internalId']
+    elif column_map["type"] == "SubCurrency":
+        if column_map["in"] in record and record[column_map["in"]] is not None:
+            result[column_map["out"]] = record[column_map["in"]]["internalId"]
         else:
-            result[ column_map['out'] ] = None
+            result[column_map["out"]] = None
 
-    elif  column_map['type'] == 'RecordRefList':
-        if column_map['in'] in record and record[column_map['in']] is not None \
-          and record[column_map['in']]['recordRef'] is not None :
+    elif column_map["type"] == "RecordRefList":
+        if (
+            column_map["in"] in record
+            and record[column_map["in"]] is not None
+            and record[column_map["in"]]["recordRef"] is not None
+        ):
             recordRefList = []
 
-            for record_entry in record[column_map['in']]['recordRef']:
+            for record_entry in record[column_map["in"]]["recordRef"]:
                 tmp_field = {
-                    "internalId": record_entry['internalId'],
-                    "name": record_entry['name'],
+                    "internalId": record_entry["internalId"],
+                    "name": record_entry["name"],
                 }
 
                 recordRefList.append(tmp_field)
 
-            result[ column_map['out'] ] = json.dumps(recordRefList)
+            result[column_map["out"]] = json.dumps(recordRefList)
         else:
-            result[ column_map['out'] ] = None
+            result[column_map["out"]] = None
 
-    elif  column_map['type'] == 'CustomFieldList':
-        if column_map['in'] in record and record[column_map['in']] is not None \
-          and record[column_map['in']]['customField'] is not None :
+    elif column_map["type"] == "CustomFieldList":
+        if (
+            column_map["in"] in record
+            and record[column_map["in"]] is not None
+            and record[column_map["in"]]["customField"] is not None
+        ):
             customFieldList = []
 
-            for record_entry in record[column_map['in']]['customField']:
+            for record_entry in record[column_map["in"]]["customField"]:
                 tmp_field = {
-                    "internalId": record_entry['internalId'],
-                    "scriptId": record_entry['scriptId'],
+                    "internalId": record_entry["internalId"],
+                    "scriptId": record_entry["scriptId"],
                 }
 
-                if 'value' in record_entry and record_entry['value'] is not None:
-                    if type(record_entry['value']) in (int, float, bool, str):
-                        tmp_field["value"] = record_entry['value']
-                    elif 'internalId' in record_entry['value']:
+                if "value" in record_entry and record_entry["value"] is not None:
+                    if type(record_entry["value"]) in (int, float, bool, str):
+                        tmp_field["value"] = record_entry["value"]
+                    elif "internalId" in record_entry["value"]:
                         tmp_field["value"] = {
-                            "name": record_entry['value']['name'],
-                            "internalId": record_entry['value']['internalId'],
-                            "typeId": record_entry['value']['typeId'],
+                            "name": record_entry["value"]["name"],
+                            "internalId": record_entry["value"]["internalId"],
+                            "typeId": record_entry["value"]["typeId"],
                         }
 
                 customFieldList.append(tmp_field)
 
-            result[ column_map['out'] ] = json.dumps(customFieldList)
+            result[column_map["out"]] = json.dumps(customFieldList)
         else:
-            result[ column_map['out'] ] = None
+            result[column_map["out"]] = None
 
-    return {'attributes': result, 'related_entities': related_entities}
+    return {"attributes": result, "related_entities": related_entities}
 
 
 def fetch_entity_list(parent_entity, record, entity_name):
@@ -198,22 +215,25 @@ def fetch_entity_list(parent_entity, record, entity_name):
     The parent entity (the one the record is for) is used in order
      to have access to the RELATED_ENTITIES dictionary (different for each major entity)
     """
-    if entity_name in record and record[entity_name] is not None \
-      and entity_name in parent_entity.schema.RELATED_ENTITIES:
+    if (
+        entity_name in record
+        and record[entity_name] is not None
+        and entity_name in parent_entity.schema.RELATED_ENTITIES
+    ):
         node_name = None
 
         # Find the node name under which the data are stored
-        for name in parent_entity.schema.RELATED_ENTITIES[entity_name]['node_names']:
+        for name in parent_entity.schema.RELATED_ENTITIES[entity_name]["node_names"]:
             if record[entity_name][name] is not None:
                 # found the node name used in this iteration
                 node_name = name
-                break;
+                break
 
         if node_name is None:
             return None
 
         # Find this entity's class name and create an instance
-        class_name = parent_entity.schema.RELATED_ENTITIES[entity_name]['class_name']
+        class_name = parent_entity.schema.RELATED_ENTITIES[entity_name]["class_name"]
         entity_class = parent_entity.client.supported_entity_class_factory(class_name)
 
         if entity_class is None:
@@ -222,8 +242,9 @@ def fetch_entity_list(parent_entity, record, entity_name):
         enity = entity_class()
 
         # Return the result of transforming the provided record node
-        return enity.transform(records=record[entity_name][node_name],
-                               parent_id=record['internalId'])
+        return enity.transform(
+            records=record[entity_name][node_name], parent_id=record["internalId"]
+        )
     else:
         return None
 
@@ -244,11 +265,14 @@ def merge_transform_results(list1, list2):
      per support entity, per batch.
     """
     for tr in list2:
-        index = next((indx for (indx, d) in enumerate(list1) if d["entity"] == tr['entity']), None)
+        index = next(
+            (indx for (indx, d) in enumerate(list1) if d["entity"] == tr["entity"]),
+            None,
+        )
         if index is None:
             list1.append(tr)
         else:
-            list1[index]['data'].extend(tr['data'])
+            list1[index]["data"].extend(tr["data"])
 
 
 def fetch_entity_list_as_json(parent_entity, record, entity_name):
@@ -267,15 +291,18 @@ def fetch_entity_list_as_json(parent_entity, record, entity_name):
     The parent entity (the one the record is for) is used in order
      to have access to the RELATED_ENTITIES dictionary (different for each major entity)
     """
-    if entity_name in record and record[entity_name] is not None \
-      and entity_name in parent_entity.schema.RELATED_ENTITIES:
+    if (
+        entity_name in record
+        and record[entity_name] is not None
+        and entity_name in parent_entity.schema.RELATED_ENTITIES
+    ):
         node_name = None
 
-        for name in parent_entity.schema.RELATED_ENTITIES[entity_name]['node_names']:
+        for name in parent_entity.schema.RELATED_ENTITIES[entity_name]["node_names"]:
             if record[entity_name][name] is not None:
                 # found the node name used in this iteration
                 node_name = name
-                break;
+                break
 
         if node_name is not None:
             entity_list = []
@@ -283,11 +310,15 @@ def fetch_entity_list_as_json(parent_entity, record, entity_name):
             for record_entry in record[entity_name][node_name]:
                 tmp_field = {}
 
-                for column_map in parent_entity.schema.RELATED_ENTITIES[entity_name]['column_map']:
+                for column_map in parent_entity.schema.RELATED_ENTITIES[entity_name][
+                    "column_map"
+                ]:
                     # recursivelly create a record for each entry by using the map for this entity
-                    extraction_result = fetch_attribute(parent_entity, record_entry, column_map)
+                    extraction_result = fetch_attribute(
+                        parent_entity, record_entry, column_map
+                    )
 
-                    tmp_field.update( extraction_result['attributes'] )
+                    tmp_field.update(extraction_result["attributes"])
 
                 # This is going to be used in JSON, so throw away attributes with none values
                 tmp_field = {k: v for k, v in tmp_field.items() if v is not None}

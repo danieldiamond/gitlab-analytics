@@ -15,16 +15,18 @@ def engine_factory(config_dict: Dict) -> Engine:
     Generate a snowflake engine based on a dict.
     """
 
-    engine = create_engine(URL(
-        account = config_dict['SNOWFLAKE_ACCOUNT'],
-        user = config_dict['SNOWFLAKE_TRANSFORM_USER'],
-        password = config_dict['SNOWFLAKE_PASSWORD'],
-        database = config_dict['SNOWFLAKE_TRANSFORM_DATABASE'],
-        schema = 'INFORMATION_SCHEMA',
-        warehouse = config_dict['SNOWFLAKE_TRANSFORM_WAREHOUSE'],
-        role = config_dict['SNOWFLAKE_TRANSFORM_ROLE'],
-        timezone = config_dict['SNOWFLAKE_TIMEZONE'],
-    ))
+    engine = create_engine(
+        URL(
+            account=config_dict["SNOWFLAKE_ACCOUNT"],
+            user=config_dict["SNOWFLAKE_TRANSFORM_USER"],
+            password=config_dict["SNOWFLAKE_PASSWORD"],
+            database=config_dict["SNOWFLAKE_TRANSFORM_DATABASE"],
+            schema="INFORMATION_SCHEMA",
+            warehouse=config_dict["SNOWFLAKE_TRANSFORM_WAREHOUSE"],
+            role=config_dict["SNOWFLAKE_TRANSFORM_ROLE"],
+            timezone=config_dict["SNOWFLAKE_TIMEZONE"],
+        )
+    )
     return engine
 
 
@@ -38,8 +40,8 @@ def write_schema(table_names: List[str]) -> None:
         f.write("models:\n")
 
         for table_name in table_names:
-            logging.info(f'Fetching info for table: {table_name}')
-            f.write("  - name: "+ table_name.lower() +":\n")
+            logging.info(f"Fetching info for table: {table_name}")
+            f.write("  - name: " + table_name.lower() + ":\n")
             f.write("    description:\n")
             f.write("      columns:\n")
 
@@ -49,17 +51,19 @@ def write_schema(table_names: List[str]) -> None:
             WHERE table_name = '{}'
             AND lower(TABLE_SCHEMA) = 'analytics'
             ORDER BY ORDINAL_POSITION
-            """.format(table_name)
+            """.format(
+                table_name
+            )
 
             column_names_df = pd.read_sql_query(column_query, engine)
-            column_names = list(column_names_df['column_name'])
+            column_names = list(column_names_df["column_name"])
 
             for column_name in column_names[:-1]:
                 f.write("        - name: " + column_name + "\n")
-                f.write("          description:\"\"\n")
+                f.write('          description:""\n')
             else:
                 f.write("        - name: " + column_names[-1] + "\n")
-                f.write("          description:\"\"\n\n")
+                f.write('          description:""\n\n')
 
 
 def main(engine: Engine) -> None:
@@ -71,21 +75,20 @@ def main(engine: Engine) -> None:
     """
 
     table_names_df = pd.read_sql_query(query, engine)
-    table_names = list(table_names_df['table_name'])
+    table_names = list(table_names_df["table_name"])
 
     write_schema(table_names)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=20)
-    logging.info('Starting schema generation script...')
+    logging.info("Starting schema generation script...")
     config_dict = env.copy()
 
-    logging.info('Creating engine...')
+    logging.info("Creating engine...")
     engine = engine_factory(config_dict)
-    logging.info(f'Engine Created: {engine}')
+    logging.info(f"Engine Created: {engine}")
 
-    logging.info('Creating schema file...')
+    logging.info("Creating schema file...")
     main(engine)
-    logging.info('Schema generated successfully.')
-
+    logging.info("Schema generated successfully.")

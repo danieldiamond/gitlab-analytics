@@ -7,10 +7,7 @@ import psycopg2
 from toolz.dicttoolz import dissoc
 from .dw_setup import metadata, engine, host, username, password, database
 
-cleaned_urls = Table('cleaned_urls',
-                    metadata,
-                    autoload=True,
-                    autoload_with=engine)
+cleaned_urls = Table("cleaned_urls", metadata, autoload=True, autoload_with=engine)
 
 
 def in_cache(domain, table):
@@ -21,11 +18,17 @@ def in_cache(domain, table):
 
     :param table: String of table name
     """
-    mydb = psycopg2.connect(host=host, user=username,
-                            password=password, dbname=database)
+    mydb = psycopg2.connect(
+        host=host, user=username, password=password, dbname=database
+    )
     cursor = mydb.cursor()
-    cursor.execute("SELECT * FROM " + table + " WHERE domain='" +
-                   domain + "' AND last_update >  NOW() - INTERVAL '30 days';")
+    cursor.execute(
+        "SELECT * FROM "
+        + table
+        + " WHERE domain='"
+        + domain
+        + "' AND last_update >  NOW() - INTERVAL '30 days';"
+    )
     domain_in_cache = False if cursor.rowcount == 0 else True
 
     mydb.commit()
@@ -44,16 +47,15 @@ def update_whois_cache(dictlist, table):
     """
 
     stmt = postgresql.insert(table, bind=engine).values(
-        domain=dictlist.get("domain",""),
+        domain=dictlist.get("domain", ""),
         name=dictlist.get("name", None),
         description=dictlist.get("description", None),
         asn_description=dictlist.get("asn_description", None),
         country_code=dictlist.get("country_code", None),
-        last_update=dictlist.get("last_update", None)
+        last_update=dictlist.get("last_update", None),
     )
     on_update_stmt = stmt.on_conflict_do_update(
-        index_elements=["domain"],
-        set_=dissoc(dictlist, "domain")
+        index_elements=["domain"], set_=dissoc(dictlist, "domain")
     )
     conn = engine.connect()
     conn.execute(on_update_stmt)
@@ -89,11 +91,10 @@ def update_cache(dictlist, table):
         company_phone=dictlist.get("company_phone", ""),
         company_tech=dictlist.get("company_tech", ""),
         company_index=dictlist.get("company_index", ""),
-        last_update=dictlist.get("last_update", "")
+        last_update=dictlist.get("last_update", ""),
     )
     on_update_stmt = stmt.on_conflict_do_update(
-        index_elements=['domain'],
-        set_=dissoc(dictlist, "parsed_domain")
+        index_elements=["domain"], set_=dissoc(dictlist, "parsed_domain")
     )
     conn = engine.connect()
     conn.execute(on_update_stmt)
@@ -110,12 +111,12 @@ def update_cache_not_found(domain, table):
 
     :param table: SQLAlchemy table
     """
-    stmt = postgresql.insert(table,
-                             bind=engine).values(domain=domain,
-                                                 last_update=datetime.datetime.now())
+    stmt = postgresql.insert(table, bind=engine).values(
+        domain=domain, last_update=datetime.datetime.now()
+    )
     on_update_stmt = stmt.on_conflict_do_update(
-        index_elements=['domain'],
-        set_=dict(last_update=datetime.datetime.now()))
+        index_elements=["domain"], set_=dict(last_update=datetime.datetime.now())
+    )
     conn = engine.connect()
     conn.execute(on_update_stmt)
     conn.close()
@@ -134,7 +135,7 @@ def write_clean_domain(raw_domain, tldextract, clean_domain, table=cleaned_urls)
     subdomain = tldextract.subdomain
     primary_domain = tldextract.domain
     suffix = tldextract.suffix
-    full_domain = subdomain + '.' + primary_domain + '.' + suffix
+    full_domain = subdomain + "." + primary_domain + "." + suffix
 
     stmt = postgresql.insert(table, bind=engine).values(
         domain=raw_domain,
@@ -143,7 +144,7 @@ def write_clean_domain(raw_domain, tldextract, clean_domain, table=cleaned_urls)
         suffix=suffix,
         clean_domain=clean_domain,
         clean_full_domain=full_domain,
-        last_update=datetime.datetime.now()
+        last_update=datetime.datetime.now(),
     )
     on_update_stmt = stmt.on_conflict_do_update(
         index_elements=["domain"],
@@ -153,7 +154,8 @@ def write_clean_domain(raw_domain, tldextract, clean_domain, table=cleaned_urls)
             suffix=suffix,
             clean_domain=clean_domain,
             clean_full_domain=full_domain,
-            last_update=datetime.datetime.now())
+            last_update=datetime.datetime.now(),
+        ),
     )
     conn = engine.connect()
     conn.execute(on_update_stmt)

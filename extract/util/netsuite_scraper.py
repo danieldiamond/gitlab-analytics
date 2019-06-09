@@ -10,7 +10,7 @@ from fire import Fire
 from stringcase import snakecase
 
 
-def parse_html_table(html_source: str, table_num: int=0) -> pd.DataFrame:
+def parse_html_table(html_source: str, table_num: int = 0) -> pd.DataFrame:
     """
     Parses an HTML table into a DataFrame. This function assumes that the
     first row of the table is the column headers.
@@ -24,7 +24,7 @@ def parse_html_table(html_source: str, table_num: int=0) -> pd.DataFrame:
     usually ordered from top to bottom.
     """
 
-    return pd.read_html(html_source, header=0)[table_num][['Name', 'Type']]
+    return pd.read_html(html_source, header=0)[table_num][["Name", "Type"]]
 
 
 def schema_formatter(raw_df: pd.DataFrame) -> Dict[str, str]:
@@ -38,11 +38,11 @@ def schema_formatter(raw_df: pd.DataFrame) -> Dict[str, str]:
         type: Proper version of the original type
     """
 
-    raw_df.columns = ['in', 'type']
-    raw_df['type'] = raw_df['type'].apply(lambda x: x.capitalize())
-    raw_df['out']  = raw_df['in'].apply(lambda x: snakecase(x))
+    raw_df.columns = ["in", "type"]
+    raw_df["type"] = raw_df["type"].apply(lambda x: x.capitalize())
+    raw_df["out"] = raw_df["in"].apply(lambda x: snakecase(x))
 
-    return raw_df[['in', 'out', 'type']].to_dict('records')
+    return raw_df[["in", "out", "type"]].to_dict("records")
 
 
 def schema_printer(schema_list: List[Dict[str, str]]) -> None:
@@ -54,7 +54,7 @@ def schema_printer(schema_list: List[Dict[str, str]]) -> None:
 
     schema_format = "'in': '{in}', 'out': '{out}', 'type':'{type}'"
     for schema in schema_list:
-        print('{' + schema_format.format(**schema) + '},')
+        print("{" + schema_format.format(**schema) + "},")
 
     return
 
@@ -70,5 +70,6 @@ def main(args: List[str]) -> None:
     schema_list = schema_formatter(parsed_table.copy())
     schema_printer(schema_list)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main(sys.argv)

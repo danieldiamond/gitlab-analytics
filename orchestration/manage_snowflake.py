@@ -30,9 +30,11 @@ class SnowflakeManager(object):
         self.analytics_database = "{}_ANALYTICS".format(
             config_vars["SNOWFLAKE_DATABASE"].upper()
         )
-        self.raw_database = "{}_RAW".format(config_vars['SNOWFLAKE_DATABASE'].upper())
+        self.raw_database = "{}_RAW".format(config_vars["SNOWFLAKE_DATABASE"].upper())
 
-    def generate_db_queries(self, database_name: str, cloned_database: str) -> List[str]:
+    def generate_db_queries(
+        self, database_name: str, cloned_database: str
+    ) -> List[str]:
         """
         Generate the queries to clone and provide permissions for databases.
         """
@@ -102,10 +104,7 @@ class SnowflakeManager(object):
         """
         Delete a clone.
         """
-        db_list = [
-            self.analytics_database,
-            self.raw_database
-        ]
+        db_list = [self.analytics_database, self.raw_database]
 
         for db in db_list:
             query = 'drop database "{}";'.format(db)

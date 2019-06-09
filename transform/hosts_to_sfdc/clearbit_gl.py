@@ -8,12 +8,9 @@ from sqlalchemy import Table
 import clearbit
 from .dw_setup import metadata, engine
 
-clearbit.key = os.environ.get('CLEARBIT_API_KEY')
+clearbit.key = os.environ.get("CLEARBIT_API_KEY")
 
-clearbit_cache = Table('clearbit_cache',
-                       metadata,
-                       autoload=True,
-                       autoload_with=engine)
+clearbit_cache = Table("clearbit_cache", metadata, autoload=True, autoload_with=engine)
 
 
 def string_converter(dictlist):
@@ -22,10 +19,10 @@ def string_converter(dictlist):
     """
 
     for key, value in dictlist.items():
-            try:
-                dictlist[key] = str(value.encode("utf-8"))
-            except:
-                dictlist[key] = str(value)
+        try:
+            dictlist[key] = str(value.encode("utf-8"))
+        except:
+            dictlist[key] = str(value)
 
     return dictlist
 
@@ -69,25 +66,25 @@ def update_clearbit(domain):
 
         dictlist = dict(
             parsed_domain=domain,
-            company_name=company_dict.get('name', ''),
-            company_legalname=company_dict.get('legalName', ''),
-            company_domain=company_dict.get('domain', ''),
-            company_site=category.get('sector', ''),
-            company_industrygroup=category.get('industryGroup', ''),
-            company_industry=category.get('industry', ''),
-            company_naics=category.get('naicsCode', ''),
-            company_desc=company_dict.get('description', ''),
-            company_loc=company_dict.get('location', ''),
-            company_ein=company_dict.get('identifiers', {}).get('usEIN', ''),
-            company_emp=metrics.get('employees', ''),
-            company_emp_range=metrics.get('employeesRange', ''),
-            company_rev=metrics.get('annualRevenue', ''),
-            company_estrev=metrics.get('estimatedAnnualRevenue', ''),
-            company_type=company_dict.get('type', ''),
-            company_phone=company_dict.get('phone', ''),
-            company_tech=company_dict.get('tech', ''),
-            company_index=company_dict.get('indexedAt', ''),
-            last_update=datetime.datetime.now()
+            company_name=company_dict.get("name", ""),
+            company_legalname=company_dict.get("legalName", ""),
+            company_domain=company_dict.get("domain", ""),
+            company_site=category.get("sector", ""),
+            company_industrygroup=category.get("industryGroup", ""),
+            company_industry=category.get("industry", ""),
+            company_naics=category.get("naicsCode", ""),
+            company_desc=company_dict.get("description", ""),
+            company_loc=company_dict.get("location", ""),
+            company_ein=company_dict.get("identifiers", {}).get("usEIN", ""),
+            company_emp=metrics.get("employees", ""),
+            company_emp_range=metrics.get("employeesRange", ""),
+            company_rev=metrics.get("annualRevenue", ""),
+            company_estrev=metrics.get("estimatedAnnualRevenue", ""),
+            company_type=company_dict.get("type", ""),
+            company_phone=company_dict.get("phone", ""),
+            company_tech=company_dict.get("tech", ""),
+            company_index=company_dict.get("indexedAt", ""),
+            last_update=datetime.datetime.now(),
         )
 
         caching.update_cache(string_converter(dictlist), clearbit_cache)

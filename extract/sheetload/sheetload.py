@@ -99,7 +99,7 @@ def csv_loader(
     if destination == "snowflake":
         engine = snowflake_engine_factory(conn_dict or env, "LOADER")
 
-    compression = compression or 'infer'
+    compression = compression or "infer"
     # Extract the schema and the table name from the file name
     for path in paths:
         schema, table = path.split("/")[-1].split(".")[0:2]
@@ -174,8 +174,7 @@ def sheet_loader(
     if destination == "snowflake":
         try:
             query = """grant select on all tables in schema "{}".{} to role transformer""".format(
-                env["SNOWFLAKE_LOAD_DATABASE"],
-                SHEETLOAD_SCHEMA,
+                env["SNOWFLAKE_LOAD_DATABASE"], SHEETLOAD_SCHEMA
             )
             connection = engine.connect()
             connection.execute(query)

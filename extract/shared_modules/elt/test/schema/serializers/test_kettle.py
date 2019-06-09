@@ -2,15 +2,19 @@ from elt.schema.serializers.kettle import KettleSerializer
 
 
 def test_config():
-    schema = KettleSerializer("sfdc") \
-      .loads(SAMPLE_KETTLE_CONFIG) \
-      .loads(SAMPLE_KETTLE_CONFIG_EXTRA) \
-      .schema
+    schema = (
+        KettleSerializer("sfdc")
+        .loads(SAMPLE_KETTLE_CONFIG)
+        .loads(SAMPLE_KETTLE_CONFIG_EXTRA)
+        .schema
+    )
 
-    import pdb; pdb.set_trace()
+    import pdb
 
-    assert(("User", "Id") in schema.columns)
-    assert(("User", "LastName") in schema.columns)
+    pdb.set_trace()
+
+    assert ("User", "Id") in schema.columns
+    assert ("User", "LastName") in schema.columns
 
 
 SAMPLE_KETTLE_CONFIG = """<?xml version="1.0" encoding="UTF-8"?>

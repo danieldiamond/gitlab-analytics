@@ -41,15 +41,17 @@ async def import_file(args, exporter):
     try:
         for export_result in exporter:
             with DB.default.open() as db:
-                logging.info(" - Importing {}".format(export_result['entity'].name_plural))
-                upsert_to_db_from_csv(db, export_result['file'],
-                                      primary_key=export_result['entity'].schema.PRIMARY_KEY,
-                                      table_name=export_result['entity'].schema.table_name(args),
-                                      table_schema=args.schema,
-                                      csv_options={
-                                          'NULL': "'null'",
-                                          'FORCE_NULL': "({columns})",
-                                      })
+                logging.info(
+                    " - Importing {}".format(export_result["entity"].name_plural)
+                )
+                upsert_to_db_from_csv(
+                    db,
+                    export_result["file"],
+                    primary_key=export_result["entity"].schema.PRIMARY_KEY,
+                    table_name=export_result["entity"].schema.table_name(args),
+                    table_schema=args.schema,
+                    csv_options={"NULL": "'null'", "FORCE_NULL": "({columns})"},
+                )
     except GeneratorExit:
         logging.info("Import finished.")
 
@@ -57,19 +59,22 @@ async def import_file(args, exporter):
 def export_file(args, entity, start_time, end_time):
     response = entity.extract_incremental(start_time, end_time)
 
-    while response is not None and response.status.isSuccess \
-      and response.recordList is not None:
+    while (
+        response is not None
+        and response.status.isSuccess
+        and response.recordList is not None
+    ):
         transform_results = entity.transform(response.recordList.record)
 
         # The result of a transform may be multiple entities being updated with data
         # For each one returned, flatten the fetched data and yield the result
         for result in transform_results:
             with NamedTemporaryFile(mode="w", delete=not args.nodelete) as f:
-                f.write(json.dumps(result['data']))
+                f.write(json.dumps(result["data"]))
                 logging.info("Wrote response at {}".format(f.name))
 
             try:
-                yield flatten_csv(args, result['data'], result['entity'])
+                yield flatten_csv(args, result["data"], result["entity"])
             except Error as e:
                 logging.error(e)
                 raise e
@@ -85,19 +90,19 @@ def flatten_csv(args, entries, entity):
     """
     table_name = entity.schema.table_name(args)
     output_file = args.output_file or "{}-{}.csv".format(
-                            entity.name_plural, datetime.utcnow().timestamp()
-                        )
-    flatten_entry = functools.partial(flatten,
-                                      entity.schema.describe_schema(args),
-                                      table_name)
+        entity.name_plural, datetime.utcnow().timestamp()
+    )
+    flatten_entry = functools.partial(
+        flatten, entity.schema.describe_schema(args), table_name
+    )
 
     header = entries[0]
-    with open(output_file, 'w') as csv_file:
+    with open(output_file, "w") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=header.keys())
         writer.writeheader()
         writer.writerows(map(flatten_entry, entries))
 
-    return {'entity':entity, 'file': output_file}
+    return {"entity": entity, "file": output_file}
 
 
 def flatten(schema: Schema, table_name, entry):
@@ -115,13 +120,13 @@ def flatten(schema: Schema, table_name, entry):
 
 
 def flatten_value(db_type: DBType, value):
-    null = lambda x: x if x is not None else 'null'
+    null = lambda x: x if x is not None else "null"
     # X -> 'wx(q|w)'
-    around = lambda w, x, q=None: ''.join((str(w), str(x), str(q or w)))
+    around = lambda w, x, q=None: "".join((str(w), str(x), str(q or w)))
     quote = functools.partial(around, "'")
-    array = compose(functools.partial(around, "{", q="}"),
-                    ",".join,
-                    functools.partial(map, str))
+    array = compose(
+        functools.partial(around, "{", q="}"), ",".join, functools.partial(map, str)
+    )
 
     strategies = {
         DBType.JSON: json.dumps,
@@ -129,8 +134,7 @@ def flatten_value(db_type: DBType, value):
         DBType.ArrayOfInteger: array,
         DBType.ArrayOfLong: array,
         # [x0, ..., xN] -> '{'x0', ..., 'xN'}'
-        DBType.ArrayOfString: compose(array,
-                                      functools.partial(map, quote)),
+        DBType.ArrayOfString: compose(array, functools.partial(map, quote)),
     }
 
     strategy = strategies.get(db_type, null)

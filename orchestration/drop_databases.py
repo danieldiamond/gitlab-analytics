@@ -40,7 +40,7 @@ def main(engine: Engine) -> None:
     Drop each of the databases for the clonses that exist.
     """
 
-    logging.info('Creating list of clones...')
+    logging.info("Creating list of clones...")
     databases = get_list_of_clones(engine)
 
     for database in databases:
@@ -58,15 +58,15 @@ def main(engine: Engine) -> None:
     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=20)
-    logging.info('Starting script...')
+    logging.info("Starting script...")
 
-    logging.info('Creating engine...')
+    logging.info("Creating engine...")
     config_dict = env.copy()
     engine = snowflake_engine_factory(config_dict, "SYSADMIN")
-    logging.info(f'Engine Created: {engine}')
+    logging.info(f"Engine Created: {engine}")
 
-    logging.info('Prepping to drop databases...')
+    logging.info("Prepping to drop databases...")
     main(engine)
-    logging.info('Clones dropped successfully.')
+    logging.info("Clones dropped successfully.")
