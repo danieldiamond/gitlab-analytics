@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 import yaml
+from functools import reduce
 from time import time
 from typing import Dict, List
 
@@ -54,8 +55,131 @@ def query_results_generator(query: str, engine: Engine) -> pd.DataFrame:
     return query_df_iterator
 
 
+def dataframe_uploader(
+    dataframe: pd.DataFrame,
+    engine: Engine,
+    table_name: str,
+    schema: str,
+    if_exists: str,
+    chunksize: int = 15000,
+) -> None:
+    """
+    Upload a dataframe, adding in some metadata and cleaning up along the way.
+    """
+
+    dataframe["_uploaded_at"] = time()  # Add an uploaded_at column
+    dataframe = dataframe.applymap(
+        lambda x: x if not isinstance(x, dict) else str(x)
+    )  # convert dict to str to avoid snowflake errors
+    dataframe.to_sql(
+        name=table_name,
+        con=engine,
+        schema=schema,
+        if_exists=if_exists,
+        index=False,
+        chunksize=chunksize,
+    )
+    return
+
+
+def upload_orchestrator(
+    results_chunker: pd.DataFrame,
+    engine: Engine,
+    table_name: str,
+    schema: str = "tap_postgres",
+    drop_first: bool = False,
+) -> None:
+    """
+    Handle the logic of uploading and logging an iterable DataFrame.
+    """
+
+    chunk_counter = 0
+    for chunk_df in results_chunker:
+        if drop_first and chunk_counter == 0:
+            if_exists = "replace"
+        else:
+            if_exists = "append"
+        row_count = chunk_df.shape[0]
+        logging.info(f"Uploading {row_count} records to snowflake...")
+        dataframe_uploader(
+            dataframe=chunk_df,
+            engine=engine,
+            table_name=table_name,
+            schema=schema,
+            if_exists=if_exists,
+        )
+        chunk_counter += row_count
+        logging.info(f"{chunk_counter} total records uploaded...")
+    return
+
+
+def get_id_diff(
+    table_name: str,
+    import_table: str,
+    postgres_engine: Engine,
+    snowflake_engine: Engine,
+) -> List[str]:
+    """
+    This function syncs a database with Snowflake based on IDs for each table.
+
+    Gets the diff between the IDs that exist in the DB vs the DW, loads any rows
+    with IDs that are missing from the DW.
+    """
+
+    # Get the list of IDs from the source DB
+    complete_id_query = f"SELECT id FROM {table_name}"
+    complete_id_chunker = query_results_generator(complete_id_query, postgres_engine)
+
+    # Upload to snowflake in a scratch table
+    id_table = f"{table_name}_id_sync"
+    logging.info(f"Starting upload for IDs from table: {table_name}")
+    logging.info(f"Sending IDs to table: {id_table}")
+    upload_orchestrator(
+        results_chunker=complete_id_chunker,
+        engine=snowflake_engine,
+        table_name=id_table,
+        drop_first=True,
+    )
+    logging.info(f"Finished upload for table: {id_table}")
+
+    # query snowflake for the diff between the two lists
+    diff_query = f"""
+        SELECT x.id
+        FROM tap_postgres.{id_table} x
+        LEFT JOIN tap_postgres.{import_table} y ON x.id = y.id
+        WHERE y.id IS NULL
+        ORDER BY 1;
+    """
+    logging.info("Retrieving ID diff set...")
+    id_diff_chunker = query_results_generator(diff_query, snowflake_engine)
+    id_list: List[str] = reduce(
+        lambda x, y: x + [str(i) for i in y["id"].tolist()], id_diff_chunker, []
+    )
+    logging.info(f"Number of missing IDs: {len(id_list)}")
+
+    return id_list
+
+
+def id_query_formatter(id_list: List[str], raw_query: str) -> str:
+    """
+    Using the list of missing IDs and the dict of table info, generate a query
+    to grab the missing IDs.
+    """
+
+    formatted_id_list = f"""({','.join(id_list)})"""
+    id_query = (
+        "".join(raw_query.lower().split("where")[0])
+        + f"WHERE id in {formatted_id_list}"
+    )
+
+    return id_query
+
+
 def main(
-    *file_paths: List[str], incremental_only: bool = False, scd_only: bool = False
+    *file_paths: List[str],
+    incremental_only: bool = False,
+    scd_only: bool = False,
+    sync: bool = False,
 ) -> None:
     """
     Read data from a postgres DB and write it to stdout following the
@@ -63,14 +187,12 @@ def main(
     """
 
     # Make sure that only one of the flags is set
-    if incremental_only and scd_only:
-        logging.info("Only one 'only' flag can be used at a time")
+    if (incremental_only + scd_only + sync) > 1:
+        logging.info("Only one flag can be used at a time")
         sys.exit()
 
     # Set vars
     env = os.environ.copy()
-    chunksize = 15000
-    snowflake_schema = "tap_postgres"
 
     # Iterate through the manifests
     for file_path in file_paths:
@@ -91,42 +213,45 @@ def main(
             # Format the query
             raw_query = table_dict["import_query"]
 
-            # Check for incremental mode and skip queries that don't use execution date (non-incremental)
-            if incremental_only and "{EXECUTION_DATE}" not in raw_query:
-                results_chunker = []
+            # If sync mode and the model is incremental, sync based on ID
+            if sync and "{EXECUTION_DATE}" in raw_query:
+                logging.info("Sync mode. Proceeding to sync based on ID.")
+
+                id_diff_list: List[str] = get_id_diff(
+                    table, table_name, postgres_engine, snowflake_engine
+                )
+                # use the diff to generate a queries to load the missing IDs
+                id_query = id_query_formatter(id_diff_list, raw_query)
+                # Do nothing if there are no missing IDs
+                if id_diff_list == []:
+                    logging.info("No IDs are missing.")
+                    results_chunker = []
+                else:
+                    logging.info("Querying DB for missing IDs...")
+                    results_chunker = query_results_generator(id_query, postgres_engine)
+                    logging.info("Query for missing IDs complete.")
+            # If incremental mode and the model isn't incremental, do nothing
+            elif incremental_only and "{EXECUTION_DATE}" not in raw_query:
+                results_chunker: List[None] = []
+            # If SCD mode and the model is incremental, do nothing
             elif scd_only and "{EXECUTION_DATE}" in raw_query:
-                results_chunker = []
+                results_chunker: List[None] = []
             else:
                 query = raw_query.format(**env)
                 logging.info(query)
-                results_chunker = query_results_generator(
-                    query=query, engine=postgres_engine
-                )
+                results_chunker = query_results_generator(query, postgres_engine)
 
-            chunk_counter = 0
-            for chunk_df in results_chunker:
-                row_count = chunk_df.shape[0]
-                logging.info(f"Uploading {row_count} records to snowflake...")
-
-                chunk_df["_uploaded_at"] = time()  # Add an uploaded_at column
-                chunk_df = chunk_df.applymap(
-                    lambda x: x if not isinstance(x, dict) else str(x)
-                )  # convert dict to str to avoid snowflake errors
-                chunk_df.to_sql(
-                    name=table_name,
-                    con=snowflake_engine,
-                    schema=snowflake_schema,
-                    if_exists="append",
-                    index=False,
-                    chunksize=chunksize,
-                )
-
-                chunk_counter += row_count
-                logging.info(f"{chunk_counter} total records uploaded...")
+            # Upload the dataframe generator to the data warehouse
+            upload_orchestrator(
+                results_chunker=results_chunker,
+                engine=snowflake_engine,
+                table_name=table_name,
+            )
             logging.info(f"Finished upload for table: {table}")
     return
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
+    logging.getLogger("sqlalchemy").setLevel(logging.WARNING)
     Fire({"tap": main})

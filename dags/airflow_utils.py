@@ -48,6 +48,7 @@ def slack_failed_task(context):
     )
     return failed_alert.execute()
 
+
 # GitLab default settings for all DAGs
 gitlab_defaults = dict(
     get_logs=True,

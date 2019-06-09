@@ -32,25 +32,24 @@ default_args = {
     "start_date": datetime(2019, 5, 30),
 }
 
+# Create the DAG
+dag = DAG(
+    "gitlab_com_db_extract", default_args=default_args, schedule_interval="0 */6 * * *"
+)
+
 # Set the command for the container
-container_cmd = f"""
+incremental_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/postgres/ &&
     python tap_postgres/tap_postgres.py tap manifests/gitlab_com_manifest.yaml --incremental_only
 """
-
-# Create the DAG
-dag = DAG(
-    "gitlab_com_db_incremental_extract", default_args=default_args, schedule_interval="0 */6 * * *"
-)
-
 # Task 1
 gitlab_com_db_incremental_extract = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
-    task_id="gitlab-com-db-incremental-extract",
-    name="gitlab-com-db-incremental-extract",
+    task_id="gitlab-com-db-incremental",
+    name="gitlab-com-db-incremental",
     secrets=[
         GITLAB_COM_DB_USER,
         GITLAB_COM_DB_PASS,
@@ -65,6 +64,6 @@ gitlab_com_db_incremental_extract = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
-    arguments=[container_cmd],
+    arguments=[incremental_cmd],
     dag=dag,
 )
