@@ -37,7 +37,7 @@ def get_list_of_clones(engine: Engine) -> List[str]:
 
 def main(engine: Engine) -> None:
     """
-    Drop each of the databases for the clonses that exist.
+    Drop each of the databases for the clones that exist.
     """
 
     logging.info("Creating list of clones...")
