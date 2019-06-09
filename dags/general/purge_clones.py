@@ -26,17 +26,15 @@ default_args = {
     "start_date": datetime(2019, 1, 1),
 }
 
-# Set the command for the container
-drop_cmd = f"""
+# Create the DAG
+dag = DAG("snowflake_cleanup", default_args=default_args, schedule_interval="0 5 * * 0")
+
+# Task 1
+drop_clones_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
     analytics/orchestration/drop_databases.py
 """
-
-# Create the DAG
-dag = DAG("purge_clones", default_args=default_args, schedule_interval="0 5 * * 0")
-
-# Task 1
-clean_clones = KubernetesPodOperator(
+purge_clones = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="purge-clones",
@@ -50,6 +48,29 @@ clean_clones = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
-    arguments=[drop_cmd],
+    arguments=[drop_clones_cmd],
+    dag=dag,
+)
+
+# Task 2
+drop_dev_cmd = f"""
+    git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
+    analytics/orchestration/drop_dev_schemas.py
+"""
+purge_dev_schemas = KubernetesPodOperator(
+    **gitlab_defaults,
+    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    task_id="purge-dev-schemas",
+    name="purge-dev-schemas",
+    secrets=[
+        SNOWFLAKE_USER,
+        SNOWFLAKE_PASSWORD,
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_LOAD_DATABASE,
+        SNOWFLAKE_LOAD_WAREHOUSE,
+    ],
+    env_vars=pod_env_vars,
+    cmds=["/bin/bash", "-c"],
+    arguments=[drop_dev_cmd],
     dag=dag,
 )
