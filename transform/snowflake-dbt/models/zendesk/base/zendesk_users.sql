@@ -23,7 +23,8 @@ renamed as (
         role,
         suspended,
         
-        --dates
+        --time
+        time_zone,
         created_at,
         last_login_at,
         updated_at

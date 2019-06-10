@@ -6,13 +6,7 @@
 
 WITH zendesk_tickets AS (
 
-  SELECT ticket_id,
-         organization_id,
-         assignee_id,
-         ticket_status,
-         ticket_priority,
-         ticket_recipient,
-         satisfaction_rating_score
+  SELECT *
   FROM {{ref('zendesk_tickets')}}
   WHERE zendesk_tickets.ticket_priority IS NOT NULL
 
@@ -32,20 +26,22 @@ WITH zendesk_tickets AS (
 
 )
 
-SELECT zendesk_tickets.ticket_id,
-       zendesk_tickets.organization_id,
+SELECT zendesk_tickets.assignee_id,
+       zendesk_tickets.brand_id,
+       zendesk_tickets.group_id,
+       zendesk_tickets.requester_id,
+       zendesk_tickets.submitter_id,
        zendesk_tickets.ticket_status,
        zendesk_tickets.ticket_priority,
+       zendesk_tickets.ticket_subject,
        zendesk_tickets.ticket_recipient,
-       zendesk_tickets.satisfaction_rating_score                                                                AS satisfaction_rating_score,
-       zendesk_ticket_metrics.first_resolution_time_in_minutes_during_calendar_hours,
-       zendesk_ticket_metrics.full_resolution_time_in_minutes_during_calendar_hours,
-       zendesk_ticket_metrics.reopens,
-       zendesk_ticket_metrics.total_replies,
-       zendesk_ticket_metrics.reply_time_in_minutes_during_calendar_hours,
-       zendesk_ticket_metrics.creation_date,
-       zendesk_organizations.arr,
-       zendesk_organizations.sfdc_id                                                                            AS sfdc_id,
+       zendesk_tickets.ticket_type,
+       zendesk_tickets.api_url,
+       zendesk_tickets.satisfaction_rating_score,
+       zendesk_tickets.date_created,
+       zendesk_tickets.date_updated,                                                             
+       zendesk_ticket_metrics.*,
+       zendesk_organizations.*,                                                                        
   COALESCE(reply_time_in_minutes_during_calendar_hours, first_resolution_time_in_minutes_during_calendar_hours, full_resolution_time_in_minutes_during_calendar_hours ) AS first_reply_time,
   EXTRACT(dow FROM creation_date)                                                                               AS day_of_week_submitted,
   EXTRACT(hour FROM creation_date)                                                                              AS hour_submitted,
