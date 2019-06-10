@@ -1,0 +1,11 @@
+version: 2
+
+models:
+    - name: zendesk_sfdc_xf
+      description: '{{ doc("zendesk_ticket_sfdc") }}'
+      columns:
+          - name: account_id
+            description: This is the Salesforce account id.
+            tests:
+              - not_null
+

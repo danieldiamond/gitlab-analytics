@@ -25,7 +25,7 @@ renamed as (
         url                                                                                 AS api_url,
         -- added ':score'
         REPLACE(satisfaction_rating:score, '"', '')                                         AS satisfaction_rating_score,
-
+        REPLACE(via:channel, '"', '')                                                       AS submission_channel,
         
         --dates
         created_at                                                                          AS date_created,
