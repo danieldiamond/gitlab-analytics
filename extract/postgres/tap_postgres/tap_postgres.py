@@ -135,12 +135,17 @@ def generate_max_id_query(
         max_id_results = query_results_generator(max_id_query, snowflake_engine)
         max_id = next(max_id_results)["id"].tolist()[0]
     except:
-        max_id = 0
+        max_id = None
 
+    if max_id:
+        max_id_clause = f" WHERE id > {max_id}"
+    else:
+        max_id_clause = ""
     max_id_query = (
         "".join(raw_query.lower().split("where")[0])
-        + f"WHERE id > {max_id} ORDER BY id"
+        + max_id_clause + " ORDER BY id"
     )
+
     logging.info(f"ID Query: {max_id_query}")
 
     return max_id_query
