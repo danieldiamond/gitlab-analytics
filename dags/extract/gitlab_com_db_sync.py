@@ -97,3 +97,5 @@ gitlab_com_db_scd_extract = KubernetesPodOperator(
     arguments=[scd_cmd],
     dag=dag,
 )
+
+gitlab_com_db_sync_extract >> gitlab_com_db_scd_extract

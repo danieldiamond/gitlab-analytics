@@ -46,23 +46,23 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'approver_groups'
     export_table_primary_key: id
-  audit_events:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , author_id
-      , type
-      , entity_id
-      , entity_type
-      , details
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
-      FROM audit_events
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
-    export_schema: 'gitlab_com'
-    export_table: 'audit_events'
-    export_table_primary_key: id
+#  audit_events:
+#    import_db: GITLAB_DB
+#    import_query: >
+#      SELECT id
+#      , author_id
+#      , type
+#      , entity_id
+#      , entity_type
+#      , details
+#      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+#      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+#      FROM audit_events
+#      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
+#        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+#    export_schema: 'gitlab_com'
+#    export_table: 'audit_events'
+#    export_table_primary_key: id
   board_assignees:
     import_db: GITLAB_DB
     import_query: >
