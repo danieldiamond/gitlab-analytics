@@ -113,12 +113,13 @@ def upload_orchestrator(
     return
 
 
-def get_id_diff(
-    table_name: str,
-    import_table: str,
-    postgres_engine: Engine,
+def generate_max_id_query(
+    source_table: str,
+    target_table: str,
+    raw_query: str,
     snowflake_engine: Engine,
-) -> List[str]:
+    schema: str="tap_postgres",
+) -> str:
     """
     This function syncs a database with Snowflake based on IDs for each table.
 
@@ -126,53 +127,23 @@ def get_id_diff(
     with IDs that are missing from the DW.
     """
 
-    # Get the list of IDs from the source DB
-    complete_id_query = f"SELECT id FROM {table_name}"
-    complete_id_chunker = query_results_generator(complete_id_query, postgres_engine)
+    # Get the max ID from the source DB
+    logging.info(f"Getting max ID from target_table: {target_table}")
+    max_id_query = f"SELECT MAX(id) as id FROM {schema}.{target_table}"
+    # If the table doesn't exist it will throw an error, ignore it and set a default ID
+    try:
+        max_id_results = query_results_generator(max_id_query, snowflake_engine)
+        max_id = next(max_id_results)["id"].tolist()[0]
+    except:
+        max_id = 0
 
-    # Upload to snowflake in a scratch table
-    id_table = f"{table_name}_id_sync"
-    logging.info(f"Starting upload for IDs from table: {table_name}")
-    logging.info(f"Sending IDs to table: {id_table}")
-    upload_orchestrator(
-        results_chunker=complete_id_chunker,
-        engine=snowflake_engine,
-        table_name=id_table,
-        drop_first=True,
-    )
-    logging.info(f"Finished upload for table: {id_table}")
-
-    # query snowflake for the diff between the two lists
-    diff_query = f"""
-        SELECT x.id
-        FROM tap_postgres.{id_table} x
-        LEFT JOIN tap_postgres.{import_table} y ON x.id = y.id
-        WHERE y.id IS NULL
-        ORDER BY 1;
-    """
-    logging.info("Retrieving ID diff set...")
-    id_diff_chunker = query_results_generator(diff_query, snowflake_engine)
-    id_list: List[str] = reduce(
-        lambda x, y: x + [str(i) for i in y["id"].tolist()], id_diff_chunker, []
-    )
-    logging.info(f"Number of missing IDs: {len(id_list)}")
-
-    return id_list
-
-
-def id_query_formatter(id_list: List[str], raw_query: str) -> str:
-    """
-    Using the list of missing IDs and the dict of table info, generate a query
-    to grab the missing IDs.
-    """
-
-    formatted_id_list = f"""({','.join(id_list)})"""
-    id_query = (
+    max_id_query = (
         "".join(raw_query.lower().split("where")[0])
-        + f"WHERE id in {formatted_id_list}"
+        + f"WHERE id > {max_id} ORDER BY id"
     )
+    logging.info(f"ID Query: {max_id_query}")
 
-    return id_query
+    return max_id_query
 
 
 def main(
@@ -215,21 +186,13 @@ def main(
 
             # If sync mode and the model is incremental, sync based on ID
             if sync and "{EXECUTION_DATE}" in raw_query:
-                logging.info("Sync mode. Proceeding to sync based on ID.")
-
-                id_diff_list: List[str] = get_id_diff(
-                    table, table_name, postgres_engine, snowflake_engine
+                logging.info("Sync mode. Proceeding to sync based on max ID.")
+                id_diff_query: str = generate_max_id_query (
+                    table, table_name, raw_query, snowflake_engine
                 )
-                # use the diff to generate a queries to load the missing IDs
-                id_query = id_query_formatter(id_diff_list, raw_query)
-                # Do nothing if there are no missing IDs
-                if id_diff_list == []:
-                    logging.info("No IDs are missing.")
-                    results_chunker = []
-                else:
-                    logging.info("Querying DB for missing IDs...")
-                    results_chunker = query_results_generator(id_query, postgres_engine)
-                    logging.info("Query for missing IDs complete.")
+                results_chunker = query_results_generator(id_diff_query, postgres_engine)
+            elif sync and "{EXECUTION_DATE}" not in raw_query:
+                results_chunker: List[None] = []
             # If incremental mode and the model isn't incremental, do nothing
             elif incremental_only and "{EXECUTION_DATE}" not in raw_query:
                 results_chunker: List[None] = []

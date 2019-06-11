@@ -5,14 +5,27 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  epic_metrics:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , epic_id
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      FROM epic_metrics
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+    export_schema: 'gitlab_com'
+    export_table: 'epic_metrics'
+    export_table_primary_key: id
   approvals:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
       , merge_request_id
       , user_id
-      , created_at
-      , updated_at
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
       FROM approvals
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
@@ -25,8 +38,8 @@ tables:
       SELECT id
       , target_type
       , group_id
-      , created_at
-      , updated_at
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
       FROM approver_groups
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
@@ -42,8 +55,8 @@ tables:
       , entity_id
       , entity_type
       , details
-      , created_at
-      , updated_at
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
       FROM audit_events
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
@@ -75,8 +88,8 @@ tables:
     import_query: >
       SELECT id
       , project_id
-      , created_at
-      , updated_at
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
       , milestone_id
       , group_id
       , weight
@@ -96,19 +109,6 @@ tables:
       FROM epic_issues
     export_schema: 'gitlab_com'
     export_table: 'epic_issues'
-    export_table_primary_key: id
-  epic_metrics:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , epic_id
-      , created_at
-      , updated_at
-      FROM epic_metrics
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
-    export_schema: 'gitlab_com'
-    export_table: 'epic_metrics'
     export_table_primary_key: id
   epics:
     import_db: GITLAB_DB
@@ -170,8 +170,8 @@ tables:
       SELECT id
       , source_id
       , target_id
-      , created_at
-      , updated_at
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
       FROM issue_links
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
@@ -186,8 +186,8 @@ tables:
       , first_mentioned_in_commit_at
       , first_associated_with_milestone_at
       , first_added_to_board_at
-      , created_at
-      , updated_at
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
       FROM issue_metrics
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
@@ -230,8 +230,8 @@ tables:
       , label_id
       , target_id
       , target_type
-      , created_at
-      , updated_at
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
       FROM label_links
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
@@ -245,8 +245,8 @@ tables:
       , project_id
       , label_id
       , priority
-      , created_at
-      , updated_at
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
       FROM label_priorities
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
@@ -260,8 +260,8 @@ tables:
       , title
       , color
       , project_id
-      , created_at
-      , updated_at
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
       , template
       , type
       , group_id
@@ -275,8 +275,8 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , created_at
-      , updated_at
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
       FROM licenses
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
@@ -502,7 +502,6 @@ tables:
       , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
       , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
       , enabled
-      , domain
       FROM project_auto_devops
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
@@ -746,7 +745,6 @@ tables:
       , ghost
       , last_activity_on
       , notified_of_own_activity
-      , support_bot
       , preferred_language
       , theme_id
       FROM users
