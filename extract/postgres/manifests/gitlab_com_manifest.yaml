@@ -46,23 +46,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'approver_groups'
     export_table_primary_key: id
-#  audit_events:
-#    import_db: GITLAB_DB
-#    import_query: >
-#      SELECT id
-#      , author_id
-#      , type
-#      , entity_id
-#      , entity_type
-#      , details
-#      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-#      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
-#      FROM audit_events
-#      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
-#        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
-#    export_schema: 'gitlab_com'
-#    export_table: 'audit_events'
-#    export_table_primary_key: id
   board_assignees:
     import_db: GITLAB_DB
     import_query: >
@@ -194,35 +177,35 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'issue_metrics'
     export_table_primary_key: id
-#  issues:
-#    import_db: GITLAB_DB
-#    import_query: >
-#      SELECT id
-#      , title
-#      , author_id
-#      , project_id
-#      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-#      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
-#      , confidential
-#      , description
-#      , milestone_id
-#      , state
-#      , updated_by_id
-#      , weight
-#      , due_date
-#      , moved_to_id
-#      , lock_version
-#      , time_estimate
-#      , TO_CHAR(last_edited_at, 'YYYY-MM-DD HH:MI:SS') AS last_edited_at
-#      , last_edited_by_id
-#      , discussion_locked
-#      , TO_CHAR(closed_at, 'YYYY-MM-DD HH:MI:SS') AS closed_at
-#      FROM issues
-#      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
-#        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
-#    export_schema: 'gitlab_com'
-#    export_table: 'issues'
-#    export_table_primary_key: id
+  issues:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , title
+      , author_id
+      , project_id
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , confidential
+      , description
+      , milestone_id
+      , state
+      , updated_by_id
+      , weight
+      , due_date
+      , moved_to_id
+      , lock_version
+      , time_estimate
+      , TO_CHAR(last_edited_at, 'YYYY-MM-DD HH:MI:SS') AS last_edited_at
+      , last_edited_by_id
+      , discussion_locked
+      , TO_CHAR(closed_at, 'YYYY-MM-DD HH:MI:SS') AS closed_at
+      FROM issues
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+    export_schema: 'gitlab_com'
+    export_table: 'issues'
+    export_table_primary_key: id
   label_links:
     import_db: GITLAB_DB
     import_query: >
@@ -752,4 +735,21 @@ tables:
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_schema: 'gitlab_com'
     export_table: 'users'
+    export_table_primary_key: id
+  audit_events:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , author_id
+      , type
+      , entity_id
+      , entity_type
+      , details
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      FROM audit_events
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+    export_schema: 'gitlab_com'
+    export_table: 'audit_events'
     export_table_primary_key: id
