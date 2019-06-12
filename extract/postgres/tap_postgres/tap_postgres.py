@@ -4,7 +4,7 @@ import sys
 import yaml
 from functools import reduce
 from time import time
-from typing import Dict, List
+from typing import Dict, List, Generator, Any
 
 import pandas as pd
 from fire import Fire
@@ -113,13 +113,33 @@ def upload_orchestrator(
     return
 
 
-def generate_max_id_query(
+def range_generator(
+    start: int, stop: int, step: int = 1_000_000
+) -> Generator[List[int], Any, None]:
+    """
+    Yields a list that contains the starting and ending number for a given window.
+    """
+
+    while True:
+        if stop < step:
+            yield [start, start + stop]
+            break
+        else:
+            yield [start, start + step]
+        start += step
+        stop -= step
+
+    return
+
+
+def id_query_generator(
     source_table: str,
     target_table: str,
     raw_query: str,
     snowflake_engine: Engine,
-    schema: str="tap_postgres",
-) -> str:
+    postgres_engine: Engine,
+    schema: str = "tap_postgres",
+) -> Generator[str, Any, None]:
     """
     This function syncs a database with Snowflake based on IDs for each table.
 
@@ -127,28 +147,37 @@ def generate_max_id_query(
     with IDs that are missing from the DW.
     """
 
-    # Get the max ID from the source DB
+    # Get the max ID from the target DB
     logging.info(f"Getting max ID from target_table: {target_table}")
-    max_id_query = f"SELECT MAX(id) as id FROM {schema}.{target_table}"
+    max_target_id_query = f"SELECT MAX(id) as id FROM {schema}.{target_table}"
     # If the table doesn't exist it will throw an error, ignore it and set a default ID
     try:
-        max_id_results = query_results_generator(max_id_query, snowflake_engine)
-        max_id = next(max_id_results)["id"].tolist()[0]
+        max_target_id_results = query_results_generator(
+            max_target_id_query, snowflake_engine
+        )
+        max_target_id = next(max_target_id_results)["id"].tolist()[0]
     except:
-        max_id = None
+        max_target_id = 0
+    logging.info(f"Target Max ID: {max_target_id}")
 
-    if max_id:
-        max_id_clause = f" WHERE id > {max_id}"
-    else:
-        max_id_clause = ""
-    max_id_query = (
-        "".join(raw_query.lower().split("where")[0])
-        + max_id_clause + " ORDER BY id"
+    # Get the max ID from the source DB
+    logging.info(f"Getting max ID from source_table: {source_table}")
+    max_source_id_query = f"SELECT MAX(id) as id FROM {source_table}"
+    max_source_id_results = query_results_generator(
+        max_source_id_query, postgres_engine
     )
+    max_source_id = next(max_source_id_results)["id"].tolist()[0]
+    logging.info(f"Source Max ID: {max_source_id}")
 
-    logging.info(f"ID Query: {max_id_query}")
+    for id_pair in range_generator(max_target_id, max_source_id):
+        id_range_query = (
+            "".join(raw_query.lower().split("where")[0])
+            + f"WHERE id BETWEEN {id_pair[0]} AND {id_pair[1]} ORDER BY id"
+        )
+        logging.info(f"ID Range: {id_pair}")
+        yield id_range_query
 
-    return max_id_query
+    return
 
 
 def main(
@@ -192,10 +221,17 @@ def main(
             # If sync mode and the model is incremental, sync based on ID
             if sync and "{EXECUTION_DATE}" in raw_query:
                 logging.info("Sync mode. Proceeding to sync based on max ID.")
-                id_diff_query: str = generate_max_id_query (
-                    table, table_name, raw_query, snowflake_engine
+                id_queries = id_query_generator(
+                    table, table_name, raw_query, snowflake_engine, postgres_engine
                 )
-                results_chunker = query_results_generator(id_diff_query, postgres_engine)
+                # Iterate through the generated queries
+                for query in id_queries:
+                    results_chunker = query_results_generator(query, postgres_engine)
+                    upload_orchestrator(
+                        results_chunker=results_chunker,
+                        engine=snowflake_engine,
+                        table_name=table_name,
+                    )
             elif sync and "{EXECUTION_DATE}" not in raw_query:
                 results_chunker: List[None] = []
             # If incremental mode and the model isn't incremental, do nothing
@@ -208,13 +244,12 @@ def main(
                 query = raw_query.format(**env)
                 logging.info(query)
                 results_chunker = query_results_generator(query, postgres_engine)
-
-            # Upload the dataframe generator to the data warehouse
-            upload_orchestrator(
-                results_chunker=results_chunker,
-                engine=snowflake_engine,
-                table_name=table_name,
-            )
+                # Upload the dataframe generator to the data warehouse
+                upload_orchestrator(
+                    results_chunker=results_chunker,
+                    engine=snowflake_engine,
+                    table_name=table_name,
+                )
             logging.info(f"Finished upload for table: {table}")
     return
 
