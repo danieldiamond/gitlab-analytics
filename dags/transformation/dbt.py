@@ -238,24 +238,7 @@ sfdc_update = KubernetesPodOperator(
     dag=dag,
 )
 
-# snowplow-load
-snowplow_load_cmd = f"""
-    {git_cmd} &&
-    python analytics/transform/util/execute_copy.py
-"""
-snowplow_load = KubernetesPodOperator(
-    **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
-    task_id="snowplow-load",
-    name="snowplow-load",
-    secrets=[SNOWFLAKE_LOAD_USER, SNOWFLAKE_LOAD_PASSWORD, SNOWFLAKE_ACCOUNT],
-    cmds=["/bin/bash", "-c"],
-    arguments=[snowplow_load_cmd],
-    dag=dag,
-)
 
-# Set up the DAG dependencies
-snowplow_load >> branching_dbt_run
 # Branching for run/archive
 branching_dbt_run >> dbt_run
 branching_dbt_run >> dbt_full_refresh

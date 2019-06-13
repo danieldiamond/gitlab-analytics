@@ -15,21 +15,34 @@ def main(engine: Engine) -> None:
 
     logging.info("Running create statement ...")
 
-    create_query = """
+    fishtown_create_query = """
     CREATE OR REPLACE
-    TABLE raw.snowplow.events_sample
+    TABLE raw.snowplow.fishtown_events_sample
     COPY grants AS
     SELECT *
     FROM raw.snowplow.events
+    LIMIT 5000000
+    """
+
+    fishtown_grant_query = """
+    GRANT SELECT ON TABLE snowplow.fishtown_events_sample TO role transformer;
+    """
+
+    gitlab_create_query = """
+    CREATE OR REPLACE
+    TABLE raw.snowplow.gitlab_events_sample
+    COPY grants AS
+    SELECT *
+    FROM raw.snowplow.gitlab_events
     WHERE uploaded_at::DATE > dateadd(day, -2, current_date)::DATE
     LIMIT 5000000
     """
 
-    grant_query = """
-    GRANT SELECT ON TABLE snowplow.events_sample TO role transformer;
+    gitlab_grant_query = """
+    GRANT SELECT ON TABLE snowplow.gitlab_events_sample TO role transformer;
     """
 
-    query_list = [create_query, grant_query]
+    query_list = [fishtown_create_query, fishtown_grant_query, gitlab_create_query, gitlab_grant_query]
 
     for query in query_list:
 
