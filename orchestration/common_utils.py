@@ -20,7 +20,7 @@ def postgres_engine_factory(args: Dict[str, str]) -> Engine:
         db_username, db_password, db_address, db_port, db_database
     )
 
-    return create_engine(conn_string)
+    return create_engine(conn_string, connect_args={'sslcompression': 0})
 
 
 def snowflake_engine_factory(args: Dict[str, str], role: str) -> Engine:
@@ -59,4 +59,4 @@ def snowflake_engine_factory(args: Dict[str, str], role: str) -> Engine:
         role=vars_dict["ROLE"],  # Don't need to do a lookup on this one
     )
 
-    return create_engine(conn_string)
+    return create_engine(conn_string, connect_args={'sslcompression': 0})
