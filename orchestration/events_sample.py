@@ -42,7 +42,12 @@ def main(engine: Engine) -> None:
     GRANT SELECT ON TABLE snowplow.gitlab_events_sample TO role transformer;
     """
 
-    query_list = [fishtown_create_query, fishtown_grant_query, gitlab_create_query, gitlab_grant_query]
+    query_list = [
+        fishtown_create_query,
+        fishtown_grant_query,
+        gitlab_create_query,
+        gitlab_grant_query,
+    ]
 
     for query in query_list:
 
