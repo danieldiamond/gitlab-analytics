@@ -1,37 +1,13 @@
-{{
-  config(
-    materialized='incremental'
-  )
-}}
 
-WITH base as (
-
-  SELECT *
-  {% if target.name not in ("prod") -%}
-
-  FROM {{ source('snowplow', 'events_sample') }}
-
-  {%- else %}
-
-  FROM {{ source('snowplow', 'events') }}
-
-  {%- endif %}
-
-  WHERE length(JSONTEXT['errorCode']) > 0
-
-  {%- if is_incremental() %}
-    AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
-  {% endif -%}
-
+WITH unioned AS (
+        {{ dbt_utils.union_tables(
+                tables =[ ref('snowplow_gitlab_bad_events'), ref('snowplow_fishtown_bad_events')],
+                column_override= none,
+                exclude = none,
+                source_column_name= none
+            ) }}
 )
 
-SELECT
-  JSONTEXT['arrivalTimestamp']::string        AS arrivalTimestamp,
-  JSONTEXT['attemptEndingTimestamp']::string  AS attemptEndingTimestamp,
-  JSONTEXT['attemptsMade']::string            AS attemptsMade,
-  JSONTEXT['errorCode']::string               AS errorCode,
-  JSONTEXT['errorMessage']::string            AS errorMessage,
-  JSONTEXT['lambdaArn']::string               AS lambdaArn,
-  JSONTEXT['rawData'::string]                 AS rawData,
-  uploaded_at
-FROM base
+SELECT *
+FROM unioned
+ORDER BY failure_timestamp

@@ -120,7 +120,8 @@ Usage:
 {{ unpack_unstructured_event(change_form, 'change_form', 'cf') }}
 ```
 Used in:
-- snowplow_unnested_events.sql
+- snowplow_fishtown_unnested_events.sql
+- snowplow_gitlab_events.sql
 
 ## Zuora Slugify ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora_slugify.sql))
 This macro replaces replaces any combination of whitespace and 2 pipes with a single pipe (important for renewal subscriptions) and it replaces all non alphanumeric characters with dashes and casts it to lowercases as well. The end result of using this macro on data like "A-S00003830 || A-S00013333" is "a-s00003830|a-s00013333".
