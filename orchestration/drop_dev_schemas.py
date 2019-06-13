@@ -41,7 +41,7 @@ def main(engine: Engine) -> None:
     Drop each of the schemas that have "scratch" in their name.
     """
 
-    logging.info('Creating list of schemas...')
+    logging.info("Creating list of schemas...")
     schemas = get_list_of_dev_schemas(engine)
     logging.info(f"Dropping {len(schemas)} dev schemas...")
 
@@ -62,15 +62,15 @@ def main(engine: Engine) -> None:
     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=20)
-    logging.info('Starting script...')
+    logging.info("Starting script...")
 
-    logging.info('Creating engine...')
+    logging.info("Creating engine...")
     config_dict = env.copy()
     engine = snowflake_engine_factory(config_dict, "SYSADMIN")
-    logging.info(f'Engine Created: {engine}')
+    logging.info(f"Engine Created: {engine}")
 
-    logging.info('Prepping to drop schemas...')
+    logging.info("Prepping to drop schemas...")
     main(engine)
-    logging.info('Schemas dropped successfully.')
+    logging.info("Schemas dropped successfully.")
