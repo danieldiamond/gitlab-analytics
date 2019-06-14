@@ -14,10 +14,12 @@ from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOpera
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {
-    "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
+    "SNOWFLAKE_LOAD_DATABASE": "RAW"
+    if GIT_BRANCH == "master"
+    else f"{GIT_BRANCH.upper()}_RAW",
     "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
     if GIT_BRANCH == "master"
-    else f"{GIT_BRANCH}_ANALYTICS",
+    else f"{GIT_BRANCH.upper()}_ANALYTICS",
 }
 
 # Default arguments for the DAG
