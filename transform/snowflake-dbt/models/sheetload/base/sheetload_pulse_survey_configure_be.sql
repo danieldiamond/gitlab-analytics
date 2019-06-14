@@ -1,6 +1,6 @@
 with source as (
 
-    SELECT * FROM raw.sheetload.pulse_survey_configure_be
+    SELECT * FROM {{ source('sheetload', 'pulse_survey_configure_be') }}
 
 ), renamed as (
 

@@ -7,7 +7,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM {{ var("database") }}.sheetload.planned_values
+	FROM {{ source('sheetload', 'planned_values') }}
 
 ), renamed AS (
 
