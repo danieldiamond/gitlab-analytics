@@ -6,8 +6,6 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-       account['internalId']::NUMBER        AS account_id,
-       account['name']::STRING              AS account_name,
        address,
        applied,
        aracct['internalId']::NUMBER         AS accounts_receivable_account_id,
@@ -33,6 +31,8 @@ WITH source AS (
        department['name']::STRING           AS department_name,
        duedate                              AS due_date,
        email,
+       entity['name']::STRING               AS entity_name,
+       entity['internalId']::STRING         AS entity_id,
        exchangerate                         AS exchange_rate,
        internalid                           AS transaction_id, -- unique id
        istaxable                            AS is_taxable,
@@ -68,6 +68,7 @@ WITH source AS (
        trandate                             AS transaction_date,
        tranid                               AS tranid, -- not the unique transaction_id
        transactionnumber                    AS transaction_number,
+       _type                                AS transaction_type,
        unapplied,
        usertotal                            AS user_total,
        otherrefnum                          AS other_ref_num,

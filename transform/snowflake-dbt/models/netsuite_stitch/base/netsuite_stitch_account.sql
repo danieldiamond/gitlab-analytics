@@ -7,7 +7,7 @@ WITH source AS (
 
     SELECT internalid                                   AS account_id,
            acctname                                     AS account_name,
-           acctnumber                                   AS account_number,
+           TRY_CAST(acctnumber as integer)              AS account_code,
            accttype [ 'value' ] :: STRING               AS account_type,
 
             -- keys
