@@ -14,7 +14,7 @@ WITH source AS (
                 ['internalId']::NUMBER  AS subsidiary_list,
         parent['internalId']::NUMBER    AS parent_id,
         parent['name']::STRING          AS parent_name,
-        name
+        name                            AS department_name
     FROM source
 
 )
