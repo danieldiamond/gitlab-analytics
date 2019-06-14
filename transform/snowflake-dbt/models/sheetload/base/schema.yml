@@ -1,11 +1,5 @@
 version: 2
 models:
-- name: sheetload_metrics
-  columns:
-  - name: primary_key
-    tests:
-    - not_null
-    - unique
 - name: sheetload_headcount
   columns:
   - name: primary_key
