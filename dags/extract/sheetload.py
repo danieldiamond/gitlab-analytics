@@ -41,7 +41,7 @@ container_cmd = f"""
 dag = DAG("sheetload", default_args=default_args, schedule_interval="0 0 */1 * *")
 
 # Task 1
-version_db_extract = KubernetesPodOperator(
+sheetload_run = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="sheetload",
