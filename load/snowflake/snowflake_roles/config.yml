@@ -190,6 +190,28 @@ roles:
                     - analytics.analytics_meta.*
                     - snowflake.account_usage.*
 
+    - reporter_staging: #Right now this matches the reporter role, until we roll out the sensitive schema 
+        warehouses:
+            - reporting
+        privileges:
+            databases:
+                read:
+                    - analytics
+                    - snowflake
+            schemas:
+                read:
+                    - analytics.analytics ##TODO:add sensitive schema
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - snowflake.account_usage
+
+            tables:
+                read:
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - snowflake.account_usage.*
+
     - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema 
         warehouses:
             - reporting
@@ -373,6 +395,10 @@ roles:
         warehouses:
             - reporting
 
+    - periscope_staging:
+        warehouses:
+            - reporting
+
     - redash:
         warehouses: 
             - reporting  
@@ -537,7 +563,13 @@ users:
         can_login: yes
         member_of:
             - reporter_sensitive
-            - periscope_sensitive            
+            - periscope_sensitive    
+
+    - periscope_staging:
+        can_login: yes
+        member_of:
+            - reporter_staging
+            - periscope_staging        
 
     - redash:
         can_login: yes
