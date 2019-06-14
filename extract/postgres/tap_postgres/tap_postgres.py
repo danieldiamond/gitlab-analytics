@@ -29,7 +29,7 @@ def postgres_engine_factory(
     port = env[connection_dict["port"]]
 
     # Inject the values to create the engine
-    engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/{database}")
+    engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/{database}", connect_args={"sslcompression": 0}))
     logging.info(engine)
     return engine
 
