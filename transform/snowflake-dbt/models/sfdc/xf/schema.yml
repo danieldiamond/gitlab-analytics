@@ -170,5 +170,10 @@ models:
         tests:
           - not_null
           - unique
-
+  - name: sfdc_opportunity_stage_duration
+    description: '{{ doc("sfdc_opportunity_stage_duration") }}'
+    columns:
+      - name: primary_key
+        tests:
+          - not_null
 
