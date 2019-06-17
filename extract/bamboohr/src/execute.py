@@ -66,6 +66,7 @@ if __name__ == "__main__":
         compensation="compensation",
         jobinfo="jobInfo",
         employmentstatus="employmentStatus",
+        custombonus="customBonus",
     )
 
     # Company Directory
