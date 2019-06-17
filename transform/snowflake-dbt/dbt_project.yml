@@ -148,6 +148,8 @@ models:
       snowplow:
         tags: ["product"]
         enabled: true
+        xf:
+          materialized: table
 
       snowflake:
         base:
