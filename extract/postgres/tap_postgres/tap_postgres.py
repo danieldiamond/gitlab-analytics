@@ -48,13 +48,15 @@ def manifest_reader(file_path: str) -> Dict[str, Dict]:
     return manifest_dict
 
 
-def query_results_generator(query: str, engine: Engine) -> pd.DataFrame:
+def query_results_generator(
+    query: str, engine: Engine, chunksize: int = 100_000
+) -> pd.DataFrame:
     """
     Use pandas to run a sql query and load it into a dataframe.
     Yield it back in chunks for scalability.
     """
 
-    query_df_iterator = pd.read_sql(sql=query, con=engine, chunksize=15000)
+    query_df_iterator = pd.read_sql(sql=query, con=engine, chunksize=chunksize)
     return query_df_iterator
 
 
@@ -64,7 +66,7 @@ def dataframe_uploader(
     table_name: str,
     schema: str,
     if_exists: str,
-    chunksize: int = 15000,
+    chunksize: int = 10000,
 ) -> None:
     """
     Upload a dataframe, adding in some metadata and cleaning up along the way.
