@@ -2,6 +2,8 @@ WITH source AS (
 
 	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) as rank_in_key
   FROM {{ source('gitlab_dotcom', 'issues') }}
+	WHERE created_at::varchar NOT IN ('0001-01-01 12:00:00','1000-01-01 12:00:00','10000-01-01 12:00:00')
+	AND LEFT(created_at::varchar , 10) != '1970-01-01'
 
 ), renamed AS (
 
@@ -17,7 +19,7 @@ WITH source AS (
       created_at :: timestamp                                     as issue_created_at,
       updated_at :: timestamp                                     as issue_updated_at,
       last_edited_at :: timestamp                                 as last_edited_at,
-      closed_at :: timestamp                                      as closed_at,
+      closed_at :: timestamp                                      as issue_closed_at,
       confidential :: boolean                                     as is_confidential,
       title,
       description,

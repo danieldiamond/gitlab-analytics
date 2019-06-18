@@ -31,10 +31,11 @@ with issues as (
     SELECT
       issue_id,
       ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY issue_id ASC) AS agg_label
-
     FROM issues
-      LEFT JOIN label_links ON issues.issue_id = label_links.target_id
-      LEFT JOIN all_labels ON label_links.label_id = all_labels.label_id
+    LEFT JOIN label_links
+    ON issues.issue_id = label_links.target_id
+    LEFT JOIN all_labels
+    ON label_links.label_id = all_labels.label_id
     GROUP BY issue_id
 
 ), projects as (
@@ -56,7 +57,7 @@ with issues as (
            issue_created_at,
            issue_updated_at,
            last_edited_at,
-           closed_at,
+           issue_closed_at,
            namespace_id,
            visibility_level,
 
@@ -76,7 +77,7 @@ with issues as (
            END AS is_community_contributor_related,
 
            CASE
-             WHEN ARRAY_CONTAINS('s1'::variant, agg_label) THEN 'severity 1'
+             WHEN ARRAY_CONTAINS('s1'::variant, agg_label) THEN 'security 1'
              WHEN ARRAY_CONTAINS('s2'::variant, agg_label) THEN 'severity 2'
              WHEN ARRAY_CONTAINS('s3'::variant, agg_label) THEN 'severity 3'
              WHEN ARRAY_CONTAINS('s4'::variant, agg_label) THEN 'severity 4'
@@ -90,6 +91,11 @@ with issues as (
              WHEN ARRAY_CONTAINS('p4'::variant, agg_label) THEN 'priority 4'
              ELSE 'undefined'
            END AS priority_tag,
+
+           CASE WHEN namespace_id = 9970
+             AND ARRAY_CONTAINS('security'::variant, agg_label) THEN TRUE
+            ELSE FALSE
+          END AS is_security_issue,
 
            state,
            weight,
