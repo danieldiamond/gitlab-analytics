@@ -77,7 +77,7 @@ with issues as (
            END AS is_community_contributor_related,
 
            CASE
-             WHEN ARRAY_CONTAINS('s1'::variant, agg_label) THEN 'security 1'
+             WHEN ARRAY_CONTAINS('s1'::variant, agg_label) THEN 'severity 1'
              WHEN ARRAY_CONTAINS('s2'::variant, agg_label) THEN 'severity 2'
              WHEN ARRAY_CONTAINS('s3'::variant, agg_label) THEN 'severity 3'
              WHEN ARRAY_CONTAINS('s4'::variant, agg_label) THEN 'severity 4'
