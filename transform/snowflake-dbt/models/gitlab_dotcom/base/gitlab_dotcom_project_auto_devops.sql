@@ -10,8 +10,7 @@ WITH source AS (
       project_id :: integer              as project_id,
       created_at :: timestamp            as project_auto_devops_created_at,
       updated_at :: timestamp            as project_auto_devops_updated_at,
-      enabled :: boolean                 as has_auto_devops_enabled,
-      domain
+      enabled :: boolean                 as has_auto_devops_enabled
 
     FROM source
     WHERE rank_in_key = 1

@@ -10,7 +10,7 @@ WITH source AS (
       id :: integer                                     as notification_settings_id,
       user_id :: integer                                as user_id,
       source_id :: integer                              as source_id,
-      source_type :: integer                            as source_type,
+      source_type                                       as source_type,
       level :: integer                                  as settings_level,
       created_at :: timestamp                           as notification_settings_created_at,
       updated_at :: timestamp                           as notification_settings_updated_at,
