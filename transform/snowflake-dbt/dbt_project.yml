@@ -109,17 +109,8 @@ models:
       gitlab_dotcom:
         tags: ["product"]
         enabled: true
-        base:
-          gitlab_dotcom_users:
-            enabled: false
-          gitlab_dotcom_project_auto_devops:
-            enabled: FALSE
         xf:
           materialized: table
-          gitlab_dotcom_retention_cohorts:
-            enabled: FALSE
-          gitlab_dotcom_users_xf:
-            enabled: FALSE
 
 
       netsuite_fivetran:

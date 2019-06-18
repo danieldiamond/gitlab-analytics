@@ -54,7 +54,6 @@ WITH source AS (
       ghost :: boolean                                                   as is_ghost,
       last_activity_on :: timestamp                                      as last_activity_on,
       notified_of_own_activity :: boolean                                as is_notified_of_own_activity,
-      support_bot :: boolean                                             as is_support_bot,
       IFF(lower(preferred_language) = 'nan', NULL, preferred_language)   as preferred_language,
       theme_id :: integer                                                as theme_id
 
