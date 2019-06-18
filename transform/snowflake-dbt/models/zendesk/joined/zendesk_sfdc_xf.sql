@@ -29,15 +29,10 @@ WITH zendesk_tickets_xf AS (
           count_using_ce
   FROM {{ref('sfdc_accounts_xf')}}
 
-), sfdc_opportunity AS (
-
-  SELECT *
-  FROM {{ref('sfdc_opportunity_xf')}}
 )
 
 SELECT * 
 FROM zendesk_tickets_xf
 INNER JOIN sfdc_accounts 
     ON zendesk_tickets_xf.sfdc_id = sfdc_accounts.dupe_account_id
-INNER JOIN sfdc_opportunity
-    ON zendesk_tickets_xf.sfdc_id = sfdc_opportunity.account_id 
+
