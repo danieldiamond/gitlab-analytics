@@ -13,7 +13,7 @@ WITH source AS (
             subsidiarylist['recordRef'][0])
                 ['internalId']::NUMBER  AS subsidiary_list,
         parent['internalId']::NUMBER    AS parent_id,
-        parent['name']::STRING          AS parent_name,
+        coalesce(parent['name']::STRING, name) AS parent_name,
         name                            AS department_name
     FROM source
 
@@ -21,5 +21,3 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-
-
