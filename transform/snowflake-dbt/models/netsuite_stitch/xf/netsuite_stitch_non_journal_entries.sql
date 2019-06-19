@@ -49,7 +49,7 @@ non_journal_entries AS (
               ELSE t.entity_name END AS entity,
             ap.accounting_period_id                   AS posting_period_id,
             d.department_name,
-            d.parent_name                             AS parent_deparment_name,
+            COALESCE(d.parent_name, 'zNeed Accounting Reclass') AS parent_department_name,
             SUM(e.amount)           AS amount
           FROM expenses e
             JOIN transactions t         ON e.transaction_id = t.transaction_id
@@ -79,7 +79,7 @@ SELECT
     e.entity,
     e.posting_period_id,
     e.department_name,
-    e.parent_deparment_name,
+    e.parent_department_name,
     CASE
      WHEN e.subsidiary_name = 'GitLab Inc'
       THEN 1
@@ -89,6 +89,6 @@ SELECT
     IFF(e.transaction_type != 'VendorCredit' AND e.amount >= 0, consolidated_exchange * e.amount * exchange_factor, 0) AS debit_amount,
     IFF(e.transaction_type = 'VendorCredit' OR e.amount < 0, ABS(consolidated_exchange * e.amount * exchange_factor), 0) AS credit_amount
 FROM non_journal_entries e
-     LEFT JOIN consolidated_exchange_rates r
-       ON CAST(r.postingperiod AS INTEGER) = e.posting_period_id
-              AND CAST(r.from_subsidiary AS INTEGER) = e.subsidiary_id
+LEFT JOIN consolidated_exchange_rates r
+     ON CAST(r.postingperiod AS INTEGER) = e.posting_period_id
+     AND CAST(r.from_subsidiary AS INTEGER) = e.subsidiary_id

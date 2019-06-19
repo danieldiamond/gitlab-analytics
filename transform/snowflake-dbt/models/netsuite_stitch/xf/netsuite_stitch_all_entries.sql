@@ -6,19 +6,27 @@
 
 
 WITH journal_entries AS (
+
     SELECT *
     FROM {{ref('netsuite_stitch_journal_entries')}}
-),
 
-non_journal_entries AS (
+), non_journal_entries AS (
+
     SELECT *
     FROM {{ref('netsuite_stitch_non_journal_entries')}}
+
+), unioned AS (
+
+    SELECT *
+    FROM journal_entries
+
+    UNION ALL
+
+    SELECT *
+    FROM non_journal_entries
+
 )
 
 SELECT *
-FROM journal_entries
-
-UNION ALL
-
-SELECT *
-FROM non_journal_entries
+FROM unioned
+WHERE account_name NOT IN ('5079 - Intercompany COGS','6079 - Intercompany')
