@@ -261,5 +261,6 @@ def main(
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    logging.getLogger("sqlalchemy").setLevel(logging.WARNING)
+    logging.getLogger("snowflake.connector.network").disabled = True
+    logging.getLogger("snowflake.connector.cursor").disabled = True
     Fire({"tap": main})
