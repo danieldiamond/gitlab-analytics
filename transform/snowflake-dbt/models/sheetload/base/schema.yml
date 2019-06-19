@@ -1,5 +1,16 @@
 version: 2
 models:
+- name: sheetload_employee_location_factor
+  description: This maps an employee ID from bamboo to the location factor used for People Ops purposes. The "Comp Data Analysis and Modeling" spreadsheet maintained by the Compensation & Benefits Manager is the SSOT for location factor.
+  columns:
+  - name: bamboo_employee_id
+    tests:
+    - not_null
+    - unique
+  - name: location_factor
+    description: This is the location factor used for calculating analyses and takes into account the metrics adjusted location factor, where that exists.
+    tests:
+    - not_null
 - name: sheetload_headcount
   columns:
   - name: primary_key
