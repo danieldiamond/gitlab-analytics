@@ -209,6 +209,7 @@ You can use `Command + Option + L` to format your file.
 - [Udacity](https://www.udacity.com/course/intro-to-relational-databases--ud197)
 - [Stanford University Mini-Courses](https://lagunita.stanford.edu/courses/DB/2014/SelfPaced/about)
 - [The Data School by Chartio](https://dataschool.com/learn/inroduction-to-teaching-others-sql)
+- [W3Schools](https://www.w3schools.com/sql/default.asp)
 
 #### Data Newsletters
 - [Data Science Roundup Newsletter](http://roundup.fishtownanalytics.com/)
