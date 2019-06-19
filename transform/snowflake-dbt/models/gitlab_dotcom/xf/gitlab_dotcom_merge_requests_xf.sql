@@ -48,7 +48,7 @@ with merge_requests as (
       merge_request_metrics.merged_at,
 
       CASE
-        WHEN target_project_id IN (select * from gitlab_org_projects)
+        WHEN gitlab_org_projects.project_id IS NOT NULL
           AND lower(labels.masked_label_title) = 'community contribution'
           THEN TRUE
         ELSE FALSE
@@ -60,6 +60,7 @@ with merge_requests as (
       LEFT JOIN label_links on merge_requests.merge_request_id = label_links.target_id
       LEFT JOIN labels on label_links.label_id = labels.label_id
       LEFT JOIN merge_request_metrics on merge_requests.merge_request_id = merge_request_metrics.merge_request_id
+      LEFT JOIN gitlab_org_projects on merge_requests.target_project_id = gitlab_org_projects.project_id
 )
 
 SELECT * from joined

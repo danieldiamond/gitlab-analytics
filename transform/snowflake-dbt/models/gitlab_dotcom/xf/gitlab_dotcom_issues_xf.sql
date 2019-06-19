@@ -5,7 +5,6 @@
 }}
 
 {% set fields_to_mask = ['title', 'description'] %}
-{% set gitlab_namespaces = (6543,9970,4347861) %}
 
 
 with issues as (
@@ -63,8 +62,8 @@ with issues as (
 
            {% for field in fields_to_mask %}
            CASE
-             WHEN is_confidential = TRUE AND namespace_id NOT IN {{gitlab_namespaces}} THEN 'confidential - masked'
-             WHEN visibility_level != 'public' AND namespace_id NOT IN {{gitlab_namespaces}} THEN 'private/internal - masked'
+             WHEN is_confidential = TRUE AND namespace_id NOT IN {{ get_internal_namespaces() }} THEN 'confidential - masked'
+             WHEN visibility_level != 'public' AND namespace_id NOT IN {{ get_internal_namespaces() }} THEN 'private/internal - masked'
              ELSE {{field}}
            END                                                         AS issue_{{field}},
            {% endfor %}
