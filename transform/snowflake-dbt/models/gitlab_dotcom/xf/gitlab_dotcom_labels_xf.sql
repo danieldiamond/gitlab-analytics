@@ -1,4 +1,3 @@
-{% set gitlab_namespaces = (6543,9970,4347861) %}
 with labels as (
 
   SELECT *
@@ -16,7 +15,7 @@ with labels as (
     SELECT label_id,
 
            CASE
-             WHEN projects.visibility_level != 'public' AND namespace_id NOT IN {{gitlab_namespaces}} THEN 'content masked'
+             WHEN projects.visibility_level != 'public' AND namespace_id NOT IN {{ get_internal_namespaces() }} THEN 'content masked'
              ELSE label_title
            END                                          AS masked_label_title,
 

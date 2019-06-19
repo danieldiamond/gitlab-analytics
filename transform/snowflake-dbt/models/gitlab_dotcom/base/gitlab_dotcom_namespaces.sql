@@ -5,7 +5,6 @@
 }}
 
 {% set fields_to_mask = ['name', 'path'] %}
-{% set gitlab_namespaces = (6543,9970,4347861) %}
 
 with source as (
 
@@ -18,9 +17,9 @@ with source as (
 
             {% for field in fields_to_mask %}
             CASE
-              WHEN visibility_level = '20' OR namespace_id::int IN {{gitlab_namespaces}} THEN {{field}}
-              WHEN visibility_level = '10' AND namespace_id::int NOT IN {{gitlab_namespaces}} THEN 'internal - masked'
-              WHEN visibility_level = '0' AND namespace_id::int NOT IN {{gitlab_namespaces}} THEN 'private - masked'
+              WHEN visibility_level = '20' OR namespace_id::int IN {{ get_internal_namespaces() }} THEN {{field}}
+              WHEN visibility_level = '10' AND namespace_id::int NOT IN {{ get_internal_namespaces() }} THEN 'internal - masked'
+              WHEN visibility_level = '0' AND namespace_id::int NOT IN {{ get_internal_namespaces() }} THEN 'private - masked'
             END                                                             AS namespace_{{field}},
             {% endfor %}
 
@@ -49,7 +48,8 @@ with source as (
             require_two_factor_authentication :: boolean                    AS does_require_two_factor_authentication,
             two_factor_grace_period :: number                               AS two_factor_grace_period,
             plan_id :: integer                                              AS plan_id,
-            project_creation_level::integer                                 AS project_creation_level
+            project_creation_level::integer                                 AS project_creation_level,
+            (namespace_id IN {{ get_internal_namespaces() }} )              AS namespace_is_internal
 
     FROM source
     WHERE rank_in_key = 1

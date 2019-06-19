@@ -46,6 +46,15 @@ Usage:
 Used in:
 - all models surfaced in our BI tool.
 
+## Get Internal Namespaces
+Returns a list of all the internal gitlab.com namespaces, enclosed in round brackets. This is useful for filtering an analysis down to external users only.
+Usage:
+```
+{{ get_internal_namespaces() }}
+```
+Used in:
+- gitlab_dotcom/
+
 ## Grants ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/grant_usage_to_schema.sql))
 This macro...
 Usage:
@@ -108,7 +117,7 @@ Used in:
 ## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/stage_mapping.sql))
 This macro takes in a product stage name, such as 'Verify', and returns a SQL aggregation statement that sums the number of users using that stage, based on the ping data. Product metrics are mapped to stages using the [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
 ```
-{{ stage_mapping( 'Verify' ) }} 
+{{ stage_mapping( 'Verify' ) }}
 ```
 Used in:
 - pings_usage_data_monthly_change_by_stage.sql
