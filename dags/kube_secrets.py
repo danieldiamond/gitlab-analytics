@@ -18,6 +18,14 @@ GCP_PRODUCTION_INSTANCE_NAME = Secret(
 # Stitch
 STITCH_CONFIG = Secret("volume", "/secrets", "airflow", "STITCH_CONFIG")
 
+# Greenhouse S3 Bucket
+GREENHOUSE_ACCESS_KEY_ID = Secret(
+    "env", "GREENHOUSE_ACCESS_KEY_ID", "airflow", "GREENHOUSE_ACCESS_KEY_ID"
+)
+GREENHOUSE_SECRET_ACCESS_KEY = Secret(
+    "env", "GREENHOUSE_SECRET_ACCESS_KEY", "airflow", "GREENHOUSE_SECRET_ACCESS_KEY"
+)
+
 # Postgres
 PG_USERNAME = Secret("env", "PG_USERNAME", "airflow", "PG_USERNAME")
 PG_ADDRESS = Secret("env", "PG_ADDRESS", "airflow", "PG_ADDRESS")
