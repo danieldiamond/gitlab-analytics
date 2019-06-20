@@ -78,6 +78,14 @@ models:
       page_views:
         optional:
           enabled: false
+    snowflake_spend:
+      enabled: true
+      base:
+        materialized: table
+      xf:
+        materialized: table
+      vars:
+        cost_per_credit: 2.55
 
     gitlab_snowflake:
       enabled: true
@@ -151,14 +159,6 @@ models:
         tags: ["product"]
         enabled: true
         xf:
-          materialized: table
-
-      snowflake:
-        base:
-          enabled: true
-          materialized: table
-        xf:
-          enabled: true
           materialized: table
 
       sfdc:
