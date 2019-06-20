@@ -1,4 +1,6 @@
 packages:
+  - git: https://gitlab.com/gitlab-data/snowflake_spend.git
+    revision: master
   - git: https://gitlab.com/gitlab-data/snowplow.git
     revision: master
   - package: fishtown-analytics/logging
