@@ -121,6 +121,8 @@ models:
         xf:
           materialized: table
 
+      netsuite:
+        enabled: false
 
       netsuite_fivetran:
         enabled: true
