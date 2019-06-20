@@ -1,10 +1,13 @@
 import sys
+from io import StringIO
 from logging import exception, info, basicConfig
 from os import environ as env
+import re
 from time import time
 from typing import Dict, List
 from yaml import load
 
+import boto3
 import gspread
 import pandas as pd
 from fire import Fire
@@ -25,6 +28,8 @@ def dw_uploader(
     schema: str,
     data: pd.DataFrame,
     chunk: int = 0,
+    upload_chunksize: int = 15000,
+    truncate: bool = False,
     force_dtypes: str = None,
 ) -> bool:
     """
@@ -38,8 +43,8 @@ def dw_uploader(
     if force_dtypes:
         data[data.columns] = data[data.columns].astype(force_dtypes)
 
-    # If the data isn't chunked, or this is the first iteration, truncate
-    if not chunk:
+    # If the data isn't chunked, or this is the first iteration, drop table
+    if not chunk and not truncate:
         try:
             if engine.has_table(table, schema):
                 existing_table = pd.read_sql_table(table, engine, schema)
@@ -48,9 +53,10 @@ def dw_uploader(
                 ).equals(data):
                     info('Table "{}" has not changed. Aborting upload.'.format(table))
                     return False
-                engine.connect().execute(
-                    "drop table {}.{} cascade".format(schema, table)
-                )
+                else:
+                    engine.connect().execute(
+                        "DROP TABLE {}.{} CASCADE".format(schema, table)
+                    )
         except Exception as e:
             info(repr(e))
             raise
@@ -60,7 +66,12 @@ def dw_uploader(
     if_exists = "append" if chunk else "replace"
     try:
         data.to_sql(
-            name=table, con=engine, schema=schema, index=False, if_exists=if_exists
+            name=table,
+            con=engine,
+            schema=schema,
+            index=False,
+            if_exists=if_exists,
+            chunksize=upload_chunksize,
         )
         info(
             "Successfully loaded {} rows into {}.{}".format(
@@ -78,7 +89,7 @@ def csv_loader(
     *paths: List[str],
     destination: str,
     conn_dict: Dict[str, str] = None,
-    compression: str = None
+    compression: str = None,
 ) -> None:
     """
     Load data from a csv file into a DataFrame and pass it to dw_uploader.
@@ -193,7 +204,7 @@ def gcs_loader(
     compression: str = "gzip",
     conn_dict: Dict[str, str] = None,
     gapi_keyfile: str = None,
-    schema: str = "sheetload"
+    schema: str = "sheetload",
 ) -> None:
     """
     Download a CSV file from a GCS bucket and then pass it to dw_uploader.
@@ -258,7 +269,56 @@ def gcs_loader(
     return
 
 
+def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> None:
+
+    """
+    Load data from csv files stored in an S3 Bucket into a DataFrame and pass it to dw_uploader
+    for loading into Snowflake.
+
+    Loader will iterate through all files in the provided bucket that have the `.csv` extension.
+
+    python sheetload.py s3 --bucket datateam-greenhouse-extract --schema greenhouse
+
+    """
+
+    # Create Snowflake engine
+    engine = snowflake_engine_factory(conn_dict or env, "LOADER")
+    info(engine)
+
+    # Set S3 Client
+    if schema == "greenhouse":
+        aws_access_key_id = env["GREENHOUSE_ACCESS_KEY_ID"]
+        aws_secret_access_key = env["GREENHOUSE_SECRET_ACCESS_KEY"]
+
+    session = boto3.Session(
+        aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key
+    )
+    s3_client = session.client("s3")
+    s3_bucket = s3_client.list_objects(Bucket=bucket)
+
+    # Iterate through files and upload
+    for obj in s3_bucket["Contents"]:
+        file = obj["Key"]
+        info(f"Working on {file}...")
+
+        if re.search(r"\.csv", file):
+
+            csv_obj = s3_client.get_object(Bucket=bucket, Key=file)
+            body = csv_obj["Body"]
+            csv_string = body.read().decode("utf-8")
+
+            sheet_df = pd.read_csv(StringIO(csv_string), engine="c", low_memory=False)
+
+            table, extension = file.split(".")[0:2]
+
+            dw_uploader(engine, table, schema, sheet_df, truncate=True)
+
+    return
+
+
 if __name__ == "__main__":
     basicConfig(stream=sys.stdout, level=20)
-    Fire({"csv": csv_loader, "sheets": sheet_loader, "gcs": gcs_loader})
+    Fire(
+        {"csv": csv_loader, "sheets": sheet_loader, "gcs": gcs_loader, "s3": s3_loader}
+    )
     info("Complete.")

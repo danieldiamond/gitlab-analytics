@@ -35,6 +35,15 @@ Loading a CSV from GCS:
   - This command has multiple default params: `schema` (the target schema) = `sheetload`, `compression` (what compression is used) = `gzip`
   - Sheetload will then download the file and iterate through it, 15000 records at a time and upload them. 
 
+Loading a CSV from S3:
+
+ - Put CSVs in a bucket for which you have the access key and secret access key
+ - Prove the bucket name and the schema name to sheetload
+ - The name of the table will be the first part of the file name, for instance `users.csv` will be in the table `users`
+ - AWS credentials are based on the schema name
+ - Run the command `python3 sheetload.py s3 --bucket <bucket_name> --schema <schema_name>`
+ - Sheetload will then iterate through each file in the bucket, download each, drop any existing table, and then upload 15000 records at a time for each file
+
 Further Usage Help:
 
   - See [the sheetload dag](https://gitlab.com/gitlab-data/analytics/blob/master/dags/extract/sheetload.py) for a real world example of usage
