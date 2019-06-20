@@ -33,7 +33,8 @@ tables:
       hostname,
       host_id
       FROM usage_data
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'version'
     export_table: 'usage_data'
@@ -77,7 +78,8 @@ tables:
       percentage_projects_prometheus_active,
       percentage_service_desk_issues
       FROM conversational_development_indices
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'version'
     export_table: 'conversational_development_indices'
@@ -93,7 +95,8 @@ tables:
       created_at,
       updated_at
       FROM fortune_companies
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'version'
     export_table: 'fortune_companies'
@@ -110,7 +113,8 @@ tables:
       fortune_rank,
       in_salesforce
       FROM hosts
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'version'
     export_table: 'hosts'
@@ -132,7 +136,8 @@ tables:
       last_ping_received_at,
       version
       FROM licenses
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'version'
     export_table: 'licenses'
@@ -140,8 +145,7 @@ tables:
   schema_migrations:
     import_db: VERSION_DB
     import_query: >
-      SELECT
-      version
+      SELECT version
       FROM schema_migrations
     export_db: EXPORT_DB
     export_schema: 'version'
@@ -165,7 +169,8 @@ tables:
       provider,
       uid
       FROM users
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'version'
     export_table: 'users'
@@ -182,7 +187,8 @@ tables:
       referer_url,
       host_id
       FROM version_checks
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'version'
     export_table: 'version_checks'
@@ -197,7 +203,8 @@ tables:
       created_at,
       updated_at
       FROM versions
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'version'
     export_table: 'versions'

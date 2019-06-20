@@ -8,14 +8,14 @@ tables:
   add_ons:
     import_db: LICENSE_DB
     import_query: >
-      SELECT
-      id,
-      name,
-      code,
-      created_at,
-      updated_at
+      SELECT id
+      , name
+      , code
+      , created_at
+      , updated_at
       FROM add_ons
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'license'
     export_table: 'add_ons'
@@ -23,15 +23,15 @@ tables:
   granted_add_ons:
     import_db: LICENSE_DB
     import_query: >
-      SELECT
-      id,
-      license_id,
-      add_on_id,
-      quantity,
-      created_at,
-      updated_at
+      SELECT id
+      , license_id
+      , add_on_id
+      , quantity
+      , created_at
+      , updated_at
       FROM granted_add_ons
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'license'
     export_table: 'granted_add_ons'
@@ -57,7 +57,8 @@ tables:
       created_at,
       updated_at
       FROM licenses
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'license'
     export_table: 'licenses'
@@ -73,7 +74,8 @@ tables:
       updated_at,
       recurly_name
       FROM plans
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'license'
     export_table: 'plans'
@@ -96,7 +98,8 @@ tables:
       provider,
       uid
       FROM users
-      WHERE updated_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'license'
     export_table: 'users'
@@ -104,8 +107,7 @@ tables:
   schema_migrations:
     import_db: LICENSE_DB
     import_query: >
-      SELECT
-      version
+      SELECT version
       FROM schema_migrations
     export_db: EXPORT_DB
     export_schema: 'license'
