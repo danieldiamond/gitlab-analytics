@@ -1,5 +1,7 @@
 packages:
   - git: https://gitlab.com/gitlab-data/snowplow.git
     revision: master
-  - git: https://github.com/fishtown-analytics/dbt-event-logging.git
-    revision: 0.1.6
+  - package: fishtown-analytics/logging
+    version: 0.1.6
+  - package: fishtown-analytics/dbt_utils
+    version: 0.1.23
