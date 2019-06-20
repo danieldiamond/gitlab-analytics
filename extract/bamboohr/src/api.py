@@ -1,5 +1,5 @@
 import os
-from logging import exception, info, basicConfig
+from typing import Dict, Any
 
 import requests
 
@@ -34,7 +34,7 @@ class BambooAPI(object):
         if self.datatype == "JSON":
             self.headers.update({"Accept": "application/json"})
 
-    def get_employee_directory(self):
+    def get_employee_directory(self) -> Dict[Any, Any]:
         """
         API method for returning a globally shared company directory.
         http://www.bamboohr.com/api/documentation/employees.php
@@ -51,13 +51,30 @@ class BambooAPI(object):
 
         return employees
 
-    def get_tabular_data(self, table_name, employee_id="all"):
+    def get_tabular_data(
+        self, table_name: str, employee_id: str = "all"
+    ) -> Dict[Any, Any]:
         """
         API method to retrieve tabular data for an employee, or all employees if employee_id argument is 'all' (the default).
         See http://www.bamboohr.com/api/documentation/tables.php for a list of available tables.
         @return A list of dictionaries with the default return data.
         """
-        url = self.base_url + "employees/{}/tables/{}".format(employee_id, table_name)
+        url = self.base_url + f"employees/{employee_id}/tables/{table_name}"
+        r = requests.get(
+            url, timeout=self.timeout, headers=self.headers, auth=(self.api_token, ".")
+        )
+        r.raise_for_status()
+
+        data = r.json()
+
+        return data
+
+    def get_report(self, report_number: int, format: str = "JSON") -> Dict[Any, Any]:
+        """
+        API method to retrieve a specific report that already exists
+        return A JSON response object
+        """
+        url = self.base_url + f"reports/{report_number}?format={format}"
         r = requests.get(
             url, timeout=self.timeout, headers=self.headers, auth=(self.api_token, ".")
         )
