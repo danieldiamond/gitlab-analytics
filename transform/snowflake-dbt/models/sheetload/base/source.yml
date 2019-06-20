@@ -17,6 +17,7 @@ sources:
       warn_after: {count: 30, period: day}
 
     tables:
+      - name: employee_location_factor
       - name: google_referrals
       - name: headcount
       - name: marketing_pipe_to_spend_headcount
