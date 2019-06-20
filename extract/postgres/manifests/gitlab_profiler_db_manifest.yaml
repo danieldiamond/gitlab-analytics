@@ -8,11 +8,22 @@ tables:
   request_stats:
     import_db: GITLAB_PROFILER_DB
     import_query: >
-      SELECT id, url, auth_type, html_url, sql_url, gitlab_version,
-             status_code, view_time_ms, sql_time_ms, total_ms, created_at,
-             started_at, ended_at
+      SELECT id
+      , url
+      , auth_type
+      , html_url
+      , sql_url
+      , gitlab_version
+      , status_code
+      , view_time_ms
+      , sql_time_ms
+      , total_ms
+      , created_at
+      , started_at
+      , ended_at
       FROM request_stats
-      WHERE created_at >= CURRENT_TIMESTAMP - interval '{DAYS} day'
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'gitlab_profiler'
     export_table: 'request_stats'

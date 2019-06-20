@@ -52,10 +52,10 @@ VERSION_DB_HOST = Secret("env", "VERSION_DB_HOST", "airflow", "VERSION_DB_HOST")
 VERSION_DB_NAME = Secret("env", "VERSION_DB_NAME", "airflow", "VERSION_DB_NAME")
 
 # Customers DB
-CUSTOMER_DB_USER = Secret("env", "CUSTOMER_DB_USER", "airflow", "CUSTOMER_DB_USER")
-CUSTOMER_DB_PASS = Secret("env", "CUSTOMER_DB_PASS", "airflow", "CUSTOMER_DB_PASS")
-CUSTOMER_DB_HOST = Secret("env", "CUSTOMER_DB_HOST", "airflow", "CUSTOMER_DB_HOST")
-CUSTOMER_DB_NAME = Secret("env", "CUSTOMER_DB_NAME", "airflow", "CUSTOMER_DB_NAME")
+CUSTOMERS_DB_USER = Secret("env", "CUSTOMERS_DB_USER", "airflow", "CUSTOMERS_DB_USER")
+CUSTOMERS_DB_PASS = Secret("env", "CUSTOMERS_DB_PASS", "airflow", "CUSTOMERS_DB_PASS")
+CUSTOMERS_DB_HOST = Secret("env", "CUSTOMERS_DB_HOST", "airflow", "CUSTOMERS_DB_HOST")
+CUSTOMERS_DB_NAME = Secret("env", "CUSTOMERS_DB_NAME", "airflow", "CUSTOMERS_DB_NAME")
 
 # License DB
 LICENSE_DB_USER = Secret("env", "LICENSE_DB_USER", "airflow", "LICENSE_DB_USER")
