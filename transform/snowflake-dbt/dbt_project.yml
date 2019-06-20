@@ -84,8 +84,9 @@ models:
       materialized: view
 
       bamboohr:
+        schema: sensitive
+        enabled: true
         base:
-          enabled: true
           materialized: table
 
       customers:

@@ -1,22 +1,97 @@
 version: 2
 
 models:
-    - name: bamboohr_directory
-      description: Base model for BambooHR Active Directory. This only shows currently active employees.
-      columns:
-          - name: employee_id
-            tests:
-                - not_null
-                - unique
-          - name: full_name
-            tests:
-                - not_null
-          - name: first_name
-            tests:
-                - not_null
-          - name: last_name
-            tests:
-                - not_null
-          - name: preferred_name
-          - name: binary_gender
-          - name: job_title
+  - name: bamboohr_compensation
+    description: A log of compensation and compensation related updates.
+    columns:
+      - name: compensation_update_id
+        tests:
+            - unique
+            - not_null
+      - name: employee_id
+        description: Foreign Key to employee info
+        tests:
+            - not_null
+      - name: effective_date
+        description: Date the compensation change goes into effect
+        tests:
+          - not_null
+      - name: compensation_type
+      - name: compensation_change_reason
+        description: Compensation can change because of promotions, role changes, annual reviews and for other reasons.
+        tests:
+          - not_null
+  - name: bamboohr_custom_bonus
+    description: There are multiple bonuses that a team member can earn that are captured here.
+    columns:
+      - name: bonus_id
+        tests:
+            - unique
+            - not_null
+      - name: employee_id
+        description: Foreign Key to employee info
+        tests:
+            - not_null
+      - name: bonus_type
+        tests:
+          - not_null
+      - name: bonus_date
+        tests:
+          - not_null
+  - name: bamboohr_directory
+    description: Base model for BambooHR Active Directory. This only shows currently active employees.
+    columns:
+      - name: employee_id
+        tests:
+            - unique
+            - not_null
+      - name: full_name
+        tests:
+            - unique
+            - not_null
+      - name: job_title
+  - name: bamboohr_employment_status
+    columns:
+      - name: status_id
+        tests:
+            - unique
+            - not_null
+      - name: employee_id
+        tests:
+            - not_null
+      - name: effective_date
+        tests:
+            - not_null
+      - name: employment_status
+        tests:
+            - not_null
+      - name: termination_type
+        tests:
+            - not_null
+  - name: bamboohr_job_info
+    columns:
+      - name: job_id
+        tests:
+            - unique
+            - not_null
+      - name: employee_id
+        tests:
+            - not_null
+      - name: job_title
+        tests:
+            - not_null
+      - name: effective_date
+        tests:
+            - not_null
+      - name: department
+        tests:
+            - not_null
+      - name: division
+        tests:
+            - not_null
+      - name: entity
+        tests:
+            - not_null
+      - name: reports_to
+        tests:
+            - not_null

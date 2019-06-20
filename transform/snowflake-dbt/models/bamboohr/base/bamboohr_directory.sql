@@ -1,29 +1,23 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 WITH source AS (
 
-	SELECT *
-    FROM {{ source('bamboohr', 'directory') }}
-    ORDER BY uploaded_at
-    DESC
-    LIMIT 1
+			SELECT *
+	    FROM {{ source('bamboohr', 'directory') }}
+	    ORDER BY uploaded_at DESC
+	    LIMIT 1
+
+), intermediate as (
+
+      SELECT d.value as data_by_row
+      FROM source,
+      LATERAL FLATTEN(INPUT => parse_json(jsontext), outer => true) d
 
 ), renamed AS (
 
     SELECT
-        d.value:displayName::STRING                             AS full_name,
-        d.value:firstName::STRING                               AS first_name,
-        d.value:gender::STRING                                  AS binary_gender,
-        d.value:id::NUMBER                                      AS employee_id,
-        d.value:jobTitle::STRING                                AS job_title,
-        d.value:lastName::STRING                                AS last_name,
-        nullif(d.value:preferredName::STRING,'null')::STRING    AS preferred_name
-    FROM source
-    , LATERAL FLATTEN(INPUT => parse_json(jsontext)) d
+        data_by_row['id']::bigint 						AS employee_id,
+				data_by_row['displayName']::varchar 	AS full_name,
+        data_by_row['jobTitle']::varchar 		AS job_title
+    FROM intermediate
 
 )
 

@@ -10,6 +10,12 @@ sources:
     freshness:
       warn_after: {count: 24, period: hour}
 
-    tables: 
+    tables:
+      - name: compensation
+      - name: custom_bonus
+        identifier: custombonus
       - name: directory
-
+      - name: employment_status
+        identifier: employmentstatus
+      - name: job_info
+        identifier: jobinfo
