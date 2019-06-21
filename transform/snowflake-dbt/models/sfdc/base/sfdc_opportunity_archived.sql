@@ -1,4 +1,10 @@
-with source AS (
+{{
+  config(
+    materialized = "table"
+  )
+}}
+
+WITH source AS (
 
     SELECT *
     FROM {{ source('salesforce_archive', 'sfdc_opportunity_archived') }}
