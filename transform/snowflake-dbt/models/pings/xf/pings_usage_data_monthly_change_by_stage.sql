@@ -28,12 +28,25 @@ pings AS (
       ON change.uuid = boolean.uuid
       AND DATE_TRUNC('month', change.created_at) = DATE_TRUNC('month', boolean.created_at)
 
+),
+
+hostnames AS (
+    SELECT
+      uuid
+      , LISTAGG(DISTINCT hostname, ', ') AS uuid_hostnames
+    FROM
+      {{ref('pings_usage_data_unpacked')}}
+    GROUP BY
+      1
 )
 
 SELECT
   DATE_TRUNC('month', pings.created_at)::DATE AS created_at,
+  pings.uuid,
   pings.ping_source,
   pings.main_edition,
+  pings.edition_type,
+  uuid_hostnames,
 
   -- For each stage in stage_list, pass it to the `stage_mapping` macro
   {% for stage_name in stage_list %}
@@ -42,5 +55,6 @@ SELECT
 
   SUM(user_count) AS "Total"
 FROM pings
-GROUP BY 1, 2, 3
+  LEFT JOIN hostnames ON pings.uuid = hostnames.uuid
+GROUP BY 1, 2, 3, 4, 5, 6
 ORDER BY 1
