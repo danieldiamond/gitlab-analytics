@@ -15,6 +15,7 @@ pod_env_vars = {
     "AVG_CYCLE_ANALYTICS_ID": "1",
     "CI_PROJECT_DIR": "/analytics",
     "DAYS": "1",
+    "EXECUTION_DATE": "{{ execution_date }}",
     "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
     "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
     if GIT_BRANCH == "master"
