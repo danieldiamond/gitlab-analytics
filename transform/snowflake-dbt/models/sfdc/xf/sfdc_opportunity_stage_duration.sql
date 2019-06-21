@@ -17,7 +17,7 @@ stages AS (
 all_stages AS (
 -- Gets a mapping of opp id to all mapped stages
         SELECT
-          opphistory.opportunityid                   AS opportunity_id,                                                      
+          opphistory.opportunity_id,                                                    
           stages.mapped_stage
         FROM opphistory
         CROSS JOIN stages
@@ -27,11 +27,11 @@ agg_days AS (
 -- Gets each mapped stage in opp history and the days in that stage
        SELECT
         stages.mapped_stage,
-        opphistory.opportunityid                    AS opportunity_id,
+        opphistory.opportunity_id,
         sum(days_in_stage) AS days_in_stage
        FROM opphistory
        JOIN stages
-       ON opphistory.stagename = stages.primary_label
+       ON opphistory.stage_name = stages.primary_label
        GROUP BY 1, 2
 )
 
