@@ -45,3 +45,4 @@ SELECT
     bad_count.bad_event_count
 FROM good_count
 LEFT JOIN bad_count on good_count.event_day = bad_count.event_day
+ORDER BY event_day

@@ -191,3 +191,4 @@ AND lower(page_url) NOT LIKE 'http://localhost:%'
 SELECT *
 FROM unnested_unstruct
 WHERE event_id NOT IN (SELECT * FROM events_to_ignore)
+ORDER BY true_tstamp
