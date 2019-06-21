@@ -4,63 +4,79 @@
     })
 }}
 
-with merge_requests as (
+WITH merge_requests AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_merge_requests')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_merge_requests')}}
 
-), all_label_links as (
+), label_links AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_label_links')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_label_links')}}
+    WHERE target_type = 'MergeRequest'
 
-), label_links as (
+), all_labels AS (
 
-    SELECT * FROM all_label_links where target_type = 'MergeRequest'
+    SELECT *
+    FROM {{ref('gitlab_dotcom_labels_xf')}}
 
-), labels as (
+), agg_labels AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_labels_xf')}}
+    SELECT merge_request_id,
+           ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY merge_request_id ASC) AS agg_label
+    FROM merge_requests
+    LEFT JOIN label_links
+      ON merge_requests.merge_request_id = label_links.target_id
+    LEFT JOIN all_labels
+      ON label_links.label_id = all_labels.label_id
+    GROUP BY merge_request_id
 
-),  latest_merge_request_metric as (
+),  latest_merge_request_metric AS (
 
-    SELECT max(merge_request_metric_id) as target_id
+    SELECT MAX(merge_request_metric_id) AS target_id
     FROM {{ref('gitlab_dotcom_merge_request_metrics')}}
     GROUP BY merge_request_id
 
-),  merge_request_metrics as (
+),  merge_request_metrics AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_merge_request_metrics')}} as a
-    INNER JOIN latest_merge_request_metric as b
-    on a.merge_request_metric_id = b.target_id
+    SELECT *
+    FROM {{ref('gitlab_dotcom_merge_request_metrics')}}
+    INNER JOIN latest_merge_request_metric
+    ON merge_request_metric_id = target_id
 
-), all_projects as (
+), all_projects AS (
 
-    SELECT * from {{ref('gitlab_dotcom_projects')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_projects')}}
 
-), gitlab_org_projects as (
+), gitlab_org_projects AS (
 
-    SELECT project_id FROM all_projects where namespace_id = 9970
+    SELECT project_id
+    FROM all_projects
+    WHERE namespace_id IN {{ get_internal_namespaces() }}
 
 ),  joined as (
 
-    SELECT
-      merge_requests.*,
-      lower(labels.masked_label_title) as label_title,
-      merge_request_metrics.merged_at,
+    SELECT merge_requests.*,
+           ARRAY_TO_STRING(agg_labels.agg_label,'|') AS masked_label_title,
+           merge_request_metrics.merged_at,
 
-      CASE
-        WHEN gitlab_org_projects.project_id IS NOT NULL
-          AND lower(labels.masked_label_title) = 'community contribution'
-          THEN TRUE
-        ELSE FALSE
-      END as is_community_contributor_related,
-      TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at, merge_request_metrics.merged_at) as hours_to_merged_status
+           CASE
+            WHEN gitlab_org_projects.project_id IS NOT NULL
+             AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.agg_label)
+              THEN TRUE
+            ELSE FALSE
+           END as is_community_contributor_related,
+           TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at, merge_request_metrics.merged_at) as hours_to_merged_status
 
-    FROM
-      merge_requests
-      LEFT JOIN label_links on merge_requests.merge_request_id = label_links.target_id
-      LEFT JOIN labels on label_links.label_id = labels.label_id
-      LEFT JOIN merge_request_metrics on merge_requests.merge_request_id = merge_request_metrics.merge_request_id
-      LEFT JOIN gitlab_org_projects on merge_requests.target_project_id = gitlab_org_projects.project_id
+    FROM merge_requests
+      LEFT JOIN agg_labels
+        ON merge_requests.merge_request_id = agg_labels.merge_request_id
+      LEFT JOIN merge_request_metrics
+        ON merge_requests.merge_request_id = merge_request_metrics.merge_request_id
+      LEFT JOIN gitlab_org_projects
+        ON merge_requests.target_project_id = gitlab_org_projects.project_id
 )
 
-SELECT * from joined
+SELECT *
+FROM joined
