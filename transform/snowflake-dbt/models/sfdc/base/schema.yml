@@ -151,7 +151,7 @@ models:
           tests:
               - not_null
               - unique
-        - name: opportunityid
+        - name: opportunity_id
           tests:
               - not_null
   - name: sfdc_opportunity_stage
