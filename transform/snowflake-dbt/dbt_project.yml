@@ -78,6 +78,7 @@ models:
       page_views:
         optional:
           enabled: false
+
     snowflake_spend:
       enabled: true
       base:
