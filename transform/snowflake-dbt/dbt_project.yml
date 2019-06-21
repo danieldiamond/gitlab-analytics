@@ -141,6 +141,12 @@ models:
 
       pings:
         tags: ["product"]
+        base:
+          pings_avg_cycle_analytics_version:
+            enabled: false
+        base_unioned:
+          pings_avg_cycle_analytics:
+            enabled: false
         xf:
           enabled: true
           materialized: table
