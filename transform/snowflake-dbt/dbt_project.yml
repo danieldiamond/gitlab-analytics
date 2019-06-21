@@ -53,7 +53,7 @@ models:
       warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
 
     logging:
-      schema: analytics_meta
+      schema: meta
       post-hook:
         - "grant select on {{this}} to role reporter"
 
