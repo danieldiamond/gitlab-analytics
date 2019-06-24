@@ -69,6 +69,8 @@ WITH source AS (
         qualified_datetime__c       AS qualified_datetime,
         unqualified_datetime__c     AS unqualified_datetime,
         {{ sales_segment_cleaning('sales_segmentation__c') }} AS sales_segmentation,
+        mkto71_Lead_Score__c        AS person_score,
+        status                      AS lead_status,
 
         --gitlab internal
 
