@@ -14,31 +14,29 @@ sources:
       identifier: false
 
     freshness:
-      warn_after: {count: 24, period: hour}
+      warn_after: {count: 48, period: hour}
 
     tables:
-#      - name: avg_cycle_analytics
-#        identifier: gitlab_db_avg_cycle_analytics
       - name: users
         identifier: gitlab_db_users
       - name: subscriptions
         identifier: gitlab_db_subscriptions
       - name: projects
         identifier: gitlab_db_projects
-#      - name: project_statistics
-#        identifier: gitlab_db_project_statistics
-#      - name: project_mirror_data
-#        identifier: gitlab_db_project_mirror_data
-#      - name: project_import_data
-#        identifier: gitlab_db_project_import_data
+      - name: project_statistics
+        identifier: gitlab_db_project_statistics
+      - name: project_mirror_data
+        identifier: gitlab_db_project_mirror_data
+      - name: project_import_data
+        identifier: gitlab_db_project_import_data
       - name: project_group_links
         identifier: gitlab_db_project_group_links
       - name: project_features
         identifier: gitlab_db_project_features
       - name: project_auto_devops
         identifier: gitlab_db_project_auto_devops
-#      - name: project_authorizations
-#        identifier: gitlab_db_project_authorizations
+      - name: project_authorizations
+        identifier: gitlab_db_project_authorizations
       - name: notification_settings
         identifier: gitlab_db_notification_settings
       - name: namespaces
@@ -55,10 +53,10 @@ sources:
         identifier: gitlab_db_merge_request_metrics
       - name: merge_request_diffs
         identifier: gitlab_db_merge_request_diffs
-#      - name: members
-#        identifier: gitlab_db_members
-#      - name: licenses
-#        identifier: gitlab_db_licenses
+      - name: members
+        identifier: gitlab_db_members
+      - name: licenses
+        identifier: gitlab_db_licenses
       - name: labels
         identifier: gitlab_db_labels
       - name: label_priorities
@@ -75,8 +73,8 @@ sources:
         identifier: gitlab_db_issue_assignees
       - name: epics
         identifier: gitlab_db_epics
-#      - name: epic_metrics
-#        identifier: gitlab_db_epic_metrics
+      - name: epic_metrics
+        identifier: gitlab_db_epic_metrics
       - name: epic_issues
         identifier: gitlab_db_epic_issues
       - name: boards

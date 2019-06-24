@@ -1,9 +1,4 @@
 -- disabled model until the data starts flowing in (the source table is missing from tap_postgres)
-{{
-  config(
-    enabled = false
-  )
-}}
 
 WITH source AS (
 
