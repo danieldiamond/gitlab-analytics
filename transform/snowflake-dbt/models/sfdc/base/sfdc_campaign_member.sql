@@ -22,6 +22,8 @@ WITH source AS (
 
         --info
       type              AS campaign_member_type,
+      MQL_After_Campaign__c
+                        AS mql_after_campaign,
 
         --metadata
       createddate       AS campaign_member_created_date,
