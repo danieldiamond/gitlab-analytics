@@ -26,9 +26,6 @@ models:
       - name: merge_request_id
         tests:
           - not_null
-#          - relationships:
-#              to: ref('gitlab_dotcom_merge_requests')
-#              field: merge_request_id
       - name: merge_request_metric_created_at
         tests:
           - not_null
@@ -76,9 +73,6 @@ models:
       - name: board_id
         tests:
           - not_null
-#          - relationships:
-#              to: ref('gitlab_dotcom_boards')
-#              field: board_id
 
   - name: gitlab_dotcom_merge_requests_closing_issues
     description: Base model for Gitlab.com merge requests closing issues
@@ -153,9 +147,6 @@ models:
       - name: namespace_id
         tests:
           - not_null
-#          - relationships:
-#              to: ref('gitlab_dotcom_namespaces')
-#              field: namespace_id
 
   - name: gitlab_dotcom_epic_issues
     description: Base model for Gitlab.com epic issues
@@ -167,15 +158,9 @@ models:
       - name: epic_id
         tests:
           - not_null
-#          - relationships:
-#              to: ref('gitlab_dotcom_epics')
-#              field: epic_id
       - name: issue_id
         tests:
           - not_null
-#          - relationships:
-#              to: ref('gitlab_dotcom_issues')
-#              field: issue_id
 
   - name: gitlab_dotcom_namespaces
     description: Base model for Gitlab.com namespaces
@@ -204,9 +189,6 @@ models:
         tests:
           - not_null
           - unique
-#          - relationships:
-#              to: ref('gitlab_dotcom_epics')
-#              field: epic_id
       - name: epic_metrics_created_at
         tests:
           - not_null
@@ -274,15 +256,9 @@ models:
       - name: user_id
         tests:
           - not_null
-#          - relationships:
-#              to: ref('gitlab_dotcom_users')
-#              field: user_id
       - name: issue_id
         tests:
           - not_null
-#          - relationships:
-#              to: ref('gitlab_dotcom_issues')
-#              field: issue_id
 
   - name: gitlab_dotcom_project_auto_devops
     description: Base model for Gitlab.com auto devops
@@ -357,9 +333,6 @@ models:
       - name: project_id
         tests:
           - not_null
-#          - relationships:
-#              to: ref('gitlab_dotcom_projects')
-#              field: project_id
       - name: group_id
         tests:
           - not_null
@@ -550,9 +523,6 @@ models:
       - name: merge_request_id
         tests:
           - not_null
-#          - relationships:
-#              to: ref('gitlab_dotcom_merge_requests')
-#              field: merge_request_id
       - name: merge_request_diff_created_at
         tests:
           - not_null
