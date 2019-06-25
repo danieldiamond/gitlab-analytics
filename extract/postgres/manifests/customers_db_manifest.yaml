@@ -54,8 +54,6 @@ tables:
       , transaction_id
       , created_at
       FROM versions
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_db: EXPORT_DB
     export_schema: 'customers'
     export_table: 'versions'
