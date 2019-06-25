@@ -56,7 +56,10 @@ def query_results_generator(
     Yield it back in chunks for scalability.
     """
 
-    query_df_iterator = pd.read_sql(sql=query, con=engine, chunksize=chunksize)
+    try:
+        query_df_iterator = pd.read_sql(sql=query, con=engine, chunksize=chunksize)
+    except:
+        raise
     return query_df_iterator
 
 
@@ -168,10 +171,14 @@ def id_query_generator(
     # Get the max ID from the source DB
     logging.info(f"Getting max ID from source_table: {source_table}")
     max_source_id_query = f"SELECT MAX(id) as id FROM {source_table}"
-    max_source_id_results = query_results_generator(
-        max_source_id_query, postgres_engine
-    )
-    max_source_id = next(max_source_id_results)["id"].tolist()[0]
+    try:
+        max_source_id_results = query_results_generator(
+            max_source_id_query, postgres_engine
+        )
+        max_source_id = next(max_source_id_results)["id"].tolist()[0]
+    except:
+        logging.critical("Source Query Failed!")
+        sys.exit(1)
     logging.info(f"Source Max ID: {max_source_id}")
 
     for id_pair in range_generator(max_target_id, max_source_id):
@@ -261,6 +268,5 @@ def main(
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    logging.getLogger("snowflake.connector.network").disabled = True
     logging.getLogger("snowflake.connector.cursor").disabled = True
     Fire({"tap": main})
