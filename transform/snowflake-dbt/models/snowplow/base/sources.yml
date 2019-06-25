@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: fishtown_snowplow
     description: These are the source tables for Snowplow events that were hosted on Fishtown Analytics' infrastructure.
-    database: raw
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: snowplow
     loader: Deprecated # informational only (free text)
     loaded_at_field: uploaded_at # configure for all sources
@@ -42,7 +42,7 @@ sources:
 
   - name: gitlab_snowplow
     description: These are the source tables for Snowplow events that are hosted on GitLab's infrastructure.
-    database: raw
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: snowplow
     loader: Snowpipe
     loaded_at_field: uploaded_at # configure for all sources
