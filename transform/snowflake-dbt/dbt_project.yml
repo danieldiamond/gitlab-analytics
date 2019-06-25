@@ -142,19 +142,22 @@ models:
       pings:
         tags: ["product"]
         base:
-          pings_avg_cycle_analytics_version:
-            enabled: false
-        base_unioned:
-          pings_avg_cycle_analytics:
+          pings_version_checks:
             enabled: false
         xf:
           enabled: true
           materialized: table
+          pings_latest_version_ping_per_host_and_month:
+            enabled: false
+          pings_active_instances:
+            enabled: false
 
       pings_to_sfdc:
         tags: ["product"]
         enabled: true
         materialized: table
+        xf:
+          enabled: false
 
       pipe2spend:
         enabled: false

@@ -1,9 +1,9 @@
-with source as (
+with source AS (
 
   SELECT * 
-  FROM {{ var("database") }}.tap_postgres.version_db_version_checks
+  FROM {{ source('pings_tap_postgres', 'version_checks') }}
 
-), renamed as (
+), renamed AS (
 
   SELECT  id,
           host_id,
@@ -19,4 +19,3 @@ with source as (
 
 SELECT * 
 FROM renamed
-WHERE created_at >= '2019-01-20'
