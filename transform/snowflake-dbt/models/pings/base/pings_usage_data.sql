@@ -1,7 +1,8 @@
-WITH source as (
+WITH source AS (
 
-    SELECT * 
-    FROM {{ var("database") }}.gcloud_postgres_stitch.version_usage_data
+  SELECT *
+  FROM {{ source('pings_tap_postgres', 'usage_data') }}
+
 )
 
 SELECT  id,
@@ -32,6 +33,6 @@ SELECT  id,
         historical_max_users,
 
         parse_json(counts) as stats_used
+
 FROM source
 WHERE uuid IS NOT NULL
-  AND created_at < '2019-01-20'
