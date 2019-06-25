@@ -79,6 +79,9 @@ def dataframe_uploader(
     dataframe = dataframe.applymap(
         lambda x: x if not isinstance(x, dict) else str(x)
     )  # convert dict to str to avoid snowflake errors
+    dataframe = dataframe.applymap(
+        lambda x: x[:4_194_304] if isinstance(x, str) else x
+    )  # shorten strings that are too long
     dataframe.to_sql(
         name=table_name,
         con=engine,
