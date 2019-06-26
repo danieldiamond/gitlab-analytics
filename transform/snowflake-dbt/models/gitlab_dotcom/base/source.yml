@@ -83,6 +83,8 @@ sources:
         identifier: gitlab_db_board_labels
       - name: board_assignees
         identifier: gitlab_db_board_assignees
+      - name: audit_events
+        identifier: gitlab_db_audit_events
       - name: approver_groups
         identifier: gitlab_db_approver_groups
       - name: approvals
