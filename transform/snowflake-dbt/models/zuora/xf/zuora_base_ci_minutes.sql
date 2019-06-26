@@ -9,7 +9,7 @@ WITH invoice_details AS (
 
     SELECT *
     FROM {{ ref('zuora_base_invoice_details') }}
-    WHERE lower(charge_name) LIKE '%1,000 ci minutes%' -- Could switch to SKU
+    WHERE sku = 'SKU-00000038'
 
 )
 
