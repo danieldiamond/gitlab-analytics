@@ -97,6 +97,7 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
+      , iid
       , milestone_id
       , group_id
       , author_id
@@ -181,6 +182,7 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
+      , iid
       , title
       , author_id
       , project_id
@@ -310,6 +312,7 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
+      , iid
       , target_branch
       , source_branch
       , source_project_id
@@ -360,6 +363,7 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
+      , iid
       , project_id
       , due_date
       , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
