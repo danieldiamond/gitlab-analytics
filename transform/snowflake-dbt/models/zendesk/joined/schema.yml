@@ -4,7 +4,7 @@ models:
     - name: zendesk_sfdc_xf
       description: '{{ doc("zendesk_ticket_sfdc") }}'
       columns:
-          - name: sfdc_account_id
+          - name: sfdc_id
             description: This is the Salesforce account id.
             tests:
               - not_null
