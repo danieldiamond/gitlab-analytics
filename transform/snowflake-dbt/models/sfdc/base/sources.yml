@@ -16,6 +16,9 @@ sources:
       - name: bizible_attribution_touchpoint
         identifier: bizible2__bizible_attribution_touchpoint__c
         description: '{{ doc("sfdc_bizible_source") }}'
+      - name: bizible_person
+        identifier: bizible2__bizible_person__c
+        description: '{{ doc("sfdc_bizible_source") }}'
       - name: bizible_touchpoint
         identifier: bizible2__bizible_touchpoint__c
         description: '{{ doc("sfdc_bizible_source") }}'
