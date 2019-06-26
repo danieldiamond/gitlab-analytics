@@ -104,8 +104,8 @@ brew cask install anaconda
 echo "export PATH=/usr/local/anaconda3/bin:"$PATH"" >> ~/.bash_profile
 echo "anaconda installed succesfully"
 
-echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" > ~/.bash_profile
-echo "export SNOWFLAKE_LOAD_DATABASE=RAW" > ~/.bash_profile
+echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.bash_profile
+echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.bash_profile
 echo "source ~/.bashrc" >> ~/.bash_profile
 
 echo "Onboarding script run successfully"
