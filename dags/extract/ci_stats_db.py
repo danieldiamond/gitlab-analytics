@@ -109,3 +109,33 @@ ci_stats_db_sync = KubernetesPodOperator(
     arguments=[sync_cmd],
     dag=sync_dag,
 )
+# SCD Task
+scd_cmd = f"""
+    git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
+    export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
+    cd analytics/extract/postgres/ &&
+    python tap_postgres/tap_postgres.py tap manifests/ci_stats_db_manifest.yaml --scd_only
+"""
+ci_stats_db_scd = KubernetesPodOperator(
+    **gitlab_defaults,
+    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    task_id="ci-stats-db-scd",
+    name="ci-stats-db-scd",
+    secrets=[
+        CI_STATS_DB_USER,
+        CI_STATS_DB_PASS,
+        CI_STATS_DB_HOST,
+        CI_STATS_DB_NAME,
+        PG_PORT,
+        SNOWFLAKE_LOAD_USER,
+        SNOWFLAKE_LOAD_PASSWORD,
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_LOAD_WAREHOUSE,
+        SNOWFLAKE_LOAD_ROLE,
+    ],
+    env_vars=pod_env_vars,
+    cmds=["/bin/bash", "-c"],
+    arguments=[scd_cmd],
+    dag=sync_dag,
+)
+ci_stats_db_sync >> ci_stats_db_scd

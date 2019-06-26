@@ -108,3 +108,33 @@ customers_db_sync = KubernetesPodOperator(
     arguments=[sync_cmd],
     dag=sync_dag,
 )
+# SCD Task
+scd_cmd = f"""
+    git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
+    export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
+    cd analytics/extract/postgres/ &&
+    python tap_postgres/tap_postgres.py tap manifests/customers_db_manifest.yaml --scd_only
+"""
+customers_db_scd = KubernetesPodOperator(
+    **gitlab_defaults,
+    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    task_id="customers-db-scd",
+    name="customers-db-scd",
+    secrets=[
+        CUSTOMERS_DB_USER,
+        CUSTOMERS_DB_PASS,
+        CUSTOMERS_DB_HOST,
+        CUSTOMERS_DB_NAME,
+        PG_PORT,
+        SNOWFLAKE_LOAD_USER,
+        SNOWFLAKE_LOAD_PASSWORD,
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_LOAD_WAREHOUSE,
+        SNOWFLAKE_LOAD_ROLE,
+    ],
+    env_vars=pod_env_vars,
+    cmds=["/bin/bash", "-c"],
+    arguments=[scd_cmd],
+    dag=sync_dag,
+)
+customers_db_sync >> customers_db_scd

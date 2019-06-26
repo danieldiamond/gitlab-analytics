@@ -87,7 +87,7 @@ sync_cmd = f"""
     cd analytics/extract/postgres/ &&
     python tap_postgres/tap_postgres.py tap manifests/gitlab_com_manifest.yaml --sync
 """
-gitlab_com_db_sync_extract = KubernetesPodOperator(
+gitlab_com_db_sync = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="gitlab-com-db-sync",
@@ -116,7 +116,7 @@ scd_cmd = f"""
     cd analytics/extract/postgres/ &&
     python tap_postgres/tap_postgres.py tap manifests/gitlab_com_manifest.yaml --scd_only
 """
-gitlab_com_db_scd_extract = KubernetesPodOperator(
+gitlab_com_db_scd = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="gitlab-com-db-scd",
@@ -138,4 +138,4 @@ gitlab_com_db_scd_extract = KubernetesPodOperator(
     arguments=[scd_cmd],
     dag=sync_dag,
 )
-gitlab_com_db_sync_extract >> gitlab_com_db_scd_extract
+gitlab_com_db_sync >> gitlab_com_db_scd
