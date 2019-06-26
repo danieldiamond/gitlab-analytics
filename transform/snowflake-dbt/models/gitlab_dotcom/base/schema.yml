@@ -47,6 +47,17 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_audit_events
+    description: Base model for Gitlab.com audit events
+    columns:
+      - name: audit_event_id
+        tests:
+          - not_null
+          - unique
+      - name: author_id
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_merge_requests
     description: Base model for Gitlab.com merge requests, column `merge_params` is hidden for privacy concerns.
     columns:
