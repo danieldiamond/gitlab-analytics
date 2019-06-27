@@ -8,9 +8,6 @@ databases:
     - raw:
         shared: no
 
-    - testing_db:
-        shared: no
-
     - snowflake:
         shared: yes
 
@@ -359,6 +356,16 @@ roles:
             schemas:
                 - analytics.iroussos_scratch
 
+    - iweeks:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        owns:
+            schemas:
+                - analytics.iweeks_scratch
+                - analytics.iweeks_scratch_meta
+                - analytics.iweeks_scratch_staging
+
     - jsalazar:
         warehouses:
             - reporting
@@ -379,6 +386,9 @@ roles:
         owns:
             schemas:
                 - analytics.jwatson_scratch
+    - ksmith:
+        warehouses:
+            - reporting
 
     - mrodriguez:
         warehouses:
@@ -386,6 +396,16 @@ roles:
         owns:
             schemas:
                 - analytics.mrodriguez_scratch
+
+    - mpeychet:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        owns:
+            schemas:
+                - analytics.mpeychet_scratch
+                - analytics.mpeychet_scratch_meta
+                - analytics.mpeychet_scratch_staging
 
     - periscope:
         warehouses: 
@@ -402,6 +422,10 @@ roles:
     - redash:
         warehouses: 
             - reporting  
+
+    - speters:
+        warehouses:
+            - reporting
 
     - ssichak:
         warehouses:
@@ -484,6 +508,7 @@ users:
     - eburke:
         can_login: yes
         member_of:
+            - engineer
             - sysadmin
             - transformer
             - eburke
@@ -506,7 +531,7 @@ users:
         member_of:
             - sysadmin
             - transformer
-            - eburke
+            - ekastelein
 
     - gitlab-ci:
         can_login: yes
@@ -525,7 +550,12 @@ users:
             - transformer
             - sysadmin
             - iroussos
-    
+    - iweeks:
+        can_login: yes
+        member_of:
+            - transformer
+            - iweeks
+
     - jsalazar:
         can_login: yes
         member_of:
@@ -546,6 +576,19 @@ users:
             - product_manager
             - reporter
             - jwatson      
+
+    - ksmith:
+        can_login: yes
+        member_of:
+            - ksmith
+            - securityadmin
+            - sysadmin
+
+    - mpeychet:
+        can_login: yes
+        member_of:
+            - transformer
+            - mpeychet
 
     - mrodriguez:
         can_login: yes
@@ -576,6 +619,13 @@ users:
         member_of:
             - reporter
             - redash
+
+    - speters:
+        can_login: yes
+        member_of: 
+            - securityadmin
+            - speters
+            - sysadmin
 
     - ssichak:
         can_login: yes
@@ -636,6 +686,9 @@ warehouses:
     - engineer_xs:
         size: x-small
 
+    - gitlab_postgres:
+        size: x-small
+
     - loading:
         size: x-small
 
@@ -646,6 +699,9 @@ warehouses:
         size: x-small
 
     - reporting:
+        size: x-small
+
+    - stitch:
         size: x-small
 
     - transforming:
