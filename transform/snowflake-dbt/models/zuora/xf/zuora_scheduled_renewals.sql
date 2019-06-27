@@ -26,4 +26,4 @@ SELECT account_number,
 FROM zuora_base_mrr
 WHERE subscription_status = 'Active'
 AND EXCLUDE_FROM_RENEWAL_REPORT != 'Yes'
-AND date_trunc('year', effective_end_date)::DATE = date_trunc('year', CURRENT_DATE)::DATE
+AND date_trunc('year', effective_end_date)::DATE >= date_trunc('year', CURRENT_DATE)::DATE
