@@ -119,9 +119,6 @@ models:
       gitlab_dotcom:
         tags: ["product"]
         enabled: true
-        base:
-          gitlab_dotcom_milestones:
-            enabled: false
         xf:
           materialized: table
 
