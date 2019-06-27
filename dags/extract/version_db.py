@@ -40,7 +40,7 @@ extract_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/postgres/ &&
-    python tap_postgres/tap_postgres.py tap manifests/version_db_manifest.yaml
+    python tap_postgres/tap_postgres.py tap manifests/version_db_manifest.yaml --incremental_only
 """
 version_db_extract = KubernetesPodOperator(
     **gitlab_defaults,
