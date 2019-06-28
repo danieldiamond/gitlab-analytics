@@ -30,6 +30,21 @@ models:
       - name: masked_label_title
         description: '{{ doc("xf_visibility_documentation") }}'
 
+  - name: gitlab_dotcom_user_audit_events_monthly
+    description: '{{ doc("gitlab_dotcom_user_audit_events_monthly") }}'
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+      - name: audit_events_count
+        description: The number of audit_events captured for the user during that month.
+        tests:
+          - not_null
+      - name: months_since_join_date
+        description: Reflects the number of months between when a user joined and the month of the audit event(s). 
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_users_xf
     description: '{{ doc("gitlab_dotcom_users_xf") }}'
     columns:
@@ -41,6 +56,7 @@ models:
         description: days between user creation and last activity
       - name: account_age_cohort
         description: cohorting of time between last dbt run and user creation date.
+  
   - name: gitlab_dotcom_retention_cohorts
     description: '{{ doc("gitlab_dotcom_retention_cohorts") }}'
     columns:
