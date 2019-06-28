@@ -45,6 +45,19 @@ In order to achieve this we will build a CTE from the project table that contain
 {% enddocs %}
 
 
+{% docs gitlab_dotcom_user_audit_events_monthly%}
+
+This model provides a summary of the audit_events table at the granularity of one row per user per month.
+
+In months where a user does not record any audit events, a row will still be created with a count of zero.
+
+Audit events are often used as a proxy for user activity, so this model allows for convenient MAU calculations without having to query the entire audit_events table. 
+
+This model provides `user_created_at_month` and `months_since_join_date` columns to allow for easy cohort and retention analysis. One difference between this model and the `gitlab_dotcom_retention_cohorts` model is that this model knows about activity for every single month, whereas the latter only uses the `created_at` and `last_activity_on` user timestamps and is forced to fill in the gaps for the months in the middle.
+
+{% enddocs %}
+
+
 {% docs gitlab_dotcom_users_xf%}
 Adds account age cohorts to the users table, the defined cohorts are:
 

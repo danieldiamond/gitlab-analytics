@@ -18,6 +18,7 @@ WITH source AS (
 
     FROM source
     WHERE rank_in_key = 1
+    ORDER BY audit_event_created_at
 
 )
 
