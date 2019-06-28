@@ -86,4 +86,4 @@ WITH source AS (
 SELECT *
 FROM renamed
 -- temporary filter while finance corrects issue
-WHERE account_id NOT IN  ('2c92a0076b791265016b7bff4e7a6db5')
+WHERE account_id NOT IN  ('2c92a0076b791265016b7bff4e7a6db5', '2c92a0ff6b9dabcf016b9df6e6ed694b')
