@@ -8,6 +8,7 @@ from typing import Dict, List, Generator, Any
 
 import pandas as pd
 from fire import Fire
+import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
 
@@ -58,8 +59,9 @@ def query_results_generator(
 
     try:
         query_df_iterator = pd.read_sql(sql=query, con=engine, chunksize=chunksize)
-    except:
-        raise
+    except sqlalchemy.exc.ProgrammingError as e:
+        logging.exception(e)
+        sys.exit(1)
     return query_df_iterator
 
 
@@ -179,8 +181,8 @@ def id_query_generator(
             max_source_id_query, postgres_engine
         )
         max_source_id = next(max_source_id_results)["id"].tolist()[0]
-    except:
-        logging.critical("Source Query Failed!")
+    except sqlalchemy.exc.ProgrammingError as e:
+        logging.exception(e)
         sys.exit(1)
     logging.info(f"Source Max ID: {max_source_id}")
 
@@ -265,6 +267,8 @@ def main(
                     engine=snowflake_engine,
                     table_name=table_name,
                 )
+                postgres_engine.dispose()
+                snowflake_engine.dispose()
             logging.info(f"Finished upload for table: {table}")
     return
 
