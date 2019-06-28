@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 {% set sensitive_fields = ['description', 'import_source','issues_template','build_coverage_regex','name', 'path','import_url','merge_requests_template'] %}
 
 WITH source as (

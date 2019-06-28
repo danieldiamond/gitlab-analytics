@@ -1,15 +1,6 @@
 version: 2
 
 models:
-  - name: gitlab_dotcom_merge_requests_xf
-    description: '{{ doc("gitlab_dotcom_merge_requests_xf") }}'
-    columns:
-      - name: merge_request_id
-        tests:
-          - not_null
-      - name: is_community_contributor_related
-        description: Merge Request has 'community contribution' tag, and is on a project in the gitlab.org namespace.
-
   - name: gitlab_dotcom_issues_xf
     description: '{{ doc("gitlab_dotcom_issues_xf") }}'
     columns:
@@ -30,33 +21,41 @@ models:
       - name: masked_label_title
         description: '{{ doc("xf_visibility_documentation") }}'
 
-  - name: gitlab_dotcom_user_audit_events_monthly
-    description: '{{ doc("gitlab_dotcom_user_audit_events_monthly") }}'
+  - name: gitlab_dotcom_merge_requests_xf
+    description: '{{ doc("gitlab_dotcom_merge_requests_xf") }}'
     columns:
-      - name: user_id
+      - name: merge_request_id
         tests:
           - not_null
-      - name: audit_events_count
-        description: The number of audit_events captured for the user during that month.
-        tests:
-          - not_null
-      - name: months_since_join_date
-        description: Reflects the number of months between when a user joined and the month of the audit event(s). 
-        tests:
-          - not_null
-
-  - name: gitlab_dotcom_users_xf
-    description: '{{ doc("gitlab_dotcom_users_xf") }}'
+      - name: is_community_contributor_related
+        description: Merge Request has 'community contribution' tag, and is on a project in the gitlab.org namespace.
+  
+  - name: gitlab_dotcom_namespaces_xf
+    description: '{{ doc("gitlab_dotcom_namespaces_xf") }}'
     columns:
-      - name: user_id
+      - name: namespace_id
         tests:
           - not_null
           - unique
-      - name: days_active
-        description: days between user creation and last activity
-      - name: account_age_cohort
-        description: cohorting of time between last dbt run and user creation date.
+      - name: namespace_plan_is_paid
+        description: Whether or not the namespace associated with the project is subscribed to a paid plan.
+      - name: member_count
+        description: The number of members that are presently associated with the namespace.
+      - name: project_count
+        description: The number of projects that are presently associated with the namespace.
   
+  - name: gitlab_dotcom_projects_xf
+    description: '{{ doc("gitlab_dotcom_projects_xf") }}'
+    columns:
+      - name: project_id
+        tests:
+          - not_null
+          - unique
+      - name: member_count
+        description: The number of members that are presently associated with the project.
+      - name: namespace_plan_is_paid
+        description: Whether or not the namespace associated with the project is subscribed to a paid plan t.
+
   - name: gitlab_dotcom_retention_cohorts
     description: '{{ doc("gitlab_dotcom_retention_cohorts") }}'
     columns:
@@ -79,3 +78,15 @@ models:
           description: Size of the original cohort.
         - name: retention
           description: Calculated as `active_in_period_distinct_count` / `base_cohort_count`.
+      
+  - name: gitlab_dotcom_users_xf
+    description: '{{ doc("gitlab_dotcom_users_xf") }}'
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+          - unique
+      - name: days_active
+        description: days between user creation and last activity
+      - name: account_age_cohort
+        description: cohorting of time between last dbt run and user creation date.
