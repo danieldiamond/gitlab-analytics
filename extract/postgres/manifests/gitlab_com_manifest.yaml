@@ -611,7 +611,6 @@ tables:
       , visibility_level
       , archived
       , avatar
-      , import_status
       , merge_requests_template
       , star_count
       , merge_requests_rebase_enabled
