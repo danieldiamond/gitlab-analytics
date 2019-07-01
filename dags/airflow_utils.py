@@ -20,10 +20,14 @@ def slack_failed_task(context):
     with open(most_recent_log, "r") as task_log:
         logs = "\n".join(task_log.readlines()[-30:])
 
-    dag_name = context["dag"].dag_id
+    dag_context = context["dag"]
+    dag_name = dag_context.dag_id
     task_name = context["task"].task_id
     execution_date = str(context["execution_date"])
     task_instance = str(context["task_instance_key_str"])
+    slack_channel = dag_context.params.get(
+        "slack_channel_override", "#analytics-pipelines"
+    )
 
     attachment = [
         {
@@ -40,7 +44,7 @@ def slack_failed_task(context):
 
     failed_alert = SlackAPIPostOperator(
         attachments=attachment,
-        channel="#analytics-pipelines",
+        channel=slack_channel,
         task_id="slack_failed",
         text=f"DAG: *{dag_name}* failed on task: *{task_name}*!",
         token=os.environ["SLACK_API_TOKEN"],
