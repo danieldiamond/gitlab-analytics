@@ -33,18 +33,6 @@ PG_PASSWORD = Secret("env", "PG_PASSWORD", "airflow", "PG_PASSWORD")
 PG_DATABASE = Secret("env", "PG_DATABASE", "airflow", "PG_DATABASE")
 PG_PORT = Secret("env", "PG_PORT", "airflow", "PG_PORT")
 
-# Netsuite
-NETSUITE_ACCOUNT = Secret("env", "NETSUITE_ACCOUNT", "airflow", "NETSUITE_ACCOUNT")
-NETSUITE_APPID = Secret("env", "NETSUITE_APPID", "airflow", "NETSUITE_APP_ID")
-NETSUITE_EARLIEST_DATE = Secret(
-    "env", "NETSUITE_EARLIEST_DATE", "airflow", "NETSUITE_EARLIEST_DATE"
-)
-NETSUITE_EMAIL = Secret("env", "NETSUITE_EMAIL", "airflow", "NETSUITE_EMAIL")
-NETSUITE_ENDPOINT = Secret("env", "NETSUITE_ENDPOINT", "airflow", "NETSUITE_ENDPOINT")
-NETSUITE_HOST = Secret("env", "NETSUITE_HOST", "airflow", "NETSUITE_HOST")
-NETSUITE_PASSWORD = Secret("env", "NETSUITE_PASSWORD", "airflow", "NETSUITE_PASSWORD")
-NETSUITE_ROLE = Secret("env", "NETSUITE_ROLE", "airflow", "NETSUITE_ROLE")
-
 # Version DB
 VERSION_DB_USER = Secret("env", "VERSION_DB_USER", "airflow", "VERSION_DB_USER")
 VERSION_DB_PASS = Secret("env", "VERSION_DB_PASS", "airflow", "VERSION_DB_PASS")
