@@ -57,6 +57,7 @@ WITH source AS (
       sales_segmentation_new__c                AS account_segment,
       support_level__c                         AS support_level,
       support_level_numeric__c                 AS support_level_numeric,
+      named_account__c                         AS named_account,
 
       --present state info
       health__c                                AS health_score,
