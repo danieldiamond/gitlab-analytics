@@ -59,7 +59,7 @@ def query_results_generator(
 
     try:
         query_df_iterator = pd.read_sql(sql=query, con=engine, chunksize=chunksize)
-    except sqlalchemy.exc.ProgrammingError as e:
+    except Exception as e:
         logging.exception(e)
         sys.exit(1)
     return query_df_iterator
