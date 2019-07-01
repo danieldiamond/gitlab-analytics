@@ -2,7 +2,7 @@
 This issue is for visualization related issues within our BI tool.
 ---->
 
-#### What is the original Looker dashboard/Look link? 
+#### What is the original Periscope dashboard/link? 
 
 THIS IS REQUIRED.
 
