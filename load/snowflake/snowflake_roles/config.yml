@@ -54,6 +54,141 @@ roles:
                     - analytics.*.*
 
     ## Regular Roles
+    - analyst_growth:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - raw.gcloud_postgres_stitch
+                    - raw.salesforce_stitch
+                    - raw.sheetload
+                    - raw.snowplow
+                    - raw.tap_postgres
+                    - raw.zuora_stitch
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+            tables:
+                read:
+                    - raw.gcloud_postgres_stitch.*
+                    - raw.netsuite_stitch.*
+                    - raw.salesforce_stitch.*
+                    - raw.sheetload.*
+                    - raw.snowplow.*
+                    - raw.tap_postgres.*
+                    - raw.zuora_stitch.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
+
+    - analyst_finance:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - raw.gcloud_postgres_stitch
+                    - raw.netsuite_stitch
+                    - raw.salesforce_stitch
+                    - raw.sheetload
+                    - raw.snowplow
+                    - raw.tap_postgres
+                    - raw.zuora_stitch
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+            tables:
+                read:
+                    - raw.gcloud_postgres_stitch.*
+                    - raw.netsuite_stitch.*
+                    - raw.salesforce_stitch.*
+                    - raw.sheetload.*
+                    - raw.snowplow.*
+                    - raw.tap_postgres.*
+                    - raw.zuora_stitch.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
+
+    - analyst_core:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - raw.gcloud_postgres_stitch
+                    - raw.netsuite_stitch
+                    - raw.salesforce_stitch
+                    - raw.sheetload
+                    - raw.snowplow
+                    - raw.tap_postgres
+                    - raw.zendesk_stitch
+                    - raw.zuora_stitch
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+            tables:
+                read:
+                    - raw.gcloud_postgres_stitch.*
+                    - raw.netsuite_stitch.*
+                    - raw.salesforce_stitch.*
+                    - raw.sheetload.*
+                    - raw.snowplow.*
+                    - raw.tap_postgres.*
+                    - raw.zendesk_stitch.*
+                    - raw.zuora_stitch.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
+
+    - analyst_sensitive:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - raw.*
+                    - analytics.*
+            tables:
+                read:
+                    - raw.*.*
+                    - analytics.*.*
+
     - engineer:
         member_of:
             - sysadmin
@@ -94,14 +229,12 @@ roles:
                     - analytics
             schemas:
                 read:
-                    - analytics.*
-                write:
-                    - analytics.*
+                    - analytics.analytics
+                    - analytics.analytics_staging
             tables:
                 read:
-                    - analytics.*.*
-                write:
-                    - analytics.*.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
 
     - loader:
         warehouses:
@@ -109,35 +242,27 @@ roles:
         owns:
             schemas:
                 - raw.*
-                - testing_db.*
             tables:
                 - raw.*.*
-                - testing_db.*.*
         privileges:
             databases:
                 read:
                     - raw
-                    - testing_db
                 write:
                     - raw
-                    - testing_db
             schemas:
                 read:
                     - raw.*
-                    - testing_db.*
                 write:
                     - raw.*
-                    - testing_db.*
             tables:
                 read:
                     - raw.*.*
-                    - testing_db.*.*
                 write:
                     - raw.*.*
-                    - testing_db.*.*
 
     - product_manager:
-        warehouse:
+        warehouses:
             - reporting
         privileges:
             databases:
@@ -146,26 +271,16 @@ roles:
                     - raw
             schemas:
                 read:
-                    - analytics.*
-                    - raw.ci_stats_db
-                    - raw.customers_db
-                    - raw.gitlab_dotcom
-                    - raw.gitlab_profiler_db
-                    - raw.license_db
+                    - analytics.analytics
+                    - analytics.analytics_staging
                     - raw.snowplow
                     - raw.tap_postgres
-                    - raw.version_db
             tables:
                 read:
-                    - analytics.*
-                    - raw.ci_stats_db.*
-                    - raw.customers_db.*
-                    - raw.gitlab_dotcom.*
-                    - raw.gitlab_profiler_db.*
-                    - raw.license_db.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
                     - raw.snowplow.*
                     - raw.tap_postgres.*
-                    - raw.version_db.*
 
     - reporter:
         warehouses:
@@ -187,7 +302,7 @@ roles:
                     - analytics.analytics_meta.*
                     - snowflake.account_usage.*
 
-    - reporter_staging: #Right now this matches the reporter role, until we roll out the sensitive schema 
+    - reporter_staging:
         warehouses:
             - reporting
         privileges:
@@ -197,7 +312,7 @@ roles:
                     - snowflake
             schemas:
                 read:
-                    - analytics.analytics ##TODO:add sensitive schema
+                    - analytics.analytics
                     - analytics.analytics_staging
                     - analytics.analytics_meta
                     - snowflake.account_usage
@@ -209,7 +324,7 @@ roles:
                     - analytics.analytics_meta.*
                     - snowflake.account_usage.*
 
-    - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema 
+    - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema
         warehouses:
             - reporting
         privileges:
@@ -219,7 +334,7 @@ roles:
                     - snowflake
             schemas:
                 read:
-                    - analytics.analytics ##TODO:add sensitive schema
+                    - analytics.analytics
                     - analytics.analytics_meta
                     - snowflake.account_usage
 
@@ -229,13 +344,8 @@ roles:
                     - analytics.analytics_meta.*
                     - snowflake.account_usage.*
 
-    - transformer:
+    - transformer: # For automated jobs
         warehouses:
-            - analyst_xl
-            - analyst_xs
-            - merge_request_xl
-            - merge_request_xs
-            - transforming
             - transforming_s
             - transforming_xl
             - transforming_xs
@@ -266,62 +376,40 @@ roles:
     - acarella:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - analytics.acarella_scratch
 
     - agroleau:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - analytics.agroleau_scratch
 
     - amrvaljevich:
         warehouses:
-            - reporting
-        owns:
-            schemas:
-                - analytics.amrvaljevich_scratch
-                - analytics.amrvaljevich_scratch_meta
+            - analyst_xs
+            - analyst_xl
 
     - crichards:
         warehouses:
-            - reporting
-        owns:
-            schemas:
-                - analytics.crichards_scratch
-                - analytics.crichards_scratch_meta
+            - analyst_xs
+            - analyst_xl
 
     - dtang:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - analytics.dtang_scratch
 
     - eburke:
         warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
             - reporting
-        owns:
-            schemas:
-                - analytics.emilie_scratch
-                - analytics.emilie_scratch_meta
 
     - ehannon:
         warehouses:
-            - reporting
-        owns:
-            schemas:
-                - analytics.ehannon_scratch
-                - analytics.ehannon_scratch_meta
+            - analyst_xs
+            - analyst_xl
 
     - eeastwood:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - analytics.eeastwood_scratch
         privileges:
             databases:
                 read:
@@ -339,53 +427,37 @@ roles:
 
     - ekastelein:
         warehouses:
-            - reporting
-        owns:
-            schemas:
-                - analytics.ekastelein_scratch
-                - analytics.ekastelein_scratch_meta
+            - analyst_xs
+            - analyst_xl
 
     - gitlab-ci:
         warehouses:
+            - gitlab_postgres
+            - loading
             - reporting
+            - stitch
 
     - iroussos:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - analytics.iroussos_scratch
 
     - iweeks:
         warehouses:
             - analyst_xs
             - analyst_xl
-        owns:
-            schemas:
-                - analytics.iweeks_scratch
-                - analytics.iweeks_scratch_meta
-                - analytics.iweeks_scratch_staging
 
     - jsalazar:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - analytics.jsalazar_scratch
-    
+
     - jurbanc:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - analytics.jurbanc_scratch              
-  
+
     - jwatson:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - analytics.jwatson_scratch
+
     - ksmith:
         warehouses:
             - reporting
@@ -393,24 +465,16 @@ roles:
     - mrodriguez:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - analytics.mrodriguez_scratch
 
     - mpeychet:
         warehouses:
             - analyst_xs
             - analyst_xl
-        owns:
-            schemas:
-                - analytics.mpeychet_scratch
-                - analytics.mpeychet_scratch_meta
-                - analytics.mpeychet_scratch_staging
 
     - periscope:
-        warehouses: 
+        warehouses:
             - reporting
-    
+
     - periscope_sensitive:
         warehouses:
             - reporting
@@ -420,8 +484,8 @@ roles:
             - reporting
 
     - redash:
-        warehouses: 
-            - reporting  
+        warehouses:
+            - reporting
 
     - speters:
         warehouses:
@@ -430,152 +494,137 @@ roles:
     - ssichak:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - analytics.ssichak_scratch
 
     - target_snowflake:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - testing_db.target_snowflake
 
     - tlapiana:
         warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
             - reporting
-        owns:
-            schemas:
-                - analytics.tlapiana_scratch
 
     - tmurphy:
         warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
             - reporting
-        owns:
-            schemas:
-                - analytics.tmurphy_scratch
-                - analytics.tmurphy_scratch_meta
-    
+
     - valexieva:
         warehouses:
             - reporting
-        owns:
-            schemas:
-                - analytics.valexieva_scratch
 
     - wwright:
         warehouses:
+            - engineer_xs
+            - engineer_xl
             - reporting
-        owns:
-            schemas:
-                - analytics.wwright_scratch
+
 
 # Users
 users:
     - acarella:
         can_login: yes
         member_of:
+            - acarella
             - securityadmin
             - sysadmin
-            - acarella
 
     - agroleau:
         can_login: yes
         member_of:
-            - reporter
             - agroleau
+            - reporter
 
     - amrvaljevich:
         can_login: yes
         member_of:
-            - sysadmin
-            - transformer
-            - amrvaljevich        
+            - amrvaljevich
+            - analyst_core
 
     - crichards:
         can_login: yes
         member_of:
-            - sysadmin
-            - transformer
-            - crichards 
+            - crichards
+            - analyst_core
 
     - dtang:
         can_login: yes
         member_of:
-            - reporter
             - dtang
+            - reporter
 
     - eburke:
         can_login: yes
         member_of:
+            - analyst_sensitive
+            - eburke
             - engineer
             - sysadmin
-            - transformer
-            - eburke
-           
+
     - eeastwood:
         can_login: yes
         member_of:
-            - reporter
             - eeastwood
+            - reporter
 
     - ehannon:
         can_login: yes
         member_of:
-            - reporter
-            - intern
             - ehannon
+            - intern
+            - reporter
 
     - ekastelein:
         can_login: yes
         member_of:
-            - sysadmin
-            - transformer
             - ekastelein
+            - analyst_growth
 
     - gitlab-ci:
         can_login: yes
         member_of:
+            - gitlab-ci
             - loader
             - reporter
             - sysadmin
             - transformer
-            - gitlab-ci
 
     - iroussos:
         can_login: yes
         member_of:
-            - engineer
-            - loader
-            - transformer
-            - sysadmin
             - iroussos
+            - reporter
+
     - iweeks:
         can_login: yes
         member_of:
-            - transformer
             - iweeks
+            - analyst_finance
 
     - jsalazar:
         can_login: yes
         member_of:
+            - jsalazar
             - securityadmin
             - sysadmin
-            - jsalazar
 
     - jurbanc:
         can_login: yes
         member_of:
+            - jurbanc
             - securityadmin
             - sysadmin
-            - jurbanc
-    
+
     - jwatson:
         can_login: yes
         member_of:
+            - jwatson
             - product_manager
             - reporter
-            - jwatson      
 
     - ksmith:
         can_login: yes
@@ -587,42 +636,42 @@ users:
     - mpeychet:
         can_login: yes
         member_of:
-            - transformer
             - mpeychet
+            - analyst_growth
 
     - mrodriguez:
         can_login: yes
         member_of:
+            - mrodriguez
             - reporter
-            - mrodriguez  
-    
+
     - periscope:
         can_login: yes
         member_of:
-            - reporter
             - periscope
+            - reporter
 
     - periscope_sensitive:
         can_login: yes
         member_of:
+            - periscope_sensitive
             - reporter_sensitive
-            - periscope_sensitive    
 
     - periscope_staging:
         can_login: yes
         member_of:
+            - periscope_staging
             - reporter_staging
-            - periscope_staging        
 
     - redash:
         can_login: yes
         member_of:
-            - reporter
             - redash
+            - reporter
 
     - speters:
         can_login: yes
-        member_of: 
+        member_of:
             - securityadmin
             - speters
             - sysadmin
@@ -631,8 +680,8 @@ users:
         can_login: yes
         member_of:
             - securityadmin
-            - sysadmin
             - ssichak
+            - sysadmin
 
     - target_snowflake:
         can_login: yes
@@ -645,15 +694,16 @@ users:
         member_of:
             - engineer
             - loader
+            - tlapiana
             - transformer
             - sysadmin
-            - tlapiana
 
     - tmurphy:
         can_login: yes
         member_of:
             - accountadmin
             - engineer
+            - securityadmin
             - sysadmin
             - transformer
             - tmurphy
@@ -668,21 +718,20 @@ users:
     - wwright:
         can_login: yes
         member_of:
-            - engineer
-            - transformer
+            - analyst_finance
             - wwright
 
 # Warehouses
 warehouses:
     - analyst_xl:
         size: x-large
-    
+
     - analyst_xs:
         size: x-small
 
     - engineer_xl:
         size: x-large
-    
+
     - engineer_xs:
         size: x-small
 
@@ -694,7 +743,7 @@ warehouses:
 
     - merge_request_xl:
         size: x-large
-    
+
     - merge_request_xs:
         size: x-small
 
@@ -703,9 +752,6 @@ warehouses:
 
     - stitch:
         size: x-small
-
-    - transforming:
-        size: x-large
 
     - transforming_s:
         size: small
