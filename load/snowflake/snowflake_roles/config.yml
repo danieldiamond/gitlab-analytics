@@ -190,8 +190,6 @@ roles:
                     - analytics.*.*
 
     - engineer:
-        member_of:
-            - sysadmin
         warehouses:
             - loading
         privileges:
@@ -231,10 +229,14 @@ roles:
                 read:
                     - analytics.analytics
                     - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - snowflake.account_usage
             tables:
                 read:
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - snowflake.account_usage.*
 
     - loader:
         warehouses:
@@ -519,8 +521,8 @@ roles:
 
     - wwright:
         warehouses:
-            - engineer_xs
-            - engineer_xl
+            - analyst_xs
+            - analyst_xl
             - reporting
 
 
