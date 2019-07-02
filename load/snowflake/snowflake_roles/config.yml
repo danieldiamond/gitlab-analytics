@@ -63,6 +63,7 @@ roles:
                 read:
                     - raw
                     - analytics
+                    - snowflake
                 write:
                     - analytics
             schemas:
@@ -77,6 +78,7 @@ roles:
                     - analytics.analytics_staging
                     - analytics.analytics_meta
                     - analytics.dbt_archive
+                    - snowflake.*
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
@@ -90,6 +92,7 @@ roles:
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
                     - analytics.dbt_archive.*
+                    - snowflake.*.*
 
     - analyst_finance:
         warehouses:
@@ -100,6 +103,7 @@ roles:
                 read:
                     - raw
                     - analytics
+                    - snowflake
                 write:
                     - analytics
             schemas:
@@ -115,6 +119,7 @@ roles:
                     - analytics.analytics_staging
                     - analytics.analytics_meta
                     - analytics.dbt_archive
+                    - snowflake.*
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
@@ -128,6 +133,7 @@ roles:
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
                     - analytics.dbt_archive.*
+                    - snowflake.*.*
 
     - analyst_core:
         warehouses:
@@ -138,6 +144,7 @@ roles:
                 read:
                     - raw
                     - analytics
+                    - snowflake
                 write:
                     - analytics
             schemas:
@@ -154,6 +161,7 @@ roles:
                     - analytics.analytics_staging
                     - analytics.analytics_meta
                     - analytics.dbt_archive
+                    - snowflake.*
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
@@ -168,6 +176,7 @@ roles:
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
                     - analytics.dbt_archive.*
+                    - snowflake.*.*
 
     - analyst_sensitive:
         warehouses:
@@ -178,16 +187,19 @@ roles:
                 read:
                     - raw
                     - analytics
+                    - snowflake
                 write:
                     - analytics
             schemas:
                 read:
                     - raw.*
                     - analytics.*
+                    - snowflake.*
             tables:
                 read:
                     - raw.*.*
                     - analytics.*.*
+                    - snowflake.*.*
 
     - engineer:
         warehouses:
@@ -197,6 +209,7 @@ roles:
                 read:
                     - raw
                     - analytics
+                    - snowflake
                 write:
                     - raw
                     - analytics
@@ -204,6 +217,7 @@ roles:
                 read:
                     - raw.*
                     - analytics.*
+                    - snowflake.*
                 write:
                     - raw.*
                     - analytics.*
@@ -211,6 +225,7 @@ roles:
                 read:
                     - raw.*.*
                     - analytics.*.*
+                    - snowflake.*.*
                 write:
                     - raw.*.*
                     - analytics.*.*
@@ -223,6 +238,7 @@ roles:
             databases:
                 read:
                     - analytics
+                    - snowflake
                 write:
                     - analytics
             schemas:
@@ -230,13 +246,13 @@ roles:
                     - analytics.analytics
                     - analytics.analytics_staging
                     - analytics.analytics_meta
-                    - snowflake.account_usage
+                    - snowflake.*
             tables:
                 read:
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
-                    - snowflake.account_usage.*
+                    - snowflake.*.*
 
     - loader:
         warehouses:
@@ -317,14 +333,14 @@ roles:
                     - analytics.analytics
                     - analytics.analytics_staging
                     - analytics.analytics_meta
-                    - snowflake.account_usage
+                    - snowflake.*
 
             tables:
                 read:
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
-                    - snowflake.account_usage.*
+                    - snowflake.*.*
 
     - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema
         warehouses:
@@ -338,13 +354,13 @@ roles:
                 read:
                     - analytics.analytics
                     - analytics.analytics_meta
-                    - snowflake.account_usage
+                    - snowflake.*
 
             tables:
                 read:
                     - analytics.analytics.*
                     - analytics.analytics_meta.*
-                    - snowflake.account_usage.*
+                    - snowflake.*.*
 
     - transformer: # For automated jobs
         warehouses:
