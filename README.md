@@ -14,12 +14,12 @@ This is the primary repository of the Data Team at GitLab. The Data Team is a pa
 
 Our charter and goals are as follows:
 
-* Build a centralized data warehouse that can support data analysis requirements from all functional groups within the company.
-* Create a common data framework and governance practice.
-* Establish the single source of truth for company metrics.
-* Establish a change management processes for source systems.
-* Develop a Data Architecture plan (in conjunction with functional teams).
-* Develop a roadmap for systems evolution in alignment with the Company’s data architecture plan.
+* Build a centralized data warehouse that can support data analysis requirements from all functional groups within the company
+* Create a common data framework and governance practice
+* Establish the single source of truth for company metrics
+* Establish a change management processes for source systems
+* Develop a Data Architecture plan (in conjunction with functional teams)
+* Develop a roadmap for systems evolution in alignment with the Company’s data architecture plan
 
 ## Priorities
 
@@ -39,8 +39,6 @@ Like the rest of the company, we set quarterly objectives and key results. These
 * [Art Nasser explains Netsuite and Campaign Data](https://drive.google.com/open?id=1KUMa8zICI9_jQDqdyN7mGSWSLdw97h5-) (GitLab internal)
 
 * [Courtland Smith explains Marketing Dashboard needs](https://drive.google.com/open?id=1bjKWRdfUgcn0GfyB2rS3qdr_8nbRYAZu) (GitLab internal)
-
-* Taylor's talk at the 2018 Nashville Analytics Summit - Coming Soon
 
 * GitLab blog post about Meltano - https://news.ycombinator.com/item?id=17667399
   * Livestream chat with Sid and HN user slap_shot - https://www.youtube.com/watch?v=F8tEDq3K_pE

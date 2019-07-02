@@ -43,6 +43,12 @@ python_linting: &python_linting
   script:
     - pip install black
     - black --check .
+  except:
+    changes:
+      - "**/*.md"
+      - LICENSE
+      - CODEOWNERS
+      - .gitlab/*
   only:
     - branches
 
@@ -53,6 +59,12 @@ python_checking: &python_checking
     - analytics
   script:
     -  pylint ../analytics/ --disable=C --reports=y --exit-zero
+  except:
+    changes:
+      - "**/*.md"
+      - LICENSE
+      - CODEOWNERS
+      - .gitlab/* 
   only:
     - branches
 
@@ -63,6 +75,12 @@ python_complexity: &python_complexity
     - analytics
   script:
     -  xenon --max-absolute A --max-modules A --max-average A .
+  except:
+    changes:
+      - "**/*.md"
+      - LICENSE
+      - CODEOWNERS
+      - .gitlab/*
   only:
     - branches
   when: manual
@@ -120,7 +138,7 @@ snowflake_review_analytics: &snowflake_review_analytics
       - $SNOWFLAKE_TRANSFORM_DATABASE  # make sure the guard works
   except:
     changes:
-      - README.md
+      - "**/*.md"
       - LICENSE
       - CODEOWNERS
       - .gitlab/*
@@ -311,9 +329,10 @@ review_stop:
       - $SNOWFLAKE_TRANSFORM_DATABASE  # make sure the guard works
   except:
     changes:
-      - README.md
+      - "**/*.md"
       - LICENSE
       - CODEOWNERS
+      - .gitlab/*
     refs:
       - master
     variables:
