@@ -1,6 +1,7 @@
 {{ config({
     "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
+    "post-hook": "grant select on {{this}} to role reporter",
+    "materialized": "table"
     })
 }}
 
@@ -15,7 +16,7 @@ WITH source AS (
 
     SELECT
       id                AS campaign_member_id,
-     
+
         --keys
       campaignid        AS campaign_id,
       leadorcontactid   AS lead_or_contact_id,
@@ -36,4 +37,3 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-
