@@ -540,3 +540,20 @@ models:
       - name: merge_request_diff_updated_at
         tests:
           - not_null
+
+  - name: gitlab_dotcom_gitlab_subscriptions
+    description: '{{ doc("gitlab_dotcom_gitlab_subscriptions") }}'
+    columns:
+      - name: gitlab_subscription_id
+        tests:
+          - not_null
+          - unique
+      - name: namespace_id
+        tests:
+          - not_null
+      - name: gitlab_subscription_created_at
+        tests:
+          - not_null
+      - name: gitlab_subscription_updated_at
+        tests:
+          - not_null

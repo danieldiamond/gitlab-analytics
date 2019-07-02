@@ -71,6 +71,8 @@ sources:
         identifier: gitlab_db_issue_links
       - name: issue_assignees
         identifier: gitlab_db_issue_assignees
+      - name: gitlab_subscriptions
+        identifier: gitlab_db_gitlab_subscriptions
       - name: epics
         identifier: gitlab_db_epics
       - name: epic_metrics

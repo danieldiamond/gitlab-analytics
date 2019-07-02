@@ -1,3 +1,10 @@
+{% docs gitlab_dotcom_gitlab_subscriptions %}
+
+Base model for Gitlab.com gitlab_subscriptions. These are the plan subscriptions for the gitlab.com product, as opposed to the `subscriptions` table (no prefix) which deals with subscribing to issues and merge requests.
+
+{% enddocs %}
+
+
 {% docs visibility_documentation %}
 This content will be masked for privacy in one of the following conditions:
  * If this is an issue, and the issue is set to `confidential`
