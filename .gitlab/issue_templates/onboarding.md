@@ -2,23 +2,22 @@
 
 Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed.
 
-- [ ] Manager: Add to Analytics API user.
-- [ ] Manager: Add to Stitch.
-- [ ] Manager: Add to Fivetran.
-- [ ] Manager: Add to Periscope.
+- [ ] Manager: Add to Analytics API user
+- [ ] Manager: Add to Stitch
+- [ ] Manager: Add to Periscope
 - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
 - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
-- [ ] Manager: Invite to `data-team` channel on Slack.
-- [ ] Manager: Update codeowners file in the handbook to include the new team member.
+- [ ] Manager: Invite to `data-team` channel on Slack
+- [ ] Manager: Update codeowners file in the handbook to include the new team member
 - [ ] Manager: Add to daily Geekbot standup
-- [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access).
-- [ ] Manager: Inform new hire what his/her/they scratch schema will be called. **Do not create the schema**, as this will lead to conflicts when dbt runs.
-- [ ] Manager: Invite to SheetLoad folder in gdrive.
-- [ ] Manager: Add to data team calendar as a calendar admin.
-- [ ] Manager: Ping appropriate person to get new hire added to Finance team meetings.
+- [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
+  - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
+- [ ] Manager: Invite to SheetLoad folder in gdrive
+- [ ] Manager: Add to data team calendar as a calendar admin
+- [ ] Manager: Ping appropriate person to get new hire added to Finance team meetings
 - [ ] Manager: Add to [dbt test coverage rotation](https://about.gitlab.com/handbook/business-ops/data-team/#-team-roles)
-- [ ] Manager: Update issue with one or two Good First Issues.
-- [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate.
+- [ ] Manager: Update issue with one or two Good First Issues
+- [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
 
 WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
@@ -159,6 +158,7 @@ This data comes from the usage ping that comes with a GitLab installation.
 ## Snowplow (Product)
 [Snowplow](https://snowplowanalytics.com) is an open source web analytics collector.
 - [ ] To understand how this is implemented at GitLab read [Feature Implementation](https://about.gitlab.com/handbook/product/feature-instrumentation/#instrumentation-for-gitlabcom).
+- [ ] Also read how we pull data from [S3 into Snowflake](https://about.gitlab.com/handbook/business-ops/data-team/#snowplow-infrastructure)
 - [ ] Familiarize yourself with the [Snowplow Open Source documentation](https://github.com/snowplow/snowplow).
 - [ ] We use the [Snowplow dbt package](https://hub.getdbt.com/fishtown-analytics/snowplow/latest/) on our models. Their documentation does show up in our dbt docs.
 
