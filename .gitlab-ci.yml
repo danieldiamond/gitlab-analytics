@@ -45,6 +45,26 @@ python_linting: &python_linting
     - black --check .
   only:
     - branches
+
+python_checking: &python_checking
+  stage: review
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  tags:
+    - analytics
+  script:
+    -  pylint ../analytics/ --disable=C --reports=y --exit-zero
+  only:
+    - branches
+
+python_complexity: &python_complexity
+  stage: review
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  tags:
+    - analytics
+  script:
+    -  xenon --max-absolute A --max-modules A --max-average A .
+  only:
+    - branches
   when: manual
 
 # Set up a new instance in CloudSQL for testing in MRs
