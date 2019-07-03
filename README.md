@@ -187,6 +187,16 @@ You should have:
 
 You can use `Command + Option + L` to format your file.
 
+#### Data Newsletters
+- [Data Science Roundup Newsletter](http://roundup.fishtownanalytics.com/)
+- [SF Data](http://weekly.sfdata.io/)
+- [Data is Plural](https://tinyletter.com/data-is-plural)
+- [DataEng Weekly](http://dataengweekly.com/)
+- [Data Elixir](https://dataelixir.com/)
+- [Data Science Weekly](https://www.datascienceweekly.org/)
+- [Normcore Tech](https://vicki.substack.com)
+- [The Carpentries](https://carpentries.topicbox.com/latest)
+
 #### Data Resources
 - [Fishtown Analytics Blog](https://blog.fishtownanalytics.com)
 - [Silota](http://www.silota.com/docs/recipes/)
@@ -199,6 +209,7 @@ You can use `Command + Option + L` to format your file.
 - [Airbnb](https://airbnb.io)
 
 #### SQL Learning Resources
+- [Chris Albon](https://chrisalbon.com/#postgresql)
 - [Mode SQL Tutorial](https://mode.com/sql-tutorial/introduction-to-sql/)
 - [Codecademy](https://www.codecademy.com/learn/learn-sql)
 - [DataQuest](https://www.dataquest.io/course/sql-fundamentals/)
@@ -208,16 +219,6 @@ You can use `Command + Option + L` to format your file.
 - [Stanford University Mini-Courses](https://lagunita.stanford.edu/courses/DB/2014/SelfPaced/about)
 - [The Data School by Chartio](https://dataschool.com/learn/inroduction-to-teaching-others-sql)
 - [W3Schools](https://www.w3schools.com/sql/default.asp)
-
-#### Data Newsletters
-- [Data Science Roundup Newsletter](http://roundup.fishtownanalytics.com/)
-- [SF Data](http://weekly.sfdata.io/)
-- [Data is Plural](https://tinyletter.com/data-is-plural)
-- [DataEng Weekly](http://dataengweekly.com/)
-- [Data Elixir](https://dataelixir.com/)
-- [Data Science Weekly](https://www.datascienceweekly.org/)
-- [Normcore Tech](https://vicki.substack.com)
-- [The Carpentries](https://carpentries.topicbox.com/latest)
 
 #### Data Visualization Resources
 - [Storytelling with Data](http://storytellingwithdata.com/)
@@ -238,7 +239,6 @@ You can use `Command + Option + L` to format your file.
 ## Contributing to the Data Team project
 
 We welcome contributions and improvements, please see the [contribution guidelines](CONTRIBUTING.md).
-
 
 ## License
 
