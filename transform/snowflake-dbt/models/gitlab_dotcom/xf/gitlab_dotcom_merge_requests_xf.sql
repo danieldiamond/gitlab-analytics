@@ -1,3 +1,5 @@
+-- depends_on: {{ ref('engineering_productivity_metrics_projects_to_include') }}
+
 {{ config({
     "schema": "analytics",
     "post-hook": "grant select on {{this}} to role reporter"
@@ -60,7 +62,9 @@ WITH merge_requests AS (
     SELECT merge_requests.*,
            ARRAY_TO_STRING(agg_labels.agg_label,'|') AS masked_label_title,
            merge_request_metrics.merged_at,
-
+           CASE WHEN merge_requests.target_project_id IN ({{is_project_included_in_engineering_metrics()}}) THEN TRUE
+                ELSE FALSE
+                END AS is_included_in_engineering_metrics,
            CASE
             WHEN gitlab_org_projects.project_id IS NOT NULL
              AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.agg_label)

@@ -8,8 +8,6 @@
 *.DS_Store
 *.idea
 *.csv
-!ping_metrics_to_stage_mapping_data.csv
-!cost_center_division_department_mapping.csv
 *.csv.gz
 tmp_log.txt
 */*.env
@@ -21,3 +19,6 @@ gcp_credentials.json
 .mypy*
 *.egg-info
 config.json
+!ping_metrics_to_stage_mapping_data.csv
+!engineering_productivity_metrics_projects_to_include.csv
+!cost_center_division_department_mapping.cs

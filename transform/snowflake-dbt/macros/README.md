@@ -65,6 +65,17 @@ on-run-end:
 Used in:
 - dbt_project.yml
 
+## Is Project Included In Engineering Metrics
+This macro pulls all the engineering projects to be included from the seeded csv and adds a boolean in the model that can be used to filter on it.
+Usage:
+```
+CASE WHEN issues.project_id IN ({{is_project_included_in_engineering_metrics()}}) THEN TRUE
+     ELSE FALSE END AS is_included_in_engineering_metrics,
+```
+Used in:
+- gitlab_dotcom_issues_xf
+- gitlab_dotcom_merge_requests_xf
+
 ## Monthly Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/monthly_change.sql))
 This macro calculates differences for each consecutive usage ping by uuid.
 Usage:

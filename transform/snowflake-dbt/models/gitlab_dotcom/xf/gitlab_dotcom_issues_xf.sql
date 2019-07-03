@@ -1,3 +1,5 @@
+-- depends_on: {{ ref('engineering_productivity_metrics_projects_to_include') }}
+
 {{ config({
     "schema": "analytics",
     "post-hook": "grant select on {{this}} to role reporter"
@@ -95,7 +97,10 @@ with issues as (
            CASE WHEN namespace_id = 9970
              AND ARRAY_CONTAINS('security'::variant, agg_label) THEN TRUE
             ELSE FALSE
-          END AS is_security_issue,
+           END AS is_security_issue,
+
+           CASE WHEN issues.project_id IN ({{is_project_included_in_engineering_metrics()}}) THEN TRUE
+                ELSE FALSE END AS is_included_in_engineering_metrics,
 
            state,
            weight,
