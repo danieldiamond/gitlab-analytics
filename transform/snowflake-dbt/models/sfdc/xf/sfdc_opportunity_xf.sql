@@ -71,6 +71,7 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.is_deleted,
         sfdc_opportunity.last_activity_date,
         sfdc_opportunity._last_dbt_run,
+        sfdc_opportunity.deployment_preference,
         sfdc_opportunity.days_since_last_activity,
         sfdc_opportunity.incremental_acv * (sfdc_opportunitystage.default_probability /100)         AS weighted_iacv,
         md5((date_trunc('month', sfdc_opportunity.close_date)::date)||UPPER(sfdc_users_xf.name))    AS sales_quota_id,

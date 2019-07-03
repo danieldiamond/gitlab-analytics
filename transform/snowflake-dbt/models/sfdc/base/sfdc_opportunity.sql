@@ -75,6 +75,7 @@ WITH source AS (
         solutions_to_be_replaced__c AS solutions_to_be_replaced,
         reason_for_lost__c          AS reason_for_loss,
         reason_for_lost_details__c  AS reason_for_loss_details,
+        deployment_preference__c    AS deployment_preference,
         push_counter__c             AS pushed_count,
         upside_iacv__c              AS upside_iacv,
         upside_swing_deal_iacv__c   AS upside_swing_deal_iacv,
