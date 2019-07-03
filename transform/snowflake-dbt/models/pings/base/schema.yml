@@ -22,17 +22,17 @@ models:
             tests:
                 - not_null
 
-    - name: pings_avg_cycle_analytics
-      description: Ping data from Self-Managed users.
-      columns:
-          - name: ping_id
-            tests:
-                - not_null
-                - unique
-          - name: id
-            tests:
-                - not_null
-                - unique
+#    - name: pings_avg_cycle_analytics
+#      description: Ping data from Self-Managed users.
+#      columns:
+#          - name: ping_id
+#            tests:
+#                - not_null
+#                - unique
+#          - name: id
+#            tests:
+#                - not_null
+#                - unique
 
     - name: pings_version_checks
       description: Ping version data from self-managed instances
