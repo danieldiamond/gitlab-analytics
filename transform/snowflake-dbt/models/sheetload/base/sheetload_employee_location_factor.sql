@@ -11,12 +11,12 @@ with source as (
 ), renamed as (
 
     SELECT
-         nullif("Employee_ID",'') as bamboo_employee_id,
+         nullif("Employee_ID",'') as bamboo_employee_number,
          nullif("Location_Factor",'')::float as location_factor
     FROM source
-    WHERE lower(bamboo_employee_id) NOT LIKE '%not in comp calc%'
+    WHERE lower(bamboo_employee_number) NOT LIKE '%not in comp calc%'
 )
 
-SELECT bamboo_employee_id::bigint as bamboo_employee_id,
-       location_factor
+SELECT bamboo_employee_number::bigint as bamboo_employee_number,
+        location_factor
 FROM renamed

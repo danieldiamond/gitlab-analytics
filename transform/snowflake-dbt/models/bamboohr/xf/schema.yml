@@ -4,6 +4,7 @@ models:
   description: This is the source of truth connecting an employee number from bamboo to the location factor used for People Ops purposes. The "Comp Data Analysis and Modeling" spreadsheet maintained by the Compensation & Benefits Manager is the SSOT for location factor.
   columns:
   - name: bamboo_employee_number
+    description: Employee number is a front-facing number that peopleops can change. It is unique per employee and could in-theory change (but shouldn't).
     tests:
     - not_null
     - unique
