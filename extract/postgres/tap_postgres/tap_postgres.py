@@ -7,12 +7,11 @@ from time import time
 from typing import Dict, List, Generator, Any
 
 import pandas as pd
-from fire import Fire
 import sqlalchemy
+from fire import Fire
+from gitlabdata.orchestration_utils import snowflake_engine_factory
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
-
-from common_utils import snowflake_engine_factory
 
 
 def postgres_engine_factory(
@@ -50,7 +49,7 @@ def manifest_reader(file_path: str) -> Dict[str, Dict]:
 
 
 def query_results_generator(
-    query: str, engine: Engine, chunksize: int = 100_000
+    query: str, engine: Engine, chunksize: int = 50000
 ) -> pd.DataFrame:
     """
     Use pandas to run a sql query and load it into a dataframe.

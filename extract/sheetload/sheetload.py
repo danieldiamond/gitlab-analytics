@@ -1,8 +1,8 @@
 import sys
+import re
 from io import StringIO
 from logging import exception, info, basicConfig
 from os import environ as env
-import re
 from time import time
 from typing import Dict, List
 from yaml import load
@@ -11,13 +11,16 @@ import boto3
 import gspread
 import pandas as pd
 from fire import Fire
+from gitlabdata.orchestration_utils import (
+    postgres_engine_factory,
+    snowflake_engine_factory,
+)
 from google.cloud import storage
 from google.oauth2 import service_account
 from gspread.exceptions import SpreadsheetNotFound
 from oauth2client.service_account import ServiceAccountCredentials
 from sqlalchemy.engine.base import Engine
 
-from common_utils import postgres_engine_factory, snowflake_engine_factory
 
 SHEETLOAD_SCHEMA = "sheetload"
 

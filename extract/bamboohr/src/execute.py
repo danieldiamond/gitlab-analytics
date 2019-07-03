@@ -1,11 +1,11 @@
 import json
 import logging
-from os import environ as env
 import sys
+from os import environ as env
+
+from gitlabdata.orchestration_utils import snowflake_engine_factory
 
 from api import BambooAPI
-
-from common_utils import snowflake_engine_factory
 
 
 def upload_to_snowflake_stage(

@@ -3,9 +3,8 @@
 import logging
 from os import environ as env
 
+from gitlabdata.orchestration_utils import snowflake_engine_factory
 from sqlalchemy.engine import Engine
-
-from common_utils import snowflake_engine_factory
 
 
 def main(engine: Engine) -> None:
