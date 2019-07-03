@@ -9,6 +9,7 @@
 *.idea
 *.csv
 !ping_metrics_to_stage_mapping_data.csv
+!cost_center_division_department_mapping.csv
 *.csv.gz
 tmp_log.txt
 */*.env

@@ -37,6 +37,14 @@ archive:
           updated_at: _last_dbt_run::timestamp_ntz
           unique_key: user_id_18__c
 
+    - source_schema: sensitive
+      target_schema: dbt_archive
+      tables:
+        - source_table: employee_directory
+          target_table: employee_directory_archived
+          updated_at: _last_dbt_run::timestamp_ntz
+          unique_key: account_id
+
 on-run-start:
     - "{{resume_warehouse(var('resume_warehouse', false), var('warehouse_name'))}}"
     - "{{create_udfs()}}"
