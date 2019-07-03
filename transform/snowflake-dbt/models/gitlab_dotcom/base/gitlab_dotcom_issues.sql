@@ -10,26 +10,27 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                                               as issue_id,
-      author_id :: integer                                        as author_id,
-      source.project_id :: integer                                as project_id,
-      milestone_id :: integer                                     as milestone_id,
-      updated_by_id :: integer                                    as updated_by_id,
-      last_edited_by_id :: integer                                as last_edited_by_id,
-      moved_to_id :: integer                                      as moved_to_id,
-      created_at :: timestamp                                     as issue_created_at,
-      updated_at :: timestamp                                     as issue_updated_at,
-      last_edited_at :: timestamp                                 as last_edited_at,
-      closed_at :: timestamp                                      as issue_closed_at,
-      confidential :: boolean                                     as is_confidential,
+      id::integer                                               AS issue_id,
+      iid::integer                                              AS issue_iid,
+      author_id::integer                                        AS author_id,
+      source.project_id::integer                                AS project_id,
+      milestone_id::integer                                     AS milestone_id,
+      updated_by_id::integer                                    AS updated_by_id,
+      last_edited_by_id::integer                                AS last_edited_by_id,
+      moved_to_id::integer                                      AS moved_to_id,
+      created_at::timestamp                                     AS issue_created_at,
+      updated_at::timestamp                                     AS issue_updated_at,
+      last_edited_at::timestamp                                 AS last_edited_at,
+      closed_at::timestamp                                      AS issue_closed_at,
+      confidential::boolean                                     AS is_confidential,
       title,
       description,
       state,
-      weight :: number                                            as weight,
-      due_date :: date                                            as due_date,
-      lock_version :: number                                      as lock_version,
-      time_estimate :: number                                     as time_estimate,
-      discussion_locked :: boolean                                as has_discussion_locked
+      weight::number                                            AS weight,
+      due_date::date                                            AS due_date,
+      lock_version::number                                      AS lock_version,
+      time_estimate::number                                     AS time_estimate,
+      discussion_locked::boolean                                AS has_discussion_locked
 
     FROM source
     WHERE rank_in_key = 1

@@ -47,6 +47,7 @@ with issues as (
 ), joined as (
 
     SELECT issues.issue_id,
+           issues.issue_iid,
            author_id,
            issues.project_id,
            milestone_id,
