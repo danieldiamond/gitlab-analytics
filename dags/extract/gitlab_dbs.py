@@ -12,7 +12,7 @@ from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOpera
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 standard_pod_env_vars = {
-    "EXECUTION_DATE": "{{ execution_date }}",
+    "EXECUTION_DATE": "{{ next_execution_date }}",
     "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
     "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
     if GIT_BRANCH == "master"
@@ -73,7 +73,7 @@ config_dict = {
     },
     "gitlab_profiler": {
         "dag_name": "gitlab_profiler",
-        "env_vars": {"DAYS": "2"},
+        "env_vars": {"DAYS": "3"},
         "extract_schedule_interval": "0 0 */1 * *",
         "task_name": "gitlab-profiler",
         "secrets": [
