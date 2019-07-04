@@ -171,7 +171,7 @@ for source_name, config in config_dict.items():
             **gitlab_defaults,
             image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
             task_id=f"{config['task_name']}-db-sync",
-            name="{config['task_name']}-db-sync",
+            name=f"{config['task_name']}-db-sync",
             secrets=standard_secrets + config["secrets"],
             env_vars={**standard_pod_env_vars, **config["env_vars"]},
             cmds=["/bin/bash", "-c"],
