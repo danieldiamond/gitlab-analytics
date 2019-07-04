@@ -8,30 +8,54 @@ tables:
   usage_data:
     import_db: VERSION_DB
     import_query: >
-      SELECT
-      id,
-      source_ip,
-      version,
-      active_user_count,
-      installation_type,
-      historical_max_users,
-      license_user_count,
-      license_starts_at,
-      license_expires_at,
-      license_add_ons,
-      license_restricted_user_count,
-      license_md5,
-      recorded_at,
-      created_at,
-      updated_at,
-      counts,
-      license_id,
-      stats,
-      mattermost_enabled,
-      uuid,
-      edition,
-      hostname,
-      host_id
+      SELECT id
+      , source_ip
+      , version
+      , active_user_count
+      , license_md5
+      , historical_max_users
+      , licensee
+      , license_user_count
+      , license_starts_at
+      , license_expires_at
+      , license_add_ons
+      , license_restricted_user_count
+      , recorded_at
+      , created_at
+      , updated_at
+      , counts
+      , license_id
+      , stats
+      , mattermost_enabled
+      , uuid
+      , edition
+      , hostname
+      , host_id
+      , license_trial
+      , source_license_id
+      , installation_type
+      , license_plan
+      , database_adapter
+      , database_version
+      , git_version
+      , gitlab_pages_enabled
+      , gitlab_pages_version
+      , container_registry_enabled
+      , elasticsearch_enabled
+      , geo_enabled
+      , gitlab_shared_runners_enabled
+      , gravatar_enabled
+      , ldap_enabled
+      , omniauth_enabled
+      , reply_by_email_enabled
+      , signup_enabled
+      , web_ide_commits
+      , influxdb_metrics_enabled
+      , prometheus_metrics_enabled
+      , smau
+      , usage_activity_by_stage
+      , gitaly_version
+      , gitaly_servers
       FROM usage_data
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
