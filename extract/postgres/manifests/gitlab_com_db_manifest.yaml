@@ -5,18 +5,38 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
-  epic_metrics:
+  notes:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , epic_id
+      , note
+      , noteable_type
+      , author_id
       , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
       , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
-      FROM epic_metrics
+      , project_id
+      , attachment
+      , line_code
+      , commit_id
+      , noteable_id
+      , system
+      , st_diff
+      , updated_by_id
+      , type
+      , position
+      , original_position
+      , resolved_at
+      , resolved_by_id
+      , discussion_id
+      , note_html
+      , cached_markdown_version
+      , change_position
+      , resolved_by_push
+      FROM notes
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_schema: 'gitlab_com'
-    export_table: 'epic_metrics'
+    export_table: 'notes'
     export_table_primary_key: id
   approvals:
     import_db: GITLAB_DB
@@ -45,6 +65,23 @@ tables:
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_schema: 'gitlab_com'
     export_table: 'approver_groups'
+    export_table_primary_key: id
+  audit_events:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , author_id
+      , type
+      , entity_id
+      , entity_type
+      , details
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      FROM audit_events
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+    export_schema: 'gitlab_com'
+    export_table: 'audit_events'
     export_table_primary_key: id
   board_assignees:
     import_db: GITLAB_DB
@@ -118,6 +155,19 @@ tables:
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_schema: 'gitlab_com'
     export_table: 'epics'
+    export_table_primary_key: id
+  epic_metrics:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , epic_id
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      FROM epic_metrics
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+    export_schema: 'gitlab_com'
+    export_table: 'epic_metrics'
     export_table_primary_key: id
   gitlab_subscriptions:
     import_db: GITLAB_DB
@@ -388,6 +438,27 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'namespace_statistics'
     export_table_primary_key: id
+  members:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , access_level
+      , source_id
+      , source_type
+      , user_id
+      , notification_level
+      , type
+      , created_by_id
+      , invite_email
+      , invite_accepted_at
+      , requested_at
+      , expires_at
+      , ldap
+      , override
+      FROM members
+    export_schema: 'gitlab_com'
+    export_table: 'members'
+    export_table_primary_key: id
   namespaces:
     import_db: GITLAB_DB
     import_query: >
@@ -421,27 +492,6 @@ tables:
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_schema: 'gitlab_com'
     export_table: 'namespaces'
-    export_table_primary_key: id
-  members:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , access_level
-      , source_id
-      , source_type
-      , user_id
-      , notification_level
-      , type
-      , created_by_id
-      , invite_email
-      , invite_accepted_at
-      , requested_at
-      , expires_at
-      , ldap
-      , override
-      FROM members
-    export_schema: 'gitlab_com'
-    export_table: 'members'
     export_table_primary_key: id
   notification_settings:
     import_db: GITLAB_DB
@@ -738,21 +788,4 @@ tables:
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_schema: 'gitlab_com'
     export_table: 'users'
-    export_table_primary_key: id
-  audit_events:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , author_id
-      , type
-      , entity_id
-      , entity_type
-      , details
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
-      FROM audit_events
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
-    export_schema: 'gitlab_com'
-    export_table: 'audit_events'
     export_table_primary_key: id
