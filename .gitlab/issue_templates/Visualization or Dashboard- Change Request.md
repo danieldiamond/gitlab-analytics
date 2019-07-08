@@ -6,6 +6,10 @@ This issue is for visualization related issues within our BI tool.
 
 THIS IS REQUIRED.
 
+#### Please link to where this (or these) performance indicator/s are defined in the handbook. 
+
+Everything needs to be defined in the handbook.
+
 #### What are your requested changes?
 
 Example: This is currently by week. I would like to see it by month. 

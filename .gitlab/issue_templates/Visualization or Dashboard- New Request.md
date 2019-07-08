@@ -6,6 +6,10 @@ This issue is for visualization related issues within our BI tool.
 
 Example: Is there a relationship between the day of the week that deals close and the ability of the account manager to upsell them in the first month? 
 
+#### Please link to where this (or these) performance indicator/s are defined in the handbook. 
+
+Everything needs to be defined in the handbook.
+
 #### What time frames are crucial here? 
 
 Example: I would like to look at performance by month, but at the trends over the last year.
