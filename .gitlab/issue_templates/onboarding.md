@@ -2,6 +2,7 @@
 
 Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed.
 
+- [ ] Manager: Create access request using data analyst baseline.
 - [ ] Manager: Add to Analytics API user
 - [ ] Manager: Add to Stitch
 - [ ] Manager: Add to Periscope
@@ -24,7 +25,7 @@ WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 - [ ] Read (skim) through this full issue, just so you have a sense of what's coming.
 - [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `analytics-pipelines`, and `business-operations`.
 - [ ] Schedule a recurring fortnightly 1:1 meeting with the Director of Business Operations.
-- [ ] Invite yourself to the to Milestone Planning/Grooming and DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar. 
+- [ ] Invite yourself to the to Milestone Planning/Grooming and DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.
 - [ ] Schedule a coffee chat with each member of the team. These should be in addition to the ones you do with other GitLab team members.
 - [ ] Read the following pages of the handbook in their entirety. Bookmark them as you should soon be making MR's to improve our documentation!
    - [ ] [Data Team](https://about.gitlab.com/handbook/business-ops/data-team/)
@@ -36,16 +37,20 @@ WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 - [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
 
 **Getting your computer set up locally**
-- [ ] Open your computer's built-in terminal app. Run the following:
+* Make sure that you have [created your SSH keys](https://docs.gitlab.com/ee/gitlab-basics/create-your-ssh-keys.html) prior to running this. You can check this by typing `ssh -T git@gitlab.com` into your terminal which should return "Welcome to GitLab, " + your_username
+* THE NEXT STEPS SHOULD ONLY BE RUN ON YOUR GITLAB-ISSUED LAPTOP. If you run this on your personal computer, we take no responsibility for the side effects.
+* [ ] Open your computer's built-in terminal app. Run the following:
 ```
 curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/onboarding_script.sh > ~/onboarding_script.sh
 bash ~/onboarding_script.sh
 rm ~/onboarding_script.sh
 ```
-   * This may take a while, and it might ask you for your password (multiple times) before it's done.
-   * Make sure that you have [created your SSH keys](https://docs.gitlab.com/ee/gitlab-basics/create-your-ssh-keys.html) prior to running this.
-      * You can check this by typing `ssh -T git@gitlab.com` into your terminal which should return "Welcome to GitLab, " + your_username
-   * This will download iTerm2 and set up atom as your text editor.
+   * This may take a while, and it might ask you for your password (multiple times) before it's done. Here's what this does:
+      * Installs iTerm, a mac-OS terminal replacement
+      * Installs Atom, an open source text editor. Atom is reccomended because of its support for dbt autocompletion.
+      * Installing dbt, the open source tool we use for data transformations.
+      * Installing goto, an easy way to move through the file system. [Please find here more details on how to use goto](https://github.com/iridakos/goto)
+      * Installing anaconda, how we recommend folks get there python distribution.
    * You will be able to `goto analytics` from anywhere to go to the analytics repo locally (you will have to open a new terminal window for `goto` to start working.)
    * You will be able to `gl_open` from anywhere within analytics to open the repo in the UI.
    * Your default python version should now be python 3.
@@ -54,13 +59,13 @@ rm ~/onboarding_script.sh
 Our data stack looks roughly like this:
 <img src = "https://cdn-images-1.medium.com/max/2000/1*BogoeTTK1OXFU1hPfUyCFw.png">
 
-As you read in the handbook, we currently use Stitch and Meltano for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool. The bulk of your projects and tasks will be in dbt , so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources.
+As you read in the handbook, we currently use Stitch for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool. The bulk of your projects and tasks will be in dbt , so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources.
 
 **Bonus**
-To see the inspiration for the onboarding script you just ran, take a look at the dbt Discourse post [here](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243) on how they set up their computers for working on dbt projects. 
+To see the inspiration for the onboarding script you just ran, take a look at the dbt Discourse post [here](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243) on how they set up their computers for working on dbt projects.
 
 ## Connecting to Snowflake
-- [ ] Follow the instructions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
+- [ ] Login with the credentials that your manager created following the instruactions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
 - [ ] Download a SQL development tool that is compatible with Snowflake, such as [SQLWorkbench/J](http://sql-workbench.net) or [DataGrip](https://www.jetbrains.com/datagrip/). If you're interested in DataGrip, follow the [instructions to get a JetBrains license in the handbook](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains). Alternatively, Snowflake has a Web UI for querying the data warehouse that can be found under [Worksheets](https://gitlab.snowflakecomputing.com/console#/internal/worksheet).
    - [ ] If using the Snowflake Web UI, update your role to `TRANSFORMER`, warehouse to `ANALYST_XS`, and database to `ANALYTICS` (located in the top right corner of the worksheet UI). The schema does not matter because your query will reference the schema.
    - [ ] If using DataGrip, you may need to download the [Driver](https://docs.snowflake.net/manuals/user-guide/jdbc-download.html#downloading-the-driver).
@@ -90,8 +95,8 @@ To see the inspiration for the onboarding script you just ran, take a look at th
 ### Getting Set up with dbt locally
 - All dbt commands need to be run within the analytics project (which you can get to my typing `goto analytics` from anywhere on your Mac, specifically you must be in `analytics/transform/snowflake-dbt` or below.
 - [ ] From the command line run `atom ~/.dbt/profiles.yml` and update this file with your info.
+- [ ] When you are ready to start working with dbt start by running `dbt deps` and doing a `dbt run --models modelname`. This will take some time (estimate 1 hour, though it could be longer) the first time it runs. Ask your manager what to substitute in `modelname`.
 - [ ] Run `dbt compile` to know that your connection has been successful, you are in the correct location, and everything will run smoothly.
-- [ ] When you are ready to start working with dbt start by running `dbt deps` and doing a `dbt run --exclude snowplow`. This will take some time (estimate 1 hour, though it could be longer) the first time it runs.
 
 Here is your dbt commands cheat sheet:
  * `dbt compile` - compiles all models

@@ -107,5 +107,7 @@ echo "anaconda installed succesfully"
 echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.bash_profile
 echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.bash_profile
 echo "source ~/.bashrc" >> ~/.bash_profile
+echo "source ~/.bashrc"
+echo "source ~/.bash_profile"
 
 echo "Onboarding script run successfully"
