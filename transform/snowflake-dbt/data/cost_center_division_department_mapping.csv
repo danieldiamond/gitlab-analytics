@@ -7,22 +7,23 @@ Sales,Sales,Commercial Sales
 Marketing,Marketing,Corporate Marketing
 Cost of Sales,Sales,Customer Solutions
 Sales,Sales,Customer Success
-Cost of Sales,Development,Customer Support
+Cost of Sales,Engineering,Customer Support
 Marketing,Marketing,Demand Generation
-R&D,Development,Development
+R&D,Engineering,Development
+R&D,Meltano,Development
 Marketing,Marketing,Digital Marketing
 Sales,Sales,Enterprise Sales
 Marketing,Marketing,Field Marketing
 Sales,Sales,Field Operations
 G&A,G&A,Finance
-R&D,Development,Infrastructure
+R&D,Engineering,Infrastructure
 Marketing,Marketing,Marketing Ops
 R&D,Meltano,Meltano
 Marketing,Marketing,Outreach
 G&A,G&A,People Ops
 R&D,Product,Product Management
 Marketing,Marketing,Product Marketing
-R&D,Development,Quality
+R&D,Engineering,Quality
 G&A,G&A,Recruiting
-R&D,Development,Security
-R&D,Development,UX
+R&D,Engineering,Security
+R&D,Engineering,UX
