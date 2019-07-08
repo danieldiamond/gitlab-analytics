@@ -169,6 +169,10 @@ models:
           enabled: true
           materialized: table
 
+      team_yaml:
+        enabled: true
+        materialized: table
+
       zuora:
         xf:
           enabled: true

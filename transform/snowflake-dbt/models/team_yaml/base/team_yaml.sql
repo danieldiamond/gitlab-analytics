@@ -1,0 +1,33 @@
+{{ config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter"
+    })
+}}
+
+WITH source AS (
+
+    SELECT *
+    FROM {{ source('team_yaml', 'team_yaml') }}
+    ORDER BY uploaded_at DESC
+    LIMIT 1
+
+), intermediate AS (
+
+      SELECT d.value AS data_by_row
+      FROM source,
+      LATERAL FLATTEN(INPUT => parse_json(jsontext), OUTER => TRUE) d
+
+), renamed AS (
+
+      SELECT
+            data_by_row['gitlab']::varchar                              AS gitlab_username,
+            data_by_row['name']::varchar                                AS name,
+            data_by_row['projects']::varchar                            AS projects,
+            data_by_row['slug']::varchar                                AS yaml_slug,
+            data_by_row['type']::varchar                                AS type
+      FROM intermediate
+
+)
+
+SELECT *
+FROM renamed
