@@ -5,7 +5,7 @@
 }}
 
 WITH months AS (
-  
+
     SELECT DISTINCT
       first_day_of_month AS skeleton_month
     FROM {{ ref('date_details') }}
@@ -27,7 +27,7 @@ WITH months AS (
     FROM users
       LEFT JOIN months
         ON DATE_TRUNC('month', user_created_at_month) <= months.skeleton_month
-  
+
 ), audit_events AS (
 
     SELECT
@@ -43,18 +43,18 @@ WITH months AS (
       skeleton.user_id,
       skeleton.user_created_at_month,
       skeleton.skeleton_month                                AS audit_event_month,
-      skeleton.months_since_join_date, 
+      skeleton.months_since_join_date,
       COALESCE(audit_events.audit_events_count, 0)           AS audit_events_count,
       IFF(audit_events.audit_events_count > 0, TRUE, FALSE)  AS user_was_active_in_month
     FROM skeleton
       LEFT JOIN audit_events
         ON skeleton.user_id = audit_events.author_id
         AND skeleton.skeleton_month = audit_events.audit_event_month
-    ORDER BY 
+    ORDER BY
       skeleton.user_id,
       skeleton.skeleton_month
 
 )
 
-SELECT * 
+SELECT *
 FROM joined
