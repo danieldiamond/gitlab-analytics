@@ -52,7 +52,7 @@ dbt_full_refresh_cmd = f"""
 """
 dbt_full_refresh = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
     task_id="dbt-snowplow-full-refresh",
     name="dbt-snowplow-full-refresh",
     secrets=[

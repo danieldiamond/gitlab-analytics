@@ -83,7 +83,7 @@ dbt_run_cmd = f"""
 
 dbt_run = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
     task_id="dbt-run",
     name="dbt-run",
     secrets=[

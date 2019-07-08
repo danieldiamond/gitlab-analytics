@@ -109,7 +109,7 @@ dbt_run_cmd = f"""
 """
 dbt_run = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
     task_id="dbt-run",
     name="dbt-run",
     secrets=[
@@ -136,7 +136,7 @@ dbt_full_refresh_cmd = f"""
 """
 dbt_full_refresh = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
     task_id="dbt-full-refresh",
     name="dbt-full-refresh",
     secrets=[
@@ -163,7 +163,7 @@ dbt_archive_cmd = f"""
 """
 dbt_archive = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
     task_id="dbt-archive",
     name="dbt-archive",
     secrets=[
@@ -190,7 +190,7 @@ dbt_test_cmd = f"""
 """
 dbt_test = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
     task_id="dbt-test",
     name="dbt-test",
     trigger_rule="one_success",
@@ -217,7 +217,7 @@ sfdc_update_cmd = f"""
 """
 sfdc_update = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
     task_id="sfdc-update",
     name="sfdc-update",
     secrets=[
