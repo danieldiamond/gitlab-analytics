@@ -36,3 +36,6 @@ export CYAN="\033[0;36m"
 export WHITE="\033[0;37m"
 
 export PS1="\[$GREEN\]\t \[$BLUE\]\w\[\033[m\]\[$MAGENTA\]\$(__git_ps1)\[$WHITE\]\[$WHITE\] $ "
+
+[[ $PS1 && -f /usr/local/etc/bash_completion.d/goto.sh ]] && \
+    . /usr/local/etc/bash_completion.d/goto.sh
