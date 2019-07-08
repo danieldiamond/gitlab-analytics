@@ -1,27 +1,32 @@
 version: 2
 models:
-- name: sheetload_employee_location_factor
-  description: This is the source of truth connecting an employee number from bamboo to the location factor used for People Ops purposes. The "Comp Data Analysis and Modeling" spreadsheet maintained by the Compensation & Benefits Manager is the SSOT for location factor.
+- name: employee_directory_analysis
+  description: Gives the current state of the employees at GitLab at any point of time. This is the model to use for headcount, team size, or any people-related analysis for employees. This has current and past employees, as well as their department, division, and cost center.
+- name: employee_directory
+  description: INCLUDES SENSITIVE INFORMATION. The master collection of all info about GitLab employees for all time.
   columns:
-  - name: bamboo_employee_number
-    description: Employee number is a front-facing number that peopleops can change. It is unique per employee and could in-theory change (but shouldn't).
+  - name: employee_id
     tests:
     - not_null
     - unique
+  - name: employee_number
+    tests:
+    - not_null
+    - unique
+  - name: first_name
+    tests:
+    - not_null
+  - name: last_name
+    tests:
+    - not_null
+  - name: job_title
+  - name: supervisor
+  - name: work_email
+  - name: hire_date
+#    tests:
+#     - not_null
+  - name: termination_date
+  - name: department
+  - name: division
+  - name: cost_center
   - name: location_factor
-    description: This is the location factor used for calculating analyses and takes into account the metrics adjusted location factor, where that exists.
-    tests:
-    - not_null
-- name: sheetload_headcount
-  columns:
-  - name: primary_key
-    tests:
-    - not_null
-    - unique
-- name: sheetload_planned_values
-  description: Planned values for multiple metrics as defined by Finance Team via Chase
-  columns:
-    - name: primary_key
-      tests:
-      - not_null
-      - unique

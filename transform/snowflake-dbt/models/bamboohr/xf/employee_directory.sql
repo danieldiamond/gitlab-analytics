@@ -5,9 +5,11 @@ with bamboohr_directory as (
 
 ), hire_dates as (
 
-    SELECT *
-    FROM {{ ref ('bamboohr_employment_status') }}
-    WHERE termination_type IS NULL
+    SELECT max(effective_date) as effective_date, employee_id
+    FROM {{ ref ('bamboohr_compensation') }}
+    WHERE compensation_change_reason = 'Hire'
+    GROUP BY 2
+
 
 ), termination_dates as (
 
