@@ -217,7 +217,7 @@ sfdc_update_cmd = f"""
 """
 sfdc_update = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="sfdc-update",
     name="sfdc-update",
     secrets=[
