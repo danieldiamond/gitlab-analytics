@@ -1,15 +1,15 @@
+"""This module pulls data from postgres and uploads it to snowflake."""
 import logging
 import os
 import sys
-import yaml
-from functools import reduce
 from time import time
 from typing import Dict, List, Generator, Any
+import yaml
 
-import pandas as pd
-import sqlalchemy
 from fire import Fire
 from gitlabdata.orchestration_utils import snowflake_engine_factory
+import pandas as pd
+import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
 
@@ -65,12 +65,7 @@ def query_results_generator(
 
 
 def dataframe_uploader(
-    dataframe: pd.DataFrame,
-    engine: Engine,
-    table_name: str,
-    schema: str,
-    if_exists: str,
-    chunksize: int = 10000,
+    dataframe: pd.DataFrame, engine: Engine, table_name: str, schema: str
 ) -> None:
     """
     Upload a dataframe, adding in some metadata and cleaning up along the way.
@@ -87,11 +82,10 @@ def dataframe_uploader(
         name=table_name,
         con=engine,
         schema=schema,
-        if_exists=if_exists,
         index=False,
-        chunksize=chunksize,
+        if_exists="append",
+        chunksize=10000,
     )
-    return
 
 
 def upload_orchestrator(
@@ -99,7 +93,6 @@ def upload_orchestrator(
     engine: Engine,
     table_name: str,
     schema: str = "tap_postgres",
-    drop_first: bool = False,
 ) -> None:
     """
     Handle the logic of uploading and logging an iterable DataFrame.
@@ -107,22 +100,13 @@ def upload_orchestrator(
 
     chunk_counter = 0
     for chunk_df in results_chunker:
-        if drop_first and chunk_counter == 0:
-            if_exists = "replace"
-        else:
-            if_exists = "append"
         row_count = chunk_df.shape[0]
         logging.info(f"Uploading {row_count} records to snowflake...")
         dataframe_uploader(
-            dataframe=chunk_df,
-            engine=engine,
-            table_name=table_name,
-            schema=schema,
-            if_exists=if_exists,
+            dataframe=chunk_df, engine=engine, table_name=table_name, schema=schema
         )
         chunk_counter += row_count
         logging.info(f"{chunk_counter} total records uploaded...")
-    return
 
 
 def range_generator(
@@ -141,7 +125,42 @@ def range_generator(
         start += step
         stop -= step
 
-    return
+
+def check_if_schema_changed(
+    raw_query: str,
+    schema: str,
+    source_engine: Engine,
+    source_table: str,
+    target_engine: Engine,
+    target_table: str,
+) -> bool:
+    """
+    Query the source table with the manifest query to get the columns, then check
+    what columns currently exist in the DW. Return a bool depending on whether
+    there has been a change or not.
+
+    """
+
+    if not target_engine.has_table(target_table, schema):
+        return False
+    # Get the columns from the current query
+    query_stem = raw_query.lower().split("where")[0]
+    source_query = "{0} where id = (select max(id) from {1}) limit 1"
+    source_columns = pd.read_sql(
+        sql=source_query.format(query_stem, source_table), con=source_engine
+    ).columns
+
+    # Get the columns from the target_table
+    target_query = "select * from {0} where id = (select max(id) from {0}) limit 1"
+    target_columns = (
+        pd.read_sql(
+            sql=target_query.format(f"{schema}.{target_table}"), con=target_engine
+        )
+        .drop(axis=1, columns=["_uploaded_at"])
+        .columns
+    )
+
+    return set(source_columns) != set(target_columns)
 
 
 def id_query_generator(
@@ -196,79 +215,111 @@ def id_query_generator(
     return
 
 
+def chunk_and_upload(
+    query: str, source_engine: Engine, target_engine: Engine, target_table: str
+) -> None:
+    """
+    Call the results chunker and then pass the results to the upload_orchestrator.
+    """
+
+    results_chunker = query_results_generator(query, source_engine)
+    # Upload the dataframe generator to the data warehouse
+    upload_orchestrator(
+        results_chunker=results_chunker, engine=target_engine, table_name=target_table
+    )
+
+
 def main(
-    *file_paths: List[str],
+    file_path: str,
     incremental_only: bool = False,
     scd_only: bool = False,
     sync: bool = False,
 ) -> None:
     """
-    Read data from a postgres DB and write it to stdout following the
-    Singer spec.
+    Read data from a postgres DB and upload it directly to Snowflake.
     """
 
     # Make sure that only one of the flags is set
     if (incremental_only + scd_only + sync) > 1:
-        logging.info("Only one flag can be used at a time")
-        sys.exit()
+        logging.critical("Only one flag can be used at a time")
+        sys.exit(1)
 
     # Set vars
     env = os.environ.copy()
 
-    # Iterate through the manifests
-    for file_path in file_paths:
-        logging.info(f"Reading manifest at location: {file_path}")
-        manifest_dict = manifest_reader(file_path)
+    # Process the manifest
+    logging.info(f"Reading manifest at location: {file_path}")
+    manifest_dict = manifest_reader(file_path)
 
-        logging.info("Creating database engines...")
-        connection_dict = manifest_dict["connection_info"]
-        postgres_engine = postgres_engine_factory(connection_dict, env)
-        snowflake_engine = snowflake_engine_factory(env, "LOADER")
-        logging.info(snowflake_engine)
+    # Create database engines
+    logging.info("Creating database engines...")
+    connection_dict = manifest_dict["connection_info"]
+    postgres_engine = postgres_engine_factory(connection_dict, env)
+    snowflake_engine = snowflake_engine_factory(env, "LOADER")
+    logging.info(snowflake_engine)
 
-        for table in manifest_dict["tables"]:
-            logging.info(f"Querying for table: {table}")
-            table_dict = manifest_dict["tables"][table]
-            table_name = "{import_db}_{export_table}".format(**table_dict).upper()
+    for table in manifest_dict["tables"]:
+        logging.info(f"Processing table: {table}")
+        table_dict = manifest_dict["tables"][table]
+        table_name = "{import_db}_{export_table}".format(**table_dict).upper()
+        raw_query = table_dict["import_query"]
 
-            # Format the query
-            raw_query = table_dict["import_query"]
+        # Check if the table has changed
+        schema_changed = check_if_schema_changed(
+            raw_query=raw_query,
+            schema="tap_postgres",
+            source_engine=postgres_engine,
+            source_table=table,
+            target_engine=snowflake_engine,
+            target_table=table_name,
+        )
 
-            # If sync mode and the model is incremental, sync based on ID
-            if sync and "{EXECUTION_DATE}" in raw_query:
-                logging.info("Sync mode. Proceeding to sync based on max ID.")
-                id_queries = id_query_generator(
-                    table, table_name, raw_query, snowflake_engine, postgres_engine
+        # Rename the table that will be uploaded to so as not to mess up dbt
+        if schema_changed:
+            final_table_name = table_name
+            table_name = f"{table_name}_TEMP"
+            sync = "{EXECUTION_DATE}" in raw_query
+            logging.info(f"Schema has changed, backfilling table into: {table_name}")
+
+        # If sync mode and the model is incremental, sync based on ID
+        if sync and "{EXECUTION_DATE}" in raw_query:
+            logging.info("Sync mode. Proceeding to sync based on max ID.")
+            id_queries = id_query_generator(
+                table, table_name, raw_query, snowflake_engine, postgres_engine
+            )
+            # Iterate through the generated queries
+            for query in id_queries:
+                chunk_and_upload(query, postgres_engine, snowflake_engine, table_name)
+        elif sync and "{EXECUTION_DATE}" not in raw_query:
+            pass
+        # If incremental mode and the model isn't incremental, do nothing
+        elif incremental_only and "{EXECUTION_DATE}" not in raw_query:
+            pass
+        # If SCD mode and the model is incremental, do nothing
+        elif scd_only and "{EXECUTION_DATE}" in raw_query:
+            pass
+        else:
+            query = raw_query.format(**env)
+            logging.info(query)
+            chunk_and_upload(query, postgres_engine, snowflake_engine, table_name)
+        logging.info(f"Finished upload for table: {table}")
+
+        # Drop the original table and rename the temp table
+        if schema_changed:
+            try:
+                connection = snowflake_engine.connect()
+                connection.execute(f"DROP TABLE tap_postgres.{final_table_name}")
+                logging.info(f"Dropped table: {final_table_name}")
+                connection.execute(
+                    f"ALTER TABLE tap_postgres.{table_name} RENAME TO tap_postgres.{final_table_name}"
                 )
-                # Iterate through the generated queries
-                for query in id_queries:
-                    results_chunker = query_results_generator(query, postgres_engine)
-                    upload_orchestrator(
-                        results_chunker=results_chunker,
-                        engine=snowflake_engine,
-                        table_name=table_name,
-                    )
-            elif sync and "{EXECUTION_DATE}" not in raw_query:
-                results_chunker: List[None] = []
-            # If incremental mode and the model isn't incremental, do nothing
-            elif incremental_only and "{EXECUTION_DATE}" not in raw_query:
-                results_chunker: List[None] = []
-            # If SCD mode and the model is incremental, do nothing
-            elif scd_only and "{EXECUTION_DATE}" in raw_query:
-                results_chunker: List[None] = []
-            else:
-                query = raw_query.format(**env)
-                logging.info(query)
-                results_chunker = query_results_generator(query, postgres_engine)
-                # Upload the dataframe generator to the data warehouse
-                upload_orchestrator(
-                    results_chunker=results_chunker,
-                    engine=snowflake_engine,
-                    table_name=table_name,
-                )
-                postgres_engine.dispose()
+                logging.info(f"Table altered from {table_name} to {final_table_name}")
+            finally:
+                connection.close()
                 snowflake_engine.dispose()
-            logging.info(f"Finished upload for table: {table}")
+        postgres_engine.dispose()
+        snowflake_engine.dispose()
+
     return
 
 
