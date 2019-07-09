@@ -557,3 +557,20 @@ models:
       - name: gitlab_subscription_updated_at
         tests:
           - not_null
+
+  - name: gitlab_dotcom_groups
+    description: '{{ doc("gitlab_dotcom_groups") }}'
+    columns:
+      - name: group_id
+        tests:
+          - not_null
+          - unique
+      - name: group_name
+        tests:
+          - not_null
+      - name: group_created_at
+        tests:
+          - not_null
+      - name: group_updated_at
+        tests:
+          - not_null
