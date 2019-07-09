@@ -59,7 +59,7 @@ SELECT
       event_fingerprint,
       event_format,
       event_id,
-      left(right(parse_json(contexts), 41), 36) AS web_page_id,
+      parse_json(contexts)['data'][0]['data']['id']::varchar AS web_page_id,
       event_name,
       event_vendor,
       event_version,

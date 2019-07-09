@@ -10,4 +10,4 @@ WITH unioned AS (
 
 SELECT *
 FROM unioned
-ORDER BY true_tstamp
+ORDER BY dvce_created_tstamp
