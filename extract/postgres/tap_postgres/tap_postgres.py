@@ -65,7 +65,7 @@ def query_results_generator(
 
 
 def dataframe_uploader(
-    dataframe: pd.DataFrame, engine: Engine, table_name: str, schema: str
+    dataframe: pd.DataFrame, engine: Engine, table_name: str
 ) -> None:
     """
     Upload a dataframe, adding in some metadata and cleaning up along the way.
@@ -79,20 +79,12 @@ def dataframe_uploader(
         lambda x: x[:4_194_304] if isinstance(x, str) else x
     )  # shorten strings that are too long
     dataframe.to_sql(
-        name=table_name,
-        con=engine,
-        schema=schema,
-        index=False,
-        if_exists="append",
-        chunksize=10000,
+        name=table_name, con=engine, index=False, if_exists="append", chunksize=10000
     )
 
 
 def upload_orchestrator(
-    results_chunker: pd.DataFrame,
-    engine: Engine,
-    table_name: str,
-    schema: str = "tap_postgres",
+    results_chunker: pd.DataFrame, engine: Engine, table_name: str
 ) -> None:
     """
     Handle the logic of uploading and logging an iterable DataFrame.
@@ -102,9 +94,7 @@ def upload_orchestrator(
     for chunk_df in results_chunker:
         row_count = chunk_df.shape[0]
         logging.info(f"Uploading {row_count} records to snowflake...")
-        dataframe_uploader(
-            dataframe=chunk_df, engine=engine, table_name=table_name, schema=schema
-        )
+        dataframe_uploader(dataframe=chunk_df, engine=engine, table_name=table_name)
         chunk_counter += row_count
         logging.info(f"{chunk_counter} total records uploaded...")
 
@@ -128,9 +118,9 @@ def range_generator(
 
 def check_if_schema_changed(
     raw_query: str,
-    schema: str,
     source_engine: Engine,
     source_table: str,
+    table_index: str,
     target_engine: Engine,
     target_table: str,
 ) -> bool:
@@ -141,20 +131,21 @@ def check_if_schema_changed(
 
     """
 
-    if not target_engine.has_table(target_table, schema):
+    if not target_engine.has_table(target_table):
         return False
     # Get the columns from the current query
     query_stem = raw_query.lower().split("where")[0]
-    source_query = "{0} where id = (select max(id) from {1}) limit 1"
+    source_query = "{0} where {1} = (select max({1}) from {2}) limit 1"
     source_columns = pd.read_sql(
-        sql=source_query.format(query_stem, source_table), con=source_engine
+        sql=source_query.format(query_stem, table_index, source_table),
+        con=source_engine,
     ).columns
 
     # Get the columns from the target_table
-    target_query = "select * from {0} where id = (select max(id) from {0}) limit 1"
+    target_query = "select * from {0} where {1} = (select max({1}) from {0}) limit 1"
     target_columns = (
         pd.read_sql(
-            sql=target_query.format(f"{schema}.{target_table}"), con=target_engine
+            sql=target_query.format(target_table, table_index), con=target_engine
         )
         .drop(axis=1, columns=["_uploaded_at"])
         .columns
@@ -169,7 +160,6 @@ def id_query_generator(
     raw_query: str,
     snowflake_engine: Engine,
     postgres_engine: Engine,
-    schema: str = "tap_postgres",
 ) -> Generator[str, Any, None]:
     """
     This function syncs a database with Snowflake based on IDs for each table.
@@ -180,7 +170,7 @@ def id_query_generator(
 
     # Get the max ID from the target DB
     logging.info(f"Getting max ID from target_table: {target_table}")
-    max_target_id_query = f"SELECT MAX(id) as id FROM {schema}.{target_table}"
+    max_target_id_query = f"SELECT MAX(id) as id FROM {target_table}"
     # If the table doesn't exist it will throw an error, ignore it and set a default ID
     try:
         max_target_id_results = query_results_generator(
@@ -245,6 +235,7 @@ def main(
         sys.exit(1)
 
     # Set vars
+    SCHEMA = "TAP_POSTGRES"
     env = os.environ.copy()
 
     # Process the manifest
@@ -255,7 +246,7 @@ def main(
     logging.info("Creating database engines...")
     connection_dict = manifest_dict["connection_info"]
     postgres_engine = postgres_engine_factory(connection_dict, env)
-    snowflake_engine = snowflake_engine_factory(env, "LOADER")
+    snowflake_engine = snowflake_engine_factory(env, "LOADER", SCHEMA)
     logging.info(snowflake_engine)
 
     for table in manifest_dict["tables"]:
@@ -267,16 +258,16 @@ def main(
         # Check if the table has changed
         schema_changed = check_if_schema_changed(
             raw_query=raw_query,
-            schema="tap_postgres",
             source_engine=postgres_engine,
             source_table=table,
+            table_index=table_dict["export_table_primary_key"],
             target_engine=snowflake_engine,
             target_table=table_name,
         )
 
         # Rename the table that will be uploaded to so as not to mess up dbt
         if schema_changed:
-            final_table_name = table_name
+            real_table_name = table_name
             table_name = f"{table_name}_TEMP"
             sync = "{EXECUTION_DATE}" in raw_query
             logging.info(f"Schema has changed, backfilling table into: {table_name}")
@@ -308,12 +299,12 @@ def main(
         if schema_changed:
             try:
                 connection = snowflake_engine.connect()
-                connection.execute(f"DROP TABLE tap_postgres.{final_table_name}")
-                logging.info(f"Dropped table: {final_table_name}")
+                connection.execute(f"DROP TABLE tap_postgres.{real_table_name}")
+                logging.info(f"Dropped table: {real_table_name}")
                 connection.execute(
-                    f"ALTER TABLE tap_postgres.{table_name} RENAME TO tap_postgres.{final_table_name}"
+                    f"ALTER TABLE tap_postgres.{table_name} RENAME TO tap_postgres.{real_table_name}"
                 )
-                logging.info(f"Table altered from {table_name} to {final_table_name}")
+                logging.info(f"Table altered from {table_name} to {real_table_name}")
             finally:
                 connection.close()
                 snowflake_engine.dispose()
