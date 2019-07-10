@@ -21,7 +21,7 @@ Our charter and goals are as follows:
 * Develop a Data Architecture plan (in conjunction with functional teams)
 * Develop a roadmap for systems evolution in alignment with the Company’s data architecture plan
 
-## Priorities
+## Priorities 
 
 Like the rest of the company, we set quarterly objectives and key results. These are available on our company OKR page.
 
@@ -93,7 +93,7 @@ The flow from code change to testing in Airflow should look like this (this assu
 1. Commit and push your code to the remote branch.
 1. Run `make set-branch`. This will spit out an environment variable you need to set for your branch.
     * Example `export GIT_BRANCH=1324-add-airflow-dag-to-create-event_sample-table`
-1. Run `make init-airflow` to spin up the postgres db container and init the Airflow tables. You will get an error if Docker is not running. 
+1. Run `make init-airflow` to spin up the postgres db container and init the Airflow tables. You will get an error if Docker is not running.
 1. Run `make airflow` to spin up Airflow and attach a shell to one of the containers
 1. Open a web browser and navigate to `localhost:8080` to see your own local webserver
 1. In the airflow shell, run a command to trigger the DAG/Task you want to test, for example `airflow run snowflake_load snowflake-load 2019-01-01` (as configured in the docker-compose file, all kube pods will be created in the `testing` namespace). Or if you want to run an entire DAG (for instance the `dbt` DAG to test the branching logic), the command would be something like `airflow backfill dbt -s 2019-01-01T00:00:00 -e 2019-01-01T00:00:00`.
@@ -136,7 +136,7 @@ Our current implementation uses the following project variables:
   - SNOWFLAKE_{FLAVOR}_DATABASE
   - SNOWFLAKE_{FLAVOR}_ROLE
   - SNOWFLAKE_{FLAVOR}_WAREHOUSE
-  
+
 The following flavors are defined:
 
   - `LOAD` flavor is used by the Extract & Load process
@@ -168,11 +168,11 @@ Some of the GitLab specific ELTs connect to databases which are in peered GCP pr
 
 From our on-premises installations, we recieve [version and ping information](https://docs.gitlab.com/ee/user/admin_area/settings/usage_statistics.html) from the software. This data is currently imported once a day from a PostgreSQL database into our enterprise data warehouse (EDW). We use this data to feed into Salesforce (SFDC) to aid our sales representatives in their work.
 
-The domains from all of the pings are first cleaned by standardizing the URL using a package called [tldextract](https://github.com/john-kurkowski/tldextract). Each cleaned ping type is combined into a single host record. We make a best effort attempt to align the pings from the same install of the software. 
+The domains from all of the pings are first cleaned by standardizing the URL using a package called [tldextract](https://github.com/john-kurkowski/tldextract). Each cleaned ping type is combined into a single host record. We make a best effort attempt to align the pings from the same install of the software.
 
 This single host record is then enriched with data from three sources: DiscoverOrg, Clearbit, and WHOIS. If DiscoverOrg has no record of the domain we then fallback to Clearbit, with WHOIS being a last resort. Each request to DiscoverOrg and Clearbit is cached in the database and is updated no more than every 30 days. The cleaning and enrichment steps are all accomplished using Python.
 
-We then take all of the cleaned records and use dbt to make multiple transformations. The last 60 days of pings are aligned with Salesforce accounts using the account name or the account website. Based on this, tables are generated of host records to upload to SFDC. If no accounts are found, we then generate a table of accounts to create within SFDC. 
+We then take all of the cleaned records and use dbt to make multiple transformations. The last 60 days of pings are aligned with Salesforce accounts using the account name or the account website. Based on this, tables are generated of host records to upload to SFDC. If no accounts are found, we then generate a table of accounts to create within SFDC.
 
 Finally, we use Python to generate SFDC accounts and to upload the host records to the appropriate SFDC account. We also generate any accounts necessary and update any SFDC accounts with DiscoverOrg, Clearbit, and WHOIS data if any of the relevant fields are not already present in SFDC.
 
