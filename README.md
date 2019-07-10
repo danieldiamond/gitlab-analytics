@@ -235,6 +235,7 @@ You can use `Command + Option + L` to format your file.
 - [WTF Visualizations](http://viz.wtf/)
 - [The Pudding](https://pudding.cool/)
 - [Makeover Monday](http://www.makeovermonday.co.uk)
+- [Data Revelations](https://www.datarevelations.com/)
 
 ## Contributing to the Data Team project
 
