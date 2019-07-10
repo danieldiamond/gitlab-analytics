@@ -48,6 +48,8 @@ Like the rest of the company, we set quarterly objectives and key results. These
    * [Pings](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view)
    * [Salesforce](https://youtu.be/KwG3ylzWWWo)
 
+* [Taylor and Israel pair on a Lost MRR Dashboard](https://www.youtube.com/watch?v=WuIcnpuS2Mg)
+
 ## Recommended Reading, Listening, Watching
 
 * [The AI Hierarchy of Needs](https://hackernoon.com/the-ai-hierarchy-of-needs-18f111fcc007)
