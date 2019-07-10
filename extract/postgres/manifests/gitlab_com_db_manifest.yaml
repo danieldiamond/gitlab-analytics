@@ -5,39 +5,6 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
-  notes:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , note
-      , noteable_type
-      , author_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
-      , project_id
-      , attachment
-      , line_code
-      , commit_id
-      , noteable_id
-      , system
-      , st_diff
-      , updated_by_id
-      , type
-      , position
-      , original_position
-      , resolved_at
-      , resolved_by_id
-      , discussion_id
-      , note_html
-      , cached_markdown_version
-      , change_position
-      , resolved_by_push
-      FROM notes
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
-    export_schema: 'gitlab_com'
-    export_table: 'notes'
-    export_table_primary_key: id
   approvals:
     import_db: GITLAB_DB
     import_query: >
@@ -492,6 +459,39 @@ tables:
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_schema: 'gitlab_com'
     export_table: 'namespaces'
+    export_table_primary_key: id
+  notes:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , note
+      , noteable_type
+      , author_id
+      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
+      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , project_id
+      , attachment
+      , line_code
+      , commit_id
+      , noteable_id
+      , system
+      , st_diff
+      , updated_by_id
+      , type
+      , position
+      , original_position
+      , resolved_at
+      , resolved_by_id
+      , discussion_id
+      , note_html
+      , cached_markdown_version
+      , change_position
+      , resolved_by_push
+      FROM notes
+      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
+        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+    export_schema: 'gitlab_com'
+    export_table: 'notes'
     export_table_primary_key: id
   notification_settings:
     import_db: GITLAB_DB
