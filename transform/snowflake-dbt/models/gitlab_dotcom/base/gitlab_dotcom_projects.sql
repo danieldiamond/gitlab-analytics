@@ -37,7 +37,6 @@ WITH source as (
 
       IFF(avatar IS NULL, FALSE, TRUE)                                              AS has_avatar,
 
-      import_status,
       star_count :: integer                                                         AS project_star_count,
       merge_requests_rebase_enabled :: boolean                                      AS merge_requests_rebase_enabled,
       IFF(LOWER(import_type) = 'nan', NULL, import_type)                            AS import_type,
