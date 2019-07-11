@@ -1,6 +1,7 @@
 version: 2
 
 models:
+  - name: cancelled_zuora_subscriptions
   - name: current_arr_segmentation_all_levels
     description: '{{ doc("current_arr_segmentation_all_levels") }}'
     columns:
