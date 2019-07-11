@@ -3,8 +3,6 @@
 Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed.
 
 - [ ] Manager: Create access request using data analyst baseline.
-- [ ] Manager: Add to Analytics API user
-- [ ] Manager: Add to Stitch
 - [ ] Manager: Add to Periscope
 - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
 - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
@@ -23,7 +21,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
 - [ ] Read (skim) through this full issue, just so you have a sense of what's coming.
-- [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `analytics-pipelines`, and `business-operations`.
+- [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `data-triage`, `dbt-runs`, and `business-operations`.
 - [ ] Schedule a recurring fortnightly 1:1 meeting with the Director of Business Operations.
 - [ ] Invite yourself to the to Milestone Planning/Grooming and DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.
 - [ ] Schedule a coffee chat with each member of the team. These should be in addition to the ones you do with other GitLab team members.
