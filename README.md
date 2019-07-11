@@ -210,18 +210,6 @@ You can use `Command + Option + L` to format your file.
 - [Calogica](https://calogica.com/blog)
 - [Airbnb](https://airbnb.io)
 
-#### SQL Learning Resources
-- [Chris Albon](https://chrisalbon.com/#postgresql)
-- [Mode SQL Tutorial](https://mode.com/sql-tutorial/introduction-to-sql/)
-- [Codecademy](https://www.codecademy.com/learn/learn-sql)
-- [DataQuest](https://www.dataquest.io/course/sql-fundamentals/)
-- [Khan Academy](https://www.khanacademy.org/computing/computer-programming/sql)
-- [HackerRank (Exercises)](https://www.hackerrank.com/domains/sql?filters%5Bstatus%5D%5B%5D=unsolved&badge_type=sql)
-- [Udacity](https://www.udacity.com/course/intro-to-relational-databases--ud197)
-- [Stanford University Mini-Courses](https://lagunita.stanford.edu/courses/DB/2014/SelfPaced/about)
-- [The Data School by Chartio](https://dataschool.com/learn/inroduction-to-teaching-others-sql)
-- [W3Schools](https://www.w3schools.com/sql/default.asp)
-
 #### Data Visualization Resources
 - [Storytelling with Data](http://storytellingwithdata.com/)
 - [Eager Eyes](https://eagereyes.org/)
@@ -238,6 +226,30 @@ You can use `Command + Option + L` to format your file.
 - [The Pudding](https://pudding.cool/)
 - [Makeover Monday](http://www.makeovermonday.co.uk)
 - [Data Revelations](https://www.datarevelations.com/)
+
+#### Data Slack Communities
+- [Data Science Community](https://dscommunity.slack.com)
+- [dbt](https://slack.getdbt.com)
+- [Locally Optimistic](https://www.locallyoptimistic.com/community/)
+- [Measure](https://www.measure.chat)
+- [Meltano](https://join.slack.com/t/meltano/shared_invite/enQtNTM2NjEzNDY2MDgyLWI1N2EyZjA1N2FiNDBlNDE2OTg4YmI1N2I3OWVjOWI2MzIyYmJmMDQwMTY2MmUwZjNkMTBiYzhiZTI2M2IxMDc)
+- [Open Data Community](opendatacommunity.slack.com)
+- [Pachyderm](http://slack.pachyderm.io)
+- [PyCarolinas](bit.ly/2Y8aoIp)
+- [R for Data Analysis](r-data-team.slack.com)
+
+#### Technical Learning Resources
+- [Chris Albon](https://chrisalbon.com/#postgresql)
+- [Mode SQL Tutorial](https://mode.com/sql-tutorial/introduction-to-sql/)
+- [Codecademy](https://www.codecademy.com/learn/learn-sql)
+- [DataQuest](https://www.dataquest.io/course/sql-fundamentals/)
+- [Khan Academy](https://www.khanacademy.org/computing/computer-programming/sql)
+- [HackerRank (Exercises)](https://www.hackerrank.com/domains/sql?filters%5Bstatus%5D%5B%5D=unsolved&badge_type=sql)
+- [Udacity](https://www.udacity.com/course/intro-to-relational-databases--ud197)
+- [Stanford University Mini-Courses](https://lagunita.stanford.edu/courses/DB/2014/SelfPaced/about)
+- [The Data School by Chartio](https://dataschool.com/learn/inroduction-to-teaching-others-sql)
+- [W3Schools](https://www.w3schools.com/sql/default.asp)
+
 
 ## Contributing to the Data Team project
 
