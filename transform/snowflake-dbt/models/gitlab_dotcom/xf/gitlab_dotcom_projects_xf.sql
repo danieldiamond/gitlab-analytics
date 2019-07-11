@@ -39,7 +39,7 @@ joined AS (
         AND members.member_source_type = 'Project'
       LEFT JOIN namespaces
         ON projects.namespace_id = namespaces.namespace_id
-    {{ dbt_utils.group_by(n=62) }} 
+    {{ dbt_utils.group_by(n=61) }} 
 )
 
 SELECT * 
