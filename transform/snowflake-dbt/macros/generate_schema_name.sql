@@ -1,3 +1,6 @@
+-- Will write to custom schemas not on prod
+-- Ensures logging package writes to analytics_meta
+
 {% macro generate_schema_name(custom_schema_name=none) -%}
 
     {%- set default_schema = target.schema -%}
@@ -6,13 +9,11 @@
         {{ default_schema }}_staging
 
     {%- elif
-        (target.name != 'prod' and custom_schema_name is not none and custom_schema_name != 'analytics')
+        (target.name != 'prod' and custom_schema_name is not none)
         or
         custom_schema_name == 'meta'
     -%}
-        -- Will write to custom schemas not on prod
-        -- Avoids analytics_analytics for snowplow package
-        -- Ensures logging package writes to analytics_meta
+
     	{{ default_schema }}_{{ custom_schema_name | trim }}
 
     {%- else -%}
