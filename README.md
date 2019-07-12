@@ -48,7 +48,9 @@ Like the rest of the company, we set quarterly objectives and key results. These
    * [Pings](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view)
    * [Salesforce](https://youtu.be/KwG3ylzWWWo)
 
-* [Taylor and Israel pair on a Lost MRR Dashboard](https://www.youtube.com/watch?v=WuIcnpuS2Mg)
+* Taylor and Israel pair on a Lost MRR Dashboard
+   * [Part 1](https://www.youtube.com/watch?v=WuIcnpuS2Mg)
+   * [Part 2](https://youtu.be/HIlDH5gaL3M)
 
 ## Recommended Reading, Listening, Watching
 
