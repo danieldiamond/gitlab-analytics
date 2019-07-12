@@ -14,3 +14,4 @@ sales_ramp_time.sales_rep_productivity_all
 sales_ramp_time.sales_rep_productivity_sal
 sales_ramp_time.sales_rep_productivity_mm_ae
 sales_ramp_time.sales_rep_productivity_smb_ae
+yc_companies.yc_companies
