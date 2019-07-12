@@ -25,8 +25,9 @@ Please include links to any related MRs and/or issues.
 - [ ] Field names should all be lowercased
 - [ ] Function names should all be capitalized
 - [ ] This MR contains new macros
-  - [ ] New macros follow the naming convention (file name matches macro name) 
+  - [ ] New macros follow the naming convention (file name matches macro name)
   - [ ] New macros have been documented in the macro README
+- [ ] This MR uses existing macros. Reference models using these macros [here](https://gitlab.com/gitlab-data/analytics/blob/73751832a5415389b60d41ef92ee8deaef374734/transform/snowflake-dbt/macros/README.md)
 
 #### Testing
 - [ ] Every model should be tested AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable ([Docs](https://docs.getdbt.com/docs/testing-and-documentation))
@@ -74,4 +75,4 @@ Stage: model_tests
 * [ ]  Check before setting to merge
 
 ## Further changes requested
-* [ ]  AUTHOR: Uncheck all boxes before taking further action. 
+* [ ]  AUTHOR: Uncheck all boxes before taking further action.
