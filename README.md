@@ -200,15 +200,17 @@ You can use `Command + Option + L` to format your file.
 - [The Carpentries](https://carpentries.topicbox.com/latest)
 
 #### Data Resources
-- [Fishtown Analytics Blog](https://blog.fishtownanalytics.com)
-- [Silota](http://www.silota.com/docs/recipes/)
-- [Mode Analytics Blog](https://blog.modeanalytics.com/)
-- [Periscope Data Blog](https://www.periscopedata.com/blog)
-- [Wes McKinney Blog](http://wesmckinney.com/archives.html)
-- [MBA Mondays](https://avc.com/archive/#mba_mondays_archive)
-- [Multithreaded](https://multithreaded.stitchfix.com/)
-- [Calogica](https://calogica.com/blog)
 - [Airbnb](https://airbnb.io)
+- [Buffer Blog](https://data.buffer.com)
+- [Calogica](https://calogica.com/blog)
+- [Fishtown Analytics Blog](https://blog.fishtownanalytics.com)
+- [Go Data Driven](https://blog.godatadriven.com)
+- [MBA Mondays](https://avc.com/archive/#mba_mondays_archive)
+- [Mode Analytics Blog](https://blog.modeanalytics.com/)
+- [Multithreaded](https://multithreaded.stitchfix.com/)
+- [Periscope Data Blog](https://www.periscopedata.com/blog)
+- [Silota](http://www.silota.com/docs/recipes/)
+- [Wes McKinney Blog](http://wesmckinney.com/archives.html)
 
 #### Data Visualization Resources
 - [Storytelling with Data](http://storytellingwithdata.com/)
