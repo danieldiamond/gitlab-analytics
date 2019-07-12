@@ -240,6 +240,7 @@ You can use `Command + Option + L` to format your file.
 - [Pachyderm](http://slack.pachyderm.io)
 - [PyCarolinas](bit.ly/2Y8aoIp)
 - [R for Data Analysis](r-data-team.slack.com)
+- [Software Engineering Daily](http://softwaredaily.herokuapp.com)
 - [The Data School](https://thedataschool.slack.com)
 
 #### Technical Learning Resources
