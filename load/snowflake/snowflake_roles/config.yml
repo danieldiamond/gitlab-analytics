@@ -404,11 +404,6 @@ roles:
             - analyst_xs
             - analyst_xl
 
-    - crichards:
-        warehouses:
-            - analyst_xs
-            - analyst_xl
-
     - dtang:
         warehouses:
             - reporting
@@ -557,12 +552,6 @@ users:
         can_login: yes
         member_of:
             - amrvaljevich
-            - analyst_core
-
-    - crichards:
-        can_login: yes
-        member_of:
-            - crichards
             - analyst_core
 
     - dtang:
