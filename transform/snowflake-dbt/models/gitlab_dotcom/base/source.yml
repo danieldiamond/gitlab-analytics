@@ -37,8 +37,12 @@ sources:
         identifier: gitlab_db_project_auto_devops
       - name: project_authorizations
         identifier: gitlab_db_project_authorizations
+      - name: oauth_access_tokens
+        identifier: gitlab_db_oauth_access_tokens
       - name: notification_settings
         identifier: gitlab_db_notification_settings
+      - name: notes
+        identifier: gitlab_db_notes     
       - name: namespaces
         identifier: gitlab_db_namespaces
       - name: namespace_statistics

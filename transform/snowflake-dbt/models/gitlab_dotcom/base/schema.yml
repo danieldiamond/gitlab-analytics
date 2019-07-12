@@ -207,6 +207,26 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_notes
+    description: This is a base model for Gitlab.com notes. Notes are comments on Commits, Epics, Issues, Merge Requests, Snippets, or Wikis.
+    columns:
+      - name: note_id
+        tests:
+          - not_null
+          - unique
+      - name: note_created_at
+        tests:
+          - not_null
+      - name: note_updated_at
+        tests:
+          - not_null
+      - name: noteable_type
+        tests:
+          - accepted_values:
+                      values: ['Commit', 'Epic', 'Issue', 'MergeRequest', 'Snippet', 'Wiki']
+
+
+
   - name: gitlab_dotcom_notification_settings
     description: Base model for Gitlab.com notification settings
     columns:
@@ -221,6 +241,21 @@ models:
         tests:
           - not_null
       - name: notification_settings_updated_at
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_oauth_access_tokens
+    description: A base model for Gitlab.com oauth access tokens. https://docs.gitlab.com/ee/api/oauth2.html
+    columns:
+      - name: oauth_access_token_id
+        tests:
+          - not_null
+          - unique
+      - name: oauth_access_token_id
+        tests:
+          - not_null
+          - unique
+      - name: oauth_access_token_created_at
         tests:
           - not_null
 
