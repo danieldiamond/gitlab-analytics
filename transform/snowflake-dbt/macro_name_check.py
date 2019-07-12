@@ -15,6 +15,8 @@ def check_macro_name_to_file_name(files: List):
                 logging.info(realfilename)
             elif realfilename == "alter_warehouse":
                 pass
+            elif realfilename == "dbt_logging":
+                pass
             else:
                 raise ValueError(error_message)
 

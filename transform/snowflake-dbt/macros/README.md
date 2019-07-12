@@ -37,6 +37,15 @@ Usage:
 Used in:
 - dbt_project.yml
 
+## dbt Logging
+This macro logs some output to the command line. It can be used in a lot of ways.
+Usage:
+```
+"{{ dbt_logging_start('on run start hooks') }}"
+```
+Used in:
+- dbt_project.yml
+
 ## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/generate_custom_schema.sql))
 This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema suffixed with `_staging` (e.g. `emilie_scratch_staging` and `analytics_staging`). For tagged models, the output is dependent on the target. It is `emilie_scratch_analytics` on dev and `analytics` on prod.
 Usage:
