@@ -8,6 +8,12 @@ Closes #
 
 Describe the solution.
 
+## What number/query are you using to audit your results are accurate? 
+
+<!---
+Example: You might be looking at the count of opportunities before and after, if you're editing the opportunity model. 
+--->
+
 ### Related Links
 
 Please include links to any related MRs and/or issues.
