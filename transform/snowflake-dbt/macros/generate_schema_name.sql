@@ -9,7 +9,7 @@
         {{ default_schema }}_staging
 
     {%- elif
-        (target.name != 'prod' and custom_schema_name is not none)
+        (target.name not in ('prod','ci') and custom_schema_name is not none)
         or
         custom_schema_name == 'meta'
     -%}
