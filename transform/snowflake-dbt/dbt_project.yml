@@ -46,16 +46,22 @@ archive:
           unique_key: employee_id
 
 on-run-start:
+    - "{{ dbt_logging_start('on run start hooks') }}"
     - "{{resume_warehouse(var('resume_warehouse', false), var('warehouse_name'))}}"
     - "{{create_udfs()}}"
+    - "{{ dbt_logging_end('on run start hooks') }}"
 
 on-run-end:
+    - "{{ dbt_logging_start('on run end hooks') }}"
     - "{{grant_usage_to_schemas(schema_name, rolename)}}"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
+    - "{{ dbt_logging_end('on run end hooks') }}"
 
 models:
-    pre-hook: "{{ logging.log_model_start_event() }}"
-    post-hook: "{{ logging.log_model_end_event() }}"
+    pre-hook:
+      - "{{ logging.log_model_start_event() }}"
+    post-hook:
+      - "{{ logging.log_model_end_event() }}"
     vars:
       database: 'raw'
       warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
