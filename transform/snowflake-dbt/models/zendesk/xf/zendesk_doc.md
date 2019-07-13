@@ -1,14 +1,3 @@
-{% docs zendesk_ticket_csat %}
-
-This table displays satisfaction rating scores based on customer survey responses after the ticket is closed as well as additional organizational and ticket metadata such as organization market segment and ticket priority. Tickets with unoffered (not sent a survey) and offered (survey sent but no response given) statuses have been filtered out.
-
-We can calculate the CSA using the following formula: `CSAT = good scores/(good scores + bad scores)`. 
-
-The operating metric can be found [here](https://about.gitlab.com/handbook/finance/operating-metrics/#csat)
-
-{% enddocs %}
-
-
 {% docs zendesk_ticket_sla %}
 
 This value calculates SLA status information for each ticket. The criteria for meeting an SLA is as follows:

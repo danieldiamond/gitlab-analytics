@@ -142,6 +142,17 @@ This macro takes in a product stage name, such as 'Verify', and returns a SQL ag
 Used in:
 - pings_usage_data_monthly_change_by_stage.sql
 
+## Support SLA Met ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/support_sla_met.sql))
+This macro implements the `CASE WHEN` logic for Support SLAs, as [documented in the handbook](https://about.gitlab.com/support/#gitlab-support-service-levels).
+```
+{{ support_sla_met( 'first_reply_time',
+                    'ticket_priority',
+                    'ticket_created_at') }} AS was_support_sla_met
+
+```
+Used in:
+- zendesk_tickets_xf.sql
+
 ## Unpack Unstructured Events ([Source]())
 This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.
 Usage:
