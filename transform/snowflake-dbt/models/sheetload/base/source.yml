@@ -24,3 +24,4 @@ sources:
       - name: planned_values
       - name: pulse_survey_configure_be
       - name: pulse_survey_monitor_be
+      - name: yc_companies
