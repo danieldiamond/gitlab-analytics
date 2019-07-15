@@ -1,5 +1,7 @@
 {{ config({
     "schema": "analytics",
+    "materialized": "incremental",
+    "unique_key": "group_month_unique_id",
     "post-hook": "grant select on {{this}} to role reporter"
     })
 }}
@@ -10,6 +12,9 @@ WITH months AS (
       first_day_of_month AS skeleton_month
     FROM {{ ref('date_details') }}
     WHERE first_day_of_month < CURRENT_DATE
+      {% if is_incremental() %}
+        AND first_day_of_month >= (SELECT MAX(audit_event_month) from {{ this }})
+      {% endif %}
 
 ), groups AS (
 
@@ -42,6 +47,9 @@ WITH months AS (
       COUNT(*)                                   AS audit_events_count
     FROM {{ ref('gitlab_dotcom_audit_events') }}
     WHERE entity_type = 'Group'
+      {% if is_incremental() %}
+        AND audit_event_created_at >= (SELECT MAX(audit_event_month) from {{ this }})
+      {% endif %}
     GROUP BY 1,2
 
 ), joined AS (
@@ -51,14 +59,16 @@ WITH months AS (
       skeleton.parent_group_id,
       skeleton.is_top_level_group,
       skeleton.group_created_at_month,
-      skeleton.skeleton_month                       AS audit_event_month,
+      skeleton.skeleton_month                                    AS audit_event_month,
       skeleton.months_since_creation_date,
-      COALESCE(audit_events.audit_events_count, 0)  AS audit_events_count,
-      IFF(audit_events_count > 0, TRUE, FALSE)      AS group_was_active_in_month
+      COALESCE(audit_events.audit_events_count, 0)               AS audit_events_count,
+      IFF(audit_events_count > 0, TRUE, FALSE)                   AS group_was_active_in_month,
+      {{ dbt_utils.surrogate_key('skeleton.group_id', 'skeleton_month') }} AS group_month_unique_id
     FROM skeleton
     LEFT JOIN audit_events
       ON skeleton.group_id = audit_events.group_id
         AND skeleton.skeleton_month = audit_events.audit_event_month
+    ORDER BY 4 DESC, 1 DESC
 
 )
 
