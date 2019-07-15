@@ -1,8 +1,10 @@
 {{
-  config(
-    materialized='incremental',
-    unique_key='event_id'
-  )
+  config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter",
+    "materialized": "incremental",
+    "unique_key": "event_id"
+  })
 }}
 
 WITH gitlab as (
