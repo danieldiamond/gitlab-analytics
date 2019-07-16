@@ -23,6 +23,7 @@ renamed as (
         subject                               AS ticket_subject,
         md5(recipient)                        AS ticket_recipient,
         url                                   AS ticket_url,
+        tags                                  AS ticket_tags,
         -- added ':score'
         satisfaction_rating['score']::varchar AS satisfaction_rating_score,
         via['channel']::varchar               AS submission_channel,
