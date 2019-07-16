@@ -69,6 +69,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
 * [Building a Data Practice](https://www.locallyoptimistic.com/post/building-a-data-practice/)
 * [Does my Startup Data Team Need a Data Engineer](https://blog.fishtownanalytics.com/does-my-startup-data-team-need-a-data-engineer-b6f4d68d7da9)
 * [Data Science is different now](https://veekaybee.github.io/2019/02/13/data-science-is-different/) (Note: this is why GitLab doesn't have a Data Scientist yet.)
+* [Why You Don't Need Data Scientists](https://medium.com/@kurtcagle/why-you-dont-need-data-scientists-a9654cc9f0e4)
 * [Resources Written by dbt Community Members](https://discourse.getdbt.com/t/resources-written-by-community-members/276)
 
 ## Documentation
@@ -213,6 +214,9 @@ You can use `Command + Option + L` to format your file.
 - [Periscope Data Blog](https://www.periscopedata.com/blog)
 - [Silota](http://www.silota.com/docs/recipes/)
 - [Wes McKinney Blog](http://wesmckinney.com/archives.html)
+- [Data Ops](https://medium.com/data-ops)
+- [Retina AI Blog](https://retina.ai/blog/)
+- [StitchFix Algorithms Blog](https://multithreaded.stitchfix.com/algorithms/blog/)
 
 #### Data Visualization Resources
 - [Storytelling with Data](http://storytellingwithdata.com/)
@@ -230,6 +234,7 @@ You can use `Command + Option + L` to format your file.
 - [The Pudding](https://pudding.cool/)
 - [Makeover Monday](http://www.makeovermonday.co.uk)
 - [Data Revelations](https://www.datarevelations.com/)
+- [From Data to Viz](https://www.data-to-viz.com/)
 
 #### Data Slack Communities
 - [Data Viz Society](https://datavizsociety.slack.com)
