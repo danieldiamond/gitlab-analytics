@@ -108,6 +108,7 @@ roles:
                     - analytics
             schemas:
                 read:
+                    - raw.bamboohr
                     - raw.gcloud_postgres_stitch
                     - raw.netsuite_stitch
                     - raw.salesforce_stitch
@@ -122,6 +123,7 @@ roles:
                     - snowflake.*
             tables:
                 read:
+                    - raw.bamboohr.*
                     - raw.gcloud_postgres_stitch.*
                     - raw.netsuite_stitch.*
                     - raw.salesforce_stitch.*
