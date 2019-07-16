@@ -134,6 +134,17 @@ Used in:
 - sfdc_opportunity.sql
 - sfdc_account_deal_size_segmentation.sql
 
+## SFDC Source Buckets ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc_source_buckets.sql))
+This macro is a CASE WHEN statement that groups the lead sources into new marketing-defined buckets. @rkohnke is the DRI on any changes made to this macro.
+Usage:
+```
+{{  sfdc_source_buckets('leadsource') }}
+```
+Used in:
+- sfdc_contact
+- sfdc_lead
+- sfdc_opportunity
+
 ## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/stage_mapping.sql))
 This macro takes in a product stage name, such as 'Verify', and returns a SQL aggregation statement that sums the number of users using that stage, based on the ping data. Product metrics are mapped to stages using the [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
 ```
