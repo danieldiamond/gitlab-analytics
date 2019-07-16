@@ -77,6 +77,8 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.incremental_acv * (sfdc_opportunitystage.default_probability /100)         AS weighted_iacv,
         md5((date_trunc('month', sfdc_opportunity.close_date)::date)||UPPER(sfdc_users_xf.name))    AS sales_quota_id,
         md5((date_trunc('month', sfdc_opportunity.close_date)::date)||UPPER(sfdc_users_xf.team))    AS region_quota_id,
+        sfdc_opportunity.source_buckets,
+        sfdc_opportunity.net_new_source_categories,
         sfdc_lead_source.lead_source_id                                                             AS lead_source_id,
         COALESCE(sfdc_lead_source.initial_source, 'Unknown')                                        AS lead_source_name,
         COALESCE(sfdc_lead_source.initial_source_type, 'Unknown')                                   AS lead_source_type,

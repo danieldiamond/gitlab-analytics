@@ -88,6 +88,7 @@ WITH source AS (
         ELSE 0
         END                         AS closed_deals,
         -- so that you can exclude closed deals that had negative impact
+        {{  sfdc_source_buckets('leadsource') }}
 
         -- metadata
         isdeleted                   AS is_deleted,
