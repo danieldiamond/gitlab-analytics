@@ -88,6 +88,4 @@ FROM renamed
 -- temporary filter while finance corrects issue
 WHERE account_id NOT IN  (
   '2c92a0086bc9001b016bcea432160f79'
-  ,'2c92a00d6bda63b1016bdd2848e45c82'
-  ,'2c92a0076bda53a6016be5f2077c72b4'
 )
