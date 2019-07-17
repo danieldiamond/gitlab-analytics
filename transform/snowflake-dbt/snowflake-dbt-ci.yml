@@ -136,6 +136,7 @@ mr_dbt_gitlab_dotcom: &mr_dbt_gitlab_dotcom
     - python3 macro_name_check.py
     - dbt deps --profiles-dir profile
     - dbt seed --profiles-dir profile --target ci #seed data from csv
+    - dbt run --profiles-dir profile --target ci --models date_details
     - dbt run --profiles-dir profile --target ci --full-refresh --models gitlab_dotcom || true
     - dbt test --profiles-dir profile --target ci --models gitlab_dotcom || true
     - dbt run --profiles-dir profile --target ci --models gitlab_dotcom || true
