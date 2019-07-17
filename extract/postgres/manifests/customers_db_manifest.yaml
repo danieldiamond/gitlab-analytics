@@ -9,14 +9,25 @@ tables:
     import_db: CUSTOMERS_DB
     import_query: >
       SELECT id
-      , zuora_account_id
-      , salesforce_account_id
-      , billable
-      , sign_in_count
-      , current_sign_in_at
-      , last_sign_in_at
       , created_at
       , updated_at
+      , current_sign_in_at
+      , last_sign_in_at
+      , current_sign_in_ip
+      , last_sign_in_ip
+      , provider
+      , uid
+      , zuora_account_id
+      , country
+      , state
+      , city
+      , company
+      , salesforce_account_id
+      , billable
+      , access_token
+      , confirmation_token
+      , confirmed_at
+      , confirmation_sent_at
       FROM customers
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
@@ -37,6 +48,11 @@ tables:
       , quantity
       , created_at
       , updated_at
+      , gl_namespace_id
+      , gl_namespace_name
+      , amendment_type
+      , trial
+      , last_extra_ci_minutes_sync_at
       FROM orders
       WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
