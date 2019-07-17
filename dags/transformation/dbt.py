@@ -153,6 +153,32 @@ dbt_full_refresh = KubernetesPodOperator(
     dag=dag,
 )
 
+# dbt-source-freshness
+dbt_source_cmd = f"""
+    {git_cmd} &&
+    cd analytics/transform/snowflake-dbt/ &&
+    dbt deps --profiles-dir profile &&
+    dbt source snapshot-freshness --profiles-dir profile
+"""
+dbt_source_freshness = KubernetesPodOperator(
+    **gitlab_defaults,
+    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    task_id="dbt-source-freshness",
+    name="dbt-source-freshness",
+    secrets=[
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_USER,
+        SNOWFLAKE_PASSWORD,
+        SNOWFLAKE_TRANSFORM_ROLE,
+        SNOWFLAKE_TRANSFORM_WAREHOUSE,
+        SNOWFLAKE_TRANSFORM_SCHEMA,
+    ],
+    env_vars=pod_env_vars,
+    cmds=["/bin/bash", "-c"],
+    arguments=[dbt_source_cmd],
+    dag=dag,
+)
+
 # dbt-archive
 dbt_archive_cmd = f"""
     {git_cmd} &&
@@ -241,7 +267,8 @@ sfdc_update = KubernetesPodOperator(
     dag=dag,
 )
 
-
+# Source Freshness
+dbt_source_freshness >> branching_dbt_run
 # Branching for run/archive
 branching_dbt_run >> dbt_run
 branching_dbt_run >> dbt_full_refresh
