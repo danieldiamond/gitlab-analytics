@@ -22,12 +22,13 @@ pod_env_vars = {
     else f"{GIT_BRANCH.upper()}_ANALYTICS",
 }
 
+slack_channel_override = "#dbt-runs"
+
 # Default arguments for the DAG
 default_args = {
     "catchup": False,
     "depends_on_past": False,
     "on_failure_callback": slack_failed_task,
-    "params": {"slack_channel_override": "#dbt-runs"},
     "owner": "airflow",
     "retries": 1,
     "retry_delay": timedelta(minutes=1),
@@ -120,6 +121,7 @@ dbt_run = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_WAREHOUSE,
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
+    params={"slack_channel_override": slack_channel_override},
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[dbt_run_cmd],
@@ -147,6 +149,7 @@ dbt_full_refresh = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_WAREHOUSE,
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
+    params={"slack_channel_override": slack_channel_override},
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[dbt_full_refresh_cmd],
@@ -200,6 +203,7 @@ dbt_archive = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_WAREHOUSE,
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
+    params={"slack_channel_override": slack_channel_override},
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[dbt_archive_cmd],
@@ -228,6 +232,7 @@ dbt_test = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_WAREHOUSE,
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
+    params={"slack_channel_override": slack_channel_override},
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[dbt_test_cmd],
@@ -261,6 +266,7 @@ sfdc_update = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_WAREHOUSE,
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
+    params={"slack_channel_override": slack_channel_override},
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
     arguments=[sfdc_update_cmd],
