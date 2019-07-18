@@ -32,7 +32,7 @@ dag = DAG("snowflake_cleanup", default_args=default_args, schedule_interval="0 5
 # Task 1
 drop_clones_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-    analytics/orchestration/drop_databases.py
+    analytics/orchestration/drop_snowflake_objects.py drop_databases
 """
 purge_clones = KubernetesPodOperator(
     **gitlab_defaults,
@@ -55,7 +55,7 @@ purge_clones = KubernetesPodOperator(
 # Task 2
 drop_dev_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-    analytics/orchestration/drop_dev_schemas.py
+    analytics/orchestration/drop_snowflake_objects.py drop_dev_schemas
 """
 purge_dev_schemas = KubernetesPodOperator(
     **gitlab_defaults,

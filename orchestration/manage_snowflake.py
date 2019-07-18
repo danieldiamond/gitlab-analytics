@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 logging.basicConfig(stream=sys.stdout, level=20)
 
 
-class SnowflakeManager(object):
+class SnowflakeManager:
     def __init__(self, config_vars: Dict):
         self.engine = create_engine(
             URL(

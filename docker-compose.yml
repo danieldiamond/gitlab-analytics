@@ -77,16 +77,8 @@ services:
     data_image:
       image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
       restart: always
-      environment:
-        SNOWFLAKE_ACCOUNT: $SNOWFLAKE_ACCOUNT
-        SNOWFLAKE_USER: $SNOWFLAKE_USER
-        SNOWFLAKE_PASSWORD: $SNOWFLAKE_PASSWORD
-        SNOWFLAKE_TRANSFORM_DATABASE: $SNOWFLAKE_TRANSFORM_DATABASE
-        SNOWFLAKE_TRANSFORM_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
-        SNOWFLAKE_TRANSFORM_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE
-        SNOWFLAKE_TRANSFORM_SCHEMA: $SNOWFLAKE_TRANSFORM_SCHEMA
       command: bash -c "/bin/bash"
-      working_dir: /usr/local/analytics/transform/snowflake-dbt/
+      working_dir: /usr/local/analytics/
       volumes:
         - type: bind
           source: .
