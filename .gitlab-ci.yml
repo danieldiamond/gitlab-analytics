@@ -242,7 +242,13 @@ sfdc_snapshot_manual:
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
     - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
   script:
-    - generate_dbt_docs.sh
+    - echo "SNOWFLAKE_DATABASE = $SNOWFLAKE_TRANSFORM_DATABASE"
+    - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
+    - dbt deps --profiles-dir profile
+    - dbt docs generate --profiles-dir profile --target prod
+    - mkdir -p $CI_PROJECT_DIR/public/dbt/snowflake
+    - cd target
+    - cp *.json *.html graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
   artifacts:
     paths:
     - public

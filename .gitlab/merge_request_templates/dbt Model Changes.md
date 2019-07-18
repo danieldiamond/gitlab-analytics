@@ -68,6 +68,7 @@ Stage: model
 * **mr_dbt_archive_manual**: For changes to dbt archive
 * **mr_dbt_all**: Runs all models
 * **mr_dbt_exclude_product**: Excludes models with the `product` tag. Use this for every other data source.
+* **mr_dbt_exclude_snowplow**: Excludes just snowplow models.
 * **mr_dbt_snowplow**: Just runs snowplow data
 * **mr_dbt_gitlab_dotcom**: Just runs GitLab.com data
 * **mr_dbt_pings**: Just runs usage / version ping data
