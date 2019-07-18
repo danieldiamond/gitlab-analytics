@@ -1,3 +1,10 @@
+{{ config({
+    "schema": "analytics",
+    "post-hook": "grant select on {{this}} to role reporter"
+    })
+}}
+
+
 with base_accounts as (
     SELECT *
     FROM {{ref('netsuite_stitch_account')}}
