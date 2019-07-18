@@ -3,7 +3,7 @@ import logging
 import os
 import sys
 from time import time
-from typing import Dict, List, Generator, Any
+from typing import Dict, List, Generator, Any, Tuple
 import yaml
 
 from fire import Fire
@@ -12,6 +12,9 @@ import pandas as pd
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
+
+
+SCHEMA = "tap_postgres"
 
 
 def postgres_engine_factory(
@@ -202,8 +205,6 @@ def id_query_generator(
         logging.info(f"ID Range: {id_pair}")
         yield id_range_query
 
-    return
-
 
 def chunk_and_upload(
     query: str, source_engine: Engine, target_engine: Engine, target_table: str
@@ -219,99 +220,157 @@ def chunk_and_upload(
     )
 
 
-def main(
-    file_path: str,
-    incremental_only: bool = False,
-    scd_only: bool = False,
-    sync: bool = False,
+def get_engines(connection_dict: Dict[str, str]) -> Tuple[Engine, Engine]:
+    """
+    Generate the engines and pass them back.
+    """
+
+    logging.info("Creating database engines...")
+    env = os.environ.copy()
+    postgres_engine = postgres_engine_factory(connection_dict, env)
+    snowflake_engine = snowflake_engine_factory(env, "LOADER", SCHEMA)
+    return postgres_engine, snowflake_engine
+
+
+def swap_temp_table(engine: Engine, real_table: str, temp_table: str) -> None:
+    """
+    Drop the real table and rename the temp table to take the place of the
+    real table.
+    """
+
+    try:
+        connection = engine.connect()
+        connection.execute(f"DROP TABLE tap_postgres.{real_table}")
+        logging.info(f"Dropped table: {real_table}")
+        connection.execute(
+            f"ALTER TABLE tap_postgres.{temp_table} RENAME TO tap_postgres.{real_table}"
+        )
+        logging.info(f"Table altered from {temp_table} to {real_table}")
+    finally:
+        connection.close()
+        engine.dispose()
+
+
+def load_incremental(
+    raw_query: str,
+    source_engine: Engine,
+    target_engine: Engine,
+    table: str,
+    table_name: str,
 ) -> None:
+    """
+    Load tables incrementally based off of the execution date.
+    """
+
+    if "{EXECUTION_DATE}" not in raw_query:
+        logging.info(f"Table {table} does not need processing.")
+        return
+    env = os.environ.copy()
+    query = raw_query.format(**env)
+    logging.info(query)
+    chunk_and_upload(query, source_engine, target_engine, table_name)
+
+
+def sync_incremental_ids(
+    raw_query: str,
+    source_engine: Engine,
+    target_engine: Engine,
+    table: str,
+    table_name: str,
+) -> None:
+    """
+    Sync incrementally-loaded tables based on their IDs.
+    """
+
+    if "{EXECUTION_DATE}" not in raw_query:
+        logging.info(f"Table {table} does not need processing.")
+        return
+
+    id_queries = id_query_generator(
+        table, table_name, raw_query, target_engine, source_engine
+    )
+    # Iterate through the generated queries
+    for query in id_queries:
+        chunk_and_upload(query, source_engine, target_engine, table_name)
+
+
+def load_scd(
+    raw_query: str,
+    source_engine: Engine,
+    target_engine: Engine,
+    table: str,
+    table_name: str,
+) -> None:
+    """
+    Load tables that are slow-changing dimensions.
+    """
+
+    if "{EXECUTION_DATE}" in raw_query:
+        logging.info(f"Table {table} does not need processing.")
+        return
+    logging.info(f"Processing table: {table}")
+
+    logging.info(raw_query)
+    chunk_and_upload(raw_query, source_engine, target_engine, table_name)
+
+
+def main(file_path: str, load_type: str = None) -> None:
     """
     Read data from a postgres DB and upload it directly to Snowflake.
     """
-
-    # Make sure that only one of the flags is set
-    if (incremental_only + scd_only + sync) > 1:
-        logging.critical("Only one flag can be used at a time")
-        sys.exit(1)
-
-    # Set vars
-    SCHEMA = "TAP_POSTGRES"
-    env = os.environ.copy()
 
     # Process the manifest
     logging.info(f"Reading manifest at location: {file_path}")
     manifest_dict = manifest_reader(file_path)
 
-    # Create database engines
-    logging.info("Creating database engines...")
-    connection_dict = manifest_dict["connection_info"]
-    postgres_engine = postgres_engine_factory(connection_dict, env)
-    snowflake_engine = snowflake_engine_factory(env, "LOADER", SCHEMA)
+    postgres_engine, snowflake_engine = get_engines(manifest_dict["connection_info"])
     logging.info(snowflake_engine)
 
+    # Link the load_types to their respective functions
+    load_types = {
+        "incremental": load_incremental,
+        "scd": load_scd,
+        "sync": sync_incremental_ids,
+    }
+
+    # Process the manifest
+    logging.info(f"Reading manifest at location: {file_path}")
+    manifest_dict = manifest_reader(file_path)
+
     for table in manifest_dict["tables"]:
-        logging.info(f"Processing table: {table}")
+        logging.info(f"Processing Table: {table}")
         table_dict = manifest_dict["tables"][table]
         table_name = "{import_db}_{export_table}".format(**table_dict).upper()
         raw_query = table_dict["import_query"]
+        is_incremental = "{EXECUTION_DATE}" in raw_query
 
-        # Check if the table has changed
+        # Check if the schema has changed, and if so then do a full load
         schema_changed = check_if_schema_changed(
-            raw_query=raw_query,
-            source_engine=postgres_engine,
-            source_table=table,
-            table_index=table_dict["export_table_primary_key"],
-            target_engine=snowflake_engine,
-            target_table=table_name,
+            raw_query,
+            postgres_engine,
+            table_dict["export_table"],
+            table_dict["export_table_primary_key"],
+            snowflake_engine,
+            table_name,
         )
-
-        # Rename the table that will be uploaded to so as not to mess up dbt
         if schema_changed:
             real_table_name = table_name
             table_name = f"{table_name}_TEMP"
-            sync = "{EXECUTION_DATE}" in raw_query
+            load_type = "sync" if is_incremental else load_type
             logging.info(f"Schema has changed, backfilling table into: {table_name}")
 
-        # If sync mode and the model is incremental, sync based on ID
-        if sync and "{EXECUTION_DATE}" in raw_query:
-            logging.info("Sync mode. Proceeding to sync based on max ID.")
-            id_queries = id_query_generator(
-                table, table_name, raw_query, snowflake_engine, postgres_engine
-            )
-            # Iterate through the generated queries
-            for query in id_queries:
-                chunk_and_upload(query, postgres_engine, snowflake_engine, table_name)
-        elif sync and "{EXECUTION_DATE}" not in raw_query:
-            pass
-        # If incremental mode and the model isn't incremental, do nothing
-        elif incremental_only and "{EXECUTION_DATE}" not in raw_query:
-            pass
-        # If SCD mode and the model is incremental, do nothing
-        elif scd_only and "{EXECUTION_DATE}" in raw_query:
-            pass
-        else:
-            query = raw_query.format(**env)
-            logging.info(query)
-            chunk_and_upload(query, postgres_engine, snowflake_engine, table_name)
+        # Call the correct function based on the load_type
+        load_types[load_type](
+            raw_query, postgres_engine, snowflake_engine, table, table_name
+        )
         logging.info(f"Finished upload for table: {table}")
 
         # Drop the original table and rename the temp table
         if schema_changed:
-            try:
-                connection = snowflake_engine.connect()
-                connection.execute(f"DROP TABLE tap_postgres.{real_table_name}")
-                logging.info(f"Dropped table: {real_table_name}")
-                connection.execute(
-                    f"ALTER TABLE tap_postgres.{table_name} RENAME TO tap_postgres.{real_table_name}"
-                )
-                logging.info(f"Table altered from {table_name} to {real_table_name}")
-            finally:
-                connection.close()
-                snowflake_engine.dispose()
+            swap_temp_table(snowflake_engine, real_table_name, table_name)
+
         postgres_engine.dispose()
         snowflake_engine.dispose()
-
-    return
 
 
 if __name__ == "__main__":

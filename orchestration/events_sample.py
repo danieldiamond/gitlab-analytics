@@ -61,7 +61,6 @@ def main(engine: Engine) -> None:
             engine.dispose()
 
     engine.dispose()
-    return
 
 
 if __name__ == "__main__":

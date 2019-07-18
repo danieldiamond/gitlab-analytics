@@ -3,7 +3,6 @@ import os
 import psycopg2
 import psycopg2.sql
 
-from psycopg2.sql import SQL
 from enum import Enum
 from functools import partial
 

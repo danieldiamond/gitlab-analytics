@@ -78,7 +78,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
 
 We use Airflow for Orchesetration, and this includes testing in MRs. The following is the new MR workflow that includes testing with Airflow.
 
-#### Airflow in Production
+#### Airflow in Production ([Data Infrastructure repo here](https://gitlab.com/gitlab-data/data-image?nav_source=navbar))
 
 All DAGs are created using the `KubernetesPodOperator`, so the airflow pod itself has minimal dependencies and doesn't need to be restarted unless a major infrastructure change takes place.
 There are 4 containers running in the current Airflow deployment:
@@ -94,8 +94,6 @@ To facilitate the easier use of Airflow locally while still testing properly run
 The flow from code change to testing in Airflow should look like this (this assumes there is already a DAG for that task):
 
 1. Commit and push your code to the remote branch.
-1. Run `make set-branch`. This will spit out an environment variable you need to set for your branch.
-    * Example `export GIT_BRANCH=1324-add-airflow-dag-to-create-event_sample-table`
 1. Run `make init-airflow` to spin up the postgres db container and init the Airflow tables. You will get an error if Docker is not running.
 1. Run `make airflow` to spin up Airflow and attach a shell to one of the containers
 1. Open a web browser and navigate to `localhost:8080` to see your own local webserver
@@ -108,20 +106,16 @@ Some gotchas:
 
 * Ensure you have the latest version of Docker. This will prevent errors like `ERROR: Version in “./docker-compose.yml” is unsupported.`
 * If you're calling a new python script in your dag, ensure the file is executable by running `chmod +x your_python_file.py`. This will avoid permission denied errors.
-* Ensure that any new secrets added in your dag are also in `kube_secrets.py`. This is the source of truth for which secrets Airflow uses. THe actual secret value isn't stored in this file, just the pointers.
+* Ensure that any new secrets added in your dag are also in `kube_secrets.py`. This is the source of truth for which secrets Airflow uses. The actual secret value isn't stored in this file, just the pointers.
 
-#### Requirements for using Airflow in the MR workflow
+#### Python Housekeeping
 
-The docker-compose file needs to read from a `.env` file when it generates the config to spin up Airflow. The `.env` file requires the following variables:
+There are multiple `make` commands and CI jobs designed to help keep the repo's python clean and maintainable. The following commands in the Makefile will help analyze the repo:
 
-```
-KUBECONFIG=/Users/tmurphy/.kube/config
-GOOGLE_APPLICATION_CREDENTIALS=/Users/tmurphy/Projects/GitLab/gcloud_service_creds.json
-GIT_BRANCH=1234-some-branch
-```
-
-As long as those are set, the docker-compose file will correctly configure all permissions. These variables are paths to the directory where the credentials are set and should be overriden with the values specific to your system.
-
+* `make lint` will run the `black` python linter and update files (this is not just a check)
+* `make pylint` will run the pylint checker but will NOT check for code formatting, as we use `black` for this. This will check for duplicated code, possible errors, warnings, etc. General things to increase code quality. It ignores the DAGs dir as those are not expected to follow general code standards.
+* `make radon` will test relevant python code for cyclomatic complexity and show functions or modules with a score of `B` or lower.
+* `make xenon` will run a complexity check that returns a non-zero exit code if the threshold isn't met. It ignores the `shared_modules` and `transform` repos until they get deleted/deprecated or updated at a later date.
 
 #### Video Walk Throughs
 

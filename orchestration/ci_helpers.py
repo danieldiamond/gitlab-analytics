@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 
-import json
 import pandas as pd
-import requests as r
 import sys
-import time
 
 from atexit import register
 from fire import Fire
-from functools import partial, wraps
+from functools import partial
 from logging import info, error, basicConfig
 from os import environ as env, remove
 from subprocess import run, PIPE, Popen, _active, _cleanup
@@ -32,7 +29,7 @@ def exit_cleanup():
         error("Sub processes could not be cleaned up.")
 
 
-def auth_gcloud(bash) -> None:
+def auth_gcloud(bash_partial) -> None:
     """
     Authenticate the gcloud service account.
     """
@@ -41,7 +38,9 @@ def auth_gcloud(bash) -> None:
         with open("gcp_credentials.json", "w") as file:
             file.write(env["GCP_SERVICE_CREDS"])
 
-        bash("gcloud auth activate-service-account --key-file=gcp_credentials.json")
+        bash_partial(
+            "gcloud auth activate-service-account --key-file=gcp_credentials.json"
+        )
     except IOError:
         error("Could not store GCP creds as a json file.")
         sys.exit(1)
@@ -137,7 +136,6 @@ def async_run(command: str, instance: str) -> None:
             break
         else:
             info(status)
-    return
 
 
 def use_cloudsqlproxy(command: str) -> None:
@@ -180,7 +178,6 @@ def delete_review_cloudsql() -> None:
         check=True,
     )
     info("Instance Deleted.")
-    return
 
 
 def manage_review_cloudsql() -> None:
@@ -262,7 +259,6 @@ def refresh_dev_cloudsql():
         'STATUS == "SUCCESSFUL"'
     )
     backup_df["WINDOW_START_TIME"] = pd.to_datetime(backup_df["WINDOW_START_TIME"])
-    newest_backup = backup_df["WINDOW_START_TIME"].max()
     [backup_id] = backup_df.query("WINDOW_START_TIME == @newest_backup")["ID"]
     remove(backup_list_filename)
 

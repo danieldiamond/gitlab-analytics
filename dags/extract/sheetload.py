@@ -34,7 +34,7 @@ container_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/sheetload/ &&
-    python3 sheetload.py sheets sheets.txt snowflake
+    python3 sheetload.py sheets --sheet_file sheets.txt
 """
 
 # Create the DAG

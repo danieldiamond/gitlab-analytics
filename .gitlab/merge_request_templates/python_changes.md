@@ -8,8 +8,9 @@ Closes
 
 * [ ] List
 
-#### Linting
+#### Code Quality
 
-* [ ] Linted?
+* [ ] Passed Linting?
+* [ ] Passed Complexity Check?
 
 #### Changes
