@@ -33,7 +33,7 @@ def main(engine: Engine) -> None:
     COPY grants AS
     SELECT *
     FROM raw.snowplow.gitlab_events
-    WHERE uploaded_at::DATE > dateadd(day, -2, current_date)::DATE
+    WHERE uploaded_at::DATE > dateadd(day, -7, current_date)::DATE
     LIMIT 5000000
     """
 
