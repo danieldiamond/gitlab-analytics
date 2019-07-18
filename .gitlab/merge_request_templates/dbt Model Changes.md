@@ -8,10 +8,10 @@ Closes #
 
 Describe the solution.
 
-## What number/query are you using to audit your results are accurate? 
+## What number/query are you using to audit your results are accurate?
 
 <!---
-Example: You might be looking at the count of opportunities before and after, if you're editing the opportunity model. 
+Example: You might be looking at the count of opportunities before and after, if you're editing the opportunity model.
 --->
 
 ### Related Links
@@ -54,6 +54,7 @@ Paste the results of dbt test here, including the command.
 * [ ]  Pipelines pass
 * [ ]  Branch set to delete and commits set to squash
 * [ ]  This MR is ready for final review and merge
+* [ ]  Remove the `WIP:` prefix in the MR title before assigning to reviewer
 * [ ]  Assigned to reviewer
 
 <details>
