@@ -25,9 +25,12 @@ def slack_failed_task(context):
     task_name = context["task"].task_id
     execution_date = str(context["execution_date"])
     task_instance = str(context["task_instance_key_str"])
-    slack_channel = dag_context.params.get(
-        "slack_channel_override", "#analytics-pipelines"
-    )
+    if task_name == "dbt-source-freshness":
+        slack_channel = "#analytics-pipelines"
+    else:
+        slack_channel = dag_context.params.get(
+            "slack_channel_override", "#analytics-pipelines"
+        )
 
     attachment = [
         {
