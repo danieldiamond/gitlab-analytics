@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: snowflake
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: snowflake
+    loader: Airflow
+    loaded_at_field: _uploaded_at
+
+    freshness:
+        warn_after: {count: 1, period: day}
+
+    tables:
+      - name: user_roles
