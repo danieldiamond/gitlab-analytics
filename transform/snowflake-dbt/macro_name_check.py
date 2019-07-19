@@ -9,13 +9,13 @@ def check_macro_name_to_file_name(files: List):
             contents = stream.read()
             error_message = "Macro naming error in " + filename
             realfilename = filename.split("macros/")[1].split(".sql")[0]
+            logging.info(f"Processing {realfilename}."),
             isolating_macro = contents.split("macro ")[1].split("(")[0]
             if realfilename == isolating_macro in contents:
+                logging.info(f"{filename} passes! 🎉")
                 pass
-                logging.info(realfilename)
-            elif realfilename == "alter_warehouse":
-                pass
-            elif realfilename == "dbt_logging":
+            elif realfilename in ("alter_warehouse", "dbt_logging"):
+                logging.info(f"Skipping {filename} 👀")
                 pass
             else:
                 raise ValueError(error_message)
@@ -30,4 +30,4 @@ if __name__ == "__main__":
 
     check_macro_name_to_file_name(files)
 
-    logging.info("All macros match their filenames.")
+    logging.info("All macros match their filenames! 🥂")
