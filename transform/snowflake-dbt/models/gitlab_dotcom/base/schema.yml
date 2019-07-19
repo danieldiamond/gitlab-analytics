@@ -173,6 +173,25 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_namespace_lineage
+    description: '{{ doc("gitlab_dotcom_namespace_lineage") }}'
+    columns:
+      - name: namespace_id
+        tests:
+          - not_null
+          - unique
+      - name: parent_id
+        description: The direct parent of a namespace. Will only be null for top-level namespaces.
+      - name: upstream_lineage
+        description: An array of the namespace's parent (upstream) lineage. Direction from left to right is young to old [namespace, parent, grandparent, ...]
+        tests:
+          - not_null
+      - name: ultimate_parent_id
+        description: The last (furthest right) item in upstream_lineage. I.E. the parent which has no parent. For top-level namespaces, this is will be itself.
+        tests:
+          - not_null
+     
+
   - name: gitlab_dotcom_namespaces
     description: Base model for Gitlab.com namespaces
     columns:

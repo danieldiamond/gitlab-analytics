@@ -1,5 +1,3 @@
-{% set fields_to_mask = ['name', 'path'] %}
-
 with source as (
 
 	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
@@ -8,15 +6,8 @@ with source as (
 ), renamed as (
 
     SELECT  id :: integer                                                   AS namespace_id,
-
-            {% for field in fields_to_mask %}
-            CASE
-              WHEN visibility_level = '20' OR namespace_id::int IN {{ get_internal_namespaces() }} THEN {{field}}
-              WHEN visibility_level = '10' AND namespace_id::int NOT IN {{ get_internal_namespaces() }} THEN 'internal - masked'
-              WHEN visibility_level = '0' AND namespace_id::int NOT IN {{ get_internal_namespaces() }} THEN 'private - masked'
-            END                                                             AS namespace_{{field}},
-            {% endfor %}
-
+            name :: varchar                                                 AS namespace_name,
+            path :: varchar                                                 AS namespace_path,
             owner_id :: integer                                             AS owner_id,
             type                                                            AS namespace_type,
             IFF(avatar IS NULL, FALSE, TRUE)                                AS has_avatar,
@@ -42,9 +33,7 @@ with source as (
             require_two_factor_authentication :: boolean                    AS does_require_two_factor_authentication,
             two_factor_grace_period :: number                               AS two_factor_grace_period,
             plan_id :: integer                                              AS plan_id,
-            project_creation_level::integer                                 AS project_creation_level,
-            (namespace_id IN {{ get_internal_namespaces() }} )              AS namespace_is_internal
-
+            project_creation_level::integer                                 AS project_creation_level
     FROM source
     WHERE rank_in_key = 1
 
