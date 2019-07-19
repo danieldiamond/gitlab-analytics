@@ -46,27 +46,33 @@ WITH merge_requests AS (
     INNER JOIN latest_merge_request_metric
     ON merge_request_metric_id = target_id
 
-), all_projects AS (
+), projects AS (
 
-    SELECT *
+    SELECT
+      *
     FROM {{ref('gitlab_dotcom_projects')}}
 
-), gitlab_org_projects AS (
+), namespace_lineage AS (
 
-    SELECT project_id
-    FROM all_projects
-    WHERE namespace_id IN {{ get_internal_namespaces() }}
+    SELECT
+      namespace_id,
+      ultimate_parent_id,
+      ( COALESCE(ultimate_parent_id, namespace_id) IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
+    FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
-),  joined as (
+), joined as (
 
     SELECT merge_requests.*,
+           projects.namespace_id,
+           namespace_lineage.ultimate_parent_id,
+           namespace_lineage.namespace_is_internal,
            ARRAY_TO_STRING(agg_labels.agg_label,'|') AS masked_label_title,
            merge_request_metrics.merged_at,
            CASE WHEN merge_requests.target_project_id IN ({{is_project_included_in_engineering_metrics()}}) THEN TRUE
                 ELSE FALSE
                 END AS is_included_in_engineering_metrics,
            CASE
-            WHEN gitlab_org_projects.project_id IS NOT NULL
+            WHEN namespace_is_internal IS NOT NULL
              AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.agg_label)
               THEN TRUE
             ELSE FALSE
@@ -78,8 +84,10 @@ WITH merge_requests AS (
         ON merge_requests.merge_request_id = agg_labels.merge_request_id
       LEFT JOIN merge_request_metrics
         ON merge_requests.merge_request_id = merge_request_metrics.merge_request_id
-      LEFT JOIN gitlab_org_projects
-        ON merge_requests.target_project_id = gitlab_org_projects.project_id
+      LEFT JOIN projects
+        ON merge_requests.target_project_id = projects.project_id
+      LEFT JOIN namespace_lineage
+        ON projects.namespace_id = namespace_lineage.namespace_id
 )
 
 SELECT *

@@ -55,11 +55,17 @@ Usage:
 Used in:
 - all models surfaced in our BI tool.
 
-## Get Internal Namespaces
-Returns a list of all the internal gitlab.com namespaces, enclosed in round brackets. This is useful for filtering an analysis down to external users only.
+## Get Internal Parent Namespaces
+Returns a list of all the internal gitlab.com parent namespaces, enclosed in round brackets. This is useful for filtering an analysis down to external users only.
+
+The internal namespaces are as follows:  
+gitlab-com  (6543)  
+gitlab-org  (9970)  
+gitlab-data (4347861)  
+
 Usage:
 ```
-{{ get_internal_namespaces() }}
+{{ get_internal_parent_namespaces() }}
 ```
 Used in:
 - gitlab_dotcom/

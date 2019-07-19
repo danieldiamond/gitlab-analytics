@@ -24,7 +24,6 @@ WITH namespace_groups AS (
          two_factor_grace_period,
          plan_id,
          project_creation_level,
-         namespace_is_internal                               AS group_is_internal,
          IFF(namespaces.parent_id IS NOT NULL, TRUE, FALSE)  AS is_parent_group
 
   FROM {{ ref('gitlab_dotcom_namespaces') }} AS namespaces

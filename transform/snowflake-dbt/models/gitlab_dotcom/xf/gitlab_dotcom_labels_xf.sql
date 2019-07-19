@@ -10,12 +10,18 @@ with labels as (
          namespace_id
   FROM {{ ref('gitlab_dotcom_projects') }}
 
+), internal_namespaces as (
+
+    SELECT
+      namespace_id
+    FROM {{ref('gitlab_dotcom_namespace_lineage')}}
+    WHERE COALESCE(ultimate_parent_id, namespace_id) IN {{ get_internal_parent_namespaces() }}
 ), joined as (
 
     SELECT label_id,
 
            CASE
-             WHEN projects.visibility_level != 'public' AND namespace_id NOT IN {{ get_internal_namespaces() }} THEN 'content masked'
+             WHEN projects.visibility_level != 'public' AND namespace_id IN (SELECT * FROM internal_namespaces) THEN 'content masked'
              ELSE label_title
            END                                          AS masked_label_title,
 

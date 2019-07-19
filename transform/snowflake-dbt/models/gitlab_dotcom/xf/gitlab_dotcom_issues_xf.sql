@@ -46,7 +46,15 @@ with issues as (
            visibility_level
     FROM {{ref('gitlab_dotcom_projects')}}
 
-), joined as (
+), internal_namespaces as (
+
+    SELECT
+      namespace_id
+    FROM {{ref('gitlab_dotcom_namespace_lineage')}}
+    WHERE COALESCE(ultimate_parent_id, namespace_id) IN {{ get_internal_parent_namespaces() }}
+),
+
+joined as (
 
     SELECT issues.issue_id,
            issues.issue_iid,
@@ -65,8 +73,8 @@ with issues as (
 
            {% for field in fields_to_mask %}
            CASE
-             WHEN is_confidential = TRUE AND namespace_id NOT IN {{ get_internal_namespaces() }} THEN 'confidential - masked'
-             WHEN visibility_level != 'public' AND namespace_id NOT IN {{ get_internal_namespaces() }} THEN 'private/internal - masked'
+             WHEN is_confidential = TRUE AND namespace_id NOT IN (SELECT * FROM internal_namespaces) THEN 'confidential - masked'
+             WHEN visibility_level != 'public' AND namespace_id NOT IN (SELECT * FROM internal_namespaces) THEN 'private/internal - masked'
              ELSE {{field}}
            END                                                         AS issue_{{field}},
            {% endfor %}
