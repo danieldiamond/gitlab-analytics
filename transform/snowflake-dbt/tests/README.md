@@ -84,6 +84,25 @@ Steps to Resolve:
 * Step 4: Filter out the zuora subscription in the test based on the md5 has of the `ultimate_parent_sub` name
 * Step 5: Once finance has confirmed that the accounts and subscriptions have been updated, create a MR to remove the filter
 
+### Test: zuora_assert_no_circular_linkages
+
+This custom test asserts `zuora_subscription_intermediate` has no circular linkage. A circular linkage is created when the `zuora_renewal_subscription_name_slugify` is equal to the `subscription_name_slugify` in the `zuora_subscription_intermediate`.
+
+When the test fails, the `zuora_subscription_lineage` model will fail with the following error:
+```
+Database Error in model zuora_subscription_lineage (models/zuora/xf/zuora_subscription_lineage.sql)
+  100189 (22000): 018d9a6c-01bb-a7c9-0000-289d0753e48e: Recursion exceeded max iteration count (100).
+```
+
+
+Steps to Resolve:
+
+* Step 1: Follow the general checklist
+* Step 2: Create an issue in finance asking for the Zuora subscription lineage to be reviewed.
+* Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
+* Step 4: Filter out the zuora account in the base `zuora_subscription` model and submit your MR for review
+  * We filter from the base model instead of the test because downstream models (such as retention) will fail otherwise
+* Step 5: Once finance has confirmed that the account has been updated, create a MR to remove the filter
 
 ### Test: uncategorized_pings
 This test checks that the list of unique ping metrics that we receive, `pings_list`, matches the ping metrics that we have categorized in the static CSV, `ping_metrics_to_stage_mapping_data`. This test will fail when these two sources get out of sync in either direction.
