@@ -20,7 +20,6 @@
 # Note some jobs come from global 'include' statements
 stages:
   - review
-  - setup
   - extract # extract/extract-ci.yml
   - model #  transform/snowflake-dbt/snowflake-dbt-ci.yml
   - model_tests #  transform/snowflake-dbt/snowflake-dbt-ci.yml
@@ -162,42 +161,7 @@ snowflake_review_refresh:
     - manage_snowflake.py manage_clones --force --database raw
   when: manual
 
-# Stage: setup
-
-# Make sure that permissions are properly set in the CloudSQL instance for MRs
-update_db: &update_db
-  <<: *job_definition
-  stage: setup
-  script:
-    - ci_helpers.py use_proxy "python3 orchestration/grant_roles.py"
-  only:
-    - branches
-  when: manual
-
 # Stage: update
-
-# Takes data from dbt models, enriches it and uploads it back to SFDC.
-# Also responsible for the tables in the sfdc_updates schema
-sfdc_update: &sfdc_update
-  stage: update
-  <<: *job_definition
-  script:
-    - python3 transform/sfdc_processor.py upload_hosts
-    - python3 transform/sfdc_processor.py generate_accounts
-    - python3 transform/sfdc_processor.py update_accounts
-  only:
-    refs:
-      - master
-    variables:
-      - $SFDC_UPDATE
-
-# Manual version of sfdc_update
-sfdc_update_manual:
-  <<: *sfdc_update
-  only:
-    refs:
-      - branches
-  when: manual
 
 # Semi-deprecated job that does a manual, full copy of the SFDC opportunity and account tables
 sfdc_snapshot: &sfdc_snapshot

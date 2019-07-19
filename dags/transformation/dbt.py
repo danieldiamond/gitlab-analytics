@@ -236,48 +236,15 @@ dbt_test = KubernetesPodOperator(
     dag=dag,
 )
 
-# sfdc-update
-sfdc_update_cmd = f"""
-    {git_cmd} &&
-    python3 analytics/transform/sfdc_processor.py upload_hosts &&
-    python3 analytics/transform/sfdc_processor.py generate_accounts &&
-    python3 analytics/transform/sfdc_processor.py update_accounts
-"""
-sfdc_update = KubernetesPodOperator(
-    **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
-    task_id="sfdc-update",
-    name="sfdc-update",
-    secrets=[
-        PG_USERNAME,
-        PG_ADDRESS,
-        PG_PASSWORD,
-        PG_DATABASE,
-        SFDC_USERNAME,
-        SFDC_PASSWORD,
-        SFDC_SECURITY_TOKEN,
-        SNOWFLAKE_ACCOUNT,
-        SNOWFLAKE_PASSWORD,
-        SNOWFLAKE_TRANSFORM_USER,
-        SNOWFLAKE_TRANSFORM_ROLE,
-        SNOWFLAKE_TRANSFORM_WAREHOUSE,
-        SNOWFLAKE_TRANSFORM_SCHEMA,
-    ],
-    env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
-    arguments=[sfdc_update_cmd],
-    dag=dag,
-)
-
 # Source Freshness
 dbt_source_freshness >> branching_dbt_run
+
 # Branching for run/archive
 branching_dbt_run >> dbt_run
 branching_dbt_run >> dbt_full_refresh
-dbt_run >> sfdc_update
-dbt_full_refresh >> sfdc_update
-#
-sfdc_update >> branching_dbt_archive
+dbt_run >> branching_dbt_archive
+dbt_full_refresh >> branching_dbt_archive
+
 # Branching for dbt_archive
 branching_dbt_archive >> dbt_archive
 branching_dbt_archive >> skip_dbt_archive

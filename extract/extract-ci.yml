@@ -27,7 +27,7 @@
   <<: *extract_definition
   script:
     - cd extract/sheetload/
-    - python3 sheetload.py sheets sheets.txt snowflake
+    - python3 sheetload.py sheets --sheet_file sheets.txt
 
 
 ## Production Jobs
