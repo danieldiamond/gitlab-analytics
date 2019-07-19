@@ -26,7 +26,7 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-    meltano permissions grant analytics/load/snowflake/snowflake_roles/config.yml --db snowflake $DRY
+    meltano permissions grant analytics/load/snowflake/roles.yml --db snowflake $DRY
 """
 
 # Create the DAG

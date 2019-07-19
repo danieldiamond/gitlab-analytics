@@ -1,8 +1,0 @@
-public: 
-    cleaned_urls
-sfdc:
-    zqu__quote__c 
-    zqu__quoterateplan__c
-    zqu__quoterateplancharge__c
-    zqu__productrateplan__c
-    zqu__zproduct__c
