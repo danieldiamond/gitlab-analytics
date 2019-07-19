@@ -1,0 +1,90 @@
+version: 2
+models:
+  - name: greenhouse_applications
+    description: This model contains all info for applications from Greenhouse.
+    columns:
+      - name: application_id
+        tests:
+          - not_null
+          - unique
+      - name: candidate_id
+        tests:
+          - not_null
+      - name: stage_id
+      - name: source_id
+      - name: referrer_id
+      - name: rejected_by_id
+      - name: job_post_id
+      - name: event_id
+      - name: rejection_reason_id
+      - name: converted_prospect_application_id
+      - name: application_status
+        tests:
+          - not_null
+      - name: prospect
+      - name: pipeline_percent
+      - name: migrated
+      - name: rejected_by
+      - name: stage_name
+      - name: prospect_pool
+      - name: prospect_pool_stage
+      - name: applied_at
+        tests:
+          - not_null
+      - name: rejected_at
+      - name: created_at
+        tests:
+          - not_null
+      - name: last_updated_at
+        tests:
+          - not_null
+  - name: greenhouse_interviewers
+    description: This model contains all info for interviewers from Greenhouse.
+    columns:
+      - name: interviewer_name
+        tests:
+          - not_null
+          - unique
+  - name: greenhouse_offers
+    description: This model contains all info for offers from Greenhouse.
+    columns:
+      - name: offer_id
+        tests:
+          - not_null
+          - unique
+      - name: application_id
+        tests:
+          - not_null
+      - name: offer_status
+        tests:
+          - not_null
+      - name: created_by
+      - name: start_date
+      - name: created_at
+        tests:
+          - not_null
+      - name: sent_at
+      - name: resolved_at
+      - name: updated_at
+  - name: greenhouse_sources
+    description: This model contains all info for sources (for candidates) from Greenhouse.
+    columns:
+      - name: source_id
+        tests:
+          - not_null
+          - unique
+      - name: organization_id
+        tests:
+          - not_null
+      - name: source_name
+        tests:
+          - not_null
+      - name: source_type
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
