@@ -49,6 +49,10 @@ Paste the results of dbt test here, including the command.
 </code></pre>
 </details>
 
+#### If you use incremental dbt models
+* [ ] If the MR adds/renames columns to a specific model, a `dbt run --full-refresh` will be needed after merging the MR. Please, add it to the Reviewer Checklist to warn them that this step is required.
+* [ ] Please also check with the Reviewer if a dag is set up in Airflow to trigger a full refresh of this model.
+
 ## All MRs Checklist
 * [ ]  [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue
 * [ ]  Pipelines pass
