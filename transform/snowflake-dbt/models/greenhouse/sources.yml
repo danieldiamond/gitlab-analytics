@@ -5,23 +5,21 @@ sources:
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: greenhouse
     loader: custom
-    loaded_at_field: updated_at
+    loaded_at_field: to_timestamp_ntz(_updated_at::number)
 
     freshness:
         warn_after: {count: 24, period: hour}
 
     tables:
       - name: application_custom_fields
+        freshness: null
       - name: application_question_answers
       - name: application_stages
       - name: applications
-      - name: appliations_jobs
+      - name: applications_jobs
       - name: approvals
       - name: attributes
       - name: candidate_custom_fields
-      - name: candidate_email_address
-      - name: candidate_mailing_address
-      - name: candidate_phone_numbers
       - name: candidate_survey_questions
       - name: candidate_surveys
       - name: candidates
@@ -31,6 +29,7 @@ sources:
       - name: eeoc_responses
       - name: employments
       - name: events
+        freshness: null
       - name: greenhouse_usages
       - name: hiring_team
       - name: interviewer_tags
@@ -41,7 +40,7 @@ sources:
       - name: job_snapshots
       - name: jobs
       - name: jobs_attributes
-      - name: jobs_deparments
+      - name: jobs_departments
       - name: jobs_interviews
       - name: jobs_offices
       - name: jobs_stages
@@ -53,6 +52,7 @@ sources:
       - name: referral_question_custom_fields
       - name: referrers
       - name: rejection_question_custom_fields
+        freshness: null
       - name: rejection_reasons
       - name: scheduled_interviews
       - name: scorecard_question_answers

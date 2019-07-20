@@ -5,7 +5,7 @@ sources:
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: snowflake
     loader: Airflow
-    loaded_at_field: _uploaded_at
+    loaded_at_field: to_timestamp_ntz(_uploaded_at::number)
 
     freshness:
         warn_after: {count: 1, period: day}
