@@ -68,19 +68,19 @@ joined as (
            issue_updated_at,
            last_edited_at,
            issue_closed_at,
-           namespace_id,
+           projects.namespace_id,
            visibility_level,
 
            {% for field in fields_to_mask %}
            CASE
-             WHEN is_confidential = TRUE AND namespace_id NOT IN (SELECT * FROM internal_namespaces) THEN 'confidential - masked'
-             WHEN visibility_level != 'public' AND namespace_id NOT IN (SELECT * FROM internal_namespaces) THEN 'private/internal - masked'
+             WHEN is_confidential = TRUE AND internal_namespaces.namespace_id IS NULL THEN 'confidential - masked'
+             WHEN visibility_level != 'public' AND internal_namespaces.namespace_id IS NULL THEN 'private/internal - masked'
              ELSE {{field}}
            END                                                         AS issue_{{field}},
            {% endfor %}
 
            CASE
-             WHEN namespace_id = 9970
+             WHEN projects.namespace_id = 9970
                AND ARRAY_CONTAINS('community contribution'::variant, agg_label)
                THEN TRUE
              ELSE FALSE
@@ -102,7 +102,7 @@ joined as (
              ELSE 'undefined'
            END AS priority_tag,
 
-           CASE WHEN namespace_id = 9970
+           CASE WHEN projects.namespace_id = 9970
              AND ARRAY_CONTAINS('security'::variant, agg_label) THEN TRUE
             ELSE FALSE
            END AS is_security_issue,
@@ -123,6 +123,8 @@ joined as (
         ON issues.issue_id = agg_labels.issue_id
       LEFT JOIN projects
         ON issues.project_id = projects.project_id
+      LEFT JOIN internal_namespaces
+        ON projects.namespace_id = internal_namespaces.namespace_id
 )
 
 SELECT * from joined
