@@ -12,7 +12,6 @@ from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOpera
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {
-    "EXECUTION_DATE": "{{ next_execution_date }}",
     "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
     "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
     if GIT_BRANCH == "master"
@@ -36,7 +35,7 @@ dag = DAG("test_suite", default_args=default_args, schedule_interval=None)
 # Task 1
 pytest_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-    pytest analytics --noconftest --ignore=analytics/dags/ --ignore=analytics/extract/shared_modules/ -vv -W ignore::DeprecationWarning
+    pytest analytics --noconftest --ignore=analytics/dags/ --ignore=analytics/extract/shared_modules/ -v -W ignore::DeprecationWarning
 """
 purge_clones = KubernetesPodOperator(
     **gitlab_defaults,
