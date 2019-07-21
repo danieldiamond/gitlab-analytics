@@ -65,3 +65,75 @@ class TestTapPostgres:
             tap_postgres.dataframe_uploader(result, SNOWFLAKE_ENGINE, TEST_TABLE)
         uploaded_rows = pd.read_sql(f"select * from {TEST_TABLE}", SNOWFLAKE_ENGINE)
         assert uploaded_rows.shape[0] == 1
+
+    def test_load_incremental1(self):
+        """
+        Test to make sure that the incremental loader is catching all of the rows.
+        """
+        table_cleanup()
+        # Set some env_vars for this run
+        execution_date = "2019-06-29T10:00:00+00:00"
+        hours = "2"
+        source_table = "merge_requests"
+        source_db = "gitlab_com_db"
+
+        # Get the count from the source DB
+        source_between_clause = f"updated_at BETWEEN '{execution_date}'::timestamp - interval '{hours} hours' AND '{execution_date}'::timestamp"
+        source_count_query = f"SELECT COUNT(*) AS row_count FROM {source_table} WHERE {source_between_clause}"
+        source_count_results = pd.read_sql(source_count_query, POSTGRES_ENGINE)
+
+        # Get the manifest for a specific table
+        file_path = f"analytics/extract/postgres/manifests/{source_db}_manifest.yaml"
+        manifest_dict = tap_postgres.manifest_reader(file_path)
+        table_dict = manifest_dict["tables"][source_table]
+
+        # Run the query and count the results
+        new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
+        os.environ.update(new_env_vars)
+        tap_postgres.load_incremental(
+            table_dict["import_query"],
+            POSTGRES_ENGINE,
+            SNOWFLAKE_ENGINE,
+            source_table,
+            TEST_TABLE,
+        )
+        target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}"
+        target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
+
+        assert source_count_results.equals(target_count_results)
+
+    def test_load_incremental2(self):
+        """
+        Test to make sure that the incremental loader is catching all of the rows.
+        """
+        table_cleanup()
+        # Set some env_vars for this run
+        execution_date = "2019-06-29T10:00:00+00:00"
+        hours = "2"
+        source_table = "merge_request_metrics"
+        source_db = "gitlab_com_db"
+
+        # Get the count from the source DB
+        source_between_clause = f"updated_at BETWEEN '{execution_date}'::timestamp - interval '{hours} hours' AND '{execution_date}'::timestamp"
+        source_count_query = f"SELECT COUNT(*) AS row_count FROM {source_table} WHERE {source_between_clause}"
+        source_count_results = pd.read_sql(source_count_query, POSTGRES_ENGINE)
+
+        # Get the manifest for a specific table
+        file_path = f"analytics/extract/postgres/manifests/{source_db}_manifest.yaml"
+        manifest_dict = tap_postgres.manifest_reader(file_path)
+        table_dict = manifest_dict["tables"][source_table]
+
+        # Run the query and count the results
+        new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
+        os.environ.update(new_env_vars)
+        tap_postgres.load_incremental(
+            table_dict["import_query"],
+            POSTGRES_ENGINE,
+            SNOWFLAKE_ENGINE,
+            source_table,
+            TEST_TABLE,
+        )
+        target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}"
+        target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
+
+        assert source_count_results.equals(target_count_results)

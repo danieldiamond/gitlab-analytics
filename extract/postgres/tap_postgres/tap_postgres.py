@@ -269,6 +269,7 @@ def load_incremental(
     query = raw_query.format(**env)
     logging.info(query)
     chunk_and_upload(query, source_engine, target_engine, table_name)
+    return query
 
 
 def sync_incremental_ids(

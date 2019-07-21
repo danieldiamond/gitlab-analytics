@@ -57,7 +57,7 @@ python_checking: &python_checking
   tags:
     - analytics
   script:
-    -  pylint ../analytics/ --disable=C --reports=y --exit-zero
+    - pylint ../analytics/ --ignore=dags --disable=C --disable=W1203 --disable=W1202 --reports=y --exit-zero
   except:
     changes:
       - "**/*.md"
