@@ -5,7 +5,7 @@ WITH source AS (
 	    ORDER BY uploaded_at DESC
 	    LIMIT 1
 
-), intermediate as (
+), intermediate AS (
 
       SELECT d.value as data_by_row
       FROM source,

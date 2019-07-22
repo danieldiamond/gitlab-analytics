@@ -40,10 +40,11 @@ archive:
     - source_schema: sensitive
       target_schema: dbt_archive
       tables:
-        - source_table: employee_directory
-          target_table: employee_directory_archived
+        - source_table: sheetload_employee_location_factor
+          target_table: sheetload_employee_location_factor_archived
           updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: employee_id
+          unique_key: bamboo_employee_number
+
 
 on-run-start:
     - "{{ dbt_logging_start('on run start hooks') }}"
