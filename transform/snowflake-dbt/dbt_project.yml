@@ -118,6 +118,10 @@ models:
       dbt_logging:
         enabled: false
 
+      gitlab_data_yaml:
+        enabled: true
+        materialized: table
+
       gitter:
         enabled: false
         transformed:
@@ -161,10 +165,6 @@ models:
         xf:
           enabled: true
           materialized: table
-
-      team_yaml:
-        enabled: true
-        materialized: table
 
       zuora:
         xf:
