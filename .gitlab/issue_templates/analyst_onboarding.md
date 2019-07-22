@@ -168,7 +168,6 @@ This data comes from the usage ping that comes with a GitLab installation.
 ## Zendesk
 - [ ] For access to Zendesk, please follow the instructions in the [handbook](https://about.gitlab.com/handbook/support/internal-support/#light-agent-zendesk-accounts-available-for-all-gitlab-staff)
 
-
 ## Zuora (Finance, Billing SSOT)
 - [ ] Become familiar with Zuora.
 - [ ] Watch Brian explain Zuora to Taylor [GDrive Link](https://drive.google.com/file/d/1fCr48jZbPiW0ViGr-6rZxVVdBpKIoopg/view).
