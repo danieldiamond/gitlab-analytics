@@ -25,22 +25,23 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    "team_yaml_extract", default_args=default_args, schedule_interval="0 */8 * * *"
+    "gitlab_data_yaml_extract",
+    default_args=default_args,
+    schedule_interval="0 */8 * * *",
 )
 
-# SFDC Extract
-team_yaml_extract_cmd = f"""
+# YAML Extract
+data_yaml_extract_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
-    cd analytics/extract/team_yaml/ &&
-    curl https://gitlab.com/gitlab-com/www-gitlab-com/raw/master/data/team.yml | yaml2json -o team.json &&
+    cd analytics/extract/gitlab_data_yaml/ &&
     python upload.py
 """
-team_yaml_extract = KubernetesPodOperator(
+data_yaml_extract = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
-    task_id="team-yaml-extract",
-    name="team-yaml-extract",
+    task_id="data-yaml-extract",
+    name="data-yaml-extract",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_LOAD_DATABASE,
@@ -51,6 +52,6 @@ team_yaml_extract = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
-    arguments=[team_yaml_extract_cmd],
+    arguments=[data_yaml_extract_cmd],
     dag=dag,
 )

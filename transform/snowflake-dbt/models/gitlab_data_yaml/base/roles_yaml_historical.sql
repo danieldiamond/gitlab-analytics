@@ -1,6 +1,5 @@
 {{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
+    "schema": "analytics"
     })
 }}
 
@@ -8,7 +7,7 @@ WITH source AS (
 
     SELECT *,
         RANK() OVER (PARTITION BY date_trunc('day', uploaded_at) ORDER BY uploaded_at DESC) AS rank
-    FROM {{ source('team_yaml', 'team_yaml') }}
+    FROM {{ source('gitlab_data_yaml', 'roles') }}
     ORDER BY uploaded_at DESC
 
 ), filtered as (
@@ -27,11 +26,10 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      data_by_row['gitlab']::varchar        AS gitlab_username,
-      data_by_row['name']::varchar          AS name,
-      data_by_row['projects']::varchar      AS projects,
-      data_by_row['slug']::varchar          AS yaml_slug,
-      data_by_row['type']::varchar          AS type,
+      data_by_row['salary']::number         AS salary,
+      data_by_row['title']::varchar         AS title,
+      data_by_row['levels']::varchar        AS role_levels,
+      data_by_row['open']::varchar          AS is_open,
       snapshot_date
     FROM intermediate
 

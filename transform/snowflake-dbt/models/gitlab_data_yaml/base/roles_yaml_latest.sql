@@ -1,13 +1,12 @@
 {{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
+    "schema": "analytics"
     })
 }}
 
 WITH source AS (
 
     SELECT *
-    FROM {{ ref('team_yaml_historical') }}
+    FROM {{ ref('roles_yaml_historical') }}
 
 ), max_date AS (
 
