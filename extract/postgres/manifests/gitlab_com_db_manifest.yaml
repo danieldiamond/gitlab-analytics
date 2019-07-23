@@ -5,6 +5,24 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  labels:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , title
+      , color
+      , project_id
+      , created_at
+      , updated_at
+      , template
+      , type
+      , group_id
+      FROM labels
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'labels'
+    export_table_primary_key: id
   approvals:
     import_db: GITLAB_DB
     import_query: >
@@ -203,8 +221,8 @@ tables:
       , title
       , author_id
       , project_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , confidential
       , description
       , milestone_id
@@ -215,13 +233,13 @@ tables:
       , moved_to_id
       , lock_version
       , time_estimate
-      , TO_CHAR(last_edited_at, 'YYYY-MM-DD HH:MI:SS') AS last_edited_at
+      , last_edited_at
       , last_edited_by_id
       , discussion_locked
-      , TO_CHAR(closed_at, 'YYYY-MM-DD HH:MI:SS') AS closed_at
+      , closed_at
       FROM issues
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'issues'
     export_table_primary_key: id
@@ -232,11 +250,11 @@ tables:
       , label_id
       , target_id
       , target_type
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       FROM label_links
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'label_links'
     export_table_primary_key: id
@@ -254,24 +272,6 @@ tables:
         AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
     export_schema: 'gitlab_com'
     export_table: 'label_priorities'
-    export_table_primary_key: id
-  labels:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , title
-      , color
-      , project_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
-      , template
-      , type
-      , group_id
-      FROM labels
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
-    export_schema: 'gitlab_com'
-    export_table: 'labels'
     export_table_primary_key: id
   licenses:
     import_db: GITLAB_DB
@@ -309,16 +309,16 @@ tables:
     import_query: >
       SELECT id
       , merge_request_id
-      , TO_CHAR(latest_build_started_at, 'YYYY-MM-DD HH:MI:SS') AS latest_build_started_at
-      , TO_CHAR(latest_build_finished_at, 'YYYY-MM-DD HH:MI:SS') AS latest_build_finished_at
+      , latest_build_started_at
+      , latest_build_finished_at
       , first_deployed_to_production_at
-      , TO_CHAR(merged_at, 'YYYY-MM-DD HH:MI:SS') AS merged_at
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , merged_at
+      , created_at
+      , updated_at
       , pipeline_id
       , merged_by_id
       , latest_closed_by_id
-      , TO_CHAR(latest_closed_at, 'YYYY-MM-DD HH:MI:SS') AS latest_closed_at
+      , latest_closed_at
       FROM merge_request_metrics
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -335,8 +335,8 @@ tables:
       , source_project_id
       , author_id
       , assignee_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , milestone_id
       , state
       , merge_status
@@ -350,7 +350,7 @@ tables:
       , lock_version
       , time_estimate
       , squash
-      , TO_CHAR(last_edited_at, 'YYYY-MM-DD HH:MI:SS') AS last_edited_at
+      , last_edited_at
       , last_edited_by_id
       , head_pipeline_id
       , discussion_locked
@@ -668,11 +668,11 @@ tables:
       , name
       , path
       , description
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , creator_id
       , namespace_id
-      , TO_CHAR(last_activity_at, 'YYYY-MM-DD HH:MI:SS') AS last_activity_at
+      , last_activity_at
       , import_url
       , visibility_level
       , archived
@@ -696,7 +696,7 @@ tables:
       , pending_delete
       , public_builds
       , last_repository_check_failed
-      , TO_CHAR(last_repository_check_at, 'YYYY-MM-DD HH:MI:SS') AS last_repository_check_at
+      , last_repository_check_at
       , container_registry_enabled
       , only_allow_merge_if_pipeline_succeeds
       , has_external_issue_tracker
@@ -712,7 +712,7 @@ tables:
       , auto_cancel_pending_pipelines
       , service_desk_enabled
       , delete_error
-      , TO_CHAR(last_repository_updated_at, 'YYYY-MM-DD HH:MI:SS') AS last_repository_updated_at
+      , last_repository_updated_at
       , disable_overriding_approvers_per_merge_request
       , storage_version
       , resolve_outdated_diff_discussions
@@ -722,8 +722,8 @@ tables:
       , mirror_overwrites_diverged_branches
       , external_authorization_classification_label
       FROM projects
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'projects'
     export_table_primary_key: id
