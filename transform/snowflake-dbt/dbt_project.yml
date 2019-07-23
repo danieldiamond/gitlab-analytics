@@ -130,7 +130,7 @@ models:
 
       gitlab_dotcom:
         tags: ["product"]
-        enabled: true
+        enabled: false
         xf:
           materialized: table
 
