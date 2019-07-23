@@ -1,4 +1,3 @@
-"""This module pulls data from postgres and uploads it to snowflake."""
 import logging
 import os
 import sys
