@@ -5,7 +5,9 @@
 }}
 
 {% set table_list = [ref('sheetload_pulse_survey_configure_be'),
-                     ref('sheetload_pulse_survey_monitor_be')] %}
+                     ref('sheetload_pulse_survey_configure_fe'),
+                     ref('sheetload_pulse_survey_monitor_be'),
+                     ref('sheetload_pulse_survey_monitor_fe')] %}
 
 with unioned as (
     {{ dbt_utils.union_tables(
