@@ -240,9 +240,8 @@ review_stop:
     GIT_STRATEGY: none
   script:
     - git clone $CI_REPOSITORY_URL
-    - analytics/orchestration/manage_snowflake.py delete_clone
+    - analytics/orchestration/manage_snowflake.py delete_clones
   when: manual
-  allow_failure: true
   only:
     refs:
       - branches
