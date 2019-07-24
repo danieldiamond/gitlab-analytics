@@ -18,6 +18,7 @@ sources:
 
     tables:
       - name: employee_location_factor
+        schema: sensitive
       - name: google_referrals
       - name: headcount
       - name: marketing_pipe_to_spend_headcount
