@@ -6,7 +6,7 @@ In months where a group does not record any audit events, a row will still be cr
 
 Audit events are often used as a proxy for user activity, so this model allows for convenient Monthly Active Group calculations without having to query the entire audit_events table.
 
-This model provides `group_created_at_month` and `months_since_creation_date` columns to allow for easy cohort and retention analysis. 
+This model provides `group_created_at_month` and `months_since_creation_date` columns to allow for easy cohort and retention analysis.
 
 {% enddocs %}
 
@@ -32,6 +32,15 @@ A CTE will find projects that don't have visibility set to public and then joine
 
 {% enddocs %}
 
+{% docs gitlab_dotcom_groups_xf %}
+
+This model includes all columns from the groups base model and adds the count of members and projects associated with the groups.
+It also adds 2 columns based on subscription inheritance (as described [here](https://about.gitlab.com/handbook/marketing/product-marketing/enablement/dotcom-subscriptions/#common-misconceptions)):
+
+* `groups_plan_is_paid`
+* `groups_plan_id`
+
+{% enddocs %}
 
 {% docs gitlab_dotcom_merge_requests_xf%}
 
