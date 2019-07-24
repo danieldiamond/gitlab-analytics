@@ -36,6 +36,20 @@ models:
       - name: masked_label_title
         description: '{{ doc("xf_visibility_documentation") }}'
 
+  - name: gitlab_dotcom_groups_xf
+    description: '{{ doc("gitlab_dotcom_groups_xf") }}'
+    columns:
+      - name: group_id
+        tests:
+          - not_null
+          - unique
+      - name: group_plan_is_paid
+        description: Whether or not the group is subscribed to a paid plan. A subgroup inherits from the subscription of its ultimate parent group
+      - name: member_count
+        description: The number of members that are presently associated with the group.
+      - name: project_count
+        description: The number of projects that are presently associated with the group.
+
   - name: gitlab_dotcom_merge_requests_xf
     description: '{{ doc("gitlab_dotcom_merge_requests_xf") }}'
     columns:
