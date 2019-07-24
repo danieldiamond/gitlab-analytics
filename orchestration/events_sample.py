@@ -14,19 +14,6 @@ def main(engine: Engine) -> None:
 
     logging.info("Running create statement ...")
 
-    fishtown_create_query = """
-    CREATE OR REPLACE
-    TABLE raw.snowplow.fishtown_events_sample
-    COPY grants AS
-    SELECT *
-    FROM raw.snowplow.events
-    LIMIT 5000000
-    """
-
-    fishtown_grant_query = """
-    GRANT SELECT ON TABLE snowplow.fishtown_events_sample TO role transformer;
-    """
-
     gitlab_create_query = """
     CREATE OR REPLACE
     TABLE raw.snowplow.gitlab_events_sample
@@ -41,12 +28,7 @@ def main(engine: Engine) -> None:
     GRANT SELECT ON TABLE snowplow.gitlab_events_sample TO role transformer;
     """
 
-    query_list = [
-        fishtown_create_query,
-        fishtown_grant_query,
-        gitlab_create_query,
-        gitlab_grant_query,
-    ]
+    query_list = [gitlab_create_query, gitlab_grant_query]
 
     for query in query_list:
 
