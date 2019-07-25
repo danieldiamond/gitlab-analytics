@@ -5,6 +5,11 @@ To solve for this, the `accounts_xf` model joins an account to potential parents
 The model currently assumes only one parent per child and only two levels, this model should be reviewed in the future to build a recursive strategy in case further levels are added in the future.
 {% enddocs %}
 
+{% docs netsuite_stitch_income %}
+Model that specifically filters and captures Income as surfaced in the Netsuite Income Statement. 
+Debits are discarded and only credits considered. Income is account codes 4000 through to 4009
+{% enddocs %}
+
 {% docs netsuite_stitch_all_entries %}
 This model unions the journal and non journal entries together into a single, explorable table. 
 {% enddocs %}
