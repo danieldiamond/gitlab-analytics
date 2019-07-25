@@ -1,3 +1,8 @@
+{{ config({
+    "materialized": "ephemeral"
+    })
+}}
+
 WITH expenses AS (
      SELECT *
      FROM {{ref('netsuite_stitch_transaction_expense_list')}}
@@ -56,39 +61,40 @@ non_journal_entries AS (
             JOIN accounting_periods ap  ON ap.accounting_period_id = t.posting_period_id
             JOIN accounts a               ON e.account_id = a.account_id
             LEFT JOIN departments d     ON d.department_id = e.department_id
-
-          WHERE
-          (ultimate_account_code BETWEEN '5000' AND '6999' AND ultimate_account_code != '5079')
           GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 
-        )
+        ), final as (
 
-SELECT
-    e.transaction_id,
-    e.transaction_type,
-    e.transaction_date,
-    e.period_date,
-    e.subsidiary_id,
-    e.subsidiary_name,
-    e.transaction_currency_name,
-    e.exchange_rate,
-    e.account_name,
-    e.account_code,
-    e.unique_account_code,
-    e.ultimate_account_code,
-    e.entity,
-    e.posting_period_id,
-    e.department_name,
-    e.parent_department_name,
-    CASE
-     WHEN e.subsidiary_name = 'GitLab Inc'
-      THEN 1
-     ELSE r.average_rate
-    END AS consolidated_exchange,
-    IFF(e.exchange_rate IS NULL, 1, e.exchange_rate) AS exchange_factor,
-    IFF(e.transaction_type != 'VendorCredit' AND e.amount >= 0, consolidated_exchange * e.amount * exchange_factor, 0) AS debit_amount,
-    IFF(e.transaction_type = 'VendorCredit' OR e.amount < 0, ABS(consolidated_exchange * e.amount * exchange_factor), 0) AS credit_amount
-FROM non_journal_entries e
-LEFT JOIN consolidated_exchange_rates r
-     ON CAST(r.postingperiod AS INTEGER) = e.posting_period_id
-     AND CAST(r.from_subsidiary AS INTEGER) = e.subsidiary_id
+    SELECT
+        e.transaction_id,
+        e.transaction_type,
+        e.transaction_date,
+        e.period_date,
+        e.subsidiary_id,
+        e.subsidiary_name,
+        e.transaction_currency_name,
+        e.exchange_rate,
+        e.account_name,
+        e.account_code,
+        e.unique_account_code,
+        e.ultimate_account_code,
+        e.entity,
+        e.posting_period_id,
+        e.department_name,
+        e.parent_department_name,
+        CASE
+         WHEN e.subsidiary_name = 'GitLab Inc'
+          THEN 1
+         ELSE r.average_rate
+        END AS consolidated_exchange,
+        IFF(e.exchange_rate IS NULL, 1, e.exchange_rate) AS exchange_factor,
+        IFF(e.transaction_type != 'VendorCredit' AND e.amount >= 0, consolidated_exchange * e.amount * exchange_factor, 0) AS debit_amount,
+        IFF(e.transaction_type = 'VendorCredit' OR e.amount < 0, ABS(consolidated_exchange * e.amount * exchange_factor), 0) AS credit_amount
+    FROM non_journal_entries e
+    LEFT JOIN consolidated_exchange_rates r
+         ON CAST(r.postingperiod AS INTEGER) = e.posting_period_id
+         AND CAST(r.from_subsidiary AS INTEGER) = e.subsidiary_id
+    )
+
+SELECT *
+FROM final

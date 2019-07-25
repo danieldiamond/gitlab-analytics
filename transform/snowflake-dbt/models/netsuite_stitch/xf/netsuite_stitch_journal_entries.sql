@@ -1,3 +1,8 @@
+{{ config({
+    "materialized": "ephemeral"
+    })
+}}
+
 WITH transactions AS (
      SELECT *
      FROM {{ref('netsuite_stitch_transactions_xf')}}
@@ -70,7 +75,6 @@ journal_entries AS (
         LEFT JOIN exchange_rates  er       ON DATE_TRUNC(DAY, t.transaction_date) = DATE_TRUNC(DAY, er.effective_date)
           AND t.currency_id = er.transaction_currency_id
           AND s.currency_name = er.base_currency_name
-        WHERE (ultimate_account_code BETWEEN '5000' AND '6999' AND ultimate_account_code != '5079')
         GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 
 ), final as (
