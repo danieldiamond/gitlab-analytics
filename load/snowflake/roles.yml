@@ -397,6 +397,15 @@ roles:
         warehouses:
             - reporting
 
+    - airflow:
+        warehouses:
+            - gitlab_postgres
+            - loading
+            - transforming_xs
+            - transforming_s
+            - transforming_l
+            - transforming_xl
+
     - agroleau:
         warehouses:
             - reporting
@@ -445,12 +454,14 @@ roles:
             - analyst_xs
             - analyst_xl
 
-    - gitlab-ci:
+    - gitlab_ci:
         warehouses:
-            - gitlab_postgres
             - loading
+            - merge_request_xs
+            - merge_request_xl
             - reporting
-            - stitch
+            - transforming_xs
+            - transforming_xl
 
     - iroussos:
         warehouses:
@@ -498,6 +509,10 @@ roles:
         warehouses:
             - reporting
 
+    - permission_bot:
+        warehouses:
+            - admin
+
     - redash:
         warehouses:
             - reporting
@@ -509,6 +524,10 @@ roles:
     - ssichak:
         warehouses:
             - reporting
+
+    - stitch:
+        warehouses:
+            - stitch
 
     - tlapiana:
         warehouses:
@@ -550,6 +569,15 @@ users:
             - agroleau
             - reporter
 
+    - airflow:
+        can_login: yes
+        member_of:
+            - airflow
+            - loader
+            - reporter
+            - sysadmin
+            - transformer
+
     - amrvaljevich:
         can_login: yes
         member_of:
@@ -589,10 +617,10 @@ users:
             - ekastelein
             - analyst_growth
 
-    - gitlab-ci:
+    - gitlab_ci:
         can_login: yes
         member_of:
-            - gitlab-ci
+            - gitlab_ci
             - loader
             - reporter
             - sysadmin
@@ -668,6 +696,12 @@ users:
             - periscope_staging
             - reporter_staging
 
+    - permission_bot:
+        can_login: yes
+        member_of:
+            - permission_bot
+            - securityadmin
+
     - redash:
         can_login: yes
         member_of:
@@ -687,6 +721,12 @@ users:
             - securityadmin
             - ssichak
             - sysadmin
+
+    - stitch:
+        can_login: yes
+        member_of:
+            - stitch
+            - loader
 
     - tlapiana:
         can_login: yes
@@ -719,6 +759,9 @@ users:
 
 # Warehouses
 warehouses:
+    - admin:
+        size: x-small
+
     - analyst_xl:
         size: x-large
 
