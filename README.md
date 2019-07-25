@@ -94,9 +94,9 @@ To facilitate the easier use of Airflow locally while still testing properly run
 The flow from code change to testing in Airflow should look like this (this assumes there is already a DAG for that task):
 
 1. Commit and push your code to the remote branch.
-1. Run `make init-airflow` to spin up the postgres db container and init the Airflow tables. You will get an error if Docker is not running.
+1. Run `make init-airflow` to spin up the postgres db container and init the Airflow tables, it will also create a generic Admin user. You will get an error if Docker is not running.
 1. Run `make airflow` to spin up Airflow and attach a shell to one of the containers
-1. Open a web browser and navigate to `localhost:8080` to see your own local webserver
+1. Open a web browser and navigate to `localhost:8080` to see your own local webserver. A generic Admin user is automatically created for you in MR airflow instances with the username and password set to `admin`.
 1. In the airflow shell, run a command to trigger the DAG/Task you want to test, for example `airflow run snowflake_load snowflake-load 2019-01-01` (as configured in the docker-compose file, all kube pods will be created in the `testing` namespace). Or if you want to run an entire DAG (for instance the `dbt` DAG to test the branching logic), the command would be something like `airflow backfill dbt -s 2019-01-01T00:00:00 -e 2019-01-01T00:00:00`.
 1. Once the job is finished, you can navigate to the DAG/Task instance to review the logs.
 
@@ -107,6 +107,7 @@ Some gotchas:
 * Ensure you have the latest version of Docker. This will prevent errors like `ERROR: Version in “./docker-compose.yml” is unsupported.`
 * If you're calling a new python script in your dag, ensure the file is executable by running `chmod +x your_python_file.py`. This will avoid permission denied errors.
 * Ensure that any new secrets added in your dag are also in `kube_secrets.py`. This is the source of truth for which secrets Airflow uses. The actual secret value isn't stored in this file, just the pointers.
+* If your images are outdated, use the command `docker pull <image_name>` to force a fresh pull of the latest images.
 
 #### Python Housekeeping
 
