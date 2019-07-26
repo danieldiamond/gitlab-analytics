@@ -136,8 +136,8 @@ This data comes from our GitLab.com SaaS product.
 - [ ] For access to Marketo, you will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request).
 
 ## Netsuite (Accounting)
-- [ ] [Coming soon]
-- [ ] For access to Netsuite, you will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request).
+- [ ] Netsuite dbt models 101: Familiarize yourself with the Netsuite models by watching this [Data Netsuite dbt models](https://www.youtube.com/watch?v=u2329sQrWDY&feature=youtu.be)
+- [ ] For access to Netsuite, your manager will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request). Please confirm with your manager that this has been done. 
 
 ## Pings (Product)
 This data comes from the usage ping that comes with a GitLab installation.
@@ -182,6 +182,7 @@ This data comes from the usage ping that comes with a GitLab installation.
 - [ ] Read through [SaaS Metrics 2.0](http://www.forentrepreneurs.com/saas-metrics-2/) to get a good understanding of general SaaS metrics.
 - [ ] Check out [10 Reads for Data Scientists Getting Started with Business Models](https://www.conordewey.com/posts/2019/5/17/10-reads-for-data-scientists-getting-started-with-business-models)  and read through the collection of articles to deepen your understanding of SaaS metrics.
 - [ ] Familiarize yourself with the GitLab Metrics Sheet (search in Google Drive, it should come up) which contains most of the key metrics we use at GitLab and the [definitions of these metrics](https://about.gitlab.com/handbook/finance/operating-metrics/).
+- [ ] Optional, for more information on Finance KPIs, you can watch this working session between the Manager, Financial Planning and Analysis and Data Analyst, Finance: [Finance KPIs](https://www.youtube.com/watch?v=dmdilBQb9PY&feature=youtu.be)
 
 ## Suggested Bookmarks
 None of these are required, but bookmarking these links will make life at GitLab much easier. Some of these are not hyperlinked for security concerns.
@@ -198,3 +199,7 @@ None of these are required, but bookmarking these links will make life at GitLab
 ## Good First Issues:
 - [ ] [Replace]
 - [ ] [Replace]
+
+## Resources to help you get started with your first issue
+- [ ] Pairing session between a new Data Analyst and a Staff Data Engineer working on the new analyst's first issue: [Pair on Lost MRR Dashboard Creation](https://www.youtube.com/watch?v=WuIcnpuS2Mg) 
+- [ ] 2nd part of pairing session between a new Data Analyst and a Staff Data Engineer working on the new analyst's first issue: [Pair on Lost MRR Dashboard Creation Part 2](https://www.youtube.com/watch?v=HIlDH5gaL3M)
