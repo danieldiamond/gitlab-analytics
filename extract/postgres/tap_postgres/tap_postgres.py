@@ -199,7 +199,7 @@ def id_query_generator(
     for id_pair in range_generator(max_target_id, max_source_id):
         id_range_query = (
             "".join(raw_query.lower().split("where")[0])
-            + f"WHERE id BETWEEN {id_pair[0]} AND {id_pair[1]} ORDER BY id"
+            + f"WHERE id BETWEEN {id_pair[0]} AND {id_pair[1]}"
         )
         logging.info(f"ID Range: {id_pair}")
         yield id_range_query
@@ -251,37 +251,41 @@ def swap_temp_table(engine: Engine, real_table: str, temp_table: str) -> None:
 
 
 def load_incremental(
-    raw_query: str,
     source_engine: Engine,
     target_engine: Engine,
     table: str,
+    table_dict: Dict[Any, Any],
     table_name: str,
 ) -> None:
     """
     Load tables incrementally based off of the execution date.
     """
 
+    raw_query = table_dict["import_query"]
+    additional_filter = table_dict.get("additional_filtering", "")
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need processing.")
         return
     env = os.environ.copy()
-    query = raw_query.format(**env)
+    query = f"{raw_query.format(**env)} {additional_filter}"
     logging.info(query)
     chunk_and_upload(query, source_engine, target_engine, table_name)
     return query
 
 
 def sync_incremental_ids(
-    raw_query: str,
     source_engine: Engine,
     target_engine: Engine,
     table: str,
+    table_dict: Dict[Any, Any],
     table_name: str,
 ) -> None:
     """
     Sync incrementally-loaded tables based on their IDs.
     """
 
+    raw_query = table_dict["import_query"]
+    additional_filtering = table_dict.get("additional_filtering", "")
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need processing.")
         return
@@ -291,27 +295,32 @@ def sync_incremental_ids(
     )
     # Iterate through the generated queries
     for query in id_queries:
-        chunk_and_upload(query, source_engine, target_engine, table_name)
+        filtered_query = f"{query} {additional_filtering} ORDER BY id"
+        logging.info(filtered_query)
+        chunk_and_upload(filtered_query, source_engine, target_engine, table_name)
 
 
 def load_scd(
-    raw_query: str,
     source_engine: Engine,
     target_engine: Engine,
     table: str,
+    table_dict: Dict[Any, Any],
     table_name: str,
 ) -> None:
     """
     Load tables that are slow-changing dimensions.
     """
 
+    raw_query = table_dict["import_query"]
+    additional_filter = table_dict.get("additional_filtering", "")
     if "{EXECUTION_DATE}" in raw_query:
         logging.info(f"Table {table} does not need processing.")
         return
     logging.info(f"Processing table: {table}")
 
-    logging.info(raw_query)
-    chunk_and_upload(raw_query, source_engine, target_engine, table_name)
+    query = f"{raw_query} {additional_filter}"
+    logging.info(query)
+    chunk_and_upload(table_dict["raw_query"], source_engine, target_engine, table_name)
 
 
 def main(file_path: str, load_type: str = None) -> None:
@@ -361,7 +370,7 @@ def main(file_path: str, load_type: str = None) -> None:
 
         # Call the correct function based on the load_type
         load_types[load_type](
-            raw_query, postgres_engine, snowflake_engine, table, table_name
+            postgres_engine, snowflake_engine, table, table_dict, table_name
         )
         logging.info(f"Finished upload for table: {table}")
 
