@@ -7,23 +7,16 @@ Please complete all items. Ask questions in #data
 **Dashboard Link**:
 `WIP:` should be in the title and it should be in the `WIP` topic
 
+**Dashboard Name**:
+
 **Original Issue Link**:
+<!--
+If none, please include a description
+--->
 
 **Editor Slack Handle**: @`handle`
 
-**Requested review time**:
-  - [ ] < 21 days (next milestone)
-  - [ ] < 7 days (current milestone)
-  - [ ] < 2 days (only for urgent needs)
-
-If urgent, please detail why.
-
 ### Submitter Checklist
-
-* Housekeeping
-  - [ ] Assigned to a member of the data team
-  - [ ] Allocated to milestone per review time request
-  - [ ] Labels and Points Allocated
 
 * Review Items
    * [ ] SQL formatted using [GitLab Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
@@ -41,7 +34,7 @@ If urgent, please detail why.
    * [ ] Chart description for each chart, linking to Metrics definitions where possible
    * [ ] Legend is clear
    * [ ] Text Tile for "What am I looking at?" and more detailed information, leveraging hyperlinks instead of URLs
-   * [ ] MR created to add to Periscope Directory
+   * [ ] Assign to reviewer on the data team
 
 ### Reviewer Checklist
 * Review Items
@@ -63,9 +56,10 @@ If urgent, please detail why.
    * [ ] Remove `WIP:` from title
    * [ ] Remove from `WIP` topic
    * [ ] Add approval badge
-   * [ ] Close this issue
+   * [ ] Assign back to submitter for closing
 
 ### Submitter
    * [ ] Post in #data channel in Slack
+   * [ ] Close this issue
 
 /label ~Reporting ~Periscope ~Review
