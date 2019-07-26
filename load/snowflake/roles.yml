@@ -513,10 +513,6 @@ roles:
         warehouses:
             - admin
 
-    - redash:
-        warehouses:
-            - reporting
-
     - speters:
         warehouses:
             - reporting
@@ -701,12 +697,6 @@ users:
         member_of:
             - permission_bot
             - securityadmin
-
-    - redash:
-        can_login: yes
-        member_of:
-            - redash
-            - reporter
 
     - speters:
         can_login: yes
