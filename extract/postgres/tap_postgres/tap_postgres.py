@@ -320,7 +320,7 @@ def load_scd(
 
     query = f"{raw_query} {additional_filter}"
     logging.info(query)
-    chunk_and_upload(table_dict["raw_query"], source_engine, target_engine, table_name)
+    chunk_and_upload(query, source_engine, target_engine, table_name)
 
 
 def main(file_path: str, load_type: str = None) -> None:
