@@ -13,15 +13,16 @@ Describe the solution.
 Please include links to any related MRs and/or issues.
 
 ## All MRs Checklist
-* [ ]  [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue
-* [ ]  Pipelines pass
-* [ ]  Branch set to delete and commits set to squash
-* [ ]  This MR is ready for final review and merge.
-* [ ]  Remove the `WIP:` prefix in the MR title before assigning to reviewer
-* [ ]  Assigned to reviewer
+* [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue
+* [ ] Pipelines pass
+* [ ] Branch set to delete and commits set to squash
+* [ ] This MR is ready for final review and merge.
+* [ ] Resolve all threads
+* [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer
+* [ ] Assigned to reviewer
 
 ## Reviewer Checklist
-* [ ]  Check before setting to merge
+* [ ] Check before setting to merge
 
 ## Further changes requested
-* [ ]  AUTHOR: Uncheck all boxes before taking further action.
+* [ ] AUTHOR: Uncheck all boxes before taking further action.
