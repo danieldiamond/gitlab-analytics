@@ -241,6 +241,7 @@ roles:
                 read:
                     - analytics
                     - snowflake
+                    - raw
                 write:
                     - analytics
             schemas:
@@ -248,12 +249,14 @@ roles:
                     - analytics.analytics
                     - analytics.analytics_staging
                     - analytics.analytics_meta
+                    - raw.greenhouse
                     - snowflake.*
             tables:
                 read:
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
+                    - raw.greenhouse.*
                     - snowflake.*.*
 
     - loader:
