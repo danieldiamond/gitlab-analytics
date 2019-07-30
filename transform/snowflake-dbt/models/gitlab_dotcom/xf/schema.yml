@@ -100,6 +100,15 @@ models:
         tests:
           - not_null
           - unique
+      - name: namespace_name
+        tests:
+          - not_null
+      - name: namespace_path
+        tests:
+          - not_null
+      - name: namespace_type
+        tests:
+          - not_null
       - name: namespace_plan_is_paid
         description: Whether or not the namespace associated with the project is subscribed to a paid plan.
       - name: member_count
