@@ -16,6 +16,11 @@ If none, please include a description
 
 **Editor Slack Handle**: @`handle`
 
+* Housekeeping
+  - [ ] Assigned to a member of the data team
+  - [ ] Allocated to milestone per review time request
+  - [ ] Labels and Points Allocated
+
 ### Submitter Checklist
 
 * Review Items
@@ -56,10 +61,10 @@ If none, please include a description
    * [ ] Remove `WIP:` from title
    * [ ] Remove from `WIP` topic
    * [ ] Add approval badge
-   * [ ] Assign back to submitter for closing
+   * [ ] Assign back to submitter for closing or merge if good to go
 
 ### Submitter
    * [ ] Post in #data channel in Slack
-   * [ ] Close this issue
+   * [ ] Close this MR
 
 /label ~Reporting ~Periscope ~Review
