@@ -75,11 +75,7 @@ models:
         tests:
             - not_null
       - name: department
-        tests:
-            - not_null
       - name: division
-        tests:
-            - not_null
       - name: entity
         tests:
             - not_null
