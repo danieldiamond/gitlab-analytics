@@ -36,6 +36,7 @@ If none, please include a description
    * [ ] Viz Titles changed to Autofit, if relevant
    * [ ] Axes labeled, if relevant
    * [ ] Numbers (Currencies, Percents, Decimal Places, etc) cleaned, if relevant
+   * [ ] If using a date filter, set an appropriate length. Most common is 365 days.
    * [ ] Chart description for each chart, linking to Metrics definitions where possible
    * [ ] Legend is clear
    * [ ] Text Tile for "What am I looking at?" and more detailed information, leveraging hyperlinks instead of URLs
@@ -55,6 +56,7 @@ If none, please include a description
    * [ ] Viz Titles changed to Autofit, if relevant
    * [ ] Axes labeled, if relevant
    * [ ] Numbers (Currencies, Percents, Decimal Places, etc) cleaned, if relevant
+   * [ ] If using a date filter, set an appropriate length. Most common is 365 days.
    * [ ] Chart description for each chart, linking to Metrics definitions where possible
    * [ ] Legend is clear
    * [ ] Merged into Periscope Directory
