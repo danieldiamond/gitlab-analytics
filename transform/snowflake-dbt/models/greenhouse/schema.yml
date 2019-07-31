@@ -12,7 +12,15 @@ models:
           - not_null
       - name: stage_id
       - name: source_id
+        tests:
+          - relationships:
+              to: ref('greenhouse_sources')
+              field: source_id
       - name: referrer_id
+        tests:
+          - relationships:
+              to: ref('greenhouse_referrers')
+              field: referrer_id
       - name: rejected_by_id
       - name: job_post_id
       - name: event_id
@@ -38,7 +46,7 @@ models:
       - name: last_updated_at
         tests:
           - not_null
-  - name: greenhouse_interviewers
+  - name: greenhouse_interviewers 
     description: This model contains all info for interviewers from Greenhouse.
     columns:
       - name: interviewer_name
@@ -55,6 +63,9 @@ models:
       - name: application_id
         tests:
           - not_null
+          - relationships:
+              to: ref('greenhouse_applications')
+              field: application_id
       - name: offer_status
         tests:
           - not_null
@@ -66,6 +77,24 @@ models:
       - name: sent_at
       - name: resolved_at
       - name: updated_at
+  - name: greenhouse_referrers
+    description: This model contains all info for referrals.
+    columns:
+      - name: referrer_id
+        tests:
+          - not_null
+          - unique
+      - name: referrer_name
+        tests:
+          - not_null
+      - name: organization_id
+      - name: user_id
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
   - name: greenhouse_sources
     description: This model contains all info for sources (for candidates) from Greenhouse.
     columns:
