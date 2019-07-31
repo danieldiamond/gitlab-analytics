@@ -58,9 +58,19 @@ WITH employee_directory AS (
 
 SELECT date_actual,
         (first_name ||' '|| last_name) AS full_name,
-        job_title,
-        department,
-        division,
+        job_title,--the below case when statement is also used in bamboohr_job_info; it can be removed FROM HERE when we move to 0.14.0
+        CASE WHEN division = 'Alliances' THEN 'Alliances'
+             WHEN division = 'Customer Support' THEN 'Customer Support'
+             WHEN division = 'Customer Service' THEN 'Customer Success'
+             WHEN department = 'Data & Analytics' THEN 'Business Operations'
+            ELSE nullif(department, '') END AS department,
+        CASE WHEN department = 'Meltano' THEN 'Meltano'
+             WHEN division = 'Employee' THEN null
+             WHEN division = 'Contractor ' THEN null
+             WHEN division = 'Alliances' Then 'Sales'
+             WHEN division = 'Customer Support' THEN 'Engineering'
+             WHEN division = 'Customer Service' THEN 'Sales'
+          ELSE nullif(division, '') END AS division,
         location_factor,
         is_hire_date,
         is_termination_date
