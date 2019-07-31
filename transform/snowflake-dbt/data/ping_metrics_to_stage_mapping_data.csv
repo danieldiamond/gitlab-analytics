@@ -97,3 +97,7 @@ web_hooks,create
 incident_issues,ignored
 dependency_list_usages_total,ignored
 pod_logs_usages_total,ignored
+git_version,create
+gitaly_version,create
+gitaly_servers,create
+gitaly_filesystems,create
