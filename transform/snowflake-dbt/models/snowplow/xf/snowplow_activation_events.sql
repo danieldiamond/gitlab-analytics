@@ -10,7 +10,8 @@
                       "wiki_page_viewed",
                       "snippet_edited",
                       "snippet_viewed",
-                      "snippet_created"]
+                      "snippet_created",
+                      "project_viewed_in_ide"]
 -%}
 
 WITH snowplow_page_views AS (
@@ -126,6 +127,21 @@ WITH snowplow_page_views AS (
                              AS sk_id
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '.*/search'
+
+)
+
+, project_viewed_in_ide AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start) AS event_date,
+    page_url_path,
+    'search_performed'       AS event_type,
+    {{ dbt_utils.surrogate_key('TO_DATE(page_view_start)', 'user_snowplow_domain_id', 'user_custom_id', 'event_type') }}
+                             AS sk_id
+  FROM snowplow_page_views
+  WHERE page_url_path RLIKE '.*/ide/project/.*'
 
 )
 
