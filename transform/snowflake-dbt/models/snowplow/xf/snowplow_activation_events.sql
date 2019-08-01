@@ -41,6 +41,7 @@ WITH snowplow_page_views AS (
                              AS sk_id
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '.*/tree/.*'
+    AND page_url_path NOT RLIKE '.*/ide/.*'
 )
 
 , mr_viewed AS (
