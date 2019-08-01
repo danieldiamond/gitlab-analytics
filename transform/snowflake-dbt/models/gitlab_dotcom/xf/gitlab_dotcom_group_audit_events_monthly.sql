@@ -28,6 +28,7 @@ WITH months AS (
       DATE_TRUNC(month, group_created_at) AS group_created_at_month
 
     FROM {{ ref('gitlab_dotcom_groups_xf') }}
+    WHERE TO_DATE(group_created_at) < DATE_TRUNC('month', CURRENT_DATE)
 
 ), skeleton AS ( -- create a framework of one row per group per month (after their creation date)
 
