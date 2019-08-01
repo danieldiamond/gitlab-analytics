@@ -22,6 +22,7 @@ WITH months AS (
       user_id,
       DATE_TRUNC(month, user_created_at) AS user_created_at_month
     FROM {{ ref('gitlab_dotcom_users') }}
+    WHERE TO_DATE(user_created_at) < DATE_TRUNC('month', CURRENT_DATE)
 
 ), skeleton AS ( -- Create a framework of one row per user per month (after their creation date)
     SELECT
