@@ -12,6 +12,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
   - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
 - [ ] Manager: Invite to SheetLoad folder in gdrive
+- [ ] Manager: Check the [Time Blackout Sheet](https://docs.google.com/spreadsheets/d/1-L1l1x0uayj-bA_U9ETt2w12rC8SqC5mHP7Aa-rkmsY/edit#gid=0) to make sure it looks up-to-date. 
 - [ ] Manager: Add to data team calendar as a calendar admin
 - [ ] Manager: Ping appropriate person to get new hire added to Finance team meetings
 - [ ] Manager: Add to [dbt test coverage rotation](https://about.gitlab.com/handbook/business-ops/data-team/#-team-roles)
@@ -21,6 +22,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
 - [ ] Read (skim) through this full issue, just so you have a sense of what's coming.
+- [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
 - [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `data-triage`, `dbt-runs`, and `business-operations`.
 - [ ] Schedule a recurring fortnightly 1:1 meeting with the Director of Business Operations.
 - [ ] Invite yourself to the to Milestone Planning/Grooming and DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.
@@ -32,7 +34,7 @@ WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
    - [ ] [Periscope Directory](https://about.gitlab.com/handbook/business-ops/data-team/periscope-directory/)
 - [ ] Watch @tlapiana's [talk at DataEngConf](https://www.youtube.com/watch?v=eu623QBwakc) that gives a phenomenal overview of how the team works.
 - [ ] Watch [this great talk](https://www.youtube.com/watch?v=prcz0ubTAAg) on what Analytics is
-- [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
+- [ ] Update the [Time Blackout Sheet](https://docs.google.com/spreadsheets/d/1-L1l1x0uayj-bA_U9ETt2w12rC8SqC5mHP7Aa-rkmsY/edit#gid=0); add a new column, and make sure you don't break any formulas!
 
 **Getting your computer set up locally**
 * Make sure that you have [created your SSH keys](https://docs.gitlab.com/ee/gitlab-basics/create-your-ssh-keys.html) prior to running this. You can check this by typing `ssh -T git@gitlab.com` into your terminal which should return "Welcome to GitLab, " + your_username
