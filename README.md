@@ -47,6 +47,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
 * Data Source Overviews:
    * [Pings](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view)
    * [Salesforce](https://youtu.be/KwG3ylzWWWo)
+   * [Netsuite](https://www.youtube.com/watch?v=u2329sQrWDY)
 
 * Taylor and Israel pair on a Lost MRR Dashboard
    * [Part 1](https://www.youtube.com/watch?v=WuIcnpuS2Mg)
