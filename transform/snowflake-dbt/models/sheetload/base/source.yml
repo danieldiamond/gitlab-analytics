@@ -22,6 +22,7 @@ sources:
       - name: google_referrals
       - name: headcount
       - name: marketing_pipe_to_spend_headcount
+      - name: marketing_kpi_benchmarks
       - name: planned_values
       - name: pulse_survey_configure_be
       - name: pulse_survey_configure_fe
