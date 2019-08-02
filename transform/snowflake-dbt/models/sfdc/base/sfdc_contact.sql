@@ -62,10 +62,11 @@ WITH source AS (
         qualifying_datetime__c      AS qualifying_datetime,
         qualified_datetime__c       AS qualified_datetime,
         unqualified_datetime__c     AS unqualified_datetime,
-        mkto_si__last_interesting_moment__c
-                                    AS marketo_last_interesting_moment,
-        mkto_si__last_interesting_moment_date__c
-                                    AS marketo_last_interesting_moment_date,
+        nurture_datetime__c         AS nurture_datetime,
+        bad_data_datetime__c        AS bad_data_datetime,
+        web_portal_purchase_datetime__c AS web_portal_purchase_datetime,
+        mkto_si__last_interesting_moment__c AS marketo_last_interesting_moment,
+        mkto_si__last_interesting_moment_date__c AS marketo_last_interesting_moment_date,
 
         {{  sfdc_source_buckets('leadsource') }}
 
