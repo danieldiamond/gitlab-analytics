@@ -213,6 +213,8 @@ You can use `Command + Option + L` to format your file.
 - [Data Ops](https://medium.com/data-ops)
 - [Retina AI Blog](https://retina.ai/blog/)
 - [StitchFix Algorithms Blog](https://multithreaded.stitchfix.com/algorithms/blog/)
+- [Five Thirty Eight](https://data.fivethirtyeight.com/)
+- [Data.gov](https://www.data.gov/)
 
 #### Data Visualization Resources
 - [Storytelling with Data](http://storytellingwithdata.com/)
