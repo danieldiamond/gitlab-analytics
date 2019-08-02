@@ -1,4 +1,4 @@
-WITH base_mrr AS ( 
+WITH base_mrr AS (
 
     SELECT * FROM {{ ref('zuora_base_mrr_amortized') }}
 
@@ -18,6 +18,7 @@ WITH base_mrr AS (
           cohort_quarter  AS zuora_subscription_cohort_quarter,
           mrr,
           'Trueup'        AS product_category,
+          charge_name     AS rate_plan_name,
           null            AS unit_of_measure,
           null            AS quantity
     FROM trueup_mrr
@@ -34,6 +35,7 @@ WITH base_mrr AS (
           cohort_quarter  AS zuora_subscription_cohort_quarter,
           mrr,
           product_category,
+          rate_plan_name,
           unit_of_measure,
           quantity
     FROM base_mrr
@@ -51,8 +53,9 @@ WITH base_mrr AS (
           zuora_subscription_cohort_quarter,
           product_category,
           unit_of_measure,
-          sum(quantity)   AS quantity,
-          sum(mrr)        AS mrr
+          array_agg(rate_plan_name) AS rate_plan_name,
+          sum(quantity)             AS quantity,
+          sum(mrr)                  AS mrr
     FROM mrr_combined
     {{ dbt_utils.group_by(n=11) }}
 
