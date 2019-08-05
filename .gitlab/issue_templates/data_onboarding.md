@@ -3,9 +3,9 @@
 Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed.
 
 - [ ] Manager: Create access request using data analyst baseline.
+   - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
+   - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
 - [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
-- [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
-- [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
 - [ ] Manager: Invite to `data-team` channel on Slack
 - [ ] Manager: Update codeowners file in the handbook to include the new team member
 - [ ] Manager: Add to daily Geekbot standup
