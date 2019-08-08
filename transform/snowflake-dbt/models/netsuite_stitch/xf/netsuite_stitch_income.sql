@@ -29,6 +29,7 @@ SELECT
     parent_department_name,
     consolidated_exchange,
     exchange_factor,
-    credit_amount
+    credit_amount,
+    debit_amount
 
 FROM income_entries
