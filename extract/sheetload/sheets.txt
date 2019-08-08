@@ -12,7 +12,6 @@ pulse_survey.pulse_survey_monitor_fe
 sales_metrics.sales_quotas_region_by_month
 sales_metrics.sales_quotas_region_by_fq
 sales_ramp_time.sales_ramp_time_by_month
-sales_ramp_time.sales_quotas
 sales_ramp_time.sales_rep_productivity_all
 sales_ramp_time.sales_rep_productivity_sal
 sales_ramp_time.sales_rep_productivity_mm_ae
