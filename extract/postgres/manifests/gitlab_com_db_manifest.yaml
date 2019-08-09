@@ -5,6 +5,27 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  ci_job_artifacts:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , job_id
+      , file_type
+      , size
+      , created_at
+      , updated_at
+      , expire_at
+      , file
+      , file_store
+      , file_format
+      , file_location
+      FROM ci_job_artifacts
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_job_artifacts
+    export_table_primary_key: id
   issues:
     import_db: GITLAB_DB
     import_query: >
@@ -272,28 +293,6 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_dotcom'
     export_table: ci_group_variables
-    export_table_primary_key: id
-  ci_job_artifacts:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , project_id
-      , job_id
-      , file_type
-      , size
-      , created_at
-      , updated_at
-      , expire_at
-      , file
-      , file_store
-      , file_sha256
-      , file_format
-      , file_location
-      FROM ci_job_artifacts
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_dotcom'
-    export_table: ci_job_artifacts
     export_table_primary_key: id
   ci_pipeline_chat_data:
     import_db: GITLAB_DB
