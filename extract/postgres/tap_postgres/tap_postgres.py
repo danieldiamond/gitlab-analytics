@@ -21,10 +21,10 @@ def swap_temp_table(engine: Engine, real_table: str, temp_table: str) -> None:
     try:
         connection = engine.connect()
         connection.execute(
-            f"ALTER TABLE tap_postgres.{temp_table} SWAP WITH tap_postgres.{real_table}"
+            f"ALTER TABLE IF EXISTS tap_postgres.{temp_table} SWAP WITH tap_postgres.{real_table}"
         )
         logging.info(f"Table altered from {temp_table} to {real_table}")
-        connection.execute(f"DROP TABLE tap_postgres.{temp_table}")
+        connection.execute(f"DROP TABLE IF EXISTS tap_postgres.{temp_table}")
         logging.info(f"Dropped table: {temp_table}")
     finally:
         connection.close()
