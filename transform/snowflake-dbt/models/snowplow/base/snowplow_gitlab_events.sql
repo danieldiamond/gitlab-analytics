@@ -163,6 +163,12 @@ FROM {{ source('gitlab_snowplow', 'events') }}
 WHERE app_id IS NOT NULL
 AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(page_url) NOT LIKE 'http://localhost:%'
+AND event_id not in (
+  'd1b9015b-f738-4ae7-a4da-a46523a98f15',
+  '8de7b076-120b-42b7-922a-d07faded8c8c',
+  '1f820848-2b49-4c01-a721-c9d2a2be77a2',
+  '246b20a5-b780-4609-b717-b6f3be18c638'
+  ) -- https://gitlab.com/gitlab-data/analytics/issues/2165 for context
 
 {% if is_incremental() %}
     AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
