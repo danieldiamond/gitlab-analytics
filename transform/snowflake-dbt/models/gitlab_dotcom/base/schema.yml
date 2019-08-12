@@ -165,13 +165,13 @@ models:
       - name: epic_issues_relation_id
         tests:
           - not_null
-          - unique
       - name: epic_id
         tests:
           - not_null
       - name: issue_id
         tests:
           - not_null
+          - unique
 
   - name: gitlab_dotcom_namespace_lineage
     description: '{{ doc("gitlab_dotcom_namespace_lineage") }}'
