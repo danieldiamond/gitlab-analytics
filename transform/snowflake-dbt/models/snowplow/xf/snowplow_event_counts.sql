@@ -9,6 +9,12 @@ WITH good_events AS (
 
     SELECT *
     FROM {{ ref('snowplow_unnested_events') }}
+    WHERE event_id not in (
+        'd1b9015b-f738-4ae7-a4da-a46523a98f15',
+        '8de7b076-120b-42b7-922a-d07faded8c8c',
+        '1f820848-2b49-4c01-a721-c9d2a2be77a2',
+        '246b20a5-b780-4609-b717-b6f3be18c638'
+        )
 
 ),
 
