@@ -11,6 +11,9 @@ databases:
     - snowflake:
         shared: yes
 
+    - testing_db:
+        shared: no
+
 
 # Roles
 roles:
@@ -527,6 +530,10 @@ roles:
     - stitch:
         warehouses:
             - stitch
+    
+    - target_snowflake:
+        warehouses:
+            - target_snowflake
 
     - tlapiana:
         warehouses:
@@ -721,6 +728,11 @@ users:
             - stitch
             - loader
 
+    - target_snowflake:
+        can_login: yes
+        member_of:
+            - target_snowflake
+
     - tlapiana:
         can_login: yes
         member_of:
@@ -783,6 +795,9 @@ warehouses:
         size: x-small
 
     - stitch:
+        size: x-small
+
+    - target_snowflake:
         size: x-small
 
     - transforming_s:
