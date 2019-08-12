@@ -416,11 +416,6 @@ roles:
         warehouses:
             - reporting
 
-    - amrvaljevich:
-        warehouses:
-            - analyst_xs
-            - analyst_xl
-
     - dtang:
         warehouses:
             - reporting
@@ -489,6 +484,14 @@ roles:
     - jwatson:
         warehouses:
             - reporting
+
+    - ktam:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting
+
 
     - ksmith:
         warehouses:
@@ -584,12 +587,6 @@ users:
             - sysadmin
             - transformer
 
-    - amrvaljevich:
-        can_login: yes
-        member_of:
-            - amrvaljevich
-            - analyst_core
-
     - dtang:
         can_login: yes
         member_of:
@@ -664,6 +661,16 @@ users:
             - jwatson
             - product_manager
             - reporter
+
+    - ktam:
+        can_login: yes
+        member_of:
+            - accountadmin
+            - engineer
+            - ktam
+            - securityadmin
+            - sysadmin
+            - tmurphy
 
     - ksmith:
         can_login: yes
