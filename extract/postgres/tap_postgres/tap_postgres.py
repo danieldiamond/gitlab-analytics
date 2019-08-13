@@ -3,7 +3,7 @@ import os
 from typing import Dict, Any
 
 from fire import Fire
-from gitlabdata.orchestration_utils import snowflake_engine_factory
+from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
 from sqlalchemy.engine.base import Engine
 
 import utils
@@ -18,17 +18,19 @@ def swap_temp_table(engine: Engine, real_table: str, temp_table: str) -> None:
     real table.
     """
 
-    try:
-        connection = engine.connect()
-        connection.execute(
-            f"ALTER TABLE IF EXISTS tap_postgres.{temp_table} SWAP WITH tap_postgres.{real_table}"
+    if engine.has_table(real_table):
+        logging.info(
+            f"Swapping the temp table: {temp_table} with the real table: {real_table}"
         )
-        logging.info(f"Table altered from {temp_table} to {real_table}")
-        connection.execute(f"DROP TABLE IF EXISTS tap_postgres.{temp_table}")
-        logging.info(f"Dropped table: {temp_table}")
-    finally:
-        connection.close()
-        engine.dispose()
+        swap_query = f"ALTER TABLE IF EXISTS tap_postgres.{temp_table} SWAP WITH tap_postgres.{real_table}"
+        query_executor(engine, swap_query)
+    else:
+        logging.info(f"Renaming the temp table: {temp_table} to {real_table}")
+        rename_query = f"ALTER TABLE IF EXISTS tap_postgres.{temp_table} RENAME TO tap_postgres.{real_table}"
+        query_executor(engine, rename_query)
+
+    drop_query = f"DROP TABLE IF EXISTS tap_postgres.{temp_table}"
+    query_executor(engine, drop_query)
 
 
 def load_incremental(
@@ -45,7 +47,14 @@ def load_incremental(
     raw_query = table_dict["import_query"]
     additional_filter = table_dict.get("additional_filtering", "")
     if "{EXECUTION_DATE}" not in raw_query:
-        logging.info(f"Table {table} does not need processing.")
+        logging.info(f"Table {table} does not need incremental processing.")
+        return
+    # If _TEMP exists in the table name, skip it because it needs a full sync
+    # If a temp table exists then it needs to finish syncing so don't load incrementally
+    if "_TEMP" == table_name[-5:] or target_engine.has_table(f"{table_name}_TEMP"):
+        logging.info(
+            f"Table {table} needs to be backfilled due to schema change, aborting incremental load."
+        )
         return
     env = os.environ.copy()
     query = f"{raw_query.format(**env)} {additional_filter}"
@@ -67,8 +76,14 @@ def sync_incremental_ids(
 
     raw_query = table_dict["import_query"]
     additional_filtering = table_dict.get("additional_filtering", "")
+    logging.info(table_name)
     if "{EXECUTION_DATE}" not in raw_query:
-        logging.info(f"Table {table} does not need processing.")
+        logging.info(f"Table {table} does not need sync processing.")
+        return
+    # If temp isn't in the name, we don't need to full sync.
+    # If a temp table exists, we know the sync didn't complete successfully
+    if "_TEMP" != table_name[-5:] and not target_engine.has_table(f"{table_name}_TEMP"):
+        logging.info(f"Table {table} doesn't need a full sync.")
         return
 
     id_queries = utils.id_query_generator(
@@ -95,7 +110,7 @@ def load_scd(
     raw_query = table_dict["import_query"]
     additional_filter = table_dict.get("additional_filtering", "")
     if "{EXECUTION_DATE}" in raw_query:
-        logging.info(f"Table {table} does not need processing.")
+        logging.info(f"Table {table} does not need SCD processing.")
         return
     logging.info(f"Processing table: {table}")
 
@@ -144,7 +159,6 @@ def main(file_path: str, load_type: str = None) -> None:
         if schema_changed:
             real_table_name = table_name
             table_name = f"{table_name}_TEMP"
-            load_type = "sync" if is_incremental else load_type
             logging.info(f"Schema has changed, backfilling table into: {table_name}")
 
         # Call the correct function based on the load_type
