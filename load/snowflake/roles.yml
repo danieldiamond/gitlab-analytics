@@ -492,7 +492,6 @@ roles:
             - loading
             - reporting
 
-
     - ksmith:
         warehouses:
             - reporting
