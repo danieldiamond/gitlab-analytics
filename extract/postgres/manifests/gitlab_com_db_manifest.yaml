@@ -86,6 +86,27 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'boards'
     export_table_primary_key: id
+  ci_build_trace_chunks:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT build_id
+      , chunk_index
+      , data_store
+      , raw_data
+      FROM ci_build_trace_chunks
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_build_trace_chunks
+    export_table_primary_key: build_id
+  ci_build_trace_section_names:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , name
+      FROM ci_build_trace_section_names
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_build_trace_section_names
+    export_table_primary_key: id
   epic_issues:
     import_db: GITLAB_DB
     import_query: >
