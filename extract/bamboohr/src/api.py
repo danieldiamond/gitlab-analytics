@@ -59,7 +59,7 @@ class BambooAPI:
         See http://www.bamboohr.com/api/documentation/tables.php for a list of available tables.
         @return A list of dictionaries with the default return data.
         """
-        url = self.base_url + f"employees/{employee_id}/tables/{table_name}"
+        url = self.base_url + f"employees/{employee_id}/tables/{table_name}/"
         r = requests.get(
             url, timeout=self.timeout, headers=self.headers, auth=(self.api_token, ".")
         )
