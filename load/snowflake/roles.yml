@@ -11,6 +11,9 @@ databases:
     - snowflake:
         shared: yes
 
+    - testing_db:
+        shared: no
+
 
 # Roles
 roles:
@@ -413,11 +416,6 @@ roles:
         warehouses:
             - reporting
 
-    - amrvaljevich:
-        warehouses:
-            - analyst_xs
-            - analyst_xl
-
     - dtang:
         warehouses:
             - reporting
@@ -487,6 +485,14 @@ roles:
         warehouses:
             - reporting
 
+    - ktam:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting
+
+
     - ksmith:
         warehouses:
             - reporting
@@ -527,6 +533,10 @@ roles:
     - stitch:
         warehouses:
             - stitch
+    
+    - target_snowflake:
+        warehouses:
+            - target_snowflake
 
     - tlapiana:
         warehouses:
@@ -576,12 +586,6 @@ users:
             - reporter
             - sysadmin
             - transformer
-
-    - amrvaljevich:
-        can_login: yes
-        member_of:
-            - amrvaljevich
-            - analyst_core
 
     - dtang:
         can_login: yes
@@ -658,6 +662,16 @@ users:
             - product_manager
             - reporter
 
+    - ktam:
+        can_login: yes
+        member_of:
+            - accountadmin
+            - engineer
+            - ktam
+            - securityadmin
+            - sysadmin
+            - tmurphy
+
     - ksmith:
         can_login: yes
         member_of:
@@ -721,6 +735,11 @@ users:
             - stitch
             - loader
 
+    - target_snowflake:
+        can_login: yes
+        member_of:
+            - target_snowflake
+
     - tlapiana:
         can_login: yes
         member_of:
@@ -783,6 +802,9 @@ warehouses:
         size: x-small
 
     - stitch:
+        size: x-small
+
+    - target_snowflake:
         size: x-small
 
     - transforming_s:

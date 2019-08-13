@@ -5,55 +5,6 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
-  issues:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , iid
-      , title
-      , author_id
-      , project_id
-      , created_at
-      , updated_at
-      , confidential
-      , description
-      , milestone_id
-      , state
-      , updated_by_id
-      , weight
-      , due_date
-      , moved_to_id
-      , lock_version
-      , time_estimate
-      , last_edited_at
-      , last_edited_by_id
-      , discussion_locked
-      , closed_at
-      FROM issues
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    additional_filtering: AND created_at NOT IN ( '0001-01-01 00:00:00+00', '1000-01-01 00:00:00+00', '10000-01-01 00:00:00+00')
-    export_schema: 'gitlab_com'
-    export_table: 'issues'
-    export_table_primary_key: id
-  labels:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , title
-      , color
-      , project_id
-      , created_at
-      , updated_at
-      , template
-      , type
-      , group_id
-      FROM labels
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'labels'
-    export_table_primary_key: id
   approvals:
     import_db: GITLAB_DB
     import_query: >
@@ -344,6 +295,55 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'gitlab_subscriptions'
+    export_table_primary_key: id
+  issues:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , iid
+      , title
+      , author_id
+      , project_id
+      , created_at
+      , updated_at
+      , confidential
+      , description
+      , milestone_id
+      , state
+      , updated_by_id
+      , weight
+      , due_date
+      , moved_to_id
+      , lock_version
+      , time_estimate
+      , last_edited_at
+      , last_edited_by_id
+      , discussion_locked
+      , closed_at
+      FROM issues
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    additional_filtering: AND created_at NOT IN ( '0001-01-01 00:00:00+00', '1000-01-01 00:00:00+00', '10000-01-01 00:00:00+00')
+    export_schema: 'gitlab_com'
+    export_table: 'issues'
+    export_table_primary_key: id
+  labels:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , title
+      , color
+      , project_id
+      , created_at
+      , updated_at
+      , template
+      , type
+      , group_id
+      FROM labels
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'labels'
     export_table_primary_key: id
   issue_assignees:
     import_db: GITLAB_DB

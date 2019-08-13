@@ -44,7 +44,7 @@ def get_list_of_clones(engine: Engine) -> List[str]:
     query = """
     SELECT DATABASE_NAME as database_name
     FROM INFORMATION_SCHEMA.DATABASES
-    WHERE DATABASE_NAME NOT IN ('ANALYTICS', 'RAW')
+    WHERE DATABASE_NAME NOT IN ('ANALYTICS', 'RAW', 'TESTING_DB')
     """
 
     try:

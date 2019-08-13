@@ -1,11 +1,10 @@
 import logging
 import os
 import sys
-from time import time
 from typing import Dict, List, Generator, Any, Tuple
 import yaml
 
-from gitlabdata.orchestration_utils import snowflake_engine_factory
+from gitlabdata.orchestration_utils import snowflake_engine_factory, dataframe_uploader
 import pandas as pd
 import sqlalchemy
 from sqlalchemy import create_engine
@@ -64,25 +63,6 @@ def query_results_generator(
     return query_df_iterator
 
 
-def dataframe_uploader(
-    dataframe: pd.DataFrame, engine: Engine, table_name: str
-) -> None:
-    """
-    Upload a dataframe, adding in some metadata and cleaning up along the way.
-    """
-
-    dataframe["_uploaded_at"] = time()  # Add an uploaded_at column
-    dataframe = dataframe.applymap(
-        lambda x: x if not isinstance(x, dict) else str(x)
-    )  # convert dict to str to avoid snowflake errors
-    dataframe = dataframe.applymap(
-        lambda x: x[:4_194_304] if isinstance(x, str) else x
-    )  # shorten strings that are too long
-    dataframe.to_sql(
-        name=table_name, con=engine, index=False, if_exists="append", chunksize=10000
-    )
-
-
 def upload_orchestrator(
     results_chunker: pd.DataFrame, engine: Engine, table_name: str
 ) -> None:
@@ -97,6 +77,21 @@ def upload_orchestrator(
         dataframe_uploader(dataframe=chunk_df, engine=engine, table_name=table_name)
         chunk_counter += row_count
         logging.info(f"{chunk_counter} total records uploaded...")
+    engine.dispose()
+
+
+def chunk_and_upload(
+    query: str, source_engine: Engine, target_engine: Engine, target_table: str
+) -> None:
+    """
+    Call the results chunker and then pass the results to the upload_orchestrator.
+    """
+
+    results_chunker = query_results_generator(query, source_engine)
+    # Upload the dataframe generator to the data warehouse
+    upload_orchestrator(
+        results_chunker=results_chunker, engine=target_engine, table_name=target_table
+    )
 
 
 def range_generator(
@@ -128,11 +123,10 @@ def check_if_schema_changed(
     Query the source table with the manifest query to get the columns, then check
     what columns currently exist in the DW. Return a bool depending on whether
     there has been a change or not.
-
     """
 
     if not target_engine.has_table(target_table):
-        return False
+        return True
     # Get the columns from the current query
     query_stem = raw_query.lower().split("where")[0]
     source_query = "{0} where {1} = (select max({1}) from {2}) limit 1"
@@ -172,12 +166,12 @@ def id_query_generator(
     logging.info(f"Getting max ID from target_table: {target_table}")
     max_target_id_query = f"SELECT MAX(id) as id FROM {target_table}"
     # If the table doesn't exist it will throw an error, ignore it and set a default ID
-    try:
+    if snowflake_engine.has_table(target_table):
         max_target_id_results = query_results_generator(
             max_target_id_query, snowflake_engine
         )
         max_target_id = next(max_target_id_results)["id"].tolist()[0]
-    except:
+    else:
         max_target_id = 0
     logging.info(f"Target Max ID: {max_target_id}")
 
@@ -201,20 +195,6 @@ def id_query_generator(
         )
         logging.info(f"ID Range: {id_pair}")
         yield id_range_query
-
-
-def chunk_and_upload(
-    query: str, source_engine: Engine, target_engine: Engine, target_table: str
-) -> None:
-    """
-    Call the results chunker and then pass the results to the upload_orchestrator.
-    """
-
-    results_chunker = query_results_generator(query, source_engine)
-    # Upload the dataframe generator to the data warehouse
-    upload_orchestrator(
-        results_chunker=results_chunker, engine=target_engine, table_name=target_table
-    )
 
 
 def get_engines(connection_dict: Dict[str, str]) -> Tuple[Engine, Engine]:
