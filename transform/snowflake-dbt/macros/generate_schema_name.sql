@@ -1,7 +1,7 @@
 -- Will write to custom schemas not on prod
 -- Ensures logging package writes to analytics_meta
 
-{% macro generate_schema_name(custom_schema_name=none) -%}
+{% macro generate_schema_name(custom_schema_name, node) -%}
 
     {%- set default_schema = target.schema -%}
 
