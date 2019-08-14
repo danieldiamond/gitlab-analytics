@@ -12,8 +12,6 @@ tables:
       , project_id
       , date_start
       , date_end
-      , byte_start
-      , byte_end
       , build_id
       , section_name_id
       FROM ci_build_trace_sections
