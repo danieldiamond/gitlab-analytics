@@ -21,7 +21,7 @@ WITH days AS (
     FROM {{ ref('gitlab_dotcom_audit_events') }}
     WHERE True
     {% if is_incremental() %}
-      AND audit_event_created_at >= DATEADD(-7, 'days', (SELECT MAX(day) FROM {{ this }}) )
+      AND audit_event_created_at >= DATEADD('day', -7, (SELECT MAX(day) FROM {{ this }}) )
     {% endif %}
 
 ), joined AS (
@@ -32,9 +32,12 @@ WITH days AS (
       COUNT(DISTINCT author_id)   AS count_active_users_last_28_days
     FROM days
       INNER JOIN audit_events
-        ON audit_event_day BETWEEN DATEADD("day", -27, days.day) AND days.day
-    GROUP BY 1,2
-    ORDER BY 1
+        ON audit_event_day BETWEEN DATEADD('day', -27, days.day) AND days.day
+    GROUP BY
+      days.day,
+      days.is_last_day_of_month
+    ORDER BY
+      days.day
 
 )
 
