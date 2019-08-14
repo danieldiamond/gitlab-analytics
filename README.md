@@ -8,19 +8,6 @@
 * [Machine Learning Resources](https://drive.google.com/drive/folders/1sOXWW-FujwKU2T-auG7KPR9h6xqDRx0z?usp=sharing) (GitLab Internal)
 * [Email Address to Share Sheetloaded Doc with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
 
-## GitLab Data Team
-
-This is the primary repository of the Data Team at GitLab. The Data Team is a part of the Finance organization within GitLab, but we serve the entire company. We do this by maintaining a data warehouse where information from all business operations is stored and managed for analysis.
-
-Our charter and goals are as follows:
-
-* Build a centralized data warehouse that can support data analysis requirements from all functional groups within the company
-* Create a common data framework and governance practice
-* Establish the single source of truth for company metrics
-* Establish a change management processes for source systems
-* Develop a Data Architecture plan (in conjunction with functional teams)
-* Develop a roadmap for systems evolution in alignment with the Company’s data architecture plan
-
 ## Priorities 
 
 Like the rest of the company, we set quarterly objectives and key results. These are available on our company OKR page.
