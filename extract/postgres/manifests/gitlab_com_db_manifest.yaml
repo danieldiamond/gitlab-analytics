@@ -5,6 +5,44 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  merge_requests:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , iid
+      , target_branch
+      , source_branch
+      , source_project_id
+      , author_id
+      , assignee_id
+      , title
+      , created_at
+      , updated_at
+      , milestone_id
+      , state
+      , merge_status
+      , target_project_id
+      , updated_by_id
+      , merge_error
+      , merge_params
+      , merge_when_pipeline_succeeds
+      , merge_user_id
+      , approvals_before_merge
+      , lock_version
+      , time_estimate
+      , squash
+      , last_edited_at
+      , last_edited_by_id
+      , head_pipeline_id
+      , discussion_locked
+      , latest_merge_request_diff_id
+      , allow_maintainer_to_push
+      FROM merge_requests
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'merge_requests'
+    export_table_primary_key: id
   approvals:
     import_db: GITLAB_DB
     import_query: >
@@ -348,43 +386,6 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'merge_request_metrics'
-    export_table_primary_key: id
-  merge_requests:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , iid
-      , target_branch
-      , source_branch
-      , source_project_id
-      , author_id
-      , assignee_id
-      , created_at
-      , updated_at
-      , milestone_id
-      , state
-      , merge_status
-      , target_project_id
-      , updated_by_id
-      , merge_error
-      , merge_params
-      , merge_when_pipeline_succeeds
-      , merge_user_id
-      , approvals_before_merge
-      , lock_version
-      , time_estimate
-      , squash
-      , last_edited_at
-      , last_edited_by_id
-      , head_pipeline_id
-      , discussion_locked
-      , latest_merge_request_diff_id
-      , allow_maintainer_to_push
-      FROM merge_requests
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'merge_requests'
     export_table_primary_key: id
   merge_requests_closing_issues:
     import_db: GITLAB_DB
