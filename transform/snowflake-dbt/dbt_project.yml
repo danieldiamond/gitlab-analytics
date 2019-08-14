@@ -18,45 +18,15 @@ quoting:
     identifier: false
     schema: false
 
-archive:
-    - source_schema: analytics_staging
-      target_schema: dbt_archive
-      tables:
-        - source_table: sfdc_account
-          target_table: sfdc_account_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: account_id
-
-        - source_table: sfdc_opportunity
-          target_table: sfdc_opportunity_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: opportunity_id
-
-        - source_table: sfdc_users
-          target_table: sfdc_users_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: user_id_18__c
-
-    - source_schema: sensitive
-      target_schema: dbt_archive
-      tables:
-        - source_table: sheetload_employee_location_factor
-          target_table: sheetload_employee_location_factor_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: bamboo_employee_number
-
-
 on-run-start:
     - "{{ dbt_logging_start('on run start hooks') }}"
     - "{{resume_warehouse(var('resume_warehouse', false), var('warehouse_name'))}}"
     - "{{create_udfs()}}"
-    - "{{ dbt_logging_end('on run start hooks') }}"
 
 on-run-end:
     - "{{ dbt_logging_start('on run end hooks') }}"
     - "{{grant_usage_to_schemas(schema_name, rolename)}}"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
-    - "{{ dbt_logging_end('on run end hooks') }}"
 
 models:
     pre-hook:
@@ -93,8 +63,6 @@ models:
         materialized: table
       xf:
         materialized: table
-      vars:
-        cost_per_credit: 2.55
 
     gitlab_snowflake:
       enabled: true

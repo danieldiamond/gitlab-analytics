@@ -74,6 +74,7 @@ roles:
                     - raw.gcloud_postgres_stitch
                     - raw.salesforce_stitch
                     - raw.sheetload
+                    - raw.snapshots
                     - raw.snowplow
                     - raw.tap_postgres
                     - raw.zuora_stitch
@@ -88,6 +89,7 @@ roles:
                     - raw.netsuite_stitch.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
+                    - raw.snapshots.*
                     - raw.snowplow.*
                     - raw.tap_postgres.*
                     - raw.zuora_stitch.*
@@ -116,6 +118,7 @@ roles:
                     - raw.netsuite_stitch
                     - raw.salesforce_stitch
                     - raw.sheetload
+                    - raw.snapshots
                     - raw.snowplow
                     - raw.tap_postgres
                     - raw.zuora_stitch
@@ -131,6 +134,7 @@ roles:
                     - raw.netsuite_stitch.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
+                    - raw.snapshots.*
                     - raw.snowplow.*
                     - raw.tap_postgres.*
                     - raw.zuora_stitch.*
@@ -158,6 +162,7 @@ roles:
                     - raw.netsuite_stitch
                     - raw.salesforce_stitch
                     - raw.sheetload
+                    - raw.snapshots
                     - raw.snowplow
                     - raw.tap_postgres
                     - raw.zendesk_stitch
@@ -173,6 +178,7 @@ roles:
                     - raw.netsuite_stitch.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
+                    - raw.snapshots.*
                     - raw.snowplow.*
                     - raw.tap_postgres.*
                     - raw.zendesk_stitch.*
