@@ -23,7 +23,9 @@ WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
 - [ ] Read (skim) through this full issue, just so you have a sense of what's coming.
 - [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
-- [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `data-triage`, `dbt-runs`, and `business-operations`.
+- [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `data-triage`, and `business-operations`. 
+   - [ ] Engineers, join `analytics-pipelines`
+   - [ ] Analytsts, join `dbt-runs`
 - [ ] Schedule a recurring fortnightly 1:1 meeting with the Director of Business Operations.
 - [ ] Invite yourself to the to Milestone Planning/Grooming and DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.
 - [ ] Schedule a coffee chat with each member of the team. These should be in addition to the ones you do with other GitLab team members.
