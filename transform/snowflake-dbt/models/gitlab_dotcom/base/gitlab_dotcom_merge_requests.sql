@@ -10,6 +10,8 @@ WITH source AS (
 
       id::integer                                                AS merge_request_id,
       iid::integer                                               AS merge_request_iid,
+      title::varchar                                             AS merge_request_title,
+
       IFF(lower(target_branch) = 'master', TRUE, FALSE)          AS is_merge_to_master,
       IFF(lower(merge_error) = 'nan', NULL, merge_error)         AS merge_error,
       assignee_id::integer                                       AS assignee_id,
