@@ -80,8 +80,8 @@ tables:
       , entity_id
       , entity_type
       , details
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       FROM audit_events
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -408,8 +408,8 @@ tables:
       , iid
       , project_id
       , due_date
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , state
       , start_date
       , group_id
@@ -459,8 +459,8 @@ tables:
       , name
       , path
       , owner_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , type
       , avatar
       , membership_lock
@@ -469,9 +469,9 @@ tables:
       , request_access_enabled
       , ldap_sync_status
       , ldap_sync_error
-      , TO_CHAR(ldap_sync_last_update_at, 'YYYY-MM-DD HH:MI:SS') AS ldap_sync_last_update_at
-      , TO_CHAR(ldap_sync_last_successful_update_at, 'YYYY-MM-DD HH:MI:SS') AS ldap_sync_last_successful_update_at
-      , TO_CHAR(ldap_sync_last_sync_at, 'YYYY-MM-DD HH:MI:SS') AS ldap_sync_last_sync_at
+      , ldap_sync_last_update_at
+      , ldap_sync_last_successful_update_at
+      , ldap_sync_last_sync_at
       , lfs_enabled
       , parent_id
       , shared_runners_minutes_limit
@@ -775,28 +775,28 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , TO_CHAR(remember_created_at, 'YYYY-MM-DD HH:MI:SS') AS remember_created_at
+      , remember_created_at
       , sign_in_count
-      , TO_CHAR(current_sign_in_at, 'YYYY-MM-DD HH:MI:SS') AS current_sign_in_at
-      , TO_CHAR(last_sign_in_at, 'YYYY-MM-DD HH:MI:SS') AS last_sign_in_at
+      , current_sign_in_at
+      , last_sign_in_at
       , current_sign_in_ip
       , last_sign_in_ip
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , admin
       , projects_limit
       , failed_attempts
-      , TO_CHAR(locked_at, 'YYYY-MM-DD HH:MI:SS') AS locked_at
+      , locked_at
       , can_create_group
       , can_create_team
       , state
       , color_scheme_id
-      , TO_CHAR(password_expires_at, 'YYYY-MM-DD HH:MI:SS') AS password_expires_at
+      , password_expires_at
       , created_by_id
-      , TO_CHAR(last_credential_check_at, 'YYYY-MM-DD HH:MI:SS') AS last_credential_check_at
+      , last_credential_check_at
       , avatar
-      , TO_CHAR(confirmed_at, 'YYYY-MM-DD HH:MI:SS') AS confirmed_at
-      , TO_CHAR(confirmation_sent_at, 'YYYY-MM-DD HH:MI:SS') AS confirmation_sent_at
+      , confirmed_at
+      , confirmation_sent_at
       , unconfirmed_email
       , hide_no_ssh_key
       , website_url
@@ -813,7 +813,7 @@ tables:
       , hide_project_limit
       , note
       , otp_grace_period_started_at
-      , TO_CHAR(otp_grace_period_started_at, 'YYYY-MM-DD HH:MI:SS') AS otp_grace_period_started_at
+      , otp_grace_period_started_at
       , notification_email
       , hide_no_password
       , external
