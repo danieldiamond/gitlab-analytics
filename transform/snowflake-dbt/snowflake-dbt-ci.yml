@@ -202,9 +202,4 @@ mr_dbt_tests_manual:
       - master
     variables:
       - $SNOWFLAKE_DBT_TESTS
-
-hello-world:
-  stage: chatops
-  only: [chat]
-  script:
-    - echo "Hello World."
+      
