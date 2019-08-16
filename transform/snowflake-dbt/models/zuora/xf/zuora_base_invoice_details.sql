@@ -40,6 +40,7 @@ WITH zuora_accts AS (
 ), sub_months AS (
 
     SELECT
+      country,
       account_number,
       cohort_month,
       cohort_quarter,
@@ -48,7 +49,7 @@ WITH zuora_accts AS (
       oldest_subscription_in_cohort,
       lineage
     FROM {{ ref('zuora_base_mrr') }}
-    GROUP BY 1, 2, 3, 4, 5, 6, 7
+    {{ dbt_utils.group_by(n=8) }}
 
 ), charges as (
 
