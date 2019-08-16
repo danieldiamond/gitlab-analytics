@@ -58,5 +58,5 @@ LEFT JOIN cost_center
 LEFT JOIN location_factor
   ON location_factor.bamboo_employee_number = mapping.employee_number
 WHERE hire_date < CURRENT_DATE
- AND employee_number NOT IN ('10902', '10942')
+ AND employee_number NOT IN ('11017')
 ORDER BY hire_date DESC
