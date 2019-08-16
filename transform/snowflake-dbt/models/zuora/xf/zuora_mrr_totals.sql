@@ -8,7 +8,9 @@ WITH base_mrr AS (
 
 ), mrr_combined AS ( --union the two tables
 
-    SELECT account_number,
+    SELECT
+          country,
+          account_number,
           subscription_name_slugify,
           subscription_name,
           oldest_subscription_in_cohort,
@@ -25,7 +27,8 @@ WITH base_mrr AS (
 
     UNION ALL
 
-    SELECT account_number,
+    SELECT country,
+          account_number,
           subscription_name_slugify,
           subscription_name,
           oldest_subscription_in_cohort,
@@ -43,6 +46,7 @@ WITH base_mrr AS (
 ), uniqueified as ( -- one row per sub slug for counting x product_category x mrr_month combo, with first of other values
 
     SELECT {{ dbt_utils.surrogate_key('mrr_month', 'subscription_name_slugify', 'product_category', 'unit_of_measure') }} AS primary_key,
+          country,
           account_number,
           subscription_name_slugify,
           subscription_name,
@@ -57,7 +61,7 @@ WITH base_mrr AS (
           sum(quantity)             AS quantity,
           sum(mrr)                  AS mrr
     FROM mrr_combined
-    {{ dbt_utils.group_by(n=11) }}
+    {{ dbt_utils.group_by(n=12) }}
 
 )
 
