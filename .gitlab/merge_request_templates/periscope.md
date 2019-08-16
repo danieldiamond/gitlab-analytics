@@ -40,6 +40,7 @@ If none, please include a description
    * [ ] Chart description for each chart, linking to Metrics definitions where possible
    * [ ] Legend is clear
    * [ ] Text Tile for "What am I looking at?" and more detailed information, leveraging hyperlinks instead of URLs
+   * [ ] Request approval from stakeholder/business partner if applicable
    * [ ] Assign to reviewer on the data team
 
 ### Reviewer Checklist
@@ -63,6 +64,7 @@ If none, please include a description
    * [ ] Remove `WIP:` from title
    * [ ] Remove from `WIP` topic
    * [ ] Add approval badge
+   * [ ] Request approval from stakeholder/business partner if applicable
    * [ ] Assign back to submitter for closing or merge if good to go
 
 ### Submitter
