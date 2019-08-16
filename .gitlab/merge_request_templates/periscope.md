@@ -40,6 +40,7 @@ If none, please include a description
    * [ ] Chart description for each chart, linking to Metrics definitions where possible
    * [ ] Legend is clear
    * [ ] Text Tile for "What am I looking at?" and more detailed information, leveraging hyperlinks instead of URLs
+   * [ ] Tooltips are used where appropriate and show relevant values
    * [ ] Request approval from stakeholder/business partner if applicable
    * [ ] Assign to reviewer on the data team
 
@@ -60,7 +61,8 @@ If none, please include a description
    * [ ] If using a date filter, set an appropriate length. Most common is 365 days.
    * [ ] Chart description for each chart, linking to Metrics definitions where possible
    * [ ] Legend is clear
-   * [ ] Merged into Periscope Directory
+   * [ ] Text Tile for "What am I looking at?" and more detailed information, leveraging hyperlinks instead of URLs
+   * [ ] Tooltips are used where appropriate and show relevant values
    * [ ] Remove `WIP:` from title
    * [ ] Remove from `WIP` topic
    * [ ] Add approval badge
