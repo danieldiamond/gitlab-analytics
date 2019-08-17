@@ -39,7 +39,7 @@ def load_incremental(
     table: str,
     table_dict: Dict[Any, Any],
     table_name: str,
-) -> None:
+) -> bool:
     """
     Load tables incrementally based off of the execution date.
     """
@@ -48,19 +48,19 @@ def load_incremental(
     additional_filter = table_dict.get("additional_filtering", "")
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need incremental processing.")
-        return
+        return False
     # If _TEMP exists in the table name, skip it because it needs a full sync
     # If a temp table exists then it needs to finish syncing so don't load incrementally
     if "_TEMP" == table_name[-5:] or target_engine.has_table(f"{table_name}_TEMP"):
         logging.info(
             f"Table {table} needs to be backfilled due to schema change, aborting incremental load."
         )
-        return
+        return False
     env = os.environ.copy()
     query = f"{raw_query.format(**env)} {additional_filter}"
     logging.info(query)
     utils.chunk_and_upload(query, source_engine, target_engine, table_name)
-    return query
+    return True
 
 
 def sync_incremental_ids(
@@ -69,7 +69,7 @@ def sync_incremental_ids(
     table: str,
     table_dict: Dict[Any, Any],
     table_name: str,
-) -> None:
+) -> bool:
     """
     Sync incrementally-loaded tables based on their IDs.
     """
@@ -79,12 +79,12 @@ def sync_incremental_ids(
     logging.info(table_name)
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need sync processing.")
-        return
+        return False
     # If temp isn't in the name, we don't need to full sync.
     # If a temp table exists, we know the sync didn't complete successfully
     if "_TEMP" != table_name[-5:] and not target_engine.has_table(f"{table_name}_TEMP"):
         logging.info(f"Table {table} doesn't need a full sync.")
-        return
+        return False
 
     id_queries = utils.id_query_generator(
         table, table_name, raw_query, target_engine, source_engine
@@ -94,6 +94,7 @@ def sync_incremental_ids(
         filtered_query = f"{query} {additional_filtering} ORDER BY id"
         logging.info(filtered_query)
         utils.chunk_and_upload(filtered_query, source_engine, target_engine, table_name)
+    return True
 
 
 def load_scd(
@@ -102,7 +103,7 @@ def load_scd(
     table: str,
     table_dict: Dict[Any, Any],
     table_name: str,
-) -> None:
+) -> bool:
     """
     Load tables that are slow-changing dimensions.
     """
@@ -111,12 +112,13 @@ def load_scd(
     additional_filter = table_dict.get("additional_filtering", "")
     if "{EXECUTION_DATE}" in raw_query:
         logging.info(f"Table {table} does not need SCD processing.")
-        return
+        return False
     logging.info(f"Processing table: {table}")
 
     query = f"{raw_query} {additional_filter}"
     logging.info(query)
     utils.chunk_and_upload(query, source_engine, target_engine, table_name)
+    return True
 
 
 def main(file_path: str, load_type: str = None) -> None:
@@ -162,13 +164,13 @@ def main(file_path: str, load_type: str = None) -> None:
             logging.info(f"Schema has changed, backfilling table into: {table_name}")
 
         # Call the correct function based on the load_type
-        load_types[load_type](
+        loaded = load_types[load_type](
             postgres_engine, snowflake_engine, table, table_dict, table_name
         )
         logging.info(f"Finished upload for table: {table}")
 
         # Drop the original table and rename the temp table
-        if schema_changed:
+        if schema_changed and loaded:
             swap_temp_table(snowflake_engine, real_table_name, table_name)
 
         postgres_engine.dispose()
