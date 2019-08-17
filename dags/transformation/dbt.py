@@ -64,20 +64,6 @@ def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
         return "dbt-run"
 
 
-def dbt_archive_or_none(timestamp: datetime) -> str:
-    """
-    Use the current timestamp to determine whether to do a full-refresh or
-    not run anything.
-
-    It is set to run every 6th hour.
-    """
-    print(timestamp.hour)
-    if timestamp.hour % 8 == 0 or timestamp.hour == 0:
-        return "dbt-archive"
-    else:
-        return "skip-dbt-archive"
-
-
 # Set the git command for the containers
 git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1"
 
@@ -87,15 +73,6 @@ branching_dbt_run = BranchPythonOperator(
     python_callable=lambda: dbt_run_or_refresh(datetime.now(), dag),
     dag=dag,
 )
-
-branching_dbt_archive = BranchPythonOperator(
-    task_id="branching-dbt-archive",
-    python_callable=lambda: dbt_archive_or_none(datetime.now()),
-    dag=dag,
-)
-
-# Dummy task for dbt-archive
-skip_dbt_archive = DummyOperator(task_id="skip-dbt-archive", dag=dag)
 
 # Warehouse variable declaration
 xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
@@ -181,33 +158,6 @@ dbt_source_freshness = KubernetesPodOperator(
     dag=dag,
 )
 
-# dbt-archive
-dbt_archive_cmd = f"""
-    {git_cmd} &&
-    cd analytics/transform/snowflake-dbt/ &&
-    dbt deps --profiles-dir profile &&
-    dbt archive --profiles-dir profile --target prod --vars {xs_warehouse} &&
-    dbt run --profiles-dir profile --target prod --models snapshots --vars {xs_warehouse}
-"""
-dbt_archive = KubernetesPodOperator(
-    **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
-    task_id="dbt-archive",
-    name="dbt-archive",
-    secrets=[
-        SNOWFLAKE_ACCOUNT,
-        SNOWFLAKE_USER,
-        SNOWFLAKE_PASSWORD,
-        SNOWFLAKE_TRANSFORM_ROLE,
-        SNOWFLAKE_TRANSFORM_WAREHOUSE,
-        SNOWFLAKE_TRANSFORM_SCHEMA,
-    ],
-    env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
-    arguments=[dbt_archive_cmd],
-    dag=dag,
-)
-
 # dbt-test
 dbt_test_cmd = f"""
     {git_cmd} &&
@@ -239,15 +189,8 @@ dbt_test = KubernetesPodOperator(
 # Source Freshness
 dbt_source_freshness >> branching_dbt_run
 
-# Branching for run/archive
+# Branching for run
 branching_dbt_run >> dbt_run
 branching_dbt_run >> dbt_full_refresh
-dbt_run >> branching_dbt_archive
-dbt_full_refresh >> branching_dbt_archive
-
-# Branching for dbt_archive
-branching_dbt_archive >> dbt_archive
-branching_dbt_archive >> skip_dbt_archive
-#
-dbt_archive >> dbt_test
-skip_dbt_archive >> dbt_test
+dbt_run >> dbt_test
+dbt_full_refresh >> dbt_test
