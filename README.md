@@ -183,6 +183,7 @@ You can use `Command + Option + L` to format your file.
 - [Data Elixir](https://dataelixir.com/)
 - [Data Science Weekly](https://www.datascienceweekly.org/)
 - [Normcore Tech](https://vicki.substack.com)
+- [One Shot Learning](https://buttondown.email/oneshotlearning)
 - [The Carpentries](https://carpentries.topicbox.com/latest)
 
 #### Data Resources
