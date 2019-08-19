@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH source AS (
 
 	SELECT *, ROW_NUMBER() OVER (PARTITION BY issue_id ORDER BY _uploaded_at DESC) as rank_in_key

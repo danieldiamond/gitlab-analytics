@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 WITH zuora_mrr AS (
 
     SELECT *

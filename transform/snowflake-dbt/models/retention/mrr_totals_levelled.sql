@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 with zuora_mrr_totals AS (
 
     SELECT * FROM {{ref('zuora_mrr_totals')}}

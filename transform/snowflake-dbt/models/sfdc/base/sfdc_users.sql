@@ -1,7 +1,7 @@
-{{
-  config(
-    materialized = "table"
-  )
+{{config({
+    "materialized": "table",
+    "schema": "staging"
+  })
 }}
 
 with base as (

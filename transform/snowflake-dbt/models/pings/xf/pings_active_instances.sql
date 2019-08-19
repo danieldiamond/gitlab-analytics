@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 with version_checks as (
 
     SELECT  to_varchar(host_id)     AS host_id,

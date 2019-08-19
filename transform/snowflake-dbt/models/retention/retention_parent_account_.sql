@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 with mrr_totals_levelled AS (
 
        SELECT * FROM {{ref('mrr_totals_levelled')}}

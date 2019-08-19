@@ -1,7 +1,3 @@
-{{ config({
-    "schema": "analytics"
-    })
-}}
 WITH income_entries AS (
 
     SELECT transaction_id,

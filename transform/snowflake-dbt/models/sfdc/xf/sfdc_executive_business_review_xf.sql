@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 with sfdc_executive_business_review AS (
 
     SELECT * FROM {{ref('sfdc_executive_business_review')}}

@@ -1,8 +1,8 @@
-{{
-  config(
-    materialized='incremental',
-    unique_key='event_id'
-  )
+{{config({
+    "materialized":"incremental",
+    "unique_key":"event_id",
+    "schema":"staging"
+  })
 }}
 
 {% set change_form = ['formId','elementId','nodeName','type','elementClasses','value'] %}

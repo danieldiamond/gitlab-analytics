@@ -1,8 +1,6 @@
 {{ config({
-    "schema": "analytics",
     "materialized": "incremental",
-    "unique_key": "user_month_unique_id",
-    "post-hook": "grant select on {{this}} to role reporter"
+    "unique_key": "user_month_unique_id"
     })
 }}
 

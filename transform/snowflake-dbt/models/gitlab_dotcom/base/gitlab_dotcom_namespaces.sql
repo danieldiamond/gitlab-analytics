@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "sensitive"
+    })
+}}
+
 with source as (
 
 	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
