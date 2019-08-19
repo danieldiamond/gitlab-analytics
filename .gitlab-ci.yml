@@ -273,7 +273,7 @@ missing_location_factor:
   only: [chat]
   script:
     - cd $CI_PROJECT_DIR/orchestration/chatops/bamboohr/
-    - python bamboo_missing_loc_fire.py
+    - python bamboo_missing_location_factor.py
 
 #--------------------------------------------------------------------------
 
