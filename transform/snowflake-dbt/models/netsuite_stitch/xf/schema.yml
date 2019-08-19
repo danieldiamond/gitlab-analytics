@@ -7,8 +7,29 @@ models:
       
     - name: netsuite_stitch_all_entries
       description: '{{ doc("netsuite_stitch_all_entries") }}'
-      
-    - name: netsuite_stitch_general_ledger
+
+    - name: netsuite_stitch_income
+      description: '{{ doc("netsuite_stitch_all_entries") }}'
+      columns:
+          - name: transaction_type
+            description: '{{ doc("netsuite_stitch_entries_col_transaction_type") }}'
+          - name: transaction_date
+            description: '{{ doc("netsuite_stitch_entries_col_transaction_date") }}'
+          - name: period_date
+            description: '{{ doc("netsuite_stitch_entries_col_period_date") }}'
+          - name: account_name
+            description: '{{ doc("netsuite_stitch_entries_col_account_name") }}'
+          - name: ultimate_account_code
+            description: '{{ doc("netsuite_stitch_entries_col_ultimate_account_code") }}'
+          - name: entity
+            description: '{{ doc("netsuite_stitch_entries_col_entity_name") }}'
+          - name: credit_amount
+            description: '{{ doc("netsuite_stitch_entries_col_gl_credit") }}'
+          - name: consolidated_exchange
+            description: '{{ doc("netsuite_stitch_entries_col_exchange_rate") }}'
+
+
+    - name: netsuite_stitch_all_entries
       description: '{{ doc("netsuite_stitch_general_ledger") }}'
       columns:
           - name: transaction_type

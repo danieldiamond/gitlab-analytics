@@ -144,6 +144,23 @@ models:
             tests:
                 - not_null
 
+    - name: netsuite_stitch_transaction_item_list
+      description: '{{ doc("netsuite_stitch_transaction_items") }}'
+      columns:
+          - name: transaction_item_list_unique_id
+            tests:
+                - not_null
+                - unique
+          - name: transaction_id
+            tests:
+                - not_null
+          - name: account_id
+            tests:
+                - not_null
+          - name: account_name
+            tests:
+                - not_null
+
     - name: netsuite_stitch_vendor
       description: Official [Vendors table docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2016_1/odbc/record/vendor.html) from Netsuite
       columns:

@@ -1,10 +1,11 @@
 {{
   config(
-    materialized='incremental'
+    materialized='incremental',
+    unique_key='base64_event'
   )
 }}
 
-WITH base as (
+WITH base AS (
 
     SELECT *
     FROM {{ source('gitlab_snowplow', 'bad_events') }}

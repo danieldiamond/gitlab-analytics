@@ -8,19 +8,6 @@
 * [Machine Learning Resources](https://drive.google.com/drive/folders/1sOXWW-FujwKU2T-auG7KPR9h6xqDRx0z?usp=sharing) (GitLab Internal)
 * [Email Address to Share Sheetloaded Doc with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
 
-## GitLab Data Team
-
-This is the primary repository of the Data Team at GitLab. The Data Team is a part of the Finance organization within GitLab, but we serve the entire company. We do this by maintaining a data warehouse where information from all business operations is stored and managed for analysis.
-
-Our charter and goals are as follows:
-
-* Build a centralized data warehouse that can support data analysis requirements from all functional groups within the company
-* Create a common data framework and governance practice
-* Establish the single source of truth for company metrics
-* Establish a change management processes for source systems
-* Develop a Data Architecture plan (in conjunction with functional teams)
-* Develop a roadmap for systems evolution in alignment with the Company’s data architecture plan
-
 ## Priorities 
 
 Like the rest of the company, we set quarterly objectives and key results. These are available on our company OKR page.
@@ -47,6 +34,7 @@ Like the rest of the company, we set quarterly objectives and key results. These
 * Data Source Overviews:
    * [Pings](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view)
    * [Salesforce](https://youtu.be/KwG3ylzWWWo)
+   * [Netsuite](https://www.youtube.com/watch?v=u2329sQrWDY)
 
 * Taylor and Israel pair on a Lost MRR Dashboard
    * [Part 1](https://www.youtube.com/watch?v=WuIcnpuS2Mg)
@@ -94,9 +82,9 @@ To facilitate the easier use of Airflow locally while still testing properly run
 The flow from code change to testing in Airflow should look like this (this assumes there is already a DAG for that task):
 
 1. Commit and push your code to the remote branch.
-1. Run `make init-airflow` to spin up the postgres db container and init the Airflow tables. You will get an error if Docker is not running.
+1. Run `make init-airflow` to spin up the postgres db container and init the Airflow tables, it will also create a generic Admin user. You will get an error if Docker is not running.
 1. Run `make airflow` to spin up Airflow and attach a shell to one of the containers
-1. Open a web browser and navigate to `localhost:8080` to see your own local webserver
+1. Open a web browser and navigate to `localhost:8080` to see your own local webserver. A generic Admin user is automatically created for you in MR airflow instances with the username and password set to `admin`.
 1. In the airflow shell, run a command to trigger the DAG/Task you want to test, for example `airflow run snowflake_load snowflake-load 2019-01-01` (as configured in the docker-compose file, all kube pods will be created in the `testing` namespace). Or if you want to run an entire DAG (for instance the `dbt` DAG to test the branching logic), the command would be something like `airflow backfill dbt -s 2019-01-01T00:00:00 -e 2019-01-01T00:00:00`.
 1. Once the job is finished, you can navigate to the DAG/Task instance to review the logs.
 
@@ -107,6 +95,7 @@ Some gotchas:
 * Ensure you have the latest version of Docker. This will prevent errors like `ERROR: Version in “./docker-compose.yml” is unsupported.`
 * If you're calling a new python script in your dag, ensure the file is executable by running `chmod +x your_python_file.py`. This will avoid permission denied errors.
 * Ensure that any new secrets added in your dag are also in `kube_secrets.py`. This is the source of truth for which secrets Airflow uses. The actual secret value isn't stored in this file, just the pointers.
+* If your images are outdated, use the command `docker pull <image_name>` to force a fresh pull of the latest images.
 
 #### Python Housekeeping
 
@@ -211,24 +200,27 @@ You can use `Command + Option + L` to format your file.
 - [Data Ops](https://medium.com/data-ops)
 - [Retina AI Blog](https://retina.ai/blog/)
 - [StitchFix Algorithms Blog](https://multithreaded.stitchfix.com/algorithms/blog/)
+- [Five Thirty Eight](https://data.fivethirtyeight.com/)
+- [Data.gov](https://www.data.gov/)
 
 #### Data Visualization Resources
 - [Storytelling with Data](http://storytellingwithdata.com/)
+- [Data Revelations](https://www.datarevelations.com/)
 - [Eager Eyes](https://eagereyes.org/)
 - [FiveThirtyEight's DataLab](https://fivethirtyeight.com/features/)
 - [Flowing Data](https://flowingdata.com/)
-- [The Functional Art](http://www.thefunctionalart.com/)
-- [PolicyViz](https://policyviz.com/)
+- [From Data to Viz](https://www.data-to-viz.com/)
+- [Gravy Anecdote](http://gravyanecdote.com/)
 - [JunkCharts](https://junkcharts.typepad.com/)
 - [Make a Powerful Point](http://makeapowerfulpoint.com/)
-- [Perceptual Edge](https://perceptualedge.com/)
-- [VizWiz](http://www.vizwiz.com/)
-- [Visualising Data](http://www.visualisingdata.com/)
-- [WTF Visualizations](http://viz.wtf/)
-- [The Pudding](https://pudding.cool/)
 - [Makeover Monday](http://www.makeovermonday.co.uk)
-- [Data Revelations](https://www.datarevelations.com/)
-- [From Data to Viz](https://www.data-to-viz.com/)
+- [Perceptual Edge](https://perceptualedge.com/)
+- [PolicyViz](https://policyviz.com/)
+- [The Functional Art](http://www.thefunctionalart.com/)
+- [The Pudding](https://pudding.cool/)
+- [Visualising Data](http://www.visualisingdata.com/)
+- [VizWiz](http://www.vizwiz.com/)
+- [WTF Visualizations](http://viz.wtf/)
 
 #### Data Slack Communities
 - [Data Viz Society](https://datavizsociety.slack.com)

@@ -7,7 +7,6 @@
 {% set paid_plans = (2, 3, 4) %}
 {% set fields_to_mask = ['namespace_name', 'namespace_path'] %}
 
-
 WITH namespaces AS (
 
     SELECT * FROM {{ref('gitlab_dotcom_namespaces')}}
@@ -41,14 +40,14 @@ joined AS (
 
       {% for field in fields_to_mask %}
       CASE
-        WHEN namespaces.visibility_level = '20' OR namespace_is_internal THEN {{field}}
-        WHEN namespaces.visibility_level = '10' AND NOT namespace_is_internal THEN 'internal - masked'
-        WHEN namespaces.visibility_level = '0'  AND NOT namespace_is_internal THEN 'private - masked'
+        WHEN namespaces.visibility_level = 'public' OR namespace_is_internal THEN {{field}}
+        WHEN namespaces.visibility_level = 'internal' THEN 'internal - masked'
+        WHEN namespaces.visibility_level = 'private'  THEN 'private - masked'
       END                                                              AS {{field}},
       {% endfor %}
 
       namespaces.owner_id,
-      namespaces.namespace_type,
+      COALESCE(namespaces.namespace_type, 'Individual')                AS namespace_type,
       namespaces.has_avatar,
       namespaces.namespace_created_at,
       namespaces.namespace_updated_at,
@@ -82,7 +81,7 @@ joined AS (
         ON namespaces.namespace_id = projects.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
-    {{ dbt_utils.group_by(n=28) }} 
+    {{ dbt_utils.group_by(n=28) }}
 )
 
 SELECT *

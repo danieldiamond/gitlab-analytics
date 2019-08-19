@@ -2,6 +2,7 @@ test_sheet.test_sheet
 employee_location_factor.employee_location_factor
 google_referrals.google_referrals
 headcount.headcount
+marketing_kpi_benchmarks.marketing_kpi_benchmarks
 marketing_pipe_to_spend_headcount.marketing_pipe_to_spend_headcount
 planned_values.planned_values
 pulse_survey.pulse_survey_configure_be
@@ -11,8 +12,6 @@ pulse_survey.pulse_survey_monitor_fe
 sales_metrics.sales_quotas_region_by_month
 sales_metrics.sales_quotas_region_by_fq
 sales_ramp_time.sales_ramp_time_by_month
-sales_ramp_time.sales_ramp_time_by_tenure
-sales_ramp_time.sales_quotas
 sales_ramp_time.sales_rep_productivity_all
 sales_ramp_time.sales_rep_productivity_sal
 sales_ramp_time.sales_rep_productivity_mm_ae

@@ -10,12 +10,15 @@ help:
 	airflow: attaches a shell to the airflow deployment in docker-compose.yml. \n \
 	init-airflow: initializes a new Airflow db, required on a fresh db. \n \
 	\n \
-	++ dbt Related ++ \n \
+	++ Python/dbt Related ++ \n \
 	data-image: attaches to a shell in the data-image and mounts the local dbt repo for testing. \n \
 	\n \
 	++ Utilities ++ \n \
 	cleanup: WARNING: DELETES DB VOLUME, frees up space and gets rid of old containers/images. \n \
-	lint: Runs a linter over the whole repo. \n \
+	lint: Runs a linter (Black) over the whole repo. \n \
+	pylint: Runs the pylint checker over the whole repo. Does not check for code formatting, only errors/warnings. \n \
+	radon: Runs a cyclomatic complexity checker and shows anything with less than an A rating. \n \
+	xenon: Runs a cyclomatic complexity checker that will throw a non-zero exit code if the criteria aren't met. \n \
 	------------------------------ \n"
 
 airflow:
@@ -39,6 +42,7 @@ init-airflow:
 	@docker-compose up -d airflow_db
 	@sleep 5
 	@docker-compose run airflow_scheduler airflow initdb
+	@docker-compose run airflow_scheduler airflow create_user --role Admin -u admin -p admin -e datateam@gitlab.com -f admin -l admin
 	@docker-compose down
 
 lint:

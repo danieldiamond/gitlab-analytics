@@ -1,26 +1,31 @@
 {% docs netsuite_stitch_account_xf %}
-Accounts in netsuite can have a parent/child relationship, and the child account_number can exist in the list of account_numbers creating duplication. 
-To solve for this, the `accounts_xf` model joins an account to potential parents and creates a unique account number by combining both. 
+Accounts in netsuite can have a parent/child relationship, and the child account_number can exist in the list of account_numbers creating duplication.
+To solve for this, the `accounts_xf` model joins an account to potential parents and creates a unique account number by combining both.
 
 The model currently assumes only one parent per child and only two levels, this model should be reviewed in the future to build a recursive strategy in case further levels are added in the future.
 {% enddocs %}
 
+{% docs netsuite_stitch_income %}
+Model that specifically filters and captures Income as surfaced in the Netsuite Income Statement.
+Debits are discarded and only credits considered. Income is account codes 4000 through to 4009
+{% enddocs %}
+
 {% docs netsuite_stitch_all_entries %}
-This model unions the journal and non journal entries together into a single, explorable table. 
+This model unions the journal and non journal entries together into a single, explorable table.
 {% enddocs %}
 
 {% docs netsuite_stitch_journal_entries %}
 This model aggregates the journal entries from Netsuite.
 
-This model will consolidate individual line items that match accounts and code into a single transaction. 
+This model will consolidate individual line items that match accounts and code into a single transaction.
 
 We filter to the relevant set of accounting codes. 5xxx are COGS (Cost of Good Sold) accounts and 6xxx are expense accounts. 5079 is intercompany transfers and should not be counted.
 {% enddocs %}
 
 {% docs netsuite_stitch_non_journal_entries %}
-This model aggregates the non journal entries from Netsuite. 
+This model aggregates the non journal entries from Netsuite.
 
-This model will consolidate individual line items that match accounts and code into a single transaction. 
+This model will consolidate individual line items that match accounts and code into a single transaction.
 
 We filter to the relevant set of accounting codes. 5xxx are COGS (Cost of Good Sold) accounts and 6xxx are expense accounts. 5079 is intercompany transfers and should not be counted.
 {% enddocs %}
@@ -62,7 +67,7 @@ In netsuite there are three currency rates to be mindful of:
 - The base currency for the consolidated reporting (USD)
 
 The exchange rate in the transaction goes from the transaction to the base currency.
-`consolidated_exchange_rate` is the weighted average of conversion rates between the base currencies of subsidiaries. 
+`consolidated_exchange_rate` is the weighted average of conversion rates between the base currencies of subsidiaries.
 
 In example:
 
@@ -86,7 +91,7 @@ The type of transaction, can be one of: VendorBill, Check, PurchaseOrder, Journa
 
 
 {% docs netsuite_stitch_entries_col_transaction_date %}
-The date of the transaction truncated to the day. 
+The date of the transaction truncated to the day.
 {% enddocs %}
 
 
@@ -107,18 +112,18 @@ GitLab Inc
 
 
 {% docs netsuite_stitch_entries_col_account_name %}
-This is contains both the general ledger code and the name of what it represents. `6120 Marketing Programs : Demand Advertising` for example. 
+This is contains both the general ledger code and the name of what it represents. `6120 Marketing Programs : Demand Advertising` for example.
 {% enddocs %}
 
 
 {% docs netsuite_stitch_entries_col_account_code %}
 This is the 4 digit general code such as 6120 or 6031.  
-**Important Note:** this number is *not* unique, as a child account can have the same code as an existing parent account, 
+**Important Note:** this number is *not* unique, as a child account can have the same code as an existing parent account,
 use ultimate_account if you want parents only, or unique_account_code if you need to operate at the child level
 {% enddocs %}
 
 {% docs netsuite_stitch_entries_col_unique_account_code %}
-As Account Codes in netsuite have a parent/child relationship, this field will create a unique code by 
+As Account Codes in netsuite have a parent/child relationship, this field will create a unique code by
 combining parent and child in the form of `parent:child` (or just child is there is no parent).
 {% enddocs %}
 
@@ -139,7 +144,7 @@ If line-item entity information is required, use the `journal_entries` model.
 {% enddocs %}
 
 {% docs netsuite_stitch_entries_col_currency_name %}
-The currency the original transaction occurred. 
+The currency the original transaction occurred.
 {% enddocs %}
 
 
@@ -163,9 +168,9 @@ The amount debit for the transaction.
 {% enddocs %}
 
 {% docs netsuite_stitch_entries_col_gl_debit %}
-The amount debit for the transaction aggregated at the transaction level. 
+The amount debit for the transaction aggregated at the transaction level.
 
-If the transaction contained both credits and debits, they will be compared and if `debit - credit > 0` then this result will be used, 
+If the transaction contained both credits and debits, they will be compared and if `debit - credit > 0` then this result will be used,
 otherwise this field will be set to 0 and the transaction displayed as a credit.
 {% enddocs %}
 
@@ -175,10 +180,8 @@ The amount credited for the transaction.
 {% enddocs %}
 
 {% docs netsuite_stitch_entries_col_gl_credit %}
-The amount credit for the transaction aggregated at the transaction level. 
+The amount credit for the transaction aggregated at the transaction level.
 
-If the transaction contained both credits and debits, they will be compared and if `debit - credit < 0` then this result will be used, 
+If the transaction contained both credits and debits, they will be compared and if `debit - credit < 0` then this result will be used,
 otherwise this field will be set to 0 and the transaction displayed as a debit.
 {% enddocs %}
-
-

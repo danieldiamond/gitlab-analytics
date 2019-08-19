@@ -15,6 +15,7 @@ WITH invoice_details AS (
 
 
 SELECT
+  country,
   account_number,
   subscription_name,
   subscription_name_slugify,

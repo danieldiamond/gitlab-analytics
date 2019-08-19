@@ -1,6 +1,40 @@
 version: 2
 
 models:
+  - name: gitlab_dotcom_gitlab_issues_requests
+    description: '{{ doc("gitlab_dotcom_gitlab_issues_requests") }}'
+    columns:
+      - name: issue_id
+        tests:
+          - not_null
+      - name: project_id
+        tests:
+          - not_null
+      - name: namespace_id
+        tests:
+          - not_null
+      - name: sfdc_account_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_internal_notes_xf
+    description: '{{ doc("gitlab_dotcom_internal_notes_xf") }}'
+    columns:
+      - name: note_id
+        tests:
+          - not_null
+          - unique
+      - name: note_created_at
+        tests:
+          - not_null
+      - name: note_updated_at
+        tests:
+          - not_null
+      - name: noteable_type
+        tests:
+          - accepted_values:
+                      values: ['Commit', 'Epic', 'Issue', 'MergeRequest', 'Snippet', 'Wiki']
+
   - name: gitlab_dotcom_group_audit_events_monthly
     description: '{{ doc("gitlab_dotcom_group_audit_events_monthly") }}'
     columns:
@@ -50,6 +84,19 @@ models:
       - name: project_count
         description: The number of projects that are presently associated with the group.
 
+  - name: gitlab_dotcom_audit_event_monthly_active_users
+    description: '{{ doc("gitlab_dotcom_audit_event_monthly_active_users") }}'
+    columns:
+      - name: day
+        tests:
+          - not_null
+          - unique
+      - name: is_last_day_of_month
+        tests:
+          - not_null
+      - name: count_active_users_last_28_days
+        description: The number of unique active users in the previous 28 days (inclusive).
+
   - name: gitlab_dotcom_merge_requests_xf
     description: '{{ doc("gitlab_dotcom_merge_requests_xf") }}'
     columns:
@@ -66,6 +113,15 @@ models:
         tests:
           - not_null
           - unique
+      - name: namespace_name
+        tests:
+          - not_null
+      - name: namespace_path
+        tests:
+          - not_null
+      - name: namespace_type
+        tests:
+          - not_null
       - name: namespace_plan_is_paid
         description: Whether or not the namespace associated with the project is subscribed to a paid plan.
       - name: member_count

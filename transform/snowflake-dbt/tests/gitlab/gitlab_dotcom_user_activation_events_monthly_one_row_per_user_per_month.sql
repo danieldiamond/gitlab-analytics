@@ -12,7 +12,7 @@ WITH months AS (
       first_day_of_month AS skeleton_month
 
     FROM {{ ref('date_details') }}
-    WHERE first_day_of_month < CURRENT_DATE
+    WHERE first_day_of_month < DATE_TRUNC('month', CURRENT_DATE)
 
 ), users AS (
 

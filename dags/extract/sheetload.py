@@ -38,7 +38,7 @@ container_cmd = f"""
 """
 
 # Create the DAG
-dag = DAG("sheetload", default_args=default_args, schedule_interval="0 0 */1 * *")
+dag = DAG("sheetload", default_args=default_args, schedule_interval="0 1 */1 * *")
 
 # Task 1
 sheetload_run = KubernetesPodOperator(

@@ -26,6 +26,7 @@ stages:
   - update
   - publish # for dbt docs
   - review_stop
+  - chatops
 
 include:
   - "extract/extract-ci.yml"
@@ -63,7 +64,7 @@ python_checking: &python_checking
       - "**/*.md"
       - LICENSE
       - CODEOWNERS
-      - .gitlab/* 
+      - .gitlab/*
   only:
     - branches
 
@@ -267,6 +268,13 @@ review_stop:
   tags:
     - housekeeping
 
+
+hello-world:
+  stage: chatops
+  only: [chat]
+  script:
+    - echo "Hello World."
+
 #--------------------------------------------------------------------------
 
 # Global definitions
@@ -275,4 +283,3 @@ review_stop:
 variables:
   PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
   SNOWFLAKE_DATABASE: "$CI_COMMIT_REF_NAME"
-
