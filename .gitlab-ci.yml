@@ -268,12 +268,12 @@ review_stop:
   tags:
     - housekeeping
 
-
-hello-world:
+missing_location_factor:
   stage: chatops
   only: [chat]
   script:
-    - echo "Hello World."
+    - cd $CI_PROJECT_DIR/orchestration/chatops/bamboohr/
+    - python bamboo_missing_loc_fire.py
 
 #--------------------------------------------------------------------------
 
