@@ -49,4 +49,7 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+WHERE note_id NOT IN (
+                      203215238 --https://gitlab.com/gitlab-data/analytics/merge_requests/1423
+                     )
 ORDER BY note_created_at
