@@ -86,26 +86,10 @@ Failure in test no_missing_location_factors (tests/bamboohr/data_test/no_missing
 ```
 
 Steps to resolve:
-* Step 1: Run the compiled SQL against analytics (below for reference)
-* Step 2: Visually compare the hire date to make sure it has been 7 days,.
-* Step 3: Ping the People Operations Analyst with the employee ID numbers that are missing location factor in #data. (AS of 2019-07-24, that would be Morgan Wilkins.)
-* Step 4: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
-* Step 5: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
-
-```
-WITH source as (
-
-  SELECT *
-  FROM "ANALYTICS".sensitive.employee_directory
-
-)
-
-SELECT *
-FROM source
-WHERE hire_location_factor IS NULL
-AND termination_date IS NULL
-AND CURRENT_DATE > dateadd('days', 7, hire_date)
-```
+* Step 1: Run the chatops command `/gitlab data run missing_location_factor` from Slack
+* Step 2: Ping the People Operations Analyst with the employee ID numbers that are missing location factor in #data. (AS of 2019-07-24, that would be Morgan Wilkins.)
+* Step 3: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
+* Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
 
 ### Test: uncategorized_pings
 This test checks that the list of unique ping metrics that we receive, `pings_list`, matches the ping metrics that we have categorized in the static CSV, `ping_metrics_to_stage_mapping_data`. This test will fail when these two sources get out of sync in either direction.

@@ -202,4 +202,3 @@ mr_dbt_tests_manual:
       - master
     variables:
       - $SNOWFLAKE_DBT_TESTS
-      
