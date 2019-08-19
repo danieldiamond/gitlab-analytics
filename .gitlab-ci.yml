@@ -270,6 +270,7 @@ review_stop:
 
 missing_location_factor:
   stage: chatops
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   only: [chat]
   script:
     - cd $CI_PROJECT_DIR/orchestration/chatops/bamboohr/
