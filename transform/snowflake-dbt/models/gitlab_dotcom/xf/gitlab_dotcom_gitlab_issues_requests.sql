@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "analytics"
-    })
-}}
-
 WITH epic_issues AS (
 
   SELECT *

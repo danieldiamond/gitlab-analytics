@@ -326,35 +326,15 @@ roles:
                 read:
                     - analytics.analytics
                     - analytics.analytics_meta
+                    - analytics.analytics_staging
                     - snowflake.account_usage
 
             tables:
                 read:
                     - analytics.analytics.*
                     - analytics.analytics_meta.*
-                    - snowflake.account_usage.*
-
-    - reporter_staging:
-        warehouses:
-            - reporting
-        privileges:
-            databases:
-                read:
-                    - analytics
-                    - snowflake
-            schemas:
-                read:
-                    - analytics.analytics
-                    - analytics.analytics_staging
-                    - analytics.analytics_meta
-                    - snowflake.*
-
-            tables:
-                read:
-                    - analytics.analytics.*
                     - analytics.analytics_staging.*
-                    - analytics.analytics_meta.*
-                    - snowflake.*.*
+                    - snowflake.account_usage.*
 
     - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema
         warehouses:

@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 with raw_ss_opportunity as (
 
        -- This table has multiple entires for each day

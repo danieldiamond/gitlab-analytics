@@ -28,6 +28,14 @@ on-run-end:
     - "{{grant_usage_to_schemas(schema_name, rolename)}}"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
 
+seeds:
+  gitlab_snowflake:
+    enabled: true
+    schema: staging
+  snowplow:
+    enabled: true
+    schema: staging
+
 models:
     pre-hook:
       - "{{ logging.log_model_start_event() }}"
@@ -101,9 +109,6 @@ models:
         enabled: true
         xf:
           materialized: table
-
-      netsuite:
-        enabled: false
 
       netsuite_stitch:
         enabled: true

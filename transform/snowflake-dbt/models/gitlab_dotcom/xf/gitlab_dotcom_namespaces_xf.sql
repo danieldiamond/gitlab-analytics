@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 {% set paid_plans = (2, 3, 4) %}
 {% set fields_to_mask = ['namespace_name', 'namespace_path'] %}
 

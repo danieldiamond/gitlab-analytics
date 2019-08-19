@@ -1,10 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
-
 WITH all_journal_entries AS (
 
     SELECT *

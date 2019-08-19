@@ -1,11 +1,5 @@
 -- depends_on: {{ ref('engineering_productivity_metrics_projects_to_include') }}
 
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 WITH merge_requests AS (
 
     SELECT *
