@@ -46,7 +46,7 @@ sheetload_cmd = f"""
     {git_cmd} &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/sheetload/ &&
-    python3 sheetload.py sheets sheets.txt snowflake    
+    python3 sheetload.py sheets --sheet_file sheets.txt
 """
 
 sheetload_run = KubernetesPodOperator(
