@@ -19,7 +19,8 @@ WITH mr_created AS (
                              AS sk_id
     
   FROM {{ref('gitlab_dotcom_merge_requests_xf')}}
-  WHERE merge_request_created_at >= '2019-07-01'
+  WHERE merge_request_created_at >= '2015-01-01'
+
 
 )
 
@@ -34,6 +35,7 @@ WITH mr_created AS (
      
   FROM {{ref('gitlab_dotcom_notes')}}
   WHERE noteable_type = 'MergeRequest'
+    AND note_created_at >= '2015-01-01'
   
 )
 
@@ -42,13 +44,14 @@ WITH mr_created AS (
   SELECT
     note_author_id AS user_id,
     TO_DATE(note_created_at) AS event_date,
-    'snoppet_comment_added' AS event_type,
+    'snippet_comment_added' AS event_type,
     {{ dbt_utils.surrogate_key('event_date', 'event_type', 'note_id') }}
                              AS sk_id
   
   FROM {{ref('gitlab_dotcom_notes')}}
   WHERE noteable_type = 'Snippet'
-  
+    AND note_created_at >= '2015-01-01'
+
 )
 
 , unioned AS (
