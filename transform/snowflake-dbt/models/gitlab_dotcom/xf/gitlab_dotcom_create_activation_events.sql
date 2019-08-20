@@ -1,5 +1,4 @@
 {{ config({
-    "materialized": "incremental",
     "unique_key": "sk_id"
     })
 }}
@@ -21,9 +20,6 @@ WITH mr_created AS (
     
   FROM {{ref('gitlab_dotcom_merge_requests_xf')}}
   WHERE merge_request_created_at >= '2019-07-01'
-  {% if is_incremental() %}
-    AND page_view_start >= (SELECT MAX(merge_request_created_at) FROM {{this}})
-  {% endif %}
 
 )
 

@@ -1,4 +1,4 @@
-{% docs gitab_dotcom_create_activation_events %}
+{% docs gitlab_dotcom_create_activation_events %}
 
 This model provides a summary of relevant activation events for Create Stage coming from gitlab_dotcom database. A summary of all activation events is at the moment defined in this issue.
 

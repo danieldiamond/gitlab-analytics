@@ -22,7 +22,7 @@ WITH snowplow_create_activation_events AS (
     sk_id,
     'gitlab_backend' AS source_type    
 
-  FROM {{ ref('gitab_dotcom_create_activation_events')}}
+  FROM {{ ref('gitlab_dotcom_create_activation_events')}}
   
 )
 
