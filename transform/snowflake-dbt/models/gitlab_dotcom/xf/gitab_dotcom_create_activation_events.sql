@@ -4,20 +4,16 @@
     })
 }}
 
-{%- set event_ctes = ["repo_file_viewed",
-                      "search_performed",
-                      "mr_viewed",
-                      "wiki_page_viewed",
-                      "snippet_edited",
-                      "snippet_viewed",
-                      "snippet_created",
-                      "project_viewed_in_ide"]
+{%- set event_ctes = ["mr_created",
+                      "mr_comment_added",
+                      "snippet_comment_added"
+                      ]
 -%}
 
 WITH mr_created AS (
 
   SELECT
-    merge_request_author_id,
+    author_id AS user_id,
     TO_DATE(merge_request_created_at) AS event_date,
     'mr_created' AS event_type,
     {{ dbt_utils.surrogate_key('event_date', 'event_type', 'merge_request_id') }}
@@ -36,7 +32,7 @@ WITH mr_created AS (
   SELECT
     note_author_id AS user_id,
     TO_DATE(note_created_at) AS event_date,
-    `mr_comment_added` AS event_type,
+    'mr_comment_added' AS event_type,
     {{ dbt_utils.surrogate_key('event_date', 'event_type', 'note_id') }}
                              AS sk_id
      
