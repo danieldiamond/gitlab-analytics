@@ -499,10 +499,6 @@ roles:
         warehouses:
             - reporting
 
-    - periscope_staging:
-        warehouses:
-            - reporting
-
     - permission_bot:
         warehouses:
             - admin
@@ -687,12 +683,6 @@ users:
         member_of:
             - periscope_sensitive
             - reporter_sensitive
-
-    - periscope_staging:
-        can_login: yes
-        member_of:
-            - periscope_staging
-            - reporter_staging
 
     - permission_bot:
         can_login: yes
