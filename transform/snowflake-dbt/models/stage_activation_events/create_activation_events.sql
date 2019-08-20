@@ -2,10 +2,11 @@ WITH snowplow_create_activation_events AS (
   
   SELECT
     user_snowplow_domain_id,
-    user_custom_id AS gitlab_user_id,
+    user_custom_id      AS gitlab_user_id,
     event_date,
     event_type,
-    sk_id
+    sk_id,
+    'snowplow_frontend' AS source_type
   
   FROM {{ ref('snowplow_create_activation_events')}}
   
@@ -14,11 +15,12 @@ WITH snowplow_create_activation_events AS (
 , gitlab_create_activation_events AS (
   
   SELECT
-    NULL    AS user_snowplow_domain_id,
-    user_id AS gitlab_user_id,
+    NULL             AS user_snowplow_domain_id,
+    user_id          AS gitlab_user_id,
     event_date,
     event_type,
-    sk_id    
+    sk_id,
+    'gitlab_backend' AS source_type    
 
   FROM {{ ref('gitab_dotcom_create_activation_events')}}
   
