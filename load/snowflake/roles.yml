@@ -81,6 +81,7 @@ roles:
                     - analytics.analytics
                     - analytics.analytics_staging
                     - analytics.analytics_meta
+                    - analytics.analytics_sensitive
                     - analytics.dbt_archive
                     - snowflake.*
             tables:
@@ -96,6 +97,13 @@ roles:
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
+                    - analytics.analytics_sensitive.gitlab_dotcom_epics
+                    - analytics.analytics_sensitive.gitlab_dotcom_issues
+                    - analytics.analytics_sensitive.gitlab_dotcom_labels
+                    - analytics.analytics_sensitive.gitlab_dotcom_merge_requests
+                    - analytics.analytics_sensitive.gitlab_dotcom_milestones
+                    - analytics.analytics_sensitive.gitlab_dotcom_namespaces
+                    - analytics.analytics_sensitive.gitlab_dotcom_projects
                     - analytics.dbt_archive.*
                     - snowflake.*.*
 
