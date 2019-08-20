@@ -13,7 +13,7 @@ models:
       - name: event_type
         tests:
           - not_null
-      - name: sk_id
+      - name: page_view_id
         tests:
           - not_null
           - unique
