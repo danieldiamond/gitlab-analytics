@@ -276,6 +276,14 @@ missing_location_factor:
     - cd $CI_PROJECT_DIR/orchestration/chatops/bamboohr/
     - python bamboo_missing_location_factor.py
 
+missing_zuora_crm_id:
+  stage: chatops
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  only: [chat]
+  script:
+    - cd $CI_PROJECT_DIR/orchestration/chatops/zuora/
+    - python zuora_crm_id.py
+
 #--------------------------------------------------------------------------
 
 # Global definitions
