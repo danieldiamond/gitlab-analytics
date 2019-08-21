@@ -321,6 +321,30 @@ roles:
                     - analytics.analytics_staging.*
                     - raw.snowplow.*
                     - raw.tap_postgres.*
+    
+    - pwc_contractor:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - analytics
+                    - raw
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - raw.salesforce_stitch
+                    - raw.zuora_stitch
+            tables:
+                read:
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - raw.salesforce_stitch.*
+                    - raw.zuora_stitch.*
 
     - reporter:
         warehouses:
@@ -511,6 +535,21 @@ roles:
         warehouses:
             - admin
 
+    - pwc_mrichard:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+
+    - pwc_mcoffman:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+
+    - pwc_snagaraj:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+
     - speters:
         warehouses:
             - reporting
@@ -697,6 +736,24 @@ users:
         member_of:
             - permission_bot
             - securityadmin
+
+    - pwc_mrichard:
+        can_login: yes
+        member_of:
+            - pwc_contractor
+            - pwc_mrichard
+
+    - pwc_mcoffman:
+        can_login: yes
+        member_of:
+            - pwc_contractor
+            - pwc_mcoffman
+
+    - pwc_snagaraj:
+        can_login: yes
+        member_of:
+            - pwc_contractor
+            - pwc_snagaraj
 
     - speters:
         can_login: yes
