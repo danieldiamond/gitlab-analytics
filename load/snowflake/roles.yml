@@ -335,14 +335,14 @@ roles:
                     - analytics
             schemas:
                 read:
-                    - analytics.analytics
-                    - analytics.analytics_staging
+                    - analytics.pwc
+                    - analytics.pwc_staging
                     - raw.salesforce_stitch
                     - raw.zuora_stitch
             tables:
                 read:
-                    - analytics.analytics.*
-                    - analytics.analytics_staging.*
+                    - analytics.pwc.*
+                    - analytics.pwc_staging.*
                     - raw.salesforce_stitch.*
                     - raw.zuora_stitch.*
 
