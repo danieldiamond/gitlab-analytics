@@ -11,7 +11,7 @@ with zuora_mrr_totals as (
     SELECT * FROM {{ref('sfdc_accounts_xf')}}
 
 ), sfdc_deleted_accounts as (
-    
+
     SELECT * FROM {{ref('sfdc_deleted_accounts')}}
 
 ), joined as (
@@ -29,9 +29,9 @@ with zuora_mrr_totals as (
 
 ), final as (
 
-    SELECT zuora_account_id, 
-            account_name, 
-            crm_id, 
+    SELECT zuora_account_id,
+            account_name,
+            crm_id,
             coalesce(joined.sfdc_account_id, sfdc_master_record_id) as sfdc_account_id
     FROM joined
     LEFT JOIN sfdc_deleted_accounts
