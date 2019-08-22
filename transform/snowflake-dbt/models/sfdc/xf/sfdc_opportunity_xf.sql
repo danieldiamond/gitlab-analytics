@@ -108,6 +108,8 @@ WITH sfdc_opportunity AS (
         ON sfdc_opportunity.owner_id = sfdc_users_xf.id
     LEFT JOIN sfdc_record_type
         ON sfdc_opportunity.record_type_id = sfdc_record_type.record_type_id
+    LEFT JOIN sfdc_campaign
+        ON sfdc_opportunity.primary_campaign_source_id = sfdc_campaign.campaign_id
 
 )
 

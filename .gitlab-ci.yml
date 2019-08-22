@@ -1,5 +1,5 @@
 # Globals defined at the bottom of the file
-
+ 
 # Job Templates
 
 .job_template: &job_definition
