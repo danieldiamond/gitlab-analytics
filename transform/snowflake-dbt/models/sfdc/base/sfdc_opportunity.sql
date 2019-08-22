@@ -61,6 +61,7 @@ WITH source AS (
         -- opp info
         acv_2__c                    AS acv,
         sql_source__c               AS sales_qualified_source,
+        campaignid                  AS primary_campaign_source_id, 
         -- Should confirm which IACV is which
         incremental_acv_2__c        AS forecasted_iacv,
         incremental_acv__c          AS incremental_acv,
