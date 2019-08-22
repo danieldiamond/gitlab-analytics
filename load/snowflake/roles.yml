@@ -447,11 +447,6 @@ roles:
             - loading
             - reporting
 
-    - ehannon:
-        warehouses:
-            - analyst_xs
-            - analyst_xl
-
     - eeastwood:
         warehouses:
             - reporting
@@ -639,13 +634,6 @@ users:
         can_login: yes
         member_of:
             - eeastwood
-            - reporter
-
-    - ehannon:
-        can_login: yes
-        member_of:
-            - ehannon
-            - intern
             - reporter
 
     - ekastelein:
