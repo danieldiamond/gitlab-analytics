@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 with gitlab_dotcom_issues_xf as (
 
     SELECT *

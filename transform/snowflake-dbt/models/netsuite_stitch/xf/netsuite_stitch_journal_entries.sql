@@ -1,8 +1,3 @@
-{{ config({
-    "materialized": "ephemeral"
-    })
-}}
-
 WITH transactions AS (
      SELECT *
      FROM {{ref('netsuite_stitch_transactions_xf')}}

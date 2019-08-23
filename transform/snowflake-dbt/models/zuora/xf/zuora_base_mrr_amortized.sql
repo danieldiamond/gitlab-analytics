@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 WITH zuora_mrr AS (
 
     SELECT *
@@ -11,7 +16,7 @@ WITH zuora_mrr AS (
 
 ), amortized_mrr AS (
 
-    SELECT
+    SELECT country,
            account_number,
            subscription_name,
            subscription_name_slugify,
@@ -40,7 +45,7 @@ WITH zuora_mrr AS (
 
 ), final as (
 
-SELECT
+SELECT country,
        account_number,
        subscription_name,
        subscription_name_slugify,
@@ -57,7 +62,7 @@ SELECT
        sum(quantity)  AS quantity
 FROM amortized_mrr
 WHERE mrr_month IS NOT NULL
-{{ dbt_utils.group_by(n=12) }}
+{{ dbt_utils.group_by(n=13) }}
 
 )
 

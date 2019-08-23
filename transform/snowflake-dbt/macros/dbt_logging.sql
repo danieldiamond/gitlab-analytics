@@ -2,8 +2,6 @@
 
     {%- if not execute -%}
         {{ log('Parsing ' + message + '...', info = True) }}
-    {%- else -%}
-        {{ log('Starting ' + message + '...', info = True) }}
     {% endif %}
 
 {% endmacro %}
@@ -12,8 +10,6 @@
 
     {%- if not execute -%}
         {{ log('Still working...', info = True) }}
-    {%- else -%}
-        {{ log('Finishing ' + message + '...', info = True) }}
     {% endif %}
 
 {% endmacro %}

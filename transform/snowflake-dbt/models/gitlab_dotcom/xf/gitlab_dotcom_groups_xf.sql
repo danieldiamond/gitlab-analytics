@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "analytics"
-    })
-}}
-
 {% set paid_plans = (2, 3, 4) %}
 {% set fields_to_mask = ['group_name', 'group_path'] %}
 

@@ -1,10 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
-
 WITH invoice_details AS (
 
     SELECT *
@@ -15,6 +8,7 @@ WITH invoice_details AS (
 
 
 SELECT
+  country,
   account_number,
   subscription_name,
   subscription_name_slugify,

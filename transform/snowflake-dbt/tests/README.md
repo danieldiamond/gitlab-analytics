@@ -86,26 +86,10 @@ Failure in test no_missing_location_factors (tests/bamboohr/data_test/no_missing
 ```
 
 Steps to resolve:
-* Step 1: Run the compiled SQL against analytics (below for reference)
-* Step 2: Visually compare the hire date to make sure it has been 7 days,.
-* Step 3: Ping the People Operations Analyst with the employee ID numbers that are missing location factor in #data. (AS of 2019-07-24, that would be Morgan Wilkins.)
-* Step 4: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
-* Step 5: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
-
-```
-WITH source as (
-
-  SELECT *
-  FROM "ANALYTICS".sensitive.employee_directory
-
-)
-
-SELECT *
-FROM source
-WHERE hire_location_factor IS NULL
-AND termination_date IS NULL
-AND CURRENT_DATE > dateadd('days', 7, hire_date)
-```
+* Step 1: Run the chatops command `/gitlab datachat run missing_location_factor` from Slack
+* Step 2: Ping the People Operations Analyst with the employee ID numbers that are missing location factor in #data. (AS of 2019-07-24, that would be Morgan Wilkins.)
+* Step 3: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
+* Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
 
 ### Test: uncategorized_pings
 This test checks that the list of unique ping metrics that we receive, `pings_list`, matches the ping metrics that we have categorized in the static CSV, `ping_metrics_to_stage_mapping_data`. This test will fail when these two sources get out of sync in either direction.
@@ -155,12 +139,11 @@ Failure in test zuora_assert_single_ult_parent (tests/data_test/zuora_assert_sin
 
 Steps to Resolve:
 
-* Step 1: Follow the general checklist
+* Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack.
 * Step 2: Create an issue in finance asking for the Zuora account and subscription linkages to be reviewed.
-    * If the data on the Zuora end is fine, then bring in Sales people to review Salesforce data.
-* Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
-* Step 4: Filter out the zuora subscription in the test based on the md5 has of the `ultimate_parent_sub` name
-* Step 5: Once finance has confirmed that the accounts and subscriptions have been updated, create a MR to remove the filter
+* Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue.
+* Step 4: Filter out the zuora subscription in the test based on the md5 hash of the subscription name.
+* Step 5: Once finance has confirmed that the accounts and subscriptions have been updated, create a MR to remove the filter.
 
 ### Test: zuora_assert_no_circular_linkages
 

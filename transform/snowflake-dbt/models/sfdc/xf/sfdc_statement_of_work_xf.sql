@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 with sfdc_statement_of_work AS (
 
     SELECT * FROM {{ref('sfdc_statement_of_work')}}

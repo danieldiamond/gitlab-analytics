@@ -1,10 +1,7 @@
 {{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter",
     "materialized": "table"
     })
 }}
-
 
 WITH source AS (
 

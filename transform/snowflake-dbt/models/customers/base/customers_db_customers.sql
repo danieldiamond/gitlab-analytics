@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH renamed AS (
   SELECT DISTINCT
     id                                   AS customer_id,

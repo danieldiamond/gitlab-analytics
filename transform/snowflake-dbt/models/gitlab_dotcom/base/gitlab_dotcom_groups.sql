@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH namespace_groups AS (
 
   SELECT namespace_id                                        AS group_id,

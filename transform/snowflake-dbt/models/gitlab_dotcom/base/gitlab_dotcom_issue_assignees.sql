@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH source AS (
 
 	SELECT DISTINCT user_id, issue_id

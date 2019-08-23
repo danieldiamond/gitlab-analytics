@@ -1,7 +1,7 @@
-{{ config(
-    { "schema": "sensitive",
-      "materialized": "table" }
-) }}
+{{ config({
+    "schema": "sensitive"
+    })
+}}
 
 with source as (
 

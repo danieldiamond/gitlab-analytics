@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 with ss_opportunity AS (
 
     SELECT * FROM {{ ref('sfdc_snapshot_opportunity') }}

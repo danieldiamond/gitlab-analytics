@@ -1,4 +1,7 @@
-{{ config(materialized='table') }}
+{{ config({
+    "materialized": "table"
+    })
+}}
 
 WITH source AS (
 

@@ -1,5 +1,5 @@
 # Globals defined at the bottom of the file
-
+ 
 # Job Templates
 
 .job_template: &job_definition
@@ -63,7 +63,7 @@ python_checking: &python_checking
       - "**/*.md"
       - LICENSE
       - CODEOWNERS
-      - .gitlab/* 
+      - .gitlab/*
   only:
     - branches
 
@@ -275,4 +275,3 @@ review_stop:
 variables:
   PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
   SNOWFLAKE_DATABASE: "$CI_COMMIT_REF_NAME"
-

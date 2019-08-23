@@ -5,122 +5,43 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
-  ci_build_trace_sections:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , project_id
-      , date_start
-      , date_end
-      , byte_start
-      , byte_end
-      , build_id
-      , section_name_id
-      FROM ci_build_trace_sections
-    export_schema: 'gitlab_dotcom'
-    export_table: ci_build_trace_sections
-    export_table_primary_key: id
-  ci_builds:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , status
-      , finished_at
-      , trace
-      , created_at
-      , updated_at
-      , started_at
-      , runner_id
-      , coverage
-      , commit_id
-      , commands
-      , name
-      , options
-      , allow_failure
-      , stage
-      , trigger_request_id
-      , stage_idx
-      , tag
-      , ref
-      , user_id
-      , type
-      , target_url
-      , description
-      , artifacts_file
-      , project_id
-      , artifacts_metadata
-      , erased_by_id
-      , erased_at
-      , artifacts_expire_at
-      , environment
-      , artifacts_size
-      , "when"
-      , yaml_variables
-      , queued_at
-      , token
-      , lock_version
-      , coverage_regex
-      , auto_canceled_by_id
-      , retried
-      , stage_id
-      , artifacts_file_store
-      , artifacts_metadata_store
-      , protected
-      , failure_reason
-      , scheduled_at
-      , token_encrypted
-      , upstream_pipeline_id
-      FROM ci_builds
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_dotcom'
-    export_table: ci_builds
-    export_table_primary_key: id
-  ci_builds_metadata:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , build_id
-      , project_id
-      , timeout
-      , timeout_source
-      , config_options
-      , config_variables
-      FROM ci_builds_metadata
-    export_schema: 'gitlab_dotcom'
-    export_table: ci_builds_metadata
-    export_table_primary_key: id
-  ci_builds_runner_session:
+  ci_build_trace_chunks:
     import_db: GITLAB_DB
     import_query: >
       SELECT build_id
-      , url
-      , certificate
-      , "authorization"
-      FROM ci_builds_runner_session
+      , chunk_index
+      , data_store
+      , raw_data
+      FROM ci_build_trace_chunks
     export_schema: 'gitlab_dotcom'
-    export_table: ci_builds_runner_session
+    export_table: ci_build_trace_chunks
     export_table_primary_key: build_id
-  ci_group_variables:
+  ci_build_trace_section_names:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , key
-      , value
-      , encrypted_value
-      , encrypted_value_salt
-      , encrypted_value_iv
-      , group_id
-      , protected
+      , project_id
+      , name
+      FROM ci_build_trace_section_names
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_build_trace_section_names
+    export_table_primary_key: id
+  events:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , author_id
+      , target_id
       , created_at
       , updated_at
-      , masked
-      , variable_type
-      FROM ci_group_variables
+      , action
+      , target_type
+      FROM events
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_dotcom'
-    export_table: ci_group_variables
+    export_schema: 'gitlab_com'
+    export_table: 'events'
     export_table_primary_key: id
   approvals:
     import_db: GITLAB_DB
@@ -159,8 +80,8 @@ tables:
       , entity_id
       , entity_type
       , details
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       FROM audit_events
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -426,6 +347,44 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'licenses'
     export_table_primary_key: id
+  merge_requests:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , iid
+      , target_branch
+      , source_branch
+      , source_project_id
+      , author_id
+      , assignee_id
+      , title
+      , created_at
+      , updated_at
+      , milestone_id
+      , state
+      , merge_status
+      , target_project_id
+      , updated_by_id
+      , merge_error
+      , merge_params
+      , merge_when_pipeline_succeeds
+      , merge_user_id
+      , approvals_before_merge
+      , lock_version
+      , time_estimate
+      , squash
+      , last_edited_at
+      , last_edited_by_id
+      , head_pipeline_id
+      , discussion_locked
+      , latest_merge_request_diff_id
+      , allow_maintainer_to_push
+      FROM merge_requests
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'merge_requests'
+    export_table_primary_key: id
   merge_request_diffs:
     import_db: GITLAB_DB
     import_query: >
@@ -466,43 +425,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'merge_request_metrics'
     export_table_primary_key: id
-  merge_requests:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , iid
-      , target_branch
-      , source_branch
-      , source_project_id
-      , author_id
-      , assignee_id
-      , created_at
-      , updated_at
-      , milestone_id
-      , state
-      , merge_status
-      , target_project_id
-      , updated_by_id
-      , merge_error
-      , merge_params
-      , merge_when_pipeline_succeeds
-      , merge_user_id
-      , approvals_before_merge
-      , lock_version
-      , time_estimate
-      , squash
-      , last_edited_at
-      , last_edited_by_id
-      , head_pipeline_id
-      , discussion_locked
-      , latest_merge_request_diff_id
-      , allow_maintainer_to_push
-      FROM merge_requests
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'merge_requests'
-    export_table_primary_key: id
   merge_requests_closing_issues:
     import_db: GITLAB_DB
     import_query: >
@@ -524,8 +446,8 @@ tables:
       , iid
       , project_id
       , due_date
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , state
       , start_date
       , group_id
@@ -575,8 +497,8 @@ tables:
       , name
       , path
       , owner_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , type
       , avatar
       , membership_lock
@@ -585,9 +507,9 @@ tables:
       , request_access_enabled
       , ldap_sync_status
       , ldap_sync_error
-      , TO_CHAR(ldap_sync_last_update_at, 'YYYY-MM-DD HH:MI:SS') AS ldap_sync_last_update_at
-      , TO_CHAR(ldap_sync_last_successful_update_at, 'YYYY-MM-DD HH:MI:SS') AS ldap_sync_last_successful_update_at
-      , TO_CHAR(ldap_sync_last_sync_at, 'YYYY-MM-DD HH:MI:SS') AS ldap_sync_last_sync_at
+      , ldap_sync_last_update_at
+      , ldap_sync_last_successful_update_at
+      , ldap_sync_last_sync_at
       , lfs_enabled
       , parent_id
       , shared_runners_minutes_limit
@@ -891,28 +813,28 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , TO_CHAR(remember_created_at, 'YYYY-MM-DD HH:MI:SS') AS remember_created_at
+      , remember_created_at
       , sign_in_count
-      , TO_CHAR(current_sign_in_at, 'YYYY-MM-DD HH:MI:SS') AS current_sign_in_at
-      , TO_CHAR(last_sign_in_at, 'YYYY-MM-DD HH:MI:SS') AS last_sign_in_at
+      , current_sign_in_at
+      , last_sign_in_at
       , current_sign_in_ip
       , last_sign_in_ip
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , admin
       , projects_limit
       , failed_attempts
-      , TO_CHAR(locked_at, 'YYYY-MM-DD HH:MI:SS') AS locked_at
+      , locked_at
       , can_create_group
       , can_create_team
       , state
       , color_scheme_id
-      , TO_CHAR(password_expires_at, 'YYYY-MM-DD HH:MI:SS') AS password_expires_at
+      , password_expires_at
       , created_by_id
-      , TO_CHAR(last_credential_check_at, 'YYYY-MM-DD HH:MI:SS') AS last_credential_check_at
+      , last_credential_check_at
       , avatar
-      , TO_CHAR(confirmed_at, 'YYYY-MM-DD HH:MI:SS') AS confirmed_at
-      , TO_CHAR(confirmation_sent_at, 'YYYY-MM-DD HH:MI:SS') AS confirmation_sent_at
+      , confirmed_at
+      , confirmation_sent_at
       , unconfirmed_email
       , hide_no_ssh_key
       , website_url
@@ -929,7 +851,7 @@ tables:
       , hide_project_limit
       , note
       , otp_grace_period_started_at
-      , TO_CHAR(otp_grace_period_started_at, 'YYYY-MM-DD HH:MI:SS') AS otp_grace_period_started_at
+      , otp_grace_period_started_at
       , notification_email
       , hide_no_password
       , external

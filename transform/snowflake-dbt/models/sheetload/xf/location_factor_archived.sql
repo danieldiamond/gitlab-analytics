@@ -1,9 +1,3 @@
-{{
-  config({
-  "schema": "analytics"
-  })
-}}
-
 with source as (
 
     SELECT *

@@ -102,6 +102,8 @@ models:
             tests:
                 - not_null
                 - unique
+          - name: country
+            description: '{{ doc("zuora_mrr_totals_col_country") }}'
           - name: account_number
             description: '{{ doc("zuora_mrr_totals_col_account_number") }}'
             tests:
@@ -152,7 +154,7 @@ models:
     - name: zuora_scheduled_renewals
       description: Zuora Scheduled Renewals
       columns:
-          - name: account_name 
+          - name: account_name
             tests:
                 - not_null
           - name: account_number
@@ -181,7 +183,7 @@ models:
                 - not_null
           - name: arr
             tests:
-                - not_null                
+                - not_null
     - name: zuora_subscription_intermediate
       description: '{{ doc("zuora_subscription_intermediate") }}'
       columns:
@@ -201,7 +203,7 @@ models:
                         values: ['Active','Cancelled']
     - name: zuora_subscription_lineage
       description:  '{{doc("zuora_subscription_lineage")}}'
-      columns: 
+      columns:
           - name: subscription_name_slugify
             description: '{{ doc("zuora_mrr_totals_col_subscription_name_slugify") }}'
             tests:
@@ -258,4 +260,3 @@ models:
           - name: cohort_year
             tests:
                 - not_null
-
