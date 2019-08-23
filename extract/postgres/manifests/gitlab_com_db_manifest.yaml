@@ -5,21 +5,6 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
-  ci_build_trace_sections:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , project_id
-      , date_start
-      , date_end
-      , byte_start
-      , byte_end
-      , build_id
-      , section_name_id
-      FROM ci_build_trace_sections
-    export_schema: 'gitlab_dotcom'
-    export_table: ci_build_trace_sections
-    export_table_primary_key: id
   ci_builds:
     import_db: GITLAB_DB
     import_query: >
@@ -89,6 +74,21 @@ tables:
       FROM ci_builds_metadata
     export_schema: 'gitlab_dotcom'
     export_table: ci_builds_metadata
+    export_table_primary_key: id
+  ci_build_trace_sections:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , date_start
+      , date_end
+      , byte_start
+      , byte_end
+      , build_id
+      , section_name_id
+      FROM ci_build_trace_sections
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_build_trace_sections
     export_table_primary_key: id
   ci_builds_runner_session:
     import_db: GITLAB_DB
