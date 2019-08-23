@@ -551,10 +551,6 @@ roles:
             - analyst_xs
             - analyst_xl
 
-    - speters:
-        warehouses:
-            - reporting
-
     - ssichak:
         warehouses:
             - reporting
@@ -754,13 +750,6 @@ users:
         member_of:
             - pwc_contractor
             - pwc_snagaraj
-
-    - speters:
-        can_login: yes
-        member_of:
-            - securityadmin
-            - speters
-            - sysadmin
 
     - ssichak:
         can_login: yes
