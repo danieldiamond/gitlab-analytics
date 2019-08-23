@@ -116,6 +116,8 @@ for source_name, config in config_dict.items():
         "owner": "airflow",
         "retries": 1,
         "retry_delay": timedelta(minutes=1),
+        "sla": timedelta(hours=8),
+        "sla_miss_callback": slack_failed_task,
         "start_date": config["start_date"],
     }
     extract_dag = DAG(
