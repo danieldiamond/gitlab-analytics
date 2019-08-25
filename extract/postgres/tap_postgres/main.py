@@ -6,8 +6,14 @@ from fire import Fire
 from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
 from sqlalchemy.engine.base import Engine
 
-import utils
-import validation
+from .utils import (
+    check_if_schema_changed,
+    chunk_and_upload,
+    get_engines,
+    id_query_generator,
+    manifest_reader,
+)
+from .validation import *
 
 
 SCHEMA = "tap_postgres"
@@ -60,7 +66,7 @@ def load_incremental(
     env = os.environ.copy()
     query = f"{raw_query.format(**env)} {additional_filter}"
     logging.info(query)
-    utils.chunk_and_upload(query, source_engine, target_engine, table_name)
+    chunk_and_upload(query, source_engine, target_engine, table_name)
     return True
 
 
@@ -87,14 +93,14 @@ def sync_incremental_ids(
         logging.info(f"Table {table} doesn't need a full sync.")
         return False
 
-    id_queries = utils.id_query_generator(
+    id_queries = id_query_generator(
         table, table_name, raw_query, target_engine, source_engine
     )
     # Iterate through the generated queries
     for query in id_queries:
         filtered_query = f"{query} {additional_filtering} ORDER BY id"
         logging.info(filtered_query)
-        utils.chunk_and_upload(filtered_query, source_engine, target_engine, table_name)
+        chunk_and_upload(filtered_query, source_engine, target_engine, table_name)
     return True
 
 
@@ -118,7 +124,7 @@ def load_scd(
 
     query = f"{raw_query} {additional_filter}"
     logging.info(query)
-    utils.chunk_and_upload(query, source_engine, target_engine, table_name)
+    chunk_and_upload(query, source_engine, target_engine, table_name)
     return True
 
 
@@ -156,10 +162,10 @@ def validate_ids(
     )
     logging.info(f"Uploading IDs to {validate_table_name}.")
     logging.info(id_query)
-    utils.chunk_and_upload(id_query, source_engine, target_engine, validate_table_name)
+    chunk_and_upload(id_query, source_engine, target_engine, validate_table_name)
 
     # Return a count of missing IDs
-    error_results = validation.get_comparison_results(
+    error_results = get_comparison_results(
         target_engine, error_table_name, table_name, validate_table_name
     )
     logging.info(f"Number of row errors for table {table_name}: {error_results[0][0]}")
@@ -174,11 +180,9 @@ def main(file_path: str, load_type: str = None) -> None:
 
     # Process the manifest
     logging.info(f"Reading manifest at location: {file_path}")
-    manifest_dict = utils.manifest_reader(file_path)
+    manifest_dict = manifest_reader(file_path)
 
-    postgres_engine, snowflake_engine = utils.get_engines(
-        manifest_dict["connection_info"]
-    )
+    postgres_engine, snowflake_engine = get_engines(manifest_dict["connection_info"])
     logging.info(snowflake_engine)
 
     # Link the load_types to their respective functions
@@ -194,10 +198,9 @@ def main(file_path: str, load_type: str = None) -> None:
         table_dict = manifest_dict["tables"][table]
         table_name = "{import_db}_{export_table}".format(**table_dict).upper()
         raw_query = table_dict["import_query"]
-        is_incremental = "{EXECUTION_DATE}" in raw_query
 
         # Check if the schema has changed, and if so then do a full load
-        schema_changed = utils.check_if_schema_changed(
+        schema_changed = check_if_schema_changed(
             raw_query,
             postgres_engine,
             table_dict["export_table"],
