@@ -6,14 +6,14 @@ from fire import Fire
 from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
 from sqlalchemy.engine.base import Engine
 
-from .utils import (
+from utils import (
     check_if_schema_changed,
     chunk_and_upload,
     get_engines,
     id_query_generator,
     manifest_reader,
 )
-from .validation import *
+from validation import *
 
 
 SCHEMA = "tap_postgres"
