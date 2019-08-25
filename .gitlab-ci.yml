@@ -96,8 +96,7 @@ pytest: &pytest
       - LICENSE
       - CODEOWNERS
       - .gitlab/*
-  only:
-    - branches
+  when: manual
 
 # Set up a new instance in CloudSQL for testing in MRs
 cloudsql_review: &cloudsql_review
