@@ -71,6 +71,8 @@ models:
         materialized: table
       xf:
         materialized: table
+        schema: analytics
+        post-hook: "grant select on {{this}} to role reporter"
 
     gitlab_snowflake:
       enabled: true
