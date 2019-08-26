@@ -1,0 +1,1 @@
+This extract pulls data for commit stats and red master stats. Original issue was https://gitlab.com/gitlab-data/analytics/issues/1815
