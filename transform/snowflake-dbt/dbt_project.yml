@@ -71,6 +71,7 @@ models:
         materialized: table
       xf:
         materialized: table
+        schema: analytics
 
     gitlab_snowflake:
       enabled: true
