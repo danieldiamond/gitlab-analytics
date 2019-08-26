@@ -96,6 +96,10 @@ models:
       dbt_logging:
         enabled: false
 
+      engineering:
+        enabled: true
+        materialized: table
+
       gitlab_data_yaml:
         enabled: true
         materialized: table
