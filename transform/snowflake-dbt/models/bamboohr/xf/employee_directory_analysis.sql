@@ -28,7 +28,7 @@ WITH employee_directory AS (
 ), location_factor AS (
 
   SELECT *
-  FROM {{ ref('location_factor_archived') }}
+  FROM {{ ref('employee_location_factor_snapshots') }}
 
 ), joined AS (
 
