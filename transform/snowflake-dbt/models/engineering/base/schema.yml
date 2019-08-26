@@ -19,4 +19,3 @@ models:
       - name: karma_coverage
       - name: karma_coverage_absolute
       - name: karma_coverage_total
- 
