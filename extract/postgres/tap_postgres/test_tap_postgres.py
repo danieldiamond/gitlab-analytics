@@ -1,10 +1,19 @@
 import os
+import sys
+
+# Path magic so the tests can run
+sys.path.insert(
+    0,
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "tap_postgres"
+    ),
+)
 
 from gitlabdata.orchestration_utils import snowflake_engine_factory
 import pandas as pd
 
-from .main import load_incremental
-from .utils import (
+from main import load_incremental
+from utils import (
     query_results_generator,
     postgres_engine_factory,
     dataframe_uploader,

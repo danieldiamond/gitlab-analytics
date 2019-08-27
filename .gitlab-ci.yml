@@ -96,7 +96,6 @@ pytest: &pytest
       - LICENSE
       - CODEOWNERS
       - .gitlab/*
-  when: manual
 
 # Template for cloning databases in Snowflake for use in MRs
 .snowflake_review: &snowflake_review
