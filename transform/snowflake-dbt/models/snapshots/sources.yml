@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: snapshots
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: snapshots
+    loader: dbt
+    loaded_at_field: _updated_at::number::timestamp
+
+    freshness:
+        warn_after: {count: 24, period: hour}
+
+    tables:
+      - name: sheetload_employee_location_factor_snapshots

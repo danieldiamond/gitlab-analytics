@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: employee_location_factor_snapshots
+    description: This is the base model for snapshotted employee location factor data.
+    columns:
+      - name: bamboo_employee_number
+        tests:
+          - not_null
+      - name: location_factor
+        tests:
+          - not_null
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to
