@@ -33,7 +33,7 @@ models:
       - name: noteable_type
         tests:
           - accepted_values:
-                      values: ['Commit', 'Epic', 'Issue', 'MergeRequest', 'Snippet', 'Wiki']
+                      values: ['Commit', 'Epic', 'Issue', 'MergeRequest', 'Snippet', 'Wiki', 'DesignManagement::Design']
 
   - name: gitlab_dotcom_group_audit_events_monthly
     description: '{{ doc("gitlab_dotcom_group_audit_events_monthly") }}'

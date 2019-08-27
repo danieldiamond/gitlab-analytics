@@ -71,6 +71,7 @@ models:
         materialized: table
       xf:
         materialized: table
+        schema: analytics
 
     gitlab_snowflake:
       enabled: true
@@ -94,6 +95,10 @@ models:
 
       dbt_logging:
         enabled: false
+
+      engineering:
+        enabled: true
+        materialized: table
 
       gitlab_data_yaml:
         enabled: true

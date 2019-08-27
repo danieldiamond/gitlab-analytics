@@ -177,13 +177,14 @@ You can use `Command + Option + L` to format your file.
 
 #### Data Newsletters
 - [Data Science Roundup Newsletter](http://roundup.fishtownanalytics.com/)
-- [SF Data](http://weekly.sfdata.io/)
 - [Data is Plural](https://tinyletter.com/data-is-plural)
 - [DataEng Weekly](http://dataengweekly.com/)
 - [Data Elixir](https://dataelixir.com/)
 - [Data Science Weekly](https://www.datascienceweekly.org/)
+- [Music and Tech](https://angelddaz.substack.com)
 - [Normcore Tech](https://vicki.substack.com)
 - [One Shot Learning](https://buttondown.email/oneshotlearning)
+- [SF Data](http://weekly.sfdata.io/)
 - [The Carpentries](https://carpentries.topicbox.com/latest)
 
 #### Data Resources

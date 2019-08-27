@@ -3,8 +3,13 @@ import os
 from gitlabdata.orchestration_utils import snowflake_engine_factory
 import pandas as pd
 
-from ..tap_postgres import tap_postgres
-
+from .main import load_incremental
+from .utils import (
+    query_results_generator,
+    postgres_engine_factory,
+    dataframe_uploader,
+    manifest_reader,
+)
 
 # Set up some fixtures
 CONFIG_DICT = os.environ.copy()
@@ -15,7 +20,7 @@ CONNECTION_DICT = {
     "database": "GITLAB_COM_DB_NAME",
     "port": "PG_PORT",
 }
-POSTGRES_ENGINE = tap_postgres.postgres_engine_factory(CONNECTION_DICT, CONFIG_DICT)
+POSTGRES_ENGINE = postgres_engine_factory(CONNECTION_DICT, CONFIG_DICT)
 SNOWFLAKE_ENGINE = snowflake_engine_factory(CONFIG_DICT, "SYSADMIN", "TEST")
 TEST_TABLE = "tap_postgres_test_table"
 
@@ -39,7 +44,7 @@ class TestTapPostgres:
         Confirm this doesn't throw errors.
         """
         query = "SELECT * FROM approvals WHERE id = (SELECT MAX(id) FROM approvals)"
-        query_results = tap_postgres.query_results_generator(query, POSTGRES_ENGINE)
+        query_results = query_results_generator(query, POSTGRES_ENGINE)
         assert query_results
 
     def test_dataframe_uploader1(self):
@@ -48,9 +53,9 @@ class TestTapPostgres:
         """
         table_cleanup()
         query = "SELECT * FROM approver_groups WHERE id = (SELECT MAX(id) FROM approver_groups)"
-        query_results = tap_postgres.query_results_generator(query, POSTGRES_ENGINE)
+        query_results = query_results_generator(query, POSTGRES_ENGINE)
         for result in query_results:
-            tap_postgres.dataframe_uploader(result, SNOWFLAKE_ENGINE, TEST_TABLE)
+            dataframe_uploader(result, SNOWFLAKE_ENGINE, TEST_TABLE)
         uploaded_rows = pd.read_sql(f"select * from {TEST_TABLE}", SNOWFLAKE_ENGINE)
         assert uploaded_rows.shape[0] == 1
 
@@ -60,9 +65,9 @@ class TestTapPostgres:
         """
         table_cleanup()
         query = "SELECT * FROM merge_requests WHERE id = (SELECT MAX(id) FROM merge_requests)"
-        query_results = tap_postgres.query_results_generator(query, POSTGRES_ENGINE)
+        query_results = query_results_generator(query, POSTGRES_ENGINE)
         for result in query_results:
-            tap_postgres.dataframe_uploader(result, SNOWFLAKE_ENGINE, TEST_TABLE)
+            dataframe_uploader(result, SNOWFLAKE_ENGINE, TEST_TABLE)
         uploaded_rows = pd.read_sql(f"select * from {TEST_TABLE}", SNOWFLAKE_ENGINE)
         assert uploaded_rows.shape[0] == 1
 
@@ -83,19 +88,15 @@ class TestTapPostgres:
         source_count_results = pd.read_sql(source_count_query, POSTGRES_ENGINE)
 
         # Get the manifest for a specific table
-        file_path = f"analytics/extract/postgres/manifests/{source_db}_manifest.yaml"
-        manifest_dict = tap_postgres.manifest_reader(file_path)
+        file_path = f"extract/postgres/manifests/{source_db}_manifest.yaml"
+        manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
 
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
-        tap_postgres.load_incremental(
-            table_dict["import_query"],
-            POSTGRES_ENGINE,
-            SNOWFLAKE_ENGINE,
-            source_table,
-            TEST_TABLE,
+        load_incremental(
+            POSTGRES_ENGINE, SNOWFLAKE_ENGINE, source_table, table_dict, TEST_TABLE
         )
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}"
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
@@ -119,19 +120,16 @@ class TestTapPostgres:
         source_count_results = pd.read_sql(source_count_query, POSTGRES_ENGINE)
 
         # Get the manifest for a specific table
-        file_path = f"analytics/extract/postgres/manifests/{source_db}_manifest.yaml"
-        manifest_dict = tap_postgres.manifest_reader(file_path)
+        file_path = f"extract/postgres/manifests/{source_db}_manifest.yaml"
+        manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
+        print(table_dict)
 
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
-        tap_postgres.load_incremental(
-            table_dict["import_query"],
-            POSTGRES_ENGINE,
-            SNOWFLAKE_ENGINE,
-            source_table,
-            TEST_TABLE,
+        load_incremental(
+            POSTGRES_ENGINE, SNOWFLAKE_ENGINE, source_table, table_dict, TEST_TABLE
         )
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}"
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)

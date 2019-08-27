@@ -5,6 +5,41 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  approvals:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , merge_request_id
+      , user_id
+      , created_at
+      , updated_at
+      FROM approvals
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'approvals'
+    export_table_primary_key: id
+  ci_build_trace_chunks:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT build_id
+      , chunk_index
+      , data_store
+      , raw_data
+      FROM ci_build_trace_chunks
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_build_trace_chunks
+    export_table_primary_key: build_id
+  ci_build_trace_section_names:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , name
+      FROM ci_build_trace_section_names
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_build_trace_section_names
+    export_table_primary_key: id
   ci_builds:
     import_db: GITLAB_DB
     import_query: >
@@ -121,28 +156,6 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_dotcom'
     export_table: ci_group_variables
-    export_table_primary_key: id
-  ci_build_trace_chunks:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT build_id
-      , chunk_index
-      , data_store
-      , raw_data
-      FROM ci_build_trace_chunks
-    export_schema: 'gitlab_dotcom'
-    export_table: ci_build_trace_chunks
-    export_table_primary_key: build_id
-  ci_build_trace_section_names:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , project_id
-      , name
-      FROM ci_build_trace_section_names
-    export_schema: 'gitlab_dotcom'
-    export_table: ci_build_trace_section_names
-    export_table_primary_key: id
   events:
     import_db: GITLAB_DB
     import_query: >
@@ -159,20 +172,6 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'events'
-    export_table_primary_key: id
-  approvals:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , merge_request_id
-      , user_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
-      FROM approvals
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'approvals'
     export_table_primary_key: id
   approver_groups:
     import_db: GITLAB_DB

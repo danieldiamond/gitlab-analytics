@@ -10,13 +10,7 @@ from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOpera
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
-GIT_BRANCH = env["GIT_BRANCH"]
-pod_env_vars = {
-    "SNOWFLAKE_LOAD_DATABASE": "RAW"
-    if GIT_BRANCH == "master"
-    else f"{GIT_BRANCH.upper()}_RAW",
-    "CI_PROJECT_DIR": "/analytics",
-}
+pod_env_vars = {"CI_PROJECT_DIR": "/analytics"}
 
 # Default arguments for the DAG
 default_args = {
@@ -31,29 +25,25 @@ default_args = {
     "start_date": datetime(2019, 1, 1),
 }
 
-# Set the command for the container
-container_cmd = f"""
-    git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-    export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
-    cd analytics/extract/sheetload/ &&
-    python3 sheetload.py s3 datateam-greenhouse-extract greenhouse
-"""
-
 # Create the DAG
 dag = DAG(
-    "greenhouse_extract", default_args=default_args, schedule_interval="0 22 */1 * *"
+    "engineering_extract", default_args=default_args, schedule_interval="0 */8 * * *"
 )
 
-# Task 1
-greenhouse_run = KubernetesPodOperator(
+engineering_extract_cmd = f"""
+    git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
+    export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
+    cd analytics/ &&
+    python extract/engineering/execute.py
+"""
+engineering_extract = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
-    task_id="greenhouse",
-    name="greenhouse",
+    task_id="engineering-extract",
+    name="engineering-extract",
     secrets=[
-        GREENHOUSE_ACCESS_KEY_ID,
-        GREENHOUSE_SECRET_ACCESS_KEY,
         SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_LOAD_DATABASE,
         SNOWFLAKE_LOAD_ROLE,
         SNOWFLAKE_LOAD_USER,
         SNOWFLAKE_LOAD_WAREHOUSE,
@@ -61,6 +51,6 @@ greenhouse_run = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
-    arguments=[container_cmd],
+    arguments=[engineering_extract_cmd],
     dag=dag,
 )

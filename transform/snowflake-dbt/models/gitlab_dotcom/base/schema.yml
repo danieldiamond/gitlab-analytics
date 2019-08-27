@@ -190,7 +190,7 @@ models:
         description: The last (furthest right) item in upstream_lineage. I.E. the parent which has no parent. For top-level namespaces, this is will be itself.
         tests:
           - not_null
-     
+
 
   - name: gitlab_dotcom_namespaces
     description: Base model for Gitlab.com namespaces
@@ -242,7 +242,7 @@ models:
       - name: noteable_type
         tests:
           - accepted_values:
-                      values: ['Commit', 'Epic', 'Issue', 'MergeRequest', 'Snippet', 'Wiki']
+                      values: ['Commit', 'Epic', 'Issue', 'MergeRequest', 'Snippet', 'Wiki', 'DesignManagement::Design']
 
 
 
