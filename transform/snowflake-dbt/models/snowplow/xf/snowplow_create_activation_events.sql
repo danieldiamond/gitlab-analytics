@@ -76,7 +76,9 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path RLIKE '(\/([a-zA-Z-])*){2,}\/wiki/.*'
+  WHERE page_url_path RLIKE '(\/([a-zA-Z-])*){2,}\/wiki\/tree\/.*'
+    AND page_url_path NOT REGEXP '/-/ide/(.)*'
+
 )
 
 , snippet_viewed AS (
@@ -90,7 +92,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path RLIKE '((\/([a-zA-Z-])*){2,})?\/snippets/[0-9]*'
+  WHERE page_url_path RLIKE '((\/([a-zA-Z-])*){2,})?\/snippets/[0-9]{1,}'
 
 )
 
@@ -145,7 +147,7 @@ WITH snowplow_page_views AS (
     user_custom_id,
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
-    'search_performed'       AS event_type,
+    'project_viewed_in_ide'       AS event_type,
     page_view_id
 
   FROM snowplow_page_views
