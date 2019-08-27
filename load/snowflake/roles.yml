@@ -536,6 +536,11 @@ roles:
         warehouses:
             - admin
 
+    - pwc_jblessing:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+
     - pwc_mrichard:
         warehouses:
             - analyst_xs
@@ -732,6 +737,12 @@ users:
         member_of:
             - permission_bot
             - securityadmin
+
+    - pwc_jblessing:
+        can_login: yes
+        member_of:
+            - pwc_contractor
+            - pwc_jblessing
 
     - pwc_mrichard:
         can_login: yes
