@@ -1,11 +1,11 @@
-gitlab-snowflake: 
+gitlab-snowflake:
   target: dev
   outputs:
     dev:
       type: snowflake
       threads: 8
       account: gitlab
-      user: %%YOUR USER%%
+      user: %%YOUR USER%% <-- This will be your GitLab email
       password: %%YOUR PASSWORD%%
       role: TRANSFORMER
       database: ANALYTICS
