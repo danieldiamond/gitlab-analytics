@@ -49,7 +49,7 @@ WITH employee_directory AS (
       AND effective_date <= date_actual
       AND COALESCE(effective_end_date::date, CURRENT_DATE) > date_actual
     LEFT JOIN location_factor
-      ON employee_directory.employee_number = location_factor.bamboo_employee_number
+      ON employee_directory.employee_number::varchar = location_factor.bamboo_employee_number::varchar
       AND valid_from <= date_actual
       AND COALESCE(valid_to::date, CURRENT_DATE) > date_actual
     WHERE employee_directory.employee_id IS NOT NULL
@@ -58,7 +58,7 @@ WITH employee_directory AS (
 
 SELECT date_actual,
         (first_name ||' '|| last_name) AS full_name,
-        job_title,--the below case when statement is also used in bamboohr_job_info; it can be removed FROM HERE when we move to 0.14.0
+        job_title,--the below case when statement is also used in bamboohr_job_info; 
         CASE WHEN division = 'Alliances' THEN 'Alliances'
              WHEN division = 'Customer Support' THEN 'Customer Support'
              WHEN division = 'Customer Service' THEN 'Customer Success'
@@ -71,7 +71,7 @@ SELECT date_actual,
              WHEN division = 'Customer Support' THEN 'Engineering'
              WHEN division = 'Customer Service' THEN 'Sales'
           ELSE nullif(division, '') END AS division,
-        location_factor,
+        COALESCE (location_factor, hire_location_factor) as location_factor,
         is_hire_date,
         is_termination_date
 FROM joined
