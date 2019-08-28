@@ -56,7 +56,7 @@ WITH employee_directory AS (
 
 )
 
-SELECT date_actual,
+SELECT date_actual, employee_id,
         (first_name ||' '|| last_name) AS full_name,
         job_title,--the below case when statement is also used in bamboohr_job_info; 
         CASE WHEN division = 'Alliances' THEN 'Alliances'
