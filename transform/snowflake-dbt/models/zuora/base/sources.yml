@@ -10,7 +10,7 @@ sources:
     freshness:
       warn_after: {count: 8, period: hour}
 
-    tables: 
+    tables:
       - name: account
         description: '{{ doc("zuora_account_source") }}'
       - name: contact
@@ -23,6 +23,7 @@ sources:
         description: '{{ doc("zuora_rateplan_charge_source") }}'
       - name: rateplan
         description: '{{ doc("zuora_rateplan_source") }}'
+      - name: refund
+        description: '{{ doc("zuora_refund_source") }}'
       - name: subscription
         description: '{{ doc("zuora_subscription_source") }}'
-
