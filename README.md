@@ -5,60 +5,26 @@
 * dbt Docs - https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview
 * Epics Roadmap - https://gitlab.com/groups/gitlab-data/-/roadmap?layout=MONTHS&sort=start_date_asc
 * Snowflake Web UI - https://gitlab.snowflakecomputing.com
-* [Machine Learning Resources](https://drive.google.com/drive/folders/1sOXWW-FujwKU2T-auG7KPR9h6xqDRx0z?usp=sharing) (GitLab Internal)
 * [Email Address to Share Sheetloaded Doc with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
-
-## Priorities  
-
-Like the rest of the company, we set quarterly objectives and key results. These are available on our company OKR page.
 
 ## Media
 * [How Data Teams Do More With Less By Adopting Software Engineering Best Practices - Thomas's talk at the 2018 DataEngConf in NYC](https://www.youtube.com/watch?v=eu623QBwakc)
-
 * [Taylor explains dbt](https://drive.google.com/open?id=1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn) (GitLab internal)
-
 * [dbt docs intro with Drew Banin from Fishtown Analytics](https://www.youtube.com/watch?v=bqIBNvA9xjo)
-
 * [Tom Cooney explains Zendesk](https://drive.google.com/open?id=1oExE1ZM5IkXcq1hJIPouxlXSiafhRRua) (GitLab internal)
-
 * [Luca Williams explains Customer Success Dashboards](https://drive.google.com/open?id=1FsgvELNmQ0ADEC1hFEKhWNA1OnH-INOJ) (GitLab internal)
-
 * [Art Nasser explains Netsuite and Campaign Data](https://drive.google.com/open?id=1KUMa8zICI9_jQDqdyN7mGSWSLdw97h5-) (GitLab internal)
-
 * [Courtland Smith explains Marketing Dashboard needs](https://drive.google.com/open?id=1bjKWRdfUgcn0GfyB2rS3qdr_8nbRYAZu) (GitLab internal)
-
 * GitLab blog post about Meltano - https://news.ycombinator.com/item?id=17667399
   * Livestream chat with Sid and HN user slap_shot - https://www.youtube.com/watch?v=F8tEDq3K_pE
   * Follow-up blog post to original Meltano post - https://about.gitlab.com/2018/08/07/meltano-follow-up/
-
 * Data Source Overviews:
    * [Pings](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view)
    * [Salesforce](https://youtu.be/KwG3ylzWWWo)
    * [Netsuite](https://www.youtube.com/watch?v=u2329sQrWDY)
-
 * Taylor and Israel pair on a Lost MRR Dashboard
    * [Part 1](https://www.youtube.com/watch?v=WuIcnpuS2Mg)
    * [Part 2](https://youtu.be/HIlDH5gaL3M)
-
-## Recommended Reading, Listening, Watching
-
-* [The AI Hierarchy of Needs](https://hackernoon.com/the-ai-hierarchy-of-needs-18f111fcc007)
-* [Data Meta Metrics](https://caitlinhudon.com/2017/11/14/data-meta-metrics/)
-* [Engineers Shouldn’t Write ETL](https://multithreaded.stitchfix.com/blog/2016/03/16/engineers-shouldnt-write-etl/)
-* [The Startup Founder’s Guide to Analytics](https://thinkgrowth.org/the-startup-founders-guide-to-analytics-1d2176f20ac1)
-* [Functional Data Engineering — a modern paradigm for batch data processing](https://medium.com/@maximebeauchemin/functional-data-engineering-a-modern-paradigm-for-batch-data-processing-2327ec32c42a)
-* [Keep it SQL Stupid, a talk by Connor McArthur of Fishtown Analytics at DataEngConf SF '18 explaining dbt](https://www.youtube.com/watch?v=9VNh11qSfAo)
-* [Views on Vue Podcast with Jacob Schatz and Taylor Murphy](https://devchat.tv/views-on-vue/vov-030-how-we-use-vue-in-data-science-with-jacob-schatz-taylor-murphy-gitlab-team/)
-* [Pain Points by the Airflow Podcast with @tlapiana](https://soundcloud.com/the-airflow-podcast/pain-points)
-* [DevOps for AI](https://www.youtube.com/watch?v=HwZlGQuCTj4)
-* [What Can Data Scientists Learn from DevOps](https://redmonk.com/dberkholz/2012/11/06/what-can-data-scientists-learn-from-devops/)
-* [One Analyst's Guide for Going from Good to Great](https://blog.fishtownanalytics.com/one-analysts-guide-for-going-from-good-to-great-6697e67e37d9)
-* The Value of Data: [Part 1](https://www.codingvc.com/the-value-of-data-part-1-using-data-as-a-competitive-advantage), [Part 2](https://www.codingvc.com/the-value-of-data-part-2-building-valuable-datasets), [Part 3](https://www.codingvc.com/the-value-of-data-part-3-data-business-models)
-* [Building a Data Practice](https://www.locallyoptimistic.com/post/building-a-data-practice/)
-* [Does my Startup Data Team Need a Data Engineer](https://blog.fishtownanalytics.com/does-my-startup-data-team-need-a-data-engineer-b6f4d68d7da9)
-* [Data Science is different now](https://veekaybee.github.io/2019/02/13/data-science-is-different/) (Note: this is why GitLab doesn't have a Data Scientist yet.)
-* [Why You Don't Need Data Scientists](https://medium.com/@kurtcagle/why-you-dont-need-data-scientists-a9654cc9f0e4)
-* [Resources Written by dbt Community Members](https://discourse.getdbt.com/t/resources-written-by-community-members/276)
 
 ## Documentation
 
@@ -174,81 +140,6 @@ You should have:
 * Keep indents on empty lines: unchecked
 
 You can use `Command + Option + L` to format your file.
-
-#### Data Newsletters
-- [Data Science Roundup Newsletter](http://roundup.fishtownanalytics.com/)
-- [Data is Plural](https://tinyletter.com/data-is-plural)
-- [DataEng Weekly](http://dataengweekly.com/)
-- [Data Elixir](https://dataelixir.com/)
-- [Data Science Weekly](https://www.datascienceweekly.org/)
-- [Music and Tech](https://angelddaz.substack.com)
-- [Normcore Tech](https://vicki.substack.com)
-- [One Shot Learning](https://buttondown.email/oneshotlearning)
-- [SF Data](http://weekly.sfdata.io/)
-- [The Carpentries](https://carpentries.topicbox.com/latest)
-
-#### Data Resources
-- [Airbnb](https://airbnb.io)
-- [Buffer Blog](https://data.buffer.com)
-- [Calogica](https://calogica.com/blog)
-- [Fishtown Analytics Blog](https://blog.fishtownanalytics.com)
-- [Go Data Driven](https://blog.godatadriven.com)
-- [MBA Mondays](https://avc.com/archive/#mba_mondays_archive)
-- [Mode Analytics Blog](https://blog.modeanalytics.com/)
-- [Multithreaded](https://multithreaded.stitchfix.com/)
-- [Periscope Data Blog](https://www.periscopedata.com/blog)
-- [Silota](http://www.silota.com/docs/recipes/)
-- [Wes McKinney Blog](http://wesmckinney.com/archives.html)
-- [Data Ops](https://medium.com/data-ops)
-- [Retina AI Blog](https://retina.ai/blog/)
-- [StitchFix Algorithms Blog](https://multithreaded.stitchfix.com/algorithms/blog/)
-- [Five Thirty Eight](https://data.fivethirtyeight.com/)
-- [Data.gov](https://www.data.gov/)
-
-#### Data Visualization Resources
-- [Storytelling with Data](http://storytellingwithdata.com/)
-- [Data Revelations](https://www.datarevelations.com/)
-- [Eager Eyes](https://eagereyes.org/)
-- [FiveThirtyEight's DataLab](https://fivethirtyeight.com/features/)
-- [Flowing Data](https://flowingdata.com/)
-- [From Data to Viz](https://www.data-to-viz.com/)
-- [Gravy Anecdote](http://gravyanecdote.com/)
-- [JunkCharts](https://junkcharts.typepad.com/)
-- [Make a Powerful Point](http://makeapowerfulpoint.com/)
-- [Makeover Monday](http://www.makeovermonday.co.uk)
-- [Perceptual Edge](https://perceptualedge.com/)
-- [PolicyViz](https://policyviz.com/)
-- [The Functional Art](http://www.thefunctionalart.com/)
-- [The Pudding](https://pudding.cool/)
-- [Visualising Data](http://www.visualisingdata.com/)
-- [VizWiz](http://www.vizwiz.com/)
-- [WTF Visualizations](http://viz.wtf/)
-
-#### Data Slack Communities
-- [Data Viz Society](https://datavizsociety.slack.com)
-- [Data Science Community](https://dscommunity.slack.com)
-- [dbt](https://slack.getdbt.com)
-- [Locally Optimistic](https://www.locallyoptimistic.com/community/)
-- [Measure](ttps://docs.google.com/forms/d/e/1FAIpQLSdyAxOcI8z1EEiJDW4sGln-1GK9eJV8Y86eljX-uSlole0Vtg/viewform?c=0&w=1)
-- [Meltano](https://join.slack.com/t/meltano/shared_invite/enQtNTM2NjEzNDY2MDgyLWI1N2EyZjA1N2FiNDBlNDE2OTg4YmI1N2I3OWVjOWI2MzIyYmJmMDQwMTY2MmUwZjNkMTBiYzhiZTI2M2IxMDc)
-- [Open Data Community](opendatacommunity.slack.com)
-- [Pachyderm](http://slack.pachyderm.io)
-- [PyCarolinas](bit.ly/2Y8aoIp)
-- [R for Data Analysis](r-data-team.slack.com)
-- [Software Engineering Daily](http://softwaredaily.herokuapp.com)
-- [The Data School](https://thedataschool.slack.com)
-
-#### Technical Learning Resources
-- [Chris Albon](https://chrisalbon.com/#postgresql)
-- [Mode SQL Tutorial](https://mode.com/sql-tutorial/introduction-to-sql/)
-- [Codecademy](https://www.codecademy.com/learn/learn-sql)
-- [DataQuest](https://www.dataquest.io/course/sql-fundamentals/)
-- [Khan Academy](https://www.khanacademy.org/computing/computer-programming/sql)
-- [HackerRank (Exercises)](https://www.hackerrank.com/domains/sql?filters%5Bstatus%5D%5B%5D=unsolved&badge_type=sql)
-- [Udacity](https://www.udacity.com/course/intro-to-relational-databases--ud197)
-- [Stanford University Mini-Courses](https://lagunita.stanford.edu/courses/DB/2014/SelfPaced/about)
-- [The Data School by Chartio](https://dataschool.com/learn/inroduction-to-teaching-others-sql)
-- [W3Schools](https://www.w3schools.com/sql/default.asp)
 
 
 ## Contributing to the Data Team project
