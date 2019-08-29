@@ -279,7 +279,7 @@ roles:
     - loader:
         warehouses:
             - loading
-            - fivetran
+            - fivetran_warehouse
             - stitch
         owns:
             schemas:
@@ -470,9 +470,9 @@ roles:
             - analyst_xs
             - analyst_xl
 
-    - fivetran:
+    - fivetran_role:
         warehouses:
-            - fivetran
+            - fivetran_warehouse
 
     - gitlab_ci:
         warehouses:
@@ -646,7 +646,7 @@ users:
     - fivetran:
         can_login: yes
         member_of:
-            - fivetran
+            - fivetran_role
             - loader
 
     - gitlab_ci:
@@ -826,7 +826,7 @@ warehouses:
     - engineer_xs:
         size: x-small
 
-    - fivetran:
+    - fivetran_warehouse:
         size: x-small
 
     - gitlab_postgres:
