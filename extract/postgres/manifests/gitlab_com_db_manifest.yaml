@@ -63,8 +63,8 @@ tables:
       SELECT id
       , target_type
       , group_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       FROM approver_groups
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -113,8 +113,8 @@ tables:
     import_query: >
       SELECT id
       , project_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       , milestone_id
       , group_id
       , weight
@@ -169,11 +169,11 @@ tables:
       , updated_by_id
       , last_edited_by_id
       , lock_version
-      , TO_CHAR(start_date, 'YYYY-MM-DD HH:MI:SS') as start_date
-      , TO_CHAR(end_date, 'YYYY-MM-DD HH:MI:SS') as end_date
-      , TO_CHAR(last_edited_at, 'YYYY-MM-DD HH:MI:SS') as last_edited_at
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , start_date
+      , end_date
+      , last_edited_at
+      , created_at
+      , updated_at
       , title
       , description
       , state
@@ -189,8 +189,8 @@ tables:
     import_query: >
       SELECT id
       , epic_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       FROM epic_metrics
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
