@@ -55,7 +55,7 @@ rm ~/onboarding_script.sh
       * Installs Atom, an open source text editor. Atom is reccomended because of its support for dbt autocompletion.
       * Installing dbt, the open source tool we use for data transformations.
       * Installing goto, an easy way to move through the file system. [Please find here more details on how to use goto](https://github.com/iridakos/goto)
-      * Installing anaconda, how we recommend folks get there python distribution.
+      * Installing anaconda, how we recommend folks get their python distribution.
    * You will be able to `goto analytics` from anywhere to go to the analytics repo locally (you will have to open a new terminal window for `goto` to start working.) If it doesn't work, try running `goto -r analytics ~/repos/analytics` then quit + reopen your terminal before trying again.
    * You will be able to `gl_open` from anywhere within the analytics project to open the repo in the UI. If doesn't work, visually inspect your `~/.bashrc` file to make sure it has [this line](https://gitlab.com/gitlab-data/analytics/blob/master/admin/make_life_easier.sh#L14). 
    * Your default python version should now be python 3. Typing `which python` into a new terminal window should now return `/usr/local/anaconda3/bin/python`
