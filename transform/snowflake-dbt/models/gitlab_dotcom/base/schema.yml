@@ -628,3 +628,9 @@ models:
       - name: group_updated_at
         tests:
           - not_null
+  - name: gitlab_dotcom_events
+    columns:
+      - name: event_id
+        tests:
+          - not_null
+          - unique
