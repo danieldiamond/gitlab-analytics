@@ -1,7 +1,3 @@
-{{ config({
-    "schema": "analytics_staging"
-    })
-}}
 WITH source as (
 
 	SELECT *
