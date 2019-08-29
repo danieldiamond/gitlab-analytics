@@ -1,10 +1,3 @@
-
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 {% set paid_plans = (2, 3, 4) %}
 {% set sensitive_fields = ['project_description', 'project_import_source', 'project_issues_template', 'project_build_coverage_regex',
                            'project_name', 'project_path', 'project_import_url', 'project_merge_requests_template'] %}
@@ -33,7 +26,7 @@ namespace_lineage AS (
     SELECT
       namespace_id,
       ultimate_parent_id,
-      ( COALESCE(ultimate_parent_id, namespace_id) IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
+      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
 ),

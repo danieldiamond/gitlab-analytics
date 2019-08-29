@@ -1,12 +1,11 @@
 {{
   config(
     materialized='incremental',
-    unique_key='id', 
-    schema='analytics'
+    unique_key='id'
   )
 }}
 
-{% set ping_list = dbt_utils.get_column_values(table=ref('pings_list'), column='full_ping_name', max_records=1000) %}
+{% set ping_list = dbt_utils.get_column_values(table=ref('pings_list'), column='full_ping_name', max_records=1000, default=['']) %}
 
 WITH usage_data as (
 

@@ -1,8 +1,8 @@
-{{
-  config(
-    materialized='incremental',
-    unique_key='event_id'
-  )
+{{config({
+    "materialized":"incremental",
+    "unique_key":"event_id",
+    "schema":"staging"
+  })
 }}
 
 {% set change_form = ['formId','elementId','nodeName','type','elementClasses','value'] %}
@@ -163,6 +163,7 @@ FROM {{ source('gitlab_snowplow', 'events') }}
 WHERE app_id IS NOT NULL
 AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(page_url) NOT LIKE 'http://localhost:%'
+AND derived_tstamp != 'com.snowplowanalytics.snowplow'
 
 {% if is_incremental() %}
     AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})

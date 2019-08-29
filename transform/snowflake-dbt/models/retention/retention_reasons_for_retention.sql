@@ -1,5 +1,3 @@
-{{ config(schema='analytics') }}
-
 with raw_mrr_totals_levelled AS (
 
        SELECT * FROM {{ref('mrr_totals_levelled')}}

@@ -78,4 +78,3 @@ sources:
         description: '{{ doc("sfdc_opp_arch_source") }}'
       - name: sfdc_users_archived
         description: '{{ doc("sfdc_users_arch_source") }}'
-

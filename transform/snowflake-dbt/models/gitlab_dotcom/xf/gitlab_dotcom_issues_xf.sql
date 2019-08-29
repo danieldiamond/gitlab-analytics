@@ -1,11 +1,5 @@
 -- depends_on: {{ ref('engineering_productivity_metrics_projects_to_include') }}
 
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 {% set fields_to_mask = ['title', 'description'] %}
 
 
@@ -51,7 +45,7 @@ with issues as (
     SELECT
       namespace_id
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
-    WHERE COALESCE(ultimate_parent_id, namespace_id) IN {{ get_internal_parent_namespaces() }}
+    WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
 ),
 
 joined as (

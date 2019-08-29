@@ -1,3 +1,30 @@
+{% docs gitlab_dotcom_gitlab_issues_requests %}
+
+This model enables product managers to surface which issue has been requested by potential prospects and current customers. The final model creates a table where each row is unique tuple of a `issue_id` and a `sfdc_account_id`.
+
+It extends the model `gitlab_dotcom_notes_linked_to_sfdc_account_id` by joining it to SFDC account metadata through the `account_id`. We add then the following metrics:
+
+* `total_tcv`
+* `carr_total`
+* `count_licensed_users`
+
+We also join the model `gitlab_dotcom_notes_linked_to_sfdc_account_id` to `gitlab_dotcom_issues`, `gitlab_dotcom_projects` and `gitlab_dotcom_namespaces_xf` to add more metadata about issues, projects and namespaces.
+
+{% enddocs %}
+
+{% docs gitlab_dotcom_internal_notes_xf %}
+
+This model is a subset of `gitlab_dotcom_notes` model which selects only notes coming from projects in Gitlab Namespaces.
+
+It adds a few columns to the base `gitlab_dotcom_notes` model:
+
+* `project_name`
+* `namespace_id`
+* `namespace_name`
+* `namespace_type`
+
+{% enddocs %}
+
 {% docs gitlab_dotcom_group_audit_events_monthly%}
 
 This model provides a summary of the audit_events table at the granularity of one row per group per month.
@@ -6,7 +33,7 @@ In months where a group does not record any audit events, a row will still be cr
 
 Audit events are often used as a proxy for user activity, so this model allows for convenient Monthly Active Group calculations without having to query the entire audit_events table.
 
-This model provides `group_created_at_month` and `months_since_creation_date` columns to allow for easy cohort and retention analysis. 
+This model provides `group_created_at_month` and `months_since_creation_date` columns to allow for easy cohort and retention analysis.
 
 {% enddocs %}
 
@@ -29,6 +56,25 @@ A CTE will find projects that don't have visibility set to public and then joine
 Masks the label description based on privacy of the project that it is on.
 
 A CTE will find projects that don't have visibility set to public and then joined to the labels in order to build a CASE statement to mask the content.
+
+{% enddocs %}
+
+{% docs gitlab_dotcom_groups_xf %}
+
+This model includes all columns from the groups base model and adds the count of members and projects associated with the groups.
+It also adds 2 columns based on subscription inheritance (as described [here](https://about.gitlab.com/handbook/marketing/product-marketing/enablement/dotcom-subscriptions/#common-misconceptions)):
+
+* `groups_plan_is_paid`
+* `groups_plan_id`
+
+{% enddocs %}
+
+
+{% docs gitlab_dotcom_audit_event_monthly_active_users%}
+
+For each day, this model counts the number of active users from the previous 28 days. The definiton of an active user is completing one or more audit events within the timeframe. This model includes the referenced date as part of the 28-day window. So for example, the window on January 31th would be from the start of January 4th to the end of January 31 (inclusive).  
+
+This model includes one row for every day, but MAU for a given month will typically be reported as the MAU on the **last day of the month**.
 
 {% enddocs %}
 
@@ -86,7 +132,10 @@ The final result is determined by merging the `cohorting` table to itself when a
 
 
 {% docs gitlab_dotcom_users_xf%}
-Adds account age cohorts to the users table, the defined cohorts are:
+This model extends the base model `gitlab_dotcom_users` and adds several other dimensions
+
+### Age cohorts
+This model adds account age cohorts to the users table, the defined cohorts are:
 
 1-  1 day or less  
 2-  2 to 7 days  
@@ -97,7 +146,30 @@ Adds account age cohorts to the users table, the defined cohorts are:
 
 The CTE does this by comparing the time of the dbt run with `created_at` in the users table.
 
-Also a definition is made for account activity time, by comparing `created_at` with `last_activity_on`
+### Highest inherited subscription
+
+This model documents the highest subscription a user inherits from. Rules around inheritance are a bit complicated, as stated in the handbook [here](https://about.gitlab.com/handbook/marketing/product-marketing/enablement/dotcom-subscriptions/#common-misconceptions),
+
+>>>
+Reality: GitLab.com subscriptions are scoped to a namespace, and individual users could participate in many groups with different subscription types. For example, they might have personal projects on a Free subscription type, participate in an open-source project that has Gold features (because it's public) while their company has a Silver subscription.
+>>>
+
+A user inherits from a subscription when:
+* They are a member of a group/sub-group that has a paid subscription.
+* They are a member of a project which belongs to a group with a paid subscription
+* They have a personal subscription attached to their personal namespace.
+
+Some gotchas:
+* If a user is part of a public open-source (or edu) group/project, they will not inherit from the Gold subscription of the group/project.
+* If a user is part of a project created by another user's personal namespace, they won't inherit from the owner's namespace subscription.
+
+We then know for each user: what's the highest plan they inherit from and where they inherit it from.
+
+If a user inherits from 2+ subscriptions with the same plan, we choose one subscription over the other based on the inheritance source: First, user, then groups, then projects.
+
+### Misc
+
+A `days_active` column is added by comparing `created_at` with `last_activity_on`
 
 {% enddocs %}
 

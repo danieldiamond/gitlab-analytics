@@ -1,12 +1,5 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 {% set paid_plans = (2, 3, 4) %}
 {% set fields_to_mask = ['namespace_name', 'namespace_path'] %}
-
 
 WITH namespaces AS (
 
@@ -29,7 +22,7 @@ projects AS (
     SELECT
       namespace_id,
       ultimate_parent_id,
-      ( COALESCE(ultimate_parent_id, namespace_id) IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
+      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
 ),
@@ -41,14 +34,14 @@ joined AS (
 
       {% for field in fields_to_mask %}
       CASE
-        WHEN namespaces.visibility_level = '20' OR namespace_is_internal THEN {{field}}
-        WHEN namespaces.visibility_level = '10' AND NOT namespace_is_internal THEN 'internal - masked'
-        WHEN namespaces.visibility_level = '0'  AND NOT namespace_is_internal THEN 'private - masked'
+        WHEN namespaces.visibility_level = 'public' OR namespace_is_internal THEN {{field}}
+        WHEN namespaces.visibility_level = 'internal' THEN 'internal - masked'
+        WHEN namespaces.visibility_level = 'private'  THEN 'private - masked'
       END                                                              AS {{field}},
       {% endfor %}
 
       namespaces.owner_id,
-      namespaces.namespace_type,
+      COALESCE(namespaces.namespace_type, 'Individual')                AS namespace_type,
       namespaces.has_avatar,
       namespaces.namespace_created_at,
       namespaces.namespace_updated_at,
@@ -82,7 +75,7 @@ joined AS (
         ON namespaces.namespace_id = projects.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
-    {{ dbt_utils.group_by(n=28) }} 
+    {{ dbt_utils.group_by(n=28) }}
 )
 
 SELECT *

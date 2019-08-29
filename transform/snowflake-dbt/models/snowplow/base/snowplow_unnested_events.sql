@@ -1,7 +1,5 @@
 {{
   config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter",
     "materialized": "incremental",
     "unique_key": "event_id"
   })

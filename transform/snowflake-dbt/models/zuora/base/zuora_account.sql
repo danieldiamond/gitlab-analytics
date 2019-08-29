@@ -1,9 +1,12 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 WITH source AS (
 
 	SELECT *
     FROM {{ source('zuora', 'account') }}
-
-
 
 ), renamed AS(
 
@@ -85,9 +88,3 @@ WITH source AS (
 
 SELECT *
 FROM renamed
--- temporary filter while finance corrects issue
-WHERE account_id NOT IN  (
-  '2c92a0086bc9001b016bcea432160f79',
-	'2c92a0076bff1825016c01f2123b273f'
-
-)

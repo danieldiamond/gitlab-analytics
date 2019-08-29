@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 WITH sfdc_opportunity AS (
 
     SELECT * FROM {{ref('sfdc_opportunity')}}
@@ -22,8 +16,8 @@ WITH sfdc_opportunity AS (
 
 ), sfdc_record_type AS (
 
-     SELECT *
-     FROM {{ ref('sfdc_record_type') }}
+    SELECT *
+    FROM {{ ref('sfdc_record_type') }}
 
 ), layered AS (
 

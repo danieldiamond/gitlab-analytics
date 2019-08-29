@@ -38,31 +38,28 @@ def query_executor(engine: Engine, query: str) -> Tuple[str]:
     return results
 
 
-def table_has_changed(
-    data: pd.DataFrame, engine: Engine, schema: str, table: str
-) -> bool:
+def table_has_changed(data: pd.DataFrame, engine: Engine, table: str) -> bool:
     """
     Check if the table has changed before uploading.
     """
 
-    if engine.has_table(table, schema):
-        existing_table = pd.read_sql_table(table, engine, schema)
+    if engine.has_table(table):
+        existing_table = pd.read_sql_table(table, engine)
         if "_updated_at" in existing_table.columns and existing_table.drop(
             "_updated_at", axis=1
         ).equals(data):
             info(f'Table "{table}" has not changed. Aborting upload.')
             return False
-        return True
+    return True
 
 
 def dw_uploader(
     engine: Engine,
     table: str,
-    schema: str,
     data: pd.DataFrame,
     chunk: int = 0,
     truncate: bool = False,
-) -> None:
+) -> bool:
     """
     Use a DB engine to upload a dataframe.
     """
@@ -74,23 +71,20 @@ def dw_uploader(
 
     # If the data isn't chunked, or this is the first iteration, drop table
     if not chunk and not truncate:
-        table_changed = table_has_changed(data, engine, schema, table)
+        table_changed = table_has_changed(data, engine, table)
         if not table_changed:
             return False
-        engine.connect().execute("DROP TABLE {}.{} CASCADE".format(schema, table))
+        drop_query = f"DROP TABLE IF EXISTS {table} CASCADE"
+        query_executor(engine, drop_query)
+
     # Add the _updated_at metadata and set some vars if chunked
     data["_updated_at"] = time()
     if_exists = "append" if chunk else "replace"
-
     data.to_sql(
-        name=table,
-        con=engine,
-        schema=schema,
-        index=False,
-        if_exists=if_exists,
-        chunksize=15000,
+        name=table, con=engine, index=False, if_exists=if_exists, chunksize=15000
     )
-    info(f"Successfully loaded {data.shape[0]} rows into {schema}.{table}")
+    info(f"Successfully loaded {data.shape[0]} rows into {table}")
+    return True
 
 
 def sheet_loader(
@@ -115,7 +109,7 @@ def sheet_loader(
     with open(sheet_file, "r") as file:
         sheets = file.read().splitlines()
 
-    engine = snowflake_engine_factory(conn_dict or env, "LOADER")
+    engine = snowflake_engine_factory(conn_dict or env, "LOADER", SHEETLOAD_SCHEMA)
     info(engine)
     # Get the credentials for sheets and the database engine
     scope = [
@@ -137,7 +131,7 @@ def sheet_loader(
             .get_all_values()
         )
         sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
-        dw_uploader(engine, table, SHEETLOAD_SCHEMA, sheet_df)
+        dw_uploader(engine, table, sheet_df)
         info(f"Finished processing for table: {sheet_info}")
 
     query = """grant select on all tables in schema "{}".{} to role transformer""".format(
@@ -153,7 +147,6 @@ def gcs_loader(
     compression: str = "gzip",
     conn_dict: Dict[str, str] = None,
     gapi_keyfile: str = None,
-    schema: str = "sheetload",
 ) -> None:
     """
     Download a CSV file from a GCS bucket and then pass it to dw_uploader.
@@ -171,7 +164,7 @@ def gcs_loader(
     chunksize = 15000
     chunk_iter = 0
 
-    engine = snowflake_engine_factory(conn_dict or env, "LOADER")
+    engine = snowflake_engine_factory(conn_dict or env, "LOADER", SHEETLOAD_SCHEMA)
 
     # Get the gcloud storage client and authenticate
     scope = ["https://www.googleapis.com/auth/cloud-platform"]
@@ -200,9 +193,7 @@ def gcs_loader(
     # Upload each chunk of the file
     for chunk in sheet_df:
         chunk[chunk.columns] = chunk[chunk.columns].astype("str")
-        dw_uploader(
-            engine=engine, table=table, schema=schema, data=chunk, chunk=chunk_iter
-        )
+        dw_uploader(engine=engine, table=table, data=chunk, chunk=chunk_iter)
         chunk_iter += 1
 
 
@@ -219,7 +210,7 @@ def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> Non
     """
 
     # Create Snowflake engine
-    engine = snowflake_engine_factory(conn_dict or env, "LOADER")
+    engine = snowflake_engine_factory(conn_dict or env, "LOADER", schema)
     info(engine)
 
     # Set S3 Client
@@ -248,7 +239,7 @@ def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> Non
 
             table, extension = file.split(".")[0:2]
 
-            dw_uploader(engine, table, schema, sheet_df, truncate=True)
+            dw_uploader(engine, table, sheet_df, truncate=True)
 
 
 if __name__ == "__main__":

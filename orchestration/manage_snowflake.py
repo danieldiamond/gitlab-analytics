@@ -100,14 +100,14 @@ class SnowflakeManager:
                     connection.close()
                     self.engine.dispose()
 
-    def delete_clone(self):
+    def delete_clones(self):
         """
         Delete a clone.
         """
         db_list = [self.analytics_database, self.raw_database]
 
         for db in db_list:
-            query = 'drop database "{}";'.format(db)
+            query = 'DROP DATABASE IF EXISTS "{}";'.format(db)
             try:
                 logging.info("Executing Query: {}".format(query))
                 connection = self.engine.connect()

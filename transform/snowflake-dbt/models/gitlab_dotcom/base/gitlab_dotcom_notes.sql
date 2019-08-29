@@ -1,6 +1,6 @@
 {{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
+    "materialized": "incremental",
+    "unique_key": "note_id"
     })
 }}
 
@@ -10,6 +10,12 @@ WITH source AS (
     *,
     ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
   FROM {{ source('gitlab_dotcom', 'notes') }}
+
+  {% if is_incremental() %}
+
+  WHERE updated_at >= (SELECT MAX(note_updated_at) FROM {{this}})
+
+  {% endif %}
 
 ), renamed AS (
 
@@ -34,7 +40,6 @@ WITH source AS (
       resolved_at::timestamp                                AS resolved_at,
       resolved_by_id::integer                               AS resolved_by_id,
       discussion_id::varchar                                AS discussion_id,
-      note_html::varchar                                    AS note_html,
       cached_markdown_version::integer                      AS cached_markdown_version,
       resolved_by_push::boolean                             AS resolved_by_push
     FROM source
@@ -44,4 +49,7 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+WHERE note_id NOT IN (
+                      203215238 --https://gitlab.com/gitlab-data/analytics/merge_requests/1423
+                     )
 ORDER BY note_created_at

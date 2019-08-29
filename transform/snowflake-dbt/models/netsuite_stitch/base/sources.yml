@@ -22,11 +22,15 @@ sources:
         identifier: accountingperiod
       - name: consolidated_exchange_rate
         identifier: consolidatedexchangerate
+        freshness: null
       - name: currency_rate
         identifier: currencyrate
       - name: customer
+        freshness: null
       - name: deleted
+        freshness: null
       - name: department
       - name: subsidiary
       - name: transaction
       - name: vendor
+        freshness: null

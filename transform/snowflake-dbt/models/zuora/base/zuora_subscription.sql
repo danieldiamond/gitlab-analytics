@@ -1,8 +1,12 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 WITH source AS (
 
 	SELECT *
     FROM {{ source('zuora', 'subscription') }}
-
 
 ), renamed AS (
 
@@ -81,4 +85,3 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-WHERE md5(subscription_name_slugify) != '639b118ab364d61919c3acd443c2dae8'

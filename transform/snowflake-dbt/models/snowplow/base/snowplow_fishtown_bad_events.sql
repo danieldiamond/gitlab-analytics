@@ -1,7 +1,8 @@
-{{
-  config(
-    materialized='incremental'
-  )
+{{config({
+    "materialized":"incremental",
+    "unique_key":"base64_event",
+    "schema":"staging"
+  })
 }}
 
 WITH base as (
