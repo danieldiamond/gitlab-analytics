@@ -2,7 +2,8 @@
   config({
     "materialized":"incremental",
     "unique_key":"event_id",
-    "schema":"staging"
+    "schema":"staging",
+    "enabled": false
   })
 }}
 

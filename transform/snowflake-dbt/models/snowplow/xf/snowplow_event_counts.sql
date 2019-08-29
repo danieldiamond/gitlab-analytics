@@ -1,3 +1,11 @@
+{% set year_value = env_var('CURRENT_YEAR') %}
+{% set month_value = env_var('CURRENT_MONTH') %}
+
+{{config({
+    "schema":"snowplow_" + year_value|string + '_' + month_value|string,  
+  })
+}}
+
 WITH good_events AS (
 
     SELECT *

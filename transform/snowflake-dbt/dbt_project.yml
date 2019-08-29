@@ -51,7 +51,7 @@ models:
         - "grant select on {{this}} to role reporter"
 
     snowplow:
-      schema: analytics
+      schema: "snowplow_{{ env_var('CURRENT_YEAR') }}_{{ env_var('CURRENT_MONTH') }}"
       tags: ["product"]
       post-hook: "grant select on {{this}} to role reporter"
       vars:

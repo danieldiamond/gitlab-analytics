@@ -1,7 +1,11 @@
+{% set year_value = env_var('CURRENT_YEAR') %}
+{% set month_value = env_var('CURRENT_MONTH') %}
+
 {{config({
-    "schema": "staging"
+    "schema":"snowplow_" + year_value|string + '_' + month_value|string, 
   })
 }}
+
 
 WITH events AS (
 

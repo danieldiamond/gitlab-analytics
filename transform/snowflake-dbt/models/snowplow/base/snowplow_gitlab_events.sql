@@ -1,7 +1,10 @@
+{% set year_value = env_var('CURRENT_YEAR') %}
+{% set month_value = env_var('CURRENT_MONTH') %}
+
 {{config({
     "materialized":"incremental",
     "unique_key":"event_id",
-    "schema":"staging"
+    "schema":"snowplow_" + year_value|string + '_' + month_value|string, 
   })
 }}
 
@@ -161,6 +164,8 @@ FROM {{ source('gitlab_snowplow', 'events') }}
 {%- endif %}
 
 WHERE app_id IS NOT NULL
+AND date_part(month, derived_tstamp::timestamp) = {{ month }}
+AND date_part(year, derived_tstamp::timestamp) = {{ year }} 
 AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(page_url) NOT LIKE 'http://localhost:%'
 AND derived_tstamp != 'com.snowplowanalytics.snowplow'

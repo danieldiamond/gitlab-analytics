@@ -1,7 +1,10 @@
+{% set year_value = env_var('CURRENT_YEAR') %}
+{% set month_value = env_var('CURRENT_MONTH') %}
+
 {{config({
     "materialized":"incremental",
     "unique_key":"base64_event",
-    "schema":"staging"
+    "schema":"snowplow_" + year_value|string + '_' + month_value|string, 
   })
 }}
 
@@ -10,6 +13,8 @@ WITH base AS (
     SELECT *
     FROM {{ source('gitlab_snowplow', 'bad_events') }}
     WHERE length(JSONTEXT['errors']) > 0
+    AND date_part(month, uploaded_at::timestamp) = {{ month }}
+    AND date_part(year, uploaded_at::timestamp) = {{ year }} 
 
     {%- if is_incremental() %}
       AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
