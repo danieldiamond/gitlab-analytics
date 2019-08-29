@@ -1,6 +1,6 @@
 ## Tools & Access
 
-Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed.
+Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed. There is a lot of information in the on-boarding issue, so please bookmark handbook pages, documentation pages, and log-ins for future reference. The goal is for you to complete and close the Data Team on-boarding issue within 1 week after you have completed the GitLab company on-boarding issue. These resources will be super helpful and serve as great reference material as you get up to speed and learn to work through issues and merge requests [over your first 90 day](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/job-families/finance/data-analyst/index.html.md#how-youll-ramp).
 
 - [ ] Manager: Create access request using data analyst baseline.
    - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
@@ -23,7 +23,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 
 WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
-- [ ] Read (skim) through this full issue, just so you have a sense of what's coming.
+- [ ] Read (skim) through this full issue, just so you have a sense of what's coming. 
 - [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
 - [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `data-triage`, and `business-operations`.
    - [ ] Engineers, join `analytics-pipelines`
