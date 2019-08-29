@@ -70,7 +70,7 @@ It also adds 2 columns based on subscription inheritance (as described [here](ht
 {% enddocs %}
 
 
-{% docs gitlab_dotcom_audit_event_monthly_active_users%}
+{% docs gitlab_dotcom_events_monthly_active_users%}
 
 For each day, this model counts the number of active users from the previous 28 days. The definiton of an active user is completing one or more audit events within the timeframe. This model includes the referenced date as part of the 28-day window. So for example, the window on January 31th would be from the start of January 4th to the end of January 31 (inclusive).  
 

@@ -1,3 +1,12 @@
+## Action Type([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/action_type.sql))
+This macro maps action type ID to the action type.
+Usage:
+```
+{{action_type(1)}}
+```
+Used in:
+- gitlab_dotcom_events.sql
+
 ## Alter Warehouse ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/alter_warehouse.sql))
 This macro turns on or off a Snowflake warehouse.
 Usage:

@@ -95,4 +95,5 @@ sources:
         identifier: gitlab_db_approver_groups
       - name: approvals
         identifier: gitlab_db_approvals
-
+      - name: events
+        identifier: gitlab_db_events
