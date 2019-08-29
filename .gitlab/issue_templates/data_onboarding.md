@@ -101,7 +101,7 @@ You can use `Command + Option + L` to format your file.
 - [ ] Peruse the [Official Docs](https://docs.getdbt.com).
 - [ ] In addition to using dbt to manage our transformations, we use dbt to maintain [our own internal documentation](https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview) on those data transformations. This is a public link. We suggest bookmarking it.
 - [ ] Read about and and watch [Drew demo dbt docs to Emilie & Taylor](https://blog.fishtownanalytics.com/using-dbt-docs-fae6137da3c3). Read about [Scaling Knowledge](https://blog.fishtownanalytics.com/scaling-knowledge-160f9f5a9b6c) and the problem we're trying to solve with our documentation.
-- [ ] Consider joining [dbt slack](https://slack.getdbt.com) (Not required, but strongly recommended).
+- [ ] Consider joining [dbt slack](https://slack.getdbt.com) (Not required, but strongly recommended; if you join use your personal email).
 - [ ] Information and troubleshooting on dbt is sparse on Google & Stack Overflow, we recommend the following sources of help when you need it:
    * Your teammates! We are all here to help!
    * dbt slack has a #beginners channel and they are very helpful.
