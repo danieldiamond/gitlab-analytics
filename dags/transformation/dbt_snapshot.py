@@ -41,8 +41,8 @@ git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-
 dbt_snapshot_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
-    dbt deps --profiles-dir profile # install packages &&
     export snowflake_load_database="RAW" &&
+    dbt deps --profiles-dir profile # install packages &&
     dbt snapshot --profiles-dir profile
 """
 dbt_snapshot = KubernetesPodOperator(
