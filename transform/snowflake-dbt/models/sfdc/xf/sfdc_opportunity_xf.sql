@@ -86,6 +86,7 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.opportunity_owner_team                                                     AS opportunity_owner_team,
         sfdc_opportunity.opportunity_owner_manager                                                  AS opportunity_owner_manager,
         sfdc_opportunity.opportunity_owner_department                                               AS opportunity_owner_department,
+        sfdc_opportunity.primary_campaign_source_id                                                 AS primary_campaign_source_id,
         sfdc_users_xf.title                                                                         AS opportunity_owner_title,
         sfdc_users_xf.role_name                                                                     AS opportunity_owner_role,
         sfdc_record_type.record_type_name,
