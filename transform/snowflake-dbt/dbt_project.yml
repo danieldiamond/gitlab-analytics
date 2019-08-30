@@ -85,7 +85,7 @@ models:
 
       customers:
         base:
-          enabled: true
+          enabled: false
           materialized: table
 
       date:
