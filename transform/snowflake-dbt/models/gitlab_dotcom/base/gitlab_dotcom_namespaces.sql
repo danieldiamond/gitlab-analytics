@@ -3,12 +3,14 @@
     })
 }}
 
-with source as (
+with source AS (
 
-	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
+  SELECT
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'namespaces') }}
 
-), renamed as (
+), renamed AS (
 
     SELECT  id :: integer                                                   AS namespace_id,
             name :: varchar                                                 AS namespace_name,

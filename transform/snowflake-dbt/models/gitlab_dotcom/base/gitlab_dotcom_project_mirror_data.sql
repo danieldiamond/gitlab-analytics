@@ -6,7 +6,9 @@
 
 WITH source AS (
 
-	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) as rank_in_key
+  SELECT
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'project_mirror_data') }}
 
 
@@ -14,12 +16,12 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                                     as project_mirror_data_id,
-      project_id :: integer                             as project_id,
-      retry_count :: integer                            as retry_count,
-      last_update_started_at :: timestamp               as last_update_started_at,
-      last_update_scheduled_at :: timestamp             as last_update_scheduled_at,
-      next_execution_timestamp :: timestamp             as next_execution_timestamp
+      id :: integer                                     AS project_mirror_data_id,
+      project_id :: integer                             AS project_id,
+      retry_count :: integer                            AS retry_count,
+      last_update_started_at :: timestamp               AS last_update_started_at,
+      last_update_scheduled_at :: timestamp             AS last_update_scheduled_at,
+      next_execution_timestamp :: timestamp             AS next_execution_timestamp
 
 
 

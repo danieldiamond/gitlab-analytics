@@ -1,19 +1,20 @@
 WITH source AS (
 
-	SELECT *,
-				ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
+  SELECT
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'label_links') }}
 
 ), renamed AS (
 
     SELECT
 
-      id :: integer                                    as label_link_id,
-      label_id :: integer                              as label_id,
-      target_id :: integer                             as target_id,
+      id :: integer                                    AS label_link_id,
+      label_id :: integer                              AS label_id,
+      target_id :: integer                             AS target_id,
       target_type,
-      created_at :: timestamp                          as label_link_created_at,
-      updated_at :: timestamp                          as label_link_updated_at
+      created_at :: timestamp                          AS label_link_created_at,
+      updated_at :: timestamp                          AS label_link_updated_at
 
 
     FROM source

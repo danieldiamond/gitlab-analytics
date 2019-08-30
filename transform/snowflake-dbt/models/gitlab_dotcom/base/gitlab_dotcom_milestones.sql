@@ -5,22 +5,24 @@
 
 WITH source AS (
 
-	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
+  SELECT
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'milestones') }}
 
 ), renamed AS (
 
     SELECT
 
-      id :: integer                           as milestone_id,
-      project_id::integer                     as project_id,
-      group_id::integer                       as group_id,
-      start_date::date                        as start_date,
-      due_date::date                          as due_date,
-      state                                   as milestone_status,
+      id :: integer                           AS milestone_id,
+      project_id::integer                     AS project_id,
+      group_id::integer                       AS group_id,
+      start_date::date                        AS start_date,
+      due_date::date                          AS due_date,
+      state                                   AS milestone_status,
 
-      created_at :: timestamp                 as milestone_created_at,
-      updated_at :: timestamp                 as milestone_updated_at
+      created_at :: timestamp                 AS milestone_created_at,
+      updated_at :: timestamp                 AS milestone_updated_at
 
     FROM source
     WHERE rank_in_key = 1
