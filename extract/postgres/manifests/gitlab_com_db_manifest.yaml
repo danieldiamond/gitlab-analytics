@@ -19,6 +19,17 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'approvals'
     export_table_primary_key: id
+  ci_builds_runner_session:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT build_id
+      , url
+      , certificate
+      , "authorization"
+      FROM ci_builds_runner_session
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_builds_runner_session
+    export_table_primary_key: build_id
   ci_build_trace_sections:
     import_db: GITLAB_DB
     import_query: >
@@ -123,17 +134,6 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_builds_metadata
     export_table_primary_key: id
-  ci_builds_runner_session:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT build_id
-      , url
-      , certificate
-      , "authorization"
-      FROM ci_builds_runner_session
-    export_schema: 'gitlab_dotcom'
-    export_table: ci_builds_runner_session
-    export_table_primary_key: build_id
   ci_group_variables:
     import_db: GITLAB_DB
     import_query: >
