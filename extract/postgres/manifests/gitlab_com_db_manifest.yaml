@@ -140,11 +140,7 @@ tables:
       SELECT id
       , key
       , value
-      , encrypted_value
-      , encrypted_value_salt
-      , encrypted_value_iv
       , group_id
-      , protected
       , created_at
       , updated_at
       , masked
