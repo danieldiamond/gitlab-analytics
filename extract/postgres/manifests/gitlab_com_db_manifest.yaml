@@ -104,8 +104,6 @@ tables:
       , project_id
       , timeout
       , timeout_source
-      , config_options
-      , config_variables
       FROM ci_builds_metadata
     export_schema: 'gitlab_dotcom'
     export_table: ci_builds_metadata
