@@ -19,6 +19,22 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'approvals'
     export_table_primary_key: id
+  ci_group_variables:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , key
+      , value
+      , group_id
+      , created_at
+      , updated_at
+      , masked
+      , variable_type
+      FROM ci_group_variables
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_group_variables
   ci_builds_runner_session:
     import_db: GITLAB_DB
     import_query: >
@@ -134,22 +150,6 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_builds_metadata
     export_table_primary_key: id
-  ci_group_variables:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , key
-      , value
-      , group_id
-      , created_at
-      , updated_at
-      , masked
-      , variable_type
-      FROM ci_group_variables
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_dotcom'
-    export_table: ci_group_variables
   events:
     import_db: GITLAB_DB
     import_query: >
