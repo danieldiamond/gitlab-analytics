@@ -104,8 +104,6 @@ tables:
       , project_id
       , timeout
       , timeout_source
-      , config_options
-      , config_variables
       FROM ci_builds_metadata
     export_schema: 'gitlab_dotcom'
     export_table: ci_builds_metadata
@@ -142,11 +140,7 @@ tables:
       SELECT id
       , key
       , value
-      , encrypted_value
-      , encrypted_value_salt
-      , encrypted_value_iv
       , group_id
-      , protected
       , created_at
       , updated_at
       , masked
