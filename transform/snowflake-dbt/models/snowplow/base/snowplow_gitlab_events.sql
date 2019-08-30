@@ -164,8 +164,8 @@ FROM {{ source('gitlab_snowplow', 'events') }}
 {%- endif %}
 
 WHERE app_id IS NOT NULL
-AND date_part(month, derived_tstamp::timestamp) = {{ month }}
-AND date_part(year, derived_tstamp::timestamp) = {{ year }} 
+AND date_part(month, uploaded_at::timestamp) = '{{ month_value }}'
+AND date_part(year, uploaded_at::timestamp) = '{{ year_value }}'
 AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(page_url) NOT LIKE 'http://localhost:%'
 AND derived_tstamp != 'com.snowplowanalytics.snowplow'

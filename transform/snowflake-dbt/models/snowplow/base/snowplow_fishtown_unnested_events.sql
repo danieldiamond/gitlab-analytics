@@ -1,9 +1,10 @@
-{{
-  config({
+{% set year_value = env_var('CURRENT_YEAR') %}
+{% set month_value = env_var('CURRENT_MONTH') %}
+
+{{config({
     "materialized":"incremental",
     "unique_key":"event_id",
-    "schema":"staging",
-    "enabled": false
+    "schema":"snowplow_" + year_value|string + '_' + month_value|string, 
   })
 }}
 
@@ -163,6 +164,8 @@ FROM {{ source('fishtown_snowplow', 'events') }}
 {%- endif %}
 
 WHERE JSONTEXT['app_id']::string IS NOT NULL
+AND date_part(month, uploaded_at::timestamp) = '{{ month_value }}'
+AND date_part(year, uploaded_at::timestamp) = '{{ year_value }}'
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'http://localhost:%'
 

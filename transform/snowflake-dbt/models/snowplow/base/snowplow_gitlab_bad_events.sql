@@ -13,8 +13,8 @@ WITH base AS (
     SELECT *
     FROM {{ source('gitlab_snowplow', 'bad_events') }}
     WHERE length(JSONTEXT['errors']) > 0
-    AND date_part(month, uploaded_at::timestamp) = {{ month }}
-    AND date_part(year, uploaded_at::timestamp) = {{ year }} 
+      AND date_part(month, uploaded_at::timestamp) = {{ month_value }}
+      AND date_part(year, uploaded_at::timestamp) = {{ year_value }} 
 
     {%- if is_incremental() %}
       AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
