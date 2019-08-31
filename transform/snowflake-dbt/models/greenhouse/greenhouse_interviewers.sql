@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "analytics"
+    })
+}}
+
 WITH source as (
 
   SELECT *
@@ -5,7 +10,7 @@ WITH source as (
 
 ), renamed as (
 
-  SELECT distinct user as interviewer_name
+  SELECT distinct user AS interviewer_name
   FROM source
 
 )

@@ -4,6 +4,8 @@
         config(
           target_database=env_var("SNOWFLAKE_LOAD_DATABASE"),
           target_schema='snapshots',
+          materialized='table', 
+          transient=false,
           unique_key='gitlab_subscription_id',
           strategy='timestamp',
           updated_at='gitlab_subscription_updated_at',

@@ -83,6 +83,7 @@ xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
 dbt_run_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
+    export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile # install packages &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse} # run on small warehouse w/o product data or snapshots &&
@@ -111,6 +112,7 @@ dbt_run = KubernetesPodOperator(
 dbt_full_refresh_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
+    export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt run --profiles-dir profile --target prod --full-refresh
@@ -138,6 +140,7 @@ dbt_full_refresh = KubernetesPodOperator(
 dbt_source_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
+    export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile &&
     dbt source snapshot-freshness --profiles-dir profile
 """
@@ -164,6 +167,7 @@ dbt_source_freshness = KubernetesPodOperator(
 dbt_test_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
+    export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile # install packages &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt test --profiles-dir profile --target prod --vars {xs_warehouse} --exclude snowplow
