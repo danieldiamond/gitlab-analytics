@@ -40,6 +40,92 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_build_trace_section_names
     export_table_primary_key: id
+  ci_pipeline_schedule_variables:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , key
+      , value
+      , encrypted_value
+      , encrypted_value_salt
+      , encrypted_value_iv
+      , pipeline_schedule_id
+      , created_at
+      , updated_at
+      , variable_type
+      FROM ci_pipeline_schedule_variables
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_pipeline_schedule_variables
+    export_table_primary_key: id
+  ci_pipeline_schedules:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , description
+      , ref
+      , cron
+      , cron_timezone
+      , next_run_at
+      , project_id
+      , owner_id
+      , active
+      , created_at
+      , updated_at
+      FROM ci_pipeline_schedules
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_pipeline_schedules
+    export_table_primary_key: id
+  ci_job_artifacts:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , job_id
+      , file_type
+      , size
+      , created_at
+      , updated_at
+      , CASE WHEN expire_at > '2262-01-01' THEN '2262-01-01' ELSE expire_at END AS expire_at
+      , file
+      , file_store
+      , file_format
+      , file_location
+      FROM ci_job_artifacts
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    additional_filtering: AND created_at NOT IN ( '0001-01-01 00:00:00+00', '1000-01-01 00:00:00+00', '10000-01-01 00:00:00+00')
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_job_artifacts
+    export_table_primary_key: id
+  ci_pipeline_chat_data:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT pipeline_id
+      , chat_name_id
+      , response_url
+      FROM ci_pipeline_chat_data
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_pipeline_chat_data
+    export_table_primary_key: pipeline_id
+  ci_pipeline_variables:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , key
+      , value
+      , encrypted_value
+      , encrypted_value_salt
+      , encrypted_value_iv
+      , pipeline_id
+      , variable_type
+      FROM ci_pipeline_variables
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_pipeline_variables
+    export_table_primary_key: id
   events:
     import_db: GITLAB_DB
     import_query: >
@@ -63,8 +149,8 @@ tables:
       SELECT id
       , target_type
       , group_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       FROM approver_groups
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -113,8 +199,8 @@ tables:
     import_query: >
       SELECT id
       , project_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       , milestone_id
       , group_id
       , weight
@@ -169,11 +255,11 @@ tables:
       , updated_by_id
       , last_edited_by_id
       , lock_version
-      , TO_CHAR(start_date, 'YYYY-MM-DD HH:MI:SS') as start_date
-      , TO_CHAR(end_date, 'YYYY-MM-DD HH:MI:SS') as end_date
-      , TO_CHAR(last_edited_at, 'YYYY-MM-DD HH:MI:SS') as last_edited_at
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , start_date
+      , end_date
+      , last_edited_at
+      , created_at
+      , updated_at
       , title
       , description
       , state
@@ -189,8 +275,8 @@ tables:
     import_query: >
       SELECT id
       , epic_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       FROM epic_metrics
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -468,6 +554,23 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'namespace_statistics'
     export_table_primary_key: id
+  namespace_root_storage_statistics:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT namespace_id
+      , repository_size
+      , lfs_objects_size
+      , wiki_size
+      , build_artifacts_size
+      , storage_size
+      , packages_size
+      , updated_at
+      FROM namespace_root_storage_statistics
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'namespace_root_storage_statistics'
+    export_table_primary_key: namespace_id
   members:
     import_db: GITLAB_DB
     import_query: >

@@ -120,7 +120,7 @@ Failure in test zuora_account_has_crm_id (tests/data_test/zuora_account_has_crm_
 
 Steps to Resolve:
 
-* Step 1: Follow the general checklist
+* Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack.
 * Step 2: Create an issue in finance asking the account get updated with a salesforce_id. Cross link this to the analytics issue
 * Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
 * Step 4: Filter out the zuora account in the base `zuora_account` model and submit your MR for review
@@ -139,7 +139,7 @@ Failure in test zuora_assert_single_ult_parent (tests/data_test/zuora_assert_sin
 
 Steps to Resolve:
 
-* Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack.
+* Step 1: Follow the general checklist
 * Step 2: Create an issue in finance asking for the Zuora account and subscription linkages to be reviewed.
 * Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue.
 * Step 4: Filter out the zuora subscription in the test based on the md5 hash of the subscription name.
