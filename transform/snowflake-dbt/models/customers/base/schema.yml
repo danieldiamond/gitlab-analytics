@@ -14,9 +14,6 @@ models:
       - name: customer_updated_at
         tests:
           - not_null
-      - name: sign_in_count
-        tests:
-          - not_null
       - name: current_sign_in_at
       - name: last_sign_in_at
       - name: zuora_account_id
