@@ -554,6 +554,23 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'namespace_statistics'
     export_table_primary_key: id
+  namespace_root_storage_statistics:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT namespace_id
+      , repository_size
+      , lfs_objects_size
+      , wiki_size
+      , build_artifacts_size
+      , storage_size
+      , packages_size
+      , updated_at
+      FROM namespace_root_storage_statistics
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'namespace_root_storage_statistics'
+    export_table_primary_key: namespace_id
   members:
     import_db: GITLAB_DB
     import_query: >
