@@ -4,20 +4,14 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, gitlab_defaults
+from airflow_utils import slack_failed_task, gitlab_defaults, gitlab_pod_env_vars
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 
 # Load the env vars into a dict and set env vars
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
-standard_pod_env_vars = {
-    "EXECUTION_DATE": "{{ next_execution_date }}",
-    "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
-    "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
-    if GIT_BRANCH == "master"
-    else f"{GIT_BRANCH}_ANALYTICS",
-}
+standard_pod_env_vars = {**gitlab_pod_env_vars, **{}}
 standard_secrets = [
     PG_PORT,
     SNOWFLAKE_LOAD_USER,
