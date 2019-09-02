@@ -2,10 +2,8 @@
 
     {{
         config(
-          target_database=env_var("SNOWFLAKE_LOAD_DATABASE"),
+          target_database='RAW',
           target_schema='snapshots',
-          materialized='table', 
-          transient=false,
           unique_key='"Employee_ID"',
           strategy='timestamp',
           updated_at='_UPDATED_AT',
