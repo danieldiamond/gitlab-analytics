@@ -131,7 +131,7 @@ for source_name, config in config_dict.items():
         # Extract Task
         incremental_cmd = f"""
             git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-            cd analytics/extract/postgres/tap_postgres/ &&
+            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
             python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type incremental
         """
         incremental_extract = KubernetesPodOperator(
@@ -166,7 +166,7 @@ for source_name, config in config_dict.items():
         # Sync Task
         sync_cmd = f"""
             git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-            cd analytics/extract/postgres/tap_postgres/ &&
+            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
             python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type sync
         """
         sync_extract = KubernetesPodOperator(
@@ -182,7 +182,7 @@ for source_name, config in config_dict.items():
         # SCD Task
         scd_cmd = f"""
             git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-            cd analytics/extract/postgres/tap_postgres/ &&
+            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
             python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type scd
         """
         scd_extract = KubernetesPodOperator(
