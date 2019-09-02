@@ -477,8 +477,8 @@ tables:
       SELECT id
       , state
       , merge_request_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , base_commit_sha
       , real_size
       , head_commit_sha
@@ -517,8 +517,8 @@ tables:
       SELECT id
       , merge_request_id
       , issue_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       FROM merge_requests_closing_issues
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -618,8 +618,8 @@ tables:
       , note
       , noteable_type
       , author_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       , project_id
       , attachment
       , line_code
@@ -652,8 +652,8 @@ tables:
       , source_id
       , source_type
       , level
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , new_note
       , new_issue
       , reopen_issue
