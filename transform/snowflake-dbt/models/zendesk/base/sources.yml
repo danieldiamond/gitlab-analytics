@@ -4,15 +4,17 @@ sources:
   - name: zendesk
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: zendesk_stitch
-    loader: Stitch
+    loader: stitch
     loaded_at_field: _sdc_batched_at
 
     freshness:
       warn_after: {count: 8, period: hour}
 
-    tables: 
+    tables:
       - name: organizations
         description: '{{ doc("zendesk_org_desc") }}'
+      - name: sla_policies
+        description: '{{ doc("zendesk_users_desc") }}'
       - name: ticket_metrics
         description: '{{ doc("zendesk_ticket_metrics_desc") }}'
       - name: tickets
