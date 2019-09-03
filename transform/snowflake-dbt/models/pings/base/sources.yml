@@ -7,7 +7,7 @@ sources:
     loaded_at_field: _uploaded_at
 
     quoting:
-      database: false
+      database: true
       schema: false
       identifier: false
 

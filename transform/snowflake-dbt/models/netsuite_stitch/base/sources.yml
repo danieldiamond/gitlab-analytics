@@ -6,11 +6,11 @@ sources:
     schema: netsuite_stitch
     loader: Stitch # informational only (free text)
     loaded_at_field: _SDC_EXTRACTED_AT # configure for all sources
-
+    
     quoting:
-      database: false
-      schema: false
+      database: true
       identifier: false
+      schema: false
 
     freshness:
       warn_after: {count: 6, period: hour}

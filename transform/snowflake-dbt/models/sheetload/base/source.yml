@@ -9,7 +9,7 @@ sources:
     description: script that loads sheets from Google Sheets into snwoflake
 
     quoting:
-      database: false
+      database: true
       schema: false
       identifier: false
 

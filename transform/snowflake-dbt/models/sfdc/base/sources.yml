@@ -6,6 +6,11 @@ sources:
     schema: salesforce_stitch
     loader: Stitch
     loaded_at_field: _sdc_batched_at
+    
+    quoting:
+      database: true
+      identifier: false
+      schema: false
 
     freshness:
         warn_after: {count: 8, period: hour}
