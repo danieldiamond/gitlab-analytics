@@ -6,12 +6,16 @@
 -- tcv
 -- uom
 
+{{config({
+    "schema": "staging"
+  })
+}}
+
 
 WITH source AS (
 
 	SELECT *
     FROM {{ source('zuora', 'rateplancharge') }}
-
 
 ), renamed AS(
 

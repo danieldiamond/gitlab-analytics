@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 with sfdc_opportunity as (
 
     SELECT distinct lead_source FROM {{ref('sfdc_opportunity')}}

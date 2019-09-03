@@ -16,9 +16,6 @@ sources:
           - name: updated_at
             tests:
               - not_null
-          - name: sign_in_count
-            tests:
-              - not_null
       - name: customers_db_orders
         columns:
           - name: id

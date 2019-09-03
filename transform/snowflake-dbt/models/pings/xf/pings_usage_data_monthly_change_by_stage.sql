@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 {% set stage_list = dbt_utils.get_column_values(table=ref('ping_metrics_to_stage_mapping_data'), column='stage') %}
 
 with change as (

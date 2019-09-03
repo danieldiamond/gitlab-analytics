@@ -10,8 +10,8 @@ WITH source as (
 
 ), renamed as (
 
-	SELECT  id 						AS referrer_id,
-          name          AS referrer_name,
+	SELECT  id 											AS referrer_id,
+          name          					AS referrer_name,
     			--keys
           organization_id,
           user_id,

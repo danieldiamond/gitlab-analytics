@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH RECURSIVE namespaces AS (
 
     SELECT * FROM {{ref('gitlab_dotcom_namespaces')}}

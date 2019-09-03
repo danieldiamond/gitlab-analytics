@@ -46,7 +46,7 @@ sheetload_cmd = f"""
     {git_cmd} &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/sheetload/ &&
-    python3 sheetload.py sheets sheets.txt snowflake    
+    python3 sheetload.py sheets --sheet_file sheets.txt
 """
 
 sheetload_run = KubernetesPodOperator(
@@ -76,6 +76,7 @@ xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
 dbt_run_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
+    export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile # install packages &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt run --profiles-dir profile --target prod --models +engineering_pulse_survey --vars {xs_warehouse} # run on small warehouse

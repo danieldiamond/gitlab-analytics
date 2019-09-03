@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "analytics"
-    })
-}}
-
 WITH epic_issues AS (
 
   SELECT *
@@ -97,3 +92,4 @@ WITH epic_issues AS (
 
 SELECT *
 FROM sfdc_account_issues
+WHERE issue_id IS NOT NULL

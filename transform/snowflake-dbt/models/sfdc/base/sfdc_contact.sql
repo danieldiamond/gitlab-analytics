@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 WITH source AS (
 
     SELECT *
@@ -69,6 +74,19 @@ WITH source AS (
         mkto_si__last_interesting_moment_date__c AS marketo_last_interesting_moment_date,
 
         {{  sfdc_source_buckets('leadsource') }}
+
+        --path factory info
+        pathfactory_experience_name__c    
+                                    AS pathfactory_experience_name,
+        pathfactory_engagement_score__c    
+                                    AS pathfactory_engagement_score,
+        pathfactory_content_count__c   
+                                    AS pathfactory_content_count,
+        pathfactory_content_list__c    
+                                    AS pathfactory_content_list,
+        pathfactory_content_journey__c    
+                                    AS pathfactory_content_journey,
+        pathfactory_topic_list__c   AS pathfactory_topic_list,
 
         --gl info
         account_owner__c            AS account_owner,

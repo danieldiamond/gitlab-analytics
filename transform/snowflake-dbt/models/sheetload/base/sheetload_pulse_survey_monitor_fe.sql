@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 with source as (
 
     SELECT * FROM {{ source('sheetload', 'pulse_survey_monitor_fe') }}

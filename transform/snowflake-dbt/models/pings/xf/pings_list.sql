@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 with pings_usage_data AS (
 
 	SELECT * FROM {{ ref('pings_usage_data') }}

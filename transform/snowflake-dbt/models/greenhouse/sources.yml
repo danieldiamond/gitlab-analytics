@@ -1,3 +1,4 @@
+
 version: 2
 
 sources:
@@ -30,7 +31,6 @@ sources:
       - name: employments
       - name: events
         freshness: null
-      - name: greenhouse_usages
       - name: hiring_team
       - name: interviewer_tags
       - name: interviewers

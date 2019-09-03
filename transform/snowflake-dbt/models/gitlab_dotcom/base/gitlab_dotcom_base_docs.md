@@ -24,6 +24,12 @@ Base model for Gitlab.com gitlab_subscriptions. These are the plan subscriptions
 
 {% enddocs %}
 
+{% docs gitlab_dotcom_events %}
+
+Base model for Gitlab.com events. Events are documented [here](https://docs.gitlab.com/ee/api/events.html).
+We do one transformation in this base model where we map an `action_type_id` to an `action_type` thanks to the macro `action_type`.
+
+{% enddocs %}
 
 {% docs visibility_documentation %}
 This content will be masked for privacy in one of the following conditions:

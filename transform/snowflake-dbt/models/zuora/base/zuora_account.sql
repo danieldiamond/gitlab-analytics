@@ -1,9 +1,12 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 WITH source AS (
 
 	SELECT *
     FROM {{ source('zuora', 'account') }}
-
-
 
 ), renamed AS(
 
@@ -85,10 +88,6 @@ WITH source AS (
 
 SELECT *
 FROM renamed
--- temporary filter while finance corrects issue
-WHERE account_id NOT IN  (
-  '2c92a0086bc9001b016bcea432160f79',
-  '2c92a0fc6c297e05016c299fb450667d', -- https://gitlab.com/gitlab-data/analytics/issues/2063
-  '2c92a0076c297df1016c356e634476fd',  --https://gitlab.com/gitlab-data/analytics/issues/2087
-	'2c92a0fe6c297e2b016c677a2b927e91' --https://gitlab.com/gitlab-data/analytics/issues/2163
+WHERE account_id NOT IN (
+  '2c92a0fd68a2d8a30168a595cd3b12c5' --https://gitlab.com/gitlab-data/analytics/issues/2328
 )

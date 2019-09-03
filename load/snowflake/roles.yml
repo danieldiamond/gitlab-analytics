@@ -81,6 +81,7 @@ roles:
                     - analytics.analytics
                     - analytics.analytics_staging
                     - analytics.analytics_meta
+                    - analytics.analytics_sensitive
                     - analytics.dbt_archive
                     - snowflake.*
             tables:
@@ -96,6 +97,13 @@ roles:
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
+                    - analytics.analytics_sensitive.gitlab_dotcom_epics
+                    - analytics.analytics_sensitive.gitlab_dotcom_issues
+                    - analytics.analytics_sensitive.gitlab_dotcom_labels
+                    - analytics.analytics_sensitive.gitlab_dotcom_merge_requests
+                    - analytics.analytics_sensitive.gitlab_dotcom_milestones
+                    - analytics.analytics_sensitive.gitlab_dotcom_namespaces
+                    - analytics.analytics_sensitive.gitlab_dotcom_projects
                     - analytics.dbt_archive.*
                     - snowflake.*.*
 
@@ -271,6 +279,8 @@ roles:
     - loader:
         warehouses:
             - loading
+            - fivetran_warehouse
+            - stitch
         owns:
             schemas:
                 - raw.*
@@ -313,6 +323,30 @@ roles:
                     - analytics.analytics_staging.*
                     - raw.snowplow.*
                     - raw.tap_postgres.*
+    
+    - pwc_contractor:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - analytics
+                    - raw
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.pwc
+                    - analytics.pwc_staging
+                    - raw.salesforce_stitch
+                    - raw.zuora_stitch
+            tables:
+                read:
+                    - analytics.pwc.*
+                    - analytics.pwc_staging.*
+                    - raw.salesforce_stitch.*
+                    - raw.zuora_stitch.*
 
     - reporter:
         warehouses:
@@ -326,35 +360,15 @@ roles:
                 read:
                     - analytics.analytics
                     - analytics.analytics_meta
+                    - analytics.analytics_staging
                     - snowflake.account_usage
 
             tables:
                 read:
                     - analytics.analytics.*
                     - analytics.analytics_meta.*
-                    - snowflake.account_usage.*
-
-    - reporter_staging:
-        warehouses:
-            - reporting
-        privileges:
-            databases:
-                read:
-                    - analytics
-                    - snowflake
-            schemas:
-                read:
-                    - analytics.analytics
-                    - analytics.analytics_staging
-                    - analytics.analytics_meta
-                    - snowflake.*
-
-            tables:
-                read:
-                    - analytics.analytics.*
                     - analytics.analytics_staging.*
-                    - analytics.analytics_meta.*
-                    - snowflake.*.*
+                    - snowflake.account_usage.*
 
     - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema
         warehouses:
@@ -433,11 +447,6 @@ roles:
             - loading
             - reporting
 
-    - ehannon:
-        warehouses:
-            - analyst_xs
-            - analyst_xl
-
     - eeastwood:
         warehouses:
             - reporting
@@ -460,6 +469,10 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_xl
+
+    - fivetran_role:
+        warehouses:
+            - fivetran_warehouse
 
     - gitlab_ci:
         warehouses:
@@ -519,17 +532,29 @@ roles:
         warehouses:
             - reporting
 
-    - periscope_staging:
-        warehouses:
-            - reporting
-
     - permission_bot:
         warehouses:
             - admin
 
-    - speters:
+    - pwc_jblessing:
         warehouses:
-            - reporting
+            - analyst_xs
+            - analyst_xl
+
+    - pwc_mrichard:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+
+    - pwc_mcoffman:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+
+    - pwc_snagaraj:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
 
     - ssichak:
         warehouses:
@@ -612,18 +637,17 @@ users:
             - eeastwood
             - reporter
 
-    - ehannon:
-        can_login: yes
-        member_of:
-            - ehannon
-            - intern
-            - reporter
-
     - ekastelein:
         can_login: yes
         member_of:
             - ekastelein
             - analyst_growth
+
+    - fivetran:
+        can_login: yes
+        member_of:
+            - fivetran_role
+            - loader
 
     - gitlab_ci:
         can_login: yes
@@ -708,24 +732,35 @@ users:
             - periscope_sensitive
             - reporter_sensitive
 
-    - periscope_staging:
-        can_login: yes
-        member_of:
-            - periscope_staging
-            - reporter_staging
-
     - permission_bot:
         can_login: yes
         member_of:
             - permission_bot
             - securityadmin
 
-    - speters:
+    - pwc_jblessing:
         can_login: yes
         member_of:
-            - securityadmin
-            - speters
-            - sysadmin
+            - pwc_contractor
+            - pwc_jblessing
+
+    - pwc_mrichard:
+        can_login: yes
+        member_of:
+            - pwc_contractor
+            - pwc_mrichard
+
+    - pwc_mcoffman:
+        can_login: yes
+        member_of:
+            - pwc_contractor
+            - pwc_mcoffman
+
+    - pwc_snagaraj:
+        can_login: yes
+        member_of:
+            - pwc_contractor
+            - pwc_snagaraj
 
     - ssichak:
         can_login: yes
@@ -789,6 +824,9 @@ warehouses:
         size: x-large
 
     - engineer_xs:
+        size: x-small
+
+    - fivetran_warehouse:
         size: x-small
 
     - gitlab_postgres:

@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 with subscription as (
 
   SELECT * FROM {{ref('zuora_subscription')}}

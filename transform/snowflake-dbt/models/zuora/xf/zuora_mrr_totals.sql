@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 WITH base_mrr AS (
 
     SELECT * FROM {{ ref('zuora_base_mrr_amortized') }}

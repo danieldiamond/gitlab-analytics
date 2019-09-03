@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 with source AS (
 
   SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key

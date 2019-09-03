@@ -28,6 +28,14 @@ on-run-end:
     - "{{grant_usage_to_schemas(schema_name, rolename)}}"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
 
+seeds:
+  gitlab_snowflake:
+    enabled: true
+    schema: staging
+  snowplow:
+    enabled: true
+    schema: staging
+
 models:
     pre-hook:
       - "{{ logging.log_model_start_event() }}"
@@ -63,6 +71,7 @@ models:
         materialized: table
       xf:
         materialized: table
+        schema: analytics
 
     gitlab_snowflake:
       enabled: true
@@ -87,6 +96,10 @@ models:
       dbt_logging:
         enabled: false
 
+      engineering:
+        enabled: true
+        materialized: table
+
       gitlab_data_yaml:
         enabled: true
         materialized: table
@@ -98,12 +111,18 @@ models:
 
       gitlab_dotcom:
         tags: ["product"]
-        enabled: true
+        enabled: false
         xf:
           materialized: table
+        base:
+          gitlab_dotcom_gitlab_subscriptions:
+            enabled: true
+          gitlab_dotcom_namespaces:
+            enabled: true
 
-      netsuite:
-        enabled: false
+      greenhouse:
+        schema: sensitive
+        enabled: true
 
       netsuite_stitch:
         enabled: true
