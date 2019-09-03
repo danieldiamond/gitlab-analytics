@@ -9,8 +9,8 @@ sources:
     
     quoting:
       database: true
-      identifier: false
       schema: false
+      identifier: false
 
     freshness:
         warn_after: {count: 1, period: day}
