@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: pings_tap_postgres
-    database: raw
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: tap_postgres
     loaded_at_field: _uploaded_at
 
