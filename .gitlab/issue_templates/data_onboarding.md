@@ -17,7 +17,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Check the [Time Blackout Sheet](https://docs.google.com/spreadsheets/d/1-L1l1x0uayj-bA_U9ETt2w12rC8SqC5mHP7Aa-rkmsY/edit#gid=0) to make sure it looks up-to-date.
 - [ ] Manager: Add to data team calendar as a calendar admin
 - [ ] Manager: Add team member to Finance team meetings
-- [ ] Manager: Add to [dbt test coverage rotation](https://about.gitlab.com/handbook/business-ops/data-team/#-team-roles)
+- [ ] Manager: Add to [dbt test coverage rotation](https://about.gitlab.com/handbook/business-ops/data-team/#-team-roles) in third week at GitLab (Week 1 = Company onboarding; Week 2 = Data team onboarding)
 - [ ] Manager: Update issue with one or two Good First Issues
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
 
