@@ -6,6 +6,11 @@ sources:
     schema: engineering_extracts
     loader: Airflow
     loaded_at_field: uploaded_at
+    
+    quoting:
+      database: true
+      identifier: false
+      schema: false
 
     freshness:
       warn_after: {count: 24, period: hour}
