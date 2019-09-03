@@ -104,8 +104,8 @@ Database Error in model pings_usage_data_monthly_change_by_stage (models/pings/x
 
 Steps to Resolve:
 
-* Step 1: Follow the general checklist
-* Step 2: Check that the rows of [ping_metrics_to_stage.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv) match the ping names in `analytics_staging.pings_list`. If `pings_list` has more rows than the CSV, the pings data has likely changed and the CSV may need to be updated to reflect that.
+* Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack.
+* Step 2: Create a new issue and ping the product folks to get the new pings categorized
 
 ### Test: zuora_account_has_crm_id
 
