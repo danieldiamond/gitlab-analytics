@@ -16,3 +16,8 @@ FULL OUTER JOIN category_mapping
   ON live_data.full_ping_name = category_mapping.stats_used_key_name
 WHERE (category_mapping.stats_used_key_name IS NULL
   OR live_data.full_ping_name IS NULL)
+  AND live_data.full_ping_name NOT IN (
+                                        'user_preferences_group_overview_details', 
+                                        'user_preferences_group_overview_security_dashboard'
+                                        )
+        
