@@ -22,8 +22,8 @@ WITH snowplow_page_views AS (
     page_view_start,
     page_url_path,
     page_view_id
-  FROM analytics.snowplow_page_views
-  WHERE page_view_start >= '2019-07-01'
+  FROM {{ ref('snowplow_page_views')}}
+  WHERE TRUE
   {% if is_incremental() %}
     AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
   {% endif %}
