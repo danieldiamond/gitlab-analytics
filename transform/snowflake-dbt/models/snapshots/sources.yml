@@ -6,6 +6,11 @@ sources:
     schema: snapshots
     loader: dbt
     loaded_at_field: _updated_at::number::timestamp
+    
+    quoting:
+      database: true
+      schema: false
+      identifier: false
 
     freshness:
         warn_after: {count: 24, period: hour}
