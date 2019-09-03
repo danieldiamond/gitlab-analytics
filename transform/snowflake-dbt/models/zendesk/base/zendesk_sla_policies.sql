@@ -11,22 +11,15 @@ with source as (
 
 renamed as (
 
-    SELECT
+  SELECT id,
+      created_at,
+      description,
+      filter['all'],
+      filter['any'],
+      position, title, updated_at,
+      policy_metrics
+  FROM RAW.ZENDESK_STITCH.SLA_POLICIES
 
-        --ids
-        id                                                  AS organization_id,
-        organization_fields['salesforce_id']::varchar       AS sfdc_account_id,
-
-        --fields
-        name                                                AS organization_name,
-        organization_fields['aar']::integer                 AS arr,
-        organization_fields['market_segment']::varchar      AS organization_market_segment,
-
-        --dates
-        created_at,
-        updated_at
-
-    FROM source
 
 )
 
