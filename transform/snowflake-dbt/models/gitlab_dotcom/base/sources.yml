@@ -7,9 +7,9 @@ sources:
     loaded_at_field: DATEADD(sec, _uploaded_at, '1970-01-01')
     loader: Airflow, tap_postgres
     description: Analytics read replica for Gitlab.com data. [Original Issue](https://gitlab.com/gitlab-com/gl-infra/infrastructure/issues/5847)
-
+    
     quoting:
-      database: false
+      database: true
       schema: false
       identifier: false
 

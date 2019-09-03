@@ -15,7 +15,8 @@ Please include links to any related MRs and/or issues.
 ## All MRs Checklist
 * [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue
 * [ ] Pipelines pass
-* [ ] Branch set to delete and commits set to squash
+* [ ] Branch set to delete
+* [ ] Commits NOT set to squash
 * [ ] This MR is ready for final review and merge.
 * [ ] Resolve all threads
 * [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer

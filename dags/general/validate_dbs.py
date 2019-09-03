@@ -114,8 +114,8 @@ for source_name, config in config_dict.items():
     # Validate Task
     validate_cmd = f"""
         git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-        cd analytics/extract/postgres/tap_postgres/ &&
-        python tap_postgres.py tap ../manifests/{config['dag_name']}_db_manifest.yaml validate
+        cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
+        python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml validate
     """
     validate_ids = KubernetesPodOperator(
         **gitlab_defaults,
