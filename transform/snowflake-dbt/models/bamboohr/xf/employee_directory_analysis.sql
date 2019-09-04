@@ -16,6 +16,7 @@ WITH employee_directory AS (
       work_email,
       hire_date,
       termination_date,
+      reports_to,
       hire_location_factor
     FROM {{ ref('employee_directory') }}
 
@@ -65,7 +66,9 @@ WITH employee_directory AS (
 
 )
 
-SELECT date_actual, employee_id,
+SELECT date_actual,
+        employee_id, 
+        reports_to,
         (first_name ||' '|| last_name) AS full_name,
         work_email,
         job_title,--the below case when statement is also used in bamboohr_job_info;
