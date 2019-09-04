@@ -4,14 +4,15 @@
     })
 }}
 
-{%- set event_ctes = ["repo_file_viewed",
+{%- set event_ctes = ["mr_viewed",
+                      "project_viewed_in_ide",
+                      "repo_file_viewed",
                       "search_performed",
-                      "mr_viewed",
-                      "wiki_page_viewed",
+                      "snippet_created",
                       "snippet_edited",
                       "snippet_viewed",
-                      "snippet_created",
-                      "project_viewed_in_ide"]
+                      "wiki_page_viewed"
+                      ]
 -%}
 
 WITH snowplow_page_views AS (
@@ -27,6 +28,38 @@ WITH snowplow_page_views AS (
   {% if is_incremental() %}
     AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
   {% endif %}
+
+)
+
+, mr_viewed AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start) AS event_date,
+    page_url_path,
+    'mr_viewed'              AS event_type,
+    page_view_id
+
+
+  FROM snowplow_page_views
+  WHERE page_url_path RLIKE '(\/([a-zA-Z-])*){2}\/merge_requests/[0-9]*'
+    AND page_url_path NOT REGEXP '/-/ide/(.)*'
+
+)
+
+, project_viewed_in_ide AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start) AS event_date,
+    page_url_path,
+    'project_viewed_in_ide'       AS event_type,
+    page_view_id
+
+  FROM snowplow_page_views
+  WHERE page_url_path RLIKE '/-/ide/project/.*'
 
 )
 
@@ -48,37 +81,47 @@ WITH snowplow_page_views AS (
 
 )
 
-, mr_viewed AS (
+, search_performed AS (
 
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
-    'mr_viewed'              AS event_type,
+    'search_performed'       AS event_type,
     page_view_id
 
-
   FROM snowplow_page_views
-  WHERE page_url_path RLIKE '(\/([a-zA-Z-])*){2}\/merge_requests/[0-9]*'
-    AND page_url_path NOT REGEXP '/-/ide/(.)*'
+  WHERE page_url_path RLIKE '/search'
 
 )
 
-, wiki_page_viewed AS (
+, snippet_created AS (
 
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
-    'wiki_page_viewed'       AS event_type,
+    'snippet_created'        AS event_type,
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path RLIKE '(\/([a-zA-Z-])*){2,}\/wiki\/tree\/.*'
-    AND page_url_path NOT REGEXP '/-/ide/(.)*'
+  WHERE page_url_path RLIKE '((\/([a-zA-Z-])*){2,})?\/snippets/new'
+)
 
+, snippet_edited AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start) AS event_date,
+    page_url_path,
+    'snippet_edited'         AS event_type,
+    page_view_id
+
+  FROM snowplow_page_views
+  WHERE page_url_path RLIKE '((\/([a-zA-Z-])*){2,})?\/snippets/[0-9]*/edit'
 )
 
 , snippet_viewed AS (
@@ -96,62 +139,19 @@ WITH snowplow_page_views AS (
 
 )
 
-, snippet_edited AS (
+, wiki_page_viewed AS (
 
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
-    'snippet_edited'         AS event_type,
+    'wiki_page_viewed'       AS event_type,
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path RLIKE '((\/([a-zA-Z-])*){2,})?\/snippets/[0-9]*/edit'
-)
-
-, snippet_created AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'snippet_created'        AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path RLIKE '((\/([a-zA-Z-])*){2,})?\/snippets/new'
-)
-
-
-, search_performed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'search_performed'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path RLIKE '/search'
-
-)
-
-, project_viewed_in_ide AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'project_viewed_in_ide'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path RLIKE '/-/ide/project/.*'
+  WHERE page_url_path RLIKE '(\/([a-zA-Z-])*){2,}\/wiki\/tree\/.*'
+    AND page_url_path NOT REGEXP '/-/ide/(.)*'
 
 )
 
