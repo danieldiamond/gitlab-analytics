@@ -21,7 +21,6 @@ WITH mr_created AS (
   FROM {{ref('gitlab_dotcom_merge_requests_xf')}}
   WHERE merge_request_created_at >= '2015-01-01'
 
-
 )
 
 , mr_comment_added AS (
