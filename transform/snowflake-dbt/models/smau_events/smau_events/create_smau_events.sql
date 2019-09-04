@@ -1,4 +1,4 @@
-WITH snowplow_create_activation_events AS (
+WITH create_snowplow_smau_events AS (
   
   SELECT
     user_snowplow_domain_id,
@@ -8,11 +8,11 @@ WITH snowplow_create_activation_events AS (
     page_view_id        AS sk_id,
     'snowplow_frontend' AS source_type
   
-  FROM {{ ref('snowplow_create_activation_events')}}
+  FROM {{ ref('create_snowplow_smau_events')}}
   
 )
 
-, gitlab_create_activation_events AS (
+, create_gitlab_dotcom_smau_events AS (
   
   SELECT
     NULL             AS user_snowplow_domain_id,
@@ -22,7 +22,7 @@ WITH snowplow_create_activation_events AS (
     sk_id,
     'gitlab_backend' AS source_type    
 
-  FROM {{ ref('gitlab_dotcom_create_activation_events')}}
+  FROM {{ ref('create_gitlab_dotcom_smau_events')}}
   
 )
 
@@ -31,7 +31,7 @@ WITH snowplow_create_activation_events AS (
   (
     
     SELECT *
-    FROM snowplow_create_activation_events
+    FROM create_snowplow_smau_events
     
   )
   
@@ -40,7 +40,7 @@ WITH snowplow_create_activation_events AS (
   (
     
     SELECT *
-    FROM gitlab_create_activation_events
+    FROM create_gitlab_dotcom_smau_events
     
   )
 )
