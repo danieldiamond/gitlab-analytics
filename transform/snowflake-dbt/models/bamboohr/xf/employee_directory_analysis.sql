@@ -16,7 +16,6 @@ WITH employee_directory AS (
       work_email,
       hire_date,
       termination_date,
-      reports_to,
       hire_location_factor
     FROM {{ ref('employee_directory') }}
 
@@ -31,6 +30,7 @@ WITH employee_directory AS (
           effective_date,
           department,
           division,
+          reports_to,
           effective_end_date
     FROM {{ ref('bamboohr_job_info') }}
 
@@ -47,6 +47,7 @@ WITH employee_directory AS (
             department_info.job_title,
             department_info.department,
             department_info.division,
+            department_info.reports_to,
             location_factor.location_factor,
             CASE WHEN hire_date = date_actual THEN True ELSE False END AS is_hire_date,
             CASE WHEN termination_date = dateadd('day', 1, date_actual) THEN True ELSE False END AS is_termination_date
@@ -67,7 +68,7 @@ WITH employee_directory AS (
 )
 
 SELECT date_actual,
-        employee_id, 
+        employee_id,
         reports_to,
         (first_name ||' '|| last_name) AS full_name,
         work_email,
