@@ -694,12 +694,8 @@ users:
     - ktam:
         can_login: yes
         member_of:
-            - accountadmin
-            - engineer
+            - analyst_core
             - ktam
-            - securityadmin
-            - sysadmin
-            - tmurphy
 
     - ksmith:
         can_login: yes
