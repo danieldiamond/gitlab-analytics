@@ -37,7 +37,17 @@ Please include links to any related MRs and/or issues.
 
 #### Testing
 - [ ] Every model should be tested AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable ([Docs](https://docs.getdbt.com/docs/testing-and-documentation))
+- [ ] The output of dbt test should be pasted into MRs directly below this point
 
+<details>
+<summary> dbt test results </summary>
+
+<pre><code>
+
+Paste the results of dbt test here, including the command.
+
+</code></pre>
+</details>
 
 #### If you use incremental dbt models
 * [ ] If the MR adds/renames columns to a specific model, a `dbt run --full-refresh` will be needed after merging the MR. Please, add it to the Reviewer Checklist to warn them that this step is required.
