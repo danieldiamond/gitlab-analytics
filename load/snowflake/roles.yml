@@ -339,14 +339,20 @@ roles:
                 read:
                     - analytics.pwc
                     - analytics.pwc_staging
+                    - analytics.pwc_write
                     - raw.salesforce_stitch
                     - raw.zuora_stitch
+                write:
+                    - analytics.pwc_write
             tables:
                 read:
                     - analytics.pwc.*
                     - analytics.pwc_staging.*
+                    - analytics.pwc_write.*
                     - raw.salesforce_stitch.*
                     - raw.zuora_stitch.*
+                write:
+                    - analytics.pwc_write.*
 
     - reporter:
         warehouses:
