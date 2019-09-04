@@ -7,21 +7,38 @@ with source as (
 
     SELECT *
     FROM {{ source('zendesk', 'sla_policies') }}
-),
 
-renamed as (
+),renamed as (
 
-  SELECT id,
-      created_at,
-      description,
-      filter['all'],
-      filter['any'],
-      position, title, updated_at,
-      policy_metrics
-  FROM RAW.ZENDESK_STITCH.SLA_POLICIES
+  SELECT
+    id::varchar                                      AS zendesk_sla_policy_id,
+    title::varchar                                   AS zendesk_sla_title,
+    description::varchar                             AS zendesk_sla_description,
+    filter_all.value['field']::varchar               AS filter_all_field,
+    filter_all.value['operator']::varchar            AS filter_all_operator,
+    filter_all.value['value']::varchar               AS filter_all_value,
+    filter_any.value['field']::varchar               AS filter_any_field,
+    filter_any.value['operator']::varchar            AS filter_any_operator,
+    filter_any.value['value']::varchar               AS filter_any_value,
+    position,
+    policy_metricss.value['business_hours']::varchar AS policy_metrics_business_hours,
+    policy_metricss.value['metric']::varchar         AS policy_metrics_metric,
+    policy_metricss.value['priority']::varchar       AS policy_metrics_priority,
+    policy_metricss.value['target']::varchar         AS policy_metrics_target
+  FROM  source,
+  LATERAL FLATTEN(INPUT => parse_json(filter['all']), outer => true) filter_all,
+  LATERAL FLATTEN(INPUT => parse_json(filter['any']), outer => true) filter_any,
+  LATERAL FLATTEN(INPUT => parse_json(policy_metrics), outer => true) policy_metricss
 
+), keyed as (
+
+  SELECT {{ dbt_utils.surrogate_key('zendesk_sla_policy_id', 'filter_all_field', 'filter_all_operator',
+            'filter_all_value', 'filter_any_field', 'filter_any_operator', 'filter_any_value',
+          'policy_metrics_business_hours', 'policy_metrics_metric', 'policy_metrics_priority', 'policy_metrics_target') }} AS surrogate_key,
+        *
+  FROM renamed
 
 )
 
 SELECT *
-FROM renamed
+FROM keyed
