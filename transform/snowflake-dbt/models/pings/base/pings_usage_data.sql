@@ -9,7 +9,7 @@ WITH source AS (
     *
   FROM {{ source('pings_tap_postgres', 'usage_data') }}
 
-) 
+),
 
 renamed AS (
 
@@ -63,6 +63,7 @@ renamed AS (
     gitaly_servers::INTEGER                  AS gitaly_servers,
 
     PARSE_JSON(counts) AS stats_used
+
   FROM source
   WHERE uuid IS NOT NULL
 )
