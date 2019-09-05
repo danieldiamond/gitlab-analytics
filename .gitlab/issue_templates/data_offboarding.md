@@ -5,3 +5,5 @@
 - [ ] Triage schedule, if applicable
 - [ ] Stitch
 - [ ] Snowflake
+- [ ] Remove from Calendar
+- [ ] Remove from Slack aliases
