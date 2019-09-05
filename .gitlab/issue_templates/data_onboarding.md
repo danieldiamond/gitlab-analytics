@@ -53,6 +53,7 @@ rm ~/onboarding_script.sh
    * This may take a while, and it might ask you for your password (multiple times) before it's done. Here's what this does:
       * Installs iTerm, a mac-OS terminal replacement
       * Installs Atom, an open source text editor. Atom is reccomended because of its support for dbt autocompletion.
+      * Installs docker so you can work out of containers.
       * Installing dbt, the open source tool we use for data transformations.
       * Installing goto, an easy way to move through the file system. [Please find here more details on how to use goto](https://github.com/iridakos/goto)
       * Installing anaconda, how we recommend folks get their python distribution.
