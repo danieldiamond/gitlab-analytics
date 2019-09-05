@@ -71,9 +71,6 @@ The internal namespaces are documented below.
 
 | namespace | namespace ID |
 | ------ | ------ |
-| cell | cell |
-| cell | cell |
-| namespace | namespace ID |
 | gitlab-com | 6543 |
 | gitlab-org | 9970 |
 | gitlab-data | 4347861 |
