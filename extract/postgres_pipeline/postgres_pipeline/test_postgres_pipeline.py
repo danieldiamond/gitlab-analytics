@@ -1,10 +1,20 @@
 import os
+import sys
+
+# Path magic so the tests can run
+sys.path.insert(
+    0,
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "postgres_pipeline",
+    ),
+)
 
 from gitlabdata.orchestration_utils import snowflake_engine_factory
 import pandas as pd
 
-from .main import load_incremental
-from .utils import (
+from main import load_incremental
+from utils import (
     query_results_generator,
     postgres_engine_factory,
     dataframe_uploader,
@@ -88,7 +98,7 @@ class TestTapPostgres:
         source_count_results = pd.read_sql(source_count_query, POSTGRES_ENGINE)
 
         # Get the manifest for a specific table
-        file_path = f"extract/postgres/manifests/{source_db}_manifest.yaml"
+        file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
 
@@ -120,7 +130,7 @@ class TestTapPostgres:
         source_count_results = pd.read_sql(source_count_query, POSTGRES_ENGINE)
 
         # Get the manifest for a specific table
-        file_path = f"extract/postgres/manifests/{source_db}_manifest.yaml"
+        file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         print(table_dict)

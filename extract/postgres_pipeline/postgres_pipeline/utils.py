@@ -149,11 +149,12 @@ def check_if_schema_changed(
 
 
 def id_query_generator(
-    source_table: str,
-    target_table: str,
+    postgres_engine: Engine,
+    primary_key: str,
     raw_query: str,
     snowflake_engine: Engine,
-    postgres_engine: Engine,
+    source_table: str,
+    target_table: str,
 ) -> Generator[str, Any, None]:
     """
     This function syncs a database with Snowflake based on IDs for each table.
@@ -163,26 +164,26 @@ def id_query_generator(
     """
 
     # Get the max ID from the target DB
-    logging.info(f"Getting max ID from target_table: {target_table}")
-    max_target_id_query = f"SELECT MAX(id) as id FROM {target_table}"
+    logging.info(f"Getting max primary key from target_table: {target_table}")
+    max_target_id_query = f"SELECT MAX({primary_key}) as id FROM {target_table}"
     # If the table doesn't exist it will throw an error, ignore it and set a default ID
     if snowflake_engine.has_table(target_table):
         max_target_id_results = query_results_generator(
             max_target_id_query, snowflake_engine
         )
-        max_target_id = next(max_target_id_results)["id"].tolist()[0]
+        max_target_id = next(max_target_id_results)[primary_key].tolist()[0]
     else:
         max_target_id = 0
     logging.info(f"Target Max ID: {max_target_id}")
 
     # Get the max ID from the source DB
     logging.info(f"Getting max ID from source_table: {source_table}")
-    max_source_id_query = f"SELECT MAX(id) as id FROM {source_table}"
+    max_source_id_query = f"SELECT MAX({primary_key}) as id FROM {source_table}"
     try:
         max_source_id_results = query_results_generator(
             max_source_id_query, postgres_engine
         )
-        max_source_id = next(max_source_id_results)["id"].tolist()[0]
+        max_source_id = next(max_source_id_results)[primary_key].tolist()[0]
     except sqlalchemy.exc.ProgrammingError as e:
         logging.exception(e)
         sys.exit(1)

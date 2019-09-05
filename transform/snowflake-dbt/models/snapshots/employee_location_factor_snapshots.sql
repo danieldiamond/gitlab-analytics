@@ -20,10 +20,18 @@ with source as (
          "DBT_VALID_TO"::number::timestamp::date                AS valid_to
     FROM source
     WHERE lower(bamboo_employee_number) NOT LIKE '%not in comp calc%'
-)
+
+), deduplicated as (
 
 SELECT bamboo_employee_number::bigint as bamboo_employee_number,
         location_factor,
         valid_from,
         valid_to
 FROM renamed
+)
+SELECT bamboo_employee_number,
+       location_factor,
+       min(valid_from) as valid_from,
+       max(valid_to) as valid_to
+FROM deduplicated
+GROUP BY 1, 2   

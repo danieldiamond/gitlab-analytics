@@ -13,6 +13,13 @@ echo "Installing git.."
 brew install git
 echo "git successfully installed"
 
+## install docker and co
+echo "Installing docker.."
+brew install docker docker-compose docker-machine xhyve docker-machine-driver-xhyve
+sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+echo "git successfully installed"
+
 ## install git completion
 echo "Installing git completion.."
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > ~/.git-completion.bash
@@ -60,8 +67,8 @@ echo '.DS_Store' >> ~/.gitignore
 echo '.idea' >> ~/.gitignore
 echo "Global gitignore created"
 
-## install the repo
-echo "Installing the analytics repo.."
+## install the project
+echo "Installing the analytics project.."
 mkdir ~/repos/
 cd ~/repos/
 git clone git@gitlab.com:gitlab-data/analytics.git

@@ -83,7 +83,6 @@ def sync_incremental_ids(
 
     raw_query = table_dict["import_query"]
     additional_filtering = table_dict.get("additional_filtering", "")
-    logging.info(table_name)
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need sync processing.")
         return False
@@ -94,7 +93,12 @@ def sync_incremental_ids(
         return False
 
     id_queries = id_query_generator(
-        table, table_name, raw_query, target_engine, source_engine
+        source_engine,
+        table_dict["export_table_primary_key"],
+        raw_query,
+        target_engine,
+        table,
+        table_name,
     )
     # Iterate through the generated queries
     for query in id_queries:

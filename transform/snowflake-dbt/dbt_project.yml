@@ -111,9 +111,18 @@ models:
 
       gitlab_dotcom:
         tags: ["product"]
-        enabled: true
+        enabled: false
         xf:
           materialized: table
+        base:
+          gitlab_dotcom_gitlab_subscriptions:
+            enabled: true
+          gitlab_dotcom_namespaces:
+            enabled: true
+
+      greenhouse:
+        schema: sensitive
+        enabled: true
 
       netsuite_stitch:
         enabled: true
