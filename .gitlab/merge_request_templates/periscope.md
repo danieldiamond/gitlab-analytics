@@ -16,11 +16,6 @@ If none, please include a description
 
 **Editor Slack Handle**: @`handle`
 
-* Housekeeping
-  - [ ] Assigned to a member of the data team
-  - [ ] Allocated to milestone per review time request
-  - [ ] Labels and Points Allocated
-
 ### Submitter Checklist
 
 * Review Items
@@ -43,6 +38,11 @@ If none, please include a description
    * [ ] Tooltips are used where appropriate and show relevant values
    * [ ] Request approval from stakeholder/business partner if applicable
    * [ ] Assign to reviewer on the data team
+
+* Housekeeping
+  - [ ] Assigned to a member of the data team
+  - [ ] Allocated to milestone per review time request
+  - [ ] Labels and Points Allocated
 
 ### Reviewer Checklist
 * Review Items

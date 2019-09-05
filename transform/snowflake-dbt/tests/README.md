@@ -104,8 +104,10 @@ Database Error in model pings_usage_data_monthly_change_by_stage (models/pings/x
 
 Steps to Resolve:
 
-* Step 1: Follow the general checklist
-* Step 2: Check that the rows of [ping_metrics_to_stage.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv) match the ping names in `analytics_staging.pings_list`. If `pings_list` has more rows than the CSV, the pings data has likely changed and the CSV may need to be updated to reflect that.
+* Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack.
+* Step 2: Create a new issue.
+* Step 3: Ask in the #product slack channel which stage the new metric belongs to.
+* Step 4: Create an MR that adds the new metric to the `ping_metrics_to_stage_mapping_data` CSV. Remember to keep it sorted alphabetically. 
 
 ### Test: zuora_account_has_crm_id
 
@@ -120,7 +122,7 @@ Failure in test zuora_account_has_crm_id (tests/data_test/zuora_account_has_crm_
 
 Steps to Resolve:
 
-* Step 1: Follow the general checklist
+* Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack.
 * Step 2: Create an issue in finance asking the account get updated with a salesforce_id. Cross link this to the analytics issue
 * Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
 * Step 4: Filter out the zuora account in the base `zuora_account` model and submit your MR for review
@@ -139,7 +141,7 @@ Failure in test zuora_assert_single_ult_parent (tests/data_test/zuora_assert_sin
 
 Steps to Resolve:
 
-* Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack.
+* Step 1: Follow the general checklist
 * Step 2: Create an issue in finance asking for the Zuora account and subscription linkages to be reviewed.
 * Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue.
 * Step 4: Filter out the zuora subscription in the test based on the md5 hash of the subscription name.

@@ -1,6 +1,6 @@
 ## Tools & Access
 
-Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed.
+Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed. There is a lot of information in the on-boarding issue, so please bookmark handbook pages, documentation pages, and log-ins for future reference. The goal is for you to complete and close the Data Team on-boarding issue within 1 week after you have completed the GitLab company on-boarding issue. These resources will be super helpful and serve as great reference material as you get up to speed and learn to work through issues and merge requests [over your first 90 day](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/job-families/finance/data-analyst/index.html.md#how-youll-ramp).
 
 - [ ] Manager: Create access request using data analyst baseline.
    - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
@@ -17,13 +17,13 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Check the [Time Blackout Sheet](https://docs.google.com/spreadsheets/d/1-L1l1x0uayj-bA_U9ETt2w12rC8SqC5mHP7Aa-rkmsY/edit#gid=0) to make sure it looks up-to-date.
 - [ ] Manager: Add to data team calendar as a calendar admin
 - [ ] Manager: Add team member to Finance team meetings
-- [ ] Manager: Add to [dbt test coverage rotation](https://about.gitlab.com/handbook/business-ops/data-team/#-team-roles)
+- [ ] Manager: Add to [data triage](https://about.gitlab.com/handbook/business-ops/data-team/#triager) in third week at GitLab (Week 1 = Company onboarding; Week 2 = Data team onboarding)
 - [ ] Manager: Update issue with one or two Good First Issues
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
 
 WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
-- [ ] Read (skim) through this full issue, just so you have a sense of what's coming.
+- [ ] Read (skim) through this full issue, just so you have a sense of what's coming. 
 - [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
 - [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `data-triage`, and `business-operations`.
    - [ ] Engineers, join `analytics-pipelines`
@@ -53,9 +53,10 @@ rm ~/onboarding_script.sh
    * This may take a while, and it might ask you for your password (multiple times) before it's done. Here's what this does:
       * Installs iTerm, a mac-OS terminal replacement
       * Installs Atom, an open source text editor. Atom is reccomended because of its support for dbt autocompletion.
+      * Installs docker so you can work out of containers.
       * Installing dbt, the open source tool we use for data transformations.
       * Installing goto, an easy way to move through the file system. [Please find here more details on how to use goto](https://github.com/iridakos/goto)
-      * Installing anaconda, how we recommend folks get there python distribution.
+      * Installing anaconda, how we recommend folks get their python distribution.
    * You will be able to `goto analytics` from anywhere to go to the analytics repo locally (you will have to open a new terminal window for `goto` to start working.) If it doesn't work, try running `goto -r analytics ~/repos/analytics` then quit + reopen your terminal before trying again.
    * You will be able to `gl_open` from anywhere within the analytics project to open the repo in the UI. If doesn't work, visually inspect your `~/.bashrc` file to make sure it has [this line](https://gitlab.com/gitlab-data/analytics/blob/master/admin/make_life_easier.sh#L14). 
    * Your default python version should now be python 3. Typing `which python` into a new terminal window should now return `/usr/local/anaconda3/bin/python`
@@ -101,7 +102,7 @@ You can use `Command + Option + L` to format your file.
 - [ ] Peruse the [Official Docs](https://docs.getdbt.com).
 - [ ] In addition to using dbt to manage our transformations, we use dbt to maintain [our own internal documentation](https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview) on those data transformations. This is a public link. We suggest bookmarking it.
 - [ ] Read about and and watch [Drew demo dbt docs to Emilie & Taylor](https://blog.fishtownanalytics.com/using-dbt-docs-fae6137da3c3). Read about [Scaling Knowledge](https://blog.fishtownanalytics.com/scaling-knowledge-160f9f5a9b6c) and the problem we're trying to solve with our documentation.
-- [ ] Consider joining [dbt slack](https://slack.getdbt.com) (Not required, but strongly recommended).
+- [ ] Consider joining [dbt slack](https://slack.getdbt.com) (Not required, but strongly recommended; if you join use your personal email).
 - [ ] Information and troubleshooting on dbt is sparse on Google & Stack Overflow, we recommend the following sources of help when you need it:
    * Your teammates! We are all here to help!
    * dbt slack has a #beginners channel and they are very helpful.
@@ -110,10 +111,12 @@ You can use `Command + Option + L` to format your file.
 
 
 ### Getting Set up with dbt locally
-- All dbt commands need to be run within the analytics project (which you can get to my typing `goto analytics` from anywhere on your Mac, specifically you must be in `analytics/transform/snowflake-dbt` or below.
-- [ ] From the command line run `atom ~/.dbt/profiles.yml` and update this file with your info.
-- [ ] When you are ready to start working with dbt start by running `dbt deps` and doing a `dbt run --models modelname`. This will take some time (estimate 1 hour, though it could be longer) the first time it runs. Ask your manager what to substitute in `modelname`.
-- [ ] Run `dbt compile` to know that your connection has been successful, you are in the correct location, and everything will run smoothly.
+- All dbt commands need to be run within the `dbt-image` docker container
+- To get into the `dbt-image` docker container, go to the analytics project (which you can get to by typing `goto analytics` from anywhere on your Mac) and run the command `make dbt-image`. This will spin up our docker container that contains `dbt` and give you a bash shell within the `analytics/transform/snowflake-dbt` directory.
+- All changes made to the files within the `analytics` repo will automatically be visible in the docker container! This container is only used to run `dbt` commands themselves, not to write SQL or edit `dbt` files in general (though technically it could be, as VIM is available within the container)
+- [ ] From a different terminal window run `atom ~/.dbt/profiles.yml` and update this file with your info.
+- [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.
+- [ ] test the command `make help` and use it to understand how to use `make dbt-docs` and access it from your local machine.
 
 Here is your dbt commands cheat sheet:
  * `dbt compile` - compiles all models
@@ -125,11 +128,9 @@ Here is your dbt commands cheat sheet:
  * `dbt run --exclude modelname` - will run all models except modelname
  * `dbt run --full-refresh` - will refresh incremental models
  * `dbt test` - will run custom data tests and schema tests; TIP: `dbt test` takes the same `--model` and `--exclude` syntax referenced for `dbt run`
- * `dbt docs generate` - will generate files for docs
- * `dbt docs serve` - will serve the dbt docs locally
- * `dbt_run_changed` - a function we've added to your computer that only runs models that have changed
- * `cycle_logs` - a function we've added to your computer to clear out the dbt logs
- * `open_dbt_docs` - a function we've added to your computer to open a local version of dbt docs (reflective of your branch) in one command
+ * `dbt_run_changed` - a function we've added to your computer that only runs models that have changed (this is accessible from within the docker container)
+ * `cycle_logs` - a function we've added to your computer to clear out the dbt logs (not accessible from within the docker container)
+ * `make dbt-docs` - a command that will spin up a local container to serve you the `dbt` docs in a web-browser, found at `localhost:8081`
 
 ## Snowflake SQL
 Snowflake SQL is probably not that different from the dialects of SQL you're already familiar with, but here are a couple of resources to point you in the right direction:

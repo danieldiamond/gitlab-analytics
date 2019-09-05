@@ -279,7 +279,7 @@ roles:
     - loader:
         warehouses:
             - loading
-            - fivetran
+            - fivetran_warehouse
             - stitch
         owns:
             schemas:
@@ -339,14 +339,20 @@ roles:
                 read:
                     - analytics.pwc
                     - analytics.pwc_staging
+                    - analytics.pwc_write
                     - raw.salesforce_stitch
                     - raw.zuora_stitch
+                write:
+                    - analytics.pwc_write
             tables:
                 read:
                     - analytics.pwc.*
                     - analytics.pwc_staging.*
+                    - analytics.pwc_write.*
                     - raw.salesforce_stitch.*
                     - raw.zuora_stitch.*
+                write:
+                    - analytics.pwc_write.*
 
     - reporter:
         warehouses:
@@ -470,9 +476,9 @@ roles:
             - analyst_xs
             - analyst_xl
 
-    - fivetran:
+    - fivetran_role:
         warehouses:
-            - fivetran
+            - fivetran_warehouse
 
     - gitlab_ci:
         warehouses:
@@ -646,7 +652,7 @@ users:
     - fivetran:
         can_login: yes
         member_of:
-            - fivetran
+            - fivetran_role
             - loader
 
     - gitlab_ci:
@@ -694,12 +700,8 @@ users:
     - ktam:
         can_login: yes
         member_of:
-            - accountadmin
-            - engineer
+            - analyst_core
             - ktam
-            - securityadmin
-            - sysadmin
-            - tmurphy
 
     - ksmith:
         can_login: yes
@@ -826,7 +828,7 @@ warehouses:
     - engineer_xs:
         size: x-small
 
-    - fivetran:
+    - fivetran_warehouse:
         size: x-small
 
     - gitlab_postgres:

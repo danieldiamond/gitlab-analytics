@@ -123,7 +123,7 @@ gitlab-org/security-products/tests/js-yarn,5456231
 gitlab-org/cluster-integration/helm-install-image,9184510
 gitlab-org/cluster-integration/auto-deploy-image,11688089
 charts/components/gitlab-operator,7686095
-charts/gitlab,3828396
+gitlab-org/charts/gitlab,3828396
 gitlab-org/fulfillment,10619765
 gitlab-org/gitlabktl,11080193
 gitlab-org/omnibus-gitlab,20699

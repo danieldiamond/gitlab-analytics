@@ -21,6 +21,7 @@ WITH source as (
 
 
     FROM source
+    WHERE eeoc_response_submitted_at IS NOT NULL
 
 )
 

@@ -84,8 +84,8 @@ models:
       - name: project_count
         description: The number of projects that are presently associated with the group.
 
-  - name: gitlab_dotcom_audit_event_monthly_active_users
-    description: '{{ doc("gitlab_dotcom_audit_event_monthly_active_users") }}'
+  - name: gitlab_dotcom_events_monthly_active_users
+    description: '{{ doc("gitlab_dotcom_events_monthly_active_users") }}'
     columns:
       - name: day
         tests:
@@ -94,9 +94,11 @@ models:
       - name: is_last_day_of_month
         tests:
           - not_null
-      - name: count_active_users_last_28_days
-        description: The number of unique active users in the previous 28 days (inclusive).
-
+      - name: count_audit_events_active_users_last_28_days
+        description: The number of unique active users (from audit events table) in the previous 28 days (inclusive). 
+      - name: count_audit_events_active_users_last_28_days
+        description: The number of unique active users (from events table) in the previous 28 days (inclusive). 
+        
   - name: gitlab_dotcom_merge_requests_xf
     description: '{{ doc("gitlab_dotcom_merge_requests_xf") }}'
     columns:

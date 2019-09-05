@@ -7,9 +7,9 @@ sources:
     loaded_at_field: DATEADD(sec, _uploaded_at, '1970-01-01')
     loader: Airflow, tap_postgres
     description: Analytics read replica for Gitlab.com data. [Original Issue](https://gitlab.com/gitlab-com/gl-infra/infrastructure/issues/5847)
-
+    
     quoting:
-      database: false
+      database: true
       schema: false
       identifier: false
 
@@ -47,6 +47,8 @@ sources:
         identifier: gitlab_db_namespaces
       - name: namespace_statistics
         identifier: gitlab_db_namespace_statistics
+      - name: namespace_root_storage_statistics
+        identifier: gitlab_db_namespace_root_storage_statistics
       - name: milestones
         identifier: gitlab_db_milestones
       - name: merge_requests_closing_issues
@@ -95,4 +97,5 @@ sources:
         identifier: gitlab_db_approver_groups
       - name: approvals
         identifier: gitlab_db_approvals
-
+      - name: events
+        identifier: gitlab_db_events
