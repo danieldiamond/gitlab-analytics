@@ -111,10 +111,12 @@ You can use `Command + Option + L` to format your file.
 
 
 ### Getting Set up with dbt locally
-- All dbt commands need to be run within the analytics project (which you can get to my typing `goto analytics` from anywhere on your Mac, specifically you must be in `analytics/transform/snowflake-dbt` or below.
-- [ ] From the command line run `atom ~/.dbt/profiles.yml` and update this file with your info.
-- [ ] When you are ready to start working with dbt start by running `dbt deps` and doing a `dbt run --models modelname`. This will take some time (estimate 1 hour, though it could be longer) the first time it runs. Ask your manager what to substitute in `modelname`.
-- [ ] Run `dbt compile` to know that your connection has been successful, you are in the correct location, and everything will run smoothly.
+- All dbt commands need to be run within the `dbt-image` docker container
+- To get into the `dbt-image` docker container, go to the analytics project (which you can get to by typing `goto analytics` from anywhere on your Mac) and run the command `make dbt-image`. This will spin up our docker container that contains `dbt` and give you a bash shell within the `analytics/transform/snowflake-dbt` directory.
+- All changes made to the files within the `analytics` repo will automatically be visible in the docker container! This container is only used to run `dbt` commands themselves, not to write SQL or edit `dbt` files in general (though technically it could be, as VIM is available within the container)
+- [ ] From a different terminal window run `atom ~/.dbt/profiles.yml` and update this file with your info.
+- [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.
+- [ ] test the command `make help` and use it to understand how to use `make dbt-docs` and access it from your local machine.
 
 Here is your dbt commands cheat sheet:
  * `dbt compile` - compiles all models
@@ -126,11 +128,9 @@ Here is your dbt commands cheat sheet:
  * `dbt run --exclude modelname` - will run all models except modelname
  * `dbt run --full-refresh` - will refresh incremental models
  * `dbt test` - will run custom data tests and schema tests; TIP: `dbt test` takes the same `--model` and `--exclude` syntax referenced for `dbt run`
- * `dbt docs generate` - will generate files for docs
- * `dbt docs serve` - will serve the dbt docs locally
- * `dbt_run_changed` - a function we've added to your computer that only runs models that have changed
- * `cycle_logs` - a function we've added to your computer to clear out the dbt logs
- * `open_dbt_docs` - a function we've added to your computer to open a local version of dbt docs (reflective of your branch) in one command
+ * `dbt_run_changed` - a function we've added to your computer that only runs models that have changed (this is accessible from within the docker container)
+ * `cycle_logs` - a function we've added to your computer to clear out the dbt logs (not accessible from within the docker container)
+ * `make dbt-docs` - a command that will spin up a local container to serve you the `dbt` docs in a web-browser, found at `localhost:8081`
 
 ## Snowflake SQL
 Snowflake SQL is probably not that different from the dialects of SQL you're already familiar with, but here are a couple of resources to point you in the right direction:
