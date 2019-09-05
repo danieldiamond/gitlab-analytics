@@ -1,5 +1,3 @@
-
-
 {% macro resume_warehouse(run, warehouse) %}
     {% if run == true %}
         alter warehouse {{warehouse}} resume
