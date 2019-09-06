@@ -25,7 +25,7 @@ renamed as (
         --fields
         status                                AS ticket_status,
         lower(priority)                       AS ticket_priority,
-        subject                               AS ticket_subject,
+        md5(subject)                          AS ticket_subject,
         md5(recipient)                        AS ticket_recipient,
         CASE WHEN recipient = 'emergency@gitlab.com' THEN 125528
             ELSE NULL
