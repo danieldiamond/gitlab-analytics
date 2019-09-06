@@ -19,7 +19,7 @@ renamed as (
 
         --fields
         name                                                AS organization_name,
-        targets                                             AS organization_tags,
+        tags                                                AS organization_tags,
         organization_fields['aar']::integer                 AS arr,
         organization_fields['market_segment']::varchar      AS organization_market_segment,
 
