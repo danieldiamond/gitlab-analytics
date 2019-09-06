@@ -1,7 +1,10 @@
 ##### Remove user from
 
-- [ ] Data team group and any projects
-- [ ] Codeowners in the handbook
-- [ ] Triage schedule, if applicable
-- [ ] Stitch
-- [ ] Snowflake
+- [ ] Remove from Data team group and any projects
+- [ ] Remove from Codeowners in the handbook
+- [ ] Remove from Triage schedule, if applicable
+- [ ] Remove from Stitch
+- [ ] Remove from Snowflake
+- [ ] Remove from Calendar
+- [ ] Remove from Slack aliases
+- [ ] Remove from Geekbot
