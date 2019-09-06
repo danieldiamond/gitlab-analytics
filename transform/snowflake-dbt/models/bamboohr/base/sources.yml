@@ -6,6 +6,11 @@ sources:
     schema: bamboohr
     loader: Airflow
     loaded_at_field: uploaded_at
+    
+    quoting:
+      database: true
+      schema: false
+      identifier: false
 
     freshness:
       warn_after: {count: 24, period: hour}

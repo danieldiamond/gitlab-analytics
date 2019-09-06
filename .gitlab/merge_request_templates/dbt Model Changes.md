@@ -37,7 +37,17 @@ Please include links to any related MRs and/or issues.
 
 #### Testing
 - [ ] Every model should be tested AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable ([Docs](https://docs.getdbt.com/docs/testing-and-documentation))
+- [ ] The output of dbt test should be pasted into MRs directly below this point
 
+<details>
+<summary> dbt test results </summary>
+
+<pre><code>
+
+Paste the results of dbt test here, including the command.
+
+</code></pre>
+</details>
 
 #### If you use incremental dbt models
 * [ ] If the MR adds/renames columns to a specific model, a `dbt run --full-refresh` will be needed after merging the MR. Please, add it to the Reviewer Checklist to warn them that this step is required.
@@ -46,7 +56,8 @@ Please include links to any related MRs and/or issues.
 ## All MRs Checklist
 * [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue
 * [ ] Pipelines pass
-* [ ] Branch set to delete and commits set to squash
+* [ ] Branch set to delete
+* [ ] Commits NOT set to squash
 * [ ] This MR is ready for final review and merge.
 * [ ] Resolve all threads
 * [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer
