@@ -32,6 +32,10 @@ seeds:
   gitlab_snowflake:
     enabled: true
     schema: staging
+    zuora_country_geographic_region:
+      enabled: true
+      schema: analytics
+
   snowplow:
     enabled: true
     schema: staging
