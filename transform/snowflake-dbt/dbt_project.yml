@@ -115,14 +115,23 @@ models:
 
       gitlab_dotcom:
         tags: ["product"]
-        enabled: false
+        enabled: true
         xf:
           materialized: table
+          gitlab_dotcom_gitlab_issues_requests:
+            enabled: false
+          gitlab_dotcom_internal_notes_xf:
+            enabled: false
         base:
-          gitlab_dotcom_gitlab_subscriptions:
-            enabled: true
-          gitlab_dotcom_namespaces:
-            enabled: true
+          gitlab_dotcom_notes:
+            enabled: false
+          gitlab_dotcom_notification_settings:
+            enabled: false
+          gitlab_dotcom_namespace_root_storage_statistics:
+            enabled: false
+        ephemeral:
+          gitlab_dotcom_notes_linked_to_sfdc_account_id:
+            enabled: false
 
       greenhouse:
         schema: sensitive
