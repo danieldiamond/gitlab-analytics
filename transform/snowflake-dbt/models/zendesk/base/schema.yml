@@ -24,8 +24,6 @@ models:
         tests:
           - not_null
       - name: zendesk_sla_description
-        tests:
-          - not_null
       - name: filter_all_field
       - name: filter_all_operator
       - name: filter_all_value

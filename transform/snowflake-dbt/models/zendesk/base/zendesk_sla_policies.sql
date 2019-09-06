@@ -20,7 +20,6 @@ with source as (
     filter_any.value['field']::varchar               AS filter_any_field,
     filter_any.value['operator']::varchar            AS filter_any_operator,
     filter_any.value['value']::varchar               AS filter_any_value,
-    position,
     policy_metricss.value['business_hours']::varchar AS policy_metrics_business_hours,
     policy_metricss.value['metric']::varchar         AS policy_metrics_metric,
     policy_metricss.value['priority']::varchar       AS policy_metrics_priority,
@@ -34,7 +33,7 @@ with source as (
 
   SELECT {{ dbt_utils.surrogate_key('zendesk_sla_policy_id', 'filter_all_field', 'filter_all_operator',
             'filter_all_value', 'filter_any_field', 'filter_any_operator', 'filter_any_value',
-          'policy_metrics_business_hours', 'policy_metrics_metric', 'policy_metrics_priority', 'policy_metrics_target') }} AS surrogate_key,
+          'policy_metrics_business_hours', 'policy_metrics_metric', 'policy_metrics_priority', 'policy_metrics_target') }} AS zendesk_sla_surrogate_key,
         *
   FROM renamed
 
