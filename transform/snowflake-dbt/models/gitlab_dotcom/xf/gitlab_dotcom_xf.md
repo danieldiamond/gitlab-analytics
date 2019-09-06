@@ -1,15 +1,3 @@
-{% docs gitlab_dotcom_create_activation_events %}
-
-This model provides a summary of relevant activation events for Create Stage coming from gitlab_dotcom database. A summary of all activation events is at the moment defined in this issue.
-
-From gitlab_dotcom database, at the moment we track the following events:
-
-* comment on a snippet
-* comment on a merge request
-* open a merge request 
-
-{% enddocs %}
-
 {% docs gitlab_dotcom_group_audit_events_monthly%}
 
 This model provides a summary of the audit_events table at the granularity of one row per group per month.
