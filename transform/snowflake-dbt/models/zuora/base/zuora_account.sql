@@ -90,4 +90,5 @@ SELECT *
 FROM renamed
 WHERE account_id NOT IN (
   '2c92a0fd68a2d8a30168a595cd3b12c5' --https://gitlab.com/gitlab-data/analytics/issues/2328
+  , '2c92a0076ccd01a9016cfcb3f1996b6c' --https://gitlab.com/gitlab-data/analytics/issues/2392
 )
