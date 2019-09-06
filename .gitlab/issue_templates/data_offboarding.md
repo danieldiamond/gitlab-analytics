@@ -8,3 +8,7 @@
 - [ ] Remove from Calendar
 - [ ] Remove from Slack aliases
 - [ ] Remove from Geekbot
+- [ ] Remove from Google Groups- finance@
+- [ ] Remove from Google Groups- analyticsapi@
+- [ ] Remove from Data group in 1Password
+- [ ] Unassign from issues
