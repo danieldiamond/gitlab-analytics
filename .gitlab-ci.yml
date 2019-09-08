@@ -150,8 +150,10 @@ python_pytest:
     - cd target
     - cp *.json *.html graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
   artifacts:
+    name: "dbt Docs Files"
     paths:
-    - public
+      - $CI_PROJECT_DIR/public/
+    expire_in: 1 week
   tags:
     - analytics
 
