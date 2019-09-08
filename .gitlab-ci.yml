@@ -144,16 +144,13 @@ python_pytest:
   script:
     - echo "SNOWFLAKE_DATABASE = $SNOWFLAKE_TRANSFORM_DATABASE"
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
+    - pwd
     - dbt deps --profiles-dir profile
     - dbt docs generate --profiles-dir profile --target prod
     - mkdir -p $CI_PROJECT_DIR/public/dbt/snowflake
     - cd target
+    - pwd
     - cp *.json *.html graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
-  artifacts:
-    name: "dbt Docs Files"
-    paths:
-      - $CI_PROJECT_DIR/public/
-    expire_in: 1 week
   tags:
     - analytics
 
