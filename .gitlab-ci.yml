@@ -146,7 +146,7 @@ python_pytest:
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
     - pwd
     - dbt deps --profiles-dir profile
-    - dbt docs generate --profiles-dir profile --target prod
+    - dbt -d docs generate --profiles-dir profile --target prod
     - mkdir -p $CI_PROJECT_DIR/public/dbt/snowflake
     - cd target
     - pwd
