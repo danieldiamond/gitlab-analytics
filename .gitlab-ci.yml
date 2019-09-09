@@ -144,12 +144,10 @@ python_pytest:
   script:
     - echo "SNOWFLAKE_DATABASE = $SNOWFLAKE_TRANSFORM_DATABASE"
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
-    - pwd
     - dbt deps --profiles-dir profile
-    - dbt -d docs generate --profiles-dir profile --target prod
+    - "dbt docs generate --profiles-dir profile 'client_session_keep_alive: False'"
     - mkdir -p $CI_PROJECT_DIR/public/dbt/snowflake
     - cd target
-    - pwd
     - cp *.json *.html graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
   tags:
     - analytics
