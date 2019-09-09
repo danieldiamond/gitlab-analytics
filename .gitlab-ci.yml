@@ -145,12 +145,18 @@ python_pytest:
     - echo "SNOWFLAKE_DATABASE = $SNOWFLAKE_TRANSFORM_DATABASE"
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
     - dbt deps --profiles-dir profile
-    - "dbt docs generate --profiles-dir profile 'client_session_keep_alive: False'"
+    - "dbt docs generate --profiles-dir profile --vars 'client_session_keep_alive: False'"
     - mkdir -p $CI_PROJECT_DIR/public/dbt/snowflake
     - cd target
     - cp *.json *.html graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
   tags:
     - analytics
+  artifacts:
+    name: "dbt Docs Files"
+    paths:
+      - public
+    expire_in: 1 week
+
 
 # Run the script to generate the dbt docs and stand them up in gitlab pages
 pages:
