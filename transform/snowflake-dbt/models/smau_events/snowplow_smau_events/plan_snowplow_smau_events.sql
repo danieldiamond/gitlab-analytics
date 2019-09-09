@@ -34,38 +34,6 @@ WITH snowplow_page_views AS (
 
 )
 
-, issue_list_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'issue_list_viewed'       AS event_type,
-    page_view_id
-
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/issues(\/)?'
-
-)
-
-, issue_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'issue_viewed'              AS event_type,
-    page_view_id
-
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/issues\/[0-9]{1,}'
-
-)
-
 , board_viewed AS (
 
   SELECT
@@ -110,20 +78,37 @@ WITH snowplow_page_views AS (
   WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/epics\/[0-9]{1,}'
 )
 
-, roadmap_viewed AS (
+, issue_list_viewed AS (
 
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
-    'roadmap_viewed'        AS event_type,
+    'issue_list_viewed'       AS event_type,
     page_view_id
 
+
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/roadmap_viewed(\/)?'
+  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/issues(\/)?'
+
 )
 
+, issue_viewed AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start) AS event_date,
+    page_url_path,
+    'issue_viewed'              AS event_type,
+    page_view_id
+
+
+  FROM snowplow_page_views
+  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/issues\/[0-9]{1,}'
+
+)
 
 , label_list_viewed AS (
 
@@ -170,18 +155,18 @@ WITH snowplow_page_views AS (
 
 )
 
-, todo_viewed AS (
+, notification_settings_viewed AS (
 
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
-    'todo_viewed'       AS event_type,
+    'notification_settings_viewed'       AS event_type,
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '\/dashboard\/todo(\/)?'
+  WHERE page_url_path REGEXP '\/profile\/notifications(\/)?'
 
 )
 
@@ -200,18 +185,33 @@ WITH snowplow_page_views AS (
 
 )
 
-, notification_settings_viewed AS (
+, roadmap_viewed AS (
 
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
-    'notification_settings_viewed'       AS event_type,
+    'roadmap_viewed'        AS event_type,
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '\/profile\/notifications(\/)?'
+  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/roadmap_viewed(\/)?'
+)
+
+
+, todo_viewed AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start) AS event_date,
+    page_url_path,
+    'todo_viewed'       AS event_type,
+    page_view_id
+
+  FROM snowplow_page_views
+  WHERE page_url_path REGEXP '\/dashboard\/todo(\/)?'
 
 )
 
