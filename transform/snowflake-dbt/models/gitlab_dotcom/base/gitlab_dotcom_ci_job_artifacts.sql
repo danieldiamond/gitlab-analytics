@@ -22,7 +22,6 @@ WITH source AS (
     expire_at::TIMESTAMP  AS ci_job_artifact_expire_at, 
     file                  AS file, 
     file_store            AS file_store, 
-    file_sha256           AS file_sha, 
     file_format           AS file_format, 
     file_location         AS file_location 
 
