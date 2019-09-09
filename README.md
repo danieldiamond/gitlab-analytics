@@ -17,9 +17,6 @@
       * [Netsuite and Campaign Data](https://drive.google.com/open?id=1KUMa8zICI9_jQDqdyN7mGSWSLdw97h5-)
    * [Zendesk](https://drive.google.com/open?id=1oExE1ZM5IkXcq1hJIPouxlXSiafhRRua)
    * [Customer Success Dashboards](https://drive.google.com/open?id=1FsgvELNmQ0ADEC1hFEKhWNA1OnH-INOJ)
-* Taylor and Israel pair on a Lost MRR Dashboard
-   * [Part 1](https://www.youtube.com/watch?v=WuIcnpuS2Mg)
-   * [Part 2](https://youtu.be/HIlDH5gaL3M)
 
 ## Contributing to the Data Team project
 
