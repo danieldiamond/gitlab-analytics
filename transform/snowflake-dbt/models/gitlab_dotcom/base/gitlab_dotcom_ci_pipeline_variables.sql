@@ -11,7 +11,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT 
-      id::INTEGEr          AS ci_poipeline_variable_id, 
+      id::INTEGEr          AS ci_pipeline_variable_id, 
       key                  AS key, 
       value                AS value, 
       encrypted_value      AS encrypted_value, 

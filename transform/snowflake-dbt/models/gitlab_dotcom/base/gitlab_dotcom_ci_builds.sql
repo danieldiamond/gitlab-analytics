@@ -12,7 +12,7 @@ WITH source AS (
 ), renamed AS (
 
   SELECT 
-    id::INTEGER                      AS id, 
+    id::INTEGER                      AS ci_build_id, 
     status                           AS status, 
     finished_at::TIMESTAMP           AS ci_build_finished_at, 
     trace                            AS trace, 
