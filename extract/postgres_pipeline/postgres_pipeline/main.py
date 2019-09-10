@@ -13,7 +13,7 @@ from utils import (
     id_query_generator,
     manifest_reader,
 )
-from validation import *
+from validation import get_comparison_results
 
 
 SCHEMA = "tap_postgres"
@@ -177,7 +177,7 @@ def validate_ids(
     return True
 
 
-def main(file_path: str, load_type: str = None) -> None:
+def main(file_path: str, load_type: str) -> None:
     """
     Read data from a postgres DB and upload it directly to Snowflake.
     """
