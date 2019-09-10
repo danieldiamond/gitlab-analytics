@@ -1,5 +1,3 @@
-[![pipeline status](https://gitlab.com/gitlab-data/analytics/badges/master/pipeline.svg)](https://gitlab.com/gitlab-data/analytics/commits/master)
-
 ## Quick Links
 * Data Team Handbook - https://about.gitlab.com/handbook/business-ops/data-team/#data-team-handbook 
 * dbt Docs - https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview
