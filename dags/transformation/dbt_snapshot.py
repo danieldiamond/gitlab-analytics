@@ -47,7 +47,7 @@ dbt_snapshot_cmd = f"""
 """
 dbt_snapshot = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:63-upgrade-dbt-to-0-14",
+    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
     task_id="dbt-snapshots",
     name="dbt-snapshots",
     secrets=[
