@@ -43,7 +43,7 @@ final AS (
     host_id,
 
     {% for ping_name in ping_list %}
-    stats_used['{{ping_name}}']::numeric                                AS {{ping_name}} {{ "," if not loop.last }}
+    stats_used:{{ping_name}}::numeric                                               AS {{ping_name}} {{ "," if not loop.last }}
     {% endfor %}
 
   FROM usage_data
