@@ -147,6 +147,7 @@ models:
       pings:
         tags: ["product"]
         enabled: true
+        materialized: table
 
       pipe2spend:
         enabled: false

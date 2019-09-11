@@ -5,7 +5,7 @@
   )
 }}
 
-{% set ping_list = dbt_utils.get_column_values(table=ref('pings_list'), column='full_ping_name', max_records=1000, default=['']) %}
+{% set ping_list = dbt_utils.get_column_values(table=ref('pings_list'), column='ping_name', max_records=1000, default=['']) %}
 
 WITH usage_data as (
 
@@ -43,7 +43,7 @@ final AS (
     host_id,
 
     {% for ping_name in ping_list %}
-    stats_used:{{ping_name}}::numeric                                               AS {{ping_name}} {{ "," if not loop.last }}
+    stats_used:{{ping_name}}::numeric                                               AS {{ping_name | replace(".", "_")}} {{ "," if not loop.last }}
     {% endfor %}
 
   FROM usage_data
