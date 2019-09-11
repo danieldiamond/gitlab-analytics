@@ -1,4 +1,4 @@
-{% snapshot gitlab_dotcom_gitlab_subscriptions_snapshots %}
+{% snapshot customers_db_customers_snapshots %}
 
     {{
         config(
@@ -12,13 +12,16 @@
     
     WITH source AS (
 
-      SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as gitlab_subscriptions_rank_in_key
-      FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
+      SELECT 
+        *, 
+        ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS customers_rank_in_key
+        
+      FROM {{ source('customers', 'customers_db_customers') }}
 
     )
 
     SELECT *
     FROM source
-    WHERE gitlab_subscriptions_rank_in_key = 1
+    WHERE customers_rank_in_key = 1
     
 {% endsnapshot %}

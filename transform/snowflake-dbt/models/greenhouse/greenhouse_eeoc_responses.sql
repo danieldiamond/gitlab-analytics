@@ -1,8 +1,3 @@
-{{ config({
-    "enabled": false
-    })
-}}
-
 WITH source as (
 
     SELECT *
@@ -26,6 +21,7 @@ WITH source as (
 
 
     FROM source
+    WHERE eeoc_response_submitted_at IS NOT NULL
 
 )
 

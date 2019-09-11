@@ -57,6 +57,5 @@ LEFT JOIN cost_center
  AND department_info.last_division=cost_center.division
 LEFT JOIN location_factor
   ON location_factor.bamboo_employee_number = mapping.employee_number
-WHERE hire_date < CURRENT_DATE
-  AND employee_number NOT IN ('10929')
+WHERE hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
 ORDER BY hire_date DESC

@@ -33,6 +33,7 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.sales_segment,
         sfdc_opportunity.parent_segment,
         sfdc_opportunity.sales_type,
+        sfdc_opportunity.business_type,
         sfdc_opportunity.close_date,
         sfdc_opportunity.created_date,
         sfdc_opportunity.stage_name,

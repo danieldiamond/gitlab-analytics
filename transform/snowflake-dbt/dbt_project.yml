@@ -32,6 +32,10 @@ seeds:
   gitlab_snowflake:
     enabled: true
     schema: staging
+    zuora_country_geographic_region:
+      enabled: true
+      schema: analytics
+
   snowplow:
     enabled: true
     schema: staging
@@ -111,14 +115,9 @@ models:
 
       gitlab_dotcom:
         tags: ["product"]
-        enabled: false
+        enabled: true
         xf:
           materialized: table
-        base:
-          gitlab_dotcom_gitlab_subscriptions:
-            enabled: true
-          gitlab_dotcom_namespaces:
-            enabled: true
 
       greenhouse:
         schema: sensitive

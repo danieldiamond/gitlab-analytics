@@ -4,8 +4,7 @@
 		 WHEN {{ new_mrr }} < {{ original_mrr }} AND {{ new_mrr }} > 0 THEN 'Downgraded'
 		 WHEN {{ new_mrr }} > {{ original_mrr }} THEN 'Upgraded'
 		 WHEN {{ new_mrr }} = {{ original_mrr }} THEN 'Maintained'
-		 ELSE 'Other' 
+		 ELSE 'Other'
 		 END AS churn_type
 
 {%- endmacro -%}
-

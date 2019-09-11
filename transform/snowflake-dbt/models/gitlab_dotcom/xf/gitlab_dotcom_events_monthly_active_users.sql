@@ -20,7 +20,7 @@ WITH days AS (
     FROM {{ ref('gitlab_dotcom_audit_events') }}
     WHERE TRUE
     {% if is_incremental() %}
-      AND audit_event_created_at >= DATEADD('day', -7, (SELECT MAX(day) FROM {{ this }}) )
+      AND audit_event_created_at >= DATEADD('day', -36, (SELECT MAX(day) FROM {{ this }}) )
     {% endif %}
 
 ), events AS (
@@ -31,7 +31,7 @@ WITH days AS (
     FROM {{ ref('gitlab_dotcom_events') }}
     WHERE TRUE
     {% if is_incremental() %}
-      AND event_created_at >= DATEADD('day', -7, (SELECT MAX(day) FROM {{ this }}) )
+      AND event_created_at >= DATEADD('day', -36, (SELECT MAX(day) FROM {{ this }}) )
     {% endif %}
 
 ), audit_events_active_user AS (
