@@ -1,4 +1,4 @@
-{% docs gitlab_dotcom_group_audit_events_monthly%}
+{% docs gitlab_dotcom_group_audit_events_monthly %}
 
 This model provides a summary of the audit_events table at the granularity of one row per group per month.
 
