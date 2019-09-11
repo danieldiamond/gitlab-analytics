@@ -10,7 +10,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
 - [ ] Manager: Invite to `data-team` channel on Slack
 - [ ] Manager: Update codeowners file in the handbook to include the new team member
-- [ ] Manager: Add to daily Geekbot standup
+- [ ] Manager: Add to daily Geekbot standup (send `dashboard` to Geekbot on slack, click into a particular standup in the web UI, add via Manage button)
 - [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
   - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
 - [ ] Manager: Invite to SheetLoad folder in gdrive
@@ -98,12 +98,14 @@ You can use `Command + Option + L` to format your file.
 
 ## dbt
 
+<img src = "https://d33wubrfki0l68.cloudfront.net/18774f02c29380c2ca7ed0a6fe06e55f275bf745/a5007/ui/img/svg/product.svg">
+
 ### What is dbt?
 - [ ] Familiarize yourself with [dbt](https://www.getdbt.com/), which we use for transformations in the data warehouse, as it gives us a way to source control the SQL.
 - [ ] Refer to http://jinja.pocoo.org/docs/2.10/templates/ as a resource for understanding Jinja which is used extensively in dbt.
 - [ ] [This article](https://blog.fishtownanalytics.com/what-exactly-is-dbt-47ba57309068) talks about the what/why.
 - [ ] [This introduction](https://docs.getdbt.com/docs/introduction) should help get you understand what dbt is.
- [ ] [This podcast](https://www.dataengineeringpodcast.com/dbt-data-analytics-episode-81/) is a general walkthrough of dbt/interview with its creator, Drew Banin.
+- [ ] [This podcast](https://www.dataengineeringpodcast.com/dbt-data-analytics-episode-81/) is a general walkthrough of dbt/interview with its creator, Drew Banin.
 - [ ] Read [how we use dbt](https://about.gitlab.com/handbook/business-ops/data-team/#-transformation) and our [SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/).
 - [ ] Watch [video](https://drive.google.com/file/d/1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn/view) of Taylor introducing Chase to dbt.
 - [ ] Peruse the [Official Docs](https://docs.getdbt.com).

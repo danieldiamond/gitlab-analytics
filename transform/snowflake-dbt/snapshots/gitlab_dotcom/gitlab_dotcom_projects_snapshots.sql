@@ -1,4 +1,4 @@
-{% snapshot gitlab_dotcom_namespaces_snapshots %}
+{% snapshot gitlab_dotcom_projects_snapshots %}
 
     {{
         config(
@@ -14,14 +14,14 @@
 
     	SELECT 
         *, 
-        ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) AS namespaces_rank_in_key
+        ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as projects_rank_in_key
       
-      FROM {{ source('gitlab_dotcom', 'namespaces') }}
+      FROM {{ source('gitlab_dotcom', 'projects') }}
 
     )
     
     SELECT *
     FROM source
-    WHERE namespaces_rank_in_key = 1
-    
+    WHERE projects_rank_in_key = 1
+        
 {% endsnapshot %}
