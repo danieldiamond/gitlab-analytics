@@ -231,6 +231,100 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_build_trace_section_names
     export_table_primary_key: id
+  ci_stages:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , pipeline_id
+      , created_at
+      , updated_at
+      , name
+      , status
+      , lock_version
+      , position
+      FROM ci_stages
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_stages
+    export_table_primary_key: id
+  ci_trigger_requests:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , trigger_id
+      , variables
+      , created_at
+      , updated_at
+      , commit_id
+      FROM ci_trigger_requests
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_trigger_requests
+    export_table_primary_key: id
+  ci_triggers:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , token
+      , created_at
+      , updated_at
+      , project_id
+      , owner_id
+      , description
+      FROM ci_triggers
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_triggers
+    export_table_primary_key: id
+  ci_variables:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , key
+      , value
+      , project_id
+      , protected
+      , environment_scope
+      , masked
+      , variable_type
+      FROM ci_variables
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_variables
+    export_table_primary_key: id
+  ci_pipelines:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , tag
+      , yaml_errors
+      , committed_at
+      , project_id
+      , status
+      , started_at
+      , finished_at
+      , duration
+      , user_id
+      , lock_version
+      , auto_canceled_by_id
+      , pipeline_schedule_id
+      , source
+      , config_source
+      , protected
+      , failure_reason
+      , iid
+      , merge_request_id
+      FROM ci_pipelines
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'ci_pipelines'
+    export_table_primary_key: id
   epic_issues:
     import_db: GITLAB_DB
     import_query: >
