@@ -10,7 +10,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
 - [ ] Manager: Invite to `data-team` channel on Slack
 - [ ] Manager: Update codeowners file in the handbook to include the new team member
-- [ ] Manager: Add to daily Geekbot standup (send `dashboard` to Geekbot on slack, add via Manage tab in web UI)
+- [ ] Manager: Add to daily Geekbot standup (send `dashboard` to Geekbot on slack, click into a particular standup in the web UI, add via Manage button)
 - [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
   - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
 - [ ] Manager: Invite to SheetLoad folder in gdrive
