@@ -47,9 +47,9 @@ final AS (
     {% endfor %}
 
   FROM usage_data
-
+  WHERE stats_used IS NOT NULL
   {% if is_incremental() %}
-      WHERE created_at > (SELECT max(created_at) FROM {{ this }})
+      AND created_at > (SELECT max(created_at) FROM {{ this }})
   {% endif %}
 
 )
