@@ -23,6 +23,10 @@ Fully sync (backfilling):
 * There are two conditions that would trigger a full backfill: 1) The table doesn't exist in snowflake or 2) The schema has changed (for instance a column was added or dropped or renamed even).
 * `pgp` will look at the max ID of the target table and backfill in million ID increments, since, at GitLab, every table implemented is guaranteed to have an ID or some primary key
 
+Test:
+
+* When a table has changed or is new (including SCD tables) `pgp` will try to load 1 million rows of that table to ensure that it can be loaded. This will catch the majority of data quality problems.
+
 Validation (data quality check):
 
 * _Documentation pending feature completion_
