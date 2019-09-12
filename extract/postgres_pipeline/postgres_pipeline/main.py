@@ -173,6 +173,34 @@ def validate_ids(
     return True
 
 
+def test_new_tables(
+    source_engine: Engine,
+    target_engine: Engine,
+    table: str,
+    table_dict: Dict[Any, Any],
+    table_name: str,
+) -> bool:
+    """
+    Load a set amount of rows for each new table in the manifest. A table is
+    considered new if it doesn't already exist in the data warehouse.
+    """
+
+    raw_query = table_dict["import_query"].split("WHERE")[0]
+    additional_filtering = table_dict.get("additional_filtering", "")
+    primary_key = table_dict["export_table_primary_key"]
+
+    # Figure out if the table exists
+    if "_TEMP" != table_name[-5:] and not target_engine.has_table(f"{table_name}_TEMP"):
+        logging.info(f"Table {table} already exists and won't be tested.")
+        return False
+
+    # If the table doesn't exist, load 1 million rows (or whatever the table has)
+    query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 1000000"
+    chunk_and_upload(query, source_engine, target_engine, table_name)
+
+    return True
+
+
 def main(file_path: str, load_type: str) -> None:
     """
     Read data from a postgres DB and upload it directly to Snowflake.
@@ -190,6 +218,7 @@ def main(file_path: str, load_type: str) -> None:
         "incremental": load_incremental,
         "scd": load_scd,
         "sync": sync_incremental_ids,
+        "test": test_new_tables,
         "validate": validate_ids,
     }
 
