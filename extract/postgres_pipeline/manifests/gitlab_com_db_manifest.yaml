@@ -182,172 +182,6 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_pipeline_variables
     export_table_primary_key: id
-  clusters:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , user_id
-      , provider_type
-      , platform_type
-      , created_at
-      , updated_at
-      , enabled
-      , name
-      , environment_scope
-      , cluster_type
-      , domain
-      , managed
-      FROM clusters
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'clusters'
-    export_table_primary_key: id
-  clusters_applications_cert_managers:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , cluster_id
-      , status
-      , version
-      , created_at
-      , updated_at
-      , status_reason
-      FROM clusters_applications_cert_managers
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-          AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'clusters_applications_cert_managers'
-    export_table_primary_key: id
-  clusters_applications_helm:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , cluster_id
-      , created_at
-      , updated_at
-      , status
-      , version
-      , status_reason
-      , encrypted_ca_key
-      , encrypted_ca_key_iv
-      , ca_cert
-      FROM clusters_applications_helm
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-          AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'clusters_applications_helm'
-    export_table_primary_key: id
-  clusters_applications_ingress:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , cluster_id
-      , created_at
-      , updated_at
-      , status
-      , ingress_type
-      , version
-      , cluster_ip
-          , status_reason
-      , external_ip
-      , external_hostname
-      FROM clusters_applications_ingress
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-          AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'clusters_applications_ingress'
-    export_table_primary_key: id
-  clusters_applications_jupyter:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , cluster_id
-      , oauth_application_id
-      , status
-      , version
-      , hostname
-      , created_at
-      , updated_at
-      , status_reason
-      FROM clusters_applications_jupyter
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-          AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'clusters_applications_jupyter'
-    export_table_primary_key: id
-  clusters_applications_knative:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , cluster_id
-      , created_at
-      , updated_at
-      , status
-      , version
-      , hostname
-      , status_reason
-      , external_ip
-      , external_hostname
-      FROM clusters_applications_knative
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'clusters_applications_knative'
-    export_table_primary_key: id
-  clusters_applications_prometheus:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , cluster_id
-      , status
-      , version
-      , status_reason
-      , created_at
-      , updated_at
-      , last_update_started_at
-      , encrypted_alert_manager_token
-      , encrypted_alert_manager_token_iv
-      FROM clusters_applications_prometheus
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-          AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'clusters_applications_prometheus'
-    export_table_primary_key: id
-  clusters_applications_runners:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , cluster_id
-      , runner_id
-      , status
-      , created_at
-      , updated_at
-      , version
-      , status_reason
-      , privileged
-      FROM clusters_applications_runners
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-          AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'clusters_applications_runners'
-    export_table_primary_key: id
-  clusters_kubernetes_namespaces:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT cluster_id
-      , project_id
-      , cluster_project_id
-      , created_at
-      , updated_at
-      , namespace
-      , service_account_name
-      FROM clusters_kubernetes_namespaces
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-          AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'clusters_kubernetes_namespaces'
-    export_table_primary_key: cluster_id
   events:
     import_db: GITLAB_DB
     import_query: >
@@ -431,6 +265,27 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'boards'
+    export_table_primary_key: id
+  ci_build_trace_chunks:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT build_id
+      , chunk_index
+      , data_store
+      , raw_data
+      FROM ci_build_trace_chunks
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_build_trace_chunks
+    export_table_primary_key: build_id
+  ci_build_trace_section_names:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , name
+      FROM ci_build_trace_section_names
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_build_trace_section_names
     export_table_primary_key: id
   ci_stages:
     import_db: GITLAB_DB
