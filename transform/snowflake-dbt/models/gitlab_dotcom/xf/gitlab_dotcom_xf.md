@@ -1,15 +1,3 @@
-{% docs gitlab_dotcom_group_audit_events_monthly %}
-
-This model provides a summary of the audit_events table at the granularity of one row per group per month.
-
-In months where a group does not record any audit events, a row will still be created with a count of zero.
-
-Audit events are often used as a proxy for user activity, so this model allows for convenient Monthly Active Group calculations without having to query the entire audit_events table.
-
-This model provides `group_created_at_month` and `months_since_creation_date` columns to allow for easy cohort and retention analysis.
-
-{% enddocs %}
-
 {% docs gitlab_dotcom_gitlab_issues_requests %}
 
 This model enables product managers to surface which issue has been requested by potential prospects and current customers. The final model creates a table where each row is unique tuple of a `issue_id` and a `sfdc_account_id`.
@@ -36,6 +24,19 @@ It adds a few columns to the base `gitlab_dotcom_notes` model:
 * `namespace_type`
 
 {% enddocs %}
+
+{% docs gitlab_dotcom_group_audit_events_monthly%}
+
+This model provides a summary of the audit_events table at the granularity of one row per group per month.
+
+In months where a group does not record any audit events, a row will still be created with a count of zero.
+
+Audit events are often used as a proxy for user activity, so this model allows for convenient Monthly Active Group calculations without having to query the entire audit_events table.
+
+This model provides `group_created_at_month` and `months_since_creation_date` columns to allow for easy cohort and retention analysis.
+
+{% enddocs %}
+
 
 {% docs gitlab_dotcom_issues_xf %}
 
