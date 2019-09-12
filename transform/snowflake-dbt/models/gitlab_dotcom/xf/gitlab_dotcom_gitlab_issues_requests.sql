@@ -82,7 +82,7 @@ WITH epic_issues AS (
     epics.epic_title
 
   FROM gitlab_dotcom_notes_linked_to_sfdc_account_id
-  LEFT JOIN issues
+  JOIN issues
     ON gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_id = issues.issue_id
   LEFT JOIN projects
     ON issues.project_id = projects.project_id
@@ -128,7 +128,7 @@ WITH epic_issues AS (
   LEFT JOIN namespaces
     ON projects.namespace_id = namespaces.namespace_id
   LEFT JOIN sfdc_accounts
-    ON gitlab_dotcom_notes_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
+    ON gitlab_dotcom_issues_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
   LEFT JOIN epic_issues
     ON issues.issue_id = epic_issues.issue_id
   LEFT JOIN epics
