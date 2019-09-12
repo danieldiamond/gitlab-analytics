@@ -1,8 +1,3 @@
-{{config({
-    "materialized": "table"
-  })
-}}
-
 WITH plan_snowplow_smau_events AS (
   
   SELECT

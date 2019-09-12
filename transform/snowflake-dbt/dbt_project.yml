@@ -145,6 +145,7 @@ models:
       smau_events:
         tags: ["product"]
         enabled: true
+        materialized: table
 
       snowplow:
         tags: ["product"]
