@@ -1,4 +1,4 @@
-{% docs gitlab_dotcom_notes_linked_to_sfdc_account_id %}
+{% docs gitlab_dotcom_issues_linked_to_sfdc_account_id %}
 
 The final table is an auxiliary mapping table where each row is a unique tuple of a `issue_id` and an `sfdc_account_id`, which means that the SFDC account `account_id` has been referenced in the issue description of the issue `issue_id` which is part of one of the Gitlab's projects.
 
