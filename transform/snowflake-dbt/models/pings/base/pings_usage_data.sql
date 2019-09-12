@@ -66,6 +66,7 @@ renamed AS (
 
   FROM source
   WHERE uuid IS NOT NULL
+    AND (CHECK_JSON(counts) IS NULL AND CHECK_JSON(stats) IS NULL)
 )
 
 SELECT
