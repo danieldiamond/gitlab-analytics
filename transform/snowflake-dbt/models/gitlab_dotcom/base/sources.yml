@@ -99,3 +99,26 @@ sources:
         identifier: gitlab_db_approvals
       - name: events
         identifier: gitlab_db_events
+      - name: ci_build_trace_chunks
+        identifier: gitlab_db_ci_build_trace_chunks
+      - name: ci_build_trace_section_names
+        identifier: gitlab_db_ci_build_trace_section_names
+      - name: ci_builds
+        identifier: gitlab_db_ci_builds
+      - name: ci_builds_metadata
+        identifier: gitlab_db_ci_builds_metadata
+      - name: ci_builds_runner_session
+        identifier: gitlab_db_ci_builds_runner_session
+      - name: ci_group_variables
+        identifier: gitlab_db_ci_group_variables
+      - name: ci_job_artifacts
+        identifier: gitlab_db_ci_job_artifacts
+      - name: ci_pipeline_chat_data
+        identifier: gitlab_db_ci_pipeline_chat_data
+      - name: ci_pipeline_schedule_variables
+        identifier: gitlab_db_ci_pipeline_schedule_variables
+      - name: ci_pipeline_schedules
+        identifier: gitlab_db_ci_pipeline_schedules
+      - name: ci_pipeline_variables
+        identifier: gitlab_db_ci_pipeline_variables
+      
