@@ -1,7 +1,5 @@
 version: 2
 
-version: 2
-
 models:
   - name: create_smau_events
     description: '{{ doc("create_smau_events") }}'
