@@ -78,6 +78,7 @@ WITH snowplow_page_views AS (
   WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/tree\/(.)*'
     AND page_url_path NOT REGEXP '/-/ide/(.)*'
     AND page_url_path NOT REGEXP '(\/([a-zA-Z-])*){2,}\/wiki\/tree\/(.)*'
+    AND page_url_path NOT REGEXP '((\/([a-zA-Z-])*){2,})?\/snippets/[0-9]{1,}'
 
 )
 
