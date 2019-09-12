@@ -5,7 +5,8 @@ import sys
 sys.path.insert(
     0,
     os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "tap_postgres"
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "postgres_pipeline",
     ),
 )
 
@@ -97,7 +98,7 @@ class TestTapPostgres:
         source_count_results = pd.read_sql(source_count_query, POSTGRES_ENGINE)
 
         # Get the manifest for a specific table
-        file_path = f"extract/postgres/manifests/{source_db}_manifest.yaml"
+        file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
 
@@ -129,7 +130,7 @@ class TestTapPostgres:
         source_count_results = pd.read_sql(source_count_query, POSTGRES_ENGINE)
 
         # Get the manifest for a specific table
-        file_path = f"extract/postgres/manifests/{source_db}_manifest.yaml"
+        file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         print(table_dict)

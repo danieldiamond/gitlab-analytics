@@ -6,6 +6,11 @@ sources:
     schema: snowflake
     loader: Airflow
     loaded_at_field: to_timestamp_ntz(_uploaded_at::number)
+    
+    quoting:
+      database: true
+      schema: false
+      identifier: false
 
     freshness:
         warn_after: {count: 1, period: day}

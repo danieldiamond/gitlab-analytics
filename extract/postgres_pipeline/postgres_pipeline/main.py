@@ -13,7 +13,7 @@ from utils import (
     id_query_generator,
     manifest_reader,
 )
-from validation import *
+from validation import get_comparison_results
 
 
 SCHEMA = "tap_postgres"
@@ -83,7 +83,7 @@ def sync_incremental_ids(
 
     raw_query = table_dict["import_query"]
     additional_filtering = table_dict.get("additional_filtering", "")
-    logging.info(table_name)
+    primary_key = table_dict["export_table_primary_key"]
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need sync processing.")
         return False
@@ -94,11 +94,11 @@ def sync_incremental_ids(
         return False
 
     id_queries = id_query_generator(
-        table, table_name, raw_query, target_engine, source_engine
+        source_engine, primary_key, raw_query, target_engine, table, table_name
     )
     # Iterate through the generated queries
     for query in id_queries:
-        filtered_query = f"{query} {additional_filtering} ORDER BY id"
+        filtered_query = f"{query} {additional_filtering} ORDER BY {primary_key}"
         logging.info(filtered_query)
         chunk_and_upload(filtered_query, source_engine, target_engine, table_name)
     return True
@@ -173,7 +173,7 @@ def validate_ids(
     return True
 
 
-def main(file_path: str, load_type: str = None) -> None:
+def main(file_path: str, load_type: str) -> None:
     """
     Read data from a postgres DB and upload it directly to Snowflake.
     """
