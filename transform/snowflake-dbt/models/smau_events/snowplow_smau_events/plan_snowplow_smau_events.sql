@@ -196,7 +196,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/roadmap_viewed(\/)?'
+  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/roadmap(\/)?'
 )
 
 
@@ -211,7 +211,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '\/dashboard\/todo(\/)?'
+  WHERE page_url_path REGEXP '\/dashboard\/todos(\/)?'
 
 )
 
