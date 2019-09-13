@@ -1,0 +1,84 @@
+WITH source AS (
+
+	SELECT *
+	FROM {{ source('sheetload', 'calendar') }}
+
+), renamed AS (
+
+  SELECT
+    NULLIF("Event_Title", '')::varchar as event_title,
+    NULLIF("Event_Location", '')::varchar as event_location,
+    NULLIF("Event_Start", '')::varchar::date as event_start,
+    NULLIF(NULLIF("Calculated_Duration"::varchar, '#REF!'), '')::float as calculated_duration,
+    NULLIF("Date_Created", '')::varchar::date as date_created,
+    NULLIF("Created_By", '')::varchar as created_by
+  FROM source
+
+), categorized AS (
+
+    SELECT *,
+      CASE WHEN lower(event_title) LIKE '%company call%' THEN 'Company Call'
+           WHEN lower(event_title) LIKE '%fgu%' THEN 'Group Conversation'
+           WHEN lower(event_title) LIKE '%group conversation%' THEN 'Group Conversation'
+           WHEN lower(event_title) LIKE '%Monthly Diversity & Inclusion Initiatives Call%' THEN 'Diversity Initiatives'
+           WHEN lower(event_title) LIKE '%e-group%' THEN 'E-Group'
+           WHEN lower(event_title) LIKE '%key monthly review%' THEN 'Monthly Key Review'
+           WHEN lower(event_title) LIKE '%monthly key review%' THEN 'Monthly Key Review'
+           WHEN event_title LIKE '%MTG%' THEN 'In Person Meetings'
+           WHEN event_title LIKE '%INTERVIEW%' THEN 'Media Interviews'
+           WHEN lower(event_title) LIKE '%media briefing%' THEN 'Media Interviews'
+           WHEN lower(event_title) LIKE '%highwire%' THEN 'Media Interviews'
+           WHEN event_title LIKE '%CALL%' THEN 'Conference Calls'
+           WHEN event_title LIKE '%VIDEOCALL%' THEN 'Video Calls'
+           WHEN event_title LIKE '%LIVESTREAM%' THEN 'Livestreams'
+           WHEN lower(event_title) LIKE '%interview%' THEN 'Candidate Interviews/Hiring'
+           WHEN lower(event_title) LIKE '%ejento%' THEN 'Candidate Interviews/Hiring'
+           WHEN lower(event_title) LIKE '%reference call%' THEN 'Candidate Interviews/Hiring'
+           WHEN event_title LIKE '%1:1%' THEN 'One on ones'
+           WHEN lower(event_title) LIKE '%skip level%' THEN 'Skip Levels'
+           WHEN lower(event_title) LIKE '%flight%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%uber%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%ground transportation%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%car service%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%ua%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%travel%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%drive%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%driving%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%walk%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%tsa%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%airport%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%check-in%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%check-out%' THEN 'Travel'
+           WHEN lower(event_title) LIKE '%accent reduction%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%pa anet%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%brother%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%sister%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%parents%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%double gdp%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%niece%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%personal%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%Karen/Sid%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%bio%' THEN 'Personal'
+           WHEN event_title IN ('Scaling: CEO', 'PM & Engineering Weekly') THEN 'Product Leadership'
+           WHEN lower(event_title) LIKE '%product strategy%' THEN 'Product Leadership'
+           WHEN event_title LIKE '%ICONIQ%' THEN 'Board related'
+           WHEN event_title LIKE '%Board Dinner%' THEN 'Board related'
+           WHEN event_title LIKE '%Board of Directors%' THEN 'Board related'
+           WHEN event_title LIKE '%Board Meeting%' THEN 'Board related'
+      ELSE 'Other'
+      END AS event_category
+
+    FROM renamed
+    WHERE calculated_duration > 0
+    AND lower(event_title) NOT LIKE '%fyi%'
+    AND lower(event_title) NOT LIKE '%fya%'
+
+)
+
+SELECT *,
+      CASE WHEN event_category IN ('Monthly Key Review', 'Media Interviews', 'Livestreams', 'In Person Meetings', 'Conference Calls') THEN 'IACV'
+           WHEN event_category IN ('Product Leadership') THEN 'Product'
+           WHEN event_category IN ('Skip Levels', 'One on ones', 'Group Conversation', 'E-Group', 'Company Call', 'Candidate Interviews/Hiring') THEN 'Team'
+           WHEN event_category IN ('Travel', 'Personal', 'Other') THEN 'Miscellaneous'
+           WHEN event_category IN ('Board related') THEN 'Executive Responsibilities'
+FROM categorized
