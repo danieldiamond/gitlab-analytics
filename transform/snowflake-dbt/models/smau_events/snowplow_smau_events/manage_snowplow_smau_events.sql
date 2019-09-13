@@ -14,7 +14,6 @@
 -%}
 
 WITH snowplow_page_views AS (
-
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
@@ -32,16 +31,15 @@ WITH snowplow_page_views AS (
 )
 
 , audit_events_viewed AS (
-
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
-    TO_DATE(page_view_start)   AS event_date,
+    TO_DATE(page_view_start)    AS event_date,
     page_url_path,
-    'audit_event_viewed'       AS event_type,
+    'audit_events_viewed'       AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path RLIKE '/audit_events'
+  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/audit_events(\/)?'
 )
 
 , cycle_analytics_viewed AS (
@@ -53,7 +51,7 @@ WITH snowplow_page_views AS (
     'cycle_analytics_viewed'   AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path LIKE '%/cycle_analytics' --TODO
+  WHERE page_url_path RLIKE '/cycle_analytics' --TODO
 )
 
 , insights_viewed AS (
@@ -65,7 +63,7 @@ WITH snowplow_page_views AS (
     'insights_viewed'          AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path LIKE '%/insights' --TODO
+  WHERE page_url_path RLIKE '/insights' --TODO
 )
 
 , group_analytics_viewed AS (
