@@ -1039,7 +1039,6 @@ models:
         - name: candidate_id
           tests:
             - not_null
-            - unique
         - name: user_candidate_link_created_at
           tests:
             - not_null
