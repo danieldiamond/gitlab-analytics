@@ -4,14 +4,13 @@ import copy
 import os
 import sys
 import argparse
-import dask
-from dask.distributed import Client
 from multiprocessing.pool import ThreadPool
 from multiprocessing import Pool
 import asyncio
 import asyncio.subprocess
 from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime, timedelta
+import subprocess
 from subprocess import Popen, PIPE
 
 #  Inspired from https://gist.github.com/abelsonlive/16611a745cace973a0c9a6f3b2b6000b
@@ -98,12 +97,13 @@ class DbtBackfill(object):
             )
         )
 
-        process = Popen(cmd, stdout=PIPE, stderr=PIPE)
+        subprocess.run(cmd)
+        # process = Popen(cmd, stdout=PIPE, stderr=PIPE)
         # process = Popen(cmd)
-        stdout, stderr = process.communicate()
-        sys.stderr.write(stdout.decode("utf-8"))
-        if process.returncode != 0:
-            sys.exit(process.returncode)
+        # stdout, stderr = process.communicate()
+        # sys.stderr.write(stdout.decode("utf-8"))
+        # if process.returncode != 0:
+        #     sys.exit(process.returncode)
 
     @property
     def partitions(self):

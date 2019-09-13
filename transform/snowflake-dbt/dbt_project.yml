@@ -69,22 +69,6 @@ models:
         'snowplow:app_ids': ['gitlab', 'about']
         'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
 
-    snowplow_dev:
-      schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
-      tags: ["product"]
-      post-hook: "grant select on {{this}} to role reporter"
-      vars:
-        'snowplow:use_fivetran_interface': false
-        'snowplow:events': "{{ref('snowplow_unnested_events')}}"
-        'snowplow:context:web_page': "{{ref('snowplow_web_page')}}"
-        'snowplow:context:performance_timing': false
-        'snowplow:context:useragent': false
-        'snowplow:timezone': 'America/New_York'
-        'snowplow:page_ping_frequency': 30
-        'snowplow:app_ids': ['gitlab', 'about']
-        'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
-
-
     snowflake_spend:
       enabled: true
       base:
@@ -159,12 +143,6 @@ models:
         materialized: table
 
       snowplow:
-        tags: ["product"]
-        enabled: true
-        xf:
-          materialized: table
-
-      snowplow_dev:
         tags: ["product"]
         enabled: true
         xf:
