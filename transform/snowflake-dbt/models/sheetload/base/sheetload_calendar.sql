@@ -65,6 +65,8 @@ WITH source AS (
            WHEN event_title LIKE '%Board Dinner%' THEN 'Board related'
            WHEN event_title LIKE '%Board of Directors%' THEN 'Board related'
            WHEN event_title LIKE '%Board Meeting%' THEN 'Board related'
+					 WHEN event_title LIKE '%exec time%' THEN 'Executive Time'
+					 WHEN event_title LIKE '%executive time%' THEN 'Executive Time'
       ELSE 'Other'
       END AS event_category
 
@@ -80,11 +82,11 @@ WITH source AS (
       event_start,
       CASE WHEN right(((round(calculated_duration*4))*.25)::varchar, 3) = '.75' THEN ((round(calculated_duration*4))*.25+.25) ELSE (round(calculated_duration*4))*.25 END as calculated_duration,
       event_category,
-      CASE WHEN event_category IN ('Monthly Key Review', 'Media Interviews', 'Livestreams', 'In Person Meetings', 'Conference Calls') THEN 'IACV'
-           WHEN event_category IN ('Product Leadership') THEN 'Product'
-           WHEN event_category IN ('Skip Levels', 'One on ones', 'Group Conversation', 'E-Group', 'Company Call', 'Candidate Interviews/Hiring') THEN 'Team'
+      CASE WHEN event_category IN ('Monthly Key Review', 'Media Interviews', 'Livestreams', 'In Person Meetings', 'Conference Calls') THEN '1. IACV'
+           WHEN event_category IN ('Product Leadership') THEN '2. Popular next generation product'
+           WHEN event_category IN ('Skip Levels', 'One on ones', 'Group Conversation', 'E-Group', 'Company Call', 'Candidate Interviews/Hiring') THEN '3. Great team'
            WHEN event_category IN ('Travel', 'Personal', 'Other') THEN 'Miscellaneous'
-           WHEN event_category IN ('Board related') THEN 'Executive Responsibilities'
+           WHEN event_category IN ('Board related', 'Executive Time') THEN 'Executive Responsibilities'
       ELSE NULL END AS okr_time_allocation
     FROM categorized
 
