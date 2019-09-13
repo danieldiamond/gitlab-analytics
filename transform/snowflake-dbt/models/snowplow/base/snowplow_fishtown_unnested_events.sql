@@ -2,7 +2,7 @@
 {% set month_value = var('month', run_started_at.strftime('%m')) %}
 
 {{config({
-    "materialized":"incremental",
+    "materialized":"table",
     "unique_key":"event_id",
     "schema":"snowplow_" + year_value|string + '_' + month_value|string, 
   })
@@ -168,10 +168,6 @@ AND date_part(month, uploaded_at::timestamp) = '{{ month_value }}'
 AND date_part(year, uploaded_at::timestamp) = '{{ year_value }}'
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'http://localhost:%'
-
-{% if is_incremental() %}
-    AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
-{% endif %}
 
 ), events_to_ignore as (
 
