@@ -10,7 +10,7 @@
 WITH events AS (
 
 	 SELECT *
-	 FROM {{ref('snowplow_unnested_events')}}
+	 FROM {{ref('snowplow_unnested_events_dev')}}
 
 )
 

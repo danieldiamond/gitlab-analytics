@@ -4,15 +4,14 @@ import copy
 import os
 import sys
 import argparse
-import dask
-from dask.distributed import Client
 from multiprocessing.pool import ThreadPool
 from multiprocessing import Pool
 import asyncio
 import asyncio.subprocess
 from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime, timedelta
-from subprocess import Popen, PIPE
+import subprocess
+from subprocess import Popen, PIPE, STDOUT
 
 #  Inspired from https://gist.github.com/abelsonlive/16611a745cace973a0c9a6f3b2b6000b
 
@@ -97,13 +96,26 @@ class DbtBackfill(object):
                 datetime.now().strftime("%H:%M:%S"), " ".join(cmd)
             )
         )
+        # unix = datetime.now().strftime("%f")
+        # tmp = [f"echo {unix}"]
+        # process = Popen(cmd, stdout=PIPE, stderr=PIPE, universal_newlines=True, bufsize=1)
+        subprocess.run(cmd)
+        # for line in process.stdout:
+            # print(line)
+        # stdout, stderr = process.communicate()
+        # for stdout_line in stdout:
+        #     print(stdout_line, end='')
+        
+        # if process.returncode != 0:
+        #     sys.exit(process.returncode)
 
-        process = Popen(cmd, stdout=PIPE, stderr=PIPE)
-        # process = Popen(cmd)
-        stdout, stderr = process.communicate()
-        sys.stderr.write(stdout.decode("utf-8"))
-        if process.returncode != 0:
-            sys.exit(process.returncode)
+        # return_code = process.wait()
+        # if return_code:
+        #     raise sub
+        # stdout, stderr = process.communicate()
+        # sys.stderr.write(stdout.decode("utf-8"))
+        # if process.returncode != 0:
+            # sys.exit(process.returncode)
 
     @property
     def partitions(self):
@@ -134,26 +146,9 @@ class DbtBackfill(object):
         """
         Run all partitions
         """
-        # sem = asyncio.Semaphore(4)
-
-        # # async def do_job(args):
-        # for cmd in self.commands:
-        #     async with sem:  # Don't run more than 10 simultaneous jobs below
-        #         proc = await asyncio.create_subprocess_shell(cmd, stdout=PIPE)
-        #         output = await proc.stdout.read()
-        #         return output
-        # run_func = dask.delayed(self._run_command)(self.commands)
-        # return 
 
         pool = Pool(2)
-            
-
-        # client = Client()
-        # with dask.config.set(pool=ThreadPool(4)):
-        #     for cmnd in self.commands:
-        #         future = client.submit(self._run_command(cmnd))
-        #         result = client.gather(sent)
-        # return
+        
         return pool.map(self._run_command, self.commands)
 
 

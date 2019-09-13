@@ -75,8 +75,8 @@ models:
       post-hook: "grant select on {{this}} to role reporter"
       vars:
         'snowplow:use_fivetran_interface': false
-        'snowplow:events': "{{ref('snowplow_unnested_events')}}"
-        'snowplow:context:web_page': "{{ref('snowplow_web_page')}}"
+        'snowplow:events': "{{ref('snowplow_unnested_events_dev')}}"
+        'snowplow:context:web_page': "{{ref('snowplow_web_page_dev')}}"
         'snowplow:context:performance_timing': false
         'snowplow:context:useragent': false
         'snowplow:timezone': 'America/New_York'

@@ -9,14 +9,14 @@
 WITH good_events AS (
 
     SELECT *
-    FROM {{ ref('snowplow_unnested_events') }}
+    FROM {{ ref('snowplow_unnested_events_dev') }}
 
 ),
 
 bad_events AS (
 
     SELECT *
-    FROM {{ ref('snowplow_unnested_errors') }}
+    FROM {{ ref('snowplow_unnested_errors_dev') }}
 
 ),
 

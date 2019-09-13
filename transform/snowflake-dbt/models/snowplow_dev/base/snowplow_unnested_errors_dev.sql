@@ -11,7 +11,7 @@
 WITH gitlab as (
 
     SELECT *
-    FROM {{ ref('snowplow_gitlab_bad_events') }}
+    FROM {{ ref('snowplow_gitlab_bad_events_dev') }}
     {% if is_incremental() %}
         WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
     {% endif %}
@@ -21,7 +21,7 @@ WITH gitlab as (
 fishtown as (
 
     SELECT *
-    FROM {{ ref('snowplow_fishtown_bad_events') }}
+    FROM {{ ref('snowplow_fishtown_bad_events_dev') }}
     {% if is_incremental() %}
        WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
     {% endif %}
