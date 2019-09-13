@@ -78,7 +78,6 @@ WITH snowplow_page_views AS (
   WHERE page_url_path REGEXP '\/groups(\/([a-zA-Z-])*){1,}\/-\/analytics'
 )
 
--- TODO: call "group created" or "new group page viewed"?
 , group_created AS (
   SELECT
     user_snowplow_domain_id,
@@ -88,10 +87,14 @@ WITH snowplow_page_views AS (
     'group_created'            AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path LIKE '%/groups/new%' --TODO
+  WHERE page_url_path REGEXP '\/groups\/new'
 )
 
-  -- Looks at referrer_url in addition to page_url
+  /*
+    Looks at referrer_url in addition to page_url.
+    Regex matches for successful sign-in authentications,
+    meaning /sign_in redirects to a real GitLab page.
+  */
 , user_authenticated AS (
   SELECT
     user_snowplow_domain_id,
@@ -101,8 +104,8 @@ WITH snowplow_page_views AS (
     'user_authenticated'       AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE referer_url_path LIKE '%users/sign_in%' --TODO
-    AND page_url_path NOT REGEXP '/users/*'
+  WHERE referer_url_path REGEXP '\/users\/sign_in'
+    AND page_url_path NOT REGEXP '\/users\/sign_in'
 )
 
 , unioned AS (
