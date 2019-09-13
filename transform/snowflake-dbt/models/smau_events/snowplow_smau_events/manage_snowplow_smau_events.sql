@@ -39,7 +39,7 @@ WITH snowplow_page_views AS (
     'audit_events_viewed'       AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/audit_events(\/)?'
+  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/audit_events'
 )
 
 , cycle_analytics_viewed AS (
@@ -51,7 +51,7 @@ WITH snowplow_page_views AS (
     'cycle_analytics_viewed'   AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path RLIKE '/cycle_analytics' --TODO
+  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/cycle_analytics' 
 )
 
 , insights_viewed AS (
@@ -63,7 +63,7 @@ WITH snowplow_page_views AS (
     'insights_viewed'          AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path RLIKE '/insights' --TODO
+  WHERE page_url_path REGEXP '\/groups(\/([a-zA-Z-])*){1,}\/-\/insights'
 )
 
 , group_analytics_viewed AS (
@@ -75,7 +75,7 @@ WITH snowplow_page_views AS (
     'group_analytics_viewed'   AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path LIKE '%/groups/%/-/analytics' --TODO
+  WHERE page_url_path REGEXP '\/groups(\/([a-zA-Z-])*){1,}\/-\/analytics'
 )
 
 -- TODO: call "group created" or "new group page viewed"?
