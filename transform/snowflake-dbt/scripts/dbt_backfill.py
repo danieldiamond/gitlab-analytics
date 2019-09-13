@@ -21,7 +21,7 @@ PARTITIONS = {
         "year": x.strftime("%Y"),
         "month": x.strftime("%m"),
         "part": x.strftime("%Y_%m"),
-    },
+    }
 }
 
 
