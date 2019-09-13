@@ -98,12 +98,6 @@ class DbtBackfill(object):
         )
 
         subprocess.run(cmd)
-        # process = Popen(cmd, stdout=PIPE, stderr=PIPE)
-        # process = Popen(cmd)
-        # stdout, stderr = process.communicate()
-        # sys.stderr.write(stdout.decode("utf-8"))
-        # if process.returncode != 0:
-        #     sys.exit(process.returncode)
 
     @property
     def partitions(self):
@@ -134,26 +128,8 @@ class DbtBackfill(object):
         """
         Run all partitions
         """
-        # sem = asyncio.Semaphore(4)
+        pool = Pool(5)
 
-        # # async def do_job(args):
-        # for cmd in self.commands:
-        #     async with sem:  # Don't run more than 10 simultaneous jobs below
-        #         proc = await asyncio.create_subprocess_shell(cmd, stdout=PIPE)
-        #         output = await proc.stdout.read()
-        #         return output
-        # run_func = dask.delayed(self._run_command)(self.commands)
-        # return 
-
-        pool = Pool(2)
-            
-
-        # client = Client()
-        # with dask.config.set(pool=ThreadPool(4)):
-        #     for cmnd in self.commands:
-        #         future = client.submit(self._run_command(cmnd))
-        #         result = client.gather(sent)
-        # return
         return pool.map(self._run_command, self.commands)
 
 
