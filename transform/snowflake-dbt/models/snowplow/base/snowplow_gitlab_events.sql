@@ -1,7 +1,10 @@
+{% set year_value = var('year', run_started_at.strftime('%Y')) %}
+{% set month_value = var('month', run_started_at.strftime('%m')) %}
+
 {{config({
     "materialized":"table",
     "unique_key":"event_id",
-    "schema":"staging"
+    "schema":current_date_schema('snowplow')
   })
 }}
 
@@ -161,6 +164,8 @@ FROM {{ source('gitlab_snowplow', 'events') }}
 {%- endif %}
 
 WHERE app_id IS NOT NULL
+AND date_part(month, uploaded_at::timestamp) = '{{ month_value }}'
+AND date_part(year, uploaded_at::timestamp) = '{{ year_value }}'
 AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(page_url) NOT LIKE 'http://localhost:%'
 AND derived_tstamp != 'com.snowplowanalytics.snowplow'
@@ -175,6 +180,10 @@ AND derived_tstamp != 'com.snowplowanalytics.snowplow'
 ), unnested_unstruct as (
 
     SELECT *,
+    CASE
+      WHEN length(unstruct_event) > 0 AND try_parse_json(unstruct_event) IS NULL
+        THEN TRUE
+      ELSE FALSE END AS is_bad_unstruct_event,
     {{ unpack_unstructured_event(change_form, 'change_form', 'cf') }},
     {{ unpack_unstructured_event(submit_form, 'submit_form', 'sf') }},
     {{ unpack_unstructured_event(focus_form, 'focus_form', 'ff') }},
