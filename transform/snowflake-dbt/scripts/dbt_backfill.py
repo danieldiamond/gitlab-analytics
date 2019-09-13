@@ -1,27 +1,28 @@
 #!/usr/bin/env python
 import json
 import copy
+import os
 import sys
 import argparse
+import dask
+from dask.distributed import Client
+from multiprocessing.pool import ThreadPool
+from multiprocessing import Pool
+import asyncio
+import asyncio.subprocess
+from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime, timedelta
 from subprocess import Popen, PIPE
 
 #  Inspired from https://gist.github.com/abelsonlive/16611a745cace973a0c9a6f3b2b6000b
 
-# dictionary of partiton names to variable generating functions
-# def week_partitions(x):
-# x = x - timedelta(days=x.isoweekday() % 7)
-# return { 'year': x.strftime('%Y'), 'month': x.strftime('%m'), 'day': x.strftime('%d'), 'week': x.strftime('%W'), 'part': x.strftime('%Y_%W') }
 
 PARTITIONS = {
-    # 'day':   lambda x: { 'year': x.strftime('%Y'), 'month': x.strftime('%m'), 'day': x.strftime('%d'), 'part': x.strftime('%Y_%m_%d') },
-    # 'week':  lambda x: week_partitions(x),
     "month": lambda x: {
         "year": x.strftime("%Y"),
         "month": x.strftime("%m"),
         "part": x.strftime("%Y_%m"),
     },
-    # 'year':  lambda x: { 'year': x.strftime('%Y'), 'part': x.strftime('%Y') }
 }
 
 
@@ -96,7 +97,9 @@ class DbtBackfill(object):
                 datetime.now().strftime("%H:%M:%S"), " ".join(cmd)
             )
         )
+
         process = Popen(cmd, stdout=PIPE, stderr=PIPE)
+        # process = Popen(cmd)
         stdout, stderr = process.communicate()
         sys.stderr.write(stdout.decode("utf-8"))
         if process.returncode != 0:
@@ -131,7 +134,27 @@ class DbtBackfill(object):
         """
         Run all partitions
         """
-        return list(map(self._run_command, self.commands))
+        # sem = asyncio.Semaphore(4)
+
+        # # async def do_job(args):
+        # for cmd in self.commands:
+        #     async with sem:  # Don't run more than 10 simultaneous jobs below
+        #         proc = await asyncio.create_subprocess_shell(cmd, stdout=PIPE)
+        #         output = await proc.stdout.read()
+        #         return output
+        # run_func = dask.delayed(self._run_command)(self.commands)
+        # return 
+
+        pool = Pool(2)
+            
+
+        # client = Client()
+        # with dask.config.set(pool=ThreadPool(4)):
+        #     for cmnd in self.commands:
+        #         future = client.submit(self._run_command(cmnd))
+        #         result = client.gather(sent)
+        # return
+        return pool.map(self._run_command, self.commands)
 
 
 # function for parsing cli-input date
