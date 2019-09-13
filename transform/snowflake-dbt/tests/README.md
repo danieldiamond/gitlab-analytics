@@ -105,7 +105,9 @@ Database Error in model pings_usage_data_monthly_change_by_stage (models/pings/x
 Steps to Resolve:
 
 * Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack.
-* Step 2: Create a new issue and ping the product folks to get the new pings categorized
+* Step 2: Create a new issue.
+* Step 3: Ask in the #product slack channel which stage the new metric belongs to.
+* Step 4: Create an MR that adds the new metric to the `ping_metrics_to_stage_mapping_data` CSV. Remember to keep it sorted alphabetically. 
 
 ### Test: zuora_account_has_crm_id
 

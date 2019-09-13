@@ -19,6 +19,7 @@ help:
 	++ Python Related ++ \n \
 	data-image: attaches to a shell in the data-image and mounts the repo for testing. \n \
 	lint: Runs a linter (Black) over the whole repo. \n \
+	mypy: Runs a type-checker in the extract dir. \n \
 	pylint: Runs the pylint checker over the whole repo. Does not check for code formatting, only errors/warnings. \n \
 	radon: Runs a cyclomatic complexity checker and shows anything with less than an A rating. \n \
 	xenon: Runs a cyclomatic complexity checker that will throw a non-zero exit code if the criteria aren't met. \n \
@@ -63,6 +64,10 @@ init-airflow:
 lint:
 	@echo "Linting the repo..."
 	@black .
+
+mypy:
+	@echo "Running mypy..."
+	@mypy extract/ --ignore-missing-imports
 
 pylint:
 	@echo "Running pylint..."
