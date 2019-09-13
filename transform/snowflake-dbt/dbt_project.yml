@@ -152,7 +152,6 @@ models:
         xf:
           materialized: table
 
-
       sfdc:
         xf:
           enabled: true
