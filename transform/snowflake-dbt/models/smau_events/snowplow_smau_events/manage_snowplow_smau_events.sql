@@ -24,7 +24,6 @@ WITH snowplow_page_views AS (
   FROM {{ ref('snowplow_page_views')}}
   WHERE TRUE
     AND app_id = 'gitlab'
-    AND page_view_start > '2019-08-01' --TODO
   {% if is_incremental() %}
     AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
   {% endif %}
