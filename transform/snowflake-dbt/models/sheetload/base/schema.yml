@@ -51,3 +51,5 @@ models:
       tests:
       - not_null
       - unique
+- name: sheetload_calendar
+  description: This is the model that categorizes the events on the CEO's calendar.
