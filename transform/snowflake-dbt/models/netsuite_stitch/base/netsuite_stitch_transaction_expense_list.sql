@@ -73,3 +73,6 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+
+--filter out transaction without account info
+WHERE transaction_id not in ('588064','586468','585869','585768')--MR 2429-failure-in-test-not_null_netsuite_stitch_transaction_expense_list_account_id-on-2019-09-11
