@@ -2,21 +2,29 @@
 {% set month_value = var('month', run_started_at.strftime('%m')) %}
 
 {{config({
-    "materialized":"table",
+    "materialized":"incremental",
     "unique_key":"base64_event",
     "schema":"snowplow_" + year_value|string + '_' + month_value|string, 
   })
 }}
 
-WITH fishtown as (
+WITH gitlab as (
 
     SELECT *
-    FROM {{ ref('snowplow_fishtown_unnested_events') }}
+    FROM {{ ref('snowplow_gitlab_bad_events_dev') }}
+    {% if is_incremental() %}
+        WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
+    {% endif %}
 
-), gitlab as (
+),
+
+fishtown as (
 
     SELECT *
-    FROM {{ ref('snowplow_gitlab_events') }}
+    FROM {{ ref('snowplow_fishtown_bad_events_dev') }}
+    {% if is_incremental() %}
+       WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
+    {% endif %}
 
 ),
 
