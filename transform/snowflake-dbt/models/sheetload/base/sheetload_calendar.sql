@@ -73,12 +73,22 @@ WITH source AS (
     AND lower(event_title) NOT LIKE '%fyi%'
     AND lower(event_title) NOT LIKE '%fya%'
 
-)
+), final as (
 
-SELECT *,
+    SELECT
+      md5(event_title) as masked_event_title,
+      event_start,
+      CASE WHEN right(((round(calculated_duration*4))*.25)::varchar, 3) = '.75' THEN ((round(calculated_duration*4))*.25+.25) ELSE (round(calculated_duration*4))*.25 END as calculated_duration,
+      event_category,
       CASE WHEN event_category IN ('Monthly Key Review', 'Media Interviews', 'Livestreams', 'In Person Meetings', 'Conference Calls') THEN 'IACV'
            WHEN event_category IN ('Product Leadership') THEN 'Product'
            WHEN event_category IN ('Skip Levels', 'One on ones', 'Group Conversation', 'E-Group', 'Company Call', 'Candidate Interviews/Hiring') THEN 'Team'
            WHEN event_category IN ('Travel', 'Personal', 'Other') THEN 'Miscellaneous'
            WHEN event_category IN ('Board related') THEN 'Executive Responsibilities'
-FROM categorized
+      ELSE NULL END AS okr_time_allocation
+    FROM categorized
+
+)
+
+SELECT *
+FROM final
