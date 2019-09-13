@@ -14,6 +14,7 @@
 -%}
 
 WITH snowplow_page_views AS (
+
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
@@ -27,9 +28,11 @@ WITH snowplow_page_views AS (
   {% if is_incremental() %}
     AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
   {% endif %}
+
 )
 
 , audit_events_viewed AS (
+
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
@@ -39,9 +42,11 @@ WITH snowplow_page_views AS (
     page_view_id
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/audit_events'
+
 )
 
 , cycle_analytics_viewed AS (
+
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
@@ -51,9 +56,11 @@ WITH snowplow_page_views AS (
     page_view_id
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/cycle_analytics' 
+
 )
 
 , insights_viewed AS (
+
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
@@ -63,9 +70,11 @@ WITH snowplow_page_views AS (
     page_view_id
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '\/groups(\/([a-zA-Z-])*){1,}\/-\/insights'
+
 )
 
 , group_analytics_viewed AS (
+
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
@@ -75,9 +84,11 @@ WITH snowplow_page_views AS (
     page_view_id
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '\/groups(\/([a-zA-Z-])*){1,}\/-\/analytics'
+
 )
 
 , group_created AS (
+
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
@@ -87,6 +98,7 @@ WITH snowplow_page_views AS (
     page_view_id
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '\/groups\/new'
+
 )
 
   /*
@@ -95,6 +107,7 @@ WITH snowplow_page_views AS (
     meaning /sign_in redirects to a real GitLab page.
   */
 , user_authenticated AS (
+
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
@@ -105,6 +118,7 @@ WITH snowplow_page_views AS (
   FROM snowplow_page_views
   WHERE referer_url_path REGEXP '\/users\/sign_in'
     AND page_url_path NOT REGEXP '\/users\/sign_in'
+    
 )
 
 , unioned AS (
