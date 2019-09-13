@@ -55,7 +55,7 @@ models:
         - "grant select on {{this}} to role reporter"
 
     snowplow:
-      schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
+      schema: analytics
       tags: ["product"]
       post-hook: "grant select on {{this}} to role reporter"
       vars:
@@ -71,7 +71,7 @@ models:
 
     snowplow_dev:
       schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
-      tags: ["product"]
+      tags: ["dev"]
       post-hook: "grant select on {{this}} to role reporter"
       vars:
         'snowplow:use_fivetran_interface': false
@@ -165,7 +165,7 @@ models:
           materialized: table
 
       snowplow_dev:
-        tags: ["product"]
+        tags: ["dev"]
         enabled: true
         xf:
           materialized: table
