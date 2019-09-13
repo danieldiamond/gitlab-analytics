@@ -8,21 +8,17 @@
   })
 }}
 
-WITH gitlab as (
-
-    SELECT *
-    FROM {{ ref('snowplow_gitlab_bad_events') }}
-
-),
-
-fishtown as (
+WITH fishtown as (
 
     SELECT *
     FROM {{ ref('snowplow_fishtown_bad_events') }}
 
-),
+), gitlab as (
 
-unioned AS (
+    SELECT *
+    FROM {{ ref('snowplow_gitlab_bad_events') }}
+
+), unioned AS (
 
     SELECT *
     FROM gitlab
