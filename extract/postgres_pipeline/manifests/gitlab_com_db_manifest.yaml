@@ -870,8 +870,8 @@ tables:
     import_query: >
       SELECT id
       , project_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , enabled
       FROM project_auto_devops
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
@@ -883,8 +883,8 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , project_id
       , key
       , value
@@ -904,8 +904,8 @@ tables:
       , wiki_access_level
       , snippets_access_level
       , builds_access_level
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , repository_access_level
       FROM project_features
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
@@ -919,10 +919,10 @@ tables:
       SELECT id
       , project_id
       , group_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , group_access
-      , TO_CHAR(expires_at, 'YYYY-MM-DD HH:MI:SS') AS expires_at
+      , expires_at
       FROM project_group_links
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -944,9 +944,9 @@ tables:
       SELECT id
       , project_id
       , retry_count
-      , TO_CHAR(last_update_started_at, 'YYYY-MM-DD HH:MI:SS') AS last_update_started_at
-      , TO_CHAR(last_update_scheduled_at, 'YYYY-MM-DD HH:MI:SS') AS last_update_scheduled_at
-      , TO_CHAR(next_execution_timestamp, 'YYYY-MM-DD HH:MI:SS') AS next_execution_timestamp
+      , last_update_started_at
+      , last_update_scheduled_at
+      , next_execution_timestamp
       FROM project_mirror_data
     export_schema: 'gitlab_com'
     export_table: 'project_mirror_data'
@@ -1053,8 +1053,8 @@ tables:
       , subscribable_id
       , subscribable_type
       , subscribed
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , project_id
       FROM subscriptions
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
