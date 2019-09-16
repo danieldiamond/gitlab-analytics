@@ -3,7 +3,7 @@
  {% call statement('get_schemata', fetch_result=True) %}
 
     SELECT DISTINCT '"' || table_schema || '"."' || table_name || '"'
-    FROM analytics.information_schema.tables
+    FROM {{ target.database }}.information_schema.tables
     WHERE table_schema ILIKE '%{{ schema_part }}%'
     AND table_name ILIKE '{{ table_name }}'
 	
@@ -15,9 +15,9 @@
 
         {%- set values = value_list['data'] | map(attribute=0) | list %}
 
-            {% for thing in values %}
+            {% for schematable in values %}
                 SELECT * 
-                FROM {{ thing }}
+                FROM {{ target.database }}.{{ schematable }}
 
             {%- if not loop.last %}      
                 UNION ALL

@@ -6,9 +6,6 @@ import sys
 import argparse
 from multiprocessing.pool import ThreadPool
 from multiprocessing import Pool
-import asyncio
-import asyncio.subprocess
-from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime, timedelta
 import subprocess
 from subprocess import Popen, PIPE
@@ -128,7 +125,7 @@ class DbtBackfill(object):
         """
         Run all partitions
         """
-        pool = Pool(5)
+        pool = Pool(4)
 
         return pool.map(self._run_command, self.commands)
 

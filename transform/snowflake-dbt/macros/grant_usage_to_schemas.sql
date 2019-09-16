@@ -2,7 +2,7 @@
 
 	{%- set schema_name = target.schema -%}
 
-	{% if rolename is not none %}
+	{% if rolename %}
 		{%- set roles = [rolename] -%}
 	{% else %}
 		{%- set roles = [
