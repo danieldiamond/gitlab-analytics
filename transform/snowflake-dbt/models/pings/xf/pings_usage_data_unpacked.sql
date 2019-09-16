@@ -79,7 +79,7 @@ unpacked AS (
         THEN ping_value::numeric
         ELSE 0
       END
-      )                                               AS {{ping_name}} {{ "," if not loop.last }}
+      ) AS {{ping_name}} {{ "," if not loop.last }}
     {% endfor %}
     
     FROM unpacked
