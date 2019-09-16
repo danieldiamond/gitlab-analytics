@@ -30,7 +30,7 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    "dbt_snowplow_full_refresh", default_args=default_args, schedule_interval=None
+    "dbt_snowplow_backfill", default_args=default_args, schedule_interval=None
 )
 
 
@@ -41,21 +41,20 @@ git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-
 # Warehouse variable declaration
 xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
 
-
-# dbt-full-refresh
-dbt_full_refresh_cmd = f"""
+# dbt-backfill
+dbt_backfill_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
     export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
-    python scripts/dbt_backfill.py --models snowplow --target prod --vars --from-date {{ macros.ds_add(ds, -62) }} --to-date {{ ds }} --partition month --profiles-dir profile
+    python scripts/dbt_backfill.py --models snowplow --target prod --vars --from-date 2018-09-01 --to-date {{ ds }} --partition month --profiles-dir profile
 """
-dbt_full_refresh = KubernetesPodOperator(
+dbt_backfill_cmd = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
-    task_id="dbt-snowplow-full-refresh",
-    name="dbt-snowplow-full-refresh",
+    task_id="dbt-snowplow-backfill",
+    name="dbt-snowplow-backfill",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
@@ -66,6 +65,6 @@ dbt_full_refresh = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
-    arguments=[dbt_full_refresh_cmd],
+    arguments=[dbt_backfill_cmd],
     dag=dag,
 )
