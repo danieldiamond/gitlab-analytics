@@ -125,9 +125,10 @@ class DbtBackfill(object):
         """
         Run all partitions
         """
-        pool = Pool(4)
+        # pool = Pool(1)
 
-        return pool.map(self._run_command, self.commands)
+        # return pool.map(self._run_command, self.commands)
+        return list(map(self._run_command, self.commands))
 
 
 # function for parsing cli-input date
