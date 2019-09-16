@@ -33,7 +33,6 @@ models:
       - name: page_view_id
         tests:
           - not_null
-          - unique  
 
   - name: plan_snowplow_smau_events
     description: '{{ doc("plan_snowplow_smau_events") }}'
