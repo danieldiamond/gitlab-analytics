@@ -30,7 +30,7 @@ renamed AS (
     created_at::TIMESTAMP                    AS created_at,
     updated_at::TIMESTAMP                    AS updated_at,
     license_id::INTEGER                      AS license_id,
-    PARSE_JSON(stats)                        AS stats,
+    stats                                    AS stats,
     mattermost_enabled::BOOLEAN              AS mattermost_enabled,
     uuid::VARCHAR                            AS uuid,
     edition::VARCHAR                         AS edition,
@@ -66,7 +66,7 @@ renamed AS (
 
   FROM source
   WHERE uuid IS NOT NULL
-    AND (CHECK_JSON(counts) IS NULL AND CHECK_JSON(stats) IS NULL)
+    AND (CHECK_JSON(counts) IS NULL)
 )
 
 SELECT
