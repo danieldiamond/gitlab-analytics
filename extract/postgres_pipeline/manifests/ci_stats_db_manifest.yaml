@@ -25,8 +25,8 @@ tables:
       , updated_at
       , branch
       FROM spec_profiling_results
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{HOURS} hour'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'ci_stats'
     export_table: 'spec_profiling_results'
     export_table_primary_key: id
