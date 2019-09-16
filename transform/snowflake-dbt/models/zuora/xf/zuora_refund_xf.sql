@@ -1,7 +1,7 @@
 WITH zuora_refund_base AS (
 
 	SELECT *
-  FROM {{ref('zuora_refund')}}
+	FROM {{ref('zuora_refund')}}
 
 ), zuora_account AS (
 
@@ -9,7 +9,7 @@ WITH zuora_refund_base AS (
 
 )
 
-SELECT zuora_account.sfdc_entity               AS entity,
+SELECT zuora_account.sfdc_entity,
        zuora_account.account_name,
        zuora_account.account_number,
        zuora_account.currency,
@@ -17,7 +17,7 @@ SELECT zuora_account.sfdc_entity               AS entity,
        amount                                  AS refund_amount,
 			 comment,
 			 reason_code,
-			 zuora_refund_base.status
+			 zuora_refund_base.refund_status
 FROM zuora_refund_base
 LEFT JOIN zuora_account
   ON zuora_refund_base.account_id = zuora_account.account_id
