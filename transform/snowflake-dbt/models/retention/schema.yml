@@ -1,11 +1,10 @@
 version: 2
 
 models:
-  - name: cancelled_zuora_subscriptions
   - name: current_arr_segmentation_all_levels
     description: '{{ doc("current_arr_segmentation_all_levels") }}'
     columns:
-        - name: id 
+        - name: id
           description: "Subcription Slug, SFDC Account ID, or SFDC Ultimate Parent Account ID"
           tests:
               - not_null
@@ -85,10 +84,10 @@ models:
         - name: product_category
         - name: unit_of_measure
         - name: quantity
-        - name: sfdc_account_id 
+        - name: sfdc_account_id
           tests:
               - not_null
-        - name: sfdc_account_name 
+        - name: sfdc_account_name
           tests:
               - not_null
         - name: ultimate_parent_account_id
@@ -150,7 +149,7 @@ models:
         - name: salesforce_account_id
           description: 'Used only for joining to SFDC in Looker'
           tests:
-              - not_null              
+              - not_null
         - name: retention_month
           tests:
               - not_null
@@ -172,7 +171,7 @@ models:
         - name: months_since_parent_account_cohort_start
           tests:
               - not_null
-        - name: quarters_since_parent_account_cohort_start  
+        - name: quarters_since_parent_account_cohort_start
           tests:
               - not_null
         - name: churn_type
@@ -211,10 +210,12 @@ models:
         - name: retention_unit_of_measure
         - name: original_mrr
         - name: retention_mrr
+        - name: rank_churn_type_month
+          description: Ranks the months of the churn type by subscription with the first month of the churn type being ranked 1.
 
   - name: retention_sfdc_account_
     description: '{{ doc("retention_sfdc_account_") }}'
-    columns: 
+    columns:
         - name: sfdc_account_id
           tests:
               - not_null
@@ -262,7 +263,7 @@ models:
 
   - name: retention_zuora_subscription_
     description: '{{ doc("retention_zuora_subscription_") }}'
-    columns: 
+    columns:
         - name: zuora_subscription_name
           tests:
               - not_null
