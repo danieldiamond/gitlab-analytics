@@ -5,7 +5,7 @@
 
 WITH source AS (
 
-	SELECT *
+  SELECT *
   FROM {{ source('zuora', 'refund') }}
 
 ), renamed AS (

@@ -260,10 +260,9 @@ models:
           - name: cohort_year
             tests:
                 - not_null
-    - name: zuora_base_refund
+    - name: zuora_refund_xf
       description: Zuora Refunds
       columns:
           - name: refund_month
             tests:
                 - not_null
-              

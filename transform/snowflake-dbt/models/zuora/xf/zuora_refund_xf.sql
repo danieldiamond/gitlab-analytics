@@ -17,6 +17,7 @@ SELECT zuora_account.sfdc_entity,
        amount                                  AS refund_amount,
 			 comment,
 			 reason_code,
+			 is_deleted,
 			 zuora_refund_base.refund_status
 FROM zuora_refund_base
 LEFT JOIN zuora_account
