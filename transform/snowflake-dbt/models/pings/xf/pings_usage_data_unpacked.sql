@@ -77,6 +77,7 @@ unpacked AS (
       MAX(
       CASE WHEN full_ping_name = '{{ping_name}}'
         THEN ping_value::numeric
+        ELSE 0
       END
       )                                               AS {{ping_name}} {{ "," if not loop.last }}
     {% endfor %}
