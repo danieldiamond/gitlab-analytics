@@ -169,6 +169,7 @@ AND date_part(year, uploaded_at::timestamp) = '{{ year_value }}'
 AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(page_url) NOT LIKE 'http://localhost:%'
 AND derived_tstamp != 'com.snowplowanalytics.snowplow'
+AND derived_tstamp != 'com.google.analytics'
 
 ), events_to_ignore as (
 

@@ -115,6 +115,15 @@ models:
       gitlab_dotcom:
         tags: ["product"]
         enabled: true
+        base:
+          gitlab_dotcom_project_features:
+            enabled: false
+          gitlab_dotcom_project_group_links:
+            enabled: false
+          gitlab_dotcom_project_mirror_data:
+            enabled: false
+          gitlab_dotcom_subscriptions:
+            enabled: false
         xf:
           materialized: table
 
