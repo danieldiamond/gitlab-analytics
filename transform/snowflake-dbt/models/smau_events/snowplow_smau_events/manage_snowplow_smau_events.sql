@@ -41,7 +41,7 @@ WITH snowplow_page_views AS (
     'audit_events_viewed'       AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/audit_events'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/audit_events'
 
 )
 
@@ -55,7 +55,7 @@ WITH snowplow_page_views AS (
     'cycle_analytics_viewed'   AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/cycle_analytics' 
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics' 
 
 )
 
@@ -69,7 +69,7 @@ WITH snowplow_page_views AS (
     'insights_viewed'          AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '\/groups(\/([a-zA-Z-])*){1,}\/-\/insights'
+  WHERE page_url_path REGEXP '\/groups(\/([0-9A-Za-z_.-])*){1,}\/-\/insights'
 
 )
 
@@ -83,7 +83,7 @@ WITH snowplow_page_views AS (
     'group_analytics_viewed'   AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '\/groups(\/([a-zA-Z-])*){1,}\/-\/analytics'
+  WHERE page_url_path REGEXP '\/groups(\/([0-9A-Za-z_.-])*){1,}\/-\/analytics'
 
 )
 
