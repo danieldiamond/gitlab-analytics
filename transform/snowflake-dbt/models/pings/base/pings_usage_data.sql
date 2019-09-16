@@ -62,7 +62,7 @@ renamed AS (
     gitaly_version::VARCHAR                  AS gitaly_version,
     gitaly_servers::INTEGER                  AS gitaly_servers,
 
-    PARSE_JSON(counts) AS stats_used
+    PARSE_JSON(counts)                       AS stats_used
 
   FROM source
   WHERE uuid IS NOT NULL
