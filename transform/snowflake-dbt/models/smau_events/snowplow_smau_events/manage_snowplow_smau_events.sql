@@ -55,7 +55,7 @@ WITH snowplow_page_views AS (
     'cycle_analytics_viewed'   AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics' 
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics'
 
 )
 
@@ -118,7 +118,7 @@ WITH snowplow_page_views AS (
   FROM snowplow_page_views
   WHERE referer_url_path REGEXP '\/users\/sign_in'
     AND page_url_path NOT REGEXP '\/users\/sign_in'
-    
+
 )
 
 , unioned AS (
