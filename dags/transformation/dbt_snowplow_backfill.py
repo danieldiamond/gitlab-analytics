@@ -11,11 +11,12 @@ from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOpera
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
+GIT_BRANCH_UPPER = GIT_BRANCH.upper()
 pod_env_vars = {
-    "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
+    "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH_UPPER}_RAW",
     "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
     if GIT_BRANCH == "master"
-    else f"{GIT_BRANCH}_ANALYTICS",
+    else f"{GIT_BRANCH_UPPER}_ANALYTICS",
 }
 
 # Default arguments for the DAG
@@ -40,6 +41,7 @@ git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-
 
 # Warehouse variable declaration
 xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
+to_date = '{{ ds }}'
 
 # dbt-backfill
 dbt_backfill_cmd = f"""
@@ -48,7 +50,8 @@ dbt_backfill_cmd = f"""
     export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
-    python scripts/dbt_backfill.py --models snowplow --target prod --vars --from-date 2018-09-01 --to-date {{ ds }} --partition month --profiles-dir profile
+    python scripts/dbt_backfill.py --model snowplow --target prod --from-date 2018-09-01 --to-date {to_date} --partition month --profiles-dir profile
+    dbt run --profiles-dire profile --target prod --models snowplow_combined
 """
 dbt_backfill_cmd = KubernetesPodOperator(
     **gitlab_defaults,
