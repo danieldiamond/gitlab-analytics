@@ -50,6 +50,8 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.net_incremental_acv,
         sfdc_opportunity.renewal_amount,
         sfdc_opportunity.renewal_acv,
+        sfdc_opportunity.refund_iacv,
+        sfdc_opportunity.is_refund,
         sfdc_opportunity.nrv,
         sfdc_opportunity.total_contract_value,
         sfdc_opportunity.lead_source,

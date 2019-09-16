@@ -18,6 +18,11 @@ Example: You might be looking at the count of opportunities before and after, if
 
 Please include links to any related MRs and/or issues.
 
+## Stakeholder Checklist (if applicable)
+
+- [ ] Does the dbt model change provide the requested data?
+- [ ] Does the dbt model change provide accurate data?
+
 ## Submitter Checklist
 
 - [ ] This MR follows the coding conventions laid out in the [style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)

@@ -112,10 +112,17 @@ python_black:
     - pip install black
     - black --check .
 
+python_mypy:
+  <<: *python_check
+  script:
+    - pip install mypy
+    - mypy extract/ --ignore-missing-imports
+
 python_pylint:
   <<: *python_check
   script:
     - pylint ../analytics/ --ignore=dags --disable=C --disable=W1203 --disable=W1202 --reports=y --exit-zero
+  when: manual
 
 python_complexity:
   <<: *python_check

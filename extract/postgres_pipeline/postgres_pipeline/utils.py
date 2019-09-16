@@ -157,7 +157,8 @@ def id_query_generator(
     target_table: str,
 ) -> Generator[str, Any, None]:
     """
-    This function syncs a database with Snowflake based on IDs for each table.
+    This function syncs a database with Snowflake based on the user-defined 
+    primary keys for each table.
 
     Gets the diff between the IDs that exist in the DB vs the DW, loads any rows
     with IDs that are missing from the DW.
@@ -178,7 +179,9 @@ def id_query_generator(
 
     # Get the max ID from the source DB
     logging.info(f"Getting max ID from source_table: {source_table}")
-    max_source_id_query = f"SELECT MAX({primary_key}) as id FROM {source_table}"
+    max_source_id_query = (
+        f"SELECT MAX({primary_key}) as {primary_key} FROM {source_table}"
+    )
     try:
         max_source_id_results = query_results_generator(
             max_source_id_query, postgres_engine
@@ -192,7 +195,7 @@ def id_query_generator(
     for id_pair in range_generator(max_target_id, max_source_id):
         id_range_query = (
             "".join(raw_query.lower().split("where")[0])
-            + f"WHERE id BETWEEN {id_pair[0]} AND {id_pair[1]}"
+            + f"WHERE {primary_key} BETWEEN {id_pair[0]} AND {id_pair[1]}"
         )
         logging.info(f"ID Range: {id_pair}")
         yield id_range_query

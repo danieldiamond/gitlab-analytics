@@ -66,7 +66,7 @@ models:
         'snowplow:context:useragent': false
         'snowplow:timezone': 'America/New_York'
         'snowplow:page_ping_frequency': 30
-        'snowplow:app_ids': ['gitlab', 'about']
+        'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
         'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
 
     snowflake_spend:
@@ -116,22 +116,17 @@ models:
       gitlab_dotcom:
         tags: ["product"]
         enabled: true
+        base:
+          gitlab_dotcom_project_features:
+            enabled: false
+          gitlab_dotcom_project_group_links:
+            enabled: false
+          gitlab_dotcom_project_mirror_data:
+            enabled: false
+          gitlab_dotcom_subscriptions:
+            enabled: false
         xf:
           materialized: table
-          gitlab_dotcom_gitlab_issues_requests:
-            enabled: false
-          gitlab_dotcom_internal_notes_xf:
-            enabled: false
-        base:
-          gitlab_dotcom_notes:
-            enabled: false
-          gitlab_dotcom_notification_settings:
-            enabled: false
-          gitlab_dotcom_namespace_root_storage_statistics:
-            enabled: false
-        ephemeral:
-          gitlab_dotcom_notes_linked_to_sfdc_account_id:
-            enabled: false
 
       greenhouse:
         schema: sensitive
@@ -153,6 +148,11 @@ models:
         materialized: table
 
       retention:
+        enabled: true
+        materialized: table
+
+      smau_events:
+        tags: ["product"]
         enabled: true
         materialized: table
 

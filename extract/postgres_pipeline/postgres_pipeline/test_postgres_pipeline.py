@@ -47,7 +47,7 @@ def table_cleanup():
         SNOWFLAKE_ENGINE.dispose()
 
 
-class TestTapPostgres:
+class TestPostgresPipeline:
     def test_query_results_generator(self):
         """
         Test loading a dataframe by querying a known table.
