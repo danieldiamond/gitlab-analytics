@@ -1,7 +1,0 @@
-version: 2
-
-models:
-    - name: cleaned_urls
-    - name: clearbit_cache
-    - name: discoverorg_cache
-    - name: whois_cache

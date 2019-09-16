@@ -8,8 +8,10 @@ Closes
 
 * [ ] List
 
-#### Linting
+#### Code Quality
 
-* [ ] Linted?
+* [ ] Passed Linting?
+* [ ] Passed Complexity Check?
+* [ ] Passed Pytest?
 
 #### Changes

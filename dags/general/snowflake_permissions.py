@@ -26,7 +26,10 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-    meltano permissions grant analytics/load/snowflake/snowflake_roles/config.yml --db snowflake $DRY
+    meltano init airflow_job &&
+    cp analytics/load/snowflake/roles.yml airflow_job/load/roles.yml &&
+    cd airflow_job/ &&
+    meltano permissions grant load/roles.yml --db snowflake $DRY
 """
 
 # Create the DAG
@@ -37,7 +40,7 @@ dag = DAG(
 # Task 1
 snowflake_load = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/meltano/meltano/runner:v0.3.0",
+    image="registry.gitlab.com/meltano/meltano/runner:v0.34.2",
     task_id="snowflake-permissions",
     name="snowflake-permissions",
     secrets=[

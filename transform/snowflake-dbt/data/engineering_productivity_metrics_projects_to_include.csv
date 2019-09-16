@@ -1,10 +1,8 @@
-project_path,project_id
+project_path,project_id 
 gitlab-org/gitlab-ce,13083
 gitlab-org/gitlab-ee,278964
 gitlab-org/gitlab-runner,250833
-gitlab-org/omnibus-gitlab,20699
 gitlab-org/gitlab-ui,7071551
-gitlab-org/design.gitlab.com,4456656
 gitlab-org/gitlab-pages,734943
 gitlab-org/gitlab-workhorse,554859
 gitlab-org/gitlab-shell,14022
@@ -40,7 +38,6 @@ gitlab-org/security-products/analyzers/find-sec-bugs,5606894
 gitlab-org/security-products/clair-scanner,4894834
 gitlab-org/security-products/ci-templates,6168240
 gitlab-org/security-products/gitlab-depscan,6802300
-gitlab-org/security-products/license-management,6130122
 gitlab-org/security-products/gemnasium/legacy,6143038
 gitlab-org/security-products/gemnasium/client,5851774
 gitlab-org/security-products/gemnasium/standalone,5849726
@@ -64,7 +61,7 @@ gitlab-org/gitlab-omnibus-builder,145205
 gitlab-org/gitaly-bench,4157550
 gitlab-org/sidekiq-reliable-fetch,8362868
 gitlab-org/omniauth-ldap,27726
-cluster-integration/gitlab-org/cluster-integration/auto-build-image,10400718
+gitlab-org/cluster-integration/auto-build-image,10400718
 gitlab-org/labkit-ruby,10947578
 gitlab-org/labkit,9438583
 gitlab-org/prometheus-client-mmap,3362933
@@ -89,30 +86,14 @@ gitlab-org/gitter/gitter-android-app,7750843
 gitlab-org/gitter/webapp,3601513
 gitlab-org/quality/staging,7524061
 gitlab-org/quality/triage-ops,7776928
-gitlab-org/design.gitlab.com,4456656
-gitlab-org/gitlab-elasticsearch-indexer,2953390
+gitlab-org/gitlab-services/design.gitlab.com,4456656
 gitlab-org/customers-gitlab-com,2670515
-gitlab-org/release/docs,5191294
-gitlab-org/gitlab-terminal,7792567
-gitlab-org/grafana-dashboards,928825
-gitlab-com/www-gitlab-com,7764
 gitlab-com/license-gitlab-com,6457868
 gitlab-com/version-gitlab-com,6491770
-gitlab-com/runbooks,1148549
-gitlab-com/ci-prometheus-configuration,4343186
-charts/gitlab-runner,6329679
-charts/auto-deploy-app,6329546
-gitlab-cookbooks/cookbook-gitlab-runner,1755725
-gitlab-cookbooks/cookbook-wrapper-gitlab-runner,1755701
-gitlab-cookbooks/gitlab-docker,1639226
-gitlab-cookbooks/gitlab-qa-tunnel,7243725
-gitlab-cookbooks/gitlab-alertmanager,5245690
-gitlab-cookbooks/gitlab-prometheus,1663959
-gitlab-cookbooks/gitlab-exporters,5252782
-gitlab-cookbooks/mtail,3569903
-security-products/container-scanning,11428501
-security-products/license-management,6130122
-security-products/gemnasium-db,12006272
+gitlab-org/charts/auto-deploy-app,11915984
+gitlab-org/security-products/container-scanning,11428501
+gitlab-org/security-products/license-management,6130122
+gitlab-org/security-products/gemnasium-db,12006272
 gitlab-org/security-products/tests/python-pipenv,11574953
 gitlab-org/security-products/tests/elixir-phoenix,11520423
 gitlab-org/security-products/tests/container-scanning,11432834
@@ -125,7 +106,7 @@ gitlab-org/security-products/tests/java-gradle,8368700
 gitlab-org/security-products/tests/java-groovy,8368695
 gitlab-org/security-products/tests/webgoat,7688358
 gitlab-org/security-products/tests/scala-sbt,6523803
-gitlab-org/security-products/tests/Common,6388398
+gitlab-org/security-products/tests/common,6388398
 gitlab-org/security-products/tests/sast,6328050
 gitlab-org/security-products/tests/go,5996549
 gitlab-org/security-products/tests/cplusplus,5737157
@@ -139,6 +120,13 @@ gitlab-org/security-products/tests/ruby-bundler,5465687
 gitlab-org/security-products/tests/js-npm,5457755
 gitlab-org/security-products/tests/java-maven,5457651
 gitlab-org/security-products/tests/js-yarn,5456231
+gitlab-org/cluster-integration/helm-install-image,9184510
+gitlab-org/cluster-integration/auto-deploy-image,11688089
+gitlab-org/charts/components/gitlab-operator,14240586
+gitlab-org/charts/gitlab,3828396
+gitlab-org/fulfillment,10619765
+gitlab-org/gitlabktl,11080193
+gitlab-org/omnibus-gitlab,20699
 Dev CE,
 Dev EE,
 Dev Gitaly,

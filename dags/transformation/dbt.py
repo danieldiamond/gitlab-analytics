@@ -27,10 +27,14 @@ default_args = {
     "catchup": False,
     "depends_on_past": False,
     "on_failure_callback": slack_failed_task,
-    "params": {"slack_channel_override": "#dbt-runs"},
     "owner": "airflow",
-    "retries": 1,
+    "params": {
+        "slack_channel_override": "#dbt-runs"
+    },  # Overriden for dbt-source-freshness in airflow_utils.py
+    "retries": 0,
     "retry_delay": timedelta(minutes=1),
+    "sla": timedelta(hours=8),
+    "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
     "trigger_rule": "all_done",
 }
@@ -62,20 +66,6 @@ def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
         return "dbt-run"
 
 
-def dbt_archive_or_none(timestamp: datetime) -> str:
-    """
-    Use the current timestamp to determine whether to do a full-refresh or
-    not run anything.
-
-    It is set to run every 6th hour.
-    """
-    print(timestamp.hour)
-    if timestamp.hour % 8 == 0 or timestamp.hour == 0:
-        return "dbt-archive"
-    else:
-        return "skip-dbt-archive"
-
-
 # Set the git command for the containers
 git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1"
 
@@ -86,15 +76,6 @@ branching_dbt_run = BranchPythonOperator(
     dag=dag,
 )
 
-branching_dbt_archive = BranchPythonOperator(
-    task_id="branching-dbt-archive",
-    python_callable=lambda: dbt_archive_or_none(datetime.now()),
-    dag=dag,
-)
-
-# Dummy task for dbt-archive
-skip_dbt_archive = DummyOperator(task_id="skip-dbt-archive", dag=dag)
-
 # Warehouse variable declaration
 xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
 
@@ -102,10 +83,11 @@ xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
 dbt_run_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
+    export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile # install packages &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse} # run on small warehouse w/o product data or snapshots &&
-    dbt run --profiles-dir profile --target prod --model tag:product # run product data on large warehouse
+    dbt run --profiles-dir profile --target prod --models tag:product # run product data on large warehouse
 """
 dbt_run = KubernetesPodOperator(
     **gitlab_defaults,
@@ -130,6 +112,7 @@ dbt_run = KubernetesPodOperator(
 dbt_full_refresh_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
+    export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt run --profiles-dir profile --target prod --full-refresh
@@ -153,19 +136,19 @@ dbt_full_refresh = KubernetesPodOperator(
     dag=dag,
 )
 
-# dbt-archive
-dbt_archive_cmd = f"""
+# dbt-source-freshness
+dbt_source_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
+    export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile &&
-    dbt archive --profiles-dir profile --target prod --vars {xs_warehouse} &&
-    dbt run --profiles-dir profile --target prod --models snapshots --vars {xs_warehouse}
+    true # dbt source snapshot-freshness --profiles-dir profile --target docs
 """
-dbt_archive = KubernetesPodOperator(
+dbt_source_freshness = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
-    task_id="dbt-archive",
-    name="dbt-archive",
+    task_id="dbt-source-freshness",
+    name="dbt-source-freshness",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
@@ -176,7 +159,7 @@ dbt_archive = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     cmds=["/bin/bash", "-c"],
-    arguments=[dbt_archive_cmd],
+    arguments=[dbt_source_cmd],
     dag=dag,
 )
 
@@ -184,6 +167,7 @@ dbt_archive = KubernetesPodOperator(
 dbt_test_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
+    export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile # install packages &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt test --profiles-dir profile --target prod --vars {xs_warehouse} --exclude snowplow
@@ -208,50 +192,11 @@ dbt_test = KubernetesPodOperator(
     dag=dag,
 )
 
-# sfdc-update
-sfdc_update_cmd = f"""
-    {git_cmd} &&
-    python3 analytics/transform/sfdc_processor.py upload_hosts &&
-    python3 analytics/transform/sfdc_processor.py generate_accounts &&
-    python3 analytics/transform/sfdc_processor.py update_accounts
-"""
-sfdc_update = KubernetesPodOperator(
-    **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
-    task_id="sfdc-update",
-    name="sfdc-update",
-    secrets=[
-        PG_USERNAME,
-        PG_ADDRESS,
-        PG_PASSWORD,
-        PG_DATABASE,
-        SFDC_USERNAME,
-        SFDC_PASSWORD,
-        SFDC_SECURITY_TOKEN,
-        SNOWFLAKE_ACCOUNT,
-        SNOWFLAKE_PASSWORD,
-        SNOWFLAKE_TRANSFORM_USER,
-        SNOWFLAKE_TRANSFORM_ROLE,
-        SNOWFLAKE_TRANSFORM_WAREHOUSE,
-        SNOWFLAKE_TRANSFORM_SCHEMA,
-    ],
-    env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
-    arguments=[sfdc_update_cmd],
-    dag=dag,
-)
+# Source Freshness
+dbt_source_freshness >> branching_dbt_run
 
-
-# Branching for run/archive
+# Branching for run
 branching_dbt_run >> dbt_run
 branching_dbt_run >> dbt_full_refresh
-dbt_run >> sfdc_update
-dbt_full_refresh >> sfdc_update
-#
-sfdc_update >> branching_dbt_archive
-# Branching for dbt_archive
-branching_dbt_archive >> dbt_archive
-branching_dbt_archive >> skip_dbt_archive
-#
-dbt_archive >> dbt_test
-skip_dbt_archive >> dbt_test
+dbt_run >> dbt_test
+dbt_full_refresh >> dbt_test

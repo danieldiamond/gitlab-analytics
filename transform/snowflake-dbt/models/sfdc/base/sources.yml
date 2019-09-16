@@ -6,6 +6,11 @@ sources:
     schema: salesforce_stitch
     loader: Stitch
     loaded_at_field: _sdc_batched_at
+    
+    quoting:
+      database: true
+      schema: false
+      identifier: false
 
     freshness:
         warn_after: {count: 8, period: hour}
@@ -78,4 +83,3 @@ sources:
         description: '{{ doc("sfdc_opp_arch_source") }}'
       - name: sfdc_users_archived
         description: '{{ doc("sfdc_users_arch_source") }}'
-

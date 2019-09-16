@@ -10,7 +10,7 @@ models:
             - not_null
       - name: arr
         description: This is the correction for AAR in organization fields. Field key cannot be changed in Zendesk.
-    
+
     - name: zendesk_tickets
       description: This is the base model for Zendesk tickets.
       columns:
@@ -18,7 +18,7 @@ models:
         tests:
             - unique
             - not_null
-            
+
     - name: zendesk_users
       description: This is the base model for Zendesk users.
       columns:
@@ -26,7 +26,7 @@ models:
         tests:
             - unique
             - not_null
-            
+
     - name: zendesk_ticket_metrics
       description: This is the base model for Zendesk ticket metrics
       columns:
@@ -34,9 +34,7 @@ models:
         tests:
             - unique
             - not_null
-      - name: id
+      - name: ticket_metrics_id
         tests:
             - unique
             - not_null
-            
-

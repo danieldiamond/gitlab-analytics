@@ -1,4 +1,7 @@
-{% set sensitive_fields = ['description', 'import_source','issues_template','build_coverage_regex','name', 'path','import_url','merge_requests_template'] %}
+{{ config({
+    "schema": "sensitive"
+    })
+}}
 
 WITH source as (
 
@@ -10,14 +13,14 @@ WITH source as (
     SELECT
 
       id :: integer                                                                 AS project_id,
-
-      {% for field in sensitive_fields %}
-      CASE
-        WHEN visibility_level != '20' AND namespace_id::int NOT IN {{ get_internal_namespaces() }}
-          THEN 'project is private/internal'
-        ELSE {{field}}
-      END                                                                           AS project_{{field}},
-      {% endfor %}
+      description :: varchar                                                        AS project_description,
+      import_source :: varchar                                                      AS project_import_source,
+      issues_template :: varchar                                                    AS project_issues_template,
+      build_coverage_regex                                                          AS project_build_coverage_regex,      
+      name :: varchar                                                               AS project_name,
+      path :: varchar                                                               AS project_path,
+      import_url                                                                    AS project_import_url,
+      merge_requests_template                                                       AS project_merge_requests_template,
 
       created_at :: timestamp                                                       AS project_created_at,
       updated_at :: timestamp                                                       AS project_updated_at,
@@ -37,7 +40,6 @@ WITH source as (
 
       IFF(avatar IS NULL, FALSE, TRUE)                                              AS has_avatar,
 
-      import_status,
       star_count :: integer                                                         AS project_star_count,
       merge_requests_rebase_enabled :: boolean                                      AS merge_requests_rebase_enabled,
       IFF(LOWER(import_type) = 'nan', NULL, import_type)                            AS import_type,

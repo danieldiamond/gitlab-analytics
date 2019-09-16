@@ -1,27 +1,19 @@
-with bamboohr_directory as (
+WITH bamboohr_directory AS (
 
     SELECT *
     FROM {{ ref ('bamboohr_directory') }}
 
-), hire_dates as (
-
-    SELECT max(effective_date) as effective_date, employee_id
-    FROM {{ ref ('bamboohr_compensation') }}
-    WHERE compensation_change_reason = 'Hire'
-    GROUP BY 2
-
-
-), termination_dates as (
-
-    SELECT *
-    FROM {{ ref ('bamboohr_employment_status') }}
-    WHERE termination_type IS NOT NULL
-
 ), department_info as (
 
     SELECT employee_id,
-            last_value(department) RESPECT NULLS OVER ( PARTITION BY employee_id ORDER BY effective_date ) AS department,
-            last_value(division) RESPECT NULLS OVER ( PARTITION BY employee_id ORDER BY effective_date ) AS division
+            last_value(job_title) RESPECT NULLS
+                OVER ( PARTITION BY employee_id ORDER BY effective_date ) AS last_job_title,
+            last_value(reports_to) RESPECT NULLS
+                OVER ( PARTITION BY employee_id ORDER BY effective_date ) AS last_supervisor,
+            last_value(department) RESPECT NULLS
+                OVER ( PARTITION BY employee_id ORDER BY effective_date ) AS last_department,
+            last_value(division) RESPECT NULLS
+                OVER ( PARTITION BY employee_id ORDER BY effective_date ) AS last_division
     FROM {{ ref ('bamboohr_job_info') }}
 
 ), mapping as (
@@ -31,8 +23,9 @@ with bamboohr_directory as (
 
 ), location_factor as (
 
-    SELECT *
-    FROM {{ref('sheetload_employee_location_factor')}}
+    SELECT distinct bamboo_employee_number,
+            FIRST_VALUE(location_factor) OVER ( PARTITION BY bamboo_employee_number ORDER BY valid_from) AS hire_location_factor
+    FROM {{ ref('employee_location_factor_snapshots') }}
 
 ), cost_center as (
 
@@ -40,33 +33,29 @@ with bamboohr_directory as (
     FROM {{ref('cost_center_division_department_mapping')}}
 )
 
-SELECT  distinct mapping.employee_id,
+SELECT distinct
+        mapping.employee_id,
+        mapping.employee_number,
         mapping.first_name,
         mapping.last_name,
-        mapping.employee_number,
-        bamboohr_directory.job_title,
-        bamboohr_directory.supervisor,
         bamboohr_directory.work_email,
-        hire_dates.effective_date as hire_date,
-        termination_dates.effective_date as termination_date,
-        department_info.department,
-        department_info.division,
+        mapping.hire_date,
+        mapping.termination_date,
+        department_info.last_job_title,
+        department_info.last_supervisor,
+        department_info.last_department,
+        department_info.last_division,
         cost_center.cost_center,
-        location_factor.location_factor,
-        convert_timezone('UTC',current_timestamp()) AS _last_dbt_run
+        location_factor.hire_location_factor
 FROM mapping
 LEFT JOIN bamboohr_directory
   ON bamboohr_directory.employee_id = mapping.employee_id
-LEFT JOIN hire_dates
-  ON bamboohr_directory.employee_id::bigint = hire_dates.employee_id::bigint
-LEFT JOIN termination_dates
-  ON bamboohr_directory.employee_id::bigint = termination_dates.employee_id::bigint
-  AND (termination_dates.effective_date > hire_dates.effective_date OR termination_dates.effective_date IS NULL)
-LEFT JOIN department_info
-  ON bamboohr_directory.employee_id::bigint = department_info.employee_id::bigint
+  LEFT JOIN department_info
+    ON mapping.employee_id = department_info.employee_id
 LEFT JOIN cost_center
-  ON department_info.department=cost_center.department
- AND department_info.division=cost_center.division
+  ON department_info.last_department=cost_center.department
+ AND department_info.last_division=cost_center.division
 LEFT JOIN location_factor
   ON location_factor.bamboo_employee_number = mapping.employee_number
+WHERE hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
 ORDER BY hire_date DESC

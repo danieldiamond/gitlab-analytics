@@ -1,23 +1,23 @@
-{% macro generate_schema_name(custom_schema_name=none) -%}
+-- Will write to custom schemas not on prod
+-- Ensures logging package writes to analytics_meta
+
+{% macro generate_schema_name(custom_schema_name, node) -%}
 
     {%- set default_schema = target.schema -%}
 
-    {%- if custom_schema_name is none -%}
-        {{ default_schema }}_staging
-
-    {%- elif
-        (target.name != 'prod' and custom_schema_name is not none and custom_schema_name != 'analytics')
-        or
-        custom_schema_name == 'meta'
+    {%- if custom_schema_name is none 
+            or
+        (target.name in ('prod','docs','ci') and custom_schema_name.lower() == default_schema.lower())
     -%}
-        -- Will write to custom schemas not on prod
-        -- Avoids analytics_analytics for snowplow package
-        -- Ensures logging package writes to analytics_meta
-    	{{ default_schema }}_{{ custom_schema_name | trim }}
+        {{ default_schema.lower() }}
+
+    {%- elif custom_schema_name in ('analytics','meta','sensitive','staging') -%}
+
+    	{{ default_schema.lower() }}_{{ custom_schema_name | trim }}
 
     {%- else -%}
 
-        {{ custom_schema_name | trim }}
+        {{ custom_schema_name.lower() | trim }}
 
     {%- endif -%}
 

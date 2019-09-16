@@ -1,3 +1,12 @@
+## Action Type([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/action_type.sql))
+This macro maps action type ID to the action type.
+Usage:
+```
+{{action_type(1)}}
+```
+Used in:
+- gitlab_dotcom_events.sql
+
 ## Alter Warehouse ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/alter_warehouse.sql))
 This macro turns on or off a Snowflake warehouse.
 Usage:
@@ -37,20 +46,54 @@ Usage:
 Used in:
 - dbt_project.yml
 
-## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/generate_custom_schema.sql))
-This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema suffixed with `_staging` (e.g. `emilie_scratch_staging` and `analytics_staging`). For tagged models, the output is dependent on the target. It is `emilie_scratch_analytics` on dev and `analytics` on prod.
+## dbt Logging
+This macro logs some output to the command line. It can be used in a lot of ways.
 Usage:
 ```
-{{ config(schema='analytics') }}
+"{{ dbt_logging_start('on run start hooks') }}"
+```
+Used in:
+- dbt_project.yml
+
+## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/generate_custom_schema.sql))
+This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema ` (e.g. `emilie_scratch` and `analytics`). For tagged models, the output is dependent on the target. It is `emilie_scratch_staging` on dev and `analytics_staging` on prod. A similar pattern is followed for the `sensitive` config.
+Usage:
+```
+{{ config(schema='staging') }}
 ```
 Used in:
 - all models surfaced in our BI tool.
 
-## Get Internal Namespaces
-Returns a list of all the internal gitlab.com namespaces, enclosed in round brackets. This is useful for filtering an analysis down to external users only.
+## Get Internal Parent Namespaces
+Returns a list of all the internal gitlab.com parent namespaces, enclosed in round brackets. This is useful for filtering an analysis down to external users only.
+
+The internal namespaces are documented below.
+
+| namespace | namespace ID |
+| ------ | ------ |
+| gitlab-com | 6543 |
+| gitlab-org | 9970 |
+| gitlab-data | 4347861 |
+| charts | 1400979 |
+| gl-recruiting | 2299361 |
+| gl-frontend | 1353442 |
+| gitlab-examples | 349181 |
+| gl-secure | 3455548 |
+| gl-retrospectives | 3068744 |
+| gl-release | 5362395 |
+| gl-docsteam-new | 4436569 |
+| gl-legal-team | 3630110 |
+| gl-locations | 3315282 |
+| gl-serverless | 5811832 |
+| gl-peoplepartners | 5496509 |
+| gl-devops-tools | 4206656 |
+| gl-compensation | 5495265 |
+| gl-learning | 5496484 |
+| meltano | 2524164 |
+
 Usage:
 ```
-{{ get_internal_namespaces() }}
+{{ get_internal_parent_namespaces() }}
 ```
 Used in:
 - gitlab_dotcom/
@@ -125,6 +168,17 @@ Used in:
 - sfdc_opportunity.sql
 - sfdc_account_deal_size_segmentation.sql
 
+## SFDC Source Buckets ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc_source_buckets.sql))
+This macro is a CASE WHEN statement that groups the lead sources into new marketing-defined buckets. @rkohnke is the DRI on any changes made to this macro.
+Usage:
+```
+{{  sfdc_source_buckets('leadsource') }}
+```
+Used in:
+- sfdc_contact
+- sfdc_lead
+- sfdc_opportunity
+
 ## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/stage_mapping.sql))
 This macro takes in a product stage name, such as 'Verify', and returns a SQL aggregation statement that sums the number of users using that stage, based on the ping data. Product metrics are mapped to stages using the [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
 ```
@@ -132,6 +186,17 @@ This macro takes in a product stage name, such as 'Verify', and returns a SQL ag
 ```
 Used in:
 - pings_usage_data_monthly_change_by_stage.sql
+
+## Support SLA Met ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/support_sla_met.sql))
+This macro implements the `CASE WHEN` logic for Support SLAs, as [documented in the handbook](https://about.gitlab.com/support/#gitlab-support-service-levels).
+```
+{{ support_sla_met( 'first_reply_time',
+                    'ticket_priority',
+                    'ticket_created_at') }} AS was_support_sla_met
+
+```
+Used in:
+- zendesk_tickets_xf.sql
 
 ## Unpack Unstructured Events ([Source]())
 This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.

@@ -1,8 +1,8 @@
-{{
-  config(
-    materialized='incremental',
-    unique_key='event_id'
-  )
+{{config({
+    "materialized":"incremental",
+    "unique_key":"event_id",
+    "schema":"staging"
+  })
 }}
 
 {% set change_form = ['formId','elementId','nodeName','type','elementClasses','value'] %}
@@ -59,7 +59,7 @@ SELECT
       event_fingerprint,
       event_format,
       event_id,
-      parse_json(contexts)['data'][0]['data']['id']::varchar AS web_page_id,
+      try_parse_json(contexts)['data'][0]['data']['id']::varchar AS web_page_id,
       event_name,
       event_vendor,
       event_version,
@@ -163,6 +163,8 @@ FROM {{ source('gitlab_snowplow', 'events') }}
 WHERE app_id IS NOT NULL
 AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(page_url) NOT LIKE 'http://localhost:%'
+AND derived_tstamp != 'com.snowplowanalytics.snowplow'
+AND derived_tstamp != 'com.google.analytics'
 
 {% if is_incremental() %}
     AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})

@@ -4,7 +4,7 @@ from typing import Dict, Any
 import requests
 
 
-class BambooAPI(object):
+class BambooAPI:
     """
     Initialized with subdomain and an API key. Currently just allows for fetching from the directory
     and from tabular data. JSON is the only accepted return data type currently. Borrowed heavily from
@@ -59,7 +59,7 @@ class BambooAPI(object):
         See http://www.bamboohr.com/api/documentation/tables.php for a list of available tables.
         @return A list of dictionaries with the default return data.
         """
-        url = self.base_url + f"employees/{employee_id}/tables/{table_name}"
+        url = self.base_url + f"employees/{employee_id}/tables/{table_name}/"
         r = requests.get(
             url, timeout=self.timeout, headers=self.headers, auth=(self.api_token, ".")
         )
@@ -69,12 +69,14 @@ class BambooAPI(object):
 
         return data
 
-    def get_report(self, report_number: int, format: str = "JSON") -> Dict[Any, Any]:
+    def get_report(
+        self, report_number: int, report_format: str = "JSON"
+    ) -> Dict[Any, Any]:
         """
         API method to retrieve a specific report that already exists
         return A JSON response object
         """
-        url = self.base_url + f"reports/{report_number}?format={format}"
+        url = self.base_url + f"reports/{report_number}?format={report_format}"
         r = requests.get(
             url, timeout=self.timeout, headers=self.headers, auth=(self.api_token, ".")
         )

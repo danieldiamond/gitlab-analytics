@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 logging.basicConfig(stream=sys.stdout, level=20)
 
 
-class SnowflakeManager(object):
+class SnowflakeManager:
     def __init__(self, config_vars: Dict):
         self.engine = create_engine(
             URL(
@@ -100,14 +100,14 @@ class SnowflakeManager(object):
                     connection.close()
                     self.engine.dispose()
 
-    def delete_clone(self):
+    def delete_clones(self):
         """
         Delete a clone.
         """
         db_list = [self.analytics_database, self.raw_database]
 
         for db in db_list:
-            query = 'drop database "{}";'.format(db)
+            query = 'DROP DATABASE IF EXISTS "{}";'.format(db)
             try:
                 logging.info("Executing Query: {}".format(query))
                 connection = self.engine.connect()

@@ -77,14 +77,27 @@ services:
     data_image:
       image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
       restart: always
+      command: bash -c "/bin/bash"
+      working_dir: /usr/local/analytics/
+      volumes:
+        - type: bind
+          source: .
+          target: /usr/local/analytics
+
+    dbt_image:
+      image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
       environment:
-        SNOWFLAKE_ACCOUNT: $SNOWFLAKE_ACCOUNT
-        SNOWFLAKE_USER: $SNOWFLAKE_USER
-        SNOWFLAKE_PASSWORD: $SNOWFLAKE_PASSWORD
-        SNOWFLAKE_TRANSFORM_DATABASE: $SNOWFLAKE_TRANSFORM_DATABASE
-        SNOWFLAKE_TRANSFORM_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
-        SNOWFLAKE_TRANSFORM_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE
-        SNOWFLAKE_TRANSFORM_SCHEMA: $SNOWFLAKE_TRANSFORM_SCHEMA
+        SNOWFLAKE_ACCOUNT: ${SNOWFLAKE_ACCOUNT}
+        SNOWFLAKE_LOAD_DATABASE: ${SNOWFLAKE_LOAD_DATABASE}
+        SNOWFLAKE_USER: ${SNOWFLAKE_USER}
+        SNOWFLAKE_PASSWORD: ${SNOWFLAKE_PASSWORD}
+        SNOWFLAKE_TRANSFORM_DATABASE: ${SNOWFLAKE_TRANSFORM_DATABASE}
+        SNOWFLAKE_TRANSFORM_ROLE: ${SNOWFLAKE_TRANSFORM_ROLE}
+        SNOWFLAKE_TRANSFORM_WAREHOUSE: ${SNOWFLAKE_TRANSFORM_WAREHOUSE}
+        SNOWFLAKE_TRANSFORM_SCHEMA: ${SNOWFLAKE_TRANSFORM_SCHEMA}
+      restart: always
+      ports:
+        - "8081:8081"
       command: bash -c "/bin/bash"
       working_dir: /usr/local/analytics/transform/snowflake-dbt/
       volumes:

@@ -1,5 +1,0 @@
-version: 2
-
-models:
-  - name: team_yaml
-    description: This is the base table built off the [team.yml file](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/data/team.yml) in the GitLab Handbook

@@ -1,39 +1,44 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 with source as (
-    
-    SELECT * 
+
+    SELECT *
     FROM {{ source('zendesk', 'tickets') }}
-), 
+),
 
 renamed as (
 
     SELECT
+        id                                   AS ticket_id,
+        created_at                           AS ticket_created_at,
         --ids
-        id                                                                                  AS ticket_id,
         organization_id,
         assignee_id,
         brand_id,
         group_id,
         requester_id,
         submitter_id,
-        
+
         --fields
-        status                                                                              AS ticket_status,
-        priority                                                                            AS ticket_priority,
-        subject                                                                             AS ticket_subject,
-        recipient                                                                           AS ticket_recipient,
-        'type'                                                                              AS ticket_type,
-        url                                                                                 AS api_url,
+        status                                AS ticket_status,
+        lower(priority)                       AS ticket_priority,
+        subject                               AS ticket_subject,
+        md5(recipient)                        AS ticket_recipient,
+        url                                   AS ticket_url,
+        tags                                  AS ticket_tags,
         -- added ':score'
-        REPLACE(satisfaction_rating:score, '"', '')                                         AS satisfaction_rating_score,
-        REPLACE(via:channel, '"', '')                                                       AS submission_channel,
-        
+        satisfaction_rating['score']::varchar AS satisfaction_rating_score,
+        via['channel']::varchar               AS submission_channel,
+
         --dates
-        created_at                                                                          AS date_created,
-        updated_at                                                                          AS date_updated
+        updated_at::date                      AS date_updated
 
     FROM source
-    
+
 )
 
-SELECT * 
+SELECT *
 FROM renamed

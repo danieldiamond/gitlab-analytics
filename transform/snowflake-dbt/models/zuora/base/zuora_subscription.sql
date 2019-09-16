@@ -1,8 +1,12 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 WITH source AS (
 
 	SELECT *
     FROM {{ source('zuora', 'subscription') }}
-
 
 ), renamed AS (
 
@@ -20,7 +24,7 @@ WITH source AS (
 		nullif(previoussubscriptionid, '')          AS previous_subscription_id,
 		nullif(recurlyid__c, '')                    AS sfdc_recurly_id,
 		cpqbundlejsonid__qt                 		AS cpq_bundle_json_id,
-		
+
 		-- info
 		status                              		AS subscription_status,
 		autorenew                           		AS auto_renew,

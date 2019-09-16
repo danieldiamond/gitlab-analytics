@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: snowflake_users_roles
+    description: This is the latest snapshot of users and the roles they've been granted.
+    columns:
+        -   name: role_name
+            tests:
+                - not_null
+        -   name: granted_to_type
+            tests:
+                - not_null
+        -   name: grantee_name
+            tests:
+                - not_null

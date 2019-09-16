@@ -1,6 +1,6 @@
 {{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
+    "materialized": "incremental",
+    "unique_key": "user_month_unique_id"
     })
 }}
 
@@ -10,6 +10,9 @@ WITH months AS (
       first_day_of_month AS skeleton_month
     FROM {{ ref('date_details') }}
     WHERE first_day_of_month < CURRENT_DATE
+    {% if is_incremental() %}
+      AND first_day_of_month >= (SELECT MAX(audit_event_month) from {{ this }})
+    {% endif %}
 
 ), users AS (
 
@@ -17,6 +20,7 @@ WITH months AS (
       user_id,
       DATE_TRUNC(month, user_created_at) AS user_created_at_month
     FROM {{ ref('gitlab_dotcom_users') }}
+    WHERE TO_DATE(user_created_at) < DATE_TRUNC('month', CURRENT_DATE)
 
 ), skeleton AS ( -- Create a framework of one row per user per month (after their creation date)
     SELECT
@@ -35,6 +39,9 @@ WITH months AS (
       DATE_TRUNC(month, audit_event_created_at)  AS audit_event_month,
       COUNT(*)                                   AS audit_events_count
     FROM {{ ref('gitlab_dotcom_audit_events') }}
+    {% if is_incremental() %}
+    WHERE audit_event_created_at >= (SELECT MAX(audit_event_month) from {{ this }})
+    {% endif %}
     GROUP BY 1,2
 
 ), joined AS (
@@ -42,10 +49,11 @@ WITH months AS (
     SELECT
       skeleton.user_id,
       skeleton.user_created_at_month,
-      skeleton.skeleton_month                                AS audit_event_month,
+      skeleton.skeleton_month                                    AS audit_event_month,
       skeleton.months_since_join_date,
-      COALESCE(audit_events.audit_events_count, 0)           AS audit_events_count,
-      IFF(audit_events.audit_events_count > 0, TRUE, FALSE)  AS user_was_active_in_month
+      COALESCE(audit_events.audit_events_count, 0)               AS audit_events_count,
+      IFF(audit_events.audit_events_count > 0, TRUE, FALSE)      AS user_was_active_in_month,
+      {{ dbt_utils.surrogate_key('user_id', 'skeleton_month') }} AS user_month_unique_id
     FROM skeleton
       LEFT JOIN audit_events
         ON skeleton.user_id = audit_events.author_id

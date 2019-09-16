@@ -116,6 +116,8 @@ for source_name, config in config_dict.items():
         "owner": "airflow",
         "retries": 1,
         "retry_delay": timedelta(minutes=1),
+        "sla": timedelta(hours=8),
+        "sla_miss_callback": slack_failed_task,
         "start_date": config["start_date"],
     }
     extract_dag = DAG(
@@ -129,8 +131,8 @@ for source_name, config in config_dict.items():
         # Extract Task
         incremental_cmd = f"""
             git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-            cd analytics/extract/postgres/tap_postgres/ &&
-            python tap_postgres.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --incremental_only
+            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
+            python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type incremental
         """
         incremental_extract = KubernetesPodOperator(
             **gitlab_defaults,
@@ -164,8 +166,8 @@ for source_name, config in config_dict.items():
         # Sync Task
         sync_cmd = f"""
             git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-            cd analytics/extract/postgres/tap_postgres/ &&
-            python tap_postgres.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --sync
+            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
+            python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type sync
         """
         sync_extract = KubernetesPodOperator(
             **gitlab_defaults,
@@ -180,8 +182,8 @@ for source_name, config in config_dict.items():
         # SCD Task
         scd_cmd = f"""
             git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-            cd analytics/extract/postgres/tap_postgres/ &&
-            python tap_postgres.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --scd_only
+            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
+            python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type scd
         """
         scd_extract = KubernetesPodOperator(
             **gitlab_defaults,

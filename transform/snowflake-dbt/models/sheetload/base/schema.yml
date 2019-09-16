@@ -17,6 +17,13 @@ models:
     tests:
     - not_null
     - unique
+- name: sheetload_marketing_kpi_benchmarks
+  description: This is the source of marketing KPI goals to be included in marketing metric reports and dashboards.
+  columns:
+  - name: goal_date
+    tests:
+    - not_null
+    - unique
 - name: sheetload_planned_values
   description: Planned values for multiple metrics as defined by Finance Team via Chase
   columns:
@@ -24,3 +31,25 @@ models:
       tests:
       - not_null
       - unique
+- name: sheetload_yc_companies
+  description: This is a list of YC Companies and their cohort provided by and maintained by marketing.
+  columns:
+    - name: company_id
+      tests:
+      - not_null
+      - unique
+    - name: company_name
+      tests:
+      - not_null
+    - name: yc_batch
+      tests:
+      - not_null
+- name: sheetload_days_to_close
+  description: Days for accounting to close the books in Netsuite.
+  columns:
+    - name: close_month
+      tests:
+      - not_null
+      - unique
+- name: sheetload_calendar
+  description: This is the model that categorizes the events on the CEO's calendar.

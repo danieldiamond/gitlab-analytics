@@ -1,10 +1,10 @@
 import sys
 import re
 from io import StringIO
-from logging import exception, info, basicConfig
+from logging import info, basicConfig, getLogger
 from os import environ as env
 from time import time
-from typing import Dict, List
+from typing import Dict, Tuple
 from yaml import load
 
 import boto3
@@ -17,7 +17,6 @@ from gitlabdata.orchestration_utils import (
 )
 from google.cloud import storage
 from google.oauth2 import service_account
-from gspread.exceptions import SpreadsheetNotFound
 from oauth2client.service_account import ServiceAccountCredentials
 from sqlalchemy.engine.base import Engine
 
@@ -25,15 +24,41 @@ from sqlalchemy.engine.base import Engine
 SHEETLOAD_SCHEMA = "sheetload"
 
 
+def query_executor(engine: Engine, query: str) -> Tuple[str]:
+    """
+    Execute DB queries safely.
+    """
+
+    try:
+        connection = engine.connect()
+        results = connection.execute(query).fetchall()
+    finally:
+        connection.close()
+        engine.dispose()
+    return results
+
+
+def table_has_changed(data: pd.DataFrame, engine: Engine, table: str) -> bool:
+    """
+    Check if the table has changed before uploading.
+    """
+
+    if engine.has_table(table):
+        existing_table = pd.read_sql_table(table, engine)
+        if "_updated_at" in existing_table.columns and existing_table.drop(
+            "_updated_at", axis=1
+        ).equals(data):
+            info(f'Table "{table}" has not changed. Aborting upload.')
+            return False
+    return True
+
+
 def dw_uploader(
     engine: Engine,
     table: str,
-    schema: str,
     data: pd.DataFrame,
     chunk: int = 0,
-    upload_chunksize: int = 15000,
     truncate: bool = False,
-    force_dtypes: str = None,
 ) -> bool:
     """
     Use a DB engine to upload a dataframe.
@@ -43,97 +68,27 @@ def dw_uploader(
     data.columns = [
         column_name.replace(" ", "_").replace("/", "_") for column_name in data.columns
     ]
-    if force_dtypes:
-        data[data.columns] = data[data.columns].astype(force_dtypes)
 
     # If the data isn't chunked, or this is the first iteration, drop table
     if not chunk and not truncate:
-        try:
-            if engine.has_table(table, schema):
-                existing_table = pd.read_sql_table(table, engine, schema)
-                if "_updated_at" in existing_table.columns and existing_table.drop(
-                    "_updated_at", axis=1
-                ).equals(data):
-                    info('Table "{}" has not changed. Aborting upload.'.format(table))
-                    return False
-                else:
-                    engine.connect().execute(
-                        "DROP TABLE {}.{} CASCADE".format(schema, table)
-                    )
-        except Exception as e:
-            info(repr(e))
-            raise
+        table_changed = table_has_changed(data, engine, table)
+        if not table_changed:
+            return False
+        drop_query = f"DROP TABLE IF EXISTS {table} CASCADE"
+        query_executor(engine, drop_query)
 
     # Add the _updated_at metadata and set some vars if chunked
     data["_updated_at"] = time()
     if_exists = "append" if chunk else "replace"
-    try:
-        data.to_sql(
-            name=table,
-            con=engine,
-            schema=schema,
-            index=False,
-            if_exists=if_exists,
-            chunksize=upload_chunksize,
-        )
-        info(
-            "Successfully loaded {} rows into {}.{}".format(
-                data.shape[0], schema, table
-            )
-        )
-        return True
-    except Exception as e:
-        info(repr(e))
-        info("Failed to load {}.{}".format(schema, table))
-        raise
-
-
-def csv_loader(
-    *paths: List[str],
-    destination: str,
-    conn_dict: Dict[str, str] = None,
-    compression: str = None,
-) -> None:
-    """
-    Load data from a csv file into a DataFrame and pass it to dw_uploader.
-
-    Loader expects the naming convention of the file to be:
-    <schema>.<table>.csv
-
-    Column names can not contain parentheses. Spaces and slashes will be
-    replaced with underscores.
-
-    Paths is a list that is separated spaces. i.e.:
-    python sheetload.py csv <path_1> <path_2> ... <snowflake|postgres>
-    """
-
-    # Determine what engine gets created
-    if destination == "postgres":
-        engine = postgres_engine_factory(conn_dict or env)
-    if destination == "snowflake":
-        engine = snowflake_engine_factory(conn_dict or env, "LOADER")
-
-    compression = compression or "infer"
-    # Extract the schema and the table name from the file name
-    for path in paths:
-        schema, table = path.split("/")[-1].split(".")[0:2]
-        try:
-            sheet_df = pd.read_csv(
-                path, engine="c", low_memory=False, compression=compression
-            )
-        except FileNotFoundError:
-            info("File {} not found.".format(path))
-            continue
-        dw_uploader(engine, table, schema, sheet_df)
-
-    return
+    data.to_sql(
+        name=table, con=engine, index=False, if_exists=if_exists, chunksize=15000
+    )
+    info(f"Successfully loaded {data.shape[0]} rows into {table}")
+    return True
 
 
 def sheet_loader(
-    sheet_file: str,
-    destination: str,
-    gapi_keyfile: str = None,
-    conn_dict: Dict[str, str] = None,
+    sheet_file: str, gapi_keyfile: str = None, conn_dict: Dict[str, str] = None
 ) -> None:
     """
     Load data from a google sheet into a DataFrame and pass it to dw_uploader.
@@ -148,18 +103,13 @@ def sheet_loader(
 
     Sheets is a newline delimited txt fileseparated spaces.
 
-    python spreadsheet_loader.py sheets <file_name> <snowflake|postgres>
+    python spreadsheet_loader.py sheets <file_name>
     """
 
     with open(sheet_file, "r") as file:
         sheets = file.read().splitlines()
 
-    # Build the correct engine
-    if destination == "postgres":
-        engine = postgres_engine_factory(conn_dict or env)
-    if destination == "snowflake":
-        engine = snowflake_engine_factory(conn_dict or env, "LOADER")
-
+    engine = snowflake_engine_factory(conn_dict or env, "LOADER", SHEETLOAD_SCHEMA)
     info(engine)
     # Get the credentials for sheets and the database engine
     scope = [
@@ -167,47 +117,36 @@ def sheet_loader(
         "https://www.googleapis.com/auth/drive",
     ]
     keyfile = load(gapi_keyfile or env["GCP_SERVICE_CREDS"])
-    credentials = ServiceAccountCredentials.from_json_keyfile_dict(keyfile, scope)
-    gc = gspread.authorize(credentials)
+    google_creds = gspread.authorize(
+        ServiceAccountCredentials.from_json_keyfile_dict(keyfile, scope)
+    )
 
     for sheet_info in sheets:
         # Sheet here refers to the name of the sheet file, table is the actual sheet name
+        info(f"Processing sheet: {sheet_info}")
         sheet_file, table = sheet_info.split(".")
-        try:
-            sheet = (
-                gc.open(SHEETLOAD_SCHEMA + "." + sheet_file)
-                .worksheet(table)
-                .get_all_values()
-            )
-        except SpreadsheetNotFound:
-            info("Sheet {} not found.".format(sheet_info))
-            raise
+        sheet = (
+            google_creds.open(SHEETLOAD_SCHEMA + "." + sheet_file)
+            .worksheet(table)
+            .get_all_values()
+        )
         sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
-        dw_uploader(engine, table, SHEETLOAD_SCHEMA, sheet_df)
+        dw_uploader(engine, table, sheet_df)
+        info(f"Finished processing for table: {sheet_info}")
 
-    if destination == "snowflake":
-        try:
-            query = """grant select on all tables in schema "{}".{} to role transformer""".format(
-                env["SNOWFLAKE_LOAD_DATABASE"], SHEETLOAD_SCHEMA
-            )
-            connection = engine.connect()
-            connection.execute(query)
-        finally:
-            connection.close()
-            engine.dispose()
-        info("Permissions granted.")
-
-    return
+    query = """grant select on all tables in schema "{}".{} to role transformer""".format(
+        env["SNOWFLAKE_LOAD_DATABASE"], SHEETLOAD_SCHEMA
+    )
+    query_executor(engine, query)
+    info("Permissions granted.")
 
 
 def gcs_loader(
-    *paths: List[str],
+    path: str,
     bucket: str,
-    destination: str,
     compression: str = "gzip",
     conn_dict: Dict[str, str] = None,
     gapi_keyfile: str = None,
-    schema: str = "sheetload",
 ) -> None:
     """
     Download a CSV file from a GCS bucket and then pass it to dw_uploader.
@@ -225,11 +164,7 @@ def gcs_loader(
     chunksize = 15000
     chunk_iter = 0
 
-    # Determine what engine gets created
-    if destination == "postgres":
-        engine = postgres_engine_factory(conn_dict or env)
-    if destination == "snowflake":
-        engine = snowflake_engine_factory(conn_dict or env, "LOADER")
+    engine = snowflake_engine_factory(conn_dict or env, "LOADER", SHEETLOAD_SCHEMA)
 
     # Get the gcloud storage client and authenticate
     scope = ["https://www.googleapis.com/auth/cloud-platform"]
@@ -240,36 +175,26 @@ def gcs_loader(
     bucket = storage_client.get_bucket(bucket)
 
     # Download the file and then pass it in chunks to dw_uploader
-    for path in paths:
-        blob = bucket.blob(path)
-        blob.download_to_filename(path)
-        table = path.split(".")[0]
+    blob = bucket.blob(path)
+    blob.download_to_filename(path)
+    table = path.split(".")[0]
 
-        try:
-            sheet_df = pd.read_csv(
-                path,
-                engine="c",
-                low_memory=False,
-                compression=compression,
-                chunksize=chunksize,
-            )
-        except FileNotFoundError:
-            info("File {} not found.".format(path))
-            continue
+    try:
+        sheet_df = pd.read_csv(
+            path,
+            engine="c",
+            low_memory=False,
+            compression=compression,
+            chunksize=chunksize,
+        )
+    except FileNotFoundError:
+        info("File {} not found.".format(path))
 
-        # Upload each chunk of the file
-        for chunk in sheet_df:
-            dw_uploader(
-                engine=engine,
-                table=table,
-                schema=schema,
-                data=chunk,
-                chunk=chunk_iter,
-                force_dtypes="str",
-            )
-            chunk_iter += 1
-
-    return
+    # Upload each chunk of the file
+    for chunk in sheet_df:
+        chunk[chunk.columns] = chunk[chunk.columns].astype("str")
+        dw_uploader(engine=engine, table=table, data=chunk, chunk=chunk_iter)
+        chunk_iter += 1
 
 
 def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> None:
@@ -285,7 +210,7 @@ def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> Non
     """
 
     # Create Snowflake engine
-    engine = snowflake_engine_factory(conn_dict or env, "LOADER")
+    engine = snowflake_engine_factory(conn_dict or env, "LOADER", schema)
     info(engine)
 
     # Set S3 Client
@@ -314,14 +239,11 @@ def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> Non
 
             table, extension = file.split(".")[0:2]
 
-            dw_uploader(engine, table, schema, sheet_df, truncate=True)
-
-    return
+            dw_uploader(engine, table, sheet_df, truncate=True)
 
 
 if __name__ == "__main__":
     basicConfig(stream=sys.stdout, level=20)
-    Fire(
-        {"csv": csv_loader, "sheets": sheet_loader, "gcs": gcs_loader, "s3": s3_loader}
-    )
+    getLogger("snowflake.connector.cursor").disabled = True
+    Fire({"sheets": sheet_loader, "gcs": gcs_loader, "s3": s3_loader})
     info("Complete.")

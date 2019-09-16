@@ -1,6 +1,0 @@
-fire
-mypy
-pandas
-psycopg2-binary
-pyyaml
-snowflake-sqlalchemy

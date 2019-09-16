@@ -1,10 +1,4 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
-with date_spine AS (
+WITH date_spine AS (
 
   {{ dbt_utils.date_spine(
       start_date="to_date('11/01/2009', 'mm/dd/yyyy')",

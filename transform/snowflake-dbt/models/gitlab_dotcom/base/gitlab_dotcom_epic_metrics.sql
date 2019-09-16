@@ -1,4 +1,9 @@
 -- disabled model until the data starts flowing in (the source table is missing from tap_postgres)
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH source AS (
 
 	SELECT *, ROW_NUMBER() OVER (PARTITION BY epic_id ORDER BY _uploaded_at DESC) as rank_in_key

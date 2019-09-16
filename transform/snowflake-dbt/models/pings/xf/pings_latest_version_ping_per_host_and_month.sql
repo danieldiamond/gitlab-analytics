@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 WITH pings_version_checks AS (
 
 	SELECT * FROM {{ ref('pings_version_checks') }}

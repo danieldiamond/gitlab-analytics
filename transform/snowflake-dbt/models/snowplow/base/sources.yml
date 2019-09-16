@@ -9,23 +9,15 @@ sources:
     loaded_at_field: uploaded_at # configure for all sources
 
     quoting:
-      database: false
+      database: true
       schema: false
       identifier: false
-
-    freshness:
-      warn_after: {count: 12, period: hour}
-      error_after: {count: 24, period: hour}
 
     tables:
       - name: events
         columns:
           - name: jsontext
-            tests:
-              - not_null
           - name: uploaded_at
-            tests:
-              - not_null
 
       - name: events_sample
         identifier: fishtown_events_sample
@@ -34,6 +26,7 @@ sources:
           - name: uploaded_at
             tests:
               - not_null
+        freshness: null
 
       - name: bad_events
         description: These are the events that weren't processed due to some error.
@@ -61,8 +54,6 @@ sources:
         identifier: gitlab_events
         columns:
           - name: uploaded_at
-            tests:
-              - not_null
 
       - name: events_sample
         identifier: gitlab_events_sample
@@ -71,6 +62,9 @@ sources:
           - name: uploaded_at
             tests:
               - not_null
+        freshness:
+          warn_after: {count: 16, period: day}
+          error_after: {count: 21, period: day}
 
       - name: bad_events
         description: These are the events that weren't processed due to some error.
