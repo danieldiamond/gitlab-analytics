@@ -67,6 +67,12 @@ unpacked AS (
     created_at,
     mattermost_enabled,
     uuid,
+    ping_source,
+    edition,
+    main_edition,
+    edition_type,
+    hostname,
+    host_id,
     {% for ping_name in ping_list %}
       MAX(
       CASE WHEN full_ping_name = '{{ping_name}}'
@@ -76,7 +82,7 @@ unpacked AS (
     {% endfor %}
     
     FROM unpacked
-    GROUP BY 1,2,3,4,5,6,7,8
+    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14
   
 )
 
