@@ -83,7 +83,7 @@ WITH snowplow_page_views AS (
     'group_analytics_viewed'   AS event_type,
     page_view_id
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '\/groups(\/([0-9A-Za-z_.-])*){1,}\/-\/analytics'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/analytics'
 
 )
 
