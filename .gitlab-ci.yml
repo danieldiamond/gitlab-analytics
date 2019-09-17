@@ -156,6 +156,7 @@ python_pytest:
     - mkdir -p $CI_PROJECT_DIR/public/dbt/snowflake
     - cd target
     - cp *.json *.html graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
+    - cp $CI_PROJECT_DIR/transform/snowflake-dbt/docs/gitlab.css $CI_PROJECT_DIR/public/dbt/snowflake/
   tags:
     - analytics
   artifacts:
