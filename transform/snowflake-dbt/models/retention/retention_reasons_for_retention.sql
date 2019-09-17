@@ -118,23 +118,10 @@ with raw_mrr_totals_levelled AS (
              net_retention_mrr as retention_mrr
       FROM churn
 
-), rank AS (
-
-    SELECT zuora_subscription_id,
-           original_mrr,
-           retention_month,
-           churn_type,
-           rank() over(partition by zuora_subscription_id, churn_type
-             order by retention_month asc)   AS rank_churn_type_month
-    FROM joined
-
 )
 
 SELECT joined.*,
-       rank_churn_type_month
+       rank() over(partition by zuora_subscription_id, churn_type
+         order by retention_month asc)   AS rank_churn_type_month
 FROM joined
-LEFT JOIN rank
-  ON joined.zuora_subscription_id = rank.zuora_subscription_id
-  AND joined.retention_month = rank.retention_month
-  AND joined.churn_type = rank.churn_type
-WHERE joined.retention_month <= dateadd(month, -1, CURRENT_DATE)
+WHERE retention_month <= dateadd(month, -1, CURRENT_DATE)
