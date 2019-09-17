@@ -155,7 +155,9 @@ python_pytest:
     - dbt docs generate --profiles-dir profile --target docs
     - mkdir -p $CI_PROJECT_DIR/public/dbt/snowflake
     - cd target
-    - cp *.json *.html graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
+    - cp *.json graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
+    - cd $CI_PROJECT_DIR/transform/snowflake-dbt/docs/
+    - cp index.html gitlab.css $CI_PROJECT_DIR/public/dbt/snowflake/
   tags:
     - analytics
   artifacts:
