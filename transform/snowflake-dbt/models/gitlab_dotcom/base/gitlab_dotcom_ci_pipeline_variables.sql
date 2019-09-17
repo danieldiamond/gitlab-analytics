@@ -5,7 +5,8 @@
 
 WITH source AS (
 
-  SELECT *
+  SELECT
+    *
   FROM {{ source('gitlab_dotcom', 'ci_pipeline_variables') }}
 
 ), renamed AS (
