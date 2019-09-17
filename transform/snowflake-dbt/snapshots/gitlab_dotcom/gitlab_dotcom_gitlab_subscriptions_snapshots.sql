@@ -2,17 +2,23 @@
 
     {{
         config(
-          target_database=env_var("SNOWFLAKE_LOAD_DATABASE"),
+          target_database='RAW',
           target_schema='snapshots',
-          materialized='table', 
-          transient=false,
-          unique_key='gitlab_subscription_id',
+          unique_key='id',
           strategy='timestamp',
-          updated_at='gitlab_subscription_updated_at',
+          updated_at='updated_at',
         )
     }}
     
-    SELECT * 
-    FROM {{ ref('gitlab_dotcom_gitlab_subscriptions') }}
+    WITH source AS (
+
+      SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as gitlab_subscriptions_rank_in_key
+      FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
+
+    )
+
+    SELECT *
+    FROM source
+    WHERE gitlab_subscriptions_rank_in_key = 1
     
 {% endsnapshot %}

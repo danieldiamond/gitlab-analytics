@@ -5,6 +5,62 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  ci_builds:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , status
+      , finished_at
+      , trace
+      , created_at
+      , updated_at
+      , started_at
+      , runner_id
+      , coverage
+      , commit_id
+      , commands
+      , name
+      , options
+      , allow_failure
+      , stage
+      , trigger_request_id
+      , stage_idx
+      , tag
+      , ref
+      , user_id
+      , type
+      , target_url
+      , description
+      , artifacts_file
+      , project_id
+      , artifacts_metadata
+      , erased_by_id
+      , erased_at
+      , CASE WHEN artifacts_expire_at > '2262-01-01' THEN '2262-01-01' ELSE artifacts_expire_at END AS artifacts_expire_at
+      , environment
+      , artifacts_size
+      , "when"
+      , yaml_variables
+      , queued_at
+      , token
+      , lock_version
+      , coverage_regex
+      , auto_canceled_by_id
+      , retried
+      , stage_id
+      , artifacts_file_store
+      , artifacts_metadata_store
+      , protected
+      , failure_reason
+      , scheduled_at
+      , token_encrypted
+      , upstream_pipeline_id
+      FROM ci_builds
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_builds
+    export_table_primary_key: id
   approvals:
     import_db: GITLAB_DB
     import_query: >
@@ -231,6 +287,100 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_build_trace_section_names
     export_table_primary_key: id
+  ci_stages:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , pipeline_id
+      , created_at
+      , updated_at
+      , name
+      , status
+      , lock_version
+      , position
+      FROM ci_stages
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_stages
+    export_table_primary_key: id
+  ci_trigger_requests:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , trigger_id
+      , variables
+      , created_at
+      , updated_at
+      , commit_id
+      FROM ci_trigger_requests
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_trigger_requests
+    export_table_primary_key: id
+  ci_triggers:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , token
+      , created_at
+      , updated_at
+      , project_id
+      , owner_id
+      , description
+      FROM ci_triggers
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_triggers
+    export_table_primary_key: id
+  ci_variables:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , key
+      , value
+      , project_id
+      , protected
+      , environment_scope
+      , masked
+      , variable_type
+      FROM ci_variables
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_variables
+    export_table_primary_key: id
+  ci_pipelines:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , tag
+      , yaml_errors
+      , committed_at
+      , project_id
+      , status
+      , started_at
+      , finished_at
+      , duration
+      , user_id
+      , lock_version
+      , auto_canceled_by_id
+      , pipeline_schedule_id
+      , source
+      , config_source
+      , protected
+      , failure_reason
+      , iid
+      , merge_request_id
+      FROM ci_pipelines
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'ci_pipelines'
+    export_table_primary_key: id
   epic_issues:
     import_db: GITLAB_DB
     import_query: >
@@ -262,7 +412,7 @@ tables:
       , updated_at
       , title
       , description
-      , state
+      , state_id
       , closed_at
       FROM epics
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
@@ -287,11 +437,11 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
-      , TO_CHAR(start_date, 'YYYY-MM-DD HH:MI:SS') AS start_date
-      , TO_CHAR(end_date, 'YYYY-MM-DD HH:MI:SS') AS end_date
-      , TO_CHAR(trial_ends_on, 'YYYY-MM-DD HH:MI:SS') AS trial_ends_on
+      , created_at
+      , updated_at
+      , start_date
+      , end_date
+      , trial_ends_on
       , namespace_id
       , hosted_plan_id
       , max_seats_used
@@ -367,8 +517,8 @@ tables:
       SELECT id
       , source_id
       , target_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       FROM issue_links
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -383,8 +533,8 @@ tables:
       , first_mentioned_in_commit_at
       , first_associated_with_milestone_at
       , first_added_to_board_at
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       FROM issue_metrics
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -413,8 +563,8 @@ tables:
       , project_id
       , label_id
       , priority
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       FROM label_priorities
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -425,8 +575,8 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       FROM licenses
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -477,8 +627,8 @@ tables:
       SELECT id
       , state
       , merge_request_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , base_commit_sha
       , real_size
       , head_commit_sha
@@ -517,8 +667,8 @@ tables:
       SELECT id
       , merge_request_id
       , issue_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       FROM merge_requests_closing_issues
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -554,23 +704,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'namespace_statistics'
     export_table_primary_key: id
-  namespace_root_storage_statistics:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT namespace_id
-      , repository_size
-      , lfs_objects_size
-      , wiki_size
-      , build_artifacts_size
-      , storage_size
-      , packages_size
-      , updated_at
-      FROM namespace_root_storage_statistics
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'namespace_root_storage_statistics'
-    export_table_primary_key: namespace_id
   members:
     import_db: GITLAB_DB
     import_query: >
@@ -628,6 +761,23 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'namespaces'
     export_table_primary_key: id
+  namespace_root_storage_statistics:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT namespace_id
+      , repository_size
+      , lfs_objects_size
+      , wiki_size
+      , build_artifacts_size
+      , storage_size
+      , packages_size
+      , updated_at
+      FROM namespace_root_storage_statistics
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'namespace_root_storage_statistics'
+    export_table_primary_key: namespace_id
   notes:
     import_db: GITLAB_DB
     import_query: >
@@ -635,8 +785,8 @@ tables:
       , note
       , noteable_type
       , author_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') as updated_at
+      , created_at
+      , updated_at
       , project_id
       , attachment
       , line_code
@@ -669,8 +819,8 @@ tables:
       , source_id
       , source_type
       , level
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , new_note
       , new_issue
       , reopen_issue
@@ -720,8 +870,8 @@ tables:
     import_query: >
       SELECT id
       , project_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , enabled
       FROM project_auto_devops
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
@@ -733,8 +883,8 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , project_id
       , key
       , value
@@ -754,8 +904,8 @@ tables:
       , wiki_access_level
       , snippets_access_level
       , builds_access_level
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , repository_access_level
       FROM project_features
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
@@ -769,10 +919,10 @@ tables:
       SELECT id
       , project_id
       , group_id
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , group_access
-      , TO_CHAR(expires_at, 'YYYY-MM-DD HH:MI:SS') AS expires_at
+      , expires_at
       FROM project_group_links
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -794,9 +944,9 @@ tables:
       SELECT id
       , project_id
       , retry_count
-      , TO_CHAR(last_update_started_at, 'YYYY-MM-DD HH:MI:SS') AS last_update_started_at
-      , TO_CHAR(last_update_scheduled_at, 'YYYY-MM-DD HH:MI:SS') AS last_update_scheduled_at
-      , TO_CHAR(next_execution_timestamp, 'YYYY-MM-DD HH:MI:SS') AS next_execution_timestamp
+      , last_update_started_at
+      , last_update_scheduled_at
+      , next_execution_timestamp
       FROM project_mirror_data
     export_schema: 'gitlab_com'
     export_table: 'project_mirror_data'
@@ -903,8 +1053,8 @@ tables:
       , subscribable_id
       , subscribable_type
       , subscribed
-      , TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') AS created_at
-      , TO_CHAR(updated_at, 'YYYY-MM-DD HH:MI:SS') AS updated_at
+      , created_at
+      , updated_at
       , project_id
       FROM subscriptions
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
@@ -973,3 +1123,31 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'users'
     export_table_primary_key: id
+  ci_group_variables:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , key
+      , value
+      , group_id
+      , created_at
+      , updated_at
+      , masked
+      , variable_type
+      FROM ci_group_variables
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_group_variables
+    export_table_primary_key: id
+  ci_builds_runner_session:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT build_id
+      , url
+      , certificate
+      , "authorization"
+      FROM ci_builds_runner_session
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_builds_runner_session
+    export_table_primary_key: build_id

@@ -2,17 +2,26 @@
 
     {{
         config(
-          target_database=env_var("SNOWFLAKE_LOAD_DATABASE"),
+          target_database='RAW',
           target_schema='snapshots',
-          materialized='table', 
-          transient=false,
-          unique_key='namespace_id',
+          unique_key='id',
           strategy='timestamp',
-          updated_at='namespace_updated_at',
+          updated_at='updated_at',
         )
     }}
     
-    SELECT * 
-    FROM {{ ref('gitlab_dotcom_namespaces') }}
+    WITH source as (
+
+    	SELECT 
+        *, 
+        ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) AS namespaces_rank_in_key
+      
+      FROM {{ source('gitlab_dotcom', 'namespaces') }}
+
+    )
+    
+    SELECT *
+    FROM source
+    WHERE namespaces_rank_in_key = 1
     
 {% endsnapshot %}
