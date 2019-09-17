@@ -3,9 +3,6 @@
     background-image: url(https://about.gitlab.com/images/press/logo/svg/gitlab-logo-gray-rgb.svg);
     background-repeat: no-repeat;
     background-color: transparent;
-    width: 190px;
-    height: 100px;
-    bottom: 20px;
 }
 img.logo {
     display: none ;
