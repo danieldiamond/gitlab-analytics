@@ -54,7 +54,7 @@ WITH merge_requests AS (
       ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
-), joined as (
+), joined AS (
 
     SELECT merge_requests.*,
            projects.namespace_id,
@@ -70,8 +70,8 @@ WITH merge_requests AS (
              AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.agg_label)
               THEN TRUE
             ELSE FALSE
-           END as is_community_contributor_related,
-           TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at, merge_request_metrics.merged_at) as hours_to_merged_status
+           END AS is_community_contributor_related,
+           TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at, merge_request_metrics.merged_at) AS hours_to_merged_status
 
     FROM merge_requests
       LEFT JOIN agg_labels

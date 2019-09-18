@@ -1,31 +1,31 @@
 -- depends_on: {{ ref('engineering_productivity_metrics_projects_to_include') }}
 
-{% set fields_to_mask = ['title', 'description'] %}
+{% set fields_to_mASk = ['title', 'description'] %}
 
 
-with issues as (
+with issues AS (
 
     SELECT * FROM {{ref('gitlab_dotcom_issues')}}
 
-), all_label_links as (
+), all_label_links AS (
 
     SELECT * FROM {{ref('gitlab_dotcom_label_links')}}
 
-), label_links as (
+), label_links AS (
 
     SELECT *
     FROM all_label_links
     WHERE target_type = 'Issue'
 
-), all_labels as (
+), all_labels AS (
 
     SELECT * FROM {{ref('gitlab_dotcom_labels_xf')}}
 
-), agg_labels as (
+), agg_labels AS (
 
     SELECT
       issue_id,
-      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY issue_id ASC) AS agg_label
+      ARRAY_AGG(LOWER(mASked_label_title)) WITHIN GROUP (ORDER BY issue_id ASC) AS agg_label
     FROM issues
     LEFT JOIN label_links
     ON issues.issue_id = label_links.target_id
@@ -33,14 +33,14 @@ with issues as (
     ON label_links.label_id = all_labels.label_id
     GROUP BY issue_id
 
-), projects as (
+), projects AS (
 
     SELECT project_id,
            namespace_id,
            visibility_level
     FROM {{ref('gitlab_dotcom_projects')}}
 
-), internal_namespaces as (
+), internal_namespaces AS (
 
     SELECT
       namespace_id
@@ -48,7 +48,7 @@ with issues as (
     WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
 ),
 
-joined as (
+joined AS (
 
     SELECT issues.issue_id,
            issues.issue_iid,
@@ -56,19 +56,19 @@ joined as (
            issues.project_id,
            milestone_id,
            updated_by_id,
-           last_edited_by_id,
+           lASt_edited_by_id,
            moved_to_id,
            issue_created_at,
            issue_updated_at,
-           last_edited_at,
+           lASt_edited_at,
            issue_closed_at,
            projects.namespace_id,
            visibility_level,
 
-           {% for field in fields_to_mask %}
+           {% for field in fields_to_mASk %}
            CASE
-             WHEN is_confidential = TRUE AND internal_namespaces.namespace_id IS NULL THEN 'confidential - masked'
-             WHEN visibility_level != 'public' AND internal_namespaces.namespace_id IS NULL THEN 'private/internal - masked'
+             WHEN is_confidential = TRUE AND internal_namespaces.namespace_id IS NULL THEN 'confidential - mASked'
+             WHEN visibility_level != 'public' AND internal_namespaces.namespace_id IS NULL THEN 'private/internal - mASked'
              ELSE {{field}}
            END                                                         AS issue_{{field}},
            {% endfor %}
@@ -86,7 +86,7 @@ joined as (
              WHEN ARRAY_CONTAINS('s3'::variant, agg_label) THEN 'severity 3'
              WHEN ARRAY_CONTAINS('s4'::variant, agg_label) THEN 'severity 4'
              ELSE 'undefined'
-           END as severity_tag,
+           END AS severity_tag,
 
            CASE
              WHEN ARRAY_CONTAINS('p1'::variant, agg_label) THEN 'priority 1'
@@ -109,8 +109,8 @@ joined as (
            due_date,
            lock_version,
            time_estimate,
-           has_discussion_locked,
-           ARRAY_TO_STRING(agg_label,'|') AS masked_label_title
+           hAS_discussion_locked,
+           ARRAY_TO_STRING(agg_label,'|') AS mASked_label_title
 
     FROM issues
       LEFT JOIN agg_labels
