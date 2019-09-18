@@ -18,7 +18,7 @@ WITH source AS (
     SELECT
 
       id :: integer                                 AS merge_request_diff_id,
-      bASe_commit_sha,
+      base_commit_sha,
       head_commit_sha,
       start_commit_sha,
       state                                         AS merge_request_diff_status,

@@ -25,7 +25,7 @@ with issues AS (
 
     SELECT
       issue_id,
-      ARRAY_AGG(LOWER(mASked_label_title)) WITHIN GROUP (ORDER BY issue_id ASC) AS agg_label
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY issue_id ASC) AS agg_label
     FROM issues
     LEFT JOIN label_links
     ON issues.issue_id = label_links.target_id
@@ -56,19 +56,19 @@ joined AS (
            issues.project_id,
            milestone_id,
            updated_by_id,
-           lASt_edited_by_id,
+           last_edited_by_id,
            moved_to_id,
            issue_created_at,
            issue_updated_at,
-           lASt_edited_at,
+           last_edited_at,
            issue_closed_at,
            projects.namespace_id,
            visibility_level,
 
            {% for field in fields_to_mASk %}
            CASE
-             WHEN is_confidential = TRUE AND internal_namespaces.namespace_id IS NULL THEN 'confidential - mASked'
-             WHEN visibility_level != 'public' AND internal_namespaces.namespace_id IS NULL THEN 'private/internal - mASked'
+             WHEN is_confidential = TRUE AND internal_namespaces.namespace_id IS NULL THEN 'confidential - masked'
+             WHEN visibility_level != 'public' AND internal_namespaces.namespace_id IS NULL THEN 'private/internal - masked'
              ELSE {{field}}
            END                                                         AS issue_{{field}},
            {% endfor %}
@@ -110,7 +110,7 @@ joined AS (
            lock_version,
            time_estimate,
            hAS_discussion_locked,
-           ARRAY_TO_STRING(agg_label,'|') AS mASked_label_title
+           ARRAY_TO_STRING(agg_label,'|') AS masked_label_title
 
     FROM issues
       LEFT JOIN agg_labels
