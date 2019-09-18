@@ -20,4 +20,5 @@ sources:
       - name: customers_db_customers_snapshots
       - name: customers_db_orders_snapshots
       - name: gitlab_dotcom_gitlab_subscriptions_snapshots
+      - name: gitlab_dotcom_namespaces_snapshots
       - name: gitlab_dotcom_members_snapshots
