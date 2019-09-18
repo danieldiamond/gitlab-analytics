@@ -109,7 +109,7 @@ joined AS (
            due_date,
            lock_version,
            time_estimate,
-           hAS_discussion_locked,
+           has_discussion_locked,
            ARRAY_TO_STRING(agg_label,'|') AS masked_label_title
 
     FROM issues
