@@ -99,18 +99,6 @@ sources:
         identifier: gitlab_db_approvals
       - name: events
         identifier: gitlab_db_events
-<<<<<<< HEAD
-      - name: ci_stages
-        identifier: gitlab_db_ci_stages
-      - name: ci_trigger_requests
-        identifier: gitlab_db_ci_trigger_requests
-      - name: ci_triggers
-        identifier: gitlab_db_ci_triggers
-      - name: ci_variables
-        identifier: gitlab_db_ci_variables
-      - name: ci_pipelines
-        identifier: gitlab_db_ci_pipelines
-=======
       - name: ci_build_trace_chunks
         identifier: gitlab_db_ci_build_trace_chunks
       - name: ci_build_trace_section_names
@@ -133,5 +121,13 @@ sources:
         identifier: gitlab_db_ci_pipeline_schedules
       - name: ci_pipeline_variables
         identifier: gitlab_db_ci_pipeline_variables
-      
->>>>>>> master
+      - name: ci_stages
+        identifier: gitlab_db_ci_stages
+      - name: ci_trigger_requests
+        identifier: gitlab_db_ci_trigger_requests
+      - name: ci_triggers
+        identifier: gitlab_db_ci_triggers
+      - name: ci_variables
+        identifier: gitlab_db_ci_variables
+      - name: ci_pipelines
+        identifier: gitlab_db_ci_pipelines

@@ -8,12 +8,13 @@ WITH source AS (
   SELECT *,
          ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
   FROM {{ source('gitlab_dotcom', 'ci_pipelines') }}
+  WHERE created_at IS NOT NULL
 
 ), renamed AS (
   
   SELECT
    
-    id                            AS id, 
+    id                            AS ci_pipeline_id, 
     created_at::TIMESTAMP         AS ci_pipeline_created_at, 
     updated_at::TIMESTAMP         AS ci_pipeline_updated_at, 
     tag                           AS tag, 

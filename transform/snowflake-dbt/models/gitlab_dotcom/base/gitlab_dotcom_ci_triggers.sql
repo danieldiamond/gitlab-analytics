@@ -21,7 +21,8 @@ WITH source AS (
     owner_id::INTEGER     AS ci_trigger_owner_id,
     description           AS description
     
-  FROM source 
+  FROM source
+  WHERE rank_in_key = 1
   
 )
 

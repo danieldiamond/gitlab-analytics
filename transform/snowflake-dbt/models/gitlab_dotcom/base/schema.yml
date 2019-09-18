@@ -194,9 +194,6 @@ models:
       - name: ci_stage_created_at
         tests:
           - not_null
-      - name: ci_stage_updated_at
-        tests:
-          - not_null
 
   - name: gitlab_dotcom_ci_trigger_requests
     description: Base model for Gitlab.com ci_trigger_requests
@@ -223,20 +220,6 @@ models:
         tests:
           - not_null
       - name: ci_trigger_updated_at
-        tests:
-          - not_null
-
-  - name: gitlab_dotcom_ci_variables
-    description: Base model for Gitlab.com ci_variables
-    columns:
-      - name: ci_variable_id
-        tests:
-          - not_null
-          - unique
-      - name: ci_variable_created_at
-        tests:
-          - not_null
-      - name: ci_variable_updated_at
         tests:
           - not_null
 
