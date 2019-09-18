@@ -27,9 +27,7 @@ default_args = {
 }
 
 # Create the DAG
-dag = DAG(
-    "dbt_snowplow_backfill", default_args=default_args, schedule_interval=None
-)
+dag = DAG("dbt_snowplow_backfill", default_args=default_args, schedule_interval=None)
 
 # Set the git command for the containers
 git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1"
@@ -61,6 +59,7 @@ def partitions(from_date, to_date, partition):
             parts.append({k: v for k, v in p.items()})
     return parts
 
+
 def generate_dbt_command(vars_dict):
     json_dict = json.dumps(vars_dict)
 
@@ -73,28 +72,26 @@ def generate_dbt_command(vars_dict):
         """
 
     return KubernetesPodOperator(
-            **gitlab_defaults,
-            image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
-            task_id=f"dbt-snowplow-backfill-{vars_dict['year']}-{vars_dict['month']}",
-            name=f"dbt-snowplow-backfill-{vars_dict['year']}-{vars_dict['month']}",
-            secrets=[
-                SNOWFLAKE_ACCOUNT,
-                SNOWFLAKE_USER,
-                SNOWFLAKE_PASSWORD,
-                SNOWFLAKE_TRANSFORM_ROLE,
-                SNOWFLAKE_TRANSFORM_WAREHOUSE,
-                SNOWFLAKE_TRANSFORM_SCHEMA,
-            ],
-            env_vars=pod_env_vars,
-            cmds=["/bin/bash", "-c"],
-            arguments=[dbt_generate_command],
-            dag=dag,
-        )
-
-dummy_operator = DummyOperator(
-    task_id='start',
-    dag=dag,
+        **gitlab_defaults,
+        image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+        task_id=f"dbt-snowplow-backfill-{vars_dict['year']}-{vars_dict['month']}",
+        name=f"dbt-snowplow-backfill-{vars_dict['year']}-{vars_dict['month']}",
+        secrets=[
+            SNOWFLAKE_ACCOUNT,
+            SNOWFLAKE_USER,
+            SNOWFLAKE_PASSWORD,
+            SNOWFLAKE_TRANSFORM_ROLE,
+            SNOWFLAKE_TRANSFORM_WAREHOUSE,
+            SNOWFLAKE_TRANSFORM_SCHEMA,
+        ],
+        env_vars=pod_env_vars,
+        cmds=["/bin/bash", "-c"],
+        arguments=[dbt_generate_command],
+        dag=dag,
     )
+
+
+dummy_operator = DummyOperator(task_id="start", dag=dag)
 
 dbt_snowplow_combined_cmd = f"""
         {git_cmd} &&
@@ -105,24 +102,26 @@ dbt_snowplow_combined_cmd = f"""
         """
 
 dbt_snowplow_combined = KubernetesPodOperator(
-            **gitlab_defaults,
-            image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
-            task_id=f"dbt-snowplow-snowplow-combined",
-            name=f"dbt-snowplow-snowplow-combined",
-            trigger_rule="all_success",
-            secrets=[
-                SNOWFLAKE_ACCOUNT,
-                SNOWFLAKE_USER,
-                SNOWFLAKE_PASSWORD,
-                SNOWFLAKE_TRANSFORM_ROLE,
-                SNOWFLAKE_TRANSFORM_WAREHOUSE,
-                SNOWFLAKE_TRANSFORM_SCHEMA,
-            ],
-            env_vars=pod_env_vars,
-            cmds=["/bin/bash", "-c"],
-            arguments=[dbt_snowplow_combined_cmd],
-            dag=dag,
-        )
+    **gitlab_defaults,
+    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    task_id=f"dbt-snowplow-snowplow-combined",
+    name=f"dbt-snowplow-snowplow-combined",
+    trigger_rule="all_success",
+    secrets=[
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_USER,
+        SNOWFLAKE_PASSWORD,
+        SNOWFLAKE_TRANSFORM_ROLE,
+        SNOWFLAKE_TRANSFORM_WAREHOUSE,
+        SNOWFLAKE_TRANSFORM_SCHEMA,
+    ],
+    env_vars=pod_env_vars,
+    cmds=["/bin/bash", "-c"],
+    arguments=[dbt_snowplow_combined_cmd],
+    dag=dag,
+)
 
-for month in partitions(datetime.strptime('2018-07-01', "%Y-%m-%d").date(), date.today(), 'month'):
+for month in partitions(
+    datetime.strptime("2018-07-01", "%Y-%m-%d").date(), date.today(), "month"
+):
     dummy_operator >> generate_dbt_command(month) >> dbt_snowplow_combined
