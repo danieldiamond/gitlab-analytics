@@ -52,9 +52,6 @@ tables:
       , status
       , version
       , status_reason
-      , encrypted_ca_key
-      , encrypted_ca_key_iv
-      , ca_cert
       FROM clusters_applications_helm
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
           AND '{EXECUTION_DATE}'::timestamp
@@ -72,7 +69,7 @@ tables:
       , ingress_type
       , version
       , cluster_ip
-          , status_reason
+      , status_reason
       , external_ip
       , external_hostname
       FROM clusters_applications_ingress
