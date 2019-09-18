@@ -53,3 +53,5 @@ models:
       - unique
 - name: sheetload_calendar
   description: This is the model that categorizes the events on the CEO's calendar.
+- name: sheetload_rep_quotas_full_fy2020
+  description: This is the model that captures sales data for rep quotas for the full fy2020.
