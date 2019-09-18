@@ -2,8 +2,6 @@
 
 AIRFLOW_IMAGE = analytics_airflow_webserver_1
 GIT_BRANCH = $$(git symbolic-ref --short HEAD)
-SNOWFLAKE_ANALYTICS_DB = $(shell echo $(GIT_BRANCH)_ANALYTICS | tr a-z A-Z)
-SNOWFLAKE_LOAD_DB = $(shell echo $(GIT_BRANCH)_RAW | tr a-z A-Z)
 
 help:
 	@echo "\n \
@@ -47,11 +45,11 @@ data-image:
 
 dbt-docs:
 	@echo "Generating docs and spinning up the a webserver on port 8081..."
-	@export SNOWFLAKE_TRANSFORM_DATABASE=$(SNOWFLAKE_ANALYTICS_DB) && export SNOWFLAKE_LOAD_DATABASE=$(SNOWFLAKE_LOAD_DB) && docker-compose run dbt_image bash -c "dbt deps && dbt docs generate --profiles-dir profile && dbt docs serve --port 8081"
+	@docker-compose run dbt_image bash -c "dbt deps && dbt docs generate --profiles-dir profile && dbt docs serve --port 8081"
 
 dbt-image:
 	@echo "Attaching to dbt-image and mounting repo..."
-	@export SNOWFLAKE_TRANSFORM_DATABASE=$(SNOWFLAKE_ANALYTICS_DB) && export SNOWFLAKE_LOAD_DATABASE=$(SNOWFLAKE_LOAD_DB) && docker-compose run dbt_image bash -c "dbt deps && /bin/bash"
+	@docker-compose run dbt_image bash -c "dbt deps && /bin/bash"
 
 init-airflow:
 	@echo "Initializing the Airflow DB..."

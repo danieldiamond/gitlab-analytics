@@ -7,6 +7,13 @@ For more documentation on which event is tracked by each data source for this st
 {% enddocs %}
 
 
+{% docs manage_smau_events %}
+
+This model encapsulates all activation events for the Manage Stage as defined in this GitLab [issue](https://gitlab.com/gitlab-org/telemetry/issues/47). 
+
+{% enddocs %}
+
+
 {% docs plan_smau_events %}
 
 This model encapsulates all activation events for stage create as defined in this gitlab [issue](https://gitlab.com/gitlab-org/telemetry/issues/48). 

@@ -16,11 +16,14 @@ If none, please include a description
 
 **Editor Slack Handle**: @`handle`
 
-### Stakeholder Checklist (if applicable)
+### DRI/Prioritization Owner Checklist
+
+The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbook/business-ops/data-team/#data-support-per-organization)
 
 * Review Items
    * [ ] Does the dashboard provide the data requested?
    * [ ] Is the data in the dashboard correct?
+   * [ ] Does the data align with the existing single source of truth and across applicable reporting in Periscope and Google Sheets?
 
 ### Submitter Checklist
 * Review Items

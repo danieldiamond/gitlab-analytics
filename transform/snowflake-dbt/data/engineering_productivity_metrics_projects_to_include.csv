@@ -1,6 +1,6 @@
 project_path,project_id 
-gitlab-org/gitlab-ce,13083
-gitlab-org/gitlab-ee,278964
+gitlab-org/gitlab-foss,13083
+gitlab-org/gitlab,278964
 gitlab-org/gitlab-runner,250833
 gitlab-org/gitlab-ui,7071551
 gitlab-org/gitlab-pages,734943
