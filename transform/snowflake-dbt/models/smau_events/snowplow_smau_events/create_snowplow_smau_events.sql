@@ -151,7 +151,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path RLIKE '(\/([0-9A-Za-z_.-])*){2,}\/wiki\/tree\/.*'
+  WHERE page_url_path RLIKE '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,}'
     AND page_url_path NOT REGEXP '/-/ide/(.)*'
 
 )
