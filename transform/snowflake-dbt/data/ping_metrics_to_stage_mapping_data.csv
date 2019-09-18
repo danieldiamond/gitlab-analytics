@@ -74,6 +74,7 @@ projects_jira_cloud_active,plan
 projects_jira_dvcs_cloud_active,plan
 projects_jira_dvcs_server_active,plan
 projects_jira_server_active,plan
+projects_auto_issue_creation_enabled,monitor
 projects_mirrored_with_pipelines_enabled,release
 projects_prometheus_active,monitor
 projects_reporting_ci_cd_back_to_github,verify

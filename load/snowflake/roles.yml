@@ -502,6 +502,12 @@ roles:
         warehouses:
             - reporting
 
+    - jstark:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting
     - jurbanc:
         warehouses:
             - reporting
@@ -573,6 +579,10 @@ roles:
     - target_snowflake:
         warehouses:
             - target_snowflake
+
+    - tcarter:
+        warehouses:
+            - reporting
 
     - tlapiana:
         warehouses:
@@ -683,6 +693,12 @@ users:
             - securityadmin
             - sysadmin
 
+    - jstark:
+        can_login: yes
+        member_of:
+            - analyst_core
+            - jstark
+
     - jurbanc:
         can_login: yes
         member_of:
@@ -776,6 +792,13 @@ users:
         member_of:
             - stitch
             - loader
+
+    - tcarter:
+        can_login: yes
+        member_of:
+            - securityadmin
+            - sysadmin
+            - tcarter
 
     - target_snowflake:
         can_login: yes

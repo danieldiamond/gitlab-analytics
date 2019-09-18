@@ -58,7 +58,7 @@ if __name__ == "__main__":
         )
 
     # Custom Reports
-    report_mapping = dict(id_employee_number_mapping="423")
+    report_mapping = dict(id_employee_number_mapping="498")
 
     for key, value in report_mapping.items():
         logging.info(f"Querying for report number {value} into table {key}...")
