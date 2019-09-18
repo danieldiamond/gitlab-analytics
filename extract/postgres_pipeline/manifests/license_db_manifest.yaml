@@ -14,8 +14,8 @@ tables:
       , created_at
       , updated_at
       FROM add_ons
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
     export_db: EXPORT_DB
     export_schema: 'license'
     export_table: 'add_ons'
@@ -30,8 +30,8 @@ tables:
       , created_at
       , updated_at
       FROM granted_add_ons
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
     export_db: EXPORT_DB
     export_schema: 'license'
     export_table: 'granted_add_ons'
@@ -57,8 +57,8 @@ tables:
       created_at,
       updated_at
       FROM licenses
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
     export_db: EXPORT_DB
     export_schema: 'license'
     export_table: 'licenses'
@@ -74,8 +74,8 @@ tables:
       updated_at,
       recurly_name
       FROM plans
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
     export_db: EXPORT_DB
     export_schema: 'license'
     export_table: 'plans'
@@ -98,8 +98,8 @@ tables:
       provider,
       uid
       FROM users
-      WHERE updated_at BETWEEN TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00') - interval '{DAYS} day'
-        AND TO_TIMESTAMP('{EXECUTION_DATE}', 'YYYY-MM-DDTHH:MI:SS+00:00')
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
     export_db: EXPORT_DB
     export_schema: 'license'
     export_table: 'users'

@@ -38,6 +38,7 @@ WITH source AS (
         COALESCE({{ sales_segment_cleaning('ultimate_parent_sales_segment_emp_o__c') }}, {{ sales_segment_cleaning('ultimate_parent_sales_segment_o__c') }} )
                                     AS parent_segment,
         type                        AS sales_type,
+        business_type__c            AS business_type,
         closedate                   AS close_date,
         createddate                 AS created_date,
         stagename                   AS stage_name,
@@ -61,13 +62,15 @@ WITH source AS (
         -- opp info
         acv_2__c                    AS acv,
         sql_source__c               AS sales_qualified_source,
-        campaignid                  AS primary_campaign_source_id, 
+        campaignid                  AS primary_campaign_source_id,
         -- Should confirm which IACV is which
         incremental_acv_2__c        AS forecasted_iacv,
         incremental_acv__c          AS incremental_acv,
         net_iacv__c                 AS net_incremental_acv,
         renewal_amount__c           AS renewal_amount,
         renewal_acv__c              AS renewal_acv,
+        refund_iacv__c              AS refund_iacv,
+        is_refund_opportunity__c    AS is_refund,
         nrv__c                      AS nrv,
         sales_segmentation_o__c     AS segment,
         amount                      AS total_contract_value,

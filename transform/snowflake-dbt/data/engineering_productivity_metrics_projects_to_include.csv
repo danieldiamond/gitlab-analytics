@@ -1,6 +1,6 @@
 project_path,project_id 
-gitlab-org/gitlab-ce,13083
-gitlab-org/gitlab-ee,278964
+gitlab-org/gitlab-foss,13083
+gitlab-org/gitlab,278964
 gitlab-org/gitlab-runner,250833
 gitlab-org/gitlab-ui,7071551
 gitlab-org/gitlab-pages,734943
@@ -90,7 +90,7 @@ gitlab-org/gitlab-services/design.gitlab.com,4456656
 gitlab-org/customers-gitlab-com,2670515
 gitlab-com/license-gitlab-com,6457868
 gitlab-com/version-gitlab-com,6491770
-charts/auto-deploy-app,6329546
+gitlab-org/charts/auto-deploy-app,11915984
 gitlab-org/security-products/container-scanning,11428501
 gitlab-org/security-products/license-management,6130122
 gitlab-org/security-products/gemnasium-db,12006272
@@ -122,7 +122,7 @@ gitlab-org/security-products/tests/java-maven,5457651
 gitlab-org/security-products/tests/js-yarn,5456231
 gitlab-org/cluster-integration/helm-install-image,9184510
 gitlab-org/cluster-integration/auto-deploy-image,11688089
-charts/components/gitlab-operator,7686095
+gitlab-org/charts/components/gitlab-operator,14240586
 gitlab-org/charts/gitlab,3828396
 gitlab-org/fulfillment,10619765
 gitlab-org/gitlabktl,11080193
