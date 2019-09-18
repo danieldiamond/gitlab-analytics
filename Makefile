@@ -2,8 +2,6 @@
 
 AIRFLOW_IMAGE = analytics_airflow_webserver_1
 GIT_BRANCH = $$(git symbolic-ref --short HEAD)
-SNOWFLAKE_ANALYTICS_DB = $(shell echo $(GIT_BRANCH)_ANALYTICS | tr a-z A-Z)
-SNOWFLAKE_LOAD_DB = $(shell echo $(GIT_BRANCH)_RAW | tr a-z A-Z)
 
 help:
 	@echo "\n \
@@ -19,6 +17,7 @@ help:
 	++ Python Related ++ \n \
 	data-image: attaches to a shell in the data-image and mounts the repo for testing. \n \
 	lint: Runs a linter (Black) over the whole repo. \n \
+	mypy: Runs a type-checker in the extract dir. \n \
 	pylint: Runs the pylint checker over the whole repo. Does not check for code formatting, only errors/warnings. \n \
 	radon: Runs a cyclomatic complexity checker and shows anything with less than an A rating. \n \
 	xenon: Runs a cyclomatic complexity checker that will throw a non-zero exit code if the criteria aren't met. \n \
@@ -46,11 +45,11 @@ data-image:
 
 dbt-docs:
 	@echo "Generating docs and spinning up the a webserver on port 8081..."
-	@export SNOWFLAKE_TRANSFORM_DATABASE=$(SNOWFLAKE_ANALYTICS_DB) && export SNOWFLAKE_LOAD_DATABASE=$(SNOWFLAKE_LOAD_DB) && docker-compose run dbt_image bash -c "dbt deps && dbt docs generate --profiles-dir profile && dbt docs serve --port 8081"
+	@docker-compose run dbt_image bash -c "dbt deps && dbt docs generate --profiles-dir profile && dbt docs serve --port 8081"
 
 dbt-image:
 	@echo "Attaching to dbt-image and mounting repo..."
-	@export SNOWFLAKE_TRANSFORM_DATABASE=$(SNOWFLAKE_ANALYTICS_DB) && export SNOWFLAKE_LOAD_DATABASE=$(SNOWFLAKE_LOAD_DB) && docker-compose run dbt_image bash -c "dbt deps && /bin/bash"
+	@docker-compose run dbt_image bash -c "dbt deps && /bin/bash"
 
 init-airflow:
 	@echo "Initializing the Airflow DB..."
@@ -63,6 +62,10 @@ init-airflow:
 lint:
 	@echo "Linting the repo..."
 	@black .
+
+mypy:
+	@echo "Running mypy..."
+	@mypy extract/ --ignore-missing-imports
 
 pylint:
 	@echo "Running pylint..."
