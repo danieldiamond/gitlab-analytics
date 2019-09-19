@@ -39,13 +39,11 @@ WITH project_created AS (
 , unioned AS (
   {% for event_cte in event_ctes %}
 
-    (
       SELECT
         *
-      FROM {{ event_cte }}
-    )
+      FROM {{ event_cte }} 
 
-    {%- if not loop.last -%}
+    {%- if not loop.last %}
         UNION
     {%- endif %}
 

@@ -29,21 +29,14 @@ WITH manage_snowplow_smau_events AS (
 
 , unioned AS (
 
-  (
-
     SELECT *
     FROM manage_snowplow_smau_events
 
-  )
-
-  UNION
-
-  (
+    UNION
 
     SELECT *
     FROM manage_gitlab_dotcom_smau_events
 
-  )
 )
 
 SELECT *
