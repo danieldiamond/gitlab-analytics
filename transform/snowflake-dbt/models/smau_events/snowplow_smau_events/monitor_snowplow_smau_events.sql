@@ -7,9 +7,9 @@
 {%- set event_ctes = ["environments_viewed",
                       "error_tracking_viewed",
                       "logging_viewed",
-                      "prometheus_edited",
                       "metrics_viewed",
                       "operations_settings_viewed",
+                      "prometheus_edited",
                       "tracing_viewed"
                       ]
 -%}
@@ -84,6 +84,51 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start)   AS event_date,
     page_url_path,
     'metrics_viewed'           AS event_type,
+    page_view_id
+
+  FROM snowplow_page_views
+  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/metrics'
+
+)
+
+, operations_settings_viewed AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start)   AS event_date,
+    page_url_path,
+    'operations_settings_viewed'           AS event_type,
+    page_view_id
+
+  FROM snowplow_page_views
+  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/metrics'
+
+)
+
+, prometheus_edited AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start)   AS event_date,
+    page_url_path,
+    'prometheus_edited'           AS event_type,
+    page_view_id
+
+  FROM snowplow_page_views
+  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/metrics'
+
+)
+
+, tracing_viewed AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start)   AS event_date,
+    page_url_path,
+    'tracing_viewed'           AS event_type,
     page_view_id
 
   FROM snowplow_page_views
