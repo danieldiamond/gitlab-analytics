@@ -6,8 +6,7 @@
 
 WITH source AS (
 
-  SELECT 
-    *
+  SELECT *
   FROM {{ source('snapshots', 'gitlab_dotcom_namespaces_snapshots') }}
     
 ), renamed as (

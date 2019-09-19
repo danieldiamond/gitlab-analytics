@@ -6,8 +6,7 @@
 
 WITH source AS (
 
-  SELECT
-    *
+  SELECT *
   FROM {{ source('snapshots', 'customers_db_orders_snapshots') }}
 
 ), renamed AS (
@@ -37,6 +36,5 @@ WITH source AS (
 
 )
 
-SELECT
-  *
+SELECT *
 FROM renamed

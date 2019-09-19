@@ -6,8 +6,7 @@
 
 WITH source AS (
 
-  SELECT 
-    *
+  SELECT *
   FROM {{ source('snapshots', 'gitlab_dotcom_gitlab_subscriptions_snapshots') }}
   WHERE id != 572635 -- This ID has NULL values for many of the important columns.
 
