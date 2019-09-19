@@ -1,7 +1,7 @@
 version: 2
 models:
 - name: sheetload_employee_location_factor
-  description: This is the source of truth connecting an employee number from bamboo to the location factor used for People Ops purposes. The "Comp Data Analysis and Modeling" spreadsheet maintained by the Compensation & Benefits Manager is the SSOT for location factor.
+  description: This is the source of truth connecting an employee number from bamboo to the location factor used for People purposes. The "Comp Data Analysis and Modeling" spreadsheet maintained by the Compensation & Benefits Manager is the SSOT for location factor.
   columns:
   - name: bamboo_employee_number
     tests:
