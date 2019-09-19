@@ -75,12 +75,7 @@ unpacked AS (
     hostname,
     host_id,
     {% for ping_name in ping_list %}
-      MAX(
-      CASE WHEN full_ping_name = '{{ping_name}}'
-        THEN ping_value::numeric
-        ELSE 0
-      END
-      ) AS {{ping_name}} {{ "," if not loop.last }}
+      MAX(IFF(full_ping_name = '{{ping_name}}', ping_value::numeric, NULL)) AS {{ping_name}} {{ "," if not loop.last }}
     {% endfor %}
     
     FROM unpacked
