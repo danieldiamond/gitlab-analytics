@@ -35,9 +35,9 @@ WITH snowplow_page_views AS (
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
-    TO_DATE(page_view_start)      AS event_date,
+    TO_DATE(page_view_start)   AS event_date,
     page_url_path,
-    'envrionments_viewed'         AS event_type,
+    'envrionments_viewed'      AS event_type,
     page_view_id
 
   FROM snowplow_page_views
@@ -45,14 +45,28 @@ WITH snowplow_page_views AS (
     AND page_url_path NOT IN ('/help/ci/environments')
 )
 
+, error_tracking_viewed AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start)      AS event_date,
+    page_url_path,
+    'error_tracking_viewed'       AS event_type,
+    page_view_id
+
+  FROM snowplow_page_views
+  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/error_tracking'
+)
+
 , metrics_viewed AS (
 
   SELECT
     user_snowplow_domain_id,
     user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
+    TO_DATE(page_view_start)   AS event_date,
     page_url_path,
-    'metrics_viewed'         AS event_type,
+    'metrics_viewed'           AS event_type,
     page_view_id
 
   FROM snowplow_page_views
