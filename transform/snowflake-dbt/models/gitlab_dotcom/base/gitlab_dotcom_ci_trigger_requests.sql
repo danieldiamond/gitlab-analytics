@@ -15,7 +15,6 @@ WITH source AS (
 
     id::INTEGER           AS ci_trigger_request_id,
     trigger_id::INTEGER   AS ci_trigger_request_trigger_id,
-    variables             AS variables,
     created_at::TIMESTAMP AS ci_trigger_request_created_at,
     updated_at::TIMESTAMP AS ci_trigger_request_updated_at,
     commit_id::INTEGER    AS ci_trigger_request_commit_id

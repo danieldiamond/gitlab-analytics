@@ -19,10 +19,10 @@ WITH source AS (
     pipeline_id::INTEGER  AS ci_stage_pipeline_id,
     created_at::TIMESTAMP AS ci_stage_created_at,
     updated_at::TIMESTAMP AS ci_stage_updated_at,
-    name                  AS name,
-    status                AS status,
-    lock_version          AS lock_version,
-    position              AS position
+    name::VARCHAR         AS name,
+    status::INTEGER       AS status,
+    lock_version::INTEGER AS lock_version,
+    position::INTEGER     AS position
 
   FROM source
   WHERE rank_in_key = 1
