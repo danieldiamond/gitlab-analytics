@@ -170,7 +170,7 @@ dbt_test = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
     task_id="dbt-test",
     name="dbt-test",
-    trigger_rule="one_success",
+    trigger_rule="all_done",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
