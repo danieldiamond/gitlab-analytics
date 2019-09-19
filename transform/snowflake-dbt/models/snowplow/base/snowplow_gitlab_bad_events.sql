@@ -18,13 +18,13 @@ WITH base AS (
 ), renamed AS (
 
     SELECT 
-      JSONTEXT [ 'line' ] :: string               AS base64_event,
-      TO_ARRAY(JSONTEXT [ 'errors' ])             AS error_array,
-      JSONTEXT [ 'failure_tstamp' ] :: timestamp  AS failure_timestamp,
-      'GitLab'                                    AS infra_source,
+      DISTINCT JSONTEXT['line']::string       AS base64_event,
+      TO_ARRAY(JSONTEXT['errors'])            AS error_array,
+      JSONTEXT[ 'failure_tstamp']::timestamp  AS failure_timestamp,
+      'GitLab'                                AS infra_source,
       uploaded_at,
       {{ dbt_utils.surrogate_key('base64_event', 'failure_timestamp','error_array') }} 
-                                                  AS bad_event_surrogate
+                                              AS bad_event_surrogate
     FROM base
 
 )
