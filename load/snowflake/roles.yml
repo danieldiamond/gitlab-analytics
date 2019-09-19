@@ -641,8 +641,8 @@ users:
     - datwood:
         can_login: yes
         member_of:
-            - datwood
             - analyst_core
+            - datwood
 
     - dtang:
         can_login: yes
