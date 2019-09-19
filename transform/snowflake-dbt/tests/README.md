@@ -86,26 +86,10 @@ Failure in test no_missing_location_factors (tests/bamboohr/data_test/no_missing
 ```
 
 Steps to resolve:
-* Step 1: Run the compiled SQL against analytics (below for reference)
-* Step 2: Visually compare the hire date to make sure it has been 7 days,.
-* Step 3: Ping the People Operations Analyst with the employee ID numbers that are missing location factor in #data. (AS of 2019-07-24, that would be Morgan Wilkins.)
-* Step 4: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
-* Step 5: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
-
-```
-WITH source as (
-
-  SELECT *
-  FROM "ANALYTICS".sensitive.employee_directory
-
-)
-
-SELECT *
-FROM source
-WHERE hire_location_factor IS NULL
-AND termination_date IS NULL
-AND CURRENT_DATE > dateadd('days', 7, hire_date)
-```
+* Step 1: Run the chatops command `/gitlab datachat run missing_location_factor` from Slack
+* Step 2: Ping the People Operations Analyst with the employee ID numbers that are missing location factor in #data. (AS of 2019-07-24, that would be Morgan Wilkins.)
+* Step 3: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
+* Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
 
 ### Test: uncategorized_pings
 This test checks that the list of unique ping metrics that we receive, `pings_list`, matches the ping metrics that we have categorized in the static CSV, `ping_metrics_to_stage_mapping_data`. This test will fail when these two sources get out of sync in either direction.
@@ -120,8 +104,10 @@ Database Error in model pings_usage_data_monthly_change_by_stage (models/pings/x
 
 Steps to Resolve:
 
-* Step 1: Follow the general checklist
-* Step 2: Check that the rows of [ping_metrics_to_stage.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv) match the ping names in `analytics_staging.pings_list`. If `pings_list` has more rows than the CSV, the pings data has likely changed and the CSV may need to be updated to reflect that.
+* Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack.
+* Step 2: Create a new issue.
+* Step 3: Ask in the #product slack channel which stage the new metric belongs to.
+* Step 4: Create an MR that adds the new metric to the `ping_metrics_to_stage_mapping_data` CSV. Remember to keep it sorted alphabetically. 
 
 ### Test: zuora_account_has_crm_id
 
@@ -136,7 +122,7 @@ Failure in test zuora_account_has_crm_id (tests/data_test/zuora_account_has_crm_
 
 Steps to Resolve:
 
-* Step 1: Follow the general checklist
+* Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack.
 * Step 2: Create an issue in finance asking the account get updated with a salesforce_id. Cross link this to the analytics issue
 * Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
 * Step 4: Filter out the zuora account in the base `zuora_account` model and submit your MR for review
@@ -157,10 +143,9 @@ Steps to Resolve:
 
 * Step 1: Follow the general checklist
 * Step 2: Create an issue in finance asking for the Zuora account and subscription linkages to be reviewed.
-    * If the data on the Zuora end is fine, then bring in Sales people to review Salesforce data.
-* Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
-* Step 4: Filter out the zuora subscription in the test based on the md5 has of the `ultimate_parent_sub` name
-* Step 5: Once finance has confirmed that the accounts and subscriptions have been updated, create a MR to remove the filter
+* Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue.
+* Step 4: Filter out the zuora subscription in the test based on the md5 hash of the subscription name.
+* Step 5: Once finance has confirmed that the accounts and subscriptions have been updated, create a MR to remove the filter.
 
 ### Test: zuora_assert_no_circular_linkages
 

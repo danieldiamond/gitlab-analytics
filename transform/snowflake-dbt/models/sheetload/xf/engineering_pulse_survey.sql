@@ -1,9 +1,3 @@
-{{ config({
-  "schema": "analytics",
-  "post-hook": "grant select on {{this}} to role reporter"
-  })
-}}
-
 {% set table_list = [ref('sheetload_pulse_survey_configure_be'),
                      ref('sheetload_pulse_survey_configure_fe'),
                      ref('sheetload_pulse_survey_monitor_be'),

@@ -1,4 +1,8 @@
 -- This file is loaded through dbt seed, your local runs will break unless you run dbt seed first.
+{{ config({
+    "schema": "staging"
+    })
+}}
 
 WITH source AS (
 

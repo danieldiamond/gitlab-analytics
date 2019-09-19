@@ -18,45 +18,27 @@ quoting:
     identifier: false
     schema: false
 
-archive:
-    - source_schema: analytics_staging
-      target_schema: dbt_archive
-      tables:
-        - source_table: sfdc_account
-          target_table: sfdc_account_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: account_id
-
-        - source_table: sfdc_opportunity
-          target_table: sfdc_opportunity_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: opportunity_id
-
-        - source_table: sfdc_users
-          target_table: sfdc_users_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: user_id_18__c
-
-    - source_schema: sensitive
-      target_schema: dbt_archive
-      tables:
-        - source_table: sheetload_employee_location_factor
-          target_table: sheetload_employee_location_factor_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: bamboo_employee_number
-
-
 on-run-start:
     - "{{ dbt_logging_start('on run start hooks') }}"
     - "{{resume_warehouse(var('resume_warehouse', false), var('warehouse_name'))}}"
     - "{{create_udfs()}}"
-    - "{{ dbt_logging_end('on run start hooks') }}"
 
 on-run-end:
     - "{{ dbt_logging_start('on run end hooks') }}"
     - "{{grant_usage_to_schemas(schema_name, rolename)}}"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
-    - "{{ dbt_logging_end('on run end hooks') }}"
+
+seeds:
+  gitlab_snowflake:
+    enabled: true
+    schema: staging
+    zuora_country_geographic_region:
+      enabled: true
+      schema: analytics
+
+  snowplow:
+    enabled: true
+    schema: staging
 
 models:
     pre-hook:
@@ -84,7 +66,7 @@ models:
         'snowplow:context:useragent': false
         'snowplow:timezone': 'America/New_York'
         'snowplow:page_ping_frequency': 30
-        'snowplow:app_ids': ['gitlab']
+        'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
         'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
 
     snowflake_spend:
@@ -93,8 +75,7 @@ models:
         materialized: table
       xf:
         materialized: table
-      vars:
-        cost_per_credit: 2.55
+        schema: analytics
 
     gitlab_snowflake:
       enabled: true
@@ -119,6 +100,10 @@ models:
       dbt_logging:
         enabled: false
 
+      engineering:
+        enabled: true
+        materialized: table
+
       gitlab_data_yaml:
         enabled: true
         materialized: table
@@ -134,8 +119,9 @@ models:
         xf:
           materialized: table
 
-      netsuite:
-        enabled: false
+      greenhouse:
+        schema: sensitive
+        enabled: true
 
       netsuite_stitch:
         enabled: true
@@ -153,6 +139,11 @@ models:
         materialized: table
 
       retention:
+        enabled: true
+        materialized: table
+
+      smau_events:
+        tags: ["product"]
         enabled: true
         materialized: table
 

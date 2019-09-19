@@ -6,9 +6,9 @@ sources:
     schema: netsuite_stitch
     loader: Stitch # informational only (free text)
     loaded_at_field: _SDC_EXTRACTED_AT # configure for all sources
-
+    
     quoting:
-      database: false
+      database: true
       schema: false
       identifier: false
 
@@ -22,6 +22,7 @@ sources:
         identifier: accountingperiod
       - name: consolidated_exchange_rate
         identifier: consolidatedexchangerate
+        freshness: null
       - name: currency_rate
         identifier: currencyrate
       - name: customer

@@ -4,21 +4,13 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, gitlab_defaults
+from airflow_utils import slack_failed_task, gitlab_defaults, gitlab_pod_env_vars
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
-pod_env_vars = {
-    "SNOWFLAKE_LOAD_DATABASE": "RAW"
-    if GIT_BRANCH == "master"
-    else f"{GIT_BRANCH.upper()}_RAW",
-    "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
-    if GIT_BRANCH == "master"
-    else f"{GIT_BRANCH.upper()}_ANALYTICS",
-    "CI_PROJECT_DIR": "/analytics",
-}
+pod_env_vars = {**gitlab_pod_env_vars, **{}}
 
 # Default arguments for the DAG
 default_args = {
@@ -46,7 +38,7 @@ sheetload_cmd = f"""
     {git_cmd} &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/sheetload/ &&
-    python3 sheetload.py sheets sheets.txt snowflake    
+    python3 sheetload.py sheets --sheet_file sheets.txt
 """
 
 sheetload_run = KubernetesPodOperator(
@@ -76,6 +68,7 @@ xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
 dbt_run_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
+    export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile # install packages &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt run --profiles-dir profile --target prod --models +engineering_pulse_survey --vars {xs_warehouse} # run on small warehouse

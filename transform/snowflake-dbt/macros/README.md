@@ -1,3 +1,12 @@
+## Action Type([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/action_type.sql))
+This macro maps action type ID to the action type.
+Usage:
+```
+{{action_type(1)}}
+```
+Used in:
+- gitlab_dotcom_events.sql
+
 ## Alter Warehouse ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/alter_warehouse.sql))
 This macro turns on or off a Snowflake warehouse.
 Usage:
@@ -47,10 +56,10 @@ Used in:
 - dbt_project.yml
 
 ## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/generate_custom_schema.sql))
-This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema suffixed with `_staging` (e.g. `emilie_scratch_staging` and `analytics_staging`). For tagged models, the output is dependent on the target. It is `emilie_scratch_analytics` on dev and `analytics` on prod.
+This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema ` (e.g. `emilie_scratch` and `analytics`). For tagged models, the output is dependent on the target. It is `emilie_scratch_staging` on dev and `analytics_staging` on prod. A similar pattern is followed for the `sensitive` config.
 Usage:
 ```
-{{ config(schema='analytics') }}
+{{ config(schema='staging') }}
 ```
 Used in:
 - all models surfaced in our BI tool.
@@ -58,10 +67,29 @@ Used in:
 ## Get Internal Parent Namespaces
 Returns a list of all the internal gitlab.com parent namespaces, enclosed in round brackets. This is useful for filtering an analysis down to external users only.
 
-The internal namespaces are as follows:  
-gitlab-com  (6543)  
-gitlab-org  (9970)  
-gitlab-data (4347861)  
+The internal namespaces are documented below.
+
+| namespace | namespace ID |
+| ------ | ------ |
+| gitlab-com | 6543 |
+| gitlab-org | 9970 |
+| gitlab-data | 4347861 |
+| charts | 1400979 |
+| gl-recruiting | 2299361 |
+| gl-frontend | 1353442 |
+| gitlab-examples | 349181 |
+| gl-secure | 3455548 |
+| gl-retrospectives | 3068744 |
+| gl-release | 5362395 |
+| gl-docsteam-new | 4436569 |
+| gl-legal-team | 3630110 |
+| gl-locations | 3315282 |
+| gl-serverless | 5811832 |
+| gl-peoplepartners | 5496509 |
+| gl-devops-tools | 4206656 |
+| gl-compensation | 5495265 |
+| gl-learning | 5496484 |
+| meltano | 2524164 |
 
 Usage:
 ```

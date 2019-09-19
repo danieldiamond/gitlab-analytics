@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 WITH sfdc_opportunity AS (
 
     SELECT * FROM {{ref('sfdc_opportunity')}}
@@ -22,8 +16,8 @@ WITH sfdc_opportunity AS (
 
 ), sfdc_record_type AS (
 
-     SELECT *
-     FROM {{ ref('sfdc_record_type') }}
+    SELECT *
+    FROM {{ ref('sfdc_record_type') }}
 
 ), layered AS (
 
@@ -39,6 +33,7 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.sales_segment,
         sfdc_opportunity.parent_segment,
         sfdc_opportunity.sales_type,
+        sfdc_opportunity.business_type,
         sfdc_opportunity.close_date,
         sfdc_opportunity.created_date,
         sfdc_opportunity.stage_name,
@@ -55,6 +50,8 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.net_incremental_acv,
         sfdc_opportunity.renewal_amount,
         sfdc_opportunity.renewal_acv,
+        sfdc_opportunity.refund_iacv,
+        sfdc_opportunity.is_refund,
         sfdc_opportunity.nrv,
         sfdc_opportunity.total_contract_value,
         sfdc_opportunity.lead_source,
@@ -92,6 +89,7 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.opportunity_owner_team                                                     AS opportunity_owner_team,
         sfdc_opportunity.opportunity_owner_manager                                                  AS opportunity_owner_manager,
         sfdc_opportunity.opportunity_owner_department                                               AS opportunity_owner_department,
+        sfdc_opportunity.primary_campaign_source_id                                                 AS primary_campaign_source_id,
         sfdc_users_xf.title                                                                         AS opportunity_owner_title,
         sfdc_users_xf.role_name                                                                     AS opportunity_owner_role,
         sfdc_record_type.record_type_name,

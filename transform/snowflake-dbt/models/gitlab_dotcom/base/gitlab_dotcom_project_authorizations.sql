@@ -1,4 +1,9 @@
 -- disabled model until the data starts flowing in (the source table is missing from tap_postgres)
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH source AS (
 
 	SELECT DISTINCT user_id, project_id, access_level

@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 WITH zendesk_tickets AS (
 
   SELECT * FROM {{ref('zendesk_tickets')}}

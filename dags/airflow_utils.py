@@ -1,5 +1,4 @@
-# This file contains common operators/functions to be used across multiple DAGs
-import functools
+""" This file contains common operators/functions to be used across multiple DAGs """
 import os
 
 from airflow.operators.slack_operator import SlackAPIPostOperator
@@ -64,3 +63,17 @@ gitlab_defaults = dict(
     is_delete_operator_pod=True,
     namespace=os.environ["NAMESPACE"],
 )
+
+# GitLab default environment variables for worker pods
+env = os.environ.copy()
+GIT_BRANCH = env["GIT_BRANCH"]
+gitlab_pod_env_vars = {
+    "CI_PROJECT_DIR": "/analytics",
+    "EXECUTION_DATE": "{{ next_execution_date }}",
+    "SNOWFLAKE_LOAD_DATABASE": "RAW"
+    if GIT_BRANCH == "master"
+    else f"{GIT_BRANCH.upper()}_RAW",
+    "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
+    if GIT_BRANCH == "master"
+    else f"{GIT_BRANCH.upper()}_ANALYTICS",
+}

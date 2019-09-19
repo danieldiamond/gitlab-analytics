@@ -12,5 +12,6 @@ Closes
 
 * [ ] Passed Linting?
 * [ ] Passed Complexity Check?
+* [ ] Passed Pytest?
 
 #### Changes

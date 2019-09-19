@@ -1,5 +1,6 @@
 {{ config({
-    "materialized": "table"
+    "materialized": "table",
+    "schema": "staging"
     })
 }}
 
@@ -9,7 +10,7 @@ WITH months AS (
       first_day_of_month AS skeleton_month
 
     FROM {{ ref('date_details') }}
-    WHERE first_day_of_month < CURRENT_DATE
+    WHERE first_day_of_month < DATE_TRUNC('month', CURRENT_DATE)
 
 ), users AS (
 
@@ -18,6 +19,7 @@ WITH months AS (
       DATE_TRUNC(month, user_created_at) AS user_created_at_month
 
     FROM {{ ref('gitlab_dotcom_users') }}
+    WHERE user_created_at < DATE_TRUNC('month', CURRENT_DATE)
 
 ), skeleton AS ( -- Create a framework of one row per user per month (after their creation date)
 

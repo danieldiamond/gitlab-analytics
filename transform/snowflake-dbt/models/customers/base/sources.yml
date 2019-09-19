@@ -4,6 +4,13 @@ sources:
   - name: customers
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: tap_postgres
+    loader: Airflow
+
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
     tables:
       - name: customers_db_customers
         columns:
@@ -14,9 +21,6 @@ sources:
             tests:
               - not_null
           - name: updated_at
-            tests:
-              - not_null
-          - name: sign_in_count
             tests:
               - not_null
       - name: customers_db_orders

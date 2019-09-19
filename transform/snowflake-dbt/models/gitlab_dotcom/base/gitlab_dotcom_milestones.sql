@@ -1,12 +1,11 @@
 {{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
+    "schema": "staging"
     })
 }}
 
 WITH source AS (
 
-	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
+  SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
   FROM {{ source('gitlab_dotcom', 'milestones') }}
 
 ), renamed AS (
