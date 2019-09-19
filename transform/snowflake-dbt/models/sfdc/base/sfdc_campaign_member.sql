@@ -12,22 +12,20 @@ WITH source AS (
 ), renamed AS(
 
     SELECT
-      id                AS campaign_member_id,
+      id                      AS campaign_member_id,
 
         --keys
-      campaignid        AS campaign_id,
-      leadorcontactid   AS lead_or_contact_id,
+      campaignid              AS campaign_id,
+      leadorcontactid         AS lead_or_contact_id,
 
         --info
-      type              AS campaign_member_type,
-      MQL_After_Campaign__c
-                        AS mql_after_campaign,
-      hasresponded      AS campaign_member_has_responded,
-      FirstRespondedDate 
-                        AS campaign_member_response_date,                  
+      type                    AS campaign_member_type,
+      MQL_After_Campaign__c   AS mql_after_campaign,
+      hasresponded            AS campaign_member_has_responded,
+      FirstRespondedDate      AS campaign_member_response_date,                  
 
         --metadata
-      createddate       AS campaign_member_created_date,
+      createddate             AS campaign_member_created_date,
       systemmodstamp
 
     FROM source
