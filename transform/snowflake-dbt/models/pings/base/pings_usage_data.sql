@@ -5,8 +5,7 @@
 
 WITH source AS (
 
-  SELECT
-    *
+  SELECT *
   FROM {{ source('pings_tap_postgres', 'usage_data') }}
 
 ),
@@ -30,7 +29,7 @@ renamed AS (
     created_at::TIMESTAMP                    AS created_at,
     updated_at::TIMESTAMP                    AS updated_at,
     license_id::INTEGER                      AS license_id,
-    stats                                    AS stats,
+    stats                                    AS stats_raw,
     mattermost_enabled::BOOLEAN              AS mattermost_enabled,
     uuid::VARCHAR                            AS uuid,
     edition::VARCHAR                         AS edition,
@@ -61,14 +60,11 @@ renamed AS (
     --usage_activity_by_stage // never not null
     gitaly_version::VARCHAR                  AS gitaly_version,
     gitaly_servers::INTEGER                  AS gitaly_servers,
-
     PARSE_JSON(counts)                       AS stats_used
-
   FROM source
   WHERE uuid IS NOT NULL
     AND (CHECK_JSON(counts) IS NULL)
 )
 
-SELECT
-  *
+SELECT *
 FROM renamed

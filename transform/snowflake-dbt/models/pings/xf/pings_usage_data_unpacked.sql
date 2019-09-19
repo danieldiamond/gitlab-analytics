@@ -7,15 +7,12 @@
 
 {% set ping_list = dbt_utils.get_column_values(table=ref('pings_list'), column='full_ping_name', max_records=1000, default=['']) %}
 
-
 WITH usage_data as (
 
-    SELECT * FROM {{ ref('pings_usage_data') }}
+  SELECT * 
+  FROM {{ ref('pings_usage_data') }}
 
-),
-
-
-unpacked AS (
+), unpacked AS (
 
   SELECT
     id,
@@ -54,9 +51,7 @@ unpacked AS (
       AND created_at > (SELECT max(created_at) FROM {{ this }})
   {% endif %}
 
-)
-
-, final AS (
+), final AS (
   
   SELECT
     id,
@@ -78,11 +73,10 @@ unpacked AS (
       MAX(IFF(full_ping_name = '{{ping_name}}', ping_value::numeric, NULL)) AS {{ping_name}} {{ "," if not loop.last }}
     {% endfor %}
     
-    FROM unpacked
-    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+  FROM unpacked
+  {{ dbt_utils.group_by(n=15) }}
   
 )
 
-SELECT
-  *
+SELECT *
 FROM final
