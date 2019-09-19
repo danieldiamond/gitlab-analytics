@@ -1,5 +1,6 @@
 {{ config({
-    "schema": "staging"
+    "schema": "staging",
+    "alias": "customers_db_orders_snapshots"
     })
 }}
 
@@ -12,7 +13,7 @@ WITH source AS (
 ), renamed AS (
 
   SELECT 
-    DISTINCT
+    dbt_scd_id::VARCHAR                             AS order_snapshot_id,
     id::INTEGER                                     AS order_id,
     customer_id::INTEGER                            AS customer_id,
     product_rate_plan_id::VARCHAR                   AS product_rate_plan_id,
