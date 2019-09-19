@@ -5,7 +5,7 @@ WITH plan_snowplow_smau_events AS (
     user_custom_id      AS gitlab_user_id,
     event_date,
     event_type,
-    page_view_id        AS sk_id,
+    page_view_id        AS event_surrogate_key,
     'snowplow_frontend' AS source_type
   
   FROM {{ ref('plan_snowplow_smau_events')}}
