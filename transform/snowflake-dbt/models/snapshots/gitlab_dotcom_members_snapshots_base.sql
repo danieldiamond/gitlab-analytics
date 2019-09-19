@@ -1,6 +1,6 @@
 {{ config({
     "schema": "staging",
-    "alias": "gitlab_dotcom_members_dbt_snapshots"
+    "alias": "gitlab_dotcom_members_snapshots"
     })
 }}
 
