@@ -442,6 +442,11 @@ roles:
         warehouses:
             - reporting
 
+    - datwood:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+
     - dtang:
         warehouses:
             - reporting
@@ -632,6 +637,12 @@ users:
             - reporter
             - sysadmin
             - transformer
+
+    - datwood:
+        can_login: yes
+        member_of:
+            - analyst_core
+            - datwood
 
     - dtang:
         can_login: yes
