@@ -135,7 +135,7 @@ dbt_source_cmd = f"""
     cd analytics/transform/snowflake-dbt/ &&
     export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile &&
-    true # dbt source snapshot-freshness --profiles-dir profile --target docs
+    dbt source snapshot-freshness --profiles-dir profile --target docs
 """
 dbt_source_freshness = KubernetesPodOperator(
     **gitlab_defaults,
@@ -170,7 +170,7 @@ dbt_test = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
     task_id="dbt-test",
     name="dbt-test",
-    trigger_rule="one_success",
+    trigger_rule="all_done",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,

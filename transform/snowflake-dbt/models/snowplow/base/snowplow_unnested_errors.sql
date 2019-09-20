@@ -1,6 +1,6 @@
 {{config({
     "materialized":"incremental",
-    "unique_key":"base64_event",
+    "unique_key":"bad_event_surrogate",
     "schema":"staging"
   })
 }}
