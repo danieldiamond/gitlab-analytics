@@ -45,6 +45,8 @@ WITH snowplow_page_views AS (
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '(\/([0-9A-Za-z_.-])*){2}\/merge_requests/[0-9]*'
     AND page_url_path NOT REGEXP '/-/ide/(.)*'
+    -- removing wiki pages
+    AND page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}'
 
 )
 
@@ -60,6 +62,9 @@ WITH snowplow_page_views AS (
 
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '/-/ide/project/.*'
+  -- removing wiki pages
+    AND page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}'
+
 
 )
 
@@ -79,6 +84,8 @@ WITH snowplow_page_views AS (
     AND page_url_path NOT REGEXP '/-/ide/(.)*'
     AND page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wiki\/tree\/(.)*'
     AND page_url_path NOT REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]{1,}'
+    -- removing wiki pages
+    AND page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}'
 
 )
 
@@ -94,6 +101,8 @@ WITH snowplow_page_views AS (
 
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '/search'
+  -- removing wiki pages
+    AND page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}'
 
 )
 
@@ -137,6 +146,8 @@ WITH snowplow_page_views AS (
 
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]{1,}'
+    -- removing wiki pages
+    AND page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}'
 
 )
 
@@ -151,8 +162,10 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path RLIKE '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,}'
+  WHERE page_url_path RLIKE '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}'
     AND page_url_path NOT REGEXP '/-/ide/(.)*'
+    -- removing wiki pages
+    AND page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}'
 
 )
 
