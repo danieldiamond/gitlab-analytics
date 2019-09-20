@@ -152,6 +152,10 @@ models:
         xf:
           materialized: table
 
+      snowplow_combined:
+        tags: ["product"]
+        enabled: true
+
       sfdc:
         xf:
           enabled: true
