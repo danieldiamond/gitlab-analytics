@@ -31,7 +31,7 @@ WITH source AS (
       line_code::varchar                                    AS line_code,
       commit_id::varchar                                    AS commit_id,
       noteable_id::INTEGER                                  AS noteable_id,
-      system::boolean                                       AS system,
+      system::BOOLEAN                                       AS system,
       --st_diff (hidden because not relevant to our current analytics needs)
       updated_by_id::INTEGER                                AS note_updated_by_id,
       --type (hidden because legacy and can be easily confused with noteable_type)
@@ -41,7 +41,7 @@ WITH source AS (
       resolved_by_id::INTEGER                               AS resolved_by_id,
       discussion_id::varchar                                AS discussion_id,
       cached_markdown_version::INTEGER                      AS cached_markdown_version,
-      resolved_by_push::boolean                             AS resolved_by_push
+      resolved_by_push::BOOLEAN                             AS resolved_by_push
     FROM source
     WHERE rank_in_key = 1
 

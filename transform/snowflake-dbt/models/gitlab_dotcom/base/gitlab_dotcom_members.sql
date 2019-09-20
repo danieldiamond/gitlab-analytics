@@ -21,8 +21,8 @@ WITH source AS (
       invite_accepted_at::TIMESTAMP                  AS invite_accepted_at,
       requested_at::TIMESTAMP                        AS requested_at,
       expires_at::TIMESTAMP                          AS expires_at,
-      ldap::boolean                                  AS has_ldap,
-      override::boolean                              AS has_override
+      ldap::BOOLEAN                                  AS has_ldap,
+      override::BOOLEAN                              AS has_override
 
     FROM source
     WHERE rank_in_key = 1

@@ -17,7 +17,7 @@ WITH source AS (
       project_id::INTEGER              AS project_id,
       created_at::TIMESTAMP            AS project_auto_devops_created_at,
       updated_at::TIMESTAMP            AS project_auto_devops_updated_at,
-      enabled :: boolean                 AS has_auto_devops_enabled
+      enabled::BOOLEAN                 AS has_auto_devops_enabled
 
     FROM source
     WHERE rank_in_key = 1

@@ -28,7 +28,7 @@ WITH source AS (
       updated_at::TIMESTAMP                                     AS issue_updated_at,
       last_edited_at::TIMESTAMP                                 AS last_edited_at,
       closed_at::TIMESTAMP                                      AS issue_closed_at,
-      confidential::boolean                                     AS is_confidential,
+      confidential::BOOLEAN                                     AS is_confidential,
       title,
       description,
       state,
@@ -36,7 +36,7 @@ WITH source AS (
       due_date::DATE                                            AS due_date,
       lock_version::number                                      AS lock_version,
       time_estimate::number                                     AS time_estimate,
-      discussion_locked::boolean                                AS has_discussion_locked
+      discussion_locked::BOOLEAN                                AS has_discussion_locked
 
     FROM source
     WHERE rank_in_key = 1

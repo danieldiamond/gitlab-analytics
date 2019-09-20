@@ -22,7 +22,7 @@ WITH source AS (
     hosted_plan_id::INTEGER                       AS plan_id,
     max_seats_used::INTEGER                       AS max_seats_used,
     seats::INTEGER                                AS seats,
-    trial::boolean                                AS is_trial,
+    trial::BOOLEAN                                AS is_trial,
     created_at::TIMESTAMP                         AS gitlab_subscription_created_at,
     updated_at::TIMESTAMP                         AS gitlab_subscription_updated_at,
     "DBT_VALID_FROM"::TIMESTAMP                   AS valid_from,

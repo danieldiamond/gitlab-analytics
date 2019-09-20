@@ -19,7 +19,7 @@ WITH source AS (
       subscribable_id::INTEGER  AS subscribable_id,
       project_id::INTEGER       AS project_id,
       subscribable_type,
-      subscribed :: boolean       AS is_subscribed,
+      subscribed::BOOLEAN       AS is_subscribed,
       created_at::TIMESTAMP     AS subscription_created_at,
       updated_at::TIMESTAMP     AS subscription_updated_at
 
