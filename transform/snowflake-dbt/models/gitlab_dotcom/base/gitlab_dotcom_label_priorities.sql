@@ -18,8 +18,8 @@ WITH source AS (
       project_id::INTEGER                   AS project_id,
       label_id::INTEGER                     AS label_id,
       priority::INTEGER                     AS priority,
-      created_at :: timestamp                 AS label_priority_created_at,
-      updated_at :: timestamp                 AS label_priority_updated_at
+      created_at::TIMESTAMP                 AS label_priority_created_at,
+      updated_at::TIMESTAMP                 AS label_priority_updated_at
 
 
     FROM source

@@ -25,7 +25,7 @@ WITH source AS (
       build_artifacts_size::INTEGER                   AS build_artifacts_size,
       shared_runners_seconds::INTEGER                 AS shared_runners_seconds,
 
-      shared_runners_seconds_last_reset :: timestamp    AS last_update_started_at
+      shared_runners_seconds_last_reset::TIMESTAMP    AS last_update_started_at
 
 
 

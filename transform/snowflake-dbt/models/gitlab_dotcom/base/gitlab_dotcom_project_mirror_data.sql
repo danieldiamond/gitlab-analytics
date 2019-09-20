@@ -19,9 +19,9 @@ WITH source AS (
       id::INTEGER                                     AS project_mirror_data_id,
       project_id::INTEGER                             AS project_id,
       retry_count::INTEGER                            AS retry_count,
-      last_update_started_at :: timestamp               AS last_update_started_at,
-      last_update_scheduled_at :: timestamp             AS last_update_scheduled_at,
-      next_execution_timestamp :: timestamp             AS next_execution_timestamp
+      last_update_started_at::TIMESTAMP               AS last_update_started_at,
+      last_update_scheduled_at::TIMESTAMP             AS last_update_scheduled_at,
+      next_execution_timestamp::TIMESTAMP             AS next_execution_timestamp
 
 
 

@@ -24,13 +24,13 @@ WITH source AS (
       import_url                                                                    AS project_import_url,
       merge_requests_template                                                       AS project_merge_requests_template,
 
-      created_at :: timestamp                                                       AS project_created_at,
-      updated_at :: timestamp                                                       AS project_updated_at,
+      created_at::TIMESTAMP                                                       AS project_created_at,
+      updated_at::TIMESTAMP                                                       AS project_updated_at,
 
       creator_id :: number                                                          AS creator_id,
       namespace_id :: number                                                        AS namespace_id,
 
-      last_activity_at :: timestamp                                                 AS last_activity_at,
+      last_activity_at::TIMESTAMP                                                 AS last_activity_at,
 
       CASE
         WHEN visibility_level = '20' THEN 'public'
@@ -57,7 +57,7 @@ WITH source AS (
       pending_delete :: boolean                                                     AS pending_delete,
       public_builds :: boolean                                                      AS public_builds,
       last_repository_check_failed :: boolean                                       AS last_repository_check_failed,
-      last_repository_check_at :: timestamp                                         AS last_repository_check_at,
+      last_repository_check_at::TIMESTAMP                                         AS last_repository_check_at,
       container_registry_enabled :: boolean                                         AS container_registry_enabled,
       only_allow_merge_if_pipeline_succeeds :: boolean                              AS only_allow_merge_if_pipeline_succeeds,
       has_external_issue_tracker :: boolean                                         AS has_external_issue_tracker,
@@ -73,7 +73,7 @@ WITH source AS (
       IFF(auto_cancel_pending_pipelines :: int = 1, TRUE, FALSE)                    AS has_auto_canceling_pending_pipelines,
       service_desk_enabled :: boolean                                               AS service_desk_enabled,
       IFF(LOWER(delete_error) = 'nan', NULL, delete_error)                          AS delete_error,
-      last_repository_updated_at :: timestamp                                       AS last_repository_updated_at,
+      last_repository_updated_at::TIMESTAMP                                       AS last_repository_updated_at,
       storage_version::INTEGER                                                    AS storage_version,
       resolve_outdated_diff_discussions :: boolean                                  AS resolve_outdated_diff_discussions,
       disable_overriding_approvers_per_merge_request :: boolean                     AS disable_overriding_approvers_per_merge_request,

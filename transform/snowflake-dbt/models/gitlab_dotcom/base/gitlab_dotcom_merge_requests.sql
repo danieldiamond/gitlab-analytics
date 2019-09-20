@@ -39,9 +39,9 @@ WITH source AS (
       squash::boolean                                            AS does_squash,
       discussion_locked::boolean                                 AS is_discussion_locked,
       allow_maintainer_to_push::boolean                          AS does_allow_maintainer_to_push,
-      created_at::timestamp                                      AS merge_request_created_at,
-      updated_at::timestamp                                      AS merge_request_updated_at,
-      last_edited_at::timestamp                                  AS merge_request_last_edited_at
+      created_at::TIMESTAMP                                      AS merge_request_created_at,
+      updated_at::TIMESTAMP                                      AS merge_request_updated_at,
+      last_edited_at::TIMESTAMP                                  AS merge_request_last_edited_at
 
       --merge_params // hidden for privacy
 

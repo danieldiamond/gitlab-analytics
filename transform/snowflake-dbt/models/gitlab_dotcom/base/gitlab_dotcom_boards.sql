@@ -15,8 +15,8 @@ WITH source AS (
     SELECT
       id::INTEGER              AS board_id,
       project_id::INTEGER      AS project_id,
-      created_at :: timestamp    AS board_created_at,
-      updated_at :: timestamp    AS board_updated_at,
+      created_at::TIMESTAMP    AS board_created_at,
+      updated_at::TIMESTAMP    AS board_updated_at,
       milestone_id::INTEGER    AS milestone_id,
       group_id::INTEGER        AS group_id,
       weight::INTEGER          AS weight

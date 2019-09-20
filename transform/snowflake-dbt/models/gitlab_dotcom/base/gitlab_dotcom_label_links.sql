@@ -13,8 +13,8 @@ WITH source AS (
       label_id::INTEGER                              AS label_id,
       target_id::INTEGER                             AS target_id,
       target_type,
-      created_at :: timestamp                          AS label_link_created_at,
-      updated_at :: timestamp                          AS label_link_updated_at
+      created_at::TIMESTAMP                          AS label_link_created_at,
+      updated_at::TIMESTAMP                          AS label_link_updated_at
 
 
     FROM source

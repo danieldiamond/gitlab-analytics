@@ -16,7 +16,7 @@ WITH source AS (
       build_artifacts_size::INTEGER AS build_artifacts_size,
       storage_size::INTEGER         AS storage_size,
       packages_size::INTEGER        AS packages_size,
-      updated_at::timestamp         AS namespace_updated_at
+      updated_at::TIMESTAMP         AS namespace_updated_at
 
     FROM source
     WHERE rank_in_key = 1

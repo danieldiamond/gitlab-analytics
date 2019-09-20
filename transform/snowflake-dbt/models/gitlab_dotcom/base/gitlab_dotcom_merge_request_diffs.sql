@@ -25,8 +25,8 @@ WITH source AS (
       merge_request_id::INTEGER                   AS merge_request_id,
       real_size                                     AS merge_request_real_size,
       commits_count::INTEGER                      AS commits_count,
-      created_at :: timestamp                       AS merge_request_diff_created_at,
-      updated_at :: timestamp                       AS merge_request_diff_updated_at
+      created_at::TIMESTAMP                       AS merge_request_diff_created_at,
+      updated_at::TIMESTAMP                       AS merge_request_diff_updated_at
 
     FROM source
     WHERE rank_in_key = 1

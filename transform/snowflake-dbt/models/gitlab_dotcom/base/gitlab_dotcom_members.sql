@@ -16,11 +16,11 @@ WITH source AS (
       user_id::INTEGER                               AS user_id,
       notification_level::INTEGER                    AS notification_level,
       type                                           AS member_type,
-      created_at::timestamp                          AS invite_created_at,
+      created_at::TIMESTAMP                          AS invite_created_at,
       created_by_id::INTEGER                         AS created_by_id,
-      invite_accepted_at::timestamp                  AS invite_accepted_at,
-      requested_at::timestamp                        AS requested_at,
-      expires_at::timestamp                          AS expires_at,
+      invite_accepted_at::TIMESTAMP                  AS invite_accepted_at,
+      requested_at::TIMESTAMP                        AS requested_at,
+      expires_at::TIMESTAMP                          AS expires_at,
       ldap::boolean                                  AS has_ldap,
       override::boolean                              AS has_override
 

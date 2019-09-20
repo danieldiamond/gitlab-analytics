@@ -14,8 +14,8 @@ WITH source AS (
       entity_id::INTEGER     AS entity_id,
       entity_type ::varchar    AS entity_type,
       details :: varchar       AS audit_event_details,
-      created_at ::timestamp   AS audit_event_created_at,
-      updated_at ::timestamp   AS audit_event_updated_at
+      created_at::TIMESTAMP   AS audit_event_created_at,
+      updated_at::TIMESTAMP   AS audit_event_updated_at
 
     FROM source
     WHERE rank_in_key = 1

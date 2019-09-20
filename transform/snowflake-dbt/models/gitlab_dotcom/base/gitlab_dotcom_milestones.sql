@@ -21,8 +21,8 @@ WITH source AS (
       due_date::date                          AS due_date,
       state                                   AS milestone_status,
 
-      created_at :: timestamp                 AS milestone_created_at,
-      updated_at :: timestamp                 AS milestone_updated_at
+      created_at::TIMESTAMP                 AS milestone_created_at,
+      updated_at::TIMESTAMP                 AS milestone_updated_at
 
     FROM source
     WHERE rank_in_key = 1

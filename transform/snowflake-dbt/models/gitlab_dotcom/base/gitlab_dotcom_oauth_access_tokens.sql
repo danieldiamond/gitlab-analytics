@@ -14,8 +14,8 @@ WITH source AS (
       token::varchar              AS oauth_access_token,
       refresh_token::varchar      AS oauth_access_refresh_token,
       expires_in::INTEGER         AS expires_in_seconds,
-      revoked_at::timestamp       AS oauth_access_token_revoked_at,
-      created_at::timestamp       AS oauth_access_token_created_at,
+      revoked_at::TIMESTAMP       AS oauth_access_token_revoked_at,
+      created_at::TIMESTAMP       AS oauth_access_token_created_at,
       scopes::varchar             AS scopes
     FROM source
     WHERE rank_in_key = 1

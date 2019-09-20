@@ -24,9 +24,9 @@ WITH source AS (
       lock_version::INTEGER                         AS lock_version,
       start_date::date                              AS epic_start_date,
       end_date::date                                AS epic_end_date,
-      last_edited_at::timestamp                     AS epic_last_edited_at,
-      created_at::timestamp                         AS epic_created_at,
-      updated_at::timestamp                         AS epic_updated_at,
+      last_edited_at::TIMESTAMP                     AS epic_last_edited_at,
+      created_at::TIMESTAMP                         AS epic_created_at,
+      updated_at::TIMESTAMP                         AS epic_updated_at,
       title                                         AS epic_title,
       LENGTH(title)                                 AS epic_title_length,
       LENGTH(description)                           AS epic_description_length

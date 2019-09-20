@@ -17,7 +17,7 @@ WITH source AS (
       id::INTEGER                                      AS namespace_statistics_id,
       namespace_id::INTEGER                            AS namespace_id,
       shared_runners_seconds::INTEGER                  AS shared_runners_seconds,
-      shared_runners_seconds_last_reset :: timestamp     AS shared_runners_seconds_last_reset
+      shared_runners_seconds_last_reset::TIMESTAMP     AS shared_runners_seconds_last_reset
 
     FROM source
     WHERE rank_in_key = 1

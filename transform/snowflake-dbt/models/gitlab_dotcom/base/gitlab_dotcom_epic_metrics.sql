@@ -15,8 +15,8 @@ WITH source AS (
 
     SELECT
       epic_id::INTEGER                    AS epic_id,
-      created_at :: timestamp               AS epic_metrics_created_at,
-      updated_at :: timestamp               AS epic_metrics_updated_at
+      created_at::TIMESTAMP               AS epic_metrics_created_at,
+      updated_at::TIMESTAMP               AS epic_metrics_updated_at
 
     FROM source
     WHERE rank_in_key = 1

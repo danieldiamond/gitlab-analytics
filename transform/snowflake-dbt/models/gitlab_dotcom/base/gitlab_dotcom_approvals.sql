@@ -16,8 +16,8 @@ WITH source AS (
       id::INTEGER                     AS approval_id,
       merge_request_id::INTEGER       AS merge_request_id,
       user_id::INTEGER                AS user_id,
-      created_at :: timestamp           AS approval_created_at,
-      updated_at :: timestamp           AS approval_updated_at
+      created_at::TIMESTAMP           AS approval_created_at,
+      updated_at::TIMESTAMP           AS approval_updated_at
 
     FROM source
     WHERE rank_in_key = 1

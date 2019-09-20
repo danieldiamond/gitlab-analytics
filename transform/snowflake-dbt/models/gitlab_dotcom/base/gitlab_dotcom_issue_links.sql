@@ -16,8 +16,8 @@ WITH source AS (
       id::INTEGER                      AS issue_link_id,
       source_id::INTEGER               AS source_id,
       target_id::INTEGER               AS target_id,
-      created_at :: timestamp            AS issue_link_created_at,
-      updated_at :: timestamp            AS issue_link_updated_at
+      created_at::TIMESTAMP            AS issue_link_created_at,
+      updated_at::TIMESTAMP            AS issue_link_updated_at
 
     FROM source
     WHERE rank_in_key = 1

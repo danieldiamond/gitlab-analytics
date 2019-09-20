@@ -23,8 +23,8 @@ WITH source AS (
     max_seats_used::INTEGER                       AS max_seats_used,
     seats::INTEGER                                AS seats,
     trial::boolean                                AS is_trial,
-    created_at::timestamp                         AS gitlab_subscription_created_at,
-    updated_at::timestamp                         AS gitlab_subscription_updated_at,
+    created_at::TIMESTAMP                         AS gitlab_subscription_created_at,
+    updated_at::TIMESTAMP                         AS gitlab_subscription_updated_at,
     "DBT_VALID_FROM"::TIMESTAMP                   AS valid_from,
     "DBT_VALID_TO"::TIMESTAMP                     AS valid_to
   
