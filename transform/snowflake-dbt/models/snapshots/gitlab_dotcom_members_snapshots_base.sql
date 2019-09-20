@@ -6,9 +6,7 @@
 
 WITH source AS (
 
-	SELECT 
-    *, 
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS rank_in_key
+	SELECT *
   FROM {{ source('snapshots', 'gitlab_dotcom_members_snapshots') }}
 
 ), renamed AS (
