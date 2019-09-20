@@ -16,14 +16,14 @@ WITH source AS (
 
     SELECT
 
-      id::integer                                               AS issue_id,
-      iid::integer                                              AS issue_iid,
-      author_id::integer                                        AS author_id,
-      source.project_id::integer                                AS project_id,
-      milestone_id::integer                                     AS milestone_id,
-      updated_by_id::integer                                    AS updated_by_id,
-      last_edited_by_id::integer                                AS last_edited_by_id,
-      moved_to_id::integer                                      AS moved_to_id,
+      id::INTEGER                                               AS issue_id,
+      iid::INTEGER                                              AS issue_iid,
+      author_id::INTEGER                                        AS author_id,
+      source.project_id::INTEGER                                AS project_id,
+      milestone_id::INTEGER                                     AS milestone_id,
+      updated_by_id::INTEGER                                    AS updated_by_id,
+      last_edited_by_id::INTEGER                                AS last_edited_by_id,
+      moved_to_id::INTEGER                                      AS moved_to_id,
       created_at::timestamp                                     AS issue_created_at,
       updated_at::timestamp                                     AS issue_updated_at,
       last_edited_at::timestamp                                 AS last_edited_at,

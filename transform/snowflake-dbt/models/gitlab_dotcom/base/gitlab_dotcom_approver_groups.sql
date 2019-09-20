@@ -13,9 +13,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id :: integer                   AS approver_group_id,
+      id::INTEGER                   AS approver_group_id,
       target_type,
-      group_id :: integer             AS group_id,
+      group_id::INTEGER             AS group_id,
       created_at :: timestamp         AS approver_group_created_at,
       updated_at :: timestamp         AS approver_group_updated_at
 

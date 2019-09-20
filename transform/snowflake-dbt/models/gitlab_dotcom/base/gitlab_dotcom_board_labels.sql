@@ -13,9 +13,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id :: integer        AS board_label_relation_id,
-      board_id :: integer  AS board_id,
-      label_id :: integer  AS label_id
+      id::INTEGER        AS board_label_relation_id,
+      board_id::INTEGER  AS board_id,
+      label_id::INTEGER  AS label_id
 
     FROM source
     WHERE rank_in_key = 1

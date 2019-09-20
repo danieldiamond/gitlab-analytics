@@ -14,7 +14,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      epic_id :: integer                    AS epic_id,
+      epic_id::INTEGER                    AS epic_id,
       created_at :: timestamp               AS epic_metrics_created_at,
       updated_at :: timestamp               AS epic_metrics_updated_at
 

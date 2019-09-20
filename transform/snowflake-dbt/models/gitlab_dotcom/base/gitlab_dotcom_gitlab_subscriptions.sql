@@ -14,14 +14,14 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id :: integer                                   AS gitlab_subscription_id,
+      id::INTEGER                                   AS gitlab_subscription_id,
       start_date :: date                              AS gitlab_subscription_start_date,
       end_date :: date                                AS gitlab_subscription_end_date,
       trial_ends_on :: date                           AS gitlab_subscription_trial_ends_on,
-      namespace_id :: integer                         AS namespace_id,
-      hosted_plan_id :: integer                       AS plan_id,
-      max_seats_used :: integer                       AS max_seats_used,
-      seats :: integer                                AS seats,
+      namespace_id::INTEGER                         AS namespace_id,
+      hosted_plan_id::INTEGER                       AS plan_id,
+      max_seats_used::INTEGER                       AS max_seats_used,
+      seats::INTEGER                                AS seats,
       trial :: boolean                                AS is_trial,
       created_at :: timestamp                         AS gitlab_subscription_created_at,
       updated_at :: timestamp                         AS gitlab_subscription_updated_at

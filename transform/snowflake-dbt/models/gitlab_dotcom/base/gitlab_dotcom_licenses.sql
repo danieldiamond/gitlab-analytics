@@ -14,7 +14,7 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                                 AS license_id,
+      id::INTEGER                                 AS license_id,
       created_at :: timestamp                       AS license_created_at,
       updated_at :: timestamp                       AS license_updated_at
 

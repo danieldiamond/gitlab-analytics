@@ -13,10 +13,10 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id :: integer                       AS epic_issues_relation_id,
-      epic_id :: integer                  AS epic_id,
-      issue_id :: integer                 AS issue_id,
-      relative_position :: integer        AS epic_issue_relative_position
+      id::INTEGER                       AS epic_issues_relation_id,
+      epic_id::INTEGER                  AS epic_id,
+      issue_id::INTEGER                 AS issue_id,
+      relative_position::INTEGER        AS epic_issue_relative_position
 
     FROM source
     WHERE rank_in_key = 1

@@ -14,8 +14,8 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                      AS project_import_relation_id,
-      project_id :: integer              AS project_id
+      id::INTEGER                      AS project_import_relation_id,
+      project_id::INTEGER              AS project_id
 
     FROM source
     WHERE rank_in_key = 1

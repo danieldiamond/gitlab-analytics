@@ -14,9 +14,9 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                                      AS namespace_statistics_id,
-      namespace_id :: integer                            AS namespace_id,
-      shared_runners_seconds :: integer                  AS shared_runners_seconds,
+      id::INTEGER                                      AS namespace_statistics_id,
+      namespace_id::INTEGER                            AS namespace_id,
+      shared_runners_seconds::INTEGER                  AS shared_runners_seconds,
       shared_runners_seconds_last_reset :: timestamp     AS shared_runners_seconds_last_reset
 
     FROM source

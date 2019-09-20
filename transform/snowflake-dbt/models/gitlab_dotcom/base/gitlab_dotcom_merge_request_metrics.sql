@@ -15,8 +15,8 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                                              AS merge_request_metric_id,
-      merge_request_id :: integer                                AS merge_request_id,
+      id::INTEGER                                              AS merge_request_metric_id,
+      merge_request_id::INTEGER                                AS merge_request_id,
 
       latest_build_started_at :: timestamp                       AS latest_build_started_at,
       latest_build_finished_at :: timestamp                      AS latest_build_finished_at,
@@ -26,9 +26,9 @@ WITH source AS (
       updated_at :: timestamp                                    AS merge_request_metric_updated_at,
       latest_closed_at :: timestamp                              AS latest_closed_at,
 
-      pipeline_id :: integer                                     AS pipeline_id,
-      merged_by_id :: integer                                    AS merged_by_id,
-      latest_closed_by_id :: integer                             AS latest_closed_by_id
+      pipeline_id::INTEGER                                     AS pipeline_id,
+      merged_by_id::INTEGER                                    AS merged_by_id,
+      latest_closed_by_id::INTEGER                             AS latest_closed_by_id
 
     FROM source
     WHERE rank_in_key = 1

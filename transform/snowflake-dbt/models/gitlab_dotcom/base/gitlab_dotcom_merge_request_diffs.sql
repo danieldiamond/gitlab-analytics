@@ -17,14 +17,14 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                                 AS merge_request_diff_id,
+      id::INTEGER                                 AS merge_request_diff_id,
       base_commit_sha,
       head_commit_sha,
       start_commit_sha,
       state                                         AS merge_request_diff_status,
-      merge_request_id :: integer                   AS merge_request_id,
+      merge_request_id::INTEGER                   AS merge_request_id,
       real_size                                     AS merge_request_real_size,
-      commits_count :: integer                      AS commits_count,
+      commits_count::INTEGER                      AS commits_count,
       created_at :: timestamp                       AS merge_request_diff_created_at,
       updated_at :: timestamp                       AS merge_request_diff_updated_at
 

@@ -13,9 +13,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id :: integer                      AS issue_link_id,
-      source_id :: integer               AS source_id,
-      target_id :: integer               AS target_id,
+      id::INTEGER                      AS issue_link_id,
+      source_id::INTEGER               AS source_id,
+      target_id::INTEGER               AS target_id,
       created_at :: timestamp            AS issue_link_created_at,
       updated_at :: timestamp            AS issue_link_updated_at
 

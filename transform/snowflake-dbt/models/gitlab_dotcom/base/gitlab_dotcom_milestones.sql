@@ -14,9 +14,9 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                           AS milestone_id,
-      project_id::integer                     AS project_id,
-      group_id::integer                       AS group_id,
+      id::INTEGER                           AS milestone_id,
+      project_id::INTEGER                     AS project_id,
+      group_id::INTEGER                       AS group_id,
       start_date::date                        AS start_date,
       due_date::date                          AS due_date,
       state                                   AS milestone_status,

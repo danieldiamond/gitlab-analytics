@@ -14,8 +14,8 @@ WITH source AS (
 
     SELECT
       md5(user_id || issue_id) AS user_issue_relation_id,
-      user_id :: integer       AS user_id,
-      issue_id :: integer      AS issue_id
+      user_id::INTEGER       AS user_id,
+      issue_id::INTEGER      AS issue_id
 
     FROM source
 

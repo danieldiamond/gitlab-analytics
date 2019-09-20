@@ -14,7 +14,7 @@ WITH source AS (
 
     SELECT
 
-      project_id :: integer              AS project_id,
+      project_id::INTEGER              AS project_id,
       created_at :: timestamp            AS project_auto_devops_created_at,
       updated_at :: timestamp            AS project_auto_devops_updated_at,
       enabled :: boolean                 AS has_auto_devops_enabled

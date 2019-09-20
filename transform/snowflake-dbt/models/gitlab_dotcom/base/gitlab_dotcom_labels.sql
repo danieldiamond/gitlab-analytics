@@ -15,11 +15,11 @@ renamed AS (
 
     SELECT
 
-      id :: integer                                AS label_id,
+      id::INTEGER                                AS label_id,
       title                                        AS label_title,
       color,
-      source.project_id :: integer                 AS project_id,
-      group_id :: integer                          AS group_id,
+      source.project_id::INTEGER                 AS project_id,
+      group_id::INTEGER                          AS group_id,
       template,
       type                                         AS label_type,
       created_at :: timestamp                      AS label_created_at,

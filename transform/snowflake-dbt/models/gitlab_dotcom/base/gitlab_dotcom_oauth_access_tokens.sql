@@ -8,12 +8,12 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::integer                 AS oauth_access_token_id,
-      resource_owner_id::integer  AS resource_owner_id,
-      application_id::integer     AS application_id,
+      id::INTEGER                 AS oauth_access_token_id,
+      resource_owner_id::INTEGER  AS resource_owner_id,
+      application_id::INTEGER     AS application_id,
       token::varchar              AS oauth_access_token,
       refresh_token::varchar      AS oauth_access_refresh_token,
-      expires_in::integer         AS expires_in_seconds,
+      expires_in::INTEGER         AS expires_in_seconds,
       revoked_at::timestamp       AS oauth_access_token_revoked_at,
       created_at::timestamp       AS oauth_access_token_created_at,
       scopes::varchar             AS scopes

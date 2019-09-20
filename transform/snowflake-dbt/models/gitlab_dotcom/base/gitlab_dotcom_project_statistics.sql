@@ -15,15 +15,15 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                                     AS project_statistics_id,
-      project_id :: integer                             AS project_id,
-      namespace_id :: integer                           AS namespace_id,
-      commit_count :: integer                           AS commit_count,
-      storage_size :: integer                           AS storage_size,
-      repository_size :: integer                        AS repository_size,
-      lfs_objects_size :: integer                       AS lfs_objects_size,
-      build_artifacts_size :: integer                   AS build_artifacts_size,
-      shared_runners_seconds :: integer                 AS shared_runners_seconds,
+      id::INTEGER                                     AS project_statistics_id,
+      project_id::INTEGER                             AS project_id,
+      namespace_id::INTEGER                           AS namespace_id,
+      commit_count::INTEGER                           AS commit_count,
+      storage_size::INTEGER                           AS storage_size,
+      repository_size::INTEGER                        AS repository_size,
+      lfs_objects_size::INTEGER                       AS lfs_objects_size,
+      build_artifacts_size::INTEGER                   AS build_artifacts_size,
+      shared_runners_seconds::INTEGER                 AS shared_runners_seconds,
 
       shared_runners_seconds_last_reset :: timestamp    AS last_update_started_at
 

@@ -14,11 +14,11 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                                     AS notification_settings_id,
-      user_id :: integer                                AS user_id,
-      source_id :: integer                              AS source_id,
+      id::INTEGER                                     AS notification_settings_id,
+      user_id::INTEGER                                AS user_id,
+      source_id::INTEGER                              AS source_id,
       source_type                                       AS source_type,
-      level :: integer                                  AS settings_level,
+      level::INTEGER                                  AS settings_level,
       created_at :: timestamp                           AS notification_settings_created_at,
       updated_at :: timestamp                           AS notification_settings_updated_at,
       new_note :: boolean                               AS has_new_note_enabled,

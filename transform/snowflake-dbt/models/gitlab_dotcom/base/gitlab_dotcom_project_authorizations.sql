@@ -16,10 +16,10 @@ WITH source AS (
 
     SELECT
 
-      md5(user_id :: integer || '-' || project_id :: integer || '-' || access_level :: integer) AS user_project_access_relation_id, -- without the extra '-' two rows result in the same hash
-      user_id :: integer                                                                        AS user_id,
-      project_id :: integer                                                                     AS project_id,
-      access_level :: integer                                                                   AS access_level
+      md5(user_id::INTEGER || '-' || project_id::INTEGER || '-' || access_level::INTEGER) AS user_project_access_relation_id, -- without the extra '-' two rows result in the same hash
+      user_id::INTEGER                                                                        AS user_id,
+      project_id::INTEGER                                                                     AS project_id,
+      access_level::INTEGER                                                                   AS access_level
 
     FROM source
 

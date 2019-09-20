@@ -14,8 +14,8 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                                               AS issue_metric_id,
-      issue_id :: integer                                         AS issue_id,
+      id::INTEGER                                               AS issue_metric_id,
+      issue_id::INTEGER                                         AS issue_id,
       first_mentioned_in_commit_at::date                          AS first_mentioned_in_commit_at,
       first_associated_with_milestone_at::date                    AS first_associated_with_milestone_at,
       first_added_to_board_at::date                               AS first_added_to_board_at,

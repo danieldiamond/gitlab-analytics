@@ -14,10 +14,10 @@ WITH source AS (
 
     SELECT
 
-      id :: integer               AS subscription_id,
-      user_id :: integer          AS user_id,
-      subscribable_id :: integer  AS subscribable_id,
-      project_id :: integer       AS project_id,
+      id::INTEGER               AS subscription_id,
+      user_id::INTEGER          AS user_id,
+      subscribable_id::INTEGER  AS subscribable_id,
+      project_id::INTEGER       AS project_id,
       subscribable_type,
       subscribed :: boolean       AS is_subscribed,
       created_at :: timestamp     AS subscription_created_at,

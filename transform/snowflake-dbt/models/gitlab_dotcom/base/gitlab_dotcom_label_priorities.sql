@@ -14,10 +14,10 @@ WITH source AS (
 
     SELECT
 
-      id :: integer                           AS label_priority_id,
-      project_id :: integer                   AS project_id,
-      label_id :: integer                     AS label_id,
-      priority :: integer                     AS priority,
+      id::INTEGER                           AS label_priority_id,
+      project_id::INTEGER                   AS project_id,
+      label_id::INTEGER                     AS label_id,
+      priority::INTEGER                     AS priority,
       created_at :: timestamp                 AS label_priority_created_at,
       updated_at :: timestamp                 AS label_priority_updated_at
 

@@ -13,9 +13,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id :: integer                     AS approval_id,
-      merge_request_id :: integer       AS merge_request_id,
-      user_id :: integer                AS user_id,
+      id::INTEGER                     AS approval_id,
+      merge_request_id::INTEGER       AS merge_request_id,
+      user_id::INTEGER                AS user_id,
       created_at :: timestamp           AS approval_created_at,
       updated_at :: timestamp           AS approval_updated_at
 

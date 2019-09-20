@@ -13,13 +13,13 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id :: integer              AS board_id,
-      project_id :: integer      AS project_id,
+      id::INTEGER              AS board_id,
+      project_id::INTEGER      AS project_id,
       created_at :: timestamp    AS board_created_at,
       updated_at :: timestamp    AS board_updated_at,
-      milestone_id :: integer    AS milestone_id,
-      group_id :: integer        AS group_id,
-      weight :: integer          AS weight
+      milestone_id::INTEGER    AS milestone_id,
+      group_id::INTEGER        AS group_id,
+      weight::INTEGER          AS weight
 
     FROM source
     WHERE rank_in_key = 1
