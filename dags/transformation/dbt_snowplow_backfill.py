@@ -82,8 +82,8 @@ dbt_snowplow_combined_cmd = f"""
 dbt_snowplow_combined = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
-    task_id=f"dbt-snowplow-snowplow-combined",
-    name=f"dbt-snowplow-snowplow-combined",
+    task_id=f"dbt-snowplow-combined",
+    name=f"dbt-snowplow-combined",
     trigger_rule="all_success",
     secrets=[
         SNOWFLAKE_ACCOUNT,
