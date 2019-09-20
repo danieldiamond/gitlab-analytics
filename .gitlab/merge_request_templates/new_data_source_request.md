@@ -1,7 +1,7 @@
 ## Request for new data source in Snowflake/Periscope Checklist
 
 <!--
-Please complete all items. Ask questions in #data
+Please complete all items. Ask questions in the #data slack channel
 --->
 
 **Original Issue Link**:
