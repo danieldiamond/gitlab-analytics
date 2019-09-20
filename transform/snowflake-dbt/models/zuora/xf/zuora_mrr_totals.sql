@@ -26,7 +26,7 @@ WITH base_mrr AS (
           mrr,
           'Trueup'        AS product_category,
           charge_name     AS rate_plan_name,
-          CASE WHEN rate_plan_name ilike '%Support%' THEN 'Support Only'
+          CASE WHEN lower(rate_plan_name) like '%support%' THEN 'Support Only'
             ELSE 'Full Service'
           END             AS service_type,
           null            AS unit_of_measure,
