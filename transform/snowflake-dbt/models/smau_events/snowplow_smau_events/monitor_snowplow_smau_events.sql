@@ -32,7 +32,7 @@ WITH snowplow_page_views AS (
 
 , environments_viewed AS (
 
-  SELECT
+  SELECT DISTINCT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start)   AS event_date,
@@ -41,14 +41,14 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/environments'
+  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/environments$'
     AND page_url_path NOT IN ('/help/ci/environments')
 
 )
 
 , error_tracking_viewed AS (
 
-  SELECT
+  SELECT DISTINCT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start)      AS event_date,
@@ -63,7 +63,7 @@ WITH snowplow_page_views AS (
 
 , logging_viewed AS (
 
-  SELECT
+  SELECT DISTINCT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start)   AS event_date,
@@ -78,7 +78,7 @@ WITH snowplow_page_views AS (
 
 , metrics_viewed AS (
 
-  SELECT
+  SELECT DISTINCT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start)   AS event_date,
@@ -93,7 +93,7 @@ WITH snowplow_page_views AS (
 
 , operations_settings_viewed AS (
 
-  SELECT
+  SELECT DISTINCT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start)   AS event_date,
@@ -108,7 +108,7 @@ WITH snowplow_page_views AS (
 
 , prometheus_edited AS (
 
-  SELECT
+  SELECT DISTINCT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start)   AS event_date,
@@ -117,13 +117,13 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/metrics'
+  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/services\/prometheus\/edit'
 
 )
 
 , tracing_viewed AS (
 
-  SELECT
+  SELECT DISTINCT
     user_snowplow_domain_id,
     user_custom_id,
     TO_DATE(page_view_start)   AS event_date,
