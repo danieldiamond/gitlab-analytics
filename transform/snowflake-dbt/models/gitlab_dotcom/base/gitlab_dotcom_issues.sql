@@ -33,7 +33,7 @@ WITH source AS (
       description,
       state,
       weight::number                                            AS weight,
-      due_date::date                                            AS due_date,
+      due_date::DATE                                            AS due_date,
       lock_version::number                                      AS lock_version,
       time_estimate::number                                     AS time_estimate,
       discussion_locked::boolean                                AS has_discussion_locked

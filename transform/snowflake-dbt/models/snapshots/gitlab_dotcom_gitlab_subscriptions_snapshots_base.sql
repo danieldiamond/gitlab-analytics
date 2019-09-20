@@ -15,9 +15,9 @@ WITH source AS (
   SELECT
     dbt_scd_id::VARCHAR                           AS gitlab_subscription_snapshot_id,
     id::INTEGER                                   AS gitlab_subscription_id,
-    start_date::date                              AS gitlab_subscription_start_date,
-    end_date::date                                AS gitlab_subscription_end_date,
-    trial_ends_on::date                           AS gitlab_subscription_trial_ends_on,
+    start_date::DATE                              AS gitlab_subscription_start_date,
+    end_date::DATE                                AS gitlab_subscription_end_date,
+    trial_ends_on::DATE                           AS gitlab_subscription_trial_ends_on,
     namespace_id::INTEGER                         AS namespace_id,
     hosted_plan_id::INTEGER                       AS plan_id,
     max_seats_used::INTEGER                       AS max_seats_used,
