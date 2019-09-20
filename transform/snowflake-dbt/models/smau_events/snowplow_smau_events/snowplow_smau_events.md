@@ -26,8 +26,14 @@ The snowplow events currently included for the Manage Stage are:
 
 This model provides a summary of relevant actions for the Monitor Stage coming from snowplow.
 
-The snowplow events currently included for the Manage Stage are:
-* TODO
+The snowplow events currently included for the Monitor Stage are:
+* environments_viewed
+* error_tracking_viewed
+* logging_viewed
+* metrics_viewed
+* operations_settings_viewed
+* prometheus_edited
+* tracing_viewed
 
 {% enddocs %}
 
