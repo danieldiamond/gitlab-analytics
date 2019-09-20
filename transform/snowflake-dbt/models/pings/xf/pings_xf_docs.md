@@ -1,5 +1,17 @@
 {% docs pings_usage_data_monthly_change_by_stage %}
 
+GitLab has been sending a weekly payload containing usage data from self-managed instances which haven't opted out. This weekly payload have changed structure over time. Some usage pings (understand metrics) have been added and we kept on switching the structure (sometimes nesting some JSONs and some other time un-nesting them).
+
+This model creates a comprehensive list of all pings that have been used with 2 different columns:
+
+* `ping_name`: the raw extracted path  in the JSON. In example A that would be `EXAMPLE`. In example B, `EXAMPLE`
+* `full_ping_name`: cleaned `ping_name`. Example A and example B will have the same `full_ping_name`. We will use the `full_ping_name` to create downstream clean models
+
+
+{% enddocs %}
+
+{% docs pings_usage_data_monthly_change_by_stage %}
+
 Monthly changes for usage statistics based on the cumulative monthly ping data, summarized into stages as per [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
 
 The following macros are used:
@@ -17,4 +29,16 @@ The following macros are used:
 
 * monthly_change - Using the change suffix, calculating differences for each consecutive usage ping by uuid
 * monthly_is_used - Adding the is_used suffix, keep the counts that show the given feature has been enabled or not
+{% enddocs %}
+
+{% docs pings_usage_data_unpacked %}
+
+The model unpacks the pings usage data stored in json column `stats_used` in model `pings_usage_data`. To do so, we perform the following actions:
+
+* flatten the `stats_used` json. The flattening explodes key-value pairs in the JSON into multiple rows. From each pair, we create 3 columns:
+  * ping_name: The key of the key-value pair. In the example below, for the first pair the key is . In our model this is the name of the metrics we calculate
+  * full_ping_name: it replicates what is done in `pings_list` model. It takes the key and replaces the `.` to `_`. 
+  * ping_value: the value of the key-value pair. In the example, it is . In our model this is the value of the metrics we calculate 
+* pivot the CTE created above. The `pings_list`
+
 {% enddocs %}
