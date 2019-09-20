@@ -1,6 +1,6 @@
 -- depends_on: {{ ref('engineering_productivity_metrics_projects_to_include') }}
 
-{% set fields_to_mASk = ['title', 'description'] %}
+{% set fields_to_mask = ['title', 'description'] %}
 
 
 with issues AS (
@@ -65,7 +65,7 @@ joined AS (
            projects.namespace_id,
            visibility_level,
 
-           {% for field in fields_to_mASk %}
+           {% for field in fields_to_mask %}
            CASE
              WHEN is_confidential = TRUE AND internal_namespaces.namespace_id IS NULL THEN 'confidential - masked'
              WHEN visibility_level != 'public' AND internal_namespaces.namespace_id IS NULL THEN 'private/internal - masked'
