@@ -82,7 +82,7 @@ WITH epic_issues AS (
     epics.epic_title
 
   FROM gitlab_dotcom_notes_linked_to_sfdc_account_id
-  JOIN issues
+  INNER JOIN issues
     ON gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_id = issues.issue_id
   LEFT JOIN projects
     ON issues.project_id = projects.project_id
