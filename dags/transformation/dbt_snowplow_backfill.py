@@ -5,7 +5,12 @@ from datetime import datetime, timedelta, date
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, gitlab_defaults, gitlab_pod_env_vars
+from airflow_utils import (
+    slack_failed_task,
+    gitlab_defaults,
+    gitlab_pod_env_vars,
+    partitions,
+)
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
 
@@ -31,33 +36,6 @@ dag = DAG("dbt_snowplow_backfill", default_args=default_args, schedule_interval=
 
 # Set the git command for the containers
 git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1"
-
-
-def partitions(from_date, to_date, partition):
-    """
-    A list of partitions to build.
-    """
-    PARTITIONS = {
-        "month": lambda x: {
-            "year": x.strftime("%Y"),
-            "month": x.strftime("%m"),
-            "part": x.strftime("%Y_%m"),
-        }
-    }
-
-    delta = to_date - from_date
-    all_parts = [
-        PARTITIONS[partition](from_date + timedelta(days=i))
-        for i in range(delta.days + 1)
-    ]
-
-    seen = set()
-    parts = []
-    for p in all_parts:
-        if p["part"] not in seen:
-            seen.add(p["part"])
-            parts.append({k: v for k, v in p.items()})
-    return parts
 
 
 def generate_dbt_command(vars_dict):

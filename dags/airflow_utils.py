@@ -1,7 +1,42 @@
 """ This file contains common operators/functions to be used across multiple DAGs """
 import os
+import json
+from datetime import datetime, timedelta, date
 
 from airflow.operators.slack_operator import SlackAPIPostOperator
+
+
+def split_date_parts(day: date, partition: str) -> List[dict]:
+
+    if partition == "month":
+        split_dict = {
+            "year": day.strftime("%Y"),
+            "month": day.strftime("%m"),
+            "part": day.strftime("%Y_%m"),
+        }
+
+    return split_dict
+
+
+def partitions(from_date: date, to_date: date, partition: str) -> List[dict]:
+    """
+    A list of partitions to build.
+    """
+
+    delta = to_date - from_date
+    all_parts = [
+        split_date_parts((from_date + timedelta(days=i)), partition)
+        for i in range(delta.days + 1)
+    ]
+
+    seen = set()
+    parts = []
+    # loops through every day and pulls out unique set of date parts
+    for p in all_parts:
+        if p["part"] not in seen:
+            seen.add(p["part"])
+            parts.append({k: v for k, v in p.items()})
+    return parts
 
 
 def slack_failed_task(context):
