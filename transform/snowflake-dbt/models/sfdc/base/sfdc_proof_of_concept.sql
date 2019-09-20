@@ -51,3 +51,6 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+WHERE poc_id NOT IN (
+  'a5v4M000001DZWfQAO' -- https://gitlab.com/gitlab-data/analytics/issues/2516
+)
