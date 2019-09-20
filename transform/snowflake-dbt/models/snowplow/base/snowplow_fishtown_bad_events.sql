@@ -1,7 +1,10 @@
+{% set year_value = var('year', run_started_at.strftime('%Y')) %}
+{% set month_value = var('month', run_started_at.strftime('%m')) %}
+
 {{config({
-    "materialized":"incremental",
+    "materialized":"table",
     "unique_key":"bad_event_surrogate",
-    "schema":"staging"
+    "schema":current_date_schema('snowplow')
   })
 }}
 
@@ -10,10 +13,8 @@ WITH base as (
     SELECT *
     FROM {{ source('fishtown_snowplow', 'bad_events') }}
     WHERE length(JSONTEXT['errors']) > 0
-
-    {%- if is_incremental() %}
-      AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
-    {% endif -%}
+      AND date_part(month, JSONTEXT['failure_tstamp']::timestamp) = '{{ month_value }}'
+      AND date_part(year, JSONTEXT['failure_tstamp']::timestamp) = '{{ year_value }}'
 
 ), renamed AS (
 

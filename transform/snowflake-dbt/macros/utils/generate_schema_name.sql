@@ -9,7 +9,7 @@
             or
         (target.name in ('prod','docs','ci') and custom_schema_name.lower() == default_schema.lower())
     -%}
-        {{ default_schema.lower() }}
+        {{ default_schema.lower() | trim }}
 
     {%- elif custom_schema_name in ('analytics','meta','sensitive','staging') -%}
 
