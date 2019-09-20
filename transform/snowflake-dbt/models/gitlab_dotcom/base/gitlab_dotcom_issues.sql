@@ -32,10 +32,10 @@ WITH source AS (
       title,
       description,
       state,
-      weight::number                                            AS weight,
+      weight::NUMBER                                            AS weight,
       due_date::DATE                                            AS due_date,
-      lock_version::number                                      AS lock_version,
-      time_estimate::number                                     AS time_estimate,
+      lock_version::NUMBER                                      AS lock_version,
+      time_estimate::NUMBER                                     AS time_estimate,
       discussion_locked::BOOLEAN                                AS has_discussion_locked
 
     FROM source
