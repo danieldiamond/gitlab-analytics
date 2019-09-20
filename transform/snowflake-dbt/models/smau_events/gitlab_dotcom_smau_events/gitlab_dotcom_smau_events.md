@@ -9,3 +9,16 @@ From gitlab_dotcom database, at the moment we track the following events:
 * open a merge request 
 
 {% enddocs %}
+
+
+{% docs manage_gitlab_dotcom_smau_events %}
+
+This model provides a summary of relevant actions for the Manage Stage coming from gitlab_dotcom database.
+
+We currently include track the following events:
+
+* Project Creation
+* User Creation
+
+{% enddocs %}
+

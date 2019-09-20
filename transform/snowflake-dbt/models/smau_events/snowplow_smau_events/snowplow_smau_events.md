@@ -6,6 +6,22 @@ For more documentation on which event is tracked by each data source for this st
  
 {% enddocs %}
 
+
+{% docs manage_snowplow_smau_events %}
+
+This model provides a summary of relevant actions for the Manage Stage coming from snowplow.
+
+The snowplow events currently included for the Manage Stage are:
+* audit_events_viewed
+* cycle_analytics_viewed
+* insights_viewed
+* group_analytics_viewed
+* group_created
+* user_authenticate
+ 
+{% enddocs %}
+
+
 {% docs plan_snowplow_smau_events %}
 
 This model provides a summary of relevant activation events for Plan Stage coming from snowplow frontend events (pageviews and events). A summary of all activation events is at the moment defined in this [issue](https://gitlab.com/gitlab-org/telemetry/issues/48).
