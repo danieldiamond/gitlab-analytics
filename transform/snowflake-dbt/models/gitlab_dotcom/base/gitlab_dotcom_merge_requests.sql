@@ -16,7 +16,7 @@ WITH source AS (
 
       id::INTEGER                                                AS merge_request_id,
       iid::INTEGER                                               AS merge_request_iid,
-      title::varchar                                             AS merge_request_title,
+      title::VARCHAR                                             AS merge_request_title,
 
       IFF(lower(target_branch) = 'master', TRUE, FALSE)          AS is_merge_to_master,
       IFF(lower(merge_error) = 'nan', NULL, merge_error)         AS merge_error,

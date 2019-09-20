@@ -15,12 +15,12 @@ WITH source AS (
     SELECT
 
       id::INTEGER                                                                 AS project_id,
-      description :: varchar                                                        AS project_description,
-      import_source :: varchar                                                      AS project_import_source,
-      issues_template :: varchar                                                    AS project_issues_template,
+      description::VARCHAR                                                        AS project_description,
+      import_source::VARCHAR                                                      AS project_import_source,
+      issues_template::VARCHAR                                                    AS project_issues_template,
       build_coverage_regex                                                          AS project_build_coverage_regex,      
-      name :: varchar                                                               AS project_name,
-      path :: varchar                                                               AS project_path,
+      name::VARCHAR                                                               AS project_name,
+      path::VARCHAR                                                               AS project_path,
       import_url                                                                    AS project_import_url,
       merge_requests_template                                                       AS project_merge_requests_template,
 

@@ -13,8 +13,8 @@ with source AS (
 ), renamed AS (
 
     SELECT  id::INTEGER                                                   AS namespace_id,
-            name :: varchar                                                 AS namespace_name,
-            path :: varchar                                                 AS namespace_path,
+            name::VARCHAR                                                 AS namespace_name,
+            path::VARCHAR                                                 AS namespace_path,
             owner_id::INTEGER                                             AS owner_id,
             type                                                            AS namespace_type,
             IFF(avatar IS NULL, FALSE, TRUE)                                AS has_avatar,
