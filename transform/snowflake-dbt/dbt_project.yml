@@ -25,7 +25,7 @@ on-run-start:
 
 on-run-end:
     - "{{ dbt_logging_start('on run end hooks') }}"
-    - "{{grant_usage_to_schemas(schema_name, rolename)}}"
+    - "{{grant_usage_to_schemas(schema_name)}}"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
 
 seeds:
@@ -55,9 +55,8 @@ models:
         - "grant select on {{this}} to role reporter"
 
     snowplow:
-      schema: analytics
+      schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
       tags: ["product"]
-      post-hook: "grant select on {{this}} to role reporter"
       vars:
         'snowplow:use_fivetran_interface': false
         'snowplow:events': "{{ref('snowplow_unnested_events')}}"
@@ -152,6 +151,10 @@ models:
         enabled: true
         xf:
           materialized: table
+
+      snowplow_combined:
+        tags: ["product"]
+        enabled: true
 
       sfdc:
         xf:

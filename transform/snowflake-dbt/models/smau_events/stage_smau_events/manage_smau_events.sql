@@ -6,7 +6,7 @@ WITH manage_snowplow_smau_events AS (
     event_date,
     event_type,
     {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
-                              AS sk_id,
+                              AS event_surrogate_key,
     'snowplow_frontend'       AS source_type
 
   FROM {{ ref('manage_snowplow_smau_events')}}
@@ -20,7 +20,7 @@ WITH manage_snowplow_smau_events AS (
     user_id::INTEGER   AS gitlab_user_id,
     event_date,
     event_type,
-    sk_id,
+    event_surrogate_key,
     'gitlab_backend'   AS source_type
 
   FROM {{ ref('manage_gitlab_dotcom_smau_events')}}
@@ -29,21 +29,14 @@ WITH manage_snowplow_smau_events AS (
 
 , unioned AS (
 
-  (
-
     SELECT *
     FROM manage_snowplow_smau_events
 
-  )
-
-  UNION
-
-  (
+    UNION
 
     SELECT *
     FROM manage_gitlab_dotcom_smau_events
 
-  )
 )
 
 SELECT *

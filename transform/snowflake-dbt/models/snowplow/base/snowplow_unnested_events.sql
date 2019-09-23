@@ -1,27 +1,19 @@
-{{
-  config({
-    "materialized": "incremental",
-    "unique_key": "event_id"
+{{config({
+    "materialized":"table",
+    "unique_key":"base64_event",
+    "schema":current_date_schema('snowplow')
   })
 }}
 
-WITH gitlab as (
-
-    SELECT *
-    FROM {{ ref('snowplow_gitlab_events') }}
-    {% if is_incremental() %}
-        WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
-    {% endif %}
-
-),
-
-fishtown as (
+WITH fishtown as (
 
     SELECT *
     FROM {{ ref('snowplow_fishtown_unnested_events') }}
-    {% if is_incremental() %}
-       WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
-    {% endif %}
+
+), gitlab as (
+
+    SELECT *
+    FROM {{ ref('snowplow_gitlab_events') }}
 
 ),
 

@@ -22,7 +22,7 @@ WITH snowplow_page_views AS (
     page_url_path,
     page_view_id,
     referer_url_path
-  FROM {{ ref('snowplow_page_views')}}
+  FROM {{ ref('snowplow_page_views_all')}}
   WHERE TRUE
     AND app_id = 'gitlab'
   {% if is_incremental() %}
@@ -124,14 +124,11 @@ WITH snowplow_page_views AS (
 , unioned AS (
   {% for event_cte in event_ctes %}
 
-    (
-      SELECT
-        *
-      FROM {{ event_cte }}
-    )
+    SELECT *
+    FROM {{ event_cte }}
 
-    {%- if not loop.last -%}
-        UNION
+    {%- if not loop.last %}
+      UNION
     {%- endif %}
 
   {% endfor -%}

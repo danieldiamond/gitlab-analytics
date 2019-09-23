@@ -26,7 +26,7 @@ WITH snowplow_page_views AS (
     page_view_start,
     page_url_path,
     page_view_id
-  FROM {{ ref('snowplow_page_views')}}
+  FROM {{ ref('snowplow_page_views_all')}}
   WHERE page_view_start >= '2019-01-01'
   {% if is_incremental() %}
     AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
@@ -218,14 +218,11 @@ WITH snowplow_page_views AS (
 , unioned AS (
   {% for event_cte in event_ctes %}
 
-    (
-      SELECT
-        *
-      FROM {{ event_cte }}
-    )
+    SELECT *
+    FROM {{ event_cte }}
 
-    {%- if not loop.last -%}
-        UNION
+    {%- if not loop.last %}
+      UNION
     {%- endif %}
 
   {% endfor -%}

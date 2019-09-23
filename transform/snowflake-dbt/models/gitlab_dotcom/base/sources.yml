@@ -105,8 +105,8 @@ sources:
         identifier: gitlab_db_ci_build_trace_section_names
       - name: ci_builds
         identifier: gitlab_db_ci_builds
-      - name: ci_builds_metadata
-        identifier: gitlab_db_ci_builds_metadata
+      # - name: ci_builds_metadata
+      #   identifier: gitlab_db_ci_builds_metadata
       - name: ci_builds_runner_session
         identifier: gitlab_db_ci_builds_runner_session
       - name: ci_group_variables
