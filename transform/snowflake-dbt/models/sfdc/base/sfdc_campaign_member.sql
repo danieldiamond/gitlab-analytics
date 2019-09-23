@@ -20,9 +20,9 @@ WITH source AS (
 
         --info
       type                    AS campaign_member_type,
-      MQL_After_Campaign__c   AS mql_after_campaign,
       hasresponded            AS campaign_member_has_responded,
-      FirstRespondedDate      AS campaign_member_response_date,                  
+      firstrespondeddate      AS campaign_member_response_date,
+      mql_after_campaign__c   AS mql_after_campaign,
 
         --metadata
       createddate             AS campaign_member_created_date,
