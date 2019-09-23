@@ -25,13 +25,17 @@ on-run-start:
 
 on-run-end:
     - "{{ dbt_logging_start('on run end hooks') }}"
-    - "{{grant_usage_to_schemas(schema_name, rolename)}}"
+    - "{{grant_usage_to_schemas(schema_name)}}"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
 
 seeds:
   gitlab_snowflake:
     enabled: true
     schema: staging
+    zuora_country_geographic_region:
+      enabled: true
+      schema: analytics
+
   snowplow:
     enabled: true
     schema: staging
@@ -51,9 +55,8 @@ models:
         - "grant select on {{this}} to role reporter"
 
     snowplow:
-      schema: analytics
+      schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
       tags: ["product"]
-      post-hook: "grant select on {{this}} to role reporter"
       vars:
         'snowplow:use_fivetran_interface': false
         'snowplow:events': "{{ref('snowplow_unnested_events')}}"
@@ -62,7 +65,7 @@ models:
         'snowplow:context:useragent': false
         'snowplow:timezone': 'America/New_York'
         'snowplow:page_ping_frequency': 30
-        'snowplow:app_ids': ['gitlab', 'about']
+        'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
         'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
 
     snowflake_spend:
@@ -114,11 +117,6 @@ models:
         enabled: true
         xf:
           materialized: table
-        base:
-          gitlab_dotcom_gitlab_subscriptions:
-            enabled: true
-          gitlab_dotcom_namespaces:
-            enabled: true
 
       greenhouse:
         schema: sensitive
@@ -143,11 +141,20 @@ models:
         enabled: true
         materialized: table
 
+      smau_events:
+        tags: ["product"]
+        enabled: true
+        materialized: table
+
       snowplow:
         tags: ["product"]
         enabled: true
         xf:
           materialized: table
+
+      snowplow_combined:
+        tags: ["product"]
+        enabled: true
 
       sfdc:
         xf:

@@ -107,6 +107,51 @@ roles:
                     - analytics.dbt_archive.*
                     - snowflake.*.*
 
+    - analyst_infrastructure:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - raw.gcloud_postgres_stitch
+                    - raw.netsuite_stitch
+                    - raw.salesforce_stitch
+                    - raw.sheetload
+                    - raw.snapshots
+                    - raw.snowplow
+                    - raw.tap_postgres
+                    - raw.zendesk_stitch
+                    - raw.zuora_stitch
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+                    - snowflake.*
+            tables:
+                read:
+                    - raw.gcloud_postgres_stitch.*
+                    - raw.netsuite_stitch.*
+                    - raw.salesforce_stitch.*
+                    - raw.sheetload.*
+                    - raw.snapshots.*
+                    - raw.snowplow.*
+                    - raw.tap_postgres.*
+                    - raw.zendesk_stitch.*
+                    - raw.zuora_stitch.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
+                    - snowflake.*.*
+
     - analyst_finance:
         warehouses:
             - analyst_xs
@@ -218,6 +263,51 @@ roles:
                 read:
                     - raw.*.*
                     - analytics.*.*
+                    - snowflake.*.*
+
+    - data_manager:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - raw.gcloud_postgres_stitch
+                    - raw.netsuite_stitch
+                    - raw.salesforce_stitch
+                    - raw.sheetload
+                    - raw.snapshots
+                    - raw.snowplow
+                    - raw.tap_postgres
+                    - raw.zendesk_stitch
+                    - raw.zuora_stitch
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+                    - snowflake.*
+            tables:
+                read:
+                    - raw.gcloud_postgres_stitch.*
+                    - raw.netsuite_stitch.*
+                    - raw.salesforce_stitch.*
+                    - raw.sheetload.*
+                    - raw.snapshots.*
+                    - raw.snowplow.*
+                    - raw.tap_postgres.*
+                    - raw.zendesk_stitch.*
+                    - raw.zuora_stitch.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
                     - snowflake.*.*
 
     - engineer:
@@ -339,14 +429,20 @@ roles:
                 read:
                     - analytics.pwc
                     - analytics.pwc_staging
+                    - analytics.pwc_write
                     - raw.salesforce_stitch
                     - raw.zuora_stitch
+                write:
+                    - analytics.pwc_write
             tables:
                 read:
                     - analytics.pwc.*
                     - analytics.pwc_staging.*
+                    - analytics.pwc_write.*
                     - raw.salesforce_stitch.*
                     - raw.zuora_stitch.*
+                write:
+                    - analytics.pwc_write.*
 
     - reporter:
         warehouses:
@@ -436,6 +532,11 @@ roles:
         warehouses:
             - reporting
 
+    - datwood:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+
     - dtang:
         warehouses:
             - reporting
@@ -496,6 +597,12 @@ roles:
         warehouses:
             - reporting
 
+    - jstark:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting
     - jurbanc:
         warehouses:
             - reporting
@@ -568,6 +675,10 @@ roles:
         warehouses:
             - target_snowflake
 
+    - tcarter:
+        warehouses:
+            - reporting
+
     - tlapiana:
         warehouses:
             - engineer_xs
@@ -616,6 +727,12 @@ users:
             - reporter
             - sysadmin
             - transformer
+
+    - datwood:
+        can_login: yes
+        member_of:
+            - analyst_core
+            - datwood
 
     - dtang:
         can_login: yes
@@ -677,6 +794,12 @@ users:
             - securityadmin
             - sysadmin
 
+    - jstark:
+        can_login: yes
+        member_of:
+            - analyst_core
+            - jstark
+
     - jurbanc:
         can_login: yes
         member_of:
@@ -694,12 +817,8 @@ users:
     - ktam:
         can_login: yes
         member_of:
-            - accountadmin
-            - engineer
+            - analyst_core
             - ktam
-            - securityadmin
-            - sysadmin
-            - tmurphy
 
     - ksmith:
         can_login: yes
@@ -774,6 +893,13 @@ users:
         member_of:
             - stitch
             - loader
+
+    - tcarter:
+        can_login: yes
+        member_of:
+            - securityadmin
+            - sysadmin
+            - tcarter
 
     - target_snowflake:
         can_login: yes

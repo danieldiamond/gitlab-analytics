@@ -27,6 +27,7 @@ clusters_platforms_gke,configure
 clusters_platforms_user,configure
 container_scanning_jobs,secure
 dast_jobs,secure
+dependency_list_usages_total,ignored
 dependency_scanning_jobs,secure
 deploy_keys,create
 deployments,release
@@ -43,6 +44,7 @@ group_clusters_disabled,configure
 group_clusters_enabled,configure
 groups,manage
 in_review_folder,release
+incident_issues,ignored
 issues,plan
 keys,create
 label_lists,plan
@@ -60,6 +62,7 @@ observations,ignored
 operations_dashboard_default_dashboard,monitor
 operations_dashboard_users_with_projects_added,monitor
 pages_domains,release
+pod_logs_usages_total,ignored
 pool_repositories,create
 project_clusters_disabled,configure
 project_clusters_enabled,configure
@@ -71,6 +74,7 @@ projects_jira_cloud_active,plan
 projects_jira_dvcs_cloud_active,plan
 projects_jira_dvcs_server_active,plan
 projects_jira_server_active,plan
+projects_auto_issue_creation_enabled,monitor
 projects_mirrored_with_pipelines_enabled,release
 projects_prometheus_active,monitor
 projects_reporting_ci_cd_back_to_github,verify
@@ -93,7 +97,6 @@ successful_deployments,release
 suggestions,create
 todos,plan
 uploads,plan
+user_preferences_group_overview_details,manage
+user_preferences_group_overview_security_dashboard,secure
 web_hooks,create
-incident_issues,ignored
-dependency_list_usages_total,ignored
-pod_logs_usages_total,ignored

@@ -16,13 +16,16 @@ If none, please include a description
 
 **Editor Slack Handle**: @`handle`
 
-* Housekeeping
-  - [ ] Assigned to a member of the data team
-  - [ ] Allocated to milestone per review time request
-  - [ ] Labels and Points Allocated
+### DRI/Prioritization Owner Checklist
+
+The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbook/business-ops/data-team/#data-support-per-organization)
+
+* Review Items
+   * [ ] Does the dashboard provide the data requested?
+   * [ ] Is the data in the dashboard correct?
+   * [ ] Does the data align with the existing single source of truth and across applicable reporting in Periscope and Google Sheets?
 
 ### Submitter Checklist
-
 * Review Items
    * [ ] SQL formatted using [GitLab Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
    * [ ] Python / R reviewed for content, formatting, and necessity
@@ -41,8 +44,13 @@ If none, please include a description
    * [ ] Legend is clear
    * [ ] Text Tile for "What am I looking at?" and more detailed information, leveraging hyperlinks instead of URLs
    * [ ] Tooltips are used where appropriate and show relevant values
-   * [ ] Request approval from stakeholder/business partner if applicable
+   * [ ] Request approval from stakeholder if applicable
    * [ ] Assign to reviewer on the data team
+
+* Housekeeping
+  - [ ] Assigned to a member of the data team
+  - [ ] Allocated to milestone per review time request
+  - [ ] Labels and Points Allocated
 
 ### Reviewer Checklist
 * Review Items

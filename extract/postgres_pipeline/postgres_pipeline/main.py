@@ -13,7 +13,7 @@ from utils import (
     id_query_generator,
     manifest_reader,
 )
-from validation import *
+from validation import get_comparison_results
 
 
 SCHEMA = "tap_postgres"
@@ -83,6 +83,7 @@ def sync_incremental_ids(
 
     raw_query = table_dict["import_query"]
     additional_filtering = table_dict.get("additional_filtering", "")
+    primary_key = table_dict["export_table_primary_key"]
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need sync processing.")
         return False
@@ -93,16 +94,11 @@ def sync_incremental_ids(
         return False
 
     id_queries = id_query_generator(
-        source_engine,
-        table_dict["export_table_primary_key"],
-        raw_query,
-        target_engine,
-        table,
-        table_name,
+        source_engine, primary_key, raw_query, target_engine, table, table_name
     )
     # Iterate through the generated queries
     for query in id_queries:
-        filtered_query = f"{query} {additional_filtering} ORDER BY id"
+        filtered_query = f"{query} {additional_filtering} ORDER BY {primary_key}"
         logging.info(filtered_query)
         chunk_and_upload(filtered_query, source_engine, target_engine, table_name)
     return True
@@ -177,7 +173,35 @@ def validate_ids(
     return True
 
 
-def main(file_path: str, load_type: str = None) -> None:
+def test_new_tables(
+    source_engine: Engine,
+    target_engine: Engine,
+    table: str,
+    table_dict: Dict[Any, Any],
+    table_name: str,
+) -> bool:
+    """
+    Load a set amount of rows for each new table in the manifest. A table is
+    considered new if it doesn't already exist in the data warehouse.
+    """
+
+    raw_query = table_dict["import_query"].split("WHERE")[0]
+    additional_filtering = table_dict.get("additional_filtering", "")
+    primary_key = table_dict["export_table_primary_key"]
+
+    # Figure out if the table exists
+    if "_TEMP" != table_name[-5:] and not target_engine.has_table(f"{table_name}_TEMP"):
+        logging.info(f"Table {table} already exists and won't be tested.")
+        return False
+
+    # If the table doesn't exist, load 1 million rows (or whatever the table has)
+    query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 1000000"
+    chunk_and_upload(query, source_engine, target_engine, table_name)
+
+    return True
+
+
+def main(file_path: str, load_type: str) -> None:
     """
     Read data from a postgres DB and upload it directly to Snowflake.
     """
@@ -194,6 +218,7 @@ def main(file_path: str, load_type: str = None) -> None:
         "incremental": load_incremental,
         "scd": load_scd,
         "sync": sync_incremental_ids,
+        "test": test_new_tables,
         "validate": validate_ids,
     }
 

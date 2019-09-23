@@ -5,7 +5,7 @@ with raw_mrr_totals_levelled AS (
 
 ), mrr_totals_levelled AS (
 
-      SELECT subscription_name, 
+      SELECT subscription_name,
               subscription_name_slugify,
               sfdc_account_id,
               oldest_subscription_in_cohort,
@@ -42,7 +42,7 @@ with raw_mrr_totals_levelled AS (
                  mrr_totals_levelled.original_unit_of_measure       AS retention_unit_of_measure,
                  coalesce(sum(mrr_totals_levelled.original_mrr), 0) AS retention_mrr
        FROM list
-       INNER JOIN mrr_totals_levelled 
+       INNER JOIN mrr_totals_levelled
        ON retention_month = mrr_month
        AND subscriptions_in_lineage = subscription_name_slugify
        {{ dbt_utils.group_by(n=6) }}
@@ -120,6 +120,8 @@ with raw_mrr_totals_levelled AS (
 
 )
 
-SELECT *
+SELECT joined.*,
+       rank() over(partition by zuora_subscription_id, churn_type
+         order by retention_month asc)   AS rank_churn_type_month
 FROM joined
 WHERE retention_month <= dateadd(month, -1, CURRENT_DATE)
