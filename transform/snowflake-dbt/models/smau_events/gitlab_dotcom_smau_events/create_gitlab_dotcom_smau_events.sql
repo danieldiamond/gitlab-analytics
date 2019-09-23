@@ -1,5 +1,5 @@
 {{ config({
-    "unique_key": "sk_id"
+    "unique_key": "event_surrogate_key"
     })
 }}
 
@@ -16,7 +16,7 @@ WITH mr_comment_added AS (
     TO_DATE(note_created_at) AS event_date,
     'mr_comment_added'       AS event_type,
     {{ dbt_utils.surrogate_key('event_date', 'event_type', 'note_id') }}
-                             AS sk_id
+                             AS event_surrogate_key 
      
   FROM {{ref('gitlab_dotcom_notes')}}
   WHERE noteable_type = 'MergeRequest'
@@ -31,7 +31,7 @@ WITH mr_comment_added AS (
     TO_DATE(merge_request_created_at) AS event_date,
     'mr_created'                      AS event_type,
     {{ dbt_utils.surrogate_key('event_date', 'event_type', 'merge_request_id') }}
-                                      AS sk_id
+                                      AS event_surrogate_key
     
   FROM {{ref('gitlab_dotcom_merge_requests_xf')}}
   WHERE merge_request_created_at >= '2015-01-01'
@@ -45,7 +45,7 @@ WITH mr_comment_added AS (
     TO_DATE(note_created_at) AS event_date,
     'snippet_comment_added'  AS event_type,
     {{ dbt_utils.surrogate_key('event_date', 'event_type', 'note_id') }}
-                             AS sk_id
+                             AS event_surrogate_key
   
   FROM {{ref('gitlab_dotcom_notes')}}
   WHERE noteable_type = 'Snippet'
@@ -56,14 +56,11 @@ WITH mr_comment_added AS (
 , unioned AS (
   {% for event_cte in event_ctes %}
 
-    (
-      SELECT
-        *
-      FROM {{ event_cte }}
-    )
+    SELECT *
+    FROM {{ event_cte }}
 
-    {%- if not loop.last -%}
-        UNION
+    {%- if not loop.last %}
+      UNION
     {%- endif %}
 
   {% endfor -%}
