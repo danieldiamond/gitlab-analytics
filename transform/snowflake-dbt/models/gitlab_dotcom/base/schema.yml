@@ -149,6 +149,20 @@ models:
         tests:
           - not_null
           
+  - name: gitlab_dotcom_ci_pipeline_schedules
+    description: Base model for Gitlab.com ci_pipeline_schedules
+    columns:
+      - name: ci_pipeline_schedule_id
+        tests:
+          - not_null
+          - unique
+      - name: ci_pipeline_schedule_created_at
+        tests:
+          - not_null
+      - name: ci_pipeline_schedule_updated_at
+        tests:
+          - not_null
+            
   - name: gitlab_dotcom_ci_pipeline_variables
     description: Base model for Gitlab.com ci_pipeline_variables
     columns:
