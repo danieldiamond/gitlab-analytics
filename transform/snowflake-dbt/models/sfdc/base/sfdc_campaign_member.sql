@@ -12,11 +12,11 @@ WITH source AS (
 ), renamed AS(
 
     SELECT
-      id                               AS campaign_member_id,
+      id::varchar                      AS campaign_member_id,
 
         --keys
-      campaignid                       AS campaign_id,
-      leadorcontactid                  AS lead_or_contact_id,
+      campaignid::varchar              AS campaign_id,
+      leadorcontactid::varchar         AS lead_or_contact_id,
 
         --info
       type                             AS campaign_member_type,
