@@ -1,4 +1,4 @@
-## Action Type([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/action_type.sql))
+## Action Type([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/gitlab_dotcom/action_type.sql))
 This macro maps action type ID to the action type.
 Usage:
 ```
@@ -7,7 +7,7 @@ Usage:
 Used in:
 - gitlab_dotcom_events.sql
 
-## Alter Warehouse ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/alter_warehouse.sql))
+## Alter Warehouse ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/warehouse/alter_warehouse.sql))
 This macro turns on or off a Snowflake warehouse.
 Usage:
 ```
@@ -16,7 +16,7 @@ Usage:
 Used in:
 - dbt_project.yml
 
-## Case When Boolean Int ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/case_when_boolean_int.sql))
+## Case When Boolean Int ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/case_when_boolean_int.sql))
 This macro returns a 1 if some value is greater than 0; otherwise, it returns a 0.
 Usage:
 ```
@@ -25,7 +25,7 @@ Usage:
 Used in:
 - pings_usage_data_boolean.sql
 
-## Churn Type ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/churn_type.sql))
+## Churn Type ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/churn_type.sql))
 This macro compares MRR values and buckets them into retention categories.
 Usage:
 ```
@@ -37,7 +37,7 @@ Used in:
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
 
-## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/create_udfs.sql))
+## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
 Usage:
 ```
@@ -55,7 +55,7 @@ Usage:
 Used in:
 - dbt_project.yml
 
-## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/generate_custom_schema.sql))
+## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/generate_custom_schema.sql))
 This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema ` (e.g. `emilie_scratch` and `analytics`). For tagged models, the output is dependent on the target. It is `emilie_scratch_staging` on dev and `analytics_staging` on prod. A similar pattern is followed for the `sensitive` config.
 Usage:
 ```
@@ -98,7 +98,7 @@ Usage:
 Used in:
 - gitlab_dotcom/
 
-## Grants ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/grant_usage_to_schema.sql))
+## Grants ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/warehouse/grant_usage_to_schema.sql))
 This macro...
 Usage:
 ```
@@ -119,7 +119,7 @@ Used in:
 - gitlab_dotcom_issues_xf
 - gitlab_dotcom_merge_requests_xf
 
-## Monthly Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/monthly_change.sql))
+## Monthly Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/monthly_change.sql))
 This macro calculates differences for each consecutive usage ping by uuid.
 Usage:
 ```
@@ -128,7 +128,7 @@ Usage:
 Used in:
 - pings_usage_data_monthly_change.sql
 
-## Monthy Is Used ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/monthly_is_used.sql))
+## Monthy Is Used ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/monthly_is_used.sql))
 This macro includes the total counts for a given feature's usage cumulatively.
 Usage:
 ```
@@ -137,7 +137,7 @@ Usage:
 Used in:
 - pings_usage_data_monthly_change.sql
 
-## Product Category([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/product_category.sql))
+## Product Category([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/product_category.sql))
 This macro maps SKUs to their product categories.
 Usage:
 ```
@@ -147,7 +147,7 @@ Used in:
 - sfdc_opportunity.sql
 - zuora_rate_plan.sql
 
-## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sales_segment_cleaning))
+## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sales_segment_cleaning))
 This macro applies proper formatting to sales segment data with the end result being one of SMB, Mid-Market, Strategic, Large or Unknown.
 Usage:
 ```
@@ -158,7 +158,25 @@ Used in:
 - zendesk_organizations.sql
 - sfdc_lead.sql
 
-## SFDC Deal Size ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc_deal_size.sql))
+## Schema Union All ([Source](ttps://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_all.sql))
+This macro takes a schema prefix and a table name and does a UNION ALL on all tables that match the pattern.
+Usage:
+```
+{{ schema_union_all('snowplow', 'snowplow_page_views') }}
+```
+Used in:
+- snowplow_combined/all/*.sql
+
+## Schema Union Limit ([Source](ttps://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_limit.sql))
+This macro takes a schema prefix, a table name, a column name, and an integer representing days. It returns a view that is limited to the last 30 days based on the column name. Note that this also calls schema union all which can be a heavy call. 
+Usage:
+```
+{{ schema_union_limit('snowplow', 'snowplow_page_views', 'page_view_start', 30) }}
+```
+Used in:
+- snowplow_combined/30_day/*.sql
+
+## SFDC Deal Size ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sfdc_deal_size.sql))
 This macro buckets a unit into a deal size (Small, Medium, Big, or Jumbo) based on an inputted value.
 Usage:
 ```
@@ -168,7 +186,7 @@ Used in:
 - sfdc_opportunity.sql
 - sfdc_account_deal_size_segmentation.sql
 
-## SFDC Source Buckets ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc_source_buckets.sql))
+## SFDC Source Buckets ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sfdc_source_buckets.sql))
 This macro is a CASE WHEN statement that groups the lead sources into new marketing-defined buckets. @rkohnke is the DRI on any changes made to this macro.
 Usage:
 ```
@@ -179,7 +197,7 @@ Used in:
 - sfdc_lead
 - sfdc_opportunity
 
-## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/stage_mapping.sql))
+## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/pings/stage_mapping.sql))
 This macro takes in a product stage name, such as 'Verify', and returns a SQL aggregation statement that sums the number of users using that stage, based on the ping data. Product metrics are mapped to stages using the [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
 ```
 {{ stage_mapping( 'Verify' ) }}
@@ -187,7 +205,7 @@ This macro takes in a product stage name, such as 'Verify', and returns a SQL ag
 Used in:
 - pings_usage_data_monthly_change_by_stage.sql
 
-## Support SLA Met ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/support_sla_met.sql))
+## Support SLA Met ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zendesk/support_sla_met.sql))
 This macro implements the `CASE WHEN` logic for Support SLAs, as [documented in the handbook](https://about.gitlab.com/support/#gitlab-support-service-levels).
 ```
 {{ support_sla_met( 'first_reply_time',
@@ -198,7 +216,7 @@ This macro implements the `CASE WHEN` logic for Support SLAs, as [documented in 
 Used in:
 - zendesk_tickets_xf.sql
 
-## Unpack Unstructured Events ([Source]())
+## Unpack Unstructured Events ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/pings/unpack_unstructured_event.sql))
 This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.
 Usage:
 ```
@@ -208,7 +226,7 @@ Used in:
 - snowplow_fishtown_unnested_events.sql
 - snowplow_gitlab_events.sql
 
-## Zuora Slugify ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora_slugify.sql))
+## Zuora Slugify ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/zuora_slugify.sql))
 This macro replaces any combination of whitespace and 2 pipes with a single pipe (important for renewal subscriptions) and it replaces all non alphanumeric characters with dashes and casts it to lowercases as well. The end result of using this macro on data like "A-S00003830 || A-S00013333" is "a-s00003830|a-s00013333".
 Usage:
 ```

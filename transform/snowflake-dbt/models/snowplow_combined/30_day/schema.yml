@@ -1,0 +1,5 @@
+version: 2
+
+models:
+    -   name: snowplow_page_views_30
+        description: This is is a view over the last 30 days of snowplow_page_views_all based on the page_view_start column.
