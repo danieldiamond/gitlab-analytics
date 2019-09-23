@@ -135,7 +135,7 @@ dbt_source_cmd = f"""
     cd analytics/transform/snowflake-dbt/ &&
     export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile &&
-    dbt source snapshot-freshness --profiles-dir profile --target docs
+    dbt source snapshot-freshness --profiles-dir profile
 """
 dbt_source_freshness = KubernetesPodOperator(
     **gitlab_defaults,

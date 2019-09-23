@@ -56,12 +56,11 @@ WITH mr_comment_added AS (
 , unioned AS (
   {% for event_cte in event_ctes %}
 
-      SELECT
-        *
-      FROM {{ event_cte }}
+    SELECT *
+    FROM {{ event_cte }}
 
     {%- if not loop.last %}
-        UNION
+      UNION
     {%- endif %}
 
   {% endfor -%}

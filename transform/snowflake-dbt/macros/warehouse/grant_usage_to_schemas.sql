@@ -1,20 +1,24 @@
-{%- macro grant_usage_to_schemas(schema_name, rolename=reporter) -%}
+{%- macro grant_usage_to_schemas(schema_name, rolename) -%}
 
 	{%- set schema_name = target.schema -%}
 
-	{%- set roles = [
-			'analyst_growth',
-			'analyst_finance',
-			'analyst_core',
-			'analyst_sensitive',
-			'engineer',
-			'intern',
-			'loader',
-			'product_manager',
-			'reporter',
-			'reporter_sensitive',
-			'transformer'
-		] -%}
+	{% if rolename %}
+		{%- set roles = [rolename] -%}
+	{% else %}
+		{%- set roles = [
+				'analyst_growth',
+				'analyst_finance',
+				'analyst_core',
+				'analyst_sensitive',
+				'engineer',
+				'intern',
+				'loader',
+				'product_manager',
+				'reporter',
+				'reporter_sensitive',
+				'transformer'
+			] -%}
+	{% endif %}
 
 	{%- for role_name in roles -%}
 
