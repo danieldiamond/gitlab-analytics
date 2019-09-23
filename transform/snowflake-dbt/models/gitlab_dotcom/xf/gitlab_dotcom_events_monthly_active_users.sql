@@ -11,6 +11,9 @@ WITH days AS (
       (date_day = last_day_of_month) AS is_last_day_of_month
     FROM {{ ref('date_details') }}
     WHERE date_day < CURRENT_DATE
+    {% if is_incremental() %}
+      AND date_day >= DATEADD('day', -7, (SELECT MAX(day) FROM {{ this }}) )
+    {% endif %}
 
 ), audit_events AS (
 
