@@ -1,6 +1,6 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "page_view_id"
+    "unique_key": "event_surrogate_key"
     })
 }}
 
@@ -39,8 +39,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
     'mr_viewed'              AS event_type,
-    page_view_id
-
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                             AS event_surrogate_key
 
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '(\/([0-9A-Za-z_.-])*){2}\/merge_requests/[0-9]*'
@@ -55,8 +56,10 @@ WITH snowplow_page_views AS (
     user_custom_id,
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
-    'project_viewed_in_ide'       AS event_type,
-    page_view_id
+    'project_viewed_in_ide'  AS event_type,
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                             AS event_surrogate_key
 
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '/-/ide/project/.*'
@@ -71,7 +74,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
     'repo_file_viewed'       AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                             AS event_surrogate_key
 
 
   FROM snowplow_page_views
@@ -90,7 +95,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
     'search_performed'       AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                             AS event_surrogate_key
 
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '/search'
@@ -105,7 +112,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
     'snippet_created'        AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                             AS event_surrogate_key
 
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/new'
@@ -119,7 +128,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
     'snippet_edited'         AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                             AS event_surrogate_key
 
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]*/edit'
@@ -133,7 +144,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
     'snippets_viewed'        AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                             AS event_surrogate_key
 
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]{1,}'
@@ -148,7 +161,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
     'wiki_page_viewed'       AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                             AS event_surrogate_key
 
   FROM snowplow_page_views
   WHERE page_url_path RLIKE '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,}'
