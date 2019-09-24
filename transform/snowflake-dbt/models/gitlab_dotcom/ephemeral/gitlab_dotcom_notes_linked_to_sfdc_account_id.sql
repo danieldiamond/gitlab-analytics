@@ -102,26 +102,22 @@ WITH gitlab_notes AS (
 )
 , gitlab_notes_with_sfdc_objects_union AS (
 
-  (
-    SELECT
-      *
-    FROM gitlab_notes_with_sfdc_accounts
+  SELECT
+    *
+  FROM gitlab_notes_with_sfdc_accounts
 
-  )
   UNION
-  (
-    SELECT
-      *
-    FROM gitlab_notes_with_sfdc_opportunities
 
-  )
+  SELECT
+    *
+  FROM gitlab_notes_with_sfdc_opportunities
+
   UNION
-  (
-    SELECT
-      *
-    FROM gitlab_notes_with_sfdc_contacts
 
-  )
+  SELECT
+    *
+  FROM gitlab_notes_with_sfdc_contacts
+
 )
 
 SELECT *

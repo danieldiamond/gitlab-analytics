@@ -136,23 +136,15 @@ WITH epic_issues AS (
 )
 
 , unioned AS (
-  
-  (
-    
-    SELECT *
-    FROM sfdc_account_issues_from_notes
-    
-  )
+      
+  SELECT *
+  FROM sfdc_account_issues_from_notes
   
   UNION 
-  
-  (
     
-    SELECT *
-    FROM sfdc_account_issues_from_issues
+  SELECT *
+  FROM sfdc_account_issues_from_issues
     
-  )
-  
 )
 
 SELECT *
