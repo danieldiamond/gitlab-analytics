@@ -25,7 +25,9 @@ If it's `models/*` this is a `schema test` and is defined in the `schema.yml` fi
 ## Schema Tests
 
 ###  Relationship Tests
-Relationship tests are a type of schema test that check for referential integrity ([dbt documentation](https://docs.getdbt.com/docs/testing#section-relationships)). The purpose of a relationship test is to "validate that all of the records in a child table have a corresponding record in a parent table."
+Relationship tests are a type of schema test that check for referential integrity ([dbt documentation](https://docs.getdbt.com/docs/testing#section-relationships)). The purpose of a relationship test is to "validate that all of the records in a child table have a corresponding record in a parent table."  
+
+For example, you might have a (child) table called `merge_requests` with a column called `author_id`. A good relationship test would be to test that every value in `merge_requests.author_id` is present in a different (parent) table called `users`.
 
 When a relationship test fails, the error message will look like: 
 ```
@@ -34,12 +36,12 @@ Failure in test relationships_childModel_childColumn__parentColumn__parentModel_
 ```
 
 Steps to debug:
-1. Confirm the failing test is a real failture by querying the parent table for the missing value(s).
+1. Confirm the failing test is a real failure by querying the parent table for the missing value(s).
 2. Confirm that the missing records are not being filtered out in a previous dbt model (check the base models).
 3. Try to narrow the problem down. The records are missing from the child table for 1 of 3 reasons:
 i. The data pipeline is broken (Example: Stitch hasn't loaded fresh data in 7 days. Solution: talk to data-eng)
-ii. The source data is missing (Example: somebody from sales forgot to fill out a field in Salesforce. Solution: ask sales to fix it)
-iii. The test isn't actually valid (Example: you realize that it's actually okay for the child to reference a parent that doesn't exist. Solution: Remove the test)
+ii. The data is missing at the source (Example: somebody from sales forgot to fill out a field in Salesforce. Solution: ask sales to fix it)
+iii. The test isn't actually valid (Example: you realize that it's actually okay for the child to reference a parent that doesn't exist. Solution: remove the test)
 
 
 ### Models : `sfdc_users_archived` and `sfdc_account_archived`
