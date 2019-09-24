@@ -12,7 +12,6 @@ WITH source AS (
 
       -- sfdc object lookups
       bizible2__sf_campaign__c                AS campaign_id,
-      bizible2__opportunity__c                AS opportunity_id,
       bizible2__contact__c                    AS bizible_contact,
       bizible2__account__c                    AS bizible_account,      
       
