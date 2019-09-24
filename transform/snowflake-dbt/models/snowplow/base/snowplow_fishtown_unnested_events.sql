@@ -164,8 +164,8 @@ FROM {{ source('fishtown_snowplow', 'events') }}
 {%- endif %}
 
 WHERE JSONTEXT['app_id']::string IS NOT NULL
-AND date_part(month, jsontext['collector_tstamp']::timestamp) = '{{ month_value }}'
-AND date_part(year, jsontext['collector_tstamp']::timestamp) = '{{ year_value }}'
+AND date_part(month, try_to_timestamp(jsontext['derived_tstamp'])) = '{{ month_value }}'
+AND date_part(year, try_to_timestamp(jsontext['derived_tstamp'])) = '{{ year_value }}'
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(JSONTEXT['page_url']::string) NOT LIKE 'http://localhost:%'
 
@@ -196,4 +196,4 @@ AND lower(JSONTEXT['page_url']::string) NOT LIKE 'http://localhost:%'
 SELECT *
 FROM unnested_unstruct
 WHERE event_id NOT IN (SELECT * FROM events_to_ignore)
-ORDER BY dvce_created_tstamp
+ORDER BY derived_tstamp
