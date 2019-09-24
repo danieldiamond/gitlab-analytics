@@ -1,7 +1,7 @@
 ## Periscope Dashboard Checklist
 
 <!--
-Please complete all items. Ask questions in #data
+Please complete all items. Ask questions in the #data slack channel
 --->
 
 **Dashboard Link**:

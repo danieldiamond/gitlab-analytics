@@ -162,14 +162,13 @@ models:
       - name: ci_pipeline_schedule_updated_at
         tests:
           - not_null
-  
+            
   - name: gitlab_dotcom_ci_pipeline_variables
     description: Base model for Gitlab.com ci_pipeline_variables
     columns:
       - name: ci_pipeline_variable_id
         tests:
           - not_null
-
                         
   - name: gitlab_dotcom_epic_issues
     description: Base model for Gitlab.com epic issues
@@ -184,6 +183,59 @@ models:
         tests:
           - not_null
           - unique
+
+  - name: gitlab_dotcom_ci_pipelines
+    description: Base model for Gitlab.com ci_pipelines
+    columns:
+      - name: ci_pipeline_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+  
+  - name: gitlab_dotcom_ci_stages
+    description: Base model for Gitlab.com ci_stages
+    columns:
+      - name: ci_stage_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_ci_trigger_requests
+    description: Base model for Gitlab.com ci_trigger_requests
+    columns:
+      - name: ci_trigger_request_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_ci_triggers
+    description: Base model for Gitlab.com ci_triggers
+    columns:
+      - name: ci_trigger_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
 
   - name: gitlab_dotcom_epic_metrics
     description: Base model for Gitlab.com epic metrics

@@ -164,12 +164,11 @@ FROM {{ source('gitlab_snowplow', 'events') }}
 {%- endif %}
 
 WHERE app_id IS NOT NULL
-AND date_part(month, collector_tstamp::timestamp) = '{{ month_value }}'
-AND date_part(year, collector_tstamp::timestamp) = '{{ year_value }}'
+AND date_part(month, try_to_timestamp(derived_tstamp)) = '{{ month_value }}'
+AND date_part(year, try_to_timestamp(derived_tstamp)) = '{{ year_value }}'
 AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
 AND lower(page_url) NOT LIKE 'http://localhost:%'
-AND derived_tstamp != 'com.snowplowanalytics.snowplow'
-AND derived_tstamp != 'com.google.analytics'
+AND try_to_timestamp(derived_tstamp) is not null
 
 ), events_to_ignore as (
 
@@ -198,4 +197,4 @@ AND derived_tstamp != 'com.google.analytics'
 SELECT *
 FROM unnested_unstruct
 WHERE event_id NOT IN (SELECT * FROM events_to_ignore)
-ORDER BY true_tstamp
+ORDER BY derived_tstamp

@@ -1,6 +1,6 @@
 {{config({
     "materialized":"table",
-    "unique_key":"base64_event",
+    "unique_key":"event_id",
     "schema":current_date_schema('snowplow')
   })
 }}
