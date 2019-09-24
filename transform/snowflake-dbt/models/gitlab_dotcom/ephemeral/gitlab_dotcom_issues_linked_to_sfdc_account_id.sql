@@ -92,7 +92,7 @@ WITH gitlab_issues AS (
     sfdc_contacts.account_id AS sfdc_account_id
 
   FROM gitlab_issues_sfdc_id_flattened
-  INNER JOIN {{ ref('sfdc_contact_xf')}} AS sfdc_contacts
+  INNER JOIN sfdc_contacts
     ON gitlab_issues_sfdc_id_flattened.sfdc_id_18char = sfdc_contacts.contact_id
 )
 , gitlab_issues_with_sfdc_objects_union AS (
