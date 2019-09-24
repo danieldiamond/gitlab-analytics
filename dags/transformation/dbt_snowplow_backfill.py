@@ -46,7 +46,7 @@ def generate_dbt_command(vars_dict):
         cd analytics/transform/snowflake-dbt/ &&
         export snowflake_load_database="RAW" &&
         dbt deps --profiles-dir profile &&
-        dbt run --profiles-dir profile --target prod --models snowplow --vars '{json_dict}'
+        dbt run --profiles-dir profile --target prod --models snowplow --full-refresh --vars '{json_dict}'
         """
 
     return KubernetesPodOperator(
