@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: licences_db_license
+  - name: license_db_licenses
     description: This model is the data from tap-postgres for the licenses table from license.gitlab.com.
     columns:
       - name: license_id

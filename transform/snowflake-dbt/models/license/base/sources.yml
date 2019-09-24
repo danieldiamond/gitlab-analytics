@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: licenses
+  - name: license
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: tap_postgres
     loader: Airflow
@@ -12,7 +12,7 @@ sources:
       identifier: false
 
     tables:
-      - name: licenses_db_licenses
+      - name: license_db_licenses
         columns:
           - name: id
             tests:
