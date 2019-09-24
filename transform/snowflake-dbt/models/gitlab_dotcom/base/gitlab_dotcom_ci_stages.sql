@@ -15,12 +15,12 @@ WITH source AS (
   SELECT
 
     id::INTEGER           AS ci_stage_id,
-    project_id::INTEGER   AS ci_stage_project_id,
-    pipeline_id::INTEGER  AS ci_stage_pipeline_id,
-    created_at::TIMESTAMP AS ci_stage_created_at,
-    updated_at::TIMESTAMP AS ci_stage_updated_at,
-    name::VARCHAR         AS name,
-    status::INTEGER       AS status,
+    project_id::INTEGER   AS project_id,
+    pipeline_id::INTEGER  AS pipeline_id,
+    created_at::TIMESTAMP AS created_at,
+    updated_at::TIMESTAMP AS updated_at,
+    name::VARCHAR         AS ci_stage_name,
+    status::INTEGER       AS ci_stage_status,
     lock_version::INTEGER AS lock_version,
     position::INTEGER     AS position
 

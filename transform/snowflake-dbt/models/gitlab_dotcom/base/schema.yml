@@ -191,10 +191,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: ci_pipeline_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: ci_pipeline_updated_at
+      - name: updated_at
         tests:
           - not_null
   
@@ -205,7 +205,7 @@ models:
         tests:
           - not_null
           - unique
-      - name: ci_stage_created_at
+      - name: created_at
         tests:
           - not_null
 
@@ -216,10 +216,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: ci_trigger_request_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: ci_trigger_request_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -230,10 +230,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: ci_trigger_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: ci_trigger_updated_at
+      - name: updated_at
         tests:
           - not_null
 

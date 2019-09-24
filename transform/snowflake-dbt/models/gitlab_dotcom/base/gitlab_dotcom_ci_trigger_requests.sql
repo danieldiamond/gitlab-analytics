@@ -14,10 +14,10 @@ WITH source AS (
   SELECT
 
     id::INTEGER           AS ci_trigger_request_id,
-    trigger_id::INTEGER   AS ci_trigger_request_trigger_id,
-    created_at::TIMESTAMP AS ci_trigger_request_created_at,
-    updated_at::TIMESTAMP AS ci_trigger_request_updated_at,
-    commit_id::INTEGER    AS ci_trigger_request_commit_id
+    trigger_id::INTEGER   AS trigger_id,
+    created_at::TIMESTAMP AS created_at,
+    updated_at::TIMESTAMP AS updated_at,
+    commit_id::INTEGER    AS commit_id
     
   FROM source
   WHERE rank_in_key = 1
