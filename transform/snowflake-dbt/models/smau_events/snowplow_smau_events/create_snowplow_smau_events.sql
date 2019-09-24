@@ -32,11 +32,11 @@ WITH snowplow_page_views AS (
 )
 
 , snowplow_page_views_excluding_wiki AS (
+
   SELECT * 
   FROM snowplow_page_views
   WHERE page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}' -- removing wiki pages
 
-  
 )
 , mr_viewed AS (
 
@@ -47,7 +47,6 @@ WITH snowplow_page_views AS (
     page_url_path,
     'mr_viewed'              AS event_type,
     page_view_id
-
 
   FROM snowplow_page_views_excluding_wiki
   WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2}\/merge_requests/[0-9]*'
@@ -79,7 +78,6 @@ WITH snowplow_page_views AS (
     page_url_path,
     'repo_file_viewed'       AS event_type,
     page_view_id
-
 
   FROM snowplow_page_views_excluding_wiki
   WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/tree\/(.)*'
