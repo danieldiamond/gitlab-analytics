@@ -7,7 +7,7 @@ WITH source AS (
 
   SELECT
     *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) AS rank_in_key
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY upadated_at DESC) AS rank_in_key
   FROM {{ source('license', 'license_db_licenses') }}
 
 ), renamed AS (
