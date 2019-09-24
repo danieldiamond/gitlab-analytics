@@ -152,5 +152,19 @@ WITH snowplow_page_views AS (
 
 )
 
-SELECT * 
-FROM pipeline_viewed
+, unioned AS (
+  {% for event_cte in event_ctes %}
+
+    SELECT *
+    FROM {{ event_cte }}
+
+    {%- if not loop.last %}
+      UNION
+    {%- endif %}
+
+  {% endfor -%}
+
+)
+
+SELECT *
+FROM unioned

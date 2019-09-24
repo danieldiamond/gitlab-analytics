@@ -16,6 +16,12 @@ This model encapsulates all activation events for the Manage Stage as defined in
 
 {% docs plan_smau_events %}
 
-This model encapsulates all activation events for stage create as defined in this gitlab [issue](https://gitlab.com/gitlab-org/telemetry/issues/48). 
+This model encapsulates all activation events for stage plan as defined in this gitlab [issue](https://gitlab.com/gitlab-org/telemetry/issues/48). 
+
+{% enddocs %}
+
+{% docs verify_smau_events %}
+
+This model encapsulates all activation events for stage verify as defined in this gitlab [issue](https://gitlab.com/gitlab-org/telemetry/issues/50). 
 
 {% enddocs %}
