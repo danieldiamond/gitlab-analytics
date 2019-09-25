@@ -46,8 +46,8 @@ models:
     post-hook:
       - "{{ logging.log_model_end_event() }}"
     vars:
-      database: 'raw'
-      warehouse: "{{ var('warehouse_name', env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE')) }}"
+      database: "raw"
+      warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
 
     logging:
       schema: meta
