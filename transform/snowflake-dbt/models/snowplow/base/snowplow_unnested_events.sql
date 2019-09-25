@@ -27,7 +27,15 @@ unioned AS (
     SELECT *
     FROM fishtown
 
+), events_to_ignore as (
+
+    SELECT event_id
+    FROM unioned
+    GROUP BY 1
+    HAVING count (*) > 1
+
 )
 
 SELECT *
 FROM unioned
+WHERE event_id NOT IN (SELECT * FROM events_to_ignore)
