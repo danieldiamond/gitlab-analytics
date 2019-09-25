@@ -39,7 +39,9 @@ git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-
 
 
 def generate_dbt_command(vars_dict):
-    json_dict = json.dumps(vars_dict)
+    xl_warehouse = {"warehouse_name": "transforming_xl"}
+    updated_dict = {**vars_dict, xl_warehouse**}
+    json_dict = json.dumps(updated_dict)
 
     dbt_generate_command = f"""
         {git_cmd} &&
