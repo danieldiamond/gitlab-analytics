@@ -2,10 +2,16 @@ version: 2
 
 models:
   - name: license_db_licenses
-    description: This model is the data from tap-postgres for the licenses table from license.gitlab.com.
+    description: This model is the data from tap-postgres for the licenses table from license.gitlab.com. This data represents the management of self-managed instances for GitLab customers.
     columns:
       - name: license_id
         tests:
           - not_null
           - unique
+
+      - name: license_starts_at
+        tests:
+          - not_null
+
+
   
