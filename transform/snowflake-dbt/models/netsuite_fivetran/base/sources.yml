@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: netsuite_fivetran
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: netsuite_fivetran
+    loader: fivetran # informational only (free text)
+    loaded_at_field: _FIVETRAN_SYNCED # configure for all sources
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    tables:
+      - name: accounting_periods
+      - name: accounts
+      - name: consolidated_exchange_rates
+      - name: currencies
+      - name: customers
+      - name: departments
+      - name: subsidiaries
+      - name: transaction_lines
+      - name: transactions
+      - name: vendors
