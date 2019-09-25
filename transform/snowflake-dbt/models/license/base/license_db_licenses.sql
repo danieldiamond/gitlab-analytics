@@ -29,7 +29,6 @@ WITH source AS (
     trial::BOOLEAN                     AS is_boolean,
     created_at::TIMESTAMP              AS license_created_at,
     updated_at::TIMESTAMP              AS license_updated_at
-
  FROM source
  WHERE rank_in_key = 1
 
