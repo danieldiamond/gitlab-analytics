@@ -22,3 +22,9 @@ The users table contains info about the users associated with your Zendesk Suppo
 The ticket_metrics table contains info about the metrics associated with Zendesk Support tickets. This table will not include records for deleted tickets. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/zendesk#ticket-metrics)
 
 {% enddocs %}
+
+{% docs zendesk_ticket_audits_desc %}
+
+The ticket_audits table contains info about the audit events associated with Zendesk Support tickets. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/zendesk#ticket-audits)
+
+{% enddocs %}
