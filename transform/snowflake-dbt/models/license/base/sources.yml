@@ -29,6 +29,12 @@ sources:
           - name: id
             tests:
               - not_null
+          - name: license_id
+            tests:
+              - not_null
+          - name: add_on_id
+            tests:
+              - not_null
           - name: created_at
             tests:
               - not_null
