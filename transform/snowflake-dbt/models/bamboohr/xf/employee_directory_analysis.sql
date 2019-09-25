@@ -105,5 +105,5 @@ WITH employee_directory AS (
 
 )
 
-SELECT *
+SELECT distinct *
 FROM final
