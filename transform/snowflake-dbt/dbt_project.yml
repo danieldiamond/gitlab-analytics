@@ -104,23 +104,20 @@ models:
     date:
       materialized: table
 
-    dbt_logging:
-      enabled: false
-
     engineering:
       materialized: table
 
     gitlab_data_yaml:
       materialized: table
 
-    gitter:
-      enabled: false
-      transformed:
-        materialized: table
-
     gitlab_dotcom:
       tags: ["product"]
       xf:
+        materialized: table
+
+    gitter:
+      enabled: false
+      transformed:
         materialized: table
 
     greenhouse:
@@ -129,15 +126,19 @@ models:
     netsuite_stitch:
       materialized: table
 
-    pings:
-      tags: ["product"]
-
     pipe2spend:
       enabled: false
       materialized: table
 
+    pings:
+      tags: ["product"]
+
     retention:
       materialized: table
+    
+    sfdc:
+      xf:
+        materialized: table
 
     smau_events:
       tags: ["product"]
@@ -151,14 +152,10 @@ models:
     snowplow_combined:
       tags: ["product"]
 
-    sfdc:
+    zendesk:
       xf:
         materialized: table
 
     zuora:
-      xf:
-        materialized: table
-
-    zendesk:
       xf:
         materialized: table
