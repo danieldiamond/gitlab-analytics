@@ -42,151 +42,123 @@ on-run-end:
 # Seed Configs
 # ======
 seeds:
-  gitlab_snowflake:
-    enabled: true
-    schema: staging
-    zuora_country_geographic_region:
-      enabled: true
-      schema: analytics
+  enabled: true
+  schema: staging
 
-  snowplow:
-    enabled: true
-    schema: staging
+  gitlab_snowflake:
+    zuora_country_geographic_region:
+      schema: analytics
 
 # ======
 # Model Configs
 # ======
 models:
-    pre-hook:
-      - "{{ logging.log_model_start_event() }}"
+  enabled: true
+  pre-hook:
+    - "{{ logging.log_model_start_event() }}"
+  post-hook:
+    - "{{ logging.log_model_end_event() }}"
+  vars:
+    database: "raw"
+    warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
+
+  # Logging Package
+  logging:
+    schema: meta
     post-hook:
-      - "{{ logging.log_model_end_event() }}"
+      - "grant select on {{this}} to role reporter"
+
+  # Snowplow Package
+  snowplow:
+    schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
+    tags: ["product"]
     vars:
-      database: "raw"
-      warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
+      'snowplow:use_fivetran_interface': false
+      'snowplow:events': "{{ref('snowplow_unnested_events')}}"
+      'snowplow:context:web_page': "{{ref('snowplow_web_page')}}"
+      'snowplow:context:performance_timing': false
+      'snowplow:context:useragent': false
+      'snowplow:timezone': 'America/New_York'
+      'snowplow:page_ping_frequency': 30
+      'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
+      'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
 
-    # Logging Package
-    logging:
-      schema: meta
-      post-hook:
-        - "grant select on {{this}} to role reporter"
+  # Snowflake Spend Package
+  snowflake_spend:
+    materialized: table
+    xf:
+      schema: analytics
 
-    # Snowplow Package
-    snowplow:
-      schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
-      tags: ["product"]
-      vars:
-        'snowplow:use_fivetran_interface': false
-        'snowplow:events': "{{ref('snowplow_unnested_events')}}"
-        'snowplow:context:web_page': "{{ref('snowplow_web_page')}}"
-        'snowplow:context:performance_timing': false
-        'snowplow:context:useragent': false
-        'snowplow:timezone': 'America/New_York'
-        'snowplow:page_ping_frequency': 30
-        'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
-        'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
+  # GitLab Models
+  gitlab_snowflake:
+    materialized: view
 
-    # Snowflake Spend Package
-    snowflake_spend:
-      enabled: true
+    bamboohr:
+      schema: sensitive
       base:
         materialized: table
+
+    customers:
+      materialized: table
+
+    date:
+      materialized: table
+
+    dbt_logging:
+      enabled: false
+
+    engineering:
+      materialized: table
+
+    gitlab_data_yaml:
+      materialized: table
+
+    gitter:
+      enabled: false
+      transformed:
+        materialized: table
+
+    gitlab_dotcom:
+      tags: ["product"]
       xf:
         materialized: table
-        schema: analytics
 
-    # GitLab Models
-    gitlab_snowflake:
-      enabled: true
-      materialized: view
+    greenhouse:
+      schema: sensitive
 
-      bamboohr:
-        schema: sensitive
-        enabled: true
-        base:
-          materialized: table
+    netsuite_stitch:
+      materialized: table
 
-      customers:
-        base:
-          enabled: true
-          materialized: table
+    pings:
+      tags: ["product"]
 
-      date:
-        base:
-          enabled: true
-          materialized: table
+    pipe2spend:
+      enabled: false
+      materialized: table
 
-      dbt_logging:
-        enabled: false
+    retention:
+      materialized: table
 
-      engineering:
-        enabled: true
+    smau_events:
+      tags: ["product"]
+      materialized: table
+
+    snowplow:
+      tags: ["product"]
+      xf:
         materialized: table
 
-      gitlab_data_yaml:
-        enabled: true
+    snowplow_combined:
+      tags: ["product"]
+
+    sfdc:
+      xf:
         materialized: table
 
-      gitter:
-        enabled: false
-        transformed:
-          materialized: table
-
-      gitlab_dotcom:
-        tags: ["product"]
-        enabled: true
-        xf:
-          materialized: table
-
-      greenhouse:
-        schema: sensitive
-        enabled: true
-
-      netsuite_stitch:
-        enabled: true
-        base:
-          materialized: table
-        xf:
-          materialized: table
-
-      pings:
-        tags: ["product"]
-        enabled: true
-
-      pipe2spend:
-        enabled: false
+    zuora:
+      xf:
         materialized: table
 
-      retention:
-        enabled: true
+    zendesk:
+      xf:
         materialized: table
-
-      smau_events:
-        tags: ["product"]
-        enabled: true
-        materialized: table
-
-      snowplow:
-        tags: ["product"]
-        enabled: true
-        xf:
-          materialized: table
-
-      snowplow_combined:
-        tags: ["product"]
-        enabled: true
-
-      sfdc:
-        xf:
-          enabled: true
-          materialized: table
-
-      zuora:
-        xf:
-          enabled: true
-          materialized: table
-
-      zendesk:
-        xf:
-          enabled: true
-          materialized: table
