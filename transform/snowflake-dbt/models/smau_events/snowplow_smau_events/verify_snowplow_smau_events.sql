@@ -23,7 +23,7 @@ WITH snowplow_page_views AS (
     page_view_start,
     page_url_path,
     page_view_id
-  FROM {{ ref('snowplow_page_views_all')}}
+  FROM analytics.snowplow_page_views_all
   WHERE page_view_start >= '2019-01-01'
   {% if is_incremental() %}
     AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
@@ -59,6 +59,8 @@ WITH snowplow_page_views AS (
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/.gitlab-ci.yml'
     AND page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/blob\/(.)*'
+    AND page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/edit\/(.)*'
+
 
 )
 
@@ -148,7 +150,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/pipelines\/[a-9]{1,}'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/pipelines\/[0-9]{1,}'
 
 )
 
