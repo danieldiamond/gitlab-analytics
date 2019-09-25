@@ -95,10 +95,15 @@ WITH employee_directory AS (
             is_termination_date
     FROM joined
 
+), final as (
+
+    SELECT cleaned.*, cost_center.cost_center
+    FROM cleaned
+    LEFT JOIN cost_center
+      ON cleaned.department=cost_center.department
+     AND cleaned.division=cost_center.division
+
 )
 
-SELECT cleaned.*, cost_center.cost_center
-FROM cleaned
-LEFT JOIN cost_center
-  ON cleaned.department=cost_center.department
- AND cleaned.division=cost_center.division
+SELECT *
+FROM final
