@@ -50,6 +50,7 @@ def generate_dbt_command(vars_dict):
         export snowflake_load_database="RAW" &&
         dbt deps --profiles-dir profile &&
         export SNOWFLAKE_TRANSFORM_WAREHOUSE="TRANSFORMING_XL" &&
+        echo $SNOWFLAKE_TRANSFORM_WAREHOUSE &&
         dbt run --profiles-dir profile --target prod --models snowplow --full-refresh --vars '{json_dict}'
         """
 
