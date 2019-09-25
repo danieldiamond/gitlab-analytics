@@ -1,23 +1,33 @@
+# ======
+# Project Details
+# ======
 name: 'gitlab_snowflake'
 version: '1.0'
-
 profile: 'gitlab-snowflake'
 
+# ======
+# File Path Configs
+# ======
 source-paths: ["models"]
 test-paths: ["tests"]
 data-paths: ["data"]
 macro-paths: ["macros"]
-
 target-path: "target"
 clean-targets:
     - "target"
     - "dbt_modules"
 
+# ======
+# Snowflake Configs
+# ======
 quoting:
     database: true
     identifier: false
     schema: false
 
+# ======
+# Run Hooks
+# ======
 on-run-start:
     - "{{ dbt_logging_start('on run start hooks') }}"
     - "{{resume_warehouse(var('resume_warehouse', false), var('warehouse_name'))}}"
@@ -28,6 +38,9 @@ on-run-end:
     - "{{grant_usage_to_schemas(schema_name)}}"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
 
+# ======
+# Seed Configs
+# ======
 seeds:
   gitlab_snowflake:
     enabled: true
@@ -40,6 +53,9 @@ seeds:
     enabled: true
     schema: staging
 
+# ======
+# Model Configs
+# ======
 models:
     pre-hook:
       - "{{ logging.log_model_start_event() }}"
@@ -49,11 +65,13 @@ models:
       database: "raw"
       warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
 
+    # Logging Package
     logging:
       schema: meta
       post-hook:
         - "grant select on {{this}} to role reporter"
 
+    # Snowplow Package
     snowplow:
       schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
       tags: ["product"]
@@ -68,6 +86,7 @@ models:
         'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
         'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
 
+    # Snowflake Spend Package
     snowflake_spend:
       enabled: true
       base:
@@ -76,6 +95,7 @@ models:
         materialized: table
         schema: analytics
 
+    # GitLab Models
     gitlab_snowflake:
       enabled: true
       materialized: view
