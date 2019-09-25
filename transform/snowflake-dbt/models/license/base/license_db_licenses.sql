@@ -7,7 +7,7 @@ WITH source AS (
 
   SELECT
     *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY upadated_at DESC) AS rank_in_key
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('license', 'license_db_licenses') }}
 
 ), renamed AS (
@@ -18,7 +18,7 @@ WITH source AS (
     users_count::INTEGER               AS users_count,
     expires_at::TIMESTAMP              AS license_expires_at,
     recurly_subscription_id::INTEGER   AS recurly_subscription_id,
-    plan_name::VARCHAR,                AS plan_name
+    plan_name::VARCHAR                 AS plan_name,
     starts_at::TIMESTAMP               AS license_starts_at,
     zuora_subscription_id::INTEGER     AS zuora_subscription_id,
     previous_users_count::INTEGER      AS previous_users_count,
@@ -32,7 +32,7 @@ WITH source AS (
 
  FROM source
  WHERE rank_in_key = 1
- 
+
 )
 
 SELECT *
