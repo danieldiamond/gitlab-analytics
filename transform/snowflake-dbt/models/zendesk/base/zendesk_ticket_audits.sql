@@ -22,7 +22,7 @@ renamed as (
         --fields
         event                                AS audit_event,
         metadata                             AS audit_metadata,
-        via                                  AS audit_via,
+        via                                  AS audit_via
 
     FROM source
 
