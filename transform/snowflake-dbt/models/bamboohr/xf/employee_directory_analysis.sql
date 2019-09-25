@@ -40,6 +40,11 @@ WITH employee_directory AS (
   SELECT *
   FROM {{ ref('employee_location_factor_snapshots') }}
 
+), cost_center as (
+
+    SELECT *
+    FROM {{ref('cost_center_division_department_mapping')}}
+
 ), joined AS (
 
     SELECT  date_actual,
@@ -65,30 +70,35 @@ WITH employee_directory AS (
       AND COALESCE(valid_to::date, {{max_date_in_analysis}}) > date_actual
     WHERE employee_directory.employee_id IS NOT NULL
 
+), cleaned as (
+
+    SELECT date_actual,
+          employee_id,
+            reports_to,
+            (first_name ||' '|| last_name) AS full_name,
+            work_email,
+            job_title,--the below case when statement is also used in bamboohr_job_info;
+            CASE WHEN division = 'Alliances' THEN 'Alliances'
+                 WHEN division = 'Customer Support' THEN 'Customer Support'
+                 WHEN division = 'Customer Service' THEN 'Customer Success'
+                 WHEN department = 'Data & Analytics' THEN 'Business Operations'
+                ELSE nullif(department, '') END AS department,
+            CASE WHEN department = 'Meltano' THEN 'Meltano'
+                 WHEN division = 'Employee' THEN null
+                 WHEN division = 'Contractor ' THEN null
+                 WHEN division = 'Alliances' Then 'Sales'
+                 WHEN division = 'Customer Support' THEN 'Engineering'
+                 WHEN division = 'Customer Service' THEN 'Sales'
+              ELSE nullif(division, '') END AS division,
+            COALESCE (location_factor, hire_location_factor) as location_factor,
+            is_hire_date,
+            is_termination_date
+    FROM joined
+
 )
 
-SELECT date_actual,
-        employee_id,
-        reports_to,
-        (first_name ||' '|| last_name) AS full_name,
-        work_email,
-        job_title,--the below case when statement is also used in bamboohr_job_info;
-        CASE WHEN division = 'Alliances' THEN 'Alliances'
-             WHEN division = 'Customer Support' THEN 'Customer Support'
-             WHEN division = 'Customer Service' THEN 'Customer Success'
-             WHEN department = 'Data & Analytics' THEN 'Business Operations'
-            ELSE nullif(department, '') END AS department,
-        CASE WHEN department = 'Meltano' THEN 'Meltano'
-             WHEN division = 'Employee' THEN null
-             WHEN division = 'Contractor ' THEN null
-             WHEN division = 'Alliances' Then 'Sales'
-             WHEN division = 'Customer Support' THEN 'Engineering'
-             WHEN division = 'Customer Service' THEN 'Sales'
-          ELSE nullif(division, '') END AS division,
-        COALESCE (location_factor, hire_location_factor) as location_factor,
-        is_hire_date,
-        is_termination_date
-FROM joined
-ORDER BY date_actual
---
---AND termination_date IS NULL
+SELECT cleaned.*, cost_center.cost_center
+FROM cleaned
+LEFT JOIN cost_center
+  ON cleaned.department=cost_center.department
+ AND cleaned.division=cost_center.division
