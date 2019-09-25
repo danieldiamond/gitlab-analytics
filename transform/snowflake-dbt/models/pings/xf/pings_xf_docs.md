@@ -41,6 +41,6 @@ The model unpacks the pings usage data stored in json column `stats_used` in mod
   * full_ping_name: it replicates what is done in `pings_list` model. It takes the key and replaces the `.` to `_`. 
   * ping_value: the value of the key-value pair. In the example, it is . In our model this is the value of the metrics we calculate 
   
-* pivot manually the CTE created above. The `pings_list` gives us the full list of columns that need to be in the final table. We iterate through each element of the list (each value of `full_ping_name` column in `pings_list` model) and find the MAX of `ping_value` (actually we can get only one row with a `ping_value` not null)
+* pivot manually the CTE created above. The `pings_list` gives us the full list of columns that need to be in the final table. We iterate through each element of the list (each value of `full_ping_name` column in `pings_list` model) and find the MAX of `ping_value` (actually we can get only one row with a `ping_value` not null).
 
 {% enddocs %}
