@@ -9,7 +9,7 @@ models:
           - not_null
           - unique
 
-  - name: license_db_add_ons
+  - name: license_db_granted_add_ons
     description: This model is the data from tap-postgres for the granted_add_ons table from license.gitlab.com. This data represents which add_ons are valid to which licenses.
     columns:
       - name: granted_add_on_id
@@ -20,13 +20,13 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('licenses_db_licenses')
+              to: ref('license_db_licenses')
               field: license_id
       - name: add_on_id
         tests:
           - not_null
           - relationships:
-              to: ref('licenses_db_add_ons')
+              to: ref('license_db_add_ons')
               field: add_on_id
 
   - name: license_db_licenses
