@@ -20,7 +20,7 @@ renamed as (
         author_id                            AS author_id,
 
         --fields
-        event                                AS audit_event,
+        events                               AS audit_events,
         metadata                             AS audit_metadata,
         via                                  AS audit_via
 
