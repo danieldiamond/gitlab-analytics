@@ -34,4 +34,4 @@ WITH fishtown as (
 
 SELECT *
 FROM unioned
-WHERE event_id NOT IN (SELECT * FROM events_to_ignore)
+WHERE event_id NOT IN (SELECT event_id FROM events_to_ignore)
