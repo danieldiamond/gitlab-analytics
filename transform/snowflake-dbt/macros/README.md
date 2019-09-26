@@ -98,7 +98,7 @@ Usage:
 Used in:
 - gitlab_dotcom/
 
-## Grants ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/warehouse/grant_usage_to_schema.sql))
+## Grants ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/warehouse/grant_usage_to_schemas.sql))
 This macro...
 Usage:
 ```
