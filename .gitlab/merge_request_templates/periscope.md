@@ -48,6 +48,8 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
    * [ ] Request approval from stakeholder if applicable
    * [ ] Assign to reviewer on the data team
    * [ ] Make it clear in the issue description that this is a re-evaluation if this is not a new dashboard.  
+   * [ ] If it is a dashboard re-evaluation, please add into the dashboard title "WIP". 
+
 
 * Housekeeping
   - [ ] Assigned to a member of the data team
@@ -56,6 +58,7 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
 
 ### Reviewer Checklist
 * Review Items
+   * [ ] If dashboard, re-evaluation, first take off official badge. 
    * [ ] SQL formatted using [GitLab Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
    * [ ] Python / R reviewed for content, formatting, and necessity
    * [ ] Filters, if relevant
