@@ -1,6 +1,5 @@
-{{
-    config({
-        "schema": "sensitive"
+{{ config({
+    "materialized": "ephemeral"
     })
 }}
 

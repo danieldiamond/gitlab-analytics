@@ -90,18 +90,18 @@ models:
           tests:
             - not_null
             - relationships:
-                to: ref('netsuite_fivetran_currencies')
+                to: ref('netsuite_currencies')
                 field: currency_id
         - name: department_id
           tests:
             - relationships:
-                to: ref('netsuite_fivetran_transaction_lines')
+                to: ref('netsuite_transaction_lines')
                 field: transaction_line_id
         - name: expense_type_id
         - name: parent_account_id
           tests:
             - relationships:
-                to: ref('netsuite_fivetran_accounts')
+                to: ref('netsuite_accounts')
                 field: account_id
         - name: account_type
           tests:
@@ -137,7 +137,7 @@ models:
           tests:
             - not_null
             - relationships:
-                to: ref('netsuite_fivetran_accounting_periods')
+                to: ref('netsuite_accounting_periods')
                 field: accounting_period_id
         - name: average_budget_rate
           tests:
@@ -161,13 +161,13 @@ models:
           tests:
             - not_null
             - relationships:
-                to: ref('netsuite_fivetran_subsidiaries')
+                to: ref('netsuite_subsidiaries')
                 field: subsidiary_id
         - name: to_subsidiary_id
           tests:
             - not_null
             - relationships:
-                to: ref('netsuite_fivetran_subsidiaries')
+                to: ref('netsuite_subsidiaries')
                 field: subsidiary_id
     - name: netsuite_currencies
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/currencies.html)"
@@ -204,23 +204,23 @@ models:
           tests:
             - not_null
             - relationships:
-                to: ref('netsuite_fivetran_subsidiaries')
+                to: ref('netsuite_subsidiaries')
                 field: subsidiary_id
         - name: currency_id
           tests:
             - not_null
             - relationships:
-                to: ref('netsuite_fivetran_currencies')
+                to: ref('netsuite_currencies')
                 field: currency_id
         - name: department_id
           tests:
             - relationships:
-                to: ref('netsuite_fivetran_departments')
+                to: ref('netsuite_departments')
                 field: department_id
         - name: parent_id
           tests:
             - relationships:
-                to: ref('netsuite_fivetran_customers')
+                to: ref('netsuite_customers')
                 field: customer_id
         - name: rev_rec_forecast_rule_id
         - name: customer_balance
@@ -242,7 +242,7 @@ models:
         - name: parent_department_id
           tests:
             - relationships:
-                to: ref('netsuite_fivetran_departments')
+                to: ref('netsuite_departments')
                 field: department_id
         - name: is_department_inactive
           tests:
@@ -282,7 +282,7 @@ models:
           tests:
             - not_null
             - relationships:
-                to: ref('netsuite_fivetran_transactions')
+                to: ref('netsuite_transactions')
                 field: transaction_id
         - name: transaction_line_id
           tests:
@@ -290,18 +290,18 @@ models:
         - name: account_id
           tests:
             - relationships:
-                to: ref('netsuite_fivetran_accounts')
+                to: ref('netsuite_accounts')
                 field: account_id
         - name: department_id
           tests:
             - relationships:
-                to: ref('netsuite_fivetran_departments')
+                to: ref('netsuite_departments')
                 field: department_id
         - name: subsidiary_id
           tests:
             - not_null
             - relationships:
-                to: ref('netsuite_fivetran_subsidiaries')
+                to: ref('netsuite_subsidiaries')
                 field: subsidiary_id
         - name: memo
         - name: amount
@@ -321,13 +321,13 @@ models:
         - name: accounting_period_id
           tests:
             - relationships:
-                to: ref('netsuite_fivetran_accounting_periods')
+                to: ref('netsuite_accounting_periods')
                 field: accounting_period_id
         - name: currency_id
           tests:
             - not_null
             - relationships:
-                to: ref('netsuite_fivetran_currencies')
+                to: ref('netsuite_currencies')
                 field: currency_id
         - name: transaction_type
           tests:
@@ -364,12 +364,12 @@ models:
           tests:
             - not_null
             - relationships:
-                to: ref('netsuite_fivetran_currencies')
+                to: ref('netsuite_currencies')
                 field: currency_id
         - name: subsidiary_id
           tests:
             - relationships:
-                to: ref('netsuite_fivetran_subsidiaries')
+                to: ref('netsuite_subsidiaries')
                 field: subsidiary_id
         - name: vendor_balance
           tests:
