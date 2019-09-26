@@ -1,7 +1,7 @@
 version: 2
 
 models:
-    - name: netsuite_fivetran_accounting_periods
+    - name: netsuite_accounting_periods
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/accountingperiod.html)"
       columns:
         - name: accounting_period_unique_id
@@ -71,7 +71,7 @@ models:
         - name: is_year
           tests:
             - not_null
-    - name: netsuite_fivetran_accounts
+    - name: netsuite_accounts
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/account.html)"
       columns:
         - name: account_id
@@ -123,7 +123,7 @@ models:
         - name: is_account_including_child_subscriptions
         - name: is_leftside_account
         - name: is_summary_account
-    - name: netsuite_fivetran_consolidated_exchange_rates
+    - name: netsuite_consolidated_exchange_rates
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/consolidatedexchangerate.html)"
       columns:
         - name: consolidated_exchange_rate_id
@@ -169,7 +169,7 @@ models:
             - relationships:
                 to: ref('netsuite_fivetran_subsidiaries')
                 field: subsidiary_id
-    - name: netsuite_fivetran_currencies
+    - name: netsuite_currencies
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/currencies.html)"
       columns:
         - name: currency_id
@@ -186,7 +186,7 @@ models:
         - name: decimal_precision
             - not_null
         - name: is_currency_inactive
-    - name: netsuite_fivetran_customers
+    - name: netsuite_customers
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/customer.html)"
       columns:
         - name: customer_id
@@ -227,7 +227,7 @@ models:
           tests:
             - not_null
         - name: days_overdue
-    - name: netsuite_fivetran_departments
+    - name: netsuite_departments
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/department.html)"
       columns:
         - name: department_id
@@ -247,7 +247,7 @@ models:
         - name: is_department_inactive
           tests:
             - not_null
-    - name: netsuite_fivetran_subsidiaries
+    - name: netsuite_subsidiaries
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/subsidiaries.html)"
       columns:
         - name: subsidiary_id
@@ -271,7 +271,7 @@ models:
         - name: is_elimination_subsidiary
           tests:
             - not_null
-    - name: netsuite_fivetran_transaction_lines
+    - name: netsuite_transaction_lines
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/transaction_lines.html)"
       columns:
         - name: transaction_lines_unique_id
@@ -310,7 +310,7 @@ models:
         - name: gross_amount
           tests:
             - not_null
-    - name: netsuite_fivetran_transactions
+    - name: netsuite_transactions
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/transaction.html)"
       columns:
         - name: transaction_id
@@ -352,7 +352,7 @@ models:
         - name: sales_effective_date
           tests:
             - not_null
-    - name: netsuite_fivetran_vendors
+    - name: netsuite_vendors
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/vendor.html)"
       columns:
         - name: vendor_id
