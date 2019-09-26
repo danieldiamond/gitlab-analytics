@@ -42,8 +42,8 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/.gitlab-ci.yml'
-    AND page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/edit\/(.)*'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/edit\/(([0-9A-Za-z_.-])*){2,}\/.gitlab-ci.yml'
+
 )
 
 , gitlab_ci_yaml_viewed AS (
@@ -57,10 +57,8 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/.gitlab-ci.yml'
-    AND page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/blob\/(.)*'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/blob\/(([0-9A-Za-z_.-])*){2,}\/.gitlab-ci.yml'
     AND page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/edit\/(.)*'
-
 
 )
 
@@ -161,7 +159,7 @@ WITH snowplow_page_views AS (
     FROM {{ event_cte }}
 
     {%- if not loop.last %}
-      UNION
+    UNION
     {%- endif %}
 
   {% endfor -%}
