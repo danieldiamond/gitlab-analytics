@@ -15,9 +15,12 @@ WITH fishtown as (
     SELECT *
     FROM {{ ref('snowplow_gitlab_events') }}
 
-),
+), events_to_ignore as (
 
-unioned AS (
+    SELECT event_id
+    FROM {{ ref('snowplow_duplicate_events') }}
+
+), unioned AS (
 
     SELECT *
     FROM gitlab
@@ -26,13 +29,6 @@ unioned AS (
 
     SELECT *
     FROM fishtown
-
-), events_to_ignore as (
-
-    SELECT event_id
-    FROM unioned
-    GROUP BY 1
-    HAVING count (*) > 1
 
 )
 
