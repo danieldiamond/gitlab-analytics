@@ -71,11 +71,10 @@ models:
             - not_null
 
     - name: zendesk_ticket_audits
-      description: This is the base model for Zendesk ticket audits
+      description: This is the base model for Zendesk ticket audit events
       columns:
-      - name: id
+      - name: audit_id
         tests:
-            - unique
             - not_null
       - name: ticket_id
         tests:
