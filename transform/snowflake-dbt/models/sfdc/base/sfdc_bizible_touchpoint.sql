@@ -7,7 +7,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id                                      AS bizible_touchpoint_id,
+      id                                      AS touchpoint_id,
       bizible2__bizible_person__c             AS bizible_person_id,
 
       -- sfdc object lookups
@@ -18,7 +18,6 @@ WITH source AS (
       -- attribution counts
       bizible2__count_first_touch__c          AS bizible_count_first_touch,
       bizible2__count_lead_creation_touch__c  AS bizible_count_lead_creation_touch,
-      bizible2__count_custom_model__c         AS bizible_attribution_percent_full_path,
       bizible2__count_u_shaped__c             AS bizible_count_u_shaped,
 
       -- touchpoint info

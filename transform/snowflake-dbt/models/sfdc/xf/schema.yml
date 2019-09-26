@@ -27,6 +27,12 @@ models:
         tests:
           - not_null
           - unique
+  - name: sfdc_bizible_touchpoint
+    columns:
+      - name: touchpoint_id
+        tests:
+          - not_null
+          - unique
   - name: sfdc_campaign_xf
     columns:
       - name: campaign_id
