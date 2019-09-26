@@ -43,7 +43,7 @@ From snowplow database, at the moment we track the following events:
 
 {% docs verify_snowplow_smau_events %}
 
-This model provides a summary of relevant activation events for Plan Stage coming from snowplow frontend events (pageviews and events). A summary of all activation events is at the moment defined in this [issue](https://gitlab.com/gitlab-org/telemetry/issues/60).
+This model provides a summary of relevant activation events for Verify Stage coming from snowplow frontend events (pageviews and events). A summary of all activation events is at the moment defined in this [issue](https://gitlab.com/gitlab-org/telemetry/issues/50).
 
 From snowplow database, at the moment we track the following events:
 
