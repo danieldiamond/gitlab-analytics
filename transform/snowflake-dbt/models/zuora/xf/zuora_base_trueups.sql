@@ -1,8 +1,8 @@
 WITH invoice_details AS (
 
-    SELECT *
-    FROM {{ ref('zuora_base_invoice_details') }}
-    WHERE charge_name ILIKE '%Trueup%'
+  SELECT *
+  FROM {{ ref('zuora_base_invoice_details') }}
+  WHERE charge_name ILIKE '%Trueup%'
 
 )
 
@@ -20,5 +20,8 @@ SELECT
   charge_name,
   service_start_date,
   charge_amount,
-  charge_amount/12              AS mrr
+  charge_amount/12              AS mrr,
+  unit_of_measure,
+  unit_price
+
 FROM invoice_details
