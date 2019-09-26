@@ -30,3 +30,6 @@ models:
 
     -   name: snowplow_unnested_errors
         description: This is the bad events table which is the union of the Fishtown and GitLab tables.
+    
+    -   name: snowplow_duplicated_events
+        description: This is a table that contains the duplicated event ids across the entire data set and is used to remove them from downstream models.
