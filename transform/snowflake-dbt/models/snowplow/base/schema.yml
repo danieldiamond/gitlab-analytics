@@ -34,6 +34,3 @@ models:
     - name: snowplow_duplicate_events
       description: This is a table that contains the duplicated event ids across the entire data set and is used to remove them from downstream models.
       columns:
-          - name: event_id
-            tests:
-                - unique
