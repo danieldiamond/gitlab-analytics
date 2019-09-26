@@ -17,8 +17,8 @@ WITH source AS (
     license_id::INTEGER    AS license_id,
     add_on_id::INTEGER     AS add_on_id,
     quantity::INTEGER      AS quantity,
-    created_at::TIMESTAMP  AS granted_add_on_created_at,
-    updated_at::TIMESTAMP  AS granted_add_on_updated_at
+    created_at::TIMESTAMP  AS created_at,
+    updated_at::TIMESTAMP  AS updated_at
  FROM source
  WHERE rank_in_key = 1
 
