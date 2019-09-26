@@ -24,6 +24,7 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
    * [ ] Does the dashboard provide the data requested?
    * [ ] Is the data in the dashboard correct?
    * [ ] Does the data align with the existing single source of truth and across applicable reporting in Periscope and Google Sheets?
+   * [ ] Is this a new dashboard or a re-evaluation of a dashboard change? 
 
 ### Submitter Checklist
 * Review Items
@@ -46,6 +47,7 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
    * [ ] Tooltips are used where appropriate and show relevant values
    * [ ] Request approval from stakeholder if applicable
    * [ ] Assign to reviewer on the data team
+   * [ ] Make it clear in the issue description that this is a re-evaluation if this is not a new dashboard.  
 
 * Housekeeping
   - [ ] Assigned to a member of the data team
@@ -71,6 +73,7 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
    * [ ] Legend is clear
    * [ ] Text Tile for "What am I looking at?" and more detailed information, leveraging hyperlinks instead of URLs
    * [ ] Tooltips are used where appropriate and show relevant values
+   * [ ] If this is a dashboard re-evaluation, check with the business logic owners if the new definitions are correct. 
    * [ ] Remove `WIP:` from title
    * [ ] Remove from `WIP` topic
    * [ ] Add approval badge
