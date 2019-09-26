@@ -6,7 +6,7 @@
 
 WITH fishtown AS (
     
-    SELECT event_id
+    SELECT nullif(jsontext['event_id']::STRING, '') AS event_id,
     FROM {{ source('fishtown_snowplow', 'events') }}
     GROUP BY 1
     HAVING count (*) > 1
@@ -28,7 +28,7 @@ WITH fishtown AS (
     SELECT *
     FROM gitlab
 
-),
+)
 
 SELECT *
 FROM unioned
