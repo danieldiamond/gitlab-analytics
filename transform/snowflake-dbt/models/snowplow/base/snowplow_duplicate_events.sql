@@ -7,26 +7,30 @@
 
 WITH fishtown AS (
     
-    SELECT nullif(jsontext['event_id']::STRING, '') AS event_id
+    SELECT 
+        nullif(jsontext['event_id']::STRING, '') AS event_id,
+        count(event_id)                          AS event_count
     FROM {{ source('fishtown_snowplow', 'events') }}
     GROUP BY 1
-    HAVING count (*) > 1
+    HAVING event_count > 1
 
 ), gitlab AS (
 
-    SELECT event_id
+    SELECT 
+        event_id,
+        count(event_id)  AS event_count
     FROM {{ source('gitlab_snowplow', 'events') }}
     GROUP BY 1
-    HAVING count (*) > 1  
+    HAVING event_count > 1  
 
 ), unioned AS (
 
-    SELECT * 
+    SELECT event_id 
     FROM fishtown
 
     UNION
 
-    SELECT *
+    SELECT event_id
     FROM gitlab
 
 )
