@@ -26,7 +26,7 @@ WITH source AS (
     trueup_from::TIMESTAMP             AS trueup_from,
     trueup_to::TIMESTAMP               AS trueup_to,
     plan_code::VARCHAR                 AS plan_code,
-    trial::BOOLEAN                     AS is_boolean,
+    trial::BOOLEAN                     AS is_trial,
     created_at::TIMESTAMP              AS created_at,
     updated_at::TIMESTAMP              AS updated_at
  FROM source
