@@ -1,4 +1,5 @@
 {{config({
+    "materialization": "table",
     "unique_key":"event_id",
     "schema":current_date_schema('snowplow')
   })
