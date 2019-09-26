@@ -36,8 +36,7 @@ models:
         tests:
           - not_null
           - unique
-
-      - name: license_starts_at
+      - name: starts_at
         tests:
           - not_null
   

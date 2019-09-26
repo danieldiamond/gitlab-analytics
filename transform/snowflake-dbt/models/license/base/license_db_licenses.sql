@@ -19,7 +19,7 @@ WITH source AS (
     expires_at::TIMESTAMP              AS license_expires_at,
     recurly_subscription_id::VARCHAR   AS recurly_subscription_id,
     plan_name::VARCHAR                 AS plan_name,
-    starts_at::TIMESTAMP               AS license_starts_at,
+    starts_at::TIMESTAMP               AS starts_at,
     zuora_subscription_id::VARCHAR     AS zuora_subscription_id,
     previous_users_count::INTEGER      AS previous_users_count,
     trueup_quantity::INTEGER           AS trueup_quantity,
