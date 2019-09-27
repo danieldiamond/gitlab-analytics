@@ -8,7 +8,7 @@ sources:
     loaded_at_field: _FIVETRAN_SYNCED # configure for all sources
 
     quoting:
-      database: false
+      database: true
       schema: false
       identifier: false
 
