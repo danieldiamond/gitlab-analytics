@@ -122,6 +122,11 @@ models:
     greenhouse:
       schema: sensitive
 
+    netsuite:
+      materialized: table
+      base:
+        schema: staging
+
     netsuite_stitch:
       materialized: table
 
