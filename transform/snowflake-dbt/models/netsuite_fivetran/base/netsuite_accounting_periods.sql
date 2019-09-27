@@ -1,40 +1,46 @@
-with source AS (
+{{ config({
+    "schema": "staging"
+    })
+}}
+
+WITH source AS (
 
     SELECT *
     FROM {{ source('netsuite', 'accounting_periods') }}
 
 ), renamed AS (
 
-    SELECT {{ dbt_utils.surrogate_key('accounting_period_id', 'full_name') }} AS accounting_period_unique_id,
-           accounting_period_id::float                   AS accounting_period_id,
-           name::varchar                                 AS account_period_name,
-           full_name::varchar                            AS accounting_period_full_name,
-           --keys
-           fiscal_calendar_id::float                     AS fiscal_calendar_id,
-           parent_id::float                              AS parent_id,
-           year_id::float                                AS year_id,
+    SELECT {{ dbt_utils.surrogate_key('accounting_period_id', 'full_name') }}
+                                                         AS accounting_period_unique_id,
+           --Primary Key
+           accounting_period_id::FLOAT                   AS accounting_period_id,
 
-           -- dates
-           closed_on::timestamp_tz                       AS accounting_period_close_date,
-           ending::timestamp_tz                          AS accounting_period_end_date,
-           starting::timestamp_tz                        AS accounting_period_starting_date,
-           -- info
-           locked_accounts_payable::boolean              AS is_accounts_payable_locked,
-           locked_accounts_receivable::boolean           AS is_accounts_receivables_locked,
-           locked_all::boolean                           AS is_all_locked,
-           locked_payroll::boolean                       AS is_payroll_locked,
+          --Foreign Keys
+           parent_id::FLOAT                              AS parent_id,
+           year_id::FLOAT                                AS year_id,
 
-           closed::boolean                               AS is_accouting_period_closed,
-           closed_accounts_payable::boolean              AS is_accounts_payable_closed,
-           closed_accounts_receivable::boolean           AS is_accounts_receivables_closed,
-           closed_all::boolean                           AS is_all_closed,
-           closed_payroll::boolean                       AS is_payroll_closed,
+           --Info
+           name::VARCHAR                                 AS account_period_name,
+           full_name::VARCHAR                            AS accounting_period_full_name,
+           fiscal_calendar_id::FLOAT                     AS fiscal_calendar_id,
+           closed_on::TIMESTAMP_TZ                       AS accounting_period_close_date,
+           ending::TIMESTAMP_TZ                          AS accounting_period_end_date,
+           starting::TIMESTAMP_TZ                        AS accounting_period_starting_date,
 
-           isinactive::boolean                           AS is_accounting_period_inactive,
-           is_adjustment::boolean                        AS is_accounting_period_adjustment,
-
-           quarter::boolean                              AS is_quarter,
-           year_0::boolean                               AS is_year
+           --Meta
+           locked_accounts_payable::BOOLEAN              AS is_accounts_payable_locked,
+           locked_accounts_receivable::BOOLEAN           AS is_accounts_receivables_locked,
+           locked_all::BOOLEAN                           AS is_all_locked,
+           locked_payroll::BOOLEAN                       AS is_payroll_locked,
+           closed::BOOLEAN                               AS is_accouting_period_closed,
+           closed_accounts_payable::BOOLEAN              AS is_accounts_payable_closed,
+           closed_accounts_receivable::BOOLEAN           AS is_accounts_receivables_closed,
+           closed_all::BOOLEAN                           AS is_all_closed,
+           closed_payroll::BOOLEAN                       AS is_payroll_closed,
+           isinactive::BOOLEAN                           AS is_accounting_period_inactive,
+           is_adjustment::BOOLEAN                        AS is_accounting_period_adjustment,
+           quarter::BOOLEAN                              AS is_quarter,
+           year_0::BOOLEAN                               AS is_year
 
     FROM source
 

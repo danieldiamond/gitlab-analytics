@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH source AS (
 
     SELECT *
@@ -5,21 +10,24 @@ WITH source AS (
 
 ), renamed AS (
 
-    SELECT transaction_id::float                AS transaction_id,
-           entity_id::float                     AS entity_id,
-           accounting_period_id::float          AS accounting_period_id,
-           currency_id::float                   AS currency_id,
-           transaction_type::varchar            AS transaction_type,
-           external_ref_number::varchar         AS external_transaction_id,
-           transaction_number::varchar          AS transaction_number,
-           memo::varchar                        AS memo,
-           opening_balance_transaction::varchar AS balance,
-           exchange_rate::float                 AS exchange_rate,
-           weighted_total::float                AS total,
-           status::varchar                      AS status,
-           due_date::timestamp_tz               AS due_date,
-           trandate::timestamp_tz               AS transaction_date,
-           sales_effective_date::timestamp_tz   AS sales_effective_date
+    SELECT --Primary Key
+           transaction_id::FLOAT                AS transaction_id,
+
+           --Info
+           entity_id::FLOAT                     AS entity_id,
+           accounting_period_id::FLOAT          AS accounting_period_id,
+           currency_id::FLOAT                   AS currency_id,
+           transaction_type::VARCHAR            AS transaction_type,
+           external_ref_number::VARCHAR         AS external_transaction_id,
+           transaction_number::VARCHAR          AS transaction_number,
+           memo::VARCHAR                        AS memo,
+           opening_balance_transaction::VARCHAR AS balance,
+           exchange_rate::FLOAT                 AS exchange_rate,
+           weighted_total::FLOAT                AS total,
+           status::VARCHAR                      AS status,
+           due_date::TIMESTAMP_TZ               AS due_date,
+           trandate::TIMESTAMP_TZ               AS transaction_date,
+           sales_effective_date::TIMESTAMP_TZ   AS sales_effective_date
 
     FROM source
 

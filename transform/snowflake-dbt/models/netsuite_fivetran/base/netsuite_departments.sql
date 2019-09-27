@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH source AS (
 
     SELECT *
@@ -5,11 +10,18 @@ WITH source AS (
 
 ), renamed AS (
 
-    SELECT department_id::float       AS department_id,
-           name::varchar              AS department_name,
-           full_name::varchar         AS department_full_name,
-           parent_id::float           AS parent_department_id,
-           isinactive::boolean        AS is_department_inactive
+    SELECT --Primary Key
+           department_id::FLOAT       AS department_id,
+
+           --Foreign Key
+           parent_id::FLOAT           AS parent_department_id,
+
+          --Info
+           name::VARCHAR              AS department_name,
+           full_name::VARCHAR         AS department_full_name,
+
+           --Meta
+           isinactive::BOOLEAN        AS is_department_inactive
 
     FROM source
 

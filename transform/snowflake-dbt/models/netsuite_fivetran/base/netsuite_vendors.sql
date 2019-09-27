@@ -3,22 +3,29 @@
     })
 }}
 
-with source AS (
+WITH source AS (
 
     SELECT *
     FROM {{ source('netsuite', 'vendors') }}
 
 ), renamed AS (
 
-    SELECT vendor_id::float                   AS vendor_id,
-           companyname::varchar               AS vendor_name,
-           currency_id::float                 AS currency_id,
-           represents_subsidiary_id::float    AS subsidiary_id,
-           openbalance::float                 AS vendor_balance,
-           comments::varchar                  AS vendor_comments,
-           is1099eligible::boolean            AS is_1099_eligible,
-           isinactive::boolean                AS is_inactive,
-           is_person::boolean                 AS is_person
+    SELECT --Primary Key
+           vendor_id::FLOAT                   AS vendor_id,
+
+           --Foreign Key
+           represents_subsidiary_id::FLOAT    AS subsidiary_id,
+           currency_id::FLOAT                 AS currency_id,
+
+           --Info
+           companyname::VARCHAR               AS vendor_name,
+           openbalance::FLOAT                 AS vendor_balance,
+           comments::VARCHAR                  AS vendor_comments,
+
+           --Meta
+           is1099eligible::BOOLEAN            AS is_1099_eligible,
+           isinactive::BOOLEAN                AS is_inactive,
+           is_person::BOOLEAN                 AS is_person
 
     FROM source
 

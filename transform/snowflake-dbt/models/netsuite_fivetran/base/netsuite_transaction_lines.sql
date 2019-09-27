@@ -10,18 +10,21 @@ WITH source AS (
 
 ), renamed AS (
 
-    SELECT {{ dbt_utils.surrogate_key('transaction_id', 'transaction_line_id') }} AS transaction_lines_unique_id,
-          -- keys
-          transaction_id::float         AS transaction_id,
-          transaction_line_id::float    AS transaction_line_id,
-          account_id::float             AS account_id,
-          department_id::float          AS department_id,
-          subsidiary_id::float          AS subsidiary_id,
+    SELECT {{ dbt_utils.surrogate_key('transaction_id', 'transaction_line_id') }}
+                                        AS transaction_lines_unique_id,
+          --Primary Key
+          transaction_id::FLOAT         AS transaction_id,
+          transaction_line_id::FLOAT    AS transaction_line_id,
+
+          --Foreign Keys
+          account_id::FLOAT             AS account_id,
+          department_id::FLOAT          AS department_id,
+          subsidiary_id::FLOAT          AS subsidiary_id,
 
           -- info
-          memo::varchar                 AS memo,
-          amount::float                 AS amount,
-          gross_amount::float           AS gross_amount
+          memo::VARCHAR                 AS memo,
+          amount::FLOAT                 AS amount,
+          gross_amount::FLOAT           AS gross_amount
 
     FROM source
 
