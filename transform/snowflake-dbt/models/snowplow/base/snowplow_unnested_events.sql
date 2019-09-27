@@ -1,6 +1,6 @@
 {{config({
     "materialized":"table",
-    "unique_key":"base64_event",
+    "unique_key":"event_id",
     "schema":current_date_schema('snowplow')
   })
 }}
@@ -15,9 +15,12 @@ WITH fishtown as (
     SELECT *
     FROM {{ ref('snowplow_gitlab_events') }}
 
-),
+), events_to_ignore as (
 
-unioned AS (
+    SELECT event_id
+    FROM {{ ref('snowplow_duplicate_events') }}
+
+), unioned AS (
 
     SELECT *
     FROM gitlab
@@ -31,3 +34,4 @@ unioned AS (
 
 SELECT *
 FROM unioned
+WHERE event_id NOT IN (SELECT event_id FROM events_to_ignore)

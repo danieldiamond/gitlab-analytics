@@ -20,12 +20,11 @@ models:
           - name: brand_id
           - name: group_id
           - name: requester_id
-#            tests:
-#              - not_null
-#              - relationships:
-#                 to: ref('zendesk_users')
-#                 field: user_id
-# https://gitlab.com/gitlab-data/analytics/issues/2517
+            tests:
+              - not_null
+              - relationships:
+                 to: ref('zendesk_users')
+                 field: user_id
           - name: submitter_id
             tests:
               - not_null
