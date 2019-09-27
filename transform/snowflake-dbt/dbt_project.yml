@@ -143,35 +143,9 @@ models:
       tags: ["product"]
       materialized: table
 
-      gitter:
-        enabled: false
-        transformed:
-          materialized: table
-
-      gitlab_dotcom:
-        tags: ["product"]
-        enabled: true
-        xf:
-          materialized: table
-
-      greenhouse:
-        schema: sensitive
-        enabled: true
-
-      netsuite_stitch:
-        enabled: true
-        base:
-          materialized: table
-        xf:
-          materialized: table
-
-      pings:
-        tags: ["product"]
-        enabled: true
-        materialized: table
-
-      pipe2spend:
-        enabled: false
+    snowplow:
+      tags: ["product"]
+      xf:
         materialized: table
 
     snowplow_combined:
