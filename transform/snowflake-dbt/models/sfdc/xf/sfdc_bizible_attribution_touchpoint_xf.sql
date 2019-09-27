@@ -23,7 +23,7 @@ WITH opps AS (
         WHEN marketing_channel_path IN ('Email.Other', 'Email.Newsletter','Email.Outreach')
           THEN 'Email'
         WHEN marketing_channel_path IN ('Field Event','Partners.Google','Brand.Corporate Event','Conference','Speaking Session')
-                  OR (medium = 'Field Event (old)' AND marketing_channel_path = 'Other')
+                  OR (bizible_medium = 'Field Event (old)' AND marketing_channel_path = 'Other')
           THEN 'Field Event'
         WHEN marketing_channel_path IN ('Paid Social.Facebook','Paid Social.LinkedIn','Paid Social.Twitter','Paid Social.YouTube')
           THEN 'Paid Social'
@@ -47,8 +47,8 @@ WITH opps AS (
         WHEN marketing_channel_path IN ('Sponsorship')
           THEN 'Paid Sponsorship'
         ELSE 'Unknown'
-              END                                                   AS pipe_name,
-      opps.incremental_acv * touches.attribution_percent_full_path  AS iacv_full_path,
+              END                                                           AS pipe_name,
+      opps.incremental_acv * touches.bizible_attribution_percent_full_path  AS iacv_full_path,
       opps.sales_type,
       opps.lead_source,
       opps.record_type_label
