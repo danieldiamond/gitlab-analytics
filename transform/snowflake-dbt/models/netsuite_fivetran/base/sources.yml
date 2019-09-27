@@ -4,7 +4,7 @@ sources:
   - name: netsuite_fivetran
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: netsuite_fivetran
-    loader: fivetran # informational only (free text)
+    loader: Fivetran # informational only (free text)
     loaded_at_field: _FIVETRAN_SYNCED # configure for all sources
 
     quoting:
