@@ -37,7 +37,6 @@ The snowplow events currently included for the Monitor Stage are:
 
 {% enddocs %}
 
-
 {% docs plan_snowplow_smau_events %}
 
 This model provides a summary of relevant activation events for Plan Stage coming from snowplow frontend events (pageviews and events). A summary of all activation events is at the moment defined in this [issue](https://gitlab.com/gitlab-org/telemetry/issues/48).
@@ -55,5 +54,22 @@ From snowplow database, at the moment we track the following events:
 * personal_issues_viewed
 * roadmap_viewed
 * todo_viewed
+
+{% enddocs %}
+
+{% docs verify_snowplow_smau_events %}
+
+This model provides a summary of relevant activation events for Verify Stage coming from snowplow frontend events (pageviews and events). A summary of all activation events is at the moment defined in this [issue](https://gitlab.com/gitlab-org/telemetry/issues/50).
+
+From snowplow database, at the moment we track the following events:
+
+* gitlab_ci_yaml_edited
+* gitlab_ci_yaml_viewed
+* job_list_viewed
+* job_viewed
+* pipeline_charts_viewed
+* pipeline_list_viewed
+* pipeline_schedules_viewed
+* pipeline_viewed
 
 {% enddocs %}
