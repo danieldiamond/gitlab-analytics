@@ -5,11 +5,11 @@ WITH source AS (
 
 ), renamed AS (
 
-    SELECT department_id,
-           name                AS department_name,
-           full_name           AS department_full_name,
-           parent_id           AS parent_department_id,
-           isinactive::boolean AS is_department_inactive
+    SELECT department_id::float       AS department_id,
+           name::varchar              AS department_name,
+           full_name::varchar         AS department_full_name,
+           parent_id::float           AS parent_department_id,
+           isinactive::boolean        AS is_department_inactive
 
     FROM source
 
