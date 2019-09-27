@@ -26,7 +26,7 @@ WITH snowplow_page_views AS (
     page_view_start,
     page_url_path,
     page_view_id
-  FROM {{ ref('snowplow_page_views')}}
+  FROM {{ ref('snowplow_page_views_all')}}
   WHERE page_view_start >= '2019-01-01'
   {% if is_incremental() %}
     AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
@@ -45,7 +45,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/boards\/[0-9]{1,}'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/boards\/[0-9]{1,}'
 
 )
 
@@ -60,7 +60,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/epics(\/)?'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/epics(\/)?'
 
 )
 
@@ -75,7 +75,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/epics\/[0-9]{1,}'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/epics\/[0-9]{1,}'
 )
 
 , issue_list_viewed AS (
@@ -90,7 +90,7 @@ WITH snowplow_page_views AS (
 
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/issues(\/)?'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/issues(\/)?'
 
 )
 
@@ -106,7 +106,7 @@ WITH snowplow_page_views AS (
 
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/issues\/[0-9]{1,}'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/issues\/[0-9]{1,}'
 
 )
 
@@ -121,7 +121,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/labels(\/)?'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/labels(\/)?'
 
 )
 
@@ -136,7 +136,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/milestones(\/)?'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/milestones(\/)?'
 
 )
 
@@ -151,7 +151,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/milestones\/[0-9]{1,}'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/milestones\/[0-9]{1,}'
 
 )
 
@@ -196,7 +196,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([a-zA-Z-])*){2,}\/roadmap(\/)?'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/roadmap(\/)?'
 )
 
 
@@ -218,14 +218,11 @@ WITH snowplow_page_views AS (
 , unioned AS (
   {% for event_cte in event_ctes %}
 
-    (
-      SELECT
-        *
-      FROM {{ event_cte }}
-    )
+    SELECT *
+    FROM {{ event_cte }}
 
-    {%- if not loop.last -%}
-        UNION
+    {%- if not loop.last %}
+      UNION
     {%- endif %}
 
   {% endfor -%}

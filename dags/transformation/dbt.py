@@ -6,21 +6,14 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import BranchPythonOperator
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, gitlab_defaults
+from airflow_utils import slack_failed_task, gitlab_defaults, gitlab_pod_env_vars
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
-pod_env_vars = {
-    "SNOWFLAKE_LOAD_DATABASE": "RAW"
-    if GIT_BRANCH == "master"
-    else f"{GIT_BRANCH.upper()}_RAW",
-    "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
-    if GIT_BRANCH == "master"
-    else f"{GIT_BRANCH.upper()}_ANALYTICS",
-}
+pod_env_vars = {**gitlab_pod_env_vars, **{}}
 
 # Default arguments for the DAG
 default_args = {
@@ -142,7 +135,7 @@ dbt_source_cmd = f"""
     cd analytics/transform/snowflake-dbt/ &&
     export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile &&
-    true # dbt source snapshot-freshness --profiles-dir profile --target docs
+    dbt source snapshot-freshness --profiles-dir profile
 """
 dbt_source_freshness = KubernetesPodOperator(
     **gitlab_defaults,
@@ -177,7 +170,7 @@ dbt_test = KubernetesPodOperator(
     image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
     task_id="dbt-test",
     name="dbt-test",
-    trigger_rule="one_success",
+    trigger_rule="all_done",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,

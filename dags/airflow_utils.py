@@ -1,8 +1,43 @@
-# This file contains common operators/functions to be used across multiple DAGs
-import functools
+""" This file contains common operators/functions to be used across multiple DAGs """
 import os
+import json
+from typing import List
+from datetime import datetime, timedelta, date
 
 from airflow.operators.slack_operator import SlackAPIPostOperator
+
+
+def split_date_parts(day: date, partition: str) -> List[dict]:
+
+    if partition == "month":
+        split_dict = {
+            "year": day.strftime("%Y"),
+            "month": day.strftime("%m"),
+            "part": day.strftime("%Y_%m"),
+        }
+
+    return split_dict
+
+
+def partitions(from_date: date, to_date: date, partition: str) -> List[dict]:
+    """
+    A list of partitions to build.
+    """
+
+    delta = to_date - from_date
+    all_parts = [
+        split_date_parts((from_date + timedelta(days=i)), partition)
+        for i in range(delta.days + 1)
+    ]
+
+    seen = set()
+    parts = []
+    # loops through every day and pulls out unique set of date parts
+    for p in all_parts:
+        if p["part"] not in seen:
+            seen.add(p["part"])
+            parts.append({k: v for k, v in p.items()})
+    return parts
 
 
 def slack_failed_task(context):
@@ -64,3 +99,17 @@ gitlab_defaults = dict(
     is_delete_operator_pod=True,
     namespace=os.environ["NAMESPACE"],
 )
+
+# GitLab default environment variables for worker pods
+env = os.environ.copy()
+GIT_BRANCH = env["GIT_BRANCH"]
+gitlab_pod_env_vars = {
+    "CI_PROJECT_DIR": "/analytics",
+    "EXECUTION_DATE": "{{ next_execution_date }}",
+    "SNOWFLAKE_LOAD_DATABASE": "RAW"
+    if GIT_BRANCH == "master"
+    else f"{GIT_BRANCH.upper()}_RAW",
+    "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
+    if GIT_BRANCH == "master"
+    else f"{GIT_BRANCH.upper()}_ANALYTICS",
+}

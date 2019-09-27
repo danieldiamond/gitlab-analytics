@@ -5,7 +5,7 @@ WITH create_snowplow_smau_events AS (
     user_custom_id      AS gitlab_user_id,
     event_date,
     event_type,
-    page_view_id        AS sk_id,
+    page_view_id        AS event_surrogate_key,
     'snowplow_frontend' AS source_type
   
   FROM {{ ref('create_snowplow_smau_events')}}
@@ -19,7 +19,7 @@ WITH create_snowplow_smau_events AS (
     user_id          AS gitlab_user_id,
     event_date,
     event_type,
-    sk_id,
+    event_surrogate_key,
     'gitlab_backend' AS source_type    
 
   FROM {{ ref('create_gitlab_dotcom_smau_events')}}
@@ -28,21 +28,14 @@ WITH create_snowplow_smau_events AS (
 
 , unioned AS (
   
-  (
-    
     SELECT *
     FROM create_snowplow_smau_events
-    
-  )
-  
-  UNION 
-  
-  (
+
+    UNION 
     
     SELECT *
     FROM create_gitlab_dotcom_smau_events
-    
-  )
+
 )
 
 SELECT * 

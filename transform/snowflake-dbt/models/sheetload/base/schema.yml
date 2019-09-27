@@ -1,7 +1,7 @@
 version: 2
 models:
 - name: sheetload_employee_location_factor
-  description: This is the source of truth connecting an employee number from bamboo to the location factor used for People Ops purposes. The "Comp Data Analysis and Modeling" spreadsheet maintained by the Compensation & Benefits Manager is the SSOT for location factor.
+  description: This is the source of truth connecting an employee number from bamboo to the location factor used for People purposes. The "Comp Data Analysis and Modeling" spreadsheet maintained by the Compensation & Benefits Manager is the SSOT for location factor.
   columns:
   - name: bamboo_employee_number
     tests:
@@ -53,3 +53,5 @@ models:
       - unique
 - name: sheetload_calendar
   description: This is the model that categorizes the events on the CEO's calendar.
+- name: sheetload_rep_quotas_full_fy2020
+  description: This is the model that captures sales data for rep quotas for the full fy2020.
