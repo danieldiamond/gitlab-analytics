@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH netsuite_transaction_lines AS  (
 
   SELECT * FROM {{ref('netsuite_transaction_lines')}}

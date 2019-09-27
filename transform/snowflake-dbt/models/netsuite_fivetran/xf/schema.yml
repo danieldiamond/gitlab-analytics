@@ -2,7 +2,7 @@ version: 2
 
 models:
     - name: netsuite_transaction_lines_xf
-      description: "The base transaction model enriched with account data and masking some sensitive data."
+      description: The base transaction model enriched with account data and masking some sensitive data.
       columns:
         - name: transaction_lines_unique_id
           tests:
