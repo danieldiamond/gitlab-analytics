@@ -6,7 +6,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('netsuite_fivetran', 'transaction_lines') }}
+    FROM {{ source('netsuite', 'transaction_lines') }}
 
 ), renamed AS (
 

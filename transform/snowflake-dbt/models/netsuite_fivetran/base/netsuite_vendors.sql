@@ -1,13 +1,12 @@
-{{
-    config({
-        "schema": "sensitive"
+{{ config({
+    "materialized": "ephemeral"
     })
 }}
 
 with source AS (
 
     SELECT *
-    FROM {{ source('netsuite_fivetran', 'vendors') }}
+    FROM {{ source('netsuite', 'vendors') }}
 
 ), renamed AS (
 

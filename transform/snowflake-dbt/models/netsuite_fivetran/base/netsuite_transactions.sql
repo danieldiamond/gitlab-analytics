@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('netsuite_fivetran', 'transactions') }}
+    FROM {{ source('netsuite', 'transactions') }}
 
 ), renamed AS (
 
