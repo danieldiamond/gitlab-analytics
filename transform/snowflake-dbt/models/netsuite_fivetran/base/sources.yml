@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: netsuite_fivetran
+  - name: netsuite
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: netsuite_fivetran
     loader: Fivetran # informational only (free text)
