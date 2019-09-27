@@ -12,7 +12,8 @@ sources:
       identifier: false
 
     tables:
-      - name: license_db_add_ons
+      - name: add_ons
+        identifier: license_db_add_ons
         columns:
           - name: id
             tests:
