@@ -26,6 +26,7 @@ WITH source AS (
 
     FROM source
     WHERE _fivetran_deleted = 'False'
+    
 )
 
 SELECT *

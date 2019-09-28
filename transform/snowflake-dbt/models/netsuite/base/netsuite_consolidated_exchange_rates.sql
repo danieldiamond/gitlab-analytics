@@ -22,10 +22,9 @@ WITH source AS (
            historical_budget_rate::FLOAT          AS historical_budget_rate,
            historical_rate::FLOAT                 AS historical_rate
 
-
-
     FROM source
     WHERE _fivetran_deleted = 'False'
+    
 )
 
 SELECT *

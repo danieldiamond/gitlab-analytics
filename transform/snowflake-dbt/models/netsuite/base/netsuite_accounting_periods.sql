@@ -15,7 +15,7 @@ WITH source AS (
            year_id::FLOAT                                AS year_id,
 
            --Info
-           name::VARCHAR                                 AS account_period_name,
+           name::VARCHAR                                 AS accounting_period_name,
            full_name::VARCHAR                            AS accounting_period_full_name,
            fiscal_calendar_id::FLOAT                     AS fiscal_calendar_id,
            closed_on::TIMESTAMP_TZ                       AS accounting_period_close_date,
