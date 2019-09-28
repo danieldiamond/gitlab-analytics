@@ -10,7 +10,7 @@ WITH source AS (
       calendar_month::DATE                                  AS calendar_month,
       fiscal_quarter::INT                                   AS fiscal_quarter,
       fiscal_year::INT                                      AS fiscal_year,
-      ZEROIFNULL(NULLIF("FULL_QUOTA",'')::DECIMAL(16,5))    AS full_quota
+      ZEROIFNULL(NULLIF("FULL_QUOTA",'')::DECIMAL(16,5))    AS full_quota,
       sales_rep,
       team,
       type
