@@ -5,15 +5,12 @@ WITH base_departments AS (
 
 ), ultimate_department AS (
 
-    SELECT a.department_id,
-           a.department_name,
-           a.department_full_name,
-           a.parent_department_id,
+    SELECT a.*,
            CASE WHEN a.parent_department_id IS NOT NULL THEN a.parent_department_id
-               ELSE a.department_id
+                ELSE a.department_id
            END                               AS ultimate_department_id,
            CASE WHEN a.parent_department_id IS NOT NULL THEN b.department_name
-               ELSE a.department_name
+                ELSE a.department_name
            END                               AS ultimate_department_name
     FROM base_departments a
     LEFT JOIN base_departments b
