@@ -13,6 +13,7 @@ WITH source AS (
            account_id::FLOAT            AS account_id,
            department_id::FLOAT         AS department_id,
            subsidiary_id::FLOAT         AS subsidiary_id,
+           category_id::FLOAT           AS category_id,
 
            --Info
            amount::FLOAT                AS budget_amount
