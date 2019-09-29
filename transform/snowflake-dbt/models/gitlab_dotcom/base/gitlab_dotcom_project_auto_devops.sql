@@ -7,7 +7,7 @@ WITH source AS (
 
   SELECT
     *,
-    ROW_NUMBER() OVER (PARTITION BY project_id ORDER BY UPDATED_AT DESC) AS rank_in_key
+    ROW_NUMBER() OVER (PARTITION BY project_id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'project_auto_devops') }}
 
 ), renamed AS (
