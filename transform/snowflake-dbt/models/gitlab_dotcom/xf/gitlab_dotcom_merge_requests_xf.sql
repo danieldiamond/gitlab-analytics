@@ -18,8 +18,9 @@ WITH merge_requests AS (
 
 ), agg_labels AS (
 
-    SELECT merge_request_id,
-           ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY merge_request_id ASC) AS agg_label
+    SELECT
+      merge_request_id,
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY merge_request_id ASC) AS agg_label
     FROM merge_requests
     LEFT JOIN label_links
       ON merge_requests.merge_request_id = label_links.target_id
@@ -42,8 +43,7 @@ WITH merge_requests AS (
 
 ), projects AS (
 
-    SELECT
-      *
+    SELECT *
     FROM {{ref('gitlab_dotcom_projects')}}
 
 ), namespace_lineage AS (
@@ -56,22 +56,23 @@ WITH merge_requests AS (
 
 ), joined AS (
 
-    SELECT merge_requests.*,
-           projects.namespace_id,
-           namespace_lineage.ultimate_parent_id,
-           namespace_lineage.namespace_is_internal,
-           ARRAY_TO_STRING(agg_labels.agg_label,'|') AS masked_label_title,
-           merge_request_metrics.merged_at,
-           CASE WHEN merge_requests.target_project_id IN ({{is_project_included_in_engineering_metrics()}}) THEN TRUE
-                ELSE FALSE
-                END AS is_included_in_engineering_metrics,
-           CASE
-            WHEN namespace_is_internal IS NOT NULL
-             AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.agg_label)
-              THEN TRUE
-            ELSE FALSE
-           END AS is_community_contributor_related,
-           TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at, merge_request_metrics.merged_at) AS hours_to_merged_status
+    SELECT
+      merge_requests.*,
+      projects.namespace_id,
+      namespace_lineage.ultimate_parent_id,
+      namespace_lineage.namespace_is_internal,
+      ARRAY_TO_STRING(agg_labels.agg_label,'|') AS masked_label_title,
+      merge_request_metrics.merged_at,
+      CASE WHEN merge_requests.target_project_id IN ({{is_project_included_in_engineering_metrics()}}) THEN TRUE
+          ELSE FALSE
+          END AS is_included_in_engineering_metrics,
+      CASE
+      WHEN namespace_is_internal IS NOT NULL
+        AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.agg_label)
+        THEN TRUE
+      ELSE FALSE
+      END AS is_community_contributor_related,
+      TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at, merge_request_metrics.merged_at) AS hours_to_merged_status
 
     FROM merge_requests
       LEFT JOIN agg_labels

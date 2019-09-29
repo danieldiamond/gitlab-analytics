@@ -4,20 +4,23 @@
 
 WITH projects AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_projects')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_projects')}}
 
 ),
 
 namespaces AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_namespaces')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_namespaces')}}
 
 ),
 
 
 members AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_members')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_members')}}
 
 ),
 

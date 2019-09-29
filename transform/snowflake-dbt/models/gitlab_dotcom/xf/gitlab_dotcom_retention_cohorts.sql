@@ -34,6 +34,7 @@ WITH users AS (
 
 )
 
-SELECT md5(cohort_date || period)                                       AS cohort_key,
-       *
+SELECT
+  md5(cohort_date || period)                                       AS cohort_key,
+  *
 FROM joined
