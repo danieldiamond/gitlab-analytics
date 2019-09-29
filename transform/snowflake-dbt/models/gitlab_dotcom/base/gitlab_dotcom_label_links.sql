@@ -2,7 +2,7 @@ WITH source AS (
 
   SELECT
     *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) AS rank_in_key
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'label_links') }}
 
 ), renamed AS (
@@ -15,7 +15,6 @@ WITH source AS (
       target_type,
       created_at::TIMESTAMP                          AS label_link_created_at,
       updated_at::TIMESTAMP                          AS label_link_updated_at
-
 
     FROM source
     WHERE rank_in_key = 1

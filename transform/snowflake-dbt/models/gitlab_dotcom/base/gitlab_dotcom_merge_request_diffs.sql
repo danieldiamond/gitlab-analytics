@@ -12,7 +12,6 @@ WITH source AS (
   WHERE created_at IS NOT NULL
     AND updated_at IS NOT NULL
 
-
 ), renamed AS (
 
     SELECT
@@ -21,9 +20,9 @@ WITH source AS (
       base_commit_sha,
       head_commit_sha,
       start_commit_sha,
-      state                                         AS merge_request_diff_status,
+      state                                       AS merge_request_diff_status,
       merge_request_id::INTEGER                   AS merge_request_id,
-      real_size                                     AS merge_request_real_size,
+      real_size                                   AS merge_request_real_size,
       commits_count::INTEGER                      AS commits_count,
       created_at::TIMESTAMP                       AS merge_request_diff_created_at,
       updated_at::TIMESTAMP                       AS merge_request_diff_updated_at

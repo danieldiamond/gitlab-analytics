@@ -1,4 +1,3 @@
--- disabled model until the data starts flowing in (the source table is missing from tap_postgres)
 {{ config({
     "schema": "staging"
     })
@@ -7,8 +6,8 @@
 WITH source AS (
 
   SELECT
-   *,
-   ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS rank_in_key
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'project_statistics') }}
 
 ), renamed AS (

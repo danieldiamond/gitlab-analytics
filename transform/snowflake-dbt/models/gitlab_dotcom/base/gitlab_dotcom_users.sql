@@ -7,7 +7,7 @@ WITH source AS (
 
   SELECT
     *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) AS rank_in_key
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'users') }}
 
 ), renamed AS (
@@ -27,7 +27,7 @@ WITH source AS (
       projects_limit::INTEGER                                          AS projects_limit,
       failed_attempts::INTEGER                                         AS failed_attempts,
       locked_at::TIMESTAMP                                             AS locked_at,
-      IFF(lower(locked_at) = 'nan', FALSE, TRUE)                         AS user_locked,
+      IFF(lower(locked_at) = 'nan', FALSE, TRUE)                       AS user_locked,
       can_create_group::BOOLEAN                                        AS has_create_group_permissions,
       can_create_team::BOOLEAN                                         AS has_create_team_permissions,
       state,
@@ -35,7 +35,7 @@ WITH source AS (
       password_expires_at::TIMESTAMP                                   AS password_expires_at,
       created_by_id::INTEGER                                           AS created_by_id,
       last_credential_check_at::TIMESTAMP                              AS last_credential_check_at,
-      IFF(lower(avatar) = 'nan', FALSE, TRUE)                            AS has_avatar,
+      IFF(lower(avatar) = 'nan', FALSE, TRUE)                          AS has_avatar,
       confirmed_at::TIMESTAMP                                          AS confirmed_at,
       confirmation_sent_at::TIMESTAMP                                  AS confirmation_sent_at,
       -- unconfirmed_email // hidden for privacy
@@ -45,7 +45,7 @@ WITH source AS (
       -- notification_email // hidden for privacy
       hide_no_password::BOOLEAN                                        AS has_hide_no_password_enabled,
       password_automatically_set::BOOLEAN                              AS is_password_automatically_set,
-      IFF(lower(location) = 'nan', NULL, location)                       AS location,
+      IFF(lower(location) = 'nan', NULL, location)                     AS location,
       -- public_email // hidden for privacy
       dashboard::INTEGER                                               AS dashboard,
       consumed_timestep::INTEGER                                       AS consumed_timestep,
@@ -54,14 +54,14 @@ WITH source AS (
       -- note // hidden for privacy
       otp_grace_period_started_at::TIMESTAMP                           AS otp_grace_period_started_at,
       external::BOOLEAN                                                AS is_external_user,
-      organization                                                       AS organization,
+      organization                                                     AS organization,
       auditor::BOOLEAN                                                 AS auditor,
       require_two_factor_authentication_from_group::BOOLEAN            AS does_require_two_factor_authentication_from_group,
       two_factor_grace_period::INTEGER                                 AS two_factor_grace_period,
       ghost::BOOLEAN                                                   AS is_ghost,
       last_activity_on::TIMESTAMP                                      AS last_activity_on,
       notified_of_own_activity::BOOLEAN                                AS is_notified_of_own_activity,
-      IFF(lower(preferred_language) = 'nan', NULL, preferred_language)   AS preferred_language,
+      IFF(lower(preferred_language) = 'nan', NULL, preferred_language) AS preferred_language,
       theme_id::INTEGER                                                AS theme_id
 
     FROM source

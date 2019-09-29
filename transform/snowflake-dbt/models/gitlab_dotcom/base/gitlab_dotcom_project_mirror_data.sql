@@ -1,4 +1,3 @@
--- disabled model until the data starts flowing in (the source table is missing from tap_postgres)
 {{ config({
     "schema": "staging"
     })
@@ -22,8 +21,6 @@ WITH source AS (
       last_update_started_at::TIMESTAMP               AS last_update_started_at,
       last_update_scheduled_at::TIMESTAMP             AS last_update_scheduled_at,
       next_execution_timestamp::TIMESTAMP             AS next_execution_timestamp
-
-
 
     FROM source
     WHERE rank_in_key = 1

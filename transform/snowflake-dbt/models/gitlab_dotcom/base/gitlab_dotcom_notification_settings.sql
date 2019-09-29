@@ -7,7 +7,7 @@ WITH source AS (
 
   SELECT
     *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) AS rank_in_key
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'notification_settings') }}
 
 ), renamed AS (
@@ -17,7 +17,7 @@ WITH source AS (
       id::INTEGER                                     AS notification_settings_id,
       user_id::INTEGER                                AS user_id,
       source_id::INTEGER                              AS source_id,
-      source_type                                       AS source_type,
+      source_type::VARCHAR                            AS source_type,
       level::INTEGER                                  AS settings_level,
       created_at::TIMESTAMP                           AS notification_settings_created_at,
       updated_at::TIMESTAMP                           AS notification_settings_updated_at,

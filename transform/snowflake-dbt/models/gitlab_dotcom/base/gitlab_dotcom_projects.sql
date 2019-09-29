@@ -18,17 +18,17 @@ WITH source AS (
       description::VARCHAR                                                        AS project_description,
       import_source::VARCHAR                                                      AS project_import_source,
       issues_template::VARCHAR                                                    AS project_issues_template,
-      build_coverage_regex                                                          AS project_build_coverage_regex,      
+      build_coverage_regex                                                        AS project_build_coverage_regex,      
       name::VARCHAR                                                               AS project_name,
       path::VARCHAR                                                               AS project_path,
-      import_url                                                                    AS project_import_url,
-      merge_requests_template                                                       AS project_merge_requests_template,
+      import_url                                                                  AS project_import_url,
+      merge_requests_template                                                     AS project_merge_requests_template,
 
       created_at::TIMESTAMP                                                       AS project_created_at,
       updated_at::TIMESTAMP                                                       AS project_updated_at,
 
-      creator_id :: number                                                          AS creator_id,
-      namespace_id :: number                                                        AS namespace_id,
+      creator_id :: number                                                        AS creator_id,
+      namespace_id :: number                                                      AS namespace_id,
 
       last_activity_at::TIMESTAMP                                                 AS last_activity_at,
 
@@ -36,15 +36,15 @@ WITH source AS (
         WHEN visibility_level = '20' THEN 'public'
         WHEN visibility_level = '10' THEN 'internal'
         ELSE 'private'
-      END                                                                           AS visibility_level,
+      END                                                                         AS visibility_level,
 
       archived::BOOLEAN                                                           AS archived,
 
-      IFF(avatar IS NULL, FALSE, TRUE)                                              AS has_avatar,
+      IFF(avatar IS NULL, FALSE, TRUE)                                            AS has_avatar,
 
       star_count::INTEGER                                                         AS project_star_count,
       merge_requests_rebase_enabled::BOOLEAN                                      AS merge_requests_rebase_enabled,
-      IFF(LOWER(import_type) = 'nan', NULL, import_type)                            AS import_type,
+      IFF(LOWER(import_type) = 'nan', NULL, import_type)                          AS import_type,
       approvals_before_merge::INTEGER                                             AS approvals_before_merge,
       reset_approvals_on_push::BOOLEAN                                            AS reset_approvals_on_push,
       merge_requests_ff_only_enabled::BOOLEAN                                     AS merge_requests_ff_only_enabled,
@@ -70,9 +70,9 @@ WITH source AS (
       only_allow_merge_if_all_discussions_are_resolved::BOOLEAN                   AS only_allow_merge_if_all_discussions_are_resolved,
       repository_size_limit::INTEGER                                              AS repository_size_limit,
       printing_merge_request_link_enabled::BOOLEAN                                AS printing_merge_request_link_enabled,
-      IFF(auto_cancel_pending_pipelines :: int = 1, TRUE, FALSE)                    AS has_auto_canceling_pending_pipelines,
+      IFF(auto_cancel_pending_pipelines :: int = 1, TRUE, FALSE)                  AS has_auto_canceling_pending_pipelines,
       service_desk_enabled::BOOLEAN                                               AS service_desk_enabled,
-      IFF(LOWER(delete_error) = 'nan', NULL, delete_error)                          AS delete_error,
+      IFF(LOWER(delete_error) = 'nan', NULL, delete_error)                        AS delete_error,
       last_repository_updated_at::TIMESTAMP                                       AS last_repository_updated_at,
       storage_version::INTEGER                                                    AS storage_version,
       resolve_outdated_diff_discussions::BOOLEAN                                  AS resolve_outdated_diff_discussions,
