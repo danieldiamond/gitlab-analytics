@@ -52,16 +52,6 @@ exclude_product:
     - dbt run $CI_PROFILE_TARGET --exclude tag:product || true
     - dbt test $CI_PROFILE_TARGET --exclude tag:product
 
-exclude_snowplow:
-  <<: *snowflake_dbt_jobs
-  script:
-    - *xl_warehouse
-    - *deps_and_seed
-    - dbt run $CI_PROFILE_TARGET --full-refresh --exclude snowplow || true
-    - dbt test $CI_PROFILE_TARGET --exclude snowplow || true
-    - dbt run $CI_PROFILE_TARGET --exclude snowplow || true
-    - dbt test $CI_PROFILE_TARGET --exclude snowplow
-
 gitlab_dotcom:
   <<: *snowflake_dbt_jobs
   script:
@@ -72,7 +62,6 @@ gitlab_dotcom:
     - dbt test $CI_PROFILE_TARGET --models gitlab_dotcom || true
     - dbt run $CI_PROFILE_TARGET --models gitlab_dotcom || true
     - dbt test $CI_PROFILE_TARGET --models gitlab_dotcom
-
 
 pings:
   <<: *snowflake_dbt_jobs
@@ -89,10 +78,10 @@ snowplow:
   script:
     - *xl_warehouse
     - *deps_and_seed
-    - dbt run $CI_PROFILE_TARGET --full-refresh --models snowplow || true
-    - dbt test $CI_PROFILE_TARGET --models snowplow || true
-    - dbt run $CI_PROFILE_TARGET --models snowplow || true
-    - dbt test $CI_PROFILE_TARGET --models snowplow
+    - dbt run $CI_PROFILE_TARGET --full-refresh --models snowplow snowplow_combined || true
+    - dbt test $CI_PROFILE_TARGET --models snowplow snowplow_combined || true
+    - dbt run $CI_PROFILE_TARGET --models snowplow snowplow_combined || true
+    - dbt test $CI_PROFILE_TARGET --models snowplow snowplow_combined
 
 specify_exclude:
   <<: *snowflake_dbt_jobs

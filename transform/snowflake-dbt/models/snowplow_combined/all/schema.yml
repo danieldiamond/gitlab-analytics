@@ -1,0 +1,20 @@
+version: 2
+
+models:
+    -   name: snowplow_event_counts_all
+        description: This is a view over all snowplow_YYYY_MM schemas for event counts.
+
+    -   name: snowplow_unnested_events_all
+        description: This is the primary events view which is the union of the Fishtown and GitLab tables across all snowplow_YYYY_MM schemas. All of the unstructured events are unpacked - [link click tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#39-link-click-tracking), [form tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#3101-enableformtracking), and [time tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#timing).
+
+    -   name: snowplow_unnested_errors_all
+        description: This is the bad events view over all snowplow_YYYY_MM schemas for bad events.
+
+    -   name: snowplow_page_views_all
+        description: This is is a view over all snowplow_YYYY_MM schemas for page views.
+
+    -   name: snowplow_sessions_all
+        description: This is is a view over all snowplow_YYYY_MM schemas for sessions.
+
+    -   name: snowplow_web_events_all
+        description: This is is a view over all snowplow_YYYY_MM schemas for web_events.
