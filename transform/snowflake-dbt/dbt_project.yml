@@ -70,6 +70,9 @@ models:
   # Snowplow Package
   snowplow:
     schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
+    post-hook:
+      - "grant usage on schema {{this.schema}} to role snowplow"
+      - "grant select on {{this}} to role snowplow"
     tags: ["product"]
     vars:
       'snowplow:use_fivetran_interface': false
@@ -121,6 +124,11 @@ models:
 
     greenhouse:
       schema: sensitive
+
+    netsuite:
+      materialized: table
+      base:
+        schema: staging
 
     netsuite_stitch:
       materialized: table
