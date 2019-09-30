@@ -39,7 +39,7 @@ Example of stats_used format (useful examples for after):
 EXAMPLE A (not nested json)
 ```json
 {
-   "operations_dashboard_users_with_projects_added":2,
+   "ping_key_with_detail": 2,
    "other_metrics": "other_values"
 }
 ```
@@ -47,20 +47,26 @@ EXAMPLE A (not nested json)
 EXAMPLE B (nested json)
 ```json
 {
-  "operations_dashboard":{ 
-     "users_with_projects_added":5
+  "ping_key": { 
+     "with_detail": 5
   },
   "other_metrics": "other_values"
 }
 ```
  
-The model unpacks the pings usage data stored in json-type column `stats_used` in model `pings_usage_data`. To do so, we perform the following actions:
+This model unpacks the pings usage data JSON stored in the json-type column `stats_used` in model `pings_usage_data`. To do so, we perform the following actions:
 
-* flatten the `stats_used` json. The flattening explodes  key/value pairs in the JSON into multiple rows (one row per pair). From each pair in the json, we create 3 columns:
-  * ping_name: The path to the pair. In the example A above, for the first pair the key is `operations_dashboard_users_with_projects_added`. For example B `operations_dashboard.users_with_projects_added` (this is json annotation)
-  * full_ping_name: it replicates what is done in `pings_list` model. It takes the key and replaces the `.` to `_`. For both our examples, full_ping_name would be `operations_dashboard_users_with_projects_added`. The full_ping_name are going to be the columns of our model.
-  * ping_value: the value of the element. In example A, '2', in example B '8' . In our model this is the value of the metrics we calculate. 
+1. Flatten the `stats_used` JSON. The flattening unnests all key/value pairs into multiple rows (one row per pair). From each pair, we create 3 columns:
+
+  * ping_name: The path to the pair. Note that nested keys are joined with `.`
+  * full_ping_name: This replicates what is done in `pings_list` model where `.` is replaced with `_`
+  * ping_value: the value of the pair
   
-* pivot manually the CTE created above. The `pings_list` gives us the full list of columns that need to be in the final table. We iterate through each element of the list (each value of `full_ping_name` column in `pings_list` model) and find the MAX of `ping_value` (actually we can get only one row with a `ping_value` not null per id).
+| Example | ping_name | full_ping_name | ping_value |
+|---|---|---|---|
+| A | `ping_key_with_detail` | `ping_key_with_detail` | 2 |
+| B | `ping_key.with_detail` | `ping_key_with_detail` | 8 |
+
+1. The `pings_list` model gives us the full list of columns that need to be in the final table. We iterate through each element of the list (i.e. each value of `full_ping_name` column in `pings_list` model) and find the MAX of `ping_value`.
 
 {% enddocs %}
