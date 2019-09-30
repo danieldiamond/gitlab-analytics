@@ -5,9 +5,9 @@
 
 WITH source AS (
 
-	SELECT
+  SELECT
     *,
-		ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'identities') }}
 
 ),
@@ -22,9 +22,9 @@ renamed AS (
       updated_at::TIMESTAMP       AS updated_at,
       --econdary_extern_uid // always null
       saml_provider_id::INTEGER   AS saml_provider_id
-
     FROM source
     WHERE rank_in_key = 1
+
 )
 
 SELECT *
