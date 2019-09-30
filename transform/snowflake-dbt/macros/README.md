@@ -147,6 +147,15 @@ Used in:
 - sfdc_opportunity.sql
 - zuora_rate_plan.sql
 
+## Delivery([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/delivery.sql))
+This macro maps product categories to [delivery](LINK).
+Usage:
+```
+{{delivery('product_category')}}
+```
+Used in:
+- zuora_mrr_totals.sql
+
 ## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sales_segment_cleaning))
 This macro applies proper formatting to sales segment data with the end result being one of SMB, Mid-Market, Strategic, Large or Unknown.
 Usage:

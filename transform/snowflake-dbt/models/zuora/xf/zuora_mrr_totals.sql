@@ -61,13 +61,7 @@ WITH base_mrr AS (
           zuora_subscription_cohort_month,
           zuora_subscription_cohort_quarter,
           product_category,
-          CASE 
-            WHEN product_category IN ('Gold', 'Silver', 'Bronze')
-              THEN 'GitLab.com'
-            WHEN product_category IN ('Ultimate', 'Premium', 'Starter')
-              THEN 'self-managed'
-          ELSE 'Others'
-          END AS delivery,
+          {{ delivery('product_category')}},
           unit_of_measure,
           array_agg(rate_plan_name) AS rate_plan_name,
           sum(quantity)             AS quantity,

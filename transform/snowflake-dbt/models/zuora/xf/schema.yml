@@ -138,6 +138,9 @@ models:
             tests:
                 - not_null
           - name: product_category
+          - name: delivery
+            tests:
+                - not_null
           - name: unit_of_measure
           - name: mrr
             description: '{{ doc("zuora_mrr_totals_col_mrr") }}'
