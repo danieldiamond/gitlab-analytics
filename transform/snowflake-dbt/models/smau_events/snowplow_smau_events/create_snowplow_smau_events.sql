@@ -31,6 +31,13 @@ WITH snowplow_page_views AS (
 
 )
 
+, snowplow_page_views_excluding_wiki AS (
+
+  SELECT * 
+  FROM snowplow_page_views
+  WHERE page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}' -- removing wiki pages
+
+)
 , mr_viewed AS (
 
   SELECT
@@ -41,9 +48,8 @@ WITH snowplow_page_views AS (
     'mr_viewed'              AS event_type,
     page_view_id
 
-
-  FROM snowplow_page_views
-  WHERE page_url_path RLIKE '(\/([0-9A-Za-z_.-])*){2}\/merge_requests/[0-9]*'
+  FROM snowplow_page_views_excluding_wiki
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2}\/merge_requests/[0-9]*'
     AND page_url_path NOT REGEXP '/-/ide/(.)*'
 
 )
@@ -58,8 +64,8 @@ WITH snowplow_page_views AS (
     'project_viewed_in_ide'       AS event_type,
     page_view_id
 
-  FROM snowplow_page_views
-  WHERE page_url_path RLIKE '/-/ide/project/.*'
+  FROM snowplow_page_views_excluding_wiki
+  WHERE page_url_path REGEXP '/-/ide/project/.*'
 
 )
 
@@ -73,8 +79,7 @@ WITH snowplow_page_views AS (
     'repo_file_viewed'       AS event_type,
     page_view_id
 
-
-  FROM snowplow_page_views
+  FROM snowplow_page_views_excluding_wiki
   WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/tree\/(.)*'
     AND page_url_path NOT REGEXP '/-/ide/(.)*'
     AND page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wiki\/tree\/(.)*'
@@ -92,8 +97,8 @@ WITH snowplow_page_views AS (
     'search_performed'       AS event_type,
     page_view_id
 
-  FROM snowplow_page_views
-  WHERE page_url_path RLIKE '/search'
+  FROM snowplow_page_views_excluding_wiki
+  WHERE page_url_path REGEXP '/search'
 
 )
 
@@ -107,8 +112,8 @@ WITH snowplow_page_views AS (
     'snippet_created'        AS event_type,
     page_view_id
 
-  FROM snowplow_page_views
-  WHERE page_url_path RLIKE '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/new'
+  FROM snowplow_page_views_excluding_wiki
+  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/new'
 )
 
 , snippet_edited AS (
@@ -121,8 +126,8 @@ WITH snowplow_page_views AS (
     'snippet_edited'         AS event_type,
     page_view_id
 
-  FROM snowplow_page_views
-  WHERE page_url_path RLIKE '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]*/edit'
+  FROM snowplow_page_views_excluding_wiki
+  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]*/edit'
 )
 
 , snippet_viewed AS (
@@ -135,8 +140,8 @@ WITH snowplow_page_views AS (
     'snippets_viewed'        AS event_type,
     page_view_id
 
-  FROM snowplow_page_views
-  WHERE page_url_path RLIKE '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]{1,}'
+  FROM snowplow_page_views_excluding_wiki
+  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]{1,}'
 
 )
 
@@ -151,7 +156,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path RLIKE '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,}'
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}'
     AND page_url_path NOT REGEXP '/-/ide/(.)*'
 
 )

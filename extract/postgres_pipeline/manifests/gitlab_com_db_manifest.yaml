@@ -644,6 +644,23 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'labels'
     export_table_primary_key: id
+  identities:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , extern_uid
+      , provider
+      , user_id
+      , created_at
+      , updated_at
+      , secondary_extern_uid
+      , saml_provider_id
+      FROM identities
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'identities'
+    export_table_primary_key: id
   issue_assignees:
     import_db: GITLAB_DB
     import_query: >
