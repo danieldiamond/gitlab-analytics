@@ -21,7 +21,8 @@ flattened as (
         -- logical data
         flat_events.value['field_name']             AS audit_field,
         flat_events.value['type']                   AS audit_type,
-        flat_events.value['value']                  AS audit_value
+        flat_events.value['value']                  AS audit_value,
+        flat_events.value['id']                     AS audit_event_id
 
     FROM source,
     LATERAL FLATTEN(INPUT => events, OUTER => false) flat_events

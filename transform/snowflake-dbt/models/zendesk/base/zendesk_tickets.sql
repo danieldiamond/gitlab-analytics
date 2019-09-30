@@ -24,12 +24,9 @@ renamed as (
 
         --fields
         status                                AS ticket_status,
-        lower(priority)                       AS ticket_priority,
+        lower(priority)                       AS ticket_first_priority,
         md5(subject)                          AS ticket_subject,
         md5(recipient)                        AS ticket_recipient,
-        CASE WHEN recipient = 'emergency@gitlab.com' THEN 125528
-            ELSE NULL
-            END AS has_emergency_sla,
         url                                   AS ticket_url,
         tags                                  AS ticket_tags,
         -- added ':score'
