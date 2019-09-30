@@ -17,7 +17,8 @@ WITH source AS (
 ), categorized AS (
 
     SELECT *,
-      CASE WHEN lower(event_title) LIKE '%company call%' THEN 'Company Call'
+      CASE WHEN lower(created_by) = 'karen.sijbrandij@gmail.com' THEN 'Personal'
+					 WHEN lower(event_title) LIKE '%company call%' THEN 'Company Call'
            WHEN lower(event_title) LIKE '%fgu%' THEN 'Group Conversation'
            WHEN lower(event_title) LIKE '%group conversation%' THEN 'Group Conversation'
            WHEN lower(event_title) LIKE '%Monthly Diversity & Inclusion Initiatives Call%' THEN 'Diversity Initiatives'
@@ -65,8 +66,8 @@ WITH source AS (
            WHEN event_title LIKE '%Board Dinner%' THEN 'Board related'
            WHEN event_title LIKE '%Board of Directors%' THEN 'Board related'
            WHEN event_title LIKE '%Board Meeting%' THEN 'Board related'
-					 WHEN event_title LIKE '%exec time%' THEN 'Executive Time'
-					 WHEN event_title LIKE '%executive time%' THEN 'Executive Time'
+					 WHEN lower(event_title) LIKE '%exec time%' THEN 'Executive Time'
+					 WHEN lower(event_title) LIKE '%executive time%' THEN 'Executive Time'
       ELSE 'Other'
       END AS event_category
 
@@ -89,6 +90,7 @@ WITH source AS (
            WHEN event_category IN ('Board related', 'Executive Time') THEN 'Executive Responsibilities'
       ELSE NULL END AS okr_time_allocation
     FROM categorized
+		WHERE event_category != 'Personal'
 
 )
 
