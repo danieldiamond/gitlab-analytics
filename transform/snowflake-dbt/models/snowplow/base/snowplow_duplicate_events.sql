@@ -22,7 +22,7 @@ WITH fishtown AS (
     SELECT event_id 
     FROM fishtown
 
-    UNION
+    UNION ALL
 
     SELECT event_id
     FROM gitlab
