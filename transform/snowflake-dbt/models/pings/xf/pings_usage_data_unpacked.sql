@@ -41,9 +41,9 @@ final AS (
       ELSE NULL END                                                                 AS edition_type,
     hostname,
     host_id,
+    git_version,
     gitaly_servers,
     gitaly_version,
-    gitaly_filesystems,
 
     {% for ping_name in ping_list %}
     stats_used['{{ping_name}}']::numeric                                AS {{ping_name}} {{ "," if not loop.last }}
