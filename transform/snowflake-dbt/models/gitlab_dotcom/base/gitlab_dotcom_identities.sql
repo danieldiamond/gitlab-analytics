@@ -15,7 +15,7 @@ renamed AS (
 
     SELECT
       id::INTEGER                 AS identity_id,
-      extern_uid::INTEGER         AS extern_uid,
+      extern_uid::VARCHAR         AS extern_uid,
       provider::VARCHAR           AS identity_provider,
       user_id::INTEGER            AS user_id,
       created_at::TIMESTAMP       AS created_at,
