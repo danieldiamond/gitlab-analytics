@@ -4,7 +4,7 @@ WITH zendesk_ticket_metrics AS (
     ticket_id,
     sla_reply_time_calendar_hours,
     sla_reply_time_business_hours,
-    created_at,
+    created_at
   FROM {{ref('zendesk_ticket_metrics')}}
 
 ), zendesk_sla_policies AS (
@@ -67,7 +67,7 @@ WITH zendesk_ticket_metrics AS (
     zendesk_ticket_reply_time.*,
     TIMEADD(minute,
       zendesk_ticket_reply_time.first_reply_time_sla,
-      zendesk_ticket_reply_time.ticket_created_at) AS first_reply_at,
+      zendesk_ticket_reply_time.created_at) AS first_reply_at,
       -- Stitch does not send over timestamps of first replies, only duration in minutes
     zendesk_ticket_audit_sla.sla_policy,
     zendesk_ticket_audit_sla.sla_audit_created_at,

@@ -24,7 +24,7 @@ renamed as (
 
         --fields
         status                                AS ticket_status,
-        lower(priority)                       AS ticket_first_priority,
+        lower(priority)                       AS ticket_priority,
         md5(subject)                          AS ticket_subject,
         md5(recipient)                        AS ticket_recipient,
         url                                   AS ticket_url,
