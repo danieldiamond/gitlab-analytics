@@ -98,9 +98,5 @@ suggestions,create
 todos,plan
 uploads,plan
 web_hooks,create
-git_version,create
-gitaly_version,create
-gitaly_servers,create
-gitaly_filesystems,create
 user_preferences_group_overview_details,manage
 user_preferences_group_overview_security_dashboard,secure

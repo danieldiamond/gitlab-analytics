@@ -22,6 +22,9 @@ WITH usage_data as (
             max(edition)                                                                                     AS edition,
             max(main_edition)                                                                                AS main_edition,
             max(edition_type)                                                                                AS edition_type,
+            max(git_version)                                                                                 AS git_version,
+            max(gitaly_version)                                                                              AS gitaly_version,
+            max(gitaly_servers)                                                                              AS gitaly_servers,
 
             {% for ping_name in ping_list %}
             max({{ping_name}})                                                                               AS {{ping_name}} {{ "," if not loop.last }}

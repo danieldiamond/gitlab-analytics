@@ -61,6 +61,7 @@ renamed AS (
     --usage_activity_by_stage // never not null
     gitaly_version::VARCHAR                  AS gitaly_version,
     gitaly_servers::INTEGER                  AS gitaly_servers,
+    gitaly_filesystems::VARCHAR              AS gitaly_filesystems
 
     PARSE_JSON(counts) AS stats_used
 
