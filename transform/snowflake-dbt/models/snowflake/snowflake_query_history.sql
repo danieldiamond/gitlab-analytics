@@ -42,5 +42,3 @@ FROM source
   WHERE snowflake_query_start_time > (SELECT MAX(snowflake_query_start_time) from {{ this }})
 
 {% endif %}
-
-limit 100 --delete me
