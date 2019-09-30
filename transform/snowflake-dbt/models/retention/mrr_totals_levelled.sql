@@ -1,3 +1,4 @@
+
 with zuora_mrr_totals AS (
 
     SELECT * FROM {{ref('zuora_mrr_totals')}}
@@ -38,7 +39,7 @@ with zuora_mrr_totals AS (
 
 ), joined as (
 
-    SELECT
+    SELECT 
            replace_sfdc_account_id_with_master_record_id.country   AS zuora_sold_to_country,
            replace_sfdc_account_id_with_master_record_id.account_number   AS zuora_account_number,
            replace_sfdc_account_id_with_master_record_id.subscription_name_slugify,
@@ -54,8 +55,8 @@ with zuora_mrr_totals AS (
            replace_sfdc_account_id_with_master_record_id.zuora_account_id,
            replace_sfdc_account_id_with_master_record_id.zuora_account_name,
            replace_sfdc_account_id_with_master_record_id.product_category,
+           replace_sfdc_account_id_with_master_record_id.delivery,
            replace_sfdc_account_id_with_master_record_id.rate_plan_name,
-           replace_sfdc_account_id_with_master_record_id.service_type,
            replace_sfdc_account_id_with_master_record_id.unit_of_measure,
            replace_sfdc_account_id_with_master_record_id.quantity,
            sfdc_accounts_xf.account_id                                      AS sfdc_account_id,
