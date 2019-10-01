@@ -36,9 +36,10 @@ windowed AS (
       ROWS BETWEEN 13 PRECEDING AND 1 PRECEDING)   AS stddev_count_last_12,
 
     ABS(count_unique_ids - average_count_last_12)  AS absolute_difference,
-    absolute_difference / stddev_count_last_12     AS absolute_difference_stddevs --TODO: divide by zero?
+    absolute_difference / stddev_count_last_12     AS absolute_difference_stddevs 
 
   FROM daily_counts
+  WHERE date BETWEEN '2019-01-01' AND CURRENT_DATE()
 )
 
 SELECT
@@ -49,7 +50,6 @@ WHERE absolute_difference_stddevs > {{min_stddevs}}
   AND day_of_year NOT IN (                     
     356,357,358,359,360,361,362,363,364,365,1 -- Christmas
   )
-  AND date BETWEEN '2019-01-01' AND CURRENT_DATE()
 ORDER BY absolute_difference_stddevs DESC
 
 {%- endmacro -%}

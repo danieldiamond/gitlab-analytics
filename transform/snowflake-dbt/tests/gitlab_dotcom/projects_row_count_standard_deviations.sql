@@ -4,7 +4,6 @@ WITH data AS (
       project_id            AS unique_id,
       project_created_at    AS timestamp_column
     FROM {{ref('gitlab_dotcom_projects')}}
-    --WHERE timestamp_column BETWEEN '2019-01-01' AND CURRENT_DATE()
 
 )
 
