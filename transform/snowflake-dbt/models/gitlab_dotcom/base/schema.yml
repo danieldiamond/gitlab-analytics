@@ -306,6 +306,21 @@ models:
         tests:
           - not_null
 
+
+  - name: gitlab_dotcom_identities
+    description: Base model for GitLab.com identities (3rd party login providers).
+    columns:
+      - name: identity_id
+        tests:
+          - not_null
+          - unique
+      - name: identity_provider
+        description: Which service is the identity provided through? (Google, GitHub, etc.)
+        tests:
+          - not_null
+      - name: created_at
+      - name: updated_at
+
   - name: gitlab_dotcom_issue_assignees
     description: >-
       Base model for Gitlab.com issue assignees, duplicate rows have not been
