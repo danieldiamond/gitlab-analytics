@@ -3,19 +3,22 @@
 
 WITH namespaces AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_namespaces')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_namespaces')}}
 
 ),
 
 members AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_members')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_members')}}
 
 ),
 
 projects AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_projects')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_projects')}}
 
 ), namespace_lineage AS (
 
@@ -67,6 +70,7 @@ joined AS (
       COALESCE( (namespaces.plan_id IN {{ paid_plans }} ), False)      AS namespace_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)                   AS member_count,
       COALESCE(COUNT(DISTINCT projects.project_id), 0)                 AS project_count
+
     FROM namespaces
       LEFT JOIN members
         ON namespaces.namespace_id = members.source_id
