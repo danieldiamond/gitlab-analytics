@@ -9,6 +9,9 @@ WITH pings_mom_change as (
           edition,
           main_edition,
           edition_type,
+          git_version,
+          gitaly_version,
+          gitaly_servers,
           {% for ping_name in ping_list %}
           {{ monthly_change(ping_name) }} {{ "," if not loop.last }}
           {% endfor %}
