@@ -54,7 +54,6 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start)   AS event_date,
     page_url_path,
     'user_authenticated'       AS event_type,
-    page_view_id,
     {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
                                AS event_surrogate_key
   FROM snowplow_page_views
