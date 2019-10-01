@@ -1,32 +1,39 @@
 version: 2
 
 models:
-    -   name: snowplow_fishtown_unnested_events
-        description: This is the base table for snowplow events captured by Fishtown's infrastructure. It unpacks all of the JSON, including unstructured events.
-        columns:
-            -   name: uploaded_at
-                tests:
-                    - not_null
+    - name: snowplow_fishtown_unnested_events
+      description: This is the base table for snowplow events captured by Fishtown's infrastructure. It unpacks all of the JSON, including unstructured events.
+      columns:
+          - name: uploaded_at
+            tests:
+                - not_null
 
-    -   name: snowplow_fishtown_bad_events
-        description: This is the base table for bad event data sent to Fishtown's infrastructure.
+    - name: snowplow_fishtown_bad_events
+      description: This is the base table for bad event data sent to Fishtown's infrastructure.
 
-    -   name: snowplow_gitlab_events
-        description: This is the base table for snowplow events captured by GitLab's infrastructure. The data is written to S3 as a TSV, so this model simply reorders the columns and unpacks the unstructured events.
-        columns:
-            -   name: uploaded_at
-                tests:
-                    - not_null
+    - name: snowplow_gitlab_events
+      description: This is the base table for snowplow events captured by GitLab's infrastructure. The data is written to S3 as a TSV, so this model simply reorders the columns and unpacks the unstructured events.
+      columns:
+          - name: uploaded_at
+            tests:
+                - not_null
 
-    -   name: snowplow_gitlab_bad_events
-        description: This is the base table for bad event data sent to GitLab's infrastructure.
+    - name: snowplow_gitlab_bad_events
+      description: This is the base table for bad event data sent to GitLab's infrastructure.
 
-    -   name: snowplow_unnested_events
-        description: This is the primary events table which is the union of the Fishtown and GitLab tables. All of the unstructured events are unpacked - [link click tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#39-link-click-tracking), [form tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#3101-enableformtracking), and [time tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#timing).
-        columns:
-            -   name: uploaded_at
-                tests:
-                    - not_null
+    - name: snowplow_unnested_events
+      description: This is the primary events table which is the union of the Fishtown and GitLab tables. All of the unstructured events are unpacked - [link click tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#39-link-click-tracking), [form tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#3101-enableformtracking), and [time tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#timing).
+      columns:
+          - name: uploaded_at
+            tests:
+                - not_null
 
-    -   name: snowplow_unnested_errors
-        description: This is the bad events table which is the union of the Fishtown and GitLab tables.
+    - name: snowplow_unnested_errors
+      description: This is the bad events table which is the union of the Fishtown and GitLab tables.
+
+    - name: snowplow_duplicate_events
+      description: This is a table that contains the duplicated event ids across the entire data set and is used to remove them from downstream models.
+      columns:
+          - name: event_id
+            tests:
+                - unique

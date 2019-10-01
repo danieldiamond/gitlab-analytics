@@ -1,6 +1,6 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "page_view_id"
+    "unique_key": "event_surrogate_key"
     })
 }}
 
@@ -22,7 +22,7 @@ WITH snowplow_page_views AS (
     page_url_path,
     page_view_id,
     referer_url_path
-  FROM {{ ref('snowplow_page_views')}}
+  FROM {{ ref('snowplow_page_views_all')}}
   WHERE TRUE
     AND app_id = 'gitlab'
   {% if is_incremental() %}
@@ -39,7 +39,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start)    AS event_date,
     page_url_path,
     'audit_events_viewed'       AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                                AS event_surrogate_key
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/audit_events'
 
@@ -53,7 +55,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start)   AS event_date,
     page_url_path,
     'cycle_analytics_viewed'   AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                               AS event_surrogate_key
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics'
 
@@ -67,7 +71,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start)   AS event_date,
     page_url_path,
     'insights_viewed'          AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                               AS event_surrogate_key
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/insights'
 
@@ -81,7 +87,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start)   AS event_date,
     page_url_path,
     'group_analytics_viewed'   AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                               AS event_surrogate_key
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/analytics'
 
@@ -95,7 +103,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start)   AS event_date,
     page_url_path,
     'group_created'            AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                               AS event_surrogate_key
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '\/groups\/new'
 
@@ -114,7 +124,9 @@ WITH snowplow_page_views AS (
     TO_DATE(page_view_start)   AS event_date,
     page_url_path,
     'user_authenticated'       AS event_type,
-    page_view_id
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                               AS event_surrogate_key
   FROM snowplow_page_views
   WHERE referer_url_path REGEXP '\/users\/sign_in'
     AND page_url_path NOT REGEXP '\/users\/sign_in'
@@ -124,14 +136,11 @@ WITH snowplow_page_views AS (
 , unioned AS (
   {% for event_cte in event_ctes %}
 
-    (
-      SELECT
-        *
-      FROM {{ event_cte }}
-    )
+    SELECT *
+    FROM {{ event_cte }}
 
-    {%- if not loop.last -%}
-        UNION
+    {%- if not loop.last %}
+      UNION
     {%- endif %}
 
   {% endfor -%}

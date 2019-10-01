@@ -1,5 +1,5 @@
 {{config({
-    "schema": "staging"
+    "schema": current_date_schema('snowplow')
   })
 }}
 

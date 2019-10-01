@@ -26,7 +26,7 @@ models:
   - name: sfdc_bizible_touchpoint
     description: Touch points are on leads and contacts.
     columns:
-        - name: bizible_touchpoint_id
+        - name: touchpoint_id
           tests:
               - unique
               - not_null

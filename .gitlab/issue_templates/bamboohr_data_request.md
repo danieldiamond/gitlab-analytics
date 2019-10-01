@@ -15,4 +15,4 @@ This template is for requesting additional data from BambooHR.
 ### Approval
 
 - [ ] Data Team Manager
-- [ ] PeopleOps Representative
+- [ ] People Representative

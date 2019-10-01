@@ -2,13 +2,13 @@
 
 This model enables product managers to surface which issue has been requested by potential prospects and current customers. The final model creates a table where each row is unique tuple of a `issue_id` and a `sfdc_account_id`.
 
-It extends the model `gitlab_dotcom_notes_linked_to_sfdc_account_id` by joining it to SFDC account metadata through the `account_id`. We add then the following metrics:
+It extends the models `gitlab_dotcom_notes_linked_to_sfdc_account_id` and `gitlab_dotcom_issues_linked_to_sfdc_account_id` by joining it to SFDC account metadata through the `account_id`. We add then the following metrics:
 
 * `total_tcv`
 * `carr_total`
 * `count_licensed_users`
 
-We also join the model `gitlab_dotcom_notes_linked_to_sfdc_account_id` to `gitlab_dotcom_issues`, `gitlab_dotcom_projects` and `gitlab_dotcom_namespaces_xf` to add more metadata about issues, projects and namespaces.
+We also join the model `gitlab_dotcom_notes_linked_to_sfdc_account_id` and `gitlab_dotcom_issues_linked_to_sfdc_account_id` to `gitlab_dotcom_issues`, `gitlab_dotcom_projects` and `gitlab_dotcom_namespaces_xf` to add more metadata about issues, projects and namespaces.
 
 {% enddocs %}
 

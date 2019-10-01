@@ -1,5 +1,5 @@
 {{ config({
-    "unique_key": "sk_id"
+    "unique_key": "event_surrogate_key"
     })
 }}
 
@@ -13,9 +13,9 @@ WITH project_created AS (
   SELECT
     creator_id                    AS user_id,
     TO_DATE(project_created_at)   AS event_date,
-    'project_created_at'          AS event_type,
+    'project_created'             AS event_type,
     {{ dbt_utils.surrogate_key('event_date', 'event_type', 'project_id') }}
-                                  AS sk_id
+                                  AS event_surrogate_key
 
   FROM {{ref('gitlab_dotcom_projects_xf')}}
   WHERE project_created_at >= '2015-01-01'
@@ -29,7 +29,7 @@ WITH project_created AS (
     TO_DATE(user_created_at)   AS event_date,
     'user_created'             AS event_type,
     {{ dbt_utils.surrogate_key('event_date', 'event_type', 'user_id') }}
-                               AS sk_id
+                               AS event_surrogate_key
 
   FROM {{ref('gitlab_dotcom_users_xf')}}
   WHERE user_created_at >= '2015-01-01'
@@ -39,14 +39,11 @@ WITH project_created AS (
 , unioned AS (
   {% for event_cte in event_ctes %}
 
-    (
-      SELECT
-        *
-      FROM {{ event_cte }}
-    )
+    SELECT *
+    FROM {{ event_cte }} 
 
-    {%- if not loop.last -%}
-        UNION
+    {%- if not loop.last %}
+      UNION
     {%- endif %}
 
   {% endfor -%}

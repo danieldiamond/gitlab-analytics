@@ -57,10 +57,57 @@ roles:
                     - analytics.*.*
 
     ## Regular Roles
+    - analyst_core:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - raw.gcloud_postgres_stitch
+                    - raw.netsuite_stitch
+                    - raw.salesforce_stitch
+                    - raw.sheetload
+                    - raw.snapshots
+                    - raw.snowplow
+                    - raw.tap_postgres
+                    - raw.zendesk_stitch
+                    - raw.zuora_stitch
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+                    - snowflake.*
+            tables:
+                read:
+                    - raw.gcloud_postgres_stitch.*
+                    - raw.netsuite_stitch.*
+                    - raw.salesforce_stitch.*
+                    - raw.sheetload.*
+                    - raw.snapshots.*
+                    - raw.snowplow.*
+                    - raw.tap_postgres.*
+                    - raw.zendesk_stitch.*
+                    - raw.zuora_stitch.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
+                    - snowflake.*.*
+                    
     - analyst_growth:
         warehouses:
             - analyst_xs
             - analyst_xl
+        member_of:
+            - snowplow
         privileges:
             databases:
                 read:
@@ -104,6 +151,51 @@ roles:
                     - analytics.analytics_sensitive.gitlab_dotcom_milestones
                     - analytics.analytics_sensitive.gitlab_dotcom_namespaces
                     - analytics.analytics_sensitive.gitlab_dotcom_projects
+                    - analytics.dbt_archive.*
+                    - snowflake.*.*
+
+    - analyst_infrastructure:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - raw.gcloud_postgres_stitch
+                    - raw.netsuite_stitch
+                    - raw.salesforce_stitch
+                    - raw.sheetload
+                    - raw.snapshots
+                    - raw.snowplow
+                    - raw.tap_postgres
+                    - raw.zendesk_stitch
+                    - raw.zuora_stitch
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+                    - snowflake.*
+            tables:
+                read:
+                    - raw.gcloud_postgres_stitch.*
+                    - raw.netsuite_stitch.*
+                    - raw.salesforce_stitch.*
+                    - raw.sheetload.*
+                    - raw.snapshots.*
+                    - raw.snowplow.*
+                    - raw.tap_postgres.*
+                    - raw.zendesk_stitch.*
+                    - raw.zuora_stitch.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
                     - analytics.dbt_archive.*
                     - snowflake.*.*
 
@@ -151,8 +243,66 @@ roles:
                     - analytics.analytics_meta.*
                     - analytics.dbt_archive.*
                     - snowflake.*.*
+    
+    - analyst_marketing:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+            tables:
+                read:
 
-    - analyst_core:
+    - analyst_sales:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+            tables:
+                read:
+
+
+    - analyst_sensitive:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - raw.*
+                    - analytics.*
+                    - snowflake.*
+            tables:
+                read:
+                    - raw.*.*
+                    - analytics.*.*
+                    - snowflake.*.*
+
+    - data_manager:
         warehouses:
             - analyst_xs
             - analyst_xl
@@ -195,29 +345,6 @@ roles:
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
                     - analytics.dbt_archive.*
-                    - snowflake.*.*
-
-    - analyst_sensitive:
-        warehouses:
-            - analyst_xs
-            - analyst_xl
-        privileges:
-            databases:
-                read:
-                    - raw
-                    - analytics
-                    - snowflake
-                write:
-                    - analytics
-            schemas:
-                read:
-                    - raw.*
-                    - analytics.*
-                    - snowflake.*
-            tables:
-                read:
-                    - raw.*.*
-                    - analytics.*.*
                     - snowflake.*.*
 
     - engineer:
@@ -424,6 +551,46 @@ roles:
                 write:
                     - analytics.*.*
 
+    # Object Roles
+    - bamboohr:
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.bamboohr
+            tables:
+                read:
+                    - raw.bamboohr.*
+    
+    - greenhouse:
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.greenhouse
+            tables:
+                read:
+                    - raw.greenhouse.*
+    
+    - snowplow:
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+            schemas:
+                read:
+                    - raw.snowplow
+                    - analytics.snowplow_*
+            tables:
+                read:
+                    - raw.snowplow.*
+                    - analytics.snowplow_*.*
+
     # User Roles
     - acarella:
         warehouses:
@@ -441,6 +608,11 @@ roles:
     - agroleau:
         warehouses:
             - reporting
+
+    - datwood:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
 
     - dtang:
         warehouses:
@@ -632,6 +804,12 @@ users:
             - reporter
             - sysadmin
             - transformer
+
+    - datwood:
+        can_login: yes
+        member_of:
+            - analyst_core
+            - datwood
 
     - dtang:
         can_login: yes
