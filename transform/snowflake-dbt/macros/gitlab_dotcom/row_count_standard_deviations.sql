@@ -28,12 +28,12 @@ windowed AS (
     AVG(count_unique_ids) OVER (
       PARTITION BY day_of_week, rounded_hour_of_day
       ORDER BY date
-      ROWS BETWEEN 13 PRECEDING AND 1 PRECEDING)   AS average_count_last_12,
+      ROWS BETWEEN 52 PRECEDING AND 1 PRECEDING)   AS average_count_last_12,
 
     STDDEV(count_unique_ids) OVER (
       PARTITION BY day_of_week, rounded_hour_of_day
       ORDER BY date
-      ROWS BETWEEN 13 PRECEDING AND 1 PRECEDING)   AS stddev_count_last_12,
+      ROWS BETWEEN 52 PRECEDING AND 1 PRECEDING)   AS stddev_count_last_12,
 
     ABS(count_unique_ids - average_count_last_12)  AS absolute_difference,
     absolute_difference / stddev_count_last_12     AS absolute_difference_stddevs 
