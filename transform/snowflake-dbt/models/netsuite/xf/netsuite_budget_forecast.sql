@@ -40,7 +40,7 @@ WITH budget AS (
            accounting_periods.accounting_period_full_name,
            departments.department_name,
            budget_category.budget_name,
-           COALESCE(departments.ultimate_department_name, 'zNeed Accounting Reclass')  AS ultimate_department_name,
+           COALESCE(departments.parent_department_name, 'zNeed Accounting Reclass')    AS parent_department_name,
            CASE WHEN account_number BETWEEN '4000' AND '4999' THEN '1-Income'
                 WHEN account_number BETWEEN '5000' AND '5999' THEN '2-Cost of Sales'
                 WHEN account_number BETWEEN '6000' AND '6999' THEN '3-Expense'

@@ -1,14 +1,17 @@
 WITH netsuite_transaction_lines AS  (
 
-  SELECT * FROM {{ref('netsuite_transaction_lines')}}
+  SELECT *
+  FROM {{ref('netsuite_transaction_lines')}}
 
 ), netsuite_accounts AS (
 
-  SELECT * FROM {{ref('netsuite_accounts')}}
+  SELECT *
+  FROM {{ref('netsuite_accounts')}}
 
 ), netsuite_subsidiaries AS (
 
-  SELECT * FROM {{ref('netsuite_subsidiaries')}}
+  SELECT *
+  FROM {{ref('netsuite_subsidiaries')}}
 
 )
 
