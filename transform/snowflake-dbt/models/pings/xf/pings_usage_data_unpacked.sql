@@ -9,12 +9,10 @@
 
 WITH usage_data as (
 
-    SELECT * FROM {{ ref('pings_usage_data') }}
+  SELECT * 
+  FROM {{ ref('pings_usage_data') }}
 
-),
-
-
-final AS (
+), unpacked AS (
 
   SELECT
     id,
@@ -42,18 +40,43 @@ final AS (
     hostname,
     host_id,
 
-    {% for ping_name in ping_list %}
-    stats_used['{{ping_name}}']::numeric                                AS {{ping_name}} {{ "," if not loop.last }}
-    {% endfor %}
-
-  FROM usage_data
-
+    f.path                                                                          AS ping_name, 
+    REPLACE(f.path, '.','_')                                                        AS full_ping_name,
+    f.value                                                                         AS ping_value 
+  FROM usage_data,
+    lateral flatten(input => usage_data.stats_used, recursive => True) f
+  WHERE IS_OBJECT(f.value) = FALSE
+    AND stats_used IS NOT NULL
   {% if is_incremental() %}
-      WHERE created_at > (SELECT max(created_at) FROM {{ this }})
+      AND created_at > (SELECT max(created_at) FROM {{ this }})
   {% endif %}
 
+), final AS (
+  
+  SELECT
+    id,
+    source_ip,
+    version,
+    installation_type,
+    active_user_count,
+    created_at,
+    mattermost_enabled,
+    uuid,
+    ping_source,
+    edition,
+    major_version,
+    main_edition,
+    edition_type,
+    hostname,
+    host_id,
+    {% for ping_name in ping_list %}
+      MAX(IFF(full_ping_name = '{{ping_name}}', ping_value::numeric, NULL)) AS {{ping_name}} {{ "," if not loop.last }}
+    {% endfor %}
+    
+  FROM unpacked
+  {{ dbt_utils.group_by(n=15) }}
+  
 )
 
-SELECT
-  *
+SELECT *
 FROM final
