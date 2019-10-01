@@ -11,8 +11,8 @@ WITH version_usage_data AS (
 )
 
 SELECT DISTINCT
-  f.path                     AS stat_name, 
-  REPLACE(f.path, '.','_')   AS full_stat_name
+  f.path                     AS ping_name, 
+  REPLACE(f.path, '.','_')   AS full_ping_name
 FROM version_usage_data,
   lateral flatten(input => pings_usage_data.stats_used, recursive => True) f
 WHERE IS_OBJECT(f.value) = FALSE

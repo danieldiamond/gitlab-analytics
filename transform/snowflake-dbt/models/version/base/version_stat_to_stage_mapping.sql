@@ -7,7 +7,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ ref('version_metrics_to_stage_mapping_data') }}
+    FROM {{ ref('version_usage_stats_to_stage_mapping_data') }}
 )
 
 SELECT * FROM source

@@ -2,13 +2,13 @@
 
 WITH usage_month as (
 
-    SELECT * FROM {{ ref('pings_usage_data_month') }}
+    SELECT * FROM {{ ref('version_usage_data_month') }}
 
 )
 
 SELECT  DISTINCT *,
 
-        {% for ping_name in p_list %}
+        {% for ping_name in version_usage_stats_list %}
         {{ case_when_boolean_int( ping_name ) }}                                       AS {{ping_name}}_active {{ "," if not loop.last }}
         {% endfor %} 
    

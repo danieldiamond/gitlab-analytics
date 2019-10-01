@@ -1,6 +1,7 @@
 version: 2
 
 models:
+    #TODO: clean this up
     - name: version_stat_to_stage_mapping
       description: mapping of metrics in the pings data to a stage. The data for this base model must be populated using `dbt seed`
     - name: version_avg_cycle_analytics_tappg
@@ -22,6 +23,7 @@ models:
             tests:
                 - not_null
 
+# TODO: re-enable
 #    - name: pings_avg_cycle_analytics
 #      description: Ping data from Self-Managed users.
 #      columns:

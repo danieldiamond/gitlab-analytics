@@ -5,12 +5,12 @@
   )
 }}
 
-{% set ping_list = dbt_utils.get_column_values(table=ref('pings_list'), column='full_ping_name', max_records=1000, default=['']) %}
+{% set version_usage_stats_list = dbt_utils.get_column_values(table=ref('version_usage_stats_list'), column='full_ping_name', max_records=1000, default=['']) %}
 
 WITH usage_data as (
 
   SELECT * 
-  FROM {{ ref('pings_usage_data') }}
+  FROM {{ ref('version_usage_data') }}
 
 ), unpacked AS (
 
@@ -23,9 +23,9 @@ WITH usage_data as (
     created_at,
     mattermost_enabled,
     uuid,
-    CASE WHEN uuid = 'ea8bf810-1d6f-4a6a-b4fd-93e8cbd8b57f'
-            THEN 'SaaS'
-        ELSE 'Self-Managed' END                                                     AS ping_source,
+    CASE
+      WHEN uuid = 'ea8bf810-1d6f-4a6a-b4fd-93e8cbd8b57f' THEN 'SaaS'
+      ELSE 'Self-Managed' END                                                       AS ping_source,
     edition,
     CONCAT(CONCAT(SPLIT_PART(version, '.', 1), '.'), SPLIT_PART(version, '.', 2))   AS major_version,
     CASE WHEN lower(edition) LIKE '%ee%' THEN 'EE'
@@ -69,8 +69,8 @@ WITH usage_data as (
     edition_type,
     hostname,
     host_id,
-    {% for ping_name in ping_list %}
-      MAX(IFF(full_ping_name = '{{ping_name}}', ping_value::numeric, NULL)) AS {{ping_name}} {{ "," if not loop.last }}
+    {% for ping_name in version_usage_stats_list %}
+      MAX(IFF(full_ping_name = '{{ping_name}}', ping_value::NUMERIC, NULL)) AS {{ping_name}} {{ "," if not loop.last }}
     {% endfor %}
     
   FROM unpacked

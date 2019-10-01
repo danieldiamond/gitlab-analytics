@@ -6,7 +6,7 @@
 WITH source AS (
 
   SELECT *
-  FROM {{ source('_tap_postgres', 'usage_data') }}
+  FROM {{ source('version', 'usage_data') }}
 
 ),
 

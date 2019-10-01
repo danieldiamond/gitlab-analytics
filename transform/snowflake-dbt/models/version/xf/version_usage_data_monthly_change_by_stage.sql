@@ -4,9 +4,9 @@ with change as (
 
   SELECT * FROM {{ref('pings_usage_data_monthly_change')}}
 
-), 
+),
 
-boolean as (
+booleans as (
 
   SELECT * FROM {{ref('pings_usage_data_boolean')}}
 
@@ -16,22 +16,21 @@ pings AS (
 
   SELECT
     change.*,
-    boolean.active_user_count AS user_count
+    booleans.active_user_count AS user_count
   FROM change
-    LEFT JOIN boolean
-      ON change.uuid = boolean.uuid
-      AND DATE_TRUNC('month', change.created_at) = DATE_TRUNC('month', boolean.created_at)
+    LEFT JOIN booleans
+      ON change.uuid = booleans.uuid
+      AND DATE_TRUNC('month', change.created_at) = DATE_TRUNC('month', booleans.created_at)
 
 ),
 
 hostnames AS (
     SELECT
-      uuid
-      , LISTAGG(DISTINCT hostname, ', ') AS uuid_hostnames
+      uuid,
+      LISTAGG(DISTINCT hostname, ', ') AS uuid_hostnames
     FROM
       {{ref('pings_usage_data_unpacked')}}
-    GROUP BY
-      1
+    GROUP BY 1
 )
 
 SELECT
