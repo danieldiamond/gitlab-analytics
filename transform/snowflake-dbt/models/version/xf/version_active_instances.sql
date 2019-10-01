@@ -4,7 +4,7 @@ with version_checks as (
             gitlab_version          AS version,
             created_at,
             'version_ping'          AS ping_type
-    FROM {{ ref("pings_version_checks") }}
+    FROM {{ ref("version_version_checks") }}
 
 ), usage_data as (
 
@@ -13,7 +13,7 @@ with version_checks as (
       version,
       created_at,
       'usage_ping'                                    AS ping_type
-    FROM {{ ref("pings_usage_data") }}
+    FROM {{ ref("version_usage_data") }}
 
 ), active_instances as (
 

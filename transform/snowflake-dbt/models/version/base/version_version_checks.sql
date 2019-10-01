@@ -6,7 +6,7 @@
 with source AS (
 
   SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
-  FROM {{ source('pings_tap_postgres', 'version_checks') }}
+  FROM {{ source('version_tap_postgres', 'version_checks') }}
 
 ), renamed AS (
 

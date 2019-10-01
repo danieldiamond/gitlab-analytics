@@ -3,12 +3,12 @@
     })
 }}
 
-{% set ping_list = dbt_utils.get_column_values(table=ref('pings_list'), column='full_ping_name', max_records=1000) %}
+{% set version_list = dbt_utils.get_column_values(table=ref('version_list'), column='full_ping_name', max_records=1000) %}
 
 
 WITH usage_data as (
 
-    SELECT * FROM {{ ref('pings_usage_data_unpacked') }}
+    SELECT * FROM {{ ref('version_usage_data_unpacked') }}
 
 ), usage_data_month_base as (
 
