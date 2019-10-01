@@ -22,7 +22,7 @@ WITH snowplow_page_views AS (
     page_url_path,
     page_view_id,
     referer_url_path
-  FROM {{ ref('snowplow_page_views_all')}}
+  FROM analytics.snowplow_page_views_all
   WHERE TRUE
     AND app_id = 'gitlab'
   {% if is_incremental() %}
@@ -31,85 +31,15 @@ WITH snowplow_page_views AS (
 
 )
 
-, audit_events_viewed AS (
+, {{ smau_events_ctes(action_name='audit_events_viewed', regexp_where_statements=[{'regexp_function':'REGEXP', 'regexp':'(\/([0-9A-Za-z_.-])*){1,}\/audit_events'}]) }}
 
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start)    AS event_date,
-    page_url_path,
-    'audit_events_viewed'       AS event_type,
-    page_view_id,
-    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
-                                AS event_surrogate_key
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/audit_events'
+, {{ smau_events_ctes(action_name='cycle_analytics_viewed', regexp_where_statements=[{'regexp_function':'REGEXP', 'regexp':'(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics'}]) }}
 
-)
+, {{ smau_events_ctes(action_name='insights_viewed', regexp_where_statements=[{'regexp_function':'REGEXP', 'regexp':'(\/([0-9A-Za-z_.-])*){1,}\/insights'}]) }}
 
-, cycle_analytics_viewed AS (
+, {{ smau_events_ctes(action_name='group_analytics_viewed', regexp_where_statements=[{'regexp_function':'REGEXP', 'regexp':'(\/([0-9A-Za-z_.-])*){1,}\/analytics'}]) }}
 
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start)   AS event_date,
-    page_url_path,
-    'cycle_analytics_viewed'   AS event_type,
-    page_view_id,
-    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
-                               AS event_surrogate_key
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics'
-
-)
-
-, insights_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start)   AS event_date,
-    page_url_path,
-    'insights_viewed'          AS event_type,
-    page_view_id,
-    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
-                               AS event_surrogate_key
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/insights'
-
-)
-
-, group_analytics_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start)   AS event_date,
-    page_url_path,
-    'group_analytics_viewed'   AS event_type,
-    page_view_id,
-    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
-                               AS event_surrogate_key
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/analytics'
-
-)
-
-, group_created AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start)   AS event_date,
-    page_url_path,
-    'group_created'            AS event_type,
-    page_view_id,
-    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
-                               AS event_surrogate_key
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '\/groups\/new'
-
-)
+, {{ smau_events_ctes(action_name='group_created', regexp_where_statements=[{'regexp_function':'REGEXP', 'regexp':'\/groups\/new'}]) }}
 
   /*
     Looks at referrer_url in addition to page_url.
