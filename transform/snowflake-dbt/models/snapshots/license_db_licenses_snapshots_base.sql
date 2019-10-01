@@ -1,6 +1,6 @@
 {{ config({
     "schema": "staging",
-    "alias": "gitlab_dotcom_gitlab_subscriptions_snapshots"
+    "alias": "license_db_licenses_snapshots"
     })
 }}
 
@@ -9,7 +9,7 @@ WITH source AS (
   SELECT
     *,
     ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
-  FROM {{ source('license', 'licenses') }}
+  FROM {{ source('snapshots', 'license_db_licenses_snapshots') }}
 
 ), renamed AS (
 
