@@ -27,6 +27,6 @@ models:
         -   name: snowflake_role_name
             tests:
                 - not_null
-        -   name: snowflake_query_start_time
+        -   name: query_start_time
             tests: 
                 - not_null    
