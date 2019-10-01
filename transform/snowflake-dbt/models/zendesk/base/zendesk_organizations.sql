@@ -3,13 +3,13 @@
   })
 }}
 
-with source as (
+WITH source AS (
 
     SELECT *
     FROM {{ source('zendesk', 'organizations') }}
 ),
 
-renamed as (
+renamed AS (
 
     SELECT
 

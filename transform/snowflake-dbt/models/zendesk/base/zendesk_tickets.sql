@@ -3,13 +3,13 @@
   })
 }}
 
-with source as (
+WITH source AS (
 
     SELECT *
     FROM {{ source('zendesk', 'tickets') }}
 ),
 
-renamed as (
+renamed AS (
 
     SELECT
         id                                   AS ticket_id,

@@ -19,7 +19,7 @@ sources:
       - name: organizations
         description: '{{ doc("zendesk_org_desc") }}'
       - name: sla_policies
-        description: '{{ doc("zendesk_users_desc") }}'
+        description: '{{ doc("zendesk_sla_policies_desc") }}'
       - name: ticket_audits
         description: '{{ doc("zendesk_ticket_audits_desc") }}'        
       - name: ticket_metrics

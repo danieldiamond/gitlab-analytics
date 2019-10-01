@@ -10,22 +10,23 @@ WITH zendesk_ticket_metrics AS (
 ), zendesk_sla_policies AS (
 
   SELECT
-    zendesk_sla_title AS sla_policy,
+    zendesk_sla_title       AS sla_policy,
     policy_metrics_priority AS priority,
-    policy_metrics_target AS sla_first_reply_target
+    policy_metrics_target   AS sla_first_reply_target
   FROM {{ref('zendesk_sla_policies')}}
   WHERE policy_metrics_metric = 'first_reply_time'
 
 ), zendesk_ticket_audit_sla AS (
 
+    /* ranking each audit and event within an audit to later select the last
+       state of sla_policy and priority prior to first_reply_time */
+
   SELECT
     ticket_id,
-    -- ranking each audit and event within an audit to later select the last
-    -- state of sla_policy and priority prior to first_reply_time
-    DENSE_RANK() OVER (PARTITION BY ticket_id ORDER BY audit_id DESC) AS sla_audit_rank,
+    DENSE_RANK() OVER (PARTITION BY ticket_id ORDER BY audit_id DESC)      AS sla_audit_rank,
     DENSE_RANK() OVER (PARTITION BY audit_id ORDER BY audit_event_id DESC) AS sla_audit_event_rank,
-    audit_created_at AS sla_audit_created_at,
-    audit_value AS sla_policy
+    audit_created_at                                                       AS sla_audit_created_at,
+    audit_value                                                            AS sla_policy
   FROM {{ref('zendesk_ticket_audits')}}
   WHERE audit_field = 'sla_policy'
 
@@ -33,10 +34,10 @@ WITH zendesk_ticket_metrics AS (
 
   SELECT
     ticket_id,
-    DENSE_RANK() OVER (PARTITION BY ticket_id ORDER BY audit_id DESC) AS priority_audit_rank,
-    DENSE_RANK() OVER (PARTITION BY audit_id ORDER BY audit_event_id DESC) as priority_audit_event_rank,
-    audit_created_at AS priority_audit_created_at,
-    audit_value AS priority
+    DENSE_RANK() OVER (PARTITION BY ticket_id ORDER BY audit_id DESC)      AS priority_audit_rank,
+    DENSE_RANK() OVER (PARTITION BY audit_id ORDER BY audit_event_id DESC) AS priority_audit_event_rank,
+    audit_created_at                                                       AS priority_audit_created_at,
+    audit_value                                                            AS priority
   FROM {{ref('zendesk_ticket_audits')}}
   WHERE audit_field = 'priority'
 
@@ -44,7 +45,7 @@ WITH zendesk_ticket_metrics AS (
 
   SELECT
     ticket_id,
-    IFF(sla_policy = 'Emergency SLA', 1, 0) AS is_emergency_sla
+    IFF(sla_policy = 'Emergency SLA', TRUE, FALSE) AS is_emergency_sla
   FROM zendesk_ticket_audit_sla
   WHERE sla_audit_rank = 1
   AND sla_audit_event_rank = 1
@@ -54,7 +55,7 @@ WITH zendesk_ticket_metrics AS (
   SELECT
     zendesk_ticket_metrics.ticket_id,
     zendesk_ticket_metrics.created_at,
-    IFF(zendesk_ticket_emergency_sla_policy.is_emergency_sla = 1,
+    IFF(zendesk_ticket_emergency_sla_policy.is_emergency_sla = FALSE,
         zendesk_ticket_metrics.sla_reply_time_calendar_hours,
         zendesk_ticket_metrics.sla_reply_time_business_hours) AS first_reply_time_sla
   FROM zendesk_ticket_metrics
@@ -82,26 +83,22 @@ WITH zendesk_ticket_metrics AS (
     ON zendesk_ticket_reply_time.ticket_id = zendesk_ticket_audit_sla.ticket_id
   LEFT JOIN zendesk_ticket_audit_priority
     ON zendesk_ticket_reply_time.ticket_id = zendesk_ticket_audit_priority.ticket_id
-  WHERE sla_audit_created_at <= TIMEADD(minute,
-    zendesk_ticket_reply_time.first_reply_time_sla + 1,
-    zendesk_ticket_reply_time.created_at)
-  AND priority_audit_created_at <= TIMEADD(minute,
-    zendesk_ticket_reply_time.first_reply_time_sla + 1,
-    zendesk_ticket_reply_time.created_at)
-    -- Zendesk and Stitch round to the nearest minute differently. 1 minute buffer is added
-    -- to account for situations where an SLA policy or priority is set at the same time
-    -- a ticket is responded to or resolved
+  WHERE sla_audit_created_at <= TIMEADD(minute, 1, first_reply_at)
+  AND priority_audit_created_at <= TIMEADD(minute, 1, first_reply_at)
+    /* Zendesk and Stitch round to the nearest minute differently. 1 minute buffer is added
+       to account for situations where an SLA policy or priority is set at the same time
+       a ticket is responded to or resolved */
 
 ), zendesk_ticket_audit_minimum_ranks AS (
 
   SELECT
     ticket_id,
-    MIN(sla_audit_rank) AS min_sla_audit_rank,
-    MIN(sla_audit_event_rank) AS min_sla_audit_event_rank,
-    MIN(priority_audit_rank) AS min_priority_audit_rank,
-    MIN(priority_audit_event_rank) AS min_priority_audit_event_rank
-    -- minimum rank (latest occurrence) of each SLA policy and priority assignment
-    -- prior to or at the time of first reply
+    MIN(sla_audit_rank)             AS min_sla_audit_rank,
+    MIN(sla_audit_event_rank)       AS min_sla_audit_event_rank,
+    MIN(priority_audit_rank)        AS min_priority_audit_rank,
+    MIN(priority_audit_event_rank)  AS min_priority_audit_event_rank
+    /* minimum rank (latest occurrence) of each SLA policy and priority assignment
+       prior to or at the time of first reply */
   FROM zendesk_ticket_sla_metric
   GROUP BY 1
 

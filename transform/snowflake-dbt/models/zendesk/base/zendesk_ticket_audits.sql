@@ -3,13 +3,14 @@
   })
 }}
 
-with source as (
+WITH source AS (
 
     SELECT *
     FROM {{ source('zendesk', 'ticket_audits') }}
+    
 ),
 
-flattened as (
+flattened AS (
 
     SELECT
         -- primary data
