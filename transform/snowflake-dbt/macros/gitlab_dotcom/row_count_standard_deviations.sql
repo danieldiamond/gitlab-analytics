@@ -1,4 +1,4 @@
-{%- macro row_count_standard_deviations(min_stddevs) %}
+{%- macro row_count_standard_deviations(min_stddevs=5) %}
 ,
 
 daily_counts AS (
@@ -40,13 +40,14 @@ windowed AS (
 
   FROM daily_counts
   WHERE date BETWEEN '2019-01-01' AND CURRENT_DATE()
+
 )
 
 SELECT
   *
 FROM windowed
 WHERE absolute_difference_stddevs > {{min_stddevs}}
-  AND count_unique_ids < average_count_last_12  -- Only if LESS than the average
+  AND count_unique_ids < average_count_last_12  -- Only concerned if LESS than the average
   AND day_of_year NOT IN (                     
     356,357,358,359,360,361,362,363,364,365,1 -- Christmas
   )

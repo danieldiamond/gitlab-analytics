@@ -147,6 +147,11 @@ Used in:
 - sfdc_opportunity.sql
 - zuora_rate_plan.sql
 
+## Row Count Standard Deviations ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/gitlab_dotcom/row_count_standard_deviation.sql))
+This macro inserts CTEs that help identify periods from a source table that might be missing rows. This is accomplished by comparing with previous time frames and looking for differences outside of a given threshold of standard deviations.   
+
+As an "input", this macro expects a CTE named `data` with columns `unique_id` and `timestamp_column`.
+
 ## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sales_segment_cleaning))
 This macro applies proper formatting to sales segment data with the end result being one of SMB, Mid-Market, Strategic, Large or Unknown.
 Usage:
