@@ -46,7 +46,7 @@ WITH source AS(
 {% if is_incremental() %}
 
   -- this filter will only be applied on an incremental run
-  WHERE snowflake_query_start_time > (SELECT MAX(snowflake_query_start_time) from {{ this }})
+  WHERE query_start_time > (SELECT MAX(query_start_time) from {{ this }})
 
 {% endif %}
 
