@@ -17,3 +17,10 @@ sources:
 
     tables:
       - name: user_roles
+
+  - name: snowflake_account_usage
+    database: snowflake
+    schema: account_usage
+
+    tables:
+      - name: query_history
