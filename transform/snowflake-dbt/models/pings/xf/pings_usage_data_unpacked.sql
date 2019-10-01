@@ -72,12 +72,15 @@ WITH usage_data as (
     edition_type,
     hostname,
     host_id,
+    git_version,
+    gitaly_servers,
+    gitaly_version,
     {% for ping_name in ping_list %}
       MAX(IFF(full_ping_name = '{{ping_name}}', ping_value::numeric, NULL)) AS {{ping_name}} {{ "," if not loop.last }}
     {% endfor %}
     
   FROM unpacked
-  {{ dbt_utils.group_by(n=15) }}
+  {{ dbt_utils.group_by(n=18) }}
   
 )
 

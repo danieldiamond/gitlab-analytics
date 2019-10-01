@@ -66,10 +66,5 @@ renamed AS (
     AND (CHECK_JSON(counts) IS NULL)
 )
 
-<<<<<<< HEAD
-SELECT
-  *
-=======
 SELECT *
->>>>>>> master
 FROM renamed
