@@ -97,6 +97,6 @@ successful_deployments,release
 suggestions,create
 todos,plan
 uploads,plan
-web_hooks,create
 user_preferences_group_overview_details,manage
 user_preferences_group_overview_security_dashboard,secure
+web_hooks,create
