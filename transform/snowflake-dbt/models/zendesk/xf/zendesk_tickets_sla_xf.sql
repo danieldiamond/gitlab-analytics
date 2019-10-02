@@ -7,15 +7,6 @@ WITH zendesk_ticket_metrics AS (
     created_at
   FROM {{ref('zendesk_ticket_metrics')}}
 
-), zendesk_sla_policies AS (
-
-  SELECT
-    zendesk_sla_title       AS sla_policy,
-    policy_metrics_priority AS priority,
-    policy_metrics_target   AS sla_first_reply_target
-  FROM {{ref('zendesk_sla_policies')}}
-  WHERE policy_metrics_metric = 'first_reply_time'
-
 ), zendesk_ticket_audit_sla AS (
 
     /* ranking each audit and event within an audit to later select the last

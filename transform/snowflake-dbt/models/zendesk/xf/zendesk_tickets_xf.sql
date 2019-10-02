@@ -12,8 +12,8 @@ WITH zendesk_tickets AS (
 
 ), zendesk_sla_policies AS (
 
-  SELECT 
-    DISTINCT zendesk_sla_policy_id,
+  SELECT DISTINCT 
+    zendesk_sla_policy_id,
     zendesk_sla_title,
     policy_metrics_business_hours,
     policy_metrics_priority,
@@ -37,8 +37,8 @@ WITH zendesk_tickets AS (
 
 )
 
-SELECT
-  DISTINCT zendesk_tickets.*,
+SELECT DISTINCT 
+  zendesk_tickets.*,
   zendesk_ticket_metrics.first_reply_time,
   zendesk_organizations.sfdc_account_id,
   zendesk_organizations.organization_market_segment,
