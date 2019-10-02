@@ -11,7 +11,7 @@ WITH users AS (
 ), cohorting AS (
 
   SELECT user_id,
-         user_created_at :: date                                        AS cohort_date,
+         user_created_at::DATE                                        AS cohort_date,
          TIMESTAMPDIFF(MONTHS,user_created_at,last_activity_on)         AS period
   FROM users
 
@@ -34,6 +34,7 @@ WITH users AS (
 
 )
 
-SELECT md5(cohort_date || period)                                       AS cohort_key,
-       *
+SELECT
+  md5(cohort_date || period)                                       AS cohort_key,
+  *
 FROM joined

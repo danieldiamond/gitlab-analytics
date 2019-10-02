@@ -24,3 +24,4 @@ config.json
 !engineering_productivity_metrics_projects_to_include.csv
 !cost_center_division_department_mapping.csv
 !excluded.csv
+.ipynb_checkpoints/*

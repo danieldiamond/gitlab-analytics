@@ -3,28 +3,28 @@
 {% set fields_to_mask = ['title', 'description'] %}
 
 
-with issues as (
+with issues AS (
 
     SELECT * 
     FROM {{ref('gitlab_dotcom_issues')}}
 
-), all_label_links as (
+), all_label_links AS (
 
     SELECT * 
     FROM {{ref('gitlab_dotcom_label_links')}}
 
-), label_links as (
+), label_links AS (
 
     SELECT *
     FROM all_label_links
     WHERE target_type = 'Issue'
 
-), all_labels as (
+), all_labels AS (
 
     SELECT * 
     FROM {{ref('gitlab_dotcom_labels_xf')}}
 
-), agg_labels as (
+), agg_labels AS (
 
     SELECT
       issue_id,
@@ -36,7 +36,7 @@ with issues as (
       ON label_links.label_id = all_labels.label_id
     GROUP BY issue_id
 
-), projects as (
+), projects AS (
 
     SELECT 
       project_id,
@@ -44,7 +44,7 @@ with issues as (
       visibility_level
     FROM {{ref('gitlab_dotcom_projects')}}
 
-), internal_namespaces as (
+), internal_namespaces AS (
 
     SELECT
       namespace_id
@@ -52,7 +52,7 @@ with issues as (
     WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
 ),
 
-joined as (
+joined AS (
 
   SELECT 
     issues.issue_id,
