@@ -22,7 +22,7 @@ with raw_mrr_totals_levelled AS (
               sum(quantity) as original_quantity,
               sum(mrr) as original_mrr
       FROM raw_mrr_totals_levelled
-      {{ dbt_utils.group_by(n=11) }}
+      {{ dbt_utils.group_by(n=10) }}
 
 ), list AS ( --get all the subscription + their lineage + the month we're looking for MRR for (12 month in the future)
 
@@ -48,7 +48,7 @@ with raw_mrr_totals_levelled AS (
        INNER JOIN mrr_totals_levelled
        ON retention_month = mrr_month
        AND subscriptions_in_lineage = subscription_name_slugify
-       {{ dbt_utils.group_by(n=6) }}
+       {{ dbt_utils.group_by(n=7) }}
 
 ), expansion AS (
 
