@@ -336,6 +336,7 @@ tables:
       SELECT id
       , created_at
       , updated_at
+      , ref
       , tag
       , yaml_errors
       , committed_at
