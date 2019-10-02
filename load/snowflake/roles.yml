@@ -569,12 +569,17 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.greenhouse
+                    - analytics.analytics
+                    - analytics.analytics_staging
             tables:
                 read:
                     - raw.greenhouse.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
     
     - snowplow:
         privileges:
