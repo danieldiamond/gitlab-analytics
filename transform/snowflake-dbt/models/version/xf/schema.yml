@@ -61,7 +61,7 @@ models:
                     values: ['EE', 'CE']
 
     - name: version_usage_data_monthly_change
-      description: '{{ doc("pings_usage_data_monthly_change") }}'
+      description: '{{ doc("version_usage_data_monthly_change") }}'
       columns:
           - name: unique_key
             tests:

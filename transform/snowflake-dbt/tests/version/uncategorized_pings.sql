@@ -1,12 +1,12 @@
 with live_data as (
 
 	SELECT distinct full_ping_name
-	FROM {{ref('pings_list')}}
+	FROM {{ref('version_usage_stats_list')}}
 
 ), category_mapping as (
 
 	SELECT distinct stats_used_key_name
-	FROM {{ref('ping_metrics_to_stage_mapping_data')}}
+	FROM {{ref('version_metrics_to_stage_mapping_data')}}
 
 )
 
