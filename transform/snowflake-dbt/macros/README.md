@@ -37,6 +37,15 @@ Used in:
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
 
+## Cost Category ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/netsuite/cost_category.sql))
+This macro categorizes expenses by Headcount and Non_Headcount.
+Usage:
+```
+{{cost_category('account_number','account_name')}}
+```
+Used in:
+- netsuite_cogs_opex
+
 ## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
 Usage:
@@ -168,7 +177,7 @@ Used in:
 - snowplow_combined/all/*.sql
 
 ## Schema Union Limit ([Source](ttps://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_limit.sql))
-This macro takes a schema prefix, a table name, a column name, and an integer representing days. It returns a view that is limited to the last 30 days based on the column name. Note that this also calls schema union all which can be a heavy call. 
+This macro takes a schema prefix, a table name, a column name, and an integer representing days. It returns a view that is limited to the last 30 days based on the column name. Note that this also calls schema union all which can be a heavy call.
 Usage:
 ```
 {{ schema_union_limit('snowplow', 'snowplow_page_views', 'page_view_start', 30) }}

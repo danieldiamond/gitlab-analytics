@@ -291,24 +291,6 @@ models:
         - name: is_department_inactive
           tests:
             - not_null
-    - name: netsuite_posting_account_activity
-      description: "[Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/posting_account_activity.html)"
-      columns:
-        - name: account_id
-          tests:
-            - not_null
-            - relationships:
-                to: ref('netsuite_accounts')
-                field: account_id
-        - name: subsidiary_id
-          tests:
-            - not_null
-            - relationships:
-                to: ref('netsuite_subsidiaries')
-                field: subsidiary_id
-        - name: actual_amount
-          tests:
-            - not_null
     - name: netsuite_subsidiaries
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/subsidiaries.html)"
       columns:

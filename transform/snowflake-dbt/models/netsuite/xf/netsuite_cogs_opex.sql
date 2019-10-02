@@ -33,7 +33,16 @@ WITH transactions AS (
      SELECT *
      FROM {{ref('netsuite_consolidated_exchange_rates')}}
 
-), income_opex_cogs AS (
+), date_details AS (
+
+     SELECT DISTINCT
+            first_day_of_month,
+            fiscal_year,
+            fiscal_quarter,
+            fiscal_quarter_name
+     FROM {{ref('date_details')}}
+
+), opex_cogs AS (
 
      SELECT t.transaction_id,
             t.external_ref_number,
@@ -43,9 +52,10 @@ WITH transactions AS (
             t.status,
             t.transaction_type,
             a.account_name,
+            a.account_full_name,
             a.account_number,
             a.unique_account_number,
-            a.ultimate_account_number,
+            a.parent_account_number,
             d.department_name,
             d.parent_department_name,
             ap.accounting_period_starting_date::DATE        AS accounting_period,
@@ -66,10 +76,10 @@ WITH transactions AS (
     LEFT JOIN consolidated_exchange_rates e
       ON ap.accounting_period_id = e.accounting_period_id
       AND e.from_subsidiary_id = s.subsidiary_id
-    WHERE a.account_number between '4000' and '6999'
+    WHERE a.account_number between '5000' and '6999'
       AND ap.fiscal_calendar_id = 2
       AND e.to_subsidiary_id = 1
-    {{ dbt_utils.group_by(n=15) }}
+    {{ dbt_utils.group_by(n=16) }}
 
 ), income_statement_grouping AS (
 
@@ -77,27 +87,31 @@ WITH transactions AS (
            external_ref_number,
            transaction_ext_id,
            document_id,
+           account_name,
+           account_full_name,
+           account_number || ' - ' || account_name          AS netsuite_ui_name,
+           account_number,
+           parent_account_number,
+           unique_account_number,
+           actual_amount,
+           CASE WHEN account_number BETWEEN '5000' AND '5999' THEN '2-Cost of Sales'
+                WHEN account_number BETWEEN '6000' AND '6999' THEN '3-Expense'
+           END                                              AS income_statement_grouping,
+           {{cost_category('account_number','account_name')}},
            transaction_lines_memo,
            status,
            transaction_type,
-           account_name,
-           account_number || ' - ' || account_name      AS account_full_name,
-           account_number,
-           unique_account_number,
-           ultimate_account_number,
            department_name,
            parent_department_name,
            accounting_period,
            accounting_period_name,
-           CASE WHEN account_number BETWEEN '4000' AND '4999' THEN '1-Income'
-                WHEN account_number BETWEEN '5000' AND '5999' THEN '2-Cost of Sales'
-                WHEN account_number BETWEEN '6000' AND '6999' THEN '3-Expense'
-           END                                          AS income_statement_grouping,
-           CASE WHEN account_number BETWEEN '4000' AND '4999' THEN -actual_amount
-                ELSE actual_amount
-       END                                              AS actual_amount
-       FROM income_opex_cogs
-       WHERE account_number NOT IN ('4005','5077','5079','5080')
+           fiscal_year,
+           fiscal_quarter,
+           fiscal_quarter_name
+       FROM opex_cogs oc
+       LEFT JOIN date_details dd
+         ON dd.first_day_of_month = oc.accounting_period
+       WHERE account_number NOT IN ('5077','5079','5080')
 
 )
 

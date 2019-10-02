@@ -28,42 +28,55 @@ WITH budget AS (
      SELECT *
      FROM {{ ref('netsuite_departments_xf') }}
 
-), income_statement_budget AS (
+), date_details AS (
 
-    SELECT accounts.account_number || ' - ' || accounts.account_name                   AS account_full_name,
-           accounts.account_name,
-           accounts.unique_account_number,
-           accounts.account_number,
-           accounts.ultimate_account_number,
-           accounting_periods.accounting_period_starting_date::DATE                    AS accounting_period_starting_date,
-           accounting_periods.accounting_period_name,
-           accounting_periods.accounting_period_full_name,
-           departments.department_name,
-           budget_category.budget_name,
-           COALESCE(departments.parent_department_name, 'zNeed Accounting Reclass')    AS parent_department_name,
+     SELECT DISTINCT
+            first_day_of_month,
+            fiscal_year,
+            fiscal_quarter,
+            fiscal_quarter_name
+     FROM {{ref('date_details')}}
+
+), budget_forecast AS (
+
+    SELECT a.account_number || ' - ' || a.account_name                                 AS netsuite_ui_name,
+           a.account_name,
+           a.account_full_name,
+           a.account_number,
+           a.parent_account_number,
+           a.unique_account_number,
+           ap.accounting_period_starting_date::DATE                                    AS accounting_period,
+           ap.accounting_period_name,
+           ap.accounting_period_full_name,
+           d.department_name,
+           COALESCE(d.parent_department_name, 'zNeed Accounting Reclass')              AS parent_department_name,
+           bc.budget_name,
            CASE WHEN account_number BETWEEN '4000' AND '4999' THEN '1-Income'
                 WHEN account_number BETWEEN '5000' AND '5999' THEN '2-Cost of Sales'
                 WHEN account_number BETWEEN '6000' AND '6999' THEN '3-Expense'
            END                                                                         AS income_statement_grouping,
-           SUM(CASE WHEN accounts.account_number BETWEEN '4000' AND '4010' THEN 0
-                    WHEN budget.budget_amount IS NULL THEN 0
-                    ELSE budget.budget_amount
+           {{cost_category('account_number','account_name')}},
+           SUM(CASE WHEN a.account_number BETWEEN '4000' AND '4010' THEN 0
+                    WHEN b.budget_amount IS NULL THEN 0
+                    ELSE b.budget_amount
                END)                                                                    AS budget_amount
-    FROM budget
-    LEFT JOIN budget_category
-      ON budget.category_id = budget_category.budget_category_id
-    LEFT JOIN accounts
-      ON budget.account_id = accounts.account_id
-    LEFT JOIN accounting_periods
-      ON budget.accounting_period_id = accounting_periods.accounting_period_id
-    LEFT JOIN departments
-      ON budget.department_id = departments.department_id
-    WHERE accounting_periods.fiscal_calendar_id = 2
-      AND accounts.account_number between '4000' and '6999'
-    {{ dbt_utils.group_by(n=12) }}
+    FROM budget b
+    LEFT JOIN budget_category bc
+      ON b.category_id = bc.budget_category_id
+    LEFT JOIN accounts a
+      ON b.account_id = a.account_id
+    LEFT JOIN accounting_periods ap
+      ON b.accounting_period_id = ap.accounting_period_id
+    LEFT JOIN departments d
+      ON b.department_id = d.department_id
+    WHERE ap.fiscal_calendar_id = 2
+      AND a.account_number between '4000' and '6999'
+    {{ dbt_utils.group_by(n=14) }}
 
 )
 
-SELECT *
-FROM income_statement_budget
-ORDER BY 6,12,1
+SELECT b.*
+FROM budget_forecast b
+LEFT JOIN date_details dd
+ ON dd.first_day_of_month = b.accounting_period
+ORDER BY 8,4
