@@ -417,18 +417,24 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
                 write:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.*
+                    - analytics.boneyard
                 write:
                     - raw.*
+                    - analytics.boneyard
             tables:
                 read:
                     - raw.*.*
+                    - analytics.boneyard.*
                 write:
                     - raw.*.*
+                    - analytics.boneyard.*
 
     - product_manager:
         warehouses:
