@@ -565,6 +565,9 @@ roles:
                     - raw.bamboohr.*
     
     - greenhouse:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
         privileges:
             databases:
                 read:
