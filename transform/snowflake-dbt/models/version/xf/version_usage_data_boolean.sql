@@ -1,4 +1,4 @@
-{% set version_stats_list = dbt_utils.get_column_values(table=ref('version_list'), column='full_ping_name', max_records=1000) %}
+{% set version_stats_list = dbt_utils.get_column_values(table=ref('version_usage_stats_list'), column='full_ping_name', max_records=1000) %}
 
 WITH usage_month as (
 

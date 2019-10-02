@@ -1,14 +1,14 @@
-{% set stage_list = dbt_utils.get_column_values(table=ref('ping_metrics_to_stage_mapping_data'), column='stage') %}
+{% set stage_list = dbt_utils.get_column_values(table=ref('version_stat_to_stage_mapping'), column='stage') %}
 
-with change as (
+WITH change AS (
 
-  SELECT * FROM {{ref('pings_usage_data_monthly_change')}}
+  SELECT * FROM {{ref('version_usage_data_monthly_change')}}
 
 ),
 
-booleans as (
+booleans AS (
 
-  SELECT * FROM {{ref('pings_usage_data_boolean')}}
+  SELECT * FROM {{ref('version_usage_data_boolean')}}
 
 ),
 
@@ -29,7 +29,7 @@ hostnames AS (
       uuid,
       LISTAGG(DISTINCT hostname, ', ') AS uuid_hostnames
     FROM
-      {{ref('pings_usage_data_unpacked')}}
+      {{ref('version_usage_data_unpacked')}}
     GROUP BY 1
 )
 
@@ -48,6 +48,7 @@ SELECT
 
   SUM(user_count) AS "Total"
 FROM pings
-  LEFT JOIN hostnames ON pings.uuid = hostnames.uuid
+  LEFT JOIN hostnames
+    ON pings.uuid = hostnames.uuid
 GROUP BY 1, 2, 3, 4, 5, 6
 ORDER BY 1

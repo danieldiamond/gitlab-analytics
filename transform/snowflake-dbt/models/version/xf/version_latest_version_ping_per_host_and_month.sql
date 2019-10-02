@@ -1,9 +1,11 @@
 WITH pings_version_checks AS (
 
 	SELECT * FROM {{ ref('version_version_checks') }}
+
 ),
 
 ranked AS (
+
   SELECT
     id AS ping_id,
     host_id,
@@ -21,6 +23,7 @@ ranked AS (
       ORDER BY created_at DESC
     ) AS row_number
   FROM pings_version_checks
+
 )
 
 SELECT
