@@ -3,6 +3,8 @@
     })
 }}
 
+-- TODO: materialize as table
+
 WITH source AS (
 
   SELECT *
