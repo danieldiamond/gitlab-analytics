@@ -146,9 +146,10 @@ Usage:
 Used in:
 - sfdc_opportunity.sql
 - zuora_rate_plan.sql
+```
 
 ## Delivery([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/delivery.sql))
-This macro maps product categories to [delivery](LINK).
+This macro maps product categories to [delivery](https://about.gitlab.com/handbook/marketing/product-marketing/tiers/#delivery).
 Usage:
 ```
 {{delivery('product_category')}}
