@@ -26,6 +26,9 @@ WITH base_mrr AS (
           mrr,
           'Trueup'        AS product_category,
           charge_name     AS rate_plan_name,
+          CASE WHEN lower(rate_plan_name) like '%support%' THEN 'Support Only'
+            ELSE 'Full Service'
+          END             AS service_type,
           null            AS unit_of_measure,
           null            AS quantity
     FROM trueup_mrr
@@ -44,6 +47,7 @@ WITH base_mrr AS (
           mrr,
           product_category,
           rate_plan_name,
+          NULL            AS service_type,
           unit_of_measure,
           quantity
     FROM base_mrr
@@ -63,11 +67,12 @@ WITH base_mrr AS (
           product_category,
           {{ delivery('product_category')}},
           unit_of_measure,
+          service_type,
           array_agg(rate_plan_name) AS rate_plan_name,
           sum(quantity)             AS quantity,
           sum(mrr)                  AS mrr
     FROM mrr_combined
-    {{ dbt_utils.group_by(n=13) }}
+    {{ dbt_utils.group_by(n=14) }}
 
 )
 

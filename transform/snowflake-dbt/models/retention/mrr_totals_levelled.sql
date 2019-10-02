@@ -57,6 +57,7 @@ with zuora_mrr_totals AS (
            replace_sfdc_account_id_with_master_record_id.product_category,
            replace_sfdc_account_id_with_master_record_id.delivery,
            replace_sfdc_account_id_with_master_record_id.rate_plan_name,
+           replace_sfdc_account_id_with_master_record_id.service_type,
            replace_sfdc_account_id_with_master_record_id.unit_of_measure,
            replace_sfdc_account_id_with_master_record_id.quantity,
            sfdc_accounts_xf.account_id                                      AS sfdc_account_id,
