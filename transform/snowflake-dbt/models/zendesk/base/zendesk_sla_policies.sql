@@ -8,7 +8,7 @@ WITH source AS (
     SELECT *
     FROM {{ source('zendesk', 'sla_policies') }}
 
-),renamed AS (
+), renamed AS (
 
   SELECT
     id::varchar                                      AS zendesk_sla_policy_id,
