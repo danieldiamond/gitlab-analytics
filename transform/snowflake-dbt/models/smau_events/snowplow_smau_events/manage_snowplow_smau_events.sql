@@ -4,13 +4,32 @@
     })
 }}
 
-{%- set event_ctes = ["audit_events_viewed",
-                      "cycle_analytics_viewed",
-                      "insights_viewed",
-                      "group_analytics_viewed",
-                      "group_created",
-                      "user_authenticated"
-                      ]
+{%- set event_ctes = [
+   {
+      "event_name":"audit_events_viewed",
+      "regexp":"(.)*"
+   },
+   {
+      "event_name":"cycle_analytics_viewed",
+      "regexp":"(.)*"
+   },
+   {
+      "event_name":"insights_viewed",
+      "regexp":"(.)*"
+   },
+   {
+      "event_name":"group_analytics_viewed",
+      "regexp":"(.)*"
+   },
+   {
+      "event_name":"group_created",
+      "regexp":"(.)*"
+   },
+   {
+      "event_name":"user_authenticated",
+      "regexp":"(.)*"
+   }
+]
 -%}
 
 WITH snowplow_page_views AS (
@@ -64,9 +83,12 @@ WITH snowplow_page_views AS (
 
 , unioned AS (
   {% for event_cte in event_ctes %}
+  {{ log(event_cte.regexp, info=True) }}
+  {{ log(event_cte.event_name, info=True) }}
 
     SELECT *
-    FROM {{ event_cte }}
+    FROM {{ event_cte.event_name }}
+    WHERE page_url_path REGEXP '{{ event_cte.regexp}}'
 
     {%- if not loop.last %}
       UNION
