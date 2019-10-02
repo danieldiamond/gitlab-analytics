@@ -7,27 +7,11 @@
 {%- set event_ctes = [
    {
       "event_name":"audit_events_viewed",
-      "regexp":"(.)*"
+      "regexp_where_statement":[{"regexp":"(\/([0-9A-Za-z_.-])*){1,}\/audit_events", "regexp_function": "REGEXP"}]
    },
    {
       "event_name":"cycle_analytics_viewed",
-      "regexp":"(.)*"
-   },
-   {
-      "event_name":"insights_viewed",
-      "regexp":"(.)*"
-   },
-   {
-      "event_name":"group_analytics_viewed",
-      "regexp":"(.)*"
-   },
-   {
-      "event_name":"group_created",
-      "regexp":"(.)*"
-   },
-   {
-      "event_name":"user_authenticated",
-      "regexp":"(.)*"
+      "regexp_where_statement":[{"regexp":"(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics", "regexp_function": "REGEXP"}]
    }
 ]
 -%}
@@ -50,15 +34,11 @@ WITH snowplow_page_views AS (
 
 )
 
-, {{ smau_events_ctes(action_name='audit_events_viewed', regexp_where_statements=[{'regexp_function':'REGEXP', 'regexp':'(\/([0-9A-Za-z_.-])*){1,}\/audit_events'}]) }}
+{% for event_cte in event_ctes %}
 
-, {{ smau_events_ctes(action_name='cycle_analytics_viewed', regexp_where_statements=[{'regexp_function':'REGEXP', 'regexp':'(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics'}]) }}
+, {{ smau_events_ctes(action_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statement) }}
 
-, {{ smau_events_ctes(action_name='insights_viewed', regexp_where_statements=[{'regexp_function':'REGEXP', 'regexp':'(\/([0-9A-Za-z_.-])*){1,}\/insights'}]) }}
-
-, {{ smau_events_ctes(action_name='group_analytics_viewed', regexp_where_statements=[{'regexp_function':'REGEXP', 'regexp':'(\/([0-9A-Za-z_.-])*){1,}\/analytics'}]) }}
-
-, {{ smau_events_ctes(action_name='group_created', regexp_where_statements=[{'regexp_function':'REGEXP', 'regexp':'\/groups\/new'}]) }}
+{% endfor -%}
 
   /*
     Looks at referrer_url in addition to page_url.
@@ -82,19 +62,22 @@ WITH snowplow_page_views AS (
 )
 
 , unioned AS (
+
   {% for event_cte in event_ctes %}
-  {{ log(event_cte.regexp, info=True) }}
-  {{ log(event_cte.event_name, info=True) }}
 
     SELECT *
     FROM {{ event_cte.event_name }}
-    WHERE page_url_path REGEXP '{{ event_cte.regexp}}'
 
     {%- if not loop.last %}
       UNION
     {%- endif %}
 
   {% endfor -%}
+  
+  UNION
+  
+  SELECT * 
+  FROM user_authenticated
 
 )
 
