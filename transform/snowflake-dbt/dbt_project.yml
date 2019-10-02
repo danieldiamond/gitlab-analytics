@@ -137,9 +137,6 @@ models:
       enabled: false
       materialized: table
 
-    pings:
-      tags: ["product"]
-
     retention:
       materialized: table
     
@@ -157,6 +154,9 @@ models:
         materialized: table
 
     snowplow_combined:
+      tags: ["product"]
+
+    version:
       tags: ["product"]
 
     zendesk:
