@@ -17,7 +17,7 @@ WITH source AS (
    
     id::INTEGER                   AS ci_pipeline_id, 
     created_at::TIMESTAMP         AS created_at, 
-    updated_at::TIMESTAMP         AS updated_at, 
+    updated_at::TIMESTAMP         AS updated_at,
     tag::BOOLEAN                  AS has_tag, 
     yaml_errors::VARCHAR          AS yaml_errors, 
     committed_at::TIMESTAMP       AS committed_at, 
