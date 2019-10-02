@@ -85,7 +85,7 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
 
 ### Submitter
    * [ ] Post in #data channel in Slack
-   * [ ] Link to Periscope Charts/Dashboards from the Handbook where appropriate. 
+   * [ ] Link to Periscope Charts/Dashboards from the Handbook. Every Periscope Dashboard should be linked from the Handbook **at least once**. 
    * [ ] Close this MR
 
 /label ~Reporting ~Periscope ~Review
