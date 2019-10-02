@@ -7,8 +7,7 @@ WITH source AS (
 
   SELECT 
     *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
-  
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'ci_pipeline_schedule_variables') }}
 
 ), renamed AS (
