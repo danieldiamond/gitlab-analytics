@@ -18,4 +18,5 @@ WITH pings_mom_change as (
 
 )
 
-SELECT * FROM pings_mom_change
+SELECT *
+FROM pings_mom_change

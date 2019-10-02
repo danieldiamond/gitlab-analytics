@@ -1,4 +1,4 @@
-WITH pings_version_checks AS (
+WITH version_version_checks AS (
 
 	SELECT * FROM {{ ref('version_version_checks') }}
 
@@ -14,15 +14,17 @@ ranked AS (
     gitlab_version,
     referer_url,
     request_data,
-    CASE WHEN gitlab_version LIKE '%ee%' THEN 'EE'
-      ELSE 'CE' END  AS main_edition,
+    CASE 
+      WHEN gitlab_version LIKE '%ee%' THEN 'EE'
+      ELSE 'CE' 
+    END AS main_edition,
     ROW_NUMBER() OVER (
       PARTITION BY
         host_id,
         DATE_TRUNC('month', created_at)
       ORDER BY created_at DESC
     ) AS row_number
-  FROM pings_version_checks
+  FROM version_version_checks
 
 )
 
