@@ -48,7 +48,7 @@ WITH base_mrr AS (
           product_category,
           rate_plan_name,
           CASE WHEN lower(rate_plan_name) like '%support%' THEN 'Support Only'
-            ELSE 'Full Service' 
+            ELSE 'Full Service'
           END             AS service_type,
           unit_of_measure,
           quantity

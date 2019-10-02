@@ -39,7 +39,7 @@ with zuora_mrr_totals AS (
 
 ), joined as (
 
-    SELECT 
+    SELECT
            replace_sfdc_account_id_with_master_record_id.country   AS zuora_sold_to_country,
            replace_sfdc_account_id_with_master_record_id.account_number   AS zuora_account_number,
            replace_sfdc_account_id_with_master_record_id.subscription_name_slugify,
