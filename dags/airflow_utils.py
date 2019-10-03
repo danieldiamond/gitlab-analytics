@@ -4,6 +4,7 @@ import json
 from typing import List
 from datetime import datetime, timedelta, date
 
+from airflow.contrib.kubernetes.pod import Resources
 from airflow.operators.slack_operator import SlackAPIPostOperator
 
 
@@ -91,13 +92,19 @@ def slack_failed_task(context):
     return failed_alert.execute()
 
 
+# Set the resources for the task pods
+pod_resources = Resources(
+    request_memory="500Mi", limit_memory="6Gi", request_cpu="200m", limit_cpu="1"
+)
+
 # GitLab default settings for all DAGs
 gitlab_defaults = dict(
     get_logs=True,
     image_pull_policy="Always",
-    in_cluster=False if os.environ["IN_CLUSTER"] == "False" else True,
+    in_cluster=not os.environ["IN_CLUSTER"] == "False",
     is_delete_operator_pod=True,
     namespace=os.environ["NAMESPACE"],
+    resources=pod_resources,
 )
 
 # GitLab default environment variables for worker pods
