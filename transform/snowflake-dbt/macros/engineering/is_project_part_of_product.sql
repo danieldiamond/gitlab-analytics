@@ -2,7 +2,7 @@
 
     {%- call statement('get_project_ids', fetch_result=True) %}
 
-        SELECT distinct project_id
+        SELECT DISTINCT project_id
         FROM {{ref('projects_part_of_product')}}
         WHERE project_id IS NOT NULL
 
