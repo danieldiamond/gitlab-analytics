@@ -5,12 +5,13 @@ WITH source AS (
 
 ), renamed AS (
 
-    SELECT --Primary Key
-           entity_id::FLOAT             AS entity_id,
+    SELECT
+      --Primary Key
+      entity_id::FLOAT             AS entity_id,
 
-           --Info
-           name::VARCHAR                AS entity_name,
-           full_name::VARCHAR           AS entity_full_name
+      --Info
+      name::VARCHAR                AS entity_name,
+      full_name::VARCHAR           AS entity_full_name
 
     FROM source
     WHERE LOWER(_fivetran_deleted) = 'false'
