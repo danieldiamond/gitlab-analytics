@@ -4,7 +4,7 @@ sources:
   - name: zendesk
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: zendesk_stitch
-    loader: stitch
+    loader: Stitch
     loaded_at_field: _sdc_batched_at
 
     quoting:
