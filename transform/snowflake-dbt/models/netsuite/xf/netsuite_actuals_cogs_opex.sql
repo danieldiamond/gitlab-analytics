@@ -48,7 +48,7 @@ WITH transactions AS (
             t.external_ref_number,
             t.transaction_ext_id,
             t.document_id,
-            tl.memo                                         AS transaction_lines_memo,
+            tl.memo                                          AS transaction_lines_memo,
             t.status,
             t.transaction_type,
             a.account_name,
@@ -58,10 +58,10 @@ WITH transactions AS (
             a.parent_account_number,
             d.department_name,
             d.parent_department_name,
-            ap.accounting_period_starting_date::DATE        AS accounting_period,
+            ap.accounting_period_starting_date::DATE         AS accounting_period,
             ap.accounting_period_name,
             SUM(CASE WHEN tl.subsidiary_id = 1 THEN amount
-                     ELSE (tl.amount * e.average_rate) END) AS actual_amount
+                     ELSE (tl.amount * e.average_rate) END)  AS actual_amount
     FROM transaction_lines tl
     LEFT JOIN transactions t
       ON tl.transaction_id = t.transaction_id
@@ -89,7 +89,7 @@ WITH transactions AS (
            document_id,
            account_name,
            account_full_name,
-           account_number || ' - ' || account_name          AS netsuite_ui_name,
+           account_number || ' - ' || account_name          AS unique_account_name,
            account_number,
            parent_account_number,
            unique_account_number,

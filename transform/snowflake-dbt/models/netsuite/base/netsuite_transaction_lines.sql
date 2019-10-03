@@ -27,7 +27,7 @@ WITH source AS (
           gross_amount::FLOAT           AS gross_amount
 
     FROM source
-
+    WHERE LOWER(non_posting_line) != 'yes'
 )
 
 SELECT *

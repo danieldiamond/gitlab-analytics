@@ -15,7 +15,7 @@ WITH base_accounts AS (
                 ELSE a.account_number
            END                               AS parent_account_number,
            CASE WHEN b.account_number IS NOT NULL
-                THEN b.account_number || ' : ' || a.account_number
+                THEN b.account_number || ' - ' || a.account_number
                 ELSE a.account_number
            END                               AS unique_account_number,
            a.currency_id,

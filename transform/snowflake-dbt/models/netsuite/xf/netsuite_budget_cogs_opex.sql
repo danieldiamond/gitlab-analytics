@@ -37,9 +37,9 @@ WITH budget AS (
             fiscal_quarter_name
      FROM {{ref('date_details')}}
 
-), budget_forecast AS (
+), budget_forecast_cogs_opex AS (
 
-    SELECT a.account_number || ' - ' || a.account_name                                 AS netsuite_ui_name,
+    SELECT a.account_number || ' - ' || a.account_name                                 AS unique_account_name,
            a.account_name,
            a.account_full_name,
            a.account_number,
@@ -51,13 +51,11 @@ WITH budget AS (
            d.department_name,
            COALESCE(d.parent_department_name, 'zNeed Accounting Reclass')              AS parent_department_name,
            bc.budget_name,
-           CASE WHEN account_number BETWEEN '4000' AND '4999' THEN '1-Income'
-                WHEN account_number BETWEEN '5000' AND '5999' THEN '2-Cost of Sales'
+           CASE WHEN account_number BETWEEN '5000' AND '5999' THEN '2-Cost of Sales'
                 WHEN account_number BETWEEN '6000' AND '6999' THEN '3-Expense'
            END                                                                         AS income_statement_grouping,
            {{cost_category('account_number','account_name')}},
-           SUM(CASE WHEN a.account_number BETWEEN '4000' AND '4010' THEN 0
-                    WHEN b.budget_amount IS NULL THEN 0
+           SUM(CASE WHEN b.budget_amount IS NULL THEN 0
                     ELSE b.budget_amount
                END)                                                                    AS budget_amount
     FROM budget b
@@ -70,13 +68,14 @@ WITH budget AS (
     LEFT JOIN departments d
       ON b.department_id = d.department_id
     WHERE ap.fiscal_calendar_id = 2
-      AND a.account_number between '4000' and '6999'
+      AND a.account_number between '5000' and '6999'
     {{ dbt_utils.group_by(n=14) }}
 
 )
 
 SELECT b.*
-FROM budget_forecast b
+FROM budget_forecast_cogs_opex b
 LEFT JOIN date_details dd
  ON dd.first_day_of_month = b.accounting_period
+WHERE account_number NOT IN ('5077','5079','5080')
 ORDER BY 8,4
