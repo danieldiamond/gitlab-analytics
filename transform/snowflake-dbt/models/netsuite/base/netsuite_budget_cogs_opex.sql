@@ -39,15 +39,18 @@ WITH budget AS (
 
 ), budget_forecast_cogs_opex AS (
 
-    SELECT a.account_number || ' - ' || a.account_name                                 AS unique_account_name,
+    SELECT a.account_id,
+           a.account_number || ' - ' || a.account_name                                 AS unique_account_name,
            a.account_name,
            a.account_full_name,
            a.account_number,
            a.parent_account_number,
            a.unique_account_number,
+           ap.accounting_period_id,
            ap.accounting_period_starting_date::DATE                                    AS accounting_period,
            ap.accounting_period_name,
            ap.accounting_period_full_name,
+           d.department_id,
            d.department_name,
            COALESCE(d.parent_department_name, 'zNeed Accounting Reclass')              AS parent_department_name,
            bc.budget_name,
@@ -69,7 +72,7 @@ WITH budget AS (
       ON b.department_id = d.department_id
     WHERE ap.fiscal_calendar_id = 2
       AND a.account_number between '5000' and '6999'
-    {{ dbt_utils.group_by(n=14) }}
+    {{ dbt_utils.group_by(n=17) }}
 
 )
 

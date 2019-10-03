@@ -8,12 +8,17 @@ WITH actuals_cogs_opex AS (
      SELECT *
      FROM {{ref('netsuite_actuals_income')}}
 
+), combined AS (
+
+     SELECT *
+     FROM actuals_cogs_opex
+
+     UNION All
+
+     SELECT *
+     FROM actuals_income
+
 )
 
 SELECT *
-FROM actuals_cogs_opex
-
-UNION All
-
-SELECT *
-FROM actuals_income
+FROM combined
