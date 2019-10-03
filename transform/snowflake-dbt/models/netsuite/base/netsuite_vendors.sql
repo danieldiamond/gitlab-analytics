@@ -28,7 +28,7 @@ WITH source AS (
            is_person::BOOLEAN                 AS is_person
 
     FROM source
-    WHERE _fivetran_deleted = 'False'
+    WHERE LOWER(_fivetran_deleted) = 'false'
 
 )
 

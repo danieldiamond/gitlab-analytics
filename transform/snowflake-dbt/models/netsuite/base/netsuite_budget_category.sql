@@ -14,7 +14,7 @@ WITH source AS (
            name::VARCHAR                         AS budget_category
 
     FROM source
-    WHERE _fivetran_deleted = 'False'
+    WHERE LOWER(_fivetran_deleted) = 'false'
 
 )
 

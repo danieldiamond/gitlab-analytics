@@ -18,11 +18,6 @@ WITH budget AS (
      SELECT *
      FROM {{ ref('netsuite_accounting_periods') }}
 
-), subsidiaries AS (
-
-     SELECT *
-     FROM {{ ref('netsuite_subsidiaries') }}
-
 ), departments AS (
 
      SELECT *
@@ -54,8 +49,8 @@ WITH budget AS (
            d.department_name,
            COALESCE(d.parent_department_name, 'zNeed Accounting Reclass')              AS parent_department_name,
            bc.budget_category,
-           CASE WHEN account_number BETWEEN '5000' AND '5999' THEN '2-Cost of Sales'
-                WHEN account_number BETWEEN '6000' AND '6999' THEN '3-Expense'
+           CASE WHEN account_number BETWEEN '5000' AND '5999' THEN '2-cost of sales'
+                WHEN account_number BETWEEN '6000' AND '6999' THEN '3-expense'
            END                                                                         AS income_statement_grouping,
            {{cost_category('account_number','account_name')}},
            SUM(CASE WHEN b.budget_amount IS NULL THEN 0

@@ -19,7 +19,7 @@ WITH source AS (
            amount::FLOAT                AS budget_amount
 
     FROM source
-    WHERE _fivetran_deleted = 'False'
+    WHERE LOWER(_fivetran_deleted) = 'false'
 
 )
 

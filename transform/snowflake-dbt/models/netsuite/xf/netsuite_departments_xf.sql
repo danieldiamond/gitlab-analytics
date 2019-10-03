@@ -3,7 +3,7 @@ WITH base_departments AS (
     SELECT *
     FROM {{ ref('netsuite_departments') }}
 
-), ultimate_department AS (
+), parent_department AS (
 
     SELECT a.department_id,
            a.department_name,
@@ -22,4 +22,4 @@ WITH base_departments AS (
 )
 
 SELECT *
-FROM ultimate_department
+FROM parent_department

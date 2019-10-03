@@ -49,6 +49,7 @@ WITH transactions AS (
             t.transaction_ext_id,
             t.document_id,
             tl.memo                                          AS transaction_lines_memo,
+            tl.entity_name,
             t.status,
             t.transaction_type,
             a.account_id,
@@ -82,7 +83,7 @@ WITH transactions AS (
     WHERE a.account_number between '5000' and '6999'
       AND ap.fiscal_calendar_id = 2
       AND e.to_subsidiary_id = 1
-    {{ dbt_utils.group_by(n=19) }}
+    {{ dbt_utils.group_by(n=20) }}
 
 ), income_statement_grouping AS (
 
@@ -98,11 +99,12 @@ WITH transactions AS (
            parent_account_number,
            unique_account_number,
            actual_amount,
-           CASE WHEN account_number BETWEEN '5000' AND '5999' THEN '2-Cost of Sales'
-                WHEN account_number BETWEEN '6000' AND '6999' THEN '3-Expense'
+           CASE WHEN account_number BETWEEN '5000' AND '5999' THEN '2-cost of sales'
+                WHEN account_number BETWEEN '6000' AND '6999' THEN '3-expense'
            END                                              AS income_statement_grouping,
            {{cost_category('account_number','account_name')}},
            transaction_lines_memo,
+           entity_name,
            status,
            transaction_type,
            department_id,

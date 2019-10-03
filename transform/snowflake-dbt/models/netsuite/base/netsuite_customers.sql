@@ -25,8 +25,8 @@ WITH source AS (
            days_overdue::FLOAT                AS days_overdue
 
     FROM source
-    WHERE _fivetran_deleted = 'False'
-    
+    WHERE LOWER(_fivetran_deleted) = 'false'
+
 )
 
 SELECT *

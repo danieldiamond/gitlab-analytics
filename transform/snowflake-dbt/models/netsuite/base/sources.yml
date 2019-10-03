@@ -21,6 +21,7 @@ sources:
       - name: currencies
       - name: customers
       - name: departments
+      - name: entity
       - name: posting_account_activity
       - name: subsidiaries
       - name: transaction_lines

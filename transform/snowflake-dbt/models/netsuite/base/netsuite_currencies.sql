@@ -17,7 +17,7 @@ WITH source AS (
            is_inactive::BOOLEAN           AS is_currency_inactive
 
     FROM source
-    WHERE _fivetran_deleted = 'False'
+    WHERE LOWER(_fivetran_deleted) = 'false'
 
 )
 
