@@ -28,18 +28,18 @@ windowed AS (
     AVG(count_unique_ids) OVER (
       PARTITION BY day_of_week, rounded_hour_of_day
       ORDER BY date
-      ROWS BETWEEN 53 PRECEDING AND 1 PRECEDING)  AS average_count,
+      ROWS BETWEEN 53 PRECEDING AND 1 PRECEDING)     AS average_count,
 
     STDDEV(count_unique_ids) OVER (
       PARTITION BY day_of_week, rounded_hour_of_day
       ORDER BY date
-      ROWS BETWEEN 53 PRECEDING AND 1 PRECEDING)  AS stddev_count,
+      ROWS BETWEEN 53 PRECEDING AND 1 PRECEDING)     AS stddev_count,
 
-    ABS(count_unique_ids - average_count)         AS absolute_difference,
-    absolute_difference / stddev_count            AS absolute_difference_stddevs 
+    ABS(count_unique_ids - average_count)            AS absolute_difference,
+    absolute_difference / GREATEST(stddev_count, 1)  AS absolute_difference_stddevs -- Avoid division by 0
 
   FROM daily_counts
-  WHERE date BETWEEN '2019-01-01' AND CURRENT_DATE()
+  WHERE
 
 )
 
@@ -51,6 +51,7 @@ WHERE absolute_difference_stddevs > {{min_stddevs}}
   AND day_of_year NOT IN (                     
     356,357,358,359,360,361,362,363,364,365,1 -- Christmas
   )
+
 ORDER BY absolute_difference_stddevs DESC
 
 {%- endmacro -%}
