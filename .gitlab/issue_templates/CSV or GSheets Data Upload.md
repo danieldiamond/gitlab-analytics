@@ -33,10 +33,9 @@ If none, please include a description
 ---
 
 - [ ] **DO** need to link it to other data AND this is a one-off analysis (Boneyard)
-    * [ ] Submitter to share CSV or GSheet with Data Team Member
     * [ ] Submitter to put spreadsheet data into a new file into the [Sheetload > Boneyard GDrive Folder](https://drive.google.com/open?id=1NdA5CDy2kT653qUdqtCiq_RkmRa-LKqs).
     * [ ] Submitter to share it with the required service account - [Email Address to share with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
-    * [ ] Submitter to make an MR to the `extract/sheetload/boneyard/sheets.txt` file adding the new sheet. 
+    * [ ] Submitter to make an MR to [this file](https://gitlab.com/gitlab-data/analytics/blob/master/extract/sheetload/boneyard/sheets.txt) adding the new sheet in alphabetical order. 
     * [ ] Submitter to assign MR to member of the Data Team
     * [ ] Data Team member to check file name and sheet names to match: The file will be located and loaded based on its name `boneyard.<table_name>`. The names of the sheets shared with the runner must be unique and in the `<file_name>.<tab_name>` format.
     * [ ] Data Team member to merge update after validation of data and MR
@@ -46,7 +45,6 @@ If none, please include a description
 ---
 
 - [ ] **DO** need to link it to other data AND want this to be repeatable (Analytics)
-    * [ ]  Submitter to share CSV or GSheet with Data Team Member
     * [ ]  Data Team member to put spreadsheet data into a new file into [Sheetload > Sheetload GDrive Folder](https://drive.google.com/drive/folders/1F5jKClNEsQstngbrh3UYVzoHAqPTf-l0).
     * [ ]  Data Team member to share it with the required service account - [Email Address to share with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
     * [ ]  Data Team member to check file name and sheet names to match: The file will be located and loaded based on its name `sheetload.<table_name>`. The names of the sheets shared with the runner must be unique and in the `<file_name>.<tab_name>` format
