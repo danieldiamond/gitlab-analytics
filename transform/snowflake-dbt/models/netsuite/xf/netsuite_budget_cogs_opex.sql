@@ -53,7 +53,7 @@ WITH budget AS (
            d.department_id,
            d.department_name,
            COALESCE(d.parent_department_name, 'zNeed Accounting Reclass')              AS parent_department_name,
-           bc.budget_name,
+           bc.budget_category,
            CASE WHEN account_number BETWEEN '5000' AND '5999' THEN '2-Cost of Sales'
                 WHEN account_number BETWEEN '6000' AND '6999' THEN '3-Expense'
            END                                                                         AS income_statement_grouping,

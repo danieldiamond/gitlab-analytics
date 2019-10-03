@@ -11,7 +11,7 @@ WITH source AS (
            --Info
            isinactive::BOOLEAN                   AS is_inactive,
            is_global::BOOLEAN                    AS is_global,
-           name::VARCHAR                         AS budget_name
+           name::VARCHAR                         AS budget_category
 
     FROM source
     WHERE _fivetran_deleted = 'False'
