@@ -138,7 +138,7 @@ python_complexity:
 python_pytest:
   <<: *python_check
   script:
-    - pytest -vv --ignore=dags
+    - pytest -vv -x --ignore=dags
 
 
 # ======
