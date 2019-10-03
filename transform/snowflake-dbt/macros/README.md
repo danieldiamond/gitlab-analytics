@@ -41,7 +41,7 @@ Used in:
 This macro categorizes expenses by Headcount and Non_Headcount.
 Usage:
 ```
-{{cost_category('account_number','account_name')}}
+{{ cost_category('account_number','account_name') }}
 ```
 Used in:
 - netsuite_cogs_opex
