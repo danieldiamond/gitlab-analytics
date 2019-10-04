@@ -2,9 +2,9 @@
 
 CASE 
   WHEN {{product_category_column}} IN ('Gold', 'Silver', 'Bronze')
-    THEN 'GitLab.com'
+    THEN 'SaaS'
   WHEN {{product_category_column}} IN ('Ultimate', 'Premium', 'Starter')
-    THEN 'self-managed'
+    THEN 'Self-Managed'
   WHEN {{product_category_column}} IN ('Basic', 'GitHost', 'Other', 'Plus', 'Standard', 'Support', 'Trueup')
     THEN 'Others'
   ELSE NULL
