@@ -1,4 +1,5 @@
 -- depends_on: {{ ref('engineering_productivity_metrics_projects_to_include') }}
+-- depends_on: {{ ref('projects_part_of_product') }}
 
 WITH merge_requests AS (
 
@@ -63,9 +64,10 @@ WITH merge_requests AS (
       namespace_lineage.namespace_is_internal,
       ARRAY_TO_STRING(agg_labels.agg_label,'|') AS masked_label_title,
       merge_request_metrics.merged_at,
-      CASE WHEN merge_requests.target_project_id IN ({{is_project_included_in_engineering_metrics()}}) THEN TRUE
-          ELSE FALSE
-          END AS is_included_in_engineering_metrics,
+      IFF(merge_requests.target_project_id IN ({{is_project_included_in_engineering_metrics()}}),
+        TRUE, FALSE)                               AS is_included_in_engineering_metrics,
+      IFF(merge_requests.target_project_id IN ({{is_project_part_of_product()}}),
+        TRUE, FALSE)                               AS is_part_of_product,
       CASE
       WHEN namespace_is_internal IS NOT NULL
         AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.agg_label)
