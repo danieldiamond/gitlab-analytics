@@ -33,7 +33,8 @@ WITH source AS (
 ), with_product_category AS (
 
 			SELECT *,
-			{{product_category('rate_plan_name')}}
+			{{product_category('rate_plan_name')}},
+      {{ delivery('product_category')}}
 			FROM renamed
 )
 
