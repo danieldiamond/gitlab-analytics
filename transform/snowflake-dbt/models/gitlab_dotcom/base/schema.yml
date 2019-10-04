@@ -643,14 +643,6 @@ models:
       A base model for Gitlab.com oauth access tokens.
       https://docs.gitlab.com/ee/api/oauth2.html
     columns:
-      - name: oauth_access_token_id
-        tests:
-          - not_null
-          - unique
-      - name: oauth_access_token_id
-        tests:
-          - not_null
-          - unique
       - name: oauth_access_token_created_at
         tests:
           - not_null
