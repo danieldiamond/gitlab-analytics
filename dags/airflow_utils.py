@@ -75,7 +75,7 @@ def slack_failed_task(context):
 
     attachment = [
         {
-            "mrkdown_in": ["title"]
+            "mrkdown_in": ["title"],
             "color": "#8b2615",
             "fallback": "An Airflow DAG has failed!",
             "title": title,
