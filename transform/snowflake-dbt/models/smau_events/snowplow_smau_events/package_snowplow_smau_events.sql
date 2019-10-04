@@ -37,7 +37,7 @@ WITH snowplow_page_views AS (
     page_view_id
 
   FROM snowplow_page_views
-  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){,})?\/container_registry$'
+  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/container_registry$'
 
 )
 
