@@ -180,7 +180,7 @@ Used in:
 This macro maps product categories to [delivery](https://about.gitlab.com/handbook/marketing/product-marketing/tiers/#delivery).
 Usage:
 ```
-{{delivery('product_category')}}
+{{ delivery('product_category') }}
 ```
 Used in:
 - zuora_rate_plan.sql
