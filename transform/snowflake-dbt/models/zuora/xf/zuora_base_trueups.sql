@@ -2,7 +2,7 @@ WITH invoice_details AS (
 
   SELECT *
   FROM {{ ref('zuora_base_invoice_details') }}
-  WHERE charge_name ILIKE '%Trueup%'
+  WHERE LOWER(charge_name) LIKE '%trueup%'
 
 )
 
