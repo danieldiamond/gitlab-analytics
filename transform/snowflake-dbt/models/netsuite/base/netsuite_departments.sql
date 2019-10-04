@@ -5,18 +5,19 @@ WITH source AS (
 
 ), renamed AS (
 
-    SELECT --Primary Key
-           department_id::FLOAT       AS department_id,
+    SELECT
+      --Primary Key
+      department_id::FLOAT       AS department_id,
 
-           --Foreign Key
-           parent_id::FLOAT           AS parent_department_id,
+      --Foreign Key
+      parent_id::FLOAT           AS parent_department_id,
 
-          --Info
-           name::VARCHAR              AS department_name,
-           full_name::VARCHAR         AS department_full_name,
+      --Info
+      name::VARCHAR              AS department_name,
+      full_name::VARCHAR         AS department_full_name,
 
-           --Meta
-           isinactive::BOOLEAN        AS is_department_inactive
+      --Meta
+      isinactive::BOOLEAN        AS is_department_inactive
 
     FROM source
 

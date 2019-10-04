@@ -37,6 +37,15 @@ Used in:
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
 
+## Cost Category ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/netsuite/cost_category.sql))
+This macro categorizes expenses by Headcount and Non_Headcount.
+Usage:
+```
+{{ cost_category('account_number','account_name') }}
+```
+Used in:
+- netsuite_cogs_opex
+
 ## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
 Usage:
@@ -109,15 +118,34 @@ Used in:
 - dbt_project.yml
 
 ## Is Project Included In Engineering Metrics
+
 This macro pulls all the engineering projects to be included from the seeded csv and adds a boolean in the model that can be used to filter on it.
+
 Usage:
 ```
-CASE WHEN issues.project_id IN ({{is_project_included_in_engineering_metrics()}}) THEN TRUE
-     ELSE FALSE END AS is_included_in_engineering_metrics,
+IFF(issues.project_id IN ({{is_project_included_in_engineering_metrics()}}),
+  TRUE, FALSE)                               AS is_included_in_engineering_metrics,
 ```
+
 Used in:
-- gitlab_dotcom_issues_xf
-- gitlab_dotcom_merge_requests_xf
+- `gitlab_dotcom_issues_xf`
+- `gitlab_dotcom_merge_requests_xf`
+
+
+## Is Project Part of Product
+
+This macro pulls all the engineering projects that are part of the product from
+the seeded csv and adds a boolean in the model that can be used to filter on it.
+
+Usage:
+```
+IFF(issues.project_id IN ({{is_project_part_of_product()}}),
+  TRUE, FALSE)                               AS is_part_of_product,
+```
+
+Used in:
+- `gitlab_dotcom_issues_xf`
+- `gitlab_dotcom_merge_requests_xf`
 
 ## Monthly Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/monthly_change.sql))
 This macro calculates differences for each consecutive usage ping by uuid.
@@ -178,7 +206,7 @@ Used in:
 - snowplow_combined/all/*.sql
 
 ## Schema Union Limit ([Source](ttps://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_limit.sql))
-This macro takes a schema prefix, a table name, a column name, and an integer representing days. It returns a view that is limited to the last 30 days based on the column name. Note that this also calls schema union all which can be a heavy call. 
+This macro takes a schema prefix, a table name, a column name, and an integer representing days. It returns a view that is limited to the last 30 days based on the column name. Note that this also calls schema union all which can be a heavy call.
 Usage:
 ```
 {{ schema_union_limit('snowplow', 'snowplow_page_views', 'page_view_start', 30) }}
