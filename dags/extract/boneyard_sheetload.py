@@ -26,7 +26,6 @@ default_args = {
 
 # Set the command for the container
 container_cmd = f"""
-    exit 1 &&
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/sheetload/ &&
