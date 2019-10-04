@@ -22,5 +22,7 @@ gcp_credentials.json
 config.json
 !ping_metrics_to_stage_mapping_data.csv
 !engineering_productivity_metrics_projects_to_include.csv
+!projects_part_of_product.csv
 !cost_center_division_department_mapping.csv
 !excluded.csv
+.ipynb_checkpoints/*

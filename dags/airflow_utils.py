@@ -4,6 +4,7 @@ import json
 from typing import List
 from datetime import datetime, timedelta, date
 
+from airflow.contrib.kubernetes.pod import Resources
 from airflow.operators.slack_operator import SlackAPIPostOperator
 
 
@@ -46,20 +47,20 @@ def slack_failed_task(context):
     Send a Slack alert.
     """
 
-    # Get the latest log file
-    task_logs_dir = context["task_instance"].log_filepath[:-4]
-    try_number = context["task_instance"].try_number - 1
-    most_recent_log = f"{task_logs_dir}/{try_number}.log"
-
-    # Read the log file and get the last 30 lines, then join them with a newline
-    with open(most_recent_log, "r") as task_log:
-        logs = "\n".join(task_log.readlines()[-30:])
-
+    # Set all of the contextual vars
+    base_url = "http://35.190.127.73"
+    execution_date = context["ts"]
     dag_context = context["dag"]
     dag_name = dag_context.dag_id
+    dag_id = context["dag"].dag_id
     task_name = context["task"].task_id
-    execution_date = str(context["execution_date"])
+    task_id = context["task_instance"].task_id
+    execution_date_str = str(context["execution_date"])
     task_instance = str(context["task_instance_key_str"])
+
+    # Generate the link to the logs
+    link = f"{base_url}/log?dag_id={dag_id}&task_id={task_id}&execution_date={execution_date}"
+
     if task_name == "dbt-source-freshness":
         slack_channel = "#analytics-pipelines"
     else:
@@ -71,10 +72,10 @@ def slack_failed_task(context):
         {
             "color": "#FF0000",
             "fallback": "An Airflow DAG has failed!",
-            "text": logs,
-            "title": "Logs:",
+            "title": "Link to debug",
+            "title_link": link,
             "fields": [
-                {"title": "Timestamp", "value": execution_date, "short": True},
+                {"title": "Timestamp", "value": execution_date_str, "short": True},
                 {"title": "Task ID", "value": task_instance, "short": False},
             ],
         }
@@ -91,13 +92,19 @@ def slack_failed_task(context):
     return failed_alert.execute()
 
 
+# Set the resources for the task pods
+pod_resources = Resources(
+    request_memory="500Mi", limit_memory="6Gi", request_cpu="200m", limit_cpu="1"
+)
+
 # GitLab default settings for all DAGs
 gitlab_defaults = dict(
     get_logs=True,
     image_pull_policy="Always",
-    in_cluster=False if os.environ["IN_CLUSTER"] == "False" else True,
+    in_cluster=not os.environ["IN_CLUSTER"] == "False",
     is_delete_operator_pod=True,
     namespace=os.environ["NAMESPACE"],
+    resources=pod_resources,
 )
 
 # GitLab default environment variables for worker pods
