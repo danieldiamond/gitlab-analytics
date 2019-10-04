@@ -183,7 +183,7 @@ Usage:
 {{delivery('product_category')}}
 ```
 Used in:
-- zuora_mrr_totals.sql
+- zuora_rate_plan.sql
 
 ## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sales_segment_cleaning))
 This macro applies proper formatting to sales segment data with the end result being one of SMB, Mid-Market, Strategic, Large or Unknown.
