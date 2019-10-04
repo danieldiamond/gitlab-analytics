@@ -12,13 +12,13 @@ WITH source AS (
 
 ), renamed AS (
 
-    SELECT
-      id::INTEGER        AS board_label_relation_id,
-      board_id::INTEGER  AS board_id,
-      label_id::INTEGER  AS label_id
+  SELECT
+    id::INTEGER        AS board_label_relation_id,
+    board_id::INTEGER  AS board_id,
+    label_id::INTEGER  AS label_id
 
-    FROM source
-    WHERE rank_in_key = 1
+  FROM source
+  WHERE rank_in_key = 1
 
 )
 

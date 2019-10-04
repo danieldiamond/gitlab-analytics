@@ -12,15 +12,15 @@ WITH source AS (
 
 ), renamed AS (
 
-    SELECT
-      id::INTEGER                     AS approval_id,
-      merge_request_id::INTEGER       AS merge_request_id,
-      user_id::INTEGER                AS user_id,
-      created_at::TIMESTAMP           AS approval_created_at,
-      updated_at::TIMESTAMP           AS approval_updated_at
+  SELECT
+    id::INTEGER                     AS approval_id,
+    merge_request_id::INTEGER       AS merge_request_id,
+    user_id::INTEGER                AS user_id,
+    created_at::TIMESTAMP           AS created_at,
+    updated_at::TIMESTAMP           AS updated_at
 
-    FROM source
-    WHERE rank_in_key = 1
+  FROM source
+  WHERE rank_in_key = 1
 
 )
 

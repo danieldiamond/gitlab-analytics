@@ -11,10 +11,10 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      build_id::INTEGER   AS ci_build_id,
-      chunk_index         AS ci_build_trace_chunk_index,
-      data_store          AS ci_build_trace_chunk_data_store,
-      raw_data            AS ci_build_trace_chunk_raw_data
+      build_id::INTEGER     AS ci_build_id,
+      chunk_index::VARCHAR  AS chunk_index,
+      data_store::VARCHAR   AS data_store,
+      raw_data::VARCHAR     AS raw_data
 
     FROM source
 
