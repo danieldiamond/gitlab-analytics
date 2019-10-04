@@ -65,7 +65,7 @@ Used in:
 - dbt_project.yml
 
 ## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/generate_custom_schema.sql))
-This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema ` (e.g. `emilie_scratch` and `analytics`). For tagged models, the output is dependent on the target. It is `emilie_scratch_staging` on dev and `analytics_staging` on prod. A similar pattern is followed for the `sensitive` config.
+This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema (e.g. `emilie_scratch` and `analytics`). For tagged models, the output is dependent on the target. It is `emilie_scratch_staging` on dev and `analytics_staging` on prod. A similar pattern is followed for the `sensitive` config.
 Usage:
 ```
 {{ config(schema='staging') }}
@@ -173,6 +173,16 @@ Usage:
 ```
 Used in:
 - sfdc_opportunity.sql
+- zuora_rate_plan.sql
+
+## Delivery([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/delivery.sql))
+This macro maps product categories to [delivery](https://about.gitlab.com/handbook/marketing/product-marketing/tiers/#delivery).
+
+Usage:
+```
+{{ delivery('product_category') }}
+```
+Used in:
 - zuora_rate_plan.sql
 
 ## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sales_segment_cleaning))
