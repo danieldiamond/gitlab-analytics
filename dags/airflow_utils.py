@@ -55,11 +55,16 @@ def slack_failed_task(context):
     dag_id = context["dag"].dag_id
     task_name = context["task"].task_id
     task_id = context["task_instance"].task_id
-    execution_date_str = str(context["execution_date"])
+    execution_date_value = context["execution_date"]
+    execution_date_str = str(execution_date_value)
+    execution_date_epoch = execution_date_value.strftime('%s')
+    execution_date_pretty = execution_date_value.strftime('%a, %b %d, %Y at %-I:%M %p UTC')
     task_instance = str(context["task_instance_key_str"])
 
     # Generate the link to the logs
-    link = f"{base_url}/log?dag_id={dag_id}&task_id={task_id}&execution_date={execution_date}"
+    title = f"DAG {dag_name} failed on task {task_name}"
+    log_link = f"{base_url}/log?dag_id={dag_id}&task_id={task_id}&execution_date={execution_date}"
+    log_link_markdown = f"<{log_link}|View Logs>"
 
     if task_name == "dbt-source-freshness":
         slack_channel = "#analytics-pipelines"
@@ -70,14 +75,18 @@ def slack_failed_task(context):
 
     attachment = [
         {
-            "color": "#FF0000",
+            "mrkdwn_in": ["title", "value"],
+            "color": "#a62d19",
             "fallback": "An Airflow DAG has failed!",
-            "title": "Link to debug",
-            "title_link": link,
             "fields": [
-                {"title": "Timestamp", "value": execution_date_str, "short": True},
-                {"title": "Task ID", "value": task_instance, "short": False},
+                {"title": "DAG", "value": dag_name, "short": True},
+                {"title": "Task", "value": task_name, "short": True},
+                {"title": "Logs", "value": log_link_markdown, "short": True},
+                {"title": "Timestamp", "value": execution_date_pretty, "short": True},
             ],
+            "footer": "Airflow",
+            "footer_icon": "http://35.190.127.73/static/pin_100.png",
+            "ts": execution_date_epoch
         }
     ]
 
@@ -85,7 +94,7 @@ def slack_failed_task(context):
         attachments=attachment,
         channel=slack_channel,
         task_id="slack_failed",
-        text=f"DAG: *{dag_name}* failed on task: *{task_name}*!",
+        text="Task failure!",
         token=os.environ["SLACK_API_TOKEN"],
         username="Airflow",
     )
