@@ -7,6 +7,7 @@ CASE
     THEN 'self-managed'
   WHEN {{product_category_column}} IN ('Basic', 'GitHost', 'Other', 'Plus', 'Standard', 'Support', 'Trueup')
     THEN 'Others'
+  ELSE NULL
 END AS {{output_column_name}}
 
 {%- endmacro -%}
