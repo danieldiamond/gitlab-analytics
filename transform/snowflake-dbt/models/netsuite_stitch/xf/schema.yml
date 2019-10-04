@@ -4,9 +4,6 @@ models:
 
     - name: netsuite_stitch_account_xf
       description: '{{ doc("netsuite_stitch_account_xf") }}'
-      
-    - name: netsuite_stitch_all_entries
-      description: '{{ doc("netsuite_stitch_all_entries") }}'
 
     - name: netsuite_stitch_income
       description: '{{ doc("netsuite_stitch_all_entries") }}'
