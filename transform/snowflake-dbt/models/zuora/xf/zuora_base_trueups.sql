@@ -9,17 +9,26 @@ WITH invoice_details AS (
 , final AS (
   
   SELECT
-    country,
-    account_number,
-    subscription_name,
+    -- PRIMARY KEY
     subscription_name_slugify,
-    oldest_subscription_in_cohort,
+    
+    -- LOGICAL INFO
+    account_number,
+    charge_name,
+    subscription_name,
+    
+    -- LINEAGE
     lineage,
+    oldest_subscription_in_cohort,
+    
+    -- METADATA
     cohort_month,
     cohort_quarter,
+    country,
     service_month                 AS trueup_month,
-    charge_name,
     service_start_date,
+    
+    -- REVENUE DATA
     charge_amount,
     charge_amount/12              AS mrr,
     unit_of_measure,
