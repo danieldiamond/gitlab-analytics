@@ -33,7 +33,7 @@ WITH snowplow_page_views AS (
     user_custom_id,
     TO_DATE(page_view_start)   AS event_date,
     page_url_path,
-    'envrionments_viewed'      AS event_type,
+    'container_registry_viewed'      AS event_type,
     page_view_id
 
   FROM snowplow_page_views
@@ -48,7 +48,7 @@ WITH snowplow_page_views AS (
     user_custom_id,
     TO_DATE(page_view_start)   AS event_date,
     page_url_path,
-    'envrionments_viewed'      AS event_type,
+    'dependency_proxy_page_viewed'      AS event_type,
     page_view_id
 
   FROM snowplow_page_views
@@ -63,7 +63,7 @@ WITH snowplow_page_views AS (
     user_custom_id,
     TO_DATE(page_view_start)   AS event_date,
     page_url_path,
-    'envrionments_viewed'      AS event_type,
+    'packages_page_viewed'      AS event_type,
     page_view_id
 
   FROM snowplow_page_views
