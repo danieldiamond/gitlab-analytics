@@ -6,7 +6,7 @@ sources:
     schema: engineering_extracts
     loader: Airflow
     loaded_at_field: uploaded_at
-    
+
     quoting:
       database: true
       schema: false
