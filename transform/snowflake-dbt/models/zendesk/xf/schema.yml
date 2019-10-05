@@ -53,6 +53,10 @@ models:
                   values: ['web', 'api', 'twitter', 'facebook', 'mobile', 'email', 'sample_ticket']
           - name: first_reply_time
           - name: sfdc_account_id
+          - name: ticket_priority_at_first_reply
+            description: This is the priority of the ticket at first reply or resolution of the ticket.
+          - name: ticket_sla_policy_at_first_reply
+            description: This is the SLA policy of the ticket at first reply or resolution of the ticket.
 #            tests:
 #              - relationships:
 #                  to: ref('sfdc_account')
@@ -64,3 +68,14 @@ models:
                   values: ['unknown', 'strategic', 'smb', 'mid-market', 'large']
           - name: was_support_sla_met
             description: '{{ doc("zendesk_ticket_sla") }}'
+    - name: zendesk_tickets_sla_xf
+      description: This model contains ticket priority and SLA policy at the time of first reply time, as defined in the Zendesk [documentation](https://support.zendesk.com/hc/en-us/articles/205951808-Understanding-first-reply-time-Professional-and-Enterprise-#topic_hxr_pqd_1hb)
+      columns:
+          - name: ticket_id
+            description: This is the ticket id.
+            tests:
+              - not_null
+              - unique
+          - name: created_at
+            tests:
+              - not_null

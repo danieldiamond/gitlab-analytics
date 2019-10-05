@@ -25,6 +25,7 @@ WITH base_mrr AS (
           cohort_quarter  AS zuora_subscription_cohort_quarter,
           mrr,
           'Trueup'        AS product_category,
+          'Other'         AS delivery,
           charge_name     AS rate_plan_name,
           CASE WHEN lower(rate_plan_name) like '%support%' THEN 'Support Only'
             ELSE 'Full Service'
@@ -46,6 +47,7 @@ WITH base_mrr AS (
           cohort_quarter  AS zuora_subscription_cohort_quarter,
           mrr,
           product_category,
+          delivery,
           rate_plan_name,
           CASE WHEN lower(rate_plan_name) like '%support%' THEN 'Support Only'
             ELSE 'Full Service'
@@ -67,13 +69,14 @@ WITH base_mrr AS (
           zuora_subscription_cohort_month,
           zuora_subscription_cohort_quarter,
           product_category,
+          delivery,
           unit_of_measure,
           service_type,
           array_agg(rate_plan_name) AS rate_plan_name,
           sum(quantity)             AS quantity,
           sum(mrr)                  AS mrr
     FROM mrr_combined
-    {{ dbt_utils.group_by(n=13) }}
+    {{ dbt_utils.group_by(n=14) }}
 
 )
 

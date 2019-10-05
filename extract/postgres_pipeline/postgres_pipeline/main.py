@@ -97,10 +97,14 @@ def sync_incremental_ids(
         source_engine, primary_key, raw_query, target_engine, table, table_name
     )
     # Iterate through the generated queries
+    backfill = True
     for query in id_queries:
         filtered_query = f"{query} {additional_filtering} ORDER BY {primary_key}"
         logging.info(filtered_query)
-        chunk_and_upload(filtered_query, source_engine, target_engine, table_name)
+        chunk_and_upload(
+            filtered_query, source_engine, target_engine, table_name, backfill
+        )
+        backfill = False  # this prevents it from seeding rows for every chunk
     return True
 
 
@@ -120,11 +124,20 @@ def load_scd(
     if "{EXECUTION_DATE}" in raw_query:
         logging.info(f"Table {table} does not need SCD processing.")
         return False
-    logging.info(f"Processing table: {table}")
 
+    # If the schema has changed for the SCD table, treat it like a backfill
+    if "_TEMP" == table_name[-5:] or target_engine.has_table(f"{table_name}_TEMP"):
+        logging.info(
+            f"Table {table} needs to be recreated to due to schema change. Recreating...."
+        )
+        backfill = True
+    else:
+        backfill = False
+
+    logging.info(f"Processing table: {table}")
     query = f"{raw_query} {additional_filter}"
     logging.info(query)
-    chunk_and_upload(query, source_engine, target_engine, table_name)
+    chunk_and_upload(query, source_engine, target_engine, table_name, backfill)
     return True
 
 
@@ -261,4 +274,5 @@ def main(file_path: str, load_type: str) -> None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     logging.getLogger("snowflake.connector.cursor").disabled = True
+    logging.getLogger("snowflake.connector.connection").disabled = True
     Fire({"tap": main})

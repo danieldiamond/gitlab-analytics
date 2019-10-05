@@ -19,6 +19,7 @@ standard_pod_env_vars = {
     else f"{GIT_BRANCH}_ANALYTICS",
 }
 standard_secrets = [
+    GCP_SERVICE_CREDS,
     PG_PORT,
     SNOWFLAKE_LOAD_USER,
     SNOWFLAKE_LOAD_PASSWORD,

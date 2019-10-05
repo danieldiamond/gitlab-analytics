@@ -22,5 +22,10 @@ sources:
     database: snowflake
     schema: account_usage
 
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+    
     tables:
       - name: query_history

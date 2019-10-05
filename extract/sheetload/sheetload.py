@@ -21,9 +21,6 @@ from oauth2client.service_account import ServiceAccountCredentials
 from sqlalchemy.engine.base import Engine
 
 
-SHEETLOAD_SCHEMA = "sheetload"
-
-
 def query_executor(engine: Engine, query: str) -> Tuple[str]:
     """
     Execute DB queries safely.
@@ -57,6 +54,7 @@ def dw_uploader(
     engine: Engine,
     table: str,
     data: pd.DataFrame,
+    schema: str = "sheetload",
     chunk: int = 0,
     truncate: bool = False,
 ) -> bool:
@@ -74,7 +72,7 @@ def dw_uploader(
         table_changed = table_has_changed(data, engine, table)
         if not table_changed:
             return False
-        drop_query = f"DROP TABLE IF EXISTS {table} CASCADE"
+        drop_query = f"DROP TABLE IF EXISTS {schema}.{table} CASCADE"
         query_executor(engine, drop_query)
 
     # Add the _updated_at metadata and set some vars if chunked
@@ -88,7 +86,11 @@ def dw_uploader(
 
 
 def sheet_loader(
-    sheet_file: str, gapi_keyfile: str = None, conn_dict: Dict[str, str] = None
+    sheet_file: str,
+    schema: str = "sheetload",
+    database="RAW",
+    gapi_keyfile: str = None,
+    conn_dict: Dict[str, str] = None,
 ) -> None:
     """
     Load data from a google sheet into a DataFrame and pass it to dw_uploader.
@@ -109,7 +111,11 @@ def sheet_loader(
     with open(sheet_file, "r") as file:
         sheets = file.read().splitlines()
 
-    engine = snowflake_engine_factory(conn_dict or env, "LOADER", SHEETLOAD_SCHEMA)
+    if database != "RAW":
+        engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", schema)
+    else:
+        engine = snowflake_engine_factory(conn_dict or env, "LOADER", schema)
+
     info(engine)
     # Get the credentials for sheets and the database engine
     scope = [
@@ -126,16 +132,16 @@ def sheet_loader(
         info(f"Processing sheet: {sheet_info}")
         sheet_file, table = sheet_info.split(".")
         sheet = (
-            google_creds.open(SHEETLOAD_SCHEMA + "." + sheet_file)
+            google_creds.open(schema + "." + sheet_file)
             .worksheet(table)
             .get_all_values()
         )
         sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
-        dw_uploader(engine, table, sheet_df)
+        dw_uploader(engine, table, sheet_df, schema)
         info(f"Finished processing for table: {sheet_info}")
 
     query = """grant select on all tables in schema "{}".{} to role transformer""".format(
-        env["SNOWFLAKE_LOAD_DATABASE"], SHEETLOAD_SCHEMA
+        database, schema
     )
     query_executor(engine, query)
     info("Permissions granted.")
@@ -144,6 +150,7 @@ def sheet_loader(
 def gcs_loader(
     path: str,
     bucket: str,
+    schema: str = "sheetload",
     compression: str = "gzip",
     conn_dict: Dict[str, str] = None,
     gapi_keyfile: str = None,
@@ -164,7 +171,7 @@ def gcs_loader(
     chunksize = 15000
     chunk_iter = 0
 
-    engine = snowflake_engine_factory(conn_dict or env, "LOADER", SHEETLOAD_SCHEMA)
+    engine = snowflake_engine_factory(conn_dict or env, "LOADER", schema)
 
     # Get the gcloud storage client and authenticate
     scope = ["https://www.googleapis.com/auth/cloud-platform"]

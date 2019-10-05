@@ -647,10 +647,7 @@ models:
         tests:
           - not_null
           - unique
-      - name: oauth_access_token_id
-        tests:
-          - not_null
-          - unique
+
       - name: oauth_access_token_created_at
         tests:
           - not_null
