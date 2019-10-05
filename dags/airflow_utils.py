@@ -102,9 +102,7 @@ def slack_failed_task(context):
 
 
 # Set the resources for the task pods
-pod_resources = Resources(
-    request_memory="1Gi", limit_memory="10Gi", request_cpu="200m", limit_cpu="1"
-)
+pod_resources = Resources(request_memory="1Gi", request_cpu="500m")
 
 # GitLab default settings for all DAGs
 gitlab_defaults = dict(
