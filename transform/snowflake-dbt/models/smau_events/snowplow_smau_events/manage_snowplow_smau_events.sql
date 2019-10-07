@@ -3,13 +3,15 @@
     "unique_key": "event_surrogate_key"
     })
 }}
-
+--TODO: alphabetize
 {%- set event_ctes = ["audit_events_viewed",
+                      "code_analytics_viewed",
                       "cycle_analytics_viewed",
-                      "insights_viewed",
+                      "insights_viewed", 
                       "group_analytics_viewed",
                       "group_created",
-                      "user_authenticated"
+                      "productivity_analytics_viewed",
+                      "user_authenticated",
                       ]
 -%}
 
@@ -47,6 +49,22 @@ WITH snowplow_page_views AS (
 
 )
 
+, code_analytics_viewed AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start)    AS event_date,
+    page_url_path,
+    'code_analytics_viewed'     AS event_type,
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                                AS event_surrogate_key
+  FROM snowplow_page_views
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/code_analytics'
+
+)
+
 , cycle_analytics_viewed AS (
 
   SELECT
@@ -60,22 +78,6 @@ WITH snowplow_page_views AS (
                                AS event_surrogate_key
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics'
-
-)
-
-, insights_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start)   AS event_date,
-    page_url_path,
-    'insights_viewed'          AS event_type,
-    page_view_id,
-    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
-                               AS event_surrogate_key
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/insights'
 
 )
 
@@ -108,6 +110,22 @@ WITH snowplow_page_views AS (
                                AS event_surrogate_key
   FROM snowplow_page_views
   WHERE page_url_path REGEXP '\/groups\/new'
+
+)
+
+, insights_viewed AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start)   AS event_date,
+    page_url_path,
+    'insights_viewed'          AS event_type,
+    page_view_id,
+    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
+                               AS event_surrogate_key
+  FROM snowplow_page_views
+  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/insights'
 
 )
 
