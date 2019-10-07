@@ -21,6 +21,7 @@ sources:
       - name: calendar
       - name: employee_location_factor
         schema: sensitive
+      - name: gitlab_slack_stats  
       - name: google_referrals
       - name: headcount
       - name: location_factor_targets
