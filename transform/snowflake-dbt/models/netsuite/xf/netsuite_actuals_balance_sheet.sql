@@ -49,11 +49,11 @@ WITH transactions AS (
        FROM subsidiaries
        WHERE parent_id IS NULL  -- constrait - only the primary subsidiary has no parent
        )
-       AND consolidated_exchange_rates.accounting_book_id IN (
-         SELECT
-           accounting_book_id
-         FROM accounting_books
-         WHERE LOWER(is_primary) = 'true'
+     AND consolidated_exchange_rates.accounting_book_id IN (
+       SELECT
+         accounting_book_id
+       FROM accounting_books
+       WHERE LOWER(is_primary) = 'true'
        )
 
 ), accountXperiod_exchange_rate_map AS ( -- account table with exchange rate details by accounting period
@@ -66,11 +66,10 @@ WITH transactions AS (
        CASE WHEN LOWER(accounts.general_rate_type) = 'historical' THEN period_exchange_rate_map.historical_rate
             WHEN LOWER(accounts.general_rate_type) = 'current'    THEN period_exchange_rate_map.current_rate
             WHEN LOWER(accounts.general_rate_type) = 'average'    THEN period_exchange_rate_map.average_rate
-            ELSE null
+            ELSE NULL
        END                AS exchange_rate
      FROM accounts
      CROSS JOIN period_exchange_rate_map
-     WHERE LOWER(accounts.is_account_inactive) = 'false'
 
 ), transaction_lines_w_accounting_period AS ( -- transaction line totals, by accounts, accounting period and subsidiary
 
@@ -82,7 +81,7 @@ WITH transactions AS (
        transactions.accounting_period_id as transaction_accounting_period_id,
        COALESCE(transaction_lines.amount, 0) as unconverted_amount
      FROM transaction_lines
-     INNER JOIN transactions on transaction_lines.transaction_id = transactions.transaction_id
+     INNER JOIN transactions ON transaction_lines.transaction_id = transactions.transaction_id
      WHERE LOWER(transactions.transaction_type) != 'revenue arrangement'
 
 ), period_id_list_to_current_period AS ( -- period ids with all future period ids.  this is needed to calculate cumulative totals by correct exchange rates.
@@ -111,7 +110,7 @@ WITH transactions AS (
        accounting_period_id,
        reporting_accounting_period_id.value AS reporting_accounting_period_id
      FROM period_id_list_to_current_period
-       ,lateral flatten (input => accounting_periods_to_include_for) reporting_accounting_period_id
+     ,lateral flatten (input => accounting_periods_to_include_for) reporting_accounting_period_id
      WHERE array_size(accounting_periods_to_include_for) > 1
 
 ), transactions_in_every_calculation_period AS (
@@ -123,18 +122,18 @@ WITH transactions AS (
      INNER JOIN flatten_period_id_array
        ON flatten_period_id_array.accounting_period_id = transaction_lines_w_accounting_period.transaction_accounting_period_id
 
-), transactions_in_every_calculation_period_w_exchange_rates as (
+), transactions_in_every_calculation_period_w_exchange_rates AS (
 
      SELECT
        transactions_in_every_calculation_period.*,
-       exchange_reporting_period.exchange_rate as exchange_reporting_period,
-       exchange_transaction_period.exchange_rate as exchange_transaction_period
+       exchange_reporting_period.exchange_rate    AS exchange_reporting_period,
+       exchange_transaction_period.exchange_rate  AS exchange_transaction_period
      FROM transactions_in_every_calculation_period
-     LEFT JOIN accountXperiod_exchange_rate_map as exchange_reporting_period
+     LEFT JOIN accountXperiod_exchange_rate_map AS exchange_reporting_period
        ON transactions_in_every_calculation_period.account_id = exchange_reporting_period.account_id
        AND transactions_in_every_calculation_period.reporting_accounting_period_id = exchange_reporting_period.accounting_period_id
        AND transactions_in_every_calculation_period.subsidiary_id = exchange_reporting_period.from_subsidiary_id
-     LEFT JOIN accountXperiod_exchange_rate_map as exchange_transaction_period
+     LEFT JOIN accountXperiod_exchange_rate_map AS exchange_transaction_period
        ON transactions_in_every_calculation_period.account_id = exchange_transaction_period.account_id
        AND transactions_in_every_calculation_period.transaction_accounting_period_id = exchange_transaction_period.accounting_period_id
        AND transactions_in_every_calculation_period.subsidiary_id = exchange_transaction_period.from_subsidiary_id
@@ -143,8 +142,8 @@ WITH transactions AS (
 
      SELECT
        transactions_in_every_calculation_period_w_exchange_rates.*,
-       unconverted_amount * exchange_transaction_period as converted_amount_using_transaction_accounting_period,
-       unconverted_amount * exchange_reporting_period as converted_amount_using_reporting_month
+       unconverted_amount * exchange_transaction_period   AS converted_amount_using_transaction_accounting_period,
+       unconverted_amount * exchange_reporting_period     AS converted_amount_using_reporting_month
      FROM transactions_in_every_calculation_period_w_exchange_rates
 
 ), balance_sheet AS (
@@ -163,7 +162,7 @@ WITH transactions AS (
               AND reporting_accounting_periods.year_id = transaction_accounting_periods.year_id) THEN 'net income'
             WHEN LOWER(accounts.account_type) IN ('income','other income','expense','other expense','other income','cost of goods sold') THEN 'retained earnings'
             ELSE LOWER(accounts.account_type)
-       END                                                                  AS account_type_name,
+       END                                                                  AS account_type,
        CASE WHEN LOWER(accounts.account_type) IN ('income','other income','expense','other expense','other income','cost of goods sold') THEN null
             ELSE accounts.account_id
        END                                                                  AS account_id,
@@ -206,9 +205,9 @@ WITH transactions AS (
         account_name,
         account_number,
         account_number || ' - ' || account_name   AS unique_account_name,
-        account_type_name,
+        account_type,
         converted_amount
-              
+
       FROM balance_sheet
 
 )
