@@ -65,18 +65,6 @@ Example: You might be looking at the count of opportunities before and after, if
 #### Testing
 
 - [ ] Every model should be [tested](https://docs.getdbt.com/docs/testing-and-documentation) AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable.
-- [ ] Please paste the output of dbt test from your local environment below. Any failing tests should be fixed or explained prior to requesting a review.
-
-<details>
-<summary> dbt test results </summary>
-
-<pre><code>
-
-Paste the results of dbt test here, including the command.
-
-</code></pre>
-</details>
-
 - [ ] Run the appropriate pipeline for the model changes in this MR
 - [ ] If the periscope_query job failed, validate that the changes you've made don't affect the grain of the table or the expected output in Periscope.
 
@@ -143,6 +131,18 @@ These jobs only appear when `.py` files have changed. All of them will run autom
 
 - **clone_stop**: Runs automatically when MR is merged or closed. Do not run manually.
 
+</details>
+
+- [ ] Please paste the output of dbt test below. Any failing tests should be fixed or explained prior to requesting a review.
+
+<details>
+<summary> dbt test results </summary>
+
+<pre><code>
+
+Paste the results of dbt test here, including the command.
+
+</code></pre>
 </details>
 
 ## All MRs Checklist
