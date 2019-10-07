@@ -11,6 +11,13 @@ models:
     description: This is the location factor used for calculating analyses and takes into account the metrics adjusted location factor, where that exists.
     tests:
     - not_null
+- name: sheetload_gitlab_slack_stats
+  description: This is the source of Slack usage statistics exported from the [Analytics dashboard](https://slack.com/help/articles/218407447-view-your-slack-analytics-dashboard).
+  columns:
+  - name: entry_date
+    tests:
+    - not_null
+    - unique
 - name: sheetload_headcount
   columns:
   - name: primary_key
