@@ -5,7 +5,7 @@ models:
     description: This is the base model for snapshotted customers data from the customers.gitlab.com database.
     columns:
       - name: customer_snapshot_id
-        description: Auto-generated primary key when building the snapshot with dbt
+        description: Auto-generated primary key when building the snapshot with dbt  
         tests:
           - not_null
           - unique
@@ -20,7 +20,7 @@ models:
     description: This is the base model for snapshotted orders data from the customers.gitlab.com database.
     columns:
       - name: order_snapshot_id
-        description: Auto-generated primary key when building the snapshot with dbt
+        description: Auto-generated primary key when building the snapshot with dbt  
         tests:
           - not_null
           - unique
@@ -48,7 +48,7 @@ models:
     description: This is the base model for snapshotted gitlab subscriptions data from the gitlab.com database.
     columns:
       - name: gitlab_subscription_snapshot_id
-        description: Auto-generated primary key when building the snapshot with dbt
+        description: Auto-generated primary key when building the snapshot with dbt  
         tests:
           - not_null
           - unique
@@ -63,7 +63,7 @@ models:
     description: This is the base model for snapshotted members data from the gitlab.com database.
     columns:
       - name: member_snapshot_id
-        description: Auto-generated primary key when building the snapshot with dbt
+        description: Auto-generated primary key when building the snapshot with dbt  
         tests:
           - not_null
           - unique
@@ -78,7 +78,7 @@ models:
     description: This is the base model for snapshotted gitlab subscriptions data from the gitlab.com database.
     columns:
       - name: namespace_snapshot_id
-        description: Auto-generated primary key when building the snapshot with dbt
+        description: Auto-generated primary key when building the snapshot with dbt  
         tests:
           - not_null
           - unique
