@@ -25,12 +25,11 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
    * [ ] Is the data in the dashboard correct?
    * [ ] Does the data align with the existing single source of truth and across applicable reporting in Periscope and Google Sheets?
    * [ ] Is this a new dashboard or a re-evaluation of a dashboard change? 
-   * [ ] If it is a dashboard re-evaluation, please add into the dashboard title "WIP" 
-   * [ ] If this is not a new dashboard, make it clear in the issue description that this is a re-evaluation  
 
 
 ### Submitter Checklist
 * Review Items
+   * [ ] `WIP:` should be in the title of the dashboard and the dashboard should be added to the `WIP` topic
    * [ ] SQL formatted using [GitLab Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
    * [ ] Python / R reviewed for content, formatting, and necessity, if relevant (Did you write Python or R?)
    * [ ] Filters, if relevant (Did you use filters?)
