@@ -1,3 +1,4 @@
+
 with zuora_mrr_totals AS (
 
     SELECT * FROM {{ref('zuora_mrr_totals')}}
@@ -54,6 +55,7 @@ with zuora_mrr_totals AS (
            replace_sfdc_account_id_with_master_record_id.zuora_account_id,
            replace_sfdc_account_id_with_master_record_id.zuora_account_name,
            replace_sfdc_account_id_with_master_record_id.product_category,
+           replace_sfdc_account_id_with_master_record_id.delivery,
            replace_sfdc_account_id_with_master_record_id.rate_plan_name,
            replace_sfdc_account_id_with_master_record_id.service_type,
            replace_sfdc_account_id_with_master_record_id.unit_of_measure,

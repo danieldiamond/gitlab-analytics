@@ -169,3 +169,28 @@ specify_tests:
     - *deps_and_seed
     - echo $DBT_MODELS
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
+
+# ======
+# Periscope Model Check
+# ======
+
+.periscope_check: &periscope_check
+  stage: dbt_misc
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  tags:
+    - analytics
+  only:
+    changes:
+      - "**/*.sql"
+    refs:
+      - merge_request
+  allow_failure: true
+
+periscope_query:
+  <<: *periscope_check
+  script:
+    - git clone -b periscope/master --single-branch https://gitlab.com/gitlab-data/periscope.git --depth 1
+    - grep -rIiEo "from (analytics|analytics_staging|boneyard)\.([\_A-z]*)" periscope/. | awk -F '.' '{print tolower($NF)}' | sort | uniq > periscope.txt
+    - git diff origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD --name-only | grep -iEo "(.*)\.sql" | sed -E 's/\.sql//' | awk -F '/' '{print tolower($NF)}' | sort | uniq > diff.txt
+    - comm -12 periscope.txt diff.txt > comparison.txt
+    - if (( $(cat comparison.txt | wc -l | tr -d ' ') > 0 )); then echo "Check these!" && cat comparison.txt && exit 1; else echo "All good" && exit 0; fi;

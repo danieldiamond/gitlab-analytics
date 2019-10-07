@@ -11,7 +11,6 @@ WITH source AS (
       id::INTEGER                 AS oauth_access_token_id,
       resource_owner_id::INTEGER  AS resource_owner_id,
       application_id::INTEGER     AS application_id,
-      token::VARCHAR              AS oauth_access_token,
       refresh_token::VARCHAR      AS oauth_access_refresh_token,
       expires_in::INTEGER         AS expires_in_seconds,
       revoked_at::TIMESTAMP       AS oauth_access_token_revoked_at,

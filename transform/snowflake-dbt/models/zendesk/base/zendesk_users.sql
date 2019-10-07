@@ -3,7 +3,7 @@
   })
 }}
 
-with source as (
+WITH source AS (
 
     SELECT *
     FROM {{ source('zendesk', 'users') }}
@@ -11,7 +11,7 @@ with source as (
 
 ),
 
-renamed as (
+renamed AS (
 
     SELECT  id AS user_id,
 
@@ -22,14 +22,14 @@ renamed as (
             CASE WHEN lower(email) LIKE '%gitlab.com%'
                   THEN name
                 ELSE md5(name)
-                  END AS name, --masking folks who are submitting tickets! We don't need to surface that.
+                  END        AS name, --masking folks who are submitting tickets! We don't need to surface that.
             CASE WHEN lower(email) LIKE '%gitlab.com%'
                   THEN email
                 ELSE md5(email)
-                  END AS email, --masking folks who are submitting tickets! We don't need to surface that.
-            restricted_agent as is_restricted_agent,
+                  END        AS email, --masking folks who are submitting tickets! We don't need to surface that.
+            restricted_agent AS is_restricted_agent,
             role,
-            suspended as is_suspended,
+            suspended        AS is_suspended,
 
             --time
             time_zone,

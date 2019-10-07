@@ -19,7 +19,7 @@ default_args = {
     "depends_on_past": False,
     "on_failure_callback": slack_failed_task,
     "owner": "airflow",
-    "retries": 1,
+    "retries": 0,
     "retry_delay": timedelta(minutes=1),
     "start_date": datetime(2019, 1, 1),
 }
@@ -29,7 +29,7 @@ container_cmd = f"""
     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/sheetload/ &&
-    python3 sheetload.py sheets boneyard/sheets.txt boneyard ANALYTICS
+    python3 sheetload.py sheets --sheet_file boneyard/sheets.txt --schema boneyard --database ANALYTICS
 """
 
 # Create the DAG
