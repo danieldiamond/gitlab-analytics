@@ -78,6 +78,8 @@ Paste the results of dbt test here, including the command.
 </details>
 
 - [ ] Run the appropriate pipeline for the model changes in this MR
+- [ ] If the periscope_query job failed, validate that the changes you've made don't affect the grain of the table or the expected output in Periscope.
+
 <details>
 <summary> Which pipeline job do I run? </summary>
 
