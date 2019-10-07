@@ -7,7 +7,7 @@
 {%- set event_ctes = ["audit_events_viewed",
                       "code_analytics_viewed",
                       "cycle_analytics_viewed",
-                      "insights_viewed", 
+                      "insights_viewed",
                       "group_analytics_viewed",
                       "group_created",
                       "productivity_analytics_viewed",
