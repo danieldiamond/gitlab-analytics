@@ -559,6 +559,9 @@ roles:
 
     # Object Roles
     - bamboohr:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
         privileges:
             databases:
                 read:
@@ -566,9 +569,13 @@ roles:
             schemas:
                 read:
                     - raw.bamboohr
+                    - analytics.analytics
+                    - analytics.analytics_staging
             tables:
                 read:
                     - raw.bamboohr.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
     
     - greenhouse:
         warehouses:
@@ -909,6 +916,8 @@ users:
         can_login: yes
         member_of:
             - analyst_core
+            - bamboohr
+            - greenhouse
             - ktam
 
     - ksmith:
