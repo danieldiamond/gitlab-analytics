@@ -33,6 +33,15 @@ WITH transactions AS (
      SELECT *
      FROM {{ ref('netsuite_consolidated_exchange_rates') }}
 
+), date_details AS (
+
+     SELECT DISTINCT
+       first_day_of_month,
+       fiscal_year,
+       fiscal_quarter,
+       fiscal_quarter_name
+     FROM {{ ref('date_details') }}
+
 ), period_exchange_rate_map AS ( -- exchange rates used, by accounting period, to convert to parent subsidiary
 
      SELECT
@@ -149,10 +158,10 @@ WITH transactions AS (
 ), balance_sheet AS (
 
      SELECT
-       reporting_accounting_periods.accounting_period_id                    AS accounting_period_id,
+       reporting_accounting_periods.accounting_period_id,
        reporting_accounting_periods.accounting_period_starting_date::DATE   AS accounting_period,
-       reporting_accounting_periods.accounting_period_name                  AS accounting_period_name,
-       reporting_accounting_periods.is_accounting_period_adjustment         AS is_accounting_period_adjustment,
+       reporting_accounting_periods.accounting_period_name,
+       accounts.is_account_inactive,
        CASE WHEN (LOWER(accounts.account_type) IN ('income','other income','expense','other expense','other income','cost of goods sold')
               AND reporting_accounting_periods.year_id = transaction_accounting_periods.year_id) THEN 'net income'
             WHEN LOWER(accounts.account_type) IN ('income','other income','expense','other expense','other income','cost of goods sold') THEN 'retained earnings'
@@ -194,23 +203,28 @@ WITH transactions AS (
          AND LOWER(accounts.account_type) != 'statistical'
         {{ dbt_utils.group_by(n=8) }}
 
-), balance_sheet_unique_account_name AS (
+), balance_sheet_grouping AS (
 
       SELECT
-        accounting_period_id,
-        accounting_period,
-        accounting_period_name,
-        is_accounting_period_adjustment,
         account_id,
         account_name,
         account_number,
         account_number || ' - ' || account_name   AS unique_account_name,
         account_type,
-        converted_amount
+        is_account_inactive,
+        converted_amount,
+        accounting_period_id,
+        accounting_period,
+        accounting_period_name,
+        fiscal_year,
+        fiscal_quarter,
+        fiscal_quarter_name
 
-      FROM balance_sheet
+      FROM balance_sheet b
+      LEFT JOIN date_details d
+        ON b.accounting_period = d.first_day_of_month
 
 )
 
 SELECT *
-FROM balance_sheet_unique_account_name
+FROM balance_sheet_grouping
