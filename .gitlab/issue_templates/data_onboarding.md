@@ -5,17 +5,21 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 
 ## Access Requests 
 
-### For Central or Embedded Analyst 
+### For all going through the Data Onboarding Process 
+- [ ] Manager: Add to the `gitlab-data` namespace as a Developer.
+- [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
+- [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
+  - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
+- [ ] Manager: Add to Data Ops calendar meeting 
+- [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
+
+### For Central or Embedded Analyst/Engineers
 - [ ] Manager: Create access request using data analyst baseline.
    - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
    - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
-- [ ] Manager: Add to the `gitlab-data` namespace as a Developer.
 - [ ] Manager: Add to the `gitlab-data/chatops` project as a Maintainer.
-- [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
 - [ ] Manager: Update codeowners file in the handbook to include the new team member
 - [ ] Manager: Add to daily Geekbot standup (send `dashboard` to Geekbot on slack, click into a particular standup in the web UI, add via Manage button)
-- [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
-  - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
 - [ ] Manager: Invite to SheetLoad folder in gdrive
 - [ ] Manager: Check the [Time Blackout Sheet](https://docs.google.com/spreadsheets/d/1-L1l1x0uayj-bA_U9ETt2w12rC8SqC5mHP7Aa-rkmsY/edit#gid=0) to make sure it looks up-to-date.
 - [ ] Manager: Add to data team calendar as a calendar admin
@@ -23,15 +27,6 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Add to [data triage](https://about.gitlab.com/handbook/business-ops/data-team/#triager) in third week at GitLab (Week 1 = Company onboarding; Week 2 = Data team onboarding)
 - [ ] Manager: Update issue with one or two Good First Issues
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
-
-### For Distributed or Other GitLab Team Members interested in accessing Data Team Tech Stack 
-- [ ] Manager: Add to the `gitlab-data` namespace as a Developer.
-- [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
-- [ ] Manager: Discuss with new member if they need access to Snowflake. Then, add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
-  - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
-- [ ] Manager: Add to Data Ops calendar meeting 
-- [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
-
 
 
 ## WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
