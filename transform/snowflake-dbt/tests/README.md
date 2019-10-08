@@ -106,7 +106,7 @@ Failure in test no_missing_location_factors (tests/bamboohr/data_test/no_missing
 ```
 
 Steps to resolve:
-* Step 1: Run the chatops command `/gitlab datachat run missing_location_factor` from Slack
+* Step 1: Run the chatops command `/gitlab datachat run missing_location_factor` from Slack to see the test results in Slack.
 * Step 2: Ping the People Operations Analyst with the employee ID numbers that are missing location factor in #data. (AS of 2019-07-24, that would be Morgan Wilkins.)
 * Step 3: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
 * Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
@@ -124,7 +124,7 @@ Database Error in model pings_usage_data_monthly_change_by_stage (models/pings/x
 
 Steps to Resolve:
 
-* Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack.
+* Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack to see the test results in Slack.
 * Step 2: Create a new issue.
 * Step 3: Ask in the #product slack channel which stage the new metric belongs to.
 * Step 4: Create an MR that adds the new metric to the `ping_metrics_to_stage_mapping_data` CSV. Remember to keep it sorted alphabetically. 
@@ -142,7 +142,7 @@ Failure in test zuora_account_has_crm_id (tests/data_test/zuora_account_has_crm_
 
 Steps to Resolve:
 
-* Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack.
+* Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack to see the test results in Slack.
 * Step 2: Create an issue in finance asking the account get updated with a salesforce_id. Cross link this to the analytics issue
 * Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
 * Step 4: Filter out the zuora account in the base `zuora_account` model and submit your MR for review
