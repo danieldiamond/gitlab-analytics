@@ -7,11 +7,48 @@
 {%- set event_ctes = [
    {
       "event_name":"audit_events_viewed",
-      "regexp_where_statement":[{"regexp":"(\/([0-9A-Za-z_.-])*){1,}\/audit_events", "regexp_function": "REGEXP"}]
+      "regexp_where_statement":[
+         {
+            "regexp":"(\/([0-9A-Za-z_.-])*){1,}\/audit_events",
+            "regexp_function":"REGEXP"
+         }
+      ]
    },
    {
       "event_name":"cycle_analytics_viewed",
-      "regexp_where_statement":[{"regexp":"(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics", "regexp_function": "REGEXP"}]
+      "regexp_where_statement":[
+         {
+            "regexp":"(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"insights_viewed",
+      "regexp_where_statement":[
+         {
+            "regexp":"(\/([0-9A-Za-z_.-])*){1,}\/insights",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"group_analytics_viewed",
+      "regexp_where_statement":[
+         {
+            "regexp":"(\/([0-9A-Za-z_.-])*){1,}\/analytics",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"group_created",
+      "regexp_where_statement":[
+         {
+            "regexp":"\/groups\/new",
+            "regexp_function":"REGEXP"
+         }
+      ]
    }
 ]
 -%}
