@@ -7,6 +7,7 @@ headcount.headcount
 location_factor_targets.location_factor_targets
 marketing_kpi_benchmarks.marketing_kpi_benchmarks
 marketing_pipe_to_spend_headcount.marketing_pipe_to_spend_headcount
+osat.osat
 planned_values.planned_values
 pulse_survey.pulse_survey_configure_be
 pulse_survey.pulse_survey_configure_fe
