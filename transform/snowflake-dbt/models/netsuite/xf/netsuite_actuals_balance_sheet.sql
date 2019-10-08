@@ -172,10 +172,10 @@ WITH transactions AS (
             WHEN LOWER(accounts.account_type) IN ('income','other income','expense','other expense','other income','cost of goods sold') THEN 'retained earnings'
             ELSE LOWER(accounts.account_type)
        END                                                                  AS account_type,
-       CASE WHEN LOWER(accounts.account_type) IN ('income','other income','expense','other expense','other income','cost of goods sold') THEN null
+       CASE WHEN LOWER(accounts.account_type) IN ('income','other income','expense','other expense','other income','cost of goods sold') THEN NULL
             ELSE accounts.account_id
        END                                                                  AS account_id,
-       CASE WHEN LOWER(accounts.account_type) IN ('income','other income','expense','other expense','other income','cost of goods sold') THEN null
+       CASE WHEN LOWER(accounts.account_type) IN ('income','other income','expense','other expense','other income','cost of goods sold') THEN NULL
             ELSE accounts.account_number
        END                                                                  AS account_number,
        SUM(CASE WHEN LOWER(accounts.account_type) IN ('income','other income','expense','other expense','other income','cost of goods sold') THEN -converted_amount_using_transaction_accounting_period
@@ -211,6 +211,21 @@ WITH transactions AS (
         account_number,
         account_number || ' - ' || account_name   AS unique_account_name,
         account_type,
+        CASE WHEN account_type IN ('accounts receivable','bank','other current asset','unbilled receivable','deferred expense') THEN 'current assets'
+             WHEN account_type IN ('accounts payable','credit card','deferred revenue','other current liability') THEN 'current liabilities'
+             WHEN account_type IN ('fixed asset') THEN 'fixed assets'
+             WHEN account_type IN ('long term liability') THEN 'long term liabilities'
+             WHEN account_type IN ('other asset') THEN 'other assets'
+             WHEN account_type IN ('net income') THEN 'equity'
+             WHEN account_type IN ('retained earnings') THEN 'equity'
+             WHEN account_type IN ('equity') THEN 'equity'
+             ELSE 'need classification'
+        END                                       AS balance_sheet_grouping_level_2,
+        CASE WHEN account_type IN ('accounts receivable','bank','other current asset','unbilled receivable','fixed asset','other asset','deferred expense') THEN 'assets'
+             WHEN account_type IN ('accounts payable','credit card','deferred revenue','other current liability',
+                                   'equity','long term liability','net income','retained earnings') THEN 'liabilities & equity'
+             ELSE 'need classification'
+        END                                       AS balance_sheet_grouping_level_3,
         is_account_inactive,
         converted_amount,
         accounting_period_id,
