@@ -93,4 +93,5 @@ WHERE account_id NOT IN (
   , '2c92a0086d1b1645016d1da88c6a4d89' --https://gitlab.com/gitlab-data/analytics/issues/2412
   , '2c92a0fe6d1b07ba016d1df03e020770' --https://gitlab.com/gitlab-data/analytics/issues/2412
   , '2c92a0fe6d1b07b9016d1e3461e7297c' --https://gitlab.com/gitlab-data/analytics/issues/2412
+  , '2c92a00d6d8c712b016da9e999837b80' --https://gitlab.com/gitlab-data/analytics/issues/2689
 )
