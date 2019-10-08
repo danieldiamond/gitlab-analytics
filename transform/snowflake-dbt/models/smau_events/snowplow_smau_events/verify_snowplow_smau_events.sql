@@ -7,76 +7,76 @@
 {%- set event_ctes = [
    {
       "event_name":"gitlab_ci_yaml_edited",
-      "regexp_statemets":[
+      "regexp_where_statements":[
          {
-            "regexp":"(\/([0-9A-Za-z_.-])*){2,}\/edit\/(([0-9A-Za-z_.-])*){0,}\/.gitlab-ci.yml",
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/edit\/(([0-9A-Za-z_.-])*){0,}\/.gitlab-ci.yml",
             "regexp_function":"REGEXP"
          }
       ]
    },
    {
       "event_name":"gitlab_ci_yaml_viewed",
-      "regexp_statemets":[
+      "regexp_where_statements":[
          {
-            "regexp":"(\/([0-9A-Za-z_.-])*){2,}\/blob\/(([0-9A-Za-z_.-])*){0,}\/.gitlab-ci.yml",
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/blob\/(([0-9A-Za-z_.-])*){0,}\/.gitlab-ci.yml",
             "regexp_function":"REGEXP"
          },
          {
-            "regexp":"(\/([0-9A-Za-z_.-])*){2,}\/edit\/(.)*",
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/edit\/(.)*",
             "regexp_function":"NOT REGEXP"
          }
       ]
    },
    {
       "event_name":"job_list_viewed",
-      "regexp_statemets":[
+      "regexp_where_statements":[
          {
-            "regexp":"(\/([0-9A-Za-z_.-])*){2,}\/-\/jobs",
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/-\/jobs",
             "regexp_function":"REGEXP"
          }
       ]
    },
    {
       "event_name":"job_viewed",
-      "regexp_statemets":[
+      "regexp_where_statements":[
          {
-            "regexp":"(\/([0-9A-Za-z_.-])*){2,}\/-\/jobs\/[0-9]{1,}",
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/-\/jobs\/[0-9]{1,}",
             "regexp_function":"REGEXP"
          }
       ]
    },
    {
       "event_name":"pipeline_charts_viewed",
-      "regexp_statemets":[
+      "regexp_where_statements":[
          {
-            "regexp":"(\/([0-9A-Za-z_.-])*){2,}\/pipelines\/charts",
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/pipelines\/charts",
             "regexp_function":"REGEXP"
          }
       ]
    },
    {
       "event_name":"pipeline_list_viewed",
-      "regexp_statemets":[
+      "regexp_where_statements":[
          {
-            "regexp":"(\/([0-9A-Za-z_.-])*){2,}\/pipelines",
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/pipelines",
             "regexp_function":"REGEXP"
          }
       ]
    },
    {
       "event_name":"pipeline_schedules_viewed",
-      "regexp_statemets":[
+      "regexp_where_statements":[
          {
-            "regexp":"(\/([0-9A-Za-z_.-])*){2,}\/pipeline_schedules",
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/pipeline_schedules",
             "regexp_function":"REGEXP"
          }
       ]
    },
    {
       "event_name":"pipeline_viewed",
-      "regexp_statemets":[
+      "regexp_where_statements":[
          {
-            "regexp":"(\/([0-9A-Za-z_.-])*){2,}\/pipelines\/[0-9]{1,}",
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/pipelines\/[0-9]{1,}",
             "regexp_function":"REGEXP"
          }
       ]
@@ -102,7 +102,7 @@ WITH snowplow_page_views AS (
 
 {% for event_cte in event_ctes %}
 
-, {{ smau_events_ctes(action_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statements) }}
+, {{ smau_events_ctes(event_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statements) }}
 
 {% endfor -%}
 

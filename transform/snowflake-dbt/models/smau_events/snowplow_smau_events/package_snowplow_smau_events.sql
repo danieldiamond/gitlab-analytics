@@ -9,7 +9,7 @@
       "event_name":"container_registry_viewed",
       "regexp_where_statements":[
          {
-            "regexp":"((\/([0-9A-Za-z_.-])*){2,})?\/container_registry$",
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/container_registry$",
             "regexp_function":"REGEXP"
          }
       ]
@@ -18,7 +18,7 @@
       "event_name":"container_registry_viewed",
       "regexp_where_statements":[
          {
-            "regexp":"/-/ide/project/.*",
+            "regexp_pattern":"/-/ide/project/.*",
             "regexp_function":"REGEXP"
          }
       ]
@@ -27,7 +27,7 @@
       "event_name":"packages_page_viewed",
       "regexp_where_statements":[
          {
-            "regexp":"((\/([0-9A-Za-z_.-])*){2,})?\/dependency_proxy$",
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/dependency_proxy$",
             "regexp_function":"REGEXP"
          }
       ]
@@ -36,7 +36,7 @@
       "event_name":"search_performed",
       "regexp_where_statements":[
          {
-            "regexp":"((\/([0-9A-Za-z_.-])*){2,})?\/packages$",
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/packages$",
             "regexp_function":"REGEXP"
          }
       ]
@@ -62,7 +62,7 @@ WITH snowplow_page_views AS (
 
 {% for event_cte in event_ctes %}
 
-, {{ smau_events_ctes(action_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statements) }}
+, {{ smau_events_ctes(event_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statements) }}
 
 {% endfor -%}
 

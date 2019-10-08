@@ -235,6 +235,34 @@ Used in:
 - sfdc_lead
 - sfdc_opportunity
 
+## Snowplow SMAU Events 
+
+This macro is designed to build the events CTEs that are then used in all the `snowplow_smau_events` models. It takes 2 parameters:
+* `event_name`: which is the name shown in output tables and Periscope reporting
+* `regexp_where_statements`: which is a list of dictionaries. Each dictionary creates a new condition in the WHERE statement of the CTE. The dictionary will have 2 items:
+  * `regexp_pattern`: the pattern that you try to match
+  * `regexp_function`: the function used (either `REGEXP` or `NOT REGEXP`)
+  The conditions created by a dictionary looks like: `page_url_path {regexp_function} '{regexp_pattern}'`. Conditions are always separated by an `AND`.
+  
+Usage:
+```
+{{  smau_events_ctes(action_name="pipeline_schedules_viewed",
+                     regexp_where_statements=[
+                                               {
+                                                  "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/pipeline_schedules",
+                                                  "regexp_function":"REGEXP"
+                                               }]
+                                               )
+}}
+```
+
+Output:
+```
+```
+
+Used in:
+- snowpl
+
 ## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/pings/stage_mapping.sql))
 This macro takes in a product stage name, such as 'Verify', and returns a SQL aggregation statement that sums the number of users using that stage, based on the ping data. Product metrics are mapped to stages using the [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
 ```

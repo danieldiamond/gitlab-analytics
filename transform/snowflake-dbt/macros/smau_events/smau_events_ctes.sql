@@ -1,4 +1,4 @@
-{%- macro smau_events_ctes(action_name, regexp_where_statements=[]) -%}
+{%- macro smau_events_ctes(event_name, regexp_where_statements=[]) -%}
 
 {{action_name}} AS (
 
@@ -15,7 +15,7 @@
   {{ log(regexp_where_statements, info=True) }}
 
   {% for regexp_where_statement in regexp_where_statements %}
-    AND page_url_path {{regexp_where_statement.regexp_function}} '{{regexp_where_statement.regexp}}'
+    AND page_url_path {{regexp_where_statement.regexp_function}} '{{regexp_where_statement.regexp_pattern}}'
   {% endfor %}
 
 )
