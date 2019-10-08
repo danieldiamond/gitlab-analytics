@@ -59,3 +59,37 @@ sheetload_run = KubernetesPodOperator(
     arguments=[container_cmd],
     dag=dag,
 )
+
+# Warehouse variable declaration
+xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
+
+# dbt-run
+dbt_run_cmd = f"""
+    {git_cmd} &&
+    cd analytics/transform/snowflake-dbt/ &&
+    export snowflake_load_database="RAW" &&
+    dbt deps --profiles-dir profile # install packages &&
+    dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
+    dbt run --profiles-dir profile --target prod --models sheetload --vars {xs_warehouse}
+"""
+dbt_run = KubernetesPodOperator(
+    **gitlab_defaults,
+    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    task_id="dbt-run-sheetload",
+    name="dbt-run-sheetload",
+    secrets=[
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_USER,
+        SNOWFLAKE_PASSWORD,
+        SNOWFLAKE_TRANSFORM_ROLE,
+        SNOWFLAKE_TRANSFORM_WAREHOUSE,
+        SNOWFLAKE_TRANSFORM_SCHEMA,
+    ],
+    env_vars=pod_env_vars,
+    cmds=["/bin/bash", "-c"],
+    arguments=[dbt_run_cmd],
+    dag=dag,
+)
+
+# Run Order
+sheetload_run >> dbt_run
