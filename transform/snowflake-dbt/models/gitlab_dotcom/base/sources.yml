@@ -129,6 +129,8 @@ sources:
         identifier: gitlab_db_project_statistics
       - name: projects
         identifier: gitlab_db_projects
+      - name: resource_label_events
+        identifier: gitlab_db_resource_label_events
       - name: subscriptions
         identifier: gitlab_db_subscriptions
       - name: users
