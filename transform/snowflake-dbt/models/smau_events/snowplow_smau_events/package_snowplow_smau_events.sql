@@ -4,10 +4,44 @@
     })
 }}
 
-{%- set event_ctes = ["container_registry_viewed",
-                      "dependency_proxy_page_viewed",
-                      "packages_page_viewed"
-                      ]
+{%- set event_ctes = [
+   {
+      "event_name":"container_registry_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp":"((\/([0-9A-Za-z_.-])*){2,})?\/container_registry$",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"container_registry_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp":"/-/ide/project/.*",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"packages_page_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp":"((\/([0-9A-Za-z_.-])*){2,})?\/dependency_proxy$",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"search_performed",
+      "regexp_where_statements":[
+         {
+            "regexp":"((\/([0-9A-Za-z_.-])*){2,})?\/packages$",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   }
+]
 -%}
 
 WITH snowplow_page_views AS (
@@ -26,56 +60,18 @@ WITH snowplow_page_views AS (
 
 )
 
-, container_registry_viewed AS (
+{% for event_cte in event_ctes %}
 
-  SELECT DISTINCT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start)      AS event_date,
-    page_url_path,
-    'container_registry_viewed'   AS event_type,
-    page_view_id
+, {{ smau_events_ctes(action_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statement) }}
 
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/container_registry$'
-
-)
-
-, dependency_proxy_page_viewed AS (
-
-  SELECT DISTINCT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start)         AS event_date,
-    page_url_path,
-    'dependency_proxy_page_viewed'   AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/dependency_proxy$'
-
-)
-
-, packages_page_viewed AS (
-
-  SELECT DISTINCT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start)   AS event_date,
-    page_url_path,
-    'packages_page_viewed'     AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/packages$'
-
-)
+{% endfor -%}
 
 , unioned AS (
+
   {% for event_cte in event_ctes %}
 
     SELECT *
-    FROM {{ event_cte }}
+    FROM {{ event_cte.event_name }}
 
     {%- if not loop.last %}
       UNION
