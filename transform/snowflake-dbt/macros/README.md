@@ -237,7 +237,9 @@ Used in:
 
 ## Snowplow SMAU Events 
 
-This macro is designed to build the events CTEs that are then used in all the `snowplow_smau_events` models. It takes 2 parameters:
+This macro is designed to build the events CTEs that are then used in all the `snowplow_smau_events` models. 
+
+It takes 2 parameters:
 * `event_name`: which is the name shown in output tables and Periscope reporting
 * `regexp_where_statements`: which is a list of dictionaries. Each dictionary creates a new condition in the WHERE statement of the CTE. The dictionary will have 2 items:
   * `regexp_pattern`: the pattern that you try to match
@@ -258,10 +260,31 @@ Usage:
 
 Output:
 ```
+pipeline_schedules_viewed AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start) AS event_date,
+    page_url_path,
+    ''        AS event_type,
+    page_view_id             AS event_surrogate_key
+
+  FROM snowplow_page_views
+  WHERE TRUE 
+    AND page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/pipeline_schedules'
+  
+
+)
 ```
 
 Used in:
-- snowpl
+- create_snowplow_smau_events
+- manage_snowplow_smau_events
+- monitor_snowplow_smau_events
+- package_snowplow_smau_events
+- plan_snowplow_smau_events
+- verify_snowplow_smau_events
 
 ## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/pings/stage_mapping.sql))
 This macro takes in a product stage name, such as 'Verify', and returns a SQL aggregation statement that sums the number of users using that stage, based on the ping data. Product metrics are mapped to stages using the [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
