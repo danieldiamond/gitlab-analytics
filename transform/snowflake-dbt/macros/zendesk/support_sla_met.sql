@@ -1,5 +1,5 @@
 {% macro support_sla_met(first_reply_time, ticket_priority, created_at) %}
-
+ 
     {% set day_after_created = dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp=created_at) %}
     {% set minutes_before_day_end = dbt_utils.datediff(created_at, day_after_created, 'mins') %}
 

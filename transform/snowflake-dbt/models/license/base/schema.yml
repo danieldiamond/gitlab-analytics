@@ -19,9 +19,6 @@ models:
       - name: license_id
         tests:
           - not_null
-          - relationships:
-              to: ref('license_db_licenses')
-              field: license_id
       - name: add_on_id
         tests:
           - not_null
