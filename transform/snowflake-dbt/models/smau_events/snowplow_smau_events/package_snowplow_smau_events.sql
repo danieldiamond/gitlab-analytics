@@ -62,7 +62,7 @@ WITH snowplow_page_views AS (
 
 {% for event_cte in event_ctes %}
 
-, {{ smau_events_ctes(action_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statement) }}
+, {{ smau_events_ctes(action_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statements) }}
 
 {% endfor -%}
 

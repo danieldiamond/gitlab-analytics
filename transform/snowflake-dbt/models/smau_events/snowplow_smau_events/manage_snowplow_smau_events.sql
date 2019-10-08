@@ -7,7 +7,7 @@
 {%- set event_ctes = [
    {
       "event_name":"audit_events_viewed",
-      "regexp_where_statement":[
+      "regexp_where_statements":[
          {
             "regexp":"(\/([0-9A-Za-z_.-])*){1,}\/audit_events",
             "regexp_function":"REGEXP"
@@ -16,7 +16,7 @@
    },
    {
       "event_name":"cycle_analytics_viewed",
-      "regexp_where_statement":[
+      "regexp_where_statements":[
          {
             "regexp":"(\/([0-9A-Za-z_.-])*){2,}\/cycle_analytics",
             "regexp_function":"REGEXP"
@@ -25,7 +25,7 @@
    },
    {
       "event_name":"insights_viewed",
-      "regexp_where_statement":[
+      "regexp_where_statements":[
          {
             "regexp":"(\/([0-9A-Za-z_.-])*){1,}\/insights",
             "regexp_function":"REGEXP"
@@ -34,7 +34,7 @@
    },
    {
       "event_name":"group_analytics_viewed",
-      "regexp_where_statement":[
+      "regexp_where_statements":[
          {
             "regexp":"(\/([0-9A-Za-z_.-])*){1,}\/analytics",
             "regexp_function":"REGEXP"
@@ -43,7 +43,7 @@
    },
    {
       "event_name":"group_created",
-      "regexp_where_statement":[
+      "regexp_where_statements":[
          {
             "regexp":"\/groups\/new",
             "regexp_function":"REGEXP"
@@ -73,7 +73,7 @@ WITH snowplow_page_views AS (
 
 {% for event_cte in event_ctes %}
 
-, {{ smau_events_ctes(action_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statement) }}
+, {{ smau_events_ctes(action_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statements) }}
 
 {% endfor -%}
 
