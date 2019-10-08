@@ -100,7 +100,7 @@ These jobs are scoped to the `ci` target. This target selects a subset of data f
 * **specify_exclude**: Specify which model to exclude with the variable `DBT_MODELS`
 * **specify_xl_exclude**: Specify which model to exclude using an XL warehouse with the variable `DBT_MODELS`
 
-Watch https://youtu.be/l14N7l-Sco4 to see an example of how to set the variable.
+Watch https://youtu.be/l14N7l-Sco4 to see an example of how to set the variable. The variable is a stand-in for any of the examples in [the dbt documentation on model selection syntax](https://docs.getdbt.com/docs/model-selection-syntax#section-specifying-models-to-run).
 
 #### Stage: dbt_misc
 * **all_tests**: Runs all of the tests
