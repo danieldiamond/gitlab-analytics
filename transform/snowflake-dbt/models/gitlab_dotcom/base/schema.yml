@@ -795,7 +795,7 @@ models:
         description: '{{ doc("visibility_documentation") }}'
 
   - name: gitlab_dotcom_resource_label_events
-    description: Base model for Gitlab.com resource label events. Explanation [here](https://docs.gitlab.com/ee/api/resource_label_events.html)
+    description: '{{ doc("gitlab_dotcom_resource_label_events") }}'
     columns:
       - name: action_id
         tests:

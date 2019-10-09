@@ -185,6 +185,16 @@ Usage:
 Used in:
 - zuora_rate_plan.sql
 
+## Resource Label Action Type([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/gitlab_dotcom/resource_label_action_type.sql))
+This macro maps action type ID to the action type for the `resource_label_events` table.
+Usage:
+```
+{{ resource_label_action_type('action') }}
+```
+
+Used in:
+- gitlab_dotcom_resource_label_events.sql
+
 ## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sales_segment_cleaning))
 This macro applies proper formatting to sales segment data with the end result being one of SMB, Mid-Market, Strategic, Large or Unknown.
 Usage:
