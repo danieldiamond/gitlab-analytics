@@ -127,6 +127,7 @@ joined AS (
     lock_version,
     time_estimate,
     has_discussion_locked,
+    agg_label                                    AS labels,
     ARRAY_TO_STRING(agg_label,'|')               AS masked_label_title,
     internal_namespaces.namespace_id IS NOT NULL AS is_internal_issue
 
