@@ -1,8 +1,13 @@
+{{ config({
+    "materialized": "table"
+    })
+}}
+
 WITH source AS (
 
   SELECT
     *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+    DENSE_RANK() OVER (ORDER BY DATEADD(S, _uploaded_at, '1970-01-01')::DATE ) AS rank_in_uploaded_date
   FROM {{ source('gitlab_dotcom', 'label_links') }}
 
 ), renamed AS (
@@ -17,7 +22,7 @@ WITH source AS (
       updated_at::TIMESTAMP                          AS label_link_updated_at
 
     FROM source
-    WHERE rank_in_key = 1
+    WHERE rank_in_uploaded_date = 1
 
 )
 
