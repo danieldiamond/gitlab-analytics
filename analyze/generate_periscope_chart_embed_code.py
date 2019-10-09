@@ -36,6 +36,7 @@ def csv_to_chart_list(input_csv):
             chart_dict["dashboard"] = int(chart["dashboard_id"])
             chart_dict["embed"] = "v2"
             chart_dict["border"] = "off"
+           #chart_dict["daterange"] = {"days": 365} 
             chart_dict_list.append(chart_dict)
 
     logging.info("Chart list captured...")
