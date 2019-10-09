@@ -15,16 +15,16 @@
       ]
    },
    {
-      "event_name":"container_registry_viewed",
+      "event_name":"packages_page_viewed",
       "regexp_where_statements":[
          {
-            "regexp_pattern":"/-/ide/project/.*",
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/packages$",
             "regexp_function":"REGEXP"
          }
       ]
    },
    {
-      "event_name":"packages_page_viewed",
+      "event_name":"dependency_proxy_page_viewed",
       "regexp_where_statements":[
          {
             "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/dependency_proxy$",
