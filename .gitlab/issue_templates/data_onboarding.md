@@ -1,18 +1,26 @@
-## Tools & Access
+## Overview 
 
 Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed. There is a lot of information in the on-boarding issue, so please bookmark handbook pages, documentation pages, and log-ins for future reference. The goal is for you to complete and close the Data Team on-boarding issue within 1 week after you have completed the GitLab company on-boarding issue. These resources will be super helpful and serve as great reference material as you get up to speed and learn to work through issues and merge requests [over your first 90 day](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/job-families/finance/data-analyst/index.html.md#how-youll-ramp).
 
+
+## Access Requests 
+
+### For all going through the Data Onboarding Process 
+- [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
+- [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
+  - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
+- [ ] Manager: Add to Data Ops calendar meeting 
+- [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
+- [ ] Manager: Add to the `GitLab Data Team` project as a Developer.
+
+### For Central or Embedded Analyst/Engineers
 - [ ] Manager: Create access request using data analyst baseline.
    - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
    - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
-- [ ] Manager: Add to the `gitlab-data` namespace as a Developer.
 - [ ] Manager: Add to the `gitlab-data/chatops` project as a Maintainer.
-- [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
-- [ ] Manager: Invite to `data-team` channel on Slack
+- [ ] Manager: Add to the `gitlab-data` namespace as a Developer.
 - [ ] Manager: Update codeowners file in the handbook to include the new team member
 - [ ] Manager: Add to daily Geekbot standup (send `dashboard` to Geekbot on slack, click into a particular standup in the web UI, add via Manage button)
-- [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
-  - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
 - [ ] Manager: Invite to SheetLoad folder in gdrive
 - [ ] Manager: Check the [Time Blackout Sheet](https://docs.google.com/spreadsheets/d/1-L1l1x0uayj-bA_U9ETt2w12rC8SqC5mHP7Aa-rkmsY/edit#gid=0) to make sure it looks up-to-date.
 - [ ] Manager: Add to data team calendar as a calendar admin
@@ -21,7 +29,8 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Update issue with one or two Good First Issues
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
 
-WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
+
+## WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
 - [ ] Read (skim) through this full issue, just so you have a sense of what's coming. 
 - [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
