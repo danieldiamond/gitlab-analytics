@@ -1219,7 +1219,8 @@ tables:
   resource_label_events:
     import_db: GITLAB_DB
     import_query: >
-      SELECT action
+      SELECT id 
+      , action
       , issue_id
       , merge_request_id
       , epic_id
