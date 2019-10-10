@@ -216,7 +216,7 @@ This macro implements the `CASE WHEN` logic for Support SLAs, as [documented in 
 Used in:
 - zendesk_tickets_xf.sql
 
-## Unpack Unstructured Events ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/pings/unpack_unstructured_event.sql))
+## Unpack Unstructured Events ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/version/unpack_unstructured_event.sql))
 This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.
 Usage:
 ```

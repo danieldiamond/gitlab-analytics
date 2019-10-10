@@ -33,7 +33,7 @@ models:
                 - not_null
 
     - name: version_usage_data_month
-      description: pings data values aggregated by month for each UUID.
+      description: usage ping data values aggregated by month for each UUID.
       columns:
           - name: created_at
             tests:
