@@ -97,7 +97,7 @@ WITH transactions AS (
 
     SELECT
       base.accounting_period_id,
-      array_agg(multiplier.accounting_period_id) WITHIN GROUP (order by multiplier.accounting_period_id) AS accounting_periods_to_include_for
+      array_agg(multiplier.accounting_period_id) WITHIN GROUP (ORDER BY multiplier.accounting_period_id) AS accounting_periods_to_include_for
     FROM accounting_periods AS base
     INNER JOIN accounting_periods AS multiplier
       ON base.accounting_period_starting_date <= multiplier.accounting_period_starting_date
