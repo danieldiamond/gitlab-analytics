@@ -8,6 +8,7 @@ with source as (
 
     SELECT *
     FROM {{ source('snapshots', 'sheetload_employee_location_factor_snapshots') }}
+    WHERE "Location_Factor" != '#N/A'
 
 ), renamed as (
 
@@ -34,4 +35,4 @@ SELECT bamboo_employee_number,
        min(valid_from) as valid_from,
        max(valid_to) as valid_to
 FROM deduplicated
-GROUP BY 1, 2   
+GROUP BY 1, 2
