@@ -12,7 +12,21 @@ sources:
       identifier: false
 
     tables:
+      - name: avg_cycle_analytics
+        identifier: version_db_avg_cycle_analytics
+        columns:
+          - name: id
+            tests:
+              - not_null
       - name: usage_data
         identifier: version_db_usage_data
+        columns:
+          - name: id
+            tests:
+              - not_null
       - name: version_checks
         identifier: version_db_version_checks
+        columns:
+          - name: id
+            tests:
+              - not_null
