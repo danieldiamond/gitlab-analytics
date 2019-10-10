@@ -240,7 +240,7 @@ def validate_ids(
     return True
 
 
-def test_new_tables(
+def check_new_tables(
     source_engine: Engine,
     target_engine: Engine,
     table: str,
@@ -263,7 +263,7 @@ def test_new_tables(
 
     # If the table doesn't exist, load 1 million rows (or whatever the table has)
     query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 1000000"
-    chunk_and_upload(query, source_engine, target_engine, table_name)
+    chunk_and_upload(query, source_engine, target_engine, table_name, backfill=True)
 
     return True
 
@@ -285,7 +285,7 @@ def main(file_path: str, load_type: str) -> None:
         "incremental": load_incremental,
         "scd": load_scd,
         "sync": sync_incremental_ids,
-        "test": test_new_tables,
+        "test": check_new_tables,
         "validate": validate_ids,
     }
 
