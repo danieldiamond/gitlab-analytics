@@ -14,5 +14,5 @@
     FROM {{ source('sheetload', 'employee_location_factor') }}
     WHERE "Employee_ID" != ''
     AND "Location_Factor" NOT LIKE '#N/A' ESCAPE '#'
-    
+
 {% endsnapshot %}
