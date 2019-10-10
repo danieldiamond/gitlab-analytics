@@ -23,7 +23,7 @@ Usage:
 {{ case_when_boolean_int("assignee_lists") }} AS assignee_lists_active
 ```
 Used in:
-- pings_usage_data_boolean.sql
+- version_usage_data_boolean.sql
 
 ## Churn Type ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/churn_type.sql))
 This macro compares MRR values and buckets them into retention categories.
@@ -126,7 +126,7 @@ Usage:
 {{ monthly_change('active_user_count') }}
 ```
 Used in:
-- pings_usage_data_monthly_change.sql
+- version_usage_data_monthly_change.sql
 
 ## Monthy Is Used ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/monthly_is_used.sql))
 This macro includes the total counts for a given feature's usage cumulatively.
@@ -135,7 +135,7 @@ Usage:
 {{ monthly_is_used('auto_devops_disabled') }}
 ```
 Used in:
-- pings_usage_data_monthly_change.sql
+- version_usage_data_monthly_change.sql
 
 ## Product Category([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/product_category.sql))
 This macro maps SKUs to their product categories.
@@ -197,13 +197,13 @@ Used in:
 - sfdc_lead
 - sfdc_opportunity
 
-## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/pings/stage_mapping.sql))
+## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/version/stage_mapping.sql))
 This macro takes in a product stage name, such as 'Verify', and returns a SQL aggregation statement that sums the number of users using that stage, based on the ping data. Product metrics are mapped to stages using the [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
 ```
 {{ stage_mapping( 'Verify' ) }}
 ```
 Used in:
-- pings_usage_data_monthly_change_by_stage.sql
+- _usage_data_monthly_change_by_stage.sql
 
 ## Support SLA Met ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zendesk/support_sla_met.sql))
 This macro implements the `CASE WHEN` logic for Support SLAs, as [documented in the handbook](https://about.gitlab.com/support/#gitlab-support-service-levels).
