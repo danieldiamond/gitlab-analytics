@@ -23,14 +23,21 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
 * Review Items
    * [ ] Does the dashboard provide the data requested?
    * [ ] Is the data in the dashboard correct?
-   * [ ] Does the data align with the existing single source of truth and across applicable reporting in Periscope and Google Sheets?
-   * [ ] Is this a new dashboard or a re-evaluation of a dashboard change? 
-   * [ ] If it is a dashboard re-evaluation, please add into the dashboard title "WIP" 
-   * [ ] If this is not a new dashboard, make it clear in the issue description that this is a re-evaluation  
+   * [ ] Does the data align with the existing single source of truth and across applicable reporting in Periscope and/or Google Sheets?
 
+### Update to Existing Dashboard Submitter Checklist
 
-### Submitter Checklist
 * Review Items
+   * [ ] `WIP:` should be in the title of the chart being added or updated
+   * [ ] Has the DRI/Prioritization Owner approved the update?
+   * [ ] Were updates made in accordance with the SQL style guide and Periscope visualization best practices included in the New Dashboard Submitter Checklist?
+   * [ ] Have you evangelized the updates in the #data channel or other relevant slack channels?
+   * [ ] Remove `WIP:` from the title of the chart being added or updated
+   * [ ] Close this MR
+
+### New Dashboard Submitter Checklist
+* Review Items
+   * [ ] `WIP:` should be in the title of the dashboard and the dashboard should be added to the `WIP` topic
    * [ ] SQL formatted using [GitLab Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
    * [ ] Python / R reviewed for content, formatting, and necessity, if relevant (Did you write Python or R?)
    * [ ] Filters, if relevant (Did you use filters?)
@@ -56,7 +63,7 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
   - [ ] Allocated to milestone per review time request
   - [ ] Labels and Points Allocated
 
-### Reviewer Checklist
+### New Dashboard Reviewer Checklist
 * Review Items
    * [ ] If dashboard, re-evaluation, first take off official badge. 
    * [ ] SQL formatted using [GitLab Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
@@ -83,7 +90,7 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
    * [ ] Request approval from stakeholder if applicable
    * [ ] Assign to reviewer on the data team. Use `@gitlab-data` on the dashboard if you don't know who to assign to  
 
-### Submitter
+### Submitter 
    * [ ] Post in #data channel in Slack
    * [ ] Link to Periscope Charts/Dashboards from the Handbook. Every Periscope Dashboard should be linked from the Handbook **at least once**. All performance indicators can be [embedded in the handbook](https://about.gitlab.com/handbook/business-ops/data-team/periscope/#embedding-periscope-charts-in-the-handbook) except those that are [not public](https://about.gitlab.com/handbook/values/#not-public). 
    * [ ] Close this MR
