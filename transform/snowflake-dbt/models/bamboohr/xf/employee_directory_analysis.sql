@@ -92,7 +92,8 @@ WITH employee_directory AS (
               ELSE nullif(division, '') END AS division,
             COALESCE (location_factor, hire_location_factor) as location_factor,
             is_hire_date,
-            is_termination_date
+            is_termination_date,
+            hire_date
     FROM joined
 
 ), final as (

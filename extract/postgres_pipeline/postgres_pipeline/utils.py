@@ -242,6 +242,7 @@ def id_query_generator(
     snowflake_engine: Engine,
     source_table: str,
     target_table: str,
+    id_range: int = 1_000_000,
 ) -> Generator[str, Any, None]:
     """
     This function syncs a database with Snowflake based on the user-defined 
@@ -279,7 +280,7 @@ def id_query_generator(
         sys.exit(1)
     logging.info(f"Source Max ID: {max_source_id}")
 
-    for id_pair in range_generator(max_target_id, max_source_id):
+    for id_pair in range_generator(max_target_id, max_source_id, step=id_range):
         id_range_query = (
             "".join(raw_query.lower().split("where")[0])
             + f"WHERE {primary_key} BETWEEN {id_pair[0]} AND {id_pair[1]}"
