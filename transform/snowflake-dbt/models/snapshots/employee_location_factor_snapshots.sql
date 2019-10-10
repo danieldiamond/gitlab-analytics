@@ -8,8 +8,6 @@ with source as (
 
     SELECT *
     FROM {{ source('snapshots', 'sheetload_employee_location_factor_snapshots') }}
-    WHERE "Location_Factor" != '#N/A'
-    AND nullif("Location_Factor",'') IS NOT NULL
 
 ), renamed as (
 
