@@ -18,6 +18,20 @@ sources:
           - name: id
             tests:
               - not_null
+      - name: licenses
+        identifier: version_db_licenses
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null
+      - name: schema_migrations
+        identifier: version_db_schema_migrations
       - name: usage_data
         identifier: version_db_usage_data
         columns:
@@ -26,6 +40,14 @@ sources:
               - not_null
       - name: version_checks
         identifier: version_db_version_checks
+        columns:
+          - name: id
+            tests:
+              - not_null
+      - name: users
+        identifier: version_db_users
+      - name: versions
+        identifier: version_db_version
         columns:
           - name: id
             tests:
