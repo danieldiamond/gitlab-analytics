@@ -38,7 +38,7 @@ renamed AS (
     production_sd::INTEGER 
     production_missing::INTEGER 
   FROM source
-  WHERE True
+
 )
 
 SELECT *
