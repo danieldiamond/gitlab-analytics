@@ -16,7 +16,7 @@ renamed AS (
     id::INTEGER                           AS licence_id,
     company::VARCHAR                      AS company,
     user_count::INTEGER                   AS user_count,
-    TOJSON(add_ons)                       AS add_ons,
+    PARSE_JSON(add_ons)                   AS add_ons,
     --md5 // waiting on fresh data https://gitlab.com/gitlab-data/analytics/issues/2696
     starts_on::TIMESTAMP                  AS starts_at,
     expires_on::TIMESTAMP                 AS expires_at,
