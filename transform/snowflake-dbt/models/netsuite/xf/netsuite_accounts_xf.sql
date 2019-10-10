@@ -1,7 +1,7 @@
 WITH base_accounts AS (
 
     SELECT *
-    FROM {{ref('netsuite_accounts')}}
+    FROM {{ ref('netsuite_accounts') }}
     WHERE account_number IS NOT NULL
 
 ), ultimate_account AS (
@@ -23,7 +23,11 @@ WITH base_accounts AS (
       a.account_name,
       a.account_full_name,
       a.account_full_description,
-      a.account_type
+      a.account_type,
+      a.general_rate_type,
+      a.is_account_inactive,
+      a.is_balancesheet_account,
+      a.is_leftside_account
     FROM base_accounts a
     LEFT JOIN base_accounts b
       ON a.parent_account_id = b.account_id
