@@ -9,6 +9,7 @@ with source as (
     SELECT *
     FROM {{ source('snapshots', 'sheetload_employee_location_factor_snapshots') }}
     WHERE "Location_Factor" != '#N/A'
+    AND nullif("Location_Factor",'') IS NOT NULL
 
 ), renamed as (
 
@@ -21,6 +22,7 @@ with source as (
          "DBT_VALID_TO"::number::timestamp::date                AS valid_to
     FROM source
     WHERE lower(bamboo_employee_number) NOT LIKE '%not in comp calc%'
+    AND location_factor IS NOT NULL
 
 ), deduplicated as (
 
