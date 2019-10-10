@@ -34,7 +34,6 @@ config_dict = {
         "dag_name": "ci_stats",
         "env_vars": {"HOURS": "13"},
         "extract_schedule_interval": "0 */6 * * *",
-        "task_name": "ci-stats",
         "secrets": [
             CI_STATS_DB_USER,
             CI_STATS_DB_PASS,
@@ -43,12 +42,13 @@ config_dict = {
         ],
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 4 */1 * *",
+        "task_name": "ci-stats",
+        "validation_schedule_interval": "0 1 */7 * *",
     },
     "customers": {
         "dag_name": "customers",
         "env_vars": {"DAYS": "1"},
         "extract_schedule_interval": "0 */8 * * *",
-        "task_name": "customers",
         "secrets": [
             CUSTOMERS_DB_USER,
             CUSTOMERS_DB_PASS,
@@ -57,12 +57,13 @@ config_dict = {
         ],
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 3 */1 * *",
+        "task_name": "customers",
+        "validation_schedule_interval": "0 1 */7 * *",
     },
     "gitlab_com": {
         "dag_name": "gitlab_com",
         "env_vars": {"HOURS": "13"},
         "extract_schedule_interval": "0 */6 * * *",
-        "task_name": "gitlab-com",
         "secrets": [
             GITLAB_COM_DB_USER,
             GITLAB_COM_DB_PASS,
@@ -71,12 +72,13 @@ config_dict = {
         ],
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 2 */1 * *",
+        "task_name": "gitlab-com",
+        "validation_schedule_interval": "0 1 */7 * *",
     },
     "gitlab_profiler": {
         "dag_name": "gitlab_profiler",
         "env_vars": {"DAYS": "3"},
         "extract_schedule_interval": "0 0 */1 * *",
-        "task_name": "gitlab-profiler",
         "secrets": [
             GITLAB_PROFILER_DB_USER,
             GITLAB_PROFILER_DB_PASS,
@@ -85,24 +87,28 @@ config_dict = {
         ],
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 4 */1 * *",
+        "task_name": "gitlab-profiler",
+        "validation_schedule_interval": "0 1 */7 * *",
     },
     "license": {
         "dag_name": "license",
         "env_vars": {"DAYS": "1"},
         "extract_schedule_interval": "0 */8 * * *",
-        "task_name": "license",
         "secrets": [LICENSE_DB_USER, LICENSE_DB_PASS, LICENSE_DB_HOST, LICENSE_DB_NAME],
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 4 */1 * *",
+        "task_name": "license",
+        "validation_schedule_interval": "0 1 */7 * *",
     },
     "version": {
         "dag_name": "version",
         "env_vars": {"DAYS": "1", "AVG_CYCLE_ANALYTICS_ID": "1"},
         "extract_schedule_interval": "0 */8 * * *",
-        "task_name": "version",
         "secrets": [VERSION_DB_USER, VERSION_DB_PASS, VERSION_DB_HOST, VERSION_DB_NAME],
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 4 */1 * *",
+        "task_name": "version",
+        "validation_schedule_interval": "0 1 */7 * *",
     },
 }
 
@@ -198,3 +204,41 @@ for source_name, config in config_dict.items():
         )
         sync_extract >> scd_extract
     globals()[f"{config['dag_name']}_db_sync"] = sync_dag
+
+    # Validation DAG
+    validation_dag_args = {
+        "catchup": True,
+        "concurrency": 1,
+        "depends_on_past": False,
+        "on_failure_callback": slack_failed_task,
+        "owner": "airflow",
+        "retries": 0,
+        "retry_delay": timedelta(minutes=1),
+        "start_date": datetime(2019, 1, 1),
+    }
+    validation_dag = DAG(
+        f"{config['dag_name']}_db_validate",
+        default_args=validation_dag_args,
+        schedule_interval=config["validation_schedule_interval"],
+    )
+
+    with validation_dag:
+
+        # Validate Task
+        validate_cmd = f"""
+            git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
+            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
+            python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml validate
+        """
+        validate_ids = KubernetesPodOperator(
+            **gitlab_defaults,
+            image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+            task_id=f"{config['task_name']}-db-validation",
+            name=f"{config['task_name']}-db-validation",
+            secrets=standard_secrets + config["secrets"],
+            env_vars={**standard_pod_env_vars, **config["env_vars"]},
+            cmds=["/bin/bash", "-c"],
+            arguments=[validate_cmd],
+            dag=validation_dag,
+        )
+    globals()[f"{config['dag_name']}_db_validation"] = validation_dag
