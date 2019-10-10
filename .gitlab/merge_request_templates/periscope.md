@@ -28,9 +28,11 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
 ### Update to Existing Dashboard Submitter Checklist
 
 * Review Items
+   * [ ] `WIP:` should be in the title of the chart being added or updated
    * [ ] Has the DRI/Prioritization Owner approved the update?
    * [ ] Were updates made in accordance with the SQL style guide and Periscope visualization best practices included in the New Dashboard Submitter Checklist?
    * [ ] Have you evangelized the updates in the #data channel or other relevant slack channels?
+   * [ ] Remove `WIP:` from the title of the chart being added or updated
    * [ ] Close this MR
 
 ### New Dashboard Submitter Checklist
