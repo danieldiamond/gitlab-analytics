@@ -7,7 +7,7 @@
     user_custom_id,
     TO_DATE(page_view_start) AS event_date,
     page_url_path,
-    '{{event_name}}'        AS event_type,
+    '{{event_name}}'         AS event_type,
     page_view_id             AS event_surrogate_key
 
   FROM snowplow_page_views
