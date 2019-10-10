@@ -13,7 +13,7 @@ WITH source AS (
 renamed AS (
 
   SELECT
-    id::INTEGER                           AS licence_id,
+    id::INTEGER                           AS license_id,
     company::VARCHAR                      AS company,
     user_count::INTEGER                   AS user_count,
     PARSE_JSON(add_ons)                   AS add_ons,

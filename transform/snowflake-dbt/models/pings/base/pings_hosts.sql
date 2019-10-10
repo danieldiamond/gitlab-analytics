@@ -5,7 +5,8 @@
 
 WITH source AS (
 
-  SELECT *
+  SELECT
+    *
   FROM {{ source('pings_tap_postgres', 'hosts') }}
 
 ),
