@@ -13,7 +13,7 @@ sys.path.insert(
 from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
 import pandas as pd
 
-from main import load_incremental, load_scd
+from main import load_incremental, load_scd, check_new_tables
 from utils import (
     query_results_generator,
     postgres_engine_factory,
@@ -222,7 +222,7 @@ class TestPostgresPipeline:
 
     def test_scd_project_import_data_normal(self):
         """
-        Test to make sure that the incremental loader is catching all of the rows.
+        Test to make sure that the SCD loader is working as intended.
         """
         table_cleanup(TEST_TABLE)
         table_cleanup(TEST_TABLE_TEMP)
@@ -249,3 +249,31 @@ class TestPostgresPipeline:
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
 
         assert source_count_results.equals(target_count_results)
+
+    def test_load_test_board_labels(self):
+        """
+        Test to make sure that the new table checker is fucntioning.
+        """
+        table_cleanup(TEST_TABLE)
+        table_cleanup(TEST_TABLE_TEMP)
+        # Set some env_vars for this run
+        source_table = "board_labels"
+        source_db = "gitlab_com_db"
+        table_query = (
+            f"create table {TEST_TABLE} like raw.tap_postgres.gitlab_db_board_labels"
+        )
+        query_executor(SNOWFLAKE_ENGINE, table_query)
+
+        # Get the manifest for a specific table
+        file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
+        manifest_dict = manifest_reader(file_path)
+        table_dict = manifest_dict["tables"][source_table]
+
+        # Run the query and count the results
+        check_succeeded = check_new_tables(
+            POSTGRES_ENGINE, SNOWFLAKE_ENGINE, source_table, table_dict, TEST_TABLE_TEMP
+        )
+        target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE_TEMP}"
+        target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
+
+        assert target_count_results["row_count"][0] > 0
