@@ -9,9 +9,10 @@
           updated_at='_UPDATED_AT',
         )
     }}
-    
-    SELECT * 
+
+    SELECT *
     FROM {{ source('sheetload', 'employee_location_factor') }}
     WHERE "Employee_ID" != ''
+    AND "Location_Factor" NOT LIKE '#N/A' ESCAPE '#'
     
 {% endsnapshot %}

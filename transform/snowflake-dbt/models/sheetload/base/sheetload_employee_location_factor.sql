@@ -14,7 +14,7 @@ with source as (
     SELECT
          nullif("Employee_ID",'')::varchar as bamboo_employee_number,
          nullif("Location_Factor",'')::float as location_factor
-    FROM source
+    FROM source 
     WHERE lower(bamboo_employee_number) NOT LIKE '%not in comp calc%'
 )
 
