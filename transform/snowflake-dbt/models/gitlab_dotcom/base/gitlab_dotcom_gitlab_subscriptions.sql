@@ -7,7 +7,7 @@ WITH source AS (
 
   SELECT 
     *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+    ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
   WHERE id != 572635 -- This ID has NULL values for many of the important columns.
 
