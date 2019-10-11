@@ -15,7 +15,7 @@
   after_script:
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
     - mkdir -p $CI_PROJECT_DIR/public/dbt/
-    - cp target $CI_PROJECT_DIR/public/dbt/ 
+    - cp -r target $CI_PROJECT_DIR/public/dbt/ 
   tags:
     - analytics
   only:
