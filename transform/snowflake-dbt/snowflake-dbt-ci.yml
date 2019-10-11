@@ -13,7 +13,7 @@
     - export CI_PROFILE_TARGET="--profiles-dir profile --target ci"
     - echo $CI_PROFILE_TARGET
   after_script:
-    - $ cd $CI_PROJECT_DIR/transform/snowflake-dbt/
+    - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
     - mkdir -p $CI_PROJECT_DIR/public/dbt/
     - cp target $CI_PROJECT_DIR/public/dbt/ 
   tags:
