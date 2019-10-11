@@ -5,6 +5,24 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  resource_label_events:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , action
+      , issue_id
+      , merge_request_id
+      , epic_id
+      , label_id
+      , user_id
+      , created_at
+      , cached_markdown_version
+      , reference
+      , reference_html
+      FROM resource_label_events
+    export_schema: 'gitlab_com'
+    export_table: 'resource_label_events'
+    export_table_primary_key: action
   epics:
     import_db: GITLAB_DB
     import_query: >
@@ -1154,23 +1172,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'subscriptions'
     export_table_primary_key: id
-  resource_label_events:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT action
-      , issue_id
-      , merge_request_id
-      , epic_id
-      , label_id
-      , user_id
-      , created_at
-      , cached_markdown_version
-      , reference
-      , reference_html
-      FROM resource_label_events
-    export_schema: 'gitlab_com'
-    export_table: 'resource_label_events'
-    export_table_primary_key: action
   users:
     import_db: GITLAB_DB
     import_query: >
