@@ -3,14 +3,29 @@
     })
 }}
 
-with source AS (
+WITH source AS (
 
   SELECT
     *,
     ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'namespaces') }}
 
-), renamed AS (
+), gitlab_subscriptions AS (
+
+    /*
+      Here we only want the current (most recent) gitlab subscription for each namespace.
+      This windowing approach does not handle hard deletes correctly. 
+      We will develop a more elegant approach after https://gitlab.com/gitlab-data/analytics/issues/2727
+    */
+    SELECT
+      *,
+      ROW_NUMBER() OVER (
+        PARTITION BY namespace_id
+        ORDER BY gitlab_subscription_updated_at DESC
+      ) AS rank_in_namespace_id
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions')}}
+
+), namespaces AS (
 
     SELECT 
       id::INTEGER                                                   AS namespace_id,
@@ -40,12 +55,21 @@ with source AS (
       repository_size_limit::NUMBER                                 AS repository_size_limit,
       require_two_factor_authentication::BOOLEAN                    AS does_require_two_factor_authentication,
       two_factor_grace_period::NUMBER                               AS two_factor_grace_period,
-      plan_id::INTEGER                                              AS namespace_plan_id,
       project_creation_level::INTEGER                               AS project_creation_level
     FROM source
     WHERE rank_in_key = 1
 
+), joined AS (
+
+  SELECT
+    namespaces.*,
+    gitlab_subscriptions.plan_id
+  FROM namespaces
+    LEFT JOIN gitlab_subscriptions
+      ON namespaces.namespace_id = gitlab_subscriptions.namespace_id
+      AND gitlab_subscriptions.rank_in_namespace_id = 1
+
 )
 
 SELECT *
-FROM renamed
+FROM joined
