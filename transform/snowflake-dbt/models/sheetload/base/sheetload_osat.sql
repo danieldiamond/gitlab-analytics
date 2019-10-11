@@ -1,24 +1,24 @@
 WITH source AS (
 
     SELECT * 
-    FROM {{ source('sheetload','rep_quotas_full_fy2020') }}
+    FROM {{ source('sheetload','osat') }}
     
-), final AS (
+), renamed AS (
 
     SELECT
-    regexp_replace(SPLIT(timestamp, ' ')[0],'"\""','')    AS date,
+    TRY_TO_TIMESTAMP_NTZ(timestamp)::DATE                 AS completed_date,
     'Anonymous'                                           AS employee_name, 
     ZEROIFNULL(NULLIF("SATISFACTION_SCORE",''))::INTEGER  AS satisfaction_score,
     ZEROIFNULL(NULLIF("RECOMMEND_TO_FRIEND",''))::INTEGER AS recommend_to_friend
     FROM source
-    WHERE DATE != ''
       
 ) 
 
 
 SELECT
-    date::DATE AS completed_date, 
+    completed_date, 
     employee_name,
     satisfaction_score, 
     recommend_to_friend
-FROM final
+FROM renamed
+WHERE completed_date is not NULL
