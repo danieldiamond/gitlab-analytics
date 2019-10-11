@@ -28,19 +28,9 @@ projects AS (
       ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
-), gitlab_subscriptions AS (
+),
 
-    /*
-      Here we only want the current (most recent) gitlab subscription for each namespace.
-      This windowing approach does not handle hard deletes correctly. 
-      We will develop a more elegant approach after https://gitlab.com/gitlab-data/analytics/issues/2727
-    */
-    SELECT
-      *,
-      ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY gitlab_subscription_updated_at DESC) AS rank_in_namespace_id
-    FROM {{ref('gitlab_dotcom_gitlab_subscriptions')}}
-
-), joined AS (
+joined AS (
     SELECT
       namespaces.namespace_id,
       namespace_lineage.namespace_is_internal,
@@ -74,11 +64,10 @@ projects AS (
       namespaces.repository_size_limit,
       namespaces.does_require_two_factor_authentication,
       namespaces.two_factor_grace_period,
+      namespaces.plan_id,
       namespaces.project_creation_level,
 
-      gitlab_subscriptions.plan_id                                     AS plan_id,
-      COALESCE( (gitlab_subscriptions.plan_id IN {{ paid_plans }} ), False)
-                                                                       AS namespace_plan_is_paid,
+      COALESCE( (namespaces.plan_id IN {{ paid_plans }} ), False)      AS namespace_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)                   AS member_count,
       COALESCE(COUNT(DISTINCT projects.project_id), 0)                 AS project_count
 
@@ -90,9 +79,6 @@ projects AS (
         ON namespaces.namespace_id = projects.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
-      LEFT JOIN gitlab_subscriptions
-        ON namespaces.namespace_id = gitlab_subscriptions.namespace_id
-        AND gitlab_subscriptions.rank_in_namespace_id = 1
     {{ dbt_utils.group_by(n=28) }}
 )
 
