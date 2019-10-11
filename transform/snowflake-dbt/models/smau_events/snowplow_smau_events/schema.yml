@@ -13,7 +13,7 @@ models:
       - name: event_type
         tests:
           - not_null
-      - name: page_view_id
+      - name: event_surrogate_key
         tests:
           - not_null
           - unique
@@ -30,7 +30,7 @@ models:
       - name: event_type
         tests:
           - not_null
-      - name: page_view_id
+      - name: event_surrogate_key
         tests:
           - not_null
 
@@ -46,7 +46,7 @@ models:
       - name: event_type
         tests:
           - not_null
-      - name: page_view_id
+      - name: event_surrogate_key
         tests:
           - not_null
           - unique
@@ -63,7 +63,7 @@ models:
       - name: event_type
         tests:
           - not_null
-      - name: page_view_id
+      - name: event_surrogate_key
         tests:
           - not_null
           - unique
@@ -80,7 +80,7 @@ models:
       - name: event_type
         tests:
           - not_null
-      - name: page_view_id
+      - name: event_surrogate_key
         tests:
           - not_null
           - unique
