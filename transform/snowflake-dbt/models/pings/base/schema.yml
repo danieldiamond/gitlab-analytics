@@ -5,7 +5,7 @@ models:
       description: mapping of metrics in the pings data to a stage. The data for this base model must be populated using `dbt seed`
 
     - name: pings_avg_cycle_analytics
-      description: Ping data from Self-Managed users.
+      description: Cycle analytics data from self-managed instances https://docs.gitlab.com/ee/user/analytics/cycle_analytics.html.
       columns:
          - name: avg_cycle_analytics_id
            tests:
