@@ -593,6 +593,8 @@ models:
         description: '{{ doc("visibility_documentation") }}'
       - name: visbility_level
         description: '{{ doc("visibility_documentation") }}'
+      - name: plan_id
+        description: This column comes from the `gitlab_subscriptions` table which is the source of truth for namespace plans (NOT namespaces.plan_id).
 
   - name: gitlab_dotcom_notes
     description: >-

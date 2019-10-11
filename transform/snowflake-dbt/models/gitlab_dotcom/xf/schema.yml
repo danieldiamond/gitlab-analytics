@@ -125,7 +125,7 @@ models:
         tests:
           - not_null
       - name: plan_id
-        description: The plan associated with the namespace's subscription. The `gitlab_subscriptions` table is the source of truth for namespace plans, NOT the namespaces.plan_id column.
+        description: The plan associated with the namespace's subscription (via gitlab_subscriptions)
       - name: namespace_plan_is_paid
         description: Whether or not the namespace associated with the project is subscribed to a paid plan.
         tests:
