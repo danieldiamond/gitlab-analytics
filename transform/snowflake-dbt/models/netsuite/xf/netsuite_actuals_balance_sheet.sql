@@ -91,10 +91,12 @@ WITH accounts AS (
      SELECT
        transaction_lines.transaction_id,
        transaction_lines.transaction_line_id,
+       transactions.document_id,
+       transactions.transaction_type,
        transaction_lines.subsidiary_id,
        transaction_lines.account_id,
-       transactions.accounting_period_id as transaction_accounting_period_id,
-       COALESCE(transaction_lines.amount, 0) as unconverted_amount
+       transactions.accounting_period_id                AS transaction_accounting_period_id,
+       COALESCE(transaction_lines.amount, 0)            AS unconverted_amount
      FROM transaction_lines
      INNER JOIN transactions ON transaction_lines.transaction_id = transactions.transaction_id
      WHERE LOWER(transactions.transaction_type) != 'revenue arrangement'
@@ -164,6 +166,8 @@ WITH accounts AS (
 ), balance_sheet AS (
 
      SELECT
+       transactions_with_converted_amounts.document_id,
+       transactions_with_converted_amounts.transaction_type,
        reporting_accounting_periods.accounting_period_id,
        reporting_accounting_periods.accounting_period_starting_date::DATE   AS accounting_period,
        reporting_accounting_periods.accounting_period_name,
@@ -206,7 +210,7 @@ WITH accounts AS (
                   THEN converted_amount_using_reporting_month
                 ELSE 0
            END)                                                             AS actual_amount
-       FROM  transactions_with_converted_amounts AS transactions_with_converted_amounts
+       FROM  transactions_with_converted_amounts
        LEFT JOIN accounts
          ON transactions_with_converted_amounts.account_id = accounts.account_id
        LEFT JOIN accounting_periods AS reporting_accounting_periods
@@ -222,11 +226,13 @@ WITH accounts AS (
                                                                    FROM subsidiaries
                                                                    WHERE parent_id IS NULL)
          AND LOWER(accounts.account_type) != 'statistical'
-        {{ dbt_utils.group_by(n=9) }}
+        {{ dbt_utils.group_by(n=11) }}
 
 ), balance_sheet_grouping AS (
 
       SELECT
+        document_id,
+        transaction_type,
         account_id,
         account_name,
         account_number,
@@ -271,3 +277,4 @@ WITH accounts AS (
 
 SELECT *
 FROM balance_sheet_grouping
+ORDER BY accounting_period, account_name
