@@ -12,11 +12,21 @@
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - export CI_PROFILE_TARGET="--profiles-dir profile --target ci"
     - echo $CI_PROFILE_TARGET
+  after_script:
+    - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
+    - mkdir -p $CI_PROJECT_DIR/public/dbt/
+    - cp -r target $CI_PROJECT_DIR/public/dbt/ 
   tags:
     - analytics
   only:
     - merge_requests
   when: manual
+  artifacts:
+    name: "dbt Compiled Files"
+    paths:
+      - public
+    expire_in: 1 week
+    when: always
 
 # Literal block abstraction
 .deps_and_seed: &deps_and_seed |
