@@ -37,6 +37,7 @@ renamed AS (
     production_average::INTEGER   AS production_average_seconds,
     production_sd::INTEGER        AS production_standard_deviation_seconds,
     production_missing::INTEGER   AS production_missing
+    
   FROM source
 
 )
