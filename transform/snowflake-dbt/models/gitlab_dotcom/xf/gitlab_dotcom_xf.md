@@ -103,7 +103,7 @@ In order to achieve this we will build a CTE from the project table that contain
 
 {% docs gitlab_dotcom_namespaces_xf %}
 
-Includes all columns from the namespaces base model.
+Includes all columns from the namespaces base model, except for `plan_id` which is overridden by the `plan_id` from the `gitlab_subscriptions` model.
 Adds the count of members and projects associated with the namespace.
 Also adds boolean column `namespaces_plan_is_paid` to provide extra context.
 
