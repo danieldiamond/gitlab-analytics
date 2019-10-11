@@ -7,8 +7,21 @@
     - echo $SNOWFLAKE_DATABASE
     - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_LOAD_DATABASE="RAW"; else export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW"; fi
     - echo $SNOWFLAKE_LOAD_DATABASE
+    - echo $SNOWFLAKE_DATABASE
+    - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
+    - echo $SNOWFLAKE_TRANSFORM_DATABASE
   tags:
     - analytics
+
+boneyard_sheetload:
+  <<: *extract_definition
+  stage: extract
+  script:
+    - cd extract/sheetload/
+    - python3 sheetload.py sheets --sheet_file boneyard/sheets.txt --schema boneyard --database ANALYTICS
+  only:
+    - merge_requests
+  when: manual
 
 sheetload:
   <<: *extract_definition

@@ -8,80 +8,80 @@ Closes #
 
 Describe the solution.
 
-## What number/query are you using to audit your results are accurate?
-
-<!---
-Example: You might be looking at the count of opportunities before and after, if you're editing the opportunity model.
---->
-
 ### Related Links
 
 Please include links to any related MRs and/or issues.
 
-## Stakeholder Checklist (if applicable)
+## Stakeholder Checklist
 
-- [ ] Does the dbt model change provide the requested data?
+If you are the person who will be using this data and/or the dashboard it depends on, please fill out this section.
+
+- [ ] Does the dbt model change provide the requested data? 
 - [ ] Does the dbt model change provide accurate data?
 
 ## Submitter Checklist
 
-- [ ] This MR follows the coding conventions laid out in the [style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
+Please go through every line
 
-#### Structure
-- [ ] Model-specific attributes (like custom schemas and materializations) should be specified in the model
-- [ ] Only base models are used to reference source tables/views
-- [ ] All `{{ ref('...') }}` statements should be placed in CTEs at the top of the file
+- [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).
 
-#### Style
-- [ ] Field names should all be lowercased
-- [ ] Function names should all be capitalized
-- [ ] This MR contains new macros
-  - [ ] New macros follow the naming convention (file name matches macro name)
-  - [ ] New macros have been documented in the macro README
-- [ ] This MR uses existing macros. Reference models using these macros [here](https://gitlab.com/gitlab-data/analytics/blob/73751832a5415389b60d41ef92ee8deaef374734/transform/snowflake-dbt/macros/README.md)
+#### What are you using to audit your results are accurate?
 
-#### Testing
-- [ ] Every model should be tested AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable ([Docs](https://docs.getdbt.com/docs/testing-and-documentation))
-- [ ] The output of dbt test should be pasted into MRs directly below this point
+If you have an existing report/dashboard/dataset as reference, please provide your query used to validate the results of your model changes. If this is the first iteration of a model or validation is otherwise out of scope, please provide additional context.
 
 <details>
-<summary> dbt test results </summary>
+<summary> Paste query and results here </summary>
 
 <pre><code>
 
-Paste the results of dbt test here, including the command.
+Example: You might be looking at the count of opportunities before and after, if you're editing the opportunity model.
 
 </code></pre>
 </details>
 
+#### Structure
+
+- [ ] Ensure source tables/views are only referenced within [base models](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#base-models).
+- [ ] All references to existing tables/views/sources (i.e. `{{ ref('...') }}` statements) should be placed in CTEs at the top of the file.
+- [ ] If you are using [custom schemas](https://docs.getdbt.com/docs/using-custom-schemas) or modifying [materializations](https://docs.getdbt.com/docs/materializations), ensure these attributes are specified in the model.
+
+#### Style
+
+- [ ] Field names should all be lowercased.
+- [ ] Function names should all be capitalized.
+
+#### Macros
+
+- [ ] Does this MR utilize [macros](https://docs.getdbt.com/docs/macros)?
+  - [ ] This MR contains new macros. Follow the naming convention (file name matches macro name) and document in the [macro README](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md).
+  - [ ] This MR uses existing macros. Ensure models are referenced under the appropriate macro in the [macro README](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md).
+
+#### Incremental Models
+
+- [ ] Does this MR contain an [incremental model](https://docs.getdbt.com/docs/configuring-incremental-models#section-how-do-i-use-the-incremental-materialization-)?
+  - [ ] If the MR adds/renames columns to a specific model, a `dbt run --full-refresh` will be needed after merging the MR. Please, add it to the Reviewer Checklist to warn them that this step is required.
+  - [ ] Please also check with the Reviewer if a dag is set up in Airflow to trigger a full refresh of this model.  
+
+#### Testing
+
+- [ ] Every model should be [tested](https://docs.getdbt.com/docs/testing-and-documentation) AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable.
+- [ ] Run the appropriate pipeline for the model changes in this MR
 - [ ] If the periscope_query job failed, validate that the changes you've made don't affect the grain of the table or the expected output in Periscope.
 
-#### If you use incremental dbt models
-* [ ] If the MR adds/renames columns to a specific model, a `dbt run --full-refresh` will be needed after merging the MR. Please, add it to the Reviewer Checklist to warn them that this step is required.
-* [ ] Please also check with the Reviewer if a dag is set up in Airflow to trigger a full refresh of this model.
-
-## All MRs Checklist
-* [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue
-* [ ] Pipelines pass
-* [ ] Branch set to delete
-* [ ] Commits NOT set to squash
-* [ ] This MR is ready for final review and merge.
-* [ ] Resolve all threads
-* [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer
-* [ ] Assigned to reviewer
-
-
-### Which pipeline job do I run?
 <details>
-<summary> Click to Expand </summary>
+<summary> Which pipeline job do I run? </summary>
 
 #### Stage: snowflake
-* **clone_analytics**: Run this when the MR opens to be able to run any dbt jobs. Subsequent runs of this job will be fast as it only verifies if the clone exists.
-* **clone_raw**: Run this if you need to run extract, freshness, or snapshot jobs. Subsequent runs of this job will be fast as it only verifies if the clone exists.
-* **force_clone_both**: Run this if you want to force refresh both raw and analytics.
+
+- **clone_analytics**: Runs automatically when the MR opens to be able to run any dbt jobs. Subsequent runs of this job will be fast as it only verifies if the clone exists. This is an empty clone of the analytics db.
+- **clone_analytics_real**: Run this if you need to do a real clone of the analytics warehouse. This is a full clone of the db.
+- **clone_raw**: Run this if you need to run extract, freshness, or snapshot jobs. Subsequent runs of this job will be fast as it only verifies if the clone exists.
+- **force_clone_both**: Run this if you want to force refresh both raw and analytics.
 
 #### Stage: extract
-* **sheetload**: Run this if you want to test a new sheetload load. This requires the RAW clone to be available.
+
+- **boneyard_sheetload**: Run this if you want to test a new boneyard sheetload load. This requires the real analytics clone to be available.
+- **sheetload**: Run this if you want to test a new sheetload load. This requires the RAW clone to be available.
 
 
 #### Stage: dbt_run
@@ -90,15 +90,17 @@ Paste the results of dbt test here, including the command.
 
 These jobs are scoped to the `ci` target. This target selects a subset of data for the snowplow and pings datasets.
 
-* **all**: Runs all models
-* **exclude_product**: Excludes models with the `product` tag. Use this for every other data source.
-* **gitlab_dotcom**: Just runs GitLab.com models
-* **pings**: Just runs usage / version ping models
-* **snowplow**: Just runs snowplow and snowplow_combined models
-* **specify_model**: Specify which model to run with the variable `DBT_MODELS`
-* **specify_xl_model**: Specify which model to run using an XL warehouse with the variable `DBT_MODELS`
-* **specify_exclude**: Specify which model to exclude with the variable `DBT_MODELS`
-* **specify_xl_exclude**: Specify which model to exclude using an XL warehouse with the variable `DBT_MODELS`
+Note that job artificats are avialable for all dbt run jobs. These include the compiled code and the run results.
+
+- **all**: Runs all models
+- **exclude_product**: Excludes models with the `product` tag. Use this for every other data source.
+- **gitlab_dotcom**: Just runs GitLab.com models
+- **pings**: Just runs usage / version ping models
+- **snowplow**: Just runs snowplow and snowplow_combined models
+- **specify_model**: Specify which model to run with the variable `DBT_MODELS`
+- **specify_xl_model**: Specify which model to run using an XL warehouse with the variable `DBT_MODELS`
+- **specify_exclude**: Specify which model to exclude with the variable `DBT_MODELS`
+- **specify_xl_exclude**: Specify which model to exclude using an XL warehouse with the variable `DBT_MODELS`
 
 Watch https://youtu.be/l14N7l-Sco4 to see an example of how to set the variable. The variable is a stand-in for any of the examples in [the dbt documentation on model selection syntax](https://docs.getdbt.com/docs/model-selection-syntax#section-specifying-models-to-run).
 
@@ -131,12 +133,34 @@ These jobs only appear when `.py` files have changed. All of them will run autom
 
 #### Stage: snowflake_stop
 
-* **clone_stop**: Runs automatically when MR is merged or closed. Do not run manually.
+- **clone_stop**: Runs automatically when MR is merged or closed. Do not run manually.
 
 </details>
 
+- [ ] Please paste the output of dbt test below. Any failing tests should be fixed or explained prior to requesting a review.
+
+<details>
+<summary> dbt test results </summary>
+
+<pre><code>
+
+Paste the results of dbt test here, including the command.
+
+</code></pre>
+</details>
+
+## All MRs Checklist
+- [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue
+- [ ] Pipelines pass
+- [ ] Branch set to delete
+- [ ] Commits NOT set to squash
+- [ ] This MR is ready for final review and merge.
+- [ ] Resolve all threads
+- [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer
+- [ ] Assigned to reviewer
+
 ## Reviewer Checklist
-* [ ]  Check before setting to merge
+- [ ]  Check before setting to merge
 
 ## Further changes requested
 * [ ]  AUTHOR: Uncheck all boxes before taking further action.

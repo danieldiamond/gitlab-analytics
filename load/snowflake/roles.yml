@@ -590,11 +590,13 @@ roles:
                     - raw.bamboohr
                     - analytics.analytics
                     - analytics.analytics_staging
+                    - analytics.analyst_sensitive
             tables:
                 read:
                     - raw.bamboohr.*
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
+                    - analytics.analyst_sensitive.*
     
     - boneyard:
         warehouses:
