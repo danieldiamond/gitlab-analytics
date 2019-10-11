@@ -26,6 +26,7 @@
     paths:
       - public
     expire_in: 1 week
+    when: always
 
 # Literal block abstraction
 .deps_and_seed: &deps_and_seed |
