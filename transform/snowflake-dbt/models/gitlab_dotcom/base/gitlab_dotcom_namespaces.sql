@@ -40,7 +40,7 @@ with source AS (
       repository_size_limit::NUMBER                                 AS repository_size_limit,
       require_two_factor_authentication::BOOLEAN                    AS does_require_two_factor_authentication,
       two_factor_grace_period::NUMBER                               AS two_factor_grace_period,
-      plan_id::INTEGER                                              AS plan_id,
+      plan_id::INTEGER                                              AS namespace_plan_id,
       project_creation_level::INTEGER                               AS project_creation_level
     FROM source
     WHERE rank_in_key = 1

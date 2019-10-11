@@ -124,8 +124,12 @@ models:
       - name: namespace_type
         tests:
           - not_null
+      - name: plan_id
+        description: The `gitlab_subscription` associated with the namespace.
       - name: namespace_plan_is_paid
         description: Whether or not the namespace associated with the project is subscribed to a paid plan.
+        tests:
+          - not_null
       - name: member_count
         description: The number of members that are presently associated with the namespace.
       - name: project_count
