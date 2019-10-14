@@ -121,7 +121,6 @@ WITH transactions AS (
     FROM opex_cogs oc
     LEFT JOIN date_details dd
       ON dd.first_day_of_month = oc.accounting_period
-    WHERE account_number NOT IN ('5077','5079','5080')
 
 )
 
