@@ -797,7 +797,7 @@ models:
   - name: gitlab_dotcom_resource_label_events
     description: '{{ doc("gitlab_dotcom_resource_label_events") }}'
     columns:
-      - name: resource_label_event_surrogate_key_id
+      - name: resource_label_event_id
         tests:
           - not_null
           - unique
