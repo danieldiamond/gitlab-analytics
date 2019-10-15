@@ -10,24 +10,28 @@ models:
          - name: avg_cycle_analytics_id
            tests:
                - not_null
+               - unique
 
     - name: pings_hosts
       columns:
           - name: host_id
             tests:
                 - not_null
+                - unique
 
     - name: pings_licenses
       columns:
           - name: license_id
             tests:
                 - not_null
+                - unique
 
     - name: pings_usage_data
       columns:
           - name: uuid
             tests:
                 - not_null
+                - unique
 
     - name: pings_version_checks
       description: Ping version data from self-managed instances

@@ -6,7 +6,8 @@
 WITH source AS (
 
   SELECT
-    *
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('pings_tap_postgres', 'hosts') }}
 
 ),
@@ -25,6 +26,7 @@ renamed AS (
     --current_version_check_id // waiting on fresh data https://gitlab.com/gitlab-data/analytics/issues/2696
 
   FROM source
+  WHERE rank_in_key = 1
 
 )
 

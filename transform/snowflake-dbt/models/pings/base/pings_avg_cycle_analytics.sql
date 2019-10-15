@@ -5,7 +5,9 @@
 
 WITH source AS (
 
-  SELECT *
+  SELECT
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS rank_in_key
   FROM {{ source('pings_tap_postgres', 'avg_cycle_analytics') }}
 
 ),
@@ -39,6 +41,7 @@ renamed AS (
     production_missing::INTEGER   AS production_missing
     
   FROM source
+  WHERE rank_in_key = 1
 
 )
 

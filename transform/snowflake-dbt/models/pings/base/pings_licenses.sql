@@ -5,7 +5,9 @@
 
 WITH source AS (
 
-  SELECT *
+  SELECT
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('pings_tap_postgres', 'licenses') }}
 
 ),
@@ -28,6 +30,7 @@ renamed AS (
     version::VARCHAR                      AS version
 
   FROM source
+  WHERE rank_in_key = 1
 
 )
 

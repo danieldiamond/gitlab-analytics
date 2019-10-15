@@ -7,7 +7,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ ref('ping_metrics_to_stage_mapping_data') }}
+    FROM {{ ref('ping_metrics_to_stage_mapping_data') }} 
 )
 
 SELECT * FROM source
