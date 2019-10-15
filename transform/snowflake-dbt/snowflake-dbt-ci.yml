@@ -68,10 +68,10 @@ gitlab_dotcom:
     - *xl_warehouse
     - *deps_and_seed
     - dbt run $CI_PROFILE_TARGET --models date_details
-    - dbt run $CI_PROFILE_TARGET --full-refresh --models gitlab_dotcom || true
-    - dbt test $CI_PROFILE_TARGET --models gitlab_dotcom || true
-    - dbt run $CI_PROFILE_TARGET --models gitlab_dotcom || true
-    - dbt test $CI_PROFILE_TARGET --models gitlab_dotcom
+    - dbt run $CI_PROFILE_TARGET --full-refresh --models @gitlab_dotcom || true
+    - dbt test $CI_PROFILE_TARGET --models @gitlab_dotcom || true
+    - dbt run $CI_PROFILE_TARGET --models @gitlab_dotcom || true
+    - dbt test $CI_PROFILE_TARGET --models @gitlab_dotcom
 
 pings:
   <<: *snowflake_dbt_jobs
