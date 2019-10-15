@@ -25,11 +25,11 @@ If it's `models/*` this is a `schema test` and is defined in the `schema.yml` fi
 ## Schema Tests
 
 ###  Relationship Tests
-Relationship tests are a type of schema test that check for referential integrity ([dbt documentation](https://docs.getdbt.com/docs/testing#section-relationships)). The purpose of a relationship test is to "validate that all of the records in a child table have a corresponding record in a parent table."  
+Relationship tests are a type of schema test that check for referential integrity ([dbt documentation](https://docs.getdbt.com/docs/testing#section-relationships)). The purpose of a relationship test is to "validate that all of the records in a child table have a corresponding record in a parent table."
 
 For example, you might have a (child) table called `merge_requests` with a column called `author_id`. A good relationship test would be to test that every value in `merge_requests.author_id` is present in a different (parent) table called `users`.
 
-When a relationship test fails, the error message will look like: 
+When a relationship test fails, the error message will look like:
 ```
 Failure in test relationships_childModel_childColumn__parentColumn__parentModel_ (models/../../schema.yml)
   Got 2 results, expected 0.
@@ -91,6 +91,13 @@ Failure in test relationships_snowplow_web_events_time_page_view_id__page_view_i
 
 ## Custom Data Tests
 
+### Test: Current Departments and Divisions
+
+This test makes sure that there are no current employees who don't have a division or department.
+The test output is the row for the employee doesn't have a department or division.
+If this test fails, ping the People Operations team with the employee's name.
+You will need to temporarily filter out the problematic candidate while it is resolved upstream. 
+
 ### Test: no_missing_location_factors
 
 This test makes sure that new hires have a location factor no later than 7 days after their start date. It is checking to make sure that for all active employees (`AND termination_date IS NULL`) within 7 days of their start date (`AND CURRENT_DATE > dateadd('days', 7, hire_date)`) have a `hire_location_factor` (the location factor on their hire date). When this is not the case, we need to alert the People Operations Analyst with the employee number.
@@ -127,7 +134,7 @@ Steps to Resolve:
 * Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack to see the test results in Slack.
 * Step 2: Create a new issue.
 * Step 3: Ask in the #product slack channel which stage the new metric belongs to.
-* Step 4: Create an MR that adds the new metric to the `ping_metrics_to_stage_mapping_data` CSV. Remember to keep it sorted alphabetically. 
+* Step 4: Create an MR that adds the new metric to the `ping_metrics_to_stage_mapping_data` CSV. Remember to keep it sorted alphabetically.
 
 ### Test: zuora_account_has_crm_id
 
