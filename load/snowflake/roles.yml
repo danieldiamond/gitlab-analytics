@@ -319,6 +319,7 @@ roles:
             - analyst_xl
         member_of:
             - boneyard
+            - snowplow
         privileges:
             databases:
                 read:
@@ -590,11 +591,13 @@ roles:
                     - raw.bamboohr
                     - analytics.analytics
                     - analytics.analytics_staging
+                    - analytics.analyst_sensitive
             tables:
                 read:
                     - raw.bamboohr.*
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
+                    - analytics.analyst_sensitive.*
     
     - boneyard:
         warehouses:

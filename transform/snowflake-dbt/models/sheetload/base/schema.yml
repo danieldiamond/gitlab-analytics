@@ -24,6 +24,36 @@ models:
     tests:
     - not_null
     - unique
+- name: sheetload_hire_forecast
+  description: This is the source of forecasted hire counts by function and department for the end of each month.
+  columns:
+  - name: function
+    tests:
+    - not_null
+  - name: department
+    tests:
+    - not_null
+  - name: month_year
+    tests:
+    - not_null
+  - name: forecast
+    tests:
+    - not_null
+- name: sheetload_hire_plan
+  description: This is the source of planned hire counts by function and department for the end of each month.
+  columns:
+  - name: function
+    tests:
+    - not_null
+  - name: department
+    tests:
+    - not_null
+  - name: month_year
+    tests:
+    - not_null
+  - name: plan
+    tests:
+    - not_null
 - name: sheetload_location_factor_targets
   description: This is the list of location factor targets for each department and division as outlined in the [handbook](https://about.gitlab.com/handbook/people-operations/people-operations-metrics/#average-location-factor).
   columns:
@@ -72,3 +102,5 @@ models:
   description: This is the model that categorizes the events on the CEO's calendar.
 - name: sheetload_rep_quotas_full_fy2020
   description: This is the model that captures sales data for rep quotas for the full fy2020.
+- name: sheetload_osat
+  description: This is the model that captures the onboarding satisfaction score survey OSAT. 

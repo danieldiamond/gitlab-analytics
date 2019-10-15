@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 from typing import Dict, Any
 
 from fire import Fire
@@ -17,6 +18,39 @@ from validation import get_comparison_results
 
 
 SCHEMA = "tap_postgres"
+
+
+def load_ids(
+    additional_filtering: str,
+    primary_key: str,
+    raw_query: str,
+    source_engine: Engine,
+    table: str,
+    table_name: str,
+    target_engine: Engine,
+    id_range: int = 1_000_000,
+) -> None:
+    """ Load a query by chunks of IDs instead of all at once."""
+
+    # Create a generator for queries that are chunked by ID range
+    id_queries = id_query_generator(
+        source_engine,
+        primary_key,
+        raw_query,
+        target_engine,
+        table,
+        table_name,
+        id_range=id_range,
+    )
+    # Iterate through the generated queries
+    backfill = True
+    for query in id_queries:
+        filtered_query = f"{query} {additional_filtering} ORDER BY {primary_key}"
+        logging.info(filtered_query)
+        chunk_and_upload(
+            filtered_query, source_engine, target_engine, table_name, backfill
+        )
+        backfill = False  # this prevents it from seeding rows for every chunk
 
 
 def swap_temp_table(engine: Engine, real_table: str, temp_table: str) -> None:
@@ -93,18 +127,15 @@ def sync_incremental_ids(
         logging.info(f"Table {table} doesn't need a full sync.")
         return False
 
-    id_queries = id_query_generator(
-        source_engine, primary_key, raw_query, target_engine, table, table_name
+    load_ids(
+        additional_filtering,
+        primary_key,
+        raw_query,
+        source_engine,
+        table,
+        table_name,
+        target_engine,
     )
-    # Iterate through the generated queries
-    backfill = True
-    for query in id_queries:
-        filtered_query = f"{query} {additional_filtering} ORDER BY {primary_key}"
-        logging.info(filtered_query)
-        chunk_and_upload(
-            filtered_query, source_engine, target_engine, table_name, backfill
-        )
-        backfill = False  # this prevents it from seeding rows for every chunk
     return True
 
 
@@ -148,11 +179,20 @@ def validate_ids(
     table_dict: Dict[Any, Any],
     table_name: str,
 ) -> bool:
-    """Use IDs to validate there is no missing data."""
+    """
+    Use IDs to validate there is no missing data.
+
+    Load all IDs from the incremental tables into Snowflake.
+    Then verify that all of those IDs exist in the DW.
+
+    IDs get loaded into the <table_name>_VALIDATE table.
+    Missing IDs populate the <table_name>_ERRORS table.
+    """
 
     # Set the initial vars and stop the validation if not needed.
     raw_query = table_dict["import_query"]
-    additional_filter = table_dict.get("additional_filtering", "")
+    additional_filtering = table_dict.get("additional_filtering", "")
+    primary_key = table_dict["export_table_primary_key"]
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need id validation.")
         return False
@@ -163,30 +203,44 @@ def validate_ids(
         return False
 
     # Set the new table name vars
-    validate_table_name = f"{table_name}_VALIDATE"
-    error_table_name = f"{table_name}_ERRORS"
+    validate_table_name = f"{table_name}_VALIDATE"  # Contains the list of current IDs
+    error_table_name = (
+        f"{table_name}_ERRORS"
+    )  # Contains the list of IDs that are missing
 
+    # Drop the validation table
     drop_query = f"DROP TABLE IF EXISTS {validate_table_name}"
     query_executor(target_engine, drop_query)
 
     # Populate the validation table
-    id_query = (
-        f"SELECT id, updated_at FROM {table} WHERE id IS NOT NULL {additional_filter}"
-    )
     logging.info(f"Uploading IDs to {validate_table_name}.")
+    id_query = f"SELECT id, updated_at FROM {table} WHERE id IS NOT NULL {additional_filtering}"
     logging.info(id_query)
-    chunk_and_upload(id_query, source_engine, target_engine, validate_table_name)
+    load_ids(
+        additional_filtering,
+        primary_key,
+        id_query,
+        source_engine,
+        table,
+        validate_table_name,
+        target_engine,
+        id_range=3_000_000,
+    )
 
-    # Return a count of missing IDs
+    # Return a count of missing IDs then throw an error if there were errors
     error_results = get_comparison_results(
         target_engine, error_table_name, table_name, validate_table_name
     )
-    logging.info(f"Number of row errors for table {table_name}: {error_results[0][0]}")
+    num_missing_rows = error_results[0][0]
+    if num_missing_rows > 0:
+        sys.exit(f"Number of row errors for table {table_name}: {num_missing_rows}")
+    else:
+        logging.info(f"No discrepancies found in table {table_name}.")
 
     return True
 
 
-def test_new_tables(
+def check_new_tables(
     source_engine: Engine,
     target_engine: Engine,
     table: str,
@@ -209,7 +263,7 @@ def test_new_tables(
 
     # If the table doesn't exist, load 1 million rows (or whatever the table has)
     query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 1000000"
-    chunk_and_upload(query, source_engine, target_engine, table_name)
+    chunk_and_upload(query, source_engine, target_engine, table_name, backfill=True)
 
     return True
 
@@ -231,7 +285,7 @@ def main(file_path: str, load_type: str) -> None:
         "incremental": load_incremental,
         "scd": load_scd,
         "sync": sync_incremental_ids,
-        "test": test_new_tables,
+        "test": check_new_tables,
         "validate": validate_ids,
     }
 
@@ -264,11 +318,6 @@ def main(file_path: str, load_type: str) -> None:
         # Drop the original table and rename the temp table
         if schema_changed and loaded:
             swap_temp_table(snowflake_engine, real_table_name, table_name)
-
-        postgres_engine.dispose()
-        snowflake_engine.dispose()
-
-        # TODO Run a query that checks for errors in any _ERRORS tables
 
 
 if __name__ == "__main__":

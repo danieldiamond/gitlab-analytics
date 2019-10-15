@@ -1,6 +1,13 @@
 version: 2
 
 models:
+    - name: netsuite_accounting_books
+      description: "[Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2016_1/odbc/record/accountingbook.html)"
+      columns:
+        - name: accounting_book_id
+          tests:
+            - not_null
+            - unique
     - name: netsuite_accounting_periods
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/accountingperiod.html)"
       columns:

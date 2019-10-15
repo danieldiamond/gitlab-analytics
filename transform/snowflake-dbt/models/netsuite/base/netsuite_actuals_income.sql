@@ -120,7 +120,6 @@ WITH transactions AS (
     FROM income i
     LEFT JOIN date_details dd
       ON dd.first_day_of_month = i.accounting_period
-    WHERE account_number NOT IN ('4005')
 
 )
 

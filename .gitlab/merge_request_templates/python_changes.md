@@ -2,16 +2,16 @@ Closes
 
 #### Code Changes
 
-* [ ] List
+* [ ] _action items_
 
 #### Steps to confirm
 
-* [ ] List
+* [ ] _action items_
 
 #### Code Quality
 
-* [ ] Passed Linting?
-* [ ] Passed Complexity Check?
-* [ ] Passed Pytest?
+* [ ] Passed all Python checks?
 
 #### Changes
+
+_description of the changes here_
