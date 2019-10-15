@@ -48,14 +48,6 @@ This content will be masked for privacy in one of the following conditions:
 
 Base model for Gitlab.com resource label events. Explanation [here](https://docs.gitlab.com/ee/api/resource_label_events.html). 
 
-We do 2 kind of transformations here:
-* add a `rersource_label_event_surrogate_key_id` which is based on the following fields:
-  * action_type_id
-  * issue_id
-  * epic_id
-  * merge_request_id
-  * label_id
-  * created_at
-* we map an `action_type_id` to an `action_type` thanks to the macro `resource_label_action_type`
+We map the `action_type_id` column to an `action_type` using the macro `resource_label_action_type`
 
 {% enddocs %}
