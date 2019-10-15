@@ -61,6 +61,8 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_xl
+        member_of:
+            - boneyard
         privileges:
             databases:
                 read:
@@ -107,6 +109,7 @@ roles:
             - analyst_xs
             - analyst_xl
         member_of:
+            - boneyard
             - snowplow
         privileges:
             databases:
@@ -158,6 +161,8 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_xl
+        member_of:
+            - boneyard
         privileges:
             databases:
                 read:
@@ -203,6 +208,8 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_xl
+        member_of:
+            - boneyard
         privileges:
             databases:
                 read:
@@ -248,6 +255,8 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_xl
+        member_of:
+            - boneyard
         privileges:
             databases:
                 read:
@@ -283,6 +292,8 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_xl
+        member_of:
+            - boneyard
         privileges:
             databases:
                 read:
@@ -306,6 +317,9 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_xl
+        member_of:
+            - boneyard
+            - snowplow
         privileges:
             databases:
                 read:
@@ -380,6 +394,8 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_xl
+        member_of:
+            - boneyard
         privileges:
             databases:
                 read:
@@ -490,6 +506,8 @@ roles:
     - reporter:
         warehouses:
             - reporting
+        member_of:
+            - boneyard
         privileges:
             databases:
                 read:
@@ -512,6 +530,8 @@ roles:
     - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema
         warehouses:
             - reporting
+        member_of:
+            - boneyard
         privileges:
             databases:
                 read:
@@ -571,12 +591,29 @@ roles:
                     - raw.bamboohr
                     - analytics.analytics
                     - analytics.analytics_staging
+                    - analytics.analyst_sensitive
             tables:
                 read:
                     - raw.bamboohr.*
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
+                    - analytics.analyst_sensitive.*
     
+    - boneyard:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.boneyard
+            tables:
+                read:
+                    - analytics.boneyard.*
+
     - greenhouse:
         warehouses:
             - analyst_xs

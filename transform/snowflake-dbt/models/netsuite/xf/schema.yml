@@ -9,12 +9,14 @@ models:
             - not_null
             - unique
             - relationships:
+                severity: warn
                 to: ref('netsuite_transaction_lines')
                 field: transaction_lines_unique_id
         - name: transaction_id
           tests:
             - not_null
             - relationships:
+                severity: warn
                 to: ref('netsuite_transactions')
                 field: transaction_id
         - name: transaction_line_id

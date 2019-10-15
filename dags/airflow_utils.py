@@ -57,8 +57,10 @@ def slack_failed_task(context):
     task_id = context["task_instance"].task_id
     execution_date_value = context["execution_date"]
     execution_date_str = str(execution_date_value)
-    execution_date_epoch = execution_date_value.strftime('%s')
-    execution_date_pretty = execution_date_value.strftime('%a, %b %d, %Y at %-I:%M %p UTC')
+    execution_date_epoch = execution_date_value.strftime("%s")
+    execution_date_pretty = execution_date_value.strftime(
+        "%a, %b %d, %Y at %-I:%M %p UTC"
+    )
     task_instance = str(context["task_instance_key_str"])
 
     # Generate the link to the logs
@@ -86,7 +88,7 @@ def slack_failed_task(context):
             ],
             "footer": "Airflow",
             "footer_icon": "http://35.190.127.73/static/pin_100.png",
-            "ts": execution_date_epoch
+            "ts": execution_date_epoch,
         }
     ]
 

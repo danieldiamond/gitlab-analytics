@@ -23,7 +23,6 @@ pod_env_vars = {**gitlab_pod_env_vars, **{}}
 # Default arguments for the DAG
 default_args = {
     "catchup": False,
-    "concurrency": 4,
     "depends_on_past": False,
     "on_failure_callback": slack_failed_task,
     "params": {"slack_channel_override": "#dbt-runs"},

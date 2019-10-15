@@ -1,1 +1,3 @@
+frontend_interview_metrics.interviews
+frontend_interview_metrics.rubric_max_points
 test_sheet.test_sheet

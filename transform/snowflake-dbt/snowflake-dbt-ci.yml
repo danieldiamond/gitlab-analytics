@@ -12,11 +12,21 @@
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - export CI_PROFILE_TARGET="--profiles-dir profile --target ci"
     - echo $CI_PROFILE_TARGET
+  after_script:
+    - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
+    - mkdir -p $CI_PROJECT_DIR/public/dbt/
+    - cp -r target $CI_PROJECT_DIR/public/dbt/ 
   tags:
     - analytics
   only:
     - merge_requests
   when: manual
+  artifacts:
+    name: "dbt Compiled Files"
+    paths:
+      - public
+    expire_in: 1 week
+    when: always
 
 # Literal block abstraction
 .deps_and_seed: &deps_and_seed |
@@ -58,10 +68,10 @@ gitlab_dotcom:
     - *xl_warehouse
     - *deps_and_seed
     - dbt run $CI_PROFILE_TARGET --models date_details
-    - dbt run $CI_PROFILE_TARGET --full-refresh --models gitlab_dotcom || true
-    - dbt test $CI_PROFILE_TARGET --models gitlab_dotcom || true
-    - dbt run $CI_PROFILE_TARGET --models gitlab_dotcom || true
-    - dbt test $CI_PROFILE_TARGET --models gitlab_dotcom
+    - dbt run $CI_PROFILE_TARGET --full-refresh --models @gitlab_dotcom || true
+    - dbt test $CI_PROFILE_TARGET --models @gitlab_dotcom || true
+    - dbt run $CI_PROFILE_TARGET --models @gitlab_dotcom || true
+    - dbt test $CI_PROFILE_TARGET --models @gitlab_dotcom
 
 pings:
   <<: *snowflake_dbt_jobs
