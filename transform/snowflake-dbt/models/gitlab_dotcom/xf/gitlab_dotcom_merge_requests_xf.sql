@@ -21,7 +21,7 @@ WITH merge_requests AS (
 
     SELECT
       merge_request_id,
-      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY merge_request_id ASC) AS agg_label
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY merge_request_id ASC) AS labels
     FROM merge_requests
     LEFT JOIN label_links
       ON merge_requests.merge_request_id = label_links.target_id
@@ -69,8 +69,8 @@ WITH merge_requests AS (
       project_namespace_lineage.ultimate_parent_id,
       project_namespace_lineage.namespace_is_internal,
       author_namespaces.namespace_path             AS author_namespace_path,
-      ARRAY_TO_STRING(agg_labels.agg_label,'|')    AS masked_label_title,
-      agg_labels.agg_label                         AS labels,
+      ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
+      agg_labels.labels,
       merge_request_metrics.merged_at,
       IFF(merge_requests.target_project_id IN ({{is_project_included_in_engineering_metrics()}}),
         TRUE, FALSE)                               AS is_included_in_engineering_metrics,
@@ -78,7 +78,7 @@ WITH merge_requests AS (
         TRUE, FALSE)                               AS is_part_of_product,
       CASE
       WHEN project_namespace_lineage.namespace_is_internal IS NOT NULL
-        AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.agg_label)
+        AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.labels)
         THEN TRUE
       ELSE FALSE
       END AS is_community_contributor_related,

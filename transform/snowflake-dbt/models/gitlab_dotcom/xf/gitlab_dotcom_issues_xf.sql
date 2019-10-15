@@ -29,7 +29,7 @@ with issues AS (
 
     SELECT
       issue_id,
-      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY issue_id ASC) AS agg_label
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY issue_id ASC) AS labels
     FROM issues
     LEFT JOIN label_links
       ON issues.issue_id = label_links.target_id
@@ -85,34 +85,34 @@ joined AS (
 
     CASE
     WHEN projects.namespace_id = 9970
-      AND ARRAY_CONTAINS('community contribution'::variant, agg_label)
+      AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.labels)
       THEN TRUE
     ELSE FALSE
     END                                          AS is_community_contributor_related,
 
     CASE
-      WHEN ARRAY_CONTAINS('s1'::variant, agg_label)
+      WHEN ARRAY_CONTAINS('s1'::variant, agg_labels.labels)
         THEN 'severity 1'
-      WHEN ARRAY_CONTAINS('s2'::variant, agg_label)
+      WHEN ARRAY_CONTAINS('s2'::variant, agg_labels.labels)
         THEN 'severity 2'
-      WHEN ARRAY_CONTAINS('s3'::variant, agg_label)
+      WHEN ARRAY_CONTAINS('s3'::variant, agg_labels.labels)
         THEN 'severity 3'
-      WHEN ARRAY_CONTAINS('s4'::variant, agg_label)
+      WHEN ARRAY_CONTAINS('s4'::variant, agg_labels.labels)
         THEN 'severity 4'
       ELSE 'undefined'
     END                                          AS severity_tag,
 
     CASE
-      WHEN ARRAY_CONTAINS('p1'::variant, agg_label) THEN 'priority 1'
-      WHEN ARRAY_CONTAINS('p2'::variant, agg_label) THEN 'priority 2'
-      WHEN ARRAY_CONTAINS('p3'::variant, agg_label) THEN 'priority 3'
-      WHEN ARRAY_CONTAINS('p4'::variant, agg_label) THEN 'priority 4'
+      WHEN ARRAY_CONTAINS('p1'::variant, agg_labels.labels) THEN 'priority 1'
+      WHEN ARRAY_CONTAINS('p2'::variant, agg_labels.labels) THEN 'priority 2'
+      WHEN ARRAY_CONTAINS('p3'::variant, agg_labels.labels) THEN 'priority 3'
+      WHEN ARRAY_CONTAINS('p4'::variant, agg_labels.labels) THEN 'priority 4'
       ELSE 'undefined'
     END                                          AS priority_tag,
 
     CASE
       WHEN projects.namespace_id = 9970
-        AND ARRAY_CONTAINS('security'::variant, agg_label)
+        AND ARRAY_CONTAINS('security'::variant, agg_labels.labels)
         THEN TRUE
       ELSE FALSE
     END                                          AS is_security_issue,
@@ -127,8 +127,8 @@ joined AS (
     lock_version,
     time_estimate,
     has_discussion_locked,
-    agg_label                                    AS labels,
-    ARRAY_TO_STRING(agg_label,'|')               AS masked_label_title,
+    agg_labels.labels,
+    ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
     internal_namespaces.namespace_id IS NOT NULL AS is_internal_issue
 
   FROM issues
