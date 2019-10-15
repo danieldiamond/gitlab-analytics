@@ -49,6 +49,15 @@
             "regexp_function":"REGEXP"
          }
       ]
+   },
+   {
+      "event_name":"productivity_analytics_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){1,}\/productivity_analytics",
+            "regexp_function":"REGEXP"
+         }
+      ]
    }
 ]
 -%}
@@ -76,38 +85,6 @@ WITH snowplow_page_views AS (
 , {{ smau_events_ctes(event_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statements) }}
 
 {% endfor -%}
-
-, insights_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start)   AS event_date,
-    page_url_path,
-    'insights_viewed'          AS event_type,
-    page_view_id,
-    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
-                               AS event_surrogate_key
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/insights'
-
-)
-
-, productivity_analytics_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start)          AS event_date,
-    page_url_path,
-    'productivity_analytics_viewed'   AS event_type,
-    page_view_id,
-    {{ dbt_utils.surrogate_key('page_view_id', 'event_type') }}
-                                AS event_surrogate_key
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){1,}\/productivity_analytics'
-
-)
 
   /*
     Looks at referrer_url in addition to page_url.
