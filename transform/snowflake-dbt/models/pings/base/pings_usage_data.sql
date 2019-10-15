@@ -5,7 +5,9 @@
 
 WITH source AS (
 
-  SELECT *
+  SELECT
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('pings_tap_postgres', 'usage_data') }}
 
 ),
@@ -65,6 +67,7 @@ renamed AS (
   FROM source
   WHERE uuid IS NOT NULL
     AND (CHECK_JSON(counts) IS NULL)
+    AND rank_in_key = 1
 )
 
 SELECT *
