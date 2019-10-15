@@ -20,8 +20,8 @@ renamed AS (
     user_count::INTEGER                   AS user_count,
     PARSE_JSON(add_ons)                   AS add_ons,
     --md5 // waiting on fresh data https://gitlab.com/gitlab-data/analytics/issues/2696
-    starts_on::TIMESTAMP                  AS starts_at,
-    expires_on::TIMESTAMP                 AS expires_at,
+    starts_on::TIMESTAMP                  AS started_at,
+    expires_on::TIMESTAMP                 AS expired_at,
     created_at::TIMESTAMP                 AS created_at,
     updated_at::TIMESTAMP                 AS updated_at,
     active_users_count::INTEGER           AS active_users_count,
