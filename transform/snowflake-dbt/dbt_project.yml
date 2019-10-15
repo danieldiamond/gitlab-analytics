@@ -114,6 +114,7 @@ models:
 
     gitlab_dotcom:
       tags: ["product"]
+      materialized: table
 
     gitter:
       enabled: false
