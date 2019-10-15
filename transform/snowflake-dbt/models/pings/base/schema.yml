@@ -28,10 +28,13 @@ models:
 
     - name: pings_usage_data
       columns:
-          - name: uuid
+          - name: id
             tests:
                 - not_null
                 - unique
+          - name: uuid
+            tests:
+                - not_null
 
     - name: pings_version_checks
       description: Ping version data from self-managed instances
