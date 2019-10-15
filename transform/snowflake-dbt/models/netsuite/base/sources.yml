@@ -13,6 +13,7 @@ sources:
       identifier: false
 
     tables:
+      - name: accounting_books
       - name: accounting_periods
       - name: accounts
       - name: budget
