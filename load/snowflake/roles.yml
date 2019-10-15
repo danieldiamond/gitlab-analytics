@@ -319,6 +319,7 @@ roles:
             - analyst_xl
         member_of:
             - boneyard
+            - snowplow
         privileges:
             databases:
                 read:
