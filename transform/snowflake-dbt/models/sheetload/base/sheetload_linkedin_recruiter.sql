@@ -21,5 +21,5 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-WHERE month is not NULL 
-  AND sourcer IS NOT NULL; 
+WHERE month IS NOT NULL 
+  AND sourcer IS NOT NULL
