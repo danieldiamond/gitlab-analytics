@@ -794,6 +794,20 @@ models:
       - name: project_description
         description: '{{ doc("visibility_documentation") }}'
 
+  - name: gitlab_dotcom_resource_label_events
+    description: '{{ doc("gitlab_dotcom_resource_label_events") }}'
+    columns:
+      - name: resource_label_event_id
+        tests:
+          - not_null
+          - unique
+      - name: action_type_id
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+          
   - name: gitlab_dotcom_subscriptions
     description: Base model for Gitlab.com subscriptions
     columns:
