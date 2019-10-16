@@ -55,7 +55,7 @@ models:
     tests:
     - not_null
 - name: sheetload_linkedin_recruiter
-  description: This is the source of linkedin recruiter inmail data for each month by sourcer.
+  description: This is the source of linkedin recruiter inmail data for each month by sourcer .
   columns:
   - name: sourcer
     tests:
