@@ -81,7 +81,7 @@ models:
   - name: accept_rate
     tests:
     - not_null
-  - name: month
+  - name: data_downloaded_month
     tests:
     - not_null
 - name: sheetload_location_factor_targets
