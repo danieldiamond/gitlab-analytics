@@ -1,10 +1,3 @@
-{{ config({
-    "materialized": "incremental",
-    "unique_key": "project_statistics_id"
-    })
-}}
-
-
 WITH source AS (
 
   SELECT
