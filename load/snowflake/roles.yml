@@ -582,13 +582,13 @@ roles:
                     - raw.bamboohr
                     - analytics.analytics
                     - analytics.analytics_staging
-                    - analytics.analyst_sensitive
+                    - analytics.analytics_sensitive
             tables:
                 read:
                     - raw.bamboohr.*
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
-                    - analytics.analyst_sensitive.*
+                    - analytics.analytics_sensitive.*
     
     - boneyard:
         warehouses:
