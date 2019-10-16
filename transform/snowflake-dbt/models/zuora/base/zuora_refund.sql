@@ -11,7 +11,7 @@ WITH source AS (
 ), renamed AS (
 
   SELECT
-    --Primary Key
+    --Primary Keys
     refundnumber::VARCHAR                  AS refund_number,
     id::VARCHAR                            AS refund_id,
 
@@ -51,6 +51,7 @@ WITH source AS (
     type::VARCHAR                          AS refund_type,
     updatedbyid::VARCHAR                   AS updated_by_id,
     updateddate::TIMESTAMP_TZ              AS updated_date
+
   FROM source
   WHERE is_deleted = FALSE
 
