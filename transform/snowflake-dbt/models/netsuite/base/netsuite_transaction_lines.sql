@@ -10,24 +10,25 @@ WITH source AS (
 
 ), renamed AS (
 
-    SELECT {{ dbt_utils.surrogate_key('transaction_id', 'transaction_line_id') }}
-                                        AS transaction_lines_unique_id,
-          --Primary Key
-          transaction_id::FLOAT         AS transaction_id,
-          transaction_line_id::FLOAT    AS transaction_line_id,
+    SELECT
+      {{ dbt_utils.surrogate_key('transaction_id', 'transaction_line_id') }}
+                                    AS transaction_lines_unique_id,
+      --Primary Key
+      transaction_id::FLOAT         AS transaction_id,
+      transaction_line_id::FLOAT    AS transaction_line_id,
 
-          --Foreign Keys
-          account_id::FLOAT             AS account_id,
-          department_id::FLOAT          AS department_id,
-          subsidiary_id::FLOAT          AS subsidiary_id,
+      --Foreign Keys
+      account_id::FLOAT             AS account_id,
+      department_id::FLOAT          AS department_id,
+      subsidiary_id::FLOAT          AS subsidiary_id,
 
-          -- info
-          memo::VARCHAR                 AS memo,
-          amount::FLOAT                 AS amount,
-          gross_amount::FLOAT           AS gross_amount
+      -- info
+      memo::VARCHAR                 AS memo,
+      amount::FLOAT                 AS amount,
+      gross_amount::FLOAT           AS gross_amount
 
     FROM source
-
+    WHERE LOWER(non_posting_line) != 'yes' --removes transactions not intended for posting
 )
 
 SELECT *

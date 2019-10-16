@@ -37,6 +37,15 @@ Used in:
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
 
+## Cost Category ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/netsuite/cost_category.sql))
+This macro categorizes expenses by Headcount and Non_Headcount.
+Usage:
+```
+{{ cost_category('account_number','account_name') }}
+```
+Used in:
+- netsuite_cogs_opex
+
 ## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
 Usage:
@@ -56,7 +65,7 @@ Used in:
 - dbt_project.yml
 
 ## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/generate_custom_schema.sql))
-This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema ` (e.g. `emilie_scratch` and `analytics`). For tagged models, the output is dependent on the target. It is `emilie_scratch_staging` on dev and `analytics_staging` on prod. A similar pattern is followed for the `sensitive` config.
+This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema (e.g. `emilie_scratch` and `analytics`). For tagged models, the output is dependent on the target. It is `emilie_scratch_staging` on dev and `analytics_staging` on prod. A similar pattern is followed for the `sensitive` config.
 Usage:
 ```
 {{ config(schema='staging') }}
@@ -109,15 +118,34 @@ Used in:
 - dbt_project.yml
 
 ## Is Project Included In Engineering Metrics
+
 This macro pulls all the engineering projects to be included from the seeded csv and adds a boolean in the model that can be used to filter on it.
+
 Usage:
 ```
-CASE WHEN issues.project_id IN ({{is_project_included_in_engineering_metrics()}}) THEN TRUE
-     ELSE FALSE END AS is_included_in_engineering_metrics,
+IFF(issues.project_id IN ({{is_project_included_in_engineering_metrics()}}),
+  TRUE, FALSE)                               AS is_included_in_engineering_metrics,
 ```
+
 Used in:
-- gitlab_dotcom_issues_xf
-- gitlab_dotcom_merge_requests_xf
+- `gitlab_dotcom_issues_xf`
+- `gitlab_dotcom_merge_requests_xf`
+
+
+## Is Project Part of Product
+
+This macro pulls all the engineering projects that are part of the product from
+the seeded csv and adds a boolean in the model that can be used to filter on it.
+
+Usage:
+```
+IFF(issues.project_id IN ({{is_project_part_of_product()}}),
+  TRUE, FALSE)                               AS is_part_of_product,
+```
+
+Used in:
+- `gitlab_dotcom_issues_xf`
+- `gitlab_dotcom_merge_requests_xf`
 
 ## Monthly Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/monthly_change.sql))
 This macro calculates differences for each consecutive usage ping by uuid.
@@ -147,6 +175,26 @@ Used in:
 - sfdc_opportunity.sql
 - zuora_rate_plan.sql
 
+## Delivery([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/delivery.sql))
+This macro maps product categories to [delivery](https://about.gitlab.com/handbook/marketing/product-marketing/tiers/#delivery).
+
+Usage:
+```
+{{ delivery('product_category') }}
+```
+Used in:
+- zuora_rate_plan.sql
+
+## Resource Label Action Type([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/gitlab_dotcom/resource_label_action_type.sql))
+This macro maps action type ID to the action type for the `resource_label_events` table.
+Usage:
+```
+{{ resource_label_action_type('action') }}
+```
+
+Used in:
+- gitlab_dotcom_resource_label_events.sql
+
 ## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sales_segment_cleaning))
 This macro applies proper formatting to sales segment data with the end result being one of SMB, Mid-Market, Strategic, Large or Unknown.
 Usage:
@@ -166,9 +214,10 @@ Usage:
 ```
 Used in:
 - snowplow_combined/all/*.sql
+- snowplow_combined/30/*.sql
 
 ## Schema Union Limit ([Source](ttps://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_limit.sql))
-This macro takes a schema prefix, a table name, a column name, and an integer representing days. It returns a view that is limited to the last 30 days based on the column name. Note that this also calls schema union all which can be a heavy call. 
+This macro takes a schema prefix, a table name, a column name, and an integer representing days. It returns a view that is limited to the last 30 days based on the column name. Note that this also calls schema union all which can be a heavy call.
 Usage:
 ```
 {{ schema_union_limit('snowplow', 'snowplow_page_views', 'page_view_start', 30) }}
@@ -197,7 +246,78 @@ Used in:
 - sfdc_lead
 - sfdc_opportunity
 
-## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/version/stage_mapping.sql))
+## SMAU Events CTES
+
+This macro is designed to build the pageview events CTEs that are then used in all the `snowplow_smau_events` models. Please [read this documentation](https://about.gitlab.com/direction/telemetry/smau_events/#events-summary-table) for more context about SMAU pageview events. This expects a CTE to exist called `snowplow_pageviews`. This CTE generally look like this:
+
+```
+WITH snowplow_page_views AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    page_view_start,
+    page_url_path,
+    page_view_id,
+    referer_url_path
+  FROM {{ ref('snowplow_page_views_all') }}
+  WHERE TRUE
+    AND app_id = 'gitlab'
+  {% if is_incremental() %}
+    AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
+  {% endif %}
+
+)
+```
+
+It takes 2 parameters:
+* `event_name`: which is the name shown in output tables and Periscope reporting
+* `regexp_where_statements`: which is a list of dictionaries. Each dictionary creates a new condition in the WHERE statement of the CTE. The dictionary will have 2 items:
+  * `regexp_pattern`: the pattern that you try to match
+  * `regexp_function`: the function used (either `REGEXP` or `NOT REGEXP`)
+  The conditions created by a dictionary looks like: `page_url_path {regexp_function} '{regexp_pattern}'`. Conditions are always separated by an `AND`.
+
+Usage:
+```
+{{  smau_events_ctes(action_name="pipeline_schedules_viewed",
+                     regexp_where_statements=[
+                                               {
+                                                  "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/pipeline_schedules",
+                                                  "regexp_function":"REGEXP"
+                                               }]
+                                               )
+}}
+```
+
+Output:
+```
+pipeline_schedules_viewed AS (
+
+  SELECT
+    user_snowplow_domain_id,
+    user_custom_id,
+    TO_DATE(page_view_start)    AS event_date,
+    page_url_path,
+    'pipeline_schedules_viewed' AS event_type,
+    page_view_id                AS event_surrogate_key
+
+  FROM snowplow_page_views
+  WHERE TRUE 
+    AND page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/pipeline_schedules'
+  
+
+)
+```
+
+Used in:
+- create_snowplow_smau_events
+- manage_snowplow_smau_events
+- monitor_snowplow_smau_events
+- package_snowplow_smau_events
+- plan_snowplow_smau_events
+- verify_snowplow_smau_events
+
+## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/pings/stage_mapping.sql))
 This macro takes in a product stage name, such as 'Verify', and returns a SQL aggregation statement that sums the number of users using that stage, based on the ping data. Product metrics are mapped to stages using the [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
 ```
 {{ stage_mapping( 'Verify' ) }}

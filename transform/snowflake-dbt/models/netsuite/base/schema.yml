@@ -1,6 +1,13 @@
 version: 2
 
 models:
+    - name: netsuite_accounting_books
+      description: "[Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2016_1/odbc/record/accountingbook.html)"
+      columns:
+        - name: accounting_book_id
+          tests:
+            - not_null
+            - unique
     - name: netsuite_accounting_periods
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/accountingperiod.html)"
       columns:
@@ -12,7 +19,7 @@ models:
         - name: accounting_period_id
           tests:
             - not_null
-        - name: account_period_name
+        - name: accounting_period_name
           tests:
             - not_null
         - name: accounting_period_full_name
@@ -123,6 +130,50 @@ models:
         - name: is_account_including_child_subscriptions
         - name: is_leftside_account
         - name: is_summary_account
+    - name: netsuite_budget
+      description: "[Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/budget.html)"
+      columns:
+        - name: budget_id
+          tests:
+            - not_null
+            - unique
+        - name: accounting_period_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_accounting_periods')
+                field: accounting_period_id
+        - name: account_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_accounts')
+                field: account_id
+        - name: subsidiary_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_subsidiaries')
+                field: subsidiary_id
+        - name: category_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_budget_category')
+                field: budget_category_id
+        - name: budget_amount
+          tests:
+            - not_null
+    - name: netsuite_budget_category
+      description: "[Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/budgetcategory.html)"
+      columns:
+        - name: budget_category_id
+          tests:
+            - not_null
+            - unique
+        - name: budget_category
+          tests:
+            - not_null
     - name: netsuite_consolidated_exchange_rates
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/consolidatedexchangerate.html)"
       columns:
@@ -247,6 +298,13 @@ models:
         - name: is_department_inactive
           tests:
             - not_null
+    - name: netsuite_entity
+      description: "[Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/entity.html)"
+      columns:
+        - name: entity_id
+          tests:
+            - not_null
+            - unique
     - name: netsuite_subsidiaries
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/subsidiaries.html)"
       columns:
@@ -282,6 +340,7 @@ models:
           tests:
             - not_null
             - relationships:
+                severity: warn
                 to: ref('netsuite_transactions')
                 field: transaction_id
         - name: transaction_line_id

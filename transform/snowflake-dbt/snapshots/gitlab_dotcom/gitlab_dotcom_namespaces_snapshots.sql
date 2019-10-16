@@ -14,7 +14,7 @@
 
     	SELECT 
         *, 
-        ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) AS namespaces_rank_in_key
+        ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS namespaces_rank_in_key
       
       FROM {{ source('gitlab_dotcom', 'namespaces') }}
 

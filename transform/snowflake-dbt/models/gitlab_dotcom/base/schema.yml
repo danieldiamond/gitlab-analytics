@@ -306,6 +306,21 @@ models:
         tests:
           - not_null
 
+
+  - name: gitlab_dotcom_identities
+    description: Base model for GitLab.com identities (3rd party login providers).
+    columns:
+      - name: identity_id
+        tests:
+          - not_null
+          - unique
+      - name: identity_provider
+        description: Which service is the identity provided through? (Google, GitHub, etc.)
+        tests:
+          - not_null
+      - name: created_at
+      - name: updated_at
+
   - name: gitlab_dotcom_issue_assignees
     description: >-
       Base model for Gitlab.com issue assignees, duplicate rows have not been
@@ -578,6 +593,13 @@ models:
         description: '{{ doc("visibility_documentation") }}'
       - name: visbility_level
         description: '{{ doc("visibility_documentation") }}'
+      - name: plan_id
+        description: This column comes from the `gitlab_subscriptions` table which is the source of truth for namespace plans (NOT namespaces.plan_id).
+        tests:
+          - not_null
+          - accepted_values:
+              values: [2, 3, 4, 34]
+
 
   - name: gitlab_dotcom_notes
     description: >-
@@ -632,10 +654,7 @@ models:
         tests:
           - not_null
           - unique
-      - name: oauth_access_token_id
-        tests:
-          - not_null
-          - unique
+
       - name: oauth_access_token_created_at
         tests:
           - not_null
@@ -782,6 +801,20 @@ models:
       - name: project_description
         description: '{{ doc("visibility_documentation") }}'
 
+  - name: gitlab_dotcom_resource_label_events
+    description: '{{ doc("gitlab_dotcom_resource_label_events") }}'
+    columns:
+      - name: resource_label_event_id
+        tests:
+          - not_null
+          - unique
+      - name: action_type_id
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+          
   - name: gitlab_dotcom_subscriptions
     description: Base model for Gitlab.com subscriptions
     columns:

@@ -1,40 +1,62 @@
-WITH netsuite_transaction_lines AS  (
+WITH transaction_lines AS  (
 
-  SELECT * FROM {{ref('netsuite_transaction_lines')}}
+  SELECT *
+  FROM {{ref('netsuite_transaction_lines')}}
 
-), netsuite_accounts AS (
+), transactions AS  (
 
-  SELECT * FROM {{ref('netsuite_accounts')}}
+  SELECT *
+  FROM {{ref('netsuite_transactions')}}
 
-), netsuite_subsidiaries AS (
+), accounts AS (
 
-  SELECT * FROM {{ref('netsuite_subsidiaries')}}
+  SELECT *
+  FROM {{ref('netsuite_accounts')}}
+
+), subsidiaries AS (
+
+  SELECT *
+  FROM {{ref('netsuite_subsidiaries')}}
+
+), entity AS (
+
+  SELECT *
+  FROM {{ref('netsuite_entity')}}
 
 )
 
-SELECT netsuite_transaction_lines.transaction_lines_unique_id,
-       netsuite_transaction_lines.transaction_id,
-       netsuite_transaction_lines.transaction_line_id,
-       netsuite_transaction_lines.account_id,
-       netsuite_transaction_lines.department_id,
-       netsuite_transaction_lines.subsidiary_id,
-       netsuite_transaction_lines.amount,
-       netsuite_transaction_lines.gross_amount,
-       netsuite_accounts.account_name,
-       netsuite_accounts.account_full_name,
-       netsuite_accounts.account_full_description,
-       netsuite_accounts.account_number,
-       netsuite_accounts.account_type,
-       CASE WHEN lower(netsuite_accounts.account_name) LIKE '%contract%'
-         THEN substring(md5(netsuite_subsidiaries.subsidiary_name), 16)
-         ELSE netsuite_subsidiaries.subsidiary_name
-       END                                      AS subsidiary_name,
-       CASE WHEN lower(netsuite_accounts.account_name) LIKE '%contract%'
-         THEN substring(md5(netsuite_transaction_lines.memo),16)
-         ELSE netsuite_transaction_lines.memo
-       END                                      AS memo
-FROM netsuite_transaction_lines
-LEFT JOIN netsuite_accounts
-  ON netsuite_transaction_lines.account_id = netsuite_accounts.account_id
-LEFT JOIN netsuite_subsidiaries
-  ON netsuite_transaction_lines.subsidiary_id = netsuite_subsidiaries.subsidiary_id
+SELECT
+  tl.transaction_lines_unique_id,
+  tl.transaction_id,
+  tl.transaction_line_id,
+  tl.account_id,
+  tl.department_id,
+  tl.subsidiary_id,
+  tl.amount,
+  tl.gross_amount,
+  a.account_name,
+  a.account_full_name,
+  a.account_full_description,
+  a.account_number,
+  a.account_type,
+  CASE WHEN LOWER(a.account_name) LIKE '%contract%'
+       THEN SUBSTRING(md5(s.subsidiary_name), 16)
+       ELSE s.subsidiary_name
+  END                                      AS subsidiary_name,
+  CASE WHEN LOWER(a.account_name) LIKE '%contract%'
+       THEN SUBSTRING(md5(tl.memo),16)
+       ELSE tl.memo
+  END                                      AS memo,
+  CASE WHEN LOWER(a.account_name) LIKE '%contract%'
+       THEN SUBSTRING(md5(e.entity_name),16)
+       ELSE e.entity_name
+  END                                      AS entity_name
+FROM transaction_lines tl
+LEFT JOIN transactions t
+  ON tl.transaction_id = t.transaction_id
+LEFT JOIN entity e
+  ON t.entity_id = e.entity_id
+LEFT JOIN accounts a
+  ON tl.account_id = a.account_id
+LEFT JOIN subsidiaries s
+  ON tl.subsidiary_id = s.subsidiary_id

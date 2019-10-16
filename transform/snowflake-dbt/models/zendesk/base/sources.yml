@@ -6,7 +6,7 @@ sources:
     schema: zendesk_stitch
     loader: Stitch
     loaded_at_field: _sdc_batched_at
-    
+
     quoting:
       database: true
       schema: false
@@ -15,9 +15,13 @@ sources:
     freshness:
       warn_after: {count: 8, period: hour}
 
-    tables: 
+    tables:
       - name: organizations
         description: '{{ doc("zendesk_org_desc") }}'
+      - name: sla_policies
+        description: '{{ doc("zendesk_sla_policies_desc") }}'
+      - name: ticket_audits
+        description: '{{ doc("zendesk_ticket_audits_desc") }}'        
       - name: ticket_metrics
         description: '{{ doc("zendesk_ticket_metrics_desc") }}'
       - name: tickets

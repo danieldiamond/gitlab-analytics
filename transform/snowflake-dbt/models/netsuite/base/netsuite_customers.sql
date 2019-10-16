@@ -5,27 +5,29 @@ WITH source AS (
 
 ), renamed AS (
 
-    SELECT --Primary Key
-           customer_id::FLOAT                 AS customer_id,
+    SELECT
+      --Primary Key
+      customer_id::FLOAT                 AS customer_id,
 
-           --Foreign Keys
-           subsidiary_id::FLOAT               AS subsidiary_id,
-           currency_id::FLOAT                 AS currency_id,
-           parent_id::FLOAT                   AS parent_id,
-           department_id::FLOAT               AS department_id,
+      --Foreign Keys
+      subsidiary_id::FLOAT               AS subsidiary_id,
+      currency_id::FLOAT                 AS currency_id,
+      parent_id::FLOAT                   AS parent_id,
+      department_id::FLOAT               AS department_id,
 
-           --Info
-           companyname::VARCHAR               AS customer_name,
-           name::VARCHAR                      AS customer_alt_name,
-           full_name::VARCHAR                 AS customer_full_name,
-           rev_rec_forecast_rule_id::FLOAT    AS rev_rec_forecast_rule_id,
+      --Info
+      companyname::VARCHAR               AS customer_name,
+      name::VARCHAR                      AS customer_alt_name,
+      full_name::VARCHAR                 AS customer_full_name,
+      rev_rec_forecast_rule_id::FLOAT    AS rev_rec_forecast_rule_id,
 
-           --deposit_balance_foreign
-           openbalance::FLOAT                 AS customer_balance,
-           days_overdue::FLOAT                AS days_overdue
+      --deposit_balance_foreign
+      openbalance::FLOAT                 AS customer_balance,
+      days_overdue::FLOAT                AS days_overdue
 
     FROM source
-    WHERE _fivetran_deleted = 'False'
+    WHERE LOWER(_fivetran_deleted) = 'false'
+
 )
 
 SELECT *

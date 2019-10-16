@@ -12,7 +12,97 @@ sources:
       identifier: false
 
     tables:
+      - name: avg_cycle_analytics
+        identifier: version_db_avg_cycle_analytics
+        columns:
+          - name: id
+            tests:
+              - not_null
+      - name: conversational_development_indicies
+        identifier: version_db_conversational_development_indicies
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null
+      - name: fortune_companies
+        identifier: version_db_fortune_companies
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null
+      - name: hosts
+        identifier: version_db_hosts
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null
+      - name: licenses
+        identifier: version_db_licenses
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null
+      - name: schema_migrations
+        identifier: version_db_schema_migrations
       - name: usage_data
         identifier: version_db_usage_data
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null
       - name: version_checks
         identifier: version_db_version_checks
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null
+      - name: users
+        identifier: version_db_users
+      - name: versions
+        identifier: version_db_version
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null

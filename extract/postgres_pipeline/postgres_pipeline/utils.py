@@ -1,16 +1,89 @@
+import csv
 import logging
 import os
 import sys
-from typing import Dict, List, Generator, Any, Tuple
 import yaml
+from time import time
+from typing import Dict, List, Generator, Any, Tuple
 
-from gitlabdata.orchestration_utils import snowflake_engine_factory, dataframe_uploader
+from gitlabdata.orchestration_utils import (
+    dataframe_uploader,
+    snowflake_engine_factory,
+    query_executor,
+)
 import pandas as pd
 import sqlalchemy
+from google.cloud import storage
+from google.cloud.storage.bucket import Bucket
+from google.oauth2 import service_account
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
 
 SCHEMA = "tap_postgres"
+
+
+def get_gcs_bucket(gapi_keyfile: str, bucket_name: str) -> Bucket:
+    """ Do the auth and return a usable gcs bucket object."""
+
+    scope = ["https://www.googleapis.com/auth/cloud-platform"]
+    credentials = service_account.Credentials.from_service_account_info(gapi_keyfile)
+    scoped_credentials = credentials.with_scopes(scope)
+    storage_client = storage.Client(credentials=scoped_credentials)
+    return storage_client.get_bucket(bucket_name)
+
+
+def upload_to_gcs(upload_df: pd.DataFrame, upload_file_name: str) -> bool:
+    """Write a dataframe to local storage and then upload it to a GCS bucket."""
+
+    keyfile = yaml.load(os.environ["GCP_SERVICE_CREDS"])
+    bucket_name = "postgres_pipeline"
+    bucket = get_gcs_bucket(keyfile, bucket_name)
+
+    # Do a bit of sanitation
+    upload_df["_uploaded_at"] = time()  # Add a metadata column
+    upload_df = upload_df.applymap(
+        lambda x: x if not isinstance(x, dict) else str(x)
+    )  # convert dict to str to avoid snowflake errors
+    upload_df = upload_df.applymap(
+        lambda x: x[:4_194_304] if isinstance(x, str) else x
+    )  # shorten strings that are too long
+    upload_df = upload_df.applymap(
+        lambda x: x.replace("\t", "    ") if isinstance(x, str) else x
+    )  # replace tabs with 4 spaces so it won't break the output file
+
+    # Write out the TSV and upload it
+    upload_df.to_csv(
+        upload_file_name,
+        compression="gzip",
+        escapechar="\\",
+        index=False,
+        quoting=csv.QUOTE_NONE,
+        sep="\t",
+    )
+    blob = bucket.blob(upload_file_name)
+    blob.upload_from_filename(upload_file_name)
+
+    return True
+
+
+def trigger_snowflake_upload(engine: Engine, table: str, upload_file_name: str) -> None:
+    """ Trigger Snowflake to upload a tsv file from GCS."""
+
+    upload_query = f"""
+        copy into {table}
+        from 'gcs://postgres_pipeline'
+        storage_integration = gcs_integration
+        pattern = '{upload_file_name}'
+        force = TRUE
+        file_format = (
+            type = csv
+            field_delimiter = '\\\\t'
+            skip_header = 1
+        );
+    """
+    results = query_executor(engine, upload_query)
+    log_result = f"Loaded {results[0][2]} rows from file: {results[0][0]}"
+    logging.info(log_result)
 
 
 def postgres_engine_factory(
@@ -48,7 +121,7 @@ def manifest_reader(file_path: str) -> Dict[str, Dict]:
 
 
 def query_results_generator(
-    query: str, engine: Engine, chunksize: int = 50000
+    query: str, engine: Engine, chunksize: int = 1_000_000
 ) -> pd.DataFrame:
     """
     Use pandas to run a sql query and load it into a dataframe.
@@ -63,35 +136,49 @@ def query_results_generator(
     return query_df_iterator
 
 
-def upload_orchestrator(
-    results_chunker: pd.DataFrame, engine: Engine, table_name: str
-) -> None:
+def seed_table(
+    df: pd.DataFrame, engine: Engine, table: str, rows_to_seed: int = 10000
+) -> bool:
     """
-    Handle the logic of uploading and logging an iterable DataFrame.
+    Load a set number of rows to Snowflake through pandas to create the table
+    and set the proper data types and column names.
     """
 
-    chunk_counter = 0
-    for chunk_df in results_chunker:
-        row_count = chunk_df.shape[0]
-        logging.info(f"Uploading {row_count} records to snowflake...")
-        dataframe_uploader(dataframe=chunk_df, engine=engine, table_name=table_name)
-        chunk_counter += row_count
-        logging.info(f"{chunk_counter} total records uploaded...")
-    engine.dispose()
+    logging.info(f"Seeding {rows_to_seed} rows directly into Snowflake...")
+    dataframe_uploader(df.iloc[:rows_to_seed], engine, table)
+    return False
 
 
 def chunk_and_upload(
-    query: str, source_engine: Engine, target_engine: Engine, target_table: str
+    query: str,
+    source_engine: Engine,
+    target_engine: Engine,
+    target_table: str,
+    backfill: bool = False,
 ) -> None:
     """
-    Call the results chunker and then pass the results to the upload_orchestrator.
+    Call the functions that upload the dataframe to CSVs in GCS and then tell Snowflake
+    to load those new files.
+
+    If it is part of a backfill, the first chunk gets sent to the dataframe_uploader
+    so that the table can be created automagically with the correct data types.
     """
 
-    results_chunker = query_results_generator(query, source_engine)
-    # Upload the dataframe generator to the data warehouse
-    upload_orchestrator(
-        results_chunker=results_chunker, engine=target_engine, table_name=target_table
-    )
+    rows_uploaded = 0
+    results_generator = query_results_generator(query, source_engine)
+    upload_file_name = f"{target_table}_CHUNK.tsv.gz"
+
+    for chunk_df in results_generator:
+        # If the table doesn't exist, it needs to send the first chunk to the dataframe_uploader
+        if backfill:
+            backfill = seed_table(chunk_df, target_engine, target_table)
+        row_count = chunk_df.shape[0]
+        rows_uploaded += row_count
+        upload_to_gcs(chunk_df, upload_file_name)
+        trigger_snowflake_upload(target_engine, target_table, upload_file_name)
+    logging.info(f"Uploaded {rows_uploaded} total rows to table {upload_file_name}.")
+    target_engine.dispose()
+    source_engine.dispose()
 
 
 def range_generator(
@@ -155,6 +242,7 @@ def id_query_generator(
     snowflake_engine: Engine,
     source_table: str,
     target_table: str,
+    id_range: int = 1_000_000,
 ) -> Generator[str, Any, None]:
     """
     This function syncs a database with Snowflake based on the user-defined 
@@ -192,7 +280,7 @@ def id_query_generator(
         sys.exit(1)
     logging.info(f"Source Max ID: {max_source_id}")
 
-    for id_pair in range_generator(max_target_id, max_source_id):
+    for id_pair in range_generator(max_target_id, max_source_id, step=id_range):
         id_range_query = (
             "".join(raw_query.lower().split("where")[0])
             + f"WHERE {primary_key} BETWEEN {id_pair[0]} AND {id_pair[1]}"

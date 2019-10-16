@@ -24,6 +24,7 @@ WITH zuora_mrr AS (
            lineage,
            rate_plan_name,
            product_category,
+           delivery,
            rate_plan_charge_name,
            mrr,
            date_actual AS mrr_month,
@@ -53,6 +54,7 @@ SELECT country,
        lineage,
        rate_plan_name,
        product_category,
+       delivery,
        rate_plan_charge_name,
        mrr_month,
        cohort_month,
@@ -62,7 +64,7 @@ SELECT country,
        sum(quantity)  AS quantity
 FROM amortized_mrr
 WHERE mrr_month IS NOT NULL
-{{ dbt_utils.group_by(n=13) }}
+{{ dbt_utils.group_by(n=14) }}
 
 )
 

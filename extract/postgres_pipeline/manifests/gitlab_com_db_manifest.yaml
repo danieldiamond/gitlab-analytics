@@ -5,61 +5,87 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
-  ci_builds:
+  resource_label_events:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , status
-      , finished_at
-      , trace
+      , action
+      , issue_id
+      , merge_request_id
+      , epic_id
+      , label_id
+      , user_id
+      , created_at
+      , cached_markdown_version
+      , reference
+      , reference_html
+      FROM resource_label_events
+    export_schema: 'gitlab_com'
+    export_table: 'resource_label_events'
+    export_table_primary_key: action
+  epics:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , iid
+      , milestone_id
+      , group_id
+      , author_id
+      , assignee_id
+      , updated_by_id
+      , last_edited_by_id
+      , lock_version
+      , start_date
+      , end_date
+      , last_edited_at
       , created_at
       , updated_at
-      , started_at
-      , runner_id
-      , coverage
-      , commit_id
-      , commands
-      , name
-      , options
-      , allow_failure
-      , stage
-      , trigger_request_id
-      , stage_idx
-      , tag
-      , ref
-      , user_id
-      , type
-      , target_url
+      , title
       , description
-      , artifacts_file
-      , project_id
-      , artifacts_metadata
-      , erased_by_id
-      , erased_at
-      , CASE WHEN artifacts_expire_at > '2262-01-01' THEN '2262-01-01' ELSE artifacts_expire_at END AS artifacts_expire_at
-      , environment
-      , artifacts_size
-      , "when"
-      , yaml_variables
-      , queued_at
-      , token
-      , lock_version
-      , coverage_regex
-      , auto_canceled_by_id
-      , retried
-      , stage_id
-      , artifacts_file_store
-      , artifacts_metadata_store
-      , protected
-      , failure_reason
-      , scheduled_at
-      , token_encrypted
-      , upstream_pipeline_id
-      FROM ci_builds
+      , state_id
+      , closed_at
+      FROM epics
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_dotcom'
-    export_table: ci_builds
+    export_schema: 'gitlab_com'
+    export_table: 'epics'
+    export_table_primary_key: id
+  oauth_access_tokens:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , resource_owner_id
+      , application_id
+      , refresh_token
+      , expires_in
+      , revoked_at
+      , created_at
+      , scopes
+      FROM oauth_access_tokens
+    export_schema: 'gitlab_com'
+    export_table: 'oauth_access_tokens'
+    export_table_primary_key: id
+  members:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , access_level
+      , source_id
+      , source_type
+      , user_id
+      , notification_level
+      , type
+      , created_at
+      , created_by_id
+      , invite_email
+      , invite_accepted_at
+      , requested_at
+      , expires_at
+      , ldap
+      , override
+      FROM members
+    export_schema: 'gitlab_com'
+    export_table: 'members'
     export_table_primary_key: id
   approvals:
     import_db: GITLAB_DB
@@ -173,9 +199,6 @@ tables:
       SELECT id
       , key
       , value
-      , encrypted_value
-      , encrypted_value_salt
-      , encrypted_value_iv
       , pipeline_id
       , variable_type
       FROM ci_pipeline_variables
@@ -320,7 +343,6 @@ tables:
     import_query: >
       SELECT id
       , key
-      , value
       , project_id
       , protected
       , environment_scope
@@ -336,6 +358,7 @@ tables:
       SELECT id
       , created_at
       , updated_at
+      , ref
       , tag
       , yaml_errors
       , committed_at
@@ -534,34 +557,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'epic_issues'
     export_table_primary_key: id
-  epics:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , iid
-      , milestone_id
-      , group_id
-      , author_id
-      , assignee_id
-      , iid
-      , updated_by_id
-      , last_edited_by_id
-      , lock_version
-      , start_date
-      , end_date
-      , last_edited_at
-      , created_at
-      , updated_at
-      , title
-      , description
-      , state_id
-      , closed_at
-      FROM epics
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'epics'
-    export_table_primary_key: id
   epic_metrics:
     import_db: GITLAB_DB
     import_query: >
@@ -679,8 +674,6 @@ tables:
       , created_at
       , updated_at
       FROM issue_links
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'issue_links'
     export_table_primary_key: id
@@ -710,8 +703,6 @@ tables:
       , created_at
       , updated_at
       FROM label_links
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'label_links'
     export_table_primary_key: id
@@ -863,28 +854,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'namespace_statistics'
     export_table_primary_key: id
-  members:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , access_level
-      , source_id
-      , source_type
-      , user_id
-      , notification_level
-      , type
-      , created_at
-      , created_by_id
-      , invite_email
-      , invite_accepted_at
-      , requested_at
-      , expires_at
-      , ldap
-      , override
-      FROM members
-    export_schema: 'gitlab_com'
-    export_table: 'members'
-    export_table_primary_key: id
   namespaces:
     import_db: GITLAB_DB
     import_query: >
@@ -998,22 +967,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'notification_settings'
     export_table_primary_key: id
-  oauth_access_tokens:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , resource_owner_id
-      , application_id
-      , token
-      , refresh_token
-      , expires_in
-      , revoked_at
-      , created_at
-      , scopes
-      FROM oauth_access_tokens
-    export_schema: 'gitlab_com'
-    export_table: 'oauth_access_tokens'
-    export_table_primary_key: id
   project_authorizations:
     import_db: GITLAB_DB
     import_query: >
@@ -1083,8 +1036,6 @@ tables:
       , group_access
       , expires_at
       FROM project_group_links
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'project_group_links'
     export_table_primary_key: id
@@ -1221,23 +1172,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'subscriptions'
     export_table_primary_key: id
-  resource_label_events:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT action
-      , issue_id
-      , merge_request_id
-      , epic_id
-      , label_id
-      , user_id
-      , created_at
-      , cached_markdown_version
-      , reference
-      , reference_html
-      FROM resource_label_events
-    export_schema: 'gitlab_com'
-    export_table: 'resource_label_events'
-    export_table_primary_key: action
   users:
     import_db: GITLAB_DB
     import_query: >
@@ -1280,9 +1214,6 @@ tables:
       , hide_project_limit
       , note
       , otp_grace_period_started_at
-      , otp_grace_period_started_at
-      , notification_email
-      , hide_no_password
       , external
       , organization
       , auditor
@@ -1327,3 +1258,59 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_builds_runner_session
     export_table_primary_key: build_id
+  ci_builds:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , status
+      , finished_at
+      , trace
+      , created_at
+      , updated_at
+      , started_at
+      , runner_id
+      , coverage
+      , commit_id
+      , commands
+      , name
+      , options
+      , allow_failure
+      , stage
+      , trigger_request_id
+      , stage_idx
+      , tag
+      , ref
+      , user_id
+      , type
+      , target_url
+      , description
+      , artifacts_file
+      , project_id
+      , artifacts_metadata
+      , erased_by_id
+      , erased_at
+      , CASE WHEN artifacts_expire_at > '2262-01-01' THEN '2262-01-01' ELSE artifacts_expire_at END AS artifacts_expire_at
+      , environment
+      , artifacts_size
+      , "when"
+      , yaml_variables
+      , queued_at
+      , token
+      , lock_version
+      , coverage_regex
+      , auto_canceled_by_id
+      , retried
+      , stage_id
+      , artifacts_file_store
+      , artifacts_metadata_store
+      , protected
+      , failure_reason
+      , scheduled_at
+      , token_encrypted
+      , upstream_pipeline_id
+      FROM ci_builds
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_builds
+    export_table_primary_key: id

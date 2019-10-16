@@ -1,10 +1,3 @@
-{{
-  config(
-    materialized='incremental',
-    unique_key='id'
-  )
-}}
-
 {% set version_usage_stats_list = dbt_utils.get_column_values(table=ref('version_usage_stats_list'), column='full_ping_name', max_records=1000, default=['']) %}
 
 WITH usage_data as (
@@ -39,6 +32,9 @@ WITH usage_data as (
       ELSE NULL END                                                                 AS edition_type,
     hostname,
     host_id,
+    git_version,
+    gitaly_servers,
+    gitaly_version,
 
     f.path                                                                          AS ping_name, 
     REPLACE(f.path, '.','_')                                                        AS full_ping_name,
@@ -69,12 +65,15 @@ WITH usage_data as (
     edition_type,
     hostname,
     host_id,
-    {% for ping_name in version_usage_stats_list %}
-      MAX(IFF(full_ping_name = '{{ping_name}}', ping_value::NUMERIC, NULL)) AS {{ping_name}} {{ "," if not loop.last }}
+    git_version,
+    gitaly_servers,
+    gitaly_version,
+    {% for stat_name in version_usage_stats_list %}
+      MAX(IFF(full_ping_name = '{{stat_name}}', ping_value::numeric, NULL)) AS {{stat_name}} {{ "," if not loop.last }}
     {% endfor %}
     
   FROM unpacked
-  {{ dbt_utils.group_by(n=15) }}
+  {{ dbt_utils.group_by(n=18) }}
   
 )
 

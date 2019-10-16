@@ -1,30 +1,31 @@
 -- depends_on: {{ ref('engineering_productivity_metrics_projects_to_include') }}
+-- depends_on: {{ ref('projects_part_of_product') }}
 
 {% set fields_to_mask = ['title', 'description'] %}
 
 
-with issues as (
+with issues AS (
 
-    SELECT * 
+    SELECT *
     FROM {{ref('gitlab_dotcom_issues')}}
 
-), all_label_links as (
+), all_label_links AS (
 
-    SELECT * 
+    SELECT *
     FROM {{ref('gitlab_dotcom_label_links')}}
 
-), label_links as (
+), label_links AS (
 
     SELECT *
     FROM all_label_links
     WHERE target_type = 'Issue'
 
-), all_labels as (
+), all_labels AS (
 
-    SELECT * 
+    SELECT *
     FROM {{ref('gitlab_dotcom_labels_xf')}}
 
-), agg_labels as (
+), agg_labels AS (
 
     SELECT
       issue_id,
@@ -36,15 +37,15 @@ with issues as (
       ON label_links.label_id = all_labels.label_id
     GROUP BY issue_id
 
-), projects as (
+), projects AS (
 
-    SELECT 
+    SELECT
       project_id,
       namespace_id,
       visibility_level
     FROM {{ref('gitlab_dotcom_projects')}}
 
-), internal_namespaces as (
+), internal_namespaces AS (
 
     SELECT
       namespace_id
@@ -52,9 +53,9 @@ with issues as (
     WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
 ),
 
-joined as (
+joined AS (
 
-  SELECT 
+  SELECT
     issues.issue_id,
     issues.issue_iid,
     author_id,
@@ -73,10 +74,10 @@ joined as (
     {% for field in fields_to_mask %}
     CASE
       WHEN is_confidential = TRUE
-        AND internal_namespaces.namespace_id IS NULL 
+        AND internal_namespaces.namespace_id IS NULL
         THEN 'confidential - masked'
-      WHEN visibility_level != 'public' 
-        AND internal_namespaces.namespace_id IS NULL 
+      WHEN visibility_level != 'public'
+        AND internal_namespaces.namespace_id IS NULL
         THEN 'private/internal - masked'
       ELSE {{field}}
     END                                          AS issue_{{field}},
@@ -90,13 +91,13 @@ joined as (
     END                                          AS is_community_contributor_related,
 
     CASE
-      WHEN ARRAY_CONTAINS('s1'::variant, agg_label) 
+      WHEN ARRAY_CONTAINS('s1'::variant, agg_label)
         THEN 'severity 1'
-      WHEN ARRAY_CONTAINS('s2'::variant, agg_label) 
+      WHEN ARRAY_CONTAINS('s2'::variant, agg_label)
         THEN 'severity 2'
-      WHEN ARRAY_CONTAINS('s3'::variant, agg_label) 
+      WHEN ARRAY_CONTAINS('s3'::variant, agg_label)
         THEN 'severity 3'
-      WHEN ARRAY_CONTAINS('s4'::variant, agg_label) 
+      WHEN ARRAY_CONTAINS('s4'::variant, agg_label)
         THEN 'severity 4'
       ELSE 'undefined'
     END                                          AS severity_tag,
@@ -109,15 +110,17 @@ joined as (
       ELSE 'undefined'
     END                                          AS priority_tag,
 
-    CASE 
-      WHEN projects.namespace_id = 9970 
-        AND ARRAY_CONTAINS('security'::variant, agg_label) 
+    CASE
+      WHEN projects.namespace_id = 9970
+        AND ARRAY_CONTAINS('security'::variant, agg_label)
         THEN TRUE
       ELSE FALSE
     END                                          AS is_security_issue,
 
     IFF(issues.project_id IN ({{is_project_included_in_engineering_metrics()}}),
       TRUE, FALSE)                               AS is_included_in_engineering_metrics,
+    IFF(issues.project_id IN ({{is_project_part_of_product()}}),
+      TRUE, FALSE)                               AS is_part_of_product,
     state,
     weight,
     due_date,

@@ -11,9 +11,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-    id::INTEGER         AS ci_build_id, 
-    project_id::INTEGER AS ci_build_project_id,
-    name                AS ci_build_name
+      id::INTEGER           AS ci_build_id, 
+      project_id::INTEGER   AS ci_build_project_id,
+      name::VARCHAR         AS ci_build_name
 
     FROM source
 

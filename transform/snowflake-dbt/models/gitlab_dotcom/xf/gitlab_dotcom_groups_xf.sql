@@ -3,19 +3,22 @@
 
 WITH groups AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_groups')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_groups')}}
 
 ),
 
 members AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_members')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_members')}}
 
 ),
 
 projects AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_projects')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_projects')}}
 
 ), namespace_lineage AS (
 

@@ -56,6 +56,7 @@ tables:
       , usage_activity_by_stage
       , gitaly_version
       , gitaly_servers
+      , gitaly_filesystems
       FROM usage_data
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
         AND '{EXECUTION_DATE}'::timestamp
@@ -135,7 +136,9 @@ tables:
       updated_at,
       star,
       fortune_rank,
-      in_salesforce
+      in_salesforce,
+      current_usage_data_id,
+      current_version_check_id
       FROM hosts
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
         AND '{EXECUTION_DATE}'::timestamp
@@ -151,6 +154,7 @@ tables:
       company,
       user_count,
       add_ons,
+      md5,
       starts_on,
       expires_on,
       created_at,

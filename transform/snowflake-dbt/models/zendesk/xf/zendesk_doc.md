@@ -1,14 +1,8 @@
 {% docs zendesk_ticket_sla %}
 
-This value calculates SLA status information for each ticket. The criteria for meeting an SLA is as follows:
-- Urgent tickets have an SLA of 30 minutes with a time period of 24 hours/7 days a week
-- High priority tickets have an SLA of 4 hours with a time period of 24 hours/5 days a week. On Fridays, the goal SLA is adjusted to take into account the weekend for tickets received with less than 4 hours left in the work day. Similarly, tickets received on Saturday or Sunday have an SLA clock beginning Monday morning.
-- Normal priority tickets have an SLA of 8 hours with a time period of 24 hours/5 days a week. On Fridays, the goal SLA is adjusted to take into account the weekend for tickets received with less than 8 hours left in the work day. Similarly, tickets received on Saturday or Sunday have an SLA clock beginning Monday morning.
-- Low priority tickets have an SLA of 24 hours with a time period of 24 hours/5 days a week. On Fridays, the goal SLA is adjusted to take into account the weekend for tickets received with less than 24 hours left in the work day. Similarly, tickets received on Saturday or Sunday have an SLA clock beginning Monday morning.
+This table calculates SLA status information for each ticket at the time of first reply. For the purpose of determining whether an SLA policy target was met or not Zendesk [calculates](https://support.zendesk.com/hc/en-us/articles/205951808-Understanding-first-reply-time-Professional-and-Enterprise-#topic_hxr_pqd_1hb) first reply as the minimum value between first reply by an agent, first resolution time, and full resolution time.
 
-The time used to decide whether SLA was met is the first non-null value of first reply time (for tickets with public responses), first resolution time, or final resolution time. The final SLA metric calculation is as follows:
-
- `Number of Times SLA met / Total Tickets SLA was applicable`.
+Furthermore SLA policies and ticket priorities can be changed, either by an automatic trigger or manual agent action, at any point prior to or after the first reply. In order to calculate whether an SLA policy target was met the most recent SLA policy and ticket priority prior to first reply are used according to the ticket [audit log](https://www.stitchdata.com/docs/integrations/saas/zendesk#ticket-audits).
 
 The operating metric can be found [here](https://about.gitlab.com/handbook/finance/operating-metrics/#service-level-agreement-sla). SLA's can be found [here](https://about.gitlab.com/support/).
 

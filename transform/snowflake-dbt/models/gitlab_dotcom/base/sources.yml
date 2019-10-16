@@ -71,6 +71,8 @@ sources:
         identifier: gitlab_db_events
       - name: gitlab_subscriptions
         identifier: gitlab_db_gitlab_subscriptions
+      - name: identities
+        identifier: gitlab_db_identities
       - name: issue_assignees
         identifier: gitlab_db_issue_assignees
       - name: issue_links
@@ -127,6 +129,8 @@ sources:
         identifier: gitlab_db_project_statistics
       - name: projects
         identifier: gitlab_db_projects
+      - name: resource_label_events
+        identifier: gitlab_db_resource_label_events
       - name: subscriptions
         identifier: gitlab_db_subscriptions
       - name: users

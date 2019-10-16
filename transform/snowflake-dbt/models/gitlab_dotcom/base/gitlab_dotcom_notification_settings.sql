@@ -5,32 +5,34 @@
 
 WITH source AS (
 
-	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
+  SELECT
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'notification_settings') }}
 
 ), renamed AS (
 
     SELECT
 
-      id :: integer                                     as notification_settings_id,
-      user_id :: integer                                as user_id,
-      source_id :: integer                              as source_id,
-      source_type                                       as source_type,
-      level :: integer                                  as settings_level,
-      created_at :: timestamp                           as notification_settings_created_at,
-      updated_at :: timestamp                           as notification_settings_updated_at,
-      new_note :: boolean                               as has_new_note_enabled,
-      new_issue :: boolean                              as has_new_issue_enabled,
-      reopen_issue :: boolean                           as has_reopen_issue_enabled,
-      close_issue :: boolean                            as has_close_issue_enabled,
-      reassign_issue :: boolean                         as has_reassign_issue_enabled,
-      new_merge_request :: boolean                      as has_new_merge_request_enabled,
-      reopen_merge_request :: boolean                   as has_reopen_merge_request_enabled,
-      close_merge_request :: boolean                    as has_close_merge_request_enabled,
-      reassign_merge_request :: boolean                 as has_reassign_merge_request_enabled,
-      merge_merge_request :: boolean                    as has_merge_merge_request_enabled,
-      failed_pipeline :: boolean                        as has_failed_pipeline_enabled,
-      success_pipeline :: boolean                       as has_success_pipeline_enabled
+      id::INTEGER                                     AS notification_settings_id,
+      user_id::INTEGER                                AS user_id,
+      source_id::INTEGER                              AS source_id,
+      source_type::VARCHAR                            AS source_type,
+      level::INTEGER                                  AS settings_level,
+      created_at::TIMESTAMP                           AS notification_settings_created_at,
+      updated_at::TIMESTAMP                           AS notification_settings_updated_at,
+      new_note::BOOLEAN                               AS has_new_note_enabled,
+      new_issue::BOOLEAN                              AS has_new_issue_enabled,
+      reopen_issue::BOOLEAN                           AS has_reopen_issue_enabled,
+      close_issue::BOOLEAN                            AS has_close_issue_enabled,
+      reassign_issue::BOOLEAN                         AS has_reassign_issue_enabled,
+      new_merge_request::BOOLEAN                      AS has_new_merge_request_enabled,
+      reopen_merge_request::BOOLEAN                   AS has_reopen_merge_request_enabled,
+      close_merge_request::BOOLEAN                    AS has_close_merge_request_enabled,
+      reassign_merge_request::BOOLEAN                 AS has_reassign_merge_request_enabled,
+      merge_merge_request::BOOLEAN                    AS has_merge_merge_request_enabled,
+      failed_pipeline::BOOLEAN                        AS has_failed_pipeline_enabled,
+      success_pipeline::BOOLEAN                       AS has_success_pipeline_enabled
 
 
     FROM source

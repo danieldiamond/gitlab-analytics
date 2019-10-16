@@ -45,4 +45,14 @@ The 5 sections are as follows:
 The 6th optional section is called `additional_filtering`.
 This field is used when you need to add an additional condition to the `import_query` that isn't related to incremental loading, for instance to filter some bad rows.
 
+#### Technical Details:
 
+The logical execution of data loading looks like the following:
+
+1. The manifest is parsed and the table is processed
+1. A check is done to see if the table exists or if the schema has changed
+1. Depending on the above, the data is either loaded into a _TEMP_ table or directly into the existing table
+1. A query is run against the `postgres` DB, and a pointer is used to return chunks of the result-set (up to 1 million records at a time)
+1. This data is then written out to a tab-separated file in a GCS bucket. Each table only has one file that it continually overwrites. The GCS bucket is set to purge files that are more than 30 days old.
+1. A query is executed in Snowflake that triggers the loading of the file into the target table.
+1. The next table is processed...

@@ -17,6 +17,7 @@ with zuora_mrr_totals as (
 ), joined as (
 
     SELECT zuora_account.account_id     as zuora_account_id,
+           zuora_account.account_number as zuora_account_number,
            zuora_account.account_name,
            zuora_account.crm_id,
            sfdc_accounts_xf.account_id  as sfdc_account_id,

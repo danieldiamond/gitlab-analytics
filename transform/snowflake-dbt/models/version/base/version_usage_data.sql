@@ -1,10 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
--- TODO: materialize as table
-
 WITH source AS (
 
   SELECT *
@@ -62,10 +55,12 @@ renamed AS (
     --usage_activity_by_stage // never not null
     gitaly_version::VARCHAR                  AS gitaly_version,
     gitaly_servers::INTEGER                  AS gitaly_servers,
+    -- gitaly_filesystems::VARCHAR // waiting on fresh data https://gitlab.com/gitlab-data/analytics/issues/2696
     PARSE_JSON(counts)                       AS stats_used
   FROM source
   WHERE uuid IS NOT NULL
     AND (CHECK_JSON(counts) IS NULL)
+    AND rank_in_key = 1
 )
 
 SELECT *

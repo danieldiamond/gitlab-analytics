@@ -1,8 +1,9 @@
 WITH source AS (
 
-	SELECT *,
-         ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
-  FROM {{ source('gitlab_dotcom', 'events') }}
+    SELECT
+      *,
+      ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+    FROM {{ source('gitlab_dotcom', 'events') }}
 
 ), renamed AS (
 

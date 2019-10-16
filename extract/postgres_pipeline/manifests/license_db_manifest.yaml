@@ -43,6 +43,7 @@ tables:
       id,
       company,
       users_count,
+      email,
       expires_at,
       recurly_subscription_id,
       plan_name,

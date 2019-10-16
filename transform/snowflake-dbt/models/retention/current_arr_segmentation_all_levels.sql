@@ -7,7 +7,7 @@
                   'sfdc_account_id',
                   'parent_account_id'] %}
 
-with base as (
+WITH base AS (
     SELECT oldest_subscription_in_cohort as zuora_subscription_id,
             ultimate_parent_account_id as parent_account_id,
           {{ dbt_utils.star(from=ref('mrr_totals_levelled'), 

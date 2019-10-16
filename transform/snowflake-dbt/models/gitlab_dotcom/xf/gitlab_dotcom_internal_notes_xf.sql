@@ -1,7 +1,8 @@
 WITH notes AS (
 
-  SELECT *,
-  {{target.schema}}_staging.regexp_to_array(note, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array
+  SELECT
+    *,
+    {{target.schema}}_staging.regexp_to_array(note, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array
   FROM {{ ref('gitlab_dotcom_notes') }}
 
 )

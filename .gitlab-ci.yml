@@ -64,7 +64,13 @@ include:
 clone_analytics:
   <<: *snowflake_start_clone
   script:
-    - manage_snowflake.py manage_clones --database analytics
+    - manage_snowflake.py manage_clones --database analytics --empty
+  when: always
+
+clone_analytics_real:
+  <<: *snowflake_start_clone
+  script:
+    - manage_snowflake.py manage_clones --force --database analytics
 
 clone_raw:
   <<: *snowflake_start_clone
@@ -74,7 +80,7 @@ clone_raw:
 force_clone_both:
   <<: *snowflake_start_clone
   script:
-    - manage_snowflake.py manage_clones --force --database analytics
+    - manage_snowflake.py manage_clones --force --database analytics --empty
     - manage_snowflake.py manage_clones --force --database raw
 
 clone_stop:
@@ -132,7 +138,7 @@ python_complexity:
 python_pytest:
   <<: *python_check
   script:
-    - pytest -vv --ignore=dags
+    - pytest -vv -x --ignore=dags
 
 
 # ======

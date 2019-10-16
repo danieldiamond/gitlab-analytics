@@ -5,8 +5,9 @@
 
 WITH source AS (
 
-  SELECT *,
-         ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
+  SELECT
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
   FROM {{ source('gitlab_dotcom', 'ci_pipelines') }}
   WHERE created_at IS NOT NULL
 
@@ -16,7 +17,8 @@ WITH source AS (
    
     id::INTEGER                   AS ci_pipeline_id, 
     created_at::TIMESTAMP         AS created_at, 
-    updated_at::TIMESTAMP         AS updated_at, 
+    updated_at::TIMESTAMP         AS updated_at,
+    ref::VARCHAR                  AS ref,
     tag::BOOLEAN                  AS has_tag, 
     yaml_errors::VARCHAR          AS yaml_errors, 
     committed_at::TIMESTAMP       AS committed_at, 
