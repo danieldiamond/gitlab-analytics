@@ -8,7 +8,7 @@ def check_macro_name_to_file_name(files: List):
         with open(filename, "r") as stream:
             contents = stream.read()
             error_message = "Macro naming error in " + filename
-            realfilename = filename.split("macros/")[1].split(".sql")[0]
+            realfilename = filename.split("/")[-1].split(".sql")[0]
             logging.info(f"Processing {realfilename}."),
             isolating_macro = contents.split("macro ")[1].split("(")[0]
             if realfilename == isolating_macro in contents:
