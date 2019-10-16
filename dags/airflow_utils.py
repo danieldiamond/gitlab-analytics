@@ -66,7 +66,9 @@ def slack_failed_task(context):
 
     # Generate the link to the logs
     title = f"DAG {dag_name} failed on task {task_name}"
-    log_params = urllib.parse.urlencode({'dag_id':dag_id, 'task_id': task_id, 'execution_date': execution_date})
+    log_params = urllib.parse.urlencode(
+        {"dag_id": dag_id, "task_id": task_id, "execution_date": execution_date}
+    )
     log_link = f"{base_url}/log?{log_params}"
     log_link_markdown = f"<{log_link}|View Logs>"
 
