@@ -3,7 +3,7 @@ version: 2
 models:
     #TODO: clean this up
     - name: version_stat_to_stage_mapping
-      description: mapping of metrics in the pings data to a stage. The data for this base model must be populated using `dbt seed`
+      description: mapping of metrics in the version data to a stage. The data for this base model must be populated using `dbt seed`
     - name: version_avg_cycle_analytics_tappg
       description: '{{ doc("tappg_model") }}'
     - name: version_avg_cycle_analytics_version

@@ -91,7 +91,7 @@ These jobs are scoped to the `ci` target. This target selects a subset of data f
 * **all**: Runs all models
 * **exclude_product**: Excludes models with the `product` tag. Use this for every other data source.
 * **gitlab_dotcom**: Just runs GitLab.com models
-* **pings**: Just runs usage / version ping models
+* **version**: Just runs usage / version ping models
 * **snowplow**: Just runs snowplow and snowplow_combined models
 * **specify_model**: Specify which model to run with the variable `DBT_MODELS`
 * **specify_xl_model**: Specify which model to run using an XL warehouse with the variable `DBT_MODELS`
