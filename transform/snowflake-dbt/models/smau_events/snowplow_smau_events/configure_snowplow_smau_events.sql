@@ -18,7 +18,7 @@
       "event_name":"function_metrics_viewed",
       "regexp_where_statements":[
          {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/environments\/[0-9]*\/logs",
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/serverless\/functions\/\*\/(.*?)",
             "regexp_function":"REGEXP"
          }
       ]

@@ -1,3 +1,9 @@
+{% docs configure_smau_events %}
+
+This model encapsulates all activation events for the Configure Stage as defined in this GitLab [issue](https://gitlab.com/gitlab-org/telemetry/issues/53).
+
+{% enddocs %}
+
 {% docs create_smau_events %}
 
 This model encapsulates all activation events for the create stage as defined in this gitlab [issue](https://gitlab.com/gitlab-org/telemetry/issues/49). It reconciles 2 different data sources (Snowplow and Gitlab) with some common enabling us to calculate Daily/Monthly Active User count for this specific stage.
