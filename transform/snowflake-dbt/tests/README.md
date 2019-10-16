@@ -95,7 +95,7 @@ Failure in test relationships_snowplow_web_events_time_page_view_id__page_view_i
 
 This test makes sure there are no current employees who don't have a division or department.
 The output is the row for the employee which does not have a department or division.
-If this test fails, ping the People Group with the employee's name.
+If this test fails, ping the People Operations team with the employee's name.
 You will need to temporarily filter out the problematic candidate while it is resolved upstream. 
 
 ### Test: no_missing_location_factors
