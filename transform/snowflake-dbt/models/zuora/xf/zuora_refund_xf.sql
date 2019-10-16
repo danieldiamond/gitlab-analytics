@@ -9,16 +9,17 @@ WITH zuora_refund_base AS (
 
 )
 
-SELECT zuora_account.sfdc_entity,
-       zuora_account.account_name,
-       zuora_account.account_number,
-       zuora_account.currency,
-       date_trunc('month',refund_date)::DATE   AS refund_month,
-       amount                                  AS refund_amount,
-	   comment,
-	   reason_code,
-	   is_deleted,
-	   zuora_refund_base.refund_status
-FROM zuora_refund_base
-LEFT JOIN zuora_account
-  ON zuora_refund_base.account_id = zuora_account.account_id
+SELECT za.sfdc_entity,
+       za.account_name,
+       za.account_number,
+       za.currency,
+       date_trunc('month',zr.refund_date)::DATE   AS refund_month,
+       zr.refund_amount,
+	   	 zr.comment,
+	     zr.reason_code,
+			 zr.source_type,
+			 zr.refund_type,
+	     zr.refund_status
+FROM zuora_refund_base zr
+LEFT JOIN zuora_account za
+  ON zr.account_id = za.account_id

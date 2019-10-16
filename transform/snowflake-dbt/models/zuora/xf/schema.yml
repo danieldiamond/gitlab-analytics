@@ -273,3 +273,15 @@ models:
           - name: refund_month
             tests:
                 - not_null
+          - name: refund_amount
+            description: The amount of the refund. The amount can't exceed the amount of the associated payment. If the original payment was applied to a single invoice, then you can create a partial refund.
+          - name: comment
+            description: This field records comments about the refund.
+          - name: reason_code
+            description: A code identifying the reason for the refund.
+          - name: source_type
+            description: Specifies whether the refund is a refund payment or a credit balance.
+          - name: refund_type
+            description: Specifies if the refund is electronic or external.
+          - name: refund_status
+            description: The status of the refund.
