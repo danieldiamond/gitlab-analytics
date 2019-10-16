@@ -933,6 +933,7 @@ users:
         can_login: yes
         member_of:
             - analyst_core
+            - data_manager
             - jstark
 
     - jurbanc:
@@ -954,6 +955,7 @@ users:
         member_of:
             - analyst_core
             - bamboohr
+            - data_manager
             - greenhouse
             - ktam
 
