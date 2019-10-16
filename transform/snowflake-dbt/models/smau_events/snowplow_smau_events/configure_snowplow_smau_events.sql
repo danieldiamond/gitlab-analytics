@@ -6,29 +6,16 @@
 
 {%- set event_ctes = [
    {
-      "event_name":"envrionments_viewed",
+      "event_name":"cluster_health_metrics_viewed",
       "regexp_where_statements":[
          {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/environments$",
-            "regexp_function":"REGEXP"
-         },
-         {
-            "regexp_pattern":"/help/ci/environments",
-            "regexp_function":"NOT REGEXP"
-         }
-      ]
-   },
-   {
-      "event_name":"error_tracking_viewed",
-      "regexp_where_statements":[
-         {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/error_tracking",
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/clusters/[0-9]{1,}",
             "regexp_function":"REGEXP"
          }
       ]
    },
    {
-      "event_name":"logging_viewed",
+      "event_name":"function_metrics_viewed",
       "regexp_where_statements":[
          {
             "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/environments\/[0-9]*\/logs",
@@ -36,42 +23,15 @@
          }
       ]
    },
-   {
-      "event_name":"metrics_viewed",
+    {
+      "event_name":"serverless_page_viewed",
       "regexp_where_statements":[
          {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/metrics",
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/functions",
             "regexp_function":"REGEXP"
          }
       ]
    },
-   {
-      "event_name":"operations_settings_viewed",
-      "regexp_where_statements":[
-         {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/settings\/operations",
-            "regexp_function":"REGEXP"
-         }
-      ]
-   },
-   {
-      "event_name":"prometheus_edited",
-      "regexp_where_statements":[
-         {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/services\/prometheus\/edit",
-            "regexp_function":"REGEXP"
-         }
-      ]
-   },
-   {
-      "event_name":"tracing_viewed",
-      "regexp_where_statements":[
-         {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/tracing",
-            "regexp_function":"REGEXP"
-         }
-      ]
-   }
 ]
 -%}
 
