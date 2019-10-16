@@ -21,5 +21,5 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-WHERE month IS NOT NULL 
+WHERE data_downloaded_month IS NOT NULL 
   AND sourcer IS NOT NULL
