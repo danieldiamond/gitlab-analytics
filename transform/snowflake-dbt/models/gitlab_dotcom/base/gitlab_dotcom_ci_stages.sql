@@ -1,5 +1,6 @@
 {{ config({
-    "schema": "staging"
+    "materialized": "incremental",
+    "unique_key": "ci_stage_id"
     })
 }}
 
