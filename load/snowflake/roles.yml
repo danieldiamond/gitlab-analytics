@@ -265,10 +265,6 @@ roles:
                     - snowflake
                 write:
                     - analytics
-            schemas:
-                read:
-            tables:
-                read:
 
     - analyst_sales:
         warehouses:
@@ -282,11 +278,6 @@ roles:
                     - snowflake
                 write:
                     - analytics
-            schemas:
-                read:
-            tables:
-                read:
-
 
     - analyst_sensitive:
         warehouses:
