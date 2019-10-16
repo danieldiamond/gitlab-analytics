@@ -1,3 +1,4 @@
+
 {{ config({
     "materialized": "incremental",
     "unique_key": "merge_request_id"
@@ -13,7 +14,7 @@ WITH source AS (
   
     {% if is_incremental() %}
 
-    AND updated_at >= (SELECT MAX(merge_request_updated_at) FROM {{this}})
+    WHERE updated_at >= (SELECT MAX(merge_request_updated_at) FROM {{this}})
 
     {% endif %}
 
