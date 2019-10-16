@@ -25,11 +25,11 @@ If it's `models/*` this is a `schema test` and is defined in the `schema.yml` fi
 ## Schema Tests
 
 ###  Relationship Tests
-Relationship tests are a type of schema test that check for referential integrity ([dbt documentation](https://docs.getdbt.com/docs/testing#section-relationships)). The purpose of a relationship test is to "validate that all of the records in a child table have a corresponding record in a parent table."  
+Relationship tests are a type of schema test that check for referential integrity ([dbt documentation](https://docs.getdbt.com/docs/testing#section-relationships)). The purpose of a relationship test is to "validate that all of the records in a child table have a corresponding record in a parent table."
 
 For example, you might have a (child) table called `merge_requests` with a column called `author_id`. A good relationship test would be to test that every value in `merge_requests.author_id` is present in a different (parent) table called `users`.
 
-When a relationship test fails, the error message will look like: 
+When a relationship test fails, the error message will look like:
 ```
 Failure in test relationships_childModel_childColumn__parentColumn__parentModel_ (models/../../schema.yml)
   Got 2 results, expected 0.
@@ -91,6 +91,13 @@ Failure in test relationships_snowplow_web_events_time_page_view_id__page_view_i
 
 ## Custom Data Tests
 
+### Test: current_depts_and_divs
+
+This test makes sure there are no current employees who don't have a division or department.
+The output is the row for the employee which does not have a department or division.
+If this test fails, ping the People Operations team with the employee's name.
+You will need to temporarily filter out the problematic candidate while it is resolved upstream. 
+
 ### Test: no_missing_location_factors
 
 This test makes sure that new hires have a location factor no later than 7 days after their start date. It is checking to make sure that for all active employees (`AND termination_date IS NULL`) within 7 days of their start date (`AND CURRENT_DATE > dateadd('days', 7, hire_date)`) have a `hire_location_factor` (the location factor on their hire date). When this is not the case, we need to alert the People Operations Analyst with the employee number.
@@ -106,7 +113,7 @@ Failure in test no_missing_location_factors (tests/bamboohr/data_test/no_missing
 ```
 
 Steps to resolve:
-* Step 1: Run the chatops command `/gitlab datachat run missing_location_factor` from Slack
+* Step 1: Run the chatops command `/gitlab datachat run missing_location_factor` from Slack to see the test results in Slack.
 * Step 2: Ping the People Operations Analyst with the employee ID numbers that are missing location factor in #data. (AS of 2019-07-24, that would be Morgan Wilkins.)
 * Step 3: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
 * Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
@@ -124,10 +131,10 @@ Database Error in model pings_usage_data_monthly_change_by_stage (models/pings/x
 
 Steps to Resolve:
 
-* Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack.
+* Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack to see the test results in Slack.
 * Step 2: Create a new issue.
 * Step 3: Ask in the #product slack channel which stage the new metric belongs to.
-* Step 4: Create an MR that adds the new metric to the `ping_metrics_to_stage_mapping_data` CSV. Remember to keep it sorted alphabetically. 
+* Step 4: Create an MR that adds the new metric to the `ping_metrics_to_stage_mapping_data` CSV. Remember to keep it sorted alphabetically.
 
 ### Test: zuora_account_has_crm_id
 
@@ -142,7 +149,7 @@ Failure in test zuora_account_has_crm_id (tests/data_test/zuora_account_has_crm_
 
 Steps to Resolve:
 
-* Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack.
+* Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack to see the test results in Slack.
 * Step 2: Create an issue in finance asking the account get updated with a salesforce_id. Cross link this to the analytics issue
 * Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
 * Step 4: Filter out the zuora account in the base `zuora_account` model and submit your MR for review

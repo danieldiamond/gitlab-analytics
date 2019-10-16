@@ -73,12 +73,14 @@ Example: You might be looking at the count of opportunities before and after, if
 
 #### Stage: snowflake
 
-- **clone_analytics**: Run this when the MR opens to be able to run any dbt jobs. Subsequent runs of this job will be fast as it only verifies if the clone exists.
+- **clone_analytics**: Runs automatically when the MR opens to be able to run any dbt jobs. Subsequent runs of this job will be fast as it only verifies if the clone exists. This is an empty clone of the analytics db.
+- **clone_analytics_real**: Run this if you need to do a real clone of the analytics warehouse. This is a full clone of the db.
 - **clone_raw**: Run this if you need to run extract, freshness, or snapshot jobs. Subsequent runs of this job will be fast as it only verifies if the clone exists.
 - **force_clone_both**: Run this if you want to force refresh both raw and analytics.
 
 #### Stage: extract
 
+- **boneyard_sheetload**: Run this if you want to test a new boneyard sheetload load. This requires the real analytics clone to be available.
 - **sheetload**: Run this if you want to test a new sheetload load. This requires the RAW clone to be available.
 
 
@@ -87,6 +89,8 @@ Example: You might be looking at the count of opportunities before and after, if
 > As part of a DBT Model Change MR, you need to trigger a pipeline job to test that your changes won't break anything in production. To trigger these jobs, go to the "Pipelines" tab at the bottom of this MR and click on the appropriate stage (dbt_run or dbt_misc).
 
 These jobs are scoped to the `ci` target. This target selects a subset of data for the snowplow and pings datasets.
+
+Note that job artificats are avialable for all dbt run jobs. These include the compiled code and the run results.
 
 - **all**: Runs all models
 - **exclude_product**: Excludes models with the `product` tag. Use this for every other data source.

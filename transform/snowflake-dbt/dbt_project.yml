@@ -114,8 +114,7 @@ models:
 
     gitlab_dotcom:
       tags: ["product"]
-      xf:
-        materialized: table
+      materialized: table
 
     gitter:
       enabled: false
@@ -139,6 +138,8 @@ models:
 
     pings:
       tags: ["product"]
+      base:
+        schema: staging
 
     retention:
       materialized: table
