@@ -57,7 +57,7 @@ models:
 - name: sheetload_linkedin_recruiter
   description: This is the source of linkedin recruiter inmail data for each month by sourcer.
   columns:
-  - name: seat_holder
+  - name: sourcer
     tests:
     - not_null
   - name: messages_sent
