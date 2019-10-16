@@ -6,7 +6,7 @@ gitlab-snowflake:
       threads: 8
       account: gitlab
       user: %%YOUR USER%% <-- This will be your GitLab email
-      password: %%YOUR PASSWORD%%
+      authenticator: externalbrowser
       role: TRANSFORMER
       database: ANALYTICS
       warehouse: ANALYST_XS
