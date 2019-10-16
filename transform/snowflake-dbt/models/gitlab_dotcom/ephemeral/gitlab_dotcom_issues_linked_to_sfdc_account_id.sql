@@ -7,7 +7,7 @@ WITH gitlab_issues AS (
 
   SELECT 
    issue_id,
-   {{target.schema}}_staging.regexp_substr_to_array(issue_description, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array
+   {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array
    
   FROM {{ ref('gitlab_dotcom_issues_xf')}}
   WHERE is_internal_issue
