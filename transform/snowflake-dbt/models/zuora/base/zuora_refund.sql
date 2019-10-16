@@ -13,9 +13,13 @@ WITH source AS (
   SELECT
     --Primary Key
     refundnumber::VARCHAR                  AS refund_number,
+    id::VARCHAR                            AS refund_id,
+
+    --Foreign Keys
+    accountid::VARCHAR                     AS account_id,
+    parentaccountid::VARCHAR               AS parent_account_id,
 
     --Info
-    accountid::VARCHAR                     AS account_id,
     accountingcode::VARCHAR                AS accounting_code,
     amount::FLOAT                          AS refund_amount,
     billtocontactid::VARCHAR               AS bill_to_contact_id,
@@ -29,9 +33,7 @@ WITH source AS (
     gatewayresponse::VARCHAR               AS gateway_response,
     gatewayresponsecode::VARCHAR           AS gateway_response_code,
     gatewaystate::VARCHAR                  AS gateway_state,
-    id::VARCHAR                            AS refund_id,
     methodtype::VARCHAR                    AS method_type,
-    parentaccountid::VARCHAR               AS parent_account_id,
     paymentmethodid::VARCHAR               AS payment_method_id,
     paymentmethodsnapshotid::VARCHAR       AS payment_method_snapshot_id,
     reasoncode::VARCHAR                    AS reason_code,
@@ -50,9 +52,9 @@ WITH source AS (
     updatedbyid::VARCHAR                   AS updated_by_id,
     updateddate::TIMESTAMP_TZ              AS updated_date
   FROM source
+  WHERE is_deleted = FALSE
 
 )
 
 SELECT *
 FROM renamed
-WHERE LOWER(is_deleted) = false
