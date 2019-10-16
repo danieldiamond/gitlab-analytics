@@ -54,6 +54,36 @@ models:
   - name: plan
     tests:
     - not_null
+- name: sheetload_linkedin_recruiter
+  description: This is the source of linkedin recruiter inmail data for each month by sourcer .
+  columns:
+  - name: sourcer
+    tests:
+    - not_null
+  - name: messages_sent
+    tests:
+    - not_null
+  - name: responses_received
+    tests:
+    - not_null
+  - name: acceptances
+    tests:
+    - not_null
+  - name: declines
+    tests:
+    - not_null
+  - name: no_response
+    tests:
+    - not_null
+  - name: responses_rate
+    tests:
+    - not_null
+  - name: accept_rate
+    tests:
+    - not_null
+  - name: data_downloaded_month
+    tests:
+    - not_null
 - name: sheetload_location_factor_targets
   description: This is the list of location factor targets for each department and division as outlined in the [handbook](https://about.gitlab.com/handbook/people-operations/people-operations-metrics/#average-location-factor).
   columns:
