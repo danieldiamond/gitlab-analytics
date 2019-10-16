@@ -138,6 +138,8 @@ models:
 
     pings:
       tags: ["product"]
+      base:
+        schema: staging
 
     retention:
       materialized: table
