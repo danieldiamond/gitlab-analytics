@@ -25,7 +25,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=20)
     logging.info("Stating macro name check... ")
 
-    files = glob("macros/*.sql", recursive=True)
+    files = glob("macros/**/*.sql", recursive=True)
     logging.info("Files collected... ")
 
     check_macro_name_to_file_name(files)
