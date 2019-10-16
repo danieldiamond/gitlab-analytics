@@ -70,7 +70,7 @@ clone_analytics:
 clone_analytics_real:
   <<: *snowflake_start_clone
   script:
-    - manage_snowflake.py manage_clones --database analytics
+    - manage_snowflake.py manage_clones --force --database analytics
 
 clone_raw:
   <<: *snowflake_start_clone
