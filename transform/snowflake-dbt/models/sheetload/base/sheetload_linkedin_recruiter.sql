@@ -14,7 +14,7 @@ WITH source AS (
       ZEROIFNULL(NULLIF("NO_RESPONSE",''))::INTEGER        AS no_response,
       ZEROIFNULL(NULLIF("RESPONSES_RATE",''))::INTEGER     AS responses_rate,
       ZEROIFNULL(NULLIF("ACCEPT_RATE",''))::INTEGER        AS accept_rate,
-      month::DATE                                          AS month
+      month::DATE                                          AS data_downloaded_month
     FROM source
       
 ) 
