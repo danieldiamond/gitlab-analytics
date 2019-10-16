@@ -1,4 +1,11 @@
-WITH groups AS  (
+WITH customers AS (
+  
+  SELECT *
+  FROM {{ ref('customers_db_customers') }}
+  
+)
+
+, groups AS  (
 
   SELECT *
   FROM {{ ref('gitlab_dotcom_groups_xf') }}
@@ -161,6 +168,8 @@ WITH groups AS  (
   FROM user_paid_subscription_plan_lk
 
 )
+
+
 , joined AS (
   SELECT
     users.*,
@@ -174,16 +183,24 @@ WITH groups AS  (
       WHEN account_age <= 60 THEN '5 - 31 to 60 days'
       WHEN account_age > 60 THEN '6 - Over 60 days'
     END                                                                          AS account_age_cohort,
+    
     highest_paid_subscription_plan.highest_paid_subscription_plan_id,
     highest_paid_subscription_plan.highest_paid_subscription_plan_id IS NOT NULL AS is_paid_user,
     highest_paid_subscription_plan.highest_paid_subscription_inheritance_source,
     highest_paid_subscription_plan.highest_paid_subscription_namespace_id,
-    highest_paid_subscription_plan.highest_paid_subscription_project_id
+    highest_paid_subscription_plan.highest_paid_subscription_project_id,
+    
+    IFF(customers.customer_provider_user_id IS NOT NULL, TRUE, FALSE)            AS has_customer_account,
+    customers.customer_created_at,
+    DATEDIFF('hour', users.user_created_at, customers.customer_created_at)       AS hours_from_user_to_customer
+    
 
   FROM users
   LEFT JOIN highest_paid_subscription_plan
     ON users.user_id = highest_paid_subscription_plan.user_id
-
+  LEFT JOIN customers 
+    ON users.user_id::VARCHAR = customers.customer_provider_user_id::VARCHAR 
+      AND customer_provider = 'gitlab'
 )
 
 SELECT *
