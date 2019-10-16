@@ -1,3 +1,4 @@
+
 {{ config({
     "schema": "staging"
     })
@@ -21,6 +22,7 @@ WITH source AS (
 
     FROM source
     WHERE rank_in_key = 1
+      AND created_at IS NOT NULL
 
 )
 
