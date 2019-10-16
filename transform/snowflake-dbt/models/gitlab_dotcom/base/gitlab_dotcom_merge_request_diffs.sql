@@ -1,5 +1,6 @@
 {{ config({
-    "schema": "staging"
+    "materialized": "incremental",
+    "unique_key": "merge_request_diff_id"
     })
 }}
 
@@ -11,11 +12,16 @@ WITH source AS (
   FROM {{ source('gitlab_dotcom', 'merge_request_diffs') }}
   WHERE created_at IS NOT NULL
     AND updated_at IS NOT NULL
+    
+    {% if is_incremental() %}
+
+    AND updated_at >= (SELECT MAX(merge_request_diff_updated_at) FROM {{this}})
+
+    {% endif %}
 
 ), renamed AS (
 
     SELECT
-
       id::INTEGER                                 AS merge_request_diff_id,
       base_commit_sha,
       head_commit_sha,
@@ -26,7 +32,6 @@ WITH source AS (
       commits_count::INTEGER                      AS commits_count,
       created_at::TIMESTAMP                       AS merge_request_diff_created_at,
       updated_at::TIMESTAMP                       AS merge_request_diff_updated_at
-
     FROM source
     WHERE rank_in_key = 1
 

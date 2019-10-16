@@ -1,5 +1,6 @@
 {{ config({
-    "schema": "staging"
+    "materialized": "incremental",
+    "unique_key": "ci_build_id"
     })
 }}
 
@@ -9,6 +10,12 @@ WITH source AS (
     *,
     ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'ci_builds') }}
+
+  {% if is_incremental() %}
+
+  WHERE updated_at >= (SELECT MAX(ci_build_updated_at) FROM {{this}})
+
+  {% endif %}
 
 ), renamed AS (
 

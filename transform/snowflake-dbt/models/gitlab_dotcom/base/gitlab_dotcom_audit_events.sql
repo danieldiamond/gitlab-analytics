@@ -1,9 +1,21 @@
+{{ config({
+    "materialized": "incremental",
+    "unique_key": "audit_event_id"
+    })
+}}
+
 WITH source AS (
 
   SELECT
     *,
     ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'audit_events') }}
+
+  {% if is_incremental() %}
+
+  WHERE updated_at >= (SELECT MAX(audit_event_updated_at) FROM {{this}})
+
+  {% endif %}
 
 ), renamed AS (
 
