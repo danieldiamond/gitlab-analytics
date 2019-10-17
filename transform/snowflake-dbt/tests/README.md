@@ -123,10 +123,10 @@ This test checks that the list of unique ping metrics that we receive, `version_
 
 Error Example:
 ```
-Database Error in model pings_usage_data_monthly_change_by_stage (models/version/xf/pings_usage_data_monthly_change_by_stage.sql)
+Database Error in model version_usage_data_monthly_change_by_stage (models/version/xf/version_usage_data_monthly_change_by_stage.sql)
   000904 (42000): 018c7f13-0141-8466-0000-289d05dda8ae: SQL compilation error: error line 397 at position 24
   invalid identifier 'PINGS.OPERATIONS_DASHBOARD_DEFAULT_DASHBOARD_CHANGE'
-  compiled SQL at target/compiled/gitlab_snowflake/pings/xf/pings_usage_data_monthly_change_by_stage.sql
+  compiled SQL at target/compiled/gitlab_snowflake/version/xf/version_usage_data_monthly_change_by_stage.sql
 ```
 
 Steps to Resolve:

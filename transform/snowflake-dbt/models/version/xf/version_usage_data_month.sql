@@ -18,14 +18,17 @@ WITH usage_data as (
       MAX(edition)                                                                                       AS edition,
       MAX(main_edition)                                                                                  AS main_edition,
       MAX(edition_type)                                                                                  AS edition_type,
+      MAX(git_version)                                                                                   AS git_version,
       MAX(gitaly_version)                                                                                AS gitaly_version,
       MAX(gitaly_servers)                                                                                AS gitaly_servers,
+      
 
-      {% for ping_name in ping_list %}
+      {% for ping_name in version_usage_stats_list %}
         MAX({{ping_name}})                                                                               AS {{ping_name}}
+          {%- if not loop.last %}      
+          ,
+          {% endif -%}
       {%- endfor -%}
-
-       MAX(git_version)                                                                                  AS git_version
     
     FROM usage_data
     {{ dbt_utils.group_by(n=5) }}
