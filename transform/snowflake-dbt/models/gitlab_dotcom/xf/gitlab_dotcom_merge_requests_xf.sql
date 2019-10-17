@@ -21,7 +21,7 @@ WITH merge_requests AS (
 
     SELECT
       merge_request_id,
-      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY merge_request_id ASC) AS agg_label
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY merge_request_id ASC) AS labels
     FROM merge_requests
     LEFT JOIN label_links
       ON merge_requests.merge_request_id = label_links.target_id
@@ -47,7 +47,13 @@ WITH merge_requests AS (
     SELECT *
     FROM {{ref('gitlab_dotcom_projects')}}
 
-), namespace_lineage AS (
+), author_namespaces AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_namespaces_xf')}}
+    WHERE namespace_type = 'Individual'
+
+), project_namespace_lineage AS (
 
     SELECT
       namespace_id,
@@ -60,17 +66,19 @@ WITH merge_requests AS (
     SELECT
       merge_requests.*,
       projects.namespace_id,
-      namespace_lineage.ultimate_parent_id,
-      namespace_lineage.namespace_is_internal,
-      ARRAY_TO_STRING(agg_labels.agg_label,'|') AS masked_label_title,
+      project_namespace_lineage.ultimate_parent_id,
+      project_namespace_lineage.namespace_is_internal,
+      author_namespaces.namespace_path             AS author_namespace_path,
+      ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
+      agg_labels.labels,
       merge_request_metrics.merged_at,
       IFF(merge_requests.target_project_id IN ({{is_project_included_in_engineering_metrics()}}),
         TRUE, FALSE)                               AS is_included_in_engineering_metrics,
       IFF(merge_requests.target_project_id IN ({{is_project_part_of_product()}}),
         TRUE, FALSE)                               AS is_part_of_product,
       CASE
-      WHEN namespace_is_internal IS NOT NULL
-        AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.agg_label)
+      WHEN project_namespace_lineage.namespace_is_internal IS NOT NULL
+        AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.labels)
         THEN TRUE
       ELSE FALSE
       END AS is_community_contributor_related,
@@ -83,8 +91,10 @@ WITH merge_requests AS (
         ON merge_requests.merge_request_id = merge_request_metrics.merge_request_id
       LEFT JOIN projects
         ON merge_requests.target_project_id = projects.project_id
-      LEFT JOIN namespace_lineage
-        ON projects.namespace_id = namespace_lineage.namespace_id
+      LEFT JOIN author_namespaces
+        ON merge_requests.author_id = author_namespaces.owner_id
+      LEFT JOIN project_namespace_lineage
+        ON projects.namespace_id = project_namespace_lineage.namespace_id
 )
 
 SELECT *
