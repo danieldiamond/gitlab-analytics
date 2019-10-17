@@ -47,7 +47,7 @@ dag = DAG(
 # Task 1
 greenhouse_run = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image="registry.gitlab.com/gitlab-data/data-image/data-image:tayloramurphy-master-patch-15921",
     task_id="greenhouse",
     name="greenhouse",
     secrets=[

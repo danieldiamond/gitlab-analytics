@@ -40,7 +40,7 @@ dag = DAG(
 # Task 1
 sheetload_run = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image="registry.gitlab.com/gitlab-data/data-image/data-image:tayloramurphy-master-patch-15921",
     task_id="boneyard-sheetload",
     name="boneyard-sheetload",
     secrets=[
