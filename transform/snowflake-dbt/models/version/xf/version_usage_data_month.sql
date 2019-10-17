@@ -28,7 +28,7 @@ WITH usage_data as (
           {%- if not loop.last %}      
           ,
           {% endif -%}
-      {%- endfor -%}
+      {%- endfor %}
     
     FROM usage_data
     {{ dbt_utils.group_by(n=5) }}

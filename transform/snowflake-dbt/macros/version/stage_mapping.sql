@@ -19,12 +19,12 @@
                 CASE WHEN
                     {% for feature in values %}
 
-                        pings.{{ feature }}_change > 0
+                        change.{{ feature }}_change > 0
 
                         {%- if not loop.last %}
                             OR
                         {% else %}
-                            THEN pings.user_count END
+                            THEN change.user_count END
                         {% endif -%}
 
                     {% endfor -%} 
