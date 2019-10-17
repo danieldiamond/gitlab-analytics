@@ -1,14 +1,16 @@
+-- depends_on: ref('version_usage_stats_to_stage_mappings')
+
 WITH live_data AS (
 
 	SELECT DISTINCT
     full_ping_name
 	FROM {{ref('version_usage_stats_list')}}
 
-), category_mapping as (
+), category_mapping AS (
 
 	SELECT DISTINCT
     stats_used_key_name
-	FROM {{ref('version_metrics_to_stage_mapping')}}
+	FROM {{ref('version_usage_stats_to_stage_mappings')}}
 
 )
 
