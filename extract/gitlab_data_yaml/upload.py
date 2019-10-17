@@ -20,17 +20,26 @@ if __name__ == "__main__":
 
     base_url = "https://gitlab.com/gitlab-com/www-gitlab-com/raw/master/data/"
 
+    job_failed = False
+
     for key, value in file_dict.items():
         logging.info(f"Downloading to {key}.yml file.")
+        try:
+            command = f"curl {base_url}{key}.yml | yaml2json -o {value}.json && exit 1"
+            p = subprocess.run(command, shell=True)
+            p.check_returncode()
+        except:
+            job_failed = True
 
-        command = f"curl {base_url}{key}.yml | yaml2json -o {value}.json"
-        p = subprocess.run(command, shell=True)
 
         logging.info(f"Uploading to {value}.json to Snowflake stage.")
 
-        snowflake_stage_load_copy_remove(
-            f"{value}.json",
-            "raw.gitlab_data_yaml.gitlab_data_yaml_load",
-            f"raw.gitlab_data_yaml.{value}",
-            snowflake_engine,
-        )
+        # snowflake_stage_load_copy_remove(
+        #     f"{value}.json",
+        #     "raw.gitlab_data_yaml.gitlab_data_yaml_load",
+        #     f"raw.gitlab_data_yaml.{value}",
+        #     snowflake_engine,
+        # )
+
+    if job_failed:
+        sys.exit(1)
