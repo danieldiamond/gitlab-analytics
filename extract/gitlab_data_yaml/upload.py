@@ -31,7 +31,6 @@ if __name__ == "__main__":
         except:
             job_failed = True
 
-
         logging.info(f"Uploading to {value}.json to Snowflake stage.")
 
         snowflake_stage_load_copy_remove(
