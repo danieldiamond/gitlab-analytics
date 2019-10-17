@@ -4,8 +4,6 @@
     })
 }}
 
-{% set max_date_in_analysis = "date_trunc('week', dateadd(week, 3, CURRENT_DATE))" %}
-
 WITH employee_directory_intermediate AS (
 
    SELECT * FROM {{ref('employee_directory_intermediate')}}
