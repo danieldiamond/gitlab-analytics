@@ -22,7 +22,8 @@ WITH usage_data as (
             max(gitaly_servers)                                                                              AS gitaly_servers,
 
             {% for ping_name in ping_list %}
-            max({{ping_name}})                                                                               AS {{ping_name}} {{ "," if not loop.last }}
+            max({{ping_name}})                                                                               AS {{ping_name}}
+              {%- if not loop.last -%} , {%- endif %}
             {%- endfor -%}
 
     FROM usage_data

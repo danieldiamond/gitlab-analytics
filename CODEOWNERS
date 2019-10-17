@@ -32,7 +32,7 @@ docker-compose.yml @tlapiana
 /transform/snowflake-dbt/models/netsuite/ @iweeks
 /transform/snowflake-dbt/models/netsuite_stitch/ @iweeks
 /transform/snowflake-dbt/models/netsuite/ @iweeks
-/transform/snowflake-dbt/models/pings/ @eli_kastelein @mpeychet
+/transform/snowflake-dbt/models/version/ @eli_kastelein @mpeychet
 /transform/snowflake-dbt/models/smau_events/ @eli_kastelein @mpeychet
 /transform/snowflake-dbt/models/snowplow/ @tayloramurphy
 /transform/snowflake-dbt/models/snowplow_combined/ @tayloramurphy

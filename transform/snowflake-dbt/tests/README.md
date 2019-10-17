@@ -119,7 +119,7 @@ Steps to resolve:
 * Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
 
 ### Test: uncategorized_version_usage_stats
-This test checks that the list of unique ping metrics that we receive, `pings_list`, matches the ping metrics that we have categorized in the static CSV, `version_usage_stats_to_stage_mappings`. This test will fail when these two sources get out of sync in either direction.
+This test checks that the list of unique ping metrics that we receive, `version_usage_stats_list`, matches the ping metrics that we have categorized in the static CSV, `version_usage_stats_to_stage_mappings`. This test will fail when these two sources get out of sync in either direction.
 
 Error Example:
 ```
