@@ -25,7 +25,7 @@ if __name__ == "__main__":
     for key, value in file_dict.items():
         logging.info(f"Downloading to {key}.yml file.")
         try:
-            command = f"curl {base_url}{key}.yml | yaml2json -o {value}.json && exit 1"
+            command = f"curl {base_url}{key}.yml | yaml2json -o {value}.json"
             p = subprocess.run(command, shell=True)
             p.check_returncode()
         except:
