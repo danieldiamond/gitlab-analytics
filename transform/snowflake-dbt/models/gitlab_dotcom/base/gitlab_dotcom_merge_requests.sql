@@ -60,3 +60,4 @@ WITH source AS (
 
 SELECT  *
 FROM renamed
+ORDER BY merge_request_updated_at

@@ -37,3 +37,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+ORDER BY event_updated_at

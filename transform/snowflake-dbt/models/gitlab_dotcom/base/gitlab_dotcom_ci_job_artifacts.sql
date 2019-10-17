@@ -41,3 +41,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+ORDER BY ci_job_artifact_updated_at

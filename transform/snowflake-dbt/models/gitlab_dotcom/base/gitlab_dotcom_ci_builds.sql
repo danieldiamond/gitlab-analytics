@@ -1,3 +1,4 @@
+
 {{ config({
     "materialized": "incremental",
     "unique_key": "ci_build_id"
@@ -74,3 +75,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+ORDER BY ci_build_updated_at

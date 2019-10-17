@@ -37,3 +37,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+ORDER BY audit_event_updated_at
