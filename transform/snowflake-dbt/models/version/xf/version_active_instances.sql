@@ -1,4 +1,4 @@
-with version_checks as (
+WITH version_checks as (
 
     SELECT 
       host_id::VARCHAR        AS host_id,

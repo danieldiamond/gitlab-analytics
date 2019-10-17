@@ -1,6 +1,8 @@
 WITH source AS (
 
-  SELECT *
+  SELECT
+    *,,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('version', 'usage_data') }}
 
 ),

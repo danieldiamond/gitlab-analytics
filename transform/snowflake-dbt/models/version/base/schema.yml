@@ -1,10 +1,8 @@
 version: 2
 
 models:
-    - name: ping_stat_to_stage_mapping
-      description: mapping of metrics in the pings data to a stage. The data for this base model must be populated using `dbt seed`
 
-    - name: pings_avg_cycle_analytics
+    - name: version_avg_cycle_analytics
       description: Cycle analytics data from self-managed instances https://docs.gitlab.com/ee/user/analytics/cycle_analytics.html.
       columns:
          - name: avg_cycle_analytics_id
@@ -12,14 +10,14 @@ models:
                - not_null
                - unique
 
-    - name: pings_hosts
+    - name: version_hosts
       columns:
           - name: host_id
             tests:
                 - not_null
                 - unique
 
-    - name: pings_licenses
+    - name: version_licenses
       columns:
           - name: license_id
             tests:
@@ -36,8 +34,8 @@ models:
             tests:
                 - not_null
 
-    - name: pings_version_checks
-      description: Ping version data from self-managed instances
+    - name: version_version_checks
+      description: Version check data from self-managed instances
       columns:
           - name: id
             tests:
