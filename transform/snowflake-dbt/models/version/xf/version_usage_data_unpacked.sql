@@ -21,7 +21,7 @@ WITH usage_data as (
       ELSE 'Self-Managed' END                                                       AS ping_source,
     edition,
     CONCAT(CONCAT(SPLIT_PART(version, '.', 1), '.'), SPLIT_PART(version, '.', 2))   AS major_version,
-    CASE WHEN lower(edition) LIKE '%ee%' THEN 'EE'
+    CASE WHEN LOWER(edition) LIKE '%ee%' THEN 'EE'
       ELSE 'CE' END                                                                 AS main_edition,
     CASE WHEN edition LIKE '%CE%' THEN 'Core'
         WHEN edition LIKE '%EES%' THEN 'Starter'
