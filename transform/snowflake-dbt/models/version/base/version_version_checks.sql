@@ -7,16 +7,14 @@ WITH source AS (
 
 ), renamed AS (
 
-  SELECT  --TODO: Cast
-    id,
-    host_id,
-
-    created_at,
-    updated_at,
-
-    gitlab_version,
-    referer_url,
-    request_data
+  SELECT
+    id::INTEGER                AS id,
+    host_id::INTEGER           AS host_id,
+    created_at::TIMESTAMP      AS created_at,
+    updated_at::TIMESTAMP      AS updated_at,
+    gitlab_version::VARCHAR    AS gitlab_version,
+    referer_url::VARCHAR       AS referer_url,
+    PARSE_JSON(request_data)   AS request_data
   FROM source
   WHERE rank_in_key = 1
 )
