@@ -34,12 +34,12 @@ if __name__ == "__main__":
 
         logging.info(f"Uploading to {value}.json to Snowflake stage.")
 
-        # snowflake_stage_load_copy_remove(
-        #     f"{value}.json",
-        #     "raw.gitlab_data_yaml.gitlab_data_yaml_load",
-        #     f"raw.gitlab_data_yaml.{value}",
-        #     snowflake_engine,
-        # )
+        snowflake_stage_load_copy_remove(
+            f"{value}.json",
+            "raw.gitlab_data_yaml.gitlab_data_yaml_load",
+            f"raw.gitlab_data_yaml.{value}",
+            snowflake_engine,
+        )
 
     if job_failed:
         sys.exit(1)

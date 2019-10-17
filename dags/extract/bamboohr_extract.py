@@ -39,7 +39,7 @@ bamboohr_extract_cmd = f"""
 """
 bamboohr_extract = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:tayloramurphy-master-patch-15921",
+    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="bamboohr-extract",
     name="bamboohr-extract",
     secrets=[
