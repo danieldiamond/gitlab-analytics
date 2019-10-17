@@ -38,7 +38,7 @@ engineering_extract_cmd = f"""
 """
 engineering_extract = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:tayloramurphy-master-patch-15921",
+    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="engineering-extract",
     name="engineering-extract",
     secrets=[

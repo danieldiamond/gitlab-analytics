@@ -47,7 +47,7 @@ dag = DAG(
 # Task 1
 snowflake_roles_snapshot = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:tayloramurphy-master-patch-15921",
+    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
     task_id="snowflake-roles-snapshot",
     name="snowflake-roles-snapshot",
     secrets=[
