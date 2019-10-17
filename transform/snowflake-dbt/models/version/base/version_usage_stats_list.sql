@@ -1,6 +1,6 @@
 WITH version_usage_data AS (
 
-	SELECT * 
+    SELECT * 
   FROM {{ ref('version_usage_data') }}
 
 )
