@@ -37,4 +37,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-ORDER BY user_updated_at
+ORDER BY updated_at
