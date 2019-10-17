@@ -323,7 +323,7 @@ This macro takes in a product stage name, such as 'Verify', and returns a SQL ag
 {{ stage_mapping( 'Verify' ) }}
 ```
 Used in:
-- _usage_data_monthly_change_by_stage.sql
+- version_usage_data_monthly_change_by_stage.sql
 
 ## Support SLA Met ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zendesk/support_sla_met.sql))
 This macro implements the `CASE WHEN` logic for Support SLAs, as [documented in the handbook](https://about.gitlab.com/support/#gitlab-support-service-levels).
