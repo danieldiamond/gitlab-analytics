@@ -37,7 +37,10 @@ WITH employee_directory_intermediate AS (
 
 ), final as (
 
-    SELECT cleaned.*, cost_center.cost_center
+    SELECT
+      {{ dbt_utils.surrogate_key('date_actual', 'employee_id') }} as unique_key,
+      cleaned.*,
+      cost_center.cost_center
     FROM cleaned
     LEFT JOIN cost_center
       ON cleaned.department=cost_center.department

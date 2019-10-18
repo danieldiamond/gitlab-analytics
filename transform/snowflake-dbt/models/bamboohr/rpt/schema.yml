@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: rpt_team_members_out_of_comp_band
+    description: 
+    columns:
+    - name: date_actual
+      tests:
+      - not_null
+      - unique
+    - name: sum_weighted_deviated_from_comp_calc
+      tests:
+      - not_null
+    - name: current_employees
+      tests:
+      - not_null
+    - name: percent_of_employees_outside_of_band
+      tests:
+      - not_null
