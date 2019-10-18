@@ -85,7 +85,3 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-WHERE subscription_id NOT IN (
-    '2c92a0076d6ceb25016d6d84765316c1' -- https://gitlab.com/gitlab-data/analytics/issues/2608
-  , '2c92a0076d6ceb25016d6d6e624a3d67' -- https://gitlab.com/gitlab-data/analytics/issues/2608
-)
