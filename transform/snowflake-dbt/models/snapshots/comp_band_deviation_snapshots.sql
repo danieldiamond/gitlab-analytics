@@ -30,7 +30,7 @@ with source as (
 
       SELECT
         bamboo_employee_number::bigint as bamboo_employee_number,
-        deviation_from_comp_calc_cl::float as deviation_from_comp_calc,
+        round(deviation_from_comp_calc_cl::float, 2) as deviation_from_comp_calc,
         valid_from,
         valid_to
       FROM renamed

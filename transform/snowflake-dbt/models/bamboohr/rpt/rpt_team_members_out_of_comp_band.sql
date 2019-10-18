@@ -16,6 +16,11 @@ WITH employee_directory_intermediate AS (
    SELECT *
    FROM {{ ref('comp_band_deviation_snapshots') }}
 
+ ), date_details AS (
+
+   SELECT *
+   FROM {{ref('date_details')}}
+
 ), joined as (
 
   SELECT employee_directory_intermediate.*,
@@ -35,13 +40,22 @@ WITH employee_directory_intermediate AS (
 
   SELECT
     date_actual,
-    SUM(weighted_deviated_from_comp_calc)/
-      COUNT(distinct employee_number) as percent_of_employees_outside_of_band
+    SUM(weighted_deviated_from_comp_calc) as sum_weighted_deviated_from_comp_calc,
+      COUNT(distinct employee_number) as current_employees,
+    sum_weighted_deviated_from_comp_calc/
+      current_employees as percent_of_employees_outside_of_band
   FROM joined
   WHERE date_actual < CURRENT_DATE
   GROUP BY 1
-)
 
+), final as (
+
+  SELECT *
+  FROM bucketed
+  WHERE date_actual IN (SELECT distinct last_day_of_month FROM  date_details)
+  AND date_actual > '2019-01-01'
+
+)
 SELECT *
-FROM joined
+FROM final
 ORDER BY 1
