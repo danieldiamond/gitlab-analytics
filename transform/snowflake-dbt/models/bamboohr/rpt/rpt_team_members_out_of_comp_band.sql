@@ -39,7 +39,7 @@ WITH employee_directory_intermediate AS (
 ), bucketed as (
 
   SELECT
-    date_actual,
+    date_actual, division, department,
     SUM(weighted_deviated_from_comp_calc) as sum_weighted_deviated_from_comp_calc,
       COUNT(distinct employee_number) as current_employees,
     sum_weighted_deviated_from_comp_calc/
