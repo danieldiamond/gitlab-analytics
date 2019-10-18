@@ -46,7 +46,7 @@ WITH employee_directory_intermediate AS (
       current_employees as percent_of_employees_outside_of_band
   FROM joined
   WHERE date_actual < CURRENT_DATE
-  GROUP BY 1
+  GROUP BY 1, 2, 3
 
 ), final as (
 
