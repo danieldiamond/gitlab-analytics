@@ -44,8 +44,8 @@ WITH customers AS (
     namespaces.namespace_type,
     namespaces.namespace_created_at,
     
-    MIN(orders_snapshots.order_start_date)      AS order_start_date, 
-    MAX(orders_snapshots.order_end_date)        AS order_end_date
+    MIN(orders_snapshots.order_start_date)      AS trial_start_date, 
+    MAX(orders_snapshots.order_end_date)        AS trial_end_date
   FROM orders_snapshots
   JOIN customers ON orders_snapshots.customer_id = customers.customer_id
   LEFT JOIN namespaces ON orders_snapshots.gitlab_namespace_id = namespaces.namespace_id
