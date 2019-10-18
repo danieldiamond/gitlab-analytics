@@ -21,7 +21,8 @@ WITH employee_directory AS (
 
 ), date_details AS (
 
-    SELECT * FROM {{ ref('date_details') }}
+    SELECT * 
+    FROM {{ ref('date_details') }}
 
 ), department_info AS (
 
@@ -37,8 +38,8 @@ WITH employee_directory AS (
 
 ), location_factor AS (
 
-  SELECT *
-  FROM {{ ref('employee_location_factor_snapshots') }}
+    SELECT *
+    FROM {{ ref('employee_location_factor_snapshots') }}
 
 ), cost_center as (
 
