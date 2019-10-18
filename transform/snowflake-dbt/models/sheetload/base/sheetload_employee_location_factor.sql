@@ -21,6 +21,5 @@ with source as (
 
 SELECT bamboo_employee_number::bigint as bamboo_employee_number,
         location_factor,
-        deviation_from_comp_calc,
-        convert_timezone('America/Los_Angeles',convert_timezone('UTC',current_timestamp())) AS _last_dbt_run
+        deviation_from_comp_calc
 FROM renamed
