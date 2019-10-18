@@ -6,11 +6,8 @@
 
 with source as (
 
-    SELECT *
-    FROM {{ source('snapshots', 'sheetload_employee_location_factor_snapshots') }}
-    WHERE dbt_scd_id != 'fd3dee5ab322f68692b97130f2bfefab'
-    AND "Employee_ID" != 'Not In Comp Calc'
-    AND "Employee_ID" NOT IN ('$72,124')
+  SELECT *
+  FROM {{ref("comp_band_loc_factor_base")}}
 
 ), renamed as (
 
