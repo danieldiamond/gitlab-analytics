@@ -13,7 +13,19 @@ models:
         -   name: user_name
             tests:
                 - not_null
-  - name: snowflake_users_roles
+  - name: snowflake_grants_to_role
+    description: This is the latest snapshot of users and the roles they've been granted.
+    columns:
+        -   name: role_name
+            tests:
+                - not_null
+        -   name: granted_to_type
+            tests:
+                - not_null
+        -   name: grantee_user_name
+            tests:
+                - not_null
+  - name: snowflake_grants_to_user
     description: This is the latest snapshot of users and the roles they've been granted.
     columns:
         -   name: role_name
