@@ -37,5 +37,5 @@ models:
         tests:
           - not_null
       - name: license_md5
-        description: This column is an md5 hash of the `license_file` column from the `license` table. We do not import the the unhashed column for security/privacy reason. This hashed value joins with usage pings from the version app.
+        description: This column is an md5 hash of the `license_file` column from the `license` table. We do not import the the unhashed column for security/privacy reasons. This hashed value joins with usage pings from the version app.
   
