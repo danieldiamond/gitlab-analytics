@@ -31,15 +31,6 @@
             "regexp_function":"REGEXP"
          }
       ]
-   },
-   {
-      "event_name":"search_performed",
-      "regexp_where_statements":[
-         {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/packages$",
-            "regexp_function":"REGEXP"
-         }
-      ]
    }
 ]
 -%}
