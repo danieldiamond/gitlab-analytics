@@ -16,7 +16,10 @@ sources:
         warn_after: {count: 1, period: day}
 
     tables:
-      - name: user_roles
+      - name: grants_to_user
+      - name: grants_to_role
+      - name: roles
+      - name: users
 
   - name: snowflake_account_usage
     database: snowflake

@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('snowflake','user_roles') }}
+    FROM {{ source('snowflake','grants_to_user') }}
 
 ), intermediate AS (
 
@@ -9,7 +9,8 @@ WITH source AS (
         role                                    AS role_name,
         granted_to                              AS granted_to_type,
         grantee_name,
-        to_timestamp_ntz(_uploaded_at::number)  AS snapshot_date
+        to_timestamp_ntz(_uploaded_at::number)  AS snapshot_date,
+        created_on
     FROM source
 
 ), max_select AS (
