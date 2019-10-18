@@ -39,6 +39,7 @@ WITH employee_directory_intermediate AS (
 ), bucketed as (
 
   SELECT
+    {{ dbt_utils.surrogate_key('date_actual', 'division', 'department') }} as unique_key,
     date_actual, division, department,
     SUM(weighted_deviated_from_comp_calc) as sum_weighted_deviated_from_comp_calc,
       COUNT(distinct employee_number) as current_employees,
@@ -46,7 +47,7 @@ WITH employee_directory_intermediate AS (
       current_employees as percent_of_employees_outside_of_band
   FROM joined
   WHERE date_actual < CURRENT_DATE
-  GROUP BY 1, 2, 3
+  GROUP BY 1, 2, 3, 4
 
 ), final as (
 
