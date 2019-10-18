@@ -45,5 +45,6 @@ with source as (
   GROUP BY 1, 2
 
   )
+
   SELECT *
   FROM final
