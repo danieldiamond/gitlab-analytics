@@ -1,6 +1,12 @@
 version: 2
 
 models:
+  - name: snowflake_show_users
+    description: This is the latest snapshot of Snowflake users.
+    columns:
+        -   name: user_name
+            tests:
+                - not_null
   - name: snowflake_users_roles
     description: This is the latest snapshot of users and the roles they've been granted.
     columns:
