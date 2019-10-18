@@ -57,6 +57,7 @@ WITH employee_directory_intermediate AS (
   AND date_actual > '2019-01-01'
 
 )
+
 SELECT *
 FROM final
 ORDER BY 1
