@@ -21,7 +21,8 @@ WITH employee_directory AS (
 
 ), date_details AS (
 
-    SELECT * FROM {{ ref('date_details') }}
+    SELECT * 
+    FROM {{ ref('date_details') }}
 
 ), department_info AS (
 
