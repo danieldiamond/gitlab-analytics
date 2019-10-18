@@ -39,7 +39,7 @@ WITH employee_directory AS (
 ), location_factor AS (
 
     SELECT *
-  FROM {{ ref('employee_location_factor_snapshots') }}
+    FROM {{ ref('employee_location_factor_snapshots') }}
 
 ), cost_center as (
 
