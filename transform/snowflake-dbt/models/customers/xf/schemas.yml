@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: customers_db_trial_started
+    description: '{{ doc("customers_db_trial_started") }}'
+    columns:
+      - name: order_id
+        test:
+          - not_null
+          - unique
+      - name: customer_id
+        test:
+          - not_null
