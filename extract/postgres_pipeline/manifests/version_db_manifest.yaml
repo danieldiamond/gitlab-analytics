@@ -56,6 +56,7 @@ tables:
       , usage_activity_by_stage
       , gitaly_version
       , gitaly_servers
+      , gitaly_filesystems::VARCHAR
       FROM usage_data
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
         AND '{EXECUTION_DATE}'::timestamp
