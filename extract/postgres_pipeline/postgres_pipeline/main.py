@@ -262,7 +262,7 @@ def check_new_tables(
         return False
 
     # If the table doesn't exist, load 1 million rows (or whatever the table has)
-    query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 1000000"
+    query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 100000"
     chunk_and_upload(query, source_engine, target_engine, table_name, backfill=True)
 
     return True
