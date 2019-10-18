@@ -1,7 +1,9 @@
 {{ config({
-    "materialized": "table"
+    "materialized": "incremental",
+    "unique_key": "id"
     })
 }}
+
 
 WITH source AS (
 
@@ -9,6 +11,10 @@ WITH source AS (
     *,
     ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
   FROM {{ source('version', 'version_checks') }}
+
+  {% if is_incremental() %}
+  WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+  {% endif %}
 
 ), renamed AS (
 
@@ -26,3 +32,4 @@ WITH source AS (
 
 SELECT * 
 FROM renamed
+ORDER BY updated_at
