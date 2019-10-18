@@ -28,7 +28,7 @@ def load_ids(
     table: str,
     table_name: str,
     target_engine: Engine,
-    id_range: int = 1_000_000,
+    id_range: int = 100_000,
 ) -> None:
     """ Load a query by chunks of IDs instead of all at once."""
 
@@ -262,7 +262,7 @@ def check_new_tables(
         return False
 
     # If the table doesn't exist, load 1 million rows (or whatever the table has)
-    query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 1000000"
+    query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 100000"
     chunk_and_upload(query, source_engine, target_engine, table_name, backfill=True)
 
     return True

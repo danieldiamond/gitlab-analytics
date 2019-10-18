@@ -242,7 +242,7 @@ def id_query_generator(
     snowflake_engine: Engine,
     source_table: str,
     target_table: str,
-    id_range: int = 1_000_000,
+    id_range: int = 100_000,
 ) -> Generator[str, Any, None]:
     """
     This function syncs a database with Snowflake based on the user-defined 
