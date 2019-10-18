@@ -110,7 +110,7 @@ WITH customers AS (
     SELECT
       user_id,
       group_id AS namespace_id,
-      NULL AS project_id,
+      NULL     AS project_id,
       inherited_subscription_plan_id,
       inheritance_source
 
@@ -156,12 +156,12 @@ WITH customers AS (
     DISTINCT
     user_id,
     MAX(inherited_subscription_plan_id) OVER
-      (PARTITION BY user_id)               AS highest_paid_subscription_plan_id,
+      (PARTITION BY user_id)         AS highest_paid_subscription_plan_id,
     FIRST_VALUE(inheritance_source) OVER
       (PARTITION BY user_id
         ORDER BY inherited_subscription_plan_id DESC,
                   inheritance_source ASC,
-                  namespace_id ASC) AS highest_paid_subscription_inheritance_source,
+                  namespace_id ASC)  AS highest_paid_subscription_inheritance_source,
     FIRST_VALUE(namespace_id) OVER
       (PARTITION BY user_id
         ORDER BY inherited_subscription_plan_id DESC,
@@ -179,23 +179,26 @@ WITH customers AS (
 , customers_with_trial AS (
   
   SELECT 
-    customers.customer_id,
-    customers.customer_provider,
-    customers.customer_provider_user_id,
-    customers.customer_created_at,
-    MAX(IFF(order_id IS NOT NULL, TRUE, FALSE)) AS has_started_trial,
-    MAX(trial_start_date)                       AS has_started_trial_at
-  FROM customers
+    users.user_id,
+    MIN(customers.customer_id)                                  AS first_customer_id,
+    MIN(customers.customer_created_at)                          AS first_customer_created_at,
+    ARRAY_AGG(customers.customer_id) 
+        WITHIN GROUP (ORDER  BY customers.customer_id)          AS customer_id_list,
+    MAX(IFF(order_id IS NOT NULL, TRUE, FALSE))                 AS has_started_trial,
+    MIN(trial_start_date)                                       AS has_started_trial_at
+  FROM users 
+  LEFT JOIN customers ON users.user_id::VARCHAR = customers.customer_provider_user_id::VARCHAR
+    AND customers.customer_provider = 'gitlab'
   LEFT JOIN trial_started ON customers.customer_id = trial_started.customer_id
-  GROUP BY 1,2,3
+  GROUP BY 1
   
 )
 
 , joined AS (
   SELECT
     users.*,
-    TIMESTAMPDIFF(DAYS, user_created_at, last_activity_on)                            AS days_active,
-    TIMESTAMPDIFF(DAYS, user_created_at, CURRENT_TIMESTAMP(2))                        AS account_age,
+    TIMESTAMPDIFF(DAYS, user_created_at, last_activity_on)                       AS days_active,
+    TIMESTAMPDIFF(DAYS, user_created_at, CURRENT_TIMESTAMP(2))                   AS account_age,
     CASE
       WHEN account_age <= 1 THEN '1 - 1 day or less'
       WHEN account_age <= 7 THEN '2 - 2 to 7 days'
@@ -203,26 +206,26 @@ WITH customers AS (
       WHEN account_age <= 30 THEN '4 - 15 to 30 days'
       WHEN account_age <= 60 THEN '5 - 31 to 60 days'
       WHEN account_age > 60 THEN '6 - Over 60 days'
-    END                                                                               AS account_age_cohort,
+    END                                                                          AS account_age_cohort,
     
     highest_paid_subscription_plan.highest_paid_subscription_plan_id,
-    highest_paid_subscription_plan.highest_paid_subscription_plan_id IS NOT NULL      AS is_paid_user,
+    highest_paid_subscription_plan.highest_paid_subscription_plan_id IS NOT NULL AS is_paid_user,
     highest_paid_subscription_plan.highest_paid_subscription_inheritance_source,
     highest_paid_subscription_plan.highest_paid_subscription_namespace_id,
     highest_paid_subscription_plan.highest_paid_subscription_project_id,
     
-    IFF(customers_with_trial.customer_provider_user_id IS NOT NULL, TRUE, FALSE)      AS has_customer_account,
-    customers_with_trial.customer_created_at,
-    DATEDIFF('hour', users.user_created_at, customers_with_trial.customer_created_at) AS hours_from_user_to_customer,
-    COALESCE(customers_with_trial.has_started_trial, FALSE)                                                AS has_started_trial,
-    customers_with_trial.has_started_trial_at
+    IFF(customers_with_trial.first_customer_id IS NOT NULL, TRUE, FALSE)         AS has_customer_account,
+    customers_with_trial.first_customer_id,
+    customers_with_trial.first_customer_created_at,
+    customers_with_trial.customer_id_list,
+    has_started_trial,
+    has_started_trial_at
 
   FROM users
   LEFT JOIN highest_paid_subscription_plan
     ON users.user_id = highest_paid_subscription_plan.user_id
   LEFT JOIN customers_with_trial 
-    ON users.user_id::VARCHAR = customers_with_trial.customer_provider_user_id::VARCHAR 
-      AND customer_provider = 'gitlab'
+    ON users.user_id = customers_with_trial.user_id
 
 )
 

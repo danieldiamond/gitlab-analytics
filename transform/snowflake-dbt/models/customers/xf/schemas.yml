@@ -5,9 +5,9 @@ models:
     description: '{{ doc("customers_db_trial_started") }}'
     columns:
       - name: order_id
-        test:
+        tests:
           - not_null
           - unique
       - name: customer_id
-        test:
+        tests:
           - not_null
