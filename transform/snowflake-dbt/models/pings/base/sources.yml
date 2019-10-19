@@ -19,7 +19,7 @@ sources:
             tests:
               - not_null
       - name: conversational_development_indicies
-        identifier: version_db_conversational_development_indicies
+        identifier: version_db_conversational_development_indices
         columns:
           - name: id
             tests:
@@ -95,7 +95,7 @@ sources:
       - name: users
         identifier: version_db_users
       - name: versions
-        identifier: version_db_version
+        identifier: version_db_versions
         columns:
           - name: id
             tests:
