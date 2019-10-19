@@ -100,3 +100,4 @@ uploads,plan
 user_preferences_group_overview_details,manage
 user_preferences_group_overview_security_dashboard,secure
 web_hooks,create
+wiki_pages_delete,create
