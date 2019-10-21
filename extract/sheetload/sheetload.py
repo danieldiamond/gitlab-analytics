@@ -114,17 +114,15 @@ def sheet_loader(
     if database != "RAW":
         engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", schema)
         database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
+        # Trys to create the schema its about to write to
+        # If it does exists, {schema} already exists, statement succeeded.
+        # is returned.
+        schema_check = f"""CREATE SCHEMA IF NOT EXISTS "{database}".{schema}"""
+        query_executor(engine, schema_check)
     else:
         engine = snowflake_engine_factory(conn_dict or env, "LOADER", schema)
-        database = env["SNOWFLAKE_LOAD_DATABASE"]
 
     info(engine)
-
-    # Trys to create the schema its about to write to
-    # If it does exists, {schema} already exists, statement succeeded.
-    # is returned.
-    schema_check = f"""CREATE SCHEMA IF NOT EXISTS "{database}".{schema}"""
-    query_executor(engine, schema_check)
 
     # Get the credentials for sheets and the database engine
     scope = [
