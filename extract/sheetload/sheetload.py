@@ -62,6 +62,12 @@ def dw_uploader(
     Use a DB engine to upload a dataframe.
     """
 
+    # Trys to create the schema its about to write to
+    # If it does exists, {schema} already exists, statement succeeded.
+    # is returned.
+    schema_check = f"CREATE SCHEMA IF NOT EXISTS {schema}"
+    query_executor(engine, schema_check)
+
     # Clean the column names and add metadata, generate the dtypes
     data.columns = [
         column_name.replace(" ", "_").replace("/", "_") for column_name in data.columns
