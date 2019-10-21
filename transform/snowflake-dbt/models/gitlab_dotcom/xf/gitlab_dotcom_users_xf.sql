@@ -215,11 +215,11 @@ WITH customers AS (
     highest_paid_subscription_plan.highest_paid_subscription_project_id,
     
     IFF(customers_with_trial.first_customer_id IS NOT NULL, TRUE, FALSE)         AS has_customer_account,
-    customers_with_trial.first_customer_id,
     customers_with_trial.first_customer_created_at,
+    customers_with_trial.first_customer_id,
     customers_with_trial.customer_id_list,
-    has_started_trial,
-    has_started_trial_at
+    customers_with_trial.has_started_trial,
+    customers_with_trial.has_started_trial_at
 
   FROM users
   LEFT JOIN highest_paid_subscription_plan
