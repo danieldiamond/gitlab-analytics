@@ -1,7 +1,8 @@
 
 {{ config({
     "materialized": "incremental",
-    "unique_key": "ci_build_id"
+    "unique_key": "ci_build_id",
+    "schema": "staging"
     })
 }}
 

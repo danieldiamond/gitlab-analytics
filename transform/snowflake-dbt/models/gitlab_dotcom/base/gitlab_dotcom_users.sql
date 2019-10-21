@@ -1,6 +1,7 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "user_id"
+    "unique_key": "user_id",
+    "schema": "staging"
     })
 }}
 
