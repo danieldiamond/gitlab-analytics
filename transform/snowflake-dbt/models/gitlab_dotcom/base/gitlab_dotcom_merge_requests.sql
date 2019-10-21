@@ -1,4 +1,7 @@
+
 {{ config({
+    "materialized": "incremental",
+    "unique_key": "merge_request_id",
     "schema": "sensitive"
     })
 }}
@@ -9,6 +12,12 @@ WITH source AS (
     *,
     ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'merge_requests') }}
+  
+    {% if is_incremental() %}
+
+    WHERE updated_at >= (SELECT MAX(merge_request_updated_at) FROM {{this}})
+
+    {% endif %}
 
 ), renamed AS (
 
@@ -52,3 +61,4 @@ WITH source AS (
 
 SELECT  *
 FROM renamed
+ORDER BY merge_request_updated_at
