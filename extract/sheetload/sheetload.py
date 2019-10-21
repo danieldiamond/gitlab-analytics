@@ -113,8 +113,10 @@ def sheet_loader(
 
     if database != "RAW":
         engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", schema)
+        database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
     else:
         engine = snowflake_engine_factory(conn_dict or env, "LOADER", schema)
+        database = env["SNOWFLAKE_LOAD_DATABASE"]
 
     info(engine)
 
@@ -147,7 +149,7 @@ def sheet_loader(
         dw_uploader(engine, table, sheet_df, schema)
         info(f"Finished processing for table: {sheet_info}")
 
-    query = f"""grant select on all tables in schema "{database}".{schem} to role transformer"""
+    query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)
     info("Permissions granted.")
 
