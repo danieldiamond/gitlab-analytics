@@ -1,7 +1,8 @@
 
 {{ config({
     "materialized": "incremental",
-    "unique_key": "merge_request_id"
+    "unique_key": "merge_request_id",
+    "schema": "sensitive"
     })
 }}
 
