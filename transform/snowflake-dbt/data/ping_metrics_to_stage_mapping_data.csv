@@ -3,8 +3,8 @@ assignee_lists,plan
 auto_devops_disabled,configure
 auto_devops_enabled,configure
 boards,plan
-campaigns_imported_from_github,manage
 campaigns,ignored
+campaigns_imported_from_github,manage
 ci_builds,verify
 ci_external_pipelines,verify
 ci_internal_pipelines,verify
@@ -37,13 +37,13 @@ design_management_designs_create,create
 design_management_designs_delete,create
 design_management_designs_update,create
 environments,release
-epics_deepest_relationship_level,plan
 epics,plan
+epics_deepest_relationship_level,plan
 failed_deployments,release
 feature_flags,release
+gcp_clusters,configure
 gcp_clusters_disabled,configure
 gcp_clusters_enabled,configure
-gcp_clusters,configure
 geo_nodes,enablement
 group_clusters_disabled,configure
 group_clusters_enabled,configure
@@ -76,6 +76,7 @@ pool_repositories,create
 productivity_analytics_views,manage
 project_clusters_disabled,configure
 project_clusters_enabled,configure
+projects,plan
 projects_auto_issue_creation_enabled,monitor
 projects_enforcing_code_owner_approval,create
 projects_imported_from_github,create
@@ -94,7 +95,6 @@ projects_with_packages,package
 projects_with_prometheus_alerts,configure
 projects_with_repositories_enabled,create
 projects_with_tracing_enabled,monitor
-projects,plan
 protected_branches,create
 releases,release
 remote_mirrors,create
