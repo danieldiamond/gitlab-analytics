@@ -173,6 +173,7 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 ## GitLab.com aka "Dot Com" (Product)
 This data comes from our GitLab.com SaaS product.
 - [ ] Become familiar with the [API docs](https://gitlab.com/gitlab-org/gitlab/tree/master/doc/api).
+- [ ] This is the [schema for the database](https://gitlab.com/gitlab-org/gitlab/blob/master/db/schema.rb)
 
 ## Marketo
 - [ ] [Coming soon]
