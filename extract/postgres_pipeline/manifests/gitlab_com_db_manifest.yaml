@@ -1226,6 +1226,15 @@ tables:
       , notified_of_own_activity
       , preferred_language
       , theme_id
+      , accepted_term_id
+      , private_profile
+      , roadmap_layout
+      , include_private_contributions
+      , group_view
+      , managing_group_id
+      , bot_type
+      , static_object_token
+      , "role"
       FROM users
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
