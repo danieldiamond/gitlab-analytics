@@ -309,6 +309,7 @@ pipeline_schedules_viewed AS (
 ```
 
 Used in:
+- configure_snowplow_smau_events
 - create_snowplow_smau_events
 - manage_snowplow_smau_events
 - monitor_snowplow_smau_events
