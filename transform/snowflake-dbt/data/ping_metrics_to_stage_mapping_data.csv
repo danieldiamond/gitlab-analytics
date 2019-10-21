@@ -106,7 +106,7 @@ snippet_comment,create
 snippet_create,create
 snippet_update,create
 snippets,create
-source_code_pushes
+source_code_pushes,create
 successful_deployments,release
 suggestions,create
 todos,plan
