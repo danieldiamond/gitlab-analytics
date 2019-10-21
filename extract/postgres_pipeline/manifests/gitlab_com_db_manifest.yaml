@@ -830,6 +830,8 @@ tables:
     import_query: >
       SELECT id
       , iid
+      , title
+      , description
       , project_id
       , due_date
       , created_at
