@@ -8,4 +8,4 @@ We welcome contributions and improvements, please see the [contribution guidelin
 
 ### License
 
-This code is distributed under the MIT license, see the [LICENSE](LICENSE) file.
+This code is distributed under the MIT license, please see the [LICENSE](LICENSE) file.
