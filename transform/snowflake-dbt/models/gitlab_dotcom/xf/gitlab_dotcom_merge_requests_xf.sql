@@ -71,9 +71,9 @@ WITH merge_requests AS (
     SELECT
       merge_requests.*,
       IFF(projects.visibility_level != 'public' AND project_namespace_lineage.namespace_is_internal = TRUE,
-        'content masked', milestone_title)         AS milestone_title,
+        'content masked', milestones.milestone_title)         AS milestone_title,
       IFF(projects.visibility_level != 'public' AND project_namespace_lineage.namespace_is_internal = TRUE,
-        'content masked', milestone_description)   AS milestone_description,
+        'content masked', milestones.milestone_description)   AS milestone_description,
       projects.namespace_id,
       project_namespace_lineage.ultimate_parent_id,
       project_namespace_lineage.namespace_is_internal,
