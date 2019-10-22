@@ -3,7 +3,7 @@ WITH resource_label_events AS (
     SELECT *
     FROM {{ref('gitlab_dotcom_resource_label_events')}}
 
-)
+),
 
 aggregated AS (
 
