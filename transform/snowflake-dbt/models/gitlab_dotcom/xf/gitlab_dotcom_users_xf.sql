@@ -179,7 +179,7 @@ WITH customers AS (
 , customers_with_trial AS (
   
   SELECT 
-    customers.user_id,
+    customers.customer_provider_user_id                         AS user_id,
     MIN(customers.customer_id)                                  AS first_customer_id,
     MIN(customers.customer_created_at)                          AS first_customer_created_at,
     ARRAY_AGG(customers.customer_id) 
