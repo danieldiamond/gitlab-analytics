@@ -11,7 +11,7 @@ aggregated AS (
     label_id,
 
     epic_id,
-    issue_id
+    issue_id,
     merge_request_id,
 
     MAX(CASE WHEN action_type='added'   THEN created_at END) AS max_added_at,
@@ -28,12 +28,12 @@ final AS ( -- Leave removed_at NULL if less than added_at.
     SELECT
       label_id,
       epic_id,
-      issue_id
+      issue_id,
       merge_request_id,
-      max_added_at                                             AS added_at,
-      IFF(max_removed_at > max_added_at, max_removed_at, NULL) AS removed_at,
-      IFF(removed_at = NULL, 'added', 'removed')               AS latest_state
-    FROM data
+      max_added_at                                              AS added_at,
+      IFF(max_removed_at > max_added_at, max_removed_at, NULL)  AS removed_at,
+      IFF(removed_at IS NULL, 'added', 'removed')               AS latest_state
+    FROM aggregated
 )
 
 SELECT *
