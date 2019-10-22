@@ -1233,7 +1233,6 @@ tables:
       , group_view
       , managing_group_id
       , bot_type
-      , static_object_token
       , "role"
       FROM users
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
