@@ -23,10 +23,10 @@ grouped AS (
     week,
     licenses.license_id,
     licenses.license_md5,
-    (usage_data.id IS NOT NULL) AS did_send_usage_data,
-    COUNT(*)                    AS count_usage_data_pings,
-    MIN(usage_data.created_at)  AS min_usage_data_create,
-    MAX(usage_data.created_at)  AS max_usage_data_create
+    MAX(IFF(usage_data.id IS NOT NULL, 1, 0)) AS did_send_usage_data,
+    COUNT(*)                                  AS count_usage_data_pings,
+    MIN(usage_data.created_at)                AS min_usage_data_created_at,
+    MAX(usage_data.created_at)                AS max_usage_data_created_at
   FROM week_spine
     LEFT JOIN licenses
       ON week_spine.week BETWEEN licenses.starts_at AND COALESCE(licenses.license_expires_at, '9999-12-31')
@@ -35,5 +35,12 @@ grouped AS (
   GROUP BY 1,2,3
 )
 
-SELECT *
+SELECT
+  week,
+  license_id,
+  license_md5,
+  did_send_usage_data::BOOLEAN AS did_send_usage_data,
+  count_usage_data_pings,
+  min_usage_data_created_at,
+  max_usage_data_created_at
 FROM grouped
