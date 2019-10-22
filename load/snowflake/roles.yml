@@ -270,6 +270,8 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_xl
+        member_of:
+            - boneyard
         privileges:
             databases:
                 read:
@@ -278,6 +280,30 @@ roles:
                     - snowflake
                 write:
                     - analytics
+            schemas:
+                read:
+                    - raw.salesforce_stitch
+                    - raw.sheetload
+                    - raw.snapshots
+                    - raw.tap_postgres
+                    - raw.zuora_stitch
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+                    - snowflake.*
+            tables:
+                read:
+                    - raw.salesforce_stitch.*
+                    - raw.sheetload.*
+                    - raw.snapshots.*
+                    - raw.tap_postgres.*
+                    - raw.zuora_stitch.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
+                    - snowflake.*.*
 
     - analyst_sensitive:
         warehouses:
@@ -658,6 +684,11 @@ roles:
         warehouses:
             - reporting
 
+    - aakgun:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+
     - datwood:
         warehouses:
             - analyst_xs
@@ -715,6 +746,11 @@ roles:
             - reporting
 
     - iweeks:
+        warehouses:
+            - analyst_xs
+            - analyst_xl
+
+    - jmahdi:
         warehouses:
             - analyst_xs
             - analyst_xl
@@ -854,6 +890,12 @@ users:
             - sysadmin
             - transformer
 
+    - aakgun:
+        can_login: yes
+        member_of:
+            - aakgun
+            - analyst_growth
+
     - datwood:
         can_login: yes
         member_of:
@@ -912,6 +954,12 @@ users:
         member_of:
             - iweeks
             - analyst_finance
+
+    - jmahdi:
+        can_login: yes
+        member_of:
+            - jmahdi
+            - analyst_sales
 
     - jsalazar:
         can_login: yes
