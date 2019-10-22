@@ -61,6 +61,17 @@ models:
       - name: issue_description
         description: '{{ doc("xf_visibility_documentation") }}'
 
+  - name: gitlab_dotcom_label_states_xf
+    description: Represents the latest state (added or removed) for each label on Epics/Issues/Merge Requests
+    columns:
+      - name: label_id
+        tests:
+          - not_null
+      - name: added_at
+        tests:
+          - not_null
+
+
   - name: gitlab_dotcom_labels_xf
     description: '{{ doc("gitlab_dotcom_labels_xf") }}'
     columns:
