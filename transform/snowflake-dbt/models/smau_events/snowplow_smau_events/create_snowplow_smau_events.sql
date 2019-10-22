@@ -35,7 +35,7 @@
             "regexp_function":"REGEXP"
          },
          {
-            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/(wiki|wikis)\/tree\/(.)*",
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/wiki\/tree\/(.)*",
             "regexp_function":"NOT REGEXP"
          },
          {
