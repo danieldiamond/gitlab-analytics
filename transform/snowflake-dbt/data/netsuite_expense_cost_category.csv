@@ -1,0 +1,130 @@
+﻿account_number,account_name,unique_account_name,cost_category
+5003,Airfare COGS,5003 - Airfare COGS,Non-Headcount
+5008,Bank Fees COGS,5008 - Bank Fees COGS,Other Operating Expenses
+5009,Benefits Medical and Other COGS,5009 - Benefits Medical and Other COGS,Headcount
+5011,Bonus COGS,5011 - Bonus COGS,Headcount
+5012,401k Match COGS,5012 - 401k Match COGS,Headcount
+5013,Business Meals & Entertainment COGS,5013 - Business Meals & Entertainment COGS,Non-Headcount
+5015,Company Functions COGS,5015 - Company Functions COGS,Non-Headcount
+5016,Computer & Office Equipment - Expensed COGS,5016 - Computer & Office Equipment - Expensed COGS,Non-Headcount
+5017,Consulting fees COGS,5017 - Consulting fees COGS,Other Operating Expenses
+5021,"Professional dues, membership fees COGS","5021 - Professional dues, membership fees COGS",Non-Headcount
+5023,Employee Training Cost of Sales,5023 - Employee Training Cost of Sales,Headcount
+5024,Events Cost of Sales,5024 - Events Cost of Sales,Other Operating Expenses
+5026,Hosting Services COGS,5026 - Hosting Services COGS,Other Operating Expenses
+5027,Hotels & Lodging COGS,5027 - Hotels & Lodging COGS,Non-Headcount
+5028,Gifts & Donations COGS,5028 - Gifts & Donations COGS,Non-Headcount
+5029,Holiday Allowance COGS,5029 - Holiday Allowance COGS,Non-Headcount
+5031,Internet COGS,5031 - Internet COGS,Non-Headcount
+5037,Legal COGS,5037 - Legal COGS,Other Operating Expenses
+5038,General Corporate COGS,5038 - General Corporate COGS,Other Operating Expenses
+5040,Office Supplies COGS,5040 - Office Supplies COGS,Non-Headcount
+5041,Meals - Company Provided COGS,5041 - Meals - Company Provided COGS,Non-Headcount
+5042,Other Expenses COGS,5042 - Other Expenses COGS,Other Operating Expenses
+5046,"Parking, Gas, Tolls, Mileage COGS","5046 - Parking, Gas, Tolls, Mileage COGS",Non-Headcount
+5047,Payroll Service Fee COGS,5047 - Payroll Service Fee COGS,Headcount
+5048,Payroll Tax COGS,5048 - Payroll Tax COGS,Headcount
+5049,Postage & Shipping COGS,5049 - Postage & Shipping COGS,Other Operating Expenses
+5055,Recruiting Fees COGS,5055 - Recruiting Fees COGS,Other Operating Expenses
+5056,Promotional Cost of Sales,5056 - Promotional Cost of Sales,Other Operating Expenses
+5056,Rent or Lease COGS,5056 - Rent or Lease COGS,Other Operating Expenses
+5058,Salaries and Wages COGS,5058 - Salaries and Wages COGS,Headcount
+5059,Contractors COGS,5059 - Contractors COGS,Headcount
+5060,Software Subscriptions COGS,5060 - Software Subscriptions COGS,Software Subscriptions
+5062,Taxes & License COGS,5062 - Taxes & License COGS,Other Operating Expenses
+5063,Software - Expensed Cost of Sales,5063 - Software - Expensed Cost of Sales,Software Subscriptions
+5063,"Taxis, Car Service, Public Transportation COGS","5063 - Taxis, Car Service, Public Transportation COGS",Non-Headcount
+5064,Telephone COGS,5064 - Telephone COGS,Non-Headcount
+5065,Training & Development COGS,5065 - Training & Development COGS,Non-Headcount
+5067,Workers Compensation COGS,5067 - Workers Compensation COGS,Other Operating Expenses
+5071,Team Building COGS,5071 - Team Building COGS,Non-Headcount
+5072,Depreciation - COGS,5072 - Depreciation - COGS,Other Operating Expenses
+5074,Other Travel  Cost of Sales,5074 - Other Travel  Cost of Sales,Non-Headcount
+5076,Coworking Space COGS,5076 - Coworking Space COGS,Non-Headcount
+5077,Stock Compensation COGS,5077 - Stock Compensation COGS,Headcount
+5079,Intercompany COGS,5079 - Intercompany COGS,Other Operating Expenses
+5080,Intercompany COGS - OLD,5080 - Intercompany COGS - OLD,Other Operating Expenses
+5999,Allocation COGS,5999 - Allocation COGS,Allocations
+6000,30% facility for incoming employees,6000 - 30% facility for incoming employees,Headcount
+6001,30% facility withholding,6001 - 30% facility withholding,Headcount
+6002,Accounting,6002 - Accounting,Other Operating Expenses
+6003,Airfare,6003 - Airfare,Non-Headcount
+6004,Amortization,6004 - Amortization,Other Operating Expenses
+6005,Audit & Tax,6005 - Audit & Tax,Other Operating Expenses
+6007,Bad Debt Expense,6007 - Bad Debt Expense,Other Operating Expenses
+6008,Bank Fees,6008 - Bank Fees,Other Operating Expenses
+6009,Benefits Medical and Other,6009 - Benefits Medical and Other,Headcount
+6010,Benefits - Fringe,6010 - Benefits - Fringe,Headcount
+6011,Bonus,6011 - Bonus,Headcount
+6012,Business Gifts,6012 - Business Gifts,Non-Headcount
+6012,401k Match,6012 - 401k Match,Headcount
+6013,Business Meals & Entertainment,6013 - Business Meals & Entertainment,Non-Headcount
+6014,Commissions,6014 - Commissions,Other Operating Expenses
+6015,Company Functions,6015 - Company Functions,Non-Headcount
+6016,Computer & Office Equipment - Expensed,6016 - Computer & Office Equipment - Expensed,Non-Headcount
+6017,Consulting fees,6017 - Consulting fees,Other Operating Expenses
+6020,Credit Card Transaction Fees,6020 - Credit Card Transaction Fees,Other Operating Expenses
+6021,"Professional dues, membership fees","6021 - Professional dues, membership fees",Non-Headcount
+6022,Employee Relocation,6022 - Employee Relocation,Headcount
+6023,Events,6023 - Events,Other Operating Expenses
+6023,Employee Training,6023 - Employee Training,Headcount
+6025,Exchange rate differences,6025 - Exchange rate differences,Other Operating Expenses
+6026,Hosting Services,6026 - Hosting Services,Other Operating Expenses
+6027,Hotels & Lodging,6027 - Hotels & Lodging,Non-Headcount
+6028,Gifts & Donations,6028 - Gifts & Donations,Non-Headcount
+6029,Holiday Allowance,6029 - Holiday Allowance,Non-Headcount
+6031,Internet,6031 - Internet,Non-Headcount
+6033,Insurance - Business,6033 - Insurance - Business,Non-Headcount
+6034,Maintenance costs - Vehicle,6034 - Maintenance costs - Vehicle,Non-Headcount
+6034,Insurance - Vehicle,6034 - Insurance - Vehicle,Non-Headcount
+6035,Marketing Automation,6035 - Marketing Automation,Other Operating Expenses
+6036,Marketing Content,6036 - Marketing Content,Other Operating Expenses
+6037,Legal,6037 - Legal,Other Operating Expenses
+6037,Marketing Design,6037 - Marketing Design,Other Operating Expenses
+6038,General Corporate,6038 - General Corporate,Other Operating Expenses
+6039,Offering Costs,6039 - Offering Costs,Other Operating Expenses
+6040,Office Supplies,6040 - Office Supplies,Non-Headcount
+6041,Meals - Company Provided,6041 - Meals - Company Provided,Non-Headcount
+6041,Online Marketing,6041 - Online Marketing,Other Operating Expenses
+6042,Other Expenses,6042 - Other Expenses,Other Operating Expenses
+6043,Other General Expense,6043 - Other General Expense,Other Operating Expenses
+6044,Other Office Expense,6044 - Other Office Expense,Other Operating Expenses
+6045,Paid Holiday Allowance,6045 - Paid Holiday Allowance,Headcount
+6046,"Parking, Gas, Tolls, Mileage","6046 - Parking, Gas, Tolls, Mileage",Non-Headcount
+6047,Payroll Service Fee,6047 - Payroll Service Fee,Headcount
+6048,Payroll Tax,6048 - Payroll Tax,Headcount
+6049,Postage & Shipping,6049 - Postage & Shipping,Other Operating Expenses
+6050,Printing & Copying,6050 - Printing & Copying,Other Operating Expenses
+6052,Promotional,6052 - Promotional,Other Operating Expenses
+6053,Public and Analyst Relations,6053 - Public and Analyst Relations,Other Operating Expenses
+6054,Internal Recruiting,6054 - Internal Recruiting,Other Operating Expenses
+6055,Recruiting Fees,6055 - Recruiting Fees,Other Operating Expenses
+6056,Rent or Lease,6056 - Rent or Lease,Other Operating Expenses
+6057,Research and development allowance on wages (S&O),6057 - Research and development allowance on wages (S&O),Other Operating Expenses
+6058,Salaries and Wages,6058 - Salaries and Wages,Headcount
+6059,Software - Expensed,6059 - Software - Expensed,Software Subscriptions
+6059,Contractors,6059 - Contractors,Headcount
+6060,Software Subscriptions,6060 - Software Subscriptions,Software Subscriptions
+6061,Sponsorships,6061 - Sponsorships,Other Operating Expenses
+6062,Taxes & License,6062 - Taxes & License,Other Operating Expenses
+6063,"Taxis, Car Service, Public Transportation","6063 - Taxis, Car Service, Public Transportation",Non-Headcount
+6064,Telephone,6064 - Telephone,Non-Headcount
+6065,Training & Development,6065 - Training & Development,Non-Headcount
+6066,Utilites,6066 - Utilites,Other Operating Expenses
+6067,Workers Compensation,6067 - Workers Compensation,Other Operating Expenses
+6071,Team Building,6071 - Team Building,Non-Headcount
+6072,Depreciation,6072 - Depreciation,Other Operating Expenses
+6073,Licenses & Registrations,6073 - Licenses & Registrations,Other Operating Expenses
+6074,Organizational Costs,6074 - Organizational Costs,Other Operating Expenses
+6074,Other Travel,6074 - Other Travel,Non-Headcount
+6075,Referral Fees,6075 - Referral Fees,Other Operating Expenses
+6076,Coworking Space,6076 - Coworking Space,Non-Headcount
+6077,Stock Compensation Expense,6077 - Stock Compensation Expense,Headcount
+6079,Stipend,6079 - Stipend,Other Operating Expenses
+6110,Marketing Site,6110 - Marketing Site,Marketing Programs
+6120,Demand Advertising,6120 - Demand Advertising,Marketing Programs
+6130,Field Events,6130 - Field Events,Marketing Programs
+6140,Email,6140 - Email,Marketing Programs
+6150,Brand,6150 - Brand,Marketing Programs
+6160,Prospecting,6160 - Prospecting,Marketing Programs
+6999,Allocation,6999 - Allocation,Allocations

@@ -72,9 +72,11 @@ WITH budget AS (
 
 )
 
-SELECT b.*
+SELECT b.*,
+       fiscal_year,
+       fiscal_quarter,
+       fiscal_quarter_name
 FROM budget_forecast_cogs_opex b
 LEFT JOIN date_details dd
  ON dd.first_day_of_month = b.accounting_period
-WHERE account_number NOT IN ('5077','5079','5080')
 ORDER BY 8,4
