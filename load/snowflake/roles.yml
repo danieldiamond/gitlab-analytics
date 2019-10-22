@@ -728,6 +728,10 @@ roles:
             - analyst_xs
             - analyst_xl
 
+    - eurie:
+        warehouses:
+            - reporting
+
     - fivetran_role:
         warehouses:
             - fivetran_warehouse
@@ -927,6 +931,13 @@ users:
         member_of:
             - ekastelein
             - analyst_growth
+
+    - eurie:
+        can_login: yes 
+        member_of:
+            - eurie
+            - reporter
+            - securityadmin
 
     - fivetran:
         can_login: yes
