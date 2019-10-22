@@ -67,9 +67,6 @@ models:
       - name: label_id
         tests:
           - not_null
-      - name: added_at
-        tests:
-          - not_null
 
 
   - name: gitlab_dotcom_labels_xf

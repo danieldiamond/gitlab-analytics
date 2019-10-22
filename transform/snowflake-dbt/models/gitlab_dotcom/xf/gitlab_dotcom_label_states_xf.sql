@@ -2,6 +2,7 @@ WITH resource_label_events AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_resource_label_events')}}
+    WHERE label_id IS NOT NULL
 
 ),
 
@@ -31,7 +32,12 @@ final AS ( -- Leave removed_at NULL if less than added_at.
       issue_id,
       merge_request_id,
       max_added_at                                              AS added_at,
-      IFF(max_removed_at > max_added_at, max_removed_at, NULL)  AS removed_at,
+      CASE
+        WHEN max_removed_at > max_added_at
+          THEN max_removed_at
+        WHEN max_added_at IS NULL
+          THEN max_removed_at
+      END                                                       AS removed_at,
       IFF(removed_at IS NULL, 'added', 'removed')               AS latest_state
     FROM aggregated
 )
