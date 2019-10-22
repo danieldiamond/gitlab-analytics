@@ -4,6 +4,10 @@ models:
   - name: employee_directory_analysis
     description: Gives the current state of the employees at GitLab at any point of time. This is the model to use for headcount, team size, or any people-related analysis for employees. This has current and past employees, as well as their department, division, and cost center and hire/termination dates.
     columns:
+    - name: unique_key
+      tests:
+      - not_null
+      - unique
     - name: date_actual
       tests:
       - not_null
@@ -49,7 +53,7 @@ models:
     - name: cost_center
     - name: location_factor
   - name: bamboohr_discretionary_bonuses
-    description: This model contains a list of Discretionary bonuses awarded (excludes other types of bonuses). It includes the employee ID to be able to join to the `employee_directory_analysis` model to understand the break down of discretionary bonuses given. 
+    description: This model contains a list of Discretionary bonuses awarded (excludes other types of bonuses). It includes the employee ID to be able to join to the `employee_directory_analysis` model to understand the break down of discretionary bonuses given.
     columns:
     - name: bonus_id
       tests:
