@@ -42,6 +42,11 @@ WITH merge_requests AS (
     INNER JOIN latest_merge_request_metric
     ON merge_request_metric_id = target_id
 
+), milestones AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_milestones')}}
+
 ), projects AS (
 
     SELECT *
@@ -65,6 +70,10 @@ WITH merge_requests AS (
 
     SELECT
       merge_requests.*,
+      IFF(projects.visibility_level != 'public' AND project_namespace_lineage.namespace_is_internal = TRUE,
+        'content masked', milestone_title)         AS milestone_title,
+      IFF(projects.visibility_level != 'public' AND project_namespace_lineage.namespace_is_internal = TRUE,
+        'content masked', milestone_description)   AS milestone_description,
       projects.namespace_id,
       project_namespace_lineage.ultimate_parent_id,
       project_namespace_lineage.namespace_is_internal,
@@ -76,25 +85,27 @@ WITH merge_requests AS (
         TRUE, FALSE)                               AS is_included_in_engineering_metrics,
       IFF(merge_requests.target_project_id IN ({{is_project_part_of_product()}}),
         TRUE, FALSE)                               AS is_part_of_product,
-      CASE
-      WHEN project_namespace_lineage.namespace_is_internal IS NOT NULL
-        AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.labels)
-        THEN TRUE
-      ELSE FALSE
-      END AS is_community_contributor_related,
-      TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at, merge_request_metrics.merged_at) AS hours_to_merged_status
+      IFF(project_namespace_lineage.namespace_is_internal IS NOT NULL
+          AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.labels),
+        TRUE, FALSE)                               AS is_community_contributor_related,
+      TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at, 
+        merge_request_metrics.merged_at)           AS hours_to_merged_status,
+
 
     FROM merge_requests
       LEFT JOIN agg_labels
         ON merge_requests.merge_request_id = agg_labels.merge_request_id
       LEFT JOIN merge_request_metrics
         ON merge_requests.merge_request_id = merge_request_metrics.merge_request_id
+      LEFT JOIN milestones
+        ON merge_requests.milestone_id = milestones.milestone_id  
       LEFT JOIN projects
         ON merge_requests.target_project_id = projects.project_id
       LEFT JOIN author_namespaces
         ON merge_requests.author_id = author_namespaces.owner_id
       LEFT JOIN project_namespace_lineage
         ON projects.namespace_id = project_namespace_lineage.namespace_id
+  
 )
 
 SELECT *
