@@ -224,7 +224,7 @@ WITH customers AS (
   LEFT JOIN highest_paid_subscription_plan
     ON users.user_id = highest_paid_subscription_plan.user_id
   LEFT JOIN customers_with_trial 
-    ON users.user_id = customers_with_trial.user_id
+    ON users.user_id::VARCHAR = customers_with_trial.user_id::VARCHAR
 
 )
 
