@@ -12,6 +12,7 @@ WITH source AS (
         ORDER BY _uploaded_at DESC
     ) AS rank_in_key,
     DENSE_RANK() OVER (
+        PARTITION BY id
         ORDER BY DATEADD('sec', _uploaded_at, '1970-01-01')::DATE DESC
     ) AS rank_in_uploaded_date
   FROM {{ source('gitlab_dotcom', 'label_links') }}
