@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: customers_db_trial_started
-    description: '{{ doc("customers_db_trial_started") }}'
+  - name: customers_db_trials
+    description: '{{ doc("customers_db_trials") }}'
     columns:
       - name: order_id
         tests:

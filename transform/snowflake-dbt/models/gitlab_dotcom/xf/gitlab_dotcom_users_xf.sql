@@ -33,10 +33,10 @@ WITH customers AS (
 
 )
 
-, trial_started AS  (
+, trials AS  (
 
   SELECT *
-  FROM {{ ref('customers_db_trial_started') }}
+  FROM {{ ref('customers_db_trials') }}
 
 )
 
@@ -179,17 +179,16 @@ WITH customers AS (
 , customers_with_trial AS (
   
   SELECT 
-    users.user_id,
+    customers.user_id,
     MIN(customers.customer_id)                                  AS first_customer_id,
     MIN(customers.customer_created_at)                          AS first_customer_created_at,
     ARRAY_AGG(customers.customer_id) 
         WITHIN GROUP (ORDER  BY customers.customer_id)          AS customer_id_list,
     MAX(IFF(order_id IS NOT NULL, TRUE, FALSE))                 AS has_started_trial,
     MIN(trial_start_date)                                       AS has_started_trial_at
-  FROM users 
-  LEFT JOIN customers ON users.user_id::VARCHAR = customers.customer_provider_user_id::VARCHAR
-    AND customers.customer_provider = 'gitlab'
-  LEFT JOIN trial_started ON customers.customer_id = trial_started.customer_id
+  FROM customers
+  LEFT JOIN trials ON customers.customer_id = trials.customer_id
+  WHERE customers.customer_provider = 'gitlab'
   GROUP BY 1
   
 )
