@@ -19,6 +19,7 @@ WITH source AS (
     company::VARCHAR                   AS company,
     users_count::INTEGER               AS users_count,
     email::VARCHAR                     AS email,
+    license_md5::VARCHAR               AS license_md5,
     expires_at::TIMESTAMP              AS license_expires_at,
     recurly_subscription_id::VARCHAR   AS recurly_subscription_id,
     plan_name::VARCHAR                 AS plan_name,
