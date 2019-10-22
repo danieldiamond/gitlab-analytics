@@ -26,14 +26,14 @@ WITH issues AS (
 ), agg_labels AS (
 
     SELECT
-      issue_id,
-      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY issue_id ASC) AS labels
+      issues.issue_id,
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY issues.issue_id ASC) AS labels
     FROM issues
     LEFT JOIN label_states
-      ON issues.issue_id = label_states.issues_id
+      ON issues.issue_id = label_states.issue_id
     LEFT JOIN all_labels
       ON label_states.label_id = all_labels.label_id
-    GROUP BY issue_id
+    GROUP BY issues.issue_id
 
 ), projects AS (
 
