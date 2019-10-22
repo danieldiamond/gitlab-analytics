@@ -81,4 +81,13 @@ models:
           - name: uuid
             tests:
                 - not_null
-
+    - name: pings_usage_data_weekly_opt_in_summary
+      columns:
+          - name: main_edition
+            description: Comes from [this section of the code](https://gitlab.com/gitlab-org/gitlab/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154)
+            tests:
+                - accepted_values:
+                    values: ['EE', 'CE']
+          - name: uuid
+            tests:
+                - not_null
