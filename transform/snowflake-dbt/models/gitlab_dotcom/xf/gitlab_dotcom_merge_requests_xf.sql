@@ -24,7 +24,7 @@ WITH merge_requests AS (
 
     SELECT
       merge_requests.merge_request_id,
-      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY merge_requests.merge_request_id ASC) AS labels
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY merge_requests.masked_label_title ASC) AS labels
     FROM merge_requests
     LEFT JOIN label_states
       ON merge_requests.merge_request_id = label_states.merge_request_id
