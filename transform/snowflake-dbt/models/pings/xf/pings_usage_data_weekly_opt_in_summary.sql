@@ -1,3 +1,8 @@
+{# {{ config({
+    "materialized": "table"
+    })
+}} #}
+
 WITH licenses AS (
   SELECT *
   FROM {{ ref('license_db_licenses') }}
@@ -13,9 +18,9 @@ usage_data AS (
 
 week_spine AS (
   SELECT DISTINCT
-    first_day_of_week AS week
+    DATE_TRUNC('week', date_actual) AS week
   FROM {{ ref('date_details') }}
-  WHERE date_details.first_day_of_week BETWEEN '2017-04-01' AND CURRENT_DATE
+  WHERE date_details.date_actual BETWEEN '2017-04-01' AND CURRENT_DATE
 ),
 
 grouped AS (
@@ -26,7 +31,7 @@ grouped AS (
     licenses.zuora_subscription_id,
     usage_data.license_plan, -- Often NULL when it shouldn't be
     MAX(IFF(usage_data.id IS NOT NULL, 1, 0)) AS did_send_usage_data,
-    COUNT(*)                                  AS count_usage_data_pings,
+    COUNT(DISTINCT usage_data.id)             AS count_usage_data_pings,
     MIN(usage_data.created_at)                AS min_usage_data_created_at,
     MAX(usage_data.created_at)                AS max_usage_data_created_at
   FROM week_spine
@@ -34,7 +39,7 @@ grouped AS (
       ON week_spine.week BETWEEN licenses.starts_at AND COALESCE(licenses.license_expires_at, '9999-12-31')
     LEFT JOIN usage_data
       ON licenses.license_md5 = usage_data.license_md5
-      AND week_spine.week = DATE_TRUNC('week', usage_data.created_at)
+      AND week = DATE_TRUNC('week', usage_data.created_at)
   {{ dbt_utils.group_by(n=5) }}
 )
 

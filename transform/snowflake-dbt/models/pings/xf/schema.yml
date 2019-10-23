@@ -82,7 +82,7 @@ models:
             tests:
                 - not_null
     - name: pings_usage_data_weekly_opt_in_summary
-      description: '{{ doc("pings_usage_data_monthly_change") }}'
+      description: '{{ doc("pings_usage_data_weekly_opt_in_summary") }}' #TODO
       columns:
           - name: week
             tests:
@@ -93,3 +93,5 @@ models:
           - name: license_md5
             tests:
                 - not_null
+          - name: license_plan
+            description: This is the plan (Starter, Premium, Ultimate) associated with the usage data. This is generally consistent with the License app, but has NULL values for many records that have plans in Zuora.
