@@ -27,7 +27,7 @@ WITH issues AS (
 
     SELECT
       issues.issue_id,
-      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY issues.masked_label_title ASC) AS labels
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY masked_label_title ASC) AS labels
     FROM issues
     LEFT JOIN label_states
       ON issues.issue_id = label_states.issue_id
