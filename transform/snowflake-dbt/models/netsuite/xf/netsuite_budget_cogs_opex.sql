@@ -74,17 +74,22 @@ WITH budget AS (
       AND a.account_number between '5000' and '6999'
     {{ dbt_utils.group_by(n=16) }}
 
+), cost_category_grouping AS (
+
+    SELECT b.*,
+           fiscal_year,
+           fiscal_quarter,
+           fiscal_quarter_name
+           cost_category_level_1,
+           cost_category_level_2
+    FROM budget_forecast_cogs_opex b
+    LEFT JOIN date_details dd
+      ON dd.first_day_of_month = b.accounting_period
+    LEFT JOIN cost_category cc
+      ON b.unique_account_name = cc.unique_account_name
+
 )
 
-SELECT b.*,
-       fiscal_year,
-       fiscal_quarter,
-       fiscal_quarter_name
-       cost_category_level_1,
-       cost_category_level_2
-FROM budget_forecast_cogs_opex b
-LEFT JOIN date_details dd
- ON dd.first_day_of_month = b.accounting_period
-LEFT JOIN cost_category cc
-  ON b.unique_account_name = cc.unique_account_name
+SELECT *
+FROM cost_category_grouping
 ORDER BY 8,4
