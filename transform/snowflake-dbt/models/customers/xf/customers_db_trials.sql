@@ -38,7 +38,7 @@ WITH customers AS (
     customers.customer_provider_user_id,
     
     users.user_id                               AS gitlab_user_id,
-    (users.user_id IS NOT NULL) AS is_gitlab_user,
+    IFF(users.user_id IS NOT NULL, TRUE, FALSE) AS is_gitlab_user,
     users.user_created_at,
     
     namespaces.namespace_created_at,
