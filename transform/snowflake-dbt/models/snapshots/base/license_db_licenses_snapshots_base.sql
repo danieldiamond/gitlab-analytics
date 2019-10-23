@@ -34,7 +34,6 @@ WITH source AS (
     "DBT_VALID_FROM"::TIMESTAMP        AS valid_from,
     "DBT_VALID_TO"::TIMESTAMP          AS valid_to
  FROM source
- WHERE rank_in_key = 1 
 )
 
 SELECT *
