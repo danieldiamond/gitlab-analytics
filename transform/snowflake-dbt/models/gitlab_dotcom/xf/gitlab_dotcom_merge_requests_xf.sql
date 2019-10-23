@@ -6,11 +6,14 @@ WITH merge_requests AS (
     SELECT *
     FROM {{ref('gitlab_dotcom_merge_requests')}}
 
-), label_links AS (
+), label_states AS (
 
-    SELECT *
-    FROM {{ref('gitlab_dotcom_label_links')}}
-    WHERE target_type = 'MergeRequest'
+    SELECT
+      label_id,
+      merge_request_id
+    FROM {{ref('gitlab_dotcom_label_states_xf')}}
+    WHERE merge_request_id IS NOT NULL
+      AND latest_state = 'added'
 
 ), all_labels AS (
 
@@ -20,14 +23,14 @@ WITH merge_requests AS (
 ), agg_labels AS (
 
     SELECT
-      merge_request_id,
-      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY merge_request_id ASC) AS labels
+      merge_requests.merge_request_id,
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY masked_label_title ASC) AS labels
     FROM merge_requests
-    LEFT JOIN label_links
-      ON merge_requests.merge_request_id = label_links.target_id
+    LEFT JOIN label_states
+      ON merge_requests.merge_request_id = label_states.merge_request_id
     LEFT JOIN all_labels
-      ON label_links.label_id = all_labels.label_id
-    GROUP BY merge_request_id
+      ON label_states.label_id = all_labels.label_id
+    GROUP BY merge_requests.merge_request_id
 
 ),  latest_merge_request_metric AS (
 

@@ -4,21 +4,19 @@
 {% set fields_to_mask = ['title', 'description'] %}
 
 
-with issues AS (
+WITH issues AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_issues')}}
 
-), all_label_links AS (
+), label_states AS (
 
-    SELECT *
-    FROM {{ref('gitlab_dotcom_label_links')}}
-
-), label_links AS (
-
-    SELECT *
-    FROM all_label_links
-    WHERE target_type = 'Issue'
+    SELECT
+      label_id,
+      issue_id
+    FROM {{ref('gitlab_dotcom_label_states_xf')}}
+    WHERE issue_id IS NOT NULL
+      AND latest_state = 'added'
 
 ), all_labels AS (
 
@@ -28,14 +26,14 @@ with issues AS (
 ), agg_labels AS (
 
     SELECT
-      issue_id,
-      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY issue_id ASC) AS labels
+      issues.issue_id,
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY masked_label_title ASC) AS labels
     FROM issues
-    LEFT JOIN label_links
-      ON issues.issue_id = label_links.target_id
+    LEFT JOIN label_states
+      ON issues.issue_id = label_states.issue_id
     LEFT JOIN all_labels
-      ON label_links.label_id = all_labels.label_id
-    GROUP BY issue_id
+      ON label_states.label_id = all_labels.label_id
+    GROUP BY issues.issue_id
 
 ), projects AS (
 
