@@ -6,9 +6,7 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('snapshots', 'license_db_licenses_snapshots') }}
 
 ), renamed AS (
