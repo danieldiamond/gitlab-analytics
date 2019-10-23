@@ -15,7 +15,7 @@ week_spine AS (
   SELECT DISTINCT
     first_day_of_week AS week
   FROM {{ ref('date_details') }}
-  WHERE date_details.first_day_of_week  BETWEEN '2017-04-01' AND CURRENT_DATE
+  WHERE date_details.first_day_of_week BETWEEN '2017-04-01' AND CURRENT_DATE
 ),
 
 grouped AS (
