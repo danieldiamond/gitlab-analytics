@@ -239,6 +239,7 @@ None of these are required, but bookmarking these links will make life at GitLab
 - [ ] [dbt Docs](https://docs.getdbt.com)
 - [ ] [dbt Discourse](http://discourse.getdbt.com)
 - [ ] [GitLab's dbt Documentation](https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview)
+- [ ] [Data Team GitLab Activity](https://gitlab.com/groups/gitlab-data/-/activity)
 
 ## Good First Issues:
 - [ ] [Replace]
