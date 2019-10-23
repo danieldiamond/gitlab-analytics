@@ -42,6 +42,11 @@ WITH transactions AS (
        fiscal_quarter_name
      FROM {{ref('date_details')}}
 
+), cost_category AS (
+
+     SELECT *
+     FROM {{ref('netsuite_expense_cost_category')}}
+
 ), opex_cogs AS (
 
      SELECT
@@ -104,7 +109,6 @@ WITH transactions AS (
       CASE WHEN account_number BETWEEN '5000' AND '5999' THEN '2-cost of sales'
            WHEN account_number BETWEEN '6000' AND '6999' THEN '3-expense'
       END                                              AS income_statement_grouping,
-      {{cost_category('account_number','account_name')}},
       transaction_lines_memo,
       entity_name,
       status,
@@ -122,7 +126,17 @@ WITH transactions AS (
     LEFT JOIN date_details dd
       ON dd.first_day_of_month = oc.accounting_period
 
+), cost_category_grouping AS (
+
+    SELECT
+      isg.*,
+      cost_category_level_1,
+      cost_category_level_2
+    FROM income_statement_grouping isg
+    LEFT JOIN cost_category cc
+      ON isg.unique_account_name = cc.unique_account_name
+
 )
 
 SELECT *
-FROM income_statement_grouping
+FROM cost_category_grouping

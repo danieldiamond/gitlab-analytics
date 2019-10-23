@@ -42,6 +42,11 @@ WITH transactions AS (
        fiscal_quarter_name
      FROM {{ref('date_details')}}
 
+), cost_category AS (
+
+     SELECT *
+     FROM {{ref('netsuite_expense_cost_category')}}
+
 ), income AS (
 
      SELECT
@@ -103,7 +108,6 @@ WITH transactions AS (
       -(actual_amount)                                 AS actual_amount,
       CASE WHEN account_number BETWEEN '4000' AND '4999' THEN '1-income'
       END                                              AS income_statement_grouping,
-      'N/A'                                            AS cost_category,
       transaction_lines_memo,
       entity_name,
       status,
@@ -121,7 +125,17 @@ WITH transactions AS (
     LEFT JOIN date_details dd
       ON dd.first_day_of_month = i.accounting_period
 
+), cost_category_grouping AS (
+
+    SELECT
+      isg.*,
+      'N/A'                                            AS cost_category_level_1,
+      'N/A'                                            AS cost_category_level_2
+    FROM income_statement_grouping isg
+    LEFT JOIN cost_category cc
+      ON isg.unique_account_name = cc.unique_account_name
+
 )
 
 SELECT *
-FROM income_statement_grouping
+FROM cost_category_grouping
