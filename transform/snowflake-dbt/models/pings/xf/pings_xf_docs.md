@@ -74,6 +74,8 @@ This model unpacks the pings usage data JSON stored in the json-type column `sta
 
 {% docs pings_usage_data_weekly_opt_in_summary %}
 
-TODO
+This model summarizes which instances from the licenses app successfully send a usage ping at a weekly granularity.  
+Only self-managaged instances that have a listed license file in the license app are included in this model. Trials are excluded entirely.  
+Instances are included in this analysis for any week where the Monday falls between their "license start date" and "license expires date".  
 
 {% enddocs %}
