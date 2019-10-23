@@ -27,7 +27,7 @@
       "event_name":"serverless_page_viewed",
       "regexp_where_statements":[
          {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/functions",
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/serverless\/functions",
             "regexp_function":"REGEXP"
          }
       ]
