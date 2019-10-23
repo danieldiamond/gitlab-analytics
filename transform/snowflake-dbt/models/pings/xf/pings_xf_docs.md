@@ -70,3 +70,10 @@ This model unpacks the pings usage data JSON stored in the json-type column `sta
 1. The `pings_list` model gives us the full list of columns that need to be in the final table. We iterate through each element of the list (i.e. each value of `full_ping_name` column in `pings_list` model) and find the MAX of `ping_value`.
 
 {% enddocs %}
+
+
+{% docs pings_usage_data_weekly_opt_in_summary %}
+
+TODO
+
+{% enddocs %}

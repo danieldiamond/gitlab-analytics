@@ -82,7 +82,7 @@ models:
             tests:
                 - not_null
     - name: pings_usage_data_weekly_opt_in_summary
-      description: '{{ doc("pings_usage_data_weekly_opt_in_summary") }}' #TODO
+      description: '{{ doc("pings_usage_data_weekly_opt_in_summary") }}'
       columns:
           - name: week
             tests:

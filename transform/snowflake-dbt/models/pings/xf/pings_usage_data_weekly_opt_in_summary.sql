@@ -1,7 +1,8 @@
-{# {{ config({
+{{ config({
     "materialized": "table"
     })
-}} #}
+}}
+
 
 WITH licenses AS (
   SELECT *
@@ -39,7 +40,7 @@ grouped AS (
       ON week_spine.week BETWEEN licenses.starts_at AND COALESCE(licenses.license_expires_at, '9999-12-31')
     LEFT JOIN usage_data
       ON licenses.license_md5 = usage_data.license_md5
-      AND week = DATE_TRUNC('week', usage_data.created_at)
+      AND week_spine.week = DATE_TRUNC('week', usage_data.created_at)
   {{ dbt_utils.group_by(n=5) }}
 )
 
