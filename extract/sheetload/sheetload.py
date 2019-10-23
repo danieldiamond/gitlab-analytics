@@ -113,10 +113,17 @@ def sheet_loader(
 
     if database != "RAW":
         engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", schema)
+        database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
+        # Trys to create the schema its about to write to
+        # If it does exists, {schema} already exists, statement succeeded.
+        # is returned.
+        schema_check = f"""CREATE SCHEMA IF NOT EXISTS "{database}".{schema}"""
+        query_executor(engine, schema_check)
     else:
         engine = snowflake_engine_factory(conn_dict or env, "LOADER", schema)
 
     info(engine)
+
     # Get the credentials for sheets and the database engine
     scope = [
         "https://spreadsheets.google.com/feeds",
@@ -140,9 +147,7 @@ def sheet_loader(
         dw_uploader(engine, table, sheet_df, schema)
         info(f"Finished processing for table: {sheet_info}")
 
-    query = """grant select on all tables in schema "{}".{} to role transformer""".format(
-        database, schema
-    )
+    query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)
     info("Permissions granted.")
 

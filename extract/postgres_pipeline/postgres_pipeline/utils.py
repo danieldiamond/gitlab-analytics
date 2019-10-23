@@ -121,7 +121,7 @@ def manifest_reader(file_path: str) -> Dict[str, Dict]:
 
 
 def query_results_generator(
-    query: str, engine: Engine, chunksize: int = 1_000_000
+    query: str, engine: Engine, chunksize: int = 100_000
 ) -> pd.DataFrame:
     """
     Use pandas to run a sql query and load it into a dataframe.
@@ -182,7 +182,7 @@ def chunk_and_upload(
 
 
 def range_generator(
-    start: int, stop: int, step: int = 1_000_000
+    start: int, stop: int, step: int = 100_000
 ) -> Generator[List[int], Any, None]:
     """
     Yields a list that contains the starting and ending number for a given window.
@@ -242,7 +242,7 @@ def id_query_generator(
     snowflake_engine: Engine,
     source_table: str,
     target_table: str,
-    id_range: int = 1_000_000,
+    id_range: int = 100_000,
 ) -> Generator[str, Any, None]:
     """
     This function syncs a database with Snowflake based on the user-defined 

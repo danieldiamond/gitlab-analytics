@@ -80,7 +80,7 @@ dbt_run_cmd = f"""
     dbt deps --profiles-dir profile # install packages &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse} # run on small warehouse w/o product data or snapshots &&
-    dbt run --profiles-dir profile --target prod --models tag:product # run product data on large warehouse
+    dbt run --profiles-dir profile --target prod --models tag:product snapshots # run product data on large warehouse
 """
 dbt_run = KubernetesPodOperator(
     **gitlab_defaults,

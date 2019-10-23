@@ -60,6 +60,9 @@ LEFT JOIN location_factor
 WHERE hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
   AND employee_number NOT IN (
                               '11209', --https://gitlab.com/gitlab-data/analytics/issues/2749
-                              '11218' --https://gitlab.com/gitlab-data/analytics/issues/2749
+                              '11218', --https://gitlab.com/gitlab-data/analytics/issues/2749
+                              '11177', --https://gitlab.com/gitlab-data/analytics/issues/2817
+                              '11188', --https://gitlab.com/gitlab-data/analytics/issues/2817
+                              '11202'  --https://gitlab.com/gitlab-data/analytics/issues/2817
                             )
 ORDER BY hire_date DESC

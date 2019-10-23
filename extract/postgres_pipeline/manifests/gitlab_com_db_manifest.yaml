@@ -830,6 +830,8 @@ tables:
     import_query: >
       SELECT id
       , iid
+      , title
+      , description
       , project_id
       , due_date
       , created_at
@@ -1224,6 +1226,14 @@ tables:
       , notified_of_own_activity
       , preferred_language
       , theme_id
+      , accepted_term_id
+      , private_profile
+      , roadmap_layout
+      , include_private_contributions
+      , group_view
+      , managing_group_id
+      , bot_type
+      , "role"
       FROM users
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -1314,3 +1324,34 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_builds
     export_table_primary_key: id
+  ci_runners:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , token
+      , created_at
+      , updated_at
+      , description
+      , contacted_at
+      , active
+      , is_shared
+      , name
+      , version
+      , revision
+      , platform
+      , architecture
+      , run_untagged
+      , locked
+      , access_level
+      , ip_address
+      , maximum_timeout
+      , runner_type
+      , token_encrypted
+      FROM ci_runners
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_runners
+    export_table_primary_key: id
+
+    

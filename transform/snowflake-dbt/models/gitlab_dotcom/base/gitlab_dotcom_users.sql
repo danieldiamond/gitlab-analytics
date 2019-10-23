@@ -1,4 +1,6 @@
 {{ config({
+    "materialized": "incremental",
+    "unique_key": "user_id",
     "schema": "staging"
     })
 }}
@@ -9,6 +11,12 @@ WITH source AS (
     *,
     ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'users') }}
+  
+    {% if is_incremental() %}
+
+    WHERE updated_at >= (SELECT MAX(user_updated_at) FROM {{this}})
+
+    {% endif %}
 
 ), renamed AS (
 
@@ -71,3 +79,4 @@ WITH source AS (
 
 SELECT  *
 FROM renamed
+ORDER BY user_updated_at

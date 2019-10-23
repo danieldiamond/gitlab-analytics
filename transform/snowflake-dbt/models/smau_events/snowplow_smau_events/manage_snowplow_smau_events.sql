@@ -49,6 +49,15 @@
             "regexp_function":"REGEXP"
          }
       ]
+   },
+   {
+      "event_name":"productivity_analytics_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){1,}\/productivity_analytics",
+            "regexp_function":"REGEXP"
+         }
+      ]
    }
 ]
 -%}

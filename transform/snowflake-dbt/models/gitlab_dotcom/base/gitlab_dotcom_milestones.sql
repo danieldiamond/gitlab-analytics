@@ -1,5 +1,5 @@
 {{ config({
-    "schema": "staging"
+    "schema": "sensitive"
     })
 }}
 
@@ -15,6 +15,8 @@ WITH source AS (
     SELECT
 
       id::INTEGER                           AS milestone_id,
+      title::VARCHAR                        AS milestone_title,
+      description::VARCHAR                  AS milestone_description,
       project_id::INTEGER                   AS project_id,
       group_id::INTEGER                     AS group_id,
       start_date::DATE                      AS start_date,

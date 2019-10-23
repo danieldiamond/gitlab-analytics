@@ -6,14 +6,14 @@
 
 with source as (
 
-    SELECT *
-    FROM {{ source('snapshots', 'sheetload_employee_location_factor_snapshots') }}
+  SELECT *
+  FROM {{ref("comp_band_loc_factor_base")}}
 
 ), renamed as (
 
     SELECT
          nullif("Employee_ID",'')::varchar as bamboo_employee_number,
-         nullif("Location_Factor",'')::float as location_factor,
+         nullif("Location_Factor",'') as location_factor,
          CASE WHEN "DBT_VALID_FROM"::number::timestamp::date < '2019-07-20'::date
              THEN '2000-01-20'::date
              ELSE "DBT_VALID_FROM"::number::timestamp::date END AS valid_from,
@@ -25,7 +25,7 @@ with source as (
 ), deduplicated as (
 
 SELECT bamboo_employee_number::bigint as bamboo_employee_number,
-        location_factor,
+        location_factor::float as location_factor,
         valid_from,
         valid_to
 FROM renamed
