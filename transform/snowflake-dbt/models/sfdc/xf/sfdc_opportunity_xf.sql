@@ -47,6 +47,7 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.sales_qualified_source,
         sfdc_opportunity.forecasted_iacv,
         sfdc_opportunity.incremental_acv,
+        sfdc_opportunity.iacv_created_date__c,
         sfdc_opportunity.net_incremental_acv,
         sfdc_opportunity.renewal_amount,
         sfdc_opportunity.renewal_acv,

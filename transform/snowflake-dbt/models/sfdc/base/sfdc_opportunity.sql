@@ -66,6 +66,7 @@ WITH source AS (
         -- Should confirm which IACV is which
         incremental_acv_2__c        AS forecasted_iacv,
         incremental_acv__c          AS incremental_acv,
+        iacv_created_date__c        AS iacv_created_date__c,
         net_iacv__c                 AS net_incremental_acv,
         renewal_amount__c           AS renewal_amount,
         renewal_acv__c              AS renewal_acv,
