@@ -60,6 +60,7 @@ WITH source AS (
         merged_opportunity__c       AS merged_opportunity_id,
 
         -- opp info
+        forecastcategoryname        AS forecast_category_name,
         acv_2__c                    AS acv,
         sql_source__c               AS sales_qualified_source,
         campaignid                  AS primary_campaign_source_id,
