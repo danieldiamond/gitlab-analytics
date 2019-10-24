@@ -77,11 +77,11 @@ WITH budget AS (
 ), cost_category_grouping AS (
 
     SELECT b.*,
-           fiscal_year,
-           fiscal_quarter,
-           fiscal_quarter_name
-           cost_category_level_1,
-           cost_category_level_2
+           dd.fiscal_year,
+           dd.fiscal_quarter,
+           dd.fiscal_quarter_name,
+           cc.cost_category_level_1,
+           cc.cost_category_level_2
     FROM budget_forecast_cogs_opex b
     LEFT JOIN date_details dd
       ON dd.first_day_of_month = b.accounting_period
@@ -92,4 +92,4 @@ WITH budget AS (
 
 SELECT *
 FROM cost_category_grouping
-ORDER BY 8,4
+ORDER BY accounting_period_id, account_full_name

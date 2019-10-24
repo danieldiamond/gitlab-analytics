@@ -94,34 +94,37 @@ WITH transactions AS (
 ), income_statement_grouping AS (
 
     SELECT
-      transaction_id,
-      external_ref_number,
-      transaction_ext_id,
-      document_id,
-      account_id,
-      account_name,
-      account_full_name,
-      account_number || ' - ' || account_name          AS unique_account_name,
-      account_number,
-      parent_account_number,
-      unique_account_number,
-      actual_amount,
-      CASE WHEN account_number BETWEEN '5000' AND '5999' THEN '2-cost of sales'
-           WHEN account_number BETWEEN '6000' AND '6999' THEN '3-expense'
-      END                                              AS income_statement_grouping,
-      transaction_lines_memo,
-      entity_name,
-      status,
-      transaction_type,
-      department_id,
-      department_name,
-      parent_department_name,
-      accounting_period_id,
-      accounting_period,
-      accounting_period_name,
-      fiscal_year,
-      fiscal_quarter,
-      fiscal_quarter_name
+      oc.transaction_id,
+      oc.external_ref_number,
+      oc.transaction_ext_id,
+      oc.document_id,
+      oc.account_id,
+      oc.account_name,
+      oc.account_full_name,
+      oc.account_number || ' - ' || oc.account_name          AS unique_account_name,
+      oc.account_number,
+      oc.parent_account_number,
+      oc.unique_account_number,
+      oc.actual_amount,
+      CASE
+        WHEN oc.account_number BETWEEN '5000' AND '5999'
+          THEN '2-cost of sales'
+        WHEN oc.account_number BETWEEN '6000' AND '6999'
+          THEN '3-expense'
+      END                                                    AS income_statement_grouping,
+      oc.transaction_lines_memo,
+      oc.entity_name,
+      oc.status,
+      oc.transaction_type,
+      oc.department_id,
+      oc.department_name,
+      oc.parent_department_name,
+      oc.accounting_period_id,
+      oc.accounting_period,
+      oc.accounting_period_name,
+      dd.fiscal_year,
+      dd.fiscal_quarter,
+      dd.fiscal_quarter_name
     FROM opex_cogs oc
     LEFT JOIN date_details dd
       ON dd.first_day_of_month = oc.accounting_period
@@ -130,8 +133,8 @@ WITH transactions AS (
 
     SELECT
       isg.*,
-      cost_category_level_1,
-      cost_category_level_2
+      cc.cost_category_level_1,
+      cc.cost_category_level_2
     FROM income_statement_grouping isg
     LEFT JOIN cost_category cc
       ON isg.unique_account_name = cc.unique_account_name
