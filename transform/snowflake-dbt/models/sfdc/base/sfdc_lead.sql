@@ -64,7 +64,8 @@ WITH source AS (
         interested_in_gitlab_ee__c  AS is_interested_gitlab_ee,
         interested_in_hosted_solution__c
                                     AS is_interested_in_hosted,
-
+        lead_assigned_datetime__c::datetime   
+                                    AS assigned_datetime,
         matched_account_top_list__c AS matched_account_top_list,
         mql_date__c                 AS marketo_qualified_lead_date,
         mql_datetime__c             AS marketo_qualified_lead_datetime,

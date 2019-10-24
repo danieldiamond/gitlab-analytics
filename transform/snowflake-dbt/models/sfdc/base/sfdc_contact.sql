@@ -60,6 +60,8 @@ WITH source AS (
         lead_source_type__c         AS lead_source_type,
         outreach_stage__c           AS outreach_stage,
         account_type__c             AS account_type,
+        contact_assigned_datetime__c::datetime   
+                                    AS assigned_datetime,
         mql_timestamp__c            AS marketo_qualified_lead_timestamp,
         mql_datetime__c             AS marketo_qualified_lead_datetime,
         inquiry_datetime__c         AS inquiry_datetime,
