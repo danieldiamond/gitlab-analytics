@@ -48,13 +48,15 @@ WITH customers AS (
     zuora_subscription_xf.subscription_status,
     
     IFF(zuora_rpc.created_by_id = '2c92a0fd55822b4d015593ac264767f2',
-          TRUE, FALSE)                       AS is_purchased_through_subscription_portal,
+          TRUE, FALSE)                                   AS is_purchased_through_subscription_portal,
     FIRST_VALUE(orders.customer_id) 
       OVER (PARTITION BY orders.subscription_name_slugify 
-            ORDER BY order_updated_at DESC)  AS current_customer_id,
+            ORDER BY order_updated_at DESC)              AS current_customer_id,
     FIRST_VALUE(orders.customer_id) 
       OVER (PARTITION BY orders.subscription_name_slugify 
-            ORDER BY order_created_at ASC)   AS first_customer_id,
+            ORDER BY order_created_at ASC)               AS first_customer_id,
+    ARRAY_AGG(customers.customer_id) 
+        WITHIN GROUP (ORDER  BY orders.order_created_at) AS customer_id_list,
     FIRST_VALUE(gitlab_namespace_id) 
       OVER (PARTITION BY orders.subscription_name_slugify 
             ORDER BY gitlab_namespace_id IS NOT NULL DESC,

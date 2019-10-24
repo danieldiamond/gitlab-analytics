@@ -39,8 +39,8 @@ WITH customers AS (
 , converted_trials AS (
   
   SELECT DISTINCT
-    order_id,
-    subscription_name_slugify
+    trials.order_id,
+    orders_snapshots.subscription_name_slugify
   FROM trials
   JOIN orders_snapshots ON trials.order_id = orders_snapshots.order_id
   WHERE orders_snapshots.subscription_name_slugify IS NOT NULL
@@ -61,11 +61,13 @@ WITH customers AS (
     namespaces.namespace_created_at,
     namespaces.namespace_type,
     
-    TO_DATE(MIN(orders_snapshots.order_start_date))         AS trial_start_date, 
-    TO_DATE(MAX(orders_snapshots.order_end_date))           AS trial_end_date,
-    
     IFF(converted_trials.order_id IS NOT NULL, TRUE, FALSE) AS is_converted,
-    converted_trials.subscription_name_slugify
+    converted_trials.subscription_name_slugify,
+    
+    MIN(order_created_at)                                   AS order_created_at,
+    TO_DATE(MIN(orders_snapshots.order_start_date))         AS trial_start_date, 
+    TO_DATE(MAX(orders_snapshots.order_end_date))           AS trial_end_date
+    
     
   FROM orders_snapshots
     JOIN customers ON orders_snapshots.customer_id = customers.customer_id
