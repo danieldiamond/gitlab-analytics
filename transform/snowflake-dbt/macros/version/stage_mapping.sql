@@ -3,7 +3,7 @@
     {%- call statement('get_mappings', fetch_result=True) %}
 
         SELECT stats_used_key_name
-        FROM {{ ref('ping_metrics_to_stage_mapping_data') }} 
+        FROM {{ ref('version_usage_stats_to_stage_mappings') }} 
         WHERE stage = '{{ stage }}'
 
     {%- endcall -%}
@@ -19,12 +19,12 @@
                 CASE WHEN
                     {% for feature in values %}
 
-                        pings.{{ feature }}_change > 0
+                        change.{{ feature }}_change > 0
 
                         {%- if not loop.last %}
                             OR
                         {% else %}
-                            THEN pings.user_count END
+                            THEN change.user_count END
                         {% endif -%}
 
                     {% endfor -%} 

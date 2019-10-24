@@ -118,15 +118,15 @@ Steps to resolve:
 * Step 3: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
 * Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
 
-### Test: uncategorized_pings
-This test checks that the list of unique ping metrics that we receive, `pings_list`, matches the ping metrics that we have categorized in the static CSV, `ping_metrics_to_stage_mapping_data`. This test will fail when these two sources get out of sync in either direction.
+### Test: uncategorized_version_usage_stats
+This test checks that the list of unique ping metrics that we receive, `version_usage_stats_list`, matches the ping metrics that we have categorized in the static CSV, `version_usage_stats_to_stage_mappings`. This test will fail when these two sources get out of sync in either direction.
 
 Error Example:
 ```
-Database Error in model pings_usage_data_monthly_change_by_stage (models/pings/xf/pings_usage_data_monthly_change_by_stage.sql)
+Database Error in model version_usage_data_monthly_change_by_stage (models/version/xf/version_usage_data_monthly_change_by_stage.sql)
   000904 (42000): 018c7f13-0141-8466-0000-289d05dda8ae: SQL compilation error: error line 397 at position 24
   invalid identifier 'PINGS.OPERATIONS_DASHBOARD_DEFAULT_DASHBOARD_CHANGE'
-  compiled SQL at target/compiled/gitlab_snowflake/pings/xf/pings_usage_data_monthly_change_by_stage.sql
+  compiled SQL at target/compiled/gitlab_snowflake/version/xf/version_usage_data_monthly_change_by_stage.sql
 ```
 
 Steps to Resolve:
@@ -134,7 +134,7 @@ Steps to Resolve:
 * Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack to see the test results in Slack.
 * Step 2: Create a new issue.
 * Step 3: Ask in the #product slack channel which stage the new metric belongs to.
-* Step 4: Create an MR that adds the new metric to the `ping_metrics_to_stage_mapping_data` CSV. Remember to keep it sorted alphabetically.
+* Step 4: Create an MR that adds the new metric to the `version_usage_stats_to_stage_mappings` CSV. Remember to keep it sorted alphabetically. 
 
 ### Test: zuora_account_has_crm_id
 

@@ -136,11 +136,6 @@ models:
       enabled: false
       materialized: table
 
-    pings:
-      tags: ["product"]
-      base:
-        schema: staging
-
     retention:
       materialized: table
     
@@ -159,6 +154,11 @@ models:
 
     snowplow_combined:
       tags: ["product"]
+
+    version:
+      tags: ["product"]
+      base:
+        schema: staging
 
     zendesk:
       xf:
