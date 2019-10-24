@@ -329,6 +329,7 @@ roles:
     - data_manager:
         warehouses:
             - analyst_xs
+            - analyst_l
         member_of:
             - boneyard
             - snowplow
