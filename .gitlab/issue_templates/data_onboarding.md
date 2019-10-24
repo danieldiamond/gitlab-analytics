@@ -80,6 +80,10 @@ rm ~/onboarding_script.sh
    * dbt will be installed at its latest version. Typing `dbt --version` will output the current version.
 * [ ] We strongly recommend configuring Atom (via the Atom UI) with the [Atom setup](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243?) section of Claire's post and [adding the tip](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243/5) from jars later in the thread. It will make your life much easier.
   * Your editor should be configured so that all tabs are converted to 4 spaces. This will minimize messy looking diffs and provide consistency across the team.
+    * VSCode
+      * `Editor: Detect Indentation` is deselected
+      * `Editor: Insert Spaces` is selected
+      * `Editor: Tab Size` is set to 4 spaces per tab
 
 
 Our data stack looks roughly like this:
