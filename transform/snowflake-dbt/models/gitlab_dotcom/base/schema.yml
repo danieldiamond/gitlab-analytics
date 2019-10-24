@@ -201,7 +201,7 @@ models:
   - name: gitlab_dotcom_ci_runners
     description: Base model for Gitlab.com ci_runners
     columns:
-      - name: id
+      - name: runner_id
         tests:
           - not_null
           - unique
