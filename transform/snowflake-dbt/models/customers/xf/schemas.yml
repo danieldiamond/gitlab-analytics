@@ -4,13 +4,10 @@ models:
   - name: customers_db_subscriptions
     description: '{{ doc("customers_db_subscriptions") }}'
     columns:
-      - name: order_id
+      - name: subscription_name_slugify
         tests:
           - not_null
-          - unique
-      - name: customer_id
-        tests:
-          - not_null
+
   - name: customers_db_trials
     description: '{{ doc("customers_db_trials") }}'
     columns:
