@@ -159,6 +159,8 @@ models:
       tags: ["product"]
       base:
         schema: staging
+      xf:
+        materialized: table
 
     zendesk:
       xf:
