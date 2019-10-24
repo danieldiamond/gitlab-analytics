@@ -60,7 +60,7 @@ roles:
     - analyst_core:
         warehouses:
             - analyst_xs
-            - analyst_xl
+            - analyst_l
         member_of:
             - boneyard
         privileges:
@@ -107,6 +107,7 @@ roles:
     - analyst_growth:
         warehouses:
             - analyst_xs
+            - analyst_l
             - analyst_xl
         member_of:
             - boneyard
@@ -160,7 +161,6 @@ roles:
     - analyst_infrastructure:
         warehouses:
             - analyst_xs
-            - analyst_xl
         member_of:
             - boneyard
         privileges:
@@ -207,7 +207,6 @@ roles:
     - analyst_finance:
         warehouses:
             - analyst_xs
-            - analyst_xl
         member_of:
             - boneyard
         privileges:
@@ -254,7 +253,6 @@ roles:
     - analyst_marketing:
         warehouses:
             - analyst_xs
-            - analyst_xl
         member_of:
             - boneyard
         privileges:
@@ -269,7 +267,6 @@ roles:
     - analyst_sales:
         warehouses:
             - analyst_xs
-            - analyst_xl
         member_of:
             - boneyard
         privileges:
@@ -308,7 +305,6 @@ roles:
     - analyst_sensitive:
         warehouses:
             - analyst_xs
-            - analyst_xl
         member_of:
             - boneyard
         privileges:
@@ -333,7 +329,7 @@ roles:
     - data_manager:
         warehouses:
             - analyst_xs
-            - analyst_xl
+            - analyst_l
         member_of:
             - boneyard
             - snowplow
@@ -410,7 +406,6 @@ roles:
     - intern:
         warehouses:
             - analyst_xs
-            - analyst_xl
         member_of:
             - boneyard
         privileges:
@@ -493,7 +488,6 @@ roles:
     - pwc_contractor:
         warehouses:
             - analyst_xs
-            - analyst_xl
         privileges:
             databases:
                 read:
@@ -598,7 +592,6 @@ roles:
     - bamboohr:
         warehouses:
             - analyst_xs
-            - analyst_xl
         privileges:
             databases:
                 read:
@@ -619,7 +612,6 @@ roles:
     - boneyard:
         warehouses:
             - analyst_xs
-            - analyst_xl
         privileges:
             databases:
                 read:
@@ -634,7 +626,6 @@ roles:
     - greenhouse:
         warehouses:
             - analyst_xs
-            - analyst_xl
         privileges:
             databases:
                 read:
@@ -687,12 +678,10 @@ roles:
     - aakgun:
         warehouses:
             - analyst_xs
-            - analyst_xl
 
     - datwood:
         warehouses:
             - analyst_xs
-            - analyst_xl
 
     - dtang:
         warehouses:
@@ -726,6 +715,7 @@ roles:
     - ekastelein:
         warehouses:
             - analyst_xs
+            - analyst_l
             - analyst_xl
 
     - eurie:
@@ -752,12 +742,10 @@ roles:
     - iweeks:
         warehouses:
             - analyst_xs
-            - analyst_xl
 
     - jmahdi:
         warehouses:
             - analyst_xs
-            - analyst_xl
 
     - jsalazar:
         warehouses:
@@ -795,6 +783,7 @@ roles:
     - mpeychet:
         warehouses:
             - analyst_xs
+            - analyst_l
             - analyst_xl
 
     - periscope:
@@ -812,22 +801,18 @@ roles:
     - pwc_jblessing:
         warehouses:
             - analyst_xs
-            - analyst_xl
 
     - pwc_mrichard:
         warehouses:
             - analyst_xs
-            - analyst_xl
 
     - pwc_mcoffman:
         warehouses:
             - analyst_xs
-            - analyst_xl
 
     - pwc_snagaraj:
         warehouses:
             - analyst_xs
-            - analyst_xl
 
     - ssichak:
         warehouses:
@@ -866,7 +851,6 @@ roles:
     - wwright:
         warehouses:
             - analyst_xs
-            - analyst_xl
             - reporting
 
 
@@ -1128,6 +1112,9 @@ users:
 warehouses:
     - admin:
         size: x-small
+
+    - analyst_l:
+        size: large
 
     - analyst_xl:
         size: x-large
