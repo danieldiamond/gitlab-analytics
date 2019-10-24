@@ -37,39 +37,25 @@ WITH customers AS (
   
   SELECT DISTINCT
     orders.subscription_name_slugify,
+    
+    zuora_rp.rate_plan_id,
+    zuora_rp.product_rate_plan_id,
+    
     zuora_subscription_xf.subscription_start_date,
     zuora_subscription_xf.oldest_subscription_in_cohort,
     zuora_subscription_xf.lineage,
     zuora_subscription_xf.subscription_status,
-    zuora_subscription_xf.exclude_from_renewal_report,
     
-    zuora_rp.product_rate_plan_id,
-    zuora_rp.rate_plan_name,
-    zuora_rp.product_category,
-    zuora_rp.delivery,
-    zuora_rpc.rate_plan_charge_name,
-    zuora_rpc.rate_plan_charge_number,
-    zuora_rpc.mrr,
-    zuora_rpc.tcv,
-    DATE_TRUNC('month', zuora_subscription_xf.subscription_start_date::DATE)                     AS sub_start_month,
-    DATE_TRUNC('month', dateadd('month', -1, zuora_subscription_xf.subscription_end_date::DATE)) AS sub_end_month,
-    DATE_TRUNC('month', zuora_rpc.effective_start_date::DATE)                                    AS effective_start_month,
-    DATE_TRUNC('month', dateadd('month', -1, zuora_rpc.effective_end_date::DATE))                AS effective_end_month,
-    DATEDIFF(month, zuora_rpc.effective_start_date::DATE,
-      zuora_rpc.effective_end_date::DATE)                                                        AS month_interval,
-    zuora_rpc.effective_start_date,
-    zuora_rpc.effective_end_date,
-    zuora_subscription_xf.cohort_month,
-    zuora_subscription_xf.cohort_quarter,
-    zuora_rpc.unit_of_measure,
-    zuora_rpc.quantity,
+    zuora_rpc.rate_plan_charge_id,
+    IFF(zuora_rpc.created_by_id = '2c92a0fd55822b4d015593ac264767f2',
+          TRUE, FALSE)                       AS is_purchased_through_subscription_portal
     FIRST_VALUE(orders.customer_id) 
       OVER (PARTITION BY orders.subscription_name_slugify 
-            ORDER BY order_updated_at DESC)                                                      AS current_customer_id,
+            ORDER BY order_updated_at DESC)  AS current_customer_id,
     FIRST_VALUE(gitlab_namespace_id) 
       OVER (PARTITION BY orders.subscription_name_slugify 
             ORDER BY gitlab_namespace_id IS NOT NULL DESC,
-                      order_updated_at DESC)                                                     AS current_gitlab_namespace_id
+                      order_updated_at DESC) AS current_gitlab_namespace_id
             
   FROM orders 
   
