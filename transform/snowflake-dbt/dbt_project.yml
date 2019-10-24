@@ -36,6 +36,7 @@ on-run-start:
 on-run-end:
     - "{{ dbt_logging_start('on run end hooks') }}"
     - "{{grant_usage_to_schemas(schema_name)}}"
+    - "drop schema {{ generate_schema_name('temporary') }}"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
 
 # ======
