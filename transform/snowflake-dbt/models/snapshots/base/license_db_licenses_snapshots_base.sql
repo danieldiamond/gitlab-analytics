@@ -1,6 +1,6 @@
 {{ config({
-    "schema": "staging",
-    "alias": "license_db_licenses_snapshots"
+    "alias": "license_db_licenses_snapshots",
+    "schema": "staging"
     })
 }}
 
