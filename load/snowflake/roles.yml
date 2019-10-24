@@ -108,6 +108,7 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_l
+            - analyst_xl
         member_of:
             - boneyard
             - snowplow
