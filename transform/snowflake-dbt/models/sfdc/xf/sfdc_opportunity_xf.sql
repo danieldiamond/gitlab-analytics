@@ -43,6 +43,7 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.sales_accepted_date,
         sfdc_opportunity.sales_qualified_date,
         sfdc_opportunity.merged_opportunity_id,
+        sfdc_opportunity.forecast_category_name,
         sfdc_opportunity.acv,
         sfdc_opportunity.sales_qualified_source,
         sfdc_opportunity.forecasted_iacv,
