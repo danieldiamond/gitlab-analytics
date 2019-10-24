@@ -40,18 +40,21 @@ WITH customers AS (
     
     zuora_rp.rate_plan_id,
     zuora_rp.product_rate_plan_id,
+    zuora_rpc.rate_plan_charge_id,
     
-    zuora_subscription_xf.subscription_start_date,
-    zuora_subscription_xf.oldest_subscription_in_cohort,
     zuora_subscription_xf.lineage,
+    zuora_subscription_xf.oldest_subscription_in_cohort,
+    zuora_subscription_xf.subscription_start_date,
     zuora_subscription_xf.subscription_status,
     
-    zuora_rpc.rate_plan_charge_id,
     IFF(zuora_rpc.created_by_id = '2c92a0fd55822b4d015593ac264767f2',
-          TRUE, FALSE)                       AS is_purchased_through_subscription_portal
+          TRUE, FALSE)                       AS is_purchased_through_subscription_portal,
     FIRST_VALUE(orders.customer_id) 
       OVER (PARTITION BY orders.subscription_name_slugify 
             ORDER BY order_updated_at DESC)  AS current_customer_id,
+    FIRST_VALUE(orders.customer_id) 
+      OVER (PARTITION BY orders.subscription_name_slugify 
+            ORDER BY order_created_at ASC)   AS first_customer_id,
     FIRST_VALUE(gitlab_namespace_id) 
       OVER (PARTITION BY orders.subscription_name_slugify 
             ORDER BY gitlab_namespace_id IS NOT NULL DESC,
