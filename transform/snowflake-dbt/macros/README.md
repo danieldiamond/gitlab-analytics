@@ -37,15 +37,6 @@ Used in:
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
 
-## Cost Category ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/netsuite/cost_category.sql))
-This macro categorizes expenses by Headcount and Non_Headcount.
-Usage:
-```
-{{ cost_category('account_number','account_name') }}
-```
-Used in:
-- netsuite_cogs_opex
-
 ## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
 Usage:
@@ -302,9 +293,9 @@ pipeline_schedules_viewed AS (
     page_view_id                AS event_surrogate_key
 
   FROM snowplow_page_views
-  WHERE TRUE 
+  WHERE TRUE
     AND page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/pipeline_schedules'
-  
+
 
 )
 ```

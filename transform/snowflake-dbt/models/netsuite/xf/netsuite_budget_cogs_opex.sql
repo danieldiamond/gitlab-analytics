@@ -32,6 +32,11 @@ WITH budget AS (
        fiscal_quarter_name
      FROM {{ref('date_details')}}
 
+), cost_category AS (
+
+     SELECT *
+     FROM {{ref('netsuite_expense_cost_category')}}
+
 ), budget_forecast_cogs_opex AS (
 
     SELECT
@@ -53,7 +58,6 @@ WITH budget AS (
       CASE WHEN account_number BETWEEN '5000' AND '5999' THEN '2-cost of sales'
            WHEN account_number BETWEEN '6000' AND '6999' THEN '3-expense'
       END                                                                         AS income_statement_grouping,
-      {{cost_category('account_number','account_name')}},
       SUM(CASE WHEN b.budget_amount IS NULL THEN 0
                ELSE b.budget_amount
           END)                                                                    AS budget_amount
@@ -68,13 +72,24 @@ WITH budget AS (
       ON b.department_id = d.department_id
     WHERE ap.fiscal_calendar_id = 2
       AND a.account_number between '5000' and '6999'
-    {{ dbt_utils.group_by(n=17) }}
+    {{ dbt_utils.group_by(n=16) }}
+
+), cost_category_grouping AS (
+
+    SELECT b.*,
+           dd.fiscal_year,
+           dd.fiscal_quarter,
+           dd.fiscal_quarter_name,
+           cc.cost_category_level_1,
+           cc.cost_category_level_2
+    FROM budget_forecast_cogs_opex b
+    LEFT JOIN date_details dd
+      ON dd.first_day_of_month = b.accounting_period
+    LEFT JOIN cost_category cc
+      ON b.unique_account_name = cc.unique_account_name
 
 )
 
-SELECT b.*
-FROM budget_forecast_cogs_opex b
-LEFT JOIN date_details dd
- ON dd.first_day_of_month = b.accounting_period
-WHERE account_number NOT IN ('5077','5079','5080')
-ORDER BY 8,4
+SELECT *
+FROM cost_category_grouping
+ORDER BY accounting_period_id, account_full_name
