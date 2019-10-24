@@ -92,7 +92,7 @@ models:
       - name: ci_build_id
         tests:
           - not_null
-        
+
   - name: gitlab_dotcom_ci_builds
     description: Base model for Gitlab.com ci_builds
     columns:
@@ -106,7 +106,7 @@ models:
       - name: ci_build_updated_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_ci_group_variables
     description: Base model for Gitlab.com ci_group_variables
     columns:
@@ -120,7 +120,7 @@ models:
       - name: ci_group_variable_updated_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_ci_job_artifacts
     description: Base model for Gitlab.com ci_job_artifacts
     columns:
@@ -134,7 +134,7 @@ models:
       - name: ci_job_artifact_updated_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_ci_pipeline_schedule_variables
     description: Base model for Gitlab.com ci_pipeline_schedule_variables
     columns:
@@ -148,7 +148,7 @@ models:
       - name: ci_pipeline_schedule_updated_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_ci_pipeline_schedules
     description: Base model for Gitlab.com ci_pipeline_schedules
     columns:
@@ -162,14 +162,14 @@ models:
       - name: ci_pipeline_schedule_updated_at
         tests:
           - not_null
-            
+
   - name: gitlab_dotcom_ci_pipeline_variables
     description: Base model for Gitlab.com ci_pipeline_variables
     columns:
       - name: ci_pipeline_variable_id
         tests:
           - not_null
-                        
+
   - name: gitlab_dotcom_epic_issues
     description: Base model for Gitlab.com epic issues
     columns:
@@ -197,7 +197,21 @@ models:
       - name: updated_at
         tests:
           - not_null
-  
+
+  - name: gitlab_dotcom_ci_runners
+    description: Base model for Gitlab.com ci_runners
+    columns:
+      - name: runner_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_ci_stages
     description: Base model for Gitlab.com ci_stages
     columns:
@@ -814,7 +828,7 @@ models:
       - name: created_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_subscriptions
     description: Base model for Gitlab.com subscriptions
     columns:
