@@ -1,3 +1,8 @@
+{{ config({
+    "materialized": "table"
+    })
+}}
+
 WITH version_usage_data AS (
 
   SELECT * 
