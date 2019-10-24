@@ -15,6 +15,7 @@ ci_pipelines,verify
 ci_runners,verify
 ci_triggers,verify
 clusters_applications_cert_managers,configure
+clusters_applications_elastic_stack, monitor
 clusters_applications_helm,configure
 clusters_applications_ingress,configure
 clusters_applications_knative,configure
