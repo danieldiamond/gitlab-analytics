@@ -13,4 +13,4 @@ WITH release_snowplow_smau_events AS (
 )
 
 SELECT * 
-FROM plan_snowplow_smau_events
+FROM release_snowplow_smau_events
