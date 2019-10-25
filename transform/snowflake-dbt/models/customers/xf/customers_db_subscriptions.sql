@@ -79,13 +79,13 @@ WITH customers AS (
                         order_updated_at DESC)                    AS current_gitlab_namespace_id
               
     FROM orders 
-      JOIN customers ON orders.customer_id = customers.customer_id
-      JOIN zuora_subscription_xf
-        ON orders.subscription_name_slugify = zuora_subscription_xf.subscription_name_slugify
-      LEFT JOIN zuora_rp 
-        ON zuora_rp.subscription_id = zuora_subscription_xf.subscription_id
-          AND orders.product_rate_plan_id = zuora_rp.product_rate_plan_id
-      LEFT JOIN zuora_rpc ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
+    JOIN customers ON orders.customer_id = customers.customer_id
+    JOIN zuora_subscription_xf
+      ON orders.subscription_name_slugify = zuora_subscription_xf.subscription_name_slugify
+    LEFT JOIN zuora_rp 
+      ON zuora_rp.subscription_id = zuora_subscription_xf.subscription_id
+        AND orders.product_rate_plan_id = zuora_rp.product_rate_plan_id
+    LEFT JOIN zuora_rpc ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
     
     WHERE orders.product_rate_plan_id IS NOT NULL 
       AND orders.order_is_trial = FALSE
