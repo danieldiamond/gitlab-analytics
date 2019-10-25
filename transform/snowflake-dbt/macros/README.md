@@ -307,6 +307,7 @@ Used in:
 - monitor_snowplow_smau_events
 - package_snowplow_smau_events
 - plan_snowplow_smau_events
+- release_snowplow_smau_events
 - verify_snowplow_smau_events
 
 ## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/version/stage_mapping.sql))
