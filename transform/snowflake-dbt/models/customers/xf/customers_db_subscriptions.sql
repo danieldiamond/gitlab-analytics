@@ -90,7 +90,7 @@ WITH customers AS (
     WHERE orders.product_rate_plan_id IS NOT NULL 
       AND orders.order_is_trial = FALSE
       AND orders.subscription_id IS NOT NULL
-      ANd zuora_rpc.mrr > 0
+      AND zuora_rpc.mrr > 0
       AND zuora_rpc.tcv > 0
       AND effective_end_date >= effective_start_date  
 
@@ -114,7 +114,7 @@ WITH customers AS (
       ARRAY_AGG(customer_id) 
         WITHIN GROUP (ORDER  BY 1) AS customer_id_list,
       ARRAY_AGG(gitlab_namespace_id) 
-        WITHIN GROUP (ORDER  BY 1) AS order_id_list
+        WITHIN GROUP (ORDER  BY 1) AS gitlab_namespace_id_list
     FROM joined
     GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12
     
