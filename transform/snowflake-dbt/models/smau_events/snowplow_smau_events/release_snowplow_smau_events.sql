@@ -18,7 +18,7 @@
       "event_name":"feature_flags_viewed",
       "regexp_where_statements":[
          {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/feature_flags$",
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/-\/feature_flags$",
             "regexp_function":"REGEXP"
          }
       ]
@@ -27,7 +27,7 @@
       "event_name":"release_page_viewed",
       "regexp_where_statements":[
          {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/releases$",
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/-\/releases$",
             "regexp_function":"REGEXP"
          }
       ]
