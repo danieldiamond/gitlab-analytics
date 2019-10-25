@@ -1,6 +1,5 @@
 {{ config({
-    "schema": "sensitive",
-    "materialized": "ephemeral"
+    "schema": "temporary"
     })
 }}
 
