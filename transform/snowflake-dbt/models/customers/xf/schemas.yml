@@ -7,6 +7,10 @@ models:
       - name: subscription_name_slugify
         tests:
           - not_null
+      - name: rate_plan_charge_id
+        tests:
+          - not_null
+          - unique
 
   - name: customers_db_trials
     description: '{{ doc("customers_db_trials") }}'
