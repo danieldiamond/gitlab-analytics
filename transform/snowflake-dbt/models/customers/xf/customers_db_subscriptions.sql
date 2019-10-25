@@ -59,18 +59,24 @@ WITH customers AS (
       zuora_subscription_xf.subscription_start_date,
       zuora_subscription_xf.subscription_status,
       
+      date_trunc('month', zuora_rpc.effective_start_date :: DATE) AS effective_start_date,
+      date_trunc('month', 
+                    dateadd('month', -1, zuora_rpc.effective_end_date :: DATE)
+                  )                                               AS effective_end_date,
+      
+      
       IFF(zuora_rpc.created_by_id = '2c92a0fd55822b4d015593ac264767f2',
-            TRUE, FALSE)                                   AS is_purchased_through_subscription_portal,
+            TRUE, FALSE)                                          AS is_purchased_through_subscription_portal,
       FIRST_VALUE(orders.customer_id) 
         OVER (PARTITION BY orders.subscription_name_slugify 
-              ORDER BY order_updated_at DESC)              AS current_customer_id,
+              ORDER BY order_updated_at DESC)                     AS current_customer_id,
       FIRST_VALUE(orders.customer_id) 
         OVER (PARTITION BY orders.subscription_name_slugify 
-              ORDER BY order_created_at ASC)               AS first_customer_id,
+              ORDER BY order_created_at ASC)                      AS first_customer_id,
       FIRST_VALUE(orders.gitlab_namespace_id) 
         OVER (PARTITION BY orders.subscription_name_slugify 
               ORDER BY gitlab_namespace_id IS NOT NULL DESC,
-                        order_updated_at DESC)             AS current_gitlab_namespace_id
+                        order_updated_at DESC)                    AS current_gitlab_namespace_id
               
     FROM orders 
       JOIN customers ON orders.customer_id = customers.customer_id
@@ -84,12 +90,15 @@ WITH customers AS (
     WHERE orders.product_rate_plan_id IS NOT NULL 
       AND orders.order_is_trial = FALSE
       AND orders.subscription_id IS NOT NULL
+      ANd zuora_rpc.mrr > 0
+      AND zuora_rpc.tcv > 0
+      AND effective_end_date >= effective_start_date  
 
 )
 
 , joined_wht_customer_and_namespace_list AS (
   
-    SELECT 
+    SELECT DISTINCT
       subscription_name_slugify,
       rate_plan_id,
       product_rate_plan_id,
