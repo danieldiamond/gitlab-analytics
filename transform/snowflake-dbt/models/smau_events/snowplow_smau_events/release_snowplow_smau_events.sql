@@ -43,7 +43,7 @@ WITH snowplow_page_views AS (
     page_view_start,
     page_url_path,
     page_view_id
-  FROM {{ ref('snowplow_page_views_30')}} --TODO
+  FROM {{ ref('snowplow_page_views_all')}}
   WHERE TRUE
   {% if is_incremental() %}
     AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
