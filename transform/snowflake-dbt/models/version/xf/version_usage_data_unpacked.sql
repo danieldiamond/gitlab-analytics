@@ -1,9 +1,27 @@
 {% set version_usage_stats_list = dbt_utils.get_column_values(table=ref('version_usage_stats_list'), column='full_ping_name', max_records=1000, default=['']) %}
 
-WITH usage_data as (
+WITH usage_data AS (
 
   SELECT * 
   FROM {{ ref('version_usage_data') }}
+
+), licenses AS (
+  
+  SELECT *
+  FROM {{ ref('licenses_db_licenses') }}
+
+), joined AS (
+
+  SELECT
+    unpacked.*,
+    licenses.zuora_subscription_id,
+
+
+  FROM usage_data
+    LEFT JOIN licenses
+      ON usage_data.license_md5 = licenses.license_md5
+  
+
 
 ), unpacked AS (
 
@@ -39,8 +57,8 @@ WITH usage_data as (
     f.path                                                                          AS ping_name, 
     REPLACE(f.path, '.','_')                                                        AS full_ping_name,
     f.value                                                                         AS ping_value 
-  FROM usage_data,
-    lateral flatten(input => usage_data.stats_used, recursive => True) f
+  FROM joined,
+    lateral flatten(input => joined.stats_used, recursive => True) f
   WHERE IS_OBJECT(f.value) = FALSE
     AND stats_used IS NOT NULL
   {% if is_incremental() %}
