@@ -41,7 +41,7 @@ WITH customers AS (
     trials.order_id,
     orders_snapshots.subscription_name_slugify
   FROM trials
-  JOIN orders_snapshots ON trials.order_id = orders_snapshots.order_id
+  INNER JOIN orders_snapshots ON trials.order_id = orders_snapshots.order_id
   WHERE orders_snapshots.subscription_name_slugify IS NOT NULL
   
 )
@@ -69,7 +69,7 @@ WITH customers AS (
     
     
   FROM orders_snapshots
-    JOIN customers ON orders_snapshots.customer_id = customers.customer_id
+    INNER JOIN customers ON orders_snapshots.customer_id = customers.customer_id
     LEFT JOIN namespaces ON orders_snapshots.gitlab_namespace_id = namespaces.namespace_id
     LEFT JOIN users ON customers.customer_provider_user_id = users.user_id
     LEFT JOIN converted_trials ON orders_snapshots.order_id = converted_trials.order_id

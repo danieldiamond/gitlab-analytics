@@ -57,6 +57,7 @@ WITH customers AS (
       zuora_subscription_xf.lineage,
       zuora_subscription_xf.oldest_subscription_in_cohort,
       zuora_subscription_xf.subscription_start_date,
+      zuora_subscription_xf.subscription_end_date,
       zuora_subscription_xf.subscription_status,
       
       date_trunc('month', zuora_rpc.effective_start_date :: DATE) AS effective_start_date,
@@ -106,6 +107,7 @@ WITH customers AS (
       lineage,
       oldest_subscription_in_cohort,
       subscription_start_date,
+      subscription_end_date,
       subscription_status,
       is_purchased_through_subscription_portal,
       current_customer_id,
@@ -116,7 +118,7 @@ WITH customers AS (
       ARRAY_AGG(gitlab_namespace_id) 
         WITHIN GROUP (ORDER  BY 1) AS gitlab_namespace_id_list
     FROM joined
-    {{ dbt_utils.group_by(n=12) }}
+    {{ dbt_utils.group_by(n=13) }}
     
 )
 
