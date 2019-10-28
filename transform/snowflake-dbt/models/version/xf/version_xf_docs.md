@@ -78,4 +78,14 @@ This model summarizes which instances from the licenses app successfully send a 
 Only self-managaged instances that have a listed license file in the license app are included in this model. Trials are excluded entirely.  
 Instances are included in this analysis for any week where the Monday falls between their "license start date" and "license expires date".  
 
+Example query usage:
+```sql
+SELECT
+  week,
+  AVG(did_send_usage_data::INTEGER)
+FROM ekastelein_scratch.version_usage_data_weekly_opt_in_summary
+GROUP BY 1
+ORDER BY 1 DESC
+```
+
 {% enddocs %}
