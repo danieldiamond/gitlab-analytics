@@ -6,7 +6,7 @@
 
 WITH licenses AS (
   SELECT *
-  FROM {{ ref('license_db_licenses') }} -- TODO: ref the snapshot
+  FROM {{ ref('license_db_licenses') }}
   WHERE license_md5 IS NOT NULL
     AND is_trial = False
 ),
