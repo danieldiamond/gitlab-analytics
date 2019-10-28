@@ -53,7 +53,7 @@ SELECT
   department_info.reports_to,
   location_factor.location_factor,
   IFF(hire_date = date_actual, True, False) AS is_hire_date,
-  IFF(termination_date = dateadd('day', 1, date_actual), True, False) AS is_termination_date
+  IFF(termination_date = DATEADD('day', 1, date_actual), True, False) AS is_termination_date
 FROM date_details
 LEFT JOIN employee_directory
   ON hire_date::date <= date_actual
