@@ -20,11 +20,14 @@ WITH usage_data AS (
     SELECT
       unpacked.*,
       licenses.zuora_subscription_id,
+      zuora_subscriptions.
 
 
     FROM usage_data
       LEFT JOIN licenses
         ON usage_data.license_md5 = licenses.license_md5
+      LEFT JOIN zuora_subscriptions
+        ON licences.zuora_subscription_id = zuora_subscriptions.subscription_id
   
 
 
