@@ -79,12 +79,12 @@ WITH customers AS (
                         order_updated_at DESC)                    AS current_gitlab_namespace_id
               
     FROM orders 
-    JOIN customers ON orders.customer_id = customers.customer_id
-    JOIN zuora_subscription_xf
+    INNER JOIN customers ON orders.customer_id = customers.customer_id
+    INNER JOIN zuora_subscription_xf
       ON orders.subscription_name_slugify = zuora_subscription_xf.subscription_name_slugify
     LEFT JOIN zuora_rp 
       ON zuora_rp.subscription_id = zuora_subscription_xf.subscription_id
-        AND orders.product_rate_plan_id = zuora_rp.product_rate_plan_id
+      AND orders.product_rate_plan_id = zuora_rp.product_rate_plan_id
     LEFT JOIN zuora_rpc ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
     
     WHERE orders.product_rate_plan_id IS NOT NULL 
@@ -96,7 +96,7 @@ WITH customers AS (
 
 )
 
-, joined_wht_customer_and_namespace_list AS (
+, joined_with_customer_and_namespace_list AS (
   
     SELECT DISTINCT
       subscription_name_slugify,
@@ -121,4 +121,4 @@ WITH customers AS (
 )
 
 SELECT * 
-FROM joined_wht_customer_and_namespace_list
+FROM joined_with_customer_and_namespace_list

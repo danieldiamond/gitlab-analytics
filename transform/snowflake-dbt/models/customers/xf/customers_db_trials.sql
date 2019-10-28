@@ -29,8 +29,7 @@ WITH customers AS (
 
 , trials AS (
   
-  SELECT 
-  *
+  SELECT *
   FROM orders_snapshots
   WHERE order_is_trial = TRUE
   
@@ -65,8 +64,8 @@ WITH customers AS (
     converted_trials.subscription_name_slugify,
     
     MIN(order_created_at)                                   AS order_created_at,
-    TO_DATE(MIN(orders_snapshots.order_start_date))         AS trial_start_date, 
-    TO_DATE(MAX(orders_snapshots.order_end_date))           AS trial_end_date
+    MIN(orders_snapshots.order_start_date)::DATE            AS trial_start_date, 
+    MAX(orders_snapshots.order_end_date)::DATE              AS trial_end_date
     
     
   FROM orders_snapshots
