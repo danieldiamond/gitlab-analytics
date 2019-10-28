@@ -2,28 +2,28 @@
 
 WITH usage_data AS (
 
-    SELECT * 
+    SELECT *
     FROM {{ ref('version_usage_data') }}
 
 ), licenses AS (
-  
+
     SELECT *
     FROM {{ ref('license_db_licenses') }}
 
 ), zuora_subscriptions AS (
 
-    SELECT *  
+    SELECT *
     FROM {{ ref('zuora_subscription')}}
-  
+
 ), zuora_accounts AS (
 
-    SELECT *  
+    SELECT *
     FROM {{ ref('zuora_account')}}
-  
+
 ), joined AS (
 
     SELECT
-      unpacked.*,
+      usage_data.*,
       licenses.zuora_subscription_id,
       zuora_subscriptions.subscription_status,
       zuora_accounts.crm_id
@@ -35,8 +35,6 @@ WITH usage_data AS (
         ON licences.zuora_subscription_id = zuora_subscriptions.subscription_id
       LEFT JOIN zuora_accounts
         ON zuora_subscriptions.account_id = zuora_accounts.account_id
-  
-
 
 ), unpacked AS (
 
@@ -69,9 +67,9 @@ WITH usage_data AS (
       gitaly_servers,
       gitaly_version,
 
-      f.path                                                                          AS ping_name, 
+      f.path                                                                          AS ping_name,
       REPLACE(f.path, '.','_')                                                        AS full_ping_name,
-      f.value                                                                         AS ping_value 
+      f.value                                                                         AS ping_value
     FROM joined,
       lateral flatten(input => joined.stats_used, recursive => True) f
     WHERE IS_OBJECT(f.value) = FALSE
@@ -81,7 +79,7 @@ WITH usage_data AS (
     {% endif %}
 
 ), final AS (
-  
+
     SELECT
       id,
       source_ip,
@@ -104,10 +102,10 @@ WITH usage_data AS (
       {% for stat_name in version_usage_stats_list %}
         MAX(IFF(full_ping_name = '{{stat_name}}', ping_value::numeric, NULL)) AS {{stat_name}} {{ "," if not loop.last }}
       {% endfor %}
-    
+
     FROM unpacked
     {{ dbt_utils.group_by(n=18) }}
-  
+
 )
 
 SELECT *
