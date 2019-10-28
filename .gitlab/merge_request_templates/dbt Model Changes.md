@@ -64,7 +64,7 @@ Example: You might be looking at the count of opportunities before and after, if
 
 #### Schema or Model Name Changes
 - [ ] Does this MR change the **schema** or **model name** of any existing models?
-  - [ ] Prepare to change all existing periscope reporting to reference the new schema/name. If doing this programatically, link the periscope MR here. 
+  - [ ] Create an issue to change all existing periscope reporting to reference the new schema/name.
   - [ ] After merging, ensure the old model is dropped from snowflake. This can be done by creating an issue specifying the tables/models to be dropped and assiging to a snowflake admin. 
 
 #### Testing
