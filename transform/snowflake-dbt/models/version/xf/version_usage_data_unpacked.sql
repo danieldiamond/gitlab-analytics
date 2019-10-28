@@ -32,7 +32,7 @@ WITH usage_data AS (
       LEFT JOIN licenses
         ON usage_data.license_md5 = licenses.license_md5
       LEFT JOIN zuora_subscriptions
-        ON licences.zuora_subscription_id = zuora_subscriptions.subscription_id
+        ON licenses.zuora_subscription_id = zuora_subscriptions.subscription_id
       LEFT JOIN zuora_accounts
         ON zuora_subscriptions.account_id = zuora_accounts.account_id
 
