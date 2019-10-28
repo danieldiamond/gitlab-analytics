@@ -25,8 +25,8 @@ WITH usage_data AS (
     SELECT
       usage_data.*,
       licenses.zuora_subscription_id,
-      zuora_subscriptions.subscription_status,
-      zuora_accounts.crm_id
+      zuora_subscriptions.subscription_status AS zuora_subscription_status,
+      zuora_accounts.crm_id                   AS zuora_crm_id
 
     FROM usage_data
       LEFT JOIN licenses
@@ -66,6 +66,9 @@ WITH usage_data AS (
       git_version,
       gitaly_servers,
       gitaly_version,
+      zuora_subscription_id,
+      zuora_subscription_status,
+      zuora_crm_id,
 
       f.path                                                                          AS ping_name,
       REPLACE(f.path, '.','_')                                                        AS full_ping_name,
