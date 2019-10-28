@@ -83,7 +83,7 @@ Example query usage:
 SELECT
   week,
   AVG(did_send_usage_data::INTEGER)
-FROM ekastelein_scratch.version_usage_data_weekly_opt_in_summary
+FROM analytics.version_usage_data_weekly_opt_in_summary
 GROUP BY 1
 ORDER BY 1 DESC
 ```
