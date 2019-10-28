@@ -82,6 +82,7 @@ models:
           - name: uuid
             tests:
                 - not_null
+
     - name: version_usage_data_weekly_opt_in_summary
       description: '{{ doc("version_usage_data_weekly_opt_in_summary") }}'
       columns:
