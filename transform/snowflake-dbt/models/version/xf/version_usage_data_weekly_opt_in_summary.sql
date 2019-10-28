@@ -4,7 +4,7 @@
 }}
 
 
-WITH licenses AS ( -- Licenses app doesn't alter rows after creation so the snapshot is not necessary
+WITH licenses AS ( -- Licenses app doesn't alter rows after creation so the snapshot is not necessary.
   SELECT *
   FROM {{ ref('license_db_licenses') }}
   WHERE license_md5 IS NOT NULL
