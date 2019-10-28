@@ -13,7 +13,7 @@ WITH licenses AS (
 
 usage_data AS (
   SELECT *
-  FROM {{ ref('pings_usage_data') }}
+  FROM {{ ref('version_usage_data') }}
   WHERE license_md5 IS NOT NULL
 ),
 
