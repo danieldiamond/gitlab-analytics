@@ -116,7 +116,7 @@ WITH customers AS (
       ARRAY_AGG(gitlab_namespace_id) 
         WITHIN GROUP (ORDER  BY 1) AS gitlab_namespace_id_list
     FROM joined
-    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12
+    {{ dbt_utils.group_by(n=12) }}
     
 )
 
