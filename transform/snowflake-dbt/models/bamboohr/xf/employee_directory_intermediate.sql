@@ -52,8 +52,8 @@ SELECT
   department_info.division,
   department_info.reports_to,
   location_factor.location_factor,
-  CASE WHEN hire_date = date_actual THEN True ELSE False END AS is_hire_date,
-  CASE WHEN termination_date = dateadd('day', 1, date_actual) THEN True ELSE False END AS is_termination_date
+  IFF(hire_date = date_actual, True, False) AS is_hire_date,
+  IFF(termination_date = dateadd('day', 1, date_actual), True, False) AS is_termination_date
 FROM date_details
 LEFT JOIN employee_directory
   ON hire_date::date <= date_actual
