@@ -72,7 +72,7 @@ This model unpacks the usage ping JSON data stored in the json-type column `stat
 {% enddocs %}
 
 
-{% docs pings_usage_data_weekly_opt_in_summary %}
+{% docs version_usage_data_weekly_opt_in_summary %}
 
 This model summarizes which instances from the licenses app successfully send a usage ping at a weekly granularity.  
 Only self-managaged instances that have a listed license file in the license app are included in this model. Trials are excluded entirely.  
