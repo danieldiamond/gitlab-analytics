@@ -15,19 +15,26 @@ WITH usage_data AS (
     SELECT *  
     FROM {{ ref('zuora_subscription')}}
   
+), zuora_accounts AS (
+
+    SELECT *  
+    FROM {{ ref('zuora_accounts')}}
+  
 ), joined AS (
 
     SELECT
       unpacked.*,
       licenses.zuora_subscription_id,
-      zuora_subscriptions.
-
+      zuora_subscriptions.subscription_status,
+      zuora_accounts.crm_id
 
     FROM usage_data
       LEFT JOIN licenses
         ON usage_data.license_md5 = licenses.license_md5
       LEFT JOIN zuora_subscriptions
         ON licences.zuora_subscription_id = zuora_subscriptions.subscription_id
+      LEFT JOIN zuora_accounts
+        ON zuora_subscriptions.account_id = zuora_accounts.account_id
   
 
 
