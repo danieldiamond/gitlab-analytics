@@ -16,7 +16,8 @@ WITH employee_directory AS (
       work_email,
       hire_date,
       termination_date,
-      hire_location_factor
+      hire_location_factor,
+      cost_center
     FROM {{ ref('employee_directory') }}
 
 ), date_details AS (
@@ -41,22 +42,18 @@ WITH employee_directory AS (
     SELECT *
     FROM {{ ref('employee_location_factor_snapshots') }}
 
-), cost_center as (
-
-    SELECT *
-    FROM {{ref('cost_center_division_department_mapping')}}
-
 )
 
-SELECT  date_actual,
-        employee_directory.*,
-        department_info.job_title,
-        department_info.department,
-        department_info.division,
-        department_info.reports_to,
-        location_factor.location_factor,
-        CASE WHEN hire_date = date_actual THEN True ELSE False END AS is_hire_date,
-        CASE WHEN termination_date = dateadd('day', 1, date_actual) THEN True ELSE False END AS is_termination_date
+SELECT  
+  date_actual,
+  employee_directory.*,
+  department_info.job_title,
+  department_info.department,
+  department_info.division,
+  department_info.reports_to,
+  location_factor.location_factor,
+  CASE WHEN hire_date = date_actual THEN True ELSE False END AS is_hire_date,
+  CASE WHEN termination_date = dateadd('day', 1, date_actual) THEN True ELSE False END AS is_termination_date
 FROM date_details
 LEFT JOIN employee_directory
   ON hire_date::date <= date_actual
