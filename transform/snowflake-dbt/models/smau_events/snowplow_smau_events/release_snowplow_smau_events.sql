@@ -37,17 +37,17 @@
 
 WITH snowplow_page_views AS (
 
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    page_view_start,
-    page_url_path,
-    page_view_id
-  FROM {{ ref('snowplow_page_views_all')}}
-  WHERE TRUE
-  {% if is_incremental() %}
-    AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
-  {% endif %}
+    SELECT
+      user_snowplow_domain_id,
+      user_custom_id,
+      page_view_start,
+      page_url_path,
+      page_view_id
+    FROM {{ ref('snowplow_page_views_all')}}
+    WHERE TRUE
+    {% if is_incremental() %}
+      AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
+    {% endif %}
 
 )
 
