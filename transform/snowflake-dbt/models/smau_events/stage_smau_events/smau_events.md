@@ -30,6 +30,12 @@ This model encapsulates all activation events for stage create as defined in thi
 
 {% enddocs %}
 
+{% docs release_smau_events %}
+
+This model encapsulates all activation events for the Release Stage as defined in this GitLab [issue](https://gitlab.com/gitlab-org/telemetry/issues/52).
+
+{% enddocs %}
+
 {% docs verify_smau_events %}
 
 This model encapsulates all activation events for stage verify as defined in this gitlab [issue](https://gitlab.com/gitlab-org/telemetry/issues/50).
