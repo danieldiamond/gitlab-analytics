@@ -167,6 +167,10 @@ We then know for each user: what's the highest plan they inherit from and where 
 
 If a user inherits from 2+ subscriptions with the same plan, we choose one subscription over the other based on the inheritance source: First, user, then groups, then projects.
 
+### Subscription Portal (customers.gitlab.com) data 
+
+This model surfaces also if a user has created an account or not in the subscription portal by joining with the `customers_db_customers` table. It also informs us if a specific user has already started a trial and if so when. 
+
 ### Misc
 
 A `days_active` column is added by comparing `created_at` with `last_activity_on`

@@ -1,3 +1,15 @@
+{% docs configure_snowplow_smau_events %}
+
+This model provides a summary of relevant actions for the Configure Stage coming from snowplow.
+
+The snowplow events currently included for the Configure Stage are:
+* cluster_health_metrics_viewed
+* function_metrics_viewed
+* serverless_page_viewed
+
+{% enddocs %}
+
+
 {% docs create_snowplow_smau_events %}
 
 This model encapsulates all activation events for stage create as defined in this gitlab issue. It reconciles 2 different data sources (Snowplow and Gitlab) with some common enabling us to calculate Daily/Monthly Active User count for this specific stage.

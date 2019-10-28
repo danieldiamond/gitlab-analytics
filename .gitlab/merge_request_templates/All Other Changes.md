@@ -39,14 +39,14 @@ Please include links to any related MRs and/or issues.
 
 > As part of a DBT Model Change MR, you need to trigger a pipeline job to test that your changes won't break anything in production. To trigger these jobs, go to the "Pipelines" tab at the bottom of this MR and click on the appropriate stage (dbt_run or dbt_misc).
 
-These jobs are scoped to the `ci` target. This target selects a subset of data for the snowplow and pings datasets.
+These jobs are scoped to the `ci` target. This target selects a subset of data for the snowplow and version datasets.
 
 * **all**: Runs all models
 * **exclude_product**: Excludes models with the `product` tag. Use this for every other data source.
 * **exclude_snowplow**: Excludes just snowplow models.
 * **snowplow**: Just runs snowplow data
 * **gitlab_dotcom**: Just runs GitLab.com data
-* **pings**: Just runs usage / version ping data
+* **version**: Just runs usage / version ping data
 * **specify_model**: Specify which model to run with the variable `DBT_MODELS`
 * **specify_xl_model**: Specify which model to run using an XL warehouse with the variable `DBT_MODELS`
 * **specify_exclude**: Specify which model to exclude with the variable `DBT_MODELS`

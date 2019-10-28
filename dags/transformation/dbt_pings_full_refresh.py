@@ -24,7 +24,7 @@ default_args = {
 }
 
 # Create the DAG
-dag = DAG("dbt_pings_full_refresh", default_args=default_args, schedule_interval=None)
+dag = DAG("dbt_version_full_refresh", default_args=default_args, schedule_interval=None)
 
 
 # Set the git command for the containers
@@ -42,13 +42,13 @@ dbt_full_refresh_cmd = f"""
     export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
-    dbt run --profiles-dir profile --target prod --models pings --full-refresh
+    dbt run --profiles-dir profile --target prod --models version --full-refresh
 """
 dbt_full_refresh = KubernetesPodOperator(
     **gitlab_defaults,
     image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
-    task_id="dbt-pings-full-refresh",
-    name="dbt-pings-full-refresh",
+    task_id="dbt-version-full-refresh",
+    name="dbt-version-full-refresh",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
