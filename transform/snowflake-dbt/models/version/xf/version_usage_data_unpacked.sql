@@ -8,7 +8,7 @@ WITH usage_data AS (
 ), licenses AS (
   
     SELECT *
-    FROM {{ ref('licenses_db_licenses') }}
+    FROM {{ ref('license_db_licenses') }}
 
 ), zuora_subscriptions AS (
 
@@ -18,7 +18,7 @@ WITH usage_data AS (
 ), zuora_accounts AS (
 
     SELECT *  
-    FROM {{ ref('zuora_accounts')}}
+    FROM {{ ref('zuora_account')}}
   
 ), joined AS (
 
