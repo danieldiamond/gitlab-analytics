@@ -20,7 +20,7 @@ internal_namespaces AS (
       namespace_id
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
     WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
-),
+)
 
 
 SELECT
@@ -36,7 +36,7 @@ SELECT
         THEN 'private/internal - masked'
       ELSE {{field}}
     END                                          AS {{field}},
-    {% endfor %},
+    {% endfor %}
 
     milestones.project_id,
     milestones.group_id,
@@ -45,7 +45,7 @@ SELECT
     milestones.milestone_status,
     milestones.milestone_created_at,
     milestones.milestone_updated_at
-    
+
 FROM milestones
   INNER JOIN projects
     ON milestones.project_id = projects.project_id
