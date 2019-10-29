@@ -7,7 +7,7 @@ WITH milestones AS (
 
 ),
 
--- Projects table joins milestones to namespaces
+-- A milestone join to a namespace through EITHER a project or group
 projects AS (
 
     SELECT *
@@ -27,7 +27,8 @@ SELECT
     milestones.milestone_id,
 
     {% for field in fields_to_mask %}
-    IFF(internal_namespaces.namespace_id IS NULL, 'private - masked', {{field}}) AS {{field}},
+    IFF(internal_namespaces.namespace_id IS NULL,
+        'private - masked', {{field}})                     AS {{field}},
     {% endfor %}
 
     milestones.project_id,
@@ -37,10 +38,11 @@ SELECT
     milestones.milestone_status,
     milestones.milestone_created_at,
     milestones.milestone_updated_at,
-    projects.namespace_id
+    COALESCE(milestones.group_id, projects.namespace_id)   AS namespace_id
 
 FROM milestones
-  INNER JOIN projects
+  LEFT JOIN projects
     ON milestones.project_id = projects.project_id
   LEFT JOIN internal_namespaces
     ON projects.namespace_id = internal_namespaces.namespace_id
+    OR milestones.group_id = internal_namespaces.namespace_id
