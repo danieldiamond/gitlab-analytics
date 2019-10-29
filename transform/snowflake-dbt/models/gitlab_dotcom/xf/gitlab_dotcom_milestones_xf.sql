@@ -25,13 +25,7 @@ internal_namespaces AS (
 
 SELECT
     milestones.milestone_id,
-    milestones.project_id,
-    milestones.group_id,
-    milestones.start_date,
-    milestones.due_date,
-    milestones.milestone_status,
-    milestones.milestone_created_at,
-    milestones.milestone_updated_at,
+
    {% for field in fields_to_mask %}
     CASE
       WHEN is_confidential = TRUE
@@ -42,7 +36,16 @@ SELECT
         THEN 'private/internal - masked'
       ELSE {{field}}
     END                                          AS {{field}},
-    {% endfor %}
+    {% endfor %},
+
+    milestones.project_id,
+    milestones.group_id,
+    milestones.start_date,
+    milestones.due_date,
+    milestones.milestone_status,
+    milestones.milestone_created_at,
+    milestones.milestone_updated_at
+    
 FROM milestones
   INNER JOIN projects
     ON milestones.project_id = projects.project_id
