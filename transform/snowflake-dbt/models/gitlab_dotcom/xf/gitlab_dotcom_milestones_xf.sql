@@ -31,7 +31,7 @@ SELECT
     milestones.due_date,
     milestones.milestone_status,
     milestones.milestone_created_at,
-    milestones.milestone_updated_at
+    milestones.milestone_updated_at,
    {% for field in fields_to_mask %}
     CASE
       WHEN is_confidential = TRUE
