@@ -869,7 +869,6 @@ users:
         member_of:
             - acarella
             - securityadmin
-            - sysadmin
 
     - agroleau:
         can_login: yes
@@ -969,7 +968,6 @@ users:
         member_of:
             - jsalazar
             - securityadmin
-            - sysadmin
 
     - jstark:
         can_login: yes
@@ -983,7 +981,6 @@ users:
         member_of:
             - jurbanc
             - securityadmin
-            - sysadmin
 
     - jwatson:
         can_login: yes
@@ -1006,7 +1003,6 @@ users:
         member_of:
             - ksmith
             - securityadmin
-            - sysadmin
     
     - mdewji:
         can_login: yes
@@ -1079,7 +1075,6 @@ users:
         member_of:
             - securityadmin
             - ssichak
-            - sysadmin
 
     - stitch:
         can_login: yes
@@ -1091,7 +1086,6 @@ users:
         can_login: yes
         member_of:
             - securityadmin
-            - sysadmin
             - tcarter
 
     - target_snowflake:
