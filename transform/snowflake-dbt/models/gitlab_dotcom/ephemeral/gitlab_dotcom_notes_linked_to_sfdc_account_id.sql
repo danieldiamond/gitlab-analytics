@@ -38,6 +38,13 @@ WITH gitlab_notes AS (
 
 )
 
+, zendesk_tickets AS (
+
+  SELECT *
+  FROM {{ ref('zendesk_tickets_xf')}}
+
+)
+
 , gitlab_notes_sfdc_id_flattened AS (
 
   SELECT
@@ -47,6 +54,17 @@ WITH gitlab_notes AS (
     {{target.schema}}_staging.id15to18(CAST(f.value AS VARCHAR)) AS sfdc_id_18char
 
   FROM gitlab_notes, table(flatten(sfdc_link_array)) f
+)
+
+, gitlab_notes_zendesk_ticket_id_flattened AS (
+
+  SELECT
+    gitlab_notes.note_id,
+    noteable_id,
+    noteable_type,
+    CAST(f.value AS INTEGER) AS zendesk_ticket_id
+
+  FROM gitlab_notes, table(flatten(zendesk_link_array)) f
 )
 
 , gitlab_notes_with_sfdc_accounts AS (
@@ -62,6 +80,7 @@ WITH gitlab_notes AS (
     ON gitlab_notes_sfdc_id_flattened.sfdc_id_18char = sfdc_accounts.account_id
 
 )
+
 , gitlab_notes_with_sfdc_opportunities AS (
 
   SELECT
@@ -75,6 +94,7 @@ WITH gitlab_notes AS (
     ON gitlab_notes_sfdc_id_flattened.sfdc_id_18char = sfdc_opportunities.opportunity_id
 
 )
+
 , gitlab_notes_with_sfdc_leads AS (
 
   SELECT
@@ -88,6 +108,7 @@ WITH gitlab_notes AS (
     ON gitlab_notes_sfdc_id_flattened.sfdc_id_18char = sfdc_leads.lead_id
 
 )
+
 , gitlab_notes_with_sfdc_contacts AS (
 
   SELECT
@@ -100,6 +121,20 @@ WITH gitlab_notes AS (
   INNER JOIN sfdc_contacts
     ON gitlab_notes_sfdc_id_flattened.sfdc_id_18char = sfdc_contacts.contact_id
 )
+
+, gitlab_notes_with_zendesk_ticket AS (
+
+  SELECT
+    gitlab_notes_zendesk_ticket_id_flattened.note_id,
+    gitlab_notes_zendesk_ticket_id_flattened.noteable_id,
+    gitlab_notes_zendesk_ticket_id_flattened.noteable_type,
+    zendesk_tickets.sfdc_account_id
+
+  FROM gitlab_notes_zendesk_ticket_id_flattened
+  INNER JOIN zendesk_tickets
+    ON gitlab_notes_zendesk_ticket_id_flattened.zendesk_ticket_id = zendesk_tickets.ticket_id
+)
+
 , gitlab_notes_with_sfdc_objects_union AS (
 
   SELECT
@@ -117,6 +152,12 @@ WITH gitlab_notes AS (
   SELECT
     *
   FROM gitlab_notes_with_sfdc_contacts
+  
+  UNION
+
+  SELECT
+    *
+  FROM gitlab_notes_with_zendesk_ticket
 
 )
 

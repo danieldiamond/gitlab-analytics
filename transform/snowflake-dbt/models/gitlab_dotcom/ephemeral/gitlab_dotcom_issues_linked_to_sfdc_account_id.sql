@@ -7,7 +7,8 @@ WITH gitlab_issues AS (
 
   SELECT 
    issue_id,
-   {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array
+   {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array,
+   {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=gitlab.zendesk.com\/agent\/ticket\/)[0-9]{1,18}') AS zendesk_link_array
    
   FROM {{ ref('gitlab_dotcom_issues_xf')}}
   WHERE is_internal_issue
@@ -43,6 +44,13 @@ WITH gitlab_issues AS (
 
 )
 
+, zendesk_tickets AS (
+
+  SELECT *
+  FROM {{ ref('zendesk_tickets_xf')}}
+
+)
+
 , gitlab_issues_sfdc_id_flattened AS (
 
   SELECT
@@ -50,6 +58,15 @@ WITH gitlab_issues AS (
     {{target.schema}}_staging.id15to18(CAST(f.value AS VARCHAR)) AS sfdc_id_18char
 
   FROM gitlab_issues, table(flatten(sfdc_link_array)) f
+)
+
+, gitlab_issues_zendesk_ticket_id_flattened AS (
+
+  SELECT
+    issue_id,
+    CAST(f.value AS INTEGER) AS zendesk_ticket_id
+
+  FROM gitlab_issues, table(flatten(zendesk_link_array)) f
 )
 
 , gitlab_issues_with_sfdc_accounts AS (
@@ -63,6 +80,7 @@ WITH gitlab_issues AS (
     ON gitlab_issues_sfdc_id_flattened.sfdc_id_18char = sfdc_accounts.account_id
 
 )
+
 , gitlab_issues_with_sfdc_opportunities AS (
 
   SELECT
@@ -74,6 +92,7 @@ WITH gitlab_issues AS (
     ON gitlab_issues_sfdc_id_flattened.sfdc_id_18char = sfdc_opportunities.opportunity_id
 
 )
+
 , gitlab_issues_with_sfdc_leads AS (
 
   SELECT
@@ -85,6 +104,7 @@ WITH gitlab_issues AS (
     ON gitlab_issues_sfdc_id_flattened.sfdc_id_18char = sfdc_leads.lead_id
 
 )
+
 , gitlab_issues_with_sfdc_contacts AS (
 
   SELECT
@@ -95,6 +115,18 @@ WITH gitlab_issues AS (
   INNER JOIN sfdc_contacts
     ON gitlab_issues_sfdc_id_flattened.sfdc_id_18char = sfdc_contacts.contact_id
 )
+
+, gitlab_notes_with_zendesk_ticket AS (
+
+  SELECT
+    gitlab_issues_zendesk_id_flattened.issue_id,
+    zendesk_tickets.sfdc_account_id
+
+  FROM gitlab_issues_zendesk_ticket_id_flattened
+  INNER JOIN zendesk_tickets
+    ON gitlab_issues_zendesk_ticket_id_flattened.zendesk_ticket_id = zendesk_tickets.ticket_id
+)
+
 , gitlab_issues_with_sfdc_objects_union AS (
 
   SELECT
