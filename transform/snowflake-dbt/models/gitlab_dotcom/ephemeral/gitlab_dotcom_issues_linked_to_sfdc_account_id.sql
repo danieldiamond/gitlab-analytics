@@ -116,7 +116,7 @@ WITH gitlab_issues AS (
     ON gitlab_issues_sfdc_id_flattened.sfdc_id_18char = sfdc_contacts.contact_id
 )
 
-, gitlab_notes_with_zendesk_ticket AS (
+, gitlab_issues_with_zendesk_ticket AS (
 
   SELECT
     gitlab_issues_zendesk_id_flattened.issue_id,
