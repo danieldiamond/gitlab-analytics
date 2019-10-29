@@ -26,16 +26,8 @@ internal_namespaces AS (
 SELECT
     milestones.milestone_id,
 
-   {% for field in fields_to_mask %}
-    CASE
-      WHEN is_confidential = TRUE
-        AND internal_namespaces.namespace_id IS NULL
-        THEN 'confidential - masked'
-      WHEN visibility_level != 'public'
-        AND internal_namespaces.namespace_id IS NULL
-        THEN 'private/internal - masked'
-      ELSE {{field}}
-    END                                          AS {{field}},
+    {% for field in fields_to_mask %}
+    IFF(internal_namespaces.namespace_id IS NULL, 'private - masked', {{field}}) AS {{field}},
     {% endfor %}
 
     milestones.project_id,
@@ -44,10 +36,11 @@ SELECT
     milestones.due_date,
     milestones.milestone_status,
     milestones.milestone_created_at,
-    milestones.milestone_updated_at
+    milestones.milestone_updated_at,
+    projects.namespace_id
 
 FROM milestones
   INNER JOIN projects
     ON milestones.project_id = projects.project_id
   LEFT JOIN internal_namespaces
-    ON projects.namespaces = internal_namespaces.namespace_id
+    ON projects.namespace_id = internal_namespaces.namespace_id
