@@ -116,6 +116,20 @@ models:
       - name: is_community_contributor_related
         description: Merge Request has 'community contribution' tag, and is on a project in the gitlab.org namespace.
 
+  - name: gitlab_dotcom_milestones_xf
+    description: TODO
+    columns:
+      - name: milestone_id
+        tests:
+          - not_null
+          - unique
+      - name: milestone_created_at
+        tests:
+          - not_null
+      - name: milestone_updated_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_namespaces_xf
     description: '{{ doc("gitlab_dotcom_namespaces_xf") }}'
     columns:
