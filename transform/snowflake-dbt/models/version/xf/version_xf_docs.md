@@ -69,4 +69,6 @@ This model unpacks the usage ping JSON data stored in the json-type column `stat
 
 1. The `version_usage_stats_list` model gives us the full list of columns that need to be in the final table. We iterate through each element of the list (i.e. each value of `full_ping_name` column in `pings_list` model) and find the MAX of `ping_value`.
 
+This model also adds some information about the related Zuora subscription, including its status and CRM ID.
+
 {% enddocs %}
