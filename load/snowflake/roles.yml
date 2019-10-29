@@ -776,6 +776,10 @@ roles:
         warehouses:
             - reporting
 
+    - mdewji:
+        warehouses:
+            - reporting
+
     - mrodriguez:
         warehouses:
             - reporting
@@ -785,6 +789,10 @@ roles:
             - analyst_xs
             - analyst_l
             - analyst_xl
+
+    - mvilain:
+        warehouses:
+            - analyst_xs
 
     - periscope:
         warehouses:
@@ -861,7 +869,6 @@ users:
         member_of:
             - acarella
             - securityadmin
-            - sysadmin
 
     - agroleau:
         can_login: yes
@@ -961,7 +968,6 @@ users:
         member_of:
             - jsalazar
             - securityadmin
-            - sysadmin
 
     - jstark:
         can_login: yes
@@ -975,7 +981,6 @@ users:
         member_of:
             - jurbanc
             - securityadmin
-            - sysadmin
 
     - jwatson:
         can_login: yes
@@ -998,7 +1003,12 @@ users:
         member_of:
             - ksmith
             - securityadmin
-            - sysadmin
+    
+    - mdewji:
+        can_login: yes
+        member_of:
+            - mdewji
+            - securityadmin
 
     - mpeychet:
         can_login: yes
@@ -1011,6 +1021,12 @@ users:
         member_of:
             - mrodriguez
             - reporter
+
+    - mvilain:
+        can_login: yes
+        member_of:
+            - mvilain
+            - analyst_sales
 
     - periscope:
         can_login: yes
@@ -1059,7 +1075,6 @@ users:
         member_of:
             - securityadmin
             - ssichak
-            - sysadmin
 
     - stitch:
         can_login: yes
@@ -1071,7 +1086,6 @@ users:
         can_login: yes
         member_of:
             - securityadmin
-            - sysadmin
             - tcarter
 
     - target_snowflake:
