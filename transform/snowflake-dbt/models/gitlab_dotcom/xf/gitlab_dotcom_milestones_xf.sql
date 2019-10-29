@@ -7,7 +7,7 @@ WITH milestones AS (
 
 ),
 
--- A milestone join to a namespace through EITHER a project or group
+-- A milestone joins to a namespace through EITHER a project or group
 projects AS (
 
     SELECT *
