@@ -117,7 +117,7 @@ models:
         description: Merge Request has 'community contribution' tag, and is on a project in the gitlab.org namespace.
 
   - name: gitlab_dotcom_milestones_xf
-    description: TODO
+    description: This is a non-sensitive models of the milestones table. The "title" and "description" columns are masked for non-internal namespaces.
     columns:
       - name: milestone_id
         tests:
@@ -129,6 +129,8 @@ models:
       - name: milestone_updated_at
         tests:
           - not_null
+      - name: namespace_id
+        description: This is added as a helper column, coming from a join through `projects`.
 
   - name: gitlab_dotcom_namespaces_xf
     description: '{{ doc("gitlab_dotcom_namespaces_xf") }}'
