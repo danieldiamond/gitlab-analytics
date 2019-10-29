@@ -41,7 +41,7 @@ WITH gitlab_notes AS (
 , zendesk_tickets AS (
 
   SELECT *
-  FROM {{ ref('zendesk_tickets_xf')}}
+  FROM analytics.zendesk_tickets_xf
 
 )
 

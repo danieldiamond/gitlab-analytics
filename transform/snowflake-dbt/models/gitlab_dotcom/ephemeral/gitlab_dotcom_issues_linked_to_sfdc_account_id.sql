@@ -8,7 +8,7 @@ WITH gitlab_issues AS (
   SELECT 
    issue_id,
    {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array,
-   {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=gitlab.zendesk.com\/agent\/ticket\/)[0-9]{1,18}') AS zendesk_link_array
+   {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=gitlab.zendesk.com\/agent\/tickets\/)[0-9]{1,18}') AS zendesk_link_array
    
   FROM {{ ref('gitlab_dotcom_issues_xf')}}
   WHERE is_internal_issue
@@ -47,7 +47,7 @@ WITH gitlab_issues AS (
 , zendesk_tickets AS (
 
   SELECT *
-  FROM {{ ref('zendesk_tickets_xf')}}
+  FROM analytics.zendesk_tickets_xf
 
 )
 
@@ -119,7 +119,7 @@ WITH gitlab_issues AS (
 , gitlab_issues_with_zendesk_ticket AS (
 
   SELECT
-    gitlab_issues_zendesk_id_flattened.issue_id,
+    gitlab_issues_zendesk_ticket_id_flattened.issue_id,
     zendesk_tickets.sfdc_account_id
 
   FROM gitlab_issues_zendesk_ticket_id_flattened
