@@ -133,7 +133,8 @@ WITH gitlab_notes AS (
   FROM gitlab_notes_zendesk_ticket_id_flattened
   INNER JOIN zendesk_tickets
     ON gitlab_notes_zendesk_ticket_id_flattened.zendesk_ticket_id = zendesk_tickets.ticket_id
-      AND zendesk_tickets.sfdc_account_id IS NOT NULL
+  INNER JOIN sfdc_accounts
+    ON zendesk_tickets.sfdc_account_id = sfdc_accounts.account_id
 )
 
 , gitlab_notes_with_sfdc_objects_union AS (
