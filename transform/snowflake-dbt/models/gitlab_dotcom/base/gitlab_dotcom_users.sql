@@ -64,7 +64,7 @@ WITH source AS (
       ghost::BOOLEAN                                                   AS is_ghost,
       last_activity_on::TIMESTAMP                                      AS last_activity_on,
       notified_of_own_activity::BOOLEAN                                AS is_notified_of_own_activity,
-      IFF(lower(preferred_language) = 'nan', NULL, preferred_language) AS preferred_language,
+      NULLIF(preferred_language, 'nan')::VARCHAR                       AS preferred_language,
       theme_id::INTEGER                                                AS theme_id
 
     FROM source
