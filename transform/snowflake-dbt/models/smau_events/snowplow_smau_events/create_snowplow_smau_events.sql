@@ -100,7 +100,7 @@
             "regexp_function":"NOT REGEXP"
          },
          {
-            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/wiki\/snippets\/(.)*",
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/wikis\/snippets\/(.)*",
             "regexp_function":"NOT REGEXP"
          }
       ]
