@@ -1,4 +1,4 @@
-{% docs customers_db_subscriptions %}
+{% docs customers_db_charges %}
 
 This model creates a clean table that one can easily join on `zuora_base_mrr` tables to have some financial information. It deduplicates, transforms and joins on `zuora_subscription_xf`, `zuorate_rate_plan` and `zuora_rate_plan_charge` in order to create a table at the granularity of one charge per row.
 

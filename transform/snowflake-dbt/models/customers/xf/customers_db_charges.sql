@@ -70,10 +70,10 @@ WITH customers AS (
       zuora_subscription_xf.subscription_end_date,
       zuora_subscription_xf.subscription_status,
       
-      DATE_TRUNC('month', zuora_rpc.effective_start_date::DATE)          AS effective_start_date,
+      DATE_TRUNC('month', zuora_rpc.effective_start_date::DATE)          AS charge_effective_start_date,
       DATE_TRUNC('month', 
                     DATEADD('month', -1, zuora_rpc.effective_end_date::DATE)
-                  )                                                      AS effective_end_date,
+                  )                                                      AS charge_effective_end_date,
       
       -- Product Category Info
       zuora_rp.delivery,
@@ -112,13 +112,13 @@ WITH customers AS (
     LEFT JOIN zuora_rp 
       ON zuora_rp.subscription_id = zuora_subscription_xf.subscription_id
       AND orders_with_subscription.product_rate_plan_id = zuora_rp.product_rate_plan_id
-    LEFT JOIN zuora_rpc ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
+    INNER JOIN zuora_rpc ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
+      AND zuora_rpc.mrr > 0
+      AND zuora_rpc.tcv > 0 
     LEFT JOIN trials ON orders_with_subscription.order_id = trials.order_id
     
     WHERE TRUE
-      AND zuora_rpc.mrr > 0
-      AND zuora_rpc.tcv > 0
-      AND effective_end_date >= effective_start_date  
+      AND charge_effective_end_date >= charge_effective_start_date  
 
 )
 
@@ -134,8 +134,8 @@ WITH customers AS (
       subscription_start_date,
       subscription_end_date,
       subscription_status,
-      effective_start_date,
-      effective_end_date,
+      charge_effective_start_date,
+      charge_effective_end_date,
       delivery,
       product_category,
       is_purchased_through_subscription_portal,
