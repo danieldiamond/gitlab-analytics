@@ -125,6 +125,7 @@ WITH gitlab_issues AS (
   FROM gitlab_issues_zendesk_ticket_id_flattened
   INNER JOIN zendesk_tickets
     ON gitlab_issues_zendesk_ticket_id_flattened.zendesk_ticket_id = zendesk_tickets.ticket_id
+    AND zendesk_tickets.sfdc_account_id IS NOT NULL
 )
 
 , gitlab_issues_with_sfdc_objects_union AS (
@@ -144,6 +145,12 @@ WITH gitlab_issues AS (
   SELECT
     *
   FROM gitlab_issues_with_sfdc_contacts
+
+  UNION
+
+  SELECT
+    *
+  FROM gitlab_issues_with_zendesk_ticket
 
 )
 
