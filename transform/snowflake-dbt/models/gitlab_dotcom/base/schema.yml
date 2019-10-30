@@ -861,5 +861,5 @@ models:
         tests:
           - not_null
       - name: role
-        tests:
+        description:
           - This is the string translation of the "role" column stored as an integer in the source database. It is converted using the `user_role_mapping` macro.
