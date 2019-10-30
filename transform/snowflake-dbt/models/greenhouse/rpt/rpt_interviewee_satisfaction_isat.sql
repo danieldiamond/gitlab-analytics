@@ -1,6 +1,5 @@
 {{ config({
-    "materialized":"table",
-    "schema": "analytics"
+    "materialized":"table"
     })
 }}
 
@@ -11,7 +10,7 @@ WITH interview_results AS (
      organization_id, 
      department_id, 
      department_name, 
-     DATE_TRUNC('month', candidate_survey_submitted_at)::DATE as submitted_at,
+     DATE_TRUNC('month', candidate_survey_submitted_at)::DATE AS submitted_at,
      candidate_survey_question_1,
     CASE
       WHEN candidate_survey_question_1 = 'Strongly Disagree' THEN 1
@@ -22,9 +21,9 @@ WITH interview_results AS (
      ELSE NULL END AS isat_score
    FROM {{ ref('greenhouse_candidate_surveys') }}
    WHERE isat_score IS NOT NULL
-     {{ dbt_utils.group_by(n=7) }}
+   {{ dbt_utils.group_by(n=7) }}
 
  )
 
 SELECT *
-FROM final
+FROM interview_results
