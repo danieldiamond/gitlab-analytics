@@ -22,7 +22,7 @@ WITH interview_results AS (
      ELSE NULL END AS isat_score
    FROM {{ ref('greenhouse_candidate_surveys') }}
    WHERE isat_score IS NOT NULL
-   GROUP BY 1,2,3,4,5,6,7
+     {{ dbt_utils.group_by(n=7) }}
 
  )
 
