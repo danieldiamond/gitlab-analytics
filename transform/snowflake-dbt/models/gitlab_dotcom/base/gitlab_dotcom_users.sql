@@ -16,7 +16,6 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-
       id::INTEGER                                                      AS user_id,
       remember_created_at::TIMESTAMP                                   AS remember_created_at,
       sign_in_count::INTEGER                                           AS sign_in_count,
@@ -75,7 +74,6 @@ WITH source AS (
       bot_type::INTEGER                                                AS bot_type,
       source.role                                                      AS role_id,
       {{user_role_mapping(user_role='source.role')}}::VARCHAR          AS role
-
 
     FROM source
     QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY user_updated_at DESC) = 1
