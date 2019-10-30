@@ -7,15 +7,10 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
-  FROM {{ source('gitlab_dotcom', 'users') }}
-  
+    SELECT *
+    FROM {{ source('gitlab_dotcom', 'users') }}
     {% if is_incremental() %}
-
     WHERE updated_at >= (SELECT MAX(user_updated_at) FROM {{this}})
-
     {% endif %}
 
 ), renamed AS (
@@ -73,7 +68,7 @@ WITH source AS (
       theme_id::INTEGER                                                AS theme_id
 
     FROM source
-    WHERE rank_in_key = 1
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY user_updated_at DESC) = 1
 
 )
 
