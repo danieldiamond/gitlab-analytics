@@ -1,27 +1,17 @@
 {%- macro user_role_mapping(user_role) -%}
 
     CASE
-      WHEN {{user_role}}::INTEGER = 1 THEN 'Software Developer'
-      WHEN {{user_role}}::INTEGER = 2 THEN 'updated'
-      WHEN {{user_role}}::INTEGER = 3 THEN 'closed'
-      WHEN {{user_role}}::INTEGER = 4 THEN 'reopened'
-      WHEN {{user_role}}::INTEGER = 5 THEN 'pushed'
-      WHEN {{user_role}}::INTEGER = 6 THEN 'commented'
-      WHEN {{user_role}}::INTEGER = 7 THEN 'merged'
-      WHEN {{user_role}}::INTEGER = 8 THEN 'joined'
-      WHEN {{user_role}}::INTEGER = 9 THEN 'left'
+      WHEN {{user_role}} = 0 THEN 'Software Developer'
+      WHEN {{user_role}} = 1 THEN 'Development Team Lead'
+      WHEN {{user_role}} = 2 THEN 'Devops Engineer'
+      WHEN {{user_role}} = 3 THEN 'Systems Administrator'
+      WHEN {{user_role}} = 4 THEN 'Security Analyst'
+      WHEN {{user_role}} = 5 THEN 'Data Analyst'
+      WHEN {{user_role}} = 6 THEN 'Product Manager'
+      WHEN {{user_role}} = 7 THEN 'Product Designer'
+      WHEN {{user_role}} = 8 THEN 'Other'
+      WHEN {{user_role}} = 99 THEN '99' -- Unclear business logic. Test?
+      ELSE {{user_role}}
     END
 
 {%- endmacro -%}
-
-/*
-<option value="software_developer">Software Developer</option>
-<option value="development_team_lead">Development Team Lead</option>
-<option value="devops_engineer">Devops Engineer</option>
-<option value="systems_administrator">Systems Administrator</option>
-<option value="security_analyst">Security Analyst</option>
-<option value="data_analyst">Data Analyst</option>
-<option value="product_manager">Product Manager</option>
-<option value="product_designer">Product Designer</option>
-<option value="other">Other</option></select>
-*/
