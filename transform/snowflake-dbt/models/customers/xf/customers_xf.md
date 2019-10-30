@@ -1,6 +1,6 @@
 {% docs customers_db_charges %}
 
-This model creates a clean table that one can easily join on `zuora_base_mrr` tables to have some financial information. It deduplicates, transforms and joins on `zuora_subscription_xf`, `zuorate_rate_plan` and `zuora_rate_plan_charge` in order to create a table at the granularity of one charge per row.
+This model creates a clean table that one can easily join on `zuora_base_mrr` tables to have some financial information. It deduplicates, transforms and joins on `zuora_subscription_xf`, `zuora_rate_plan` and `zuora_rate_plan_charge` in order to create a table at the granularity of one charge per row.
 
 On the zuora side, the model does exactly the same transformation as the [`zuora_base_mrr` model](https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/model/model.gitlab_snowflake.zuora_base_mrr) in order to filter out only valid charges for mrr calculations.
 

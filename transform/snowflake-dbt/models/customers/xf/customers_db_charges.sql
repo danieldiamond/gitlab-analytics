@@ -42,8 +42,7 @@ WITH customers AS (
 
 , orders_with_subscription AS (
   
-    SELECT
-      *
+    SELECT *
     FROM orders
     WHERE orders.product_rate_plan_id IS NOT NULL 
       AND orders.order_is_trial = FALSE
@@ -112,7 +111,8 @@ WITH customers AS (
     LEFT JOIN zuora_rp 
       ON zuora_rp.subscription_id = zuora_subscription_xf.subscription_id
       AND orders_with_subscription.product_rate_plan_id = zuora_rp.product_rate_plan_id
-    INNER JOIN zuora_rpc ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
+    INNER JOIN zuora_rpc 
+      ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
       AND zuora_rpc.mrr > 0
       AND zuora_rpc.tcv > 0 
     LEFT JOIN trials ON orders_with_subscription.order_id = trials.order_id
