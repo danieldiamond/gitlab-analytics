@@ -73,15 +73,15 @@ gitlab_dotcom:
     - dbt run $CI_PROFILE_TARGET --models @gitlab_dotcom || true
     - dbt test $CI_PROFILE_TARGET --models @gitlab_dotcom
 
-pings:
+version:
   <<: *snowflake_dbt_jobs
   script:
     - *xl_warehouse
     - *deps_and_seed
-    - dbt run $CI_PROFILE_TARGET --full-refresh --models pings || true
-    - dbt test $CI_PROFILE_TARGET --models pings || true
-    - dbt run $CI_PROFILE_TARGET --models pings || true
-    - dbt test $CI_PROFILE_TARGET --models pings
+    - dbt run $CI_PROFILE_TARGET --full-refresh --models version || true
+    - dbt test $CI_PROFILE_TARGET --models version || true
+    - dbt run $CI_PROFILE_TARGET --models version || true
+    - dbt test $CI_PROFILE_TARGET --models version
 
 snowplow:
   <<: *snowflake_dbt_jobs

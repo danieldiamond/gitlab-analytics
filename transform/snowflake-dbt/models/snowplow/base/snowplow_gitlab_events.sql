@@ -3,7 +3,8 @@
 
 {{config({
     "unique_key":"event_id",
-    "schema":current_date_schema('snowplow')
+    "schema":current_date_schema('snowplow'),
+    "materialized": "table"
   })
 }}
 

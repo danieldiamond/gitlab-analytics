@@ -1,14 +1,14 @@
 version: 2
 
 models:
-    - name: pings_active_instances
+    - name: version_active_instances
       description: instances checked for new version or send a usage ping
       columns:
           - name: host_id
           - name: ping_type
             description: an instance checked for new version or send a usage ping
 
-    - name: pings_latest_version_ping_per_host_and_month
+    - name: version_latest_version_ping_per_host_and_month
       description: This model includes only the lastest version ping for every host for each month in which they sent a version ping.
       columns:
           - name: ping_id
@@ -19,7 +19,7 @@ models:
             tests:
                 - not_null
 
-    - name: pings_usage_data_boolean
+    - name: version_usage_data_boolean
       description: converts all ping values to either 0 or 1 in order to determine if a feature has *ever* been used
       columns:
           - name: created_at
@@ -32,8 +32,8 @@ models:
             tests:
                 - not_null
 
-    - name: pings_usage_data_month
-      description: pings data values aggregated by month for each UUID.
+    - name: version_usage_data_month
+      description: usage ping data values aggregated by month for each UUID.
       columns:
           - name: created_at
             tests:
@@ -45,8 +45,8 @@ models:
             tests:
                 - not_null
 
-    - name: pings_usage_data_monthly_change_by_stage
-      description: '{{ doc("pings_usage_data_monthly_change_by_stage") }}'
+    - name: version_usage_data_monthly_change_by_stage
+      description: '{{ doc("version_usage_data_monthly_change_by_stage") }}'
       columns:
           - name: created_at
             tests:
@@ -60,8 +60,8 @@ models:
                 - accepted_values:
                     values: ['EE', 'CE']
 
-    - name: pings_usage_data_monthly_change
-      description: '{{ doc("pings_usage_data_monthly_change") }}'
+    - name: version_usage_data_monthly_change
+      description: '{{ doc("version_usage_data_monthly_change") }}'
       columns:
           - name: unique_key
             tests:
@@ -71,7 +71,8 @@ models:
             tests:
                 - accepted_values:
                     values: ['EE', 'CE']
-    - name: pings_usage_data_unpacked
+
+    - name: version_usage_data_unpacked
       columns:
           - name: main_edition
             description: Comes from [this section of the code](https://gitlab.com/gitlab-org/gitlab/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154)
@@ -81,4 +82,3 @@ models:
           - name: uuid
             tests:
                 - not_null
-

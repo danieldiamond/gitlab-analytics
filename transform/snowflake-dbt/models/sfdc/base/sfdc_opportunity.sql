@@ -60,12 +60,14 @@ WITH source AS (
         merged_opportunity__c       AS merged_opportunity_id,
 
         -- opp info
+        forecastcategoryname        AS forecast_category_name,
         acv_2__c                    AS acv,
         sql_source__c               AS sales_qualified_source,
         campaignid                  AS primary_campaign_source_id,
         -- Should confirm which IACV is which
         incremental_acv_2__c        AS forecasted_iacv,
         incremental_acv__c          AS incremental_acv,
+        iacv_created_date__c        AS iacv_created_date,
         net_iacv__c                 AS net_incremental_acv,
         renewal_amount__c           AS renewal_amount,
         renewal_acv__c              AS renewal_acv,
@@ -84,7 +86,7 @@ WITH source AS (
         push_counter__c             AS pushed_count,
         upside_iacv__c              AS upside_iacv,
         upside_swing_deal_iacv__c   AS upside_swing_deal_iacv,
-        --swing_deal__c                             as is_swing_deal,
+        --swing_deal__c                             as is_swing_deal ,
         swing_deal__c               AS is_swing_deal,
         {{sfdc_deal_size('incremental_acv_2__c', 'deal_size')}},
         CASE WHEN acv_2__c >= 0

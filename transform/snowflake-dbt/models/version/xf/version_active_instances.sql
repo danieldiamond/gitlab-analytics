@@ -1,10 +1,11 @@
-with version_checks as (
+WITH version_checks as (
 
-    SELECT  to_varchar(host_id)     AS host_id,
-            gitlab_version          AS version,
-            created_at,
-            'version_ping'          AS ping_type
-    FROM {{ ref("pings_version_checks") }}
+    SELECT 
+      host_id::VARCHAR        AS host_id,
+      gitlab_version          AS version,
+      created_at,
+      'version_ping'          AS ping_type
+    FROM {{ ref("version_version_checks") }}
 
 ), usage_data as (
 
@@ -13,7 +14,7 @@ with version_checks as (
       version,
       created_at,
       'usage_ping'                                    AS ping_type
-    FROM {{ ref("pings_usage_data") }}
+    FROM {{ ref("version_usage_data") }}
 
 ), active_instances as (
 

@@ -15,7 +15,7 @@ ci_pipelines,verify
 ci_runners,verify
 ci_triggers,verify
 clusters_applications_cert_managers,configure
-clusters_applications_elastic_stack, monitor
+clusters_applications_elastic_stack,monitor
 clusters_applications_helm,configure
 clusters_applications_ingress,configure
 clusters_applications_knative,configure
@@ -62,7 +62,7 @@ lfs_objects,create
 license_management_jobs,secure
 licenses_list_views,secure
 merge_request_comment,create
-merge_request_create,creage
+merge_request_create,create
 merge_requests,create
 milestone_lists,plan
 milestones,plan

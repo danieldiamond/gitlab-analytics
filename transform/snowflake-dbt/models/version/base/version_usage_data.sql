@@ -1,9 +1,19 @@
+{{ config({
+    "materialized": "incremental",
+    "unique_key": "id"
+    })
+}}
+
 WITH source AS (
 
   SELECT
     *,
     ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
-  FROM {{ source('pings_tap_postgres', 'usage_data') }}
+  FROM {{ source('version', 'usage_data') }}
+
+  {% if is_incremental() %}
+  WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+  {% endif %}
 
 ),
 
@@ -67,3 +77,4 @@ renamed AS (
 
 SELECT *
 FROM renamed
+ORDER BY updated_at

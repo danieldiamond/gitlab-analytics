@@ -1,8 +1,8 @@
-{% docs pings_list %}
+{% docs version_usage_stats_list %}
 
 GitLab has been sending a weekly payload containing usage data from self-managed instances which haven't opted out. This weekly payload have changed structure over time. Some usage pings (understand metrics) have been added and we kept on switching the structure (sometimes nesting some JSONs and some other time un-nesting them).
 
-This model creates a comprehensive list of all pings that have been used with 2 different columns:
+This model creates a comprehensive list of all usage ping stats that have been used with 2 different columns:
 
 * `ping_name`: the raw extracted path  in the JSON. In example A that would be `EXAMPLE`. In example B, `EXAMPLE`
 * `full_ping_name`: cleaned `ping_name`. Example A and example B will have the same `full_ping_name`. We will use the `full_ping_name` to create downstream clean models
@@ -10,7 +10,7 @@ This model creates a comprehensive list of all pings that have been used with 2 
 
 {% enddocs %}
 
-{% docs pings_usage_data_monthly_change_by_stage %}
+{% docs version_usage_data_monthly_change_by_stage %}
 
 Monthly changes for usage statistics based on the cumulative monthly ping data, summarized into stages as per [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
 
@@ -19,7 +19,7 @@ The following macros are used:
 
 {% enddocs %}
 
-{% docs pings_usage_data_monthly_change %}
+{% docs version_usage_data_monthly_change %}
 
 Monthly changes for usage statistics based on the cumulative monthly ping data.
 
@@ -32,7 +32,7 @@ The following macros are used:
 * monthly_is_used - Adding the is_used suffix, keep the counts that show the given feature has been enabled or not
 {% enddocs %}
 
-{% docs pings_usage_data_unpacked %}
+{% docs version_usage_data_unpacked %}
 
 Example of stats_used format (useful examples for after):
 
@@ -54,7 +54,7 @@ EXAMPLE B (nested json)
 }
 ```
  
-This model unpacks the pings usage data JSON stored in the json-type column `stats_used` in model `pings_usage_data`. To do so, we perform the following actions:
+This model unpacks the usage ping JSON data stored in the json-type column `stats_used` in the model `version_usage_data`. To do so, we perform the following actions:
 
 1. Flatten the `stats_used` JSON. The flattening unnests all key/value pairs into multiple rows (one row per pair). From each pair, we create 3 columns:
 
@@ -67,6 +67,6 @@ This model unpacks the pings usage data JSON stored in the json-type column `sta
 | A | `ping_key_with_detail` | `ping_key_with_detail` | 2 |
 | B | `ping_key.with_detail` | `ping_key_with_detail` | 8 |
 
-1. The `pings_list` model gives us the full list of columns that need to be in the final table. We iterate through each element of the list (i.e. each value of `full_ping_name` column in `pings_list` model) and find the MAX of `ping_value`.
+1. The `version_usage_stats_list` model gives us the full list of columns that need to be in the final table. We iterate through each element of the list (i.e. each value of `full_ping_name` column in `pings_list` model) and find the MAX of `ping_value`.
 
 {% enddocs %}

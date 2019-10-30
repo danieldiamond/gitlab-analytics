@@ -23,7 +23,7 @@ Usage:
 {{ case_when_boolean_int("assignee_lists") }} AS assignee_lists_active
 ```
 Used in:
-- pings_usage_data_boolean.sql
+- version_usage_data_boolean.sql
 
 ## Churn Type ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/churn_type.sql))
 This macro compares MRR values and buckets them into retention categories.
@@ -36,15 +36,6 @@ Used in:
 - retention_parent_account_.sql
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
-
-## Cost Category ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/netsuite/cost_category.sql))
-This macro categorizes expenses by Headcount and Non_Headcount.
-Usage:
-```
-{{ cost_category('account_number','account_name') }}
-```
-Used in:
-- netsuite_cogs_opex
 
 ## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
@@ -154,7 +145,7 @@ Usage:
 {{ monthly_change('active_user_count') }}
 ```
 Used in:
-- pings_usage_data_monthly_change.sql
+- version_usage_data_monthly_change.sql
 
 ## Monthy Is Used ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/monthly_is_used.sql))
 This macro includes the total counts for a given feature's usage cumulatively.
@@ -163,7 +154,7 @@ Usage:
 {{ monthly_is_used('auto_devops_disabled') }}
 ```
 Used in:
-- pings_usage_data_monthly_change.sql
+- version_usage_data_monthly_change.sql
 
 ## Product Category([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/product_category.sql))
 This macro maps SKUs to their product categories.
@@ -302,28 +293,30 @@ pipeline_schedules_viewed AS (
     page_view_id                AS event_surrogate_key
 
   FROM snowplow_page_views
-  WHERE TRUE 
+  WHERE TRUE
     AND page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/pipeline_schedules'
-  
+
 
 )
 ```
 
 Used in:
+- configure_snowplow_smau_events
 - create_snowplow_smau_events
 - manage_snowplow_smau_events
 - monitor_snowplow_smau_events
 - package_snowplow_smau_events
 - plan_snowplow_smau_events
+- release_snowplow_smau_events
 - verify_snowplow_smau_events
 
-## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/pings/stage_mapping.sql))
+## Stage Mapping ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/version/stage_mapping.sql))
 This macro takes in a product stage name, such as 'Verify', and returns a SQL aggregation statement that sums the number of users using that stage, based on the ping data. Product metrics are mapped to stages using the [ping_metrics_to_stage_mapping_data.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv).
 ```
 {{ stage_mapping( 'Verify' ) }}
 ```
 Used in:
-- pings_usage_data_monthly_change_by_stage.sql
+- version_usage_data_monthly_change_by_stage.sql
 
 ## Support SLA Met ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zendesk/support_sla_met.sql))
 This macro implements the `CASE WHEN` logic for Support SLAs, as [documented in the handbook](https://about.gitlab.com/support/#gitlab-support-service-levels).
@@ -336,7 +329,7 @@ This macro implements the `CASE WHEN` logic for Support SLAs, as [documented in 
 Used in:
 - zendesk_tickets_xf.sql
 
-## Unpack Unstructured Events ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/pings/unpack_unstructured_event.sql))
+## Unpack Unstructured Events ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/version/unpack_unstructured_event.sql))
 This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.
 Usage:
 ```

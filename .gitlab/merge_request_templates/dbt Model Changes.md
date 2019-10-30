@@ -62,6 +62,11 @@ Example: You might be looking at the count of opportunities before and after, if
   - [ ] If the MR adds/renames columns to a specific model, a `dbt run --full-refresh` will be needed after merging the MR. Please, add it to the Reviewer Checklist to warn them that this step is required.
   - [ ] Please also check with the Reviewer if a dag is set up in Airflow to trigger a full refresh of this model.  
 
+#### Schema or Model Name Changes
+- [ ] Does this MR change the **schema** or **model name** of any existing models?
+  - [ ] Create an issue to change all existing periscope reporting to reference the new schema/name.
+  - [ ] After merging, ensure the old model is dropped from snowflake. This can be done by creating an issue specifying the tables/models to be dropped and assiging to a snowflake admin. 
+
 #### Testing
 
 - [ ] Every model should be [tested](https://docs.getdbt.com/docs/testing-and-documentation) AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable.
@@ -88,14 +93,14 @@ Example: You might be looking at the count of opportunities before and after, if
 
 > As part of a DBT Model Change MR, you need to trigger a pipeline job to test that your changes won't break anything in production. To trigger these jobs, go to the "Pipelines" tab at the bottom of this MR and click on the appropriate stage (dbt_run or dbt_misc).
 
-These jobs are scoped to the `ci` target. This target selects a subset of data for the snowplow and pings datasets.
+These jobs are scoped to the `ci` target. This target selects a subset of data for the snowplow and version datasets.
 
-Note that job artificats are avialable for all dbt run jobs. These include the compiled code and the run results.
+Note that job artificats are available for all dbt run jobs. These include the compiled code and the run results.
 
 - **all**: Runs all models
 - **exclude_product**: Excludes models with the `product` tag. Use this for every other data source.
 - **gitlab_dotcom**: Just runs GitLab.com models
-- **pings**: Just runs usage / version ping models
+- **version**: Just runs usage / version ping models
 - **snowplow**: Just runs snowplow and snowplow_combined models
 - **specify_model**: Specify which model to run with the variable `DBT_MODELS`
 - **specify_xl_model**: Specify which model to run using an XL warehouse with the variable `DBT_MODELS`
