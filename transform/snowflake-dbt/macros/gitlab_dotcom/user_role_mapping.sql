@@ -11,7 +11,6 @@
       WHEN {{user_role}} = 7 THEN 'Product Designer'
       WHEN {{user_role}} = 8 THEN 'Other'
       WHEN {{user_role}} = 99 THEN 'Experiment Default Value - Signup Not Completed'
-      ELSE {{user_role}}
     END
 
 {%- endmacro -%}
