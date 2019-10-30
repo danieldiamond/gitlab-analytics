@@ -1,7 +1,7 @@
 version: 1
 
 models:
-  - name: rpt_isat
+  - name: rpt_interviewee_satisfaction_isat
     description: This surfaces the greenhouse data for candidate surveys at a department level for interview SAT scores.
     columns:
     - name: candidate_survey_id
