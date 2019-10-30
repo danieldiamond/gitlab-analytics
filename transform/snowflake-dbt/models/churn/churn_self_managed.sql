@@ -12,7 +12,16 @@ WITH licenses AS (
 
 
 SELECT
-  *
+  licenses.license_id,
+  licenses.company,
+  licenses.users_count,
+  licenses.license_md5,
+  licenses.starts_at,
+  licenses.license_expires_at,
+
+  zuora_subs.subscription_id,
+  zuora_subs.subscription_name_slugify,
+  
 FROM licenses
   LEFT JOIN zuora_subs
     ON licenses.zuora_subscription_id = zuora_subs.subscription_id
