@@ -65,7 +65,15 @@ WITH source AS (
       last_activity_on::TIMESTAMP                                      AS last_activity_on,
       notified_of_own_activity::BOOLEAN                                AS is_notified_of_own_activity,
       NULLIF(preferred_language, 'nan')::VARCHAR                       AS preferred_language,
-      theme_id::INTEGER                                                AS theme_id
+      theme_id::INTEGER                                                AS theme_id,
+      accepted_term_id::INTEGER                                        AS accepted_term_id,
+      private_profile::BOOLEAN                                         AS is_private_profile,
+      roadmap_layout::INTEGER                                          AS roadmap_layout,
+      include_private_contributions::BOOLEAN                           AS include_private_contributions,
+      group_view::INTEGER                                              AS group_views,
+      managing_group_id::INTEGER                                       AS managing_group_id,
+      bot_type::INTEGER                                                AS bot_type,
+      role                                                             AS role
 
     FROM source
     QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY user_updated_at DESC) = 1
