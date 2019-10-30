@@ -73,8 +73,8 @@ WITH source AS (
       group_view::INTEGER                                              AS group_views,
       managing_group_id::INTEGER                                       AS managing_group_id,
       bot_type::INTEGER                                                AS bot_type,
-      role                                                             AS role_id,
-      {{user_role_mapping(user_role='role')}}                          AS role
+      source.role                                                      AS role_id,
+      {{user_role_mapping(user_role='source.role')}}::VARCHAR          AS role
 
 
     FROM source
