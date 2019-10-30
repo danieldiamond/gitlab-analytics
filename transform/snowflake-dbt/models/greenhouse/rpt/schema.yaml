@@ -1,0 +1,24 @@
+version: 1
+
+models:
+  - name: rpt_isat
+    description: This surfaces the greenhouse data for candidate surveys at a department level for interview SAT scores.
+    columns:
+    - name: candidate_survey_id
+      tests:
+      - not_null
+      - unique
+    - name: organization_id
+      tests:
+      - not_null
+    - name: department_id
+      tests:
+      - not_null
+    - name: department_name
+      tests:
+      - not_null
+    - name: submitted_at
+      tests:
+      - not_null
+    - name: candidate_survey_question_1
+    - name: isat_score
