@@ -23,7 +23,6 @@ gitlab-org/gitlab,278964
 gitlab-org/gitlab_emoji,36743
 gitlab-org/gitlab_kramdown,5647182
 gitlab-org/gitlab-compose-kit,4534254
-gitlab-org/gitlab-design,443787
 gitlab-org/gitlab-development-kit,74823
 gitlab-org/gitlab-docs,1794617
 gitlab-org/gitlab-elasticsearch-indexer,2953390
@@ -35,14 +34,10 @@ gitlab-org/gitlab-mattermost,387896
 gitlab-org/gitlab-omnibus-builder,145205
 gitlab-org/gitlab-pages,734943
 gitlab-org/gitlab-pages-proto,5981322
-gitlab-org/gitlab-qa,1441932
 gitlab-org/gitlab-recipes,13764
 gitlab-org/gitlab-runner,250833
-gitlab-org/gitlab-services/design.gitlab.com,4456656
 gitlab-org/gitlab-shell,14022
-gitlab-org/gitlab-svgs,4149988
 gitlab-org/gitlab-terminal,7792567
-gitlab-org/gitlab-ui,7071551
 gitlab-org/gitlab-workhorse,554859
 gitlab-org/gitlabktl,11080193
 gitlab-org/gitter/desktop,3626648
@@ -74,7 +69,6 @@ gitlab-org/project-templates/salesforcedx,13331704
 gitlab-org/project-templates/spring,3842996
 gitlab-org/prometheus-client-mmap,3362933
 gitlab-org/prometheus-storage-migrator,4949400
-gitlab-org/quality/performance,11511606
 gitlab-org/security-products/analyzers/bundler-audit,9358979
 gitlab-org/security-products/analyzers/eslint,10476326
 gitlab-org/security-products/analyzers/find-sec-bugs-groovy,7795571

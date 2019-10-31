@@ -62,6 +62,11 @@ Example: You might be looking at the count of opportunities before and after, if
   - [ ] If the MR adds/renames columns to a specific model, a `dbt run --full-refresh` will be needed after merging the MR. Please, add it to the Reviewer Checklist to warn them that this step is required.
   - [ ] Please also check with the Reviewer if a dag is set up in Airflow to trigger a full refresh of this model.  
 
+#### Schema or Model Name Changes
+- [ ] Does this MR change the **schema** or **model name** of any existing models?
+  - [ ] Create an issue to change all existing periscope reporting to reference the new schema/name.
+  - [ ] After merging, ensure the old model is dropped from snowflake. This can be done by creating an issue specifying the tables/models to be dropped and assiging to a snowflake admin. 
+
 #### Testing
 
 - [ ] Every model should be [tested](https://docs.getdbt.com/docs/testing-and-documentation) AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable.
