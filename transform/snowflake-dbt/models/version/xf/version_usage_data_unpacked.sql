@@ -102,6 +102,9 @@ WITH usage_data AS (
       git_version,
       gitaly_servers,
       gitaly_version,
+      zuora_subscription_id,
+      zuora_subscription_status,
+      zuora_crm_id,
       {% for stat_name in version_usage_stats_list %}
         MAX(IFF(full_ping_name = '{{stat_name}}', ping_value::numeric, NULL)) AS {{stat_name}} {{ "," if not loop.last }}
       {% endfor %}

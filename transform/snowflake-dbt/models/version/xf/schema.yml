@@ -82,3 +82,5 @@ models:
           - name: uuid
             tests:
                 - not_null
+          - name: zuora_subscription_id
+            description: The Zuora subscription associated with the license sending the usage ping.
