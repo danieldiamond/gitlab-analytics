@@ -20,29 +20,34 @@ internal_namespaces AS (
       namespace_id
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
     WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
+),
+
+final AS (
+
+    SELECT
+      milestones.milestone_id,
+
+      {% for field in fields_to_mask %}
+      IFF(internal_namespaces.namespace_id IS NULL,
+          'private - masked', {{field}})                     AS {{field}},
+      {% endfor %}
+      
+      milestones.due_date,
+      milestones.group_id,
+      milestones.milestone_status,
+      milestones.milestone_created_at,
+      milestones.milestone_updated_at,
+      COALESCE(milestones.group_id, projects.namespace_id)   AS namespace_id,
+      milestones.project_id,
+      milestones.start_date
+
+    FROM milestones
+      LEFT JOIN projects
+        ON milestones.project_id = projects.project_id
+      LEFT JOIN internal_namespaces
+        ON projects.namespace_id = internal_namespaces.namespace_id
+        OR milestones.group_id = internal_namespaces.namespace_id
 )
 
-
-SELECT
-    milestones.milestone_id,
-
-    {% for field in fields_to_mask %}
-    IFF(internal_namespaces.namespace_id IS NULL,
-        'private - masked', {{field}})                     AS {{field}},
-    {% endfor %}
-
-    milestones.project_id,
-    milestones.group_id,
-    milestones.start_date,
-    milestones.due_date,
-    milestones.milestone_status,
-    milestones.milestone_created_at,
-    milestones.milestone_updated_at,
-    COALESCE(milestones.group_id, projects.namespace_id)   AS namespace_id
-
-FROM milestones
-  LEFT JOIN projects
-    ON milestones.project_id = projects.project_id
-  LEFT JOIN internal_namespaces
-    ON projects.namespace_id = internal_namespaces.namespace_id
-    OR milestones.group_id = internal_namespaces.namespace_id
+SELECT *
+FROM final
