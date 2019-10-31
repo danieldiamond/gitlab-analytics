@@ -1,4 +1,4 @@
-{% set fields_to_mask = ['milestone_title', 'milestone_description'] %}
+{% set fields_to_mask = ['milestone_description', 'milestone_title'] %}
 
 WITH milestones AS (
 
@@ -34,9 +34,9 @@ final AS (
       
       milestones.due_date,
       milestones.group_id,
-      milestones.milestone_status,
       milestones.milestone_created_at,
       milestones.milestone_updated_at,
+      milestones.milestone_status,
       COALESCE(milestones.group_id, projects.namespace_id)   AS namespace_id,
       milestones.project_id,
       milestones.start_date
