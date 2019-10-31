@@ -110,7 +110,7 @@ WITH usage_data AS (
       {% endfor %}
 
     FROM unpacked
-    {{ dbt_utils.group_by(n=18) }}
+    {{ dbt_utils.group_by(n=21) }}
 
 )
 
