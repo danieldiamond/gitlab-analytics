@@ -217,6 +217,7 @@ roles:
                     - snowflake
                 write:
                     - analytics
+                    - raw
             schemas:
                 read:
                     - raw.bamboohr
@@ -226,6 +227,7 @@ roles:
                     - raw.sheetload
                     - raw.snapshots
                     - raw.snowplow
+                    - raw.stitch_google_sheets
                     - raw.tap_postgres
                     - raw.zuora_stitch
                     - analytics.analytics
@@ -233,6 +235,8 @@ roles:
                     - analytics.analytics_meta
                     - analytics.dbt_archive
                     - snowflake.*
+                write:
+                    - raw.stitch_google_sheets
             tables:
                 read:
                     - raw.bamboohr.*
@@ -242,6 +246,7 @@ roles:
                     - raw.sheetload.*
                     - raw.snapshots.*
                     - raw.snowplow.*
+                    - raw.stitch_google_sheets.*
                     - raw.tap_postgres.*
                     - raw.zuora_stitch.*
                     - analytics.analytics.*
@@ -249,6 +254,8 @@ roles:
                     - analytics.analytics_meta.*
                     - analytics.dbt_archive.*
                     - snowflake.*.*
+                write:
+                    - raw.stitch_google_sheets.*
     
     - analyst_marketing:
         warehouses:
