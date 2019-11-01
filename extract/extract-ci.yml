@@ -1,7 +1,7 @@
 # Job definitions
 #
 .job_template: &extract_definition
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:77-pin-azure-storage-blob
   before_script:
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
     - echo $SNOWFLAKE_DATABASE

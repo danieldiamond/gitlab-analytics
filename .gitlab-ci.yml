@@ -29,7 +29,7 @@ include:
 
 # Template for cloning databases in Snowflake for use in MRs
 .snowflake_clone_template: &snowflake_clone_template
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:77-pin-azure-storage-blob
   tags:
     - analytics
   before_script:
@@ -102,7 +102,7 @@ clone_stop:
 
 .python_check: &python_check
   stage: python
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:77-pin-azure-storage-blob
   tags:
     - analytics
   only:
@@ -147,7 +147,7 @@ python_pytest:
 
 .pages_job_template: &pages_job_template
   stage: dbt_docs
-  image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/dbt-image:77-pin-azure-storage-blob
   variables:
     SNOWFLAKE_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
     SNOWFLAKE_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE
