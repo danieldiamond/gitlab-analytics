@@ -1,5 +1,6 @@
-* [ ]￼ Write + public blog post
+* [ ]￼ Write + publish blog post
 * [ ]￼ Write up message using the template below (from Security)- Internal Message, Prewritten Tweet, Mention on LinkedIn formatting
+* [ ]￼ Identify data places online to share. Ask a team member to share, if you'd prefer. 
 * [ ]￼ Share in #data channel asking people to share
 
 ```
