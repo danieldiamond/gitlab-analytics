@@ -1,4 +1,4 @@
-{% snapshot gitlab_dotcom_gitlab_subscriptions_snapshots %}
+{% snapshot gitlab_dotcom_gitlab_subscriptions_namespace_snapshots %}
 
     {{
         config(
