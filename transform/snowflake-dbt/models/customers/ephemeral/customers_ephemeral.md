@@ -1,4 +1,4 @@
-{% docs customers_db_orders_with_valid_charges %}
+{% docs customers_db_orders_with_valid_charges_data %}
 
 This is an intermediate ephemeral model used in the `customers_db_charges_xf`. Each row is a different zuora rate_plan_charge with a unique `rate_plan_charge_id` key.
 
@@ -29,7 +29,7 @@ During the life of an order, the customer can change the namespace attached to t
 
 {% enddocs %}
 
-{% docs customers_db_orders_with_valid_charges %}
+{% docs customers_db_orders_with_incomplete_charges_data %}
 
 This is an intermediate ephemeral model used in the `customers_db_charges_xf`. Each row is a different zuora rate_plan_charge with a unique `rate_plan_charge_id` key.
 
@@ -59,3 +59,5 @@ During the life of an order, the customer can change the namespace attached to t
 * `gitlab_namespace_id_list`: all gitlab_namespace that are linked to a specific subscription.
 
 We finally join with the `customers_db_orders_with_valid_charges` in order to exclude the `rate_plan_charge_id` that are already in this model.
+
+{% enddocs %}

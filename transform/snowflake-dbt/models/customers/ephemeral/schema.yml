@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: customers_db_charges_with_incomplete_charges_data
-    description: '{{ doc("customers_db_charges_with_incomplete_charges_data") }}'
+  - name: customers_db_orders_with_incomplete_charges_data
+    description: '{{ doc("customers_db_orders_with_incomplete_charges_data") }}'
     columns:
       - name: subscription_name_slugify
         tests:

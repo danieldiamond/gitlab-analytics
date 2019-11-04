@@ -1,14 +1,14 @@
 WITH valid_charges AS (
   
     SELECT * 
-    FROM {{ ref('customers_db_valid_charges') }}
+    FROM {{ ref('customers_db_orders_with_valid_charges_data') }}
   
 )
 
 , charges_for_expired_transactions AS (
   
     SELECT * 
-    FROM {{ ref('customers_db_charges_for_expired_transactions') }}
+    FROM {{ ref('customers_db_orders_with_incomplete_charges_data') }}
   
 )
 
