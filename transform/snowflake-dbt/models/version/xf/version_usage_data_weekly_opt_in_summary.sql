@@ -48,6 +48,7 @@ grouped AS (
 SELECT
   week,
   license_id,
+  week_license_unique_id,
   license_md5,
   zuora_subscription_id,
   product_category,

@@ -92,7 +92,7 @@ models:
           - name: license_id
             tests:
                 - not_null
-          - name: week_license_id
+          - name: week_license_unique_id
             tests:
                 - not_null
                 - unique
