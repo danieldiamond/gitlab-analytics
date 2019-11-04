@@ -19,24 +19,16 @@ WITH valid_charges AS (
   
 )
 
-, filtered_out_charges_for_expired_transactions AS (
-  
-    SELECT charges_for_expired_transactions.*
-    FROM charges_for_expired_transactions
-    LEFT JOIN valid_charges ON charges_for_expired_transactions.rate_plan_charge_id = valid_charges.rate_plan_charge_id 
-    WHERE valid_charges.rate_plan_charge_id IS NULL
-
-)
 
 , unioned_charges AS (
   
-  SELECT *
-  FROM valid_charges
-  
-  UNION 
-  
-  SELECT *
-  FROM filtered_out_charges_for_expired_transactions
+    SELECT *
+    FROM valid_charges
+    
+    UNION 
+    
+    SELECT *
+    FROM filtered_out_charges_for_expired_transactions
   
 )
 
@@ -45,13 +37,13 @@ WITH valid_charges AS (
     SELECT
       unioned_charges.rate_plan_charge_id,
       unioned_charges.subscription_name_slugify,
-      rate_plan_id,
-      is_purchased_through_subscription_portal,
-      current_customer_id,
-      current_gitlab_namespace_id,
-      first_customer_id,
-      is_started_with_trial,
-      trial_start_date,
+      unioned_charges.rate_plan_id,
+      unioned_charges.is_purchased_through_subscription_portal,
+      unioned_charges.current_customer_id,
+      unioned_charges.current_gitlab_namespace_id,
+      unioned_charges.first_customer_id,
+      unioned_charges.is_started_with_trial,
+      unioned_charges.trial_start_date,
       
       -- Subscription metadata
       zuora_base_mrr.lineage,
