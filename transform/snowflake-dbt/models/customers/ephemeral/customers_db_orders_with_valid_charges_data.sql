@@ -1,3 +1,8 @@
+{{ config({
+    "materialized": "ephemeral"
+    })
+}}
+
 WITH customers AS (
   
     SELECT * 
@@ -135,7 +140,7 @@ WITH customers AS (
       ARRAY_AGG(gitlab_namespace_id) 
         WITHIN GROUP (ORDER  BY customer_id ASC) AS gitlab_namespace_id_list
     FROM joined
-    {{ dbt_utils.group_by(n=9) }}
+    {{ dbt_utils.group_by(n=19) }}
     
 )
 
