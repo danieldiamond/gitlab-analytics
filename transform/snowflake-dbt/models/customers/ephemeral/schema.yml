@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: customers_db_charges_with_incomplete_charges_data
+    description: '{{ doc("customers_db_charges_with_incomplete_charges_data") }}'
+    columns:
+      - name: subscription_name_slugify
+        tests:
+          - not_null
+      - name: rate_plan_charge_id
+        tests:
+          - not_null
+          - unique
+      - name: is_purchased_through_subscription_portal
+        description: From the subscription portal, a charge can either be purchased by a customer through the normal subscription portal checkout or activated via the admin interface by a GitLab team member. The charges that are started in the normal customer checkout have all the same `created_by_id` value '2c92a0fd55822b4d015593ac264767f2'
+
+  - name: customers_db_orders_with_valid_charges_data
+    description: '{{ doc("customers_db_orders_with_valid_charges_data") }}'
+    columns:
+      - name: subscription_name_slugify
+        tests:
+          - not_null
+      - name: rate_plan_charge_id
+        tests:
+          - not_null
+          - unique
+      - name: is_purchased_through_subscription_portal
+        description: From the subscription portal, a charge can either be purchased by a customer through the normal subscription portal checkout or activated via the admin interface by a GitLab team member. The charges that are started in the normal customer checkout have all the same `created_by_id` value '2c92a0fd55822b4d015593ac264767f2'

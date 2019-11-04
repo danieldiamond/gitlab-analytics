@@ -49,7 +49,10 @@ Some examples:
 | 6259     | 10075       | a-s00008638               | FALSE          | 2756798             | 2018-04-16 00:00:00.000 | 2019-04-16 00:00:00.000 | 2c92a0ff5a840412015aa3cde86f2ba6 |
 | 5336     | 9010        | a-s00007947               | FALSE          | 2542496             | 2018-03-02 00:00:00.000 | 2019-03-02 00:00:00.000 |                      |
 
+First case is expired but not correctly downgraded. The 2nd is expired and currently downgraded.
+
 #### Problems raised
+
 The problem with this update mechanism is that we totally lose the data about the history of this order. When an order is expired, for example, we can't see in this table if the order was a trial, SaaS subscription...
 
 For example, that means that looking at this table, we are not able to calculate the number of trials that have been started in August 2019 (they have all expired and now look like expired subscription)
@@ -57,5 +60,7 @@ For example, that means that looking at this table, we are not able to calculate
 We can't know either how many Gold Subscription have been started in 2018...
 
 Another example is some subscriptions that have been downgraded from Silver to Bronze. Looking at the table, we will see only the latest subscription, the Bronze. No possibility to trace back to the Silver one without any join!
+
+Some of these problems are solved thanks to the customers_db_orders_snapshots that has been started in September 2019.
 
 {% enddocs %}
