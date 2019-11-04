@@ -143,6 +143,11 @@ models:
     sfdc:
       xf:
         materialized: table
+    
+    sheetload: 
+      base: 
+        sheetload_employee_location_factor:
+          enabled: false
 
     smau_events:
       tags: ["product"]
