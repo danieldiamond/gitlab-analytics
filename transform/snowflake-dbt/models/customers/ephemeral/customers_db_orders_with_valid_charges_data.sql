@@ -45,13 +45,6 @@ WITH customers AS (
   
 )
 
-, zuora_base_mrr AS (
-  
-    SELECT * 
-    FROM {{ ref('zuora_base_mrr') }}
-  
-)
-
 , orders_with_subscription AS (
   
     SELECT DISTINCT
@@ -117,8 +110,6 @@ WITH customers AS (
       AND orders_with_subscription.product_rate_plan_id = zuora_rp.product_rate_plan_id
     INNER JOIN zuora_rpc 
       ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
-    INNER JOIN zuora_base_mrr
-      ON zuora_rpc.rate_plan_charge_id = zuora_base_mrr.rate_plan_charge_id
     LEFT JOIN trials ON orders_with_subscription.order_id = trials.order_id
 
 )

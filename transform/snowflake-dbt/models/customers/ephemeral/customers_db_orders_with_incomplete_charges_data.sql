@@ -118,8 +118,6 @@ WITH customers AS (
       AND orders_with_subscriptions_without_product_plan_rate.product_rate_plan_id = zuora_rp.product_rate_plan_id
     INNER JOIN zuora_rpc 
       ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
-    INNER JOIN zuora_base_mrr
-      ON zuora_rpc.rate_plan_charge_id = zuora_base_mrr.rate_plan_charge_id
     LEFT JOIN trials ON orders_with_subscriptions_without_product_plan_rate.order_id = trials.order_id
 
 )
