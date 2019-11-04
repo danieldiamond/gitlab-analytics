@@ -52,13 +52,6 @@ WITH customers AS (
   
 )
 
-, zuora_base_mrr AS (
-  
-    SELECT * 
-    FROM {{ ref('zuora_base_mrr') }}
-  
-)
-
 , orders_with_subscriptions_without_product_plan_rate AS (
   
   SELECT DISTINCT
