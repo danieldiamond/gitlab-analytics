@@ -153,6 +153,11 @@ models:
       tags: ["product"]
       materialized: table
 
+    snapshots: 
+      sheetload:
+         sheetload_employee_location_factor: 
+          enabled: false
+  
     snowplow:
       tags: ["product"]
       xf:
