@@ -30,7 +30,7 @@ grouped AS (
     licenses.license_id,
     licenses.license_md5,
     licenses.zuora_subscription_id,
-    usage_data.license_plan                   AS product_category, -- Often NULL when it shouldn't be
+    licenses.plan_code                        AS product_category,
     MAX(IFF(usage_data.id IS NOT NULL, 1, 0)) AS did_send_usage_data,
     COUNT(DISTINCT usage_data.id)             AS count_usage_data_pings,
     MIN(usage_data.created_at)                AS min_usage_data_created_at,
