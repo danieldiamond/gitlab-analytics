@@ -5,7 +5,7 @@ WITH valid_charges AS (
   
 )
 
-, charges_for_expired_transactions AS (
+, incomplete_charges AS (
   
     SELECT * 
     FROM {{ ref('customers_db_orders_with_incomplete_charges_data') }}
@@ -28,7 +28,7 @@ WITH valid_charges AS (
     UNION 
     
     SELECT *
-    FROM filtered_out_charges_for_expired_transactions
+    FROM incomplete_charges
   
 )
 
