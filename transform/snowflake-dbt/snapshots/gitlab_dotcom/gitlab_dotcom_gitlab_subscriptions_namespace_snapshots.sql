@@ -14,13 +14,13 @@
 
       SELECT
         *,
-        ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY updated_at DESC) as gitlab_subscriptions_rank_in_key
+        ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY updated_at DESC) AS gitlab_subscriptions_rank_in_namespace
       FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
 
     )
 
     SELECT *
     FROM source
-    WHERE gitlab_subscriptions_rank_in_key = 1
+    WHERE gitlab_subscriptions_rank_in_namespace = 1
     
 {% endsnapshot %}
