@@ -92,6 +92,10 @@ models:
           - name: license_id
             tests:
                 - not_null
+          - name: week_license_id
+            tests:
+                - not_null
+                - unique
           - name: license_md5
             tests:
                 - not_null

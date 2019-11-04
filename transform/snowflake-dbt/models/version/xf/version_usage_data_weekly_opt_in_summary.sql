@@ -26,8 +26,9 @@ week_spine AS (
 
 grouped AS (
   SELECT
-    week,
+    week_spine.week,
     licenses.license_id,
+    {{ dbt_utils.surrogate_key('week', 'license_id') }} AS week_license_unique_id
     licenses.license_md5,
     licenses.zuora_subscription_id,
     licenses.plan_code                        AS product_category,
@@ -41,7 +42,7 @@ grouped AS (
     LEFT JOIN usage_data
       ON licenses.license_md5 = usage_data.license_md5
       AND week_spine.week = DATE_TRUNC('week', usage_data.created_at)
-  {{ dbt_utils.group_by(n=5) }}
+  {{ dbt_utils.group_by(n=6) }}
 )
 
 SELECT
