@@ -28,14 +28,14 @@ grouped AS (
   SELECT
     week_spine.week,
     licenses.license_id,
-    {{ dbt_utils.surrogate_key('week', 'license_id') }} AS week_license_unique_id
+    {{ dbt_utils.surrogate_key('week', 'licenses.license_id') }} AS week_license_unique_id,
     licenses.license_md5,
     licenses.zuora_subscription_id,
-    licenses.plan_code                        AS product_category,
-    MAX(IFF(usage_data.id IS NOT NULL, 1, 0)) AS did_send_usage_data,
-    COUNT(DISTINCT usage_data.id)             AS count_usage_data_pings,
-    MIN(usage_data.created_at)                AS min_usage_data_created_at,
-    MAX(usage_data.created_at)                AS max_usage_data_created_at
+    licenses.plan_code                                           AS product_category,
+    MAX(IFF(usage_data.id IS NOT NULL, 1, 0))                    AS did_send_usage_data,
+    COUNT(DISTINCT usage_data.id)                                AS count_usage_data_pings,
+    MIN(usage_data.created_at)                                   AS min_usage_data_created_at,
+    MAX(usage_data.created_at)                                   AS max_usage_data_created_at
   FROM week_spine
     LEFT JOIN licenses
       ON week_spine.week BETWEEN licenses.starts_at AND COALESCE(licenses.license_expires_at, '9999-12-31')
