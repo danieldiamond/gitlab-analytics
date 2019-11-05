@@ -862,3 +862,6 @@ models:
           - not_null
       - name: role
         description: This is the string translation of the "role" column stored as an integer in the source database. It is converted using the `user_role_mapping` macro.
+      - name: role_id
+        accepted_values:
+          values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 99]
