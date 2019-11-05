@@ -31,7 +31,7 @@ During the life of an order, the customer can change the namespace attached to t
 
 {% docs customers_db_orders_with_incomplete_charges_data %}
 
-This is an intermediate ephemeral model used in the `customers_db_charges_xf`. Each row is a different zuora rate_plan_charge with a unique `rate_plan_charge_id` key.
+This is an intermediate ephemeral model used in the `customers_db_charges_xf` model. Each row is a different zuora rate_plan_charge with a unique `rate_plan_charge_id` key.
 
 As described in the `customers_db_orders` documentation, this base table has some weird overriding logics. When a subscription expires, the orders associated to this subscription lose some key important metadata: `product_rate_plan_id`.
 
