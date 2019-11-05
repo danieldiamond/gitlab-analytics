@@ -40,7 +40,7 @@ When a trial expires, `order_is_trial` turns to `FALSE`. This example is taken f
 
 #### expired subscription 
 
-Currently, the downgrade process seems quite unstable. For both SaaS and self-managed plans, we see 2 different behavior. The `product_rate_plan_id` should turn to `NULL` once the order is expired, but it seems that a lot of orders are not correctly expired and keep having the `product_rate_plan_id` set even though the order expired. While it shouldn't be a problem for self-managed product categories, it is a currently a problem for SaaS product categories, customers with expired subscription still having access to paid plans with their namespace.
+Currently, the downgrade process seems quite unstable. For both SaaS and self-managed plans, we see 2 different behaviors. The `product_rate_plan_id` should turn to `NULL` once the order is expired, but it seems that a lot of orders are not correctly expired and keep having the `product_rate_plan_id` set even though the order expired. While it shouldn't be a problem for self-managed product categories, it is currently a problem for SaaS product categories because customers with expired subscription are preserving access to paid plans with their namespace.
 
 Some examples:
 
