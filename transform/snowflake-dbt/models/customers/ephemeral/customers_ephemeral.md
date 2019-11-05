@@ -1,6 +1,6 @@
 {% docs customers_db_orders_with_valid_charges_data %}
 
-This is an intermediate ephemeral model used in the `customers_db_charges_xf`. Each row is a different zuora rate_plan_charge with a unique `rate_plan_charge_id` key.
+This is an intermediate ephemeral model used in the `customers_db_charges_xf` model. Each row is a different zuora rate_plan_charge with a unique `rate_plan_charge_id` key.
 
 We isolate from the `customers_db_orders_snapshots` table the orders with the following criteria:
 
