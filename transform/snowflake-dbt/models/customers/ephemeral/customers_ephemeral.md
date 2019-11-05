@@ -45,7 +45,7 @@ That means that all these expired subscriptions can't be captured and joined in 
 
 This model isolates these subscriptions and will join them to zuora tables only through the `subscription_name_slugify` key.
 
-Weird behavior of the `customers_db_orders` tables are that a subscription (unique `subscription_name_slugify`) can be linked to several customer accounts (`customer_id`) and therefore we can find several `customer_id` for the same `subscription_name_slugify`. We then capture the following metadata: 
+One weird behavior of the `customers_db_orders` table is that a subscription (unique `subscription_name_slugify`) can be linked to several customer accounts (`customer_id`) and therefore we can find several `customer_id` for the same `subscription_name_slugify`. We then capture the following metadata: 
 
 * `current_customer_id` which is the `customer_id` linked to the latest updated order in the `customers_db_orders` table 
 * `first_customer_id` which is the `customer_id` linked to the oldest (oldest `order_created_at`) order in the `customers_db_orders` table
