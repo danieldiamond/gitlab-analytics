@@ -83,7 +83,7 @@ WITH zuora_accts AS (
     INNER JOIN zuora_rpc 
       ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id AND zuora_rpc.mrr > 0 AND zuora_rpc.tcv > 0
     LEFT JOIN zuora_contact 
-      ON COALESCE(zuora_accts.SOLD_TO_CONTACT_ID,zuora_accts.BILL_TO_CONTACT_ID) = zuora_contact.contact_id
+      ON COALESCE(zuora_accts.sold_to_contact_id ,zuora_accts.bill_to_contact_id) = zuora_contact.contact_id
 
 )
 

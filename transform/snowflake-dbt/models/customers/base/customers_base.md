@@ -2,7 +2,7 @@
 
 customers_db_orders is the base model built upon the orders table in the customers_db table. This table is a list of the current state of all orders that have been completed through the subscription portal.
 
-This table is a weird, complicated tables with a lot of strange mechanisms. Below, you will find a list of all the different findings (results of huge data exploration led by @ekastalein and @mpeychet in October 2019):
+This table is a weird, complicated table with a lot of strange mechanisms. Below, you will find a list of all the different findings (results of huge data exploration led by @ekastelein and @mpeychet in October 2019):
 
 ### What is an order ?
 
@@ -40,7 +40,7 @@ When a trial expires, `order_is_trial` turns to `FALSE`. This example is taken f
 
 #### expired subscription 
 
-Currently, the downgrade process seems quite unstable. For both SaaS and self-managed plans, we see 2 different behavior. The `product_rate_plan_id` should turn to `NULL` once the order is expired, but it seems that a lot of orders are not correctly expired and keep having the `product_rate_plan_id` set even though the order expired. While it shouldn't be a problem for self-managed product categories, it is a currently a problem for SaaS product categories, customers with expired subscription still having access to paid plans with their namespace.
+Currently, the downgrade process seems quite unstable. For both SaaS and self-managed plans, we see 2 different behaviors. The `product_rate_plan_id` should turn to `NULL` once the order is expired, but it seems that a lot of orders are not correctly expired and keep having the `product_rate_plan_id` set even though the order expired. While it shouldn't be a problem for self-managed product categories, it is currently a problem for SaaS product categories because customers with expired subscription are preserving access to paid plans with their namespace.
 
 Some examples:
 
