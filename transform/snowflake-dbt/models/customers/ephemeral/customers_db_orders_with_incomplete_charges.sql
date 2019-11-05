@@ -17,10 +17,10 @@ WITH customers AS (
   
 )
 
-, orders_with_valid_charges_data AS (
+, orders_with_valid_charges AS (
   
     SELECT * 
-    FROM {{ ref('customers_db_orders_with_valid_charges_data') }}
+    FROM {{ ref('customers_db_orders_with_valid_charges') }}
   
 )
 
@@ -147,9 +147,9 @@ WITH customers AS (
   
   SELECT joined_with_customer_and_namespace_list.* 
   FROM joined_with_customer_and_namespace_list
-  LEFT JOIN orders_with_valid_charges_data
-    ON joined_with_customer_and_namespace_list.rate_plan_charge_id = customers_db_orders_with_valid_charges_data.rate_plan_charge_id
-  WHERE customers_db_orders_with_valid_charges_data.rate_plan_charge_id IS NULL
+  LEFT JOIN orders_with_valid_charges
+    ON joined_with_customer_and_namespace_list.rate_plan_charge_id = orders_with_valid_charges.rate_plan_charge_id
+  WHERE orders_with_valid_charges.rate_plan_charge_id IS NULL
 )
 
 SELECT * 
