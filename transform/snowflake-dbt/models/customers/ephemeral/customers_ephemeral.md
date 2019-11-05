@@ -1,6 +1,6 @@
-{% docs customers_db_orders_with_valid_charges_data %}
+{% docs customers_db_orders_with_valid_charges %}
 
-This is an intermediate ephemeral model used in the `customers_db_charges_xf` model. Each row is a different zuora rate_plan_charge with a unique `rate_plan_charge_id` key.
+This is an intermediate ephemeral model used in the `customers_db_charges_xf`. Each row is a different zuora rate_plan_charge with a unique `rate_plan_charge_id` key.
 
 We isolate from the `customers_db_orders_snapshots` table the orders with the following criteria:
 
@@ -13,7 +13,7 @@ This will help us identify paid orders that were active when we started recordin
 * `subscription_name_slugify` joins to `zuora_subscription_xf`
 * `product_rate_plan_id` joins to `zuora_rate_plan`
 
-One weird behavior of the `customers_db_orders` table is that a subscription (unique `subscription_name_slugify`) can be linked to several customer accounts (`customer_id`) and therefore we can find several `customer_id` for the same `subscription_name_slugify`. We then capture the following metadata: 
+Weird behavior of the `customers_db_orders` tables are that a subscription (unique `subscription_name_slugify`) can be linked to several customer accounts (`customer_id`) and therefore we can find several `customer_id` for the same `subscription_name_slugify`. We then capture the following metadata: 
 
 * `current_customer_id` which is the `customer_id` linked to the latest updated order in the `customers_db_orders` table 
 * `first_customer_id` which is the `customer_id` linked to the oldest (oldest `order_created_at`) order in the `customers_db_orders` table
@@ -29,11 +29,11 @@ During the life of an order, the customer can change the namespace attached to t
 
 {% enddocs %}
 
-{% docs customers_db_orders_with_incomplete_charges_data %}
+{% docs customers_db_orders_with_incomplete_charges %}
 
-This is an intermediate ephemeral model used in the `customers_db_charges_xf` model. Each row is a different zuora rate_plan_charge with a unique `rate_plan_charge_id` key.
+This is an intermediate ephemeral model used in the `customers_db_charges_xf`. Each row is a different zuora rate_plan_charge with a unique `rate_plan_charge_id` key.
 
-As described in the `customers_db_orders` documentation, this base table has some weird overriding logic. When a subscription expires, the orders associated to this subscription lose some key important metadata: `product_rate_plan_id`.
+As described in the `customers_db_orders` documentation, this base table has some weird overriding logics. When a subscription expires, the orders associated to this subscription lose some key important metadata: `product_rate_plan_id`.
 
 Example:
 
@@ -45,7 +45,7 @@ That means that all these expired subscriptions can't be captured and joined in 
 
 This model isolates these subscriptions and will join them to zuora tables only through the `subscription_name_slugify` key.
 
-One weird behavior of the `customers_db_orders` table is that a subscription (unique `subscription_name_slugify`) can be linked to several customer accounts (`customer_id`) and therefore we can find several `customer_id` for the same `subscription_name_slugify`. We then capture the following metadata: 
+Weird behavior of the `customers_db_orders` tables are that a subscription (unique `subscription_name_slugify`) can be linked to several customer accounts (`customer_id`) and therefore we can find several `customer_id` for the same `subscription_name_slugify`. We then capture the following metadata: 
 
 * `current_customer_id` which is the `customer_id` linked to the latest updated order in the `customers_db_orders` table 
 * `first_customer_id` which is the `customer_id` linked to the oldest (oldest `order_created_at`) order in the `customers_db_orders` table
