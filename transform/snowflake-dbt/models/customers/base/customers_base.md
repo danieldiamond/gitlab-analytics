@@ -2,7 +2,7 @@
 
 customers_db_orders is the base model built upon the orders table in the customers_db table. This table is a list of the current state of all orders that have been completed through the subscription portal.
 
-This table is a weird, complicated tables with a lot of strange mechanisms. Below, you will find a list of all the different findings (results of huge data exploration led by @ekastalein and @mpeychet in October 2019):
+This table is a weird, complicated table with a lot of strange mechanisms. Below, you will find a list of all the different findings (results of huge data exploration led by @ekastelein and @mpeychet in October 2019):
 
 ### What is an order ?
 
