@@ -27,6 +27,7 @@ with zuora_mrr_totals as (
         ON zuora_account.account_number = zuora_mrr_totals.account_number
     LEFT JOIN sfdc_accounts_xf
         ON sfdc_accounts_xf.account_id = zuora_account.crm_id
+    WHERE zuora_account.updated_date::date < current_date
 
 ), final as (
 
