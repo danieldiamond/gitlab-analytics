@@ -9,26 +9,26 @@ WITH licenses AS ( -- Licenses app doesn't alter rows after creation so the snap
   FROM {{ ref('license_db_licenses') }}
   WHERE license_md5 IS NOT NULL
     AND is_trial = False
-),
+)
 
-usage_data AS (
+, usage_data AS (
   SELECT *
   FROM {{ ref('version_usage_data') }}
   WHERE license_md5 IS NOT NULL
-),
+)
 
-week_spine AS (
+, week_spine AS (
   SELECT DISTINCT
     DATE_TRUNC('week', date_actual) AS week
   FROM {{ ref('date_details') }}
   WHERE date_details.date_actual BETWEEN '2017-04-01' AND CURRENT_DATE
-),
+)
 
-grouped AS (
+, grouped AS (
   SELECT
+    {{ dbt_utils.surrogate_key('week', 'licenses.license_id') }} AS week_license_unique_id,
     week_spine.week,
     licenses.license_id,
-    {{ dbt_utils.surrogate_key('week', 'licenses.license_id') }} AS week_license_unique_id,
     licenses.license_md5,
     licenses.zuora_subscription_id,
     licenses.plan_code                                           AS product_category,
@@ -45,15 +45,26 @@ grouped AS (
   {{ dbt_utils.group_by(n=6) }}
 )
 
-SELECT
-  week,
-  license_id,
-  week_license_unique_id,
-  license_md5,
-  zuora_subscription_id,
-  product_category,
-  did_send_usage_data::BOOLEAN AS did_send_usage_data,
-  count_usage_data_pings,
-  min_usage_data_created_at,
-  max_usage_data_created_at
-FROM grouped
+, alphabetized AS (
+
+    SELECT
+      week_license_unique_id,
+      
+      week,
+      license_id,
+      
+      license_md5,
+      product_category,
+      zuora_subscription_id,
+      
+      --metadata
+      count_usage_data_pings,
+      did_send_usage_data::BOOLEAN AS did_send_usage_data,
+      min_usage_data_created_at,
+      max_usage_data_created_at
+    FROM grouped
+    
+)
+
+SELECT * 
+FROM alphabetized
