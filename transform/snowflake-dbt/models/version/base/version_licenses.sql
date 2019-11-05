@@ -14,7 +14,7 @@ renamed AS (
     company::VARCHAR                      AS company,
     user_count::INTEGER                   AS user_count,
     add_ons::VARCHAR                      AS add_ons,
-    --md5 // waiting on fresh data https://gitlab.com/gitlab-data/analytics/issues/2696
+    md5::VARCHAR                          AS license_md5,
     starts_on::TIMESTAMP                  AS started_at,
     expires_on::TIMESTAMP                 AS expired_at,
     created_at::TIMESTAMP                 AS created_at,
