@@ -175,10 +175,11 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 - [ ] Save the [Data Kitchen Data Ops Cookbook](https://drive.google.com/file/d/14KyYdFB-DOeD0y2rNyb2SqjXKygo10lg/view?usp=sharing) as a reference.
 - [ ] Save the [Data Engineering Cookbook](https://drive.google.com/file/d/1Tm3GiV3P6c5S3mhfF9bm7VaKCtio-9hm/view?usp=sharing) as a reference.
 
-## GitLab.com aka "Dot Com" (Product)
+## GitLab.com (Product)
 This data comes from our GitLab.com SaaS product.
-- [ ] Become familiar with the [API docs](https://gitlab.com/gitlab-org/gitlab/tree/master/doc/api).
+- [ ] Become familiar with the [API docs](https://gitlab.com/gitlab-org/gitlab/tree/master/doc/api)
 - [ ] This is the [schema for the database](https://gitlab.com/gitlab-org/gitlab/blob/master/db/schema.rb)
+- [ ] If you ever want to know what queries are going on in the background while you're using GitLab.com, enable the [Performance Bar](https://docs.gitlab.com/ee/administration/monitoring/performance/performance_bar.html) and click on the numbers to the left of `pg`. This is useful for learning how the gitlab.com schema works. The performance bar can be enable by pressing `p + b` ([Shortcut Docs](https://docs.gitlab.com/ee/user/shortcuts.html)).
 
 ## Marketo
 - [ ] [Coming soon]
