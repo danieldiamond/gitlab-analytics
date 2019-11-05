@@ -5,26 +5,33 @@
 
 
 WITH licenses AS ( -- Licenses app doesn't alter rows after creation so the snapshot is not necessary.
+
   SELECT *
   FROM {{ ref('license_db_licenses') }}
   WHERE license_md5 IS NOT NULL
     AND is_trial = False
+    
 )
 
 , usage_data AS (
+
   SELECT *
   FROM {{ ref('version_usage_data') }}
   WHERE license_md5 IS NOT NULL
+  
 )
 
 , week_spine AS (
+
   SELECT DISTINCT
     DATE_TRUNC('week', date_actual) AS week
   FROM {{ ref('date_details') }}
   WHERE date_details.date_actual BETWEEN '2017-04-01' AND CURRENT_DATE
+  
 )
 
 , grouped AS (
+
   SELECT
     {{ dbt_utils.surrogate_key('week', 'licenses.license_id') }} AS week_license_unique_id,
     week_spine.week,
@@ -43,6 +50,7 @@ WITH licenses AS ( -- Licenses app doesn't alter rows after creation so the snap
       ON licenses.license_md5 = usage_data.license_md5
       AND week_spine.week = DATE_TRUNC('week', usage_data.created_at)
   {{ dbt_utils.group_by(n=6) }}
+  
 )
 
 , alphabetized AS (
