@@ -845,7 +845,7 @@ models:
 
   - name: gitlab_dotcom_users
     description: >-
-      Base model for Gitlab.com users, the follwing fields are hidden for
+      Base model for Gitlab.com users, the following fields are hidden for
       privacy `current_sign_in_ip`, `last_sign_in_ip`, `unconfirmed_email`,
       `website_url`, `notification_email`, `public_email`, `note`,
       `organization`
@@ -863,5 +863,7 @@ models:
       - name: role
         description: This is the string translation of the "role" column stored as an integer in the source database. It is converted using the `user_role_mapping` macro.
       - name: role_id
-        accepted_values:
-          values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 99]
+        description: This is the integer representation of a user's role, as it's stored in the database.
+        tests:
+          - accepted_values:
+              values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 99]
