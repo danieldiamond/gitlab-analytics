@@ -72,3 +72,22 @@ This model unpacks the usage ping JSON data stored in the json-type column `stat
 This model also adds some information about the related Zuora subscription, including its status and CRM ID.
 
 {% enddocs %}
+
+
+{% docs version_usage_data_weekly_opt_in_summary %}
+
+This model summarizes which instances from the licenses app successfully send a usage ping at a weekly granularity.  
+Only self-managaged instances that have a listed license file in the license app are included in this model. Trials are excluded entirely.  
+Instances are included in this analysis for any week where the Monday falls between their "license start date" and "license expires date".  
+
+Example query usage:
+```sql
+SELECT
+  week,
+  AVG(did_send_usage_data::INTEGER)
+FROM analytics.version_usage_data_weekly_opt_in_summary
+GROUP BY 1
+ORDER BY 1 DESC
+```
+
+{% enddocs %}

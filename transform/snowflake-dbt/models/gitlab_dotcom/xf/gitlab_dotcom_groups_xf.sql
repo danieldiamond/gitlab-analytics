@@ -61,7 +61,7 @@ joined AS (
       groups.ldap_sync_last_sync_at,
       groups.lfs_enabled,
       groups.parent_group_id,
-      IFF(groups.parent_group_id IS NULL, True, False)                         AS is_top_level_group,
+      IFF(groups.parent_group_id IS NULL, True, False)                  AS is_top_level_group,
       namespace_lineage.ultimate_parent_id                              AS group_ultimate_parent_id,
       groups.shared_runners_minutes_limit,
       groups.repository_size_limit,
