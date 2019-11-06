@@ -23,6 +23,7 @@ WITH usage_data AS (
 ), joined AS (
 
     SELECT
+
       usage_data.*,
       licenses.zuora_subscription_id,
       zuora_subscriptions.subscription_status AS zuora_subscription_status,
@@ -39,18 +40,12 @@ WITH usage_data AS (
 ), unpacked AS (
 
     SELECT
-      id,
-      source_ip,
-      version,
-      installation_type,
-      active_user_count,
-      created_at,
-      mattermost_enabled,
-      uuid,
+
+      {{ dbt_utils.star(from=ref('version_usage_data')) }},
       CASE
         WHEN uuid = 'ea8bf810-1d6f-4a6a-b4fd-93e8cbd8b57f' THEN 'SaaS'
-        ELSE 'Self-Managed' END                                                       AS ping_source,
-      edition,
+        ELSE 'Self-Managed'
+      END                                                                             AS ping_source,
       CONCAT(CONCAT(SPLIT_PART(version, '.', 1), '.'), SPLIT_PART(version, '.', 2))   AS major_version,
       CASE WHEN LOWER(edition) LIKE '%ee%' THEN 'EE'
         ELSE 'CE' END                                                                 AS main_edition,
@@ -61,15 +56,9 @@ WITH usage_data AS (
           WHEN edition LIKE '%EE Free%' THEN 'Core'
           WHEN edition LIKE '%EE%' THEN 'Starter'
         ELSE NULL END                                                                 AS edition_type,
-      hostname,
-      host_id,
-      git_version,
-      gitaly_servers,
-      gitaly_version,
       zuora_subscription_id,
       zuora_subscription_status,
       zuora_crm_id,
-
       f.path                                                                          AS ping_name,
       REPLACE(f.path, '.','_')                                                        AS full_ping_name,
       f.value                                                                         AS ping_value
@@ -84,31 +73,11 @@ WITH usage_data AS (
 ), final AS (
 
     SELECT
-      id,
-      source_ip,
-      version,
-      installation_type,
-      active_user_count,
-      created_at,
-      mattermost_enabled,
-      uuid,
-      ping_source,
-      edition,
-      major_version,
-      main_edition,
-      edition_type,
-      hostname,
-      host_id,
-      git_version,
-      gitaly_servers,
-      gitaly_version,
-      zuora_subscription_id,
-      zuora_subscription_status,
-      zuora_crm_id,
+      unpacked.*
       {% for stat_name in version_usage_stats_list %}
-        MAX(IFF(full_ping_name = '{{stat_name}}', ping_value::numeric, NULL)) AS {{stat_name}} {{ "," if not loop.last }}
+        MAX(IFF(full_ping_name = '{{stat_name}}', ping_value::NUMERIC, NULL)) AS {{stat_name}}
+        {{ "," if not loop.last }}
       {% endfor %}
-
     FROM unpacked
     {{ dbt_utils.group_by(n=21) }}
 
