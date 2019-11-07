@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "temporary"
+    })
+}}
+
 WITH customers AS (
   
     SELECT * 
@@ -5,10 +10,10 @@ WITH customers AS (
   
 )
 
-, orders AS (
+, orders_snapshots AS (
   
     SELECT * 
-    FROM {{ ref('customers_db_orders') }}
+    FROM {{ ref('customers_db_orders_snapshots_base') }}
   
 )
 
@@ -42,11 +47,23 @@ WITH customers AS (
 
 , orders_with_subscription AS (
   
-    SELECT *
-    FROM orders
-    WHERE orders.product_rate_plan_id IS NOT NULL 
-      AND orders.order_is_trial = FALSE
-      AND orders.subscription_id IS NOT NULL
+    SELECT DISTINCT
+      order_id,
+      subscription_id,
+      subscription_name_slugify,
+      customer_id,
+      gitlab_namespace_id,
+      product_rate_plan_id,
+      FIRST_VALUE(order_created_at) 
+        OVER (PARTITION BY order_id
+              ORDER BY valid_from ASC) AS order_created_at,
+      FIRST_VALUE(order_updated_at) 
+        OVER (PARTITION BY order_id
+              ORDER BY valid_to ASC)   AS order_updated_at
+    FROM orders_snapshots
+    WHERE orders_snapshots.product_rate_plan_id IS NOT NULL 
+      AND orders_snapshots.order_is_trial = FALSE
+      AND orders_snapshots.subscription_id IS NOT NULL
 )
 
 , joined AS (
@@ -58,31 +75,11 @@ WITH customers AS (
       orders_with_subscription.customer_id,
       orders_with_subscription.gitlab_namespace_id,
       orders_with_subscription.subscription_name_slugify,
-      
-      zuora_rp.product_rate_plan_id,
       zuora_rp.rate_plan_id,
-      
-      -- Subscription metadata
-      zuora_subscription_xf.lineage,
-      zuora_subscription_xf.oldest_subscription_in_cohort,
-      zuora_subscription_xf.subscription_start_date,
-      zuora_subscription_xf.subscription_end_date,
-      zuora_subscription_xf.subscription_status,
-      
-      DATE_TRUNC('month', zuora_rpc.effective_start_date::DATE)          AS charge_effective_start_date,
-      DATE_TRUNC('month', 
-                    DATEADD('month', -1, zuora_rpc.effective_end_date::DATE)
-                  )                                                      AS charge_effective_end_date,
-      
-      -- Product Category Info
-      zuora_rp.delivery,
-      zuora_rp.product_category,
       
       -- Financial Info
       IFF(zuora_rpc.created_by_id = '2c92a0fd55822b4d015593ac264767f2',
             TRUE, FALSE)                                                 AS is_purchased_through_subscription_portal,
-      zuora_rpc.mrr,
-      zuora_rpc.tcv,
       
       -- Orders metadata
       FIRST_VALUE(orders_with_subscription.customer_id) 
@@ -113,12 +110,7 @@ WITH customers AS (
       AND orders_with_subscription.product_rate_plan_id = zuora_rp.product_rate_plan_id
     INNER JOIN zuora_rpc 
       ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
-      AND zuora_rpc.mrr > 0
-      AND zuora_rpc.tcv > 0 
     LEFT JOIN trials ON orders_with_subscription.order_id = trials.order_id
-    
-    WHERE TRUE
-      AND charge_effective_end_date >= charge_effective_start_date  
 
 )
 
@@ -128,19 +120,7 @@ WITH customers AS (
       rate_plan_charge_id,
       subscription_name_slugify,
       rate_plan_id,
-      product_rate_plan_id,
-      lineage,
-      oldest_subscription_in_cohort,
-      subscription_start_date,
-      subscription_end_date,
-      subscription_status,
-      charge_effective_start_date,
-      charge_effective_end_date,
-      delivery,
-      product_category,
       is_purchased_through_subscription_portal,
-      mrr,
-      tcv,
       current_customer_id,
       current_gitlab_namespace_id,
       first_customer_id,
@@ -151,7 +131,7 @@ WITH customers AS (
       ARRAY_AGG(gitlab_namespace_id) 
         WITHIN GROUP (ORDER  BY customer_id ASC) AS gitlab_namespace_id_list
     FROM joined
-    {{ dbt_utils.group_by(n=21) }}
+    {{ dbt_utils.group_by(n=9) }}
     
 )
 

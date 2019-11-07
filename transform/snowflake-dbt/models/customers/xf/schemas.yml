@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: customers_db_charges
-    description: '{{ doc("customers_db_charges") }}'
+  - name: customers_db_charges_xf
+    description: '{{ doc("customers_db_charges_xf") }}'
     columns:
       - name: subscription_name_slugify
         tests:
