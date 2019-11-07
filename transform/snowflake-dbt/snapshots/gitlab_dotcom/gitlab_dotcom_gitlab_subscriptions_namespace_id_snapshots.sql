@@ -10,17 +10,8 @@
         )
     }}
     
-    WITH source AS (
-
-      SELECT
-        *,
-        ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY updated_at DESC) AS gitlab_subscriptions_rank_in_namespace
-      FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
-
-    )
-
     SELECT *
-    FROM source
-    WHERE gitlab_subscriptions_rank_in_namespace = 1
+    FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1 
     
 {% endsnapshot %}
