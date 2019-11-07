@@ -1,18 +1,4 @@
-WITH valid_charges AS (
-  
-    SELECT * 
-    FROM {{ ref('customers_db_orders_with_valid_charges') }}
-  
-)
-
-, incomplete_charges AS (
-  
-    SELECT * 
-    FROM {{ ref('customers_db_orders_with_incomplete_charges') }}
-  
-)
-
-, zuora_base_mrr AS (
+WITH zuora_base_mrr AS (
   
     SELECT * 
     FROM {{ ref('zuora_base_mrr') }}
@@ -22,13 +8,12 @@ WITH valid_charges AS (
 
 , unioned_charges AS (
   
-    SELECT *
-    FROM valid_charges
-    
-    UNION 
-    
-    SELECT *
-    FROM incomplete_charges
+  {{ dbt_utils.union_tables(
+      tables=[
+              ref('customers_db_orders_with_valid_charges'), 
+              ref('customers_db_orders_with_incomplete_charges')
+              ],
+  ) }}
   
 )
 

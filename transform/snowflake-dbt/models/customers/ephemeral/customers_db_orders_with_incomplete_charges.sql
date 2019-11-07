@@ -1,5 +1,5 @@
 {{ config({
-    "materialized": "ephemeral"
+    "materialized": "temporary"
     })
 }}
 
@@ -80,45 +80,45 @@ WITH customers AS (
       zuora_rpc.rate_plan_charge_id,
       
       -- Foreign Keys
-      orders_with_subscriptions_without_product_plan_rate.customer_id,
-      orders_with_subscriptions_without_product_plan_rate.gitlab_namespace_id,
-      orders_with_subscriptions_without_product_plan_rate.subscription_name_slugify,
+      opr.customer_id,
+      opr.gitlab_namespace_id,
+      opr.subscription_name_slugify,
       zuora_rp.rate_plan_id,
       
       -- Financial Info
       IFF(zuora_rpc.created_by_id = '2c92a0fd55822b4d015593ac264767f2',
-            TRUE, FALSE)                                                 AS is_purchased_through_subscription_portal,
+            TRUE, FALSE)                            AS is_purchased_through_subscription_portal,
       
       -- Orders metadata
-      FIRST_VALUE(orders_with_subscriptions_without_product_plan_rate.customer_id) 
-        OVER (PARTITION BY orders_with_subscriptions_without_product_plan_rate.subscription_name_slugify 
-              ORDER BY orders_with_subscriptions_without_product_plan_rate.order_updated_at DESC)   AS current_customer_id,
-      FIRST_VALUE(orders_with_subscriptions_without_product_plan_rate.gitlab_namespace_id) 
-        OVER (PARTITION BY orders_with_subscriptions_without_product_plan_rate.subscription_name_slugify 
-              ORDER BY orders_with_subscriptions_without_product_plan_rate.gitlab_namespace_id IS NOT NULL DESC,
-                        orders_with_subscriptions_without_product_plan_rate.order_updated_at DESC)  AS current_gitlab_namespace_id,
-      FIRST_VALUE(orders_with_subscriptions_without_product_plan_rate.customer_id) 
-        OVER (PARTITION BY orders_with_subscriptions_without_product_plan_rate.subscription_name_slugify 
-              ORDER BY orders_with_subscriptions_without_product_plan_rate.order_created_at ASC)    AS first_customer_id,
+      FIRST_VALUE(opr.customer_id) 
+        OVER (PARTITION BY opr.subscription_name_slugify 
+              ORDER BY opr.order_updated_at DESC)   AS current_customer_id,
+      FIRST_VALUE(opr.gitlab_namespace_id) 
+        OVER (PARTITION BY opr.subscription_name_slugify 
+              ORDER BY opr.gitlab_namespace_id IS NOT NULL DESC,
+                        opr.order_updated_at DESC)  AS current_gitlab_namespace_id,
+      FIRST_VALUE(opr.customer_id) 
+        OVER (PARTITION BY opr.subscription_name_slugify 
+              ORDER BY opr.order_created_at ASC)    AS first_customer_id,
       
       -- Trial Info                  
       MAX(IFF(trials.order_id IS NOT NULL, TRUE, FALSE)) 
-        OVER (PARTITION BY orders_with_subscriptions_without_product_plan_rate.subscription_name_slugify
-              ORDER BY trial_start_date ASC)                             AS is_started_with_trial,
+        OVER (PARTITION BY opr.subscription_name_slugify
+              ORDER BY trial_start_date ASC)        AS is_started_with_trial,
       FIRST_VALUE(trials.trial_start_date)
-        OVER (PARTITION BY orders_with_subscriptions_without_product_plan_rate.subscription_name_slugify
-              ORDER BY trial_start_date ASC)                             AS trial_start_date
+        OVER (PARTITION BY opr.subscription_name_slugify
+              ORDER BY trial_start_date ASC)        AS trial_start_date
     
-    FROM orders_with_subscriptions_without_product_plan_rate 
-    INNER JOIN customers ON orders_with_subscriptions_without_product_plan_rate.customer_id = customers.customer_id
+    FROM orders_with_subscriptions_without_product_plan_rate AS opr 
+    INNER JOIN customers ON opr.customer_id = customers.customer_id
     INNER JOIN zuora_subscription_xf
-      ON orders_with_subscriptions_without_product_plan_rate.subscription_name_slugify = zuora_subscription_xf.subscription_name_slugify
+      ON opr.subscription_name_slugify = zuora_subscription_xf.subscription_name_slugify
     LEFT JOIN zuora_rp 
       ON zuora_rp.subscription_id = zuora_subscription_xf.subscription_id
-      AND orders_with_subscriptions_without_product_plan_rate.product_rate_plan_id = zuora_rp.product_rate_plan_id
+      AND opr.product_rate_plan_id = zuora_rp.product_rate_plan_id
     INNER JOIN zuora_rpc 
       ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
-    LEFT JOIN trials ON orders_with_subscriptions_without_product_plan_rate.order_id = trials.order_id
+    LEFT JOIN trials ON opr.order_id = trials.order_id
 
 )
 
