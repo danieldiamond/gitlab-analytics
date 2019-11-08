@@ -27,6 +27,39 @@ WITH customers AS (
  
 )
 
+, zuora_rate_plan AS (
+ 
+ SELECT * 
+ FROM {{ ref('zuora_rate_plan')}}
+ 
+)
+
+, zuora_subscription AS (
+ 
+ SELECT * 
+ FROM {{ ref('zuora_subscription_xf')}}
+ 
+)
+
+, ci_minutes_charges AS (
+  
+  SELECT *
+  FROM zuora_rate_plan
+  WHERE rate_plan_name = '1,000 CI Minutes'
+  
+)
+
+, orders_shapshots_excluding_ci_minutes AS (
+  
+  SELECT orders_snapshots.*
+  FROM orders_snapshots
+  LEFT JOIN ci_minutes_charges 
+    ON orders_snapshots.subscription_id = ci_minutes_charges.subscription_id
+      AND orders_snapshots.product_rate_plan_id = ci_minutes_charges.product_rate_plan_id
+  WHERE ci_minutes_charges.subscription_id IS NULL
+  
+)
+
 , trials AS (
   
   SELECT *
@@ -39,10 +72,11 @@ WITH customers AS (
   
   SELECT DISTINCT
     trials.order_id,
-    orders_snapshots.subscription_name_slugify
+    orders_shapshots_excluding_ci_minutes.subscription_name_slugify
   FROM trials
-  INNER JOIN orders_snapshots ON trials.order_id = orders_snapshots.order_id
-  WHERE orders_snapshots.subscription_name_slugify IS NOT NULL
+  INNER JOIN orders_shapshots_excluding_ci_minutes 
+    ON trials.order_id = orders_shapshots_excluding_ci_minutes.order_id
+  WHERE orders_shapshots_excluding_ci_minutes.subscription_name_slugify IS NOT NULL
   
 )
 , joined AS (
