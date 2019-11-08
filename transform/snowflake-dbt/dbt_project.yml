@@ -130,9 +130,6 @@ models:
       base:
         schema: staging
 
-    netsuite_stitch:
-      materialized: table
-
     pipe2spend:
       enabled: false
       materialized: table
