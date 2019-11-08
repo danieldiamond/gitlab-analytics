@@ -1,5 +1,5 @@
 {{ config({
-    "schema": "temporary"
+    "materialized": "ephemeral"
     })
 }}
 
