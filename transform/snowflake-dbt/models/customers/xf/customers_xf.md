@@ -16,6 +16,8 @@ This model collects all trials started from the subscription portal. For this we
 * It deduplicates by taking the first row created
 * It joins with customers, users and namespaces. 
 
+Finally, this model identifies if a trial has been converted or not. To achieve that, we join the selected trials to the order_snapshots selecting only orders converted to subscription (look at example below). We exclude ci_minutes orders from the order_snapshots.   
+
 The `customers_db_orders_snapshots_base` model has reliable data from the 1st of September, therefore we select only orders that have a `start_date` after this date.
 
 Examples:
