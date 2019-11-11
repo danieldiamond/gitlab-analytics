@@ -843,6 +843,20 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_timelogs
+    description: Base model for timelogs table
+    columns:
+      - name: timelog_id
+        tests:
+          - not_null
+          - unique
+      - name: user_id
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_users
     description: >-
       Base model for Gitlab.com users, the following fields are hidden for
