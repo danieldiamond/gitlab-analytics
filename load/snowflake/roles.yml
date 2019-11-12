@@ -859,8 +859,6 @@ roles:
             - loading
             - reporting
 
-    - valexieva: {}
-
     - wwright:
         warehouses:
             - analyst_xs
