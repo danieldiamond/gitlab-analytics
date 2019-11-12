@@ -10,9 +10,7 @@ WITH source AS (
     FROM {{ source('salesforce', 'opportunity') }}
 
 
-),
-
-    renamed AS (
+), renamed AS (
 
       SELECT
         -- keys
@@ -56,7 +54,7 @@ WITH source AS (
         COALESCE({{ sales_segment_cleaning('sales_segmentation_employees_o__c') }}, {{ sales_segment_cleaning('sales_segmentation_o__c') }}, 'Unknown' )
                                        AS sales_segment,
         type                           AS sales_type,
-        {{  sfdc_source_buckets('leadsource') }},        
+        {{  sfdc_source_buckets('leadsource') }}        
         stagename                      AS stage_name,
 
         -- opportunity information
@@ -92,7 +90,7 @@ WITH source AS (
         upside_swing_deal_iacv__c      AS upside_swing_deal_iacv,
 
         -- metadata
-        convert_timezone('America/Los_Angeles',convert_timezone('UTC',
+        convert_timezone('America/Los_Angeles',convert_timezone('UTC', 
                  CURRENT_TIMESTAMP())) AS _last_dbt_run,        
         DATEDIFF(days, lastactivitydate::date, 
                          CURRENT_DATE) AS days_since_last_activity,                 
@@ -102,7 +100,7 @@ WITH source AS (
 
       FROM source
       WHERE accountid IS NOT NULL
-            AND isdeleted = FALSE
+        AND isdeleted = FALSE
 
   )
 
