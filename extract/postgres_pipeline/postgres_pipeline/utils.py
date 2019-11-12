@@ -264,7 +264,7 @@ def check_if_schema_changed(
         pd.read_sql(
             sql=target_query.format(target_table, table_index), con=target_engine
         )
-        .drop(axis=1, columns=["_uploaded_at", "_task_instance"])
+        .drop(axis=1, columns=["_uploaded_at", "_task_instance"], errors="ignore")
         .columns
     )
 
