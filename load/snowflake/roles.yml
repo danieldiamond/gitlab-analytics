@@ -1116,7 +1116,7 @@ users:
 
     - valexieva:
         can_login: no
-        member_of: {}
+        member_of: []
 
     - wwright:
         can_login: yes
