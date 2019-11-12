@@ -205,8 +205,8 @@ def validate_ids(
     # Set the new table name vars
     validate_table_name = f"{table_name}_VALIDATE"  # Contains the list of current IDs
     error_table_name = (
-        f"{table_name}_ERRORS"
-    )  # Contains the list of IDs that are missing
+        f"{table_name}_ERRORS"  # Contains the list of IDs that are missing
+    )
 
     # Drop the validation table
     drop_query = f"DROP TABLE IF EXISTS {validate_table_name}"
