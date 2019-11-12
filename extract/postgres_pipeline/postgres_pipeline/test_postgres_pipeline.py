@@ -71,7 +71,7 @@ class TestPostgresPipeline:
         query = "SELECT * FROM approver_groups WHERE id = (SELECT MAX(id) FROM approver_groups)"
         query_results = query_results_generator(query, POSTGRES_ENGINE)
         for result in query_results:
-            dataframe_uploader(result, SNOWFLAKE_ENGINE, TEST_TABLE)
+            dataframe_uploader(False, result, SNOWFLAKE_ENGINE, TEST_TABLE)
         uploaded_rows = pd.read_sql(f"select * from {TEST_TABLE}", SNOWFLAKE_ENGINE)
         assert uploaded_rows.shape[0] == 1
 
@@ -83,7 +83,7 @@ class TestPostgresPipeline:
         query = "SELECT * FROM merge_requests WHERE id = (SELECT MAX(id) FROM merge_requests)"
         query_results = query_results_generator(query, POSTGRES_ENGINE)
         for result in query_results:
-            dataframe_uploader(result, SNOWFLAKE_ENGINE, TEST_TABLE)
+            dataframe_uploader(False, result, SNOWFLAKE_ENGINE, TEST_TABLE)
         uploaded_rows = pd.read_sql(f"select * from {TEST_TABLE}", SNOWFLAKE_ENGINE)
         assert uploaded_rows.shape[0] == 1
 
@@ -250,9 +250,41 @@ class TestPostgresPipeline:
 
         assert source_count_results.equals(target_count_results)
 
+    def test_scd_project_import_data_advanced_metadata(self):
+        """
+        Test to make sure that the SCD loader is working as intended when
+        loading a table with the "advanced_metadata" flag set.
+        """
+        table_cleanup(TEST_TABLE)
+        table_cleanup(TEST_TABLE_TEMP)
+        # Set some env_vars for this run
+        source_table = "project_import_data"
+        source_db = "gitlab_com_db"
+
+        # Get the manifest for a specific table
+        file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
+        manifest_dict = manifest_reader(file_path)
+        table_dict = manifest_dict["tables"][source_table]
+        # Set the "advanced_metadata" flag and update the env vars
+        table_dict["advanced_metadata"] = True
+        new_env_vars = {"TASK_INSTANCE": "task_instance_key_str"}
+        os.environ.update(new_env_vars)
+
+        # Run the query and count the results
+        load_scd(
+            POSTGRES_ENGINE, SNOWFLAKE_ENGINE, source_table, table_dict, TEST_TABLE_TEMP
+        )
+
+        column_check_query = f"SELECT * FROM {TEST_TABLE_TEMP} LIMIT 1"
+        column_check_results = pd.read_sql(column_check_query, SNOWFLAKE_ENGINE)
+        assert (
+            column_check_results["_task_instance"].tolist()[0]
+            == "task_instance_key_str"
+        )
+
     def test_load_test_board_labels(self):
         """
-        Test to make sure that the new table checker is fucntioning.
+        Test to make sure that the new table checker is functioning.
         """
         table_cleanup(TEST_TABLE)
         table_cleanup(TEST_TABLE_TEMP)
@@ -270,7 +302,7 @@ class TestPostgresPipeline:
         table_dict = manifest_dict["tables"][source_table]
 
         # Run the query and count the results
-        check_succeeded = check_new_tables(
+        check_new_tables(
             POSTGRES_ENGINE, SNOWFLAKE_ENGINE, source_table, table_dict, TEST_TABLE_TEMP
         )
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE_TEMP}"

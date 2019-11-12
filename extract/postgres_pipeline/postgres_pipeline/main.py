@@ -48,7 +48,7 @@ def load_ids(
         filtered_query = f"{query} {additional_filtering} ORDER BY {primary_key}"
         logging.info(filtered_query)
         chunk_and_upload(
-            filtered_query, source_engine, target_engine, table_name, backfill
+            filtered_query, source_engine, target_engine, table_name, backfill=backfill
         )
         backfill = False  # this prevents it from seeding rows for every chunk
 
@@ -152,6 +152,7 @@ def load_scd(
 
     raw_query = table_dict["import_query"]
     additional_filter = table_dict.get("additional_filtering", "")
+    advanced_metadata = table_dict.get("advanced_metadata", False)
     if "{EXECUTION_DATE}" in raw_query:
         logging.info(f"Table {table} does not need SCD processing.")
         return False
@@ -168,7 +169,9 @@ def load_scd(
     logging.info(f"Processing table: {table}")
     query = f"{raw_query} {additional_filter}"
     logging.info(query)
-    chunk_and_upload(query, source_engine, target_engine, table_name, backfill)
+    chunk_and_upload(
+        query, source_engine, target_engine, table_name, advanced_metadata, backfill
+    )
     return True
 
 
@@ -254,6 +257,7 @@ def check_new_tables(
 
     raw_query = table_dict["import_query"].split("WHERE")[0]
     additional_filtering = table_dict.get("additional_filtering", "")
+    advanced_metadata = table_dict.get("advanced_metadata", False)
     primary_key = table_dict["export_table_primary_key"]
 
     # Figure out if the table exists
@@ -263,7 +267,14 @@ def check_new_tables(
 
     # If the table doesn't exist, load 1 million rows (or whatever the table has)
     query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 100000"
-    chunk_and_upload(query, source_engine, target_engine, table_name, backfill=True)
+    chunk_and_upload(
+        query,
+        source_engine,
+        target_engine,
+        table_name,
+        advanced_metadata,
+        backfill=True,
+    )
 
     return True
 
