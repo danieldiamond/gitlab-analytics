@@ -260,7 +260,8 @@ def id_query_generator(
         max_target_id_results = query_results_generator(
             max_target_id_query, snowflake_engine
         )
-        max_target_id = next(max_target_id_results)[primary_key].tolist()[0]
+        # Grab the max primary key, or if the table is empty default to 0
+        max_target_id = next(max_target_id_results)[primary_key].tolist()[0] or 0
     else:
         max_target_id = 0
     logging.info(f"Target Max ID: {max_target_id}")

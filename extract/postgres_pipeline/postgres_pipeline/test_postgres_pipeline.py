@@ -13,12 +13,12 @@ sys.path.insert(
 from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
 import pandas as pd
 
-from main import load_incremental, load_scd, check_new_tables
+from main import load_incremental, load_scd, check_new_tables, sync_incremental_ids
 from utils import (
-    query_results_generator,
-    postgres_engine_factory,
     dataframe_uploader,
     manifest_reader,
+    postgres_engine_factory,
+    query_results_generator,
 )
 
 # Set up some fixtures
@@ -276,4 +276,31 @@ class TestPostgresPipeline:
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE_TEMP}"
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
 
+        assert target_count_results["row_count"][0] > 0
+
+    def test_sync_incremental_ids_empty(self):
+        """
+        Test to make sure that the sync_incremental_ids function doesn't break
+        when the temp table exists but contains no rows.
+        """
+        table_cleanup(TEST_TABLE_TEMP)
+        # Set some env_vars for this run
+        source_table = "approver_groups"
+        source_db = "gitlab_com_db"
+        temp_table_query = f"create table {TEST_TABLE_TEMP} like raw.tap_postgres.gitlab_db_approver_groups"
+        query_executor(SNOWFLAKE_ENGINE, temp_table_query)
+
+        # Get the manifest for a specific table
+        file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
+        manifest_dict = manifest_reader(file_path)
+        table_dict = manifest_dict["tables"][source_table]
+
+        # Run the query and count the results
+        return_status = sync_incremental_ids(
+            POSTGRES_ENGINE, SNOWFLAKE_ENGINE, source_table, table_dict, TEST_TABLE_TEMP
+        )
+        target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE_TEMP}"
+        target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
+
+        assert return_status
         assert target_count_results["row_count"][0] > 0
