@@ -58,6 +58,7 @@ WITH sfdc_opportunity AS (
         sfdc_opportunity.total_contract_value,
         sfdc_opportunity.lead_source,
         sfdc_opportunity.products_purchased,
+        sfdc_opportunity.professional_services_value,
         sfdc_opportunity.competitors,
         sfdc_opportunity.solutions_to_be_replaced,
         sfdc_opportunity.reason_for_loss,

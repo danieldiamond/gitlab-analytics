@@ -78,6 +78,7 @@ WITH source AS (
         amount                      AS total_contract_value,
         leadsource                  AS lead_source,
         products_purchased__c       AS products_purchased,
+        professional_services_value__c AS professional_services_value,
         competitors__C              AS competitors,
         solutions_to_be_replaced__c AS solutions_to_be_replaced,
         reason_for_lost__c          AS reason_for_loss,
