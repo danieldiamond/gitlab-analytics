@@ -47,7 +47,7 @@ WITH zuora_base_mrr AS (
       zuora_base_mrr.mrr,
       zuora_base_mrr.tcv
     FROM unioned_charges
-    LEFT JOIN zuora_base_mrr
+    INNER JOIN zuora_base_mrr
       ON unioned_charges.rate_plan_charge_id = zuora_base_mrr.rate_plan_charge_id
 
 )
