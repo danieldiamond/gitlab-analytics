@@ -64,7 +64,7 @@ WITH accounts AS (
          SELECT
            accounting_book_id
          FROM accounting_books
-         WHERE LOWER(is_primary) = true
+         WHERE is_primary = true
          )
 
 ), account_period_exchange_rate_map AS ( -- account table with exchange rate details by accounting period
@@ -113,8 +113,8 @@ WITH accounts AS (
       AND base.is_year = multiplier.is_year
       AND base.fiscal_calendar_id = multiplier.fiscal_calendar_id
       AND multiplier.accounting_period_starting_date <= CURRENT_TIMESTAMP()
-    WHERE LOWER(base.is_quarter) = false
-      AND LOWER(base.is_year) = false
+    WHERE base.is_quarter = false
+      AND base.is_year = false
       AND base.fiscal_calendar_id = (SELECT
                                        fiscal_calendar_id
                                      FROM subsidiaries
@@ -172,43 +172,63 @@ WITH accounts AS (
        reporting_accounting_periods.accounting_period_starting_date::DATE   AS accounting_period,
        reporting_accounting_periods.accounting_period_name,
        accounts.is_account_inactive,
-       CASE WHEN (LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
-            AND reporting_accounting_periods.year_id = transaction_accounting_periods.year_id)
-              THEN 'net income'
-            WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
-              THEN 'retained earnings'
-            ELSE LOWER(accounts.account_name)
+       CASE
+         WHEN (LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
+           AND reporting_accounting_periods.year_id = transaction_accounting_periods.year_id)
+             THEN 'net income'
+         WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
+           THEN 'retained earnings'
+         WHEN accounts.account_number = '3000'
+           THEN 'retained earnings'
+         ELSE LOWER(accounts.account_name)
        END                                                                  AS account_name,
-       CASE WHEN (LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
-            AND reporting_accounting_periods.year_id = transaction_accounting_periods.year_id)
-              THEN 'net income'
-            WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
-              THEN 'retained earnings'
-            ELSE LOWER(accounts.account_type)
+       CASE
+         WHEN (LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
+           AND reporting_accounting_periods.year_id = transaction_accounting_periods.year_id)
+           THEN 'net income'
+         WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
+           THEN 'retained earnings'
+         WHEN accounts.account_number = '3000'
+           THEN 'retained earnings'
+         WHEN accounts.account_number = '1351'
+           THEN 'other current asset'
+         ELSE LOWER(accounts.account_type)
        END                                                                  AS account_type,
-       CASE WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
-              THEN NULL
-            ELSE accounts.account_id
+       CASE
+         WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
+           THEN NULL
+         WHEN accounts.account_number = '3000'
+           THEN NULL
+         ELSE accounts.account_id
        END                                                                  AS account_id,
-       CASE WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
-              THEN NULL
-            ELSE accounts.account_number
+       CASE
+         WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
+           THEN ''
+         WHEN accounts.account_number = '3000'
+           THEN ''
+         ELSE accounts.account_number
        END                                                                  AS account_number,
-       CASE WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
-              THEN NULL
-            ELSE accounts.unique_account_number
+       CASE
+         WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
+           THEN ''
+         WHEN accounts.account_number = '3000'
+           THEN ''
+         ELSE accounts.unique_account_number
        END                                                                  AS unique_account_number,
-       SUM(CASE WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
-                  THEN -converted_amount_using_transaction_accounting_period
-                WHEN (LOWER(accounts.general_rate_type) = 'historical' AND LOWER(accounts.is_leftside_account) = false)
-                  THEN -converted_amount_using_transaction_accounting_period
-                WHEN (LOWER(accounts.general_rate_type) = 'historical' AND LOWER(accounts.is_leftside_account) = true)
-                  THEN converted_amount_using_transaction_accounting_period
-                WHEN (LOWER(accounts.is_balancesheet_account) = true AND LOWER(accounts.is_leftside_account) = false)
-                  THEN -converted_amount_using_reporting_month
-                WHEN (LOWER(accounts.is_balancesheet_account) = true AND LOWER(accounts.is_leftside_account) = true)
-                  THEN converted_amount_using_reporting_month
-                ELSE 0
+       SUM(CASE
+             WHEN LOWER(accounts.account_type) IN {{net_income_retained_earnings}}
+               THEN -converted_amount_using_transaction_accounting_period
+             WHEN accounts.account_number = '3000'
+               THEN -converted_amount_using_transaction_accounting_period
+             WHEN (LOWER(accounts.general_rate_type) = 'historical' AND accounts.is_leftside_account = false)
+               THEN -converted_amount_using_transaction_accounting_period
+             WHEN (LOWER(accounts.general_rate_type) = 'historical' AND accounts.is_leftside_account = true)
+               THEN converted_amount_using_transaction_accounting_period
+             WHEN (accounts.is_balancesheet_account = true AND accounts.is_leftside_account = false)
+               THEN -converted_amount_using_reporting_month
+             WHEN (accounts.is_balancesheet_account = true AND accounts.is_leftside_account = true)
+               THEN converted_amount_using_reporting_month
+             ELSE 0
            END)                                                             AS actual_amount
        FROM  transactions_with_converted_amounts
        LEFT JOIN accounts
@@ -226,7 +246,48 @@ WITH accounts AS (
                                                                    FROM subsidiaries
                                                                    WHERE parent_id IS NULL)
          AND LOWER(accounts.account_type) != 'statistical'
+         AND accounts.account_number != '3035'
         {{ dbt_utils.group_by(n=11) }}
+
+       UNION ALL
+
+       SELECT
+         transactions_with_converted_amounts.document_id,
+         transactions_with_converted_amounts.transaction_type,
+         reporting_accounting_periods.accounting_period_id,
+         reporting_accounting_periods.accounting_period_starting_date::DATE   AS accounting_period,
+         reporting_accounting_periods.accounting_period_name,
+         accounts.is_account_inactive,
+         'Cumulative Translation Adjustment'                                  AS account_name,
+         'Cumulative Translation Adjustment'                                  AS account_type,
+         NULL                                                                 AS account_id,
+         ''                                                                   AS account_number,
+         NULL                                                                 AS unique_account_number,
+         SUM(CASE
+               WHEN LOWER(account_type) IN {{net_income_retained_earnings}}
+                 THEN converted_amount_using_transaction_accounting_period
+               WHEN LOWER(account_type) IN ('equity', 'retained earnings', 'net income')
+                 THEN converted_amount_using_transaction_accounting_period
+               ELSE converted_amount_using_reporting_month
+             END)                                                             AS actual_amount
+       FROM  transactions_with_converted_amounts
+       LEFT JOIN accounts
+         ON transactions_with_converted_amounts.account_id = accounts.account_id
+       LEFT JOIN accounting_periods AS reporting_accounting_periods
+         ON transactions_with_converted_amounts.reporting_accounting_period_id = reporting_accounting_periods.accounting_period_id
+       LEFT JOIN accounting_periods AS transaction_accounting_periods
+         ON transactions_with_converted_amounts.transaction_accounting_period_id = transaction_accounting_periods.accounting_period_id
+       WHERE reporting_accounting_periods.fiscal_calendar_id    = (SELECT
+                                                                     fiscal_calendar_id
+                                                                   FROM subsidiaries
+                                                                   WHERE parent_id IS NULL)
+         AND transaction_accounting_periods.fiscal_calendar_id  = (SELECT
+                                                                     fiscal_calendar_id
+                                                                   FROM subsidiaries
+                                                                   WHERE parent_id IS NULL)
+         AND LOWER(accounts.account_type) != 'statistical'
+         AND accounts.account_number != '3035'
+         {{ dbt_utils.group_by(n=6) }}
 
 ), balance_sheet_grouping AS (
 
@@ -239,26 +300,28 @@ WITH accounts AS (
         unique_account_number,
         account_number || ' - ' || account_name   AS unique_account_name,
         account_type,
-        CASE WHEN account_type IN ('accounts receivable','bank','other current asset','unbilled receivable','deferred expense')
-               THEN '1-current assets'
-             WHEN account_type IN ('accounts payable','credit card','deferred revenue','other current liability')
-               THEN '1-current liabilities'
-             WHEN account_type IN ('fixed asset')
-               THEN '3-fixed assets'
-             WHEN account_type IN ('long term liability')
-               THEN '2-long term liabilities'
-             WHEN account_type IN ('other asset')
-               THEN '2-other assets'
-             WHEN account_type IN ('net income','retained earnings','equity')
-               THEN '3-equity'
-             ELSE 'need classification'
+        CASE
+          WHEN account_type IN ('accounts receivable','bank','other current asset','unbilled receivable','deferred expense')
+            THEN '1-current assets'
+          WHEN account_type IN ('accounts payable','credit card','deferred revenue','other current liability')
+            THEN '1-current liabilities'
+          WHEN account_type IN ('fixed asset')
+            THEN '3-fixed assets'
+          WHEN account_type IN ('long term liability')
+            THEN '2-long term liabilities'
+          WHEN account_type IN ('other asset')
+            THEN '2-other assets'
+          WHEN account_type IN ('net income','retained earnings','equity','Cumulative Translation Adjustment')
+            THEN '3-equity'
+          ELSE 'need classification'
         END                                       AS balance_sheet_grouping_level_2,
-        CASE WHEN account_type IN ('accounts receivable','bank','other current asset','unbilled receivable','fixed asset','other asset','deferred expense')
-               THEN '1-assets'
-             WHEN account_type IN ('accounts payable','credit card','deferred revenue','other current liability',
-                                   'equity','long term liability','net income','retained earnings')
-               THEN '2-liabilities & equity'
-             ELSE 'need classification'
+        CASE
+          WHEN account_type IN ('accounts receivable','bank','other current asset','unbilled receivable','fixed asset','other asset','deferred expense')
+            THEN '1-assets'
+          WHEN account_type IN ('accounts payable','credit card','deferred revenue','other current liability',
+                                'equity','long term liability','net income','retained earnings','Cumulative Translation Adjustment')
+            THEN '2-liabilities & equity'
+          ELSE 'need classification'
         END                                       AS balance_sheet_grouping_level_3,
         is_account_inactive,
         actual_amount,

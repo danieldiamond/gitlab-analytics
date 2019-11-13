@@ -17,6 +17,7 @@ standard_pod_env_vars = {
     "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
     if GIT_BRANCH == "master"
     else f"{GIT_BRANCH}_ANALYTICS",
+    "TASK_INSTANCE": "{{ task_instance_key_str }}",
 }
 standard_secrets = [
     GCP_SERVICE_CREDS,

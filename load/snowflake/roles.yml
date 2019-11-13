@@ -859,10 +859,6 @@ roles:
             - loading
             - reporting
 
-    - valexieva:
-        warehouses:
-            - reporting
-
     - wwright:
         warehouses:
             - analyst_xs
@@ -1117,11 +1113,8 @@ users:
             - tmurphy
 
     - valexieva:
-        can_login: yes
-        member_of:
-            - product_manager
-            - reporter
-            - valexieva
+        can_login: no
+        member_of: []
 
     - wwright:
         can_login: yes

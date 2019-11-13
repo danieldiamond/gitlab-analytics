@@ -11,6 +11,9 @@ models:
     - name: zuora_base_mrr
       description: '{{ doc("zuora_base_mrr") }}'
       columns:
+          - name: rate_plan_charge_id
+            tests:
+                - unique
           - name: mrr
             description: Monthly recurring revenue
             tests:

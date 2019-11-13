@@ -19,7 +19,6 @@ WITH source AS (
     email::VARCHAR                               AS email,
     license_md5::VARCHAR                         AS license_md5,
     expires_at::TIMESTAMP                        AS license_expires_at,
-    recurly_subscription_id::VARCHAR             AS recurly_subscription_id,
     plan_name::VARCHAR                           AS plan_name,
     starts_at::TIMESTAMP                         AS starts_at,
     NULLIF(zuora_subscription_id, '')::VARCHAR   AS zuora_subscription_id,

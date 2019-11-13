@@ -6,11 +6,7 @@ import yaml
 from time import time
 from typing import Dict, List, Generator, Any, Tuple
 
-from gitlabdata.orchestration_utils import (
-    dataframe_uploader,
-    snowflake_engine_factory,
-    query_executor,
-)
+from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
 import pandas as pd
 import sqlalchemy
 from google.cloud import storage
@@ -20,6 +16,46 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
 
 SCHEMA = "tap_postgres"
+
+
+def dataframe_enricher(advanced_metadata: bool, raw_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Enrich a dataframe with metadata and do some cleaning.
+    """
+
+    # Add metadata columns
+    raw_df.loc[:, "_uploaded_at"] = time()  # Add a metadata column
+    if advanced_metadata:
+        # Add additional metadata from an Airflow scheduler
+        # _task_instance is expected to be the task_instance_key_str
+        raw_df.loc[:, "_task_instance"] = os.environ["TASK_INSTANCE"]
+
+    # Do some Snowflake-specific sanitation
+    enriched_df = (
+        raw_df.applymap(  # convert dict to str to avoid snowflake errors
+            lambda x: x if not isinstance(x, dict) else str(x)
+        )
+        .applymap(  # shorten strings that are too long
+            lambda x: x[:4_194_304] if isinstance(x, str) else x
+        )
+        .applymap(  # replace tabs with 4 spaces
+            lambda x: x.replace("\t", "    ") if isinstance(x, str) else x
+        )
+    )
+
+    return enriched_df
+
+
+def dataframe_uploader(
+    advanced_metadata: bool, dataframe: pd.DataFrame, engine: Engine, table_name: str
+) -> None:
+    """
+    Upload a dataframe, adding in some metadata and cleaning up along the way.
+    """
+
+    dataframe_enricher(advanced_metadata, dataframe).to_sql(
+        name=table_name, con=engine, index=False, if_exists="append", chunksize=10000
+    )
 
 
 def get_gcs_bucket(gapi_keyfile: str, bucket_name: str) -> Bucket:
@@ -32,27 +68,20 @@ def get_gcs_bucket(gapi_keyfile: str, bucket_name: str) -> Bucket:
     return storage_client.get_bucket(bucket_name)
 
 
-def upload_to_gcs(upload_df: pd.DataFrame, upload_file_name: str) -> bool:
-    """Write a dataframe to local storage and then upload it to a GCS bucket."""
+def upload_to_gcs(
+    advanced_metadata: bool, upload_df: pd.DataFrame, upload_file_name: str
+) -> bool:
+    """
+    Write a dataframe to local storage and then upload it to a GCS bucket.
+    """
 
-    keyfile = yaml.load(os.environ["GCP_SERVICE_CREDS"])
+    keyfile = yaml.load(os.environ["GCP_SERVICE_CREDS"], Loader=yaml.FullLoader)
     bucket_name = "postgres_pipeline"
     bucket = get_gcs_bucket(keyfile, bucket_name)
 
-    # Do a bit of sanitation
-    upload_df["_uploaded_at"] = time()  # Add a metadata column
-    upload_df = upload_df.applymap(
-        lambda x: x if not isinstance(x, dict) else str(x)
-    )  # convert dict to str to avoid snowflake errors
-    upload_df = upload_df.applymap(
-        lambda x: x[:4_194_304] if isinstance(x, str) else x
-    )  # shorten strings that are too long
-    upload_df = upload_df.applymap(
-        lambda x: x.replace("\t", "    ") if isinstance(x, str) else x
-    )  # replace tabs with 4 spaces so it won't break the output file
-
     # Write out the TSV and upload it
-    upload_df.to_csv(
+    enriched_df = dataframe_enricher(advanced_metadata, upload_df)
+    enriched_df.to_csv(
         upload_file_name,
         compression="gzip",
         escapechar="\\",
@@ -115,7 +144,7 @@ def manifest_reader(file_path: str) -> Dict[str, Dict]:
     """
 
     with open(file_path, "r") as file:
-        manifest_dict = yaml.load(file)
+        manifest_dict = yaml.load(file, Loader=yaml.FullLoader)
 
     return manifest_dict
 
@@ -137,7 +166,11 @@ def query_results_generator(
 
 
 def seed_table(
-    df: pd.DataFrame, engine: Engine, table: str, rows_to_seed: int = 10000
+    advanced_metadata: bool,
+    df: pd.DataFrame,
+    engine: Engine,
+    table: str,
+    rows_to_seed: int = 10000,
 ) -> bool:
     """
     Load a set number of rows to Snowflake through pandas to create the table
@@ -145,7 +178,7 @@ def seed_table(
     """
 
     logging.info(f"Seeding {rows_to_seed} rows directly into Snowflake...")
-    dataframe_uploader(df.iloc[:rows_to_seed], engine, table)
+    dataframe_uploader(advanced_metadata, df.iloc[:rows_to_seed], engine, table)
     return False
 
 
@@ -154,6 +187,7 @@ def chunk_and_upload(
     source_engine: Engine,
     target_engine: Engine,
     target_table: str,
+    advanced_metadata: bool = False,
     backfill: bool = False,
 ) -> None:
     """
@@ -171,10 +205,12 @@ def chunk_and_upload(
     for chunk_df in results_generator:
         # If the table doesn't exist, it needs to send the first chunk to the dataframe_uploader
         if backfill:
-            backfill = seed_table(chunk_df, target_engine, target_table)
+            backfill = seed_table(
+                advanced_metadata, chunk_df, target_engine, target_table
+            )
         row_count = chunk_df.shape[0]
         rows_uploaded += row_count
-        upload_to_gcs(chunk_df, upload_file_name)
+        upload_to_gcs(advanced_metadata, chunk_df, upload_file_name)
         trigger_snowflake_upload(target_engine, target_table, upload_file_name)
     logging.info(f"Uploaded {rows_uploaded} total rows to table {upload_file_name}.")
     target_engine.dispose()
@@ -228,7 +264,7 @@ def check_if_schema_changed(
         pd.read_sql(
             sql=target_query.format(target_table, table_index), con=target_engine
         )
-        .drop(axis=1, columns=["_uploaded_at"])
+        .drop(axis=1, columns=["_uploaded_at", "_task_instance"], errors="ignore")
         .columns
     )
 
@@ -260,7 +296,8 @@ def id_query_generator(
         max_target_id_results = query_results_generator(
             max_target_id_query, snowflake_engine
         )
-        max_target_id = next(max_target_id_results)[primary_key].tolist()[0]
+        # Grab the max primary key, or if the table is empty default to 0
+        max_target_id = next(max_target_id_results)[primary_key].tolist()[0] or 0
     else:
         max_target_id = 0
     logging.info(f"Target Max ID: {max_target_id}")
