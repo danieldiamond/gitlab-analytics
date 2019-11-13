@@ -844,7 +844,7 @@ models:
           - not_null
 
   - name: gitlab_dotcom_timelogs
-    description: Base model for timelogs table
+    description: Base model for timelogs table.
     columns:
       - name: timelog_id
         tests:
