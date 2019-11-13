@@ -14,7 +14,7 @@ WITH source AS (
 ), renamed AS (
   
     SELECT 
-      id AS timelog_id,
+      id         AS timelog_id,
       created_at,
       spent_at,
       updated_at,
