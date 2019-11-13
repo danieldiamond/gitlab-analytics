@@ -39,7 +39,7 @@ WITH usage_data AS (
 ), unpacked AS (
 
     SELECT
-      {{ dbt_utils.star(from=ref('version_usage_data')) }},
+      {{ dbt_utils.star(from=ref('version_usage_data'), except=['stats_used']) }},
       CASE
         WHEN uuid = 'ea8bf810-1d6f-4a6a-b4fd-93e8cbd8b57f' THEN 'SaaS'
         ELSE 'Self-Managed'
@@ -72,7 +72,7 @@ WITH usage_data AS (
 ), final AS (
 
     SELECT
-      {{ dbt_utils.star(from=ref('version_usage_data')) }},
+      {{ dbt_utils.star(from=ref('version_usage_data'), except=['stats_used']) }},
       unpacked.ping_source,
       unpacked.major_version,
       unpacked.main_edition,
