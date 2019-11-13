@@ -11,6 +11,7 @@ WITH source AS (
       fiscal_quarter::INT                                   AS fiscal_quarter,
       fiscal_year::INT                                      AS fiscal_year,
       ZEROIFNULL(NULLIF("FULL_QUOTA",'')::DECIMAL(16,5))    AS full_quota,
+      ZEROIFNULL(NULLIF("PS_QUOTA",'')::DECIMAL(16,5))      AS ps_quota,
       sales_rep,
       team,
       type
