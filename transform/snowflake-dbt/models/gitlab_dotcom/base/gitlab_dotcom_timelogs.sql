@@ -19,7 +19,7 @@ WITH source AS (
       spent_at,
       updated_at,
       
-      time_spent AS second_spent,
+      time_spent AS seconds_spent,
       
       issue_id,
       merge_request_id,
