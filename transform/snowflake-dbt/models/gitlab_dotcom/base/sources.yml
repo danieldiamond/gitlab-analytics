@@ -135,5 +135,7 @@ sources:
         identifier: gitlab_db_resource_label_events
       - name: subscriptions
         identifier: gitlab_db_subscriptions
+      - name: timelogs
+        identifier: gitlab_db_timelogs
       - name: users
         identifier: gitlab_db_users
