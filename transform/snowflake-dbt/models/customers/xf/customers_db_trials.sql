@@ -55,7 +55,7 @@ WITH customers AS (
   FROM orders_snapshots
   LEFT JOIN ci_minutes_charges 
     ON orders_snapshots.subscription_id = ci_minutes_charges.subscription_id
-      AND orders_snapshots.product_rate_plan_id = ci_minutes_charges.product_rate_plan_id
+    AND orders_snapshots.product_rate_plan_id = ci_minutes_charges.product_rate_plan_id
   WHERE ci_minutes_charges.subscription_id IS NULL
   
 )
