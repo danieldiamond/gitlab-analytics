@@ -5,8 +5,7 @@
 
 WITH source AS (
 
-  SELECT
-    *
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'timelogs') }}
   QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
@@ -19,7 +18,7 @@ WITH source AS (
       spent_at,
       updated_at,
       
-      time_spent AS second_spent,
+      time_spent AS seconds_spent,
       
       issue_id,
       merge_request_id,
