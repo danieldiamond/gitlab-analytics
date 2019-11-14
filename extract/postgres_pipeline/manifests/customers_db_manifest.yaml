@@ -69,7 +69,7 @@ tables:
       FROM trial_histories
     export_db: EXPORT_DB
     export_schema: 'customers'
-    export_table: 'customers'
+    export_table: 'trial_histories'
     export_table_primary_key: id
     advanced_metadata: true
   versions:
