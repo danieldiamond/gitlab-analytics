@@ -61,8 +61,7 @@ tables:
   trial_histories:
     import_db: CUSTOMERS_DB
     import_query: >
-      SELECT id
-        , gl_namespace_id
+      SELECT gl_namespace_id
         , start_date
         , expired_on
         , created_at
@@ -71,8 +70,7 @@ tables:
     export_db: EXPORT_DB
     export_schema: 'customers'
     export_table: 'trial_histories'
-    export_table_primary_key: id
-    advanced_metadata: true
+    export_table_primary_key: gl_namespace_id
   versions:
     import_db: CUSTOMERS_DB
     import_query: >
