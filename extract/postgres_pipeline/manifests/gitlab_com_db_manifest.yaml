@@ -546,6 +546,25 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'clusters_kubernetes_namespaces'
     export_table_primary_key: cluster_id
+  environments:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , name
+      , created_at
+      , updated_at
+      , external_url
+      , environment_type
+      , state
+      , slug
+      FROM environments
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+          AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'environments'
+    export_table_primary_key: id
+    advanced_metadata: true
   epic_issues:
     import_db: GITLAB_DB
     import_query: >
@@ -1174,6 +1193,21 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'subscriptions'
     export_table_primary_key: id
+  protected_environments:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , created_at
+      , updated_at
+      , name
+      FROM protected_environments
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'protected_environments'
+    export_table_primary_key: id
+    advanced_metadata: true
   timelogs:
     import_db: GITLAB_DB
     import_query: >
