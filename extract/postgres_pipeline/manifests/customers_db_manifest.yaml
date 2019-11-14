@@ -61,7 +61,8 @@ tables:
   trial_histories:
     import_db: CUSTOMERS_DB
     import_query: >
-      SELECT gl_namespace_id
+      SELECT id
+        , gl_namespace_id
         , start_date
         , expired_on
         , created_at
