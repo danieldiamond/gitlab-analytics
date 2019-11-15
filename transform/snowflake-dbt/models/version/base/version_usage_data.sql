@@ -60,7 +60,7 @@ renamed AS (
     omniauth_enabled::BOOLEAN                AS omniauth_enabled,
     reply_by_email_enabled::BOOLEAN          AS reply_by_email_enabled,
     signup_enabled::BOOLEAN                  AS signup_enabled,
-    web_ide_commits::INTEGER                 AS web_ide_commits,
+    --web_ide_commits // was implemented as both a column and in `counts`
     influxdb_metrics_enabled::BOOLEAN        AS influxdb_metrics_enabled,
     prometheus_metrics_enabled::BOOLEAN      AS prometheus_metrics_enabled,
     --smau // never not null
