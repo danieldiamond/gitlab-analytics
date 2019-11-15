@@ -1,4 +1,4 @@
-version: 2 
+version: 2
 
 models:
     - name: date_details
@@ -27,7 +27,7 @@ models:
             tests:
                - not_null
           - name: quarter_actual
-            description: Calendar quarter, e.g. '1' for 2019-02-02 
+            description: Calendar quarter, e.g. '1' for 2019-02-02
             tests:
                - not_null
           - name: day_of_week
@@ -55,7 +55,7 @@ models:
             tests:
                - not_null
           - name: fiscal_year
-            description: Fiscal year for the date, e.g. '2020' for 2019-02-02 
+            description: Fiscal year for the date, e.g. '2020' for 2019-02-02
             tests:
                - not_null
           - name: fiscal_quarter
@@ -119,7 +119,7 @@ models:
             tests:
                - not_null
           - name: month_of_fiscal_year
-            description: The month number for the fiscal year, e.g. '1' for 2019-02-02 
+            description: The month number for the fiscal year, e.g. '1' for 2019-02-02
             tests:
                - not_null
           - name: last_day_of_week
@@ -132,5 +132,9 @@ models:
                - not_null
           - name: fiscal_quarter_name
             description: The name of the fiscal quarter, e.g '2020-Q1' for 2019-02-02
+            tests:
+               - not_null
+          - name: fiscal_quarter_name_fy
+            description: The name of the fiscal quarter, e.g 'FY20-Q1' for 2019-02-02
             tests:
                - not_null
