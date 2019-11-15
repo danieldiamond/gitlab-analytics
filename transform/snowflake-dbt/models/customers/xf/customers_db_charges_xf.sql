@@ -42,12 +42,14 @@ WITH zuora_base_mrr AS (
       -- Product Category Info
       zuora_base_mrr.delivery,
       zuora_base_mrr.product_category,
+      zuora_base_mrr.quantity,
+      zuora_base_mrr.unit_of_measure,
       
       -- Financial Info
       zuora_base_mrr.mrr,
       zuora_base_mrr.tcv
     FROM unioned_charges
-    LEFT JOIN zuora_base_mrr
+    INNER JOIN zuora_base_mrr
       ON unioned_charges.rate_plan_charge_id = zuora_base_mrr.rate_plan_charge_id
 
 )
