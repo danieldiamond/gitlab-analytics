@@ -776,6 +776,7 @@ tables:
     import_query: >
       SELECT merge_request_diff_id
       , relative_order
+      , index_merge_request_diff_files_on_mr_diff_id_and_order
       , new_file
       , renamed_file
       , deleted_file
@@ -784,7 +785,7 @@ tables:
       FROM merge_request_diff_files
     export_schema: 'gitlab_com'
     export_table: 'merge_request_diff_files'
-    export_table_primary_key: merge_request_diff_id       
+    export_table_primary_key: index_merge_request_diff_files_on_mr_diff_id_and_order      
   merge_request_diffs:
     import_db: GITLAB_DB
     import_query: >
