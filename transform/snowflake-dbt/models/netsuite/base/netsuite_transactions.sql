@@ -28,7 +28,6 @@ WITH source AS (
       sales_effective_date::TIMESTAMP_TZ   AS sales_effective_date
 
     FROM source
-    --WHERE LOWER(_fivetran_deleted) = 'false'
 
 )
 
