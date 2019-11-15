@@ -58,6 +58,20 @@ tables:
     export_table: 'orders'
     export_table_primary_key: id
     advanced_metadata: true
+  trial_histories:
+    import_db: CUSTOMERS_DB
+    import_query: >
+      SELECT gl_namespace_id
+        , start_date
+        , expired_on
+        , created_at
+        , updated_at
+      FROM trial_histories
+    export_db: EXPORT_DB
+    export_schema: 'customers'
+    export_table: 'trial_histories'
+    export_table_primary_key: gl_namespace_id
+    advanced_metadata: true
   versions:
     import_db: CUSTOMERS_DB
     import_query: >

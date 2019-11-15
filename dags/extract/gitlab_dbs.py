@@ -29,6 +29,8 @@ standard_secrets = [
     SNOWFLAKE_LOAD_ROLE,
 ]
 
+validation_schedule_interval = "0 1 * * 0"
+
 # Dictionary containing the configuration values for the various Postgres DBs
 config_dict = {
     "ci_stats": {
@@ -44,7 +46,7 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 4 */1 * *",
         "task_name": "ci-stats",
-        "validation_schedule_interval": "0 1 */7 * *",
+        "validation_schedule_interval": validation_schedule_interval,
     },
     "customers": {
         "dag_name": "customers",
@@ -59,7 +61,7 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 3 */1 * *",
         "task_name": "customers",
-        "validation_schedule_interval": "0 1 */7 * *",
+        "validation_schedule_interval": validation_schedule_interval,
     },
     "gitlab_com": {
         "dag_name": "gitlab_com",
@@ -74,7 +76,7 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 2 */1 * *",
         "task_name": "gitlab-com",
-        "validation_schedule_interval": "0 1 */7 * *",
+        "validation_schedule_interval": validation_schedule_interval,
     },
     "gitlab_profiler": {
         "dag_name": "gitlab_profiler",
@@ -89,7 +91,7 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 4 */1 * *",
         "task_name": "gitlab-profiler",
-        "validation_schedule_interval": "0 1 */7 * *",
+        "validation_schedule_interval": validation_schedule_interval,
     },
     "license": {
         "dag_name": "license",
@@ -99,7 +101,7 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 4 */1 * *",
         "task_name": "license",
-        "validation_schedule_interval": "0 1 */7 * *",
+        "validation_schedule_interval": validation_schedule_interval,
     },
     "version": {
         "dag_name": "version",
@@ -109,7 +111,7 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 4 */1 * *",
         "task_name": "version",
-        "validation_schedule_interval": "0 1 */7 * *",
+        "validation_schedule_interval": validation_schedule_interval,
     },
 }
 
