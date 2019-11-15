@@ -774,7 +774,8 @@ tables:
   merge_request_diff_files:
     import_db: GITLAB_DB
     import_query: >
-      SELECT merge_request_diff_id
+      SELECT id
+      , merge_request_diff_id
       , relative_order
       , new_file
       , renamed_file
