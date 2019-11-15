@@ -42,6 +42,8 @@ WITH zuora_base_mrr AS (
       -- Product Category Info
       zuora_base_mrr.delivery,
       zuora_base_mrr.product_category,
+      zuora_base_mrr.quantity,
+      zuora_base_mrr.unit_of_measure,
       
       -- Financial Info
       zuora_base_mrr.mrr,
