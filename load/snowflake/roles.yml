@@ -845,13 +845,6 @@ roles:
         warehouses:
             - reporting
 
-    - tlapiana:
-        warehouses:
-            - engineer_xs
-            - engineer_xl
-            - loading
-            - reporting
-
     - tmurphy:
         warehouses:
             - engineer_xs
@@ -1097,11 +1090,8 @@ users:
             - target_snowflake
 
     - tlapiana:
-        can_login: yes
-        member_of:
-            - engineer
-            - tlapiana
-            - sysadmin
+        can_login: no
+        member_of: []
 
     - tmurphy:
         can_login: yes
