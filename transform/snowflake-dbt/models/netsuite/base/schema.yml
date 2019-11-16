@@ -340,7 +340,6 @@ models:
           tests:
             - not_null
             - relationships:
-                severity: warn
                 to: ref('netsuite_transactions')
                 field: transaction_id
         - name: transaction_line_id
