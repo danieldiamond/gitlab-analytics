@@ -145,7 +145,7 @@ joined AS (
     ON projects.namespace_id = internal_namespaces.namespace_id
   LEFT JOIN gitlab_subscriptions
     ON projects.namespace_id = gitlab_subscriptions.namespace_id
-    AND issues.issue_created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity(gitlab_subscriptions.valid_to) }}
+    AND issues.issue_created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
 )
 
 SELECT * from joined
