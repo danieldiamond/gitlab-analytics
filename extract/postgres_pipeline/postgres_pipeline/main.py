@@ -236,7 +236,10 @@ def validate_ids(
     )
     num_missing_rows = error_results[0][0]
     if num_missing_rows > 0:
-        sys.exit(f"Number of row errors for table {table_name}: {num_missing_rows}")
+        logging.critical(
+            f"Number of row errors for table {table_name}: {num_missing_rows}"
+        )
+        sys.exit(3)
     else:
         logging.info(f"No discrepancies found in table {table_name}.")
 
