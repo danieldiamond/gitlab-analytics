@@ -32,6 +32,7 @@ SELECT
   tl.account_id,
   tl.department_id,
   tl.subsidiary_id,
+  tl.receipt_url,
   tl.amount,
   tl.gross_amount,
   a.account_name,
@@ -55,7 +56,7 @@ FROM transaction_lines tl
 LEFT JOIN transactions t
   ON tl.transaction_id = t.transaction_id
 LEFT JOIN entity e
-  ON t.entity_id = e.entity_id
+  ON tl.company_id = e.entity_id
 LEFT JOIN accounts a
   ON tl.account_id = a.account_id
 LEFT JOIN subsidiaries s

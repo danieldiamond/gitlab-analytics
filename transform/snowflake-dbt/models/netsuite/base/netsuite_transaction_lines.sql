@@ -21,9 +21,11 @@ WITH source AS (
       account_id::FLOAT             AS account_id,
       department_id::FLOAT          AS department_id,
       subsidiary_id::FLOAT          AS subsidiary_id,
+      company_id::FLOAT             AS company_id,
 
       -- info
       memo::VARCHAR                 AS memo,
+      receipt_url::VARCHAR          AS receipt_url,
       amount::FLOAT                 AS amount,
       gross_amount::FLOAT           AS gross_amount
 
