@@ -179,7 +179,9 @@ models:
       - name: member_count
         description: The number of members that are presently associated with the project.
       - name: namespace_plan_is_paid
-        description: Whether or not the namespace associated with the project is subscribed to a paid plan t.
+        description: Whether or not the namespace associated with the project is subscribed to a paid plan.
+      - name: namespace_plan_id_at_project_creation
+        description: '{{ doc("namespace_plan_id_at_creation") }}'
 
   - name: gitlab_dotcom_retention_cohorts
     description: '{{ doc("gitlab_dotcom_retention_cohorts") }}'

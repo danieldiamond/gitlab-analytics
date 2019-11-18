@@ -205,14 +205,8 @@ This content will be masked for privacy in one of the following conditions:
 
 {% docs namespace_plan_id_at_creation %}
 
-This content will be masked for privacy in one of the following conditions:
- * If this is an issue, and the issue is set to `confidential`
- * If the namespace or project visibility level is set to "internal" (`visibility_level` = 10) or "private" (`visibility_level` = 0).
-    * The visibility values can be validated by going to the [project navigation](https://gitlab.com/explore) and using the keyboard shortcut "pb" to show how the front-end queries for visibility.
- * Public projects are defined with a `visibility_level` of 20   
- * In all the above cases,  the content will *not* be masked if the namespace_id is in:
-   * 6543: gitlab-com
-   * 9970: gitlab-org
-   * 4347861: gitlab-data  
+This column represents the gitlab_subscription plan_id (2,3,4 ... bronze, silver, gold) of the namespace at the time that the object (issue, project, merge request) was created. 
+
+We only have completed data from `2019-09-03` on, which is the date that we started snapshotting gitlab_subscriptions by namespace in dbt.
 
 {% enddocs %}
