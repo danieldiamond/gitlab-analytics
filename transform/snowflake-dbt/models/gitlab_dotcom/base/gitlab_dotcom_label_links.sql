@@ -12,7 +12,6 @@ WITH source AS (
   SELECT *
   FROM {{ source('gitlab_dotcom', 'label_links') }}
   QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
-  QUALIFY DENSE_RANK() OVER (ORDER BY _task_instance DESC) = 1
 
 ), renamed AS (
 
@@ -26,7 +25,7 @@ WITH source AS (
       updated_at::TIMESTAMP                          AS label_link_updated_at
 
     FROM source
-
+    WHERE _task_instance IN (SELECT MAX(_task_instance) FROM source)
 )
 
 SELECT *

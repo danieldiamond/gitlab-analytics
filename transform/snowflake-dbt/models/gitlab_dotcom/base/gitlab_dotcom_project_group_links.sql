@@ -21,6 +21,7 @@ WITH source AS (
       expires_at::TIMESTAMP                           AS expires_at
 
     FROM source
+    WHERE _task_instance IN (SELECT MAX(_task_instance) FROM source)
 
 )
 

@@ -21,6 +21,7 @@ WITH source AS (
 
     FROM source
     WHERE created_at IS NOT NULL
+      AND _task_instance IN (SELECT MAX(_task_instance) FROM source)
 
 )
 
