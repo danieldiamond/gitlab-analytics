@@ -43,12 +43,13 @@ WITH issues AS (
       visibility_level
     FROM {{ref('gitlab_dotcom_projects')}}
 
-), internal_namespaces AS (
+), namespace_lineage AS (
 
     SELECT
-      namespace_id
+      namespace_id,
+      ultimate_parent_id,
+      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
-    WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
 
 ), gitlab_subscriptions AS (
 
@@ -78,10 +79,10 @@ joined AS (
     {% for field in fields_to_mask %}
     CASE
       WHEN is_confidential = TRUE
-        AND internal_namespaces.namespace_id IS NULL
+        AND namespace_lineage.namespace_is_internal = TRUE
         THEN 'confidential - masked'
       WHEN visibility_level != 'public'
-        AND internal_namespaces.namespace_id IS NULL
+        AND namespace_lineage.namespace_is_internal = TRUE
         THEN 'private/internal - masked'
       ELSE {{field}}
     END                                          AS issue_{{field}},
@@ -133,7 +134,7 @@ joined AS (
     has_discussion_locked,
     agg_labels.labels,
     ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
-    internal_namespaces.namespace_id IS NOT NULL AS is_internal_issue,
+    namespace_lineage.namespace_is_internal      AS is_internal_issue,
     gitlab_subscriptions.plan_id                 AS namespace_plan_id_at_issue_creation
 
   FROM issues
@@ -141,11 +142,12 @@ joined AS (
     ON issues.issue_id = agg_labels.issue_id
   LEFT JOIN projects
     ON issues.project_id = projects.project_id
-  LEFT JOIN internal_namespaces
-    ON projects.namespace_id = internal_namespaces.namespace_id
+  LEFT JOIN namespace_lineage
+    ON projects.namespace_id = namespace_lineage.namespace_id
   LEFT JOIN gitlab_subscriptions
-    ON projects.namespace_id = gitlab_subscriptions.namespace_id
+    ON namespace_lineage.namespace_id.namespace_id = gitlab_subscriptions.namespace_id
     AND issues.issue_created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
 )
 
-SELECT * from joined
+SELECT * 
+FROM joined
