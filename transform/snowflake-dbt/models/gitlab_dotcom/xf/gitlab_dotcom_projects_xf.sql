@@ -104,7 +104,7 @@ joined AS (
       namespace_lineage.ultimate_parent_id                         AS namespace_ultimate_parent_id,
       namespace_lineage.namespace_is_internal,
 
-      gitlab_subscriptions.plan_id                                 AS namespace_plan_id_at_creation,
+      gitlab_subscriptions.plan_id                                 AS namespace_plan_id_at_project_creation,
 
       COALESCE( (namespaces.plan_id IN {{ paid_plans }} ), False)  AS namespace_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)               AS member_count
@@ -119,7 +119,7 @@ joined AS (
       LEFT JOIN gitlab_subscriptions
         ON projects.namespace_id = gitlab_subscriptions.namespace_id
         AND projects.project_created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
-    {{ dbt_utils.group_by(n=61) }}
+    {{ dbt_utils.group_by(n=62) }}
 )
 
 SELECT *

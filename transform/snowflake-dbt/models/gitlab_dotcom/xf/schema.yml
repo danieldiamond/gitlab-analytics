@@ -60,6 +60,8 @@ models:
         description: '{{ doc("xf_visibility_documentation") }}'
       - name: issue_description
         description: '{{ doc("xf_visibility_documentation") }}'
+      - name: namespace_plan_id_at_issue_creation
+        description: '{{ doc("namespace_plan_id_at_creation") }}'
 
   - name: gitlab_dotcom_label_states_xf
     description: Represents the latest state (added or removed) for each label on Epics/Issues/Merge Requests
