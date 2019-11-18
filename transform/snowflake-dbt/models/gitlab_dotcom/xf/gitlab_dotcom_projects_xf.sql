@@ -32,6 +32,11 @@ namespace_lineage AS (
       ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
+), gitlab_subscriptions AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
+
 ),
 
 joined AS (
@@ -98,6 +103,9 @@ joined AS (
       namespaces.plan_id                                           AS namespace_plan_id,
       namespace_lineage.ultimate_parent_id                         AS namespace_ultimate_parent_id,
       namespace_lineage.namespace_is_internal,
+
+      gitlab_subscriptions.plan_id                                 AS namespace_plan_id_at_creation,
+
       COALESCE( (namespaces.plan_id IN {{ paid_plans }} ), False)  AS namespace_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)               AS member_count
     FROM projects
@@ -108,6 +116,9 @@ joined AS (
         ON projects.namespace_id = namespaces.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
+      LEFT JOIN gitlab_subscriptions
+        ON projects.namespace_id = gitlab_subscriptions.namespace_id
+        AND projects.project_created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
     {{ dbt_utils.group_by(n=61) }}
 )
 

@@ -134,7 +134,7 @@ joined AS (
     agg_labels.labels,
     ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
     internal_namespaces.namespace_id IS NOT NULL AS is_internal_issue,
-    gitlab_subscriptions.plan_id                 AS plan_id_at_creation
+    gitlab_subscriptions.plan_id                 AS namespace_plan_id_at_creation
 
   FROM issues
   LEFT JOIN agg_labels
