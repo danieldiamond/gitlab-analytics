@@ -306,7 +306,7 @@ def main(file_path: str, load_type: str) -> None:
         table_name = "{import_db}_{export_table}".format(**table_dict).upper()
         raw_query = table_dict["import_query"]
 
-        # Check if the schema has changed, and if so then do a full load
+        # Check if the schema has changed or the table is new
         schema_changed = check_if_schema_changed(
             raw_query,
             postgres_engine,
