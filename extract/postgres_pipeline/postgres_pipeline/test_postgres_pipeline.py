@@ -10,10 +10,17 @@ sys.path.insert(
     ),
 )
 
-from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
 import pandas as pd
+import pytest
+from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
 
-from main import load_incremental, load_scd, check_new_tables, sync_incremental_ids
+from main import (
+    load_incremental,
+    load_scd,
+    check_new_tables,
+    sync_incremental_ids,
+    validate_ids,
+)
 from utils import (
     dataframe_uploader,
     manifest_reader,
@@ -336,3 +343,62 @@ class TestPostgresPipeline:
 
         assert return_status
         assert target_count_results["row_count"][0] > 0
+
+    def test_validate_ids(self):
+        """
+        Test to make sure that the validate_ids function passes when there are
+        no missing IDs.
+        """
+        table_cleanup(TEST_TABLE)
+        table_cleanup(TEST_TABLE_TEMP)
+        # Set some env_vars for this run
+        source_table = "approver_groups"
+        source_db = "gitlab_com_db"
+
+        # Load some rows into Snowflake
+        load_query = f"SELECT * FROM {source_table}"
+        load_df = pd.read_sql(load_query, POSTGRES_ENGINE)
+        load_df.to_sql(TEST_TABLE, SNOWFLAKE_ENGINE, index=False, chunksize=15000)
+
+        # Get the manifest for a specific table
+        file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
+        manifest_dict = manifest_reader(file_path)
+        table_dict = manifest_dict["tables"][source_table]
+
+        # Run the validation function and confirm it has zero IDs in the error table
+        validate_ids(
+            POSTGRES_ENGINE, SNOWFLAKE_ENGINE, source_table, table_dict, TEST_TABLE
+        )
+        error_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}_ERRORS"
+        error_count_results = pd.read_sql(error_query, SNOWFLAKE_ENGINE)
+
+        assert error_count_results["row_count"][0] == 0
+
+    def test_validate_ids_missing(self):
+        """
+        Test to make sure that the validate_ids function throws an error as
+        expected when there are missing IDs in the target table.
+        """
+        table_cleanup(TEST_TABLE)
+        table_cleanup(TEST_TABLE_TEMP)
+        # Set some env_vars for this run
+        source_table = "approver_groups"
+        source_db = "gitlab_com_db"
+
+        # Load some rows into Snowflake
+        partial_load_query = f"SELECT * FROM {source_table} LIMIT 100"
+        partial_load_df = pd.read_sql(partial_load_query, POSTGRES_ENGINE)
+        partial_load_df.to_sql(TEST_TABLE, SNOWFLAKE_ENGINE, index=False)
+
+        # Get the manifest for a specific table
+        file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
+        manifest_dict = manifest_reader(file_path)
+        table_dict = manifest_dict["tables"][source_table]
+
+        # Run the validation function and confirm it triggers a non-zero exit
+        with pytest.raises(SystemExit) as pytest_wrapped_e:
+            validate_ids(
+                POSTGRES_ENGINE, SNOWFLAKE_ENGINE, source_table, table_dict, TEST_TABLE
+            )
+            assert pytest_wrapped_e.type == SystemExit
+            assert pytest_wrapped_e.value.code == 3

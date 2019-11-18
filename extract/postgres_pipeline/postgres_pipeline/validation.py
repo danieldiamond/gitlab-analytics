@@ -9,21 +9,19 @@ def get_comparison_results(
 ):
     """
     Runs a query that checks for discrepancies between the source IDs and
-    the target IDs. Notifies Slack with an error if discrepancies exist and stores
-    the related IDs in a target table.
+    the target IDs. Stores any missing IDs in a new table.
     """
 
     # Run the query
     create_query = f"""
     CREATE OR REPLACE TABLE {error_table} AS
-    SELECT vt.id, vt.updated_at AS validate_timestamp, dt.updated_at AS data_timestamp
+    SELECT DISTINCT vt.id, vt.updated_at AS validate_timestamp, dt.updated_at AS data_timestamp
     FROM {validate_table} vt
     LEFT JOIN {data_table} dt
         ON vt.updated_at = dt.updated_at and vt.id = dt.id
-    WHERE vt.id != dt.id
-        AND vt.updated_at <= (select max(updated_at) from {data_table});
+    WHERE dt.updated_at IS NULL;
     """
     query_executor(engine, create_query)
 
-    select_query = f"SELECT COUNT(*) FROM {error_table}"
+    select_query = f"SELECT COUNT(*) AS error_count FROM {error_table}"
     return query_executor(engine, select_query)
