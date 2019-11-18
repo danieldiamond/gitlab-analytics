@@ -9,6 +9,7 @@ WITH source AS (
   FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
   WHERE id != 572635 -- This ID has NULL values for many of the important columns.
   QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
+  QUALIFY DENSE_RANK() OVER (ORDER BY _task_instance DESC) = 1
 
 ), renamed AS (
 
