@@ -17,8 +17,8 @@ WITH source AS (
     key                     AS key, 
     value                   AS value, 
     group_id::INTEGER       AS ci_group_variable_group_id, 
-    created_at::TIMESTAMP   AS ci_group_variable_created_at, 
-    updated_at::TIMESTAMP   AS ci_group_variable_updated_at, 
+    created_at::TIMESTAMP   AS created_at, 
+    updated_at::TIMESTAMP   AS updated_at, 
     masked                  AS masked, 
     variable_type           AS variable_variable_type 
   FROM source

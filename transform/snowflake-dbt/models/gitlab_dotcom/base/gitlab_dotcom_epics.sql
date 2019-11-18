@@ -5,10 +5,9 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'epics') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -25,8 +24,8 @@ WITH source AS (
       start_date::DATE                              AS epic_start_date,
       end_date::DATE                                AS epic_end_date,
       last_edited_at::TIMESTAMP                     AS epic_last_edited_at,
-      created_at::TIMESTAMP                         AS epic_created_at,
-      updated_at::TIMESTAMP                         AS epic_updated_at,
+      created_at::TIMESTAMP                         AS created_at,
+      updated_at::TIMESTAMP                         AS updated_at,
       title                                         AS epic_title,
       LENGTH(title)                                 AS epic_title_length,
       LENGTH(description)                           AS epic_description_length

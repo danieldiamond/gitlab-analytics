@@ -25,8 +25,8 @@ WITH source AS (
       author_id::INTEGER      AS author_id,
       target_id::INTEGER      AS target_id,
       target_type             AS target_type,
-      created_at::TIMESTAMP   AS event_created_at,
-      updated_at::TIMESTAMP   AS event_updated_at,
+      created_at::TIMESTAMP   AS created_at,
+      updated_at::TIMESTAMP   AS updated_at,
       action::INTEGER         AS event_action_type_id,
       {{action_type(action_type_id='event_action_type_id')}} AS event_action_type
       

@@ -7,10 +7,9 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'ci_stages') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
   WHERE created_at IS NOT NULL
   
     {% if is_incremental() %}

@@ -5,10 +5,9 @@
 
 WITH source AS (
 
-  SELECT 
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
   WHERE id != 572635 -- This ID has NULL values for many of the important columns.
 
 ), renamed AS (
@@ -23,8 +22,8 @@ WITH source AS (
       max_seats_used::INTEGER                       AS max_seats_used,
       seats::INTEGER                                AS seats,
       trial::BOOLEAN                                AS is_trial,
-      created_at::TIMESTAMP                         AS gitlab_subscription_created_at,
-      updated_at::TIMESTAMP                         AS gitlab_subscription_updated_at
+      created_at::TIMESTAMP                         AS created_at,
+      updated_at::TIMESTAMP                         AS updated_at
 
     FROM source
     WHERE rank_in_key = 1
