@@ -29,12 +29,11 @@ tables:
       , confirmed_at
       , confirmation_sent_at
       FROM customers
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
-        AND '{EXECUTION_DATE}'::timestamp
     export_db: EXPORT_DB
     export_schema: 'customers'
     export_table: 'customers'
     export_table_primary_key: id
+    advanced_metadata: true
   orders:
     import_db: CUSTOMERS_DB
     import_query: >
@@ -54,12 +53,25 @@ tables:
       , trial
       , last_extra_ci_minutes_sync_at
       FROM orders
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
-        AND '{EXECUTION_DATE}'::timestamp
     export_db: EXPORT_DB
     export_schema: 'customers'
     export_table: 'orders'
     export_table_primary_key: id
+    advanced_metadata: true
+  trial_histories:
+    import_db: CUSTOMERS_DB
+    import_query: >
+      SELECT gl_namespace_id
+        , start_date
+        , expired_on
+        , created_at
+        , updated_at
+      FROM trial_histories
+    export_db: EXPORT_DB
+    export_schema: 'customers'
+    export_table: 'trial_histories'
+    export_table_primary_key: gl_namespace_id
+    advanced_metadata: true
   versions:
     import_db: CUSTOMERS_DB
     import_query: >
@@ -74,6 +86,7 @@ tables:
     export_schema: 'customers'
     export_table: 'versions'
     export_table_primary_key: id
+    advanced_metadata: true
   schema_migrations:
     import_db: CUSTOMERS_DB
     import_query: >
@@ -83,3 +96,4 @@ tables:
     export_schema: 'customers'
     export_table: 'schema_migrations'
     export_table_primary_key: version
+    advanced_metadata: true

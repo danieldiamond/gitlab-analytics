@@ -11,6 +11,9 @@ models:
     - name: zuora_base_mrr
       description: '{{ doc("zuora_base_mrr") }}'
       columns:
+          - name: rate_plan_charge_id
+            tests:
+                - unique
           - name: mrr
             description: Monthly recurring revenue
             tests:
@@ -67,6 +70,10 @@ models:
             tests:
               - accepted_values:
                       values: ['GitHost', 'Other', 'Gold', 'Basic', 'Bronze', 'Premium', 'Starter', 'Ultimate', 'Support', 'Plus', 'Silver', 'Standard', 'Trueup']
+          - name: delivery
+            description: delivery is based on the product category name.
+            tests:
+                - not_null
     - name: zuora_base_invoice_details
       description: '{{ doc("zuora_base_invoice_details") }}'
     - name: zuora_base_ci_minutes
@@ -138,6 +145,9 @@ models:
             tests:
                 - not_null
           - name: product_category
+          - name: delivery
+            tests:
+                - not_null
           - name: unit_of_measure
           - name: mrr
             description: '{{ doc("zuora_mrr_totals_col_mrr") }}'
@@ -266,3 +276,15 @@ models:
           - name: refund_month
             tests:
                 - not_null
+          - name: refund_amount
+            description: The amount of the refund. The amount can't exceed the amount of the associated payment. If the original payment was applied to a single invoice, then you can create a partial refund.
+          - name: comment
+            description: This field records comments about the refund.
+          - name: reason_code
+            description: A code identifying the reason for the refund.
+          - name: source_type
+            description: Specifies whether the refund is a refund payment or a credit balance.
+          - name: refund_type
+            description: Specifies if the refund is electronic or external.
+          - name: refund_status
+            description: The status of the refund.

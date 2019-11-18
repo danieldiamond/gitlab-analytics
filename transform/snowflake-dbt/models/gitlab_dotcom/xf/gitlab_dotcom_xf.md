@@ -103,7 +103,7 @@ In order to achieve this we will build a CTE from the project table that contain
 
 {% docs gitlab_dotcom_namespaces_xf %}
 
-Includes all columns from the namespaces base model.
+Includes all columns from the namespaces base model. Note that `namespaces.plan_id` is overridden by the `plan_id` from the `gitlab_subscriptions` model.
 Adds the count of members and projects associated with the namespace.
 Also adds boolean column `namespaces_plan_is_paid` to provide extra context.
 
@@ -166,6 +166,10 @@ Some gotchas:
 We then know for each user: what's the highest plan they inherit from and where they inherit it from.
 
 If a user inherits from 2+ subscriptions with the same plan, we choose one subscription over the other based on the inheritance source: First, user, then groups, then projects.
+
+### Subscription Portal (customers.gitlab.com) data 
+
+This model surfaces also if a user has created an account or not in the subscription portal by joining with the `customers_db_customers` table. It also informs us if a specific user has already started a trial and if so when. 
 
 ### Misc
 

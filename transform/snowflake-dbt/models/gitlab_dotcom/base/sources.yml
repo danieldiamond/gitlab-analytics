@@ -7,7 +7,7 @@ sources:
     loaded_at_field: DATEADD(sec, _uploaded_at, '1970-01-01')
     loader: Airflow, tap_postgres
     description: Analytics read replica for Gitlab.com data. [Original Issue](https://gitlab.com/gitlab-com/gl-infra/infrastructure/issues/5847)
-    
+
     quoting:
       database: true
       schema: false
@@ -53,6 +53,8 @@ sources:
         identifier: gitlab_db_ci_pipeline_variables
       - name: ci_pipelines
         identifier: gitlab_db_ci_pipelines
+      - name: ci_runners
+        identifier: gitlab_db_ci_runners
       - name: ci_stages
         identifier: gitlab_db_ci_stages
       - name: ci_trigger_requests
@@ -129,7 +131,11 @@ sources:
         identifier: gitlab_db_project_statistics
       - name: projects
         identifier: gitlab_db_projects
+      - name: resource_label_events
+        identifier: gitlab_db_resource_label_events
       - name: subscriptions
         identifier: gitlab_db_subscriptions
+      - name: timelogs
+        identifier: gitlab_db_timelogs
       - name: users
         identifier: gitlab_db_users

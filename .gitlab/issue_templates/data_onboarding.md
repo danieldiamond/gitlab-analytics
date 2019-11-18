@@ -1,18 +1,26 @@
-## Tools & Access
+## Overview 
 
 Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed. There is a lot of information in the on-boarding issue, so please bookmark handbook pages, documentation pages, and log-ins for future reference. The goal is for you to complete and close the Data Team on-boarding issue within 1 week after you have completed the GitLab company on-boarding issue. These resources will be super helpful and serve as great reference material as you get up to speed and learn to work through issues and merge requests [over your first 90 day](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/job-families/finance/data-analyst/index.html.md#how-youll-ramp).
 
+
+## Access Requests 
+
+### For all going through the Data Onboarding Process 
+- [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
+- [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
+  - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
+- [ ] Manager: Add to Data Ops calendar meeting 
+- [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
+- [ ] Manager: Add to the `GitLab Data Team` project as a Developer.
+
+### For Central or Embedded Analyst/Engineers
 - [ ] Manager: Create access request using data analyst baseline.
    - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
    - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
-- [ ] Manager: Add to the `gitlab-data` namespace as a Developer.
 - [ ] Manager: Add to the `gitlab-data/chatops` project as a Maintainer.
-- [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
-- [ ] Manager: Invite to `data-team` channel on Slack
+- [ ] Manager: Add to the `gitlab-data` namespace as a Developer.
 - [ ] Manager: Update codeowners file in the handbook to include the new team member
 - [ ] Manager: Add to daily Geekbot standup (send `dashboard` to Geekbot on slack, click into a particular standup in the web UI, add via Manage button)
-- [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
-  - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
 - [ ] Manager: Invite to SheetLoad folder in gdrive
 - [ ] Manager: Check the [Time Blackout Sheet](https://docs.google.com/spreadsheets/d/1-L1l1x0uayj-bA_U9ETt2w12rC8SqC5mHP7Aa-rkmsY/edit#gid=0) to make sure it looks up-to-date.
 - [ ] Manager: Add to data team calendar as a calendar admin
@@ -21,7 +29,8 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Update issue with one or two Good First Issues
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
 
-WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
+
+## WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
 - [ ] Read (skim) through this full issue, just so you have a sense of what's coming. 
 - [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
@@ -70,6 +79,11 @@ rm ~/onboarding_script.sh
    * Your default python version should now be python 3. Typing `which python` into a new terminal window should now return `/usr/local/anaconda3/bin/python`
    * dbt will be installed at its latest version. Typing `dbt --version` will output the current version.
 * [ ] We strongly recommend configuring Atom (via the Atom UI) with the [Atom setup](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243?) section of Claire's post and [adding the tip](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243/5) from jars later in the thread. It will make your life much easier.
+  * Your editor should be configured so that all tabs are converted to 4 spaces. This will minimize messy looking diffs and provide consistency across the team.
+    * VSCode
+      * `Editor: Detect Indentation` is deselected
+      * `Editor: Insert Spaces` is selected
+      * `Editor: Tab Size` is set to 4 spaces per tab
 
 
 Our data stack looks roughly like this:
@@ -161,9 +175,11 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 - [ ] Save the [Data Kitchen Data Ops Cookbook](https://drive.google.com/file/d/14KyYdFB-DOeD0y2rNyb2SqjXKygo10lg/view?usp=sharing) as a reference.
 - [ ] Save the [Data Engineering Cookbook](https://drive.google.com/file/d/1Tm3GiV3P6c5S3mhfF9bm7VaKCtio-9hm/view?usp=sharing) as a reference.
 
-## GitLab.com aka "Dot Com" (Product)
+## GitLab.com (Product)
 This data comes from our GitLab.com SaaS product.
-- [ ] Become familiar with the [API docs](https://gitlab.com/gitlab-org/gitlab/tree/master/doc/api).
+- [ ] Become familiar with the [API docs](https://gitlab.com/gitlab-org/gitlab/tree/master/doc/api)
+- [ ] This is the [schema for the database](https://gitlab.com/gitlab-org/gitlab/blob/master/db/schema.rb)
+- [ ] If you ever want to know what queries are going on in the background while you're using GitLab.com, enable the [Performance Bar](https://docs.gitlab.com/ee/administration/monitoring/performance/performance_bar.html) and click on the numbers to the left of `pg`. This is useful for learning how the gitlab.com schema works. The performance bar can be enable by pressing `p + b` ([Shortcut Docs](https://docs.gitlab.com/ee/user/shortcuts.html)).
 
 ## Marketo
 - [ ] [Coming soon]
@@ -173,13 +189,13 @@ This data comes from our GitLab.com SaaS product.
 - [ ] Netsuite dbt models 101: Familiarize yourself with the Netsuite models by watching this [Data Netsuite dbt models](https://www.youtube.com/watch?v=u2329sQrWDY&feature=youtu.be). You will need to be logged into [GitLab Unfiltered](https://www.youtube.com/channel/UCMtZ0sc1HHNtGGWZFDRTh5A/).
 - [ ] For access to Netsuite, your manager will need to create an [Access Request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=New%20Access%20Request). Please confirm with your manager that this has been done.
 
-## Pings (Product)
+## Usage/Version Ping (Product)
 This data comes from the usage ping that comes with a GitLab installation.
 - [ ] Read about the [usage ping](https://docs.gitlab.com/ee/user/admin_area/settings/usage_statistics.html).
 - [ ] To understand how this is implemented at GitLab read [Feature Implementation](https://about.gitlab.com/handbook/product/feature-instrumentation/#instrumentation-for-gitlabcom).
 - [ ] Read the product vision for [telemetry](https://about.gitlab.com/direction/fulfillment/telemetry/).
 - [ ] There is not great documentation on the usage ping, but you can get a sense from looking at the `usage.rb` file for [GitLab CE](https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/usage_data.rb).
-- [ ] It might be helpful to look at issues related to the usage pings (telemetry) [here](https://gitlab.com/gitlab-org/telemetry/issues) and [here](https://gitlab.com/groups/gitlab-org/-/issues?scope=all&utf8=✓&state=all&search=~telemetry).
+- [ ] It might be helpful to look at issues related to telemetry [here](https://gitlab.com/gitlab-org/telemetry/issues) and [here](https://gitlab.com/groups/gitlab-org/-/issues?scope=all&utf8=✓&state=all&search=~telemetry).
 - [ ] Watch the [pings brain dump session](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view).
 
 ## Salesforce (Sales, Marketing, Finance)
@@ -229,6 +245,7 @@ None of these are required, but bookmarking these links will make life at GitLab
 - [ ] [dbt Docs](https://docs.getdbt.com)
 - [ ] [dbt Discourse](http://discourse.getdbt.com)
 - [ ] [GitLab's dbt Documentation](https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview)
+- [ ] [Data Team GitLab Activity](https://gitlab.com/groups/gitlab-data/-/activity)
 
 ## Good First Issues:
 - [ ] [Replace]

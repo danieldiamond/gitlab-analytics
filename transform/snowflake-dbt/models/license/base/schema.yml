@@ -19,9 +19,6 @@ models:
       - name: license_id
         tests:
           - not_null
-          - relationships:
-              to: ref('license_db_licenses')
-              field: license_id
       - name: add_on_id
         tests:
           - not_null
@@ -39,4 +36,6 @@ models:
       - name: starts_at
         tests:
           - not_null
+      - name: license_md5
+        description: This column is an md5 hash of the `license_file` column from the `license` table. We do not import the the unhashed column for security/privacy reasons. This hashed value joins with usage pings from the version app.
   

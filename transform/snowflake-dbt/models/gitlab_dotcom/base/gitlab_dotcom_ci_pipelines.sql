@@ -1,4 +1,6 @@
 {{ config({
+    "materialized": "incremental",
+    "unique_key": "ci_pipeline_id",
     "schema": "staging"
     })
 }}
@@ -10,14 +12,20 @@ WITH source AS (
     ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
   FROM {{ source('gitlab_dotcom', 'ci_pipelines') }}
   WHERE created_at IS NOT NULL
+  
+    {% if is_incremental() %}
+
+    AND updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+
+    {% endif %}
 
 ), renamed AS (
   
   SELECT
-   
     id::INTEGER                   AS ci_pipeline_id, 
     created_at::TIMESTAMP         AS created_at, 
     updated_at::TIMESTAMP         AS updated_at,
+    ref::VARCHAR                  AS ref,
     tag::BOOLEAN                  AS has_tag, 
     yaml_errors::VARCHAR          AS yaml_errors, 
     committed_at::TIMESTAMP       AS committed_at, 
@@ -36,7 +44,6 @@ WITH source AS (
     failure_reason::VARCHAR       AS failure_reason, 
     iid::INTEGER                  AS ci_pipeline_iid, 
     merge_request_id::INTEGER     AS merge_request_id 
-    
   FROM source
   WHERE rank_in_key = 1 
 
@@ -44,3 +51,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+ORDER BY updated_at

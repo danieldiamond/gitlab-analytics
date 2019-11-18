@@ -69,6 +69,10 @@ models:
           - name: refund_date
             tests:
                - not_null
+          - name: refund_number
+            tests:
+               - unique
+               - not_null
     - name: zuora_subscription
       description: '{{ doc("zuora_subscription") }}'
       columns:

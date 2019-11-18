@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: rpt_team_members_out_of_comp_band
+    description: This calculates the weighted number of team members outside of the compensation band. From the Comp Model (SheetLoad) we get how far from the top of the comp band team members are. We round to the nearest tenth (because this is how People Ops does it). Then we use the weighting model utilized by the Comp Team (the case when statement on L28) based on how far over the top of the band we are. The sum of the weights are divided by the total number of active team members to create this KPI. We only care about the state of this number on the last day of a calendar month. This model is used for reporting purposes and can be used with ```SELECT date_actual, sum(sum_weighted_deviated_from_comp_calc)/sum(current_employees) FROM analytics.rpt_team_members_out_of_comp_band GROUP BY 1``` in order to aggregate to the whole company. It's grain is by department, but it can easily be aggregated upwards. THIS MODEL SHOULD NOT BE CONSUMED FOR ANY ANALYSIS PRIOR TO SEPTERMBER 2019.
+    columns:
+    - name: unique_key
+      tests:
+      - not_null
+      - unique
+    - name: date_actual
+      tests:
+      - not_null
+    - name: division
+      tests:
+      - not_null
+    - name: department
+      tests:
+      - not_null
+    - name: sum_weighted_deviated_from_comp_calc
+      tests:
+      - not_null
+    - name: current_employees
+      tests:
+      - not_null
+    - name: percent_of_employees_outside_of_band
+      tests:
+      - not_null

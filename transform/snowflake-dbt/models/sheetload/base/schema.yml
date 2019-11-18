@@ -11,12 +11,89 @@ models:
     description: This is the location factor used for calculating analyses and takes into account the metrics adjusted location factor, where that exists.
     tests:
     - not_null
+- name: sheetload_gitlab_slack_stats
+  description: This is the source of Slack usage statistics exported from the [Analytics dashboard](https://slack.com/help/articles/218407447-view-your-slack-analytics-dashboard).
+  columns:
+  - name: entry_date
+    tests:
+    - not_null
+    - unique
 - name: sheetload_headcount
   columns:
   - name: primary_key
     tests:
     - not_null
     - unique
+- name: sheetload_hire_forecast
+  description: This is the source of forecasted hire counts by function and department for the end of each month.
+  columns:
+  - name: function
+    tests:
+    - not_null
+  - name: department
+    tests:
+    - not_null
+  - name: month_year
+    tests:
+    - not_null
+  - name: forecast
+    tests:
+    - not_null
+- name: sheetload_hire_plan
+  description: This is the source of planned hire counts by function and department for the end of each month.
+  columns:
+  - name: function
+    tests:
+    - not_null
+  - name: department
+    tests:
+    - not_null
+  - name: month_year
+    tests:
+    - not_null
+  - name: plan
+    tests:
+    - not_null
+- name: sheetload_linkedin_recruiter
+  description: This is the source of linkedin recruiter inmail data for each month by sourcer .
+  columns:
+  - name: sourcer
+    tests:
+    - not_null
+  - name: messages_sent
+    tests:
+    - not_null
+  - name: responses_received
+    tests:
+    - not_null
+  - name: acceptances
+    tests:
+    - not_null
+  - name: declines
+    tests:
+    - not_null
+  - name: no_response
+    tests:
+    - not_null
+  - name: responses_rate
+    tests:
+    - not_null
+  - name: accept_rate
+    tests:
+    - not_null
+  - name: data_downloaded_month
+    tests:
+    - not_null
+- name: sheetload_location_factor_targets
+  description: This is the list of location factor targets for each department and division as outlined in the [handbook](https://about.gitlab.com/handbook/people-operations/people-operations-metrics/#average-location-factor).
+  columns:
+  - name: department
+    tests:
+    - not_null
+    - unique
+  - name: location_factor_target
+    tests:
+    - not_null    
 - name: sheetload_marketing_kpi_benchmarks
   description: This is the source of marketing KPI goals to be included in marketing metric reports and dashboards.
   columns:
@@ -55,3 +132,5 @@ models:
   description: This is the model that categorizes the events on the CEO's calendar.
 - name: sheetload_rep_quotas_full_fy2020
   description: This is the model that captures sales data for rep quotas for the full fy2020.
+- name: sheetload_osat
+  description: This is the model that captures the onboarding satisfaction score survey OSAT. 

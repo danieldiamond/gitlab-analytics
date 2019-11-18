@@ -33,7 +33,7 @@ Validation (data quality check):
 
 #### pgp manifest definition:
 
-There are 5 mandatory sections and 1 optional sections in a `pgp` manifest.
+There are 5 mandatory sections and 2 optional sections in a `pgp` manifest.
 The 5 sections are as follows:
 
 1. `import_db`: the name of the database that is being imported from
@@ -44,6 +44,9 @@ The 5 sections are as follows:
 
 The 6th optional section is called `additional_filtering`.
 This field is used when you need to add an additional condition to the `import_query` that isn't related to incremental loading, for instance to filter some bad rows.
+
+The 7th optional section is called `advanced_metadata`. This is a boolean field with the default being false and the only accepted value being `true`.
+This field is used only on SCD tables and will add a `_task_instance` column to each upload so partitioning by Airflow runs is easier.
 
 #### Technical Details:
 

@@ -1,8 +1,23 @@
+{{ config({
+    "materialized": "table"
+    })
+}}
+
+/*
+  The dense rank filters down to only rows added during the last airflow run.
+  Waiting on: https://gitlab.com/gitlab-data/analytics/issues/2727
+*/
 WITH source AS (
 
   SELECT
     *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+    ROW_NUMBER() OVER (
+        PARTITION BY id
+        ORDER BY _uploaded_at DESC
+    ) AS rank_in_key,
+    DENSE_RANK() OVER (
+        ORDER BY DATEADD('sec', _uploaded_at, '1970-01-01')::DATE DESC
+    ) AS rank_in_uploaded_date
   FROM {{ source('gitlab_dotcom', 'label_links') }}
 
 ), renamed AS (
@@ -18,6 +33,7 @@ WITH source AS (
 
     FROM source
     WHERE rank_in_key = 1
+      AND rank_in_uploaded_date = 1
 
 )
 

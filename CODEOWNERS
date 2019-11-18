@@ -7,21 +7,21 @@
 # nested in that directory, on any level
 /.gitlab/ @jjstark @kathleentam
 /admin/ @jjstark @kathleentam
-/dags/ @tlapiana @tayloramurphy
-/extract/ @tlapiana @tayloramurphy
+/dags/ @tayloramurphy
+/extract/ @tayloramurphy
 /load/ @tayloramurphy
-/orchestrate/ @tlapiana @tayloramurphy
+/orchestrate/ @tayloramurphy
 
 # Top level file overwrites
-Makefile @tlapiana
-docker-compose.yml @tlapiana
-.gitlab-ci.yml @tayloramurphy @tlapiana
+Makefile @tayloramurphy
+docker-compose.yml @tayloramurphy
+.gitlab-ci.yml @tayloramurphy 
 
 # dbt
 /transform/generate_dbt_schema.py @emilie
 /transform/README.md @emilie
 /transform/snowflake-dbt/ @tayloramurphy @kathleentam @emilie
-/transform/snowflake-dbt/snowflake-dbt-ci.yml @tayloramurphy @tlapiana
+/transform/snowflake-dbt/snowflake-dbt-ci.yml @tayloramurphy 
 /transform/snowflake-dbt/docs/ @tayloramurphy
 /transform/snowflake-dbt/macros/ @tayloramurphy @emilie
 /transform/snowflake-dbt/models/bamboohr/ @emilie
@@ -32,7 +32,7 @@ docker-compose.yml @tlapiana
 /transform/snowflake-dbt/models/netsuite/ @iweeks
 /transform/snowflake-dbt/models/netsuite_stitch/ @iweeks
 /transform/snowflake-dbt/models/netsuite/ @iweeks
-/transform/snowflake-dbt/models/pings/ @eli_kastelein @mpeychet
+/transform/snowflake-dbt/models/version/ @eli_kastelein @mpeychet
 /transform/snowflake-dbt/models/smau_events/ @eli_kastelein @mpeychet
 /transform/snowflake-dbt/models/snowplow/ @tayloramurphy
 /transform/snowflake-dbt/models/snowplow_combined/ @tayloramurphy

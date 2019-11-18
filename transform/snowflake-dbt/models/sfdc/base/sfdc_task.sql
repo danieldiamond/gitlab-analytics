@@ -8,9 +8,6 @@ WITH source AS (
     SELECT *
     FROM {{ source('salesforce', 'task') }}
 
-
-
-
 ), renamed AS(
 
     SELECT

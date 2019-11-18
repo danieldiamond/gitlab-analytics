@@ -42,6 +42,11 @@ WITH transactions AS (
        fiscal_quarter_name
      FROM {{ref('date_details')}}
 
+), cost_category AS (
+
+     SELECT *
+     FROM {{ref('netsuite_expense_cost_category')}}
+
 ), income AS (
 
      SELECT
@@ -89,40 +94,48 @@ WITH transactions AS (
 ), income_statement_grouping AS (
 
     SELECT
-      transaction_id,
-      external_ref_number,
-      transaction_ext_id,
-      document_id,
-      account_id,
-      account_name,
-      account_full_name,
-      account_number || ' - ' || account_name          AS unique_account_name,
-      account_number,
-      parent_account_number,
-      unique_account_number,
-      -(actual_amount)                                 AS actual_amount,
-      CASE WHEN account_number BETWEEN '4000' AND '4999' THEN '1-income'
-      END                                              AS income_statement_grouping,
-      'N/A'                                            AS cost_category,
-      transaction_lines_memo,
-      entity_name,
-      status,
-      transaction_type,
-      department_id,
-      department_name,
-      parent_department_name,
-      accounting_period_id,
-      accounting_period,
-      accounting_period_name,
-      fiscal_year,
-      fiscal_quarter,
-      fiscal_quarter_name
+      i.transaction_id,
+      i.external_ref_number,
+      i.transaction_ext_id,
+      i.document_id,
+      i.account_id,
+      i.account_name,
+      i.account_full_name,
+      i.account_number || ' - ' || i.account_name          AS unique_account_name,
+      i.account_number,
+      i.parent_account_number,
+      i.unique_account_number,
+      -(i.actual_amount)                                   AS actual_amount,
+      CASE
+        WHEN i.account_number BETWEEN '4000' AND '4999'
+          THEN '1-income'
+      END                                                  AS income_statement_grouping,
+      i.transaction_lines_memo,
+      i.entity_name,
+      i.status,
+      i.transaction_type,
+      i.department_id,
+      i.department_name,
+      i.parent_department_name,
+      i.accounting_period_id,
+      i.accounting_period,
+      i.accounting_period_name,
+      dd.fiscal_year,
+      dd.fiscal_quarter,
+      dd.fiscal_quarter_name
     FROM income i
     LEFT JOIN date_details dd
       ON dd.first_day_of_month = i.accounting_period
-    WHERE account_number NOT IN ('4005')
+
+), cost_category_grouping AS (
+
+    SELECT
+      isg.*,
+      'N/A'                                            AS cost_category_level_1,
+      'N/A'                                            AS cost_category_level_2
+    FROM income_statement_grouping isg
 
 )
 
 SELECT *
-FROM income_statement_grouping
+FROM cost_category_grouping

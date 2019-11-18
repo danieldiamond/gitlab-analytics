@@ -1,19 +1,21 @@
 {{ config({
+    "materialized": "incremental",
+    "unique_key": "user_id",
     "schema": "staging"
     })
 }}
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
-  FROM {{ source('gitlab_dotcom', 'users') }}
+    SELECT *
+    FROM {{ source('gitlab_dotcom', 'users') }}
+    {% if is_incremental() %}
+    WHERE updated_at >= (SELECT MAX(user_updated_at) FROM {{this}})
+    {% endif %}
 
 ), renamed AS (
 
     SELECT
-
       id::INTEGER                                                      AS user_id,
       remember_created_at::TIMESTAMP                                   AS remember_created_at,
       sign_in_count::INTEGER                                           AS sign_in_count,
@@ -61,13 +63,23 @@ WITH source AS (
       ghost::BOOLEAN                                                   AS is_ghost,
       last_activity_on::TIMESTAMP                                      AS last_activity_on,
       notified_of_own_activity::BOOLEAN                                AS is_notified_of_own_activity,
-      IFF(lower(preferred_language) = 'nan', NULL, preferred_language) AS preferred_language,
-      theme_id::INTEGER                                                AS theme_id
+      NULLIF(preferred_language, 'nan')::VARCHAR                       AS preferred_language,
+      theme_id::INTEGER                                                AS theme_id,
+      accepted_term_id::INTEGER                                        AS accepted_term_id,
+      private_profile::BOOLEAN                                         AS is_private_profile,
+      roadmap_layout::INTEGER                                          AS roadmap_layout,
+      include_private_contributions::BOOLEAN                           AS include_private_contributions,
+      group_view::INTEGER                                              AS group_views,
+      managing_group_id::INTEGER                                       AS managing_group_id,
+      bot_type::INTEGER                                                AS bot_type,
+      source.role                                                      AS role_id,
+      {{user_role_mapping(user_role='source.role')}}::VARCHAR          AS role
 
     FROM source
-    WHERE rank_in_key = 1
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY user_updated_at DESC) = 1
 
 )
 
 SELECT  *
 FROM renamed
+ORDER BY user_updated_at

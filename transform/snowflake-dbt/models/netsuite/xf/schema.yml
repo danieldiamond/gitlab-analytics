@@ -1,6 +1,18 @@
 version: 2
 
 models:
+    - name: netsuite_actuals_balance_sheet
+      description: Balance Sheet from Netsuite
+      columns:
+        - name: unique_account_name
+          tests:
+            - not_null
+        - name: accounting_period
+          tests:
+            - not_null
+        - name: account_type
+          tests:
+            - not_null
     - name: netsuite_transaction_lines_xf
       description: The base transaction model enriched with account data and masking some sensitive data.
       columns:

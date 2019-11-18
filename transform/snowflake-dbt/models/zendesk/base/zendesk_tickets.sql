@@ -3,13 +3,13 @@
   })
 }}
 
-with source as (
+WITH source AS (
 
     SELECT *
     FROM {{ source('zendesk', 'tickets') }}
 ),
 
-renamed as (
+renamed AS (
 
     SELECT
         id                                   AS ticket_id,
@@ -25,7 +25,7 @@ renamed as (
         --fields
         status                                AS ticket_status,
         lower(priority)                       AS ticket_priority,
-        subject                               AS ticket_subject,
+        md5(subject)                          AS ticket_subject,
         md5(recipient)                        AS ticket_recipient,
         url                                   AS ticket_url,
         tags                                  AS ticket_tags,

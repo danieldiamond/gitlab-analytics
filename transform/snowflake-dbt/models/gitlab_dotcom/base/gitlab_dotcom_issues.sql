@@ -7,7 +7,7 @@ WITH source AS (
 
   SELECT
     *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY last_edited_at DESC) AS rank_in_key
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
   FROM {{ source('gitlab_dotcom', 'issues') }}
   WHERE created_at::VARCHAR NOT IN ('0001-01-01 12:00:00','1000-01-01 12:00:00','10000-01-01 12:00:00')
     AND LEFT(created_at::VARCHAR , 10) != '1970-01-01'

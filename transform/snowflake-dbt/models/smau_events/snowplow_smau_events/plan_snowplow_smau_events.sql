@@ -1,21 +1,120 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "page_view_id"
+    "unique_key": "event_surrogate_key"
     })
 }}
 
-{%- set event_ctes = ["issue_list_viewed",
-                      "issue_viewed",
-                      "board_viewed",
-                      "epic_list_viewed",
-                      "epic_viewed",
-                      "roadmap_viewed",
-                      "milestones_list_viewed",
-                      "milestone_viewed",
-                      "todo_viewed",
-                      "personal_issues_viewed",
-                      "notification_settings_viewed"
-                      ]
+{%- set event_ctes = [
+   {
+      "event_name":"board_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/boards\/[0-9]{1,}",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"epic_list_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/epics(\/)?",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"epic_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/epics\/[0-9]{1,}",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"issue_list_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/issues(\/)?",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"issue_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/issues\/[0-9]{1,}",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"label_list_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/labels(\/)?",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"milestones_list_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/milestones(\/)?",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"milestone_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/milestones\/[0-9]{1,}",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"notification_settings_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"\/profile\/notifications(\/)?",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"personal_issues_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"\/dashboard\/issues(\/)?",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"roadmap_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/roadmap(\/)?",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"todo_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"\/dashboard\/todos(\/)?",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   }
+]
+
 -%}
 
 WITH snowplow_page_views AS (
@@ -34,184 +133,24 @@ WITH snowplow_page_views AS (
 
 )
 
-, board_viewed AS (
+{% for event_cte in event_ctes %}
 
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'board_viewed'       AS event_type,
-    page_view_id
+, {{ smau_events_ctes(event_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statements) }}
 
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/boards\/[0-9]{1,}'
+{% endfor -%}
 
-)
+, unioned AS (
 
-, epic_list_viewed AS (
+  {% for event_cte in event_ctes %}
 
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'epic_list_viewed'        AS event_type,
-    page_view_id
+    SELECT *
+    FROM {{ event_cte.event_name }}
 
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/epics(\/)?'
+    {%- if not loop.last %}
+      UNION
+    {%- endif %}
 
-)
-
-, epic_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'epic_viewed'         AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/epics\/[0-9]{1,}'
-)
-
-, issue_list_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'issue_list_viewed'       AS event_type,
-    page_view_id
-
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/issues(\/)?'
-
-)
-
-, issue_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'issue_viewed'              AS event_type,
-    page_view_id
-
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/issues\/[0-9]{1,}'
-
-)
-
-, label_list_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'label_list_viewed'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/labels(\/)?'
-
-)
-
-, milestones_list_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'milestones_list_viewed'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/milestones(\/)?'
-
-)
-
-, milestone_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'milestone_viewed'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/milestones\/[0-9]{1,}'
-
-)
-
-, notification_settings_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'notification_settings_viewed'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '\/profile\/notifications(\/)?'
-
-)
-
-, personal_issues_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'personal_issues_viewed'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '\/dashboard\/issues(\/)?'
-
-)
-
-, roadmap_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'roadmap_viewed'        AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/roadmap(\/)?'
-)
-
-
-, todo_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'todo_viewed'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '\/dashboard\/todos(\/)?'
+  {% endfor -%}
 
 )
 
@@ -219,7 +158,7 @@ WITH snowplow_page_views AS (
   {% for event_cte in event_ctes %}
 
     SELECT *
-    FROM {{ event_cte }}
+    FROM {{ event_cte.event_name }}
 
     {%- if not loop.last %}
       UNION

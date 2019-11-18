@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: customers_db_orders_with_incomplete_charges
+    description: '{{ doc("customers_db_orders_with_incomplete_charges") }}'
+  - name: customers_db_orders_with_valid_charges
+    description: '{{ doc("customers_db_orders_with_valid_charges") }}'

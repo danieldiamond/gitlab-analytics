@@ -6,7 +6,7 @@ sources:
     schema: sheetload
     loaded_at_field: DATEADD(sec, _updated_at, '1970-01-01')
     loader: Python [Sheetload](https://gitlab.com/gitlab-data/analytics/tree/master/extract/sheetload)
-    description: script that loads sheets from Google Sheets into snwoflake
+    description: script that loads sheets from Google Sheets into Snowflake
 
     quoting:
       database: true
@@ -21,10 +21,16 @@ sources:
       - name: calendar
       - name: employee_location_factor
         schema: sensitive
+      - name: gitlab_slack_stats  
       - name: google_referrals
       - name: headcount
+      - name: hire_forecast
+      - name: hire_plan
+      - name: linkedin_recruiter
+      - name: location_factor_targets
       - name: marketing_pipe_to_spend_headcount
       - name: marketing_kpi_benchmarks
+      - name: osat
       - name: planned_values
       - name: pulse_survey_configure_be
       - name: pulse_survey_configure_fe

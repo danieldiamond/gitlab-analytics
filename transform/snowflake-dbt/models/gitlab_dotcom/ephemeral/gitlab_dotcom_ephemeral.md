@@ -11,6 +11,8 @@ This model extracts and flattens the salesforce IDs from the issue description. 
 
 We eventually normalise the output table to keep the `account_id` .
 
+We reiterate the same process with zendesk tickets (extracting zendesk ticket id, linking them to `zendesk_tickets_xf` and then associating them to a `sfdc_account_id`) 
+
 {% enddocs %}
 
 
@@ -25,6 +27,9 @@ This model flattens the salesforce IDs array extracted in the model `gitlab_dotc
 * leads
 * opportunity
 
-We eventually normalise the output table to keep the `account_id` .
+We eventually normalise the output table to keep the `account_id`.
+
+We reiterate the same process with zendesk tickets (extracting zendesk ticket id, linking them to `zendesk_tickets_xf` and then associating them to a `sfdc_account_id`) 
+
 
 {% enddocs %}

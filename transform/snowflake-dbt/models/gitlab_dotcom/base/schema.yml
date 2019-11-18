@@ -92,7 +92,7 @@ models:
       - name: ci_build_id
         tests:
           - not_null
-        
+
   - name: gitlab_dotcom_ci_builds
     description: Base model for Gitlab.com ci_builds
     columns:
@@ -106,7 +106,7 @@ models:
       - name: ci_build_updated_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_ci_group_variables
     description: Base model for Gitlab.com ci_group_variables
     columns:
@@ -120,7 +120,7 @@ models:
       - name: ci_group_variable_updated_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_ci_job_artifacts
     description: Base model for Gitlab.com ci_job_artifacts
     columns:
@@ -134,7 +134,7 @@ models:
       - name: ci_job_artifact_updated_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_ci_pipeline_schedule_variables
     description: Base model for Gitlab.com ci_pipeline_schedule_variables
     columns:
@@ -148,7 +148,7 @@ models:
       - name: ci_pipeline_schedule_updated_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_ci_pipeline_schedules
     description: Base model for Gitlab.com ci_pipeline_schedules
     columns:
@@ -162,14 +162,14 @@ models:
       - name: ci_pipeline_schedule_updated_at
         tests:
           - not_null
-            
+
   - name: gitlab_dotcom_ci_pipeline_variables
     description: Base model for Gitlab.com ci_pipeline_variables
     columns:
       - name: ci_pipeline_variable_id
         tests:
           - not_null
-                        
+
   - name: gitlab_dotcom_epic_issues
     description: Base model for Gitlab.com epic issues
     columns:
@@ -197,7 +197,21 @@ models:
       - name: updated_at
         tests:
           - not_null
-  
+
+  - name: gitlab_dotcom_ci_runners
+    description: Base model for Gitlab.com ci_runners
+    columns:
+      - name: runner_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_ci_stages
     description: Base model for Gitlab.com ci_stages
     columns:
@@ -593,6 +607,13 @@ models:
         description: '{{ doc("visibility_documentation") }}'
       - name: visbility_level
         description: '{{ doc("visibility_documentation") }}'
+      - name: plan_id
+        description: This column comes from the `gitlab_subscriptions` table which is the source of truth for namespace plans (NOT namespaces.plan_id).
+        tests:
+          - not_null
+          - accepted_values:
+              values: [2, 3, 4, 34]
+
 
   - name: gitlab_dotcom_notes
     description: >-
@@ -647,10 +668,7 @@ models:
         tests:
           - not_null
           - unique
-      - name: oauth_access_token_id
-        tests:
-          - not_null
-          - unique
+
       - name: oauth_access_token_created_at
         tests:
           - not_null
@@ -797,6 +815,20 @@ models:
       - name: project_description
         description: '{{ doc("visibility_documentation") }}'
 
+  - name: gitlab_dotcom_resource_label_events
+    description: '{{ doc("gitlab_dotcom_resource_label_events") }}'
+    columns:
+      - name: resource_label_event_id
+        tests:
+          - not_null
+          - unique
+      - name: action_type_id
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_subscriptions
     description: Base model for Gitlab.com subscriptions
     columns:
@@ -811,9 +843,23 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_timelogs
+    description: Base model for timelogs table.
+    columns:
+      - name: timelog_id
+        tests:
+          - not_null
+          - unique
+      - name: user_id
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_users
     description: >-
-      Base model for Gitlab.com users, the follwing fields are hidden for
+      Base model for Gitlab.com users, the following fields are hidden for
       privacy `current_sign_in_ip`, `last_sign_in_ip`, `unconfirmed_email`,
       `website_url`, `notification_email`, `public_email`, `note`,
       `organization`
@@ -828,3 +874,10 @@ models:
       - name: user_updated_at
         tests:
           - not_null
+      - name: role
+        description: This is the string translation of the "role" column stored as an integer in the source database. It is converted using the `user_role_mapping` macro.
+      - name: role_id
+        description: This is the integer representation of a user's role, as it's stored in the database.
+        tests:
+          - accepted_values:
+              values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 99]

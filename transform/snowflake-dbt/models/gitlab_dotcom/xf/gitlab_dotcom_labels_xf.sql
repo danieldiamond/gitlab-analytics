@@ -17,6 +17,7 @@ with labels AS (
       namespace_id
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
     WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
+
 ), joined AS (
 
     SELECT
@@ -42,4 +43,5 @@ with labels AS (
 
 )
 
-SELECT * FROM joined
+SELECT *
+FROM joined

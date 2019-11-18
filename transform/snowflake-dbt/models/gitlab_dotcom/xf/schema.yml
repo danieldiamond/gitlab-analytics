@@ -61,6 +61,14 @@ models:
       - name: issue_description
         description: '{{ doc("xf_visibility_documentation") }}'
 
+  - name: gitlab_dotcom_label_states_xf
+    description: Represents the latest state (added or removed) for each label on Epics/Issues/Merge Requests
+    columns:
+      - name: label_id
+        tests:
+          - not_null
+
+
   - name: gitlab_dotcom_labels_xf
     description: '{{ doc("gitlab_dotcom_labels_xf") }}'
     columns:
@@ -108,6 +116,26 @@ models:
       - name: is_community_contributor_related
         description: Merge Request has 'community contribution' tag, and is on a project in the gitlab.org namespace.
 
+  - name: gitlab_dotcom_milestones_xf
+    description: This is a non-sensitive models of the milestones table. The "title" and "description" columns are masked for non-internal namespaces.
+    columns:
+      - name: milestone_id
+        tests:
+          - not_null
+          - unique
+      - name: milestone_status
+        tests:
+          - not_null
+      - name: milestone_created_at
+        tests:
+          - not_null
+      - name: milestone_updated_at
+        tests:
+          - not_null
+      - name: namespace_id
+        description: This is added as a helper column. This is either the group_id (groups are namespaces) or the namespace associated with the milestone's project.
+
+
   - name: gitlab_dotcom_namespaces_xf
     description: '{{ doc("gitlab_dotcom_namespaces_xf") }}'
     columns:
@@ -124,8 +152,16 @@ models:
       - name: namespace_type
         tests:
           - not_null
+      - name: plan_id
+        description: The plan associated with the namespace's subscription (via gitlab_subscriptions)
+        tests:
+          - not_null
+          - accepted_values:
+              values: [2, 3, 4, 34]
       - name: namespace_plan_is_paid
         description: Whether or not the namespace associated with the project is subscribed to a paid plan.
+        tests:
+          - not_null
       - name: member_count
         description: The number of members that are presently associated with the namespace.
       - name: project_count

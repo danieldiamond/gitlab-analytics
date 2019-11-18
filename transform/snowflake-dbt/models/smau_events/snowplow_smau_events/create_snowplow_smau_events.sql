@@ -1,18 +1,111 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "page_view_id"
+    "unique_key": "event_surrogate_key"
     })
 }}
 
-{%- set event_ctes = ["mr_viewed",
-                      "project_viewed_in_ide",
-                      "repo_file_viewed",
-                      "search_performed",
-                      "snippet_created",
-                      "snippet_edited",
-                      "snippet_viewed",
-                      "wiki_page_viewed"
-                      ]
+{%- set event_ctes = [
+   {
+      "event_name":"mr_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2}\/merge_requests/[0-9]*",
+            "regexp_function":"REGEXP"
+         },
+         {
+            "regexp_pattern":"/-/ide/(.)*",
+            "regexp_function":"NOT REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"project_viewed_in_ide",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"/-/ide/project/.*",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"repo_file_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/tree\/(.)*",
+            "regexp_function":"REGEXP"
+         },
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/wiki\/tree\/(.)*",
+            "regexp_function":"NOT REGEXP"
+         },
+         {
+            "regexp_pattern":"/-/ide/(.)*",
+            "regexp_function":"NOT REGEXP"
+         },
+         {
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]{1,}",
+            "regexp_function":"NOT REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"search_performed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"/search",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"snippet_created",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/snippets/new",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"snippet_edited",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]*/edit",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"snippets_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]{1,}",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
+      "event_name":"wiki_page_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}",
+            "regexp_function":"REGEXP"
+         },
+         {
+            "regexp_pattern":"/-/ide/(.)*",
+            "regexp_function":"NOT REGEXP"
+         },
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/tree\/(.)*",
+            "regexp_function":"NOT REGEXP"
+         },
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/wikis\/snippets\/(.)*",
+            "regexp_function":"NOT REGEXP"
+         }
+      ]
+   }
+]
 -%}
 
 WITH snowplow_page_views AS (
@@ -31,141 +124,18 @@ WITH snowplow_page_views AS (
 
 )
 
-, snowplow_page_views_excluding_wiki AS (
+{% for event_cte in event_ctes %}
 
-  SELECT * 
-  FROM snowplow_page_views
-  WHERE page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}' -- removing wiki pages
+, {{ smau_events_ctes(event_name=event_cte.event_name, regexp_where_statements=event_cte.regexp_where_statements) }}
 
-)
-, mr_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'mr_viewed'              AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views_excluding_wiki
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2}\/merge_requests/[0-9]*'
-    AND page_url_path NOT REGEXP '/-/ide/(.)*'
-
-)
-
-, project_viewed_in_ide AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'project_viewed_in_ide'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views_excluding_wiki
-  WHERE page_url_path REGEXP '/-/ide/project/.*'
-
-)
-
-, repo_file_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'repo_file_viewed'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views_excluding_wiki
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/tree\/(.)*'
-    AND page_url_path NOT REGEXP '/-/ide/(.)*'
-    AND page_url_path NOT REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wiki\/tree\/(.)*'
-    AND page_url_path NOT REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]{1,}'
-
-)
-
-, search_performed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'search_performed'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views_excluding_wiki
-  WHERE page_url_path REGEXP '/search'
-
-)
-
-, snippet_created AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'snippet_created'        AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views_excluding_wiki
-  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/new'
-)
-
-, snippet_edited AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'snippet_edited'         AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views_excluding_wiki
-  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]*/edit'
-)
-
-, snippet_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'snippets_viewed'        AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views_excluding_wiki
-  WHERE page_url_path REGEXP '((\/([0-9A-Za-z_.-])*){2,})?\/snippets/[0-9]{1,}'
-
-)
-
-, wiki_page_viewed AS (
-
-  SELECT
-    user_snowplow_domain_id,
-    user_custom_id,
-    TO_DATE(page_view_start) AS event_date,
-    page_url_path,
-    'wiki_page_viewed'       AS event_type,
-    page_view_id
-
-  FROM snowplow_page_views
-  WHERE page_url_path REGEXP '(\/([0-9A-Za-z_.-])*){2,}\/wikis(\/(([0-9A-Za-z_.-]|\%))*){1,2}'
-    AND page_url_path NOT REGEXP '/-/ide/(.)*'
-
-)
+{% endfor -%}
 
 , unioned AS (
+
   {% for event_cte in event_ctes %}
 
     SELECT *
-    FROM {{ event_cte }}
+    FROM {{ event_cte.event_name }}
 
     {%- if not loop.last %}
       UNION
@@ -174,6 +144,7 @@ WITH snowplow_page_views AS (
   {% endfor -%}
 
 )
+
 
 SELECT *
 FROM unioned
