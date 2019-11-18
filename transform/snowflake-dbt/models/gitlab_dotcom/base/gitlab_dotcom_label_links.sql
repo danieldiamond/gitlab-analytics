@@ -3,10 +3,6 @@
     })
 }}
 
-/*
-  The dense rank filters down to only rows added during the last airflow run.
-  Waiting on: https://gitlab.com/gitlab-data/analytics/issues/2727
-*/
 WITH source AS (
 
   SELECT *
