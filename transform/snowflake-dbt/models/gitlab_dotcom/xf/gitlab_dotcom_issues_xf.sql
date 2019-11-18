@@ -49,6 +49,12 @@ WITH issues AS (
       namespace_id
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
     WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
+
+), gitlab_subscriptions AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
+
 ),
 
 joined AS (
@@ -127,7 +133,8 @@ joined AS (
     has_discussion_locked,
     agg_labels.labels,
     ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
-    internal_namespaces.namespace_id IS NOT NULL AS is_internal_issue
+    internal_namespaces.namespace_id IS NOT NULL AS is_internal_issue,
+    gitlab_subscriptions.plan_id                 AS plan_id_at_creation
 
   FROM issues
   LEFT JOIN agg_labels
@@ -136,6 +143,9 @@ joined AS (
     ON issues.project_id = projects.project_id
   LEFT JOIN internal_namespaces
     ON projects.namespace_id = internal_namespaces.namespace_id
+  LEFT JOIN gitlab_subscriptions
+    ON projects.namespace_id = gitlab_subscriptions.namespace_id
+    AND issues.issue_created_at BETWEEN gitlab_subscriptions.valid_from AND COALESCE(gitlab_subscriptions.valid_to, '9999-12-31')
 )
 
 SELECT * from joined
