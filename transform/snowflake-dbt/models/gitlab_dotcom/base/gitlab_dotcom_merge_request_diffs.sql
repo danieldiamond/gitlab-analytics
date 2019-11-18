@@ -9,15 +9,15 @@ WITH source AS (
 
   SELECT *
   FROM {{ source('gitlab_dotcom', 'merge_request_diffs') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
   WHERE created_at IS NOT NULL
     AND updated_at IS NOT NULL
     
     {% if is_incremental() %}
 
-    AND updated_at >= (SELECT MAX(merge_request_diff_updated_at) FROM {{this}})
+    AND updated_at >= (SELECT MAX(updated_at) FROM {{this}})
 
     {% endif %}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 

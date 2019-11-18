@@ -18,7 +18,6 @@ WITH source AS (
       relative_position::INTEGER        AS epic_issue_relative_position
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

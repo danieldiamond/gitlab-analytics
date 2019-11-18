@@ -17,7 +17,6 @@ WITH source AS (
     label_id::INTEGER  AS label_id
 
   FROM source
-  WHERE rank_in_key = 1
 
 )
 

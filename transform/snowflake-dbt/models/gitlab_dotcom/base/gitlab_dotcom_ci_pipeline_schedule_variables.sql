@@ -24,7 +24,6 @@ WITH source AS (
       variable_type                 AS variable_type
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

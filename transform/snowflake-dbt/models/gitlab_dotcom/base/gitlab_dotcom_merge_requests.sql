@@ -8,16 +8,15 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'merge_requests') }}
   
     {% if is_incremental() %}
 
-    WHERE updated_at >= (SELECT MAX(merge_request_updated_at) FROM {{this}})
+    WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
 
     {% endif %}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -48,14 +47,13 @@ WITH source AS (
       squash::BOOLEAN                                            AS does_squash,
       discussion_locked::BOOLEAN                                 AS is_discussion_locked,
       allow_maintainer_to_push::BOOLEAN                          AS does_allow_maintainer_to_push,
-      created_at::TIMESTAMP                                      AS merge_request_created_at,
-      updated_at::TIMESTAMP                                      AS merge_request_updated_at,
+      created_at::TIMESTAMP                                      AS created_at,
+      updated_at::TIMESTAMP                                      AS updated_at,
       last_edited_at::TIMESTAMP                                  AS merge_request_last_edited_at
 
       --merge_params // hidden for privacy
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

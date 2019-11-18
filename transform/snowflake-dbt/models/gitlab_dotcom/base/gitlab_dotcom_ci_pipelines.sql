@@ -9,7 +9,6 @@ WITH source AS (
 
   SELECT *
   FROM {{ source('gitlab_dotcom', 'ci_pipelines') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
   WHERE created_at IS NOT NULL
   
     {% if is_incremental() %}
@@ -17,6 +16,7 @@ WITH source AS (
     AND updated_at >= (SELECT MAX(updated_at) FROM {{this}})
 
     {% endif %}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
   
@@ -44,7 +44,6 @@ WITH source AS (
     iid::INTEGER                  AS ci_pipeline_iid, 
     merge_request_id::INTEGER     AS merge_request_id 
   FROM source
-  WHERE rank_in_key = 1 
 
 )
 

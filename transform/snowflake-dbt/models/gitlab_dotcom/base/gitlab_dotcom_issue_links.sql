@@ -20,8 +20,7 @@ WITH source AS (
       updated_at::TIMESTAMP            AS updated_at
 
     FROM source
-    WHERE rank_in_key = 1
-      AND created_at IS NOT NULL
+    WHERE created_at IS NOT NULL
 
 )
 

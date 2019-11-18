@@ -5,9 +5,7 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'project_group_links') }}
 
 ), renamed AS (
@@ -23,7 +21,6 @@ WITH source AS (
       expires_at::TIMESTAMP                           AS expires_at
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

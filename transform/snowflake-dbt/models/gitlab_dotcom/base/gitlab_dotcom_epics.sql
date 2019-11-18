@@ -26,12 +26,11 @@ WITH source AS (
       last_edited_at::TIMESTAMP                     AS epic_last_edited_at,
       created_at::TIMESTAMP                         AS created_at,
       updated_at::TIMESTAMP                         AS updated_at,
-      title                                         AS epic_title,
-      LENGTH(title)                                 AS epic_title_length,
-      LENGTH(description)                           AS epic_description_length
+      title::VARCHAR                                AS epic_title,
+      LENGTH(title)::INTEGER                        AS epic_title_length,
+      LENGTH(description)::INTEGER                  AS epic_description_length
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

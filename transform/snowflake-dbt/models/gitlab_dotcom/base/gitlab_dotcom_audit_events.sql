@@ -12,7 +12,7 @@ WITH source AS (
   
   {% if is_incremental() %}
 
-  WHERE updated_at >= (SELECT MAX(audit_event_updated_at) FROM {{this}})
+  WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
 
   {% endif %}
 
@@ -29,11 +29,9 @@ WITH source AS (
     updated_at::TIMESTAMP   AS updated_at
 
   FROM source
-  WHERE rank_in_key = 1
-  ORDER BY audit_event_created_at
 
 )
 
 SELECT *
 FROM renamed
-ORDER BY audit_event_updated_at
+ORDER BY updated_at

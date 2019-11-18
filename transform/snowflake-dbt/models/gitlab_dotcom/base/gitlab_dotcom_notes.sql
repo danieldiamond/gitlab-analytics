@@ -6,9 +6,7 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'notes') }}
 
   {% if is_incremental() %}
@@ -16,6 +14,7 @@ WITH source AS (
   WHERE updated_at >= (SELECT MAX(note_updated_at) FROM {{this}})
 
   {% endif %}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -43,7 +42,6 @@ WITH source AS (
       cached_markdown_version::INTEGER                      AS cached_markdown_version,
       resolved_by_push::BOOLEAN                             AS resolved_by_push
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

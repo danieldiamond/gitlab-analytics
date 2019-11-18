@@ -21,7 +21,6 @@ WITH source AS (
     weight::INTEGER          AS weight
 
   FROM source
-  WHERE rank_in_key = 1
 
 )
 

@@ -22,7 +22,6 @@ WITH source AS (
     description::VARCHAR  AS ci_trigger_description
     
   FROM source
-  WHERE rank_in_key = 1
   
 )
 

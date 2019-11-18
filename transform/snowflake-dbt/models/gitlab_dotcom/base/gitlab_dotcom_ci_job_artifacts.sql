@@ -9,13 +9,13 @@ WITH source AS (
 
   SELECT *
   FROM {{ source('gitlab_dotcom', 'ci_job_artifacts') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
   {% if is_incremental() %}
 
-  WHERE updated_at >= (SELECT MAX(ci_job_artifact_updated_at) FROM {{this}})
+  WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
 
   {% endif %}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -34,7 +34,6 @@ WITH source AS (
     file_location         AS file_location 
 
   FROM source
-  WHERE rank_in_key = 1
 
 )
 

@@ -5,10 +5,9 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'ci_group_variables') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -22,7 +21,6 @@ WITH source AS (
     masked                  AS masked, 
     variable_type           AS variable_variable_type 
   FROM source
-  WHERE rank_in_key = 1
 
 )
 

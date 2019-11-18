@@ -5,10 +5,9 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY project_id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'project_auto_devops') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -20,7 +19,6 @@ WITH source AS (
       enabled::BOOLEAN                 AS has_auto_devops_enabled
 
     FROM source
-    WHERE rank_in_key = 1
 )
 
 SELECT *

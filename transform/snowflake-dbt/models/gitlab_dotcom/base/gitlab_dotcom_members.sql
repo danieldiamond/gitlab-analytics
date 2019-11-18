@@ -24,7 +24,6 @@ WITH source AS (
       override::BOOLEAN                              AS has_override
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

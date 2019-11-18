@@ -25,7 +25,7 @@ renamed AS (
       updated_at::TIMESTAMP                      AS updated_at
 
     FROM source
-    WHERE rank_in_key = 1
+
 )
 
 SELECT *

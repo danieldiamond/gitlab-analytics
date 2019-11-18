@@ -17,7 +17,6 @@ WITH source AS (
     assignee_id::INTEGER        AS board_assignee_id
 
   FROM source
-  WHERE rank_in_key = 1
 
 )
 

@@ -20,7 +20,6 @@ WITH source AS (
     commit_id::INTEGER    AS commit_id
     
   FROM source
-  WHERE rank_in_key = 1
   
 )
 

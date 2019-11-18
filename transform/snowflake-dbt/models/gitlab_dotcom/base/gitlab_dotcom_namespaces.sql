@@ -5,10 +5,9 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'namespaces') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), gitlab_subscriptions AS (
 
@@ -43,7 +42,7 @@ WITH source AS (
         WHEN visibility_level = '20' THEN 'public'
         WHEN visibility_level = '10' THEN 'internal'
         ELSE 'private'
-      END                                                           AS visibility_level,
+      END::VARCHAR                                                  AS visibility_level,
       ldap_sync_status,
       ldap_sync_error,
       ldap_sync_last_update_at::TIMESTAMP                           AS ldap_sync_last_update_at,
@@ -57,7 +56,6 @@ WITH source AS (
       two_factor_grace_period::NUMBER                               AS two_factor_grace_period,
       project_creation_level::INTEGER                               AS project_creation_level
     FROM source
-    WHERE rank_in_key = 1
 
 ), joined AS (
 

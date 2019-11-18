@@ -10,11 +10,11 @@ WITH source AS (
 
   SELECT *
   FROM {{ source('gitlab_dotcom', 'ci_builds') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
   {% if is_incremental() %}
 
-  WHERE updated_at >= (SELECT MAX(ci_build_updated_at) FROM {{this}})
+  WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
   {% endif %}
 
@@ -68,7 +68,6 @@ WITH source AS (
     token_encrypted::VARCHAR          AS token_encrypted, 
     upstream_pipeline_id::INTEGER     AS upstream_pipeline_id 
   FROM source
-  WHERE rank_in_key = 1
 
 )
 

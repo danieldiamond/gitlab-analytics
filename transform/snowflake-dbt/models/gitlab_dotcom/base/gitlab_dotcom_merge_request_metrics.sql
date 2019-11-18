@@ -5,10 +5,9 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'merge_request_metrics') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 
 ), renamed AS (
@@ -31,7 +30,6 @@ WITH source AS (
       latest_closed_by_id::INTEGER                             AS latest_closed_by_id
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

@@ -1,9 +1,8 @@
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY _uploaded_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'namespace_root_storage_statistics') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
 
@@ -19,7 +18,6 @@ WITH source AS (
       updated_at::TIMESTAMP         AS namespace_updated_at
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

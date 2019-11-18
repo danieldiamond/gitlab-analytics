@@ -22,7 +22,6 @@ renamed AS (
       --econdary_extern_uid // always null
       saml_provider_id::INTEGER   AS saml_provider_id
     FROM source
-    WHERE rank_in_key = 1
 
 )
 
