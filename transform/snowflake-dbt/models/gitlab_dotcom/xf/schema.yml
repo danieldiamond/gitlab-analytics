@@ -117,6 +117,8 @@ models:
           - not_null
       - name: is_community_contributor_related
         description: Merge Request has 'community contribution' tag, and is on a project in the gitlab.org namespace.
+      - name: namespace_plan_id_at_merge_request_creation
+        description: '{{ doc("namespace_plan_id_at_creation") }}'
 
   - name: gitlab_dotcom_milestones_xf
     description: This is a non-sensitive models of the milestones table. The "title" and "description" columns are masked for non-internal namespaces.

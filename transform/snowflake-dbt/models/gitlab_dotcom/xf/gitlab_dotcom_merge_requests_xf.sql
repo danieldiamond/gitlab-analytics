@@ -99,7 +99,7 @@ WITH merge_requests AS (
       TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at,
         merge_request_metrics.merged_at)           AS hours_to_merged_status,
 
-      gitlab_subscriptions.plan_id                 AS namespace_plan_id_at_merge_request_creation,
+      gitlab_subscriptions.plan_id                 AS namespace_plan_id_at_merge_request_creation
 
     FROM merge_requests
       LEFT JOIN agg_labels
