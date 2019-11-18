@@ -50,7 +50,7 @@ def dataframe_uploader(
     advanced_metadata: bool, dataframe: pd.DataFrame, engine: Engine, table_name: str
 ) -> None:
     """
-    Upload a dataframe, adding in some metadata and cleaning up along the way.
+    Upload a dataframe using an engine.
     """
 
     dataframe_enricher(advanced_metadata, dataframe).to_sql(
@@ -140,7 +140,7 @@ def postgres_engine_factory(
 
 def manifest_reader(file_path: str) -> Dict[str, Dict]:
     """
-    Read a manifest file into a dictionary and pass it back.
+    Read a yaml manifest file into a dictionary and return it.
     """
 
     with open(file_path, "r") as file:
@@ -191,7 +191,7 @@ def chunk_and_upload(
     backfill: bool = False,
 ) -> None:
     """
-    Call the functions that upload the dataframe to CSVs in GCS and then tell Snowflake
+    Call the functions that upload the dataframes as TSVs in GCS and then trigger Snowflake
     to load those new files.
 
     If it is part of a backfill, the first chunk gets sent to the dataframe_uploader
@@ -246,6 +246,8 @@ def check_if_schema_changed(
     Query the source table with the manifest query to get the columns, then check
     what columns currently exist in the DW. Return a bool depending on whether
     there has been a change or not.
+
+    If the table does not exist this function will also return True.
     """
 
     if not target_engine.has_table(target_table):
@@ -281,11 +283,13 @@ def id_query_generator(
     id_range: int = 100_000,
 ) -> Generator[str, Any, None]:
     """
-    This function syncs a database with Snowflake based on the user-defined 
-    primary keys for each table.
+    This function generates a list of queries based on the max ID in the target table.
 
-    Gets the diff between the IDs that exist in the DB vs the DW, loads any rows
+    Gets the diff between the IDs that exist in the DB vs the DW, generates queries for any rows
     with IDs that are missing from the DW.
+
+    i.e. if the table in Snowflake has a max id of 2000, but postgres has a max id of 5000,
+    it will return a list of queries that load chunks of IDs until it has the same max id.
     """
 
     # Get the max ID from the target DB
@@ -328,7 +332,7 @@ def id_query_generator(
 
 def get_engines(connection_dict: Dict[str, str]) -> Tuple[Engine, Engine]:
     """
-    Generate the engines and pass them back.
+    Generates Snowflake and Postgres engines from env vars and returns them.
     """
 
     logging.info("Creating database engines...")
