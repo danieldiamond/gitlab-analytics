@@ -21,7 +21,7 @@ WITH source AS (
       *,
       ROW_NUMBER() OVER (
         PARTITION BY namespace_id
-        ORDER BY gitlab_subscription_updated_at DESC
+        ORDER BY updated_at DESC
       ) AS rank_in_namespace_id
     FROM {{ref('gitlab_dotcom_gitlab_subscriptions')}}
 
