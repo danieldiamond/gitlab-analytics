@@ -86,13 +86,6 @@ CI_STATS_DB_PASS = Secret("env", "CI_STATS_DB_PASS", "airflow", "CI_STATS_DB_PAS
 CI_STATS_DB_HOST = Secret("env", "CI_STATS_DB_HOST", "airflow", "CI_STATS_DB_HOST")
 CI_STATS_DB_NAME = Secret("env", "CI_STATS_DB_NAME", "airflow", "CI_STATS_DB_NAME")
 
-# SFDC
-SFDC_PASSWORD = Secret("env", "SFDC_PASSWORD", "airflow", "SFDC_PASSWORD")
-SFDC_SECURITY_TOKEN = Secret(
-    "env", "SFDC_SECURITY_TOKEN", "airflow", "SFDC_SECURITY_TOKEN"
-)
-SFDC_USERNAME = Secret("env", "SFDC_USERNAME", "airflow", "SFDC_USERNAME")
-SFDC_THREADS = Secret("env", "SFDC_THREADS", "airflow", "SFDC_THREADS")
 
 # Snowflake Generic
 SNOWFLAKE_ACCOUNT = Secret("env", "SNOWFLAKE_ACCOUNT", "airflow", "SNOWFLAKE_ACCOUNT")
