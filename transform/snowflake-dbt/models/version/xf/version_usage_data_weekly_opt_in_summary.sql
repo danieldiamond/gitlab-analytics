@@ -11,6 +11,7 @@ WITH licenses AS ( -- Licenses app doesn't alter rows after creation so the snap
   WHERE license_md5 IS NOT NULL
     AND is_trial = False
     AND email NOT LIKE '%@gitlab.com' -- Remove internal test licenses
+
 )
 
 , usage_data AS (
