@@ -829,6 +829,10 @@ roles:
         warehouses:
             - analyst_xs
 
+    - sreddy:
+        warehouses:
+            - reporting
+
     - ssichak:
         warehouses:
             - reporting
@@ -971,6 +975,9 @@ users:
             - analyst_core
             - data_manager
             - jstark
+            - accountadmin
+            - securityadmin
+            - sysadmin
 
     - jurbanc:
         can_login: yes
@@ -1065,6 +1072,12 @@ users:
         member_of:
             - pwc_contractor
             - pwc_snagaraj
+
+    - sreddy:
+        can_login: yes
+        member_of:
+            - product_manager
+            - sreddy
 
     - ssichak:
         can_login: yes
