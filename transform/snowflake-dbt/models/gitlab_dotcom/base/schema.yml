@@ -296,10 +296,10 @@ models:
       - name: namespace_id
         tests:
           - not_null
-      - name: gitlab_subscription_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: gitlab_subscription_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -359,10 +359,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: issue_link_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: issue_link_updated_at
+      - name: updated_at
         tests:
           - not_null
 
