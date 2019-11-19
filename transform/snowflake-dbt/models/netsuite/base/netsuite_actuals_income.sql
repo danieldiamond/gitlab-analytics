@@ -56,6 +56,7 @@ WITH transactions AS (
        t.document_id,
        tl.memo                                          AS transaction_lines_memo,
        tl.entity_name,
+       tl.receipt_url,
        t.status,
        t.transaction_type,
        a.account_id,
@@ -89,7 +90,7 @@ WITH transactions AS (
     WHERE a.account_number between '4000' and '4999'
       AND ap.fiscal_calendar_id = 2
       AND e.to_subsidiary_id = 1
-    {{ dbt_utils.group_by(n=20) }}
+    {{ dbt_utils.group_by(n=21) }}
 
 ), income_statement_grouping AS (
 
@@ -112,6 +113,7 @@ WITH transactions AS (
       END                                                  AS income_statement_grouping,
       i.transaction_lines_memo,
       i.entity_name,
+      i.receipt_url,
       i.status,
       i.transaction_type,
       i.department_id,
