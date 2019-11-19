@@ -605,8 +605,6 @@ tables:
       , seats
       , trial
       FROM gitlab_subscriptions
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'gitlab_subscriptions'
     export_table_primary_key: id
