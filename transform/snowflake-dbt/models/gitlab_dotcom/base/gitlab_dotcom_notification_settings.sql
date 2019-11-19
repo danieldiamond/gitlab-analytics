@@ -33,7 +33,6 @@ WITH source AS (
       failed_pipeline::BOOLEAN                        AS has_failed_pipeline_enabled,
       success_pipeline::BOOLEAN                       AS has_success_pipeline_enabled
 
-
     FROM source
 
 )

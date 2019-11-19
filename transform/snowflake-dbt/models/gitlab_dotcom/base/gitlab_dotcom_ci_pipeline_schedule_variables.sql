@@ -12,7 +12,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                   AS ci_pipeline_schedule_id,
+      id::INTEGER                   AS ci_pipeline_schedule_variable_id,
       key                           AS key,
       value                         AS value,
       encrypted_value               AS encrypted_value,

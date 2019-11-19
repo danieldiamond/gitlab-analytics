@@ -74,4 +74,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-ORDER BY ci_build_updated_at
+ORDER BY updated_at

@@ -33,7 +33,6 @@ WITH source AS (
       created_at::TIMESTAMP                       AS created_at,
       updated_at::TIMESTAMP                       AS updated_at
     FROM source
-    WHERE rank_in_key = 1
 
 )
 
