@@ -1,4 +1,3 @@
-{% set paid_plans = (2, 3, 4) %}
 {% set fields_to_mask = ['namespace_name', 'namespace_path'] %}
 
 WITH namespaces AS (
@@ -27,6 +26,11 @@ projects AS (
       ultimate_parent_id,
       ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
+
+), plans AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_plans')}}
 
 ),
 
@@ -67,7 +71,7 @@ joined AS (
       namespaces.plan_id,
       namespaces.project_creation_level,
 
-      COALESCE( (namespaces.plan_id IN {{ paid_plans }} ), False)      AS namespace_plan_is_paid,
+      plans.plan_is_paid                                               AS namespace_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)                   AS member_count,
       COALESCE(COUNT(DISTINCT projects.project_id), 0)                 AS project_count
 
@@ -79,6 +83,8 @@ joined AS (
         ON namespaces.namespace_id = projects.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
+      LEFT JOIN plans
+        ON namespaces.plan_id = plans.plan_id
     {{ dbt_utils.group_by(n=28) }}
 )
 
