@@ -59,7 +59,7 @@ WITH customers AS (
     AND namespace_plan_is_paid
 )
 
-, group_members AS (
+, group_members AS ( --TODO
   -- always inherits
 
   SELECT

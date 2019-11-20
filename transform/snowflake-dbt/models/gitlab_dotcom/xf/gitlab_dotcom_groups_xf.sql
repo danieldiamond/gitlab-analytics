@@ -1,4 +1,3 @@
-{% set paid_plans = (2, 3, 4) %}
 {% set fields_to_mask = ['group_name', 'group_path'] %}
 
 WITH groups AS (
@@ -25,14 +24,16 @@ projects AS (
     SELECT
       namespace_id,
       ultimate_parent_id,
-      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} )
-          AS namespace_is_internal
+      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
 
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
-),
+), plans AS (
 
-joined AS (
+    SELECT *
+    FROM {{ref('gitlab_dotcom_plans')}}
+
+), joined AS (
 
     SELECT
       groups.group_id,
@@ -67,10 +68,11 @@ joined AS (
       groups.repository_size_limit,
       groups.does_require_two_factor_authentication,
       groups.two_factor_grace_period,
-      COALESCE(ultimate_parent_groups.plan_id, groups.plan_id)          AS plan_id,
+      groups.plan_id
+      ultimate_parent_groups.plan_id                                    AS ultimate_parent_plan_id,
       groups.project_creation_level,
-      COALESCE((COALESCE(ultimate_parent_groups.plan_id,
-                          groups.plan_id) IN {{ paid_plans }}) , False) AS group_plan_is_paid,
+      group_plans.plan_is_paid                                          AS group_plan_is_paid,
+      ultimate_parent_plans.plan_is_paid                                AS ultimate_parent_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)                    AS member_count,
       COALESCE(COUNT(DISTINCT projects.project_id), 0)                  AS project_count
 
@@ -84,6 +86,10 @@ joined AS (
         ON groups.group_id = namespace_lineage.namespace_id
       LEFT JOIN groups AS ultimate_parent_groups
         ON namespace_lineage.ultimate_parent_id = ultimate_parent_groups.group_id
+      LEFT JOIN plans AS group_plans
+        ON groups.group_id = namespace_plans.plan_id
+      LEFT JOIN plans AS ultimate_parent_plans
+        ON namespace_lineage.ultimate_parent_id = ultimate_parent_plans.plan_id
     {{ dbt_utils.group_by(n=27) }}
 
 )

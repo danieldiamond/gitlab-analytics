@@ -35,7 +35,7 @@ WITH months AS (
       groups.group_id,
       groups.parent_group_id,
       groups.group_ultimate_parent_id,
-      groups.group_plan_is_paid,
+      groups.group_ultimate_parent_plan_is_paid,
       groups.is_top_level_group,
       groups.group_created_at_month,
       months.skeleton_month,

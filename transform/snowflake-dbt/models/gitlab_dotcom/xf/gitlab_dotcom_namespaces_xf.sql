@@ -32,9 +32,7 @@ projects AS (
     SELECT *
     FROM {{ref('gitlab_dotcom_plans')}}
 
-),
-
-joined AS (
+), joined AS (
     SELECT
       namespaces.namespace_id,
       namespace_lineage.namespace_is_internal,
@@ -69,6 +67,7 @@ joined AS (
       namespaces.does_require_two_factor_authentication,
       namespaces.two_factor_grace_period,
       namespaces.plan_id,
+      ultimate_parent_plans.plan_id                                    AS ultimate_parent_plan_id,
       namespaces.project_creation_level,
 
       namespace_plans.plan_is_paid                                     AS namespace_plan_is_paid,
@@ -87,8 +86,8 @@ joined AS (
       LEFT JOIN plans AS namespace_plans
         ON namespaces.plan_id = namespace_plans.plan_id
       LEFT JOIN plans AS ultimate_parent_plans
-        ON namespaces.plan_id = ultimate_parent_plans.plan_id
-    {{ dbt_utils.group_by(n=29) }}
+        ON namespace_lineage.ultimate_parent_id = ultimate_parent_plans.plan_id
+    {{ dbt_utils.group_by(n=30) }}
 )
 
 SELECT *
