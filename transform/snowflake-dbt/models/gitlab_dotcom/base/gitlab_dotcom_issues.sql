@@ -30,7 +30,7 @@ WITH source AS (
       confidential::BOOLEAN                                     AS is_confidential,
       title::VARCHAR                                            AS issue_title,
       description::VARCHAR                                      AS issue_description,
-      state::VARCHAR                                            AS issue_statet ,
+      state::VARCHAR                                            AS issue_state,
       weight::NUMBER                                            AS weight,
       due_date::DATE                                            AS due_date,
       lock_version::NUMBER                                      AS lock_version,

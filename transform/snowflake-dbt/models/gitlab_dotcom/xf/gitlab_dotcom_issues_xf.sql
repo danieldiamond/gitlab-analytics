@@ -1,7 +1,7 @@
 -- depends_on: {{ ref('engineering_productivity_metrics_projects_to_include') }}
 -- depends_on: {{ ref('projects_part_of_product') }}
 
-{% set fields_to_mask = ['title', 'description'] %}
+{% set fields_to_mask = ['issue_title', 'issue_description'] %}
 
 
 WITH issues AS (
@@ -78,7 +78,7 @@ joined AS (
         AND internal_namespaces.namespace_id IS NULL
         THEN 'private/internal - masked'
       ELSE {{field}}
-    END                                          AS issue_{{field}},
+    END                                          AS {{field}},
     {% endfor %}
 
     CASE
@@ -119,7 +119,7 @@ joined AS (
       TRUE, FALSE)                               AS is_included_in_engineering_metrics,
     IFF(issues.project_id IN ({{is_project_part_of_product()}}),
       TRUE, FALSE)                               AS is_part_of_product,
-    state,
+    issue_state,
     weight,
     due_date,
     lock_version,
