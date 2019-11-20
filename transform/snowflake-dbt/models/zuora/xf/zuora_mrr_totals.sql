@@ -28,7 +28,8 @@ WITH base_mrr AS (
           'Other'         AS delivery,
           charge_name     AS rate_plan_name,
           CASE
-            WHEN lower(rate_plan_name) like '%support%' THEN 'Support Only'
+            WHEN lower(rate_plan_name) like '%support%' 
+              THEN 'Support Only'
             ELSE 'Full Service'
           END             AS service_type,
           NULL            AS unit_of_measure,
@@ -54,7 +55,8 @@ WITH base_mrr AS (
           delivery,
           rate_plan_name,
           CASE
-            WHEN lower(rate_plan_name) like '%support%' THEN 'Support Only'
+            WHEN lower(rate_plan_name) like '%support%' 
+              THEN 'Support Only'
             ELSE 'Full Service'
           END             AS service_type,
           unit_of_measure,
