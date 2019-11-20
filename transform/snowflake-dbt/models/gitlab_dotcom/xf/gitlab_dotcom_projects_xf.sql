@@ -1,4 +1,3 @@
-{% set paid_plans = (2, 3, 4) %}
 {% set sensitive_fields = ['project_description', 'project_import_source', 'project_issues_template', 'project_build_coverage_regex',
                            'project_name', 'project_path', 'project_import_url', 'project_merge_requests_template'] %}
 

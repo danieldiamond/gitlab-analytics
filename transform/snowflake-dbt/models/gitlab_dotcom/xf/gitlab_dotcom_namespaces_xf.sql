@@ -70,7 +70,7 @@ projects AS (
       ultimate_parent_plans.plan_id                                    AS ultimate_parent_plan_id,
       namespaces.project_creation_level,
 
-      namespace_plans.plan_is_paid                                     AS namespace_plan_is_paid,
+      namespace_plans.plan_is_paid                                     AS plan_is_paid,
       ultimate_parent_plans.plan_is_paid                               AS ultimate_parent_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)                   AS member_count,
       COALESCE(COUNT(DISTINCT projects.project_id), 0)                 AS project_count
