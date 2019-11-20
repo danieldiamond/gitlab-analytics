@@ -207,6 +207,6 @@ This content will be masked for privacy in one of the following conditions:
 
 This column represents the gitlab_subscription plan_id of the namespace at the time that the object (issue, project, merge request) was created. 
 
-We only have completed data from `2019-09-03` on, which is the date that we started snapshotting gitlab_subscriptions by namespace in dbt.
+We only have completed data from mid-`2019-09` on, which is when we started snapshotting gitlab_subscriptions by namespace in dbt.
 
 {% enddocs %}
