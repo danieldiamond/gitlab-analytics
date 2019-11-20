@@ -672,7 +672,7 @@ models:
         tests:
           - not_null
 
-  - name: plans
+  - name: gitlab_dotcom_plans
     description: >-
       A base model for Gitlab.com plans.
     columns:
@@ -680,10 +680,18 @@ models:
         tests:
           - not_null
           - unique
+      - name: name
+        description: The english naming of the plan type (gold, silver, etc)
+        tests:
+          - not_null
       - name: created_at
         tests:
           - not_null
       - name: updated_at
+        tests:
+          - not_null
+      - name: plan_is_paid
+        description: Whether or not this plan type is considered a paid subscription.
         tests:
           - not_null
 
