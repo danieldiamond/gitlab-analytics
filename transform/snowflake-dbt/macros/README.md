@@ -40,6 +40,12 @@ Used in:
 ## Coalesce to Infinity
 This macro expects a timestamp or date column as an input. If a non-null value is inputted, the same value is returned. If a null value is inputted, a large date representing 'infinity' is returned. This is useful for writing `BETWEEN` clauses using date columns that are sometimes NULL.
 
+Used in:
+- gitlab_dotcom_issues_xf.sql
+- gitlab_dotcom_merge_requests_xf.sql
+- gitlab_dotcom_projects_xf.sql
+- version_usage_data_weekly_opt_in_summary.sql
+
 ## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
 Usage:
