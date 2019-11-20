@@ -157,8 +157,8 @@ python_pytest:
   script:
     - echo "SNOWFLAKE_DATABASE = $SNOWFLAKE_TRANSFORM_DATABASE"
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
-    - dbt deps --profiles-dir profile --target docs
-    - dbt docs generate --profiles-dir profile --target docs
+    - dbt deps --profiles-dir profile --target prod
+    - dbt docs generate --profiles-dir profile --target prod
     - mkdir -p $CI_PROJECT_DIR/public/dbt/snowflake
     - cd target
     - cp *.json graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
