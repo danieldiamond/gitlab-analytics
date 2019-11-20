@@ -114,7 +114,17 @@
     - *deps_and_seed
     - dbt test --schema $CI_PROFILE_TARGET
 
+<<<<<<< HEAD
 
+=======
+snapshots:
+  <<: *snowflake_dbt_jobs
+  stage: dbt_misc
+  script:
+    - *deps_and_seed
+    - echo $snowflake_load_database
+    - dbt snapshot $CI_PROFILE_TARGET
+>>>>>>> Uncomment snapshots test
     
 📝specify_tests:
   <<: *dbt_misc_jobs
