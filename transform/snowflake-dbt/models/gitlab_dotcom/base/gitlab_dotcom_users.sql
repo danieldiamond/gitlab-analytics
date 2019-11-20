@@ -76,10 +76,10 @@ WITH source AS (
       {{user_role_mapping(user_role='source.role')}}::VARCHAR          AS role
 
     FROM source
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY user_updated_at DESC) = 1
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY updated_at DESC) = 1
 
 )
 
 SELECT  *
 FROM renamed
-ORDER BY user_updated_at
+ORDER BY updated_at

@@ -58,7 +58,7 @@ WITH months AS (
 
     FROM skeleton
     LEFT JOIN issues
-      ON skeleton.user_id = issues.author_id
+      ON skeleton.user_id = issues.issue_author_id
       AND skeleton.skeleton_month = issues.event_month
     ORDER BY
       skeleton.user_id,

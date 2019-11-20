@@ -18,7 +18,7 @@ WITH months AS (
 
     SELECT
       user_id,
-      DATE_TRUNC(month, user_created_at) AS user_created_at_month
+      DATE_TRUNC(month, created_at) AS user_created_at_month
     FROM {{ ref('gitlab_dotcom_users') }}
     WHERE TO_DATE(created_at) < DATE_TRUNC('month', CURRENT_DATE)
 
@@ -36,7 +36,7 @@ WITH months AS (
 
     SELECT
       author_id,
-      DATE_TRUNC(month, audit_event_created_at)  AS audit_event_month,
+      DATE_TRUNC(month, created_at)              AS audit_event_month,
       COUNT(*)                                   AS audit_events_count
     FROM {{ ref('gitlab_dotcom_audit_events') }}
     {% if is_incremental() %}
