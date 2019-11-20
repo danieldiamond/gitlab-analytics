@@ -145,7 +145,7 @@ joined AS (
   LEFT JOIN namespace_lineage
     ON projects.namespace_id = namespace_lineage.namespace_id
   LEFT JOIN gitlab_subscriptions
-    ON namespace_lineage.namespace_id = gitlab_subscriptions.namespace_id
+    ON namespace_lineage.ultimate_parent_id = gitlab_subscriptions.namespace_id
     AND issues.issue_created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
 )
 
