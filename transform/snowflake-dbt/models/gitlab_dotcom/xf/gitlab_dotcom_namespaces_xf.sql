@@ -71,7 +71,8 @@ joined AS (
       namespaces.plan_id,
       namespaces.project_creation_level,
 
-      plans.plan_is_paid                                               AS namespace_plan_is_paid,
+      namespace_plans.plan_is_paid                                     AS namespace_plan_is_paid,
+      ultimate_parent_plans.plan_is_paid                               AS ultimate_parent_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)                   AS member_count,
       COALESCE(COUNT(DISTINCT projects.project_id), 0)                 AS project_count
 
@@ -83,9 +84,11 @@ joined AS (
         ON namespaces.namespace_id = projects.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
-      LEFT JOIN plans
-        ON namespaces.plan_id = plans.plan_id
-    {{ dbt_utils.group_by(n=28) }}
+      LEFT JOIN plans AS namespace_plans
+        ON namespaces.plan_id = namespace_plans.plan_id
+      LEFT JOIN plans AS ultimate_parent_plans
+        ON namespaces.plan_id = ultimate_parent_plans.plan_id
+    {{ dbt_utils.group_by(n=29) }}
 )
 
 SELECT *
