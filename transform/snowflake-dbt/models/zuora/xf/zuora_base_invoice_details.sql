@@ -40,9 +40,12 @@ WITH zuora_accts AS (
       subscription_name,
       subscription_name_slugify,
       oldest_subscription_in_cohort,
-      lineage
+      lineage,
+      subscription_status,
+      exclude_from_renewal_report,
+      sub_end_month
     FROM {{ ref('zuora_base_mrr') }}
-    {{ dbt_utils.group_by(n=8) }}
+    {{ dbt_utils.group_by(n=11) }}
 
 ), charges as (
 

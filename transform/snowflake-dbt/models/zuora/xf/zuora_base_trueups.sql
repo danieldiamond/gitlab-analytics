@@ -7,27 +7,30 @@ WITH invoice_details AS (
 )
 
 , final AS (
-  
+
   SELECT
     -- PRIMARY KEY
     subscription_name_slugify,
-    
+
     -- LOGICAL INFO
     account_number,
     charge_name,
     subscription_name,
-    
+
     -- LINEAGE
     lineage,
     oldest_subscription_in_cohort,
-    
+
     -- METADATA
     cohort_month,
     cohort_quarter,
     country,
     service_month                 AS trueup_month,
     service_start_date,
-    
+    subscription_status,
+    exclude_from_renewal_report,
+    sub_end_month,
+
     -- REVENUE DATA
     charge_amount,
     charge_amount/12              AS mrr,
@@ -38,5 +41,5 @@ WITH invoice_details AS (
 
 )
 
-SELECT * 
+SELECT *
 FROM final
