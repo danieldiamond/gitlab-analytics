@@ -41,6 +41,22 @@ WITH customers AS (
  
 )
 
+, zuora_base_mrr AS (
+ 
+ SELECT * 
+ FROM {{ ref('zuora_base_mrr')}}
+ 
+)
+
+, zuora_subscription_with_positive_mrr_tcv AS (
+  
+  SELECT DISTINCT
+    subscription_name_slugify,
+    subscription_start_date
+  FROM zuora_subscription 
+  
+)
+
 , ci_minutes_charges AS (
   
   SELECT *
@@ -76,7 +92,7 @@ WITH customers AS (
   FROM trials
   INNER JOIN orders_shapshots_excluding_ci_minutes 
     ON trials.order_id = orders_shapshots_excluding_ci_minutes.order_id
-  INNER JOIN zuora_subscription_xf AS subscription
+  INNER JOIN zuora_subscription_with_positive_mrr_tcv AS subscription
     ON orders_shapshots_excluding_ci_minutes.subscription_name_slugify = subscription.subscription_name_slugify
       AND trials.order_start_date <= subscription.subscription_start_date
   WHERE orders_shapshots_excluding_ci_minutes.subscription_name_slugify IS NOT NULL
