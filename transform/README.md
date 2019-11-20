@@ -10,7 +10,7 @@ It expects the following envrionment variables:
 * SNOWFLAKE_SCHEMA
 * SNOWFLAKE_TRANSFORM_WAREHOUSE
 * SNOWFLAKE_TRANSFORM_ROLE
-* SNOWFLAKE_TIMEZONE
+* SNOWFLAKE_TIMEZONE testing 123
 
 Example:
 ```
