@@ -21,8 +21,8 @@ WITH source AS (
       latest_build_finished_at::TIMESTAMP                      AS latest_build_finished_at,
       first_deployed_to_production_at::TIMESTAMP               AS first_deployed_to_production_at,
       merged_at::TIMESTAMP                                     AS merged_at,
-      created_at::TIMESTAMP                                    AS merge_request_metric_created_at,
-      updated_at::TIMESTAMP                                    AS merge_request_metric_updated_at,
+      created_at::TIMESTAMP                                    AS created_at,
+      updated_at::TIMESTAMP                                    AS updated_at,
       latest_closed_at::TIMESTAMP                              AS latest_closed_at,
 
       pipeline_id::INTEGER                                     AS pipeline_id,

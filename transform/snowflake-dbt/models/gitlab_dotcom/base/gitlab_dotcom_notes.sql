@@ -23,8 +23,8 @@ WITH source AS (
       note::VARCHAR                                         AS note,
       IFF(noteable_type = '', NULL, noteable_type)::VARCHAR AS noteable_type,
       author_id::INTEGER                                    AS note_author_id,
-      created_at::TIMESTAMP                                 AS note_created_at,
-      updated_at::TIMESTAMP                                 AS note_updated_at,
+      created_at::TIMESTAMP                                 AS created_at,
+      updated_at::TIMESTAMP                                 AS updated_at,
       project_id::INTEGER                                   AS note_project_id,
       attachment::VARCHAR                                   AS attachment,
       line_code::VARCHAR                                    AS line_code,
@@ -50,4 +50,4 @@ FROM renamed
 WHERE note_id NOT IN (
   203215238 --https://gitlab.com/gitlab-data/analytics/merge_requests/1423
 )
-ORDER BY note_created_at
+ORDER BY created_at

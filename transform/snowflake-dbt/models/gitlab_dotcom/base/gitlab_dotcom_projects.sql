@@ -23,8 +23,8 @@ WITH source AS (
       import_url::VARCHAR                                                         AS project_import_url,
       merge_requests_template                                                     AS project_merge_requests_template,
 
-      created_at::TIMESTAMP                                                       AS project_created_at,
-      updated_at::TIMESTAMP                                                       AS project_updated_at,
+      created_at::TIMESTAMP                                                       AS created_at,
+      updated_at::TIMESTAMP                                                       AS updated_at,
 
       creator_id::NUMBER                                                          AS creator_id,
       namespace_id::NUMBER                                                        AS namespace_id,
