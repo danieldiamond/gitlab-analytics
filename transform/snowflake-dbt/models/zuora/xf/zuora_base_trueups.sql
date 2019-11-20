@@ -27,9 +27,6 @@ WITH invoice_details AS (
     country,
     service_month                 AS trueup_month,
     service_start_date,
-    subscription_status,
-    exclude_from_renewal_report,
-    sub_end_month,
 
     -- REVENUE DATA
     charge_amount,

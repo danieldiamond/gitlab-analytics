@@ -28,15 +28,12 @@ WITH base_mrr AS (
           'Other'         AS delivery,
           charge_name     AS rate_plan_name,
           CASE
-            WHEN lower(rate_plan_name) like '%support%' 
+            WHEN lower(rate_plan_name) like '%support%'
               THEN 'Support Only'
             ELSE 'Full Service'
           END             AS service_type,
           NULL            AS unit_of_measure,
-          NULL            AS quantity,
-          subscription_status,
-          exclude_from_renewal_report,
-          sub_end_month
+          NULL            AS quantity
     FROM trueup_mrr
 
     UNION ALL
@@ -55,15 +52,12 @@ WITH base_mrr AS (
           delivery,
           rate_plan_name,
           CASE
-            WHEN lower(rate_plan_name) like '%support%' 
+            WHEN lower(rate_plan_name) like '%support%'
               THEN 'Support Only'
             ELSE 'Full Service'
           END             AS service_type,
           unit_of_measure,
-          quantity,
-          subscription_status,
-          exclude_from_renewal_report,
-          sub_end_month
+          quantity
     FROM base_mrr
 
 ), uniqueified as ( -- one row per sub slug for counting x product_category x mrr_month combo, with first of other values
@@ -82,14 +76,11 @@ WITH base_mrr AS (
           delivery,
           unit_of_measure,
           service_type,
-          subscription_status,
-          exclude_from_renewal_report,
-          sub_end_month,
           array_agg(rate_plan_name) AS rate_plan_name,
           sum(quantity)             AS quantity,
           sum(mrr)                  AS mrr
     FROM mrr_combined
-    {{ dbt_utils.group_by(n=17) }}
+    {{ dbt_utils.group_by(n=14) }}
 
 )
 

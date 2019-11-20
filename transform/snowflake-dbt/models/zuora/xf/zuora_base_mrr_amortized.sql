@@ -37,9 +37,7 @@ WITH zuora_mrr AS (
            cohort_month,
            cohort_quarter,
            unit_of_measure,
-           quantity,
-           subscription_status,
-           exclude_from_renewal_report
+           quantity
   FROM zuora_mrr b
   LEFT JOIN date_table d
   ON d.date_actual >= b.effective_start_month
@@ -62,14 +60,11 @@ SELECT country,
        cohort_month,
        cohort_quarter,
        unit_of_measure,
-       subscription_status,
-       exclude_from_renewal_report,
-       sub_end_month,
        sum(mrr)       AS mrr,
        sum(quantity)  AS quantity
 FROM amortized_mrr
 WHERE mrr_month IS NOT NULL
-{{ dbt_utils.group_by(n=17) }}
+{{ dbt_utils.group_by(n=14) }}
 
 )
 
