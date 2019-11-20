@@ -22,8 +22,8 @@ WITH source AS (
     id::INTEGER             AS audit_event_id,
     author_id::INTEGER      AS author_id,
     type::VARCHAR           AS audit_event_type,
-    entity_id::INTEGER      AS audit_event_entity_id,
-    entity_type::VARCHAR    AS audit_event_entity_type,
+    entity_id::INTEGER      AS entity_id,
+    entity_type::VARCHAR    AS entity_type,
     details::VARCHAR        AS audit_event_details,
     created_at::TIMESTAMP   AS created_at,
     updated_at::TIMESTAMP   AS updated_at

@@ -38,4 +38,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-ORDER BY merge_request_diff_updated_at
+ORDER BY updated_at

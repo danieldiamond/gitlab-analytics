@@ -23,8 +23,8 @@ WITH source AS (
       last_sign_in_at::TIMESTAMP                                       AS last_sign_in_at,
       -- current_sign_in_ip   // hidden for privacy
       -- last_sign_in_ip   // hidden for privacy
-      created_at::TIMESTAMP                                            AS user_created_at,
-      updated_at::TIMESTAMP                                            AS user_updated_at,
+      created_at::TIMESTAMP                                            AS created_at,
+      updated_at::TIMESTAMP                                            AS updated_at,
       admin::BOOLEAN                                                   AS is_admin,
       projects_limit::INTEGER                                          AS projects_limit,
       failed_attempts::INTEGER                                         AS failed_attempts,

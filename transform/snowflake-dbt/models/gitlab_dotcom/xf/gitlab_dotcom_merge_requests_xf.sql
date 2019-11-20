@@ -91,7 +91,7 @@ WITH merge_requests AS (
       IFF(project_namespace_lineage.namespace_is_internal IS NOT NULL
           AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.labels),
         TRUE, FALSE)                               AS is_community_contributor_related,
-      TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at, 
+      TIMESTAMPDIFF(HOURS, merge_requests.created_at, 
         merge_request_metrics.merged_at)           AS hours_to_merged_status
     FROM merge_requests
       LEFT JOIN agg_labels
