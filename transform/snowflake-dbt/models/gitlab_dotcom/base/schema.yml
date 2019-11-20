@@ -668,8 +668,22 @@ models:
         tests:
           - not_null
           - unique
-
       - name: oauth_access_token_created_at
+        tests:
+          - not_null
+
+  - name: plans
+    description: >-
+      A base model for Gitlab.com plans.
+    columns:
+      - name: plan_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
         tests:
           - not_null
 
