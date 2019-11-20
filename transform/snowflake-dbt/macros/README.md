@@ -38,7 +38,7 @@ Used in:
 - retention_zuora_subscription_.sql
 
 ## Coalesce to Infinity
-This macro expects a timestamp or date column as an input. If a non-null value is inputted, the same value is returned. If a null value is inputted, a large date representing 'infinity' is returned. This is useful for writing `BETWEEN` clauses using dates.
+This macro expects a timestamp or date column as an input. If a non-null value is inputted, the same value is returned. If a null value is inputted, a large date representing 'infinity' is returned. This is useful for writing `BETWEEN` clauses using date columns that are sometimes NULL.
 
 ## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
