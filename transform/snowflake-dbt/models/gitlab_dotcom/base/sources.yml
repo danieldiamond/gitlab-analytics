@@ -115,6 +115,8 @@ sources:
         identifier: gitlab_db_notification_settings
       - name: oauth_access_tokens
         identifier: gitlab_db_oauth_access_tokens
+      - name: plans
+        identifier: gitlab_db_plans
       - name: project_authorizations
         identifier: gitlab_db_project_authorizations
       - name: project_auto_devops
