@@ -45,7 +45,8 @@ on-run-end:
 seeds:
   enabled: true
   schema: staging
-
+  quote_columns: True
+  
   gitlab_snowflake:
     zuora_country_geographic_region:
       schema: analytics
