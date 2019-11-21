@@ -34,13 +34,6 @@ WITH customers AS (
  
 )
 
-, zuora_subscription AS (
- 
- SELECT * 
- FROM {{ ref('zuora_subscription_xf')}}
- 
-)
-
 , zuora_base_mrr AS (
  
  SELECT * 
@@ -53,7 +46,7 @@ WITH customers AS (
   SELECT DISTINCT
     subscription_name_slugify,
     subscription_start_date
-  FROM zuora_subscription 
+  FROM zuora_base_mrr 
   
 )
 
