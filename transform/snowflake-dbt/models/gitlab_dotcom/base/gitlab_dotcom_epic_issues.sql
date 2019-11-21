@@ -7,7 +7,7 @@ WITH source AS (
 
   SELECT *
   FROM {{ source('gitlab_dotcom', 'epic_issues') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY issue_id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
 

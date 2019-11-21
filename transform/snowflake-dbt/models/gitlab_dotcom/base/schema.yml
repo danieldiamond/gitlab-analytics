@@ -138,7 +138,7 @@ models:
   - name: gitlab_dotcom_ci_pipeline_schedule_variables
     description: Base model for Gitlab.com ci_pipeline_schedule_variables
     columns:
-      - name: ci_pipeline_schedule_id
+      - name: ci_pipeline_schedule_variable_id
         tests:
           - not_null
           - unique

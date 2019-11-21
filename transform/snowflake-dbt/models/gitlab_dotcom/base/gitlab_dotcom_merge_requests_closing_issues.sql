@@ -12,11 +12,11 @@ WITH source AS (
 ), renamed AS (
 
     SELECT DISTINCT 
-      md5(merge_request_id || issue_id || created_at)::VARCHAR   AS merge_request_issue_relation_id,
-      merge_request_id::INTEGER                                  AS merge_request_id,
-      issue_id::INTEGER                                          AS issue_id,
-      created_at::TIMESTAMP                                      AS created_at,
-      updated_at::TIMESTAMP                                      AS updated_at
+      id::INTEGER                AS merge_request_issue_relation_id,
+      merge_request_id::INTEGER  AS merge_request_id,
+      issue_id::INTEGER          AS issue_id,
+      created_at::TIMESTAMP      AS created_at,
+      updated_at::TIMESTAMP      AS updated_at
 
     FROM source
 
