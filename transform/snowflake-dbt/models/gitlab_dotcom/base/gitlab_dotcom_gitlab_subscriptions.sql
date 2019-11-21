@@ -24,7 +24,7 @@ WITH source AS (
       created_at::TIMESTAMP                         AS created_at,
       updated_at::TIMESTAMP                         AS updated_at,
        _task_instance NOT IN (
-         SELECT MAX(_task_instance) FROM source)    AS is_deleted
+         SELECT MAX(_task_instance) FROM source)    AS is_in_most_recent_task
 
     FROM source
 
@@ -47,18 +47,17 @@ WITH source AS (
     updated_at AS valid_from,
     CASE
       WHEN next_updated_at IS NOT NULL THEN DATEADD('millisecond', -1, next_updated_at)
-      WHEN id_in_most_recent_task = FALSE THEN max_uploaded_at_by_id.uploaded_at
+      WHEN is_in_most_recent_task = FALSE THEN max_uploaded_at_by_id.uploaded_at
     END AS valid_to,
     CASE
       WHEN next_updated_at IS NOT NULL THEN FALSE
-      WHEN id_in_most_recent_task = FALSE THEN FALSE
+      WHEN is_in_most_recent_task = FALSE THEN FALSE
       ELSE TRUE
     END AS is_currently_valid
 
   FROM renamed
     LEFT JOIN max_uploaded_at_by_id
       ON renamed.namespace_id = max_uploaded_at_by_id.namespace_id
-  WHERE renamed.namespace_id = 1418911
   ORDER BY updated_at
 )
 
