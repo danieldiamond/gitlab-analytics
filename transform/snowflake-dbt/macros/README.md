@@ -215,6 +215,7 @@ Usage:
 ```
 Used in:
 - snowplow_combined/30_day/*.sql
+- snowplow_combined/90_day/*.sql
 
 ## SFDC Deal Size ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sfdc_deal_size.sql))
 This macro buckets a unit into a deal size (Small, Medium, Big, or Jumbo) based on an inputted value.
