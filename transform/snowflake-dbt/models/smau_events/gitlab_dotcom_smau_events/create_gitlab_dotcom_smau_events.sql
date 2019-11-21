@@ -13,14 +13,14 @@ WITH mr_comment_added AS (
   
   SELECT
     note_author_id           AS user_id,
-    TO_DATE(note_created_at) AS event_date,
+    TO_DATE(created_at)      AS event_date,
     'mr_comment_added'       AS event_type,
     {{ dbt_utils.surrogate_key('event_date', 'event_type', 'note_id') }}
                              AS event_surrogate_key 
      
-  FROM {{ref('gitlab_dotcom_notes_xf')}}
+  FROM {{ref('gitlab_dotcom_notes')}}
   WHERE noteable_type = 'MergeRequest'
-    AND note_created_at >= '2015-01-01'
+    AND created_at >= '2015-01-01'
   
 )
 
