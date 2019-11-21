@@ -23,10 +23,11 @@ WITH source AS (
       seats::INTEGER                                AS seats,
       trial::BOOLEAN                                AS is_trial,
       created_at::TIMESTAMP                         AS created_at,
-      updated_at::TIMESTAMP                         AS updated_at
+      updated_at::TIMESTAMP                         AS updated_at,
+       _task_instance NOT IN (
+         SELECT MAX(_task_instance) FROM source)    AS is_deleted
 
     FROM source
-    WHERE _task_instance IN (SELECT MAX(_task_instance) FROM source)
 
 )
 
