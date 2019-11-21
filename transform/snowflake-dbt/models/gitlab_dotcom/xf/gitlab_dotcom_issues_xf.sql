@@ -135,7 +135,11 @@ joined AS (
     agg_labels.labels,
     ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
     namespace_lineage.namespace_is_internal      AS is_internal_issue,
-    gitlab_subscriptions.plan_id                 AS namespace_plan_id_at_issue_creation
+    CASE
+      WHEN issue_created_at >= '2019-11-09'
+        THEN COALESCE(gitlab_subscriptions.plan_id, 34)
+      ELSE gitlab_subscriptions.plan_id            
+    END AS namespace_plan_id_at_issue_creation
 
   FROM issues
   LEFT JOIN agg_labels

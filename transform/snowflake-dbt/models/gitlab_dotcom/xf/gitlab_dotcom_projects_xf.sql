@@ -104,7 +104,11 @@ joined AS (
       namespace_lineage.ultimate_parent_id                         AS namespace_ultimate_parent_id,
       namespace_lineage.namespace_is_internal,
 
-      gitlab_subscriptions.plan_id                                 AS namespace_plan_id_at_project_creation,
+      CASE
+        WHEN project_created_at >= '2019-11-09'
+          THEN COALESCE(gitlab_subscriptions.plan_id, 34)
+        ELSE gitlab_subscriptions.plan_id            
+      END AS namespace_plan_id_at_project_creation,
 
       COALESCE( (namespaces.plan_id IN {{ paid_plans }} ), False)  AS namespace_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)               AS member_count

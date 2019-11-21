@@ -99,7 +99,11 @@ WITH merge_requests AS (
       TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at,
         merge_request_metrics.merged_at)           AS hours_to_merged_status,
 
-      gitlab_subscriptions.plan_id                 AS namespace_plan_id_at_merge_request_creation
+      CASE
+        WHEN merge_request_created_at >= '2019-11-09'
+          THEN COALESCE(gitlab_subscriptions.plan_id, 34)
+        ELSE gitlab_subscriptions.plan_id            
+      END AS namespace_plan_id_at_merge_request_creation
 
     FROM merge_requests
       LEFT JOIN agg_labels
