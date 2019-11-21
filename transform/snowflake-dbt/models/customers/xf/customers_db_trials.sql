@@ -23,7 +23,7 @@ WITH customers AS (
 , users AS (
  
  SELECT * 
- FROM {{ ref('gitlab_dotcom_users_xf')}}
+ FROM {{ ref('gitlab_dotcom_users')}}
  
 )
 
@@ -108,7 +108,7 @@ WITH customers AS (
       
     users.user_id                                           AS gitlab_user_id,
     IFF(users.user_id IS NOT NULL, TRUE, FALSE)             AS is_gitlab_user,
-    users.user_created_at,
+    users.created_at                                        AS user_created_at,
     
     
     namespaces.namespace_created_at,
