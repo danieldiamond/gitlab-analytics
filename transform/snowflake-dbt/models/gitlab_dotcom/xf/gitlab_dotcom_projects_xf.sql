@@ -37,7 +37,7 @@ namespace_lineage AS (
 joined AS (
     SELECT
       projects.project_id,
-      projects.project_created_at,
+      projects.created_at                                          AS project_created_at,
       projects.project_updated_at,
       projects.creator_id,
       projects.namespace_id,
@@ -90,7 +90,7 @@ joined AS (
         WHEN projects.visibility_level != '20' AND NOT namespace_lineage.namespace_is_internal
           THEN 'project is private/internal'
         ELSE {{field}}
-      END                                                                           AS {{field}},
+      END                                                          AS {{field}},
       {% endfor %}
 
       namespaces.namespace_name,

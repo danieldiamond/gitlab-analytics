@@ -10,7 +10,7 @@ WITH source AS (
     SELECT *
     FROM {{ source('gitlab_dotcom', 'users') }}
     {% if is_incremental() %}
-    WHERE updated_at >= (SELECT MAX(user_updated_at) FROM {{this}})
+    WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
     {% endif %}
 
 ), renamed AS (
