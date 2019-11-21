@@ -18,7 +18,7 @@ WITH mr_comment_added AS (
     {{ dbt_utils.surrogate_key('event_date', 'event_type', 'note_id') }}
                              AS event_surrogate_key 
      
-  FROM {{ref('gitlab_dotcom_notes')}}
+  FROM {{ref('gitlab_dotcom_notes_xf')}}
   WHERE noteable_type = 'MergeRequest'
     AND note_created_at >= '2015-01-01'
   

@@ -111,7 +111,7 @@ WITH customers AS (
     users.created_at                                        AS user_created_at,
     
     
-    namespaces.namespace_created_at,
+    namespaces.created_at                                   AS namespace_created_at,
     namespaces.namespace_type,
     
     IFF(converted_trials.order_id IS NOT NULL, TRUE, FALSE) AS is_converted,
