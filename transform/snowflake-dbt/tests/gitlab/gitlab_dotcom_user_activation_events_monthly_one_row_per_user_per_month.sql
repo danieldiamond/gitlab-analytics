@@ -20,7 +20,7 @@ WITH months AS (
       user_id,
       DATE_TRUNC(month, user_created_at) AS user_created_at_month
 
-    FROM {{ ref('gitlab_dotcom_users') }}
+    FROM {{ ref('gitlab_dotcom_users_xf') }}
     WHERE user_created_at < date_trunc('month', CURRENT_DATE)::DATE
 
 ), skeleton AS ( -- Create a framework of one row per user per month (after their creation date)

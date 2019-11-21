@@ -38,7 +38,7 @@ joined AS (
     SELECT
       projects.project_id,
       projects.created_at                                          AS project_created_at,
-      projects.project_updated_at,
+      projects.updated_at                                          AS project_updated_at,
       projects.creator_id,
       projects.namespace_id,
       projects.last_activity_at,

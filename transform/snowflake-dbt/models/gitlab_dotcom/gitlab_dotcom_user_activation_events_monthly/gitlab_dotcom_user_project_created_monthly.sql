@@ -39,8 +39,8 @@ WITH months AS (
 
     SELECT
       creator_id                              AS author_id,
-      DATE_TRUNC('month', project_created_at) AS event_month,
-      COUNT(*)                                         AS events_count
+      DATE_TRUNC('month', created_at)         AS event_month,
+      COUNT(*)                                AS events_count
 
     FROM {{ ref('gitlab_dotcom_projects') }}
     GROUP BY 1,2
