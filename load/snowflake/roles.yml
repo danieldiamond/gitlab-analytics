@@ -686,6 +686,10 @@ roles:
         warehouses:
             - analyst_xs
 
+    - cmestel:
+        warehouses:
+            - analyst_xs
+
     - datwood:
         warehouses:
             - analyst_xs
@@ -890,6 +894,12 @@ users:
         member_of:
             - aakgun
             - analyst_growth
+
+    - cmestel:
+        can_login: yes
+        member_of:
+            - analyst_finance
+            - cmestel
 
     - datwood:
         can_login: yes
