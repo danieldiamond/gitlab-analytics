@@ -8,11 +8,10 @@ WITH source AS (
   SELECT *
   FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
   WHERE id != 572635 -- This ID has NULL values for many of the important columns.
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
-    SELECT
+    SELECT DISTINCT
       id::INTEGER                                   AS gitlab_subscription_id,
       start_date::DATE                              AS gitlab_subscription_start_date,
       end_date::DATE                                AS gitlab_subscription_end_date,
