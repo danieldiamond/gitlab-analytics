@@ -197,10 +197,12 @@ for source_name, config in config_dict.items():
         """
         scd_affinity = {
             "podAntiAffinity": {
-                "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "labelSelector": [],
-                    "topologyKey": "failure-domain.beta.kubernetes.io/region=us-west1"
-                }
+                "requiredDuringSchedulingIgnoredDuringExecution": [
+                    {
+                        "labelSelector": [],
+                        "topologyKey": "failure-domain.beta.kubernetes.io/region=us-west1",
+                    }
+                ]
             }
         }
         scd_extract = KubernetesPodOperator(
