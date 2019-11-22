@@ -12,22 +12,16 @@
   SELECT
     {{casted_cte}}.*,
 
-    FIRST_VALUE(updated_at) OVER (
-        PARTITION BY {{casted_cte}}.{{primary_key}}
-        ORDER BY updated_at
-        ROWS BETWEEN 1 FOLLOWING AND UNBOUNDED FOLLOWING
-    ) AS next_updated_at,
     updated_at AS valid_from,
-    
     COALESCE(
       DATEADD('millisecond', -1, FIRST_VALUE(updated_at) OVER (
         PARTITION BY {{casted_cte}}.{{primary_key}}
         ORDER BY updated_at
         ROWS BETWEEN 1 FOLLOWING AND UNBOUNDED FOLLOWING)
       ),
-      IFF(is_in_most_recent_task = FALSE, max_uploaded_at_by_primary_key.uploaded_at, NULL) -- always needed?
+      IFF(is_in_most_recent_task = FALSE, max_by_primary_key.uploaded_at, NULL)
     ) AS valid_to,
-    (valid_to IS NOT NULL) AS is_currently_valid
+    (valid_to IS NULL) AS is_currently_valid
 
   FROM {{casted_cte}}
     LEFT JOIN max_by_primary_key

@@ -2,11 +2,10 @@ WITH source AS (
 
   SELECT *
   FROM {{ source('gitlab_dotcom', 'members') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
 
-    SELECT
+    SELECT DISTINCT
 
       id::INTEGER                                    AS member_id,
       access_level::INTEGER                          AS access_level,
@@ -28,5 +27,8 @@ WITH source AS (
 
 )
 
-SELECT *
-FROM renamed
+{{ scd_type_6(
+    primary_key='member_id',
+    source_cte='source',
+    casted_cte='renamed'
+) }}

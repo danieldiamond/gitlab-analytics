@@ -12,6 +12,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT DISTINCT
+
       id::INTEGER                                   AS gitlab_subscription_id,
       start_date::DATE                              AS gitlab_subscription_start_date,
       end_date::DATE                                AS gitlab_subscription_end_date,
