@@ -40,7 +40,7 @@ dag = DAG(
 # Task 1
 snowflake_load = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/meltano/meltano/runner:v1.1.0",
+    image="registry.gitlab.com/gitlab-data/data-image/data-image:tayloramurphy-master-patch-12221",
     task_id="snowflake-permissions",
     name="snowflake-permissions",
     secrets=[
