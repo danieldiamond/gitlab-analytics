@@ -199,7 +199,7 @@ for source_name, config in config_dict.items():
             "podAntiAffinity": {
                 "requiredDuringSchedulingIgnoredDuringExecution": [
                     {
-                        "labelSelector": [],
+                        "labelSelector": {},
                         "topologyKey": "failure-domain.beta.kubernetes.io/region=us-west1",
                     }
                 ]
