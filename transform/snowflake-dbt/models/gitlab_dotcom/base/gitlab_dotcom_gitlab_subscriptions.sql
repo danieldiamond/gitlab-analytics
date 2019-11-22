@@ -31,6 +31,7 @@ WITH source AS (
 
 {{ scd_type_6(
     primary_key='namespace_id',
+    primary_key_raw='namespace_id',
     source_cte='source',
     casted_cte='renamed'
 ) }}

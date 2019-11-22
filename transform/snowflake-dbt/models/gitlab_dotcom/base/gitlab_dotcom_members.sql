@@ -29,6 +29,7 @@ WITH source AS (
 
 {{ scd_type_6(
     primary_key='member_id',
+    primary_key_raw='id',
     source_cte='source',
     casted_cte='renamed'
 ) }}

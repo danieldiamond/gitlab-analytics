@@ -1,8 +1,8 @@
-{%- macro scd_type_6(primary_key, source_cte, casted_cte) -%}
+{%- macro scd_type_6(primary_key, primary_key_raw, source_cte, casted_cte) -%}
 
 , max_by_primary_key AS (
   SELECT
-    {{ primary_key }} AS primary_key,
+    {{ primary_key_raw }} AS primary_key,
     MAX(IFF(_task_instance IN ( SELECT MAX(_task_instance) FROM source), 1, 0)) AS is_in_most_recent_task,
     MAX(DATEADD('sec', _uploaded_at, '1970-01-01')::DATE) AS uploaded_at
   FROM {{ source_cte }}
@@ -25,7 +25,7 @@
 
   FROM {{casted_cte}}
     LEFT JOIN max_by_primary_key
-      ON renamed.namespace_id = max_by_primary_key.primary_key
+      ON renamed.{{primary_key}} = max_by_primary_key.primary_key
   ORDER BY valid_from, valid_to
 
 )
