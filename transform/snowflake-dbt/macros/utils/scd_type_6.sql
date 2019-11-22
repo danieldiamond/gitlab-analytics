@@ -1,10 +1,10 @@
-{%- macro scd_type_6(primary_key, cte_name, source) -%}
+{%- macro scd_type_6(primary_key, source_cte, casted_cte) -%}
 
-, max_uploaded_at_by_id AS (
+, max_uploaded_at_by_primary_key AS (
   SELECT
-    namespace_id,
+    {{ primary_key }} AS primary_key,
     MAX(DATEADD('sec', _uploaded_at, '1970-01-01')::DATE) AS uploaded_at
-  FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }} -- Source table
+  FROM {{ source_cte }}
   GROUP BY 1
 
 ), windowed AS (
@@ -19,7 +19,7 @@
     updated_at AS valid_from,
     CASE
       WHEN next_updated_at IS NOT NULL THEN DATEADD('millisecond', -1, next_updated_at)
-      WHEN is_in_most_recent_task = FALSE THEN max_uploaded_at_by_id.uploaded_at
+      WHEN is_in_most_recent_task = FALSE THEN max_uploaded_at_by_primary_key.uploaded_at
     END AS valid_to,
     CASE
       WHEN next_updated_at IS NOT NULL THEN FALSE
@@ -28,8 +28,8 @@
     END AS is_currently_valid
 
   FROM renamed
-    LEFT JOIN max_uploaded_at_by_id
-      ON renamed.namespace_id = max_uploaded_at_by_id.namespace_id
+    LEFT JOIN max_uploaded_at_by_primary_key
+      ON renamed.namespace_id = max_uploaded_at_by_primary_key.namespace_id
   ORDER BY updated_at
 )
 

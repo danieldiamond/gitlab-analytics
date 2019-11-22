@@ -31,7 +31,7 @@ WITH source AS (
 )
 
 {{ scd_type_6(
-  primary_key='namespace_id',
-  cte_name='renamed',
-  source="source('gitlab_dotcom', 'gitlab_subscriptions')"
+    primary_key='namespace_id',
+    source_cte='source',
+    casted_cte='renamed'
 ) }}
