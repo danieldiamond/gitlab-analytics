@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT * 
-    FROM {{ source('sheetload','sheetload_rep_quotas_full_ps_fy2020') }}
+    FROM {{ source('sheetload','rep_quotas_full_ps_fy2020') }}
     
 ), final AS (
 
