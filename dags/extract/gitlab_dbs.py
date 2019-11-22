@@ -200,7 +200,7 @@ for source_name, config in config_dict.items():
                 "requiredDuringSchedulingIgnoredDuringExecution": [
                     {
                         "labelSelector": {},
-                        "topologyKey": "region=us-west1",
+                        "topologyKey": "us-west1-a",
                     }
                 ]
             }
