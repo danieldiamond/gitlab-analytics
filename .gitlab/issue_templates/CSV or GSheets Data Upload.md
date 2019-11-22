@@ -23,6 +23,8 @@ If none, please include a description
   - [ ] Yes 
   - [ ] No
 * [ ]  How long will this data need to reside in the Data team's data warehouse? Expiration Date: ______ 
+* [ ]  How do you want to name the table? Table Name: ______ 
+* [ ]  Update the due date on this issue for when you want this data in Periscope. 
 
 ### If you need data in Periscope but...
 
@@ -49,7 +51,6 @@ If none, please include a description
     * [ ]  Data Team member to share it with the required service account - [Email Address to share with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
     * [ ]  Data Team member to check file name and sheet names to match: The file will be located and loaded based on its name `sheetload.<table_name>`. The names of the sheets shared with the runner must be unique and in the `<file_name>.<tab_name>` format
     * [ ]  Data Team member to create MR to add this sheet to be pulled in by Sheetload . See: https://gitlab.com/gitlab-data/analytics/merge_requests/1633/diffs as example
-    * [ ]  Data Team member to ask turn around time needed for data in Periscope. Note: The airflow job for sheetload runs  every night. 
     * [ ]  Data Engineer to verify if the data loaded correctly. 
     * [ ]  Data Analyst to create dbt models 
     * [ ]  Data Analyst to assign MR of dbt model to Data Engineer team (iterate until model is complete).
