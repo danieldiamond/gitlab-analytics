@@ -9,10 +9,10 @@
 
 ), windowed AS (
   SELECT
-    renamed.*,
+    {{casted_cte}}.*,
 
     FIRST_VALUE(updated_at) OVER (
-        PARTITION BY renamed.namespace_id
+        PARTITION BY {{casted_cte}}.{{primary_key}}
         ORDER BY updated_at
         ROWS BETWEEN 1 FOLLOWING AND UNBOUNDED FOLLOWING
     ) AS next_updated_at,
@@ -27,10 +27,11 @@
       ELSE TRUE
     END AS is_currently_valid
 
-  FROM renamed
+  FROM {{casted_cte}}
     LEFT JOIN max_uploaded_at_by_primary_key
-      ON renamed.namespace_id = max_uploaded_at_by_primary_key.namespace_id
+      ON {{casted_cte}}.{{primary_key}} = max_uploaded_at_by_primary_key.{{primary_key}}
   ORDER BY updated_at
+
 )
 
 SELECT *
