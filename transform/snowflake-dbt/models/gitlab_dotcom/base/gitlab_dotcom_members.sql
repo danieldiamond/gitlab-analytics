@@ -1,16 +1,16 @@
 WITH source AS (
 
-  SELECT {{ dbt_utils.star(from=source('gitlab_dotcom', 'members'), except=["exclude_field_1", "exclude_field_2"]) }}
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'members') }}
 
 ), source_distinct AS (
 
   SELECT
-    {{ dbt_utils.star(from=source('gitlab_dotcom', 'members'), except=['_uploaded_at', 'task_instance']) }},
-    MIN(DATEADD('sec', _uploaded_at, '1970-01-01')) AS row_first_seen_at,
+    {{ dbt_utils.star(from=source('gitlab_dotcom', 'members'), except=["_UPLOADED_AT", "_TASK_INSTANCE"]) }},
+    MIN(DATEADD('sec', _uploaded_at, '1970-01-01')) AS valid_from,
     MAX(_task_instance) AS max_task_instance
   FROM source
-  GROUP BY {{ dbt_utils.star(from=source('gitlab_dotcom', 'members'), except=['_uploaded_at', '_uploaded_at']) }}
+  GROUP BY {{ dbt_utils.star(from=source('gitlab_dotcom', 'members'),  except=["_UPLOADED_AT", "_TASK_INSTANCE"]) }}
 
 ), renamed AS (
 
@@ -30,7 +30,7 @@ WITH source AS (
       expires_at::TIMESTAMP                          AS expires_at,
       ldap::BOOLEAN                                  AS has_ldap,
       override::BOOLEAN                              AS has_override,
-      row_first_seen_at
+      valid_from
 
     FROM source_distinct
 
@@ -40,6 +40,6 @@ WITH source AS (
     primary_key='member_id',
     primary_key_raw='id',
     source_cte='source_distinct',
-    source_timestamp='row_first_seen_at',
+    source_timestamp='valid_from',
     casted_cte='renamed'
 ) }}

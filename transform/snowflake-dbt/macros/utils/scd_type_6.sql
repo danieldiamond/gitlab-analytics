@@ -3,8 +3,8 @@
 , max_by_primary_key AS (
   SELECT
     {{ primary_key_raw }} AS primary_key,
-    MAX(IFF(max_task_instance IN ( SELECT MAX(max_task_instance) FROM {{ source_cte }}), 1, 0)) AS is_in_most_recent_task,
-    MAX(DATEADD('sec', _uploaded_at, '1970-01-01')) AS uploaded_at
+    MAX(IFF(max_task_instance IN ( SELECT MAX(max_task_instance) FROM {{ source_cte }} ), 1, 0)) AS is_in_most_recent_task,
+    MAX({{ source_timestamp }} ) AS max_timestamp
   FROM {{ source_cte }}
   GROUP BY 1
 
@@ -12,14 +12,13 @@
   SELECT
     {{casted_cte}}.*,
 
-    {{ source_timestamp }} AS valid_from,
     COALESCE(
-      DATEADD('millisecond', -1, FIRST_VALUE({{ source_timestamp }}) OVER (
+      DATEADD('millisecond', -1, FIRST_VALUE( {{ source_timestamp }} ) OVER (
         PARTITION BY {{casted_cte}}.{{primary_key}}
         ORDER BY {{ source_timestamp }}
         ROWS BETWEEN 1 FOLLOWING AND UNBOUNDED FOLLOWING)
       ),
-      IFF(is_in_most_recent_task = FALSE, max_by_primary_key.uploaded_at, NULL)
+      IFF(is_in_most_recent_task = FALSE, max_by_primary_key.max_timestamp, NULL)
     ) AS valid_to,
     (valid_to IS NULL) AS is_currently_valid
 
