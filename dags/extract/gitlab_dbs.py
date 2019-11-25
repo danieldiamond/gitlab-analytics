@@ -211,7 +211,7 @@ for source_name, config in config_dict.items():
 
         scd_tolerations = [
                 {
-                    "key": "pgp",
+                    "key": "scd",
                     "operator": "Equal",
                     "value": "true",
                     "effect": "NoSchedule",
