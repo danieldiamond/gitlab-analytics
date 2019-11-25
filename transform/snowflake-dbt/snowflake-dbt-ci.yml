@@ -31,13 +31,13 @@
 
 # Common commands anchors
 .deps_and_seed: &deps_and_seed
-  python3 macro_name_check.py
-  dbt deps $CI_PROFILE_TARGET
-  dbt seed $CI_PROFILE_TARGET #seed data from csv
+  - python3 macro_name_check.py
+  - dbt deps $CI_PROFILE_TARGET
+  - dbt seed $CI_PROFILE_TARGET #seed data from csv
 
 .xl_warehouse: &xl_warehouse
-  export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
-  echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
+  - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
+  - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
 
 
 # MR Jobs
