@@ -28,17 +28,14 @@
     expire_in: 1 week
     when: always
 
-# Literal block abstraction
-.deps_and_seed: &deps_and_seed |
+# Common commands anchors
+.deps_and_seed: &deps_and_seed
   python3 macro_name_check.py
-  echo -e "\e[92mdbt deps $CI_PROFILE_TARGET\033[0m"
   dbt deps $CI_PROFILE_TARGET
-  echo -e "\e[92mdbt seed $CI_PROFILE_TARGET\033[0m"
   dbt seed $CI_PROFILE_TARGET #seed data from csv
 
-.xl_warehouse: &xl_warehouse |
+.xl_warehouse: &xl_warehouse
   export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
-  echo -e "\e[32mecho \$SNOWFLAKE_TRANSFORM_WAREHOUSE\033[0m"
   echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
 
 
