@@ -200,7 +200,7 @@ for source_name, config in config_dict.items():
                 "requiredDuringSchedulingIgnoredDuringExecution": [
                     {
                         "labelSelector": {},
-                        "topologyKey": "us-west1-a",
+                        "topologyKey": "kubernetes.io/hostname",
                     }
                 ]
             }
