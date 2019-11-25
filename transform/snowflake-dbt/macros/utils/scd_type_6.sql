@@ -25,7 +25,7 @@
   FROM {{casted_cte}}
     LEFT JOIN max_by_primary_key
       ON renamed.{{primary_key}} = max_by_primary_key.primary_key
-  ORDER BY valid_from, valid_to
+  ORDER BY {{ source_timestamp }}, valid_to
 
 )
 

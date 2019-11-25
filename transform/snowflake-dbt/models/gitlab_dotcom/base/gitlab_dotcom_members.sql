@@ -3,13 +3,13 @@ WITH source AS (
   SELECT *
   FROM {{ source('gitlab_dotcom', 'members') }}
 
-), 
+),
 
-{{ source_distinct_rows(source = "source('gitlab_dotcom', 'members')")}}
+{{ source_distinct_rows(source=source('gitlab_dotcom', 'members'))}}
 
 , renamed AS (
 
-    SELECT DISTINCT
+    SELECT
 
       id::INTEGER                                    AS member_id,
       access_level::INTEGER                          AS access_level,

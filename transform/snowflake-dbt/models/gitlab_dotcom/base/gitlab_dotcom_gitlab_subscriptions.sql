@@ -23,15 +23,18 @@ WITH source AS (
       seats::INTEGER                                AS seats,
       trial::BOOLEAN                                AS is_trial,
       created_at::TIMESTAMP                         AS created_at,
-      updated_at::TIMESTAMP                         AS updated_at
+      updated_at::TIMESTAMP                         AS updated_at,
+      updated_at::TIMESTAMP                         AS valid_from
   
     FROM source
 
 )
 
+
 {{ scd_type_6(
-    primary_key='namespace_id',
-    primary_key_raw='namespace_id',
-    source_cte='source',
+    primary_key='member_id',
+    primary_key_raw='id',
+    source_cte='source_distinct',
+    source_timestamp='valid_from',
     casted_cte='renamed'
 ) }}
