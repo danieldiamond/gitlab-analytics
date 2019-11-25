@@ -210,13 +210,8 @@ for source_name, config in config_dict.items():
         }
 
         scd_tolerations = [
-                {
-                    "key": "scd",
-                    "operator": "Equal",
-                    "value": "true",
-                    "effect": "NoSchedule",
-                }
-            ]
+            {"key": "scd", "operator": "Equal", "value": "true", "effect": "NoSchedule"}
+        ]
 
         scd_extract = KubernetesPodOperator(
             **gitlab_defaults,
