@@ -204,7 +204,7 @@ for source_name, config in config_dict.items():
                                 {
                                     "key": "pgp",
                                     "operator": "In",
-                                    "values": ["scd"],
+                                    "values": ["scd"]
                                 }
                             ]
                         }
