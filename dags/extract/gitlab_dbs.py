@@ -195,14 +195,23 @@ for source_name, config in config_dict.items():
             cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
             python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type scd
         """
-        scd_tolerations = [
-            {
-                "key": "scd",
-                "operator": "Equal",
-                "value": "true",
-                "effect": "NoSchedule",
+        scd_affinity = {
+            "nodeAffinity": {
+                "preferredDuringSchedulingIgnoredDuringExecution": {
+                    "nodeSelectorTerms": [
+                        {
+                            "matchExpressions": [
+                                {
+                                    "key": "pgp",
+                                    "operator": "In",
+                                    "values": ["scd"],
+                                }
+                            ]
+                        }
+                    ]
+                }
             }
-        ]
+        }
 
         scd_extract = KubernetesPodOperator(
             **gitlab_defaults,
@@ -213,7 +222,7 @@ for source_name, config in config_dict.items():
             env_vars={**standard_pod_env_vars, **config["env_vars"]},
             cmds=["/bin/bash", "-c"],
             arguments=[scd_cmd],
-            tolerations=scd_tolerations,
+            affinity=scd_affinity,
         )
         sync_extract >> scd_extract
     globals()[f"{config['dag_name']}_db_sync"] = sync_dag
