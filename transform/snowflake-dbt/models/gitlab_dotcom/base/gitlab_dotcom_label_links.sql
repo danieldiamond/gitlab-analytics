@@ -8,7 +8,11 @@ WITH source AS (
   SELECT *
   FROM {{ source('gitlab_dotcom', 'label_links') }}
 
-), renamed AS (
+),
+
+{{ source_distinct_rows(source = "source('gitlab_dotcom', 'label_links')")}}
+
+, renamed AS (
 
     SELECT
 
@@ -18,14 +22,16 @@ WITH source AS (
       target_type::VARCHAR                           AS target_type,
       created_at::TIMESTAMP                          AS label_link_created_at,
       updated_at::TIMESTAMP                          AS label_link_updated_at,
-
-      _task_instance IN (
-         SELECT MAX(_task_instance) FROM source)    AS is_in_most_recent_task
-
+      valid_from -- Column was added in source_distinct_rows CTE
 
     FROM source
-    WHERE _task_instance IN (SELECT MAX(_task_instance) FROM source)
+
 )
 
-SELECT *
-FROM renamed
+{{ scd_type_6(
+    primary_key='label_link_id',
+    primary_key_raw='id',
+    source_cte='source_distinct',
+    source_timestamp='valid_from',
+    casted_cte='renamed'
+) }}

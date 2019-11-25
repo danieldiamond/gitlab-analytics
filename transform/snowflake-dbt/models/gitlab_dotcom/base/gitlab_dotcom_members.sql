@@ -25,7 +25,7 @@ WITH source AS (
       expires_at::TIMESTAMP                          AS expires_at,
       ldap::BOOLEAN                                  AS has_ldap,
       override::BOOLEAN                              AS has_override,
-      valid_from
+      valid_from -- Column was added in source_distinct_rows CTE
 
     FROM source_distinct
 
