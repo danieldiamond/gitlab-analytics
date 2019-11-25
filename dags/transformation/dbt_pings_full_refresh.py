@@ -39,7 +39,6 @@ xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
 dbt_full_refresh_cmd = f"""
     {git_cmd} &&
     cd analytics/transform/snowflake-dbt/ &&
-    export snowflake_load_database="RAW" &&
     dbt deps --profiles-dir profile &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
     dbt run --profiles-dir profile --target prod --models version --full-refresh
