@@ -14,7 +14,7 @@
   tags:
     - analytics
 
-boneyard_sheetload:
+💀boneyard_sheetload:
   <<: *extract_definition
   script:
     - cd extract/sheetload/
@@ -23,7 +23,7 @@ boneyard_sheetload:
     - merge_requests
   when: manual
 
-sheetload:
+📜sheetload:
   <<: *extract_definition
   script:
     - cd extract/sheetload/
@@ -32,7 +32,7 @@ sheetload:
     - merge_requests
   when: manual
 
-pgp_test:
+🛢pgp_test:
   <<: *extract_definition
   script:
     - echo $MANIFEST_NAME
