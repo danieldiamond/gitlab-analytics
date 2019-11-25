@@ -209,6 +209,17 @@ for source_name, config in config_dict.items():
             }
         }
 
+        scd_tolerations = {
+            "tolerations": [
+                {
+                    "key": "pgp",
+                    "operator": "Equal",
+                    "value": "true",
+                    "effect": "NoSchedule",
+                }
+            ]
+        }
+
         scd_extract = KubernetesPodOperator(
             **gitlab_defaults,
             image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
@@ -219,6 +230,7 @@ for source_name, config in config_dict.items():
             cmds=["/bin/bash", "-c"],
             arguments=[scd_cmd],
             affinity=scd_affinity,
+            tolerations=scd_tolerations,
         )
         # sync_extract >> scd_extract
         scd_extract
