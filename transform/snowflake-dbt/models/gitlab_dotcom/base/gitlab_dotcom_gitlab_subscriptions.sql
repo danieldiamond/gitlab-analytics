@@ -34,7 +34,8 @@ WITH source AS (
 
 )
 
-/* Note: primary key used is namespace_id, not subscription id */
+/* Note: the primary key used is namespace_id, not subscription id.
+   This matches our business use case better. */
 {{ scd_type_2(
     primary_key='namespace_id', 
     primary_key_raw='namespace_id',
