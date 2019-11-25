@@ -28,7 +28,7 @@ WITH source AS (
 
 )
 
-{{ scd_type_6(
+{{ scd_type_2(
     primary_key='label_link_id',
     primary_key_raw='id',
     source_cte='source_distinct',

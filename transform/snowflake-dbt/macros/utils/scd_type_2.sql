@@ -1,4 +1,4 @@
-{%- macro scd_type_6(primary_key, primary_key_raw, source_cte, source_timestamp, casted_cte) -%}
+{%- macro scd_type_2(primary_key, primary_key_raw, source_cte, source_timestamp, casted_cte) -%}
 
 , max_by_primary_key AS (
   SELECT
