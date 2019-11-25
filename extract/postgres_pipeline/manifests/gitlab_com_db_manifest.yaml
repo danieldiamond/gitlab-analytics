@@ -555,6 +555,7 @@ tables:
       FROM deployment_merge_requests
     export_schema: 'gitlab_com'
     export_table: 'deployment_merge_requests'
+    export_table_primary_key: deployment_id
   deployments:
     import_db: GITLAB_DB
     import_query: >
