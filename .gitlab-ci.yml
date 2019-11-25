@@ -67,7 +67,7 @@ include:
     - manage_snowflake.py manage_clones --database analytics --empty
   when: always
 
-clone_analytics_real:
+📈❗️clone_analytics_real:
   <<: *snowflake_start_clone
   script:
     - manage_snowflake.py manage_clones --force --database analytics
