@@ -9,7 +9,11 @@ WITH source AS (
   FROM {{ source('gitlab_dotcom', 'project_group_links') }}
   QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
-), renamed AS (
+), 
+
+{{ source_distinct_rows(source=source('gitlab_dotcom', 'project_group_links'))}}
+
+renamed AS (
 
     SELECT
 
@@ -19,12 +23,15 @@ WITH source AS (
       group_access::INTEGER                           AS group_access,
       created_at::TIMESTAMP                           AS project_features_created_at,
       updated_at::TIMESTAMP                           AS project_features_updated_at,
-      expires_at::TIMESTAMP                           AS expires_at
-
-    FROM source
-    WHERE _task_instance IN (SELECT MAX(_task_instance) FROM source)
+      expires_at::TIMESTAMP                           AS expires_at,
+      valid_from
 
 )
 
-SELECT *
-FROM renamed
+{{ scd_type_2(
+    primary_key='project_group_link_id',
+    primary_key_raw='id',
+    source_cte='source_distinct',
+    source_timestamp='valid_from',
+    casted_cte='renamed'
+) }}

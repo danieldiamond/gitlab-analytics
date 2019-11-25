@@ -8,22 +8,30 @@ WITH source AS (
 
   SELECT *
   FROM {{ source('gitlab_dotcom', 'issue_links') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
-), renamed AS (
+),
+
+{{ source_distinct_rows(source=source('gitlab_dotcom', 'issue_links'))}}
+
+, renamed AS (
 
     SELECT
       id::INTEGER                      AS issue_link_id,
       source_id::INTEGER               AS source_id,
       target_id::INTEGER               AS target_id,
       created_at::TIMESTAMP            AS created_at,
-      updated_at::TIMESTAMP            AS updated_at
+      updated_at::TIMESTAMP            AS updated_at,
+      valid_from -- Column was added in source_distinct_rows CTE
 
-    FROM source
-    WHERE created_at IS NOT NULL
-      AND _task_instance IN (SELECT MAX(_task_instance) FROM source)
+    FROM source_distinct
 
 )
 
-SELECT *
-FROM renamed
+{{ scd_type_2(
+    primary_key='issue_link_id',
+    primary_key_raw='id',
+    source_cte='source_distinct',
+    source_timestamp='valid_from',
+    casted_cte='renamed'
+) }}
+
