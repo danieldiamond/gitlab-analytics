@@ -52,7 +52,7 @@ If none, please include a description
     * [ ]  Data Team member to check file name and sheet names to match: The file will be located and loaded based on its name `sheetload.<table_name>`. The names of the sheets shared with the runner must be unique and in the `<file_name>.<tab_name>` format
     * [ ]  Data Team member to create MR to add this sheet to be pulled in by Sheetload that combines the steps taken in the following MR examples:
            * [ ] Edit the sheets.txt file (Ex: https://gitlab.com/gitlab-data/analytics/merge_requests/1633/diffs)
-           * [ ] Edit the schema.yml, sources.yml, and add a new file for the base model (Ex: https://gitlab.com/gitlab-data/analytics/merge_requests/1634/diffs#a2524a57cc3b9785d313cf227a09bdc744bba542/diffs)
+           * [ ] Edit the schema.yml, sources.yml, and add a new file for the base model (Ex: https://gitlab.com/gitlab-data/analytics/merge_requests/1634/diffs)
     * [ ]  Data Team member to run the following CI Jobs on the MR: 
            * [ ] clone_raw
            * [ ] sheetload
