@@ -384,6 +384,30 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'ci_pipelines'
     export_table_primary_key: id
+  cluster_groups:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , cluster_id
+      , group_id
+      FROM cluster_groups
+    export_schema: 'gitlab_com'
+    export_table: 'cluster_groups'
+    export_table_primary_key: id
+  custer_projects:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , cluster_id
+      , project_id
+      , created_at
+      , updated_at
+      FROM custer_projects
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'custer_projects'
+    export_table_primary_key: id
   clusters:
     import_db: GITLAB_DB
     import_query: >
@@ -547,6 +571,31 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'clusters_kubernetes_namespaces'
     export_table_primary_key: cluster_id
+  deployments:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , iid
+      , project_id
+      , environment_id
+      , ref
+      , tag
+      , sha
+      , user_id
+      , deployable_id
+      , deployable_type
+      , created_at
+      , updated_at
+      , on_stop
+      , status
+      , finished_at
+      , cluster_id
+      FROM deployments
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+          AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'deployments'
+    export_table_primary_key: id
   environments:
     import_db: GITLAB_DB
     import_query: >
@@ -657,6 +706,21 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'labels'
+    export_table_primary_key: id
+  lfs_objects_projects:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , lfs_object_id
+      , project_id
+      , created_at
+      , updated_at
+      , repository_type
+      FROM lfs_objects_projects
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'lfs_objects_projects'
     export_table_primary_key: id
   identities:
     import_db: GITLAB_DB
@@ -990,6 +1054,28 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'notification_settings'
     export_table_primary_key: id
+  page_domains:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , certificate
+      , encrypted_key
+      , encrypted_key_iv
+      , encrypted_key_salt
+      , domain
+      , verified_at
+      , verification_code
+      , enabled_until
+      , remove_at
+      , auto_ssl_enabled
+      , certificate_valid_not_before
+      , certificate_valid_not_after
+      , certificate_source
+      FROM page_domains
+    export_schema: 'gitlab_com'
+    export_table: 'page_domains'
+    export_table_primary_key: id
   plans:
     import_db: GITLAB_DB
     import_query: >
@@ -1223,6 +1309,38 @@ tables:
     export_table: 'protected_environments'
     export_table_primary_key: id
     advanced_metadata: true
+  releases:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , tag
+      , description
+      , project_id
+      , created_at, 
+      , updated_at,
+      , author_id
+      , sha
+      FROM releases
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'releases'
+    export_table_primary_key: id
+  routes:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , source_id
+      , source_type
+      , path
+      , created_at, 
+      , updated_at
+      FROM releases
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'routes'
+    export_table_primary_key: id
   timelogs:
     import_db: GITLAB_DB
     import_query: >
@@ -1419,5 +1537,19 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_runners
     export_table_primary_key: id
+  ci_runner_projects:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , runner_id
+      , created_at
+      , updated_at
+      , project_id
+      FROM ci_runner_projects
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: ci_runner_projects
+    export_table_primary_key: id  
 
     
