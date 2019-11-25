@@ -224,7 +224,8 @@ for source_name, config in config_dict.items():
             arguments=[scd_cmd],
             affinity=scd_affinity,
         )
-        sync_extract >> scd_extract
+        # sync_extract >> scd_extract
+        scd_extract
     globals()[f"{config['dag_name']}_db_sync"] = sync_dag
 
     # Validation DAG
