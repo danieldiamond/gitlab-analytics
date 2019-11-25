@@ -30,4 +30,4 @@ if __name__ == "__main__":
 
     check_macro_name_to_file_name(files)
 
-    logging.info("All macros match their filenames! 🥂") 
+    logging.info("All macros match their filenames! 🥂")
