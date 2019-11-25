@@ -55,6 +55,16 @@ Usage:
 Used in:
 - dbt_project.yml
 
+## Distinct Source Rows
+This macro is used for condensing a `source` CTE into unique rows only. Our ETL runs frequently while most rows in our source tables don't update frequently. So we end up with a lot of tables in RAW that look the same as each other. This macro takes in a `source_cte` and looks for unique values across ALL columns. 
+
+The 2 exception columns are:
+* `_uploaded_at`: we only want the *minimum* value per unique row. This macros captures this as `valid_from` AKA "when did we *first* see this unique row?"
+* `_task_instance`: here we want to know the *maximum* task instance. This is used later to infer whether a `primary_key` is still present in the source table (a workaround for tracking hard deletes!)
+
+-- Usage: this macro takes in 2 parameters, `source` and `source_cte` (optional). This is somewhat redundant and could be simplified to take in ONLY a source, but taking in a source CTE allows the user more flexibility to filter out bad rows.
+
+
 ## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/generate_custom_schema.sql))
 This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema (e.g. `emilie_scratch` and `analytics`). For tagged models, the output is dependent on the target. It is `emilie_scratch_staging` on dev and `analytics_staging` on prod. A similar pattern is followed for the `sensitive` config.
 Usage:
