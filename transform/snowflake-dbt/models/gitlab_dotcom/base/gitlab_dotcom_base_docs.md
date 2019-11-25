@@ -20,7 +20,10 @@ The recurvice CTE uses a top-down approach to iterate though each namespace. The
 
 {% docs gitlab_dotcom_gitlab_subscriptions %}
 
-Base model for Gitlab.com gitlab_subscriptions. These are the plan subscriptions for the gitlab.com product, as opposed to the `subscriptions` table (no prefix) which deals with subscribing to issues and merge requests.
+Base model for Gitlab.com gitlab_subscriptions. These are the plan subscriptions for the gitlab.com product, as opposed to the `subscriptions` table (no prefix) which deals with subscriptions in the notification sense, related to issues and merge requests.
+
+This base model is modelled as a Type 2 Slowly Changing Dimension. This means 3 columns have been added as metadata to track row-level changes at a time. These columns are `valid_from`, `valid_to` and `is_currently_valid`.  
+
 
 {% enddocs %}
 
