@@ -57,7 +57,7 @@ If none, please include a description
            * [ ] clone_raw
            * [ ] sheetload
            * [ ] specify_model
-    * [ ]  Data Analyst to assign MR of dbt model to Data Engineer team (iterate until model is complete).
+    * [ ]  Data Analyst to assign MR to project maintainer for review (iterate until model is complete).
     * [ ]  Data Team project maintainers/owners to merge in dbt models 
     * [ ]  If not urgent, data will be availble within 24 hours. If urgent, Data Engineer to run full refresh and inform when available.
     * [ ]  Submitter to query in Periscope for table: ``` SELECT * FROM [new-dbt-model-name] LIMIT 10 ```. 
