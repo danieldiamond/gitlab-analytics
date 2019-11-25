@@ -20,7 +20,7 @@ sources:
       - name: days_to_close
       - name: calendar
       - name: employee_location_factor
-        schema: sensitive
+        #schema: sensitive
       - name: gitlab_slack_stats  
       - name: google_referrals
       - name: headcount
