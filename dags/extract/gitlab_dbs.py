@@ -209,8 +209,7 @@ for source_name, config in config_dict.items():
             }
         }
 
-        scd_tolerations = {
-            "tolerations": [
+        scd_tolerations = [
                 {
                     "key": "pgp",
                     "operator": "Equal",
@@ -218,7 +217,6 @@ for source_name, config in config_dict.items():
                     "effect": "NoSchedule",
                 }
             ]
-        }
 
         scd_extract = KubernetesPodOperator(
             **gitlab_defaults,
