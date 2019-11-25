@@ -10,7 +10,9 @@ WITH licenses AS ( -- Licenses app doesn't alter rows after creation so the snap
   FROM {{ ref('license_db_licenses') }}
   WHERE license_md5 IS NOT NULL
     AND is_trial = False
-    
+    -- Remove internal test licenses
+    AND NOT (email LIKE '%@gitlab.com' AND LOWER(company) LIKE '%gitlab%')
+
 )
 
 , usage_data AS (

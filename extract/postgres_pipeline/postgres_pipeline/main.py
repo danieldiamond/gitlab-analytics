@@ -236,7 +236,10 @@ def validate_ids(
     )
     num_missing_rows = error_results[0][0]
     if num_missing_rows > 0:
-        sys.exit(f"Number of row errors for table {table_name}: {num_missing_rows}")
+        logging.critical(
+            f"Number of row errors for table {table_name}: {num_missing_rows}"
+        )
+        sys.exit(3)
     else:
         logging.info(f"No discrepancies found in table {table_name}.")
 
@@ -306,7 +309,7 @@ def main(file_path: str, load_type: str) -> None:
         table_name = "{import_db}_{export_table}".format(**table_dict).upper()
         raw_query = table_dict["import_query"]
 
-        # Check if the schema has changed, and if so then do a full load
+        # Check if the schema has changed or the table is new
         schema_changed = check_if_schema_changed(
             raw_query,
             postgres_engine,
