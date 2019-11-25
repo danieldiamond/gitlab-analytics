@@ -11,7 +11,7 @@ WITH source AS (
 
 ), 
 
-{{ source_distinct_rows(source=source('gitlab_dotcom', 'project_group_links'))}}
+{{ distinct_source_rows(source=source('gitlab_dotcom', 'project_group_links'))}}
 
 renamed AS (
 
@@ -24,7 +24,7 @@ renamed AS (
       created_at::TIMESTAMP                           AS project_features_created_at,
       updated_at::TIMESTAMP                           AS project_features_updated_at,
       expires_at::TIMESTAMP                           AS expires_at,
-      valid_from
+      valid_from -- Column was added in distinct_source_rows CTE
 
 )
 

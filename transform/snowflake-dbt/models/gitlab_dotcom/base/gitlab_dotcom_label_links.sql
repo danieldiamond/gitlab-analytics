@@ -10,7 +10,7 @@ WITH source AS (
 
 ),
 
-{{ source_distinct_rows(source=source('gitlab_dotcom', 'label_links'))}}
+{{ distinct_source_rows(source=source('gitlab_dotcom', 'label_links'))}}
 
 , renamed AS (
 
@@ -22,7 +22,7 @@ WITH source AS (
       target_type::VARCHAR                           AS target_type,
       created_at::TIMESTAMP                          AS label_link_created_at,
       updated_at::TIMESTAMP                          AS label_link_updated_at,
-      valid_from -- Column was added in source_distinct_rows CTE
+      valid_from -- Column was added in distinct_source_rows CTE
 
     FROM source_distinct
 

@@ -5,7 +5,7 @@ WITH source AS (
 
 ),
 
-{{ source_distinct_rows(source=source('gitlab_dotcom', 'members'))}}
+{{ distinct_source_rows(source=source('gitlab_dotcom', 'members'))}}
 
 , renamed AS (
 
@@ -25,7 +25,7 @@ WITH source AS (
       expires_at::TIMESTAMP                          AS expires_at,
       ldap::BOOLEAN                                  AS has_ldap,
       override::BOOLEAN                              AS has_override,
-      valid_from -- Column was added in source_distinct_rows CTE
+      valid_from -- Column was added in distinct_source_rows CTE
 
     FROM source_distinct
 
