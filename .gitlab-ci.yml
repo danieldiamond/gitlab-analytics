@@ -10,13 +10,13 @@ variables:
 # CI Stages
 # ======
 stages:
-  - snowflake
-  - extract   # extract/extract-ci.yml
-  - dbt_run   # transform/snowflake-dbt/snowflake-dbt-ci.yml
-  - dbt_misc  # transform/snowflake-dbt/snowflake-dbt-ci.yml
-  - dbt_docs
-  - python
-  - snowflake_stop
+  - ❄️ Snowflake
+  - 🚂 Extract   # extract/extract-ci.yml
+  - ⚙️ dbt Run   # transform/snowflake-dbt/snowflake-dbt-ci.yml
+  - 🛠 dbt Misc  # transform/snowflake-dbt/snowflake-dbt-ci.yml
+  - 📚 dbt Docs
+  - 🐍 Python
+  - 🛑 Snowflake Stop
 
 include:
   - "extract/extract-ci.yml"
@@ -56,28 +56,28 @@ include:
   environment:
     name: review/$CI_COMMIT_REF_NAME
     on_stop: clone_stop
-  stage: snowflake
+  stage: ❄️ Snowflake
   variables:
     GIT_STRATEGY: clone
 
 # Clone Jobs
-clone_analytics:
+📈clone_analytics:
   <<: *snowflake_start_clone
   script:
     - manage_snowflake.py manage_clones --database analytics --empty
   when: always
 
-clone_analytics_real:
+📈❗️clone_analytics_real:
   <<: *snowflake_start_clone
   script:
     - manage_snowflake.py manage_clones --force --database analytics
 
-clone_raw:
+🥩clone_raw:
   <<: *snowflake_start_clone
   script:
     - manage_snowflake.py manage_clones --database raw
 
-force_clone_both:
+👥force_clone_both:
   <<: *snowflake_start_clone
   script:
     - manage_snowflake.py manage_clones --force --database analytics --empty
@@ -85,7 +85,7 @@ force_clone_both:
 
 clone_stop:
   <<: *snowflake_clone_template
-  stage: snowflake_stop
+  stage: 🛑 Snowflake Stop
   environment:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
@@ -101,7 +101,7 @@ clone_stop:
 # ======
 
 .python_check: &python_check
-  stage: python
+  stage: 🐍 Python
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   tags:
     - analytics
@@ -146,7 +146,7 @@ python_pytest:
 # ======
 
 .pages_job_template: &pages_job_template
-  stage: dbt_docs
+  stage: 📚 dbt Docs
   image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
   variables:
     SNOWFLAKE_ROLE: $SNOWFLAKE_TRANSFORM_ROLE

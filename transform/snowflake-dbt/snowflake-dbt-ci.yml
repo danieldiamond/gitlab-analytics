@@ -1,6 +1,6 @@
 .snowflake_dbt_jobs: &snowflake_dbt_jobs
   image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
-  stage: dbt_run
+  stage: ⚙️ dbt Run
   before_script:
     - cd transform/snowflake-dbt/
     - echo $SNOWFLAKE_DATABASE
@@ -43,57 +43,7 @@
 
 
 # MR Jobs
-all:
-  <<: *snowflake_dbt_jobs
-  script:
-    - *xl_warehouse
-    - *deps_and_seed
-    - dbt run $CI_PROFILE_TARGET --full-refresh || true
-    - dbt test $CI_PROFILE_TARGET || true
-    - dbt run $CI_PROFILE_TARGET || true
-    - dbt test $CI_PROFILE_TARGET
-
-exclude_product:  
-  <<: *snowflake_dbt_jobs
-  script:
-    - *deps_and_seed
-    - dbt run $CI_PROFILE_TARGET --full-refresh --exclude tag:product || true
-    - dbt test $CI_PROFILE_TARGET --exclude tag:product || true
-    - dbt run $CI_PROFILE_TARGET --exclude tag:product || true
-    - dbt test $CI_PROFILE_TARGET --exclude tag:product
-
-gitlab_dotcom:
-  <<: *snowflake_dbt_jobs
-  script:
-    - *xl_warehouse
-    - *deps_and_seed
-    - dbt run $CI_PROFILE_TARGET --models date_details
-    - dbt run $CI_PROFILE_TARGET --full-refresh --models @gitlab_dotcom || true
-    - dbt test $CI_PROFILE_TARGET --models @gitlab_dotcom || true
-    - dbt run $CI_PROFILE_TARGET --models @gitlab_dotcom || true
-    - dbt test $CI_PROFILE_TARGET --models @gitlab_dotcom
-
-version:
-  <<: *snowflake_dbt_jobs
-  script:
-    - *xl_warehouse
-    - *deps_and_seed
-    - dbt run $CI_PROFILE_TARGET --full-refresh --models version || true
-    - dbt test $CI_PROFILE_TARGET --models version || true
-    - dbt run $CI_PROFILE_TARGET --models version || true
-    - dbt test $CI_PROFILE_TARGET --models version
-
-snowplow:
-  <<: *snowflake_dbt_jobs
-  script:
-    - *xl_warehouse
-    - *deps_and_seed
-    - dbt run $CI_PROFILE_TARGET --full-refresh --models snowplow snowplow_combined || true
-    - dbt test $CI_PROFILE_TARGET --models snowplow snowplow_combined || true
-    - dbt run $CI_PROFILE_TARGET --models snowplow snowplow_combined || true
-    - dbt test $CI_PROFILE_TARGET --models snowplow snowplow_combined
-
-specify_exclude:
+➖specify_exclude:
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
@@ -103,7 +53,7 @@ specify_exclude:
     - dbt run $CI_PROFILE_TARGET --exclude $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --exclude $DBT_MODELS
 
-specify_xl_exclude:
+➖❗️specify_xl_exclude:
   <<: *snowflake_dbt_jobs
   script:
     - *xl_warehouse
@@ -114,7 +64,7 @@ specify_xl_exclude:
     - dbt run $CI_PROFILE_TARGET --exclude $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --exclude $DBT_MODELS
 
-specify_model:
+➕specify_model:
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
@@ -124,7 +74,7 @@ specify_model:
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
-specify_xl_model:
+➕❗️specify_xl_model:
   <<: *snowflake_dbt_jobs
   script:
     - *xl_warehouse
@@ -136,45 +86,43 @@ specify_xl_model:
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
 # dbt tests
-all_tests:
+.dbt_misc_jobs: &dbt_misc_jobs
   <<: *snowflake_dbt_jobs
-  stage: dbt_misc
+  stage: 🛠 dbt Misc
+
+🧠all_tests:
+  <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
     - dbt test $CI_PROFILE_TARGET
 
-data_tests:
-  <<: *snowflake_dbt_jobs
-  stage: dbt_misc
+💾data_tests:
+  <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
     - dbt test --data $CI_PROFILE_TARGET
 
-freshness:
-  <<: *snowflake_dbt_jobs
-  stage: dbt_misc
+🌻freshness:
+  <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
     - dbt source snapshot-freshness $CI_PROFILE_TARGET
 
-schema_tests:
-  <<: *snowflake_dbt_jobs
-  stage: dbt_misc
+🗂schema_tests:
+  <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
     - dbt test --schema $CI_PROFILE_TARGET
 
 # snapshots:
-#   <<: *snowflake_dbt_jobs
-#   stage: dbt_misc
+#   <<: *dbt_misc_jobs
 #   script:
 #     - *deps_and_seed
 #     - echo $snowflake_load_database
 #     - dbt snapshot $CI_PROFILE_TARGET
     
-specify_tests:
-  <<: *snowflake_dbt_jobs
-  stage: dbt_misc
+📝specify_tests:
+  <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
     - echo $DBT_MODELS
@@ -185,7 +133,7 @@ specify_tests:
 # ======
 
 .periscope_check: &periscope_check
-  stage: dbt_misc
+  stage: 🛠 dbt Misc
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   tags:
     - analytics
@@ -196,7 +144,7 @@ specify_tests:
       - merge_request
   allow_failure: true
 
-periscope_query:
+🔍periscope_query:
   <<: *periscope_check
   script:
     - git clone -b periscope/master --single-branch https://gitlab.com/gitlab-data/periscope.git --depth 1
