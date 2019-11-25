@@ -61,7 +61,7 @@ include:
     GIT_STRATEGY: clone
 
 # Clone Jobs
-clone_analytics:
+📈clone_analytics:
   <<: *snowflake_start_clone
   script:
     - manage_snowflake.py manage_clones --database analytics --empty
@@ -72,12 +72,12 @@ clone_analytics_real:
   script:
     - manage_snowflake.py manage_clones --force --database analytics
 
-clone_raw:
+🥩clone_raw:
   <<: *snowflake_start_clone
   script:
     - manage_snowflake.py manage_clones --database raw
 
-force_clone_both:
+👥force_clone_both:
   <<: *snowflake_start_clone
   script:
     - manage_snowflake.py manage_clones --force --database analytics --empty
