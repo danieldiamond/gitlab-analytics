@@ -31,7 +31,7 @@ include:
 .snowflake_clone_template: &snowflake_clone_template
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   tags:
-    - kubernetes
+    - analytics
   before_script:
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
   only:
@@ -104,7 +104,7 @@ clone_stop:
   stage: 🐍 Python
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   tags:
-    - kubernetes
+    - analytics
   only:
     changes:
       - "**/*.py"
@@ -165,7 +165,7 @@ python_pytest:
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/docs/
     - cp index.html gitlab.css $CI_PROJECT_DIR/public/dbt/snowflake/
   tags:
-    - kubernetes
+    - analytics
   artifacts:
     name: "dbt Docs Files"
     paths:

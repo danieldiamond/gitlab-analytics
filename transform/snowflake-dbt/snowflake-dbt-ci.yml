@@ -17,7 +17,7 @@
     - mkdir -p $CI_PROJECT_DIR/public/dbt/
     - cp -r target $CI_PROJECT_DIR/public/dbt/ 
   tags:
-    - kubernetes
+    - analytics
   only:
     - merge_requests
   when: manual
