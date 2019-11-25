@@ -394,7 +394,7 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'cluster_groups'
     export_table_primary_key: id
-  custer_projects:
+  cluster_projects:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
@@ -402,11 +402,11 @@ tables:
       , project_id
       , created_at
       , updated_at
-      FROM custer_projects
+      FROM cluster_projects
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
-    export_table: 'custer_projects'
+    export_table: 'cluster_projects'
     export_table_primary_key: id
   clusters:
     import_db: GITLAB_DB
