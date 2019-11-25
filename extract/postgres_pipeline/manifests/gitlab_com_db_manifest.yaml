@@ -783,9 +783,13 @@ tables:
       , new_path
       , old_path
       FROM merge_request_diff_files
+    additional_filtering: WHERE merge_request_diff_id IN (SELECT DISTINCT merge_request_diff_id 
+                                                          FROM merge_request_diffs 
+                                                          INNER JOIN merge_requests ON merge_request_diffs.merge_request_id = merge_requests.id
+                                                          WHERE merge_requests.target_project_id = 7764)  
     export_schema: 'gitlab_com'
     export_table: 'merge_request_diff_files'
-    export_table_primary_key: merge_request_diff_files_on_mr_diff_id_and_order      
+    export_table_primary_key: merge_request_diff_files_on_mr_diff_id_and_order    
   merge_request_diffs:
     import_db: GITLAB_DB
     import_query: >
