@@ -1,6 +1,6 @@
 .snowflake_dbt_jobs: &snowflake_dbt_jobs
   image: registry.gitlab.com/gitlab-data/data-image/dbt-image:79-upgrade-dbt-to-v0-15
-  stage: dbt_run
+  stage: ⚙️ dbt Run
   before_script:
     - cd transform/snowflake-dbt/
     - echo $SNOWFLAKE_DATABASE
