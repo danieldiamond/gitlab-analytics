@@ -174,21 +174,21 @@ for source_name, config in config_dict.items():
 
     with sync_dag:
         # Sync Task
-        # sync_cmd = f"""
-        #     git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-        #     cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
-        #     python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type sync
-        # """
-        # sync_extract = KubernetesPodOperator(
-        #     **gitlab_defaults,
-        #     image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
-        #     task_id=f"{config['task_name']}-db-sync",
-        #     name=f"{config['task_name']}-db-sync",
-        #     secrets=standard_secrets + config["secrets"],
-        #     env_vars={**standard_pod_env_vars, **config["env_vars"]},
-        #     cmds=["/bin/bash", "-c"],
-        #     arguments=[sync_cmd],
-        # )
+        sync_cmd = f"""
+            git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
+            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
+            python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type sync
+        """
+        sync_extract = KubernetesPodOperator(
+            **gitlab_defaults,
+            image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+            task_id=f"{config['task_name']}-db-sync",
+            name=f"{config['task_name']}-db-sync",
+            secrets=standard_secrets + config["secrets"],
+            env_vars={**standard_pod_env_vars, **config["env_vars"]},
+            cmds=["/bin/bash", "-c"],
+            arguments=[sync_cmd],
+        )
         # SCD Task
         scd_cmd = f"""
             git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
@@ -230,8 +230,7 @@ for source_name, config in config_dict.items():
             affinity=scd_affinity,
             tolerations=scd_tolerations,
         )
-        # sync_extract >> scd_extract
-        scd_extract
+        sync_extract >> scd_extract
     globals()[f"{config['dag_name']}_db_sync"] = sync_dag
 
     # Validation DAG
