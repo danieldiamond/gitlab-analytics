@@ -2,6 +2,7 @@
 #
 .job_template: &extract_definition
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  stage: 🚂 Extract
   before_script:
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
     - echo $SNOWFLAKE_DATABASE
@@ -15,7 +16,6 @@
 
 boneyard_sheetload:
   <<: *extract_definition
-  stage: extract
   script:
     - cd extract/sheetload/
     - python3 sheetload.py sheets --sheet_file boneyard/sheets.txt --schema boneyard --database ANALYTICS
@@ -25,7 +25,6 @@ boneyard_sheetload:
 
 sheetload:
   <<: *extract_definition
-  stage: extract
   script:
     - cd extract/sheetload/
     - python3 sheetload.py sheets --sheet_file sheets.txt
@@ -35,7 +34,6 @@ sheetload:
 
 pgp_test:
   <<: *extract_definition
-  stage: extract
   script:
     - echo $MANIFEST_NAME
     - cd extract/postgres_pipeline/postgres_pipeline/

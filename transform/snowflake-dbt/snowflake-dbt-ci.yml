@@ -1,6 +1,6 @@
 .snowflake_dbt_jobs: &snowflake_dbt_jobs
   image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
-  stage: dbt_run
+  stage: ⚙️ dbt Run
   before_script:
     - cd transform/snowflake-dbt/
     - echo $SNOWFLAKE_DATABASE
@@ -136,45 +136,43 @@ specify_xl_model:
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
 # dbt tests
-all_tests:
+.dbt_misc_jobs: &dbt_misc_jobs
   <<: *snowflake_dbt_jobs
-  stage: dbt_misc
+  stage: 🛠 dbt Misc
+
+all_tests:
+  <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
     - dbt test $CI_PROFILE_TARGET
 
 data_tests:
-  <<: *snowflake_dbt_jobs
-  stage: dbt_misc
+  <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
     - dbt test --data $CI_PROFILE_TARGET
 
 freshness:
-  <<: *snowflake_dbt_jobs
-  stage: dbt_misc
+  <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
     - dbt source snapshot-freshness $CI_PROFILE_TARGET
 
 schema_tests:
-  <<: *snowflake_dbt_jobs
-  stage: dbt_misc
+  <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
     - dbt test --schema $CI_PROFILE_TARGET
 
 # snapshots:
-#   <<: *snowflake_dbt_jobs
-#   stage: dbt_misc
+#   <<: *dbt_misc_jobs
 #   script:
 #     - *deps_and_seed
 #     - echo $snowflake_load_database
 #     - dbt snapshot $CI_PROFILE_TARGET
     
 specify_tests:
-  <<: *snowflake_dbt_jobs
-  stage: dbt_misc
+  <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
     - echo $DBT_MODELS
@@ -185,7 +183,7 @@ specify_tests:
 # ======
 
 .periscope_check: &periscope_check
-  stage: dbt_misc
+  stage: 🛠 dbt Misc
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   tags:
     - analytics
