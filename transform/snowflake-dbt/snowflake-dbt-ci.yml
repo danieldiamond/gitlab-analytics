@@ -28,6 +28,7 @@
     expire_in: 1 week
     when: always
 
+
 # Common commands anchors
 .deps_and_seed: &deps_and_seed
   python3 macro_name_check.py
