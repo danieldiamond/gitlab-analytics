@@ -5,8 +5,7 @@
 
 WITH source AS (
 
-  SELECT
-    *
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'environments') }}
   QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
@@ -21,7 +20,7 @@ WITH source AS (
       external_url::VARCHAR                            AS external_url,
       environment_type::VARCHAR                        AS environment_type,
       state::VARCHAR                                   AS state,
-      slug::VARCHAR                                    AS slug,
+      slug::VARCHAR                                    AS slug
 
     FROM source
 
