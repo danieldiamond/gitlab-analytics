@@ -22,17 +22,17 @@ WITH source AS (
 
 ), final AS (
 
-    SELECT DISTINCT
+    SELECT
       date_actual,
       source.*,
       dbt_valid_from                         AS valid_from,
-      dbt_valid_to                           AS vaid_to,
+      dbt_valid_to                           AS valid_to,
       IFF(dbt_valid_to IS NULL, TRUE, FALSE) AS is_current_snapshot
-    FROM snapshots
+    FROM source
     INNER JOIN date_spine
-      ON snapshots.valid_from <= date_spine.date_actual
-     AND (snapshots.valid_to > date_spine.date_actual OR snapshots.is_current_snapshot = TRUE)
-     AND snapshots.rank_in_day = 1   
+      ON source.dbt_valid_from <= date_spine.date_actual
+     AND (source.dbt_valid_to > date_spine.date_actual OR source.dbt_valid_to IS NULL)
+     AND source.rank_in_day = 1   
 
 )
 
