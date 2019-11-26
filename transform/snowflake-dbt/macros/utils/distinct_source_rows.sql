@@ -1,4 +1,4 @@
-{%- macro distinct_source_rows(source, source_cte='source') -%}
+{%- macro distinct_source_rows(source) -%}
 
 source_distinct AS (
 

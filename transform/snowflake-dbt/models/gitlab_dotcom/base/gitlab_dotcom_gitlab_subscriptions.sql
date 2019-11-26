@@ -3,14 +3,6 @@
     })
 }}
 
-WITH source AS (
-
-  SELECT *
-  FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
-  WHERE id != 572635 -- This ID has NULL values for many of the important columns.
-
-), 
-
 {{ distinct_source_rows(source=source('gitlab_dotcom', 'gitlab_subscriptions'))}}
 
 , renamed AS (
@@ -31,6 +23,7 @@ WITH source AS (
       valid_from -- Column was added in distinct_source_rows CTE
   
     FROM source_distinct
+    WHERE gitlab_subscription_id != 572635 -- This ID has NULL values for many of the important columns.
 
 )
 

@@ -64,6 +64,12 @@ The 2 exception columns are:
 
 -- Usage: this macro takes in 2 parameters, `source` and `source_cte` (optional). This is somewhat redundant and could be simplified to take in ONLY a source, but taking in a source CTE allows the user more flexibility to filter out bad rows.
 
+Used in:
+- gitlab_dotcom_gitlab_subscriptions.sql
+- gitlab_dotcom_issue_links.sql
+- gitlab_dotcom_label_links.sql
+- gitlab_dotcom_members.sql
+- gitlab_dotcom_project_group_links.sql
 
 ## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/generate_custom_schema.sql))
 This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema (e.g. `emilie_scratch` and `analytics`). For tagged models, the output is dependent on the target. It is `emilie_scratch_staging` on dev and `analytics_staging` on prod. A similar pattern is followed for the `sensitive` config.
@@ -225,6 +231,21 @@ Usage:
 ```
 Used in:
 - snowplow_combined/30_day/*.sql
+
+## SCD Type 2
+This macro inserts SQL statements that turn an inputted CTE into a [type 2 slowly changing dimension model](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row).
+
+From [Orcale](https://www.oracle.com/webfolder/technetwork/tutorials/obe/db/10g/r2/owb/owb10gr2_gs/owb/lesson3/slowlychangingdimensions.htm): "A Type 2 SCD retains the full history of values. When the value of a chosen attribute changes, the current record is closed. A new record is created with the changed data values and this new record becomes the current record. Each record contains the effective time and expiration time to identify the time period between which the record was active."
+
+In particular, this macro adds 3 columns: `valid_from`, `valid_to`, and `is_currently_valid`.
+`valid_from` will never be null, while `valid_to` can be NULL for one row per ID (`is_currently_active` will be TRUE in that case). It is possible for an ID to have 0 currently active rows (referred to as a "Hard Delete" on the source db.)
+
+Used in:
+- gitlab_dotcom_gitlab_subscriptions.sql
+- gitlab_dotcom_issue_links.sql
+- gitlab_dotcom_label_links.sql
+- gitlab_dotcom_members.sql
+- gitlab_dotcom_project_group_links.sql
 
 ## SFDC Deal Size ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sfdc_deal_size.sql))
 This macro buckets a unit into a deal size (Small, Medium, Big, or Jumbo) based on an inputted value.
