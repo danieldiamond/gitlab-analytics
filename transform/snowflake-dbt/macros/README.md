@@ -213,7 +213,7 @@ Used in:
 - zendesk_organizations.sql
 - sfdc_lead.sql
 
-## Schema Union All ([Source](ttps://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_all.sql))
+## Schema Union All ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_all.sql))
 This macro takes a schema prefix and a table name and does a UNION ALL on all tables that match the pattern.
 Usage:
 ```
@@ -223,7 +223,7 @@ Used in:
 - snowplow_combined/all/*.sql
 - snowplow_combined/30/*.sql
 
-## Schema Union Limit ([Source](ttps://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_limit.sql))
+## Schema Union Limit ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_limit.sql))
 This macro takes a schema prefix, a table name, a column name, and an integer representing days. It returns a view that is limited to the last 30 days based on the column name. Note that this also calls schema union all which can be a heavy call.
 Usage:
 ```
@@ -233,12 +233,14 @@ Used in:
 - snowplow_combined/30_day/*.sql
 
 ## SCD Type 2
-This macro inserts SQL statements that turn an inputted CTE into a [type 2 slowly changing dimension model](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row).
+This macro inserts SQL statements that turn the inputted CTE into a [type 2 slowly changing dimension model](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row).
 
 From [Orcale](https://www.oracle.com/webfolder/technetwork/tutorials/obe/db/10g/r2/owb/owb10gr2_gs/owb/lesson3/slowlychangingdimensions.htm): "A Type 2 SCD retains the full history of values. When the value of a chosen attribute changes, the current record is closed. A new record is created with the changed data values and this new record becomes the current record. Each record contains the effective time and expiration time to identify the time period between which the record was active."
 
 In particular, this macro adds 3 columns: `valid_from`, `valid_to`, and `is_currently_valid`.
 `valid_from` will never be null, while `valid_to` can be NULL for one row per ID (`is_currently_active` will be TRUE in that case). It is possible for an ID to have 0 currently active rows (referred to as a "Hard Delete" on the source db.)
+
+This macro was built to be used in conjunction with the `distinct_source` macro. 
 
 Used in:
 - gitlab_dotcom_gitlab_subscriptions.sql

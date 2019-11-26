@@ -4,7 +4,7 @@
 }}
 
 WITH 
-{ distinct_source(source=source('gitlab_dotcom', 'project_group_links'))}}
+{{ distinct_source(source=source('gitlab_dotcom', 'project_group_links')) }}
 
 renamed AS (
 
