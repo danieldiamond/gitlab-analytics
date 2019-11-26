@@ -104,3 +104,11 @@ models:
         tests:
           - not_null
       - name: valid_to
+  - name: sfdc_opportunity_snapshots_base
+    description: This is the base model for snapshots of the salesforce opportunity table for 2019-10-01 and forward.
+    columns:
+      - name: opportunity_id
+        tests: 
+          - not_null
+      - name: valid_from    
+          - not_null   
