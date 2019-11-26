@@ -473,24 +473,57 @@ roles:
 
     - product_manager:
         warehouses:
-            - reporting
+            - analyst_xs
+            - analyst_l
+            - analyst_xl
+        member_of:
+            - boneyard
+            - snowplow
         privileges:
             databases:
                 read:
-                    - analytics
                     - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
             schemas:
                 read:
-                    - analytics.analytics
-                    - analytics.analytics_staging
+                    - raw.gcloud_postgres_stitch
+                    - raw.salesforce_stitch
+                    - raw.sheetload
+                    - raw.snapshots
                     - raw.snowplow
                     - raw.tap_postgres
+                    - raw.zuora_stitch
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.analytics_sensitive
+                    - analytics.dbt_archive
+                    - snowflake.*
             tables:
                 read:
-                    - analytics.analytics.*
-                    - analytics.analytics_staging.*
+                    - raw.gcloud_postgres_stitch.*
+                    - raw.netsuite_fivetran.*
+                    - raw.salesforce_stitch.*
+                    - raw.sheetload.*
+                    - raw.snapshots.*
                     - raw.snowplow.*
                     - raw.tap_postgres.*
+                    - raw.zuora_stitch.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.analytics_sensitive.gitlab_dotcom_epics
+                    - analytics.analytics_sensitive.gitlab_dotcom_issues
+                    - analytics.analytics_sensitive.gitlab_dotcom_labels
+                    - analytics.analytics_sensitive.gitlab_dotcom_merge_requests
+                    - analytics.analytics_sensitive.gitlab_dotcom_milestones
+                    - analytics.analytics_sensitive.gitlab_dotcom_namespaces
+                    - analytics.analytics_sensitive.gitlab_dotcom_projects
+                    - analytics.dbt_archive.*
+                    - snowflake.*.*
     
     - pwc_contractor:
         warehouses:
@@ -683,6 +716,10 @@ roles:
             - reporting
 
     - aakgun:
+        warehouses:
+            - analyst_xs
+
+    - cmestel:
         warehouses:
             - analyst_xs
 
@@ -890,6 +927,12 @@ users:
         member_of:
             - aakgun
             - analyst_growth
+
+    - cmestel:
+        can_login: yes
+        member_of:
+            - analyst_finance
+            - cmestel
 
     - datwood:
         can_login: yes

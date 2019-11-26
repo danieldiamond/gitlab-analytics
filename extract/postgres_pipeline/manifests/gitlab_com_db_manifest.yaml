@@ -547,6 +547,40 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'clusters_kubernetes_namespaces'
     export_table_primary_key: cluster_id
+  deployment_merge_requests:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT deployment_id
+      , merge_request_id
+      , CONCAT(deployment_id,merge_request_id) as pkey
+      FROM deployment_merge_requests
+    export_schema: 'gitlab_com'
+    export_table: 'deployment_merge_requests'
+    export_table_primary_key: CONCAT(deployment_id,merge_request_id)
+  deployments:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , iid
+      , project_id
+      , environment_id
+      , ref
+      , tag
+      , sha
+      , user_id
+      , deployable_id
+      , created_at
+      , updated_at
+      , on_stop
+      , finished_at
+      , status
+      , cluster_id
+      FROM deployments
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+          AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'deployments'
+    export_table_primary_key: id
   environments:
     import_db: GITLAB_DB
     import_query: >
@@ -1419,5 +1453,3 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_runners
     export_table_primary_key: id
-
-    
