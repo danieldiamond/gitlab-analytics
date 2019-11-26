@@ -1,8 +1,5 @@
 {%- macro scd_type_2(primary_key_renamed, primary_key_raw, source_cte='distinct_source', casted_cte='renamed') -%}
 
-/* From the source table, for each primary_key find:
-    * The maximum timestamp it was seen
-    * Whether or not the row is in the most recent task */
 , max_by_primary_key AS (
   SELECT
     {{ primary_key_raw }} AS primary_key,
@@ -11,20 +8,17 @@
   FROM {{ source_cte }}
   GROUP BY 1
 
-/* Select everything from the casted cte and add valid_to. The logic for valid_to is as follows:
-   * If the primary_key has another row LATER than the current row, then the current row is valid up until one second before that.
-   * If the row IS the most recent one for that 
-*/
 ), windowed AS (
   SELECT
     {{casted_cte}}.*,
 
-    COALESCE(
+    COALESCE( -- First, look for the row immediately following by PK and subtract one millisecond from its timestamp.
       DATEADD('millisecond', -1, FIRST_VALUE(valid_from) OVER (
         PARTITION BY {{casted_cte}}.{{primary_key_renamed}}
         ORDER BY valid_from
         ROWS BETWEEN 1 FOLLOWING AND UNBOUNDED FOLLOWING)
       ),
+      -- If row has no following rows, check when it's valid until (NULL if it appeared in latest task instance.)
       IFF(is_in_most_recent_task = FALSE, max_by_primary_key.max_timestamp, NULL)
     ) AS valid_to,
     (valid_to IS NULL) AS is_currently_valid

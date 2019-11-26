@@ -55,14 +55,21 @@ Usage:
 Used in:
 - dbt_project.yml
 
-## Distinct Source Rows
-This macro is used for condensing a `source` CTE into unique rows only. Our ETL runs frequently while most rows in our source tables don't update frequently. So we end up with a lot of tables in RAW that look the same as each other. This macro takes in a `source_cte` and looks for unique values across ALL columns. 
+## Distinct Sourse
+This macro is used for condensing a `source` CTE into unique rows only. Our ETL runs quite frequently while most rows in our source tables don't update as frequently. So we end up with a lot of rows in our RAW tables that look the same as each other (except for the metadata columns with a leading underscore). This macro takes in a `source_cte` and looks for unique values across ALL columns. 
 
 The 2 exception columns are:
-* `_uploaded_at`: we only want the *minimum* value per unique row. This macros captures this as `valid_from` AKA "when did we *first* see this unique row?"
-* `_task_instance`: here we want to know the *maximum* task instance. This is used later to infer whether a `primary_key` is still present in the source table (a workaround for tracking hard deletes!)
+* `_uploaded_at`: we only want the *minimum* value per unique row ... AKA "when did we *first* see this unique row?" This macros calls this column `valid_from` (to be used in the SCD Type 2 Macro)
+* `_task_instance`: here we want to know the *maximum* task instance. This is used later to infer whether a `primary_key` is still present in the source table (as a roundabout way to track hard deletes.)
 
--- Usage: this macro takes in 2 parameters, `source` and `source_cte` (optional). This is somewhat redundant and could be simplified to take in ONLY a source, but taking in a source CTE allows the user more flexibility to filter out bad rows.
+Usage:
+```
+WITH
+{{ distinct_source(source=source('gitlab_dotcom', 'gitlab_subscriptions'))}}
+
+, renamed AS ( ...
+```
+
 
 Used in:
 - gitlab_dotcom_gitlab_subscriptions.sql
@@ -238,9 +245,28 @@ This macro inserts SQL statements that turn the inputted CTE into a [type 2 slow
 From [Orcale](https://www.oracle.com/webfolder/technetwork/tutorials/obe/db/10g/r2/owb/owb10gr2_gs/owb/lesson3/slowlychangingdimensions.htm): "A Type 2 SCD retains the full history of values. When the value of a chosen attribute changes, the current record is closed. A new record is created with the changed data values and this new record becomes the current record. Each record contains the effective time and expiration time to identify the time period between which the record was active."
 
 In particular, this macro adds 3 columns: `valid_from`, `valid_to`, and `is_currently_valid`.
-`valid_from` will never be null, while `valid_to` can be NULL for one row per ID (`is_currently_active` will be TRUE in that case). It is possible for an ID to have 0 currently active rows (referred to as a "Hard Delete" on the source db.)
+`valid_from` will never be null, while `valid_to` can be NULL for one row per ID (`is_currently_active` will be TRUE in that case). It is possible for an ID to have 0 currently active rows (implies a "Hard Delete" on the source db.)
 
 This macro was built to be used in conjunction with the `distinct_source` macro. 
+
+The parameters are as follows:
+  * **primary_key_renamed**: The primary key column from the `casted_cte` 
+  * **primary_key_raw**: The same column as above, but use the name from when it was in the RAW schema. Value is usually `id`.
+  * **source_cte**: (defaults to '`distinct_source`). This is the name of the CTE with all of the unique source rows. This will always be `distinct_source` if using the `distinct_source` macro.
+  * **casted_cte**: (defaults to `renamed`) . This is the name of the CTE with all of the casted/renamed column names. Our internal convention is to call this `renamed`.
+
+Usage:
+```
+, renamed AS (
+  ... 
+)
+
+{{ scd_type_2(
+    primary_key_renamed='project_group_link_id',
+    primary_key_raw='id'
+) }}
+```
+
 
 Used in:
 - gitlab_dotcom_gitlab_subscriptions.sql

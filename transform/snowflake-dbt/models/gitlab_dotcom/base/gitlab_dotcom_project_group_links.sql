@@ -6,7 +6,7 @@
 WITH 
 {{ distinct_source(source=source('gitlab_dotcom', 'project_group_links')) }}
 
-renamed AS (
+, renamed AS (
 
     SELECT
 
@@ -18,6 +18,8 @@ renamed AS (
       updated_at::TIMESTAMP                           AS project_features_updated_at,
       expires_at::TIMESTAMP                           AS expires_at,
       valid_from -- Column was added in distinct_source CTE
+
+    FROM distinct_source
 
 )
 
