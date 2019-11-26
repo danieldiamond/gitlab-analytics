@@ -5,7 +5,7 @@ WITH source AS (
 
 ),
 
-{{ distinct_source_rows(source=source('gitlab_dotcom', 'members'))}}
+{{ distinct_source(source=source('gitlab_dotcom', 'members'))}}
 
 , renamed AS (
 
@@ -25,16 +25,16 @@ WITH source AS (
       expires_at::TIMESTAMP                          AS expires_at,
       ldap::BOOLEAN                                  AS has_ldap,
       override::BOOLEAN                              AS has_override,
-      valid_from -- Column was added in distinct_source_rows CTE
+      valid_from -- Column was added in distinct_source CTE
 
-    FROM source_distinct
+    FROM distinct_source
 
 )
 
 {{ scd_type_2(
     primary_key='member_id',
     primary_key_raw='id',
-    source_cte='source_distinct',
+    source_cte='distinct_source',
     source_timestamp='valid_from',
     casted_cte='renamed'
 ) }}

@@ -11,7 +11,7 @@ WITH source AS (
 
 ), 
 
-{{ distinct_source_rows(source=source('gitlab_dotcom', 'project_group_links'))}}
+{{ distinct_source(source=source('gitlab_dotcom', 'project_group_links'))}}
 
 renamed AS (
 
@@ -24,14 +24,14 @@ renamed AS (
       created_at::TIMESTAMP                           AS project_features_created_at,
       updated_at::TIMESTAMP                           AS project_features_updated_at,
       expires_at::TIMESTAMP                           AS expires_at,
-      valid_from -- Column was added in distinct_source_rows CTE
+      valid_from -- Column was added in distinct_source CTE
 
 )
 
 {{ scd_type_2(
     primary_key='project_group_link_id',
     primary_key_raw='id',
-    source_cte='source_distinct',
+    source_cte='distinct_source',
     source_timestamp='valid_from',
     casted_cte='renamed'
 ) }}

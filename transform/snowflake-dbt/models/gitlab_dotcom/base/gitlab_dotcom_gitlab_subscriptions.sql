@@ -3,7 +3,8 @@
     })
 }}
 
-{{ distinct_source_rows(source=source('gitlab_dotcom', 'gitlab_subscriptions'))}}
+WITH
+{{ distinct_source(source=source('gitlab_dotcom', 'gitlab_subscriptions'))}}
 
 , renamed AS (
 
@@ -20,9 +21,9 @@
       trial::BOOLEAN                                AS is_trial,
       created_at::TIMESTAMP                         AS created_at,
       updated_at::TIMESTAMP                         AS updated_at,
-      valid_from -- Column was added in distinct_source_rows CTE
+      valid_from -- Column was added in distinct_source CTE
   
-    FROM source_distinct
+    FROM distinct_source
     WHERE gitlab_subscription_id != 572635 -- This ID has NULL values for many of the important columns.
 
 )
@@ -32,7 +33,7 @@
 {{ scd_type_2(
     primary_key='namespace_id', 
     primary_key_raw='namespace_id',
-    source_cte='source_distinct',
+    source_cte='distinct_source',
     source_timestamp='valid_from',
     casted_cte='renamed'
 ) }}

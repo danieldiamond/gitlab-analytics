@@ -10,7 +10,7 @@ WITH source AS (
 
 ),
 
-{{ distinct_source_rows(source=source('gitlab_dotcom', 'label_links'))}}
+{{ distinct_source(source=source('gitlab_dotcom', 'label_links'))}}
 
 , renamed AS (
 
@@ -22,16 +22,16 @@ WITH source AS (
       target_type::VARCHAR                           AS target_type,
       created_at::TIMESTAMP                          AS label_link_created_at,
       updated_at::TIMESTAMP                          AS label_link_updated_at,
-      valid_from -- Column was added in distinct_source_rows CTE
+      valid_from -- Column was added in distinct_source CTE
 
-    FROM source_distinct
+    FROM distinct_source
 
 )
 
 {{ scd_type_2(
     primary_key='label_link_id',
     primary_key_raw='id',
-    source_cte='source_distinct',
+    source_cte='distinct_source',
     source_timestamp='valid_from',
     casted_cte='renamed'
 ) }}

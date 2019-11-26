@@ -11,7 +11,7 @@ WITH source AS (
 
 ),
 
-{{ distinct_source_rows(source=source('gitlab_dotcom', 'issue_links'))}}
+{{ distinct_source(source=source('gitlab_dotcom', 'issue_links'))}}
 
 , renamed AS (
 
@@ -21,16 +21,16 @@ WITH source AS (
       target_id::INTEGER               AS target_id,
       created_at::TIMESTAMP            AS created_at,
       updated_at::TIMESTAMP            AS updated_at,
-      valid_from -- Column was added in distinct_source_rows CTE
+      valid_from -- Column was added in distinct_source CTE
 
-    FROM source_distinct
+    FROM distinct_source
 
 )
 
 {{ scd_type_2(
     primary_key='issue_link_id',
     primary_key_raw='id',
-    source_cte='source_distinct',
+    source_cte='distinct_source',
     source_timestamp='valid_from',
     casted_cte='renamed'
 ) }}
