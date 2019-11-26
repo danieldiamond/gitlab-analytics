@@ -22,6 +22,7 @@ tables:
       , state
       , city
       , company
+      , company_size
       , salesforce_account_id
       , billable
       , access_token
