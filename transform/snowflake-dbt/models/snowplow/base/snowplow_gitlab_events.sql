@@ -166,8 +166,22 @@ FROM {{ source('gitlab_snowplow', 'events') }}
 WHERE app_id IS NOT NULL
 AND date_part(month, try_to_timestamp(derived_tstamp)) = '{{ month_value }}'
 AND date_part(year, try_to_timestamp(derived_tstamp)) = '{{ year_value }}'
-AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
-AND lower(page_url) NOT LIKE 'http://localhost:%'
+AND 
+  (
+    (
+      -- js backend tracker
+      AND v_tracker LIKE 'js%'
+      lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
+      AND lower(page_url) NOT LIKE 'http://localhost:%'
+    )
+    
+    OR
+    
+    (
+      -- ruby backend tracker
+      v_tracker LIKE 'rb%'
+    )
+  )
 AND try_to_timestamp(derived_tstamp) is not null
 
 ), events_to_ignore as (
