@@ -1277,6 +1277,25 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'projects'
     export_table_primary_key: id
+  snippets:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , title
+      , content
+      , author_id
+      , project_id
+      , created_at
+      , updated_at
+      , file_name
+      , type
+      , visibility_level
+      FROM snippets
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'snippets'
+    export_table_primary_key: id
   subscriptions:
     import_db: GITLAB_DB
     import_query: >
@@ -1357,6 +1376,28 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'timelogs'
+    export_table_primary_key: id
+  todos:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , user_id
+      , project_id
+      , target_id
+      , target_type
+      , author_id
+      , action
+      , state
+      , created_at
+      , updated_at
+      , note_id
+      , commit_id
+      , group_id
+      FROM todos
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'todos'
     export_table_primary_key: id
   users:
     import_db: GITLAB_DB
