@@ -1332,7 +1332,7 @@ tables:
       , path
       , created_at 
       , updated_at
-      FROM releases
+      FROM routes
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
