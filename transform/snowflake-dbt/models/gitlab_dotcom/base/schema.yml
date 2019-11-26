@@ -292,7 +292,6 @@ models:
       - name: gitlab_subscription_id
         tests:
           - not_null
-          - unique
       - name: namespace_id
         tests:
           - not_null
@@ -358,7 +357,6 @@ models:
       - name: issue_link_id
         tests:
           - not_null
-          - unique
       - name: created_at
         tests:
           - not_null
@@ -407,7 +405,6 @@ models:
       - name: label_link_id
         tests:
           - not_null
-          - unique
 
   - name: gitlab_dotcom_label_priorities
     description: Base model for Gitlab.com label priorities
@@ -459,7 +456,6 @@ models:
       - name: member_id
         tests:
           - not_null
-          - unique
 
   - name: gitlab_dotcom_merge_request_diffs
     description: Base model for Gitlab.com request diffs
@@ -733,7 +729,6 @@ models:
       - name: project_group_link_id
         tests:
           - not_null
-          - unique
       - name: project_id
         tests:
           - not_null
