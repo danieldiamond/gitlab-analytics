@@ -170,7 +170,7 @@ AND
   (
     (
       -- js backend tracker
-       v_tracker LIKE 'js%'
+      v_tracker LIKE 'js%'
       AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
       AND lower(page_url) NOT LIKE 'http://localhost:%'
     )
