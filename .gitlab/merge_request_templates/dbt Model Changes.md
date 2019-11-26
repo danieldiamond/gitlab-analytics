@@ -87,6 +87,7 @@ Example: You might be looking at the count of opportunities before and after, if
 
 - **boneyard_sheetload**: Run this if you want to test a new boneyard sheetload load. This requires the real analytics clone to be available.
 - **sheetload**: Run this if you want to test a new sheetload load. This requires the RAW clone to be available.
+- **pgp_test**: Run this if you're adding or updating a postgres pipeline manifest. Requires MANIFEST_NAME variable, possibly TASK_INSTANCE variable, and the RAW clone to be available. 
 
 
 #### Stage: dbt_run
@@ -97,11 +98,6 @@ These jobs are scoped to the `ci` target. This target selects a subset of data f
 
 Note that job artificats are available for all dbt run jobs. These include the compiled code and the run results.
 
-- **all**: Runs all models
-- **exclude_product**: Excludes models with the `product` tag. Use this for every other data source.
-- **gitlab_dotcom**: Just runs GitLab.com models
-- **version**: Just runs usage / version ping models
-- **snowplow**: Just runs snowplow and snowplow_combined models
 - **specify_model**: Specify which model to run with the variable `DBT_MODELS`
 - **specify_xl_model**: Specify which model to run using an XL warehouse with the variable `DBT_MODELS`
 - **specify_exclude**: Specify which model to exclude with the variable `DBT_MODELS`

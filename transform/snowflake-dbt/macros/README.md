@@ -238,6 +238,7 @@ Usage:
 ```
 Used in:
 - snowplow_combined/30_day/*.sql
+- snowplow_combined/90_day/*.sql
 
 ## SCD Type 2
 This macro inserts SQL statements that turn the inputted CTE into a [type 2 slowly changing dimension model](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row).

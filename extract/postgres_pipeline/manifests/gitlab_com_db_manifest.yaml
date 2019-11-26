@@ -605,8 +605,6 @@ tables:
       , seats
       , trial
       FROM gitlab_subscriptions
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'gitlab_subscriptions'
     export_table_primary_key: id
@@ -991,6 +989,18 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'notification_settings'
+    export_table_primary_key: id
+  plans:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , name
+      , title
+      FROM plans
+    export_schema: 'gitlab_com'
+    export_table: 'plans'
     export_table_primary_key: id
   project_authorizations:
     import_db: GITLAB_DB
