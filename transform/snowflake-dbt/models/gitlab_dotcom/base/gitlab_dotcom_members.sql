@@ -1,10 +1,4 @@
-WITH source AS (
-
-  SELECT *
-  FROM {{ source('gitlab_dotcom', 'members') }}
-
-),
-
+WITH
 {{ distinct_source(source=source('gitlab_dotcom', 'members'))}}
 
 , renamed AS (
@@ -32,9 +26,6 @@ WITH source AS (
 )
 
 {{ scd_type_2(
-    primary_key='member_id',
-    primary_key_raw='id',
-    source_cte='distinct_source',
-    source_timestamp='valid_from',
-    casted_cte='renamed'
+    primary_key_renamed='member_id',
+    primary_key_raw='id'
 ) }}

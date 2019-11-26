@@ -31,9 +31,6 @@ WITH
 /* Note: the primary key used is namespace_id, not subscription id.
    This matches our business use case better. */
 {{ scd_type_2(
-    primary_key='namespace_id', 
-    primary_key_raw='namespace_id',
-    source_cte='distinct_source',
-    source_timestamp='valid_from',
-    casted_cte='renamed'
+    primary_key_renamed='namespace_id', 
+    primary_key_raw='namespace_id'
 ) }}

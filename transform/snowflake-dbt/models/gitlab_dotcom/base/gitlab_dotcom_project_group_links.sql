@@ -3,15 +3,8 @@
     })
 }}
 
-WITH source AS (
-
-  SELECT *
-  FROM {{ source('gitlab_dotcom', 'project_group_links') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
-
-), 
-
-{{ distinct_source(source=source('gitlab_dotcom', 'project_group_links'))}}
+WITH 
+{ distinct_source(source=source('gitlab_dotcom', 'project_group_links'))}}
 
 renamed AS (
 
@@ -29,9 +22,6 @@ renamed AS (
 )
 
 {{ scd_type_2(
-    primary_key='project_group_link_id',
-    primary_key_raw='id',
-    source_cte='distinct_source',
-    source_timestamp='valid_from',
-    casted_cte='renamed'
+    primary_key_renamed='project_group_link_id',
+    primary_key_raw='id'
 ) }}
