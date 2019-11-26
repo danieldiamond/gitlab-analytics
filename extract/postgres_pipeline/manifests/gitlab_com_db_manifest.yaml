@@ -1064,10 +1064,10 @@ tables:
       , encrypted_key_iv
       , encrypted_key_salt
       , domain
-      , verified_at
+      , verified_at::timestamp   AS verified_at
       , verification_code
-      , enabled_until
-      , remove_at
+      , enabled_until::timestamp AS enabled_until
+      , remove_at::timestamp     AS remove_at
       , auto_ssl_enabled
       , certificate_valid_not_before
       , certificate_valid_not_after
