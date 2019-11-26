@@ -1313,8 +1313,8 @@ tables:
       , tag
       , description
       , project_id
-      , created_at, 
-      , updated_at,
+      , created_at
+      , updated_at
       , author_id
       , sha
       FROM releases
@@ -1330,7 +1330,7 @@ tables:
       , source_id
       , source_type
       , path
-      , created_at, 
+      , created_at 
       , updated_at
       FROM releases
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
