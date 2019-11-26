@@ -69,7 +69,11 @@ WITH sfdc_opportunity_snapshots AS (
       solutions_to_be_replaced__c    AS solutions_to_be_replaced,        
       amount                         AS total_contract_value,
       upside_iacv__c                 AS upside_iacv,
-      upside_swing_deal_iacv__c      AS upside_swing_deal_iacv,               
+      upside_swing_deal_iacv__c      AS upside_swing_deal_iacv, 
+
+      -- metadata
+      convert_timezone('America/Los_Angeles',convert_timezone('UTC', 
+               CURRENT_TIMESTAMP())) AS _last_dbt_run,                    
       isdeleted                      AS is_deleted,
       lastactivitydate               AS last_activity_date,
       recordtypeid                   AS record_type_id        
