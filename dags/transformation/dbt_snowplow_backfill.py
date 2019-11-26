@@ -43,7 +43,6 @@ def generate_dbt_command(vars_dict):
     dbt_generate_command = f"""
         {git_cmd} &&
         cd analytics/transform/snowflake-dbt/ &&
-        export snowflake_load_database="RAW" &&
         dbt deps --profiles-dir profile &&
         export SNOWFLAKE_TRANSFORM_WAREHOUSE="TRANSFORMING_4XL" &&
         dbt run --profiles-dir profile --target prod --models snowplow --full-refresh --vars '{json_dict}'
@@ -74,7 +73,6 @@ dummy_operator = DummyOperator(task_id="start", dag=dag)
 dbt_snowplow_combined_cmd = f"""
         {git_cmd} &&
         cd analytics/transform/snowflake-dbt/ &&
-        export snowflake_load_database="RAW" &&
         dbt deps --profiles-dir profile &&
         dbt run --profiles-dir profile --target prod --models snowplow_combined
         """
