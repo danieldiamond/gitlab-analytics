@@ -552,10 +552,11 @@ tables:
     import_query: >
       SELECT deployment_id
       , merge_request_id
+      , CONCAT(deployment_id,merge_request_id) as pkey
       FROM deployment_merge_requests
     export_schema: 'gitlab_com'
     export_table: 'deployment_merge_requests'
-    export_table_primary_key: merge_request_id
+    export_table_primary_key: CONCAT(deployment_id,merge_request_id)
   deployments:
     import_db: GITLAB_DB
     import_query: >
