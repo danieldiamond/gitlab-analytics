@@ -55,7 +55,7 @@ Usage:
 Used in:
 - dbt_project.yml
 
-## Distinct Sourse
+## Distinct Source
 This macro is used for condensing a `source` CTE into unique rows only. Our ETL runs quite frequently while most rows in our source tables don't update as frequently. So we end up with a lot of rows in our RAW tables that look the same as each other (except for the metadata columns with a leading underscore). This macro takes in a `source_cte` and looks for unique values across ALL columns. 
 
 The 2 exception columns are:
