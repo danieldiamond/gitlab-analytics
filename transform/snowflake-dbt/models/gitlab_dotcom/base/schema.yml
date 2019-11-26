@@ -358,11 +358,7 @@ models:
         tests:
           - not_null
       - name: created_at
-        tests:
-          - not_null
       - name: updated_at
-        tests:
-          - not_null
 
   - name: gitlab_dotcom_issue_metrics
     description: Base model for Gitlab.com issue metrics
