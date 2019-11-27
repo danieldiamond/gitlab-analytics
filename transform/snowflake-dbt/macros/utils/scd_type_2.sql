@@ -4,7 +4,7 @@
   SELECT
     {{ primary_key_raw }} AS primary_key,
     MAX(IFF(max_task_instance IN ( SELECT MAX(max_task_instance) FROM {{ source_cte }} ), 1, 0)) AS is_in_most_recent_task,
-    MAX(valid_from)                                                                              AS max_timestamp
+    MAX(max_uploaded_at)                                                                         AS max_timestamp
   FROM {{ source_cte }}
   GROUP BY 1
 
