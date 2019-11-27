@@ -39,7 +39,7 @@ WITH RECURSIVE namespaces AS (
     INNER JOIN namespaces  AS iter -- Child namespace
       ON anchor.namespace_id = iter.parent_id
 
-), with_ultimate_parent AS (
+), extracted AS (
 
   SELECT
     *,
@@ -47,20 +47,27 @@ WITH RECURSIVE namespaces AS (
     GET(upstream_lineage, ARRAY_SIZE(upstream_lineage)-1) AS ultimate_parent_id
   FROM recursive_namespaces
 
-), ultimate_parent_with_plan AS (
+), with_plans AS (
 
   SELECT
-    with_ultimate_parent.*,
-    plans.plan_id  AS ultimate_parent_plan_id,
-    plans.title    AS ultimate_parent_plan_title
-  FROM with_ultimate_parent
-    LEFT JOIN gitlab_subscriptions
-      ON with_ultimate_parent.ultimate_parent_id = gitlab_subscriptions.namespace_id
-      --AND gitlab_subsriptions.is_currently_valid = True
-    LEFT JOIN plans
-      ON COALESCE(gitlab_subscriptions.plan_id, 34) = plans.plan_id
+    extracted.*,
+    namespace_plans.plan_id        AS namespace_plan_id,
+    namespace_plans.title          AS namespace_plan_title,
+    ultimate_parent_plans.plan_id  AS ultimate_parent_plan_id,
+    ultimate_parent_plans.title    AS ultimate_parent_plan_title
+  FROM extracted
+    -- Get plan information for the namespace.
+    LEFT JOIN gitlab_subscriptions AS namespace_gitlab_subscriptions
+      ON extracted.namespace_id = namespace_gitlab_subscriptions.namespace_id
+    LEFT JOIN plans AS namespace_plans
+      ON COALESCE(namespace_gitlab_subscriptions.plan_id, 34) = namespace_plans.plan_id
+    -- Get plan information for the ultimate parent namespace.
+    LEFT JOIN gitlab_subscriptions AS ultimate_parent_gitlab_subscriptions
+      ON extracted.ultimate_parent_id = ultimate_parent_gitlab_subscriptions.namespace_id
+    LEFT JOIN plans AS ultimate_parent_plans
+      ON COALESCE(ultimate_parent_gitlab_subscriptions.plan_id, 34) = ultimate_parent_plans.plan_id
 
 )
 
 SELECT *
-FROM ultimate_parent_with_plan
+FROM with_plans

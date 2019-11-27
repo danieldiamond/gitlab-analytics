@@ -28,11 +28,6 @@ projects AS (
 
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
-), plans AS (
-
-    SELECT *
-    FROM {{ref('gitlab_dotcom_plans')}}
-
 ), joined AS (
 
     SELECT
