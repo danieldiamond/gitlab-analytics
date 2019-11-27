@@ -1070,14 +1070,11 @@ tables:
       SELECT id
       , project_id
       , certificate
-      , encrypted_key
-      , encrypted_key_iv
-      , encrypted_key_salt
       , domain
-      , verified_at
+      , CAST(verified_at AS VARCHAR) AS verified_at
       , verification_code
       , CAST(enabled_until AS VARCHAR) AS enabled_until
-      , remove_at
+      , CAST(remove_at AS VARCHAR) AS remove_at
       , auto_ssl_enabled
       , certificate_valid_not_before
       , certificate_valid_not_after
