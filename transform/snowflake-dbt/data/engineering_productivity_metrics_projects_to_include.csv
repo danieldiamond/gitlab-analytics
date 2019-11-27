@@ -1,4 +1,4 @@
-project_path,project_id 
+project_path,project_id
 gitlab-org/gitlab-foss,13083
 gitlab-org/gitlab,278964
 gitlab-org/gitlab-runner,250833
@@ -127,6 +127,7 @@ gitlab-org/charts/gitlab,3828396
 gitlab-org/fulfillment,10619765
 gitlab-org/gitlabktl,11080193
 gitlab-org/omnibus-gitlab,20699
+gitlab-org/iglu/,14694517
 Dev CE,
 Dev EE,
 Dev Gitaly,
