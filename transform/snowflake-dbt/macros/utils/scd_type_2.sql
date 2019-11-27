@@ -13,10 +13,9 @@
     {{casted_cte}}.*,
 
     COALESCE( -- First, look for the row immediately following by PK and subtract one millisecond from its timestamp.
-      DATEADD('millisecond', -1, FIRST_VALUE(valid_from) OVER (
+      DATEADD('millisecond', -1, LAG(valid_from) OVER (
         PARTITION BY {{casted_cte}}.{{primary_key_renamed}}
-        ORDER BY valid_from
-        ROWS BETWEEN 1 FOLLOWING AND UNBOUNDED FOLLOWING)
+        ORDER BY valid_from)
       ),
       -- If row has no following rows, check when it's valid until (NULL if it appeared in latest task instance.)
       IFF(is_in_most_recent_task = FALSE, max_by_primary_key.max_timestamp, NULL)
