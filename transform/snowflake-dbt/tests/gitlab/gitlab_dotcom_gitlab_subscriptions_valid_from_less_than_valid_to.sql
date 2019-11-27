@@ -1,4 +1,4 @@
--- valid_from should always be less than valid_to
+-- valid_from should always be less than valid_to.
 
 WITH data AS (
 
