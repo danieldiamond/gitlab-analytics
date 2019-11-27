@@ -1570,5 +1570,3 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_runner_projects
     export_table_primary_key: id  
-
-    
