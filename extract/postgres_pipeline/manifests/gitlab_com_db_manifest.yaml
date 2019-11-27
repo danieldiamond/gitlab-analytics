@@ -1076,8 +1076,8 @@ tables:
       , CAST(enabled_until AS VARCHAR) AS enabled_until
       , CAST(remove_at AS VARCHAR) AS remove_at
       , auto_ssl_enabled
-      , certificate_valid_not_before
-      , certificate_valid_not_after
+      , CAST(certificate_valid_not_before AS VARCHAR) AS certificate_valid_not_before
+      , CAST(certificate_valid_not_after AS VARCHAR) AS certificate_valid_not_after
       , certificate_source
       FROM pages_domains
     export_schema: 'gitlab_com'
