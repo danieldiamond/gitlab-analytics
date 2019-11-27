@@ -9,4 +9,4 @@ WITH data AS (
 
 SELECT *
 FROM data
-WHERE valid_from >= valid_to
+WHERE valid_from > valid_to

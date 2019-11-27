@@ -1,4 +1,4 @@
--- Each namespace_id should only have a maximum of one currently active row
+-- Each namespace_id should only have a maximum of one currently valid row.
 
 WITH data AS (
 
@@ -9,6 +9,6 @@ WITH data AS (
 
 SELECT namespace_id
 FROM data
-WHERE is_currently_active=True
+WHERE is_currently_valid = True
 GROUP BY namespace_id
 HAVING COUNT(*) > 1
