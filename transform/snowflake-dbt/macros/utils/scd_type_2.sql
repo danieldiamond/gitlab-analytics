@@ -13,7 +13,7 @@
     {{casted_cte}}.*,
 
     COALESCE( -- First, look for the row immediately following by PK and subtract one millisecond from its timestamp.
-      DATEADD('millisecond', -1, LAG(valid_from) OVER (
+      DATEADD('millisecond', -1, LEAD(valid_from) OVER (
         PARTITION BY {{casted_cte}}.{{primary_key_renamed}}
         ORDER BY valid_from)
       ),
