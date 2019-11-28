@@ -50,11 +50,14 @@ WITH RECURSIVE namespaces AS (
 ), with_plans AS (
 
   SELECT
+
     extracted.*,
-    namespace_plans.plan_id        AS namespace_plan_id,
-    namespace_plans.title          AS namespace_plan_title,
-    ultimate_parent_plans.plan_id  AS ultimate_parent_plan_id,
-    ultimate_parent_plans.title    AS ultimate_parent_plan_title
+    namespace_plans.plan_id               AS namespace_plan_id,
+    namespace_plans.title                 AS namespace_plan_title,
+    namespace_plans.plan_is_paid          AS namespace_plan_is_paid,
+    ultimate_parent_plans.plan_id         AS ultimate_parent_plan_id,
+    ultimate_parent_plans.title           AS ultimate_parent_plan_title,
+    ultimate_parent_plans.plan_is_paid    AS ultimate_parent_plan_is_paid
   FROM extracted
     -- Get plan information for the namespace.
     LEFT JOIN gitlab_subscriptions AS namespace_gitlab_subscriptions
