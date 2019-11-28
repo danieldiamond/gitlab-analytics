@@ -83,7 +83,7 @@ projects AS (
       LEFT JOIN groups AS ultimate_parent_groups
         ON namespace_lineage.ultimate_parent_id = ultimate_parent_groups.group_id
     -- TODO: test equivalent to namespace_lineage.namespace_plan_id
-    {{ dbt_utils.group_by(n=29) }}
+    {{ dbt_utils.group_by(n=32) }}
 
 )
 
