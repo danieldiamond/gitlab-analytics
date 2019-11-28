@@ -64,23 +64,6 @@ tables:
     export_schema: 'license'
     export_table: 'licenses'
     export_table_primary_key: id
-  plans:
-    import_db: LICENSE_DB
-    import_query: >
-      SELECT
-      id,
-      recurly_code,
-      users_count,
-      created_at,
-      updated_at,
-      recurly_name
-      FROM plans
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_db: EXPORT_DB
-    export_schema: 'license'
-    export_table: 'plans'
-    export_table_primary_key: id
   users:
     import_db: LICENSE_DB
     import_query: >
