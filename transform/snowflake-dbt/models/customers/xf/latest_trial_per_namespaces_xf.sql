@@ -143,6 +143,8 @@ WITH customers AS (
     SELECT
       trials_joined.namespace_id,
       trials_joined.customer_id,
+      trials_joined.country,
+      trials_joined.company_size,
         
       users.user_id                                           AS gitlab_user_id,
       IFF(users.user_id IS NOT NULL, TRUE, FALSE)             AS is_gitlab_user,
@@ -153,13 +155,15 @@ WITH customers AS (
       namespaces.namespace_type,
       
       trials_joined.latest_trial_start_date, 
-      trials_joined.latest_trial_end_date
+      trials_joined.latest_trial_end_date,
+      MIN(order_created_at)                                   AS order_created_at,
       
     FROM trials_joined
-      LEFT JOIN namespaces ON trials_joined.namespace_id = namespaces.namespace_id
-      LEFT JOIN users ON trials_joined.customer_provider_user_id = users.user_id
-      LEFT JOIN converted_trials ON trials_joined.namespace_id = converted_trials.namespace_id
-  
+    LEFT JOIN namespaces ON trials_joined.namespace_id = namespaces.namespace_id
+    LEFT JOIN users ON trials_joined.customer_provider_user_id = users.user_id
+    LEFT JOIN converted_trials ON trials_joined.namespace_id = converted_trials.namespace_id
+    {{dbt_utils.group_by(11)}}
+
 )
 
 SELECT *
