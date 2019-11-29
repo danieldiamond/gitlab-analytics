@@ -112,7 +112,9 @@ WITH customers AS (
       COALESCE(latest_trials_from_snapshot.order_start_date, 
                   namespace_with_latest_trial.estimated_latest_trial_start_date) AS latest_trial_start_date,
       customers.customer_id,
-      customers.customer_provider_user_id
+      customers.customer_provider_user_id,
+      customers.country,
+      customers.company_size
       
     FROM namespace_with_latest_trial
     LEFT JOIN latest_trials_from_snapshot 

@@ -28,6 +28,7 @@ WITH source AS (
     state::VARCHAR                   AS state,
     city::VARCHAR                    AS city,
     company::VARCHAR                 AS company,
+    company_size::VARCHAR            AS company_size,
     salesforce_account_id::VARCHAR   AS sfdc_account_id,
     billable::BOOLEAN                AS customer_is_billable,
     access_token::VARCHAR            AS access_token,
