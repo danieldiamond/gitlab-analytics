@@ -83,7 +83,7 @@ WITH customers AS (
   
 )
 
-, namespace_with_latest_trial AS (
+, namespace_with_latest_trial_date AS (
                                      
     SELECT 
       namespace_id, 
@@ -96,7 +96,7 @@ WITH customers AS (
 
 )
 
-, latest_trials_from_snapshot AS (
+, latest_trials_from_trial_snapshot AS (
   
     SELECT *
     FROM trials_snapshots
@@ -107,20 +107,20 @@ WITH customers AS (
 , trials_joined AS (
 
     SELECT
-      namespace_with_latest_trial.namespace_id,
-      namespace_with_latest_trial.latest_trial_end_date,
-      COALESCE(latest_trials_from_snapshot.order_start_date, 
-                  namespace_with_latest_trial.estimated_latest_trial_start_date) AS latest_trial_start_date,
+      namespace_with_latest_trial_date.namespace_id,
+      namespace_with_latest_trial_date.latest_trial_end_date,
+      COALESCE(latest_trials_from_trial_snapshot.order_start_date, 
+                  namespace_with_latest_trial_date.estimated_latest_trial_start_date) AS latest_trial_start_date,
       customers.customer_id,
       customers.customer_provider_user_id,
       customers.country,
       customers.company_size
       
-    FROM namespace_with_latest_trial
-    LEFT JOIN latest_trials_from_snapshot 
-      ON namespace_with_latest_trial.namespace_id = latest_trials_from_snapshot.gitlab_namespace_id
+    FROM namespace_with_latest_trial_date
+    LEFT JOIN latest_trials_from_trial_snapshot 
+      ON namespace_with_latest_trial_date.namespace_id = latest_trials_from_trial_snapshot.gitlab_namespace_id
     LEFT JOIN customers 
-      ON latest_trials_from_snapshot.customer_id = customers.customer_id
+      ON latest_trials_from_trial_snapshot.customer_id = customers.customer_id
 
 )
 
