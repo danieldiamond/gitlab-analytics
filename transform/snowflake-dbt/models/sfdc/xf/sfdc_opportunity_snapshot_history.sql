@@ -10,7 +10,7 @@ WITH sfdc_opportunity_snapshots AS (
       date_actual,
       valid_from,
       valid_to,
-      is_current_snapshot,
+      is_currently_valid,
       opportunity_snapshot_id,
       accountid                      AS account_id,        
       id                             AS opportunity_id,
