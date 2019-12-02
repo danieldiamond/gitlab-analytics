@@ -107,6 +107,70 @@ def slack_failed_task(context):
     return failed_alert.execute()
 
 
+def slack_succeeded_task(context):
+    """
+    Function to be used as a callable for on_failure_callback.
+    Send a Slack alert.
+    """
+
+    # Set all of the contextual vars
+    base_url = "http://35.190.127.73"
+    execution_date = context["ts"]
+    dag_context = context["dag"]
+    dag_name = dag_context.dag_id
+    dag_id = context["dag"].dag_id
+    task_name = context["task"].task_id
+    task_id = context["task_instance"].task_id
+    execution_date_value = context["execution_date"]
+    execution_date_str = str(execution_date_value)
+    execution_date_epoch = execution_date_value.strftime("%s")
+    execution_date_pretty = execution_date_value.strftime(
+        "%a, %b %d, %Y at %-I:%M %p UTC"
+    )
+    task_instance = str(context["task_instance_key_str"])
+
+    # Generate the link to the logs
+    log_params = urllib.parse.urlencode(
+        {"dag_id": dag_id, "task_id": task_id, "execution_date": execution_date}
+    )
+    log_link = f"{base_url}/log?{log_params}"
+    log_link_markdown = f"<{log_link}|View Logs>"
+
+    if task_name == "snowflake-password-reset":
+        slack_channel = "#data-lounge"
+    else:
+        slack_channel = dag_context.params.get(
+            "slack_channel_override", "#analytics-pipelines"
+        )
+
+    attachment = [
+        {
+            "mrkdwn_in": ["title", "value"],
+            "color": "#1aaa55",
+            "fallback": "An Airflow DAG has succeeded!",
+            "fields": [
+                {"title": "DAG", "value": dag_name, "short": True},
+                {"title": "Task", "value": task_name, "short": True},
+                {"title": "Logs", "value": log_link_markdown, "short": True},
+                {"title": "Timestamp", "value": execution_date_pretty, "short": True},
+            ],
+            "footer": "Airflow",
+            "footer_icon": "http://35.190.127.73/static/pin_100.png",
+            "ts": execution_date_epoch,
+        }
+    ]
+
+    failed_alert = SlackAPIPostOperator(
+        attachments=attachment,
+        channel=slack_channel,
+        task_id="slack_succeeded",
+        text="Task succeeded!",
+        token=os.environ["SLACK_API_TOKEN"],
+        username="Airflow",
+    )
+    return failed_alert.execute()
+
+
 # Set the resources for the task pods
 pod_resources = Resources(request_memory="1Gi", request_cpu="500m")
 
