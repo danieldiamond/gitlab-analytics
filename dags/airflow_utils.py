@@ -129,7 +129,6 @@ def slack_succeeded_task(context):
     task_instance = str(context["task_instance_key_str"])
 
     # Generate the link to the logs
-    title = f"DAG {dag_name} failed on task {task_name}"
     log_params = urllib.parse.urlencode(
         {"dag_id": dag_id, "task_id": task_id, "execution_date": execution_date}
     )
@@ -163,8 +162,8 @@ def slack_succeeded_task(context):
     failed_alert = SlackAPIPostOperator(
         attachments=attachment,
         channel=slack_channel,
-        task_id="slack_failed",
-        text="Task failure!",
+        task_id="slack_succeeded",
+        text="Task succeeded!",
         token=os.environ["SLACK_API_TOKEN"],
         username="Airflow",
     )
