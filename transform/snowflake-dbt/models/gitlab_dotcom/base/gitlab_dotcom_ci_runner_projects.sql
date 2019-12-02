@@ -8,7 +8,7 @@ WITH source AS (
   SELECT
     *
   FROM {{ source('gitlab_dotcom', 'ci_runner_projects') }}
-  WHERE QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
   
 )
 
