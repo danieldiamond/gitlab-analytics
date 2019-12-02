@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "temporary"
+    })
+}}
+
 WITH orders_snapshots AS (
   
   SELECT * 
