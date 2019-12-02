@@ -20,7 +20,7 @@ class SnowflakeManager:
             URL(
                 user=config_vars["PERMISSION_BOT_USER"],
                 password=config_vars["PERMISSION_BOT_PASSWORD"],
-                account=config_vars["PERMISSION_BOT_ACCOUNT"],
+                account=config_vars["SNOWFLAKE_ACCOUNT"],
                 role=config_vars["PERMISSION_BOT_ROLE"],
                 database=config_vars["PERMISSION_BOT_DATABASE"],
                 warehouse=config_vars["PERMISSION_BOT_WAREHOUSE"],
