@@ -17,9 +17,9 @@ WITH source AS (
         author_id::INTEGER        AS author_id,
         project_id::INTEGER       AS project_id,
         created_at::TIMESTAMP     AS created_at,
-        updated_at::TIMESTAMP     AS updated_at
-        type::INTEGER             AS type,
-        visibility_level::INTEGER AS visibility_level
+        updated_at::TIMESTAMP     AS updated_at,
+        type::VARCHAR             AS type,
+        visibility_level::VARCHAR AS visibility_level
     FROM source
     
 )

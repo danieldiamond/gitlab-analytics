@@ -18,12 +18,12 @@ WITH source AS (
       target_id::INTEGER    AS target_id,
       target_type::VARCHAR  AS target_type,
       author_id::INTEGER    AS author_id,
-      action::INTEGER       AS todo_action,
-      state::INTEGER        AS todo_state,
+      action::VARCHAR       AS todo_action,
+      state::VARCHAR        AS todo_state,
       created_at::TIMESTAMP AS created_at,
       updated_at::TIMESTAMP AS updated_at,
       note_id::INTEGER      AS note_id,
-      commit_id::INTEGER    AS commit_id,
+      commit_id::VARCHAR    AS commit_id,
       group_id::INTEGER     AS group_id
     FROM source
     

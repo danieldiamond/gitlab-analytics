@@ -7,7 +7,7 @@ WITH source AS (
 
   SELECT *
   FROM {{ source('gitlab_dotcom', 'clusters') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY issue_id ORDER BY updated_at DESC) = 1
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
