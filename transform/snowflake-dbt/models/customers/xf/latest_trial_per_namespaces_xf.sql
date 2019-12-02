@@ -5,6 +5,13 @@ WITH customers AS (
   
 )
 
+, customers_db_latest_trials_per_namespace AS (
+  
+    SELECT * 
+    FROM {{ ref('customers_db_latest_trials_per_namespace')}}
+  
+)
+
 , gitlab_subscriptions AS (
   
     SELECT * 
@@ -18,11 +25,11 @@ WITH customers AS (
     FROM {{ ref('gitlab_dotcom_namespaces')}}
   
 )
- 
+
 , orders_snapshots AS (
   
-    SELECT * 
-    FROM {{ ref('customers_db_orders_snapshots_base')}}
+  SELECT * 
+  FROM {{ ref('customers_db_orders_snapshots_base')}}
   
 )
 
@@ -75,14 +82,6 @@ WITH customers AS (
   
 )
 
-, trials_snapshots AS (
-  
-    SELECT *
-    FROM orders_snapshots
-    WHERE order_is_trial = TRUE
-  
-)
-
 , namespace_with_latest_trial_date AS (
                                      
     SELECT 
@@ -96,20 +95,12 @@ WITH customers AS (
 
 )
 
-, latest_trials_from_trial_snapshot AS (
-  
-    SELECT *
-    FROM trials_snapshots
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY gitlab_namespace_id ORDER BY valid_from DESC, order_id DESC) = 1
-
-)  
-
 , trials_joined AS (
 
     SELECT
       namespace_with_latest_trial_date.namespace_id,
       namespace_with_latest_trial_date.latest_trial_end_date,
-      COALESCE(latest_trials_from_trial_snapshot.order_start_date, 
+      COALESCE(customers_db_latest_trials_per_namespace.order_start_date, 
                   namespace_with_latest_trial_date.estimated_latest_trial_start_date) AS latest_trial_start_date,
       customers.customer_id,
       customers.customer_provider_user_id,
@@ -117,10 +108,10 @@ WITH customers AS (
       customers.company_size
       
     FROM namespace_with_latest_trial_date
-    LEFT JOIN latest_trials_from_trial_snapshot 
-      ON namespace_with_latest_trial_date.namespace_id = latest_trials_from_trial_snapshot.gitlab_namespace_id
+    LEFT JOIN customers_db_latest_trials_per_namespace 
+      ON namespace_with_latest_trial_date.namespace_id = customers_db_latest_trials_per_namespace.gitlab_namespace_id
     LEFT JOIN customers 
-      ON latest_trials_from_trial_snapshot.customer_id = customers.customer_id
+      ON customers_db_latest_trials_per_namespace.customer_id = customers.customer_id
 
 )
 
@@ -129,7 +120,7 @@ WITH customers AS (
     SELECT DISTINCT
       trials_joined.namespace_id,
       orders_shapshots_excluding_ci_minutes.subscription_name_slugify,
-      orders_shapshots_excluding_ci_minutes.order_created_at
+      subscription.subscription_start_date
     FROM trials_joined
     INNER JOIN orders_shapshots_excluding_ci_minutes 
       ON trials_joined.namespace_id = orders_shapshots_excluding_ci_minutes.gitlab_namespace_id
@@ -157,7 +148,7 @@ WITH customers AS (
       
       trials_joined.latest_trial_start_date, 
       trials_joined.latest_trial_end_date,
-      MIN(order_created_at)                                   AS order_created_at
+      MIN(subscription_start_date)                            AS subscription_start_date
       
     FROM trials_joined
     LEFT JOIN namespaces ON trials_joined.namespace_id = namespaces.namespace_id
