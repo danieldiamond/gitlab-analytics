@@ -91,7 +91,6 @@ WITH customers AS (
     FROM gitlab_subscriptions
     WHERE gitlab_subscription_trial_ends_on IS NOT NULL
     GROUP BY 1
-    ORDER BY 3 DESC
 
 )
 
