@@ -6,10 +6,9 @@
 
 WITH source AS (
 
-    SELECT
-      *,
-      ROW_NUMBER() OVER (PARTITION BY id, DATE_TRUNC('day', dbt_valid_from) ORDER BY dbt_valid_from DESC) AS rank_in_key
-    FROM {{ source('snapshots', 'sfdc_opportunity_snapshots') }}   
+    SELECT *
+    FROM {{ source('snapshots', 'sfdc_opportunity_snapshots') }}
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id, DATE_TRUNC('day', dbt_valid_from) ORDER BY dbt_valid_from DESC) = 1   
 
 ), date_spine AS (
 
@@ -31,9 +30,8 @@ WITH source AS (
       dbt_valid_to                           AS valid_to
     FROM source
     INNER JOIN date_spine
-      ON source.dbt_valid_from <= date_spine.date_actual
-     AND (source.dbt_valid_to > date_spine.date_actual OR source.dbt_valid_to IS NULL)
-     AND source.rank_in_key = 1   
+      ON source.dbt_valid_from::DATE <= date_spine.date_actual
+     AND (source.dbt_valid_to > date_spine.date_actual OR source.dbt_valid_to IS NULL)  
 
 )
 

@@ -1,12 +1,17 @@
 WITH sfdc_opportunity_snapshots AS (
 
     SELECT *
-    FROM {{ref('sfdc_opportunity_snapshots')}}
+    FROM {{ref('sfdc_opportunity_snapshots_base')}}
 
 ), final AS (
 
     SELECT
       -- keys
+      date_actual,
+      valid_from,
+      valid_to,
+      is_current_snapshot,
+      opportunity_snapshot_id,
       accountid                      AS account_id,        
       id                             AS opportunity_id,
       name                           AS opportunity_name,
