@@ -51,7 +51,7 @@ class SnowflakeManager:
         for index, row in user_list.iterrows():
             user_name = row["name"]
             if user_name not in exemption_list:
-                query = f"ALTER USER {user_name} SET MUST_CHANGE_PASSWORD = FALSE;"
+                query = f"ALTER USER {user_name} SET MUST_CHANGE_PASSWORD = TRUE;"
             else:
                 continue
             logging.info(f"Executing {query}")
