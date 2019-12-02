@@ -47,14 +47,17 @@ class SnowflakeManager:
             "SNOWFLAKE",
             "TARGET_SNOWFLAKE",
         ]
+        connection = self.engine.connect()
         for index, row in user_list.iterrows():
             user_name = row["name"]
             if user_name not in exemption_list:
-                query = f"ALTER USER {user_name} SET MUST_CHANGE_PASSWORD = TRUE;"
+                query = f"ALTER USER {user_name} SET MUST_CHANGE_PASSWORD = FALSE;"
             else:
                 continue
-            # results = pd.read_sql(sql=query, con=connection)
-            print(query)
+            logging.info(f"Executing {query}")
+            connection.execute(query)
+            
+        self.engine.dispose()
 
 
 if __name__ == "__main__":
