@@ -70,7 +70,7 @@ WITH customers AS (
     FROM orders_snapshots
     LEFT JOIN ci_minutes_charges 
       ON orders_snapshots.subscription_id = ci_minutes_charges.subscription_id
-      AND orders_snapshots.product_rate_plan_id = ci_minutes_charges.product_rate_plan_id
+        AND orders_snapshots.product_rate_plan_id = ci_minutes_charges.product_rate_plan_id
     WHERE ci_minutes_charges.subscription_id IS NULL
   
 )
@@ -128,7 +128,8 @@ WITH customers AS (
   
     SELECT DISTINCT
       trials_joined.namespace_id,
-      orders_shapshots_excluding_ci_minutes.subscription_name_slugify
+      orders_shapshots_excluding_ci_minutes.subscription_name_slugify,
+      orders_shapshots_excluding_ci_minutes.order_created_at
     FROM trials_joined
     INNER JOIN orders_shapshots_excluding_ci_minutes 
       ON trials_joined.namespace_id = orders_shapshots_excluding_ci_minutes.gitlab_namespace_id
@@ -156,7 +157,7 @@ WITH customers AS (
       
       trials_joined.latest_trial_start_date, 
       trials_joined.latest_trial_end_date,
-      MIN(order_created_at)                                   AS order_created_at,
+      MIN(order_created_at)                                   AS order_created_at
       
     FROM trials_joined
     LEFT JOIN namespaces ON trials_joined.namespace_id = namespaces.namespace_id
