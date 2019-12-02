@@ -1,3 +1,17 @@
+{% docs customers_db_latest_trials_per_namespace %}
+
+This model is used to build [latest_trial_per_namespaces_xf]().
+
+It is used to build a single table summarising trials information for a specific namespace.
+
+We start from `customers_db_orders_snapshots_base` model in order to isolate the trials. This model does the following thing:
+
+* It isolates the orders that are flagged with the column `is_trial=TRUE`
+* It deduplicates by taking the latest row created for a specific `gitlab_namespace_id`
+* It then joins with `customers_db_customers` in order to get information about country, company_size of the user who started the trial
+
+{% enddocs %}
+
 {% docs customers_db_orders_with_valid_charges %}
 
 This is an intermediate ephemeral model used in the `customers_db_charges_xf`. Each row is a different zuora rate_plan_charge with a unique `rate_plan_charge_id` key.
