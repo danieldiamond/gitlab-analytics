@@ -34,7 +34,9 @@ container_cmd = f"""
 # Create the DAG
 # At 05:30 on Sunday in every 3rd month from January through December
 dag = DAG(
-    "snowflake_password_reset", default_args=default_args, schedule_interval="30 5 * 1-12/3 7"
+    "snowflake_password_reset",
+    default_args=default_args,
+    schedule_interval="30 5 * 1-12/3 7",
 )
 
 # Task 1

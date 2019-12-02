@@ -106,6 +106,7 @@ def slack_failed_task(context):
     )
     return failed_alert.execute()
 
+
 def slack_succeeded_task(context):
     """
     Function to be used as a callable for on_failure_callback.
@@ -168,6 +169,7 @@ def slack_succeeded_task(context):
         username="Airflow",
     )
     return failed_alert.execute()
+
 
 # Set the resources for the task pods
 pod_resources = Resources(request_memory="1Gi", request_cpu="500m")
