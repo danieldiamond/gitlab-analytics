@@ -24,3 +24,11 @@ models:
       - name: customer_id
         tests:
           - not_null
+
+  - name: latest_trial_per_namespaces_xf
+    description: '{{ doc("latest_trial_per_namespaces_xf") }}'
+    columns:
+      - name: namespace_id
+        tests:
+          - not_null
+          - unique
