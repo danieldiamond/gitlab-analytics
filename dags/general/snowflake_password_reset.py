@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, gitlab_defaults
+from airflow_utils import slack_failed_task, slack_succeeded_task, gitlab_defaults
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 
@@ -16,6 +16,7 @@ default_args = {
     "catchup": False,
     "depends_on_past": False,
     "on_failure_callback": slack_failed_task,
+    "on_success_callback": slack_succeeded_task,
     "owner": "airflow",
     "retries": 0,
     "retry_delay": timedelta(minutes=1),
