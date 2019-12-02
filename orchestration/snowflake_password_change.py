@@ -27,7 +27,7 @@ class SnowflakeManager:
             )
         )
 
-    def show_users(self) -> DataFrame:
+    def show_users(self) -> pd.DataFrame:
         query = "SHOW USERS;"
         connection = self.engine.connect()
         results = pd.read_sql(sql=query, con=connection)
