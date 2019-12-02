@@ -40,7 +40,7 @@ This order examplifies perfectly what is happening in the table `customers_db_or
 
 {% enddocs %}
 
-{% docs customers_db_trials %}
+{% docs latest_trial_per_namespaces_xf %}
 
 This model collects for a specific namespace the latest trials information. 
 
@@ -48,7 +48,7 @@ This model collects for a specific namespace the latest trials information.
 ## Context
 
 To understand the context, the following information is important:
-* before 2019-09-16, a namespace can subscribe several times to a trial. That was a bug corrected by the fulfillment team in September 2019. 
+* before 2019-09-16, a namespace can subscribe several times to a trial. That was a bug corrected by the fulfillment team in September 2019. More info (here)[https://gitlab.com/gitlab-org/customers-gitlab-com/merge_requests/458]
 * all snapshots tables have also been created in September 2019. Before that we don't have historical information
 * customers_db ETL was before October 2019 unstable. We improved the logic at the end of October by changing from incremental model to a daily full "drop and create" to the raw database.
 
@@ -56,10 +56,10 @@ To understand the context, the following information is important:
 
 Trial Information is collected in 2 tables (one in the subscription portal database - customer_db, the other in the .com database - main app). These 2 tables have incomplete information. We join them together to get a more consistent and complete picture of trials started
 
-For the gitlab_dotcom database, information is stored in `gitlab_dotcom_gitlab_subscriptions` table. As described [here](LINK), rows can be deleted in this table, so we use the `gitlab_dotcom_gitlab_subscriptions_snapshot` for higher reporting accuracy.  In this model, we do the following operations:
+For the gitlab_dotcom database, information is stored in `gitlab_dotcom_gitlab_subscriptions` table. As described [here](https://gitlab.com/gitlab-data/analytics/merge_requests/1983#note_249268694), rows can be deleted in this table, so we use the `gitlab_dotcom_gitlab_subscriptions_snapshot` for higher reporting accuracy.  In this model, we do the following operations:
 * We isolate trials by looking at a specific column `gitlab_subscription_trial_ends_on` which is filled only when a specific subscription was a trial before.
 * We then group by the namespace_id in order to only select the latest trials started for a specific namespace.
-* One weird behaviour of this table is the way it deals with expired orders. It is explained [here](LINK) That means that the `start_date` is NOT a reliable information for us in order to know the trial start date. We therefore use the `gitlab_subscription_trial_ends_on` column in order to estimate when the trial has been started (30 days before the end of the trials in most cases)
+* One weird behaviour of this table is the way it deals with expired orders. It is explained [here](/model.gitlab_snowflake.gitlab_dotcom_gitlab_subscriptions) That means that the `start_date` is NOT a reliable information for us in order to know the trial start date. We therefore use the `gitlab_subscription_trial_ends_on` column in order to estimate when the trial has been started (30 days before the end of the trials in most cases)
 
 For the customers database, it is explained in the models `customers_db_latest_trials_per_namespace`
 
