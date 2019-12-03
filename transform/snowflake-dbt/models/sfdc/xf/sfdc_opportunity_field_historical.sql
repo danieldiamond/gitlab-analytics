@@ -30,7 +30,9 @@ WITH base AS (
     SELECT
       id          AS opportunity_id,
       valid_to,
-      {{ fields_to_use }},
+      {% for field in fields_to_use %}
+      {{field}}::VARCHAR AS {{field}},
+      {% endfor %}
       createddate AS created_date,
       valid_from
     FROM {{ref('sfdc_opportunity_snapshots_base')}}  
