@@ -161,8 +161,7 @@ models:
         tests:
           - not_null
           - unique
-  - name: sfdc_opportunity_field_historical
-    description: '{{ doc("sfdc_opportunity_field_historical") }}'    
+  - name: sfdc_opportunity_field_historical  
     columns:
       - name: opportunity_id
         tests:
