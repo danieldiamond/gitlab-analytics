@@ -5,13 +5,14 @@
 
 WITH source AS (
 
-  SELECT *
-  FROM {{ source('gitlab_dotcom', 'todos') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
+    SELECT *
+    FROM {{ source('gitlab_dotcom', 'todos') }}
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
   
     SELECT
+    
       id::INTEGER           AS id,
       user_id::INTEGER      AS user_id,
       project_id::INTEGER   AS project_id,
@@ -25,6 +26,7 @@ WITH source AS (
       note_id::INTEGER      AS note_id,
       commit_id::VARCHAR    AS commit_id,
       group_id::INTEGER     AS group_id
+      
     FROM source
     
 )
