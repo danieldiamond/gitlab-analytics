@@ -352,7 +352,7 @@ models:
           - not_null
 
   - name: gitlab_dotcom_issue_links
-    description: Base model for Gitlab.com issue links
+    description: 'Base model for Gitlab.com issue links. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: issue_link_id
         tests:
@@ -396,7 +396,7 @@ models:
         description: '{{ doc("visibility_documentation") }}'
 
   - name: gitlab_dotcom_label_links
-    description: Base model for Gitlab.com label links
+    description: 'Base model for Gitlab.com label links. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: label_link_id
         tests:
@@ -447,7 +447,7 @@ models:
           - not_null
 
   - name: gitlab_dotcom_members
-    description: Base model for Gitlab.com members
+    description: 'Base model for Gitlab.com members. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: member_id
         tests:
@@ -720,7 +720,7 @@ models:
           - not_null
 
   - name: gitlab_dotcom_project_group_links
-    description: Base model for Gitlab.com group links
+    description: 'Base model for Gitlab.com group links. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: project_group_link_id
         tests:

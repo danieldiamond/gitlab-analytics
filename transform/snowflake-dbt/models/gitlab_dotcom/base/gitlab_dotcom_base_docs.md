@@ -22,13 +22,14 @@ The recurvice CTE uses a top-down approach to iterate though each namespace. The
 
 Base model for Gitlab.com gitlab_subscriptions. These are the plan subscriptions for the GitLab.com product, as opposed to the `subscriptions` table (no prefix) which deals with subscriptions in the notification sense, related to issues and merge requests.
 
-Note: the primary_key in this model is `namespace_id`
+Note: the primary_key in this model is `namespace_id`.
 
 {% enddocs %}
 
 
 {% docs scd_type_two_documentation %}
-
+<br/>
+### Type 2 Slowly Changing Dimension
 This base model is modelled as a Type 2 Slowly Changing Dimension. This means 3 columns have been added as metadata to track row-level changes over time. These columns are `valid_from`, `valid_to` and `is_currently_valid`. One implication of this is that the primary key column in this table is *not* unique. There can be multiple rows per primary_key, but only a maximum of one will have `is_currently_vaild` set to TRUE. 
 
 Read the documentation for the SCD Type 2 Macro [here](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md#scd_type_2).
