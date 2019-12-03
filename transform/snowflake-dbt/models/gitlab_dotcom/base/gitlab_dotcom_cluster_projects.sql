@@ -15,9 +15,9 @@ WITH source AS (
   
     SELECT
 
-      id::INTEGER           AS cluster_group_id,
+      id::INTEGER           AS cluster_project_id,
       cluster_id::INTEGER   AS cluster_id,
-      project_id::INTEGER   AS group_id
+      project_id::INTEGER   AS project_id
       
     FROM source
   

@@ -22,6 +22,7 @@ WITH source AS (
       updated_at::TIMESTAMP AS updated_at
 
     FROM source
+    WHERE porject_id IS NOT NULL
   
 )
 

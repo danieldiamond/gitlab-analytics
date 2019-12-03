@@ -13,7 +13,7 @@ WITH source AS (
   
     SELECT
     
-      id::INTEGER           AS id,
+      id::INTEGER           AS todo_id,
       user_id::INTEGER      AS user_id,
       project_id::INTEGER   AS project_id,
       target_id::INTEGER    AS target_id,
