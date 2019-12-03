@@ -5,10 +5,9 @@
 
 WITH source AS (
 
-  SELECT
-    *
-  FROM {{ source('gitlab_dotcom', 'deployments') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
+    SELECT *
+    FROM {{ source('gitlab_dotcom', 'deployments') }}
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -27,9 +26,8 @@ WITH source AS (
       updated_at::TIMESTAMP                            AS updated_at,
       on_stop::VARCHAR                                 AS on_stop,
       finished_at::TIMESTAMP                           AS finished_at,
-      status::INTEGER                                  AS status,
+      status::INTEGER                                  AS status_id,
       cluster_id::INTEGER                              AS cluster_id
-
     FROM source
 
 )

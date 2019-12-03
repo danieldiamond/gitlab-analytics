@@ -5,9 +5,9 @@
 
 WITH source AS (
 
-  SELECT *
-  FROM {{ source('gitlab_dotcom', 'environments') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
+    SELECT *
+    FROM {{ source('gitlab_dotcom', 'environments') }}
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -21,11 +21,8 @@ WITH source AS (
       environment_type::VARCHAR                        AS environment_type,
       state::VARCHAR                                   AS state,
       slug::VARCHAR                                    AS slug
-
     FROM source
 
 )
-
-
 SELECT *
 FROM renamed
