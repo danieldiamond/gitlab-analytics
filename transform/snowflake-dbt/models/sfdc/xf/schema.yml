@@ -72,6 +72,26 @@ models:
         tests:
           - not_null
           - unique
+  - name: sfdc_opportunity_snapshot_history
+    columns:
+        - name: account_id
+          tests:
+              - not_null
+        - name: opportunity_id
+          tests:
+              - not_null
+        - name: opportunity_name
+          tests:
+              - not_null
+        - name: stage_name
+          tests:
+              - not_null
+  - name: sfdc_opportunity_stage_duration
+    description: '{{ doc("sfdc_opportunity_stage_duration") }}'
+    columns:
+      - name: primary_key
+        tests:
+          - not_null                        
   - name: sfdc_opportunity_xf
     columns:
       - name: opportunity_id
@@ -141,6 +161,7 @@ models:
         tests:
           - not_null
           - unique
+<<<<<<< HEAD
   - name: sfdc_opportunity_stage_duration
     description: '{{ doc("sfdc_opportunity_stage_duration") }}'
     columns:
@@ -156,3 +177,5 @@ models:
       - name: valid_from
         tests:
           - not_null        
+=======
+>>>>>>> 2964-model-sfdc-opportunity-snapshot-data
