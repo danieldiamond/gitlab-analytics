@@ -147,3 +147,12 @@ models:
       - name: primary_key
         tests:
           - not_null
+  - name: sfdc_opportunity_field_historical
+    description: '{{ doc("sfdc_opportunity_field_historical") }}'    
+    columns:
+      - name: opportunity_id
+        tests:
+          - not_null
+      - name: valid_from
+        tests:
+          - not_null        

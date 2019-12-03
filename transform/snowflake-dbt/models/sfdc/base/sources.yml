@@ -39,6 +39,9 @@ sources:
         description: '{{ doc("sfdc_execbus_source") }}'
       - name: lead         
         description: '{{ doc("sfdc_lead_source") }}'
+      - name: opportunity_field_history
+        identifier: opportunityfieldhistory
+        description: '{{ doc("sfdc_oppfieldhistory_source") }}'  
       - name: opportunity_history
         identifier: opportunityhistory          
         description: '{{ doc("sfdc_opphistory_source") }}'
