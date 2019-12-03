@@ -20,7 +20,7 @@ WITH source AS (
       created_at::TIMESTAMP     AS created_at,
       updated_at::TIMESTAMP     AS updated_at,
       type::VARCHAR             AS type,
-      visibility_level::VARCHAR AS visibility_level
+      visibility_level::INTEGER AS visibility_level
       
     FROM source
     

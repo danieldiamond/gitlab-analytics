@@ -19,7 +19,7 @@ WITH source AS (
       target_id::INTEGER    AS target_id,
       target_type::VARCHAR  AS target_type,
       author_id::INTEGER    AS author_id,
-      action::VARCHAR       AS todo_action,
+      action::INTEGER       AS todo_action_id,
       state::VARCHAR        AS todo_state,
       created_at::TIMESTAMP AS created_at,
       updated_at::TIMESTAMP AS updated_at,

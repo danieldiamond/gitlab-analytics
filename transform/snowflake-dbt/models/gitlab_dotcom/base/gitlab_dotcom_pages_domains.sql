@@ -21,7 +21,7 @@ WITH source AS (
       verification_code::VARCHAR              AS verification_code,
       enabled_until::TIMESTAMP                AS enabled_until,
       remove_at::TIMESTAMP                    AS remove_at,
-      auto_ssl_enabled::VARCHAR               AS auto_ssl_enabled,
+      auto_ssl_enabled::BOOLEAN               AS is_auto_ssl_enabled,
       certificate_valid_not_before::TIMESTAMP AS certificate_valid_not_before,
       certificate_valid_not_after::TIMESTAMP  AS certificate_valid_not_after,
       certificate_source::VARCHAR             AS certificate_source

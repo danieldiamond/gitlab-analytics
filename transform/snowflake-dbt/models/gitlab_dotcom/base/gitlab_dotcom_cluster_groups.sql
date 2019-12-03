@@ -17,7 +17,7 @@ WITH source AS (
     
       id::INTEGER           AS cluster_group_id,
       cluster_id::INTEGER   AS cluster_id,
-      group_id::INTEGER      AS group_id
+      group_id::INTEGER     AS group_id
 
     FROM source
   

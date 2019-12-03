@@ -14,14 +14,14 @@ WITH source AS (
     SELECT
       id::INTEGER                AS cluster_id,
       user_id::INTEGER           AS user_id,
-      provider_type::VARCHAR     AS provider_type,
-      platform_type::VARCHAR     AS platform_type,
+      provider_type::INTEGER     AS provider_type_id,
+      platform_type::INTEGER     AS platform_type_id,
       created_at::TIMESTAMP      AS created_at,
       updated_at::TIMESTAMP      AS updated_at,
       enabled::BOOLEAN           AS is_enabled,
       name::VARCHAR              AS cluster_name,
       environment_scope::VARCHAR AS environment_scope,
-      cluster_type::VARCHAR      AS cluster_type,
+      cluster_type::INTEGER      AS cluster_type_id,
       domain::VARCHAR            AS domain,
       managed::VARCHAR           AS managed
 
