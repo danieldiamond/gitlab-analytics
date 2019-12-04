@@ -1,0 +1,8 @@
+{{ _xf_witth_anonymized_fields(
+                                base_model='gitlab_dotcom_epics',
+                                fields_to_mask=['epic_title'],
+                                related_object='namespace'
+) }}
+
+SELECT * 
+FROM anonymised
