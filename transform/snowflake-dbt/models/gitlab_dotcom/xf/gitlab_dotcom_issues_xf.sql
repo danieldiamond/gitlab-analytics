@@ -56,7 +56,7 @@ joined AS (
   SELECT
     issues.issue_id,
     issues.issue_iid,
-    issue_author_id,
+    issues.author_id,
     issues.project_id,
     milestone_id,
     updated_by_id,

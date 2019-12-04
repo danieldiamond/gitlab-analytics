@@ -42,7 +42,10 @@ WITH customers AS (
 
 , users AS (
 
-  SELECT *
+  SELECT 
+  {{ dbt_utils.star(from=ref('gitlab_dotcom_users'), except=["created_at", "updated_at"]) }},
+    created_at AS user_created_at,
+    updated_at AS user_updated_at
   FROM {{ ref('gitlab_dotcom_users') }}
 
 )
@@ -196,8 +199,8 @@ WITH customers AS (
 , joined AS (
   SELECT
     users.*,
-    TIMESTAMPDIFF(DAYS, created_at, last_activity_on)                            AS days_active,
-    TIMESTAMPDIFF(DAYS, created_at, CURRENT_TIMESTAMP(2))                        AS account_age,
+    TIMESTAMPDIFF(DAYS, user_created_at, last_activity_on)                       AS days_active,
+    TIMESTAMPDIFF(DAYS, user_created_at, CURRENT_TIMESTAMP(2))                   AS account_age,
     CASE
       WHEN account_age <= 1 THEN '1 - 1 day or less'
       WHEN account_age <= 7 THEN '2 - 2 to 7 days'

@@ -17,7 +17,7 @@ WITH source AS (
 
       id::INTEGER                                               AS issue_id,
       iid::INTEGER                                              AS issue_iid,
-      author_id::INTEGER                                        AS issue_author_id,
+      author_id::INTEGER                                        AS author_id,
       source.project_id::INTEGER                                AS project_id,
       milestone_id::INTEGER                                     AS milestone_id,
       updated_by_id::INTEGER                                    AS updated_by_id,
