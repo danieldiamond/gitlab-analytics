@@ -203,6 +203,8 @@ Usage:
 ```
 Used in:
 - sfdc_opportunity.sql
+- sfdc_opportunity_field_historical.sql
+- sfdc_opportunity_snapshot_history.sql
 - zendesk_organizations.sql
 - sfdc_lead.sql
 
@@ -234,6 +236,8 @@ Usage:
 ```
 Used in:
 - sfdc_opportunity.sql
+- sfdc_opportunity_field_historical.sql
+- sfdc_opportunity_snapshot_history.sql
 - sfdc_account_deal_size_segmentation.sql
 
 ## SFDC Source Buckets ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sfdc_source_buckets.sql))
@@ -246,6 +250,8 @@ Used in:
 - sfdc_contact
 - sfdc_lead
 - sfdc_opportunity
+- sfdc_opportunity_field_historical.sql
+- sfdc_opportunity_snapshot_history.sql
 
 ## SMAU Events CTES
 
