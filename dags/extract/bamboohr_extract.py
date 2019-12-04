@@ -4,9 +4,13 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, gitlab_defaults
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
+from airflow_utils import (
+    clone_and_setup_extraction_cmd,
+    gitlab_defaults,
+    slack_failed_task,
+)
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
@@ -32,10 +36,8 @@ dag = DAG(
 
 # SFDC Extract
 bamboohr_extract_cmd = f"""
-    git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-    export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
-    cd analytics/ &&
-    python extract/bamboohr/src/execute.py
+    {clone_and_setup_extraction_cmd} &&
+    python bamboohr/src/execute.py
 """
 bamboohr_extract = KubernetesPodOperator(
     **gitlab_defaults,

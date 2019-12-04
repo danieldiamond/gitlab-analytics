@@ -197,3 +197,14 @@ gitlab_pod_env_vars = {
     if GIT_BRANCH == "master"
     else f"{GIT_BRANCH.upper()}_ANALYTICS",
 }
+
+clone_repo_cmd = f"""
+git clone -b {GIT_BRANCH} --single-branch --depth 1 \
+    https://gitlab.com/gitlab-data/analytics.git
+"""
+
+clone_and_setup_extraction_cmd = f"""
+{clone_repo_cmd} &&
+export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
+cd analytics/extract/
+"""

@@ -4,8 +4,13 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, gitlab_defaults, gitlab_pod_env_vars
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
+from airflow_utils import (
+    clone_and_setup_extraction_cmd,
+    gitlab_defaults,
+    gitlab_pod_env_vars,
+    slack_failed_task,
+)
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
@@ -35,9 +40,8 @@ git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-
 
 # Sheetload task
 sheetload_cmd = f"""
-    {git_cmd} &&
-    export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
-    cd analytics/extract/sheetload/ &&
+    {clone_and_setup_extraction_cmd} &&
+    cd sheetload/ &&
     python3 sheetload.py sheets --sheet_file sheets.txt
 """
 
