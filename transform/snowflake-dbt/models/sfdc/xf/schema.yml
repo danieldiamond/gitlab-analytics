@@ -72,6 +72,27 @@ models:
         tests:
           - not_null
           - unique
+  - name: sfdc_opportunity_snapshot_history
+    description: This model constrains the scope of sfdc_opportunity_snapshots_base to the columns in sfdc_opportunity_xf and their corresponding aliases.
+    columns:
+        - name: account_id
+          tests:
+              - not_null
+        - name: opportunity_id
+          tests:
+              - not_null
+        - name: opportunity_name
+          tests:
+              - not_null
+        - name: stage_name
+          tests:
+              - not_null
+  - name: sfdc_opportunity_stage_duration
+    description: '{{ doc("sfdc_opportunity_stage_duration") }}'
+    columns:
+      - name: primary_key
+        tests:
+          - not_null                        
   - name: sfdc_opportunity_xf
     columns:
       - name: opportunity_id
@@ -141,9 +162,3 @@ models:
         tests:
           - not_null
           - unique
-  - name: sfdc_opportunity_stage_duration
-    description: '{{ doc("sfdc_opportunity_stage_duration") }}'
-    columns:
-      - name: primary_key
-        tests:
-          - not_null
