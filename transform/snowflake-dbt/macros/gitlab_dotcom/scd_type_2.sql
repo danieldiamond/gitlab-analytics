@@ -24,7 +24,7 @@
         -- If row has no following rows, check when it's valid until (NULL if it appeared in latest task instance.)
           IFF(is_in_most_recent_task = FALSE, max_by_primary_key.max_timestamp, NULL)
       ) AS valid_to,
-      (valid_to IS NULL) AS is_currently_valid
+      IFF(valid_to IS NULL, True, False) AS is_currently_valid
 
     FROM {{casted_cte}}
     LEFT JOIN max_by_primary_key
