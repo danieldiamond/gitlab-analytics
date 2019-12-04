@@ -14,12 +14,11 @@ WITH source AS (
     SELECT
     
       id::INTEGER               AS snippet_id,
-      title::VARCHAR            AS snippet_title,
       author_id::INTEGER        AS author_id,
       project_id::INTEGER       AS project_id,
       created_at::TIMESTAMP     AS created_at,
       updated_at::TIMESTAMP     AS updated_at,
-      type::VARCHAR             AS type,
+      type::VARCHAR             AS snippet_type,
       visibility_level::INTEGER AS visibility_level
       
     FROM source

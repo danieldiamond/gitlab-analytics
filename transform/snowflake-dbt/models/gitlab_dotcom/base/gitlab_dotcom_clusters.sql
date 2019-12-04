@@ -19,7 +19,6 @@ WITH source AS (
       created_at::TIMESTAMP      AS created_at,
       updated_at::TIMESTAMP      AS updated_at,
       enabled::BOOLEAN           AS is_enabled,
-      name::VARCHAR              AS cluster_name,
       environment_scope::VARCHAR AS environment_scope,
       cluster_type::INTEGER      AS cluster_type_id,
       domain::VARCHAR            AS domain,

@@ -15,8 +15,6 @@ WITH source AS (
     
       id::INTEGER                             AS pages_domain_id,
       project_id::INTEGER                     AS project_id,
-      certificate::VARCHAR                    AS certificate,
-      domain::VARCHAR                         AS domain,
       verified_at::TIMESTAMP                  AS verified_at,
       verification_code::VARCHAR              AS verification_code,
       enabled_until::TIMESTAMP                AS enabled_until,
