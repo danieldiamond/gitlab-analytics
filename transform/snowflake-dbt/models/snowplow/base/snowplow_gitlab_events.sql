@@ -44,7 +44,7 @@ WITH source as (
       derived_contexts,
       -- correctting bugs on ruby tracker which was sending wrong timestamp
       -- https://gitlab.com/gitlab-data/analytics/issues/3097
-      IFF(DATE_PART('year', derived_tstamp) > 1970, 
+      IFF(DATE_PART('year', TRY_TO_TSTAMP(derived_tstamp)) > 1970, 
             derived_tstamp, collector_tstamp) AS derived_tstamp,
       doc_charset,
       try_to_numeric(doc_height)              AS doc_height,
