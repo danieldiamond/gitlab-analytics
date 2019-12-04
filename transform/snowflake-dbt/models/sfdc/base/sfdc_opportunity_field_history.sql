@@ -14,7 +14,7 @@ WITH base AS (
       opportunityid         AS opportunity_id,
       id                    AS field_history_id,
       createddate           AS field_modified_at,
-      field                 AS opportunity_field,
+      LOWER(field)          AS opportunity_field,
       newvalue__fl          AS new_value_float,
       newvalue__st          AS new_value_string,
       newvalue__bo          AS new_value_boolean,
