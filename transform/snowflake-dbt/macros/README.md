@@ -37,6 +37,15 @@ Used in:
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
 
+## Create Snapshot Base Models ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/create_snapshot_base.sql))
+This macro creates a base model for dbt snapshots. A single entry is generated from the chosen start date through the current date for the specified primary key(s) and unit of time. 
+Usage:
+```
+"{{create_snapshot_base(source, primary_key, date_start, date_part, snapshot_id_name)}}"
+```
+Used in:
+- sfdc_opportunity_snapshots_base.sql
+
 ## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
 Usage:
@@ -194,6 +203,8 @@ Usage:
 ```
 Used in:
 - sfdc_opportunity.sql
+- sfdc_opportunity_field_historical.sql
+- sfdc_opportunity_snapshot_history.sql
 - zendesk_organizations.sql
 - sfdc_lead.sql
 
@@ -225,6 +236,8 @@ Usage:
 ```
 Used in:
 - sfdc_opportunity.sql
+- sfdc_opportunity_field_historical.sql
+- sfdc_opportunity_snapshot_history.sql
 - sfdc_account_deal_size_segmentation.sql
 
 ## SFDC Source Buckets ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sfdc_source_buckets.sql))
@@ -237,6 +250,8 @@ Used in:
 - sfdc_contact
 - sfdc_lead
 - sfdc_opportunity
+- sfdc_opportunity_field_historical.sql
+- sfdc_opportunity_snapshot_history.sql
 
 ## SMAU Events CTES
 
