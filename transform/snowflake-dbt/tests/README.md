@@ -116,7 +116,7 @@ Steps to resolve:
 * Step 1: Run the chatops command `/gitlab datachat run missing_location_factor` from Slack to see the test results in Slack.
 * Step 2: Ping the People Operations Analyst with the employee ID numbers that are missing location factor in #data. (AS of 2019-07-24, that would be Morgan Wilkins.)
 * Step 3: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
-* Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
+* Step 4: Create an issue and assign it to the Data Analyst, People to investigate, check PO confirmation, and remove the filter on the employee_id. 
 
 ### Test: uncategorized_version_usage_stats
 This test checks that the list of unique ping metrics that we receive, `version_usage_stats_list`, matches the ping metrics that we have categorized in the static CSV, `version_usage_stats_to_stage_mappings`. This test will fail when these two sources get out of sync in either direction.
