@@ -61,7 +61,6 @@ bamboohr_extract = KubernetesPodOperator(
         SNOWFLAKE_LOAD_PASSWORD,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[bamboohr_extract_cmd],
     dag=dag,
 )

@@ -97,7 +97,6 @@ dbt_run = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[dbt_run_cmd],
     dag=dag,
 )
@@ -121,7 +120,6 @@ dbt_full_refresh = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[dbt_full_refresh_cmd],
     dag=dag,
 )
@@ -145,7 +143,6 @@ dbt_source_freshness = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[dbt_source_cmd],
     dag=dag,
 )
@@ -170,7 +167,6 @@ dbt_test = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[dbt_test_cmd],
     dag=dag,
 )

@@ -185,6 +185,7 @@ gitlab_defaults = dict(
     is_delete_operator_pod=True,
     namespace=os.environ["NAMESPACE"],
     resources=pod_resources,
+    cmds=["/bin/bash", "-c"],
 )
 
 # GitLab default environment variables for worker pods

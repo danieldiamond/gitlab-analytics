@@ -66,7 +66,6 @@ def generate_dbt_command(vars_dict):
             SNOWFLAKE_TRANSFORM_SCHEMA,
         ],
         env_vars=pod_env_vars,
-        cmds=["/bin/bash", "-c"],
         arguments=[dbt_generate_command],
         dag=dag,
     )
@@ -94,7 +93,6 @@ dbt_snowplow_combined = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[dbt_snowplow_combined_cmd],
     dag=dag,
 )

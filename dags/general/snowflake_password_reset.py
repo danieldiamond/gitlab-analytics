@@ -64,7 +64,6 @@ snowflake_password = KubernetesPodOperator(
         PERMISSION_BOT_DATABASE,
         PERMISSION_BOT_WAREHOUSE,
     ],
-    cmds=["/bin/bash", "-c"],
     arguments=[container_cmd],
     dag=dag,
 )

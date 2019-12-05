@@ -59,7 +59,6 @@ dbt_full_refresh = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[dbt_full_refresh_cmd],
     dag=dag,
 )

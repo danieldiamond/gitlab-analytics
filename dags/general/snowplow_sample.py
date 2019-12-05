@@ -55,7 +55,6 @@ clean_clones = KubernetesPodOperator(
         SNOWFLAKE_LOAD_WAREHOUSE,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[drop_cmd],
     dag=dag,
 )

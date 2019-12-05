@@ -186,7 +186,6 @@ for source_name, config in config_dict.items():
             name=f"{config['task_name']}-db-incremental",
             secrets=standard_secrets + config["secrets"],
             env_vars={**standard_pod_env_vars, **config["env_vars"]},
-            cmds=["/bin/bash", "-c"],
             arguments=[incremental_cmd],
         )
     globals()[f"{config['dag_name']}_db_extract"] = extract_dag
@@ -217,7 +216,6 @@ for source_name, config in config_dict.items():
             name=f"{config['task_name']}-db-sync",
             secrets=standard_secrets + config["secrets"],
             env_vars={**standard_pod_env_vars, **config["env_vars"]},
-            cmds=["/bin/bash", "-c"],
             arguments=[sync_cmd],
         )
         # SCD Task
@@ -247,7 +245,6 @@ for source_name, config in config_dict.items():
             name=f"{config['task_name']}-db-scd",
             secrets=standard_secrets + config["secrets"],
             env_vars={**standard_pod_env_vars, **config["env_vars"]},
-            cmds=["/bin/bash", "-c"],
             arguments=[scd_cmd],
             affinity=scd_affinity,
             tolerations=scd_tolerations,
@@ -283,7 +280,6 @@ for source_name, config in config_dict.items():
             name=f"{config['task_name']}-db-validation",
             secrets=standard_secrets + config["secrets"],
             env_vars={**standard_pod_env_vars, **config["env_vars"]},
-            cmds=["/bin/bash", "-c"],
             arguments=[validate_cmd],
             dag=validation_dag,
         )

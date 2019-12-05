@@ -71,7 +71,6 @@ snowflake_roles_snapshot = KubernetesPodOperator(
         SNOWFLAKE_LOAD_WAREHOUSE,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[container_cmd],
     dag=dag,
 )

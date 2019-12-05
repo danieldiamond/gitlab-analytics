@@ -69,7 +69,6 @@ greenhouse_run = KubernetesPodOperator(
         SNOWFLAKE_LOAD_PASSWORD,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[container_cmd],
     dag=dag,
 )

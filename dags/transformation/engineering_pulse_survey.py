@@ -72,7 +72,6 @@ sheetload_run = KubernetesPodOperator(
         SNOWFLAKE_LOAD_PASSWORD,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[sheetload_cmd],
     dag=dag,
 )
@@ -98,7 +97,6 @@ dbt_run = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[dbt_run_cmd],
     dag=dag,
 )

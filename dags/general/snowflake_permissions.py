@@ -57,7 +57,6 @@ snowflake_load = KubernetesPodOperator(
         PERMISSION_BOT_WAREHOUSE,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[container_cmd],
     dag=dag,
 )
