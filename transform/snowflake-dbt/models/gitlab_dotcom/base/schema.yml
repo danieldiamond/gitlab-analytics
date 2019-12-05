@@ -279,7 +279,7 @@ models:
           - not_null
 
   - name: gitlab_dotcom_environments
-    description: Base mode for GitLab.com environments
+    description: Base model for GitLab.com environments.
     columns:
       - name: environment_id
         tests:
