@@ -19,15 +19,16 @@ WITH date_spine AS (
 ), first_snapshot AS (
 
     SELECT
-      id                 AS opportunity_id,
+      id                   AS opportunity_id,
       valid_to,
       {% for field in fields_to_use %}
         {{field}}::VARCHAR AS {{field}},
       {% endfor %}
-      createddate        AS created_at,
+      createddate          AS created_at,
       valid_from
     FROM {{ref('sfdc_opportunity_snapshots_base')}}  
     WHERE date_actual = '2019-10-01'::DATE
+      AND isdeleted = FALSE
 
 ), base AS (
 
@@ -46,10 +47,10 @@ WITH date_spine AS (
 
     SELECT *
     FROM first_snapshot
+
     UNION
 
     SELECT 
-
       *,
       NULL::TIMESTAMP_TZ AS created_at,
       NULL::TIMESTAMP_TZ AS valid_from      
@@ -71,11 +72,10 @@ WITH date_spine AS (
       FIRST_VALUE(created_at) IGNORE NULLS 
         OVER (PARTITION BY opportunity_id ORDER BY valid_to) AS created_date,
       COALESCE(
-        IFNULL(valid_from, LAG(valid_to) 
-          OVER (PARTITION BY opportunity_id ORDER BY valid_to)), 
+        IFNULL(valid_from, LAG(valid_to) OVER (PARTITION BY opportunity_id ORDER BY valid_to)), 
         created_date
         )                                                    AS valid_from,
-      valid_to
+      valid_to  
     FROM unioned
 
 ), cleaned AS (
@@ -87,7 +87,7 @@ WITH date_spine AS (
       {% endfor %}
       created_date,
       valid_from,
-      valid_to
+      COALESCE(LEAD(valid_from) OVER (PARTITION BY opportunity_id ORDER BY valid_from), valid_to) AS valid_to
     FROM filled
     QUALIFY ROW_NUMBER() OVER (
         PARTITION BY opportunity_id, DATE_TRUNC('day', valid_from) 
