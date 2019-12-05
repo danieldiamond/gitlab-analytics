@@ -7,9 +7,11 @@ from kube_secrets import *
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import (
     clone_and_setup_extraction_cmd,
+    dbt_install_deps_and_seed_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
     slack_failed_task,
+    xs_warehouse,
 )
 
 # Load the env vars into a dict and set Secrets
@@ -35,8 +37,6 @@ dag = DAG(
     schedule_interval="0 12 * * 5",
 )
 
-# Set the git command for the containers
-git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1"
 
 # Sheetload task
 sheetload_cmd = f"""
@@ -65,15 +65,9 @@ sheetload_run = KubernetesPodOperator(
 )
 
 
-# Warehouse variable declaration
-xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
-
 # dbt run task
 dbt_run_cmd = f"""
-    {git_cmd} &&
-    cd analytics/transform/snowflake-dbt/ &&
-    dbt deps --profiles-dir profile # install packages &&
-    dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
+    {dbt_install_deps_and_seed_cmd} &&
     dbt run --profiles-dir profile --target prod --models +engineering_pulse_survey --vars {xs_warehouse} # run on small warehouse
 """
 

@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, gitlab_defaults
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
+from airflow_utils import clone_repo_cmd, gitlab_defaults, slack_failed_task
 
 # Load the env vars into a dict and set env vars
 env = os.environ.copy()
@@ -115,6 +115,15 @@ config_dict = {
     },
 }
 
+
+def generate_cmd(dag_name, operation):
+    return f"""
+        {clone_repo_cmd} &&
+        cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
+        python main.py tap ../manifests/{dag_name}_db_manifest.yaml {operation}
+    """
+
+
 # Loop through each config_dict and generate a DAG
 for source_name, config in config_dict.items():
 
@@ -139,11 +148,7 @@ for source_name, config in config_dict.items():
     with extract_dag:
 
         # Extract Task
-        incremental_cmd = f"""
-            git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
-            python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type incremental
-        """
+        incremental_cmd = generate_cmd(config["dag_name"], "--load_type incremental")
         incremental_extract = KubernetesPodOperator(
             **gitlab_defaults,
             image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
@@ -174,11 +179,7 @@ for source_name, config in config_dict.items():
 
     with sync_dag:
         # Sync Task
-        sync_cmd = f"""
-            git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
-            python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type sync
-        """
+        sync_cmd = generate_cmd(config["dag_name"], "--load_type sync")
         sync_extract = KubernetesPodOperator(
             **gitlab_defaults,
             image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
@@ -190,11 +191,7 @@ for source_name, config in config_dict.items():
             arguments=[sync_cmd],
         )
         # SCD Task
-        scd_cmd = f"""
-            git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
-            python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml --load_type scd
-        """
+        scd_cmd = generate_cmd(config["dag_name"], "--load_type scd")
         scd_affinity = {
             "nodeAffinity": {
                 "requiredDuringSchedulingIgnoredDuringExecution": {
@@ -248,11 +245,7 @@ for source_name, config in config_dict.items():
     with validation_dag:
 
         # Validate Task
-        validate_cmd = f"""
-            git clone -b {env['GIT_BRANCH']} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1 &&
-            cd analytics/extract/postgres_pipeline/postgres_pipeline/ &&
-            python main.py tap ../manifests/{config['dag_name']}_db_manifest.yaml validate
-        """
+        validate_cmd = generate_cmd(config["dag_name"], "validate")
         validate_ids = KubernetesPodOperator(
             **gitlab_defaults,
             image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",

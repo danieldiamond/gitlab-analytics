@@ -6,10 +6,11 @@ from airflow import DAG
 
 from kube_secrets import *
 from airflow_utils import (
-    slack_failed_task,
+    dbt_install_deps_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
     partitions,
+    slack_failed_task,
 )
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
@@ -36,17 +37,11 @@ dag = DAG(
 )
 
 
-# Set the git command for the containers
-git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1"
-
-
 def generate_dbt_command(vars_dict):
     json_dict = json.dumps(vars_dict)
 
     dbt_generate_command = f"""
-        {git_cmd} &&
-        cd analytics/transform/snowflake-dbt/ &&
-        dbt deps --profiles-dir profile &&
+        {dbt_install_deps_cmd} &&
         export SNOWFLAKE_TRANSFORM_WAREHOUSE="TRANSFORMING_XL" &&
         dbt run --profiles-dir profile --target prod --models snowplow --full-refresh --vars '{json_dict}'
         """
@@ -74,9 +69,7 @@ def generate_dbt_command(vars_dict):
 dummy_operator = DummyOperator(task_id="start", dag=dag)
 
 dbt_snowplow_combined_cmd = f"""
-        {git_cmd} &&
-        cd analytics/transform/snowflake-dbt/ &&
-        dbt deps --profiles-dir profile &&
+        {dbt_install_deps_cmd} &&
         dbt run --profiles-dir profile --target prod --models snowplow_combined
         """
 

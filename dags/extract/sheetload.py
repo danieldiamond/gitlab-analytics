@@ -8,9 +8,11 @@ from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOpera
 
 from airflow_utils import (
     clone_and_setup_extraction_cmd,
+    dbt_install_deps_and_seed_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
     slack_failed_task,
+    xs_warehouse,
 )
 
 # Load the env vars into a dict and set Secrets
@@ -59,16 +61,10 @@ sheetload_run = KubernetesPodOperator(
     dag=dag,
 )
 
-# Warehouse variable declaration
-xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
-
 # dbt-sheetload
 dbt_sheetload_cmd = f"""
-    {git_cmd} &&
-    cd analytics/transform/snowflake-dbt/ &&
     export snowflake_load_database="RAW" &&
-    dbt deps --profiles-dir profile &&
-    dbt seed --profiles-dir profile --target prod --vars {xs_warehouse} # seed data from csv &&
+    {dbt_install_deps_and_seed_cmd} &&
     dbt run --profiles-dir profile --target prod --models sheetload --vars {xs_warehouse}
 """
 dbt_sheetload = KubernetesPodOperator(

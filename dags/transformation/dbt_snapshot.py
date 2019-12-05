@@ -4,9 +4,14 @@ from datetime import datetime, timedelta
 from airflow import DAG
 
 from kube_secrets import *
-from airflow_utils import slack_failed_task, gitlab_defaults, gitlab_pod_env_vars
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
+from airflow_utils import (
+    dbt_install_deps_cmd,
+    gitlab_defaults,
+    gitlab_pod_env_vars,
+    slack_failed_task,
+)
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
@@ -27,16 +32,9 @@ default_args = {
 # Create the DAG
 dag = DAG("dbt_snapshots", default_args=default_args, schedule_interval="30 */8 * * *")
 
-
-# Set the git command for the containers
-git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1"
-
-
 # dbt-snapshot
 dbt_snapshot_cmd = f"""
-    {git_cmd} &&
-    cd analytics/transform/snowflake-dbt/ &&
-    dbt deps --profiles-dir profile # install packages &&
+    {dbt_install_deps_cmd} &&
     dbt snapshot --profiles-dir profile
 """
 dbt_snapshot = KubernetesPodOperator(
