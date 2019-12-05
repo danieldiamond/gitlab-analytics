@@ -62,6 +62,6 @@ WHERE hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
                               '11209', --https://gitlab.com/gitlab-data/analytics/issues/2749
                               '11218', --https://gitlab.com/gitlab-data/analytics/issues/2749
                               '11219', --https://gitlab.com/gitlab-data/analytics/issues/2882
-                              '11279'  --https://gitlab.com/gitlab-data/analytics/issues/3004 
+                              '11279'  --https://gitlab.com/gitlab-data/analytics/issues/3004  
                             )
 ORDER BY hire_date DESC
