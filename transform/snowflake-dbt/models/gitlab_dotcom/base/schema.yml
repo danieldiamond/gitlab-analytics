@@ -252,7 +252,7 @@ models:
           - not_null
 
   - name: gitlab_dotcom_deployment_merge_requests
-    description: Base mode for GitLab.com deployments_merge_requests
+    description: Base model for GitLab.com deployments_merge_requests.
     columns:
       - name: deployment_id
         tests:
