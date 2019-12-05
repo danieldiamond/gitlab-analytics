@@ -82,8 +82,6 @@ WITH source AS (
 	        '2c92a0fe6477df2e0164888d62fc5628', -- Timostestcompany
 	        '2c92a0fe55a0e4a50155a3a50d7b3de6', -- Wilson Lau
 	        '2c92a0ff55a0e4910155a36b51e0389c'  -- Wilson - Colorado
-
-
 	    )
 
 
