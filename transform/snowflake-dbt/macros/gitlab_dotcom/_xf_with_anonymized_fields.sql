@@ -1,4 +1,4 @@
-{%- macro _xf_witth_anonymized_fields(base_model='', fields_to_mask=[], anonymization_key='') -%}
+{%- macro _xf_with_anonymized_fields(base_model='', fields_to_mask=[], anonymization_key='') -%}
 
 
 
