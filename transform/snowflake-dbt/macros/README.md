@@ -363,6 +363,26 @@ For example, user_role=0 maps to the 'Software Developer' role.
 Used in:
 - gitlab_dotcom_users.sql
 
+## Xf with anonymised fields 
+This macro creates simple `_xf` models for gitlab_dotcom containing sensitive data and stored in `analytics_sensitive` schema. 
+It takes a base model, a list of fields to mask and a anonymization key (either `group_id`, `namespace_id` or `project_id`) that will allow us to join on `gitlab_dotcom_namespaces_xf` and `gitlab_dotcom_projects_xf` tables in order to look at visibility_level of these entities. Based off the visibility of the project/namespace, the fields included in the `fields_to_mask` will be automatically anonymized.
+
+Rule followed:
+The field value will be hidden unless the project is publicly visible or an internal GitLab project.  
+
+Usage:
+```
+{{ _xf_witth_anonymized_fields(
+                                base_model='gitlab_dotcom_environments',
+                                fields_to_mask=['environment_name', 'slug'],
+                                anonymization_key='project_id'
+) }}
+```
+
+Used in:
+- gitlab_dotcom_environments_xf.sql
+- gitlab_dotcom_epics_xf.sql
+
 ## Zuora Slugify ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/zuora_slugify.sql))
 This macro replaces any combination of whitespace and 2 pipes with a single pipe (important for renewal subscriptions) and it replaces all non alphanumeric characters with dashes and casts it to lowercases as well. The end result of using this macro on data like "A-S00003830 || A-S00013333" is "a-s00003830|a-s00013333".
 Usage:

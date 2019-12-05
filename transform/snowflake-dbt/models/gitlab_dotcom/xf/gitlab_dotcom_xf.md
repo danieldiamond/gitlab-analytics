@@ -1,3 +1,15 @@
+{% docs gitlab_dotcom_environments_xf %}
+
+This transformation masks names and slugs based on the privacy of the projects it belongs to.  
+
+{% enddocs %}
+
+{% docs gitlab_dotcom_epics_xf %}
+
+This transformation masks title if the group is not a GitLab interrnal project.  
+
+{% enddocs %}
+
 {% docs gitlab_dotcom_gitlab_issues_requests %}
 
 This model enables product managers to surface which issue has been requested by potential prospects and current customers. The final model creates a table where each row is unique tuple of a `issue_id` and a `sfdc_account_id`.
