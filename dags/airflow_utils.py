@@ -1,12 +1,15 @@
 """ This file contains common operators/functions to be used across multiple DAGs """
 import os
-import json
 import urllib.parse
+from datetime import date, timedelta
 from typing import List
-from datetime import datetime, timedelta, date
 
 from airflow.contrib.kubernetes.pod import Resources
 from airflow.operators.slack_operator import SlackAPIPostOperator
+
+REPO = "https://gitlab.com/gitlab-data/analytics.git"
+DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
+DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
 
 
 def split_date_parts(day: date, partition: str) -> List[dict]:
@@ -182,6 +185,7 @@ gitlab_defaults = dict(
     is_delete_operator_pod=True,
     namespace=os.environ["NAMESPACE"],
     resources=pod_resources,
+    cmds=["/bin/bash", "-c"],
 )
 
 # GitLab default environment variables for worker pods
@@ -197,3 +201,31 @@ gitlab_pod_env_vars = {
     if GIT_BRANCH == "master"
     else f"{GIT_BRANCH.upper()}_ANALYTICS",
 }
+
+# Warehouse variable declaration
+xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
+
+clone_repo_cmd = f"""
+    git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}
+"""
+
+clone_and_setup_extraction_cmd = f"""
+    {clone_repo_cmd} &&
+    export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
+    cd analytics/extract/
+"""
+
+clone_and_setup_dbt_cmd = f"""
+    {clone_repo_cmd} &&
+    cd analytics/transform/snowflake-dbt/
+"""
+
+dbt_install_deps_cmd = f"""
+    {clone_and_setup_dbt_cmd} &&
+    dbt deps --profiles-dir profile
+"""
+
+dbt_install_deps_and_seed_cmd = f"""
+    {dbt_install_deps_cmd} &&
+    dbt seed --profiles-dir profile --target prod --vars {xs_warehouse}
+"""
