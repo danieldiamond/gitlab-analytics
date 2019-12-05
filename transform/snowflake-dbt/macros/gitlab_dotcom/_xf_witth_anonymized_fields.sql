@@ -1,4 +1,4 @@
-{%- macro _xf_witth_anonymized_fields(base_model='', fields_to_mask=[], related_object='') -%}
+{%- macro _xf_witth_anonymized_fields(base_model='', fields_to_mask=[], anonymization_key='') -%}
 
 
 
@@ -32,7 +32,7 @@ WITH base AS (
       {% for field in fields_to_mask %}
       CASE
         WHEN TRUE 
-          {% if related_object == 'project' %}
+          {% if anonymization_key == 'project_id' %}
           AND projects.visibility_level != 'public'
           {% endif %}
           AND NOT internal_namespaces.namespace_is_internal
@@ -42,13 +42,16 @@ WITH base AS (
       {% if not loop.last %} , {% endif %}
       {% endfor %}
     FROM base
-    {% if related_object == 'project' %}
+    {% if anonymization_key == 'project_id' %}
       LEFT JOIN projects ON base.project_id = projects.project_id
       LEFT JOIN internal_namespaces
         ON projects.namespace_id = internal_namespaces.namespace_id
-    {% elif related_object == 'namespace' %}
+    {% elif anonymization_key == 'namespace_id' %}
       LEFT JOIN internal_namespaces
-        ON base.group_id = internal_namespaces.namespace_id
+        ON base.namespace_id = internal_namespaces.namespace_id
+    {% elif anonymization_key == 'group_id' %}
+    LEFT JOIN internal_namespaces
+      ON base.group_id = internal_namespaces.namespace_id
     {% endif %}
     
 
