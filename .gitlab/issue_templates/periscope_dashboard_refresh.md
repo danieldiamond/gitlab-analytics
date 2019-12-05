@@ -20,5 +20,5 @@ Please complete all items. Ask questions in the #data slack channel
                         At what time PST: __ : __ (24 hour)               
 
 ### Reviewer Checklist 
-* [ ]  Review the Submitter Checklist. 
+* [ ]  Review the **DRI/Prioritization Owner Checklist**. 
 * [ ]  Update issue with status and close issue. 
