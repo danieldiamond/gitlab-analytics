@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import (
+    DATA_IMAGE,
+    DBT_IMAGE,
     clone_and_setup_extraction_cmd,
     dbt_install_deps_and_seed_cmd,
     gitlab_defaults,
@@ -58,7 +60,7 @@ sheetload_cmd = f"""
 
 sheetload_run = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image=DATA_IMAGE,
     task_id="sheetload",
     name="sheetload",
     secrets=[
@@ -84,7 +86,7 @@ dbt_run_cmd = f"""
 
 dbt_run = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    image=DBT_IMAGE,
     task_id="dbt-run",
     name="dbt-run",
     secrets=[

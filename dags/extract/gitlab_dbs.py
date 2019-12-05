@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-from airflow_utils import clone_repo_cmd, gitlab_defaults, slack_failed_task
+from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
 from kube_secrets import (
     CI_STATS_DB_HOST,
     CI_STATS_DB_NAME,
@@ -181,7 +181,7 @@ for source_name, config in config_dict.items():
         incremental_cmd = generate_cmd(config["dag_name"], "--load_type incremental")
         incremental_extract = KubernetesPodOperator(
             **gitlab_defaults,
-            image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+            image=DATA_IMAGE,
             task_id=f"{config['task_name']}-db-incremental",
             name=f"{config['task_name']}-db-incremental",
             secrets=standard_secrets + config["secrets"],
@@ -212,7 +212,7 @@ for source_name, config in config_dict.items():
         sync_cmd = generate_cmd(config["dag_name"], "--load_type sync")
         sync_extract = KubernetesPodOperator(
             **gitlab_defaults,
-            image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+            image=DATA_IMAGE,
             task_id=f"{config['task_name']}-db-sync",
             name=f"{config['task_name']}-db-sync",
             secrets=standard_secrets + config["secrets"],
@@ -242,7 +242,7 @@ for source_name, config in config_dict.items():
 
         scd_extract = KubernetesPodOperator(
             **gitlab_defaults,
-            image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+            image=DATA_IMAGE,
             task_id=f"{config['task_name']}-db-scd",
             name=f"{config['task_name']}-db-scd",
             secrets=standard_secrets + config["secrets"],
@@ -278,7 +278,7 @@ for source_name, config in config_dict.items():
         validate_cmd = generate_cmd(config["dag_name"], "validate")
         validate_ids = KubernetesPodOperator(
             **gitlab_defaults,
-            image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+            image=DATA_IMAGE,
             task_id=f"{config['task_name']}-db-validation",
             name=f"{config['task_name']}-db-validation",
             secrets=standard_secrets + config["secrets"],

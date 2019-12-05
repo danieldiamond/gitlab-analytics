@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import (
+    DATA_IMAGE,
     clone_and_setup_extraction_cmd,
     gitlab_defaults,
     slack_failed_task,
@@ -55,7 +56,7 @@ dag = DAG(
 # Task 1
 greenhouse_run = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image=DATA_IMAGE,
     task_id="greenhouse",
     name="greenhouse",
     secrets=[

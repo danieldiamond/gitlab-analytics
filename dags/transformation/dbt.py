@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import BranchPythonOperator
 from airflow_utils import (
+    DBT_IMAGE,
     dbt_install_deps_and_seed_cmd,
     dbt_install_deps_cmd,
     gitlab_defaults,
@@ -85,7 +85,7 @@ dbt_run_cmd = f"""
 """
 dbt_run = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    image=DBT_IMAGE,
     task_id="dbt-run",
     name="dbt-run",
     secrets=[
@@ -109,7 +109,7 @@ dbt_full_refresh_cmd = f"""
 """
 dbt_full_refresh = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    image=DBT_IMAGE,
     task_id="dbt-full-refresh",
     name="dbt-full-refresh",
     secrets=[
@@ -133,7 +133,7 @@ dbt_source_cmd = f"""
 """
 dbt_source_freshness = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    image=DBT_IMAGE,
     task_id="dbt-source-freshness",
     name="dbt-source-freshness",
     secrets=[
@@ -157,7 +157,7 @@ dbt_test_cmd = f"""
 """
 dbt_test = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    image=DBT_IMAGE,
     task_id="dbt-test",
     name="dbt-test",
     trigger_rule="all_done",

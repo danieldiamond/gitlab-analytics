@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import (
+    DBT_IMAGE,
     dbt_install_deps_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
@@ -44,7 +45,7 @@ dbt_snapshot_cmd = f"""
 """
 dbt_snapshot = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    image=DBT_IMAGE,
     task_id="dbt-snapshots",
     name="dbt-snapshots",
     secrets=[

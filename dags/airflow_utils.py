@@ -7,6 +7,10 @@ from typing import List
 from airflow.contrib.kubernetes.pod import Resources
 from airflow.operators.slack_operator import SlackAPIPostOperator
 
+REPO = "https://gitlab.com/gitlab-data/analytics.git"
+DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
+DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
+
 
 def split_date_parts(day: date, partition: str) -> List[dict]:
 
@@ -201,8 +205,7 @@ gitlab_pod_env_vars = {
 xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
 
 clone_repo_cmd = f"""
-    git clone -b {GIT_BRANCH} --single-branch --depth 1 \
-        https://gitlab.com/gitlab-data/analytics.git
+    git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}
 """
 
 clone_and_setup_extraction_cmd = f"""

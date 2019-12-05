@@ -6,6 +6,7 @@ from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
 from airflow_utils import (
+    DBT_IMAGE,
     dbt_install_deps_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
@@ -51,7 +52,7 @@ def generate_dbt_command(vars_dict):
 
     return KubernetesPodOperator(
         **gitlab_defaults,
-        image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+        image=DBT_IMAGE,
         task_id=f"dbt-snowplow-backfill-{vars_dict['year']}-{vars_dict['month']}",
         name=f"dbt-snowplow-backfill-{vars_dict['year']}-{vars_dict['month']}",
         secrets=[
@@ -78,7 +79,7 @@ dbt_snowplow_combined_cmd = f"""
 
 dbt_snowplow_combined = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    image=DBT_IMAGE,
     task_id=f"dbt-snowplow-combined",
     name=f"dbt-snowplow-combined",
     trigger_rule="all_success",

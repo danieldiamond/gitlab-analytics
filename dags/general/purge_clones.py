@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-from airflow_utils import clone_repo_cmd, gitlab_defaults, slack_failed_task
+from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
 from kube_secrets import (
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_LOAD_DATABASE,
@@ -40,7 +40,7 @@ drop_clones_cmd = f"""
 """
 purge_clones = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image=DATA_IMAGE,
     task_id="purge-clones",
     name="purge-clones",
     secrets=[
@@ -63,7 +63,7 @@ drop_dev_cmd = f"""
 """
 purge_dev_schemas = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/data-image:latest",
+    image=DATA_IMAGE,
     task_id="purge-dev-schemas",
     name="purge-dev-schemas",
     secrets=[
