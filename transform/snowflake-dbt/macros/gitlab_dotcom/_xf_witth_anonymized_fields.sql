@@ -28,7 +28,7 @@ WITH base AS (
 , anonymised AS (
   
     SELECT
-      {{ dbt_utils.star(from=ref(base_model), except=fields_to_mask|upper) }},
+      {{ dbt_utils.star(from=ref(base_model), except=fields_to_mask|upper, relation_alias='base') }},
       {% for field in fields_to_mask %}
       CASE
         WHEN TRUE 
