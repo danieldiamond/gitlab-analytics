@@ -262,7 +262,7 @@ models:
           - not_null
 
   - name: gitlab_dotcom_deployments
-    description: Base mode for GitLab.com deployments
+    description: Base model for GitLab.com deployments.
     columns:
       - name: deployment_id
         tests:
