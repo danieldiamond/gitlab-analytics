@@ -87,7 +87,10 @@ WITH date_spine AS (
       {% endfor %}
       created_date,
       valid_from,
-      COALESCE(LEAD(valid_from) OVER (PARTITION BY opportunity_id ORDER BY valid_from), valid_to) AS valid_to
+      COALESCE(
+        LEAD(valid_from) OVER (PARTITION BY opportunity_id ORDER BY valid_from), 
+        valid_to
+        )                                             AS valid_to
     FROM filled
     QUALIFY ROW_NUMBER() OVER (
         PARTITION BY opportunity_id, DATE_TRUNC('day', valid_from) 
