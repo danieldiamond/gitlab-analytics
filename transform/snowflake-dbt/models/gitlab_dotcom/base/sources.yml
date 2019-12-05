@@ -63,10 +63,10 @@ sources:
         identifier: gitlab_db_ci_triggers
       - name: ci_variables
         identifier: gitlab_db_ci_variables
-      - name: deployment_merge_requests
-        identifier: gitlab_db_deployment_merge_requests
       - name: deployments
         identifier: gitlab_db_deployments
+      - name: deployment_merge_requests
+        identifier: gitlab_db_deployment_merge_requests
       - name: environments
         identifier: gitlab_db_environments
       - name: epic_issues
