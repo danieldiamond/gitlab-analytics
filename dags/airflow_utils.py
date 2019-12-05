@@ -1,9 +1,8 @@
 """ This file contains common operators/functions to be used across multiple DAGs """
 import os
-import json
 import urllib.parse
+from datetime import date, timedelta
 from typing import List
-from datetime import datetime, timedelta, date
 
 from airflow.contrib.kubernetes.pod import Resources
 from airflow.operators.slack_operator import SlackAPIPostOperator

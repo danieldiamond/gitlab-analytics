@@ -2,12 +2,9 @@ import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import BranchPythonOperator
-
-from kube_secrets import *
-from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-
 from airflow_utils import (
     dbt_install_deps_and_seed_cmd,
     dbt_install_deps_cmd,
@@ -15,6 +12,14 @@ from airflow_utils import (
     gitlab_pod_env_vars,
     slack_failed_task,
     xs_warehouse,
+)
+from kube_secrets import (
+    SNOWFLAKE_ACCOUNT,
+    SNOWFLAKE_PASSWORD,
+    SNOWFLAKE_TRANSFORM_ROLE,
+    SNOWFLAKE_TRANSFORM_SCHEMA,
+    SNOWFLAKE_TRANSFORM_WAREHOUSE,
+    SNOWFLAKE_USER,
 )
 
 # Load the env vars into a dict and set Secrets

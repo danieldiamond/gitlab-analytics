@@ -2,8 +2,6 @@ import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
-
-from kube_secrets import *
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import (
     clone_and_setup_extraction_cmd,
@@ -12,6 +10,19 @@ from airflow_utils import (
     gitlab_pod_env_vars,
     slack_failed_task,
     xs_warehouse,
+)
+from kube_secrets import (
+    GCP_SERVICE_CREDS,
+    SNOWFLAKE_ACCOUNT,
+    SNOWFLAKE_LOAD_PASSWORD,
+    SNOWFLAKE_LOAD_ROLE,
+    SNOWFLAKE_LOAD_USER,
+    SNOWFLAKE_LOAD_WAREHOUSE,
+    SNOWFLAKE_PASSWORD,
+    SNOWFLAKE_TRANSFORM_ROLE,
+    SNOWFLAKE_TRANSFORM_SCHEMA,
+    SNOWFLAKE_TRANSFORM_WAREHOUSE,
+    SNOWFLAKE_USER,
 )
 
 # Load the env vars into a dict and set Secrets

@@ -2,11 +2,16 @@ import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
-
-from kube_secrets import *
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-
 from airflow_utils import clone_repo_cmd, gitlab_defaults, slack_failed_task
+from kube_secrets import (
+    PERMISSION_BOT_ACCOUNT,
+    PERMISSION_BOT_DATABASE,
+    PERMISSION_BOT_PASSWORD,
+    PERMISSION_BOT_ROLE,
+    PERMISSION_BOT_USER,
+    PERMISSION_BOT_WAREHOUSE,
+)
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()

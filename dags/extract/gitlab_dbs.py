@@ -2,11 +2,41 @@ import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
-
-from kube_secrets import *
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-
 from airflow_utils import clone_repo_cmd, gitlab_defaults, slack_failed_task
+from kube_secrets import (
+    CI_STATS_DB_HOST,
+    CI_STATS_DB_NAME,
+    CI_STATS_DB_PASS,
+    CI_STATS_DB_USER,
+    CUSTOMERS_DB_HOST,
+    CUSTOMERS_DB_NAME,
+    CUSTOMERS_DB_PASS,
+    CUSTOMERS_DB_USER,
+    GCP_SERVICE_CREDS,
+    GITLAB_COM_DB_HOST,
+    GITLAB_COM_DB_NAME,
+    GITLAB_COM_DB_PASS,
+    GITLAB_COM_DB_USER,
+    GITLAB_PROFILER_DB_HOST,
+    GITLAB_PROFILER_DB_NAME,
+    GITLAB_PROFILER_DB_PASS,
+    GITLAB_PROFILER_DB_USER,
+    LICENSE_DB_HOST,
+    LICENSE_DB_NAME,
+    LICENSE_DB_PASS,
+    LICENSE_DB_USER,
+    PG_PORT,
+    SNOWFLAKE_ACCOUNT,
+    SNOWFLAKE_LOAD_PASSWORD,
+    SNOWFLAKE_LOAD_ROLE,
+    SNOWFLAKE_LOAD_USER,
+    SNOWFLAKE_LOAD_WAREHOUSE,
+    VERSION_DB_HOST,
+    VERSION_DB_NAME,
+    VERSION_DB_PASS,
+    VERSION_DB_USER,
+)
 
 # Load the env vars into a dict and set env vars
 env = os.environ.copy()
