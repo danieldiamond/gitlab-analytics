@@ -203,29 +203,23 @@ gitlab_pod_env_vars = {
 }
 
 # Warehouse variable declaration
-xs_warehouse = f"""'{{warehouse_name: transforming_xs}}'"""
+xs_warehouse = f"'{{warehouse_name: transforming_xs}}'"
 
-clone_repo_cmd = f"""
-    git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}
-"""
+clone_repo_cmd = f"git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}"
 
 clone_and_setup_extraction_cmd = f"""
     {clone_repo_cmd} &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
-    cd analytics/extract/
-"""
+    cd analytics/extract/"""
 
 clone_and_setup_dbt_cmd = f"""
     {clone_repo_cmd} &&
-    cd analytics/transform/snowflake-dbt/
-"""
+    cd analytics/transform/snowflake-dbt/"""
 
 dbt_install_deps_cmd = f"""
     {clone_and_setup_dbt_cmd} &&
-    dbt deps --profiles-dir profile
-"""
+    dbt deps --profiles-dir profile"""
 
 dbt_install_deps_and_seed_cmd = f"""
     {dbt_install_deps_cmd} &&
-    dbt seed --profiles-dir profile --target prod --vars {xs_warehouse}
-"""
+    dbt seed --profiles-dir profile --target prod --vars {xs_warehouse}"""
