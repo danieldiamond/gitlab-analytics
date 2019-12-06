@@ -405,8 +405,20 @@ This macro implements the `CASE WHEN` logic for Support SLAs, as [documented in 
 Used in:
 - zendesk_tickets_xf.sql
 
-## Test No Overlapping Valid From To Dates
+## Test No Overlapping Valid From To Dates ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/tests/test_no_overlapping_valid_from_to_dates.sql))
+This macro is a custom schema test to be used as a column test in a schema.yml file. It checks that there is a maximum of one valid row for that column on a selection of randomly selected dates. It expects that there are 2 other columns in the model: `valid_from` and `valid_to`. It was developed to be used on primary key columns in models built using the [SCD Type 2 macro](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/scd_type_2.sql).
 
+```
+  - name: gitlab_dotcom_members
+    columns:
+      - name: member_id
+        tests:
+          - not_null
+          - no_overlapping_valid_from_to_dates
+```
+
+Used in:
+- gitlab_dotcom/base/schema.yml
 
 ## Unpack Unstructured Events ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/version/unpack_unstructured_event.sql))
 This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.
