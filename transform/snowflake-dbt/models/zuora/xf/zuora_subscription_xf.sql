@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 with zuora_subscription_intermediate as (
 
     SELECT * FROM {{ ref ('zuora_subscription_intermediate')}}

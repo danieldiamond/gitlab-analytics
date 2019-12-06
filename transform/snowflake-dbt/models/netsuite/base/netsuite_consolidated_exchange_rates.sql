@@ -1,27 +1,30 @@
-with base as (
-		SELECT *
-		FROM {{ var("database") }}.gcloud_postgres_stitch.netsuite_consolidated_exchange_rates
+WITH source AS (
 
-), renamed as (
+    SELECT *
+    FROM {{ source('netsuite', 'consolidated_exchange_rates') }}
 
-		SELECT
-            internal_id 	AS internal_id,
-            -- external_id
-            -- accounting_book
-            average_rate,
-            current_rate,
-            from_currency	AS from_currency_id,
-            from_subsidiary	AS from_subsidiary_id,
-            historical_rate,
-            -- is_derived
-            -- is_elimination_subsidiary
-            -- is_period_closed          BOOLEAN,
-            posting_period 	AS posting_period_id,
-            to_currency		AS to_currency_id,
-            to_subsidiary	AS to_subsidiary_id
-            -- imported_at
+), renamed AS (
 
-		FROM base
+    SELECT
+      --Primary Key
+      consolidated_exchange_rate_id::FLOAT   AS consolidated_exchange_rate_id,
+
+      --Foreign Keys
+      accounting_period_id::FLOAT            AS accounting_period_id,
+      from_subsidiary_id::FLOAT              AS from_subsidiary_id,
+      to_subsidiary_id::FLOAT                AS to_subsidiary_id,
+
+      --Info
+      accounting_book_id::FLOAT              AS accounting_book_id,
+      average_budget_rate::FLOAT             AS average_budget_rate,
+      current_budget_rate::FLOAT             AS current_budget_rate,
+      average_rate::FLOAT                    AS average_rate,
+      current_rate::FLOAT                    AS current_rate,
+      historical_budget_rate::FLOAT          AS historical_budget_rate,
+      historical_rate::FLOAT                 AS historical_rate
+
+    FROM source
+    WHERE LOWER(_fivetran_deleted) = 'false'
 
 )
 

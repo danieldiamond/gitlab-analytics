@@ -1,58 +1,41 @@
-{#
--- Netsuite Docs: http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2016_1/schema/record/account.html
-#}
+WITH source AS (
 
+    SELECT *
+    FROM {{ source('netsuite', 'accounts') }}
 
-with base as (
-		SELECT *
-		FROM {{ var("database") }}.netsuite_stitch.account
+), renamed AS (
 
-), renamed as (
+    SELECT
+      --Primary Key
+      account_id::FLOAT                                   AS account_id,
 
-		SELECT internalid as internal_account_id,
-				--external_id as external_account_id,
-			  	acctname as account_name,
-			 	acctnumber as account_number,
-			 	accttype as account_type,
-			 	--billable_expenses_acct_id as billable_expenses_account_id,
-			 	--billable_expenses_acct_name as billable_expenses_account_name,
-			  --cash_flow_rate,
-				--category1099misc_id,
-				--category1099misc_name,
-				--class_id,
-				--class_name,
-				--cur_doc_num,
-				currency:internalId as currency_id,
-			 	currency:name as currency_name,
-			 	--deferral_acct_id,
-				--deferral_acct_name,
-				--department_id,
-				--department_name,
-				description as account_description,
-				eliminate as is_intercompany_account,
-				--exchange_rate,
-				--general_rate, -- refers to exchange rate type
-				includechildren as does_include_children,
-				--inventory
-				isinactive as is_inactive,
-				--legal_name
-				--location_id
-				--location_name
-				--opening_balance
-				parent:internalId as parent_account_id,
-				parent:name as parent_account_name,
-				--restrict_to_accounting_book_list
-				revalue,
-				subsidiarylist -- is json --needs to be unnested
-				--tran_date
-				--unit_id
-				--unit_name
-				--units_type_id
-				--units_type_name
-				--custom_field_list
-				--imported_at
+      --Foreign Keys
+      parent_id::FLOAT                                    AS parent_account_id,
+      currency_id::FLOAT                                  AS currency_id,
+      department_id::FLOAT                                AS department_id,
 
-		FROM base
+      --Info
+      name::VARCHAR                                       AS account_name,
+      full_name::VARCHAR                                  AS account_full_name,
+      full_description::VARCHAR                           AS account_full_description,
+      accountnumber::VARCHAR                              AS account_number,
+      expense_type_id::FLOAT                              AS expense_type_id,
+      type_name::VARCHAR                                  AS account_type,
+      type_sequence::FLOAT                                AS account_type_sequence,
+      openbalance::FLOAT                                  AS current_account_balance,
+      cashflow_rate_type::VARCHAR                         AS cashflow_rate_type,
+      general_rate_type::VARCHAR                          AS general_rate_type,
+
+      --Meta
+      isinactive::BOOLEAN                                 AS is_account_inactive,
+      is_balancesheet::BOOLEAN                            AS is_balancesheet_account,
+      is_included_in_elimination::BOOLEAN                 AS is_account_included_in_elimination,
+      is_included_in_reval::BOOLEAN                       AS is_account_included_in_reval,
+      is_including_child_subs::BOOLEAN                    AS is_account_including_child_subscriptions,
+      is_leftside::BOOLEAN                                AS is_leftside_account,
+      is_summary::BOOLEAN                                 AS is_summary_account
+
+    FROM source
 
 )
 

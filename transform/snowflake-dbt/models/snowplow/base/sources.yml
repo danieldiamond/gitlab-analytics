@@ -9,7 +9,7 @@ sources:
     loaded_at_field: uploaded_at # configure for all sources
 
     quoting:
-      database: false
+      database: true
       schema: false
       identifier: false
 
@@ -41,7 +41,7 @@ sources:
     loaded_at_field: uploaded_at # configure for all sources
 
     quoting:
-      database: false
+      database: true
       schema: false
       identifier: false
 
@@ -63,8 +63,8 @@ sources:
             tests:
               - not_null
         freshness:
-          warn_after: {count: 7, period: day}
-          error_after: {count: 10, period: day}
+          warn_after: {count: 16, period: day}
+          error_after: {count: 21, period: day}
 
       - name: bad_events
         description: These are the events that weren't processed due to some error.

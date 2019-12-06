@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: engineering_commit_stats
+    description: This table details information about engineering commmit stats.
+    columns:
+      - name: commit_date
+      - name: commit_id
+  - name: engineering_red_master_stats
+    description: This table details data for when master has a red pipeline.
+    columns:
+      - name: backend_coverage
+      - name: backend_coverage_absolute
+      - name: backend_coverage_total
+      - name: commit_date
+      - name: jest_coverage
+      - name: jest_coverage_absolute
+      - name: jest_coverage_total
+      - name: karma_coverage
+      - name: karma_coverage_absolute
+      - name: karma_coverage_total

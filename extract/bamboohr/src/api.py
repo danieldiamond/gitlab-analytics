@@ -1,4 +1,5 @@
 import os
+import sys
 from typing import Dict, Any
 
 import requests
@@ -47,6 +48,9 @@ class BambooAPI:
         r.raise_for_status()
 
         data = r.json()
+
+        self.quality_check(data)
+
         employees = data["employees"]
 
         return employees
@@ -59,13 +63,15 @@ class BambooAPI:
         See http://www.bamboohr.com/api/documentation/tables.php for a list of available tables.
         @return A list of dictionaries with the default return data.
         """
-        url = self.base_url + f"employees/{employee_id}/tables/{table_name}"
+        url = self.base_url + f"employees/{employee_id}/tables/{table_name}/"
         r = requests.get(
             url, timeout=self.timeout, headers=self.headers, auth=(self.api_token, ".")
         )
         r.raise_for_status()
 
         data = r.json()
+
+        self.quality_check(data)
 
         return data
 
@@ -84,4 +90,15 @@ class BambooAPI:
 
         data = r.json()
 
+        self.quality_check(data)
+
         return data
+
+    def quality_check(self, json_response: Dict[Any, Any]) -> None:
+        """
+        Sanity check on JSON response object for data integrity.
+        """
+        record_count = len(json_response)
+
+        if record_count < 2:
+            sys.exit(1)

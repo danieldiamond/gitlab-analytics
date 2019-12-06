@@ -60,6 +60,19 @@ models:
             tests:
                 - not_null
                 - unique
+    - name: zuora_refund
+      description: Base model for Zuora Refunds
+      columns:
+          - name: account_id
+            tests:
+               - not_null
+          - name: refund_date
+            tests:
+               - not_null
+          - name: refund_number
+            tests:
+               - unique
+               - not_null
     - name: zuora_subscription
       description: '{{ doc("zuora_subscription") }}'
       columns:

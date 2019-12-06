@@ -1,11 +1,5 @@
 version: 2
 
 models:
-    -   name: snowplow_event_counts
-        description: This model counts good and bad events by day.
-        columns:
-            -   name: event_day
-                tests:
-                    - not_null
-                    - unique
-
+  - name: snowplow_web_page
+    description: This model is needed for the snowplow dbt package.

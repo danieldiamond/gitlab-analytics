@@ -1,30 +1,31 @@
 {{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
+    "schema": "sensitive"
     })
 }}
 
 WITH source AS (
 
-	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'milestones') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
     SELECT
 
-      id :: integer                           as milestone_id,
-      project_id::integer                     as project_id,
-      group_id::integer                       as group_id,
-      start_date::date                        as start_date,
-      due_date::date                          as due_date,
-      state                                   as milestone_status,
+      id::INTEGER                           AS milestone_id,
+      title::VARCHAR                        AS milestone_title,
+      description::VARCHAR                  AS milestone_description,
+      project_id::INTEGER                   AS project_id,
+      group_id::INTEGER                     AS group_id,
+      start_date::DATE                      AS start_date,
+      due_date::DATE                        AS due_date,
+      state::VARCHAR                        AS milestone_status,
 
-      created_at :: timestamp                 as milestone_created_at,
-      updated_at :: timestamp                 as milestone_updated_at
+      created_at::TIMESTAMP                 AS created_at,
+      updated_at::TIMESTAMP                 AS updated_at
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

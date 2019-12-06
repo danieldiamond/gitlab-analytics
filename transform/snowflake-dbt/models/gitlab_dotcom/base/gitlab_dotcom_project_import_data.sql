@@ -1,18 +1,22 @@
--- disabled model until the data starts flowing in (the source table is missing from tap_postgres)
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH source AS (
 
-	SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) as rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'project_import_data') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
 
     SELECT
 
-      id :: integer                      as project_import_relation_id,
-      project_id :: integer              as project_id
+      id::INTEGER                      AS project_import_relation_id,
+      project_id::INTEGER              AS project_id
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

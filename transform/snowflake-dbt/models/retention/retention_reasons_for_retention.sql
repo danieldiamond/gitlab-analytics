@@ -1,13 +1,11 @@
-{{ config(schema='analytics') }}
-
-with raw_mrr_totals_levelled AS (
+WITH raw_mrr_totals_levelled AS (
 
        SELECT * FROM {{ref('mrr_totals_levelled')}}
        WHERE product_category != 'Trueup'
 
 ), mrr_totals_levelled AS (
 
-      SELECT subscription_name, 
+      SELECT subscription_name,
               subscription_name_slugify,
               sfdc_account_id,
               oldest_subscription_in_cohort,
@@ -18,7 +16,9 @@ with raw_mrr_totals_levelled AS (
               months_since_zuora_subscription_cohort_start,
               quarters_since_zuora_subscription_cohort_start,
               array_agg(DISTINCT product_category) WITHIN GROUP (ORDER BY product_category ASC) AS original_product_category,
-              array_agg(DISTINCT UNIT_OF_MEASURE) WITHIN GROUP (ORDER BY unit_of_measure ASC) AS original_unit_of_measure,
+              array_agg(DISTINCT delivery) WITHIN GROUP (ORDER BY delivery ASC)                 AS original_delivery,
+              array_agg(DISTINCT UNIT_OF_MEASURE) WITHIN GROUP (ORDER BY unit_of_measure ASC)   AS original_unit_of_measure,
+
               sum(quantity) as original_quantity,
               sum(mrr) as original_mrr
       FROM raw_mrr_totals_levelled
@@ -40,14 +40,15 @@ with raw_mrr_totals_levelled AS (
                  list.retention_month,
                  list.original_mrr_month,
                  mrr_totals_levelled.original_product_category      AS retention_product_category,
+                 mrr_totals_levelled.original_delivery              AS retention_delivery,
                  mrr_totals_levelled.original_quantity              AS retention_quantity,
                  mrr_totals_levelled.original_unit_of_measure       AS retention_unit_of_measure,
                  coalesce(sum(mrr_totals_levelled.original_mrr), 0) AS retention_mrr
        FROM list
-       INNER JOIN mrr_totals_levelled 
+       INNER JOIN mrr_totals_levelled
        ON retention_month = mrr_month
        AND subscriptions_in_lineage = subscription_name_slugify
-       {{ dbt_utils.group_by(n=6) }}
+       {{ dbt_utils.group_by(n=7) }}
 
 ), expansion AS (
 
@@ -96,6 +97,8 @@ with raw_mrr_totals_levelled AS (
              churn_type,
              original_product_category,
              retention_product_category,
+             original_delivery,
+             retention_delivery,
              original_quantity,
              retention_quantity,
              original_unit_of_measure,
@@ -112,6 +115,8 @@ with raw_mrr_totals_levelled AS (
              churn_type,
              original_product_category,
              retention_product_category,
+             original_delivery,
+             retention_delivery,
              original_quantity,
              retention_quantity,
              original_unit_of_measure,
@@ -122,6 +127,8 @@ with raw_mrr_totals_levelled AS (
 
 )
 
-SELECT *
+SELECT joined.*,
+       rank() over(partition by zuora_subscription_id, churn_type
+         order by retention_month asc)   AS rank_churn_type_month
 FROM joined
 WHERE retention_month <= dateadd(month, -1, CURRENT_DATE)

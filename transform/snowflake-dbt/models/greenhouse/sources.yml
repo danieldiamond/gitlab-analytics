@@ -1,4 +1,5 @@
-version: 2 
+
+version: 2
 
 sources:
   - name: greenhouse
@@ -6,6 +7,11 @@ sources:
     schema: greenhouse
     loader: custom
     loaded_at_field: to_timestamp_ntz(_updated_at::number)
+    
+    quoting:
+      database: true
+      schema: false
+      identifier: false
 
     freshness:
         warn_after: {count: 24, period: hour}
@@ -30,7 +36,6 @@ sources:
       - name: employments
       - name: events
         freshness: null
-      - name: greenhouse_usages
       - name: hiring_team
       - name: interviewer_tags
       - name: interviewers

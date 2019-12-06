@@ -84,6 +84,26 @@ services:
           source: .
           target: /usr/local/analytics
 
+    dbt_image:
+      image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
+      environment:
+        DBT_PROFILES_DIR: /usr/local/dbt_profiles/
+        SNOWFLAKE_LOAD_DATABASE: "RAW"
+        SNOWFLAKE_TRANSFORM_WAREHOUSE: "ANALYST_XS"
+      restart: always
+      ports:
+        - "8081:8081"
+      command: bash -c "/bin/bash"
+      working_dir: /usr/local/analytics/transform/snowflake-dbt/
+      volumes:
+        - type: bind
+          source: .
+          target: /usr/local/analytics
+        - type: bind
+          source: ${DBT_PROFILE_PATH}
+          target: /usr/local/dbt_profiles/profiles.yml
+          read_only: True
+
 volumes:
   airflow_logs:
   pgdata:

@@ -1,191 +1,444 @@
 version: 2
 
 models:
+    - name: netsuite_accounting_books
+      description: "[Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2016_1/odbc/record/accountingbook.html)"
+      columns:
+        - name: accounting_book_id
+          tests:
+            - not_null
+            - unique
     - name: netsuite_accounting_periods
+      description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/accountingperiod.html)"
       columns:
-          - name: posting_period_id
-            tests:
-                - not_null
-
+        - name: accounting_period_unique_id
+          description: This is a surrogate key, as some accounting periods map to multiple names, thus the accounting period id is not a unique value.
+          tests:
+            - unique
+            - not_null
+        - name: accounting_period_id
+          tests:
+            - not_null
+        - name: accounting_period_name
+          tests:
+            - not_null
+        - name: accounting_period_full_name
+          tests:
+            - not_null
+        - name: fiscal_calendar_id
+          tests:
+            - not_null
+        - name: parent_id
+        - name: year_id
+          tests:
+            - not_null
+        - name: accounting_period_close_date
+        - name: accounting_period_end_date
+          tests:
+            - not_null
+        - name: accounting_period_starting_date
+          tests:
+            - not_null
+        - name: is_accounts_payable_locked
+          tests:
+            - not_null
+        - name: is_accounts_receivables_locked
+          tests:
+            - not_null
+        - name: is_all_locked
+          tests:
+            - not_null
+        - name: is_payroll_locked
+          tests:
+            - not_null
+        - name: is_accouting_period_closed
+          tests:
+            - not_null
+        - name: is_accounts_payable_closed
+          tests:
+            - not_null
+        - name: is_accounts_receivables_closed
+          tests:
+            - not_null
+        - name: is_all_closed
+          tests:
+            - not_null
+        - name: is_payroll_closed
+          tests:
+            - not_null
+        - name: is_accounting_period_inactive
+          tests:
+            - not_null
+        - name: is_accounting_period_adjustment
+          tests:
+            - not_null
+        - name: is_quarter
+          tests:
+            - not_null
+        - name: is_year
+          tests:
+            - not_null
     - name: netsuite_accounts
+      description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/account.html)"
       columns:
-          - name: internal_account_id
-            tests:
-                - not_null
-                - unique
-          - name: account_name
-            tests:
-                - not_null
-          - name: account_type
-            tests:
-                - not_null
-
-    - name: netsuite_applications
+        - name: account_id
+          tests:
+            - not_null
+            - unique
+        - name: account_name
+          tests:
+            - not_null
+        - name: account_full_name
+          tests:
+            - not_null
+        - name: account_full_description
+        - name: account_number
+        - name: currency_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_currencies')
+                field: currency_id
+        - name: department_id
+          tests:
+            - relationships:
+                to: ref('netsuite_transaction_lines')
+                field: transaction_line_id
+        - name: expense_type_id
+        - name: parent_account_id
+          tests:
+            - relationships:
+                to: ref('netsuite_accounts')
+                field: account_id
+        - name: account_type
+          tests:
+            - not_null
+        - name: account_type_sequence
+        - name: current_account_balance
+          tests:
+            - not_null
+        - name: cashflow_rate_type
+          tests:
+            - not_null
+        - name: general_rate_type
+          tests:
+            - not_null
+        - name: is_account_inactive
+        - name: is_balancesheet_account
+        - name: is_account_included_in_elimination
+        - name: is_account_included_in_reval
+        - name: is_account_including_child_subscriptions
+        - name: is_leftside_account
+        - name: is_summary_account
+    - name: netsuite_budget
+      description: "[Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/budget.html)"
       columns:
-          - name: application_id
-            tests:
-                - not_null
-                - unique
-          - name: transaction_id
-            tests:
-                - not_null
-          - name: transaction_line
-            tests:
-                - not_null
-          - name: application_amount
-            tests:
-                - not_null
-          - name: doc_id
-            tests:
-                - not_null
-          - name: application_type
-            tests:
-                - not_null
-
+        - name: budget_id
+          tests:
+            - not_null
+            - unique
+        - name: accounting_period_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_accounting_periods')
+                field: accounting_period_id
+        - name: account_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_accounts')
+                field: account_id
+        - name: subsidiary_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_subsidiaries')
+                field: subsidiary_id
+        - name: category_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_budget_category')
+                field: budget_category_id
+        - name: budget_amount
+          tests:
+            - not_null
+    - name: netsuite_budget_category
+      description: "[Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/budgetcategory.html)"
+      columns:
+        - name: budget_category_id
+          tests:
+            - not_null
+            - unique
+        - name: budget_category
+          tests:
+            - not_null
     - name: netsuite_consolidated_exchange_rates
+      description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/consolidatedexchangerate.html)"
       columns:
-          - name: internal_id
-            tests:
-                - not_null
-                - unique
-
+        - name: consolidated_exchange_rate_id
+          tests:
+            - not_null
+            - unique
+        - name: accounting_book_id
+          tests:
+            - not_null
+        - name: accounting_period_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_accounting_periods')
+                field: accounting_period_id
+        - name: average_budget_rate
+          tests:
+            - not_null
+        - name: current_budget_rate
+          tests:
+            - not_null
+        - name: average_rate
+          tests:
+            - not_null
+        - name: current_rate
+          tests:
+            - not_null
+        - name: historical_budget_rate
+          tests:
+            - not_null
+        - name: historical_rate
+          tests:
+            - not_null
+        - name: from_subsidiary_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_subsidiaries')
+                field: subsidiary_id
+        - name: to_subsidiary_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_subsidiaries')
+                field: subsidiary_id
     - name: netsuite_currencies
+      description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/currencies.html)"
       columns:
-          - name: currency_id
-            tests:
-                - not_null
-                - unique
-          - name: currency_name
-            tests:
-                - not_null
-                - unique
-          - name: currency_symbol
-            tests:
-                - not_null
-                - unique
-          - name: exchange_rate
-            tests:
-                - not_null
-
+        - name: currency_id
+          tests:
+            - not_null
+            - unique
+        - name: currency_name
+          tests:
+            - not_null
+            - unique
+        - name: currency_symbol
+          tests:
+            - not_null
+        - name: decimal_precision
+            - not_null
+        - name: is_currency_inactive
     - name: netsuite_customers
+      description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/customer.html)"
       columns:
-          - name: customer_id
-            tests:
-                - not_null
-                - unique
-          - name: entity_name
-            tests:
-                - not_null
-                - unique
-
-    - name: netsuite_deleted
-      columns:
-          - name: internal_id
-            tests:
-                - not_null
-          - name: deleted_timestamp
-            tests:
-                - not_null
-
+        - name: customer_id
+          tests:
+            - not_null
+            - unique
+        - name: customer_name
+        - name: customer_alt_name
+          tests:
+            - not_null
+        - name: customer_full_name
+          tests:
+            - not_null
+        - name: subsidiary_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_subsidiaries')
+                field: subsidiary_id
+        - name: currency_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_currencies')
+                field: currency_id
+        - name: department_id
+          tests:
+            - relationships:
+                to: ref('netsuite_departments')
+                field: department_id
+        - name: parent_id
+          tests:
+            - relationships:
+                to: ref('netsuite_customers')
+                field: customer_id
+        - name: rev_rec_forecast_rule_id
+        - name: customer_balance
+          tests:
+            - not_null
+        - name: days_overdue
     - name: netsuite_departments
+      description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/department.html)"
       columns:
-          - name: department_id
-            tests:
-                - not_null
-                - unique
-          - name: department_name
-            tests:
-                - not_null
-
-    - name: netsuite_expenses
-      description: '{{ doc("netsuite_expenses") }}'
+        - name: department_id
+          tests:
+            - not_null
+            - unique
+        - name: department_name
+        - name: department_full_name
+          tests:
+            - not_null
+            - unique
+        - name: parent_department_id
+          tests:
+            - relationships:
+                to: ref('netsuite_departments')
+                field: department_id
+        - name: is_department_inactive
+          tests:
+            - not_null
+    - name: netsuite_entity
+      description: "[Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/entity.html)"
       columns:
-          - name: expense_id
-            tests:
-                - not_null
-                - unique
-          - name: transaction_id
-            tests:
-                - not_null
-          - name: account_id
-            tests:
-                - not_null
-          - name: account_name
-            tests:
-                - not_null
-
+        - name: entity_id
+          tests:
+            - not_null
+            - unique
     - name: netsuite_subsidiaries
+      description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/subsidiaries.html)"
       columns:
-          - name: subsidiary_id
-            tests:
-                - not_null
-                - unique
-          - name: subsidiary_name
-            tests:
-                - not_null
-                - unique
-          - name: currency
-            tests:
-                - not_null
-          - name: country
-            tests:
-                - not_null
-
-    - name: netsuite_transaction_items
-      columns:
-          - name: transaction_item_id
-            tests:
-                - not_null
-                - unique
-          - name: transaction_id
-            tests:
-                - not_null
-          - name: transaction_line
-            tests:
-                - not_null
-          - name: item_id
-            tests:
-                - not_null
-          - name: item_name
-            tests:
-                - not_null
-
+        - name: subsidiary_id
+          tests:
+            - not_null
+            - unique
+        - name: subsidiary_full_name
+          tests:
+            - not_null
+            - unique
+        - name: subsidiary_name
+          tests:
+            - not_null
+            - unique
+        - name: base_currency_id
+          tests:
+            - not_null
+        - name: is_subsidiary_inactive
+          tests:
+            - not_null
+        - name: is_elimination_subsidiary
+          tests:
+            - not_null
     - name: netsuite_transaction_lines
-      description: '{{ doc("netsuite_transaction_lines") }}'
+      description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/transaction_lines.html)"
       columns:
-          - name: transaction_line_id
-            tests:
-                - not_null
-                - unique
-          - name: transaction_id
-            tests:
-                - not_null
-          - name: transaction_line
-            tests:
-                - not_null
-          - name: account_id
-            tests:
-                - not_null
-          - name: account_name
-            tests:
-                - not_null
-
+        - name: transaction_lines_unique_id
+          tests:
+            - not_null
+            - unique
+        - name: transaction_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_transactions')
+                field: transaction_id
+        - name: transaction_line_id
+          tests:
+            - not_null
+        - name: account_id
+          tests:
+            - relationships:
+                to: ref('netsuite_accounts')
+                field: account_id
+        - name: department_id
+          tests:
+            - relationships:
+                to: ref('netsuite_departments')
+                field: department_id
+        - name: subsidiary_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_subsidiaries')
+                field: subsidiary_id
+        - name: memo
+        - name: amount
+          tests:
+            - not_null
+        - name: gross_amount
+          tests:
+            - not_null
     - name: netsuite_transactions
+      description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/transaction.html)"
       columns:
-          - name: transaction_id
-            tests:
-                - not_null
-                - unique
-          - name: transaction_date
-            tests:
-                - not_null
-
+        - name: transaction_id
+          tests:
+            - not_null
+            - unique
+        - name: entity_id
+        - name: accounting_period_id
+          tests:
+            - relationships:
+                to: ref('netsuite_accounting_periods')
+                field: accounting_period_id
+        - name: currency_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_currencies')
+                field: currency_id
+        - name: transaction_type
+          tests:
+            - not_null
+        - name: external_transaction_id
+        - name: transaction_number
+        - name: memo
+        - name: balance
+          tests:
+            - not_null
+        - name: exchange_rate
+          tests:
+            - not_null
+        - name: total
+        - name: status
+          tests:
+            - not_null
+        - name: due_date
+        - name: transaction_date
+          tests:
+            - not_null
+        - name: sales_effective_date
+          tests:
+            - not_null
     - name: netsuite_vendors
+      description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/vendor.html)"
       columns:
-          - name: internal_vendor_id
-            tests:
-                - not_null
-                - unique
-          - name: entity_name
-            tests:
-                - not_null
+        - name: vendor_id
+          tests:
+            - not_null
+            - unique
+        - name: vendor_name
+        - name: currency_id
+          tests:
+            - not_null
+            - relationships:
+                to: ref('netsuite_currencies')
+                field: currency_id
+        - name: subsidiary_id
+          tests:
+            - relationships:
+                to: ref('netsuite_subsidiaries')
+                field: subsidiary_id
+        - name: vendor_balance
+          tests:
+            - not_null
+        - name: vendor_comments
+        - name: is_1099_eligible
+          tests:
+            - not_null
+        - name: is_inactive
+          tests:
+            - not_null
+        - name: is_person
+          tests:
+            - not_null

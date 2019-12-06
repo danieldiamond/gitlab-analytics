@@ -50,6 +50,11 @@ This is the source table for Zuora Rate Plan Charges. [Link to Documentation](ht
 
 {% enddocs %}
 
+{% docs zuora_refund_source %}
+
+This is the source table for Zuora Refunds. [Link to Documentation](https://knowledgecenter.zuora.com/DC_Developers/G_SOAP_API/E1_SOAP_API_Object_Reference/Refund)
+
+{% enddocs %}
 
 {% docs zuora_subscription_source %}
 

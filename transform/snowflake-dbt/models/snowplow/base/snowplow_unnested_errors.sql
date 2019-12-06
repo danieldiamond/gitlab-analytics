@@ -1,31 +1,21 @@
-{{
-  config(
-    materialized='incremental',
-    unique_key='base64_event'
-  )
+{{config({
+    "materialized":"table",
+    "unique_key":"bad_event_surrogate",
+    "schema": current_date_schema('snowplow')
+  })
 }}
 
-WITH gitlab as (
-
-    SELECT *
-    FROM {{ ref('snowplow_gitlab_bad_events') }}
-    {% if is_incremental() %}
-        WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
-    {% endif %}
-
-),
-
-fishtown as (
+WITH fishtown as (
 
     SELECT *
     FROM {{ ref('snowplow_fishtown_bad_events') }}
-    {% if is_incremental() %}
-       WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
-    {% endif %}
 
-),
+), gitlab as (
 
-unioned AS (
+    SELECT *
+    FROM {{ ref('snowplow_gitlab_bad_events') }}
+
+), unioned AS (
 
     SELECT *
     FROM gitlab

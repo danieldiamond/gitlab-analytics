@@ -9,7 +9,7 @@ gitlab-cookbooks/gitlab-exporters,5252782
 gitlab-cookbooks/mtail,3569903
 gitlab-com/runbooks,1148549
 gitlab-com/ci-prometheus-configuration,4343186
-charts/gitlab-runner,6329679
+gitlab-org/charts/gitlab-runner,6329679
 gitlab-org/release/docs,5191294
 gitlab-org/gitlab-terminal,7792567
 gitlab-org/grafana-dashboards,928825

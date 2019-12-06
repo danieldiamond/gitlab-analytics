@@ -1,30 +1,26 @@
-
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 {% set paid_plans = (2, 3, 4) %}
 {% set sensitive_fields = ['project_description', 'project_import_source', 'project_issues_template', 'project_build_coverage_regex',
                            'project_name', 'project_path', 'project_import_url', 'project_merge_requests_template'] %}
 
 WITH projects AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_projects')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_projects')}}
 
 ),
 
 namespaces AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_namespaces')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_namespaces')}}
 
 ),
 
 
 members AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_members')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_members')}}
 
 ),
 
@@ -41,8 +37,8 @@ namespace_lineage AS (
 joined AS (
     SELECT
       projects.project_id,
-      projects.project_created_at,
-      projects.project_updated_at,
+      projects.created_at                                          AS project_created_at,
+      projects.updated_at                                          AS project_updated_at,
       projects.creator_id,
       projects.namespace_id,
       projects.last_activity_at,
@@ -94,7 +90,7 @@ joined AS (
         WHEN projects.visibility_level != '20' AND NOT namespace_lineage.namespace_is_internal
           THEN 'project is private/internal'
         ELSE {{field}}
-      END                                                                           AS {{field}},
+      END                                                          AS {{field}},
       {% endfor %}
 
       namespaces.namespace_name,

@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: create_gitlab_dotcom_smau_events
+    description: '{{ doc("create_gitlab_dotcom_smau_events") }}'
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+      - name: event_date
+        tests:
+          - not_null
+      - name: event_surrogate_key
+        tests:
+          - not_null
+          - unique
+
+  - name: manage_gitlab_dotcom_smau_events
+    description: '{{ doc("manage_gitlab_dotcom_smau_events") }}'
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+      - name: event_date
+        tests:
+          - not_null
+      - name: event_surrogate_key
+        tests:
+          - not_null
+          - unique

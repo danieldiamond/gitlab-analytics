@@ -6,6 +6,11 @@ sources:
     schema: salesforce_stitch
     loader: Stitch
     loaded_at_field: _sdc_batched_at
+    
+    quoting:
+      database: true
+      schema: false
+      identifier: false
 
     freshness:
         warn_after: {count: 8, period: hour}
@@ -34,6 +39,9 @@ sources:
         description: '{{ doc("sfdc_execbus_source") }}'
       - name: lead         
         description: '{{ doc("sfdc_lead_source") }}'
+      - name: opportunity_field_history
+        identifier: opportunityfieldhistory
+        description: '{{ doc("sfdc_oppfieldhistory_source") }}'  
       - name: opportunity_history
         identifier: opportunityhistory          
         description: '{{ doc("sfdc_opphistory_source") }}'
@@ -78,4 +86,3 @@ sources:
         description: '{{ doc("sfdc_opp_arch_source") }}'
       - name: sfdc_users_archived
         description: '{{ doc("sfdc_users_arch_source") }}'
-

@@ -25,7 +25,7 @@ WITH bamboohr_directory AS (
 
     SELECT distinct bamboo_employee_number,
             FIRST_VALUE(location_factor) OVER ( PARTITION BY bamboo_employee_number ORDER BY valid_from) AS hire_location_factor
-    FROM {{ ref('location_factor_archived') }}
+    FROM {{ ref('employee_location_factor_snapshots') }}
 
 ), cost_center as (
 
@@ -57,6 +57,11 @@ LEFT JOIN cost_center
  AND department_info.last_division=cost_center.division
 LEFT JOIN location_factor
   ON location_factor.bamboo_employee_number = mapping.employee_number
-WHERE hire_date < CURRENT_DATE
- AND employee_number NOT IN ('10902', '10942')
+WHERE hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
+  AND employee_number NOT IN (
+                              '11209', --https://gitlab.com/gitlab-data/analytics/issues/2749
+                              '11218', --https://gitlab.com/gitlab-data/analytics/issues/2749
+                              '11219', --https://gitlab.com/gitlab-data/analytics/issues/2882
+                              '11279'  --https://gitlab.com/gitlab-data/analytics/issues/3004 
+                            )
 ORDER BY hire_date DESC

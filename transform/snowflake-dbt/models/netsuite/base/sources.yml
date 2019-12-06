@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: netsuite
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: netsuite_fivetran
+    loader: fivetran
+    loaded_at_field: _FIVETRAN_SYNCED
+
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    tables:
+      - name: accounting_books
+      - name: accounting_periods
+      - name: accounts
+      - name: budget
+      - name: budget_category
+      - name: consolidated_exchange_rates
+      - name: currencies
+      - name: customers
+      - name: departments
+      - name: entity
+      - name: posting_account_activity
+      - name: subsidiaries
+      - name: transaction_lines
+      - name: transactions
+      - name: vendors

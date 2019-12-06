@@ -1,28 +1,24 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 {% set paid_plans = (2, 3, 4) %}
 {% set fields_to_mask = ['namespace_name', 'namespace_path'] %}
 
-
 WITH namespaces AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_namespaces')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_namespaces')}}
 
 ),
 
 members AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_members')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_members')}}
 
 ),
 
 projects AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_projects')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_projects')}}
 
 ), namespace_lineage AS (
 
@@ -41,17 +37,17 @@ joined AS (
 
       {% for field in fields_to_mask %}
       CASE
-        WHEN namespaces.visibility_level = '20' OR namespace_is_internal THEN {{field}}
-        WHEN namespaces.visibility_level = '10' AND NOT namespace_is_internal THEN 'internal - masked'
-        WHEN namespaces.visibility_level = '0'  AND NOT namespace_is_internal THEN 'private - masked'
+        WHEN namespaces.visibility_level = 'public' OR namespace_is_internal THEN {{field}}
+        WHEN namespaces.visibility_level = 'internal' THEN 'internal - masked'
+        WHEN namespaces.visibility_level = 'private'  THEN 'private - masked'
       END                                                              AS {{field}},
       {% endfor %}
 
       namespaces.owner_id,
-      namespaces.namespace_type,
+      COALESCE(namespaces.namespace_type, 'Individual')                AS namespace_type,
       namespaces.has_avatar,
-      namespaces.namespace_created_at,
-      namespaces.namespace_updated_at,
+      namespaces.created_at                                            AS namespace_created_at,
+      namespaces.updated_at                                            AS namespace_updated_at,
       namespaces.is_membership_locked,
       namespaces.has_request_access_enabled,
       namespaces.has_share_with_group_locked,
@@ -74,6 +70,7 @@ joined AS (
       COALESCE( (namespaces.plan_id IN {{ paid_plans }} ), False)      AS namespace_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)                   AS member_count,
       COALESCE(COUNT(DISTINCT projects.project_id), 0)                 AS project_count
+
     FROM namespaces
       LEFT JOIN members
         ON namespaces.namespace_id = members.source_id
@@ -82,7 +79,7 @@ joined AS (
         ON namespaces.namespace_id = projects.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
-    {{ dbt_utils.group_by(n=28) }} 
+    {{ dbt_utils.group_by(n=28) }}
 )
 
 SELECT *

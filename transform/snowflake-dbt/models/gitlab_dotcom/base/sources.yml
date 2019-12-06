@@ -1,0 +1,147 @@
+version: 2
+
+sources:
+  - name: gitlab_dotcom
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: tap_postgres
+    loaded_at_field: DATEADD(sec, _uploaded_at, '1970-01-01')
+    loader: Airflow, tap_postgres
+    description: Analytics read replica for Gitlab.com data. [Original Issue](https://gitlab.com/gitlab-com/gl-infra/infrastructure/issues/5847)
+
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    freshness:
+      warn_after: {count: 48, period: hour}
+
+    tables:
+      - name: approvals
+        identifier: gitlab_db_approvals
+      - name: approver_groups
+        identifier: gitlab_db_approver_groups
+      - name: audit_events
+        identifier: gitlab_db_audit_events
+      - name: board_assignees
+        identifier: gitlab_db_board_assignees
+      - name: board_labels
+        identifier: gitlab_db_board_labels
+      - name: boards
+        identifier: gitlab_db_boards
+      - name: ci_build_trace_chunks
+        identifier: gitlab_db_ci_build_trace_chunks
+      - name: ci_build_trace_section_names
+        identifier: gitlab_db_ci_build_trace_section_names
+      - name: ci_builds
+        identifier: gitlab_db_ci_builds
+      # - name: ci_builds_metadata
+      #   identifier: gitlab_db_ci_builds_metadata
+      - name: ci_builds_runner_session
+        identifier: gitlab_db_ci_builds_runner_session
+      - name: ci_group_variables
+        identifier: gitlab_db_ci_group_variables
+      - name: ci_job_artifacts
+        identifier: gitlab_db_ci_job_artifacts
+      - name: ci_pipeline_chat_data
+        identifier: gitlab_db_ci_pipeline_chat_data
+      - name: ci_pipeline_schedule_variables
+        identifier: gitlab_db_ci_pipeline_schedule_variables
+      - name: ci_pipeline_schedules
+        identifier: gitlab_db_ci_pipeline_schedules
+      - name: ci_pipeline_variables
+        identifier: gitlab_db_ci_pipeline_variables
+      - name: ci_pipelines
+        identifier: gitlab_db_ci_pipelines
+      - name: ci_runners
+        identifier: gitlab_db_ci_runners
+      - name: ci_stages
+        identifier: gitlab_db_ci_stages
+      - name: ci_trigger_requests
+        identifier: gitlab_db_ci_trigger_requests
+      - name: ci_triggers
+        identifier: gitlab_db_ci_triggers
+      - name: ci_variables
+        identifier: gitlab_db_ci_variables
+      - name: deployments
+        identifier: gitlab_db_deployments
+      - name: deployment_merge_requests
+        identifier: gitlab_db_deployment_merge_requests
+      - name: environments
+        identifier: gitlab_db_environments
+      - name: epic_issues
+        identifier: gitlab_db_epic_issues
+      - name: epic_metrics
+        identifier: gitlab_db_epic_metrics
+      - name: epics
+        identifier: gitlab_db_epics
+      - name: events
+        identifier: gitlab_db_events
+      - name: gitlab_subscriptions
+        identifier: gitlab_db_gitlab_subscriptions
+      - name: identities
+        identifier: gitlab_db_identities
+      - name: issue_assignees
+        identifier: gitlab_db_issue_assignees
+      - name: issue_links
+        identifier: gitlab_db_issue_links
+      - name: issue_metrics
+        identifier: gitlab_db_issue_metrics
+      - name: issues
+        identifier: gitlab_db_issues
+      - name: label_links
+        identifier: gitlab_db_label_links
+      - name: label_priorities
+        identifier: gitlab_db_label_priorities
+      - name: labels
+        identifier: gitlab_db_labels
+      - name: licenses
+        identifier: gitlab_db_licenses
+      - name: members
+        identifier: gitlab_db_members
+      - name: merge_request_diffs
+        identifier: gitlab_db_merge_request_diffs
+      - name: merge_request_metrics
+        identifier: gitlab_db_merge_request_metrics
+      - name: merge_requests
+        identifier: gitlab_db_merge_requests
+      - name: merge_requests_closing_issues
+        identifier: gitlab_db_merge_requests_closing_issues
+      - name: milestones
+        identifier: gitlab_db_milestones
+      - name: namespace_root_storage_statistics
+        identifier: gitlab_db_namespace_root_storage_statistics
+      - name: namespace_statistics
+        identifier: gitlab_db_namespace_statistics
+      - name: namespaces
+        identifier: gitlab_db_namespaces
+      - name: notes
+        identifier: gitlab_db_notes
+      - name: notification_settings
+        identifier: gitlab_db_notification_settings
+      - name: oauth_access_tokens
+        identifier: gitlab_db_oauth_access_tokens
+      - name: project_authorizations
+        identifier: gitlab_db_project_authorizations
+      - name: project_auto_devops
+        identifier: gitlab_db_project_auto_devops
+      - name: project_features
+        identifier: gitlab_db_project_features
+      - name: project_group_links
+        identifier: gitlab_db_project_group_links
+      - name: project_import_data
+        identifier: gitlab_db_project_import_data
+      - name: project_mirror_data
+        identifier: gitlab_db_project_mirror_data
+      - name: project_statistics
+        identifier: gitlab_db_project_statistics
+      - name: projects
+        identifier: gitlab_db_projects
+      - name: resource_label_events
+        identifier: gitlab_db_resource_label_events
+      - name: subscriptions
+        identifier: gitlab_db_subscriptions
+      - name: timelogs
+        identifier: gitlab_db_timelogs
+      - name: users
+        identifier: gitlab_db_users

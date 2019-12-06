@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 with sfdc_opportunity_xf  AS (
 
         SELECT *

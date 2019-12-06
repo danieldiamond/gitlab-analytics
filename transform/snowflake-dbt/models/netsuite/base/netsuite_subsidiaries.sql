@@ -1,27 +1,28 @@
-{#
--- Netsuite Docs: http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2016_1/schema/record/subsidiary.html
-#}
+WITH source AS (
 
+    SELECT *
+    FROM {{ source('netsuite', 'subsidiaries') }}
 
+), renamed AS (
 
-with base as (
+    SELECT
+      --Primary Key
+      subsidiary_id::FLOAT               AS subsidiary_id,
 
-		SELECT *
-		FROM {{ var("database") }}.gcloud_postgres_stitch.netsuite_subsidiaries
+      --Info
+      full_name::VARCHAR                 AS subsidiary_full_name,
+      name::VARCHAR                      AS subsidiary_name,
+      base_currency_id::FLOAT            AS base_currency_id,
+      fiscal_calendar_id::FLOAT          AS fiscal_calendar_id,
+      parent_id::FLOAT                   AS parent_id,
 
-), renamed as (
+      --Meta
+      isinactive::BOOLEAN                AS is_subsidiary_inactive,
+      is_elimination::BOOLEAN            AS is_elimination_subsidiary
 
-		SELECT
-			internal_id 	as subsidiary_id,
-           	name 			as subsidiary_name,
-           	currency,
-           	country
-    FROM base
+    FROM source
 
 )
 
 SELECT *
 FROM renamed
-
-
-

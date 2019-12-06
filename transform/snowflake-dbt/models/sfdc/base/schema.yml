@@ -10,18 +10,6 @@ models:
       - name: account_name
         tests:
           - not_null
-  - name: sfdc_account_archived
-    description: "This is the base model for the archived version of SFDC accounts. It is deduped."
-    columns:
-      - name: unique_identifier
-        tests:
-          - not_null
-          - unique
-    tests:
-      - dbt_utils.recency:
-          datepart: day
-          field: dbt_last_updated_timestamp
-          interval: 1
   - name: sfdc_bizible_attribution_touchpoint
     description: Attribution touchpoints are on opportunities.
     columns:
@@ -36,9 +24,9 @@ models:
                     to: ref('sfdc_campaign')
                     field: campaign_id
   - name: sfdc_bizible_touchpoint
-    description: Touch points are on leads and contacts. 
-    columns: 
-        - name: bizible_touchpoint_id
+    description: Touch points are on leads and contacts.
+    columns:
+        - name: touchpoint_id
           tests:
               - unique
               - not_null
@@ -122,18 +110,15 @@ models:
               - relationships:
                     to: ref('sfdc_opportunity_stage')
                     field: primary_label
-  - name: sfdc_opportunity_archived
-    description: "This is the base model for the archived version of SFDC opportunities. It is deduped."
+  - name: sfdc_opportunity_field_history
+    description: base model for SFDC Opportunity Field History
     columns:
-      - name: unique_identifier
-        tests:
-          - not_null
-          - unique
-    tests:
-      - dbt_utils.recency:
-          datepart: day
-          field: dbt_last_updated_timestamp
-          interval: 1
+        - name: field_history_id
+          tests:
+              - not_null
+        - name: opportunity_id
+          tests:
+              - not_null                       
   - name: sfdc_opportunity_line_item
     description: base model for SFDC Opportunity Line Items
     columns:
@@ -225,15 +210,3 @@ models:
           tests:
               - not_null
               - unique
-  - name: sfdc_users_archived
-    description: "This is the base model for the archived version of SFDC users. It is deduped."
-    columns:
-      - name: unique_identifier
-        tests:
-          - not_null
-          - unique
-    tests:
-      - dbt_utils.recency:
-          datepart: day
-          field: dbt_last_updated_timestamp
-          interval: 1

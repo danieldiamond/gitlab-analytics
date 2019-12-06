@@ -1,0 +1,99 @@
+connection_info:
+  user: LICENSE_DB_USER
+  pass: LICENSE_DB_PASS
+  host: LICENSE_DB_HOST
+  database: LICENSE_DB_NAME
+  port: PG_PORT
+tables:
+  add_ons:
+    import_db: LICENSE_DB
+    import_query: >
+      SELECT id
+      , name
+      , code
+      , created_at
+      , updated_at
+      FROM add_ons
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'license'
+    export_table: 'add_ons'
+    export_table_primary_key: id
+  granted_add_ons:
+    import_db: LICENSE_DB
+    import_query: >
+      SELECT id
+      , license_id
+      , add_on_id
+      , quantity
+      , created_at
+      , updated_at
+      FROM granted_add_ons
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'license'
+    export_table: 'granted_add_ons'
+    export_table_primary_key: id
+  licenses:
+    import_db: LICENSE_DB
+    import_query: >
+      SELECT
+      id,
+      company,
+      users_count,
+      email,
+      MD5(license_file) AS license_md5,
+      expires_at,
+      plan_name,
+      starts_at,
+      zuora_subscription_id,
+      previous_users_count,
+      trueup_quantity,
+      trueup_from,
+      trueup_to,
+      plan_code,
+      trial,
+      created_at,
+      updated_at
+      FROM licenses
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'license'
+    export_table: 'licenses'
+    export_table_primary_key: id
+  users:
+    import_db: LICENSE_DB
+    import_query: >
+      SELECT
+      id,
+      email,
+      sign_in_count,
+      current_sign_in_at,
+      last_sign_in_at,
+      current_sign_in_ip,
+      last_sign_in_ip,
+      failed_attempts,
+      locked_at,
+      created_at,
+      updated_at,
+      provider,
+      uid
+      FROM users
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'license'
+    export_table: 'users'
+    export_table_primary_key: id
+  schema_migrations:
+    import_db: LICENSE_DB
+    import_query: >
+      SELECT version
+      FROM schema_migrations
+    export_db: EXPORT_DB
+    export_schema: 'license'
+    export_table: 'schema_migrations'
+    export_table_primary_key: version

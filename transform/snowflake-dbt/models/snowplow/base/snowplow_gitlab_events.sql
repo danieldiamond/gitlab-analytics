@@ -1,8 +1,11 @@
-{{
-  config(
-    materialized='incremental',
-    unique_key='event_id'
-  )
+{% set year_value = var('year', run_started_at.strftime('%Y')) %}
+{% set month_value = var('month', run_started_at.strftime('%m')) %}
+
+{{config({
+    "unique_key":"event_id",
+    "schema":current_date_schema('snowplow'),
+    "materialized": "table"
+  })
 }}
 
 {% set change_form = ['formId','elementId','nodeName','type','elementClasses','value'] %}
@@ -12,10 +15,9 @@
 {% set track_timing = ['category','variable','timing','label'] %}
 
 
-with base as (
+WITH source as (
 
-SELECT
-    DISTINCT
+    SELECT DISTINCT
       app_id,
       base_currency,
       br_colordepth,
@@ -40,7 +42,10 @@ SELECT
       collector_tstamp,
       contexts,
       derived_contexts,
-      derived_tstamp,
+      -- correctting bugs on ruby tracker which was sending wrong timestamp
+      -- https://gitlab.com/gitlab-data/analytics/issues/3097
+      IFF(DATE_PART('year', TRY_TO_TIMESTAMP(derived_tstamp)) > 1970, 
+            derived_tstamp, collector_tstamp) AS derived_tstamp,
       doc_charset,
       try_to_numeric(doc_height)              AS doc_height,
       try_to_numeric(doc_width)               AS doc_width,
@@ -150,23 +155,41 @@ SELECT
       v_tracker,
       uploaded_at,
       'GitLab' AS infra_source
-{% if target.name not in ("prod") -%}
+    {% if target.name not in ("prod") -%}
 
-FROM {{ source('gitlab_snowplow', 'events_sample') }}
+    FROM {{ source('gitlab_snowplow', 'events_sample') }}
 
-{%- else %}
+    {%- else %}
 
-FROM {{ source('gitlab_snowplow', 'events') }}
+    FROM {{ source('gitlab_snowplow', 'events') }}
 
-{%- endif %}
+    {%- endif %}
+)
 
-WHERE app_id IS NOT NULL
-AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
-AND lower(page_url) NOT LIKE 'http://localhost:%'
-
-{% if is_incremental() %}
-    AND uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
-{% endif %}
+, base AS (
+  
+    SELECT * 
+    FROM source
+    WHERE app_id IS NOT NULL
+      AND date_part(month, try_to_timestamp(derived_tstamp)) = '{{ month_value }}'
+      AND date_part(year, try_to_timestamp(derived_tstamp)) = '{{ year_value }}'
+      AND 
+        (
+          (
+            -- js backend tracker
+            v_tracker LIKE 'js%'
+            AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
+            AND lower(page_url) NOT LIKE 'http://localhost:%'
+          )
+          
+          OR
+          
+          (
+            -- ruby backend tracker
+            v_tracker LIKE 'rb%'
+          )
+        )
+      AND try_to_timestamp(derived_tstamp) is not null
 
 ), events_to_ignore as (
 
@@ -178,6 +201,10 @@ AND lower(page_url) NOT LIKE 'http://localhost:%'
 ), unnested_unstruct as (
 
     SELECT *,
+    CASE
+      WHEN length(unstruct_event) > 0 AND try_parse_json(unstruct_event) IS NULL
+        THEN TRUE
+      ELSE FALSE END AS is_bad_unstruct_event,
     {{ unpack_unstructured_event(change_form, 'change_form', 'cf') }},
     {{ unpack_unstructured_event(submit_form, 'submit_form', 'sf') }},
     {{ unpack_unstructured_event(focus_form, 'focus_form', 'ff') }},
@@ -191,4 +218,4 @@ AND lower(page_url) NOT LIKE 'http://localhost:%'
 SELECT *
 FROM unnested_unstruct
 WHERE event_id NOT IN (SELECT * FROM events_to_ignore)
-ORDER BY true_tstamp
+ORDER BY derived_tstamp

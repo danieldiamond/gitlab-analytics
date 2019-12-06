@@ -1,204 +1,152 @@
 .snowflake_dbt_jobs: &snowflake_dbt_jobs
   image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
-  stage: model
+  stage: ⚙️ dbt Run
   before_script:
     - cd transform/snowflake-dbt/
     - echo $SNOWFLAKE_DATABASE
     - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
     - echo $SNOWFLAKE_TRANSFORM_DATABASE
+    - if [ $SNOWFLAKE_DATABASE = "master" ]; then export snowflake_load_database="RAW"; else export snowflake_load_database="${CI_COMMIT_REF_NAME^^}_RAW"; fi
+    - echo $snowflake_load_database # This is a workaround for a bug in dbt https://github.com/fishtown-analytics/dbt/issues/1712
     - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XS_WAREHOUSE
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
+    - export CI_PROFILE_TARGET="--profiles-dir profile --target ci"
+    - echo $CI_PROFILE_TARGET
+  after_script:
+    - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
+    - mkdir -p $CI_PROJECT_DIR/public/dbt/
+    - cp -r target $CI_PROJECT_DIR/public/dbt/ 
   tags:
     - analytics
+  only:
+    - merge_requests
+  when: manual
+  artifacts:
+    name: "dbt Compiled Files"
+    paths:
+      - public
+    expire_in: 1 week
+    when: always
 
-# Model
-.dbt_snowflake: &dbt_snowflake
+
+# Common commands anchors
+.deps_and_seed: &deps_and_seed
+  - python3 macro_name_check.py
+  - dbt deps $CI_PROFILE_TARGET
+  - dbt seed $CI_PROFILE_TARGET #seed data from csv
+
+.xl_warehouse: &xl_warehouse
+  - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
+  - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
+
+
+# MR Jobs
+➖specify_exclude:
   <<: *snowflake_dbt_jobs
   script:
-    - dbt deps --profiles-dir profile # install packages
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --exclude snapshots # run without snapshot models
+    - *deps_and_seed
+    - echo $DBT_MODELS
+    - dbt run $CI_PROFILE_TARGET --full-refresh --exclude $DBT_MODELS || true
+    - dbt test $CI_PROFILE_TARGET --exclude $DBT_MODELS || true
+    - dbt run $CI_PROFILE_TARGET --exclude $DBT_MODELS || true
+    - dbt test $CI_PROFILE_TARGET --exclude $DBT_MODELS
+
+➖❗️specify_xl_exclude:
+  <<: *snowflake_dbt_jobs
+  script:
+    - *xl_warehouse
+    - *deps_and_seed
+    - echo $DBT_MODELS
+    - dbt run $CI_PROFILE_TARGET --full-refresh --exclude $DBT_MODELS || true
+    - dbt test $CI_PROFILE_TARGET --exclude $DBT_MODELS || true
+    - dbt run $CI_PROFILE_TARGET --exclude $DBT_MODELS || true
+    - dbt test $CI_PROFILE_TARGET --exclude $DBT_MODELS
+
+➕specify_model:
+  <<: *snowflake_dbt_jobs
+  script:
+    - *deps_and_seed
+    - echo $DBT_MODELS
+    - dbt run $CI_PROFILE_TARGET --full-refresh --models $DBT_MODELS || true
+    - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS || true
+    - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
+    - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
+
+➕❗️specify_xl_model:
+  <<: *snowflake_dbt_jobs
+  script:
+    - *xl_warehouse
+    - *deps_and_seed
+    - echo $DBT_MODELS
+    - dbt run $CI_PROFILE_TARGET --full-refresh --models $DBT_MODELS || true
+    - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS || true
+    - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
+    - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
+
+# dbt tests
+.dbt_misc_jobs: &dbt_misc_jobs
+  <<: *snowflake_dbt_jobs
+  stage: 🛠 dbt Misc
+
+🧠all_tests:
+  <<: *dbt_misc_jobs
+  script:
+    - *deps_and_seed
+    - dbt test $CI_PROFILE_TARGET
+
+💾data_tests:
+  <<: *dbt_misc_jobs
+  script:
+    - *deps_and_seed
+    - dbt test --data $CI_PROFILE_TARGET
+
+🌻freshness:
+  <<: *dbt_misc_jobs
+  script:
+    - *deps_and_seed
+    - dbt source snapshot-freshness $CI_PROFILE_TARGET
+
+🗂schema_tests:
+  <<: *dbt_misc_jobs
+  script:
+    - *deps_and_seed
+    - dbt test --schema $CI_PROFILE_TARGET
+
+📸snapshots:
+  <<: *dbt_misc_jobs
+  script:
+    - *deps_and_seed
+    - echo $snowflake_load_database
+    - dbt snapshot $CI_PROFILE_TARGET
+    
+📝specify_tests:
+  <<: *dbt_misc_jobs
+  script:
+    - *deps_and_seed
+    - echo $DBT_MODELS
+    - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
+
+# ======
+# Periscope Model Check
+# ======
+
+.periscope_check: &periscope_check
+  stage: 🛠 dbt Misc
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  tags:
+    - analytics
   only:
+    changes:
+      - "**/*.sql"
     refs:
-      - master
-    variables:
-      - $SNOWFLAKE_DBT
+      - merge_request
+  allow_failure: true
 
-.dbt_snowflake_full_refresh: &dbt_snowflake
-  <<: *snowflake_dbt_jobs
+🔍periscope_query:
+  <<: *periscope_check
   script:
-    - export CURRENT_DBT_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
-    - dbt deps --profiles-dir profile # install packages
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --full-refresh
-  only:
-    refs:
-      - master
-    variables:
-      - $SNOWFLAKE_DBT_FULL
-
-.dbt_snowflake_archive_script: &dbt_snowflake_archive_script
-  <<: *snowflake_dbt_jobs
-  script:
-    - dbt deps --profiles-dir profile # install packages
-    - dbt archive --profiles-dir profile --target prod # archive tables that snapshot models need
-    - dbt run --profiles-dir profile --target prod --models snapshots # update models that rely on archives
-
-.dbt_snowflake_archive: &dbt_snowflake_archive
-  <<: *dbt_snowflake_archive_script
-  only:
-    refs:
-      - master
-    variables:
-      - $SNOWFLAKE_DBT_ARCHIVE
-
-mr_dbt_archive_manual: &mr_dbt_archive_manual
-  <<: *dbt_snowflake_archive_script
-  only:
-    - branches
-  when: manual
-
-.dbt_snowflake_full_refresh: &dbt_snowflake_full_refresh
-  <<: *snowflake_dbt_jobs
-  script:
-    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
-    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
-    - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target ci #seed data from csv
-    - dbt run --profiles-dir profile --target ci --full-refresh
-  when: manual
-
-mr_dbt_all: &mr_dbt_all
-  <<: *snowflake_dbt_jobs
-  script:
-    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
-    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
-    - python3 macro_name_check.py
-    - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target ci #seed data from csv
-    - dbt run --profiles-dir profile --target ci --full-refresh || true
-    - dbt test --profiles-dir profile --target ci || true
-    - dbt run --profiles-dir profile --target ci || true
-    - dbt test --profiles-dir profile --target ci
-  only:
-    - branches
-  when: manual
-
-mr_dbt_exclude_product: &mr_dbt_exclude_product
-  <<: *snowflake_dbt_jobs
-  script:
-    - python3 macro_name_check.py
-    - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target ci #seed data from csv
-    - dbt run --profiles-dir profile --target ci --full-refresh --exclude tag:product || true
-    - dbt test --profiles-dir profile --target ci --exclude tag:product || true
-    - dbt run --profiles-dir profile --target ci --exclude tag:product || true
-    - dbt test --profiles-dir profile --target ci --exclude tag:product
-  only:
-    - branches
-  when: manual
-
-mr_dbt_exclude_snowplow: &mr_dbt_exclude_snowplow
-  <<: *snowflake_dbt_jobs
-  script:
-    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
-    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
-    - python3 macro_name_check.py
-    - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target ci #seed data from csv
-    - dbt run --profiles-dir profile --target ci --full-refresh --exclude snowplow || true
-    - dbt test --profiles-dir profile --target ci --exclude snowplow || true
-    - dbt run --profiles-dir profile --target ci --exclude snowplow || true
-    - dbt test --profiles-dir profile --target ci --exclude snowplow
-  only:
-    - branches
-  when: manual
-
-mr_dbt_snowplow: &mr_dbt_snowplow
-  <<: *snowflake_dbt_jobs
-  script:
-    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
-    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
-    - python3 macro_name_check.py
-    - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target ci #seed data from csv
-    - dbt run --profiles-dir profile --target ci --full-refresh --models snowplow || true
-    - dbt test --profiles-dir profile --target ci --models snowplow || true
-    - dbt run --profiles-dir profile --target ci --models snowplow || true
-    - dbt test --profiles-dir profile --target ci --models snowplow
-  only:
-    - branches
-  when: manual
-
-prod_dbt_snowplow_full_refresh:
-  <<: *snowflake_dbt_jobs
-  script:
-    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
-    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
-    - python3 macro_name_check.py
-    - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt run --profiles-dir profile --target prod --full-refresh --models snowplow || true
-    - dbt test --profiles-dir profile --target prod --models snowplow
-  only:
-    - master
-  when: manual
-
-mr_dbt_gitlab_dotcom: &mr_dbt_gitlab_dotcom
-  <<: *snowflake_dbt_jobs
-  script:
-    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
-    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
-    - python3 macro_name_check.py
-    - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target ci #seed data from csv
-    - dbt run --profiles-dir profile --target ci --models date_details
-    - dbt run --profiles-dir profile --target ci --full-refresh --models gitlab_dotcom || true
-    - dbt test --profiles-dir profile --target ci --models gitlab_dotcom || true
-    - dbt run --profiles-dir profile --target ci --models gitlab_dotcom || true
-    - dbt test --profiles-dir profile --target ci --models gitlab_dotcom
-  only:
-    - branches
-  when: manual
-
-
-mr_dbt_pings: &mr_dbt_pings
-  <<: *snowflake_dbt_jobs
-  script:
-    - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XL_WAREHOUSE
-    - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
-    - python3 macro_name_check.py
-    - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target ci #seed data from csv
-    - dbt run --profiles-dir profile --target ci --full-refresh --models pings || true
-    - dbt test --profiles-dir profile --target ci --models pings || true
-    - dbt run --profiles-dir profile --target ci --models pings || true
-    - dbt test --profiles-dir profile --target ci --models pings
-  only:
-    - branches
-  when: manual
-
-# Model tests
-mr_dbt_tests_manual:
-  <<: *snowflake_dbt_jobs
-  stage: model_tests
-  script:
-    - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt test --profiles-dir profile --target prod
-  only:
-    - branches
-  when: manual
-
-.dbt_snowflake_tests:
-  <<: *snowflake_dbt_jobs
-  stage: model_tests
-  script:
-    - dbt deps --profiles-dir profile
-    - dbt seed --profiles-dir profile --target prod #seed data from csv
-    - dbt test --profiles-dir profile --target prod
-  only:
-    refs:
-      - master
-    variables:
-      - $SNOWFLAKE_DBT_TESTS
+    - git clone -b periscope/master --single-branch https://gitlab.com/gitlab-data/periscope.git --depth 1
+    - grep -rIiEo "from (analytics|analytics_staging|boneyard)\.([\_A-z]*)" periscope/. | awk -F '.' '{print tolower($NF)}' | sort | uniq > periscope.txt
+    - git diff origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD --name-only | grep -iEo "(.*)\.sql" | sed -E 's/\.sql//' | awk -F '/' '{print tolower($NF)}' | sort | uniq > diff.txt
+    - comm -12 periscope.txt diff.txt > comparison.txt
+    - if (( $(cat comparison.txt | wc -l | tr -d ' ') > 0 )); then echo "Check these!" && cat comparison.txt && exit 1; else echo "All good" && exit 0; fi;

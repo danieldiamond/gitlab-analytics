@@ -1,8 +1,12 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 WITH source AS (
 
     SELECT *
     FROM {{ source('zuora', 'invoiceitem') }}
-
 
 ), renamed AS (
 

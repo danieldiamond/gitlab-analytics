@@ -1,31 +1,37 @@
 {{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
+    "materialized": "incremental",
+    "unique_key": "audit_event_id"
     })
 }}
 
 WITH source AS (
 
-  SELECT *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'audit_events') }}
+  
+  {% if is_incremental() %}
+
+  WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+
+  {% endif %}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
-    SELECT
-      id :: integer            AS audit_event_id,
-      author_id :: integer     AS author_id,
-      type :: varchar          AS audit_event_type,
-      entity_id :: integer     AS entity_id,
-      entity_type ::varchar    AS entity_type,
-      details :: varchar       AS audit_event_details,
-      created_at ::timestamp   AS audit_event_created_at,
-      updated_at ::timestamp   AS audit_event_updated_at
+  SELECT
+    id::INTEGER             AS audit_event_id,
+    author_id::INTEGER      AS author_id,
+    type::VARCHAR           AS audit_event_type,
+    entity_id::INTEGER      AS entity_id,
+    entity_type::VARCHAR    AS entity_type,
+    details::VARCHAR        AS audit_event_details,
+    created_at::TIMESTAMP   AS created_at,
+    updated_at::TIMESTAMP   AS updated_at
 
-    FROM source
-    WHERE rank_in_key = 1
-    ORDER BY audit_event_created_at
+  FROM source
 
 )
 
-SELECT * FROM renamed
+SELECT *
+FROM renamed
+ORDER BY updated_at

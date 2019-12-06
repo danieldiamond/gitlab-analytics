@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: bamboohr_compensation
-    description: A log of compensation and compensation related updates.
+    description: A log of compensation and compensation related updates. We don't pull in the most sensitive compensation-related data, such as salary.
     columns:
       - name: compensation_update_id
         tests:
@@ -51,6 +51,7 @@ models:
             - not_null
       - name: job_title
   - name: bamboohr_employment_status
+    description: This model shows an employee current status. Updates are captured in log-style.
     columns:
       - name: status_id
         tests:
@@ -60,6 +61,7 @@ models:
         tests:
             - not_null
   - name: bamboohr_job_info
+    description: This model shows the details (manager, department, and division) that an employee is in at a given point in time. This includes historical information. 
     columns:
       - name: job_id
         tests:
@@ -75,11 +77,7 @@ models:
         tests:
             - not_null
       - name: department
-        tests:
-            - not_null
       - name: division
-        tests:
-            - not_null
       - name: entity
         tests:
             - not_null

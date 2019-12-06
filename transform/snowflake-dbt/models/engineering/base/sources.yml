@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: engineering
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: engineering_extracts
+    loader: Airflow
+    loaded_at_field: uploaded_at
+    
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    freshness:
+      warn_after: {count: 24, period: hour}
+
+    tables:
+      - name: commit_stats
+      - name: red_master_stats

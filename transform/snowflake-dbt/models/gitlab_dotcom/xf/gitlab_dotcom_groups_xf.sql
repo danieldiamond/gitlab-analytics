@@ -1,26 +1,24 @@
-{{ config({
-    "schema": "analytics"
-    })
-}}
-
 {% set paid_plans = (2, 3, 4) %}
 {% set fields_to_mask = ['group_name', 'group_path'] %}
 
 WITH groups AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_groups')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_groups')}}
 
 ),
 
 members AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_members')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_members')}}
 
 ),
 
 projects AS (
 
-    SELECT * FROM {{ref('gitlab_dotcom_projects')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_projects')}}
 
 ), namespace_lineage AS (
 
@@ -50,8 +48,8 @@ joined AS (
 
       groups.owner_id,
       groups.has_avatar,
-      groups.group_created_at,
-      groups.group_updated_at,
+      groups.created_at                                                 AS group_created_at,
+      groups.updated_at                                                 AS group_updated_at,
       groups.is_membership_locked,
       groups.has_request_access_enabled,
       groups.has_share_with_group_locked,
@@ -63,6 +61,7 @@ joined AS (
       groups.ldap_sync_last_sync_at,
       groups.lfs_enabled,
       groups.parent_group_id,
+      IFF(groups.parent_group_id IS NULL, True, False)                  AS is_top_level_group,
       namespace_lineage.ultimate_parent_id                              AS group_ultimate_parent_id,
       groups.shared_runners_minutes_limit,
       groups.repository_size_limit,

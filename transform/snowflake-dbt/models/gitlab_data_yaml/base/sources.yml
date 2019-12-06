@@ -6,6 +6,11 @@ sources:
     schema: gitlab_data_yaml
     loader: Airflow
     loaded_at_field: uploaded_at
+    
+    quoting:
+      database: true
+      schema: false
+      identifier: false
 
     freshness:
         warn_after: {count: 8, period: hour}

@@ -1,6 +1,6 @@
 project_path,project_id
-gitlab-org/gitlab-ce,13083
-gitlab-org/gitlab-ee,278964
+gitlab-org/gitlab-foss,13083
+gitlab-org/gitlab,278964
 gitlab-org/gitlab-runner,250833
 gitlab-org/gitlab-ui,7071551
 gitlab-org/gitlab-pages,734943
@@ -48,7 +48,7 @@ gitlab-org/security-products/gemnasium/schema,5778074
 gitlab-org/security-products/gemnasium/resolver,5778056
 gitlab-org/security-products/gemnasium/registry-tracker,5778044
 gitlab-org/security-products/gemnasium/registry-syncer,5778037
-gitlab-org/omnibus-gitlabgitlab-org/security-products/gemnasium/pgcli,5777976
+gitlab-org/security-products/gemnasium/pgcli,5777976
 gitlab-org/security-products/gemnasium/package-syncer,5777954
 gitlab-org/security-products/gemnasium/nsqcli,5777952
 gitlab-org/security-products/gemnasium/maven-index-reader,5777939
@@ -86,14 +86,14 @@ gitlab-org/gitter/gitter-android-app,7750843
 gitlab-org/gitter/webapp,3601513
 gitlab-org/quality/staging,7524061
 gitlab-org/quality/triage-ops,7776928
-gitlab-org/design.gitlab.com,4456656
+gitlab-org/gitlab-services/design.gitlab.com,4456656
 gitlab-org/customers-gitlab-com,2670515
 gitlab-com/license-gitlab-com,6457868
 gitlab-com/version-gitlab-com,6491770
-charts/auto-deploy-app,6329546
-security-products/container-scanning,11428501
-security-products/license-management,6130122
-security-products/gemnasium-db,12006272
+gitlab-org/charts/auto-deploy-app,11915984
+gitlab-org/security-products/container-scanning,11428501
+gitlab-org/security-products/license-management,6130122
+gitlab-org/security-products/gemnasium-db,12006272
 gitlab-org/security-products/tests/python-pipenv,11574953
 gitlab-org/security-products/tests/elixir-phoenix,11520423
 gitlab-org/security-products/tests/container-scanning,11432834
@@ -121,11 +121,13 @@ gitlab-org/security-products/tests/js-npm,5457755
 gitlab-org/security-products/tests/java-maven,5457651
 gitlab-org/security-products/tests/js-yarn,5456231
 gitlab-org/cluster-integration/helm-install-image,9184510
-charts/components/gitlab-operator,7686095
-charts/gitlab,3828396
+gitlab-org/cluster-integration/auto-deploy-image,11688089
+gitlab-org/charts/components/gitlab-operator,14240586
+gitlab-org/charts/gitlab,3828396
 gitlab-org/fulfillment,10619765
 gitlab-org/gitlabktl,11080193
 gitlab-org/omnibus-gitlab,20699
+gitlab-org/iglu,14694517
 Dev CE,
 Dev EE,
 Dev Gitaly,

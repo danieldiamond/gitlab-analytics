@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 with source as (
 
 	SELECT * FROM {{ref('zuora_subscription_lineage')}}

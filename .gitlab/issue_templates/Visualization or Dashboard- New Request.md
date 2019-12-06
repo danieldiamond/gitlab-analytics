@@ -6,13 +6,24 @@ This issue is for visualization related issues within our BI tool.
 
 Example: Is there a relationship between the day of the week that deals close and the ability of the account manager to upsell them in the first month? 
 
+##### What is the impact of this question and how will it help the company?
+
+
 #### Please link to where this (or these) performance indicator/s are defined in the handbook. 
 
 Everything needs to be defined in the handbook.
 
+#### Who will be using this data?
+
+Example: SDRs need this to better understand X or VP of Product needs this to do Y
+
 #### What time frames are crucial here? 
 
 Example: I would like to look at performance by month, but at the trends over the last year.
+
+#### Will this deliver business value within 90 days?
+
+If not, consider why you want this data.
 
 #### What is the visualization you are trying to create?
 

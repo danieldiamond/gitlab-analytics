@@ -1,83 +1,37 @@
-{#
--- Netsuite Docs: http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2016_1/schema/record/subsidiary.html
-#}
+{{ config({
+    "materialized": "ephemeral"
+    })
+}}
 
+WITH source AS (
 
+    SELECT *
+    FROM {{ source('netsuite', 'transaction_lines') }}
 
-with base as (
+), renamed AS (
 
-		SELECT *
-		FROM {{ var("database") }}.gcloud_postgres_stitch.netsuite_transaction_lines
+    SELECT
+      {{ dbt_utils.surrogate_key('transaction_id', 'transaction_line_id') }}
+                                    AS transaction_lines_unique_id,
+      --Primary Key
+      transaction_id::FLOAT         AS transaction_id,
+      transaction_line_id::FLOAT    AS transaction_line_id,
 
-), renamed as (
+      --Foreign Keys
+      account_id::FLOAT             AS account_id,
+      department_id::FLOAT          AS department_id,
+      subsidiary_id::FLOAT          AS subsidiary_id,
+      company_id::FLOAT             AS company_id,
 
-		SELECT unique_id as transaction_line_id,
-				transaction_id,
-				line as transaction_line,
-				account_id,
-				account_name,
-				credit as credit_amount,
-				--credit_tax
-				debit as debit_amount,
-				--debit_tax
-				department_id,
-				department_name,
-				entity_id,
-				CASE
-				  WHEN account_name ILIKE '%Contract%'
-					THEN substring(md5(entity_name),16)
-				  ELSE entity_name END AS entity_name,
-				CASE
-				  WHEN account_name ILIKE '%Contract%'
-					THEN substring(md5(memo),16)
-				  ELSE memo END AS memo,
-				--amortization_end_date
-				--amortization_residual
-				--amortization_sched_id
-				--amortization_sched_name
-				--amortiz_start_date
-				--class_id
-				--class_name
-				--due_to_from_subsidiary_id
-				--due_to_from_subsidiary_name
-				--eliminate
-				--end_date
-				gross_amt as gross_amount,
-				line_fx_rate as line_exchange_rate,
-				line_subsidiary_id,
-				line_subsidiary_name
-				--line_tax_code_id
-				--line_tax_code_name
-				--line_tax_rate
-				--line_unit_id
-				--line_unit_name
-				--location_id
-				--location_name
-				--preview_debit
-				--residual
-				--revenue_recognition_rule_id
-				--revenue_recognition_rule_name
-				--schedule_id
-				--schedule_name
-				--schedule_num_id
-				--schedule_num_name
-				--start_date
-				--tax1_acct_id
-				--tax1_acct_name
-				--tax1_amt
-				--tax_account_id
-				--tax_account_name
-				--tax_basis
-				--tax_code_id
-				--tax_code_name
-				--tax_rate1
-				--total_amount
-				--custom_field_list --is json
-    FROM base
+      -- info
+      memo::VARCHAR                 AS memo,
+      receipt_url::VARCHAR          AS receipt_url,
+      amount::FLOAT                 AS amount,
+      gross_amount::FLOAT           AS gross_amount
 
+    FROM source
+    WHERE LOWER(non_posting_line) != 'yes' --removes transactions not intended for posting
 )
 
 SELECT *
 FROM renamed
-
-

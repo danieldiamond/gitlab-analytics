@@ -18,6 +18,9 @@ Example: This is currently by week. I would like to see it by month.
 
 Example: Is there a relationship between the day of the week that deals close and the ability of the account manager to upsell them in the first month? 
 
+#### What is the impact of this question and how will it help the company?
+
+
 #### What time frames are crucial here? 
 
 Example: I would like to look at performance by month, but at the trends over the last year.

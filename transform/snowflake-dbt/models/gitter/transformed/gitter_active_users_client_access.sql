@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 -- Based off of the following references,
 -- https://looker.com/platform/blocks/analytic/daily-weekly-monthly-active-users ->
 -- https://discourse.looker.com/t/analytic-block-daily-weekly-monthly-active-users/1499

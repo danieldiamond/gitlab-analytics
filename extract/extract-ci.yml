@@ -2,70 +2,43 @@
 #
 .job_template: &extract_definition
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  stage: 🚂 Extract
   before_script:
-    - echo $STITCH_CONFIG > stitch_config.json
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
-    - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$CI_PROJECT_DIR/orchestration/:$PYTHONPATH"
     - echo $SNOWFLAKE_DATABASE
     - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_LOAD_DATABASE="RAW"; else export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW"; fi
     - echo $SNOWFLAKE_LOAD_DATABASE
+    - echo $SNOWFLAKE_DATABASE
+    - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
+    - echo $SNOWFLAKE_TRANSFORM_DATABASE
   tags:
     - analytics
 
-.sfdc_extract: &sfdc_extract
-  variables:
-    FIXED_SFDC_PASSWORD: $SFDC_PASSWORD_NOTOKEN
-  stage: extract
+💀boneyard_sheetload:
   <<: *extract_definition
   script:
-    - pip3 install salesforce-bulk # TODO: add me to the container
-    - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc apply_schema"
-    - ci_helpers.py use_proxy "python3 extract/sfdc/src/ --schema sfdc export"
+    - cd extract/sheetload/
+    - python3 sheetload.py sheets --sheet_file boneyard/sheets.txt --schema boneyard --database ANALYTICS
+  only:
+    - merge_requests
+  when: manual
 
-.sheetload_snowflake: &sheetload_snowflake
-  stage: extract
+📜sheetload:
   <<: *extract_definition
   script:
     - cd extract/sheetload/
     - python3 sheetload.py sheets --sheet_file sheets.txt
-
-
-## Production Jobs
-
-sfdc:
-  <<: *sfdc_extract
   only:
-    refs:
-      - master
-    variables:
-      - $SFDC
-
-sheetload_snowflake:
-  stage: extract
-  <<: *sheetload_snowflake
-  only:
-    refs:
-      - master
-    variables:
-      - $SHEETLOAD_SNOWFLAKE
-
-## Review Jobs
-
-sfdc_manual:
-  <<: *sfdc_extract
-  only:
-    - branches
-  except:
-    - master
+    - merge_requests
   when: manual
 
-sheetload_snowflake_manual:
-  stage: extract
-  <<: *sheetload_snowflake
+🛢pgp_test:
+  <<: *extract_definition
+  script:
+    - echo $MANIFEST_NAME
+    - cd extract/postgres_pipeline/postgres_pipeline/
+    - python main.py tap ../manifests/${MANIFEST_NAME}_db_manifest.yaml --load_type test
+  only:
+    - merge_requests
+    - $MANIFEST_NAME
   when: manual
-
-# Stage: test
-
-.test_job_template: &test_job_template
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
-

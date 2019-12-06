@@ -1,23 +1,27 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH source AS (
 
-	SELECT *,
-				ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) as rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'approver_groups') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
-    SELECT
-      id :: integer                   as approver_group_id,
-      target_type,
-      group_id :: integer             as group_id,
-      created_at :: timestamp         as approver_group_created_at,
-      updated_at :: timestamp         as approver_group_updated_at
+  SELECT
+    id::INTEGER                   AS approver_group_id,
+    target_type::VARCHAR          AS target_type,
+    group_id::INTEGER             AS group_id,
+    created_at::TIMESTAMP         AS created_at,
+    updated_at::TIMESTAMP         AS updated_at
 
-    FROM source
-    WHERE rank_in_key = 1
+  FROM source
 
 )
 
 
-SELECT  *
+SELECT *
 FROM renamed

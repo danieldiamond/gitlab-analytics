@@ -1,15 +1,21 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH source AS (
 
-	SELECT DISTINCT user_id, issue_id
+  SELECT DISTINCT
+    user_id,
+    issue_id
   FROM {{ source('gitlab_dotcom', 'issue_assignees') }}
 
 ), renamed AS (
 
     SELECT
-      md5(user_id || issue_id) as user_issue_relation_id,
-      user_id :: integer       as user_id,
-      issue_id :: integer      as issue_id
-
+      md5(user_id || issue_id)::VARCHAR AS user_issue_relation_id,
+      user_id::INTEGER                  AS user_id,
+      issue_id::INTEGER                 AS issue_id
     FROM source
 
 

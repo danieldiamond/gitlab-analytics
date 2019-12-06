@@ -1,33 +1,26 @@
-{{
-  config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter",
-    "materialized": "incremental",
-    "unique_key": "event_id"
+{{config({
+    "materialized":"table",
+    "unique_key":"event_id",
+    "schema":current_date_schema('snowplow')
   })
 }}
 
-WITH gitlab as (
-
-    SELECT *
-    FROM {{ ref('snowplow_gitlab_events') }}
-    {% if is_incremental() %}
-        WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
-    {% endif %}
-
-),
-
-fishtown as (
+WITH fishtown as (
 
     SELECT *
     FROM {{ ref('snowplow_fishtown_unnested_events') }}
-    {% if is_incremental() %}
-       WHERE uploaded_at > (SELECT max(uploaded_at) FROM {{ this }})
-    {% endif %}
 
-),
+), gitlab as (
 
-unioned AS (
+    SELECT *
+    FROM {{ ref('snowplow_gitlab_events') }}
+
+), events_to_ignore as (
+
+    SELECT event_id
+    FROM {{ ref('snowplow_duplicate_events') }}
+
+), unioned AS (
 
     SELECT *
     FROM gitlab
@@ -41,3 +34,4 @@ unioned AS (
 
 SELECT *
 FROM unioned
+WHERE event_id NOT IN (SELECT event_id FROM events_to_ignore)

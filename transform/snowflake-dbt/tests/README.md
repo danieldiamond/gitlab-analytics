@@ -24,6 +24,26 @@ If it's `models/*` this is a `schema test` and is defined in the `schema.yml` fi
 
 ## Schema Tests
 
+###  Relationship Tests
+Relationship tests are a type of schema test that check for referential integrity ([dbt documentation](https://docs.getdbt.com/docs/testing#section-relationships)). The purpose of a relationship test is to "validate that all of the records in a child table have a corresponding record in a parent table."
+
+For example, you might have a (child) table called `merge_requests` with a column called `author_id`. A good relationship test would be to test that every value in `merge_requests.author_id` is present in a different (parent) table called `users`.
+
+When a relationship test fails, the error message will look like:
+```
+Failure in test relationships_childModel_childColumn__parentColumn__parentModel_ (models/../../schema.yml)
+  Got 2 results, expected 0.
+```
+
+Steps to debug:
+1. Confirm the failing test is a real failure by querying the parent table for the missing value(s).
+2. Confirm that the missing records are not being filtered out in a previous dbt model (check the base models).
+3. Try to narrow the problem down. The records are missing from the child table for 1 of 3 reasons:
+i. The data pipeline is broken (Example: Stitch hasn't loaded fresh data in 7 days. Solution: talk to data-eng)
+ii. The data is missing at the source (Example: somebody from sales forgot to fill out a field in Salesforce. Solution: ask sales to fix it)
+iii. The test isn't actually valid (Example: you realize that it's actually okay for the child to reference a parent that doesn't exist. Solution: remove the test)
+
+
 ### Models : `sfdc_users_archived` and `sfdc_account_archived`
 
 The failing tests are the following:
@@ -71,6 +91,13 @@ Failure in test relationships_snowplow_web_events_time_page_view_id__page_view_i
 
 ## Custom Data Tests
 
+### Test: current_depts_and_divs
+
+This test makes sure there are no current employees who don't have a division or department.
+The output is the row for the employee which does not have a department or division.
+If this test fails, ping the People Operations team with the employee's name.
+You will need to temporarily filter out the problematic candidate while it is resolved upstream. 
+
 ### Test: no_missing_location_factors
 
 This test makes sure that new hires have a location factor no later than 7 days after their start date. It is checking to make sure that for all active employees (`AND termination_date IS NULL`) within 7 days of their start date (`AND CURRENT_DATE > dateadd('days', 7, hire_date)`) have a `hire_location_factor` (the location factor on their hire date). When this is not the case, we need to alert the People Operations Analyst with the employee number.
@@ -86,42 +113,28 @@ Failure in test no_missing_location_factors (tests/bamboohr/data_test/no_missing
 ```
 
 Steps to resolve:
-* Step 1: Run the compiled SQL against analytics (below for reference)
-* Step 2: Visually compare the hire date to make sure it has been 7 days,.
-* Step 3: Ping the People Operations Analyst with the employee ID numbers that are missing location factor in #data. (AS of 2019-07-24, that would be Morgan Wilkins.)
-* Step 4: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
-* Step 5: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
+* Step 1: Run the chatops command `/gitlab datachat run missing_location_factor` from Slack to see the test results in Slack.
+* Step 2: Ping the People Operations Analyst with the employee ID numbers that are missing location factor in #data. (AS of 2019-07-24, that would be Morgan Wilkins.)
+* Step 3: Filter out the employee by employee number in the `employee_directory` model and submit your MR for review. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
+* Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
 
-```
-WITH source as (
-
-  SELECT *
-  FROM "ANALYTICS".sensitive.employee_directory
-
-)
-
-SELECT *
-FROM source
-WHERE hire_location_factor IS NULL
-AND termination_date IS NULL
-AND CURRENT_DATE > dateadd('days', 7, hire_date)
-```
-
-### Test: uncategorized_pings
-This test checks that the list of unique ping metrics that we receive, `pings_list`, matches the ping metrics that we have categorized in the static CSV, `ping_metrics_to_stage_mapping_data`. This test will fail when these two sources get out of sync in either direction.
+### Test: uncategorized_version_usage_stats
+This test checks that the list of unique ping metrics that we receive, `version_usage_stats_list`, matches the ping metrics that we have categorized in the static CSV, `version_usage_stats_to_stage_mappings`. This test will fail when these two sources get out of sync in either direction.
 
 Error Example:
 ```
-Database Error in model pings_usage_data_monthly_change_by_stage (models/pings/xf/pings_usage_data_monthly_change_by_stage.sql)
+Database Error in model version_usage_data_monthly_change_by_stage (models/version/xf/version_usage_data_monthly_change_by_stage.sql)
   000904 (42000): 018c7f13-0141-8466-0000-289d05dda8ae: SQL compilation error: error line 397 at position 24
   invalid identifier 'PINGS.OPERATIONS_DASHBOARD_DEFAULT_DASHBOARD_CHANGE'
-  compiled SQL at target/compiled/gitlab_snowflake/pings/xf/pings_usage_data_monthly_change_by_stage.sql
+  compiled SQL at target/compiled/gitlab_snowflake/version/xf/version_usage_data_monthly_change_by_stage.sql
 ```
 
 Steps to Resolve:
 
-* Step 1: Follow the general checklist
-* Step 2: Check that the rows of [ping_metrics_to_stage.csv](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/ping_metrics_to_stage_mapping_data.csv) match the ping names in `analytics_staging.pings_list`. If `pings_list` has more rows than the CSV, the pings data has likely changed and the CSV may need to be updated to reflect that.
+* Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack to see the test results in Slack.
+* Step 2: Create a new issue.
+* Step 3: Ask in the #product slack channel which stage the new metric belongs to.
+* Step 4: Create an MR that adds the new metric to the `version_usage_stats_to_stage_mappings` CSV. Remember to keep it sorted alphabetically. 
 
 ### Test: zuora_account_has_crm_id
 
@@ -136,7 +149,7 @@ Failure in test zuora_account_has_crm_id (tests/data_test/zuora_account_has_crm_
 
 Steps to Resolve:
 
-* Step 1: Follow the general checklist
+* Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack to see the test results in Slack.
 * Step 2: Create an issue in finance asking the account get updated with a salesforce_id. Cross link this to the analytics issue
 * Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
 * Step 4: Filter out the zuora account in the base `zuora_account` model and submit your MR for review
@@ -157,10 +170,9 @@ Steps to Resolve:
 
 * Step 1: Follow the general checklist
 * Step 2: Create an issue in finance asking for the Zuora account and subscription linkages to be reviewed.
-    * If the data on the Zuora end is fine, then bring in Sales people to review Salesforce data.
-* Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
-* Step 4: Filter out the zuora subscription in the test based on the md5 has of the `ultimate_parent_sub` name
-* Step 5: Once finance has confirmed that the accounts and subscriptions have been updated, create a MR to remove the filter
+* Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue.
+* Step 4: Filter out the zuora subscription in the test based on the md5 hash of the subscription name.
+* Step 5: Once finance has confirmed that the accounts and subscriptions have been updated, create a MR to remove the filter.
 
 ### Test: zuora_assert_no_circular_linkages
 

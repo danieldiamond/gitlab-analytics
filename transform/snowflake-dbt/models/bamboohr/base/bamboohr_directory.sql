@@ -25,3 +25,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+WHERE work_email != 't2test@gitlab.com'

@@ -1,22 +1,32 @@
-{#
--- Netsuite Docs: http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2016_1/schema/record/customer.html
-#}
+WITH source AS (
 
-with base as (
+    SELECT *
+    FROM {{ source('netsuite', 'customers') }}
 
-		SELECT *
-		FROM {{ var("database") }}.netsuite_stitch.customer
+), renamed AS (
 
-), renamed as (
+    SELECT
+      --Primary Key
+      customer_id::FLOAT                 AS customer_id,
 
-	SELECT internalid as customer_id,
-		companyname as customer_name,
-       	entityid as entity_name,
-       	balance,
-       	consolbalance as consolidated_balance,
-       	consoloverduebalance as consolidated_balance_days_overdue,
-       	overduebalance
-    FROM base
+      --Foreign Keys
+      subsidiary_id::FLOAT               AS subsidiary_id,
+      currency_id::FLOAT                 AS currency_id,
+      parent_id::FLOAT                   AS parent_id,
+      department_id::FLOAT               AS department_id,
+
+      --Info
+      companyname::VARCHAR               AS customer_name,
+      name::VARCHAR                      AS customer_alt_name,
+      full_name::VARCHAR                 AS customer_full_name,
+      rev_rec_forecast_rule_id::FLOAT    AS rev_rec_forecast_rule_id,
+
+      --deposit_balance_foreign
+      openbalance::FLOAT                 AS customer_balance,
+      days_overdue::FLOAT                AS days_overdue
+
+    FROM source
+    WHERE LOWER(_fivetran_deleted) = 'false'
 
 )
 

@@ -1,3 +1,30 @@
+{% docs gitlab_dotcom_gitlab_issues_requests %}
+
+This model enables product managers to surface which issue has been requested by potential prospects and current customers. The final model creates a table where each row is unique tuple of a `issue_id` and a `sfdc_account_id`.
+
+It extends the models `gitlab_dotcom_notes_linked_to_sfdc_account_id` and `gitlab_dotcom_issues_linked_to_sfdc_account_id` by joining it to SFDC account metadata through the `account_id`. We add then the following metrics:
+
+* `total_tcv`
+* `carr_total`
+* `count_licensed_users`
+
+We also join the model `gitlab_dotcom_notes_linked_to_sfdc_account_id` and `gitlab_dotcom_issues_linked_to_sfdc_account_id` to `gitlab_dotcom_issues`, `gitlab_dotcom_projects` and `gitlab_dotcom_namespaces_xf` to add more metadata about issues, projects and namespaces.
+
+{% enddocs %}
+
+{% docs gitlab_dotcom_internal_notes_xf %}
+
+This model is a subset of `gitlab_dotcom_notes` model which selects only notes coming from projects in Gitlab Namespaces.
+
+It adds a few columns to the base `gitlab_dotcom_notes` model:
+
+* `project_name`
+* `namespace_id`
+* `namespace_name`
+* `namespace_type`
+
+{% enddocs %}
+
 {% docs gitlab_dotcom_group_audit_events_monthly%}
 
 This model provides a summary of the audit_events table at the granularity of one row per group per month.
@@ -42,6 +69,16 @@ It also adds 2 columns based on subscription inheritance (as described [here](ht
 
 {% enddocs %}
 
+
+{% docs gitlab_dotcom_events_monthly_active_users%}
+
+For each day, this model counts the number of active users from the previous 28 days. The definiton of an active user is completing one or more audit events within the timeframe. This model includes the referenced date as part of the 28-day window. So for example, the window on January 31th would be from the start of January 4th to the end of January 31 (inclusive).  
+
+This model includes one row for every day, but MAU for a given month will typically be reported as the MAU on the **last day of the month**.
+
+{% enddocs %}
+
+
 {% docs gitlab_dotcom_merge_requests_xf%}
 
 Adds associated labels for Merge Requests when these exist.
@@ -66,7 +103,7 @@ In order to achieve this we will build a CTE from the project table that contain
 
 {% docs gitlab_dotcom_namespaces_xf %}
 
-Includes all columns from the namespaces base model.
+Includes all columns from the namespaces base model. Note that `namespaces.plan_id` is overridden by the `plan_id` from the `gitlab_subscriptions` model.
 Adds the count of members and projects associated with the namespace.
 Also adds boolean column `namespaces_plan_is_paid` to provide extra context.
 
@@ -95,7 +132,10 @@ The final result is determined by merging the `cohorting` table to itself when a
 
 
 {% docs gitlab_dotcom_users_xf%}
-Adds account age cohorts to the users table, the defined cohorts are:
+This model extends the base model `gitlab_dotcom_users` and adds several other dimensions
+
+### Age cohorts
+This model adds account age cohorts to the users table, the defined cohorts are:
 
 1-  1 day or less  
 2-  2 to 7 days  
@@ -106,7 +146,34 @@ Adds account age cohorts to the users table, the defined cohorts are:
 
 The CTE does this by comparing the time of the dbt run with `created_at` in the users table.
 
-Also a definition is made for account activity time, by comparing `created_at` with `last_activity_on`
+### Highest inherited subscription
+
+This model documents the highest subscription a user inherits from. Rules around inheritance are a bit complicated, as stated in the handbook [here](https://about.gitlab.com/handbook/marketing/product-marketing/enablement/dotcom-subscriptions/#common-misconceptions),
+
+>>>
+Reality: GitLab.com subscriptions are scoped to a namespace, and individual users could participate in many groups with different subscription types. For example, they might have personal projects on a Free subscription type, participate in an open-source project that has Gold features (because it's public) while their company has a Silver subscription.
+>>>
+
+A user inherits from a subscription when:
+* They are a member of a group/sub-group that has a paid subscription.
+* They are a member of a project which belongs to a group with a paid subscription
+* They have a personal subscription attached to their personal namespace.
+
+Some gotchas:
+* If a user is part of a public open-source (or edu) group/project, they will not inherit from the Gold subscription of the group/project.
+* If a user is part of a project created by another user's personal namespace, they won't inherit from the owner's namespace subscription.
+
+We then know for each user: what's the highest plan they inherit from and where they inherit it from.
+
+If a user inherits from 2+ subscriptions with the same plan, we choose one subscription over the other based on the inheritance source: First, user, then groups, then projects.
+
+### Subscription Portal (customers.gitlab.com) data 
+
+This model surfaces also if a user has created an account or not in the subscription portal by joining with the `customers_db_customers` table. It also informs us if a specific user has already started a trial and if so when. 
+
+### Misc
+
+A `days_active` column is added by comparing `created_at` with `last_activity_on`
 
 {% enddocs %}
 

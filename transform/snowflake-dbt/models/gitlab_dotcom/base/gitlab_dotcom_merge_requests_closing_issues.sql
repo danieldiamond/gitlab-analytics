@@ -1,20 +1,24 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH source AS (
 
-	SELECT *,
-				ROW_NUMBER() OVER (PARTITION BY merge_request_id ORDER BY UPDATED_AT DESC) as rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'merge_requests_closing_issues') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
-    SELECT
-      DISTINCT md5(merge_request_id || issue_id || created_at)    as merge_request_issue_relation_id,
-      merge_request_id :: integer                                 as merge_request_id,
-      issue_id :: integer                                         as issue_id,
-      created_at :: timestamp                                     as merge_request_closing_issue_created_at,
-      updated_at :: timestamp                                     as merge_request_closing_issue_updated_at
+    SELECT DISTINCT 
+      id::INTEGER                AS merge_request_issue_relation_id,
+      merge_request_id::INTEGER  AS merge_request_id,
+      issue_id::INTEGER          AS issue_id,
+      created_at::TIMESTAMP      AS created_at,
+      updated_at::TIMESTAMP      AS updated_at
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

@@ -1,0 +1,58 @@
+version: 2
+
+sources:
+  - name: license
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: tap_postgres
+    loader: Airflow
+
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    tables:
+      - name: add_ons
+        identifier: license_db_add_ons
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null
+
+      - name: granted_add_ons
+        identifier: license_db_granted_add_ons
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: license_id
+            tests:
+              - not_null
+          - name: add_on_id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null
+
+      - name: licenses
+        identifier: license_db_licenses
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null

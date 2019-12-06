@@ -1,202 +1,152 @@
-# Globals defined at the bottom of the file
+# ======
+# Globals
+# ======
 
-# Job Templates
+variables:
+  PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
+  SNOWFLAKE_DATABASE: "$CI_COMMIT_REF_NAME"
 
-.job_template: &job_definition
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
-  before_script:
-    - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
-    - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
-    - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_LOAD_DATABASE="RAW"; else export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW"; fi
-    - echo $SNOWFLAKE_LOAD_DATABASE
-    - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
-    - echo $SNOWFLAKE_TRANSFORM_DATABASE
-  tags:
-    - analytics
-
-# ---------------------------------------------------------------------------
-
-# Stages
-# Note some jobs come from global 'include' statements
+# ======
+# CI Stages
+# ======
 stages:
-  - review
-  - extract # extract/extract-ci.yml
-  - model #  transform/snowflake-dbt/snowflake-dbt-ci.yml
-  - model_tests #  transform/snowflake-dbt/snowflake-dbt-ci.yml
-  - update
-  - publish # for dbt docs
-  - review_stop
+  - ❄️ Snowflake
+  - 🚂 Extract   # extract/extract-ci.yml
+  - ⚙️ dbt Run   # transform/snowflake-dbt/snowflake-dbt-ci.yml
+  - 🛠 dbt Misc  # transform/snowflake-dbt/snowflake-dbt-ci.yml
+  - 📚 dbt Docs
+  - 🐍 Python
+  - 🛑 Snowflake Stop
 
 include:
   - "extract/extract-ci.yml"
   - "transform/snowflake-dbt/snowflake-dbt-ci.yml"
 
-# Stage: review
 
-# Job that tests if the repo is linted
-python_linting: &python_linting
-  stage: review
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
-  tags:
-    - analytics
-  script:
-    - pip install black
-    - black --check .
-  except:
-    changes:
-      - "**/*.md"
-      - LICENSE
-      - CODEOWNERS
-      - .gitlab/*
-  only:
-    - branches
+# ======
+# Snowflake Database Clones
+# ======
 
-python_checking: &python_checking
-  stage: review
+# Template for cloning databases in Snowflake for use in MRs
+.snowflake_clone_template: &snowflake_clone_template
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
-  tags:
-    - analytics
-  script:
-    - pylint ../analytics/ --ignore=dags --disable=C --disable=W1203 --disable=W1202 --reports=y --exit-zero
-  except:
-    changes:
-      - "**/*.md"
-      - LICENSE
-      - CODEOWNERS
-      - .gitlab/* 
-  only:
-    - branches
-
-python_complexity: &python_complexity
-  stage: review
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
-  tags:
-    - analytics
-  script:
-    -  xenon --max-absolute B --max-modules A --max-average A . -i transform,shared_modules
-  except:
-    changes:
-      - "**/*.md"
-      - LICENSE
-      - CODEOWNERS
-      - .gitlab/*
-  only:
-    - branches
-
-# Set up a new instance in CloudSQL for testing in MRs
-cloudsql_review: &cloudsql_review
-  stage: review
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
-  variables:
-    GIT_STRATEGY: clone
   tags:
     - analytics
   before_script:
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
-    - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
-  script:
-    - ci_helpers.py manage_instances
-  environment:
-    name: review/$CI_COMMIT_REF_NAME
-    on_stop: review_stop
-  only:
-    - branches
-  when: manual
-
-# Force the re-creation of the CloudSQL instance for testing in MRs
-cloudsql_review_refresh:
-  <<: *cloudsql_review
-  variables:
-    FORCE: "true"
-  when: manual
-
-# Clone the ANALYTICS database in Snowflake for use in MRs
-snowflake_review_analytics: &snowflake_review_analytics
-  stage: review
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
-  variables:
-    GIT_STRATEGY: clone
-  tags:
-    - analytics
-  before_script:
-    - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
-    - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
-  script:
-    - manage_snowflake.py manage_clones --database analytics
-  environment:
-    name: review/$CI_COMMIT_REF_NAME
-    on_stop: review_stop
   only:
     refs:
-      - branches
+      - merge_requests
     variables:
       - $SNOWFLAKE_SYSADMIN_ROLE
       - $SNOWFLAKE_LOAD_WAREHOUSE
       - $SNOWFLAKE_LOAD_DATABASE       # make sure the guard works
       - $SNOWFLAKE_TRANSFORM_DATABASE  # make sure the guard works
   except:
-    changes:
-      - "**/*.md"
-      - LICENSE
-      - CODEOWNERS
-      - .gitlab/*
     refs:
       - master
     variables:
       - $SNOWFLAKE_DATABASE == $SNOWFLAKE_LOAD_DATABASE
       - $SNOWFLAKE_DATABASE == $SNOWFLAKE_TRANSFORM_DATABASE
       - $TEST_PIPELINE
+  when: manual  
 
-snowflake_review_raw:
-  <<: *snowflake_review_analytics
+.snowflake_start_clone: &snowflake_start_clone
+  <<: *snowflake_clone_template
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    on_stop: clone_stop
+  stage: ❄️ Snowflake
+  variables:
+    GIT_STRATEGY: clone
+
+# Clone Jobs
+📈clone_analytics:
+  <<: *snowflake_start_clone
   script:
-    - manage_snowflake.py manage_clones --database raw
-  when: manual
+    - manage_snowflake.py manage_clones --database analytics --empty
+  when: always
 
-# Force re-clone the ANALYTICS and RAW databases in Snowflake for use in MRs
-snowflake_review_refresh:
-  <<: *snowflake_review_analytics
+📈❗️clone_analytics_real:
+  <<: *snowflake_start_clone
   script:
     - manage_snowflake.py manage_clones --force --database analytics
-    - manage_snowflake.py manage_clones --force --database raw
-  when: manual
 
-# Stage: update
-
-# Semi-deprecated job that does a manual, full copy of the SFDC opportunity and account tables
-sfdc_snapshot: &sfdc_snapshot
-  stage: update
-  <<: *job_definition
+🥩clone_raw:
+  <<: *snowflake_start_clone
   script:
-    - ci_helpers.py use_proxy "python3 extract/util/snapshot_opportunity.py"
-    - ci_helpers.py use_proxy "python3 extract/util/snapshot_account.py"
-  only:
-    refs:
-      - master
-    variables:
-      - $SFDC_SNAPSHOT
+    - manage_snowflake.py manage_clones --database raw
 
-# Manual version of sfdc_snapshot
-sfdc_snapshot_manual:
-  stage: update
-  <<: *sfdc_snapshot
+👥force_clone_both:
+  <<: *snowflake_start_clone
+  script:
+    - manage_snowflake.py manage_clones --force --database analytics --empty
+    - manage_snowflake.py manage_clones --force --database raw
+
+clone_stop:
+  <<: *snowflake_clone_template
+  stage: 🛑 Snowflake Stop
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - git clone $CI_REPOSITORY_URL
+    - analytics/orchestration/manage_snowflake.py delete_clones
+
+
+# ======
+# Python Code Checks
+# ======
+
+.python_check: &python_check
+  stage: 🐍 Python
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  tags:
+    - analytics
   only:
+    changes:
+      - "**/*.py"
     refs:
-      - branches
+      - merge_requests
+  allow_failure: true
+
+python_black:
+  <<: *python_check
+  script:
+    - pip install black
+    - black --check .
+
+python_mypy:
+  <<: *python_check
+  script:
+    - pip install mypy
+    - mypy extract/ --ignore-missing-imports
+
+python_pylint:
+  <<: *python_check
+  script:
+    - pylint ../analytics/ --ignore=dags --disable=C --disable=W1203 --disable=W1202 --reports=y --exit-zero
   when: manual
 
-# Stage: publish
+python_complexity:
+  <<: *python_check
+  script:
+    -  xenon --max-absolute B --max-modules A --max-average A . -i transform,shared_modules
+
+python_pytest:
+  <<: *python_check
+  script:
+    - pytest -vv -x --ignore=dags
+
 
 # ======
-# Pages
+# dbt docs to GitLab Pages
 # ======
 
-# Define some variables for use in other Pages jobs
-
-
-# Job template for use in the Pages publishing jobs
 .pages_job_template: &pages_job_template
-  stage: publish
+  stage: 📚 dbt Docs
   image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
   variables:
     SNOWFLAKE_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
@@ -204,20 +154,24 @@ sfdc_snapshot_manual:
     SNOWFLAKE_DATABASE: $SNOWFLAKE_TRANSFORM_DATABASE
   before_script:
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
-    - export PYTHONPATH="$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
   script:
     - echo "SNOWFLAKE_DATABASE = $SNOWFLAKE_TRANSFORM_DATABASE"
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
-    - dbt deps --profiles-dir profile
+    - dbt deps --profiles-dir profile --target prod
     - dbt docs generate --profiles-dir profile --target prod
     - mkdir -p $CI_PROJECT_DIR/public/dbt/snowflake
     - cd target
-    - cp *.json *.html graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
-  artifacts:
-    paths:
-    - public
+    - cp *.json graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
+    - cd $CI_PROJECT_DIR/transform/snowflake-dbt/docs/
+    - cp index.html gitlab.css $CI_PROJECT_DIR/public/dbt/snowflake/
   tags:
     - analytics
+  artifacts:
+    name: "dbt Docs Files"
+    paths:
+      - public
+    expire_in: 1 week
+
 
 # Run the script to generate the dbt docs and stand them up in gitlab pages
 pages:
@@ -227,52 +181,3 @@ pages:
       - master
     variables:
       - $DEPLOY_DBT_PAGES
-
-
-
-# Stage: review_stop
-
-# Delete the Snowflake cloned database used for MRs
-review_stop:
-  stage: review_stop
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - git clone $CI_REPOSITORY_URL
-    - analytics/orchestration/manage_snowflake.py delete_clones
-  when: manual
-  only:
-    refs:
-      - branches
-    variables:
-      - $SNOWFLAKE_SYSADMIN_ROLE
-      - $SNOWFLAKE_LOAD_WAREHOUSE
-      - $SNOWFLAKE_LOAD_DATABASE       # make sure the guard works
-      - $SNOWFLAKE_TRANSFORM_DATABASE  # make sure the guard works
-  except:
-    changes:
-      - "**/*.md"
-      - LICENSE
-      - CODEOWNERS
-      - .gitlab/*
-    refs:
-      - master
-    variables:
-      - $SNOWFLAKE_DATABASE == $SNOWFLAKE_LOAD_DATABASE
-      - $SNOWFLAKE_DATABASE == $SNOWFLAKE_TRANSFORM_DATABASE
-  environment:
-    name: review/$CI_COMMIT_REF_NAME
-    action: stop
-  tags:
-    - housekeeping
-
-#--------------------------------------------------------------------------
-
-# Global definitions
-
-# Global variables
-variables:
-  PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
-  SNOWFLAKE_DATABASE: "$CI_COMMIT_REF_NAME"
-

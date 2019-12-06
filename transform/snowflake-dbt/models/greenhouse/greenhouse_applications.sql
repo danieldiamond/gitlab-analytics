@@ -3,6 +3,7 @@
     })
 }}
 
+
 WITH source as (
 
 	SELECT *
@@ -10,7 +11,7 @@ WITH source as (
 
 ), renamed as (
 
-	SELECT  id 						AS application_id,
+	SELECT  id 						        AS application_id,
 
 			--keys
 		    candidate_id,
@@ -24,7 +25,7 @@ WITH source as (
 		    converted_prospect_application_id,
 
 		    --info
-		    status 					AS application_status,
+		    status 					        AS application_status,
 		    prospect,
 
 		    pipeline_percent,

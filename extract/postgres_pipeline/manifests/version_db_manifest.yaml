@@ -1,0 +1,272 @@
+connection_info:
+  user: VERSION_DB_USER
+  pass: VERSION_DB_PASS
+  host: VERSION_DB_HOST
+  database: VERSION_DB_NAME
+  port: PG_PORT
+tables:
+  usage_data:
+    import_db: VERSION_DB
+    import_query: >
+      SELECT id
+      , source_ip
+      , version
+      , active_user_count
+      , license_md5
+      , historical_max_users
+      , licensee
+      , license_user_count
+      , CASE WHEN license_starts_at < '1970-01-01' THEN '1970-01-01' ELSE license_starts_at END AS license_starts_at
+      , CASE WHEN license_expires_at > '2262-01-01' THEN '2262-01-01' ELSE license_expires_at END AS license_expires_at
+      , license_add_ons
+      , license_restricted_user_count
+      , recorded_at
+      , created_at
+      , updated_at
+      , counts
+      , license_id
+      , stats
+      , mattermost_enabled
+      , uuid
+      , edition
+      , hostname
+      , host_id
+      , license_trial
+      , source_license_id
+      , installation_type
+      , license_plan
+      , database_adapter
+      , database_version
+      , git_version
+      , gitlab_pages_enabled
+      , gitlab_pages_version
+      , container_registry_enabled
+      , elasticsearch_enabled
+      , geo_enabled
+      , gitlab_shared_runners_enabled
+      , gravatar_enabled
+      , ldap_enabled
+      , omniauth_enabled
+      , reply_by_email_enabled
+      , signup_enabled
+      , web_ide_commits
+      , influxdb_metrics_enabled
+      , prometheus_metrics_enabled
+      , smau
+      , usage_activity_by_stage
+      , gitaly_version
+      , gitaly_servers
+      , gitaly_filesystems::VARCHAR
+      FROM usage_data
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'version'
+    export_table: 'usage_data'
+    export_table_primary_key: id
+  conversational_development_indices:
+    import_db: VERSION_DB
+    import_query: >
+      SELECT
+      id,
+      usage_data_id,
+      leader_boards,
+      instance_boards,
+      leader_ci_pipelines,
+      instance_ci_pipelines,
+      leader_deployments,
+      instance_deployments,
+      leader_environments,
+      instance_environments,
+      leader_issues,
+      instance_issues,
+      leader_merge_requests,
+      instance_merge_requests,
+      leader_milestones,
+      instance_milestones,
+      leader_notes,
+      instance_notes,
+      leader_projects_prometheus_active,
+      instance_projects_prometheus_active,
+      leader_service_desk_issues,
+      instance_service_desk_issues,
+      created_at,
+      updated_at,
+      percentage_boards,
+      percentage_ci_pipelines,
+      percentage_deployments,
+      percentage_environments,
+      percentage_issues,
+      percentage_merge_requests,
+      percentage_milestones,
+      percentage_notes,
+      percentage_projects_prometheus_active,
+      percentage_service_desk_issues
+      FROM conversational_development_indices
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'version'
+    export_table: 'conversational_development_indices'
+    export_table_primary_key: id
+  fortune_companies:
+    import_db: VERSION_DB
+    import_query: >
+      SELECT
+      id,
+      rank,
+      company,
+      domain,
+      created_at,
+      updated_at
+      FROM fortune_companies
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'version'
+    export_table: 'fortune_companies'
+    export_table_primary_key: id
+  hosts:
+    import_db: VERSION_DB
+    import_query: >
+      SELECT
+      id,
+      url,
+      created_at,
+      updated_at,
+      star,
+      fortune_rank,
+      in_salesforce,
+      current_usage_data_id,
+      current_version_check_id
+      FROM hosts
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'version'
+    export_table: 'hosts'
+    export_table_primary_key: id
+  licenses:
+    import_db: VERSION_DB
+    import_query: >
+      SELECT
+      id,
+      company,
+      user_count,
+      add_ons,
+      md5,
+      starts_on,
+      expires_on,
+      created_at,
+      updated_at,
+      active_users_count,
+      historical_max_users_count,
+      last_ping_received_at,
+      version
+      FROM licenses
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'version'
+    export_table: 'licenses'
+    export_table_primary_key: id
+  schema_migrations:
+    import_db: VERSION_DB
+    import_query: >
+      SELECT version
+      FROM schema_migrations
+    export_db: EXPORT_DB
+    export_schema: 'version'
+    export_table: 'schema_migrations'
+    export_table_primary_key: version
+  users:
+    import_db: VERSION_DB
+    import_query: >
+      SELECT
+      id,
+      email,
+      sign_in_count,
+      current_sign_in_at,
+      last_sign_in_at,
+      current_sign_in_ip,
+      last_sign_in_ip,
+      failed_attempts,
+      locked_at,
+      created_at,
+      updated_at,
+      provider,
+      uid
+      FROM users
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'version'
+    export_table: 'users'
+    export_table_primary_key: id
+  version_checks:
+    import_db: VERSION_DB
+    import_query: >
+      SELECT
+      id,
+      request_data,
+      created_at,
+      updated_at,
+      gitlab_version,
+      referer_url,
+      host_id
+      FROM version_checks
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'version'
+    export_table: 'version_checks'
+    export_table_primary_key: id
+  versions:
+    import_db: VERSION_DB
+    import_query: >
+      SELECT
+      id,
+      version,
+      vulnerable,
+      created_at,
+      updated_at
+      FROM versions
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{DAYS} day'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_db: EXPORT_DB
+    export_schema: 'version'
+    export_table: 'versions'
+    export_table_primary_key: id
+  avg_cycle_analytics:
+    import_db: VERSION_DB
+    import_query: >
+      SELECT
+      id,
+      usage_data_id,
+      total,
+      issue_average,
+      issue_sd,
+      issue_missing,
+      plan_average,
+      plan_sd,
+      plan_missing,
+      code_average,
+      code_sd,
+      code_missing,
+      test_average,
+      test_sd,
+      test_missing,
+      review_average,
+      review_sd,
+      review_missing,
+      staging_average,
+      staging_sd,
+      staging_missing,
+      production_average,
+      production_sd,
+      production_missing
+      FROM avg_cycle_analytics
+    export_db: EXPORT_DB
+    export_schema: 'version'
+    export_table: 'avg_cycle_analytics'
+    export_table_primary_key: id

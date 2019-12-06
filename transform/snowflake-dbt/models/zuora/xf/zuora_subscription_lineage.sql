@@ -1,3 +1,8 @@
+{{config({
+    "schema": "staging"
+  })
+}}
+
 WITH RECURSIVE
 
 flattening AS (

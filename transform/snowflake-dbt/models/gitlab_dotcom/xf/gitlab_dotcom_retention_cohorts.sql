@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "staging"
+    })
+}}
+
 WITH users AS (
 
   SELECT *
@@ -6,8 +11,8 @@ WITH users AS (
 ), cohorting AS (
 
   SELECT user_id,
-         user_created_at :: date                                        AS cohort_date,
-         TIMESTAMPDIFF(MONTHS,user_created_at,last_activity_on)         AS period
+         created_at::DATE                                               AS cohort_date,
+         TIMESTAMPDIFF(MONTHS, created_at,last_activity_on)         AS period
   FROM users
 
 ), joined AS (
@@ -29,6 +34,7 @@ WITH users AS (
 
 )
 
-SELECT md5(cohort_date || period)                                       AS cohort_key,
-       *
+SELECT
+  md5(cohort_date || period)                                       AS cohort_key,
+  *
 FROM joined

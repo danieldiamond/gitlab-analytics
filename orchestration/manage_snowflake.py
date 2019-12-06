@@ -41,7 +41,7 @@ class SnowflakeManager:
 
         # Queries for database cloning and permissions
         check_db_exists_query = """use database "{0}";"""
-        create_query = """create or replace database "{0}" clone {1};"""
+        create_query = """create or replace database "{0}" {1};"""
         grant_query = """grant ownership on database "{0}" to TRANSFORMER;"""
         grant_roles_loader = (
             """grant create schema, usage on database "{0}" to LOADER"""
@@ -61,13 +61,18 @@ class SnowflakeManager:
 
         return queries
 
-    def manage_clones(self, database: str, force: bool = False) -> None:
+    def manage_clones(
+        self, database: str, empty: bool = False, force: bool = False
+    ) -> None:
         """
         Manage zero copy clones in Snowflake.
         """
 
-        clone_db = {"analytics": self.analytics_database, "raw": self.raw_database}
-        queries = self.generate_db_queries(clone_db[database], database)
+        databases = {"analytics": self.analytics_database, "raw": self.raw_database}
+
+        create_db = databases[database]
+        clone_db = f"clone {database}" if not empty else ""
+        queries = self.generate_db_queries(create_db, clone_db)
 
         # if force is false, check if the database exists
         if force:

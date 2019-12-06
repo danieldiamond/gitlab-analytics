@@ -12,16 +12,16 @@ WITH months AS (
       first_day_of_month AS skeleton_month
 
     FROM {{ ref('date_details') }}
-    WHERE first_day_of_month < CURRENT_DATE
+    WHERE first_day_of_month < DATE_TRUNC('month', CURRENT_DATE)
 
 ), users AS (
 
     SELECT
       user_id,
-      DATE_TRUNC(month, user_created_at) AS user_created_at_month
+      DATE_TRUNC(month, created_at) AS user_created_at_month
 
     FROM {{ ref('gitlab_dotcom_users') }}
-    WHERE user_created_at < date_trunc('month', CURRENT_DATE)::DATE
+    WHERE created_at < date_trunc('month', CURRENT_DATE)::DATE
 
 ), skeleton AS ( -- Create a framework of one row per user per month (after their creation date)
 

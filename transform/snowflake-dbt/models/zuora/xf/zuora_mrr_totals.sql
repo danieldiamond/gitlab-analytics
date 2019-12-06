@@ -1,4 +1,9 @@
-WITH base_mrr AS ( 
+{{config({
+    "schema": "staging"
+  })
+}}
+
+WITH base_mrr AS (
 
     SELECT * FROM {{ ref('zuora_base_mrr_amortized') }}
 
@@ -8,7 +13,9 @@ WITH base_mrr AS (
 
 ), mrr_combined AS ( --union the two tables
 
-    SELECT account_number,
+    SELECT
+          country,
+          account_number,
           subscription_name_slugify,
           subscription_name,
           oldest_subscription_in_cohort,
@@ -18,13 +25,19 @@ WITH base_mrr AS (
           cohort_quarter  AS zuora_subscription_cohort_quarter,
           mrr,
           'Trueup'        AS product_category,
+          'Other'         AS delivery,
+          charge_name     AS rate_plan_name,
+          CASE WHEN lower(rate_plan_name) like '%support%' THEN 'Support Only'
+            ELSE 'Full Service'
+          END             AS service_type,
           null            AS unit_of_measure,
           null            AS quantity
     FROM trueup_mrr
 
     UNION ALL
 
-    SELECT account_number,
+    SELECT country,
+          account_number,
           subscription_name_slugify,
           subscription_name,
           oldest_subscription_in_cohort,
@@ -34,6 +47,11 @@ WITH base_mrr AS (
           cohort_quarter  AS zuora_subscription_cohort_quarter,
           mrr,
           product_category,
+          delivery,
+          rate_plan_name,
+          CASE WHEN lower(rate_plan_name) like '%support%' THEN 'Support Only'
+            ELSE 'Full Service'
+          END             AS service_type,
           unit_of_measure,
           quantity
     FROM base_mrr
@@ -41,6 +59,7 @@ WITH base_mrr AS (
 ), uniqueified as ( -- one row per sub slug for counting x product_category x mrr_month combo, with first of other values
 
     SELECT {{ dbt_utils.surrogate_key('mrr_month', 'subscription_name_slugify', 'product_category', 'unit_of_measure') }} AS primary_key,
+          country,
           account_number,
           subscription_name_slugify,
           subscription_name,
@@ -50,11 +69,14 @@ WITH base_mrr AS (
           zuora_subscription_cohort_month,
           zuora_subscription_cohort_quarter,
           product_category,
+          delivery,
           unit_of_measure,
-          sum(quantity)   AS quantity,
-          sum(mrr)        AS mrr
+          service_type,
+          array_agg(rate_plan_name) AS rate_plan_name,
+          sum(quantity)             AS quantity,
+          sum(mrr)                  AS mrr
     FROM mrr_combined
-    {{ dbt_utils.group_by(n=11) }}
+    {{ dbt_utils.group_by(n=14) }}
 
 )
 

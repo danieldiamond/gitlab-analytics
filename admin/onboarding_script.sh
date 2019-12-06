@@ -13,6 +13,14 @@ echo "Installing git.."
 brew install git
 echo "git successfully installed"
 
+## install docker and co
+echo "Installing docker.."
+brew cask install docker 
+brew install docker-compose docker-machine xhyve docker-machine-driver-xhyve
+sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+echo "docker successfully installed"
+
 ## install git completion
 echo "Installing git completion.."
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > ~/.git-completion.bash
@@ -60,8 +68,8 @@ echo '.DS_Store' >> ~/.gitignore
 echo '.idea' >> ~/.gitignore
 echo "Global gitignore created"
 
-## install the repo
-echo "Installing the analytics repo.."
+## install the project
+echo "Installing the analytics project.."
 mkdir ~/repos/
 cd ~/repos/
 git clone git@gitlab.com:gitlab-data/analytics.git
@@ -106,8 +114,9 @@ echo "anaconda installed succesfully"
 
 echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.bash_profile
 echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.bash_profile
+echo "export DBT_PROFILE_PATH=~/.dbt/profiles.yml" >> ~/.bash_profile
 echo "source ~/.bashrc" >> ~/.bash_profile
 echo "source ~/.bashrc"
 echo "source ~/.bash_profile"
 
-echo "Onboarding script run successfully"
+echo "Onboarding script ran successfully"

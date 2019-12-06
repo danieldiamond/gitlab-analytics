@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
 -- this can't be an incremental model because of the day_range calculation
 WITH zuora_invoice_base AS (
 

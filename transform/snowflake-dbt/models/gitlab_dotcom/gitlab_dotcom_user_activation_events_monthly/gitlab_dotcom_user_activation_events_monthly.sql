@@ -1,9 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
 WITH unioned AS (
 
     {{ dbt_utils.union_tables(tables=[ ref('gitlab_dotcom_user_issue_created_monthly'),

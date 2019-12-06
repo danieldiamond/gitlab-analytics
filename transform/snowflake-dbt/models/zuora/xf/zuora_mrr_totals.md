@@ -1,3 +1,7 @@
+{% docs zuora_mrr_totals_col_country %}
+Zuora Sold To Country
+{% enddocs %}
+
 {% docs zuora_mrr_totals_col_account_number %}
 Zuora account number
 {% enddocs %}

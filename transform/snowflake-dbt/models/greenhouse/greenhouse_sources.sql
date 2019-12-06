@@ -10,12 +10,12 @@ WITH source as (
 
 ), renamed as (
 
-	SELECT id 					AS source_id,
+	SELECT id 									AS source_id,
 
 		--keys
 	    organization_id,
-	    name 					AS source_name,
-	    type 					AS source_type,
+	    name 										AS source_name,
+	    type 										AS source_type,
 
 	    created_at::timestamp 	AS created_at,
 	    updated_at::timestamp 	AS updated_at

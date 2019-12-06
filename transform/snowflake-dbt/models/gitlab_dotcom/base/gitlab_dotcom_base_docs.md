@@ -24,6 +24,12 @@ Base model for Gitlab.com gitlab_subscriptions. These are the plan subscriptions
 
 {% enddocs %}
 
+{% docs gitlab_dotcom_events %}
+
+Base model for Gitlab.com events. Events are documented [here](https://docs.gitlab.com/ee/api/events.html).
+We do one transformation in this base model where we map an `action_type_id` to an `action_type` thanks to the macro `action_type`.
+
+{% enddocs %}
 
 {% docs visibility_documentation %}
 This content will be masked for privacy in one of the following conditions:
@@ -35,5 +41,13 @@ This content will be masked for privacy in one of the following conditions:
    * 6543: gitlab-com
    * 9970: gitlab-org
    * 4347861: gitlab-data  
+
+{% enddocs %}
+
+{% docs gitlab_dotcom_resource_label_events %}
+
+Base model for Gitlab.com resource label events. Explanation [here](https://docs.gitlab.com/ee/api/resource_label_events.html). 
+
+We map the `action_type_id` column to an `action_type` using the macro `resource_label_action_type`
 
 {% enddocs %}

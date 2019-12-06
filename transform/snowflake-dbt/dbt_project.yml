@@ -1,178 +1,170 @@
+# ======
+# Project Details
+# ======
 name: 'gitlab_snowflake'
 version: '1.0'
-
 profile: 'gitlab-snowflake'
 
+# ======
+# File Path Configs
+# ======
 source-paths: ["models"]
 test-paths: ["tests"]
 data-paths: ["data"]
 macro-paths: ["macros"]
-
 target-path: "target"
 clean-targets:
     - "target"
     - "dbt_modules"
 
+# ======
+# Snowflake Configs
+# ======
 quoting:
     database: true
     identifier: false
     schema: false
 
-archive:
-    - source_schema: analytics_staging
-      target_schema: dbt_archive
-      tables:
-        - source_table: sfdc_account
-          target_table: sfdc_account_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: account_id
-
-        - source_table: sfdc_opportunity
-          target_table: sfdc_opportunity_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: opportunity_id
-
-        - source_table: sfdc_users
-          target_table: sfdc_users_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: user_id_18__c
-
-    - source_schema: sensitive
-      target_schema: dbt_archive
-      tables:
-        - source_table: sheetload_employee_location_factor
-          target_table: sheetload_employee_location_factor_archived
-          updated_at: _last_dbt_run::timestamp_ntz
-          unique_key: bamboo_employee_number
-
-
+# ======
+# Run Hooks
+# ======
 on-run-start:
     - "{{ dbt_logging_start('on run start hooks') }}"
     - "{{resume_warehouse(var('resume_warehouse', false), var('warehouse_name'))}}"
     - "{{create_udfs()}}"
-    - "{{ dbt_logging_end('on run start hooks') }}"
 
 on-run-end:
     - "{{ dbt_logging_start('on run end hooks') }}"
-    - "{{grant_usage_to_schemas(schema_name, rolename)}}"
+    - "{{grant_usage_to_schemas(schema_name)}}"
+    - "drop schema if exists {{ generate_schema_name('temporary') }}"
     - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
-    - "{{ dbt_logging_end('on run end hooks') }}"
 
-models:
-    pre-hook:
-      - "{{ logging.log_model_start_event() }}"
-    post-hook:
-      - "{{ logging.log_model_end_event() }}"
-    vars:
-      database: 'raw'
-      warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
-
-    logging:
-      schema: meta
-      post-hook:
-        - "grant select on {{this}} to role reporter"
-
-    snowplow:
+# ======
+# Seed Configs
+# ======
+seeds:
+  enabled: true
+  schema: staging
+  quote_columns: False
+  
+  gitlab_snowflake:
+    zuora_country_geographic_region:
       schema: analytics
-      tags: ["product"]
-      post-hook: "grant select on {{this}} to role reporter"
-      vars:
-        'snowplow:use_fivetran_interface': false
-        'snowplow:events': "{{ref('snowplow_unnested_events')}}"
-        'snowplow:context:web_page': "{{ref('snowplow_web_page')}}"
-        'snowplow:context:performance_timing': false
-        'snowplow:context:useragent': false
-        'snowplow:timezone': 'America/New_York'
-        'snowplow:page_ping_frequency': 30
-        'snowplow:app_ids': ['gitlab']
-        'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
 
-    snowflake_spend:
-      enabled: true
+# ======
+# Model Configs
+# ======
+models:
+  pre-hook:
+    - "{{ logging.log_model_start_event() }}"
+  post-hook:
+    - "{{ logging.log_model_end_event() }}"
+  vars:
+    database: "raw"
+    warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
+
+  # Logging Package
+  logging:
+    schema: meta
+    post-hook:
+      - "grant select on {{this}} to role reporter"
+
+  # Snowplow Package
+  snowplow:
+    schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
+    post-hook:
+      - "grant usage on schema {{this.schema}} to role snowplow"
+      - "grant select on {{this}} to role snowplow"
+    tags: ["product"]
+    vars:
+      'snowplow:use_fivetran_interface': false
+      'snowplow:events': "{{ref('snowplow_unnested_events')}}"
+      'snowplow:context:web_page': "{{ref('snowplow_web_page')}}"
+      'snowplow:context:performance_timing': false
+      'snowplow:context:useragent': false
+      'snowplow:timezone': 'America/New_York'
+      'snowplow:page_ping_frequency': 30
+      'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
+      'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
+
+  # Snowflake Spend Package
+  snowflake_spend:
+    materialized: table
+    xf:
+      schema: analytics
+
+  # GitLab Models
+  gitlab_snowflake:
+    materialized: view
+
+    bamboohr:
+      schema: sensitive
       base:
         materialized: table
+
+    customers:
+      materialized: table
+
+    date:
+      materialized: table
+
+    engineering:
+      materialized: table
+
+    gitlab_data_yaml:
+      materialized: table
+
+    gitlab_dotcom:
+      tags: ["product"]
+      materialized: table
+
+    gitter:
+      enabled: false
+      transformed:
+        materialized: table
+
+    greenhouse:
+      schema: sensitive
+
+    netsuite:
+      materialized: table
+      base:
+        schema: staging
+
+    pipe2spend:
+      enabled: false
+      materialized: table
+
+    retention:
+      materialized: table
+    
+    sfdc:
       xf:
         materialized: table
-      vars:
-        cost_per_credit: 2.55
 
-    gitlab_snowflake:
-      enabled: true
-      materialized: view
+    smau_events:
+      tags: ["product"]
+      materialized: table
 
-      bamboohr:
-        schema: sensitive
-        enabled: true
-        base:
-          materialized: table
-
-      customers:
-        base:
-          enabled: true
-          materialized: table
-
-      date:
-        base:
-          enabled: true
-          materialized: table
-
-      dbt_logging:
-        enabled: false
-
-      gitlab_data_yaml:
-        enabled: true
+    snowplow:
+      tags: ["product"]
+      xf:
         materialized: table
 
-      gitter:
-        enabled: false
-        transformed:
-          materialized: table
+    snowplow_combined:
+      tags: ["product"]
 
-      gitlab_dotcom:
-        tags: ["product"]
-        enabled: false
-        xf:
-          materialized: table
-
-      netsuite:
-        enabled: false
-
-      netsuite_stitch:
-        enabled: true
-        base:
-          materialized: table
-        xf:
-          materialized: table
-
-      pings:
-        tags: ["product"]
-        enabled: true
-
-      pipe2spend:
-        enabled: false
+    version:
+      tags: ["product"]
+      base:
+        schema: staging
+      xf:
         materialized: table
 
-      retention:
-        enabled: true
+    zendesk:
+      xf:
         materialized: table
 
-      snowplow:
-        tags: ["product"]
-        enabled: true
-        xf:
-          materialized: table
-
-      sfdc:
-        xf:
-          enabled: true
-          materialized: table
-
-      zuora:
-        xf:
-          enabled: true
-          materialized: table
-
-      zendesk:
-        xf:
-          enabled: true
-          materialized: table
+    zuora:
+      xf:
+        materialized: table

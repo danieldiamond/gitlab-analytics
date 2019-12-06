@@ -10,7 +10,11 @@ WITH source AS (
 
 ), filtered AS (
 
-  SELECT bonus_id, bonus_date
+  SELECT
+    employee_id,
+    bonus_id,
+    bonus_date,
+    bonus_nominator_type
   FROM source
   WHERE bonus_type = 'Discretionary Bonus'
 

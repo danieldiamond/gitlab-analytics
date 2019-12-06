@@ -1,11 +1,3 @@
-{{ config({
-    "schema": "analytics",
-    "post-hook": "grant select on {{this}} to role reporter"
-    })
-}}
-
-
-
 WITH opphistory AS (
 		SELECT * FROM {{ ref('sfdc_opportunity_history') }}
 ),
