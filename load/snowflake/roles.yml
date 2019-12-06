@@ -750,6 +750,10 @@ roles:
         warehouses:
             - reporting
 
+    - adietrich:
+        warehouses:
+            - reporting
+
     - airflow:
         warehouses:
             - gitlab_postgres
@@ -957,6 +961,12 @@ users:
         can_login: yes
         member_of:
             - acarella
+            - securityadmin
+
+    - adietrich:
+        can_login: yes
+        member_of:
+            - adietrich
             - securityadmin
 
     - agroleau:
