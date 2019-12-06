@@ -401,11 +401,7 @@ models:
           - not_null
           - no_overlapping_valid_from_to_dates
       - name: created_at
-        tests:
-          - not_null
       - name: updated_at
-        tests:
-          - not_null
 
   - name: gitlab_dotcom_issue_metrics
     description: Base model for Gitlab.com issue metrics
@@ -774,7 +770,7 @@ models:
       - name: project_group_link_id
         tests:
           - not_null
-          - test_no_overlapping_valid_from_to_dates
+          - no_overlapping_valid_from_to_dates
       - name: project_id
         tests:
           - not_null
