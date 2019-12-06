@@ -1,7 +1,9 @@
 WITH notes AS (
 
   SELECT
-    *,
+    {{ dbt_utils.star(from=ref('gitlab_dotcom_notes'), except=["created_at", "updated_at"]) }},
+    created_at AS note_created_at,
+    updated_at AS note_updated_at,
     {{target.schema}}_staging.regexp_to_array(note, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array,
     {{target.schema}}_staging.regexp_to_array(note, '(?<=gitlab.zendesk.com\/agent\/tickets\/)[0-9]{1,18}') AS zendesk_link_array
   FROM {{ ref('gitlab_dotcom_notes') }}

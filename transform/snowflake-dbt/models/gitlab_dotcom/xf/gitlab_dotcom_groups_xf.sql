@@ -49,8 +49,8 @@ joined AS (
 
       groups.owner_id,
       groups.has_avatar,
-      groups.group_created_at,
-      groups.group_updated_at,
+      groups.created_at                                                 AS group_created_at,
+      groups.updated_at                                                 AS group_updated_at,
       groups.is_membership_locked,
       groups.has_request_access_enabled,
       groups.has_share_with_group_locked,

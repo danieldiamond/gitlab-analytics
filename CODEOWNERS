@@ -1,10 +1,22 @@
-# https://gitlab.com/help/user/project/code_owners
+# ======
+# Documentation
+# ======
 
-# Default codeowner
-* @jjstark @kathleentam @tayloramurphy
+# https://gitlab.com/help/user/project/code_owners
 
 # Ending a path in a `/` will specify the code owners for every file
 # nested in that directory, on any level
+
+# ======
+# Default
+# ======
+
+* @jjstark @kathleentam @tayloramurphy
+
+# ======
+# Top Level Folder Overwrites
+# ======
+
 /.gitlab/ @jjstark @kathleentam
 /admin/ @jjstark @kathleentam
 /dags/ @tayloramurphy
@@ -12,14 +24,19 @@
 /load/ @tayloramurphy
 /orchestrate/ @tayloramurphy
 
-# Top level file overwrites
+# ======
+# Top Level File Overwrites
+# ======
+
 Makefile @tayloramurphy
 docker-compose.yml @tayloramurphy
 .gitlab-ci.yml @tayloramurphy 
 
-# dbt
-/transform/generate_dbt_schema.py @emilie
-/transform/README.md @emilie
+# ======
+# dbt Overwrites
+# ======
+
+/transform/ @tayloramurphy @emilie
 /transform/snowflake-dbt/ @tayloramurphy @kathleentam @emilie
 /transform/snowflake-dbt/snowflake-dbt-ci.yml @tayloramurphy 
 /transform/snowflake-dbt/docs/ @tayloramurphy
@@ -29,8 +46,6 @@ docker-compose.yml @tayloramurphy
 /transform/snowflake-dbt/models/gitlab_data_yaml/ @tayloramurphy
 /transform/snowflake-dbt/models/gitlab_dotcom/ @eli_kastelein @mpeychet
 /transform/snowflake-dbt/models/license/ @eli_kastelein @mpeychet
-/transform/snowflake-dbt/models/netsuite/ @iweeks
-/transform/snowflake-dbt/models/netsuite_stitch/ @iweeks
 /transform/snowflake-dbt/models/netsuite/ @iweeks
 /transform/snowflake-dbt/models/version/ @eli_kastelein @mpeychet
 /transform/snowflake-dbt/models/smau_events/ @eli_kastelein @mpeychet

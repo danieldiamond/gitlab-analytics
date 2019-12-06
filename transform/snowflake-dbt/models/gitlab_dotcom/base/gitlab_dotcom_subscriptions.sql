@@ -5,10 +5,9 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'subscriptions') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -20,11 +19,10 @@ WITH source AS (
       project_id::INTEGER       AS project_id,
       subscribable_type,
       subscribed::BOOLEAN       AS is_subscribed,
-      created_at::TIMESTAMP     AS subscription_created_at,
-      updated_at::TIMESTAMP     AS subscription_updated_at
+      created_at::TIMESTAMP     AS created_at,
+      updated_at::TIMESTAMP     AS updated_at
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 
