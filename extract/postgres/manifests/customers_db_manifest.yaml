@@ -24,8 +24,6 @@ tables:
       , company
       , salesforce_account_id
       , billable
-      , access_token
-      , confirmation_token
       , confirmed_at
       , confirmation_sent_at
       FROM customers
