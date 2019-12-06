@@ -336,6 +336,7 @@ models:
       - name: namespace_id
         tests:
           - not_null
+          - no_overlapping_valid_from_to_dates
       - name: created_at
         tests:
           - not_null
@@ -398,6 +399,7 @@ models:
       - name: issue_link_id
         tests:
           - not_null
+          - no_overlapping_valid_from_to_dates
       - name: created_at
         tests:
           - not_null
@@ -446,6 +448,7 @@ models:
       - name: label_link_id
         tests:
           - not_null
+          - no_overlapping_valid_from_to_dates
 
   - name: gitlab_dotcom_label_priorities
     description: Base model for Gitlab.com label priorities
@@ -497,6 +500,7 @@ models:
       - name: member_id
         tests:
           - not_null
+          - no_overlapping_valid_from_to_dates
 
   - name: gitlab_dotcom_merge_request_diffs
     description: Base model for Gitlab.com request diffs
@@ -770,6 +774,7 @@ models:
       - name: project_group_link_id
         tests:
           - not_null
+          - test_no_overlapping_valid_from_to_dates
       - name: project_id
         tests:
           - not_null
