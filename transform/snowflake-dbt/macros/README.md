@@ -252,20 +252,22 @@ Used in:
 - snowplow_combined/90_day/*.sql
 
 ## SCD Type 2 ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/scd_type_2.sql))
-This macro inserts SQL statements that turn the inputted CTE into a [type 2 slowly changing dimension model](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row).
+This macro inserts SQL statements that turn the inputted CTE into a [type 2 slowly changing dimension model](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row). According to [Orcale](https://www.oracle.com/webfolder/technetwork/tutorials/obe/db/10g/r2/owb/owb10gr2_gs/owb/lesson3/slowlychangingdimensions.htm), "a Type 2 SCD retains the full history of values. When the value of a chosen attribute changes, the current record is closed. A new record is created with the changed data values and this new record becomes the current record. Each record contains the effective time and expiration time to identify the time period between which the record was active."
 
-From [Orcale](https://www.oracle.com/webfolder/technetwork/tutorials/obe/db/10g/r2/owb/owb10gr2_gs/owb/lesson3/slowlychangingdimensions.htm): "A Type 2 SCD retains the full history of values. When the value of a chosen attribute changes, the current record is closed. A new record is created with the changed data values and this new record becomes the current record. Each record contains the effective time and expiration time to identify the time period between which the record was active."
-
-In particular, this macro adds 3 columns: `valid_from`, `valid_to`, and `is_currently_valid`.
-`valid_from` will never be null, while `valid_to` can be NULL for one row per ID (`is_currently_active` will be TRUE in that case). It is possible for an ID to have 0 currently active rows (implies a "Hard Delete" on the source db.)
-
-This macro was built to be used in conjunction with the `distinct_source` macro. 
+In particular, this macro adds 3 columns: `valid_from`, `valid_to`, and `is_currently_valid`. It does not alter or drop any of the existing columns in the input CTE.
+* `valid_from` will never be null
+* `valid_to` can be NULL for up to one row per ID. It is possible for an ID to have 0 currently active rows (implies a "Hard Delete" on the source db)
+* `is_currently_active` will be TRUE in cases where `valid_to` is NULL (for either 0 or 1 rows per ID)
 
 The parameters are as follows:
-  * **primary_key_renamed**: The primary key column from the `casted_cte` 
-  * **primary_key_raw**: The same column as above, but use the name from when it was in the RAW schema. Value is usually `id`.
-  * **source_cte**: (defaults to '`distinct_source`). This is the name of the CTE with all of the unique source rows. This will always be `distinct_source` if using the `distinct_source` macro.
-  * **casted_cte**: (defaults to `renamed`) . This is the name of the CTE with all of the casted/renamed column names. Our internal convention is to call this `renamed`.
+  * **primary_key_renamed**: The primary key column from the `casted_cte`. According to our style guide, we usually rename primary keys to include the table name ("merge_request_id")
+  * **primary_key_raw**: The same column as above, but references the column name from when it was in the RAW schema (usually "id")
+  * **source_cte**: (defaults to '`distinct_source`). This is the name of the CTE with all of the unique rows from the raw source table. This will always be `distinct_source` if using the `distinct_source` macro.
+  * **casted_cte**: (defaults to `renamed`). This is the name of the CTE where all of the columns have been casted and renamed. Our internal convention is to call this `renamed`. This CTE needs to have a column called `valid_from`.
+
+This macro does **not** reference anything specific to the pgp data sources, but was built with them in mind. It is unlikely that this macro will be useful to anything outside of pgp data sources as it was built for a fairly specific problem. We would have just used dbt snapshots here except for the fact that they currently don't support hard deletes. dbt snapshots should be satisfactory for most other use cases.
+
+This macro was built to be used in conjunction with the [distinct_source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/distinct_source.sql)) macro.
 
 Usage:
 ```
