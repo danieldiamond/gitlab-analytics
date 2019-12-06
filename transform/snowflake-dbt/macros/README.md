@@ -65,11 +65,11 @@ Used in:
 - dbt_project.yml
 
 ## Distinct Source ## SCD Type 2 ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/distinct_source.sql))
-This macro is used for condensing a `source` CTE into unique rows only. Our ETL runs quite frequently while most rows in our source tables don't update as frequently. So we end up with a lot of rows in our RAW tables that look the same as each other (except for the metadata columns with a leading underscore). This macro takes in a `source_cte` and looks for unique values across ALL columns. 
+This macro is used for condensing a `source` CTE into unique rows only. Our ETL runs quite frequently while most rows in our source tables don't update as frequently. So we end up with a lot of rows in our RAW tables that look the same as each other (except for the metadata columns with a leading underscore). This macro takes in a `source_cte` and looks for unique values across ALL columns (exluding airflow metadata.)  
 
-The 2 exception columns are:
+This macro **is specifc** to pgp tables (gitlab_dotcom, version, license) and should not be used outside of those. Specifically, it makes references to 2 airflow metadata columns:
 * `_uploaded_at`: we only want the *minimum* value per unique row ... AKA "when did we *first* see this unique row?" This macros calls this column `valid_from` (to be used in the SCD Type 2 Macro)
-* `_task_instance`: here we want to know the *maximum* task instance. This is used later to infer whether a `primary_key` is still present in the source table (as a roundabout way to track hard deletes.)
+* `_task_instance`: we want to know the *maximum* task instance (what was the last task when we saw this row?). This is used later to infer whether a `primary_key` is still present in the source table (as a roundabout way to track hard deletes)
 
 Usage:
 ```
