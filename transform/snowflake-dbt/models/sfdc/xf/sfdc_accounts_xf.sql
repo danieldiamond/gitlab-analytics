@@ -32,7 +32,7 @@ with sfdc_account AS (
         sfdc_users.name AS technical_account_manager,
             parent_account.ultimate_parent_account_name, 
             parent_account.ultimate_parent_account_segment,
-        sfdc_record_type.record_type_name,
+        --sfdc_record_type.record_type_name,
         sfdc_record_type.business_process_id,
         sfdc_record_type.record_type_label,
         sfdc_record_type.record_type_description,
