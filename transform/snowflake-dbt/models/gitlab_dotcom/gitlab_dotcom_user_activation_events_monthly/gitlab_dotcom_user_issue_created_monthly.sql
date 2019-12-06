@@ -38,7 +38,7 @@ WITH months AS (
 ), issues AS (
 
     SELECT
-      issue_author_id,
+      author_id,
       DATE_TRUNC('month', created_at) AS event_month,
       COUNT(*) AS events_count
 
