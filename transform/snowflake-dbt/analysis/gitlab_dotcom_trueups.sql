@@ -64,7 +64,7 @@ FROM gl_subs
     ON customers.zuora_account_id = zuora.account_id
     -- TODO: is joining on account best? or subscription?
 WHERE zuora.account_id IN (
-  --'2c92a0fc682cf7e8016833feca8c6ce3', --SOFI
+  --'2c92a0fc682cf7e8016833feca8c6ce3',
   '2c92a0086851550101686ffb72745347'
 )
 
