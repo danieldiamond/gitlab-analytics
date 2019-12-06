@@ -19,6 +19,7 @@ customers AS (
   SELECT DISTINCT
     cust_orders.gitlab_namespace_id,
     cust_customers.zuora_account_id,
+    cust_orders.subscription_id,
     sfdc_account_id
   FROM analytics_staging.customers_db_orders AS cust_orders
     LEFT JOIN analytics_staging.customers_db_customers AS cust_customers
@@ -62,12 +63,9 @@ FROM gl_subs
     ON gl_subs.namespace_id = customers.gitlab_namespace_id
   LEFT JOIN summed_zuora AS zuora
     ON customers.zuora_account_id = zuora.account_id
+    AND customers.subscription_id = zuora.subscription_id
     -- TODO: is joining on account best? or subscription?
 WHERE zuora.account_id IN (
-  --'2c92a0fc682cf7e8016833feca8c6ce3',
-  '2c92a0086851550101686ffb72745347'
+  --'2c92a0fc682cf7e8016833feca8c6ce3', --SF
+  '2c92a0086851550101686ffb72745347' 
 )
-
-
-
-
