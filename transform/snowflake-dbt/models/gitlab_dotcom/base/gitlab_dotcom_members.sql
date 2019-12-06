@@ -1,9 +1,8 @@
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'members') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
 
@@ -25,7 +24,6 @@ WITH source AS (
       override::BOOLEAN                              AS has_override
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

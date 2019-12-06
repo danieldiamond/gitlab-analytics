@@ -1,9 +1,8 @@
 WITH source AS (
 
-  SELECT 
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'oauth_access_tokens') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
 
@@ -14,13 +13,12 @@ WITH source AS (
       refresh_token::VARCHAR      AS oauth_access_refresh_token,
       expires_in::INTEGER         AS expires_in_seconds,
       revoked_at::TIMESTAMP       AS oauth_access_token_revoked_at,
-      created_at::TIMESTAMP       AS oauth_access_token_created_at,
+      created_at::TIMESTAMP       AS created_at,
       scopes::VARCHAR             AS scopes
     FROM source
-    WHERE rank_in_key = 1
 
 )
 
 SELECT *
 FROM renamed
-ORDER BY oauth_access_token_created_at
+ORDER BY created_at

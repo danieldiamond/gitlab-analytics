@@ -5,10 +5,9 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'namespaces') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), gitlab_subscriptions AS (
 
@@ -21,7 +20,7 @@ WITH source AS (
       *,
       ROW_NUMBER() OVER (
         PARTITION BY namespace_id
-        ORDER BY gitlab_subscription_updated_at DESC
+        ORDER BY updated_at DESC
       ) AS rank_in_namespace_id
     FROM {{ref('gitlab_dotcom_gitlab_subscriptions')}}
 
@@ -34,8 +33,8 @@ WITH source AS (
       owner_id::INTEGER                                             AS owner_id,
       type                                                          AS namespace_type,
       IFF(avatar IS NULL, FALSE, TRUE)                              AS has_avatar,
-      created_at::TIMESTAMP                                         AS namespace_created_at,
-      updated_at::TIMESTAMP                                         AS namespace_updated_at,
+      created_at::TIMESTAMP                                         AS created_at,
+      updated_at::TIMESTAMP                                         AS updated_at,
       membership_lock::BOOLEAN                                      AS is_membership_locked,
       request_access_enabled::BOOLEAN                               AS has_request_access_enabled,
       share_with_group_lock::BOOLEAN                                AS has_share_with_group_locked,
@@ -43,7 +42,7 @@ WITH source AS (
         WHEN visibility_level = '20' THEN 'public'
         WHEN visibility_level = '10' THEN 'internal'
         ELSE 'private'
-      END                                                           AS visibility_level,
+      END::VARCHAR                                                  AS visibility_level,
       ldap_sync_status,
       ldap_sync_error,
       ldap_sync_last_update_at::TIMESTAMP                           AS ldap_sync_last_update_at,
@@ -57,7 +56,6 @@ WITH source AS (
       two_factor_grace_period::NUMBER                               AS two_factor_grace_period,
       project_creation_level::INTEGER                               AS project_creation_level
     FROM source
-    WHERE rank_in_key = 1
 
 ), joined AS (
 

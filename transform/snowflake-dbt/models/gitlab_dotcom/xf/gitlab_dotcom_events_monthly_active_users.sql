@@ -19,22 +19,22 @@ WITH days AS (
 
     SELECT DISTINCT
       author_id,
-      TO_DATE(audit_event_created_at) AS audit_event_day
+      TO_DATE(created_at) AS audit_event_day
     FROM {{ ref('gitlab_dotcom_audit_events') }}
     WHERE TRUE
     {% if is_incremental() %}
-      AND audit_event_created_at >= DATEADD('day', -36, (SELECT MAX(day) FROM {{ this }}) )
+      AND created_at >= DATEADD('day', -36, (SELECT MAX(day) FROM {{ this }}) )
     {% endif %}
 
 ), events AS (
 
     SELECT DISTINCT
       author_id,
-      TO_DATE(event_created_at) AS event_day
+      TO_DATE(created_at) AS event_day
     FROM {{ ref('gitlab_dotcom_events') }}
     WHERE TRUE
     {% if is_incremental() %}
-      AND event_created_at >= DATEADD('day', -36, (SELECT MAX(day) FROM {{ this }}) )
+      AND created_at >= DATEADD('day', -36, (SELECT MAX(day) FROM {{ this }}) )
     {% endif %}
 
 ), audit_events_active_user AS (

@@ -10,7 +10,7 @@ WITH source AS (
     SELECT *
     FROM {{ source('gitlab_dotcom', 'users') }}
     {% if is_incremental() %}
-    WHERE updated_at >= (SELECT MAX(user_updated_at) FROM {{this}})
+    WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
     {% endif %}
 
 ), renamed AS (
@@ -23,8 +23,8 @@ WITH source AS (
       last_sign_in_at::TIMESTAMP                                       AS last_sign_in_at,
       -- current_sign_in_ip   // hidden for privacy
       -- last_sign_in_ip   // hidden for privacy
-      created_at::TIMESTAMP                                            AS user_created_at,
-      updated_at::TIMESTAMP                                            AS user_updated_at,
+      created_at::TIMESTAMP                                            AS created_at,
+      updated_at::TIMESTAMP                                            AS updated_at,
       admin::BOOLEAN                                                   AS is_admin,
       projects_limit::INTEGER                                          AS projects_limit,
       failed_attempts::INTEGER                                         AS failed_attempts,
@@ -72,14 +72,14 @@ WITH source AS (
       group_view::INTEGER                                              AS group_views,
       managing_group_id::INTEGER                                       AS managing_group_id,
       bot_type::INTEGER                                                AS bot_type,
-      source.role                                                      AS role_id,
+      source.role::INTEGER                                             AS role_id,
       {{user_role_mapping(user_role='source.role')}}::VARCHAR          AS role
 
     FROM source
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY user_updated_at DESC) = 1
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY updated_at DESC) = 1
 
 )
 
 SELECT  *
 FROM renamed
-ORDER BY user_updated_at
+ORDER BY updated_at
