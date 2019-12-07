@@ -16,6 +16,7 @@ WITH customers AS (
 
   SELECT *
   FROM {{ ref('gitlab_dotcom_members') }}
+  WHERE is_currently_valid = TRUE
 
 )
 

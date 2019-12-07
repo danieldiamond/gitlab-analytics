@@ -3,13 +3,10 @@
     })
 }}
 
-WITH source AS (
+WITH 
+{{ distinct_source(source=source('gitlab_dotcom', 'project_group_links')) }}
 
-  SELECT *
-  FROM {{ source('gitlab_dotcom', 'project_group_links') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
-
-), renamed AS (
+, renamed AS (
 
     SELECT
 
@@ -19,11 +16,14 @@ WITH source AS (
       group_access::INTEGER                           AS group_access,
       created_at::TIMESTAMP                           AS created_at,
       updated_at::TIMESTAMP                           AS updated_at,
-      expires_at::TIMESTAMP                           AS expires_at
+      expires_at::TIMESTAMP                           AS expires_at,
+      valid_from -- Column was added in distinct_source CTE
 
-    FROM source
+    FROM distinct_source
 
 )
 
-SELECT *
-FROM renamed
+{{ scd_type_2(
+    primary_key_renamed='project_group_link_id',
+    primary_key_raw='id'
+) }}
