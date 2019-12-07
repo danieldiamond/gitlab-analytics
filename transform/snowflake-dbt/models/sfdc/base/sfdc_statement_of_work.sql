@@ -40,3 +40,6 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+WHERE statement_of_work_id NOT IN (
+  'a5t4M000000XZrbQAG' -- https://gitlab.com/gitlab-data/analytics/issues/3181
+)
