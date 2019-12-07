@@ -2,7 +2,7 @@
 -- ====================
 -- set email = 'email@gitlab.com';
 -- set firstname  = 'Sasha';
--- set lastname = 'Unlyanov';
+-- set lastname = 'Ulyanov';
 -- ====================
 
 set username = (select upper(LEFT($email, CHARINDEX('@', $email) - 1)));
