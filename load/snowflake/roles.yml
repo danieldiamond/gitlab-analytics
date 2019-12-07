@@ -1143,8 +1143,8 @@ users:
     - lvandensteen
         can_login: yes
         member_of:
-            - lvandensteen
             - analyst_people
+            - lvandensteen
 
     - periscope:
         can_login: yes
