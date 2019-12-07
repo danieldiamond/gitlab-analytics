@@ -5,7 +5,6 @@
 -- set lastname = 'Unlyanov';
 -- ====================
 
-
 set username = (select upper(LEFT($email, CHARINDEX('@', $email) - 1)));
 
 set loginname = (select upper($email));
