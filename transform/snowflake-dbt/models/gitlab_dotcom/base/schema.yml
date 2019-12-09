@@ -264,6 +264,10 @@ models:
       - name: updated_at
         tests:
           - not_null
+<<<<<<< HEAD
+=======
+
+>>>>>>> f8539524d34a84ba5142ab6960575ada76965efd
   - name: gitlab_dotcom_cluster_groups
     description: Base model for Gitlab.com cluster_groups
     columns:
@@ -289,6 +293,10 @@ models:
         tests:
           - not_null
       - name: project_id
+<<<<<<< HEAD
+=======
+
+>>>>>>> f8539524d34a84ba5142ab6960575ada76965efd
   - name: gitlab_dotcom_deployment_merge_requests
     description: Base model for GitLab.com deployments_merge_requests.
     columns:
