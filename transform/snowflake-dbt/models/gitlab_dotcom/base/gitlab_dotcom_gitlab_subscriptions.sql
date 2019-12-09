@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH
 {{ distinct_source(source=source('gitlab_dotcom', 'gitlab_subscriptions'))}}
 
