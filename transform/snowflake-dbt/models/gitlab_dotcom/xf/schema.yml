@@ -1,6 +1,19 @@
 version: 2
 
 models:
+  - name: gitlab_dotcom_environments_xf
+    description: '{{ doc("gitlab_dotcom_environments_xf") }}'
+    columns:
+      - name: environment_id
+        tests:
+          - not_null
+          - unique
+      - name: project_id
+        tests:
+          - not_null
+      - name: environment_name
+        tests:
+          - not_null
   - name: gitlab_dotcom_gitlab_issues_requests
     description: '{{ doc("gitlab_dotcom_gitlab_issues_requests") }}'
     columns:
