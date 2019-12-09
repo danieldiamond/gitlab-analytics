@@ -26,13 +26,13 @@ WITH project_created AS (
 
   SELECT
     user_id,
-    TO_DATE(user_created_at)   AS event_date,
+    TO_DATE(created_at)   AS event_date,
     'user_created'             AS event_type,
     {{ dbt_utils.surrogate_key('event_date', 'event_type', 'user_id') }}
                                AS event_surrogate_key
 
   FROM {{ref('gitlab_dotcom_users_xf')}}
-  WHERE user_created_at >= '2015-01-01'
+  WHERE created_at >= '2015-01-01'
 
 )
 

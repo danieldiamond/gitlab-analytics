@@ -1,19 +1,17 @@
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'board_labels') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
 
-    SELECT
-      id::INTEGER        AS board_label_relation_id,
-      board_id::INTEGER  AS board_id,
-      label_id::INTEGER  AS label_id
+  SELECT
+    id::INTEGER        AS board_label_relation_id,
+    board_id::INTEGER  AS board_id,
+    label_id::INTEGER  AS label_id
 
-    FROM source
-    WHERE rank_in_key = 1
+  FROM source
 
 )
 

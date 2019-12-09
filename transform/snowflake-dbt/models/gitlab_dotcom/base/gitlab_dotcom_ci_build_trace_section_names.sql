@@ -7,7 +7,7 @@ WITH source AS (
 
     SELECT
       id::INTEGER           AS ci_build_id, 
-      project_id::INTEGER   AS ci_build_project_id,
+      project_id::INTEGER   AS project_id,
       name::VARCHAR         AS ci_build_name
 
     FROM source
