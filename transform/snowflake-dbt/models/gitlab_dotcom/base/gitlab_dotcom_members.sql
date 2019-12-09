@@ -1,5 +1,5 @@
 {{ config({
-    "schema": ""
+    "schema": "analytics"
     })
 }}
 
