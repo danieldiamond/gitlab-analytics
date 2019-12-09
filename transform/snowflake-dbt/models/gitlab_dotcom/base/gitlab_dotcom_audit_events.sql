@@ -1,6 +1,7 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "audit_event_id"
+    "unique_key": "audit_event_id",
+    "schema": "analytics"
     })
 }}
 
