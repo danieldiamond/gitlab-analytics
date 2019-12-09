@@ -24,15 +24,13 @@ WITH base AS (
 )
 
 , anonymised AS (
-  
+    
     SELECT
       {{ dbt_utils.star(from=ref('gitlab_dotcom_environments'), except=fields_to_mask|upper, relation_alias='base') }},
       {% for field in fields_to_mask %}
       CASE
         WHEN TRUE 
-          {% if anonymization_key == 'project_id' %}
           AND projects.visibility_level != 'public'
-          {% endif %}
           AND NOT internal_namespaces.namespace_is_internal
           THEN 'confidential - masked'
         ELSE {{field}}
