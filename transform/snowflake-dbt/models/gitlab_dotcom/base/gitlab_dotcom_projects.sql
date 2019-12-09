@@ -5,10 +5,9 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'projects') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -21,14 +20,14 @@ WITH source AS (
       build_coverage_regex                                                        AS project_build_coverage_regex,      
       name::VARCHAR                                                               AS project_name,
       path::VARCHAR                                                               AS project_path,
-      import_url                                                                  AS project_import_url,
+      import_url::VARCHAR                                                         AS project_import_url,
       merge_requests_template                                                     AS project_merge_requests_template,
 
-      created_at::TIMESTAMP                                                       AS project_created_at,
-      updated_at::TIMESTAMP                                                       AS project_updated_at,
+      created_at::TIMESTAMP                                                       AS created_at,
+      updated_at::TIMESTAMP                                                       AS updated_at,
 
-      creator_id :: number                                                        AS creator_id,
-      namespace_id :: number                                                      AS namespace_id,
+      creator_id::NUMBER                                                          AS creator_id,
+      namespace_id::NUMBER                                                        AS namespace_id,
 
       last_activity_at::TIMESTAMP                                                 AS last_activity_at,
 
@@ -36,11 +35,11 @@ WITH source AS (
         WHEN visibility_level = '20' THEN 'public'
         WHEN visibility_level = '10' THEN 'internal'
         ELSE 'private'
-      END                                                                         AS visibility_level,
+      END::VARCHAR                                                                AS visibility_level,
 
       archived::BOOLEAN                                                           AS archived,
 
-      IFF(avatar IS NULL, FALSE, TRUE)                                            AS has_avatar,
+      IFF(avatar IS NULL, FALSE, TRUE)::BOOLEAN                                   AS has_avatar,
 
       star_count::INTEGER                                                         AS project_star_count,
       merge_requests_rebase_enabled::BOOLEAN                                      AS merge_requests_rebase_enabled,
@@ -83,7 +82,6 @@ WITH source AS (
       mirror_overwrites_diverged_branches::BOOLEAN                                AS mirror_overwrites_diverged_branches,
       external_authorization_classification_label
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

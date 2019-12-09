@@ -110,6 +110,15 @@ models:
               - relationships:
                     to: ref('sfdc_opportunity_stage')
                     field: primary_label
+  - name: sfdc_opportunity_field_history
+    description: base model for SFDC Opportunity Field History
+    columns:
+        - name: field_history_id
+          tests:
+              - not_null
+        - name: opportunity_id
+          tests:
+              - not_null                       
   - name: sfdc_opportunity_line_item
     description: base model for SFDC Opportunity Line Items
     columns:
