@@ -420,6 +420,23 @@ This macro is a custom schema test to be used as a column test in a schema.yml f
 Used in:
 - gitlab_dotcom/base/schema.yml
 
+## Test Greater Than ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/tests/test_greater_than.sql))
+Test than a column's values are always greater than another column's values *in the same model*. The column being compared to is referenced using `compare_to`.
+
+Usage:
+```
+columns:
+  - name: valid_to
+    tests:
+      - greater_than:
+          compare_to: valid_from
+
+```
+
+Used in:
+- gitlab_dotcom/base/schema.yml
+
+
 ## Unpack Unstructured Events ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/version/unpack_unstructured_event.sql))
 This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.
 Usage:

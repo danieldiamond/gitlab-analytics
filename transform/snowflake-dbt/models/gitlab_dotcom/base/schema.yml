@@ -503,7 +503,6 @@ models:
           - unique_where_currently_valid
       - name: valid_to
         tests:
-          - not_null
           - greater_than:
               compare_to: valid_from
 

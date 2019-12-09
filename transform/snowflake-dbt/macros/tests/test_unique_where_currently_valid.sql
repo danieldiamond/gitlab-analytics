@@ -9,7 +9,7 @@ WITH data AS (
     WHERE is_currently_valid = True
     GROUP BY 1
 
-),
+)
 
 SELECT COUNT(*)
 FROM data
