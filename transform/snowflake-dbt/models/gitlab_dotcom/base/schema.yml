@@ -501,6 +501,11 @@ models:
           - not_null
           - no_overlapping_valid_from_to_dates
           - unique_where_currently_valid
+      - valid_to:
+          tests:
+            - not_null
+            - greater_than:
+                field: valid_from
 
   - name: gitlab_dotcom_merge_request_diffs
     description: Base model for Gitlab.com request diffs
