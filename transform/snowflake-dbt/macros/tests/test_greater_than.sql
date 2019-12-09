@@ -1,4 +1,4 @@
-{% macro greater_than(model, comparison_column_name, column_name) %}
+{% macro greater_than(model, compare_to, column_name) %}
 
 WITH data AS (
 
