@@ -421,7 +421,7 @@ Used in:
 - gitlab_dotcom/base/schema.yml
 
 ## Test Greater Than ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/tests/test_greater_than.sql))
-Test than a column's values are always greater than another column's values *in the same model*. The column being compared to is referenced using `compare_to`.
+Test than a column's values are always greater than or equal to another column's values *in the same model*. The column being compared to is referenced using `compare_to`.
 
 Usage:
 ```

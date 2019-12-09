@@ -11,6 +11,6 @@ WITH data AS (
 
 SELECT COUNT(*)
 FROM data
-WHERE NOT greater_column > lesser_column
+WHERE NOT greater_column >= lesser_column
 
 {% endmacro %}
