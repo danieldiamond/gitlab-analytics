@@ -1,3 +1,8 @@
+{{ config({
+    "schema": ""
+    })
+}}
+
 WITH
 {{ distinct_source(source=source('gitlab_dotcom', 'members'))}}
 

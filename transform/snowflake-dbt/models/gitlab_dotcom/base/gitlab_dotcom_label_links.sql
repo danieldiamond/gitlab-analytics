@@ -1,6 +1,6 @@
 {{ config({
     "materialized": "table",
-    "schema": ""
+    "schema": "analytics"
     })
 }}
 
