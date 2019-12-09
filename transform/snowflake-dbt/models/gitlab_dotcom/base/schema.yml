@@ -8,10 +8,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: approval_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: approval_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -22,10 +22,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: approver_group_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: approver_group_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -72,10 +72,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: board_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: board_created_at
+      - name: created_at
         tests:
           - not_null
 
@@ -100,10 +100,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: ci_build_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: ci_build_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -114,10 +114,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: ci_group_variable_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: ci_group_variable_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -128,24 +128,24 @@ models:
         tests:
           - not_null
           - unique
-      - name: ci_job_artifact_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: ci_job_artifact_updated_at
+      - name: updated_at
         tests:
           - not_null
 
   - name: gitlab_dotcom_ci_pipeline_schedule_variables
     description: Base model for Gitlab.com ci_pipeline_schedule_variables
     columns:
-      - name: ci_pipeline_schedule_id
+      - name: ci_pipeline_schedule_variable_id
         tests:
           - not_null
           - unique
-      - name: ci_pipeline_schedule_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: ci_pipeline_schedule_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -156,10 +156,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: ci_pipeline_schedule_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: ci_pipeline_schedule_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -290,6 +290,45 @@ models:
         tests:
           - not_null
       - name: project_id
+
+  - name: gitlab_dotcom_deployment_merge_requests
+    description: Base model for GitLab.com deployments_merge_requests.
+    columns:
+      - name: deployment_id
+        tests:
+          - not_null
+      - name: merge_request_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_deployments
+    description: Base model for GitLab.com deployments.
+    columns:
+      - name: deployment_id
+        tests:
+          - not_null
+          - unique
+      - name: deployment_iid
+        tests:
+          - not_null
+      - name: project_id
+        tests:
+          - not_null
+      - name: environment_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_environments
+    description: Base model for GitLab.com environments.
+    columns:
+      - name: environment_id
+        tests:
+          - not_null
+          - unique
+      - name: project_id
+        tests:
+          - not_null
+      - name: environment_name
         tests:
           - not_null
 
@@ -300,10 +339,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: epic_metrics_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: epic_metrics_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -314,10 +353,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: epic_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: epic_created_at
+      - name: created_at
         tests:
           - not_null
 
@@ -329,19 +368,19 @@ models:
           - unique
 
   - name: gitlab_dotcom_gitlab_subscriptions
-    description: '{{ doc("gitlab_dotcom_gitlab_subscriptions") }}'
+    description: '{{ doc("gitlab_dotcom_gitlab_subscriptions") }} {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: gitlab_subscription_id
         tests:
           - not_null
-          - unique
       - name: namespace_id
         tests:
           - not_null
-      - name: gitlab_subscription_created_at
+          - no_overlapping_valid_from_to_dates
+      - name: created_at
         tests:
           - not_null
-      - name: gitlab_subscription_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -355,10 +394,10 @@ models:
       - name: group_name
         tests:
           - not_null
-      - name: group_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: group_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -395,18 +434,14 @@ models:
           - not_null
 
   - name: gitlab_dotcom_issue_links
-    description: Base model for Gitlab.com issue links
+    description: 'Base model for Gitlab.com issue links. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: issue_link_id
         tests:
           - not_null
-          - unique
-      - name: issue_link_created_at
-        tests:
-          - not_null
-      - name: issue_link_updated_at
-        tests:
-          - not_null
+          - no_overlapping_valid_from_to_dates
+      - name: created_at
+      - name: updated_at
 
   - name: gitlab_dotcom_issue_metrics
     description: Base model for Gitlab.com issue metrics
@@ -418,10 +453,10 @@ models:
       - name: issue_id
         tests:
           - not_null
-      - name: issue_metric_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: issue_metric_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -432,10 +467,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: issue_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: issue_updated_at
+      - name: updated_at
         tests:
           - not_null
       - name: issue_title
@@ -444,12 +479,12 @@ models:
         description: '{{ doc("visibility_documentation") }}'
 
   - name: gitlab_dotcom_label_links
-    description: Base model for Gitlab.com label links
+    description: 'Base model for Gitlab.com label links. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: label_link_id
         tests:
           - not_null
-          - unique
+          - no_overlapping_valid_from_to_dates
 
   - name: gitlab_dotcom_label_priorities
     description: Base model for Gitlab.com label priorities
@@ -464,10 +499,10 @@ models:
       - name: label_id
         tests:
           - not_null
-      - name: label_priority_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: label_priority_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -502,20 +537,20 @@ models:
         tests:
           - not_null
           - unique
-      - name: license_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: license_updated_at
+      - name: updated_at
         tests:
           - not_null
 
   - name: gitlab_dotcom_members
-    description: Base model for Gitlab.com members
+    description: 'Base model for Gitlab.com members. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: member_id
         tests:
           - not_null
-          - unique
+          - no_overlapping_valid_from_to_dates
 
   - name: gitlab_dotcom_merge_request_diffs
     description: Base model for Gitlab.com request diffs
@@ -527,10 +562,10 @@ models:
       - name: merge_request_id
         tests:
           - not_null
-      - name: merge_request_diff_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: merge_request_diff_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -544,10 +579,10 @@ models:
       - name: merge_request_id
         tests:
           - not_null
-      - name: merge_request_metric_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: merge_request_metric_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -560,10 +595,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: merge_request_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: merge_request_updated_at
+      - name: updated_at
         tests:
           - not_null
       - name: is_merge_to_master
@@ -587,10 +622,10 @@ models:
       - name: issue_id
         tests:
           - not_null
-      - name: merge_request_closing_issue_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: merge_request_closing_issue_created_at
+      - name: created_at
         tests:
           - not_null
 
@@ -601,10 +636,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: milestone_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: milestone_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -651,10 +686,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: namespace_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: namespace_updated_at
+      - name: updated_at
         tests:
           - not_null
       - name: namespace_path
@@ -680,10 +715,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: note_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: note_updated_at
+      - name: updated_at
         tests:
           - not_null
       - name: noteable_type
@@ -708,10 +743,10 @@ models:
       - name: user_id
         tests:
           - not_null
-      - name: notification_settings_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: notification_settings_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -725,7 +760,7 @@ models:
           - not_null
           - unique
 
-      - name: oauth_access_token_created_at
+      - name: created_at
         tests:
           - not_null
 
@@ -767,10 +802,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: project_auto_devops_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: project_auto_devops_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -785,30 +820,30 @@ models:
         tests:
           - not_null
           - unique
-      - name: project_features_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: project_features_updated_at
+      - name: updated_at
         tests:
           - not_null
 
   - name: gitlab_dotcom_project_group_links
-    description: Base model for Gitlab.com group links
+    description: 'Base model for Gitlab.com group links. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: project_group_link_id
         tests:
           - not_null
-          - unique
+          - no_overlapping_valid_from_to_dates
       - name: project_id
         tests:
           - not_null
       - name: group_id
         tests:
           - not_null
-      - name: project_features_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: project_features_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -849,10 +884,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: project_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: project_updated_at
+      - name: updated_at
         tests:
           - not_null
       - name: has_avatar
@@ -935,10 +970,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: subscription_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: subscription_updated_at
+      - name: updated_at
         tests:
           - not_null
 
@@ -984,10 +1019,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: user_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: user_updated_at
+      - name: updated_at
         tests:
           - not_null
       - name: role

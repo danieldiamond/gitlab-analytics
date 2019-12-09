@@ -24,10 +24,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: note_created_at
+      - name: created_at
         tests:
           - not_null
-      - name: note_updated_at
+      - name: updated_at
         tests:
           - not_null
       - name: noteable_type

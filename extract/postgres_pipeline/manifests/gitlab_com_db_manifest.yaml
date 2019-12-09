@@ -1466,6 +1466,7 @@ tables:
       , managing_group_id
       , bot_type
       , "role"
+      , username
       FROM users
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp

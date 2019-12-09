@@ -51,14 +51,14 @@ If none, please include a description
     * [ ]  Data Team member to share it with the required service account - [Email Address to share with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
     * [ ]  Data Team member to check file name and sheet names to match: The file will be located and loaded based on its name `sheetload.<table_name>`. The names of the sheets shared with the runner must be unique and in the `<file_name>.<tab_name>` format
     * [ ]  Data Team member to create MR to add this sheet to be pulled in by Sheetload that combines the steps taken in the following MR examples:
-           * [ ] Edit the sheets.txt file (Ex: https://gitlab.com/gitlab-data/analytics/merge_requests/1633/diffs)
-           * [ ] Edit the schema.yml, sources.yml, and add a new file for the base model (Ex: https://gitlab.com/gitlab-data/analytics/merge_requests/1634/diffs)
+      - [ ] Edit the sheets.txt file (Ex: https://gitlab.com/gitlab-data/analytics/merge_requests/1633/diffs)
+      - [ ] Edit the schema.yml, sources.yml, and add a new file for the base model (Ex: https://gitlab.com/gitlab-data/analytics/merge_requests/1634/diffs)
     * [ ]  Data Team member to run the following CI Jobs on the MR: 
-           * [ ] clone_raw
-           * [ ] sheetload
-           * [ ] specify_model
+         - [ ] clone_raw
+         - [ ] sheetload
+         - [ ] specify_model
     * [ ]  Data Analyst to assign MR to project maintainer for review (iterate until model is complete).
     * [ ]  Data Team project maintainers/owners to merge in dbt models 
     * [ ]  If not urgent, data will be availble within 24 hours. If urgent, Data Engineer to run full refresh and inform when available.
-    * [ ]  Submitter to query in Periscope for table: ``` SELECT * FROM [new-dbt-model-name] LIMIT 10 ```. 
+    * [ ]  Submitter to query in Periscope for table: ``` SELECT * FROM [new-dbt-model-name] LIMIT 10 ```.
 

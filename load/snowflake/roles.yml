@@ -271,6 +271,54 @@ roles:
                 write:
                     - analytics
 
+    - analyst_people:
+        warehouses:
+            - analyst_xs
+        member_of:
+            - bamboohr
+            - boneyard
+            - greenhouse
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - raw.gcloud_postgres_stitch
+                    - raw.netsuite_fivetran
+                    - raw.salesforce_stitch
+                    - raw.sheetload
+                    - raw.snapshots
+                    - raw.snowplow
+                    - raw.tap_postgres
+                    - raw.zendesk_stitch
+                    - raw.zuora_stitch
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+                    - snowflake.*
+            tables:
+                read:
+                    - raw.gcloud_postgres_stitch.*
+                    - raw.netsuite_fivetran.*
+                    - raw.salesforce_stitch.*
+                    - raw.sheetload.*
+                    - raw.snapshots.*
+                    - raw.snowplow.*
+                    - raw.tap_postgres.*
+                    - raw.zendesk_stitch.*
+                    - raw.zuora_stitch.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
+                    - snowflake.*.*
+
     - analyst_sales:
         warehouses:
             - analyst_xs
@@ -702,6 +750,10 @@ roles:
         warehouses:
             - reporting
 
+    - adietrich:
+        warehouses:
+            - reporting
+
     - airflow:
         warehouses:
             - gitlab_postgres
@@ -820,6 +872,10 @@ roles:
         warehouses:
             - reporting
 
+    - lvandensteen:
+        warehouses: 
+            - reporting
+
     - mdewji:
         warehouses:
             - reporting
@@ -849,6 +905,10 @@ roles:
     - permission_bot:
         warehouses:
             - admin
+
+    - pluthra:
+        warehouses:
+            - analyst_xs
 
     - pwc_jblessing:
         warehouses:
@@ -905,6 +965,12 @@ users:
         can_login: yes
         member_of:
             - acarella
+            - securityadmin
+
+    - adietrich:
+        can_login: yes
+        member_of:
+            - adietrich
             - securityadmin
 
     - agroleau:
@@ -1074,6 +1140,12 @@ users:
             - mvilain
             - analyst_sales
 
+    - lvandensteen
+        can_login: yes
+        member_of:
+            - analyst_people
+            - lvandensteen
+
     - periscope:
         can_login: yes
         member_of:
@@ -1091,6 +1163,12 @@ users:
         member_of:
             - permission_bot
             - securityadmin
+
+    - pluthra:
+        can_login: yes
+        member_of:
+            - analyst_people
+            - pluthra
 
     - pwc_jblessing:
         can_login: yes
