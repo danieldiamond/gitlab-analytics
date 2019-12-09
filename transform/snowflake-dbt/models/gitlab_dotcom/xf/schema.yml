@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: gitlab_dotcom_environments
-    description: '{{ doc("gitlab_dotcom_environments") }}'
+  - name: gitlab_dotcom_environments_xf
+    description: '{{ doc("gitlab_dotcom_environments_xf") }}'
     columns:
       - name: environment_id
         tests:

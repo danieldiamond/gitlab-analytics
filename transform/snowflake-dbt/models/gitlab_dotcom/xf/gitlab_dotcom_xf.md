@@ -1,4 +1,4 @@
-{% docs gitlab_dotcom_environments %}
+{% docs gitlab_dotcom_environments_xf %}
 
 This model anonymizes threre fields: `environment_name`, `slug`, `external_url` based on the visibility of the projects the environments are associated to 
 
