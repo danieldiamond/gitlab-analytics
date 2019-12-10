@@ -750,6 +750,10 @@ roles:
         warehouses:
             - reporting
 
+    - adietrich:
+        warehouses:
+            - reporting
+
     - airflow:
         warehouses:
             - gitlab_postgres
@@ -868,6 +872,10 @@ roles:
         warehouses:
             - reporting
 
+    - lvandensteen:
+        warehouses: 
+            - reporting
+
     - mdewji:
         warehouses:
             - reporting
@@ -957,6 +965,12 @@ users:
         can_login: yes
         member_of:
             - acarella
+            - securityadmin
+
+    - adietrich:
+        can_login: yes
+        member_of:
+            - adietrich
             - securityadmin
 
     - agroleau:
@@ -1125,6 +1139,12 @@ users:
         member_of:
             - mvilain
             - analyst_sales
+
+    - lvandensteen
+        can_login: yes
+        member_of:
+            - analyst_people
+            - lvandensteen
 
     - periscope:
         can_login: yes

@@ -16,6 +16,7 @@ WITH customers AS (
 
   SELECT *
   FROM {{ ref('gitlab_dotcom_members') }}
+  WHERE is_currently_valid = TRUE
 
 )
 
@@ -42,7 +43,10 @@ WITH customers AS (
 
 , users AS (
 
-  SELECT *
+  SELECT 
+  {{ dbt_utils.star(from=ref('gitlab_dotcom_users'), except=["created_at", "updated_at"]) }},
+    created_at AS user_created_at,
+    updated_at AS user_updated_at
   FROM {{ ref('gitlab_dotcom_users') }}
 
 )

@@ -45,6 +45,7 @@ class SnowflakeManager:
             "PERISCOPE_STAGING",
             "PERMISSION_BOT",
             "SNOWFLAKE",
+            "STITCH",
             "TARGET_SNOWFLAKE",
         ]
         connection = self.engine.connect()
