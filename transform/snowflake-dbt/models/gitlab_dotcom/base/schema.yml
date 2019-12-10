@@ -197,6 +197,20 @@ models:
       - name: updated_at
         tests:
           - not_null
+  - name: gitlab_dotcom_ci_runner_projects
+    description: Base model for Gitlab.com ci_runner_projects
+    columns:
+      - name: ci_runner_project_id
+        tests:
+          - not_null
+          - unique
+      - name: runner_id
+        tests:
+          - not_null
+      - name: project_id
+        tests:
+          - not_null
+
 
   - name: gitlab_dotcom_ci_runners
     description: Base model for Gitlab.com ci_runners
@@ -250,6 +264,32 @@ models:
       - name: updated_at
         tests:
           - not_null
+
+  - name: gitlab_dotcom_cluster_groups
+    description: Base model for Gitlab.com cluster_groups
+    columns:
+      - name: cluster_group_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+      - name: group_id
+        tests:
+          - not_null
+          
+  - name: gitlab_dotcom_cluster_projects
+    description: Base model for Gitlab.com cluster_projects
+    columns:
+      - name: cluster_project_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+      - name: project_id
 
   - name: gitlab_dotcom_deployment_merge_requests
     description: Base model for GitLab.com deployments_merge_requests.
@@ -476,6 +516,20 @@ models:
           - not_null
           - unique
 
+  - name: gitlab_dotcom_lfs_objects_projects
+    description: Base model for Gitlab.com lfs_objects_projects
+    columns:
+      - name: lfs_object_project_id
+        tests:
+          - not_null
+          - unique
+      - name: lfs_object_id
+        tests:
+          - not_null
+      - name: project_id
+        tests:
+          - not_null
+          
   - name: gitlab_dotcom_licenses
     description: Base model for Gitlab.com licenses
     columns:
@@ -710,6 +764,15 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_pages_domains
+    description: >-
+      A base model for Gitlab.com pages domains.
+    columns:
+      - name: pages_domain_id
+        tests:
+          - not_null
+          - unique
+          
   - name: gitlab_dotcom_project_authorizations
     description: >-
       Base model for Gitlab.com authorizations, duplicate rows have not been
@@ -852,6 +915,23 @@ models:
       - name: project_description
         description: '{{ doc("visibility_documentation") }}'
 
+  - name: gitlab_dotcom_releases
+    description: Base model for Gitlab.com releases
+    columns:
+      - name: release_id
+        tests:
+          - not_null
+          - unique
+      - name: project_id
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_resource_label_events
     description: '{{ doc("gitlab_dotcom_resource_label_events") }}'
     columns:
@@ -866,6 +946,23 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_snippets
+    description: Base model for Gitlab.com snippets
+    columns:
+      - name: snippet_id
+        tests:
+          - not_null
+          - unique
+      - name: author_id
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+          
   - name: gitlab_dotcom_subscriptions
     description: Base model for Gitlab.com subscriptions
     columns:
@@ -894,6 +991,23 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_todos
+    description: Base model for Gitlab.com todos
+    columns:
+      - name: todo_id
+        tests:
+          - not_null
+          - unique
+      - name: user_id
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+  
   - name: gitlab_dotcom_users
     description: >-
       Base model for Gitlab.com users, the following fields are hidden for
