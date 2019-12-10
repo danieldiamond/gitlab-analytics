@@ -12,7 +12,6 @@ WITH source AS (
 ), renamed AS (
   
     SELECT
-    
       id::INTEGER               AS snippet_id,
       author_id::INTEGER        AS author_id,
       project_id::INTEGER       AS project_id,
