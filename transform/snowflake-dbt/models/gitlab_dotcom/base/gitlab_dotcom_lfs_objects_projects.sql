@@ -14,7 +14,6 @@ WITH source AS (
 , renamed AS (
   
     SELECT 
-     
       id::INTEGER              AS lfs_object_project_id,
       lfs_object_id::INTEGER   AS lfs_object_id,
       project_id::INTEGER      AS project_id,
