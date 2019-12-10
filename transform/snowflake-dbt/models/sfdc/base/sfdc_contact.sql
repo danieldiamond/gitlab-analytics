@@ -49,6 +49,8 @@ WITH source AS (
         mailingcountry              AS mailing_country,
         mailingcountrycode          AS mailing_country_code,
         mailingpostalcode           AS mailing_zip_code,
+        mailinglatitude             AS mailing_latitude, 
+        mailinglongitude            AS mailing_longitude,
 
         -- info
         using_ce__c                 AS using_ce,

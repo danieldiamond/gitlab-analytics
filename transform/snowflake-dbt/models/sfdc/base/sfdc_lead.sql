@@ -51,6 +51,8 @@ WITH source AS (
         country                     AS country,
         countrycode                 AS country_code,
         postalcode                  AS postal_code,
+        latitude                    AS latitude,
+        longitude                   AS longitude,
 
         -- info
         requested_contact__c        AS requested_contact,

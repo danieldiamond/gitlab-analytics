@@ -60,6 +60,8 @@ WITH source AS (
       named_account__c                         AS named_account,
       billingcountry                           AS billing_country, 
       billingpostalcode                        AS billing_postal_code, 
+      billinglongitude                         AS billing_longitude, 
+      billinglatitude                          AS billing_latitude,
 
       --present state info
       health__c                                AS health_score,
