@@ -12,7 +12,6 @@ WITH source AS (
 ), renamed AS (
   
     SELECT
-    
       id::INTEGER           AS todo_id,
       user_id::INTEGER      AS user_id,
       project_id::INTEGER   AS project_id,
