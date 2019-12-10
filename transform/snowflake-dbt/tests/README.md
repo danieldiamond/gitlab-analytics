@@ -93,7 +93,7 @@ Failure in test relationships_snowplow_web_events_time_page_view_id__page_view_i
 
 ### Test: current_depts_and_divs
 
-This test makes sure there are no current employees who don't have a division or department.
+This test makes sure there are no current employees who don't have a division, department, or cost center.
 The output is the row for the employee which does not have a department or division.
 If this test fails, ping the People Operations team with the employee's name.
 You will need to temporarily filter out the problematic candidate while it is resolved upstream. 
