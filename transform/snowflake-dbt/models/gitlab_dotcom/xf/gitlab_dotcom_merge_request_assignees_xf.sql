@@ -53,11 +53,12 @@ WITH users AS (
     merge_request_id,
     merge_request_created_at,
     merged_at,
-    author_id  AS merge_request_author_id,
+    author_id             AS merge_request_author_id,
+    note_id,
     note_author_id,
-    created_at AS note_created_at,
+    notes_flat.created_at AS note_created_at,
     event,
-    user_id    AS event_user_id,
+    user_id               AS event_user_id,
     rank_in_event,
     namespace_id,
     ultimate_parent_id,
@@ -65,10 +66,10 @@ WITH users AS (
     is_part_of_product,
     is_community_contributor_related
   FROM notes_flat
+  INNER JOIN merge_requests
+    ON notes_flat.noteable_id = merge_requests.merge_request_id   
   LEFT JOIN users
-    ON notes_flat.username = users.username
-  LEFT JOIN merge_requests
-    ON notes_flat.noteable_id = merge_requests.merge_request_id  
+    ON notes_flat.username = users.username 
   
 )
 
