@@ -45,7 +45,7 @@ WITH users AS (
     note_author_id,
     created_at,
     note,
-    event,
+    LOWER(event)              AS event,
     f.index                   AS rank_in_event,
     REPLACE(f.value, '@', '') AS username
   FROM notes_cleaned,
