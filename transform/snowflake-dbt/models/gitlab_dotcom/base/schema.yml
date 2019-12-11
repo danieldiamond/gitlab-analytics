@@ -328,15 +328,15 @@ models:
           - unique
 
   - name: gitlab_dotcom_gitlab_subscriptions
-    description: '{{ doc("gitlab_dotcom_gitlab_subscriptions") }}'
+    description: '{{ doc("gitlab_dotcom_gitlab_subscriptions") }} {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: gitlab_subscription_id
         tests:
           - not_null
-          - unique
       - name: namespace_id
         tests:
           - not_null
+          - no_overlapping_valid_from_to_dates
       - name: created_at
         tests:
           - not_null
@@ -394,18 +394,14 @@ models:
           - not_null
 
   - name: gitlab_dotcom_issue_links
-    description: Base model for Gitlab.com issue links
+    description: 'Base model for Gitlab.com issue links. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: issue_link_id
         tests:
           - not_null
-          - unique
+          - no_overlapping_valid_from_to_dates
       - name: created_at
-        tests:
-          - not_null
       - name: updated_at
-        tests:
-          - not_null
 
   - name: gitlab_dotcom_issue_metrics
     description: Base model for Gitlab.com issue metrics
@@ -443,12 +439,12 @@ models:
         description: '{{ doc("visibility_documentation") }}'
 
   - name: gitlab_dotcom_label_links
-    description: Base model for Gitlab.com label links
+    description: 'Base model for Gitlab.com label links. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: label_link_id
         tests:
           - not_null
-          - unique
+          - no_overlapping_valid_from_to_dates
 
   - name: gitlab_dotcom_label_priorities
     description: Base model for Gitlab.com label priorities
@@ -495,12 +491,12 @@ models:
           - not_null
 
   - name: gitlab_dotcom_members
-    description: Base model for Gitlab.com members
+    description: 'Base model for Gitlab.com members. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: member_id
         tests:
           - not_null
-          - unique
+          - no_overlapping_valid_from_to_dates
 
   - name: gitlab_dotcom_merge_request_diffs
     description: Base model for Gitlab.com request diffs
@@ -769,12 +765,12 @@ models:
           - not_null
 
   - name: gitlab_dotcom_project_group_links
-    description: Base model for Gitlab.com group links
+    description: 'Base model for Gitlab.com group links. {{ doc("scd_type_two_documentation") }}'
     columns:
       - name: project_group_link_id
         tests:
           - not_null
-          - unique
+          - no_overlapping_valid_from_to_dates
       - name: project_id
         tests:
           - not_null

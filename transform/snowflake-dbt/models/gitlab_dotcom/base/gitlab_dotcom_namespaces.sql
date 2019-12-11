@@ -11,18 +11,9 @@ WITH source AS (
 
 ), gitlab_subscriptions AS (
 
-    /*
-      Here we only want the current (most recent) gitlab subscription for each namespace.
-      This windowing approach does not handle hard deletes correctly. 
-      We will develop a more elegant approach after https://gitlab.com/gitlab-data/analytics/issues/2727
-    */
-    SELECT
-      *,
-      ROW_NUMBER() OVER (
-        PARTITION BY namespace_id
-        ORDER BY updated_at DESC
-      ) AS rank_in_namespace_id
+    SELECT *
     FROM {{ref('gitlab_dotcom_gitlab_subscriptions')}}
+    WHERE is_currently_valid = TRUE
 
 ), namespaces AS (
 
@@ -65,7 +56,6 @@ WITH source AS (
   FROM namespaces
     LEFT JOIN gitlab_subscriptions
       ON namespaces.namespace_id = gitlab_subscriptions.namespace_id
-      AND gitlab_subscriptions.rank_in_namespace_id = 1
 
 )
 
