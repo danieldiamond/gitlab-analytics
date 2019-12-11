@@ -107,7 +107,7 @@ models:
       - name: count_audit_events_active_users_last_28_days
         description: The number of unique active users (from events table) in the previous 28 days (inclusive). 
 
-  - name: gitlab_dotcom_merge_request_assignees_xf
+  - name: gitlab_dotcom_merge_request_assignment_events
     description: This model contains the history of assignments and unassignments for merge requests within internal namespaces. 
     columns:
       - name: merge_request_id

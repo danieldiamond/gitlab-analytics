@@ -5,11 +5,6 @@ WITH users AS (
       username
     FROM {{ ref('gitlab_dotcom_users') }}
 
-), merge_requests AS (
-
-    SELECT *
-    FROM {{ ref('gitlab_dotcom_merge_requests_xf') }}
-
 ), notes AS (
 
     SELECT
@@ -50,24 +45,14 @@ WITH users AS (
 ), joined AS (
 
   SELECT
-    merge_request_id,
-    merge_request_created_at,
-    merged_at,
-    author_id             AS merge_request_author_id,
+    noteable_id AS merge_request_id,
     note_id,
     note_author_id,
-    notes_flat.created_at AS note_created_at,
+    created_at  AS note_created_at,
     event,
-    user_id               AS event_user_id,
-    rank_in_event,
-    namespace_id,
-    ultimate_parent_id,
-    is_included_in_engineering_metrics,
-    is_part_of_product,
-    is_community_contributor_related
-  FROM notes_flat
-  INNER JOIN merge_requests
-    ON notes_flat.noteable_id = merge_requests.merge_request_id   
+    user_id     AS event_user_id,
+    rank_in_event
+  FROM notes_flat 
   LEFT JOIN users
     ON notes_flat.username = users.username 
   
@@ -75,3 +60,4 @@ WITH users AS (
 
 SELECT *
 FROM joined
+ORDER BY 1,2,7
