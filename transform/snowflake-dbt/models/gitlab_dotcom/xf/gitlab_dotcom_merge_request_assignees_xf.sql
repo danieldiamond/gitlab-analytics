@@ -30,7 +30,7 @@ WITH users AS (
     note,
     event,
     strtok_to_array(REGEXP_REPLACE(event_string, '(, and )|( and )|(, )', ','), ',') AS event_cleaned
-  FROM note_sample
+  FROM notes
   UNPIVOT(event_string FOR event IN (assigned, unassigned))
   
 ), notes_flat AS (
