@@ -1,10 +1,22 @@
+{{ config({
+    "materialized": "incremental",
+    "unique_key": "note_id"
+    })
+}}
+
+
 {% set fields_to_mask = ['note'] %}
 
 WITH base AS (
 
     SELECT *
     FROM {{ ref('gitlab_dotcom_notes') }}
+    WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+    {% if is_incremental() %}
 
+    WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+
+    {% endif %}
 )
 
 , projects AS (
@@ -26,7 +38,7 @@ WITH base AS (
 , anonymised AS (
     
     SELECT
-      {{ dbt_utils.star(from=ref('gitlab_dotcom_environments'), except=fields_to_mask|upper, relation_alias='base') }},
+      {{ dbt_utils.star(from=ref('gitlab_dotcom_notes'), except=fields_to_mask|upper, relation_alias='base') }},
       {% for field in fields_to_mask %}
       CASE
         WHEN TRUE 
