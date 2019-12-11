@@ -7,10 +7,6 @@ This model recognizes that there are three levels of analysis: Zuora Subscriptio
 
 This model extends `zuora_mrr_totals` by joining it to SFDC account data through `zuora_account`'s `crm_id` value.  From the account, we get the ultimate parent account information. It now holds details for _every_ level of analysis, including cohort months and cohort quarters for each level and product information. 
 
-We want to guarantee that each subscription has a linked SFDC account. Every zuora subscription is linked to a SFDC account through the `crm_id`. This `LEFT JOIN` (in the model, the CTE `initial_join_to_sfdc`) can potentially return a null value for the column `sfdc_account_id_int`. SFDC accounts can be deleted/merged, see the doc [here](LINK) and hence filtered out from our model `sfdc_accounts_xf`. In this case, the `LEFT JOIN` will return `NULL` values for `sfdc_account_id_int`.  
-
-For the subscriptions that fail to be joined with `sfdc_accounts_xf` in the CTE `initial_join_to_sfdc` because they were referencing a deleted SFDC account, we use the model `sfdc_deleted_accounts` that stores all deleted SFDC accounts and a `sfdc_master_record_id` which is the SFDC account they were merged to. We get this SFDC master record as the SFDC account linked to the subscription. 
-
 All retention analyses start at this table.
 
 {% enddocs %}
