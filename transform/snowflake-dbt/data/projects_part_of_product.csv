@@ -151,3 +151,5 @@ gitlab-org/security-products/tests/typescript-yarn,10846938
 gitlab-org/security-products/tests/webgoat,7688358
 gitlab-org/labkit,9438583
 gitlab-org/container-registry,13831684
+gitlab-org/gitlab-ui,7071551
+gitlab-org/cluster-integration/cluster-applications,14404642
