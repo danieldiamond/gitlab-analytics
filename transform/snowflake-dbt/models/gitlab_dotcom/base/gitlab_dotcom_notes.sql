@@ -26,7 +26,7 @@ WITH source AS (
       author_id::INTEGER                                    AS note_author_id,
       created_at::TIMESTAMP                                 AS created_at,
       updated_at::TIMESTAMP                                 AS updated_at,
-      project_id::INTEGER                                   AS note_project_id,
+      project_id::INTEGER                                   AS project_id,
       attachment::VARCHAR                                   AS attachment,
       line_code::VARCHAR                                    AS line_code,
       commit_id::VARCHAR                                    AS commit_id,
