@@ -12,7 +12,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-
+      id::INTEGER                      AS project_auto_devops_id,
       project_id::INTEGER              AS project_id,
       created_at::TIMESTAMP            AS created_at,
       updated_at::TIMESTAMP            AS updated_at,
