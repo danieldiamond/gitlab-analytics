@@ -2,13 +2,13 @@
   {
     "event_name": "ci_builds",
     "table_name": "gitlab_dotcom_ci_builds",
-    "key_to_parent_object": "project_id",
+    "key_to_parent_object": "ci_build_project_id",
     "primary_key": "ci_build_id"
   },
   {
     "event_name": "notes",
     "table_name": "gitlab_dotcom_notes",
-    "key_to_parent_object": "project_id",
+    "key_to_parent_object": "note_project_id",
     "primary_key": "note_id"
   },
   {
@@ -80,11 +80,11 @@ WITH namespaces AS (
 
 SELECT
   ultimate_namespace.namespace_id, 
-  ultimate_namespace.created_at         AS namespace_created_at,
+  ultimate_namespace.namespace_created_at,
   projects.created_at                   AS project_created_at,
   {{ event_cte.event_name }}.created_at AS event_created_at
 FROM {{ event_cte.event_name }}
-LEFT JOIN projects ON label_events.project_id = projects.project_id
+LEFT JOIN projects ON {{ event_cte.event_name }}.{{event_cte.key_to_parent_object}} = projects.project_id
 LEFT JOIN namespaces ON projects.namespace_id = namespaces.namespace_id
 LEFT JOIN namespaces AS ultimate_namespace 
   ON namespaces.namespace_ultimate_parent_id = ultimate_namespace.namespace_id
