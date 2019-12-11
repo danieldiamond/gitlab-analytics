@@ -93,6 +93,7 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
 ### Submitter 
    * [ ] Post in #data channel in Slack
    * [ ] Link to Periscope Charts/Dashboards from the Handbook. Every Periscope Dashboard should be linked from the Handbook **at least once**. All performance indicators can be [embedded in the handbook](https://about.gitlab.com/handbook/business-ops/data-team/periscope/#embedding-periscope-charts-in-the-handbook) except those that are [not public](https://about.gitlab.com/handbook/values/#not-public). 
+   * [ ] Add label `Approved`
    * [ ] Close this MR
 
 /label ~Reporting ~Periscope ~Review
