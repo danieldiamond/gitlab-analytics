@@ -9,11 +9,20 @@ WITH users AS (
 
     SELECT
       *,
-      REPLACE(SPLIT_PART(note, 'unassigned ', 1), 'assigned to ', '') AS assigned,
-      SPLIT_PART(note, 'unassigned ', 2)                              AS unassigned
+      CASE
+        WHEN note NOT LIKE 'Reassigned%' 
+          THEN REPLACE(SPLIT_PART(note, 'unassigned ', 1), 'assigned to ', '')
+        ELSE NULL
+      END                              AS assigned,
+      CASE
+        WHEN note LIKE 'Reassigned%'
+          THEN REPLACE(note, 'Reassigned to ', '') 
+        ELSE NULL
+      END                              AS reassigned,
+    SPLIT_PART(note, 'unassigned ', 2) AS unassigned
     FROM {{ ref('gitlab_dotcom_internal_notes_xf') }}
     WHERE noteable_type = 'MergeRequest'
-      AND (note LIKE 'assigned%' OR note like 'unassigned%')
+      AND (note LIKE 'assigned to%' OR note LIKE 'unassigned%' OR note LIKE 'Reassigned%')
 
 ), notes_cleaned AS (
 
@@ -26,7 +35,7 @@ WITH users AS (
     event,
     strtok_to_array(REGEXP_REPLACE(event_string, '(, and )|( and )|(, )', ','), ',') AS event_cleaned
   FROM notes
-  UNPIVOT(event_string FOR event IN (assigned, unassigned))
+  UNPIVOT(event_string FOR event IN (assigned, unassigned, reassigned))
   
 ), notes_flat AS (
 
