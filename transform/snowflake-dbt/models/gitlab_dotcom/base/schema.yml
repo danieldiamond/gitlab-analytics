@@ -349,8 +349,8 @@ models:
           - not_null
       - name: valid_to
         tests:
-          - greater_than:
-              compare_to: valid_from
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_groups
     description: '{{ doc("gitlab_dotcom_groups") }}'
@@ -416,8 +416,8 @@ models:
           - not_null
       - name: valid_to
         tests:
-          - greater_than:
-              compare_to: valid_from
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_issue_metrics
     description: Base model for Gitlab.com issue metrics
@@ -467,8 +467,8 @@ models:
           - not_null
       - name: valid_to
         tests:
-          - greater_than:
-              compare_to: valid_from
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_label_priorities
     description: Base model for Gitlab.com label priorities
@@ -527,8 +527,8 @@ models:
           - not_null
       - name: valid_to
         tests:
-          - greater_than:
-              compare_to: valid_from
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_merge_request_diffs
     description: Base model for Gitlab.com request diffs
@@ -821,8 +821,8 @@ models:
           - not_null
       - name: valid_to
         tests:
-          - greater_than:
-              compare_to: valid_from
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_project_import_data
     description: Base model for Gitlab.com import data
