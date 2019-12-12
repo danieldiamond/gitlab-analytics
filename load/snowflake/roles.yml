@@ -1140,7 +1140,7 @@ users:
             - mvilain
             - analyst_sales
 
-    - lvandensteen
+    - lvandensteen:
         can_login: yes
         member_of:
             - analyst_people
