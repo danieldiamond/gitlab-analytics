@@ -2,27 +2,27 @@
 pii:
   schema: salesforce_stitch
     tables: 
-      - contact
+      - name: contact
         primary_key: id
         columns:
-          - email
-          - name
-          - firstname
-          - lastname
-          - phone
-      - lead
+          - name: email
+          - name: name
+          - name: firstname
+          - name: lastname
+          - name: phone
+      - name: lead
         primary_key: id
         columns:
-          - email
-          - name
-          - firstname
-          - lastname
-          - phone
+          - name: email
+          - name: name
+          - name: firstname
+          - name: lastname
+          - name: phone
   schema: tap_postgres
     tables:
-      - gitlab_db_users
+      - name: gitlab_db_users
         primary_key: id
         columns:
-          - notification_email
-          - public_email
-          - unconfirmed_email
+          - name: notification_email
+          - name: public_email
+          - name: unconfirmed_email
