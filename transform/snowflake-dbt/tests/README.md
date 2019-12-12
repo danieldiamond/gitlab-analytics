@@ -96,7 +96,8 @@ Failure in test relationships_snowplow_web_events_time_page_view_id__page_view_i
 This test makes sure there are no current employees who don't have a division, department, or cost center.
 The output is the row for the employee which does not have a department or division.
 If this test fails, ping the People Operations team with the employee's name.
-You will need to temporarily filter out the problematic candidate while it is resolved upstream. 
+You will need to temporarily filter out the problematic candidate while it is resolved upstream.
+Alternatively, it's possible the cost center is missing from the csv file (loaded using dbt seed).
 
 ### Test: no_missing_location_factors
 
@@ -134,7 +135,7 @@ Steps to Resolve:
 * Step 1: Run the chatops command `/gitlab datachat run uncategorized_pings` from Slack to see the test results in Slack.
 * Step 2: Create a new issue.
 * Step 3: Ask in the #product slack channel which stage the new metric belongs to.
-* Step 4: Create an MR that adds the new metric to the `version_usage_stats_to_stage_mappings` CSV. Remember to keep it sorted alphabetically. 
+* Step 4: Create an MR that adds the new metric to the `version_usage_stats_to_stage_mappings` CSV. Remember to keep it sorted alphabetically.
 
 ### Test: zuora_account_has_crm_id
 
