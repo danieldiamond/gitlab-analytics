@@ -86,7 +86,7 @@ This model includes one row for every day, but MAU for a given month will typica
 
 {% docs gitlab_dotcom_merge_request_assignment_events %}
 
-This model contains the history of assignments, unassignments, and reassignments for merge requests within internal namespaces. 
+This model contains the history of assignments, unassignments, and reassignments for merge requests within internal namespaces. From `gitlab_dotcom_internal_notes_xf`, notes of type `MergeRequest` are queried. Notes are stemmed down to referenced usernames, tokenized, and flattened so that for each event (assign, unassign, reassign) a row is created for each referenced username in the order it appears in the note. Finally, usernames are replaced with user id's by joining to `gitlab_dotcom_users`. Usernames that do not have an associated user_id (if the user was deleted or changed usernames) are not included in this model so as to not misattribute assignee changes.
 
 {% enddocs %}
 
