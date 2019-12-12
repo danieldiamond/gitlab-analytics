@@ -94,7 +94,7 @@ brew tap fishtown-analytics/dbt
 brew install dbt
 echo "dbt successfully installed.. Printing version.."
 dbt --version
-echo "Seting up dbt profile.."
+echo "Setting up dbt profile.."
 mkdir ~/.dbt
 touch ~/.dbt/profiles.yml
 curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/sample_profiles.yml >> ~/.dbt/profiles.yml
