@@ -31,7 +31,7 @@ all_children AS (
 //      projects.project_id
 //    FROM top_level
 //      LEFT JOIN projects
-//        ON top_level.namespace_id = projects.namespace_ultimate_parent_id -- CHECK
+//        ON top_level.namespace_id = projects.namespace_ultimate_parent_id
 ),
 
 members_max_access AS (
