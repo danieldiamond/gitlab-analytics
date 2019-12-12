@@ -377,12 +377,20 @@ models:
         tests:
           - not_null
           - no_overlapping_valid_from_to_dates
+          - unique_where_currently_valid
       - name: created_at
         tests:
           - not_null
       - name: updated_at
         tests:
           - not_null
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_groups
     description: '{{ doc("gitlab_dotcom_groups") }}'
@@ -440,8 +448,16 @@ models:
         tests:
           - not_null
           - no_overlapping_valid_from_to_dates
+          - unique_where_currently_valid
       - name: created_at
       - name: updated_at
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_issue_metrics
     description: Base model for Gitlab.com issue metrics
@@ -485,6 +501,14 @@ models:
         tests:
           - not_null
           - no_overlapping_valid_from_to_dates
+          - unique_where_currently_valid
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_label_priorities
     description: Base model for Gitlab.com label priorities
@@ -551,6 +575,14 @@ models:
         tests:
           - not_null
           - no_overlapping_valid_from_to_dates
+          - unique_where_currently_valid
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_merge_request_diffs
     description: Base model for Gitlab.com request diffs
@@ -834,6 +866,7 @@ models:
         tests:
           - not_null
           - no_overlapping_valid_from_to_dates
+          - unique_where_currently_valid
       - name: project_id
         tests:
           - not_null
@@ -846,6 +879,13 @@ models:
       - name: updated_at
         tests:
           - not_null
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_project_import_data
     description: Base model for Gitlab.com import data

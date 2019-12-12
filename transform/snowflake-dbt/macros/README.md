@@ -420,6 +420,21 @@ This macro is a custom schema test to be used as a column test in a schema.yml f
 Used in:
 - gitlab_dotcom/base/schema.yml
 
+## Test Unique Where Currently Valid([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/tests/test_unique_where_currently_valid.sql))
+This macro tests a column for uniqueness, but only checks rows with an `is_currently_valid` column with a value of True. This custom test was made specifically for models using the SCD macro and the default dbt uniquess test should be used in all other cases. 
+
+```
+  - name: gitlab_dotcom_issue_links
+    columns:
+      - name: issue_link_id
+        tests:
+          - not_null
+          - unique_where_currently_valid
+```
+
+Used in:
+- gitlab_dotcom/base/schema.yml
+
 ## Unpack Unstructured Events ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/version/unpack_unstructured_event.sql))
 This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.
 Usage:
