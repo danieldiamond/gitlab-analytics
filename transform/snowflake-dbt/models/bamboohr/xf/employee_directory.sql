@@ -30,7 +30,7 @@ WITH bamboohr_directory AS (
 ), cost_center as (
 
     SELECT *
-    FROM {{ref('cost_center_division_department_mapping')}}
+    FROM {{ref('cost_center_division_department_mapping')}} 
 )
 
 SELECT distinct
