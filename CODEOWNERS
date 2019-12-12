@@ -30,7 +30,7 @@
 
 Makefile @tayloramurphy
 docker-compose.yml @tayloramurphy
-.gitlab-ci.yml @tayloramurphy 
+.gitlab-ci.yml @tayloramurphy
 
 # ======
 # dbt Overwrites
@@ -38,7 +38,7 @@ docker-compose.yml @tayloramurphy
 
 /transform/ @tayloramurphy @emilie
 /transform/snowflake-dbt/ @tayloramurphy @kathleentam @emilie
-/transform/snowflake-dbt/snowflake-dbt-ci.yml @tayloramurphy 
+/transform/snowflake-dbt/snowflake-dbt-ci.yml @tayloramurphy
 /transform/snowflake-dbt/docs/ @tayloramurphy
 /transform/snowflake-dbt/macros/ @tayloramurphy @emilie
 /transform/snowflake-dbt/models/bamboohr/ @emilie
@@ -51,3 +51,9 @@ docker-compose.yml @tayloramurphy
 /transform/snowflake-dbt/models/smau_events/ @eli_kastelein @mpeychet
 /transform/snowflake-dbt/models/snowplow/ @tayloramurphy
 /transform/snowflake-dbt/models/snowplow_combined/ @tayloramurphy
+
+# ======
+# dbt data file Overwrites
+# ======
+
+/transform/snowflake-dbt/data/projects_part_of_product.csv @clefelhocz1
