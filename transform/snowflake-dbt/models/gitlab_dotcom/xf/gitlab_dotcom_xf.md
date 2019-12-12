@@ -84,6 +84,12 @@ This model includes one row for every day, but MAU for a given month will typica
 
 {% enddocs %}
 
+{% docs gitlab_dotcom_merge_request_assignment_events %}
+
+This model contains the history of assignments, unassignments, and reassignments for merge requests within internal namespaces. 
+
+{% enddocs %}
+
 
 {% docs gitlab_dotcom_merge_requests_xf%}
 

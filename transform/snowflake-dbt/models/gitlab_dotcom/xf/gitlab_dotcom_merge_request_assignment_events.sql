@@ -62,7 +62,7 @@ WITH users AS (
       user_id     AS event_user_id,
       rank_in_event
     FROM notes_flat 
-    LEFT JOIN users
+    INNER JOIN users
       ON notes_flat.user_name = users.user_name 
   
 )
