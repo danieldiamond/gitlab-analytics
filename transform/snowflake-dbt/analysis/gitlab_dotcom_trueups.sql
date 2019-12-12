@@ -23,6 +23,7 @@ all_children AS (
   FROM top_level
     LEFT JOIN sub_groups
       ON top_level.namespace_id = sub_groups.ultimate_parent_id
+    --Project members aren't currently counted.
 //    UNION 
 //    SELECT
 //      top_level.namespace_id,
@@ -178,7 +179,4 @@ WHERE True
   AND count_seats_above_entitiled > 0
 QUALIFY ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY count_zuora_seats_entitled_to DESC) = 1 --Handle multiple customers accounts tied to same namespace (rare)
 ORDER BY count_seats_above_entitiled DESC
-
---SELECT SUM(mrr_per_seat_on_current_subscription * count_seats_above_entitiled) * 12 FROM final WHERE count_seats_above_entitiled > 0 AND subscription_days_old_on_12_06 > 365
-
---Consensys Systems UK Ltd.
+;
