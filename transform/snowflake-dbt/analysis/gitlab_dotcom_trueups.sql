@@ -1,54 +1,75 @@
-WITH members_raw AS ( --Workaround until !1986 is merged
-    SELECT
-      id::INTEGER                                    AS member_id,
-      access_level::INTEGER                          AS access_level,
-      source_id::INTEGER                             AS source_id,
-      source_type                                    AS member_source_type
-    FROM raw.tap_postgres.gitlab_db_members
-    WHERE _task_instance = (SELECT MAX(_task_instance) FROM raw.tap_postgres.gitlab_db_members)
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
+WITH top_level AS (
+  SELECT *
+  FROM analytics.gitlab_dotcom_namespaces_xf
+  WHERE namespace_type = 'Group'
+    AND parent_id IS NULL
+),
+
+sub_groups AS (
+  SELECT *
+  FROM analytics_staging.gitlab_dotcom_namespace_lineage
+),
+
+projects AS (
+  SELECT *
+  FROM analytics.gitlab_dotcom_projects_xf
+),
+
+all_children AS (
+  SELECT
+    top_level.namespace_id  AS ultimate_parent_id,
+    'Namespace'             AS source_type,
+    sub_groups.namespace_id AS source_id
+  FROM top_level
+    LEFT JOIN sub_groups
+      ON top_level.namespace_id = sub_groups.ultimate_parent_id
+//    UNION 
+//    SELECT
+//      top_level.namespace_id,
+//      'Project',
+//      projects.project_id
+//    FROM top_level
+//      LEFT JOIN projects
+//        ON top_level.namespace_id = projects.namespace_ultimate_parent_id -- CHECK
+),
+
+members_max_access AS (
+  SELECT
+    all_children.ultimate_parent_id AS namespace_id,
+    members.user_id,
+    MAX(access_level) AS max_access_level
+  FROM all_children
+    INNER JOIN analytics.gitlab_dotcom_members AS members
+      ON  all_children.source_id = members.source_id
+      AND all_children.source_type = members.member_source_type
+      AND is_currently_valid = True
+  GROUP BY 1,2
 ),
 
 members AS (
   SELECT
-    source_id AS namespace_id,
-    COALESCE(COUNT(DISTINCT CASE WHEN access_level > 20 THEN member_id END), 0) AS count_non_guest_members,
-    COALESCE(COUNT(DISTINCT CASE WHEN access_level = 10 THEN member_id END), 0) AS count_guest_members
-  FROM members_raw --analytics.gitlab_dotcom_members AS members
-  WHERE member_source_type = 'Namespace'
+    namespace_id,
+    COALESCE(COUNT(DISTINCT CASE WHEN max_access_level >= 20 THEN user_id END), 0) AS count_non_guest_members,
+    COALESCE(COUNT(DISTINCT CASE WHEN max_access_level = 10 THEN user_id END), 0) AS count_guest_members
+  FROM members_max_access
   GROUP BY 1
-),
-
-gitlab_subscriptions_raw AS ( --Workaround until !1986 is merged
-    SELECT
-      id::INTEGER                                   AS gitlab_subscription_id,
-      start_date::DATE                              AS gitlab_subscription_start_date,
-      end_date::DATE                                AS gitlab_subscription_end_date,
-      trial_ends_on::DATE                           AS gitlab_subscription_trial_ends_on,
-      namespace_id::INTEGER                         AS namespace_id,
-      hosted_plan_id::INTEGER                       AS plan_id,
-      max_seats_used::INTEGER                       AS max_seats_used,
-      seats::INTEGER                                AS seats,
-      trial::BOOLEAN                                AS is_trial,
-      created_at::TIMESTAMP                         AS created_at,
-      updated_at::TIMESTAMP                         AS updated_at
-    FROM raw.tap_postgres.gitlab_db_gitlab_subscriptions
-    WHERE _task_instance = (SELECT MAX(_task_instance) FROM raw.tap_postgres.gitlab_db_gitlab_subscriptions)
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY _uploaded_at DESC) = 1
 ),
 
 gl_subs AS (
   SELECT
     namespace_id,
     plan_id
-  FROM gitlab_subscriptions_raw --analytics_staging.gitlab_dotcom_gitlab_subscriptions AS gl_subs
+  FROM analytics_staging.gitlab_dotcom_gitlab_subscriptions AS gl_subs
   WHERE True
     AND plan_id != 34
     AND is_trial = False
+    AND is_currently_valid = True
 ),
 
 customers AS (
   SELECT DISTINCT
+    cust_customers.company AS company_name,
+    cust_orders.customer_id AS customer_id,
     cust_orders.gitlab_namespace_id,
     cust_customers.zuora_account_id,
     cust_orders.subscription_id AS zuora_subscription_id,
@@ -85,6 +106,7 @@ zuora AS (
   WHERE subscription_status = 'Active'
     AND zuora_rp.product_category IN ('Gold', 'Silver', 'Bronze')
     AND effective_end_date >= CURRENT_DATE
+    AND mrr>0
   QUALIFY DENSE_RANK() OVER (PARTITION BY zuora_subscriptions.account_id ORDER BY segment DESC) = 1 -- TODO: if account join changes later on
 ),
 
@@ -100,6 +122,9 @@ summed_zuora AS (
 final AS (
 
   SELECT
+    customers.company_name,
+    'https://customers.gitlab.com/admin/customer/' || customers.customer_id AS customers_portal_link,
+
     CASE
       WHEN summed_zuora.product_category = 'Gold' THEN count_non_guest_members
       ELSE count_non_guest_members + count_guest_members
@@ -108,6 +133,7 @@ final AS (
     count_seats_currently_used - count_zuora_seats_entitled_to AS count_seats_above_entitiled,
     summed_zuora.mrr_per_seat_on_current_subscription,
     count_seats_above_entitiled * mrr_per_seat_on_current_subscription AS "Seats Over x MRR per Seat",
+    count_seats_above_entitiled * mrr_per_seat_on_current_subscription * 12 AS "12 x Seats Over x MRR per Seat",
 
     gl_subs.namespace_id,
     --gl_subs.plan_id,
@@ -115,13 +141,14 @@ final AS (
     members.count_guest_members,
 
     customers.zuora_subscription_id,
-    'https://www.zuora.com/apps/Subscription.do?method=view&id' || customers.zuora_subscription_id AS zuora_subscription_link,
+    'https://www.zuora.com/apps/Subscription.do?method=view&id=' || customers.zuora_subscription_id AS zuora_subscription_link,
     customers.zuora_account_id,
     'https://www.zuora.com/apps/CustomerAccount.do?method=view&id=' || customers.zuora_account_id AS zuora_account_link,
     customers.sfdc_account_id,
     'https://gitlab.my.salesforce.com/' || customers.sfdc_account_id AS sfdc_account_link,
     summed_zuora.subscription_start_date,
-    DATEDIFF('days', subscription_start_date, CURRENT_DATE) AS subscription_days_old_on_12_06,
+    DATEDIFF('days', subscription_start_date, CURRENT_DATE) AS subscription_days_old_on_12_11,
+    (subscription_days_old_on_12_11 >= 365) AS subscription_over_one_year_on_12_11,
     summed_zuora.subscription_end_date,
     summed_zuora.product_category,
     summed_zuora.auto_renew
@@ -143,6 +170,7 @@ final AS (
     AND zuora_subscription_id NOT IN ('2c92a0ff6e68f558016e7fec81b11a4b')
   ORDER BY count_seats_above_entitiled DESC
 )
+--SELECT * FROM members_max_access WHERE namespace_id = 3517177;
 
 SELECT *
 FROM final 
@@ -151,4 +179,6 @@ WHERE True
 QUALIFY ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY count_zuora_seats_entitled_to DESC) = 1 --Handle multiple customers accounts tied to same namespace (rare)
 ORDER BY count_seats_above_entitiled DESC
 
---SELECT SUM(mrr_per_seat_on_current_subscription * count_seats_above_entitiled) * 12 FROM final WHERE count_seats_above_entitiled > 0
+--SELECT SUM(mrr_per_seat_on_current_subscription * count_seats_above_entitiled) * 12 FROM final WHERE count_seats_above_entitiled > 0 AND subscription_days_old_on_12_06 > 365
+
+--Consensys Systems UK Ltd.
