@@ -74,7 +74,7 @@ WITH source AS (
       bot_type::INTEGER                                                AS bot_type,
       source.role::INTEGER                                             AS role_id,
       {{user_role_mapping(user_role='source.role')}}::VARCHAR          AS role,
-      username::VARCHAR                                                AS username
+      username::VARCHAR                                                AS user_name
 
     FROM source
     QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY updated_at DESC) = 1

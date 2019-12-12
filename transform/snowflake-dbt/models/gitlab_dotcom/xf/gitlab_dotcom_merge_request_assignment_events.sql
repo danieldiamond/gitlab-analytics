@@ -2,7 +2,7 @@ WITH users AS (
 
     SELECT
       user_id,
-      username
+      user_name
     FROM {{ ref('gitlab_dotcom_users') }}
 
 ), notes AS (
@@ -26,44 +26,44 @@ WITH users AS (
 
 ), notes_cleaned AS (
 
-  SELECT
-    note_id,
-    noteable_id,
-    note_author_id,
-    created_at,
-    note,
-    event,
-    strtok_to_array(REGEXP_REPLACE(event_string, '(, and )|( and )|(, )', ','), ',') AS event_cleaned
-  FROM notes
-  UNPIVOT(event_string FOR event IN (assigned, unassigned, reassigned))
+    SELECT
+      note_id,
+      noteable_id,
+      note_author_id,
+      created_at,
+      note,
+      event,
+      strtok_to_array(REGEXP_REPLACE(event_string, '(, and )|( and )|(, )', ','), ',') AS event_cleaned
+    FROM notes
+    UNPIVOT(event_string FOR event IN (assigned, unassigned, reassigned))
   
 ), notes_flat AS (
 
-  SELECT 
-    note_id,
-    noteable_id,
-    note_author_id,
-    created_at,
-    note,
-    LOWER(event)              AS event,
-    f.index                   AS rank_in_event,
-    REPLACE(f.value, '@', '') AS username
-  FROM notes_cleaned,
-  LATERAL FLATTEN(input => event_cleaned) f
+    SELECT 
+      note_id,
+      noteable_id,
+      note_author_id,
+      created_at,
+      note,
+      LOWER(event)              AS event,
+      f.index                   AS rank_in_event,
+      REPLACE(f.value, '@', '') AS user_name
+    FROM notes_cleaned,
+    LATERAL FLATTEN(input => event_cleaned) f
 
 ), joined AS (
 
-  SELECT
-    noteable_id AS merge_request_id,
-    note_id,
-    note_author_id,
-    created_at  AS note_created_at,
-    event,
-    user_id     AS event_user_id,
-    rank_in_event
-  FROM notes_flat 
-  LEFT JOIN users
-    ON notes_flat.username = users.username 
+    SELECT
+      noteable_id AS merge_request_id,
+      note_id,
+      note_author_id,
+      created_at  AS note_created_at,
+      event,
+      user_id     AS event_user_id,
+      rank_in_event
+    FROM notes_flat 
+    LEFT JOIN users
+      ON notes_flat.user_name = users.user_name 
   
 )
 
