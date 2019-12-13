@@ -100,7 +100,7 @@ WITH customers AS (
       namespace_with_latest_trial_date.namespace_id,
       namespace_with_latest_trial_date.latest_trial_end_date,
       COALESCE(customers_db_latest_trials_per_namespace.order_start_date, 
-                  namespace_with_latest_trial_date.estimated_latest_trial_start_date) AS latest_trial_start_date,
+               namespace_with_latest_trial_date.estimated_latest_trial_start_date) AS latest_trial_start_date,
       customers.customer_id,
       customers.customer_provider_user_id,
       customers.country,
