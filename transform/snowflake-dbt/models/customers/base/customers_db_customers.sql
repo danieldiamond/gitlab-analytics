@@ -31,8 +31,6 @@ WITH source AS (
     company_size::VARCHAR            AS company_size,
     salesforce_account_id::VARCHAR   AS sfdc_account_id,
     billable::BOOLEAN                AS customer_is_billable,
-    access_token::VARCHAR            AS access_token,
-    confirmation_token::VARCHAR      AS confirmation_token,
     confirmed_at::TIMESTAMP          AS confirmed_at,
     confirmation_sent_at::TIMESTAMP  AS confirmation_sent_at
  FROM source
