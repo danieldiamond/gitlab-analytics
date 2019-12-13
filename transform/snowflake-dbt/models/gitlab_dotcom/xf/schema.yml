@@ -119,7 +119,14 @@ models:
         description: The number of unique active users (from audit events table) in the previous 28 days (inclusive). 
       - name: count_audit_events_active_users_last_28_days
         description: The number of unique active users (from events table) in the previous 28 days (inclusive). 
-        
+
+  - name: gitlab_dotcom_merge_request_assignment_events
+    description: '{{ doc("gitlab_dotcom_merge_request_assignment_events") }}'
+    columns:
+      - name: merge_request_id
+        tests: 
+          - not_null
+
   - name: gitlab_dotcom_merge_requests_xf
     description: '{{ doc("gitlab_dotcom_merge_requests_xf") }}'
     columns:
