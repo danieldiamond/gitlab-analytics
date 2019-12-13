@@ -117,3 +117,9 @@ This is the source table for the archived Salesforce opportunities.
 This is the source table for the archived Salesforce users.
 
 {% enddocs %}
+
+{% docs sfdc_oppfieldhistory_source %}
+
+This is the source table for Opportunity Field History.
+
+{% enddocs %}

@@ -49,13 +49,13 @@ WITH months AS (
 
     SELECT
       entity_id AS group_id,
-      DATE_TRUNC(month, audit_event_created_at)  AS audit_event_month,
+      DATE_TRUNC(month, created_at)              AS audit_event_month,
       COUNT(*)                                   AS audit_events_count
 
     FROM {{ ref('gitlab_dotcom_audit_events') }}
     WHERE entity_type = 'Group'
       {% if is_incremental() %}
-        AND audit_event_created_at >= (SELECT MAX(audit_event_month) from {{ this }})
+        AND created_at >= (SELECT MAX(audit_event_month) from {{ this }})
       {% endif %}
     GROUP BY 1,2
 

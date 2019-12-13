@@ -15,10 +15,9 @@
 {% set track_timing = ['category','variable','timing','label'] %}
 
 
-with base as (
+WITH source as (
 
-SELECT
-    DISTINCT
+    SELECT DISTINCT
       app_id,
       base_currency,
       br_colordepth,
@@ -43,7 +42,10 @@ SELECT
       collector_tstamp,
       contexts,
       derived_contexts,
-      derived_tstamp,
+      -- correctting bugs on ruby tracker which was sending wrong timestamp
+      -- https://gitlab.com/gitlab-data/analytics/issues/3097
+      IFF(DATE_PART('year', TRY_TO_TIMESTAMP(derived_tstamp)) > 1970, 
+            derived_tstamp, collector_tstamp) AS derived_tstamp,
       doc_charset,
       try_to_numeric(doc_height)              AS doc_height,
       try_to_numeric(doc_width)               AS doc_width,
@@ -153,22 +155,41 @@ SELECT
       v_tracker,
       uploaded_at,
       'GitLab' AS infra_source
-{% if target.name not in ("prod") -%}
+    {% if target.name not in ("prod") -%}
 
-FROM {{ source('gitlab_snowplow', 'events_sample') }}
+    FROM {{ source('gitlab_snowplow', 'events_sample') }}
 
-{%- else %}
+    {%- else %}
 
-FROM {{ source('gitlab_snowplow', 'events') }}
+    FROM {{ source('gitlab_snowplow', 'events') }}
 
-{%- endif %}
+    {%- endif %}
+)
 
-WHERE app_id IS NOT NULL
-AND date_part(month, try_to_timestamp(derived_tstamp)) = '{{ month_value }}'
-AND date_part(year, try_to_timestamp(derived_tstamp)) = '{{ year_value }}'
-AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
-AND lower(page_url) NOT LIKE 'http://localhost:%'
-AND try_to_timestamp(derived_tstamp) is not null
+, base AS (
+  
+    SELECT * 
+    FROM source
+    WHERE app_id IS NOT NULL
+      AND date_part(month, try_to_timestamp(derived_tstamp)) = '{{ month_value }}'
+      AND date_part(year, try_to_timestamp(derived_tstamp)) = '{{ year_value }}'
+      AND 
+        (
+          (
+            -- js backend tracker
+            v_tracker LIKE 'js%'
+            AND lower(page_url) NOT LIKE 'https://staging.gitlab.com/%'
+            AND lower(page_url) NOT LIKE 'http://localhost:%'
+          )
+          
+          OR
+          
+          (
+            -- ruby backend tracker
+            v_tracker LIKE 'rb%'
+          )
+        )
+      AND try_to_timestamp(derived_tstamp) is not null
 
 ), events_to_ignore as (
 

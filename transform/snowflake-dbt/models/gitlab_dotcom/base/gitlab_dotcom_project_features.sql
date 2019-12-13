@@ -5,10 +5,9 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'project_features') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -22,11 +21,10 @@ WITH source AS (
       snippets_access_level::INTEGER                  AS snippets_access_level,
       builds_access_level::INTEGER                    AS builds_access_level,
       repository_access_level::INTEGER                AS repository_access_level,
-      created_at::TIMESTAMP                           AS project_features_created_at,
-      updated_at::TIMESTAMP                           AS project_features_updated_at
+      created_at::TIMESTAMP                           AS created_at,
+      updated_at::TIMESTAMP                           AS updated_at
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

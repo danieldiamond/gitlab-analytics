@@ -101,10 +101,10 @@ WITH customers AS (
       
     users.user_id                                           AS gitlab_user_id,
     IFF(users.user_id IS NOT NULL, TRUE, FALSE)             AS is_gitlab_user,
-    users.user_created_at,
+    users.created_at                                        AS user_created_at,
     
     
-    namespaces.namespace_created_at,
+    namespaces.created_at                                   AS namespace_created_at,
     namespaces.namespace_type,
     
     IFF(converted_trials.order_id IS NOT NULL, TRUE, FALSE) AS is_converted,

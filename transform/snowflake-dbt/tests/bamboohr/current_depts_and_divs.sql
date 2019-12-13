@@ -8,4 +8,4 @@ WITH source as (
 SELECT *
 FROM source
 WHERE date_actual = CURRENT_date
-  AND (department IS NULL OR division IS NULL)
+  AND (department IS NULL OR division IS NULL OR cost_center IS NULL)

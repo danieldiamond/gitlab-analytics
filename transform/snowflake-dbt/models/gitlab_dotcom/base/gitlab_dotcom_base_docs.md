@@ -20,9 +20,22 @@ The recurvice CTE uses a top-down approach to iterate though each namespace. The
 
 {% docs gitlab_dotcom_gitlab_subscriptions %}
 
-Base model for Gitlab.com gitlab_subscriptions. These are the plan subscriptions for the gitlab.com product, as opposed to the `subscriptions` table (no prefix) which deals with subscribing to issues and merge requests.
+Base model for Gitlab.com gitlab_subscriptions. These are the plan subscriptions for the GitLab.com product, as opposed to the `subscriptions` table (no prefix) which deals with subscriptions in the notification sense, related to issues and merge requests.
+
+Note: the primary_key in this model is `namespace_id`.
 
 {% enddocs %}
+
+
+{% docs scd_type_two_documentation %}
+<br/>
+### Type 2 Slowly Changing Dimension
+This base model is modelled as a Type 2 Slowly Changing Dimension. This means 3 columns have been added as metadata to track row-level changes over time. These columns are `valid_from`, `valid_to` and `is_currently_valid`. One implication of this is that the primary key column in this table is *not* unique. There can be multiple rows per primary_key, but only a maximum of one will have `is_currently_vaild` set to TRUE. 
+
+Read the documentation for the SCD Type 2 Macro [here](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md#scd_type_2).
+
+{% enddocs %}
+
 
 {% docs gitlab_dotcom_events %}
 
@@ -30,6 +43,7 @@ Base model for Gitlab.com events. Events are documented [here](https://docs.gitl
 We do one transformation in this base model where we map an `action_type_id` to an `action_type` thanks to the macro `action_type`.
 
 {% enddocs %}
+
 
 {% docs visibility_documentation %}
 This content will be masked for privacy in one of the following conditions:

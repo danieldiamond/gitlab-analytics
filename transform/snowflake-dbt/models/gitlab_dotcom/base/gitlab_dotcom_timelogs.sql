@@ -13,16 +13,16 @@ WITH source AS (
 ), renamed AS (
   
     SELECT 
-      id         AS timelog_id,
-      created_at,
-      spent_at,
-      updated_at,
+      id::INTEGER               AS timelog_id,
+      created_at::TIMESTAMP     AS created_at,
+      spent_at::TIMESTAMP       AS spent_at,
+      updated_at::TIMESTAMP     AS updated_at,
       
-      time_spent AS seconds_spent,
+      time_spent::INTEGER       AS seconds_spent,
       
-      issue_id,
-      merge_request_id,
-      user_id
+      issue_id::INTEGER         AS issue_id,
+      merge_request_id::INTEGER AS merge_request_id,
+      user_id::INTEGER          AS user_id  
     FROM source
     
 )

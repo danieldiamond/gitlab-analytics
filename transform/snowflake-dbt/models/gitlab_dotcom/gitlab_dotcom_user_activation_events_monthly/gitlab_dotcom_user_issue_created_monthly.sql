@@ -16,10 +16,10 @@ WITH months AS (
 
     SELECT
       user_id,
-      DATE_TRUNC(month, user_created_at) AS user_created_at_month
+      DATE_TRUNC(month, created_at) AS user_created_at_month
 
     FROM {{ ref('gitlab_dotcom_users') }}
-    WHERE user_created_at < DATE_TRUNC('month', CURRENT_DATE)
+    WHERE created_at < DATE_TRUNC('month', CURRENT_DATE)
 
 ), skeleton AS ( -- Create a framework of one row per user per month (after their creation date)
 
@@ -39,7 +39,7 @@ WITH months AS (
 
     SELECT
       author_id,
-      DATE_TRUNC('month', issue_created_at) AS event_month,
+      DATE_TRUNC('month', created_at) AS event_month,
       COUNT(*) AS events_count
 
     FROM {{ ref('gitlab_dotcom_issues') }}
