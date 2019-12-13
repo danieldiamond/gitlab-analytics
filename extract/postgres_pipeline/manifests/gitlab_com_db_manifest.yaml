@@ -576,7 +576,7 @@ tables:
     import_query: >
       SELECT deployment_id
       , merge_request_id
-      , CONCAT(deployment_id,'_',merge_request_id) as deployment_merge_request_id
+      , CONCAT(deployment_id,'_',merge_request_id) as pkey
       FROM deployment_merge_requests
     export_schema: 'gitlab_com'
     export_table: 'deployment_merge_requests'
