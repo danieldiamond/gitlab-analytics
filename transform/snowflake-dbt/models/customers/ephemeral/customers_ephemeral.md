@@ -4,7 +4,7 @@ This model is used to build [latest_trial_per_namespaces_xf]().
 
 It is used to build a single table summarising trials information for a specific namespace.
 
-We start from `customers_db_orders_snapshots_base` model in order to isolate the trials. This model does the following thing:
+We start from `customers_db_orders_snapshots_base` model in order to isolate the trials. This model does the following:
 
 * It isolates the orders that are flagged with the column `is_trial=TRUE`
 * It deduplicates by taking the latest row created for a specific `gitlab_namespace_id`
