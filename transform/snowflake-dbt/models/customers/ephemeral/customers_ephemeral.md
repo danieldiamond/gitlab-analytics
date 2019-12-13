@@ -1,6 +1,6 @@
 {% docs customers_db_latest_trials_per_namespace %}
 
-This model is used to build [latest_trial_per_namespaces_xf]().
+This model is used to build [latest_trial_per_namespaces_xf](/model.gitlab_snowflake.latest_trial_per_namespaces_xf).
 
 It is used to build a single table summarising trials information for a specific namespace.
 
