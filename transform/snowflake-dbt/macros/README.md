@@ -37,6 +37,15 @@ Used in:
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
 
+## Create Snapshot Base Models ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/create_snapshot_base.sql))
+This macro creates a base model for dbt snapshots. A single entry is generated from the chosen start date through the current date for the specified primary key(s) and unit of time. 
+Usage:
+```
+"{{create_snapshot_base(source, primary_key, date_start, date_part, snapshot_id_name)}}"
+```
+Used in:
+- sfdc_opportunity_snapshots_base.sql
+
 ## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
 Usage:
@@ -54,6 +63,28 @@ Usage:
 ```
 Used in:
 - dbt_project.yml
+
+## Distinct Source ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/distinct_source.sql))
+This macro is used for condensing a `source` CTE into unique rows only. Our ETL runs quite frequently while most rows in our source tables don't update as frequently. So we end up with a lot of rows in our RAW tables that look the same as each other (except for the metadata columns with a leading underscore). This macro takes in a `source_cte` and looks for unique values across ALL columns (excluding airflow metadata.)  
+
+This macro **is specific** to pgp tables (gitlab_dotcom, version, license) and should not be used outside of those. Specifically, it makes references to 2 airflow metadata columns:
+* `_uploaded_at`: we only want the *minimum* value per unique row ... AKA "when did we *first* see this unique row?" This macros calls this column `valid_from` (to be used in the SCD Type 2 Macro)
+* `_task_instance`: we want to know the *maximum* task instance (what was the last task when we saw this row?). This is used later to infer whether a `primary_key` is still present in the source table (as a roundabout way to track hard deletes)
+
+Usage:
+```
+WITH
+{{ distinct_source(source=source('gitlab_dotcom', 'gitlab_subscriptions'))}}
+
+, renamed AS ( ...
+```
+
+Used in:
+- gitlab_dotcom_gitlab_subscriptions.sql
+- gitlab_dotcom_issue_links.sql
+- gitlab_dotcom_label_links.sql
+- gitlab_dotcom_members.sql
+- gitlab_dotcom_project_group_links.sql
 
 ## Generate Custom Schema ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/generate_custom_schema.sql))
 This macro is used for implementing custom schemas for each model. For untagged models, the output is to the target schema (e.g. `emilie_scratch` and `analytics`). For tagged models, the output is dependent on the target. It is `emilie_scratch_staging` on dev and `analytics_staging` on prod. A similar pattern is followed for the `sensitive` config.
@@ -194,10 +225,12 @@ Usage:
 ```
 Used in:
 - sfdc_opportunity.sql
+- sfdc_opportunity_field_historical.sql
+- sfdc_opportunity_snapshot_history.sql
 - zendesk_organizations.sql
 - sfdc_lead.sql
 
-## Schema Union All ([Source](ttps://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_all.sql))
+## Schema Union All ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_all.sql))
 This macro takes a schema prefix and a table name and does a UNION ALL on all tables that match the pattern.
 Usage:
 ```
@@ -207,7 +240,7 @@ Used in:
 - snowplow_combined/all/*.sql
 - snowplow_combined/30/*.sql
 
-## Schema Union Limit ([Source](ttps://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_limit.sql))
+## Schema Union Limit ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_limit.sql))
 This macro takes a schema prefix, a table name, a column name, and an integer representing days. It returns a view that is limited to the last 30 days based on the column name. Note that this also calls schema union all which can be a heavy call.
 Usage:
 ```
@@ -217,6 +250,44 @@ Used in:
 - snowplow_combined/30_day/*.sql
 - snowplow_combined/90_day/*.sql
 
+## SCD Type 2 ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/scd_type_2.sql))
+This macro inserts SQL statements that turn the inputted CTE into a [type 2 slowly changing dimension model](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row). According to [Orcale](https://www.oracle.com/webfolder/technetwork/tutorials/obe/db/10g/r2/owb/owb10gr2_gs/owb/lesson3/slowlychangingdimensions.htm), "a Type 2 SCD retains the full history of values. When the value of a chosen attribute changes, the current record is closed. A new record is created with the changed data values and this new record becomes the current record. Each record contains the effective time and expiration time to identify the time period between which the record was active."
+
+In particular, this macro adds 3 columns: `valid_from`, `valid_to`, and `is_currently_valid`. It does not alter or drop any of the existing columns in the input CTE.
+* `valid_from` will never be null
+* `valid_to` can be NULL for up to one row per ID. It is possible for an ID to have 0 currently active rows (implies a "Hard Delete" on the source db)
+* `is_currently_active` will be TRUE in cases where `valid_to` is NULL (for either 0 or 1 rows per ID)
+
+The parameters are as follows:
+  * **primary_key_renamed**: The primary key column from the `casted_cte`. According to our style guide, we usually rename primary keys to include the table name ("merge_request_id")
+  * **primary_key_raw**: The same column as above, but references the column name from when it was in the RAW schema (usually "id")
+  * **source_cte**: (defaults to '`distinct_source`). This is the name of the CTE with all of the unique rows from the raw source table. This will always be `distinct_source` if using the `distinct_source` macro.
+  * **casted_cte**: (defaults to `renamed`). This is the name of the CTE where all of the columns have been casted and renamed. Our internal convention is to call this `renamed`. This CTE needs to have a column called `valid_from`.
+
+This macro does **not** reference anything specific to the pgp data sources, but was built with them in mind. It is unlikely that this macro will be useful to anything outside of pgp data sources as it was built for a fairly specific problem. We would have just used dbt snapshots here except for the fact that they currently don't support hard deletes. dbt snapshots should be satisfactory for most other use cases.
+
+This macro was built to be used in conjunction with the [distinct_source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/distinct_source.sql)) macro.
+
+Usage:
+```
+, renamed AS (
+  ... 
+)
+
+{{ scd_type_2(
+    primary_key_renamed='project_group_link_id',
+    primary_key_raw='id'
+) }}
+```
+
+
+Used in:
+- gitlab_dotcom_gitlab_subscriptions.sql
+- gitlab_dotcom_issue_links.sql
+- gitlab_dotcom_label_links.sql
+- gitlab_dotcom_members.sql
+- gitlab_dotcom_project_group_links.sql
+
 ## SFDC Deal Size ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sfdc_deal_size.sql))
 This macro buckets a unit into a deal size (Small, Medium, Big, or Jumbo) based on an inputted value.
 Usage:
@@ -225,6 +296,8 @@ Usage:
 ```
 Used in:
 - sfdc_opportunity.sql
+- sfdc_opportunity_field_historical.sql
+- sfdc_opportunity_snapshot_history.sql
 - sfdc_account_deal_size_segmentation.sql
 
 ## SFDC Source Buckets ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sfdc_source_buckets.sql))
@@ -237,6 +310,8 @@ Used in:
 - sfdc_contact
 - sfdc_lead
 - sfdc_opportunity
+- sfdc_opportunity_field_historical.sql
+- sfdc_opportunity_snapshot_history.sql
 
 ## SMAU Events CTES
 
@@ -329,6 +404,36 @@ This macro implements the `CASE WHEN` logic for Support SLAs, as [documented in 
 ```
 Used in:
 - zendesk_tickets_xf.sql
+
+## Test No Overlapping Valid From To Dates ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/tests/test_no_overlapping_valid_from_to_dates.sql))
+This macro is a custom schema test to be used as a column test in a schema.yml file. It checks that there is a maximum of one valid row for that column on a selection of randomly selected dates. It expects that there are 2 other columns in the model: `valid_from` and `valid_to`. It was developed to be used on primary key columns in models built using the [SCD Type 2 macro](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/scd_type_2.sql).
+
+```
+  - name: gitlab_dotcom_members
+    columns:
+      - name: member_id
+        tests:
+          - not_null
+          - no_overlapping_valid_from_to_dates
+```
+
+Used in:
+- gitlab_dotcom/base/schema.yml
+
+## Test Unique Where Currently Valid([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/tests/test_unique_where_currently_valid.sql))
+This macro tests a column for uniqueness, but only checks rows with an `is_currently_valid` column with a value of True. This custom test was made specifically for models using the SCD macro and the default dbt uniquess test should be used in all other cases. 
+
+```
+  - name: gitlab_dotcom_issue_links
+    columns:
+      - name: issue_link_id
+        tests:
+          - not_null
+          - unique_where_currently_valid
+```
+
+Used in:
+- gitlab_dotcom/base/schema.yml
 
 ## Unpack Unstructured Events ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/version/unpack_unstructured_event.sql))
 This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.

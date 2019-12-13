@@ -58,6 +58,8 @@ WITH source AS (
       support_level__c                         AS support_level,
       support_level_numeric__c                 AS support_level_numeric,
       named_account__c                         AS named_account,
+      billingcountry                           AS billing_country, 
+      billingpostalcode                        AS billing_postal_code, 
 
       --present state info
       health__c                                AS health_score,

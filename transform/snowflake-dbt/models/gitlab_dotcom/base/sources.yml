@@ -53,6 +53,8 @@ sources:
         identifier: gitlab_db_ci_pipeline_variables
       - name: ci_pipelines
         identifier: gitlab_db_ci_pipelines
+      - name: ci_runner_projects
+        identifier: gitlab_db_ci_runner_projects
       - name: ci_runners
         identifier: gitlab_db_ci_runners
       - name: ci_stages
@@ -63,6 +65,18 @@ sources:
         identifier: gitlab_db_ci_triggers
       - name: ci_variables
         identifier: gitlab_db_ci_variables
+      - name: cluster_groups
+        identifier: gitlab_db_cluster_groups
+      - name: cluster_projects
+        identifier: gitlab_db_cluster_projects
+      - name: clusters
+        identifier: gitlab_db_clusters
+      - name: deployments
+        identifier: gitlab_db_deployments
+      - name: deployment_merge_requests
+        identifier: gitlab_db_deployment_merge_requests
+      - name: environments
+        identifier: gitlab_db_environments
       - name: epic_issues
         identifier: gitlab_db_epic_issues
       - name: epic_metrics
@@ -89,6 +103,8 @@ sources:
         identifier: gitlab_db_label_priorities
       - name: labels
         identifier: gitlab_db_labels
+      - name: lfs_objects_projects
+        identifier: gitlab_db_lfs_objects_projects
       - name: licenses
         identifier: gitlab_db_licenses
       - name: members
@@ -115,6 +131,8 @@ sources:
         identifier: gitlab_db_notification_settings
       - name: oauth_access_tokens
         identifier: gitlab_db_oauth_access_tokens
+      - name: pages_domains
+        identifier: gitlab_db_pages_domains
       - name: project_authorizations
         identifier: gitlab_db_project_authorizations
       - name: project_auto_devops
@@ -131,11 +149,17 @@ sources:
         identifier: gitlab_db_project_statistics
       - name: projects
         identifier: gitlab_db_projects
+      - name: releases
+        identifier: gitlab_db_releases
       - name: resource_label_events
         identifier: gitlab_db_resource_label_events
       - name: subscriptions
         identifier: gitlab_db_subscriptions
+      - name: snippets
+        identifier: gitlab_db_snippets
       - name: timelogs
         identifier: gitlab_db_timelogs
+      - name: todos
+        identifier: gitlab_db_todos
       - name: users
         identifier: gitlab_db_users
