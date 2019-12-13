@@ -40,7 +40,7 @@ This order examplifies perfectly what is happening in the table `customers_db_or
 
 {% enddocs %}
 
-{% docs latest_trial_per_namespaces_xf %}
+{% docs latest_trial_per_namespace_xf %}
 
 This model collects for a specific namespace the latest trials information. 
 

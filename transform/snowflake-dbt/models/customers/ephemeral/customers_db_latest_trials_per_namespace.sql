@@ -18,7 +18,7 @@ WITH orders_snapshots AS (
   
 )
 
-, latest_trials_from_trial_snapshot AS (
+, latest_trials_from_trials_snapshot AS (
   
     SELECT *
     FROM trials_snapshots
@@ -27,4 +27,4 @@ WITH orders_snapshots AS (
 )  
 
 SELECT * 
-FROM latest_trials_from_trial_snapshot
+FROM latest_trials_from_trials_snapshot

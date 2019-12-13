@@ -125,7 +125,7 @@ WITH customers AS (
       ON trials_joined.namespace_id = orders_shapshots_excluding_ci_minutes.gitlab_namespace_id
     INNER JOIN zuora_subscription_with_positive_mrr_tcv AS subscription
       ON orders_shapshots_excluding_ci_minutes.subscription_name_slugify = subscription.subscription_name_slugify
-        AND trials_joined.latest_trial_start_date <= subscription.subscription_start_date
+      AND trials_joined.latest_trial_start_date <= subscription.subscription_start_date
     WHERE orders_shapshots_excluding_ci_minutes.subscription_name_slugify IS NOT NULL
   
 )
@@ -147,12 +147,13 @@ WITH customers AS (
       
       trials_joined.latest_trial_start_date, 
       trials_joined.latest_trial_end_date,
-      MIN(subscription_start_date)                            AS subscription_start_date
-      
+      MIN(subscription_start_date)                            AS subscription_start_date  
     FROM trials_joined
-    LEFT JOIN namespaces ON trials_joined.namespace_id = namespaces.namespace_id
-    LEFT JOIN users ON trials_joined.customer_provider_user_id = users.user_id
-    LEFT JOIN converted_trials ON trials_joined.namespace_id = converted_trials.namespace_id
+    LEFT JOIN namespaces 
+      ON trials_joined.namespace_id = namespaces.namespace_id
+    LEFT JOIN users 
+      ON trials_joined.customer_provider_user_id = users.user_id
+    LEFT JOIN converted_trials  ON trials_joined.namespace_id = converted_trials.namespace_id
     {{dbt_utils.group_by(11)}}
 
 )
