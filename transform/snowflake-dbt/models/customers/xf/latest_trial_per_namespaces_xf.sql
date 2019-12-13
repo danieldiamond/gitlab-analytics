@@ -28,8 +28,8 @@ WITH customers AS (
 
 , orders_snapshots AS (
   
-  SELECT * 
-  FROM {{ ref('customers_db_orders_snapshots_base')}}
+    SELECT *
+    FROM {{ ref('customers_db_orders_snapshots_base')}}
   
 )
 
