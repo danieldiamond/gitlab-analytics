@@ -14,7 +14,7 @@ WITH source AS (
     SELECT
       deployment_id::INTEGER                           AS deployment_id,
       merge_request_id::INTEGER                        AS merge_request_id
-      pkey::INTEGER                                    AS pkey
+      MD5(deployment_merge_request_id::VARCHAR)        AS deployment_merge_request_id
     FROM source
 
 )
