@@ -979,7 +979,6 @@ roles:
                     - raw.stitch_google_sheets.*
                     - raw.zendesk_stitch.*
                     - raw.zuora_stitch.*
-
     
     - target_snowflake:
         warehouses:
