@@ -834,7 +834,7 @@ roles:
                 read:
                     - raw.netsuite_fivetran.*
                 write:
-                    - raw.netsuite_fivetran
+                    - raw.netsuite_fivetran.*
 
     - gitlab_ci:
         warehouses:
