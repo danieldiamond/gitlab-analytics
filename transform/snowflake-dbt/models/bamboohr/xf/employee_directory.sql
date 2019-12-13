@@ -58,7 +58,7 @@ LEFT JOIN cost_center
 LEFT JOIN location_factor
   ON location_factor.bamboo_employee_number = mapping.employee_number
 WHERE hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
-AND mapping.employee_id NOT IN (
+  AND mapping.employee_id NOT IN (
                               '41683', --https://gitlab.com/gitlab-data/analytics/issues/2749
                               '41692', --https://gitlab.com/gitlab-data/analytics/issues/2749
                               '41693', --https://gitlab.com/gitlab-data/analytics/issues/2882
