@@ -142,7 +142,7 @@ WITH customers AS (
       users.created_at                                        AS user_created_at,
       
       
-      namespaces.namespace_created_at,
+      namespaces.created_at                                   AS namespace_created_at,
       namespaces.namespace_type,
       
       trials_joined.latest_trial_start_date, 
