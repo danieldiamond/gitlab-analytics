@@ -49,8 +49,8 @@ WITH customers AS (
 
 , zuora_base_mrr AS (
  
-     SELECT * 
-     FROM {{ ref('zuora_base_mrr')}}
+    SELECT *
+    FROM {{ ref('zuora_base_mrr')}}
  
 )
 
