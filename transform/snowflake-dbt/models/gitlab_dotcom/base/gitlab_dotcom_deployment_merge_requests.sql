@@ -7,7 +7,7 @@ WITH source AS (
 
     SELECT *
     FROM {{ source('gitlab_dotcom', 'deployment_merge_requests') }}
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY pkey ORDER BY _uploaded_at DESC) = 1
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY deployment_merge_request_id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
 
