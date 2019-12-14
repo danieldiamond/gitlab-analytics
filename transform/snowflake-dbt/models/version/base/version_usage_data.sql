@@ -69,7 +69,7 @@ renamed AS (
     PARSE_JSON(counts)                       AS stats_used
   FROM source
   WHERE uuid IS NOT NULL
-    --??????? AND (CHECK_JSON(counts) IS NULL) 
+    AND (CHECK_JSON(counts) IS NULL) 
 )
 
 SELECT *
