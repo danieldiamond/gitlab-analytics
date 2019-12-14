@@ -34,9 +34,9 @@ models:
           - name: action
             tests:
                 - not_null
-          - name: action
+          - name: count_users
             tests:
-                - count_users
+                - not_null
 
     - name: version_usage_data_boolean
       description: converts all ping values to either 0 or 1 in order to determine if a feature has *ever* been used
