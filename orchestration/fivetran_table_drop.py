@@ -12,10 +12,10 @@ def main(engine: Engine) -> None:
     Create the events_sample table with 5M max rows
     """
 
-    logging.info("Running create statement ...")
+    logging.info("Running dropte statements...")
 
     transactions_drop = """
-    drop table raw.netsuite_fivetran.transactions
+    drop table raw.netsuite_fivetran.transactions;
     """
 
     lines_drop = """
@@ -48,6 +48,6 @@ if __name__ == "__main__":
     engine = snowflake_engine_factory(config_dict, "SYSADMIN")
     logging.info(f"Engine Created: {engine}")
 
-    logging.info("Prepping to create table...")
+    logging.info("Prepping to drop tables...")
     main(engine)
-    logging.info("Table created successfully!")
+    logging.info("Tables dropped successfully!")
