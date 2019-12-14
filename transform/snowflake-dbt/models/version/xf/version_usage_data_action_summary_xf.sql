@@ -15,9 +15,7 @@ WITH usage_data AS (
     LATERAL FLATTEN(INPUT => usage_activity_by_stage, RECURSIVE => False) f
   WHERE usage_activity_by_stage != '{}'
 
-),
-
-final AS (
+), final AS (
 
   SELECT
     by_stage.usage_data_id,
