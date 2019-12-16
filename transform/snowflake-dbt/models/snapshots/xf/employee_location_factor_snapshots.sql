@@ -27,12 +27,14 @@ with source as (
 SELECT bamboo_employee_number::bigint as bamboo_employee_number,
         location_factor::float as location_factor,
         valid_from,
-        valid_to
+        valid_to,
+        conditional_change_event(location_factor) over(order by bamboo_employee_number, valid_to asc) as location_factor_change_event_number
 FROM renamed
 )
 SELECT bamboo_employee_number,
        location_factor,
+       location_factor_change_event_number
        min(valid_from) as valid_from,
        max(valid_to) as valid_to
 FROM deduplicated
-GROUP BY 1, 2
+GROUP BY 1, 2, 3
