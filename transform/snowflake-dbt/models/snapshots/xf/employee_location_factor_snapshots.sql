@@ -33,7 +33,7 @@ FROM renamed
 )
 SELECT bamboo_employee_number,
        location_factor,
-       location_factor_change_event_number
+       location_factor_change_event_number,
        min(valid_from) as valid_from,
        max(valid_to) as valid_to
 FROM deduplicated
