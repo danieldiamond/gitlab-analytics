@@ -52,6 +52,8 @@ gitlab-org/gitter/styleguide,3787977
 gitlab-org/gitter/troupeobjccommon,8375261
 gitlab-org/gitter/webapp,3601513
 gitlab-org/grafana-dashboards,928825
+gitlab-org/iglu,14694517
+gitlab-org/license-gitlab-com,6457868
 gitlab-org/omniauth-gitlab,143237
 gitlab-org/omniauth-ldap,27726
 gitlab-org/omnibus-gitlab,20699
@@ -153,3 +155,4 @@ gitlab-org/labkit,9438583
 gitlab-org/container-registry,13831684
 gitlab-org/gitlab-ui,7071551
 gitlab-org/cluster-integration/cluster-applications,14404642
+gitlab-services/version-gitlab-com
