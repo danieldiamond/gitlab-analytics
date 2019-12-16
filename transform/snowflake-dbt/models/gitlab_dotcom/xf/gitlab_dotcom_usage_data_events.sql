@@ -40,6 +40,48 @@
     "table_name": "gitlab_dotcom_deployments",
     "key_to_parent_object": "project_id",
     "primary_key": "deployment_id"
+  },
+  {
+    "event_name": "issues",
+    "table_name": "gitlab_dotcom_issues",
+    "key_to_parent_object": "project_id",
+    "primary_key": "issue_id"
+  },
+  {
+    "event_name": "milestones",
+    "table_name": "gitlab_dotcom_milestones",
+    "key_to_parent_object": "project_id",
+    "primary_key": "milestone_id"
+  },
+  {
+    "event_name": "releases",
+    "table_name": "gitlab_dotcom_releases",
+    "key_to_parent_object": "project_id",
+    "primary_key": "release_id"
+  },
+  {
+    "event_name": "labels",
+    "table_name": "gitlab_dotcom_labels",
+    "key_to_parent_object": "project_id",
+    "primary_key": "label_id"
+  },
+  {
+    "event_name": "boards",
+    "table_name": "gitlab_dotcom_boards",
+    "key_to_parent_object": "project_id",
+    "primary_key": "board_id"
+  },
+  {
+    "event_name": "environments",
+    "table_name": "gitlab_dotcom_environments",
+    "key_to_parent_object": "project_id",
+    "primary_key": "environment_id"
+  },
+  {
+    "event_name": "ci_pipeline_schedules",
+    "table_name": "gitlab_dotcom_ci_pipeline_schedules",
+    "key_to_parent_object": "project_id",
+    "primary_key": "ci_pipeline_schedule_id"
   }
 ]
 -%}
