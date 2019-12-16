@@ -141,7 +141,6 @@ WITH customers AS (
       IFF(users.user_id IS NOT NULL, TRUE, FALSE)             AS is_gitlab_user,
       users.created_at                                        AS user_created_at,
       
-      
       namespaces.created_at                                   AS namespace_created_at,
       namespaces.namespace_type,
       
