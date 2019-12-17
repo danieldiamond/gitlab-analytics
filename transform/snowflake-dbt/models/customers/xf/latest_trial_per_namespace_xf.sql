@@ -5,10 +5,10 @@ WITH customers AS (
   
 )
 
-, customers_db_latest_trials_per_namespace AS (
+, customers_db_latest_trial_per_namespace AS (
   
     SELECT * 
-    FROM {{ ref('customers_db_latest_trials_per_namespace')}}
+    FROM {{ ref('customers_db_latest_trial_per_namespace')}}
   
 )
 
@@ -99,7 +99,7 @@ WITH customers AS (
     SELECT
       namespace_with_latest_trial_date.namespace_id,
       namespace_with_latest_trial_date.latest_trial_end_date,
-      COALESCE(customers_db_latest_trials_per_namespace.order_start_date, 
+      COALESCE(customers_db_latest_trial_per_namespace.order_start_date, 
                namespace_with_latest_trial_date.estimated_latest_trial_start_date) AS latest_trial_start_date,
       customers.customer_id,
       customers.customer_provider_user_id,
@@ -107,10 +107,10 @@ WITH customers AS (
       customers.company_size
       
     FROM namespace_with_latest_trial_date
-    LEFT JOIN customers_db_latest_trials_per_namespace 
-      ON namespace_with_latest_trial_date.namespace_id = customers_db_latest_trials_per_namespace.gitlab_namespace_id
+    LEFT JOIN customers_db_latest_trial_per_namespace 
+      ON namespace_with_latest_trial_date.namespace_id = customers_db_latest_trial_per_namespace.gitlab_namespace_id
     LEFT JOIN customers 
-      ON customers_db_latest_trials_per_namespace.customer_id = customers.customer_id
+      ON customers_db_latest_trial_per_namespace.customer_id = customers.customer_id
 
 )
 
