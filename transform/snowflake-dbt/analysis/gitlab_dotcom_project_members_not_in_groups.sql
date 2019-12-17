@@ -136,6 +136,7 @@ customers AS (
      4347861 -- GitLab internal
     ,5086770 -- V.P. 
   )
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY gitlab_namespace_id ORDER BY order_start_date DESC) = 1
 )
 
 SELECT
@@ -147,4 +148,3 @@ FROM gl_subs
     ON gl_subs.namespace_id = customers.gitlab_namespace_id
  ORDER BY 5 DESC
 ;
-
