@@ -149,7 +149,7 @@ SELECT
   ultimate_namespace.namespace_created_at,
   projects.created_at                   AS project_created_at,
   {{ event_cte.event_name }}.created_at AS event_created_at,
-  {{ event_cte.event_name }}            AS event_name
+  '{{ event_cte.event_name }}'          AS event_name
 FROM {{ event_cte.event_name }}
 LEFT JOIN projects ON {{ event_cte.event_name }}.{{event_cte.key_to_parent_object}} = projects.project_id
 LEFT JOIN namespaces ON projects.namespace_id = namespaces.namespace_id
