@@ -61,7 +61,7 @@ For the gitlab_dotcom database, information is stored in `gitlab_dotcom_gitlab_s
 * We then group by the namespace_id in order to only select the latest trials started for a specific namespace.
 * One weird behaviour of this table is the way it deals with expired orders. It is explained [here](/model.gitlab_snowflake.gitlab_dotcom_gitlab_subscriptions). That means that the `start_date` is NOT a reliable source for us in order to find the trial start date. We therefore use the `gitlab_subscription_trial_ends_on` column in order to estimate when the trial has been started (30 days before the end of the trials in most cases)
 
-For the customers database, the trial logic is explained in the `customers_db_latest_trials_per_namespace` model.
+For the customers database, the trial logic is explained in the `customers_db_latest_trial_per_namespace` model.
 
 We then join the 2 CTEs created on `gitlab_namespace_id`.
 
