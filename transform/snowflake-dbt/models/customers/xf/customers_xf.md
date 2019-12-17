@@ -70,9 +70,9 @@ Finally, this model identifies if a trial has been converted or not. To achieve 
 There is one trick here to identify which subscriptions are actually valid and not refunded. We join on `zuora_rate_plan` and `zuora_rate_plan_charge` in order to filter out subscriptions that have (MRR <= 0 and TCV <=0). One of the case we filter out are those subscriptions that are cancelled instantly or fully refunded after a certain period.
 
 
-## Table Examples
+## Why do we need this model ?
 
-### customers_db_orders
+Here's an example, showing a few rows from `customers_db_orders` that shows why we need this model.
 
 | ORDER_ID | ORDER_UPDATED_AT        | ORDER_START_DATE  | ORDER_END_DATE | ORDER_IS_TRIAL | SUBSCRIPTION_NAME_SLUGIFY |
 |----------|-------------------------|-------------------|----------------|----------------|---------------------------|
