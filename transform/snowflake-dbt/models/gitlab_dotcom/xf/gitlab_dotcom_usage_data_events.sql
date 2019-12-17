@@ -103,7 +103,7 @@
   },
   {
     "event_name": "snippets",
-    "table_name": "gitlab_dotcom_nsnippets",
+    "table_name": "gitlab_dotcom_snippets",
     "key_to_parent_object": "project_id",
     "primary_key": "snippet_id"
   },
