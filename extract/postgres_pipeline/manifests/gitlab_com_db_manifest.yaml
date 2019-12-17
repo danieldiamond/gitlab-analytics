@@ -657,6 +657,7 @@ tables:
       , updated_at
       , start_date
       , end_date
+      , trial_starts_on
       , trial_ends_on
       , namespace_id
       , hosted_plan_id
