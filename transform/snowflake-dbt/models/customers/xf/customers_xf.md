@@ -65,7 +65,7 @@ For the customers database, the trial logic is explained in the `customers_db_la
 
 We then join the 2 CTEs created on `gitlab_namespace_id`.
 
-Finally, this model identifies if a trial has been converted or not. To achieve that, we join the selected trials to the order_snapshots selecting only orders converted to subscription after the trial starting date  (look at example below). We exclude ci_minutes orders from the order_snapshots.   
+Finally, this model identifies if a trial has been converted or not. To achieve that, we join the selected trials to the order_snapshots, selecting only orders that converted to subscriptions after the trial start date (look at example below). We exclude ci_minutes orders from the order_snapshots.   
 
 There is one trick here to identify which subscriptions are actually valid and not refunded. We join on `zuora_rate_plan` and `zuora_rate_plan_charge` in order to filter out subscriptions that have (MRR <= 0 and TCV <=0). One of the case we filter out are those subscriptions that are cancelled instantly or fully refunded after a certain period.
 
