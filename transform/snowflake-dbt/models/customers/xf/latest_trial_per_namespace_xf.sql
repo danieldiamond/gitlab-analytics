@@ -129,6 +129,7 @@ WITH customers AS (
     WHERE orders_shapshots_excluding_ci_minutes.subscription_name_slugify IS NOT NULL
   
 )
+
 , joined AS (
   
     SELECT
