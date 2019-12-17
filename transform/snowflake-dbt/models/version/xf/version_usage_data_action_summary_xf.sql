@@ -18,6 +18,8 @@ WITH usage_data AS (
 ), final AS (
 
     SELECT
+      {{ dbt_utils.surrogate_key('by_stage.usage_data_id', 'f.path', 'created_at') }} 
+                    AS unique_key,
       by_stage.usage_data_id,
       by_stage.license_md5,
       by_stage.created_at,
