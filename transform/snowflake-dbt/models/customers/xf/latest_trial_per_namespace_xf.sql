@@ -129,6 +129,7 @@ WITH customers AS (
     WHERE orders_shapshots_excluding_ci_minutes.subscription_name_slugify IS NOT NULL
   
 )
+
 , joined AS (
   
     SELECT
@@ -140,7 +141,6 @@ WITH customers AS (
       users.user_id                                           AS gitlab_user_id,
       IFF(users.user_id IS NOT NULL, TRUE, FALSE)             AS is_gitlab_user,
       users.created_at                                        AS user_created_at,
-      
       
       namespaces.created_at                                   AS namespace_created_at,
       namespaces.namespace_type,
