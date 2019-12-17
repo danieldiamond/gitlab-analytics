@@ -84,12 +84,6 @@
     "primary_key": "note_id"
   },
   {
-    "event_name": "pages_domains",
-    "table_name": "gitlab_dotcom_pages_domains",
-    "key_to_parent_object": "project_id",
-    "primary_key": "page_domain_id"
-  },
-  {
     "event_name": "project_auto_devops",
     "table_name": "gitlab_dotcom_project_auto_devops",
     "key_to_parent_object": "project_id",
@@ -154,7 +148,8 @@ SELECT
   ultimate_namespace.namespace_id, 
   ultimate_namespace.namespace_created_at,
   projects.created_at                   AS project_created_at,
-  {{ event_cte.event_name }}.created_at AS event_created_at
+  {{ event_cte.event_name }}.created_at AS event_created_at,
+  {{ event_cte.event_name }}            AS event_name
 FROM {{ event_cte.event_name }}
 LEFT JOIN projects ON {{ event_cte.event_name }}.{{event_cte.key_to_parent_object}} = projects.project_id
 LEFT JOIN namespaces ON projects.namespace_id = namespaces.namespace_id
