@@ -8,7 +8,7 @@ WITH customers AS (
 , customers_db_latest_trial_per_namespace AS (
   
     SELECT * 
-    FROM {{ ref('customers_db_latest_trials_per_namespace')}}
+    FROM {{ ref('customers_db_latest_trial_per_namespace')}}
   
 )
 
