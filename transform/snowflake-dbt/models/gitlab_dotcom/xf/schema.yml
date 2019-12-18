@@ -218,7 +218,7 @@ models:
   - name: gitlab_dotcom_usage_data_events
     description: '{{ doc("gitlab_dotcom_usage_data_events") }}'
     columns:
-      - name: project_id
+      - name: namespace_id
         tests:
           - not_null
       - name: event_name

@@ -137,6 +137,11 @@ WITH namespaces AS (
   
   SELECT *
   FROM {{ ref(event_cte.table_name) }}
+  {% if is_incremental() %}
+
+  WHERE created_at >= (SELECT MAX(event_created_at) FROM {{this}} WHERE event_name = '{{ event_cte.event_name }}')
+
+  {% endif %}
   
 )
 
@@ -147,6 +152,7 @@ WITH namespaces AS (
 SELECT
   ultimate_namespace.namespace_id, 
   ultimate_namespace.namespace_created_at,
+  projects.project_id,
   projects.created_at                   AS project_created_at,
   {{ event_cte.event_name }}.created_at AS event_created_at,
   '{{ event_cte.event_name }}'          AS event_name
