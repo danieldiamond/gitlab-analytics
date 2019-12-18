@@ -96,7 +96,9 @@ zuora AS (
     zuora_rpc.rate_plan_charge_id,
     zuora_rpc.mrr,
     zuora_rpc.unit_of_measure,
-    zuora_rpc.quantity
+    zuora_rpc.quantity,
+    sfdc_accounts_xf.account_owner,
+    sfdc_accounts_xf.account_owner_team
   FROM analytics_staging.zuora_subscription AS zuora_subscriptions
     INNER JOIN analytics_staging.zuora_rate_plan AS zuora_rp
       ON zuora_rp.subscription_id = zuora_subscriptions.subscription_id
@@ -104,6 +106,8 @@ zuora AS (
       ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
     LEFT JOIN analytics_staging.zuora_account AS zuora_accounts
      ON zuora_subscriptions.account_id = zuora_accounts.account_id
+    LEFT JOIN analytics.sfdc_accounts_xf
+      ON zuora_accounts.crm_id = sfdc_accounts_xf.account_id 
   WHERE subscription_status = 'Active'
     AND zuora_rp.product_category IN ('Gold', 'Silver', 'Bronze')
     AND effective_end_date >= CURRENT_DATE
@@ -113,11 +117,11 @@ zuora AS (
 
 summed_zuora AS (
   SELECT
-    account_id, account_created_date, subscription_id, auto_renew, product_category, unit_of_measure, subscription_start_date, subscription_end_date,
+    account_id, account_created_date, subscription_id, auto_renew, product_category, unit_of_measure, subscription_start_date, subscription_end_date, account_owner, account_owner_team,
     SUM(quantity) AS count_zuora_seats_entitled_to,
     SUM(mrr) / SUM(quantity) AS mrr_per_seat_on_current_subscription
   FROM zuora
-  GROUP BY 1,2,3,4,5,6,7,8
+  GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 
 final AS (
@@ -152,6 +156,8 @@ final AS (
     (subscription_days_old_on_12_11 >= 365) AS subscription_over_one_year_on_12_11,
     summed_zuora.subscription_end_date,
     summed_zuora.product_category,
+    summed_zuora.account_owner,
+    summed_zuora.account_owner_team,
     summed_zuora.auto_renew
 
     ,' ' AS metadata
@@ -171,7 +177,6 @@ final AS (
     AND zuora_subscription_id NOT IN ('2c92a0ff6e68f558016e7fec81b11a4b')
   ORDER BY count_seats_above_entitiled DESC
 )
---SELECT * FROM members_max_access WHERE namespace_id = 3517177;
 
 SELECT *
 FROM final 
@@ -179,4 +184,3 @@ WHERE True
   AND count_seats_above_entitiled > 0
 QUALIFY ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY count_zuora_seats_entitled_to DESC) = 1 --Handle multiple customers accounts tied to same namespace (rare)
 ORDER BY count_seats_above_entitiled DESC
-;
