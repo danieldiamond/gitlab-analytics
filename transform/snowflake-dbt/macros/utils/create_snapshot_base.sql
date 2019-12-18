@@ -18,11 +18,12 @@ WITH date_spine AS (
 ), final AS (
 
     SELECT
-      dbt_scd_id                             AS {{ snapshot_id_name }},
+      {{ dbt_utils.surrogate_key(primary_key, 'date_actual') }}         AS unique_key,
+      dbt_scd_id                                                        AS {{ snapshot_id_name }},
       date_actual,
-      dbt_valid_from                         AS valid_from,
-      dbt_valid_to                           AS valid_to,
-      IFF(dbt_valid_to IS NULL, TRUE, FALSE) AS is_currently_valid,
+      dbt_valid_from                                                    AS valid_from,
+      dbt_valid_to                                                      AS valid_to,
+      IFF(dbt_valid_to IS NULL, TRUE, FALSE)                            AS is_currently_valid,
       base.*
     FROM base
     INNER JOIN date_spine
