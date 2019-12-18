@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: employee_location_factor_snapshots
+    description: words will go here
+    columns:
+      - name: column_name
+        description: bamboo emp id
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        tests:
+          - not_null
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to

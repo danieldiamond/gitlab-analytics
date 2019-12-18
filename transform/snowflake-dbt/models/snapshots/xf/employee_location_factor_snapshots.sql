@@ -4,6 +4,8 @@
     })
 }}
 
+{% set max_date_in_analysis = "date_trunc('week', dateadd(week, 3, CURRENT_DATE))" %}
+
 with source as (
 
   SELECT *
@@ -27,7 +29,7 @@ with source as (
 SELECT bamboo_employee_number::bigint as bamboo_employee_number,
         location_factor::float as location_factor,
         valid_from,
-        COALESCE(valid_to, CURRENT_DATE) as valid_to,
+        COALESCE(valid_to, {{max_date_in_analysis}}) as valid_to,
         conditional_change_event(location_factor) over(order by bamboo_employee_number, valid_to asc) as location_factor_change_event_number
 FROM renamed
 )
