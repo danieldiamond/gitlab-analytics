@@ -454,7 +454,10 @@ Used in:
 - gitlab_dotcom_users.sql
 
 ## Zuora Slugify ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/zuora_slugify.sql))
-This macro replaces any combination of whitespace and 2 pipes with a single pipe (important for renewal subscriptions) and it replaces all non alphanumeric characters with dashes and casts it to lowercases as well. The end result of using this macro on data like "A-S00003830 || A-S00013333" is "a-s00003830|a-s00013333".
+This macro replaces any combination of whitespace and 2 pipes with a single pipe (important for renewal subscriptions), replaces any multiple whitespace by a single whitespace, and then it replaces all non alphanumeric characters with dashes and casts it to lowercases as well. The end result of using this macro on data like "A-S00003830 || A-S00013333" is "a-s00003830|a-s00013333".
+
+The custom test `zuora_slugify_cardinality` tests the uniqueness of the `zuora_subscription_slugify` (eg. 2 different subscription names will result to 2 different `zuora_subscription_name_slugify`)
+
 Usage:
 ```
 {{zuora_slugify("name")}}
