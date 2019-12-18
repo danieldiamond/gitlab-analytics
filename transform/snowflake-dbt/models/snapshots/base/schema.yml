@@ -5,7 +5,7 @@ models:
     description: This is the base model for snapshotted customers data from the customers.gitlab.com database.
     columns:
       - name: customer_snapshot_id
-        description: Auto-generated primary key when building the snapshot with dbt  
+        description: Auto-generated primary key when building the snapshot with dbt
         tests:
           - not_null
           - unique
@@ -20,7 +20,7 @@ models:
     description: This is the base model for snapshotted orders data from the customers.gitlab.com database.
     columns:
       - name: order_snapshot_id
-        description: Auto-generated primary key when building the snapshot with dbt  
+        description: Auto-generated primary key when building the snapshot with dbt
         tests:
           - not_null
           - unique
@@ -31,24 +31,11 @@ models:
         tests:
           - not_null
       - name: valid_to
-  - name: employee_location_factor_snapshots
-    description: This is the base model for snapshotted employee location factor data.
-    columns:
-      - name: bamboo_employee_number
-        tests:
-          - not_null
-      - name: location_factor
-        tests:
-          - not_null
-      - name: valid_from
-        tests:
-          - not_null
-      - name: valid_to
   - name: gitlab_dotcom_gitlab_subscriptions_snapshots_base
     description: This is the base model for snapshotted gitlab subscriptions data from the gitlab.com database.
     columns:
       - name: gitlab_subscription_snapshot_id
-        description: Auto-generated primary key when building the snapshot with dbt  
+        description: Auto-generated primary key when building the snapshot with dbt
         tests:
           - not_null
           - unique
@@ -63,7 +50,7 @@ models:
     description: This is the base model for snapshotted members data from the gitlab.com database.
     columns:
       - name: member_snapshot_id
-        description: Auto-generated primary key when building the snapshot with dbt  
+        description: Auto-generated primary key when building the snapshot with dbt
         tests:
           - not_null
           - unique
@@ -78,7 +65,7 @@ models:
     description: This is the base model for snapshotted gitlab subscriptions data from the gitlab.com database.
     columns:
       - name: namespace_snapshot_id
-        description: Auto-generated primary key when building the snapshot with dbt  
+        description: Auto-generated primary key when building the snapshot with dbt
         tests:
           - not_null
           - unique
@@ -108,9 +95,9 @@ models:
     description: This is the base model for snapshots of the salesforce opportunity table for 2019-10-01 and forward.
     columns:
       - name: opportunity_snapshot_id
-        tests: 
+        tests:
           - not_null
       - name: id
-          - not_null    
-      - name: valid_from    
-          - not_null   
+          - not_null
+      - name: valid_from
+          - not_null
