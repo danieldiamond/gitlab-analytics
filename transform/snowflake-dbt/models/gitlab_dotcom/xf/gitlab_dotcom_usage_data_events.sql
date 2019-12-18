@@ -157,9 +157,9 @@ SELECT
   {{ event_cte.event_name }}.created_at AS event_created_at,
   '{{ event_cte.event_name }}'          AS event_name
 FROM {{ event_cte.event_name }}
-LEFT JOIN projects ON {{ event_cte.event_name }}.{{event_cte.key_to_parent_object}} = projects.project_id
-LEFT JOIN namespaces ON projects.namespace_id = namespaces.namespace_id
-LEFT JOIN namespaces AS ultimate_namespace 
+INNER JOIN projects ON {{ event_cte.event_name }}.{{event_cte.key_to_parent_object}} = projects.project_id
+INNER JOIN namespaces ON projects.namespace_id = namespaces.namespace_id
+INNER JOIN namespaces AS ultimate_namespace 
   ON namespaces.namespace_ultimate_parent_id = ultimate_namespace.namespace_id
 
 {% if not loop.last %} 
