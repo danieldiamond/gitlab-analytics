@@ -68,6 +68,7 @@ joined AS (
     issue_closed_at,
     projects.namespace_id,
     visibility_level,
+    is_confidential,
 
     {% for field in fields_to_mask %}
     CASE
