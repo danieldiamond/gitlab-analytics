@@ -28,7 +28,9 @@ WITH source AS (
     NULLIF(gl_namespace_name, '')::VARCHAR          AS gitlab_namespace_name,
     amendment_type::VARCHAR                         AS amendment_type,
     trial::BOOLEAN                                  AS order_is_trial,
-    last_extra_ci_minutes_sync_at::TIMESTAMP        AS last_extra_ci_minutes_sync_at
+    last_extra_ci_minutes_sync_at::TIMESTAMP        AS last_extra_ci_minutes_sync_at,
+    zuora_account_id::VARCHAR                       AS zuora_account_id,
+    increased_billing_rate_notified_at::TIMESTAMP   AS increased_billing_rate_notified_at
   FROM source
   WHERE rank_in_key = 1
 )
