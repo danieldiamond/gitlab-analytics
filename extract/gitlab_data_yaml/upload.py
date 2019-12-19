@@ -11,7 +11,7 @@ from gitlabdata.orchestration_utils import (
 
 if __name__ == "__main__":
 
-    file_dict = dict(team="team", location_factors="location_factors", roles="roles")
+    file_dict = dict(team="team", location_factors="location_factors", roles="job_families")
 
     logging.basicConfig(stream=sys.stdout, level=20)
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
         snowflake_stage_load_copy_remove(
             f"{value}.json",
             "raw.gitlab_data_yaml.gitlab_data_yaml_load",
-            f"raw.gitlab_data_yaml.{value}",
+            f"raw.gitlab_data_yaml.{key}",
             snowflake_engine,
         )
 
