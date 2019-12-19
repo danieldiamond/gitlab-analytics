@@ -65,6 +65,7 @@ gl_subs AS (
     AND plan_id != 34
     AND is_trial = False
     AND is_currently_valid = True
+    --AND namespace_id IN (3282456, 3205431, 3282456, 3228448, 3282129)
 ),
 
 customers AS (
@@ -74,6 +75,7 @@ customers AS (
     cust_orders.gitlab_namespace_id,
     cust_customers.zuora_account_id,
     cust_orders.subscription_id AS zuora_subscription_id,
+    cust_orders.increased_billing_rate_notified_at,
     sfdc_account_id
   FROM analytics_staging.customers_db_orders AS cust_orders
     LEFT JOIN analytics_staging.customers_db_customers AS cust_customers
@@ -95,7 +97,6 @@ zuora AS (
     zuora_rp.product_category,
     zuora_rpc.rate_plan_charge_id,
     zuora_rpc.mrr,
-    zuora_rpc.unit_of_measure,
     zuora_rpc.quantity,
     sfdc_accounts_xf.account_owner,
     sfdc_accounts_xf.account_owner_team
@@ -112,16 +113,16 @@ zuora AS (
     AND zuora_rp.product_category IN ('Gold', 'Silver', 'Bronze')
     AND effective_end_date >= CURRENT_DATE
     AND mrr>0
-  QUALIFY DENSE_RANK() OVER (PARTITION BY zuora_subscriptions.account_id ORDER BY segment DESC) = 1 -- TODO: if account join changes later on
+  QUALIFY DENSE_RANK() OVER (PARTITION BY zuora_subscriptions.subscription_id ORDER BY (is_last_segment = True) DESC) = 1
 ),
 
 summed_zuora AS (
   SELECT
-    account_id, account_created_date, subscription_id, auto_renew, product_category, unit_of_measure, subscription_start_date, subscription_end_date, account_owner, account_owner_team,
+    account_id, account_created_date, subscription_id, auto_renew, product_category, subscription_start_date, subscription_end_date, account_owner, account_owner_team,
     SUM(quantity) AS count_zuora_seats_entitled_to,
     SUM(mrr) / SUM(quantity) AS mrr_per_seat_on_current_subscription
   FROM zuora
-  GROUP BY 1,2,3,4,5,6,7,8,9,10
+  GROUP BY 1,2,3,4,5,6,7,8,9
 ),
 
 final AS (
@@ -141,10 +142,10 @@ final AS (
     count_seats_above_entitiled * mrr_per_seat_on_current_subscription * 12 AS "12 x Seats Over x MRR per Seat",
 
     gl_subs.namespace_id,
-    --gl_subs.plan_id,
     members.count_non_guest_members,
     members.count_guest_members,
-
+  
+    customers.increased_billing_rate_notified_at,
     customers.zuora_subscription_id,
     'https://www.zuora.com/apps/Subscription.do?method=view&id=' || customers.zuora_subscription_id AS zuora_subscription_link,
     customers.zuora_account_id,
@@ -176,11 +177,16 @@ final AS (
     /* Hard filter out exceptions */
     AND zuora_subscription_id NOT IN ('2c92a0ff6e68f558016e7fec81b11a4b')
   ORDER BY count_seats_above_entitiled DESC
+),
+
+z AS (
+  SELECT *
+  FROM final
+  WHERE True
+    AND count_seats_above_entitiled > 0
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY count_zuora_seats_entitled_to DESC) = 1 --Handle multiple customers accounts tied to same namespace (rare)
 )
 
-SELECT *
-FROM final 
-WHERE True
-  AND count_seats_above_entitiled > 0
-QUALIFY ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY count_zuora_seats_entitled_to DESC) = 1 --Handle multiple customers accounts tied to same namespace (rare)
+SELECT * --SUM("12 x Seats Over x MRR per Seat")
+FROM z
 ORDER BY count_seats_above_entitiled DESC
