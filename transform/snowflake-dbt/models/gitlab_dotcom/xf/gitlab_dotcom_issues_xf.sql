@@ -62,14 +62,13 @@ joined AS (
     updated_by_id,
     last_edited_by_id,
     moved_to_id,
-    issues.created_at AS issue_created_at,
-    issues.updated_at AS issue_updated_at,
+    issues.created_at                            AS issue_created_at,
+    issues.updated_at                            AS issue_updated_at,
     issue_last_edited_at,
     issue_closed_at,
     projects.namespace_id,
     visibility_level,
-    is_confidential,
-
+    is_confidential                              AS issue_is_confidential,
     {% for field in fields_to_mask %}
     CASE
       WHEN is_confidential = TRUE
