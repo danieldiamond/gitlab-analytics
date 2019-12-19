@@ -11,7 +11,9 @@ from gitlabdata.orchestration_utils import (
 
 if __name__ == "__main__":
 
-    file_dict = dict(team="team", location_factors="location_factors", roles="job_families")
+    file_dict = dict(
+        team="team", location_factors="location_factors", roles="job_families"
+    )
 
     logging.basicConfig(stream=sys.stdout, level=20)
 
