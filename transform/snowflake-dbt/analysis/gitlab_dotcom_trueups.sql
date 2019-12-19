@@ -65,7 +65,6 @@ gl_subs AS (
     AND plan_id != 34
     AND is_trial = False
     AND is_currently_valid = True
-    --AND namespace_id IN (3282456, 3205431, 3282456, 3228448, 3282129)
 ),
 
 customers AS (
@@ -105,7 +104,7 @@ zuora AS (
       ON zuora_rp.subscription_id = zuora_subscriptions.subscription_id
     INNER JOIN analytics_staging.zuora_rate_plan_charge AS zuora_rpc
       ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
-    LEFT JOIN analytics_staging.zuora_account AS zuora_accounts
+    INNER JOIN analytics_staging.zuora_account AS zuora_accounts
      ON zuora_subscriptions.account_id = zuora_accounts.account_id
     LEFT JOIN analytics.sfdc_accounts_xf
       ON zuora_accounts.crm_id = sfdc_accounts_xf.account_id 
