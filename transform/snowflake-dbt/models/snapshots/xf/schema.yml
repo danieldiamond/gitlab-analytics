@@ -13,15 +13,15 @@ models:
         description: the location factor for the given time period
         tests:
           - not_null
-      - name: event
+      - name: location_factor_change_event_number
         description: identifies the number of times location factor has been updated in source but doesn't necessarily equate to distinct changes
         tests:
           - not_null
-      - name: min(valid_from)
+      - name: valid_from
         description: event start time
         tests:
           - not_null
-     - name: max(valid_to)
+     - name: valid_to
         description: event end time
         tests:
           - not_null
