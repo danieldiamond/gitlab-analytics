@@ -1,4 +1,4 @@
-WITH verify_snowplow_smau_events AS (
+WITH verify_snowplow_smau_pageviews_events AS (
   
   SELECT
     user_snowplow_domain_id,
@@ -8,9 +8,9 @@ WITH verify_snowplow_smau_events AS (
     event_surrogate_key AS event_surrogate_key,
     'snowplow_frontend' AS source_type
   
-  FROM {{ ref('verify_snowplow_smau_events')}}
+  FROM {{ ref('verify_snowplow_smau_pageviews_events')}}
   
 )
 
 SELECT * 
-FROM verify_snowplow_smau_events
+FROM verify_snowplow_smau_pageviews_events
