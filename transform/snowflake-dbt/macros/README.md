@@ -465,3 +465,13 @@ Usage:
 Used in:
 - zuora_subscription.sql
 - customers_db_orders.sql
+
+## Zuora Test Accounts ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/zuora_test_accounts.sql))
+This macro returns a list of zuora account_ids that are meant to be excluded from our base models. Account IDs can be filtered out because they were created for internal testing purposes (permanent filter) or because there's a data quality problem we're working on (temporary filter).
+
+- Used in:
+- zuora_account.sql
+- zuora_contact
+- zuora_invoice
+- zuora_refund
+- zuora_subscription.sql
