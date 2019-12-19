@@ -1,3 +1,10 @@
+{% docs version_usage_data_action_summary_xf %}
+
+This model unnests the JSON in the `usage_data.usage_activity_by_stage` column. The transformed model has one row per usage ping per **action** (which roll up into stages).
+
+{% enddocs %}
+
+
 {% docs version_usage_stats_list %}
 
 GitLab has been sending a weekly payload containing usage data from self-managed instances which haven't opted out. This weekly payload have changed structure over time. Some usage pings (understand metrics) have been added and we kept on switching the structure (sometimes nesting some JSONs and some other time un-nesting them).
