@@ -10,19 +10,19 @@ models:
           - not_null
           - unique
       - name: location_factor
-        description: the location factor for the given time period
+        description: The location factor for the given time period
         tests:
           - not_null
       - name: location_factor_change_event_number
-        description: identifies the number of times location factor has been updated in source but doesn't necessarily equate to distinct changes
+        description: Identifies the number of times location factor has been updated in source but doesn't necessarily equate to distinct changes
         tests:
           - not_null
       - name: valid_from
-        description: event start time
+        description: Marks the start date for a location factor used for an employee
         tests:
           - not_null
      - name: valid_to
-        description: event end time
+        description: Marks the end date for a location factor used for an employee
         tests:
           - not_null
         
