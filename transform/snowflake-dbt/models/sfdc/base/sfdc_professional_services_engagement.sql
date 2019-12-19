@@ -6,24 +6,23 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('salesforce', 'statement_of_work') }}
-
+    FROM {{ source('salesforce', 'professional_services_engagement') }}
 
 ), renamed AS (
 
     SELECT
     -- keys
-      id                                 AS statement_of_work_id,
+      id                                 AS ps_engagement_id,
       opportunity__c                     AS opportunity_id,
       owner__c                           AS owner_id,
 
-    -- Dates
+    -- dates
       completed_date__c                  AS completed_date,
       kick_off_date__c                   AS kick_off_date,
       go_live_date__c                    AS go_live_date,
 
-    -- Info
-      name                               AS statement_of_work_name,
+    -- info
+      name                               AS ps_engagement_name,
       percentcomplete__c                 AS percent_complete,
       signed_acceptance_from_customer__c AS signed_acceptance_from_customer,
       status__c                          AS status,
@@ -40,6 +39,6 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-WHERE statement_of_work_id NOT IN (
+WHERE ps_engagement_id NOT IN (
   'a5t4M000000XZrbQAG' -- https://gitlab.com/gitlab-data/analytics/issues/3181
 )

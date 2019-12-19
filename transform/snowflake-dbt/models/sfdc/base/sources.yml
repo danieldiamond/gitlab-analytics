@@ -54,15 +54,15 @@ sources:
         description: '{{ doc("sfdc_oppstage_source") }}'
       - name: opportunity         
         description: '{{ doc("sfdc_opp_source") }}'
-      - name: proof_of_concept
+      - name: proof_of_value
         identifier: proof_of_concept__c     
-        description: '{{ doc("sfdc_poc_source") }}'
+        description: '{{ doc("sfdc_pov_source") }}'
       - name: record_type
         identifier: recordtype         
         description: '{{ doc("sfdc_recordtype_source") }}'
-      - name: statement_of_work
+      - name: ps_engagement
         identifier: statement_of_work__c      
-        description: '{{ doc("sfdc_sow_source") }}'
+        description: '{{ doc("sfdc_ps_engagement_source") }}'
       - name: task         
         description: '{{ doc("sfdc_task_source") }}'
       - name: user_role
