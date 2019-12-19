@@ -51,6 +51,9 @@ WITH source AS (
         country                     AS country,
         countrycode                 AS country_code,
         postalcode                  AS postal_code,
+        leandata_region__c          AS leandata_region,
+        leandata_sub_region__c      AS leandata_sub_region,
+        leandata_territory__c       AS leandata_territory,
 
         -- info
         requested_contact__c        AS requested_contact,

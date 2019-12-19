@@ -60,6 +60,9 @@ WITH source AS (
       named_account__c                         AS named_account,
       billingcountry                           AS billing_country, 
       billingpostalcode                        AS billing_postal_code, 
+      atam_region__c                           AS leandata_region,
+      atam_sub_region__c                       AS leandata_sub_region,
+      atam_territory__c                        AS leandata_territory,
 
       --present state info
       health__c                                AS health_score,
