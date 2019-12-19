@@ -21,7 +21,7 @@ models:
         description: Marks the start date for a location factor used for an employee
         tests:
           - not_null
-     - name: valid_to
+      - name: valid_to
         description: Marks the end date for a location factor used for an employee
         tests:
           - not_null
