@@ -8,7 +8,6 @@ models:
         description: bamboo emp id
         tests:
           - not_null
-          - unique
       - name: location_factor
         description: The location factor for the given time period
         tests:
@@ -25,4 +24,3 @@ models:
         description: Marks the end date for a location factor used for an employee
         tests:
           - not_null
-        
