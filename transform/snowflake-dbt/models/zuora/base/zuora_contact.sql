@@ -47,6 +47,7 @@ WITH source AS (
 
 	FROM source
 	WHERE deleted = FALSE
+	  AND account_id NOT IN {{ zuora_test_accounts }}
 
 )
 

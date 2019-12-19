@@ -76,10 +76,9 @@ WITH source AS (
 		createddate                         		AS created_date
 
 	FROM source
-	WHERE
-		deleted = FALSE
-		AND
-		excludefromanalysis__c IN ('False', '')
+	WHERE deleted = FALSE
+	  AND excludefromanalysis__c IN ('False', '')
+	  AND account_id NOT IN {{ zuora_test_accounts }}
 
 )
 
