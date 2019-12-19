@@ -39,10 +39,8 @@ WITH snowplow_structured_events AS (
               'registry_tag_delete'
               
             )
-        (
-              
-            )
-          )
+        )
+      )
   {% endif %}
 
 )
