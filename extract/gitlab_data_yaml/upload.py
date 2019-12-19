@@ -11,7 +11,9 @@ from gitlabdata.orchestration_utils import (
 
 if __name__ == "__main__":
 
-    file_dict = dict(team="team", location_factors="location_factors", roles="job_families")
+    file_dict = dict(
+        team="team", location_factors="location_factors", roles="job_families"
+    )
 
     logging.basicConfig(stream=sys.stdout, level=20)
 
@@ -23,9 +25,9 @@ if __name__ == "__main__":
     job_failed = False
 
     for key, value in file_dict.items():
-        logging.info(f"Downloading to {key}.yml file.")
+        logging.info(f"Downloading {value}.yml to {value}.json file.")
         try:
-            command = f"curl {base_url}{key}.yml | yaml2json -o {value}.json"
+            command = f"curl {base_url}{value}.yml | yaml2json -o {value}.json"
             p = subprocess.run(command, shell=True)
             p.check_returncode()
         except:
