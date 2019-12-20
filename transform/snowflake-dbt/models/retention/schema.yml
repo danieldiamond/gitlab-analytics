@@ -204,7 +204,12 @@ models:
           tests:
             - not_null
             - accepted_values:
-                    values: ['Seat Expansion', 'Discount/Price Change', 'Product Change', 'Product Change/Seat Change Mix','Downgraded','Cancelled', 'Unknown']
+                    values: ['Downgraded','Cancelled','Upgraded','Other']
+        - name: churn_reason
+          tests:
+            - not_null
+            - accepted_values:
+                    values: ['Seat Change','Price Change','Product Change','Product Change/Seat Change Mix','Unknown']            
         - name: original_product_category
         - name: retention_product_category
           description: Product category is based on the rate plan name.
