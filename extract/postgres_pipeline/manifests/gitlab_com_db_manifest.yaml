@@ -609,53 +609,51 @@ tables:
   design_management_designs:
     import_db: GITLAB_DB
     import_query: >
-      SELECT id
+      SELECT CONCAT(issue_id,'_',filename) AS id
       , project_id
       , issue_id
+      , filename
       FROM design_management_designs
     export_schema: 'gitlab_com'
     export_table: 'design_management_designs'
-    export_table_primary_key: id
+    export_table_primary_key: CONCAT(issue_id,'_',filename)
   design_management_designs_versions:
     import_db: GITLAB_DB
     import_query: >
-      SELECT id
+      SELECT CONCAT(design_id,'_', version_id) AS id
       , design_id
       , version_id
       , event
       FROM design_management_designs_versions
     export_schema: 'gitlab_com'
     export_table: 'design_management_designs_versions'
-    export_table_primary_key: id
+    export_table_primary_key: CONCAT(design_id,'_', version_id)
   design_management_versions:
     import_db: GITLAB_DB
     import_query: >
-      SELECT id
+      SELECT CONCAT(sha,'_', issue_id) AS id
+      , sha
       , issue_id
       , created_at
       , author_id
       FROM design_management_versions
     export_schema: 'gitlab_com'
     export_table: 'design_management_versions'
-    export_table_primary_key: id
+    export_table_primary_key: CONCAT(sha,'_', issue_id)
   design_user_mentions:
     import_db: GITLAB_DB
     import_query: >
-      SELECT id
-      , cluster_id
-      , runner_id
-      , status
-      , created_at
-      , updated_at
-      , version
-      , status_reason
-      , privileged
+      SELECT note_id
+      , design_id
+      , mentioned_users_ids
+      , mentioned_projects_ids
+      , mentioned_groups_ids
       FROM design_user_mentions
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
           AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'design_user_mentions'
-    export_table_primary_key: id
+    export_table_primary_key: note_id
   environments:
     import_db: GITLAB_DB
     import_query: >
