@@ -17,7 +17,7 @@ WITH snowplow_structured_events AS (
   FROM {{ ref('snowplow_structured_events')}}
   WHERE derived_tstamp >= '2019-01-01'
   {% if is_incremental() %}
-    AND page_view_start >= (SELECT MAX(event_date) FROM {{this}})
+    AND derived_tstamp >= (SELECT MAX(derived_tstamp) FROM {{this}})
     AND 
       (
         (
