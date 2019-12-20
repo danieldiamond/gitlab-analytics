@@ -148,7 +148,7 @@ WITH raw_mrr_totals_levelled AS (
 )
 
 SELECT joined.*,
-       rank() over(partition by zuora_subscription_id, churn_type, churn_reason
+       rank() over(partition by zuora_subscription_id, churn_type
          order by retention_month asc)   AS rank_churn_type_month
 FROM joined
 WHERE retention_month <= dateadd(month, -1, CURRENT_DATE)
