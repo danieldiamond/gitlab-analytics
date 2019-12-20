@@ -606,6 +606,56 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'deployments'
     export_table_primary_key: id
+  design_management_designs:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , issue_id
+      FROM design_management_designs
+    export_schema: 'gitlab_com'
+    export_table: 'design_management_designs'
+    export_table_primary_key: id
+  design_management_designs_versions:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , design_id
+      , version_id
+      , event
+      FROM design_management_designs_versions
+    export_schema: 'gitlab_com'
+    export_table: 'design_management_designs_versions'
+    export_table_primary_key: id
+  design_management_versions:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , issue_id
+      , created_at
+      , author_id
+      FROM design_management_versions
+    export_schema: 'gitlab_com'
+    export_table: 'design_management_versions'
+    export_table_primary_key: id
+  design_user_mentions:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , cluster_id
+      , runner_id
+      , status
+      , created_at
+      , updated_at
+      , version
+      , status_reason
+      , privileged
+      FROM design_user_mentions
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+          AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'design_user_mentions'
+    export_table_primary_key: id
   environments:
     import_db: GITLAB_DB
     import_query: >
@@ -1366,6 +1416,39 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'routes'
+    export_table_primary_key: id
+  services:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , type
+      , title
+      , project_id
+      , created_at
+      , updated_at
+      , active
+      , properties
+      , template
+      , push_events
+      , issues_events
+      , merge_requests_events
+      , tag_push_events
+      , note_events
+      , category
+      , default
+      , wiki_page_events
+      , pipeline_events
+      , confidential_issues_events
+      , commit_events
+      , job_events
+      , confidential_note_events
+      , deployment_events
+      , comment_on_event_enabled
+      FROM services
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'services'
     export_table_primary_key: id
   timelogs:
     import_db: GITLAB_DB
