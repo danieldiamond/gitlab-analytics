@@ -66,13 +66,13 @@ The opportunity source table contains info about your opportunities, which are s
 
 {% docs sfdc_pov_source %}
 
-Custom source table: This table contains data on the proof of value.
+This table contains data on the proof of value. Note the API name for this source remained proof_of_concept after renaming of the SFDC custom object.
 
 {% enddocs %}
 
 {% docs sfdc_professional_services_engagement_source %}
 
-Custom source table: This table contains data on the professional services engagement.
+This table contains data on the professional services engagement. Note the API name for this source remained statement_of_work after renaming of the SFDC custom object.
 
 {% enddocs %}
 

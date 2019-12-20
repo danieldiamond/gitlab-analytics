@@ -6,7 +6,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('salesforce', 'professional_services_engagement') }}
+    FROM {{ source('salesforce', 'statement_of_work') }}
 
 ), renamed AS (
 

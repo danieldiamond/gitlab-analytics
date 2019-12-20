@@ -6,7 +6,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('salesforce', 'proof_of_value') }}
+    FROM {{ source('salesforce', 'proof_of_concept') }}
 
 ), renamed AS (
 

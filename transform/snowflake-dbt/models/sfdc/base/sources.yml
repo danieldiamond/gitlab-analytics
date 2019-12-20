@@ -52,17 +52,17 @@ sources:
       - name: opportunity_stage
         identifier: opportunitystage         
         description: '{{ doc("sfdc_oppstage_source") }}'
-      - name: opportunity         
+      - name: opportunity
         description: '{{ doc("sfdc_opp_source") }}'
-      - name: proof_of_value
+      - name: proof_of_concept
         identifier: proof_of_concept__c     
         description: '{{ doc("sfdc_pov_source") }}'
       - name: record_type
         identifier: recordtype         
         description: '{{ doc("sfdc_recordtype_source") }}'
-      - name: ps_engagement
+      - name: statement_of_work
         identifier: statement_of_work__c      
-        description: '{{ doc("sfdc_ps_engagement_source") }}'
+        description: '{{ doc("sfdc_professional_services_engagement_source") }}'
       - name: task         
         description: '{{ doc("sfdc_task_source") }}'
       - name: user_role
