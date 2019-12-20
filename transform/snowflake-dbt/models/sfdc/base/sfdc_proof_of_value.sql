@@ -42,6 +42,7 @@ WITH source AS (
       lastmodifieddate                          AS last_modified_date
 
     FROM source
+    WHERE isdeleted = FALSE
 
 )
 
