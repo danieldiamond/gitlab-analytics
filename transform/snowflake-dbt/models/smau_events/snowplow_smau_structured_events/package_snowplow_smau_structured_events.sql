@@ -1,6 +1,6 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "event_surrogate_key"
+    "unique_key": "event_id"
     })
 }}
 
