@@ -632,7 +632,6 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT CONCAT(sha,'_', issue_id) AS id
-      , sha
       , issue_id
       , created_at
       , author_id
