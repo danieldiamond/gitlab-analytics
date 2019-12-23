@@ -101,7 +101,7 @@ WITH customers AS (
   SELECT
     trials.order_id, 
     trials.latest_namespace_id                              AS gitlab_namespace_id,
-    customers.latest_customer_id                            AS customer_id,
+    customers.customer_id,
     
       
     users.user_id                                           AS gitlab_user_id,
