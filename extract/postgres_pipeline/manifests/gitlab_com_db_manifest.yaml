@@ -1600,3 +1600,13 @@ tables:
     export_schema: 'gitlab_dotcom'
     export_table: ci_runner_projects
     export_table_primary_key: id  
+  merge_request_diff_files:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT  * -- will update comments once looking at file 
+      FROM merge_request_diff_files
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'merge_request_diff_files'
+    export_table_primary_key: id  
