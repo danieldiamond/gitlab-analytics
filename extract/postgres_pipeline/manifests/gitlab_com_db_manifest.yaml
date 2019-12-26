@@ -1603,10 +1603,23 @@ tables:
   merge_request_diff_files:
     import_db: GITLAB_DB
     import_query: >
-      SELECT  * -- will update comments once looking at file 
+      SELECT merge_request_diff_id
+      , relative_order
+      , new_file
+      , renamed_file
+      , deleted_file
+      , too_large
+      , a_mode
+      , b_mode
+      , new_path
+      , old_path
+      , diff
+      , binary
+      , external_diff_offset
+      , external_diff_size
       FROM merge_request_diff_files
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'merge_request_diff_files'
-    export_table_primary_key: id  
+    export_table_primary_key: merge_request_diff_id 
