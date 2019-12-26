@@ -1605,6 +1605,7 @@ tables:
     import_query: >
       SELECT merge_request_diff_id
       , relative_order
+      , CONCAT(merge_request_diff_id,'_',relative_order) as pkey
       , new_file
       , renamed_file
       , deleted_file
