@@ -1623,4 +1623,4 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'merge_request_diff_files'
-    export_table_primary_key: merge_request_diff_id 
+    export_table_primary_key: CONCAT(merge_request_diff_id,'_',relative_order)
