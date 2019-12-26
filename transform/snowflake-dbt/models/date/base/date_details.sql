@@ -47,21 +47,9 @@ SELECT date_day,
         ROW_NUMBER() OVER (PARTITION BY fiscal_year ORDER BY date_day) AS day_of_fiscal_year,
 
 
-        decode(extract('month',date_day),
-                   1, 'January',
-                   2, 'February',
-                   3, 'March',
-                   4, 'April',
-                   5, 'May',
-                   6, 'June',
-                   7, 'July',
-                   8, 'August',
-                   9, 'September',
-                   10, 'October',
-                   11, 'November',
-                   12, 'December') AS month_name,
+        TO_CHAR(date_day, 'MMMM') AS month_name,
 
-        FIRST_VALUE(date_day) OVER (PARTITION BY year_actual, month_actual ORDER BY date_day) AS first_day_of_month,
+        TRUNC(date_day, 'Month') AS first_day_of_month,
         LAST_VALUE(date_day) OVER (PARTITION BY year_actual, month_actual ORDER BY date_day) AS last_day_of_month,
 
         FIRST_VALUE(date_day) OVER (PARTITION BY year_actual ORDER BY date_day) AS first_day_of_year,
@@ -84,11 +72,7 @@ SELECT date_day,
 
         LAST_VALUE(date_day) OVER (PARTITION BY first_day_of_week ORDER BY date_day) AS last_day_of_week,
 
-        (year_actual || '-' || DECODE(extract(quarter,date_day),
-                   1, 'Q1',
-                   2, 'Q2',
-                   3, 'Q3',
-                   4, 'Q4')) AS quarter_name,
+        ('Q' || EXTRACT(QUARTER FROM date_day) AS quarter_name,
 
         (fiscal_year || '-' || DECODE(fiscal_quarter,
                    1, 'Q1',
@@ -96,7 +80,14 @@ SELECT date_day,
                    3, 'Q3',
                    4, 'Q4')) AS fiscal_quarter_name,
 
-        ('FY' || SUBSTR(fiscal_quarter_name, 3, 7)) AS fiscal_quarter_name_fy
+        ('FY' || SUBSTR(fiscal_quarter_name, 3, 7)) AS fiscal_quarter_name_fy,
+
+        (CASE WHEN MONTH(DATE_KEY) = 1 AND DAYOFMONTH(DATE_KEY) = 1 THEN 'New Year''s Day'
+             WHEN MONTH(DATE_KEY) = 12 AND DAYOFMONTH(DATE_KEY) = 25 THEN 'Christmas Day'
+             WHEN MONTH(DATE_KEY) = 12 AND DAYOFMONTH(DATE_KEY) = 26 THEN 'Boxing Day'
+             ELSE NULL END)::varchar AS holiday_desc,
+      (CASE WHEN HOLIDAY_DESC IS NULL THEN 0
+             ELSE 1 END)::boolean AS is_holiday
 
 FROM date_spine
 
@@ -135,7 +126,7 @@ SELECT date_day,
         last_day_of_week,
         quarter_name,
         fiscal_quarter_name,
-        fiscal_quarter_name_fy
+        fiscal_quarter_name_fy,
+        holiday_desc,
+        is_holiday
 FROM calculated
-
---week of month
