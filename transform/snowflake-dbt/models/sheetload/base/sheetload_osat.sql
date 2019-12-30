@@ -10,7 +10,7 @@ WITH source AS (
         'Anonymous'                                           AS employee_name, 
         ZEROIFNULL(NULLIF("SATISFACTION_SCORE",''))::INTEGER  AS satisfaction_score,
         ZEROIFNULL(NULLIF("RECOMMEND_TO_FRIEND",''))::INTEGER AS recommend_to_friend
-    FROM source
+    FROM source 
       
 ) 
 
