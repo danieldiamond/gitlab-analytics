@@ -32,13 +32,9 @@ with source as (
                 else 'Other' end                                                                AS emp_status      
             -- will need to work with people group to create a translation table for different employment statuses
   FROM renamed r
-),mapping as (
-    SELECT *
-  --  FROM "ANALYTICS".analytics_sensitive.bamboohr_id_employee_number_mapping
-    FROM {{ref('bamboohr_id_employee_number_mapping')}}
 )  
     SELECT
-        mapping.employee_number,
+        employee_id,
         employment_status,
         emp_status, -- will need to work with people group to create a translation table for different employment statuses
         termination_type,
@@ -47,6 +43,4 @@ with source as (
         valid_from_date,
         ifnull(valid_to_date, last_day(current_date))                                           AS valid_to_date
     FROM additional
-    LEFT JOIN mapping
-      ON additional.employee_id = mapping.employee_id
  
