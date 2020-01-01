@@ -2,9 +2,8 @@
 import os
 from os.path import join, getsize, dirname
 import re
-import json
 
-# Periscope project
+# Assumes the periscope directory was checked out at the parent repository
 
 dirname = os.path.dirname(os.path.abspath(__file__))
 parentdirname = os.path.dirname(dirname)
@@ -19,27 +18,35 @@ for path in paths_to_check:
         for file in files:
             if re.search("sql", file):
                 full_filename = f"{root}/{file}"
-                with open(full_filename, 'r') as f:
+                with open(full_filename, "r") as f:
                     lines = f.readlines()
                     for line in lines:
-                        matches = re.search("(?:from|join)\s+(?:analytics|analytics_staging|boneyard)\.([\_A-z0-9]*)", line.lower())
+                        # Find from and join references. Only match group is table name(s)
+                        matches = re.search(
+                            "(?:from|join)\s+(?:analytics|analytics_staging|boneyard)\.([\_A-z0-9]*)",
+                            line.lower(),
+                        )
                         if matches is not None:
                             for match in matches.groups():
                                 curr_list = periscope_table_dict.get(match, [])
-                                simplified_name = re.sub(".*\/analytics\/periscope\/", "", full_filename)
+                                # Strip prefixes
+                                simplified_name = re.sub(
+                                    ".*\/analytics\/periscope\/", "", full_filename
+                                )
                                 curr_list.append(simplified_name)
                                 periscope_table_dict[match] = list(set(curr_list))
 
+with open("comparison.txt", "w+") as f:
+    f.write("Check these!\r\n\r\n")
 
-with open('comparison.txt', 'w+') as f:
-    f.write("dbt models to check\r\n")
-
-with open('diff.txt', 'r') as f:
+# Assumes git diff was run to output the sql files that changed
+with open("diff.txt", "r") as f:
     lines = f.readlines()
     for line in lines:
         match = periscope_table_dict.get(line.strip(), [])
         if len(match) > 0:
-            with open('comparison.txt', 'a') as comp:
-                write_string = f"dbt model: {line}. Periscope references: {str(match)} \r\n"
+            with open("comparison.txt", "a") as comp:
+                write_string = (
+                    f"dbt model: {line}Periscope references: {str(match)} \r\n\r\n"
+                )
                 comp.write(write_string)
-          
