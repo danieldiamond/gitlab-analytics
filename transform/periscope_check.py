@@ -20,10 +20,17 @@ for path in paths_to_check:
                 full_filename = f"{root}/{file}"
                 with open(full_filename, "r") as f:
                     lines = f.readlines()
-                    for line in lines:
+                    all_lines = " ".join(lines)
+                    # Removes new lines following "from" and "join" b/c people don't follow style guide
+                    clean_lines = re.sub(
+                        r"(from|join)([\s\\r\\n]*)", r"\1 ", all_lines.lower()
+                    )
+                    new_lines = clean_lines.split("\n")
+
+                    for line in new_lines:
                         # Find from and join references. Only match group is table name(s)
                         matches = re.search(
-                            "(?:from|join)\s+(?:analytics|analytics_staging|boneyard)\.([\_A-z0-9]*)",
+                            r"(?:from|join)\s+(?:analytics|analytics_staging|boneyard)\.([\_A-z0-9]*)",
                             line.lower(),
                         )
                         if matches is not None:
