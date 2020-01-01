@@ -148,6 +148,7 @@
     - git clone -b periscope/master --single-branch https://gitlab.com/gitlab-data/periscope.git --depth 1
     - git diff origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD --name-only | grep -iEo "(.*)\.sql" | sed -E 's/\.sql//' | awk -F '/' '{print tolower($NF)}' | sort | uniq > diff.txt
     - python3 transform/periscope_check.py
+    - if (( $(cat comparison.txt | wc -l | tr -d ' ') > 0 )); then echo "Check these!" && cat comparison.txt && exit 1; else echo "All good" && exit 0; fi;
   artifacts:
     expose_as: 'Periscope Check'
     paths: ['comparison.txt']
