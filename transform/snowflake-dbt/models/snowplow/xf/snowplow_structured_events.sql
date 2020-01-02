@@ -21,6 +21,7 @@ WITH events AS (
       se_label                     AS event_label,
       se_property                  AS event_prorperty,
       se_value                     AS event_value,
+      TRY_PARSE_JSON(contexts)     AS contexts,
       dvce_created_tstamp,
       derived_tstamp,
       collector_tstamp,
