@@ -39,7 +39,8 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     {clone_repo_cmd} &&
-    analytics/orchestration/snowflake_password_change.py set_password_reset
+    exit 0
+    # analytics/orchestration/snowflake_password_change.py set_password_reset
 """
 
 # Create the DAG
