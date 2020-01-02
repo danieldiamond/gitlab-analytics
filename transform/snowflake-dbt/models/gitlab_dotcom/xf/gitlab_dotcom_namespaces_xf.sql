@@ -67,12 +67,13 @@ projects AS (
       namespaces.repository_size_limit,
       namespaces.does_require_two_factor_authentication,
       namespaces.two_factor_grace_period,
-      namespaces.plan_id,
-      ultimate_parent_plans.plan_id                                    AS ultimate_parent_plan_id,
       namespaces.project_creation_level,
-
-      namespace_plans.plan_is_paid                                     AS plan_is_paid,
-      ultimate_parent_plans.plan_is_paid                               AS ultimate_parent_plan_is_paid,
+      namespaces.plan_id, --equivalent to namespace_lineage.plan_id
+      namespace_lineage.namespace_plan_title                           AS plan_title,
+      namespace_lineage.namespace_plan_is_paid                         AS plan_is_paid,
+      namespace_lineage.ultimate_parent_plan_id,
+      namespace_lineage.ultimate_parent_plan_title,
+      namespace_lineage.ultimate_parent_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)                   AS member_count,
       COALESCE(COUNT(DISTINCT projects.project_id), 0)                 AS project_count
 
@@ -84,11 +85,7 @@ projects AS (
         ON namespaces.namespace_id = projects.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
-      LEFT JOIN plans AS namespace_plans
-        ON namespaces.plan_id = namespace_plans.plan_id
-      LEFT JOIN plans AS ultimate_parent_plans
-        ON namespace_lineage.ultimate_parent_id = ultimate_parent_plans.plan_id
-    {{ dbt_utils.group_by(n=30) }}
+    {{ dbt_utils.group_by(n=32) }}
 )
 
 SELECT *
