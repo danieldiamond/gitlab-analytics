@@ -71,7 +71,10 @@ WITH customers AS (
 
 , trials AS (
   
-  SELECT *
+  SELECT 
+    *,
+    FIRST_VALUE(gitlab_namespace_id) 
+      OVER (PARTITION BY order_id ORDER BY order_updated_at DESC) AS latest_namespace_id
   FROM orders_snapshots
   WHERE order_is_trial = TRUE
   
@@ -95,7 +98,7 @@ WITH customers AS (
   
   SELECT
     trials.order_id, 
-    trials.gitlab_namespace_id,
+    trials.latest_namespace_id                              AS gitlab_namespace_id,
     customers.customer_id,
     
       
@@ -117,7 +120,7 @@ WITH customers AS (
     
   FROM trials
     INNER JOIN customers ON trials.customer_id = customers.customer_id
-    LEFT JOIN namespaces ON trials.gitlab_namespace_id = namespaces.namespace_id
+    LEFT JOIN namespaces ON trials.latest_namespace_id = namespaces.namespace_id
     LEFT JOIN users ON customers.customer_provider_user_id = users.user_id
     LEFT JOIN converted_trials ON trials.order_id = converted_trials.order_id
   WHERE trials.order_start_date >= '2019-09-01'

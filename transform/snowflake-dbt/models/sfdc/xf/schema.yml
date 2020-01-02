@@ -106,6 +106,7 @@ models:
         tests:
           - not_null                        
   - name: sfdc_opportunity_xf
+    description: This model contains meta information on each Salesforce opportunity enriched with stage, source, and user information. Note that `sales_segment` and `parent_segment` are derived from the Stamped Sales Segment for an opportunity and do not change over time. The current segmentation of an opportunity's account is available in `sfdc_accounts_xf`.
     columns:
       - name: opportunity_id
         tests:

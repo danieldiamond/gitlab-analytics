@@ -489,8 +489,6 @@ roles:
     - loader:
         warehouses:
             - loading
-            - fivetran_warehouse
-            - stitch
         owns:
             schemas:
                 - raw.*
@@ -821,6 +819,22 @@ roles:
     - fivetran_role:
         warehouses:
             - fivetran_warehouse
+        privileges:
+            databases:
+                read:
+                    - raw
+                write:
+                    - raw
+            schemas:
+                read:
+                    - raw.netsuite_fivetran
+                write:
+                    - raw.netsuite_fivetran
+            tables:
+                read:
+                    - raw.netsuite_fivetran.*
+                write:
+                    - raw.netsuite_fivetran.*
 
     - gitlab_ci:
         warehouses:
@@ -937,6 +951,34 @@ roles:
     - stitch:
         warehouses:
             - stitch
+        privileges:
+            databases:
+                read:
+                    - raw
+                write:
+                    - raw
+            schemas:
+                read:
+                    - raw.salesforce_stitch
+                    - raw.stitch_google_sheets
+                    - raw.zendesk_stitch
+                    - raw.zuora_stitch
+                write:
+                    - raw.salesforce_stitch
+                    - raw.stitch_google_sheets
+                    - raw.zendesk_stitch
+                    - raw.zuora_stitch
+            tables:
+                read:
+                    - raw.salesforce_stitch.*
+                    - raw.stitch_google_sheets.*
+                    - raw.zendesk_stitch.*
+                    - raw.zuora_stitch.*
+                write:
+                    - raw.salesforce_stitch.*
+                    - raw.stitch_google_sheets.*
+                    - raw.zendesk_stitch.*
+                    - raw.zuora_stitch.*
     
     - target_snowflake:
         warehouses:
@@ -1043,7 +1085,6 @@ users:
         can_login: yes
         member_of:
             - fivetran_role
-            - loader
 
     - gitlab_ci:
         can_login: yes
@@ -1210,7 +1251,6 @@ users:
         can_login: yes
         member_of:
             - stitch
-            - loader
 
     - tcarter:
         can_login: yes

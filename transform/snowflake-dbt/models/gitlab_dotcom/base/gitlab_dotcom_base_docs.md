@@ -34,6 +34,19 @@ This base model is modelled as a Type 2 Slowly Changing Dimension. This means 3 
 
 Read the documentation for the SCD Type 2 Macro [here](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md#scd_type_2).
 
+This table has some weird overriding mechanisms that need to be explained. Most of the times (but not always), the app overwrites data. For example, if a gitlab_subscription is started with a Gold Trial, if the trial expires and is not converted, the following fields are updated:
+
+* `gitlab_subscription_start_date` (when the trial expires)
+* `gitlab_subscription_end_date` is turned to NULL
+* `plan_id` is turned to 34 (free plan)
+
+Here is an example (namespace_id won't be shown because PII):
+
+| GITLAB_SUBSCRIPTION_ID | GITLAB_SUBSCRIPTION_START_DATE | GITLAB_SUBSCRIPTION_END_DATE | GITLAB_SUBSCRIPTION_TRIAL_ENDS_ON | PLAN_ID | IS_TRIAL |
+|------------------------|--------------------------------|------------------------------|-----------------------------------|---------|----------|
+| 350446                 | 2019-11-15                     | NULL                         | 2019-11-15                        | 34      | FALSE    |
+| 350446                 | 2019-10-16                     | 2019-11-15                   | 2019-11-15                        | 4       | TRUE     |
+
 {% enddocs %}
 
 
