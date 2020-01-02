@@ -1071,7 +1071,7 @@ tables:
       , project_id
       , certificate
       , domain
-      , CAST(verified_at AS VARCHAR) AS verified_at
+      , verified_at
       , verification_code
       , CAST(enabled_until AS VARCHAR) AS enabled_until
       , CAST(remove_at AS VARCHAR) AS remove_at
