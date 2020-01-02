@@ -25,3 +25,4 @@ SELECT
   quantity,
   sku
 FROM invoice_details
+ 
