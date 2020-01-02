@@ -39,7 +39,7 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     {clone_repo_cmd} &&
-    exit 0
+    exit 1
     # analytics/orchestration/snowflake_password_change.py set_password_reset
 """
 
