@@ -86,3 +86,6 @@ models:
       - name: reports_to
         tests:
             - not_null
+- name: bamboohr_employment_status_v2
+    description: This is a testing model to shows an employee historical status.
+                
