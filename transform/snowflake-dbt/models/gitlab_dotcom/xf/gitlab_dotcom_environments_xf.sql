@@ -18,7 +18,7 @@ WITH base AS (
     SELECT 
       namespace_id,
       namespace_ultimate_parent_id,
-      (namespace_ultimate_parent_id IN {{ get_internal_parent_namespaces() }}) AS namespace_is_internal
+      namespace_is_internal
     FROM {{ ref('gitlab_dotcom_namespaces_xf') }}
 
 )

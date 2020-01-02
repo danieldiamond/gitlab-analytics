@@ -60,7 +60,7 @@ WITH customers AS (
     '0. personal_namespace' AS inheritance_source
   FROM namespaces
   WHERE namespace_type = 'Individual'
-    AND namespace_plan_is_paid
+    AND plan_is_paid
 )
 
 , group_members AS (
