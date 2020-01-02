@@ -17,7 +17,6 @@ WITH base AS (
   
     SELECT 
       namespace_id,
-      namespace_ultimate_parent_id,
       namespace_is_internal
     FROM {{ ref('gitlab_dotcom_namespaces_xf') }}
 
@@ -38,7 +37,8 @@ WITH base AS (
       {% if not loop.last %} , {% endif %}
       {% endfor %}
     FROM base
-      LEFT JOIN projects ON base.project_id = projects.project_id
+      LEFT JOIN projects
+        ON base.project_id = projects.project_id
       LEFT JOIN internal_namespaces
         ON projects.namespace_id = internal_namespaces.namespace_id
 
