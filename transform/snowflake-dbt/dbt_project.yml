@@ -108,6 +108,10 @@ models:
     date:
       materialized: table
 
+    dqp:
+      enabled: false
+      materialized: table
+
     engineering:
       materialized: table
 
