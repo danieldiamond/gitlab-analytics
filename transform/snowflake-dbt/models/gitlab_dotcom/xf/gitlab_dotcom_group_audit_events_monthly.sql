@@ -22,8 +22,8 @@ WITH months AS (
       group_id,
       parent_group_id,
       is_top_level_group,
-      group_ultimate_parent_id,
-      group_ultimate_parent_plan_is_paid,
+      ultimate_parent_id,
+      ultimate_parent_plan_is_paid,
       DATE_TRUNC(month, group_created_at) AS group_created_at_month
 
     FROM {{ ref('gitlab_dotcom_groups_xf') }}
@@ -63,7 +63,7 @@ WITH months AS (
 
     SELECT
       skeleton.group_id,
-      skeleton.group_ultimate_parent_id,
+      skeleton.ultimate_parent_id,
       skeleton.is_top_level_group,
       skeleton.group_created_at_month,
       skeleton.skeleton_month                                    AS audit_event_month,

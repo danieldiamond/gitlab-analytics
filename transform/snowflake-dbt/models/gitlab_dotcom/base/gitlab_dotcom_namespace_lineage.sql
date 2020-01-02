@@ -52,7 +52,7 @@ WITH RECURSIVE namespaces AS (
   SELECT
 
     extracted.*,
-    ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal,
+    (ultimate_parent_id IN {{ get_internal_parent_namespaces() }})   AS namespace_is_internal,
     namespace_plans.plan_id                                          AS namespace_plan_id,
     namespace_plans.title                                            AS namespace_plan_title,
     namespace_plans.plan_is_paid                                     AS namespace_plan_is_paid,
