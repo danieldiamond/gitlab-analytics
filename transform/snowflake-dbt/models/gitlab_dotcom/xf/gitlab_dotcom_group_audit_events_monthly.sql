@@ -21,13 +21,13 @@ WITH months AS (
     SELECT
       group_id,
       parent_group_id,
-      group_ultimate_parent_id,
       is_top_level_group,
+      group_ultimate_parent_id,
       group_ultimate_parent_plan_is_paid,
       DATE_TRUNC(month, group_created_at) AS group_created_at_month
 
     FROM {{ ref('gitlab_dotcom_groups_xf') }}
-    WHERE TO_DATE(group_created_at) < DATE_TRUNC('month', CURRENT_DATE)
+    WHERE group_created_at::DATE < DATE_TRUNC('month', CURRENT_DATE)
 
 ), skeleton AS ( -- create a framework of one row per group per month (after their creation date)
 
@@ -63,7 +63,6 @@ WITH months AS (
 
     SELECT
       skeleton.group_id,
-      skeleton.parent_group_id,
       skeleton.group_ultimate_parent_id,
       skeleton.is_top_level_group,
       skeleton.group_created_at_month,
@@ -77,7 +76,6 @@ WITH months AS (
     LEFT JOIN audit_events
       ON skeleton.group_id = audit_events.group_id
       AND skeleton.skeleton_month = audit_events.audit_event_month
-    ORDER BY 4 DESC, 1 DESC
 
 )
 
