@@ -112,7 +112,7 @@ def slack_failed_task(context):
 
 def slack_succeeded_task(context):
     """
-    Function to be used as a callable for on_failure_callback.
+    Function to be used as a callable for on_success_callback.
     Send a Slack alert.
     """
 

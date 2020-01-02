@@ -420,6 +420,21 @@ This macro is a custom schema test to be used as a column test in a schema.yml f
 Used in:
 - gitlab_dotcom/base/schema.yml
 
+## Test Unique Where Currently Valid([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/tests/test_unique_where_currently_valid.sql))
+This macro tests a column for uniqueness, but only checks rows with an `is_currently_valid` column with a value of True. This custom test was made specifically for models using the SCD macro and the default dbt uniquess test should be used in all other cases. 
+
+```
+  - name: gitlab_dotcom_issue_links
+    columns:
+      - name: issue_link_id
+        tests:
+          - not_null
+          - unique_where_currently_valid
+```
+
+Used in:
+- gitlab_dotcom/base/schema.yml
+
 ## Unpack Unstructured Events ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/version/unpack_unstructured_event.sql))
 This macro unpacks the unstructured snowplow events. It takes a list of field names, the pattern to match for the name of the event, and the prefix the new fields should use.
 Usage:
@@ -439,7 +454,10 @@ Used in:
 - gitlab_dotcom_users.sql
 
 ## Zuora Slugify ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/zuora_slugify.sql))
-This macro replaces any combination of whitespace and 2 pipes with a single pipe (important for renewal subscriptions) and it replaces all non alphanumeric characters with dashes and casts it to lowercases as well. The end result of using this macro on data like "A-S00003830 || A-S00013333" is "a-s00003830|a-s00013333".
+This macro replaces any combination of whitespace and 2 pipes with a single pipe (important for renewal subscriptions), replaces any multiple whitespace characters with a single whitespace character, and then it replaces all non alphanumeric characters with dashes and casts it to lowercases as well. The end result of using this macro on data like "A-S00003830 || A-S00013333" is "a-s00003830|a-s00013333".
+
+The custom test `zuora_slugify_cardinality` tests the uniqueness of the `zuora_subscription_slugify` (eg. 2 different subscription names will result to 2 different `zuora_subscription_name_slugify`)
+
 Usage:
 ```
 {{zuora_slugify("name")}}

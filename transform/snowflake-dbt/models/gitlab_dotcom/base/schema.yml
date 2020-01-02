@@ -278,7 +278,7 @@ models:
       - name: group_id
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_cluster_projects
     description: Base model for Gitlab.com cluster_projects
     columns:
@@ -294,6 +294,10 @@ models:
   - name: gitlab_dotcom_deployment_merge_requests
     description: Base model for GitLab.com deployments_merge_requests.
     columns:
+      - name: deployment_merge_request_id
+        tests:
+          - unique
+          - not_null
       - name: deployment_id
         tests:
           - not_null
@@ -377,12 +381,20 @@ models:
         tests:
           - not_null
           - no_overlapping_valid_from_to_dates
+          - unique_where_currently_valid
       - name: created_at
         tests:
           - not_null
       - name: updated_at
         tests:
           - not_null
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_groups
     description: '{{ doc("gitlab_dotcom_groups") }}'
@@ -440,8 +452,16 @@ models:
         tests:
           - not_null
           - no_overlapping_valid_from_to_dates
+          - unique_where_currently_valid
       - name: created_at
       - name: updated_at
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_issue_metrics
     description: Base model for Gitlab.com issue metrics
@@ -485,6 +505,14 @@ models:
         tests:
           - not_null
           - no_overlapping_valid_from_to_dates
+          - unique_where_currently_valid
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_label_priorities
     description: Base model for Gitlab.com label priorities
@@ -529,7 +557,7 @@ models:
       - name: project_id
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_licenses
     description: Base model for Gitlab.com licenses
     columns:
@@ -551,6 +579,14 @@ models:
         tests:
           - not_null
           - no_overlapping_valid_from_to_dates
+          - unique_where_currently_valid
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_merge_request_diffs
     description: Base model for Gitlab.com request diffs
@@ -772,7 +808,7 @@ models:
         tests:
           - not_null
           - unique
-          
+
   - name: gitlab_dotcom_project_authorizations
     description: >-
       Base model for Gitlab.com authorizations, duplicate rows have not been
@@ -834,6 +870,7 @@ models:
         tests:
           - not_null
           - no_overlapping_valid_from_to_dates
+          - unique_where_currently_valid
       - name: project_id
         tests:
           - not_null
@@ -846,6 +883,13 @@ models:
       - name: updated_at
         tests:
           - not_null
+      - name: valid_from
+        tests:
+          - not_null
+      - name: valid_to
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "valid_from <= valid_to"
 
   - name: gitlab_dotcom_project_import_data
     description: Base model for Gitlab.com import data
@@ -962,7 +1006,7 @@ models:
       - name: updated_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_subscriptions
     description: Base model for Gitlab.com subscriptions
     columns:
@@ -1007,7 +1051,7 @@ models:
       - name: updated_at
         tests:
           - not_null
-  
+
   - name: gitlab_dotcom_users
     description: >-
       Base model for Gitlab.com users, the following fields are hidden for
