@@ -26,10 +26,7 @@ members AS (
 
 namespace_lineage AS (
 
-    SELECT
-      namespace_id,
-      ultimate_parent_id,
-      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
+    SELECT *
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
 ),
@@ -95,10 +92,15 @@ joined AS (
 
       namespaces.namespace_name,
       namespaces.namespace_path,
-      --namespaces.plan_id                                           AS namespace_plan_id,
-      --namespace_lineage.ultimate_parent_id                         AS namespace_ultimate_parent_id,
+
       namespace_lineage.namespace_is_internal,
-      COALESCE( (namespaces.plan_id IN {{ paid_plans }} ), False)  AS namespace_plan_is_paid,
+      namespace_lineage.namespace_plan_id, 
+      namespace_lineage.namespace_plan_title,
+      namespace_lineage.namespace_plan_is_paid,
+      namespace_lineage.ultimate_parent_id,
+      namespace_lineage.ultimate_parent_plan_id,
+      namespace_lineage.ultimate_parent_plan_title,
+      namespace_lineage.ultimate_parent_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)               AS member_count
     FROM projects
       LEFT JOIN members
@@ -108,7 +110,7 @@ joined AS (
         ON projects.namespace_id = namespaces.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
-    {{ dbt_utils.group_by(n=61) }}
+    {{ dbt_utils.group_by(n=66) }}
 )
 
 SELECT *
