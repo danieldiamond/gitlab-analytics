@@ -95,8 +95,8 @@ joined AS (
 
       namespaces.namespace_name,
       namespaces.namespace_path,
-      namespaces.plan_id                                           AS namespace_plan_id,
-      namespace_lineage.ultimate_parent_id                         AS namespace_ultimate_parent_id,
+      --namespaces.plan_id                                           AS namespace_plan_id,
+      --namespace_lineage.ultimate_parent_id                         AS namespace_ultimate_parent_id,
       namespace_lineage.namespace_is_internal,
       COALESCE( (namespaces.plan_id IN {{ paid_plans }} ), False)  AS namespace_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)               AS member_count

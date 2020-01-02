@@ -22,10 +22,7 @@ projects AS (
 
 ), namespace_lineage AS (
 
-    SELECT
-      namespace_id,
-      ultimate_parent_id,
-      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
+    SELECT *
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
 ), plans AS (
@@ -62,15 +59,16 @@ projects AS (
       namespaces.ldap_sync_last_sync_at,
       namespaces.lfs_enabled,
       namespaces.parent_id,
-      namespace_lineage.ultimate_parent_id                             AS namespace_ultimate_parent_id,
       namespaces.shared_runners_minutes_limit,
       namespaces.repository_size_limit,
       namespaces.does_require_two_factor_authentication,
       namespaces.two_factor_grace_period,
       namespaces.project_creation_level,
-      namespaces.plan_id, --equivalent to namespace_lineage.plan_id
+
+      namespace_lineage.namespace_plan_id                              AS plan_id, --equivalent to namespaces.plan_id
       namespace_lineage.namespace_plan_title                           AS plan_title,
       namespace_lineage.namespace_plan_is_paid                         AS plan_is_paid,
+      namespace_lineage.ultimate_parent_id                             AS namespace_ultimate_parent_id,
       namespace_lineage.ultimate_parent_plan_id,
       namespace_lineage.ultimate_parent_plan_title,
       namespace_lineage.ultimate_parent_plan_is_paid,
