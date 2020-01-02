@@ -71,20 +71,20 @@ def slack_defaults(context, task_type):
     log_link = f"{base_url}/log?{log_params}"
     log_link_markdown = f"<{log_link}|View Logs>"
 
-    if task_type == 'success':
+    if task_type == "success":
         if task_name == "snowflake-password-reset":
             slack_channel = "#data-lounge"
         else:
             slack_channel = dag_context.params.get(
                 "slack_channel_override", "#analytics-pipelines"
             )
-        
+
         color = "#1aaa55"
         fallback = "An Airflow DAG has succeeded!"
         task_id = "slack_succeeded"
         task_text = "Task succeeded!"
 
-    if task_type == 'failure':
+    if task_type == "failure":
         if task_name == "dbt-source-freshness":
             slack_channel = "#analytics-pipelines"
         else:
@@ -114,12 +114,13 @@ def slack_defaults(context, task_type):
     ]
     return attachment, slack_channel, task_id, task_text
 
+
 def slack_failed_task(context):
     """
     Function to be used as a callable for on_failure_callback.
     Send a Slack alert.
     """
-    
+
     attachment, slack_channel, task_id, task_text = slack_defaults(context, "failure")
 
     slack_alert = SlackAPIPostOperator(
@@ -132,12 +133,13 @@ def slack_failed_task(context):
     )
     return slack_alert.execute()
 
+
 def slack_succeeded_task(context):
     """
     Function to be used as a callable for on_success_callback.
     Send a Slack alert.
     """
-    
+
     attachment, slack_channel, task_id, task_text = slack_defaults(context, "success")
 
     slack_alert = SlackAPIPostOperator(
