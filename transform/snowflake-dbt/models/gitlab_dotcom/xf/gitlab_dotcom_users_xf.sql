@@ -44,7 +44,7 @@ WITH customers AS (
 , users AS (
 
   SELECT 
-  {{ dbt_utils.star(from=ref('gitlab_dotcom_users'), except=["created_at", "updated_at"]) }},
+    {{ dbt_utils.star(from=ref('gitlab_dotcom_users'), except=["created_at", "updated_at"]) }},
     created_at AS user_created_at,
     updated_at AS user_updated_at
   FROM {{ ref('gitlab_dotcom_users') }}
@@ -72,7 +72,7 @@ WITH customers AS (
     groups.ultimate_parent_plan_id,
     groups.visibility_level,
     groups.ultimate_parent_plan_id AS inherited_subscription_plan_id,
-    '1. group'            AS inheritance_source
+    '1. group'                     AS inheritance_source
 
   FROM members
   INNER JOIN groups
@@ -89,12 +89,12 @@ WITH customers AS (
     SELECT
       members.user_id,
       projects.project_id,
-      projects.visibility_level AS project_visibility_level,
+      projects.visibility_level      AS project_visibility_level,
       groups.ultimate_parent_plan_id,
-      groups.visibility_level   AS namespace_visibility_level,
+      groups.visibility_level        AS namespace_visibility_level,
       groups.group_id,
       groups.ultimate_parent_plan_id AS inherited_subscription_plan_id,
-      '2. project'              AS inheritance_source
+      '2. project'                   AS inheritance_source
 
     FROM members
     LEFT JOIN projects

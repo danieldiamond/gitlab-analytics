@@ -61,9 +61,9 @@ projects AS (
       groups.two_factor_grace_period,
 
       namespace_lineage.namespace_is_internal                           AS group_is_internal,
-      namespace_lineage.namespace_plan_id, -- equivalent to groups.plan_id
-      namespace_lineage.namespace_plan_title                            AS plan_title,
-      namespace_lineage.namespace_plan_is_paid                          AS plan_is_paid,
+      namespace_lineage.namespace_plan_id                               AS group_plan_id,-- equivalent to groups.plan_id
+      namespace_lineage.namespace_plan_title                            AS group_plan_title,
+      namespace_lineage.namespace_plan_is_paid                          AS group_plan_is_paid,
       namespace_lineage.ultimate_parent_plan_id,
       namespace_lineage.ultimate_parent_plan_title,
       namespace_lineage.ultimate_parent_plan_is_paid,
