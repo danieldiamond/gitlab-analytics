@@ -34,8 +34,8 @@ WITH months AS (
     SELECT
       groups.group_id,
       groups.parent_group_id,
-      groups.group_ultimate_parent_id,
-      groups.group_ultimate_parent_plan_is_paid,
+      groups.ultimate_parent_id,
+      groups.ultimate_parent_plan_is_paid,
       groups.is_top_level_group,
       groups.group_created_at_month,
       months.skeleton_month,
@@ -76,7 +76,7 @@ WITH months AS (
     FROM skeleton
     LEFT JOIN audit_events
       ON skeleton.group_id = audit_events.group_id
-        AND skeleton.skeleton_month = audit_events.audit_event_month
+      AND skeleton.skeleton_month = audit_events.audit_event_month
     ORDER BY 4 DESC, 1 DESC
 
 )

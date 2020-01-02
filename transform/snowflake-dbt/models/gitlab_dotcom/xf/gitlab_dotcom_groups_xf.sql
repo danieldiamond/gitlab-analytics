@@ -22,17 +22,13 @@ projects AS (
 
 ), namespace_lineage AS (
 
-    SELECT
-      *,
-      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
-
+    SELECT *
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
 ), joined AS (
 
     SELECT
       groups.group_id,
-      namespace_lineage.namespace_is_internal                           AS group_is_internal,
 
       {% for field in fields_to_mask %}
       CASE
@@ -63,7 +59,9 @@ projects AS (
       groups.repository_size_limit,
       groups.does_require_two_factor_authentication,
       groups.two_factor_grace_period,
-      groups.plan_id, -- equivalent to namespace_lineage.namespace_plan_id
+
+      namespace_lineage.namespace_is_internal                           AS group_is_internal,
+      namespace_lineage.namespace_plan_id, -- equivalent to groups.plan_id
       namespace_lineage.namespace_plan_title                            AS plan_title,
       namespace_lineage.namespace_plan_is_paid                          AS plan_is_paid,
       namespace_lineage.ultimate_parent_plan_id,
@@ -83,7 +81,6 @@ projects AS (
         ON groups.group_id = namespace_lineage.namespace_id
       LEFT JOIN groups AS ultimate_parent_groups
         ON namespace_lineage.ultimate_parent_id = ultimate_parent_groups.group_id
-    -- TODO: test equivalent to namespace_lineage.namespace_plan_id
     {{ dbt_utils.group_by(n=32) }}
 
 )
