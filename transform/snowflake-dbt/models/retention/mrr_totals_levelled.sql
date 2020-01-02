@@ -90,3 +90,4 @@ SELECT *,
       datediff(month, parent_account_cohort_month, mrr_month) as months_since_parent_account_cohort_start,
       datediff(quarter, parent_account_cohort_quarter, mrr_month) as quarters_since_parent_account_cohort_start
 FROM joined
+ 
