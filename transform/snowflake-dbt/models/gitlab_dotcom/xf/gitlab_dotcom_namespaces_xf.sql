@@ -33,7 +33,6 @@ projects AS (
 ), joined AS (
     SELECT
       namespaces.namespace_id,
-      namespace_lineage.namespace_is_internal,
 
       {% for field in fields_to_mask %}
       CASE
@@ -65,6 +64,7 @@ projects AS (
       namespaces.two_factor_grace_period,
       namespaces.project_creation_level,
 
+      namespace_lineage.namespace_is_internal,
       namespace_lineage.namespace_plan_id                              AS plan_id, --equivalent to namespaces.plan_id
       namespace_lineage.namespace_plan_title                           AS plan_title,
       namespace_lineage.namespace_plan_is_paid                         AS plan_is_paid,
