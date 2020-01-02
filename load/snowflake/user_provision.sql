@@ -1,4 +1,4 @@
--- RUN THE FOLLOWING BEFORE THE SCRIPT (with correct values) with the SECURITYADMIN role
+-- RUN THE FOLLOWING BEFORE THE SCRIPT (with correct values) using the SECURITYADMIN role
 -- ====================
 -- set email = 'email@gitlab.com';
 -- set firstname  = 'Sasha';
