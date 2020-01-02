@@ -41,9 +41,6 @@ for path in paths_to_check:
                                 )
                                 periscope_table_dict.setdefault(match, set()).add(simplified_name)
 
-with open("comparison.txt", "w+") as f:
-    f.write("Check these!\r\n\r\n")
-
 # Assumes git diff was run to output the sql files that changed
 with open("diff.txt", "r") as f:
     lines = f.readlines()
