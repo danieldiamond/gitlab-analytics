@@ -39,7 +39,9 @@ for path in paths_to_check:
                                 simplified_name = re.sub(
                                     ".*\/analytics\/periscope\/", "", full_filename
                                 )
-                                periscope_table_dict.setdefault(match, set()).add(simplified_name)
+                                periscope_table_dict.setdefault(match, set()).add(
+                                    simplified_name
+                                )
 
 # Assumes git diff was run to output the sql files that changed
 with open("diff.txt", "r") as f:
