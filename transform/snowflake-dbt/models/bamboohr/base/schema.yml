@@ -86,3 +86,5 @@ models:
       - name: reports_to
         tests:
             - not_null
+ - name: employee_diversity 
+    description: This testing model is to capture employee diversity fields. We capture things historically in case anyone chooses change identification. 
