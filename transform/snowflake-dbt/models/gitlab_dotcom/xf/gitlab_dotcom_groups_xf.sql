@@ -79,8 +79,6 @@ projects AS (
         ON projects.namespace_id = groups.group_id
       LEFT JOIN namespace_lineage
         ON groups.group_id = namespace_lineage.namespace_id
-      LEFT JOIN groups AS ultimate_parent_groups
-        ON namespace_lineage.ultimate_parent_id = ultimate_parent_groups.group_id
     {{ dbt_utils.group_by(n=32) }}
 
 )
