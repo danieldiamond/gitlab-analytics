@@ -45,11 +45,12 @@ dag = DAG(
     # And with weekly-ish timelines
 )
 
-# dbt-snapshot
+# dbt-snapshot for weekly tag
 dbt_snapshot_cmd = f"""
     {dbt_install_deps_cmd} &&
     dbt snapshot -s tag:weekly --profiles-dir profile
 """
+
 dbt_snapshot = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
