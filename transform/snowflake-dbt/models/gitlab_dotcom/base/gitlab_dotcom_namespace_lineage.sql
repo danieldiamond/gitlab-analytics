@@ -12,6 +12,7 @@ WITH RECURSIVE namespaces AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_gitlab_subscriptions')}}
+    WHERE is_currently_valid = TRUE
 
 ), plans AS (
 
