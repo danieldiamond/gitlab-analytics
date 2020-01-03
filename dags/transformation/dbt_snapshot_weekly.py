@@ -40,7 +40,7 @@ dag = DAG(
     "dbt_snapshots_weekly",
     default_args=default_args,
     schedule_interval="0 1 1,5,12,19,28-31 * *",
-    # “At 01:00 on day-of-month 1, 5, 12, 19, and every day-of-month from 28 through 31.” 
+    # “At 01:00 on day-of-month 1, 5, 12, 19, and every day-of-month from 28 through 31.”
     # Pseudo-weekly to ensure we get it on the first and last days of a month
     # And with weekly-ish timelines
 )
