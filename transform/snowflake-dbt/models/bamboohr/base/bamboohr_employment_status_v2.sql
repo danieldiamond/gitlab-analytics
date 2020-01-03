@@ -38,7 +38,9 @@ WITH source AS (
                 else 'Other' end                                                                AS emp_status      
             -- will need to work with people group to create a translation table for different employment statuses
   FROM renamed r
+
 )  
+
     SELECT
         employee_id,
         employment_status,
