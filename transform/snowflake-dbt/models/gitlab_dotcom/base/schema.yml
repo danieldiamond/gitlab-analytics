@@ -703,6 +703,15 @@ models:
           itself.
         tests:
           - not_null
+      - name: namespace_is_internal
+        tests:
+          - not_null
+      - name: namespace_plan_id
+        tests:
+          - not_null
+      - name: ultimate_parent_plan_id
+        tests:
+          - not_null          
 
   - name: gitlab_dotcom_namespace_statistics
     description: Base model for Gitlab.com namespace statistics
