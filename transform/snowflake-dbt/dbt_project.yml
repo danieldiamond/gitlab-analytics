@@ -168,3 +168,7 @@ models:
     zuora:
       xf:
         materialized: table
+
+# ======
+# Snapshot Configs
+# ======
