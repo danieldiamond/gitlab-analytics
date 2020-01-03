@@ -116,7 +116,7 @@
   <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
-    - echo $snowflake_load_database
+    - echo $SNOWFLAKE_LOAD_DATABASE
     - dbt snapshot $CI_PROFILE_TARGET
     
 📝specify_tests:
