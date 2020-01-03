@@ -1,4 +1,4 @@
-with source as (
+WITH source AS (
 
     SELECT *
 --    FROM "RAW"."BAMBOOHR"."EMPLOYMENTSTATUS" 
