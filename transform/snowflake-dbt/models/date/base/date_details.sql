@@ -72,7 +72,7 @@ WITH date_spine AS (
 
             LAST_VALUE(date_day) OVER (PARTITION BY first_day_of_week ORDER BY date_day) AS last_day_of_week,
 
-            (year_actual || 'Q' || EXTRACT(QUARTER FROM date_day)) AS quarter_name,
+            (year_actual || '-Q' || EXTRACT(QUARTER FROM date_day)) AS quarter_name,
 
             (fiscal_year || '-' || DECODE(fiscal_quarter,
                        1, 'Q1',
