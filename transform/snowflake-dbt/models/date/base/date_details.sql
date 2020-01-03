@@ -82,9 +82,9 @@ WITH date_spine AS (
 
             ('FY' || SUBSTR(fiscal_quarter_name, 3, 7)) AS fiscal_quarter_name_fy,
 
-            (CASE WHEN MONTH(DATE_KEY) = 1 AND DAYOFMONTH(DATE_KEY) = 1 THEN 'New Year''s Day'
-                 WHEN MONTH(DATE_KEY) = 12 AND DAYOFMONTH(DATE_KEY) = 25 THEN 'Christmas Day'
-                 WHEN MONTH(DATE_KEY) = 12 AND DAYOFMONTH(DATE_KEY) = 26 THEN 'Boxing Day'
+            (CASE WHEN MONTH(date_day) = 1 AND DAYOFMONTH(date_day) = 1 THEN 'New Year''s Day'
+                 WHEN MONTH(date_day) = 12 AND DAYOFMONTH(date_day) = 25 THEN 'Christmas Day'
+                 WHEN MONTH(date_day) = 12 AND DAYOFMONTH(date_day) = 26 THEN 'Boxing Day'
                  ELSE NULL END)::varchar AS holiday_desc,
             (CASE WHEN HOLIDAY_DESC IS NULL THEN 0
                  ELSE 1 END)::boolean AS is_holiday
