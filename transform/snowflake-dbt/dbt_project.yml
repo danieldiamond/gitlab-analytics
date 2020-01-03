@@ -178,20 +178,20 @@ snapshots:
     target_schema: "snapshots"
     transient: false
 
-  customers:
-    tags: ["daily"]
+    customers:
+      tags: ["daily"]
 
-  gitlab_dotcom:
-    tags: ["daily"]
+    gitlab_dotcom:
+      tags: ["daily"]
 
-  license:
-    tags: ["daily"]
-  
-  sfdc:
-    tags: ["daily"]
+    license:
+      tags: ["daily"]
+    
+    sfdc:
+      tags: ["daily"]
 
-  sheetload:
-    tags: ["daily"]
+    sheetload:
+      tags: ["daily"]
 
-  zuora:
-    tags: ["weekly"]
+    zuora:
+      tags: ["weekly"]
