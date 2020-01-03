@@ -178,7 +178,7 @@ models:
           - not_null
           - accepted_values:
               values: [2, 3, 4, 34]
-      - name: namespace_plan_is_paid
+      - name: plan_is_paid
         description: Whether or not the namespace associated with the project is subscribed to a paid plan.
         tests:
           - not_null

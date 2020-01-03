@@ -65,7 +65,7 @@ projects AS (
       namespaces.project_creation_level,
 
       namespace_lineage.namespace_is_internal,
-      namespace_lineage.namespace_plan_id                              AS plan_id, --equivalent to namespaces.plan_id
+      namespaces.plan_id,  --equivalent to namespace_lineage.namespace_plan_id
       namespace_lineage.namespace_plan_title                           AS plan_title,
       namespace_lineage.namespace_plan_is_paid                         AS plan_is_paid,
       namespace_lineage.ultimate_parent_id,
