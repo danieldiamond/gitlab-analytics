@@ -857,6 +857,10 @@ roles:
         warehouses:
             - analyst_xs
 
+    - jpeguero:
+        warehouses:
+            - analyst_xs
+
     - jsalazar:
         warehouses:
             - reporting
@@ -1112,6 +1116,12 @@ users:
         member_of:
             - jmahdi
             - analyst_sales
+
+    - jpeguero:
+        can_login: yes
+        member_of:
+            - jpeguero
+            - analyst_marketing
 
     - jsalazar:
         can_login: yes
