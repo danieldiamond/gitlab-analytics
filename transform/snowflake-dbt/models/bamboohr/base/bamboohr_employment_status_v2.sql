@@ -11,7 +11,9 @@ WITH source AS (
         SELECT d.value AS data_by_row
         FROM source,
         LATERAL FLATTEN(INPUT => parse_json(jsontext), outer => true) d
-), renamed as (
+
+), renamed AS (
+
         SELECT
             data_by_row['id']::bigint                             AS status_id,
             data_by_row['employeeId']::bigint                     AS employee_id,
