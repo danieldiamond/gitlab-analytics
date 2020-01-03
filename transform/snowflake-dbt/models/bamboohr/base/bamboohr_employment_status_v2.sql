@@ -21,7 +21,9 @@ WITH source AS (
             data_by_row['employmentStatus']::varchar              AS employment_status,   
             nullif(data_by_row['terminationTypeId']::varchar, '') AS termination_type  
       FROM intermediate
-), additional as (
+
+), additional AS (
+
         SELECT
             employee_id,
             effective_date                                                                      AS valid_from_date,
