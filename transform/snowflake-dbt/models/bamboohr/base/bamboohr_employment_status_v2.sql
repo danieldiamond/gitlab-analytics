@@ -1,7 +1,6 @@
 WITH source AS (
 
     SELECT *
---    FROM "RAW"."BAMBOOHR"."EMPLOYMENTSTATUS" 
     FROM {{ source('bamboohr', 'employment_status') }}
     ORDER BY uploaded_at DESC
     LIMIT 1
