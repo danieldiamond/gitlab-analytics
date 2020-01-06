@@ -1419,7 +1419,6 @@ tables:
       , tag_push_events
       , note_events
       , category
-      , default
       , wiki_page_events
       , pipeline_events
       , confidential_issues_events
