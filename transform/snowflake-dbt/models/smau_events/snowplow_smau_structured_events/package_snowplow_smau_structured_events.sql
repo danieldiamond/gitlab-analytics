@@ -23,11 +23,11 @@ WITH snowplow_structured_events AS (
         (
           event_action IN 
             (
-              'registry_repository_delete',
-              'bulk_registry_tag_delete',
-              'registry_tag_delete',
+              'delete_repository',
+              'delete_tag',
+              'delete_tag_bulk',
               'list_repositories',
-              'delete_repository'
+              'list_tags'
             )
         )
       OR
