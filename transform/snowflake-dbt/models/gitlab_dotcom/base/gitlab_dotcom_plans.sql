@@ -22,7 +22,6 @@ WITH source AS (
 
     FROM source
 
-
 )
 
 SELECT *
