@@ -61,7 +61,7 @@ models:
         tests:
             - not_null
   - name: bamboohr_id_employee_number_mapping
-    description: This model is the canonical source mapping bamboo employee numbers with employee IDs. It includes all employees for all time. 
+    description: This model is the canonical source mapping bamboo employee numbers with employee IDs. It includes all employees for all time. The model also captures demograhic information.
   - name: bamboohr_job_info
     description: This model shows the details (manager, department, and division) that an employee is in at a given point in time. This includes historical information.
     columns:
