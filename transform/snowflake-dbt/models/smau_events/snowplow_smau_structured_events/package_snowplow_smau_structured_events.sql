@@ -1,13 +1,12 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "event_id"
+    "unique_key": "event_surrogate_key"
     })
 }}
 
 WITH snowplow_structured_events AS (
 
   SELECT
-    event_id,
     user_snowplow_domain_id,
     user_custom_id,
     derived_tstamp,
@@ -49,7 +48,6 @@ WITH snowplow_structured_events AS (
 , renamed AS (
   
     SELECT
-      event_id,
       user_snowplow_domain_id,
       user_custom_id,
       TO_DATE(derived_tstamp) AS event_date,
