@@ -16,9 +16,9 @@ Since groups can be nested up to 21 levels deep, this model provides an `ultimat
 The recurvice CTE uses a top-down approach to iterate though each namespace. The anchor section selects all namespaces without parents. The iteration section recursively joins through all children onto the anchor wherever anchor.namespace == iteration.parent_namespace.  
 
 This model also adds some helper columns related to the **plan** associated with each namespace and its parents. For both the namespace and the namespace's ultimate parent, there are columns to represent:
-* the plan_id (4)
-* the plan_title (gold)
-* whether or not the plan is paid (TRUE)
+* the **current** plan_id (4)
+* the **current** plan_title (gold)
+* whether or not the **current** plan is paid (TRUE)
 
 {% enddocs %}
 
