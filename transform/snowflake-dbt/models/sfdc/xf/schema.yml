@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: sfdc_accounts_xf
+    description: '{{ doc("sfdc_accounts_xf") }}' 
     columns:
       - name: account_id
         tests:
