@@ -7,6 +7,7 @@
 WITH snowplow_structured_events AS (
 
   SELECT
+    event_id,
     user_snowplow_domain_id,
     user_custom_id,
     derived_tstamp,
@@ -17,7 +18,8 @@ WITH snowplow_structured_events AS (
   FROM {{ ref('snowplow_structured_events')}}
   WHERE derived_tstamp >= '2019-01-01'
   {% if is_incremental() %}
-    AND derived_tstamp >= (SELECT MAX(derived_tstamp) FROM {{this}})
+    AND derived_tstamp >= (SELECT MAX({{this}}.event_date) FROM {{this}})
+  {% endif %}
     AND 
       (
         (
@@ -41,13 +43,13 @@ WITH snowplow_structured_events AS (
             )
         )
       )
-  {% endif %}
 
 )
 
 , renamed AS (
   
     SELECT
+      event_id,
       user_snowplow_domain_id,
       user_custom_id,
       TO_DATE(derived_tstamp) AS event_date,
