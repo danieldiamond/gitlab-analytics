@@ -64,21 +64,21 @@ The opportunity source table contains info about your opportunities, which are s
 
 {% enddocs %}
 
-{% docs sfdc_poc_source %}
+{% docs sfdc_pov_source %}
 
-Custom source table: This table contains data on the proof of concept.
+This table contains data on the proof of value. Note the API name for this source remained proof_of_concept after renaming of the SFDC custom object.
+
+{% enddocs %}
+
+{% docs sfdc_professional_services_engagement_source %}
+
+This table contains data on the professional services engagement. Note the API name for this source remained statement_of_work after renaming of the SFDC custom object.
 
 {% enddocs %}
 
 {% docs sfdc_recordtype_source %}
 
 The record type source table represents a record type. [Link to Documentation](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_recordtype.htm)
-
-{% enddocs %}
-
-{% docs sfdc_sow_source %}
-
-Custom source table: This table contains data on the statement of work.
 
 {% enddocs %}
 

@@ -35,16 +35,13 @@ for path in paths_to_check:
                         )
                         if matches is not None:
                             for match in matches.groups():
-                                curr_list = periscope_table_dict.get(match, [])
                                 # Strip prefixes
                                 simplified_name = re.sub(
                                     ".*\/analytics\/periscope\/", "", full_filename
                                 )
-                                curr_list.append(simplified_name)
-                                periscope_table_dict[match] = list(set(curr_list))
-
-with open("comparison.txt", "w+") as f:
-    f.write("Check these!\r\n\r\n")
+                                periscope_table_dict.setdefault(match, set()).add(
+                                    simplified_name
+                                )
 
 # Assumes git diff was run to output the sql files that changed
 with open("diff.txt", "r") as f:
