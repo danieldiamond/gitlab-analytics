@@ -48,8 +48,8 @@ WITH RECURSIVE namespaces AS (
     GET(upstream_lineage, ARRAY_SIZE(upstream_lineage)-1) AS ultimate_parent_id
   FROM recursive_namespaces
 
-  /* Select children with deleted parents. These are missed by the top-down recursive CTE.
-     This is quite rare (n=79 on 2020-01-06). */
+  /* Select children with deleted ancestors. These are missed by the top-down recursive CTE.
+     This is quite rare (n=82 on 2020-01-06). */
   UNION SELECT
     namespaces.namespace_id, 
     namespaces.parent_id,
@@ -57,6 +57,7 @@ WITH RECURSIVE namespaces AS (
     NULL AS ultimate_parent_id
   FROM namespaces
   WHERE parent_id NOT IN (SELECT DISTINCT namespace_id FROM namespaces)
+    OR namespace_id IN (6713278, 6142621, 4159925) -- Grandparent or older is deleted.
 
 ), with_plans AS (
 
