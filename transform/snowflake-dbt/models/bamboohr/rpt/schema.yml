@@ -12,7 +12,11 @@ models:
       tests:
       - not_null
     - name: division
+      tests:
+      - not_null
     - name: department
+      tests:
+      - not_null
     - name: sum_weighted_deviated_from_comp_calc
       tests:
       - not_null
