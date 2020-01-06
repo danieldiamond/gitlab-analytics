@@ -14,7 +14,6 @@ WITH source AS (
   SELECT 
     id::INTEGER             AS ci_group_variable_id, 
     key                     AS key, 
-    value                   AS value, 
     group_id::INTEGER       AS ci_group_variable_group_id, 
     created_at::TIMESTAMP   AS created_at, 
     updated_at::TIMESTAMP   AS updated_at, 
