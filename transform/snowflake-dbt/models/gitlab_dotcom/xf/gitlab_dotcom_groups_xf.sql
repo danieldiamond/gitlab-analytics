@@ -54,16 +54,16 @@ projects AS (
       groups.lfs_enabled,
       groups.parent_group_id,
       IFF(groups.parent_group_id IS NULL, True, False)                  AS is_top_level_group,
-      namespace_lineage.ultimate_parent_id                              AS ultimate_parent_id,
       groups.shared_runners_minutes_limit,
       groups.repository_size_limit,
       groups.does_require_two_factor_authentication,
       groups.two_factor_grace_period,
 
+      namespace_lineage.ultimate_parent_id                              AS ultimate_parent_id,
       namespace_lineage.namespace_is_internal                           AS group_is_internal,
-      groups.plan_id                                                    AS group_plan_id, -- equivalent to namespace_lineage.namespace_plan_id
-      namespace_lineage.namespace_plan_title                            AS group_plan_title,
-      namespace_lineage.namespace_plan_is_paid                          AS group_plan_is_paid,
+      groups.plan_id, -- equivalent to namespace_lineage.namespace_plan_id
+      namespace_lineage.namespace_plan_title                            AS plan_title,
+      namespace_lineage.namespace_plan_is_paid                          AS plan_is_paid,
       namespace_lineage.ultimate_parent_plan_id,
       namespace_lineage.ultimate_parent_plan_title,
       namespace_lineage.ultimate_parent_plan_is_paid,
