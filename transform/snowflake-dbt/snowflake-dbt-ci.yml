@@ -6,7 +6,7 @@
     - echo $SNOWFLAKE_DATABASE
     - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
     - echo $SNOWFLAKE_TRANSFORM_DATABASE
-    - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_LOAD_DATABASE="RAW"; else export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW"; fi
+    - export SNOWFLAKE_LOAD_DATABASE="RAW" # dbt pulls from RAW
     - echo $SNOWFLAKE_LOAD_DATABASE
     - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XS_WAREHOUSE
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
@@ -116,6 +116,7 @@
   <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
+    - export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW" # Must write to clone of RAW since this does real work
     - echo $SNOWFLAKE_LOAD_DATABASE
     - dbt snapshot $CI_PROFILE_TARGET
     
