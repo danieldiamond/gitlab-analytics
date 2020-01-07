@@ -1,7 +1,6 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "ci_job_artifact_id",
-    "schema": "staging"
+    "unique_key": "ci_job_artifact_id"
     })
 }}
 

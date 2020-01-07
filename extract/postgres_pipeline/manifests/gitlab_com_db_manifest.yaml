@@ -56,7 +56,6 @@ tables:
       SELECT id
       , resource_owner_id
       , application_id
-      , refresh_token
       , expires_in
       , revoked_at
       , created_at
@@ -128,10 +127,6 @@ tables:
     import_query: >
       SELECT id
       , key
-      , value
-      , encrypted_value
-      , encrypted_value_salt
-      , encrypted_value_iv
       , pipeline_schedule_id
       , created_at
       , updated_at
@@ -199,7 +194,6 @@ tables:
     import_query: >
       SELECT id
       , key
-      , value
       , pipeline_id
       , variable_type
       FROM ci_pipeline_variables
@@ -327,7 +321,6 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , token
       , created_at
       , updated_at
       , project_id
@@ -529,8 +522,6 @@ tables:
       , created_at
       , updated_at
       , last_update_started_at
-      , encrypted_alert_manager_token
-      , encrypted_alert_manager_token_iv
       FROM clusters_applications_prometheus
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
           AND '{EXECUTION_DATE}'::timestamp
@@ -606,6 +597,40 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'deployments'
     export_table_primary_key: id
+  design_management_designs:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT CONCAT(issue_id,'_',filename) AS id
+      , project_id
+      , issue_id
+      , filename
+      FROM design_management_designs
+    export_schema: 'gitlab_com'
+    export_table: 'design_management_designs'
+    export_table_primary_key: CONCAT(issue_id,'_',filename)
+  design_management_designs_versions:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT CONCAT(design_id,'_', version_id) AS id
+      , design_id
+      , version_id
+      , event
+      FROM design_management_designs_versions
+    export_schema: 'gitlab_com'
+    export_table: 'design_management_designs_versions'
+    export_table_primary_key: CONCAT(design_id,'_', version_id)
+  design_management_versions:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT CONCAT(sha,'_', issue_id) AS id
+      , CAST(sha AS VARCHAR) AS sha
+      , issue_id
+      , created_at
+      , author_id
+      FROM design_management_versions
+    export_schema: 'gitlab_com'
+    export_table: 'design_management_versions'
+    export_table_primary_key: CONCAT(sha,'_', issue_id)
   environments:
     import_db: GITLAB_DB
     import_query: >
@@ -1127,7 +1152,6 @@ tables:
       , updated_at
       , project_id
       , key
-      , value
       FROM project_custom_attributes
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -1367,6 +1391,38 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'routes'
     export_table_primary_key: id
+  services:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , type
+      , title
+      , project_id
+      , created_at
+      , updated_at
+      , active
+      , properties
+      , template
+      , push_events
+      , issues_events
+      , merge_requests_events
+      , tag_push_events
+      , note_events
+      , category
+      , wiki_page_events
+      , pipeline_events
+      , confidential_issues_events
+      , commit_events
+      , job_events
+      , confidential_note_events
+      , deployment_events
+      , comment_on_event_enabled
+      FROM services
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'services'
+    export_table_primary_key: id
   timelogs:
     import_db: GITLAB_DB
     import_query: >
@@ -1478,7 +1534,6 @@ tables:
     import_query: >
       SELECT id
       , key
-      , value
       , group_id
       , created_at
       , updated_at
@@ -1538,7 +1593,6 @@ tables:
       , "when"
       , yaml_variables
       , queued_at
-      , token
       , lock_version
       , coverage_regex
       , auto_canceled_by_id
@@ -1549,7 +1603,6 @@ tables:
       , protected
       , failure_reason
       , scheduled_at
-      , token_encrypted
       , upstream_pipeline_id
       FROM ci_builds
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
@@ -1561,7 +1614,6 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , token
       , created_at
       , updated_at
       , description
@@ -1579,7 +1631,6 @@ tables:
       , ip_address
       , maximum_timeout
       , runner_type
-      , token_encrypted
       FROM ci_runners
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp

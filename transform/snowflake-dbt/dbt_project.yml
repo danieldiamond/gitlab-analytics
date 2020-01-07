@@ -117,6 +117,8 @@ models:
     gitlab_dotcom:
       tags: ["product"]
       materialized: table
+      base:
+          schema: staging
 
     gitter:
       enabled: false
@@ -168,3 +170,30 @@ models:
     zuora:
       xf:
         materialized: table
+
+# ======
+# Snapshot Configs
+# ======
+snapshots:
+  gitlab_snowflake:
+    target_database: "{{ env_var('SNOWFLAKE_LOAD_DATABASE') }}"
+    target_schema: "snapshots"
+    transient: false
+
+    customers:
+      tags: ["daily"]
+
+    gitlab_dotcom:
+      tags: ["daily"]
+
+    license:
+      tags: ["daily"]
+    
+    sfdc:
+      tags: ["daily"]
+
+    sheetload:
+      tags: ["daily"]
+
+    zuora:
+      tags: ["weekly"]

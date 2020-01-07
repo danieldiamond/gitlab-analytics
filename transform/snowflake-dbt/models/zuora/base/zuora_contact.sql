@@ -51,4 +51,4 @@ WITH source AS (
 )
 
 SELECT *
-FROM renamed
+FROM renamed 
