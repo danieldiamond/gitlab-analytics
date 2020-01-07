@@ -21,7 +21,6 @@ WITH source AS (
 
   SELECT
     id::INTEGER                         AS runner_id,
-    token::VARCHAR                      AS runner_token,
     created_at::TIMESTAMP               AS created_at,
     updated_at::TIMESTAMP               AS updated_at,
     description::VARCHAR                AS description,
@@ -38,8 +37,7 @@ WITH source AS (
     access_level::INTEGER               AS access_level,
     ip_address::VARCHAR                 AS ip_address,
     maximum_timeout::INTEGER            AS maximum_timeout,
-    runner_type::INTEGER                AS runner_type,
-    token_encrypted::VARCHAR            AS token_encrypted 
+    runner_type::INTEGER                AS runner_type
   FROM source
 
 )

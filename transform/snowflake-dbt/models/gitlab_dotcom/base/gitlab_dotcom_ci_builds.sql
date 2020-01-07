@@ -53,7 +53,6 @@ WITH source AS (
     artifacts_size::VARCHAR           AS artifacts_size, 
     yaml_variables::VARCHAR           AS yaml_variables, 
     queued_at::TIMESTAMP              AS ci_build_queued_at, 
-    token::VARCHAR                    AS token, 
     lock_version::VARCHAR             AS lock_version, 
     coverage_regex::VARCHAR           AS coverage_regex, 
     auto_canceled_by_id::INTEGER      AS ci_build_auto_canceled_by_id, 
@@ -64,7 +63,6 @@ WITH source AS (
     protected::BOOLEAN                AS protected, 
     failure_reason::VARCHAR           AS failure_reason, 
     scheduled_at::TIMESTAMP           AS ci_build_scheduled_at, 
-    token_encrypted::VARCHAR          AS token_encrypted, 
     upstream_pipeline_id::INTEGER     AS upstream_pipeline_id 
   FROM source
 
