@@ -7,7 +7,7 @@
     WHERE table_schema ILIKE '%{{ schema_part }}%'
       AND table_schema NOT ILIKE '%{{ exclude_part }}%' -- new part
       AND table_name ILIKE '{{ table_name }}'
-	ORDER BY 1
+    ORDER BY 1
 
   {%- endcall -%}
 
