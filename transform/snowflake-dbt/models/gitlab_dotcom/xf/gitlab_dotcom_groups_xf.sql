@@ -61,10 +61,10 @@ projects AS (
       groups.project_creation_level,
 
       namespace_lineage.namespace_is_internal                           AS group_is_internal,
-      namespace_lineage.ultimate_parent_id                              AS ultimate_parent_id,
+      namespace_lineage.ultimate_parent_id                              AS group_ultimate_parent_id,
       namespace_lineage.ultimate_parent_plan_id                         AS group_plan_id,
       namespace_lineage.ultimate_parent_plan_title                      AS group_plan_title,
-      namespace_lineage.ultimate_parent_plan_is_paid                    AS group_parent_plan_is_paid,
+      namespace_lineage.ultimate_parent_plan_is_paid                    AS group_plan_is_paid,
 
       COALESCE(COUNT(DISTINCT members.member_id), 0)                    AS member_count,
       COALESCE(COUNT(DISTINCT projects.project_id), 0)                  AS project_count
