@@ -74,7 +74,7 @@ rm ~/onboarding_script.sh
 ```
    * This may take a while, and it might ask you for your password (multiple times) before it's done. Here's what this does:
       * Installs iTerm, a mac-OS terminal replacement
-      * Installs Atom, an open source text editor. Atom is reccomended because of its support for dbt autocompletion.
+      * Installs VSCode, an open source text editor. VSCode is recommended for multiple reasons including community support, the [GitLab workflow](https://marketplace.visualstudio.com/items?itemName=fatihacet.gitlab-workflow) extension, and the LiveShare features.
       * Installs docker so you can work out of containers.
       * Installing dbt, the open source tool we use for data transformations.
       * Installing goto, an easy way to move through the file system. [Please find here more details on how to use goto](https://github.com/iridakos/goto)
@@ -83,7 +83,7 @@ rm ~/onboarding_script.sh
    * You will be able to `gl_open` from anywhere within the analytics project to open the repo in the UI. If doesn't work, visually inspect your `~/.bashrc` file to make sure it has [this line](https://gitlab.com/gitlab-data/analytics/blob/master/admin/make_life_easier.sh#L14). 
    * Your default python version should now be python 3. Typing `which python` into a new terminal window should now return `/usr/local/anaconda3/bin/python`
    * dbt will be installed at its latest version. Typing `dbt --version` will output the current version.
-* [ ] We strongly recommend configuring Atom (via the Atom UI) with the [Atom setup](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243?) section of Claire's post and [adding the tip](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243/5) from jars later in the thread. It will make your life much easier.
+* [ ] We strongly recommend configuring VSCode (via the VSCode UI) with the [VSCode setup](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243?) section of Claire's post and [adding the tip](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243/10?u=tmurphy) from tmurphy later in the thread. It will make your life much easier.
   * Your editor should be configured so that all tabs are converted to 4 spaces. This will minimize messy looking diffs and provide consistency across the team.
     * VSCode
       * `Editor: Detect Indentation` is deselected
