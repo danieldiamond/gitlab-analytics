@@ -610,6 +610,7 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT CONCAT(issue_id,'_',filename) AS id
+      , project_id
       , issue_id
       , filename
       FROM design_management_designs
@@ -626,7 +627,7 @@ tables:
       FROM design_management_designs_versions
     export_schema: 'gitlab_com'
     export_table: 'design_management_designs_versions'
-    export_table_primary_key: CONCAT(design_id,'_', version_id)
+    export_table_primary_key: id
   design_management_versions:
     import_db: GITLAB_DB
     import_query: >
