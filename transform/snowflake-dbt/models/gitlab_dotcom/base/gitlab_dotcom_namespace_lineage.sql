@@ -64,7 +64,6 @@ WITH RECURSIVE namespaces AS (
 ), with_plans AS (
 
   SELECT
-
     extracted.*,
     COALESCE((ultimate_parent_id IN {{ get_internal_parent_namespaces() }}), FALSE)   AS namespace_is_internal,
     namespace_plans.plan_id                                                           AS namespace_plan_id,
