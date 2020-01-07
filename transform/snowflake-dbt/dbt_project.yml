@@ -117,6 +117,8 @@ models:
     gitlab_dotcom:
       tags: ["product"]
       materialized: table
+      base:
+          schema: staging
 
     gitter:
       enabled: false

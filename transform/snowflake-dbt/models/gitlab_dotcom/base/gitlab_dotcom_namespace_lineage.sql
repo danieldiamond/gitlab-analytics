@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH RECURSIVE namespaces AS (
 
     SELECT

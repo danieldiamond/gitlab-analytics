@@ -1,7 +1,6 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "runner_id",
-    "schema": "staging"
+    "unique_key": "runner_id"
     })
 }}
 
