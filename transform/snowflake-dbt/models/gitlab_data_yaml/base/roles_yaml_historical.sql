@@ -21,7 +21,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      data_by_row['salary']::number         AS salary,
+      data_by_row['compensation']::number         AS compensation,
       data_by_row['title']::varchar         AS title,
       data_by_row['levels']::varchar        AS role_levels,
       data_by_row['open']::varchar          AS is_open,
