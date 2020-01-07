@@ -11,10 +11,10 @@ WITH base AS (
 
     SELECT *
     FROM {{ ref('gitlab_dotcom_notes') }}
-    WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+    WHERE TRUE
     {% if is_incremental() %}
 
-    WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+      AND updated_at >= (SELECT MAX(updated_at) FROM {{this}})
 
     {% endif %}
 )
@@ -40,14 +40,14 @@ WITH base AS (
     SELECT
       {{ dbt_utils.star(from=ref('gitlab_dotcom_notes'), except=fields_to_mask|upper, relation_alias='base') }},
       {% for field in fields_to_mask %}
-      CASE
-        WHEN TRUE 
-          AND projects.visibility_level != 'public'
-          AND NOT internal_namespaces.namespace_is_internal
-          THEN 'confidential - masked'
-        ELSE {{field}}
-      END AS {{field}}
-      {% if not loop.last %} , {% endif %}
+        CASE
+          WHEN TRUE 
+            AND projects.visibility_level != 'public'
+            AND NOT internal_namespaces.namespace_is_internal
+            THEN 'confidential - masked'
+          ELSE {{field}}
+        END AS {{field}}
+        {% if not loop.last %} , {% endif %}
       {% endfor %}
     FROM base
       LEFT JOIN projects ON base.project_id = projects.project_id
