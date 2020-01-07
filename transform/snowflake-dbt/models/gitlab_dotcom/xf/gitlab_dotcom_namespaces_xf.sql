@@ -60,7 +60,7 @@ projects AS (
       namespaces.project_creation_level,
 
       namespace_lineage.namespace_is_internal,
-      namespace_lineage.ultimate_parent_id,
+      namespace_lineage.ultimate_parent_id                             AS namespace_ultimate_parent_id,
       namespace_lineage.ultimate_parent_plan_id                        AS plan_id,
       namespace_lineage.ultimate_parent_plan_title                     AS plan_title,
       namespace_lineage.ultimate_parent_plan_is_paid                   AS plan_is_paid,
