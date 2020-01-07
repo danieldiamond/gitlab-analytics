@@ -616,7 +616,7 @@ tables:
       FROM design_management_designs
     export_schema: 'gitlab_com'
     export_table: 'design_management_designs'
-    export_table_primary_key: id
+    export_table_primary_key: CONCAT(issue_id,'_',filename)
   design_management_designs_versions:
     import_db: GITLAB_DB
     import_query: >
@@ -627,7 +627,7 @@ tables:
       FROM design_management_designs_versions
     export_schema: 'gitlab_com'
     export_table: 'design_management_designs_versions'
-    export_table_primary_key: id
+    export_table_primary_key: CONCAT(design_id,'_', version_id)
   design_management_versions:
     import_db: GITLAB_DB
     import_query: >
