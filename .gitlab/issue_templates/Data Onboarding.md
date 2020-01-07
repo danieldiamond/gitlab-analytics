@@ -19,6 +19,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
    - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
 - [ ] Manager: Add to the `gitlab-data/chatops` project as a Maintainer.
 - [ ] Manager: Add to the `gitlab-data` namespace as a Developer.
+- [ ] Manager: Add to Airflow as Analyst (Admin for Engineers)
 - [ ] Manager: Update codeowners file in the handbook to include the new team member
 - [ ] Manager: Add to daily Geekbot standup (send `dashboard` to Geekbot on slack, click into a particular standup in the web UI, add via Manage button)
 - [ ] Manager: Invite to SheetLoad folder in gdrive
@@ -29,6 +30,10 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Update issue with one or two Good First Issues
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
 
+### For Engineers
+- [ ] Manager: Add to `gitlab-analytics` GCP group
+- [ ] Manager: Add to Stitch
+- [ ] Manager: Add to Fivetran
 
 ## WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
