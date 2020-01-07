@@ -22,7 +22,7 @@ WITH months AS (
       group_id,
       parent_group_id,
       is_top_level_group,
-      ultimate_parent_id,
+      group_ultimate_parent_id,
       DATE_TRUNC(month, group_created_at) AS group_created_at_month
 
     FROM {{ ref('gitlab_dotcom_groups_xf') }}
