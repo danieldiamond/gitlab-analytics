@@ -6,7 +6,7 @@ WITH plan_snowplow_smau_pageviews_events AS (
     event_date,
     event_type,
     event_surrogate_key AS event_surrogate_key,
-    'snowplow_frontend' AS source_type
+    'snowplow_pageviews' AS source_type
   
   FROM {{ ref('plan_snowplow_smau_pageviews_events')}}
   
