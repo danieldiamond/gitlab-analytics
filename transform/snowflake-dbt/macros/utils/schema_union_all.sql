@@ -5,7 +5,7 @@
     SELECT DISTINCT '"' || table_schema || '"."' || table_name || '"'
     FROM "{{ target.database }}".information_schema.tables
     WHERE table_schema ILIKE '%{{ schema_part }}%'
-      AND table_schema NOT ILIKE '%{{ exclude_part }}%' -- new part
+      AND table_schema NOT ILIKE '%{{ exclude_part }}%'
       AND table_name ILIKE '{{ table_name }}'
     ORDER BY 1
 
