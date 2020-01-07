@@ -621,7 +621,6 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT CONCAT(design_id,'_', version_id) AS id
-      , design_id
       , version_id
       , event
       FROM design_management_designs_versions
