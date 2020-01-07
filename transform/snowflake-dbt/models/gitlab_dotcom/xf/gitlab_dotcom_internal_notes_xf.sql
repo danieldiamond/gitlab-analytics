@@ -35,7 +35,7 @@ WITH notes AS (
 
   FROM notes
   LEFT JOIN projects
-    ON notes.note_project_id = projects.project_id
+    ON notes.project_id = projects.project_id
   INNER JOIN internal_namespaces
     ON projects.namespace_id = internal_namespaces.namespace_id
 

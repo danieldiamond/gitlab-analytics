@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
   SELECT *
@@ -13,7 +8,6 @@ WITH source AS (
     SELECT 
       id::INTEGER          AS ci_pipeline_variable_id, 
       key                  AS key, 
-      value                AS value, 
       pipeline_id::INTEGER AS ci_pipeline_id, 
       variable_type        AS variable_type
 
