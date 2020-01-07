@@ -40,6 +40,8 @@ Custom source table: This table contains executive business review data.
 
 The lead source table contains info about your leads, who are prospects or potential Opportunities. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/salesforce/#lead)
 
+Note: A number of fields prefixed with JB_ and ATAM_ are pulled in as part of [Territory Success Planning](https://about.gitlab.com/handbook/sales/field-operations/sales-operations/go-to-market/#territory-success-planning-tsp). These are cast as fields prefixed with TSP_ in downstream models to distinguish from equivalent "Actual" fields reflecting the current Go-To-Market approach.
+
 {% enddocs %}
 
 {% docs sfdc_opphistory_source %}

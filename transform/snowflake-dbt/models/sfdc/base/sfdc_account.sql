@@ -22,7 +22,7 @@ WITH source AS (
       parentid                                 AS parent_id,
       primary_contact_id__c                    AS primary_contact_id,
       recordtypeid                             AS record_type_id,
-      ultimate_parent_account_id__c            AS utimate_parent_id,
+      ultimate_parent_account_id__c            AS ultimate_parent_id,
       partner_vat_tax_id__c                    AS partner_vat_tax_id,
 
       -- key people GL side
