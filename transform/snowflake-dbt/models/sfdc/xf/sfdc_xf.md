@@ -6,6 +6,18 @@ Fields prefixed with TSP_ are related to [Territory Success Planning](https://ab
 
 {% enddocs %}
 
+{% docs sfdc_accounts_xf_col_ultimate_parent_account_id %}
+
+Salesforce Account ID for Ultimate Parent Account
+
+{% enddocs %}
+
+{% docs sfdc_accounts_xf_col_ultimate_parent_account_name %}
+
+Salesforce Account Name for Ultimate Parent Account
+
+{% enddocs %}
+
 {% docs sfdc_lead_xf %}
 
 This table contains information about leads, who are prospects or potential Opportunities.
