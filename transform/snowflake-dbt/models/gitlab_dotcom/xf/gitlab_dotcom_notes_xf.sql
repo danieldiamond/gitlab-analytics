@@ -13,7 +13,7 @@ WITH base AS (
     FROM {{ ref('gitlab_dotcom_notes') }}
     {% if is_incremental() %}
 
-      AND updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+      WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
 
     {% endif %}
 )
