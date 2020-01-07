@@ -44,18 +44,16 @@ WITH RECURSIVE namespaces AS (
 
   SELECT
     *,
-    -- The last item of the lineage array is the ultimate parent
-    GET(upstream_lineage, ARRAY_SIZE(upstream_lineage)-1) AS ultimate_parent_id
+    GET(upstream_lineage, ARRAY_SIZE(upstream_lineage)-1) AS ultimate_parent_id -- Last item is the ultimate parent.
   FROM recursive_namespaces
 
-  /* Select children with deleted ancestors. These are missed by the top-down recursive CTE.
-     This is quite rare (n=82 on 2020-01-06) but need to be included in this model for full coverage.*/
   UNION ALL
-  
+  /* Union all children with deleted ancestors. These are missed by the top-down recursive CTE.
+     This is quite rare (n=82 on 2020-01-06) but need to be included in this model for full coverage. */
   SELECT
     namespaces.namespace_id, 
     namespaces.parent_id,
-    ARRAY_CONSTRUCT() AS upstream_lineage, -- empty array
+    ARRAY_CONSTRUCT() AS upstream_lineage, -- Empty Array.
     0                 AS ultimate_parent_id
   FROM namespaces
   WHERE parent_id NOT IN (SELECT DISTINCT namespace_id FROM namespaces)
