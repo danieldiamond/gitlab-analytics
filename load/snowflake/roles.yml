@@ -63,6 +63,7 @@ roles:
             - analyst_l
         member_of:
             - boneyard
+            - gitlab_data_yaml
         privileges:
             databases:
                 read:
@@ -111,6 +112,7 @@ roles:
             - analyst_xl
         member_of:
             - boneyard
+            - gitlab_data_yaml
             - snowplow
         privileges:
             databases:
@@ -163,6 +165,7 @@ roles:
             - analyst_xs
         member_of:
             - boneyard
+            - gitlab_data_yaml
         privileges:
             databases:
                 read:
@@ -209,6 +212,7 @@ roles:
             - analyst_xs
         member_of:
             - boneyard
+            - gitlab_data_yaml
         privileges:
             databases:
                 read:
@@ -262,6 +266,7 @@ roles:
             - analyst_xs
         member_of:
             - boneyard
+            - gitlab_data_yaml
         privileges:
             databases:
                 read:
@@ -277,6 +282,7 @@ roles:
         member_of:
             - bamboohr
             - boneyard
+            - gitlab_data_yaml
             - greenhouse
         privileges:
             databases:
@@ -324,6 +330,7 @@ roles:
             - analyst_xs
         member_of:
             - boneyard
+            - gitlab_data_yaml
         privileges:
             databases:
                 read:
@@ -362,6 +369,7 @@ roles:
             - analyst_xs
         member_of:
             - boneyard
+            - gitlab_data_yaml
         privileges:
             databases:
                 read:
@@ -387,6 +395,7 @@ roles:
             - analyst_l
         member_of:
             - boneyard
+            - gitlab_data_yaml
             - snowplow
         privileges:
             databases:
@@ -708,6 +717,20 @@ roles:
             tables:
                 read:
                     - analytics.boneyard.*
+
+    - gitlab_data_yaml:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.gitlab_data_yaml
+            tables:
+                read:
+                    - raw.gitlab_data_yaml.*
 
     - greenhouse:
         warehouses:
