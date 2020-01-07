@@ -51,7 +51,7 @@ models:
             - not_null
       - name: job_title
   - name: bamboohr_employment_status
-    description: This model shows an employment status for employees (active, terminated, on leave, etc). Updates are captured in log-style.
+    description: This model shows employment status for employees (active, terminated, on leave, etc). Updates are captured in log-style.
     columns:
       - name: status_id
         tests:
