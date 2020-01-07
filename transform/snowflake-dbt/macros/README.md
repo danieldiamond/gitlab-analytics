@@ -231,7 +231,7 @@ Used in:
 - sfdc_lead.sql
 
 ## Schema Union All ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_all.sql))
-This macro takes a schema prefix and a table name and does a UNION ALL on all tables that match the pattern.
+This macro takes a schema prefix and a table name and does a UNION ALL on all tables that match the pattern. The exclude_part parameter defaults to 'scratch' and all schemas matching that pattern will be ignored. 
 Usage:
 ```
 {{ schema_union_all('snowplow', 'snowplow_page_views') }}

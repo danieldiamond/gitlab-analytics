@@ -1,11 +1,12 @@
-{%- macro schema_union_all(schema_part, table_name) -%}
+{%- macro schema_union_all(schema_part, table_name, exclude_part='scratch') -%}
  
  {% call statement('get_schemata', fetch_result=True) %}
 
     SELECT DISTINCT '"' || table_schema || '"."' || table_name || '"'
     FROM "{{ target.database }}".information_schema.tables
     WHERE table_schema ILIKE '%{{ schema_part }}%'
-    AND table_name ILIKE '{{ table_name }}'
+      AND table_schema NOT ILIKE '%{{ exclude_part }}%' -- new part
+      AND table_name ILIKE '{{ table_name }}'
 	
   {%- endcall -%}
 
