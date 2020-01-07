@@ -50,7 +50,9 @@ WITH RECURSIVE namespaces AS (
 
   /* Select children with deleted ancestors. These are missed by the top-down recursive CTE.
      This is quite rare (n=82 on 2020-01-06) but need to be included in this model for full coverage.*/
-  UNION SELECT
+  UNION ALL
+  
+  SELECT
     namespaces.namespace_id, 
     namespaces.parent_id,
     ARRAY_CONSTRUCT() AS upstream_lineage, -- empty array
