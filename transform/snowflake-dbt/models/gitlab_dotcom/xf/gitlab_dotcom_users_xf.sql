@@ -69,15 +69,15 @@ WITH customers AS (
   SELECT
     members.user_id,
     groups.group_id,
-    groups.ultimate_parent_plan_id,
+    groups.group_plan_id,
     groups.visibility_level,
-    groups.ultimate_parent_plan_id AS inherited_subscription_plan_id,
-    '1. group'                     AS inheritance_source
+    groups.group_plan_id    AS inherited_subscription_plan_id,
+    '1. group'              AS inheritance_source
 
   FROM members
   INNER JOIN groups
     ON members.source_id = groups.group_id
-    AND groups.ultimate_parent_plan_is_paid = TRUE
+    AND groups.group_plan_id = TRUE
   WHERE member_type = 'GroupMember'
     AND (members.expires_at >= CURRENT_DATE OR members.expires_at IS NULL)
 )
@@ -90,10 +90,10 @@ WITH customers AS (
       members.user_id,
       projects.project_id,
       projects.visibility_level      AS project_visibility_level,
-      groups.ultimate_parent_plan_id,
+      groups.group_plan_id,
       groups.visibility_level        AS namespace_visibility_level,
       groups.group_id,
-      groups.ultimate_parent_plan_id AS inherited_subscription_plan_id,
+      groups.group_plan_id           AS inherited_subscription_plan_id,
       '2. project'                   AS inheritance_source
 
     FROM members
