@@ -44,6 +44,7 @@ WITH source AS (
 		tcv,
 		uom																	AS unit_of_measure,
 
+        accountid                                                           AS account_id,
 		accountingcode                  									AS accounting_code,
 		applydiscountto                 									AS apply_discount_to,
 		billcycleday                    									AS bill_cycle_day,
