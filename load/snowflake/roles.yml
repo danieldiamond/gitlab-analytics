@@ -957,6 +957,10 @@ roles:
         warehouses:
             - reporting
 
+    - kaguilar:
+        warehouses:
+            - analyst_xs
+
     - ktam:
         warehouses:
             - engineer_xs
@@ -967,10 +971,6 @@ roles:
     - ksmith:
         warehouses:
             - reporting
-
-    - kaguilar:
-        warehouses:
-            - analyst_xs
 
     - lvandensteen:
         warehouses: 
