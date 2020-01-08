@@ -1,3 +1,5 @@
+-- depends_on: {{ ref('zuora_excluded_accounts') }}
+
 {{config({
     "schema": "staging"
   })
