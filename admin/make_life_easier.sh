@@ -15,7 +15,7 @@ alias gl_open="git remote -v | awk '/fetch/{print \$2}' | sed -Ee 's#(git@|git:/
 alias ls='ls -G'
 alias grep='grep --color=auto'
 
-export EDITOR="atom --wait"
+export EDITOR="code --wait"
 
 TERM=xterm-256color
 
