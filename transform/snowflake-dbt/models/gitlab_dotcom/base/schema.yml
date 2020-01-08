@@ -821,8 +821,12 @@ models:
         tests:
           - not_null
           - unique
-      - name: name
-        description: The english naming of the plan type (gold, silver, etc)
+      - name: plan_name
+        description: The english naming of the plan type (gold, silver, etc.)
+        tests:
+          - not_null
+      - name: plan_title
+        description: The capitalized english naming of the plan type (Gold, Silver, etc.)
         tests:
           - not_null
       - name: created_at
