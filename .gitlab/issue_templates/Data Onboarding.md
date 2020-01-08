@@ -43,7 +43,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
    - [ ] Engineers, join `analytics-pipelines`
    - [ ] Analytsts, join `dbt-runs`
 - [ ] Schedule a recurring fortnightly 1:1 meeting with the Director of Business Operations.
-- [ ] Invite yourself to the to Milestone Planning/Grooming and DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.
+- [ ] Invite yourself to the DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.
 - [ ] Schedule a coffee chat with each member of the team. These should be in addition to the ones you do with other GitLab team members.
 - [ ] Read the following pages of the handbook in their entirety. Bookmark them as you should soon be making MR's to improve our documentation!
    - [ ] [Data Team](https://about.gitlab.com/handbook/business-ops/data-team/)
