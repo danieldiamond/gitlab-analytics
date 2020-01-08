@@ -2,6 +2,8 @@ version: 2
 
 models:
     -   name: snowplow_gitlab_events_30
-        description: This is is a view over the last 30 days of snowplow_gitlab_events_all based on the derived_tstamp column.
+        description: This is is a view over the last 30 days of snowplow_gitlab_events_all based on the derived_tstamp column. This model is being phased out in favor of snowplow_unnested_events_30.
     -   name: snowplow_page_views_30
         description: This is is a view over the last 30 days of snowplow_page_views_all based on the page_view_start column.
+    -   name: snowplow_unnested_events_30
+        description: This is is a view over the last 30 days of snowplow_unnested_events_all based on the derived_tstamp column.
