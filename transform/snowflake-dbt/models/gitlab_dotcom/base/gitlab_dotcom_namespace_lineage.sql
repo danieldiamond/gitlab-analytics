@@ -60,10 +60,10 @@ WITH RECURSIVE namespaces AS (
     extracted.*,
     COALESCE((ultimate_parent_id IN {{ get_internal_parent_namespaces() }}), FALSE)   AS namespace_is_internal,
     namespace_plans.plan_id                                                           AS namespace_plan_id,
-    namespace_plans.title                                                             AS namespace_plan_title,
+    namespace_plans.plan_title                                                        AS namespace_plan_title,
     namespace_plans.plan_is_paid                                                      AS namespace_plan_is_paid,
     COALESCE(ultimate_parent_plans.plan_id, 34)                                       AS ultimate_parent_plan_id,
-    COALESCE(ultimate_parent_plans.title, 'Free')                                     AS ultimate_parent_plan_title,
+    COALESCE(ultimate_parent_plans.plan_title, 'Free')                                AS ultimate_parent_plan_title,
     COALESCE(ultimate_parent_plans.plan_is_paid, FALSE)                               AS ultimate_parent_plan_is_paid
   FROM extracted
     -- Get plan information for the namespace.
