@@ -14,33 +14,33 @@ WITH snowplow_structured_events AS (
     event_id,
     event_action,
     event_label
-  FROM {{ ref('snowplow_structured_events_all')}}
+  FROM {{ ref('snowplow_structured_events')}}
   WHERE derived_tstamp >= '2019-01-01'
   {% if is_incremental() %}
     AND derived_tstamp >= (SELECT MAX({{this}}.event_date) FROM {{this}})
   {% endif %}
     AND 
       (
-        (
-          event_action IN 
-            (
-              'delete_repository',
-              'delete_tag',
-              'delete_tag_bulk',
-              'list_repositories',
-              'list_tags'
-            )
-        )
-      OR
-        (
-          event_label IN
-            (
-              'bulk_registry_tag_delete',
-              'registry_repository_delete',
-              'registry_tag_delete'
-              
-            )
-        )
+        
+        event_action IN 
+          (
+            'delete_repository',
+            'delete_tag',
+            'delete_tag_bulk',
+            'list_repositories',
+            'list_tags'
+          )
+        
+        OR
+        
+        event_label IN
+          (
+            'bulk_registry_tag_delete',
+            'registry_repository_delete',
+            'registry_tag_delete'
+            
+          )
+        
       )
 
 )
