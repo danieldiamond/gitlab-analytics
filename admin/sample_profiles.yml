@@ -6,8 +6,18 @@ gitlab-snowflake:
       threads: 8
       account: gitlab
       user: %%YOUR USER%% <-- This will be your GitLab email
-      authenticator: externalbrowser
-      role: TRANSFORMER
+      password: %%YOUR PASSWORD%%
+      role: %%YOUR ROLE%% <-- Talk to your manager
       database: ANALYTICS
       warehouse: ANALYST_XS
       schema: %%YOUR SCRATCH%%
+    docs:
+      type: snowflake
+      threads: 8
+      account: gitlab
+      user: %%YOUR USER%% <-- This will be your GitLab email
+      password: %%YOUR PASSWORD%%
+      role: %%YOUR ROLE%% <-- Talk to your manager
+      database: ANALYTICS
+      warehouse: ANALYST_XS
+      schema: ANALYTICS
