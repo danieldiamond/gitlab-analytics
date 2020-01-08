@@ -10,9 +10,6 @@
 
     {%- set value_list = load_result('get_excluded_accounts') -%}
 
-
-    {{ log("Value List " ~ value_list) }}
-
     {%- if value_list and value_list['data'] -%}
       {%- set values = value_list['data'] | map(attribute=0) | join(', ') %}
     {%- endif -%}
