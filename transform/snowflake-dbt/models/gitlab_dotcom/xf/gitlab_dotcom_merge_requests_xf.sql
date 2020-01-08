@@ -69,7 +69,7 @@ WITH merge_requests AS (
     SELECT
       namespace_id,
       ultimate_parent_id,
-      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
+      namespace_is_internal
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
 ), joined AS (

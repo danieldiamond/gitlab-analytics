@@ -1,4 +1,3 @@
-{% set paid_plans = (2, 3, 4) %}
 {% set fields_to_mask = ['namespace_name', 'namespace_path'] %}
 
 WITH namespaces AS (
@@ -23,18 +22,12 @@ projects AS (
 
 ), namespace_lineage AS (
 
-    SELECT
-      namespace_id,
-      ultimate_parent_id,
-      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
+    SELECT *
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
-),
-
-joined AS (
+), joined AS (
     SELECT
       namespaces.namespace_id,
-      namespace_lineage.namespace_is_internal,
 
       {% for field in fields_to_mask %}
       CASE
@@ -60,15 +53,18 @@ joined AS (
       namespaces.ldap_sync_last_sync_at,
       namespaces.lfs_enabled,
       namespaces.parent_id,
-      namespace_lineage.ultimate_parent_id                             AS namespace_ultimate_parent_id,
       namespaces.shared_runners_minutes_limit,
       namespaces.repository_size_limit,
       namespaces.does_require_two_factor_authentication,
       namespaces.two_factor_grace_period,
-      namespaces.plan_id,
       namespaces.project_creation_level,
 
-      COALESCE( (namespaces.plan_id IN {{ paid_plans }} ), False)      AS namespace_plan_is_paid,
+      namespace_lineage.namespace_is_internal,
+      namespace_lineage.ultimate_parent_id                             AS namespace_ultimate_parent_id,
+      namespace_lineage.ultimate_parent_plan_id                        AS plan_id,
+      namespace_lineage.ultimate_parent_plan_title                     AS plan_title,
+      namespace_lineage.ultimate_parent_plan_is_paid                   AS plan_is_paid,
+
       COALESCE(COUNT(DISTINCT members.member_id), 0)                   AS member_count,
       COALESCE(COUNT(DISTINCT projects.project_id), 0)                 AS project_count
 
@@ -80,7 +76,7 @@ joined AS (
         ON namespaces.namespace_id = projects.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
-    {{ dbt_utils.group_by(n=28) }}
+    {{ dbt_utils.group_by(n=29) }}
 )
 
 SELECT *
