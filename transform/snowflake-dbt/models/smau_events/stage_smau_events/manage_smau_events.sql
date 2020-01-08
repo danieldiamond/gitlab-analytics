@@ -2,7 +2,7 @@ WITH manage_snowplow_smau_pageviews_events AS (
 
   SELECT
     user_snowplow_domain_id,
-    user_custom_id::INTEGER   AS gitlab_user_id,
+    user_custom_id::INTEGER    AS gitlab_user_id,
     event_date,
     event_type,
     event_surrogate_key,

@@ -53,9 +53,9 @@ WITH snowplow_structured_events AS (
       TO_DATE(derived_tstamp) AS event_date,
       page_url_path,
       event_action 
-      || IFF(event_label IS NOT NULL, 
-        '_' || event_label
-        , NULL)               AS event_type,
+        || IFF(event_label IS NOT NULL, 
+                '_' || event_label
+                , NULL)       AS event_type,
       event_id                AS event_surrogate_key
     FROM snowplow_structured_events
     
