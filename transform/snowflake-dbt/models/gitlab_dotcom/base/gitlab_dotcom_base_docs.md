@@ -7,13 +7,18 @@ This is the base model for Gitlab.com groups. It is a subset of the namespaces t
 
 {% docs gitlab_dotcom_namespace_lineage %}
 
-This model has one row for each namespace in the namespaces base model. This model adds extra information about all of the upstream parents associated with the namespace.  
+This model has one row for each namespace in the namespaces base model. This model adds extra information about all of the upstream parents associated with the namespace. This model can be thought of as an intermediate model in between the gitlab_dotcom_namespaces base model and the gitlab_dotcom_namespaces_xf transformed model. 
 
 The `upstream_lineage` column is an array with the namespaces's entire geneology, ordered from young to old (self, parent, grandparent).  
 
 Since groups can be nested up to 21 levels deep, this model provides an `ultimate_parent_id` column which does the work of finding the top-level namespace for each namespace, using a recusive CTE.  This column is always the same as the last (furthest right) item of `upstream_lineage`.  
 
 The recurvice CTE uses a top-down approach to iterate though each namespace. The anchor section selects all namespaces without parents. The iteration section recursively joins through all children onto the anchor wherever anchor.namespace == iteration.parent_namespace.  
+
+This model also adds some helper columns related to the **plan** associated with each namespace and its parents. For both the namespace and the namespace's ultimate parent, there are columns to represent:
+* the **current** plan_id (4)
+* the **current** plan_title (gold)
+* whether or not the **current** plan is paid (TRUE)
 
 {% enddocs %}
 

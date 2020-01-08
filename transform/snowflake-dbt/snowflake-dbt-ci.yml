@@ -6,8 +6,8 @@
     - echo $SNOWFLAKE_DATABASE
     - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
     - echo $SNOWFLAKE_TRANSFORM_DATABASE
-    - if [ $SNOWFLAKE_DATABASE = "master" ]; then export snowflake_load_database="RAW"; else export snowflake_load_database="${CI_COMMIT_REF_NAME^^}_RAW"; fi
-    - echo $snowflake_load_database # This is a workaround for a bug in dbt https://github.com/fishtown-analytics/dbt/issues/1712
+    - export SNOWFLAKE_LOAD_DATABASE="RAW" # dbt pulls from RAW
+    - echo $SNOWFLAKE_LOAD_DATABASE
     - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XS_WAREHOUSE
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - export CI_PROFILE_TARGET="--profiles-dir profile --target ci"
@@ -116,7 +116,8 @@
   <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
-    - echo $snowflake_load_database
+    - export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW" # Must write to clone of RAW since this does real work
+    - echo $SNOWFLAKE_LOAD_DATABASE
     - dbt snapshot $CI_PROFILE_TARGET
     
 📝specify_tests:

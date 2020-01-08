@@ -4,6 +4,7 @@
 -- set firstname  = 'Sasha';
 -- set lastname = 'Ulyanov';
 -- ====================
+use warehouse ADMIN;
 
 set username = (select upper(LEFT($email, CHARINDEX('@', $email) - 1)));
 

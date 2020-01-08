@@ -59,10 +59,12 @@ LEFT JOIN location_factor
   ON location_factor.bamboo_employee_number = mapping.employee_number
 WHERE hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
   AND mapping.employee_id NOT IN (
-                              '41683', --https://gitlab.com/gitlab-data/analytics/issues/2749
-                              '41692', --https://gitlab.com/gitlab-data/analytics/issues/2749
-                              '41693', --https://gitlab.com/gitlab-data/analytics/issues/2882
-                              '41835' --https://gitlab.com/gitlab-data/analytics/issues/3219
+                              '41683' --https://gitlab.com/gitlab-data/analytics/issues/2749
+                              , '41692' --https://gitlab.com/gitlab-data/analytics/issues/2749
+                              , '41693' --https://gitlab.com/gitlab-data/analytics/issues/2882
+                              , '41835' --https://gitlab.com/gitlab-data/analytics/issues/3219
+                              , '41816' --https://gitlab.com/gitlab-data/analytics/issues/3318
+                              , '41826' --https://gitlab.com/gitlab-data/analytics/issues/3318
                             )
 
 ORDER BY hire_date DESC

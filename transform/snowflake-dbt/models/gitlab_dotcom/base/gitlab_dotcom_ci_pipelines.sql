@@ -1,7 +1,6 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "ci_pipeline_id",
-    "schema": "staging"
+    "unique_key": "ci_pipeline_id"
     })
 }}
 

@@ -1,4 +1,4 @@
-{% docs configure_snowplow_smau_events %}
+{% docs configure_snowplow_smau_pageviews_events %}
 
 This model provides a summary of relevant actions for the Configure Stage coming from snowplow.
 
@@ -10,16 +10,16 @@ The snowplow events currently included for the Configure Stage are:
 {% enddocs %}
 
 
-{% docs create_snowplow_smau_events %}
+{% docs create_snowplow_smau_pageviews_events %}
 
 This model encapsulates all activation events for stage create as defined in this gitlab issue. It reconciles 2 different data sources (Snowplow and Gitlab) with some common enabling us to calculate Daily/Monthly Active User count for this specific stage.
 
-For more documentation on which event is tracked by each data source for this stage, refer to the 2 upstream models ((create_snowplow_smau_events)[https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/model/model.gitlab_snowflake.create_snowplow_smau_events] and (create_gitlab_smau_events)[https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/model/model.gitlab_snowflake.create_gitlab_smau_events])
+For more documentation on which event is tracked by each data source for this stage, refer to the 2 upstream models ((create_snowplow_smau_pageviews_events)[https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/model/model.gitlab_snowflake.create_snowplow_smau_pageviews_events] and (create_gitlab_smau_events)[https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/model/model.gitlab_snowflake.create_gitlab_smau_events])
 
 {% enddocs %}
 
 
-{% docs manage_snowplow_smau_events %}
+{% docs manage_snowplow_smau_pageviews_events %}
 
 This model provides a summary of relevant actions for the Manage Stage coming from snowplow.
 
@@ -34,7 +34,7 @@ The snowplow events currently included for the Manage Stage are:
 {% enddocs %}
 
 
-{% docs monitor_snowplow_smau_events %}
+{% docs monitor_snowplow_smau_pageviews_events %}
 
 This model provides a summary of relevant actions for the Monitor Stage coming from snowplow.
 
@@ -49,7 +49,7 @@ The snowplow events currently included for the Monitor Stage are:
 
 {% enddocs %}
 
-{% docs plan_snowplow_smau_events %}
+{% docs plan_snowplow_smau_pageviews_events %}
 
 This model provides a summary of relevant activation events for Plan Stage coming from snowplow frontend events (pageviews and events). A summary of all activation events is at the moment defined in this [issue](https://gitlab.com/gitlab-org/telemetry/issues/48).
 
@@ -69,7 +69,7 @@ From snowplow database, at the moment we track the following events:
 
 {% enddocs %}
 
-{% docs verify_snowplow_smau_events %}
+{% docs verify_snowplow_smau_pageviews_events %}
 
 This model provides a summary of relevant activation events for Verify Stage coming from snowplow frontend events (pageviews and events). A summary of all activation events is at the moment defined in this [issue](https://gitlab.com/gitlab-org/telemetry/issues/50).
 

@@ -1,4 +1,3 @@
-{% set paid_plans = (2, 3, 4) %}
 {% set fields_to_mask = ['group_name', 'group_path'] %}
 
 WITH groups AS (
@@ -23,21 +22,13 @@ projects AS (
 
 ), namespace_lineage AS (
 
-    SELECT
-      namespace_id,
-      ultimate_parent_id,
-      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} )
-          AS namespace_is_internal
-
+    SELECT *
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
-),
-
-joined AS (
+), joined AS (
 
     SELECT
       groups.group_id,
-      namespace_lineage.namespace_is_internal                           AS group_is_internal,
 
       {% for field in fields_to_mask %}
       CASE
@@ -63,15 +54,18 @@ joined AS (
       groups.lfs_enabled,
       groups.parent_group_id,
       IFF(groups.parent_group_id IS NULL, True, False)                  AS is_top_level_group,
-      namespace_lineage.ultimate_parent_id                              AS group_ultimate_parent_id,
       groups.shared_runners_minutes_limit,
       groups.repository_size_limit,
       groups.does_require_two_factor_authentication,
       groups.two_factor_grace_period,
-      COALESCE(ultimate_parent_groups.plan_id, groups.plan_id)          AS plan_id,
       groups.project_creation_level,
-      COALESCE((COALESCE(ultimate_parent_groups.plan_id,
-                          groups.plan_id) IN {{ paid_plans }}) , False) AS group_plan_is_paid,
+
+      namespace_lineage.namespace_is_internal                           AS group_is_internal,
+      namespace_lineage.ultimate_parent_id                              AS group_ultimate_parent_id,
+      namespace_lineage.ultimate_parent_plan_id                         AS group_plan_id,
+      namespace_lineage.ultimate_parent_plan_title                      AS group_plan_title,
+      namespace_lineage.ultimate_parent_plan_is_paid                    AS group_plan_is_paid,
+
       COALESCE(COUNT(DISTINCT members.member_id), 0)                    AS member_count,
       COALESCE(COUNT(DISTINCT projects.project_id), 0)                  AS project_count
 
@@ -83,9 +77,7 @@ joined AS (
         ON projects.namespace_id = groups.group_id
       LEFT JOIN namespace_lineage
         ON groups.group_id = namespace_lineage.namespace_id
-      LEFT JOIN groups AS ultimate_parent_groups
-        ON namespace_lineage.ultimate_parent_id = ultimate_parent_groups.group_id
-    {{ dbt_utils.group_by(n=27) }}
+    {{ dbt_utils.group_by(n=29) }}
 
 )
 

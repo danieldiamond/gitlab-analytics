@@ -231,14 +231,15 @@ Used in:
 - sfdc_lead.sql
 
 ## Schema Union All ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_all.sql))
-This macro takes a schema prefix and a table name and does a UNION ALL on all tables that match the pattern.
+This macro takes a schema prefix and a table name and does a UNION ALL on all tables that match the pattern. The exclude_part parameter defaults to 'scratch' and all schemas matching that pattern will be ignored. 
 Usage:
 ```
 {{ schema_union_all('snowplow', 'snowplow_page_views') }}
 ```
 Used in:
+- snowplow_combined/30_day/*.sql
+- snowplow_combined/90_day/*.sql
 - snowplow_combined/all/*.sql
-- snowplow_combined/30/*.sql
 
 ## Schema Union Limit ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_limit.sql))
 This macro takes a schema prefix, a table name, a column name, and an integer representing days. It returns a view that is limited to the last 30 days based on the column name. Note that this also calls schema union all which can be a heavy call.

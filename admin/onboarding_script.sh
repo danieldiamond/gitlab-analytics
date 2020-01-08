@@ -43,12 +43,12 @@ unzip iterm2-colors.zip
 rm iterm2-colors.zip
 echo "iTerm2 + Colors installed"
 
-## install atom
-echo "Installing Atom.."
-brew cask install atom
+## install visual studio code
+echo "Installing VS Code.."
+brew cask install visual-studio-code
 ## this might ask you for your password
-atom --version
-echo "Atom successfully installed"
+code --version
+echo "VS Code successfully installed"
 
 ## install bash completion
 echo "Installing bash competion.."

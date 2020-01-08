@@ -19,6 +19,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
    - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
 - [ ] Manager: Add to the `gitlab-data/chatops` project as a Maintainer.
 - [ ] Manager: Add to the `gitlab-data` namespace as a Developer.
+- [ ] Manager: Add to Airflow as Analyst (Admin for Engineers)
 - [ ] Manager: Update codeowners file in the handbook to include the new team member
 - [ ] Manager: Add to daily Geekbot standup (send `dashboard` to Geekbot on slack, click into a particular standup in the web UI, add via Manage button)
 - [ ] Manager: Invite to SheetLoad folder in gdrive
@@ -29,6 +30,10 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Update issue with one or two Good First Issues
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
 
+### For Engineers
+- [ ] Manager: Add to `gitlab-analytics` GCP group
+- [ ] Manager: Add to Stitch
+- [ ] Manager: Add to Fivetran
 
 ## WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
@@ -38,7 +43,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
    - [ ] Engineers, join `analytics-pipelines`
    - [ ] Analytsts, join `dbt-runs`
 - [ ] Schedule a recurring fortnightly 1:1 meeting with the Director of Business Operations.
-- [ ] Invite yourself to the to Milestone Planning/Grooming and DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.
+- [ ] Invite yourself to the DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.
 - [ ] Schedule a coffee chat with each member of the team. These should be in addition to the ones you do with other GitLab team members.
 - [ ] Read the following pages of the handbook in their entirety. Bookmark them as you should soon be making MR's to improve our documentation!
    - [ ] [Data Team](https://about.gitlab.com/handbook/business-ops/data-team/)
@@ -69,7 +74,7 @@ rm ~/onboarding_script.sh
 ```
    * This may take a while, and it might ask you for your password (multiple times) before it's done. Here's what this does:
       * Installs iTerm, a mac-OS terminal replacement
-      * Installs Atom, an open source text editor. Atom is reccomended because of its support for dbt autocompletion.
+      * Installs VSCode, an open source text editor. VSCode is recommended for multiple reasons including community support, the [GitLab workflow](https://marketplace.visualstudio.com/items?itemName=fatihacet.gitlab-workflow) extension, and the LiveShare features.
       * Installs docker so you can work out of containers.
       * Installing dbt, the open source tool we use for data transformations.
       * Installing goto, an easy way to move through the file system. [Please find here more details on how to use goto](https://github.com/iridakos/goto)
@@ -78,7 +83,7 @@ rm ~/onboarding_script.sh
    * You will be able to `gl_open` from anywhere within the analytics project to open the repo in the UI. If doesn't work, visually inspect your `~/.bashrc` file to make sure it has [this line](https://gitlab.com/gitlab-data/analytics/blob/master/admin/make_life_easier.sh#L14). 
    * Your default python version should now be python 3. Typing `which python` into a new terminal window should now return `/usr/local/anaconda3/bin/python`
    * dbt will be installed at its latest version. Typing `dbt --version` will output the current version.
-* [ ] We strongly recommend configuring Atom (via the Atom UI) with the [Atom setup](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243?) section of Claire's post and [adding the tip](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243/5) from jars later in the thread. It will make your life much easier.
+* [ ] We strongly recommend configuring VSCode (via the VSCode UI) with the [VSCode setup](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243?) section of Claire's post and [adding the tip](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243/10?u=tmurphy) from tmurphy later in the thread. It will make your life much easier.
   * Your editor should be configured so that all tabs are converted to 4 spaces. This will minimize messy looking diffs and provide consistency across the team.
     * VSCode
       * `Editor: Detect Indentation` is deselected
@@ -140,7 +145,7 @@ You can use `Command + Option + L` to format your file.
 - All dbt commands need to be run within the `dbt-image` docker container
 - To get into the `dbt-image` docker container, go to the analytics project (which you can get to by typing `goto analytics` from anywhere on your Mac) and run the command `make dbt-image`. This will spin up our docker container that contains `dbt` and give you a bash shell within the `analytics/transform/snowflake-dbt` directory.
 - All changes made to the files within the `analytics` repo will automatically be visible in the docker container! This container is only used to run `dbt` commands themselves, not to write SQL or edit `dbt` files in general (though technically it could be, as VIM is available within the container)
-- [ ] From a different terminal window run `atom ~/.dbt/profiles.yml` and update this file with your info.
+- [ ] From a different terminal window run `code ~/.dbt/profiles.yml` and update this file with your info.
 - [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.
 - [ ] test the command `make help` and use it to understand how to use `make dbt-docs` and access it from your local machine.
 
@@ -194,7 +199,7 @@ This data comes from our GitLab.com SaaS product.
 This data comes from the usage ping that comes with a GitLab installation.
 - [ ] Read about the [usage ping](https://docs.gitlab.com/ee/user/admin_area/settings/usage_statistics.html).
 - [ ] To understand how this is implemented at GitLab read [Feature Implementation](https://about.gitlab.com/handbook/product/feature-instrumentation/#instrumentation-for-gitlabcom).
-- [ ] Read the product vision for [telemetry](https://about.gitlab.com/direction/fulfillment/telemetry/).
+- [ ] Read the product vision for [telemetry](https://about.gitlab.com/direction/telemetry/).
 - [ ] There is not great documentation on the usage ping, but you can get a sense from looking at the `usage.rb` file for [GitLab CE](https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/usage_data.rb).
 - [ ] It might be helpful to look at issues related to telemetry [here](https://gitlab.com/gitlab-org/telemetry/issues) and [here](https://gitlab.com/groups/gitlab-org/-/issues?scope=all&utf8=✓&state=all&search=~telemetry).
 - [ ] Watch the [pings brain dump session](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view).
