@@ -14,7 +14,7 @@ WITH snowplow_structured_events AS (
     event_id,
     event_action,
     event_label
-  FROM {{ ref('snowplow_structured_events')}}
+  FROM {{ ref('snowplow_structured_events_all')}}
   WHERE derived_tstamp >= '2019-01-01'
   {% if is_incremental() %}
     AND derived_tstamp >= (SELECT MAX({{this}}.event_date) FROM {{this}})
