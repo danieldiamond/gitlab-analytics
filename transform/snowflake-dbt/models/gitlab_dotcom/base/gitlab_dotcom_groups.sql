@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH namespace_groups AS (
 
   SELECT 

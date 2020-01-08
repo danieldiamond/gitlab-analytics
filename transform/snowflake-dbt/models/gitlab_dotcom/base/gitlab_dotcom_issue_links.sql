@@ -1,9 +1,3 @@
-
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH 
 {{ distinct_source(source=source('gitlab_dotcom', 'issue_links'))}}
 
@@ -25,4 +19,3 @@ WITH
     primary_key_renamed='issue_link_id',
     primary_key_raw='id'
 ) }}
-

@@ -6,14 +6,12 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('version', 'usage_data') }}
-
   {% if is_incremental() %}
   WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
   {% endif %}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ),
 
@@ -64,15 +62,14 @@ renamed AS (
     influxdb_metrics_enabled::BOOLEAN        AS influxdb_metrics_enabled,
     prometheus_metrics_enabled::BOOLEAN      AS prometheus_metrics_enabled,
     --smau // never not null
-    --usage_activity_by_stage // never not null
+    PARSE_JSON(usage_activity_by_stage)      AS usage_activity_by_stage,
     gitaly_version::VARCHAR                  AS gitaly_version,
     gitaly_servers::INTEGER                  AS gitaly_servers,
     gitaly_filesystems::VARCHAR              AS gitaly_filesystems,
     PARSE_JSON(counts)                       AS stats_used
   FROM source
   WHERE uuid IS NOT NULL
-    AND (CHECK_JSON(counts) IS NULL)
-    AND rank_in_key = 1
+    AND (CHECK_JSON(counts) IS NULL) 
 )
 
 SELECT *
