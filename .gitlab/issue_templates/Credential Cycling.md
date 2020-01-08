@@ -21,6 +21,8 @@ This issue is for cycling credentials within our data systems.
 * [ ] Fivetran
   * [ ] Drop tables in schema
   * [ ] Trigger full-refresh in UI
+  * [ ] Run meltano permissions to ensure appropriate role access to recreated schema
 * [ ] Stitch
   * [ ] Drop tables in schema
   * [ ] Trigger full-refresh in UI
+  * [ ] Run meltano permissions to ensure appropriate role access to recreated schema
