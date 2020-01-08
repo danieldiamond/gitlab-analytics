@@ -674,6 +674,28 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'epic_metrics'
     export_table_primary_key: id
+  gitlab_subscription_histories:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , gitlab_subscription_created_at
+      , gitlab_subscription_updated_at
+      , start_date
+      , end_date
+      , trial_starts_on
+      , trial_ends_on
+      , namespace_id
+      , hosted_plan_id
+      , max_seats_used
+      , seats
+      , trial
+      , change_type
+      , gitlab_subscription_id
+      , created_at
+      FROM gitlab_subscription_histories
+    export_schema: 'gitlab_com'
+    export_table: 'gitlab_subscription_histories'
+    export_table_primary_key: id
   gitlab_subscriptions:
     import_db: GITLAB_DB
     import_query: >
@@ -682,6 +704,7 @@ tables:
       , updated_at
       , start_date
       , end_date
+      , trial_starts_on
       , trial_ends_on
       , namespace_id
       , hosted_plan_id
