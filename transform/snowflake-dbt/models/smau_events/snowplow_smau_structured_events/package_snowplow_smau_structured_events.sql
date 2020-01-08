@@ -21,7 +21,6 @@ WITH snowplow_structured_events AS (
   {% endif %}
     AND 
       (
-        
         event_action IN 
           (
             'delete_repository',
@@ -60,5 +59,6 @@ WITH snowplow_structured_events AS (
     FROM snowplow_structured_events
     
 )
+
 SELECT *
 FROM renamed
