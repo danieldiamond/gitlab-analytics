@@ -22,7 +22,7 @@ sources:
       - name: contact
         description: '{{ doc("zuora_contact_source") }}'
       - name: discountappliedmetrics
-        description: '{{ doc("discount_applied_metrics_source") }}'
+        description: '{{ doc("zuora_discount_applied_metrics_source") }}'
       - name: invoiceitem
         description: '{{ doc("zuora_invoice_item_source") }}'
       - name: invoice
