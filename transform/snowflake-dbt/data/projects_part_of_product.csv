@@ -173,3 +173,6 @@ gitlab-org/security/omnibus-gitlab,15667093
 gitlab-org/security/gitlab,15642544
 gitlab-org/defend/general,15234689
 gitlab-org/status-page,16842968
+gitlab-com/gl-infra/gitter-infrastructure,2959752
+gitlab-org/webide-file-sync,11446522
+gitlab-org/gitlab-services/design.gitlab.com,4456656
