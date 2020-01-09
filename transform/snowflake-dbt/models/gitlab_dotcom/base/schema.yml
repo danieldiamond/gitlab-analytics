@@ -401,7 +401,7 @@ models:
               expression: "valid_from <= valid_to"
     tests:
       - not_null:
-          column_name: "IFF(gitlab_subscription_trial_starts_on IS NOT NULL, gitlab_subscription_trial_ends_on, 1)"
+          column_name: "IFF(gitlab_subscription_trial_starts_on IS NOT NULL, gitlab_subscription_trial_ends_on, CURRENT_DATE)"
 
   - name: gitlab_dotcom_groups
     description: '{{ doc("gitlab_dotcom_groups") }}'
