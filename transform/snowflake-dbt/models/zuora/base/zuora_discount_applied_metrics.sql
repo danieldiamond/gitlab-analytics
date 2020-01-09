@@ -48,7 +48,7 @@ WITH source AS (
 
       updatedbyid                             AS updated_by_id,
       updateddate                             AS updated_date
-      FROM source
+    FROM source
 
 )
 
