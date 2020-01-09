@@ -85,10 +85,10 @@ sources:
         identifier: gitlab_db_epics
       - name: events
         identifier: gitlab_db_events
-      - name: gitlab_subscriptions
-        identifier: gitlab_db_gitlab_subscriptions
       - name: gitlab_subscription_histories
         identifier: gitlab_db_gitlab_subscription_histories
+      - name: gitlab_subscriptions
+        identifier: gitlab_db_gitlab_subscriptions
       - name: identities
         identifier: gitlab_db_identities
       - name: issue_assignees
