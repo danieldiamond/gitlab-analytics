@@ -1,4 +1,3 @@
-
 {% docs zuora_subscription %}
 
 This table is the base table for Zuora subscriptions.
@@ -27,7 +26,7 @@ The contact source table contains info about an account’s point-of-contact. [L
 {% enddocs %}
 
 
-{% docs zuora_discount_applied_metrics %}
+{% docs zuora_discount_applied_metrics_source %}
 
 The discountAppliedMetrics source table contains info about rate plan charges that use either a discount-fixed amount or discount-percentage charge model. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/zuora#discountappliedmetrics)
 
