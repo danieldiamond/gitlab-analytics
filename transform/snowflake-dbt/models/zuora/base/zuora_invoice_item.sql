@@ -6,7 +6,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('zuora', 'invoiceitem') }}
+    FROM {{ source('zuora', 'invoice_item') }}
 
 ), renamed AS (
 
