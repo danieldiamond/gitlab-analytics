@@ -466,3 +466,13 @@ Usage:
 Used in:
 - zuora_subscription.sql
 - customers_db_orders.sql
+
+## Zuora Excluded Accounts ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/zuora_excluded_accounts.sql))
+This macro returns a list of zuora account_ids that are meant to be excluded from our base models. Account IDs can be filtered out because they were created for internal testing purposes (permanent filter) or because there's a data quality issue ([like a missing CRM](https://gitlab.com/gitlab-data/analytics/tree/master/transform/snowflake-dbt/tests#test-zuora_account_has_crm_id)) that we're fixing (temporary filter).
+
+- Used in:
+- zuora_account.sql
+- zuora_contact
+- zuora_invoice
+- zuora_refund
+- zuora_subscription.sql

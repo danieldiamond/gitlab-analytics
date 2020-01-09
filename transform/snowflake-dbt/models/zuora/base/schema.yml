@@ -60,6 +60,10 @@ models:
             tests:
                 - not_null
                 - unique
+          - name: account_id
+            description: The zuora account associated with the rate plan charge.
+            tests:
+                - not_null
     - name: zuora_refund
       description: Base model for Zuora Refunds
       columns:
