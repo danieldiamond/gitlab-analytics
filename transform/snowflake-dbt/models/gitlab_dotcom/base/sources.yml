@@ -87,8 +87,8 @@ sources:
         identifier: gitlab_db_events
       - name: gitlab_subscriptions
         identifier: gitlab_db_gitlab_subscriptions
-      - name: gitlab_subscriptions_history
-        identifier: gitlab_db_gitlab_subscriptions_history
+      - name: gitlab_subscription_histories
+        identifier: gitlab_db_gitlab_subscription_histories
       - name: identities
         identifier: gitlab_db_identities
       - name: issue_assignees
