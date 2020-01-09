@@ -307,17 +307,10 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
+            - analyst_sales
             - boneyard
             - gitlab_data_yaml
             - zuora
-        privileges:
-            databases:
-                read:
-                    - raw
-                    - analytics
-                    - snowflake
-                write:
-                    - analytics
 
     - analyst_people:
         warehouses:
@@ -1025,6 +1018,10 @@ roles:
         warehouses:
             - analyst_xs
 
+    - rkohnke:
+        warehouses:
+            - analyst_xs
+
     - sreddy:
         warehouses:
             - reporting
@@ -1331,6 +1328,12 @@ users:
         member_of:
             - pwc_contractor
             - pwc_snagaraj
+
+    - rkohnke:
+        can_login: yes
+        member_of:
+            - reporter
+            - rkohnke
 
     - sreddy:
         can_login: yes
