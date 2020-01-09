@@ -382,6 +382,10 @@ models:
           - not_null
           - no_overlapping_valid_from_to_dates
           - unique_where_currently_valid
+      - name: gitlab_subscription_trial_starts_on
+        description: The date that the subscription started their trial.
+      - name: gitlab_subscription_trial_starts_on
+        description: The date that the subscription's trial ended or is scheduled to end (can be in the future.) Should always be populated when gitlab_subscription_trial_starts_on is populated.
       - name: created_at
         tests:
           - not_null
@@ -393,6 +397,8 @@ models:
           - not_null
       - name: valid_to
         tests:
+          - not_null:
+              column_name: "IFF(gitlab_subscription_trial_starts_on IS NOT NULL, gitlab_subscription_trial_ends_on, 1)"
           - dbt_utils.expression_is_true:
               expression: "valid_from <= valid_to"
 
@@ -412,7 +418,6 @@ models:
       - name: updated_at
         tests:
           - not_null
-
 
   - name: gitlab_dotcom_identities
     description: Base model for GitLab.com identities (3rd party login providers).

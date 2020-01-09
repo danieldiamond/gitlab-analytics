@@ -8,7 +8,7 @@ WITH
       id::INTEGER                                   AS gitlab_subscription_id,
       start_date::DATE                              AS gitlab_subscription_start_date,
       end_date::DATE                                AS gitlab_subscription_end_date,
-      trial_starts_on::DATE                         AS gitlab_subscription_trial_start_on,
+      trial_starts_on::DATE                         AS gitlab_subscription_trial_starts_on,
       trial_ends_on::DATE                           AS gitlab_subscription_trial_ends_on,
       namespace_id::INTEGER                         AS namespace_id,
       hosted_plan_id::INTEGER                       AS plan_id,
