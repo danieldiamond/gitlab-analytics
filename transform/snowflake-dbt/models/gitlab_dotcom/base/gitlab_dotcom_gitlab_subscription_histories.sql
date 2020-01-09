@@ -20,7 +20,7 @@ WITH source AS (
       max_seats_used::INTEGER                          AS max_seats_used,
       seats::INTEGER                                   AS seats,
       trial::BOOLEAN                                   AS is_trial,
-      change_type                                      AS todo,
+      change_type::INTEGER                             AS change_type,
       gitlab_subscription_id::INTEGER                  AS gitlab_subscription_id,
       created_at::TIMESTAMP                            AS gitlab_subscription_history_created_at
 
