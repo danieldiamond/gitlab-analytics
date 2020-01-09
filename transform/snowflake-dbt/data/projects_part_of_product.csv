@@ -156,3 +156,10 @@ gitlab-org/container-registry,13831684
 gitlab-org/gitlab-ui,7071551
 gitlab-org/cluster-integration/cluster-applications,14404642
 gitlab-services/version-gitlab-com,6491770
+gitlab-org/security/gitlab-workhorse,15704133
+gitlab-org/security/gitaly,15685912
+gitlab-org/security/gitlab-pages,15685887
+gitlab-org/security/gitlab-shell,15685819
+gitlab-org/security/gitlab-foss,15683922
+gitlab-org/security/omnibus-gitlab,15667093
+gitlab-org/security/gitlab,15642544
