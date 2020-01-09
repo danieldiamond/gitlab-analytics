@@ -26,6 +26,13 @@ The contact source table contains info about an account’s point-of-contact. [L
 
 {% enddocs %}
 
+
+{% docs zuora_discount_applied_metrics %}
+
+The discountAppliedMetrics source table contains info about rate plan charges that use either a discount-fixed amount or discount-percentage charge model. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/zuora#discountappliedmetrics)
+
+{% enddocs %}
+
 {% docs zuora_invoice_item_source %}
 
 The invoiceItem source table contains info about the line items in invoices. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/zuora#invoiceitem)
