@@ -23,7 +23,7 @@ WITH source AS (
 	    id                              									AS rate_plan_charge_id,
 		name                            									AS rate_plan_charge_name,
 		--keys	
-		accountid 															AS account_id	
+		accountid 															AS account_id,	
 		originalid                      									AS original_id,
 		rateplanid                      									AS rate_plan_id,
 		productrateplanchargeid         									AS product_rate_plan_charge_id,
