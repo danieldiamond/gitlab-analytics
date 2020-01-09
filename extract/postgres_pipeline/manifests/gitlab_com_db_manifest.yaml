@@ -1456,7 +1456,7 @@ tables:
       , updated_at
       , issue_id
       , merge_request_id
-      , spent_at
+      , CASE WHEN spent_at < '1970-01-01' THEN NULL ELSE spent_at END AS spent_at
       FROM timelogs
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
