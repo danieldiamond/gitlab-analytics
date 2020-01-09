@@ -104,6 +104,52 @@ roles:
                     - analytics.dbt_archive.*
                     - snowflake.*.*
                     
+    - analyst_engineering:
+        warehouses:
+            - analyst_xs
+            - analyst_l
+        member_of:
+            - boneyard
+            - gitlab_data_yaml
+            - snowplow
+            - zuora
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - raw.gcloud_postgres_stitch
+                    - raw.salesforce_stitch
+                    - raw.sheetload
+                    - raw.snapshots
+                    - raw.snowplow
+                    - raw.tap_postgres
+                    - raw.zendesk_stitch
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+                    - snowflake.*
+            tables:
+                read:
+                    - raw.gcloud_postgres_stitch.*
+                    - raw.salesforce_stitch.*
+                    - raw.sheetload.*
+                    - raw.snapshots.*
+                    - raw.snowplow.*
+                    - raw.tap_postgres.*
+                    - raw.zendesk_stitch.*
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
+                    - snowflake.*.*
+
     - analyst_growth:
         warehouses:
             - analyst_xs
@@ -910,6 +956,10 @@ roles:
         warehouses:
             - reporting
 
+    - kaguilar:
+        warehouses:
+            - analyst_xs
+
     - ktam:
         warehouses:
             - engineer_xs
@@ -1182,6 +1232,12 @@ users:
             - jwatson
             - product_manager
             - reporter
+   
+    - kaguilar:
+        can_login: yes
+        member_of:
+            - kaguilar
+            - analyst_engineering
 
     - ktam:
         can_login: yes
