@@ -32,6 +32,7 @@ WITH bamboohr_employment_status AS (
     FROM bamboohr_employment_status
 
 ), final AS (  
+
     SELECT
       employee_id,
       employment_status,
