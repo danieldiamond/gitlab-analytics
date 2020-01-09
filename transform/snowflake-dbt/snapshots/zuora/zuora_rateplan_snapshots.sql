@@ -9,6 +9,6 @@
     }}
     
     SELECT * 
-    FROM {{ source('zuora', 'rateplan') }}
+    FROM {{ source('zuora', 'rate_plan') }}
     
 {% endsnapshot %}
