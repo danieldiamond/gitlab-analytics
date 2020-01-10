@@ -1,5 +1,5 @@
 {{ config({
-    "schema": "analytics"
+    "schema": "sensitive"
     })
 }}
 
