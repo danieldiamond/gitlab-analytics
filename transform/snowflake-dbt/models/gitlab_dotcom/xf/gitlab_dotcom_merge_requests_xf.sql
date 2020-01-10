@@ -73,13 +73,13 @@ WITH merge_requests AS (
 
     SELECT
       merge_requests.*, 
-      IFF(projects.visibility_level != 'public' AND project_namespace_lineage.namespace_is_internal = FALSE,
+      IFF(projects.visibility_level != 'public' AND projects.namespace_is_internal = FALSE,
         'content masked', milestones.milestone_title)         AS milestone_title,
-      IFF(projects.visibility_level != 'public' AND project_namespace_lineage.namespace_is_internal = FALSE,
+      IFF(projects.visibility_level != 'public' AND projects.namespace_is_internal = FALSE,
         'content masked', milestones.milestone_description)   AS milestone_description,
       projects.namespace_id,
-      project_namespace_lineage.ultimate_parent_id,
-      project_namespace_lineage.namespace_is_internal,
+      projects.ultimate_parent_id,
+      projects.namespace_is_internal,
       author_namespaces.namespace_path                        AS author_namespace_path,
       ARRAY_TO_STRING(agg_labels.labels,'|')                  AS masked_label_title,
       agg_labels.labels,

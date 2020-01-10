@@ -110,6 +110,8 @@ We also need to know if a MR is related to our community contributor project, th
 
 In order to achieve this we will build a CTE from the project table that contains only project from the Gitlab.org space, then we will use this as a logical condition in a case statement.
 
+Information about the merge request's namespace (`namespace_id`) and ultimate parent namespace (`ultimate_parent_id`, `namespace_is_internal`) is found through the **project** that the merge request is associated with. 
+
 {% enddocs %}
 
 
