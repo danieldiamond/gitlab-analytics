@@ -19,6 +19,7 @@ WITH bamboohr_employment_status AS (
     LEAD(effective_date) OVER (PARTITION BY employee_id ORDER BY effective_date)        AS valid_to_date,
     LEAD(employment_status) OVER (PARTITION BY employee_id ORDER BY effective_date)     AS next_employment_status,
     LAG(employment_status) OVER (PARTITION BY employee_id ORDER BY effective_date)      AS previous_employment_status
+    FROM bamboohr_employment_status
     
 ), final AS (  
 
