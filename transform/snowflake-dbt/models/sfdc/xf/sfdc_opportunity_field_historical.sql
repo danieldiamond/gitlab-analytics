@@ -72,7 +72,7 @@ WITH date_spine AS (
       FIRST_VALUE(created_at) IGNORE NULLS 
         OVER (PARTITION BY opportunity_id ORDER BY valid_to) AS created_date,
       COALESCE(
-        IFNULL(valid_from, LAG(valid_to) OVER (PARTITION BY opportunity_id ORDER BY valid_to)), 
+        LAG(valid_to) OVER (PARTITION BY opportunity_id ORDER BY valid_to), 
         created_date
         )                                                    AS valid_from,
       valid_to  
