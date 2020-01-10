@@ -54,7 +54,7 @@ WITH issues AS (
 ), gitlab_subscriptions AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions')}}
 ),
 
 joined AS (
@@ -134,10 +134,11 @@ joined AS (
     agg_labels.labels,
     ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
     namespace_lineage.namespace_is_internal      AS is_internal_issue,
+
     CASE
-      WHEN issue_created_at >= '2019-11-09'
-        THEN COALESCE(gitlab_subscriptions.plan_id, 34)
-      ELSE gitlab_subscriptions.plan_id            
+      WHEN issues_created_at BETWEEN DATEADD('days', -30, gitlab_subscription_trial_ends_on) AND gitlab_subscription_trial_ends_on
+        THEN 'trial'
+      ELSE gitlab_subscriptions.plan_id::VARCHAR
     END AS namespace_plan_id_at_issue_creation
 
   FROM issues
@@ -152,5 +153,5 @@ joined AS (
     AND issues.issue_created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
 )
 
-SELECT * 
+SELECT *
 FROM joined

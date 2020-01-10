@@ -64,18 +64,10 @@ WITH merge_requests AS (
     FROM {{ref('gitlab_dotcom_namespaces_xf')}}
     WHERE namespace_type = 'Individual'
 
-), project_namespace_lineage AS (
-
-    SELECT
-      namespace_id,
-      ultimate_parent_id,
-      namespace_is_internal
-    FROM {{ref('gitlab_dotcom_namespace_lineage')}}
-
 ), gitlab_subscriptions AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions')}}
 
 ), joined AS (
 
@@ -98,19 +90,15 @@ WITH merge_requests AS (
         TRUE, FALSE)                                          AS is_part_of_product,
       IFF(project_namespace_lineage.namespace_is_internal IS NOT NULL
           AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.labels),
-        TRUE, FALSE)                               AS is_community_contributor_related,
+        TRUE, FALSE)                                          AS is_community_contributor_related,
       TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at,
-        merge_request_metrics.merged_at)           AS hours_to_merged_status,
+        merge_request_metrics.merged_at)                      AS hours_to_merged_status,
 
-      CASE
-        WHEN merge_request_created_at >= '2019-11-09' THEN
-          CASE
-            WHEN merge_request_created_at BETWEEN DATEADD('days', -30, gitlab_subscription_trial_ends_on) AND gitlab_subscription_trial_ends_on
-              THEN 'trial'
-            ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR END
+      CASE 
+        WHEN merge_request_created_at BETWEEN DATEADD('days', -30, gitlab_subscription_trial_ends_on) AND gitlab_subscription_trial_ends_on
+          THEN 'trial'
         ELSE gitlab_subscriptions.plan_id::VARCHAR
       END AS namespace_plan_id_at_merge_request_creation
-
 
     FROM merge_requests
       LEFT JOIN agg_labels
@@ -123,12 +111,9 @@ WITH merge_requests AS (
         ON merge_requests.target_project_id = projects.project_id
       LEFT JOIN author_namespaces
         ON merge_requests.author_id = author_namespaces.owner_id
-      LEFT JOIN project_namespace_lineage
-        ON projects.namespace_id = project_namespace_lineage.namespace_id
       LEFT JOIN gitlab_subscriptions
-        ON project_namespace_lineage.ultimate_parent_id = gitlab_subscriptions.namespace_id
+        ON projects.ultimate_parent_id = gitlab_subscriptions.namespace_id
         AND merge_requests.merge_request_created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
-        -- TODO: check for overlaps
 
 )
 
