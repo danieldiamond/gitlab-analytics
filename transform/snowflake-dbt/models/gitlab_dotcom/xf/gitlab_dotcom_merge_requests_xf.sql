@@ -56,7 +56,7 @@ WITH merge_requests AS (
 ), projects AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_projects')}}
+    FROM {{ref('gitlab_dotcom_projects_xf')}}
 
 ), author_namespaces AS (
 

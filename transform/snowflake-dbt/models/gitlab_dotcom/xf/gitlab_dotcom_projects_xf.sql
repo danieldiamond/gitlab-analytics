@@ -122,7 +122,7 @@ joined AS (
         ON namespaces.namespace_id = namespace_lineage.namespace_id
       LEFT JOIN gitlab_subscriptions
         ON namespace_lineage.ultimate_parent_id  = gitlab_subscriptions.namespace_id
-        AND projects.project_created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
+        AND projects.created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
     {{ dbt_utils.group_by(n=67) }}
 )
 
