@@ -8,7 +8,8 @@ WITH sfdc_lead AS (
     SELECT
 		lead_id,
 		lead_email,
-		lead_name
+		lead_name, 
+		person_id
     FROM {{ ref('sfdc_lead') }}
 
 ), sfdc_lead_pii as (

@@ -15,7 +15,8 @@ WITH source AS (
         id                                                      AS lead_id,
         name                                                    AS lead_name,
         email                                                   AS lead_email,
-
+		sha1(email)												AS person_id,
+		
         --keys
         masterrecordid                                          AS master_record_id,
         convertedaccountid                                      AS converted_account_id,

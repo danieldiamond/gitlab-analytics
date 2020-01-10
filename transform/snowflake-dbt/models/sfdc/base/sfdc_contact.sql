@@ -17,6 +17,7 @@ WITH source AS (
         id                          AS contact_id,
         name                        AS contact_name,
         email                       AS contact_email,
+		sha1(email)					AS person_id,
 
         -- keys
         accountid                   AS account_id,
