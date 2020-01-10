@@ -1,10 +1,3 @@
-{{ config({
-    "materialized":"table",
-    "schema": "sensitive"
-    })
-}}
-
-
 WITH bamboohr_employment_status AS (
   
     SELECT *
