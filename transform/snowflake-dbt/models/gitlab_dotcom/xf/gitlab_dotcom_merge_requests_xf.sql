@@ -113,7 +113,7 @@ WITH merge_requests AS (
         ON merge_requests.author_id = author_namespaces.owner_id
       LEFT JOIN gitlab_subscriptions
         ON projects.ultimate_parent_id = gitlab_subscriptions.namespace_id
-        AND merge_requests.merge_request_created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
+        AND merge_requests.created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
 
 )
 
