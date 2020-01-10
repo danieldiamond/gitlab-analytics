@@ -23,17 +23,35 @@ WITH source AS (
         business_type__c               AS business_type,
         closedate                      AS close_date,
         createddate                    AS created_date,
-        DATEDIFF(days, CURRENT_DATE, (greatest(
-            x0_pending_acceptance_date__c,
-            x1_discovery_date__c,
-            x2_scoping_date__c,
-            x3_technical_evaluation_date__c,
-            x4_proposal_date__c,
-            x5_negotiating_date__c,
-            --x6_closed_won_date__c,
-            x7_closed_lost_date__c--,
-            --x8_unqualified_date__c
-        )::DATE)) + 1                  AS days_in_stage,
+        DATEDIFF(
+            days,
+            IFF(
+                greatest(
+                    IFNULL(x0_pending_acceptance_date__c, '0000-01-01'),
+                    IFNULL(x1_discovery_date__c, '0000-01-01'),
+                    IFNULL(x2_scoping_date__c, '0000-01-01'),
+                    IFNULL(x3_technical_evaluation_date__c, '0000-01-01'),
+                    IFNULL(x4_proposal_date__c, '0000-01-01'),
+                    IFNULL(x5_negotiating_date__c, '0000-01-01'),
+                    --x6_closed_won_date__c,
+                    IFNULL(x7_closed_lost_date__c, '0000-01-01')--,
+                    --x8_unqualified_date__c
+                ) = '0000-01-01',
+                NULL,
+                greatest(
+                    IFNULL(x0_pending_acceptance_date__c, '0000-01-01'),
+                    IFNULL(x1_discovery_date__c, '0000-01-01'),
+                    IFNULL(x2_scoping_date__c, '0000-01-01'),
+                    IFNULL(x3_technical_evaluation_date__c, '0000-01-01'),
+                    IFNULL(x4_proposal_date__c, '0000-01-01'),
+                    IFNULL(x5_negotiating_date__c, '0000-01-01'),
+                    --x6_closed_won_date__c,
+                    IFNULL(x7_closed_lost_date__c, '0000-01-01')--,
+                    --x8_unqualified_date__c
+                )::DATE
+            ),
+            CURRENT_DATE::DATE
+        ) + 1                          AS days_in_stage,
         deployment_preference__c       AS deployment_preference,
         sql_source__c                  AS generated_source,
         leadsource                     AS lead_source,
