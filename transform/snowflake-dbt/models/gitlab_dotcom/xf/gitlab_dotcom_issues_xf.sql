@@ -136,7 +136,7 @@ joined AS (
     namespace_lineage.namespace_is_internal      AS is_internal_issue,
 
     CASE
-      WHEN issues_created_at BETWEEN DATEADD('days', -30, gitlab_subscription_trial_ends_on) AND gitlab_subscription_trial_ends_on
+      WHEN issue_created_at BETWEEN DATEADD('days', -30, gitlab_subscription_trial_ends_on) AND gitlab_subscription_trial_ends_on
         THEN 'trial'
       ELSE gitlab_subscriptions.plan_id::VARCHAR
     END AS namespace_plan_id_at_issue_creation
