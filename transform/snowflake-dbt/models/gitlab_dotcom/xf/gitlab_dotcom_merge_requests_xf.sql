@@ -88,7 +88,7 @@ WITH merge_requests AS (
         TRUE, FALSE)                                          AS is_included_in_engineering_metrics,
       IFF(merge_requests.target_project_id IN ({{is_project_part_of_product()}}),
         TRUE, FALSE)                                          AS is_part_of_product,
-      IFF(project_namespace_lineage.namespace_is_internal IS NOT NULL
+      IFF(projects.namespace_is_internal IS NOT NULL
           AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.labels),
         TRUE, FALSE)                                          AS is_community_contributor_related,
       TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at,
