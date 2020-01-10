@@ -7,11 +7,6 @@ WITH bamboohr_employment_status AS (
   
     SELECT *
     FROM {{ ref ('bamboohr_employment_status') }}
-
-WITH bamboohr_employment_status AS (
-  
-    SELECT *
-    FROM {{ ref ('bamboohr_employment_status') }}
   
 ), employment_log AS (
   
