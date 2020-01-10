@@ -6,7 +6,7 @@
 WITH bamboohr_employment_status AS (
   
     SELECT *
-    FROM {{ ref ('bamboo_hr_employment_status') }}
+    FROM {{ ref ('bamboohr_employment_status') }}
   
 ),employment_log AS (--the emp_status will need to work with people group to create a translation table for different employment statuses   
   
