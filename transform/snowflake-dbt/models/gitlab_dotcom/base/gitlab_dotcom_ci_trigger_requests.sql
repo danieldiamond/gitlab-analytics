@@ -1,13 +1,8 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
-  SELECT *,
-         ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'ci_trigger_requests') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
   
@@ -20,7 +15,6 @@ WITH source AS (
     commit_id::INTEGER    AS commit_id
     
   FROM source
-  WHERE rank_in_key = 1
   
 )
 

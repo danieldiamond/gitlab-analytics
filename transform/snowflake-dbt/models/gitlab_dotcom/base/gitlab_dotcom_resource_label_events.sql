@@ -1,14 +1,8 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'resource_label_events') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 )
 
@@ -28,7 +22,6 @@ WITH source AS (
       reference::VARCHAR                             AS referrence,
       reference_html::VARCHAR                        AS reference_html  
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

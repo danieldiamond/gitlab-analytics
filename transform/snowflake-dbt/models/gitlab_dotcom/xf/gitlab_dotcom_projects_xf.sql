@@ -1,4 +1,3 @@
-{% set paid_plans = (2, 3, 4) %}
 {% set sensitive_fields = ['project_description', 'project_import_source', 'project_issues_template', 'project_build_coverage_regex',
                            'project_name', 'project_path', 'project_import_url', 'project_merge_requests_template'] %}
 
@@ -21,15 +20,13 @@ members AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_members')}}
+    WHERE is_currently_valid = TRUE
 
 ),
 
 namespace_lineage AS (
 
-    SELECT
-      namespace_id,
-      ultimate_parent_id,
-      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
+    SELECT *
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
 ), gitlab_subscriptions AS (
@@ -42,8 +39,8 @@ namespace_lineage AS (
 joined AS (
     SELECT
       projects.project_id,
-      projects.project_created_at,
-      projects.project_updated_at,
+      projects.created_at                                          AS project_created_at,
+      projects.updated_at                                          AS project_updated_at,
       projects.creator_id,
       projects.namespace_id,
       projects.last_activity_at,
@@ -95,22 +92,26 @@ joined AS (
         WHEN projects.visibility_level != '20' AND NOT namespace_lineage.namespace_is_internal
           THEN 'project is private/internal'
         ELSE {{field}}
-      END                                                                           AS {{field}},
+      END                                                          AS {{field}},
       {% endfor %}
 
       namespaces.namespace_name,
       namespaces.namespace_path,
-      namespaces.plan_id                                           AS namespace_plan_id,
-      namespace_lineage.ultimate_parent_id                         AS namespace_ultimate_parent_id,
-      namespace_lineage.namespace_is_internal,
 
+      namespace_lineage.namespace_is_internal,
       CASE
         WHEN project_created_at >= '2019-11-09'
           THEN COALESCE(gitlab_subscriptions.plan_id, 34)
         ELSE gitlab_subscriptions.plan_id            
       END AS namespace_plan_id_at_project_creation,
-
       COALESCE( (namespaces.plan_id IN {{ paid_plans }} ), False)  AS namespace_plan_is_paid,
+      namespace_lineage.namespace_plan_id, 
+      namespace_lineage.namespace_plan_title,
+      namespace_lineage.namespace_plan_is_paid,
+      namespace_lineage.ultimate_parent_id,
+      namespace_lineage.ultimate_parent_plan_id,
+      namespace_lineage.ultimate_parent_plan_title,
+      namespace_lineage.ultimate_parent_plan_is_paid,
       COALESCE(COUNT(DISTINCT members.member_id), 0)               AS member_count
     FROM projects
       LEFT JOIN members
@@ -123,7 +124,7 @@ joined AS (
       LEFT JOIN gitlab_subscriptions
         ON namespace_lineage.ultimate_parent_id  = gitlab_subscriptions.namespace_id
         AND projects.project_created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
-    {{ dbt_utils.group_by(n=62) }}
+    {{ dbt_utils.group_by(n=66) }}
 )
 
 SELECT *

@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
   SELECT *
@@ -12,7 +7,7 @@ WITH source AS (
 
     SELECT 
       pipeline_id::INTEGER  AS ci_pipeline_id,
-      chat_name_id::INTEGER AS ci_pipeline_chat_id,
+      chat_name_id::INTEGER AS chat_name_id,
       response_url          AS response_url
 
     FROM source

@@ -1,3 +1,9 @@
+{% docs gitlab_dotcom_environments_xf %}
+
+This model anonymizes three fields: `environment_name`, `slug`, `external_url` based on the visibility of the projects the environments are associated to 
+
+{% enddocs %}
+
 {% docs gitlab_dotcom_gitlab_issues_requests %}
 
 This model enables product managers to surface which issue has been requested by potential prospects and current customers. The final model creates a table where each row is unique tuple of a `issue_id` and a `sfdc_account_id`.
@@ -78,6 +84,12 @@ This model includes one row for every day, but MAU for a given month will typica
 
 {% enddocs %}
 
+{% docs gitlab_dotcom_merge_request_assignment_events %}
+
+This model contains the history of assignments, unassignments, and reassignments for merge requests within internal namespaces. From `gitlab_dotcom_internal_notes_xf`, notes of type `MergeRequest` are queried. Notes are stemmed down to referenced usernames, tokenized, and flattened so that for each event (assign, unassign, reassign) a row is created for each referenced username in the order it appears in the note. Finally, usernames are replaced with user id's by joining to `gitlab_dotcom_users`. Usernames that do not have an associated user_id (if the user was deleted or changed usernames) are not included in this model so as to not misattribute assignee changes.
+
+{% enddocs %}
+
 
 {% docs gitlab_dotcom_merge_requests_xf%}
 
@@ -103,9 +115,10 @@ In order to achieve this we will build a CTE from the project table that contain
 
 {% docs gitlab_dotcom_namespaces_xf %}
 
-Includes all columns from the namespaces base model. Note that `namespaces.plan_id` is overridden by the `plan_id` from the `gitlab_subscriptions` model.
-Adds the count of members and projects associated with the namespace.
-Also adds boolean column `namespaces_plan_is_paid` to provide extra context.
+Includes all columns from the namespaces base model.  
+The plan columns here (plan_id, plan_title, plan_is_paid) reference the plan that is inheritted from the namespace's ultimate parent.
+Adds the count of members and projects associated with the namespace.  
+Also adds boolean column `namespaces_plan_is_paid` to provide extra context.  
 
 {% enddocs %}
 

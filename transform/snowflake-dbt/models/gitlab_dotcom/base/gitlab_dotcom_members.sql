@@ -1,11 +1,12 @@
-WITH source AS (
+{{ config({
+    "schema": "analytics"
+    })
+}}
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS rank_in_key
-  FROM {{ source('gitlab_dotcom', 'members') }}
+WITH
+{{ distinct_source(source=source('gitlab_dotcom', 'members'))}}
 
-), renamed AS (
+, renamed AS (
 
     SELECT
 
@@ -22,12 +23,14 @@ WITH source AS (
       requested_at::TIMESTAMP                        AS requested_at,
       expires_at::TIMESTAMP                          AS expires_at,
       ldap::BOOLEAN                                  AS has_ldap,
-      override::BOOLEAN                              AS has_override
+      override::BOOLEAN                              AS has_override,
+      valid_from -- Column was added in distinct_source CTE
 
-    FROM source
-    WHERE rank_in_key = 1
+    FROM distinct_source
 
 )
 
-SELECT *
-FROM renamed
+{{ scd_type_2(
+    primary_key_renamed='member_id',
+    primary_key_raw='id'
+) }}

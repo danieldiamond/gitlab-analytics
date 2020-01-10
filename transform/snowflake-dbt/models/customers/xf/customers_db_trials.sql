@@ -34,11 +34,20 @@ WITH customers AS (
  
 )
 
-, zuora_subscription AS (
+, zuora_base_mrr AS (
  
  SELECT * 
- FROM {{ ref('zuora_subscription_xf')}}
+ FROM {{ ref('zuora_base_mrr')}}
  
+)
+
+, zuora_subscription_with_positive_mrr_tcv AS (
+  
+  SELECT DISTINCT
+    subscription_name_slugify,
+    subscription_start_date
+  FROM zuora_base_mrr 
+  
 )
 
 , ci_minutes_charges AS (
@@ -62,7 +71,12 @@ WITH customers AS (
 
 , trials AS (
   
-  SELECT *
+  SELECT 
+    *,
+    FIRST_VALUE(customer_id)
+      OVER (PARTITION BY order_id ORDER BY order_updated_at DESC) AS latest_customer_id,
+    FIRST_VALUE(gitlab_namespace_id) 
+      OVER (PARTITION BY order_id ORDER BY order_updated_at DESC) AS latest_namespace_id
   FROM orders_snapshots
   WHERE order_is_trial = TRUE
   
@@ -76,39 +90,42 @@ WITH customers AS (
   FROM trials
   INNER JOIN orders_shapshots_excluding_ci_minutes 
     ON trials.order_id = orders_shapshots_excluding_ci_minutes.order_id
+  INNER JOIN zuora_subscription_with_positive_mrr_tcv AS subscription
+    ON orders_shapshots_excluding_ci_minutes.subscription_name_slugify = subscription.subscription_name_slugify
+      AND trials.order_start_date <= subscription.subscription_start_date
   WHERE orders_shapshots_excluding_ci_minutes.subscription_name_slugify IS NOT NULL
   
 )
 , joined AS (
   
   SELECT
-    orders_snapshots.order_id, 
-    orders_snapshots.gitlab_namespace_id,
+    trials.order_id, 
+    trials.latest_namespace_id                              AS gitlab_namespace_id,
     customers.customer_id,
     
       
     users.user_id                                           AS gitlab_user_id,
     IFF(users.user_id IS NOT NULL, TRUE, FALSE)             AS is_gitlab_user,
-    users.user_created_at,
+    users.created_at                                        AS user_created_at,
     
-    namespaces.namespace_created_at,
+    
+    namespaces.created_at                                   AS namespace_created_at,
     namespaces.namespace_type,
     
     IFF(converted_trials.order_id IS NOT NULL, TRUE, FALSE) AS is_converted,
     converted_trials.subscription_name_slugify,
     
     MIN(order_created_at)                                   AS order_created_at,
-    MIN(orders_snapshots.order_start_date)::DATE            AS trial_start_date, 
-    MAX(orders_snapshots.order_end_date)::DATE              AS trial_end_date
+    MIN(trials.order_start_date)::DATE                      AS trial_start_date, 
+    MAX(trials.order_end_date)::DATE                        AS trial_end_date
     
     
-  FROM orders_snapshots
-    INNER JOIN customers ON orders_snapshots.customer_id = customers.customer_id
-    LEFT JOIN namespaces ON orders_snapshots.gitlab_namespace_id = namespaces.namespace_id
+  FROM trials
+    INNER JOIN customers ON trials.latest_customer_id = customers.customer_id
+    LEFT JOIN namespaces ON trials.latest_namespace_id = namespaces.namespace_id
     LEFT JOIN users ON customers.customer_provider_user_id = users.user_id
-    LEFT JOIN converted_trials ON orders_snapshots.order_id = converted_trials.order_id
-  WHERE order_is_trial 
-    AND order_start_date >= '2019-09-01'
+    LEFT JOIN converted_trials ON trials.order_id = converted_trials.order_id
+  WHERE trials.order_start_date >= '2019-09-01'
   {{dbt_utils.group_by(10)}}
   
 )

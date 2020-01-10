@@ -3,7 +3,10 @@
 
 WITH merge_requests AS (
 
-    SELECT *
+    SELECT 
+      {{ dbt_utils.star(from=ref('gitlab_dotcom_merge_requests'), except=["created_at", "updated_at"]) }},
+      created_at AS merge_request_created_at,
+      updated_at  AS merge_request_updated_at
     FROM {{ref('gitlab_dotcom_merge_requests')}}
 
 ), label_states AS (
@@ -66,7 +69,7 @@ WITH merge_requests AS (
     SELECT
       namespace_id,
       ultimate_parent_id,
-      ( ultimate_parent_id IN {{ get_internal_parent_namespaces() }} ) AS namespace_is_internal
+      namespace_is_internal
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
 ), gitlab_subscriptions AS (
@@ -77,7 +80,7 @@ WITH merge_requests AS (
 ), joined AS (
 
     SELECT
-      merge_requests.*,
+      merge_requests.*, 
       IFF(projects.visibility_level != 'public' AND project_namespace_lineage.namespace_is_internal = FALSE,
         'content masked', milestones.milestone_title)         AS milestone_title,
       IFF(projects.visibility_level != 'public' AND project_namespace_lineage.namespace_is_internal = FALSE,
@@ -85,14 +88,14 @@ WITH merge_requests AS (
       projects.namespace_id,
       project_namespace_lineage.ultimate_parent_id,
       project_namespace_lineage.namespace_is_internal,
-      author_namespaces.namespace_path             AS author_namespace_path,
-      ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
+      author_namespaces.namespace_path                        AS author_namespace_path,
+      ARRAY_TO_STRING(agg_labels.labels,'|')                  AS masked_label_title,
       agg_labels.labels,
       merge_request_metrics.merged_at,
       IFF(merge_requests.target_project_id IN ({{is_project_included_in_engineering_metrics()}}),
-        TRUE, FALSE)                               AS is_included_in_engineering_metrics,
+        TRUE, FALSE)                                          AS is_included_in_engineering_metrics,
       IFF(merge_requests.target_project_id IN ({{is_project_part_of_product()}}),
-        TRUE, FALSE)                               AS is_part_of_product,
+        TRUE, FALSE)                                          AS is_part_of_product,
       IFF(project_namespace_lineage.namespace_is_internal IS NOT NULL
           AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.labels),
         TRUE, FALSE)                               AS is_community_contributor_related,
@@ -107,6 +110,7 @@ WITH merge_requests AS (
             ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR END
         ELSE gitlab_subscriptions.plan_id::VARCHAR
       END AS namespace_plan_id_at_merge_request_creation
+
 
     FROM merge_requests
       LEFT JOIN agg_labels

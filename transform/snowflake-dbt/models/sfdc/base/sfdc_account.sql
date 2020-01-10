@@ -14,6 +14,7 @@ WITH source AS (
     SELECT
       id                                       AS account_id,
       name                                     AS account_name,
+
       -- keys
       account_id_18__c                         AS account_id_18,
       masterrecordid                           AS master_record_id,
@@ -21,7 +22,7 @@ WITH source AS (
       parentid                                 AS parent_id,
       primary_contact_id__c                    AS primary_contact_id,
       recordtypeid                             AS record_type_id,
-      ultimate_parent_account_id__c            AS utimate_parent_id,
+      ultimate_parent_account_id__c            AS ultimate_parent_id,
       partner_vat_tax_id__c                    AS partner_vat_tax_id,
 
       -- key people GL side
@@ -38,7 +39,7 @@ WITH source AS (
       solutions_architect__c                   AS solutions_architect,
       technical_account_manager_lu__c          AS technical_account_manager_id,
 
-    --   info
+      -- info
       {{target.schema}}_staging.id15to18(substring(regexp_replace(ultimate_parent_account__c,
                      '_HL_ENCODED_/|<a\\s+href="/', ''), 0, 15))                 
                                                AS ultimate_parent_account_id,
@@ -58,11 +59,28 @@ WITH source AS (
       support_level__c                         AS support_level,
       support_level_numeric__c                 AS support_level_numeric,
       named_account__c                         AS named_account,
+      billingcountry                           AS billing_country, 
+      billingpostalcode                        AS billing_postal_code, 
 
-      --present state info
+      -- territory success planning fields
+      atam_approved_next_owner__c              AS tsp_approved_next_owner,
+      atam_next_owner_role__c                  AS tsp_next_owner_role,
+      atam_next_owner_team__c                  AS tsp_next_owner_team,
+      jb_max_family_employees__c               AS tsp_max_family_employees,
+      jb_test_sales_segment__c                 AS tsp_test_sales_segment,
+      atam_region__c                           AS tsp_region,
+      atam_sub_region__c                       AS tsp_sub_region,
+      atam_area__c                             AS tsp_area,
+      atam_territory__c                        AS tsp_territory,
+      atam_address_country__c                  AS tsp_address_country,
+      atam_address_state__c                    AS tsp_address_state,
+      atam_address_city__c                     AS tsp_address_city,
+      atam_address_street__c                   AS tsp_address_street,
+      atam_address_postal_code__c              AS tsp_address_postal_code, 
+
+      -- present state info
       health__c                                AS health_score,
       health_score_reasons__c                  AS health_score_explained,
-
 
       -- opportunity metrics
       count_of_active_subscription_charges__c  AS count_active_subscription_charges,
@@ -80,7 +98,6 @@ WITH source AS (
       number_of_open_opportunities__c          AS count_open_opportunities,
       using_ce__c                              AS count_using_ce,
 
-
       -- metadata
       createdbyid                              AS created_by_id,
       createddate                              AS created_date,
@@ -92,7 +109,6 @@ WITH source AS (
       lastvieweddate                           AS last_viewed_date,
       convert_timezone('America/Los_Angeles',convert_timezone('UTC',current_timestamp())) AS _last_dbt_run,
       systemmodstamp
-
 
     FROM source
     WHERE id IS NOT NULL

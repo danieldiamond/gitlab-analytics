@@ -11,11 +11,11 @@ function cycle_logs() {
 }
 
 alias open_dbt_docs='dbt docs generate && dbt docs serve'
-alias gl_open="git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@' | head -n1 | xargs open"
+alias gl_open="git remote -v | awk '/fetch/{print \$2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@' | head -n1 | xargs open"
 alias ls='ls -G'
 alias grep='grep --color=auto'
 
-export EDITOR="atom --wait"
+export EDITOR="code --wait"
 
 TERM=xterm-256color
 

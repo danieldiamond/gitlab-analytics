@@ -21,13 +21,12 @@ WITH months AS (
     SELECT
       group_id,
       parent_group_id,
-      group_ultimate_parent_id,
       is_top_level_group,
-      group_plan_is_paid,
+      group_ultimate_parent_id,
       DATE_TRUNC(month, group_created_at) AS group_created_at_month
 
     FROM {{ ref('gitlab_dotcom_groups_xf') }}
-    WHERE TO_DATE(group_created_at) < DATE_TRUNC('month', CURRENT_DATE)
+    WHERE group_created_at::DATE < DATE_TRUNC('month', CURRENT_DATE)
 
 ), skeleton AS ( -- create a framework of one row per group per month (after their creation date)
 
@@ -35,7 +34,6 @@ WITH months AS (
       groups.group_id,
       groups.parent_group_id,
       groups.group_ultimate_parent_id,
-      groups.group_plan_is_paid,
       groups.is_top_level_group,
       groups.group_created_at_month,
       months.skeleton_month,
@@ -49,13 +47,13 @@ WITH months AS (
 
     SELECT
       entity_id AS group_id,
-      DATE_TRUNC(month, audit_event_created_at)  AS audit_event_month,
+      DATE_TRUNC(month, created_at)              AS audit_event_month,
       COUNT(*)                                   AS audit_events_count
 
     FROM {{ ref('gitlab_dotcom_audit_events') }}
     WHERE entity_type = 'Group'
       {% if is_incremental() %}
-        AND audit_event_created_at >= (SELECT MAX(audit_event_month) from {{ this }})
+        AND created_at >= (SELECT MAX(audit_event_month) from {{ this }})
       {% endif %}
     GROUP BY 1,2
 
@@ -63,7 +61,6 @@ WITH months AS (
 
     SELECT
       skeleton.group_id,
-      skeleton.parent_group_id,
       skeleton.group_ultimate_parent_id,
       skeleton.is_top_level_group,
       skeleton.group_created_at_month,
@@ -76,8 +73,7 @@ WITH months AS (
     FROM skeleton
     LEFT JOIN audit_events
       ON skeleton.group_id = audit_events.group_id
-        AND skeleton.skeleton_month = audit_events.audit_event_month
-    ORDER BY 4 DESC, 1 DESC
+      AND skeleton.skeleton_month = audit_events.audit_event_month
 
 )
 

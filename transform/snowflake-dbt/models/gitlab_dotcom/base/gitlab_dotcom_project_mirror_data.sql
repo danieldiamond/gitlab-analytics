@@ -1,14 +1,8 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'project_mirror_data') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 
 ), renamed AS (
@@ -23,7 +17,6 @@ WITH source AS (
       next_execution_timestamp::TIMESTAMP             AS next_execution_timestamp
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

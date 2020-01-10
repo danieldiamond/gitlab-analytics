@@ -19,7 +19,7 @@ internal_namespaces AS (
     SELECT
       namespace_id
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
-    WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
+    WHERE namespace_is_internal = True
 ),
 
 final AS (
@@ -34,8 +34,8 @@ final AS (
       
       milestones.due_date,
       milestones.group_id,
-      milestones.milestone_created_at,
-      milestones.milestone_updated_at,
+      milestones.created_at                                  AS milestone_created_at,
+      milestones.updated_at                                  AS milestone_updated_at,
       milestones.milestone_status,
       COALESCE(milestones.group_id, projects.namespace_id)   AS namespace_id,
       milestones.project_id,

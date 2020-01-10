@@ -16,7 +16,7 @@ with labels AS (
     SELECT
       namespace_id
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
-    WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
+    WHERE namespace_is_internal
 
 ), joined AS (
 
@@ -34,8 +34,8 @@ with labels AS (
     group_id,
     template,
     label_type,
-    label_created_at,
-    label_updated_at
+    created_at                                   AS label_created_at,
+    updated_at                                   AS label_updated_at
 
     FROM labels
       LEFT JOIN projects

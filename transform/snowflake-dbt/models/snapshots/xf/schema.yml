@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: employee_location_factor_snapshots
+    description: This captures changes in location factor for an employee
+    columns:
+      - name: bamboo_employee_number
+        description: bamboo emp id
+        tests:
+          - not_null
+      - name: location_factor
+        description: The location factor for the given time period
+        tests:
+          - not_null
+      - name: location_factor_change_event_number
+        description: Identifies the number of times location factor has been updated in source but doesn't necessarily equate to distinct changes
+        tests:
+          - not_null
+      - name: valid_from
+        description: Marks the start date for a location factor used for an employee
+        tests:
+          - not_null
+      - name: valid_to
+        description: Marks the end date for a location factor used for an employee
+        tests:
+          - not_null

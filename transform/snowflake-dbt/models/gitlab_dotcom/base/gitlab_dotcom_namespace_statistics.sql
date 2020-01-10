@@ -1,14 +1,8 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'namespace_statistics') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
 
@@ -20,7 +14,6 @@ WITH source AS (
       shared_runners_seconds_last_reset::TIMESTAMP     AS shared_runners_seconds_last_reset
 
     FROM source
-    WHERE rank_in_key = 1
 
 )
 

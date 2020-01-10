@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
   SELECT DISTINCT
@@ -13,10 +8,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      md5(user_id || issue_id)   AS user_issue_relation_id,
-      user_id::INTEGER           AS user_id,
-      issue_id::INTEGER          AS issue_id
-
+      md5(user_id || issue_id)::VARCHAR AS user_issue_relation_id,
+      user_id::INTEGER                  AS user_id,
+      issue_id::INTEGER                 AS issue_id
     FROM source
 
 

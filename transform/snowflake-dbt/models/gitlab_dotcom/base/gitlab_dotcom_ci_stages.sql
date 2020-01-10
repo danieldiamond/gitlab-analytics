@@ -1,17 +1,15 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "ci_stage_id",
-    "schema": "staging"
+    "unique_key": "ci_stage_id"
     })
 }}
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'ci_stages') }}
   WHERE created_at IS NOT NULL
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
   
     {% if is_incremental() %}
 
@@ -32,7 +30,6 @@ WITH source AS (
     lock_version::INTEGER AS lock_version,
     position::INTEGER     AS position
   FROM source
-  WHERE rank_in_key = 1
 
 )
 

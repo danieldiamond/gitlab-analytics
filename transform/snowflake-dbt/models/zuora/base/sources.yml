@@ -14,19 +14,26 @@ sources:
 
     freshness:
       warn_after: {count: 8, period: hour}
+      error_after: {count: 24, period: hour}
 
     tables:
       - name: account
         description: '{{ doc("zuora_account_source") }}'
       - name: contact
         description: '{{ doc("zuora_contact_source") }}'
-      - name: invoiceitem
+      - name: discount_applied_metrics
+        identifier: discountappliedmetrics
+        description: '{{ doc("zuora_discount_applied_metrics_source") }}'
+      - name: invoice_item
+        identifier: invoiceitem
         description: '{{ doc("zuora_invoice_item_source") }}'
       - name: invoice
         description: '{{ doc("zuora_invoice_source") }}'
-      - name: rateplancharge
+      - name: rate_plan_charge
+        identifier: rateplancharge
         description: '{{ doc("zuora_rateplan_charge_source") }}'
-      - name: rateplan
+      - name: rate_plan
+        identifier: rateplan
         description: '{{ doc("zuora_rateplan_source") }}'
       - name: refund
         description: '{{ doc("zuora_refund_source") }}'

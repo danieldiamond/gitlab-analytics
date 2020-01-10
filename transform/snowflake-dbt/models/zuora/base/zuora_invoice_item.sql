@@ -6,7 +6,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('zuora', 'invoiceitem') }}
+    FROM {{ source('zuora', 'invoice_item') }}
 
 ), renamed AS (
 
@@ -14,7 +14,7 @@ WITH source AS (
       -- keys
       id                     AS invoice_item_id,
       invoiceid              AS invoice_id,
-      accountingperiodid     AS accounting_period_id,
+      --accountingperiodid     AS accounting_period_id, 
       appliedtoinvoiceitemid AS applied_to_invoice_item_id,
       rateplanchargeid       AS rate_plan_charge_id,
       subscriptionid         AS subscription_id,

@@ -1,15 +1,12 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "runner_id",
-    "schema": "staging"
+    "unique_key": "runner_id"
     })
 }}
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'ci_runners') }}
   WHERE created_at IS NOT NULL
 
@@ -18,12 +15,12 @@ WITH source AS (
     AND updated_at >= (SELECT MAX(updated_at) FROM {{this}})
 
     {% endif %}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
   SELECT
     id::INTEGER                         AS runner_id,
-    token::VARCHAR                      AS runner_token,
     created_at::TIMESTAMP               AS created_at,
     updated_at::TIMESTAMP               AS updated_at,
     description::VARCHAR                AS description,
@@ -40,10 +37,8 @@ WITH source AS (
     access_level::INTEGER               AS access_level,
     ip_address::VARCHAR                 AS ip_address,
     maximum_timeout::INTEGER            AS maximum_timeout,
-    runner_type::INTEGER                AS runner_type,
-    token_encrypted::VARCHAR            AS token_encrypted 
+    runner_type::INTEGER                AS runner_type
   FROM source
-  WHERE rank_in_key = 1
 
 )
 

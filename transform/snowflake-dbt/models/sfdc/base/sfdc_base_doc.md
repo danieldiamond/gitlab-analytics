@@ -2,6 +2,8 @@
 
 The account source table contains info about the individual accounts (organizations and persons) involved with your business. This could be a customer, a competitor, a partner, and so on. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/salesforce/#account)
 
+Note: A number of fields prefixed with JB_ and ATAM_ are pulled in as part of [Territory Success Planning](https://about.gitlab.com/handbook/sales/field-operations/sales-operations/go-to-market/#territory-success-planning-tsp). These are cast as fields prefixed with TSP_ in downstream models to distinguish from equivalent "Actual" fields reflecting the current Go-To-Market approach.
+
 {% enddocs %}
 
 {% docs sfdc_bizible_source %}
@@ -38,6 +40,8 @@ Custom source table: This table contains executive business review data.
 
 The lead source table contains info about your leads, who are prospects or potential Opportunities. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/salesforce/#lead)
 
+Note: A number of fields prefixed with JB_ and ATAM_ are pulled in as part of [Territory Success Planning](https://about.gitlab.com/handbook/sales/field-operations/sales-operations/go-to-market/#territory-success-planning-tsp). These are cast as fields prefixed with TSP_ in downstream models to distinguish from equivalent "Actual" fields reflecting the current Go-To-Market approach.
+
 {% enddocs %}
 
 {% docs sfdc_opphistory_source %}
@@ -64,21 +68,21 @@ The opportunity source table contains info about your opportunities, which are s
 
 {% enddocs %}
 
-{% docs sfdc_poc_source %}
+{% docs sfdc_pov_source %}
 
-Custom source table: This table contains data on the proof of concept.
+This table contains data on the proof of value. Note the API name for this source remained proof_of_concept after renaming of the SFDC custom object.
+
+{% enddocs %}
+
+{% docs sfdc_professional_services_engagement_source %}
+
+This table contains data on the professional services engagement. Note the API name for this source remained statement_of_work after renaming of the SFDC custom object.
 
 {% enddocs %}
 
 {% docs sfdc_recordtype_source %}
 
 The record type source table represents a record type. [Link to Documentation](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_recordtype.htm)
-
-{% enddocs %}
-
-{% docs sfdc_sow_source %}
-
-Custom source table: This table contains data on the statement of work.
 
 {% enddocs %}
 
@@ -115,5 +119,11 @@ This is the source table for the archived Salesforce opportunities.
 {% docs sfdc_users_arch_source %}
 
 This is the source table for the archived Salesforce users.
+
+{% enddocs %}
+
+{% docs sfdc_oppfieldhistory_source %}
+
+This is the source table for Opportunity Field History.
 
 {% enddocs %}

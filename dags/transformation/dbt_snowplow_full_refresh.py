@@ -1,19 +1,26 @@
-import os
 import json
-from datetime import datetime, timedelta, date
+import os
+from datetime import date, datetime, timedelta
 
 from airflow import DAG
-
-from kube_secrets import *
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
+from airflow.operators.dummy_operator import DummyOperator
 from airflow_utils import (
-    slack_failed_task,
+    DBT_IMAGE,
+    dbt_install_deps_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
     partitions,
+    slack_failed_task,
 )
-from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-from airflow.operators.dummy_operator import DummyOperator
-
+from kube_secrets import (
+    SNOWFLAKE_ACCOUNT,
+    SNOWFLAKE_PASSWORD,
+    SNOWFLAKE_TRANSFORM_ROLE,
+    SNOWFLAKE_TRANSFORM_SCHEMA,
+    SNOWFLAKE_TRANSFORM_WAREHOUSE,
+    SNOWFLAKE_USER,
+)
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
@@ -36,25 +43,18 @@ dag = DAG(
 )
 
 
-# Set the git command for the containers
-git_cmd = f"git clone -b {GIT_BRANCH} --single-branch https://gitlab.com/gitlab-data/analytics.git --depth 1"
-
-
 def generate_dbt_command(vars_dict):
     json_dict = json.dumps(vars_dict)
 
     dbt_generate_command = f"""
-        {git_cmd} &&
-        cd analytics/transform/snowflake-dbt/ &&
-        export snowflake_load_database="RAW" &&
-        dbt deps --profiles-dir profile &&
+        {dbt_install_deps_cmd} &&
         export SNOWFLAKE_TRANSFORM_WAREHOUSE="TRANSFORMING_XL" &&
         dbt run --profiles-dir profile --target prod --models snowplow --full-refresh --vars '{json_dict}'
         """
 
     return KubernetesPodOperator(
         **gitlab_defaults,
-        image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+        image=DBT_IMAGE,
         task_id=f"dbt-snowplow-full-refresh-{vars_dict['year']}-{vars_dict['month']}",
         name=f"dbt-snowplow-full-refresh-{vars_dict['year']}-{vars_dict['month']}",
         secrets=[
@@ -66,7 +66,6 @@ def generate_dbt_command(vars_dict):
             SNOWFLAKE_TRANSFORM_SCHEMA,
         ],
         env_vars=pod_env_vars,
-        cmds=["/bin/bash", "-c"],
         arguments=[dbt_generate_command],
         dag=dag,
     )
@@ -75,16 +74,13 @@ def generate_dbt_command(vars_dict):
 dummy_operator = DummyOperator(task_id="start", dag=dag)
 
 dbt_snowplow_combined_cmd = f"""
-        {git_cmd} &&
-        cd analytics/transform/snowflake-dbt/ &&
-        export snowflake_load_database="RAW" &&
-        dbt deps --profiles-dir profile &&
+        {dbt_install_deps_cmd} &&
         dbt run --profiles-dir profile --target prod --models snowplow_combined
         """
 
 dbt_snowplow_combined = KubernetesPodOperator(
     **gitlab_defaults,
-    image="registry.gitlab.com/gitlab-data/data-image/dbt-image:latest",
+    image=DBT_IMAGE,
     task_id=f"dbt-snowplow-combined",
     name=f"dbt-snowplow-combined",
     trigger_rule="all_success",
@@ -97,7 +93,6 @@ dbt_snowplow_combined = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
-    cmds=["/bin/bash", "-c"],
     arguments=[dbt_snowplow_combined_cmd],
     dag=dag,
 )

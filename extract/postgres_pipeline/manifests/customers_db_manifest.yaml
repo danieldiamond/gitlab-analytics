@@ -22,10 +22,9 @@ tables:
       , state
       , city
       , company
+      , company_size
       , salesforce_account_id
       , billable
-      , access_token
-      , confirmation_token
       , confirmed_at
       , confirmation_sent_at
       FROM customers
@@ -52,6 +51,8 @@ tables:
       , amendment_type
       , trial
       , last_extra_ci_minutes_sync_at
+      , zuora_account_id
+      , increased_billing_rate_notified_at
       FROM orders
     export_db: EXPORT_DB
     export_schema: 'customers'

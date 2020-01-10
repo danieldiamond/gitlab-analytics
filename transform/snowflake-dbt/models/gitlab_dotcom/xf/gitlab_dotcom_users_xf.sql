@@ -16,6 +16,7 @@ WITH customers AS (
 
   SELECT *
   FROM {{ ref('gitlab_dotcom_members') }}
+  WHERE is_currently_valid = TRUE
 
 )
 
@@ -42,7 +43,10 @@ WITH customers AS (
 
 , users AS (
 
-  SELECT *
+  SELECT 
+    {{ dbt_utils.star(from=ref('gitlab_dotcom_users'), except=["created_at", "updated_at"]) }},
+    created_at AS user_created_at,
+    updated_at AS user_updated_at
   FROM {{ ref('gitlab_dotcom_users') }}
 
 )
@@ -56,7 +60,7 @@ WITH customers AS (
     '0. personal_namespace' AS inheritance_source
   FROM namespaces
   WHERE namespace_type = 'Individual'
-    AND namespace_plan_is_paid
+    AND plan_is_paid
 )
 
 , group_members AS (
@@ -65,15 +69,15 @@ WITH customers AS (
   SELECT
     members.user_id,
     groups.group_id,
-    groups.plan_id,
+    groups.group_plan_id,
     groups.visibility_level,
-    groups.plan_id        AS inherited_subscription_plan_id,
-    '1. group'            AS inheritance_source
+    groups.group_plan_id    AS inherited_subscription_plan_id,
+    '1. group'              AS inheritance_source
 
   FROM members
   INNER JOIN groups
     ON members.source_id = groups.group_id
-      AND groups.group_plan_is_paid
+    AND groups.group_plan_id = TRUE
   WHERE member_type = 'GroupMember'
     AND (members.expires_at >= CURRENT_DATE OR members.expires_at IS NULL)
 )
@@ -85,19 +89,19 @@ WITH customers AS (
     SELECT
       members.user_id,
       projects.project_id,
-      projects.visibility_level AS project_visibility_level,
-      groups.plan_id,
-      groups.visibility_level   AS namespace_visibility_level,
+      projects.visibility_level      AS project_visibility_level,
+      groups.group_plan_id,
+      groups.visibility_level        AS namespace_visibility_level,
       groups.group_id,
-      groups.plan_id            AS inherited_subscription_plan_id,
-      '2. project'              AS inheritance_source
+      groups.group_plan_id           AS inherited_subscription_plan_id,
+      '2. project'                   AS inheritance_source
 
     FROM members
     LEFT JOIN projects
       ON members.source_id = projects.project_id
     INNER JOIN groups
       ON projects.namespace_id = groups.group_id
-        AND groups.group_plan_is_paid
+      AND groups.group_plan_is_paid
     WHERE members.member_type = 'ProjectMember'
       AND (members.expires_at >= CURRENT_DATE OR members.expires_at IS NULL)
 

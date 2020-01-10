@@ -1,21 +1,21 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "note_id"
+    "unique_key": "note_id",
+    "schema": "sensitive"
     })
 }}
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('gitlab_dotcom', 'notes') }}
 
   {% if is_incremental() %}
 
-  WHERE updated_at >= (SELECT MAX(note_updated_at) FROM {{this}})
+  WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
 
   {% endif %}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -24,9 +24,9 @@ WITH source AS (
       note::VARCHAR                                         AS note,
       IFF(noteable_type = '', NULL, noteable_type)::VARCHAR AS noteable_type,
       author_id::INTEGER                                    AS note_author_id,
-      created_at::TIMESTAMP                                 AS note_created_at,
-      updated_at::TIMESTAMP                                 AS note_updated_at,
-      project_id::INTEGER                                   AS note_project_id,
+      created_at::TIMESTAMP                                 AS created_at,
+      updated_at::TIMESTAMP                                 AS updated_at,
+      project_id::INTEGER                                   AS project_id,
       attachment::VARCHAR                                   AS attachment,
       line_code::VARCHAR                                    AS line_code,
       commit_id::VARCHAR                                    AS commit_id,
@@ -43,7 +43,6 @@ WITH source AS (
       cached_markdown_version::INTEGER                      AS cached_markdown_version,
       resolved_by_push::BOOLEAN                             AS resolved_by_push
     FROM source
-    WHERE rank_in_key = 1
 
 )
 
@@ -52,4 +51,4 @@ FROM renamed
 WHERE note_id NOT IN (
   203215238 --https://gitlab.com/gitlab-data/analytics/merge_requests/1423
 )
-ORDER BY note_created_at
+ORDER BY created_at

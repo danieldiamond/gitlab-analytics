@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH namespace_groups AS (
 
   SELECT 
@@ -11,8 +6,8 @@ WITH namespace_groups AS (
     namespace_path                                      AS group_path,
     owner_id,
     has_avatar,
-    namespace_created_at                                AS group_created_at,
-    namespace_updated_at                                AS group_updated_at,
+    created_at,
+    updated_at,
     is_membership_locked,
     has_request_access_enabled,
     has_share_with_group_locked,
