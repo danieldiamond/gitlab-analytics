@@ -379,7 +379,7 @@ models:
         tests:
           - not_null
           - unique
-      - name: namespace_id
+      - name: gitlab_subscription_id
         description: The namespace associated with the gitlab_subscription.
         tests:
           - not_null

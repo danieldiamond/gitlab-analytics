@@ -22,7 +22,7 @@ WITH source AS (
       trial::BOOLEAN                                   AS is_trial,
       change_type::INTEGER                             AS change_type,
       gitlab_subscription_id::INTEGER                  AS gitlab_subscription_id,
-      created_at::TIMESTAMP                            AS gitlab_subscription_history_created_at
+      created_at::TIMESTAMP                            AS created
 
     FROM source
 
