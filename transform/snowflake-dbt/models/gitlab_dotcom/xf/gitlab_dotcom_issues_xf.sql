@@ -130,7 +130,15 @@ joined AS (
     has_discussion_locked,
     agg_labels.labels,
     ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
+
     namespace_lineage.namespace_is_internal      AS is_internal_issue,
+    namespace_lineage.namespace_plan_id,
+    namespace_lineage.namespace_plan_title,
+    namespace_lineage.namespace_plan_is_paid,
+    namespace_lineage.ultimate_parent_id,
+    namespace_lineage.ultimate_parent_plan_id,
+    namespace_lineage.ultimate_parent_plan_title,
+    namespace_lineage.ultimate_parent_plan_is_paid,
 
     CASE
       WHEN issue_created_at BETWEEN DATEADD('days', -30, gitlab_subscription_trial_ends_on) AND gitlab_subscription_trial_ends_on
