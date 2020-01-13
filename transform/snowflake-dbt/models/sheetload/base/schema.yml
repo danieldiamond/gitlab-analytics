@@ -108,6 +108,21 @@ models:
       tests:
       - not_null
       - unique
+- name: sheetload_rep_productivity
+  description: This is a manual aggregation of each sales rep, their role, and percent ramped for each month.
+  columns:
+    - name: sales_rep
+      tests:
+      - not_null 
+    - name: month
+      tests:
+      - not_null 
+    - name: rep_role
+      tests:
+      - not_null 
+    - name: percent_ramped
+      tests:
+      - not_null                     
 - name: sheetload_yc_companies
   description: This is a list of YC Companies and their cohort provided by and maintained by marketing.
   columns:
