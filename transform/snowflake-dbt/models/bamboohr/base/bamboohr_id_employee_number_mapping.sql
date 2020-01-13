@@ -12,7 +12,8 @@ WITH source AS (
 
 ), intermediate AS (
 
-    SELECT nullif(d.value['employeeNumber'],'')::BIGINT                   AS employee_number,
+    SELECT 
+          nullif(d.value['employeeNumber'],'')::BIGINT                   AS employee_number,
           d.value['id']::BIGINT                                           AS employee_id,
           d.value['firstName']::VARCHAR                                   AS first_name,
           d.value['lastName']::VARCHAR                                    AS last_name,
