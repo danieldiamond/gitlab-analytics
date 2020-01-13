@@ -64,7 +64,7 @@ models:
     description: This model is the canonical source mapping bamboo employee numbers with employee IDs. It includes all employees for all time. The model also captures demographic information.
     columns:
       - name: greenhouse_candidate_id
-        description: Captures the id associated to the employee in Greenhouse (our recruiting platform). This will only be applicable from 2019-12-13 going forward, and will help identify which candidates were hired.
+        description: Captures the id associated to the employee in Greenhouse (our recruiting platform). This will only be applicable in Greenhouse starting 2019-12-13, and will help identify which candidates were hired.
   - name: bamboohr_job_info
     description: This model shows the details (manager, department, and division) that an employee is in at a given point in time. This includes historical information.
     columns:
