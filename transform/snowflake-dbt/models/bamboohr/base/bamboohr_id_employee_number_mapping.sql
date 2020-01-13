@@ -13,12 +13,12 @@ WITH source AS (
 ), intermediate AS (
 
     SELECT 
-          nullif(d.value['employeeNumber'],'')::BIGINT                   AS employee_number,
+          NULLIF(d.value['employeeNumber'],'')::BIGINT                    AS employee_number,
           d.value['id']::BIGINT                                           AS employee_id,
           d.value['firstName']::VARCHAR                                   AS first_name,
           d.value['lastName']::VARCHAR                                    AS last_name,
-          nullif(d.value['hireDate']::varchar,'0000-00-00')::DATE         AS hire_date,
-          nullif(d.value['terminationDate']::varchar,'0000-00-00')::DATE  AS termination_date,
+          NULLIF(d.value['hireDate']::varchar,'0000-00-00')::DATE         AS hire_date,
+          NULLIF(d.value['terminationDate']::varchar,'0000-00-00')::DATE  AS termination_date,
           d.value['customNationality']::VARCHAR                           AS nationality,
           d.value['customRegion']::VARCHAR                                AS region,
           d.value['ethnicity']::VARCHAR                                   AS ethnicity,
