@@ -20,7 +20,8 @@ WITH source AS (
           nullif(d.value['terminationDate']::varchar,'0000-00-00')::date  AS termination_date,
           d.value['customNationality']::varchar                           AS nationality,
           d.value['customRegion']::varchar                                AS region,
-          d.value['ethnicity']::varchar                                   AS ethnicity
+          d.value['ethnicity']::varchar                                   AS ethnicity,
+          d.value['customCandidateID']::varchar                           AS greenhouse_candidate_id
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), outer => true) d
 
