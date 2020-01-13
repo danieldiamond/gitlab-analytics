@@ -11,16 +11,16 @@ tables:
       SELECT id
       , created_at
       , updated_at
+      , sign_in_count
       , current_sign_in_at
       , last_sign_in_at
-      , current_sign_in_ip
-      , last_sign_in_ip
       , provider
       , uid
       , zuora_account_id
       , country
       , state
       , city
+      , vat_code
       , company
       , company_size
       , salesforce_account_id
