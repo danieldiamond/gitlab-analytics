@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "sensitive"
-    })
-}}
-
 WITH bamboohr_employment_status AS (
   
     SELECT *
@@ -20,7 +15,7 @@ WITH bamboohr_employment_status AS (
     LEAD(employment_status) OVER (PARTITION BY employee_id ORDER BY effective_date)     AS next_employment_status,
     LAG(employment_status) OVER (PARTITION BY employee_id ORDER BY effective_date)      AS previous_employment_status
     FROM bamboohr_employment_status
-    
+
 ), final AS (  
 
     SELECT
