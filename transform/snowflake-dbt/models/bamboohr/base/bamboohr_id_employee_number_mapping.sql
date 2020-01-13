@@ -18,7 +18,7 @@ WITH source AS (
           d.value['firstName']::VARCHAR                                   AS first_name,
           d.value['lastName']::VARCHAR                                    AS last_name,
           NULLIF(d.value['hireDate']::VARCHAR,'0000-00-00')::DATE         AS hire_date,
-          NULLIF(d.value['terminationDate']::varchar,'0000-00-00')::DATE  AS termination_date,
+          NULLIF(d.value['terminationDate']::VARCHAR,'0000-00-00')::DATE  AS termination_date,
           d.value['customNationality']::VARCHAR                           AS nationality,
           d.value['customRegion']::VARCHAR                                AS region,
           d.value['ethnicity']::VARCHAR                                   AS ethnicity,
