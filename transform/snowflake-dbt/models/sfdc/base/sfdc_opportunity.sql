@@ -26,7 +26,7 @@ WITH source AS (
         DATEDIFF(
             days,
             IFF(
-                greatest(
+                GREATEST(
                     IFNULL(x0_pending_acceptance_date__c, '0000-01-01'),
                     IFNULL(x1_discovery_date__c, '0000-01-01'),
                     IFNULL(x2_scoping_date__c, '0000-01-01'),
@@ -38,7 +38,7 @@ WITH source AS (
                     --x8_unqualified_date__c
                 ) = '0000-01-01',
                 NULL,
-                greatest(
+                GREATEST(
                     IFNULL(x0_pending_acceptance_date__c, '0000-01-01'),
                     IFNULL(x1_discovery_date__c, '0000-01-01'),
                     IFNULL(x2_scoping_date__c, '0000-01-01'),
