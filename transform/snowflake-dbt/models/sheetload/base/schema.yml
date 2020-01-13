@@ -114,7 +114,7 @@ models:
     - name: sales_rep
       tests:
       - not_null 
-    - name: month
+    - name: calendar_month
       tests:
       - not_null 
     - name: rep_role
