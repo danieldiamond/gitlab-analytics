@@ -226,6 +226,14 @@ models:
         - name: retention
           description: Calculated as `active_in_period_distinct_count` / `base_cohort_count`.
 
+  - name: gitlab_dotcom_usage_data_events
+    description: '{{ doc("gitlab_dotcom_usage_data_events") }}'
+    columns:
+      - name: namespace_id
+        tests:
+          - not_null
+      - name: event_name
+        
   - name: gitlab_dotcom_users_xf
     description: '{{ doc("gitlab_dotcom_users_xf") }}'
     columns:
