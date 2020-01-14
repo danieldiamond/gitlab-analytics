@@ -8,6 +8,10 @@ This template is for the monthly KPI Status report.
 - [ ] What is the handbook commit this issue starts from: 
 - [ ] What is the handbook commit this issue ends on: 
 
+## High level summary  
+- [ ] What is the total number of KPIs at this issue start date: 
+- [ ] What is the total number of KPIs completed by the end of this issue: 
+
 ### Concerns/Comments 
 <!---
 List out any concerns or comments if this issue's scope changes while this issue is live. 
