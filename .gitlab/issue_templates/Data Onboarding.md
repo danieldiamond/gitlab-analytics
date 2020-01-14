@@ -65,7 +65,12 @@ Please watch one minute of [this clip](https://www.youtube.com/watch?v=LqzDY76Q8
 
 **Getting your computer set up locally**
 * Make sure that you have [created your SSH keys](https://docs.gitlab.com/ee/gitlab-basics/create-your-ssh-keys.html) prior to running this. You can check this by typing `ssh -T git@gitlab.com` into your terminal which should return "Welcome to GitLab, " + your_username
+<details>
+
+<summary>For Data Analysts</summary>
+
 * THE NEXT STEPS SHOULD ONLY BE RUN ON YOUR GITLAB-ISSUED LAPTOP. If you run this on your personal computer, we take no responsibility for the side effects. 
+
 * [ ] Open your computer's built-in terminal app. Run the following:
 ```
 curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/onboarding_script.sh > ~/onboarding_script.sh
@@ -90,6 +95,39 @@ rm ~/onboarding_script.sh
       * `Editor: Insert Spaces` is selected
       * `Editor: Tab Size` is set to 4 spaces per tab
 
+</details>
+
+<details>
+<summary>For Data Engineers</summary>
+
+Take a look at https://gitlab.com/gitlab-data/analytics/raw/master/admin/onboarding_script.sh and feel free to use what is in there that makes sense.
+
+Some important parts of the script that you will definitely want to do in some way:
+* [ ] Install git
+    * [ ] Setup a global gitignore that ignores IDE generated files
+    * [ ] Clone the analytics project at git@gitlab.com:gitlab-data/analytics.git
+    * [ ] Make sure to globally configure git with at least your name and email.
+* [ ] Install docker, docker-compose, and docker-machine
+* [ ] Install Python3
+    * [ ] Install pip3
+    * [ ] Make sure to install the setuptools library as dbt will not install without it
+    * [ ] Here is [a list of all of the Python tools that may be used for formatting, linting, or testing](https://gitlab.com/gitlab-data/analytics/blob/master/.gitlab-ci.yml#L100).  Consider installing these locally with pip3.
+* [ ] Install dbt, the open source tool we use for data transformations.
+    * [ ] Create a dbt profile file in `~/.dbt/`
+    * [ ] Set the DBT_PROFILE_PATH environment variable to point to the profile file
+* [ ] Install your Python-compatible IDE of choice.  We recommend VSCode for its community support, [GitLab workflow](https://marketplace.visualstudio.com/items?itemName=fatihacet.gitlab-workflow) extension, and overall flexibility.
+    * [ ] Ensure your IDE converts tabs to 4 spaces.  To do that in VSCode, make sure in settings:
+      * `Editor: Detect Indentation` is deselected
+      * `Editor: Insert Spaces` is selected
+      * `Editor: Tab Size` is set to 4 spaces per tab
+    * [ ] Ensure your IDE uses the Python3 installation
+        * To do this in VSCode: press `Ctrl+Shift+P` and then type in and select `Python: Select Interpreter` and then select the Python 3 installation
+    * [ ] Consider installing extensions/add-ons in your IDE to support the Python libraries used for linting/testing as mentioned in the Python section above.  For example, you can setup VSCode to use black as its formatter as described [here](https://code.visualstudio.com/docs/python/editing#_formatting).
+* [ ] Install Data Grip (from JetBrains) for interfacing with databases
+    * [ ] Follow [this process](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains) for requesting a license for Data Grip.  Until you have a license, you can easily use Data Grip on a trial basis for 30 days.
+
+
+</details>
 
 Our data stack looks roughly like this:
 <img src = "https://cdn-images-1.medium.com/max/2000/1*BogoeTTK1OXFU1hPfUyCFw.png">
@@ -97,7 +135,7 @@ Our data stack looks roughly like this:
 As you read in the handbook, we currently use Stitch for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool. The bulk of your projects and tasks will be in dbt , so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources.
 
 **Bonus**
-To see the inspiration for the onboarding script you just ran, take a look at the dbt Discourse post [here](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243) on how they set up their computers for working on dbt projects. You might want to do some of the additional configurations mentioned in that post.
+To see the inspiration for the onboarding script above, take a look at the dbt Discourse post [here](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243) on how they set up their computers for working on dbt projects. You might want to do some of the additional configurations mentioned in that post.
 
 ## Connecting to Snowflake
 - [ ] Login with the credentials that your manager created following the instructions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
