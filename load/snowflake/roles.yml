@@ -64,6 +64,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -76,7 +77,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -91,7 +91,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -158,6 +157,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - snowplow
             - zuora
         privileges:
@@ -185,7 +185,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -210,6 +209,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -222,7 +222,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -237,7 +236,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -256,6 +254,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -270,7 +269,6 @@ roles:
                 read:
                     - raw.bamboohr
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -288,7 +286,6 @@ roles:
                 read:
                     - raw.bamboohr.*
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -310,7 +307,30 @@ roles:
             - analyst_sales
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+                    - snowflake.*
+            tables:
+                read:
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
+                    - snowflake.*.*
 
     - analyst_people:
         warehouses:
@@ -320,6 +340,7 @@ roles:
             - boneyard
             - gitlab_data_yaml
             - greenhouse
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -332,7 +353,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -347,7 +367,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -431,6 +450,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - snowplow
             - zuora
         privileges:
@@ -444,7 +464,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -459,7 +478,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -594,7 +612,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -783,7 +800,21 @@ roles:
                     - raw.greenhouse.*
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
-    
+
+    - netsuite:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.netsuite_fivetran
+            tables:
+                read:
+                    - raw.netsuite_fivetran.*
+
     - snowplow:
         privileges:
             databases:
