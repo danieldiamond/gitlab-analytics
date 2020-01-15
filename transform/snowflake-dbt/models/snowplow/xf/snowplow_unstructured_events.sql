@@ -11,13 +11,13 @@ WITH events AS (
 )
 
 , renamed AS (
-  
+
     SELECT
-    
+
       event_id,
       event_name,
       TRY_PARSE_JSON(unstruct_event) AS unstruct_event,
-      TRY_PARSE_JSON(unstruct_event):"data":"data" 
+      TRY_PARSE_JSON(unstruct_event)['data']['data']
                                      AS unstruct_event_data,
       v_tracker,
       dvce_created_tstamp,
@@ -50,7 +50,32 @@ WITH events AS (
       br_renderengine                AS browser_engine,
       dvce_type                      AS device_type,
       dvce_ismobile                  AS device_is_mobile
-      
+
+      --change_form
+      cf_formid,
+      cf_elementid,
+      cf_nodename,
+      cf_type,
+      cf_elementclasses,
+      cf_value,
+      --submit_form
+      sf_formid,
+      sf_formclasses,
+      sf_elements,
+      --focus_form
+      ff_formid,
+      ff_elementid,
+      ff_nodename,
+      ff_elementtype,
+      ff_elementclasses,
+      ff_value,
+      --link_click
+      lc_elementcontent,
+      lc_elementid,
+      lc_elementclasses,
+      lc_elementtarget,
+      lc_targeturl
+
     FROM events
     WHERE event = 'unstruct'
 
