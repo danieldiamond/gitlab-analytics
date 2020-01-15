@@ -746,7 +746,6 @@ tables:
       , state_id
       , duplicated_to_id
       , promoted_to_epic_id
-
       FROM issues
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
