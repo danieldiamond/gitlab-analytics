@@ -174,6 +174,19 @@ models:
         - name: budget_category
           tests:
             - not_null
+    - name: netsuite_classes
+      description: "[Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/classes.html)"
+      columns:
+        - name: class_id
+          tests:
+            - not_null
+            - unique
+        - name: class_name
+          tests:
+            - not_null
+        - name: class_full_name
+          tests:
+            - not_null
     - name: netsuite_consolidated_exchange_rates
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/consolidatedexchangerate.html)"
       columns:
