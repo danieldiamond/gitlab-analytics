@@ -8,7 +8,7 @@ Describe the solution. Include links to any related MRs and/or issues.
 
 ## Stakeholder Checklist
 <details>
-<summary>Click to toggle Stakeholder Checklist</summary>
+<summary>*Click to toggle Stakeholder Checklist*</summary>
 If you are the person who will be using this data and/or the dashboard it depends on, please fill out this section.
 
 - [ ] Does the dbt model change provide the requested data? 
@@ -16,8 +16,6 @@ If you are the person who will be using this data and/or the dashboard it depend
 </details>
 
 ## Submitter Checklist
-
-Please go through every line
 
 - [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).
 
@@ -35,16 +33,15 @@ Example: You might be looking at the count of opportunities before and after, if
 </code></pre>
 </details>
 
-#### Structure
-
+#### Style & Structure
+<details>
+<summary>*Click to toggle Style & Structure*</summary>
+- [ ] Field names should all be lowercased.
+- [ ] Function names should all be capitalized.
 - [ ] Ensure source tables/views are only referenced within [base models](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#base-models).
 - [ ] All references to existing tables/views/sources (i.e. `{{ ref('...') }}` statements) should be placed in CTEs at the top of the file.
 - [ ] If you are using [custom schemas](https://docs.getdbt.com/docs/using-custom-schemas) or modifying [materializations](https://docs.getdbt.com/docs/materializations), ensure these attributes are specified in the model.
-
-#### Style
-
-- [ ] Field names should all be lowercased.
-- [ ] Function names should all be capitalized.
+</details>
 
 #### Macros
 
