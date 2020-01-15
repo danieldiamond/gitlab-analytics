@@ -1,11 +1,16 @@
-WITH sfdc_lead_pii AS (
+WITH source AS (
+
+    SELECT *
+    FROM {{ source('salesforce', 'lead') }}
+
+), sfdc_lead_pii AS (
 
     SELECT
-		lead_id,
-		lead_email,
-		lead_name, 
-		person_id
-    FROM {{ ref('sfdc_lead') }}
+		id 				AS lead_id,
+		sha1(email) 	AS person_id,
+		email 			AS lead_email,
+		name 			AS lead_name
+    FROM source
 
 )
 

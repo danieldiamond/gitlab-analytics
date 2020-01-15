@@ -1,8 +1,3 @@
-{{config({
-	"materialized": "ephemeral"
-  })
-}}
-
 WITH source AS (
 
     SELECT *
@@ -16,7 +11,6 @@ WITH source AS (
         -- id
         id                          AS contact_id,
         name                        AS contact_name,
-        email                       AS contact_email,
         sha1(email)                 AS person_id,
 
         -- keys
