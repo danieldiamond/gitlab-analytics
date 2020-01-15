@@ -30,6 +30,7 @@ SELECT
   tl.transaction_id,
   tl.transaction_line_id,
   tl.account_id,
+  tl.class_id,
   tl.department_id,
   tl.subsidiary_id,
   tl.receipt_url,
