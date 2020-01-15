@@ -740,6 +740,13 @@ tables:
       , last_edited_by_id
       , discussion_locked
       , closed_at
+      , closed_by_id
+      , relative_position
+      , service_desk_reply_to
+      , state_id
+      , duplicated_to_id
+      , promoted_to_epic_id
+
       FROM issues
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
