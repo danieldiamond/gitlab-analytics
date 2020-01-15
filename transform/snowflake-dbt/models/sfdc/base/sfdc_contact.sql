@@ -64,6 +64,7 @@ WITH source AS (
                                     AS assigned_datetime,
         mql_timestamp__c            AS marketo_qualified_lead_timestamp,
         mql_datetime__c             AS marketo_qualified_lead_datetime,
+        mql_date__c                 AS marketo_qualified_lead_date,
         inquiry_datetime__c         AS inquiry_datetime,
         accepted_datetime__c        AS accepted_datetime,
         qualifying_datetime__c      AS qualifying_datetime,
