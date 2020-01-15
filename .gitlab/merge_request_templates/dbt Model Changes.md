@@ -36,6 +36,7 @@ Example: You might be looking at the count of opportunities before and after, if
 #### Style & Structure
 <details>
 <summary><i>Click to toggle Style & Structure</i></summary>
+
 - [ ] Field names should all be lowercased.
 - [ ] Function names should all be capitalized.
 - [ ] Ensure source tables/views are only referenced within [base models](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#base-models).
