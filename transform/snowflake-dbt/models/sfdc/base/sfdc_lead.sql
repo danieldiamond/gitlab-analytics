@@ -1,5 +1,5 @@
 {{config({
-    "schema": "staging"
+	"materialized": "ephemeral"
   })
 }}
 
