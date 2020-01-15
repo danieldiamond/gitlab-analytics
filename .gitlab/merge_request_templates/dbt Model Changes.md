@@ -17,22 +17,6 @@ If you are the person who will be using this data and/or the dashboard it depend
 
 ## Submitter Checklist
 
-- [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).
-
-#### What are you using to audit your results are accurate?
-
-If you have an existing report/dashboard/dataset as reference, please provide your query used to validate the results of your model changes. If this is the first iteration of a model or validation is otherwise out of scope, please provide additional context.
-
-<details>
-<summary> Paste query and results here </summary>
-
-<pre><code>
-
-Example: You might be looking at the count of opportunities before and after, if you're editing the opportunity model.
-
-</code></pre>
-</details>
-
 #### Style & Structure
 <details>
 <summary><i>Click to toggle Style & Structure</i></summary>
@@ -60,6 +44,20 @@ Example: You might be looking at the count of opportunities before and after, if
 - [ ] Does this MR change the **schema** or **model name** of any existing models?
   - [ ] Create an issue to change all existing periscope reporting to reference the new schema/name.
   - [ ] After merging, ensure the old model is dropped from snowflake. This can be done by creating an issue specifying the tables/models to be dropped and assiging to a snowflake admin. 
+
+#### What are you using to audit your results are accurate?
+
+If you have an existing report/dashboard/dataset as reference, please provide your query used to validate the results of your model changes. If this is the first iteration of a model or validation is otherwise out of scope, please provide additional context.
+
+<details>
+<summary> Paste query and results here </summary>
+
+<pre><code>
+
+Example: You might be looking at the count of opportunities before and after, if you're editing the opportunity model.
+
+</code></pre>
+</details>
 
 #### Testing
 
@@ -145,6 +143,7 @@ Paste the results of dbt test here, including the command.
 </details>
 
 ## All MRs Checklist
+- [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).
 - [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue
 - [ ] Pipelines pass
 - [ ] Branch set to delete
