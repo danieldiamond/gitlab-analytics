@@ -28,7 +28,7 @@ WITH bamboohr_employment_status AS (
       valid_from_date                                                                       AS valid_from_date,
       IFF(employment_status='Terminated'
             ,valid_to_date
-            ,COALESCE(valid_to_date, date_trunc('week', dateadd(week, 3, CURRENT_DATE)))    AS valid_to_date
+            ,COALESCE(valid_to_date, date_trunc('week', dateadd(week, 3, CURRENT_DATE))))    AS valid_to_date
      FROM employment_log
 )
 
