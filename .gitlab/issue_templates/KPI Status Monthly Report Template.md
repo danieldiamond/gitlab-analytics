@@ -4,276 +4,32 @@ This template is for the monthly KPI Status report.
 
 --->
 
-## Background 
-- [ ] What is the handbook commit this issue starts from: 
-- [ ] What is the handbook commit this issue ends on: 
+Last update: <!--- Link to issue --->
+Issue effective date: <!--- Date --->
 
-## High level summary  
-- [ ] What is the total number of KPIs at this issue start date: 
-- [ ] What is the total number of KPIs completed by the end of this issue: 
+## New KPIs since last month
+* List of New KPIs
+* Added to the KPI index page
+* Since last month
+* There may not be any, which is okay
+* Format would be [KPI name hyperlinked to definition in the handbook](linked definition) (Department Name)
+* Example:
+* [IACV](https://about.gitlab.com/handbook/sales/#incremental-annual-contract-value-iacv) (GitLab, Sales)
 
-### Concerns/Comments 
+## KPIs Completed
+* List of KPIs that are productionized with their [legend](https://about.gitlab.com/handbook/business-ops/data-team/kpi-index/#legend) indicator for status in the handbook
+* Format would be [KPI name hyperlinked to definition in the handbook](linked definition) legend (Department Name)
+* Example: 
+* [IACV](https://about.gitlab.com/handbook/sales/#incremental-annual-contract-value-iacv) 🔗 (GitLab, Sales)
+
+## KPI Expected to be completed before next update
+Estimated date of next update:  <!--- Date --->
+* A is currently blocked because of something, but we expect the blocker to be handled this month. 
+* B is blocked by soemthign else but the plan is to have that unblocked on a certain date. 
+* Example: 
+* We have all the data to calculate [Wider community MRs per release](https://about.gitlab.com/handbook/marketing/community-relations/code-contributor-program/#wider-community-contributions-per-milestone) but have been slow on communication. We've set up 3 syncs with our business stakeholders over the next two weeks and expect to have this KPI productionized before the next update. 
+
+## Concerns/Comments 
 <!---
 List out any concerns or comments if this issue's scope changes while this issue is live. 
 --->
-
-## GitLab KPIs 
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-
-## Sales KPIs 
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-## Marketing KPIs 
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-## People Group KPIs 
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-### Recruiting Department KPIs 
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-## Finance KPIs 
-
-### Corporate Financial KPIs 
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-
-### Finance Team KPIs
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-
-## Product KPIs
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-## Product Strategy KPIs
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-## Engineering KPIs
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-### Development Department KPIs
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-### Infrastructure Department KPIs
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-### Quality Department KPIs
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-### Security Department KPIs
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-### Support Department KPIs
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
-
-### UX Department KPIs
-The table below summaries the statuses of the KPIs in this section. 
-
-| Status of KPI | Total Number of issues in status | Total % of issues in status | 
-|----|----|----|
-| Completed | | | 
-| Blocked | | | 
-| Waiting on Business Function | | | 
-| In-Progress | | | 
-
-The table below provides additional details to KPIs with the statuses: `In-Progress`, `Waiting on Business Function`, and `Blocked`. 
-
-| KPI Name | Status | Comment | 
-|----|----|----|
-| TBD | | | 
