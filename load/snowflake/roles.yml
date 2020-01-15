@@ -1017,6 +1017,13 @@ roles:
         warehouses:
             - analyst_xs
 
+    -mwalker:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting
+
     - periscope:
         warehouses:
             - reporting
@@ -1184,8 +1191,8 @@ users:
     - ekastelein:
         can_login: yes
         member_of:
-            - ekastelein
             - analyst_growth
+            - ekastelein
 
     - eurie:
         can_login: yes 
@@ -1217,14 +1224,14 @@ users:
     - iweeks:
         can_login: yes
         member_of:
-            - iweeks
             - analyst_finance
+            - iweeks
 
     - jmahdi:
         can_login: yes
         member_of:
-            - jmahdi
             - analyst_sales
+            - jmahdi
 
     - jpeguero:
         can_login: yes
@@ -1241,10 +1248,10 @@ users:
     - jstark:
         can_login: yes
         member_of:
+            - accountadmin
             - analyst_core
             - data_manager
             - jstark
-            - accountadmin
             - securityadmin
             - sysadmin
 
@@ -1264,8 +1271,8 @@ users:
     - kaguilar:
         can_login: yes
         member_of:
-            - kaguilar
             - analyst_engineering
+            - kaguilar
 
     - ktam:
         can_login: yes
@@ -1291,8 +1298,8 @@ users:
     - mpeychet:
         can_login: yes
         member_of:
-            - mpeychet
             - analyst_growth
+            - mpeychet
 
     - mrodriguez:
         can_login: yes
@@ -1303,8 +1310,14 @@ users:
     - mvilain:
         can_login: yes
         member_of:
-            - mvilain
             - analyst_sales
+            - mvilain
+
+    - mwalker:
+        can_login: yes
+        member_of:
+            - engineer
+            - mwalker
 
     - lvandensteen:
         can_login: yes
