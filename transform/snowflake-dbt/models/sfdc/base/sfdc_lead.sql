@@ -9,7 +9,7 @@ WITH source AS (
         --id
         id                                                      AS lead_id,
         name                                                    AS lead_name,
-        sha1(email)                                             AS person_id,
+        sha1(email)                                             AS email_hash,
 		
         --keys
         masterrecordid                                          AS master_record_id,
