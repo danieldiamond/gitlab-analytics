@@ -1,8 +1,3 @@
-{{config({
-    "schema": "sensitive"
-  })
-}}
-
 WITH sfdc_contact_pii AS (
 
     SELECT

@@ -1,8 +1,3 @@
-{{config({
-    "schema": "sensitive"
-  })
-}}
-
 WITH sfdc_lead_pii AS (
 
     SELECT
