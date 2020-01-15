@@ -1,23 +1,18 @@
 ## Issue
-<!---
-Link the Issue this MR closes
---->
+<!--- Link the Issue this MR closes --->
 Closes #
 
 ## Solution
 
-Describe the solution.
+Describe the solution. Include links to any related MRs and/or issues.
 
-### Related Links
-
-Please include links to any related MRs and/or issues.
-
-## Stakeholder Checklist
-
+<details>
+<summary>## Stakeholder Checklist</summary>
 If you are the person who will be using this data and/or the dashboard it depends on, please fill out this section.
 
 - [ ] Does the dbt model change provide the requested data? 
 - [ ] Does the dbt model change provide accurate data?
+</details>
 
 ## Submitter Checklist
 
