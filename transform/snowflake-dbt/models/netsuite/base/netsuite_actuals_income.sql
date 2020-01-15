@@ -18,6 +18,11 @@ WITH transactions AS (
      SELECT *
      FROM {{ref('netsuite_accounts_xf')}}
 
+), classes AS (
+
+     SELECT *
+     FROM {{ref('netsuite_classes')}}
+
 ), subsidiaries AS (
 
      SELECT *
@@ -65,6 +70,8 @@ WITH transactions AS (
        a.account_number,
        a.unique_account_number,
        a.parent_account_number,
+       cl.class_id,
+       cl.class_name,
        d.department_id,
        d.department_name,
        d.parent_department_name,
@@ -78,6 +85,8 @@ WITH transactions AS (
       ON tl.transaction_id = t.transaction_id
     LEFT JOIN accounts a
       ON a.account_id = tl.account_id
+    LEFT JOIN classes cl
+      ON tl.class_id = cl.class_id
     LEFT JOIN departments d
       ON d.department_id = tl.department_id
     LEFT JOIN accounting_periods ap
@@ -90,7 +99,7 @@ WITH transactions AS (
     WHERE a.account_number between '4000' and '4999'
       AND ap.fiscal_calendar_id = 2
       AND e.to_subsidiary_id = 1
-    {{ dbt_utils.group_by(n=21) }}
+    {{ dbt_utils.group_by(n=23) }}
 
 ), income_statement_grouping AS (
 
@@ -116,6 +125,8 @@ WITH transactions AS (
       i.receipt_url,
       i.status,
       i.transaction_type,
+      i.class_id,
+      i.class_name,
       i.department_id,
       i.department_name,
       i.parent_department_name,
