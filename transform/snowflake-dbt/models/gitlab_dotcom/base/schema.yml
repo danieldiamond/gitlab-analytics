@@ -371,6 +371,19 @@ models:
           - not_null
           - unique
 
+  - name: gitlab_dotcom_gitlab_subscription_histories
+    description: A log table tracking all changes to a gitlab_subscription.
+    columns:
+      - name: gitlab_subscription_history_id
+        description: The unique identifier of the history row.
+        tests:
+          - not_null
+          - unique
+      - name: gitlab_subscription_id
+        description: The namespace associated with the gitlab_subscription.
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_gitlab_subscriptions
     description: '{{ doc("gitlab_dotcom_gitlab_subscriptions") }} {{ doc("scd_type_two_documentation") }}'
     columns:
@@ -382,6 +395,10 @@ models:
           - not_null
           - no_overlapping_valid_from_to_dates
           - unique_where_currently_valid
+      - name: gitlab_subscription_trial_starts_on
+        description: The date that the subscription started their trial.
+      - name: gitlab_subscription_trial_ends_on
+        description: The date that the subscription's trial ended or is scheduled to end (can be in the future.) Should always be populated when gitlab_subscription_trial_starts_on is populated.
       - name: created_at
         tests:
           - not_null
@@ -395,6 +412,9 @@ models:
         tests:
           - dbt_utils.expression_is_true:
               expression: "valid_from <= valid_to"
+    tests:
+      - not_null:
+          column_name: "IFF(gitlab_subscription_trial_starts_on IS NOT NULL, gitlab_subscription_trial_ends_on, CURRENT_DATE)"
 
   - name: gitlab_dotcom_groups
     description: '{{ doc("gitlab_dotcom_groups") }}'
@@ -412,7 +432,6 @@ models:
       - name: updated_at
         tests:
           - not_null
-
 
   - name: gitlab_dotcom_identities
     description: Base model for GitLab.com identities (3rd party login providers).

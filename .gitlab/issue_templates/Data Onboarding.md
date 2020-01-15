@@ -42,9 +42,9 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `data-triage`, and `business-operations`.
    - [ ] Engineers, join `analytics-pipelines`
    - [ ] Analytsts, join `dbt-runs`
-- [ ] Schedule a recurring fortnightly 1:1 meeting with the Director of Business Operations.
-- [ ] Invite yourself to the DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.
-- [ ] Schedule a coffee chat with each member of the team. These should be in addition to the ones you do with other GitLab team members.
+- [ ] Schedule a recurring fortnightly (every two weeks) 1:1 meeting with the Director of Business Operations.
+- [ ] Invite yourself to the DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.  If you do not yet have access to the Data Team Calendar, ask your manager to add you.
+- [ ] Schedule a coffee chat with each member of the data team. These should be in addition to the ones you do with other GitLab team members.  In addition, you should also consider scheduling chats with IT and BizOps people as well.
 - [ ] Read the following pages of the handbook in their entirety. Bookmark them as you should soon be making MR's to improve our documentation!
    - [ ] [Data Team](https://about.gitlab.com/handbook/business-ops/data-team/)
    - [ ] [Business Operations](https://about.gitlab.com/handbook/business-ops/)
@@ -202,7 +202,7 @@ This data comes from the usage ping that comes with a GitLab installation.
 - [ ] Read the product vision for [telemetry](https://about.gitlab.com/direction/telemetry/).
 - [ ] There is not great documentation on the usage ping, but you can get a sense from looking at the `usage.rb` file for [GitLab CE](https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/usage_data.rb).
 - [ ] It might be helpful to look at issues related to telemetry [here](https://gitlab.com/gitlab-org/telemetry/issues) and [here](https://gitlab.com/groups/gitlab-org/-/issues?scope=all&utf8=✓&state=all&search=~telemetry).
-- [ ] Watch the [pings brain dump session](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view).
+- [ ] Watch the [pings brain dump session](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view).  This video is outdated.  The tables that are related to the usage ping now reside in the [version model](https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/model/model.gitlab_snowflake.version_usage_data).
 
 ## Salesforce (Sales, Marketing, Finance)
 - [ ] Become familiar with Salesforce using [Trailhead](https://trailhead.salesforce.com/).
@@ -236,8 +236,8 @@ This data comes from the usage ping that comes with a GitLab installation.
 
 ### Metrics and Methods
 - [ ] Read through [SaaS Metrics 2.0](http://www.forentrepreneurs.com/saas-metrics-2/) to get a good understanding of general SaaS metrics.
-- [ ] Check out [10 Reads for Data Scientists Getting Started with Business Models](https://www.conordewey.com/posts/2019/5/17/10-reads-for-data-scientists-getting-started-with-business-models)  and read through the collection of articles to deepen your understanding of SaaS metrics.
-- [ ] Familiarize yourself with the GitLab Metrics Sheet (search in Google Drive, it should come up) which contains most of the key metrics we use at GitLab and the [definitions of these metrics](https://about.gitlab.com/handbook/finance/operating-metrics/).
+- [ ] Check out [10 Reads for Data Scientists Getting Started with Business Models](https://www.conordewey.com/blog/10-reads-for-data-scientists-getting-started-with-business-models/) and read through the collection of articles to deepen your understanding of SaaS metrics.
+- [ ] Familiarize yourself with the GitLab Metrics Sheet (search in Google Drive, it should come up) which contains most of the key metrics we use at GitLab and the [definitions of these metrics](https://about.gitlab.com/handbook/business-ops/data-team/kpi-index/).
 - [ ] Optional, for more information on Finance KPIs, you can watch this working session between the Manager, Financial Planning and Analysis and Data Analyst, Finance: [Finance KPIs](https://www.youtube.com/watch?v=dmdilBQb9PY&feature=youtu.be)
 
 ## Suggested Bookmarks

@@ -47,7 +47,7 @@ container_cmd = f"""
 dag = DAG(
     "snowflake_password_reset",
     default_args=default_args,
-    schedule_interval="30 5 * 1-12/3 7",
+    schedule_interval="30 5 * */3 6",
 )
 
 # Task 1
