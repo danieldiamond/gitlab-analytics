@@ -80,7 +80,7 @@
   {
     "event_name": "notes",
     "table_name": "gitlab_dotcom_notes",
-    "key_to_parent_object": "note_project_id",
+    "key_to_parent_object": "project_id",
     "primary_key": "note_id"
   },
   {
