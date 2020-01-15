@@ -6,8 +6,8 @@ WITH source AS (
 ), sfdc_lead_pii AS (
 
     SELECT
+        sha1(email) AS email_hash,
         id          AS lead_id,
-        sha1(email) AS person_id,
         email       AS lead_email,
         name        AS lead_name
     FROM source
