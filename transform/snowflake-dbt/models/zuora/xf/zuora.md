@@ -74,7 +74,7 @@ The subscription_end_month calculation is taken as the previous month for a few 
 
 {% docs zuora_subscription_lineage %}
 
-Connects a subscription to all of the subscriptions in its lineage. To understand more about a subscription's relationship to others, please see [the handbook](https://about.gitlab.com/handbook/finance/zuora-sub-data/)
+Connects a subscription to all of the subscriptions in its lineage. To understand more about a subscription's relationship to others, please see [the handbook under Zuora Subscription Data Management](https://about.gitlab.com/handbook/finance/accounting/)
 
 The `flattening` CTE flattens the intermediate model based on the array in the renewal slug field set in the base subscription model. Lineage is initially set here as the values in the parent slug and any renewal slugs. The OUTER => TRUE setting is like doing an outer join and will return rows even if the renewal slug is null.  
 
