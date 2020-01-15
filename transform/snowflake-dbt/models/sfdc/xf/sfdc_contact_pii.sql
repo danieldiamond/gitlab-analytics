@@ -3,7 +3,7 @@
   })
 }}
 
-WITH sfdc_contact AS (
+WITH sfdc_contact_pii AS (
 
     SELECT
 		contact_id,
@@ -11,11 +11,6 @@ WITH sfdc_contact AS (
 		contact_name, 
 		person_id
     FROM {{ ref('sfdc_contact') }}
-
-), sfdc_contact_pii as (
-
-	SELECT *
-	FROM sfdc_contact
 
 )
 

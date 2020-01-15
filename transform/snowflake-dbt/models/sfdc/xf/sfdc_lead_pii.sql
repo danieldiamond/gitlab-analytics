@@ -3,7 +3,7 @@
   })
 }}
 
-WITH sfdc_lead AS (
+WITH sfdc_lead_pii AS (
 
     SELECT
 		lead_id,
@@ -11,11 +11,6 @@ WITH sfdc_lead AS (
 		lead_name, 
 		person_id
     FROM {{ ref('sfdc_lead') }}
-
-), sfdc_lead_pii as (
-
-	SELECT *
-	FROM sfdc_lead
 
 )
 
