@@ -512,10 +512,10 @@ models:
       - name: updated_at
         tests:
           - not_null
-      - name: issue_state
+      - name: state
         description: >-
           The source table has both "state" and "state_id" columns. We use state_id to 
-          infer the "issue_state" string as we found this gives results that match the API and UI.
+          infer the "state" string as we found this gives results that match the API and UI.
         tests:
           - not_null
       - name: state_id

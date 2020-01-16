@@ -119,7 +119,7 @@ joined AS (
       TRUE, FALSE)                               AS is_included_in_engineering_metrics,
     IFF(issues.project_id IN ({{is_project_part_of_product()}}),
       TRUE, FALSE)                               AS is_part_of_product,
-    issue_state                                  AS state,
+    state,
     weight,
     due_date,
     lock_version,
