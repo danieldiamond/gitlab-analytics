@@ -1,8 +1,6 @@
 {% set max_date_in_analysis = "date_trunc('week', dateadd(week, 3, CURRENT_DATE))" %}
 
 
-
-
 WITH bamboohr_employment_status AS (
   
     SELECT *
