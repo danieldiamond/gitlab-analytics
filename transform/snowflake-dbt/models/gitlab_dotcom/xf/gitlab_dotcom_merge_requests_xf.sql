@@ -97,11 +97,13 @@ WITH merge_requests AS (
       TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at,
         merge_request_metrics.merged_at)                      AS hours_to_merged_status,
 
-      CASE 
-        WHEN merge_request_created_at BETWEEN DATEADD('days', -30, gitlab_subscription_trial_ends_on) AND gitlab_subscription_trial_ends_on
-          THEN 'trial'
-        ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
-      END AS namespace_plan_id_at_merge_request_creation
+    CASE
+      WHEN gitlab_subscriptions.is_trial
+        THEN 'trial'
+      WHEN merge_request_created_at BETWEEN gitlab_subscription_start_date AND {{ coalesce_to_infinity("gitlab_subscription_end_date") }}
+        THEN gitlab_subscriptions.plan_id
+      ELSE 34
+    END AS plan_id_at_merge_request_creation,
 
     FROM merge_requests
       LEFT JOIN agg_labels

@@ -143,7 +143,7 @@ joined AS (
       WHEN issue_created_at BETWEEN gitlab_subscription_start_date AND {{ coalesce_to_infinity("gitlab_subscription_end_date") }}
         THEN gitlab_subscriptions.plan_id
       ELSE 34
-    END AS namespace_plan_id_at_issue_creation
+    END AS plan_id_at_issue_creation
 
   FROM issues
   LEFT JOIN agg_labels
