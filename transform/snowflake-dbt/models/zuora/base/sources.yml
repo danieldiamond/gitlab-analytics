@@ -6,7 +6,7 @@ sources:
     schema: zuora_stitch
     loader: Stitch
     loaded_at_field: _sdc_batched_at
-    
+
     quoting:
       database: true
       schema: false
@@ -19,6 +19,9 @@ sources:
     tables:
       - name: account
         description: '{{ doc("zuora_account_source") }}'
+      - name: accounting_period
+        identifier: accountingperiod
+        description: '{{ doc("zuora_accounting_period") }}'
       - name: contact
         description: '{{ doc("zuora_contact_source") }}'
       - name: discount_applied_metrics
@@ -37,5 +40,8 @@ sources:
         description: '{{ doc("zuora_rateplan_source") }}'
       - name: refund
         description: '{{ doc("zuora_refund_source") }}'
+      - name: revenue_schedule_item
+        identifier: revenuescheduleitem
+        description: '{{ doc("zuora_revenue_schedule_item") }}'
       - name: subscription
         description: '{{ doc("zuora_subscription_source") }}'
