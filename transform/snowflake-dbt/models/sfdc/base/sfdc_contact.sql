@@ -12,7 +12,7 @@ WITH source AS (
         id                          AS contact_id,
         name                        AS contact_name,
         sha1(email)                 AS email_hash,
-        split_part(email,'@',2)		AS email_domain,
+        split_part(email,'@',2)     AS email_domain,
 
         -- keys
         accountid                   AS account_id,
