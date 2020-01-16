@@ -31,6 +31,14 @@ WITH source AS (
       title::VARCHAR                                            AS issue_title,
       description::VARCHAR                                      AS issue_description,
 
+      -- Override state by mapping state_id. See issue #3344.
+      CASE
+        WHEN state_id = 1 THEN 'opened'
+        WHEN state_id = 2 THEN 'closed'
+        WHEN state_id = 3 THEN 'merged'
+        WHEN state_id = 4 THEN 'locked'
+      END                                                       AS issue_state,
+
       weight::NUMBER                                            AS weight,
       due_date::DATE                                            AS due_date,
       lock_version::NUMBER                                      AS lock_version,
