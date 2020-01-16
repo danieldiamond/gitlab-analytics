@@ -513,7 +513,11 @@ models:
         tests:
           - not_null
       - name: issue_state
-        description: The source table has both "state" and "state_id" columns. Using state_id gives results that match the API and UI.
+        description: >-
+          The source table has both "state" and "state_id" columns. We use state_id to 
+          infer the "issue_state" string as we found this gives results that match the API and UI.
+        tests:
+          - not_null
       - name: state_id
         tests:
           - accepted_values:
