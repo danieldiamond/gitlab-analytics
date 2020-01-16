@@ -141,6 +141,10 @@ models:
       materialized: table
     
     sfdc:
+      base:
+        schema: staging
+      sensitive:
+        schema: sensitive
       xf:
         materialized: table
 

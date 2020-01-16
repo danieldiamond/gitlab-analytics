@@ -1,8 +1,3 @@
-{{config({
-    "schema": "staging"
-  })
-}}
-
 WITH source AS (
 
     SELECT *
@@ -16,7 +11,7 @@ WITH source AS (
         -- id
         id                          AS contact_id,
         name                        AS contact_name,
-        email                       AS contact_email,
+        sha1(email)                 AS email_hash,
 
         -- keys
         accountid                   AS account_id,

@@ -1,6 +1,7 @@
 WITH sfdc_lead AS (
 
-    SELECT * 
+    SELECT
+	{{ dbt_utils.star(from=ref('sfdc_lead'), except=["LEAD_EMAIL", "LEAD_NAME"]) }}
     FROM {{ ref('sfdc_lead') }}
 
 ), sfdc_record_type as (
