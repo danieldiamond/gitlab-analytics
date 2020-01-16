@@ -522,6 +522,11 @@ models:
         tests:
           - accepted_values:
               values: [1, 2, 3, 4]
+      - name: duplicated_to_id
+        tests:
+          - relationships:
+              to: ref('gitlab_dotcom_issues')
+              field: issue_id
       - name: issue_title
         description: '{{ doc("visibility_documentation") }}'
       - name: issue_description
