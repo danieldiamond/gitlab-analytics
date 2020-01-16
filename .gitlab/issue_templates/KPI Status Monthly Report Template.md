@@ -16,7 +16,7 @@ Issue effective date: <!--- Date --->
 * Example:
 * [IACV](https://about.gitlab.com/handbook/sales/#incremental-annual-contract-value-iacv) (GitLab, Sales)
 
-## KPIs Completed
+## KPIs Completed since last month
 * List of KPIs that are productionized with their [legend](https://about.gitlab.com/handbook/business-ops/data-team/kpi-index/#legend) indicator for status in the handbook
 * Format would be [KPI name hyperlinked to definition in the handbook](linked definition) legend (Department Name)
 * Example: 
