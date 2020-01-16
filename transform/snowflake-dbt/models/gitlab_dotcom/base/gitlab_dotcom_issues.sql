@@ -35,7 +35,8 @@ WITH source AS (
       due_date::DATE                                            AS due_date,
       lock_version::NUMBER                                      AS lock_version,
       time_estimate::NUMBER                                     AS time_estimate,
-      discussion_locked::BOOLEAN                                AS has_discussion_locked
+      discussion_locked::BOOLEAN                                AS has_discussion_locked,
+      state_id::INTEGER                                         AS state_id
 
     FROM source
 
