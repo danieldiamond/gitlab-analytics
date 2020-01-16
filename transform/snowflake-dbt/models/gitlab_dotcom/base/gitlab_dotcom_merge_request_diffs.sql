@@ -1,7 +1,6 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "merge_request_diff_id",
-    "schema": "staging"
+    "unique_key": "merge_request_diff_id"
     })
 }}
 

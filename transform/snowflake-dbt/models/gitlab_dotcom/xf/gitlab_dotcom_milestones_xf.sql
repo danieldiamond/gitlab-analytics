@@ -19,7 +19,7 @@ internal_namespaces AS (
     SELECT
       namespace_id
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
-    WHERE ultimate_parent_id IN {{ get_internal_parent_namespaces() }}
+    WHERE namespace_is_internal = True
 ),
 
 final AS (

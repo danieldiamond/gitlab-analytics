@@ -29,7 +29,6 @@ renamed AS (
     license_starts_at::TIMESTAMP             AS license_starts_at,
     license_expires_at::TIMESTAMP            AS license_expires_at,
     PARSE_JSON(license_add_ons)              AS license_add_ons,
-    license_restricted_user_count::INTEGER   AS license_restricted_user_count,
     recorded_at::TIMESTAMP                   AS recorded_at,
     created_at::TIMESTAMP                    AS created_at,
     updated_at::TIMESTAMP                    AS updated_at,

@@ -73,6 +73,8 @@ WITH customers AS (
   
   SELECT 
     *,
+    FIRST_VALUE(customer_id)
+      OVER (PARTITION BY order_id ORDER BY order_updated_at DESC) AS latest_customer_id,
     FIRST_VALUE(gitlab_namespace_id) 
       OVER (PARTITION BY order_id ORDER BY order_updated_at DESC) AS latest_namespace_id
   FROM orders_snapshots
@@ -119,7 +121,7 @@ WITH customers AS (
     
     
   FROM trials
-    INNER JOIN customers ON trials.customer_id = customers.customer_id
+    INNER JOIN customers ON trials.latest_customer_id = customers.customer_id
     LEFT JOIN namespaces ON trials.latest_namespace_id = namespaces.namespace_id
     LEFT JOIN users ON customers.customer_provider_user_id = users.user_id
     LEFT JOIN converted_trials ON trials.order_id = converted_trials.order_id

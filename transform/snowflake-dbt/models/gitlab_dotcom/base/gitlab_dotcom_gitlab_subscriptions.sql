@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH
 {{ distinct_source(source=source('gitlab_dotcom', 'gitlab_subscriptions'))}}
 
@@ -13,6 +8,7 @@ WITH
       id::INTEGER                                   AS gitlab_subscription_id,
       start_date::DATE                              AS gitlab_subscription_start_date,
       end_date::DATE                                AS gitlab_subscription_end_date,
+      trial_starts_on::DATE                         AS gitlab_subscription_trial_starts_on,
       trial_ends_on::DATE                           AS gitlab_subscription_trial_ends_on,
       namespace_id::INTEGER                         AS namespace_id,
       hosted_plan_id::INTEGER                       AS plan_id,

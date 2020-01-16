@@ -43,12 +43,12 @@ unzip iterm2-colors.zip
 rm iterm2-colors.zip
 echo "iTerm2 + Colors installed"
 
-## install atom
-echo "Installing Atom.."
-brew cask install atom
+## install visual studio code
+echo "Installing VS Code.."
+brew cask install visual-studio-code
 ## this might ask you for your password
-atom --version
-echo "Atom successfully installed"
+code --version
+echo "VS Code successfully installed"
 
 ## install bash completion
 echo "Installing bash competion.."
@@ -114,7 +114,7 @@ echo "anaconda installed succesfully"
 
 echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.bash_profile
 echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.bash_profile
-echo "export DBT_PROFILE_PATH=~/.dbt/profiles.yml" >> ~/.bash_profile
+echo "export DBT_PROFILE_PATH=~/.dbt/" >> ~/.bash_profile
 echo "source ~/.bashrc" >> ~/.bash_profile
 echo "source ~/.bashrc"
 echo "source ~/.bash_profile"

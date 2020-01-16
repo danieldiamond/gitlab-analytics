@@ -85,6 +85,8 @@ sources:
         identifier: gitlab_db_epics
       - name: events
         identifier: gitlab_db_events
+      - name: gitlab_subscription_histories
+        identifier: gitlab_db_gitlab_subscription_histories
       - name: gitlab_subscriptions
         identifier: gitlab_db_gitlab_subscriptions
       - name: identities
@@ -131,6 +133,8 @@ sources:
         identifier: gitlab_db_notification_settings
       - name: oauth_access_tokens
         identifier: gitlab_db_oauth_access_tokens
+      - name: plans
+        identifier: gitlab_db_plans
       - name: pages_domains
         identifier: gitlab_db_pages_domains
       - name: project_authorizations
