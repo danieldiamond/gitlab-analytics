@@ -9,4 +9,4 @@ SELECT *
 FROM source
 WHERE date_actual = CURRENT_date
   AND (department IS NULL OR division IS NULL OR cost_center IS NULL)
-  AND CURRENT_DATE > dateadd('days', 10, hire_date)
+  AND CURRENT_DATE > DATEADD('days', 10, hire_date)
