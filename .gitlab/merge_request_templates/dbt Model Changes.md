@@ -146,13 +146,14 @@ These jobs only appear when `.py` files have changed. All of them will run autom
 
 ## All MRs Checklist
 - [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).
-- [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue
-- [ ] Latest CI pipeline passes
-  - [ ] If not, an explination has been provided.
+- [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue.
+- [ ] Branch set to delete.
+- [ ] Latest CI pipeline passes.
+  - [ ] If not, an explanation has been provided.
 - [ ] This MR is ready for final review and merge.
-- [ ] Resolve all threads
-- [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer
-- [ ] Assigned to reviewer
+- [ ] All threads are resolved.
+- [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer.
+- [ ] Assigned to reviewer.
 
 ## Reviewer Checklist
 - [ ]  Check before setting to merge
