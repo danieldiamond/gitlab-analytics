@@ -58,12 +58,12 @@ WITH raw_mrr_totals_levelled AS (
          CASE
            WHEN original_product_category = retention_product_category AND
                 original_quantity < retention_quantity
-             THEN 'Seat Change'
+             THEN 'Seat Expansion'
            WHEN (original_product_category = retention_product_category AND
                  original_quantity = retention_quantity
              OR original_product_category = retention_product_category AND
                 original_quantity > retention_quantity)
-             THEN 'Price Change'
+             THEN 'Discount/Price Change'
            WHEN original_product_category != retention_product_category AND
                 original_quantity = retention_quantity
              THEN 'Product Change'
@@ -86,12 +86,12 @@ WITH raw_mrr_totals_levelled AS (
               CASE
                 WHEN original_product_category = retention_product_category AND
                         original_quantity > retention_quantity
-                  THEN 'Seat Change'
+                  THEN 'Seat Contraction'
                 WHEN (original_product_category = retention_product_category AND
                          original_quantity = retention_quantity
                   OR original_product_category = retention_product_category AND
                         original_quantity < retention_quantity)
-                  THEN 'Price Change'
+                  THEN 'Discount/Price Change'
                 WHEN original_product_category != retention_product_category AND
                         original_quantity = retention_quantity
                   THEN 'Product Change'
