@@ -33,4 +33,3 @@ WITH source AS (
 SELECT *
 FROM intermediate
 WHERE hire_date IS NOT NULL
-and uploaded_at >= '2019-01-17'
