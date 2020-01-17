@@ -125,6 +125,12 @@ joined AS (
     lock_version,
     time_estimate,
     has_discussion_locked,
+    closed_by_id,
+    relative_position,
+    service_desk_reply_to,
+    duplicated_to_id,
+    promoted_to_epic_id,
+
     agg_labels.labels,
     ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
     internal_namespaces.namespace_id IS NOT NULL AS is_internal_issue
