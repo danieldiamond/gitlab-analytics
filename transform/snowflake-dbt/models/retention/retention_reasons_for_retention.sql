@@ -70,8 +70,7 @@ WITH raw_mrr_totals_levelled AS (
            WHEN original_product_category != retention_product_category AND
                 original_quantity != retention_quantity
              THEN 'Product Change/Seat Change Mix'
-           ELSE 'Unknown' END                      AS churn_reason,
-           {{ churn_type('original_mrr', 'net_retention_mrr') }}
+           ELSE 'Unknown' END                      AS churn_type
        FROM mrr_totals_levelled
        LEFT JOIN retention_subs
        ON subscription_name_slugify = original_sub
@@ -99,8 +98,7 @@ WITH raw_mrr_totals_levelled AS (
                         original_quantity != retention_quantity
                   THEN 'Product Change/Seat Change Mix'
                 ELSE 'Unknown'
-              END                                       AS churn_reason,
-              {{ churn_type('original_mrr', 'net_retention_mrr') }}
+              END                                       AS churn_type
        FROM mrr_totals_levelled
        LEFT JOIN retention_subs
         ON subscription_name_slugify = original_sub
@@ -113,7 +111,6 @@ WITH raw_mrr_totals_levelled AS (
              oldest_subscription_in_cohort  AS zuora_subscription_id,
              dateadd('year', 1, mrr_month)  AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
              churn_type,
-             churn_reason,
              original_product_category,
              retention_product_category,
              original_delivery,
@@ -132,7 +129,6 @@ WITH raw_mrr_totals_levelled AS (
              oldest_subscription_in_cohort  AS zuora_subscription_id,
              dateadd('year', 1, mrr_month)  AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
              churn_type,
-             churn_reason,
              original_product_category,
              retention_product_category,
              original_delivery,
