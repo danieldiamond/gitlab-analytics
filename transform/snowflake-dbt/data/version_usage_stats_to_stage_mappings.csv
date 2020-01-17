@@ -14,6 +14,7 @@ ci_pipeline_schedules,verify
 ci_pipelines,verify
 ci_runners,verify
 ci_triggers,verify
+clusters,monitor
 clusters_applications_cert_managers,configure
 clusters_applications_elastic_stack,monitor
 clusters_applications_helm,configure
@@ -25,7 +26,6 @@ clusters_disabled,configure
 clusters_enabled,configure
 clusters_platforms_gke,configure
 clusters_platforms_user,configure
-clusters,monitor
 commit_comment,create
 container_scanning_jobs,secure
 cycle_analytics_views,manage
