@@ -37,6 +37,7 @@ WITH source AS (
         WHEN state_id = 2 THEN 'closed'
         WHEN state_id = 3 THEN 'merged'
         WHEN state_id = 4 THEN 'locked'
+        ELSE NULL
       END                                                       AS state,
 
       weight::NUMBER                                            AS weight,

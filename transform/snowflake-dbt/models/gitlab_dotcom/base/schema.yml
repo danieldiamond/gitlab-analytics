@@ -520,6 +520,7 @@ models:
           - not_null
       - name: state_id
         tests:
+          - not_null
           - accepted_values:
               values: [1, 2, 3, 4]
       - name: duplicated_to_id
