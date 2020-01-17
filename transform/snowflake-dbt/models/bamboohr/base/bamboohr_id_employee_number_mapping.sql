@@ -7,8 +7,7 @@ WITH source AS (
 
     SELECT *
     FROM {{ source('bamboohr', 'id_employee_number_mapping') }}
-    ORDER BY uploaded_at DESC
-    LIMIT 1
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY DATE_TRUNC('month', uploaded_at) ORDER BY uploaded_at DESC) = 1
 
 ), intermediate AS (
 
@@ -22,6 +21,7 @@ WITH source AS (
           d.value['customNationality']::VARCHAR                           AS nationality,
           d.value['customRegion']::VARCHAR                                AS region,
           d.value['ethnicity']::VARCHAR                                   AS ethnicity,
+          d.value['gender']::VARCHAR                                      AS gender,  
           d.value['customCandidateID']::BIGINT                            AS greenhouse_candidate_id
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), outer => true) d
@@ -32,3 +32,4 @@ WITH source AS (
 SELECT *
 FROM intermediate
 WHERE hire_date IS NOT NULL
+and uploaded_at >= '2019-01-17'
