@@ -89,6 +89,10 @@ WITH raw_mrr_totals_levelled AS (
 
          CASE
          WHEN original_product_category = retention_product_category AND
+                 original_quantity < retention_quantity AND
+                 original_mrr / original_quantity < retention_mrr / retention_quantity
+             THEN 'Seat Change'
+         WHEN original_product_category = retention_product_category AND
                  original_quantity < retention_quantity
              THEN 'Seat Change'
          WHEN (original_product_category = retention_product_category AND
@@ -139,6 +143,10 @@ WITH raw_mrr_totals_levelled AS (
               coalesce(retention_subs.retention_mrr, 0) AS net_retention_mrr,
               {{ churn_type('original_mrr', 'net_retention_mrr') }},
               CASE
+                WHEN original_product_category = retention_product_category AND
+                 original_quantity > retention_quantity AND
+                 original_mrr / original_quantity > retention_mrr / retention_quantity
+                  THEN 'Seat Change/Price Change Mix'
                 WHEN original_product_category = retention_product_category AND
                         original_quantity > retention_quantity
                   THEN 'Seat Change'
