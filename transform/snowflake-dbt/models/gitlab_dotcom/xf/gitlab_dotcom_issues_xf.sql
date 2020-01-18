@@ -51,7 +51,7 @@ WITH issues AS (
 ), gitlab_subscriptions AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_gitlab_subscriptions')}}
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
 ),
 
 joined AS (
@@ -140,9 +140,7 @@ joined AS (
     CASE
       WHEN gitlab_subscriptions.is_trial
         THEN 'trial'
-      WHEN issue_created_at BETWEEN gitlab_subscription_start_date AND {{ coalesce_to_infinity("gitlab_subscription_end_date") }}
-        THEN gitlab_subscriptions.plan_id
-      ELSE 34
+      ELSE COALESCE(gitlab_subscriptions.plan_id, 34)
     END AS plan_id_at_issue_creation
 
   FROM issues

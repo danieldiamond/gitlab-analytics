@@ -67,7 +67,7 @@ WITH merge_requests AS (
 ), gitlab_subscriptions AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id')}}
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
 
 ), joined AS (
 
@@ -100,8 +100,8 @@ WITH merge_requests AS (
     CASE
       WHEN gitlab_subscriptions.is_trial
         THEN 'trial'
-      ELES COALESCE(gitlab_subscriptions.plan_id, 34)
-    END AS plan_id_at_merge_request_creation,
+      ELSE COALESCE(gitlab_subscriptions.plan_id, 34)
+    END AS plan_id_at_merge_request_creation
 
     FROM merge_requests
       LEFT JOIN agg_labels
