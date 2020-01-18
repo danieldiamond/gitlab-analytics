@@ -117,9 +117,9 @@ WITH raw_mrr_totals_levelled AS (
                 WHEN original_product_ranking = retention_product_ranking
                     THEN 'Maintained'
                 WHEN original_product_ranking > retention_product_ranking
-                    THEN 'Downgrade'
+                    THEN 'Downgraded'
                 WHEN original_product_ranking < retention_product_ranking
-                    THEN 'Upgrade'
+                    THEN 'Upgraded'
               END                                       AS plan_change,
               
               CASE
@@ -241,9 +241,18 @@ WITH raw_mrr_totals_levelled AS (
              dateadd('year', 1, mrr_month)  AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
              churn_type,
              retention_reason,
-             plan_change,
-             seat_change,
-             price_change,
+             CASE
+                WHEN churn_type = 'Cancelled'
+                THEN 'Downgraded' ELSE plan_change
+             END AS plan_change,
+             CASE
+                WHEN churn_type = 'Cancelled'
+                THEN 'Contraction' ELSE seat_change
+             END AS seat_change,
+             CASE
+                WHEN churn_type = 'Cancelled'
+                THEN 'Down' ELSE price_change
+             END AS price_change,
              original_product_category,
              retention_product_category,
              original_delivery,
