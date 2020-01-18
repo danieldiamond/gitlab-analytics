@@ -32,6 +32,8 @@ sources:
         description: '{{ doc("zuora_invoice_item_source") }}'
       - name: invoice
         description: '{{ doc("zuora_invoice_source") }}'
+      - name: product
+        description: '{{ doc("zuora_product") }}'    
       - name: rate_plan_charge
         identifier: rateplancharge
         description: '{{ doc("zuora_rateplan_charge_source") }}'

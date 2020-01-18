@@ -33,6 +33,11 @@ WITH zuora_accts AS (
   SELECT *
   FROM {{ source('zuora', 'accounting_period') }}
 
+), zuora_product AS (
+
+  SELECT *
+  FROM {{ source('zuora', 'product') }}
+
 ), date_table AS (
 
   SELECT *
@@ -75,6 +80,7 @@ WITH zuora_accts AS (
     zuora_rpc.tcv,
     zuora_rpc.uom AS unit_of_measure,
 
+    zuora_product.name AS product_name,
 
     --date_trunc('month', zuora_subscriptions_xf.subscription_start_date :: date) AS sub_start_month,
     --date_trunc('month', dateadd('month', -1, zuora_subscriptions_xf.subscription_end_date :: DATE)) AS sub_end_month,
@@ -94,6 +100,8 @@ WITH zuora_accts AS (
     ON zuora_rpc.rateplanid = zuora_rp.id
   LEFT JOIN zuora_contact
     ON COALESCE(zuora_accts.soldtocontactid ,zuora_accts.billtocontactid) = zuora_contact.id
+  LEFT JOIN zuora_product
+    ON zuora_product.id = zuora_rpc.product_id
   WHERE zuora_subscription.status NOT IN ('Draft','Expired')
 
 ), month_base_mrr AS (
@@ -109,7 +117,7 @@ WITH zuora_accts AS (
     --product_category,
     --delivery,
     --rate_plan_charge_name,
-    date_actual AS mrr_month,
+    date_actual AS accounting_period,
     --sub_start_month,
     --sub_end_month,
     --effective_start_month,
@@ -119,25 +127,29 @@ WITH zuora_accts AS (
     --cohort_month,
     --cohort_quarter,
     --unit_of_measure,
+    product_name,
     SUM(mrr) AS mrr,
     SUM(quantity) AS quantity
   FROM base_mrr
   LEFT JOIN date_table
     ON base_mrr.effective_start_date <= date_table.date_actual
     AND (base_mrr.effective_end_date > date_table.date_actual OR base_mrr.effective_end_date IS NULL)
-  {{ dbt_utils.group_by(n=1) }}
+  {{ dbt_utils.group_by(n=2) }}
 
 ), gaap_revenue AS (
 
   SELECT
     zuora_acct_period.startdate::DATE  AS accounting_period,
+    zuora_product.name                 AS product_name,
     SUM(zuora_rev_sch.amount)          AS revenue_amt
   FROM zuora_rev_sch
   INNER JOIN zuora_rpc
     ON zuora_rev_sch.rateplanchargeid = zuora_rpc.id
   INNER JOIN zuora_acct_period
     ON zuora_acct_period.id = zuora_rev_sch.accountingperiodid
-  {{ dbt_utils.group_by(n=1) }}
+  LEFT JOIN zuora_product
+    ON zuora_product.id = zuora_rpc.product_id
+  {{ dbt_utils.group_by(n=2) }}
 
 ), current_mrr AS (
 
@@ -157,7 +169,8 @@ WITH zuora_accts AS (
 )
 
 SELECT
-  mrr_month,
+  month_base_mrr.accounting_period,
+  product_name,
   MAX(current_mrr)   AS current_mrr,
   SUM(mrr)           AS mrr,
   SUM(revenue_amt)   AS revenue_amt
@@ -165,4 +178,4 @@ FROM month_base_mrr
 LEFT JOIN gaap_revenue
   ON month_base_mrr.mrr_month = gaap_revenue.accounting_period
 LEFT JOIN current_mrr
-{{ dbt_utils.group_by(n=1) }}
+{{ dbt_utils.group_by(n=2) }}

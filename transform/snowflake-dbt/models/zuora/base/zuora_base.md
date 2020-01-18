@@ -49,6 +49,12 @@ The invoice source table contains info about invoices, which are bills to custom
 
 {% enddocs %}
 
+{% docs zuora_product %}
+
+This is the source table for the product table. [Link to Documentation](https://knowledgecenter.zuora.com/Developer_Platform/API/G_SOAP_API/E1_SOAP_API_Object_Reference/Product)
+
+{% enddocs %}
+
 {% docs zuora_rateplan_source %}
 
 The ratePlan source table contains info about rate plans, which is a price or collection of prices for services. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/zuora#rateplan)
