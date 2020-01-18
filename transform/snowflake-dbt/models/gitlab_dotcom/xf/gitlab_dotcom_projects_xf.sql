@@ -111,7 +111,7 @@ joined AS (
         WHEN gitlab_subscriptions.is_trial
           THEN 'trial'
         ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
-      END                                                          AS plan_id_at_project_creation
+      END                                                          AS plan_id_at_project_creation,
 
       COALESCE(COUNT(DISTINCT members.member_id), 0)               AS member_count
     FROM projects
