@@ -15,6 +15,17 @@ WITH raw_mrr_totals_levelled AS (
               zuora_subscription_cohort_quarter,
               months_since_zuora_subscription_cohort_start,
               quarters_since_zuora_subscription_cohort_start,
+              DECODE(product_category,   --Need to account for the other categories
+                'Bronze', 1,
+                'Silver', 2,
+                'Gold', 2,
+
+                'Starter', 1,
+                'Premium', 2,
+                'Ultimate', 3,
+
+                0
+              )                                                                                 AS original_product_ranking,
               array_agg(DISTINCT product_category) WITHIN GROUP (ORDER BY product_category ASC) AS original_product_category,
               array_agg(DISTINCT delivery) WITHIN GROUP (ORDER BY delivery ASC)                 AS original_delivery,
               array_agg(DISTINCT UNIT_OF_MEASURE) WITHIN GROUP (ORDER BY unit_of_measure ASC)   AS original_unit_of_measure,
@@ -22,7 +33,7 @@ WITH raw_mrr_totals_levelled AS (
               sum(quantity) as original_quantity,
               sum(mrr) as original_mrr
       FROM raw_mrr_totals_levelled
-      {{ dbt_utils.group_by(n=10) }}
+      {{ dbt_utils.group_by(n=11) }}
 
 ), list AS ( --get all the subscription + their lineage + the month we're looking for MRR for (12 month in the future)
 
@@ -43,14 +54,17 @@ WITH raw_mrr_totals_levelled AS (
                  mrr_totals_levelled.original_delivery              AS retention_delivery,
                  mrr_totals_levelled.original_quantity              AS retention_quantity,
                  mrr_totals_levelled.original_unit_of_measure       AS retention_unit_of_measure,
+
+                 mrr_totals_levelled.original_product_ranking       AS retention_product_ranking,
                  coalesce(sum(mrr_totals_levelled.original_mrr), 0) AS retention_mrr
        FROM list
        INNER JOIN mrr_totals_levelled
        ON retention_month = mrr_month
        AND subscriptions_in_lineage = subscription_name_slugify
-       {{ dbt_utils.group_by(n=7) }}
+       {{ dbt_utils.group_by(n=8) }}
 
 ), expansion AS (
+
 
        SELECT mrr_totals_levelled.*,
          retention_subs.*,
@@ -70,7 +84,48 @@ WITH raw_mrr_totals_levelled AS (
            WHEN original_product_category != retention_product_category AND
                 original_quantity != retention_quantity
              THEN 'Product Change/Seat Change Mix'
-           ELSE 'Unknown' END                      AS churn_type
+           ELSE 'Unknown' END                      AS churn_type,
+
+
+         CASE
+         WHEN original_product_category = retention_product_category AND
+                 original_quantity < retention_quantity
+             THEN 'Seat Change'
+         WHEN (original_product_category = retention_product_category AND
+                 original_quantity = retention_quantity
+             OR original_product_category = retention_product_category AND
+                 original_quantity > retention_quantity)
+             THEN 'Price Change'
+         WHEN original_product_ranking > retention_product_ranking AND   -- not sure of this
+                 original_quantity = retention_quantity
+             THEN 'Price Change/Product Change Mix'
+         WHEN original_product_category != retention_product_category AND
+                 original_quantity = retention_quantity
+             THEN 'Product Change'
+         WHEN original_product_category != retention_product_category AND
+                 original_quantity != retention_quantity
+             THEN 'Product Change/Seat Change Mix'
+         ELSE 'Unknown' END                      AS retention_reason,
+
+         CASE
+                WHEN original_product_ranking = retention_product_ranking
+                    THEN 'Maintained'
+                WHEN original_product_ranking > retention_product_ranking
+                    THEN 'Downgrade'
+                WHEN original_product_ranking < retention_product_ranking
+                    THEN 'Upgrade'
+              END                                       AS plan_change,
+              
+              CASE
+                WHEN original_quantity = retention_quantity
+                    THEN 'Maintained'
+                WHEN original_quantity > retention_quantity
+                    THEN 'Expansion'
+                WHEN original_quantity < retention_quantity
+                    THEN 'Contraction'
+              END                                       AS seat_change,
+              
+               price_change
        FROM mrr_totals_levelled
        LEFT JOIN retention_subs
        ON subscription_name_slugify = original_sub
@@ -82,7 +137,48 @@ WITH raw_mrr_totals_levelled AS (
        SELECT mrr_totals_levelled.*,
               retention_subs.*,
               coalesce(retention_subs.retention_mrr, 0) AS net_retention_mrr,
-       {{ churn_type('original_mrr', 'net_retention_mrr') }}
+              {{ churn_type('original_mrr', 'net_retention_mrr') }},
+              CASE
+                WHEN original_product_category = retention_product_category AND
+                        original_quantity > retention_quantity
+                  THEN 'Seat Change'
+                WHEN (original_product_category = retention_product_category AND
+                         original_quantity = retention_quantity
+                  OR original_product_category = retention_product_category AND
+                        original_quantity < retention_quantity)
+                  THEN 'Price Change'
+                WHEN original_product_ranking < retention_product_ranking AND   -- not sure of this
+                 original_quantity = retention_quantity
+                  THEN 'Price Change/Product Change Mix'
+                WHEN original_product_category != retention_product_category AND
+                        original_quantity = retention_quantity
+                  THEN 'Product Change'
+                WHEN original_product_category != retention_product_category AND
+                        original_quantity != retention_quantity
+                  THEN 'Product Change/Seat Change Mix'
+                ELSE 'Unknown'
+              END                                       AS retention_reason,
+
+              CASE
+                WHEN original_product_ranking = retention_product_ranking
+                    THEN 'Maintained'
+                WHEN original_product_ranking > retention_product_ranking
+                    THEN 'Downgrade'
+                WHEN original_product_ranking < retention_product_ranking
+                    THEN 'Upgrade'
+              END                                       AS plan_change,
+              
+              CASE
+                WHEN original_quantity = retention_quantity
+                    THEN 'Maintained'
+                WHEN original_quantity > retention_quantity
+                    THEN 'Contraction'
+                WHEN original_quantity < retention_quantity
+                    THEN 'Expansion'
+              END                                       AS seat_change,
+              
+               price_change
+
        FROM mrr_totals_levelled
        LEFT JOIN retention_subs
         ON subscription_name_slugify = original_sub
@@ -128,7 +224,7 @@ WITH raw_mrr_totals_levelled AS (
 )
 
 SELECT joined.*,
-       rank() over(partition by zuora_subscription_id, churn_type
+       rank() over(partition by zuora_subscription_id, churn_type, retention_reason, plan_change, seat_change
          order by retention_month asc)   AS rank_churn_type_month
 FROM joined
 WHERE retention_month <= dateadd(month, -1, CURRENT_DATE)
