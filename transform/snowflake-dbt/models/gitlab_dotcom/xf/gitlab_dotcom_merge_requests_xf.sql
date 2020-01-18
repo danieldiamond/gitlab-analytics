@@ -100,7 +100,7 @@ WITH merge_requests AS (
     CASE
       WHEN gitlab_subscriptions.is_trial
         THEN 'trial'
-      ELSE COALESCE(gitlab_subscriptions.plan_id, 34)
+      ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
     END AS plan_id_at_merge_request_creation
 
     FROM merge_requests
