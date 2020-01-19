@@ -18,7 +18,8 @@ WITH source AS (
 
     SELECT *,
       CASE WHEN lower(created_by) LIKE '%sijbrandij%' THEN 'Personal'
-           WHEN lower(event_title) LIKE '%ski%' THEN 'Personal'
+					 WHEN lower(event_title) LIKE '%hold%' THEN 'Personal'
+					 WHEN lower(event_title) LIKE '%ski%' THEN 'Personal'
            WHEN lower(event_title) LIKE '%boat%' THEN 'Personal'
            WHEN lower(event_title) LIKE '%pto%' THEN 'Personal'
 					 WHEN lower(event_title) LIKE '%company call%' THEN 'Company Call'
@@ -95,6 +96,7 @@ WITH source AS (
       ELSE NULL END AS okr_time_allocation
     FROM categorized
 		WHERE event_category != 'Personal'
+		AND calculated_duration < 10
 
 )
 
