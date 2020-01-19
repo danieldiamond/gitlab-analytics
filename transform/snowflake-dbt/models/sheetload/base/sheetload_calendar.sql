@@ -17,7 +17,10 @@ WITH source AS (
 ), categorized AS (
 
     SELECT *,
-      CASE WHEN lower(created_by) = 'karen.sijbrandij@gmail.com' THEN 'Personal'
+      CASE WHEN lower(created_by) = lower(sijbrandij) THEN 'Personal'
+           WHEN lower(event_title) LIKE '%ski%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%boat%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%pto%' THEN 'Personal'
 					 WHEN lower(event_title) LIKE '%company call%' THEN 'Company Call'
            WHEN lower(event_title) LIKE '%fgu%' THEN 'Group Conversation'
            WHEN lower(event_title) LIKE '%group conversation%' THEN 'Group Conversation'
