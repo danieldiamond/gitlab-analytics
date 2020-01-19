@@ -1,5 +1,7 @@
 version: 2
 models:
+- name: sheetload_calendar
+  description: This is the basis of the CEO's calendar analysis. When you open the raw sheet, you'll be prompted to run the appscript. Additional categorization can be done by adding additional `case when` statements.
 - name: sheetload_employee_location_factor
   description: This is the source of truth connecting an employee number from bamboo to the location factor used for People purposes. The "Comp Data Analysis and Modeling" spreadsheet maintained by the Compensation & Benefits Manager is the SSOT for location factor.
   columns:
@@ -93,7 +95,7 @@ models:
     - unique
   - name: location_factor_target
     tests:
-    - not_null    
+    - not_null
 - name: sheetload_marketing_kpi_benchmarks
   description: This is the source of marketing KPI goals to be included in marketing metric reports and dashboards.
   columns:
@@ -113,16 +115,16 @@ models:
   columns:
     - name: sales_rep
       tests:
-      - not_null 
+      - not_null
     - name: calendar_month
       tests:
-      - not_null 
+      - not_null
     - name: rep_role
       tests:
-      - not_null 
+      - not_null
     - name: percent_ramped
       tests:
-      - not_null                     
+      - not_null
 - name: sheetload_yc_companies
   description: This is a list of YC Companies and their cohort provided by and maintained by marketing.
   columns:
@@ -148,6 +150,6 @@ models:
 - name: sheetload_rep_quotas_full_fy2020
   description: This is the model that captures sales data for rep quotas for the full fy2020.
 - name: sheetload_osat
-  description: This is the model that captures the onboarding satisfaction score survey OSAT. 
+  description: This is the model that captures the onboarding satisfaction score survey OSAT.
 - name: sheetload_rep_quotas_full_ps_fy2020
   description: This is the model that captures sales data for rep quotas for professional services the full fy2020.
