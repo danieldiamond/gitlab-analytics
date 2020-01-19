@@ -15,25 +15,26 @@ WITH raw_mrr_totals_levelled AS (
               zuora_subscription_cohort_quarter,
               months_since_zuora_subscription_cohort_start,
               quarters_since_zuora_subscription_cohort_start,
-              DECODE(product_category,   --Need to account for the 'other' categories
+              
+              array_agg(DISTINCT product_category) WITHIN GROUP (ORDER BY product_category ASC) AS original_product_category,
+              array_agg(DISTINCT delivery) WITHIN GROUP (ORDER BY delivery ASC)                 AS original_delivery,
+              array_agg(DISTINCT UNIT_OF_MEASURE) WITHIN GROUP (ORDER BY unit_of_measure ASC)   AS original_unit_of_measure,
+              
+              max(DECODE(product_category,   --Need to account for the 'other' categories
                 'Bronze', 1,
                 'Silver', 2,
-                'Gold', 2,
+                'Gold', 3,
 
                 'Starter', 1,
                 'Premium', 2,
                 'Ultimate', 3,
 
                 0
-              )                                                                                 AS original_product_ranking,
-              array_agg(DISTINCT product_category) WITHIN GROUP (ORDER BY product_category ASC) AS original_product_category,
-              array_agg(DISTINCT delivery) WITHIN GROUP (ORDER BY delivery ASC)                 AS original_delivery,
-              array_agg(DISTINCT UNIT_OF_MEASURE) WITHIN GROUP (ORDER BY unit_of_measure ASC)   AS original_unit_of_measure,
-
+              ))            as original_product_ranking,
               sum(quantity) as original_quantity,
               sum(mrr) as original_mrr
       FROM raw_mrr_totals_levelled
-      {{ dbt_utils.group_by(n=11) }}
+      {{ dbt_utils.group_by(n=10) }}
 
 ), list AS ( --get all the subscription + their lineage + the month we're looking for MRR for (12 month in the future)
 
