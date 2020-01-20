@@ -28,7 +28,6 @@ tables:
     import_query: >
       SELECT id
       , iid
-      , milestone_id
       , group_id
       , author_id
       , assignee_id
