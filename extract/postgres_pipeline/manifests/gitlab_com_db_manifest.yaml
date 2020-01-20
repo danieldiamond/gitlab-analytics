@@ -725,7 +725,7 @@ tables:
       , shared_with_group_id
       , expires_at
       , group_access
-      FROM gitlab_subscriptions
+      FROM group_group_links
     export_schema: 'gitlab_com'
     export_table: 'group_group_links'
     export_table_primary_key: id
