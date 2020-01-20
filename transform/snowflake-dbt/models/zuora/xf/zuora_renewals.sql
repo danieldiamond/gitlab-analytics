@@ -1,14 +1,14 @@
 WITH zuora_subscription AS (
   
   SELECT *
-  FROM "ANALYTICS".mpeychet_scratch_staging.zuora_subscription
+  FROM {{ ref('zuora_subscription') }}
   
 )
 
 , zuora_account AS (
   
   SELECT *
-  FROM "ANALYTICS".mpeychet_scratch_staging.zuora_account
+  FROM {{ ref('zuora_account') }}
   
 )
 
@@ -19,6 +19,9 @@ WITH zuora_subscription AS (
       zuora_subscription.subscription_name_slugify,    
       zuora_subscription.subscription_status, 
       zuora_subscription.version,
+      zuora_subscription.zuora_renewal_subscription_name_slugify,
+      zuora_subscription.renewal_term,
+      zuora_subscription.renewal_term_period_type,
       
       zuora_subscription.account_id, 
       zuora_account.account_number,
@@ -43,6 +46,7 @@ SELECT
   subscription_name_slugify,    
   subscription_status, 
   version,
+  zuora_renewal_subscription_name_slugify,
   account_id, 
   account_number,
   account_name,
