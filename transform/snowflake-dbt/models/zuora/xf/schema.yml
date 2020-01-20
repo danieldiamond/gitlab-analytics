@@ -298,3 +298,14 @@ models:
             description: Specifies if the refund is electronic or external.
           - name: refund_status
             description: The status of the refund.
+            
+    - name: zuora_renewals
+      description: '{{doc("zuora_renewals")}}'
+      columns:
+          - name: subscriptiton_name_slugify
+            tests:
+                - not_null
+          - name: subscription_id
+            tests:
+                - not_null
+                - unique
