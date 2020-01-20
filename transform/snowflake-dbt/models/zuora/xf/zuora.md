@@ -178,3 +178,7 @@ The final result:
 
 
 {% enddocs %}
+
+{% docs zuora_renewals %}
+
+{% enddocs %}
