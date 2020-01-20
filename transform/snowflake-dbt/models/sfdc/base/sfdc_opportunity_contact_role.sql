@@ -13,7 +13,7 @@ WITH base AS (
     SELECT
 
       --Primary Key
-      id::FLOAT                       AS contact_role_id,
+      id::VARCHAR                       AS opportunity_contact_role_id,
 
       --Foreign Keys
       contactid::VARCHAR               AS contact_id,
