@@ -29,13 +29,52 @@ Used in:
 This macro compares MRR values and buckets them into retention categories.
 Usage:
 ```
-{{ churn_type(original_mrr, new_mrr) }}
+{{ churn_type(original_mrr, new_mrr, column_name="churn_type") }}
 ```
 Used in:
 - retention_reasons_For_retention.sql
 - retention_parent_account_.sql
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
+
+## Retention Reason ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/retention_reason.sql))
+This macro compares MRR values, Product Category, Product Ranking and Amount of seats and gives back the reason as to why MRR went up or down.
+Usage:
+```
+{{ retention_reason(original_mrr, original_product_category, original_product_ranking,
+                           original_seat_quantity, new_mrr, new_product_category, new_product_ranking,
+                           new_seat_quantity) }}
+```
+Used in:
+- retention_reasons_For_retention.sql
+
+## Price Per Seat Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/price_per_seat_change.sql))
+This macro calculates the difference between price per seat, but only when the unit_of_measure of the plan is Seats.
+Usage:
+```
+{{ price_per_seat_change(original_mrr, original_seat_quantity, original_unit_of_measure,
+                                new_mrr, new_seat_quantity, new_unit_of_measure) }}
+```
+Used in:
+- retention_reasons_For_retention.sql
+
+## Seat Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/seat_change.sql))
+This macro compares the amount of seats and categorizes it into Maintained/Contraction/Expansion, and when the unit_of_measure of the plans isn't seats, Not Valid
+Usage:
+```
+{{ seat_change(original_seat_quantity, original_unit_of_measure, new_seat_quantity, new_unit_of_measure) }}
+```
+Used in:
+- retention_reasons_For_retention.sql
+
+## Plan Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/plan_change.sql))
+This macro compares product rankings and returns whether it was upgraded/downgraded/maintained, and when the product ranking is 0 (which means it's an old plan) it returns Not Valid
+Usage:
+```
+{{ plan_change(original_product_ranking, new_product_ranking) }}
+```
+Used in:
+- retention_reasons_For_retention.sql
 
 ## Create Snapshot Base Models ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/create_snapshot_base.sql))
 This macro creates a base model for dbt snapshots. A single entry is generated from the chosen start date through the current date for the specified primary key(s) and unit of time. 
