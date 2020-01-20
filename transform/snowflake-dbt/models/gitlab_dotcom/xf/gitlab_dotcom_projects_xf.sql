@@ -29,6 +29,11 @@ namespace_lineage AS (
     SELECT *
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
+), gitlab_subscriptions AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
+
 ),
 
 joined AS (
@@ -94,13 +99,20 @@ joined AS (
       namespaces.namespace_path,
 
       namespace_lineage.namespace_is_internal,
-      namespace_lineage.namespace_plan_id, 
+      namespace_lineage.namespace_plan_id,
       namespace_lineage.namespace_plan_title,
       namespace_lineage.namespace_plan_is_paid,
       namespace_lineage.ultimate_parent_id,
       namespace_lineage.ultimate_parent_plan_id,
       namespace_lineage.ultimate_parent_plan_title,
       namespace_lineage.ultimate_parent_plan_is_paid,
+
+      CASE
+        WHEN gitlab_subscriptions.is_trial
+          THEN 'trial'
+        ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
+      END                                                          AS plan_id_at_project_creation,
+
       COALESCE(COUNT(DISTINCT members.member_id), 0)               AS member_count
     FROM projects
       LEFT JOIN members
@@ -110,7 +122,10 @@ joined AS (
         ON projects.namespace_id = namespaces.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
-    {{ dbt_utils.group_by(n=66) }}
+      LEFT JOIN gitlab_subscriptions
+        ON namespace_lineage.ultimate_parent_id  = gitlab_subscriptions.namespace_id
+        AND projects.created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
+    {{ dbt_utils.group_by(n=67) }}
 )
 
 SELECT *

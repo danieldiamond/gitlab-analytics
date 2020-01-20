@@ -1,4 +1,4 @@
-{% set version_usage_stats_list = dbt_utils.get_column_values(table=ref('version_usage_stats_list'), column='full_ping_name', max_records=1000) %}
+{% set version_usage_stats_list = dbt_utils.get_column_values(table=ref('version_usage_stats_list'), column='full_ping_name', max_records=1000, default=[]) %}
 
 WITH usage_month as (
 
@@ -11,7 +11,7 @@ SELECT DISTINCT
 
   {% for ping_name in version_usage_stats_list %}
   {{ case_when_boolean_int( ping_name ) }} AS {{ping_name}}_active
-    {%- if not loop.last %}      
+    {%- if not loop.last %}
     ,
     {% endif -%}
   {% endfor %}

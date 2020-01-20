@@ -1,5 +1,5 @@
 -- depends_on: ref('version_usage_stats_to_stage_mappings')
-{% set stage_list = dbt_utils.get_column_values(table=ref('version_usage_stats_to_stage_mappings') , column='stage') %}
+{% set stage_list = dbt_utils.get_column_values(table=ref('version_usage_stats_to_stage_mappings') , column='stage', default=[]) %}
 
 WITH monthly_change AS (
 
