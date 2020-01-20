@@ -142,7 +142,7 @@ SELECT
        nullif(jsontext['tr_total_base']::STRING, '')            AS tr_total_base,
        nullif(jsontext['true_tstamp']::STRING, '')              AS true_tstamp,
        nullif(jsontext['txn_id']::STRING, '')                   AS txn_id,
-       nullif(jsontext['unstruct_event']::STRING, '')           AS unstruct_event,
+       {{ sanitize_unstructured_event() }},                     AS unstruct_event,
        nullif(jsontext['user_fingerprint']::STRING, '')         AS user_fingerprint,
        nullif(jsontext['user_id']::STRING, '')                  AS user_id,
        nullif(jsontext['user_ipaddress']::STRING, '')           AS user_ipaddress,

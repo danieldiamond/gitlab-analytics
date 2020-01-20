@@ -145,7 +145,7 @@ WITH source as (
       tr_total_base,
       true_tstamp,
       txn_id,
-      unstruct_event,
+      {{ sanitize_unstructured_event() }}     AS unstruct_event,
       user_fingerprint,
       user_id,
       user_ipaddress,
