@@ -1,10 +1,10 @@
-{%- macro churn_type(original_mrr, new_mrr) -%}
+{%- macro churn_type(original_mrr, new_mrr, column_name="churn_type") -%}
 
 	CASE WHEN {{ new_mrr }} = 0 and {{ original_mrr }} > 0 THEN 'Cancelled'
 		 WHEN {{ new_mrr }} < {{ original_mrr }} AND {{ new_mrr }} > 0 THEN 'Downgraded'
 		 WHEN {{ new_mrr }} > {{ original_mrr }} THEN 'Upgraded'
 		 WHEN {{ new_mrr }} = {{ original_mrr }} THEN 'Maintained'
 		 ELSE 'Other'
-		 END AS churn_type
+		 END AS {{ column_name }}
 
 {%- endmacro -%}

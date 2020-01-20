@@ -209,7 +209,7 @@ models:
           tests:
             - not_null
             - accepted_values:
-                    values: ['Seat Change/Price Change Mix', 'Seat Change', 'Price Change', 'Product Change','Product Change/Seat Change Mix', 'Unknown']
+                    values: ['Price Change/Seat Change Mix', 'Seat Change', 'Price Change', 'Product Change','Product Change/Seat Change Mix', 'Unknown']
         - name: plan_change
           tests:
             - not_null
@@ -220,11 +220,6 @@ models:
             - not_null
             - accepted_values:
                     values: ['Maintained', 'Contraction','Expansion']
-        - name: price_change
-          tests:
-            - not_null
-            - accepted_values:
-                    values: ['Maintained', 'Down', 'Up']
         - name: original_product_category
         - name: retention_product_category
           description: Product category is based on the rate plan name.
