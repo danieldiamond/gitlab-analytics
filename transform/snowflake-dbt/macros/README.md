@@ -169,6 +169,17 @@ Used in:
 - `gitlab_dotcom_issues_xf`
 - `gitlab_dotcom_merge_requests_xf`
 
+## Max Date in Bamboo HR ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/max_date_in_bamboo_analyses.sql))
+This macro creates a reusable variable based on the current date. 
+Usage:
+```
+{{ max_date_in_bamboo_analyses() }}
+```
+Used in: 
+- `rpt_team_members_out_of_comp_band`
+- `bamboohr_employment_status_xf`
+- `employee_directory_intermediate`
+
 ## Monthly Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/monthly_change.sql))
 This macro calculates differences for each consecutive usage ping by uuid.
 Usage:
