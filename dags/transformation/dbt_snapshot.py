@@ -36,13 +36,15 @@ default_args = {
 }
 
 # Create the DAG
+# Runs 3x per day
 dag = DAG("dbt_snapshots", default_args=default_args, schedule_interval="30 */8 * * *")
 
-# dbt-snapshot
+# dbt-snapshot for daily tag
 dbt_snapshot_cmd = f"""
     {dbt_install_deps_cmd} &&
-    dbt snapshot --profiles-dir profile
+    dbt snapshot -s tag:daily --profiles-dir profile
 """
+
 dbt_snapshot = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,

@@ -1,3 +1,5 @@
+-- depends_on: {{ ref('zuora_excluded_accounts') }}
+
 {{config({
     "schema": "staging"
   })
@@ -54,6 +56,7 @@ WITH source AS (
 
   FROM source
   WHERE is_deleted = FALSE
+    AND account_id NOT IN ({{ zuora_excluded_accounts() }})
 
 )
 

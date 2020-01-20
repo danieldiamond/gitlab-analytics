@@ -521,8 +521,6 @@ models:
           tests:
             - not_null
         - name: job_post_location
-          tests:
-            - not_null
         - name: job_post_created_at
           tests:
             - not_null

@@ -6,8 +6,8 @@
     - echo $SNOWFLAKE_DATABASE
     - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
     - echo $SNOWFLAKE_TRANSFORM_DATABASE
-    - if [ $SNOWFLAKE_DATABASE = "master" ]; then export snowflake_load_database="RAW"; else export snowflake_load_database="${CI_COMMIT_REF_NAME^^}_RAW"; fi
-    - echo $snowflake_load_database # This is a workaround for a bug in dbt https://github.com/fishtown-analytics/dbt/issues/1712
+    - export SNOWFLAKE_LOAD_DATABASE="RAW" # dbt pulls from RAW
+    - echo $SNOWFLAKE_LOAD_DATABASE
     - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XS_WAREHOUSE
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
     - export CI_PROFILE_TARGET="--profiles-dir profile --target ci"
@@ -83,6 +83,18 @@
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
+📜➕sheetload_model:
+  <<: *snowflake_dbt_jobs
+  script:
+    - *deps_and_seed
+    - echo $DBT_MODELS
+    - export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW" # Must write to clone of RAW since this does real work
+    - echo $SNOWFLAKE_LOAD_DATABASE
+    - dbt run $CI_PROFILE_TARGET --full-refresh --models $DBT_MODELS || true
+    - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS || true
+    - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
+    - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
+
 # dbt tests
 .dbt_misc_jobs: &dbt_misc_jobs
   <<: *snowflake_dbt_jobs
@@ -116,7 +128,8 @@
   <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
-    - echo $snowflake_load_database
+    - export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW" # Must write to clone of RAW since this does real work
+    - echo $SNOWFLAKE_LOAD_DATABASE
     - dbt snapshot $CI_PROFILE_TARGET
     
 📝specify_tests:
@@ -146,7 +159,7 @@
   <<: *periscope_check
   script:
     - git clone -b periscope/master --single-branch https://gitlab.com/gitlab-data/periscope.git --depth 1
-    - grep -rIiEo "from (analytics|analytics_staging|boneyard)\.([\_A-z]*)" periscope/. | awk -F '.' '{print tolower($NF)}' | sort | uniq > periscope.txt
     - git diff origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD --name-only | grep -iEo "(.*)\.sql" | sed -E 's/\.sql//' | awk -F '/' '{print tolower($NF)}' | sort | uniq > diff.txt
-    - comm -12 periscope.txt diff.txt > comparison.txt
+    - touch comparison.txt
+    - python3 transform/periscope_check.py
     - if (( $(cat comparison.txt | wc -l | tr -d ' ') > 0 )); then echo "Check these!" && cat comparison.txt && exit 1; else echo "All good" && exit 0; fi;

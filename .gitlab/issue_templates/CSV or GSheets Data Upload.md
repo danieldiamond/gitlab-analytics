@@ -22,6 +22,10 @@ If none, please include a description
 * [ ]  Does this data need to be linked to other data in the Data team's data warehouse?
   - [ ] Yes 
   - [ ] No
+* [ ] Does this data contain anything that is sensitive (Classified as Red or Orange in our [Data Classification Policy](https://about.gitlab.com/handbook/engineering/security/data-classification-policy.html#data-classification-levels))?
+  - [ ] Yes 
+  - [ ] No
+  - [ ] I don't know
 * [ ]  How long will this data need to reside in the Data team's data warehouse? Expiration Date: ______ 
 * [ ]  How do you want to name the table? Table Name: ______ 
 * [ ]  Update the due date on this issue for when you want this data in Periscope. (Note: The airflow job for sheetload runs every night and is immediately followed by a sheetload-specific dbt run)

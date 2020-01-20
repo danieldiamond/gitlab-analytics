@@ -138,3 +138,9 @@ models:
             description: The name of the fiscal quarter, e.g 'FY20-Q1' for 2019-02-02
             tests:
                - not_null
+          - name: holiday_desc
+            description: The name of the holiday, if applicable
+          - name: is_holiday
+            description: Whether or not it is a holiday
+            tests:
+               - not_null

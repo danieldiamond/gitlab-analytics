@@ -153,8 +153,7 @@ Steps to Resolve:
 * Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack to see the test results in Slack.
 * Step 2: Create an issue in finance asking the account get updated with a salesforce_id. Cross link this to the analytics issue
 * Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
-* Step 4: Filter out the zuora account in the base `zuora_account` model and submit your MR for review
-  * We filter from the base model instead of the test because downstream models (such as retention) rely on every account having accurate data.
+* Step 4: Add the zuora account_id in the [zuora_excluded_accounts seed file](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/zuora/zuora_excluded_accounts.sql) and submit your MR for review
 * Step 5: Once finance has confirmed that the account has been updated, create a MR to remove the filter
 
 
@@ -215,3 +214,10 @@ Steps to Resolve:
   * We filter from the base model instead of the test because downstream models (such as retention) rely on every account having accurate data.
 * Step 5: Once finance has confirmed that the account has been updated, create a MR to remove the filter
 -----------
+
+### Test: zuora_discount_accounts_are_excluded
+This tests that all zuora rate plan charges that used a particular internal discount are removed from the zuora base models. 
+
+Steps to Resolve:
+* Step 1: Confirm with finance that the account_id is indeed coming from an internal account and was meant for testing.
+* Step 2: Make an MR adding the account_id to the `zuora_excluded_accounts.csv` seed file with `is_permanently_excluded` set to TRUE and the account name as the description.

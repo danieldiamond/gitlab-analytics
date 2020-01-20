@@ -1,6 +1,7 @@
 with sfdc_contact as (
 
-     SELECT * 
+     SELECT
+	{{ dbt_utils.star(from=ref('sfdc_contact'), except=["CONTACT_EMAIL", "CONTACT_NAME"]) }}
      FROM {{ref('sfdc_contact')}}
 
 ), sfdc_record_type as (

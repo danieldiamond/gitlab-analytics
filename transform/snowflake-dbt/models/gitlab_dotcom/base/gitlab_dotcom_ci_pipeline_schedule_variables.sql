@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
   SELECT *
@@ -14,10 +9,6 @@ WITH source AS (
     SELECT
       id::INTEGER                   AS ci_pipeline_schedule_variable_id,
       key                           AS key,
-      value                         AS value,
-      encrypted_value               AS encrypted_value,
-      encrypted_value_salt          AS encrypted_value_salt,
-      encrypted_value_iv            AS encrypted_value_iv,
       pipeline_schedule_id::INTEGER AS ci_pipeline_schedule_id,
       created_at::TIMESTAMP         AS created_at,
       updated_at::TIMESTAMP         AS updated_at,

@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
   SELECT *
@@ -14,7 +9,6 @@ WITH source AS (
   SELECT
   
     id::INTEGER           AS ci_trigger_id,
-    token::VARCHAR        AS token,
     created_at::TIMESTAMP AS created_at,
     updated_at::TIMESTAMP AS updated_at,
     project_id::INTEGER   AS project_id,

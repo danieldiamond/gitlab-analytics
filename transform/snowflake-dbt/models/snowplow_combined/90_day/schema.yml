@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: snowplow_page_views_90
+    description: This is is a view over the last 90 days of snowplow_page_views_all based on the page_view_start column.
+  - name: snowplow_sessions_90
+    description: This is is a view over the last 90 days of snowplow_sessions_all based on the session_start column.
+  - name: snowplow_unnested_events_90
+    description: This is is a view over the last 90 days of snowplow_unnested_events_all based on the derived_tstamp column.

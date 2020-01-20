@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: sfdc_accounts_xf
+    description: '{{ doc("sfdc_accounts_xf") }}' 
     columns:
       - name: account_id
         tests:
@@ -67,6 +68,7 @@ models:
         tests:
           - not_null
   - name: sfdc_lead_xf
+    description: '{{ doc("sfdc_lead_xf") }}'
     columns:
       - name: lead_id
         tests:
@@ -129,9 +131,15 @@ models:
       - name: opportunity_owner
         tests:
           - not_null
-  - name: sfdc_proof_of_concept_xf
+  - name: sfdc_professional_services_engagement_xf
     columns:
-      - name: poc_id
+      - name: ps_engagement_id
+        tests:
+          - not_null
+          - unique          
+  - name: sfdc_proof_of_value_xf
+    columns:
+      - name: pov_id
         tests:
           - not_null
           - unique
@@ -147,7 +155,7 @@ models:
           - relationships:
               to: ref('sfdc_opportunity_xf')
               field: opportunity_id
-      - name: poc_status
+      - name: pov_status
         tests:
           - not_null
   - name: sfdc_reason_for_loss_unpacked
@@ -163,12 +171,6 @@ models:
       - name: account_name
         tests:
           - not_null
-  - name: sfdc_statement_of_work_xf
-    columns:
-      - name: statement_of_work_id
-        tests:
-          - not_null
-          - unique
   - name: sfdc_users_xf
     columns:
       - name: id

@@ -169,6 +169,17 @@ Used in:
 - `gitlab_dotcom_issues_xf`
 - `gitlab_dotcom_merge_requests_xf`
 
+## Max Date in Bamboo HR ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/max_date_in_bamboo_analyses.sql))
+This macro creates a reusable variable based on the current date. 
+Usage:
+```
+{{ max_date_in_bamboo_analyses() }}
+```
+Used in: 
+- `rpt_team_members_out_of_comp_band`
+- `bamboohr_employment_status_xf`
+- `employee_directory_intermediate`
+
 ## Monthly Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/monthly_change.sql))
 This macro calculates differences for each consecutive usage ping by uuid.
 Usage:
@@ -231,14 +242,15 @@ Used in:
 - sfdc_lead.sql
 
 ## Schema Union All ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_all.sql))
-This macro takes a schema prefix and a table name and does a UNION ALL on all tables that match the pattern.
+This macro takes a schema prefix and a table name and does a UNION ALL on all tables that match the pattern. The exclude_part parameter defaults to 'scratch' and all schemas matching that pattern will be ignored. 
 Usage:
 ```
 {{ schema_union_all('snowplow', 'snowplow_page_views') }}
 ```
 Used in:
+- snowplow_combined/30_day/*.sql
+- snowplow_combined/90_day/*.sql
 - snowplow_combined/all/*.sql
-- snowplow_combined/30/*.sql
 
 ## Schema Union Limit ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_limit.sql))
 This macro takes a schema prefix, a table name, a column name, and an integer representing days. It returns a view that is limited to the last 30 days based on the column name. Note that this also calls schema union all which can be a heavy call.
@@ -465,3 +477,13 @@ Usage:
 Used in:
 - zuora_subscription.sql
 - customers_db_orders.sql
+
+## Zuora Excluded Accounts ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/zuora_excluded_accounts.sql))
+This macro returns a list of zuora account_ids that are meant to be excluded from our base models. Account IDs can be filtered out because they were created for internal testing purposes (permanent filter) or because there's a data quality issue ([like a missing CRM](https://gitlab.com/gitlab-data/analytics/tree/master/transform/snowflake-dbt/tests#test-zuora_account_has_crm_id)) that we're fixing (temporary filter).
+
+- Used in:
+- zuora_account.sql
+- zuora_contact
+- zuora_invoice
+- zuora_refund
+- zuora_subscription.sql

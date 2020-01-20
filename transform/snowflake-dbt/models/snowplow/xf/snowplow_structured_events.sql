@@ -19,7 +19,7 @@ WITH events AS (
       se_action                    AS event_action,
       se_category                  AS event_category,
       se_label                     AS event_label,
-      se_property                  AS event_prorperty,
+      se_property                  AS event_property,
       se_value                     AS event_value,
       TRY_PARSE_JSON(contexts)     AS contexts,
       dvce_created_tstamp,

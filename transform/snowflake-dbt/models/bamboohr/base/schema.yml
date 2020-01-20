@@ -51,7 +51,7 @@ models:
             - not_null
       - name: job_title
   - name: bamboohr_employment_status
-    description: This model shows an employee current status. Updates are captured in log-style.
+    description: This model shows changes in employment status (active, terminated, on leave, etc). Updates are captured in log-style.
     columns:
       - name: status_id
         tests:
@@ -61,7 +61,12 @@ models:
         tests:
             - not_null
   - name: bamboohr_id_employee_number_mapping
-    description: This model is the canonical source mapping bamboo employee numbers with employee IDs. It includes all employees for all time. 
+    description: This model is the canonical source mapping bamboo employee numbers with employee IDs. It includes all employees for all time. The model also captures demographic information.
+    columns:
+      - name: greenhouse_candidate_id
+        description: Captures the id associated to the employee in Greenhouse (our recruiting platform). This will only be applicable in Greenhouse starting 2019-12-13, and will help identify which candidates were hired.
+        tests: 
+            - unique    
   - name: bamboohr_job_info
     description: This model shows the details (manager, department, and division) that an employee is in at a given point in time. This includes historical information.
     columns:
