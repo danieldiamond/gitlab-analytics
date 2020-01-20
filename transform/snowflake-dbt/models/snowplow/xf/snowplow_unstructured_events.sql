@@ -49,7 +49,7 @@ WITH events AS (
       os_timezone,
       br_renderengine                AS browser_engine,
       dvce_type                      AS device_type,
-      dvce_ismobile                  AS device_is_mobile
+      dvce_ismobile                  AS device_is_mobile,
 
       --change_form
       cf_formid,
@@ -65,7 +65,7 @@ WITH events AS (
       ff_elementid,
       ff_nodename,
       ff_elementtype,
-      ff_elementclasses
+      ff_elementclasses,
       --link_click
       lc_elementcontent,
       lc_elementid,
