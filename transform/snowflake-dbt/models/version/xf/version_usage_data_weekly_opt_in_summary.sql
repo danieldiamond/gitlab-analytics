@@ -20,7 +20,7 @@ WITH licenses AS ( -- Licenses app doesn't alter rows after creation so the snap
   SELECT *
   FROM {{ ref('version_usage_data') }}
   WHERE license_md5 IS NOT NULL
-  
+
 )
 
 , week_spine AS (
@@ -29,7 +29,7 @@ WITH licenses AS ( -- Licenses app doesn't alter rows after creation so the snap
     DATE_TRUNC('week', date_actual) AS week
   FROM {{ ref('date_details') }}
   WHERE date_details.date_actual BETWEEN '2017-04-01' AND CURRENT_DATE
-  
+
 )
 
 , grouped AS (
@@ -52,29 +52,29 @@ WITH licenses AS ( -- Licenses app doesn't alter rows after creation so the snap
       ON licenses.license_md5 = usage_data.license_md5
       AND week_spine.week = DATE_TRUNC('week', usage_data.created_at)
   {{ dbt_utils.group_by(n=6) }}
-  
+
 )
 
 , alphabetized AS (
 
     SELECT
       week_license_unique_id,
-      
+
       week,
       license_id,
-      
+
       license_md5,
       product_category,
       zuora_subscription_id,
-      
+
       --metadata
       count_usage_data_pings,
       did_send_usage_data::BOOLEAN AS did_send_usage_data,
       min_usage_data_created_at,
       max_usage_data_created_at
     FROM grouped
-    
+
 )
 
-SELECT * 
+SELECT *
 FROM alphabetized
