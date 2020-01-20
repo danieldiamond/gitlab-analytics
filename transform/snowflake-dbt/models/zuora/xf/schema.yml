@@ -291,7 +291,7 @@ models:
     - name: zuora_renewals
       description: '{{doc("zuora_renewals")}}'
       columns:
-          - name: subscriptiton_name_slugify
+          - name: subscription_name_slugify
             tests:
                 - not_null
           - name: subscription_id
