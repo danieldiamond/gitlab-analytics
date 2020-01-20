@@ -47,7 +47,7 @@ WITH licenses AS ( -- Licenses app doesn't alter rows after creation so the snap
     MAX(usage_data.created_at)                                   AS max_usage_data_created_at
   FROM week_spine
     LEFT JOIN licenses
-      ON week_spine.week BETWEEN licenses.starts_at AND COALESCE(licenses.license_expires_at, '9999-12-31')
+      ON week_spine.week BETWEEN licenses.starts_at AND {{ coalesce_to_infinity("licenses.license_expires_at") }}
     LEFT JOIN usage_data
       ON licenses.license_md5 = usage_data.license_md5
       AND week_spine.week = DATE_TRUNC('week', usage_data.created_at)

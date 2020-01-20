@@ -56,7 +56,7 @@ WITH merge_requests AS (
 ), projects AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_projects')}}
+    FROM {{ref('gitlab_dotcom_projects_xf')}}
 
 ), author_namespaces AS (
 
@@ -64,25 +64,25 @@ WITH merge_requests AS (
     FROM {{ref('gitlab_dotcom_namespaces_xf')}}
     WHERE namespace_type = 'Individual'
 
-), project_namespace_lineage AS (
+), gitlab_subscriptions AS (
 
-    SELECT
-      namespace_id,
-      ultimate_parent_id,
-      namespace_is_internal
-    FROM {{ref('gitlab_dotcom_namespace_lineage')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
 
 ), joined AS (
 
     SELECT
       merge_requests.*, 
-      IFF(projects.visibility_level != 'public' AND project_namespace_lineage.namespace_is_internal = FALSE,
+      IFF(projects.visibility_level != 'public' AND projects.namespace_is_internal = FALSE,
         'content masked', milestones.milestone_title)         AS milestone_title,
-      IFF(projects.visibility_level != 'public' AND project_namespace_lineage.namespace_is_internal = FALSE,
+      IFF(projects.visibility_level != 'public' AND projects.namespace_is_internal = FALSE,
         'content masked', milestones.milestone_description)   AS milestone_description,
       projects.namespace_id,
-      project_namespace_lineage.ultimate_parent_id,
-      project_namespace_lineage.namespace_is_internal,
+      projects.ultimate_parent_id,
+      projects.ultimate_parent_plan_id,
+      projects.ultimate_parent_plan_title,
+      projects.ultimate_parent_plan_is_paid,
+      projects.namespace_is_internal,
       author_namespaces.namespace_path                        AS author_namespace_path,
       ARRAY_TO_STRING(agg_labels.labels,'|')                  AS masked_label_title,
       agg_labels.labels,
@@ -91,25 +91,33 @@ WITH merge_requests AS (
         TRUE, FALSE)                                          AS is_included_in_engineering_metrics,
       IFF(merge_requests.target_project_id IN ({{is_project_part_of_product()}}),
         TRUE, FALSE)                                          AS is_part_of_product,
-      IFF(project_namespace_lineage.namespace_is_internal IS NOT NULL
+      IFF(projects.namespace_is_internal IS NOT NULL
           AND ARRAY_CONTAINS('community contribution'::variant, agg_labels.labels),
         TRUE, FALSE)                                          AS is_community_contributor_related,
-      TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at, 
-        merge_request_metrics.merged_at)                      AS hours_to_merged_status
+      TIMESTAMPDIFF(HOURS, merge_requests.merge_request_created_at,
+        merge_request_metrics.merged_at)                      AS hours_to_merged_status,
+
+    CASE
+      WHEN gitlab_subscriptions.is_trial
+        THEN 'trial'
+      ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
+    END AS plan_id_at_merge_request_creation
+
     FROM merge_requests
       LEFT JOIN agg_labels
         ON merge_requests.merge_request_id = agg_labels.merge_request_id
       LEFT JOIN merge_request_metrics
         ON merge_requests.merge_request_id = merge_request_metrics.merge_request_id
       LEFT JOIN milestones
-        ON merge_requests.milestone_id = milestones.milestone_id  
+        ON merge_requests.milestone_id = milestones.milestone_id
       LEFT JOIN projects
         ON merge_requests.target_project_id = projects.project_id
       LEFT JOIN author_namespaces
         ON merge_requests.author_id = author_namespaces.owner_id
-      LEFT JOIN project_namespace_lineage
-        ON projects.namespace_id = project_namespace_lineage.namespace_id
-  
+      LEFT JOIN gitlab_subscriptions
+        ON projects.ultimate_parent_id = gitlab_subscriptions.namespace_id
+        AND merge_requests.created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
+
 )
 
 SELECT *
