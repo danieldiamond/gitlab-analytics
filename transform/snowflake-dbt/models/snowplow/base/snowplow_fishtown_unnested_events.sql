@@ -7,9 +7,9 @@
   })
 }}
 
-{% set change_form = ['formId','elementId','nodeName','type','elementClasses','value'] %}
-{% set submit_form = ['formId','formClasses','elements'] %}
-{% set focus_form = ['formId','elementId','nodeName','elementType','elementClasses','value'] %}
+{% set change_form = ['formId','elementId','nodeName','type','elementClasses'] %}
+{% set submit_form = ['formId','formClasses'] %}
+{% set focus_form = ['formId','elementId','nodeName','elementType','elementClasses'] %}
 {% set link_click = ['elementId','elementClasses','elementTarget','targetUrl','elementContent'] %}
 {% set track_timing = ['category','variable','timing','label'] %}
 

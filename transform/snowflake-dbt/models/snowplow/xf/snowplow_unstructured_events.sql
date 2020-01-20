@@ -57,18 +57,15 @@ WITH events AS (
       cf_nodename,
       cf_type,
       cf_elementclasses,
-      cf_value,
       --submit_form
       sf_formid,
       sf_formclasses,
-      sf_elements,
       --focus_form
       ff_formid,
       ff_elementid,
       ff_nodename,
       ff_elementtype,
-      ff_elementclasses,
-      ff_value,
+      ff_elementclasses
       --link_click
       lc_elementcontent,
       lc_elementid,
