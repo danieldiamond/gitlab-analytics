@@ -16,7 +16,7 @@ WITH base AS (
       id::FLOAT                       AS contact_role_id,
 
       --Foreign Keys
-      contact_id::FLOAT               AS contact_id,
+      contactid::VARCHAR               AS contact_id,
       opportunity_id::FLOAT           AS opportunity_id,
       
       --Info
