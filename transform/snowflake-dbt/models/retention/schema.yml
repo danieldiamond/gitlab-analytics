@@ -219,7 +219,7 @@ models:
           tests:
             - not_null
             - accepted_values:
-                    values: ['Maintained', 'Contraction','Expansion']
+                    values: ['Maintained', 'Contraction','Expansion', 'Not Valid']
         - name: original_product_category
         - name: retention_product_category
           description: Product category is based on the rate plan name.
