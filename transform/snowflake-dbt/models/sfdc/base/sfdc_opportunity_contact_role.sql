@@ -20,7 +20,7 @@ WITH base AS (
       opportunity_id::FLOAT           AS opportunity_id,
       
       --Info
-      isprimary::BOOL                 AS is_primary
+      isprimary::BOOLEAN                 AS is_primary
 
     FROM base  
 
