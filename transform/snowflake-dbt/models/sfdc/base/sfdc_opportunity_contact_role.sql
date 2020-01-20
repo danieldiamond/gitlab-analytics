@@ -17,7 +17,7 @@ WITH base AS (
 
       --Foreign Keys
       contactid::VARCHAR               AS contact_id,
-      opportunity_id::FLOAT           AS opportunity_id,
+      opportunityid::VARCHAR           AS opportunity_id,
       
       --Info
       isprimary::BOOLEAN                 AS is_primary
