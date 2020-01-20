@@ -69,6 +69,11 @@ models:
       - name: issue_id
         tests:
           - not_null
+      - name: state
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['opened', 'closed', 'merged', 'locked']
       - name: issue_title
         description: '{{ doc("xf_visibility_documentation") }}'
       - name: issue_description
