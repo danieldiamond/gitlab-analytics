@@ -15,6 +15,7 @@ WITH zuora_subscription AS (
 , transform AS (
 
     SELECT 
+      zuora_subscription.subscription_id,
       zuora_subscription.subscription_name,
       zuora_subscription.subscription_name_slugify,    
       zuora_subscription.subscription_status, 
@@ -42,6 +43,7 @@ WITH zuora_subscription AS (
 )
 
 SELECT 
+  subscription_id,
   subscription_name,
   subscription_name_slugify,    
   subscription_status, 

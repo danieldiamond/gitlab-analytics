@@ -181,4 +181,37 @@ The final result:
 
 {% docs zuora_renewals %}
 
+All our subscriptions are termed subscriptions. That means they have all a term start date, term end date and Renewal term. 
+
+We have 2 scenario when a subscription is getting renewed:
+
+1. a new version of the subscription is created.
+1. a new subscription is created and manually linked to the original one.
+
+Case 1.: New version of the subscription is created
+
+Any time a subscription is edited (terms changing, product plan is changing), a new version of the subscription is created. A new version of the subscription doesn't mean that this subscription has been accepted by the customer. Sometimes, back and forth is necessary and several versions are created (with amended conditions). There is no way for us to understand which version has been accepted, approved and 
+
+In this model, we try to isolate those subscription versions that have been agreed by both sides.
+
+Case 2:
+
+This is an easy case, that is well explained in `zuora_subscription_xf` model and in the handbook. Please look and read this handbook page for more explanation around renewal linkage.
+
+
+Some odd cases that deserve documentation:
+
+Some subscriptions have specific behaviour that need to be understood.
+
+###### Subscription with auto-renew turned on
+
+When the auto-renew setting is turned on, 
+
+###### Subscriptions with proration
+
+Some subscriptions have proration turned on. That means, instead of having a trure
+
+###### Subscription Versions with several consecutive periods
+
+
 {% enddocs %}
