@@ -55,7 +55,8 @@ prometheus_operator = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     arguments=[
-        prometheus_extract_command + " {{ ts }} {{ next_execution_date.isoformat() }}"
+        prometheus_extract_command
+        + " {{ ts }} {{ next_execution_date.isoformat() }} $(gcloud auth print-identity-token)"
     ],
     dag=dag,
 )

@@ -12,26 +12,6 @@ from gitlabdata.orchestration_utils import (
 )
 
 from api import Prometheus
-import google.auth
-from google.auth.transport.requests import Request
-from google.oauth2 import service_account
-
-OAUTH_TOKEN_URI = "https://www.googleapis.com/oauth2/v4/token"
-
-
-def get_google_open_id_connect_token(service_account_credentials):
-    service_account_jwt = (
-        service_account_credentials._make_authorization_grant_assertion()
-    )
-    request = google.auth.transport.requests.Request()
-    body = {
-        "assertion": service_account_jwt,
-        "grant_type": google.oauth2._client._JWT_GRANT_TYPE,
-    }
-    token_response = google.oauth2._client._token_endpoint_request(
-        request, OAUTH_TOKEN_URI, body
-    )
-    return token_response["id_token"]
 
 
 if __name__ == "__main__":
@@ -41,6 +21,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("start")
     parser.add_argument("end")
+    parser.add_argument("token")
     args = parser.parse_args()
 
     prometheus_client = Prometheus(
@@ -64,17 +45,14 @@ if __name__ == "__main__":
         "gitlab_runner_jobs_total",
         "gitlab_runner_failed_jobs_total",
     ]
-    credentials = service_account.Credentials.from_service_account_info(
-        json.loads(os.environ["GCP_SERVICE_CREDS"])
-    )
-
-    open_id_token = get_google_open_id_connect_token(credentials)
 
     for metric in metrics_to_load:
         logging.info(f"loading {metric} from prometheus for {args.start} to {args.end}")
         file_name = f"{metric.upper()}.json"
         with open(file_name, "w") as outfile:
-            metric_data = prometheus_client.get_metric(args.start, args.end, metric)
+            metric_data = prometheus_client.get_metric(
+                args.start, args.end, metric, args.token
+            )
             json.dump(metric_data, outfile)
 
         snowflake_stage_load_copy_remove(
