@@ -91,7 +91,7 @@
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
-    - *clone_raw # Must write to clone of RAW since this does real work
+    - *clone_raw # Reads from raw clone 
     - echo $DBT_MODELS
     - dbt run $CI_PROFILE_TARGET --full-refresh --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS || true
