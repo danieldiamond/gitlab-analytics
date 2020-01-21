@@ -269,15 +269,13 @@ def csv_loader(
     csv_data = pd.read_csv(filename)
 
     if tablename:
-        table = f"{schema}.{tablename}"
+        table = tablename
     else:
-        csv_name = filename.split(".")[0].split("/")[-1]
-        table = f"{schema}.{csv_name}"
+        table = filename.split(".")[0].split("/")[-1]
 
-    print(table)
-    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-        print(csv_data)
-    # dw_uploader(engine, table, sheet_df, truncate=True)
+    info(f"Uploading {filename} to {database}.{schema}.{table}")
+    
+    dw_uploader(engine, table=table, data=csv_data, schema=schema, truncate=True)
 
 
 if __name__ == "__main__":
