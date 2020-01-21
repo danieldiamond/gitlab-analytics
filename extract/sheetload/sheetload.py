@@ -254,8 +254,36 @@ def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> Non
             dw_uploader(engine, table, sheet_df, truncate=True)
 
 
+def csv_loader(
+    filename: str,
+    schema: str,
+    database: str = "RAW",
+    tablename: str = None,
+    conn_dict: Dict[str, str] = None,
+):
+
+    # Create Snowflake engine
+    engine = snowflake_engine_factory(conn_dict or env, "LOADER", schema)
+    info(engine)
+
+    csv_data = pd.read_csv(filename)
+
+    if tablename:
+        table = f"{schema}.{tablename}"
+    else:
+        csv_name = filename.split(".")[0].split("/")[-1]
+        table = f"{schema}.{csv_name}"
+
+    print(table)
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        print(csv_data)
+    # dw_uploader(engine, table, sheet_df, truncate=True)
+
+
 if __name__ == "__main__":
     basicConfig(stream=sys.stdout, level=20)
     getLogger("snowflake.connector.cursor").disabled = True
-    Fire({"sheets": sheet_loader, "gcs": gcs_loader, "s3": s3_loader})
+    Fire(
+        {"sheets": sheet_loader, "gcs": gcs_loader, "s3": s3_loader, "csv": csv_loader}
+    )
     info("Complete.")
