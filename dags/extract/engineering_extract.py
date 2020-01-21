@@ -42,8 +42,7 @@ dag = DAG(
 
 engineering_extract_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
-    exit 0
-    # python engineering/execute.py
+    python engineering/execute.py
 """
 engineering_extract = KubernetesPodOperator(
     **gitlab_defaults,
