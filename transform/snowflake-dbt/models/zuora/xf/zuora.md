@@ -181,7 +181,7 @@ The final result:
 
 {% docs zuora_subscription_periods %}
 
-This table is the xf table for valid Zuora subscription periods. A subscription period is an interval (bounded by `term_start_date` and `term_end_date`) during which a specific version was valid.
+This table is the xf table for valid Zuora subscription periods. A subscription period is an interval (bounded by `term_start_date` and `term_end_date`) during which a specific version of the subscription was valid.
 
 In a more explicit way, this shows, when looking at a specific date (past or  future), what was/will be the active subscription version at this time.
 
