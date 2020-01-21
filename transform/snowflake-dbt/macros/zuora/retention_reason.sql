@@ -52,6 +52,7 @@
         WHEN {{ original_product_category }} != {{ new_product_category }} AND
                 {{ original_seat_quantity }} != {{ new_seat_quantity }}
             THEN 'Product Change/Seat Change Mix'
-        ELSE 'Unknown' END                      AS retention_reason
+        ELSE 'Unknown' 
+     END                      AS retention_reason
 
 {%- endmacro -%}
