@@ -87,7 +87,7 @@
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
-➕📜sheetload_model:
+📜➕x_sheetload_model:
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
