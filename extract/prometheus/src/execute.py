@@ -13,6 +13,7 @@ from gitlabdata.orchestration_utils import (
 
 from api import Prometheus
 import google.auth
+from google.auth.transport.requests import Request
 from google.oauth2 import service_account
 
 OAUTH_TOKEN_URI = "https://www.googleapis.com/oauth2/v4/token"
