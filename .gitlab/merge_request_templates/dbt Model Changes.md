@@ -72,7 +72,7 @@ Example: You might be looking at the count of opportunities before and after, if
 - [ ] Every model should be [tested](https://docs.getdbt.com/docs/testing-and-documentation) AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable.
 - [ ] Run the appropriate pipeline for the model changes in this MR
 - [ ] If the periscope_query job failed, validate that the changes you've made don't affect the grain of the table or the expected output in Periscope.
-- [ ] Please paste the output of `dbt test` when run locally below. Any failing tests should be fixed or explained prior to requesting a review.
+- [ ] If you are a data analyst on the Data Team, please paste the output of `dbt test` when run locally below. Any failing tests should be fixed or explained prior to requesting a review.
 
 <details>
 <summary> dbt test results </summary>
