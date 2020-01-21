@@ -11,6 +11,7 @@ from airflow_utils import (
 )
 
 from kube_secrets import (
+    GCP_SERVICE_CREDS,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_LOAD_DATABASE,
     SNOWFLAKE_LOAD_PASSWORD,
@@ -36,10 +37,7 @@ default_args = {
 
 dag = DAG("prometheus_extract", default_args=default_args, schedule_interval="@hourly")
 
-prometheus_extract_command = f"""
-    {clone_and_setup_extraction_cmd} &&
-    python prometheus/src/execute.py
-"""
+prometheus_extract_command = f"{clone_and_setup_extraction_cmd} && python prometheus/src/execute.py"  # don't move these quotes
 
 prometheus_operator = KubernetesPodOperator(
     **gitlab_defaults,
@@ -47,6 +45,7 @@ prometheus_operator = KubernetesPodOperator(
     task_id="prometheus-extract",
     name="prometheus-extract",
     secrets=[
+        GCP_SERVICE_CREDS,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_LOAD_DATABASE,
         SNOWFLAKE_LOAD_ROLE,
@@ -56,7 +55,7 @@ prometheus_operator = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     arguments=[
-        prometheus_extract_command + "{{ ts }} {{ next_execution_date.isoformat() }}"
+        prometheus_extract_command + " {{ ts }} {{ next_execution_date.isoformat() }}"
     ],
     dag=dag,
 )

@@ -2,7 +2,9 @@ import argparse
 import json
 import logging
 import sys
+import os
 from os import environ as env
+import yaml
 
 from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
@@ -10,6 +12,25 @@ from gitlabdata.orchestration_utils import (
 )
 
 from api import Prometheus
+import google.auth
+from google.oauth2 import service_account
+
+OAUTH_TOKEN_URI = "https://www.googleapis.com/oauth2/v4/token"
+
+
+def get_google_open_id_connect_token(service_account_credentials):
+    service_account_jwt = (
+        service_account_credentials._make_authorization_grant_assertion()
+    )
+    request = google.auth.transport.requests.Request()
+    body = {
+        "assertion": service_account_jwt,
+        "grant_type": google.oauth2._client._JWT_GRANT_TYPE,
+    }
+    token_response = google.oauth2._client._token_endpoint_request(
+        request, OAUTH_TOKEN_URI, body
+    )
+    return token_response["id_token"]
 
 
 if __name__ == "__main__":
@@ -21,7 +42,9 @@ if __name__ == "__main__":
     parser.add_argument("end")
     args = parser.parse_args()
 
-    prometheus_client = Prometheus("https://thanos-query.ops.gitlab.net/")
+    prometheus_client = Prometheus(
+        "https://us-central1-gitlab-ops.cloudfunctions.net/query-thanos-infra-kpi"
+    )
 
     config_dict = env.copy()
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
@@ -40,6 +63,11 @@ if __name__ == "__main__":
         "gitlab_runner_jobs_total",
         "gitlab_runner_failed_jobs_total",
     ]
+    credentials = service_account.Credentials.from_service_account_file(
+        os.environ["GCP_SERVICE_CREDS"]
+    )
+
+    open_id_token = get_google_open_id_connect_token(credentials)
 
     for metric in metrics_to_load:
         logging.info(f"loading {metric} from prometheus for {args.start} to {args.end}")
