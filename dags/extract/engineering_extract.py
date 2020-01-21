@@ -40,27 +40,28 @@ dag = DAG(
     "engineering_extract", default_args=default_args, schedule_interval="0 */8 * * *"
 )
 
-# engineering_extract_cmd = f"""
-#     {clone_and_setup_extraction_cmd} &&
-#     python engineering/execute.py
-# """
-# engineering_extract = KubernetesPodOperator(
-#     **gitlab_defaults,
-#     image=DATA_IMAGE,
-#     task_id="engineering-extract",
-#     name="engineering-extract",
-#     secrets=[
-#         SNOWFLAKE_ACCOUNT,
-#         SNOWFLAKE_LOAD_DATABASE,
-#         SNOWFLAKE_LOAD_ROLE,
-#         SNOWFLAKE_LOAD_USER,
-#         SNOWFLAKE_LOAD_WAREHOUSE,
-#         SNOWFLAKE_LOAD_PASSWORD,
-#     ],
-#     env_vars=pod_env_vars,
-#     arguments=[engineering_extract_cmd],
-#     dag=dag,
-# )
+engineering_extract_cmd = f"""
+    {clone_and_setup_extraction_cmd} &&
+    exit 0
+    # python engineering/execute.py
+"""
+engineering_extract = KubernetesPodOperator(
+    **gitlab_defaults,
+    image=DATA_IMAGE,
+    task_id="engineering-extract",
+    name="engineering-extract",
+    secrets=[
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_LOAD_DATABASE,
+        SNOWFLAKE_LOAD_ROLE,
+        SNOWFLAKE_LOAD_USER,
+        SNOWFLAKE_LOAD_WAREHOUSE,
+        SNOWFLAKE_LOAD_PASSWORD,
+    ],
+    env_vars=pod_env_vars,
+    arguments=[engineering_extract_cmd],
+    dag=dag,
+)
 
 advisory_database_extract_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
