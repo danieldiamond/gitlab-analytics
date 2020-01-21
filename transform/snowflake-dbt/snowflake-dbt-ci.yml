@@ -45,7 +45,7 @@
 
 
 # MR Jobs
-➖x_exclude:
+➖specify_exclude:
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
@@ -55,7 +55,7 @@
     - dbt run $CI_PROFILE_TARGET --exclude $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --exclude $DBT_MODELS
 
-➖❗️x_exclude_xl:
+➖❗️specify_xl_exclude:
   <<: *snowflake_dbt_jobs
   script:
     - *xl_warehouse
@@ -66,7 +66,7 @@
     - dbt run $CI_PROFILE_TARGET --exclude $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --exclude $DBT_MODELS
 
-➕model:
+➕specify_model:
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
@@ -76,7 +76,7 @@
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
-➕❗️model_xl:
+➕❗️specify_xl_model:
   <<: *snowflake_dbt_jobs
   script:
     - *xl_warehouse
@@ -87,7 +87,7 @@
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
-➕🥩z_model_raw:
+➕🥩specify_raw_model:
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
