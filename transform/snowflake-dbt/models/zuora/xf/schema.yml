@@ -288,7 +288,7 @@ models:
           - name: refund_status
             description: The status of the refund.
             
-    - name: zuora_subsciption_periods
+    - name: zuora_subscription_periods
       description: '{{doc("zuora_renewals")}}'
       columns:
           - name: subscription_name_slugify
