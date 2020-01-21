@@ -181,43 +181,25 @@ The final result:
 
 {% docs zuora_subscription_periods %}
 
-This table is the xf table for valid Zuora subscription periods. A version of a subscription is created after any amendment to a subscription (detailed zuora documentation).
- 
-The table is built recursively. The latest version is always the latest valid subscription. In order to 
+This table is the xf table for valid Zuora subscription periods. A subscription period is an interval (bounded by `term_start_date` and `term_end_date`) during which a specific version was valid.
 
+In a more explicit way, this shows, when looking at a specific date (past or  future), what was/will be the active subscription version at this time.
 
-All our subscriptions are termed subscriptions. That means they have all a term start date, term end date and Renewal term. When a subscription reaches its term date:
+From this model, we can surface renewal rates by product category. We can also start estimating IACV, Renewal ACV and other metrics for the Growth team. A `subscription_period` is considered as renewed if a newer valid subscription period has been created or if a `zuora_renewal_subscription_name_slugify` has been linked to this version (more documentation about [the process here](LINK)) (in this model, the `is_renewed` flag will be turned to `TRUE`).
 
-* either the subscription is renewed. We recreate a new version of the subscription with new term end date and potentially new products
-* or the subscription becomes expired, customers lose access to premium features on the platform.
+#### Some context about subscription versions
 
-We have 2 scenario when a subscription is getting renewed:
+[Zuora Subscription Version Documentation](LINK)
 
-1. a new version of the subscription is created.
-1. a new subscription is created and manually linked to the original one.
+The way GitLab works with version is quite confusing. For subscription with `auto_renew` turned on, a new subscription version is automatically created when the subscription expires (without processing credit card payment). If the payment fails, a new version (similar to the previous one) is created, auto_renew is turned to off and status stays as `active`.
 
-Case 1.: New version of the subscription is created
+For all other  subscriptions, any change in the subscription T&Cs and settings (product, seats, end date, price...) will create a new version of the subscription. That means that some subscriptions have up to 20 versions when they actually had only 2 renewals (`subscription_id = ''` for a sales generated one and `subscription_id = ''`  for one that has been created on the customers portal are 2 good examples).
 
-Any time a subscription is edited (terms changing, product plan is changing), a new version of the subscription is created. A new version of the subscription doesn't mean that this subscription has been accepted by the customer. Sometimes, back and forth is necessary and several versions are created (with amended conditions). There is no way for us to understand which version has been accepted, approved.
+#### Technical explanations
 
-Case 2:
+The model wants to identify which versions have been valid. In order to do so, the model is built recursively starting from the latest subscription version (version column is an incremental counter). This one has always `Cancelled` or `Active` status. We assume that this one is currently valid and shows the latest state of the subscription.
 
-This is an easy case, that is well explained in `zuora_subscription_xf` model and in the handbook. Please look and read this handbook page for more explanation around renewal linkage.
-
-
-Some odd cases that deserve documentation:
-
-Some subscriptions have specific behaviour that need to be understood.
-
-###### Subscription with auto-renew turned on
-
-When the auto-renew setting is turned on, 
-
-###### Subscriptions with proration
-
-Some subscriptions have proration turned on. That means, instead of having a trure
-
-###### Subscription Versions with several consecutive periods
+To check if the previous version have been valid at some point, we will compare the `term_start_date` between the freshest and the one before. If the `term_start_date` is in the future or on the same day as the latest version, we assume that this version has been never properly validated and got rolled back. For a specific version, we look at all newer versions (with higher version number), and check the minimum `term_start_date` in this subset of versions. If the `term_start_date` of the version checked, is greater or equal to the minimum of the newer ones, we assume that this one has never been valid, and we filter it out.  
 
 
 {% enddocs %}
