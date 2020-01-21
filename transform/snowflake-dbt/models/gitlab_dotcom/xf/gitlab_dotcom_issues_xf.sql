@@ -43,12 +43,15 @@ WITH issues AS (
       visibility_level
     FROM {{ref('gitlab_dotcom_projects')}}
 
-), internal_namespaces AS (
+), namespace_lineage AS (
 
-    SELECT
-      namespace_id
+    SELECT *
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
-    WHERE namespace_is_internal = TRUE
+
+), gitlab_subscriptions AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
 ),
 
 joined AS (
@@ -72,10 +75,10 @@ joined AS (
     {% for field in fields_to_mask %}
     CASE
       WHEN is_confidential = TRUE
-        AND internal_namespaces.namespace_id IS NULL
+        AND namespace_lineage.namespace_is_internal = TRUE
         THEN 'confidential - masked'
       WHEN visibility_level != 'public'
-        AND internal_namespaces.namespace_id IS NULL
+        AND namespace_lineage.namespace_is_internal = TRUE
         THEN 'private/internal - masked'
       ELSE {{field}}
     END                                          AS {{field}},
@@ -119,23 +122,44 @@ joined AS (
       TRUE, FALSE)                               AS is_included_in_engineering_metrics,
     IFF(issues.project_id IN ({{is_project_part_of_product()}}),
       TRUE, FALSE)                               AS is_part_of_product,
-    issue_state                                  AS state,
+    state,
     weight,
     due_date,
     lock_version,
     time_estimate,
     has_discussion_locked,
+    closed_by_id,
+    relative_position,
+    service_desk_reply_to,
+    duplicated_to_id,
+    promoted_to_epic_id,
+
     agg_labels.labels,
     ARRAY_TO_STRING(agg_labels.labels,'|')       AS masked_label_title,
-    internal_namespaces.namespace_id IS NOT NULL AS is_internal_issue
+
+    namespace_lineage.namespace_is_internal      AS is_internal_issue,
+    namespace_lineage.ultimate_parent_id,
+    namespace_lineage.ultimate_parent_plan_id,
+    namespace_lineage.ultimate_parent_plan_title,
+    namespace_lineage.ultimate_parent_plan_is_paid,
+
+    CASE
+      WHEN gitlab_subscriptions.is_trial
+        THEN 'trial'
+      ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
+    END AS plan_id_at_issue_creation
 
   FROM issues
   LEFT JOIN agg_labels
     ON issues.issue_id = agg_labels.issue_id
   LEFT JOIN projects
     ON issues.project_id = projects.project_id
-  LEFT JOIN internal_namespaces
-    ON projects.namespace_id = internal_namespaces.namespace_id
+  LEFT JOIN namespace_lineage
+    ON projects.namespace_id = namespace_lineage.namespace_id
+  LEFT JOIN gitlab_subscriptions
+    ON namespace_lineage.ultimate_parent_id = gitlab_subscriptions.namespace_id
+    AND issues.created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
 )
 
-SELECT * from joined
+SELECT *
+FROM joined

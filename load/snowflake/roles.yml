@@ -1030,7 +1030,7 @@ roles:
         warehouses:
             - analyst_xs
 
-    -mwalker:
+    - mwalker:
         warehouses:
             - engineer_xs
             - engineer_xl

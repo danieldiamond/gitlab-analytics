@@ -1,8 +1,8 @@
-{% set version_usage_stats_list = dbt_utils.get_column_values(table=ref('version_usage_stats_list'), column='full_ping_name', max_records=1000) %}
+{% set version_usage_stats_list = dbt_utils.get_column_values(table=ref('version_usage_stats_list'), column='full_ping_name', max_records=1000, default=[]) %}
 
 WITH mom_change as (
 
-  SELECT 
+  SELECT
     MD5(uuid || created_at)             AS unique_key,
     uuid,
     created_at,

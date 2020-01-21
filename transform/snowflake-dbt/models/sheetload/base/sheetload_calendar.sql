@@ -17,13 +17,18 @@ WITH source AS (
 ), categorized AS (
 
     SELECT *,
-      CASE WHEN lower(created_by) = 'karen.sijbrandij@gmail.com' THEN 'Personal'
+      CASE WHEN lower(created_by) LIKE '%sijbrandij%' THEN 'Personal'
+					 WHEN lower(event_title) LIKE '%hold%' THEN 'Personal'
+					 WHEN lower(event_title) LIKE '%ski%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%boat%' THEN 'Personal'
+           WHEN lower(event_title) LIKE '%pto%' THEN 'Personal'
 					 WHEN lower(event_title) LIKE '%company call%' THEN 'Company Call'
            WHEN lower(event_title) LIKE '%fgu%' THEN 'Group Conversation'
            WHEN lower(event_title) LIKE '%group conversation%' THEN 'Group Conversation'
-           WHEN lower(event_title) LIKE '%Monthly Diversity & Inclusion Initiatives Call%' THEN 'Diversity Initiatives'
+           WHEN lower(event_title) LIKE '%monthly diversity & inclusion initiatives call%' THEN 'Diversity Initiatives'
            WHEN lower(event_title) LIKE '%e-group%' THEN 'E-Group'
            WHEN lower(event_title) LIKE '%key monthly review%' THEN 'Monthly Key Review'
+					 WHEN lower(event_title) LIKE '%key review%' THEN 'Monthly Key Review'
            WHEN lower(event_title) LIKE '%monthly key review%' THEN 'Monthly Key Review'
            WHEN event_title LIKE '%MTG%' THEN 'In Person Meetings'
            WHEN event_title LIKE '%INTERVIEW%' THEN 'Media Interviews'
@@ -91,6 +96,7 @@ WITH source AS (
       ELSE NULL END AS okr_time_allocation
     FROM categorized
 		WHERE event_category != 'Personal'
+		AND calculated_duration < 10
 
 )
 
