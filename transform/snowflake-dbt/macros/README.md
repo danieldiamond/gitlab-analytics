@@ -49,7 +49,7 @@ Used in:
 - retention_reasons_For_retention.sql
 
 ## Price Per Seat Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/price_per_seat_change.sql))
-This macro calculates the difference between price per seat, but only when the unit_of_measure of the plan is Seats.
+This macro calculates the difference between price per seat, but only when the unit_of_measure of the plan is seats.
 Usage:
 ```
 {{ price_per_seat_change(original_mrr, original_seat_quantity, original_unit_of_measure,
