@@ -1,11 +1,4 @@
-WITH zuora_subscription AS (
-  
-  SELECT *
-  FROM {{ ref('zuora_subscription') }}
-  
-)
-
-, zuora_account AS (
+WITH zuora_account AS (
   
   SELECT *
   FROM {{ ref('zuora_account') }}
@@ -26,7 +19,14 @@ WITH zuora_subscription AS (
   
 )
 
-, transform AS (
+, zuora_subscription AS (
+  
+  SELECT *
+  FROM {{ ref('zuora_subscription') }}
+  
+)
+
+, subsription_joined_with_accounts AS (
 
     SELECT DISTINCT
       zuora_subscription.subscription_id,
@@ -56,31 +56,33 @@ WITH zuora_subscription AS (
     
 )
 
-, last_cte AS (
-SELECT DISTINCT
-  transform.subscription_id,
-  transform.subscription_name,
-  transform.subscription_name_slugify,    
-  transform.subscription_status, 
-  transform.version,
-  transform.zuora_renewal_subscription_name_slugify,
-  transform.account_id, 
-  transform.account_number,
-  transform.account_name,
-  transform.subscription_start_date, 
-  transform.subscription_version_end_date,
-  transform.subscription_version_term_end_date,
-  transform.subscription_version_term_start_date
+, subscription_joined_with_charges AS (
   
-FROM transform
-INNER JOIN zuora_rate_plan
-  ON transform.subscription_id = zuora_rate_plan.subscription_id
-INNER JOIN zuora_rate_plan_charge
-  ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
-    AND mrr > 0 AND tcv > 0
-WHERE (subscription_version_term_start_date  < min_following_subscription_version_term_start_date
-  OR min_following_subscription_version_term_start_date IS NULL)
-  AND subscription_status <> 'Cancelled'
+    SELECT DISTINCT
+      subsription_joined_with_accounts.subscription_id,
+      subsription_joined_with_accounts.subscription_name,
+      subsription_joined_with_accounts.subscription_name_slugify,    
+      subsription_joined_with_accounts.subscription_status, 
+      subsription_joined_with_accounts.version,
+      subsription_joined_with_accounts.zuora_renewal_subscription_name_slugify,
+      subsription_joined_with_accounts.account_id, 
+      subsription_joined_with_accounts.account_number,
+      subsription_joined_with_accounts.account_name,
+      subsription_joined_with_accounts.subscription_start_date, 
+      subsription_joined_with_accounts.subscription_version_end_date,
+      subsription_joined_with_accounts.subscription_version_term_end_date,
+      subsription_joined_with_accounts.subscription_version_term_start_date
+      
+    FROM subsription_joined_with_accounts
+    INNER JOIN zuora_rate_plan
+      ON subsription_joined_with_accounts.subscription_id = zuora_rate_plan.subscription_id
+    INNER JOIN zuora_rate_plan_charge
+      ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
+        AND mrr > 0 AND tcv > 0
+    WHERE (subscription_version_term_start_date  < min_following_subscription_version_term_start_date
+      OR min_following_subscription_version_term_start_date IS NULL)
+      AND subscription_status <> 'Cancelled'
+      
 )
 
 SELECT 
@@ -91,4 +93,4 @@ SELECT
       THEN TRUE
     ELSE FALSE
   END AS is_renewed
-FROM last_cte
+FROM subscription_joined_with_charges
