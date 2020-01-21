@@ -51,7 +51,7 @@ WITH zuora_account AS (
             ROWS BETWEEN UNBOUNDED PRECEDING
                    AND 1 PRECEDING)   AS min_following_subscription_version_term_start_date
     FROM zuora_subscription
-    LEFT JOIN zuora_account
+    INNER JOIN zuora_account
       ON zuora_subscription.account_id = zuora_account.account_id
     
 )
