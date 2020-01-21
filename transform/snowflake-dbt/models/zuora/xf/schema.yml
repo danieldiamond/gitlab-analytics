@@ -289,7 +289,7 @@ models:
             description: The status of the refund.
             
     - name: zuora_subscription_periods
-      description: '{{doc("zuora_renewals")}}'
+      description: '{{doc("zuora_subscription_periods")}}'
       columns:
           - name: subscription_name_slugify
             tests:

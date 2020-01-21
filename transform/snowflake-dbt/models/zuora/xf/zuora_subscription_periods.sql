@@ -45,11 +45,11 @@ WITH zuora_account AS (
       subscription_end_date           AS subscription_version_end_date, 
       term_end_date                   AS subscription_version_term_end_date, 
       term_start_date                 AS subscription_version_term_start_date,
-        MIN(term_start_date) 
-        OVER (PARTITION BY subscription_name_slugify 
-              ORDER BY zuora_subscription.version DESC 
-              ROWS BETWEEN UNBOUNDED PRECEDING
-                     AND 1 PRECEDING) AS min_following_subscription_version_term_start_date
+      MIN(term_start_date) 
+      OVER (PARTITION BY subscription_name_slugify 
+            ORDER BY zuora_subscription.version DESC 
+            ROWS BETWEEN UNBOUNDED PRECEDING
+                   AND 1 PRECEDING)   AS min_following_subscription_version_term_start_date
     FROM zuora_subscription
     LEFT JOIN zuora_account
       ON zuora_subscription.account_id = zuora_account.account_id
@@ -71,24 +71,31 @@ WITH zuora_account AS (
       subsription_joined_with_accounts.subscription_start_date, 
       subsription_joined_with_accounts.subscription_version_end_date,
       subsription_joined_with_accounts.subscription_version_term_end_date,
-      subsription_joined_with_accounts.subscription_version_term_start_date
+      subsription_joined_with_accounts.subscription_version_term_start_date,
+      SUM(tcv) AS tcv,
+      SUM(mrr) AS mrr
       
     FROM subsription_joined_with_accounts
     INNER JOIN zuora_rate_plan
       ON subsription_joined_with_accounts.subscription_id = zuora_rate_plan.subscription_id
     INNER JOIN zuora_rate_plan_charge
       ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
+        -- remove refunded subscriptions
         AND mrr > 0 AND tcv > 0
     WHERE (subscription_version_term_start_date  < min_following_subscription_version_term_start_date
       OR min_following_subscription_version_term_start_date IS NULL)
-      AND subscription_status <> 'Cancelled'
+      -- remove cancelled subscription
+      AND subscription_version_term_end_date <> subscription_version_term_start_date
+    {{ dbt_utils.group_by(n=13) }}
       
 )
 
 SELECT 
   *,
   CASE
+    -- manual linked subscription
     WHEN zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
+    -- new version available, got renewed
     WHEN LAG(subscription_name_slugify, 1) OVER (PARTITION BY subscription_name_slugify ORDER BY version DESC) IS NOT NULL
       THEN TRUE
     ELSE FALSE

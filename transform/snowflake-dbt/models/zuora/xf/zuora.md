@@ -179,9 +179,17 @@ The final result:
 
 {% enddocs %}
 
-{% docs zuora_renewals %}
+{% docs zuora_subscription_periods %}
 
-All our subscriptions are termed subscriptions. That means they have all a term start date, term end date and Renewal term. 
+This table is the xf table for valid Zuora subscription periods. A version of a subscription is created after any amendment to a subscription (detailed zuora documentation).
+ 
+The table is built recursively. The latest version is always the latest valid subscription. In order to 
+
+
+All our subscriptions are termed subscriptions. That means they have all a term start date, term end date and Renewal term. When a subscription reaches its term date:
+
+* either the subscription is renewed. We recreate a new version of the subscription with new term end date and potentially new products
+* or the subscription becomes expired, customers lose access to premium features on the platform.
 
 We have 2 scenario when a subscription is getting renewed:
 
@@ -190,9 +198,7 @@ We have 2 scenario when a subscription is getting renewed:
 
 Case 1.: New version of the subscription is created
 
-Any time a subscription is edited (terms changing, product plan is changing), a new version of the subscription is created. A new version of the subscription doesn't mean that this subscription has been accepted by the customer. Sometimes, back and forth is necessary and several versions are created (with amended conditions). There is no way for us to understand which version has been accepted, approved and 
-
-In this model, we try to isolate those subscription versions that have been agreed by both sides.
+Any time a subscription is edited (terms changing, product plan is changing), a new version of the subscription is created. A new version of the subscription doesn't mean that this subscription has been accepted by the customer. Sometimes, back and forth is necessary and several versions are created (with amended conditions). There is no way for us to understand which version has been accepted, approved.
 
 Case 2:
 
