@@ -109,10 +109,14 @@ These jobs are scoped to the `ci` target. This target selects a subset of data f
 
 Note that job artificats are available for all dbt run jobs. These include the compiled code and the run results.
 
+These jobs run against the primary `RAW` database.
 - **specify_model**: Specify which model to run with the variable `DBT_MODELS`
 - **specify_xl_model**: Specify which model to run using an XL warehouse with the variable `DBT_MODELS`
 - **specify_exclude**: Specify which model to exclude with the variable `DBT_MODELS`
 - **specify_xl_exclude**: Specify which model to exclude using an XL warehouse with the variable `DBT_MODELS`
+
+This jobs runs against the clone of `RAW`. Requires the `clone_raw` job to have been run.
+- **specify_raw_model**: Specify a dbt model against the clone of the RAW database. 
 
 Watch https://youtu.be/l14N7l-Sco4 to see an example of how to set the variable. The variable is a stand-in for any of the examples in [the dbt documentation on model selection syntax](https://docs.getdbt.com/docs/model-selection-syntax#section-specifying-models-to-run).
 
