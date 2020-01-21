@@ -4,7 +4,7 @@
         WHEN NOT (       -- Only compare prices per seat when the unit of measure of the original and new plans is seats
             ARRAY_CONTAINS('Seats'::VARIANT, {{ original_unit_of_measure }}) AND
             ARRAY_SIZE({{ original_unit_of_measure }}) = 1 AND
-            ARRAY_CONTAINS('Seats'::variant, {{ new_unit_of_measure }}) AND
+            ARRAY_CONTAINS('Seats'::VARIANT, {{ new_unit_of_measure }}) AND
             ARRAY_SIZE({{ new_unit_of_measure }}) = 1
         )
             THEN 'Not Valid'
