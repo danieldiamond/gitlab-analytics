@@ -87,12 +87,12 @@
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
-📜➕_sheetload_model:
+➕📜sheetload_model:
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
-    - echo $DBT_MODELS
     - *clone_raw # Must write to clone of RAW since this does real work
+    - echo $DBT_MODELS
     - dbt run $CI_PROFILE_TARGET --full-refresh --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
@@ -131,7 +131,7 @@
   <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
-    - export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW" # Must write to clone of RAW since this does real work
+    - *clone_raw # Must write to clone of RAW since this does real work
     - echo $SNOWFLAKE_LOAD_DATABASE
     - dbt snapshot $CI_PROFILE_TARGET
     
