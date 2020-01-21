@@ -185,11 +185,12 @@ This table is the xf table for valid Zuora subscription periods. A subscription 
 
 In a more explicit way, this shows, when looking at a specific date (past or  future), what was/will be the active subscription version at this time.
 
-From this model, we can surface renewal rates by product category. We can also start estimating IACV, Renewal ACV and other metrics for the Growth team. A `subscription_period` is considered as renewed if a newer valid subscription period has been created or if a `zuora_renewal_subscription_name_slugify` has been linked to this version (more documentation about [the process here](LINK)) (in this model, the `is_renewed` flag will be turned to `TRUE`).
+From this model, we can surface renewal rates by product category. We can also start estimating IACV, Renewal ACV and other metrics for the Growth team. A `subscription_period` is considered as renewed if a newer valid subscription period has been created or if a `zuora_renewal_subscription_name_slugify` has been linked to this version (more documentation about [the process here especially the section Linking Renewal Subscriptions](https://about.gitlab.com/handbook/finance/accounting/)) (in this model, the `is_renewed` flag will be turned to `TRUE`).
 
 #### Some context about subscription versions
 
-[Zuora Subscription Version Documentation](LINK)
+[Zuora Amendment API Object](https://knowledgecenter.zuora.com/Developer_Platform/API/G_SOAP_API/E1_SOAP_API_Object_Reference/Amendment)
+[Zuora Subscription Amendment Doc](https://knowledgecenter.zuora.com/Zuora_Central/Subscriptions/Subscriptions/E_Changing_Subscriptions_Amendments)
 
 The way GitLab works with version is quite confusing. For subscription with `auto_renew` turned on, a new subscription version is automatically created when the subscription expires (without processing credit card payment). If the payment fails, a new version (similar to the previous one) is created, auto_renew is turned to off and status stays as `active`.
 
