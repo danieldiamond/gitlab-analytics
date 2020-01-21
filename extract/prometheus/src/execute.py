@@ -63,7 +63,7 @@ if __name__ == "__main__":
         "gitlab_runner_jobs_total",
         "gitlab_runner_failed_jobs_total",
     ]
-    credentials = service_account.Credentials.from_service_account_file(
+    credentials = service_account.Credentials.from_service_account_info(
         os.environ["GCP_SERVICE_CREDS"]
     )
 
