@@ -16,8 +16,9 @@ WITH events AS (
 
       event_id,
       event_name,
-      TRY_PARSE_JSON(unstruct_event) AS unstruct_event,
-      TRY_PARSE_JSON(unstruct_event)['data']['data']
+      IFF(unstruct_event='masked', 'masked', TRY_PARSE_JSON(unstruct_event)
+                                     AS unstruct_event,
+      IFF(unstruct_event='masked', 'masked', TRY_PARSE_JSON(unstruct_event)['data']['data']
                                      AS unstruct_event_data,
       v_tracker,
       dvce_created_tstamp,
