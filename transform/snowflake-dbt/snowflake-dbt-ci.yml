@@ -30,6 +30,10 @@
 
 
 # Common commands anchors
+.clone_raw: &clone_raw
+  - export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW"
+  - echo $SNOWFLAKE_LOAD_DATABASE
+
 .deps_and_seed: &deps_and_seed
   - python3 macro_name_check.py
   - dbt deps $CI_PROFILE_TARGET
@@ -83,13 +87,12 @@
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
-📜➕sheetload_model:
+📜➕_sheetload_model:
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
     - echo $DBT_MODELS
-    - export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW" # Must write to clone of RAW since this does real work
-    - echo $SNOWFLAKE_LOAD_DATABASE
+    - *clone_raw # Must write to clone of RAW since this does real work
     - dbt run $CI_PROFILE_TARGET --full-refresh --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
