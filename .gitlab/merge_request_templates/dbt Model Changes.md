@@ -116,7 +116,7 @@ These jobs run against the primary `RAW` database.
 - **specify_xl_exclude**: Specify which model to exclude using an XL warehouse with the variable `DBT_MODELS`
 
 This jobs runs against the clone of `RAW`. Requires the `clone_raw` job to have been run.
-- **📜➕_sheetload_model**: Specify a sheetload dbt model against the clone of the RAW database. 
+- **specify_model_raw**: Specify a dbt model against the clone of the RAW database. 
 
 Watch https://youtu.be/l14N7l-Sco4 to see an example of how to set the variable. The variable is a stand-in for any of the examples in [the dbt documentation on model selection syntax](https://docs.getdbt.com/docs/model-selection-syntax#section-specifying-models-to-run).
 
