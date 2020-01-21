@@ -72,8 +72,7 @@ WITH zuora_account AS (
       subsription_joined_with_accounts.subscription_version_end_date,
       subsription_joined_with_accounts.subscription_version_term_end_date,
       subsription_joined_with_accounts.subscription_version_term_start_date,
-      SUM(tcv) AS tcv,
-      SUM(mrr) AS mrr
+      SUM(tcv) AS tcv
       
     FROM subsription_joined_with_accounts
     INNER JOIN zuora_rate_plan
