@@ -64,7 +64,7 @@ if __name__ == "__main__":
         "gitlab_runner_failed_jobs_total",
     ]
     credentials = service_account.Credentials.from_service_account_info(
-        os.environ["GCP_SERVICE_CREDS"]
+        json.loads(os.environ["GCP_SERVICE_CREDS"])
     )
 
     open_id_token = get_google_open_id_connect_token(credentials)
