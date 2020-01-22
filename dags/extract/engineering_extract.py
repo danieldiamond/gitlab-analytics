@@ -67,7 +67,7 @@ advisory_database_extract_cmd = f"""
     curl -L https://gitlab.com/gitlab-org/security-products/gemnasium-db/-/jobs/artifacts/master/raw/data/data.tar.gz\?job\=pages | gunzip -c | tar xvf -
     curl -L https://gitlab.com/gitlab-org/security-products/gemnasium-db/-/jobs/artifacts/master/raw/data/nvd.tar.gz\?job\=pages | gunzip -c | tar xvf -
     python3 sheetload/sheetload.py csv --filename data/data.csv --schema engineering_extracts --tablename advisory_data
-    python3 sheetload/sheetload.py csv --filename data/nvd.csv --schema engineering_extracts --tablename nvd_data
+    python3 sheetload/sheetload.py csv --filename data/nvd.csv --schema engineering_extracts --tablename nvd_data --header None
 """
 advisory_database_extract = KubernetesPodOperator(
     **gitlab_defaults,
