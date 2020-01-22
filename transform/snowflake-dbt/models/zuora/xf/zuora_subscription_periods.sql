@@ -93,7 +93,8 @@ SELECT
   *,
   CASE
     -- manual linked subscription
-    WHEN zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
+    WHEN zuora_renewal_subscription_name_slugify IS NOT NULL
+      THEN TRUE
     -- new version available, got renewed
     WHEN LAG(subscription_name_slugify, 1) OVER (PARTITION BY subscription_name_slugify ORDER BY version DESC) IS NOT NULL
       THEN TRUE
