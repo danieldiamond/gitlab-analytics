@@ -71,7 +71,7 @@ Example: You might be looking at the count of opportunities before and after, if
 
 </code></pre>
 </details>
-<details>
+</details>
 
 #### Testing
 
