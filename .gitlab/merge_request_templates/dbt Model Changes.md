@@ -1,3 +1,8 @@
+<!---
+  Use this template when making consequential changes to the `/transform` directory,
+  including changes to dbt models, tests, seeds, and docs.
+--->
+
 ## Issue
 <!--- Link the Issue this MR closes --->
 Closes #
