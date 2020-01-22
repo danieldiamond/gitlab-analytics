@@ -7,3 +7,5 @@ models:
         description: This is a view over the last 30 days of snowplow_page_views_all based on the page_view_start column.
     -   name: snowplow_unnested_events_30
         description: This a view over the last 30 days of snowplow_unnested_events_all based on the derived_tstamp column.
+    -   name: snowplow_unstructured_events_30
+        description: This a view over the last 30 days of snowplow_unstuctured_events_all based on the derived_tstamp column.

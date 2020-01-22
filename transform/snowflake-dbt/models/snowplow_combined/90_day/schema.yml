@@ -7,3 +7,5 @@ models:
     description: This is is a view over the last 90 days of snowplow_sessions_all based on the session_start column.
   - name: snowplow_unnested_events_90
     description: This is is a view over the last 90 days of snowplow_unnested_events_all based on the derived_tstamp column.
+  - name: snowplow_unstructured_events_90
+    description: This a view over the last 90 days of snowplow_unstuctured_events_all based on the derived_tstamp column.

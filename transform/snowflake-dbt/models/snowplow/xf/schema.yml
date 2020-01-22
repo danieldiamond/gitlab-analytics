@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: snowplow_structured_events
-    description: This model isolates only structured events and chooses a subset of columns needed for further models/analyses
+    description: This model isolates only structured events and chooses a subset of columns needed for further models/analyses.
+  - name: snowplow_unstructured_events
+    description: This model isolates only unstructured events and chooses a subset of columns needed for further models/analyses.
   - name: snowplow_web_page
     description: This model is needed for the snowplow dbt package.

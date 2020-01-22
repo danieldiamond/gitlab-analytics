@@ -7,9 +7,9 @@
   })
 }}
 
-{% set change_form = ['formId','elementId','nodeName','type','elementClasses','value'] %}
-{% set submit_form = ['formId','formClasses','elements'] %}
-{% set focus_form = ['formId','elementId','nodeName','elementType','elementClasses','value'] %}
+{% set change_form = ['formId','elementId','nodeName','type','elementClasses'] %}
+{% set submit_form = ['formId','formClasses'] %}
+{% set focus_form = ['formId','elementId','nodeName','elementType','elementClasses'] %}
 {% set link_click = ['elementId','elementClasses','elementTarget','targetUrl','elementContent'] %}
 {% set track_timing = ['category','variable','timing','label'] %}
 
@@ -142,7 +142,11 @@ SELECT
        nullif(jsontext['tr_total_base']::STRING, '')            AS tr_total_base,
        nullif(jsontext['true_tstamp']::STRING, '')              AS true_tstamp,
        nullif(jsontext['txn_id']::STRING, '')                   AS txn_id,
-       nullif(jsontext['unstruct_event']::STRING, '')           AS unstruct_event,
+       CASE
+         WHEN event_name IN ('submit_form', 'focus_form', 'change_form')
+           THEN 'masked'
+         ELSE nullif(jsontext['unstruct_event']::STRING, '')
+       END AS unstruct_event,
        nullif(jsontext['user_fingerprint']::STRING, '')         AS user_fingerprint,
        nullif(jsontext['user_id']::STRING, '')                  AS user_id,
        nullif(jsontext['user_ipaddress']::STRING, '')           AS user_ipaddress,

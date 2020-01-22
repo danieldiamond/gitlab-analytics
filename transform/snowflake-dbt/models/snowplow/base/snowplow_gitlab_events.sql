@@ -8,9 +8,9 @@
   })
 }}
 
-{% set change_form = ['formId','elementId','nodeName','type','elementClasses','value'] %}
-{% set submit_form = ['formId','formClasses','elements'] %}
-{% set focus_form = ['formId','elementId','nodeName','elementType','elementClasses','value'] %}
+{% set change_form = ['formId','elementId','nodeName','type','elementClasses'] %}
+{% set submit_form = ['formId','formClasses'] %}
+{% set focus_form = ['formId','elementId','nodeName','elementType','elementClasses'] %}
 {% set link_click = ['elementId','elementClasses','elementTarget','targetUrl','elementContent'] %}
 {% set track_timing = ['category','variable','timing','label'] %}
 
@@ -145,7 +145,11 @@ WITH source as (
       tr_total_base,
       true_tstamp,
       txn_id,
-      unstruct_event,
+      CASE
+        WHEN event_name IN ('submit_form', 'focus_form', 'change_form')
+          THEN 'masked'
+        ELSE unstruct_event
+      END AS unstruct_event,
       user_fingerprint,
       user_id,
       user_ipaddress,
