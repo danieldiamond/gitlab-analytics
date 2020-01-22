@@ -168,10 +168,10 @@ SELECT
     ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
   END                                   AS plan_id_at_action_date,
   DATEDIFF('hour', 
-           namespace_created_at, 
+           ultimate_namespace.namespace_created_at, 
            event_created_at)/24         AS day_since_namespace_creation,
   DATEDIFF('hour', 
-           namespace_created_at, 
+           ultimate_namespace.namespace_created_at, 
            event_created_at)/(24 * 7)   AS week_since_namespace_creation,
   DATEDIFF('hour', 
            project_created_at, 
@@ -185,8 +185,8 @@ FROM {{ event_cte.event_name }}
   INNER JOIN namespaces AS ultimate_namespace 
     ON namespaces.namespace_ultimate_parent_id = ultimate_namespace.namespace_id
   LEFT JOIN gitlab_subscriptions
-    ON ultimate_namespace.ultimate_parent_id = gitlab_subscriptions.namespace_id
-    AND issues.created_at BETWEEN gitlab_subscriptions.valid_from 
+    ON ultimate_namespace.namespace_id = gitlab_subscriptions.namespace_id
+    AND {{ event_cte.event_name }}.created_at BETWEEN gitlab_subscriptions.valid_from 
     AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
 
 {% if not loop.last %} 
