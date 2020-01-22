@@ -9,8 +9,9 @@ WITH invoices AS (
 /* Self join invoices before and after the invoice date to get a sum of other transactions paid. */
 ), joined AS (
     SELECT DISTINCT
-      base.*,
-      DATE_TRUNC('month', base.invoice_date)::DATE AS refund_month,
+      invoices.invoice_id,
+      invoices.invoice_date,
+      DATE_TRUNC('month', invoices.invoice_date)::DATE AS refund_month,
       zuora_account.crm_id,
       zuora_account.sfdc_entity,
       zuora_account.account_name,
@@ -18,14 +19,15 @@ WITH invoices AS (
       zuora_account.currency,
       SUM(COALESCE(before_and_after.amount, 0)) OVER (
         PARTITION BY zuora_account.crm_id
-        ORDER BY base.invoice_date
+        ORDER BY invoice.invoice_date
       ) AS before_and_after_amount_sum
-    FROM invoices AS base
+    FROM invoices
       LEFT JOIN zuora_account
-        ON base.account_id = zuora_account.account_id
+        ON invoices.account_id = zuora_account.account_id
       LEFT JOIN invoices AS before_and_after
-        ON base.account_id = before_and_after.account_id
-        AND before_and_after.invoice_date BETWEEN DATEADD('days', -60, base.invoice_date) AND DATEADD('days', 60, base.invoice_date)
+        ON invoices.account_id = before_and_after.account_id
+        AND before_and_after.invoice_date BETWEEN DATEADD('days', -60, invoices.invoice_date) AND DATEADD('days', 60, invoices.invoice_date)
+    {{ dbt_utils.group_by(8) }}
 )
 
 SELECT
