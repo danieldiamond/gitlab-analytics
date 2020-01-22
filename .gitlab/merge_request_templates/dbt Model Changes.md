@@ -83,6 +83,7 @@ Example: You might be looking at the count of opportunities before and after, if
 
 ```
 ```
+</details>
 
 <details>
 <summary> Which pipeline job do I run? </summary>
