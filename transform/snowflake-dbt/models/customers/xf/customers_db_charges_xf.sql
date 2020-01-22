@@ -38,6 +38,7 @@ WITH zuora_base_mrr AS (
       
       zuora_base_mrr.effective_start_date,
       zuora_base_mrr.effective_end_date,
+      zuora_base_mrr.month_interval,
       
       -- Product Category Info
       zuora_base_mrr.delivery,
