@@ -13,7 +13,6 @@ WITH source AS (
 
     SELECT
       id::INTEGER                                   AS epic_id,
-      milestone_id::INTEGER                         AS milestone_id,
       group_id::INTEGER                             AS group_id,
       author_id::INTEGER                            AS author_id,
       assignee_id::INTEGER                          AS assignee_id,
