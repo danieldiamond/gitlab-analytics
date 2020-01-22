@@ -15,7 +15,7 @@ WITH invoices AS (
       za.sfdc_entity,
       za.account_name,
       za.account_number,
-      za.currency
+      za.currency,
       SUM(COALESCE(before_and_after.amount, 0)) OVER (
         PARTITION BY zuora_account.crm_id
         ORDER BY base.invoice_date
