@@ -10,9 +10,9 @@ WITH invoices AS (
 ), joined AS (
     SELECT DISTINCT
       invoices.invoice_id,
-      invoices.invoice_date,
-      invoices.amount,
+      invoices.amount                                  AS refund_amount,
       invoices.account_id,
+      invoices.invoice_date                            AS refund_date,
       DATE_TRUNC('month', invoices.invoice_date)::DATE AS refund_month,
       zuora_account.crm_id,
       zuora_account.sfdc_entity,
