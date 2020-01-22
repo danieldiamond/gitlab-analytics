@@ -68,19 +68,19 @@ Used in:
 - retention_reasons_for_retention.sql
 
 ## Seat Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/seat_change.sql))
-This macro compares the amount of seats and categorizes it into Maintained/Contraction/Expansion, and when the unit_of_measure of the plans isn't seats, Not Valid
+This macro compares the amount of seats and categorizes it into Maintained/Contraction/Expansion/Cancelled, and when the unit_of_measure of the plans isn't seats, Not Valid
 Usage:
 ```
-{{ seat_change(original_seat_quantity, original_unit_of_measure, new_seat_quantity, new_unit_of_measure) }}
+{{ seat_change(original_seat_quantity, original_unit_of_measure, original_mrr, new_seat_quantity, new_unit_of_measure, new_mrr) }}
 ```
 Used in:
 - retention_reasons_for_retention.sql
 
 ## Plan Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/plan_change.sql))
-This macro compares product rankings and returns whether it was upgraded/downgraded/maintained, and when the product ranking is 0 (which means it's an old plan) it returns Not Valid
+This macro compares product rankings and returns whether it was upgraded/downgraded/maintained/cancelled, and when the product ranking is 0 (which means it's an old plan) it returns Not Valid
 Usage:
 ```
-{{ plan_change(original_product_ranking, new_product_ranking) }}
+{{ plan_change(original_product_ranking, original_mrr, new_product_ranking, new_mrr) }}
 ```
 Used in:
 - retention_reasons_For_retention.sql
