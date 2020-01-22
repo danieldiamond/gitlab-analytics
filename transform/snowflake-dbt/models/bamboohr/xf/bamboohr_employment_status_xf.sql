@@ -27,8 +27,8 @@ WITH bamboohr_employment_status AS (
       next_employment_status,
       valid_from_date                                                                       AS valid_from_date,
       IFF(employment_status='Terminated'
-            ,valid_to_date
-            ,COALESCE(valid_to_date, {{max_date_in_bamboo_analyses()}}))   AS valid_to_date
+            ,valid_from_date
+            ,COALESCE(DATEADD('day',-1,valid_to_date), {{max_date_in_bamboo_analyses()}}))   AS valid_to_date
      FROM employment_log
 )
 
