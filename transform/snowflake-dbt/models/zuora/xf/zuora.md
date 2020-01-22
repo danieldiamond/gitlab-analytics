@@ -60,6 +60,18 @@ We then aggregate the data into one row per Month for each unique (subscription 
 {% enddocs %}
 
 
+{% docs zuora_refund_invoices %}
+
+This model is a view on top of `zuora_invoices`. It attempts to isolate all cases in Zuora where we *refund* a customer, resulting in the customer arriving at a net balance of $0 (or higher).
+
+Although Zuora does have a built-in concept of `refunds`, it is not sufficient for all reporting use cases because there are many cases where a customer gets a refund but still ends up paying us money (double charges are a common example.) Sometimes, we're only interested in cases where the account arrives back at their starting balance.
+
+### Technical Details
+For every invoice with a negative amount (i.e. where GitLab is paying a Customer), this model checks the total sum of invoices from the account in the **60 days** before and after the date of that invoice. The model only selects rows in cases where the sum from that 120-day period is $0 or less. This indicates that the account was truly refunded and didn't have any additional purchases that resulted in a transfer of funds to GitLab.
+
+{% enddocs %}
+
+
 {% docs zuora_subscription_intermediate %}
 
 The `zuora_subs` CTE de-duplicates Zuora subscriptions. Zuora keeps track of different versions of a subscription via the field "version". However, it's possible for there to be multiple version of a single Zuora version. The data with account_id = '2c92a0fc55a0dc530155c01a026806bd' in the base zuora_subscription table exemplifies this. There are multiple rows with a version of 4. The CTE adds a row number based on the updated_date where a value of 1 means it's the newest version of that version. It also filters subscriptions down to those that have either "Active" or "Cancelled" statuses since those are the only ones that we care about.
