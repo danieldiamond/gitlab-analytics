@@ -29,13 +29,22 @@ Used in:
 This macro compares MRR values and buckets them into retention categories.
 Usage:
 ```
-{{ churn_type(original_mrr, new_mrr, column_name="churn_type") }}
+{{ churn_type(original_mrr, new_mrr) }}
 ```
 Used in:
-- retention_reasons_For_retention.sql
+- retention_reasons_for_retention.sql
 - retention_parent_account_.sql
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
+
+## Retention Type ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/churn_type.sql))
+This macro compares MRR values and buckets them into retention categories.
+Usage:
+```
+{{ retention_type(original_mrr, new_mrr) }}
+```
+Used in:
+- retention_reasons_for_retention.sql
 
 ## Retention Reason ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/retention_reason.sql))
 This macro compares MRR values, Product Category, Product Ranking and Amount of seats and gives back the reason as to why MRR went up or down.
@@ -46,17 +55,17 @@ Usage:
                            new_seat_quantity) }}
 ```
 Used in:
-- retention_reasons_For_retention.sql
+- retention_reasons_for_retention.sql
 
-## Price Per Seat Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/price_per_seat_change.sql))
-This macro calculates the difference between price per seat, but only when the unit_of_measure of the plan is seats.
+## Monthly Price Per Seat Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/price_per_seat_change.sql))
+This macro calculates the difference between monthly price per seat, but only when the unit_of_measure of the plan is seats.
 Usage:
 ```
 {{ price_per_seat_change(original_mrr, original_seat_quantity, original_unit_of_measure,
                                 new_mrr, new_seat_quantity, new_unit_of_measure) }}
 ```
 Used in:
-- retention_reasons_For_retention.sql
+- retention_reasons_for_retention.sql
 
 ## Seat Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/seat_change.sql))
 This macro compares the amount of seats and categorizes it into Maintained/Contraction/Expansion, and when the unit_of_measure of the plans isn't seats, Not Valid
@@ -65,7 +74,7 @@ Usage:
 {{ seat_change(original_seat_quantity, original_unit_of_measure, new_seat_quantity, new_unit_of_measure) }}
 ```
 Used in:
-- retention_reasons_For_retention.sql
+- retention_reasons_for_retention.sql
 
 ## Plan Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/plan_change.sql))
 This macro compares product rankings and returns whether it was upgraded/downgraded/maintained, and when the product ranking is 0 (which means it's an old plan) it returns Not Valid

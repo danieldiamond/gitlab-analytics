@@ -52,6 +52,10 @@
         WHEN {{ original_product_category }} != {{ new_product_category }} AND
                 {{ original_seat_quantity }} != {{ new_seat_quantity }}
             THEN 'Product Change/Seat Change Mix'
+
+        WHEN {{ new_mrr }} = 0 AND {{ original_mrr }} > 0
+            THEN 'Cancelled'
+
         ELSE 'Unknown' 
      END                      AS retention_reason
 

@@ -91,15 +91,15 @@ WITH raw_mrr_totals_levelled AS (
             ELSE 'Unknown'
         END                      AS churn_type,
         
-        {{ churn_type('original_mrr', 'net_retention_mrr', 'retention_type') }},
+        {{ retention_type('original_mrr', 'net_retention_mrr') }},
         {{ retention_reason('original_mrr', 'original_product_category', 'original_product_ranking',
-        'original_quantity', 'retention_mrr', 'retention_product_category', 'retention_product_ranking',
+        'original_quantity', 'net_retention_mrr', 'retention_product_category', 'retention_product_ranking',
         'retention_quantity') }},
 
         {{ plan_change('original_product_ranking', 'retention_product_ranking') }},
         {{ seat_change('original_quantity', 'original_unit_of_measure', 'retention_quantity', 'retention_unit_of_measure') }},
-        {{ price_per_seat_change('original_mrr', 'original_quantity', 'original_unit_of_measure',
-                              'retention_mrr', 'retention_quantity', 'retention_unit_of_measure') }}
+        {{ monthly_price_per_seat_change('original_mrr', 'original_quantity', 'original_unit_of_measure',
+                              'net_retention_mrr', 'retention_quantity', 'retention_unit_of_measure') }}
 
     FROM mrr_totals_levelled
     LEFT JOIN retention_subs
@@ -114,15 +114,15 @@ WITH raw_mrr_totals_levelled AS (
         retention_subs.*,
         COALESCE(retention_subs.retention_mrr, 0)               AS net_retention_mrr,
         {{ churn_type('original_mrr', 'net_retention_mrr') }},
-        {{ churn_type('original_mrr', 'net_retention_mrr', 'retention_type') }},
+        {{ retention_type('original_mrr', 'net_retention_mrr') }},
         {{ retention_reason('original_mrr', 'original_product_category', 'original_product_ranking',
-        'original_quantity', 'retention_mrr', 'retention_product_category', 'retention_product_ranking',
+        'original_quantity', 'net_retention_mrr', 'retention_product_category', 'retention_product_ranking',
         'retention_quantity') }},
 
         {{ plan_change('original_product_ranking', 'retention_product_ranking') }},
         {{ seat_change('original_quantity', 'original_unit_of_measure', 'retention_quantity', 'retention_unit_of_measure') }},
-        {{ price_per_seat_change('original_mrr', 'original_quantity', 'original_unit_of_measure',
-                              'retention_mrr', 'retention_quantity', 'retention_unit_of_measure') }}
+        {{ monthly_price_per_seat_change('original_mrr', 'original_quantity', 'original_unit_of_measure',
+                              'net_retention_mrr', 'retention_quantity', 'retention_unit_of_measure') }}
 
     FROM mrr_totals_levelled
     LEFT JOIN retention_subs
@@ -141,7 +141,7 @@ WITH raw_mrr_totals_levelled AS (
         retention_reason,
         plan_change,
         seat_change,
-        price_per_seat_change,
+        monthly_price_per_seat_change,
         original_product_category,
         retention_product_category,
         original_delivery,
@@ -163,9 +163,9 @@ WITH raw_mrr_totals_levelled AS (
         churn_type,
         retention_type,
         retention_reason,
-        IFF(retention_type = 'Cancelled', 'Downgrade', plan_change)   AS plan_change,
+        IFF(retention_type = 'Cancelled', 'Downgraded', plan_change)   AS plan_change,
         IFF(retention_type = 'Cancelled', 'Contraction', seat_change) AS seat_change,
-        price_per_seat_change,
+        monthly_price_per_seat_change,
         original_product_category,
         retention_product_category,
         original_delivery,
@@ -182,7 +182,7 @@ WITH raw_mrr_totals_levelled AS (
 
 SELECT
     joined.*,
-    RANK() OVER(PARTITION by zuora_subscription_id, churn_type, retention_type, retention_reason, plan_change, seat_change
+    RANK() OVER(PARTITION by zuora_subscription_id, churn_type
         ORDER BY retention_month ASC)   AS rank_churn_type_month
 FROM joined
 WHERE retention_month <= DATEADD(month, -1, CURRENT_DATE)

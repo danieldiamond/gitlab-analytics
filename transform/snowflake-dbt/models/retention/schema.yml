@@ -209,7 +209,7 @@ models:
           tests:
             - not_null
             - accepted_values:
-                    values: ['Price Change/Seat Change Mix', 'Seat Change', 'Price Change', 'Product Change','Product Change/Seat Change Mix', 'Unknown']
+                    values: ['Price Change/Seat Change Mix', 'Seat Change', 'Price Change', 'Product Change','Product Change/Seat Change Mix', 'Cancelled', 'Unknown']
         - name: plan_change
           tests:
             - not_null
