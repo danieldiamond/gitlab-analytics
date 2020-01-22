@@ -68,6 +68,12 @@ The opportunity source table contains info about your opportunities, which are s
 
 {% enddocs %}
 
+{% docs sfdc_oppcontact_role_source %}
+
+The opportunity contact role source table contains contact information from opportunities as well as describes if the contact is the primary one for said opportunity. [Link to Documentation](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_opportunitycontactrole.htm)
+
+{% enddocs %}
+
 {% docs sfdc_pov_source %}
 
 This table contains data on the proof of value. Note the API name for this source remained proof_of_concept after renaming of the SFDC custom object.

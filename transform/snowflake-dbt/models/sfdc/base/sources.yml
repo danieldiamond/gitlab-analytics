@@ -54,6 +54,9 @@ sources:
         description: '{{ doc("sfdc_oppstage_source") }}'
       - name: opportunity
         description: '{{ doc("sfdc_opp_source") }}'
+      - name: opportunity_contact_role
+        identifier: opportunitycontactrole
+        description: '{{ doc("sfdc_oppcontact_role_source") }}'
       - name: proof_of_concept
         identifier: proof_of_concept__c     
         description: '{{ doc("sfdc_pov_source") }}'
