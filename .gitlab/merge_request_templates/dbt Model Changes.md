@@ -195,7 +195,7 @@ This uses word count (wc) to see how many lines are in the comparison file. If t
 ## All MRs Checklist
 - [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).
 - [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue.
-- [ ] Branch set to delete.
+- [ ] Branch set to delete. (Leave commits unsquashed)
 - [ ] Latest CI pipeline passes.
   - [ ] If not, an explanation has been provided.
 - [ ] This MR is ready for final review and merge.
