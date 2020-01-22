@@ -110,7 +110,13 @@
 ]
 -%}
 
-WITH namespaces AS (
+WITH gitlab_subscriptions AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
+)
+
+, namespaces AS (
   
   SELECT * 
   FROM {{ ref('gitlab_dotcom_namespaces_xf') }}
@@ -155,12 +161,33 @@ SELECT
   projects.project_id,
   projects.created_at                   AS project_created_at,
   {{ event_cte.event_name }}.created_at AS event_created_at,
-  '{{ event_cte.event_name }}'          AS event_name
+  '{{ event_cte.event_name }}'          AS event_name,
+  CASE
+    WHEN gitlab_subscriptions.is_trial
+      THEN 'trial'
+    ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
+  END                                   AS plan_id_at_action_date,
+  DATEDIFF('hour', 
+           namespace_created_at, 
+           event_created_at)/24         AS day_since_namespace_creation,
+  DATEDIFF('hour', 
+           namespace_created_at, 
+           event_created_at)/(24 * 7)   AS week_since_namespace_creation,
+  DATEDIFF('hour', 
+           project_created_at, 
+           event_created_at)/24         AS day_since_project_creation,
+  DATEDIFF('hour', 
+           project_created_at, 
+           event_created_at)/(24 * 7)   AS week_since_project_creation
 FROM {{ event_cte.event_name }}
-INNER JOIN projects ON {{ event_cte.event_name }}.{{event_cte.key_to_parent_object}} = projects.project_id
-INNER JOIN namespaces ON projects.namespace_id = namespaces.namespace_id
-INNER JOIN namespaces AS ultimate_namespace 
-  ON namespaces.namespace_ultimate_parent_id = ultimate_namespace.namespace_id
+  INNER JOIN projects ON {{ event_cte.event_name }}.{{event_cte.key_to_parent_object}} = projects.project_id
+  INNER JOIN namespaces ON projects.namespace_id = namespaces.namespace_id
+  INNER JOIN namespaces AS ultimate_namespace 
+    ON namespaces.namespace_ultimate_parent_id = ultimate_namespace.namespace_id
+  LEFT JOIN gitlab_subscriptions
+    ON ultimate_namespace.ultimate_parent_id = gitlab_subscriptions.namespace_id
+    AND issues.created_at BETWEEN gitlab_subscriptions.valid_from 
+    AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
 
 {% if not loop.last %} 
 UNION
