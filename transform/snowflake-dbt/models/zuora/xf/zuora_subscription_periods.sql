@@ -72,8 +72,10 @@ WITH zuora_account AS (
       subsription_joined_with_accounts.subscription_version_end_date,
       subsription_joined_with_accounts.subscription_version_term_start_date,
       subsription_joined_with_accounts.subscription_version_term_end_date,
-      SUM(tcv) AS tcv
-      
+      LAST_VALUE(mrr) OVER (PARTITION BY subsription_joined_with_accounts.subscription_id 
+        ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
+      SUM(tcv) OVER (
+        PARTITION BY subsription_joined_with_accounts.subscription_id) AS tcv
     FROM subsription_joined_with_accounts
     INNER JOIN zuora_rate_plan
       ON subsription_joined_with_accounts.subscription_id = zuora_rate_plan.subscription_id
@@ -85,7 +87,6 @@ WITH zuora_account AS (
       OR min_following_subscription_version_term_start_date IS NULL)
       -- remove cancelled subscription
       AND subscription_version_term_end_date <> subscription_version_term_start_date
-    {{ dbt_utils.group_by(n=13) }}
       
 )
 
@@ -100,4 +101,4 @@ SELECT
     ELSE FALSE
   END AS is_renewed
 FROM subscription_joined_with_charges
-ORDER BY subscription_version_start_date
+ORDER BY subscription_start_date
