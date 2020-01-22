@@ -11,11 +11,11 @@ WITH invoices AS (
     SELECT DISTINCT
       base.*,
       DATE_TRUNC('month', base.invoice_date)::DATE AS refund_month,
-      za.crm_id,
-      za.sfdc_entity,
-      za.account_name,
-      za.account_number,
-      za.currency,
+      zuora_account.crm_id,
+      zuora_account.sfdc_entity,
+      zuora_account.account_name,
+      zuora_account.account_number,
+      zuora_account.currency,
       SUM(COALESCE(before_and_after.amount, 0)) OVER (
         PARTITION BY zuora_account.crm_id
         ORDER BY base.invoice_date
