@@ -4,11 +4,52 @@ import sys
 from os import environ as env
 
 from gitlabdata.orchestration_utils import (
+    query_executor,
     snowflake_engine_factory,
     snowflake_stage_load_copy_remove,
 )
 
 from api import BambooAPI
+
+ALLOWED_DATA_CHANGE_PER_EXTRACT = 0.25
+
+
+def get_snowflake_difference_count(table_name, snowflake_engine, field_name):
+    base_field_name = field_name.split(":")[0]
+    query = f"""
+        with row_numbered_json as
+        (
+            select 
+                {base_field_name}, 
+                uploaded_at,
+                row_number() over (order by uploaded_at desc) as row_number
+            from {table_name}
+        )
+        select
+        (
+            select array_size({field_name}) from row_numbered_json
+            where row_number = 1
+        ) - 
+        (
+            select array_size({field_name}) from row_numbered_json
+            where row_number = 2
+        )
+    """
+    return query_executor(snowflake_engine, query)[0][0]
+
+
+def test_extraction(data, snowflake_table, snowflake_engine, field_name="JSONTEXT"):
+    count_extracted = len(data)
+    snowflake_difference_count = get_snowflake_difference_count(
+        snowflake_table, snowflake_engine, field_name
+    )
+    if abs(snowflake_difference_count) > (
+        ALLOWED_DATA_CHANGE_PER_EXTRACT * float(count_extracted)
+    ):
+        logging.error(
+            f"row difference was {snowflake_difference_count} for {snowflake_table}"
+        )
+        sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -35,6 +76,8 @@ if __name__ == "__main__":
         snowflake_engine,
     )
 
+    test_extraction(employees, "raw.bamboohr.directory", snowflake_engine)
+
     # Tabular Data
     tabular_data = dict(
         compensation="compensation",
@@ -57,6 +100,8 @@ if __name__ == "__main__":
             snowflake_engine,
         )
 
+        test_extraction(data, f"raw.bamboohr.{key}", snowflake_engine)
+
     # Custom Reports
     report_mapping = dict(id_employee_number_mapping="498")
 
@@ -72,4 +117,10 @@ if __name__ == "__main__":
             "raw.bamboohr.bamboohr_load",
             f"raw.bamboohr.{key}",
             snowflake_engine,
+        )
+        test_extraction(
+            data,
+            f"raw.bamboohr.{key}",
+            snowflake_engine,
+            field_name="JSONTEXT:employees",
         )
