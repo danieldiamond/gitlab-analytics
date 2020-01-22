@@ -37,7 +37,6 @@ WITH zuora_account AS (
       zuora_subscription.zuora_renewal_subscription_name_slugify,
       zuora_subscription.renewal_term,
       zuora_subscription.renewal_term_period_type,
-      
       zuora_subscription.account_id, 
       zuora_account.account_number,
       zuora_account.account_name,
