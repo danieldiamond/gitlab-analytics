@@ -93,9 +93,8 @@ WITH raw_mrr_totals_levelled AS (
         
         {{ retention_type('original_mrr', 'net_retention_mrr') }},
         {{ retention_reason('original_mrr', 'original_product_category', 'original_product_ranking',
-        'original_quantity', 'net_retention_mrr', 'retention_product_category', 'retention_product_ranking',
-        'retention_quantity') }},
-
+                            'original_quantity', 'net_retention_mrr', 'retention_product_category', 
+                            'retention_product_ranking', 'retention_quantity') }},
         {{ plan_change('original_product_ranking', 'original_mrr',
                        'retention_product_ranking', 'net_retention_mrr') }},
         {{ seat_change('original_quantity', 'original_unit_of_measure', 'original_mrr',
@@ -118,9 +117,8 @@ WITH raw_mrr_totals_levelled AS (
         {{ churn_type('original_mrr', 'net_retention_mrr') }},
         {{ retention_type('original_mrr', 'net_retention_mrr') }},
         {{ retention_reason('original_mrr', 'original_product_category', 'original_product_ranking',
-        'original_quantity', 'net_retention_mrr', 'retention_product_category', 'retention_product_ranking',
-        'retention_quantity') }},
-
+                            'original_quantity', 'net_retention_mrr', 'retention_product_category', 
+                            'retention_product_ranking', 'retention_quantity') }},
         {{ plan_change('original_product_ranking', 'original_mrr',
                        'retention_product_ranking', 'net_retention_mrr') }},
         {{ seat_change('original_quantity', 'original_unit_of_measure', 'original_mrr',

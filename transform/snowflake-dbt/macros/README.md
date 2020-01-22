@@ -84,6 +84,7 @@ Usage:
 ```
 Used in:
 - retention_reasons_For_retention.sql
+
 ## Coalesce to Infinity
 This macro expects a timestamp or date column as an input. If a non-null value is inputted, the same value is returned. If a null value is inputted, a large date representing 'infinity' is returned. This is useful for writing `BETWEEN` clauses using date columns that are sometimes NULL.
 
