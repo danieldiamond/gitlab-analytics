@@ -90,7 +90,6 @@ Paste the results of dbt test here, including the command.
 
 </code></pre>
 </details>
-</details>
 
 <details>
 <summary> Which pipeline job do I run? </summary>
@@ -159,6 +158,7 @@ These jobs only appear when `.py` files have changed. All of them will run autom
 
 - **clone_stop**: Runs automatically when MR is merged or closed. Do not run manually.
 
+</details>
 
 <details>
 <summary>Periscope Query Bash Details</summary>
@@ -169,7 +169,7 @@ This clones the periscope project.
 
 `grep -rIiEo "from (analytics|analytics_staging|boneyard)\.([\_A-z]*)" periscope/. | awk -F '.' '{print tolower($NF)}' | sort | uniq > periscope.txt`
 
-This recursively searches the entire git repo for a string that matches a `from` statement from any of the 3 currently queryable schemas. Using `awk`, it then prints the lower-case of the last column of each line in a file (represented by $NF - which is the number of fields), using a period as a field separator. This works because all queries are some form of <schema>.<table> and what we want is the table. It then sorts the results, gets the unique set, and writes it to a file called periscope.txt.
+This recursively searches the entire git repo for a string that matches a `from` statement from any of the 3 currently queryable schemas. Using `awk`, it then prints the lower-case of the last column of each line in a file (represented by $NF - which is the number of fields), using a period as a field separator. This works because all queries are some form of schema.table and what we want is the table. It then sorts the results, gets the unique set, and writes it to a file called periscope.txt.
 
 `git diff origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD --name-only | grep -iEo "(.*)\.sql" | sed -E 's/\.sql//' | awk -F '/' '{print tolower($NF)}' | sort | uniq > diff.txt`
 
@@ -182,7 +182,6 @@ This compares (comm) two files and print only lines that are common to both file
 `if (( $(cat comparison.txt | wc -l | tr -d ' ') > 0 )); then echo "Check these!" && cat comparison.txt && exit 1; else echo "All good" && exit 0; fi;`
 
 This uses word count (wc) to see how many lines are in the comparison file. If there is more than zero it will print the lines and exit with a failure. If there are no lines it exits with a success.
-</details>
 </details>
 </details>
 
@@ -202,3 +201,4 @@ This uses word count (wc) to see how many lines are in the comparison file. If t
 
 ## Further changes requested
 * [ ]  AUTHOR: Uncheck all boxes before taking further action.
+
