@@ -20,7 +20,7 @@ WITH raw_mrr_totals_levelled AS (
 
         ARRAY_AGG(DISTINCT product_category) WITHIN GROUP (ORDER BY product_category ASC) AS original_product_category,
         ARRAY_AGG(DISTINCT delivery) WITHIN GROUP (ORDER BY delivery ASC)                 AS original_delivery,
-        ARRAY_AGG(DISTINCT UNIT_OF_MEASURE) WITHIN GROUP (ORDER BY unit_of_measure ASC)   AS original_unit_of_measure,
+        ARRAY_AGG(DISTINCT unit_of_measure) WITHIN GROUP (ORDER BY unit_of_measure ASC)   AS original_unit_of_measure,
         
         MAX(DECODE(product_category,   --Need to account for the 'other' categories
         'Bronze', 1,
@@ -130,7 +130,7 @@ WITH raw_mrr_totals_levelled AS (
         AND retention_subs.original_mrr_month = mrr_totals_levelled.mrr_month
     WHERE net_retention_mrr < original_mrr
 
-), joined as (
+), joined AS (
 
     SELECT
         subscription_name              AS zuora_subscription_name,
@@ -151,28 +151,20 @@ WITH raw_mrr_totals_levelled AS (
         original_unit_of_measure,
         retention_unit_of_measure,
         original_mrr,
-        net_retention_mrr as retention_mrr
+        net_retention_mrr AS retention_mrr
     FROM expansion
 
     UNION ALL
 
     SELECT 
-        subscription_name                      AS zuora_subscription_name,
-        oldest_subscription_in_cohort          AS zuora_subscription_id,
-        DATEADD('year', 1, mrr_month)          AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
+        subscription_name                                             AS zuora_subscription_name,
+        oldest_subscription_in_cohort                                 AS zuora_subscription_id,
+        DATEADD('year', 1, mrr_month)                                 AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
         churn_type,
         retention_type,
         retention_reason,
-        CASE
-            WHEN churn_type = 'Cancelled'
-                THEN 'Downgraded'
-            ELSE plan_change
-        END                                    AS plan_change,
-        CASE
-            WHEN churn_type = 'Cancelled'
-                THEN 'Contraction'
-            ELSE seat_change
-        END                                    AS seat_change,
+        IFF(retention_type = 'Cancelled', 'Downgrade', plan_change)   AS plan_change,
+        IFF(retention_type = 'Cancelled', 'Contraction', seat_change) AS seat_change,
         price_per_seat_change,
         original_product_category,
         retention_product_category,
@@ -183,14 +175,14 @@ WITH raw_mrr_totals_levelled AS (
         original_unit_of_measure,
         retention_unit_of_measure,
         original_mrr,
-        net_retention_mrr                      AS retention_mrr
+        net_retention_mrr                                             AS retention_mrr
     FROM churn
 
 )
 
 SELECT
     joined.*,
-    RANK() OVER(PARTITION by zuora_subscription_id, churn_type, retention_type, retention_reason, plan_change, seat_change, price_per_seat_change
+    RANK() OVER(PARTITION by zuora_subscription_id, churn_type, retention_type, retention_reason, plan_change, seat_change
         ORDER BY retention_month ASC)   AS rank_churn_type_month
 FROM joined
 WHERE retention_month <= DATEADD(month, -1, CURRENT_DATE)
