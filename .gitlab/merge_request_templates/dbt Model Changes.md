@@ -81,8 +81,15 @@ Example: You might be looking at the count of opportunities before and after, if
 - [ ] If the periscope_query job failed, validate that the changes you've made don't affect the grain of the table or the expected output in Periscope.
 - [ ] If you are on the Data Team, please paste the output of `dbt test` when run locally below. Any failing tests should be fixed or explained prior to requesting a review.
 
-```
-```
+<details>
+<summary> dbt test results </summary>
+
+<pre><code>
+
+Paste the results of dbt test here, including the command.
+
+</code></pre>
+</details>
 </details>
 
 <details>
@@ -152,24 +159,6 @@ These jobs only appear when `.py` files have changed. All of them will run autom
 
 - **clone_stop**: Runs automatically when MR is merged or closed. Do not run manually.
 
-</details>
-
-## All MRs Checklist
-- [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).
-- [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue.
-- [ ] Branch set to delete.
-- [ ] Latest CI pipeline passes.
-  - [ ] If not, an explanation has been provided.
-- [ ] This MR is ready for final review and merge.
-- [ ] All threads are resolved.
-- [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer.
-- [ ] Assigned to reviewer.
-
-## Reviewer Checklist
-- [ ]  Check before setting to merge
-
-## Further changes requested
-* [ ]  AUTHOR: Uncheck all boxes before taking further action.
 
 <details>
 <summary>Periscope Query Bash Details</summary>
@@ -194,3 +183,21 @@ This compares (comm) two files and print only lines that are common to both file
 
 This uses word count (wc) to see how many lines are in the comparison file. If there is more than zero it will print the lines and exit with a failure. If there are no lines it exits with a success.
 </details>
+</details>
+
+## All MRs Checklist
+- [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).
+- [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue.
+- [ ] Branch set to delete.
+- [ ] Latest CI pipeline passes.
+  - [ ] If not, an explanation has been provided.
+- [ ] This MR is ready for final review and merge.
+- [ ] All threads are resolved.
+- [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer.
+- [ ] Assigned to reviewer.
+
+## Reviewer Checklist
+- [ ]  Check before setting to merge
+
+## Further changes requested
+* [ ]  AUTHOR: Uncheck all boxes before taking further action.
