@@ -75,8 +75,10 @@ Example: You might be looking at the count of opportunities before and after, if
 - [ ] Every model should be [tested](https://docs.getdbt.com/docs/testing-and-documentation) AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable.
 - [ ] Run the appropriate pipeline for the model changes in this MR
 - [ ] If the periscope_query job failed, validate that the changes you've made don't affect the grain of the table or the expected output in Periscope.
-</details>
+- [ ] If you are on the Data Team, please paste the output of `dbt test` when run locally below. Any failing tests should be fixed or explained prior to requesting a review.
 
+```
+```
 
 <details>
 <summary> Which pipeline job do I run? </summary>
@@ -103,10 +105,14 @@ These jobs are scoped to the `ci` target. This target selects a subset of data f
 
 Note that job artificats are available for all dbt run jobs. These include the compiled code and the run results.
 
+These jobs run against the primary `RAW` database.
 - **specify_model**: Specify which model to run with the variable `DBT_MODELS`
 - **specify_xl_model**: Specify which model to run using an XL warehouse with the variable `DBT_MODELS`
 - **specify_exclude**: Specify which model to exclude with the variable `DBT_MODELS`
 - **specify_xl_exclude**: Specify which model to exclude using an XL warehouse with the variable `DBT_MODELS`
+
+This jobs runs against the clone of `RAW`. Requires the `clone_raw` job to have been run.
+- **specify_raw_model**: Specify a dbt model against the clone of the RAW database. 
 
 Watch https://youtu.be/l14N7l-Sco4 to see an example of how to set the variable. The variable is a stand-in for any of the examples in [the dbt documentation on model selection syntax](https://docs.getdbt.com/docs/model-selection-syntax#section-specifying-models-to-run).
 
@@ -142,7 +148,6 @@ These jobs only appear when `.py` files have changed. All of them will run autom
 - **clone_stop**: Runs automatically when MR is merged or closed. Do not run manually.
 
 </details>
-
 
 ## All MRs Checklist
 - [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).

@@ -65,7 +65,12 @@ Please watch one minute of [this clip](https://www.youtube.com/watch?v=LqzDY76Q8
 
 **Getting your computer set up locally**
 * Make sure that you have [created your SSH keys](https://docs.gitlab.com/ee/gitlab-basics/create-your-ssh-keys.html) prior to running this. You can check this by typing `ssh -T git@gitlab.com` into your terminal which should return "Welcome to GitLab, " + your_username
+<details>
+
+<summary>For Data Analysts</summary>
+
 * THE NEXT STEPS SHOULD ONLY BE RUN ON YOUR GITLAB-ISSUED LAPTOP. If you run this on your personal computer, we take no responsibility for the side effects. 
+
 * [ ] Open your computer's built-in terminal app. Run the following:
 ```
 curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/onboarding_script.sh > ~/onboarding_script.sh
@@ -90,6 +95,39 @@ rm ~/onboarding_script.sh
       * `Editor: Insert Spaces` is selected
       * `Editor: Tab Size` is set to 4 spaces per tab
 
+</details>
+
+<details>
+<summary>For Data Engineers</summary>
+
+Take a look at https://gitlab.com/gitlab-data/analytics/raw/master/admin/onboarding_script.sh and feel free to use what is in there that makes sense.
+
+Some important parts of the script that you will definitely want to do in some way:
+* [ ] Install git
+    * [ ] Setup a global gitignore that ignores IDE generated files
+    * [ ] Clone the analytics project at git@gitlab.com:gitlab-data/analytics.git
+    * [ ] Make sure to globally configure git with at least your name and email.
+* [ ] Install docker, docker-compose, and docker-machine
+* [ ] Install Python3
+    * [ ] Install pip3
+    * [ ] Make sure to install the setuptools library as dbt will not install without it
+    * [ ] Here is [a list of all of the Python tools that may be used for formatting, linting, or testing](https://gitlab.com/gitlab-data/analytics/blob/master/.gitlab-ci.yml#L100).  Consider installing these locally with pip3.
+* [ ] Install dbt, the open source tool we use for data transformations.
+    * [ ] Create a dbt profile file in `~/.dbt/`
+    * [ ] Set the DBT_PROFILE_PATH environment variable to point to the profile file
+* [ ] Install your Python-compatible IDE of choice.  We recommend VSCode for its community support, [GitLab workflow](https://marketplace.visualstudio.com/items?itemName=fatihacet.gitlab-workflow) extension, and overall flexibility.
+    * [ ] Ensure your IDE converts tabs to 4 spaces.  To do that in VSCode, make sure in settings:
+      * `Editor: Detect Indentation` is deselected
+      * `Editor: Insert Spaces` is selected
+      * `Editor: Tab Size` is set to 4 spaces per tab
+    * [ ] Ensure your IDE uses the Python3 installation
+        * To do this in VSCode: press `Ctrl+Shift+P` and then type in and select `Python: Select Interpreter` and then select the Python 3 installation
+    * [ ] Consider installing extensions/add-ons in your IDE to support the Python libraries used for linting/testing as mentioned in the Python section above.  For example, you can setup VSCode to use black as its formatter as described [here](https://code.visualstudio.com/docs/python/editing#_formatting).
+* [ ] Install Data Grip (from JetBrains) for interfacing with databases
+    * [ ] Follow [this process](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains) for requesting a license for Data Grip.  Until you have a license, you can easily use Data Grip on a trial basis for 30 days.
+
+
+</details>
 
 Our data stack looks roughly like this:
 <img src = "https://cdn-images-1.medium.com/max/2000/1*BogoeTTK1OXFU1hPfUyCFw.png">
@@ -97,7 +135,7 @@ Our data stack looks roughly like this:
 As you read in the handbook, we currently use Stitch for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool. The bulk of your projects and tasks will be in dbt , so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources.
 
 **Bonus**
-To see the inspiration for the onboarding script you just ran, take a look at the dbt Discourse post [here](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243) on how they set up their computers for working on dbt projects. You might want to do some of the additional configurations mentioned in that post.
+To see the inspiration for the onboarding script above, take a look at the dbt Discourse post [here](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243) on how they set up their computers for working on dbt projects. You might want to do some of the additional configurations mentioned in that post.
 
 ## Connecting to Snowflake
 - [ ] Login with the credentials that your manager created following the instructions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
@@ -145,8 +183,9 @@ You can use `Command + Option + L` to format your file.
 - All dbt commands need to be run within the `dbt-image` docker container
 - To get into the `dbt-image` docker container, go to the analytics project (which you can get to by typing `goto analytics` from anywhere on your Mac) and run the command `make dbt-image`. This will spin up our docker container that contains `dbt` and give you a bash shell within the `analytics/transform/snowflake-dbt` directory.
 - All changes made to the files within the `analytics` repo will automatically be visible in the docker container! This container is only used to run `dbt` commands themselves, not to write SQL or edit `dbt` files in general (though technically it could be, as VIM is available within the container)
-- [ ] From a different terminal window run `code ~/.dbt/profiles.yml` and update this file with your info.
-- [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.
+- [ ] From a different terminal window run `code ~/.dbt/profiles.yml` and update this file with your info.  The schema should be something like `yourname_scratch`.
+    - [ ] __Data Engineers__: update the warehouse in `~/.dbt/profiles.yml` to be `ENGINEER_XS` for both `dev` and `docs` profiles.  The role should be filled in with `ENGINEER`. 
+- [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.  If you see an error like `Schema 'ANALYTICS.NAME_SCRATCH_STAGING' does not exist or not authorized`, it is because that schema hasn't been created by dbt in Snowflake yet. Since `dbt compile` doesn't actually create anything in the database, it won't create it for you.  To fix this, feel free to run a small model with dbt `dbt run --models sfdc` and then `dbt compile` should work as long as there weren't any issues with running the model.  
 - [ ] test the command `make help` and use it to understand how to use `make dbt-docs` and access it from your local machine.
 
 Here is your dbt commands cheat sheet:

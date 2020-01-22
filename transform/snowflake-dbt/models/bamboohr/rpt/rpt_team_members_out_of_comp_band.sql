@@ -4,8 +4,6 @@
     })
 }}
 
-{% set max_date_in_analysis = "date_trunc('week', dateadd(week, 3, CURRENT_DATE))" %}
-
 WITH employee_directory_intermediate AS (
 
    SELECT *
@@ -34,7 +32,7 @@ WITH employee_directory_intermediate AS (
   LEFT JOIN comp_band
     ON employee_directory_intermediate.employee_number::varchar = comp_band.bamboo_employee_number::varchar
     AND valid_from <= date_actual
-    AND COALESCE(valid_to::date, {{max_date_in_analysis}}) > date_actual
+    AND COALESCE(valid_to::date, {{max_date_in_bamboo_analyses()}}) > date_actual
 
 ), bucketed as (
 

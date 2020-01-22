@@ -4,8 +4,6 @@
     })
 }}
 
-{% set max_date_in_analysis = "date_trunc('week', dateadd(week, 3, CURRENT_DATE))" %}
-
 WITH employee_directory AS (
 
     SELECT
@@ -22,7 +20,7 @@ WITH employee_directory AS (
 
 ), date_details AS (
 
-    SELECT * 
+    SELECT *
     FROM {{ ref('date_details') }}
 
 ), department_info AS (
@@ -44,7 +42,7 @@ WITH employee_directory AS (
 
 )
 
-SELECT  
+SELECT
   date_actual,
   employee_directory.*,
   department_info.job_title,
@@ -57,13 +55,13 @@ SELECT
 FROM date_details
 LEFT JOIN employee_directory
   ON hire_date::date <= date_actual
-  AND COALESCE(termination_date::date, {{max_date_in_analysis}}) > date_actual
+  AND COALESCE(termination_date::date, {{max_date_in_bamboo_analyses()}}) > date_actual
 LEFT JOIN department_info
   ON employee_directory.employee_id = department_info.employee_id
   AND effective_date <= date_actual
-  AND COALESCE(effective_end_date::date, {{max_date_in_analysis}}) > date_actual
+  AND COALESCE(effective_end_date::date, {{max_date_in_bamboo_analyses()}}) > date_actual
 LEFT JOIN location_factor
   ON employee_directory.employee_number::varchar = location_factor.bamboo_employee_number::varchar
   AND valid_from <= date_actual
-  AND COALESCE(valid_to::date, {{max_date_in_analysis}}) > date_actual
+  AND COALESCE(valid_to::date, {{max_date_in_bamboo_analyses()}}) > date_actual
 WHERE employee_directory.employee_id IS NOT NULL

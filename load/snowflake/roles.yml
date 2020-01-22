@@ -64,6 +64,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -76,7 +77,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -91,7 +91,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -157,7 +156,9 @@ roles:
             - analyst_xl
         member_of:
             - boneyard
+            - db_dumps
             - gitlab_data_yaml
+            - netsuite
             - snowplow
             - zuora
         privileges:
@@ -185,7 +186,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -210,6 +210,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -222,7 +223,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -237,7 +237,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -256,6 +255,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -270,7 +270,6 @@ roles:
                 read:
                     - raw.bamboohr
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -288,7 +287,6 @@ roles:
                 read:
                     - raw.bamboohr.*
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -310,7 +308,30 @@ roles:
             - analyst_sales
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+                    - snowflake.*
+            tables:
+                read:
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
+                    - snowflake.*.*
 
     - analyst_people:
         warehouses:
@@ -320,6 +341,7 @@ roles:
             - boneyard
             - gitlab_data_yaml
             - greenhouse
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -332,7 +354,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -347,7 +368,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -431,6 +451,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - snowplow
             - zuora
         privileges:
@@ -444,7 +465,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -459,7 +479,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -594,7 +613,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -783,7 +801,21 @@ roles:
                     - raw.greenhouse.*
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
-    
+
+    - netsuite:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.netsuite_fivetran
+            tables:
+                read:
+                    - raw.netsuite_fivetran.*
+
     - snowplow:
         privileges:
             databases:
@@ -798,6 +830,18 @@ roles:
                 read:
                     - raw.snowplow.*
                     - analytics.snowplow_*.*
+
+    - db_dumps:
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.version_db_dump_stitch
+            tables:
+                read:
+                    - raw.version_db_dump_stitch.*
 
     - zuora:
         warehouses:
@@ -986,6 +1030,13 @@ roles:
         warehouses:
             - analyst_xs
 
+    - mwalker:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting
+
     - periscope:
         warehouses:
             - reporting
@@ -1153,8 +1204,8 @@ users:
     - ekastelein:
         can_login: yes
         member_of:
-            - ekastelein
             - analyst_growth
+            - ekastelein
 
     - eurie:
         can_login: yes 
@@ -1186,14 +1237,14 @@ users:
     - iweeks:
         can_login: yes
         member_of:
-            - iweeks
             - analyst_finance
+            - iweeks
 
     - jmahdi:
         can_login: yes
         member_of:
-            - jmahdi
             - analyst_sales
+            - jmahdi
 
     - jpeguero:
         can_login: yes
@@ -1210,10 +1261,10 @@ users:
     - jstark:
         can_login: yes
         member_of:
+            - accountadmin
             - analyst_core
             - data_manager
             - jstark
-            - accountadmin
             - securityadmin
             - sysadmin
 
@@ -1233,8 +1284,8 @@ users:
     - kaguilar:
         can_login: yes
         member_of:
-            - kaguilar
             - analyst_engineering
+            - kaguilar
 
     - ktam:
         can_login: yes
@@ -1260,8 +1311,8 @@ users:
     - mpeychet:
         can_login: yes
         member_of:
-            - mpeychet
             - analyst_growth
+            - mpeychet
 
     - mrodriguez:
         can_login: yes
@@ -1272,8 +1323,14 @@ users:
     - mvilain:
         can_login: yes
         member_of:
-            - mvilain
             - analyst_sales
+            - mvilain
+
+    - mwalker:
+        can_login: yes
+        member_of:
+            - engineer
+            - mwalker
 
     - lvandensteen:
         can_login: yes

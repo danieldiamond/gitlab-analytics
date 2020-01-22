@@ -86,7 +86,7 @@ WITH usage_data AS (
         {{ "," if not loop.last }}
       {% endfor %}
     FROM unpacked
-    {{ dbt_utils.group_by(n=53) }}
+    {{ dbt_utils.group_by(n=52) }}
 
 )
 

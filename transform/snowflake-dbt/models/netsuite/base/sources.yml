@@ -22,6 +22,7 @@ sources:
       - name: accounts
       - name: budget
       - name: budget_category
+      - name: classes
       - name: consolidated_exchange_rates
       - name: currencies
       - name: customers

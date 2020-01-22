@@ -80,7 +80,7 @@ branching_dbt_run = BranchPythonOperator(
 # dbt-run
 dbt_run_cmd = f"""
     {dbt_install_deps_and_seed_cmd} &&
-    dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse} # run on small warehouse w/o product data or snapshots &&
+    dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse} && # run on small warehouse w/o product data or snapshots
     dbt run --profiles-dir profile --target prod --models tag:product snapshots # run product data on large warehouse
 """
 dbt_run = KubernetesPodOperator(
