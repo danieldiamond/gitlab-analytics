@@ -270,7 +270,6 @@ models:
           - name: cohort_year
             tests:
                 - not_null
-
     - name: zuora_refund_invoices
       description:  '{{doc("zuora_refund_invoices")}}'
       columns:
@@ -283,7 +282,6 @@ models:
             tests:
                 - not_null
             
-
     - name: zuora_refund_xf
       description: Zuora Refunds
       columns: 
