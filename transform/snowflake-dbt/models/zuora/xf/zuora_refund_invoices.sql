@@ -27,11 +27,14 @@ WITH invoices AS (
         ON invoices.account_id = before_and_after.account_id
         AND before_and_after.invoice_date BETWEEN DATEADD('days', -60, invoices.invoice_date) AND DATEADD('days', 60, invoices.invoice_date)
     {{ dbt_utils.group_by(10) }}
+    HAVING before_and_after_amount_sum < 0
 )
 
 SELECT
   joined.*
 FROM joined
-WHERE amount < 0 -- negative amount = refund
-  AND before_and_after_amount_sum <= 0 -- customer ended up even ($0) or better (<$0)
-ORDER BY amount
+WHERE before_and_after_amount_sum <= 0 -- To count as a refund, the customer must up even ($0) or better (<$0)
+  AND refend_amount < 0 -- Only include the rows that are actually negative
+ORDER BY
+  invoice_date,
+  refund_amount
