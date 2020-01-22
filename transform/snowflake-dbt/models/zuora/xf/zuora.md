@@ -194,7 +194,7 @@ From this model, we can calculate renewal rates by product category. We can also
 
 The way GitLab works with zuora versions is quite confusing. For subscriptions with `auto_renew` turned on, a new subscription version is automatically created when the subscription expires (without processing credit card payment). If the payment fails, a second new version (similar to the previous one) is created, auto_renew is turned to off and status stays as `active`.
 
-For all other subscriptions, any change in the subscription T&Cs and settings (product, seats, end date, price...) will create a new version of the subscription. That means that some subscriptions have up to 20 versions when they actually had only 2 renewals (`subscription_id = ''` for a sales generated one and `subscription_id = ''` for one that has been created on the customers portal are 2 good examples).
+For all other subscriptions, any change in the subscription T&Cs and settings (product, seats, end date, price...) will create a new version of the subscription. That means that some subscriptions have up to 20 versions when they actually had only 2 renewals (`subscription_id = '2c92a0fd6c298453016c44f994e94be5'` for a sales generated one and `subscription_id = '2c92a0076d713cf5016d7227062c1477'` for one that has been created on the customers portal are 2 good examples).
 
 #### Technical Explanations
 
