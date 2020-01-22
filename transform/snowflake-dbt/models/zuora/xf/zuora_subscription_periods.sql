@@ -47,9 +47,9 @@ WITH zuora_account AS (
       term_start_date                 AS subscription_version_term_start_date,
       MIN(term_start_date) 
       OVER (PARTITION BY subscription_name_slugify 
-            ORDER BY zuora_subscription.version DESC 
-            ROWS BETWEEN UNBOUNDED PRECEDING
-                   AND 1 PRECEDING)   AS min_following_subscription_version_term_start_date
+            ORDER BY zuora_subscription.version
+            ROWS BETWEEN 1 FOLLOWING
+                   AND UNBOUNDED FOLLOWING)   AS min_following_subscription_version_term_start_date
     FROM zuora_subscription
     INNER JOIN zuora_account
       ON zuora_subscription.account_id = zuora_account.account_id
