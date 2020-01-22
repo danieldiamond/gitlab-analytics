@@ -20,14 +20,8 @@ sources:
       - name: conversational_development_indicies
         columns:
           - name: id
-            tests:
-              - not_null
           - name: created_at
-            tests:
-              - not_null
           - name: updated_at
-            tests:
-              - not_null
       - name: fortune_companies
         columns:
           - name: id

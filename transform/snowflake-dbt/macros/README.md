@@ -37,6 +37,15 @@ Used in:
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
 
+## Coalesce to Infinity
+This macro expects a timestamp or date column as an input. If a non-null value is inputted, the same value is returned. If a null value is inputted, a large date representing 'infinity' is returned. This is useful for writing `BETWEEN` clauses using date columns that are sometimes NULL.
+
+Used in:
+- gitlab_dotcom_issues_xf.sql
+- gitlab_dotcom_merge_requests_xf.sql
+- gitlab_dotcom_projects_xf.sql
+- version_usage_data_weekly_opt_in_summary.sql
+
 ## Create Snapshot Base Models ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/create_snapshot_base.sql))
 This macro creates a base model for dbt snapshots. A single entry is generated from the chosen start date through the current date for the specified primary key(s) and unit of time. 
 Usage:
@@ -168,6 +177,17 @@ IFF(issues.project_id IN ({{is_project_part_of_product()}}),
 Used in:
 - `gitlab_dotcom_issues_xf`
 - `gitlab_dotcom_merge_requests_xf`
+
+## Max Date in Bamboo HR ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/max_date_in_bamboo_analyses.sql))
+This macro creates a reusable variable based on the current date. 
+Usage:
+```
+{{ max_date_in_bamboo_analyses() }}
+```
+Used in: 
+- `rpt_team_members_out_of_comp_band`
+- `bamboohr_employment_status_xf`
+- `employee_directory_intermediate`
 
 ## Monthly Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/monthly_change.sql))
 This macro calculates differences for each consecutive usage ping by uuid.

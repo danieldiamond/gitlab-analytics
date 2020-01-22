@@ -30,12 +30,27 @@ WITH source AS (
       confidential::BOOLEAN                                     AS is_confidential,
       title::VARCHAR                                            AS issue_title,
       description::VARCHAR                                      AS issue_description,
-      state::VARCHAR                                            AS issue_state,
+
+      -- Override state by mapping state_id. See issue #3344.
+      CASE
+        WHEN state_id = 1 THEN 'opened'
+        WHEN state_id = 2 THEN 'closed'
+        WHEN state_id = 3 THEN 'merged'
+        WHEN state_id = 4 THEN 'locked'
+        ELSE NULL
+      END                                                       AS state,
+
       weight::NUMBER                                            AS weight,
       due_date::DATE                                            AS due_date,
       lock_version::NUMBER                                      AS lock_version,
       time_estimate::NUMBER                                     AS time_estimate,
-      discussion_locked::BOOLEAN                                AS has_discussion_locked
+      discussion_locked::BOOLEAN                                AS has_discussion_locked,
+      closed_by_id::INTEGER                                     AS closed_by_id,
+      relative_position::INTEGER                                AS relative_position,
+      service_desk_reply_to::VARCHAR                            AS service_desk_reply_to,
+      state_id::INTEGER                                         AS state_id,
+      duplicated_to_id::INTEGER                                 AS duplicated_to_id,
+      promoted_to_epic_id::INTEGER                              AS promoted_to_epic_id
 
     FROM source
 

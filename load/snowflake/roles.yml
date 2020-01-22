@@ -156,6 +156,7 @@ roles:
             - analyst_xl
         member_of:
             - boneyard
+            - db_dumps
             - gitlab_data_yaml
             - netsuite
             - snowplow
@@ -830,6 +831,18 @@ roles:
                     - raw.snowplow.*
                     - analytics.snowplow_*.*
 
+    - db_dumps:
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.version_db_dump_stitch
+            tables:
+                read:
+                    - raw.version_db_dump_stitch.*
+
     - zuora:
         warehouses:
             - analyst_xs
@@ -1017,7 +1030,7 @@ roles:
         warehouses:
             - analyst_xs
 
-    -mwalker:
+    - mwalker:
         warehouses:
             - engineer_xs
             - engineer_xl
