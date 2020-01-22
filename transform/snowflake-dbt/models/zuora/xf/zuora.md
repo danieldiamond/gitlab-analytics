@@ -64,10 +64,10 @@ We then aggregate the data into one row per Month for each unique (subscription 
 
 This model is a view on top of `zuora_invoices`. It attempts to isolate all cases in Zuora where we *refund* a customer, resulting in the customer arriving at a net balance of $0 (or higher).
 
-Although Zuora does have a built-in concept of `refunds`, it is not sufficient for all reporting use cases because there are many cases where a customer gets a refund but still ends up paying us money (double charges are a common example.) Sometimes, we're only interested in cases where the account arrives back at their starting balance.
+Although Zuora does have a built-in concept of `refunds`, it is not sufficient for all reporting use cases because there are many cases where a customer gets a refund but still ends up paying us money (a common example is accidental double charges where one gets refunded.) Sometimes, we're only interested in cases where the customer account ends up back at their starting balance.
 
 ### Technical Details
-For every invoice with a negative amount (i.e. where GitLab is paying a Customer), this model checks the total sum of invoices from the account in the **60 days** before and after the date of that invoice. The model only selects rows in cases where the sum from that 120-day period is $0 or less. This indicates that the account was truly refunded and didn't have any additional purchases that resulted in a transfer of funds to GitLab.
+For every invoice with a negative amount (i.e. where GitLab is paying a Customer), this model checks the total sum of invoices from the account in the **60 days before and after** the date of that invoice. The model only selects rows in cases where the sum from that 120-day period is $0 or less. This indicates that the account was truly a "net refund" and didn't have any additional purchases that ultimately resulted in a transfer of funds to GitLab.
 
 {% enddocs %}
 

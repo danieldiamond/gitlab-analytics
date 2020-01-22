@@ -26,7 +26,7 @@ WITH invoices AS (
         AND before_and_after.invoice_date BETWEEN DATEADD('days', -60, invoices.invoice_date) AND DATEADD('days', 60, invoices.invoice_date)
     {{ dbt_utils.group_by(9) }}
     -- To count as a refund, the customer must up even ($0) or better (<$0)
-    HAVING SUM(COALESCE(before_and_after.amount, 0) <= 0
+    HAVING SUM(COALESCE(before_and_after.amount, 0)) <= 0
 )
 
 SELECT
