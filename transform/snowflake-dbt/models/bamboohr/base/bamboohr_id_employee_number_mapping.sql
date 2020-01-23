@@ -34,6 +34,6 @@ WITH source AS (
 SELECT *
 FROM intermediate
 WHERE hire_date IS NOT NULL
-    AND (LOWER(first_name) not like '%greenhouse test%'
-         and LOWER(last_name) not like '%test profile%'
+    AND (LOWER(first_name) NOT LIKE '%greenhouse test%'
+         and LOWER(last_name) NOT LIKE '%test profile%'
          and LOWER(last_name) != 'test_gitlab')
