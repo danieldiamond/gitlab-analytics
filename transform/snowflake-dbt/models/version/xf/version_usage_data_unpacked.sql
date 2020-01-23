@@ -5,7 +5,7 @@ WITH usage_data AS (
     SELECT *
     FROM {{ ref('version_usage_data') }}
 
-), licenses AS (
+), licenses AS ( -- Licenses app doesn't alter rows after creation so the snapshot is not necessary.
 
     SELECT *
     FROM {{ ref('license_db_licenses') }}
@@ -25,6 +25,7 @@ WITH usage_data AS (
     SELECT
       usage_data.*,
       licenses.zuora_subscription_id,
+      licenses.company,
       zuora_subscriptions.subscription_status AS zuora_subscription_status,
       zuora_accounts.crm_id                   AS zuora_crm_id
 
@@ -35,6 +36,8 @@ WITH usage_data AS (
         ON licenses.zuora_subscription_id = zuora_subscriptions.subscription_id
       LEFT JOIN zuora_accounts
         ON zuora_subscriptions.account_id = zuora_accounts.account_id
+    WHERE licenses.email IS NULL
+      OR NOT (email LIKE '%@gitlab.com' AND LOWER(company) LIKE '%gitlab%') -- Exclude internal tests licenses.
 
 ), unpacked AS (
 
