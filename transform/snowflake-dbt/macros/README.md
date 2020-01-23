@@ -17,7 +17,7 @@ Used in:
 - dbt_project.yml
 
 ## Backup to GCS ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/warehouse/backup_to_gcs.sql))
-This macro fetchs all relevant tables in the specified database and schema for backing up into GCS. This macro should NOT be used outside of a `dbt run-operation` command.
+This macro fetches all relevant tables in the specified database and schema for backing up into GCS. This macro should NOT be used outside of a `dbt run-operation` command.
 
 Used in:
 - dags/general/dbt_backups.py
