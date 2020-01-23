@@ -1,7 +1,16 @@
+{{ config({
+    "materialized": "incremental",
+    "unique_key": "resource_label_event_id"
+    })
+}}
+
 WITH source AS (
 
   SELECT *
   FROM {{ source('gitlab_dotcom', 'resource_label_events') }}
+    {% if is_incremental() %}
+    AND created_at >= (SELECT MAX(created_at) FROM {{this}})
+    {% endif %}
   QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 )
