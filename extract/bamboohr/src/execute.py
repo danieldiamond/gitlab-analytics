@@ -14,7 +14,7 @@ from api import BambooAPI
 ALLOWED_DATA_CHANGE_PER_EXTRACT = 0.25
 
 
-def get_snowflake_difference_count(table_name, snowflake_engine, field_name):
+def get_snowflake_latest_entry_count(table_name, snowflake_engine, field_name):
     base_field_name = field_name.split(":")[0]
     query = f"""
         with row_numbered_json as
@@ -29,10 +29,6 @@ def get_snowflake_difference_count(table_name, snowflake_engine, field_name):
         (
             select array_size({field_name}) from row_numbered_json
             where row_number = 1
-        ) - 
-        (
-            select array_size({field_name}) from row_numbered_json
-            where row_number = 2
         )
     """
     return query_executor(snowflake_engine, query)[0][0]
@@ -40,9 +36,10 @@ def get_snowflake_difference_count(table_name, snowflake_engine, field_name):
 
 def test_extraction(data, snowflake_table, snowflake_engine, field_name="JSONTEXT"):
     count_extracted = len(data)
-    snowflake_difference_count = get_snowflake_difference_count(
+    snowflake_latest_count = get_snowflake_latest_entry_count(
         snowflake_table, snowflake_engine, field_name
     )
+    snowflake_difference_count = count_extracted - snowflake_latest_count
     if abs(snowflake_difference_count) > (
         ALLOWED_DATA_CHANGE_PER_EXTRACT * float(count_extracted)
     ):
@@ -69,14 +66,14 @@ if __name__ == "__main__":
     with open("directory.json", "w") as outfile:
         json.dump(employees, outfile)
 
+    test_extraction(employees, "raw.bamboohr.directory", snowflake_engine)
+
     snowflake_stage_load_copy_remove(
         "directory.json",
         "raw.bamboohr.bamboohr_load",
         "raw.bamboohr.directory",
         snowflake_engine,
     )
-
-    test_extraction(employees, "raw.bamboohr.directory", snowflake_engine)
 
     # Tabular Data
     tabular_data = dict(
@@ -93,14 +90,14 @@ if __name__ == "__main__":
         with open(f"{key}.json", "w") as outfile:
             json.dump(data, outfile)
 
+        test_extraction(data, f"raw.bamboohr.{key}", snowflake_engine)
+
         snowflake_stage_load_copy_remove(
             f"{key}.json",
             "raw.bamboohr.bamboohr_load",
             f"raw.bamboohr.{key}",
             snowflake_engine,
         )
-
-        test_extraction(data, f"raw.bamboohr.{key}", snowflake_engine)
 
     # Custom Reports
     report_mapping = dict(id_employee_number_mapping="498")
@@ -112,15 +109,16 @@ if __name__ == "__main__":
         with open(f"{key}.json", "w") as outfile:
             json.dump(data, outfile)
 
+        test_extraction(
+            data["employees"],
+            f"raw.bamboohr.{key}",
+            snowflake_engine,
+            field_name="JSONTEXT:employees",
+        )
+
         snowflake_stage_load_copy_remove(
             f"{key}.json",
             "raw.bamboohr.bamboohr_load",
             f"raw.bamboohr.{key}",
             snowflake_engine,
-        )
-        test_extraction(
-            data,
-            f"raw.bamboohr.{key}",
-            snowflake_engine,
-            field_name="JSONTEXT:employees",
         )
