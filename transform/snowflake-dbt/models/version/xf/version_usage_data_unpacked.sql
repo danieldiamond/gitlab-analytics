@@ -24,8 +24,12 @@ WITH usage_data AS (
 
     SELECT
       usage_data.*,
+      licenses.license_id,
       licenses.zuora_subscription_id,
       licenses.company,
+      licenses.plan_id                        AS license_plan_id,
+      licenses.license_starts_at,
+      licenses.license_expires_at,
       zuora_subscriptions.subscription_status AS zuora_subscription_status,
       zuora_accounts.crm_id                   AS zuora_crm_id
 
