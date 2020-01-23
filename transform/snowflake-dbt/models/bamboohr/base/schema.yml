@@ -66,13 +66,7 @@ models:
       - name: greenhouse_candidate_id
         description: Captures the id associated to the employee in Greenhouse (our recruiting platform). This will only be applicable in Greenhouse starting 2019-12-13, and will help identify which candidates were hired.
         tests: 
-            - unique   
-      - name: is_test_account
-        description: Creates a column to identify test accounts in the source name based on last_name = 'Test-Gitlab' (this will be the naming convention going forward from 2020-01-23).  Also, removing the test account from prior to new naming convention. The column should be all 0s.
-        tests: 
-            - accepted_values:
-                values: ['false']
-                quote: false         
+            - unique          
   - name: bamboohr_job_info
     description: This model shows the details (manager, department, and division) that an employee is in at a given point in time. This includes historical information.
     columns:
