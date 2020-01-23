@@ -2,6 +2,8 @@
 
     {%- for column in unstruct_columns_list %}
       CASE
+        WHEN event_name IN ('value', 'elements') -- Mask these as they contain sensitive data.
+          THEN 'masked'
         WHEN event_name = '{{ match_text }}'
           THEN
             try_parse_json(unstruct_event)['data']['data']['{{ column }}']
