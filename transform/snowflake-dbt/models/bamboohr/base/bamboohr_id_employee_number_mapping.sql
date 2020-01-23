@@ -28,19 +28,12 @@ WITH source AS (
     LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), outer => true) d
 
 
-), final AS (
-
-    SELECT 
-        intermediate.*,
-        CASE WHEN LOWER(first_name) LIKE '%greenhouse test%' THEN 'true'
-             WHEN LOWER(last_name) LIKE '%test profile%' THEN 'true'
-             WHEN LOWER(last_name) = 'test-gitlab' THEN 'true'             
-             ELSE 'false' END                                               AS is_test_account
-    FROM intermediate
-
 )
 
-SELECT * 
-FROM final
+
+SELECT *
+FROM intermediate
 WHERE hire_date IS NOT NULL
-    AND is_test_account = 'false'
+    AND (LOWER(first_name) not like '%greenhouse test%'
+         and LOWER(last_name) not like '%test profile%'
+         and LOWER(last_name) != 'test_gitlab')
