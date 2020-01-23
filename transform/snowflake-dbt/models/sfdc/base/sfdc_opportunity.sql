@@ -81,7 +81,7 @@ WITH source AS (
         reason_for_lost__c             AS reason_for_loss,
         reason_for_lost_details__c     AS reason_for_loss_details,
         refund_iacv__c                 AS refund_iacv,
-        downgrade_iacv__c              AS downgrade_iacv,        
+        downgrade_iacv__c              AS downgrade_iacv,
         renewal_acv__c                 AS renewal_acv,
         renewal_amount__c              AS renewal_amount,
         sql_source__c                  AS sales_qualified_source,
@@ -90,6 +90,7 @@ WITH source AS (
         amount                         AS total_contract_value,
         upside_iacv__c                 AS upside_iacv,
         upside_swing_deal_iacv__c      AS upside_swing_deal_iacv,
+        web_portal_purchase__c         AS is_web_portal_purchase,
 
         -- metadata
         convert_timezone('America/Los_Angeles',convert_timezone('UTC',
