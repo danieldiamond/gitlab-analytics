@@ -32,9 +32,9 @@ WITH source AS (
 
     SELECT 
         intermediate.*,
-        CASE WHEN lower(first_name) LIKE '%greenhouse test%' THEN 1
-             WHEN lower(last_name) LIKE '%test profile%' THEN 1
-             WHEN lower(last_name) = 'test-gitlab' THEN 1             
+        CASE WHEN LOWER(first_name) LIKE '%greenhouse test%' THEN 1
+             WHEN LOWER(last_name) LIKE '%test profile%' THEN 1
+             WHEN LOWER(last_name) = 'test-gitlab' THEN 1             
              ELSE 0 END                                                   AS test_account
     FROM intermediate
 
