@@ -1,6 +1,7 @@
 import sys
 import re
 from io import StringIO
+import json
 from logging import info, basicConfig, getLogger
 from os import environ as env
 from time import time
@@ -207,6 +208,24 @@ def gcs_loader(
         chunk[chunk.columns] = chunk[chunk.columns].astype("str")
         dw_uploader(engine=engine, table=table, data=chunk, chunk=chunk_iter)
         chunk_iter += 1
+
+
+def count_records_in_s3_csv(bucket: str, s3_client, s3_file_key: str) -> int:
+    query_result = s3_client.select_object_content(
+        Bucket=bucket,
+        Key=s3_file_key,
+        ExpressionType="SQL",
+        Expression="select count(*) as line_count from s3object",
+        InputSerialization={
+            "CSV": {"FileHeaderInfo": "IGNORE", "AllowQuotedRecordDelimiter": True}
+        },
+        OutputSerialization={"JSON": {}},
+    )
+    for event in query_result["Payload"]:
+        if "Records" in event:
+            json_payload_dict = json.loads(event["Records"]["Payload"].decode("utf-8"))
+            return json_payload_dict["line_count"]
+    return -1
 
 
 def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> None:
