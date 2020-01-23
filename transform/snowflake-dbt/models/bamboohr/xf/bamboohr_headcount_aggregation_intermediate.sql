@@ -6,7 +6,8 @@ With dates AS (
     FROM "ANALYTICS"."ANALYTICS"."DATE_DETAILS"
     WHERE date_day <= LAST_DAY(current_date) 
        AND day_of_month = 1 
-    
+       AND date_actual >= '2013-07-01' -- min employment_status_date in bamboohr_employment_status model
+
 ), mapping AS (
   
   SELECT * 
