@@ -35,7 +35,7 @@ WITH source AS (
         CASE WHEN LOWER(first_name) LIKE '%greenhouse test%' THEN 1
              WHEN LOWER(last_name) LIKE '%test profile%' THEN 1
              WHEN LOWER(last_name) = 'test-gitlab' THEN 1             
-             ELSE 0 END                                                   AS test_account
+             ELSE 0 END                                                   AS is_test_account
     FROM intermediate
 
 )
@@ -43,4 +43,4 @@ WITH source AS (
 SELECT * 
 FROM final
 WHERE hire_date IS NOT NULL
-    AND test_account = 0
+    AND is_test_account = 0
