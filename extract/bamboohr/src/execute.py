@@ -47,7 +47,7 @@ def test_extraction(data, snowflake_table, snowflake_engine, field_name="JSONTEX
         ALLOWED_DATA_CHANGE_PER_EXTRACT * float(count_extracted)
     ):
         logging.error(
-            f"row difference was {snowflake_difference_count} for {snowflake_table}"
+            f"Row difference was {snowflake_difference_count} for {snowflake_table}."
         )
         sys.exit(1)
 
