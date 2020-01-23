@@ -22,6 +22,6 @@ The script that performs these steps is available [here](https://gitlab.com/gitl
 
 The data is available via [this link](https://gitlab.com/gitlab-org/security-products/gemnasium-db/-/jobs/artifacts/master/raw/data/nvd.tar.gz?job=pages).
 
-There are no columns on the csv, but the first column is year and the second is count.
+There are two columns in CSV file representing respectively NVD feed publication year and NVD feed size (i.e, number of contained CVEs).
 
 {% enddocs %}
