@@ -28,7 +28,7 @@ WITH usage_data AS (
       licenses.zuora_subscription_id,
       licenses.company,
       licenses.plan_code                      AS license_plan_code,
-      licenses.license_starts_at,
+      licenses.starts_at                      AS license_starts_at,
       licenses.license_expires_at,
       zuora_subscriptions.subscription_status AS zuora_subscription_status,
       zuora_accounts.crm_id                   AS zuora_crm_id
