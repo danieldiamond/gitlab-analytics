@@ -41,7 +41,7 @@ def test_extraction(data, snowflake_table, snowflake_engine, field_name="JSONTEX
     )
     snowflake_difference_count = count_extracted - snowflake_latest_count
     if abs(snowflake_difference_count) > (
-        ALLOWED_DATA_CHANGE_PER_EXTRACT * float(count_extracted)
+        ALLOWED_DATA_CHANGE_PER_EXTRACT * float(snowflake_latest_count)
     ):
         logging.error(
             f"Row difference was {snowflake_difference_count} for {snowflake_table}."
