@@ -70,7 +70,7 @@ models:
       - name: test_account
         description: Creates a column to identify test accounts in the source name based on last_name = 'Test-Gitlab' (this will be the naming convention going forward from 2020-01-23).  Also, removing the test account from prior to new naming convention. The column should be all 0s.
         tests: 
-            - accepted_values
+            - accepted_values:
                 values: [0]
                 quote: false         
   - name: bamboohr_job_info
