@@ -953,7 +953,6 @@ tables:
       , new_path
       , old_path
       , diff
-      , binary
       , external_diff_offset
       , external_diff_size
       FROM merge_request_diff_files
