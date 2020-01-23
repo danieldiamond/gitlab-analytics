@@ -5,7 +5,7 @@ The data is derived from files contained in [gemnasium-db repository](https://gi
 * full file path from advisory file
 * git merge date for advisory file
 * relevant data fields from advisory file (file has to be parsed)
-* package type from file (based on file path)
+* package type to which the advisory relates
 
 The script that performs these steps is available [here](https://gitlab.com/gitlab-org/security-products/gemnasium-db/blob/master/stats/scripts/prepare_data.rb).
 
