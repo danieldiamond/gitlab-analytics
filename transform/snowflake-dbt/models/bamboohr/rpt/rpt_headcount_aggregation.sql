@@ -8,7 +8,7 @@
 With source AS (
     
   SELECT *
-  FROM "ANALYTICS"."PLUTHRA_SCRATCH_SENSITIVE"."Bamboohr_headcount_aggregation_xf"
+  FROM "ANALYTICS"."ANALYTICS_SENSITIVE"."BAMBOOHR_HEADCOUNT_AGGREGATION_XF"
 
 ), overall_headcount_pivoted AS (
    

@@ -16,10 +16,10 @@ With dates AS (
   
     SELECT 
       employees.*,
-      coalesce(mapping.gender,'unidentified')             AS gender,
-      coalesce(mapping.ethnicity, 'unidentified')         AS ethnicity,
-      coalesce(mapping.nationality, 'unidentified')       AS nationality,
-      coalesce(mapping.region, 'unidentified')            AS region,
+      COALESCE(mapping.gender,'unidentified')             AS gender,
+      COALESCE(mapping.ethnicity, 'unidentified')         AS ethnicity,
+      COALESCE(mapping.nationality, 'unidentified')       AS nationality,
+      COALESCE(mapping.region, 'unidentified')            AS region,
       ROW_NUMBER() OVER (PARTITION BY employees.employee_id ORDER BY valid_from_date) AS employee_status_event
     FROM "ANALYTICS"."ANALYTICS_SENSITIVE"."BAMBOOHR_EMPLOYMENT_STATUS_XF"  employees
     LEFT JOIN mapping 
