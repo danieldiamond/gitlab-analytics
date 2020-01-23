@@ -35,11 +35,9 @@ WITH usage_data AS (
     MIN(usage_data.created_at)                                   AS min_usage_data_created_at,
     MAX(usage_data.created_at)                                   AS max_usage_data_created_at
   FROM week_spine
-    LEFT JOIN licenses
-      ON week_spine.week BETWEEN licenses.starts_at AND {{ coalesce_to_infinity("licenses.license_expires_at") }}
     LEFT JOIN usage_data
-      ON licenses.license_md5 = usage_data.license_md5
-      AND week_spine.week = DATE_TRUNC('week', usage_data.created_at)
+      ON week_spine.week = DATE_TRUNC('week', usage_data.created_at)
+      AND week_spine.week BETWEEN license_starts_at AND {{ coalesce_to_infinity("license_expires_at") }}
   {{ dbt_utils.group_by(n=6) }}
 
 )
