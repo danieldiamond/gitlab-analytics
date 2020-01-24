@@ -86,6 +86,8 @@ WITH usage_data AS (
       unpacked.major_version,
       unpacked.main_edition,
       unpacked.edition_type,
+      unpacked.license_plan_code,
+      unpacked.company,
       unpacked.zuora_subscription_id,
       unpacked.zuora_subscription_status,
       unpacked.zuora_crm_id,
@@ -95,7 +97,7 @@ WITH usage_data AS (
         {{ "," if not loop.last }}
       {% endfor %}
     FROM unpacked
-    {{ dbt_utils.group_by(n=52) }}
+    {{ dbt_utils.group_by(n=54) }}
 
 )
 
