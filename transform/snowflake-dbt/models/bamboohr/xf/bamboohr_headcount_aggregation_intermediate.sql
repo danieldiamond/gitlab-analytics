@@ -3,7 +3,7 @@ With dates AS (
     SELECT 
       date_actual                                 AS start_date,
       LAST_DAY(date_actual)                       AS end_date
-    FROM "ANALYTICS"."ANALYTICS"."DATE_DETAILS"
+    FROM {{ ref ('date_details') }}
     WHERE date_day <= LAST_DAY(current_date) 
        AND day_of_month = 1 
        AND date_actual >= '2013-07-01' -- min employment_status_date in bamboohr_employment_status model
@@ -11,20 +11,25 @@ With dates AS (
 ), mapping AS (
   
   SELECT * 
-  FROM "ANALYTICS"."ANALYTICS_SENSITIVE"."BAMBOOHR_ID_EMPLOYEE_NUMBER_MAPPING"
+  FROM {{ref('bamboohr_id_employee_number_mapping')}}
     
+), bamboohr_employment_status_xf as (
+
+  SELECT * 
+  FROM {{ref('bamboohr_employment_status_xf')}}
+
 ), employees AS (  
   
     SELECT 
-      employees.*,
+      bamboohr_employment_status_xf.*,
       COALESCE(mapping.gender,'unidentified')             AS gender,
       COALESCE(mapping.ethnicity, 'unidentified')         AS ethnicity,
       COALESCE(mapping.nationality, 'unidentified')       AS nationality,
       COALESCE(mapping.region, 'unidentified')            AS region,
-      ROW_NUMBER() OVER (PARTITION BY employees.employee_id ORDER BY valid_from_date) AS employee_status_event
-    FROM "ANALYTICS"."ANALYTICS_SENSITIVE"."BAMBOOHR_EMPLOYMENT_STATUS_XF"  employees
+      ROW_NUMBER() OVER (PARTITION BY bamboohr_employment_status_xf.employee_id ORDER BY valid_from_date) AS employee_status_event
+    FROM bamboohr_employment_status_xf
     LEFT JOIN mapping 
-       ON employees.employee_id = mapping.employee_id
+       ON bamboohr_employment_status_xf.employee_id = mapping.employee_id
       
 ),headcount_start AS (
  
