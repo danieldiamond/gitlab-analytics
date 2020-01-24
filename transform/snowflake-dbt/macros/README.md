@@ -16,6 +16,12 @@ Usage:
 Used in:
 - dbt_project.yml
 
+## Backup to GCS ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/warehouse/backup_to_gcs.sql))
+This macro fetches all relevant tables in the specified database and schema for backing up into GCS. This macro should NOT be used outside of a `dbt run-operation` command.
+
+Used in:
+- dags/general/dbt_backups.py
+
 ## Case When Boolean Int ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/case_when_boolean_int.sql))
 This macro returns a 1 if some value is greater than 0; otherwise, it returns a 0.
 Usage:
@@ -103,6 +109,15 @@ Usage:
 ```
 Used in:
 - all models surfaced in our BI tool.
+
+## Get Backup Table Command ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/warehouse/get_backup_table_command.sql))
+This macro is called by `backup_to_gcs` so that the actual `copy into` command can be generated. This macro should NOT be referenced outside of the `backup_to_gcs` macro.
+```
+{% set backup_table_command = get_backup_table_command(table, day_of_month) %}
+{{ backup_table_command }}
+```
+Used in:
+- backup_to_gcs.sql
 
 ## Get Internal Parent Namespaces
 Returns a list of all the internal gitlab.com parent namespaces, enclosed in round brackets. This is useful for filtering an analysis down to external users only.
