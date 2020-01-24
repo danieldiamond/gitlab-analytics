@@ -4,13 +4,7 @@
 }}
 
 
-WITH usage_data AS (
-
-  SELECT *
-  FROM {{ ref('version_usage_data_unpacked') }}
-  WHERE license_md5 IS NOT NULL
-
-), licenses AS (
+WITH licenses AS (
  
   SELECT *
   FROM {{ ref('license_db_licenses') }}
@@ -18,17 +12,21 @@ WITH usage_data AS (
     AND is_trial = False
     -- Remove internal test licenses
     AND NOT (email LIKE '%@gitlab.com' AND LOWER(company) LIKE '%gitlab%')
+    
+), usage_data AS (
 
-) , week_spine AS (
+  SELECT *
+  FROM {{ ref('version_usage_data_unpacked') }}
+  WHERE license_md5 IS NOT NULL
+
+), week_spine AS (
 
   SELECT DISTINCT
     DATE_TRUNC('week', date_actual) AS week
   FROM {{ ref('date_details') }}
   WHERE date_details.date_actual BETWEEN '2017-04-01' AND CURRENT_DATE
 
-)
-
-, grouped AS (
+), grouped AS (
 
   SELECT
     week_spine.week,
@@ -48,9 +46,7 @@ WITH usage_data AS (
       AND week_spine.week = DATE_TRUNC('week', usage_data.created_at)
   {{ dbt_utils.group_by(n=5) }}
 
-)
-
-, alphabetized AS (
+), alphabetized AS (
 
     SELECT
       week,
