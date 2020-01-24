@@ -4,7 +4,7 @@ WITH invoices AS (
 
 ), zuora_account AS (
 
-	SELECT * FROM {{ref('zuora_account')}}
+    SELECT * FROM {{ref('zuora_account')}}
 
 /* Self join invoices before and after the invoice date to get a sum of other transactions paid. */
 ), joined AS (
