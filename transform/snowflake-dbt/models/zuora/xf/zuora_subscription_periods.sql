@@ -86,7 +86,7 @@ WITH zuora_account AS (
     WHERE (subscription_version_term_start_date  < min_following_subscription_version_term_start_date
       OR min_following_subscription_version_term_start_date IS NULL)
       -- remove cancelled subscription
-      AND subscription_version_term_end_date <> subscription_version_term_start_date
+      AND subscription_version_term_end_date != subscription_version_term_start_date
       
 )
 
