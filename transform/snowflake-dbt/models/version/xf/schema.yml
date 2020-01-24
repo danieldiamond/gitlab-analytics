@@ -111,7 +111,8 @@ models:
     - name: version_usage_data_weekly_opt_in_summary
       description: '{{ doc("version_usage_data_weekly_opt_in_summary") }}'
       tests:
-        
+        - unique:
+            column_name: "concat(week, license_id)"
       columns:
           - name: week
             tests:
