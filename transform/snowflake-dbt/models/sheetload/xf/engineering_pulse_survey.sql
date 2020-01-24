@@ -4,8 +4,8 @@
                      ref('sheetload_pulse_survey_monitor_fe')] %}
 
 with unioned as (
-    {{ dbt_utils.union_tables(
-        tables=table_list,
+    {{ dbt_utils.union_relations(
+        relations=table_list,
         column_override=none,
         exclude=none,
         source_column_name=none

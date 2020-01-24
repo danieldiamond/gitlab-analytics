@@ -8,8 +8,8 @@ WITH zuora_base_mrr AS (
 
 , unioned_charges AS (
   
-  {{ dbt_utils.union_tables(
-      tables=[
+  {{ dbt_utils.union_relations(
+      relations=[
               ref('customers_db_orders_with_valid_charges'), 
               ref('customers_db_orders_with_incomplete_charges')
               ],
