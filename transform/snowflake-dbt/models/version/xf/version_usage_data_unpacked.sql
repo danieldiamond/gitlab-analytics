@@ -4,7 +4,6 @@ WITH usage_data AS (
 
     SELECT {{ dbt_utils.star(from=ref('version_usage_data'), except=['LICENSE_ID', 'LICENSE_STARTS_AT', 'LICENSE_EXPIRES_AT']) }}
     FROM {{ ref('version_usage_data') }}
-    LIMIT 100000
 
 ), licenses AS ( -- Licenses app doesn't alter rows after creation so the snapshot is not necessary.
 
