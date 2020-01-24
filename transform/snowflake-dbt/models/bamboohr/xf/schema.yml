@@ -111,7 +111,4 @@ models:
             - not_null
         - name: metric
           description: This column indicates the headcount metric created.
-          tests:
-            - accepted_values:
-                values: ['headcount_start', 'headcount_end','hires','total_separated','voluntary_separations','involuntary_separations']
-                quote: false    
+            
