@@ -97,4 +97,22 @@ models:
         - name: gender
           tests:
             - not_null
-        
+        - name: ethnicity
+          tests:
+            - not_null
+        - name: nationality
+          tests:
+            - not_null       
+        - name: region
+          tests:
+            - not_null  
+        - name: total_count
+          description: Provides the count of employees that tie to the applicable metric. For example, total_count tied to the metric headcount_start shows how many employees were active on the 1st of the month.
+          tests:
+            - not_null               
+        - name: metric
+          description: Indicates the metric being created.
+          tests: 
+            accepted_values:
+                values: ['headcount_start', 'headcount_end','hires','total_separated','voluntary_separations','involuntary_separations']
+                quote: false  
