@@ -2,7 +2,7 @@ import sys
 import re
 from io import StringIO
 import json
-from logging import info, basicConfig, getLogger
+from logging import error, info, basicConfig, getLogger
 from os import environ as env
 from time import time
 from typing import Dict, Tuple
@@ -15,25 +15,12 @@ from fire import Fire
 from gitlabdata.orchestration_utils import (
     postgres_engine_factory,
     snowflake_engine_factory,
+    query_executor,
 )
 from google.cloud import storage
 from google.oauth2 import service_account
 from oauth2client.service_account import ServiceAccountCredentials
 from sqlalchemy.engine.base import Engine
-
-
-def query_executor(engine: Engine, query: str) -> Tuple[str]:
-    """
-    Execute DB queries safely.
-    """
-
-    try:
-        connection = engine.connect()
-        results = connection.execute(query).fetchall()
-    finally:
-        connection.close()
-        engine.dispose()
-    return results
 
 
 def table_has_changed(data: pd.DataFrame, engine: Engine, table: str) -> bool:
@@ -210,7 +197,7 @@ def gcs_loader(
         chunk_iter += 1
 
 
-def count_records_in_s3_csv(bucket: str, s3_client, s3_file_key: str) -> int:
+def count_records_in_s3_csv(bucket: str, s3_file_key: str, s3_client) -> int:
     query_result = s3_client.select_object_content(
         Bucket=bucket,
         Key=s3_file_key,
@@ -226,6 +213,21 @@ def count_records_in_s3_csv(bucket: str, s3_client, s3_file_key: str) -> int:
             json_payload_dict = json.loads(event["Records"]["Payload"].decode("utf-8"))
             return json_payload_dict["line_count"]
     return -1
+
+
+def check_s3_csv_count_integrity(
+    bucket, file_key, s3_client, snowflake_engine, table_name
+) -> None:
+    snowflake_count_result_set = query_executor(
+        snowflake_engine, f"select count(*) from {table_name}"
+    )
+    snowflake_count = snowflake_count_result_set[0][0]
+    s3_count = count_records_in_s3_csv(bucket, file_key, s3_client)
+    if snowflake_count != s3_count:
+        error(
+            f"Error replicating CSV from S3 for table name: {table_name}. Snowflake count: {snowflake_count}, S3 count: {s3_count}."
+        )
+        sys.exit(1)
 
 
 def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> None:
@@ -271,6 +273,8 @@ def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> Non
             table, extension = file.split(".")[0:2]
 
             dw_uploader(engine, table, sheet_df, truncate=True)
+
+            check_s3_csv_count_integrity(bucket, file, s3_client, engine, table)
 
 
 if __name__ == "__main__":
