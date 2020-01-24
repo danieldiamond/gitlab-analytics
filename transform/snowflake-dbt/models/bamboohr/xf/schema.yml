@@ -90,25 +90,5 @@ models:
             - not_null
         - name: valid_to_date
           description: Provides the end date for a specific record. For the terminated record stamp, it will provide a null since there will be no following record, unless the employee is re-hired, in which case it will indicate how long the employee was separated.
-  - name: bamboohr_headcount_aggregation_intermediate
-    description: This is the intermediate model to creating out the headcount report. This report provides a count breakdown of headcounts, hires, separations by diversity fields.
-    columns:
-        - name: gender
-          tests:
-            -not_null
-        - name: ethnicity
-          tests: 
-            -not_null
-        - name: nationality
-          tests:
-            -not_null
-        - name: region
-          tests:
-            -not_null            
-        - name: total_count
-          description: Provides the count of employees that tie to the applicable metric. For example, total_count tied to the metric headcount start shows how many employees were active on the 1st of the month.
-          tests:
-            - not_null
-        - name: metric
-          description: This column indicates the headcount metric created.
+  
             
