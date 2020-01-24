@@ -1,8 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('gitlab_dotcom', 'design_management_designs') }}
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
+    FROM {{ source('gitlab_dotcom', 'design_management_designs_versions') }}
 
 ), renamed AS (
 
