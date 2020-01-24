@@ -3,4 +3,4 @@
     })
 }}
 
-{{ schema_union_limit('snowplow', 'snowplow_unstructured', 'derived_tstamp', 90) }}
+{{ schema_union_limit('snowplow', 'snowplow_unstructured_events', 'derived_tstamp', 90) }}
