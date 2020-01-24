@@ -61,6 +61,8 @@ WITH usage_data AS (
           WHEN edition LIKE '%EE Free%' THEN 'Core'
           WHEN edition LIKE '%EE%' THEN 'Starter'
         ELSE NULL END                                                                 AS edition_type,
+      license_plan_code,
+      company,
       zuora_subscription_id,
       zuora_subscription_status,
       zuora_crm_id,
