@@ -6,11 +6,11 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      file              AS filename,
-      pubdate::DATE     AS publish_date,
-      mergedate::DATE   AS merge_date,
-      delta,
-      packagetype       AS package_type
+      "FILE"::VARCHAR         AS filename,
+      pubdate::DATE         AS publish_date,
+      mergedate::DATE       AS merge_date,
+      delta::NUMBER,
+      packagetype::VARCHAR  AS package_type
     FROM source
 
 )
