@@ -26,7 +26,7 @@ WITH zuora_account AS (
   
 )
 
-, subsription_joined_with_accounts AS (
+, subscription_joined_with_accounts AS (
 
     SELECT DISTINCT
       zuora_subscription.subscription_id,
@@ -59,26 +59,26 @@ WITH zuora_account AS (
 , subscription_joined_with_charges AS (
   
     SELECT DISTINCT
-      subsription_joined_with_accounts.subscription_id,
-      subsription_joined_with_accounts.subscription_name,
-      subsription_joined_with_accounts.subscription_name_slugify,    
-      subsription_joined_with_accounts.subscription_status, 
-      subsription_joined_with_accounts.version,
-      subsription_joined_with_accounts.zuora_renewal_subscription_name_slugify,
-      subsription_joined_with_accounts.account_id, 
-      subsription_joined_with_accounts.account_number,
-      subsription_joined_with_accounts.account_name,
-      subsription_joined_with_accounts.subscription_start_date, 
-      subsription_joined_with_accounts.subscription_version_end_date,
-      subsription_joined_with_accounts.subscription_version_term_start_date,
-      subsription_joined_with_accounts.subscription_version_term_end_date,
-      LAST_VALUE(mrr) OVER (PARTITION BY subsription_joined_with_accounts.subscription_id 
+      subscription_joined_with_accounts.subscription_id,
+      subscription_joined_with_accounts.subscription_name,
+      subscription_joined_with_accounts.subscription_name_slugify,    
+      subscription_joined_with_accounts.subscription_status, 
+      subscription_joined_with_accounts.version,
+      subscription_joined_with_accounts.zuora_renewal_subscription_name_slugify,
+      subscription_joined_with_accounts.account_id, 
+      subscription_joined_with_accounts.account_number,
+      subscription_joined_with_accounts.account_name,
+      subscription_joined_with_accounts.subscription_start_date, 
+      subscription_joined_with_accounts.subscription_version_end_date,
+      subscription_joined_with_accounts.subscription_version_term_start_date,
+      subscription_joined_with_accounts.subscription_version_term_end_date,
+      LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
         ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
       SUM(tcv) OVER (
-        PARTITION BY subsription_joined_with_accounts.subscription_id) AS tcv
-    FROM subsription_joined_with_accounts
+        PARTITION BY subscription_joined_with_accounts.subscription_id) AS tcv
+    FROM subscription_joined_with_accounts
     INNER JOIN zuora_rate_plan
-      ON subsription_joined_with_accounts.subscription_id = zuora_rate_plan.subscription_id
+      ON subscription_joined_with_accounts.subscription_id = zuora_rate_plan.subscription_id
     INNER JOIN zuora_rate_plan_charge
       ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
         -- remove refunded subscriptions
