@@ -4,7 +4,6 @@ import logging
 import sys
 import os
 from os import environ as env
-import pendulum
 import yaml
 
 from gitlabdata.orchestration_utils import (
@@ -16,8 +15,7 @@ from api import Prometheus
 
 # The api expects a specific timezone format
 def fixup_datetime_string_format(datetime_string):
-    pendulum_datetime = pendulum.parse(datetime_string)
-    return pendulum_datetime.isoformat()[:-6] + "Z"
+    return datetime_string[:-6] + "Z"
 
 
 if __name__ == "__main__":
