@@ -96,13 +96,5 @@ models:
     columns:
         - name: gender
           tests:
-            -not_null
-        - name: ethnicity
-          tests:
-            -not_null
-        - name: nationality
-          tests:
-            -not_null
-        - name: region
-          tests:
-            -not_null                   
+            - not_null
+        
