@@ -74,7 +74,7 @@ With dates AS (
 ), hires AS (
 
     SELECT 
-      date_trunc('month', dates.start_date)          AS hire_month,
+      DATE_TRUNC('month', dates.start_date)          AS hire_month,
       gender,
       ethnicity,
       nationality,
@@ -102,14 +102,14 @@ With dates AS (
   
     SELECT
        headcount_end.*,
-       'headcount_end'              AS Metric
+       'headcount_end'              AS metric
     FROM headcount_end
  
     UNION ALL
   
     SELECT 
        hires.*,
-       'hires'                      AS Metric
+       'hires'                      AS metric
     FROM hires
   
     UNION ALL
@@ -121,7 +121,7 @@ With dates AS (
       nationality,
       region,
       total_separated,
-      'total_separated'             AS Metric
+      'total_separated'             AS metric
     FROM separated
   
     UNION ALL
@@ -133,7 +133,7 @@ With dates AS (
       nationality,
       region,
       voluntary_separation,
-      'voluntary_separations'       AS Metric
+      'voluntary_separations'       AS metric
     FROM separated
   
     UNION ALL
@@ -145,7 +145,7 @@ With dates AS (
       nationality,
       region,
       involuntary_separation,
-      'involuntary_separations'     AS Metric
+      'involuntary_separations'     AS metric
   FROM separated
   
  )
