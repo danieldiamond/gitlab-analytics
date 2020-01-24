@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
         snowflake_stage_load_copy_remove(
             file_name,
-            f"raw.prometheus.{table_name}",
+            f"raw.prometheus.prometheus_load",
             f"raw.prometheus.{table_name}",
             snowflake_engine,
         )
