@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 import json
 import logging
 import sys
@@ -12,6 +13,15 @@ from gitlabdata.orchestration_utils import (
 )
 
 from api import Prometheus
+
+# The api expects a specific timezone format
+def fixup_datetime_string_format(datetime_string):
+    if ":" == datetime_string[-3:-2]:
+        datetime_string = datetime_string[:-3] + datetime_string[-2:]
+    parsed_datetime = datetime.strptime(datetime_string, "%Y-%m-%dT%H:%M:%S%z")
+
+    # These are all UTC times, so we can just hack off the timezone and replace it with Z
+    return parsed_datetime.isoformat()[:-6] + "Z"
 
 
 if __name__ == "__main__":
@@ -46,13 +56,14 @@ if __name__ == "__main__":
         "gitlab_runner_failed_jobs_total",
     ]
 
+    start = fixup_datetime_string_format(args.start)
+    end = fixup_datetime_string_format(args.end)
+
     for metric in metrics_to_load:
         logging.info(f"loading {metric} from prometheus for {args.start} to {args.end}")
         file_name = f"{metric.upper()}.json"
         with open(file_name, "w") as outfile:
-            metric_data = prometheus_client.get_metric(
-                args.start, args.end, metric, args.token
-            )
+            metric_data = prometheus_client.get_metric(start, end, metric, args.token)
             json.dump(metric_data, outfile)
 
         snowflake_stage_load_copy_remove(
