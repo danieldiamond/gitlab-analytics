@@ -55,7 +55,7 @@ if __name__ == "__main__":
     start = fixup_datetime_string_format(args.start)
     end = fixup_datetime_string_format(args.end)
 
-    for metric_name, table_name in metrics_to_load:
+    for metric_name, table_name in metrics_to_load.items():
         logging.info(
             f"loading {metric_name} from prometheus for {args.start} to {args.end}"
         )
