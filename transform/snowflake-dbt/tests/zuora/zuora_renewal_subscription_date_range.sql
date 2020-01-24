@@ -1,8 +1,8 @@
 -- this test checks for renewal dates to be older than subscription start dates.
 
 WITH base AS (
-   
-   SELECT 	
+
+   SELECT
         subscription_name_slugify,
    		renewal.value::string AS zuora_renewal_subscription_name_slugify,
    		subscription_start_date,
@@ -10,6 +10,12 @@ WITH base AS (
 		FROM {{ref('zuora_subscription')}},
 			 LATERAL flatten(input => zuora_renewal_subscription_name_slugify, OUTER => TRUE) renewal
    WHERE subscription_status IN ('Active', 'Cancelled')
+     AND account_id NOT IN (
+       '2c92a0fe59b55c400159d7c1f2550f81', --https://gitlab.com/gitlab-data/analytics/issues/2966
+       '2c92a0fe5f912d8e015f98f5b02411b5', --https://gitlab.com/gitlab-data/analytics/issues/2966
+       '2c92a0076b6403ed016b65a237774f34'  --https://gitlab.com/gitlab-data/analytics/issues/2966
+     )
+
 
    )
 
