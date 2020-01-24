@@ -25,10 +25,10 @@ WITH usage_data AS (
 
   SELECT
     week_spine.week,
-    licenses.license_id,
-    licenses.license_md5,
-    licenses.zuora_subscription_id,
-    licenses.plan_code                                           AS product_category,
+    usage_data.license_id,
+    usage_data.license_md5,
+    usage_data.zuora_subscription_id,
+    usage_data.plan_code                                         AS product_category,
     MAX(IFF(usage_data.id IS NOT NULL, 1, 0))                    AS did_send_usage_data,
     COUNT(DISTINCT usage_data.id)                                AS count_usage_data_pings,
     MIN(usage_data.created_at)                                   AS min_usage_data_created_at,
