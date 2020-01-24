@@ -1,1 +1,1 @@
-{{ schema_union_limit('snowplow', 'snowplow_unstructured_events') }}
+{{ schema_union_all('snowplow', 'snowplow_unstructured_events') }}
