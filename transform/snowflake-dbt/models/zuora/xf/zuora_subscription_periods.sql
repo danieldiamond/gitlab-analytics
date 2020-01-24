@@ -42,7 +42,6 @@ WITH zuora_account AS (
       zuora_account.account_number,
       zuora_account.account_name,
       subscription_start_date, 
-      subscription_end_date           AS subscription_version_end_date, 
       term_end_date                   AS subscription_version_term_end_date, 
       term_start_date                 AS subscription_version_term_start_date,
       MIN(term_start_date) 
@@ -69,7 +68,6 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.account_number,
       subscription_joined_with_accounts.account_name,
       subscription_joined_with_accounts.subscription_start_date, 
-      subscription_joined_with_accounts.subscription_version_end_date,
       subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
       LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
@@ -82,12 +80,11 @@ WITH zuora_account AS (
     INNER JOIN zuora_rate_plan_charge
       ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
         -- remove refunded subscriptions
-      AND mrr > 0
-      AND tcv > 0
+        AND mrr > 0 AND tcv > 0
     WHERE (subscription_version_term_start_date  < min_following_subscription_version_term_start_date
       OR min_following_subscription_version_term_start_date IS NULL)
       -- remove cancelled subscription
-      AND subscription_version_term_end_date != subscription_version_term_start_date
+      AND subscription_version_term_end_date <> subscription_version_term_start_date
       
 )
 
@@ -102,4 +99,4 @@ SELECT
     ELSE FALSE
   END AS is_renewed
 FROM subscription_joined_with_charges
-ORDER BY subscription_start_date, version
+ORDER BY subscription_start_date
