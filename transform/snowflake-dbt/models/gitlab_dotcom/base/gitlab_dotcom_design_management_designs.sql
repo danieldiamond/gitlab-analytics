@@ -2,6 +2,7 @@ WITH source AS (
 
     SELECT *
     FROM {{ source('gitlab_dotcom', 'design_management_designs') }}
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
 
