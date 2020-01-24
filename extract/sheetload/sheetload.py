@@ -198,6 +198,14 @@ def gcs_loader(
 
 
 def count_records_in_s3_csv(bucket: str, s3_file_key: str, s3_client) -> int:
+    """
+        This function is used to count the number of records found in a CSV on S3 with path
+        s3://bucket/s3_file_key .  The number of records is returned.
+
+        This function uses an AWS feature known as "s3 select" which can perform queries
+        directly on s3 objects.  This function assumes that the CSVs it is querying have header rows at the top.
+    """
+
     query_result = s3_client.select_object_content(
         Bucket=bucket,
         Key=s3_file_key,
@@ -218,6 +226,14 @@ def count_records_in_s3_csv(bucket: str, s3_file_key: str, s3_client) -> int:
 def check_s3_csv_count_integrity(
     bucket, file_key, s3_client, snowflake_engine, table_name
 ) -> None:
+    """
+        This function is used to verify that the count of rows in the snowflake table with name "table_name"
+        is equivalent to the count of records found in the csv on aws s3 with path s3://bucket/file_key .
+
+        If the counts are equal, this function returns gracefully and returns nothing.  If the counts are not equal,
+        this function logs an error and exits the current running program with an exit code of 1.  The exit code is
+        used to signal airflow that it should fail the task.
+    """
     snowflake_count_result_set = query_executor(
         snowflake_engine, f"select count(*) from {table_name}"
     )
