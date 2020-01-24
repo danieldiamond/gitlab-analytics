@@ -2,7 +2,7 @@
 
 WITH usage_data AS (
 
-    SELECT *
+    SELECT {{ dbt_utils.star(from=ref('version_usage_data'), except=['LICENSE_ID', 'LICENSE_STARTS_AT', 'LICENSE_EXPIRES_AT']) }}
     FROM {{ ref('version_usage_data') }}
 
 ), licenses AS ( -- Licenses app doesn't alter rows after creation so the snapshot is not necessary.
@@ -24,7 +24,7 @@ WITH usage_data AS (
 
     SELECT
       usage_data.*,
-
+      licenses.license_id,
       licenses.zuora_subscription_id,
       licenses.company,
       licenses.plan_code                      AS license_plan_code,
@@ -87,7 +87,7 @@ WITH usage_data AS (
       unpacked.zuora_subscription_id,
       unpacked.zuora_subscription_status,
       unpacked.zuora_crm_id,
-
+    
       {% for stat_name in version_usage_stats_list %}
         MAX(IFF(full_ping_name = '{{stat_name}}', ping_value::NUMERIC, NULL)) AS {{stat_name}}
         {{ "," if not loop.last }}

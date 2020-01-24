@@ -24,7 +24,6 @@ WITH usage_data AS (
 , grouped AS (
 
   SELECT
-    {{ dbt_utils.surrogate_key('week', 'licenses.license_id') }} AS week_license_unique_id,
     week_spine.week,
     licenses.license_id,
     licenses.license_md5,
@@ -38,18 +37,15 @@ WITH usage_data AS (
     LEFT JOIN usage_data
       ON week_spine.week = DATE_TRUNC('week', usage_data.created_at)
       AND week_spine.week BETWEEN license_starts_at AND {{ coalesce_to_infinity("license_expires_at") }}
-  {{ dbt_utils.group_by(n=6) }}
+  {{ dbt_utils.group_by(n=5) }}
 
 )
 
 , alphabetized AS (
 
     SELECT
-      week_license_unique_id,
-
       week,
       license_id,
-
       license_md5,
       product_category,
       zuora_subscription_id,
