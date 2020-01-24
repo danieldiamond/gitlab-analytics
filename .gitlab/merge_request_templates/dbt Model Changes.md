@@ -174,17 +174,13 @@ These jobs only appear when `.py` files have changed. All of them will run autom
 
 This clones the periscope project.
 
-`grep -rIiEo "from (analytics|analytics_staging|boneyard)\.([\_A-z]*)" periscope/. | awk -F '.' '{print tolower($NF)}' | sort | uniq > periscope.txt`
-
-This recursively searches the entire git repo for a string that matches a `from` statement from any of the 3 currently queryable schemas. Using `awk`, it then prints the lower-case of the last column of each line in a file (represented by $NF - which is the number of fields), using a period as a field separator. This works because all queries are some form of schema.table and what we want is the table. It then sorts the results, gets the unique set, and writes it to a file called periscope.txt.
-
 `git diff origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD --name-only | grep -iEo "(.*)\.sql" | sed -E 's/\.sql//' | awk -F '/' '{print tolower($NF)}' | sort | uniq > diff.txt`
 
 This gets the list of files that have changed from the master branch (i.e. target branch) to the current commit (HEAD). It then finds (grep) only the sql files and substitutes (sed) the `.sql` with an empty string. Using `awk`, it then prints the lower-case of the last column of each line in a file (represented by $NF - which is the number of fields), using a slash (/) as a field separator. Since the output is directoy/directoy/filename and we make the assumption that most dbt models will write to a table named after its file name, this works as expected. It then sorts the results, gets the unique set, and writes it to a file called diff.txt.
 
-`comm -12 periscope.txt diff.txt > comparison.txt`
+`periscope_check.py`
 
-This compares (comm) two files and print only lines that are common to both files. It saves it to a file called comparison.txt
+This recursively searches the entire periscope repo for a string that matches a `from|join` statement from any of the 3 currently queryable schemas. It does some cleaning on files that match and creates a dictionary of table name mapping to all of the files it is referenced in. It then reads in `diff.txt` to do a lookup and write to comparison.txt and matches based on the model name.
 
 `if (( $(cat comparison.txt | wc -l | tr -d ' ') > 0 )); then echo "Check these!" && cat comparison.txt && exit 1; else echo "All good" && exit 0; fi;`
 
