@@ -1523,6 +1523,7 @@ tables:
       , last_sign_in_ip
       , created_at
       , updated_at
+      , name
       , admin
       , projects_limit
       , failed_attempts

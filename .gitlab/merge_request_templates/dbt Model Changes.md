@@ -1,33 +1,71 @@
-## Issue
 <!---
-Link the Issue this MR closes
+  Use this template when making consequential changes to the `/transform` directory,
+  including changes to dbt models, tests, seeds, and docs.
 --->
+
+## Issue
+<!--- Link the Issue this MR closes --->
 Closes #
 
 ## Solution
 
-Describe the solution.
-
-### Related Links
-
-Please include links to any related MRs and/or issues.
+Describe the solution. Include links to any related MRs and/or issues.
 
 ## Stakeholder Checklist
-
+<details>
+<summary><i>Click to toggle Stakeholder Checklist</i></summary>
 If you are the person who will be using this data and/or the dashboard it depends on, please fill out this section.
 
 - [ ] Does the dbt model change provide the requested data? 
 - [ ] Does the dbt model change provide accurate data?
+</details>
 
 ## Submitter Checklist
 
-Please go through every line
+#### Style & Structure
+<details>
+<summary><i>Click to toggle Style & Structure</i></summary>
 
-- [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).
+- [ ] Field names should all be lowercased.
+- [ ] Function names should all be capitalized.
+- [ ] Ensure source tables/views are only referenced within [base models](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#base-models).
+- [ ] All references to existing tables/views/sources (i.e. `{{ ref('...') }}` statements) should be placed in CTEs at the top of the file.
+- [ ] If you are using [custom schemas](https://docs.getdbt.com/docs/using-custom-schemas) or modifying [materializations](https://docs.getdbt.com/docs/materializations), ensure these attributes are specified in the model.
+</details>
 
-#### What are you using to audit your results are accurate?
+#### Macros
 
-If you have an existing report/dashboard/dataset as reference, please provide your query used to validate the results of your model changes. If this is the first iteration of a model or validation is otherwise out of scope, please provide additional context.
+<details>
+<summary><i>Click to toggle Macros</i></summary>
+
+- [ ] Does this MR utilize [macros](https://docs.getdbt.com/docs/macros)?
+  - [ ] This MR contains new macros. Follow the naming convention (file name matches macro name) and document in the [macro README](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md).
+  - [ ] This MR uses existing macros. Ensure models are referenced under the appropriate macro in the [macro README](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md).
+</details>
+
+#### Incremental Models
+
+<details>
+<summary><i>Click to toggle Incremental Models</i></summary>
+
+- [ ] Does this MR contain an [incremental model](https://docs.getdbt.com/docs/configuring-incremental-models#section-how-do-i-use-the-incremental-materialization-)?
+  - [ ] If the MR adds/renames columns to a specific model, a `dbt run --full-refresh` will be needed after merging the MR. Please, add it to the Reviewer Checklist to warn them that this step is required.
+  - [ ] Please also check with the Reviewer if a dag is set up in Airflow to trigger a full refresh of this model.  
+</details>
+
+#### Schema or Model Name Changes
+<details>
+<summary><i>Click to toggle Schema or Model Name Changes</i></summary>
+
+- [ ] Does this MR change the **schema** or **model name** of any existing models?
+  - [ ] Create an issue to change all existing periscope reporting to reference the new schema/name.
+  - [ ] After merging, ensure the old model is dropped from snowflake. This can be done by creating an issue specifying the tables/models to be dropped and assiging to a snowflake admin. 
+</details>
+
+#### Auditing
+<details>
+<summary><i>Click to toggle Auditing</i></summary>
+What are you using to audit your results are accurate If you have an existing report/dashboard/dataset as reference, please provide your query used to validate the results of your model changes. If this is the first iteration of a model or validation is otherwise out of scope, please provide additional context.
 
 <details>
 <summary> Paste query and results here </summary>
@@ -38,36 +76,12 @@ Example: You might be looking at the count of opportunities before and after, if
 
 </code></pre>
 </details>
-
-#### Structure
-
-- [ ] Ensure source tables/views are only referenced within [base models](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#base-models).
-- [ ] All references to existing tables/views/sources (i.e. `{{ ref('...') }}` statements) should be placed in CTEs at the top of the file.
-- [ ] If you are using [custom schemas](https://docs.getdbt.com/docs/using-custom-schemas) or modifying [materializations](https://docs.getdbt.com/docs/materializations), ensure these attributes are specified in the model.
-
-#### Style
-
-- [ ] Field names should all be lowercased.
-- [ ] Function names should all be capitalized.
-
-#### Macros
-
-- [ ] Does this MR utilize [macros](https://docs.getdbt.com/docs/macros)?
-  - [ ] This MR contains new macros. Follow the naming convention (file name matches macro name) and document in the [macro README](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md).
-  - [ ] This MR uses existing macros. Ensure models are referenced under the appropriate macro in the [macro README](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md).
-
-#### Incremental Models
-
-- [ ] Does this MR contain an [incremental model](https://docs.getdbt.com/docs/configuring-incremental-models#section-how-do-i-use-the-incremental-materialization-)?
-  - [ ] If the MR adds/renames columns to a specific model, a `dbt run --full-refresh` will be needed after merging the MR. Please, add it to the Reviewer Checklist to warn them that this step is required.
-  - [ ] Please also check with the Reviewer if a dag is set up in Airflow to trigger a full refresh of this model.  
-
-#### Schema or Model Name Changes
-- [ ] Does this MR change the **schema** or **model name** of any existing models?
-  - [ ] Create an issue to change all existing periscope reporting to reference the new schema/name.
-  - [ ] After merging, ensure the old model is dropped from snowflake. This can be done by creating an issue specifying the tables/models to be dropped and assiging to a snowflake admin. 
+</details>
 
 #### Testing
+
+<details>
+<summary><i>Click to toggle Testing</i></summary>
 
 - [ ] Every model should be [tested](https://docs.getdbt.com/docs/testing-and-documentation) AND documented in a `schema.yml` file. At minimum, unique, not nullable fields, and foreign key constraints should be tested, if applicable.
 - [ ] Run the appropriate pipeline for the model changes in this MR
@@ -153,22 +167,6 @@ These jobs only appear when `.py` files have changed. All of them will run autom
 
 </details>
 
-## All MRs Checklist
-- [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue
-- [ ] Pipelines pass
-- [ ] Branch set to delete
-- [ ] Commits NOT set to squash
-- [ ] This MR is ready for final review and merge.
-- [ ] Resolve all threads
-- [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer
-- [ ] Assigned to reviewer
-
-## Reviewer Checklist
-- [ ]  Check before setting to merge
-
-## Further changes requested
-* [ ]  AUTHOR: Uncheck all boxes before taking further action.
-
 <details>
 <summary>Periscope Query Bash Details</summary>
 
@@ -178,7 +176,7 @@ This clones the periscope project.
 
 `grep -rIiEo "from (analytics|analytics_staging|boneyard)\.([\_A-z]*)" periscope/. | awk -F '.' '{print tolower($NF)}' | sort | uniq > periscope.txt`
 
-This recursively searches the entire git repo for a string that matches a `from` statement from any of the 3 currently queryable schemas. Using `awk`, it then prints the lower-case of the last column of each line in a file (represented by $NF - which is the number of fields), using a period as a field separator. This works because all queries are some form of <schema>.<table> and what we want is the table. It then sorts the results, gets the unique set, and writes it to a file called periscope.txt.
+This recursively searches the entire git repo for a string that matches a `from` statement from any of the 3 currently queryable schemas. Using `awk`, it then prints the lower-case of the last column of each line in a file (represented by $NF - which is the number of fields), using a period as a field separator. This works because all queries are some form of schema.table and what we want is the table. It then sorts the results, gets the unique set, and writes it to a file called periscope.txt.
 
 `git diff origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD --name-only | grep -iEo "(.*)\.sql" | sed -E 's/\.sql//' | awk -F '/' '{print tolower($NF)}' | sort | uniq > diff.txt`
 
@@ -192,3 +190,22 @@ This compares (comm) two files and print only lines that are common to both file
 
 This uses word count (wc) to see how many lines are in the comparison file. If there is more than zero it will print the lines and exit with a failure. If there are no lines it exits with a success.
 </details>
+</details>
+
+## All MRs Checklist
+- [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).
+- [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue.
+- [ ] Branch set to delete. (Leave commits unsquashed)
+- [ ] Latest CI pipeline passes.
+  - [ ] If not, an explanation has been provided.
+- [ ] This MR is ready for final review and merge.
+- [ ] All threads are resolved.
+- [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer.
+- [ ] Assigned to reviewer.
+
+## Reviewer Checklist
+- [ ]  Check before setting to merge
+
+## Further changes requested
+* [ ]  AUTHOR: Uncheck all boxes before taking further action.
+
