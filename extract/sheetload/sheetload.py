@@ -64,7 +64,8 @@ def dw_uploader(
 
     # Clean the column names and add metadata, generate the dtypes
     data.columns = [
-        column_name.replace(" ", "_").replace("/", "_") for column_name in data.columns
+        str(column_name).replace(" ", "_").replace("/", "_")
+        for column_name in data.columns
     ]
 
     # If the data isn't chunked, or this is the first iteration, drop table
@@ -105,7 +106,7 @@ def sheet_loader(
 
     Sheets is a newline delimited txt fileseparated spaces.
 
-    python spreadsheet_loader.py sheets <file_name>
+    python sheetload.py sheets <file_name>
     """
 
     with open(sheet_file, "r") as file:
@@ -254,8 +255,48 @@ def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> Non
             dw_uploader(engine, table, sheet_df, truncate=True)
 
 
+def csv_loader(
+    filename: str,
+    schema: str,
+    database: str = "RAW",
+    tablename: str = None,
+    header: str = "infer",
+    conn_dict: Dict[str, str] = None,
+):
+    """
+    Loads csv files from a local file system into a DataFrame and pass it to dw_uploader
+    for loading into Snowflake.
+
+    Tablename will use the name of the csv by default. 
+    python sheetload.py csv --filename nvd.csv --schema engineering_extracts
+    becomes raw.engineering_extracts.nvd
+
+    Header will read the first row of the csv as the column names by default. Passing
+    None will use integers for each column.
+
+    python sheetload.py csv --filename nvd.csv --schema engineering_extracts --tablename nvd_data --header None
+    """
+
+    # Create Snowflake engine
+    engine = snowflake_engine_factory(conn_dict or env, "LOADER", schema)
+    info(engine)
+
+    csv_data = pd.read_csv(filename, header=header)
+
+    if tablename:
+        table = tablename
+    else:
+        table = filename.split(".")[0].split("/")[-1]
+
+    info(f"Uploading {filename} to {database}.{schema}.{table}")
+
+    dw_uploader(engine, table=table, data=csv_data, schema=schema, truncate=True)
+
+
 if __name__ == "__main__":
     basicConfig(stream=sys.stdout, level=20)
     getLogger("snowflake.connector.cursor").disabled = True
-    Fire({"sheets": sheet_loader, "gcs": gcs_loader, "s3": s3_loader})
+    Fire(
+        {"sheets": sheet_loader, "gcs": gcs_loader, "s3": s3_loader, "csv": csv_loader}
+    )
     info("Complete.")

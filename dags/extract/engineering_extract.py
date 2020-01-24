@@ -61,3 +61,28 @@ engineering_extract = KubernetesPodOperator(
     arguments=[engineering_extract_cmd],
     dag=dag,
 )
+
+advisory_database_extract_cmd = f"""
+    {clone_and_setup_extraction_cmd} &&
+    curl -L https://gitlab.com/gitlab-org/security-products/gemnasium-db/-/jobs/artifacts/master/raw/data/data.tar.gz\?job\=pages | gunzip -c | tar xvf -
+    curl -L https://gitlab.com/gitlab-org/security-products/gemnasium-db/-/jobs/artifacts/master/raw/data/nvd.tar.gz\?job\=pages | gunzip -c | tar xvf -
+    python3 sheetload/sheetload.py csv --filename data/data.csv --schema engineering_extracts --tablename advisory_data
+    python3 sheetload/sheetload.py csv --filename data/nvd.csv --schema engineering_extracts --tablename nvd_data --header None
+"""
+advisory_database_extract = KubernetesPodOperator(
+    **gitlab_defaults,
+    image=DATA_IMAGE,
+    task_id="advisory-db-extract",
+    name="advisory-db-extract",
+    secrets=[
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_LOAD_DATABASE,
+        SNOWFLAKE_LOAD_ROLE,
+        SNOWFLAKE_LOAD_USER,
+        SNOWFLAKE_LOAD_WAREHOUSE,
+        SNOWFLAKE_LOAD_PASSWORD,
+    ],
+    env_vars=pod_env_vars,
+    arguments=[advisory_database_extract_cmd],
+    dag=dag,
+)

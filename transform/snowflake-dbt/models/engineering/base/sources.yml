@@ -16,5 +16,9 @@ sources:
       warn_after: {count: 24, period: hour}
 
     tables:
+      - name: advisory_data
+        description: '{{ doc("engineering_advisory_data") }}'
       - name: commit_stats
+      - name: nvd_data
+        description: '{{ doc("engineering_nvd_data") }}'
       - name: red_master_stats
