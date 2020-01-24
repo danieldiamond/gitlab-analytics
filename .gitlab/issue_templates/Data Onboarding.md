@@ -299,3 +299,4 @@ None of these are required, but bookmarking these links will make life at GitLab
 ## Resources to help you get started with your first issue
 - [ ] Pairing session between a new Data Analyst and a Staff Data Engineer working on the new analyst's first issue: [Pair on Lost MRR Dashboard Creation](https://www.youtube.com/watch?v=WuIcnpuS2Mg)
 - [ ] 2nd part of pairing session between a new Data Analyst and a Staff Data Engineer working on the new analyst's first issue: [Pair on Lost MRR Dashboard Creation Part 2](https://www.youtube.com/watch?v=HIlDH5gaL3M)
+- [ ] Setting up visual studio and git terminals to use for testing locally. (https://youtu.be/t5eoNLUl3x0)
