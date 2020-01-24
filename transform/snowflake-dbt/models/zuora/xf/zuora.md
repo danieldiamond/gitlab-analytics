@@ -183,7 +183,7 @@ The final result:
 
 This table is the transformed table for valid Zuora subscription periods. A subscription period is an interval (bounded by `term_start_date` and `term_end_date`) during which a specific version of the subscription was valid.
 
-More explicitly, this model shows what was or will be the active subscription version on a specific date (past or future), .
+More explicitly, this model shows what was or will be the active subscription version on a specific date (past or future).
 
 From this model, we can calculate renewal rates by product category. We can also start estimating IACV, Renewal ACV and other metrics for the Growth team. A `subscription_period` is considered as renewed if a newer valid subscription period has been created or if a `zuora_renewal_subscription_name_slugify` has been linked to this version (more documentation about [the process here especially the section Linking Renewal Subscriptions](https://about.gitlab.com/handbook/finance/accounting/)) (in this model, the `is_renewed` flag will be turned to `TRUE`).
 
