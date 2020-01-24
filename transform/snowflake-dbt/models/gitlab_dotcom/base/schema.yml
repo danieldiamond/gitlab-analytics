@@ -1070,6 +1070,23 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_services
+    description: Base model for Gitlab.com services
+    columns:
+      - name: service_id
+        tests:
+          - not_null
+          - unique
+      - name: project_id
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+          
   - name: gitlab_dotcom_snippets
     description: Base model for Gitlab.com snippets
     columns:
