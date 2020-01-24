@@ -200,7 +200,7 @@ For all other subscriptions, any change in the subscription T&Cs and settings (p
 
 The model wants to identify which versions were valid. In order to do so, the model is built recursively starting from the latest subscription version (the version column is an incremental counter). This latest version always has a `Cancelled` or `Active` status. We assume that this one is currently valid and shows the latest state of the subscription.
 
-To check if the previous version have been valid at some point, we will compare the `term_start_date` between the freshest and the one before. If the `term_start_date` is in the future or on the same day as the latest version, we assume that this version has been never properly validated and got rolled back. For a specific version, we look at all newer versions (with higher version number), and check the minimum `term_start_date` in this subset of versions. If the `term_start_date` of the version checked, is greater or equal to the minimum of the newer ones, we assume that this one has never been valid, and we filter it out.  
+To check if the previous version was valid at some point, we compare the `term_start_date` between the freshest row and the one before it. If the `term_start_date` is in the future or on the same day as the latest version, we assume that this version was never properly validated and got rolled back. For a specific version, we look at all newer versions (with higher version numbers) and check the minimum `term_start_date` in this subset of versions. If the `term_start_date` of the version checked is greater or equal to the minimum of the newer ones, we assume that this one has never been valid, and we filter it out.  
 
 
 {% enddocs %}
