@@ -115,4 +115,3 @@ models:
           tests: 
             accepted_values:
                 values: ['headcount_start', 'headcount_end','hires','total_separated','voluntary_separations','involuntary_separations']
-                quote: false  
