@@ -9,7 +9,10 @@ class Prometheus:
         self.base_url = base_url
 
     def get_metric(self, start, end, metric_name, id_token, **kwargs) -> Dict[Any, Any]:
-        header_dict = {"Authorization": "Bearer {}".format(id_token)}
+        header_dict = {
+            "Authorization": "Bearer {}".format(id_token),
+            "Content-Type": "application/json",
+        }
         if "timeout" not in kwargs:
             kwargs["timeout"] = 90
         query = {"query": f"{metric_name}&start={start}&end={end}&step=15s"}
