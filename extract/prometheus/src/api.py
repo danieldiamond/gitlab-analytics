@@ -12,7 +12,7 @@ class Prometheus:
         header_dict = {"Authorization": "Bearer {}".format(id_token)}
         if "timeout" not in kwargs:
             kwargs["timeout"] = 90
-        query = {"query": f"{metric_name}&start={start}&end={end}"}
+        query = {"query": f"{metric_name}&start={start}&end={end}&step=15s"}
         response = requests.request(
             "POST", self.base_url, headers=header_dict, data=query, **kwargs
         )
