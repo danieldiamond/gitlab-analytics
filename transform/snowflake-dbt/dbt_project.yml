@@ -148,6 +148,15 @@ models:
       xf:
         materialized: table
 
+    sheetload: 
+      base: 
+        sheetload_rep_productivity: 
+          enabled: false 
+        sheetload_rep_quotas_full_fy2020:
+          enabled: false 
+        sheetload_rep_quotas_full_ps_fy2020: 
+          enabled: false 
+          
     smau_events:
       tags: ["product"]
       materialized: table
