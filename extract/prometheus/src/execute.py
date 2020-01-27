@@ -59,7 +59,7 @@ if __name__ == "__main__":
         logging.info(
             f"loading {metric_name} from prometheus for {args.start} to {args.end}"
         )
-        file_name = f"{metric_name.upper()}.json"
+        file_name = f"{table_name.upper()}.json"
         with open(file_name, "w") as outfile:
             metric_data = prometheus_client.get_metric(
                 start, end, metric_name, args.token
