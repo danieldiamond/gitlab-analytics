@@ -100,4 +100,4 @@ SELECT
     ELSE FALSE
   END AS is_renewed
 FROM subscription_joined_with_charges
-ORDER BY subscription_start_date
+ORDER BY subscription_start_date, version
