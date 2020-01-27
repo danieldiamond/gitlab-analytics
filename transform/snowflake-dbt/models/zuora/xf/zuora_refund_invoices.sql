@@ -28,6 +28,7 @@ WITH invoices AS (
     {{ dbt_utils.group_by(9) }}
     -- To count as a refund, the customer must up even ($0) or better (<$0)
     HAVING SUM(COALESCE(before_and_after.amount, 0)) <= 0
+
 )
 
 SELECT
