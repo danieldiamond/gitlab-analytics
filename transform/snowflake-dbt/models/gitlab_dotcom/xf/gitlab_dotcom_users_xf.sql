@@ -77,7 +77,7 @@ WITH customers AS (
   FROM members
   INNER JOIN groups
     ON members.source_id = groups.group_id
-    AND groups.group_plan_id = TRUE
+    AND groups.group_plan_is_paid
   WHERE member_type = 'GroupMember'
     AND (members.expires_at >= CURRENT_DATE OR members.expires_at IS NULL)
 )
