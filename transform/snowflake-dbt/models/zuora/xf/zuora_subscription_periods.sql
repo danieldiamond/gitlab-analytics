@@ -71,7 +71,7 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
       LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
-        ORDER BY zuora_rate_plan_charge.effective_start_date)           AS mrr,
+        ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
       SUM(tcv) OVER (
         PARTITION BY subscription_joined_with_accounts.subscription_id) AS tcv
     FROM subscription_joined_with_accounts
@@ -80,11 +80,12 @@ WITH zuora_account AS (
     INNER JOIN zuora_rate_plan_charge
       ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
         -- remove refunded subscriptions
-        AND mrr > 0 AND tcv > 0
+        AND mrr > 0 
+        AND tcv > 0
     WHERE (subscription_version_term_start_date  < min_following_subscription_version_term_start_date
       OR min_following_subscription_version_term_start_date IS NULL)
       -- remove cancelled subscription
-      AND subscription_version_term_end_date <> subscription_version_term_start_date
+      AND subscription_version_term_end_date != subscription_version_term_start_date
       
 )
 
