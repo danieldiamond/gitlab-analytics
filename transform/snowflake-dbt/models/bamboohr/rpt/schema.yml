@@ -32,13 +32,9 @@ models:
         -name: diversity_field
          description: Indicates what diversity field the headcount metrics are attributed to. Total reflects overall company. 
          tests: 
-             - accepted_values:
-                 values: ['total','female','male','unidentified']
-                 quote: false
+         -not_null
         -name: aggregation_type
          description: Indicates which model the headcount metrics can be used for. This has 2 models combined -- total, which is entire company, and gender which provides a breakout by gender.
          tests:
-             -accepted_values:
-                 values: ['total','gender']
-                 quote: false
+         -not_null
      
