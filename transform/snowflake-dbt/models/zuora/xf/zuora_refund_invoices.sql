@@ -8,6 +8,7 @@ WITH invoices AS (
 
 /* Self join invoices before and after the invoice date to get a sum of other transactions paid. */
 ), joined AS (
+
     SELECT DISTINCT
       invoices.invoice_id,
       invoices.amount                                  AS invoice_amount,
