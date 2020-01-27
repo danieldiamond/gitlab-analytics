@@ -24,7 +24,7 @@ env = os.environ.copy()
 pod_env_vars = {"CI_PROJECT_DIR": "/analytics"}
 
 default_args = {
-    "catchup": False,
+    "catchup": True,
     "depends_on_past": False,
     "on_failure_callback": slack_failed_task,
     "owner": "airflow",
