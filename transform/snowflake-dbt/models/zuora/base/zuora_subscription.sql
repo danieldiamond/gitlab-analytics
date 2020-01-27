@@ -86,8 +86,3 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-WHERE account_id NOT IN (
-  '2c92a0fe59b55c400159d7c1f2550f81', --https://gitlab.com/gitlab-data/analytics/issues/2966
-  '2c92a0fe5f912d8e015f98f5b02411b5', --https://gitlab.com/gitlab-data/analytics/issues/2966
-  '2c92a0076b6403ed016b65a237774f34'  --https://gitlab.com/gitlab-data/analytics/issues/2966
-)

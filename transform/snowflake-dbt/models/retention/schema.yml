@@ -205,6 +205,21 @@ models:
             - not_null
             - accepted_values:
                     values: ['Seat Expansion', 'Discount/Price Change', 'Product Change', 'Product Change/Seat Change Mix','Downgraded','Cancelled', 'Unknown']
+        - name: retention_reason
+          tests:
+            - not_null
+            - accepted_values:
+                    values: ['Price Change/Seat Change Mix', 'Seat Change', 'Price Change', 'Product Change','Product Change/Seat Change Mix', 'Cancelled', 'Unknown']
+        - name: plan_change
+          tests:
+            - not_null
+            - accepted_values:
+                    values: ['Maintained', 'Downgraded', 'Upgraded', 'Not Valid', 'Cancelled']
+        - name: seat_change
+          tests:
+            - not_null
+            - accepted_values:
+                    values: ['Maintained', 'Contraction','Expansion', 'Not Valid', 'Cancelled']
         - name: original_product_category
         - name: retention_product_category
           description: Product category is based on the rate plan name.
