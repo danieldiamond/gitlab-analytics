@@ -33,17 +33,17 @@ With dates AS (
       
 ),headcount_start AS (
  
-  SELECT 
-    start_date                                          AS month_date,            
-    gender,
-    ethnicity,
-    nationality,
-    region,
-    COUNT(employee_id)                                  AS headcount_start
-  FROM dates
-  LEFT JOIN employees
-     ON dates.start_date BETWEEN valid_from_date AND valid_to_date
-  GROUP BY 1,2,3,4,5      
+    SELECT 
+      start_date                                          AS month_date,            
+      gender,
+      ethnicity,
+      nationality,
+      region,
+      COUNT(employee_id)                                  AS headcount_start
+    FROM dates
+    LEFT JOIN employees
+      ON dates.start_date BETWEEN valid_from_date AND valid_to_date
+    GROUP BY 1,2,3,4,5      
   
 ), headcount_end AS (
   
