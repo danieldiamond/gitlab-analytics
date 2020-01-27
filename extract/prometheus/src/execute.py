@@ -13,8 +13,12 @@ from gitlabdata.orchestration_utils import (
 
 from api import Prometheus
 
-# The api expects a specific timezone format
+
 def fixup_datetime_string_format(datetime_string: str) -> str:
+    """
+    Take datetime as formatted in iso6801, and replace the timezone with "Z"
+    This function is necessary because the Thanos api doesn't accept timezones in the format airflow provides them in.
+    """
     return datetime_string[:-6] + "Z"
 
 
