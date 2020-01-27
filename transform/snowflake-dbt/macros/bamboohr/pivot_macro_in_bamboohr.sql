@@ -5,9 +5,8 @@
                cmp='=',
                prefix='',
                suffix='',
-               then_value= values,
-               else_value=0,
-               quote_identifiers=True) %}
+               then_value=1,
+               else_value=0) %}
   {% for v in values %}
     {{ agg }}(
       case
@@ -17,11 +16,7 @@
       end
     )
     {% if alias %}
-      {% if quote_identifiers %}
-            as {{ adapter.quote(prefix ~ v ~ suffix) }}
-      {% else %}
-        as {{prefix ~ v ~ suffix }}
-      {% endif %}
+      as {{ adapter.quote(prefix ~ v ~ suffix) }}
     {% endif %}
     {% if not loop.last %},{% endif %}
   {% endfor %}
