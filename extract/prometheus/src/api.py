@@ -27,7 +27,7 @@ class Prometheus:
             "POST", self.base_url, headers=header_dict, json=query, **kwargs
         )
         response.raise_for_status()
-        
+
         data = response.json()
         self.quality_check(data)
         return data
