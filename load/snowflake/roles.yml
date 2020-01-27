@@ -492,6 +492,8 @@ roles:
                     - snowflake.*.*
 
     - engineer:
+        member_of:
+            - loader
         warehouses:
             - loading
         privileges:
