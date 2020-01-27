@@ -8,7 +8,7 @@
 With source AS (
     
   SELECT *
-  FROM "ANALYTICS"."ANALYTICS_SENSITIVE"."BAMBOOHR_HEADCOUNT_AGGREGATION_INTERMEDIATE"
+  FROM {{ref('bamboohr_headcount_aggregation_intermediate')}}
 
 ), overall_headcount_pivoted AS (
    
