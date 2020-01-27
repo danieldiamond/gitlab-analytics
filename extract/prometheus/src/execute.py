@@ -14,7 +14,7 @@ from gitlabdata.orchestration_utils import (
 from api import Prometheus
 
 # The api expects a specific timezone format
-def fixup_datetime_string_format(datetime_string):
+def fixup_datetime_string_format(datetime_string: str) -> str:
     return datetime_string[:-6] + "Z"
 
 

@@ -37,7 +37,10 @@ default_args = {
 
 dag = DAG("prometheus_extract", default_args=default_args, schedule_interval="@hourly")
 
-prometheus_extract_command = f"{clone_and_setup_extraction_cmd} && python prometheus/src/execute.py"  # don't move these quotes
+# don't add a newline at the end of this because it gets added to in the K8sPodOperator arguments
+prometheus_extract_command = (
+    f"{clone_and_setup_extraction_cmd} && python prometheus/src/execute.py"
+)
 
 prometheus_operator = KubernetesPodOperator(
     **gitlab_defaults,
@@ -45,7 +48,6 @@ prometheus_operator = KubernetesPodOperator(
     task_id="prometheus-extract",
     name="prometheus-extract",
     secrets=[
-        GCP_SERVICE_CREDS,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_LOAD_DATABASE,
         SNOWFLAKE_LOAD_ROLE,
