@@ -31,8 +31,7 @@ WITH invoices AS (
 
 )
 
-SELECT
-  joined.*
+SELECT *
 FROM joined
 WHERE invoice_amount < 0 -- Only include the rows that are actually negative
 ORDER BY
