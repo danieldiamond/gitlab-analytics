@@ -1,11 +1,24 @@
 version: 2
 
 models:
+  - name: engineering_advisory_data
+    description: '{{ doc("engineering_advisory_data") }}' 
+    columns:
+      - name: delta
+      - name: filename
+      - name: merge_date
+      - name: package_type
+      - name: publish_date
   - name: engineering_commit_stats
     description: This table details information about engineering commmit stats.
     columns:
       - name: commit_date
       - name: commit_id
+  - name: engineering_nvd_data
+    description: '{{ doc("engineering_nvd_data") }}'
+    columns:
+      - name: count
+      - name: year
   - name: engineering_red_master_stats
     description: This table details data for when master has a red pipeline.
     columns:

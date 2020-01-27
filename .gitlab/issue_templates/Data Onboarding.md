@@ -244,6 +244,7 @@ This data comes from the usage ping that comes with a GitLab installation.
 - [ ] Watch the [pings brain dump session](https://drive.google.com/file/d/1S8lNyMdC3oXfCdWhY69Lx-tUVdL9SPFe/view).  This video is outdated.  The tables that are related to the usage ping now reside in the [version model](https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/model/model.gitlab_snowflake.version_usage_data).
 
 ## Salesforce (Sales, Marketing, Finance)
+Also referred as SFDC, Salesforce.com (Sales Force Dot Com).
 - [ ] Become familiar with Salesforce using [Trailhead](https://trailhead.salesforce.com/).
 - [ ] If you are new to Salesforce or CRMs in general, start with [Intro to CRM Basics](https://trailhead.salesforce.com/trails/getting_started_crm_basics).
 - [ ] If you have not used Salesforce before, take this [intro to the platform](https://trailhead.salesforce.com/trails/force_com_admin_beginner/modules/starting_force_com).

@@ -18,3 +18,6 @@ models:
 
     -   name: snowplow_web_events_all
         description: This is is a view over all snowplow_YYYY_MM schemas for web_events.
+
+    -   name: snowplow_unstructured_events_all
+        description: This a view over all snowplow_YYYY_MM schemas for unstructured events.

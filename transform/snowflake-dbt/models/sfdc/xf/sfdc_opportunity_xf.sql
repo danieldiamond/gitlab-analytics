@@ -93,7 +93,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.reason_for_loss,
       sfdc_opportunity.reason_for_loss_details,
       sfdc_opportunity.refund_iacv,
-      sfdc_opportunity.downgrade_iacv,     
+      sfdc_opportunity.downgrade_iacv,
       sfdc_opportunity.renewal_acv,
       sfdc_opportunity.renewal_amount,
       sfdc_opportunity.sales_qualified_source,
@@ -102,6 +102,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.upside_iacv,
       sfdc_opportunity.upside_swing_deal_iacv,
       sfdc_opportunity.incremental_acv * (sfdc_opportunitystage.default_probability /100)         AS weighted_iacv,
+      sfdc_opportunity.is_web_portal_purchase,
 
       -- metadata
       sfdc_opportunity._last_dbt_run,

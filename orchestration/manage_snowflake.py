@@ -43,21 +43,21 @@ class SnowflakeManager:
         check_db_exists_query = """use database "{0}";"""
         create_query = """create or replace database "{0}" {1};"""
         grant_query = """grant ownership on database "{0}" to TRANSFORMER;"""
-        grant_roles_loader = (
-            """grant create schema, usage on database "{0}" to LOADER"""
+        usage_roles = ["LOADER", "TRANSFORMER", "ENGINEER"]
+        usage_grant_query_with_params = (
+            """grant create schema, usage on database "{0}" to {1}"""
         )
-        grant_roles_transformer = (
-            """grant create schema, usage on database "{0}" to TRANSFORMER"""
-        )
+        usage_grant_queries = [
+            usage_grant_query_with_params.format(database_name, role)
+            for role in usage_roles
+        ]
 
         # The order of the queries matters!
         queries = [
             check_db_exists_query.format(database_name),
             create_query.format(database_name, cloned_database),
             grant_query.format(database_name),
-            grant_roles_transformer.format(database_name),
-            grant_roles_loader.format(database_name),
-        ]
+        ] + usage_grant_queries
 
         return queries
 
