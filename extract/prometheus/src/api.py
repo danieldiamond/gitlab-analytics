@@ -19,7 +19,7 @@ class Prometheus:
     ) -> Dict[Any, Any]:
         """
         Calls the GCP cloud function to query the prometheus api at self.base_url.
-        Queries for the metric_name for times between start and end.  Automatically adds a step size of 15s.
+        Queries for the metric_name for times between start and end, using the step size passed in.
         Uses the id_token for authorization with the cloud function.
         """
 
