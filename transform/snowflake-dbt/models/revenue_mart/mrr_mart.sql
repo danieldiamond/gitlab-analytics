@@ -48,6 +48,7 @@ WITH zuora_accts AS (
     --account info
     zuora_accts.name AS account_name,
     zuora_accts.accountnumber AS account_number,
+		zuora_accts.crmid					AS crm_id,
     zuora_contact.country,
     zuora_accts.currency,
 
@@ -84,6 +85,7 @@ WITH zuora_accts AS (
   SELECT
     date_actual AS mrr_month,
 		account_number,
+		crm_id,
 		account_name,
 		country,
 		{{product_category('rate_plan_name')}},
@@ -97,7 +99,7 @@ WITH zuora_accts AS (
   LEFT JOIN date_table
     ON base_mrr.effective_start_date <= date_table.date_actual
     AND (base_mrr.effective_end_date > date_table.date_actual OR base_mrr.effective_end_date IS NULL)
-  {{ dbt_utils.group_by(n=9) }}
+  {{ dbt_utils.group_by(n=10) }}
 
 ), current_mrr AS (
 
@@ -117,8 +119,9 @@ WITH zuora_accts AS (
 )
 
 SELECT
-  mrr_month,
+  dateadd('month',-1,mrr_month)  AS mrr_month,
 	account_number,
+	crm_id,
  	account_name,
 	country,
 	product_category,
@@ -127,7 +130,8 @@ SELECT
 	rate_plan_name,
 	rate_plan_charge_name,
   MAX(current_mrr)				AS current_mrr,
-	SUM(mrr)  							AS mrr
+	SUM(mrr)  							AS mrr,
+	SUM(mrr*12)							AS arr
 FROM month_base_mrr
 LEFT JOIN current_mrr
-{{ dbt_utils.group_by(n=9) }}
+{{ dbt_utils.group_by(n=10) }}
