@@ -98,6 +98,7 @@ Used in:
 - gitlab_dotcom_issues_xf.sql
 - gitlab_dotcom_merge_requests_xf.sql
 - gitlab_dotcom_projects_xf.sql
+- gitlab_dotcom_usage_data_events.sql
 - version_usage_data_weekly_opt_in_summary.sql
 
 ## Create Snapshot Base Models ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/create_snapshot_base.sql))
