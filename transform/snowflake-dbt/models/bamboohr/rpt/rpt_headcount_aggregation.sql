@@ -10,10 +10,11 @@ With overall_headcount_pivoted AS (
         DATE_TRUNC('month',month_date)                  AS month_date,  
         'total'                                         AS diversity_field,   
         'total'                                         AS aggregation_type,  
-        {{ dbt_util.pivot(
+        {{ dbt_utils.pivot(
             'metric',
-            dbt_util.get_column_values(ref('bamboohr_headcount_aggregation_intermediate'), 'metric'),
-            then_value ='total_count'
+            dbt_utils.get_column_values(ref('bamboohr_headcount_aggregation_intermediate'), 'metric'),
+            then_value ='total_count',
+            quote_identifiers = False
         ) }} 
     FROM {{ ref('bamboohr_headcount_aggregation_intermediate') }}
     GROUP BY 1,2,3
@@ -24,10 +25,11 @@ With overall_headcount_pivoted AS (
         DATE_TRUNC('month',month_date)                  AS month_date,  
         gender,    
         'gender_breakdown'                              AS aggregation_type,                                     
-        {{ dbt_util.pivot(
+        {{ dbt_utils.pivot(
             'metric',
-            dbt_util.get_column_values(ref('bamboohr_headcount_aggregation_intermediate'), 'metric'),
-            then_value ='total_count'
+            dbt_utils.get_column_values(ref('bamboohr_headcount_aggregation_intermediate'), 'metric'),
+            then_value ='total_count',
+            quote_identifiers = False
         ) }} 
     FROM {{ ref('bamboohr_headcount_aggregation_intermediate') }}
     GROUP BY 1,2,3
