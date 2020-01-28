@@ -13,6 +13,11 @@ WITH zuora_accts AS (
     SELECT *
     FROM {{ ref('zuora_subscription_xf') }}
 
+), zuora_subscriptions AS (
+
+    SELECT *
+    FROM {{ ref('zuora_subscription') }}
+
 ), zuora_rp AS (
 
     SELECT *
@@ -73,6 +78,8 @@ WITH zuora_accts AS (
               zuora_rpc.effective_end_date :: date) AS month_interval,
       zuora_rpc.effective_start_date,
       zuora_rpc.effective_end_date,
+      zuora_subscriptions.term_start_date,
+      zuora_subscriptions.term_end_date,
       zuora_subscriptions_xf.cohort_month,
       zuora_subscriptions_xf.cohort_quarter
     FROM zuora_accts
@@ -84,6 +91,8 @@ WITH zuora_accts AS (
       ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id AND zuora_rpc.mrr > 0 AND zuora_rpc.tcv > 0
     LEFT JOIN zuora_contact 
       ON COALESCE(zuora_accts.sold_to_contact_id ,zuora_accts.bill_to_contact_id) = zuora_contact.contact_id
+    LEFT JOIN zuora_subscriptions 
+      ON zuora_rp.subscription_id = zuora_subscriptions.subscription_id
 
 )
 
