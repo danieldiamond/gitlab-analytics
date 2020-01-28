@@ -559,4 +559,3 @@ This macro returns a list of zuora account_ids that are meant to be excluded fro
 - zuora_invoice
 - zuora_refund
 - zuora_subscription.sql
-
