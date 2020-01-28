@@ -31,5 +31,11 @@ sources:
       - name: posting_account_activity
       - name: subsidiaries
       - name: transaction_lines
+        columns:
+          - name: transaction_id
+            tests:
+              - relationships:
+                  to: source('netsuite', 'transactions')
+                  field: transaction_id
       - name: transactions
       - name: vendors
