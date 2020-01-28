@@ -8,7 +8,7 @@
                prefix='',
                suffix='',
                else_value=0,
-               quote_identifiers=True) %}
+               quote_identifiers=False) %}
 
   {% for v in values %}
     {{ agg }}(
