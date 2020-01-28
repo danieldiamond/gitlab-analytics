@@ -56,6 +56,13 @@ if __name__ == "__main__":
         "gitlab_service_errors:ratio": "gitlab_service_errors_ratio",
     }
 
+    default_step_size = "15s"  # the raw data is sampled at this rate
+
+    custom_step_sizes = {
+        "avg_over_time(slo_observation_status[1d])": "1m",
+        "gitlab_service_errors:ratio": "1m",
+    }
+
     start = fixup_datetime_string_format(args.start)
     end = fixup_datetime_string_format(args.end)
 
@@ -66,7 +73,11 @@ if __name__ == "__main__":
         file_name = f"{table_name.upper()}.json"
         with open(file_name, "w") as outfile:
             metric_data = prometheus_client.get_metric(
-                start, end, metric_name, args.token
+                start,
+                end,
+                metric_name,
+                custom_step_sizes.get(metric_name, default_step_size),
+                args.token,
             )
             json.dump(metric_data, outfile)
 

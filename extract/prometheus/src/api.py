@@ -9,7 +9,13 @@ class Prometheus:
         self.base_url = base_url
 
     def get_metric(
-        self, start: str, end: str, metric_name: str, id_token: str, **kwargs
+        self,
+        start: str,
+        end: str,
+        metric_name: str,
+        step_size: str,
+        id_token: str,
+        **kwargs,
     ) -> Dict[Any, Any]:
         """
         Calls the GCP cloud function to query the prometheus api at self.base_url.
@@ -22,7 +28,7 @@ class Prometheus:
         if "timeout" not in kwargs:
             kwargs["timeout"] = 90
 
-        query = {"query": f"{metric_name}&start={start}&end={end}&step=15s"}
+        query = {"query": f"{metric_name}&start={start}&end={end}&step={step_size}"}
         response = requests.request(
             "POST", self.base_url, headers=header_dict, json=query, **kwargs
         )
