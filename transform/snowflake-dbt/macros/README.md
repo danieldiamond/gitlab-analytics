@@ -560,17 +560,14 @@ This macro returns a list of zuora account_ids that are meant to be excluded fro
 - zuora_refund
 - zuora_subscription.sql
 
-## Get Column Values ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/get_column_values.sql))
-
-This macro is used to identify distinct values in a given column. 
-
-Used in:
-rpt_headcount_aggregation.sql
-
 
 ## Pivot ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/pivot.sql))
 
 This macro uses the pivot function and takes 3 arguments: column, values, then values. The column name is the column we are pivoting out. The values are the new columns we want created (using the get_column_values macros we can identify all the distinct values without having to type each one out). The then_value is the value that is being aggregated. This macro is used in the rpt_headcount_aggregation model in bamboohr to aggregate out metrics (i.e. headcount start, headcount end) from the intermediate model.
+
+
+
+The default 
 
 Used in:
 rpt_headcount_aggregation.sql
