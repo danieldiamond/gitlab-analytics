@@ -34,7 +34,7 @@ WITH source AS (
       account_owner_team__c                    AS account_owner_team,
       business_development_rep__c              AS business_development_rep,
       dedicated_service_engineer__c            AS dedicated_service_engineer,
-      sdr__c                                   AS sales_development_rep,
+      sdr_assigned__c                          AS sales_development_rep,
       sdr_account_team__c                      AS sales_development_rep_team,
       solutions_architect__c                   AS solutions_architect,
       technical_account_manager_lu__c          AS technical_account_manager_id,
@@ -60,7 +60,8 @@ WITH source AS (
       support_level_numeric__c                 AS support_level_numeric,
       named_account__c                         AS named_account,
       billingcountry                           AS billing_country, 
-      billingpostalcode                        AS billing_postal_code, 
+      billingpostalcode                        AS billing_postal_code,
+      sdr_target_account__c::BOOLEAN           AS is_sdr_target_account,
 
       -- territory success planning fields
       atam_approved_next_owner__c              AS tsp_approved_next_owner,
