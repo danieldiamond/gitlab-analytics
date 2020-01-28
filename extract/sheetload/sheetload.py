@@ -196,6 +196,16 @@ def gcs_loader(
         chunk[chunk.columns] = chunk[chunk.columns].astype("str")
         dw_uploader(engine=engine, table=table, data=chunk, chunk=chunk_iter)
         chunk_iter += 1
+    max_size_of_relation = chunk_iter * chunksize
+    min_size_of_relation = max((chunk_iter - 1) * chunksize, 0)
+    actual_size = query_executor(f"SELECT COUNT(*) FROM {table};", engine)[0][0]
+    if (actual_size > max_size_of_relation) or (actual_size < min_size_of_relation):
+        error(
+            f"Count in Snowflake for table {table} ({actual_size})"
+            / " did not match the range of what was read in code "
+            / f"({min_size_of_relation} to {max_size_of_relation})"
+        )
+        sys.exit(1)
 
 
 def count_records_in_s3_csv(bucket: str, s3_file_key: str, s3_client) -> int:
