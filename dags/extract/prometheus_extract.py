@@ -35,7 +35,12 @@ default_args = {
     "start_date": datetime(2019, 1, 1),
 }
 
-dag = DAG("prometheus_extract", default_args=default_args, schedule_interval="@hourly")
+dag = DAG(
+    "prometheus_extract",
+    default_args=default_args,
+    catchup=True,
+    schedule_interval="@hourly",
+)
 
 # don't add a newline at the end of this because it gets added to in the K8sPodOperator arguments
 prometheus_extract_command = (
