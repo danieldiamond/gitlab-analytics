@@ -39,6 +39,7 @@ dag = DAG(
     "prometheus_extract",
     default_args=default_args,
     catchup=True,
+    start_date=datetime(2019, 1, 1),
     schedule_interval="@hourly",
 )
 
