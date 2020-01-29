@@ -10,6 +10,7 @@ WITH source AS (
         id                                                      AS lead_id,
         name                                                    AS lead_name,
         sha1(email)                                             AS email_hash,
+        split_part(email,'@',2)                                 AS email_domain,
 		
         --keys
         masterrecordid                                          AS master_record_id,

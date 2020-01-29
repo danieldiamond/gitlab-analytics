@@ -12,6 +12,7 @@ WITH source AS (
         id                          AS contact_id,
         name                        AS contact_name,
         sha1(email)                 AS email_hash,
+        split_part(email,'@',2)     AS email_domain,
 
         -- keys
         accountid                   AS account_id,
@@ -59,6 +60,7 @@ WITH source AS (
                                     AS assigned_datetime,
         mql_timestamp__c            AS marketo_qualified_lead_timestamp,
         mql_datetime__c             AS marketo_qualified_lead_datetime,
+        mql_date__c                 AS marketo_qualified_lead_date,
         inquiry_datetime__c         AS inquiry_datetime,
         accepted_datetime__c        AS accepted_datetime,
         qualifying_datetime__c      AS qualifying_datetime,

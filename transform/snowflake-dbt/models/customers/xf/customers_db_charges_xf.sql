@@ -8,8 +8,8 @@ WITH zuora_base_mrr AS (
 
 , unioned_charges AS (
   
-  {{ dbt_utils.union_tables(
-      tables=[
+  {{ dbt_utils.union_relations(
+      relations=[
               ref('customers_db_orders_with_valid_charges'), 
               ref('customers_db_orders_with_incomplete_charges')
               ],
@@ -38,6 +38,7 @@ WITH zuora_base_mrr AS (
       
       zuora_base_mrr.effective_start_date,
       zuora_base_mrr.effective_end_date,
+      zuora_base_mrr.month_interval,
       
       -- Product Category Info
       zuora_base_mrr.delivery,

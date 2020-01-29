@@ -178,3 +178,29 @@ The final result:
 
 
 {% enddocs %}
+
+{% docs zuora_subscription_periods %}
+
+This table is the transformed table for valid Zuora subscription periods. A subscription period is an interval (bounded by `term_start_date` and `term_end_date`) during which a specific version of the subscription was valid.
+
+More explicitly, this model shows what was or will be the active subscription version on a specific date (past or future).
+
+From this model, we can calculate renewal rates by product category. We can also start estimating IACV, Renewal ACV and other metrics for the Growth team. A `subscription_period` is considered as renewed if a newer valid subscription period has been created or if a `zuora_renewal_subscription_name_slugify` has been linked to this version (more documentation about [the process here especially the section Linking Renewal Subscriptions](https://about.gitlab.com/handbook/finance/accounting/)) (in this model, the `is_renewed` flag will be turned to `TRUE`).
+
+#### Context About Subscription Versions
+
+[Zuora Amendment API Object](https://knowledgecenter.zuora.com/Developer_Platform/API/G_SOAP_API/E1_SOAP_API_Object_Reference/Amendment)
+[Zuora Subscription Amendment Doc](https://knowledgecenter.zuora.com/Zuora_Central/Subscriptions/Subscriptions/E_Changing_Subscriptions_Amendments)
+
+The way GitLab works with zuora versions is quite confusing. For subscriptions with `auto_renew` turned on, a new subscription version is automatically created when the subscription expires (without processing credit card payment). If the payment fails, a second new version (similar to the previous one) is created, auto_renew is turned to off and status stays as `active`.
+
+For all other subscriptions, any change in the subscription T&Cs and settings (product, seats, end date, price...) will create a new version of the subscription. That means that some subscriptions have up to 20 versions when they actually had only 2 renewals (`subscription_id = '2c92a0fd6c298453016c44f994e94be5'` for a sales generated one and `subscription_id = '2c92a0076d713cf5016d7227062c1477'` for one that has been created on the customers portal are 2 good examples).
+
+#### Technical Explanations
+
+The model wants to identify which versions were valid. In order to do so, the model is built recursively starting from the latest subscription version (the version column is an incremental counter). This latest version always has a `Cancelled` or `Active` status. We assume that this one is currently valid and shows the latest state of the subscription.
+
+To check if the previous version was valid at some point, we compare the `term_start_date` between the freshest row and the one before it. If the `term_start_date` is in the future or on the same day as the latest version, we assume that this version was never properly validated and got rolled back. For a specific version, we look at all newer versions (with higher version numbers) and check the minimum `term_start_date` in this subset of versions. If the `term_start_date` of the version checked is greater or equal to the minimum of the newer ones, we assume that this one has never been valid, and we filter it out.  
+
+
+{% enddocs %}

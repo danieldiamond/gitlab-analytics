@@ -352,9 +352,6 @@ models:
         - name: transaction_id
           tests:
             - not_null
-            - relationships:
-                to: ref('netsuite_transactions')
-                field: transaction_id
         - name: transaction_line_id
           tests:
             - not_null

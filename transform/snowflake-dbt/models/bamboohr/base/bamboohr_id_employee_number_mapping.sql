@@ -22,6 +22,7 @@ WITH source AS (
           d.value['customNationality']::VARCHAR                           AS nationality,
           d.value['customRegion']::VARCHAR                                AS region,
           d.value['ethnicity']::VARCHAR                                   AS ethnicity,
+          d.value['gender']::VARCHAR                                      AS gender, 
           d.value['customCandidateID']::BIGINT                            AS greenhouse_candidate_id
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), outer => true) d
@@ -29,6 +30,10 @@ WITH source AS (
 
 )
 
+
 SELECT *
 FROM intermediate
 WHERE hire_date IS NOT NULL
+    AND (LOWER(first_name) NOT LIKE '%greenhouse test%'
+         and LOWER(last_name) NOT LIKE '%test profile%'
+         and LOWER(last_name) != 'test_gitlab')

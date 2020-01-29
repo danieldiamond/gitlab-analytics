@@ -30,6 +30,10 @@
 
 
 # Common commands anchors
+.clone_raw: &clone_raw
+  - export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW"
+  - echo $SNOWFLAKE_LOAD_DATABASE
+
 .deps_and_seed: &deps_and_seed
   - python3 macro_name_check.py
   - dbt deps $CI_PROFILE_TARGET
@@ -41,7 +45,7 @@
 
 
 # MR Jobs
-➖specify_exclude:
+➖🐭specify_exclude:
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
@@ -51,7 +55,7 @@
     - dbt run $CI_PROFILE_TARGET --exclude $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --exclude $DBT_MODELS
 
-➖❗️specify_xl_exclude:
+➖🦖specify_xl_exclude:
   <<: *snowflake_dbt_jobs
   script:
     - *xl_warehouse
@@ -62,7 +66,7 @@
     - dbt run $CI_PROFILE_TARGET --exclude $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --exclude $DBT_MODELS
 
-➕specify_model:
+➕🐭specify_model:
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
@@ -72,7 +76,7 @@
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
-➕❗️specify_xl_model:
+➕🦖specify_xl_model:
   <<: *snowflake_dbt_jobs
   script:
     - *xl_warehouse
@@ -83,13 +87,12 @@
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
-📜➕sheetload_model:
+➕🐭🥩specify_raw_model:
   <<: *snowflake_dbt_jobs
   script:
     - *deps_and_seed
+    - *clone_raw # Reads from raw clone 
     - echo $DBT_MODELS
-    - export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW" # Must write to clone of RAW since this does real work
-    - echo $SNOWFLAKE_LOAD_DATABASE
     - dbt run $CI_PROFILE_TARGET --full-refresh --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
@@ -128,7 +131,7 @@
   <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
-    - export SNOWFLAKE_LOAD_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW" # Must write to clone of RAW since this does real work
+    - *clone_raw # Must write to clone of RAW since this does real work
     - echo $SNOWFLAKE_LOAD_DATABASE
     - dbt snapshot $CI_PROFILE_TARGET
     

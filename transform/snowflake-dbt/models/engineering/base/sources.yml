@@ -5,7 +5,6 @@ sources:
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: engineering_extracts
     loader: Airflow
-    loaded_at_field: uploaded_at
     
     quoting:
       database: true
@@ -16,5 +15,11 @@ sources:
       warn_after: {count: 24, period: hour}
 
     tables:
+      - name: advisory_data
+        description: '{{ doc("engineering_advisory_data") }}'
       - name: commit_stats
+        loaded_at_field: uploaded_at
+      - name: nvd_data
+        description: '{{ doc("engineering_nvd_data") }}'
       - name: red_master_stats
+        loaded_at_field: uploaded_at

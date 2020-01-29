@@ -16,6 +16,12 @@ Usage:
 Used in:
 - dbt_project.yml
 
+## Backup to GCS ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/warehouse/backup_to_gcs.sql))
+This macro fetches all relevant tables in the specified database and schema for backing up into GCS. This macro should NOT be used outside of a `dbt run-operation` command.
+
+Used in:
+- dags/general/dbt_backups.py
+
 ## Case When Boolean Int ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/case_when_boolean_int.sql))
 This macro returns a 1 if some value is greater than 0; otherwise, it returns a 0.
 Usage:
@@ -32,10 +38,67 @@ Usage:
 {{ churn_type(original_mrr, new_mrr) }}
 ```
 Used in:
-- retention_reasons_For_retention.sql
+- retention_reasons_for_retention.sql
 - retention_parent_account_.sql
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
+
+## Retention Type ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/churn_type.sql))
+This macro compares MRR values and buckets them into retention categories.
+Usage:
+```
+{{ retention_type(original_mrr, new_mrr) }}
+```
+Used in:
+- retention_reasons_for_retention.sql
+
+## Retention Reason ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/retention_reason.sql))
+This macro compares MRR values, Product Category, Product Ranking and Amount of seats and gives back the reason as to why MRR went up or down.
+Usage:
+```
+{{ retention_reason(original_mrr, original_product_category, original_product_ranking,
+                           original_seat_quantity, new_mrr, new_product_category, new_product_ranking,
+                           new_seat_quantity) }}
+```
+Used in:
+- retention_reasons_for_retention.sql
+
+## Monthly Price Per Seat Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/price_per_seat_change.sql))
+This macro calculates the difference between monthly price per seat, but only when the unit_of_measure of the plan is seats.
+Usage:
+```
+{{ price_per_seat_change(original_mrr, original_seat_quantity, original_unit_of_measure,
+                                new_mrr, new_seat_quantity, new_unit_of_measure) }}
+```
+Used in:
+- retention_reasons_for_retention.sql
+
+## Seat Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/seat_change.sql))
+This macro compares the amount of seats and categorizes it into Maintained/Contraction/Expansion/Cancelled, and when the unit_of_measure of the plans isn't seats, Not Valid
+Usage:
+```
+{{ seat_change(original_seat_quantity, original_unit_of_measure, original_mrr, new_seat_quantity, new_unit_of_measure, new_mrr) }}
+```
+Used in:
+- retention_reasons_for_retention.sql
+
+## Plan Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/plan_change.sql))
+This macro compares product rankings and returns whether it was upgraded/downgraded/maintained/cancelled, and when the product ranking is 0 (which means it's an old plan) it returns Not Valid
+Usage:
+```
+{{ plan_change(original_product_ranking, original_mrr, new_product_ranking, new_mrr) }}
+```
+Used in:
+- retention_reasons_For_retention.sql
+
+## Coalesce to Infinity
+This macro expects a timestamp or date column as an input. If a non-null value is inputted, the same value is returned. If a null value is inputted, a large date representing 'infinity' is returned. This is useful for writing `BETWEEN` clauses using date columns that are sometimes NULL.
+
+Used in:
+- gitlab_dotcom_issues_xf.sql
+- gitlab_dotcom_merge_requests_xf.sql
+- gitlab_dotcom_projects_xf.sql
+- version_usage_data_weekly_opt_in_summary.sql
 
 ## Create Snapshot Base Models ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/create_snapshot_base.sql))
 This macro creates a base model for dbt snapshots. A single entry is generated from the chosen start date through the current date for the specified primary key(s) and unit of time. 
@@ -94,6 +157,15 @@ Usage:
 ```
 Used in:
 - all models surfaced in our BI tool.
+
+## Get Backup Table Command ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/warehouse/get_backup_table_command.sql))
+This macro is called by `backup_to_gcs` so that the actual `copy into` command can be generated. This macro should NOT be referenced outside of the `backup_to_gcs` macro.
+```
+{% set backup_table_command = get_backup_table_command(table, day_of_month) %}
+{{ backup_table_command }}
+```
+Used in:
+- backup_to_gcs.sql
 
 ## Get Internal Parent Namespaces
 Returns a list of all the internal gitlab.com parent namespaces, enclosed in round brackets. This is useful for filtering an analysis down to external users only.
@@ -168,6 +240,17 @@ IFF(issues.project_id IN ({{is_project_part_of_product()}}),
 Used in:
 - `gitlab_dotcom_issues_xf`
 - `gitlab_dotcom_merge_requests_xf`
+
+## Max Date in Bamboo HR ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/max_date_in_bamboo_analyses.sql))
+This macro creates a reusable variable based on the current date. 
+Usage:
+```
+{{ max_date_in_bamboo_analyses() }}
+```
+Used in: 
+- `rpt_team_members_out_of_comp_band`
+- `bamboohr_employment_status_xf`
+- `employee_directory_intermediate`
 
 ## Monthly Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/monthly_change.sql))
 This macro calculates differences for each consecutive usage ping by uuid.

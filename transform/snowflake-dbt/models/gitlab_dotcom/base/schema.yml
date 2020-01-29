@@ -412,9 +412,6 @@ models:
         tests:
           - dbt_utils.expression_is_true:
               expression: "valid_from <= valid_to"
-    tests:
-      - not_null:
-          column_name: "IFF(gitlab_subscription_trial_starts_on IS NOT NULL, gitlab_subscription_trial_ends_on, CURRENT_DATE)"
 
   - name: gitlab_dotcom_groups
     description: '{{ doc("gitlab_dotcom_groups") }}'
@@ -512,6 +509,29 @@ models:
       - name: updated_at
         tests:
           - not_null
+      - name: state
+        description: >-
+          The source table has both "state" and "state_id" columns. We use state_id to 
+          infer the "state" string as we found this gives results that match the API and UI.
+        tests:
+          - not_null
+      - name: state_id
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4]
+      - name: duplicated_to_id
+        tests:
+          - relationships:
+              to: ref('gitlab_dotcom_issues')
+              field: issue_id
+              severity: warn
+      - name: promoted_to_epic_id
+        tests:
+          - relationships:
+              to: ref('gitlab_dotcom_epics')
+              field: epic_id
+              severity: warn
       - name: issue_title
         description: '{{ doc("visibility_documentation") }}'
       - name: issue_description

@@ -65,3 +65,28 @@ models:
     - name: bonus_date
       tests:
         - not_null
+  - name: bamboohr_employment_status_xf
+    description: This model provides a transaction record of an employee's status changes (i.e. active, leave, termed). It helps identify when an employee is re-hired.
+    columns:
+        - name: employee_id
+          tests:
+            - not_null
+        - name: employment_status
+          tests:
+            - not_null
+        - name: is_rehire
+          description: Identifies re-hired employees based on having a previous employment status of "Terminated."
+          tests:
+            - not_null
+            - accepted_values:
+                    values: ['True', 'False']
+        - name: termination_type
+          description: For an employment status record equal to "Terminated" the termination_type will identify if it was voluntary or involuntary.
+        - name: next_employment_status
+          description: Captures the next employment status if one exists. In the case there is none the next_employment_status will be null.
+        - name: valid_from_date
+          description: Provides the start date for the specific employment status record.
+          tests:
+            - not_null
+        - name: valid_to_date
+          description: Provides the end date for a specific record. For the terminated record stamp, it will provide a null since there will be no following record, unless the employee is re-hired, in which case it will indicate how long the employee was separated.
