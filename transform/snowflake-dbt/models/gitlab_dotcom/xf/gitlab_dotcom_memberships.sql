@@ -58,7 +58,7 @@ project_group_links_unnested AS ( -- Where groups are invited to projects.
       group_members.user_id
     FROM project_group_links
       INNER JOIN group_members
-        ON project_group_links.project_id = group_members.source_id
+        ON project_group_links.group_id = group_members.source_id
       INNER JOIN projects
         ON project_group_links.project_id = projects.project_id
 
