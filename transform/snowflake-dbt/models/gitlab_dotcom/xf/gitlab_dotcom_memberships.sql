@@ -40,8 +40,12 @@ group_members AS (
 
 project_members AS (
 
-    SELECT *
+    SELECT
+      projects.namespace_id,
+      members.*
     FROM members
+      INNER JOIN projects
+        ON members.source_id = projects.project_id
     WHERE member_source_type = 'Project'
 
 ),
@@ -75,7 +79,7 @@ unioned AS (
   UNION 
 
   SELECT
-    source_id AS namespace_id, --TODO
+    namespace_id,
     user_id,
     access_level,
     source_id            AS membership_source,
