@@ -22,3 +22,13 @@ models:
       - not_null
     - name: candidate_survey_question_1
     - name: isat_score
+  - name: greenhouse_diversity_lifecycle_gender
+    description: Provides a breakdown of recruiting KPIs by gender.
+    columns:
+    - name: metric_month
+    - name: gender
+      tests: 
+      - not_null
+    - name: metric_total  
+    - name: recruiting_metric
+      description: Identifies which recruiting KPI the metric_total is related to. For example, the metric_total for where recruiting_metric is percent_of_applicants will show what percent of applicants were the gender in that row for that given month.
