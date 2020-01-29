@@ -92,9 +92,19 @@ unioned AS (
     'project_group_link'  AS membership_type
 
   FROM project_group_links_unnested
+
+),
+
+final AS (
+
+  SELECT
+    namespace_lineage.ultimate_parent_id,
+    unioned.*
+  FROM unioned
+    LEFT JOIN namespace_lineage
+      ON unioned.namespace_id = namespace_lineage.namespace_id
+
 )
-)
 
-
-
-SELECT * FROM project_group_links_unnested
+SELECT *
+FROM final
