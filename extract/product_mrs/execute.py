@@ -14,3 +14,35 @@ def get_project_ids():
     csv = pd.read_csv(io.StringIO(csv_bytes.decode("utf-8")))
     return csv["project_id"].unique()
 
+
+def get_urls_for_mrs_for_project(project_id):
+    url = f"https://gitlab.com/api/v4/projects/{project_id}/merge_requests"
+    response = requests.get(url)
+    mr_json_list = response.json()
+    return [mr["web_url"] for mr in mr_json_list]
+
+def get_mr_json(mr_url):
+    url = f"{mr_url}/diffs.json"
+    response = requests.get(url)
+    return response.json()
+
+if __name__ == "__main__":
+
+    config_dict = env.copy()
+    snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
+
+    file_name = "part_of_product_mrs.json"
+
+    with open(file_name, "w") as out_file:
+        project_ids = get_project_ids()
+        for project_id in project_ids:
+            mr_urls = get_urls_for_mrs_for_project(project_id)
+            for mr_url in mr_urls:
+                mr_information = get_mr_json(mr_url)
+
+    snowflake_stage_load_copy_remove(
+        file_name,
+        f"raw.engineering_extracts.engineering_extracts",
+        f"raw.engineering_extracts.part_of_product_merge_requests",
+        snowflake_engine,
+    )
