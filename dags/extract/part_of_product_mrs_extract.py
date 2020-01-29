@@ -10,8 +10,6 @@ from airflow_utils import (
     slack_failed_task,
 )
 from kube_secrets import (
-    GREENHOUSE_ACCESS_KEY_ID,
-    GREENHOUSE_SECRET_ACCESS_KEY,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_LOAD_PASSWORD,
     SNOWFLAKE_LOAD_ROLE,

@@ -1,4 +1,5 @@
 import io
+from os import environ as env
 import pandas as pd
 import requests
 
@@ -21,10 +22,12 @@ def get_urls_for_mrs_for_project(project_id):
     mr_json_list = response.json()
     return [mr["web_url"] for mr in mr_json_list]
 
+
 def get_mr_json(mr_url):
     url = f"{mr_url}/diffs.json"
     response = requests.get(url)
     return response.json()
+
 
 if __name__ == "__main__":
 
