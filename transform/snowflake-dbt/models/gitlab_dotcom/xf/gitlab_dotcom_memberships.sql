@@ -4,8 +4,6 @@ WITH members AS (
     FROM {{ref('gitlab_dotcom_members')}}
     WHERE is_currently_valid = True
 
-    LIMIT 10000 --TODO
-
 ), 
 
 project_group_links AS (
@@ -72,7 +70,7 @@ unioned AS (
     source_id          AS namespace_id,
     user_id,
     access_level,
-    source_id          AS membership_source,
+    source_id          AS membership_source_id,
     'group_membership' AS membership_type
   FROM group_members
 
