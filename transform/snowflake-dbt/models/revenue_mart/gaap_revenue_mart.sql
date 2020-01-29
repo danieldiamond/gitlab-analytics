@@ -56,7 +56,7 @@ WITH zuora_accts AS (
 	zuora_contact.country,
     zuora_accts.currency,
 
-		--rate_plan info
+	--rate_plan info
     zuora_rpc.name 					   AS rate_plan_charge_name,
     zuora_rpc.chargenumber 			   AS rate_plan_charge_number,
     zuora_rpc.tcv,
