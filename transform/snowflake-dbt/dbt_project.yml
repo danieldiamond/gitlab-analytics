@@ -148,6 +148,11 @@ models:
       xf:
         materialized: table
 
+    sheetload: 
+      base: 
+        sheetload_rep_productivity: 
+          enabled: false 
+          
     smau_events:
       tags: ["product"]
       materialized: table
