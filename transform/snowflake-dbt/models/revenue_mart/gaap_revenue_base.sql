@@ -1,6 +1,6 @@
 WITH zuora_accts AS (
 
-	SELECT *
+    SELECT *
 	FROM {{ source('zuora', 'account') }}
 
 ), zuora_subscription AS (
