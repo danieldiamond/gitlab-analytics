@@ -1,3 +1,9 @@
+{{ config({
+    "materialized":"table",
+    "schema": "analytics"
+    })
+}}
+
 With date_details AS (
   
     SELECT 
