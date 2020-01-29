@@ -42,31 +42,31 @@ WITH zuora_accts AS (
 ), base_mrr AS (
 
   SELECT
-	  --keys
-    zuora_rpc.id AS rate_plan_charge_id,
+	--keys
+    zuora_rpc.id                AS rate_plan_charge_id,
 
     --account info
-    zuora_accts.name AS account_name,
-    zuora_accts.accountnumber AS account_number,
-		zuora_accts.crmid					AS crm_id,
+    zuora_accts.name            AS account_name,
+    zuora_accts.accountnumber   AS account_number,
+	zuora_accts.crmid		    AS crm_id,
     zuora_contact.country,
     zuora_accts.currency,
 
     --rate_plan info
-    zuora_rp.name AS rate_plan_name,
-    zuora_rpc.name AS rate_plan_charge_name,
-    zuora_rpc.chargenumber AS rate_plan_charge_number,
+    zuora_rp.name               AS rate_plan_name,
+    zuora_rpc.name              AS rate_plan_charge_name,
+    zuora_rpc.chargenumber      AS rate_plan_charge_number,
     zuora_rpc.tcv,
-    zuora_rpc.uom AS unit_of_measure,
-		zuora_rpc.quantity AS quantity,
-    zuora_rpc.mrr AS mrr,
-    zuora_product.name AS product_name,
+    zuora_rpc.uom               AS unit_of_measure,
+	zuora_rpc.quantity          AS quantity,
+    zuora_rpc.mrr               AS mrr,
+    zuora_product.name          AS product_name,
 
-		--date info
-    date_trunc('month', zuora_rpc.effectivestartdate::DATE) AS effective_start_month,
-    date_trunc('month', zuora_rpc.effectiveenddate::DATE) AS effective_end_month,
-    zuora_rpc.effectivestartdate AS effective_start_date,
-    zuora_rpc.effectiveenddate AS effective_end_date
+	--date info
+    date_trunc('month', zuora_rpc.effectivestartdate::DATE)     AS effective_start_month,
+    date_trunc('month', zuora_rpc.effectiveenddate::DATE)       AS effective_end_month,
+    zuora_rpc.effectivestartdate                                AS effective_start_date,
+    zuora_rpc.effectiveenddate                                  AS effective_end_date
   FROM zuora_accts
   INNER JOIN zuora_subscription
     ON zuora_accts.id = zuora_subscription.accountid
@@ -84,15 +84,15 @@ WITH zuora_accts AS (
 
   SELECT
     date_actual AS mrr_month,
-		account_number,
-		crm_id,
-		account_name,
-		country,
-		{{product_category('rate_plan_name')}},
+	account_number,
+	crm_id,
+	account_name,
+	country,
+	{{product_category('rate_plan_name')}},
     {{ delivery('product_category')}},
     product_name,
-		rate_plan_name,
-		rate_plan_charge_name,
+	rate_plan_name,
+	rate_plan_charge_name,
     SUM(mrr) AS mrr,
     SUM(quantity) AS quantity
   FROM base_mrr
@@ -120,18 +120,18 @@ WITH zuora_accts AS (
 
 SELECT
   dateadd('month',-1,mrr_month)  AS mrr_month,
-	account_number,
-	crm_id,
- 	account_name,
-	country,
-	product_category,
-	delivery,
+  account_number,
+  crm_id,
+  account_name,
+  country,
+  product_category,
+  delivery,
   product_name,
-	rate_plan_name,
-	rate_plan_charge_name,
+  rate_plan_name,
+  rate_plan_charge_name,
   MAX(current_mrr)				AS current_mrr,
-	SUM(mrr)  							AS mrr,
-	SUM(mrr*12)							AS arr
+  SUM(mrr)  							AS mrr,
+  SUM(mrr*12)							AS arr
 FROM month_base_mrr
 LEFT JOIN current_mrr
 {{ dbt_utils.group_by(n=10) }}
