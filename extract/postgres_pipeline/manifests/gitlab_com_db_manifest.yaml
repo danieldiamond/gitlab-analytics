@@ -896,6 +896,7 @@ tables:
       , updated_at
       , milestone_id
       , state
+      , state_id
       , merge_status
       , target_project_id
       , updated_by_id
