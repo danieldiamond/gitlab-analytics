@@ -33,6 +33,11 @@ WITH zuora_accts AS (
   SELECT *
   FROM {{ source('zuora', 'product') }}
 
+), gaap_revenue AS (
+
+  SELECT *
+  FROM {{ ref('gaap_revenue_mart') }}
+
 ), date_table AS (
 
   SELECT *
@@ -42,13 +47,13 @@ WITH zuora_accts AS (
 ), base_mrr AS (
 
   SELECT
-	--keys
+		--keys
     zuora_rpc.id                AS rate_plan_charge_id,
 
     --account info
     zuora_accts.name            AS account_name,
     zuora_accts.accountnumber   AS account_number,
-	zuora_accts.crmid		    AS crm_id,
+		zuora_accts.crmid		    		AS crm_id,
     zuora_contact.country,
     zuora_accts.currency,
 
@@ -58,11 +63,11 @@ WITH zuora_accts AS (
     zuora_rpc.chargenumber      AS rate_plan_charge_number,
     zuora_rpc.tcv,
     zuora_rpc.uom               AS unit_of_measure,
-	zuora_rpc.quantity          AS quantity,
+		zuora_rpc.quantity          AS quantity,
     zuora_rpc.mrr               AS mrr,
     zuora_product.name          AS product_name,
 
-	--date info
+		--date info
     date_trunc('month', zuora_rpc.effectivestartdate::DATE)     AS effective_start_month,
     date_trunc('month', zuora_rpc.effectiveenddate::DATE)       AS effective_end_month,
     zuora_rpc.effectivestartdate                                AS effective_start_date,
@@ -84,15 +89,15 @@ WITH zuora_accts AS (
 
   SELECT
     date_actual AS mrr_month,
-	account_number,
-	crm_id,
-	account_name,
-	country,
-	{{product_category('rate_plan_name')}},
+		account_number,
+		crm_id,
+		account_name,
+		country,
+		{{product_category('rate_plan_name')}},
     {{ delivery('product_category')}},
     product_name,
-	rate_plan_name,
-	rate_plan_charge_name,
+		rate_plan_name,
+		rate_plan_charge_name,
     SUM(mrr) AS mrr,
     SUM(quantity) AS quantity
   FROM base_mrr
@@ -100,6 +105,16 @@ WITH zuora_accts AS (
     ON base_mrr.effective_start_date <= date_table.date_actual
     AND (base_mrr.effective_end_date > date_table.date_actual OR base_mrr.effective_end_date IS NULL)
   {{ dbt_utils.group_by(n=10) }}
+
+), movingtogitlab AS (
+
+	SELECT
+		accounting_period AS mrr_month,
+	  rate_plan_charge_name,
+		SUM(revenue_amt) AS revenue_amt
+	FROM gaap_revenue
+	WHERE rate_plan_charge_name = '#movingtogitlab'
+	GROUP BY 1,2
 
 ), current_mrr AS (
 
@@ -119,7 +134,7 @@ WITH zuora_accts AS (
 )
 
 SELECT
-  dateadd('month',-1,mrr_month)  AS mrr_month,
+  dateadd('month',-1,month_base_mrr.mrr_month)  AS mrr_month,
   account_number,
   crm_id,
   account_name,
@@ -128,10 +143,21 @@ SELECT
   delivery,
   product_name,
   rate_plan_name,
-  rate_plan_charge_name,
+  month_base_mrr.rate_plan_charge_name,
   MAX(current_mrr)				AS current_mrr,
-  SUM(mrr)  							AS mrr,
-  SUM(mrr*12)							AS arr
+  SUM(CASE
+    		WHEN month_base_mrr.rate_plan_charge_name = '#movingtogitlab'
+      		THEN revenue_amt
+    		ELSE mrr
+  		END) 			  				AS mrr,
+  SUM((CASE
+    		WHEN month_base_mrr.rate_plan_charge_name = '#movingtogitlab'
+      		THEN revenue_amt
+    		ELSE mrr
+  		 END)*12)						AS arr
 FROM month_base_mrr
+LEFT JOIN movingtogitlab
+  ON month_base_mrr.mrr_month = movingtogitlab.mrr_month
+	AND month_base_mrr.rate_plan_charge_name = movingtogitlab.rate_plan_charge_name
 LEFT JOIN current_mrr
 {{ dbt_utils.group_by(n=10) }}

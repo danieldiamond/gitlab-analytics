@@ -46,25 +46,25 @@ WITH zuora_accts AS (
 
 ), gaap_revenue AS (
 
-  SELECT
-    zuora_acct_period.startdate::DATE  AS accounting_period,
+	SELECT
+		zuora_acct_period.startdate::DATE  	AS accounting_period,
 
-	-- account info
-	zuora_accts.name 				   AS account_name,
-    zuora_accts.accountnumber          AS account_number,
-	zuora_accts.crmid				   AS crm_id,
-	zuora_contact.country,
+		-- account info
+		zuora_accts.name 				   					AS account_name,
+    zuora_accts.accountnumber          	AS account_number,
+		zuora_accts.crmid				   					AS crm_id,
+		zuora_contact.country,
     zuora_accts.currency,
 
-	--rate_plan info
-    zuora_rpc.name 					   AS rate_plan_charge_name,
-    zuora_rpc.chargenumber 			   AS rate_plan_charge_number,
+		--rate_plan info
+    zuora_rpc.name 					   					AS rate_plan_charge_name,
+    zuora_rpc.chargenumber 			   			AS rate_plan_charge_number,
     zuora_rpc.tcv,
-    zuora_rpc.uom 					   AS unit_of_measure,
-	zuora_rpc.quantity 				   AS quantity,
-    zuora_rpc.mrr 					   AS mrr,
-    zuora_product.name 				   AS product_name,
-    SUM(zuora_rev_sch.amount)          AS revenue_amt
+    zuora_rpc.uom 					   					AS unit_of_measure,
+		zuora_rpc.quantity 				   				AS quantity,
+    zuora_rpc.mrr 					   					AS mrr,
+    zuora_product.name 				   				AS product_name,
+    SUM(zuora_rev_sch.amount)          	AS revenue_amt
   FROM zuora_rev_sch
   LEFT JOIN zuora_accts
     ON zuora_rev_sch.accountid = zuora_accts.id
