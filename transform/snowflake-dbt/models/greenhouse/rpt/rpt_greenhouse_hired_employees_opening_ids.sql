@@ -45,7 +45,8 @@ With employees AS (
     INNER JOIN jobs 
       ON jobs.job_id = openings.job_id
     INNER JOIN bamboohr_job_info 
-      ON bamboohr_job_info.employee_id = employees.employee_id    
+      ON bamboohr_job_info.employee_id = employees.employee_id 
+      AND bamboohr_job_info.job_row_number = 1 --to get the initial job
     WHERE greenhouse_candidate_id IS NOT NULL 
 
 )
