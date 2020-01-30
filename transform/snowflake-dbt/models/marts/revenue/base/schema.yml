@@ -1,7 +1,7 @@
 version: 2
 
 models:
-    - name: mrr_base
+    - name: monthly_recurring_revenue
       description: Base model for Zuora MRR
       columns:
           - name: account_number
@@ -18,7 +18,7 @@ models:
           - name: rate_plan_charge_name
             tests:
                 - not_null
-    - name: gaap_revenue_base
+    - name: gaap_revenue
       description: Base model for Zuora GAAP Revenue
       columns:
           - name: account_number
