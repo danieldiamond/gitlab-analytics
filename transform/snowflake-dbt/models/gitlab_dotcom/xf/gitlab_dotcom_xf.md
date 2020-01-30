@@ -75,6 +75,12 @@ It also adds 2 columns based on subscription inheritance (as described [here](ht
 
 {% enddocs %}
 
+{% docs gitlab_dotcom_memberships %}
+
+This model unions together all of the other models that represent a user having (full or partial) access to a namespace "membership". 
+
+{% enddocs %}
+
 
 {% docs gitlab_dotcom_events_monthly_active_users%}
 

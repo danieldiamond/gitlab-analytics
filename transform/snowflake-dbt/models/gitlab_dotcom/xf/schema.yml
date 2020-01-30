@@ -112,7 +112,10 @@ models:
         description: The number of projects that are presently associated with the group.
 
   - name: gitlab_dotcom_memberships
-    description: '{{ doc("gitlab_dotcom_groups_xf") }}'
+    description: '{{ doc("gitlab_dotcom_memberships") }}'
+    tests:
+      - unique:
+          column_name: "concat(membership_source, user_id)"
     columns:
       - name: ultimate_parent_id
         tests:
@@ -132,9 +135,6 @@ models:
       - name: membership_source
         tests:
           - not_null
-
-
-
 
   - name: gitlab_dotcom_events_monthly_active_users
     description: '{{ doc("gitlab_dotcom_events_monthly_active_users") }}'
