@@ -4,6 +4,7 @@ import logging
 from os import environ as env
 import pandas as pd
 import requests
+import sys
 
 from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
