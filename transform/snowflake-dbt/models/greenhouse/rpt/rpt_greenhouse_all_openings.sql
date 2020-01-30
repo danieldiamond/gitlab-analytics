@@ -11,7 +11,7 @@ With greenhouse_openings AS (
 ), aggregated AS (
 
     SELECT 
-      greenhouse_openings.job_id
+      greenhouse_openings.job_id,
       greenhouse_openings.opening_id, 
       greenhouse_jobs.job_name, 
       greenhouse_jobs.job_status, 
@@ -20,7 +20,6 @@ With greenhouse_openings AS (
     FROM greenhouse_openings
     LEFT JOIN greenhouse_jobs
       ON greenhouse_openings.job_id = greenhouse_jobs.job_id 
---WHERE openings.opening_id IS NULL
 
 )
 

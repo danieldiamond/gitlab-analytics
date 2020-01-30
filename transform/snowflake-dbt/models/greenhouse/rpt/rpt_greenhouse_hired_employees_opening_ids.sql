@@ -13,7 +13,7 @@ With employees AS (
     SELECT * 
     FROM {{ref('greenhouse_openings')}}
 
-, jobs AS (
+), jobs AS (
 
     SELECT * 
     FROM {{ref('greenhouse_jobs')}}
@@ -28,12 +28,12 @@ With employees AS (
 ), aggregated AS (
 
     SELECT
-        employee_id,
+        employees.employee_id,
         CONCAT(first_name,' ', last_name)                                       AS full_name, 
         department, 
         division, 
         job_title,
-        bhr.hire_date, 
+        hire_date, 
         greenhouse_candidate_id, 
         opening_id,
         job_name
@@ -41,7 +41,7 @@ With employees AS (
     INNER JOIN applications
       ON employees.greenhouse_candidate_id = applications.candidate_id 
     INNER JOIN openings
-      ON openings.hired_application_id = appslications.application_id
+      ON openings.hired_application_id = applications.application_id
     INNER JOIN jobs 
       ON jobs.job_id = openings.job_id
     INNER JOIN bamboohr_job_info 
