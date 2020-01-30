@@ -5,6 +5,7 @@ from os import environ as env
 import pandas as pd
 import requests
 import sys
+from typing import Dict, Any, List
 
 from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
@@ -12,7 +13,7 @@ from gitlabdata.orchestration_utils import (
 )
 
 
-def get_project_ids():
+def get_project_ids() -> List[str]:
     """
     Extracts the part of product CSV and returns the unique project_ids listed in the CSV.
     """
@@ -22,7 +23,7 @@ def get_project_ids():
     return csv["project_id"].unique()
 
 
-def get_urls_for_mrs_for_project(project_id, api_token):
+def get_urls_for_mrs_for_project(project_id: int, api_token: str) -> List[str]:
     """
     Returns an array of all of the web_urls found in the project_id that is passed in as a parameter.
     If the api_token does not have access to the project, or another error occurs, an empty list is returned.
@@ -39,7 +40,7 @@ def get_urls_for_mrs_for_project(project_id, api_token):
     return []
 
 
-def get_mr_json(mr_url, api_token):
+def get_mr_json(mr_url: str, api_token: str) -> Dict[Any, Any]:
     """
     Gets the diff JSON for the merge request by making a request to /diffs.json appended to the url.
     If the HTTP response is non-200 or the JSON could not be parsed, an empty dictionary is returned.
