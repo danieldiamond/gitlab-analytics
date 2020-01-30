@@ -4,7 +4,7 @@
     })
 }}
 
-With date_details AS (
+WITH date_details AS (
   
     SELECT 
       date_actual                                       AS start_date,
