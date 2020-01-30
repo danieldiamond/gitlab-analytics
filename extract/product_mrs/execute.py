@@ -60,14 +60,17 @@ if __name__ == "__main__":
     for project_id in project_ids:
         logging.info(f"Extracting project {project_id}.")
         mr_urls = get_urls_for_mrs_for_project(project_id, api_token)
+        wrote_to_file = False
         with open(file_name, "w") as out_file:
             for mr_url in mr_urls:
                 mr_information = get_mr_json(mr_url, api_token)
                 if mr_information:
+                    wrote_to_file = True
                     out_file.write(json.dumps(mr_information))
-        snowflake_stage_load_copy_remove(
-            file_name,
-            f"raw.engineering_extracts.engineering_extracts",
-            f"raw.engineering_extracts.part_of_product_merge_requests",
-            snowflake_engine,
-        )
+        if wrote_to_file:
+            snowflake_stage_load_copy_remove(
+                file_name,
+                f"raw.engineering_extracts.engineering_extracts",
+                f"raw.engineering_extracts.part_of_product_merge_requests",
+                snowflake_engine,
+            )
