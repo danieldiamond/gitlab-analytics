@@ -26,5 +26,6 @@ sales_ramp_time.sales_rep_productivity_all
 sales_ramp_time.sales_rep_productivity_sal
 sales_ramp_time.sales_rep_productivity_mm_ae
 sales_ramp_time.sales_rep_productivity_smb_ae
+values_certificate.values_certificate
 yc_companies.yc_companies
 days_to_close.days_to_close
