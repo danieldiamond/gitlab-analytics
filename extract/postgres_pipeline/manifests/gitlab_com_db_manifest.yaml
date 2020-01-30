@@ -22,7 +22,7 @@ tables:
       FROM resource_label_events
     export_schema: 'gitlab_com'
     export_table: 'resource_label_events'
-    export_table_primary_key: action
+    export_table_primary_key: id
   epics:
     import_db: GITLAB_DB
     import_query: >
