@@ -12,6 +12,15 @@ models:
             tests:
                 - not_null
           - name: crm_id
+    - name: zuora_accounting_period_source
+      description: Base model for Zuora Accounting Periods
+      columns:
+          - name: accounting_period_id
+            tests:
+                - not_null
+          - name: accounting_period_start_date
+            tests:
+                - not_null
     - name: zuora_contact
       description: Base model for Zuora contacts
       columns:
@@ -23,11 +32,11 @@ models:
                 - not_null
                 - unique
     - name: zuora_discount_applied_metrics
-      description: Base model for Zuora Discount Applied Metrics 
-      columns: 
+      description: Base model for Zuora Discount Applied Metrics
+      columns:
           - name: discount_applied_metrics_id
-            description: The id column of the discountappliedmetrics data source 
-          - name: account_id 
+            description: The id column of the discountappliedmetrics data source
+          - name: account_id
             description: The zuora account associated with the rate plan charge.
             tests:
                 - not_null
@@ -50,6 +59,15 @@ models:
             tests:
                 - not_null
                 - unique
+    - name: zuora_product_source
+      description: Base model for Zuora Product
+      columns:
+          - name: product_id
+            tests:
+                - not_null
+          - name: product_name
+            tests:
+                - not_null
     - name: zuora_rate_plan
       description: Base model for Zuora Rate Plans
       columns:
@@ -94,6 +112,18 @@ models:
           - name: refund_number
             tests:
                - unique
+               - not_null
+    - name: zuora_revenue_schedule_item_source
+      description: Base model for Zuora Revenue Schedule Item
+      columns:
+          - name: revenue_schedule_item_id
+            tests:
+               - not_null
+          - name: rate_plan_charge_id
+            tests:
+               - not_null
+          - name: accounting_period_id
+            tests:
                - not_null
     - name: zuora_subscription
       description: '{{ doc("zuora_subscription") }}'

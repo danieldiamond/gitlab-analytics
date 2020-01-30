@@ -1,42 +1,42 @@
 WITH zuora_accts AS (
 
 	SELECT *
-	FROM {{ source('zuora', 'account') }}
+	FROM {{ ref('zuora_account_source') }}
 
 ), zuora_subscription AS (
 
 	SELECT *
-	FROM {{ source('zuora', 'subscription') }}
+	FROM {{ ref('zuora_subscription_source') }}
 
 ), zuora_rp AS (
 
 	SELECT *
-	FROM {{ source('zuora', 'rate_plan') }}
+	FROM {{ ref('zuora_rate_plan_source') }}
 
 ), zuora_rpc AS (
 
 	SELECT *
-	FROM {{ source('zuora', 'rate_plan_charge') }}
+	FROM {{ ref('zuora_rate_plan_charge_source') }}
 
 ), zuora_contact AS (
 
 	SELECT *
-	FROM {{ source('zuora', 'contact') }}
+	FROM {{ ref('zuora_contact_source') }}
 
 ), zuora_acct_period AS (
 
 	SELECT *
-	FROM {{ source('zuora', 'accounting_period') }}
+	FROM {{ ref('zuora_accounting_period_source') }}
 
 ), zuora_product AS (
 
 	SELECT *
-	FROM {{ source('zuora', 'product') }}
+	FROM {{ ref('zuora_product_source') }}
 
 ), gaap_revenue AS (
 
 	SELECT *
-	FROM {{ ref('gaap_revenue_mart') }}
+	FROM {{ ref('gaap_revenue_base') }}
 
 ), date_table AS (
 
@@ -48,42 +48,42 @@ WITH zuora_accts AS (
 
 	SELECT
 	  --keys
-	  zuora_rpc.id								AS rate_plan_charge_id,
+	  zuora_rpc.rate_plan_charge_id,
 
 	  --account info
-	  zuora_accts.name						    AS account_name,
-	  zuora_accts.accountnumber		            AS account_number,
-	  zuora_accts.crmid						    AS crm_id,
+	  zuora_accts.account_name,
+	  zuora_accts.account_number,
+	  zuora_accts.crm_id,
 	  zuora_contact.country,
 	  zuora_accts.currency,
 
 	  --rate_plan info
-	  zuora_rp.name								AS rate_plan_name,
-	  zuora_rpc.name							AS rate_plan_charge_name,
-	  zuora_rpc.chargenumber			        AS rate_plan_charge_number,
+	  zuora_rp.rate_plan_name,
+	  zuora_rpc.rate_plan_charge_name,
+	  zuora_rpc.rate_plan_charge_number,
 	  zuora_rpc.tcv,
-	  zuora_rpc.uom								AS unit_of_measure,
-	  zuora_rpc.quantity				        AS quantity,
-	  zuora_rpc.mrr								AS mrr,
-	  zuora_product.name					    AS product_name,
+	  zuora_rpc.unit_of_measure,
+	  zuora_rpc.quantity,
+	  zuora_rpc.mrr,
+	  zuora_product.product_name,
 
 	  --date info
-	  date_trunc('month', zuora_rpc.effectivestartdate::DATE)			AS effective_start_month,
-	  date_trunc('month', zuora_rpc.effectiveenddate::DATE)				AS effective_end_month,
-	  zuora_rpc.effectivestartdate										AS effective_start_date,
-	  zuora_rpc.effectiveenddate									    AS effective_end_date
+	  date_trunc('month', zuora_rpc.effective_start_date::DATE)			AS effective_start_month,
+	  date_trunc('month', zuora_rpc.effective_end_date::DATE)			AS effective_end_month,
+	  zuora_rpc.effective_start_date									AS effective_start_date,
+	  zuora_rpc.effective_end_date										AS effective_end_date
 	FROM zuora_accts
 	INNER JOIN zuora_subscription
-	  ON zuora_accts.id = zuora_subscription.accountid
+	  ON zuora_accts.account_id = zuora_subscription.account_id
 	INNER JOIN zuora_rp
-	  ON zuora_rp.subscriptionid = zuora_subscription.id
+	  ON zuora_rp.subscription_id = zuora_subscription.subscription_id
 	INNER JOIN zuora_rpc
-	  ON zuora_rpc.rateplanid = zuora_rp.id
+	  ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
 	LEFT JOIN zuora_contact
-	  ON COALESCE(zuora_accts.soldtocontactid ,zuora_accts.billtocontactid) = zuora_contact.id
+	  ON COALESCE(zuora_accts.sold_to_contact_id ,zuora_accts.bill_to_contact_id) = zuora_contact.contact_id
 	LEFT JOIN zuora_product
-	  ON zuora_product.id = zuora_rpc.productid
-	WHERE zuora_subscription.status NOT IN ('Draft','Expired')
+	  ON zuora_product.product_id = zuora_rpc.product_id
+	WHERE zuora_subscription.subscription_status NOT IN ('Draft','Expired')
 
 ), month_base_mrr AS (
 
@@ -122,14 +122,14 @@ WITH zuora_accts AS (
 	  SUM(zuora_rpc.mrr) AS current_mrr
 	FROM zuora_accts
 	INNER JOIN zuora_subscription
-	  ON zuora_accts.id = zuora_subscription.accountid
+	  ON zuora_accts.account_id = zuora_subscription.account_id
 	INNER JOIN zuora_rp
-	  ON zuora_rp.subscriptionid = zuora_subscription.id
+	  ON zuora_rp.subscription_id = zuora_subscription.subscription_id
 	INNER JOIN zuora_rpc
-	  ON zuora_rpc.rateplanid = zuora_rp.id
+	  ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
 	WHERE zuora_subscription.status NOT IN ('Draft','Expired')
-	  AND effectivestartdate <= current_date
-	  AND (effectiveenddate > current_date OR effectiveenddate IS NULL)
+	  AND effective_start_date <= current_date
+	  AND (effective_end_date > current_date OR effective_end_date IS NULL)
 
 )
 
