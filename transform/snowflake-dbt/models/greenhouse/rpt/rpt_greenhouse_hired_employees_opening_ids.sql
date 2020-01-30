@@ -28,15 +28,13 @@ With employees AS (
 ), aggregated AS (
 
     SELECT
-        employees.employee_id,
-        CONCAT(first_name,' ', last_name)                                       AS full_name, 
-        department, 
-        division, 
-        job_title,
-        hire_date, 
-        greenhouse_candidate_id, 
         opening_id,
-        job_name
+        job_name                                                                AS job_opening_name,
+        greenhouse_jobs.job_opened_at, 
+        CONCAT(first_name,' ', last_name)                                       AS full_name,     
+        department                                                              AS department_hired_into, 
+        division                                                                AS division_hired_into, 
+        job_title                                                               AS job_hired_into     
     FROM employees
     INNER JOIN applications
       ON employees.greenhouse_candidate_id = applications.candidate_id 
