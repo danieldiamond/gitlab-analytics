@@ -1,6 +1,6 @@
 WITH source AS (
 
-	SELECT *
+    SELECT *
     FROM {{ ref('zuora_rate_plan_charge_source') }}
 
 )

@@ -2,7 +2,7 @@
 
 WITH source AS (
 
-	SELECT *
+    SELECT *
     FROM {{ ref('zuora_invoice_source') }}
 
 )

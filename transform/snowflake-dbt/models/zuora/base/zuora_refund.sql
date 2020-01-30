@@ -2,8 +2,8 @@
 
 WITH source AS (
 
-  SELECT *
-  FROM {{ ref('zuora_refund_source') }}
+    SELECT *
+    FROM {{ ref('zuora_refund_source') }}
 
 )
 
