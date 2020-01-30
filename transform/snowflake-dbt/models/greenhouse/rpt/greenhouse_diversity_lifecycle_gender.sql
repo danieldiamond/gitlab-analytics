@@ -16,7 +16,7 @@ WITH date_details AS (
 ), applications AS (
     
     SELECT * 
- 	FROM analytics.analytics.greenhouse_applications
+     FROM analytics.analytics.greenhouse_applications
 
 ), offers AS (
     
