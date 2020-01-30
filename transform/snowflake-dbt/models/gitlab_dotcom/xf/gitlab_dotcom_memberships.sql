@@ -3,6 +3,7 @@ WITH members AS (
     SELECT *
     FROM {{ref('gitlab_dotcom_members')}}
     WHERE is_currently_valid = True
+      AND user_id IS NOT NULL
 
 ), 
 
@@ -103,7 +104,7 @@ final AS (
     namespace_lineage.ultimate_parent_id,
     unioned.*
   FROM unioned
-    LEFT JOIN namespace_lineage
+    INNER JOIN namespace_lineage
       ON unioned.namespace_id = namespace_lineage.namespace_id
 
 )
