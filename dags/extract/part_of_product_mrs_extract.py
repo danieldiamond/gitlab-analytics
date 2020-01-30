@@ -51,7 +51,7 @@ container_cmd = f"""
 dag = DAG("part_of_product_mrs", default_args=default_args, schedule_interval="@daily")
 
 # Task 1
-greenhouse_run = KubernetesPodOperator(
+part_of_product_mrs_run = KubernetesPodOperator(
     **gitlab_defaults,
     image=DATA_IMAGE,
     task_id="part-of-product-mrs",
