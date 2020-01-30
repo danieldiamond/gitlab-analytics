@@ -2,10 +2,10 @@
 
 WITH usage_data AS (
 
-    SELECT *
+    SELECT {{ dbt_utils.star(from=ref('version_usage_data'), except=['LICENSE_ID', 'LICENSE_STARTS_AT', 'LICENSE_EXPIRES_AT']) }}
     FROM {{ ref('version_usage_data') }}
 
-), licenses AS (
+), licenses AS ( -- Licenses app doesn't alter rows after creation so the snapshot is not necessary.
 
     SELECT *
     FROM {{ ref('license_db_licenses') }}
@@ -24,7 +24,12 @@ WITH usage_data AS (
 
     SELECT
       usage_data.*,
+      licenses.license_id,
       licenses.zuora_subscription_id,
+      licenses.company,
+      licenses.plan_code                      AS license_plan_code,
+      licenses.starts_at                      AS license_starts_at,
+      licenses.license_expires_at,
       zuora_subscriptions.subscription_status AS zuora_subscription_status,
       zuora_accounts.crm_id                   AS zuora_crm_id
 
@@ -35,6 +40,8 @@ WITH usage_data AS (
         ON licenses.zuora_subscription_id = zuora_subscriptions.subscription_id
       LEFT JOIN zuora_accounts
         ON zuora_subscriptions.account_id = zuora_accounts.account_id
+    WHERE licenses.email IS NULL
+      OR NOT (email LIKE '%@gitlab.com' AND LOWER(company) LIKE '%gitlab%') -- Exclude internal tests licenses.
 
 ), unpacked AS (
 
@@ -54,6 +61,8 @@ WITH usage_data AS (
           WHEN edition LIKE '%EE Free%' THEN 'Core'
           WHEN edition LIKE '%EE%' THEN 'Starter'
         ELSE NULL END                                                                 AS edition_type,
+      license_plan_code,
+      company,
       zuora_subscription_id,
       zuora_subscription_status,
       zuora_crm_id,
@@ -77,6 +86,8 @@ WITH usage_data AS (
       unpacked.major_version,
       unpacked.main_edition,
       unpacked.edition_type,
+      unpacked.license_plan_code,
+      unpacked.company,
       unpacked.zuora_subscription_id,
       unpacked.zuora_subscription_status,
       unpacked.zuora_crm_id,
@@ -86,7 +97,7 @@ WITH usage_data AS (
         {{ "," if not loop.last }}
       {% endfor %}
     FROM unpacked
-    {{ dbt_utils.group_by(n=52) }}
+    {{ dbt_utils.group_by(n=54) }}
 
 )
 

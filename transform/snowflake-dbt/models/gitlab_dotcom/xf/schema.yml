@@ -82,12 +82,11 @@ models:
         description: '{{ doc("namespace_plan_id_at_creation") }}'
 
   - name: gitlab_dotcom_label_states_xf
-    description: Represents the latest state (added or removed) for each label on Epics/Issues/Merge Requests
+    description: Represents the latest state (added or removed) for each label on Epics/Issues/Merge Requests. Should be phased out in favor of `label_links`.
     columns:
       - name: label_id
         tests:
           - not_null
-
 
   - name: gitlab_dotcom_labels_xf
     description: '{{ doc("gitlab_dotcom_labels_xf") }}'

@@ -268,10 +268,20 @@ models:
           - name: cohort_year
             tests:
                 - not_null
-                
+    - name: zuora_refund_invoices
+      description:  '{{doc("zuora_refund_invoices")}}'
+      columns:
+          - name: invoice_id
+            tests:
+                - not_null
+                - unique
+          - name: invoice_amount
+            description: The dollar amount going back to the customer.
+            tests:
+                - not_null         
     - name: zuora_refund_xf
       description: Zuora Refunds
-      columns:
+      columns: 
           - name: refund_month
             tests:
                 - not_null
@@ -286,8 +296,7 @@ models:
           - name: refund_type
             description: Specifies if the refund is electronic or external.
           - name: refund_status
-            description: The status of the refund.
-            
+            description: The status of the refund.    
     - name: zuora_subscription_periods
       description: '{{doc("zuora_subscription_periods")}}'
       tests:    

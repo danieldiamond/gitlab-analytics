@@ -18,7 +18,7 @@ WITH source as (
             unit::varchar                           AS  application_custom_field_unit,
             min_value::numeric                      AS  application_custom_field_min_value,
             max_value::numeric                      AS  application_custom_field_max_value,
-            date_value::date                        AS  application_custom_field_date,
+            TRY_TO_DATE(date_value::VARCHAR)        AS  application_custom_field_date,
             created_at::timestamp                   AS  application_custom_field_created_at,
             updated_at::timestamp                   AS  application_custom_field_updated_at
 
