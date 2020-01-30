@@ -10,6 +10,7 @@ from airflow_utils import (
     slack_failed_task,
 )
 from kube_secrets import (
+    GITLAB_COM_API_TOKEN,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_LOAD_PASSWORD,
     SNOWFLAKE_LOAD_ROLE,
