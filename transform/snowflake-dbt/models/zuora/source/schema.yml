@@ -1,0 +1,21 @@
+version: 2
+
+models:
+    - name: zuora_account_source
+      description: Ephemeral layer for Zuora Accounts for cleaning and renaming
+    - name: zuora_contact_source
+      description: Ephemeral layer for Zuora contacts for cleaning and renaming
+    - name: zuora_discount_applied_metrics_source
+      description: Ephemeral layer for Zuora Discount Applied Metrics  for cleaning and renaming
+    - name: zuora_invoice_source
+      description: Ephemeral layer for Zuora Invoices for cleaning and renaming
+    - name: zuora_invoice_item_source
+      description: Ephemeral layer for Zuora Invoice Items for cleaning and renaming
+    - name: zuora_rate_plan_source
+      description: Ephemeral layer for Zuora Rate Plans for cleaning and renaming
+    - name: zuora_rate_plan_charge_source
+      description: Ephemeral layer for Zuora Rate Plan Charges for cleaning and renaming
+    - name: zuora_refund_source
+      description: Ephemeral layer for Zuora Refunds for cleaning and renaming
+    - name: zuora_subscription_source
+      description: Ephemeral layer for Zuora Subscriptions for cleaning and renaming
