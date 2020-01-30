@@ -70,8 +70,8 @@ unioned AS (
     source_id          AS namespace_id,
     user_id,
     access_level,
-    source_id          AS membership_source_id,
-    'group_membership' AS membership_type
+    'group_membership' AS membership_source_type,
+    source_id          AS membership_source_id
   FROM group_members
 
   UNION 
@@ -80,8 +80,8 @@ unioned AS (
     namespace_id,
     user_id,
     access_level,
-    source_id            AS membership_source,
-    'project_membership' AS membership_type
+    'project_membership' AS membership_source_type,
+    source_id            AS membership_source_id
   FROM project_members
 
   UNION
@@ -90,8 +90,8 @@ unioned AS (
     namespace_id,
     user_id,
     access_level,
-    project_group_link_id AS membership_source,
-    'project_group_link'  AS membership_type
+    'project_group_link'  AS membership_source_type,
+    project_group_link_id AS membership_source_id
 
   FROM project_group_links_unnested
 

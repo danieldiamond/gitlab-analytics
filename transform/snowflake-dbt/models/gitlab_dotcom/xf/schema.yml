@@ -129,10 +129,10 @@ models:
       - name: access_level
         tests:
           - not_null
-      - name: membership_type
+      - name: membership_source_type
         tests:
           - not_null
-      - name: membership_source
+      - name: membership_source_id
         tests:
           - not_null
 
