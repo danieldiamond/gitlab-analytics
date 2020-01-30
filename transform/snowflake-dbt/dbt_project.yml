@@ -177,6 +177,10 @@ models:
         materialized: table
 
     zuora:
+      source:
+        materialized: ephemeral
+      base:
+        schema: staging
       xf:
         materialized: table
 
