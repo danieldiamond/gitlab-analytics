@@ -70,8 +70,8 @@ WITH zuora_accts AS (
 	  --date info
 	  date_trunc('month', zuora_rpc.effective_start_date::DATE)			AS effective_start_month,
 	  date_trunc('month', zuora_rpc.effective_end_date::DATE)			AS effective_end_month,
-	  zuora_rpc.effective_start_date									AS effective_start_date,
-	  zuora_rpc.effective_end_date										AS effective_end_date
+	  zuora_rpc.effective_start_date,
+	  zuora_rpc.effective_end_date
 	FROM zuora_accts
 	INNER JOIN zuora_subscription
 	  ON zuora_accts.account_id = zuora_subscription.account_id
@@ -109,9 +109,9 @@ WITH zuora_accts AS (
 ), movingtogitlab AS (
 
 	SELECT
-	  accounting_period 			AS mrr_month,
+	  accounting_period 					AS mrr_month,
 	  rate_plan_charge_name,
-	  SUM(revenue_amt) 				AS revenue_amt
+	  SUM(revenue_amt) 						AS revenue_amt
 	FROM gaap_revenue
 	WHERE rate_plan_charge_name = '#movingtogitlab'
 	GROUP BY 1,2
@@ -127,7 +127,7 @@ WITH zuora_accts AS (
 	  ON zuora_rp.subscription_id = zuora_subscription.subscription_id
 	INNER JOIN zuora_rpc
 	  ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id
-	WHERE zuora_subscription.status NOT IN ('Draft','Expired')
+	WHERE zuora_subscription.subscription_status NOT IN ('Draft','Expired')
 	  AND effective_start_date <= current_date
 	  AND (effective_end_date > current_date OR effective_end_date IS NULL)
 

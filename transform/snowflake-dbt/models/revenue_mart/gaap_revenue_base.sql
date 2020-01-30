@@ -47,7 +47,7 @@ WITH zuora_accts AS (
 ), gaap_revenue AS (
 
 	SELECT
-	  zuora_acct_period.accounting_period_start_date,
+	  zuora_acct_period.accounting_period_start_date	AS accounting_period,
 
 	  -- account info
 	  zuora_accts.account_name,

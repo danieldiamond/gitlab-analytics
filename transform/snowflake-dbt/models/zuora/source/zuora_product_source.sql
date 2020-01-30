@@ -23,7 +23,6 @@ WITH source AS (
     updateddate::TIMESTAMP_TZ              AS updated_date
 
   FROM source
-  WHERE deleted = FALSE
 
 )
 
