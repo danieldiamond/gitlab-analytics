@@ -13,6 +13,9 @@ from gitlabdata.orchestration_utils import (
 
 
 def get_project_ids():
+    """
+    Extracts the part of product CSV and returns the unique project_ids listed in the CSV.
+    """
     url = "https://gitlab.com/gitlab-data/analytics/raw/master/transform/snowflake-dbt/data/projects_part_of_product.csv"
     csv_bytes = requests.get(url).content
     csv = pd.read_csv(io.StringIO(csv_bytes.decode("utf-8")))
@@ -20,6 +23,10 @@ def get_project_ids():
 
 
 def get_urls_for_mrs_for_project(project_id, api_token):
+    """
+    Returns an array of all of the web_urls found in the project_id that is passed in as a parameter.
+    If the api_token does not have access to the project, or another error occurs, an empty list is returned.
+    """
     url = f"https://gitlab.com/api/v4/projects/{project_id}/merge_requests"
     response = requests.get(url, headers={"Private-Token": api_token})
     if response.status_code == 200:
@@ -33,6 +40,10 @@ def get_urls_for_mrs_for_project(project_id, api_token):
 
 
 def get_mr_json(mr_url, api_token):
+    """
+    Gets the diff JSON for the merge request by making a request to /diffs.json appended to the url.
+    If the HTTP response is non-200 or the JSON could not be parsed, an empty dictionary is returned.
+    """
     url = f"{mr_url}/diffs.json"
     response = requests.get(url, headers={"Private-Token": api_token})
     if response.status_code == 200:
