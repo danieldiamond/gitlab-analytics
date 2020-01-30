@@ -208,16 +208,16 @@ for source_name, config in config_dict.items():
 
     with sync_dag:
         # Sync Task
-        sync_cmd = generate_cmd(config["dag_name"], "--load_type sync")
-        sync_extract = KubernetesPodOperator(
-            **gitlab_defaults,
-            image=DATA_IMAGE,
-            task_id=f"{config['task_name']}-db-sync",
-            name=f"{config['task_name']}-db-sync",
-            secrets=standard_secrets + config["secrets"],
-            env_vars={**standard_pod_env_vars, **config["env_vars"]},
-            arguments=[sync_cmd],
-        )
+        # sync_cmd = generate_cmd(config["dag_name"], "--load_type sync")
+        # sync_extract = KubernetesPodOperator(
+        #     **gitlab_defaults,
+        #     image=DATA_IMAGE,
+        #     task_id=f"{config['task_name']}-db-sync",
+        #     name=f"{config['task_name']}-db-sync",
+        #     secrets=standard_secrets + config["secrets"],
+        #     env_vars={**standard_pod_env_vars, **config["env_vars"]},
+        #     arguments=[sync_cmd],
+        # )
         # SCD Task
         scd_cmd = generate_cmd(config["dag_name"], "--load_type scd")
         scd_affinity = {
