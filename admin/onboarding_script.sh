@@ -50,6 +50,11 @@ brew cask install visual-studio-code
 code --version
 echo "VS Code successfully installed"
 
+## install tldr https://tldr.sh/
+echo "Installing tldr..."
+brew install tldr
+echo "tldr installed. "
+
 ## install bash completion
 echo "Installing bash competion.."
 brew install bash-completion
