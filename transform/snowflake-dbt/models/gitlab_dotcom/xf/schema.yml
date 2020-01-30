@@ -115,7 +115,7 @@ models:
     description: '{{ doc("gitlab_dotcom_memberships") }}'
     tests:
       - unique:
-          column_name: "concat(membership_source_id, user_id)"
+          column_name: "concat(membership_source_type, '_', membership_source_id, '_', user_id)"
     columns:
       - name: ultimate_parent_id
         tests:
