@@ -35,7 +35,15 @@ def get_urls_for_mrs_for_project(project_id, api_token):
 def get_mr_json(mr_url, api_token):
     url = f"{mr_url}/diffs.json"
     response = requests.get(url, headers={"Private-Token": api_token})
-    return response.json()
+    if response.status_code == 200:
+        try:
+            return response.json()
+        except ValueError:  # JSON was bad
+            logging.error(f"Json didn't parse for mr: {mr_url}")
+            return {}
+    else:
+        logging.warn(f"Received {response.status_code} for mr: {mr_url}")
+        return {}
 
 
 if __name__ == "__main__":
@@ -55,7 +63,8 @@ if __name__ == "__main__":
             mr_urls = get_urls_for_mrs_for_project(project_id, api_token)
             for mr_url in mr_urls:
                 mr_information = get_mr_json(mr_url, api_token)
-                out_file.write(json.dumps(mr_information))
+                if mr_information:
+                    out_file.write(json.dumps(mr_information))
 
     snowflake_stage_load_copy_remove(
         file_name,
