@@ -110,8 +110,9 @@ gitlab-org/security-products/gemnasium/semver,5778095
 gitlab-org/security-products/gemnasium/web,5828233
 gitlab-org/security-products/license-management,6130122
 gitlab-org/security-products/sast,5373222
-gitlab-org/serverless/runtimes/nodejs,11373038
-gitlab-org/serverless/runtimes/ruby,11533294
+gitlab-org/serverless,4834769
+gitlab-org/project-templates/serverless-framework,15112583
+gitlab-org/quality/triage-serverless,12690061
 gitlab-org/sidekiq-reliable-fetch,8362868
 gitlab-org/security-products/advisory-db-curation-tools,13467157
 gitlab-org/security-products/analyzers/bandit,6237088
