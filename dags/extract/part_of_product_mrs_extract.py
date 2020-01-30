@@ -44,7 +44,7 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
-    python3 product_mrs/execute.py
+    python product_mrs/execute.py
 """
 
 # Create the DAG
