@@ -18,7 +18,7 @@ The account source table contains information about the customer accounts in you
 
 {% enddocs %}
 
-{% docs zuora_accounting_period %}
+{% docs zuora_accounting_period_source %}
 
 This is the source table for the accounting period table. [Link to Documentation](https://knowledgecenter.zuora.com/Developer_Platform/API/G_SOAP_API/E1_SOAP_API_Object_Reference/AccountingPeriod)
 
@@ -49,7 +49,7 @@ The invoice source table contains info about invoices, which are bills to custom
 
 {% enddocs %}
 
-{% docs zuora_product %}
+{% docs zuora_product_source %}
 
 This is the source table for the product table. [Link to Documentation](https://knowledgecenter.zuora.com/Developer_Platform/API/G_SOAP_API/E1_SOAP_API_Object_Reference/Product)
 
@@ -73,7 +73,7 @@ This is the source table for Zuora Refunds. [Link to Documentation](https://know
 
 {% enddocs %}
 
-{% docs zuora_revenue_schedule_item %}
+{% docs zuora_revenue_schedule_item_source %}
 
 This is the source table for the Zuora Revenue Schedule Item [Link to Documentation](https://knowledgecenter.zuora.com/Zuora_Central/Reporting_and_Analytics/D_Data_Sources_and_Exports/C_Data_Source_Reference/Revenue_Schedule_Item_Data_Source)
 

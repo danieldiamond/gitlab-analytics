@@ -1,12 +1,7 @@
-{{config({
-    "schema": "staging"
-  })
-}}
-
 WITH source AS (
 
-  SELECT *
-  FROM {{ source('zuora', 'revenue_schedule_item') }}
+    SELECT *
+    FROM {{ source('zuora', 'revenue_schedule_item') }}
 
 ), renamed AS (
 

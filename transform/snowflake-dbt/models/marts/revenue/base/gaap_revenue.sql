@@ -1,12 +1,32 @@
-WITH zuora_accts AS (
+WITH date_table AS (
+
+    SELECT *
+    FROM {{ ref('date_details') }}
+
+), zuora_accts AS (
 
     SELECT *
     FROM {{ ref('zuora_account_source') }}
 
-), zuora_subscription AS (
+), zuora_acct_period AS (
 
     SELECT *
-    FROM {{ ref('zuora_subscription_source') }}
+    FROM {{ ref('zuora_accounting_period_source') }}
+
+), zuora_contact AS (
+
+    SELECT *
+    FROM {{ ref('zuora_contact_source') }}
+
+), zuora_product AS (
+
+    SELECT *
+    FROM {{ ref('zuora_product_source') }}
+
+), zuora_rev_sch AS (
+
+    SELECT *
+    FROM {{ ref('zuora_revenue_schedule_item_source') }}
 
 ), zuora_rp AS (
 
@@ -18,31 +38,10 @@ WITH zuora_accts AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge_source') }}
 
-), zuora_contact AS (
+), zuora_subscription AS (
 
     SELECT *
-    FROM {{ ref('zuora_contact_source') }}
-
-), zuora_rev_sch AS (
-
-    SELECT *
-    FROM {{ ref('zuora_revenue_schedule_item_source') }}
-
-), zuora_acct_period AS (
-
-    SELECT *
-    FROM {{ ref('zuora_accounting_period_source') }}
-
-), zuora_product AS (
-
-    SELECT *
-    FROM {{ ref('zuora_product_source') }}
-
-), date_table AS (
-
-    SELECT *
-    FROM {{ ref('date_details') }}
-    WHERE day_of_month = 1
+    FROM {{ ref('zuora_subscription_source') }}
 
 ), gaap_revenue AS (
 
@@ -64,7 +63,7 @@ WITH zuora_accts AS (
       zuora_rpc.quantity,
       zuora_rpc.mrr,
       zuora_product.product_name,
-      SUM(zuora_rev_sch.revenue_schedule_item_amount)	AS revenue_amt
+      SUM(zuora_rev_sch.revenue_schedule_item_amount)    AS revenue_amt
     FROM zuora_rev_sch
     LEFT JOIN zuora_accts
       ON zuora_rev_sch.account_id = zuora_accts.account_id

@@ -1,12 +1,28 @@
-WITH zuora_accts AS (
+WITH date_table AS (
+
+    SELECT *
+    FROM {{ ref('date_details') }}
+    WHERE day_of_month = 1
+
+), zuora_accts AS (
 
     SELECT *
     FROM {{ ref('zuora_account_source') }}
 
-), zuora_subscription AS (
+), zuora_acct_period AS (
 
     SELECT *
-    FROM {{ ref('zuora_subscription_source') }}
+    FROM {{ ref('zuora_accounting_period_source') }}
+
+), zuora_contact AS (
+
+    SELECT *
+    FROM {{ ref('zuora_contact_source') }}
+
+), zuora_product AS (
+
+    SELECT *
+    FROM {{ ref('zuora_product_source') }}
 
 ), zuora_rp AS (
 
@@ -18,31 +34,10 @@ WITH zuora_accts AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge_source') }}
 
-), zuora_contact AS (
+), zuora_subscription AS (
 
     SELECT *
-    FROM {{ ref('zuora_contact_source') }}
-
-), zuora_acct_period AS (
-
-    SELECT *
-    FROM {{ ref('zuora_accounting_period_source') }}
-
-), zuora_product AS (
-
-    SELECT *
-    FROM {{ ref('zuora_product_source') }}
-
-), gaap_revenue AS (
-
-    SELECT *
-    FROM {{ ref('gaap_revenue_base') }}
-
-), date_table AS (
-
-    SELECT *
-    FROM {{ ref('date_details') }}
-    WHERE day_of_month = 1
+    FROM {{ ref('zuora_subscription_source') }}
 
 ), base_mrr AS (
 
