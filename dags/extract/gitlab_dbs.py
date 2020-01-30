@@ -208,16 +208,16 @@ for source_name, config in config_dict.items():
 
     with sync_dag:
         # Sync Task
-        # sync_cmd = generate_cmd(config["dag_name"], "--load_type sync")
-        # sync_extract = KubernetesPodOperator(
-        #     **gitlab_defaults,
-        #     image=DATA_IMAGE,
-        #     task_id=f"{config['task_name']}-db-sync",
-        #     name=f"{config['task_name']}-db-sync",
-        #     secrets=standard_secrets + config["secrets"],
-        #     env_vars={**standard_pod_env_vars, **config["env_vars"]},
-        #     arguments=[sync_cmd],
-        # )
+        sync_cmd = generate_cmd(config["dag_name"], "--load_type sync")
+        sync_extract = KubernetesPodOperator(
+            **gitlab_defaults,
+            image=DATA_IMAGE,
+            task_id=f"{config['task_name']}-db-sync",
+            name=f"{config['task_name']}-db-sync",
+            secrets=standard_secrets + config["secrets"],
+            env_vars={**standard_pod_env_vars, **config["env_vars"]},
+            arguments=[sync_cmd],
+        )
         # SCD Task
         scd_cmd = generate_cmd(config["dag_name"], "--load_type scd")
         scd_affinity = {
@@ -249,8 +249,7 @@ for source_name, config in config_dict.items():
             affinity=scd_affinity,
             tolerations=scd_tolerations,
         )
-        # sync_extract >> scd_extract
-        scd_extract
+        sync_extract >> scd_extract
     globals()[f"{config['dag_name']}_db_sync"] = sync_dag
 
     # Validation DAG
