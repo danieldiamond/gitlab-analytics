@@ -30,7 +30,7 @@ help:
 airflow:
 	@echo "Attaching to the Webserver container..."
 	@docker-compose down
-	@export GIT_BRANCH=$(GIT_BRANCH) && docker-compose up -d airflow_webserver
+	@export GIT_BRANCH=$(GIT_BRANCH) && export GCLOUD_PROJECT="gitlab-analysis" && docker-compose up -d airflow_webserver
 	@sleep 5
 	@docker exec -ti ${AIRFLOW_IMAGE} /bin/bash
 
