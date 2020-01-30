@@ -27,7 +27,7 @@ If none, please include a description
 Sufficient access needs to be granted and verified before we can begin working on an automated extraction
 --->
 
-Will there need to be access grated in order for a Data Engineer to extract this data? (example: New permissions or credentials to Salesforce in order to access the data)
+Will there need to be access granted in order for a Data Engineer to extract this data? (example: New permissions or credentials to Salesforce in order to access the data)
   - [ ] Yes 
   - [ ] No
   - [ ] I don't know
