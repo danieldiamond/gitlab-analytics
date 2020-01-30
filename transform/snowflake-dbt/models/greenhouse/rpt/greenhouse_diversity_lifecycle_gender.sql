@@ -34,7 +34,7 @@ WITH date_details AS (
       candidate_id,
       offers.offer_id,
       DATE_TRUNC('month', MIN(applied_at))                                  AS application_month, 
-      COALESCE(candidate_gender,'Decline To Self Identify')                AS gender,
+      COALESCE(candidate_gender,'Decline To Self Identify')                 AS gender,
       SUM(iff(offers.offer_id IS NOT NULL,1,0))                             AS hired,
       COUNT(DISTINCT(applications.application_id))                          AS total_applications
     FROM applications
