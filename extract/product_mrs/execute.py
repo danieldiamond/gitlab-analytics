@@ -1,4 +1,6 @@
 import io
+import json
+import logging
 from os import environ as env
 import pandas as pd
 import requests
@@ -31,6 +33,8 @@ def get_mr_json(mr_url, api_token):
 
 if __name__ == "__main__":
 
+    logging.basicConfig(stream=sys.stdout, level=20)
+
     config_dict = env.copy()
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
@@ -38,12 +42,13 @@ if __name__ == "__main__":
 
     with open(file_name, "w") as out_file:
         project_ids = get_project_ids()
+        api_token = env["GITLAB_COM_API_TOKEN"]
         for project_id in project_ids:
-            mr_urls = get_urls_for_mrs_for_project(
-                project_id, env["GITLAB_COM_API_TOKEN"]
-            )
+            logging.info(f"Extracting project {project_id}.")
+            mr_urls = get_urls_for_mrs_for_project(project_id, api_token)
             for mr_url in mr_urls:
-                mr_information = get_mr_json(mr_url, env["GITLAB_COM_API_TOKEN"])
+                mr_information = get_mr_json(mr_url, api_token)
+                out_file.write(json.dumps(mr_information))
 
     snowflake_stage_load_copy_remove(
         file_name,
