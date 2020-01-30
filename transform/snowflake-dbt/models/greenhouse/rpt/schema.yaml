@@ -39,4 +39,3 @@ models:
     - name: department_hired_into
     - name: division_hired_into
     - name: job_hired_into
-      description: This is the id associated to the job the employee was hired for. 
