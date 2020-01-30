@@ -1,7 +1,7 @@
 version: '3.7'
 services:
     airflow_webserver:
-        image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
+        image: registry.gitlab.com/gitlab-data/data-image/airflow-image:upgrades
         restart: always
         ports:
           - "8080:8080"
@@ -33,7 +33,7 @@ services:
             read_only: True
 
     airflow_scheduler:
-        image: registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
+        image: registry.gitlab.com/gitlab-data/data-image/airflow-image:upgrades
         restart: always
         ports:
           - "8793:8793"
@@ -75,7 +75,7 @@ services:
         - pgdata:/var/lib/postgresql/data
 
     data_image:
-      image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+      image: registry.gitlab.com/gitlab-data/data-image/data-image:upgrades
       restart: always
       command: bash -c "/bin/bash"
       working_dir: /usr/local/analytics/
@@ -85,7 +85,7 @@ services:
           target: /usr/local/analytics
 
     dbt_image:
-      image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
+      image: registry.gitlab.com/gitlab-data/data-image/dbt-image:upgrades
       environment:
         DBT_PROFILES_DIR: /usr/local/dbt_profiles/
         SNOWFLAKE_LOAD_DATABASE: "RAW"
