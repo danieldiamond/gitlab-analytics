@@ -22,8 +22,8 @@ def get_project_ids():
 def get_urls_for_mrs_for_project(project_id, api_token):
     url = f"https://gitlab.com/api/v4/projects/{project_id}/merge_requests"
     response = requests.get(url, headers={"Private-Token": api_token})
-    mr_json_list = response.json()
     if response.status_code == 200:
+        mr_json_list = response.json()
         return [mr["web_url"] for mr in mr_json_list]
     else:
         logging.warn(
