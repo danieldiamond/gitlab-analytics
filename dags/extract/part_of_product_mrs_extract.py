@@ -57,6 +57,7 @@ greenhouse_run = KubernetesPodOperator(
     task_id="part-of-product-mrs",
     name="part-of-product-mrs",
     secrets=[
+        GITLAB_COM_API_TOKEN,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_LOAD_ROLE,
         SNOWFLAKE_LOAD_USER,
