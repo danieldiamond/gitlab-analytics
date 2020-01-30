@@ -22,7 +22,7 @@ WITH source AS (
       originalid                                            AS original_id,
       rateplanid                                            AS rate_plan_id,
       productrateplanchargeid                               AS product_rate_plan_charge_id,
-	  productid												AS product_id,
+      productid                                             AS product_id,
 
       --recognition
       revenuerecognitionrulename                            AS revenue_recognition_rule_name,
