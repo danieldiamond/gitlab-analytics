@@ -715,6 +715,21 @@ tables:
     export_table: 'gitlab_subscriptions'
     export_table_primary_key: id
     advanced_metadata: true
+  group_group_links:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , shared_group_id
+      , shared_with_group_id
+      , expires_at
+      , group_access
+      FROM group_group_links
+    export_schema: 'gitlab_com'
+    export_table: 'group_group_links'
+    export_table_primary_key: id
+    advanced_metadata: true
   issues:
     import_db: GITLAB_DB
     import_query: >
