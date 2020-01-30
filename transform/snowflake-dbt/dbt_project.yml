@@ -178,7 +178,7 @@ models:
 
     zuora:
       source:
-        materialized: ephemeral
+        schema: staging
       base:
         schema: staging
       xf:
