@@ -25,7 +25,6 @@ With greenhouse_openings AS (
       greenhouse_jobs.job_name                          AS job_title, 
       greenhouse_jobs.job_opened_at, 
       greenhouse_organization.organization_name
-
     FROM greenhouse_openings
     LEFT JOIN greenhouse_jobs
       ON greenhouse_openings.job_id = greenhouse_jobs.job_id 
