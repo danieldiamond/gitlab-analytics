@@ -7,7 +7,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      MD5(id)::VARCHAR                            AS version_id,
+      id::INTEGER                                 AS version_id,
       issue_id::INTEGER                           AS issue_id,
       created_at::TIMESTAMP                       AS created_at,
       author_id::INTEGER                          AS author_id
