@@ -1,4 +1,9 @@
-With employees AS (
+{{ config({
+    "schema": "analytics"
+    })
+}}
+
+WITH employees AS (
 
     SELECT * 
     FROM {{ref('bamboohr_id_employee_number_mapping')}}

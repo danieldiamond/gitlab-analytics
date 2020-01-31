@@ -1,4 +1,9 @@
-With greenhouse_openings AS (
+{{ config({
+    "schema": "analytics"
+    })
+}}
+
+WITH greenhouse_openings AS (
 
     SELECT * 
     FROM {{ref('greenhouse_openings')}}
