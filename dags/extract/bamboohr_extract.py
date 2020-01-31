@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timedelta
 
-from airflow import DAG, Variable
+from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.models import Variable
 from airflow_utils import (
