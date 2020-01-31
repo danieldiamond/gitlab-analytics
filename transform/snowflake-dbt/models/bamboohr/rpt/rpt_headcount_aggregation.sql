@@ -84,24 +84,26 @@ With date_details AS (
       COALESCE(aggregated.headcount_start, 0)         AS headcount_start,
       COALESCE(aggregated.headcount_end, 0)           AS headcount_end,
       COALESCE(aggregated.hires,0)                    AS hires,
-      AVG(aggregated.average_headcount) {{partition_statement}} AS rolling_12_month_headcount,
-      SUM(total_separated) {{partition_statement}}              AS rolling_12_month_separations,
-      SUM(voluntary_separations) {{partition_statement}}        AS rolling_12_month_voluntary_separations,
-      SUM(involuntary_separations) {{partition_statement}}      AS rolling_12_month_involuntary_separations
-FROM base
-LEFT JOIN aggregated
-  ON base.month_date = aggregated.month_date
-  AND base.diversity_field = aggregated.diversity_field
-  AND base.aggregation_type = aggregated.aggregation_type
+      AVG(COALESCE(aggregated.average_headcount, 0)) {{partition_statement}} AS rolling_12_month_headcount,
+      SUM(COALESCE(total_separated,0)) {{partition_statement}}              AS rolling_12_month_separations,
+      SUM(COALESCE(voluntary_separations,0)) {{partition_statement}}        AS rolling_12_month_voluntary_separations,
+      SUM(COALESCE(involuntary_separations,0)) {{partition_statement}}      AS rolling_12_month_involuntary_separations
+    FROM base
+    LEFT JOIN aggregated
+    ON base.month_date = aggregated.month_date
+    AND base.diversity_field = aggregated.diversity_field
+    AND base.aggregation_type = aggregated.aggregation_type
 
 ), final AS (
 
     SELECT
       intermediate.*,
-      1 - (rolling_12_month_separations/rolling_12_month_headcount)             AS retention
+      1 - (rolling_12_month_separations/NULLIF(rolling_12_month_headcount,0))        AS retention
     FROM intermediate
+    WHERE month_date > '2012-11-30'
 
 )
 
 SELECT *
 FROM final
+WHERE month_date < date_trunc('month', CURRENT_DATE)
