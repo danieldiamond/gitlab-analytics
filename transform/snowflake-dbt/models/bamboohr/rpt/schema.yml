@@ -51,4 +51,4 @@ models:
     - name: rolling_12_month_involuntary_separations 
       description: Provides the total number of the employees separated voluntarily for the current month and previous 11 months.
     - name: retention
-      description: Is equal to 1 - (rolling_12_month_separations divided by rolling_12_month_headcount).
+      description: Is equal to 1 - (rolling_12_month_separations divided by rolling_12_month_headcount). Note - in the case the rolling_12_month_headcount is less than the rolling_12_month_separations, retention will appear as null.
