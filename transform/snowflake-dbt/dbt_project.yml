@@ -46,7 +46,7 @@ seeds:
   enabled: true
   schema: staging
   quote_columns: False
-  
+
   gitlab_snowflake:
     zuora_country_geographic_region:
       schema: analytics
@@ -128,6 +128,11 @@ models:
     greenhouse:
       schema: sensitive
 
+    marts:
+      revenue:
+        base:
+          materialized: table
+
     netsuite:
       materialized: table
       base:
@@ -139,7 +144,7 @@ models:
 
     retention:
       materialized: table
-    
+
     sfdc:
       base:
         schema: staging
@@ -148,11 +153,11 @@ models:
       xf:
         materialized: table
 
-    sheetload: 
-      base: 
-        sheetload_rep_productivity: 
-          enabled: false 
-          
+    sheetload:
+      base:
+        sheetload_rep_productivity:
+          enabled: false
+
     smau_events:
       tags: ["product"]
       materialized: table
@@ -178,7 +183,7 @@ models:
 
     zuora:
       source:
-        materialized: ephemeral
+        schema: staging
       base:
         schema: staging
       xf:
@@ -201,7 +206,7 @@ snapshots:
 
     license:
       tags: ["daily"]
-    
+
     sfdc:
       tags: ["daily"]
 
