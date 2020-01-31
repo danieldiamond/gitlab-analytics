@@ -18,10 +18,11 @@ WITH source AS (
     SELECT
       id                                                    AS rate_plan_charge_id,
       name                                                  AS rate_plan_charge_name,
-      --keys    
+      --keys
       originalid                                            AS original_id,
       rateplanid                                            AS rate_plan_id,
       productrateplanchargeid                               AS product_rate_plan_charge_id,
+      productid                                             AS product_id,
 
       --recognition
       revenuerecognitionrulename                            AS revenue_recognition_rule_name,
@@ -63,7 +64,7 @@ WITH source AS (
       overagecalculationoption                              AS overage_calculation_option,
       overageunusedunitscreditoption                        AS overage_unused_units_credit_option,
       processedthroughdate                                  AS processed_through_date,
-      
+
       segment                                               AS segment,
       specificbillingperiod                                 AS specific_billing_period,
       specificenddate                                       AS specific_end_date,
