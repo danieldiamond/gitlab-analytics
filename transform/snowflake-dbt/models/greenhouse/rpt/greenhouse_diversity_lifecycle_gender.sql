@@ -1,5 +1,4 @@
 {{ config({
-    "materialized":"table",
     "schema": "analytics"
     })
 }}
@@ -9,16 +8,16 @@
 WITH date_details AS (
   
     SELECT 
-      date_actual                                       AS start_date,
-      last_day(date_actual)                             AS end_date
+      date_actual                                                          AS month_date                               
     FROM {{ ref ('date_details') }}
-    WHERE date_day <= LAST_DAY(current_date) 
+    WHERE date_actual <= {{max_date_in_bamboo_analyses()}}
     AND day_of_month = 1 
+    AND date_actual >='2012-08-01' --1st employee hire date--
 
 ), applications AS (
     
     SELECT * 
-     FROM {{ ref ('greenhouse_applications') }}
+    FROM {{ ref ('greenhouse_applications') }}
 
 ), offers AS (
     
@@ -30,7 +29,7 @@ WITH date_details AS (
     SELECT *
     FROM {{ ref ('greenhouse_eeoc_responses') }}
   
-), candidates_aggregated as ( 
+), candidates_aggregated AS ( 
   
     SELECT 
       candidate_id,
@@ -69,9 +68,9 @@ WITH date_details AS (
 ), aggregated AS (
 
     SELECT
-      repeated_column_names,
+      {{repeated_column_names}},
       ratio_to_report(COUNT(candidate_id))
-        OVER (PARTITION BY application_month)                               AS metric_total,
+        OVER (PARTITION BY month_date)                                      AS metric_total,
       'percent_of_applicants'                                               AS recruiting_metric
     FROM candidates_aggregated
     GROUP BY 1,2
@@ -79,7 +78,7 @@ WITH date_details AS (
     UNION ALL
   
     SELECT 
-      repeated_column_names,
+      {{repeated_column_names}},
       SUM(hired)/SUM(total_applications)                                    AS metric_total,             
       'applicaton_to_offer_percent'                                         AS recruiting_metric 
     FROM candidates_aggregated
@@ -88,16 +87,16 @@ WITH date_details AS (
     UNION ALL
   
     SELECT 
-      repeated_column_names,
+      {{repeated_column_names}},
       RATIO_TO_REPORT(number_of_offers) 
-        OVER (PARTITION BY offer_sent_month)                                AS metric_total,
+        OVER (PARTITION BY month_date)                                      AS metric_total,
       'percent_of_offers'                                                   AS recruiting_metric
     FROM offers_aggregated
 
     UNION ALL
 
     SELECT 
-      repeated_column_names,
+      {{repeated_column_names}},
       offer_acceptance_rate                                                 AS metric_total,  
       'offer_acceptance_rate_based_on_offer_month'                          AS recruiting_metric
     FROM offers_aggregated
@@ -105,12 +104,23 @@ WITH date_details AS (
     UNION ALL
 
     SELECT 
-      repeated_column_names,
+      {{repeated_column_names}},
       avg_apply_to_accept_days                                              AS metric_total,
       'avg_apply_to_accept_days'                                            AS recruiting_metric
     FROM offers_aggregated
 
-)
+), final AS(
 
-SELECT *  
-FROM aggregated 
+    SELECT 
+      date_details.month_date,
+      gender,
+      metric_total,
+      recruiting_metric
+    FROM date_details
+    LEFT JOIN aggregated
+    ON date_details.month_date = aggregated.month_date
+    WHERE date_details.month_date < DATE_TRUNC('month', CURRENT_DATE)
+
+)
+SELECT *
+FROM final
