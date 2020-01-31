@@ -125,7 +125,7 @@ unioned AS (
       access_level,
       'group_group_link'    AS membership_source_type,
       group_group_link_id   AS membership_source_id
-    FROM project_group_links_unnested
+    FROM group_group_links_unnested
 
 ),
 
