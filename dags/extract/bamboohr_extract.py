@@ -1,8 +1,9 @@
 import os
 from datetime import datetime, timedelta
 
-from airflow import DAG
+from airflow import DAG, Variable
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
+from airflow.models import Variable
 from airflow_utils import (
     DATA_IMAGE,
     clone_and_setup_extraction_cmd,
@@ -21,7 +22,13 @@ from kube_secrets import (
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
-pod_env_vars = {"CI_PROJECT_DIR": "/analytics"}
+pod_env_vars = {
+    "CI_PROJECT_DIR": "/analytics",
+}
+
+bamboo_hr_skip_tests = Variable.get("BAMBOOHR_SKIP_TEST", default_var=None)
+if bamboo_hr_skip_tests:
+    pod_env_vars["BAMBOOHR_SKIP_TEST"] = bamboo_hr_skip_tests
 
 # Default arguments for the DAG
 default_args = {
