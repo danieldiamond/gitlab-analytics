@@ -99,7 +99,7 @@ With date_details AS (
     SELECT
       intermediate.*,
       iff(rolling_12_month_headcount< rolling_12_month_separations, null,
-        1 - (rolling_12_month_separations/NULLIF(rolling_12_month_headcount,0))        AS retention
+        1 - (rolling_12_month_separations/NULLIF(rolling_12_month_headcount,0)))        AS retention
     FROM intermediate
     WHERE month_date > '2012-11-30'
 
