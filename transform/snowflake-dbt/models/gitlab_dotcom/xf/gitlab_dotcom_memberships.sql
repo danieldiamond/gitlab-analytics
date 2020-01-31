@@ -5,12 +5,20 @@ WITH members AS (
     WHERE is_currently_valid = True
       AND user_id IS NOT NULL
 
-), 
+),
 
 project_group_links AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_project_group_links')}}
+    WHERE is_currently_valid = True
+
+),
+
+group_group_links AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_group_group_links')}}
     WHERE is_currently_valid = True
 
 ), 
@@ -49,7 +57,7 @@ project_members AS (
 
 ),
 
-project_group_links_unnested AS ( -- Where groups are invited to projects.
+project_group_links_unnested AS ( -- Where groups are invited to projects https://docs.gitlab.com/ee/user/group/#sharing-a-project-with-a-group.
 
     SELECT
       projects.namespace_id, -- The group that the project belongs to
@@ -65,36 +73,49 @@ project_group_links_unnested AS ( -- Where groups are invited to projects.
 
 ),
 
+group_group_links_unnested AS ( -- Where groups are invited to groups https://docs.gitlab.com/ee/user/group/#sharing-a-group-with-another-group.
+
+    SELECT
+      group_group_links.shared_group_id, -- The "host" group.
+      group_group_links.group_group_link_id,
+      group_group_links.shared_with_group_id, -- The "guest" groupo
+      group_group_links.group_access AS access_level,
+      group_members.user_id
+    FROM group_group_links
+      INNER JOIN group_members
+        ON group_group_links.shared_with_group_id = group_members.source_id
+
+),
+
 unioned AS (
 
-  SELECT
-    source_id          AS namespace_id,
-    user_id,
-    access_level,
-    'group_membership' AS membership_source_type,
-    source_id          AS membership_source_id
-  FROM group_members
+    SELECT
+      source_id          AS namespace_id,
+      user_id,
+      access_level,
+      'group_membership' AS membership_source_type,
+      source_id          AS membership_source_id
+    FROM group_members
 
-  UNION 
+    UNION
 
-  SELECT
-    namespace_id,
-    user_id,
-    access_level,
-    'project_membership' AS membership_source_type,
-    source_id            AS membership_source_id
-  FROM project_members
+    SELECT
+      namespace_id,
+      user_id,
+      access_level,
+      'project_membership' AS membership_source_type,
+      source_id            AS membership_source_id
+    FROM project_members
 
-  UNION
+    UNION
 
-  SELECT 
-    namespace_id,
-    user_id,
-    access_level,
-    'project_group_link'  AS membership_source_type,
-    project_group_link_id AS membership_source_id
-
-  FROM project_group_links_unnested
+    SELECT
+      namespace_id,
+      user_id,
+      access_level,
+      'project_group_link'  AS membership_source_type,
+      project_group_link_id AS membership_source_id
+    FROM project_group_links_unnested
 
 ),
 
