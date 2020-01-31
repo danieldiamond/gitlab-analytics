@@ -57,7 +57,7 @@ project_members AS (
 
 ),
 
-project_group_links_unnested AS ( -- Where groups are invited to projects https://docs.gitlab.com/ee/user/group/#sharing-a-project-with-a-group.
+project_group_links_unnested AS ( -- Where groups are invited to projects.
 
     SELECT
       projects.namespace_id, -- The group that the project directly belongs to.
@@ -73,7 +73,7 @@ project_group_links_unnested AS ( -- Where groups are invited to projects https:
 
 ),
 
-group_group_links_unnested AS ( -- Where groups are invited to groups https://docs.gitlab.com/ee/user/group/#sharing-a-group-with-another-group.
+group_group_links_unnested AS ( -- Where groups are invited to groups.
 
     SELECT
       group_group_links.shared_group_id, -- The "host" group.
