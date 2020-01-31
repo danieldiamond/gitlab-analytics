@@ -117,16 +117,26 @@ unioned AS (
       project_group_link_id AS membership_source_id
     FROM project_group_links_unnested
 
+    UNION
+
+    SELECT
+      shared_group_id       AS namespace_id
+      user_id,
+      access_level,
+      'group_group_link'    AS membership_source_type,
+      group_group_link_id   AS membership_source_id
+    FROM project_group_links_unnested
+
 ),
 
-final AS (
+final AS ( -- Get ultimate parent of the namespace.
 
-  SELECT
-    namespace_lineage.ultimate_parent_id,
-    unioned.*
-  FROM unioned
-    INNER JOIN namespace_lineage
-      ON unioned.namespace_id = namespace_lineage.namespace_id
+    SELECT
+      namespace_lineage.ultimate_parent_id,
+      unioned.*
+    FROM unioned
+      INNER JOIN namespace_lineage
+        ON unioned.namespace_id = namespace_lineage.namespace_id
 
 )
 
