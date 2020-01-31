@@ -20,9 +20,9 @@ WITH employees AS (
 
  ), bamboohr_job_info AS (
 
-  SELECT *
-  FROM {{ref('bamboohr_job_info')}} job_info
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY effective_date) = 1
+    SELECT *
+    FROM {{ref('bamboohr_job_info')}} job_info
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY effective_date) = 1
 
 ), aggregated AS (
 
