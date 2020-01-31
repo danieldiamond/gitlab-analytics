@@ -412,7 +412,31 @@ models:
         tests:
           - dbt_utils.expression_is_true:
               expression: "valid_from <= valid_to"
+  
+  - name: gitlab_dotcom_group_group_links
+    description: '{{ doc("gitlab_dotcom_groups") }}'
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "valid_from <= valid_to"
+    columns:
+      - name: group_group_link_id
+        tests:
+          - not_null
+          - unique
+      - name: shared_group_id
+        tests:
+          - not_null
+      - name: shared_with_group_id
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
 
+  
   - name: gitlab_dotcom_groups
     description: '{{ doc("gitlab_dotcom_groups") }}'
     columns:
