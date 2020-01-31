@@ -4,6 +4,8 @@
     })
 }}
 
+{% set repeated_column_names = "month_date, gender" %}
+
 WITH date_details AS (
   
     SELECT 
@@ -33,7 +35,7 @@ WITH date_details AS (
     SELECT 
       candidate_id,
       offers.offer_id,
-      DATE_TRUNC('month', MIN(applied_at))                                  AS application_month, 
+      DATE_TRUNC('month', MIN(applied_at))                                  AS month_date, 
       COALESCE(candidate_gender,'Decline To Self Identify')                 AS gender,
       SUM(iff(offers.offer_id IS NOT NULL,1,0))                             AS hired,
       COUNT(DISTINCT(applications.application_id))                          AS total_applications
@@ -43,11 +45,11 @@ WITH date_details AS (
     LEFT JOIN offers
       ON applications.application_id = offers.application_id
     GROUP BY 1,2,4
-  
+
 ), offers_aggregated AS (
   
     SELECT 
-      DATE_TRUNC('month', offers.sent_at)                                   AS offer_sent_month, 
+      DATE_TRUNC('month', offers.sent_at)                                   AS month_date, 
       COALESCE(candidate_gender,'Decline To Self Identify')                 AS gender,
       COUNT(DISTINCT(offer_id))                                             AS number_of_offers, 
       SUM(IFF(offer_status = 'accepted',1,0))                               AS accepted_offers,
@@ -67,8 +69,7 @@ WITH date_details AS (
 ), aggregated AS (
 
     SELECT
-      application_month                                                     AS metric_month,
-      gender,
+      repeated_column_names,
       ratio_to_report(COUNT(candidate_id))
         OVER (PARTITION BY application_month)                               AS metric_total,
       'percent_of_applicants'                                               AS recruiting_metric
@@ -78,8 +79,7 @@ WITH date_details AS (
     UNION ALL
   
     SELECT 
-      application_month,
-      gender,
+      repeated_column_names,
       SUM(hired)/SUM(total_applications)                                    AS metric_total,             
       'applicaton_to_offer_percent'                                         AS recruiting_metric 
     FROM candidates_aggregated
@@ -88,8 +88,7 @@ WITH date_details AS (
     UNION ALL
   
     SELECT 
-      offer_sent_month,
-      gender,
+      repeated_column_names,
       RATIO_TO_REPORT(number_of_offers) 
         OVER (PARTITION BY offer_sent_month)                                AS metric_total,
       'percent_of_offers'                                                   AS recruiting_metric
@@ -98,8 +97,7 @@ WITH date_details AS (
     UNION ALL
 
     SELECT 
-      offer_sent_month,
-      gender,
+      repeated_column_names,
       offer_acceptance_rate                                                 AS metric_total,  
       'offer_acceptance_rate_based_on_offer_month'                          AS recruiting_metric
     FROM offers_aggregated
@@ -107,8 +105,7 @@ WITH date_details AS (
     UNION ALL
 
     SELECT 
-      offer_sent_month,
-      gender,
+      repeated_column_names,
       avg_apply_to_accept_days                                              AS metric_total,
       'avg_apply_to_accept_days'                                            AS recruiting_metric
     FROM offers_aggregated
@@ -116,4 +113,4 @@ WITH date_details AS (
 )
 
 SELECT *  
-FROM aggregated
+FROM aggregated 
