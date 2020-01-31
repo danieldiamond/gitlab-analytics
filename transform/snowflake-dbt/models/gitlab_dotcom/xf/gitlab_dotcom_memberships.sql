@@ -60,7 +60,7 @@ project_members AS (
 project_group_links_unnested AS ( -- Where groups are invited to projects https://docs.gitlab.com/ee/user/group/#sharing-a-project-with-a-group.
 
     SELECT
-      projects.namespace_id, -- The group that the project belongs to
+      projects.namespace_id, -- The group that the project directly belongs to.
       project_group_links.project_group_link_id,
       project_group_links.project_id,
       project_group_links.group_access AS access_level,
@@ -78,7 +78,7 @@ group_group_links_unnested AS ( -- Where groups are invited to groups https://do
     SELECT
       group_group_links.shared_group_id, -- The "host" group.
       group_group_links.group_group_link_id,
-      group_group_links.shared_with_group_id, -- The "guest" groupo
+      group_group_links.shared_with_group_id, -- The "guest" group.
       group_group_links.group_access AS access_level,
       group_members.user_id
     FROM group_group_links
@@ -120,7 +120,7 @@ unioned AS (
     UNION
 
     SELECT
-      shared_group_id       AS namespace_id
+      shared_group_id       AS namespace_id,
       user_id,
       access_level,
       'group_group_link'    AS membership_source_type,
