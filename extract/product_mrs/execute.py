@@ -23,12 +23,18 @@ def get_project_ids() -> List[str]:
     return csv["project_id"].unique()
 
 
-def get_urls_for_mrs_for_project(project_id: int, api_token: str) -> List[str]:
+def get_urls_for_mrs_for_project(
+    project_id: int, api_token: str, start: str, end: str
+) -> List[str]:
     """
     Returns an array of all of the web_urls found in the project_id that is passed in as a parameter.
     If the api_token does not have access to the project, or another error occurs, an empty list is returned.
     """
-    url = f"https://gitlab.com/api/v4/projects/{project_id}/merge_requests"
+    start_query_param, end_query_param = (
+        start.replace("+", "%2B"),
+        end.replace("+", "%2B"),
+    )
+    url = f"https://gitlab.com/api/v4/projects/{project_id}/merge_requests?updated_after={start_query_param}&updated_before={end_query_param}"
     response = requests.get(url, headers={"Private-Token": api_token})
     if response.status_code == 200:
         mr_json_list = response.json()
@@ -71,7 +77,9 @@ if __name__ == "__main__":
     api_token = env["GITLAB_COM_API_TOKEN"]
     for project_id in project_ids:
         logging.info(f"Extracting project {project_id}.")
-        mr_urls = get_urls_for_mrs_for_project(project_id, api_token)
+        mr_urls = get_urls_for_mrs_for_project(
+            project_id, api_token, config_dict["START"], config_dict["END"]
+        )
         wrote_to_file = False
         with open(file_name, "w") as out_file:
             for mr_url in mr_urls:

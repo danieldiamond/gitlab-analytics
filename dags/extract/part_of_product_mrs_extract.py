@@ -64,7 +64,10 @@ part_of_product_mrs_run = KubernetesPodOperator(
         SNOWFLAKE_LOAD_WAREHOUSE,
         SNOWFLAKE_LOAD_PASSWORD,
     ],
-    env_vars=pod_env_vars,
+    env_vars={
+        **pod_env_vars,
+        **{"START": "{{ ts }}", "END": "{{ next_execution_date.isoformat() }}"},
+    },  # merge the dictionaries into one
     arguments=[container_cmd],
     dag=dag,
 )
