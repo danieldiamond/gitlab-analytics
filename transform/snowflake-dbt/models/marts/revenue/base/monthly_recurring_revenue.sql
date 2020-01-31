@@ -4,6 +4,11 @@ WITH date_table AS (
     FROM {{ ref('date_details') }}
     WHERE day_of_month = 1
 
+), gaap_revenue AS (
+
+    SELECT *
+    FROM {{ ref('gaap_revenue') }}
+
 ), zuora_accts AS (
 
     SELECT *
@@ -145,11 +150,11 @@ SELECT
           THEN revenue_amt
         ELSE mrr
       END)                                                              AS mrr,
-SUM((CASE
-       WHEN month_base_mrr.rate_plan_charge_name = '#movingtogitlab'
-         THEN revenue_amt
-       ELSE mrr
-      END)*12)                                                          AS arr
+  SUM((CASE
+         WHEN month_base_mrr.rate_plan_charge_name = '#movingtogitlab'
+           THEN revenue_amt
+         ELSE mrr
+       END)*12)                                                         AS arr
 FROM month_base_mrr
 LEFT JOIN movingtogitlab
   ON month_base_mrr.mrr_month = movingtogitlab.mrr_month
