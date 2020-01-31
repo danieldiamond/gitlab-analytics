@@ -12,7 +12,7 @@ WITH date_details AS (
     FROM {{ ref ('date_details') }}
     WHERE date_actual <= {{max_date_in_bamboo_analyses()}}
     AND day_of_month = 1 
-    AND date_actual >='2018-08-01' --1st month we have EEOC data--
+    AND date_actual >='2018-09-01' --1st month we have EEOC data for all offers extended--
 
 ), applications AS (
     
