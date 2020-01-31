@@ -50,7 +50,6 @@ LEFT JOIN employee_mapping
 LEFT JOIN employees 
  ON employees.bamboo_employee_number = employee_mapping.employee_number
  AND date_details.date_actual between employees.valid_from and employees.valid_to
-where job_info.employee_id = 40849
 
 )
 
