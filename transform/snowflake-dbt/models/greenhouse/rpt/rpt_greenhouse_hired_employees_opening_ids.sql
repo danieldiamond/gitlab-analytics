@@ -1,4 +1,4 @@
-With employees AS (
+WITH employees AS (
 
     SELECT * 
     FROM {{ref('bamboohr_id_employee_number_mapping')}}
@@ -20,10 +20,9 @@ With employees AS (
 
  ), bamboohr_job_info AS (
 
-  SELECT 
-    job_info.*,
-    ROW_NUMBER() OVER(PARTITION BY employee_id order by effective_date)         AS job_row_number
-  FROM "ANALYTICS"."ANALYTICS_SENSITIVE"."BAMBOOHR_JOB_INFO"  job_info
+  SELECT *
+  FROM {{ref('bamboohr_job_info')}} job_info
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY effective_date) = 1
 
 ), aggregated AS (
 
@@ -44,7 +43,6 @@ With employees AS (
       ON greenhouse_jobs.job_id = greenhouse_openings.job_id
     INNER JOIN bamboohr_job_info 
       ON bamboohr_job_info.employee_id = employees.employee_id 
-      AND bamboohr_job_info.job_row_number = 1 --to get the initial job
     WHERE greenhouse_candidate_id IS NOT NULL 
 
 )
