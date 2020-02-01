@@ -122,5 +122,6 @@ WITH date_details AS (
     WHERE date_details.month_date < DATE_TRUNC('month', CURRENT_DATE)
 
 )
+
 SELECT *
 FROM final
