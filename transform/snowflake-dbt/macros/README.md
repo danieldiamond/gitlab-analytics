@@ -299,6 +299,9 @@ Usage:
 ```
 
 Used in:
+- none
+
+Previously used in:
 - gitlab_dotcom_resource_label_events.sql
 
 ## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sales_segment_cleaning))
