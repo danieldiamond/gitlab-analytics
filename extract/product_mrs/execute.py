@@ -54,6 +54,7 @@ def get_mr_json(mr_url: str, api_token: str) -> Dict[Any, Any]:
     """
     url = f"{mr_url}/diffs.json"
     response = requests.get(url, headers={"Private-Token": api_token})
+
     if response.status_code == 200:
         try:
             return response.json()
