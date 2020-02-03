@@ -422,7 +422,6 @@ models:
       - name: group_group_link_id
         tests:
           - not_null
-          - unique
       - name: shared_group_id
         tests:
           - not_null
@@ -433,10 +432,6 @@ models:
         tests:
           - not_null
       - name: updated_at
-        tests:
-          - not_null
-      - name: membership_source_id
-        description: The id of the record that is granting the access. If membership_source_type='group_membership', then this is the group_id.
         tests:
           - not_null
 
