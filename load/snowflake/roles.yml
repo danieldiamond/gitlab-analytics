@@ -744,6 +744,7 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.bamboohr
@@ -910,6 +911,8 @@ roles:
         privileges:
             databases:
                 read:
+                    - raw
+                write:
                     - raw
             schemas:
                 read:
