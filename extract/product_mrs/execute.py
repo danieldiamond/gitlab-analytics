@@ -84,6 +84,7 @@ if __name__ == "__main__":
             project_id, api_token, config_dict["START"], config_dict["END"]
         )
         wrote_to_file = False
+
         with open(file_name, "w") as out_file:
             for mr_url in mr_urls:
                 mr_information = get_mr_json(mr_url, api_token)
