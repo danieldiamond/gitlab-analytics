@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "analytics"
-    })
-}}
-
 WITH greenhouse_openings AS (
 
     SELECT * 
