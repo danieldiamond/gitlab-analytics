@@ -199,6 +199,8 @@ More explicitly, this model shows what was or will be the active subscription ve
 
 From this model, we can calculate renewal rates by product category. We can also start estimating IACV, Renewal ACV and other metrics for the Growth team. A `subscription_period` is considered as renewed if a newer valid subscription period has been created or if a `zuora_renewal_subscription_name_slugify` has been linked to this version (more documentation about [the process here especially the section Linking Renewal Subscriptions](https://about.gitlab.com/handbook/finance/accounting/)) (in this model, the `is_renewed` flag will be turned to `TRUE`).
 
+The model has also a `has_auto_renew_on` column that explicits if the auto-renew setting was turned on before the end of the term of the period. 
+
 #### Context About Subscription Versions
 
 [Zuora Amendment API Object](https://knowledgecenter.zuora.com/Developer_Platform/API/G_SOAP_API/E1_SOAP_API_Object_Reference/Amendment)
