@@ -11,7 +11,7 @@ If none, please include a description
 
 **Submitter Slack Handle**: @`handle`
 
-**Business Use Case** (Please explain what this data will be used for): 
+**Business Use Case (Please explain what this data will be used for):** 
 
 
 ## DRI/Prioritization Owner Checklist
@@ -34,7 +34,7 @@ Sufficient access needs to be granted and verified before we can begin working o
 
 **If Yes:**
 - Where will access be required? 
-- Link to Access Request : <!-- This can be blank to start, will need to be added for prioritization -->
+- Link to Access Request: <!-- This can be blank to start, will need to be added for prioritization -->
 
 ## Data Use / Acceptance Criteria 
 
