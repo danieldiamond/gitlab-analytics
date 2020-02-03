@@ -24,7 +24,7 @@ def get_project_ids() -> List[str]:
 
 
 def get_urls_for_mrs_for_project(
-    project_id: int, api_token: str, start: str, end: str
+    project_id: str, api_token: str, start: str, end: str
 ) -> List[str]:
     """
     Returns an array of all of the web_urls found in the project_id that is passed in as a parameter.
