@@ -435,6 +435,10 @@ models:
       - name: updated_at
         tests:
           - not_null
+      - name: membership_source_id
+        description: The id of the record that is granting the access. If membership_source_type='group_membership', then this is the group_id.
+        tests:
+          - not_null
 
   - name: gitlab_dotcom_groups
     description: '{{ doc("gitlab_dotcom_groups") }}'
