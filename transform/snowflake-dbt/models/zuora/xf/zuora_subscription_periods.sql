@@ -42,8 +42,8 @@ WITH zuora_account AS (
       zuora_account.account_number,
       zuora_account.account_name,
       subscription_start_date, 
-      term_end_date                   AS subscription_version_term_end_date, 
       term_start_date                 AS subscription_version_term_start_date,
+      term_end_date                   AS subscription_version_term_end_date, 
       MIN(term_start_date) 
       OVER (PARTITION BY subscription_name_slugify 
             ORDER BY zuora_subscription.version DESC 
@@ -88,7 +88,8 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.account_id, 
       subscription_joined_with_accounts.account_number,
       subscription_joined_with_accounts.account_name,
-      subscription_joined_with_accounts.subscription_start_date, 
+      subscription_joined_with_accounts.subscription_start_date,
+      subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
       LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
         ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
