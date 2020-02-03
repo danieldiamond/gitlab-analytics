@@ -56,7 +56,10 @@ WITH zuora_account AS (
 )
 
 , subscription_with_vaid_auto_renew_setting AS (
-  
+    
+    -- special CTE to check auto_renew settings before the renewal happens
+    -- special case for auto-reneweable subscription with a failing payment
+    -- good example is subscription_name_slugify = 'a-s00014110'
     SELECT DISTINCT 
         subscription_name_slugify,
         term_end_date,
@@ -66,6 +69,9 @@ WITH zuora_account AS (
                           term_end_date
              ORDER BY version DESC) AS last_auto_renew
     FROM zuora_subscription
+    -- when subscription with auto-renew turned on, but CC declined
+    -- a new version of the same subscription is created (same term_end_date) with status = 'Cancelled'
+    -- this new version has auto_column set to FALSE
     WHERE created_date > term_end_date
   
 )
