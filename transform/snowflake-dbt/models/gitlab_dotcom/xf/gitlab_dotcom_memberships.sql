@@ -60,9 +60,9 @@ project_members AS (
 project_group_links_unnested AS ( -- Where groups are invited to projects.
 
     SELECT
-      projects.namespace_id, -- The group that the project directly belongs to.
+      projects.namespace_id, -- The group that the "host" project directly belongs to.
       project_group_links.project_group_link_id,
-      project_group_links.project_id,
+      project_group_links.project_id, -- The "host" project.
       project_group_links.group_access AS access_level,
       group_members.user_id
     FROM project_group_links
