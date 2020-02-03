@@ -34,7 +34,8 @@ WITH employee_directory_intermediate AS (
       is_hire_date,
       is_termination_date,
       hire_date,
-      cost_center
+      cost_center,
+      layers
     FROM employee_directory_intermediate
 
 ), final AS (
