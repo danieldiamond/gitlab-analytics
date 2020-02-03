@@ -91,6 +91,7 @@ if __name__ == "__main__":
                 if mr_information:
                     wrote_to_file = True
                     out_file.write(json.dumps(mr_information))
+
         if wrote_to_file:
             snowflake_stage_load_copy_remove(
                 file_name,
