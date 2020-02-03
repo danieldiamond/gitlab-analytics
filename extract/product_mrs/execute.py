@@ -36,6 +36,7 @@ def get_urls_for_mrs_for_project(
     )
     url = f"https://gitlab.com/api/v4/projects/{project_id}/merge_requests?updated_after={start_query_param}&updated_before={end_query_param}"
     response = requests.get(url, headers={"Private-Token": api_token})
+
     if response.status_code == 200:
         mr_json_list = response.json()
         return [mr["web_url"] for mr in mr_json_list]
