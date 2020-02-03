@@ -59,7 +59,7 @@ WITH date_table AS (
       zuora_rp.rate_plan_name,
       zuora_rpc.rate_plan_charge_name,
       zuora_rpc.rate_plan_charge_number,
-      {{product_category('rate_plan_name')}},
+      {{ product_category('rate_plan_name') }},
       {{ delivery('product_category')}},
       zuora_rpc.tcv,
       zuora_rpc.unit_of_measure,
