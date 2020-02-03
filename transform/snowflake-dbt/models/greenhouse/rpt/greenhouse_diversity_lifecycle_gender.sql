@@ -1,18 +1,22 @@
+
 {% set repeated_column_names = "month_date, gender" %}
+
 
 WITH date_details AS (
   
     SELECT 
-      date_actual                                                          AS month_date                               
+      date_actual                                                          AS month_date,                               
+      'join'                                                               AS join_field  
     FROM {{ ref ('date_details') }}
     WHERE date_actual <= {{max_date_in_bamboo_analyses()}}
     AND day_of_month = 1 
-    AND date_actual >='2018-09-01' --1st month we have EEOC data for all offers extended--
+    AND date_actual >= '2018-09-01'
 
 ), applications AS (
     
     SELECT * 
     FROM {{ ref ('greenhouse_applications') }}
+    WHERE applied_at >= '2018-09-01'
 
 ), offers AS (
     
@@ -21,24 +25,48 @@ WITH date_details AS (
   
 ), eeoc AS (
 
-    SELECT *
-    FROM {{ ref ('greenhouse_eeoc_responses') }}
-  
-), candidates_aggregated AS ( 
+        {{ dbt_utils.unpivot(
+        relation=ref('greenhouse_eeoc_responses'),
+        cast_to='varchar',
+        exclude=['application_id'],
+        remove=['eeoc_response_submitted_at'],
+        field_name='eeoc_field_name',
+        value_name='eeoc_values'
+        ) }}
+
+), eeoc_fields AS (
+
+    SELECT 
+      DISTINCT eeoc_field_name        AS eeoc_field_name,
+      'join'                          AS join_field
+    FROM eeoc
+
+), base AS (
+
+    SELECT
+      month_date,
+      eeoc_field_name
+    FROM date_details
+    LEFT JOIN eeoc_fields 
+      ON eeoc_fields.join_field = date_details.join_field
+
+), candidates_aggregated AS (
   
     SELECT 
-      candidate_id,
+      base.*,
+      applications.candidate_id,
+      eeoc.eeoc_values,
       offers.offer_id,
-      DATE_TRUNC('month', MIN(applied_at))                                  AS month_date, 
-      COALESCE(candidate_gender,'Decline To Self Identify')                 AS gender,
-      SUM(iff(offers.offer_id IS NOT NULL,1,0))                             AS hired,
-      COUNT(DISTINCT(applications.application_id))                          AS total_applications
+      iff(offers.offer_status = 'accepted',1,0)                            AS accepted_offer
     FROM applications
+    LEFT JOIN base
+      ON date_trunc('month',applications.applied_at) = base.month_date
     LEFT JOIN eeoc            
       ON applications.application_id = eeoc.application_id
+      AND eeoc.eeoc_field_name = base.eeoc_field_name
     LEFT JOIN offers
-      ON applications.application_id = offers.application_id
-    GROUP BY 1,2,4
+      ON applications.application_id = offers.application_id 
+    WHERE base.month_date IS NOT NULL
 
 ), offers_aggregated AS (
   
@@ -47,8 +75,7 @@ WITH date_details AS (
       COALESCE(candidate_gender,'Decline To Self Identify')                 AS gender,
       COUNT(DISTINCT(offer_id))                                             AS number_of_offers, 
       SUM(IFF(offer_status = 'accepted',1,0))                               AS accepted_offers,
-      SUM(IFF(offer_status = 'accepted',1,0))
-            /COUNT(distinct(offer_id))                                      AS offer_acceptance_rate,
+      accepted_offers/number_of_offers                                      AS offer_acceptance_rate,
       AVG(IFF(offer_status ='accepted',
             DATEDIFF('day', applications.applied_at, offers.sent_at),
             NULL))                                                          AS avg_apply_to_accept_days
@@ -119,4 +146,4 @@ WITH date_details AS (
 )
 
 SELECT *
-FROM final
+FROM final 

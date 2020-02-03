@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 models:
   - name: rpt_interviewee_satisfaction_isat
