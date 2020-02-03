@@ -70,7 +70,7 @@ WITH zuora_account AS (
              ORDER BY version DESC) AS last_auto_renew
     FROM zuora_subscription
     -- when subscription with auto-renew turned on, but CC declined
-    -- a new version of the same subscription is created (same term_end_date) with status = 'Cancelled'
+    -- a new version of the same subscription is created (same term_end_date) 
     -- this new version has auto_column set to FALSE
     WHERE created_date > term_end_date
   
