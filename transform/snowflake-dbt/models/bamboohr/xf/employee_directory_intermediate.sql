@@ -45,6 +45,7 @@ WITH employee_directory AS (
 SELECT
   date_actual,
   employee_directory.*,
+  (first_name ||' '|| last_name) AS full_name,
   department_info.job_title,
   department_info.department,
   department_info.division,
