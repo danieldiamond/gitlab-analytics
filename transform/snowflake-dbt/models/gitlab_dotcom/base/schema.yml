@@ -436,7 +436,6 @@ models:
         tests:
           - not_null
 
-  
   - name: gitlab_dotcom_groups
     description: '{{ doc("gitlab_dotcom_groups") }}'
     columns:
