@@ -1,5 +1,4 @@
 {{ config({
-    "materialized":"table",
     "schema": "analytics"
     })
 }}
