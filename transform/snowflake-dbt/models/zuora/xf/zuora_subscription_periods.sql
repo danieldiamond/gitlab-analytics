@@ -55,6 +55,21 @@ WITH zuora_account AS (
     
 )
 
+, subscription_with_vaid_auto_renew_setting AS (
+  
+    SELECT DISTINCT 
+        subscription_name_slugify,
+        term_end_date,
+        FIRST_VALUE(auto_renew) 
+          OVER 
+            (PARTITION BY subscription_name_slugify, 
+                          term_end_date
+             ORDER BY version DESC) AS last_auto_renew
+    FROM zuora_subscription
+    WHERE created_date > term_end_date
+  
+)
+
 , subscription_joined_with_charges AS (
   
     SELECT DISTINCT
@@ -68,7 +83,6 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.account_number,
       subscription_joined_with_accounts.account_name,
       subscription_joined_with_accounts.subscription_start_date, 
-      subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
       LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
         ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
@@ -90,14 +104,22 @@ WITH zuora_account AS (
 )
 
 SELECT 
-  *,
+  subscription_joined_with_charges.*,
+  subscription_with_vaid_auto_renew_setting.last_auto_renew AS has_auto_renew_on,
   CASE
     -- manual linked subscription
-    WHEN zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
+    WHEN subscription_joined_with_charges.zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
     -- new version available, got renewed
-    WHEN LEAD(subscription_name_slugify) OVER (PARTITION BY subscription_name_slugify ORDER BY version) IS NOT NULL
+    WHEN LEAD(subscription_joined_with_charges.subscription_name_slugify) 
+          OVER (
+            PARTITION BY subscription_joined_with_charges.subscription_name_slugify 
+            ORDER BY version
+          ) IS NOT NULL
       THEN TRUE
     ELSE FALSE
-  END AS is_renewed
+  END                                                       AS is_renewed
 FROM subscription_joined_with_charges
+LEFT JOIN subscription_with_vaid_auto_renew_setting
+  ON subscription_joined_with_charges.subscription_name_slugify = subscription_with_vaid_auto_renew_setting.subscription_name_slugify
+    AND subscription_joined_with_charges.subscription_version_term_end_date = subscription_with_vaid_auto_renew_setting.term_end_date
 ORDER BY subscription_start_date, version
