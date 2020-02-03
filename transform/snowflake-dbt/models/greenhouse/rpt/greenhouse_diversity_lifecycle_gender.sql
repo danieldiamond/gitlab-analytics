@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "analytics"
-    })
-}}
-
 {% set repeated_column_names = "month_date, gender" %}
 
 WITH date_details AS (
