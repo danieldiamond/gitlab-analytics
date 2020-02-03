@@ -77,6 +77,7 @@ if __name__ == "__main__":
 
     project_ids = get_project_ids()
     api_token = env["GITLAB_COM_API_TOKEN"]
+
     for project_id in project_ids:
         logging.info(f"Extracting project {project_id}.")
         mr_urls = get_urls_for_mrs_for_project(
