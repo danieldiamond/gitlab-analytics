@@ -62,7 +62,7 @@ WITH zuora_account AS (
     -- good example is subscription_name_slugify = 'a-s00014110'
     SELECT DISTINCT 
         subscription_name_slugify,
-        term_end_date,
+        term_start_date,
         FIRST_VALUE(auto_renew) 
           OVER 
             (PARTITION BY subscription_name_slugify, 
@@ -128,5 +128,5 @@ SELECT
 FROM subscription_joined_with_charges
 LEFT JOIN subscription_with_vaid_auto_renew_setting
   ON subscription_joined_with_charges.subscription_name_slugify = subscription_with_vaid_auto_renew_setting.subscription_name_slugify
-    AND subscription_joined_with_charges.subscription_version_term_end_date = subscription_with_vaid_auto_renew_setting.term_end_date
+    AND subscription_joined_with_charges.subscription_version_term_start_date = subscription_with_vaid_auto_renew_setting.term_start_date
 ORDER BY subscription_start_date, version
