@@ -18,7 +18,8 @@ WITH source AS (
       acv_plan::INT                         AS acv_plan,
       planned_new_iacv::INT                 AS planned_new_iacv,
       planned_growth_iacv::INT              AS planned_growth_iacv,
-      iacv_divided_by_capcon_plan::FLOAT    AS iacv_divided_by_capcon_plan
+      iacv_divided_by_capcon_plan::FLOAT    AS iacv_divided_by_capcon_plan,
+      revenue::INT                          AS revenue
     FROM source
 
 )
