@@ -1,11 +1,12 @@
 import io
 import json
 import logging
+import sys
 from os import environ as env
+from typing import Dict, Any, List
+
 import pandas as pd
 import requests
-import sys
-from typing import Dict, Any, List
 
 from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
