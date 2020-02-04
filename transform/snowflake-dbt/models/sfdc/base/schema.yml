@@ -10,6 +10,9 @@ models:
       - name: account_name
         tests:
           - not_null
+      - name: is_sdr_target_account
+        tests:
+          - not_null
   - name: sfdc_bizible_attribution_touchpoint
     description: Attribution touchpoints are on opportunities.
     columns:
