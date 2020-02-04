@@ -35,8 +35,12 @@ models:
     - name: metric_total
       description: This is the metric associated to the recruiting_metric, eeoc_field_name, and eeoc_vales. For example, the metric_total for where recruiting_metric is percent_of_applicants will show what percent of applicants were the gender in that row for that given month.
     - name: recruiting_metric
-      description: This identifies what is being measured. 
+      description: This identifies recruiting metric is being measured. 
       tests: 
         - accepted_values:
-            values: ['application_to_offer_percent','avg_apply_to_accept_days', 'offer_acceptance_rate_based_on_offer_month',
-                'percent_of_accepted_offers', 'percent_of_applicants, 'percent_of_extended_offers']
+            values: ['application_to_offer_percent',
+                    'avg_apply_to_accept_days', 
+                    'offer_acceptance_rate_based_on_offer_month', 
+                    'percent_of_accepted_offers', 
+                    'percent_of_applicants', 
+                    'percent_of_extended_offers']
