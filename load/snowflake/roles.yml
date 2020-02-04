@@ -771,7 +771,7 @@ roles:
                     - snowflake.*.*
                 write:
                     - analytics.*.*
-                    - raw.snapshots.*.*
+                    - raw.snapshots.*
 
     # Object Roles
     - bamboohr:
