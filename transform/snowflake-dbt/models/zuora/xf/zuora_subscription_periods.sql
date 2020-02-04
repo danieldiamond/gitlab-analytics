@@ -37,7 +37,6 @@ WITH zuora_account AS (
       zuora_subscription.zuora_renewal_subscription_name_slugify,
       zuora_subscription.renewal_term,
       zuora_subscription.renewal_term_period_type,
-      zuora_subscription.auto_renew,
       
       zuora_subscription.account_id, 
       zuora_account.account_number,
@@ -56,25 +55,27 @@ WITH zuora_account AS (
     
 )
 
-, subscription_with_vaid_auto_renew_setting AS (
+, subscription_with_valid_auto_renew_setting AS (
     
     -- special CTE to check auto_renew settings before the renewal happens
     -- special case for auto-reneweable subscription with a failing payment
     -- good example is subscription_name_slugify = 'a-s00014110'
-    -- when subscription with auto-renew turned on, but CC declined
-    -- a new version of the same subscription is created (same term_end_date) 
-    -- this new version has auto_column set to FALSE
     SELECT DISTINCT 
         subscription_name_slugify,
         term_start_date,
+        term_end_date,
         FIRST_VALUE(auto_renew) 
           OVER 
-            (PARTITION BY 
-             subscription_name_slugify, 
+            (PARTITION BY subscription_name_slugify, 
+                          term_start_date,
                           term_end_date
-             ORDER BY created_date < term_end_date DESC, version DESC) AS last_auto_renew
+             ORDER BY version DESC) AS last_auto_renew
     FROM zuora_subscription
-
+    -- when subscription with auto-renew turned on, but CC declined
+    -- a new version of the same subscription is created (same term_end_date) 
+    -- this new version has auto_column set to FALSE
+    WHERE created_date < term_end_date
+  
 )
 
 , subscription_joined_with_charges AS (
@@ -92,20 +93,8 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.subscription_start_date,
       subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
-      FIRST_VALUE(subscription_joined_with_accounts.auto_renew) 
-      -- special CTE to check auto_renew settings before the renewal happens
-      -- special case for auto-reneweable subscription with a failing payment
-      -- good example is subscription_name_slugify = 'a-s00014110'
-      -- when subscription with auto-renew turned on, but CC declined
-      -- a new version of the same subscription is created (same term_end_date) 
-      -- this new version has auto_column set to FALSE
-        OVER 
-          (PARTITION BY 
-           subscription_name_slugify, 
-                        term_end_date
-           ORDER BY created_date < term_end_date DESC, version DESC)    AS has_auto_renew_on,
       LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
-        ORDER BY zuora_rate_plan_charge.effective_start_date)           AS mrr,
+        ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
       SUM(tcv) OVER (
         PARTITION BY subscription_joined_with_accounts.subscription_id) AS tcv
     FROM subscription_joined_with_accounts
@@ -125,6 +114,7 @@ WITH zuora_account AS (
 
 SELECT 
   subscription_joined_with_charges.*,
+  subscription_with_valid_auto_renew_setting.last_auto_renew AS has_auto_renew_on,
   CASE
     -- manual linked subscription
     WHEN subscription_joined_with_charges.zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
@@ -138,7 +128,8 @@ SELECT
     ELSE FALSE
   END                                                       AS is_renewed
 FROM subscription_joined_with_charges
-LEFT JOIN subscription_with_vaid_auto_renew_setting
-  ON subscription_joined_with_charges.subscription_name_slugify = subscription_with_vaid_auto_renew_setting.subscription_name_slugify
-    AND subscription_joined_with_charges.subscription_version_term_start_date = subscription_with_vaid_auto_renew_setting.term_start_date
+LEFT JOIN subscription_with_valid_auto_renew_setting
+  ON subscription_joined_with_charges.subscription_name_slugify = subscription_with_valid_auto_renew_setting.subscription_name_slugify
+    AND subscription_joined_with_charges.subscription_version_term_start_date = subscription_with_valid_auto_renew_setting.term_start_date
+    AND subscription_joined_with_charges.subscription_version_term_end_date = subscription_with_valid_auto_renew_setting.term_end_date
 ORDER BY subscription_start_date, version
