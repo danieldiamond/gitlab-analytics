@@ -733,6 +733,8 @@ roles:
 
     - transformer: # For automated jobs
         warehouses:
+            - merge_request_xs
+            - merge_request_xl
             - transforming_s
             - transforming_l
             - transforming_xl
@@ -993,6 +995,10 @@ roles:
                     - raw.netsuite_fivetran.*
 
     - gitlab_ci:
+        member_of:
+            - loader
+            - reporter
+            - transformer
         warehouses:
             - loading
             - merge_request_xs
@@ -1284,10 +1290,7 @@ users:
         can_login: yes
         member_of:
             - gitlab_ci
-            - loader
-            - reporter
             - sysadmin
-            - transformer
 
     - iroussos:
         can_login: yes
