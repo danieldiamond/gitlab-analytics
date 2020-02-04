@@ -52,9 +52,11 @@ WITH date_details AS (
     SELECT 
       base.*,
       applications.candidate_id,
-      eeoc.eeoc_values,
+      iff(eeoc_values in ('I don''t wish to answer','Decline To Self Identify'), 
+            'Did Not Identify',
+            coalesce(eeoc_values, 'Did Not Identify'))                              AS eeoc_values,
       offers.offer_id,
-      iff(offers.offer_status = 'accepted',1,0)                             AS accepted_offer
+      iff(offers.offer_status = 'accepted',1,0)                                     AS accepted_offer
     FROM applications
     LEFT JOIN base
       ON date_trunc('month',applications.applied_at) = base.month_date
@@ -71,11 +73,13 @@ WITH date_details AS (
       base.*,
       candidate_id,
       offer_id,
-      eeoc.eeoc_values,
-      IFF(offer_status = 'accepted',1,0)                                    AS accepted_offer,
+      iff(eeoc_values in ('I don''t wish to answer','Decline To Self Identify'), 
+            'Did Not Identify',
+            coalesce(eeoc_values, 'Did Not Identify'))                              AS eeoc_values,
+      IFF(offer_status = 'accepted',1,0)                                            AS accepted_offer,
       IFF(offer_status ='accepted',
             DATEDIFF('day', applications.applied_at, offers.sent_at),
-            NULL)                                                           AS apply_to_accept_days
+            NULL)                                                                   AS apply_to_accept_days
     FROM base
     LEFT JOIN offers 
       ON DATE_TRUNC('month', offers.sent_at) = base.month_date
