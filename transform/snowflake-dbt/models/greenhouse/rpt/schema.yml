@@ -23,7 +23,7 @@ models:
     - name: candidate_survey_question_1
     - name: isat_score
   - name: greenhouse_diversity_lifecycle_gender
-    description: Provides a breakdown of recruiting KPIs by gender.
+    description: Provides a breakdown of recruiting KPIs by gender. This model initially builds out a base cte that includes month_date, a column for all the various eeoc_field_names, and a column with the associated eeoc_field_values. It then joins the candidate information to ensure all categories are represented in the data. 
     columns:
     - name: month_date
     - name: eeoc_field_name
