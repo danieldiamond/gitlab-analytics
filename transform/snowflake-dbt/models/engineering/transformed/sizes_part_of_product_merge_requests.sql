@@ -6,7 +6,7 @@ WITH split_diff_path AS (
       removed_lines::varchar                                    AS product_merge_request_lines_removed,
       SPLIT(plain_diff_url_path, '-')                           AS product_merge_request_diff_url_split,
       ARRAY_SIZE(SPLIT(plain_diff_url_path, '-'))               AS product_merge_request_diff_url_size 
-    FROM {{ref('engineering_part_of_product_merge_requests')}}
+    FROM {{ ref('engineering_part_of_product_merge_requests') }}
 )
 SELECT 
     product_merge_request_lines_added,
