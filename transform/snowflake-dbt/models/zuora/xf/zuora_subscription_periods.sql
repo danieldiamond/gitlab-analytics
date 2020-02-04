@@ -57,7 +57,7 @@ WITH zuora_account AS (
 
 , subscription_with_valid_auto_renew_setting AS (
     
-    -- special CTE to check auto_renew settings before the renewal happens
+    -- specific CTE to check auto_renew settings before the renewal happens
     -- special case for auto-reneweable subscription with a failing payment
     -- good example is subscription_name_slugify = 'a-s00014110'
     SELECT DISTINCT 
@@ -72,7 +72,8 @@ WITH zuora_account AS (
              ORDER BY version DESC) AS last_auto_renew
     FROM zuora_subscription
     -- when subscription with auto-renew turned on, but CC declined
-    -- a new version of the same subscription is created (same term_end_date) 
+    -- a new version of the same subscription is created (same term_end_date)
+    -- created_date eis after the term_end_date 
     -- this new version has auto_column set to FALSE
     WHERE created_date < term_end_date
   
@@ -114,7 +115,8 @@ WITH zuora_account AS (
 
 SELECT 
   subscription_joined_with_charges.*,
-  subscription_with_valid_auto_renew_setting.last_auto_renew AS has_auto_renew_on,
+  COALESCE(subscription_with_valid_auto_renew_setting.last_auto_renew, 
+    FALSE)                                AS has_auto_renew_on,
   CASE
     -- manual linked subscription
     WHEN subscription_joined_with_charges.zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
@@ -126,7 +128,7 @@ SELECT
           ) IS NOT NULL
       THEN TRUE
     ELSE FALSE
-  END                                                       AS is_renewed
+  END                                     AS is_renewed
 FROM subscription_joined_with_charges
 LEFT JOIN subscription_with_valid_auto_renew_setting
   ON subscription_joined_with_charges.subscription_name_slugify = subscription_with_valid_auto_renew_setting.subscription_name_slugify
