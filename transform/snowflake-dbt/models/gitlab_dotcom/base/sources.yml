@@ -75,6 +75,12 @@ sources:
         identifier: gitlab_db_deployments
       - name: deployment_merge_requests
         identifier: gitlab_db_deployment_merge_requests
+      - name: design_management_designs_versions
+        identifier: gitlab_db_design_management_designs_versions
+      - name: design_management_designs
+        identifier: gitlab_db_design_management_designs
+      - name: design_management_versions
+        identifier: gitlab_db_design_management_versions
       - name: environments
         identifier: gitlab_db_environments
       - name: epic_issues
@@ -157,6 +163,8 @@ sources:
         identifier: gitlab_db_releases
       - name: resource_label_events
         identifier: gitlab_db_resource_label_events
+      - name: services
+        identifier: gitlab_db_services
       - name: subscriptions
         identifier: gitlab_db_subscriptions
       - name: snippets
