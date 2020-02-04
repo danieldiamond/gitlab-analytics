@@ -20,41 +20,49 @@ roles:
     ## Admin Roles
     - accountadmin:
         warehouses:
-            - loading
+            - admin
         member_of:
+            - securityadmin
             - sysadmin
 
     - securityadmin:
         warehouses:
-            - loading
+            - admin
         member_of:
             - sysadmin
 
     - sysadmin:
         warehouses:
-            - loading
+            - admin
         privileges:
             databases:
                 read:
                     - raw
                     - analytics
+                    - snowflake
+                    - testing_db
                 write:
                     - raw
                     - analytics
+                    - testing_db
             schemas:
                 read:
                     - raw.*
                     - analytics.*
+                    - testing_db.*
                 write:
                     - raw.*
                     - analytics.*
+                    - testing_db.*
             tables:
                 read:
                     - raw.*.*
                     - analytics.*.*
+                    - testing_db.*.*
                 write:
                     - raw.*.*
                     - analytics.*.*
+                    - testing_db.*.*
 
     ## Regular Roles
     - analyst_core:
@@ -495,6 +503,9 @@ roles:
         member_of:
             - loader
         warehouses:
+            - airflow_testing_l
+            - engineer_xs
+            - engineer_xl
             - loading
         privileges:
             databases:
@@ -555,9 +566,21 @@ roles:
             - loading
         owns:
             schemas:
-                - raw.*
+                - raw.bamboohr
+                - raw.engineering_extracts
+                - raw.gitlab_data_yaml
+                - raw.gitter
+                - raw.prometheus
+                - raw.snowplow
+                - raw.tap_postgres
             tables:
-                - raw.*.*
+                - raw.bamboohr.*
+                - raw.engineering_extracts.*
+                - raw.gitlab_data_yaml.*
+                - raw.gitter.*
+                - raw.prometheus.*
+                - raw.snowplow.*
+                - raw.tap_postgres.*
         privileges:
             databases:
                 read:
@@ -711,30 +734,44 @@ roles:
     - transformer: # For automated jobs
         warehouses:
             - transforming_s
+            - transforming_l
             - transforming_xl
             - transforming_xs
+            - transforming_4xl
         owns:
             schemas:
-                - analytics.*
+                - analytics.analytics
+                - analytics.analytics_meta
+                - analytics.analytics_sensitive
+                - analytics.analytics_staging
             tables:
-                - analytics.*.*
+                - analytics.analytics.*
+                - analytics.analytics_meta.*
+                - analytics.analytics_sensitive.*
+                - analytics.analytics_staging.*
         privileges:
             databases:
                 read:
                     - raw
                     - analytics
+                    - snowflake
                 write:
                     - analytics
+                    - raw
             schemas:
                 read:
                     - raw.*
+                    - snowflake.*
                 write:
                     - analytics.*
+                    - raw.snapshots
             tables:
                 read:
                     - raw.*.*
+                    - snowflake.*.*
                 write:
                     - analytics.*.*
+                    - raw.snapshots.*
 
     # Object Roles
     - bamboohr:
@@ -744,6 +781,7 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.bamboohr
@@ -911,6 +949,8 @@ roles:
             databases:
                 read:
                     - raw
+                write:
+                    - raw
             schemas:
                 read:
                     - raw.gitter
@@ -987,6 +1027,7 @@ roles:
             - engineer_xl
             - loading
             - reporting
+    
     - jurbanc:
         warehouses:
             - reporting
@@ -1118,6 +1159,23 @@ roles:
     - target_snowflake:
         warehouses:
             - target_snowflake
+        privileges:
+            databases:
+                read:
+                    - testing_db
+                write:
+                    - testing_db
+            schemas:
+                read:
+                    - testing_db.*
+                write:
+                    - testing_db.*
+            tables:
+                read:
+                    - testing_db.*.*
+                write:
+                    - testing_db.*.*
+          
 
     - tcarter:
         warehouses:
@@ -1125,6 +1183,7 @@ roles:
 
     - tmurphy:
         warehouses:
+            - admin
             - engineer_xs
             - engineer_xl
             - loading
@@ -1357,6 +1416,7 @@ users:
         member_of:
             - permission_bot
             - securityadmin
+            - sysadmin
 
     - pluthra:
         can_login: yes
@@ -1450,6 +1510,9 @@ warehouses:
     - admin:
         size: x-small
 
+    - airflow_testing_l:
+        size: large
+
     - analyst_l:
         size: large
 
@@ -1500,4 +1563,7 @@ warehouses:
     
     - transforming_xs:
         size: x-small
+    
+    - transforming_4xl:
+        size: "4-x-large"
         
