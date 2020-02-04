@@ -37,5 +37,6 @@ sources:
               - relationships:
                   to: source('netsuite', 'transactions')
                   field: transaction_id
+                  severity: warn
       - name: transactions
       - name: vendors
