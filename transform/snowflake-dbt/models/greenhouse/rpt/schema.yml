@@ -25,10 +25,18 @@ models:
   - name: greenhouse_diversity_lifecycle_gender
     description: Provides a breakdown of recruiting KPIs by gender.
     columns:
-    - name: metric_month
-    - name: gender
+    - name: month_date
+    - name: eeoc_field_name
       tests: 
-      - not_null
-    - name: metric_total  
+        - accepted_values:
+            values: ['candidate_veteran_status', 'candidate_gender', 'candidate_status', 'candidate_race', 'candidate_disability_status']
+    - name: eeoc_values 
+      description: This is associated to the eeoc_field_name. For eeoc_field_name = 'candidate_gender' there will be a row for each of the values (male, female, and decline to self identify). This allows us to create a base model with all the potential eeoc_field_values for each field_column and join all applicants even those that don't identify.
+    - name: metric_total
+      description: This is the metric associated to the recruiting_metric, eeoc_field_name, and eeoc_vales. For example, the metric_total for where recruiting_metric is percent_of_applicants will show what percent of applicants were the gender in that row for that given month.
     - name: recruiting_metric
-      description: Identifies which recruiting KPI the metric_total is related to. For example, the metric_total for where recruiting_metric is percent_of_applicants will show what percent of applicants were the gender in that row for that given month.
+      description: This identifies what is being measured. 
+      tests: 
+        - accepted_values:
+            values: ['application_to_offer_percent','avg_apply_to_accept_days', 'offer_acceptance_rate_based_on_offer_month',
+                'percent_of_accepted_offers', 'percent_of_applicants, 'percent_of_extended_offers']
