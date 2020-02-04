@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: part_of_product_merge_requests_sizes
+  - name: sizes_part_of_product_merge_requests
     description: This table is a table of unique merge requests with data about the lines and files added/removed in the MR.
     columns:
     - name: product_merge_request_lines_added
