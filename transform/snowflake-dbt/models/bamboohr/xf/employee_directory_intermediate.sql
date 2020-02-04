@@ -108,12 +108,13 @@ WITH recursive employee_directory AS (
       employee,
       max(layers_count) as layers
     FROM layers
+    GROUP BY 1, 2
 
 )
 
 SELECT
   enriched.*,
-  calculated_layers.layers
+  COALESCE(calculated_layers.layers, 1) as layers
 FROM enriched
 LEFT JOIN calculated_layers
 ON enriched.date_actual = calculated_layers.date_actual
