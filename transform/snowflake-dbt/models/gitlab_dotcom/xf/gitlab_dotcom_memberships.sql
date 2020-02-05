@@ -7,6 +7,14 @@ WITH members AS (
 
 ),
 
+group_group_links AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_group_group_links')}}
+    WHERE is_currently_valid = True
+
+),
+
 project_group_links AS (
 
     SELECT *
@@ -14,14 +22,6 @@ project_group_links AS (
     WHERE is_currently_valid = True
 
 ),
-
-group_group_links AS (
-
-    SELECT *
-    FROM {{ref('gitlab_dotcom_group_group_links')}}
-    WHERE is_currently_valid = True
-
-), 
 
 namespace_lineage AS (
 
@@ -57,6 +57,20 @@ project_members AS (
 
 ),
 
+group_group_links_unnested AS ( -- Where groups are invited to groups.
+
+    SELECT
+      group_group_links.shared_group_id, -- The "host" group.
+      group_group_links.group_group_link_id,
+      group_group_links.shared_with_group_id, -- The "guest" group.
+      group_group_links.group_access AS access_level,
+      group_members.user_id
+    FROM group_group_links
+      INNER JOIN group_members
+        ON group_group_links.shared_with_group_id = group_members.source_id
+
+),
+
 project_group_links_unnested AS ( -- Where groups are invited to projects.
 
     SELECT
@@ -70,20 +84,6 @@ project_group_links_unnested AS ( -- Where groups are invited to projects.
         ON project_group_links.group_id = group_members.source_id
       INNER JOIN projects
         ON project_group_links.project_id = projects.project_id
-
-),
-
-group_group_links_unnested AS ( -- Where groups are invited to groups.
-
-    SELECT
-      group_group_links.shared_group_id, -- The "host" group.
-      group_group_links.group_group_link_id,
-      group_group_links.shared_with_group_id, -- The "guest" group.
-      group_group_links.group_access AS access_level,
-      group_members.user_id
-    FROM group_group_links
-      INNER JOIN group_members
-        ON group_group_links.shared_with_group_id = group_members.source_id
 
 ),
 
@@ -110,22 +110,22 @@ unioned AS (
     UNION
 
     SELECT
-      namespace_id,
-      user_id,
-      access_level,
-      'project_group_link'  AS membership_source_type,
-      project_group_link_id AS membership_source_id
-    FROM project_group_links_unnested
-
-    UNION
-
-    SELECT
       shared_group_id       AS namespace_id,
       user_id,
       access_level,
       'group_group_link'    AS membership_source_type,
       group_group_link_id   AS membership_source_id
     FROM group_group_links_unnested
+
+    UNION
+
+    SELECT
+      namespace_id,
+      user_id,
+      access_level,
+      'project_group_link'  AS membership_source_type,
+      project_group_link_id AS membership_source_id
+    FROM project_group_links_unneste
 
 ),
 
