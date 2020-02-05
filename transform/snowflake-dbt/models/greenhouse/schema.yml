@@ -771,25 +771,15 @@ models:
       description: '{{ doc("greenhouse_rejection_question_custom_fields") }}'
       columns:
         - name: application_id
-
         - name: user_id
-
         - name: rejection_question_custom_field
-
         - name: rejection_question_custom_field_float_value
-
         - name: rejection_question_custom_field_date_value
-
         - name: rejection_question_custom_field_display_value
-
         - name: rejection_question_custom_field_unit
-
         - name: rejection_question_custom_field_min_value
-
         - name: rejection_question_custom_field_max_value
-
         - name: rejection_question_custom_field_created_at
-
         - name: rejection_question_custom_field_updated_at
 
     - name: greenhouse_rejection_reasons
