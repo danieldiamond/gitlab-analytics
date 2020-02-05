@@ -97,8 +97,8 @@ WITH recursive employee_directory AS (
           (layers_count+1)  AS layers_count
     FROM layers anchor
     JOIN base_layers iter
-    ON anchor.date_actual = iter.date_actual
-    AND iter.reports_to = anchor.employee
+      ON anchor.date_actual = iter.date_actual
+     AND iter.reports_to = anchor.employee
 
 
 ), calculated_layers AS (
@@ -117,5 +117,5 @@ SELECT
   COALESCE(calculated_layers.layers, 1) AS layers
 FROM enriched
 LEFT JOIN calculated_layers
-ON enriched.date_actual = calculated_layers.date_actual
-AND full_name = employee
+  ON enriched.date_actual = calculated_layers.date_actual
+ AND full_name = employee
