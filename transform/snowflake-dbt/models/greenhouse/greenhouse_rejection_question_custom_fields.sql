@@ -6,9 +6,8 @@ WITH source as (
 ), renamed as (
 
 	SELECT
-
-   	    --key
-   		application_id::bigint			AS application_id,
+        --key
+        application_id::bigint			AS application_id,
         user_id::bigint             AS user_id,
         
         --info
