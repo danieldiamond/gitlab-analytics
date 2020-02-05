@@ -771,40 +771,16 @@ models:
       description: '{{ doc("greenhouse_rejection_question_custom_fields") }}'
       columns:
         - name: application_id
-          tests:
-            - not_null
-            - unique
         - name: user_id
-          tests:
-            - not_null
-            - unique
         - name: rejection_question_custom_field
-          tests:
-            - not_null
         - name: rejection_question_custom_field_float_value
-          tests:
-            - not_null
         - name: rejection_question_custom_field_date_value
-          tests:
-            - not_null
         - name: rejection_question_custom_field_display_value
-          tests:
-            - not_null
         - name: rejection_question_custom_field_unit
-          tests:
-            - not_null
         - name: rejection_question_custom_field_min_value
-          tests:
-            - not_null
         - name: rejection_question_custom_field_max_value
-          tests:
-            - not_null
         - name: rejection_question_custom_field_created_at
-          tests:
-            - not_null
         - name: rejection_question_custom_field_updated_at
-          tests:
-            - not_null
     - name: greenhouse_rejection_reasons
       description: '{{ doc("greenhouse_rejection_reasons") }}'
       columns:
