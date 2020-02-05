@@ -73,6 +73,6 @@ if __name__ == "__main__":
             snowflake_stage_load_copy_remove(
                 configuration["file_name"],
                 f"raw.engineering_extracts.engineering_extracts",
-                f"raw.engineering_extracts.part_of_product_merge_requests",
+                f"raw.engineering_extracts.{extract_name}_merge_requests",
                 snowflake_engine,
             )
