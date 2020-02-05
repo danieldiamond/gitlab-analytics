@@ -25,7 +25,7 @@ models:
       tests:
       - not_null
     - name: layers
-      description: The number of [layers](https://about.gitlab.com/company/team/structure/#layers) to the CEO 
+      description: '{{ doc("employee_layers") }}'
       tests:
       - not_null
   - name: employee_directory_intermediate
@@ -55,7 +55,7 @@ models:
     - name: cost_center
     - name: location_factor
     - name: layers
-      description: The number of [layers](https://about.gitlab.com/company/team/structure/#layers) to the CEO
+      description: '{{ doc("employee_layers") }}'
       tests:
       - not_null
   - name: bamboohr_discretionary_bonuses
