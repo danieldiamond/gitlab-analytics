@@ -11,7 +11,7 @@ If none, please include a description
 
 **Submitter Slack Handle**: @`handle`
 
-**Business Use Case** (Please explain what this data will be used for): 
+**Business Use Case (Please explain what this data will be used for):** 
 
 
 ## DRI/Prioritization Owner Checklist
@@ -27,19 +27,19 @@ If none, please include a description
 Sufficient access needs to be granted and verified before we can begin working on an automated extraction
 --->
 
-Will there need to be access granted in order for a Data Engineer to extract this data? (example: New permissions or credentials to Salesforce in order to access the data)
+**Will there need to be access granted in order for a Data Engineer to extract this data? (example: New permissions or credentials to Salesforce in order to access the data)**
   - [ ] Yes 
   - [ ] No
   - [ ] I don't know
 
 **If Yes:**
 - Where will access be required? 
-- Link to Access Request : <!-- This can be blank to start, will need to be added for prioritization -->
+- Link to Access Request: <!-- This can be blank to start, will need to be added for prioritization -->
 
 ## Data Use / Acceptance Criteria 
 
-Who should be responsible for making the data accessible and usable in the data warehouse?
+**Who should be responsible for making the data accessible and usable in the data warehouse?**
 - Analyst: <!-- please tag them -->
 - Data Engineer: <!-- please tag them -->
 
-Who will be using this data, and where (dashboards, snowflake UI, etc.)?
+**Who will be using this data, and where (dashboards, snowflake UI, etc.)?**

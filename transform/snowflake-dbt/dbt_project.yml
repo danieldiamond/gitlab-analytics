@@ -126,7 +126,12 @@ models:
         materialized: table
 
     greenhouse:
-      schema: sensitive
+      base:
+        schema: sensitive
+      xf: 
+        schema: sensitive  
+      rpt:
+        schema: analytics
 
     marts:
       revenue:

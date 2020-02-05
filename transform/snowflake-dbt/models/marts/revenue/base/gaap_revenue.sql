@@ -56,8 +56,11 @@ WITH date_table AS (
       zuora_accts.currency,
 
       --rate_plan info
+      zuora_rp.rate_plan_name,
       zuora_rpc.rate_plan_charge_name,
       zuora_rpc.rate_plan_charge_number,
+      {{ product_category('rate_plan_name') }},
+      {{ delivery('product_category')}},
       zuora_rpc.tcv,
       zuora_rpc.unit_of_measure,
       zuora_rpc.quantity,
@@ -71,11 +74,13 @@ WITH date_table AS (
       ON COALESCE(zuora_accts.sold_to_contact_id ,zuora_accts.bill_to_contact_id) = zuora_contact.contact_id
     INNER JOIN zuora_rpc
       ON zuora_rev_sch.rate_plan_charge_id = zuora_rpc.rate_plan_charge_id
+    LEFT JOIN zuora_rp
+      ON zuora_rp.rate_plan_id = zuora_rpc.rate_plan_id
     INNER JOIN zuora_acct_period
       ON zuora_acct_period.accounting_period_id = zuora_rev_sch.accounting_period_id
     LEFT JOIN zuora_product
       ON zuora_product.product_id = zuora_rev_sch.product_id
-    {{ dbt_utils.group_by(n=13) }}
+    {{ dbt_utils.group_by(n=16) }}
 
 )
 

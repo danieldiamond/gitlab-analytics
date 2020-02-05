@@ -151,3 +151,8 @@ DORG_USERNAME = Secret("env", "DORG_USERNAME", "airflow", "DORG_USERNAME")
 DORG_PASSWORD = Secret("env", "DORG_PASSWORD", "airflow", "DORG_PASSWORD")
 GMAPS_API_KEY = Secret("env", "GMAPS_API_KEY", "airflow", "GMAPS_API_KEY")
 CLEARBIT_API_KEY = Secret("env", "CLEARBIT_API_KEY", "airflow", "CLEARBIT_API_KEY")
+
+# GitLab API
+GITLAB_COM_API_TOKEN = Secret(
+    "env", "GITLAB_COM_API_TOKEN", "airflow", "GITLAB_COM_API_TOKEN"
+)
