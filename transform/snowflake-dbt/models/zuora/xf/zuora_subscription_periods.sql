@@ -77,7 +77,7 @@ WITH zuora_account AS (
     /* 
     when subscription with auto-renew turned on, but CC declined
      a new version of the same subscription is created (same term_end_date)
-     created_date eis after the term_end_date 
+     created_date is after the term_end_date 
      this new version has auto_column set to FALSE
      */
     WHERE created_date < term_end_date 
