@@ -64,6 +64,8 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.subscription_status, 
       subscription_joined_with_accounts.version,
       subscription_joined_with_accounts.zuora_renewal_subscription_name_slugify,
+      GET(subscription_joined_with_accounts.zuora_renewal_subscription_name_slugify, 
+          1 )                                                            AS zuora_next_renewal_subscription_name_slugify,
       subscription_joined_with_accounts.account_id, 
       subscription_joined_with_accounts.account_number,
       subscription_joined_with_accounts.account_name,
@@ -71,7 +73,7 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
       LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
-        ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
+        ORDER BY zuora_rate_plan_charge.effective_start_date)           AS mrr,
       SUM(tcv) OVER (
         PARTITION BY subscription_joined_with_accounts.subscription_id) AS tcv
     FROM subscription_joined_with_accounts
@@ -89,15 +91,35 @@ WITH zuora_account AS (
       
 )
 
+, subscription_with_renewals AS (
+  
+    SELECT DISTINCT
+      subscription_joined_with_charges.subscription_id,
+      subscription_joined_with_charges.subscription_name_slugify,
+      FIRST_VALUE(renewed_subscription.mrr) 
+        OVER (PARTITION BY renewed_subscription.subscription_name_slugify
+              ORDER BY subscription_joined_with_charges.version) AS renewal_mrr
+    FROM subscription_joined_with_charges
+    INNER JOIN subscription_joined_with_charges  AS renewed_subscription
+      ON subscription_joined_with_charges.zuora_next_renewal_subscription_name_slugify = renewed_subscription.subscription_name_slugify
+    
+)
+
 SELECT 
-  *,
+  subscription_joined_with_charges.*,
   CASE
     -- manual linked subscription
-    WHEN zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
+    WHEN subscription_joined_with_charges.zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
     -- new version available, got renewed
-    WHEN LEAD(subscription_name_slugify) OVER (PARTITION BY subscription_name_slugify ORDER BY version) IS NOT NULL
+    WHEN LEAD(subscription_joined_with_charges.subscription_name_slugify) OVER (PARTITION BY subscription_joined_with_charges.subscription_name_slugify ORDER BY version) IS NOT NULL
       THEN TRUE
     ELSE FALSE
-  END AS is_renewed
+  END                                           AS is_renewed,
+  COALESCE(
+    LEAD(subscription_joined_with_charges.mrr) 
+      OVER (PARTITION BY subscription_joined_with_charges.subscription_name_slugify ORDER BY version)
+      , subscription_with_renewals.renewal_mrr) AS renewal_mrr
 FROM subscription_joined_with_charges
+LEFT JOIN subscription_with_renewals 
+  ON subscription_joined_with_charges.subscription_id = subscription_with_renewals.subscription_id
 ORDER BY subscription_start_date, version
