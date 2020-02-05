@@ -1,4 +1,4 @@
-With greenhouse_openings AS (
+WITH greenhouse_openings AS (
 
     SELECT * 
     FROM {{ref('greenhouse_openings')}}
