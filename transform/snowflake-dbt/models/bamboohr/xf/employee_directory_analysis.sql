@@ -11,11 +11,11 @@ WITH employee_directory_intermediate AS (
 
 ), cleaned AS (
 
-    SELECT 
+    SELECT
       date_actual,
       employee_id,
       reports_to,
-      (first_name ||' '|| last_name) AS full_name,
+      full_name,
       work_email,
       job_title,--the below case when statement is also used in bamboohr_job_info;
       CASE WHEN division = 'Alliances' THEN 'Alliances'
@@ -34,7 +34,8 @@ WITH employee_directory_intermediate AS (
       is_hire_date,
       is_termination_date,
       hire_date,
-      cost_center
+      cost_center,
+      layers
     FROM employee_directory_intermediate
 
 ), final AS (
