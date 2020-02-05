@@ -22,3 +22,20 @@ models:
       - not_null
     - name: candidate_survey_question_1
     - name: isat_score
+  - name: rpt_greenhouse_all_openings
+    description: Provides all job openings created in Greenhouse.
+    columns: 
+    - name: opening_id
+    - name: job_title
+    - name: job_opened_at
+    - name: department_name
+  - name: rpt_greenhouse_hired_employees_opening
+    description: For all hired employees, this report provides the job opening id for the job they were hired for,  in addition to the job title, department, and division they were hired in. Note - we will only have data for candidates that have an associated candidate_id in bamboohr. This data started being captured late 2019-12.
+    columns:
+    - name: opening_id
+      description: This is the id associated to the job the employee was hired for.
+    - name: job_name
+    - name: full_name
+    - name: department_hired_into
+    - name: division_hired_into
+    - name: job_hired_into

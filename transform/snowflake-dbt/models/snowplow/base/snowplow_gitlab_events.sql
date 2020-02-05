@@ -145,7 +145,11 @@ WITH source as (
       tr_total_base,
       true_tstamp,
       txn_id,
-      unstruct_event,
+      CASE
+        WHEN event_name IN ('submit_form', 'focus_form', 'change_form')
+          THEN 'masked'
+        ELSE unstruct_event
+      END AS unstruct_event,
       user_fingerprint,
       user_id,
       user_ipaddress,

@@ -1,8 +1,3 @@
-{{config({
-    "schema": "staging"
-  })
-}}
-
 WITH source AS (
 
     SELECT *
@@ -14,8 +9,9 @@ WITH source AS (
         --id
         id                                                      AS lead_id,
         name                                                    AS lead_name,
-        email                                                   AS lead_email,
-
+        sha1(email)                                             AS email_hash,
+        split_part(email,'@',2)                                 AS email_domain,
+		
         --keys
         masterrecordid                                          AS master_record_id,
         convertedaccountid                                      AS converted_account_id,

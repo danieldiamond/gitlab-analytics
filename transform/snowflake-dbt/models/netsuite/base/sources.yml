@@ -22,6 +22,7 @@ sources:
       - name: accounts
       - name: budget
       - name: budget_category
+      - name: classes
       - name: consolidated_exchange_rates
       - name: currencies
       - name: customers
@@ -30,5 +31,12 @@ sources:
       - name: posting_account_activity
       - name: subsidiaries
       - name: transaction_lines
+        columns:
+          - name: transaction_id
+            tests:
+              - relationships:
+                  to: source('netsuite', 'transactions')
+                  field: transaction_id
+                  severity: warn
       - name: transactions
       - name: vendors

@@ -19,6 +19,7 @@ WITH source AS (
 
       --Foreign Keys
       account_id::FLOAT             AS account_id,
+      class_id::FLOAT               AS class_id,
       department_id::FLOAT          AS department_id,
       subsidiary_id::FLOAT          AS subsidiary_id,
       company_id::FLOAT             AS company_id,

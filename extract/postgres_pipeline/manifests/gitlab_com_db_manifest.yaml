@@ -5,30 +5,29 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
-  resource_label_events:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , action
-      , issue_id
-      , merge_request_id
-      , epic_id
-      , label_id
-      , user_id
-      , created_at
-      , cached_markdown_version
-      , reference
-      , reference_html
-      FROM resource_label_events
-    export_schema: 'gitlab_com'
-    export_table: 'resource_label_events'
-    export_table_primary_key: action
+  # resource_label_events:
+  #   import_db: GITLAB_DB
+  #   import_query: >
+  #     SELECT id
+  #     , action
+  #     , issue_id
+  #     , merge_request_id
+  #     , epic_id
+  #     , label_id
+  #     , user_id
+  #     , created_at
+  #     , cached_markdown_version
+  #     , reference
+  #     , reference_html
+  #     FROM resource_label_events
+  #   export_schema: 'gitlab_com'
+  #   export_table: 'resource_label_events'
+  #   export_table_primary_key: id
   epics:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
       , iid
-      , milestone_id
       , group_id
       , author_id
       , assignee_id
@@ -567,7 +566,7 @@ tables:
     import_query: >
       SELECT deployment_id
       , merge_request_id
-      , CONCAT(deployment_id,'_',merge_request_id) as pkey
+      , CONCAT(deployment_id,'_',merge_request_id) as deployment_merge_request_id
       FROM deployment_merge_requests
     export_schema: 'gitlab_com'
     export_table: 'deployment_merge_requests'
@@ -600,7 +599,7 @@ tables:
   design_management_designs:
     import_db: GITLAB_DB
     import_query: >
-      SELECT CONCAT(issue_id,'_',filename) AS id
+      SELECT id
       , project_id
       , issue_id
       , filename
@@ -622,7 +621,7 @@ tables:
   design_management_versions:
     import_db: GITLAB_DB
     import_query: >
-      SELECT CONCAT(sha,'_', issue_id) AS id
+      SELECT id
       , CAST(sha AS VARCHAR) AS sha
       , issue_id
       , created_at
@@ -716,6 +715,21 @@ tables:
     export_table: 'gitlab_subscriptions'
     export_table_primary_key: id
     advanced_metadata: true
+  group_group_links:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , shared_group_id
+      , shared_with_group_id
+      , expires_at
+      , group_access
+      FROM group_group_links
+    export_schema: 'gitlab_com'
+    export_table: 'group_group_links'
+    export_table_primary_key: id
+    advanced_metadata: true
   issues:
     import_db: GITLAB_DB
     import_query: >
@@ -740,6 +754,12 @@ tables:
       , last_edited_by_id
       , discussion_locked
       , closed_at
+      , closed_by_id
+      , relative_position
+      , service_desk_reply_to
+      , state_id
+      , duplicated_to_id
+      , promoted_to_epic_id
       FROM issues
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -891,6 +911,7 @@ tables:
       , updated_at
       , milestone_id
       , state
+      , state_id
       , merge_status
       , target_project_id
       , updated_by_id
@@ -1406,7 +1427,7 @@ tables:
       , source_id
       , source_type
       , path
-      , created_at 
+      , created_at
       , updated_at
       FROM routes
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
@@ -1497,6 +1518,7 @@ tables:
       , last_sign_in_ip
       , created_at
       , updated_at
+      , name
       , admin
       , projects_limit
       , failed_attempts
@@ -1673,4 +1695,4 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_dotcom'
     export_table: ci_runner_projects
-    export_table_primary_key: id  
+    export_table_primary_key: id

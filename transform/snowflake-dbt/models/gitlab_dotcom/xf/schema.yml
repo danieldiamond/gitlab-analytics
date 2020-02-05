@@ -69,18 +69,24 @@ models:
       - name: issue_id
         tests:
           - not_null
+      - name: state
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['opened', 'closed', 'merged', 'locked']
       - name: issue_title
         description: '{{ doc("xf_visibility_documentation") }}'
       - name: issue_description
         description: '{{ doc("xf_visibility_documentation") }}'
+      - name: namespace_plan_id_at_issue_creation
+        description: '{{ doc("namespace_plan_id_at_creation") }}'
 
   - name: gitlab_dotcom_label_states_xf
-    description: Represents the latest state (added or removed) for each label on Epics/Issues/Merge Requests
+    description: Represents the latest state (added or removed) for each label on Epics/Issues/Merge Requests. Should be phased out in favor of `label_links`.
     columns:
       - name: label_id
         tests:
           - not_null
-
 
   - name: gitlab_dotcom_labels_xf
     description: '{{ doc("gitlab_dotcom_labels_xf") }}'
@@ -135,6 +141,8 @@ models:
           - not_null
       - name: is_community_contributor_related
         description: Merge Request has 'community contribution' tag, and is on a project in the gitlab.org namespace.
+      - name: namespace_plan_id_at_merge_request_creation
+        description: '{{ doc("namespace_plan_id_at_creation") }}'
 
   - name: gitlab_dotcom_milestones_xf
     description: This is a non-sensitive models of the milestones table. The "title" and "description" columns are masked for non-internal namespaces.
@@ -201,7 +209,9 @@ models:
       - name: member_count
         description: The number of members that are presently associated with the project.
       - name: namespace_plan_is_paid
-        description: Whether or not the namespace associated with the project is subscribed to a paid plan t.
+        description: Whether or not the namespace associated with the project is subscribed to a paid plan.
+      - name: namespace_plan_id_at_project_creation
+        description: '{{ doc("namespace_plan_id_at_creation") }}'
 
   - name: gitlab_dotcom_retention_cohorts
     description: '{{ doc("gitlab_dotcom_retention_cohorts") }}'

@@ -20,41 +20,49 @@ roles:
     ## Admin Roles
     - accountadmin:
         warehouses:
-            - loading
+            - admin
         member_of:
+            - securityadmin
             - sysadmin
 
     - securityadmin:
         warehouses:
-            - loading
+            - admin
         member_of:
             - sysadmin
 
     - sysadmin:
         warehouses:
-            - loading
+            - admin
         privileges:
             databases:
                 read:
                     - raw
                     - analytics
+                    - snowflake
+                    - testing_db
                 write:
                     - raw
                     - analytics
+                    - testing_db
             schemas:
                 read:
                     - raw.*
                     - analytics.*
+                    - testing_db.*
                 write:
                     - raw.*
                     - analytics.*
+                    - testing_db.*
             tables:
                 read:
                     - raw.*.*
                     - analytics.*.*
+                    - testing_db.*.*
                 write:
                     - raw.*.*
                     - analytics.*.*
+                    - testing_db.*.*
 
     ## Regular Roles
     - analyst_core:
@@ -64,6 +72,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -76,7 +85,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -91,7 +99,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -157,7 +164,9 @@ roles:
             - analyst_xl
         member_of:
             - boneyard
+            - db_dumps
             - gitlab_data_yaml
+            - netsuite
             - snowplow
             - zuora
         privileges:
@@ -185,7 +194,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -210,6 +218,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -222,7 +231,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -237,7 +245,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -256,6 +263,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -270,7 +278,6 @@ roles:
                 read:
                     - raw.bamboohr
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -288,7 +295,6 @@ roles:
                 read:
                     - raw.bamboohr.*
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -310,7 +316,30 @@ roles:
             - analyst_sales
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - zuora
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                write:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.analytics
+                    - analytics.analytics_staging
+                    - analytics.analytics_meta
+                    - analytics.dbt_archive
+                    - snowflake.*
+            tables:
+                read:
+                    - analytics.analytics.*
+                    - analytics.analytics_staging.*
+                    - analytics.analytics_meta.*
+                    - analytics.dbt_archive.*
+                    - snowflake.*.*
 
     - analyst_people:
         warehouses:
@@ -320,6 +349,7 @@ roles:
             - boneyard
             - gitlab_data_yaml
             - greenhouse
+            - netsuite
             - zuora
         privileges:
             databases:
@@ -332,7 +362,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -347,7 +376,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -431,6 +459,7 @@ roles:
         member_of:
             - boneyard
             - gitlab_data_yaml
+            - netsuite
             - snowplow
             - zuora
         privileges:
@@ -444,7 +473,6 @@ roles:
             schemas:
                 read:
                     - raw.gcloud_postgres_stitch
-                    - raw.netsuite_fivetran
                     - raw.salesforce_stitch
                     - raw.sheetload
                     - raw.snapshots
@@ -459,7 +487,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -473,7 +500,12 @@ roles:
                     - snowflake.*.*
 
     - engineer:
+        member_of:
+            - loader
         warehouses:
+            - airflow_testing_l
+            - engineer_xs
+            - engineer_xl
             - loading
         privileges:
             databases:
@@ -534,9 +566,21 @@ roles:
             - loading
         owns:
             schemas:
-                - raw.*
+                - raw.bamboohr
+                - raw.engineering_extracts
+                - raw.gitlab_data_yaml
+                - raw.gitter
+                - raw.prometheus
+                - raw.snowplow
+                - raw.tap_postgres
             tables:
-                - raw.*.*
+                - raw.bamboohr.*
+                - raw.engineering_extracts.*
+                - raw.gitlab_data_yaml.*
+                - raw.gitter.*
+                - raw.prometheus.*
+                - raw.snowplow.*
+                - raw.tap_postgres.*
         privileges:
             databases:
                 read:
@@ -594,7 +638,6 @@ roles:
             tables:
                 read:
                     - raw.gcloud_postgres_stitch.*
-                    - raw.netsuite_fivetran.*
                     - raw.salesforce_stitch.*
                     - raw.sheetload.*
                     - raw.snapshots.*
@@ -690,31 +733,47 @@ roles:
 
     - transformer: # For automated jobs
         warehouses:
+            - merge_request_xs
+            - merge_request_xl
             - transforming_s
+            - transforming_l
             - transforming_xl
             - transforming_xs
+            - transforming_4xl
         owns:
             schemas:
-                - analytics.*
+                - analytics.analytics
+                - analytics.analytics_meta
+                - analytics.analytics_sensitive
+                - analytics.analytics_staging
             tables:
-                - analytics.*.*
+                - analytics.analytics.*
+                - analytics.analytics_meta.*
+                - analytics.analytics_sensitive.*
+                - analytics.analytics_staging.*
         privileges:
             databases:
                 read:
                     - raw
                     - analytics
+                    - snowflake
                 write:
                     - analytics
+                    - raw
             schemas:
                 read:
                     - raw.*
+                    - snowflake.*
                 write:
                     - analytics.*
+                    - raw.snapshots
             tables:
                 read:
                     - raw.*.*
+                    - snowflake.*.*
                 write:
                     - analytics.*.*
+                    - raw.snapshots.*
 
     # Object Roles
     - bamboohr:
@@ -724,6 +783,7 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.bamboohr
@@ -783,7 +843,21 @@ roles:
                     - raw.greenhouse.*
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
-    
+
+    - netsuite:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.netsuite_fivetran
+            tables:
+                read:
+                    - raw.netsuite_fivetran.*
+
     - snowplow:
         privileges:
             databases:
@@ -798,6 +872,18 @@ roles:
                 read:
                     - raw.snowplow.*
                     - analytics.snowplow_*.*
+
+    - db_dumps:
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.version_db_dump_stitch
+            tables:
+                read:
+                    - raw.version_db_dump_stitch.*
 
     - zuora:
         warehouses:
@@ -865,6 +951,8 @@ roles:
             databases:
                 read:
                     - raw
+                write:
+                    - raw
             schemas:
                 read:
                     - raw.gitter
@@ -907,6 +995,10 @@ roles:
                     - raw.netsuite_fivetran.*
 
     - gitlab_ci:
+        member_of:
+            - loader
+            - reporter
+            - transformer
         warehouses:
             - loading
             - merge_request_xs
@@ -941,6 +1033,7 @@ roles:
             - engineer_xl
             - loading
             - reporting
+    
     - jurbanc:
         warehouses:
             - reporting
@@ -985,6 +1078,13 @@ roles:
     - mvilain:
         warehouses:
             - analyst_xs
+
+    - mwalker:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting
 
     - periscope:
         warehouses:
@@ -1065,6 +1165,23 @@ roles:
     - target_snowflake:
         warehouses:
             - target_snowflake
+        privileges:
+            databases:
+                read:
+                    - testing_db
+                write:
+                    - testing_db
+            schemas:
+                read:
+                    - testing_db.*
+                write:
+                    - testing_db.*
+            tables:
+                read:
+                    - testing_db.*.*
+                write:
+                    - testing_db.*.*
+          
 
     - tcarter:
         warehouses:
@@ -1072,6 +1189,7 @@ roles:
 
     - tmurphy:
         warehouses:
+            - admin
             - engineer_xs
             - engineer_xl
             - loading
@@ -1153,8 +1271,8 @@ users:
     - ekastelein:
         can_login: yes
         member_of:
-            - ekastelein
             - analyst_growth
+            - ekastelein
 
     - eurie:
         can_login: yes 
@@ -1172,10 +1290,7 @@ users:
         can_login: yes
         member_of:
             - gitlab_ci
-            - loader
-            - reporter
             - sysadmin
-            - transformer
 
     - iroussos:
         can_login: yes
@@ -1186,14 +1301,14 @@ users:
     - iweeks:
         can_login: yes
         member_of:
-            - iweeks
             - analyst_finance
+            - iweeks
 
     - jmahdi:
         can_login: yes
         member_of:
-            - jmahdi
             - analyst_sales
+            - jmahdi
 
     - jpeguero:
         can_login: yes
@@ -1210,10 +1325,10 @@ users:
     - jstark:
         can_login: yes
         member_of:
+            - accountadmin
             - analyst_core
             - data_manager
             - jstark
-            - accountadmin
             - securityadmin
             - sysadmin
 
@@ -1233,8 +1348,8 @@ users:
     - kaguilar:
         can_login: yes
         member_of:
-            - kaguilar
             - analyst_engineering
+            - kaguilar
 
     - ktam:
         can_login: yes
@@ -1260,8 +1375,8 @@ users:
     - mpeychet:
         can_login: yes
         member_of:
-            - mpeychet
             - analyst_growth
+            - mpeychet
 
     - mrodriguez:
         can_login: yes
@@ -1272,8 +1387,14 @@ users:
     - mvilain:
         can_login: yes
         member_of:
-            - mvilain
             - analyst_sales
+            - mvilain
+
+    - mwalker:
+        can_login: yes
+        member_of:
+            - engineer
+            - mwalker
 
     - lvandensteen:
         can_login: yes
@@ -1298,6 +1419,7 @@ users:
         member_of:
             - permission_bot
             - securityadmin
+            - sysadmin
 
     - pluthra:
         can_login: yes
@@ -1391,6 +1513,9 @@ warehouses:
     - admin:
         size: x-small
 
+    - airflow_testing_l:
+        size: large
+
     - analyst_l:
         size: large
 
@@ -1441,4 +1566,7 @@ warehouses:
     
     - transforming_xs:
         size: x-small
+    
+    - transforming_4xl:
+        size: "4-x-large"
         

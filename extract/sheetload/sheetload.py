@@ -1,7 +1,8 @@
 import sys
 import re
 from io import StringIO
-from logging import info, basicConfig, getLogger
+import json
+from logging import error, info, basicConfig, getLogger
 from os import environ as env
 from time import time
 from typing import Dict, Tuple
@@ -14,25 +15,12 @@ from fire import Fire
 from gitlabdata.orchestration_utils import (
     postgres_engine_factory,
     snowflake_engine_factory,
+    query_executor,
 )
 from google.cloud import storage
 from google.oauth2 import service_account
 from oauth2client.service_account import ServiceAccountCredentials
 from sqlalchemy.engine.base import Engine
-
-
-def query_executor(engine: Engine, query: str) -> Tuple[str]:
-    """
-    Execute DB queries safely.
-    """
-
-    try:
-        connection = engine.connect()
-        results = connection.execute(query).fetchall()
-    finally:
-        connection.close()
-        engine.dispose()
-    return results
 
 
 def table_has_changed(data: pd.DataFrame, engine: Engine, table: str) -> bool:
@@ -64,7 +52,8 @@ def dw_uploader(
 
     # Clean the column names and add metadata, generate the dtypes
     data.columns = [
-        column_name.replace(" ", "_").replace("/", "_") for column_name in data.columns
+        str(column_name).replace(" ", "_").replace("/", "_")
+        for column_name in data.columns
     ]
 
     # If the data isn't chunked, or this is the first iteration, drop table
@@ -105,7 +94,7 @@ def sheet_loader(
 
     Sheets is a newline delimited txt fileseparated spaces.
 
-    python spreadsheet_loader.py sheets <file_name>
+    python sheetload.py sheets <file_name>
     """
 
     with open(sheet_file, "r") as file:
@@ -207,6 +196,65 @@ def gcs_loader(
         chunk[chunk.columns] = chunk[chunk.columns].astype("str")
         dw_uploader(engine=engine, table=table, data=chunk, chunk=chunk_iter)
         chunk_iter += 1
+    max_size_of_relation = chunk_iter * chunksize
+    min_size_of_relation = max((chunk_iter - 1) * chunksize, 0)
+    actual_size = query_executor(f"SELECT COUNT(*) FROM {table};", engine)[0][0]
+    if (actual_size > max_size_of_relation) or (actual_size < min_size_of_relation):
+        error(
+            f"Count in Snowflake for table {table} ({actual_size})"
+            / " did not match the range of what was read in code "
+            / f"({min_size_of_relation} to {max_size_of_relation})"
+        )
+        sys.exit(1)
+
+
+def count_records_in_s3_csv(bucket: str, s3_file_key: str, s3_client) -> int:
+    """
+        This function is used to count the number of records found in a CSV on S3 with path
+        s3://bucket/s3_file_key .  The number of records is returned.
+
+        This function uses an AWS feature known as "s3 select" which can perform queries
+        directly on s3 objects.  This function assumes that the CSVs it is querying have header rows at the top.
+    """
+
+    query_result = s3_client.select_object_content(
+        Bucket=bucket,
+        Key=s3_file_key,
+        ExpressionType="SQL",
+        Expression="select count(*) as line_count from s3object",
+        InputSerialization={
+            "CSV": {"FileHeaderInfo": "IGNORE", "AllowQuotedRecordDelimiter": True}
+        },
+        OutputSerialization={"JSON": {}},
+    )
+    for event in query_result["Payload"]:
+        if "Records" in event:
+            json_payload_dict = json.loads(event["Records"]["Payload"].decode("utf-8"))
+            return json_payload_dict["line_count"]
+    return -1
+
+
+def check_s3_csv_count_integrity(
+    bucket, file_key, s3_client, snowflake_engine, table_name
+) -> None:
+    """
+        This function is used to verify that the count of rows in the snowflake table with name "table_name"
+        is equivalent to the count of records found in the csv on aws s3 with path s3://bucket/file_key .
+
+        If the counts are equal, this function returns gracefully and returns nothing.  If the counts are not equal,
+        this function logs an error and exits the current running program with an exit code of 1.  The exit code is
+        used to signal airflow that it should fail the task.
+    """
+    snowflake_count_result_set = query_executor(
+        snowflake_engine, f"select count(*) from {table_name}"
+    )
+    snowflake_count = snowflake_count_result_set[0][0]
+    s3_count = count_records_in_s3_csv(bucket, file_key, s3_client)
+    if snowflake_count != s3_count:
+        error(
+            f"Error replicating CSV from S3 for table name: {table_name}. Snowflake count: {snowflake_count}, S3 count: {s3_count}."
+        )
+        sys.exit(1)
 
 
 def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> None:
@@ -253,9 +301,51 @@ def s3_loader(bucket: str, schema: str, conn_dict: Dict[str, str] = None) -> Non
 
             dw_uploader(engine, table, sheet_df, truncate=True)
 
+            check_s3_csv_count_integrity(bucket, file, s3_client, engine, table)
+
+
+def csv_loader(
+    filename: str,
+    schema: str,
+    database: str = "RAW",
+    tablename: str = None,
+    header: str = "infer",
+    conn_dict: Dict[str, str] = None,
+):
+    """
+    Loads csv files from a local file system into a DataFrame and pass it to dw_uploader
+    for loading into Snowflake.
+
+    Tablename will use the name of the csv by default. 
+    python sheetload.py csv --filename nvd.csv --schema engineering_extracts
+    becomes raw.engineering_extracts.nvd
+
+    Header will read the first row of the csv as the column names by default. Passing
+    None will use integers for each column.
+
+    python sheetload.py csv --filename nvd.csv --schema engineering_extracts --tablename nvd_data --header None
+    """
+
+    # Create Snowflake engine
+    engine = snowflake_engine_factory(conn_dict or env, "LOADER", schema)
+    info(engine)
+
+    csv_data = pd.read_csv(filename, header=header)
+
+    if tablename:
+        table = tablename
+    else:
+        table = filename.split(".")[0].split("/")[-1]
+
+    info(f"Uploading {filename} to {database}.{schema}.{table}")
+
+    dw_uploader(engine, table=table, data=csv_data, schema=schema, truncate=True)
+
 
 if __name__ == "__main__":
     basicConfig(stream=sys.stdout, level=20)
     getLogger("snowflake.connector.cursor").disabled = True
-    Fire({"sheets": sheet_loader, "gcs": gcs_loader, "s3": s3_loader})
+    Fire(
+        {"sheets": sheet_loader, "gcs": gcs_loader, "s3": s3_loader, "csv": csv_loader}
+    )
     info("Complete.")

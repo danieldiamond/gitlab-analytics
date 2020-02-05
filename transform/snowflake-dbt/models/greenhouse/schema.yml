@@ -133,11 +133,7 @@ models:
         - name: application_id
           tests:
             - not_null
-            - unique
         - name: user_id
-          tests:
-            - not_null
-            - unique
         - name: application_custom_field
           tests:
             - not_null
@@ -148,17 +144,9 @@ models:
           tests:
             - not_null
         - name: application_custom_field_unit
-          tests:
-            - not_null
         - name: application_custom_field_min_value
-          tests:
-            - not_null
         - name: application_custom_field_max_value
-          tests:
-            - not_null
         - name: application_custom_field_date
-          tests:
-            - not_null
         - name: application_custom_field_created_at
           tests:
             - not_null

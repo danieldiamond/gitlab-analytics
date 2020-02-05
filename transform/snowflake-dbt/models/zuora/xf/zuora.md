@@ -60,6 +60,18 @@ We then aggregate the data into one row per Month for each unique (subscription 
 {% enddocs %}
 
 
+{% docs zuora_refund_invoices %}
+
+This model is a view on top of `zuora_invoices`. It attempts to isolate all cases in Zuora where we *refund* a customer, resulting in the customer arriving at a net balance of $0 (or higher).
+
+Although Zuora does have a built-in concept of `refunds`, it is not sufficient for all reporting use cases because there are many cases where a customer gets a refund but still ends up paying us money (a common example is accidental double charges where one gets refunded.) Sometimes, we're only interested in cases where the customer account ends up back at their starting balance.
+
+### Technical Details
+For every invoice with a negative amount (i.e. where GitLab is paying a Customer), this model checks the total sum of invoices from the account in the **60 days before and after** the date of that invoice. The model only selects rows in cases where the sum from that 120-day period is $0 or less. This indicates that the account was truly a "net refund" and didn't have any additional purchases that ultimately resulted in a transfer of funds to GitLab.
+
+{% enddocs %}
+
+
 {% docs zuora_subscription_intermediate %}
 
 The `zuora_subs` CTE de-duplicates Zuora subscriptions. Zuora keeps track of different versions of a subscription via the field "version". However, it's possible for there to be multiple version of a single Zuora version. The data with account_id = '2c92a0fc55a0dc530155c01a026806bd' in the base zuora_subscription table exemplifies this. There are multiple rows with a version of 4. The CTE adds a row number based on the updated_date where a value of 1 means it's the newest version of that version. It also filters subscriptions down to those that have either "Active" or "Cancelled" statuses since those are the only ones that we care about.
@@ -74,7 +86,7 @@ The subscription_end_month calculation is taken as the previous month for a few 
 
 {% docs zuora_subscription_lineage %}
 
-Connects a subscription to all of the subscriptions in its lineage. To understand more about a subscription's relationship to others, please see [the handbook](https://about.gitlab.com/handbook/finance/zuora-sub-data/)
+Connects a subscription to all of the subscriptions in its lineage. To understand more about a subscription's relationship to others, please see [the handbook under Zuora Subscription Data Management](https://about.gitlab.com/handbook/finance/accounting/)
 
 The `flattening` CTE flattens the intermediate model based on the array in the renewal slug field set in the base subscription model. Lineage is initially set here as the values in the parent slug and any renewal slugs. The OUTER => TRUE setting is like doing an outer join and will return rows even if the renewal slug is null.  
 
@@ -175,6 +187,32 @@ The final result:
 |a-s00003114|a-s00009998|2016-01-01|2016-01-01|2016-01-01|
 |a-s00003114|a-s00003873|2016-01-01|2016-01-01|2016-01-01|
 |a-s00003114|a-s00005209|2016-01-01|2016-01-01|2016-01-01|
+
+
+{% enddocs %}
+
+{% docs zuora_subscription_periods %}
+
+This table is the transformed table for valid Zuora subscription periods. A subscription period is an interval (bounded by `term_start_date` and `term_end_date`) during which a specific version of the subscription was valid.
+
+More explicitly, this model shows what was or will be the active subscription version on a specific date (past or future).
+
+From this model, we can calculate renewal rates by product category. We can also start estimating IACV, Renewal ACV and other metrics for the Growth team. A `subscription_period` is considered as renewed if a newer valid subscription period has been created or if a `zuora_renewal_subscription_name_slugify` has been linked to this version (more documentation about [the process here especially the section Linking Renewal Subscriptions](https://about.gitlab.com/handbook/finance/accounting/)) (in this model, the `is_renewed` flag will be turned to `TRUE`).
+
+#### Context About Subscription Versions
+
+[Zuora Amendment API Object](https://knowledgecenter.zuora.com/Developer_Platform/API/G_SOAP_API/E1_SOAP_API_Object_Reference/Amendment)
+[Zuora Subscription Amendment Doc](https://knowledgecenter.zuora.com/Zuora_Central/Subscriptions/Subscriptions/E_Changing_Subscriptions_Amendments)
+
+The way GitLab works with zuora versions is quite confusing. For subscriptions with `auto_renew` turned on, a new subscription version is automatically created when the subscription expires (without processing credit card payment). If the payment fails, a second new version (similar to the previous one) is created, auto_renew is turned to off and status stays as `active`.
+
+For all other subscriptions, any change in the subscription T&Cs and settings (product, seats, end date, price...) will create a new version of the subscription. That means that some subscriptions have up to 20 versions when they actually had only 2 renewals (`subscription_id = '2c92a0fd6c298453016c44f994e94be5'` for a sales generated one and `subscription_id = '2c92a0076d713cf5016d7227062c1477'` for one that has been created on the customers portal are 2 good examples).
+
+#### Technical Explanations
+
+The model wants to identify which versions were valid. In order to do so, the model is built recursively starting from the latest subscription version (the version column is an incremental counter). This latest version always has a `Cancelled` or `Active` status. We assume that this one is currently valid and shows the latest state of the subscription.
+
+To check if the previous version was valid at some point, we compare the `term_start_date` between the freshest row and the one before it. If the `term_start_date` is in the future or on the same day as the latest version, we assume that this version was never properly validated and got rolled back. For a specific version, we look at all newer versions (with higher version numbers) and check the minimum `term_start_date` in this subset of versions. If the `term_start_date` of the version checked is greater or equal to the minimum of the newer ones, we assume that this one has never been valid, and we filter it out.  
 
 
 {% enddocs %}

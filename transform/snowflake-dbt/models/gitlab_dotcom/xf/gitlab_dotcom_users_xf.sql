@@ -57,6 +57,7 @@ WITH customers AS (
     owner_id                AS user_id,
     namespace_id,
     plan_id,
+    plan_is_paid,
     '0. personal_namespace' AS inheritance_source
   FROM namespaces
   WHERE namespace_type = 'Individual'
@@ -71,13 +72,14 @@ WITH customers AS (
     groups.group_id,
     groups.group_plan_id,
     groups.visibility_level,
-    groups.group_plan_id    AS inherited_subscription_plan_id,
-    '1. group'              AS inheritance_source
+    groups.group_plan_id       AS inherited_subscription_plan_id,
+    groups.group_plan_is_paid  AS inherited_subscription_plan_is_paid,
+    '1. group'                 AS inheritance_source
 
   FROM members
   INNER JOIN groups
     ON members.source_id = groups.group_id
-    AND groups.group_plan_id = TRUE
+    AND groups.group_plan_is_paid = TRUE
   WHERE member_type = 'GroupMember'
     AND (members.expires_at >= CURRENT_DATE OR members.expires_at IS NULL)
 )
@@ -94,6 +96,7 @@ WITH customers AS (
       groups.visibility_level        AS namespace_visibility_level,
       groups.group_id,
       groups.group_plan_id           AS inherited_subscription_plan_id,
+      groups.group_plan_is_paid      AS inherited_subscription_plan_is_paid,
       '2. project'                   AS inheritance_source
 
     FROM members
@@ -116,6 +119,7 @@ WITH customers AS (
       group_id AS namespace_id,
       NULL     AS project_id,
       inherited_subscription_plan_id,
+      inherited_subscription_plan_is_paid,
       inheritance_source
 
     FROM group_members
@@ -131,6 +135,7 @@ WITH customers AS (
       group_id AS namespace_id,
       project_id,
       inherited_subscription_plan_id,
+      inherited_subscription_plan_is_paid,
       inheritance_source
 
     FROM project_members
@@ -146,6 +151,7 @@ WITH customers AS (
       namespace_id,
       NULL AS project_id,
       plan_id,
+      plan_is_paid,
       inheritance_source
 
     FROM user_namespace_subscriptions
@@ -161,6 +167,8 @@ WITH customers AS (
     user_id,
     MAX(inherited_subscription_plan_id) OVER
       (PARTITION BY user_id)         AS highest_paid_subscription_plan_id,
+    MAX(inherited_subscription_plan_is_paid) OVER
+      (PARTITION BY user_id)         AS highest_paid_subscription_plan_is_paid,
     FIRST_VALUE(inheritance_source) OVER
       (PARTITION BY user_id
         ORDER BY inherited_subscription_plan_id DESC,
@@ -209,15 +217,15 @@ WITH customers AS (
       WHEN account_age <= 30 THEN '4 - 15 to 30 days'
       WHEN account_age <= 60 THEN '5 - 31 to 60 days'
       WHEN account_age > 60 THEN '6 - Over 60 days'
-    END                                                                          AS account_age_cohort,
+    END                                                                           AS account_age_cohort,
     
     highest_paid_subscription_plan.highest_paid_subscription_plan_id,
-    highest_paid_subscription_plan.highest_paid_subscription_plan_id IS NOT NULL AS is_paid_user,
+    highest_paid_subscription_plan.highest_paid_subscription_plan_is_paid         AS is_paid_user,
     highest_paid_subscription_plan.highest_paid_subscription_inheritance_source,
     highest_paid_subscription_plan.highest_paid_subscription_namespace_id,
     highest_paid_subscription_plan.highest_paid_subscription_project_id,
     
-    IFF(customers_with_trial.first_customer_id IS NOT NULL, TRUE, FALSE)         AS has_customer_account,
+    IFF(customers_with_trial.first_customer_id IS NOT NULL, TRUE, FALSE)          AS has_customer_account,
     customers_with_trial.first_customer_created_at,
     customers_with_trial.first_customer_id,
     customers_with_trial.customer_id_list,
