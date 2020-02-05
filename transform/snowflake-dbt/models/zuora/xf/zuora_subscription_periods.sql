@@ -65,7 +65,7 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.version,
       subscription_joined_with_accounts.zuora_renewal_subscription_name_slugify,
       GET(subscription_joined_with_accounts.zuora_renewal_subscription_name_slugify, 
-          1 )                                                            AS zuora_next_renewal_subscription_name_slugify,
+          0)::VARCHAR                                                    AS zuora_next_renewal_subscription_name_slugify,
       subscription_joined_with_accounts.account_id, 
       subscription_joined_with_accounts.account_number,
       subscription_joined_with_accounts.account_name,
