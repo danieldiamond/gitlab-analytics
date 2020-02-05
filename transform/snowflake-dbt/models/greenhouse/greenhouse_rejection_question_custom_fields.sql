@@ -12,15 +12,15 @@ WITH source as (
         user_id::bigint             AS user_id,
 
    			--info
-   			custom_field::varchar			  	AS rejection_question_custom_field,
-   			float_value::float	        		AS rejection_question_custom_field_float_value,
-   			TRY_TO_DATE(date_value::VARCHAR) 	AS rejection_question_custom_field_date_value,
-   			display_value::varchar				AS rejection_question_custom_field_display_value,
-   			unit::varchar					    AS rejection_question_custom_field_unit,
-   			min_value::numeric				  	AS rejection_question_custom_field_min_value,
-   			max_value::numeric				  	AS rejection_question_custom_field_max_value,
-   			created_at::timestamp			  	AS rejection_question_custom_field_created_at,
-   			updated_at::timestamp			  	AS rejection_question_custom_field_updated_at
+   			custom_field::varchar               AS rejection_question_custom_field,
+   			float_value::float                  AS rejection_question_custom_field_float_value,
+   			TRY_TO_DATE(date_value::VARCHAR)    AS rejection_question_custom_field_date_value,
+   			display_value::varchar              AS rejection_question_custom_field_display_value,
+   			unit::varchar                       AS rejection_question_custom_field_unit,
+   			min_value::numeric                  AS rejection_question_custom_field_min_value,
+   			max_value::numeric                  AS rejection_question_custom_field_max_value,
+   			created_at::timestamp               AS rejection_question_custom_field_created_at,
+   			updated_at::timestamp               AS rejection_question_custom_field_updated_at
 
 	FROM source
 
