@@ -34,7 +34,13 @@ def get_snowflake_latest_entry_count(table_name, snowflake_engine, field_name):
     return query_executor(snowflake_engine, query)[0][0]
 
 
-def test_extraction(data, snowflake_table, snowflake_engine, field_name="JSONTEXT"):
+def test_extraction(
+    data, snowflake_table, snowflake_engine, tables_to_skip, field_name="JSONTEXT"
+):
+    if snowflake_table.upper() in tables_to_skip:
+        return None
+    elif snowflake_table.upper().split(".")[-1] in tables_to_skip:
+        return None
     count_extracted = len(data)
     snowflake_latest_count = get_snowflake_latest_entry_count(
         snowflake_table, snowflake_engine, field_name
@@ -56,6 +62,15 @@ if __name__ == "__main__":
     bamboo = BambooAPI(subdomain="gitlab")
 
     config_dict = env.copy()
+
+    tables_to_skip_test_list = []
+    if "BAMBOOHR_SKIP_TEST" in config_dict:
+        tables_to_skip_test_str = config_dict["BAMBOOHR_SKIP_TEST"]
+        if tables_to_skip_test_str:
+            tables_to_skip_test_list = [
+                table_name.upper() for table_name in tables_to_skip_test_str.split(",")
+            ]
+
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
     # Company Directory
@@ -66,7 +81,9 @@ if __name__ == "__main__":
     with open("directory.json", "w") as outfile:
         json.dump(employees, outfile)
 
-    test_extraction(employees, "raw.bamboohr.directory", snowflake_engine)
+    test_extraction(
+        employees, "raw.bamboohr.directory", snowflake_engine, tables_to_skip_test_list
+    )
 
     snowflake_stage_load_copy_remove(
         "directory.json",
@@ -90,7 +107,9 @@ if __name__ == "__main__":
         with open(f"{key}.json", "w") as outfile:
             json.dump(data, outfile)
 
-        test_extraction(data, f"raw.bamboohr.{key}", snowflake_engine)
+        test_extraction(
+            data, f"raw.bamboohr.{key}", snowflake_engine, tables_to_skip_test_list
+        )
 
         snowflake_stage_load_copy_remove(
             f"{key}.json",
@@ -113,6 +132,7 @@ if __name__ == "__main__":
             data["employees"],
             f"raw.bamboohr.{key}",
             snowflake_engine,
+            tables_to_skip_test_list,
             field_name="JSONTEXT:employees",
         )
 

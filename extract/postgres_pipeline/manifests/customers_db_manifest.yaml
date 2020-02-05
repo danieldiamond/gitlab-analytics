@@ -67,6 +67,9 @@ tables:
         , expired_on
         , created_at
         , updated_at
+        , glm_source
+        , glm_content
+        , trial_entity
       FROM trial_histories
     export_db: EXPORT_DB
     export_schema: 'customers'
