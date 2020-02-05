@@ -21,5 +21,6 @@ WITH source AS (
     FROM source
 
 )
-SELECT * from renamed
+SELECT * 
+FROM renamed
 
