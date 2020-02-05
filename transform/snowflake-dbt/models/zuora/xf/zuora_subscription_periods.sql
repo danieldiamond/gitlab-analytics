@@ -67,12 +67,12 @@ WITH zuora_account AS (
         subscription_name_slugify,
         term_start_date,
         term_end_date,
-        FIRST_VALUE(auto_renew) 
+        LAST_VALUE(auto_renew) 
           OVER 
             (PARTITION BY subscription_name_slugify, 
                           term_start_date,
                           term_end_date
-             ORDER BY version DESC) AS last_auto_renew
+             ORDER BY version) AS last_auto_renew
     FROM zuora_subscription
     /* 
     when subscription with auto-renew turned on, but CC declined
