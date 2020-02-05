@@ -680,7 +680,17 @@ models:
         description: >-
           This fields queries if the target branch name is "master" and returns
           a boolean
-
+      - name: merge_request_state
+        description: >-
+          The source table has both "state" and "state_id" columns. We use state_id to 
+          infer the "state" string as we found this gives results that match the API and UI.
+        tests:
+          - not_null
+      - name: merge_request_state_id
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4]
   - name: gitlab_dotcom_merge_requests_closing_issues
     description: Base model for Gitlab.com merge requests closing issues
     columns:

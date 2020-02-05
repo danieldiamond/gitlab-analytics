@@ -41,6 +41,7 @@ WITH source AS (
       source_project_id::INTEGER                                 AS project_id,
       target_project_id::INTEGER                                 AS target_project_id,
       author_id::INTEGER                                         AS author_id,
+      state_id::INTEGER                                          AS merge_request_state_id,
       -- Override state by mapping state_id. See issue #.
       CASE
         WHEN state_id = 1 THEN 'opened'
