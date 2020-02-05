@@ -54,9 +54,10 @@ WITH date_details AS (
       applications.candidate_id,
       iff(eeoc_values in ('I don''t wish to answer','Decline To Self Identify'), 
             'Did Not Identify',
-            coalesce(eeoc_values, 'Did Not Identify'))                              AS eeoc_values,
-      offers.offer_id,
-      iff(offers.offer_status = 'accepted',1,0)                                     AS accepted_offer
+            coalesce(eeoc_values, 'Did Not Identify'))                                  AS eeoc_values,
+       offers.offer_id,
+      COUNT(DISTINCT(applications.application_id))                                      AS total_applications,
+      sum(iff(offers.offer_status = 'accepted',1,0))                                    AS accepted_offer
     FROM applications
     LEFT JOIN base
       ON date_trunc('month',applications.applied_at) = base.month_date
@@ -66,7 +67,13 @@ WITH date_details AS (
     LEFT JOIN offers
       ON applications.application_id = offers.application_id 
     WHERE base.month_date IS NOT NULL
+    group by 1,2,3,4,5
 
+) 
+
+select * from candidates_aggregated
+
+{#     
 ), offers_aggregated AS (
   
     SELECT 
@@ -151,4 +158,4 @@ WITH date_details AS (
 
 SELECT *
 FROM aggregated
-WHERE month_date < DATE_TRUNC('month', CURRENT_DATE)
+WHERE month_date < DATE_TRUNC('month', CURRENT_DATE) #}
