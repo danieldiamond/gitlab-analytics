@@ -91,10 +91,10 @@ WITH recursive employee_directory AS (
     UNION ALL
 
     SELECT anchor.date_actual,
-          iter.full_name as employee,
-          iter.reports_to as manager,
-          array_prepend(anchor.lineage, iter.reports_to) as lineage,
-          (layers_count+1) as layers_count
+          iter.full_name    AS employee,
+          iter.reports_to   AS manager,
+          array_prepend(anchor.lineage, iter.reports_to) AS lineage,
+          (layers_count+1)  AS layers_count
     FROM layers anchor
     JOIN base_layers iter
     ON anchor.date_actual = iter.date_actual
@@ -106,7 +106,7 @@ WITH recursive employee_directory AS (
     SELECT
       date_actual,
       employee,
-      max(layers_count) as layers
+      max(layers_count)     AS layers
     FROM layers
     GROUP BY 1, 2
 
@@ -114,7 +114,7 @@ WITH recursive employee_directory AS (
 
 SELECT
   enriched.*,
-  COALESCE(calculated_layers.layers, 1) as layers
+  COALESCE(calculated_layers.layers, 1) AS layers
 FROM enriched
 LEFT JOIN calculated_layers
 ON enriched.date_actual = calculated_layers.date_actual
