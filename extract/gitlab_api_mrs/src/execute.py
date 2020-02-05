@@ -52,6 +52,8 @@ if __name__ == "__main__":
 
     configuration = configurations_dict[extract_name]
 
+    file_name: str = configuration["file_name"]  # type: ignore
+
     api_token = env["GITLAB_COM_API_TOKEN"]
     api_client = GitLabAPI(api_token)
 
@@ -62,7 +64,7 @@ if __name__ == "__main__":
         )
         wrote_to_file = False
 
-        with open(configuration["file_name"], "w") as out_file:
+        with open(file_name, "w") as out_file:
             for mr_url in mr_urls:
                 mr_information = api_client.get_mr_json(mr_url)
                 if mr_information:
@@ -71,7 +73,7 @@ if __name__ == "__main__":
 
         if wrote_to_file:
             snowflake_stage_load_copy_remove(
-                configuration["file_name"],
+                file_name,
                 f"raw.engineering_extracts.engineering_extracts",
                 f"raw.engineering_extracts.{extract_name}_merge_requests",
                 snowflake_engine,
