@@ -4,7 +4,7 @@
     })
 }}
 
-WITH recursive employee_directory AS (
+WITH RECURSIVE employee_directory AS (
 
     SELECT
       employee_id,
