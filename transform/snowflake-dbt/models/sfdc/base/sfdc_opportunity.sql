@@ -91,7 +91,7 @@ WITH source AS (
         upside_iacv__c                 AS upside_iacv,
         upside_swing_deal_iacv__c      AS upside_swing_deal_iacv,
         web_portal_purchase__c         AS is_web_portal_purchase,
-
+        opportunity_term__c            AS opportunity_term,
         -- metadata
         convert_timezone('America/Los_Angeles',convert_timezone('UTC',
                  CURRENT_TIMESTAMP())) AS _last_dbt_run,
