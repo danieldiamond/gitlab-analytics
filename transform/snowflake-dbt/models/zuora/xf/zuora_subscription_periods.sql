@@ -57,29 +57,27 @@ WITH zuora_account AS (
 
 , subscription_with_valid_auto_renew_setting AS (
   
-  
     /* 
-    specific CTE to check auto_renew settings before the renewal happens
-    special case for auto-reneweable subscription with a failing payment
-    good example is subscription_name_slugify = 'a-s00014110'
+      Specific CTE to check auto_renew settings before the renewal happens.
+      This is a special case for auto-reneweable subscriptions with a failing payment.
+      A good example is where subscription_name_slugify = 'a-s00014110'.
     */
     SELECT DISTINCT 
-        subscription_name_slugify,
-        term_start_date,
-        term_end_date,
-        LAST_VALUE(auto_renew) 
-          OVER 
-            (PARTITION BY subscription_name_slugify, 
-                          term_start_date,
-                          term_end_date
-             ORDER BY version) AS last_auto_renew
+      subscription_name_slugify,
+      term_start_date,
+      term_end_date,
+      LAST_VALUE(auto_renew) 
+        OVER 
+          (PARTITION BY subscription_name_slugify, 
+                        term_start_date,
+                        term_end_date
+            ORDER BY version) AS last_auto_renew
     FROM zuora_subscription
     /* 
-    when subscription with auto-renew turned on, but CC declined
-     a new version of the same subscription is created (same term_end_date)
-     created_date is after the term_end_date 
-     this new version has auto_column set to FALSE
-     */
+      When a subscription has auto-renew turned on but the CC is declined, a new version of the same
+      subscription is created (same term_end_date) but the created_date is after the term_end_date.
+      This new version has auto_column set to FALSE.
+    */
     WHERE created_date < term_end_date 
   
 )
