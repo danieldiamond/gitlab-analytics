@@ -69,11 +69,6 @@ WITH date_details AS (
     WHERE base.month_date IS NOT NULL
     group by 1,2,3,4,5
 
-) 
-
-select * from candidates_aggregated
-
-{#     
 ), offers_aggregated AS (
   
     SELECT 
@@ -158,4 +153,4 @@ select * from candidates_aggregated
 
 SELECT *
 FROM aggregated
-WHERE month_date < DATE_TRUNC('month', CURRENT_DATE) #}
+WHERE month_date < DATE_TRUNC('month', CURRENT_DATE) 
