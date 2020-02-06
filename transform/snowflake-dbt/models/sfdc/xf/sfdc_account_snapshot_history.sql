@@ -1,7 +1,7 @@
 WITH sfdc_account_snapshots AS (
 
     SELECT *
-    FROM {{ref('sfdc_opportunity_account_base')}}
+    FROM {{ref('sfdc_account_snapshots_base')}}
 
 ), final AS (
 
@@ -111,7 +111,7 @@ WITH sfdc_account_snapshots AS (
       lastvieweddate                             AS last_viewed_date,
       convert_timezone('America/Los_Angeles',convert_timezone('UTC',current_timestamp())) AS _last_dbt_run,
       systemmodstamp
-      
+
     FROM source
     WHERE id IS NOT NULL
     AND isdeleted = FALSE
