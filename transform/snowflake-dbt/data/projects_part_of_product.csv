@@ -14,12 +14,14 @@ gitlab-org/cookbook-omnibus-gitlab,95156
 gitlab-org/customers-gitlab-com,2670515
 gitlab-org/discourse-omniauth-gitlab,150440
 gitlab-org/distribution/gitlab-configurator,13682597
+gitlab-org/distribution/gitlab-provisioner,6047528
 gitlab-org/docker-distribution-pruner,2651596
 gitlab-org/Dockerfile,3101096
 gitlab-org/gitaly,2009901
 gitlab-org/gitaly-bench,4157550
 gitlab-org/gitaly-proto,2694799
 gitlab-org/gitlab,278964
+gitlab-org/gitlab-build-images,1075790
 gitlab-org/gitlab_emoji,36743
 gitlab-org/gitlab_kramdown,5647182
 gitlab-org/gitlab-compose-kit,4534254
@@ -57,6 +59,7 @@ gitlab-org/license-gitlab-com,6457868
 gitlab-org/omniauth-gitlab,143237
 gitlab-org/omniauth-ldap,27726
 gitlab-org/omnibus-gitlab,20699
+gitlab-org/gitlab-orchestrator,14378900
 gitlab-org/project-templates/android,10953870
 gitlab-org/project-templates/contributing,10506825
 gitlab-org/project-templates/dotnetcore,10973541
@@ -71,6 +74,7 @@ gitlab-org/project-templates/salesforcedx,13331704
 gitlab-org/project-templates/spring,3842996
 gitlab-org/prometheus-client-mmap,3362933
 gitlab-org/prometheus-storage-migrator,4949400
+gitlab-org/release-tools,430285
 gitlab-org/security-products/analyzers/bundler-audit,9358979
 gitlab-org/security-products/analyzers/eslint,10476326
 gitlab-org/security-products/analyzers/find-sec-bugs-groovy,7795571
