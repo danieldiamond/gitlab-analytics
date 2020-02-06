@@ -112,13 +112,13 @@ WITH sfdc_account_snapshots AS (
       convert_timezone('America/Los_Angeles',convert_timezone('UTC',current_timestamp())) AS _last_dbt_run,
       systemmodstamp
 
-    FROM source
+    FROM sfdc_account_snapshots
     WHERE id IS NOT NULL
     AND isdeleted = FALSE
 
 )
 
 SELECT *
-FROM renamed
+FROM final
 
 
