@@ -21,9 +21,14 @@ WITH greenhouse_openings AS (
 ), aggregated AS (
 
     SELECT 
+      greenhouse_openings.job_id,
+      greenhouse_jobs.job_created_at, 
+      greenhouse_jobs.job_status,
       greenhouse_openings.opening_id, 
+      greenhouse_openings.target_start_date,
+      greenhouse_openings.job_opened_at as opening_date,
+      greenhouse_openings.job_closed_at as closing_date,
       greenhouse_jobs.job_name                          AS job_title, 
-      greenhouse_jobs.job_opened_at, 
       greenhouse_department.department_name
     FROM greenhouse_openings
     LEFT JOIN greenhouse_jobs
