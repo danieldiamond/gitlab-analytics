@@ -66,7 +66,7 @@ WITH date_details AS (
     LEFT JOIN offers
       ON applications.application_id = offers.application_id 
     WHERE base.month_date IS NOT NULL
-    group by 1,2,3,4,5
+    group by 1,2,3,4
 
 ), offers_aggregated AS (
   
