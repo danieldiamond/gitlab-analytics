@@ -109,6 +109,7 @@ Usage:
 ```
 Used in:
 - sfdc_opportunity_snapshots_base.sql
+- sfdc_account_snapshots_base.sql
 
 ## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
