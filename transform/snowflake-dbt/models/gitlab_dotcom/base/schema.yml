@@ -449,7 +449,7 @@ models:
               expression: "valid_from <= valid_to"
   
   - name: gitlab_dotcom_group_group_links
-    description: This table represents groups being shared with groups. Introduced in https://gitlab.com/gitlab-org/gitlab/issues/18328.
+    description: This table represents groups being shared with groups. {{ doc("scd_type_two_documentation") }}'
     tests:
       - dbt_utils.expression_is_true:
           expression: "valid_from <= valid_to"
