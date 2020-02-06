@@ -120,6 +120,10 @@ WITH zuora_account AS (
 
 , subscription_with_renewals AS (
   
+    /* 
+    select the next renewal subscription name slugify, 
+    look up the mrr of the subscription period that comes right after (the one with the lowest version number)
+    */
     SELECT DISTINCT
       subscription_joined_with_charges.subscription_id,
       subscription_joined_with_charges.subscription_name_slugify,
