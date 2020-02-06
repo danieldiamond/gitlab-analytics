@@ -146,11 +146,11 @@ SELECT
     WHEN LEAD(subscription_joined_with_charges.subscription_name_slugify) OVER (PARTITION BY subscription_joined_with_charges.subscription_name_slugify ORDER BY version) IS NOT NULL
       THEN TRUE
     ELSE FALSE
-  END                                           AS is_renewed,
+  END                                              AS is_renewed,
   COALESCE(
     LEAD(subscription_joined_with_charges.mrr) 
       OVER (PARTITION BY subscription_joined_with_charges.subscription_name_slugify ORDER BY version)
-      , subscription_with_renewals.renewal_mrr) AS renewal_mrr
+      , subscription_with_renewals.renewal_mrr, 0) AS renewal_mrr
 FROM subscription_joined_with_charges
 LEFT JOIN subscription_with_renewals 
   ON subscription_joined_with_charges.subscription_id = subscription_with_renewals.subscription_id
