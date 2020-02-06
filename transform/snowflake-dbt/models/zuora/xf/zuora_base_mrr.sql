@@ -33,6 +33,21 @@ WITH zuora_accts AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge') }}
 
+), original_rate_plan_id AS (
+  
+    SELECT DISTINCT
+      zuora_rpc.original_id, 
+      FIRST_VALUE(subscription_version_term_start_date) OVER
+        (PARTITION BY original_id
+         ORDER BY periods.version) AS subscription_version_term_start_date,
+      FIRST_VALUE(subscription_version_term_end_date) OVER
+        (PARTITION BY original_id
+         ORDER BY periods.version) AS subscription_version_term_end_date
+    FROM zuora_subscription_periods AS periods
+      INNER JOIN zuora_rp 
+        ON periods.subscription_id  = zuora_rp.subscription_id
+      INNER JOIN zuora_rpc 
+        ON zuora_rp.rate_plan_id = zuora_rpc.rate_plan_id
 
 ), base_mrr AS (
 
@@ -78,8 +93,8 @@ WITH zuora_accts AS (
               zuora_rpc.effective_end_date :: date) AS month_interval,
       zuora_rpc.effective_start_date,
       zuora_rpc.effective_end_date,
-      zuora_subscription_periods.subscription_version_term_start_date,
-      zuora_subscription_periods.subscription_version_term_end_date,
+      original_rate_plan_id.subscription_version_term_start_date,
+      original_rate_plan_id.subscription_version_term_end_date,
       zuora_subscriptions_xf.cohort_month,
       zuora_subscriptions_xf.cohort_quarter
     FROM zuora_accts
@@ -91,10 +106,8 @@ WITH zuora_accts AS (
       ON zuora_rpc.rate_plan_id = zuora_rp.rate_plan_id AND zuora_rpc.mrr > 0 AND zuora_rpc.tcv > 0
     LEFT JOIN zuora_contact 
       ON COALESCE(zuora_accts.sold_to_contact_id ,zuora_accts.bill_to_contact_id) = zuora_contact.contact_id
-    LEFT JOIN zuora_subscription_periods
-      ON zuora_subscriptions_xf.subscription_name_slugify = zuora_subscription_periods.subscription_name_slugify
-        AND zuora_rpc.effective_start_date >= zuora_subscription_periods.subscription_version_term_start_date 
-        AND zuora_rpc.effective_start_date < zuora_subscription_periods.subscription_version_term_end_date
+    LEFT JOIN original_rate_plan_id
+      ON zuora_rpc.original_id = original_rate_plan_id.original_id
 )
 
 SELECT *
