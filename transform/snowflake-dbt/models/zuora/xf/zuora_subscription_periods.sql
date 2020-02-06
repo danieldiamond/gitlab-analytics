@@ -42,8 +42,8 @@ WITH zuora_account AS (
       zuora_account.account_number,
       zuora_account.account_name,
       subscription_start_date, 
-      term_end_date                   AS subscription_version_term_end_date, 
       term_start_date                 AS subscription_version_term_start_date,
+      term_end_date                   AS subscription_version_term_end_date, 
       MIN(term_start_date) 
       OVER (PARTITION BY subscription_name_slugify 
             ORDER BY zuora_subscription.version DESC 
@@ -53,6 +53,33 @@ WITH zuora_account AS (
     INNER JOIN zuora_account
       ON zuora_subscription.account_id = zuora_account.account_id
     
+)
+
+, subscription_with_valid_auto_renew_setting AS (
+  
+    /* 
+      Specific CTE to check auto_renew settings before the renewal happens.
+      This is a special case for auto-reneweable subscriptions with a failing payment.
+      A good example is where subscription_name_slugify = 'a-s00014110'.
+    */
+    SELECT DISTINCT 
+      subscription_name_slugify,
+      term_start_date,
+      term_end_date,
+      LAST_VALUE(auto_renew) 
+        OVER 
+          (PARTITION BY subscription_name_slugify, 
+                        term_start_date,
+                        term_end_date
+            ORDER BY version) AS last_auto_renew
+    FROM zuora_subscription
+    /* 
+      When a subscription has auto-renew turned on but the CC is declined, a new version of the same
+      subscription is created (same term_end_date) but the created_date is after the term_end_date.
+      This new version has auto_column set to FALSE.
+    */
+    WHERE created_date < term_end_date 
+  
 )
 
 , subscription_joined_with_charges AS (
@@ -69,7 +96,7 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.account_id, 
       subscription_joined_with_accounts.account_number,
       subscription_joined_with_accounts.account_name,
-      subscription_joined_with_accounts.subscription_start_date, 
+      subscription_joined_with_accounts.subscription_start_date,
       subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
       LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 

@@ -41,7 +41,15 @@ WITH source AS (
       source_project_id::INTEGER                                 AS project_id,
       target_project_id::INTEGER                                 AS target_project_id,
       author_id::INTEGER                                         AS author_id,
-      state                                                      AS merge_request_state,
+      state_id::INTEGER                                          AS merge_request_state_id,
+      -- Override state by mapping state_id. See issue #3556.
+      CASE
+        WHEN state_id = 1 THEN 'opened'
+        WHEN state_id = 2 THEN 'closed'
+        WHEN state_id = 3 THEN 'merged'
+        WHEN state_id = 4 THEN 'locked'
+        ELSE NULL
+      END                                                        AS merge_request_state,
       merge_status                                               AS merge_request_status,
       merge_when_pipeline_succeeds::BOOLEAN                      AS does_merge_when_pipeline_succeeds,
       squash::BOOLEAN                                            AS does_squash,
