@@ -55,7 +55,6 @@ WITH date_details AS (
       iff(eeoc_values in ('I don''t wish to answer','Decline To Self Identify'), 
             'Did Not Identify',
             coalesce(eeoc_values, 'Did Not Identify'))                                  AS eeoc_values,
-       offers.offer_id,
       COUNT(DISTINCT(applications.application_id))                                      AS total_applications,
       sum(iff(offers.offer_status = 'accepted',1,0))                                    AS accepted_offer
     FROM applications
