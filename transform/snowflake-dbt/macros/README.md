@@ -368,6 +368,7 @@ Usage:
 
 Used in:
 - gitlab_dotcom_gitlab_subscriptions.sql
+- gitlab_dotcom_group_group_links.sql
 - gitlab_dotcom_issue_links.sql
 - gitlab_dotcom_label_links.sql
 - gitlab_dotcom_members.sql
