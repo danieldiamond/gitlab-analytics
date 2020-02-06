@@ -100,7 +100,7 @@ WITH zuora_account AS (
         OVER (PARTITION BY renewed_subscription.subscription_name_slugify
               ORDER BY subscription_joined_with_charges.version) AS renewal_mrr
     FROM subscription_joined_with_charges
-    INNER JOIN subscription_joined_with_charges  AS renewed_subscription
+    INNER JOIN subscription_joined_with_charges AS renewed_subscription
       ON subscription_joined_with_charges.zuora_next_renewal_subscription_name_slugify = renewed_subscription.subscription_name_slugify
     
 )
