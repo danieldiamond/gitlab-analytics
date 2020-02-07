@@ -20,7 +20,7 @@ models:
     - name: merge_request_state
       tests:
         - not_null
-    - name: gitlab_db_merge_request_edited_at
+    - name: merge_request_edited_at
       tests:
         - not_null
     - name: plain_merge_request_diff_url_path
