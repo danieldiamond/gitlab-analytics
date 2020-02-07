@@ -80,12 +80,6 @@ This table contains data on the professional services engagement. Note the API n
 
 {% enddocs %}
 
-{% docs sfdc_quote_source %}
-
-TBD
-
-{% enddocs %}
-
 {% docs sfdc_recordtype_source %}
 
 The record type source table represents a record type. [Link to Documentation](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_recordtype.htm)
