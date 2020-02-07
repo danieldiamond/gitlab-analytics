@@ -8,6 +8,7 @@ from typing import Dict, List, Generator, Any, Tuple
 
 from gitlabdata.orchestration_utils import (
     dataframe_uploader,
+    dataframe_enricher,
     snowflake_engine_factory,
     query_executor,
 )
@@ -142,7 +143,9 @@ def seed_table(
     """
 
     logging.info(f"Seeding {rows_to_seed} rows directly into Snowflake...")
-    dataframe_uploader(df.iloc[:rows_to_seed], engine, table, advanced_metadata=advanced_metadata)
+    dataframe_uploader(
+        df.iloc[:rows_to_seed], engine, table, advanced_metadata=advanced_metadata
+    )
     return False
 
 

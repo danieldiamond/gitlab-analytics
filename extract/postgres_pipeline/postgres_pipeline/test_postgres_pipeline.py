@@ -14,6 +14,7 @@ import pandas as pd
 import pytest
 from gitlabdata.orchestration_utils import (
     dataframe_uploader,
+    dataframe_enricher,
     snowflake_engine_factory,
     query_executor,
 )

@@ -3,7 +3,11 @@ import sys
 from os import environ as env
 from time import time
 
-from gitlabdata.orchestration_utils import dataframe_uploader, snowflake_engine_factory
+from gitlabdata.orchestration_utils import (
+    dataframe_uploader,
+    dataframe_enricher,
+    snowflake_engine_factory,
+)
 import pandas as pd
 from sqlalchemy.engine.base import Engine
 
