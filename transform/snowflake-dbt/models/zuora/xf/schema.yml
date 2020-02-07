@@ -318,5 +318,5 @@ models:
             tests:
                 - not_null
           - name: renewal_mrr
-            description: for a subscription that has been renewed, the mrr of the subscription renewal. If the subscription expired, the value will be 0.
+            description: For a subscription that has been renewed, this is the MRR of the subscription renewal. If the subscription expired, the value will be 0.
             
