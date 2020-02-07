@@ -139,6 +139,8 @@ WITH zuora_account AS (
 
 SELECT 
   subscription_joined_with_charges.*,
+  COALESCE(subscription_with_valid_auto_renew_setting.last_auto_renew, 
+    FALSE)                                AS has_auto_renew_on,
   CASE
     -- manual linked subscription
     WHEN subscription_joined_with_charges.zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
