@@ -130,8 +130,6 @@ models:
     greenhouse:
       base:
         schema: sensitive
-      xf: 
-        schema: sensitive  
       rpt:
         schema: analytics
 
