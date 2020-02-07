@@ -129,8 +129,8 @@ WITH zuora_account AS (
       subscription_joined_with_charges.subscription_id,
       subscription_joined_with_charges.subscription_name_slugify,
       FIRST_VALUE(renewed_subscription.mrr) 
-        OVER (PARTITION BY renewed_subscription.subscription_name_slugify
-              ORDER BY subscription_joined_with_charges.version) AS renewal_mrr
+        OVER (PARTITION BY subscription_joined_with_charges.subscription_name_slugify
+              ORDER BY renewed_subscription.version) AS mrr_from_renewal_subscription
     FROM subscription_joined_with_charges
     INNER JOIN subscription_joined_with_charges AS renewed_subscription
       ON subscription_joined_with_charges.zuora_next_renewal_subscription_name_slugify = renewed_subscription.subscription_name_slugify
@@ -150,7 +150,7 @@ SELECT
   COALESCE(
     LEAD(subscription_joined_with_charges.mrr) 
       OVER (PARTITION BY subscription_joined_with_charges.subscription_name_slugify ORDER BY version)
-      , subscription_with_renewals.renewal_mrr, 0) AS renewal_mrr
+      , subscription_with_renewals.mrr_from_renewal_subscription, 0) AS mrr_from_renewal_subscription
 FROM subscription_joined_with_charges
 LEFT JOIN subscription_with_renewals 
   ON subscription_joined_with_charges.subscription_id = subscription_with_renewals.subscription_id
