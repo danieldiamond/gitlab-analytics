@@ -1,4 +1,14 @@
-WITH diff_id_broken_out AS (
+WITH gitlab_dotcom_mr_diffs AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_merge_request_diffs') }}
+
+), gitlab_dotcom_merge_requests AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_merge_requests') }}
+
+), diff_id_broken_out AS (
     
     SELECT 
       handbook_file_edited,
@@ -10,33 +20,32 @@ WITH diff_id_broken_out AS (
 ), joined_to_mr AS (
 
     SELECT 
-      mr.merge_request_state    AS gitlab_db_merge_request_state,
-      mr.updated_at             AS gitlab_db_merge_request_updated_at,
-      di.plain_mr_diff_url_path AS gitlab_api_plain_mr_diff_url_path,
+      gitlab_dotcom_merge_requests.merge_request_state    AS gitlab_db_merge_request_state,
+      gitlab_dotcom_merge_requests.updated_at             AS gitlab_db_merge_request_updated_at,
+      diff_id_broken_out.plain_mr_diff_url_path           AS gitlab_api_plain_mr_diff_url_path,
       CASE 
-        WHEN di.handbook_file_edited like '%/handbook/engineering/development/%' 
+        WHEN diff_id_broken_out.handbook_file_edited like '%/handbook/engineering/development/%' 
           THEN 'development'
-        WHEN di.handbook_file_edited like '%/handbook/engineering/infrastructure/%' 
+        WHEN diff_id_broken_out.handbook_file_edited like '%/handbook/engineering/infrastructure/%' 
           THEN 'infrastructure'
-        WHEN di.handbook_file_edited like '%/handbook/engineering/security/%' 
+        WHEN diff_id_broken_out.handbook_file_edited like '%/handbook/engineering/security/%' 
           THEN 'security'
-        WHEN di.handbook_file_edited like '%/handbook/support/%' 
+        WHEN diff_id_broken_out.handbook_file_edited like '%/handbook/support/%' 
           THEN 'support'
-        WHEN di.handbook_file_edited like '%/handbook/engineering/ux/%' 
+        WHEN diff_id_broken_out.handbook_file_edited like '%/handbook/engineering/ux/%' 
           THEN 'ux'
-        WHEN di.handbook_file_edited like '%/handbook/engineering/%' 
+        WHEN diff_id_broken_out.handbook_file_edited like '%/handbook/engineering/%' 
           THEN 'engineering'
         ELSE NULL 
       END                       AS gitlab_api_merge_request_file_department
-
     FROM 
-      diff_id_broken_out AS di
+      diff_id_broken_out
       INNER JOIN
-      {{ ref('gitlab_dotcom_merge_request_diffs') }} AS diff
-      ON (diff.merge_request_diff_id = di.DIFF_ID)
+      gitlab_dotcom_mr_diffs
+      ON (gitlab_dotcom_mr_diffs.merge_request_diff_id = diff_id_broken_out.diff_id)
       INNER JOIN
-      {{ ref('gitlab_dotcom_merge_requests') }} AS mr
-      ON (diff.merge_request_id = mr.merge_request_id)
+      gitlab_dotcom_merge_requests
+      ON (gitlab_dotcom_mr_diffs.merge_request_id = gitlab_dotcom_merge_requests.merge_request_id)
 
 ), renamed AS (
 
