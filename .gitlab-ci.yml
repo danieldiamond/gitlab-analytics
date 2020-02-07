@@ -102,7 +102,7 @@ clone_stop:
 
 .python_check: &python_check
   stage: 🐍 Python
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:tayloramurphy-master-patch-04386
   tags:
     - analytics
   only:
