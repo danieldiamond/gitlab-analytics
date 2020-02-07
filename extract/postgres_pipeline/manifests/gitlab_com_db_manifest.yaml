@@ -23,6 +23,7 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'resource_label_events'
     export_table_primary_key: id
+    advanced_metadata: true
   epics:
     import_db: GITLAB_DB
     import_query: >
