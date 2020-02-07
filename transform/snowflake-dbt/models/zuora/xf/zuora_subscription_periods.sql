@@ -154,6 +154,10 @@ SELECT
       OVER (PARTITION BY subscription_joined_with_charges.subscription_name_slugify ORDER BY version)
       , subscription_with_renewals.mrr_from_renewal_subscription, 0) AS mrr_from_renewal_subscription
 FROM subscription_joined_with_charges
+LEFT JOIN subscription_with_valid_auto_renew_setting
+  ON subscription_joined_with_charges.subscription_name_slugify = subscription_with_valid_auto_renew_setting.subscription_name_slugify
+  AND subscription_joined_with_charges.subscription_version_term_start_date = subscription_with_valid_auto_renew_setting.term_start_date
+  AND subscription_joined_with_charges.subscription_version_term_end_date = subscription_with_valid_auto_renew_setting.term_end_date
 LEFT JOIN subscription_with_renewals 
   ON subscription_joined_with_charges.subscription_id = subscription_with_renewals.subscription_id
 ORDER BY subscription_start_date, version
