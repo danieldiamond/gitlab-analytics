@@ -1,7 +1,6 @@
 WITH source AS (
 
-    SELECT
-      *
+    SELECT *
     FROM {{ source('customers', 'customers_db_trial_histories') }}
     QUALIFY ROW_NUMBER() OVER (PARTITION BY gl_namespace_id ORDER BY updated_at DESC) = 1
 
