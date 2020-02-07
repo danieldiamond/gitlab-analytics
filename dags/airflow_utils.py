@@ -8,7 +8,7 @@ from airflow.contrib.kubernetes.pod import Resources
 from airflow.operators.slack_operator import SlackAPIPostOperator
 
 REPO = "https://gitlab.com/gitlab-data/analytics.git"
-DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
+DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:tayloramurphy-master-patch-04386"
 DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
 
 
