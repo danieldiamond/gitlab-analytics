@@ -28,7 +28,7 @@ WITH base AS (
       mr_diffs.value:version_path::VARCHAR                    AS merge_request_version_url_path
     FROM exploded_file_paths
     INNER JOIN TABLE(FLATTEN(INPUT => merge_request_version_diffs, outer => true)) AS mr_diffs
-    WHERE mr_diffs.value:latest::boolean
+    WHERE mr_diffs.value:latest::BOOLEAN
 
 )
 SELECT * FROM current_mr_diff
