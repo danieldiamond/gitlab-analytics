@@ -57,9 +57,6 @@ sources:
       - name: proof_of_concept
         identifier: proof_of_concept__c     
         description: '{{ doc("sfdc_pov_source") }}'
-      - name: quote
-        identifier: zqu__quote__c
-        description: '{{ doc("sfdc_quote_source") }}'  
       - name: record_type
         identifier: recordtype         
         description: '{{ doc("sfdc_recordtype_source") }}'
