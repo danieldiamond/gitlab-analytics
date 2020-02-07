@@ -104,6 +104,8 @@ models:
 
     customers:
       materialized: table
+      base:
+          schema: staging
 
     date:
       materialized: table
