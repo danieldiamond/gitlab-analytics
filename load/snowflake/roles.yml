@@ -1049,6 +1049,11 @@ roles:
             - analyst_xs
 
     - ktam:
+        member_of:
+            - analyst_core
+            - bamboohr
+            - data_manager
+            - greenhouse
         warehouses:
             - engineer_xs
             - engineer_xl
@@ -1364,10 +1369,6 @@ users:
     - ktam:
         can_login: yes
         member_of:
-            - analyst_core
-            - bamboohr
-            - data_manager
-            - greenhouse
             - ktam
 
     - ksmith:
