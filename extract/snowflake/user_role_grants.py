@@ -76,7 +76,7 @@ if __name__ == "__main__":
         user_results, "name", "SHOW GRANTS TO USER", "grants_to_user"
     )
 
-    # # Grants to role
-    # iterative_query_upload(
-    #     role_results, "name", "SHOW GRANTS TO ROLE", "grants_to_role"
-    # )
+    # Grants to role
+    iterative_query_upload(
+        role_results, "name", "SHOW GRANTS TO ROLE", "grants_to_role"
+    )
