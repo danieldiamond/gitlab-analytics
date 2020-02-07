@@ -25,3 +25,5 @@ sources:
         loaded_at_field: uploaded_at
       - name: part_of_product_merge_requests
         loaded_at_field: uploaded_at
+      - name: handbook_merge_requests
+        loaded_at_field: uploaded_at
