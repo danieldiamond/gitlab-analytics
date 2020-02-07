@@ -44,20 +44,18 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
-    python gitlab_api_mrs/src/execute.py part_of_product
+    python gitlab_api_mrs/src/execute.py handbook
 """
 
 # Create the DAG
-dag = DAG(
-    "part_of_product_mrs", default_args=default_args, schedule_interval="0 4 * * *"
-)
+dag = DAG("handbook_mrs", default_args=default_args, schedule_interval="0 2 * * *")
 
 # Task 1
 part_of_product_mrs_run = KubernetesPodOperator(
     **gitlab_defaults,
     image=DATA_IMAGE,
-    task_id="part-of-product-mrs",
-    name="part-of-product-mrs",
+    task_id="handbook-mrs",
+    name="handbook-mrs",
     secrets=[
         GITLAB_COM_API_TOKEN,
         SNOWFLAKE_ACCOUNT,

@@ -733,6 +733,8 @@ roles:
 
     - transformer: # For automated jobs
         warehouses:
+            - merge_request_xs
+            - merge_request_xl
             - transforming_s
             - transforming_l
             - transforming_xl
@@ -879,9 +881,11 @@ roles:
             schemas:
                 read:
                     - raw.version_db_dump_stitch
+                    - raw.license_db_dump
             tables:
                 read:
                     - raw.version_db_dump_stitch.*
+                    - raw.license_db_dump.*
 
     - zuora:
         warehouses:
@@ -993,6 +997,10 @@ roles:
                     - raw.netsuite_fivetran.*
 
     - gitlab_ci:
+        member_of:
+            - loader
+            - reporter
+            - transformer
         warehouses:
             - loading
             - merge_request_xs
@@ -1135,24 +1143,32 @@ roles:
                     - raw
             schemas:
                 read:
+                    - raw.license_db_dump
                     - raw.salesforce_stitch
                     - raw.stitch_google_sheets
+                    - raw.version_db_dump_stitch
                     - raw.zendesk_stitch
                     - raw.zuora_stitch
                 write:
+                    - raw.license_db_dump
                     - raw.salesforce_stitch
                     - raw.stitch_google_sheets
+                    - raw.version_db_dump_stitch
                     - raw.zendesk_stitch
                     - raw.zuora_stitch
             tables:
                 read:
+                    - raw.license_db_dump.*
                     - raw.salesforce_stitch.*
                     - raw.stitch_google_sheets.*
+                    - raw.version_db_dump_stitch.*
                     - raw.zendesk_stitch.*
                     - raw.zuora_stitch.*
                 write:
+                    - raw.license_db_dump.*
                     - raw.salesforce_stitch.*
                     - raw.stitch_google_sheets.*
+                    - raw.version_db_dump_stitch.*
                     - raw.zendesk_stitch.*
                     - raw.zuora_stitch.*
     
@@ -1284,10 +1300,7 @@ users:
         can_login: yes
         member_of:
             - gitlab_ci
-            - loader
-            - reporter
             - sysadmin
-            - transformer
 
     - iroussos:
         can_login: yes

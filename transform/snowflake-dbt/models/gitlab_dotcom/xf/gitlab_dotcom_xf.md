@@ -75,6 +75,19 @@ It also adds 2 columns based on subscription inheritance (as described [here](ht
 
 {% enddocs %}
 
+{% docs gitlab_dotcom_memberships %}
+
+This model unions together all of the other models that represent a user having (full or partial) access to a namespace, AKA "membership". 
+
+There are 5 general ways that a user can have access to a group G:
+* Be a **group member** of group G.
+* Be a **group member** of G2, where G2 is a descendant (subgroup) of group G.
+* Be a **project member** of P, where P is owned by G or one of G's descendants.
+* Be a group member of X, where X is invited to a project underneath G via [project group links](https://docs.gitlab.com/ee/user/group/#sharing-a-project-with-a-group).
+* Be a group member of Y, where Y is invited to G or one of G's descendants via [group group links](https://docs.gitlab.com/ee/user/group/#sharing-a-group-with-another-group).
+
+{% enddocs %}
+
 
 {% docs gitlab_dotcom_events_monthly_active_users%}
 

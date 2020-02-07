@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: rpt_interviewee_satisfaction_isat
+    description: This surfaces the greenhouse data for candidate surveys at a department level for interview SAT scores.
+    columns:
+    - name: candidate_survey_id
+      tests:
+      - not_null
+      - unique
+    - name: organization_id
+      tests:
+      - not_null
+    - name: department_id
+      tests:
+      - not_null
+    - name: department_name
+      tests:
+      - not_null
+    - name: submitted_at
+      tests:
+      - not_null
+    - name: candidate_survey_question_1
+    - name: isat_score
+
+  - name: rpt_greenhouse_all_openings
+    description: Provides all job openings created in Greenhouse.
+    columns: 
+    - name: opening_id
+    - name: job_title
+    - name: job_opened_at
+    - name: department_name
+  - name: rpt_greenhouse_hired_employees_opening
+    description: For all hired employees, this report provides the job opening id for the job they were hired for,  in addition to the job title, department, and division they were hired in. Note - we will only have data for candidates that have an associated candidate_id in bamboohr. This data started being captured late 2019-12.
+    columns:
+    - name: opening_id
+      description: This is the id associated to the job the employee was hired for.
+    - name: job_name
+    - name: full_name
+    - name: department_hired_into
+    - name: division_hired_into
+    - name: job_hired_into
+  - name: greenhouse_diversity_lifecycle_gender
+    description: Provides a breakdown of recruiting KPIs by gender. This model initially builds out a base cte that includes month_date, a column for all the various eeoc_field_names, and a column with the associated eeoc_field_values. It then joins the candidate information to ensure all categories are represented in the data. 
+    columns:
+    - name: month_date
+    - name: eeoc_field_name
+      tests: 
+        - accepted_values:
+            values: ['candidate_veteran_status', 'candidate_gender', 'candidate_status', 'candidate_race', 'candidate_disability_status']
+    - name: eeoc_values 
+      description: This is associated to the eeoc_field_name. For eeoc_field_name = 'candidate_gender' there will be a row for each of the values (male, female, and decline to self identify). This allows us to create a base model with all the potential eeoc_field_values for each field_column and join all applicants even those that don't identify.
+    - name: metric_total
+      description: This is the metric associated to the recruiting_metric, eeoc_field_name, and eeoc_vales. For example, the metric_total for where recruiting_metric is percent_of_applicants will show what percent of applicants were the gender in that row for that given month.
+    - name: recruiting_metric
+      description: This identifies recruiting metric is being measured. 
+      tests: 
+        - accepted_values:
+            values: ['application_to_offer_percent',
+                    'avg_apply_to_accept_days', 
+                    'offer_acceptance_rate_based_on_offer_month', 
+                    'percent_of_accepted_offers', 
+                    'percent_of_applicants', 
+                    'percent_of_extended_offers']
