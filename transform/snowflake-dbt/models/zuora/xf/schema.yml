@@ -20,6 +20,12 @@ models:
                 - not_null
           - name: lineage
             description: "All the subscriptions subsquent to the primary subscription, separated by commas."
+          - name: subscription_version_term_start_date
+            tests:
+                - not_null
+          - name: subscription_version_term_end_date
+            tests:
+                - not_null
     - name: zuora_base_mrr_amortized
       description: '{{ doc("zuora_base_mrr_amortized") }}'
       columns:
