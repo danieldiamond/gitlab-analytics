@@ -82,7 +82,9 @@ class TestPostgresPipeline:
         query = "SELECT * FROM approver_groups WHERE id = (SELECT MAX(id) FROM approver_groups)"
         query_results = query_results_generator(query, POSTGRES_ENGINE)
         for result in query_results:
-            dataframe_uploader(result, SNOWFLAKE_ENGINE, TEST_TABLE, advanced_metadata=False)
+            dataframe_uploader(
+                result, SNOWFLAKE_ENGINE, TEST_TABLE, advanced_metadata=False
+            )
         uploaded_rows = pd.read_sql(f"select * from {TEST_TABLE}", SNOWFLAKE_ENGINE)
         assert uploaded_rows.shape[0] == 1
 
@@ -94,7 +96,9 @@ class TestPostgresPipeline:
         query = "SELECT * FROM merge_requests WHERE id = (SELECT MAX(id) FROM merge_requests)"
         query_results = query_results_generator(query, POSTGRES_ENGINE)
         for result in query_results:
-            dataframe_uploader(result, SNOWFLAKE_ENGINE, TEST_TABLE, advanced_metadata=False)
+            dataframe_uploader(
+                result, SNOWFLAKE_ENGINE, TEST_TABLE, advanced_metadata=False
+            )
         uploaded_rows = pd.read_sql(f"select * from {TEST_TABLE}", SNOWFLAKE_ENGINE)
         assert uploaded_rows.shape[0] == 1
 
