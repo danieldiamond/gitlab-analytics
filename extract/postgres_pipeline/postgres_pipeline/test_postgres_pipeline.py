@@ -12,7 +12,11 @@ sys.path.insert(
 
 import pandas as pd
 import pytest
-from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
+from gitlabdata.orchestration_utils import (
+    dataframe_uploader,
+    snowflake_engine_factory,
+    query_executor,
+)
 
 from main import (
     load_incremental,
@@ -22,7 +26,6 @@ from main import (
     validate_ids,
 )
 from utils import (
-    dataframe_uploader,
     manifest_reader,
     postgres_engine_factory,
     query_results_generator,

@@ -6,7 +6,11 @@ import yaml
 from time import time
 from typing import Dict, List, Generator, Any, Tuple
 
-from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
+from gitlabdata.orchestration_utils import (
+    dataframe_uploader,
+    snowflake_engine_factory,
+    query_executor,
+)
 import pandas as pd
 import sqlalchemy
 from google.cloud import storage
@@ -16,46 +20,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
 
 SCHEMA = "tap_postgres"
-
-
-def dataframe_enricher(advanced_metadata: bool, raw_df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Enrich a dataframe with metadata and do some cleaning.
-    """
-
-    # Add metadata columns
-    raw_df.loc[:, "_uploaded_at"] = time()  # Add a metadata column
-    if advanced_metadata:
-        # Add additional metadata from an Airflow scheduler
-        # _task_instance is expected to be the task_instance_key_str
-        raw_df.loc[:, "_task_instance"] = os.environ["TASK_INSTANCE"]
-
-    # Do some Snowflake-specific sanitation
-    enriched_df = (
-        raw_df.applymap(  # convert dict to str to avoid snowflake errors
-            lambda x: x if not isinstance(x, dict) else str(x)
-        )
-        .applymap(  # shorten strings that are too long
-            lambda x: x[:4_194_304] if isinstance(x, str) else x
-        )
-        .applymap(  # replace tabs with 4 spaces
-            lambda x: x.replace("\t", "    ") if isinstance(x, str) else x
-        )
-    )
-
-    return enriched_df
-
-
-def dataframe_uploader(
-    advanced_metadata: bool, dataframe: pd.DataFrame, engine: Engine, table_name: str
-) -> None:
-    """
-    Upload a dataframe using an engine.
-    """
-
-    dataframe_enricher(advanced_metadata, dataframe).to_sql(
-        name=table_name, con=engine, index=False, if_exists="append", chunksize=10000
-    )
 
 
 def get_gcs_bucket(gapi_keyfile: str, bucket_name: str) -> Bucket:
@@ -178,7 +142,7 @@ def seed_table(
     """
 
     logging.info(f"Seeding {rows_to_seed} rows directly into Snowflake...")
-    dataframe_uploader(advanced_metadata, df.iloc[:rows_to_seed], engine, table)
+    dataframe_uploader(df.iloc[:rows_to_seed], engine, table, advanced_metadata=advanced_metadata)
     return False
 
 
