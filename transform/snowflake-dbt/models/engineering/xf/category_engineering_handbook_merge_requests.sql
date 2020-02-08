@@ -58,4 +58,5 @@ WITH mr_diffs AS (
     GROUP BY 1, 2, 3 
 
 )
-SELECT * FROM renamed
+SELECT * 
+FROM renamed
