@@ -15,7 +15,7 @@ models:
       tests:
         - not_null
   - name: category_engineering_handbook_merge_requests
-    description: This table is a table of unique merge requests to the handbook along with their categorization of a specific department/division in engineering.
+    description: This is a table of unique merge requests to the handbook along with their categorization of a specific department/division in engineering.
     columns:
     - name: merge_request_state
       tests:
