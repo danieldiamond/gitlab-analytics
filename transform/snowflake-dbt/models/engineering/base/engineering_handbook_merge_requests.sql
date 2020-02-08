@@ -16,6 +16,7 @@ WITH filtered_attributes AS (
       ORDER BY ARRAY_SIZE(jsontext['merge_request_diffs']) DESC, uploaded_at DESC) = 1
 
 )
+
 SELECT * 
 FROM filtered_attributes
  
