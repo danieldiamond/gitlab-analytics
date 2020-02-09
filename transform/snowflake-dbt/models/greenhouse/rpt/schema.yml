@@ -49,7 +49,7 @@ models:
     - name: eeoc_field_name
       tests: 
         - accepted_values:
-            values: ['candidate_veteran_status', 'candidate_gender', 'candidate_status', 'candidate_race', 'candidate_disability_status']
+            values: ['CANDIDATE_VETERAN_STATUS', 'CANDIDATE_GENDER', 'CANDIDATE_STATUS', 'CANDIDATE_RACE', 'CANDIDATE_DISABILITY_STATUS']
     - name: eeoc_values 
       description: This is associated to the eeoc_field_name. For eeoc_field_name = 'candidate_gender' there will be a row for each of the values (male, female, and decline to self identify). This allows us to create a base model with all the potential eeoc_field_values for each field_column and join all applicants even those that don't identify.
     - name: metric_total
