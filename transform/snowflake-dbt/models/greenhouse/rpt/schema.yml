@@ -12,11 +12,7 @@ models:
       tests:
       - not_null
     - name: department_id
-      tests:
-      - not_null
     - name: department_name
-      tests:
-      - not_null
     - name: submitted_at
       tests:
       - not_null
