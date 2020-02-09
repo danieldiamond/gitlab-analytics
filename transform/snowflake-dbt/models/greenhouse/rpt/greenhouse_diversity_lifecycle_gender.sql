@@ -106,7 +106,7 @@ WITH date_details AS (
     SELECT 
       {{repeated_column_names}},
       SUM(accepted_offer)/COUNT(DISTINCT(candidate_id))                     AS metric_total,             
-      'applicaton_to_offer_percent'                                         AS recruiting_metric 
+      'application_to_offer_percent'                                         AS recruiting_metric 
     FROM candidates_aggregated
     GROUP BY 1,2,3  
 
