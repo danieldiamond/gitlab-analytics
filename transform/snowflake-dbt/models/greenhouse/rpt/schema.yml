@@ -30,6 +30,7 @@ models:
     - name: job_title
     - name: job_opened_at
     - name: department_name
+    
   - name: rpt_greenhouse_hired_employees_opening
     description: For all hired employees, this report provides the job opening id for the job they were hired for,  in addition to the job title, department, and division they were hired in. Note - we will only have data for candidates that have an associated candidate_id in bamboohr. This data started being captured late 2019-12.
     columns:
@@ -40,6 +41,7 @@ models:
     - name: department_hired_into
     - name: division_hired_into
     - name: job_hired_into
+    
   - name: greenhouse_diversity_lifecycle_gender
     description: Provides a breakdown of recruiting KPIs by gender. This model initially builds out a base cte that includes month_date, a column for all the various eeoc_field_names, and a column with the associated eeoc_field_values. It then joins the candidate information to ensure all categories are represented in the data. 
     columns:
