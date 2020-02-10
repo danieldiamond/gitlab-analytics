@@ -99,7 +99,7 @@ If this test fails:
 
 * Step 1: Run the chatops command `/gitlab datachat run current_depts_and_divs` from Slack to see the test results in Slack.
 * Step 2: Ping the People Operations team with the employee's name.
-* Step 3: Filter out the employee name from the test while it is resolved upstream. Create a subsequent issue around unfiltering the employee and assign it to the next milestone.
+* Step 3: Filter out the employee name from the test while it is resolved upstream. Create a subsequent issue around unfiltering the employee, add the `People` label and assign it to the next milestone.
 * Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
 
 Alternatively, it's possible the cost center is missing from the csv file (loaded using dbt seed).
