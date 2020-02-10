@@ -173,7 +173,7 @@ SELECT
       THEN 'configure'
     WHEN '{{ event_cte.event_name }}' = 'ci_stages'
       THEN 'configure'
-    ELSE version_usage_stats_to_stage_mappings.stage)    
+    ELSE version_usage_stats_to_stage_mappings.stage    
   END                                             AS stage_name,
   CASE
     WHEN gitlab_subscriptions.is_trial
