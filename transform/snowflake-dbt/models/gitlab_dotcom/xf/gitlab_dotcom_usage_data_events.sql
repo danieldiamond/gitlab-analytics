@@ -168,6 +168,7 @@ SELECT
   projects.created_at                            AS project_created_at,
   {{ event_cte.event_name }}.created_at          AS event_created_at,
   '{{ event_cte.event_name }}'                   AS event_name,
+  version_usage_stats_to_stage_mappings.stage    AS stage_name,
   CASE
     WHEN gitlab_subscriptions.is_trial
       THEN 'trial'
