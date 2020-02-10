@@ -33,8 +33,6 @@ WITH sfdc_opportunity_snapshots AS (
       BDR_LU__c                      AS opportunity_business_development_representative,        
       COALESCE({{ sales_segment_cleaning('ultimate_parent_sales_segment_emp_o__c') }}, {{ sales_segment_cleaning('ultimate_parent_sales_segment_o__c') }} )
                                      AS parent_segment,        
-      products_purchased__c          AS product,      
-      {{product_category('products_purchased__c')}},  
       sales_accepted_date__c         AS sales_accepted_date,                
       engagement_type__c             AS sales_path,
       sales_qualified_date__c        AS sales_qualified_date,        
@@ -61,7 +59,6 @@ WITH sfdc_opportunity_snapshots AS (
       net_iacv__c                    AS net_incremental_acv,   
       nrv__c                         AS nrv,                                           
       campaignid                     AS primary_campaign_source_id,
-      products_purchased__c          AS products_purchased,
       professional_services_value__c AS professional_services_value,
       push_counter__c                AS pushed_count,
       reason_for_lost__c             AS reason_for_loss,
