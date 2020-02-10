@@ -3,7 +3,13 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
+from airflow_utils import (
+    DATA_IMAGE,
+    clone_repo_cmd,
+    gitlab_defaults,
+    gitlab_pod_env_vars,
+    slack_failed_task
+)
 from kube_secrets import (
     PERMISSION_BOT_ACCOUNT,
     PERMISSION_BOT_DATABASE,
