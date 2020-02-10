@@ -165,27 +165,37 @@ SELECT
   ultimate_namespace.namespace_id, 
   ultimate_namespace.namespace_created_at,
   projects.project_id,
-  projects.created_at                            AS project_created_at,
-  {{ event_cte.event_name }}.created_at          AS event_created_at,
-  '{{ event_cte.event_name }}'                   AS event_name,
-  version_usage_stats_to_stage_mappings.stage    AS stage_name,
+  projects.created_at                             AS project_created_at,
+  {{ event_cte.event_name }}.created_at           AS event_created_at,
+  '{{ event_cte.event_name }}'                    AS event_name,
+  CASE
+    WHEN '{{ event_cte.event_name }}' = 'project_auto_devops'
+      THEN 'configure'
+    WHEN '{{ event_cte.event_name }}' = 'ci_stages'
+      THEN 'configure'
+    ELSE version_usage_stats_to_stage_mappings.stage)    
+  END                                             AS stage_name,
   CASE
     WHEN gitlab_subscriptions.is_trial
       THEN 'trial'
     ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
-  END                                            AS plan_id_at_event_date,
-  DATEDIFF('hour', 
-           ultimate_namespace.namespace_created_at, 
-           event_created_at)/24::INTEGER         AS days_since_namespace_creation,
-  DATEDIFF('hour', 
-           ultimate_namespace.namespace_created_at, 
-           event_created_at)/(24 * 7)::INTEGER   AS weeks_since_namespace_creation,
-  DATEDIFF('hour', 
-           project_created_at, 
-           event_created_at)/24::INTEGER         AS days_since_project_creation,
-  DATEDIFF('hour', 
-           project_created_at, 
-           event_created_at)/(24 * 7)::INTEGER   AS weeks_since_project_creation
+  END                                             AS plan_id_at_event_date,
+  CEIL(
+    DATEDIFF('hour', 
+             ultimate_namespace.namespace_created_at, 
+             event_created_at)/24::INTEGER)       AS days_since_namespace_creation,
+  CEIL(
+    DATEDIFF('hour', 
+             ultimate_namespace.namespace_created_at, 
+             event_created_at)/(24 * 7)::INTEGER) AS weeks_since_namespace_creation,
+  CEIL(
+    DATEDIFF('hour', 
+             project_created_at, 
+             event_created_at)/24::INTEGER)       AS days_since_project_creation,
+  CEIL(
+    DATEDIFF('hour', 
+             project_created_at, 
+             event_created_at)/(24 * 7)::INTEGER) AS weeks_since_project_creation
 FROM {{ event_cte.event_name }}
   INNER JOIN projects ON {{ event_cte.event_name }}.{{event_cte.key_to_parent_object}} = projects.project_id
   INNER JOIN namespaces ON projects.namespace_id = namespaces.namespace_id
