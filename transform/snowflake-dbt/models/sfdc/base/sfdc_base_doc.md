@@ -82,8 +82,8 @@ This table contains data on the professional services engagement. Note the API n
 
 {% docs sfdc_quote_source %}
 
-This table contains data on Zuora quotes generated for opportunities. This provides the SSOT mapping between opportunities and subscriptions.
-
+This table contains data on Zuora quotes generated for opportunities. This provides the SSOT mapping between opportunities and subscriptions for quotes where `status = 'Sent to Z-Billing'` and `is_primary_quote = TRUE`
+.
 {% enddocs %}
 
 {% docs sfdc_recordtype_source %}
