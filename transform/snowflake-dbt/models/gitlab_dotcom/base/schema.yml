@@ -398,6 +398,15 @@ models:
       - name: created_at
         tests:
           - not_null
+      - name: state_id
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4]
+      - name: state
+        description: Inferred off of state_id.
+        tests:
+          - not_null
 
   - name: gitlab_dotcom_events
     columns:

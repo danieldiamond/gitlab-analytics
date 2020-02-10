@@ -26,6 +26,15 @@ WITH source AS (
       created_at::TIMESTAMP                         AS created_at,
       updated_at::TIMESTAMP                         AS updated_at,
       title::VARCHAR                                AS epic_title,
+      closed_at::TIMESTAMP                          AS closed_at
+      state_id::INTEGER                             AS state_id,
+      CASE
+        WHEN state_id = 1 THEN 'opened'
+        WHEN state_id = 2 THEN 'closed'
+        WHEN state_id = 3 THEN 'merged'
+        WHEN state_id = 4 THEN 'locked'
+        ELSE NULL
+      END                                           AS state,
       LENGTH(title)::INTEGER                        AS epic_title_length,
       LENGTH(description)::INTEGER                  AS epic_description_length
 
