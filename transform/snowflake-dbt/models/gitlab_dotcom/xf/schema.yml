@@ -243,6 +243,11 @@ models:
         tests:
           - not_null
       - name: event_name
+        tests:
+          - not_null
+      - name: stage_name
+        tests:
+          - not_null
         
   - name: gitlab_dotcom_users_xf
     description: '{{ doc("gitlab_dotcom_users_xf") }}'
