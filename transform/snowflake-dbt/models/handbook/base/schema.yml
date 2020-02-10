@@ -8,3 +8,5 @@ models:
       - name: merge_request_version_diffs
       - name: plain_diff_url_path
       - name: source_branch_name
+  - name: handbook_file_classification_mapping
+    description: This a csv loaded by dbt seed for mapping handbook file paths to divisions/department classifications.
