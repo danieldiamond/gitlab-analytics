@@ -137,6 +137,12 @@ WITH gitlab_subscriptions AS (
   
 )
 
+, version_usage_stats_to_stage_mappings AS (
+  
+  SELECT *
+  FROM {{ ref('version_usage_stats_to_stage_mappings') }}
+)
+
 {% for event_cte in event_ctes %}
 
 , {{ event_cte.event_name }} AS (
@@ -159,26 +165,26 @@ SELECT
   ultimate_namespace.namespace_id, 
   ultimate_namespace.namespace_created_at,
   projects.project_id,
-  projects.created_at                   AS project_created_at,
-  {{ event_cte.event_name }}.created_at AS event_created_at,
-  '{{ event_cte.event_name }}'          AS event_name,
+  projects.created_at                            AS project_created_at,
+  {{ event_cte.event_name }}.created_at          AS event_created_at,
+  '{{ event_cte.event_name }}'                   AS event_name,
   CASE
     WHEN gitlab_subscriptions.is_trial
       THEN 'trial'
     ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
-  END                                   AS plan_id_at_event_date,
+  END                                            AS plan_id_at_event_date,
   DATEDIFF('hour', 
            ultimate_namespace.namespace_created_at, 
-           event_created_at)/24         AS days_since_namespace_creation,
+           event_created_at)/24::INTEGER         AS days_since_namespace_creation,
   DATEDIFF('hour', 
            ultimate_namespace.namespace_created_at, 
-           event_created_at)/(24 * 7)   AS weeks_since_namespace_creation,
+           event_created_at)/(24 * 7)::INTEGER   AS weeks_since_namespace_creation,
   DATEDIFF('hour', 
            project_created_at, 
-           event_created_at)/24         AS days_since_project_creation,
+           event_created_at)/24::INTEGER         AS days_since_project_creation,
   DATEDIFF('hour', 
            project_created_at, 
-           event_created_at)/(24 * 7)   AS weeks_since_project_creation
+           event_created_at)/(24 * 7)::INTEGER   AS weeks_since_project_creation
 FROM {{ event_cte.event_name }}
   INNER JOIN projects ON {{ event_cte.event_name }}.{{event_cte.key_to_parent_object}} = projects.project_id
   INNER JOIN namespaces ON projects.namespace_id = namespaces.namespace_id
@@ -188,6 +194,8 @@ FROM {{ event_cte.event_name }}
     ON ultimate_namespace.namespace_id = gitlab_subscriptions.namespace_id
     AND {{ event_cte.event_name }}.created_at BETWEEN gitlab_subscriptions.valid_from 
     AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
+  LEFT JOIN version_usage_stats_to_stage_mappings
+    ON '{{ event_cte.event_name }}' = version_usage_stats_to_stage_mappings.stats_used_key_name
 
 {% if not loop.last %} 
 UNION
