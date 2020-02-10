@@ -73,7 +73,7 @@ def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
 
 
 branching_dbt_run = BranchPythonOperator(
-    task_id="branching-dbt-run",
+    task_id="dbt-non-product-models-run",
     python_callable=lambda: dbt_run_or_refresh(datetime.now(), dag),
     dag=dag,
 )
@@ -100,7 +100,6 @@ dbt_non_product_models_task = KubernetesPodOperator(
     env_vars=pod_env_vars,
     arguments=[dbt_non_product_models_command],
     dag=dag,
-    trigger_rule=TriggerRule.ALL_DONE,
 )
 
 
@@ -126,7 +125,7 @@ dbt_product_models_task = KubernetesPodOperator(
     env_vars=pod_env_vars,
     arguments=[dbt_product_models_command],
     dag=dag,
-    trigger_rule=TriggerRule.ALL_DONE,
+    trigger_rule=TriggerRule.ALL_DONE,  # Run this even if the non-product model run fails
 )
 
 
@@ -230,8 +229,7 @@ dbt_source_freshness >> branching_dbt_run
 
 # Branching for run
 branching_dbt_run >> dbt_non_product_models_task
-branching_dbt_run >> dbt_product_models_task
-dbt_non_product_models_task >> dbt_snapshots_run
+dbt_non_product_models_task >> dbt_product_models_task
 dbt_product_models_task >> dbt_snapshots_run
 branching_dbt_run >> dbt_full_refresh
 [dbt_product_models_task, dbt_non_product_models_task] >> dbt_test
