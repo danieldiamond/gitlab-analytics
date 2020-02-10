@@ -157,16 +157,6 @@ models:
           tests:
               - not_null
               - unique
-  - name: sfdc_record_type
-    description: base model for SFDC Record Types
-    columns:
-        - name: record_type_id
-          tests:
-              - not_null
-              - unique
-        - name: record_type_name
-          tests:
-              - not_null
   - name: sfdc_professional_services_engagement
     description: base model for SFDC Professional Services Engagements
     columns:
@@ -200,6 +190,26 @@ models:
               - not_null
               - unique
         - name: pov_status
+          tests:
+              - not_null
+  - name: sfdc_quote
+    description: base model for SFDC Zuora Quotes
+    columns:
+        - name: quote_id
+          tests:
+              - not_null
+              - unique
+        - name: owner_id
+          tests:
+              - not_null      
+  - name: sfdc_record_type
+    description: base model for SFDC Record Types
+    columns:
+        - name: record_type_id
+          tests:
+              - not_null
+              - unique
+        - name: record_type_name
           tests:
               - not_null
   - name: sfdc_user_roles

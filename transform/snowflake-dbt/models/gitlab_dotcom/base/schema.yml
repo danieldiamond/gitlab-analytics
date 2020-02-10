@@ -447,6 +447,28 @@ models:
         tests:
           - dbt_utils.expression_is_true:
               expression: "valid_from <= valid_to"
+  
+  - name: gitlab_dotcom_group_group_links
+    description: This table represents groups being shared with groups. {{ doc("scd_type_two_documentation") }}'
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "valid_from <= valid_to"
+    columns:
+      - name: group_group_link_id
+        tests:
+          - not_null
+      - name: shared_group_id
+        tests:
+          - not_null
+      - name: shared_with_group_id
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
 
   - name: gitlab_dotcom_groups
     description: '{{ doc("gitlab_dotcom_groups") }}'
@@ -715,7 +737,17 @@ models:
         description: >-
           This fields queries if the target branch name is "master" and returns
           a boolean
-
+      - name: merge_request_state
+        description: >-
+          The source table has both "state" and "state_id" columns. We use state_id to 
+          infer the "state" string as we found this gives results that match the API and UI.
+        tests:
+          - not_null
+      - name: merge_request_state_id
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4]
   - name: gitlab_dotcom_merge_requests_closing_issues
     description: Base model for Gitlab.com merge requests closing issues
     columns:

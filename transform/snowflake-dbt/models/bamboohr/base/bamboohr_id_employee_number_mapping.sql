@@ -36,4 +36,4 @@ FROM intermediate
 WHERE hire_date IS NOT NULL
     AND (LOWER(first_name) NOT LIKE '%greenhouse test%'
          and LOWER(last_name) NOT LIKE '%test profile%'
-         and LOWER(last_name) != 'test_gitlab')
+         and LOWER(last_name) != 'test-gitlab')

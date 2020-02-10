@@ -22,5 +22,6 @@ sources:
       - name: gitlab_dotcom_members_snapshots
       - name: gitlab_dotcom_namespaces_snapshots
       - name: license_db_licenses_snapshots
+      - name: sfdc_account_snapshots
       - name: sfdc_opportunity_snapshots
       - name: sheetload_employee_location_factor_snapshots

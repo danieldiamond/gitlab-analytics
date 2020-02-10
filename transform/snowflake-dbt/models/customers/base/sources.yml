@@ -28,3 +28,4 @@ sources:
           - name: id
             tests:
               - not_null
+      - name: customers_db_trial_histories

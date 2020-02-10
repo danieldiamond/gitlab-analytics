@@ -881,9 +881,11 @@ roles:
             schemas:
                 read:
                     - raw.version_db_dump_stitch
+                    - raw.license_db_dump
             tables:
                 read:
                     - raw.version_db_dump_stitch.*
+                    - raw.license_db_dump.*
 
     - zuora:
         warehouses:
@@ -1047,6 +1049,11 @@ roles:
             - analyst_xs
 
     - ktam:
+        member_of:
+            - analyst_core
+            - bamboohr
+            - data_manager
+            - greenhouse
         warehouses:
             - engineer_xs
             - engineer_xl
@@ -1141,24 +1148,32 @@ roles:
                     - raw
             schemas:
                 read:
+                    - raw.license_db_dump
                     - raw.salesforce_stitch
                     - raw.stitch_google_sheets
+                    - raw.version_db_dump_stitch
                     - raw.zendesk_stitch
                     - raw.zuora_stitch
                 write:
+                    - raw.license_db_dump
                     - raw.salesforce_stitch
                     - raw.stitch_google_sheets
+                    - raw.version_db_dump_stitch
                     - raw.zendesk_stitch
                     - raw.zuora_stitch
             tables:
                 read:
+                    - raw.license_db_dump.*
                     - raw.salesforce_stitch.*
                     - raw.stitch_google_sheets.*
+                    - raw.version_db_dump_stitch.*
                     - raw.zendesk_stitch.*
                     - raw.zuora_stitch.*
                 write:
+                    - raw.license_db_dump.*
                     - raw.salesforce_stitch.*
                     - raw.stitch_google_sheets.*
+                    - raw.version_db_dump_stitch.*
                     - raw.zendesk_stitch.*
                     - raw.zuora_stitch.*
     
@@ -1354,10 +1369,6 @@ users:
     - ktam:
         can_login: yes
         member_of:
-            - analyst_core
-            - bamboohr
-            - data_manager
-            - greenhouse
             - ktam
 
     - ksmith:

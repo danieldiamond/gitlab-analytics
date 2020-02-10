@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: license
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
-    schema: tap_postgres
+    schema: license_db_dump
     loader: Airflow
 
     quoting:
@@ -13,7 +13,7 @@ sources:
 
     tables:
       - name: add_ons
-        identifier: license_db_add_ons
+        identifier: add_ons
         columns:
           - name: id
             tests:
@@ -26,7 +26,7 @@ sources:
               - not_null
 
       - name: granted_add_ons
-        identifier: license_db_granted_add_ons
+        identifier: granted_add_ons
         columns:
           - name: id
             tests:
@@ -45,7 +45,7 @@ sources:
               - not_null
 
       - name: licenses
-        identifier: license_db_licenses
+        identifier: licenses
         columns:
           - name: id
             tests:

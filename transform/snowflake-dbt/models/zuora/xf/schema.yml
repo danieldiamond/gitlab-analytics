@@ -313,3 +313,7 @@ models:
           - name: account_number
             tests:
                 - not_null 
+          - name: has_auto_renew_on
+            description: is `TRUE` if the zuora subscription has auto-renew turned on. [DOCUMENTATION](https://knowledgecenter.zuora.com/Zuora_Central/Subscriptions/Subscriptions/B_Creating_Subscriptions/Renewing_Subscriptions_Automatically)
+            tests:
+                - not_null

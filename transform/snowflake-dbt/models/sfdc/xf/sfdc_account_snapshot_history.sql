@@ -1,17 +1,17 @@
-{{config({
-    "materialized": "table",
-    "schema": "staging"
-  })
-}}
-
-WITH source AS (
+WITH sfdc_account_snapshots AS (
 
     SELECT *
-    FROM {{ source('salesforce', 'account') }}
+    FROM {{ref('sfdc_account_snapshots_base')}}
 
-), renamed AS (
+), final AS (
 
     SELECT
+      -- keys
+      date_actual,
+      valid_from,
+      valid_to,
+      is_currently_valid,
+      account_snapshot_id,
       id                                         AS account_id,
       name                                       AS account_name,
 
@@ -112,11 +112,13 @@ WITH source AS (
       convert_timezone('America/Los_Angeles',convert_timezone('UTC',current_timestamp())) AS _last_dbt_run,
       systemmodstamp
 
-    FROM source
+    FROM sfdc_account_snapshots
     WHERE id IS NOT NULL
     AND isdeleted = FALSE
 
 )
 
 SELECT *
-FROM renamed
+FROM final
+
+
