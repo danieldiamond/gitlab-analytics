@@ -17,7 +17,7 @@ WITH base AS (
       base.source_branch_name             AS source_branch_name
     FROM base
     INNER JOIN TABLE(FLATTEN(INPUT => file_diffs, outer => true)) AS file_diffs
-    WHERE file_diffs.value:file_path LIKE ANY ('%/handbook/engineering/%', '%/handbook/support/%') 
+    WHERE LOWER(file_diffs.value:file_path) LIKE '%/handbook/%'
 
 ), current_mr_diff AS ( -- keeps only the latest MR diff
 
