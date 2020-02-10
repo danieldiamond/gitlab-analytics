@@ -69,7 +69,7 @@ def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
     if current_weekday == 7 and dag_interval >= current_seconds:
         return "dbt-full-refresh"
     else:
-        return "dbt-non-product-models-run","
+        return "dbt-non-product-models-run"
 
 
 branching_dbt_run = BranchPythonOperator(
