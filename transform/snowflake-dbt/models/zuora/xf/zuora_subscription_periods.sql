@@ -97,9 +97,10 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.subscription_start_date, 
       CASE
         WHEN zuora_rate_plan_charge.effective_start_date < subscription_joined_with_accounts.subscription_start_date
+          AND subscription_joined_with_accounts.subscription_start_date = subscription_joined_with_accounts.subscription_version_term_start_date
           THEN zuora_rate_plan_charge.effective_start_date
         ELSE subscription_joined_with_accounts.subscription_version_term_start_date
-      END subscription_version_term_start_date,
+      END  AS subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
       LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
         ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
