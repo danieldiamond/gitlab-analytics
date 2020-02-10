@@ -24,4 +24,5 @@ sources:
       - name: red_master_stats
         loaded_at_field: uploaded_at
       - name: part_of_product_merge_requests
+        description: '{{ doc("engineering_product_merge_requests") }}'
         loaded_at_field: uploaded_at

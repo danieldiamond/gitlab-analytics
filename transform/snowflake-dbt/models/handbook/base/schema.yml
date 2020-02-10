@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: engineering_handbook_merge_requests
-    description: This table is a base table for merge request data for the handbook GitLab project.
+  - name: handbook_merge_requests
+    description: '{{ doc("handbook_merge_requests") }}'
     columns:
       - name: file_diffs
       - name: merge_request_version_diffs

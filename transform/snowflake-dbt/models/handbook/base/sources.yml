@@ -16,4 +16,5 @@ sources:
 
     tables:
       - name: handbook_merge_requests
+        description: '{{ doc("handbook_merge_requests") }}'
         loaded_at_field: uploaded_at
