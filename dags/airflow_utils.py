@@ -184,6 +184,8 @@ gitlab_pod_env_vars = {
 # Warehouse variable declaration
 xs_warehouse = f"'{{warehouse_name: transforming_xs}}'"
 
+l_warehouse = f"'{{warehouse_name: transforming_l}}'"
+
 clone_repo_cmd = f"git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}"
 
 clone_and_setup_extraction_cmd = f"""

@@ -11,6 +11,7 @@ from airflow_utils import (
     dbt_install_deps_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
+    l_warehouse,
     slack_failed_task,
     xs_warehouse,
 )
@@ -106,7 +107,7 @@ dbt_non_product_models_task = KubernetesPodOperator(
 # run product models on large warehouse
 dbt_product_models_command = f"""
     {dbt_install_deps_and_seed_cmd} &&
-    dbt run --profiles-dir profile --target prod --models tag:product
+    dbt run --profiles-dir profile --target prod --models tag:product --vars {l_warehouse}
 """
 
 dbt_product_models_task = KubernetesPodOperator(
@@ -132,7 +133,7 @@ dbt_product_models_task = KubernetesPodOperator(
 # run snapshots on large warehouse
 dbt_snapshots_command = f"""
     {dbt_install_deps_and_seed_cmd} &&
-    dbt run --profiles-dir profile --target prod --models snapshots
+    dbt run --profiles-dir profile --target prod --models snapshots --vars {l_warehouse}
 """
 
 dbt_snapshots_run = KubernetesPodOperator(
