@@ -15,6 +15,7 @@ from kube_secrets import (
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
+pod_env_vars = {**gitlab_pod_env_vars, **{}}
 
 # Default arguments for the DAG
 default_args = {
