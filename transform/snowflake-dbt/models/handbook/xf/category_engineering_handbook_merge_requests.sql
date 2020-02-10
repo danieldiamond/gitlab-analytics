@@ -15,7 +15,7 @@ WITH mr_diffs AS (
       plain_mr_diff_url_path,
       source_branch_name,
       SPLIT(merge_request_version_url_path, 'diff_id=')[1]::BIGINT AS diff_id
-    FROM {{ ref('handbook_merge_requests') }}
+    FROM {{ ref('handbook_merge_requests_files') }}
 
 ), joined_to_mr AS (
 

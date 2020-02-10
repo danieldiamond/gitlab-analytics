@@ -42,11 +42,4 @@ models:
         tests:
           - not_null
           - unique
-  - name: engineering_handbook_merge_requests
-    description: This table is a base table for merge request data for the handbook GitLab project.
-    columns:
-      - name: file_diffs
-      - name: source_branch_name
-      - name: merge_request_version_diffs
-      - name: plain_diff_url_path
     

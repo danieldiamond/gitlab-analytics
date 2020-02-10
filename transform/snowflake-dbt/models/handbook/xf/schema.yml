@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: category_engineering_handbook_merge_requests
+    description: This is a table of unique merge requests to the handbook along with their categorization of a specific department/division in engineering.
+    columns:
+    - name: merge_request_state
+      tests:
+        - not_null
+    - name: merge_request_edited_at
+      tests:
+        - not_null
+    - name: plain_merge_request_diff_url_path
+      tests:
+        - not_null
+        - unique
+    - name: merge_request_department_list
