@@ -502,6 +502,7 @@ roles:
     - engineer:
         member_of:
             - loader
+            - transformer
         warehouses:
             - airflow_testing_l
             - engineer_xs
