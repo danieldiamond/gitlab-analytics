@@ -733,6 +733,7 @@ roles:
 
     - transformer: # For automated jobs
         warehouses:
+            - airflow_testing_l
             - merge_request_xs
             - merge_request_xl
             - transforming_s
@@ -912,6 +913,7 @@ roles:
 
     - airflow:
         warehouses:
+            - airflow_testing_l
             - gitlab_postgres
             - loading
             - transforming_xs
