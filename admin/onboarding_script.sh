@@ -111,6 +111,9 @@ echo "Installing dbt completion script.."
 curl https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash > ~/.dbt-completion.bash
 echo "dbt completion script successfully installed"
 
+## Add refresh command
+echo "alias dbt_refresh ='dbt clean ; dbt deps ; dbt seed'" >> ~/.bash_profile
+
 ## install anaconda
 echo "Installing anaconda.."
 brew cask install anaconda
