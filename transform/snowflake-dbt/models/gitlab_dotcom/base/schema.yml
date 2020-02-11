@@ -594,6 +594,21 @@ models:
       - name: issue_description
         description: '{{ doc("visibility_documentation") }}'
 
+  - name: gitlab_dotcom_keys
+    description: >-
+      Base model for Gitlab.com keys. All sensitive fields are not included in the manifest.
+    columns:
+      - name: key_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_label_links
     description: 'Base model for Gitlab.com label links. {{ doc("scd_type_two_documentation") }}'
     columns:
