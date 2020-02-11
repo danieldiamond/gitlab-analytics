@@ -291,6 +291,7 @@ Usage:
 ```
 Used in:
 - zuora_rate_plan.sql
+- zuora_subscription_periods.sql
 
 ## Resource Label Action Type([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/gitlab_dotcom/resource_label_action_type.sql))
 This macro maps action type ID to the action type for the `resource_label_events` table.
