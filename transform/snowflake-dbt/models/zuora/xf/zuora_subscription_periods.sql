@@ -95,13 +95,11 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.account_number,
       subscription_joined_with_accounts.account_name,
       subscription_joined_with_accounts.subscription_start_date, 
-      CASE
-        WHEN zuora_rate_plan_charge.effective_start_date < subscription_joined_with_accounts.subscription_start_date
-          AND subscription_joined_with_accounts.subscription_start_date = subscription_joined_with_accounts.subscription_version_term_start_date
-          THEN zuora_rate_plan_charge.effective_start_date
-        ELSE subscription_joined_with_accounts.subscription_version_term_start_date
-      END  AS subscription_version_term_start_date,
+      subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
+      subscription_joined_with_accounts.min_following_subscription_version_term_start_date,
+      MIN(zuora_rate_plan_charge.effective_start_date) OVER 
+        (PARTITION BY subscription_joined_with_accounts.subscription_id) AS min_effective_start_date,
       LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
         ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
       SUM(tcv) OVER (
@@ -114,33 +112,58 @@ WITH zuora_account AS (
         -- remove refunded subscriptions
       AND mrr > 0
       AND tcv > 0
-    WHERE (subscription_version_term_start_date  < min_following_subscription_version_term_start_date
-      OR min_following_subscription_version_term_start_date IS NULL)
-      -- remove cancelled subscription
-      AND (subscription_version_term_end_date != subscription_version_term_start_date
-            OR effective_start_date < subscription_start_date)
+
+)
+
+, subscription_perirod_with_patched_term_start_date AS (
+  
+      SELECT 
+        subscription_id,
+        subscription_name,
+        subscription_name_slugify,    
+        subscription_status, 
+        version,
+        zuora_renewal_subscription_name_slugify,
+        account_id, 
+        account_number,
+        account_name,
+        subscription_start_date, 
+        CASE
+          WHEN min_effective_start_date < subscription_start_date
+            AND subscription_start_date = subscription_version_term_start_date
+            THEN min_effective_start_date
+          ELSE subscription_version_term_start_date
+        END  AS subscription_version_term_start_date,
+        subscription_version_term_end_date,
+        mrr,
+        tcv
+      FROM subscription_joined_with_charges
+      WHERE (subscription_version_term_start_date  < min_following_subscription_version_term_start_date
+        OR min_following_subscription_version_term_start_date IS NULL)
+        -- remove cancelled subscription
+        AND subscription_version_term_start_date != subscription_version_term_end_date
       
 )
 
 SELECT 
-  subscription_joined_with_charges.*,
+  subscription_perirod_with_patched_term_start_date.*,
   COALESCE(subscription_with_valid_auto_renew_setting.last_auto_renew, 
     FALSE)                                AS has_auto_renew_on,
   CASE
     -- manual linked subscription
-    WHEN subscription_joined_with_charges.zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
+    WHEN subscription_perirod_with_patched_term_start_date.zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
     -- new version available, got renewed
-    WHEN LEAD(subscription_joined_with_charges.subscription_name_slugify) 
+    WHEN LEAD(subscription_perirod_with_patched_term_start_date.subscription_name_slugify) 
           OVER (
-            PARTITION BY subscription_joined_with_charges.subscription_name_slugify 
+            PARTITION BY subscription_perirod_with_patched_term_start_date.subscription_name_slugify 
             ORDER BY version
           ) IS NOT NULL
       THEN TRUE
     ELSE FALSE
   END                                     AS is_renewed
-FROM subscription_joined_with_charges
+FROM subscription_perirod_with_patched_term_start_date
 LEFT JOIN subscription_with_valid_auto_renew_setting
-  ON subscription_joined_with_charges.subscription_name_slugify = subscription_with_valid_auto_renew_setting.subscription_name_slugify
-  AND subscription_joined_with_charges.subscription_version_term_start_date = subscription_with_valid_auto_renew_setting.term_start_date
-  AND subscription_joined_with_charges.subscription_version_term_end_date = subscription_with_valid_auto_renew_setting.term_end_date
+  ON subscription_perirod_with_patched_term_start_date.subscription_name_slugify = subscription_with_valid_auto_renew_setting.subscription_name_slugify
+  AND subscription_perirod_with_patched_term_start_date.subscription_version_term_start_date = subscription_with_valid_auto_renew_setting.term_start_date
+  AND subscription_perirod_with_patched_term_start_date.subscription_version_term_end_date = subscription_with_valid_auto_renew_setting.term_end_date
 ORDER BY subscription_start_date, version
