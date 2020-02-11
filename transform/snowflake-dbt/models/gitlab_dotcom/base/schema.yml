@@ -595,8 +595,7 @@ models:
         description: '{{ doc("visibility_documentation") }}'
 
   - name: gitlab_dotcom_keys
-    description: >-
-      Base model for Gitlab.com keys. All sensitive fields are not included in the manifest.
+    description: Base model for Gitlab.com keys. All sensitive fields are not included in the manifest.
     columns:
       - name: key_id
         tests:
