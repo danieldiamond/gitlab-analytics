@@ -40,7 +40,7 @@ container_cmd = f"""
     meltano init airflow_job &&
     cp analytics/load/snowflake/roles.yml airflow_job/load/roles.yml &&
     cd airflow_job/ &&
-    meltano permissions grant load/roles.yml --db snowflake --dry
+    meltano permissions grant load/roles.yml --db snowflake
 """
 
 # Create the DAG

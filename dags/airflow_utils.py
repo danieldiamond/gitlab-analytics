@@ -10,7 +10,7 @@ from airflow.operators.slack_operator import SlackAPIPostOperator
 REPO = "https://gitlab.com/gitlab-data/analytics.git"
 DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
 DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
-MELTANO_IMAGE = "registry.gitlab.com/gitlab-data/data-image/meltano-image:82-upgrade-meltano"
+MELTANO_IMAGE = "registry.gitlab.com/meltano/meltano:v1.20.0"
 
 
 def split_date_parts(day: date, partition: str) -> List[dict]:
