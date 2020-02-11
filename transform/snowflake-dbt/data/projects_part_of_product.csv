@@ -4,6 +4,7 @@ gitlab-org/charts/auto-deploy-app,11915984
 gitlab-org/charts/deploy-image-helm-base,7453181
 gitlab-org/charts/gitlab,3828396
 gitlab-org/charts/gitlab-runner,6329679
+gitlab-org/charts/knative,16590122
 gitlab-org/ci-cd/custom-executors/autoscaler,13815397
 gitlab-org/ci-cd/docker-machine,1254421
 gitlab-org/ci-cd/gcp-exporter,5279538
@@ -69,6 +70,7 @@ gitlab-org/project-templates/rails,3844141
 gitlab-org/project-templates/react,11380952
 gitlab-org/project-templates/salesforcedx,13331704
 gitlab-org/project-templates/spring,3842996
+gitlab-org/project-templates/serverless-framework,15112583
 gitlab-org/prometheus-client-mmap,3362933
 gitlab-org/prometheus-storage-migrator,4949400
 gitlab-org/security-products/analyzers/bundler-audit,9358979
@@ -164,3 +166,4 @@ gitlab-org/security/gitlab-foss,15683922
 gitlab-org/security/omnibus-gitlab,15667093
 gitlab-org/security/gitlab,15642544
 gitlab-org/defend/general,15234689
+gitlab-org/configure/general,13454093
