@@ -8,7 +8,7 @@ from airflow_utils import (
     clone_repo_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
-    slack_failed_task
+    slack_failed_task,
 )
 from kube_secrets import (
     PERMISSION_BOT_ACCOUNT,
