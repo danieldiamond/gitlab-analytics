@@ -95,8 +95,13 @@ Failure in test relationships_snowplow_web_events_time_page_view_id__page_view_i
 
 This test makes sure there are no current employees who don't have a division, department, or cost center.
 The output is the row for the employee which does not have a department or division.
-If this test fails, ping the People Operations team with the employee's name.
-You will need to temporarily filter out the problematic candidate while it is resolved upstream.
+If this test fails:
+
+* Step 1: Run the chatops command `/gitlab datachat run current_depts_and_divs` from Slack to see the test results in Slack.
+* Step 2: Ping the People Operations team with the employee's name.
+* Step 3: Filter out the employee name from the test while it is resolved upstream. Create a subsequent issue around unfiltering the employee, add the `People` label and assign it to the next milestone.
+* Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
+
 Alternatively, it's possible the cost center is missing from the csv file (loaded using dbt seed).
 
 ### Test: no_missing_location_factors
