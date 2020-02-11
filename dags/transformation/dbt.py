@@ -70,7 +70,7 @@ def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
     if current_weekday == 7 and dag_interval >= current_seconds:
         return "dbt-full-refresh"
     else:
-        return "dbt-non-product-models-run"
+        return "dbt-snapshots-run"
 
 
 branching_dbt_run = BranchPythonOperator(
@@ -229,9 +229,6 @@ dbt_test = KubernetesPodOperator(
 dbt_source_freshness >> branching_dbt_run
 
 # Branching for run
-branching_dbt_run >> dbt_non_product_models_task
-dbt_non_product_models_task >> dbt_product_models_task
-dbt_product_models_task >> dbt_snapshots_run
-branching_dbt_run >> dbt_full_refresh
-dbt_product_models_task >> dbt_test
-dbt_full_refresh >> dbt_test
+branching_dbt_run >> dbt_snapshots_run >> dbt_non_product_models_task >> dbt_product_models_task >> dbt_test
+
+branching_dbt_run >> dbt_full_refresh >> dbt_test
