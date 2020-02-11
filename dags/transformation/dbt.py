@@ -43,7 +43,7 @@ default_args = {
     "sla": timedelta(hours=8),
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
-    "trigger_rule": "all_done",
+    "trigger_rule": TriggerRule.ALL_DONE,
 }
 
 # Create the DAG
@@ -126,7 +126,6 @@ dbt_product_models_task = KubernetesPodOperator(
     env_vars=pod_env_vars,
     arguments=[dbt_product_models_command],
     dag=dag,
-    trigger_rule=TriggerRule.ALL_DONE,  # Run this even if the non-product model run fails
 )
 
 
