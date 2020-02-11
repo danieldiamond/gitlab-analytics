@@ -47,7 +47,6 @@ WITH sfdc_account_snapshots AS (
                                                  AS ultimate_parent_account_id,
       type                                       AS account_type,
       industry                                   AS industry,
-      product_category__c                        AS product_category,
       account_tier__c                            AS account_tier,
       customer_since__c::DATE                    AS customer_since_date,
       carr_total__c                              AS carr_total,
