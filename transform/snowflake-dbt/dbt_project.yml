@@ -132,6 +132,9 @@ models:
         schema: sensitive
       rpt:
         schema: analytics
+    
+    handbook:
+        materialized: table
 
     marts:
       revenue:

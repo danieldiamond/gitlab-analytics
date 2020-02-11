@@ -33,7 +33,7 @@ models:
       - name: karma_coverage_absolute
       - name: karma_coverage_total
   - name: engineering_part_of_product_merge_requests
-    description: This table is a base table for merge request data for projects that are part of product.
+    description: '{{ doc("engineering_product_merge_requests") }}'
     columns:
       - name: added_lines
       - name: real_size
@@ -42,5 +42,4 @@ models:
         tests:
           - not_null
           - unique
-        
     

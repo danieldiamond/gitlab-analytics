@@ -25,3 +25,11 @@ The data is available via [this link](https://gitlab.com/gitlab-org/security-pro
 There are two columns in CSV file representing respectively NVD feed publication year and NVD feed size (i.e, number of contained CVEs).
 
 {% enddocs %}
+
+{% docs engineering_product_merge_requests %}
+
+This data is first gathered by getting the CSV located in the data project [here](https://gitlab.com/gitlab-data/analytics/raw/master/transform/snowflake-dbt/data/projects_part_of_product.csv).  The CSV data is then parsed to get each project id that is part of the product.  The GitLab API is then hit to get all information about the merge requests that are part of each project.
+
+The data eventually made available through dbt currently only involves numbers of lines and files changed by the merge request.
+
+{% enddocs %}

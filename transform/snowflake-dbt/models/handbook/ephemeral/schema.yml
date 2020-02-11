@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: engineering_specific_handbook_merge_requests
+    description: This table contains each handbook file changed on its own line and contains the most recent MR version.
+    columns:
+    - name: handbook_file_edited
+    - name: merge_request_version_url_path
+    - name: plain_mr_diff_url_path
+    - name: source_branch_name
