@@ -60,3 +60,17 @@ models:
                     'percent_of_accepted_offers', 
                     'percent_of_applicants', 
                     'percent_of_extended_offers']
+  - name: rpt_greenhouse_offer_stage
+    description: This report provides a breakdown of how many candidates we expect to start in North America. 
+    columns: 
+    - name: start_week
+      description: The week the candidate is expected to start. We've aggregated to week level to help with onboarding.
+    - name: geographic_region
+      description: The report currently pulls for candidates expected to start in North America, and is our start case to determine if the report helps with onboarding.
+      tests:
+        - accepted_values: 
+            values: ['North America']
+    - name: candidates_estimated_to_start
+      description: This is a total count of all the candidates we have sent an offer to.
+    - name: accepted_offers_to_start
+      description: This is a count of the candidates that have accepted the offer. This will be the true count for what we will have to prepare for, whereas the candidates_estimated_to_start provides an idea of how many overall we may see.                    
