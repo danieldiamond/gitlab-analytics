@@ -1,4 +1,4 @@
-WITH gh_offers AS (
+WITH greenhouse_offers AS (
   
     SELECT *
     FROM {{ref('greenhouse_offers')}}
