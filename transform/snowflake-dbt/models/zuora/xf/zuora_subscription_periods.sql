@@ -100,7 +100,7 @@ WITH zuora_account AS (
       LAST_VALUE(product_category) OVER (
         PARTITION BY subscription_joined_with_accounts.subscription_id 
         ORDER BY zuora_rate_plan_charge.effective_start_date)          AS latest_product_category,
-      {{ delivery('latetst_product_category', 'latest_delivery')}},
+      {{ delivery('latest_product_category', 'latest_delivery')}},
       LAST_VALUE(mrr) OVER (
         PARTITION BY subscription_joined_with_accounts.subscription_id 
         ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
