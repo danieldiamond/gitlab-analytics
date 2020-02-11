@@ -3,7 +3,7 @@ WITH greenhouse_offers AS (
     SELECT *
     FROM {{ref('greenhouse_offers')}}
 
-), gh_applications AS (
+), greenhouse_applications AS (
     
     SELECT *
     FROM {{ref('greenhouse_applications')}}
