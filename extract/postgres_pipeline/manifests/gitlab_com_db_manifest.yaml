@@ -855,6 +855,20 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'issue_metrics'
     export_table_primary_key: id
+  keys:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , user_id
+      , created_at
+      , updated_at
+      , type
+      , public
+      , last_used_at
+      FROM keys
+    export_schema: 'gitlab_com'
+    export_table: 'keys'
+    export_table_primary_key: id
   label_links:
     import_db: GITLAB_DB
     import_query: >

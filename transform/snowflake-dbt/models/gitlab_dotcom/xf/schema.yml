@@ -48,21 +48,6 @@ models:
           - accepted_values:
                       values: ['Commit', 'Epic', 'Issue', 'MergeRequest', 'Snippet', 'Wiki', 'DesignManagement::Design']
 
-  - name: gitlab_dotcom_group_audit_events_monthly
-    description: '{{ doc("gitlab_dotcom_group_audit_events_monthly") }}'
-    columns:
-      - name: group_id
-        tests:
-          - not_null
-      - name: audit_events_count
-        description: The number of audit_events captured for the user during that month.
-        tests:
-          - not_null
-      - name: months_since_creation_date
-        description: Reflects the number of months between when a user joined and the month of the audit event(s).
-        tests:
-          - not_null
-
   - name: gitlab_dotcom_issues_xf
     description: '{{ doc("gitlab_dotcom_issues_xf") }}'
     columns:
