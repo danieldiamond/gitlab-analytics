@@ -31,5 +31,6 @@ WITH base AS (
     WHERE mr_diffs.value:latest::BOOLEAN
 
 )
+
 SELECT * 
 FROM current_mr_diff

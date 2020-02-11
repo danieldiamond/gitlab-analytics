@@ -1,6 +1,6 @@
 {% docs handbook_merge_requests %}
 
-This data is gathered by hitting the GitLab API for project 7764, which includes the handbook.  
+This data is gathered by hitting the GitLab API for [project 7764](https://gitlab.com/gitlab-com/www-gitlab-com/), which includes the handbook.  
 
 All merge request data is pulled for this project, and becomes part of the source for handbook_merge_requests.
 

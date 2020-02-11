@@ -33,11 +33,11 @@ WITH mr_diffs AS (
       file_classifications.file_classification  AS file_classification
     FROM mr_files
     INNER JOIN mr_diffs
-      ON ( mr_diffs.merge_request_diff_id = mr_files.diff_id)
+      ON mr_diffs.merge_request_diff_id = mr_files.diff_id
     INNER JOIN merge_requests
-      ON ( mr_diffs.merge_request_id = merge_requests.merge_request_id)
+      ON mr_diffs.merge_request_id = merge_requests.merge_request_id
     INNER JOIN file_classifications
-      ON ( LOWER(mr_files.handbook_file_edited) LIKE '%' || file_classifications.handbook_path || '%' )
+      ON LOWER(mr_files.handbook_file_edited) LIKE '%' || file_classifications.handbook_path || '%' 
 
 ), renamed AS (
 
