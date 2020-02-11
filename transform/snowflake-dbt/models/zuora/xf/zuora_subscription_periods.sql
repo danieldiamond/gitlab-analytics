@@ -97,10 +97,12 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.subscription_start_date,
       subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
-      LAST_VALUE(product_category) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
-        ORDER BY zuora_rate_plan_charge.effective_start_date)          AS latetst_product_category,
+      LAST_VALUE(product_category) OVER (
+        PARTITION BY subscription_joined_with_accounts.subscription_id 
+        ORDER BY zuora_rate_plan_charge.effective_start_date)          AS latest_product_category,
       {{ delivery('latetst_product_category', 'latest_delivery')}},
-      LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
+      LAST_VALUE(mrr) OVER (
+        PARTITION BY subscription_joined_with_accounts.subscription_id 
         ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
       SUM(tcv) OVER (
         PARTITION BY subscription_joined_with_accounts.subscription_id) AS tcv
