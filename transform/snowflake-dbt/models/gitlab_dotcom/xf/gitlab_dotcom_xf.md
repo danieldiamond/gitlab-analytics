@@ -178,6 +178,8 @@ Currently, the following tables are included in the model:
 * gitlab_dotcom_snippets
 * gitlab_dotcom_todos
 
+A `stage_name` column is also added leveraging the seeded csv file `version_usage_stats_to_stage_mappings.csv`. When the event_name is not in the csv file, we add a condition to the case statement.
+
 {% enddocs %}
 
 {% docs gitlab_dotcom_users_xf%}
