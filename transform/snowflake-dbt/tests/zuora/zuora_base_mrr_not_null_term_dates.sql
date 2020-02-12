@@ -2,7 +2,7 @@ WITH row_count_calc AS (
 
   SELECT 
     COUNT(*)
-  FROM {{ ref('zuora_subscription_periods') }}
+  FROM {{ ref('zuora_base_mrr') }}
   WHERE 
     (
       subscription_version_term_start_date IS NULL OR
