@@ -7,8 +7,8 @@ WITH date_details AS (
       'join'                                                               AS join_field  
     FROM {{ ref ('date_details') }}
     WHERE date_actual <= {{max_date_in_bamboo_analyses()}}
-    AND day_of_month = 1 
-    AND date_actual >= '2018-09-01' -- 1st date we started capturing eeoc data
+      AND day_of_month = 1 
+      AND date_actual >= '2018-09-01' -- 1st date we started capturing eeoc data
 
 ), applications AS (
     
@@ -22,20 +22,20 @@ WITH date_details AS (
   
 ), eeoc AS (
 
-        {{ dbt_utils.unpivot(
-        relation=ref('greenhouse_eeoc_responses'),
-        cast_to='varchar',
-        exclude=['application_id'],
-        remove=['eeoc_response_submitted_at'],
-        field_name='eeoc_field_name',
-        value_name='eeoc_values'
-        ) }}
+      {{ dbt_utils.unpivot(
+      relation=ref('greenhouse_eeoc_responses'),
+      cast_to='varchar',
+      exclude=['application_id'],
+      remove=['eeoc_response_submitted_at'],
+      field_name='eeoc_field_name',
+      value_name='eeoc_values'
+      ) }}
 
 ), eeoc_fields AS (
 
-    SELECT 
-      DISTINCT eeoc_field_name                                  AS eeoc_field_name,
-      'join'                                                    AS join_field
+    SELECT DISTINCT 
+      eeoc_field_name                                  AS eeoc_field_name,
+      'join'                                           AS join_field
     FROM eeoc
 
 ), base AS (
@@ -52,11 +52,11 @@ WITH date_details AS (
     SELECT 
       base.*,
       applications.candidate_id,
-      iff(eeoc_values in ('I don''t wish to answer','Decline To Self Identify'), 
+      IFF(eeoc_values in ('I don''t wish to answer','Decline To Self Identify'), 
             'Did Not Identify',
-            coalesce(eeoc_values, 'Did Not Identify'))                                  AS eeoc_values,
+            COALESCE(eeoc_values, 'Did Not Identify'))                                  AS eeoc_values,
       COUNT(DISTINCT(applications.application_id))                                      AS total_applications,
-      sum(iff(offers.offer_status = 'accepted',1,0))                                    AS accepted_offer
+      SUM(IFF(offers.offer_status = 'accepted',1,0))                                    AS accepted_offer
     FROM applications
     LEFT JOIN base
       ON date_trunc('month',applications.applied_at) = base.month_date
@@ -66,7 +66,7 @@ WITH date_details AS (
     LEFT JOIN offers
       ON applications.application_id = offers.application_id 
     WHERE base.month_date IS NOT NULL
-    group by 1,2,3,4
+    GROUP BY 1,2,3,4
 
 ), offers_aggregated AS (
   
@@ -74,9 +74,9 @@ WITH date_details AS (
       base.*,
       candidate_id,
       offer_id,
-      iff(eeoc_values in ('I don''t wish to answer','Decline To Self Identify'), 
+      IFF(eeoc_values IN ('I don''t wish to answer','Decline To Self Identify'), 
             'Did Not Identify',
-            coalesce(eeoc_values, 'Did Not Identify'))                              AS eeoc_values,
+            COALESCE(eeoc_values, 'Did Not Identify'))                              AS eeoc_values,
       IFF(offer_status = 'accepted',1,0)                                            AS accepted_offer,
       IFF(offer_status ='accepted',
             DATEDIFF('day', applications.applied_at, offers.sent_at),
@@ -106,7 +106,7 @@ WITH date_details AS (
     SELECT 
       {{repeated_column_names}},
       SUM(accepted_offer)/COUNT(DISTINCT(candidate_id))                     AS metric_total,             
-      'applicaton_to_offer_percent'                                         AS recruiting_metric 
+      'application_to_offer_percent'                                         AS recruiting_metric 
     FROM candidates_aggregated
     GROUP BY 1,2,3  
 

@@ -3,33 +3,13 @@ import sys
 from os import environ as env
 from time import time
 
-from gitlabdata.orchestration_utils import snowflake_engine_factory
+from gitlabdata.orchestration_utils import (
+    dataframe_uploader,
+    dataframe_enricher,
+    snowflake_engine_factory,
+)
 import pandas as pd
 from sqlalchemy.engine.base import Engine
-
-
-def dataframe_uploader(
-    dataframe: pd.DataFrame, engine: Engine, table_name: str, schema_name: str
-) -> None:
-    """
-    Append a dataframe to existing, adding in some metadata and cleaning up along the way.
-    """
-
-    dataframe["_uploaded_at"] = time()  # Add an uploaded_at column
-    dataframe = dataframe.applymap(
-        lambda x: x if not isinstance(x, dict) else str(x)
-    )  # convert dict to str to avoid snowflake errors
-    dataframe = dataframe.applymap(
-        lambda x: x[:4_194_304] if isinstance(x, str) else x
-    )  # shorten strings that are too long
-    dataframe.to_sql(
-        name=table_name,
-        con=engine,
-        schema=schema_name,
-        index=False,
-        if_exists="append",
-        chunksize=10000,
-    )
 
 
 def single_query_upload(query: str, table_name: str) -> pd.DataFrame:

@@ -10,6 +10,7 @@ from airflow.operators.slack_operator import SlackAPIPostOperator
 REPO = "https://gitlab.com/gitlab-data/analytics.git"
 DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
 DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
+MELTANO_IMAGE = "registry.gitlab.com/meltano/meltano:v1.20.0"
 
 
 def split_date_parts(day: date, partition: str) -> List[dict]:
@@ -183,6 +184,8 @@ gitlab_pod_env_vars = {
 
 # Warehouse variable declaration
 xs_warehouse = f"'{{warehouse_name: transforming_xs}}'"
+
+l_warehouse = f"'{{warehouse_name: transforming_l}}'"
 
 clone_repo_cmd = f"git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}"
 

@@ -502,6 +502,7 @@ roles:
     - engineer:
         member_of:
             - loader
+            - transformer
         warehouses:
             - airflow_testing_l
             - engineer_xs
@@ -733,6 +734,7 @@ roles:
 
     - transformer: # For automated jobs
         warehouses:
+            - airflow_testing_l
             - merge_request_xs
             - merge_request_xl
             - transforming_s
@@ -912,6 +914,7 @@ roles:
 
     - airflow:
         warehouses:
+            - airflow_testing_l
             - gitlab_postgres
             - loading
             - transforming_xs
@@ -1049,6 +1052,11 @@ roles:
             - analyst_xs
 
     - ktam:
+        member_of:
+            - analyst_core
+            - bamboohr
+            - data_manager
+            - greenhouse
         warehouses:
             - engineer_xs
             - engineer_xl
@@ -1364,10 +1372,6 @@ users:
     - ktam:
         can_login: yes
         member_of:
-            - analyst_core
-            - bamboohr
-            - data_manager
-            - greenhouse
             - ktam
 
     - ksmith:

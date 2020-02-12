@@ -91,15 +91,27 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.subscription_status, 
       subscription_joined_with_accounts.version,
       subscription_joined_with_accounts.zuora_renewal_subscription_name_slugify,
+      GET(subscription_joined_with_accounts.zuora_renewal_subscription_name_slugify, 
+          0)::VARCHAR                                                    AS zuora_next_renewal_subscription_name_slugify,
       subscription_joined_with_accounts.account_id, 
       subscription_joined_with_accounts.account_number,
       subscription_joined_with_accounts.account_name,
       subscription_joined_with_accounts.subscription_start_date, 
       subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
+<<<<<<< HEAD
       subscription_joined_with_accounts.min_following_subscription_version_term_start_date,
       LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
         ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
+=======
+      LAST_VALUE(product_category) OVER (
+        PARTITION BY subscription_joined_with_accounts.subscription_id 
+        ORDER BY zuora_rate_plan_charge.effective_start_date)           AS latest_product_category,
+      {{ delivery('latest_product_category', 'latest_delivery')}},
+      LAST_VALUE(mrr) OVER (
+        PARTITION BY subscription_joined_with_accounts.subscription_id 
+        ORDER BY zuora_rate_plan_charge.effective_start_date)           AS mrr,
+>>>>>>> master
       SUM(tcv) OVER (
         PARTITION BY subscription_joined_with_accounts.subscription_id) AS tcv
     FROM subscription_joined_with_accounts
@@ -117,6 +129,26 @@ WITH zuora_account AS (
 
 )
 
+, subscription_with_renewals AS (
+  
+    /* 
+    select the next renewal subscription name slugify, 
+    look up the mrr of the subscription period that comes right after (the one with the lowest version number)
+    account_id = '2c92a0ff55a0e4940155c01a0ab36854' is a good example
+    */
+    SELECT DISTINCT
+      subscription_joined_with_charges.subscription_id,
+      subscription_joined_with_charges.subscription_name_slugify,
+      FIRST_VALUE(renewed_subscription.mrr) OVER (
+        PARTITION BY subscription_joined_with_charges.subscription_name_slugify
+        ORDER BY renewed_subscription.version
+      ) AS mrr_from_renewal_subscription
+    FROM subscription_joined_with_charges
+    INNER JOIN subscription_joined_with_charges AS renewed_subscription
+      ON subscription_joined_with_charges.zuora_next_renewal_subscription_name_slugify = renewed_subscription.subscription_name_slugify
+    
+)
+
 SELECT 
   subscription_joined_with_charges.*,
   COALESCE(subscription_with_valid_auto_renew_setting.last_auto_renew, 
@@ -125,17 +157,21 @@ SELECT
     -- manual linked subscription
     WHEN subscription_joined_with_charges.zuora_renewal_subscription_name_slugify IS NOT NULL THEN TRUE
     -- new version available, got renewed
-    WHEN LEAD(subscription_joined_with_charges.subscription_name_slugify) 
-          OVER (
-            PARTITION BY subscription_joined_with_charges.subscription_name_slugify 
-            ORDER BY version
-          ) IS NOT NULL
+    WHEN LEAD(subscription_joined_with_charges.subscription_name_slugify) OVER (PARTITION BY subscription_joined_with_charges.subscription_name_slugify ORDER BY version) IS NOT NULL
       THEN TRUE
     ELSE FALSE
-  END                                     AS is_renewed
+  END                                              AS is_renewed,
+  COALESCE(
+    LEAD(subscription_joined_with_charges.mrr) OVER (
+      PARTITION BY subscription_joined_with_charges.subscription_name_slugify
+      ORDER BY version
+    ),
+  subscription_with_renewals.mrr_from_renewal_subscription, 0) AS mrr_from_renewal_subscription
 FROM subscription_joined_with_charges
 LEFT JOIN subscription_with_valid_auto_renew_setting
   ON subscription_joined_with_charges.subscription_name_slugify = subscription_with_valid_auto_renew_setting.subscription_name_slugify
   AND subscription_joined_with_charges.subscription_version_term_start_date = subscription_with_valid_auto_renew_setting.term_start_date
   AND subscription_joined_with_charges.subscription_version_term_end_date = subscription_with_valid_auto_renew_setting.term_end_date
+LEFT JOIN subscription_with_renewals 
+  ON subscription_joined_with_charges.subscription_id = subscription_with_renewals.subscription_id
 ORDER BY subscription_start_date, version
