@@ -99,11 +99,6 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.subscription_start_date, 
       subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
-<<<<<<< HEAD
-      subscription_joined_with_accounts.min_following_subscription_version_term_start_date,
-      LAST_VALUE(mrr) OVER (PARTITION BY subscription_joined_with_accounts.subscription_id 
-        ORDER BY zuora_rate_plan_charge.effective_start_date)          AS mrr,
-=======
       LAST_VALUE(product_category) OVER (
         PARTITION BY subscription_joined_with_accounts.subscription_id 
         ORDER BY zuora_rate_plan_charge.effective_start_date)           AS latest_product_category,
@@ -111,7 +106,6 @@ WITH zuora_account AS (
       LAST_VALUE(mrr) OVER (
         PARTITION BY subscription_joined_with_accounts.subscription_id 
         ORDER BY zuora_rate_plan_charge.effective_start_date)           AS mrr,
->>>>>>> master
       SUM(tcv) OVER (
         PARTITION BY subscription_joined_with_accounts.subscription_id) AS tcv
     FROM subscription_joined_with_accounts
