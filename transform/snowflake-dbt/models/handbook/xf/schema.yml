@@ -14,9 +14,7 @@ models:
       tests: 
         - unique
         - not_null
-    - name: merge_request_last_edited_at\
-      tests:
-        - not_null
+    - name: merge_request_last_edited_at
     - name: merge_request_merged_at
     - name: merge_request_state
       tests:
@@ -37,9 +35,7 @@ models:
       tests: 
         - unique
         - not_null
-    - name: merge_request_last_edited_at\
-      tests:
-        - not_null
+    - name: merge_request_last_edited_at
     - name: merge_request_merged_at
     - name: merge_request_state
       tests:
