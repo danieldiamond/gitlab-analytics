@@ -29,7 +29,7 @@ WITH greenhouse_offers AS (
       candidate_country,
       IFF(LOWER(LEFT(candidate_country,12))= 'united state', 
           'North America',
-          COALESCE(z1.geographic_region,z2.geographic_region, z3.geographic_region))       AS geographic_region      
+          COALESCE(z1.geographic_region,z2.geographic_region, z3.geographic_region, candidate_country))       AS geographic_region      
     FROM greenhouse_offer_custom_fields
     LEFT JOIN zuora_regions z1 
       ON LOWER(z1.country_name_in_zuora) = LOWER(greenhouse_offer_custom_fields.candidate_country)
