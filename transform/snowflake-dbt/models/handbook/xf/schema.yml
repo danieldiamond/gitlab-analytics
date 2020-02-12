@@ -1,17 +1,49 @@
 version: 2
 
 models:
-  - name: category_engineering_handbook_merge_requests
-    description: This is a table of unique merge requests to the handbook along with their categorization of a specific department/division in engineering.
+  - name: category_handbook_engineering_merge_requests
+    description: This table just filters category_handbook_merge_requests to only include engineering and support related MRs.
     columns:
-    - name: merge_request_department_list
-    - name: merge_request_edited_at
+    - name: merge_request_created_at
       tests:
         - not_null
+    - name: merge_request_department_list
+      tests:
+        - not_null
+    - name: merge_request_iid
+      tests: 
+        - unique
+        - not_null
+    - name: merge_request_last_edited_at\
+      tests:
+        - not_null
+    - name: merge_request_merged_at
     - name: merge_request_state
       tests:
         - not_null
-    - name: plain_merge_request_diff_url_path
+    - name: merge_request_updated_at
       tests:
         - not_null
+  - name: category_handbook_merge_requests
+    description: This is a table of unique merge requests to the handbook along with their categorization of a specific department/division in engineering.
+    columns:
+    - name: merge_request_created_at
+      tests:
+        - not_null
+    - name: merge_request_department_list
+      tests:
+        - not_null
+    - name: merge_request_iid
+      tests: 
         - unique
+        - not_null
+    - name: merge_request_last_edited_at\
+      tests:
+        - not_null
+    - name: merge_request_merged_at
+    - name: merge_request_state
+      tests:
+        - not_null
+    - name: merge_request_updated_at
+      tests:
+        - not_null

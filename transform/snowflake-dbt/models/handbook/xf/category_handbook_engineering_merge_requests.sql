@@ -1,3 +1,7 @@
+{{ config({
+    "materialized": "view"
+    })
+}}
 WITH handbook_categories AS (
 
     SELECT *

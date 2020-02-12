@@ -26,7 +26,7 @@ WITH merge_requests AS (
       merge_requests.merge_request_last_edited_at                      AS merge_request_last_edited_at,
       merge_requests.merged_at                                         AS merge_request_merged_at,
       mr_files.merge_request_iid                                       AS merge_request_iid,
-      IFNULL(file_classifications.file_classification, 'UNCLASSIFIED') AS file_classification
+      IFNULL(file_classifications.file_classification, 'unclassified') AS file_classification
     FROM mr_files
     INNER JOIN merge_requests
       ON mr_files.merge_request_iid = merge_requests.merge_request_iid AND merge_requests.project_id = 7764 --handbook project
