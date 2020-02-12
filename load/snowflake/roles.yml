@@ -1085,6 +1085,13 @@ roles:
             - analyst_l
             - analyst_xl
 
+    - msendal:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting    
+
     - mvilain:
         warehouses:
             - analyst_xs
@@ -1397,6 +1404,12 @@ users:
         member_of:
             - mrodriguez
             - reporter
+
+    - msendal:
+        can_login: yes
+        member_of:
+            - engineer
+            - msendal
 
     - mvilain:
         can_login: yes
