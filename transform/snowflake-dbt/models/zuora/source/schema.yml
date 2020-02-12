@@ -20,6 +20,16 @@ models:
       description: Ephemeral layer for Zuora Invoices for cleaning and renaming
     - name: zuora_invoice_item_source
       description: Ephemeral layer for Zuora Invoice Items for cleaning and renaming
+    - name: zuora_invoice_payment_source
+      description: Source layer for Zuora Products for cleaning and renaming
+      columns:
+          - name: invoice_payment_id
+            tests:
+                - not_null
+                - unique
+          - name: invoice_id
+            tests:
+                - not_null
     - name: zuora_product_source
       description: Ephemeral layer for Zuora Products for cleaning and renaming
       columns:
