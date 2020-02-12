@@ -41,19 +41,19 @@ WITH greenhouse_offers AS (
 ), data_set AS (
 
     SELECT 
-      gh_offers.offer_id,
+      greenhouse_offers.offer_id,
       application_status, 
       stage_name, 
       offer_status,
-      gh_offers.created_at,
-      gh_offers.sent_at,
-      gh_offers.start_date,
+      greenhouse_offers.created_at,
+      greenhouse_offers.sent_at,
+      greenhouse_offers.start_date,
       geographic_region
-    FROM gh_offers 
-    INNER JOIN gh_applications 
-      ON gh_offers.application_id = gh_applications.application_id
+    FROM greenhouse_offers
+    INNER JOIN greenhouse_applications 
+      ON greenhouse_offers.application_id = greenhouse_applications.application_id
     INNER JOIN location_cleaned
-      ON location_cleaned.offer_id = gh_offers.offer_id
+      ON location_cleaned.offer_id = greenhouse_offers.offer_id
 
 ), final AS (
 
