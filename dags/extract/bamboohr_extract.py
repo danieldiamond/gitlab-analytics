@@ -69,5 +69,6 @@ bamboohr_extract = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     arguments=[bamboohr_extract_cmd],
+    do_xcom_push=True,
     dag=dag,
 )

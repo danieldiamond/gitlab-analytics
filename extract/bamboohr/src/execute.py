@@ -59,6 +59,8 @@ if __name__ == "__main__":
 
     logging.basicConfig(stream=sys.stdout, level=20)
 
+    record_counts = {}
+
     bamboo = BambooAPI(subdomain="gitlab")
 
     config_dict = env.copy()
@@ -78,6 +80,8 @@ if __name__ == "__main__":
 
     employees = bamboo.get_employee_directory()
 
+    record_counts["directory"] = len(employees)
+
     with open("directory.json", "w") as outfile:
         json.dump(employees, outfile)
 
@@ -85,12 +89,12 @@ if __name__ == "__main__":
         employees, "raw.bamboohr.directory", snowflake_engine, tables_to_skip_test_list
     )
 
-    snowflake_stage_load_copy_remove(
-        "directory.json",
-        "raw.bamboohr.bamboohr_load",
-        "raw.bamboohr.directory",
-        snowflake_engine,
-    )
+    # snowflake_stage_load_copy_remove(
+    #     "directory.json",
+    #     "raw.bamboohr.bamboohr_load",
+    #     "raw.bamboohr.directory",
+    #     snowflake_engine,
+    # )
 
     # Tabular Data
     tabular_data = dict(
@@ -104,6 +108,8 @@ if __name__ == "__main__":
         logging.info(f"Querying for {value} tabular data...")
         data = bamboo.get_tabular_data(value)
 
+        record_counts[key] = len(data)
+
         with open(f"{key}.json", "w") as outfile:
             json.dump(data, outfile)
 
@@ -111,12 +117,12 @@ if __name__ == "__main__":
             data, f"raw.bamboohr.{key}", snowflake_engine, tables_to_skip_test_list
         )
 
-        snowflake_stage_load_copy_remove(
-            f"{key}.json",
-            "raw.bamboohr.bamboohr_load",
-            f"raw.bamboohr.{key}",
-            snowflake_engine,
-        )
+        # snowflake_stage_load_copy_remove(
+        #     f"{key}.json",
+        #     "raw.bamboohr.bamboohr_load",
+        #     f"raw.bamboohr.{key}",
+        #     snowflake_engine,
+        # )
 
     # Custom Reports
     report_mapping = dict(id_employee_number_mapping="498")
@@ -128,6 +134,8 @@ if __name__ == "__main__":
         with open(f"{key}.json", "w") as outfile:
             json.dump(data, outfile)
 
+        record_counts[key] = len(data["employees"])
+
         test_extraction(
             data["employees"],
             f"raw.bamboohr.{key}",
@@ -136,9 +144,12 @@ if __name__ == "__main__":
             field_name="JSONTEXT:employees",
         )
 
-        snowflake_stage_load_copy_remove(
-            f"{key}.json",
-            "raw.bamboohr.bamboohr_load",
-            f"raw.bamboohr.{key}",
-            snowflake_engine,
-        )
+        # snowflake_stage_load_copy_remove(
+        #     f"{key}.json",
+        #     "raw.bamboohr.bamboohr_load",
+        #     f"raw.bamboohr.{key}",
+        #     snowflake_engine,
+        # )
+
+    with open("/airflow/xcom/return.json", "w") as xcom_file:
+        json.dump(record_counts, xcom_file)
