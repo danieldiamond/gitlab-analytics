@@ -107,6 +107,8 @@ sources:
         identifier: gitlab_db_issue_metrics
       - name: issues
         identifier: gitlab_db_issues
+      - name: keys
+        identifier: gitlab_db_keys
       - name: label_links
         identifier: gitlab_db_label_links
       - name: label_priorities
