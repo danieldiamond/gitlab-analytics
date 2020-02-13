@@ -1,3 +1,4 @@
+setwd("~/scratch/slack_stats")
 install.packages('readr')
 install.packages('stringr')
                  
@@ -6,7 +7,6 @@ library(stringr)
 library(readr)
 library(tibble)
 
-setwd("/Users/parulluthra/scratch/")
 file_path <- paste0('./data/raw/', dir('data/raw'))
 raw <- read_csv(file_path,
                 col_types = cols(.default = 'c',
