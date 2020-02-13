@@ -4,12 +4,14 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.python_operator import BranchPythonOperator
+from airflow.utils.trigger_rule import TriggerRule
 from airflow_utils import (
     DBT_IMAGE,
     dbt_install_deps_and_seed_cmd,
     dbt_install_deps_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
+    l_warehouse,
     slack_failed_task,
     xs_warehouse,
 )
@@ -41,7 +43,7 @@ default_args = {
     "sla": timedelta(hours=8),
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
-    "trigger_rule": "all_done",
+    "trigger_rule": TriggerRule.ALL_DONE,
 }
 
 # Create the DAG
@@ -68,7 +70,7 @@ def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
     if current_weekday == 7 and dag_interval >= current_seconds:
         return "dbt-full-refresh"
     else:
-        return "dbt-run"
+        return "dbt-snapshots-run"
 
 
 branching_dbt_run = BranchPythonOperator(
@@ -77,17 +79,17 @@ branching_dbt_run = BranchPythonOperator(
     dag=dag,
 )
 
-# dbt-run
-dbt_run_cmd = f"""
+# run non-product models on small warehouse
+dbt_non_product_models_command = f"""
     {dbt_install_deps_and_seed_cmd} &&
-    dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse} && # run on small warehouse w/o product data or snapshots
-    dbt run --profiles-dir profile --target prod --models tag:product snapshots # run product data on large warehouse
+    dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse}
 """
-dbt_run = KubernetesPodOperator(
+
+dbt_non_product_models_task = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
-    task_id="dbt-run",
-    name="dbt-run",
+    task_id="dbt-non-product-models-run",
+    name="dbt-non-product-models-run",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
@@ -97,9 +99,60 @@ dbt_run = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
-    arguments=[dbt_run_cmd],
+    arguments=[dbt_non_product_models_command],
     dag=dag,
 )
+
+
+# run product models on large warehouse
+dbt_product_models_command = f"""
+    {dbt_install_deps_and_seed_cmd} &&
+    dbt run --profiles-dir profile --target prod --models tag:product --vars {l_warehouse}
+"""
+
+dbt_product_models_task = KubernetesPodOperator(
+    **gitlab_defaults,
+    image=DBT_IMAGE,
+    task_id="dbt-product-models-run",
+    name="dbt-product-models-run",
+    secrets=[
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_USER,
+        SNOWFLAKE_PASSWORD,
+        SNOWFLAKE_TRANSFORM_ROLE,
+        SNOWFLAKE_TRANSFORM_WAREHOUSE,
+        SNOWFLAKE_TRANSFORM_SCHEMA,
+    ],
+    env_vars=pod_env_vars,
+    arguments=[dbt_product_models_command],
+    dag=dag,
+)
+
+
+# run snapshots on large warehouse
+dbt_snapshots_command = f"""
+    {dbt_install_deps_and_seed_cmd} &&
+    dbt run --profiles-dir profile --target prod --models snapshots --vars {l_warehouse}
+"""
+
+dbt_snapshots_run = KubernetesPodOperator(
+    **gitlab_defaults,
+    image=DBT_IMAGE,
+    task_id="dbt-snapshots-run",
+    name="dbt-snapshots-run",
+    secrets=[
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_USER,
+        SNOWFLAKE_PASSWORD,
+        SNOWFLAKE_TRANSFORM_ROLE,
+        SNOWFLAKE_TRANSFORM_WAREHOUSE,
+        SNOWFLAKE_TRANSFORM_SCHEMA,
+    ],
+    env_vars=pod_env_vars,
+    arguments=[dbt_snapshots_command],
+    dag=dag,
+)
+
 
 # dbt-full-refresh
 dbt_full_refresh_cmd = f"""
@@ -175,7 +228,6 @@ dbt_test = KubernetesPodOperator(
 dbt_source_freshness >> branching_dbt_run
 
 # Branching for run
-branching_dbt_run >> dbt_run
-branching_dbt_run >> dbt_full_refresh
-dbt_run >> dbt_test
-dbt_full_refresh >> dbt_test
+branching_dbt_run >> dbt_snapshots_run >> dbt_non_product_models_task >> dbt_product_models_task >> dbt_test
+
+branching_dbt_run >> dbt_full_refresh >> dbt_test

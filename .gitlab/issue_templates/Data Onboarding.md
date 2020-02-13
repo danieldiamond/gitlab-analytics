@@ -94,6 +94,9 @@ rm ~/onboarding_script.sh
       * `Editor: Detect Indentation` is deselected
       * `Editor: Insert Spaces` is selected
       * `Editor: Tab Size` is set to 4 spaces per tab
+* [ ] Consider following [these instructions](https://stackoverflow.com/a/23963086) so you can have option + arrow keys to move around the terminal easier
+* [ ] If you get a weird semaphore issue error when running dbt try [this script](https://gist.github.com/llbbl/c54f44d028d014514d5d837f64e60bac) which is sourced from this [Apple forum thread](https://forums.developer.apple.com/thread/119429)
+
 
 </details>
 
@@ -107,8 +110,9 @@ Some important parts of the script that you will definitely want to do in some w
     * [ ] Setup a global gitignore that ignores IDE generated files
     * [ ] Clone the analytics project at git@gitlab.com:gitlab-data/analytics.git
     * [ ] Make sure to globally configure git with at least your name and email.
+    * [ ] Ensure you have [git completion](https://stackoverflow.com/questions/24315201/warning-this-script-is-deprecated-please-see-git-completion-zsh/41767727#41767727) configured to make your life easier
 * [ ] Install docker, docker-compose, and docker-machine
-* [ ] Install Python3
+* [ ] Install Python3. [The Hitchhiker's Guide to Python](https://docs.python-guide.org/starting/install3/osx/) is a good resource
     * [ ] Install pip3
     * [ ] Make sure to install the setuptools library as dbt will not install without it
     * [ ] Here is [a list of all of the Python tools that may be used for formatting, linting, or testing](https://gitlab.com/gitlab-data/analytics/blob/master/.gitlab-ci.yml#L100).  Consider installing these locally with pip3.
@@ -124,7 +128,13 @@ Some important parts of the script that you will definitely want to do in some w
         * To do this in VSCode: press `Ctrl+Shift+P` and then type in and select `Python: Select Interpreter` and then select the Python 3 installation
     * [ ] Consider installing extensions/add-ons in your IDE to support the Python libraries used for linting/testing as mentioned in the Python section above.  For example, you can setup VSCode to use black as its formatter as described [here](https://code.visualstudio.com/docs/python/editing#_formatting).
 * [ ] Install Data Grip (from JetBrains) for interfacing with databases
-    * [ ] Follow [this process](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains) for requesting a license for Data Grip.  Until you have a license, you can easily use Data Grip on a trial basis for 30 days.
+    * [ ] Follow [this process](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains) for requesting a license for Data Grip.  Until you have a license, you can easily use Data Grip on a trial basis for 30 days
+* [ ] Install the [gcloud sdk](https://cloud.google.com/sdk/docs/quickstart-macos) and authenticate once you're provisioned
+* [ ] Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-homebrew-on-macos)
+* [ ] Install the [awscli](https://aws.amazon.com/cli/)
+* [ ] Consider installing [tldr](https://tldr.sh/) for easy reference to common CLI commands
+* [ ] Disable [autocorrect in zsh](https://coderwall.com/p/jaoypq/disabling-autocorrect-in-zsh) if it annoys you
+* [ ] Consider downloading and installing [Little Snitch](https://www.obdev.at/products/littlesnitch/index.html) - You can submit for reimbursement for the full version
 
 
 </details>

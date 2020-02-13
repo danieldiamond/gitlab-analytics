@@ -5,7 +5,6 @@ G&A,G&A,CEO
 Sales,Sales,Channel
 Sales,Sales,Commercial Sales
 Marketing,Marketing,Corporate Marketing
-Cost of Sales,Sales,Customer Solutions
 Sales,Sales,Customer Success
 Cost of Sales,Engineering,Customer Support
 Marketing,Marketing,Demand Generation
@@ -34,3 +33,6 @@ Sales,Sales,Business Development
 Marketing,Marketing,Community Relations
 G&A,G&A,Legal
 Marketing,Marketing,Brand and Digital Design
+Cost of Sales,Sales,Consulting Delivery
+Cost of Sales,Sales,Education Delivery
+Sales,Sales,Practice Management

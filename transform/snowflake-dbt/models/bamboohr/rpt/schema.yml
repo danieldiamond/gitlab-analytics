@@ -25,4 +25,30 @@ models:
       - not_null
     - name: percent_of_employees_outside_of_band
       tests:
+      - not_null    
+  - name: rpt_headcount_aggregation    
+    description: This report creates out a headcount report from the bamboohr_headcount_aggregation_intermediate to be used for periscope dashboards for each month.
+    columns:
+    - name: month_date    
+    - name: diversity_field
+      description: Indicates what diversity field the headcount metrics are attributed to. Total reflects overall company. 
+      tests: 
       - not_null
+    - name: aggregation_type
+      description: Indicates which model the headcount metrics can be used for. This has 2 models combined -- total, which is entire company, and gender which provides a breakout by gender.
+      tests:
+      - not_null
+    - name: headcount_start
+    - name: headcount_end
+    - name: hires 
+      description: Provides the total number of employees hired for a given month as associated to the diversity_field and aggregation_type.
+    - name: rolling_12_month_headcount
+      description: Provides the average of the current month and previous 11 month average headcounts (the average headcount for each month is the headcount_start + headcount_end divided by 2).  
+    - name: rolling_12_month_separations
+      description: Provides the total number of employees separated for the current month and previous 11 months.
+    - name: rolling_12_month_voluntary_separations
+      description: Provides the total number of the employees separated voluntarily for the current month and previous 11 months.
+    - name: rolling_12_month_involuntary_separations 
+      description: Provides the total number of the employees separated voluntarily for the current month and previous 11 months.
+    - name: retention
+      description: Is equal to 1 - (rolling_12_month_separations divided by rolling_12_month_headcount). Note - in the case the rolling_12_month_headcount is less than the rolling_12_month_separations, retention will appear as null.

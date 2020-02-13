@@ -46,8 +46,6 @@ WITH source AS (
         BDR_LU__c                      AS opportunity_business_development_representative,
         COALESCE({{ sales_segment_cleaning('ultimate_parent_sales_segment_emp_o__c') }}, {{ sales_segment_cleaning('ultimate_parent_sales_segment_o__c') }} )
                                        AS parent_segment,
-        products_purchased__c          AS product,
-        {{product_category('products_purchased__c')}},
         sales_accepted_date__c         AS sales_accepted_date,
         engagement_type__c             AS sales_path,
         sales_qualified_date__c        AS sales_qualified_date,
@@ -75,7 +73,6 @@ WITH source AS (
         net_iacv__c                    AS net_incremental_acv,
         nrv__c                         AS nrv,
         campaignid                     AS primary_campaign_source_id,
-        products_purchased__c          AS products_purchased,
         professional_services_value__c AS professional_services_value,
         push_counter__c                AS pushed_count,
         reason_for_lost__c             AS reason_for_loss,
@@ -91,7 +88,7 @@ WITH source AS (
         upside_iacv__c                 AS upside_iacv,
         upside_swing_deal_iacv__c      AS upside_swing_deal_iacv,
         web_portal_purchase__c         AS is_web_portal_purchase,
-
+        opportunity_term__c            AS opportunity_term,
         -- metadata
         convert_timezone('America/Los_Angeles',convert_timezone('UTC',
                  CURRENT_TIMESTAMP())) AS _last_dbt_run,

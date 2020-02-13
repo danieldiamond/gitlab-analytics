@@ -4,6 +4,7 @@
 name: 'gitlab_snowflake'
 version: '1.0'
 profile: 'gitlab-snowflake'
+require-dbt-version: ">=0.15.0"
 
 # ======
 # File Path Configs
@@ -46,7 +47,7 @@ seeds:
   enabled: true
   schema: staging
   quote_columns: False
-  
+
   gitlab_snowflake:
     zuora_country_geographic_region:
       schema: analytics
@@ -104,6 +105,8 @@ models:
 
     customers:
       materialized: table
+      base:
+          schema: staging
 
     date:
       materialized: table
@@ -126,7 +129,18 @@ models:
         materialized: table
 
     greenhouse:
-      schema: sensitive
+      base:
+        schema: sensitive
+      rpt:
+        schema: analytics
+    
+    handbook:
+        materialized: table
+
+    marts:
+      revenue:
+        base:
+          materialized: table
 
     netsuite:
       materialized: table
@@ -139,7 +153,7 @@ models:
 
     retention:
       materialized: table
-    
+
     sfdc:
       base:
         schema: staging
@@ -148,11 +162,6 @@ models:
       xf:
         materialized: table
 
-    sheetload: 
-      base: 
-        sheetload_rep_productivity: 
-          enabled: false 
-          
     smau_events:
       tags: ["product"]
       materialized: table
@@ -178,7 +187,7 @@ models:
 
     zuora:
       source:
-        materialized: ephemeral
+        schema: staging
       base:
         schema: staging
       xf:
@@ -201,7 +210,7 @@ snapshots:
 
     license:
       tags: ["daily"]
-    
+
     sfdc:
       tags: ["daily"]
 

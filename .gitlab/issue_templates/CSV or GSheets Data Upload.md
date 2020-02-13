@@ -1,4 +1,4 @@
-## Request for new data source in Snowflake/Periscope Checklist
+## Request for Data Import in Snowflake/Periscope Checklist
 
 <!--
 Please complete all items. Ask questions in the #data slack channel

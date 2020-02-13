@@ -50,6 +50,11 @@ brew cask install visual-studio-code
 code --version
 echo "VS Code successfully installed"
 
+## install tldr https://tldr.sh/
+echo "Installing tldr..."
+brew install tldr
+echo "tldr installed. "
+
 ## install bash completion
 echo "Installing bash competion.."
 brew install bash-completion
@@ -105,6 +110,9 @@ echo "dbt profile created.. You will need to edit this file later."
 echo "Installing dbt completion script.."
 curl https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash > ~/.dbt-completion.bash
 echo "dbt completion script successfully installed"
+
+## Add refresh command
+echo "alias dbt_refresh='dbt clean ; dbt deps ; dbt seed'" >> ~/.bash_profile
 
 ## install anaconda
 echo "Installing anaconda.."

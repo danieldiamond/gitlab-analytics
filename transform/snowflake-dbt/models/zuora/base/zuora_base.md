@@ -18,6 +18,11 @@ The account source table contains information about the customer accounts in you
 
 {% enddocs %}
 
+{% docs zuora_accounting_period_source %}
+
+This is the source table for the accounting period table. [Link to Documentation](https://knowledgecenter.zuora.com/Developer_Platform/API/G_SOAP_API/E1_SOAP_API_Object_Reference/AccountingPeriod)
+
+{% enddocs %}
 
 {% docs zuora_contact_source %}
 
@@ -44,6 +49,18 @@ The invoice source table contains info about invoices, which are bills to custom
 
 {% enddocs %}
 
+{% docs zuora_invoice_payment_source %}
+
+The invoice payment source table contains info about payments made on invoices. [Link to Documentation](https://knowledgecenter.zuora.com/Developer_Platform/API/G_SOAP_API/E1_SOAP_API_Object_Reference/InvoicePayment)
+
+{% enddocs %}
+
+{% docs zuora_product_source %}
+
+This is the source table for the product table. [Link to Documentation](https://knowledgecenter.zuora.com/Developer_Platform/API/G_SOAP_API/E1_SOAP_API_Object_Reference/Product)
+
+{% enddocs %}
+
 {% docs zuora_rateplan_source %}
 
 The ratePlan source table contains info about rate plans, which is a price or collection of prices for services. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/zuora#rateplan)
@@ -59,6 +76,12 @@ This is the source table for Zuora Rate Plan Charges. [Link to Documentation](ht
 {% docs zuora_refund_source %}
 
 This is the source table for Zuora Refunds. [Link to Documentation](https://knowledgecenter.zuora.com/DC_Developers/G_SOAP_API/E1_SOAP_API_Object_Reference/Refund)
+
+{% enddocs %}
+
+{% docs zuora_revenue_schedule_item_source %}
+
+This is the source table for the Zuora Revenue Schedule Item [Link to Documentation](https://knowledgecenter.zuora.com/Zuora_Central/Reporting_and_Analytics/D_Data_Sources_and_Exports/C_Data_Source_Reference/Revenue_Schedule_Item_Data_Source)
 
 {% enddocs %}
 
