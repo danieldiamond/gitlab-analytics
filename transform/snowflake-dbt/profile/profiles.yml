@@ -2,7 +2,7 @@ config:
     send_anonymous_usage_stats: False
     use_colors: True
 
-gitlab:
+gitlab-snowflake:
   target: prod
   outputs:
     prod:
