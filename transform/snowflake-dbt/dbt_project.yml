@@ -4,6 +4,7 @@
 name: 'gitlab_snowflake'
 version: '1.0'
 profile: 'gitlab-snowflake'
+require-dbt-version: ">=0.15.0"
 
 # ======
 # File Path Configs
