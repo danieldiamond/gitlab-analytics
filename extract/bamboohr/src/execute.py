@@ -4,6 +4,7 @@ import sys
 from os import environ as env
 
 from gitlabdata.orchestration_utils import (
+    # push_to_xcom,
     query_executor,
     snowflake_engine_factory,
     snowflake_stage_load_copy_remove,
@@ -11,7 +12,22 @@ from gitlabdata.orchestration_utils import (
 
 from api import BambooAPI
 
+import pathlib
+
 ALLOWED_DATA_CHANGE_PER_EXTRACT = 0.25
+
+
+def push_to_xcom_file(xcom_json):
+    """
+    Writes the json passed in as a parameter to the file path required by KubernetesPodOperator to make the json an xcom in Airflow.
+
+    This is primarily used to push metrics to prometheus right now.
+    """
+
+    xcom_file_name = "/airflow/xcom/return.json"
+    pathlib.Path("/airflow/xcom/").mkdir(parents=True, exist_ok=True)
+    with open(xcom_file_name, "w") as xcom_file:
+        json.dump(xcom_json, xcom_file)
 
 
 def get_snowflake_latest_entry_count(table_name, snowflake_engine, field_name):
@@ -151,5 +167,4 @@ if __name__ == "__main__":
         #     snowflake_engine,
         # )
 
-    with open("/airflow/xcom/return.json", "w") as xcom_file:
-        json.dump(record_counts, xcom_file)
+    push_to_xcom_file(record_counts)
