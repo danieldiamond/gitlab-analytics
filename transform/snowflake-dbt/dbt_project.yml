@@ -98,6 +98,15 @@ models:
   gitlab_snowflake:
     materialized: view
 
+    sources:
+      schema: source
+
+    staging:
+      schema: staging
+      zuora:
+        xf:
+          materialized: table
+
     bamboohr:
       schema: sensitive
       base:
@@ -185,13 +194,6 @@ models:
       xf:
         materialized: table
 
-    zuora:
-      source:
-        schema: staging
-      base:
-        schema: staging
-      xf:
-        materialized: table
 
 # ======
 # Snapshot Configs
