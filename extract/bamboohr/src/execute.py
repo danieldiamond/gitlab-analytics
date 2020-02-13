@@ -4,7 +4,7 @@ import sys
 from os import environ as env
 
 from gitlabdata.orchestration_utils import (
-    # push_to_xcom,
+    push_to_xcom_file,
     query_executor,
     snowflake_engine_factory,
     snowflake_stage_load_copy_remove,
@@ -15,19 +15,6 @@ from api import BambooAPI
 import pathlib
 
 ALLOWED_DATA_CHANGE_PER_EXTRACT = 0.25
-
-
-def push_to_xcom_file(xcom_json):
-    """
-    Writes the json passed in as a parameter to the file path required by KubernetesPodOperator to make the json an xcom in Airflow.
-
-    This is primarily used to push metrics to prometheus right now.
-    """
-
-    xcom_file_name = "/airflow/xcom/return.json"
-    pathlib.Path("/airflow/xcom/").mkdir(parents=True, exist_ok=True)
-    with open(xcom_file_name, "w") as xcom_file:
-        json.dump(xcom_json, xcom_file)
 
 
 def get_snowflake_latest_entry_count(table_name, snowflake_engine, field_name):
@@ -105,12 +92,12 @@ if __name__ == "__main__":
         employees, "raw.bamboohr.directory", snowflake_engine, tables_to_skip_test_list
     )
 
-    # snowflake_stage_load_copy_remove(
-    #     "directory.json",
-    #     "raw.bamboohr.bamboohr_load",
-    #     "raw.bamboohr.directory",
-    #     snowflake_engine,
-    # )
+    snowflake_stage_load_copy_remove(
+        "directory.json",
+        "raw.bamboohr.bamboohr_load",
+        "raw.bamboohr.directory",
+        snowflake_engine,
+    )
 
     # Tabular Data
     tabular_data = dict(
@@ -133,12 +120,12 @@ if __name__ == "__main__":
             data, f"raw.bamboohr.{key}", snowflake_engine, tables_to_skip_test_list
         )
 
-        # snowflake_stage_load_copy_remove(
-        #     f"{key}.json",
-        #     "raw.bamboohr.bamboohr_load",
-        #     f"raw.bamboohr.{key}",
-        #     snowflake_engine,
-        # )
+        snowflake_stage_load_copy_remove(
+            f"{key}.json",
+            "raw.bamboohr.bamboohr_load",
+            f"raw.bamboohr.{key}",
+            snowflake_engine,
+        )
 
     # Custom Reports
     report_mapping = dict(id_employee_number_mapping="498")
@@ -160,11 +147,11 @@ if __name__ == "__main__":
             field_name="JSONTEXT:employees",
         )
 
-        # snowflake_stage_load_copy_remove(
-        #     f"{key}.json",
-        #     "raw.bamboohr.bamboohr_load",
-        #     f"raw.bamboohr.{key}",
-        #     snowflake_engine,
-        # )
+        snowflake_stage_load_copy_remove(
+            f"{key}.json",
+            "raw.bamboohr.bamboohr_load",
+            f"raw.bamboohr.{key}",
+            snowflake_engine,
+        )
 
     push_to_xcom_file(record_counts)

@@ -53,6 +53,8 @@ bamboohr_extract_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
     python bamboohr/src/execute.py
 """
+
+# having both xcom flag flavors since we're in an airflow version where one is being deprecated
 bamboohr_extract = KubernetesPodOperator(
     **gitlab_defaults,
     image=DATA_IMAGE,
@@ -70,5 +72,6 @@ bamboohr_extract = KubernetesPodOperator(
     env_vars=pod_env_vars,
     arguments=[bamboohr_extract_cmd],
     do_xcom_push=True,
+    xcom_push=True,
     dag=dag,
 )
