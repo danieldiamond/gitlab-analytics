@@ -1,9 +1,9 @@
 # ======
 # Project Details
 # ======
-name: 'gitlab'
+name: 'gitlab_snowflake'
 version: '1.0'
-profile: 'gitlab'
+profile: 'gitlab-snowflake'
 require-dbt-version: ">=0.15.0"
 
 # ======
@@ -48,7 +48,7 @@ seeds:
   schema: staging
   quote_columns: False
 
-  gitlab:
+  gitlab_snowflake:
     zuora_country_geographic_region:
       schema: analytics
 
@@ -95,18 +95,8 @@ models:
       schema: analytics
 
   # GitLab Models
-  gitlab:
+  gitlab_snowflake:
     materialized: view
-    
-    sources:
-      schema: source
-    
-    staging:
-      zuora:
-        base:
-          schema: staging
-        xf:
-          materialized: table
 
     bamboohr:
       schema: sensitive
@@ -195,12 +185,19 @@ models:
       xf:
         materialized: table
 
+    zuora:
+      source:
+        schema: staging
+      base:
+        schema: staging
+      xf:
+        materialized: table
 
 # ======
 # Snapshot Configs
 # ======
 snapshots:
-  gitlab:
+  gitlab_snowflake:
     target_database: "{{ env_var('SNOWFLAKE_LOAD_DATABASE') }}"
     target_schema: "snapshots"
     transient: false
