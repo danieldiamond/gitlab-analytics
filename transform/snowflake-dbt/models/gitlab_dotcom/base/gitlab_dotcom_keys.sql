@@ -12,7 +12,7 @@ WITH source AS (
       user_id::INTEGER        AS user_id,
       created_at::TIMESTAMP   AS created_at,
       updated_at::TIMESTAMP   AS updated_at,
-      type::VARCHAR           AS type,
+      type::VARCHAR           AS key_type,
       public::BOOLEAN         AS is_public,
       last_used_at::TIMESTAMP AS last_updated_at
 
