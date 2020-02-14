@@ -12,8 +12,6 @@ from gitlabdata.orchestration_utils import (
 
 from api import BambooAPI
 
-import pathlib
-
 ALLOWED_DATA_CHANGE_PER_EXTRACT = 0.25
 
 
