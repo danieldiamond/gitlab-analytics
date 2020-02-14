@@ -74,7 +74,6 @@ tables:
       , notification_level
       , type
       , created_at
-      , updated_at
       , created_by_id
       , invite_email
       , invite_accepted_at
