@@ -6,6 +6,7 @@ version: '1.0'
 profile: 'gitlab-snowflake'
 require-dbt-version: ">=0.15.0"
 
+
 # ======
 # File Path Configs
 # ======
@@ -25,6 +26,7 @@ quoting:
     database: true
     identifier: false
     schema: false
+query-comment: "{{ query_comment(node) }}"
 
 # ======
 # Run Hooks
