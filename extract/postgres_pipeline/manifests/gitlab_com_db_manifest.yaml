@@ -79,15 +79,14 @@ tables:
       , invite_email
       , invite_accepted_at
       , requested_at
-      , expires_at
+      , CASE WHEN expires_at > '2262-01-01' THEN '2262-01-01' ELSE expires_at END AS expires_at
       , ldap
       , override
       FROM members
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'members'
     export_table_primary_key: id
+    advanced_metadata: true
   approvals:
     import_db: GITLAB_DB
     import_query: >
