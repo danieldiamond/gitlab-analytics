@@ -50,6 +50,7 @@ WITH source AS (
       IFF(lower(location) = 'nan', NULL, location)                     AS location,
       -- public_email // hidden for privacy
       dashboard::INTEGER                                               AS dashboard,
+      project_view::INTEGER                                            AS project_view,
       consumed_timestep::INTEGER                                       AS consumed_timestep,
       layout::INTEGER                                                  AS layout,
       hide_project_limit::BOOLEAN                                      AS has_hide_project_limit_enabled,
@@ -69,7 +70,7 @@ WITH source AS (
       private_profile::BOOLEAN                                         AS is_private_profile,
       roadmap_layout::INTEGER                                          AS roadmap_layout,
       include_private_contributions::BOOLEAN                           AS include_private_contributions,
-      group_view::INTEGER                                              AS group_views,
+      group_view::INTEGER                                              AS group_view,
       managing_group_id::INTEGER                                       AS managing_group_id,
       bot_type::INTEGER                                                AS bot_type,
       source.role::INTEGER                                             AS role_id,
