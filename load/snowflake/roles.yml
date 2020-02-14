@@ -1029,6 +1029,8 @@ roles:
             - analyst_xs
 
     - jpeguero:
+        member_of:
+            - netsuite
         warehouses:
             - analyst_xs
 
