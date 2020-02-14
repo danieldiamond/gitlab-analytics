@@ -979,6 +979,10 @@ roles:
         warehouses:
             - reporting
 
+    - ewegscheider
+        warehouses:
+            - analyst_xs
+
     - fivetran_role:
         warehouses:
             - fivetran_warehouse
@@ -1298,6 +1302,12 @@ users:
             - eurie
             - reporter
             - securityadmin
+    
+    - ewegscheider:
+        can_login: yes
+        member_of: 
+            - ewegscheider
+            - analyst_people
 
     - fivetran:
         can_login: yes
