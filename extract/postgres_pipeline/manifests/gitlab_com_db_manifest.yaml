@@ -74,6 +74,7 @@ tables:
       , notification_level
       , type
       , created_at
+      , updated_at
       , created_by_id
       , invite_email
       , invite_accepted_at
@@ -82,10 +83,11 @@ tables:
       , ldap
       , override
       FROM members
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'members'
     export_table_primary_key: id
-    advanced_metadata: true
   approvals:
     import_db: GITLAB_DB
     import_query: >
