@@ -37,9 +37,10 @@ WITH zuora_accts AS (
   
     SELECT DISTINCT
       zuora_rpc.original_id, 
-      FIRST_VALUE(subscription_version_term_start_date) OVER
-        (PARTITION BY original_id
-         ORDER BY periods.version) AS subscription_version_term_start_date,
+      FIRST_VALUE(subscription_version_term_start_date) OVER (
+        PARTITION BY original_id
+        ORDER BY periods.version
+      ) AS subscription_version_term_start_date,
       FIRST_VALUE(subscription_version_term_end_date) OVER (
         PARTITION BY original_id
         ORDER BY periods.version
