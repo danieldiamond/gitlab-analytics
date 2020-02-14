@@ -108,6 +108,7 @@ WITH zuora_accts AS (
       ON COALESCE(zuora_accts.sold_to_contact_id ,zuora_accts.bill_to_contact_id) = zuora_contact.contact_id
     LEFT JOIN original_rate_plan_id
       ON zuora_rpc.original_id = original_rate_plan_id.original_id
+
 )
 
 SELECT *
