@@ -22,6 +22,7 @@ GRANT ROLE identifier($username) TO ROLE "SYSADMIN";
 
 GRANT ROLE identifier($username) to user identifier($username);
 
+-- IF PASSWORD NEEDED (PROBABLY NOT NEEDED)
 -- RUN THE FOLLOWING TO SET PASSWORD AND FORCE RESET (with randomly generated values)
 -- ====================
 -- ALTER USER identifier($username) SET PASSWORD ='randomGeneratedPassword' MUST_CHANGE_PASSWORD = TRUE;
