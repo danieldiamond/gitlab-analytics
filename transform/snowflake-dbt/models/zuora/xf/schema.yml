@@ -28,7 +28,7 @@ models:
 
           - name: subscription_version_term_end_date
             description: >-
-              term end date of the subscription period the charge belongs to. 
+              The term end date of the subscription period that the charge belongs to. 
               This column shouldn't be null except for 5 specific charges
               This behavior is captured in a specific test `zuora_base_mrr_not_null_term_dates`
 
