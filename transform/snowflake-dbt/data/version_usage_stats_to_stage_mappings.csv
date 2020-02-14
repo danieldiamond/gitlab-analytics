@@ -96,6 +96,7 @@ projects_bamboo_active,enablement
 projects_bugzilla_active,enablement
 projects_buildkite_active,enablement
 projects_campfire_active,enablement
+projects_conclusion_active,ignored
 projects_custom_issue_tracker_active,enablement
 projects_discord_active,enablement
 projects_drone_ci_active,enablement
