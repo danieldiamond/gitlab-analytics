@@ -13,6 +13,7 @@ WITH RECURSIVE employee_directory AS (
       last_name,
       work_email,
       hire_date,
+      rehire_date,
       termination_date,
       hire_location_factor,
       cost_center
@@ -34,25 +35,31 @@ WITH RECURSIVE employee_directory AS (
           effective_end_date
     FROM {{ ref('bamboohr_job_info') }}
 
-
 ), location_factor AS (
 
     SELECT *
     FROM {{ ref('employee_location_factor_snapshots') }}
+
+), employment_status AS (
+    
+    SELECT * 
+     FROM {{ ref('bamboohr_employment_status_xf') }}
 
 ), enriched AS (
 
     SELECT
       date_actual,
       employee_directory.*,
-      (first_name ||' '|| last_name) AS full_name,
+      (first_name ||' '|| last_name)                                AS full_name,
       department_info.job_title,
       department_info.department,
       department_info.division,
       department_info.reports_to,
       location_factor.location_factor,
-      IFF(hire_date = date_actual, True, False) AS is_hire_date,
-      IFF(termination_date = DATEADD('day', 1, date_actual), True, False) AS is_termination_date
+      IFF(hire_date = date_actual, True, False)                     AS is_hire_date,
+      IFF(employment_status = 'Terminated', True, False)            AS is_termination_date,
+      IFF(rehire_date = date_actual, True, False)                   AS is_rehire_date ,
+      employment_status 
     FROM date_details
     LEFT JOIN employee_directory
       ON hire_date::date <= date_actual
@@ -65,6 +72,10 @@ WITH RECURSIVE employee_directory AS (
       ON employee_directory.employee_number::varchar = location_factor.bamboo_employee_number::varchar
       AND valid_from <= date_actual
       AND COALESCE(valid_to::date, {{max_date_in_bamboo_analyses()}}) > date_actual
+    LEFT JOIN employment_status
+      ON employee_directory.employee_id = employment_status.employee_id 
+      AND (date_details.date_actual = valid_from_date AND employment_status = 'Terminated' 
+        OR date_details.date_actual BETWEEN employment_status.valid_from_date AND employment_status.valid_to_date )  
     WHERE employee_directory.employee_id IS NOT NULL
 
 ), base_layers as (
@@ -119,3 +130,5 @@ FROM enriched
 LEFT JOIN calculated_layers
   ON enriched.date_actual = calculated_layers.date_actual
  AND full_name = employee
+ AND enriched.employment_status IS NOT NULL
+

@@ -45,6 +45,7 @@ WITH bamboohr_directory AS (
 
     Select 
        employee_id,
+       is_rehire,
        valid_from_date as rehire_date
     FROM {{ref('bamboohr_employment_status_xf')}}
     WHERE is_rehire='True'
@@ -56,7 +57,7 @@ SELECT distinct
         mapping.first_name,
         mapping.last_name,
         bamboohr_directory.work_email,
-        initial_hire.hire_date,
+        iff(rehire.is_rehire = 'True', initial_hire.hire_date, mapping.hire_date) AS hire_date,
         rehire.rehire_date,
         mapping.termination_date,
         department_info.last_job_title,
@@ -79,14 +80,7 @@ LEFT JOIN initial_hire
   ON initial_hire.employee_id = mapping.employee_id
 LEFT JOIN rehire
   ON rehire.employee_id = mapping.employee_id
-WHERE COALESCE(initial_hire.hire_date,mapping.hire_date) < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
-  AND mapping.employee_id NOT IN (
-                              '41683' --https://gitlab.com/gitlab-data/analytics/issues/2749
-                              , '41692' --https://gitlab.com/gitlab-data/analytics/issues/2749
-                              , '41693' --https://gitlab.com/gitlab-data/analytics/issues/2882
-                              , '41835' --https://gitlab.com/gitlab-data/analytics/issues/3219
-                              , '41816' --https://gitlab.com/gitlab-data/analytics/issues/3318
-                              , '41826' --https://gitlab.com/gitlab-data/analytics/issues/3318
-                            )
+WHERE mapping.hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
+
 
 
