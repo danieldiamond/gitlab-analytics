@@ -979,7 +979,7 @@ roles:
         warehouses:
             - reporting
 
-    - ewegscheider
+    - ewegscheider:
         warehouses:
             - analyst_xs
 
