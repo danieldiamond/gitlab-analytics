@@ -159,7 +159,7 @@ python_pytest:
 🔐permissions_query:
   <<: *permissions_check
   script:
-    - python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))' < /load/snowflake/roles.yml
+    - python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))' < load/snowflake/roles.yml
 
 
 # ======
