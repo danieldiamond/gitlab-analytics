@@ -15,7 +15,7 @@ If none, please include a description
 
 
 ## DRI/Prioritization Owner Checklist
-* [ ] This data does not exist live in the Data team's data warehouse? (https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview) 
+* [ ] This data does not exist live in the Data team's data warehouse? (https://dbt.gitlabdata.com) 
 * [ ] Does this data contain anything that is sensitive (Classified as Red or Orange in our [Data Classification Policy](https://about.gitlab.com/handbook/engineering/security/data-classification-policy.html#data-classification-levels))?
   - [ ] Yes 
   - [ ] No

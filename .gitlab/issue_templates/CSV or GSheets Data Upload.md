@@ -16,7 +16,7 @@ If none, please include a description
 
 ### DRI/Prioritization Owner Checklist
 * [ ]  Provide link to CSV/GSheet data. Link: ____
-* [ ]  Does this data live in the Data team's data warehouse? (https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview) 
+* [ ]  Does this data live in the Data team's data warehouse? (https://dbt.gitlabdata.com) 
   - [ ] Yes 
   - [ ] No 
 * [ ]  Does this data need to be linked to other data in the Data team's data warehouse?
