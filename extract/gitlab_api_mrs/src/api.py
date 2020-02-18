@@ -10,7 +10,7 @@ class GitLabAPI:
 
     def get_urls_for_mrs_paged_for_project(
         self, project_id: str, start: str, end: str, page: int
-    ):
+    ) -> List[str]:
         """
         This function is page specific and only returns 20 records at a time.
         This function returns an array of the web_urls found in the project_id that is passed in as a parameter.
