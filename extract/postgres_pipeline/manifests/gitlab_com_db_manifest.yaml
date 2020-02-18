@@ -1588,6 +1588,35 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'users'
     export_table_primary_key: id
+  users_preferences:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT user_id
+      , issue_notes_filter
+      , merge_request_notes_filter
+      , created_at
+      , updated_at
+      , epics_sort
+      , roadmap_epics_state
+      , epic_notes_filter
+      , issues_sort
+      , merge_requests_sort
+      , roadmaps_sort
+      , first_day_of_week
+      , timezone
+      , time_display_relative
+      , time_format_in_
+      , projects_sort
+      , show_whitespace_in_diffs
+      , sourcegraph_enabled
+      , setup_for_company
+      , render_whitespace_in_code
+      , tab_width
+      , feature_filter_type
+      FROM users_preferences
+    export_schema: 'gitlab_com'
+    export_table: 'users_preferences'
+    export_table_primary_key: user_id
   ci_group_variables:
     import_db: GITLAB_DB
     import_query: >
