@@ -180,6 +180,7 @@ python_pytest:
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
     - dbt deps --profiles-dir profile --target prod
     - dbt docs generate --profiles-dir profile --target prod
+    - mkdir -p $CI_PROJECT_DIR/public/
     - cd target
     - cp *.json graph.gpickle $CI_PROJECT_DIR/public/
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/docs/
