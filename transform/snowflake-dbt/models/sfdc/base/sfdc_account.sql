@@ -99,13 +99,13 @@ WITH source AS (
       using_ce__c                                AS count_using_ce,
 
       --demandbase fields
-      account_list__c                            AS demandbase_account_list
-      intent__c                                  AS demandbase_intent
-      page_views__c                              AS demandbase_page_views
-      score__c                                   AS demandbase_score
-      sessions__c                                AS demandbase_sessions
-      trending_offsite_intent__c                 AS demandbase_trending_offsite_intent
-      trending_onsite_engagement__c              AS demandbase_trending_onsite_engagement
+      account_list__c                            AS demandbase_account_list,
+      intent__c                                  AS demandbase_intent,
+      page_views__c                              AS demandbase_page_views,
+      score__c                                   AS demandbase_score,
+      sessions__c                                AS demandbase_sessions,
+      trending_offsite_intent__c                 AS demandbase_trending_offsite_intent,
+      trending_onsite_engagement__c              AS demandbase_trending_onsite_engagement,
 
       -- metadata
       createdbyid                                AS created_by_id,
