@@ -1605,7 +1605,7 @@ tables:
       , first_day_of_week
       , timezone
       , time_display_relative
-      , time_format_in_
+      , time_format_in_24h
       , projects_sort
       , show_whitespace_in_diffs
       , sourcegraph_enabled
