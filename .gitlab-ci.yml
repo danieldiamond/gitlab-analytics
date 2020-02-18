@@ -151,7 +151,7 @@ python_pytest:
     - analytics
   only:
     changes:
-      - "**/*.yml"
+      - "load/snowflake/roles.yml"
     refs:
       - merge_request
   allow_failure: true
