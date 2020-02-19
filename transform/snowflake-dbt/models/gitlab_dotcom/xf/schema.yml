@@ -230,6 +230,8 @@ models:
           - unique
       - name: member_count
         description: The number of members that are presently associated with the project.
+      - name: active_service_types
+        description: The types of services currently active and associated with the project.
       - name: namespace_plan_is_paid
         description: Whether or not the namespace associated with the project is subscribed to a paid plan.
       - name: namespace_plan_id_at_project_creation

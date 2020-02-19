@@ -15,7 +15,6 @@ namespaces AS (
 
 ),
 
-
 members AS (
 
     SELECT *
@@ -29,10 +28,20 @@ namespace_lineage AS (
     SELECT *
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
-), gitlab_subscriptions AS (
+),
+
+gitlab_subscriptions AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
+
+),
+
+active_services AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_services')}}
+    WHERE is_active = True
 
 ),
 
@@ -113,6 +122,7 @@ joined AS (
         ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
       END                                                          AS plan_id_at_project_creation,
 
+      ARRAYAGG(active_services.service_type)                       AS active_service_types,
       COALESCE(COUNT(DISTINCT members.member_id), 0)               AS member_count
     FROM projects
       LEFT JOIN members
@@ -125,6 +135,8 @@ joined AS (
       LEFT JOIN gitlab_subscriptions
         ON namespace_lineage.ultimate_parent_id  = gitlab_subscriptions.namespace_id
         AND projects.created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
+      LEFT JOIN active_services
+        ON projects.project_id = active_services.project_id
     {{ dbt_utils.group_by(n=67) }}
 )
 
