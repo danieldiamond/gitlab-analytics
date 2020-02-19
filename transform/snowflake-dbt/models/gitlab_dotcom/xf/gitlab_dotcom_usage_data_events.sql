@@ -108,7 +108,7 @@
     "event_name": "project_auto_devops",
     "table_name": "gitlab_dotcom_project_auto_devops",
     "key_to_parent_object": "project_id",
-    "primary_key": "project_auto_devops_id"
+    "primary_key": "project_auto_devops_id",
     "is_representative_of_stage": "False"
   },
   {
