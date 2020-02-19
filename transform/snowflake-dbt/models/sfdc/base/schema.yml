@@ -133,10 +133,6 @@ models:
           tests:
               - not_null
               - unique
-        - name: stage_id
-          tests:
-              - not_null
-              - unique
   - name: sfdc_professional_services_engagement
     description: base model for SFDC Professional Services Engagements
     columns:
