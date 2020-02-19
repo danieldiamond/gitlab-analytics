@@ -126,7 +126,7 @@ WITH gitlab_subscriptions AS (
 , projects AS (
   
   SELECT *
-  FROM {{ ref('gitlab_dotcom_projects') }}
+  FROM {{ ref('gitlab_dotcom_projects_xf') }}
   
 )
 
@@ -198,9 +198,8 @@ SELECT
              event_created_at)/(24 * 7))          AS weeks_since_project_creation
 FROM {{ event_cte.event_name }}
   INNER JOIN projects ON {{ event_cte.event_name }}.{{event_cte.key_to_parent_object}} = projects.project_id
-  INNER JOIN namespaces ON projects.namespace_id = namespaces.namespace_id
   INNER JOIN namespaces AS ultimate_namespace 
-    ON namespaces.namespace_ultimate_parent_id = ultimate_namespace.namespace_id
+    ON projects.ultimate_parent_id = ultimate_namespace.namespace_id
   LEFT JOIN gitlab_subscriptions
     ON ultimate_namespace.namespace_id = gitlab_subscriptions.namespace_id
     AND {{ event_cte.event_name }}.created_at BETWEEN gitlab_subscriptions.valid_from 
