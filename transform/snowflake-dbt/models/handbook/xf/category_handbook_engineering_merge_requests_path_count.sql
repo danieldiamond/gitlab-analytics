@@ -20,7 +20,7 @@ WITH category_handbook_engineering_merge_requests AS (
         merge_request_path,
         CASE WHEN LOWER(merge_request_path) LIKE '%/handbook/engineering/%' THEN 1 
              WHEN LOWER(merge_request_path) LIKE '%/handbook/support/%' THEN 1 
-             ELSE 0 END AS engineering,
+             ELSE 0 END AS path_count_engineering,
         IFF(LOWER(merge_request_path) LIKE '%/handbook/engineering/ux/%',1,0) AS path_count_ux,
         IFF(LOWER(merge_request_path) LIKE '%/handbook/engineering/security/%',1,0) AS path_count_security,
         IFF(LOWER(merge_request_path) LIKE '%/handbook/engineering/infrastructure/%',1,0) AS path_count_infrastructure,
