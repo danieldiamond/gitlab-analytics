@@ -6,9 +6,24 @@
 
 WITH source AS (
 
-    SELECT *
-    FROM {{ source('salesforce', 'opportunity') }}
-
+    SELECT
+      opportunity.*,
+      CASE
+        WHEN stagename = '00-Pre Opportunity' THEN createddate
+        WHEN stagename = '0-Pending Acceptance' THEN x0_pending_acceptance_date__c
+        WHEN stagename = '1-Discovery' THEN x1_discovery_date__c
+        WHEN stagename = '2-Scoping' THEN x2_scoping_date__c
+        WHEN stagename = '3-Technical Evaluation' THEN x3_technical_evaluation_date__c
+        WHEN stagename = '4-Proposal' THEN x4_proposal_date__c
+        WHEN stagename = '5-Negotiating' THEN x5_negotiating_date__c
+        WHEN stagename = '6-Awaiting Signature' THEN x6_awaiting_signature_date__c
+      END calculation_days_in_stage_date,
+      DATEDIFF(
+        days,
+        calculation_days_in_stage_date::DATE,
+        CURRENT_DATE::DATE
+      ) + 1                                        AS days_in_stage
+    FROM {{ source('salesforce', 'opportunity') }} AS opportunity
 
 ), renamed AS (
 
@@ -23,35 +38,7 @@ WITH source AS (
         business_type__c               AS business_type,
         closedate                      AS close_date,
         createddate                    AS created_date,
-        DATEDIFF(
-            days,
-            IFF(
-                GREATEST(
-                    IFNULL(x0_pending_acceptance_date__c, '0000-01-01'),
-                    IFNULL(x1_discovery_date__c, '0000-01-01'),
-                    IFNULL(x2_scoping_date__c, '0000-01-01'),
-                    IFNULL(x3_technical_evaluation_date__c, '0000-01-01'),
-                    IFNULL(x4_proposal_date__c, '0000-01-01'),
-                    IFNULL(x5_negotiating_date__c, '0000-01-01'),
-                    --x6_closed_won_date__c,
-                    IFNULL(x7_closed_lost_date__c, '0000-01-01')--,
-                    --x8_unqualified_date__c
-                ) = '0000-01-01',
-                NULL,
-                GREATEST(
-                    IFNULL(x0_pending_acceptance_date__c, '0000-01-01'),
-                    IFNULL(x1_discovery_date__c, '0000-01-01'),
-                    IFNULL(x2_scoping_date__c, '0000-01-01'),
-                    IFNULL(x3_technical_evaluation_date__c, '0000-01-01'),
-                    IFNULL(x4_proposal_date__c, '0000-01-01'),
-                    IFNULL(x5_negotiating_date__c, '0000-01-01'),
-                    --x6_closed_won_date__c,
-                    IFNULL(x7_closed_lost_date__c, '0000-01-01')--,
-                    --x8_unqualified_date__c
-                )::DATE
-            ),
-            CURRENT_DATE::DATE
-        ) + 1                          AS days_in_stage,
+        days_in_stage                  AS days_in_stage,
         deployment_preference__c       AS deployment_preference,
         sql_source__c                  AS generated_source,
         leadsource                     AS lead_source,

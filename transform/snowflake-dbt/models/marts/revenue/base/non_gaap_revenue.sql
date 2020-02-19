@@ -46,7 +46,7 @@ WITH date_table AS (
 ), gaap_revenue AS (
 
     SELECT
-      zuora_acct_period.accounting_period_start_date    AS accounting_period,
+      zuora_acct_period.accounting_period_start_date::DATE    AS accounting_period,
 
       -- account info
       zuora_accts.account_name,
@@ -58,15 +58,10 @@ WITH date_table AS (
       --rate_plan info
       zuora_rp.rate_plan_name,
       zuora_rpc.rate_plan_charge_name,
-      zuora_rpc.rate_plan_charge_number,
       {{ product_category('rate_plan_name') }},
       {{ delivery('product_category')}},
-      zuora_rpc.tcv,
-      zuora_rpc.unit_of_measure,
-      zuora_rpc.quantity,
-      zuora_rpc.mrr,
       zuora_product.product_name,
-      SUM(zuora_rev_sch.revenue_schedule_item_amount)    AS revenue_amt
+      SUM(zuora_rev_sch.revenue_schedule_item_amount)         AS revenue_amt
     FROM zuora_rev_sch
     LEFT JOIN zuora_accts
       ON zuora_rev_sch.account_id = zuora_accts.account_id
@@ -80,7 +75,7 @@ WITH date_table AS (
       ON zuora_acct_period.accounting_period_id = zuora_rev_sch.accounting_period_id
     LEFT JOIN zuora_product
       ON zuora_product.product_id = zuora_rev_sch.product_id
-    {{ dbt_utils.group_by(n=16) }}
+    {{ dbt_utils.group_by(n=11) }}
 
 )
 
