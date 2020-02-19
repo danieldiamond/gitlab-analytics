@@ -48,6 +48,7 @@ active_services AS (
 joined AS (
     SELECT
       projects.project_id,
+      projects.created_at, -- We will phase out `project_created_out`
       projects.created_at                                          AS project_created_at,
       projects.updated_at                                          AS project_updated_at,
       projects.creator_id,
