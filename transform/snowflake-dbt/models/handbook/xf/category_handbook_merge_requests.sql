@@ -26,6 +26,7 @@ WITH merge_requests AS (
       merge_requests.merge_request_last_edited_at                      AS merge_request_last_edited_at,
       merge_requests.merged_at                                         AS merge_request_merged_at,
       mr_files.merge_request_iid                                       AS merge_request_iid,
+      mr_files.handbook_file_edited                                    AS merge_request_path, 
       IFNULL(file_classifications.file_classification, 'unclassified') AS file_classification
     FROM mr_files
     INNER JOIN merge_requests
@@ -43,9 +44,10 @@ WITH merge_requests AS (
       merge_request_last_edited_at,
       merge_request_merged_at,                
       merge_request_iid,
+      merge_request_path, 
       ARRAY_AGG(DISTINCT file_classification) AS merge_request_department_list
     FROM joined_to_mr
-    {{ dbt_utils.group_by(n=6) }} 
+    {{ dbt_utils.group_by(n=7) }} 
 
 )
 SELECT * 
