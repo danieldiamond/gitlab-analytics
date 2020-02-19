@@ -4,14 +4,11 @@ models:
   - name: gitlab_dotcom_clusters_applications_helm_xf
     description: The model extends the clusters_applications_helm model by adding information about the associated cluster.
     columns:
-      - name: environment_id
+      - name: clusters_applications_helm_id
         tests:
           - not_null
           - unique
-      - name: project_id
-        tests:
-          - not_null
-      - name: environment_name
+      - name: cluster_id
         tests:
           - not_null
   - name: gitlab_dotcom_environments_xf
