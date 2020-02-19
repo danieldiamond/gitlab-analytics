@@ -30,7 +30,7 @@ final AS (
 
   SELECT
     clusters_applications_helm.*,
-    clusters.user_id  AS cluster_user_id,
+    clusters.user_id,
     clusters_groups.group_id,
     clusters_projects.project_id
   FROM clusters_applications_helm

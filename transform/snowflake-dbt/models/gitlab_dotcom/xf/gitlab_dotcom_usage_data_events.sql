@@ -8,11 +8,11 @@
   },
   {
     "event_name": "clusters_applications_helm",
-    "table_name": "clusters_applications_helm", {# Temp #}
+    "table_name": "gitlab_dotcom_clusters_applications_helm_xf",
     "key_to_parent_object": "project_id",
-    "primary_key": "todo_id",
+    "primary_key": "clusters_applications_helm_id",
     "is_representative_of_stage": "False"
-  }
+  },
   {
     "event_name": "ci_builds",
     "table_name": "gitlab_dotcom_ci_builds",
