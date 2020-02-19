@@ -49,10 +49,10 @@ models:
     - name: merge_request_iid
       tests:
         - not_null
-    - name: merge_request_path
+    - name: merge_request_state
       tests:
         - not_null
-    - name: merge_request_state
+    - name: merge_request_path
       tests:
         - not_null
     - name: path_count_engineering
@@ -74,6 +74,42 @@ models:
       tests:
         - not_null
     - name: path_count_support
+      tests:
+        - not_null
+    - name: merge_request_created_at
+    - name: merge_request_last_edited_at
+    - name: merge_request_merged_at
+    - name: merge_request_updated_at
+      tests:
+        - not_null
+- name: category_handbook_merge_requests_count
+    description: This is a dbt model (view) of unique merge requests to the handbook along with their categorization and count for each specific department/division in Engineering.
+    columns:
+    - name: merge_request_iid
+      tests:
+        - not_null
+    - name: merge_request_state
+      tests:
+        - not_null
+    - name: mr_total_count_engineering
+      tests:
+        - not_null
+    - name: mr_total_count_ux
+      tests:
+        - not_null
+    - name: mr_total_count_security
+      tests:
+        - not_null
+    - name: mr_total_count_infrastructure
+      tests:
+        - not_null
+    - name: mr_total_count_development
+      tests:
+        - not_null
+    - name: mr_total_count_quality
+      tests:
+        - not_null
+    - name: mr_total_count_support
       tests:
         - not_null
     - name: merge_request_created_at
