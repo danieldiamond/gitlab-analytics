@@ -6,7 +6,7 @@ WITH source AS (
 
 ), 
 
-renamed AS 
+renamed AS (
     
     SELECT
       id::INTEGER              AS clusters_application_helm_id,
