@@ -1,6 +1,19 @@
 version: 2
 
 models:
+  - name: gitlab_dotcom_clusters_applications_helm_xf
+    description: The model extends the clusters_applications_helm model by adding information about the associated cluster.
+    columns:
+      - name: environment_id
+        tests:
+          - not_null
+          - unique
+      - name: project_id
+        tests:
+          - not_null
+      - name: environment_name
+        tests:
+          - not_null
   - name: gitlab_dotcom_environments_xf
     description: '{{ doc("gitlab_dotcom_environments_xf") }}'
     columns:

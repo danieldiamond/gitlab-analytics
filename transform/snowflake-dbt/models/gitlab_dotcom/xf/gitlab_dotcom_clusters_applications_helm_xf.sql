@@ -8,7 +8,7 @@ WITH clusters AS (
 clusters_applications_helm AS (
 
   SELECT *
-  FROM {{ ref('gitlab_dotcom_clusters_applications_groups')}}
+  FROM {{ ref('gitlab_dotcom_clusters_applications_helm')}}
 
 ),
 
@@ -31,15 +31,15 @@ final AS (
   SELECT
     clusters_applications_helm.*,
     clusters.user_id,
-    clusters_groups.group_id,
-    clusters_projects.project_id
+    cluster_groups.cluster_group_id,
+    cluster_projects.cluster_project_id
   FROM clusters_applications_helm
     INNER JOIN clusters
       ON clusters_applications_helm.cluster_id = clusters.cluster_id
-    LEFT JOIN clusters_groups
-      ON clusters.cluster_id = clusters_groups.cluster_id
-    LEFT JOIN clusters_projects
-      ON clusters.cluster_id = clusters_projects.cluster_id
+    LEFT JOIN cluster_groups
+      ON clusters.cluster_id = cluster_groups.cluster_id
+    LEFT JOIN cluster_projects
+      ON clusters.cluster_id = cluster_projects.cluster_id
 )
 
 SELECT *
