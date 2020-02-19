@@ -9,9 +9,9 @@
   {
     "event_name": "clusters_applications_helm",
     "table_name": "gitlab_dotcom_clusters_applications_helm_xf",
-    "key_to_parent_object": "project_id",
+    "key_to_parent_object": "cluster_project_id",
     "primary_key": "clusters_applications_helm_id",
-    "is_representative_of_stage": "False"
+    "is_representative_of_stage": "True"
   },
   {
     "event_name": "ci_builds",
@@ -191,7 +191,7 @@ SELECT
   projects.project_id,
   projects.created_at                                  AS project_created_at,
   {{ event_cte.event_name }}.created_at                AS event_created_at,
-  {{ event_cte.is_representative_of_stage }}::BOOLEAN  AS is_representative_of_stage
+  {{ event_cte.is_representative_of_stage }}::BOOLEAN  AS is_representative_of_stage,
   
   '{{ event_cte.event_name }}'                         AS event_name,
   CASE
