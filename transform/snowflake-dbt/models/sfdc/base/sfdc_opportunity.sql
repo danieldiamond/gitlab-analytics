@@ -7,22 +7,22 @@
 WITH source AS (
 
     SELECT
-        opportunity.*,
-        CASE
-            WHEN stagename = '00-Pre Opportunity' THEN createddate
-            WHEN stagename = '0-Pending Acceptance' THEN x0_pending_acceptance_date__c
-            WHEN stagename = '1-Discovery' THEN x1_discovery_date__c
-            WHEN stagename = '2-Scoping' THEN x2_scoping_date__c
-            WHEN stagename = '3-Technical Evaluation' THEN x3_technical_evaluation_date__c
-            WHEN stagename = '4-Proposal' THEN x4_proposal_date__c
-            WHEN stagename = '5-Negotiating' THEN x5_negotiating_date__c
-            WHEN stagename = '6-Awaiting Signature' THEN x6_awaiting_signature_date__c
-        END calculation_days_in_stage_date,
-        DATEDIFF(
-            days,
-            calculation_days_in_stage_date::DATE,
-            CURRENT_DATE::DATE
-        ) + 1                          AS days_in_stage
+      opportunity.*,
+      CASE
+        WHEN stagename = '00-Pre Opportunity' THEN createddate
+        WHEN stagename = '0-Pending Acceptance' THEN x0_pending_acceptance_date__c
+        WHEN stagename = '1-Discovery' THEN x1_discovery_date__c
+        WHEN stagename = '2-Scoping' THEN x2_scoping_date__c
+        WHEN stagename = '3-Technical Evaluation' THEN x3_technical_evaluation_date__c
+        WHEN stagename = '4-Proposal' THEN x4_proposal_date__c
+        WHEN stagename = '5-Negotiating' THEN x5_negotiating_date__c
+        WHEN stagename = '6-Awaiting Signature' THEN x6_awaiting_signature_date__c
+      END calculation_days_in_stage_date,
+      DATEDIFF(
+        days,
+        calculation_days_in_stage_date::DATE,
+        CURRENT_DATE::DATE
+      ) + 1                                        AS days_in_stage
     FROM {{ source('salesforce', 'opportunity') }} AS opportunity
 
 ), renamed AS (
