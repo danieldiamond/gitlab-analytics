@@ -979,6 +979,10 @@ roles:
         warehouses:
             - reporting
 
+    - ewegscheider:
+        warehouses:
+            - analyst_xs
+
     - fivetran_role:
         warehouses:
             - fivetran_warehouse
@@ -1025,6 +1029,8 @@ roles:
             - analyst_xs
 
     - jpeguero:
+        member_of:
+            - netsuite
         warehouses:
             - analyst_xs
 
@@ -1084,6 +1090,13 @@ roles:
             - analyst_xs
             - analyst_l
             - analyst_xl
+
+    - msendal:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting    
 
     - mvilain:
         warehouses:
@@ -1298,6 +1311,12 @@ users:
             - eurie
             - reporter
             - securityadmin
+    
+    - ewegscheider:
+        can_login: yes
+        member_of: 
+            - ewegscheider
+            - analyst_people
 
     - fivetran:
         can_login: yes
@@ -1397,6 +1416,12 @@ users:
         member_of:
             - mrodriguez
             - reporter
+
+    - msendal:
+        can_login: yes
+        member_of:
+            - engineer
+            - msendal
 
     - mvilain:
         can_login: yes

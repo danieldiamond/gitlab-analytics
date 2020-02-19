@@ -42,8 +42,15 @@ if __name__ == "__main__":
         "part_of_product": {
             "file_name": "part_of_product_mrs.json",
             "project_ids": get_product_project_ids(),
+            "schema": "engineering_extracts",
+            "stage": "part_of_product_merge_request_extracts",
         },
-        "handbook": {"file_name": "handbook_mrs.json", "project_ids": ["7764"]},
+        "handbook": {
+            "file_name": "handbook_mrs.json",
+            "project_ids": ["7764"],
+            "schema": "handbook",
+            "stage": "handbook_load",
+        },
     }
 
     if extract_name not in configurations_dict:
@@ -53,6 +60,8 @@ if __name__ == "__main__":
     configuration = configurations_dict[extract_name]
 
     file_name: str = configuration["file_name"]  # type: ignore
+    schema: str = configuration["schema"]
+    stage: str = configuration["stage"]
 
     api_token = env["GITLAB_COM_API_TOKEN"]
     api_client = GitLabAPI(api_token)
@@ -74,7 +83,7 @@ if __name__ == "__main__":
         if wrote_to_file:
             snowflake_stage_load_copy_remove(
                 file_name,
-                f"raw.engineering_extracts.engineering_extracts",
-                f"raw.engineering_extracts.{extract_name}_merge_requests",
+                f"raw.{schema}.{stage}",
+                f"raw.{schema}.{extract_name}_merge_requests",
                 snowflake_engine,
             )

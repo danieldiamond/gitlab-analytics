@@ -13,7 +13,7 @@
         {{ default_schema.lower() | trim }}
 
     {%- elif 
-            custom_schema_name in ('analytics','meta','sensitive','staging','temporary') 
+            custom_schema_name in ('analytics','meta','sensitive','source','staging','temporary') 
                 or
             ('snowplow' in custom_schema_name and target.name not in ('prod','docs','ci') )
     -%}
