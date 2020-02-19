@@ -7,6 +7,13 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "clusters_applications_helm",
+    "table_name": "clusters_applications_helm", {# Temp #}
+    "key_to_parent_object": "project_id",
+    "primary_key": "todo_id",
+    "is_representative_of_stage": "False"
+  }
+  {
     "event_name": "ci_builds",
     "table_name": "gitlab_dotcom_ci_builds",
     "key_to_parent_object": "ci_build_project_id",

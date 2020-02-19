@@ -266,7 +266,7 @@ models:
           - not_null
 
   - name: gitlab_dotcom_clusters_applications_helm
-    description: Base model for Gitlab.com `clusters_applications_helm` table
+    description: Base model for the Gitlab.com `clusters_applications_helm` table.
     columns:
       - name: clusters_applications_helm_id
         tests:
