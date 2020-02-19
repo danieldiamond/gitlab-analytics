@@ -82,7 +82,7 @@ models:
     - name: merge_request_updated_at
       tests:
         - not_null
-- name: category_handbook_merge_requests_count
+  - name: category_handbook_merge_requests_count
     description: This is a dbt model (view) of unique merge requests to the handbook along with their categorization and count for each specific department/division in Engineering.
     columns:
     - name: merge_request_iid
