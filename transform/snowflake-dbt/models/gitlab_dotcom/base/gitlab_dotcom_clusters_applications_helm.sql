@@ -9,7 +9,7 @@ WITH source AS (
 renamed AS (
     
     SELECT
-      id::INTEGER              AS clusters_application_helm_id,
+      id::INTEGER              AS clusters_applications_helm_id,
       cluster_id::INTEGER      AS cluster_id,
       created_at::TIMESTAMP    AS created_at,
       updated_at::TIMESTAMP    AS updated_at,
