@@ -1402,6 +1402,17 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'subscriptions'
     export_table_primary_key: id
+  programming_languages:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , name
+      FROM programming_languages
+      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'programming_languages'
+    export_table_primary_key: id
   protected_environments:
     import_db: GITLAB_DB
     import_query: >
