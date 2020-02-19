@@ -81,7 +81,7 @@
     "table_name": "gitlab_dotcom_merge_requests",
     "key_to_parent_object": "project_id",
     "primary_key": "merge_request_id",
-    "is_representative_of_stage": "False"
+    "is_representative_of_stage": "True"
   },
   {
     "event_name": "milestones",
