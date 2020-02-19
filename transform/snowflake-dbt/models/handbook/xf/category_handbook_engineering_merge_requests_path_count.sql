@@ -33,7 +33,7 @@ WITH category_handbook_engineering_merge_requests AS (
         merge_request_created_at,
         merge_request_last_edited_at,
         merge_request_merged_at,
-        merge_request_updated_at,
+        merge_request_updated_at
 
     FROM category_handbook_engineering_merge_requests
 
