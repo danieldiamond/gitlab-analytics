@@ -1,0 +1,4 @@
+version: 2
+
+models:
+  - name: rpt_engineering_handbook_update_frequency_monthly
