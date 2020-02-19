@@ -2,3 +2,29 @@ version: 2
 
 models:
   - name: rpt_engineering_handbook_update_frequency_monthly
+    description: This is a dbt model (view) of total count of Handbook MR file changes for each specific department/division in Engineering.
+    columns:
+    - name: month_merged_at
+      tests:
+        - not_null
+    - name: total_count_engineering
+      tests:
+        - not_null
+    - name: total_count_ux
+      tests:
+        - not_null
+    - name: total_count_security
+      tests:
+        - not_null
+    - name: total_count_infrastructure
+      tests:
+        - not_null
+    - name: total_count_development
+      tests:
+        - not_null
+    - name: total_count_quality
+      tests:
+        - not_null
+    - name: total_count_support
+      tests:
+        - not_null
