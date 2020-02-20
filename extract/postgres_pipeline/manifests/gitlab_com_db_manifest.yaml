@@ -1647,7 +1647,6 @@ tables:
       , created_at
       , updated_at
       , type
-      , ProjectHook
       , service_id
       FROM web_hooks
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
