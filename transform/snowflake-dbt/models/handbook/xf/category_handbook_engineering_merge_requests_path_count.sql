@@ -27,7 +27,7 @@ WITH category_handbook_engineering_merge_requests AS (
         IFF(LOWER(merge_request_path) LIKE '%/handbook/engineering/quality/%',1,0)          AS path_count_quality,
         IFF(LOWER(merge_request_path) LIKE '%/handbook/engineering/security/%',1,0)         AS path_count_security,
         IFF(LOWER(merge_request_path) LIKE '%/handbook/support/%',1,0)                      AS path_count_support,
-        IFF(LOWER(merge_request_path) LIKE '%/handbook/engineering/ux/%',1,0)               AS path_count_ux
+        IFF(LOWER(merge_request_path) LIKE '%/handbook/engineering/ux/%',1,0)               AS path_count_ux,
 
         -- Metadata 
         merge_request_created_at,
