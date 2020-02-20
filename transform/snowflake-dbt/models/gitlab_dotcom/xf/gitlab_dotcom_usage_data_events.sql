@@ -52,7 +52,7 @@
     "source_table_name": "gitlab_dotcom_ci_pipelines",
     "key_to_parent_project": "project_id",
     "primary_key": "ci_pipeline_id",
-    "is_representative_of_stage": "False"
+    "is_representative_of_stage": "True"
   },
   {
     "event_name": "ci_stages",
@@ -73,7 +73,7 @@
     "source_table_name": "gitlab_dotcom_deployments",
     "key_to_parent_project": "project_id",
     "primary_key": "deployment_id",
-    "is_representative_of_stage": "False"
+    "is_representative_of_stage": "True"
   },
   {
     "event_name": "environments",
@@ -87,7 +87,7 @@
     "source_table_name": "gitlab_dotcom_issues",
     "key_to_parent_project": "project_id",
     "primary_key": "issue_id",
-    "is_representative_of_stage": "False"
+    "is_representative_of_stage": "True"
   },
   {
     "event_name": "labels",
