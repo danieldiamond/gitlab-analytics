@@ -1402,6 +1402,17 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'subscriptions'
     export_table_primary_key: id
+  programming_languages:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , name
+      FROM programming_languages
+      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'programming_languages'
+    export_table_primary_key: id
   protected_environments:
     import_db: GITLAB_DB
     import_query: >
@@ -1417,6 +1428,16 @@ tables:
     export_table: 'protected_environments'
     export_table_primary_key: id
     advanced_metadata: true
+  repository_languages:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT project_id
+      , programming_language_id
+      , CONCAT(project_id, '_', programming_language_id) AS project_programming_language_id
+      FROM repository_languages
+    export_schema: 'gitlab_com'
+    export_table: 'repository_languages'
+    export_table_primary_key: CONCAT(project_id, '_', programming_language_id)
   releases:
     import_db: GITLAB_DB
     import_query: >
