@@ -37,29 +37,6 @@ models:
     - name: department_hired_into
     - name: division_hired_into
     - name: job_hired_into
-    
-  - name: greenhouse_diversity_lifecycle_gender
-    description: Provides a breakdown of recruiting KPIs by gender. This model initially builds out a base cte that includes month_date, a column for all the various eeoc_field_names, and a column with the associated eeoc_field_values. It then joins the candidate information to ensure all categories are represented in the data. 
-    columns:
-    - name: month_date
-    - name: eeoc_field_name
-      tests: 
-        - accepted_values:
-            values: ['CANDIDATE_VETERAN_STATUS', 'CANDIDATE_GENDER', 'CANDIDATE_STATUS', 'CANDIDATE_RACE', 'CANDIDATE_DISABILITY_STATUS']
-    - name: eeoc_values 
-      description: This is associated to the eeoc_field_name. For eeoc_field_name = 'candidate_gender' there will be a row for each of the values (male, female, and decline to self identify). This allows us to create a base model with all the potential eeoc_field_values for each field_column and join all applicants even those that don't identify.
-    - name: metric_total
-      description: This is the metric associated to the recruiting_metric, eeoc_field_name, and eeoc_vales. For example, the metric_total for where recruiting_metric is percent_of_applicants will show what percent of applicants were the gender in that row for that given month.
-    - name: recruiting_metric
-      description: This identifies recruiting metric is being measured. 
-      tests: 
-        - accepted_values:
-            values: ['application_to_offer_percent',
-                    'avg_apply_to_accept_days', 
-                    'offer_acceptance_rate_based_on_offer_month', 
-                    'percent_of_accepted_offers', 
-                    'percent_of_applicants', 
-                    'percent_of_extended_offers']
   - name: rpt_greenhouse_offer_stage
     description: This report provides a breakdown of how many candidates we expect to start in North America. 
     columns: 
@@ -74,7 +51,8 @@ models:
       description: This is a total count of all the candidates we have sent an offer to.
     - name: accepted_offers_to_start
       description: This is a count of the candidates that have accepted the offer. This will be the true count for what we will have to prepare for, whereas the candidates_estimated_to_start provides an idea of how many overall we may see.                    
-  - name: greenhouse_diversity
+  
+    - name: greenhouse_diversity
     description: Provides a breakdown of recruiting KPIs by gender, as well as department and division breakouts.
     columns:
     - name: month_date
@@ -93,10 +71,21 @@ models:
       description: This is associated to the eeoc_field_name. For eeoc_field_name = 'candidate_gender' there will be a row for each of the values (male, female, and decline to self identify). This allows us to create a base model with all the potential eeoc_field_values for each field_column and join all applicants even those that don't identify.
     - name: total_candidates_applied
       description: This shows how many candidates applied in a specific month. We are removing any instances the 
-    - name: percent_of_applicants
     - name: application_to_offer_percent 
-      description: This is based on the application month and shows how many applicants for a given month are extended an offer.
+      description: This is based on the application month and shows how many applicants for a given month have been extended an offer.
+    - name: percent_of_applicants
+      description: Provides what percent of applicants are for example female of the total applicants in a month.
+    - name: total_sent_offers
     - name: percent_of_offers_sent
+    - name: offers_accepted
+      description: In a given month, how many candidates accepted the offer.
+    - name: percent_of_offers_accepted
+    - name: time_to_offer_average
+      description: Shows the average time in days from the data a candidate applied for the offer they accepted for offers accepted in a given month.
+    - name: time_to_offer_median
+      description: Shows the median time in days from the data a candidate applied for the offer they accepted for offers accepted in a given month.
+    - name: offer_acceptance_rate_based_on_offer_month
+      description: Of the offers extended, shows what percent of candidates accept.    
     - name: percent_of_offers_accepted
     - name: time_to_offer
       description: Shows how long it takes on average to go from apply to offer for a candidate. This is based on offer sent month.

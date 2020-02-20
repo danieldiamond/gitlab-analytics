@@ -13,7 +13,6 @@ WITH applications AS (
     SELECT * 
     FROM  {{ ref ('greenhouse_job_posts') }}
 
-
 ), jobs AS (
 
     SELECT * 
@@ -30,6 +29,7 @@ WITH applications AS (
     FROM  {{ ref ('greenhouse_sources') }}
 
 ), cost_center AS (
+
     SELECT DISTINCT division, department
     FROM {{ref('cost_center_division_department_mapping')}}
 
@@ -47,12 +47,15 @@ SELECT
     resolved_at                                                                     AS offer_resolved_date,
     job_name,
     department_name,
-    cost_center.division,
+    CASE WHEN lower(department_name) LIKE '%sales%' THEN 'Sales'
+         WHEN department_name = 'Dev' THEN 'Engineering'
+         WHEN department_name = 'Customer Success Management' THEN 'Sales'
+         ELSE COALESCE(cost_center.division, department_name) END                   AS division,
     greenhouse_sources.source_name,
     greenhouse_sources.source_type,
     IFF(offer_status ='accepted',
             DATEDIFF('day', applications.applied_at, offers.resolved_at),
-            NULL)                                                                   AS apply_to_accept_days
+            NULL)                                                                   AS time_to_offer
 FROM applications 
 LEFT JOIN job_posts 
   ON job_posts.job_post_id = applications.job_post_id

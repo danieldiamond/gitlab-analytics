@@ -41,7 +41,7 @@ WITH date_details AS (
 ), eeoc_fields AS (
 
     SELECT DISTINCT 
-      LOWER(eeoc_field_name)                           AS eeoc_field_name,
+      lower(eeoc_field_name)                           AS eeoc_field_name,
       'join'                                           AS join_field
     FROM eeoc
 
@@ -61,13 +61,13 @@ WITH date_details AS (
       'application_month'                                                               AS capture_month,
       {{repeated_column_names}},
       IFF(offer_status = 'accepted',1,0)                                                AS accepted_offer,
-      null                                                                              AS apply_to_accept_days     
+      null                                                                              AS time_to_offer     
     FROM base
     LEFT JOIN greenhouse_recruiting_xf
       ON DATE_TRUNC('month',greenhouse_recruiting_xf.application_date) = base.month_date
     LEFT JOIN eeoc            
       ON greenhouse_recruiting_xf.application_id = eeoc.application_id
-      AND eeoc.eeoc_field_name = base.eeoc_field_name 
+      AND LOWER(eeoc.eeoc_field_name) = base.eeoc_field_name 
 
 ), offers AS (
 
@@ -76,13 +76,13 @@ WITH date_details AS (
       'offer_sent_month'                                                               AS capture_month,
       {{repeated_column_names}},
       IFF(offer_status = 'accepted',1,0)                                                AS accepted_offer,
-      null                                                                              AS apply_to_accept_days 
+      null                                                                              AS time_to_offer 
     FROM base
     LEFT JOIN greenhouse_recruiting_xf
       ON DATE_TRUNC('month',greenhouse_recruiting_xf.offer_sent_date) = base.month_date
     LEFT JOIN eeoc            
       ON greenhouse_recruiting_xf.application_id = eeoc.application_id
-      AND eeoc.eeoc_field_name = base.eeoc_field_name 
+      AND LOWER(eeoc.eeoc_field_name) = base.eeoc_field_name 
     WHERE base.month_date >= '2018-08-12' -- 1st date we started capturing eeoc data
 
 ), accepted AS (
@@ -92,27 +92,32 @@ WITH date_details AS (
       'accepted_month'                                                                  AS capture_month,
       {{repeated_column_names}},
       IFF(offer_status = 'accepted',1,0)                                                AS accepted_offer,
-      DATEDIFF('day', application_date, offer_resolved_date)                            AS apply_to_accept_days 
+      time_to_offer                           
     FROM base
     LEFT JOIN greenhouse_recruiting_xf
       ON DATE_TRUNC('month',greenhouse_recruiting_xf.offer_resolved_date) = base.month_date
     LEFT JOIN eeoc            
       ON greenhouse_recruiting_xf.application_id = eeoc.application_id
-      AND eeoc.eeoc_field_name = base.eeoc_field_name 
+      AND LOWER(eeoc.eeoc_field_name) = base.eeoc_field_name 
     WHERE base.month_date >= '2018-09-01' -- 1st date we started capturing eeoc data
       AND offer_status ='accepted'
+
+), final AS (
+
+    SELECT * 
+    FROM applications
+
+    UNION ALL
+
+    SELECT * 
+    FROM offers
+
+    UNION ALL
+
+    SELECT *
+    FROM accepted 
 
 ) 
 
 SELECT * 
-FROM applications
-
-UNION ALL
-
-SELECT * 
-FROM offers
-
-UNION ALL
-
-SELECT *
-FROM accepted 
+FROM final
