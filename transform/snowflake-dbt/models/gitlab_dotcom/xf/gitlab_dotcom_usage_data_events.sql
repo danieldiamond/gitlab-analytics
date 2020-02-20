@@ -192,9 +192,9 @@ WITH gitlab_subscriptions AS (
 , {{ event_cte.event_name }} AS (
   
   SELECT *
-  /* Check for source_table, else use source_cte. */
-  {% if event_cte.source_table is defined %}
-    FROM {{ ref(event_cte.source_source_table_name) }}
+  /* Check for source_table_name, else use source_cte_name. */
+  {% if event_cte.source_table_name is defined %}
+    FROM {{ ref(event_cte.source_table_name) }}
   {% else %}
     FROM {{ event_cte.source_cte_name }}
   {% endif %}

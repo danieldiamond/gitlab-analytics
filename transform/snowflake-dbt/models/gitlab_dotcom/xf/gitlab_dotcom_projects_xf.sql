@@ -48,7 +48,7 @@ active_services AS (
 joined AS (
     SELECT
       projects.project_id,
-      projects.created_at, -- We will phase out `project_created_out`
+      projects.created_at, -- We will phase out `project_created_at`
       projects.created_at                                          AS project_created_at,
       projects.updated_at                                          AS project_updated_at,
       projects.creator_id,
@@ -138,7 +138,7 @@ joined AS (
         AND projects.created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
       LEFT JOIN active_services
         ON projects.project_id = active_services.project_id
-    {{ dbt_utils.group_by(n=67) }}
+    {{ dbt_utils.group_by(n=68) }}
 )
 
 SELECT *
