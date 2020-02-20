@@ -253,11 +253,11 @@ SELECT
              event_created_at)/(24 * 7))               AS weeks_since_namespace_creation,
   FLOOR(
     DATEDIFF('hour', 
-             project_created_at, 
+             projects.project_created_at, 
              event_created_at)/24)                     AS days_since_project_creation,
   FLOOR(
     DATEDIFF('hour', 
-             project_created_at, 
+             projects.project_created_at, 
              event_created_at)/(24 * 7))               AS weeks_since_project_creation
 FROM {{ event_cte.event_name }}
   /* Join with project project. */
