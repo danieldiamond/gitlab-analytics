@@ -29,8 +29,8 @@ WITH applications AS (
     SELECT * 
     FROM  {{ ref ('greenhouse_sources') }}
 
-), cost_center as (
-    SELECT *
+), cost_center AS (
+    SELECT DISTINCT division, department
     FROM {{ref('cost_center_division_department_mapping')}}
 
 )
@@ -51,7 +51,7 @@ SELECT
     greenhouse_sources.source_name,
     greenhouse_sources.source_type,
     IFF(offer_status ='accepted',
-            DATEDIFF('day', applications.applied_at, offers.sent_at),
+            DATEDIFF('day', applications.applied_at, offers.resolved_at),
             NULL)                                                                   AS apply_to_accept_days
 FROM applications 
 LEFT JOIN job_posts 
@@ -66,9 +66,8 @@ LEFT JOIN greenhouse_sources
 LEFT JOIN offers 
   ON applications.application_id = offers.application_id
 LEFT JOIN cost_center
-  ON trim(greenhouse_departments.department_name)=trim(cost_center.department)
+  ON TRIM(greenhouse_departments.department_name)=TRIM(cost_center.department)
 
---where candidate_id='32534811002'
 
 
 
