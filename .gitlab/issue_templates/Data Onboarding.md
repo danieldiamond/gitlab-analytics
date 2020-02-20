@@ -142,13 +142,13 @@ Additional tools to install that are not part of the onboarding script:
 
 </details>
 
+**Bonus**
+To see the inspiration for the onboarding script above, take a look at the dbt Discourse post [here](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243) on how they set up their computers for working on dbt projects. You might want to do some of the additional configurations mentioned in that post.
+
 Our data stack looks roughly like this:
 <img src = "https://cdn-images-1.medium.com/max/2000/1*BogoeTTK1OXFU1hPfUyCFw.png">
 
 As you read in the handbook, we currently use Stitch for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool. The bulk of your projects and tasks will be in dbt , so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources.
-
-**Bonus**
-To see the inspiration for the onboarding script above, take a look at the dbt Discourse post [here](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243) on how they set up their computers for working on dbt projects. You might want to do some of the additional configurations mentioned in that post.
 
 ## Connecting to Snowflake
 - [ ] Login with the credentials that your manager created following the instructions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
@@ -167,6 +167,12 @@ You should have:
 * Keep indents on empty lines: unchecked
 
 You can use `Command + Option + L` to format your file.
+
+#### Snowflake SQL
+Snowflake SQL is probably not that different from the dialects of SQL you're already familiar with, but here are a couple of resources to point you in the right direction:
+- [ ] [Differences we found while transition from Postgres to Snowflake](https://gitlab.com/gitlab-data/analytics/issues/645)
+- [ ] [How Compatible are Redshift and Snowflake’s SQL Syntaxes?](https://medium.com/@jthandy/how-compatible-are-redshift-and-snowflakes-sql-syntaxes-c2103a43ae84)
+- [ ] [Snowflake Functions](https://docs.snowflake.net/manuals/sql-reference/functions-all.html)
 
 ## dbt
 
@@ -197,16 +203,17 @@ You can use `Command + Option + L` to format your file.
 - To get into the `dbt-image` docker container, go to the analytics project (which you can get to by typing `goto analytics` from anywhere on your Mac) and run the command `make dbt-image`. This will spin up our docker container that contains `dbt` and give you a bash shell within the `analytics/transform/snowflake-dbt` directory.
 - All changes made to the files within the `analytics` repo will automatically be visible in the docker container! This container is only used to run `dbt` commands themselves, not to write SQL or edit `dbt` files in general (though technically it could be, as VIM is available within the container)
 - [ ] From a different terminal window run `code ~/.dbt/profiles.yml` and update this file with your info.  The schema should be something like `yourname_scratch`.
-    - [ ] __Data Engineers__: update the warehouse in `~/.dbt/profiles.yml` to be `ENGINEER_XS` for both `dev` and `docs` profiles.  The role should be filled in with `ENGINEER`. 
+    - [ ] __Data Engineers__: update the `~/.dbt/profiles.yml` to be: 
+       `
+        role: ENGINEER
+        database: ANALYTICS
+        warehouse: ENGINEER_XS
+      `
+        
 - [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.  If you see an error like `Schema 'ANALYTICS.NAME_SCRATCH_STAGING' does not exist or not authorized`, it is because that schema hasn't been created by dbt in Snowflake yet. Since `dbt compile` doesn't actually create anything in the database, it won't create it for you.  To fix this, feel free to run a small model with dbt `dbt run --models sfdc` and then `dbt compile` should work as long as there weren't any issues with running the model.  
 - [ ] test the command `make help` and use it to understand how to use `make dbt-docs` and access it from your local machine.
 - [ ] Here is the [dbt command line cheat sheet](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/#command-line-cheat-sheet)
 
-## Snowflake SQL
-Snowflake SQL is probably not that different from the dialects of SQL you're already familiar with, but here are a couple of resources to point you in the right direction:
-- [ ] [Differences we found while transition from Postgres to Snowflake](https://gitlab.com/gitlab-data/analytics/issues/645)
-- [ ] [How Compatible are Redshift and Snowflake’s SQL Syntaxes?](https://medium.com/@jthandy/how-compatible-are-redshift-and-snowflakes-sql-syntaxes-c2103a43ae84)
-- [ ] [Snowflake Functions](https://docs.snowflake.net/manuals/sql-reference/functions-all.html)
 
 ## Misc
 - [ ] Familiarize yourself with the [Stitch](http://stitchdata.com) UI, as this is mostly the source of truth for what data we are loading. An email will have been sent with info on how to get logged in.
