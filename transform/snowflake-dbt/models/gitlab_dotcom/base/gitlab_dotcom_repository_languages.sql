@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('gitlab_dotcom', 'releases') }}
+    FROM {{ source('gitlab_dotcom', 'repository_languages') }}
     QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
