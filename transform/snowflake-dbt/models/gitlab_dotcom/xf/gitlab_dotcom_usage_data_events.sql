@@ -11,13 +11,6 @@
 
 {%- set event_ctes = [
   {
-    "event_name": "projects_prometheus_active",
-    "source_cte_name": "projects_prometheus_active",
-    "key_to_parent_project": "project_id",
-    "primary_key": "project_id",
-    "is_representative_of_stage": "True"
-  },
-  {
     "event_name": "boards",
     "source_table_name": "gitlab_dotcom_boards",
     "key_to_parent_project": "project_id",
@@ -32,13 +25,6 @@
     "key_to_parent_group": "cluster_group_id",
     "primary_key": "clusters_applications_helm_id",
     "is_representative_of_stage": "True"
-  },
-  {
-    "event_name": "ci_builds",
-    "source_table_name": "gitlab_dotcom_ci_builds",
-    "key_to_parent_project": "ci_build_project_id",
-    "primary_key": "ci_build_id",
-    "is_representative_of_stage": "False"
   },
   {
     "event_name": "ci_pipeline_schedules",
@@ -132,6 +118,13 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "projects_prometheus_active",
+    "source_cte_name": "projects_prometheus_active",
+    "key_to_parent_project": "project_id",
+    "primary_key": "project_id",
+    "is_representative_of_stage": "True"
+  },
+  {
     "event_name": "releases",
     "source_table_name": "gitlab_dotcom_releases",
     "key_to_parent_project": "project_id",
@@ -154,6 +147,16 @@
   }
 ]
 -%}
+
+/* Temporary excluded
+  {
+    "event_name": "ci_builds",
+    "source_table_name": "gitlab_dotcom_ci_builds",
+    "key_to_parent_project": "ci_build_project_id",
+    "primary_key": "ci_build_id",
+    "is_representative_of_stage": "False"
+  },
+*/
 
 WITH gitlab_subscriptions AS (
 
@@ -213,6 +216,7 @@ WITH gitlab_subscriptions AS (
   {% if is_incremental() %}
 
   WHERE created_at >= (SELECT MAX(event_created_at) FROM {{this}} WHERE event_name = '{{ event_cte.event_name }}')
+    AND created_at >= '2019-06-01'
 
   {% endif %}
   
