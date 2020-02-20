@@ -6,7 +6,7 @@
     * primary_key
   Must have ONE of the following:
     * source_cte_name OR source_table_name
-    * key_to_parent_project or key_to_group_project (or both)
+    * key_to_parent_project or key_to_group_project (NOT both, see clusters_applications_helm is included twice for group and project.
 */
 
 {%- set event_ctes = [
