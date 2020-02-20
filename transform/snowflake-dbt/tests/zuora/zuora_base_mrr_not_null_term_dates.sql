@@ -1,7 +1,7 @@
 WITH row_count_calc AS (
 
   SELECT 
-    COUNT(*)
+    COUNT(*) AS row_count
   FROM {{ ref('zuora_base_mrr') }}
   WHERE 
     (
