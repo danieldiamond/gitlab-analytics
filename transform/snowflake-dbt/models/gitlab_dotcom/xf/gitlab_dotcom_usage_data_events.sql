@@ -216,7 +216,6 @@ WITH gitlab_subscriptions AS (
   {% if is_incremental() %}
 
   WHERE created_at >= (SELECT MAX(event_created_at) FROM {{this}} WHERE event_name = '{{ event_cte.event_name }}')
-    AND created_at >= '2019-06-01'
 
   {% endif %}
   
@@ -265,18 +264,24 @@ SELECT
              event_created_at)/(24 * 7))               AS weeks_since_project_creation
 FROM {{ event_cte.event_name }}
   /* Join with project project. */
+  {% if event_cte.key_to_parent_project is defined %}
   LEFT JOIN projects
     ON {{ event_cte.event_name }}.{{ event_cte.key_to_parent_project }} = projects.project_id
   /* Join with parent group. */
+  {% elif event_cte.key_to_parent_project is defined %}
   LEFT JOIN namespaces
-    {% if event_cte.key_to_parent_group is defined %}
-      ON {{ event_cte.event_name }}.{{ event_cte.key_to_parent_group }} = namespaces.namespace_id
-    {% else %}
-      ON True = False
-    {% endif %}
-  /* Join on either the project or the group's ultimate namespace. */
+    ON {{ event_cte.event_name }}.{{ event_cte.key_to_parent_group }} = namespaces.namespace_id
+  {% endif %}
+  
+  -- Join on either the project or the group's ultimate namespace.
   INNER JOIN namespaces AS ultimate_namespace 
-    ON COALESCE(projects.ultimate_parent_id, namespaces.namespace_ultimate_parent_id) = ultimate_namespace.namespace_id
+    ON ultimate_namespace.namespace_id = 
+    {% if event_cte.key_to_parent_project is defined %}
+    projects.ultimate_parent_id
+    {% elif event_cte.key_to_parent_project is defined %}
+    namespaces.namespace_ultimate_parent_id)
+    {% endif %}
+
   LEFT JOIN gitlab_subscriptions
     ON ultimate_namespace.namespace_id = gitlab_subscriptions.namespace_id
     AND {{ event_cte.event_name }}.created_at BETWEEN gitlab_subscriptions.valid_from 
