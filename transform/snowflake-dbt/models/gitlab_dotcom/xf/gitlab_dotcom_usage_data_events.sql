@@ -11,11 +11,11 @@
 
 {%- set event_ctes = [
   {
-    "event_name": "clusters_applications_helm",
-    "source_table_name": "gitlab_dotcom_clusters_applications_helm_xf",
-    "key_to_parent_group": "cluster_group_id",
-    "primary_key": "clusters_applications_helm_id",
-    "is_representative_of_stage": "True"
+    "event_name": "boards",
+    "source_table_name": "gitlab_dotcom_boards",
+    "key_to_parent_project": "project_id",
+    "primary_key": "board_id",
+    "is_representative_of_stage": "False"
   },
   {
     "event_name": "clusters_applications_helm",
@@ -25,12 +25,132 @@
     "is_representative_of_stage": "True"
   },
   {
+    "event_name": "clusters_applications_helm",
+    "source_table_name": "gitlab_dotcom_clusters_applications_helm_xf",
+    "key_to_parent_group": "cluster_group_id",
+    "primary_key": "clusters_applications_helm_id",
+    "is_representative_of_stage": "True"
+  },
+  {
+    "event_name": "ci_pipeline_schedules",
+    "source_table_name": "gitlab_dotcom_ci_pipeline_schedules",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_pipeline_schedule_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "ci_pipelines",
+    "source_table_name": "gitlab_dotcom_ci_pipelines",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_pipeline_id",
+    "is_representative_of_stage": "True"
+  },
+  {
+    "event_name": "ci_stages",
+    "source_table_name": "gitlab_dotcom_ci_stages",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_stage_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "ci_triggers",
+    "source_table_name": "gitlab_dotcom_ci_triggers",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_trigger_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "deployments",
+    "source_table_name": "gitlab_dotcom_deployments",
+    "key_to_parent_project": "project_id",
+    "primary_key": "deployment_id",
+    "is_representative_of_stage": "True"
+  },
+  {
+    "event_name": "environments",
+    "source_table_name": "gitlab_dotcom_environments",
+    "key_to_parent_project": "project_id",
+    "primary_key": "environment_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "issues",
+    "source_table_name": "gitlab_dotcom_issues",
+    "key_to_parent_project": "project_id",
+    "primary_key": "issue_id",
+    "is_representative_of_stage": "True"
+  },
+  {
+    "event_name": "labels",
+    "source_table_name": "gitlab_dotcom_labels",
+    "key_to_parent_project": "project_id",
+    "primary_key": "label_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "lfs_objects",
+    "source_table_name": "gitlab_dotcom_lfs_objects_projects",
+    "key_to_parent_project": "project_id",
+    "primary_key": "lfs_object_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "merge_requests",
+    "source_table_name": "gitlab_dotcom_merge_requests",
+    "key_to_parent_project": "project_id",
+    "primary_key": "merge_request_id",
+    "is_representative_of_stage": "True"
+  },
+  {
+    "event_name": "milestones",
+    "source_table_name": "gitlab_dotcom_milestones",
+    "key_to_parent_project": "project_id",
+    "primary_key": "milestone_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "notes",
+    "source_table_name": "gitlab_dotcom_notes",
+    "key_to_parent_project": "project_id",
+    "primary_key": "note_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "project_auto_devops",
+    "source_table_name": "gitlab_dotcom_project_auto_devops",
+    "key_to_parent_project": "project_id",
+    "primary_key": "project_auto_devops_id",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "projects_prometheus_active",
     "source_cte_name": "projects_prometheus_active",
     "key_to_parent_project": "project_id",
     "primary_key": "project_id",
     "is_representative_of_stage": "True"
   },
+  {
+    "event_name": "releases",
+    "source_table_name": "gitlab_dotcom_releases",
+    "key_to_parent_project": "project_id",
+    "primary_key": "release_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "snippets",
+    "source_table_name": "gitlab_dotcom_snippets",
+    "key_to_parent_project": "project_id",
+    "primary_key": "snippet_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "todos",
+    "source_table_name": "gitlab_dotcom_todos",
+    "key_to_parent_project": "project_id",
+    "primary_key": "todo_id",
+    "is_representative_of_stage": "False"
+  }
+
 ]
 -%}
 
@@ -123,7 +243,7 @@ SELECT
   {% elif event_cte.key_to_parent_group is defined %}
     'group'                       AS parent_type,
     namespaces.namespace_id       AS parent_id,
-    namespaces.project_created_at AS parent_created_at,
+    namespaces.namespace_created_at AS parent_created_at,
   {% endif %}
   {{ event_cte.event_name }}.created_at                AS event_created_at,
   {{ event_cte.is_representative_of_stage }}::BOOLEAN  AS is_representative_of_stage,
