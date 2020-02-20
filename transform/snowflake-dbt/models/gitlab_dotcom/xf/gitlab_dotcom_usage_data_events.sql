@@ -194,11 +194,9 @@ WITH gitlab_subscriptions AS (
 /* Source CTEs Start Here */ 
 , projects_prometheus_active AS (
 
-  SELECT
-    services.*
-  FROM {{ ref('gitlab_dotcom_services') }} AS services
-  WHERE services.service_type = 'PrometheusService'
-    AND services.is_active = True
+  SELECT *
+  FROM {{ ref('gitlab_dotcom_projects_xf') }}
+  WHERE ARRAY_CONTAINS('PrometheusService'::VARIANT, active_service_types)
 
 )
 /* End of Source CTEs */
