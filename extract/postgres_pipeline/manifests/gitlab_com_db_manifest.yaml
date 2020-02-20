@@ -1588,7 +1588,7 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'users'
     export_table_primary_key: id
-  user_preferencess:
+  user_preferences:
     import_db: GITLAB_DB
     import_query: >
       SELECT user_id
