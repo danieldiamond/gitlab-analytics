@@ -127,12 +127,15 @@ Some important parts of the script that you will definitely want to do in some w
     * [ ] Ensure your IDE uses the Python3 installation
         * To do this in VSCode: press `Ctrl+Shift+P` and then type in and select `Python: Select Interpreter` and then select the Python 3 installation
     * [ ] Consider installing extensions/add-ons in your IDE to support the Python libraries used for linting/testing as mentioned in the Python section above.  For example, you can setup VSCode to use black as its formatter as described [here](https://code.visualstudio.com/docs/python/editing#_formatting).
+    * [ ] Consider installing [tldr](https://tldr.sh/) for easy reference to common CLI commands
+
+
+Additional tools to install that are not part of the onboarding script:
 * [ ] Install Data Grip (from JetBrains) for interfacing with databases
     * [ ] Follow [this process](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains) for requesting a license for Data Grip.  Until you have a license, you can easily use Data Grip on a trial basis for 30 days
 * [ ] Install the [gcloud sdk](https://cloud.google.com/sdk/docs/quickstart-macos) and authenticate once you're provisioned
 * [ ] Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-homebrew-on-macos)
 * [ ] Install the [awscli](https://aws.amazon.com/cli/)
-* [ ] Consider installing [tldr](https://tldr.sh/) for easy reference to common CLI commands
 * [ ] Disable [autocorrect in zsh](https://coderwall.com/p/jaoypq/disabling-autocorrect-in-zsh) if it annoys you
 * [ ] Consider downloading and installing [Little Snitch](https://www.obdev.at/products/littlesnitch/index.html) - You can submit for reimbursement for the full version
 
