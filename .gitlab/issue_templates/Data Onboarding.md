@@ -179,11 +179,11 @@ You can use `Command + Option + L` to format your file.
 - [ ] [This introduction](https://docs.getdbt.com/docs/introduction) should help get you understand what dbt is.
 - [ ] [This podcast](https://www.dataengineeringpodcast.com/dbt-data-analytics-episode-81/) is a general walkthrough of dbt/interview with its creator, Drew Banin.
 - [ ] Read [how we use dbt](https://about.gitlab.com/handbook/business-ops/data-team/#-transformation) and our [SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/).
-- [ ] Watch [video](https://drive.google.com/file/d/1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn/view) of Taylor introducing Chase to dbt.
 - [ ] Watch [video](https://www.youtube.com/watch?v=P_NQ9qHnsyQ&feature=youtu.be) of Thomas and Israel discussing getting started with dbt locally.
 - [ ] Peruse the [Official Docs](https://docs.getdbt.com).
 - [ ] In addition to using dbt to manage our transformations, we use dbt to maintain [our own internal documentation](https://dbt.gitlabdata.com) on those data transformations. This is a public link. We suggest bookmarking it.
 - [ ] Read about and and watch [Drew demo dbt docs to Emilie & Taylor](https://blog.fishtownanalytics.com/using-dbt-docs-fae6137da3c3). Read about [Scaling Knowledge](https://blog.fishtownanalytics.com/scaling-knowledge-160f9f5a9b6c) and the problem we're trying to solve with our documentation.
+- [ ] Watch [video](https://drive.google.com/file/d/1ZuieqqejDd2HkvhEZeOPd6f2Vd5JWyUn/view) of Taylor introducing Chase to dbt.
 - [ ] Consider joining [dbt slack](https://slack.getdbt.com) (Not required, but strongly recommended; if you join use your personal email).
 - [ ] Information and troubleshooting on dbt is sparse on Google & Stack Overflow, we recommend the following sources of help when you need it:
    * Your teammates! We are all here to help!
@@ -200,20 +200,7 @@ You can use `Command + Option + L` to format your file.
     - [ ] __Data Engineers__: update the warehouse in `~/.dbt/profiles.yml` to be `ENGINEER_XS` for both `dev` and `docs` profiles.  The role should be filled in with `ENGINEER`. 
 - [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.  If you see an error like `Schema 'ANALYTICS.NAME_SCRATCH_STAGING' does not exist or not authorized`, it is because that schema hasn't been created by dbt in Snowflake yet. Since `dbt compile` doesn't actually create anything in the database, it won't create it for you.  To fix this, feel free to run a small model with dbt `dbt run --models sfdc` and then `dbt compile` should work as long as there weren't any issues with running the model.  
 - [ ] test the command `make help` and use it to understand how to use `make dbt-docs` and access it from your local machine.
-
-Here is your dbt commands cheat sheet:
- * `dbt compile` - compiles all models
- * `dbt run` - regular run
- * `dbt run --models modelname` - will only run modelname
- * `dbt run --models +modelname` - will run modelname and all the models it depends on
- * `dbt run --models modelname+` - will run modelname and all the models that depend on it
- * `dbt run --models +modelname+` - will run modelname, all the models it depends on, and all the models that depend on it
- * `dbt run --exclude modelname` - will run all models except modelname
- * `dbt run --full-refresh` - will refresh incremental models
- * `dbt test` - will run custom data tests and schema tests; TIP: `dbt test` takes the same `--model` and `--exclude` syntax referenced for `dbt run`
- * `dbt_run_changed` - a function we've added to your computer that only runs models that have changed (this is accessible from within the docker container)
- * `cycle_logs` - a function we've added to your computer to clear out the dbt logs (not accessible from within the docker container)
- * `make dbt-docs` - a command that will spin up a local container to serve you the `dbt` docs in a web-browser, found at `localhost:8081`
+- [ ] Here is the [dbt command line cheat sheet](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/#command-line-cheat-sheet)
 
 ## Snowflake SQL
 Snowflake SQL is probably not that different from the dialects of SQL you're already familiar with, but here are a couple of resources to point you in the right direction:
