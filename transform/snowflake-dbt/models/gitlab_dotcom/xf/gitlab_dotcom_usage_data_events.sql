@@ -1,3 +1,14 @@
+/* 
+  Must have ALL of the following:
+    * event_name
+    * primary_key
+    * is_representative_of_stage
+    * primary_key
+  Must have ONE of the following:
+    * source_cte_name OR source_table_name
+    * key_to_parent_project or key_to_group_project (or both)
+*/
+
 {%- set event_ctes = [
   {
     "event_name": "projects_prometheus_active",
