@@ -147,6 +147,8 @@ sources:
         identifier: gitlab_db_plans
       - name: pages_domains
         identifier: gitlab_db_pages_domains
+      - name: programming_languages
+        identifier: gitlab_db_proprogramming_languages
       - name: project_authorizations
         identifier: gitlab_db_project_authorizations
       - name: project_auto_devops
@@ -165,6 +167,8 @@ sources:
         identifier: gitlab_db_projects
       - name: releases
         identifier: gitlab_db_releases
+      - name: repository_languages
+        identifier: gitlab_db_repository_languages
       - name: resource_label_events
         identifier: gitlab_db_resource_label_events
       - name: services
@@ -177,5 +181,7 @@ sources:
         identifier: gitlab_db_timelogs
       - name: todos
         identifier: gitlab_db_todos
+      - name: user_preferences
+        identifier: gitlab_db_user_preferences
       - name: users
         identifier: gitlab_db_users
