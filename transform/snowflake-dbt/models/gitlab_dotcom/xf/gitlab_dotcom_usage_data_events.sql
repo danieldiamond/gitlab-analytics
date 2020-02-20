@@ -1,12 +1,12 @@
 /* 
-  Must have ALL of the following:
+  Each dict must have ALL of the following:
     * event_name
     * primary_key
     * is_representative_of_stage
     * primary_key
   Must have ONE of the following:
     * source_cte_name OR source_table_name
-    * key_to_parent_project or key_to_group_project (NOT both, see clusters_applications_helm is included twice for group and project.
+    * key_to_parent_project OR key_to_group_project (NOT both, see how clusters_applications_helm is included twice for group and project.
 */
 
 {%- set event_ctes = [
@@ -30,6 +30,13 @@
     "key_to_parent_group": "cluster_group_id",
     "primary_key": "clusters_applications_helm_id",
     "is_representative_of_stage": "True"
+  },
+  {
+    "event_name": "ci_builds",
+    "source_table_name": "gitlab_dotcom_ci_builds",
+    "key_to_parent_project": "ci_build_project_id",
+    "primary_key": "ci_build_id",
+    "is_representative_of_stage": "False"
   },
   {
     "event_name": "ci_pipeline_schedules",
@@ -150,19 +157,8 @@
     "primary_key": "todo_id",
     "is_representative_of_stage": "False"
   }
-
 ]
 -%}
-
-/* Temporary excluded
-  {
-    "event_name": "ci_builds",
-    "source_table_name": "gitlab_dotcom_ci_builds",
-    "key_to_parent_project": "ci_build_project_id",
-    "primary_key": "ci_build_id",
-    "is_representative_of_stage": "False"
-  },
-*/
 
 WITH gitlab_subscriptions AS (
 
