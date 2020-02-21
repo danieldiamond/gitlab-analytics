@@ -107,6 +107,7 @@ models:
       schema: staging
       zuora:
         xf:
+          schema: analytics
           materialized: table
 
     bamboohr:
