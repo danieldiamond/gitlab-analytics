@@ -18,20 +18,6 @@
     "is_representative_of_stage": "False"
   },
   {
-    "event_name": "clusters_applications_helm",
-    "source_table_name": "gitlab_dotcom_clusters_applications_helm_xf",
-    "key_to_parent_project": "cluster_project_id",
-    "primary_key": "clusters_applications_helm_id",
-    "is_representative_of_stage": "True"
-  },
-  {
-    "event_name": "clusters_applications_helm",
-    "source_table_name": "gitlab_dotcom_clusters_applications_helm_xf",
-    "key_to_parent_group": "cluster_group_id",
-    "primary_key": "clusters_applications_helm_id",
-    "is_representative_of_stage": "True"
-  },
-  {
     "event_name": "ci_builds",
     "source_table_name": "gitlab_dotcom_ci_builds",
     "key_to_parent_project": "ci_build_project_id",
@@ -65,6 +51,20 @@
     "key_to_parent_project": "project_id",
     "primary_key": "ci_trigger_id",
     "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "clusters_applications_helm",
+    "source_table_name": "gitlab_dotcom_clusters_applications_helm_xf",
+    "key_to_parent_project": "cluster_project_id",
+    "primary_key": "clusters_applications_helm_id",
+    "is_representative_of_stage": "True"
+  },
+  {
+    "event_name": "clusters_applications_helm",
+    "source_table_name": "gitlab_dotcom_clusters_applications_helm_xf",
+    "key_to_parent_group": "cluster_group_id",
+    "primary_key": "clusters_applications_helm_id",
+    "is_representative_of_stage": "True"
   },
   {
     "event_name": "deployments",
