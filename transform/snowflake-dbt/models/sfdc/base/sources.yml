@@ -43,12 +43,6 @@ sources:
       - name: opportunity_field_history
         identifier: opportunityfieldhistory
         description: '{{ doc("sfdc_oppfieldhistory_source") }}'  
-      - name: opportunity_history
-        identifier: opportunityhistory          
-        description: '{{ doc("sfdc_opphistory_source") }}'
-      - name: opportunity_line_item
-        identifier: opportunitylineitem      
-        description: '{{ doc("sfdc_oppline_source") }}'
       - name: opportunity_stage
         identifier: opportunitystage         
         description: '{{ doc("sfdc_oppstage_source") }}'
