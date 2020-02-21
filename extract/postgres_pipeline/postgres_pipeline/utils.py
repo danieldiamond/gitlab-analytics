@@ -172,9 +172,7 @@ def chunk_and_upload(
     for chunk_df in results_generator:
         # If the table doesn't exist, it needs to send the first chunk to the dataframe_uploader
         if backfill:
-            seed_table(
-                advanced_metadata, chunk_df, target_engine, target_table
-            )
+            seed_table(advanced_metadata, chunk_df, target_engine, target_table)
         row_count = chunk_df.shape[0]
         rows_uploaded += row_count
         upload_to_gcs(advanced_metadata, chunk_df, upload_file_name)
@@ -303,7 +301,9 @@ def id_query_generator(
         sys.exit(1)
     logging.info(f"Source Min ID: {min_source_id}")
 
-    for id_pair in range_generator(max(max_target_id, min_source_id), max_source_id, step=id_range):
+    for id_pair in range_generator(
+        max(max_target_id, min_source_id), max_source_id, step=id_range
+    ):
         id_range_query = (
             "".join(raw_query.lower().split("where")[0])
             + f"WHERE {primary_key} BETWEEN {id_pair[0]} AND {id_pair[1]}"
