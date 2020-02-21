@@ -12,14 +12,8 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-
-      id::INTEGER                       AS plan_id,
-      created_at::TIMESTAMP             AS created_at,
-      updated_at::TIMESTAMP             AS updated_at,
-      name::VARCHAR                     AS plan_name,
-      title::VARCHAR                    AS plan_title,
-      id IN (2,3,4)                     AS plan_is_paid
-
+      id::INTEGER                       AS programming_language_id,
+      name::VARCHAR                     AS programming_language_name
     FROM source
 
 )
