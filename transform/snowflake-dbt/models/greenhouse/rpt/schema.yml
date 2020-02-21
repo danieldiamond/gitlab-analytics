@@ -53,7 +53,7 @@ models:
       description: This is a count of the candidates that have accepted the offer. This will be the true count for what we will have to prepare for, whereas the candidates_estimated_to_start provides an idea of how many overall we may see.                    
   
     - name: greenhouse_diversity
-    description: Provides a breakdown of recruiting KPIs by gender, as well as department and division breakouts.
+    description: Provides a breakdown of recruiting KPIs by gender, as well as department and division breakouts. Note - the values for the columns in this model will be null in the case there are less than 3 candidates for a given eeoc pool (this is done using the min over partition value).
     columns:
     - name: month_date
     - name: breakout_type
