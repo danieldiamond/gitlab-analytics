@@ -44,18 +44,6 @@ Note: A number of fields prefixed with JB_ and ATAM_ are pulled in as part of [T
 
 {% enddocs %}
 
-{% docs sfdc_opphistory_source %}
-
-The opportunity history source table represents the stage history of an Opportunity. [Link to Documentation](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_opportunityhistory.htm)
-
-{% enddocs %}
-
-{% docs sfdc_oppline_source %}
-
-The opportunity line item source table represents an opportunity line item, which is a member of the list of Product2 products associated with an Opportunity. [Link to Documentation](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_opportunitylineitem.htm)
-
-{% enddocs %}
-
 {% docs sfdc_oppstage_source %}
 
 The opportunity stage source table represents the stage of an Opportunity in the sales pipeline, such as New Lead, Negotiating, Pending, Closed, and so on. [Link to Documentation](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_opportunitystage.htm)
