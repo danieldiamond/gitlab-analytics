@@ -123,6 +123,7 @@ WITH greenhouse_diversity_intermediate AS (
     iff(min_total_offers_accepted_for_breakout < 3, null, 
         offer_acceptance_rate_based_on_offer_month)                                     AS offer_acceptance_rate_based_on_offer_month 
     FROM aggregated
+    and month_date <= DATEADD(MONTH,-1,current_date())
 
 )
 
