@@ -19,7 +19,7 @@ WITH source AS (
       merge_request_notes_filter::VARCHAR AS merge_request_notes_filter,
       created_at::TIMESTAMP               AS created_at,
       updated_at::TIMESTAMP               AS updated_at,
-      epics_sort::VARCHAR                 AS epic_sort
+      epics_sort::VARCHAR                 AS epic_sort,
       roadmap_epics_state::VARCHAR        AS roadmap_epics_state,
       epic_notes_filter::VARCHAR          AS epic_notes_filter,
       issues_sort::VARCHAR                AS issues_sort,
@@ -45,26 +45,3 @@ WITH source AS (
 SELECT  *
 FROM renamed
 ORDER BY updated_at
-SELECT user_id
-, issue_notes_filter
-, merge_request_notes_filter
-, created_at
-, updated_at
-, epics_sort
-, roadmap_epics_state
-, epic_notes_filter
-, issues_sort
-, merge_requests_sort
-, roadmaps_sort
-, first_day_of_week
-, timezone
-, time_display_relative
-, time_format_in_24h
-, projects_sort
-, show_whitespace_in_diffs
-, sourcegraph_enabled
-, setup_for_company
-, render_whitespace_in_code
-, tab_width
-, feature_filter_type
-FROM user_preferences
