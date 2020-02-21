@@ -60,7 +60,7 @@ models:
       description: This column indicates what the metric data is displayed at the KPI level (not accounting for eeoc values), division level, or all (accounting for division and department).
       tests:
         - accepted_values:
-            values: ['kpi_level','all','eeoc_only_breakout','division_breakout']  
+            values: ['kpi_level','all','eeoc_only_breakout','division_breakout','department_division_only']  
     - name: department_name
     - name: division
     - name: eeoc_field_name

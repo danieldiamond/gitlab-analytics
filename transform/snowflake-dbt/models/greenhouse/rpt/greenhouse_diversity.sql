@@ -47,6 +47,19 @@ WITH greenhouse_diversity_intermediate AS (
 
     SELECT
       month_date,
+      'department_division_only'                               AS breakout_type,
+      department_name,
+      division,
+      'na'                                                     AS eeoc_field_name,
+      'na'                                                     AS eeoc_values,
+      {{repeated_column_metrics}}
+    FROM  greenhouse_diversity_intermediate
+    GROUP BY 1,2,3,4,5,6
+
+    UNION ALL
+
+    SELECT
+      month_date,
       'division_breakout'                     AS breakout_type,
       'division_breakout'                     AS department_name,
       division,
