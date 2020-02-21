@@ -172,7 +172,7 @@ def chunk_and_upload(
     for chunk_df in results_generator:
         # If the table doesn't exist, it needs to send the first chunk to the dataframe_uploader
         if backfill:
-            backfill = seed_table(
+            seed_table(
                 advanced_metadata, chunk_df, target_engine, target_table
             )
         row_count = chunk_df.shape[0]
