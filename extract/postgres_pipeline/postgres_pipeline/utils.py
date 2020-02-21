@@ -301,6 +301,8 @@ def id_query_generator(
         sys.exit(1)
     logging.info(f"Source Min ID: {min_source_id}")
 
+    # Generate the range pairs based on the max source id and the 
+    # greatest of either the min_source_id or the max_target_id
     for id_pair in range_generator(
         max(max_target_id, min_source_id), max_source_id, step=id_range
     ):
