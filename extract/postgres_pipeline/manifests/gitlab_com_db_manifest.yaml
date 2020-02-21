@@ -1625,7 +1625,6 @@ tables:
       , timezone
       , time_display_relative
       , time_format_in_24h
-      , projects_sort
       , show_whitespace_in_diffs
       , sourcegraph_enabled
       , setup_for_company
@@ -1633,6 +1632,8 @@ tables:
       , tab_width
       , feature_filter_type
       FROM user_preferences
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'user_preferences'
     export_table_primary_key: user_id
