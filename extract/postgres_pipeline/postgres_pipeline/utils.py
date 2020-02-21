@@ -288,7 +288,22 @@ def id_query_generator(
         sys.exit(1)
     logging.info(f"Source Max ID: {max_source_id}")
 
-    for id_pair in range_generator(max_target_id, max_source_id, step=id_range):
+    # Get the min ID from the source DB
+    logging.info(f"Getting min ID from source_table: {source_table}")
+    min_source_id_query = (
+        f"SELECT MIN({primary_key}) as {primary_key} FROM {source_table}"
+    )
+    try:
+        min_source_id_results = query_results_generator(
+            min_source_id_query, postgres_engine
+        )
+        min_source_id = next(min_source_id_results)[primary_key].tolist()[0]
+    except sqlalchemy.exc.ProgrammingError as e:
+        logging.exception(e)
+        sys.exit(1)
+    logging.info(f"Source Min ID: {min_source_id}")
+
+    for id_pair in range_generator(max(max_target_id, min_source_id), max_source_id, step=id_range):
         id_range_query = (
             "".join(raw_query.lower().split("where")[0])
             + f"WHERE {primary_key} BETWEEN {id_pair[0]} AND {id_pair[1]}"
