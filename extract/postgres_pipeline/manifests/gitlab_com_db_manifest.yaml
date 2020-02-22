@@ -1647,8 +1647,6 @@ tables:
       , project_id
       , scanner_id
       , primary_identifier_id
-      , project_fingerprint
-      , location_fingerprint
       , uuid
       , name
       , metadata_version
