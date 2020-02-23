@@ -4,6 +4,15 @@ WITH members AS (
     FROM {{ref('gitlab_dotcom_members')}}
     WHERE is_currently_valid = True
       AND user_id IS NOT NULL
+    QUALIFY RANK() OVER (
+      PARTITION BY
+        user_id,
+        source_id,
+        member_source_type
+      ORDER BY
+        access_level DESC,
+        invite_created_at DESC
+    ) = 1
 
 ),
 
