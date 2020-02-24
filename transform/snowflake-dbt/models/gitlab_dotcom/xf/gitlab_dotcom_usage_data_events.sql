@@ -109,7 +109,7 @@
   {
     "event_name": "labels",
     "source_table_name": "gitlab_dotcom_labels",
-    "user_column_name": "user_id",
+    "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "label_id",
     "is_representative_of_stage": "False"
