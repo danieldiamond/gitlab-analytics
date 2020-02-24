@@ -184,19 +184,17 @@ def chunk_and_upload(
 
 def range_generator(
     start: int, stop: int, step: int = 100_000
-) -> Generator[List[int], Any, None]:
+) -> Generator[Tuple[int, int], None, None]:
     """
     Yields a list that contains the starting and ending number for a given window.
     """
 
     while True:
-        if stop < step:
-            yield [start, start + stop]
+        if start > stop:
             break
         else:
-            yield [start, start + step]
+            yield tuple([start, start + step])
         start += step
-        stop -= step
 
 
 def check_if_schema_changed(
