@@ -2,7 +2,7 @@ WITH sfdc_opportunity AS (
 
     SELECT * FROM {{ref('sfdc_opportunity')}}
 
-), sfdc_opportunitystage AS (
+), sfdc_opportunity_stage AS (
 
     SELECT * FROM {{ref('sfdc_opportunity_stage')}}
 
@@ -39,7 +39,6 @@ WITH sfdc_opportunity AS (
       sfdc_lead_source.lead_source_id                                                             AS lead_source_id,
       COALESCE(sfdc_lead_source.initial_source, 'Unknown')                                        AS lead_source_name,
       COALESCE(sfdc_lead_source.initial_source_type, 'Unknown')                                   AS lead_source_type,
-      sfdc_opportunitystage.mapped_stage                                                          AS mapped_stage,
       sfdc_opportunity.merged_opportunity_id,
       sfdc_opportunity.net_new_source_categories,
       sfdc_opportunity.opportunity_business_development_representative,
@@ -59,12 +58,10 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.sales_segment,
       sfdc_opportunity.sales_type,
       sfdc_opportunity.source_buckets,
-      sfdc_opportunitystage.default_probability                                                   AS stage_default_probability,
-      sfdc_opportunitystage.is_active                                                             AS stage_is_active,
-      sfdc_opportunitystage.is_closed                                                             AS stage_is_closed,
       sfdc_opportunity.stage_name,
-      sfdc_opportunitystage.stage_state                                                           AS stage_state,
-
+      sfdc_opportunity_stage.is_active                                                             AS stage_is_active,
+      sfdc_opportunity_stage.is_closed                                                             AS stage_is_closed,
+      
       -- opportunity information
       sfdc_opportunity.acv,
       sfdc_opportunity.closed_deals,
@@ -83,9 +80,10 @@ WITH sfdc_opportunity AS (
       ELSE FALSE
       END                                                                                         AS is_risky,
       sfdc_opportunity.is_swing_deal,
-      sfdc_opportunitystage.is_won                                                                AS is_won,
+      sfdc_opportunity_stage.is_won                                                               AS is_won,
       sfdc_opportunity.net_incremental_acv,
       sfdc_opportunity.nrv,
+      sfdc_opportunity.probability,
       sfdc_opportunity.professional_services_value,
       sfdc_opportunity.pushed_count,
       sfdc_opportunity.reason_for_loss,
@@ -99,7 +97,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.total_contract_value,
       sfdc_opportunity.upside_iacv,
       sfdc_opportunity.upside_swing_deal_iacv,
-      sfdc_opportunity.incremental_acv * (sfdc_opportunitystage.default_probability /100)         AS weighted_iacv,
+      sfdc_opportunity.incremental_acv * (probability /100)         AS weighted_iacv,
       sfdc_opportunity.is_web_portal_purchase,
 
       -- metadata
@@ -117,8 +115,8 @@ WITH sfdc_opportunity AS (
       md5((date_trunc('month', sfdc_opportunity.close_date)::date)||UPPER(sfdc_users_xf.name))    AS sales_quota_id
 
   FROM sfdc_opportunity
-  INNER JOIN sfdc_opportunitystage
-    ON sfdc_opportunity.stage_name = sfdc_opportunitystage.primary_label
+  INNER JOIN sfdc_opportunity_stage
+    ON sfdc_opportunity.stage_name = sfdc_opportunity_stage.primary_label
   LEFT JOIN sfdc_lead_source
     ON sfdc_opportunity.lead_source = sfdc_lead_source.initial_source
   LEFT JOIN sfdc_users_xf

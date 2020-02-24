@@ -50,7 +50,7 @@ def slack_defaults(context, task_type):
     """
     Function to handle switching between a task failure and success.
     """
-    base_url = "http://35.190.127.73"
+    base_url = "https://airflow.gitlabdata.com"
     execution_date = context["ts"]
     dag_context = context["dag"]
     dag_name = dag_context.dag_id
@@ -109,7 +109,7 @@ def slack_defaults(context, task_type):
                 {"title": "Timestamp", "value": execution_date_pretty, "short": True},
             ],
             "footer": "Airflow",
-            "footer_icon": "http://35.190.127.73/static/pin_100.png",
+            "footer_icon": "https://airflow.gitlabdata/static/pin_100.png",
             "ts": execution_date_epoch,
         }
     ]

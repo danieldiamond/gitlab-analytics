@@ -78,6 +78,7 @@ WITH source AS (
         net_iacv__c                    AS net_incremental_acv,
         nrv__c                         AS nrv,
         campaignid                     AS primary_campaign_source_id,
+        probability                    AS probability,
         professional_services_value__c AS professional_services_value,
         push_counter__c                AS pushed_count,
         reason_for_lost__c             AS reason_for_loss,

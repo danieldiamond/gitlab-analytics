@@ -265,6 +265,17 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_clusters_applications_helm
+    description: Base model for the Gitlab.com `clusters_applications_helm` table.
+    columns:
+      - name: clusters_applications_helm_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_cluster_groups
     description: Base model for Gitlab.com cluster_groups
     columns:
@@ -347,8 +358,6 @@ models:
         tests:
           -  not_null
       - name: issue_id
-        tests:
-          - not_null
 
   - name: gitlab_dotcom_design_management_versions
     description: Base model for GitLab.com versions.
