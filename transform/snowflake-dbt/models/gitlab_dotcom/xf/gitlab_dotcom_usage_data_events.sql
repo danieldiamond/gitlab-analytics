@@ -77,17 +77,25 @@
   {
     "event_name": "environments",
     "source_table_name": "gitlab_dotcom_environments",
-    "user_column_name": "user_id",
+    "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "environment_id",
     "is_representative_of_stage": "False"
   },
   {
     "event_name": "groups",
-    "source_table_name": "gitlab_dotcom_groups_xf",
+    "source_cte_name": "project_members",
     "user_column_name": "user_id",
-    "key_to_parent_group": "ultimate_parent_id",
-    "primary_key": "group_id",
+    "key_to_parent_group": "source_id",
+    "primary_key": "member_id",
+    "is_representative_of_stage": "True"
+  },
+  {
+    "event_name": "groups",
+    "source_cte_name": "group_members",
+    "user_column_name": "user_id",
+    "key_to_parent_project": "source_id",
+    "primary_key": "member_id",
     "is_representative_of_stage": "True"
   },
   {
@@ -238,6 +246,18 @@ WITH gitlab_subscriptions AS (
     FROM {{ ref('gitlab_dotcom_projects_xf') }}
     WHERE ARRAY_CONTAINS('PrometheusService'::VARIANT, active_service_types)
 
+), group_members AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_members') }}
+    WHERE member_source_type = 'Namespace'
+
+), project_members AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_members') }}
+    WHERE member_source_type = 'Project'
+
 )
 /* End of Source CTEs */
 
@@ -270,36 +290,40 @@ WITH gitlab_subscriptions AS (
     SELECT
       ultimate_namespace.namespace_id,
       ultimate_namespace.namespace_created_at,
-      NULLIF({{ event_cte.event_name }}, 'NULL')           AS user_id,
+      {% if 'NULL' in event_cte.user_column_name %}
+        NULL
+      {% else %}
+        {{ event_cte.event_name }}.{{ event_cte.user_column_name }}
+      {% endif %}                                                 AS user_id,
       {% if event_cte.key_to_parent_project is defined %}
-        'project'                                          AS parent_type,
-        projects.project_id                                AS parent_id,
-        projects.project_created_at                        AS parent_created_at,
+        'project'                                                 AS parent_type,
+        projects.project_id                                       AS parent_id,
+        projects.project_created_at                               AS parent_created_at,
       {% elif event_cte.key_to_parent_group is defined %}
-        'group'                                            AS parent_type,
-        namespaces.namespace_id                            AS parent_id,
-        namespaces.namespace_created_at                    AS parent_created_at,
+        'group'                                                   AS parent_type,
+        namespaces.namespace_id                                   AS parent_id,
+        namespaces.namespace_created_at                           AS parent_created_at,
       {% endif %}
-      {{ event_cte.event_name }}.created_at                AS event_created_at,
-      {{ event_cte.is_representative_of_stage }}::BOOLEAN  AS is_representative_of_stage,
-      '{{ event_cte.event_name }}'                         AS event_name,
+      {{ event_cte.event_name }}.created_at                       AS event_created_at,
+      {{ event_cte.is_representative_of_stage }}::BOOLEAN         AS is_representative_of_stage,
+      '{{ event_cte.event_name }}'                                AS event_name,
       CASE
         WHEN '{{ event_cte.event_name }}' = 'project_auto_devops'
           THEN 'configure'
         WHEN '{{ event_cte.event_name }}' = 'ci_stages'
           THEN 'configure'
         ELSE version_usage_stats_to_stage_mappings.stage
-      END                                                  AS stage_name,
+      END                                                         AS stage_name,
       CASE
         WHEN gitlab_subscriptions.is_trial
           THEN 'trial'
         ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
-      END                                                  AS plan_id_at_event_date,
+      END                                                         AS plan_id_at_event_date,
       CASE
         WHEN gitlab_subscriptions.is_trial
           THEN 'trial'
         ELSE COALESCE(plans.plan_name, 'Free')
-      END                                                  AS plan_name_at_event_date
+      END                                                         AS plan_name_at_event_date
     FROM {{ event_cte.event_name }}
       /* Join with parent project. */
       {% if event_cte.key_to_parent_project is defined %}
