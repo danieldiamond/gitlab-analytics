@@ -148,7 +148,7 @@ sources:
       - name: pages_domains
         identifier: gitlab_db_pages_domains
       - name: programming_languages
-        identifier: gitlab_db_proprogramming_languages
+        identifier: gitlab_db_programming_languages
       - name: project_authorizations
         identifier: gitlab_db_project_authorizations
       - name: project_auto_devops
