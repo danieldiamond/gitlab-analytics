@@ -1,15 +1,15 @@
 {% set repeated_column_metrics = 
-    "COUNT(CASE WHEN capture_month = 'application_month' THEN application_id ELSE NULL END)         AS total_candidates_applied,
-    SUM(CASE WHEN capture_month = 'application_month' THEN accepted_offer ELSE NULL END)            AS total_offers_based_on_application_month,
-    SUM(CASE WHEN capture_month='offer_sent_month' THEN 1 ELSE NULL END)                            AS total_sent_offers,
-    SUM(CASE WHEN capture_month='offer_sent_month' THEN accepted_offer ELSE NULL END)               AS offers_accepted_based_on_sent_month,
-    SUM(CASE WHEN capture_month = 'accepted_month' THEN accepted_offer ELSE NULL END)               AS offers_accepted,
-    AVG(CASE WHEN capture_month = 'accepted_month' THEN time_to_offer ELSE NULL END)                AS time_to_offer_average, 
-    MEDIAN(CASE WHEN capture_month = 'accepted_month' THEN time_to_offer ELSE NULL END)             AS time_to_offer_median
+    "COUNT(CASE WHEN capture_month = 'application_month' THEN application_id ELSE NULL END) AS total_candidates_applied,
+    SUM(CASE WHEN capture_month = 'application_month' THEN accepted_offer ELSE NULL END)    AS total_offers_based_on_application_month,
+    SUM(CASE WHEN capture_month='offer_sent_month' THEN 1 ELSE NULL END)                    AS total_sent_offers,
+    SUM(CASE WHEN capture_month='offer_sent_month' THEN accepted_offer ELSE NULL END)       AS offers_accepted_based_on_sent_month,
+    SUM(CASE WHEN capture_month = 'accepted_month' THEN accepted_offer ELSE NULL END)       AS offers_accepted,
+    AVG(CASE WHEN capture_month = 'accepted_month' THEN time_to_offer ELSE NULL END)        AS time_to_offer_average, 
+    MEDIAN(CASE WHEN capture_month = 'accepted_month' THEN time_to_offer ELSE NULL END)     AS time_to_offer_median
     " %}
 
 {% set repeated_column_names_ratio_to_report =
-                "(partition by month_date, breakout_type, department_name, division, eeoc_field_name order by month_date) " %}
+    "(partition by month_date, breakout_type, department_name, division, eeoc_field_name order by month_date) " %}
 
 WITH greenhouse_diversity_intermediate AS (
 
@@ -20,21 +20,21 @@ WITH greenhouse_diversity_intermediate AS (
 
     SELECT
       month_date,
-      'kpi_level'                                 AS breakout_type,
-      'NA'                                        AS department_name,
-      'NA'                                        AS division,
-      'NA'                                        AS eeoc_field_name,
-      'NA'                                        AS eeoc_values,
+      'kpi_level_breakout'                        AS breakout_type,
+      null                                        AS department_name,
+      null                                        AS division,
+      null                                        AS eeoc_field_name,
+      null                                        AS eeoc_values,
       {{repeated_column_metrics}}  
     FROM  greenhouse_diversity_intermediate
-    WHERE lower(eeoc_field_name) = 'candidate_status'
+    WHERE LOWER(eeoc_field_name) = 'candidate_status'
     GROUP BY 1,2,3,4,5,6
 
     UNION ALL
 
     SELECT
       month_date,
-      'all'                                 AS breakout_type,
+      'all_attributes_breakout'                  AS breakout_type,
       department_name,
       division,
       eeoc_field_name,
@@ -47,11 +47,11 @@ WITH greenhouse_diversity_intermediate AS (
 
     SELECT
       month_date,
-      'department_division_only'                               AS breakout_type,
+      'department_division_breakout'                         AS breakout_type,
       department_name,
       division,
-      'na'                                                     AS eeoc_field_name,
-      'na'                                                     AS eeoc_values,
+      null                                                     AS eeoc_field_name,
+      null                                                     AS eeoc_values,
       {{repeated_column_metrics}}
     FROM  greenhouse_diversity_intermediate
     GROUP BY 1,2,3,4,5,6
@@ -61,7 +61,7 @@ WITH greenhouse_diversity_intermediate AS (
     SELECT
       month_date,
       'division_breakout'                     AS breakout_type,
-      'division_breakout'                     AS department_name,
+      null                                    AS department_name,
       division,
       eeoc_field_name,
       eeoc_values,
@@ -109,32 +109,32 @@ WITH greenhouse_diversity_intermediate AS (
 ), final AS (
 
     SELECT 
-    month_date,
-    breakout_type,
-    department_name,
-    division,
-    LOWER(eeoc_field_name)                                                            AS eeoc_field_name,
-    eeoc_values,
-    ----Applicant Level----
+      month_date,
+      breakout_type,
+      department_name,
+      division,
+      LOWER(eeoc_field_name)                                                            AS eeoc_field_name,
+      eeoc_values,
+      ----Applicant Level----
 
-    iff(min_applicants_breakout < 3, null, total_candidates_applied)                  AS total_candidates_applied,
-    iff(breakout_type in ('kpi_level','eeoc_only_breakout'), 
-                application_to_offer_percent, null)                                   AS application_to_offer_percent,
-    iff(min_applicants_breakout < 3, null, percent_of_applicants)                     AS percent_of_applicants,
+      IFF(min_applicants_breakout < 3, NULL, total_candidates_applied)                  AS total_candidates_applied,
+      IFF(breakout_type IN ('kpi_level','eeoc_only_breakout'), 
+            application_to_offer_percent, NULL)                                         AS application_to_offer_percent,
+      IFF(min_applicants_breakout < 3, NULL, percent_of_applicants)                     AS percent_of_applicants,
 
-    ---Offers Sent Level ---
+      ---Offers Sent Level ---
 
-    iff(min_sent_offers_for_breakout < 3, null, total_sent_offers)                      AS total_sent_offers,
-    iff(min_sent_offers_for_breakout < 3, null, percent_of_offers_sent)                 AS percent_of_offers_sent,
-    min_sent_offers_for_breakout,
+      IFF(min_sent_offers_for_breakout < 3, NULL, total_sent_offers)                      AS total_sent_offers,
+      IFF(min_sent_offers_for_breakout < 3, NULL, percent_of_offers_sent)                 AS percent_of_offers_sent,
+      min_sent_offers_for_breakout,
 
-    --Offers Accepted Level ---
-    iff(min_total_offers_accepted_for_breakout < 3, null, offers_accepted)              AS offers_accepted,
-    iff(min_total_offers_accepted_for_breakout < 3, null, percent_of_offers_accepted)   AS percent_of_offers_accepted,
-    iff(min_total_offers_accepted_for_breakout < 3, null, time_to_offer_average)        AS time_to_offer_average,
-     iff(min_total_offers_accepted_for_breakout < 3, null, time_to_offer_median)        AS time_to_offer_median,
-    iff(min_total_offers_accepted_for_breakout < 3, null, 
-        offer_acceptance_rate_based_on_offer_month)                                     AS offer_acceptance_rate_based_on_offer_month 
+      --Offers Accepted Level ---
+      IFF(min_total_offers_accepted_for_breakout < 3, NULL, offers_accepted)              AS offers_accepted,
+      IFF(min_total_offers_accepted_for_breakout < 3, NULL, percent_of_offers_accepted)   AS percent_of_offers_accepted,
+      IFF(min_total_offers_accepted_for_breakout < 3, NULL, time_to_offer_average)        AS time_to_offer_average,
+      IFF(min_total_offers_accepted_for_breakout < 3, NULL, time_to_offer_median)         AS time_to_offer_median,
+      IFF(min_total_offers_accepted_for_breakout < 3, NULL, 
+          offer_acceptance_rate_based_on_offer_month)                                     AS offer_acceptance_rate_based_on_offer_month 
     FROM aggregated
     WHERE month_date <= DATEADD(MONTH,-1,current_date())
 
