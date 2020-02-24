@@ -146,7 +146,7 @@
 ]
 -%}
 
-/* 
+/*
   {
     "event_name": "ci_builds",
     "source_table_name": "gitlab_dotcom_ci_builds",
@@ -167,6 +167,13 @@ WITH gitlab_subscriptions AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
+)
+
+, plans AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_plans')}}
+
 )
 
 , namespaces AS (
@@ -260,7 +267,12 @@ WITH gitlab_subscriptions AS (
         WHEN gitlab_subscriptions.is_trial
           THEN 'trial'
         ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
-      END                                                  AS plan_id_at_event_date
+      END                                                  AS plan_id_at_event_date,
+      CASE
+        WHEN gitlab_subscriptions.is_trial
+          THEN 'trial'
+        ELSE COALESCE(plans.plan_name, 'Free')
+      END                                                  AS plan_name_at_event_date
     FROM {{ event_cte.event_name }}
       /* Join with parent project. */
       {% if event_cte.key_to_parent_project is defined %}
@@ -285,6 +297,8 @@ WITH gitlab_subscriptions AS (
         ON ultimate_namespace.namespace_id = gitlab_subscriptions.namespace_id
         AND {{ event_cte.event_name }}.created_at BETWEEN gitlab_subscriptions.valid_from
         AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
+      LEFT JOIN plans
+        ON gitlab_subscriptions.plan_id = plans.plan_id
       LEFT JOIN version_usage_stats_to_stage_mappings
         ON '{{ event_cte.event_name }}' = version_usage_stats_to_stage_mappings.stats_used_key_name
 
