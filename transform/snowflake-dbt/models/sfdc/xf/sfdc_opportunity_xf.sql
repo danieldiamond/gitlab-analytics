@@ -49,6 +49,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.opportunity_owner_team                                                     AS opportunity_owner_team,
       sfdc_users_xf.title                                                                         AS opportunity_owner_title,
       sfdc_opportunity.opportunity_sales_development_representative,
+      sfdc_opportunity.account_owner_team_stamped,
       sfdc_opportunity.opportunity_term,
       sfdc_opportunity.parent_segment,
       sfdc_opportunity.primary_campaign_source_id                                                 AS primary_campaign_source_id,
