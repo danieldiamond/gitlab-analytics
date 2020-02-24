@@ -320,13 +320,13 @@ WITH gitlab_subscriptions AS (
       END                                                         AS stage_name,
       CASE
         WHEN gitlab_subscriptions.is_trial
-          THEN 'trial'
+          THEN 'trial'::VARCHAR
         ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
       END                                                         AS plan_id_at_event_date,
       CASE
         WHEN gitlab_subscriptions.is_trial
           THEN 'trial'
-        ELSE COALESCE(plans.plan_name, 'Free')
+        ELSE COALESCE(plans.plan_name, 'free')
       END                                                         AS plan_name_at_event_date
     FROM {{ event_cte.event_name }}
       /* Join with parent project. */
