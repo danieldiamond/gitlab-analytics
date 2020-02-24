@@ -57,7 +57,6 @@ WITH sfdc_account_snapshots AS (
       total_account_value__c                     AS total_account_value,
       sub_region__c                              AS account_sub_region,
       support_level__c                           AS support_level,
-      support_level_numeric__c                   AS support_level_numeric,
       named_account__c                           AS named_account,
       billingcountry                             AS billing_country, 
       billingpostalcode                          AS billing_postal_code, 
@@ -106,8 +105,6 @@ WITH sfdc_account_snapshots AS (
       lastmodifiedbyid                           AS last_modified_by_id,
       lastmodifieddate                           AS last_modified_date,
       lastactivitydate                           AS last_activity_date,
-      lastreferenceddate                         AS last_referenced_date,
-      lastvieweddate                             AS last_viewed_date,
       convert_timezone('America/Los_Angeles',convert_timezone('UTC',current_timestamp())) AS _last_dbt_run,
       systemmodstamp
 
