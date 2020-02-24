@@ -91,25 +91,25 @@ models:
     - name: merge_request_state
       tests:
         - not_null
-    - name: mr_total_count_engineering
+    - name: mr_count_engineering
       tests:
         - not_null
-    - name: mr_total_count_ux
+    - name: mr_count_ux
       tests:
         - not_null
-    - name: mr_total_count_security
+    - name: mr_count_security
       tests:
         - not_null
-    - name: mr_total_count_infrastructure
+    - name: mr_count_infrastructure
       tests:
         - not_null
-    - name: mr_total_count_development
+    - name: mr_count_development
       tests:
         - not_null
-    - name: mr_total_count_quality
+    - name: mr_count_quality
       tests:
         - not_null
-    - name: mr_total_count_support
+    - name: mr_count_support
       tests:
         - not_null
     - name: merge_request_created_at
