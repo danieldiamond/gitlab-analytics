@@ -248,13 +248,17 @@ WITH gitlab_subscriptions AS (
 
 ), group_members AS (
 
-    SELECT *
+    SELECT
+      *,
+      invite_accepted_at AS created_at
     FROM {{ ref('gitlab_dotcom_members') }}
     WHERE member_source_type = 'Namespace'
 
 ), project_members AS (
 
-    SELECT *
+    SELECT
+      *,
+      invite_accepted_at AS created_at
     FROM {{ ref('gitlab_dotcom_members') }}
     WHERE member_source_type = 'Project'
 
