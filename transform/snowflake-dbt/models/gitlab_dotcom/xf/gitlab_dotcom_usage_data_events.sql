@@ -19,6 +19,14 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "ci_builds",
+    "source_table_name": "gitlab_dotcom_ci_builds",
+    "user_column_name": "ci_build_user_id",
+    "key_to_parent_project": "ci_build_project_id",
+    "primary_key": "ci_build_id",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "ci_pipeline_schedules",
     "source_table_name": "gitlab_dotcom_ci_pipeline_schedules",
     "user_column_name": "owner_id",
@@ -139,6 +147,14 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "notes",
+    "source_table_name": "gitlab_dotcom_notes",
+    "user_column_name": "note_author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "note_id",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "project_auto_devops",
     "source_table_name": "gitlab_dotcom_project_auto_devops",
     "user_column_name": "NULL",
@@ -181,22 +197,6 @@
 ]
 -%}
 
-/*
-  {
-    "event_name": "ci_builds",
-    "source_table_name": "gitlab_dotcom_ci_builds",
-    "key_to_parent_project": "ci_build_project_id",
-    "primary_key": "ci_build_id",
-    "is_representative_of_stage": "False"
-  },
-  {
-    "event_name": "notes",
-    "source_table_name": "gitlab_dotcom_notes",
-    "key_to_parent_project": "project_id",
-    "primary_key": "note_id",
-    "is_representative_of_stage": "False"
-  },
-*/
 
 WITH gitlab_subscriptions AS (
 
