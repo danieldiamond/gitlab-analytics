@@ -11,6 +11,14 @@
 
 {%- set event_ctes = [
   {
+    "event_name": "boards",
+    "source_table_name": "gitlab_dotcom_boards",
+    "user_column_name": "NULL",
+    "key_to_parent_project": "project_id",
+    "primary_key": "board_id",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "ci_pipeline_schedules",
     "source_table_name": "gitlab_dotcom_ci_pipeline_schedules",
     "user_column_name": "owner_id",
@@ -29,7 +37,7 @@
   {
     "event_name": "ci_stages",
     "source_table_name": "gitlab_dotcom_ci_stages",
-    "user_column_name": "user_id",
+    "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "ci_stage_id",
     "is_representative_of_stage": "False"
@@ -37,18 +45,10 @@
   {
     "event_name": "ci_triggers",
     "source_table_name": "gitlab_dotcom_ci_triggers",
-    "user_column_name": "user_id",
+    "user_column_name": "owner_id",
     "key_to_parent_project": "project_id",
     "primary_key": "ci_trigger_id",
     "is_representative_of_stage": "False"
-  },
-  {
-    "event_name": "clusters",
-    "source_table_name": "gitlab_dotcom_clusters",
-    "user_column_name": "user_id",
-    "key_to_parent_project": "cluster_project_id",
-    "primary_key": "clusters_applications_helm_id",
-    "is_representative_of_stage": "True"
   },
   {
     "event_name": "clusters_applications_helm",
@@ -270,15 +270,15 @@ WITH gitlab_subscriptions AS (
     SELECT
       ultimate_namespace.namespace_id,
       ultimate_namespace.namespace_created_at,
-      user_id,
+      NULLIF({{ event_cte.event_name }}, 'NULL')           AS user_id,
       {% if event_cte.key_to_parent_project is defined %}
-        'project'                     AS parent_type,
-        projects.project_id           AS parent_id,
-        projects.project_created_at   AS parent_created_at,
+        'project'                                          AS parent_type,
+        projects.project_id                                AS parent_id,
+        projects.project_created_at                        AS parent_created_at,
       {% elif event_cte.key_to_parent_group is defined %}
-        'group'                       AS parent_type,
-        namespaces.namespace_id       AS parent_id,
-        namespaces.namespace_created_at AS parent_created_at,
+        'group'                                            AS parent_type,
+        namespaces.namespace_id                            AS parent_id,
+        namespaces.namespace_created_at                    AS parent_created_at,
       {% endif %}
       {{ event_cte.event_name }}.created_at                AS event_created_at,
       {{ event_cte.is_representative_of_stage }}::BOOLEAN  AS is_representative_of_stage,
