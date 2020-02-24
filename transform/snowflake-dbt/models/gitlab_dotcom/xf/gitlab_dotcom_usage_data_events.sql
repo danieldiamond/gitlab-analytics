@@ -101,7 +101,7 @@
   {
     "event_name": "issues",
     "source_table_name": "gitlab_dotcom_issues",
-    "user_column_name": "user_id",
+    "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "issue_id",
     "is_representative_of_stage": "True"
@@ -117,7 +117,7 @@
   {
     "event_name": "lfs_objects",
     "source_table_name": "gitlab_dotcom_lfs_objects_projects",
-    "user_column_name": "user_id",
+    "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "lfs_object_id",
     "is_representative_of_stage": "False"
@@ -125,7 +125,7 @@
   {
     "event_name": "merge_requests",
     "source_table_name": "gitlab_dotcom_merge_requests",
-    "user_column_name": "user_id",
+    "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "merge_request_id",
     "is_representative_of_stage": "True"
@@ -133,7 +133,7 @@
   {
     "event_name": "milestones",
     "source_table_name": "gitlab_dotcom_milestones",
-    "user_column_name": "user_id",
+    "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "milestone_id",
     "is_representative_of_stage": "False"
@@ -141,7 +141,7 @@
   {
     "event_name": "project_auto_devops",
     "source_table_name": "gitlab_dotcom_project_auto_devops",
-    "user_column_name": "user_id",
+    "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "project_auto_devops_id",
     "is_representative_of_stage": "False"
@@ -149,7 +149,7 @@
   {
     "event_name": "projects_prometheus_active",
     "source_cte_name": "projects_prometheus_active",
-    "user_column_name": "user_id",
+    "user_column_name": "creator_id",
     "key_to_parent_project": "project_id",
     "primary_key": "project_id",
     "is_representative_of_stage": "True"
@@ -157,7 +157,7 @@
   {
     "event_name": "releases",
     "source_table_name": "gitlab_dotcom_releases",
-    "user_column_name": "user_id",
+    "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "release_id",
     "is_representative_of_stage": "False"
@@ -165,7 +165,7 @@
   {
     "event_name": "snippets",
     "source_table_name": "gitlab_dotcom_snippets",
-    "user_column_name": "user_id",
+    "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "snippet_id",
     "is_representative_of_stage": "False"
@@ -173,7 +173,7 @@
   {
     "event_name": "todos",
     "source_table_name": "gitlab_dotcom_todos",
-    "user_column_name": "user_id",
+    "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "todo_id",
     "is_representative_of_stage": "False"
