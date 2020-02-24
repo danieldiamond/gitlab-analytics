@@ -190,13 +190,12 @@ def range_generator(
     """
 
     while True:
-        if stop < step:
+        if stop < start:
             yield [start, start + stop]
             break
         else:
             yield [start, start + step]
         start += step
-        stop -= step
 
 
 def check_if_schema_changed(
