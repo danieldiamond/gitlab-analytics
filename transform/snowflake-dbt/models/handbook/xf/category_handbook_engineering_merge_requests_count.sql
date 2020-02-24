@@ -22,15 +22,15 @@ WITH category_handbook_engineering_merge_requests_path_count AS (
 
         -- Logical Information
         merge_request_state,
-        SUM(path_count_engineering)         AS mr_total_count_engineering,
+        MAX(path_count_engineering)         AS mr_count_engineering,
         
             -- Engineering departments
-        SUM(path_count_development)         AS mr_total_count_development,
-        SUM(path_count_infrastructure)      AS mr_total_count_infrastructure,
-        SUM(path_count_quality)             AS mr_total_count_quality,
-        SUM(path_count_security)            AS mr_total_count_security,
-        SUM(path_count_support)             AS mr_total_count_support,
-        SUM(path_count_ux)                  AS mr_total_count_ux
+        MAX(path_count_development)         AS mr_count_development,
+        MAX(path_count_infrastructure)      AS mr_count_infrastructure,
+        MAX(path_count_quality)             AS mr_count_quality,
+        MAX(path_count_security)            AS mr_count_security,
+        MAX(path_count_support)             AS mr_count_support,
+        MAX(path_count_ux)                  AS mr_count_ux
         
     FROM category_handbook_engineering_merge_requests_path_count
     {{ dbt_utils.group_by(n=6) }}
