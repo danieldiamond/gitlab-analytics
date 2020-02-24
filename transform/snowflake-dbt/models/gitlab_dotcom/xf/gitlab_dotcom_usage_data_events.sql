@@ -74,6 +74,13 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "groups",
+    "source_table_name": "gitlab_dotcom_groups_xf",
+    "key_to_parent_group": "ultimate_parent_id",
+    "primary_key": "group_id",
+    "is_representative_of_stage": "True"
+  },
+  {
     "event_name": "issues",
     "source_table_name": "gitlab_dotcom_issues",
     "key_to_parent_project": "project_id",
