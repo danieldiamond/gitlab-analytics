@@ -18,13 +18,6 @@
     "is_representative_of_stage": "False"
   },
   {
-    "event_name": "ci_builds",
-    "source_table_name": "gitlab_dotcom_ci_builds",
-    "key_to_parent_project": "ci_build_project_id",
-    "primary_key": "ci_build_id",
-    "is_representative_of_stage": "False"
-  },
-  {
     "event_name": "ci_pipeline_schedules",
     "source_table_name": "gitlab_dotcom_ci_pipeline_schedules",
     "key_to_parent_project": "project_id",
@@ -116,13 +109,6 @@
     "is_representative_of_stage": "False"
   },
   {
-    "event_name": "notes",
-    "source_table_name": "gitlab_dotcom_notes",
-    "key_to_parent_project": "project_id",
-    "primary_key": "note_id",
-    "is_representative_of_stage": "False"
-  },
-  {
     "event_name": "project_auto_devops",
     "source_table_name": "gitlab_dotcom_project_auto_devops",
     "key_to_parent_project": "project_id",
@@ -159,6 +145,23 @@
   }
 ]
 -%}
+
+/* 
+  {
+    "event_name": "ci_builds",
+    "source_table_name": "gitlab_dotcom_ci_builds",
+    "key_to_parent_project": "ci_build_project_id",
+    "primary_key": "ci_build_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "notes",
+    "source_table_name": "gitlab_dotcom_notes",
+    "key_to_parent_project": "project_id",
+    "primary_key": "note_id",
+    "is_representative_of_stage": "False"
+  },
+*/
 
 WITH gitlab_subscriptions AS (
 
@@ -233,6 +236,7 @@ WITH gitlab_subscriptions AS (
     SELECT
       ultimate_namespace.namespace_id,
       ultimate_namespace.namespace_created_at,
+      {{ event_cte }}.user_id,
       {% if event_cte.key_to_parent_project is defined %}
         'project'                     AS parent_type,
         projects.project_id           AS parent_id,
