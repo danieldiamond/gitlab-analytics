@@ -184,17 +184,17 @@ def chunk_and_upload(
 
 def range_generator(
     start: int, stop: int, step: int = 100_000
-) -> Generator[List[int], Any, None]:
+) -> Generator[Tuple[int], Any, None]:
     """
     Yields a list that contains the starting and ending number for a given window.
     """
 
     while True:
         if stop < start:
-            yield [start, start + stop]
+            yield tuple([start, start + stop])
             break
         else:
-            yield [start, start + step]
+            yield tuple([start, start + step])
         start += step
 
 
