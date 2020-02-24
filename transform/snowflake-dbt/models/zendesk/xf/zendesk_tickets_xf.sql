@@ -7,6 +7,7 @@ WITH zendesk_tickets AS (
 
   SELECT
     ticket_id,
+    solved_at,
     LEAST(sla_reply_time_business_hours, sla_reply_time_calendar_hours) AS first_reply_time
   FROM {{ref('zendesk_ticket_metrics')}}
 
@@ -47,6 +48,7 @@ SELECT DISTINCT
   zendesk_tickets_sla.sla_policy                            AS ticket_sla_policy_at_first_reply,
   zendesk_tickets_sla.first_reply_time_sla,
   zendesk_tickets_sla.first_reply_at,
+  zendesk_ticket_metrics.solved_at,
   IFF(zendesk_tickets_sla.first_reply_time_sla <= zendesk_sla_policies.policy_metrics_target, 
       True, False)                                          AS was_support_sla_met
 FROM zendesk_tickets
