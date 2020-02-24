@@ -1638,6 +1638,27 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'user_preferences'
     export_table_primary_key: user_id
+  vulnerability_occurrences:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , severity
+      , confidence
+      , report_type
+      , project_id
+      , scanner_id
+      , primary_identifier_id
+      , uuid
+      , name
+      , metadata_version
+      , raw_metadata
+      , vulnerability_id
+      FROM vulnerability_occurrences
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_occurrences'
+    export_table_primary_key: 'id'
   web_hook_logs:
     import_db: GITLAB_DB
     import_query: >
