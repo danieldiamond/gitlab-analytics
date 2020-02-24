@@ -190,7 +190,7 @@ def range_generator(
     """
 
     while True:
-        if stop < start:
+        if start > stop:
             yield tuple([start, start + stop])
             break
         else:
