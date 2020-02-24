@@ -56,7 +56,7 @@ brew install tldr
 echo "tldr installed. "
 
 ## install bash completion
-echo "Installing bash competion.."
+echo "Installing bash completion.."
 brew install bash-completion
 echo "bash completion successfully installed"
 

@@ -358,8 +358,6 @@ models:
         tests:
           -  not_null
       - name: issue_id
-        tests:
-          - not_null
 
   - name: gitlab_dotcom_design_management_versions
     description: Base model for GitLab.com versions.
