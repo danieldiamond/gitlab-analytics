@@ -1639,7 +1639,8 @@ tables:
   vulnerability_occurrences:
     import_db: GITLAB_DB
     import_query: >
-      SELECT created_at
+      SELECT id
+      , created_at
       , updated_at
       , severity
       , confidence
@@ -1655,7 +1656,7 @@ tables:
       FROM vulnerability_occurrences
     export_schema: 'gitlab_com'
     export_table: 'vulnerability_occurrences'
-    export_table_primary_key: 'uuid'
+    export_table_primary_key: 'id'
   web_hook_logs:
     import_db: GITLAB_DB
     import_query: >
