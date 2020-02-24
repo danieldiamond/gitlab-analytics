@@ -191,7 +191,6 @@ def range_generator(
 
     while True:
         if start > stop:
-            yield tuple([start, start + stop])
             break
         else:
             yield tuple([start, start + step])
