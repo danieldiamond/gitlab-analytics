@@ -2,7 +2,7 @@ WITH source AS (
 
     SELECT *
     FROM {{ source('gitlab_dotcom', 'repository_languages') }}
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY project_programming_language_id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
   
