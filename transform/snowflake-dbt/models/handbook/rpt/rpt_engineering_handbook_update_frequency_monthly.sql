@@ -21,6 +21,7 @@ WITH category_handbook_engineering_merge_requests_count AS (
         SUM(mr_count_support)                           AS is_mr_support
     FROM category_handbook_engineering_merge_requests_count
     WHERE merge_request_state = 'merged'
+        AND merge_request_merged_at IS NOT NULL
     GROUP BY 1
 
 )
