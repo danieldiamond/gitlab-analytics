@@ -13,7 +13,7 @@ with source as (
 
     SELECT
          nullif("Employee_ID",'')::varchar as bamboo_employee_number,
-         IFF(nullif(deviation_from_comp_calc, '') = 'Exec', 0,
+         IFF(nullif(deviation_from_comp_calc, '') = 'Exec', '0.0%',
             nullif(deviation_from_comp_calc, '')) as deviation_from_comp_calc_cl,
          CASE WHEN "DBT_VALID_FROM"::number::timestamp::date < '2019-10-18'::date
              THEN '2000-01-20'::date
