@@ -1,3 +1,10 @@
+{{ config({
+    "materialized": "table",
+    "unique_key": "ci_build_id",
+    "schema": "analytics"
+    })
+}}
+
 {%- set tables_to_import = [
                             'configure_snowplow_smau_pageviews_events',
                             'create_snowplow_smau_pageviews_events',
@@ -45,7 +52,10 @@ WITH snowplow_page_views_30 AS (
 
 , filtered_pageviews AS (
   
-  SELECT snowplow_page_views_30.*
+  SELECT 
+    {{ dbt_utils.star(from=ref('snowplow_page_views_30'), 
+                      except=["page_url", "page_url_path", "referer_url", "referer_url_path", "ip_address"]) }}.
+    unioned.event_type
   FROM snowplow_page_views_30
   INNER JOIN unioned 
     ON snowplow_page_views_30.page_view_id = unioned.event_surrogate_key
