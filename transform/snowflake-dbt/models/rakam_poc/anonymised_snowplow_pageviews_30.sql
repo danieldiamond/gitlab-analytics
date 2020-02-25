@@ -19,7 +19,8 @@
 
 WITH snowplow_page_views_30 AS (
   
-  SELECT *
+  SELECT {{ dbt_utils.star(from=ref('snowplow_page_views_30'), 
+                           except=["page_url", "page_url_path", "referer_url", "referer_url_path", "ip_address"]) }}
   FROM {{ ref('snowplow_page_views_30')}}
 
 )
@@ -53,8 +54,7 @@ WITH snowplow_page_views_30 AS (
 , filtered_pageviews AS (
   
   SELECT 
-    {{ dbt_utils.star(from=ref('snowplow_page_views_30'), 
-                      except=["page_url", "page_url_path", "referer_url", "referer_url_path", "ip_address"]) }}.
+    snowplow_page_views_30.*,
     unioned.event_type
   FROM snowplow_page_views_30
   INNER JOIN unioned 
