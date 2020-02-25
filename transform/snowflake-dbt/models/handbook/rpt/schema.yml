@@ -7,24 +7,24 @@ models:
     - name: month_merged_at
       tests:
         - not_null
-    - name: is_mr_engineering
+    - name: mr_count_engineering
       tests:
         - not_null
-    - name: is_mr_ux
+    - name: mr_count_ux
       tests:
         - not_null
-    - name: is_mr_security
+    - name: mr_count_security
       tests:
         - not_null
-    - name: is_mr_infrastructure
+    - name: mr_count_infrastructure
       tests:
         - not_null
-    - name: is_mr_development
+    - name: mr_count_development
       tests:
         - not_null
-    - name: is_mr_quality
+    - name: mr_count_quality
       tests:
         - not_null
-    - name: is_mr_support
+    - name: mr_count_support
       tests:
         - not_null
