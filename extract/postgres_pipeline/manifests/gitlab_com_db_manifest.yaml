@@ -1408,6 +1408,8 @@ tables:
       SELECT id
       , name
       FROM programming_languages
+      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'programming_languages'
     export_table_primary_key: id
@@ -1633,8 +1635,6 @@ tables:
       , tab_width
       , feature_filter_type
       FROM user_preferences
-      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'user_preferences'
     export_table_primary_key: user_id
