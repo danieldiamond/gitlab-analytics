@@ -1260,7 +1260,7 @@ models:
         tests:
           - not_null
 
-  - name: gitlab_dotcom_todos
+  - name: gitlab_dotcom_user_preferences
     description: Base model for Gitlab.com user_preferences
     columns:
       - name: user_id
