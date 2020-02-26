@@ -21,6 +21,7 @@ spine_cols AS (
     SELECT DISTINCT
       event_name,
       stage_name,
+      is_representative_of_stage,
       plan_name_at_event_date
     FROM usage_data_events
 
@@ -34,6 +35,7 @@ spine AS (
       DATE_TRUNC('month', date_actual)::DATE  AS event_month,
       event_name,
       stage_name,
+      is_representative_of_stage,
       plan_name_at_event_date
     FROM date_details
       INNER JOIN spine_cols
@@ -48,6 +50,7 @@ final AS (
     spine.event_month,
     spine.event_name,
     spine.stage_name,
+    spine.is_representative_of_stage,
     spine.plan_name_at_event_date,
 
     COUNT(DISTINCT user_id) OVER (PARTITION BY event_day, spine.event_name)   AS unique_users_by_event_and_day,
