@@ -6,6 +6,7 @@ google_referrals.google_referrals
 headcount.headcount
 hire_plan_forecast.hire_forecast
 hire_plan_forecast.hire_plan
+kpi_status.kpi_status
 linkedin_recruiter.linkedin_recruiter
 location_factor_targets.location_factor_targets
 marketing_kpi_benchmarks.marketing_kpi_benchmarks
