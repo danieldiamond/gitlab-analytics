@@ -43,5 +43,5 @@ SELECT job_id,
           ELSE nullif(division, '') END AS division,
         entity,
         reports_to,
-      (lag(effective_date, 1) OVER (PARTITION BY employee_id ORDER BY effective_date DESC)) as effective_end_date
+      (lag(DATEADD('day',-1,effective_date), 1) OVER (PARTITION BY employee_id ORDER BY effective_date DESC)) as effective_end_date
 FROM renamed
