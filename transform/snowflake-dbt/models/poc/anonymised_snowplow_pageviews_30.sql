@@ -1,10 +1,3 @@
-{{ config({
-    "materialized": "table",
-    "unique_key": "ci_build_id",
-    "schema": "analytics"
-    })
-}}
-
 {%- set tables_to_import = [
                             'configure_snowplow_smau_pageviews_events',
                             'create_snowplow_smau_pageviews_events',
