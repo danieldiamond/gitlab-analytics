@@ -159,7 +159,7 @@ pod_resources = {"request_memory": "1Gi", "request_cpu": "500m"}
 
 # GitLab default settings for all DAGs
 gitlab_defaults = dict(
-    get_logs=True,
+    get_logs=False,
     image_pull_policy="Always",
     in_cluster=not os.environ["IN_CLUSTER"] == "False",
     is_delete_operator_pod=True,
