@@ -276,7 +276,7 @@ models:
         tests:
           - not_null
         description: This column represents whether or not this action represents being active for the entire stage. One action per stage has this designation.
-      - name: event_created_at_date
+      - name: event_created_at
         tests:
           - not_null
         
