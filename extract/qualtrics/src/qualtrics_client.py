@@ -1,3 +1,4 @@
+import logging
 import requests
 
 
@@ -11,11 +12,17 @@ class QualtricsClient:
         headers = {"X-API-TOKEN": self.api_token}
         while True:
             response = requests.get(url, headers=headers)
-            response_body = response.json()["result"]
-            for element in response_body["elements"]:
+            response_body = response.json()
+            if "result" not in response_body:
+                logging.warn(
+                    f"No results for url {url_path}, paramaters {query_params}"
+                )
+                break
+            result = response_body["result"]
+            for element in result["elements"]:
                 yield element
-            if "nextPage" in response_body and response_body["nextPage"]:
-                url = response_body["nextPage"]
+            if "nextPage" in result and result["nextPage"]:
+                url = result["nextPage"]
             else:
                 break
 
