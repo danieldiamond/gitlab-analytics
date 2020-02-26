@@ -145,8 +145,8 @@ To see the inspiration for the onboarding script above, take a look at the dbt D
 
 Our data stack looks roughly like this:
 <img src = "https://cdn-images-1.medium.com/max/2000/1*BogoeTTK1OXFU1hPfUyCFw.png">
-
 As you read in the handbook, we currently use Stitch for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool. The bulk of your projects and tasks will be in dbt , so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources.
+
 
 ## Connecting to Snowflake
 - [ ] Login with the credentials that your manager created following the instructions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
@@ -180,7 +180,7 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 - [ ] Familiarize yourself with [dbt](https://www.getdbt.com/) and how we use it by reading our [dbt Guide](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/).
 - [ ] Refer to http://jinja.pocoo.org/docs/2.10/templates/ as a resource for understanding Jinja which is used extensively in dbt.
 - [ ] [This podcast](https://www.dataengineeringpodcast.com/dbt-data-analytics-episode-81/) is a general walkthrough of dbt/interview with its creator, Drew Banin.
-- [ ] Read [how we use dbt](https://about.gitlab.com/handbook/business-ops/data-team/#-transformation) and our [SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/).
+- [ ] Read our [SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/).
 - [ ] Watch [video](https://www.youtube.com/watch?v=P_NQ9qHnsyQ&feature=youtu.be) of Thomas and Israel discussing getting started with dbt locally.
 - [ ] Peruse the [Official Docs](https://docs.getdbt.com).
 - [ ] In addition to using dbt to manage our transformations, we use dbt to maintain [our own internal documentation](https://dbt.gitlabdata.com) on those data transformations. This is a public link. We suggest bookmarking it.
