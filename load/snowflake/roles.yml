@@ -539,6 +539,20 @@ roles:
                     - raw.*.*
                     - analytics.*.*
 
+    - google_analytics_360: 
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.google_analytics_360 # Do we need to rename the schema?
+            tables:
+                read:
+                    - raw.google_analytics_360.*
+
     - intern:
         warehouses:
             - analyst_xs
