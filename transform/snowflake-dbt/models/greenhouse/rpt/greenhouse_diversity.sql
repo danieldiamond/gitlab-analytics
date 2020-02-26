@@ -9,7 +9,8 @@
     " %}
 
 {% set repeated_column_names_ratio_to_report =
-    "(partition by month_date, breakout_type, department_name, division, eeoc_field_name order by month_date) " %}
+    "(PARTITION BY month_date, breakout_type, department_name, division, eeoc_field_name ORDER BY month_date) 
+    " %}
 
 WITH greenhouse_diversity_intermediate AS (
 
@@ -28,7 +29,7 @@ WITH greenhouse_diversity_intermediate AS (
       {{repeated_column_metrics}}  
     FROM  greenhouse_diversity_intermediate
     WHERE LOWER(eeoc_field_name) = 'candidate_status'
-    GROUP BY 1,2,3,4,5,6
+    {{ dbt_utils.group_by(n=6) }}
 
     UNION ALL
 
@@ -41,7 +42,7 @@ WITH greenhouse_diversity_intermediate AS (
       eeoc_values,
       {{repeated_column_metrics}}
     FROM  greenhouse_diversity_intermediate
-    GROUP BY 1,2,3,4,5,6
+    {{ dbt_utils.group_by(n=6) }}
 
     UNION ALL
 
@@ -54,7 +55,7 @@ WITH greenhouse_diversity_intermediate AS (
       null                                                     AS eeoc_values,
       {{repeated_column_metrics}}
     FROM  greenhouse_diversity_intermediate
-    GROUP BY 1,2,3,4,5,6
+    {{ dbt_utils.group_by(n=6) }}
 
     UNION ALL
 
@@ -67,7 +68,7 @@ WITH greenhouse_diversity_intermediate AS (
       eeoc_values,
       {{repeated_column_metrics}}
     FROM  greenhouse_diversity_intermediate
-    GROUP BY 1,2,3,4,5,6
+    {{ dbt_utils.group_by(n=6) }}
 
     UNION ALL
 
@@ -80,7 +81,7 @@ WITH greenhouse_diversity_intermediate AS (
       eeoc_values,
       {{repeated_column_metrics}}
     FROM  greenhouse_diversity_intermediate
-    group by 1,2,3,4,5,6
+    {{ dbt_utils.group_by(n=6) }}
 
 ), aggregated AS (
 
