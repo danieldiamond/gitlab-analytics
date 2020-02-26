@@ -551,7 +551,7 @@ roles:
                     - raw.google_analytics_360_fivetran
             tables:
                 read:
-                    - raw.google_analytics_360.*
+                    - raw.google_analytics_360z_fivetran.*
 
     - intern:
         warehouses:
