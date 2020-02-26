@@ -17,10 +17,19 @@
 
 -%}
 
+{%- set fields_to_exclude = ["page_url", 
+                     "page_url_path", 
+                     "referer_url", 
+                     "referer_url_path", 
+                     "ip_address", 
+                     "page_title"
+                     ]
+-%}
+                     
 WITH snowplow_page_views_30 AS (
   
   SELECT {{ dbt_utils.star(from=ref('snowplow_page_views_30'), 
-                           except=["page_url", "page_url_path", "referer_url", "referer_url_path", "ip_address"]) }}
+                           except=fields_to_exclude|upper) }}
   FROM {{ ref('snowplow_page_views_30')}}
 
 )
