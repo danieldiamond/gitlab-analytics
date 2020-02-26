@@ -28,7 +28,7 @@ spine_cols AS (
 ),
 
 spine AS (
-    
+
     SELECT DISTINCT
       DATE_TRUNC('day', date_actual)::DATE    AS event_day,
       DATE_TRUNC('week', date_actual)::DATE   AS event_week,
@@ -40,8 +40,8 @@ spine AS (
     FROM date_details
       INNER JOIN spine_cols
         ON 1=1
-      
-), 
+
+),
 
 final AS (
   SELECT DISTINCT
@@ -53,6 +53,7 @@ final AS (
     spine.is_representative_of_stage,
     spine.plan_name_at_event_date,
 
+    /* A. Unique users without plan. */
     COUNT(DISTINCT user_id) OVER (PARTITION BY event_day, spine.event_name)   AS unique_users_by_event_and_day,
     COUNT(DISTINCT user_id) OVER (PARTITION BY event_week, spine.event_name)  AS unique_users_by_event_and_week,
     COUNT(DISTINCT user_id) OVER (PARTITION BY event_month, spine.event_name) AS unique_users_by_event_and_month,
@@ -60,12 +61,30 @@ final AS (
     COUNT(DISTINCT user_id) OVER (PARTITION BY event_week, spine.stage_name)  AS unique_users_by_stage_and_week,
     COUNT(DISTINCT user_id) OVER (PARTITION BY event_month, spine.stage_name) AS unique_users_by_stage_and_month,
 
+    /* B. Unique users with plan. */
     COUNT(DISTINCT user_id) OVER (PARTITION BY event_day, spine.event_name, spine.plan_name_at_event_date)   AS unique_users_by_event_and_day_and_plan,
     COUNT(DISTINCT user_id) OVER (PARTITION BY event_week, spine.event_name, spine.plan_name_at_event_date)  AS unique_users_by_event_and_week_and_plan,
     COUNT(DISTINCT user_id) OVER (PARTITION BY event_month, spine.event_name, spine.plan_name_at_event_date) AS unique_users_by_event_and_month_and_plan,
     COUNT(DISTINCT user_id) OVER (PARTITION BY event_day, spine.stage_name,spine. plan_name_at_event_date)   AS unique_users_by_stage_and_day_and_plan,
     COUNT(DISTINCT user_id) OVER (PARTITION BY event_week, spine.stage_name, spine.plan_name_at_event_date)  AS unique_users_by_stage_and_week_and_plan,
-    COUNT(DISTINCT user_id) OVER (PARTITION BY event_month, spine.stage_name, spine.plan_name_at_event_date) AS unique_users_by_stage_and_month_and_plan
+    COUNT(DISTINCT user_id) OVER (PARTITION BY event_month, spine.stage_name, spine.plan_name_at_event_date) AS unique_users_by_stage_and_month_and_plan,
+
+    /* C. Unique namespaces without plan. */
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_day, spine.event_name)   AS unique_namespaces_by_event_and_day,
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_week, spine.event_name)  AS unique_namespaces_by_event_and_week,
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_month, spine.event_name) AS unique_namespaces_by_event_and_month,
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_day, spine.stage_name)   AS unique_namespaces_by_stage_and_day,
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_week, spine.stage_name)  AS unique_namespaces_by_stage_and_week,
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_month, spine.stage_name) AS unique_namespaces_by_stage_and_month,
+
+    /* D. Unique namespaces with plan. */
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_day, spine.event_name, spine.plan_name_at_event_date)   AS unique_namespaces_by_event_and_day_and_plan,
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_week, spine.event_name, spine.plan_name_at_event_date)  AS unique_namespaces_by_event_and_week_and_plan,
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_month, spine.event_name, spine.plan_name_at_event_date) AS unique_namespaces_by_event_and_month_and_plan,
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_day, spine.stage_name,spine. plan_name_at_event_date)   AS unique_namespaces_by_stage_and_day_and_plan,
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_week, spine.stage_name, spine.plan_name_at_event_date)  AS unique_namespaces_by_stage_and_week_and_plan,
+    COUNT(DISTINCT namespace_id) OVER (PARTITION BY event_month, spine.stage_name, spine.plan_name_at_event_date) AS unique_namespaces_by_stage_and_month_and_plan
+
   FROM spine
     LEFT JOIN usage_data_events
       ON spine.event_day = DATE_TRUNC('day', usage_data_events.event_created_at)
