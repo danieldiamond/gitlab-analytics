@@ -197,7 +197,7 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 - To get into the `dbt-image` docker container, go to the analytics project (which you can get to by typing `goto analytics` from anywhere on your Mac) and run the command `make dbt-image`. This will spin up our docker container that contains `dbt` and give you a bash shell within the `analytics/transform/snowflake-dbt` directory.
 - All changes made to the files within the `analytics` repo will automatically be visible in the docker container! This container is only used to run `dbt` commands themselves, not to write SQL or edit `dbt` files in general (though technically it could be, as VIM is available within the container)
 - [ ] From a different terminal window run `code ~/.dbt/profiles.yml` and update this file with your info.  The schema should be something like `yourname_scratch`.
-    - [ ] __Data Engineers__: update followiing params in the `~/.dbt/profiles.yml`: 
+    - [ ] __Data Engineers__: update the following paramaters in the `~/.dbt/profiles.yml`: 
         ```
         role: ENGINEER 
         warehouse: ENGINEER_XS
