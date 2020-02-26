@@ -207,7 +207,7 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 - [ ] Here is the [dbt command line cheat sheet](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/#command-line-cheat-sheet)
 
 ## Airflow (Data Engineers)
- - [ ] Read Airflow section in [Data Infrastrcure](https://about.gitlab.com/handbook/business-ops/data-team/data-infrastructure/#airflow)
+ - [ ] Read the Airflow section on the [Data Infrastructure page](https://about.gitlab.com/handbook/business-ops/data-team/data-infrastructure/#airflow)
 
 ## Misc
 - [ ] Familiarize yourself with the [Stitch](http://stitchdata.com) UI, as this is mostly the source of truth for what data we are loading. An email will have been sent with info on how to get logged in.
