@@ -23,7 +23,6 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Update codeowners file in the handbook to include the new team member
 - [ ] Manager: Add to daily Geekbot standup (send `dashboard` to Geekbot on slack, click into a particular standup in the web UI, add via Manage button)
 - [ ] Manager: Invite to SheetLoad folder in gdrive
-- [ ] Manager: Check the [Time Blackout Sheet](https://docs.google.com/spreadsheets/d/1-L1l1x0uayj-bA_U9ETt2w12rC8SqC5mHP7Aa-rkmsY/edit#gid=0) to make sure it looks up-to-date.
 - [ ] Manager: Add to data team calendar as a calendar admin
 - [ ] Manager: Add team member to Finance team meetings
 - [ ] Manager: Add to [data triage](https://about.gitlab.com/handbook/business-ops/data-team/#triager) in third week at GitLab (Week 1 = Company onboarding; Week 2 = Data team onboarding)
@@ -52,7 +51,6 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
    - [ ] [Periscope Directory](https://about.gitlab.com/handbook/business-ops/data-team/periscope-directory/)
 - [ ] Watch @tlapiana's [talk at DataEngConf](https://www.youtube.com/watch?v=eu623QBwakc) that gives a phenomenal overview of how the team works.
 - [ ] Watch [this great talk](https://www.youtube.com/watch?v=prcz0ubTAAg) on what Analytics is
-- [ ] Update the [Time Blackout Sheet](https://docs.google.com/spreadsheets/d/1-L1l1x0uayj-bA_U9ETt2w12rC8SqC5mHP7Aa-rkmsY/edit#gid=0); add a new column, and make sure you don't break any formulas!
 - [ ] Try running `/gitlab datachat run hello-world` in Slack in the #data team channel. You may be prompted to authenticate! Do it! (Sometimes we run [chatops](https://docs.gitlab.com/ee/ci/chatops/) to help with testing.)
 - [ ] If relevant, watch ["The State of [Product] Data"](https://www.youtube.com/watch?v=eNLkj3Ho2bk&feature=youtu.be) from Eli at the Growth Fastboot. (You'll need to be logged into GitLab Unfiltered.)
 
