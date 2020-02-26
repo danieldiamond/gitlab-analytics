@@ -181,3 +181,5 @@ sources:
         identifier: gitlab_db_todos
       - name: users
         identifier: gitlab_db_users
+      - name: vulnerability_occurrences
+        identifier: gitlab_db_vulnerability_occurrences
