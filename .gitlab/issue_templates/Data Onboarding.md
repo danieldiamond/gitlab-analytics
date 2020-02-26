@@ -143,10 +143,9 @@ Additional tools to install that are not part of the onboarding script:
 **Bonus**
 To see the inspiration for the onboarding script above, take a look at the dbt Discourse post [here](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243) on how they set up their computers for working on dbt projects. You might want to do some of the additional configurations mentioned in that post.
 
-Our data stack looks roughly like this:
-<img src = "https://cdn-images-1.medium.com/max/2000/1*BogoeTTK1OXFU1hPfUyCFw.png">
+## Data stack
 As you read in the handbook, we currently use Stitch for extracting data from its raw sources and loading it into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool. The bulk of your projects and tasks will be in dbt , so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources.
-
+ - [ ] Our current data infrastructure is represented in this [system diagram](https://about.gitlab.com/handbook/business-ops/data-team/data-infrastructure/#system-diagram)
 
 ## Connecting to Snowflake
 - [ ] Login with the credentials that your manager created following the instructions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
@@ -208,6 +207,8 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 - [ ] test the command `make help` and use it to understand how to use `make dbt-docs` and access it from your local machine.
 - [ ] Here is the [dbt command line cheat sheet](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/#command-line-cheat-sheet)
 
+## Airflow (Data Engineers)
+ - [ ] Read Airflow section in [Data Infrastrcure](https://about.gitlab.com/handbook/business-ops/data-team/data-infrastructure/#airflow)
 
 ## Misc
 - [ ] Familiarize yourself with the [Stitch](http://stitchdata.com) UI, as this is mostly the source of truth for what data we are loading. An email will have been sent with info on how to get logged in.
