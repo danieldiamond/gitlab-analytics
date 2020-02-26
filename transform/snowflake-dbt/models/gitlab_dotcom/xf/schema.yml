@@ -155,6 +155,31 @@ models:
         tests: 
           - not_null
 
+  - name: gitlab_dotcom_merge_requests_merged_authors_xf.sql
+    description: This is a dbt model (view) of authors/reviewers assigned to the MRs via the Reviewer Roulette.
+    columns:
+      - name: project_id
+        tests: 
+          - not_null
+      - name: namespace_id
+        tests: 
+          - not_null
+      - name: merge_request_iid
+        tests: 
+          - not_null
+      - name: merge_request_title
+        tests: 
+          - not_null
+      - name: noteable_id
+        tests: 
+          - not_null
+      - name: note_author_id
+        tests: 
+          - not_null
+      - name: user_name
+        tests: 
+          - not_null
+
   - name: gitlab_dotcom_merge_requests_xf
     description: '{{ doc("gitlab_dotcom_merge_requests_xf") }}'
     columns:
