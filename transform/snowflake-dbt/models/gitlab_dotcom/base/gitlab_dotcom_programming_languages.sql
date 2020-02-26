@@ -1,13 +1,8 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
-  SELECT *
-  FROM {{ source('gitlab_dotcom', 'programming_languages') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
+    SELECT *
+    FROM {{ source('gitlab_dotcom', 'programming_languages') }}
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
 
 ), renamed AS (
 
