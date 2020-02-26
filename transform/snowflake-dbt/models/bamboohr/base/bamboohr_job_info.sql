@@ -23,25 +23,31 @@ WITH source AS (
              data_by_row['reportsTo']::varchar  AS reports_to
       FROM intermediate
 
+), final AS (
+
+    SELECT 
+    job_id,
+    employee_id,
+    job_title,
+    effective_date, --the below case when statement is also used in employee_directory_analysis until we upgrade to 0.14.0 of dbt
+    CASE WHEN division = 'Alliances' THEN 'Alliances'
+        WHEN division = 'Customer Support' THEN 'Customer Support'
+        WHEN division = 'Customer Service' THEN 'Customer Success'
+        WHEN department = 'Data & Analytics' THEN 'Business Operations'
+        ELSE nullif(department, '') END                                      AS department,
+    CASE WHEN department = 'Meltano' THEN 'Meltano'
+        WHEN division = 'Employee' THEN null
+        WHEN division = 'Contractor ' THEN null
+        WHEN division = 'Alliances' Then 'Sales'
+        WHEN division = 'Customer Support' THEN 'Engineering'
+        WHEN division = 'Customer Service' THEN 'Sales'
+        ELSE nullif(division, '') END AS division,
+    entity,
+    reports_to,
+    (LAG(DATEADD('day',-1,effective_date), 1) OVER (PARTITION BY employee_id ORDER BY effective_date DESC)) AS effective_end_date
+    FROM renamed
+
 )
 
-SELECT job_id,
-        employee_id,
-        job_title,
-        effective_date, --the below case when statement is also used in employee_directory_analysis until we upgrade to 0.14.0 of dbt
-        CASE WHEN division = 'Alliances' THEN 'Alliances'
-             WHEN division = 'Customer Support' THEN 'Customer Support'
-             WHEN division = 'Customer Service' THEN 'Customer Success'
-             WHEN department = 'Data & Analytics' THEN 'Business Operations'
-            ELSE nullif(department, '') END AS department,
-        CASE WHEN department = 'Meltano' THEN 'Meltano'
-             WHEN division = 'Employee' THEN null
-             WHEN division = 'Contractor ' THEN null
-             WHEN division = 'Alliances' Then 'Sales'
-             WHEN division = 'Customer Support' THEN 'Engineering'
-             WHEN division = 'Customer Service' THEN 'Sales'
-          ELSE nullif(division, '') END AS division,
-        entity,
-        reports_to,
-      (lag(DATEADD('day',-1,effective_date), 1) OVER (PARTITION BY employee_id ORDER BY effective_date DESC)) as effective_end_date
-FROM renamed
+SELECT *
+FROM final
