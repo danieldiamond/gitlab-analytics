@@ -164,7 +164,7 @@ models:
 
     poc:
       tags: ["poc"]
-      enabled: false
+      enabled: true
       materialized: table
       schema: analytics
     
