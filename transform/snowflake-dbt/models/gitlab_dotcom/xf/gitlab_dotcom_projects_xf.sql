@@ -99,7 +99,7 @@ joined AS (
 
       {% for field in sensitive_fields %}
       CASE
-        WHEN projects.visibility_level != '20' AND NOT namespace_lineage.namespace_is_internal
+        WHEN projects.visibility_level != 'public' AND NOT namespace_lineage.namespace_is_internal
           THEN 'project is private/internal'
         ELSE {{field}}
       END                                                          AS {{field}},
