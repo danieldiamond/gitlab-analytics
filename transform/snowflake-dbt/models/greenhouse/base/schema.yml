@@ -1029,3 +1029,20 @@ models:
         - name: user_updated_at
           tests:
             - not_null
+    - name: greenhouse_opening_custom_fields
+      columns: 
+        - name: opening_id
+          tests: 
+            - not_null
+        - name: opening_custom_field
+          tests:
+            - not_null
+        - name: opening_custom_field_display_value
+          tests:
+            - not_null
+        - name: opening_custom_field_created_at
+          tests: 
+            - not_null
+        - name: opening_custom_field_updated_at
+          tests: 
+            - not_null
