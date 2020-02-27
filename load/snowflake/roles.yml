@@ -539,6 +539,20 @@ roles:
                     - raw.*.*
                     - analytics.*.*
 
+    - google_analytics_360: 
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.google_analytics_360_fivetran
+            tables:
+                read:
+                    - raw.google_analytics_360_fivetran.*
+
     - intern:
         warehouses:
             - analyst_xs
