@@ -97,8 +97,6 @@ WITH sfdc_opportunity_snapshots AS (
       -- metadata
       convert_timezone('America/Los_Angeles',convert_timezone('UTC',
                CURRENT_TIMESTAMP())) AS _last_dbt_run,
-      DATEDIFF(days, lastactivitydate::date,
-                       CURRENT_DATE) AS days_since_last_activity,
       isdeleted                      AS is_deleted,
       lastactivitydate               AS last_activity_date,
       recordtypeid                   AS record_type_id  
