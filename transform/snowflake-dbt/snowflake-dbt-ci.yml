@@ -131,8 +131,8 @@
   <<: *dbt_misc_jobs
   script:
     - *deps_and_seed
-    - *clone_raw # Must write to clone of RAW since this does real work
-    - echo $SNOWFLAKE_LOAD_DATABASE
+    - export SNOWFLAKE_SNAPSHOT_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW" # Must write to clone of RAW since this does real work
+    - echo $SNOWFLAKE_SNAPSHOT_DATABASE
     - dbt snapshot $CI_PROFILE_TARGET
     
 📝specify_tests:
