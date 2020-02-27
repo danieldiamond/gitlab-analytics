@@ -2,9 +2,9 @@
 
     {{
         config(
-          strategy='check',
+          strategy='timestamp',
           unique_key = 'department_id',
-          check_cols = 'all'
+          check_cols = 'date_last_modified'
         )
     }}
 
