@@ -284,7 +284,9 @@ WITH gitlab_subscriptions AS (
     {% endif %}
     WHERE created_at IS NOT NULL
     {% if is_incremental() %}
+
       AND created_at >= (SELECT MAX(event_created_at) FROM {{this}} WHERE event_name = '{{ event_cte.event_name }}')
+
     {% endif %}
 
 )
