@@ -49,6 +49,7 @@ WITH source AS (
         sales_market__c                AS opportunity_owner_department,
         SDR_LU__c                      AS opportunity_sales_development_representative,
         BDR_LU__c                      AS opportunity_business_development_representative,
+        BDR_SDR__c                     AS opportunity_development_representative,
         account_owner_team_o__c        AS account_owner_team_stamped,
         COALESCE({{ sales_segment_cleaning('ultimate_parent_sales_segment_emp_o__c') }}, {{ sales_segment_cleaning('ultimate_parent_sales_segment_o__c') }} )
                                        AS parent_segment,
