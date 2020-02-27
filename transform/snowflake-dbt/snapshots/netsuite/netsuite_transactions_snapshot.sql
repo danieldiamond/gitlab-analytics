@@ -1,9 +1,9 @@
-{% snapshot netsuite_transaction_lines_snapshots %}
+{% snapshot netsuite_transactions_snapshots %}
 
     {{
         config(
           strategy='timestamp',
-          unique_key='transaction_line_id',
+          unique_key='transaction_id',
           updated_at='date_last_modified',
         )
     }}
