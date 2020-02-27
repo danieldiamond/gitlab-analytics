@@ -2,7 +2,7 @@
 
     {{
         config(
-          strategy='timestamp',
+          strategy='check',
           unique_key='budget_id',
           check_cols = 'all',
         )
