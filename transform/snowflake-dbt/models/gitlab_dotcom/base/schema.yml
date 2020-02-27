@@ -988,6 +988,15 @@ models:
           - not_null
           - unique
 
+  - name: gitlab_dotcom_programming_languages
+    description: >-
+      A base model for Gitlab.com Gitlab.com programming_languages.
+    columns:
+      - name: programming_language_id
+        tests:
+          - not_null
+          - unique
+          
   - name: gitlab_dotcom_project_authorizations
     description: >-
       Base model for Gitlab.com authorizations, duplicate rows have not been
@@ -1155,6 +1164,21 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_repository_languages
+    description: >-
+      A base model for Gitlab.com Gitlab.com repository_languages.
+    columns:
+      - name: repository_language_id
+        tests:
+          - not_null
+          - unique
+      - name: project_id
+        tests:
+          - not_null
+      - name: programming_language_id
+        tests:
+          - not_null
+          
   - name: gitlab_dotcom_resource_label_events
     description: '{{ doc("gitlab_dotcom_resource_label_events") }}'
     columns:
@@ -1245,6 +1269,14 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_user_preferences
+    description: Base model for Gitlab.com user_preferences
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+          - unique
+          
   - name: gitlab_dotcom_users
     description: >-
       Base model for Gitlab.com users, the following fields are hidden for
