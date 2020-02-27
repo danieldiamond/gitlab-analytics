@@ -163,6 +163,12 @@ models:
       enabled: false
       materialized: table
 
+    poc:
+      tags: ["poc"]
+      enabled: true
+      materialized: table
+      schema: analytics
+    
     retention:
       materialized: table
 
