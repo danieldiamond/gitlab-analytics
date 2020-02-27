@@ -21,7 +21,7 @@ Last Milestone: <!-- link here -->
 
 ## Weight Available: :crystal_ball: 
 Current Milestone:
-* **Capacity:** 
+* **Eng Days:** 
 * **Velocity:** 
 
 **Engineering capacity for this milestone:**
