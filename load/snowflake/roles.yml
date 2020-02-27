@@ -968,6 +968,8 @@ roles:
             - analyst_xs
 
     - datwood:
+        member_of:
+            - analyst_core
         warehouses:
             - analyst_xs
 
@@ -1315,7 +1317,6 @@ users:
     - datwood:
         can_login: yes
         member_of:
-            - analyst_core
             - datwood
 
     - dtang:
