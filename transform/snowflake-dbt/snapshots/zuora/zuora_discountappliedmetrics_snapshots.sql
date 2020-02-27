@@ -9,6 +9,6 @@
     }}
     
     SELECT * 
-    FROM {{ source('zuora', 'discountappliedmetrics') }}
+    FROM {{ source('zuora', 'discount_applied_metrics') }}
     
 {% endsnapshot %}
