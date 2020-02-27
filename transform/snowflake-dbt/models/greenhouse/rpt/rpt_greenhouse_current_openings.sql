@@ -22,22 +22,21 @@ WITH greenhouse_openings AS (
 ), greenhouse_finance_id AS (
 
     SELECT * 
-    FROM {{ref('greenhouse_job_custom_fields')}}
-    WHERE job_custom_field = 'Finance_ID'
+    FROM {{ref('greenhouse_opening_custom_fields')}}
+    WHERE opening_custom_field = 'finance_id'
 
 ), aggregated AS (
 
     SELECT 
       greenhouse_openings.job_id,
-      greenhouse_finance_id.job_custom_field_float_value,
-      job_custom_field_display_value,
+      greenhouse_finance_id.opening_custom_field_display_value AS finance_id,
       greenhouse_jobs.job_created_at, 
       greenhouse_jobs.job_status,
       greenhouse_openings.opening_id, 
       greenhouse_openings.target_start_date,
-      greenhouse_openings.job_opened_at as opening_date,
-      greenhouse_openings.job_closed_at as closing_date,
-      greenhouse_jobs.job_name                          AS job_title, 
+      greenhouse_openings.job_opened_at                         AS opening_date,
+      greenhouse_openings.job_closed_at                         AS closing_date,
+      greenhouse_jobs.job_name                                  AS job_title, 
       greenhouse_department.department_name
     FROM greenhouse_openings
     LEFT JOIN greenhouse_jobs
@@ -45,7 +44,7 @@ WITH greenhouse_openings AS (
     LEFT JOIN greenhouse_department 
       ON greenhouse_department.department_id = greenhouse_jobs.department_id
     LEFT join greenhouse_finance_id 
-      ON greenhouse_finance_id.job_id = greenhouse_jobs.job_id  
+      ON greenhouse_finance_id.opening_id = greenhouse_openings.job_opening_id  
     WHERE greenhouse_jobs.job_closed_at IS NULL
       AND greenhouse_jobs.job_opened_at IS NOT NULL 
 )
