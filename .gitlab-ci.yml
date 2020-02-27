@@ -140,6 +140,27 @@ python_pytest:
   script:
     - pytest -vv -x --ignore=dags
 
+# ======
+# Snowflake Permissions Validator
+# ======
+
+.permissions_check: &permissions_check
+  stage: 🐍 Python
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  tags:
+    - analytics
+  only:
+    changes:
+      - "load/snowflake/roles.yml"
+    refs:
+      - merge_request
+  allow_failure: true
+
+🔐permissions_query:
+  <<: *permissions_check
+  script:
+    - python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))' < load/snowflake/roles.yml
+
 
 # ======
 # dbt docs to GitLab Pages
@@ -159,11 +180,11 @@ python_pytest:
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
     - dbt deps --profiles-dir profile --target prod
     - dbt docs generate --profiles-dir profile --target prod
-    - mkdir -p $CI_PROJECT_DIR/public/dbt/snowflake
+    - mkdir -p $CI_PROJECT_DIR/public/
     - cd target
-    - cp *.json graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
+    - cp *.json graph.gpickle $CI_PROJECT_DIR/public/
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/docs/
-    - cp index.html gitlab.css $CI_PROJECT_DIR/public/dbt/snowflake/
+    - cp index.html gitlab.css $CI_PROJECT_DIR/public/
   tags:
     - analytics
   artifacts:

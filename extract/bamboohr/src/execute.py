@@ -4,6 +4,7 @@ import sys
 from os import environ as env
 
 from gitlabdata.orchestration_utils import (
+    push_to_xcom_file,
     query_executor,
     snowflake_engine_factory,
     snowflake_stage_load_copy_remove,
@@ -59,6 +60,8 @@ if __name__ == "__main__":
 
     logging.basicConfig(stream=sys.stdout, level=20)
 
+    record_counts = {}
+
     bamboo = BambooAPI(subdomain="gitlab")
 
     config_dict = env.copy()
@@ -77,6 +80,8 @@ if __name__ == "__main__":
     logging.info("Getting latest employee directory.")
 
     employees = bamboo.get_employee_directory()
+
+    record_counts["directory"] = len(employees)
 
     with open("directory.json", "w") as outfile:
         json.dump(employees, outfile)
@@ -104,6 +109,8 @@ if __name__ == "__main__":
         logging.info(f"Querying for {value} tabular data...")
         data = bamboo.get_tabular_data(value)
 
+        record_counts[key] = len(data)
+
         with open(f"{key}.json", "w") as outfile:
             json.dump(data, outfile)
 
@@ -128,6 +135,8 @@ if __name__ == "__main__":
         with open(f"{key}.json", "w") as outfile:
             json.dump(data, outfile)
 
+        record_counts[key] = len(data["employees"])
+
         test_extraction(
             data["employees"],
             f"raw.bamboohr.{key}",
@@ -142,3 +151,5 @@ if __name__ == "__main__":
             f"raw.bamboohr.{key}",
             snowflake_engine,
         )
+
+    push_to_xcom_file(record_counts)

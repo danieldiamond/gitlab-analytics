@@ -56,7 +56,6 @@ WITH source AS (
       total_account_value__c                     AS total_account_value,
       sub_region__c                              AS account_sub_region,
       support_level__c                           AS support_level,
-      support_level_numeric__c                   AS support_level_numeric,
       named_account__c                           AS named_account,
       billingcountry                             AS billing_country, 
       billingpostalcode                          AS billing_postal_code, 
@@ -98,6 +97,15 @@ WITH source AS (
       number_of_open_opportunities__c            AS count_open_opportunities,
       using_ce__c                                AS count_using_ce,
 
+      --demandbase fields
+      account_list__c                            AS demandbase_account_list,
+      intent__c                                  AS demandbase_intent,
+      page_views__c                              AS demandbase_page_views,
+      score__c                                   AS demandbase_score,
+      sessions__c                                AS demandbase_sessions,
+      trending_offsite_intent__c                 AS demandbase_trending_offsite_intent,
+      trending_onsite_engagement__c              AS demandbase_trending_onsite_engagement,
+
       -- metadata
       createdbyid                                AS created_by_id,
       createddate                                AS created_date,
@@ -105,8 +113,6 @@ WITH source AS (
       lastmodifiedbyid                           AS last_modified_by_id,
       lastmodifieddate                           AS last_modified_date,
       lastactivitydate                           AS last_activity_date,
-      lastreferenceddate                         AS last_referenced_date,
-      lastvieweddate                             AS last_viewed_date,
       convert_timezone('America/Los_Angeles',convert_timezone('UTC',current_timestamp())) AS _last_dbt_run,
       systemmodstamp
 

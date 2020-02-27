@@ -6,9 +6,24 @@
 
 WITH source AS (
 
-    SELECT *
-    FROM {{ source('salesforce', 'opportunity') }}
-
+    SELECT
+      opportunity.*,
+      CASE
+        WHEN stagename = '00-Pre Opportunity' THEN createddate
+        WHEN stagename = '0-Pending Acceptance' THEN x0_pending_acceptance_date__c
+        WHEN stagename = '1-Discovery' THEN x1_discovery_date__c
+        WHEN stagename = '2-Scoping' THEN x2_scoping_date__c
+        WHEN stagename = '3-Technical Evaluation' THEN x3_technical_evaluation_date__c
+        WHEN stagename = '4-Proposal' THEN x4_proposal_date__c
+        WHEN stagename = '5-Negotiating' THEN x5_negotiating_date__c
+        WHEN stagename = '6-Awaiting Signature' THEN x6_awaiting_signature_date__c
+      END calculation_days_in_stage_date,
+      DATEDIFF(
+        days,
+        calculation_days_in_stage_date::DATE,
+        CURRENT_DATE::DATE
+      ) + 1                                        AS days_in_stage
+    FROM {{ source('salesforce', 'opportunity') }} AS opportunity
 
 ), renamed AS (
 
@@ -23,17 +38,7 @@ WITH source AS (
         business_type__c               AS business_type,
         closedate                      AS close_date,
         createddate                    AS created_date,
-        DATEDIFF(days, CURRENT_DATE, (greatest(
-            x0_pending_acceptance_date__c,
-            x1_discovery_date__c,
-            x2_scoping_date__c,
-            x3_technical_evaluation_date__c,
-            x4_proposal_date__c,
-            x5_negotiating_date__c,
-            --x6_closed_won_date__c,
-            x7_closed_lost_date__c--,
-            --x8_unqualified_date__c
-        )::DATE)) + 1                  AS days_in_stage,
+        days_in_stage                  AS days_in_stage,
         deployment_preference__c       AS deployment_preference,
         sql_source__c                  AS generated_source,
         leadsource                     AS lead_source,
@@ -44,6 +49,7 @@ WITH source AS (
         sales_market__c                AS opportunity_owner_department,
         SDR_LU__c                      AS opportunity_sales_development_representative,
         BDR_LU__c                      AS opportunity_business_development_representative,
+        account_owner_team_o__c        AS account_owner_team_stamped,
         COALESCE({{ sales_segment_cleaning('ultimate_parent_sales_segment_emp_o__c') }}, {{ sales_segment_cleaning('ultimate_parent_sales_segment_o__c') }} )
                                        AS parent_segment,
         sales_accepted_date__c         AS sales_accepted_date,
@@ -73,6 +79,7 @@ WITH source AS (
         net_iacv__c                    AS net_incremental_acv,
         nrv__c                         AS nrv,
         campaignid                     AS primary_campaign_source_id,
+        probability                    AS probability,
         professional_services_value__c AS professional_services_value,
         push_counter__c                AS pushed_count,
         reason_for_lost__c             AS reason_for_loss,

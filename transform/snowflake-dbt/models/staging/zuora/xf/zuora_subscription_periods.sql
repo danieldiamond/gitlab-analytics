@@ -96,7 +96,7 @@ WITH zuora_account AS (
       subscription_joined_with_accounts.account_id, 
       subscription_joined_with_accounts.account_number,
       subscription_joined_with_accounts.account_name,
-      subscription_joined_with_accounts.subscription_start_date,
+      subscription_joined_with_accounts.subscription_start_date, 
       subscription_joined_with_accounts.subscription_version_term_start_date,
       subscription_joined_with_accounts.subscription_version_term_end_date,
       LAST_VALUE(product_category) OVER (
@@ -119,8 +119,8 @@ WITH zuora_account AS (
     WHERE (subscription_version_term_start_date  < min_following_subscription_version_term_start_date
       OR min_following_subscription_version_term_start_date IS NULL)
       -- remove cancelled subscription
-      AND subscription_version_term_end_date != subscription_version_term_start_date
-      
+      AND subscription_version_term_start_date != subscription_version_term_end_date
+
 )
 
 , subscription_with_renewals AS (

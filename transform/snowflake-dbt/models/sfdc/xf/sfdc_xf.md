@@ -37,19 +37,3 @@ For each opportunity_id, the state of each field is taken from sfdc_opportunity_
 NOTE: Only opportunities that were not deleted (see [Salesforce Documentation](https://help.salesforce.com/articleView?id=home_delete.htm&type=5)) as of 2019-10-01 are included in this model. Hard deleted opportunities are not present in current extracts of opportunity and opportunityfieldhistory, so there is no mechanism for constructing historical records for these opportunities.
 
 {% enddocs %}
-
-{% docs sfdc_opportunity_stage_duration %}
-
-This table provides the days_in_stage where the value is the greater of the aggregated days in stage or .0001 if the days in stage sums up to 0.
-
-The calculation is done in this manner so that the average is taken out of all opportunities (including those with a value of 0).
-
-{% enddocs %}
-
-{% docs sfdc_reason_for_loss_unpacked %}
-
-This model unpackes the reason for loss field for easier querying. 
-
-NOTE: This creates a fan out and raw counts of opportunities will be inflated.
-
-{% enddocs %}

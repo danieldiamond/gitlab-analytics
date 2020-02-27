@@ -4,10 +4,10 @@ WITH date_table AS (
     FROM {{ ref('date_details') }}
     WHERE day_of_month = 1
 
-), gaap_revenue AS (
+), non_gaap_revenue AS (
 
     SELECT *
-    FROM {{ ref('gaap_revenue') }}
+    FROM {{ ref('non_gaap_revenue') }}
 
 ), zuora_accts AS (
 
@@ -61,7 +61,6 @@ WITH date_table AS (
       zuora_rp.rate_plan_name,
       zuora_rpc.rate_plan_charge_name,
       zuora_rpc.rate_plan_charge_number,
-      zuora_rpc.tcv,
       zuora_rpc.unit_of_measure,
       zuora_rpc.quantity,
       zuora_rpc.mrr,
@@ -98,13 +97,14 @@ WITH date_table AS (
       product_name,
       rate_plan_name,
       rate_plan_charge_name,
+      unit_of_measure,
       SUM(mrr)                                  AS mrr,
       SUM(quantity)                             AS quantity
     FROM base_mrr
     LEFT JOIN date_table
       ON base_mrr.effective_start_date <= date_table.date_actual
       AND (base_mrr.effective_end_date > date_table.date_actual OR base_mrr.effective_end_date IS NULL)
-    {{ dbt_utils.group_by(n=10) }}
+    {{ dbt_utils.group_by(n=11) }}
 
 ), movingtogitlab AS (
 
@@ -112,14 +112,14 @@ WITH date_table AS (
       accounting_period             AS mrr_month,
       rate_plan_charge_name,
       SUM(revenue_amt)              AS revenue_amt
-    FROM gaap_revenue
+    FROM non_gaap_revenue
     WHERE rate_plan_charge_name = '#movingtogitlab'
     GROUP BY 1,2
 
 ), current_mrr AS (
 
     SELECT
-      SUM(zuora_rpc.mrr)    AS current_mrr
+      SUM(zuora_rpc.mrr)    AS total_current_mrr
     FROM zuora_accts
     INNER JOIN zuora_subscription
       ON zuora_accts.account_id = zuora_subscription.account_id
@@ -144,7 +144,7 @@ SELECT
   product_name,
   rate_plan_name,
   month_base_mrr.rate_plan_charge_name,
-  MAX(current_mrr)                                                      AS current_mrr,
+  unit_of_measure,
   SUM(CASE
         WHEN month_base_mrr.rate_plan_charge_name = '#movingtogitlab'
           THEN revenue_amt
@@ -154,10 +154,12 @@ SELECT
          WHEN month_base_mrr.rate_plan_charge_name = '#movingtogitlab'
            THEN revenue_amt
          ELSE mrr
-       END)*12)                                                         AS arr
+       END)*12)                                                         AS arr,
+  SUM(quantity)                                                         AS quantity,
+  MAX(total_current_mrr)                                                AS total_current_mrr
 FROM month_base_mrr
 LEFT JOIN movingtogitlab
   ON month_base_mrr.mrr_month = movingtogitlab.mrr_month
   AND month_base_mrr.rate_plan_charge_name = movingtogitlab.rate_plan_charge_name
 LEFT JOIN current_mrr
-{{ dbt_utils.group_by(n=10) }}
+{{ dbt_utils.group_by(n=11) }}

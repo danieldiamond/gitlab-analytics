@@ -6,6 +6,7 @@ version: '1.0'
 profile: 'gitlab-snowflake'
 require-dbt-version: ">=0.15.0"
 
+
 # ======
 # File Path Configs
 # ======
@@ -25,6 +26,7 @@ quoting:
     database: true
     identifier: false
     schema: false
+query-comment: "{{ query_comment(node) }}"
 
 # ======
 # Run Hooks
@@ -97,6 +99,16 @@ models:
   # GitLab Models
   gitlab_snowflake:
     materialized: view
+
+    sources:
+      schema: source
+
+    staging:
+      schema: staging
+      zuora:
+        xf:
+          schema: analytics
+          materialized: table
 
     bamboohr:
       schema: sensitive
@@ -182,14 +194,6 @@ models:
         materialized: table
 
     zendesk:
-      xf:
-        materialized: table
-
-    zuora:
-      source:
-        schema: staging
-      base:
-        schema: staging
       xf:
         materialized: table
 

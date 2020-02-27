@@ -172,9 +172,7 @@ def chunk_and_upload(
     for chunk_df in results_generator:
         # If the table doesn't exist, it needs to send the first chunk to the dataframe_uploader
         if backfill:
-            backfill = seed_table(
-                advanced_metadata, chunk_df, target_engine, target_table
-            )
+            seed_table(advanced_metadata, chunk_df, target_engine, target_table)
         row_count = chunk_df.shape[0]
         rows_uploaded += row_count
         upload_to_gcs(advanced_metadata, chunk_df, upload_file_name)
@@ -186,19 +184,17 @@ def chunk_and_upload(
 
 def range_generator(
     start: int, stop: int, step: int = 100_000
-) -> Generator[List[int], Any, None]:
+) -> Generator[Tuple[int, int], None, None]:
     """
     Yields a list that contains the starting and ending number for a given window.
     """
 
     while True:
-        if stop < step:
-            yield [start, start + stop]
+        if start > stop:
             break
         else:
-            yield [start, start + step]
+            yield tuple([start, start + step])
         start += step
-        stop -= step
 
 
 def check_if_schema_changed(
@@ -288,7 +284,26 @@ def id_query_generator(
         sys.exit(1)
     logging.info(f"Source Max ID: {max_source_id}")
 
-    for id_pair in range_generator(max_target_id, max_source_id, step=id_range):
+    # Get the min ID from the source DB
+    logging.info(f"Getting min ID from source_table: {source_table}")
+    min_source_id_query = (
+        f"SELECT MIN({primary_key}) as {primary_key} FROM {source_table}"
+    )
+    try:
+        min_source_id_results = query_results_generator(
+            min_source_id_query, postgres_engine
+        )
+        min_source_id = next(min_source_id_results)[primary_key].tolist()[0]
+    except sqlalchemy.exc.ProgrammingError as e:
+        logging.exception(e)
+        sys.exit(1)
+    logging.info(f"Source Min ID: {min_source_id}")
+
+    # Generate the range pairs based on the max source id and the
+    # greatest of either the min_source_id or the max_target_id
+    for id_pair in range_generator(
+        max(max_target_id, min_source_id), max_source_id, step=id_range
+    ):
         id_range_query = (
             "".join(raw_query.lower().split("where")[0])
             + f"WHERE {primary_key} BETWEEN {id_pair[0]} AND {id_pair[1]}"

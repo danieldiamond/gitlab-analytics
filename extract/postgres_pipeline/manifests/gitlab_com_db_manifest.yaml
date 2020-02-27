@@ -78,7 +78,7 @@ tables:
       , invite_email
       , invite_accepted_at
       , requested_at
-      , expires_at
+      , CASE WHEN expires_at > '2262-01-01' THEN '2262-01-01' ELSE expires_at END AS expires_at
       , ldap
       , override
       FROM members
@@ -1402,6 +1402,15 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'subscriptions'
     export_table_primary_key: id
+  programming_languages:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , name
+      FROM programming_languages
+    export_schema: 'gitlab_com'
+    export_table: 'programming_languages'
+    export_table_primary_key: id
   protected_environments:
     import_db: GITLAB_DB
     import_query: >
@@ -1417,6 +1426,16 @@ tables:
     export_table: 'protected_environments'
     export_table_primary_key: id
     advanced_metadata: true
+  repository_languages:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT project_id
+      , programming_language_id
+      , CONCAT(project_id, '_', programming_language_id) AS project_programming_language_id
+      FROM repository_languages
+    export_schema: 'gitlab_com'
+    export_table: 'repository_languages'
+    export_table_primary_key: CONCAT(project_id, '_', programming_language_id)
   releases:
     import_db: GITLAB_DB
     import_query: >
@@ -1587,6 +1606,95 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'users'
+    export_table_primary_key: id
+  user_preferences:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT user_id
+      , issue_notes_filter
+      , merge_request_notes_filter
+      , created_at
+      , updated_at
+      , epics_sort
+      , roadmap_epics_state
+      , epic_notes_filter
+      , issues_sort
+      , merge_requests_sort
+      , roadmaps_sort
+      , first_day_of_week
+      , timezone
+      , time_display_relative
+      , time_format_in_24h
+      , projects_sort
+      , show_whitespace_in_diffs
+      , sourcegraph_enabled
+      , setup_for_company
+      , render_whitespace_in_code
+      , tab_width
+      , feature_filter_type
+      FROM user_preferences
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'user_preferences'
+    export_table_primary_key: user_id
+  vulnerability_occurrences:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , severity
+      , confidence
+      , report_type
+      , project_id
+      , scanner_id
+      , primary_identifier_id
+      , uuid
+      , name
+      , metadata_version
+      , raw_metadata
+      , vulnerability_id
+      FROM vulnerability_occurrences
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_occurrences'
+    export_table_primary_key: 'id'
+  web_hook_logs:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , web_hook_id
+      , trigger
+      , url
+      , request_headers
+      , request_data
+      , response_headers
+      , response_body
+      , response_status
+      , execution_duration
+      , internal_error_message
+      , created_at
+      , updated_at
+      FROM web_hook_logs
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: web_hook_logs
+    export_table_primary_key: id
+  web_hooks:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , created_at
+      , updated_at
+      , type
+      , service_id
+      FROM web_hooks
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: web_hooks
     export_table_primary_key: id
   ci_group_variables:
     import_db: GITLAB_DB

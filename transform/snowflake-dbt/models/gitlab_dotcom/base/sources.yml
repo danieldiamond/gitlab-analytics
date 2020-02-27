@@ -71,6 +71,8 @@ sources:
         identifier: gitlab_db_cluster_projects
       - name: clusters
         identifier: gitlab_db_clusters
+      - name: clusters_applications_helm
+        identifier: gitlab_db_clusters_applications_helm
       - name: deployments
         identifier: gitlab_db_deployments
       - name: deployment_merge_requests
