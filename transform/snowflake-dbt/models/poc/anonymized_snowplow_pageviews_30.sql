@@ -57,7 +57,7 @@ WITH snowplow_page_views_30 AS (
   
   SELECT 
     snowplow_page_views_30.*,
-    unioned.event_type
+    unioned.event_type AS smau_event_type
   FROM snowplow_page_views_30
   INNER JOIN unioned 
     ON snowplow_page_views_30.page_view_id = unioned.event_surrogate_key
