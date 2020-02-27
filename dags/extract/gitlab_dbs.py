@@ -173,8 +173,6 @@ for source_name, config in config_dict.items():
         f"{config['dag_name']}_db_extract",
         default_args=extract_dag_args,
         schedule_interval=config["extract_schedule_interval"],
-        do_xcom_push=True,
-        xcom_push=True,
     )
 
     with extract_dag:
