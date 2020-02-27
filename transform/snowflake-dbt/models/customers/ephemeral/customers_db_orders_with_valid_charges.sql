@@ -55,11 +55,11 @@ WITH customers AS (
       gitlab_namespace_id,
       product_rate_plan_id,
       FIRST_VALUE(order_created_at) 
-        OVER (PARTITION BY order_id
+        OVER (PARTITION BY order_id, gitlab_namespace_id
               ORDER BY valid_from ASC) AS order_created_at,
       FIRST_VALUE(order_updated_at) 
-        OVER (PARTITION BY order_id
-              ORDER BY valid_to ASC)   AS order_updated_at
+        OVER (PARTITION BY order_id, gitlab_namespace_id
+              ORDER BY valid_from ASC)   AS order_updated_at
     FROM orders_snapshots
     WHERE orders_snapshots.product_rate_plan_id IS NOT NULL 
       AND orders_snapshots.order_is_trial = FALSE
