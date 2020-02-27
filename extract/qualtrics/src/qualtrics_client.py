@@ -11,7 +11,7 @@ class QualtricsClient:
         url = self.base_url + url_path
         headers = {"X-API-TOKEN": self.api_token}
         while True:
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, params=query_params)
             response_body = response.json()
             if "result" not in response_body:
                 logging.warn(
