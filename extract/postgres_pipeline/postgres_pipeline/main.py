@@ -21,270 +21,279 @@ from utils import (
 from validation import get_comparison_results
 
 
-SCHEMA = "tap_postgres"
+class PostgresToSnowflakePipeline:
 
+    load_method: object
+    TEMP_SCHEMA_NAME = 'TAP_POSTGRES'
 
-def load_ids(
-    additional_filtering: str,
-    primary_key: str,
-    raw_query: str,
-    source_engine: Engine,
-    table: str,
-    table_name: str,
-    target_engine: Engine,
-    id_range: int = 100_000,
-) -> None:
-    """ Load a query by chunks of IDs instead of all at once."""
+    def __init__(self,
+                 primary_key: str,
+                 raw_query: str,
+                 source_engine: Engine,
+                 source_table: str,
+                 table_name: str,
+                 target_engine: Engine,
+                 additional_filtering: str,
+                 load_type: str,
+                 ) -> None:
+        self.primary_key = primary_key
+        self.raw_query = raw_query
+        self.source_engine = source_engine
+        self.source_table = source_table
+        self.target_table = table_name
+        self.temp_table = f"{self.target_table}_TEMP"
+        self.target_engine = target_engine
+        self.additional_filtering = additional_filtering
+        # Link the load_types to their respective functions
+        # load_types = {
+        #     "incremental": load_incremental,
+        #     "scd": load_scd,
+        #     "sync": sync_incremental_ids,
+        #     "test": check_new_tables,
+        #     "validate": validate_ids,
+        # }
+        self.load_method = getattr(load_type)
 
-    # Create a generator for queries that are chunked by ID range
-    id_queries = id_query_generator(
-        source_engine,
-        primary_key,
-        raw_query,
-        target_engine,
-        table,
-        table_name,
-        id_range=id_range,
-    )
-    # Iterate through the generated queries
-    backfill = True
-    for query in id_queries:
-        filtered_query = f"{query} {additional_filtering} ORDER BY {primary_key}"
-        logging.info(filtered_query)
-        chunk_and_upload(
-            filtered_query, source_engine, target_engine, table_name, backfill=backfill
+    def load_ids(self, id_range: 100_000) -> None:
+        """ Load a query by chunks of IDs instead of all at once."""
+
+        # Create a generator for queries that are chunked by ID range
+        id_queries = id_query_generator(
+            self.source_engine,
+            self.primary_key,
+            self.raw_query,
+            self.target_engine,
+            self.source_table,
+            self.target_table,
+            id_range=id_range,
         )
-        backfill = False  # this prevents it from seeding rows for every chunk
-
-
-def swap_temp_table(engine: Engine, real_table: str, temp_table: str) -> None:
-    """
-    Drop the real table and rename the temp table to take the place of the
-    real table.
-    """
-
-    if engine.has_table(real_table):
-        logging.info(
-            f"Swapping the temp table: {temp_table} with the real table: {real_table}"
-        )
-        swap_query = f"ALTER TABLE IF EXISTS tap_postgres.{temp_table} SWAP WITH tap_postgres.{real_table}"
-        query_executor(engine, swap_query)
-    else:
-        logging.info(f"Renaming the temp table: {temp_table} to {real_table}")
-        rename_query = f"ALTER TABLE IF EXISTS tap_postgres.{temp_table} RENAME TO tap_postgres.{real_table}"
-        query_executor(engine, rename_query)
-
-    drop_query = f"DROP TABLE IF EXISTS tap_postgres.{temp_table}"
-    query_executor(engine, drop_query)
-
-
-def load_incremental(
-    source_engine: Engine,
-    target_engine: Engine,
-    table: str,
-    table_dict: Dict[Any, Any],
-    table_name: str,
-) -> bool:
-    """
-    Load tables incrementally based off of the execution date.
-    """
-
-    raw_query = table_dict["import_query"]
-    additional_filter = table_dict.get("additional_filtering", "")
-    if "{EXECUTION_DATE}" not in raw_query:
-        logging.info(f"Table {table} does not need incremental processing.")
-        return False
-    # If _TEMP exists in the table name, skip it because it needs a full sync
-    # If a temp table exists then it needs to finish syncing so don't load incrementally
-    if "_TEMP" == table_name[-5:] or target_engine.has_table(f"{table_name}_TEMP"):
-        logging.info(
-            f"Table {table} needs to be backfilled due to schema change, aborting incremental load."
-        )
-        return False
-    env = os.environ.copy()
-    query = f"{raw_query.format(**env)} {additional_filter}"
-    logging.info(query)
-    chunk_and_upload(query, source_engine, target_engine, table_name)
-
-    return True
-
-
-def sync_incremental_ids(
-    source_engine: Engine,
-    target_engine: Engine,
-    table: str,
-    table_dict: Dict[Any, Any],
-    table_name: str,
-) -> bool:
-    """
-    Sync incrementally-loaded tables based on their IDs.
-    """
-
-    raw_query = table_dict["import_query"]
-    additional_filtering = table_dict.get("additional_filtering", "")
-    primary_key = table_dict["export_table_primary_key"]
-    if "{EXECUTION_DATE}" not in raw_query:
-        logging.info(f"Table {table} does not need sync processing.")
-        return False
-    # If temp isn't in the name, we don't need to full sync.
-    # If a temp table exists, we know the sync didn't complete successfully
-    if "_TEMP" != table_name[-5:] and not target_engine.has_table(f"{table_name}_TEMP"):
-        logging.info(f"Table {table} doesn't need a full sync.")
-        return False
-
-    load_ids(
-        additional_filtering,
-        primary_key,
-        raw_query,
-        source_engine,
-        table,
-        table_name,
-        target_engine,
-    )
-    return True
-
-
-def load_scd(
-    source_engine: Engine,
-    target_engine: Engine,
-    table: str,
-    table_dict: Dict[Any, Any],
-    table_name: str,
-) -> bool:
-    """
-    Load tables that are slow-changing dimensions.
-    """
-
-    raw_query = table_dict["import_query"]
-    additional_filter = table_dict.get("additional_filtering", "")
-    advanced_metadata = table_dict.get("advanced_metadata", False)
-    if "{EXECUTION_DATE}" in raw_query:
-        logging.info(f"Table {table} does not need SCD processing.")
-        return False
-
-    # If the schema has changed for the SCD table, treat it like a backfill
-    if "_TEMP" == table_name[-5:] or target_engine.has_table(f"{table_name}_TEMP"):
-        logging.info(
-            f"Table {table} needs to be recreated to due to schema change. Recreating...."
-        )
+        # Iterate through the generated queries
         backfill = True
-    else:
-        backfill = False
+        for query in id_queries:
+            filtered_query = f"{query} {self.additional_filtering} ORDER BY {self.primary_key}"
+            logging.info(filtered_query)
+            chunk_and_upload(
+                filtered_query, self.source_engine, self.target_engine, self.target_table, backfill=backfill
+            )
+            backfill = False  # this prevents it from seeding rows for every chunk
 
-    logging.info(f"Processing table: {table}")
-    query = f"{raw_query} {additional_filter}"
-    logging.info(query)
-    chunk_and_upload(
-        query, source_engine, target_engine, table_name, advanced_metadata, backfill
-    )
-    return True
+    def swap_temp_table(self) -> None:
+        """
+        Drop the real table and rename the temp table to take the place of the
+        real table.
+        """
 
+        if self.target_engine.has_table(self.target_table):
+            logging.info(
+                f"Swapping the temp table: {self.temp_table} with the real table: {self.target_table}"
+            )
+            swap_query = f"ALTER TABLE IF EXISTS {self.TEMP_SCHEMA_NAME}.{self.temp_table} SWAP WITH {self.TEMP_SCHEMA_NAME}.{self.target_table}"
+            query_executor(self.target_engine, swap_query)
+        else:
+            logging.info(f"Renaming the temp table: {self.temp_table} to {self.target_table}")
+            rename_query = f"ALTER TABLE IF EXISTS {self.TEMP_SCHEMA_NAME}.{self.temp_table} RENAME TO {self.TEMP_SCHEMA_NAME}.{self.target_table}"
+            query_executor(self.target_engine, rename_query)
 
-def validate_ids(
-    source_engine: Engine,
-    target_engine: Engine,
-    table: str,
-    table_dict: Dict[Any, Any],
-    table_name: str,
-) -> bool:
-    """
-    Use IDs to validate there is no missing data.
+        drop_query = f"DROP TABLE IF EXISTS {self.TEMP_SCHEMA_NAME}.{self.temp_table}"
+        query_executor(self.target_engine, drop_query)
 
-    Load all IDs from the incremental tables into Snowflake.
-    Then verify that all of those IDs exist in the DW.
+    def load_incremental(self,
+            table: str,
+            table_dict: Dict[Any, Any],
+            table_name: str,
+    ) -> bool:
+        """
+        Load tables incrementally based off of the execution date.
+        """
 
-    IDs get loaded into the <table_name>_VALIDATE table.
-    Missing IDs populate the <table_name>_ERRORS table.
-    """
+        raw_query = table_dict["import_query"]
+        additional_filter = table_dict.get("additional_filtering", "")
+        if "{EXECUTION_DATE}" not in raw_query:
+            logging.info(f"Table {table} does not need incremental processing.")
+            return False
+        # If _TEMP exists in the table name, skip it because it needs a full sync
+        # If a temp table exists then it needs to finish syncing so don't load incrementally
+        if "_TEMP" == table_name[-5:] or self.target_engine.has_table(f"{table_name}_TEMP"):
+            logging.info(
+                f"Table {table} needs to be backfilled due to schema change, aborting incremental load."
+            )
+            return False
+        env = os.environ.copy()
+        query = f"{raw_query.format(**env)} {additional_filter}"
+        logging.info(query)
+        self.chunk_and_upload(query, self.source_engine, self.target_engine, table_name)
+        return True
 
-    # Set the initial vars and stop the validation if not needed.
-    raw_query = table_dict["import_query"]
-    additional_filtering = table_dict.get("additional_filtering", "")
-    primary_key = table_dict["export_table_primary_key"]
-    if "{EXECUTION_DATE}" not in raw_query:
-        logging.info(f"Table {table} does not need id validation.")
-        return False
-    if "_TEMP" == table_name[-5:] or target_engine.has_table(f"{table_name}_TEMP"):
-        logging.info(
-            f"Table {table} needs to be backfilled due to schema change, aborting validation."
+    def sync_incremental_ids(self,
+            table: str,
+            table_dict: Dict[Any, Any],
+            table_name: str,
+    ) -> bool:
+        """
+        Sync incrementally-loaded tables based on their IDs.
+        """
+
+        raw_query = table_dict["import_query"]
+        additional_filtering = table_dict.get("additional_filtering", "")
+        primary_key = table_dict["export_table_primary_key"]
+        if "{EXECUTION_DATE}" not in raw_query:
+            logging.info(f"Table {table} does not need sync processing.")
+            return False
+        # If temp isn't in the name, we don't need to full sync.
+        # If a temp table exists, we know the sync didn't complete successfully
+        if "_TEMP" != table_name[-5:] and not self.target_engine.has_table(f"{table_name}_TEMP"):
+            logging.info(f"Table {table} doesn't need a full sync.")
+            return False
+
+        self.load_ids()
+        return True
+
+    def load_scd(self,
+            table: str,
+            table_dict: Dict[Any, Any],
+            table_name: str,
+    ) -> bool:
+        """
+        Load tables that are slow-changing dimensions.
+        """
+
+        raw_query = table_dict["import_query"]
+        additional_filter = table_dict.get("additional_filtering", "")
+        advanced_metadata = table_dict.get("advanced_metadata", False)
+        if "{EXECUTION_DATE}" in raw_query:
+            logging.info(f"Table {table} does not need SCD processing.")
+            return False
+
+        # If the schema has changed for the SCD table, treat it like a backfill
+        if "_TEMP" == table_name[-5:] or self.target_engine.has_table(f"{table_name}_TEMP"):
+            logging.info(
+                f"Table {table} needs to be recreated to due to schema change. Recreating...."
+            )
+            backfill = True
+        else:
+            backfill = False
+
+        logging.info(f"Processing table: {table}")
+        query = f"{raw_query} {additional_filter}"
+        logging.info(query)
+        self.chunk_and_upload(
+            query, self.source_engine, self.target_engine, table_name, advanced_metadata, backfill
         )
-        return False
+        return True
 
-    # Set the new table name vars
-    validate_table_name = f"{table_name}_VALIDATE"  # Contains the list of current IDs
-    error_table_name = (
-        f"{table_name}_ERRORS"  # Contains the list of IDs that are missing
-    )
+    def validate_ids(self,
+            table: str,
+            table_dict: Dict[Any, Any],
+            table_name: str,
+    ) -> bool:
+        """
+        Use IDs to validate there is no missing data.
 
-    # Drop the validation table
-    drop_query = f"DROP TABLE IF EXISTS {validate_table_name}"
-    query_executor(target_engine, drop_query)
+        Load all IDs from the incremental tables into Snowflake.
+        Then verify that all of those IDs exist in the DW.
 
-    # Populate the validation table
-    logging.info(f"Uploading IDs to {validate_table_name}.")
-    id_query = f"SELECT id, updated_at FROM {table} WHERE id IS NOT NULL {additional_filtering}"
-    logging.info(id_query)
-    load_ids(
-        additional_filtering,
-        primary_key,
-        id_query,
-        source_engine,
-        table,
-        validate_table_name,
-        target_engine,
-        id_range=3_000_000,
-    )
+        IDs get loaded into the <table_name>_VALIDATE table.
+        Missing IDs populate the <table_name>_ERRORS table.
+        """
 
-    # Return a count of missing IDs then throw an error if there were errors
-    error_results = get_comparison_results(
-        target_engine, error_table_name, table_name, validate_table_name
-    )
-    num_missing_rows = error_results[0][0]
-    if num_missing_rows > 0:
-        logging.critical(
-            f"Number of row errors for table {table_name}: {num_missing_rows}"
+        # Set the initial vars and stop the validation if not needed.
+        raw_query = table_dict["import_query"]
+        additional_filtering = table_dict.get("additional_filtering", "")
+        primary_key = table_dict["export_table_primary_key"]
+        if "{EXECUTION_DATE}" not in raw_query:
+            logging.info(f"Table {table} does not need id validation.")
+            return False
+        if "_TEMP" == table_name[-5:] or self.target_engine.has_table(f"{table_name}_TEMP"):
+            logging.info(
+                f"Table {table} needs to be backfilled due to schema change, aborting validation."
+            )
+            return False
+
+        # Set the new table name vars
+        validate_table_name = f"{table_name}_VALIDATE"  # Contains the list of current IDs
+        error_table_name = (
+            f"{table_name}_ERRORS"  # Contains the list of IDs that are missing
         )
-        sys.exit(3)
-    else:
-        logging.info(f"No discrepancies found in table {table_name}.")
 
-    return True
+        # Drop the validation table
+        drop_query = f"DROP TABLE IF EXISTS {validate_table_name}"
+        query_executor(self.target_engine, drop_query)
+
+        # Populate the validation table
+        logging.info(f"Uploading IDs to {validate_table_name}.")
+        id_query = f"SELECT id, updated_at FROM {table} WHERE id IS NOT NULL {additional_filtering}"
+        logging.info(id_query)
+        self.load_ids(
+            id_range=3_000_000,
+        )
+
+        # Return a count of missing IDs then throw an error if there were errors
+        error_results = get_comparison_results(
+            self.target_engine, error_table_name, table_name, validate_table_name
+        )
+        num_missing_rows = error_results[0][0]
+        if num_missing_rows > 0:
+            logging.critical(
+                f"Number of row errors for table {table_name}: {num_missing_rows}"
+            )
+            sys.exit(3)
+        else:
+            logging.info(f"No discrepancies found in table {table_name}.")
+
+        return True
+
+    def check_new_tables(self,
+            table: str,
+            table_dict: Dict[Any, Any],
+            table_name: str,
+    ) -> bool:
+        """
+        Load a set amount of rows for each new table in the manifest. A table is
+        considered new if it doesn't already exist in the data warehouse.
+        """
+
+        raw_query = table_dict["import_query"].split("WHERE")[0]
+        additional_filtering = table_dict.get("additional_filtering", "")
+        advanced_metadata = table_dict.get("advanced_metadata", False)
+        primary_key = table_dict["export_table_primary_key"]
+
+        # Figure out if the table exists
+        if "_TEMP" != table_name[-5:] and not self.target_engine.has_table(f"{table_name}_TEMP"):
+            logging.info(f"Table {table} already exists and won't be tested.")
+            return False
+
+        # If the table doesn't exist, load 1 million rows (or whatever the table has)
+        query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 100000"
+        chunk_and_upload(
+            query,
+            self.source_engine,
+            self.target_engine,
+            table_name,
+            advanced_metadata,
+            backfill=True,
+        )
+
+        return True
+
+    def run_pipeline(self,
+                     ) -> None:
+        # Check if the schema has changed or the table is new
+        schema_changed = self.check_if_schema_changed()
+        if schema_changed:
+            real_table_name = self.target_table
+            table_name = f"{self.target_table}_TEMP"
+            logging.info(f"Schema has changed for table: {real_table_name}.")
+
+        # Call the correct function based on the load_type
+        loaded = self.load_method()
+        logging.info(f"Finished upload for table: {self.source_table}")
+
+        # Drop the original table and rename the temp table
+        if schema_changed and loaded:
+            self.swap_temp_table(real_table_name)
 
 
-def check_new_tables(
-    source_engine: Engine,
-    target_engine: Engine,
-    table: str,
-    table_dict: Dict[Any, Any],
-    table_name: str,
-) -> bool:
-    """
-    Load a set amount of rows for each new table in the manifest. A table is
-    considered new if it doesn't already exist in the data warehouse.
-    """
 
-    raw_query = table_dict["import_query"].split("WHERE")[0]
-    additional_filtering = table_dict.get("additional_filtering", "")
-    advanced_metadata = table_dict.get("advanced_metadata", False)
-    primary_key = table_dict["export_table_primary_key"]
-
-    # Figure out if the table exists
-    if "_TEMP" != table_name[-5:] and not target_engine.has_table(f"{table_name}_TEMP"):
-        logging.info(f"Table {table} already exists and won't be tested.")
-        return False
-
-    # If the table doesn't exist, load 1 million rows (or whatever the table has)
-    query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 100000"
-    chunk_and_upload(
-        query,
-        source_engine,
-        target_engine,
-        table_name,
-        advanced_metadata,
-        backfill=True,
-    )
-
-    return True
 
 
 def main(file_path: str, load_type: str) -> None:
@@ -299,14 +308,7 @@ def main(file_path: str, load_type: str) -> None:
     postgres_engine, snowflake_engine = get_engines(manifest_dict["connection_info"])
     logging.info(snowflake_engine)
 
-    # Link the load_types to their respective functions
-    load_types = {
-        "incremental": load_incremental,
-        "scd": load_scd,
-        "sync": sync_incremental_ids,
-        "test": check_new_tables,
-        "validate": validate_ids,
-    }
+
 
     for table in manifest_dict["tables"]:
         logging.info(f"Processing Table: {table}")
