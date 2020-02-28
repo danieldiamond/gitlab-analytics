@@ -43,7 +43,7 @@ WITH greenhouse_openings AS (
       ON greenhouse_openings.job_id = greenhouse_jobs.job_id 
     LEFT JOIN greenhouse_department 
       ON greenhouse_department.department_id = greenhouse_jobs.department_id
-    LEFT join greenhouse_finance_id 
+    LEFT JOIN greenhouse_finance_id 
       ON greenhouse_finance_id.opening_id = greenhouse_openings.job_opening_id  
     WHERE greenhouse_jobs.job_closed_at IS NULL
       AND greenhouse_jobs.job_opened_at IS NOT NULL 
