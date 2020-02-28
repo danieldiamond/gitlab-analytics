@@ -1,5 +1,6 @@
 import os
 from datetime import datetime, timedelta
+import json
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
@@ -7,6 +8,7 @@ from airflow.operators.python_operator import BranchPythonOperator
 from airflow.utils.trigger_rule import TriggerRule
 from airflow_utils import (
     DBT_IMAGE,
+    clone_and_setup_dbt_cmd,
     dbt_install_deps_and_seed_cmd,
     dbt_install_deps_cmd,
     gitlab_defaults,
@@ -29,6 +31,8 @@ env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {**gitlab_pod_env_vars, **{}}
 
+pull_commit_hash = """export GIT_COMMIT="{{ ti.xcom_pull(task_ids="dbt-commit-hash-setter", key="return_value")["commit_hash"] }}" """
+
 # Default arguments for the DAG
 default_args = {
     "catchup": False,
@@ -45,10 +49,6 @@ default_args = {
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
     "trigger_rule": TriggerRule.ALL_DONE,
 }
-
-pull_commit_hash_and_checkout = """
-    git checkout {{ ti.xcom_pull(task_ids="dbt-commit-hash-setter", key="commit_hash") }}
-"""
 
 # Create the DAG
 dag = DAG("dbt", default_args=default_args, schedule_interval="0 */8 * * *")
@@ -84,9 +84,9 @@ dbt_commit_hash_setter = KubernetesPodOperator(
     name="dbt-commit-hash-setter",
     env_vars=pod_env_vars,
     arguments=[
-        """
+        f"""{clone_and_setup_dbt_cmd} && 
             mkdir -p /airflow/xcom/ &&
-            echo "{\"commit_hash\": \"$(git rev-parse HEAD)\"}" >> /airflow/xcom/return.json
+            echo "{{\\"commit_hash\\": \\"$(git rev-parse HEAD)\\"}}" >> /airflow/xcom/return.json
         """
     ],
     do_xcom_push=True,
@@ -102,7 +102,7 @@ branching_dbt_run = BranchPythonOperator(
 
 # run non-product models on small warehouse
 dbt_non_product_models_command = f"""
-    {pull_commit_hash_and_checkout} &&
+    {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
     dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse}
 """
@@ -128,7 +128,7 @@ dbt_non_product_models_task = KubernetesPodOperator(
 
 # run product models on large warehouse
 dbt_product_models_command = f"""
-    {pull_commit_hash_and_checkout} &&
+    {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
     dbt run --profiles-dir profile --target prod --models tag:product --vars {l_warehouse}
 """
@@ -154,7 +154,7 @@ dbt_product_models_task = KubernetesPodOperator(
 
 # run snapshots on large warehouse
 dbt_snapshots_command = f"""
-    {pull_commit_hash_and_checkout} &&
+    {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
     dbt run --profiles-dir profile --target prod --models snapshots --vars {l_warehouse}
 """
@@ -180,7 +180,7 @@ dbt_snapshots_run = KubernetesPodOperator(
 
 # dbt-full-refresh
 dbt_full_refresh_cmd = f"""
-    {pull_commit_hash_and_checkout} &&
+    {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
     dbt run --profiles-dir profile --target prod --full-refresh
 """
@@ -204,7 +204,7 @@ dbt_full_refresh = KubernetesPodOperator(
 
 # dbt-source-freshness
 dbt_source_cmd = f"""
-    {pull_commit_hash_and_checkout} &&
+    {pull_commit_hash} &&
     {dbt_install_deps_cmd} &&
     dbt source snapshot-freshness --profiles-dir profile
 """
@@ -228,6 +228,7 @@ dbt_source_freshness = KubernetesPodOperator(
 
 # dbt-test
 dbt_test_cmd = f"""
+    {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
     dbt test --profiles-dir profile --target prod --vars {xs_warehouse} --exclude snowplow
 """
