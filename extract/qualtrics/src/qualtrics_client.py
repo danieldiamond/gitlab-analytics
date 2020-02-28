@@ -36,4 +36,3 @@ class QualtricsClient:
         return self.get(
             f"directories/{directory_id}/mailinglists/{mailing_list_id}/contacts", {}
         )
-
