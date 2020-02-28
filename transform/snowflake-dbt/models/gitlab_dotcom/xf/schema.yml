@@ -159,11 +159,7 @@ models:
     description: This is a dbt model (view) of authors/reviewers assigned to the MRs via the Reviewer Roulette.
     columns:
       - name: project_id
-        tests: 
-          - not_null
       - name: namespace_id
-        tests: 
-          - not_null
       - name: merge_request_iid
         tests: 
           - not_null
