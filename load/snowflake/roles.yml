@@ -322,6 +322,7 @@ roles:
             - gitlab_data_yaml
             - netsuite
             - zuora
+            - google_analytics_360
         privileges:
             databases:
                 read:
