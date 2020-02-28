@@ -4,6 +4,8 @@ This table contains information about individual accounts (organizations and per
 
 Fields prefixed with TSP_ are related to [Territory Success Planning](https://about.gitlab.com/handbook/sales/field-operations/sales-operations/go-to-market/#territory-success-planning-tsp) and intended as staging fields updated from a variety of data sources, and at given intervals copied over to the "Actual" set of fields for general use. The relationship between "Actual" and TSP fields can be found [here](https://about.gitlab.com/handbook/sales/field-operations/sales-systems/gtm-technical-documentation/). Note that these fields are defined in Salesforce and brought into the data warehouse as-is.
 
+Fields prefixed with CP_ are related to [Command Plan](https://about.gitlab.com/handbook/sales/#opportunity-management-guidelines).
+
 `sales_segment` is the canonized field for an account's [Sales Segment](https://gitlab.my.salesforce.com/00N6100000IOi8o). Note that this is based on the ultimate parent of the account per [Segmentation](https://about.gitlab.com/handbook/business-ops/resources/#segmentation). `account_segment` is used to determine the segmentation of the account according to the same logic.
 
 {% enddocs %}
