@@ -4,7 +4,7 @@
         config(
           strategy='timestamp',
           unique_key = 'department_id',
-          check_cols = 'date_last_modified'
+          updated_at = 'date_last_modified'
         )
     }}
 
