@@ -27,26 +27,33 @@ class PostgresToSnowflakePipeline:
     TEMP_SCHEMA_NAME = 'TAP_POSTGRES'
 
     def __init__(self,
-                 primary_key: str,
-                 raw_query: str,
-                 source_engine: Engine,
-                 source_table: str,
-                 table_name: str,
-                 target_engine: Engine,
-                 additional_filtering: str,
-                 load_type: str,
-                 advanced_metadata: str = False,
+                 table_name,
+                 **config
                  ) -> None:
-        self.primary_key = primary_key
-        self.raw_query = raw_query
-        self.source_engine = source_engine
-        self.source_table = source_table
+        #Mandatory config values
+        self.primary_key = config.get('export_table_primary_key')
+        self.raw_query = config.get('import_query')
+        #TODO: what is the source table
+        self.source_table = "{import_db}_{export_table}".format(**config).upper()
         self.target_table = table_name
+        self.source_engine, self.target_engine = get_engines(config.get("connection_info"))
+
+        #Optional config values
+        self.advanced_metadata = config.get('advanced_metadata', False)
+        self.additional_filtering = config.get('additional_filtering', None)
+
+        #helpers
         self.temp_table = f"{self.target_table}_TEMP"
-        self.target_engine = target_engine
-        self.additional_filtering = additional_filtering
-        self.advanced_metadata = advanced_metadata
-        self.schema_changed = check_if_schema_changed()
+
+        self.schema_changed = check_if_schema_changed(
+            query = self.raw_query,
+            source_engine = self.source_engine,
+            source_table = config.get('export_table'),
+            table_index = self.primary_key,
+            target_engine = self.target_engine,
+            target_table = "{import_db}_{export_table}".format(**config).upper(),
+        )
+
         # Link the load_types to their respective functions
         # load_types = {
         #     "incremental": load_incremental,
@@ -55,7 +62,6 @@ class PostgresToSnowflakePipeline:
         #     "test": check_new_tables,
         #     "validate": validate_ids,
         # }
-        self.load_method = getattr(load_type)
 
     def load_ids(self, id_range: 100_000) -> None:
         """ Load a query by chunks of IDs instead of all at once."""
@@ -259,7 +265,7 @@ class PostgresToSnowflakePipeline:
 
         return True
 
-    def run_pipeline(self,
+    def run_pipeline(self, load_type,
                      ) -> None:
         # Check if the schema has changed or the table is new
         schema_changed = self.check_if_schema_changed()
@@ -268,7 +274,8 @@ class PostgresToSnowflakePipeline:
             logging.info(f"Schema has changed for table: {self.target_table}.")
 
         # Call the correct function based on the load_type
-        loaded = self.load_method()
+        load_method = getattr(self, load_type)
+        loaded = load_method()
         logging.info(f"Finished upload for table: {self.source_table}")
 
         # Drop the original table and rename the temp table
@@ -288,8 +295,6 @@ def main(file_path: str, load_type: str) -> None:
     postgres_engine, snowflake_engine = get_engines(manifest_dict["connection_info"])
     logging.info(snowflake_engine)
 
-
-
     for table in manifest_dict["tables"]:
         logging.info(f"Processing Table: {table}")
         table_dict = manifest_dict["tables"][table]
@@ -305,25 +310,6 @@ def main(file_path: str, load_type: str) -> None:
             snowflake_engine,
             table_name,
         )
-        if schema_changed:
-            real_table_name = table_name
-            table_name = f"{table_name}_TEMP"
-            logging.info(f"Schema has changed for table: {real_table_name}.")
-
-        # Call the correct function based on the load_type
-        loaded = load_types[load_type](
-            postgres_engine, snowflake_engine, table, table_dict, table_name
-        )
-        logging.info(f"Finished upload for table: {table}")
-
-        # Drop the original table and rename the temp table
-        if schema_changed and loaded:
-            swap_temp_table(snowflake_engine, real_table_name, table_name)
-            table_name = real_table_name
-
-        count_query = f"SELECT COUNT(*) FROM {table_name}"
-        count = query_executor(snowflake_engine, count_query)[0][0]
-        append_to_xcom_file({table_name: count})
 
 
 if __name__ == "__main__":
