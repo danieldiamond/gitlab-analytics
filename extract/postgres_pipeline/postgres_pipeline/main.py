@@ -31,6 +31,7 @@ class PostgresToSnowflakePipeline:
                  target_engine: Engine,
                  additional_filtering: str,
                  load_type: str,
+                 advanced_metadata: str = False,
                  ) -> None:
         self.primary_key = primary_key
         self.raw_query = raw_query
@@ -40,6 +41,8 @@ class PostgresToSnowflakePipeline:
         self.temp_table = f"{self.target_table}_TEMP"
         self.target_engine = target_engine
         self.additional_filtering = additional_filtering
+        self.advanced_metadata = advanced_metadata
+        self.schema_changed = check_if_schema_changed()
         # Link the load_types to their respective functions
         # load_types = {
         #     "incremental": load_incremental,
@@ -95,16 +98,13 @@ class PostgresToSnowflakePipeline:
 
     def load_incremental(self,
             table: str,
-            table_dict: Dict[Any, Any],
             table_name: str,
     ) -> bool:
         """
         Load tables incrementally based off of the execution date.
         """
 
-        raw_query = table_dict["import_query"]
-        additional_filter = table_dict.get("additional_filtering", "")
-        if "{EXECUTION_DATE}" not in raw_query:
+        if "{EXECUTION_DATE}" not in self.raw_query:
             logging.info(f"Table {table} does not need incremental processing.")
             return False
         # If _TEMP exists in the table name, skip it because it needs a full sync
@@ -115,24 +115,20 @@ class PostgresToSnowflakePipeline:
             )
             return False
         env = os.environ.copy()
-        query = f"{raw_query.format(**env)} {additional_filter}"
+        query = f"{self.raw_query.format(**env)} {self.additional_filter}"
         logging.info(query)
-        self.chunk_and_upload(query, self.source_engine, self.target_engine, table_name)
+        chunk_and_upload(query, self.source_engine, self.target_engine, table_name)
         return True
 
     def sync_incremental_ids(self,
             table: str,
-            table_dict: Dict[Any, Any],
             table_name: str,
     ) -> bool:
         """
         Sync incrementally-loaded tables based on their IDs.
         """
 
-        raw_query = table_dict["import_query"]
-        additional_filtering = table_dict.get("additional_filtering", "")
-        primary_key = table_dict["export_table_primary_key"]
-        if "{EXECUTION_DATE}" not in raw_query:
+        if "{EXECUTION_DATE}" not in self.raw_query:
             logging.info(f"Table {table} does not need sync processing.")
             return False
         # If temp isn't in the name, we don't need to full sync.
@@ -146,17 +142,13 @@ class PostgresToSnowflakePipeline:
 
     def load_scd(self,
             table: str,
-            table_dict: Dict[Any, Any],
             table_name: str,
     ) -> bool:
         """
         Load tables that are slow-changing dimensions.
         """
 
-        raw_query = table_dict["import_query"]
-        additional_filter = table_dict.get("additional_filtering", "")
-        advanced_metadata = table_dict.get("advanced_metadata", False)
-        if "{EXECUTION_DATE}" in raw_query:
+        if "{EXECUTION_DATE}" in self.raw_query:
             logging.info(f"Table {table} does not need SCD processing.")
             return False
 
@@ -170,16 +162,15 @@ class PostgresToSnowflakePipeline:
             backfill = False
 
         logging.info(f"Processing table: {table}")
-        query = f"{raw_query} {additional_filter}"
+        query = f"{self.raw_query} {self.additional_filtering}"
         logging.info(query)
-        self.chunk_and_upload(
-            query, self.source_engine, self.target_engine, table_name, advanced_metadata, backfill
+        chunk_and_upload(
+            query, self.source_engine, self.target_engine, table_name, self.advanced_metadata, backfill
         )
         return True
 
     def validate_ids(self,
             table: str,
-            table_dict: Dict[Any, Any],
             table_name: str,
     ) -> bool:
         """
@@ -193,10 +184,7 @@ class PostgresToSnowflakePipeline:
         """
 
         # Set the initial vars and stop the validation if not needed.
-        raw_query = table_dict["import_query"]
-        additional_filtering = table_dict.get("additional_filtering", "")
-        primary_key = table_dict["export_table_primary_key"]
-        if "{EXECUTION_DATE}" not in raw_query:
+        if "{EXECUTION_DATE}" not in self.raw_query:
             logging.info(f"Table {table} does not need id validation.")
             return False
         if "_TEMP" == table_name[-5:] or self.target_engine.has_table(f"{table_name}_TEMP"):
@@ -217,7 +205,7 @@ class PostgresToSnowflakePipeline:
 
         # Populate the validation table
         logging.info(f"Uploading IDs to {validate_table_name}.")
-        id_query = f"SELECT id, updated_at FROM {table} WHERE id IS NOT NULL {additional_filtering}"
+        id_query = f"SELECT id, updated_at FROM {table} WHERE id IS NOT NULL {self.additional_filtering}"
         logging.info(id_query)
         self.load_ids(
             id_range=3_000_000,
@@ -240,7 +228,6 @@ class PostgresToSnowflakePipeline:
 
     def check_new_tables(self,
             table: str,
-            table_dict: Dict[Any, Any],
             table_name: str,
     ) -> bool:
         """
@@ -248,10 +235,7 @@ class PostgresToSnowflakePipeline:
         considered new if it doesn't already exist in the data warehouse.
         """
 
-        raw_query = table_dict["import_query"].split("WHERE")[0]
-        additional_filtering = table_dict.get("additional_filtering", "")
-        advanced_metadata = table_dict.get("advanced_metadata", False)
-        primary_key = table_dict["export_table_primary_key"]
+        raw_query = self.raw_query.split("WHERE")[0]
 
         # Figure out if the table exists
         if "_TEMP" != table_name[-5:] and not self.target_engine.has_table(f"{table_name}_TEMP"):
@@ -259,13 +243,13 @@ class PostgresToSnowflakePipeline:
             return False
 
         # If the table doesn't exist, load 1 million rows (or whatever the table has)
-        query = f"{raw_query} WHERE {primary_key} IS NOT NULL {additional_filtering} LIMIT 100000"
+        query = f"{raw_query} WHERE {self.primary_key} IS NOT NULL {self.additional_filtering} LIMIT 100000"
         chunk_and_upload(
             query,
             self.source_engine,
             self.target_engine,
             table_name,
-            advanced_metadata,
+            self.advanced_metadata,
             backfill=True,
         )
 
@@ -277,8 +261,7 @@ class PostgresToSnowflakePipeline:
         schema_changed = self.check_if_schema_changed()
         if schema_changed:
             real_table_name = self.target_table
-            table_name = f"{self.target_table}_TEMP"
-            logging.info(f"Schema has changed for table: {real_table_name}.")
+            logging.info(f"Schema has changed for table: {self.target_table}.")
 
         # Call the correct function based on the load_type
         loaded = self.load_method()
@@ -286,10 +269,7 @@ class PostgresToSnowflakePipeline:
 
         # Drop the original table and rename the temp table
         if schema_changed and loaded:
-            self.swap_temp_table(real_table_name)
-
-
-
+            self.swap_temp_table()
 
 
 def main(file_path: str, load_type: str) -> None:
