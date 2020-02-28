@@ -22,14 +22,7 @@ from kube_secrets import (
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
-pod_env_vars = {
-    **gitlab_pod_env_vars,
-    **{
-        "SNOWFLAKE_SNAPSHOT_DATABASE": "RAW"
-        if GIT_BRANCH == "master"
-        else f"{GIT_BRANCH.upper()}_RAW",
-    },
-}
+pod_env_vars = {**gitlab_pod_env_vars, **{}}
 
 # Default arguments for the DAG
 default_args = {

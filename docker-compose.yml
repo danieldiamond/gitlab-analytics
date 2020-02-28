@@ -88,6 +88,7 @@ services:
       image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
       environment:
         DBT_PROFILES_DIR: /usr/local/dbt_profiles/
+        SNOWFLAKE_SNAPSHOT_DATABASE: "NONE"
         SNOWFLAKE_LOAD_DATABASE: "RAW"
         SNOWFLAKE_TRANSFORM_WAREHOUSE: "ANALYST_XS"
       restart: always

@@ -174,6 +174,9 @@ GIT_BRANCH = env["GIT_BRANCH"]
 gitlab_pod_env_vars = {
     "CI_PROJECT_DIR": "/analytics",
     "EXECUTION_DATE": "{{ next_execution_date }}",
+    "SNOWFLAKE_SNAPSHOT_DATABASE": "RAW"
+    if GIT_BRANCH == "master"
+    else f"{GIT_BRANCH.upper()}_RAW",
     "SNOWFLAKE_LOAD_DATABASE": "RAW"
     if GIT_BRANCH == "master"
     else f"{GIT_BRANCH.upper()}_RAW",
