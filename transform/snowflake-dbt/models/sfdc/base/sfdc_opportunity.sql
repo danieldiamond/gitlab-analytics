@@ -100,7 +100,7 @@ WITH source AS (
         fm_close_plan__c               AS cp_close_plan,
         fm_competition__c              AS cp_competition,
         fm_decision_criteria__c        AS cp_decision_criteria,
-        fm_decision_process_c          AS cp_decision_process,
+        fm_decision_process__c         AS cp_decision_process,
         fm_economic_buyer__c           AS cp_economic_buyer,
         fm_identify_pain__c            AS cp_identify_pain,
         fm_metrics__c                  AS cp_metrics,
