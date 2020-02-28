@@ -149,3 +149,30 @@ models:
   description: This is the model that captures the onboarding satisfaction score survey OSAT.
 - name: sheetload_rep_quotas_full_ps_fy2020
   description: This is the model that captures sales data for rep quotas for professional services the full fy2020.
+- name: sheetload_social_marketing_metrics
+  description: This is the model that captures data from social marketing metrics
+  columns:
+    - name: month_date
+      tests:
+      - not_null
+    - name: channel
+      tests:
+      - not_null
+    - name: brand
+      tests:
+      - not_null
+    - name: metric
+      tests:
+      - not_null
+    - name: is_organic
+      tests:
+      - not_null
+    - name: value
+      tests:
+      - not_null
+    - name: source
+      tests:
+      - not_null
+  tests:
+    - unique:
+      column_name: "CONCAT(month_date, channel, brand, metric, is_organic)"
