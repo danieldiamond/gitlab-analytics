@@ -1147,6 +1147,81 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'notification_settings'
     export_table_primary_key: id
+  packages_build_infos:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , package_id
+      , pipeline_id
+      FROM packages_build_infos
+    export_schema: 'gitlab_com'
+    export_table: 'packages_build_infos'
+    export_table_primary_key: id
+  packages_dependencies:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , name
+      , version_pattern
+      FROM packages_dependencies
+    export_schema: 'gitlab_com'
+    export_table: 'packages_dependencies'
+    export_table_primary_key: id
+  packages_dependency_links:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , package_id
+      , dependency_id
+      , dependency_type
+      FROM packages_dependency_links
+    export_schema: 'gitlab_com'
+    export_table: 'packages_dependency_links'
+    export_table_primary_key: id
+  packages_package_files:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , package_id
+      , created_at
+      , updated_at
+      , size
+      , file_type
+      , file_store
+      , file_md5
+      , file_sha1
+      , file_name
+      , file
+      FROM packages_package_files
+    export_schema: 'gitlab_com'
+    export_table: 'packages_package_files'
+    export_table_primary_key: id
+  packages_packages:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , created_at
+      , updated_at
+      , name
+      , version
+      , package_type
+      FROM packages_packages
+    export_schema: 'gitlab_com'
+    export_table: 'packages_packages'
+    export_table_primary_key: id
+  packages_tags:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , package_id
+      , name
+      , created_at
+      , updated_at
+      FROM packages_tags
+    export_schema: 'gitlab_com'
+    export_table: 'packages_tags'
+    export_table_primary_key: id
   pages_domains:
     import_db: GITLAB_DB
     import_query: >
