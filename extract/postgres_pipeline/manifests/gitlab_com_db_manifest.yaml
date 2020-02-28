@@ -1296,6 +1296,8 @@ tables:
       , build_artifacts_size
       , shared_runners_seconds
       , shared_runners_seconds_last_reset
+      , packages_size
+      , wiki_size
       FROM project_statistics
     export_schema: 'gitlab_com'
     export_table: 'project_statistics'
