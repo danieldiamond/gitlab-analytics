@@ -296,7 +296,8 @@ def main(file_path: str, load_type: str) -> None:
     for table in manifest_dict["tables"]:
         logging.info(f"Processing Table: {table}")
         table_dict = manifest_dict["tables"][table]
-        pipeline = PostgresToSnowflakePipeline(table_name = table, config = {**manifest_dict["tables"][table], **manifest_dict['connection_info']})
+        pipeline = PostgresToSnowflakePipeline(table_name = table,
+                                               config = {**table_dict, **{'connection_info' : manifest_dict['connection_info']}})
         # Link the load_types to their respective functions
         # load_types = {
         #     "incremental": load_incremental,
