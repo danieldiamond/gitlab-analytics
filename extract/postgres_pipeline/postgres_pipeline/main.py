@@ -102,7 +102,7 @@ class PostgresToSnowflakePipeline:
         drop_query = f"DROP TABLE IF EXISTS {self.TEMP_SCHEMA_NAME}.{self.temp_table}"
         query_executor(self.target_engine, drop_query)
 
-    def __incremental(self,
+    def incremental(self,
                       ) -> bool:
         """
         Load tables incrementally based off of the execution date.
@@ -129,7 +129,7 @@ class PostgresToSnowflakePipeline:
         )
         return True
 
-    def __sync(self,
+    def sync(self,
                ) -> bool:
         """
         Sync incrementally-loaded tables based on their IDs.
@@ -147,7 +147,7 @@ class PostgresToSnowflakePipeline:
         self.load_ids()
         return True
 
-    def __scd(self,
+    def scd(self,
               ) -> bool:
         """
         Load tables that are slow-changing dimensions.
@@ -179,7 +179,7 @@ class PostgresToSnowflakePipeline:
         )
         return True
 
-    def __validate(self,
+    def validate(self,
                    ) -> bool:
         """
         Use IDs to validate there is no missing data.
@@ -234,7 +234,7 @@ class PostgresToSnowflakePipeline:
 
         return True
 
-    def __test(self,
+    def test(self,
                ) -> bool:
         """
         Load a set amount of rows for each new table in the manifest. A table is
