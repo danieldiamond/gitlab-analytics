@@ -154,3 +154,29 @@ models:
   columns:
     - name: job_title
     - name: job_role
+- name: sheetload_kpi_status
+  description: Record of all the kpi status and commit history
+  columns: 
+    - name: kpi_grouping
+      tests: 
+      - not_null
+    - name: kpi_sub_grouping
+    - name: kpi_name
+      tests: 
+      - not_null
+    - name: start_date
+      tests: 
+      - not_null
+    - name: completion_date
+    - name: status
+    - name: comment
+    - name: in_handbook
+      tests: 
+      - not_null
+    - name: sisense_link
+    - name: gitlab_issue
+    - name: commit_start    
+    - name: commit_handbook_v1
+    - name: is_deleted
+      tests: 
+      - not_null
