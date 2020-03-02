@@ -32,3 +32,4 @@ values_certificate.communication_certificate
 values_certificate.values_certificate
 yc_companies.yc_companies
 days_to_close.days_to_close
+social_marketing_metrics.social_marketing_metrics
