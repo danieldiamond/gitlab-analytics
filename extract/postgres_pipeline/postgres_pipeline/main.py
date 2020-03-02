@@ -23,6 +23,14 @@ from validation import get_comparison_results
 
 class PostgresToSnowflakePipeline:
     TEMP_SCHEMA_NAME = "TAP_POSTGRES"
+    primary_key: str
+    raw_query: str
+    target_table: str
+    source_table: str
+    source_engine: Engine
+    target_engine: Engine
+    advanced_metadata: bool
+    additional_filtering: str
 
     def __init__(
         self,
@@ -32,7 +40,21 @@ class PostgresToSnowflakePipeline:
         table_config: Dict[str, str],
     ) -> None:
         # Mandatory config values
-        logging.info(table_config)
+        if (
+            not all(
+                [
+                    "import_query",
+                    "import_db",
+                    "export_table",
+                    "export_table_primary_key",
+                    "export_schema",
+                ]
+            )
+            in table_config.keys()
+        ):
+            logging.error("Required table params missing")
+            return
+
         self.primary_key = table_config.get("export_table_primary_key")
         self.raw_query = table_config.get("import_query")
         # TODO: what is the source table
@@ -41,7 +63,7 @@ class PostgresToSnowflakePipeline:
         self.source_engine, self.target_engine = source_engine, target_engine
 
         # Optional config values
-        self.advanced_metadata = table_config.get("advanced_metadata", False)
+        self.advanced_metadata = bool(table_config.get("advanced_metadata", False))
         self.additional_filtering = table_config.get("additional_filtering", "")
 
         # helpers
@@ -56,7 +78,7 @@ class PostgresToSnowflakePipeline:
             target_table=self.target_table,
         )
 
-    def __load_ids(self, id_range: 100_000) -> None:
+    def load_ids(self, id_range: int = 100_000) -> None:
         """ Load a query by chunks of IDs instead of all at once."""
 
         # Create a generator for queries that are chunked by ID range
@@ -176,7 +198,7 @@ class PostgresToSnowflakePipeline:
         else:
             backfill = False
 
-        logging.info(f"Processing table: {self.target_tabletarget_table}")
+        logging.info(f"Processing table: {self.target_table}")
         query = f"{self.raw_query} {self.additional_filtering}"
         logging.info(query)
         chunk_and_upload(
