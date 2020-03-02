@@ -41,7 +41,7 @@ class PostgresToSnowflakePipeline:
 
         # Optional config values
         self.advanced_metadata = table_config.get('advanced_metadata', False)
-        self.additional_filtering = table_config.get('additional_filtering', None)
+        self.additional_filtering = table_config.get('additional_filtering', '')
 
         # helpers
         self.temp_table = f"{self.target_table}_TEMP"
