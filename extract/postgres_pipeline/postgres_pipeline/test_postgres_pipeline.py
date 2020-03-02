@@ -19,12 +19,6 @@ from gitlabdata.orchestration_utils import (
     query_executor,
 )
 
-from main import (
-      load_scd,
-    check_new_tables,
-    sync_incremental_ids,
-    validate_ids,
-)
 from main import PostgresToSnowflakePipeline
 from utils import (
     manifest_reader,
