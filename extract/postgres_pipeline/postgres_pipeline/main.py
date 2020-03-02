@@ -234,8 +234,8 @@ class PostgresToSnowflakePipeline:
 
         return True
 
-    def test(self,
-               ) -> bool:
+    def check_missing_tables(self,
+                             ) -> bool:
         """
         Load a set amount of rows for each new table in the manifest. A table is
         considered new if it doesn't already exist in the data warehouse.
