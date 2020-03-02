@@ -25,6 +25,8 @@ sources:
       - name: headcount
       - name: hire_forecast
       - name: hire_plan
+      - name: job_roles_prior_to_2020_02
+      - name: kpi_status
       - name: linkedin_recruiter
       - name: location_factor_targets
       - name: marketing_pipe_to_spend_headcount
