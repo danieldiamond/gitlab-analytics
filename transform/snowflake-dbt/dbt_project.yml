@@ -163,6 +163,12 @@ models:
       enabled: false
       materialized: table
 
+    poc:
+      tags: ["poc"]
+      enabled: true
+      materialized: table
+      schema: analytics
+    
     retention:
       materialized: table
 
@@ -202,7 +208,7 @@ models:
 # ======
 snapshots:
   gitlab_snowflake:
-    target_database: "{{ env_var('SNOWFLAKE_LOAD_DATABASE') }}"
+    target_database: "{{ env_var('SNOWFLAKE_SNAPSHOT_DATABASE') }}"
     target_schema: "snapshots"
     transient: false
 

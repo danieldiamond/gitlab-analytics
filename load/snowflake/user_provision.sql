@@ -6,6 +6,8 @@
 -- ====================
 use warehouse ADMIN;
 
+use role securityadmin;
+
 set username = (select upper(LEFT($email, CHARINDEX('@', $email) - 1)));
 
 set loginname = (select upper($email));
@@ -23,6 +25,6 @@ GRANT ROLE identifier($username) TO ROLE "SYSADMIN";
 GRANT ROLE identifier($username) to user identifier($username);
 
 -- IF PASSWORD NEEDED (PROBABLY NOT NEEDED)
--- RUN THE FOLLOWING TO SET PASSWORD AND FORCE RESET (with randomly generated values)
+-- RUN THE FOLLOWING TO SET PASSWORD AND FORCE RESET (with randomly generated values) https://passwordsgenerator.net
 -- ====================
 -- ALTER USER identifier($username) SET PASSWORD ='randomGeneratedPassword' MUST_CHANGE_PASSWORD = TRUE;

@@ -1,3 +1,9 @@
+{{
+  config({
+    "materialized": "incremental"
+  })
+}}
+
 /*
   Each dict must have ALL of the following:
     * event_name
@@ -250,7 +256,7 @@ WITH gitlab_subscriptions AS (
 
     SELECT
       *,
-      invite_accepted_at AS created_at
+      invite_created_at AS created_at
     FROM {{ ref('gitlab_dotcom_members') }}
     WHERE member_source_type = 'Namespace'
 
@@ -258,7 +264,7 @@ WITH gitlab_subscriptions AS (
 
     SELECT
       *,
-      invite_accepted_at AS created_at
+      invite_created_at AS created_at
     FROM {{ ref('gitlab_dotcom_members') }}
     WHERE member_source_type = 'Project'
 
@@ -276,12 +282,10 @@ WITH gitlab_subscriptions AS (
     {% else %}
       FROM {{ event_cte.source_cte_name }}
     {% endif %}
-
-    {% if is_incremental() %}
-
-    WHERE created_at >= (SELECT MAX(event_created_at) FROM {{this}} WHERE event_name = '{{ event_cte.event_name }}')
-
-    {% endif %}
+    WHERE created_at IS NOT NULL
+      {% if is_incremental() %}
+        AND created_at >= (SELECT MAX(event_created_at) FROM {{this}} WHERE event_name = '{{ event_cte.event_name }}')
+      {% endif %}
 
 )
 
