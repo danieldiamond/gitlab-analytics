@@ -23,7 +23,6 @@ from validation import get_comparison_results
 
 class PostgresToSnowflakePipeline:
 
-    load_method: object
     TEMP_SCHEMA_NAME = 'TAP_POSTGRES'
 
     def __init__(self,
@@ -34,8 +33,8 @@ class PostgresToSnowflakePipeline:
         self.primary_key = config.get('export_table_primary_key')
         self.raw_query = config.get('import_query')
         #TODO: what is the source table
-        self.source_table = "{import_db}_{export_table}".format(**config).upper()
-        self.target_table = table_name
+        self.target_table = "{import_db}_{export_table}".format(**config).upper()
+        self.source_table = table_name
         self.source_engine, self.target_engine = get_engines(config.get("connection_info"))
 
         #Optional config values
@@ -53,15 +52,6 @@ class PostgresToSnowflakePipeline:
             target_engine = self.target_engine,
             target_table = "{import_db}_{export_table}".format(**config).upper(),
         )
-
-        # Link the load_types to their respective functions
-        # load_types = {
-        #     "incremental": load_incremental,
-        #     "scd": load_scd,
-        #     "sync": sync_incremental_ids,
-        #     "test": check_new_tables,
-        #     "validate": validate_ids,
-        # }
 
     def load_ids(self, id_range: 100_000) -> None:
         """ Load a query by chunks of IDs instead of all at once."""
@@ -106,10 +96,10 @@ class PostgresToSnowflakePipeline:
         drop_query = f"DROP TABLE IF EXISTS {self.TEMP_SCHEMA_NAME}.{self.temp_table}"
         query_executor(self.target_engine, drop_query)
 
-    def load_incremental(self,
-            table: str,
-            table_name: str,
-    ) -> bool:
+    def incremental(self,
+                    table: str,
+                    table_name: str,
+                    ) -> bool:
         """
         Load tables incrementally based off of the execution date.
         """
@@ -130,7 +120,7 @@ class PostgresToSnowflakePipeline:
         chunk_and_upload(query, self.source_engine, self.target_engine, table_name)
         return True
 
-    def sync_incremental_ids(self,
+    def sync(self,
             table: str,
             table_name: str,
     ) -> bool:
@@ -150,39 +140,39 @@ class PostgresToSnowflakePipeline:
         self.load_ids()
         return True
 
-    def load_scd(self,
-            table: str,
-            table_name: str,
-    ) -> bool:
+    def scd(self,
+            target_table: str,
+            temp_table: str,
+            ) -> bool:
         """
         Load tables that are slow-changing dimensions.
         """
 
         if "{EXECUTION_DATE}" in self.raw_query:
-            logging.info(f"Table {table} does not need SCD processing.")
+            logging.info(f"Table {target_table} does not need SCD processing.")
             return False
 
         # If the schema has changed for the SCD table, treat it like a backfill
-        if "_TEMP" == table_name[-5:] or self.target_engine.has_table(f"{table_name}_TEMP"):
+        if "_TEMP" == temp_table[-5:] or self.target_engine.has_table(f"{temp_table}_TEMP"):
             logging.info(
-                f"Table {table} needs to be recreated to due to schema change. Recreating...."
+                f"Table {target_table} needs to be recreated to due to schema change. Recreating...."
             )
             backfill = True
         else:
             backfill = False
 
-        logging.info(f"Processing table: {table}")
+        logging.info(f"Processing table: {target_table}")
         query = f"{self.raw_query} {self.additional_filtering}"
         logging.info(query)
         chunk_and_upload(
-            query, self.source_engine, self.target_engine, table_name, self.advanced_metadata, backfill
+            query, self.source_engine, self.target_engine, temp_table, self.advanced_metadata, backfill
         )
         return True
 
-    def validate_ids(self,
-            table: str,
-            table_name: str,
-    ) -> bool:
+    def validate(self,
+                 table: str,
+                 table_name: str,
+                 ) -> bool:
         """
         Use IDs to validate there is no missing data.
 
@@ -236,7 +226,7 @@ class PostgresToSnowflakePipeline:
 
         return True
 
-    def check_new_tables(self,
+    def test(self,
             table: str,
             table_name: str,
     ) -> bool:
@@ -268,7 +258,14 @@ class PostgresToSnowflakePipeline:
     def run_pipeline(self, load_type,
                      ) -> None:
         # Check if the schema has changed or the table is new
-        schema_changed = self.check_if_schema_changed()
+        schema_changed = check_if_schema_changed(
+            raw_query=self.raw_query,
+            source_engine=self.source_engine,
+            source_table=self.source_table,
+            table_index  = self.table_index,
+            target_engine=self.target_engine,
+            target_table=self.target_table
+        )
         if schema_changed:
             real_table_name = self.target_table
             logging.info(f"Schema has changed for table: {self.target_table}.")
@@ -281,6 +278,9 @@ class PostgresToSnowflakePipeline:
         # Drop the original table and rename the temp table
         if schema_changed and loaded:
             self.swap_temp_table()
+        count_query = f"SELECT COUNT(*) FROM {self.source_table}"
+        count = query_executor(self.source_engine, count_query)[0][0]
+        append_to_xcom_file({self.source_table: count})
 
 
 def main(file_path: str, load_type: str) -> None:
@@ -298,18 +298,16 @@ def main(file_path: str, load_type: str) -> None:
     for table in manifest_dict["tables"]:
         logging.info(f"Processing Table: {table}")
         table_dict = manifest_dict["tables"][table]
-        table_name = "{import_db}_{export_table}".format(**table_dict).upper()
-        raw_query = table_dict["import_query"]
-
-        # Check if the schema has changed or the table is new
-        schema_changed = check_if_schema_changed(
-            raw_query,
-            postgres_engine,
-            table_dict["export_table"],
-            table_dict["export_table_primary_key"],
-            snowflake_engine,
-            table_name,
-        )
+        pipeline = PostgresToSnowflakePipeline(table_name = table, config = {**manifest_dict["tables"][table], **manifest_dict['connection_info']})
+        # Link the load_types to their respective functions
+        # load_types = {
+        #     "incremental": load_incremental,
+        #     "scd": load_scd,
+        #     "sync": sync_incremental_ids,
+        #     "test": check_new_tables,
+        #     "validate": validate_ids,
+        # }
+        pipeline.run_pipeline(load_type)
 
 
 if __name__ == "__main__":
