@@ -28,17 +28,16 @@ class PostgresToSnowflakePipeline:
                  table_name: str,
                  source_engine: Engine,
                  target_engine: Engine,
-                 **table_config: Dict[str, str]
+                 table_config: Dict[str, str]
                  ) -> None:
         # Mandatory config values
         logging.info(table_config)
         self.primary_key = table_config.get('export_table_primary_key')
         self.raw_query = table_config.get('import_query')
         # TODO: what is the source table
-        self.target_table = "{0}_{1}".format(table_config.get('import_db'), table_config.get('export_table')).upper()
+        self.target_table = f"{table_config.get('import_db')}_{table_config.get('export_table')}".upper()
         self.source_table = table_name
         self.source_engine, self.target_engine = source_engine, target_engine
-        logging(self.snowflake_engine)
 
         # Optional config values
         self.advanced_metadata = table_config.get('advanced_metadata', False)
@@ -291,12 +290,15 @@ def main(file_path: str, load_type: str) -> None:
     # Process the manifest
     logging.info(f"Reading manifest at location: {file_path}")
     manifest_dict = manifest_reader(file_path)
+
     postgres_engine, snowflake_engine = get_engines(manifest_dict["connection_info"])
+    logging.info(snowflake_engine)
+
     for table in manifest_dict["tables"]:
         logging.info(f"Processing Table: {table}")
         table_dict = manifest_dict["tables"][table]
         pipeline = PostgresToSnowflakePipeline(table_name=table, source_engine=postgres_engine,
-                                               target_engine=snowflake_engine, table_config= ** table_dict)
+                                               target_engine=snowflake_engine, table_config=table_dict)
         pipeline.run_pipeline(load_type)
 
 
