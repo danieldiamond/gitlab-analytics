@@ -18,7 +18,7 @@ WITH source AS (
         NULLIF("gitlab_issue", '')::VARCHAR             AS gitlab_issue,
         NULLIF("commit_start", '')::VARCHAR             AS commit_start,
         NULLIF("commit_handbook_v1", '')::VARCHAR       AS commit_handbook_v1,
-        NULLIF("is_deleted", '')::VARCHAR::BOOLEAN     AS is_deleted
+        NULLIF("is_deleted", '')::VARCHAR::BOOLEAN      AS is_deleted
     FROM source
       
 ) 
