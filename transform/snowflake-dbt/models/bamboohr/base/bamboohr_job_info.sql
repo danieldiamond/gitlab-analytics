@@ -28,11 +28,11 @@ WITH source AS (
     SELECT * 
     FROM {{ ref('bamboohr_job_role') }}
 
-{# ), sheetload_job_roles AS (
+), sheetload_job_roles AS (
 
-    SELECT * 
-    FROM {{ ref('sheetload_job_roles_prior_to_2020_02') }} #}
-
+    SELECT *
+    FROM {{ ref('sheetload_job_roles_prior_to_2020_02') }}
+    
 ), final AS (
 
     SELECT 
@@ -61,12 +61,11 @@ WITH source AS (
 
 SELECT 
   final.*,
-  job_role
-  --    iff(job_info.effective_date< '2020-02-28', job_role_prior_to_capture.job_role, job_role.job_role) as job_role,
+  iff(job_info.effective_date< '2020-02-28', job_role_prior_to_capture.job_role, job_role.job_role) as job_role
 
 FROM final
- {# LEFT JOIN sheetload_job_roles
-      ON sheetload_job_roles.job_title = renamed.job_title #} 
+ LEFT JOIN sheetload_job_roles
+      ON sheetload_job_roles.job_title = renamed.job_title
 LEFT JOIN job_role
       ON job_role.employee_id = final.employee_id
       AND job_role.effective_date BETWEEN final.effective_date and COALESCE(final.effective_end_date, {{max_date_in_bamboo_analyses()}})
