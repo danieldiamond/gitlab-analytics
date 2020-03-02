@@ -34,10 +34,10 @@ class PostgresToSnowflakePipeline:
         self.primary_key = config.get('export_table_primary_key')
         self.raw_query = config.get('import_query')
         #TODO: what is the source table
-        self.target_table = "{import_db}_{export_table}".format(config.get('import_db'), config.get('export_table')).upper()
+        self.target_table = "{import_db}_{export_table}".format(**config).upper()
         self.source_table = table_name
         self.source_engine, self.target_engine = get_engines(config.get("connection_info"))
-        self.logging(self.snowflake_engine)
+        logging(self.snowflake_engine)
 
         #Optional config values
         self.advanced_metadata = config.get('advanced_metadata', False)
@@ -52,7 +52,7 @@ class PostgresToSnowflakePipeline:
             source_table = config.get('export_table'),
             table_index = self.primary_key,
             target_engine = self.target_engine,
-            target_table = "{import_db}_{export_table}".format(**config).upper(),
+            target_table = self.target_table,
         )
 
     def __load_ids(self, id_range: 100_000) -> None:
