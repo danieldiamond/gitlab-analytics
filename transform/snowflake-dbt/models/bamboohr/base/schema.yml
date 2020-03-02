@@ -91,3 +91,20 @@ models:
       - name: reports_to
         tests:
             - not_null
+ - name: bamboohr_job_role_info
+   description: This model shows the job role an employee is in and when their role changes.
+   columns:
+      - name: employee_number
+        tests:
+            - not null
+      - name: employee_id
+        tests:
+            - not null
+      - name: job_role
+        tests:
+            - not_null
+            - accepted_values:
+                    values: ['Individual Contributor', 'Leader', 'Manager']
+      - name: job_grade
+      - name: effective_date
+        description: The date the role is effective until a change occurs. 
