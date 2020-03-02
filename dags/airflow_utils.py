@@ -190,7 +190,13 @@ xs_warehouse = f"'{{warehouse_name: transforming_xs}}'"
 
 l_warehouse = f"'{{warehouse_name: transforming_l}}'"
 
-clone_repo_cmd = f"git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}"
+clone_repo_cmd = f"""
+    if [[ -z "$GIT_COMMIT" ]]; then
+        export GIT_COMMIT="HEAD"
+    fi
+    git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO} &&
+    echo "checking out commit $GIT_COMMIT" &&
+    cd analytics && git checkout $GIT_COMMIT && cd .. """
 
 clone_and_setup_extraction_cmd = f"""
     {clone_repo_cmd} &&
