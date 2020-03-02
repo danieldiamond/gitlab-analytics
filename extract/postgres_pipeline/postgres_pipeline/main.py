@@ -26,7 +26,7 @@ class PostgresToSnowflakePipeline:
                  **config
                  ) -> None:
         #Mandatory config values
-        self.logging(config)
+        logging.info(config)
         self.primary_key = config.get('export_table_primary_key')
         self.raw_query = config.get('import_query')
         #TODO: what is the source table
