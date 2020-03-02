@@ -119,7 +119,7 @@ class PostgresToSnowflakePipeline:
             )
             return False
         env = os.environ.copy()
-        query = f"{self.raw_query.format(**env)} {self.additional_filter}"
+        query = f"{self.raw_query.format(**env)} {self.additional_filtering}"
         logging.info(query)
         chunk_and_upload(
             query=query,
