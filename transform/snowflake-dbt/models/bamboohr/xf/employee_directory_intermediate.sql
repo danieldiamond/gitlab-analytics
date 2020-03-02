@@ -32,6 +32,7 @@ WITH RECURSIVE employee_directory AS (
           department,
           division,
           reports_to,
+          job_role,
           effective_end_date
     FROM {{ ref('bamboohr_job_info') }}
 
@@ -63,6 +64,7 @@ WITH RECURSIVE employee_directory AS (
       department_info.department,
       department_info.division,
       department_info.reports_to,
+      department_info.job_role,
       location_factor.location_factor, 
       IFF(hire_date = date_actual or 
           rehire_date = date_actual, True, False)                   AS is_hire_date,

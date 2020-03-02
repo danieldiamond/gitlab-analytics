@@ -91,9 +91,9 @@ models:
       - name: reports_to
         tests:
             - not_null
- - name: bamboohr_job_role_info
-   description: This model shows the job role an employee is in and when their role changes.
-   columns:
+  - name: bamboohr_job_role
+    description: This model shows the job role an employee is in and when their role changes.
+    columns:
       - name: employee_number
         tests:
             - not null

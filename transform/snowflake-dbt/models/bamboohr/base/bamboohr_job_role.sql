@@ -1,20 +1,17 @@
 WITH source AS (
-
+    
     SELECT *
-    FROM "RAW".bamboohr.id_employee_number_mapping    
-
-), job_info AS (
-
-    SELECT * 
-    FROM "ANALYTICS"."ANALYTICS_SENSITIVE"."BAMBOOHR_JOB_INFO"  
+    FROM {{ source('bamboohr', 'id_employee_number_mapping') }} 
   
 ), intermediate AS (
 
     SELECT 
           NULLIF(d.value['employeeNumber'],'')::BIGINT                    AS employee_number,
           d.value['id']::BIGINT                                           AS employee_id,
+          d.value['firstName']::VARCHAR                                   AS first_name,
+          d.value['lastName']::VARCHAR                                    AS last_name,
           d.value['customRole']::VARCHAR                                  AS job_role,
-          d.value['customJobGrade'::VARCHAR                               AS job_grade,
+          d.value['customJobGrade']::VARCHAR                              AS job_grade,
           uploaded_at::DATE                                               AS effective_date
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), OUTER => true) d
@@ -22,7 +19,8 @@ WITH source AS (
 
 ), final AS (
 
-    SELECT *,
+    SELECT 
+      intermediate.*,
       LEAD(DATEADD(day,-1,effective_date)) OVER (PARTITION BY employee_number ORDER BY effective_date)  AS next_effective_date
     FROM intermediate 
     

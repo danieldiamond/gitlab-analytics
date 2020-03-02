@@ -23,13 +23,23 @@ WITH source AS (
              data_by_row['reportsTo']::varchar  AS reports_to
       FROM intermediate
 
+), job_role AS (
+
+    SELECT * 
+    FROM {{ ref('bamboohr_job_role') }}
+
+{# ), sheetload_job_roles AS (
+
+    SELECT * 
+    FROM {{ ref('sheetload_job_roles_prior_to_2020_02') }} #}
+
 ), final AS (
 
     SELECT 
     job_id,
-    employee_id,
+    renamed.employee_id,
     job_title,
-    effective_date, --the below case when statement is also used in employee_directory_analysis until we upgrade to 0.14.0 of dbt
+    renamed.effective_date, --the below case when statement is also used in employee_directory_analysis until we upgrade to 0.14.0 of dbt
     CASE WHEN division = 'Alliances' THEN 'Alliances'
         WHEN division = 'Customer Support' THEN 'Customer Support'
         WHEN division = 'Customer Service' THEN 'Customer Success'
@@ -44,10 +54,19 @@ WITH source AS (
         ELSE nullif(division, '') END AS division,
     entity,
     reports_to,
-    (LAG(DATEADD('day',-1,effective_date), 1) OVER (PARTITION BY employee_id ORDER BY effective_date DESC)) AS effective_end_date
+    (LAG(DATEADD('day',-1,renamed.effective_date), 1) OVER (PARTITION BY renamed.employee_id ORDER BY renamed.effective_date DESC)) AS effective_end_date
     FROM renamed
-
+    
 )
 
-SELECT *
+SELECT 
+  final.*,
+  job_role
+  --    iff(job_info.effective_date< '2020-02-28', job_role_prior_to_capture.job_role, job_role.job_role) as job_role,
+
 FROM final
+ {# LEFT JOIN sheetload_job_roles
+      ON sheetload_job_roles.job_title = renamed.job_title #} 
+LEFT JOIN job_role
+      ON job_role.employee_id = final.employee_id
+      AND job_role.effective_date BETWEEN final.effective_date and COALESCE(final.effective_end_date, {{max_date_in_bamboo_analyses()}})

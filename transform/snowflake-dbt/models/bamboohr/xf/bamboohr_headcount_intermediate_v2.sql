@@ -72,17 +72,6 @@ with dates AS (
 
     SELECT *
     FROM {{ ref ('employee_directory_intermediate') }}
-  
-), job_info AS (
-
-    SELECT  
-      DISTINCT job_title,
-      CASE WHEN job_title LIKE '%VP'          THEN 'leader'
-           WHEN LEFT(job_title,5) = 'Chief'   THEN 'leader'
-           WHEN job_title LIKE '%EVP'         THEN 'leader'
-           WHEN job_title LIKE '%Manager,%'   THEN 'manager'
-           ELSE 'individual_contributor'END   AS job_role
-    FROM {{ ref ('bamboohr_job_info') }}
 
 ), intermediate AS (
 
@@ -100,38 +89,36 @@ with dates AS (
       IFF(termination_type = 'Involuntary',1,0)                                 AS involuntary_separation,
 
       IFF(dates.start_date = date_actual 
-          AND job_role = 'leader',1,0)                                          AS headcount_start_leader,
+          AND job_role = 'Leader',1,0)                                          AS headcount_start_leader,
       IFF(dates.end_date = date_actual
-          AND job_role = 'leader',1,0)                                          AS headcount_end_leader,
+          AND job_role = 'Leader',1,0)                                          AS headcount_end_leader,
       IFF(is_hire_date = True 
-          AND job_role = 'leader',1,0)                                          AS hired_leaders,
+          AND job_role = 'Leader',1,0)                                          AS hired_leaders,
       IFF(is_termination_date = True
-          AND job_role = 'leader',1,0)                                          AS separated_leaders,
+          AND job_role = 'Leader',1,0)                                          AS separated_leaders,
       
       IFF(dates.start_date = date_actual 
-          AND job_role = 'manager',1,0)                                          AS headcount_start_manager,
+          AND job_role = 'Manager',1,0)                                          AS headcount_start_manager,
       IFF(dates.end_date = date_actual
-          AND job_role = 'manager',1,0)                                          AS headcount_end_manager,
+          AND job_role = 'Manager',1,0)                                          AS headcount_end_manager,
       IFF(is_hire_date = True 
-          AND job_role = 'manager',1,0)                                          AS hired_manager,
+          AND job_role = 'Manager',1,0)                                          AS hired_manager,
       IFF(is_termination_date = True
-          AND job_role = 'manager',1,0)                                          AS separated_manager,
+          AND job_role = 'Manager',1,0)                                          AS separated_manager,
 
        IFF(dates.start_date = date_actual 
-          AND job_role = 'individual contributor',1,0)                           AS headcount_start_contributor,
+          AND job_role = 'Individual Contributor',1,0)                           AS headcount_start_contributor,
       IFF(dates.end_date = date_actual
-          AND job_role = 'individual contributor',1,0)                           AS headcount_end_contributor,
+          AND job_role = 'Individual Contributor',1,0)                           AS headcount_end_contributor,
       IFF(is_hire_date = True 
-          AND job_role = 'individual contributor',1,0)                           AS hired_contributor,
+          AND job_role = 'Individual Contributor',1,0)                           AS hired_contributor,
       IFF(is_termination_date = True
-          AND job_role = 'individual contributor',1,0)                           AS separated_contributor                
+          AND job_role = 'Individual Contributor',1,0)                           AS separated_contributor                
     FROM dates
     LEFT JOIN employees
       ON DATE_TRUNC(month,dates.start_date) = DATE_TRUNC(month, employees.date_actual)
     LEFT JOIN mapping_enhanced
       ON employees.employee_id = mapping_enhanced.employee_id
-    Left join job_info 
-      ON job_info.job_title = employees.job_title
     LEFT JOIN separation_reason
       ON separation_reason.employee_id = employees.employee_id
       AND separation_reason.valid_from_date = employees.date_actual
