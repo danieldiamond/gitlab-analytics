@@ -122,8 +122,12 @@ class TestPostgresPipeline:
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
-        ps_pipeline = PostgresToSnowflakePipeline(table_name=source_table, source_engine=POSTGRES_ENGINE,
-                                               target_engine=SNOWFLAKE_ENGINE, table_config=table_dict)
+        ps_pipeline = PostgresToSnowflakePipeline(
+            table_name=source_table,
+            source_engine=POSTGRES_ENGINE,
+            target_engine=SNOWFLAKE_ENGINE,
+            table_config=table_dict,
+        )
         ps_pipeline.incremental()
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}"
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
@@ -158,8 +162,12 @@ class TestPostgresPipeline:
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
-        ps_pipeline = PostgresToSnowflakePipeline(table_name=source_table, source_engine=POSTGRES_ENGINE,
-                                               target_engine=SNOWFLAKE_ENGINE, table_config=table_dict)
+        ps_pipeline = PostgresToSnowflakePipeline(
+            table_name=source_table,
+            source_engine=POSTGRES_ENGINE,
+            target_engine=SNOWFLAKE_ENGINE,
+            table_config=table_dict,
+        )
         ps_pipeline.incremental()
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}"
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
@@ -192,8 +200,12 @@ class TestPostgresPipeline:
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
-        ps_pipeline = PostgresToSnowflakePipeline(table_name=source_table, source_engine=POSTGRES_ENGINE,
-                                               target_engine=SNOWFLAKE_ENGINE, table_config=table_dict)
+        ps_pipeline = PostgresToSnowflakePipeline(
+            table_name=source_table,
+            source_engine=POSTGRES_ENGINE,
+            target_engine=SNOWFLAKE_ENGINE,
+            table_config=table_dict,
+        )
         ps_pipeline.incremental()
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}"
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
@@ -219,8 +231,12 @@ class TestPostgresPipeline:
         table_dict = manifest_dict["tables"][source_table]
 
         # Run the query and count the results
-        ps_pipeline = PostgresToSnowflakePipeline(table_name=source_table, source_engine=POSTGRES_ENGINE,
-                                               target_engine=SNOWFLAKE_ENGINE, table_config=table_dict)
+        ps_pipeline = PostgresToSnowflakePipeline(
+            table_name=source_table,
+            source_engine=POSTGRES_ENGINE,
+            target_engine=SNOWFLAKE_ENGINE,
+            table_config=table_dict,
+        )
         ps_pipeline.scd()
         target_count_query = (
             f"SELECT COUNT(*) - 10000 AS row_count FROM {TEST_TABLE_TEMP}"
@@ -251,8 +267,12 @@ class TestPostgresPipeline:
         table_dict = manifest_dict["tables"][source_table]
 
         # Run the query and count the results
-        ps_pipeline = PostgresToSnowflakePipeline(table_name=source_table, source_engine=POSTGRES_ENGINE,
-                                               target_engine=SNOWFLAKE_ENGINE, table_config=table_dict)
+        ps_pipeline = PostgresToSnowflakePipeline(
+            table_name=source_table,
+            source_engine=POSTGRES_ENGINE,
+            target_engine=SNOWFLAKE_ENGINE,
+            table_config=table_dict,
+        )
         ps_pipeline.scd()
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}"
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
@@ -280,8 +300,12 @@ class TestPostgresPipeline:
         os.environ.update(new_env_vars)
 
         # Run the query and count the results
-        ps_pipeline = PostgresToSnowflakePipeline(table_name=source_table, source_engine=POSTGRES_ENGINE,
-                                               target_engine=SNOWFLAKE_ENGINE, table_config=table_dict)
+        ps_pipeline = PostgresToSnowflakePipeline(
+            table_name=source_table,
+            source_engine=POSTGRES_ENGINE,
+            target_engine=SNOWFLAKE_ENGINE,
+            table_config=table_dict,
+        )
         ps_pipeline.scd()
 
         column_check_query = f"SELECT * FROM {TEST_TABLE_TEMP} LIMIT 1"
@@ -311,8 +335,12 @@ class TestPostgresPipeline:
         table_dict = manifest_dict["tables"][source_table]
 
         # Run the query and count the results
-        ps_pipeline = PostgresToSnowflakePipeline(table_name=source_table, source_engine=POSTGRES_ENGINE,
-                                                  target_engine=SNOWFLAKE_ENGINE, table_config=table_dict)
+        ps_pipeline = PostgresToSnowflakePipeline(
+            table_name=source_table,
+            source_engine=POSTGRES_ENGINE,
+            target_engine=SNOWFLAKE_ENGINE,
+            table_config=table_dict,
+        )
         ps_pipeline.check_new_tables()
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE_TEMP}"
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
@@ -337,8 +365,12 @@ class TestPostgresPipeline:
         table_dict = manifest_dict["tables"][source_table]
 
         # Run the query and count the results
-        ps_pipeline = PostgresToSnowflakePipeline(table_name=source_table, source_engine=POSTGRES_ENGINE,
-                                               target_engine=SNOWFLAKE_ENGINE, table_config=table_dict)
+        ps_pipeline = PostgresToSnowflakePipeline(
+            table_name=source_table,
+            source_engine=POSTGRES_ENGINE,
+            target_engine=SNOWFLAKE_ENGINE,
+            table_config=table_dict,
+        )
         ps_pipeline.validate()
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE_TEMP}"
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
@@ -368,8 +400,12 @@ class TestPostgresPipeline:
         table_dict = manifest_dict["tables"][source_table]
 
         # Run the validation function and confirm it has zero IDs in the error table
-        ps_pipeline = PostgresToSnowflakePipeline(table_name=source_table, source_engine=POSTGRES_ENGINE,
-                                               target_engine=SNOWFLAKE_ENGINE, table_config=table_dict)
+        ps_pipeline = PostgresToSnowflakePipeline(
+            table_name=source_table,
+            source_engine=POSTGRES_ENGINE,
+            target_engine=SNOWFLAKE_ENGINE,
+            table_config=table_dict,
+        )
         ps_pipeline.validate()
         error_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}_ERRORS"
         error_count_results = pd.read_sql(error_query, SNOWFLAKE_ENGINE)
@@ -399,8 +435,12 @@ class TestPostgresPipeline:
 
         # Run the validation function and confirm it triggers a non-zero exit
         with pytest.raises(SystemExit) as pytest_wrapped_e:
-            ps_pipeline = PostgresToSnowflakePipeline(table_name=source_table, source_engine=POSTGRES_ENGINE,
-                                                      target_engine=SNOWFLAKE_ENGINE, table_config=table_dict)
+            ps_pipeline = PostgresToSnowflakePipeline(
+                table_name=source_table,
+                source_engine=POSTGRES_ENGINE,
+                target_engine=SNOWFLAKE_ENGINE,
+                table_config=table_dict,
+            )
             ps_pipeline.validate()
             assert pytest_wrapped_e.type == SystemExit
             assert pytest_wrapped_e.value.code == 3
