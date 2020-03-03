@@ -4,40 +4,45 @@
     })
 }}
 
-with source as (
+WITH source AS (
 
     SELECT *
     FROM {{ref("comp_band_loc_factor_base")}}
 
-), renamed as (
+), renamed AS (
 
     SELECT
-         nullif("Employee_ID",'')::varchar as bamboo_employee_number,
-         IFF(nullif(deviation_from_comp_calc, '') = 'Exec', 0,
-            nullif(deviation_from_comp_calc, '')) as deviation_from_comp_calc_cl,
-         CASE WHEN "DBT_VALID_FROM"::number::timestamp::date < '2019-10-18'::date
-             THEN '2000-01-20'::date
-             ELSE "DBT_VALID_FROM"::number::timestamp::date END AS valid_from,
-         "DBT_VALID_TO"::number::timestamp::date                AS valid_to
+      NULLIF("Employee_ID",'')::VARCHAR                                     AS bamboo_employee_number,
+      deviation_from_comp_calc                                              AS original_value_deviation_from_comp_calc,
+      CASE WHEN NULLIF(deviation_from_comp_calc, '') ='Exec'    THEN '0.00'
+           WHEN NULLIF(deviation_from_comp_calc, '') ='#DIV/0!' THEN NULL
+           WHEN deviation_from_comp_calc LIKE '%'               THEN NULLIF(REPLACE(deviation_from_comp_calc,'%',''),'') 
+           ELSE NULLIF(deviation_from_comp_calc, '') END                    AS deviation_from_comp_calc_cl,
+      CASE WHEN "DBT_VALID_FROM"::NUMBER::TIMESTAMP::DATE < '2019-10-18'::date
+           THEN '2000-01-20'::DATE
+           ELSE "DBT_VALID_FROM"::NUMBER::TIMESTAMP::DATE END               AS valid_from,
+      "DBT_VALID_TO"::NUMBER::TIMESTAMP::DATE                               AS valid_to
     FROM source
     WHERE deviation_from_comp_calc_cl IS NOT NULL
 
-  ), deduplicated as (
+  ), deduplicated AS (
 
-      SELECT distinct
-        bamboo_employee_number::bigint as bamboo_employee_number,
-        round(deviation_from_comp_calc_cl::float, 2) as deviation_from_comp_calc,
-        valid_from,
-        valid_to
-      FROM renamed
+    SELECT DISTINCT   
+      bamboo_employee_number::BIGINT                                              AS bamboo_employee_number,
+      IFF(CONTAINS(original_value_deviation_from_comp_calc,'%') = True,
+        ROUND(deviation_from_comp_calc_cl/100::FLOAT, 2),
+        ROUND(deviation_from_comp_calc_cl::FLOAT, 2))                             AS deviation_from_comp_calc,
+    valid_from,
+    valid_to
+    FROM renamed
 
-  ), final as (
+  ), final AS (
 
   SELECT
     bamboo_employee_number,
     deviation_from_comp_calc,
-    min(valid_from) as valid_from,
-    NULLIF(max(valid_to), CURRENT_DATE) as valid_to
+    MIN(valid_from)                     AS valid_from,
+    NULLIF(MAX(valid_to), CURRENT_DATE) AS valid_to
   FROM deduplicated
   GROUP BY 1, 2
 
