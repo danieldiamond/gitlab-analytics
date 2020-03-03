@@ -225,6 +225,8 @@ snapshots:
 
     netsuite:
       tags: ["daily"]
+      netsuite_transaction_lines_snapshots:
+        enabled: false
 
     sfdc:
       tags: ["daily"]
