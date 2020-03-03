@@ -57,7 +57,6 @@ models:
       description: This is a total count of all the candidates we have sent an offer to.
     - name: accepted_offers_to_start
       description: This is a count of the candidates that have accepted the offer. This will be the true count for what we will have to prepare for, whereas the candidates_estimated_to_start provides an idea of how many overall we may see.                    
-  
   - name: greenhouse_diversity
     description: Provides a breakdown of recruiting KPIs by gender, as well as department and division breakouts. Note - the values for the columns in this model will be null in the case there are less than 3 candidates for a given eeoc pool (this is done using the min over partition value).
     columns:
@@ -66,7 +65,7 @@ models:
       description: This column indicates what the metric data is displayed at the KPI level (not accounting for eeoc values), division level, or all (accounting for division and department).
       tests:
         - accepted_values:
-            values: ['kpi_level','all','eeoc_only_breakout','division_breakout','department_division_only']  
+            values: ['kpi_level_breakout','all_attributes_breakout','eeoc_only_breakout','division_breakout','department_division_breakout']  
     - name: department_name
     - name: division
     - name: eeoc_field_name
