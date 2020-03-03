@@ -84,9 +84,9 @@ with dates AS (
       IFF(dates.start_date = date_actual,1,0)                                   AS headcount_start,
       IFF(dates.end_date = date_actual,1,0)                                     AS headcount_end,
       IFF(is_hire_date = True, 1,0)                                             AS hire_count,
-      IFF(is_termination_date = True,1,0)                                       AS separation_count,
       IFF(termination_type = 'Voluntary',1,0)                                   AS voluntary_separation,
       IFF(termination_type = 'Involuntary',1,0)                                 AS involuntary_separation,
+      voluntary_separation + involuntary_separation                             AS separation_count,
 
       IFF(dates.start_date = date_actual 
           AND job_role = 'Leader',1,0)                                          AS headcount_start_leader,
@@ -121,7 +121,7 @@ with dates AS (
       ON employees.employee_id = mapping_enhanced.employee_id
     LEFT JOIN separation_reason
       ON separation_reason.employee_id = employees.employee_id
-      AND separation_reason.valid_from_date = employees.date_actual
+      AND DATE_TRUNC(month,dates.start_date) = DATE_TRUNC(month,separation_reason.valid_from_date)
    WHERE date_actual IS NOT NULL
 
 ), aggregated AS (
@@ -171,7 +171,7 @@ with dates AS (
     WHERE department IS NOT NULL
     {{ dbt_utils.group_by(n=6) }} 
 
-    UNION ALL
+    {# UNION ALL
 
     SELECT
       DATE_TRUNC(month,start_date)      AS month_date,
@@ -184,23 +184,9 @@ with dates AS (
     FROM dates 
     LEFT JOIN intermediate
       ON DATE_TRUNC(month, start_date) = DATE_TRUNC(month, date_actual)
-    {{ dbt_utils.group_by(n=6) }}  
+    {{ dbt_utils.group_by(n=6) }}   #}
 
 ) 
 
-{# SELECT * 
-FROM aggregated #}
-
-
-SELECT
-      DATE_TRUNC(month,start_date)      AS month_date,
-      'kpi_breakout'                    AS breakout_type, 
-      null                              AS department,
-      null                              AS division,
-      null                              AS eeoc_field_name,                                                       
-      null                              AS eeoc_value,     
-      {{repeated_metric_columns}}
-    FROM dates 
-    LEFT JOIN intermediate
-      ON DATE_TRUNC(month, start_date) = DATE_TRUNC(month, date_actual)
-    {{ dbt_utils.group_by(n=6) }}  
+SELECT * 
+FROM aggregated
