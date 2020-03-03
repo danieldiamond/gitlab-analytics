@@ -17,18 +17,8 @@
         )
     }}
     
-    WITH source as (
-
-    	SELECT 
-        *, 
-        ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS statistics_rank_in_key
-      
-      FROM {{ source('gitlab_dotcom', 'project_statistics') }}
-
-    )
-    
-    SELECT *
-    FROM source
-    WHERE statistics_rank_in_key = 1
+    SELECT *       
+    FROM {{ source('gitlab_dotcom', 'project_statistics') }}
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) = 1
     
 {% endsnapshot %}
