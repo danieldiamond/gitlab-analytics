@@ -52,7 +52,7 @@ Please complete all items. Ask questions in the #data slack channel
 * [ ] Maintain the KPI Index page by 
     - [ ] Creating an issue with any outstanding concerns (broken links, missing KPI definitions, charts vs links, etc)
     - [ ] Assigning the issue to the [functional DRIs](/handbook/business-ops/data-team/#-team-organization)
-* [ ] Review the commit history of the following two files and update
+* [ ] Review the commit history of the following two files and update the [sheetload_kpi_status data](https://docs.google.com/spreadsheets/d/1CZLnXiAG7D_T_6vm50X0hDPnMPKrKmtajrcga5vyDTQ/edit?usp=sharing) with any new KPIs or update existing KPI statistics (`commit_start` is the commit URL for the `start_date` and `commit_handbook_v1` is the commit URL for the `completion_date`)
     - [ ] [KPI Index handbook page](https://gitlab.com/gitlab-com/www-gitlab-com/-/commits/master/source/handbook/business-ops/data-team/kpi-index/index.html.md.erb)
     - [ ] [Engineering KPI list](https://gitlab.com/gitlab-com/www-gitlab-com/-/blob/master/data/performance_indicators.yml)
 
