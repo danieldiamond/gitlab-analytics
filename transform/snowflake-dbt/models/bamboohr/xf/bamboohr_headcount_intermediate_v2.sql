@@ -188,5 +188,19 @@ with dates AS (
 
 ) 
 
-SELECT * 
-FROM aggregated
+{# SELECT * 
+FROM aggregated #}
+
+
+SELECT
+      DATE_TRUNC(month,start_date)      AS month_date,
+      'kpi_breakout'                    AS breakout_type, 
+      null                              AS department,
+      null                              AS division,
+      null                              AS eeoc_field_name,                                                       
+      null                              AS eeoc_value,     
+      {{repeated_metric_columns}}
+    FROM dates 
+    LEFT JOIN intermediate
+      ON DATE_TRUNC(month, start_date) = DATE_TRUNC(month, date_actual)
+    {{ dbt_utils.group_by(n=6) }}  
