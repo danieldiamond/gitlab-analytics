@@ -59,7 +59,7 @@ with dates AS (
     SELECT 
       DISTINCT employee_id,
       'no_eeoc'                         AS eeoc_field_name,
-      'no eeoc'                         AS eeoc_value
+      'no_eeoc'                         AS eeoc_value
     FROM mapping
  
 ), separation_reason AS(
@@ -145,8 +145,8 @@ with dates AS (
     SELECT
       DATE_TRUNC(month,start_date)      AS month_date,
       'eeoc_breakout'                   AS breakout_type, 
-      null                              AS department,
-      null                              AS division,
+      'eeoc_breakout'                   AS department,
+      'eeoc_breakout'                   AS division,
       eeoc_field_name,                                                       
       eeoc_value,  
       {{repeated_metric_columns}}
@@ -160,7 +160,7 @@ with dates AS (
     SELECT
       DATE_TRUNC(month,start_date)      AS month_date,
       'division_breakout'               AS breakout_type, 
-      null                              AS department,
+      'division_breakout'               AS department,
       division,
       eeoc_field_name,                                                       
       eeoc_value,
@@ -170,21 +170,6 @@ with dates AS (
       ON DATE_TRUNC(month, start_date) = DATE_TRUNC(month, date_actual)
     WHERE department IS NOT NULL
     {{ dbt_utils.group_by(n=6) }} 
-
-    {# UNION ALL
-
-    SELECT
-      DATE_TRUNC(month,start_date)      AS month_date,
-      'kpi_breakout'                    AS breakout_type, 
-      null                              AS department,
-      null                              AS division,
-      null                              AS eeoc_field_name,                                                       
-      null                              AS eeoc_value,     
-      {{repeated_metric_columns}}
-    FROM dates 
-    LEFT JOIN intermediate
-      ON DATE_TRUNC(month, start_date) = DATE_TRUNC(month, date_actual)
-    {{ dbt_utils.group_by(n=6) }}   #}
 
 ) 
 
