@@ -3,8 +3,8 @@
     {{
         config(
           strategy='timestamp',
-          unique_key='transaction_line_id',
-          updated_at='date_last_modified',
+          unique_key=['transaction_line_id', 'transaction_id'],
+          updated_at='date_last_modified_gmt',
         )
     }}
 
