@@ -6,7 +6,7 @@ Please complete all items. Ask questions in the #data slack channel
 
 ### Housekeeping 
 * [ ] Assign this issue to yourself. 
-* [ ] [Add a weight to the issue](/handbook/business-ops/data-team/#Issue_Pointing)
+* [ ] [Add a weight to the issue](/handbook/business-ops/data-team/#issue-pointing)
 * [ ] Link any issues opened as a result of Data Triage to this `parent` issue. 
 * [ ] Close this issue once all the items below are completed. 
 
@@ -22,7 +22,7 @@ Please complete all items. Ask questions in the #data slack channel
         - [ ] Adding additional [labels](/handbook/business-ops/data-team/#issue-labeling)
         - [ ] Assigning the issue based on:
             - [ ] the [CODEOWNERS file](https://gitlab.com/gitlab-data/analytics/blob/master/CODEOWNERS) for specific dbt model failures 
-            - [ ] the [functional DRIs](/handbook/business-ops/data-team/#-team-organization)
+            - [ ] the [functional DRIs](https://about.gitlab.com/handbook/business-ops/data-team/#-team-organization)
             - [ ] OR to the  Manager, Data if you aren't sure. 
         - [ ] Asking initial questions (data source, business logic clarification, etc) to groom the issue. 
 
@@ -37,7 +37,7 @@ Please complete all items. Ask questions in the #data slack channel
 
     - [ ] For each error message, group the errors in order to create and assign issues based on:
         - [ ] the [CODEOWNERS file](https://gitlab.com/gitlab-data/analytics/blob/master/CODEOWNERS) for specific dbt model failures 
-        - [ ] the [functional DRIs](/handbook/business-ops/data-team/#-team-organization)
+        - [ ] the [functional DRIs](https://about.gitlab.com/handbook/business-ops/data-team/#-team-organization)
         - [ ] OR to the  Manager, Data if you aren't sure. 
     - [ ] Label the issue by: 
         - [ ] Comment `/labels ~Workflow::start (triage) ~Triage ~Break-fix ~dbt ~Data Team ~documentation ~Housekeeping` 
