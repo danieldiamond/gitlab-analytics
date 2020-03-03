@@ -13,7 +13,7 @@ with source as (
 
     SELECT
          nullif("Employee_ID",'')::varchar as bamboo_employee_number,
-         nullif("Location_Factor",'')::float as location_factor,
+         nullif("Formula",'')::float as location_factor,
          nullif(nullif("DEVIATION_FROM_COMP_CALC", ''), '#N/A')::varchar as deviation_from_comp_calc
     FROM source
     WHERE lower(bamboo_employee_number) NOT LIKE '%not in comp calc%'
