@@ -28,7 +28,12 @@ with source AS (
 )
 
    SELECT
-      base.*,    
+      base.month_date,
+      IFF(base.breakout_type = 'eeoc_breakout' and base.eeoc_field_name = 'no_eeoc', 'kpi_breakout',base.breakout_type) AS breakout_type, 
+      base.department,
+      base.division,
+      base.eeoc_field_name,
+      base.eeoc_value,
       headcount_start,
       headcount_end,
       headcount_average,
@@ -41,9 +46,9 @@ with source AS (
       SUM(COALESCE(voluntary_separation,0)) {{partition_statement}}                 AS rolling_12_month_voluntary_separations,
       SUM(COALESCE(involuntary_separation,0)) {{partition_statement}}               AS rolling_12_month_involuntary_separations,
       IFF(rolling_12_month_headcount< rolling_12_month_separations, null,
-        1 - (rolling_12_month_separations/NULLIF(rolling_12_month_headcount,0)))    AS retention, 
-      {# RATIO_TO_REPORT(headcount_average) {{partition_statement}}                    AS percent_of_headcount,
-      RATIO_TO_REPORT(hire_count) {{partition_statement}}                           AS percent_of_hires, #}
+        1 - (rolling_12_month_separations/NULLIF(rolling_12_month_headcount,0)))    AS retention,
+       {# RATIO_TO_REPORT(headcount_average) {{partition_statement}}                    AS percent_of_headcount,
+      RATIO_TO_REPORT(hire_count) {{partition_statement}}                           AS percent_of_hires #}
 
       headcount_average_leader,
       hired_leaders,
