@@ -6,7 +6,7 @@ Please complete all items. Ask questions in the #data slack channel
 
 ### Housekeeping 
 * [ ] Assign this issue to yourself. 
-* [ ] [Add a weight to the issue](/handbook/business-ops/data-team/#issue-pointing)
+* [ ] [Add a weight to the issue](https://about.gitlab.com/handbook/business-ops/data-team/#issue-pointing)
 * [ ] Link any issues opened as a result of Data Triage to this `parent` issue. 
 * [ ] Close this issue once all the items below are completed. 
 
@@ -19,7 +19,7 @@ Please complete all items. Ask questions in the #data slack channel
 * [ ] Review each slack message in the **#data-triage** channel, which will inform the triager of what issues have been opened in the data team project that day. 
     - [ ] For each issue opened by a non-Data Team member, label the issue by: 
         - [ ] Adding the `Workflow::start (triage)` and `Triage` label
-        - [ ] Adding additional [labels](/handbook/business-ops/data-team/#issue-labeling)
+        - [ ] Adding additional [labels](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling)
         - [ ] Assigning the issue based on:
             - [ ] the [CODEOWNERS file](https://gitlab.com/gitlab-data/analytics/blob/master/CODEOWNERS) for specific dbt model failures 
             - [ ] the [functional DRIs](https://about.gitlab.com/handbook/business-ops/data-team/#-team-organization)
@@ -51,7 +51,7 @@ Please complete all items. Ask questions in the #data slack channel
 ### Maintain KPI related information         
 * [ ] Maintain the KPI Index page by 
     - [ ] Creating an issue with any outstanding concerns (broken links, missing KPI definitions, charts vs links, etc)
-    - [ ] Assigning the issue to the [functional DRIs](/handbook/business-ops/data-team/#-team-organization)
+    - [ ] Assigning the issue to the [functional DRIs](https://about.gitlab.com/handbook/business-ops/data-team/#-team-organization)
 * [ ] Review the commit history of the following two files and update the [sheetload_kpi_status data](https://docs.google.com/spreadsheets/d/1CZLnXiAG7D_T_6vm50X0hDPnMPKrKmtajrcga5vyDTQ/edit?usp=sharing) with any new KPIs or update existing KPI statistics (`commit_start` is the commit URL for the `start_date` and `commit_handbook_v1` is the commit URL for the `completion_date`)
     - [ ] [KPI Index handbook page](https://gitlab.com/gitlab-com/www-gitlab-com/-/commits/master/source/handbook/business-ops/data-team/kpi-index/index.html.md.erb)
     - [ ] [Engineering KPI list](https://gitlab.com/gitlab-com/www-gitlab-com/-/blob/master/data/performance_indicators.yml)
