@@ -40,7 +40,7 @@ Please complete all items. Ask questions in the #data slack channel
         - [ ] the [functional DRIs](https://about.gitlab.com/handbook/business-ops/data-team/#-team-organization)
         - [ ] OR to the  Manager, Data if you aren't sure. 
     - [ ] Label the issue by: 
-        - [ ] Comment `/labels ~Workflow::start (triage) ~Triage ~Break-fix ~dbt ~"Data Team" ~documentation ~Housekeeping` 
+        - [ ] Comment in the issue `/label ~"Workflow::start (triage)" ~"Triage" ~"Break-fix" ~"dbt" ~"Data Team" ~"documentation" ~"Housekeeping"` 
         - [ ] Adding additional [labels](/handbook/business-ops/data-team/#issue-labeling)
     - [ ] Add the current milestone to each issue 
     - [ ] On each issue, ask initial questions (data source, business logic clarification, etc) to groom the issue. 
@@ -58,4 +58,4 @@ Please complete all items. Ask questions in the #data slack channel
 
 
 
-/labels ~Housekeeping ~"Data Team" ~Documentation ~Triage ~"workflow::In dev"
+/label ~"workflow::In dev" ~"Housekeeping" ~"Data Team" ~"Documentation" ~"Triage"
