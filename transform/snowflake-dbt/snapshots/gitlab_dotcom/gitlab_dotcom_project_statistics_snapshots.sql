@@ -1,4 +1,4 @@
-{% snapshot gitlab_dotcom_namespaces_snapshots %}
+{% snapshot gitlab_dotcom_project_statistics_snapshots %}
 
     {{
         config(
