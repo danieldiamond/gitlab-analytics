@@ -40,21 +40,6 @@ class PostgresToSnowflakePipeline:
         target_engine: Engine,
         table_config: Dict[str, str],
     ) -> None:
-        # Mandatory config values
-        if (
-            not all(
-                [
-                    "import_query",
-                    "import_db",
-                    "export_table",
-                    "export_table_primary_key",
-                    "export_schema",
-                ]
-            )
-            in table_config.keys()
-        ):
-            logging.error("Required table params missing")
-            return
 
         self.primary_key = table_config.get("export_table_primary_key")
         self.raw_query = table_config.get("import_query")
