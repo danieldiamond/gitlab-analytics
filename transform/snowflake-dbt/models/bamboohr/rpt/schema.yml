@@ -52,3 +52,53 @@ models:
       description: Provides the total number of the employees separated voluntarily for the current month and previous 11 months.
     - name: retention
       description: Is equal to 1 - (rolling_12_month_separations divided by rolling_12_month_headcount). Note - in the case the rolling_12_month_headcount is less than the rolling_12_month_separations, retention will appear as null.
+
+  - name: bamboohr_rpt_headcount_aggregation    
+    description: This report creates out a headcount report from the bamboohr_headcount_intermediate_v2 to be used for periscope dashboards for each month.
+    columns:
+    - name: month_date
+    - name: breakout_type
+      description: This identifies the breakout of the data. 
+      tests:
+        - accepted_values:
+                values: ['all_attributes_breakout', 'kpi_breakout','eeoc_breakout','division_breakout']
+    - name: department
+    - name: division
+    - name: eeoc_field_name
+    - name: eeoc_value
+    - name: headcount_start
+      description: Provides headcount at start of month.
+    - name: headcount_end
+      description: Provides headcount on the last day of the month.
+    - name: headcount_average
+    - name: hire_count
+      description: Provides the total number of employees hired for a given month as associated to the diversity_field and aggregation_type.
+    - name: separation_count
+    - name: rolling_12_month_headcount
+      description: Provides the average of the current month and previous 11 month average headcounts (the average headcount for each month is the headcount_start + headcount_end divided by 2).  
+    - name: rolling_12_month_separations
+      description: Provides the total number of employees separated for the current month and previous 11 months.
+    - name: rolling_12_month_voluntary_separations
+      description: Provides the total number of the employees separated voluntarily for the current month and previous 11 months.
+    - name: rolling_12_month_involuntary_separations
+      description: Provides the total number of the employees separated voluntarily for the current month and previous 11 months.
+    - name: voluntary_separation_rate
+      description: Is equal to the rolling_12_month_voluntary_separations dividied by rolling_12_month_headcount.
+    - name: involuntary_separation_rate
+      description: Is equal to the rolling_12_month_involuntary_separations divided by rolling_12_month_headcount.
+    - name: retention
+      description: Is equal to 1 - (rolling_12_month_separations divided by rolling_12_month_headcount). Note - in the case the rolling_12_month_headcount is less than the rolling_12_month_separations, retention will appear as null.
+    - name: headcount_leader
+    - name: hired_leaders
+    - name: separated_leaders
+    - name: headcount_manager
+    - name: hired_manager
+    - name: separated_manager
+    - name: headcount_contributor
+    - name: hired_contributor
+    - name: separated_contributor
+    - name: percent_of_headcount
+    - name: percent_of_hires
+    - name: percent_of_headcount_leaders
+    - name: percent_of_headcount_manager
+    - name: percent_of_headcount_contributor
