@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: transformed_latest_location_factor_yaml.sql
+  - name: transformed_latest_location_factor_yaml
     description: This dbt model (view) just transforms the latest location factor yaml file to be able to join with the location application question answers.
     columns:
     - name: city
@@ -16,7 +16,7 @@ models:
     - name: location_factor
       tests:
         - not_null
-  - name: transformed_location_application_question_answers.sql
+  - name: transformed_location_application_question_answers
     description: This dbt model (view) just transforms the location application question answers to be able to join with the latest location factor yaml file.
     columns:
     - name: city

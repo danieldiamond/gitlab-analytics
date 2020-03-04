@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: location_factor_application_answers
+    description: This dbt model (view) gives the location factor of location application question answers.
+    columns:
+    - name: city
+      tests:
+        - not_null
+    - name: state
+      tests:
+        - not_null
+    - name: country
+      tests: 
+        - not_null
+    - name: location_factor
+      tests:
+        - not_null
