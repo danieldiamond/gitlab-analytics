@@ -1115,6 +1115,12 @@ roles:
         warehouses:
             - reporting
 
+    - lmai:
+        member_of:
+            - analyst_engineering
+        warehouses:
+            - analyst_xs
+
     - lvandensteen:
         warehouses: 
             - reporting
@@ -1444,7 +1450,12 @@ users:
         member_of:
             - ksmith
             - securityadmin
-    
+
+    - lmai:
+        can_login: yes
+        member_of:
+            - lmai
+
     - mdewji:
         can_login: yes
         member_of:
