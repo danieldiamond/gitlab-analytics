@@ -37,7 +37,7 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     {clone_repo_cmd} &&
-    permifrost permissions grant analytics/load/snowflake/small.yml --dry
+    permifrost grant analytics/load/snowflake/small.yml --dry
 """
 
 # Create the DAG
