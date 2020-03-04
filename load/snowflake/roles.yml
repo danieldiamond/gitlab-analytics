@@ -1114,6 +1114,7 @@ roles:
     - ksmith:
         warehouses:
             - reporting
+
     - lmai:
         member_of:
             - analyst_engineering
