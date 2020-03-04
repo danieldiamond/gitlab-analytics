@@ -98,14 +98,6 @@
   },
   {
     "event_name": "groups",
-    "source_cte_name": "project_members",
-    "user_column_name": "user_id",
-    "key_to_parent_group": "source_id",
-    "primary_key": "member_id",
-    "is_representative_of_stage": "True"
-  },
-  {
-    "event_name": "groups",
     "source_cte_name": "group_members",
     "user_column_name": "user_id",
     "key_to_parent_project": "source_id",
@@ -259,14 +251,6 @@ WITH gitlab_subscriptions AS (
       invite_created_at AS created_at
     FROM {{ ref('gitlab_dotcom_members') }}
     WHERE member_source_type = 'Namespace'
-
-), project_members AS (
-
-    SELECT
-      *,
-      invite_created_at AS created_at
-    FROM {{ ref('gitlab_dotcom_members') }}
-    WHERE member_source_type = 'Project'
 
 )
 /* End of Source CTEs */
