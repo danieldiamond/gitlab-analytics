@@ -28,6 +28,3 @@ models:
     - name: country
       tests: 
         - not_null
-    - name: location_factor
-      tests:
-        - not_null  
