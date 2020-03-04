@@ -1301,3 +1301,16 @@ models:
         tests:
           - accepted_values:
               values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 99]
+  - name: gitlab_dotcom_vulnerability_occurrences
+    description: >-
+      Base model for Gitlab.com vulnerability occurrences.  The `project_id` field is uniformly obscured for privacy.
+    columns:
+      - name: project_id
+        tests:
+          - not_null
+      - name: vulnerability_created_at
+        tests:
+          - not_null
+      - name: vulnerability_name
+      - name: vulnerability_report_type
+      - name: vulnerability_severity

@@ -322,6 +322,7 @@ roles:
             - gitlab_data_yaml
             - netsuite
             - zuora
+            - google_analytics_360
         privileges:
             databases:
                 read:
@@ -538,6 +539,20 @@ roles:
                 write:
                     - raw.*.*
                     - analytics.*.*
+
+    - google_analytics_360: 
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.google_analytics_360_fivetran
+            tables:
+                read:
+                    - raw.google_analytics_360_fivetran.*
 
     - intern:
         warehouses:
@@ -954,6 +969,8 @@ roles:
             - analyst_xs
 
     - datwood:
+        member_of:
+            - analyst_core
         warehouses:
             - analyst_xs
 
@@ -1301,7 +1318,6 @@ users:
     - datwood:
         can_login: yes
         member_of:
-            - analyst_core
             - datwood
 
     - dtang:

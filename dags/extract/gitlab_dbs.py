@@ -187,6 +187,8 @@ for source_name, config in config_dict.items():
             secrets=standard_secrets + config["secrets"],
             env_vars={**standard_pod_env_vars, **config["env_vars"]},
             arguments=[incremental_cmd],
+            do_xcom_push=True,
+            xcom_push=True,
         )
     globals()[f"{config['dag_name']}_db_extract"] = extract_dag
 
@@ -217,6 +219,8 @@ for source_name, config in config_dict.items():
             secrets=standard_secrets + config["secrets"],
             env_vars={**standard_pod_env_vars, **config["env_vars"]},
             arguments=[sync_cmd],
+            do_xcom_push=True,
+            xcom_push=True,
         )
         # SCD Task
         scd_cmd = generate_cmd(config["dag_name"], "--load_type scd")
@@ -248,6 +252,8 @@ for source_name, config in config_dict.items():
             arguments=[scd_cmd],
             affinity=scd_affinity,
             tolerations=scd_tolerations,
+            do_xcom_push=True,
+            xcom_push=True,
         )
         sync_extract >> scd_extract
     globals()[f"{config['dag_name']}_db_sync"] = sync_dag
@@ -282,5 +288,7 @@ for source_name, config in config_dict.items():
             env_vars={**standard_pod_env_vars, **config["env_vars"]},
             arguments=[validate_cmd],
             dag=validation_dag,
+            do_xcom_push=True,
+            xcom_push=True,
         )
     globals()[f"{config['dag_name']}_db_validation"] = validation_dag

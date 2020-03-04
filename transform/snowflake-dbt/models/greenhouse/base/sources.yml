@@ -53,6 +53,7 @@ sources:
       - name: offers
       - name: offices
       - name: openings
+      - name: opening_custom_fields
       - name: organizations
       - name: referral_question_custom_fields
       - name: referrers
