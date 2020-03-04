@@ -31,6 +31,7 @@ class PostgresToSnowflakePipeline:
     target_engine: Engine
     advanced_metadata: bool
     additional_filtering: str
+    schema_changed: bool
 
     def __init__(
         self,
