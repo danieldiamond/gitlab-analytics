@@ -1188,8 +1188,6 @@ tables:
       , size
       , file_type
       , file_store
-      , file_md5
-      , file_sha1
       , file_name
       , file
       FROM packages_package_files
