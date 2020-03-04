@@ -86,6 +86,22 @@ tables:
     export_table: 'members'
     export_table_primary_key: id
     advanced_metadata: true
+  analytics_language_trend_repository_languages:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT CONCAT(programming_language_id, project_id, snapshot_date) AS analytics_language_trend_repository_languages_id
+      , file_count
+      , programming_language_id
+      , project_id
+      , loc
+      , bytes
+      , percentage
+      , snapshot_date
+      FROM analytics_language_trend_repository_languages
+    export_schema: 'gitlab_com'
+    export_table: 'analytics_language_trend_repository_languages'
+    export_table_primary_key: CONCAT(programming_language_id, project_id, snapshot_date)
+    advanced_metadata: true
   approvals:
     import_db: GITLAB_DB
     import_query: >
