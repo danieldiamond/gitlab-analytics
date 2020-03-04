@@ -74,6 +74,8 @@ licenses_list_views,secure
 merge_request_comment,create
 merge_request_create,create
 merge_requests,create
+merge_requests_with_optional_codeowners,create
+merge_requests_with_required_codeowners,create
 milestone_lists,plan
 milestones,plan
 navbar_searches,create

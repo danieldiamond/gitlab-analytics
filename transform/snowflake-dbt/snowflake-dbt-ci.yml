@@ -10,6 +10,8 @@
     - echo $SNOWFLAKE_LOAD_DATABASE
     - export SNOWFLAKE_TRANSFORM_WAREHOUSE=$SNOWFLAKE_MR_XS_WAREHOUSE
     - echo $SNOWFLAKE_TRANSFORM_WAREHOUSE
+    - export SNOWFLAKE_SNAPSHOT_DATABASE="SNOWFLAKE"
+    - echo $SNOWFLAKE_SNAPSHOT_DATABASE
     - export CI_PROFILE_TARGET="--profiles-dir profile --target ci"
     - echo $CI_PROFILE_TARGET
   after_script:
@@ -130,9 +132,9 @@
 📸snapshots:
   <<: *dbt_misc_jobs
   script:
+    - export SNOWFLAKE_SNAPSHOT_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW" # Must write to clone of RAW since this does real work
+    - echo $SNOWFLAKE_SNAPSHOT_DATABASE
     - *deps_and_seed
-    - *clone_raw # Must write to clone of RAW since this does real work
-    - echo $SNOWFLAKE_LOAD_DATABASE
     - dbt snapshot $CI_PROFILE_TARGET
     
 📝specify_tests:
