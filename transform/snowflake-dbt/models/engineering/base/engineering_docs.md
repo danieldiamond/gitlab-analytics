@@ -33,3 +33,6 @@ This data is first gathered by getting the CSV located in the data project [here
 The data eventually made available through dbt currently only involves numbers of lines and files changed by the merge request.
 
 {% enddocs %}
+
+{% docs engineering_development_team_members %}
+{% enddocs %}
