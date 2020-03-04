@@ -38,7 +38,7 @@
   script:
     - echo $MANIFEST_NAME
     - cd extract/postgres_pipeline/postgres_pipeline/
-    - python main.py tap ../manifests/ci_stats_db_manifest.yaml --load_type test
+    - python main.py tap ../manifests/${MANIFEST_NAME}_db_manifest.yaml --load_type test
   only:
     - merge_requests
     - $MANIFEST_NAME
