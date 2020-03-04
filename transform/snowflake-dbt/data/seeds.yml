@@ -1,0 +1,5 @@
+version: 2
+
+seeds:
+  - name: handbook_file_classification_mapping
+    description: This a csv loaded by dbt seed for mapping handbook file paths to divisions/department classifications.

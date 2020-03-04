@@ -62,6 +62,16 @@ models:
               - not_null
   - name: sfdc_contact_pii
     description: This is the segregated PII data from the sfdc_contact base model
+    columns:
+        - name: contact_email
+          meta:
+            pii: true
+        - name: contact_id
+          meta:
+            pii: true
+        - name: contact_name
+          meta:
+            pii: true
   - name: sfdc_executive_business_review
     description: base model for SFDC Executive Business Reviews
     columns:

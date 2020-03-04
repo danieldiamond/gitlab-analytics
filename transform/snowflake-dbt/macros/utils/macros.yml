@@ -1,0 +1,5 @@
+version: 2
+
+macros:
+  - name: generate_schema_name
+    description: This is our override of the native generate_schema_name macro

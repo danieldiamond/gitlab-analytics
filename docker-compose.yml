@@ -85,7 +85,7 @@ services:
           target: /usr/local/analytics
 
     dbt_image:
-      image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
+      image: registry.gitlab.com/gitlab-data/data-image/dbt-image:tayloramurphy-master-patch-26124
       environment:
         DBT_PROFILES_DIR: /usr/local/dbt_profiles/
         SNOWFLAKE_SNAPSHOT_DATABASE: "SNOWFLAKE"

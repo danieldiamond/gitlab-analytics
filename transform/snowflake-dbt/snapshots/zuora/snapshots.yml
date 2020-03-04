@@ -1,0 +1,5 @@
+version: 2
+
+snapshots:
+  - name: zuora_account_snapshots
+    description: Snapshot of the raw Zuora account table.
