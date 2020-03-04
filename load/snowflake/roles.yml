@@ -1450,7 +1450,7 @@ users:
             - ksmith
             - securityadmin
 
-     - lmai:
+    - lmai:
         can_login: yes
         member_of:
             - lmai
