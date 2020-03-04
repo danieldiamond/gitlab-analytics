@@ -3,12 +3,13 @@
     {{
         config(
           strategy='timestamp',
-          unique_key=['transaction_line_id', 'transaction_id'],
+          unique_key='id',
           updated_at='date_last_modified_gmt',
         )
     }}
 
-    SELECT *
+    SELECT concat(transaction_id, transaction_line_id) as id,
+           *
     FROM {{ source('netsuite', 'transaction_lines') }}
 
 {% endsnapshot %}
