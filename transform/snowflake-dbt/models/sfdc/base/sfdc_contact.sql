@@ -52,6 +52,7 @@ WITH source AS (
         ee_trial_end_date__c        AS ee_trial_end_date,
         industry__c                 AS industry,
         responded_to_githost_price_change__c AS responded_to_githost_price_change, -- maybe we can exclude this if it's not relevant
+        core_check_in_notes__c      AS core_check_in_notes,
         leadsource                  AS lead_source,
         lead_source_type__c         AS lead_source_type,
         outreach_stage__c           AS outreach_stage,
