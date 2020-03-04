@@ -120,3 +120,43 @@ models:
           tests:
             - accepted_values:
                 values: ['headcount_start', 'headcount_end', 'hires', 'total_separated', 'voluntary_separations', 'involuntary_separations']
+  - name: bamboohr_headcount_intermediate_v2
+    description: This is the intermediate model to creating out the headcount report. This report provides headcounts, hires, separations by diversity fields, department, and division.
+    columns: 
+        - name: month_date	
+        - name: breakout_type	
+          description: Explains the breakout of the data in the columns associated to this field.
+          tests:
+            - accepted_values:
+                    values: ['all_attributes_breakout', eeoc_breakout','division_breakout']
+        - name: department	
+        - name: division
+        - name: eeoc_field_name	
+          description: Identifies what eeoc field the data is associated to.
+          tests: 
+            - accepted_values:
+                values: ['no_eeoc','ethnicity','gender','region','nationality']
+        - name: eeoc_value
+          description: This is the answer to the eeoc questions. For example, for the eeoc gender field we could have female, male, choose not to identify.
+        - name: headcount_start	
+        - name: headcount_end	
+        - name: headcount_average	
+        - name: hire_count	
+        - name: separation_count	
+        - name: voluntary_separation	
+        - name: involuntary_separation	
+        - name: headcount_start_leader	
+        - name: headcount_end_leader	
+        - name: headcount_average_leader	
+        - name: hired_leaders	
+        - name: separated_leaders	
+        - name: headcount_start_manager	
+        - name: headcount_end_manager	
+        - name: headcount_average_manager	
+        - name: hired_manager	
+        - name: separated_manager	
+        - name: headcount_start_contributor	
+        - name: headcount_end_individual_contributor	
+        - name: headcount_average_contributor	
+        - name: hired_contributor	
+        - name: separated_contributor

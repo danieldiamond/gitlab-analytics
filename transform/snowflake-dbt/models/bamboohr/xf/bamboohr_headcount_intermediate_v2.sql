@@ -31,7 +31,7 @@
       " %}
 
 
-with dates AS (
+WITH dates AS (
 
     SELECT
       date_actual                                 AS start_date,

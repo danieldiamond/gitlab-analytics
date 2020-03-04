@@ -13,7 +13,7 @@
                                               ORDER BY base.month_date)
                               " %}
 
-with source AS (
+WITH source AS (
 
     SELECT *
     FROM {{ ref ('bamboohr_headcount_intermediate_v2') }}

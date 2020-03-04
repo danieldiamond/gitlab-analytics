@@ -58,14 +58,19 @@ WITH source AS (
       (LAG(DATEADD('day',-1,renamed.effective_date), 1) OVER (PARTITION BY renamed.employee_id ORDER BY renamed.effective_date DESC)) AS effective_end_date
     FROM renamed
     
-)
+), final AS (
 
-SELECT 
-  final.*,
-  IFF(final.effective_date< '2020-02-28', sheetload_job_roles.job_role, job_role.job_role) AS job_role
-FROM final
- LEFT JOIN sheetload_job_roles
+    SELECT 
+      final.*,
+      IFF(final.effective_date< '2020-02-28', sheetload_job_roles.job_role, job_role.job_role) AS job_role
+    FROM final
+    LEFT JOIN sheetload_job_roles
       ON sheetload_job_roles.job_title = final.job_title
-LEFT JOIN job_role
+    LEFT JOIN job_role
       ON job_role.employee_id = final.employee_id
       AND final.effective_date BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_Date, {{max_date_in_bamboo_analyses()}})
+
+)
+
+SELECT * 
+FROM final
