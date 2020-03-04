@@ -50,7 +50,7 @@ WITH dates AS (
 
     SELECT 
       employee_id,
-      field_name                         AS eeoc_field_name, 
+      LOWER(field_name)                  AS eeoc_field_name, 
       COALESCE(value, 'Not Identified')  AS eeoc_value
     FROM mapping
 
