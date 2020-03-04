@@ -64,11 +64,9 @@ WITH source AS (
 
         -- opportunity information
         acv_2__c                       AS acv,
-        CASE WHEN acv_2__c >= 0
-          THEN 1
-        ELSE 0
-        END                            AS closed_deals, -- so that you can exclude closed deals that had negative impact
-        competitors__C                 AS competitors,
+        IFF(acv_2__c >= 0, 1, 0)       AS closed_deals, -- so that you can exclude closed deals that had negative impact
+        competitors__c                 AS competitors,
+        critical_deal_flag__c          AS critical_deal_flag,
         {{sfdc_deal_size('incremental_acv_2__c', 'deal_size')}},
         forecastcategoryname           AS forecast_category_name,
         incremental_acv_2__c           AS forecasted_iacv,
@@ -97,6 +95,23 @@ WITH source AS (
         upside_swing_deal_iacv__c      AS upside_swing_deal_iacv,
         web_portal_purchase__c         AS is_web_portal_purchase,
         opportunity_term__c            AS opportunity_term,
+
+        -- command plan fields
+        fm_champion__c                 AS cp_champion,
+        fm_close_plan__c               AS cp_close_plan,
+        fm_competition__c              AS cp_competition,
+        fm_decision_criteria__c        AS cp_decision_criteria,
+        fm_decision_process__c         AS cp_decision_process,
+        fm_economic_buyer__c           AS cp_economic_buyer,
+        fm_identify_pain__c            AS cp_identify_pain,
+        fm_metrics__c                  AS cp_metrics,
+        fm_risks__c                    AS cp_risks,
+        fm_use_cases__c                AS cp_use_cases,
+        fm_value_driver__c             AS cp_value_driver,
+        fm_why_do_anything_at_all__c   AS cp_why_do_anything_at_all,
+        fm_why_gitlab__c               AS cp_why_gitlab,
+        fm_why_now__c                  AS cp_why_now,
+        
         -- metadata
         convert_timezone('America/Los_Angeles',convert_timezone('UTC',
                  CURRENT_TIMESTAMP())) AS _last_dbt_run,

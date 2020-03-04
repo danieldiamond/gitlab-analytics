@@ -143,6 +143,8 @@ models:
     greenhouse:
       base:
         schema: sensitive
+      xf:
+        schema: sensitive  
       rpt:
         schema: analytics
     
@@ -221,6 +223,9 @@ snapshots:
     license:
       tags: ["daily"]
 
+    netsuite:
+      tags: ["daily"]
+
     sfdc:
       tags: ["daily"]
 
@@ -228,4 +233,4 @@ snapshots:
       tags: ["daily"]
 
     zuora:
-      tags: ["weekly"]
+      tags: ["daily"]
