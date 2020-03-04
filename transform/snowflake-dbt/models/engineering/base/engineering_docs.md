@@ -35,4 +35,7 @@ The data eventually made available through dbt currently only involves numbers o
 {% enddocs %}
 
 {% docs engineering_development_team_members %}
+
+This data is publicly available data about the GitLab team-members in the engineering division.  This data is gathered, like other engineering extracts, by querying a public cloud function that returns the entire JSON array.  One extract of data results in a single row in the RAW table.  The row is an array with all of the team member data.
+
 {% enddocs %}
