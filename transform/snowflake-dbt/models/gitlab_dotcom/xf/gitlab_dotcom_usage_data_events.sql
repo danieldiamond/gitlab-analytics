@@ -97,6 +97,14 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "epics",
+    "source_table_name": "gitlab_dotcom_epics",
+    "user_column_name": "author_id",
+    "key_to_group_project": "group_id",
+    "primary_key": "epic_id",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "groups",
     "source_cte_name": "group_members",
     "user_column_name": "user_id",
