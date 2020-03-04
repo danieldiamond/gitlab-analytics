@@ -68,4 +68,4 @@ FROM final
       ON sheetload_job_roles.job_title = final.job_title
 LEFT JOIN job_role
       ON job_role.employee_id = final.employee_id
-      AND job_role.effective_date BETWEEN final.effective_date AND COALESCE(final.effective_end_date, {{max_date_in_bamboo_analyses()}})
+      AND final.effective_date BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_Date, {{max_date_in_bamboo_analyses()}})

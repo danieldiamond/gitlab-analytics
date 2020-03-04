@@ -51,7 +51,7 @@ WITH RECURSIVE employee_directory AS (
     SELECT 
       employee_id,
       MIN(valid_from_date) AS employment_status_first_value
-     FROM "ANALYTICS"."ANALYTICS_SENSITIVE"."BAMBOOHR_EMPLOYMENT_STATUS_XF"     
+     FROM {{ ref('bamboohr_employment_status_xf') }}
      GROUP BY 1 
 
 ), enriched AS (
@@ -71,11 +71,11 @@ WITH RECURSIVE employee_directory AS (
       IFF(employment_status = 'Terminated', True, False)            AS is_termination_date,
       IFF(rehire_date = date_actual, True, False)                   AS is_rehire_date,
       IFF(hire_date< employment_status_first_value,
-            'Active', employment_status)                             AS employment_status
+            'Active', employment_status)                            AS employment_status
     FROM date_details
     LEFT JOIN employee_directory
       ON hire_date::date <= date_actual
-      AND COALESCE(termination_date::date, {{max_date_in_bamboo_analyses()}}) > date_actual
+      AND COALESCE(termination_date::date, {{max_date_in_bamboo_analyses()}}) >= date_actual
     LEFT JOIN department_info
       ON employee_directory.employee_id = department_info.employee_id
       AND date_actual between effective_date 
@@ -143,6 +143,6 @@ SELECT
 FROM enriched
 LEFT JOIN calculated_layers
   ON enriched.date_actual = calculated_layers.date_actual
- AND full_name = employee
- AND enriched.employment_status IS NOT NULL
-
+  AND full_name = employee
+  AND enriched.employment_status IS NOT NULL
+WHERE employment_status IS NOT NULL
