@@ -1191,6 +1191,8 @@ tables:
       , file_name
       , file
       FROM packages_package_files
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'packages_package_files'
     export_table_primary_key: id
@@ -1205,6 +1207,8 @@ tables:
       , version
       , package_type
       FROM packages_packages
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'packages_packages'
     export_table_primary_key: id
@@ -1217,6 +1221,8 @@ tables:
       , created_at
       , updated_at
       FROM packages_tags
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'packages_tags'
     export_table_primary_key: id
