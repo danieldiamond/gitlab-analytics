@@ -195,7 +195,7 @@ clone_repo_cmd = f"""
     if [[ -z "$GIT_COMMIT" ]]; then
         export GIT_COMMIT="HEAD"
     fi
-    echo "git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}"" &&
+    echo "git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}" &&
     git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO} &&
     echo "checking out commit $GIT_COMMIT" &&
     cd analytics &&
