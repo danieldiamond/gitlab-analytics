@@ -199,6 +199,9 @@ clone_repo_cmd = f"""
     git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO} &&
     echo "checking out commit $GIT_COMMIT" &&
     cd analytics &&
+    echo "pwd" &&
+    pwd &&
+    echo "git checkout $GIT_COMMIT" &&
     git checkout $GIT_COMMIT &&
     cd .."""
 
