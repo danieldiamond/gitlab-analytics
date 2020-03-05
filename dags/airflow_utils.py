@@ -8,7 +8,6 @@ from airflow.contrib.kubernetes.pod import Resources
 from airflow.operators.slack_operator import SlackAPIPostOperator
 
 REPO = "https://gitlab.com/gitlab-data/analytics.git"
-REMOTE = "git@gitlab.com:gitlab-data/analytics.git"
 DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
 DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
 PERMIFROST_IMAGE = "registry.gitlab.com/gitlab-data/permifrost:v0.0.2"
@@ -204,7 +203,7 @@ clone_repo_sha_cmd = f"""
     mkdir analytics &&
     cd analytics &&
     git init &&
-    git remote add origin {REMOTE} &&
+    git remote add origin {REPO} &&
     git fetch --depth 1 origin $GIT_COMMIT &&
     git checkout FETCH_HEAD"""
 
