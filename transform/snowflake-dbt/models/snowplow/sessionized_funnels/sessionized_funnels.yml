@@ -1,0 +1,9 @@
+version: 2
+
+models:
+    - name: sessionized_saas_funnel_90
+      description: This is the base table for snowplow events captured by Fishtown's infrastructure. It unpacks all of the JSON, including unstructured events.
+      columns:
+          - name: session_id
+            tests:
+                - not_null

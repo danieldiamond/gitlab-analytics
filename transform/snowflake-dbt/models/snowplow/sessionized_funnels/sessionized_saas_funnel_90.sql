@@ -42,7 +42,6 @@ saas_funnel_subscription_start_page AS (
   
     SELECT 
         saas_funnel_subscription_start_page.session_id,
-        saas_funnel_subscription_start_page.min_tstamp,
         saas_funnel_subscription_start_page.session_id IS NOT NULL   AS subscription_funnel_start_page,
         MIN(saas_funnel_subscription_start_page.min_tstamp)          AS subscription_funnel_start_min_tsamp,
         saas_funnel_subscription_success_page.session_id IS NOT NULL AS subscription_funnel_success_page,
@@ -50,7 +49,7 @@ saas_funnel_subscription_start_page AS (
     FROM saas_funnel_subscription_start_page
     LEFT JOIN saas_funnel_subscription_success_page 
         ON saas_funnel_subscription_start_page.session_id = saas_funnel_subscription_success_page.session_id
-    GROUP BY 1,2,3,5
+    GROUP BY 1,2,4
 )
 
 SELECT *
