@@ -199,9 +199,6 @@ clone_repo_cmd = f"""
     git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO} &&
     echo "checking out commit $GIT_COMMIT" &&
     cd analytics &&
-    echo "pwd" &&
-    pwd &&
-    echo "git checkout $GIT_COMMIT" &&
     git checkout $GIT_COMMIT &&
     cd .."""
 
@@ -210,6 +207,7 @@ clone_repo_sha_cmd = f"""
     cd analytics &&
     git init &&
     git remote add origin {REPO} &&
+    echo "Fetching commit $GIT_COMMIT" &&
     git fetch --depth 1 origin $GIT_COMMIT --quiet &&
     git checkout FETCH_HEAD"""
 
