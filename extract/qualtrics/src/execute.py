@@ -51,11 +51,11 @@ if __name__ == "__main__":
         )
     contacts_to_write = []
     for distribution in distributions_to_write:
-        for recipient in distribution["recipients"]:
-            if recipient["mailingListId"]:
-                for contact in client.get_contacts(POOL_ID, recipient["mailingListId"]):
-                    contact["mailingListId"] = recipient["mailingListId"]
-                    contacts_to_write.append(contact)
+        mailing_list_id = distribution["recipients"]["mailingListId"]
+        if mailing_list_id:
+            for contact in client.get_contacts(POOL_ID, mailing_list_id):
+                contact["mailingListId"] = mailing_list_id
+                contacts_to_write.append(contact)
 
     snowflake_stage_load_copy_remove(
         "surveys.json",
