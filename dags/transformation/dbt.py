@@ -86,7 +86,7 @@ dbt_commit_hash_setter = KubernetesPodOperator(
     env_vars=pod_env_vars,
     arguments=[
         f"""{clone_repo_cmd} &&
-            cd analytics/transform/snowflake-dbt/ & 
+            cd analytics/transform/snowflake-dbt/ &&
             mkdir -p /airflow/xcom/ &&
             echo "{{\\"commit_hash\\": \\"$(git rev-parse HEAD)\\"}}" >> /airflow/xcom/return.json
         """
