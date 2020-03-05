@@ -58,9 +58,9 @@ if __name__ == "__main__":
                     contacts_to_write.append(contact)
 
     snowflake_stage_load_copy_remove(
-        f"survey.json",
+        "surveys.json",
         "raw.qualtrics.qualtrics_load",
-        f"raw.qualtrics.survey",
+        "raw.qualtrics.survey",
         snowflake_engine,
     )
 
@@ -69,9 +69,9 @@ if __name__ == "__main__":
             json.dump(distributions_to_write, out_file)
 
         snowflake_stage_load_copy_remove(
-            f"distributions.json",
+            "distributions.json",
             "raw.qualtrics.qualtrics_load",
-            f"raw.qualtrics.distribution",
+            "raw.qualtrics.distribution",
             snowflake_engine,
         )
 
@@ -80,8 +80,8 @@ if __name__ == "__main__":
             json.dump(contacts_to_write, out_file)
 
         snowflake_stage_load_copy_remove(
-            f"contacts.json",
+            "contacts.json",
             "raw.qualtrics.qualtrics_load",
-            f"raw.qualtrics.contact",
+            "raw.qualtrics.contact",
             snowflake_engine,
         )
