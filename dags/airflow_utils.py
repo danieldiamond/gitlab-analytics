@@ -190,6 +190,7 @@ xs_warehouse = f"'{{warehouse_name: transforming_xs}}'"
 
 l_warehouse = f"'{{warehouse_name: transforming_l}}'"
 
+# git commands
 clone_repo_cmd = f"""
     if [[ -z "$GIT_COMMIT" ]]; then
         export GIT_COMMIT="HEAD"
@@ -198,14 +199,24 @@ clone_repo_cmd = f"""
     echo "checking out commit $GIT_COMMIT" &&
     cd analytics && git checkout $GIT_COMMIT && cd .. """
 
+clone_repo_sha_cmd = f"""
+    mkdir analytics &&
+    cd analytics &&
+    git init &&
+    git remote add origin {REPO} &&
+    git fetch --depth 1 origin $GIT_COMMIT --quiet &&
+    git checkout FETCH_HEAD"""
+
+# extract command
 clone_and_setup_extraction_cmd = f"""
     {clone_repo_cmd} &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/"""
 
+# dbt commands
 clone_and_setup_dbt_cmd = f"""
-    {clone_repo_cmd} &&
-    cd analytics/transform/snowflake-dbt/"""
+    {clone_repo_sha_cmd} &&
+    cd transform/snowflake-dbt/"""
 
 dbt_install_deps_cmd = f"""
     {clone_and_setup_dbt_cmd} &&
