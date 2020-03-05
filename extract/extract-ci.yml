@@ -11,7 +11,6 @@
     - echo $SNOWFLAKE_DATABASE
     - if [ $SNOWFLAKE_DATABASE = "master" ]; then export SNOWFLAKE_TRANSFORM_DATABASE="ANALYTICS"; else export SNOWFLAKE_TRANSFORM_DATABASE="${CI_COMMIT_REF_NAME^^}_ANALYTICS"; fi
     - echo $SNOWFLAKE_TRANSFORM_DATABASE
-    - echo $
   tags:
     - analytics
 
@@ -38,7 +37,7 @@
   script:
     - echo $MANIFEST_NAME
     - cd extract/postgres_pipeline/postgres_pipeline/
-    - python main.py tap ../manifests/${MANIFEST_NAME}_db_manifest.yaml --load_type test
+    - python main.py tap ../manifests/${MANIFEST_NAME}_db_manifest.yaml --load_type check_missing_tables
   only:
     - merge_requests
     - $MANIFEST_NAME
