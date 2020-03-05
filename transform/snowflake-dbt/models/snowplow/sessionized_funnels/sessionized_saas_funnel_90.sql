@@ -21,7 +21,7 @@ saas_funnel_subscription_start_page AS (
       page_url_path,
       page_url_query,
       snowplow_page_views_90.referer_url_path,
-      min_tstamp
+      min_tstampa
     FROM snowplow_page_views_90
     LEFT JOIN snowplow_sessions_90
       ON snowplow_page_views_90.session_id = snowplow_sessions_90.session_id
@@ -55,3 +55,4 @@ saas_funnel_subscription_start_page AS (
 
 SELECT *
 FROM joined
+ORDER BY subscription_funnel_start_page ASC
