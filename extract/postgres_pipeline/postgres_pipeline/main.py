@@ -53,7 +53,7 @@ class PostgresToSnowflakePipeline:
         self.additional_filtering = table_config.get("additional_filtering", "")
 
         # helpers
-        self.temp_table = f"{self.target_table}_TEMP"
+        self.temp_table = None
 
         self.schema_changed = check_if_schema_changed(
             raw_query=self.raw_query,
@@ -63,6 +63,9 @@ class PostgresToSnowflakePipeline:
             target_engine=self.target_engine,
             target_table=self.target_table,
         )
+        #If schema has changed data will be loaded to TEMP table and target table will be replaced with TEMP table at the end
+        if self.schema_changed:
+            self.temp_table = f"{self.target_table}_TEMP"
 
     def load_ids(self, id_range: int = 100_000) -> None:
         """ Load a query by chunks of IDs instead of all at once."""
@@ -74,7 +77,7 @@ class PostgresToSnowflakePipeline:
             self.raw_query,
             self.target_engine,
             self.source_table,
-            self.target_table,
+            self.temp_table,
             id_range=id_range,
         )
         # Iterate through the generated queries
@@ -88,7 +91,7 @@ class PostgresToSnowflakePipeline:
                 query=filtered_query,
                 source_engine=self.source_engine,
                 target_engine=self.target_engine,
-                target_table=self.target_table,
+                target_table=self.temp_table,
                 backfill=backfill,
             )
             backfill = False  # this prevents it from seeding rows for every chunk
@@ -122,21 +125,20 @@ class PostgresToSnowflakePipeline:
 
         if "{EXECUTION_DATE}" not in self.raw_query:
             logging.info(
-                f"Table {self.source_table} does not need incremental processing."
+                f"Table {self.target_table} does not need incremental processing."
             )
             return False
-        # If _TEMP exists in the table name, skip it because it needs a full sync
+        # If _TEMP table is set, skip it because it needs a full sync
         # If a temp table exists then it needs to finish syncing so don't load incrementally
-        if "_TEMP" == self.target_table[-5:] or self.target_engine.has_table(
-            f"{self.target_table}_TEMP"
-        ):
+        if self.temp_table is not None or self.target_engine.has_table(f"{self.target_table}_TEMP"):
             logging.info(
-                f"Table {self.source_table} needs to be backfilled due to schema change, aborting incremental load."
+                f"Table {self.target_table} needs to be backfilled due to schema change, aborting incremental load."
             )
             return False
         env = os.environ.copy()
         query = f"{self.raw_query.format(**env)} {self.additional_filtering}"
         logging.info(query)
+
         chunk_and_upload(
             query=query,
             source_engine=self.source_engine,
@@ -153,9 +155,9 @@ class PostgresToSnowflakePipeline:
         if "{EXECUTION_DATE}" not in self.raw_query:
             logging.info(f"Table {self.source_table} does not need sync processing.")
             return False
-        # If temp isn't in the name, we don't need to full sync.
+        # If temp is not set (schema not changed), we don't need to full sync.
         # If a temp table exists, we know the sync didn't complete successfully
-        if "_TEMP" != self.target_table[-5:] and not self.target_engine.has_table(
+        if self.temp_table is None and not self.target_engine.has_table(
             f"{self.target_table}_TEMP"
         ):
             logging.info(f"Table {self.source_table} doesn't need a full sync.")
@@ -174,15 +176,15 @@ class PostgresToSnowflakePipeline:
             return False
 
         # If the schema has changed for the SCD table, treat it like a backfill
-        if "_TEMP" == self.temp_table[-5:] or self.target_engine.has_table(
-            f"{self.temp_table}_TEMP"
-        ):
+        if self.temp_table is not None or self.target_engine.has_table(f"{self.target_table}_TEMP"):
             logging.info(
-                f"Table {self.target_table} needs to be recreated to due to schema change. Recreating...."
+                f"Table {self.target_table} needs to be recreated due to schema change. Recreating...."
             )
             backfill = True
+            load_to_table = self.temp_table
         else:
             backfill = False
+            load_to_table = self.target_table
 
         logging.info(f"Processing table: {self.target_table}")
         query = f"{self.raw_query} {self.additional_filtering}"
@@ -191,7 +193,7 @@ class PostgresToSnowflakePipeline:
             query=query,
             source_engine=self.source_engine,
             target_engine=self.target_engine,
-            target_table=self.temp_table,
+            target_table=load_to_table,
             backfill=backfill,
             advanced_metadata=self.advanced_metadata,
         )
@@ -212,7 +214,7 @@ class PostgresToSnowflakePipeline:
         if "{EXECUTION_DATE}" not in self.raw_query:
             logging.info(f"Table {self.source_table} does not need id validation.")
             return False
-        if "_TEMP" == self.target_table[-5:] or self.target_engine.has_table(
+        if self.temp_table is not None or self.target_engine.has_table(
             f"{self.target_table}_TEMP"
         ):
             logging.info(
@@ -262,7 +264,7 @@ class PostgresToSnowflakePipeline:
         raw_query = self.raw_query.split("WHERE")[0]
 
         # Figure out if the table exists
-        if "_TEMP" != self.target_table[-5:] and not self.target_engine.has_table(
+        if self.temp_table is not None and not self.target_engine.has_table(
             f"{self.target_table}_TEMP"
         ):
             logging.info(
@@ -271,12 +273,12 @@ class PostgresToSnowflakePipeline:
             return False
 
         # If the table doesn't exist, load 1 million rows (or whatever the table has)
-        query = f"{self.raw_query} WHERE {self.primary_key} IS NOT NULL {self.additional_filtering} LIMIT 100000"
+        query = f"{raw_query} WHERE {self.primary_key} IS NOT NULL {self.additional_filtering} LIMIT 100000"
         chunk_and_upload(
             query=query,
             source_engine=self.source_engine,
             target_engine=self.target_engine,
-            target_table=self.target_table,
+            target_table=self.temp_table,
             backfill=True,
             advanced_metadata=self.advanced_metadata,
         )
@@ -287,8 +289,7 @@ class PostgresToSnowflakePipeline:
         # Check if the schema has changed or the table is new
 
         if self.schema_changed:
-            real_table_name = self.target_table
-            logging.info(f"Schema has changed for table: {self.target_table}.")
+            logging.info(f"Schema has changed for table: {self.source_table}.")
 
         # Call the correct function based on the load_type
         load_method = getattr(self, load_type)
