@@ -204,7 +204,7 @@ clone_repo_sha_cmd = f"""
     cd analytics &&
     git init &&
     git remote add origin {REPO} &&
-    git fetch --depth 1 origin $GIT_COMMIT &&
+    git fetch --depth 1 origin $GIT_COMMIT --quiet &&
     git checkout FETCH_HEAD"""
 
 # extract command
@@ -216,7 +216,7 @@ clone_and_setup_extraction_cmd = f"""
 # dbt commands
 clone_and_setup_dbt_cmd = f"""
     {clone_repo_sha_cmd} &&
-    cd analytics/transform/snowflake-dbt/"""
+    cd transform/snowflake-dbt/"""
 
 dbt_install_deps_cmd = f"""
     {clone_and_setup_dbt_cmd} &&
