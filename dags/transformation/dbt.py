@@ -8,6 +8,7 @@ from airflow.operators.python_operator import BranchPythonOperator
 from airflow.utils.trigger_rule import TriggerRule
 from airflow_utils import (
     DBT_IMAGE,
+    clone_repo_cmd,
     clone_and_setup_dbt_cmd,
     dbt_install_deps_and_seed_cmd,
     dbt_install_deps_cmd,
