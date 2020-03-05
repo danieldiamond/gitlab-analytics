@@ -66,6 +66,7 @@ qualtrics_operator = KubernetesPodOperator(
         **{
             "START_TIME": "{{ execution_date.isoformat() }}",
             "END_TIME": "{{ next_execution_date.isoformat() }}",
+            "QUALTRICS_DATA_CENTER": "eu",
         },
     },
     arguments=[qualtrics_extract_command],
