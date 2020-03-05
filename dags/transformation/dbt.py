@@ -84,7 +84,7 @@ dbt_commit_hash_setter = KubernetesPodOperator(
     name="dbt-commit-hash-setter",
     env_vars=pod_env_vars,
     arguments=[
-        f"""{clone_and_setup_dbt_cmd} && 
+        f"""{clone_repo_cmd} && 
             mkdir -p /airflow/xcom/ &&
             echo "{{\\"commit_hash\\": \\"$(git rev-parse HEAD)\\"}}" >> /airflow/xcom/return.json
         """
