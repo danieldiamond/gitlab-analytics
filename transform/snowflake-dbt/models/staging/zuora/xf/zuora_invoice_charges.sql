@@ -45,6 +45,7 @@ WITH zuora_account AS (
       zuora_subscription.version                          AS subscription_version,
       zuora_rate_plan_charge.rate_plan_charge_id,
       zuora_rate_plan_charge.rate_plan_charge_number,
+      zuora_rate_plan_charge.rate_plan_charge_name,
       zuora_rate_plan_charge.segment                      AS rate_plan_charge_segment,
       zuora_rate_plan_charge.version                      AS rate_plan_charge_version,
       zuora_rate_plan_charge.effective_start_date::DATE   AS effective_start_date,
