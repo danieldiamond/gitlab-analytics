@@ -91,9 +91,15 @@ models:
     - name: headcount_leader
     - name: hired_leaders
     - name: separated_leaders
+    - name: rolling_12_month_headcount_leader
+    - name: rolling_12_month_separations_leader
+    - name: retention_leader
     - name: headcount_manager
     - name: hired_manager
     - name: separated_manager
+    - name: rolling_12_month_headcount_manager
+    - name: rolling_12_month_separations_manager
+    - name: retention_manager
     - name: headcount_contributor
     - name: hired_contributor
     - name: separated_contributor

@@ -140,17 +140,17 @@ WITH source AS (
       rolling_12_month_headcount_manager,
       rolling_12_month_separations_manager,
       retention_manager,
-
+ 
       IFF(headcount_average_contributor < 4, null, 
             headcount_average_contributor)                                  AS headcount_contributor,
       IFF(hired_contributor < 4, null, hired_contributor)                   AS hired_contributor,
-      IFF(separated_contributor < 4 null, separated_contributor)            AS separated_contributor,
+      IFF(separated_contributor < 4, null, separated_contributor)            AS separated_contributor,
 
       IFF(min_headcount_average <2, null, percent_of_headcount)             AS percent_of_headcount,
       IFF(min_hire_count <2, null, percent_of_hires)                        AS percent_of_hires,
       IFF(min_headcount_leader <2, null, percent_of_headcount_leaders)      AS percent_of_headcount_leaders,
       IFF(min_headcount_manager <2, null, percent_of_headcount_manager)     AS percent_of_headcount_manager,
-      IFF(min_headcount_contributor <2, null, percent_of_headcount_leaders) AS percent_of_headcount_contributor 
+      IFF(min_headcount_contributor <2, null, percent_of_headcount_leaders) AS percent_of_headcount_contributor
     FROM intermediate   
 
 )
