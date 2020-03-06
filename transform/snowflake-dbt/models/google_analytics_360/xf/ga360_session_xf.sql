@@ -16,7 +16,7 @@ WITH sessions AS (
 	FROM sessions
 	LEFT JOIN session_custom_dims AS clientid_dim
 		ON sessions.visit_id = clientid_dim.visit_id
-			and clientid_dim.dimension_index = 6 --clientID
+		    and clientid_dim.dimension_index = 6 --clientID
 )
 
 SELECT *
