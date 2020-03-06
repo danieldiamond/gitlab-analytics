@@ -37,7 +37,7 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    "dbt_proof_of_concept", default_args=default_args, schedule_interval=None
+    "dbt_proof_of_concept", default_args=default_args, schedule_interval="0 6 * * 0"
 )
 
 
