@@ -56,7 +56,7 @@ class PostgresToSnowflakePipeline:
         self.additional_filtering = table_config.get("additional_filtering", "")
 
         # helpers
-        self.temp_table = None
+        self.temp_table = f"{self.target_table}_TEMP"
 
         self.schema_changed = check_if_schema_changed(
             raw_query=self.raw_query,
@@ -66,9 +66,6 @@ class PostgresToSnowflakePipeline:
             target_engine=self.target_engine,
             target_table=self.target_table,
         )
-        #If schema has changed data will be loaded to TEMP table and target table will be replaced with TEMP table at the end
-        if self.schema_changed:
-            self.temp_table = f"{self.target_table}_TEMP"
 
     def load_ids(self, id_range: int = 100_000) -> None:
         """ Load a query by chunks of IDs instead of all at once."""
