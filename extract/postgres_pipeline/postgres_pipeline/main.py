@@ -61,7 +61,7 @@ class PostgresToSnowflakePipeline:
         self.schema_changed = check_if_schema_changed(
             raw_query=self.raw_query,
             source_engine=self.source_engine,
-            source_table=table_config.get("export_table"),
+            source_table=self.source_table,
             table_index=self.primary_key,
             target_engine=self.target_engine,
             target_table=self.target_table,
