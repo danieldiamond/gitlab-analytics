@@ -77,7 +77,7 @@ WITH zuora_account AS (
     FROM zuora_invoice_item
     INNER JOIN zuora_invoice
       ON zuora_invoice_item.invoice_id = zuora_invoice.invoice_id
-    WHERE invoice_status = 'Posted'
+    WHERE zuora_invoice.status = 'Posted'
 
 ), final AS (
 

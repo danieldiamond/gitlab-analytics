@@ -16,7 +16,7 @@ WITH source AS (
       duedate                     AS due_date,
       invoicenumber               AS invoice_number,
       invoicedate                 AS invoice_date,
-      status                      AS invoice_status,
+      status                      AS status,
 
       lastemailsentdate           AS last_email_sent_date,
       posteddate                  AS posted_date,
