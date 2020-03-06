@@ -13,6 +13,10 @@
 
             {{ target.schema.lower() }}_{{ custom_schema_name | trim }}
 
+        {%- elif custom_schema_name is none -%}
+
+            {{ target.schema.lower() | trim }}
+
         {%- else -%}
             
             {{ custom_schema_name.lower() | trim }}
@@ -21,7 +25,15 @@
 
     {%- else -%}
     
-        {{ target.schema.lower() }}_{{ custom_schema_name | trim }}
+        {%- if custom_schema_name is none -%}
+
+            {{ target.schema.lower() | trim }}
+
+        {%- else -%}
+            
+            {{ target.schema.lower() }}_{{ custom_schema_name | trim }}
+
+        {%- endif -%}
     
     {%- endif -%}
 
