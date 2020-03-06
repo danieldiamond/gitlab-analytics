@@ -3,27 +3,26 @@
 
 {% macro generate_schema_name(custom_schema_name, node) -%}
 
-    {%- set default_schema = target.schema -%}
+    {%- set production_targets = ('prod','docs','ci') -%}
 
-    {%- if custom_schema_name is none 
-            or
-        (target.name in ('prod','docs','ci') and custom_schema_name.lower() == default_schema.lower())
-    -%}
+    {%- set prefixed_schemas = ('meta','sensitive','staging','temporary') -%}
+
+    {%- if target.name in production_targets -%}
         
-        {{ default_schema.lower() | trim }}
+        {%- if custom_schema_name in prefixed_schemas -%}
 
-    {%- elif 
-            custom_schema_name in ('analytics','meta','sensitive','source','staging','temporary') 
-                or
-            ('snowplow' in custom_schema_name and target.name not in ('prod','docs','ci') )
-    -%}
+            {{ target.schema.lower() }}_{{ custom_schema_name | trim }}
 
-    	{{ default_schema.lower() }}_{{ custom_schema_name | trim }}
+        {%- else -%}
+            
+            {{ target.schema.lower() | trim }}
+
+        {%- endif -%}
 
     {%- else -%}
-
-        {{ custom_schema_name.lower() | trim }}
-
+    
+        {{ target.schema.lower() }}_{{ custom_schema_name | trim }}
+    
     {%- endif -%}
 
 {%- endmacro %}
