@@ -160,7 +160,8 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         #Table to be set results
-        table_dict['target_table'] = TEST_TABLE
+        table_dict['export_table'] = TEST_TABLE
+        table_dict['export_schema'] = ''
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
@@ -170,6 +171,7 @@ class TestPostgresPipeline:
             target_engine=SNOWFLAKE_ENGINE,
             table_config=table_dict,
         )
+        assert ps_pipeline.target_table == TEST_TABLE
         ps_pipeline.incremental()
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}"
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
@@ -199,6 +201,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['target_table'] = TEST_TABLE
+        table_dict['export_schema'] = ''
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
@@ -208,6 +211,7 @@ class TestPostgresPipeline:
             target_engine=SNOWFLAKE_ENGINE,
             table_config=table_dict,
         )
+        assert ps_pipeline.target_table == TEST_TABLE
         ps_pipeline.incremental()
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}"
         target_count_results = pd.read_sql(target_count_query, SNOWFLAKE_ENGINE)
@@ -232,6 +236,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['target_table'] = TEST_TABLE
+        table_dict['export_schema'] = ''
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
             table_name=source_table,
@@ -239,6 +244,7 @@ class TestPostgresPipeline:
             target_engine=SNOWFLAKE_ENGINE,
             table_config=table_dict,
         )
+        assert ps_pipeline.target_table == TEST_TABLE
         ps_pipeline.scd()
         target_count_query = (
             f"SELECT COUNT(*) - 10000 AS row_count FROM {TEST_TABLE_TEMP}"
