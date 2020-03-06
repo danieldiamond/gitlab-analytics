@@ -169,7 +169,7 @@ yaml_validation:
   only:
     refs:
       - merge_requests
-  allow_failure:: true
+  allow_failure: true
 
 permifrost_manual:
   <<: *permifrost
