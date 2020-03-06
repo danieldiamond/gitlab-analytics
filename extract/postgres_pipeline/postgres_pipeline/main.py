@@ -133,7 +133,7 @@ class PostgresToSnowflakePipeline:
             return False
         # If _TEMP table is set, skip it because it needs a full sync
         # If a temp table exists then it needs to finish syncing so don't load incrementally
-        if self.temp_table is not None or self.target_engine.has_table(f"{self.target_table}_TEMP"):
+        if self.schema_changed or self.target_engine.has_table(f"{self.target_table}_TEMP"):
             logging.info(
                 f"Table {self.target_table} needs to be backfilled due to schema change, aborting incremental load."
             )
@@ -160,7 +160,7 @@ class PostgresToSnowflakePipeline:
             return False
         # If temp is not set (schema not changed), we don't need to full sync.
         # If a temp table exists, we know the sync didn't complete successfully
-        if self.temp_table is None and not self.target_engine.has_table(
+        if not self.schema_changed and not self.target_engine.has_table(
             f"{self.target_table}_TEMP"
         ):
             logging.info(f"Table {self.source_table} doesn't need a full sync.")
@@ -179,7 +179,7 @@ class PostgresToSnowflakePipeline:
             return False
 
         # If the schema has changed for the SCD table, treat it like a backfill
-        if self.temp_table is not None or self.target_engine.has_table(f"{self.target_table}_TEMP"):
+        if self.schema_changed or self.target_engine.has_table(f"{self.target_table}_TEMP"):
             logging.info(
                 f"Table {self.target_table} needs to be recreated due to schema change. Recreating...."
             )
@@ -217,7 +217,7 @@ class PostgresToSnowflakePipeline:
         if "{EXECUTION_DATE}" not in self.raw_query:
             logging.info(f"Table {self.source_table} does not need id validation.")
             return False
-        if self.temp_table is not None or self.target_engine.has_table(
+        if self.schema_changed or self.target_engine.has_table(
             f"{self.target_table}_TEMP"
         ):
             logging.info(
