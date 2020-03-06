@@ -11,8 +11,12 @@ WITH sessions AS (
 ), sessions_xf AS(
 
 	SELECT
+	    --sessions
 		sessions.*
+		
+		--client_id dimension
 		, clientid_dim.dimension_value 	AS client_id
+		
 	FROM sessions
 	LEFT JOIN session_custom_dims AS clientid_dim
 		ON sessions.visit_id = clientid_dim.visit_id
