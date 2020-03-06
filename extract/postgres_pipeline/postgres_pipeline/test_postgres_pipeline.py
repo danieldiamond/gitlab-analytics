@@ -163,7 +163,7 @@ class TestPostgresPipeline:
         table_dict = manifest_dict["tables"][source_table]
         #Table to be set results
         table_dict['export_table'] = TEST_TABLE
-        table_dict['export_schema'] = ''
+        table_dict['import_db'] = ''
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
@@ -203,7 +203,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['target_table'] = TEST_TABLE
-        table_dict['export_schema'] = ''
+        table_dict['import_db'] = ''
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
@@ -238,7 +238,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['target_table'] = TEST_TABLE
-        table_dict['export_schema'] = ''
+        table_dict['import_db'] = ''
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
             table_name=source_table,
