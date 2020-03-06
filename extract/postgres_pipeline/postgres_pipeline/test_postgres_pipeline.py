@@ -118,7 +118,7 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['target_table'] = TEST_TABLE
+        table_dict['export_table'] = TEST_TABLE
         table_dict['export_schema'] = ''
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
