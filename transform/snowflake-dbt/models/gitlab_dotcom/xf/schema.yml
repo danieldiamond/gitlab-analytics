@@ -156,7 +156,7 @@ models:
           - not_null
 
   - name: gitlab_dotcom_merge_requests_merged_authors_xf
-    description: This is a dbt model (view) of authors/reviewers assigned to the MRs via the Reviewer Roulette.
+    description: This is a dbt model of notes that signify a merge request being merged.
     columns:
       - name: project_id
       - name: namespace_id
