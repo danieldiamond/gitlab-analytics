@@ -25,7 +25,7 @@ WITH merge_requests AS (
       merge_requests.namespace_id,
       merge_requests.merge_request_iid,
       merge_requests.merge_request_title,
-      notes.noteable_id,
+      merge_requests.merge_request_id,
       notes.note_author_id,
       users.user_name
     FROM merge_requests
