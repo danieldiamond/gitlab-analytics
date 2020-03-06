@@ -82,6 +82,7 @@ WITH sfdc_opportunity AS (
       ELSE FALSE
       END                                                                                         AS is_risky,
       sfdc_opportunity.is_swing_deal,
+      sfdc_opportunity.is_edu_oss,
       sfdc_opportunity_stage.is_won                                                               AS is_won,
       sfdc_opportunity.net_incremental_acv,
       sfdc_opportunity.nrv,
