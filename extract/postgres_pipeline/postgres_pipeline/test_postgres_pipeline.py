@@ -119,6 +119,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['target_table'] = TEST_TABLE
+        table_dict['export_schema'] = ''
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
@@ -128,6 +129,7 @@ class TestPostgresPipeline:
             target_engine=SNOWFLAKE_ENGINE,
             table_config=table_dict,
         )
+        assert ps_pipeline.target_table == TEST_TABLE
         ps_pipeline.incremental()
         print(source_count_results)
         target_count_query = f"SELECT COUNT(*) AS row_count FROM {TEST_TABLE}"
