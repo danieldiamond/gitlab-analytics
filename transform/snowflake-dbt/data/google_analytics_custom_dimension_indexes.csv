@@ -1,0 +1,21 @@
+Name,Index,Scope
+Marketo Lead,1,Hit
+Demandbase SID,2,Session
+Company Name,3,Session
+tags,4,Session
+postType,5,Session
+clientID,6,User
+Audience,7,Session
+Audience segment,8,Session
+State,9,Session
+City,10,Session
+Country Name,11,Session
+Marketing Alias,12,Session
+Industry,13,Session
+Sub Industry,14,Session
+Revenue Range,15,Session
+Employee Range,16,Session
+Account Watch - Status,17,Session
+Account Watch - Type,18,Session
+Account Watch – Campaign Code,19,Session
+Account Watch – Account Owner,20,Session
