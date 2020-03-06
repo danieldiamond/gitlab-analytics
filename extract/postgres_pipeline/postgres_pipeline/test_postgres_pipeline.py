@@ -237,7 +237,7 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['export_table'] = TEST_TABLE
+        table_dict['export_table'] = TEST_TABLE_TEMP
         table_dict['import_db'] = None
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
@@ -246,7 +246,7 @@ class TestPostgresPipeline:
             target_engine=SNOWFLAKE_ENGINE,
             table_config=table_dict,
         )
-        assert ps_pipeline.target_table == TEST_TABLE
+        assert ps_pipeline.target_table == TEST_TABLE_TEMP
         ps_pipeline.scd()
         target_count_query = (
             f"SELECT COUNT(*) - 10000 AS row_count FROM {TEST_TABLE_TEMP}"
