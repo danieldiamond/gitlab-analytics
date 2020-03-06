@@ -175,6 +175,7 @@ permifrost_manual:
   <<: *permifrost
   script:
     - permifrost grant load/snowflake/roles.yml --diff --dry
+  when: manual
 
 # ======
 # dbt docs to GitLab Pages
