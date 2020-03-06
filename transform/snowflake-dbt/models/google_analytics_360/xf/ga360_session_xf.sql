@@ -11,8 +11,9 @@ WITH sessions AS (
 ), sessions_xf AS(
 
 	SELECT
+	    
 	    --sessions
-		sessions.*
+	    sessions.*
 		
 		--client_id dimension
 		, clientid_dim.dimension_value 	AS client_id
