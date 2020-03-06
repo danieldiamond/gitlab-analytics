@@ -75,6 +75,7 @@ WITH source AS (
         is_refund_opportunity__c       AS is_refund,
         is_downgrade_opportunity__c    AS is_downgrade,
         swing_deal__c                  AS is_swing_deal,
+        is_edu_oss_opportunity__c      AS is_edu_oss,
         net_iacv__c                    AS net_incremental_acv,
         nrv__c                         AS nrv,
         campaignid                     AS primary_campaign_source_id,
