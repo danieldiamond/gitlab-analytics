@@ -197,7 +197,7 @@ class TestPostgresPipeline:
         """
         table_cleanup(TEST_TABLE)
         # Set some env_vars for this run
-        execution_date = "2019-07-20T10:00:00+00:00"
+        execution_date = "2020-02-20T10:00:00+00:00"
         hours = "2"
         source_table = "merge_request_metrics"
         source_db = "gitlab_com_db"
