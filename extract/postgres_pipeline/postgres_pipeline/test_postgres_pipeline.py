@@ -119,7 +119,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = ''
+        table_dict['import_db'] = None
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
@@ -163,7 +163,7 @@ class TestPostgresPipeline:
         table_dict = manifest_dict["tables"][source_table]
         #Table to be set results
         table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = ''
+        table_dict['import_db'] = None
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
@@ -203,7 +203,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = ''
+        table_dict['import_db'] = None
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
@@ -238,7 +238,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = ''
+        table_dict['import_db'] = None
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
             table_name=source_table,
@@ -276,7 +276,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = ''
+        table_dict['import_db'] = None
 
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
@@ -307,7 +307,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = ''
+        table_dict['import_db'] = None
         # Set the "advanced_metadata" flag and update the env vars
         table_dict["advanced_metadata"] = True
         new_env_vars = {"TASK_INSTANCE": "task_instance_key_str"}
@@ -348,7 +348,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = ''
+        table_dict['import_db'] = None
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
             table_name=source_table,
@@ -379,7 +379,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = ''
+        table_dict['import_db'] = None
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
             table_name=source_table,
@@ -415,7 +415,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = ''
+        table_dict['import_db'] = None
         # Run the validation function and confirm it has zero IDs in the error table
         ps_pipeline = PostgresToSnowflakePipeline(
             table_name=source_table,
@@ -450,7 +450,7 @@ class TestPostgresPipeline:
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
         table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = ''
+        table_dict['import_db'] = None
         # Run the validation function and confirm it triggers a non-zero exit
         with pytest.raises(SystemExit) as pytest_wrapped_e:
             ps_pipeline = PostgresToSnowflakePipeline(

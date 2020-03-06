@@ -44,7 +44,10 @@ class PostgresToSnowflakePipeline:
         self.primary_key = table_config.get("export_table_primary_key")
         self.raw_query = table_config.get("import_query")
         # TODO: what is the source table
-        self.target_table = f"{table_config.get('import_db')}_{table_config.get('export_table')}".upper()
+        if table_config['import_db'] is not None:
+            self.target_table = f"{table_config.get('import_db')}_{table_config.get('export_table')}".upper()
+        else:
+            self.target_table = table_config['export_table']
         self.source_table = table_name
         self.source_engine, self.target_engine = source_engine, target_engine
 
