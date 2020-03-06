@@ -135,10 +135,10 @@ python_complexity:
   script:
     -  xenon --max-absolute B --max-modules A --max-average A . -i transform,shared_modules
 
-python_pytest:
-  <<: *python_check
-  script:
-    - pytest -vv -x --ignore=dags
+# python_pytest:
+#   <<: *python_check
+#   script:
+#     - pytest -vv -x --ignore=dags
 
 # ======
 # Snowflake Permissions Validator
