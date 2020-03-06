@@ -166,7 +166,7 @@ models:
       - name: merge_request_title
         tests: 
           - not_null
-      - name: noteable_id
+      - name: merge_request_id
         tests: 
           - not_null
       - name: note_author_id
