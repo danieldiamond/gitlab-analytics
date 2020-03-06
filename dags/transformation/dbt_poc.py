@@ -1,14 +1,15 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import (
     DBT_IMAGE,
-    dbt_install_deps_cmd,
+    dbt_install_deps_and_seed_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
     slack_failed_task,
+    xs_warehouse
 )
 from kube_secrets import (
     SNOWFLAKE_ACCOUNT,
@@ -29,33 +30,27 @@ default_args = {
     "catchup": False,
     "depends_on_past": False,
     "on_failure_callback": slack_failed_task,
+    "params": {"slack_channel_override": "#dbt-runs"},
     "owner": "airflow",
-    "sla": timedelta(hours=12),
-    "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
 }
 
 # Create the DAG
 dag = DAG(
-    "dbt_snapshots_weekly",
-    default_args=default_args,
-    schedule_interval="0 1 1,5,12,19,28-31 * *",
-    # “At 01:00 on day-of-month 1, 5, 12, 19, and every day-of-month from 28 through 31.”
-    # Pseudo-weekly to ensure we get it on the first and last days of a month
-    # And with weekly-ish timelines
+    "dbt_proof_of_concept", default_args=default_args, schedule_interval="0 6 * * 0"
 )
 
-# dbt-snapshot for weekly tag
-dbt_snapshot_cmd = f"""
-    {dbt_install_deps_cmd} &&
-    dbt snapshot -s tag:weekly --profiles-dir profile
-"""
 
-dbt_snapshot = KubernetesPodOperator(
+# dbt-poc
+dbt_poc_cmd = f"""
+    {dbt_install_deps_and_seed_cmd} &&
+    dbt run --profiles-dir profile --target prod --models tag:poc
+"""
+dbt_poc = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
-    task_id="dbt-snapshots-weekly",
-    name="dbt-snapshots-weekly",
+    task_id="dbt-poc",
+    name="dbt-poc",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
@@ -65,6 +60,6 @@ dbt_snapshot = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
-    arguments=[dbt_snapshot_cmd],
+    arguments=[dbt_poc_cmd],
     dag=dag,
 )

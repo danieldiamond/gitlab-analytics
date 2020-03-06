@@ -49,6 +49,8 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.opportunity_owner_team                                                     AS opportunity_owner_team,
       sfdc_users_xf.title                                                                         AS opportunity_owner_title,
       sfdc_opportunity.opportunity_sales_development_representative,
+      sfdc_opportunity.opportunity_development_representative,
+      sfdc_opportunity.account_owner_team_stamped,
       sfdc_opportunity.opportunity_term,
       sfdc_opportunity.parent_segment,
       sfdc_opportunity.primary_campaign_source_id                                                 AS primary_campaign_source_id,
@@ -80,6 +82,7 @@ WITH sfdc_opportunity AS (
       ELSE FALSE
       END                                                                                         AS is_risky,
       sfdc_opportunity.is_swing_deal,
+      sfdc_opportunity.is_edu_oss,
       sfdc_opportunity_stage.is_won                                                               AS is_won,
       sfdc_opportunity.net_incremental_acv,
       sfdc_opportunity.nrv,
@@ -99,6 +102,22 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.upside_swing_deal_iacv,
       sfdc_opportunity.incremental_acv * (probability /100)         AS weighted_iacv,
       sfdc_opportunity.is_web_portal_purchase,
+
+      -- command plan fields
+      sfdc_opportunity.cp_champion,
+      sfdc_opportunity.cp_close_plan,
+      sfdc_opportunity.cp_competition,
+      sfdc_opportunity.cp_decision_criteria,
+      sfdc_opportunity.cp_decision_process,
+      sfdc_opportunity.cp_economic_buyer,
+      sfdc_opportunity.cp_identify_pain,
+      sfdc_opportunity.cp_metrics,
+      sfdc_opportunity.cp_risks,
+      sfdc_opportunity.cp_use_cases,
+      sfdc_opportunity.cp_value_driver,
+      sfdc_opportunity.cp_why_do_anything_at_all,
+      sfdc_opportunity.cp_why_gitlab,
+      sfdc_opportunity.cp_why_now,
 
       -- metadata
       sfdc_opportunity._last_dbt_run,

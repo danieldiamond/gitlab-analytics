@@ -26,11 +26,7 @@ from main import (
     sync_incremental_ids,
     validate_ids,
 )
-from utils import (
-    manifest_reader,
-    postgres_engine_factory,
-    query_results_generator,
-)
+from utils import manifest_reader, postgres_engine_factory, query_results_generator
 
 # Set up some fixtures
 CONFIG_DICT = os.environ.copy()

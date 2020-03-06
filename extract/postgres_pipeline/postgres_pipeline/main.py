@@ -4,7 +4,11 @@ import sys
 from typing import Dict, Any
 
 from fire import Fire
-from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
+from gitlabdata.orchestration_utils import (
+    snowflake_engine_factory,
+    query_executor,
+    append_to_xcom_file,
+)
 from sqlalchemy.engine.base import Engine
 
 from utils import (
@@ -101,6 +105,7 @@ def load_incremental(
     query = f"{raw_query.format(**env)} {additional_filter}"
     logging.info(query)
     chunk_and_upload(query, source_engine, target_engine, table_name)
+
     return True
 
 
@@ -332,6 +337,11 @@ def main(file_path: str, load_type: str) -> None:
         # Drop the original table and rename the temp table
         if schema_changed and loaded:
             swap_temp_table(snowflake_engine, real_table_name, table_name)
+            table_name = real_table_name
+
+        count_query = f"SELECT COUNT(*) FROM {table_name}"
+        count = query_executor(snowflake_engine, count_query)[0][0]
+        append_to_xcom_file({table_name: count})
 
 
 if __name__ == "__main__":

@@ -322,6 +322,7 @@ roles:
             - gitlab_data_yaml
             - netsuite
             - zuora
+            - google_analytics_360
         privileges:
             databases:
                 read:
@@ -538,6 +539,20 @@ roles:
                 write:
                     - raw.*.*
                     - analytics.*.*
+
+    - google_analytics_360: 
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.google_analytics_360_fivetran
+            tables:
+                read:
+                    - raw.google_analytics_360_fivetran.*
 
     - intern:
         warehouses:
@@ -954,6 +969,8 @@ roles:
             - analyst_xs
 
     - datwood:
+        member_of:
+            - analyst_core
         warehouses:
             - analyst_xs
 
@@ -1021,6 +1038,12 @@ roles:
                     - raw.netsuite_fivetran.*
                 write:
                     - raw.netsuite_fivetran.*
+
+    - fkurniadi:
+        member_of:
+            - analyst_finance
+        warehouses:
+            - analyst_xs        
 
     - gitlab_ci:
         member_of:
@@ -1091,6 +1114,12 @@ roles:
     - ksmith:
         warehouses:
             - reporting
+
+    - lmai:
+        member_of:
+            - analyst_engineering
+        warehouses:
+            - analyst_xs
 
     - lvandensteen:
         warehouses: 
@@ -1295,7 +1324,6 @@ users:
     - datwood:
         can_login: yes
         member_of:
-            - analyst_core
             - datwood
 
     - dtang:
@@ -1341,6 +1369,11 @@ users:
         can_login: yes
         member_of:
             - fivetran_role
+
+    - fkurniadi:
+        can_login: yes
+        member_of:
+            - fkurniadi
 
     - gitlab_ci:
         can_login: yes
@@ -1417,7 +1450,12 @@ users:
         member_of:
             - ksmith
             - securityadmin
-    
+
+    - lmai:
+        can_login: yes
+        member_of:
+            - lmai
+
     - mdewji:
         can_login: yes
         member_of:

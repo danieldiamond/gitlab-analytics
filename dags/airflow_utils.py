@@ -10,7 +10,7 @@ from airflow.operators.slack_operator import SlackAPIPostOperator
 REPO = "https://gitlab.com/gitlab-data/analytics.git"
 DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
 DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
-MELTANO_IMAGE = "registry.gitlab.com/meltano/meltano:v1.20.0"
+PERMIFROST_IMAGE = "registry.gitlab.com/gitlab-data/permifrost:v0.0.2"
 
 
 def split_date_parts(day: date, partition: str) -> List[dict]:
@@ -174,6 +174,9 @@ GIT_BRANCH = env["GIT_BRANCH"]
 gitlab_pod_env_vars = {
     "CI_PROJECT_DIR": "/analytics",
     "EXECUTION_DATE": "{{ next_execution_date }}",
+    "SNOWFLAKE_SNAPSHOT_DATABASE": "RAW"
+    if GIT_BRANCH == "master"
+    else f"{GIT_BRANCH.upper()}_RAW",
     "SNOWFLAKE_LOAD_DATABASE": "RAW"
     if GIT_BRANCH == "master"
     else f"{GIT_BRANCH.upper()}_RAW",
@@ -187,16 +190,37 @@ xs_warehouse = f"'{{warehouse_name: transforming_xs}}'"
 
 l_warehouse = f"'{{warehouse_name: transforming_l}}'"
 
-clone_repo_cmd = f"git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}"
+# git commands
+clone_repo_cmd = f"""
+    if [[ -z "$GIT_COMMIT" ]]; then
+        export GIT_COMMIT="HEAD"
+    fi
+    echo "git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}" &&
+    git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO} &&
+    echo "checking out commit $GIT_COMMIT" &&
+    cd analytics &&
+    git checkout $GIT_COMMIT &&
+    cd .."""
 
+clone_repo_sha_cmd = f"""
+    mkdir analytics &&
+    cd analytics &&
+    git init &&
+    git remote add origin {REPO} &&
+    echo "Fetching commit $GIT_COMMIT" &&
+    git fetch --depth 1 origin $GIT_COMMIT --quiet &&
+    git checkout FETCH_HEAD"""
+
+# extract command
 clone_and_setup_extraction_cmd = f"""
     {clone_repo_cmd} &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/"""
 
+# dbt commands
 clone_and_setup_dbt_cmd = f"""
-    {clone_repo_cmd} &&
-    cd analytics/transform/snowflake-dbt/"""
+    {clone_repo_sha_cmd} &&
+    cd transform/snowflake-dbt/"""
 
 dbt_install_deps_cmd = f"""
     {clone_and_setup_dbt_cmd} &&
