@@ -414,12 +414,12 @@ roles:
         member_of:
             - loader
             - transformer
+            - snowflake_db
         warehouses:
             - airflow_testing_l
             - engineer_xs
             - engineer_xl
             - loading
-            - snowflake_db
         privileges:
             databases:
                 read:
