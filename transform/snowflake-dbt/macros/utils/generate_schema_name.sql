@@ -15,7 +15,7 @@
 
         {%- else -%}
             
-            {{ target.schema.lower() | trim }}
+            {{ custom_schema_name.lower() | trim }}
 
         {%- endif -%}
 
