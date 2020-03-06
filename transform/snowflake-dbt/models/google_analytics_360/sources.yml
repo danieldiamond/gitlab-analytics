@@ -21,4 +21,3 @@ sources:
       - name: ga_session_custom_dimension
       - name: session_hit
       - name: session_hit_custom_dimension
-      
