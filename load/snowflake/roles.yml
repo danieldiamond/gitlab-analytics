@@ -81,32 +81,18 @@ roles:
             - gitlab_data_yaml
             - handbook
             - netsuite
+            - postgres_pipeline
+            - salesforce
+            - sheetload
+            - snapshots
+            - snowplow
             - snowflake_db
+            - zendesk
             - zuora
         privileges:
             databases:
-                read:
-                    - raw
                 write:
                     - analytics
-            schemas:
-                read:
-                    - raw.gcloud_postgres_stitch
-                    - raw.salesforce_stitch
-                    - raw.sheetload
-                    - raw.snapshots
-                    - raw.snowplow
-                    - raw.tap_postgres
-                    - raw.zendesk_stitch
-            tables:
-                read:
-                    - raw.gcloud_postgres_stitch.*
-                    - raw.salesforce_stitch.*
-                    - raw.sheetload.*
-                    - raw.snapshots.*
-                    - raw.snowplow.*
-                    - raw.tap_postgres.*
-                    - raw.zendesk_stitch.*
                     
     - analyst_engineering:
         warehouses:
@@ -117,33 +103,18 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
-            - snowflake_db
+            - postgres_pipeline
+            - salesforce
+            - sheetload
+            - snapshots
             - snowplow
+            - snowflake_db
+            - zendesk
             - zuora
         privileges:
             databases:
-                read:
-                    - raw
                 write:
                     - analytics
-            schemas:
-                read:
-                    - raw.gcloud_postgres_stitch
-                    - raw.salesforce_stitch
-                    - raw.sheetload
-                    - raw.snapshots
-                    - raw.snowplow
-                    - raw.tap_postgres
-                    - raw.zendesk_stitch
-            tables:
-                read:
-                    - raw.gcloud_postgres_stitch.*
-                    - raw.salesforce_stitch.*
-                    - raw.sheetload.*
-                    - raw.snapshots.*
-                    - raw.snowplow.*
-                    - raw.tap_postgres.*
-                    - raw.zendesk_stitch.*
 
     - analyst_growth:
         warehouses:
@@ -156,32 +127,25 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - postgres_pipeline
             - netsuite
+            - salesforce
+            - sheetload
+            - snapshots
             - snowflake_db
             - snowplow
             - zuora
         privileges:
             databases:
                 read:
-                    - raw
                     - analytics
                 write:
                     - analytics
             schemas:
                 read:
-                    - raw.gcloud_postgres_stitch
-                    - raw.salesforce_stitch
-                    - raw.sheetload
-                    - raw.snapshots
-                    - raw.tap_postgres
                     - analytics.analytics_sensitive
             tables:
                 read:
-                    - raw.gcloud_postgres_stitch.*
-                    - raw.salesforce_stitch.*
-                    - raw.sheetload.*
-                    - raw.snapshots.*
-                    - raw.tap_postgres.*
                     - analytics.analytics_sensitive.gitlab_dotcom_epics
                     - analytics.analytics_sensitive.gitlab_dotcom_issues
                     - analytics.analytics_sensitive.gitlab_dotcom_labels
@@ -199,31 +163,18 @@ roles:
             - gitlab_data_yaml
             - handbook
             - netsuite
+            - postgres_pipeline
+            - salesforce
+            - sheetload
+            - snapshots
             - snowflake_db
             - snowplow
+            - zendesk
             - zuora
         privileges:
             databases:
-                read:
-                    - raw
                 write:
                     - analytics
-            schemas:
-                read:
-                    - raw.gcloud_postgres_stitch
-                    - raw.salesforce_stitch
-                    - raw.sheetload
-                    - raw.snapshots
-                    - raw.tap_postgres
-                    - raw.zendesk_stitch
-            tables:
-                read:
-                    - raw.gcloud_postgres_stitch.*
-                    - raw.salesforce_stitch.*
-                    - raw.sheetload.*
-                    - raw.snapshots.*
-                    - raw.tap_postgres.*
-                    - raw.zendesk_stitch.*
 
     - analyst_finance:
         warehouses:
@@ -234,6 +185,10 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - netsuite
+            - postgres_pipeline
+            - salesforce
+            - sheetload
+            - snapshots
             - snowflake_db
             - snowplow
             - zuora
@@ -246,22 +201,12 @@ roles:
                     - raw
             schemas:
                 read:
-                    - raw.gcloud_postgres_stitch
-                    - raw.salesforce_stitch
-                    - raw.sheetload
-                    - raw.snapshots
                     - raw.stitch_google_sheets
-                    - raw.tap_postgres
                 write:
                     - raw.stitch_google_sheets
             tables:
                 read:
-                    - raw.gcloud_postgres_stitch.*
-                    - raw.salesforce_stitch.*
-                    - raw.sheetload.*
-                    - raw.snowplow.*
                     - raw.stitch_google_sheets.*
-                    - raw.tap_postgres.*
                 write:
                     - raw.stitch_google_sheets.*
     
@@ -279,13 +224,8 @@ roles:
             - zuora
         privileges:
             databases:
-                read: []
                 write:
                     - analytics
-            schemas:
-                read: []
-            tables:
-                read: []
 
     - analyst_people:
         warehouses:
@@ -297,31 +237,18 @@ roles:
             - gitlab_data_yaml
             - greenhouse
             - netsuite
+            - postgres_pipeline
+            - salesforce
+            - sheetload
+            - snapshots
             - snowplow
             - snowflake_db
+            - zendesk
             - zuora
         privileges:
             databases:
-                read:
-                    - raw
                 write:
                     - analytics
-            schemas:
-                read:
-                    - raw.gcloud_postgres_stitch
-                    - raw.salesforce_stitch
-                    - raw.sheetload
-                    - raw.snapshots
-                    - raw.tap_postgres
-                    - raw.zendesk_stitch
-            tables:
-                read:
-                    - raw.gcloud_postgres_stitch.*
-                    - raw.salesforce_stitch.*
-                    - raw.sheetload.*
-                    - raw.snapshots.*
-                    - raw.tap_postgres.*
-                    - raw.zendesk_stitch.*
 
     - analyst_sales:
         warehouses:
@@ -330,26 +257,16 @@ roles:
             - boneyard
             - dbt_analytics
             - gitlab_data_yaml
+            - postgres_pipeline
+            - salesforce
+            - sheetload
+            - snapshots
             - snowflake_db
             - zuora
         privileges:
             databases:
-                read:
-                    - raw
                 write:
                     - analytics
-            schemas:
-                read:
-                    - raw.salesforce_stitch
-                    - raw.sheetload
-                    - raw.snapshots
-                    - raw.tap_postgres
-            tables:
-                read:
-                    - raw.salesforce_stitch.*
-                    - raw.sheetload.*
-                    - raw.snapshots.*
-                    - raw.tap_postgres.*
 
     - analyst_sensitive:
         warehouses:
@@ -384,31 +301,18 @@ roles:
             - gitlab_data_yaml
             - handbook
             - netsuite
+            - postgres_pipeline
+            - salesforce
+            - sheetload
+            - snapshots
             - snowflake_db
             - snowplow
+            - zendesk
             - zuora
         privileges:
             databases:
-                read:
-                    - raw
                 write:
                     - analytics
-            schemas:
-                read:
-                    - raw.gcloud_postgres_stitch
-                    - raw.salesforce_stitch
-                    - raw.sheetload
-                    - raw.snapshots
-                    - raw.tap_postgres
-                    - raw.zendesk_stitch
-            tables:
-                read:
-                    - raw.gcloud_postgres_stitch.*
-                    - raw.salesforce_stitch.*
-                    - raw.sheetload.*
-                    - raw.snapshots.*
-                    - raw.tap_postgres.*
-                    - raw.zendesk_stitch.*
 
     - engineer:
         member_of:
@@ -450,13 +354,6 @@ roles:
             - boneyard
             - dbt_analytics
             - snowflake_db
-        privileges:
-            databases:
-                write: []
-            schemas:
-                read: []
-            tables:
-                read: []
 
     - loader:
         warehouses:
@@ -509,6 +406,10 @@ roles:
         member_of:
             - boneyard
             - dbt_analytics
+            - postgres_pipeline
+            - salesforce
+            - sheetload
+            - snapshots
             - snowplow
             - snowflake_db
             - zuora
@@ -516,24 +417,13 @@ roles:
             databases:
                 read:
                     - analytics
-                    - raw
                 write:
                     - analytics
             schemas:
                 read:
-                    - raw.gcloud_postgres_stitch
-                    - raw.salesforce_stitch
-                    - raw.sheetload
-                    - raw.snapshots
-                    - raw.tap_postgres
                     - analytics.analytics_sensitive
             tables:
                 read:
-                    - raw.gcloud_postgres_stitch.*
-                    - raw.salesforce_stitch.*
-                    - raw.sheetload.*
-                    - raw.snapshots.*
-                    - raw.tap_postgres.*
                     - analytics.analytics_sensitive.gitlab_dotcom_epics
                     - analytics.analytics_sensitive.gitlab_dotcom_issues
                     - analytics.analytics_sensitive.gitlab_dotcom_labels
@@ -546,12 +436,12 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
+            - salesforce
             - zuora
         privileges:
             databases:
                 read:
                     - analytics
-                    - raw
                 write:
                     - analytics
             schemas:
@@ -559,7 +449,6 @@ roles:
                     - analytics.pwc
                     - analytics.pwc_staging
                     - analytics.pwc_write
-                    - raw.salesforce_stitch
                 write:
                     - analytics.pwc_write
             tables:
@@ -567,7 +456,6 @@ roles:
                     - analytics.pwc.*
                     - analytics.pwc_staging.*
                     - analytics.pwc_write.*
-                    - raw.salesforce_stitch.*
                 write:
                     - analytics.pwc_write.*
 
@@ -778,6 +666,62 @@ roles:
                 read:
                     - raw.netsuite_fivetran.*
 
+    - postgres_pipeline:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.tap_postgres
+            tables:
+                read:
+                    - raw.tap_postgres.*  
+
+    - salesforce:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.salesforce_stitch
+            tables:
+                read:
+                    - raw.salesforce_stitch.*      
+
+    - sheetload:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.sheetload
+            tables:
+                read:
+                    - raw.sheetload.*  
+
+    - snapshots:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.snapshots
+            tables:
+                read:
+                    - raw.snapshots.*  
+
     - snowflake_db:
         privileges:
             databases:
@@ -804,6 +748,20 @@ roles:
                 read:
                     - raw.snowplow.*
                     - analytics.snowplow_*.*
+
+    - zendesk:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+            schemas:
+                read:
+                    - raw.zendesk_stitch
+            tables:
+                read:
+                    - raw.zendesk_stitch.*  
 
     - zuora:
         warehouses:
