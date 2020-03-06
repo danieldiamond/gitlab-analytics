@@ -140,6 +140,12 @@ models:
       transformed:
         materialized: table
 
+    google_analytics_360:
+      base:
+        schema: staging
+      xf:
+        materialized: table
+
     greenhouse:
       base:
         schema: sensitive
