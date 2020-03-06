@@ -53,6 +53,17 @@ def table_cleanup(table, cleanup_mode: str = "DROP"):
         connection.close()
         SNOWFLAKE_ENGINE.dispose()
 
+def table_drop_col(table: str, column_name: str):
+    """
+    Drops column from table to simulate schema change
+    """
+    try:
+        connection = SNOWFLAKE_ENGINE.connect()
+        connection.execute(f" ALTER TABLE {table} DROP COLUMN {column_name};")
+    finally:
+        connection.close()
+        SNOWFLAKE_ENGINE.dispose()
+
 
 table_cleanup(TEST_TABLE)
 table_cleanup(TEST_TABLE_TEMP)
@@ -237,7 +248,7 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['export_table'] = TEST_TABLE_TEMP
+        table_dict['export_table'] = TEST_TABLE
         table_dict['import_db'] = None
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
@@ -246,7 +257,9 @@ class TestPostgresPipeline:
             target_engine=SNOWFLAKE_ENGINE,
             table_config=table_dict,
         )
-        assert ps_pipeline.target_table == TEST_TABLE_TEMP
+        assert ps_pipeline.target_table == TEST_TABLE
+        #force backfill
+        ps_pipeline.schema_changed = True
         ps_pipeline.scd()
         target_count_query = (
             f"SELECT COUNT(*) - 10000 AS row_count FROM {TEST_TABLE_TEMP}"
