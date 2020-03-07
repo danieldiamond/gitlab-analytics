@@ -8,6 +8,8 @@ This issue should be opened at:
 - the earliest on the Thursday before the milestone. 
 - the latest on the Monday before the milestone. 
 
+## Announcements
+This section contains information on events that could affect several members of the team and the capacity. (Ex: company conferences, world events, etc...)
 
 ## Capacity :weight_lifter: 
 
@@ -15,6 +17,7 @@ How is `capacity` calculated?
 * Identify number of days (decimal - divide by 8)
 * Convert days to weights 
 * Divide by total weights of issues 
+
 
 
 ### Available Time :calendar: 
