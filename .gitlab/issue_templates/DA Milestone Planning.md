@@ -20,21 +20,21 @@ How is `capacity` calculated?
 ### Available Time :calendar: 
 Please add a number of days (decimal) you'll be working this milestone. 
 Guidelines: 
-* Each milestone has 10 days. 
-* Remove days/hours for leave: holiday, conference, etc... 
-* Remove two day for data triage, data team meetings, grooming issues, and planning. 
+1. Each milestone has 10 days. 
+1. Remove days/hours for leave: holiday, conference, etc... 
+1. Remove two day for data triage, data team meetings, grooming issues, and planning. 
     - If you have multiple data triage days, please remove an additional day per triage day. 
-* Remove hours based on any additional meetings. 
+1. Remove hours based on any additional meetings. 
 
 <!-- in alphabetical order -->
-@derekatwood:
-@eli_kastelein: 
-@iweeks: 
-@jeanpeguero:
-@ken_aguilar:  
-@ktam: 
-@mpeychet\_: 
-@pluthra: 
+- @derekatwood:
+- @eli_kastelein: 
+- @iweeks: 
+- @jeanpeguero:
+- @ken_aguilar:  
+- @ktam: 
+- @mpeychet\_: 
+- @pluthra: 
 
 
 **Total Engineering Days**: 
