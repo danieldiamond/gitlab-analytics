@@ -77,6 +77,10 @@ Prioritization should be discussed in the comments.
     - <!-- link here --> 
 
 #### Ad-hoc  
+##### People 
+1. <!-- link here --> 
+
+##### Finance 
 1. <!-- link here --> 
 
 
@@ -86,7 +90,15 @@ Prioritization should be discussed in the comments.
     - <!-- link here --> 
 
 #### Ad-hoc  
+##### Sales 
 1. <!-- link here --> 
+
+##### Marketing 
+1. <!-- link here --> 
+
+##### Finance 
+1. <!-- link here --> 
+
 
 ### R&D (Product, Product Strategy / Engineering)
 #### Projects / Working Groups 
@@ -94,6 +106,13 @@ Prioritization should be discussed in the comments.
     - <!-- link here --> 
 
 #### Ad-hoc  
+##### Product 
+1. <!-- link here --> 
+
+##### Engineering 
+1. <!-- link here --> 
+
+##### Product Strategy 
 1. <!-- link here --> 
 
 
