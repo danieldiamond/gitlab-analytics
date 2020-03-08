@@ -1,6 +1,6 @@
-# `YYYY-MM-DD - DA` Planning 
+# `YY.MM.DD - DA` Planning 
 
-SSOT for `YYYY-MM-DD` work: [Data Analytics board](https://gitlab.com/groups/gitlab-data/-/boards/1587810?scope=all&utf8=%E2%9C%93&state=opened&milestone_title=YY.MM.DD%20-%20DA%20(current)). 
+SSOT for `YY.MM.DD` work: [Data Analytics board](https://gitlab.com/groups/gitlab-data/-/boards/1587810?scope=all&utf8=%E2%9C%93&state=opened&milestone_title=YY.MM.DD%20-%20DA%20(current)). 
 
 Please bookmark and use this board to work from in priority order. 
 
@@ -19,7 +19,6 @@ How is `capacity` calculated?
 * Divide by total weights of issues 
 
 
-
 ### Available Time :calendar: 
 Please add a number of days (decimal) you'll be working this milestone. 
 Guidelines: 
@@ -34,8 +33,8 @@ Guidelines:
 - @eli_kastelein: 
 - @iweeks: 
 - @jeanpeguero:
+- @kathleentam: 
 - @ken_aguilar:  
-- @ktam: 
 - @mpeychet\_: 
 - @pluthra: 
 
