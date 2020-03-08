@@ -71,7 +71,7 @@ Prioritization should be discussed in the comments.
 
 ## Function Groups :two_women_holding_hands: 
 
-### G&A (People / Finance)
+### G&A 
 #### Projects / Working Groups 
 1. <!-- project / working group name --> 
     - <!-- link here --> 
@@ -84,7 +84,7 @@ Prioritization should be discussed in the comments.
 1. <!-- link here --> 
 
 
-### GTM (Sales / Marketing / Finance)
+### GTM 
 #### Projects / Working Groups 
 1. <!-- project / working group name --> 
     - <!-- link here --> 
@@ -100,7 +100,7 @@ Prioritization should be discussed in the comments.
 1. <!-- link here --> 
 
 
-### R&D (Product, Product Strategy / Engineering)
+### R&D 
 #### Projects / Working Groups 
 1. <!-- project / working group name --> 
     - <!-- link here --> 
