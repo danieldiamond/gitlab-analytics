@@ -222,6 +222,7 @@ def check_if_schema_changed(
         sql=source_query.format(query_stem, table_index, source_table),
         con=source_engine,
     ).columns
+    logging.info('SOURCE columns:', source_columns)
 
     # Get the columns from the target_table
     target_query = "select * from {0} where {1} = (select max({1}) from {0}) limit 1"
@@ -232,6 +233,7 @@ def check_if_schema_changed(
         .drop(axis=1, columns=["_uploaded_at", "_task_instance"], errors="ignore")
         .columns
     )
+    logging.info('target columns:', target_columns)
 
     return set(source_columns) != set(target_columns)
 
