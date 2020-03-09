@@ -97,4 +97,5 @@ models:
       description: Shows how long it takes on average to go from apply to offer for a candidate. This is based on offer accepted month.
     - name: offer_acceptance_rate_based_on_offer_month
       description: This metric indicates of the offers sent, how many candidates have accepted. 
-
+    - name: percent_of_hires_sourced     
+      description: Identifies of the hires for a specific month, how many were sourced by a recruiter.    

@@ -61,7 +61,9 @@ WITH date_details AS (
       'application_month'                                                               AS capture_month,
       {{repeated_column_names}},
       IFF(offer_status = 'accepted',1,0)                                                AS accepted_offer,
-      null                                                                              AS time_to_offer     
+      null                                                                              AS time_to_offer,
+      IFF(sourced_candidate = TRUE, 1,0)                                                AS sourced_candidate,
+      IFF(sourced_candidate = TRUE AND offer_status = 'accepted', 1,0)                  AS hired_sourced_candidate
     FROM base
     LEFT JOIN greenhouse_recruiting_xf
       ON DATE_TRUNC('month',greenhouse_recruiting_xf.application_date) = base.month_date
@@ -73,10 +75,12 @@ WITH date_details AS (
 
     SELECT 
       base.*,
-      'offer_sent_month'                                                               AS capture_month,
+      'offer_sent_month'                                                                AS capture_month,
       {{repeated_column_names}},
       IFF(offer_status = 'accepted',1,0)                                                AS accepted_offer,
-      null                                                                              AS time_to_offer 
+      null                                                                              AS time_to_offer, 
+      IFF(sourced_candidate = TRUE, 1,0)                                                AS sourced_candidate,
+      IFF(sourced_candidate = TRUE AND offer_status = 'accepted', 1,0)                  AS hired_sourced_candidate
     FROM base
     LEFT JOIN greenhouse_recruiting_xf
       ON DATE_TRUNC('month',greenhouse_recruiting_xf.offer_sent_date) = base.month_date
@@ -92,7 +96,9 @@ WITH date_details AS (
       'accepted_month'                                                                  AS capture_month,
       {{repeated_column_names}},
       IFF(offer_status = 'accepted',1,0)                                                AS accepted_offer,
-      time_to_offer                           
+      time_to_offer,
+      IFF(sourced_candidate = TRUE, 1,0)                                                AS sourced_candidate,
+      IFF(sourced_candidate = TRUE AND offer_status = 'accepted', 1,0)                  AS hired_sourced_candidate                           
     FROM base
     LEFT JOIN greenhouse_recruiting_xf
       ON DATE_TRUNC('month',greenhouse_recruiting_xf.offer_resolved_date) = base.month_date

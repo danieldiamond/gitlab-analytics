@@ -53,6 +53,7 @@ SELECT
          ELSE COALESCE(cost_center.division, department_name) END                   AS division,
     greenhouse_sources.source_name,
     greenhouse_sources.source_type,
+    IFF(greenhouse_sources.source_name ='LinkedIn (Prospecting)',True, False)       AS sourced_candidate,
     IFF(offer_status ='accepted',
             DATEDIFF('day', applications.applied_at, offers.resolved_at),
             NULL)                                                                   AS time_to_offer
