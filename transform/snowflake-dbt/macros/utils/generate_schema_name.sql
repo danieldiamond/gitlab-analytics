@@ -7,6 +7,28 @@
 
     {%- set prefixed_schemas = ('meta','sensitive','staging','temporary') -%}
 
+    {#
+        Definitions:
+            - custom_schema_name: schema provided via dbt_project.yml or model config
+            - target.schema: schema provided by the target defined in profiles.yml
+            - target.name: name of the target (dev for local development, prod for production, etc.)
+        
+        This macro is hard to test, but here are some test cases and expected output.
+        (custom_schema_name, target.name, target.schema) = <output>
+
+        (analytics, prod, analytics) = analytics
+        (analytics, ci, analytics) = analytics
+        (analytics, dev, tmurphy_scratch) = tmurphy_scratch_analytics
+        
+        (staging, prod, analytics) = analytics_staging
+        (staging, ci, analytics) = analytics_staging
+        (staging, dev, tmurphy_scratch) = tmurphy_scratch_staging
+        
+        (zuora, prod, analytics) = zuora
+        (zuora, ci, analytics) = zuora
+        (zuora, dev, tmurphy_scratch) = tmurphy_scratch_zuora
+
+    #}
     {%- if target.name in production_targets -%}
         
         {%- if custom_schema_name in prefixed_schemas -%}
