@@ -3,10 +3,21 @@ WITH zuora_account AS (
     SELECT *
     FROM {{ ref('zuora_account') }}
 
-), zuora_subscription AS (
+), zuora_invoice AS (
 
     SELECT *
-    FROM {{ ref('zuora_subscription') }}
+    FROM {{ ref('zuora_invoice') }}
+
+), zuora_invoice_item AS (
+
+    SELECT *
+    FROM {{ ref('zuora_invoice_item') }}
+
+), zuora_product AS (
+
+    SELECT *
+    FROM {{ ref('zuora_product_source') }}
+    WHERE is_deleted = FALSE
 
 ), zuora_rate_plan AS (
 
@@ -18,21 +29,10 @@ WITH zuora_account AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge') }}
 
-), zuora_product AS (
+), zuora_subscription AS (
 
     SELECT *
-    FROM {{ ref('zuora_product_source') }}
-    WHERE is_deleted = FALSE
-
-), zuora_invoice AS (
-
-    SELECT *
-    FROM {{ ref('zuora_invoice') }}
-
-), zuora_invoice_item AS (
-
-    SELECT *
-    FROM {{ ref('zuora_invoice_item') }}
+    FROM {{ ref('zuora_subscription') }}
 
 ), base_charges AS (
 
@@ -70,7 +70,7 @@ WITH zuora_account AS (
       zuora_invoice.invoice_number,
       zuora_invoice.invoice_date::DATE              AS invoice_date,
       zuora_invoice_item.service_start_date::DATE   AS service_start_date,
-      zuora_invoice_item.service_end_date::DATE     AS service_end_date,      
+      zuora_invoice_item.service_end_date::DATE     AS service_end_date,
       zuora_invoice.amount_without_tax              AS invoice_amount_without_tax,
       zuora_invoice_item.charge_amount              AS invoice_item_charge_amount,
       zuora_invoice_item.rate_plan_charge_id
@@ -90,7 +90,7 @@ WITH zuora_account AS (
       IFF(ROW_NUMBER() OVER (
           PARTITION BY rate_plan_charge_number, rate_plan_charge_segment
           ORDER BY rate_plan_charge_version DESC) = 1,
-          TRUE, FALSE 
+          TRUE, FALSE
       ) AS is_last_segment_version,
       invoice_number,
       invoice_date,
@@ -100,7 +100,7 @@ WITH zuora_account AS (
       invoice_item_charge_amount
     FROM base_charges
     INNER JOIN invoice_charges
-      ON base_charges.rate_plan_charge_id = invoice_charges.rate_plan_charge_id        
+      ON base_charges.rate_plan_charge_id = invoice_charges.rate_plan_charge_id
 
 )
 
