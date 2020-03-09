@@ -53,6 +53,7 @@ def table_cleanup(table, cleanup_mode: str = "DROP"):
         connection.close()
         SNOWFLAKE_ENGINE.dispose()
 
+
 def table_drop_col(table: str, column_name: str):
     """
     Drops column from table to simulate schema change
@@ -129,8 +130,8 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = None
+        table_dict["export_table"] = TEST_TABLE
+        table_dict["import_db"] = None
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
@@ -172,9 +173,9 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        #Table to be set results
-        table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = None
+        # Table to be set results
+        table_dict["export_table"] = TEST_TABLE
+        table_dict["import_db"] = None
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
@@ -213,8 +214,8 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = None
+        table_dict["export_table"] = TEST_TABLE
+        table_dict["import_db"] = None
         # Run the query and count the results
         new_env_vars = {"EXECUTION_DATE": execution_date, "HOURS": hours}
         os.environ.update(new_env_vars)
@@ -248,8 +249,8 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = None
+        table_dict["export_table"] = TEST_TABLE
+        table_dict["import_db"] = None
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
             table_name=source_table,
@@ -258,7 +259,7 @@ class TestPostgresPipeline:
             table_config=table_dict,
         )
         assert ps_pipeline.target_table == TEST_TABLE
-        #force backfill
+        # force backfill
         ps_pipeline.schema_changed = True
         ps_pipeline.scd()
         target_count_query = (
@@ -288,8 +289,8 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = None
+        table_dict["export_table"] = TEST_TABLE
+        table_dict["import_db"] = None
 
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
@@ -319,8 +320,8 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = None
+        table_dict["export_table"] = TEST_TABLE
+        table_dict["import_db"] = None
         # Set the "advanced_metadata" flag and update the env vars
         table_dict["advanced_metadata"] = True
         new_env_vars = {"TASK_INSTANCE": "task_instance_key_str"}
@@ -360,8 +361,8 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = None
+        table_dict["export_table"] = TEST_TABLE
+        table_dict["import_db"] = None
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
             table_name=source_table,
@@ -391,8 +392,8 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = None
+        table_dict["export_table"] = TEST_TABLE
+        table_dict["import_db"] = None
         # Run the query and count the results
         ps_pipeline = PostgresToSnowflakePipeline(
             table_name=source_table,
@@ -427,8 +428,8 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = None
+        table_dict["export_table"] = TEST_TABLE
+        table_dict["import_db"] = None
         # Run the validation function and confirm it has zero IDs in the error table
         ps_pipeline = PostgresToSnowflakePipeline(
             table_name=source_table,
@@ -462,8 +463,8 @@ class TestPostgresPipeline:
         file_path = f"extract/postgres_pipeline/manifests/{source_db}_manifest.yaml"
         manifest_dict = manifest_reader(file_path)
         table_dict = manifest_dict["tables"][source_table]
-        table_dict['export_table'] = TEST_TABLE
-        table_dict['import_db'] = None
+        table_dict["export_table"] = TEST_TABLE
+        table_dict["import_db"] = None
         # Run the validation function and confirm it triggers a non-zero exit
         with pytest.raises(SystemExit) as pytest_wrapped_e:
             ps_pipeline = PostgresToSnowflakePipeline(

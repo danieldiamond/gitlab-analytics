@@ -44,10 +44,10 @@ class PostgresToSnowflakePipeline:
         self.primary_key = table_config.get("export_table_primary_key")
         self.raw_query = table_config.get("import_query")
         # TODO: what is the source table
-        if table_config['import_db'] is not None:
+        if table_config["import_db"] is not None:
             self.target_table = f"{table_config.get('import_db')}_{table_config.get('export_table')}".upper()
         else:
-            self.target_table = table_config['export_table']
+            self.target_table = table_config["export_table"]
         self.source_table = table_name
         self.source_engine, self.target_engine = source_engine, target_engine
 
@@ -130,7 +130,9 @@ class PostgresToSnowflakePipeline:
             return False
         # If _TEMP table is set, skip it because it needs a full sync
         # If a temp table exists then it needs to finish syncing so don't load incrementally
-        if self.schema_changed or self.target_engine.has_table(f"{self.target_table}_TEMP"):
+        if self.schema_changed or self.target_engine.has_table(
+            f"{self.target_table}_TEMP"
+        ):
             logging.info(
                 f"Table {self.target_table} needs to be backfilled due to schema change, aborting incremental load."
             )
@@ -176,7 +178,9 @@ class PostgresToSnowflakePipeline:
             return False
 
         # If the schema has changed for the SCD table, treat it like a backfill
-        if self.schema_changed or self.target_engine.has_table(f"{self.target_table}_TEMP"):
+        if self.schema_changed or self.target_engine.has_table(
+            f"{self.target_table}_TEMP"
+        ):
             logging.info(
                 f"Table {self.target_table} needs to be recreated due to schema change. Recreating...."
             )
