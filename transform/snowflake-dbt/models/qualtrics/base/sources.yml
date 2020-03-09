@@ -12,7 +12,6 @@ sources:
       schema: false
       identifier: false
 
-  
     freshness:
       warn_after: {count: 24, period: hour}
 
