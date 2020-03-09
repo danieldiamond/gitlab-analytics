@@ -50,6 +50,7 @@ if __name__ == "__main__":
         distributions_to_write = distributions_to_write + get_distributions(
             client, survey_id, start_time, end_time
         )
+
     contacts_to_write = []
     for distribution in distributions_to_write:
         mailing_list_id = distribution["recipients"]["mailingListId"]
