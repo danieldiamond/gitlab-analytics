@@ -20,7 +20,8 @@ WITH source AS (
       updatedbyid         AS updated_by_id,
       updateddate         AS updated_date,
       createdbyid         AS created_by_id,
-      createddate         AS created_date
+      createddate         AS created_date,
+      deleted             AS is_deleted
 
     FROM source
 
