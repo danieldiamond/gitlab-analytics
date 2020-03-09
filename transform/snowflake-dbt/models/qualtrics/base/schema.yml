@@ -2,5 +2,43 @@ version: 2
 
 models:
     - name: qualtrics_distribution
+      description: '{{ doc("qualtrics_distribution") }}'
+      columns:
+        - name: distribution_id
+          tests:
+            - not_null
+        - name: mailing_list_id
+        - name: mailing_sent_at
+          tests:
+            - not_null
+        - name: survey_id
+          tests:
+            - not_null
     - name: qualtrics_survey
+      description: '{{ doc("qualtrics_survey") }}'
+      columns:
+        - name: survey_id
+          tests:
+            - not_null
+            - unique
+        - name: survey_name
+          tests:
+            - not_null
     - name: qualtrics_mailing_contacts
+      description: '{{ doc("qualtrics_mailing_contacts") }}'
+      columns:
+        - name: contact_email
+          tests:
+            - not_null
+        - name: contact_id
+          tests:
+            - not_null
+        - name: is_unsubscribed
+          tests:
+            - not_null
+        - name: mailing_list_id
+          tests:
+            - not_null
+        - name: mailing_list_membership_observed_at
+          tests:
+            - not_null
