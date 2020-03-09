@@ -10,3 +10,29 @@ models:
   - name: survey_id
     tests:
     - not_null
+- name: sheetload_certificates_unioned
+  columns:
+  - name: date_completed
+    tests:
+    - not_null
+  - name: submitter_name
+    tests:
+    - not_null
+  - name: correct_responses
+    tests:
+    - not_null
+  - name: total_responses
+    tests:
+    - not_null
+  - name: is_team_member
+    tests:
+    - not_null
+  - name: submitter_email
+    tests:
+    - not_null
+  - name: certificate_name
+    tests:
+    - not_null
+  - name: last_updated_at
+    tests:
+    - not_null
