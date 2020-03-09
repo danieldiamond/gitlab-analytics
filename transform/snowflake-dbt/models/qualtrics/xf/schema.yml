@@ -1,0 +1,5 @@
+version: 2
+
+models:
+    - name: qualtrics_user_mailing_send
+      description: ''
