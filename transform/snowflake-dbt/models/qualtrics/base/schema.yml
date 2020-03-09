@@ -2,5 +2,5 @@ version: 2
 
 models:
     - name: qualtrics_distribution
-    - name: qualtrics_surveys
+    - name: qualtrics_survey
     - name: qualtrics_mailing_contacts
