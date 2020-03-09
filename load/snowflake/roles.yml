@@ -929,12 +929,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.zuora
                     - raw.zuora_stitch
             tables:
                 read:
+                    - analytics.zuora.*
                     - raw.zuora_stitch.*
 
     # User Roles
