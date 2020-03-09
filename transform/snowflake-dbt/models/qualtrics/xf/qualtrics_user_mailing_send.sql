@@ -25,9 +25,9 @@ WITH mailing_list_distinct_versions AS (
 ), distribution_contacts_joined AS (
 
     SELECT 
-        m.contact_email,
-        d.mailing_sent_at,
-        s.survey_name
+        m.contact_email     AS contact_email,
+        d.mailing_sent_at   AS mailing_sent_at,
+        s.survey_name       AS survey_name
     FROM distribution_mailing_list_version d
     INNER JOIN {{ ref('qualtrics_mailing_contacts') }} m
       ON d.mailing_list_membership_observed_at = m.mailing_list_membership_observed_at AND NOT m.is_unsubscribed
