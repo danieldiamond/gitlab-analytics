@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import json
 from os import environ as env
 
-from typing import List
+from typing import Any, Dict, List
 
 from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     POOL_ID = config_dict["QUALTRICS_POOL_ID"]
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
-    distributions_to_write = []
+    distributions_to_write: List[Dict[Any,]] = []
     for survey_id in get_and_write_surveys(client):
         distributions_to_write = distributions_to_write + get_distributions(
             client, survey_id, start_time, end_time
