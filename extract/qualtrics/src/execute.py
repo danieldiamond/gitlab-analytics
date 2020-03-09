@@ -44,6 +44,7 @@ if __name__ == "__main__":
     end_time = parse_string_to_timestamp(config_dict["END_TIME"])
     POOL_ID = config_dict["QUALTRICS_POOL_ID"]
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
+
     distributions_to_write = []
     for survey_id in get_and_write_surveys(client, start_time, end_time):
         distributions_to_write = distributions_to_write + get_distributions(
