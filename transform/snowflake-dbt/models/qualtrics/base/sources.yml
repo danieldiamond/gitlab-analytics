@@ -12,15 +12,11 @@ sources:
       schema: false
       identifier: false
 
-      quoting:
-        database: true
-        schema: false
-        identifier: false
   
-      freshness:
-        warn_after: {count: 24, period: hour}
-  
-      tables:
-        - name: contact
-        - name: distribution
-        - name: survey
+    freshness:
+      warn_after: {count: 24, period: hour}
+
+    tables:
+    - name: contact
+    - name: distribution
+    - name: survey

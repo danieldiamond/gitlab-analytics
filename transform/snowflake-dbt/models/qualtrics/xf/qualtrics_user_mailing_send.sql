@@ -19,7 +19,7 @@ WITH mailing_list_distinct_versions AS (
       min(mailing_list_membership_observed_at) AS mailing_list_membership_observed_at
     FROM {{ ref('qualtrics_distribution') }} dist
     INNER JOIN mailing_list_distinct_versions ml
-      ON dist.send_date < ml.mailing_list_membership_observed_at
+      ON dist.mailing_sent_at < ml.mailing_list_membership_observed_at
     {{ dbt_utils.group_by(n=4) }}
 
 ), distribution_contacts_joined AS (
