@@ -1,7 +1,7 @@
 version: 2
 
 models:
-    - name: qualtrics_user_mailing_send
+    - name: qualtrics_contact_mailing_send
       description: 'All mailings sent to individual Qualtrics contacts, as well as the time in which they were sent.'
       columns:
         - name: contact_email
