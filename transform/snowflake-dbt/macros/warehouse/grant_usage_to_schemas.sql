@@ -6,7 +6,7 @@
 		{%- set roles = [rolename] -%}
 	{% else %}
 		{%- set roles = [
-				'dbt_analytics',
+                'dbt_analytics',
                 'dbt_analytics_sensitive'
 			] -%}
 	{% endif %}
