@@ -60,7 +60,7 @@ If none, please include a description
     * [ ]  Data Team member to run the following CI Jobs on the MR: 
          - [ ] clone_raw
          - [ ] sheetload
-         - [ ] specify_model
+         - [ ] specify_raw_model (here you need to specify which dbt-models you want to run/test, just as if it was specify_model)
     * [ ]  Data Analyst to assign MR to project maintainer for review (iterate until model is complete).
     * [ ]  Data Team project maintainers/owners to merge in dbt models 
     * [ ]  If not urgent, data will be availble within 24 hours. If urgent, Data Engineer to run full refresh and inform when available.

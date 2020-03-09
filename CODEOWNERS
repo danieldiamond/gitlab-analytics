@@ -1,4 +1,3 @@
-
 # ======
 # Documentation
 # ======
@@ -44,10 +43,12 @@ docker-compose.yml @tayloramurphy
 /transform/snowflake-dbt/models/customers/ @eli_kastelein @mpeychet_
 /transform/snowflake-dbt/models/gitlab_data_yaml/ @tayloramurphy
 /transform/snowflake-dbt/models/gitlab_dotcom/ @eli_kastelein @mpeychet_
+/transform/snowflake-dbt/models/greenhouse/ @pluthra
 /transform/snowflake-dbt/models/license/ @eli_kastelein @mpeychet_
 /transform/snowflake-dbt/models/netsuite/ @iweeks
-/transform/snowflake-dbt/models/version/ @eli_kastelein @mpeychet_
-/transform/snowflake-dbt/models/smau_events/ @eli_kastelein @mpeychet_
+/transform/snowflake-dbt/models/version/ @eli_kastelein @mpeychet
+/transform/snowflake-dbt/models/sfdc/ @derekatwood
+/transform/snowflake-dbt/models/smau_events/ @eli_kastelein @mpeychet
 /transform/snowflake-dbt/models/snowplow/ @tayloramurphy
 /transform/snowflake-dbt/models/snowplow_combined/ @tayloramurphy
 

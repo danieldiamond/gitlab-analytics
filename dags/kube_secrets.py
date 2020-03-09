@@ -156,3 +156,9 @@ CLEARBIT_API_KEY = Secret("env", "CLEARBIT_API_KEY", "airflow", "CLEARBIT_API_KE
 GITLAB_COM_API_TOKEN = Secret(
     "env", "GITLAB_COM_API_TOKEN", "airflow", "GITLAB_COM_API_TOKEN"
 )
+
+QUALTRICS_API_TOKEN = Secret(
+    "env", "QUALTRICS_API_TOKEN", "airflow", "QUALTRICS_API_TOKEN"
+)
+
+QUALTRICS_POOL_ID = Secret("env", "QUALTRICS_POOL_ID", "airflow", "QUALTRICS_POOL_ID")

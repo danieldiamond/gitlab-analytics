@@ -49,6 +49,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.opportunity_owner_team                                                     AS opportunity_owner_team,
       sfdc_users_xf.title                                                                         AS opportunity_owner_title,
       sfdc_opportunity.opportunity_sales_development_representative,
+      sfdc_opportunity.opportunity_development_representative,
       sfdc_opportunity.account_owner_team_stamped,
       sfdc_opportunity.opportunity_term,
       sfdc_opportunity.parent_segment,
@@ -65,6 +66,7 @@ WITH sfdc_opportunity AS (
       
       -- opportunity information
       sfdc_opportunity.acv,
+      sfdc_opportunity.amount,
       sfdc_opportunity.closed_deals,
       sfdc_opportunity.competitors,
       sfdc_opportunity.deal_size,
@@ -72,6 +74,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.forecasted_iacv,
       sfdc_opportunity.iacv_created_date,
       sfdc_opportunity.incremental_acv,
+      sfdc_opportunity.invoice_number,
       sfdc_opportunity.is_refund,
       sfdc_opportunity.is_downgrade,
       CASE WHEN (sfdc_opportunity.days_in_stage > 30
@@ -81,6 +84,7 @@ WITH sfdc_opportunity AS (
       ELSE FALSE
       END                                                                                         AS is_risky,
       sfdc_opportunity.is_swing_deal,
+      sfdc_opportunity.is_edu_oss,
       sfdc_opportunity_stage.is_won                                                               AS is_won,
       sfdc_opportunity.net_incremental_acv,
       sfdc_opportunity.nrv,
