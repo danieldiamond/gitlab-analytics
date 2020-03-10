@@ -19,4 +19,5 @@ WITH source AS (
     FROM intermediate
 
 )
-SELECT * from parsed
+SELECT * 
+FROM parsed
