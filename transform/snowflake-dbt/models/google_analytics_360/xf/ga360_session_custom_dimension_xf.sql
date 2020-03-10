@@ -11,11 +11,11 @@ WITH session_custom_dims AS (
 ), named_dims AS(
 
 	SELECT
-	    --dimensions
-	    session_custom_dims.*,
+	  --dimensions
+	  session_custom_dims.*,
 	    
-	    --index names
-	    ga_index_names.name	AS dimension_name
+	  --index names
+	  ga_index_names.name	AS dimension_name
 	    
 	FROM session_custom_dims
 	LEFT JOIN ga_index_names 
