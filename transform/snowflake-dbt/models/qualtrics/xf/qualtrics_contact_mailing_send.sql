@@ -50,5 +50,6 @@ WITH qualtrics_mailing_contacts AS (
       ON d.survey_id = s.survey_id
 
 )
+
 SELECT *
 FROM distribution_contacts_joined
