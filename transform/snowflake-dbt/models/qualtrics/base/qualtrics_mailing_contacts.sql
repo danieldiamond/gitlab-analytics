@@ -10,9 +10,9 @@ WITH source AS (
 
 ), intermediate AS (
 
-      SELECT d.value as data_by_row, uploaded_at
-      FROM source,
-      LATERAL FLATTEN(INPUT => parse_json(jsontext), outer => true) d
+    SELECT d.value as data_by_row, uploaded_at
+    FROM source,
+    LATERAL FLATTEN(INPUT => parse_json(jsontext), outer => true) d
 
 ), parsed AS (
 
