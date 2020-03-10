@@ -102,6 +102,9 @@ models:
 
     sources:
       schema: source
+      qualtrics:
+        schema: qualtrics
+        materialized: table
 
     staging:
       schema: staging
@@ -109,6 +112,7 @@ models:
         xf:
           schema: analytics
           materialized: table
+
 
     bamboohr:
       schema: sensitive
