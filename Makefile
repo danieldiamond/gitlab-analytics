@@ -35,7 +35,6 @@ airflow:
 	@sleep 5
 	@docker exec -ti ${AIRFLOW_IMAGE} /bin/bash
 
-
 cleanup:
 	@echo "Cleaning things up..."
 	@docker-compose down -v
