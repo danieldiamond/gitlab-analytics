@@ -21,6 +21,8 @@ WITH
 
     FROM distinct_source
 
+    LIMIT 100000
+
 )
 
 {{ scd_type_2(
