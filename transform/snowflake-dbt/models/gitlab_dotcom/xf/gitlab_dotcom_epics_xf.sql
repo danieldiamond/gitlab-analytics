@@ -25,7 +25,7 @@ WITH epics AS (
       ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY masked_label_title ASC) AS labels
     FROM epics
     LEFT JOIN label_links
-      ON epics.issue_id = label_links.target_id
+      ON epics.epic_id = label_links.target_id
     LEFT JOIN all_labels
       ON label_links.label_id = all_labels.label_id
     GROUP BY epics.epic_id
@@ -82,12 +82,12 @@ joined AS (
 
   FROM epics
   LEFT JOIN agg_labels
-    ON issues.issue_id = agg_labels.issue_id
+    ON epics.epic_id = agg_labels.epic_id
   LEFT JOIN namespace_lineage
     ON epics.group_id = namespace_lineage.namespace_id
   LEFT JOIN gitlab_subscriptions
     ON namespace_lineage.ultimate_parent_id = gitlab_subscriptions.namespace_id
-    AND issues.created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
+    AND epics.created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
 )
 
 SELECT *
