@@ -6,7 +6,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('zendesk_tickets_source') }}
+    FROM {{ ref('zendesk_tickets_source') }}
 )
 
 SELECT *

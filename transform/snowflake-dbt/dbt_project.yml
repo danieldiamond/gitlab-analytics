@@ -213,9 +213,6 @@ models:
       xf:
         materialized: table
 
-    zendesk:
-      xf:
-        materialized: table
 
 # ======
 # Snapshot Configs

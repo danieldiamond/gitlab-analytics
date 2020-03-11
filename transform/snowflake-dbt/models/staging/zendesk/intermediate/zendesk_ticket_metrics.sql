@@ -6,7 +6,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('zendesk_ticket_metrics_source') }}
+    FROM {{ ref('zendesk_ticket_metrics_source') }}
 
 ),
 
@@ -40,7 +40,7 @@ renamed AS (
               COALESCE(full_resolution_time_in_minutes_during_business_hours, 50000000),
               COALESCE(reply_time_in_minutes_during_business_hours, 50000000)
             )
-        )                                                   AS sla_reply_time_business_hours,
+        )                                                   AS sla_reply_time_business_hours
 
 
     FROM source
