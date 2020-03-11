@@ -6,12 +6,12 @@
 WITH location_application_answer AS (
   
   SELECT *
-  FROM {{ ref('transformed_location_application_question_answers') }}
+  FROM {{ ref('greenhouse_location_application_question_answers') }}
   
 ), latest_location_factor AS (
   
   SELECT *
-  FROM {{ ref('transformed_latest_location_factor_yaml') }}
+  FROM {{ ref('location_factors_yaml_latest_area_partition') }}
   
 ), application_answer_loc_factor AS (
 
