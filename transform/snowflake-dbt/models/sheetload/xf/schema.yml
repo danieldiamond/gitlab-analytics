@@ -11,7 +11,7 @@ models:
     tests:
     - not_null
 - name: sheetload_certificates_unioned
-  description:
+  description: The collection of all certificates distributed by the Learning and Development team in the People group. 
   columns:
   - name: date_completed
     description: The date the form was submitted.
