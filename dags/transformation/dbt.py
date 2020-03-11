@@ -208,8 +208,8 @@ dbt_full_refresh = KubernetesPodOperator(
 dbt_source_cmd = f"""
     {pull_commit_hash} &&
     {dbt_install_deps_cmd} &&
-    dbt source snapshot-freshness --profiles-dir profile &&
-    python ../../orchestration/parse_source_freshness.py
+    dbt source snapshot-freshness --profiles-dir profile; ret=$?;
+    python ../../orchestration/upload_source_freshness_to_snowflake.py; exit $ret
 """
 dbt_source_freshness = KubernetesPodOperator(
     **gitlab_defaults,
