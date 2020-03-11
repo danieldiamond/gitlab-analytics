@@ -234,6 +234,7 @@ roles:
             - bamboohr
             - boneyard
             - dbt_analytics
+            - dbt_analytics_sensitive
             - gitlab_data_yaml
             - greenhouse
             - netsuite
