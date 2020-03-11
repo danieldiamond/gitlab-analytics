@@ -109,6 +109,9 @@ models:
         xf:
           schema: analytics
           materialized: table
+      google_analytics_360:
+        schema: analytics
+        materialized: table
 
     bamboohr:
       schema: sensitive
@@ -138,12 +141,6 @@ models:
     gitter:
       enabled: false
       transformed:
-        materialized: table
-
-    google_analytics_360:
-      base:
-        schema: staging
-      xf:
         materialized: table
 
     greenhouse:
