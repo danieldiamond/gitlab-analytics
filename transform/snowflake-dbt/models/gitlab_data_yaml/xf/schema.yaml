@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: location_factor_application_answers
-    description: This dbt model (view) gives the location factor of location application question answers.
+  - name: location_factors_yaml_latest_area_partition
+    description: This dbt model partitions the area column of location_factors_yaml_latest to have the city, state, and country of each location.
     columns:
     - name: city
       tests:

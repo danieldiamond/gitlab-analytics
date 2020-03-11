@@ -50,4 +50,15 @@ models:
         - name: time_to_offer
           description: Shows how long an applicant to go from applying to accepting an offer. This is based on offer accept month. 
 
-          
+ - name: greenhouse_location_application_question_answers
+    description: This dbt model partitions the area column from the location application question answers to get the city, state, and country of each location.
+    columns:
+    - name: city
+      tests:
+        - not_null
+    - name: state
+      tests:
+        - not_null
+    - name: country
+      tests: 
+        - not_null         

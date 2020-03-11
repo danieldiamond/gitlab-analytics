@@ -99,3 +99,18 @@ models:
     - name: offer_acceptance_rate_based_on_offer_month
       description: This metric indicates of the offers sent, how many candidates have accepted. 
 
+- name: greenhouse_application_question_answers_location_factor
+    description: This dbt model gives the location factor of location application question answers.
+    columns:
+    - name: city
+      tests:
+        - not_null
+    - name: state
+      tests:
+        - not_null
+    - name: country
+      tests: 
+        - not_null
+    - name: location_factor
+      tests:
+        - not_null
