@@ -33,14 +33,14 @@ query-comment: "{{ query_comment(node) }}"
 # ======
 on-run-start:
     - "{{ dbt_logging_start('on run start hooks') }}"
-    - "{{resume_warehouse(var('resume_warehouse', false), var('warehouse_name'))}}"
-    - "{{create_udfs()}}"
+    - "{{ resume_warehouse(var('resume_warehouse', false), var('warehouse_name')) }}"
+    - "{{ create_udfs() }}"
 
 on-run-end:
     - "{{ dbt_logging_start('on run end hooks') }}"
-    - "{{grant_usage_to_schemas(schema_name)}}"
+    - "{{ grant_usage_to_schemas() }}"
     - "drop schema if exists {{ generate_schema_name('temporary') }}"
-    - "{{suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name'))}}"
+    - "{{ suspend_warehouse(var('suspend_warehouse', false), var('warehouse_name')) }}"
 
 # ======
 # Seed Configs
@@ -100,11 +100,22 @@ models:
   gitlab_snowflake:
     materialized: view
 
+    # Dimensional Structure
     sources:
-      schema: source
+      qualtrics:
+        materialized: table
+        schema: qualtrics
 
+      zendesk:
+        schema: zendesk
+
+      zuora:
+        schema: zuora
+    
     staging:
       schema: staging
+      materialized: table
+
       zuora:
         xf:
           schema: analytics
@@ -113,6 +124,8 @@ models:
         schema: analytics
         materialized: table
 
+
+    # Legacy Structure
     bamboohr:
       schema: sensitive
       base:
@@ -147,7 +160,7 @@ models:
       base:
         schema: sensitive
       xf:
-        schema: sensitive  
+        schema: sensitive
       rpt:
         schema: analytics
     
@@ -204,9 +217,6 @@ models:
       xf:
         materialized: table
 
-    zendesk:
-      xf:
-        materialized: table
 
 # ======
 # Snapshot Configs

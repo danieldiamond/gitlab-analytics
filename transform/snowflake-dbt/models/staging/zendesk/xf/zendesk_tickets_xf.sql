@@ -1,7 +1,7 @@
 WITH zendesk_tickets AS (
 
   SELECT *
-  FROM {{ref('zendesk_tickets')}}
+  FROM {{ref('zendesk_tickets_source')}}
 
 ), zendesk_ticket_metrics AS (
 
@@ -19,7 +19,7 @@ WITH zendesk_tickets AS (
     policy_metrics_business_hours,
     policy_metrics_priority,
     policy_metrics_target
-  FROM {{ref('zendesk_sla_policies')}}
+  FROM {{ref('zendesk_sla_policies_source')}}
   WHERE policy_metrics_metric = 'first_reply_time'
 
 ), zendesk_organizations AS (
@@ -29,7 +29,7 @@ WITH zendesk_tickets AS (
     sfdc_account_id,
     organization_tags,
     organization_market_segment
-  FROM {{ref('zendesk_organizations')}}
+  FROM {{ref('zendesk_organizations_source')}}
 
 ), zendesk_tickets_sla AS (
 

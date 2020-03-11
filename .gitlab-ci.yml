@@ -135,16 +135,16 @@ python_complexity:
   script:
     -  xenon --max-absolute B --max-modules A --max-average A . -i transform,shared_modules
 
-python_pytest:
-  <<: *python_check
-  script:
-    - pytest -vv -x --ignore=dags
+# python_pytest:
+#   <<: *python_check
+#   script:
+#     - pytest -vv -x --ignore=dags
 
 # ======
 # Snowflake Permissions Validator
 # ======
 
-.permissions_check: &permissions_check
+.yaml_validate: &yaml_validate
   stage: 🐍 Python
   image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
   tags:
@@ -156,11 +156,26 @@ python_pytest:
       - merge_request
   allow_failure: true
 
-🔐permissions_query:
-  <<: *permissions_check
+yaml_validation:
+  <<: *yaml_validate
   script:
     - python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))' < load/snowflake/roles.yml
 
+.permifrost: &permifrost
+  stage: 🐍 Python
+  image: registry.gitlab.com/gitlab-data/permifrost:v0.1.0
+  tags:
+    - analytics
+  only:
+    refs:
+      - merge_requests
+  allow_failure: true
+
+permifrost_manual:
+  <<: *permifrost
+  script:
+    - permifrost grant load/snowflake/roles.yml --diff --dry
+  when: manual
 
 # ======
 # dbt docs to GitLab Pages
