@@ -100,17 +100,25 @@ models:
   gitlab_snowflake:
     materialized: view
 
+    # Dimensional Structure
     sources:
+      qualtrics:
+        materialized: table
+        schema: qualtrics
+
       zuora:
         schema: zuora
-
+    
     staging:
       schema: staging
+      materialized: table
+      
       zuora:
         xf:
           schema: analytics
-          materialized: table
 
+
+    # Legacy Structure
     bamboohr:
       schema: sensitive
       base:
