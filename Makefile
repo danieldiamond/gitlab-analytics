@@ -28,6 +28,7 @@ help:
 	------------------------------ \n"
 
 airflow:
+	@if [ "$(GIT_BRANCH)" = "master" ]; then echo "GIT_BRANCH must not be master" && exit 1; fi
 	@echo "Attaching to the Webserver container..."
 	@docker-compose down
 	@export GIT_BRANCH=$(GIT_BRANCH) && docker-compose up -d airflow_webserver
