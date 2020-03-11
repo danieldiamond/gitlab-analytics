@@ -756,12 +756,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.zendesk
                     - raw.zendesk_stitch
             tables:
                 read:
+                    - analytics.zendesk.*
                     - raw.zendesk_stitch.*  
 
     - zuora:
