@@ -30,20 +30,17 @@ WITH epics AS (
       ON label_links.label_id = all_labels.label_id
     GROUP BY epics.epic_id
 
-), projects AS (
+), namespaces AS (
 
-    SELECT
-      project_id,
-      namespace_id,
-      visibility_level
-    FROM {{ref('gitlab_dotcom_projects')}}
+    SELECT *
+    FROM {{ref('gitlab_dotcom_namespaces')}}
 
 ), namespace_lineage AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
-, gitlab_subscriptions AS (
+) , gitlab_subscriptions AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
@@ -52,22 +49,21 @@ WITH epics AS (
 joined AS (
 
   SELECT
-    {{ dbt_utils.star(from=ref('gitlab_dotcom_epics'), except=fields_to_mask|upper) }}
+    {{ dbt_utils.star(from=ref('gitlab_dotcom_epics'), except=fields_to_mask|upper, relation_alias='epics')}},
     
     {% for field in fields_to_mask %}
     CASE
-      WHEN is_confidential = TRUE
-        AND namespace_lineage.namespace_is_internal = TRUE
-        THEN 'confidential - masked'
-      WHEN visibility_level != 'public'
-        AND namespace_lineage.namespace_is_internal = TRUE
-        THEN 'private/internal - masked'
-      ELSE {{field}}
+      WHEN namespaces.visibility_level = 'public'
+        THEN {{field}}
+      WHEN namespace_lineage.namespace_is_internal = True
+        THEN {{field}}
+      ELSE 'private/internal - masked'
     END                                          AS {{field}},
     {% endfor %}
 
     agg_labels.labels,
 
+    namespaces.visibility_level                  AS namespace_visibility_level,
     namespace_lineage.namespace_is_internal      AS is_internal_epic,
     namespace_lineage.ultimate_parent_id,  --TODO: always top-level because of epics?
     namespace_lineage.ultimate_parent_plan_id,
@@ -83,6 +79,8 @@ joined AS (
   FROM epics
   LEFT JOIN agg_labels
     ON epics.epic_id = agg_labels.epic_id
+  LEFT JOIN namespaces
+    ON epics.group_id = namespaces.namespace_id
   LEFT JOIN namespace_lineage
     ON epics.group_id = namespace_lineage.namespace_id
   LEFT JOIN gitlab_subscriptions

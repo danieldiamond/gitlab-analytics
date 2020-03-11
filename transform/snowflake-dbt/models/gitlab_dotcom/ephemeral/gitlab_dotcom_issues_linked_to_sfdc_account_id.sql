@@ -37,7 +37,6 @@ WITH gitlab_issues AS (
   SELECT *
   FROM gitlab_epics
 
-
 ), sfdc_accounts AS (
 
   SELECT *
