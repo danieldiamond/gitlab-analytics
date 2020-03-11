@@ -106,13 +106,16 @@ models:
         materialized: table
         schema: qualtrics
 
+      zendesk:
+        schema: zendesk
+
       zuora:
         schema: zuora
     
     staging:
       schema: staging
       materialized: table
-      
+
       zuora:
         xf:
           schema: analytics
