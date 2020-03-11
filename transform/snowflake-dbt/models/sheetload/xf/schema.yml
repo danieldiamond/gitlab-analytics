@@ -11,26 +11,34 @@ models:
     tests:
     - not_null
 - name: sheetload_certificates_unioned
+  description:
   columns:
   - name: date_completed
+    description: The date the form was submitted.
     tests:
     - not_null
   - name: submitter_name
+    description: The name of the submitter, if one was provided.
     tests:
     - not_null
   - name: correct_responses
+    description: The number of correctly submitted responses.
     tests:
     - not_null
   - name: total_responses
+    description: The number of total responses submited.
     tests:
     - not_null
   - name: is_team_member
+    description: A boolean flag that looks for an `@gitlab.com` email address to identify if someone is a team member.
     tests:
     - not_null
   - name: submitter_email
+    description: If the person is a team member, share their email; otherwise, this is a hash.
     tests:
     - not_null
   - name: certificate_name
+    description: The name of the certificate- there are multiple kinds (Values, Ally, Certification, etc.)
     tests:
     - not_null
   - name: last_updated_at
