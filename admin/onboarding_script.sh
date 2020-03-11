@@ -56,7 +56,7 @@ brew install tldr
 echo "tldr installed. "
 
 ## install bash completion
-echo "Installing bash competion.."
+echo "Installing bash completion.."
 brew install bash-completion
 echo "bash completion successfully installed"
 
@@ -111,6 +111,9 @@ echo "Installing dbt completion script.."
 curl https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash > ~/.dbt-completion.bash
 echo "dbt completion script successfully installed"
 
+## Add refresh command
+echo "alias dbt_refresh='dbt clean ; dbt deps ; dbt seed'" >> ~/.bash_profile
+
 ## install anaconda
 echo "Installing anaconda.."
 brew cask install anaconda
@@ -119,6 +122,7 @@ echo "anaconda installed succesfully"
 
 echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.bash_profile
 echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.bash_profile
+echo "export SNOWFLAKE_SNAPSHOT_DATABASE='SNOWFLAKE'" >> ~/.bash_profile
 echo "export DBT_PROFILE_PATH=~/.dbt/" >> ~/.bash_profile
 echo "source ~/.bashrc" >> ~/.bash_profile
 echo "source ~/.bashrc"

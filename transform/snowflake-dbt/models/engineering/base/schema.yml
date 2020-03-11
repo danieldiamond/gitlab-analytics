@@ -33,7 +33,7 @@ models:
       - name: karma_coverage_absolute
       - name: karma_coverage_total
   - name: engineering_part_of_product_merge_requests
-    description: This table is a base table for merge request data for projects that are part of product.
+    description: '{{ doc("engineering_product_merge_requests") }}'
     columns:
       - name: added_lines
       - name: real_size
@@ -42,5 +42,32 @@ models:
         tests:
           - not_null
           - unique
-        
+  - name: engineering_development_team_members
+    description: '{{ doc("engineering_development_team_members") }}'
+    columns:
+      - name: country
+      - name: development_section
+      - name: gitlab_handle
+        tests:
+          - not_null
+          - unique
+      - name: gitlab_id
+        tests:
+          - not_null
+          - unique
+      - name: is_backend_maintainer
+      - name: is_backend_trainee_maintainer
+      - name: is_database_maintainer
+      - name: is_database_trainee_maintainer
+      - name: is_frontend_maintainer
+      - name: is_frontend_trainee_maintainer
+      - name: is_manager
+      - name: level
+      - name: locality
+      - name: location_factor
+      - name: match_name
+      - name: name
+      - name: start_date
+      - name: team
+      - name: technology_group
     

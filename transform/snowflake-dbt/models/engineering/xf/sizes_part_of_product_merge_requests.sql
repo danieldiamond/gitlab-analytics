@@ -16,12 +16,31 @@ WITH split_diff_path AS (
       product_merge_request_files_changed,
       product_merge_request_files_changed_truncated,
       product_merge_request_lines_removed,
-      ARRAY_TO_STRING(ARRAY_SLICE(product_merge_request_diff_url_split, 0, -1), '-')::VARCHAR AS product_merge_request_project,
-      REGEXP_REPLACE(GET(product_merge_request_diff_url_split, product_merge_request_diff_url_size - 1), '[^0-9]+', '')::bigint AS product_merge_request_id
+      TRIM(ARRAY_TO_STRING(ARRAY_SLICE(product_merge_request_diff_url_split, 0, -1), '-'), '/')::VARCHAR AS product_merge_request_project,
+      REGEXP_REPLACE(GET(product_merge_request_diff_url_split, product_merge_request_diff_url_size - 1), '[^0-9]+', '')::bigint AS product_merge_request_iid
     FROM split_diff_path
+
+), product_projects AS (
+
+    SELECT *
+    FROM {{ ref('projects_part_of_product') }}
+
+), project_id_merged_in AS (
+
+    SELECT
+      product_merge_request_lines_added,
+      product_merge_request_files_changed,
+      product_merge_request_files_changed_truncated,
+      product_merge_request_lines_removed,
+      product_merge_request_project,
+      product_projects.project_id AS product_merge_request_project_id,
+      product_merge_request_iid
+    FROM id_split_out
+    INNER JOIN product_projects
+      ON product_projects.project_path = id_split_out.product_merge_request_project
 
 )
 SELECT * 
-FROM id_split_out
+FROM project_id_merged_in
 
 

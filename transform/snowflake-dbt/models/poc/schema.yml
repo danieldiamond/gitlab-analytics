@@ -1,0 +1,5 @@
+version: 2
+
+models:
+    - name: anonymized_snowplow_pageviews_30
+      description: '{{ doc("anonymized_snowplow_pageviews_30") }}'

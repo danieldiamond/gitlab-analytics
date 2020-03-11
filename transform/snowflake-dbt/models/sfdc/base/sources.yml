@@ -43,12 +43,6 @@ sources:
       - name: opportunity_field_history
         identifier: opportunityfieldhistory
         description: '{{ doc("sfdc_oppfieldhistory_source") }}'  
-      - name: opportunity_history
-        identifier: opportunityhistory          
-        description: '{{ doc("sfdc_opphistory_source") }}'
-      - name: opportunity_line_item
-        identifier: opportunitylineitem      
-        description: '{{ doc("sfdc_oppline_source") }}'
       - name: opportunity_stage
         identifier: opportunitystage         
         description: '{{ doc("sfdc_oppstage_source") }}'
@@ -57,6 +51,9 @@ sources:
       - name: proof_of_concept
         identifier: proof_of_concept__c     
         description: '{{ doc("sfdc_pov_source") }}'
+      - name: quote
+        identifier: zqu__quote__c
+        description: '{{ doc("sfdc_quote_source") }}'  
       - name: record_type
         identifier: recordtype         
         description: '{{ doc("sfdc_recordtype_source") }}'

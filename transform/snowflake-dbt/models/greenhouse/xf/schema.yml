@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: greenhouse_recruiting_xf
+    description: This is shows all applications submitted and ties in offer data, greenhouse department (the associated division), and source data to be in 1 place.
+    columns:
+        - name: application_id
+        - name: offer_id
+        - name: candidate_id
+        - name: application_status
+        - name: stage_name
+        - name: application_date
+          description: The date the candidate applied for a specific job posting.
+        - name: offer_sent_date
+          description: The date the candidate was sent an offer
+        - name:  offer_resolved_date
+          description: The date the candidate either accepted or rejected the offer.
+        - name: job_name
+        - name: department_name
+        - name: division
+        - name: source_name
+          description: Where the candidate came from 
+        - name: source_type
+        - name: time_to_offer
+          description: Shows how long an applicant to go from applying to accepting an offer. This is based on offer accept month.
+
+  - name: greenhouse_diversity_intermediate
+    description: This is the intermediate model used for greenhouse_diversity. It builds out a base that includes month_date, a column for all the various eeoc_field_names, and joins greenhouse_recruiting_xf to ensure each candidate is tied to an eeoc_field. In the event the candidate did not answer, the response is 'Did not identify'. This is later used in the greenhouse_diversity rpt to aggregate metrics.
+    columns:
+        - name: month_date
+        - name: eeoc_field_name
+          description: This column lists the eeoc_fields and ties it to each application. As a result, an applicant will have a response for gender, race, etc if it is null.           
+          tests: 
+            - accepted_values:
+                values: ['candidate_veteran_status', 'candidate_gender', 'candidate_status', 'candidate_race', 'candidate_disability_status']
+        - name: capture_month
+          description: This identifies if the data is captured for the application month, the offer sent month, or offer_accepted. The metrics associated to these are grouped up in the greenhouse_diversity rpt.
+          tests:
+            - accepted_values:
+                values: ['application_month','offer_sent_month','accepted_month']
+        - name: candidate_id
+        - name: application_id
+        - name: department_name
+        - name: division
+        - name: source_type
+        - name: eeoc_values
+          description: This field indicates the diversity for a candidate. For example, tying this to eeoc_field_name = 'Candidate_Gender' we can see the gender of the candidate if they choose to respond.
+        - name: accepted_offer
+          description: If the offer_status = 'accepted' then this will be a 1, otherwise 0. This is used later to aggregate offers in the greenhouse_diversity model.
+        - name: time_to_offer
+          description: Shows how long an applicant to go from applying to accepting an offer. This is based on offer accept month. 
+
+          

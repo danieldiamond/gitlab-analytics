@@ -135,11 +135,47 @@ python_complexity:
   script:
     -  xenon --max-absolute B --max-modules A --max-average A . -i transform,shared_modules
 
-python_pytest:
-  <<: *python_check
-  script:
-    - pytest -vv -x --ignore=dags
+# python_pytest:
+#   <<: *python_check
+#   script:
+#     - pytest -vv -x --ignore=dags
 
+# ======
+# Snowflake Permissions Validator
+# ======
+
+.yaml_validate: &yaml_validate
+  stage: 🐍 Python
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  tags:
+    - analytics
+  only:
+    changes:
+      - "load/snowflake/roles.yml"
+    refs:
+      - merge_request
+  allow_failure: true
+
+yaml_validation:
+  <<: *yaml_validate
+  script:
+    - python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))' < load/snowflake/roles.yml
+
+.permifrost: &permifrost
+  stage: 🐍 Python
+  image: registry.gitlab.com/gitlab-data/permifrost:v0.1.0
+  tags:
+    - analytics
+  only:
+    refs:
+      - merge_requests
+  allow_failure: true
+
+permifrost_manual:
+  <<: *permifrost
+  script:
+    - permifrost grant load/snowflake/roles.yml --diff --dry
+  when: manual
 
 # ======
 # dbt docs to GitLab Pages
@@ -155,15 +191,17 @@ python_pytest:
   before_script:
     - export PATH="$CI_PROJECT_DIR/orchestration/:$PATH"
   script:
+    - export SNOWFLAKE_SNAPSHOT_DATABASE="SNOWFLAKE"
+    - echo $SNOWFLAKE_SNAPSHOT_DATABASE
     - echo "SNOWFLAKE_DATABASE = $SNOWFLAKE_TRANSFORM_DATABASE"
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
     - dbt deps --profiles-dir profile --target prod
     - dbt docs generate --profiles-dir profile --target prod
-    - mkdir -p $CI_PROJECT_DIR/public/dbt/snowflake
+    - mkdir -p $CI_PROJECT_DIR/public/
     - cd target
-    - cp *.json graph.gpickle $CI_PROJECT_DIR/public/dbt/snowflake/
+    - cp *.json graph.gpickle $CI_PROJECT_DIR/public/
     - cd $CI_PROJECT_DIR/transform/snowflake-dbt/docs/
-    - cp index.html gitlab.css $CI_PROJECT_DIR/public/dbt/snowflake/
+    - cp index.html gitlab.css $CI_PROJECT_DIR/public/
   tags:
     - analytics
   artifacts:

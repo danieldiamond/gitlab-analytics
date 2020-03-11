@@ -109,6 +109,7 @@ Usage:
 ```
 Used in:
 - sfdc_opportunity_snapshots_base.sql
+- sfdc_account_snapshots_base.sql
 
 ## Create UDFs ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/udfs/create_udfs.sql))
 This macro is inspired by [this discourse post](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions-redshift/18) on using dbt to manager UDFs.
@@ -290,6 +291,7 @@ Usage:
 ```
 Used in:
 - zuora_rate_plan.sql
+- zuora_subscription_periods.sql
 
 ## Resource Label Action Type([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/gitlab_dotcom/resource_label_action_type.sql))
 This macro maps action type ID to the action type for the `resource_label_events` table.
@@ -368,6 +370,7 @@ Usage:
 
 Used in:
 - gitlab_dotcom_gitlab_subscriptions.sql
+- gitlab_dotcom_group_group_links.sql
 - gitlab_dotcom_issue_links.sql
 - gitlab_dotcom_label_links.sql
 - gitlab_dotcom_members.sql

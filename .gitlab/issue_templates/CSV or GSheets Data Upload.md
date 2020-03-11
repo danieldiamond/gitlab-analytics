@@ -16,7 +16,7 @@ If none, please include a description
 
 ### DRI/Prioritization Owner Checklist
 * [ ]  Provide link to CSV/GSheet data. Link: ____
-* [ ]  Does this data live in the Data team's data warehouse? (https://gitlab-data.gitlab.io/analytics/dbt/snowflake/#!/overview) 
+* [ ]  Does this data live in the Data team's data warehouse? (https://dbt.gitlabdata.com) 
   - [ ] Yes 
   - [ ] No 
 * [ ]  Does this data need to be linked to other data in the Data team's data warehouse?
@@ -60,7 +60,7 @@ If none, please include a description
     * [ ]  Data Team member to run the following CI Jobs on the MR: 
          - [ ] clone_raw
          - [ ] sheetload
-         - [ ] specify_model
+         - [ ] specify_raw_model (here you need to specify which dbt-models you want to run/test, just as if it was specify_model)
     * [ ]  Data Analyst to assign MR to project maintainer for review (iterate until model is complete).
     * [ ]  Data Team project maintainers/owners to merge in dbt models 
     * [ ]  If not urgent, data will be availble within 24 hours. If urgent, Data Engineer to run full refresh and inform when available.

@@ -12,7 +12,12 @@ sys.path.insert(
 
 import pandas as pd
 import pytest
-from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
+from gitlabdata.orchestration_utils import (
+    dataframe_uploader,
+    dataframe_enricher,
+    snowflake_engine_factory,
+    query_executor,
+)
 
 from main import (
     load_incremental,
@@ -21,12 +26,7 @@ from main import (
     sync_incremental_ids,
     validate_ids,
 )
-from utils import (
-    dataframe_uploader,
-    manifest_reader,
-    postgres_engine_factory,
-    query_results_generator,
-)
+from utils import manifest_reader, postgres_engine_factory, query_results_generator
 
 # Set up some fixtures
 CONFIG_DICT = os.environ.copy()
@@ -78,7 +78,9 @@ class TestPostgresPipeline:
         query = "SELECT * FROM approver_groups WHERE id = (SELECT MAX(id) FROM approver_groups)"
         query_results = query_results_generator(query, POSTGRES_ENGINE)
         for result in query_results:
-            dataframe_uploader(False, result, SNOWFLAKE_ENGINE, TEST_TABLE)
+            dataframe_uploader(
+                result, SNOWFLAKE_ENGINE, TEST_TABLE, advanced_metadata=False
+            )
         uploaded_rows = pd.read_sql(f"select * from {TEST_TABLE}", SNOWFLAKE_ENGINE)
         assert uploaded_rows.shape[0] == 1
 
@@ -90,7 +92,9 @@ class TestPostgresPipeline:
         query = "SELECT * FROM merge_requests WHERE id = (SELECT MAX(id) FROM merge_requests)"
         query_results = query_results_generator(query, POSTGRES_ENGINE)
         for result in query_results:
-            dataframe_uploader(False, result, SNOWFLAKE_ENGINE, TEST_TABLE)
+            dataframe_uploader(
+                result, SNOWFLAKE_ENGINE, TEST_TABLE, advanced_metadata=False
+            )
         uploaded_rows = pd.read_sql(f"select * from {TEST_TABLE}", SNOWFLAKE_ENGINE)
         assert uploaded_rows.shape[0] == 1
 

@@ -3,7 +3,13 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
+from airflow_utils import (
+    PERMIFROST_IMAGE,
+    clone_repo_cmd,
+    gitlab_defaults,
+    gitlab_pod_env_vars,
+    slack_failed_task,
+)
 from kube_secrets import (
     PERMISSION_BOT_ACCOUNT,
     PERMISSION_BOT_DATABASE,
@@ -15,7 +21,7 @@ from kube_secrets import (
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
-pod_env_vars = {"DRY": "--dry"}
+pod_env_vars = {**gitlab_pod_env_vars, **{}}
 
 # Default arguments for the DAG
 default_args = {
@@ -31,10 +37,7 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     {clone_repo_cmd} &&
-    meltano init airflow_job &&
-    cp analytics/load/snowflake/roles.yml airflow_job/load/roles.yml &&
-    cd airflow_job/ &&
-    meltano permissions grant load/roles.yml --db snowflake $DRY
+    permifrost grant analytics/load/snowflake/roles.yml
 """
 
 # Create the DAG
@@ -45,7 +48,7 @@ dag = DAG(
 # Task 1
 snowflake_load = KubernetesPodOperator(
     **gitlab_defaults,
-    image=DATA_IMAGE,
+    image=PERMIFROST_IMAGE,
     task_id="snowflake-permissions",
     name="snowflake-permissions",
     secrets=[

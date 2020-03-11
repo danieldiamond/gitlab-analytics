@@ -44,11 +44,13 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
-    python product_mrs/execute.py
+    python gitlab_api_mrs/src/execute.py part_of_product
 """
 
 # Create the DAG
-dag = DAG("part_of_product_mrs", default_args=default_args, schedule_interval="@daily")
+dag = DAG(
+    "part_of_product_mrs", default_args=default_args, schedule_interval="0 4 * * *"
+)
 
 # Task 1
 part_of_product_mrs_run = KubernetesPodOperator(

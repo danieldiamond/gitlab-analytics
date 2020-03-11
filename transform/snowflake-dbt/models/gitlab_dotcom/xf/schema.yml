@@ -1,6 +1,16 @@
 version: 2
 
 models:
+  - name: gitlab_dotcom_clusters_applications_helm_xf
+    description: The model extends the clusters_applications_helm model by adding information about the associated cluster.
+    columns:
+      - name: clusters_applications_helm_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
   - name: gitlab_dotcom_environments_xf
     description: '{{ doc("gitlab_dotcom_environments_xf") }}'
     columns:
@@ -47,21 +57,6 @@ models:
         tests:
           - accepted_values:
                       values: ['Commit', 'Epic', 'Issue', 'MergeRequest', 'Snippet', 'Wiki', 'DesignManagement::Design']
-
-  - name: gitlab_dotcom_group_audit_events_monthly
-    description: '{{ doc("gitlab_dotcom_group_audit_events_monthly") }}'
-    columns:
-      - name: group_id
-        tests:
-          - not_null
-      - name: audit_events_count
-        description: The number of audit_events captured for the user during that month.
-        tests:
-          - not_null
-      - name: months_since_creation_date
-        description: Reflects the number of months between when a user joined and the month of the audit event(s).
-        tests:
-          - not_null
 
   - name: gitlab_dotcom_issues_xf
     description: '{{ doc("gitlab_dotcom_issues_xf") }}'
@@ -111,6 +106,33 @@ models:
       - name: project_count
         description: The number of projects that are presently associated with the group.
 
+  - name: gitlab_dotcom_memberships
+    description: '{{ doc("gitlab_dotcom_memberships") }}'
+    tests:
+      - unique:
+          column_name: "concat(membership_source_type, '_', membership_source_id, '_', user_id)"
+    columns:
+      - name: ultimate_parent_id
+        tests:
+          - not_null
+      - name: namespace_id
+        tests:
+          - not_null
+      - name: user_id
+        tests:
+          - not_null
+      - name: access_level
+        tests:
+          - not_null
+      - name: membership_source_type
+        description: This describes how the access is being granted ('group_membership', 'project_membership', 'group_group_links', 'project_group_links').
+        tests:
+          - not_null
+      - name: membership_source_id
+        description: The id of the record that is granting the access. If membership_source_type='group_membership', then this is the group_id.
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_events_monthly_active_users
     description: '{{ doc("gitlab_dotcom_events_monthly_active_users") }}'
     columns:
@@ -130,6 +152,27 @@ models:
     description: '{{ doc("gitlab_dotcom_merge_request_assignment_events") }}'
     columns:
       - name: merge_request_id
+        tests: 
+          - not_null
+
+  - name: gitlab_dotcom_merge_requests_merged_authors_xf
+    description: This is a dbt model of notes that signify a merge request being merged.
+    columns:
+      - name: project_id
+      - name: namespace_id
+      - name: merge_request_iid
+        tests: 
+          - not_null
+      - name: merge_request_title
+        tests: 
+          - not_null
+      - name: merge_request_id
+        tests: 
+          - not_null
+      - name: note_author_id
+        tests: 
+          - not_null
+      - name: user_name
         tests: 
           - not_null
 
@@ -208,6 +251,8 @@ models:
           - unique
       - name: member_count
         description: The number of members that are presently associated with the project.
+      - name: active_service_types
+        description: The types of services currently active and associated with the project.
       - name: namespace_plan_is_paid
         description: Whether or not the namespace associated with the project is subscribed to a paid plan.
       - name: namespace_plan_id_at_project_creation
@@ -243,6 +288,18 @@ models:
         tests:
           - not_null
       - name: event_name
+        tests:
+          - not_null
+      - name: stage_name
+        tests:
+          - not_null
+      - name: is_representative_of_stage
+        tests:
+          - not_null
+        description: This column represents whether or not this action represents being active for the entire stage. One action per stage has this designation.
+      - name: event_created_at
+        tests:
+          - not_null
         
   - name: gitlab_dotcom_users_xf
     description: '{{ doc("gitlab_dotcom_users_xf") }}'

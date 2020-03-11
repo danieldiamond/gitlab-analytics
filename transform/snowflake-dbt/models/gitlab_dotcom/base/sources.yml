@@ -71,6 +71,8 @@ sources:
         identifier: gitlab_db_cluster_projects
       - name: clusters
         identifier: gitlab_db_clusters
+      - name: clusters_applications_helm
+        identifier: gitlab_db_clusters_applications_helm
       - name: deployments
         identifier: gitlab_db_deployments
       - name: deployment_merge_requests
@@ -95,6 +97,8 @@ sources:
         identifier: gitlab_db_gitlab_subscription_histories
       - name: gitlab_subscriptions
         identifier: gitlab_db_gitlab_subscriptions
+      - name: group_group_links
+        identifier: gitlab_db_group_group_links
       - name: identities
         identifier: gitlab_db_identities
       - name: issue_assignees
@@ -105,6 +109,8 @@ sources:
         identifier: gitlab_db_issue_metrics
       - name: issues
         identifier: gitlab_db_issues
+      - name: keys
+        identifier: gitlab_db_keys
       - name: label_links
         identifier: gitlab_db_label_links
       - name: label_priorities
@@ -143,6 +149,8 @@ sources:
         identifier: gitlab_db_plans
       - name: pages_domains
         identifier: gitlab_db_pages_domains
+      - name: programming_languages
+        identifier: gitlab_db_programming_languages
       - name: project_authorizations
         identifier: gitlab_db_project_authorizations
       - name: project_auto_devops
@@ -161,6 +169,8 @@ sources:
         identifier: gitlab_db_projects
       - name: releases
         identifier: gitlab_db_releases
+      - name: repository_languages
+        identifier: gitlab_db_repository_languages
       - name: resource_label_events
         identifier: gitlab_db_resource_label_events
       - name: services
@@ -173,5 +183,9 @@ sources:
         identifier: gitlab_db_timelogs
       - name: todos
         identifier: gitlab_db_todos
+      - name: user_preferences
+        identifier: gitlab_db_user_preferences
       - name: users
         identifier: gitlab_db_users
+      - name: vulnerability_occurrences
+        identifier: gitlab_db_vulnerability_occurrences

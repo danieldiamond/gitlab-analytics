@@ -6,6 +6,8 @@ google_referrals.google_referrals
 headcount.headcount
 hire_plan_forecast.hire_forecast
 hire_plan_forecast.hire_plan
+job_roles_prior_to_2020_02.job_roles_prior_to_2020_02
+kpi_status.kpi_status
 linkedin_recruiter.linkedin_recruiter
 location_factor_targets.location_factor_targets
 marketing_kpi_benchmarks.marketing_kpi_benchmarks
@@ -16,7 +18,6 @@ pulse_survey.pulse_survey_configure_be
 pulse_survey.pulse_survey_configure_fe
 pulse_survey.pulse_survey_monitor_be
 pulse_survey.pulse_survey_monitor_fe
-rep_productivity.rep_productivity
 rep_quotas_full_fy2020.rep_quotas_full_fy2020
 rep_quotas_full_ps_fy2020.rep_quotas_full_ps_fy2020
 sales_metrics.sales_quotas_region_by_month
@@ -26,6 +27,9 @@ sales_ramp_time.sales_rep_productivity_all
 sales_ramp_time.sales_rep_productivity_sal
 sales_ramp_time.sales_rep_productivity_mm_ae
 sales_ramp_time.sales_rep_productivity_smb_ae
+values_certificate.ally_certificate
+values_certificate.communication_certificate
 values_certificate.values_certificate
 yc_companies.yc_companies
 days_to_close.days_to_close
+social_marketing_metrics.social_marketing_metrics

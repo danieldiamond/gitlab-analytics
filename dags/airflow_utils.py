@@ -10,6 +10,7 @@ from airflow.operators.slack_operator import SlackAPIPostOperator
 REPO = "https://gitlab.com/gitlab-data/analytics.git"
 DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
 DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
+PERMIFROST_IMAGE = "registry.gitlab.com/gitlab-data/permifrost:v0.0.2"
 
 
 def split_date_parts(day: date, partition: str) -> List[dict]:
@@ -49,7 +50,7 @@ def slack_defaults(context, task_type):
     """
     Function to handle switching between a task failure and success.
     """
-    base_url = "http://35.190.127.73"
+    base_url = "https://airflow.gitlabdata.com"
     execution_date = context["ts"]
     dag_context = context["dag"]
     dag_name = dag_context.dag_id
@@ -108,7 +109,7 @@ def slack_defaults(context, task_type):
                 {"title": "Timestamp", "value": execution_date_pretty, "short": True},
             ],
             "footer": "Airflow",
-            "footer_icon": "http://35.190.127.73/static/pin_100.png",
+            "footer_icon": "https://airflow.gitlabdata/static/pin_100.png",
             "ts": execution_date_epoch,
         }
     ]
@@ -154,7 +155,7 @@ def slack_succeeded_task(context):
 
 
 # Set the resources for the task pods
-pod_resources = Resources(request_memory="1Gi", request_cpu="500m")
+pod_resources = {"request_memory": "1Gi", "request_cpu": "500m"}
 
 # GitLab default settings for all DAGs
 gitlab_defaults = dict(
@@ -173,6 +174,9 @@ GIT_BRANCH = env["GIT_BRANCH"]
 gitlab_pod_env_vars = {
     "CI_PROJECT_DIR": "/analytics",
     "EXECUTION_DATE": "{{ next_execution_date }}",
+    "SNOWFLAKE_SNAPSHOT_DATABASE": "RAW"
+    if GIT_BRANCH == "master"
+    else f"{GIT_BRANCH.upper()}_RAW",
     "SNOWFLAKE_LOAD_DATABASE": "RAW"
     if GIT_BRANCH == "master"
     else f"{GIT_BRANCH.upper()}_RAW",
@@ -184,16 +188,39 @@ gitlab_pod_env_vars = {
 # Warehouse variable declaration
 xs_warehouse = f"'{{warehouse_name: transforming_xs}}'"
 
-clone_repo_cmd = f"git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}"
+l_warehouse = f"'{{warehouse_name: transforming_l}}'"
 
+# git commands
+clone_repo_cmd = f"""
+    if [[ -z "$GIT_COMMIT" ]]; then
+        export GIT_COMMIT="HEAD"
+    fi
+    echo "git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO}" &&
+    git clone -b {GIT_BRANCH} --single-branch --depth 1 {REPO} &&
+    echo "checking out commit $GIT_COMMIT" &&
+    cd analytics &&
+    git checkout $GIT_COMMIT &&
+    cd .."""
+
+clone_repo_sha_cmd = f"""
+    mkdir analytics &&
+    cd analytics &&
+    git init &&
+    git remote add origin {REPO} &&
+    echo "Fetching commit $GIT_COMMIT" &&
+    git fetch --depth 1 origin $GIT_COMMIT --quiet &&
+    git checkout FETCH_HEAD"""
+
+# extract command
 clone_and_setup_extraction_cmd = f"""
     {clone_repo_cmd} &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/extract/"""
 
+# dbt commands
 clone_and_setup_dbt_cmd = f"""
-    {clone_repo_cmd} &&
-    cd analytics/transform/snowflake-dbt/"""
+    {clone_repo_sha_cmd} &&
+    cd transform/snowflake-dbt/"""
 
 dbt_install_deps_cmd = f"""
     {clone_and_setup_dbt_cmd} &&

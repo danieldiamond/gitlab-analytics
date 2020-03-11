@@ -31,18 +31,6 @@ It adds a few columns to the base `gitlab_dotcom_notes` model:
 
 {% enddocs %}
 
-{% docs gitlab_dotcom_group_audit_events_monthly%}
-
-This model provides a summary of the audit_events table at the granularity of one row per group per month.
-
-In months where a group does not record any audit events, a row will still be created with a count of zero.
-
-Audit events are often used as a proxy for user activity, so this model allows for convenient Monthly Active Group calculations without having to query the entire audit_events table.
-
-This model provides `group_created_at_month` and `months_since_creation_date` columns to allow for easy cohort and retention analysis.
-
-{% enddocs %}
-
 
 {% docs gitlab_dotcom_issues_xf %}
 
@@ -72,6 +60,19 @@ It also adds 2 columns based on subscription inheritance (as described [here](ht
 
 * `groups_plan_is_paid`
 * `groups_plan_id`
+
+{% enddocs %}
+
+{% docs gitlab_dotcom_memberships %}
+
+This model unions together all of the other models that represent a user having (full or partial) access to a namespace, AKA "membership". 
+
+There are 5 general ways that a user can have access to a group G:
+* Be a **group member** of group G.
+* Be a **group member** of G2, where G2 is a descendant (subgroup) of group G.
+* Be a **project member** of P, where P is owned by G or one of G's descendants.
+* Be a group member of X, where X is invited to a project underneath G via [project group links](https://docs.gitlab.com/ee/user/group/#sharing-a-project-with-a-group).
+* Be a group member of Y, where Y is invited to G or one of G's descendants via [group group links](https://docs.gitlab.com/ee/user/group/#sharing-a-group-with-another-group).
 
 {% enddocs %}
 
@@ -177,6 +178,8 @@ Currently, the following tables are included in the model:
 * gitlab_dotcom_snippets
 * gitlab_dotcom_todos
 
+A `stage_name` column is also added leveraging the seeded csv file `version_usage_stats_to_stage_mappings.csv`. When the event_name is not in the csv file, we add a condition to the case statement.
+
 {% enddocs %}
 
 {% docs gitlab_dotcom_users_xf%}
@@ -225,17 +228,6 @@ A `days_active` column is added by comparing `created_at` with `last_activity_on
 
 {% enddocs %}
 
-{% docs gitlab_dotcom_user_audit_events_monthly%}
-
-This model provides a summary of the audit_events table at the granularity of one row per user per month.
-
-In months where a user does not record any audit events, a row will still be created with a count of zero.
-
-Audit events are often used as a proxy for user activity, so this model allows for convenient MAU calculations without having to query the entire audit_events table.
-
-This model provides `user_created_at_month` and `months_since_join_date` columns to allow for easy cohort and retention analysis. One difference between this model and the `gitlab_dotcom_retention_cohorts` model is that this model knows about activity for every single month, whereas the latter only uses the `created_at` and `last_activity_on` user timestamps and is forced to fill in the gaps for the months in the middle.
-
-{% enddocs %}
 
 {% docs xf_visibility_documentation %}
 

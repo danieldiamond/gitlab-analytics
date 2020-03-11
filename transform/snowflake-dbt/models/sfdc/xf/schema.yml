@@ -34,16 +34,6 @@ models:
         tests:
           - not_null
           - unique
-  - name: sfdc_closed_deals_acv
-    columns:
-      - name: opportunity_owner
-        tests:
-          - not_null
-  - name: sfdc_competitors_to_be_replaced
-    columns:
-      - name: opportunity_id
-        tests:
-          - not_null
   - name: sfdc_contact_xf
     columns:
       - name: contact_id
@@ -82,7 +72,19 @@ models:
           - not_null
       - name: valid_from
         tests:
-          - not_null             
+          - not_null 
+  - name: sfdc_account_snapshot_history
+    description: This model constrains the scope of sfdc_account_snapshots_base to the columns in sfdc_accounts_xf and their corresponding aliases.
+    columns:
+      - name: account_id
+        tests:
+          - not_null
+      - name: account_name
+        tests:
+          - not_null            
+      - name: valid_from
+        tests: 
+          - not_null                        
   - name: sfdc_opportunity_snapshot_history
     description: This model constrains the scope of sfdc_opportunity_snapshots_base to the columns in sfdc_opportunity_xf and their corresponding aliases.
     columns:
@@ -100,13 +102,7 @@ models:
             - not_null
         - name: valid_from
           tests: 
-            - not_null      
-  - name: sfdc_opportunity_stage_duration
-    description: '{{ doc("sfdc_opportunity_stage_duration") }}'
-    columns:
-      - name: primary_key
-        tests:
-          - not_null                        
+            - not_null                             
   - name: sfdc_opportunity_xf
     description: This model contains meta information on each Salesforce opportunity enriched with stage, source, and user information. Note that `sales_segment` and `parent_segment` are derived from the Stamped Sales Segment for an opportunity and do not change over time. The current segmentation of an opportunity's account is available in `sfdc_accounts_xf`.
     columns:
@@ -126,11 +122,6 @@ models:
         tests:
           - accepted_values:
               values: ['SMB', 'Mid-Market', 'Strategic', 'Large', 'Unknown', Null]
-  - name: sfdc_pipeline
-    columns:
-      - name: opportunity_owner
-        tests:
-          - not_null
   - name: sfdc_professional_services_engagement_xf
     columns:
       - name: ps_engagement_id
@@ -156,19 +147,6 @@ models:
               to: ref('sfdc_opportunity_xf')
               field: opportunity_id
       - name: pov_status
-        tests:
-          - not_null
-  - name: sfdc_reason_for_loss_unpacked
-    columns:
-      - name: opportunity_id
-        tests:
-          - not_null
-  - name: sfdc_sales_accepted_opportunity
-    columns:
-      - name: opportunity_name
-        tests:
-          - not_null
-      - name: account_name
         tests:
           - not_null
   - name: sfdc_users_xf

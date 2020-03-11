@@ -18,8 +18,8 @@ models:
           - name: rate_plan_charge_name
             tests:
                 - not_null
-    - name: gaap_revenue
-      description: Base model for Zuora GAAP Revenue
+    - name: non_gaap_revenue
+      description: Base model for Zuora Non-GAAP Revenue
       columns:
           - name: account_number
             tests:
