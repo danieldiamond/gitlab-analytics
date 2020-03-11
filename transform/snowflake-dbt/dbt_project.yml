@@ -101,7 +101,8 @@ models:
     materialized: view
 
     sources:
-      schema: source
+      zuora:
+        schema: zuora
 
     staging:
       schema: staging
@@ -144,7 +145,7 @@ models:
       base:
         schema: sensitive
       xf:
-        schema: sensitive  
+        schema: sensitive
       rpt:
         schema: analytics
     
