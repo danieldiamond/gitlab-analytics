@@ -1,3 +1,8 @@
+{{ config({
+    "materialized": "view"
+    })
+}}
+
 WITH location_application_answer AS (
   
   SELECT *

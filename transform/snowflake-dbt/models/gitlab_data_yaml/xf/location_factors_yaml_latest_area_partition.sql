@@ -1,3 +1,8 @@
+{{ config({
+    "materialized": "view"
+    })
+}}
+
 WITH location_factor_base AS (
   
   SELECT
