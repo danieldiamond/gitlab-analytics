@@ -7,10 +7,23 @@ WITH gitlab_issues AS (
 
   SELECT 
    issue_id,
+   'issue' AS note_type,
    {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array,
    {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=gitlab.zendesk.com\/agent\/tickets\/)[0-9]{1,18}') AS zendesk_link_array
    
   FROM {{ ref('gitlab_dotcom_issues_xf')}}
+  WHERE is_internal_issue
+    AND issue_description IS NOT NULL
+
+), gitlab_epics AS (
+
+  SELECT 
+   epic_id,
+   'epic' AS note_type,
+   {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array,
+   {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=gitlab.zendesk.com\/agent\/tickets\/)[0-9]{1,18}') AS zendesk_link_array
+   
+  FROM {{ ref('gitlab_dotcom_epics_xf')}}
   WHERE is_internal_issue
     AND issue_description IS NOT NULL
 
@@ -132,26 +145,22 @@ WITH gitlab_issues AS (
 
 , gitlab_issues_with_sfdc_objects_union AS (
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_issues_with_sfdc_accounts
 
   UNION
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_issues_with_sfdc_opportunities
 
   UNION
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_issues_with_sfdc_contacts
 
   UNION
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_issues_with_zendesk_ticket
 
 )
