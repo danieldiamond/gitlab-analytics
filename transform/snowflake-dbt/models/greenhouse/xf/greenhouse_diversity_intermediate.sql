@@ -54,6 +54,13 @@ WITH date_details AS (
     LEFT JOIN eeoc_fields 
       ON eeoc_fields.join_field = date_details.join_field  
   
+    UNION ALL
+
+    SELECT
+      month_date,
+      'no_eeoc' AS eeoc_field_name
+    FROM date_details
+    
 ), applications AS (
 
     SELECT 

@@ -3,6 +3,11 @@ WITH applications AS (
     SELECT *
     FROM  {{ ref ('greenhouse_applications') }}
 
+), greenhouse_application_jobs AS (
+
+    SELECT *
+    FROM  {{ ref ('greenhouse_applications_jobs') }}
+
 ), offers AS (
 
     SELECT * 
@@ -58,10 +63,10 @@ SELECT
             DATEDIFF('day', applications.applied_at, offers.resolved_at),
             NULL)                                                                   AS time_to_offer
 FROM applications 
-LEFT JOIN job_posts 
-  ON job_posts.job_post_id = applications.job_post_id
+LEFT JOIN greenhouse_application_jobs 
+  ON greenhouse_application_jobs.application_id = applications.application_id
 LEFT JOIN jobs 
-  ON job_posts.job_id = jobs.job_id
+  ON greenhouse_application_jobs.job_id = jobs.job_id
 LEFT JOIN  greenhouse_departments 
   ON jobs.department_id = greenhouse_departments.department_id
   AND jobs.organization_id = greenhouse_departments.organization_id
