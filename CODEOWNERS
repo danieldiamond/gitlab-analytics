@@ -17,10 +17,10 @@
 # Top Level Folder Overwrites
 # ======
 
-/dags/ @tayloramurphy
-/extract/ @tayloramurphy
-/load/ @tayloramurphy
-/orchestrate/ @tayloramurphy
+/dags/ @tayloramurphy @m_walker
+/extract/ @tayloramurphy @m_walker
+/load/ @tayloramurphy @m_walker
+/orchestrate/ @tayloramurphy @m_walker
 
 # ======
 # Top Level File Overwrites
