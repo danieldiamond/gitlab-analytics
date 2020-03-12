@@ -30,8 +30,6 @@ models:
                 - not_null
                 - unique
           - name: uuid
-            tests:
-                - not_null
 
     - name: version_version_checks_source
       description: Version check data from self-managed instances
