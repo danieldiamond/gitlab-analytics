@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM {{ source('google_analytics_360','ga_session_custom_dimension') }}
+	FROM {{ source('google_analytics_360', 'ga_session_custom_dimension') }}
 
 ), renamed AS(
 
