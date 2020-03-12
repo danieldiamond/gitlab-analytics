@@ -25,7 +25,7 @@ WITH gitlab_issues AS (
    
   FROM {{ ref('gitlab_dotcom_epics_xf')}}
   WHERE is_internal_epic
-    AND issue_description IS NOT NULL
+    AND epic_description IS NOT NULL
 
 ), gitlab_issues_and_epics AS (
 
