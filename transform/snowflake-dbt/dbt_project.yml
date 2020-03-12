@@ -119,6 +119,10 @@ models:
       zuora:
         xf:
           schema: analytics
+          materialized: table
+      google_analytics_360:
+        schema: analytics
+        materialized: table
 
 
     # Legacy Structure
