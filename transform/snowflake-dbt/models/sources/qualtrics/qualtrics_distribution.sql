@@ -17,6 +17,7 @@ WITH source AS (
       data_by_row['surveyLink']['surveyId']::VARCHAR        AS survey_id,
       data_by_row['sendDate']::TIMESTAMP                    AS mailing_sent_at
     FROM intermediate
+    WHERE data_by_row IS NOT NULL
 
 )
 SELECT * 
