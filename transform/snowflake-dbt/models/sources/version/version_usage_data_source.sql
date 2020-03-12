@@ -6,12 +6,12 @@
 
 WITH source AS (
 
-  SELECT *
-  FROM {{ source('version', 'usage_data') }}
-  {% if is_incremental() %}
-  WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
-  {% endif %}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
+    SELECT *
+    FROM {{ source('version', 'usage_data') }}
+    {% if is_incremental() %}
+    WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+    {% endif %}
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ),
 
@@ -67,6 +67,7 @@ renamed AS (
       gitaly_filesystems::VARCHAR              AS gitaly_filesystems,
       PARSE_JSON(counts)                       AS stats_used
     FROM source
+    WHERE CHECK_JSON(counts) IS NULL
 
 )
 

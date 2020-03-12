@@ -1,29 +1,6 @@
 version: 2
 
 models:
-
-    - name: version_avg_cycle_analytics
-      description: Cycle analytics data from self-managed instances https://docs.gitlab.com/ee/user/analytics/cycle_analytics.html.
-      columns:
-         - name: avg_cycle_analytics_id
-           tests:
-               - not_null
-               - unique
-
-    - name: version_hosts
-      columns:
-          - name: host_id
-            tests:
-                - not_null
-                - unique
-
-    - name: version_licenses
-      columns:
-          - name: license_id
-            tests:
-                - not_null
-                - unique
-
     - name: version_usage_data
       columns:
           - name: id
@@ -34,13 +11,7 @@ models:
             tests:
                 - not_null
 
-    - name: version_version_checks
-      description: Version check data from self-managed instances
+    - name: version_usage_stats_list
       columns:
-          - name: id
-            tests:
-                - not_null
-                - unique
-          - name: host_id
-            tests:
-                - not_null
+          - name: ping_name
+          - name: full_ping_name
