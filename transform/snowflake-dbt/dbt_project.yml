@@ -129,6 +129,7 @@ models:
         schema: analytics
       
       version:
+        tags: ["product"]
         xf:
           schema: analytics
 
