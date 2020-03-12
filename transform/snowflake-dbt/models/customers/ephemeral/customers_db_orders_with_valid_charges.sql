@@ -57,9 +57,9 @@ WITH customers AS (
       FIRST_VALUE(order_created_at) 
         OVER (PARTITION BY order_id, gitlab_namespace_id
               ORDER BY valid_from ASC) AS order_created_at,
-      FIRST_VALUE(order_updated_at) 
+      LAST_VALUE(order_updated_at) 
         OVER (PARTITION BY order_id, gitlab_namespace_id
-              ORDER BY valid_from ASC)   AS order_updated_at
+              ORDER BY valid_from ASC) AS order_updated_at
     FROM orders_snapshots
     WHERE orders_snapshots.product_rate_plan_id IS NOT NULL 
       AND orders_snapshots.order_is_trial = FALSE
