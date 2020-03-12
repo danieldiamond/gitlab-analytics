@@ -6,10 +6,10 @@
 WITH gitlab_issues AS (
 
   SELECT 
-   issue_id,
-   'issue' AS note_type,
+   issue_id  AS noteable_id,
+   'Issue'   AS noteable_type,
    {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array,
-   {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=gitlab.zendesk.com\/agent\/tickets\/)[0-9]{1,18}') AS zendesk_link_array
+   {{target.schema}}_staging.regexp_to_array(issue_description, '(?<=gitlab.zendesk.com\/agent\/tickets\/)[0-9]{1,18}')      AS zendesk_link_array
    
   FROM {{ ref('gitlab_dotcom_issues_xf')}}
   WHERE is_internal_issue
@@ -18,10 +18,10 @@ WITH gitlab_issues AS (
 ), gitlab_epics AS (
 
   SELECT 
-   epic_id,
-   'epic' AS note_type,
+   epic_id  AS noteable_id,
+   'Epic'   AS noteable_type,
    {{target.schema}}_staging.regexp_to_array(epic_description, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array,
-   {{target.schema}}_staging.regexp_to_array(epic_description, '(?<=gitlab.zendesk.com\/agent\/tickets\/)[0-9]{1,18}') AS zendesk_link_array
+   {{target.schema}}_staging.regexp_to_array(epic_description, '(?<=gitlab.zendesk.com\/agent\/tickets\/)[0-9]{1,18}')      AS zendesk_link_array
    
   FROM {{ ref('gitlab_dotcom_epics_xf')}}
   WHERE is_internal_epic
@@ -75,7 +75,7 @@ WITH gitlab_issues AS (
 , gitlab_issues_and_epics_sfdc_id_flattened AS (
 
   SELECT
-    issue_id,
+    noteable_id,
     {{target.schema}}_staging.id15to18(CAST(f.value AS VARCHAR)) AS sfdc_id_18char
 
   FROM gitlab_issues_and_epics, table(flatten(sfdc_link_array)) f
@@ -84,7 +84,7 @@ WITH gitlab_issues AS (
 , gitlab_issues_and_epics_zendesk_ticket_id_flattened AS (
 
   SELECT
-    issue_id,
+    noteable_id,
     CAST(f.value AS INTEGER) AS zendesk_ticket_id
 
   FROM gitlab_issues_and_epics, table(flatten(zendesk_link_array)) f
@@ -93,7 +93,7 @@ WITH gitlab_issues AS (
 , gitlab_issues_and_epics_with_sfdc_accounts AS (
 
   SELECT
-    gitlab_issues_and_epics_sfdc_id_flattened.issue_id,
+    gitlab_issues_and_epics_sfdc_id_flattened.noteable_id,
     sfdc_accounts.account_id AS sfdc_account_id
 
   FROM gitlab_issues_and_epics_sfdc_id_flattened
@@ -105,7 +105,7 @@ WITH gitlab_issues AS (
 , gitlab_issues_and_epics_with_sfdc_opportunities AS (
 
   SELECT
-    gitlab_issues_and_epics_sfdc_id_flattened.issue_id,
+    gitlab_issues_and_epics_sfdc_id_flattened.noteable_id,
     sfdc_opportunities.account_id AS sfdc_account_id
 
   FROM gitlab_issues_and_epics_sfdc_id_flattened
@@ -117,7 +117,7 @@ WITH gitlab_issues AS (
 , gitlab_issues_and_epics_with_sfdc_leads AS (
 
   SELECT
-    gitlab_issues_and_epics_sfdc_id_flattened.issue_id,
+    gitlab_issues_and_epics_sfdc_id_flattened.noteable_id,
     sfdc_leads.converted_account_id AS sfdc_account_id
 
   FROM gitlab_issues_and_epics_sfdc_id_flattened
@@ -129,7 +129,7 @@ WITH gitlab_issues AS (
 , gitlab_issues_and_epics_with_sfdc_contacts AS (
 
   SELECT
-    gitlab_issues_and_epics_sfdc_id_flattened.issue_id,
+    gitlab_issues_and_epics_sfdc_id_flattened.noteable_id,
     sfdc_contacts.account_id AS sfdc_account_id
 
   FROM gitlab_issues_and_epics_sfdc_id_flattened
@@ -140,7 +140,7 @@ WITH gitlab_issues AS (
 , gitlab_issues_and_epics_with_zendesk_ticket AS (
 
   SELECT
-    gitlab_issues_and_epics_zendesk_ticket_id_flattened.issue_id,
+    gitlab_issues_and_epics_zendesk_ticket_id_flattened.noteable_id,
     zendesk_tickets.sfdc_account_id
 
   FROM gitlab_issues_and_epics_zendesk_ticket_id_flattened
