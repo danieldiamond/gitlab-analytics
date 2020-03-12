@@ -6,7 +6,7 @@
 		"Timestamp"::timestamp::date AS date_completed,
 		"Score" AS  score,
 		"First_&_Last_Name" AS submitter_name,
-		"{{raw_email_column}}"::string AS  submitter_email,
+		"{{raw_email_column}}"::STRING AS  submitter_email,
 		"_UPDATED_AT" AS last_updated_at
 	FROM source
 
