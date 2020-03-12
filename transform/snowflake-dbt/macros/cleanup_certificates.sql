@@ -3,11 +3,11 @@
 ), renamed as (
 
 	SELECT
-		"Timestamp"::timestamp::date AS date_completed,
-		"Score" AS  score,
-		"First_&_Last_Name" AS submitter_name,
-		"{{raw_email_column}}"::STRING AS  submitter_email,
-		"_UPDATED_AT" AS last_updated_at
+		"Timestamp"::TIMESTAMP::DATE            AS date_completed,
+		"Score"                                 AS score,
+		"First_&_Last_Name"                     AS submitter_name,
+		"{{raw_email_column}}"::STRING          AS submitter_email,
+		"_UPDATED_AT"                           AS last_updated_at
 	FROM source
 
 ), clean_score as (
@@ -20,11 +20,11 @@
     CASE WHEN LOWER(submitter_email) LIKE '%@gitlab.com%'
       THEN True
       ELSE False
-      END                                   AS is_team_member,
+      END                                       AS is_team_member,
     CASE WHEN LOWER(submitter_email) LIKE '%@gitlab.com%'
       THEN TRIM(LOWER(submitter_email))
-      ELSE md5(submitter_email) END         AS submitter_email,
-    {{certificate_name}}                    AS certificate_name,
+      ELSE md5(submitter_email) END             AS submitter_email,
+    {{certificate_name}}                        AS certificate_name,
 		last_updated_at
 	FROM renamed
 
