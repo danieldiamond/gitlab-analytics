@@ -43,6 +43,7 @@ WITH zuora_account AS (
       zuora_subscription.subscription_name_slugify,
       zuora_subscription.subscription_status,
       zuora_subscription.version                          AS subscription_version,
+      zuora_rate_plan.rate_plan_name,
       zuora_rate_plan_charge.rate_plan_charge_id,
       zuora_rate_plan_charge.rate_plan_charge_number,
       zuora_rate_plan_charge.rate_plan_charge_name,
