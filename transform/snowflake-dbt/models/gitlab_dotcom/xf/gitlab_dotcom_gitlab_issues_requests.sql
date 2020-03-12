@@ -60,8 +60,7 @@ WITH epic_issues AS (
 
 , sfdc_account_issues_from_notes AS (
 
-  SELECT
-    DISTINCT
+  SELECT DISTINCT
     issues.issue_id,
     issues.issue_iid,
     issues.issue_title,
