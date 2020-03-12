@@ -38,7 +38,7 @@ class GitLabAPI:
         """
         This function returns all of the URLs of the merge requests updated in a specific timeframe for the specified project.
         """
-        aggregated_result = []
+        aggregated_result: List[str] = []
         current_page_number = 1
         while True:
             current_result = self.get_urls_for_mrs_paged_for_project(

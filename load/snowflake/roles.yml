@@ -234,6 +234,7 @@ roles:
             - bamboohr
             - boneyard
             - dbt_analytics
+            - dbt_analytics_sensitive
             - gitlab_data_yaml
             - greenhouse
             - netsuite
@@ -755,12 +756,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.zendesk
                     - raw.zendesk_stitch
             tables:
                 read:
+                    - analytics.zendesk.*
                     - raw.zendesk_stitch.*  
 
     - zuora:
@@ -769,12 +773,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.zuora
                     - raw.zuora_stitch
             tables:
                 read:
+                    - analytics.zuora.*
                     - raw.zuora_stitch.*
 
 # ==========================================

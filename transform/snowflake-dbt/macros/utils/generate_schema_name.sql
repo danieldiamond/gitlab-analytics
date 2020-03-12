@@ -3,27 +3,60 @@
 
 {% macro generate_schema_name(custom_schema_name, node) -%}
 
-    {%- set default_schema = target.schema -%}
+    {%- set production_targets = ('prod','docs','ci') -%}
 
-    {%- if custom_schema_name is none 
-            or
-        (target.name in ('prod','docs','ci') and custom_schema_name.lower() == default_schema.lower())
-    -%}
+    {%- set prefixed_schemas = ('meta','sensitive','staging','temporary') -%}
+
+    {#
+        Definitions:
+            - custom_schema_name: schema provided via dbt_project.yml or model config
+            - target.schema: schema provided by the target defined in profiles.yml
+            - target.name: name of the target (dev for local development, prod for production, etc.)
         
-        {{ default_schema.lower() | trim }}
+        This macro is hard to test, but here are some test cases and expected output.
+        (custom_schema_name, target.name, target.schema) = <output>
 
-    {%- elif 
-            custom_schema_name in ('analytics','meta','sensitive','source','staging','temporary') 
-                or
-            ('snowplow' in custom_schema_name and target.name not in ('prod','docs','ci') )
-    -%}
+        (analytics, prod, analytics) = analytics
+        (analytics, ci, analytics) = analytics
+        (analytics, dev, tmurphy_scratch) = tmurphy_scratch_analytics
+        
+        (staging, prod, analytics) = analytics_staging
+        (staging, ci, analytics) = analytics_staging
+        (staging, dev, tmurphy_scratch) = tmurphy_scratch_staging
+        
+        (zuora, prod, analytics) = zuora
+        (zuora, ci, analytics) = zuora
+        (zuora, dev, tmurphy_scratch) = tmurphy_scratch_zuora
 
-    	{{ default_schema.lower() }}_{{ custom_schema_name | trim }}
+    #}
+    {%- if target.name in production_targets -%}
+        
+        {%- if custom_schema_name in prefixed_schemas -%}
+
+            {{ target.schema.lower() }}_{{ custom_schema_name | trim }}
+
+        {%- elif custom_schema_name is none -%}
+
+            {{ target.schema.lower() | trim }}
+
+        {%- else -%}
+            
+            {{ custom_schema_name.lower() | trim }}
+
+        {%- endif -%}
 
     {%- else -%}
+    
+        {%- if custom_schema_name is none -%}
 
-        {{ custom_schema_name.lower() | trim }}
+            {{ target.schema.lower() | trim }}
 
+        {%- else -%}
+            
+            {{ target.schema.lower() }}_{{ custom_schema_name | trim }}
+
+        {%- endif -%}
+    
     {%- endif -%}
 
 {%- endmacro %}

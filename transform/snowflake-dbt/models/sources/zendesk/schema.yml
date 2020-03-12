@@ -1,8 +1,8 @@
 version: 2
 
 models:
-    - name: zendesk_organizations
-      description: This is the base model for Zendesk organizations.
+    - name: zendesk_organizations_source
+      description: This is the source model for Zendesk organizations.
       columns:
       - name: organization_id
         tests:
@@ -10,8 +10,8 @@ models:
             - not_null
       - name: arr
         description: This is the correction for AAR in organization fields. Field key cannot be changed in Zendesk.
-    - name: zendesk_sla_policies
-      description: This is the base model for all Zendesk SLA policies totally flattened, where each criteria for a policy is its own row.
+    - name: zendesk_sla_policies_source
+      description: This is the source model for all Zendesk SLA policies totally flattened, where each criteria for a policy is its own row.
       columns:
       - name: zendesk_sla_surrogate_key
         tests:
@@ -42,8 +42,8 @@ models:
       - name: policy_metrics_target
         tests:
           - not_null
-    - name: zendesk_ticket_audits
-      description: This is the base model for Zendesk ticket audit events.
+    - name: zendesk_ticket_audits_source
+      description: This is the source model for Zendesk ticket audit events.
       columns:
       - name: audit_id
         tests:
@@ -51,8 +51,8 @@ models:
       - name: ticket_id
         tests:
             - not_null    
-    - name: zendesk_ticket_metrics
-      description: This is the base model for Zendesk ticket metrics.
+    - name: zendesk_ticket_metrics_source
+      description: This is the source model for Zendesk ticket metrics.
       columns:
       - name: ticket_id
         tests:
@@ -62,15 +62,15 @@ models:
         tests:
             - unique
             - not_null                  
-    - name: zendesk_tickets
-      description: This is the base model for Zendesk tickets.
+    - name: zendesk_tickets_source
+      description: This is the source model for Zendesk tickets.
       columns:
       - name: ticket_id
         tests:
             - unique
             - not_null
-    - name: zendesk_users
-      description: This is the base model for Zendesk users.
+    - name: zendesk_users_source
+      description: This is the source model for Zendesk users.
       columns:
       - name: user_id
         tests:

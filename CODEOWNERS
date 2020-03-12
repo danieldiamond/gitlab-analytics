@@ -17,10 +17,10 @@
 # Top Level Folder Overwrites
 # ======
 
-/dags/ @tayloramurphy
-/extract/ @tayloramurphy
-/load/ @tayloramurphy
-/orchestrate/ @tayloramurphy
+/dags/ @tayloramurphy @m_walker
+/extract/ @tayloramurphy @m_walker
+/load/ @tayloramurphy @m_walker
+/orchestrate/ @tayloramurphy @m_walker
 
 # ======
 # Top Level File Overwrites
@@ -39,7 +39,7 @@ docker-compose.yml @tayloramurphy
 /transform/snowflake-dbt/snowflake-dbt-ci.yml @tayloramurphy
 /transform/snowflake-dbt/docs/ @tayloramurphy
 /transform/snowflake-dbt/macros/ @tayloramurphy @emilie
-/transform/snowflake-dbt/models/bamboohr/ @emilie @kathleentam
+/transform/snowflake-dbt/models/bamboohr/ @emilie @kathleentam @pluthra
 /transform/snowflake-dbt/models/customers/ @eli_kastelein @mpeychet_
 /transform/snowflake-dbt/models/gitlab_data_yaml/ @tayloramurphy
 /transform/snowflake-dbt/models/gitlab_dotcom/ @eli_kastelein @mpeychet_
