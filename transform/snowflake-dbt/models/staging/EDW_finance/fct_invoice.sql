@@ -14,8 +14,8 @@ select zuora_invoice.INVOICE_ID,
     zuora_invoice.INVOICE_NUMBER,
     zuora_invoice.INVOICE_DATE::DATE AS invoice_date,
     zuora_invoice.STATUS as invoice_status,
-    POSTED_DATE::DATE
-    invoice_item_id,
+    zuora_invoice.POSTED_DATE::DATE
+    zuora_invoice_item.invoice_item_id,
     zuora_invoice_item.SUBSCRIPTION_ID,
     zuora_invoice_item.SKU,
     zuora_invoice_item.service_start_Date::DATE as service_start_Date,
