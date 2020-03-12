@@ -87,6 +87,7 @@ roles:
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -109,6 +110,7 @@ roles:
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -134,6 +136,7 @@ roles:
             - snapshots
             - snowflake_db
             - snowplow
+            - version_db
             - zuora
         privileges:
             databases:
@@ -169,6 +172,7 @@ roles:
             - snapshots
             - snowflake_db
             - snowplow
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -191,6 +195,7 @@ roles:
             - snapshots
             - snowflake_db
             - snowplow
+            - version_db
             - zuora
         privileges:
             databases:
@@ -244,6 +249,7 @@ roles:
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -263,6 +269,7 @@ roles:
             - sheetload
             - snapshots
             - snowflake_db
+            - version_db
             - zuora
         privileges:
             databases:
@@ -308,6 +315,7 @@ roles:
             - snapshots
             - snowflake_db
             - snowplow
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -413,6 +421,7 @@ roles:
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zuora
         privileges:
             databases:
@@ -752,6 +761,19 @@ roles:
                 read:
                     - raw.snowplow.*
                     - analytics.snowplow_*.*
+
+    - version_db:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.version_db
+            tables:
+                read:
+                    - analytics.version_db.*
+
 
     - zendesk:
         warehouses:
