@@ -11,7 +11,7 @@ WITH epics AS (
     SELECT *
     FROM {{ref('gitlab_dotcom_label_links')}}
     WHERE is_currently_valid = True
-      AND target_type = 'Epic' --TODO test
+      AND target_type = 'Epic'
 
 ), all_labels AS (
 
@@ -53,6 +53,8 @@ joined AS (
     
     {% for field in fields_to_mask %}
     CASE
+      WHEN {{field}} = NULL
+        THEN NULL
       WHEN namespaces.visibility_level = 'public'
         THEN {{field}}
       WHEN namespace_lineage.namespace_is_internal = True
@@ -65,7 +67,7 @@ joined AS (
 
     namespaces.visibility_level                  AS namespace_visibility_level,
     namespace_lineage.namespace_is_internal      AS is_internal_epic,
-    namespace_lineage.ultimate_parent_id,  --TODO: always top-level because of epics?
+    namespace_lineage.ultimate_parent_id,
     namespace_lineage.ultimate_parent_plan_id,
     namespace_lineage.ultimate_parent_plan_title,
     namespace_lineage.ultimate_parent_plan_is_paid,
