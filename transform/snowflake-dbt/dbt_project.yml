@@ -125,13 +125,13 @@ models:
       schema: staging
       materialized: table
 
+      google_analytics_360:
+        schema: analytics
+      
       version:
         xf:
           schema: analytics
 
-      google_analytics_360:
-        schema: analytics
-      
       zuora:
         xf:
           schema: analytics
