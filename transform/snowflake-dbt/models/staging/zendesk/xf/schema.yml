@@ -15,7 +15,7 @@ models:
           - name: organization_id
             tests:
               - relationships:
-                  to: ref('zendesk_organizations')
+                  to: ref('zendesk_organizations_source')
                   field: organization_id
           - name: brand_id
           - name: group_id
@@ -23,7 +23,7 @@ models:
             tests:
               - not_null
               - relationships:
-                 to: ref('zendesk_users')
+                 to: ref('zendesk_users_source')
                  field: user_id
           - name: submitter_id
             tests:

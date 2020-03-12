@@ -18,6 +18,8 @@ WITH source AS (
       data_by_row['id']::VARCHAR    AS survey_id,
       data_by_row['name']::VARCHAR  AS survey_name
     FROM intermediate
+    WHERE data_by_row IS NOT NULL
+
 )
 SELECT *
 FROM parsed

@@ -102,9 +102,16 @@ models:
 
     # Dimensional Structure
     sources:
+      google_analytics_360:
+        materialized: table
+        schema: google_analytics_360
+
       qualtrics:
         materialized: table
         schema: qualtrics
+
+      zendesk:
+        schema: zendesk
 
       zuora:
         schema: zuora
@@ -112,6 +119,9 @@ models:
     staging:
       schema: staging
       materialized: table
+
+      google_analytics_360:
+        schema: analytics
       
       zuora:
         xf:
@@ -210,9 +220,6 @@ models:
       xf:
         materialized: table
 
-    zendesk:
-      xf:
-        materialized: table
 
 # ======
 # Snapshot Configs
