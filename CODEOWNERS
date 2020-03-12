@@ -34,12 +34,12 @@ docker-compose.yml  @tayloramurphy @m_walker
 # dbt Overwrites
 # ======
 
-/transform/                                         @tayloramurphy  @emilie     @kathleentam
-/transform/snowflake-dbt/                           @tayloramurphy  @emilie     @kathleentam
+/transform/                                         @tayloramurphy  @jjstark    @emilie     @kathleentam
+/transform/snowflake-dbt/                           @tayloramurphy  @jjstark    @emilie     @kathleentam
 
 /transform/snowflake-dbt/snowflake-dbt-ci.yml       @tayloramurphy  @m_walker
-/transform/snowflake-dbt/docs/                      @tayloramurphy  @emilie     @kathleentam
-/transform/snowflake-dbt/macros/                    @tayloramurphy  @emilie     @kathleentam
+/transform/snowflake-dbt/docs/                      @tayloramurphy  @jjstark    @emilie     @kathleentam
+/transform/snowflake-dbt/macros/                    @tayloramurphy  @jjstark    @emilie     @kathleentam
 
 /transform/snowflake-dbt/models/bamboohr/           @emilie         @kathleentam
 /transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_
