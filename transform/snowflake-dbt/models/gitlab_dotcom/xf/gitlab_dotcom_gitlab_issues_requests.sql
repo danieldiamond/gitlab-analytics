@@ -132,8 +132,8 @@ WITH epic_issues AS (
 
 , sfdc_account_issues_from_issues AS (
 
-  SELECT
-    DISTINCT
+  SELECT DISTINCT
+    'Issue' AS noteable_type,
     issues.issue_id,
     issues.issue_iid,
     issues.issue_title,
@@ -141,7 +141,7 @@ WITH epic_issues AS (
     issues.milestone_id,
     issues.state AS issue_state,
     issues.weight,
-    issues.masked_label_title,
+    issues.labels,
     projects.project_name,
     projects.project_id,
     namespaces.namespace_id,
