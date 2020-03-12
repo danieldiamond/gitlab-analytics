@@ -8,7 +8,7 @@ WITH epic_issues AS (
 , epics AS (
 
   SELECT *
-  FROM {{ref('gitlab_dotcom_epics')}}
+  FROM {{ref('gitlab_dotcom_epics_xf')}}
 
 )
 
@@ -67,9 +67,9 @@ WITH epic_issues AS (
     issues.issue_title         AS noteable_title,
     issues.issue_created_at    AS noteable_created_at,
     issues.milestone_id,
-    issues.state               AS issue_state,
+    issues.state               AS noteable_state,
     issues.weight,
-    issues.masked_label_title,
+    issues.labels,
     projects.project_name,
     projects.project_id,
     namespaces.namespace_id,
@@ -105,10 +105,10 @@ WITH epic_issues AS (
     epics.epic_internal_id     AS noteable_iid,
     epics.epic_title           AS noteable_title,
     epics.created_at           AS noteable_created_at,
-    epics.milestone_id,
+    NULL                       AS milestone_id,
     epics.state                AS epic_state,
-    epics.weight,
-    epics.masked_label_title,
+    NULL                       AS weight,
+    epics.labels               AS labels,
     NULL                       AS project_name,
     NULL                       AS project_id,
     namespaces.namespace_id,
@@ -123,16 +123,10 @@ WITH epic_issues AS (
   FROM gitlab_dotcom_notes_linked_to_sfdc_account_id
   INNER JOIN epics
     ON gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_id = epics.epic_id
-  {# LEFT JOIN projects
-    ON issues.project_id = projects.project_id #}
   LEFT JOIN namespaces
     ON epics.group_id = namespaces.namespace_id
   LEFT JOIN sfdc_accounts
     ON gitlab_dotcom_notes_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
-  {# LEFT JOIN epic_issues
-    ON issues.issue_id = epic_issues.issue_id #}
-  {# LEFT JOIN epics
-    ON epic_issues.epic_id = epics.epic_id #}
   WHERE gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_type = 'Epic'
 )
 
