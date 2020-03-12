@@ -24,7 +24,7 @@ WITH gitlab_issues AS (
    {{target.schema}}_staging.regexp_to_array(epic_description, '(?<=gitlab.zendesk.com\/agent\/tickets\/)[0-9]{1,18}') AS zendesk_link_array
    
   FROM {{ ref('gitlab_dotcom_epics_xf')}}
-  WHERE is_internal_issue
+  WHERE is_internal_epic
     AND issue_description IS NOT NULL
 
 ), gitlab_issues_and_epics AS (
