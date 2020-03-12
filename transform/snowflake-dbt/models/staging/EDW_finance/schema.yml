@@ -1,0 +1,9 @@
+version: 2
+
+models:
+    - name: fct_invoice
+
+
+    - name: dim_customer
+
+    - name: dim_subscription
