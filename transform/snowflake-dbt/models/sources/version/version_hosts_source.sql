@@ -1,9 +1,8 @@
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rank_in_key
+  SELECT *
   FROM {{ source('version', 'hosts') }}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ),
 
@@ -17,7 +16,6 @@ renamed AS (
     star::BOOLEAN                       AS has_star,
     fortune_rank::INTEGER               AS fortune_rank
   FROM source
-  WHERE rank_in_key = 1
 
 )
 

@@ -7,14 +7,12 @@
 
 WITH source AS (
 
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as rank_in_key
+  SELECT *
   FROM {{ source('version', 'version_checks') }}
-
   {% if is_incremental() %}
   WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
   {% endif %}
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
@@ -27,7 +25,7 @@ WITH source AS (
     referer_url::VARCHAR       AS referer_url,
     PARSE_JSON(request_data)   AS request_data
   FROM source
-  WHERE rank_in_key = 1
+
 )
 
 SELECT * 
