@@ -102,6 +102,10 @@ models:
 
     # Dimensional Structure
     sources:
+      google_analytics_360:
+        materialized: table
+        schema: google_analytics_360
+
       qualtrics:
         materialized: table
         schema: qualtrics
@@ -125,6 +129,9 @@ models:
         xf:
           schema: analytics
 
+      google_analytics_360:
+        schema: analytics
+      
       zuora:
         xf:
           schema: analytics

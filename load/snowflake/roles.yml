@@ -617,12 +617,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.google_analytics_360
                     - raw.google_analytics_360_fivetran
             tables:
                 read:
+                    - analytics.google_analytics_360.*
                     - raw.google_analytics_360_fivetran.*
 
     - greenhouse:

@@ -32,8 +32,9 @@ def get_and_write_surveys(qualtrics_client: QualtricsClient) -> List[str]:
     Returns a list of all of the survey ids.
     """
     surveys_to_write = [survey for survey in qualtrics_client.get_surveys()]
-    with open("surveys.json", "w") as out_file:
-        json.dump(surveys_to_write, out_file)
+    if surveys_to_write:
+        with open("surveys.json", "w") as out_file:
+            json.dump(surveys_to_write, out_file)
     return [survey["id"] for survey in surveys_to_write]
 
 
