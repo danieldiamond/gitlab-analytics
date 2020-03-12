@@ -16,7 +16,7 @@
 		date_completed,
 		submitter_name,
 		TRIM(SPLIT_PART(score, '/', 1))::number AS correct_responses,
-		TRIM(SPLIT_PART(score, '/', 2))::number AS total_responses,
+		TRIM(SPLIT_PART(score, '/', 2))::NUMBER AS total_responses,
     CASE WHEN LOWER(submitter_email) LIKE '%@gitlab.com%'
       THEN True
       ELSE False
