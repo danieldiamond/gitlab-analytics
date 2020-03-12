@@ -12,10 +12,10 @@ WITH epic_issues AS (
 
 )
 
-, gitlab_dotcom_issues_linked_to_sfdc_account_id AS (
+, gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id AS (
 
   SELECT *
-  FROM {{ ref('gitlab_dotcom_issues_linked_to_sfdc_account_id') }}
+  FROM {{ ref('gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id') }}
 
 )
 
@@ -119,15 +119,15 @@ WITH epic_issues AS (
     sfdc_accounts.count_licensed_users,
     epics.epic_title
 
-  FROM gitlab_dotcom_issues_linked_to_sfdc_account_id
+  FROM gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id
   LEFT JOIN issues
-    ON gitlab_dotcom_issues_linked_to_sfdc_account_id.issue_id = issues.issue_id
+    ON gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.issue_id = issues.issue_id
   LEFT JOIN projects
     ON issues.project_id = projects.project_id
   LEFT JOIN namespaces
     ON projects.namespace_id = namespaces.namespace_id
   LEFT JOIN sfdc_accounts
-    ON gitlab_dotcom_issues_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
+    ON gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
   LEFT JOIN epic_issues
     ON issues.issue_id = epic_issues.issue_id
   LEFT JOIN epics
