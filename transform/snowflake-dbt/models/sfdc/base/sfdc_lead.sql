@@ -46,6 +46,7 @@ WITH source AS (
         requested_contact__c                                    AS requested_contact,
         company                                                 AS company,
         buying_process_for_procuring_gitlab__c                  AS buying_process,
+        core_check_in_notes__c                                  AS core_check_in_notes,
         industry                                                AS industry,
         region__c                                               AS region,
         largeaccount__c                                         AS is_large_account,

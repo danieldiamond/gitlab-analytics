@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import (
-    MELTANO_IMAGE,
+    PERMIFROST_IMAGE,
     clone_repo_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
@@ -37,10 +37,7 @@ default_args = {
 # Set the command for the container
 container_cmd = f"""
     {clone_repo_cmd} &&
-    meltano init airflow_job &&
-    cp analytics/load/snowflake/roles.yml airflow_job/load/roles.yml &&
-    cd airflow_job/ &&
-    meltano permissions grant load/roles.yml --db snowflake
+    permifrost grant analytics/load/snowflake/roles.yml
 """
 
 # Create the DAG
@@ -51,7 +48,7 @@ dag = DAG(
 # Task 1
 snowflake_load = KubernetesPodOperator(
     **gitlab_defaults,
-    image=MELTANO_IMAGE,
+    image=PERMIFROST_IMAGE,
     task_id="snowflake-permissions",
     name="snowflake-permissions",
     secrets=[
