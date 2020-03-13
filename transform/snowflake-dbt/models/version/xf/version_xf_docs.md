@@ -80,25 +80,6 @@ This model also adds some information about the related Zuora subscription, incl
 
 {% enddocs %}
 
-
-{% docs version_usage_data_weekly_opt_in_summary %}
-
-This model summarizes which instances from the licenses app successfully send a usage ping at a weekly granularity.  
-Only self-managaged instances that have a listed license file in the license app are included in this model. Trials are excluded entirely.  
-Instances are included in this analysis for any week where the Monday falls between their "license start date" and "license expires date".  
-
-Example query usage:
-```sql
-SELECT
-  week,
-  AVG(did_send_usage_data::INTEGER)
-FROM analytics.version_usage_data_weekly_opt_in_summary
-GROUP BY 1
-ORDER BY 1 DESC
-```
-
-{% enddocs %}
-
 (% docs version_user_activity_by_stage_unpacked %)
 
 This model flattens twice the JSON contained in the column `usage_activity_by_stage` to build a table that shows for a specific usage_ping `id` and a specific `usage_action_name` the monthly_count (number of time this action happens the last 28 days from the `created_at` timestamp)
@@ -131,5 +112,23 @@ and will be transformed into a table that looks like that:
 
 
 This table will be used to create calculations for MAU and SMAU KPIs.
+
+{% enddocs %}
+
+{% docs version_usage_data_weekly_opt_in_summary %}
+
+This model summarizes which instances from the licenses app successfully send a usage ping at a weekly granularity.  
+Only self-managaged instances that have a listed license file in the license app are included in this model. Trials are excluded entirely.  
+Instances are included in this analysis for any week where the Monday falls between their "license start date" and "license expires date".  
+
+Example query usage:
+```sql
+SELECT
+  week,
+  AVG(did_send_usage_data::INTEGER)
+FROM analytics.version_usage_data_weekly_opt_in_summary
+GROUP BY 1
+ORDER BY 1 DESC
+```
 
 {% enddocs %}
