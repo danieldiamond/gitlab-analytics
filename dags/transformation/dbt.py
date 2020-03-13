@@ -25,6 +25,10 @@ from kube_secrets import (
     SNOWFLAKE_TRANSFORM_SCHEMA,
     SNOWFLAKE_TRANSFORM_WAREHOUSE,
     SNOWFLAKE_USER,
+    SNOWFLAKE_LOAD_PASSWORD,
+    SNOWFLAKE_LOAD_ROLE,
+    SNOWFLAKE_LOAD_USER,
+    SNOWFLAKE_LOAD_WAREHOUSE,
 )
 
 # Load the env vars into a dict and set Secrets
@@ -223,6 +227,10 @@ dbt_source_freshness = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_ROLE,
         SNOWFLAKE_TRANSFORM_WAREHOUSE,
         SNOWFLAKE_TRANSFORM_SCHEMA,
+        SNOWFLAKE_LOAD_PASSWORD,
+        SNOWFLAKE_LOAD_ROLE,
+        SNOWFLAKE_LOAD_USER,
+        SNOWFLAKE_LOAD_WAREHOUSE,
     ],
     env_vars=pod_env_vars,
     arguments=[dbt_source_cmd],
