@@ -28,7 +28,7 @@ models:
     description: '{{ doc("gitlab_dotcom_gitlab_issues_requests") }}'
     tests:
     - unique:
-        column_name: "concat(noteable_type, noteable_id, sfdc_account_id)"
+        column_name: "concat(noteable_type, noteable_id, mention_type, sfdc_account_id)"
     columns:
       - name: noteable_id
         tests:
