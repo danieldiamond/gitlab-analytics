@@ -15,12 +15,3 @@ if __name__ == "__main__":
     snowflake_stage_load_copy_remove(
         file_name, f"raw.dbt.dbt_load", f"raw.dbt.sources", snowflake_engine,
     )
-    sources_state = {}
-    with open(file_name) as json_file:
-        sources_state = json.load(json_file)
-    sources_information_generated_at = sources_state["meta"]["generated_at"]
-    sources_to_alert_on = []
-    for attribute, value in sources_state["sources"].items():
-        individual_source_state = value["state"]
-        if individual_source_state == "error":
-            sys.exit(1)
