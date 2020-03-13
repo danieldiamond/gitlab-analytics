@@ -32,7 +32,7 @@ models:
           description: This column lists the eeoc_fields and ties it to each application. As a result, an applicant will have a response for gender, race, etc if it is null.           
           tests: 
             - accepted_values:
-                values: ['candidate_veteran_status', 'candidate_gender', 'candidate_status', 'candidate_race', 'candidate_disability_status']
+                values: ['candidate_veteran_status', 'candidate_gender', 'candidate_status', 'candidate_race', 'candidate_disability_status','no_eeoc']
         - name: capture_month
           description: This identifies if the data is captured for the application month, the offer sent month, or offer_accepted. The metrics associated to these are grouped up in the greenhouse_diversity rpt.
           tests:

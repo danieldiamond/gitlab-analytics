@@ -19,6 +19,10 @@ WITH greenhouse_diversity_intermediate AS (
     SELECT * 
     FROM  {{ ref ('greenhouse_diversity_intermediate') }}
 
+)
+SELECT * FROM greenhouse_diversity_intermediate
+
+{#
 ), breakout AS (
 
     SELECT
@@ -85,7 +89,7 @@ WITH greenhouse_diversity_intermediate AS (
     FROM  greenhouse_diversity_intermediate
     {{ dbt_utils.group_by(n=6) }}
 
-), aggregated AS (
+ ), aggregated AS (
 
     SELECT 
       breakout.*,
@@ -143,9 +147,10 @@ WITH greenhouse_diversity_intermediate AS (
           offer_acceptance_rate_based_on_offer_month)                                     AS offer_acceptance_rate_based_on_offer_month,
       percent_of_hires_sourced
     FROM aggregated
-    WHERE month_date <= DATEADD(MONTH,-1,current_date())
+    WHERE month_date <= DATEADD(MONTH,-1,current_date()) 
 
 )
 
 SELECT * 
-FROM final
+FROM breakout
+#}

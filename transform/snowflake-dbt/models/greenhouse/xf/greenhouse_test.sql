@@ -6,6 +6,8 @@
       source_type,
       CASE WHEN eeoc_values in ('I don''t wish to answer','Decline To Self Identify') 
             THEN 'did not identify'
+           WHEN eeoc_values = 'No, I don''t have a disability' 
+            THEN 'No' 
             ELSE COALESCE(lower(eeoc_values), 'did not identify') end                AS eeoc_values
 " %}
 
@@ -64,74 +66,34 @@ WITH date_details AS (
     SELECT 
       base.*,
       'application_month'                                                               AS capture_month,
-      {{repeated_column_names}},
-      IFF(offer_status = 'accepted',1,0)                                                AS accepted_offer,
+      {{repeated_column_names}}
+      {# IFF(offer_status = 'accepted',1,0)                                                AS accepted_offer,
       null                                                                              AS time_to_offer,
       IFF(sourced_candidate = TRUE, 1,0)                                                AS sourced_candidate,
-      IFF(sourced_candidate = TRUE AND offer_status = 'accepted', 1,0)                  AS hired_sourced_candidate
+      IFF(sourced_candidate = TRUE AND offer_status = 'accepted', 1,0)                  AS hired_sourced_candidate #}
     FROM base
     LEFT JOIN greenhouse_recruiting_xf
       ON DATE_TRUNC('month',greenhouse_recruiting_xf.application_date) = base.month_date
     LEFT JOIN eeoc            
       ON greenhouse_recruiting_xf.application_id = eeoc.application_id
       AND LOWER(eeoc.eeoc_field_name) = base.eeoc_field_name  
-
-
-), offers AS (
-
+    
+{# --), offers AS ( #}
+)
     SELECT 
       base.*,
-      'offer_sent_month'                                                               AS capture_month,
-      {{repeated_column_names}},
-      IFF(offer_status = 'accepted',1,0)                                                AS accepted_offer,
-      null                                                                              AS time_to_offer,
-      IFF(sourced_candidate = TRUE, 1,0)                                                AS sourced_candidate,
-      IFF(sourced_candidate = TRUE AND offer_status = 'accepted', 1,0)                  AS hired_sourced_candidate
+      'offer_sent_month'        AS capture_month,
+      greenhouse_recruiting_xf.candidate_id,
+      greenhouse_recruiting_xf.application_id,
+      department_name,
+      trim(division) as division
+      {# source_type,  #}
+      {# CASE WHEN eeoc_values in ('I don''t wish to answer','Decline To Self Identify') 
+            THEN 'did not identify'
+           WHEN eeoc_values = 'No, I don''t have a disability' 
+            THEN 'No' 
+            ELSE COALESCE(lower(eeoc_values), 'did not identify') end                AS eeoc_values   #}
     FROM base
     LEFT JOIN greenhouse_recruiting_xf
-      ON DATE_TRUNC('month',greenhouse_recruiting_xf.offer_sent_date) = base.month_date
-    LEFT JOIN eeoc            
-      ON greenhouse_recruiting_xf.application_id = eeoc.application_id
-      AND LOWER(eeoc.eeoc_field_name) = base.eeoc_field_name 
-    WHERE base.month_date='2020-01-01' 
-      AND offer_status IS NOT NULL
-      AND candidate_id = '32534811002'
- 
-), accepted AS (
-
-    SELECT 
-      base.*,
-      'accepted_month'                                                                  AS capture_month,
-      {{repeated_column_names}},
-      IFF(offer_status = 'accepted',1,0)                                                AS accepted_offer,
-      time_to_offer,
-      IFF(sourced_candidate = TRUE, 1,0)                                                AS sourced_candidate,
-      IFF(sourced_candidate = TRUE AND offer_status = 'accepted', 1,0)                  AS hired_sourced_candidate                           
-    FROM base
-    LEFT JOIN greenhouse_recruiting_xf
-      ON DATE_TRUNC('month',greenhouse_recruiting_xf.offer_resolved_date) = base.month_date
-    LEFT JOIN eeoc            
-      ON greenhouse_recruiting_xf.application_id = eeoc.application_id
-      AND LOWER(eeoc.eeoc_field_name) = base.eeoc_field_name 
-    WHERE base.month_date >= '2018-09-01' -- 1st date we started capturing eeoc data
-      AND offer_status ='accepted'
-
-), final AS (
-
-    SELECT * 
-    FROM applications
-
-    {# UNION ALL
-
-    SELECT * 
-    FROM offers
-
-    UNION ALL
-
-    SELECT *
-    FROM accepted  #}
-
-) 
-
-SELECT * 
-FROM final  
+      ON DATE_TRUNC('month', greenhouse_recruiting_xf.offer_sent_date) = base.month_date
+    where division = 'Sales'
