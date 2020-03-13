@@ -80,12 +80,13 @@ This model also adds some information about the related Zuora subscription, incl
 
 {% enddocs %}
 
-(% docs version_user_activity_by_stage_unpacked %)
+{% docs version_user_activity_by_stage_unpacked %}
 
 This model flattens twice the JSON contained in the column `usage_activity_by_stage` to build a table that shows for a specific usage_ping `id` and a specific `usage_action_name` the monthly_count (number of time this action happens the last 28 days from the `created_at` timestamp)
 
 The JSON looks typically like that
-```json
+
+```
 "usage_activity_by_stage": {
 "configure": {
   "clusters_disabled": 9048,
