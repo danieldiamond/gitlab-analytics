@@ -201,7 +201,7 @@ WITH epic_issues AS (
   LEFT JOIN namespaces
     ON epics.group_id = namespaces.namespace_id
   LEFT JOIN sfdc_accounts
-    ON gitlab_dotcom_notes_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
+    ON gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
 )
 
 , unioned AS (

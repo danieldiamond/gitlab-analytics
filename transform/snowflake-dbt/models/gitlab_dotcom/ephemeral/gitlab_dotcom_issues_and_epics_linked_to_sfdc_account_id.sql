@@ -147,7 +147,7 @@ WITH gitlab_issues AS (
 
   SELECT
     gitlab_issues_and_epics_zendesk_ticket_id_flattened.noteable_id,
-    gitlab_issues_and_epics_sfdc_id_flattened.noteable_type,
+    gitlab_issues_and_epics_zendesk_ticket_id_flattened.noteable_type,
     zendesk_tickets.sfdc_account_id
 
   FROM gitlab_issues_and_epics_zendesk_ticket_id_flattened
