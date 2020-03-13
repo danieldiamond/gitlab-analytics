@@ -219,12 +219,12 @@ WITH epic_issues AS (
   UNION 
     
   SELECT *
-  FROM sfdc_account_issues_from_issues --TODO: rename
+  FROM sfdc_accounts_from_issue_descriptions --TODO: rename
 
   UNION
 
   SELECT *
-  FROM sfdc_account_epics_from_epics
+  FROM sfdc_accounts_from_epic_descriptions
     
 )
 

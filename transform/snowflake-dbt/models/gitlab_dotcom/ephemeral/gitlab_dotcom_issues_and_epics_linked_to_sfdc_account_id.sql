@@ -76,6 +76,7 @@ WITH gitlab_issues AS (
 
   SELECT
     noteable_id,
+    noteable_type,
     {{target.schema}}_staging.id15to18(CAST(f.value AS VARCHAR)) AS sfdc_id_18char
 
   FROM gitlab_issues_and_epics, table(flatten(sfdc_link_array)) f
@@ -85,6 +86,7 @@ WITH gitlab_issues AS (
 
   SELECT
     noteable_id,
+    noteable_type,
     CAST(f.value AS INTEGER) AS zendesk_ticket_id
 
   FROM gitlab_issues_and_epics, table(flatten(zendesk_link_array)) f
@@ -94,6 +96,7 @@ WITH gitlab_issues AS (
 
   SELECT
     gitlab_issues_and_epics_sfdc_id_flattened.noteable_id,
+    gitlab_issues_and_epics_sfdc_id_flattened.noteable_type,
     sfdc_accounts.account_id AS sfdc_account_id
 
   FROM gitlab_issues_and_epics_sfdc_id_flattened
@@ -106,6 +109,7 @@ WITH gitlab_issues AS (
 
   SELECT
     gitlab_issues_and_epics_sfdc_id_flattened.noteable_id,
+    gitlab_issues_and_epics_sfdc_id_flattened.noteable_type,
     sfdc_opportunities.account_id AS sfdc_account_id
 
   FROM gitlab_issues_and_epics_sfdc_id_flattened
@@ -118,6 +122,7 @@ WITH gitlab_issues AS (
 
   SELECT
     gitlab_issues_and_epics_sfdc_id_flattened.noteable_id,
+    gitlab_issues_and_epics_sfdc_id_flattened.noteable_type,
     sfdc_leads.converted_account_id AS sfdc_account_id
 
   FROM gitlab_issues_and_epics_sfdc_id_flattened
@@ -130,6 +135,7 @@ WITH gitlab_issues AS (
 
   SELECT
     gitlab_issues_and_epics_sfdc_id_flattened.noteable_id,
+    gitlab_issues_and_epics_sfdc_id_flattened.noteable_type,
     sfdc_contacts.account_id AS sfdc_account_id
 
   FROM gitlab_issues_and_epics_sfdc_id_flattened
@@ -141,6 +147,7 @@ WITH gitlab_issues AS (
 
   SELECT
     gitlab_issues_and_epics_zendesk_ticket_id_flattened.noteable_id,
+    gitlab_issues_and_epics_sfdc_id_flattened.noteable_type,
     zendesk_tickets.sfdc_account_id
 
   FROM gitlab_issues_and_epics_zendesk_ticket_id_flattened
