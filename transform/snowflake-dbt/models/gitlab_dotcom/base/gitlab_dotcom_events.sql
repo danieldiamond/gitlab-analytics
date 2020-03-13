@@ -68,8 +68,6 @@ WITH source AS (
     FROM renamed
       LEFT JOIN projects
         ON renamed.project_id = projects.project_id
-      LEFT JOIN projects
-        ON renamed.project_id = projects.project_id
       LEFT JOIN gitlab_subscriptions
         ON projects.ultimate_parent_id = gitlab_subscriptions.namespace_id
         AND renamed.created_at BETWEEN gitlab_subscriptions.valid_from
