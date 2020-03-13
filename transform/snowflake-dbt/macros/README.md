@@ -43,6 +43,22 @@ Used in:
 - retention_sfdc_account_.sql
 - retention_zuora_subscription_.sql
 
+## Cleanup Certificates ([Source]())
+This macro cleans up and standardizes data from Certifications created by the L&D team in the People Group.
+It takes the certificate name as a string and the email address column from the raw data as two arguments.
+
+Usage:
+```
+{{cleanup_certificates("'ally_certificate'",
+	"Email_Address_(GitLab_team_members,_please_use_your_GitLab_email_address)")}}
+
+```
+Used in:
+- sheetload_ally_certificate
+- sheetload_communication_certificate
+- sheetload_values_certificate
+
+
 ## Retention Type ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/zuora/churn_type.sql))
 This macro compares MRR values and buckets them into retention categories.
 Usage:
@@ -102,7 +118,7 @@ Used in:
 - version_usage_data_weekly_opt_in_summary.sql
 
 ## Create Snapshot Base Models ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/create_snapshot_base.sql))
-This macro creates a base model for dbt snapshots. A single entry is generated from the chosen start date through the current date for the specified primary key(s) and unit of time. 
+This macro creates a base model for dbt snapshots. A single entry is generated from the chosen start date through the current date for the specified primary key(s) and unit of time.
 Usage:
 ```
 "{{create_snapshot_base(source, primary_key, date_start, date_part, snapshot_id_name)}}"
@@ -130,7 +146,7 @@ Used in:
 - dbt_project.yml
 
 ## Distinct Source ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/distinct_source.sql))
-This macro is used for condensing a `source` CTE into unique rows only. Our ETL runs quite frequently while most rows in our source tables don't update as frequently. So we end up with a lot of rows in our RAW tables that look the same as each other (except for the metadata columns with a leading underscore). This macro takes in a `source_cte` and looks for unique values across ALL columns (excluding airflow metadata.)  
+This macro is used for condensing a `source` CTE into unique rows only. Our ETL runs quite frequently while most rows in our source tables don't update as frequently. So we end up with a lot of rows in our RAW tables that look the same as each other (except for the metadata columns with a leading underscore). This macro takes in a `source_cte` and looks for unique values across ALL columns (excluding airflow metadata.)
 
 This macro **is specific** to pgp tables (gitlab_dotcom, version, license) and should not be used outside of those. Specifically, it makes references to 2 airflow metadata columns:
 * `_uploaded_at`: we only want the *minimum* value per unique row ... AKA "when did we *first* see this unique row?" This macros calls this column `valid_from` (to be used in the SCD Type 2 Macro)
@@ -244,12 +260,12 @@ Used in:
 - `gitlab_dotcom_merge_requests_xf`
 
 ## Max Date in Bamboo HR ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/max_date_in_bamboo_analyses.sql))
-This macro creates a reusable variable based on the current date. 
+This macro creates a reusable variable based on the current date.
 Usage:
 ```
 {{ max_date_in_bamboo_analyses() }}
 ```
-Used in: 
+Used in:
 - `rpt_team_members_out_of_comp_band`
 - `bamboohr_employment_status_xf`
 - `employee_directory_intermediate`
@@ -317,7 +333,7 @@ Used in:
 - sfdc_lead.sql
 
 ## Schema Union All ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/schema_union_all.sql))
-This macro takes a schema prefix and a table name and does a UNION ALL on all tables that match the pattern. The exclude_part parameter defaults to 'scratch' and all schemas matching that pattern will be ignored. 
+This macro takes a schema prefix and a table name and does a UNION ALL on all tables that match the pattern. The exclude_part parameter defaults to 'scratch' and all schemas matching that pattern will be ignored.
 Usage:
 ```
 {{ schema_union_all('snowplow', 'snowplow_page_views') }}
@@ -358,7 +374,7 @@ This macro was built to be used in conjunction with the [distinct_source](https:
 Usage:
 ```
 , renamed AS (
-  ... 
+  ...
 )
 
 {{ scd_type_2(
@@ -509,7 +525,7 @@ Used in:
 - gitlab_dotcom/base/schema.yml
 
 ## Test Unique Where Currently Valid([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/tests/test_unique_where_currently_valid.sql))
-This macro tests a column for uniqueness, but only checks rows with an `is_currently_valid` column with a value of True. This custom test was made specifically for models using the SCD macro and the default dbt uniquess test should be used in all other cases. 
+This macro tests a column for uniqueness, but only checks rows with an `is_currently_valid` column with a value of True. This custom test was made specifically for models using the SCD macro and the default dbt uniquess test should be used in all other cases.
 
 ```
   - name: gitlab_dotcom_issue_links
