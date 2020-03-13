@@ -30,6 +30,5 @@ from zuora_invoice
 ON zuora_invoice_item.invoice_id = zuora_invoice.invoice_id
     )
 
-select *,
-       iff(service_months = 0, 0, charge_amount / service_months) as mrr
+select *
 from invoice_data

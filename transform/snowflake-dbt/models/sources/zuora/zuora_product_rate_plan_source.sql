@@ -1,6 +1,7 @@
-with source as (
+WITH source AS (
 
-    select * from zuora_stitch_schema.productrateplan
+    SELECT *
+    FROM {{ source('zuora', 'product_rate_plan') }}
 
 ),
 

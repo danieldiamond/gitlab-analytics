@@ -39,6 +39,8 @@ models:
           - name: product_name
             tests:
                 - not_null
+    - name: zuora_product_rate_plan_source
+      description: Ephemeral layer for Zuora Product Rate Plan for cleaning and renaming
     - name: zuora_rate_plan_source
       description: Ephemeral layer for Zuora Rate Plans for cleaning and renaming
     - name: zuora_rate_plan_charge_source
