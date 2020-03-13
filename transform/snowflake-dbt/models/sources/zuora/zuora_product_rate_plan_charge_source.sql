@@ -51,8 +51,6 @@ select
     TRIGGEREVENT::VARCHAR as trigger_event,
     WEEKLYBILLCYCLEDAY::VARCHAR as weekly_bill_cycle_day,
     description::VARCHAR as product_rate_plan_description,
-    effectiveenddate::date as effective_end_date,
-    effectivestartdate::date as effective_start_date,
 
     -- metadata
     createdbyid as created_by_id,
