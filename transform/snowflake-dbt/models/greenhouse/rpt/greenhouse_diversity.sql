@@ -27,7 +27,7 @@ WITH greenhouse_diversity_intermediate AS (
       'kpi_level_breakout'                        AS breakout_type,
       null                                        AS department_name,
       null                                        AS division,
-      null                                        AS eeoc_field_name,
+      'no_eeoc'                                   AS eeoc_field_name,
       null                                        AS eeoc_values,
       {{repeated_column_metrics}}  
     FROM  greenhouse_diversity_intermediate
@@ -54,7 +54,7 @@ WITH greenhouse_diversity_intermediate AS (
       'department_division_breakout'                         AS breakout_type,
       department_name,
       division_modified                                      AS division,
-      null                                                   AS eeoc_field_name,
+      'no_eeoc'                                              AS eeoc_field_name,
       null                                                   AS eeoc_values,
       {{repeated_column_metrics}}
     FROM  greenhouse_diversity_intermediate
