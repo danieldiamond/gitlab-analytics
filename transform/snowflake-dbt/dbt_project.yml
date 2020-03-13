@@ -105,6 +105,8 @@ models:
 
     staging:
       schema: staging
+      finance:
+        schema: finance
       zuora:
         xf:
           schema: analytics
