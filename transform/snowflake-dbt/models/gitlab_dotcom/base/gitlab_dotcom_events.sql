@@ -18,6 +18,8 @@ WITH source AS (
       {% endif %}
     QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
+    LIMIT 10000 --TEMP
+
 ), projects AS (
 
     SELECT *
@@ -27,6 +29,11 @@ WITH source AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
+
+), plans AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_plans')}}
 
 ), renamed AS (
 
