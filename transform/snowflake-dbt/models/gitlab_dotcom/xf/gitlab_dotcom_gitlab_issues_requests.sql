@@ -64,6 +64,7 @@ WITH epic_issues AS (
 
   SELECT DISTINCT
     'Issue'                    AS noteable_type,
+    'Note'                     AS mention_type,
     issues.issue_id            AS noteable_id,
     issues.issue_iid           AS noteable_iid,
     issues.issue_title         AS noteable_title,
@@ -103,6 +104,7 @@ WITH epic_issues AS (
 
   SELECT DISTINCT
     'Epic'                     AS noteable_type,
+    'Note'                     AS mention_type,
     epics.epic_id              AS noteable_id,
     epics.epic_internal_id     AS noteable_iid,
     epics.epic_title           AS noteable_title,
@@ -135,7 +137,8 @@ WITH epic_issues AS (
 , sfdc_accounts_from_issue_descriptions AS (
 
   SELECT DISTINCT
-    'Issue' AS noteable_type,
+    'Issue'         AS noteable_type,
+    'Description'   AS mention_type,
     issues.issue_id,
     issues.issue_iid,
     issues.issue_title,
@@ -175,6 +178,7 @@ WITH epic_issues AS (
 
   SELECT DISTINCT
     'Epic'                     AS noteable_type,
+    'Description'              AS mention_type,
     epics.epic_id              AS noteable_id,
     epics.epic_internal_id     AS noteable_iid,
     epics.epic_title           AS noteable_title,
@@ -205,19 +209,19 @@ WITH epic_issues AS (
 )
 
 , unioned AS (
-  
+
   /* Notes */
   SELECT *
   FROM sfdc_accounts_from_issue_notes
 
-  UNION 
+  UNION
 
   SELECT *
   FROM sfdc_accounts_from_epic_notes
-  
+
   /* Descriptions */
-  UNION 
-    
+  UNION
+
   SELECT *
   FROM sfdc_accounts_from_issue_descriptions --TODO: rename
 
@@ -225,7 +229,7 @@ WITH epic_issues AS (
 
   SELECT *
   FROM sfdc_accounts_from_epic_descriptions
-    
+
 )
 
 SELECT *
