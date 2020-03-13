@@ -14,7 +14,6 @@ select
     adjustmentrevenueaccountingcodeid as adjustment_revenue_accounting_code_id,
     contractassetaccountingcodeid as contract_asset_accounting_code_id,
     contractliabilityaccountingcodeid as contract_liability_accounting_code_id,
-    adjustmentrevenueaccountingcodeid as adjustment_revenue_accounting_code_id,
     contractrecognizedrevenueaccountingcodeid as contract_recognized_revenue_accounting_code_id,
     deferredrevenueaccountingcodeid as deffered_revenue_accounting_code_id,
     PRODUCTRATEPLANID::VARCHAR AS product_rate_plan_id,
