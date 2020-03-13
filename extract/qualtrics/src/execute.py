@@ -65,7 +65,7 @@ if __name__ == "__main__":
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
     distributions_to_write: List[Dict[Any, Any]] = []
-    surveys_to_write: List[Dict[Any, Any]] = get_and_write_surveys(client)
+    surveys_to_write: List[str] = get_and_write_surveys(client)
 
     for survey_id in surveys_to_write:
         distributions_to_write = distributions_to_write + get_distributions(
