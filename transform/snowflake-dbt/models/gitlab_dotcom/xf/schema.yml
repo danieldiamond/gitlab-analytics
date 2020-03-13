@@ -26,11 +26,14 @@ models:
           - not_null
   - name: gitlab_dotcom_gitlab_issues_requests
     description: '{{ doc("gitlab_dotcom_gitlab_issues_requests") }}'
+    tests:
+    - unique:
+        column_name: "concat(noteable_type, noteable_id, sfdc_account_id)"
     columns:
-      - name: issue_id
+      - name: noteable_id
         tests:
           - not_null
-      - name: project_id
+      - name: noteable_type
         tests:
           - not_null
       - name: namespace_id

@@ -3,11 +3,8 @@ version: 2
 models:
   - name: gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id
     description: '{{ doc("gitlab_dotcom_issues_linked_to_sfdc_account_id") }}'
-    tests:
-    - unique:
-        column_name: "concat(noteable_type, noteable_id, sfdc_account_id)"
     columns:
-      - name: issue_id
+      - name: noteable_id
         tests:
           - not_null
       - name: sfdc_account_id
@@ -16,9 +13,6 @@ models:
 
   - name: gitlab_dotcom_notes_linked_to_sfdc_account_id
     description: '{{ doc("gitlab_dotcom_notes_linked_to_sfdc_account_id") }}'
-    tests:
-    - unique:
-        column_name: "concat(noteable_type, noteable_id, sfdc_account_id)"
     columns:
       - name: note_id
         tests:
