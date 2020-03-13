@@ -6,3 +6,6 @@ models:
     - name: dim_customer
 
     - name: dim_subscription
+
+    - name: dim_product
+
