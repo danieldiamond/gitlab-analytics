@@ -131,4 +131,5 @@ and will be transformed into a table that looks like that:
 
 
 This table will be used to create calculations for MAU and SMAU KPIs.
+
 {% enddocs %}
