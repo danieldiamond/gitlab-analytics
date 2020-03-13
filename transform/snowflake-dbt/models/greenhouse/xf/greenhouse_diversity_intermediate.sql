@@ -1,11 +1,13 @@
 {% set repeated_column_names = 
-    "greenhouse_recruiting_xf.candidate_id,
-      greenhouse_recruiting_xf.application_id,
-      department_name,
-      division, 
-      source_type,
+    "greenhouse_recruiting_xf.application_id,
+      department_name::VARCHAR(100)                                                 AS department_name,
+      division::VARCHAR(100)                                                        AS division,
+      division_modified::VARCHAR(100)                                               AS division_modified,
+      source_type::VARCHAR(100)                                                     AS source_type,
       CASE WHEN eeoc_values in ('I don''t wish to answer','Decline To Self Identify') 
             THEN 'did not identify'
+           WHEN eeoc_values = 'No, I don''t have a disability' 
+            THEN 'No' 
             ELSE COALESCE(lower(eeoc_values), 'did not identify') end                AS eeoc_values
 " %}
 
@@ -38,7 +40,7 @@ WITH date_details AS (
 ), eeoc_fields AS (
 
     SELECT DISTINCT 
-      lower(eeoc_field_name)                           AS eeoc_field_name,
+      LOWER(eeoc_field_name)::VARCHAR(100)             AS eeoc_field_name,
       'join'                                           AS join_field
     FROM eeoc
 
@@ -93,9 +95,7 @@ WITH date_details AS (
     LEFT JOIN eeoc            
       ON greenhouse_recruiting_xf.application_id = eeoc.application_id
       AND LOWER(eeoc.eeoc_field_name) = base.eeoc_field_name 
-    WHERE base.month_date='2020-01-01' 
-      AND offer_status IS NOT NULL
-      AND candidate_id = '32534811002'
+    WHERE offer_status IS NOT NULL
  
 ), accepted AS (
 
@@ -121,7 +121,7 @@ WITH date_details AS (
     SELECT * 
     FROM applications
 
-    {# UNION ALL
+    UNION ALL
 
     SELECT * 
     FROM offers
@@ -129,7 +129,7 @@ WITH date_details AS (
     UNION ALL
 
     SELECT *
-    FROM accepted  #}
+    FROM accepted 
 
 ) 
 

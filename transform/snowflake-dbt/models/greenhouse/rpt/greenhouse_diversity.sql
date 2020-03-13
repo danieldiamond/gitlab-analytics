@@ -19,10 +19,7 @@ WITH greenhouse_diversity_intermediate AS (
     SELECT * 
     FROM  {{ ref ('greenhouse_diversity_intermediate') }}
 
-)
-SELECT * FROM greenhouse_diversity_intermediate
 
-{#
 ), breakout AS (
 
     SELECT
@@ -43,7 +40,7 @@ SELECT * FROM greenhouse_diversity_intermediate
       month_date,
       'all_attributes_breakout'                  AS breakout_type,
       department_name,
-      division,
+      division_modified                          AS division,
       eeoc_field_name,
       eeoc_values,
       {{repeated_column_metrics}}
@@ -56,9 +53,9 @@ SELECT * FROM greenhouse_diversity_intermediate
       month_date,
       'department_division_breakout'                         AS breakout_type,
       department_name,
-      division,
-      null                                                     AS eeoc_field_name,
-      null                                                     AS eeoc_values,
+      division_modified                                      AS division,
+      null                                                   AS eeoc_field_name,
+      null                                                   AS eeoc_values,
       {{repeated_column_metrics}}
     FROM  greenhouse_diversity_intermediate
     {{ dbt_utils.group_by(n=6) }}
@@ -69,7 +66,7 @@ SELECT * FROM greenhouse_diversity_intermediate
       month_date,
       'division_breakout'                     AS breakout_type,
       null                                    AS department_name,
-      division,
+      division_modified                       AS division,
       eeoc_field_name,
       eeoc_values,
       {{repeated_column_metrics}}
@@ -152,5 +149,5 @@ SELECT * FROM greenhouse_diversity_intermediate
 )
 
 SELECT * 
-FROM breakout
-#}
+FROM final
+
