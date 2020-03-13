@@ -98,3 +98,37 @@ ORDER BY 1 DESC
 ```
 
 {% enddocs %}
+
+(% docs version_user_activity_by_stage_unpacked %)
+
+This model flattens twice the JSON contained in the column `usage_activity_by_stage` to build a table that shows for a specific usage_ping `id` and a specific `usage_action_name` the monthly_count (number of time this action happens the last 28 days from the `created_at` timestamp)
+
+The JSON looks typically like that
+```json
+"usage_activity_by_stage": {
+"configure": {
+  "clusters_disabled": 9048,
+  "clusters_enabled": 92343
+},
+"create": {
+  "merge_requests": 977856,
+  "snippets": 2434
+},
+"manage": {
+  "events": 6976879
+}
+}
+```
+
+and will be transformed into a table that looks like that:
+
+| clusters\_disabled | configure | 9048    |
+|--------------------|-----------|---------|
+| clusters\_enabled  | configure | 92343   |
+| merge\_requests    | create    | 977856  |
+| snippets           | create    | 2434    |
+| events             | manage    | 6976879 |
+
+
+This table will be used to create calculations for MAU and SMAU KPIs.
+{% enddocs %}

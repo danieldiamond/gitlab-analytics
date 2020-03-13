@@ -125,3 +125,17 @@ models:
                 - not_null
           - name: product_category
             description: This is the plan (Starter, Premium, Ultimate) associated with the usage data. This is generally consistent with the License app, but has NULL values for many records that have plans in Zuora.
+            
+    - name: version_user_activity_by_stage_unpacked
+      description: '{{ doc("version_user_activity_by_stage_unpacked") }}'
+      columns:
+          - name: main_edition
+            description: Comes from [this section of the code](https://gitlab.com/gitlab-org/gitlab/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154)
+            tests:
+                - accepted_values:
+                    values: ['EE', 'CE']
+          - name: uuid
+            tests:
+                - not_null
+          - name: zuora_subscription_id
+            description: The Zuora subscription associated with the license sending the usage ping.
