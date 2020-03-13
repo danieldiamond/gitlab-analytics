@@ -39,7 +39,6 @@ sources:
         description: '{{ doc("zuora_product_source") }}'
       - name: product_rate_plan
         identifier: productrateplan
-        description: '{{ doc("zuora_product_rate_plan_source") }}'
       - name: rate_plan_charge
         identifier: rateplancharge
         description: '{{ doc("zuora_rateplan_charge_source") }}'
