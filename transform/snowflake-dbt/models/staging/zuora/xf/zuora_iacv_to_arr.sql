@@ -25,7 +25,8 @@ WITH sfdc_opportunity_xf AS (
       {{ product_category('rate_plan_name') }},
       {{ delivery('product_category') }},  
       rate_plan_charge_name      AS charge_name,  
-      rate_plan_charge_number    AS charge_number,  
+      rate_plan_charge_number    AS charge_number, 
+      rate_plan_charge_segment   AS charge_segment, 
       subscription_name_slugify
     FROM {{ ref('zuora_invoice_charges') }}
 
@@ -35,6 +36,16 @@ WITH sfdc_opportunity_xf AS (
     FROM zuora_invoice_charges
     WHERE effective_end_date > invoice_date
         AND mrr > 0
+
+), true_mrr_periods AS (
+
+    SELECT
+      charge_number,
+      charge_segment,
+      effective_start_date AS true_effective_start_date,
+      effective_end_date   AS true_effective_end_date
+    FROM zuora_invoice_charges
+    WHERE is_last_segment_version  
 
 ), aggregate_subscription AS (
 
@@ -61,8 +72,10 @@ WITH sfdc_opportunity_xf AS (
 
       -- dates
       aggregate_subscription.invoice_date,
-      filtered_charges.effective_start_date,
-      filtered_charges.effective_end_date,
+      filtered_charges.effective_start_date AS booked_effective_start_date,
+      filtered_charges.effective_end_date   AS booked_effective_end_date,
+      true_mrr_periods.true_effective_start_date,
+      true_mrr_periods.true_effective_end_date,
       sfdc_opportunity_xf.close_date,
 
       -- invoice info
@@ -80,6 +93,7 @@ WITH sfdc_opportunity_xf AS (
 
       -- metadata
       filtered_charges.charge_name,
+      filtered_charges.charge_segment,
       filtered_charges.delivery,
       filtered_charges.product_category,
       sfdc_opportunity_xf.sales_type,
@@ -88,10 +102,13 @@ WITH sfdc_opportunity_xf AS (
     INNER JOIN filtered_charges
       ON aggregate_subscription.subscription_name_slugify = filtered_charges.subscription_name_slugify
       AND aggregate_subscription.invoice_number = filtered_charges.invoice_number
+    INNER JOIN true_mrr_periods
+      ON filtered_charges.charge_number = true_mrr_periods.charge_number
+      AND filtered_charges.charge_segment = true_mrr_periods.charge_segment  
     LEFT JOIN sfdc_opportunity_xf
       ON aggregate_subscription.invoice_number = sfdc_opportunity_xf.invoice_number
       AND aggregate_subscription.subscription_amount = sfdc_opportunity_xf.opportunity_amount
-    {{ dbt_utils.group_by(n=21)}}      
+    {{ dbt_utils.group_by(n=24)}}      
 
 )
 
