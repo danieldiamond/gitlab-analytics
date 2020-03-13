@@ -231,10 +231,10 @@ WITH gitlab_subscriptions AS (
 
 )
 
-, label_events AS (
+, users AS (
 
     SELECT *
-    FROM {{ ref('gitlab_dotcom_labels') }}
+    FROM {{ ref('gitlab_dotcom_users') }}
 
 )
 
@@ -363,10 +363,11 @@ WITH gitlab_subscriptions AS (
 , final AS (
     SELECT
       data.*,
+      users.created_at                                    AS user_id,
       FLOOR(
       DATEDIFF('hour',
               namespace_created_at,
-              event_created_at)/24)                      AS days_since_namespace_creation,
+              event_created_at)/24)                       AS days_since_namespace_creation,
       FLOOR(
         DATEDIFF('hour',
                 namespace_created_at,
@@ -380,6 +381,8 @@ WITH gitlab_subscriptions AS (
                 parent_created_at,
                 event_created_at)/(24 * 7))               AS weeks_since_parent_creation
     FROM data
+      LEFT JOIN users
+        ON data.user_id = users.user_id
 )
 
 SELECT *
