@@ -393,7 +393,7 @@ WITH gitlab_subscriptions AS (
 , final AS (
     SELECT
       data.*,
-      users.created_at                                    AS user_id,
+      users.created_at                                    AS user_created_at,
       FLOOR(
       DATEDIFF('hour',
               namespace_created_at,
