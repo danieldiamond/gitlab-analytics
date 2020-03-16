@@ -24,7 +24,7 @@ select zuora_account.account_id,
 from  zuora_account
          left join zuora_contact
                    --on zuora_account.ACCOUNT_ID = zuora_contact.ACCOUNT_ID
-ON COALESCE(zuora_account.sold_to_contact_id ,zuora_contact.bill_to_contact_id) = zuora_contact.contact_id
+ON COALESCE(zuora_account.sold_to_contact_id ,zuora_account.bill_to_contact_id) = zuora_contact.contact_id
 WHERE zuora_account.is_deleted = FALSE
   AND zuora_account.account_id NOT IN ({{zuora_excluded_accounts()}})
 

@@ -5,7 +5,7 @@ models:
 
     - name: fct_rate_plan_charges
 
-    - name: dim_customer
+    - name: dim_account
 
     - name: dim_subscription
 

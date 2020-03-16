@@ -1,3 +1,5 @@
+-- depends_on: {{ ref('zuora_excluded_accounts') }}
+
 WITH zuora_subscription AS (
 
     SELECT *
@@ -6,20 +8,19 @@ WITH zuora_subscription AS (
 )
 
 SELECT
-      zuora_account.account_id,
-      zuora_account.crm_id,
-       zuora_account.sfdc_oppotunity_id,
       zuora_subscription.subscription_id,
       zuora_subscription.subscription_name_slugify,
       zuora_subscription.subscription_status,
       zuora_subscription.version                          AS subscription_version,
-      zuora_subscription.auto_renawal as is_auto_renewal,
-      zuora_subscription.renewal_setting,
-       zuora_subscription.zuora_renewal_subscription_slugify,
-       zuora_subscription.renewal_term,
-       zuora_subscription.renewal_term_period_type,
-       zuora_subscription.quote_type,
-       zuora_subscription.renewal_setting
-    FROM zuora_account
-    INNER JOIN zuora_subscription
-      ON zuora_account.account_id = zuora_subscription.account_id
+      zuora_subscription.auto_renew as is_auto_renew,
+      zuora_subscription.zuora_renewal_subscription_name,
+      zuora_subscription.zuora_renewal_subscription_name_slugify,
+      zuora_subscription.renewal_term,
+      zuora_subscription.renewal_term_period_type,
+      zuora_subscription.quote_type,
+      zuora_subscription.renewal_setting
+    FROM zuora_subscription
+      WHERE is_deleted = FALSE
+  AND exclude_from_analysis IN ('False', '')
+  AND account_id NOT IN ({{ zuora_excluded_accounts() }})
+
