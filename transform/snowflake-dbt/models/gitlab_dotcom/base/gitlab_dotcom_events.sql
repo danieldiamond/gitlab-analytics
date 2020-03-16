@@ -7,8 +7,7 @@
 
 WITH source AS (
 
-    SELECT
-      *
+    SELECT *
     FROM {{ source('gitlab_dotcom', 'events') }}
     
       {% if is_incremental() %}
@@ -17,8 +16,6 @@ WITH source AS (
 
       {% endif %}
     QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
-
-    LIMIT 10000 --TEMP
 
 ), projects AS (
 
