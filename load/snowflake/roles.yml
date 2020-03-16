@@ -1317,6 +1317,12 @@ users:
         member_of:
             - lmai
 
+    - lvandensteen:
+        can_login: yes
+        member_of:
+            - analyst_people
+            - lvandensteen
+
     - mdewji:
         can_login: yes
         member_of:
@@ -1352,12 +1358,6 @@ users:
         member_of:
             - engineer
             - mwalker
-
-    - lvandensteen:
-        can_login: yes
-        member_of:
-            - analyst_people
-            - lvandensteen
 
     - parmstrong:
         can_login: yes
