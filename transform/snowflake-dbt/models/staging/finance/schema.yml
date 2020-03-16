@@ -1,7 +1,9 @@
 version: 2
 
 models:
-    - name: fct_invoice
+    - name: fct_invoice_item
+
+    - name: fct_rate_plan_charges
 
     - name: dim_customer
 
