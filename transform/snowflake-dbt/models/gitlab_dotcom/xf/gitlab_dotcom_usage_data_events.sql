@@ -363,11 +363,12 @@ WITH gitlab_subscriptions AS (
 
       -- Join on either the project's or the group's ultimate namespace.
       INNER JOIN namespaces AS ultimate_namespace
-        ON ultimate_namespace.namespace_id =
         {% if event_cte.key_to_parent_project is defined %}
-        projects.ultimate_parent_id
+        ON ultimate_namespace.namespace_id = projects.ultimate_parent_id
         {% elif event_cte.key_to_parent_group is defined %}
-        namespaces.namespace_ultimate_parent_id
+        ON ultimate_namespace.namespace_id = namespaces.namespace_ultimate_parent_id
+        {% else %}
+        ON FALSE -- Don't join any rows.
         {% endif %}
 
       LEFT JOIN gitlab_subscriptions
