@@ -40,10 +40,10 @@ models:
             - not_null
             - accepted_values:
                 values: ['application_month','offer_sent_month','accepted_month']
-        - name: candidate_id
         - name: application_id
         - name: department_name
         - name: division
+        - name: division_modified
         - name: source_type
         - name: eeoc_values
           description: This field indicates the diversity for a candidate. For example, tying this to eeoc_field_name = 'Candidate_Gender' we can see the gender of the candidate if they choose to respond.
@@ -51,5 +51,7 @@ models:
           description: If the offer_status = 'accepted' then this will be a 1, otherwise 0. This is used later to aggregate offers in the greenhouse_diversity model.
         - name: time_to_offer
           description: Shows how long an applicant to go from applying to accepting an offer. This is based on offer accept month. 
-
+        - name: sourced_candidate
+          description: Candidates sourced through LinkedIn.
+        - name: hired_sourced_candidates  
           
