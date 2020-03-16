@@ -20,7 +20,7 @@ def get_table_name(config_name, snowflake_database):
     if config_name == "sources":
         return f"{snowflake_database}.dbt.sources"
     else:
-        return "f{snowflake_database}.dbt.run_results"
+        return f"{snowflake_database}.dbt.run_results"
 
 
 if __name__ == "__main__":
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
     snowflake_stage_load_copy_remove(
         file_name,
-        f"{snowflake_database}.dbt.dbt_load",
+        f"raw.dbt.dbt_load",
         get_table_name(config_name, snowflake_database),
         snowflake_engine,
     )
