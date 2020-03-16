@@ -324,6 +324,10 @@ WITH gitlab_subscriptions AS (
         'group'                                                   AS parent_type,
         namespaces.namespace_id                                   AS parent_id,
         namespaces.namespace_created_at                           AS parent_created_at,
+      {% else %}
+        NULL                                                      AS parent_type,
+        NULL                                                      AS parent_id,
+        NULL                                                      AS parent_created_at,
       {% endif %}
       {{ event_cte.event_name }}.created_at                       AS event_created_at,
       {{ event_cte.is_representative_of_stage }}::BOOLEAN         AS is_representative_of_stage,
