@@ -1035,8 +1035,6 @@ models:
           tests: 
             - not_null
         - name: opening_custom_field
-          tests:
-            - not_null
         - name: opening_custom_field_display_value
           tests:
             - not_null

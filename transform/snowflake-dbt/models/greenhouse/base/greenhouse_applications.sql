@@ -1,7 +1,19 @@
-WITH source as (
+WITH source AS (
 
 	SELECT *
   	FROM {{ source('greenhouse', 'applications') }}
+
+), stages_source AS (
+
+    SELECT * 
+    FROM {{ source('greenhouse', 'application_stages') }}
+
+), stages AS (
+
+    SELECT * 
+    FROM stages_source
+    WHERE entered_on IS NOT NULL
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY application_id ORDER BY entered_on DESC) =1
 
 ), renamed as (
 
@@ -9,7 +21,7 @@ WITH source as (
 
 			--keys
 		    candidate_id,
-		    stage_id,
+		    stages.stage_id,
 		    source_id,
 		    referrer_id,
 		    rejected_by_id,
@@ -25,7 +37,7 @@ WITH source as (
 		    pipeline_percent,
 		    migrated,
 		    rejected_by,
-		    stage_name,
+		    stages.stage_name,
 		    prospect_pool,
 		    prospect_pool_stage,
 
@@ -33,9 +45,9 @@ WITH source as (
 		    rejected_at::timestamp 	AS rejected_at,
 		    created_at::timestamp 	AS created_at,
 		    updated_at::timestamp 	AS last_updated_at
-
 	FROM source
-
+    LEFT JOIN stages 
+      ON stages.application_id = source.id
 )
 
 SELECT *
