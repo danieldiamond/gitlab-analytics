@@ -1009,6 +1009,13 @@ roles:
             - loading
             - reporting
 
+    - parmstrong:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting
+
     - periscope:
         warehouses:
             - reporting
@@ -1351,6 +1358,12 @@ users:
         member_of:
             - analyst_people
             - lvandensteen
+
+    - parmstrong:
+        can_login: yes
+        member_of:
+            - engineer
+            - parmstrong
 
     - periscope:
         can_login: yes
