@@ -169,6 +169,14 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "projects_container_registry_enabled",
+    "source_cte_name": "projects_container_registry_enabled",
+    "user_column_name": "creator_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "project_id",
+    "is_representative_of_stage": "True"
+  },
+  {
     "event_name": "projects_prometheus_active",
     "source_cte_name": "projects_prometheus_active",
     "user_column_name": "creator_id",
@@ -260,6 +268,12 @@ WITH gitlab_subscriptions AS (
     FROM {{ ref('gitlab_dotcom_projects_xf') }}
     WHERE ARRAY_CONTAINS('PrometheusService'::VARIANT, active_service_types)
 
+), projects_container_registry_enabled AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_projects_xf') }}
+    WHERE container_registry_enabled = True
+
 ), group_members AS (
 
     SELECT
@@ -320,6 +334,10 @@ WITH gitlab_subscriptions AS (
           THEN 'configure'
         WHEN '{{ event_cte.event_name }}' = 'ci_stages'
           THEN 'configure'
+        WHEN '{{ event_cte.event_name }}' = 'users'
+          THEN 'manage'
+        WHEN '{{ event_cte.event_name }}' = 'projects_container_registry_enabled'
+          THEN 'package'
         ELSE version_usage_stats_to_stage_mappings.stage
       END                                                         AS stage_name,
       CASE
