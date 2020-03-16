@@ -211,8 +211,8 @@
   {
     "event_name": "users",
     "source_table_name": "gitlab_dotcom_users",
-    "user_column_name": "user",
-    "primary_key": "user",
+    "user_column_name": "user_id",
+    "primary_key": "user_id",
     "is_representative_of_stage": "False"
   },
 ]
