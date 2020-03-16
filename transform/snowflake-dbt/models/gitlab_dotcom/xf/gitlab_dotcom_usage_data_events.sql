@@ -212,7 +212,6 @@
     "event_name": "users",
     "source_table_name": "gitlab_dotcom_users",
     "user_column_name": "user",
-    "key_to_parent_project": "NULL",
     "primary_key": "user",
     "is_representative_of_stage": "False"
   },
