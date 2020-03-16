@@ -24,8 +24,8 @@ models:
       - name: environment_name
         tests:
           - not_null
-  - name: gitlab_dotcom_gitlab_issues_requests
-    description: '{{ doc("gitlab_dotcom_gitlab_issues_requests") }}'
+  - name: gitlab_dotcom_gitlab_user_requests
+    description: '{{ doc("gitlab_dotcom_gitlab_user_requests") }}'
     tests:
     - unique:
         column_name: "concat(noteable_type, noteable_id, mention_type, sfdc_account_id)"
