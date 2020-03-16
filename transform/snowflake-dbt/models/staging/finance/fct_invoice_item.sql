@@ -34,6 +34,7 @@ select --zuora_invoice.INVOICE_ID,
 from zuora_invoice_item
     join zuora_invoice
 ON zuora_invoice_item.invoice_id = zuora_invoice.invoice_id
+    where zuora_invoice.is_deleted = FALSE and zuora_invoice_item.is_deleted=FALSE
     )
 
 select *

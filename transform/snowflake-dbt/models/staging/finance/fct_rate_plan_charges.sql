@@ -25,11 +25,11 @@ WITH zuora_rate_plan AS (
       zuora_rate_plan_charge.unit_of_measure,
       zuora_rate_plan_charge.quantity,
       zuora_rate_plan_charge.mrr,
-      zuora_rate_plan.rate_plan_name = '#movingtogitlab' AS is_movingtogitlab
+      zuora_rate_plan.rate_plan_name = '#movingtogitlab' AS is_movingtogitlab,
+      {{ product_category('zuora_rate_plan.rate_plan_name') }}
     FROM zuora_rate_plan
     INNER JOIN zuora_rate_plan_charge
       ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
-   WHERE zuora_rate_plan_charge.account_id NOT IN ({{ zuora_excluded_accounts() }})
 
 ), final AS (
 
