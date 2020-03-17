@@ -104,8 +104,9 @@ The JSON looks typically like that
 
 and will be transformed into a table that looks like that:
 
-| clusters\_disabled | configure | 9048    |
+| usage_action_name  | stage_name | usage_action_count|
 |--------------------|-----------|---------|
+| clusters\_disabled | configure | 9048    |
 | clusters\_enabled  | configure | 92343   |
 | merge\_requests    | create    | 977856  |
 | snippets           | create    | 2434    |
