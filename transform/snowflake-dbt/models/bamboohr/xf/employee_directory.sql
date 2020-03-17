@@ -83,6 +83,3 @@ LEFT JOIN rehire
 WHERE mapping.hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
 AND mapping.employee_id NOT IN (41949)
 
-
-
-
