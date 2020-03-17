@@ -232,7 +232,7 @@ dbt_install_deps_and_seed_cmd = f"""
   
 clone_and_setup_dbt_nosha_cmd = f"""
     {clone_repo_cmd} &&
-    cd transform/snowflake-dbt/"""
+    cd analytics/transform/snowflake-dbt/"""
     
 dbt_install_deps_nosha_cmd = f"""
     {clone_and_setup_dbt_nosha_cmd} &&
