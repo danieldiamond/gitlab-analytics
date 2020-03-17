@@ -41,7 +41,7 @@ dag = DAG("dbt_snapshots", default_args=default_args, schedule_interval="30 */8 
 
 # dbt-snapshot for daily tag
 dbt_snapshot_cmd = f"""
-    {dbt_install_deps_cmd} &&
+    {dbt_install_deps_nosha_cmd} &&
     dbt snapshot -s tag:daily --profiles-dir profile
 """
 

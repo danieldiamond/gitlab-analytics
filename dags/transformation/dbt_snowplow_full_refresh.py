@@ -47,7 +47,7 @@ def generate_dbt_command(vars_dict):
     json_dict = json.dumps(vars_dict)
 
     dbt_generate_command = f"""
-        {dbt_install_deps_cmd} &&
+        {dbt_install_deps_nosha_cmd} &&
         export SNOWFLAKE_TRANSFORM_WAREHOUSE="TRANSFORMING_XL" &&
         dbt run --profiles-dir profile --target prod --models snowplow --full-refresh --vars '{json_dict}'
         """
@@ -74,7 +74,7 @@ def generate_dbt_command(vars_dict):
 dummy_operator = DummyOperator(task_id="start", dag=dag)
 
 dbt_snowplow_combined_cmd = f"""
-        {dbt_install_deps_cmd} &&
+        {dbt_install_deps_nosha_cmd} &&
         dbt run --profiles-dir profile --target prod --models snowplow_combined
         """
 

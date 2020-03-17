@@ -39,7 +39,7 @@ dag = DAG("dbt_version_full_refresh", default_args=default_args, schedule_interv
 
 # dbt-full-refresh
 dbt_full_refresh_cmd = f"""
-    {dbt_install_deps_and_seed_cmd} &&
+    {dbt_install_deps_and_seed_nosha_cmd} &&
     dbt run --profiles-dir profile --target prod --models version --full-refresh
 """
 dbt_full_refresh = KubernetesPodOperator(
