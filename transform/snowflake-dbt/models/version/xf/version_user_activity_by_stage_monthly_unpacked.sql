@@ -2,7 +2,7 @@
 
 WITH usage_data AS (
 
-    SELECT {{ dbt_utils.star(from=ref('version_usage_data'), except=['LICENSE_ID', 'LICENSE_STARTS_AT', 'LICENSE_EXPIRES_AT']) }}
+    SELECT {{ dbt_utils.star(from=ref('version_usage_data_unpacked'), except=['LICENSE_ID', 'LICENSE_STARTS_AT', 'LICENSE_EXPIRES_AT']) }}
     FROM {{ ref('version_usage_data_unpacked') }}
 
 ), unpacked_stage_json AS (
@@ -26,6 +26,7 @@ WITH usage_data AS (
       unpacked_stage_json.id,
       unpacked_stage_json.version,
       unpacked_stage_json.created_at,
+      unpacked_stage_json.license_id,
       unpacked_stage_json.uuid,
       unpacked_stage_json.edition,      
       unpacked_stage_json.ping_source,
