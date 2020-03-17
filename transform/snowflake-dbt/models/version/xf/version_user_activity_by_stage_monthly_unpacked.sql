@@ -26,7 +26,6 @@ WITH usage_data AS (
       unpacked_stage_json.id,
       unpacked_stage_json.version,
       unpacked_stage_json.created_at,
-      unpacked_stage_json.license_id,
       unpacked_stage_json.uuid,
       unpacked_stage_json.edition,      
       unpacked_stage_json.ping_source,
