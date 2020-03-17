@@ -5,7 +5,7 @@ from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import (
     DBT_IMAGE,
-    dbt_install_deps_cmd,
+    dbt_install_deps_nosha_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
     slack_failed_task,

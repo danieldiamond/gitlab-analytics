@@ -7,7 +7,7 @@ from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOpera
 from airflow.operators.dummy_operator import DummyOperator
 from airflow_utils import (
     DBT_IMAGE,
-    dbt_install_deps_cmd,
+    dbt_install_deps_nosha_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
     partitions,
