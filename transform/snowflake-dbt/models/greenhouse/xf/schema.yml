@@ -29,19 +29,13 @@ models:
     columns:
         - name: month_date
         - name: eeoc_field_name
-          description: This column lists the eeoc_fields and ties it to each application. As a result, an applicant will have a response for gender, race, etc if it is null.           
-          tests: 
-            - accepted_values:
-                values: ['candidate_veteran_status', 'candidate_gender', 'candidate_status', 'candidate_race', 'candidate_disability_status']
+          description: This column lists the eeoc_fields and ties it to each application. As a result, an applicant will have a response for gender, race, etc if it is null.                  
         - name: capture_month
           description: This identifies if the data is captured for the application month, the offer sent month, or offer_accepted. The metrics associated to these are grouped up in the greenhouse_diversity rpt.
-          tests:
-            - accepted_values:
-                values: ['application_month','offer_sent_month','accepted_month']
-        - name: candidate_id
         - name: application_id
         - name: department_name
         - name: division
+        - name: division_modified
         - name: source_type
         - name: eeoc_values
           description: This field indicates the diversity for a candidate. For example, tying this to eeoc_field_name = 'Candidate_Gender' we can see the gender of the candidate if they choose to respond.
@@ -49,5 +43,7 @@ models:
           description: If the offer_status = 'accepted' then this will be a 1, otherwise 0. This is used later to aggregate offers in the greenhouse_diversity model.
         - name: time_to_offer
           description: Shows how long an applicant to go from applying to accepting an offer. This is based on offer accept month. 
-
+        - name: sourced_candidate
+          description: Candidates sourced through LinkedIn.
+        - name: hired_sourced_candidates  
           
