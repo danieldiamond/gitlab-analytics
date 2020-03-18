@@ -80,6 +80,7 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -104,6 +105,7 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
@@ -129,6 +131,7 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - postgres_pipeline
             - netsuite
             - salesforce
@@ -165,6 +168,7 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -188,6 +192,7 @@ roles:
             - boneyard
             - dbt_analytics
             - gitlab_data_yaml
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -242,6 +247,7 @@ roles:
             - dbt_analytics_sensitive
             - gitlab_data_yaml
             - greenhouse
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -264,6 +270,7 @@ roles:
             - boneyard
             - dbt_analytics
             - gitlab_data_yaml
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
@@ -308,6 +315,7 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -415,6 +423,7 @@ roles:
         member_of:
             - boneyard
             - dbt_analytics
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
@@ -664,6 +673,18 @@ roles:
             tables:
                 read:
                     - raw.handbook.*
+
+    - license_db:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.license_db
+            tables:
+                read:
+                    - analytics.license_db.*
 
     - netsuite:
         warehouses:
