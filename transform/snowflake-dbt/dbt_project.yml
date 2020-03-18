@@ -110,6 +110,11 @@ models:
         materialized: table
         schema: qualtrics
 
+      version:
+        tags: ["product"]
+        materialized: table
+        schema: version_db
+
       zendesk:
         schema: zendesk
 
@@ -123,6 +128,11 @@ models:
       google_analytics_360:
         schema: analytics
       
+      version:
+        tags: ["product"]
+        xf:
+          schema: analytics
+
       zuora:
         xf:
           schema: analytics
@@ -212,13 +222,6 @@ models:
 
     snowplow_combined:
       tags: ["product"]
-
-    version:
-      tags: ["product"]
-      base:
-        schema: staging
-      xf:
-        materialized: table
 
 
 # ======
