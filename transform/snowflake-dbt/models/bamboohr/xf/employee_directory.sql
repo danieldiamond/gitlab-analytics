@@ -31,6 +31,24 @@ WITH bamboohr_directory AS (
 
     SELECT *
     FROM {{ref('cost_center_division_department_mapping')}}
+
+), initial_hire AS (
+    
+    SELECT 
+      employee_id,
+      effective_date as hire_date
+    FROM {{ref('bamboohr_employment_status')}}
+    WHERE employment_status != 'Terminated'
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY effective_date) = 1
+
+), rehire AS (
+
+    Select 
+       employee_id,
+       is_rehire,
+       valid_from_date as rehire_date
+    FROM {{ref('bamboohr_employment_status_xf')}}
+    WHERE is_rehire='True'
 )
 
 SELECT distinct
@@ -39,7 +57,8 @@ SELECT distinct
         mapping.first_name,
         mapping.last_name,
         bamboohr_directory.work_email,
-        mapping.hire_date,
+        iff(rehire.is_rehire = 'True', initial_hire.hire_date, mapping.hire_date) AS hire_date,
+        rehire.rehire_date,
         mapping.termination_date,
         department_info.last_job_title,
         department_info.last_supervisor,
@@ -57,14 +76,10 @@ LEFT JOIN cost_center
  AND trim(department_info.last_division)=trim(cost_center.division)
 LEFT JOIN location_factor
   ON location_factor.bamboo_employee_number = mapping.employee_number
-WHERE hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
-  AND mapping.employee_id NOT IN (
-                              '41683' --https://gitlab.com/gitlab-data/analytics/issues/2749
-                              , '41692' --https://gitlab.com/gitlab-data/analytics/issues/2749
-                              , '41693' --https://gitlab.com/gitlab-data/analytics/issues/2882
-                              , '41835' --https://gitlab.com/gitlab-data/analytics/issues/3219
-                              , '41816' --https://gitlab.com/gitlab-data/analytics/issues/3318
-                              , '41826' --https://gitlab.com/gitlab-data/analytics/issues/3318
-                            )
+LEFT JOIN initial_hire 
+  ON initial_hire.employee_id = mapping.employee_id
+LEFT JOIN rehire
+  ON rehire.employee_id = mapping.employee_id
+WHERE mapping.hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
+AND mapping.employee_id NOT IN (41949)
 
-ORDER BY hire_date DESC

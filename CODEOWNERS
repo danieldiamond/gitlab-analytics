@@ -17,40 +17,45 @@
 # Top Level Folder Overwrites
 # ======
 
-/dags/ @tayloramurphy @m_walker
-/extract/ @tayloramurphy @m_walker
-/load/ @tayloramurphy @m_walker
-/orchestrate/ @tayloramurphy @m_walker
+/dags/          @tayloramurphy  @m_walker
+/extract/       @tayloramurphy  @m_walker
+/load/          @tayloramurphy  @jjstark    @kathleentam
+/orchestrate/   @tayloramurphy  @m_walker
 
 # ======
 # Top Level File Overwrites
 # ======
 
-Makefile @tayloramurphy
-docker-compose.yml @tayloramurphy
-.gitlab-ci.yml @tayloramurphy
+Makefile            @tayloramurphy @m_walker
+docker-compose.yml  @tayloramurphy @m_walker
+.gitlab-ci.yml      @tayloramurphy @m_walker
 
 # ======
 # dbt Overwrites
 # ======
 
-/transform/ @tayloramurphy @emilie
-/transform/snowflake-dbt/ @tayloramurphy @kathleentam @emilie
-/transform/snowflake-dbt/snowflake-dbt-ci.yml @tayloramurphy
-/transform/snowflake-dbt/docs/ @tayloramurphy
-/transform/snowflake-dbt/macros/ @tayloramurphy @emilie
-/transform/snowflake-dbt/models/bamboohr/ @emilie @kathleentam
-/transform/snowflake-dbt/models/customers/ @eli_kastelein @mpeychet_
-/transform/snowflake-dbt/models/gitlab_data_yaml/ @tayloramurphy
-/transform/snowflake-dbt/models/gitlab_dotcom/ @eli_kastelein @mpeychet_
-/transform/snowflake-dbt/models/greenhouse/ @pluthra
-/transform/snowflake-dbt/models/license/ @eli_kastelein @mpeychet_
-/transform/snowflake-dbt/models/netsuite/ @iweeks
-/transform/snowflake-dbt/models/version/ @eli_kastelein @mpeychet
-/transform/snowflake-dbt/models/sfdc/ @derekatwood
-/transform/snowflake-dbt/models/smau_events/ @eli_kastelein @mpeychet
-/transform/snowflake-dbt/models/snowplow/ @tayloramurphy
-/transform/snowflake-dbt/models/snowplow_combined/ @tayloramurphy
+/transform/                                         @tayloramurphy  @jjstark    @emilie     @kathleentam
+/transform/snowflake-dbt/                           @tayloramurphy  @jjstark    @emilie     @kathleentam
+
+/transform/snowflake-dbt/snowflake-dbt-ci.yml       @tayloramurphy  @m_walker
+/transform/snowflake-dbt/docs/                      @tayloramurphy  @jjstark    @emilie     @kathleentam
+/transform/snowflake-dbt/macros/                    @tayloramurphy  @jjstark    @emilie     @kathleentam
+
+/transform/snowflake-dbt/models/bamboohr/           @emilie         @kathleentam
+/transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam
+/transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/greenhouse/         @pluthra        @kathleentam
+/transform/snowflake-dbt/models/license/            @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/netsuite/           @iweeks         @kathleentam
+/transform/snowflake-dbt/models/sfdc/               @derekatwood    @kathleentam
+/transform/snowflake-dbt/models/smau_events/        @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/snowplow/           @tayloramurphy  @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/snowplow_combined/  @tayloramurphy  @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/version/            @eli_kastelein  @mpeychet_
+
+/transform/snowflake-dbt/models/sources/zendesk     @derekatwood    @ken_aguilar
+/transform/snowflake-dbt/models/staging/zendesk     @derekatwood    @ken_aguilar
 
 # ======
 # dbt data file Overwrites

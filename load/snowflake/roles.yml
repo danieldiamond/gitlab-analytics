@@ -234,6 +234,7 @@ roles:
             - bamboohr
             - boneyard
             - dbt_analytics
+            - dbt_analytics_sensitive
             - gitlab_data_yaml
             - greenhouse
             - netsuite
@@ -616,12 +617,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.google_analytics_360
                     - raw.google_analytics_360_fivetran
             tables:
                 read:
+                    - analytics.google_analytics_360.*
                     - raw.google_analytics_360_fivetran.*
 
     - greenhouse:
@@ -755,12 +759,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.zendesk
                     - raw.zendesk_stitch
             tables:
                 read:
+                    - analytics.zendesk.*
                     - raw.zendesk_stitch.*  
 
     - zuora:
@@ -769,12 +776,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.zuora
                     - raw.zuora_stitch
             tables:
                 read:
+                    - analytics.zuora.*
                     - raw.zuora_stitch.*
 
 # ==========================================
@@ -993,6 +1003,13 @@ roles:
             - analyst_xs
 
     - mwalker:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting
+
+    - parmstrong:
         warehouses:
             - engineer_xs
             - engineer_xl
@@ -1300,6 +1317,12 @@ users:
         member_of:
             - lmai
 
+    - lvandensteen:
+        can_login: yes
+        member_of:
+            - analyst_people
+            - lvandensteen
+
     - mdewji:
         can_login: yes
         member_of:
@@ -1336,11 +1359,11 @@ users:
             - engineer
             - mwalker
 
-    - lvandensteen:
+    - parmstrong:
         can_login: yes
         member_of:
-            - analyst_people
-            - lvandensteen
+            - engineer
+            - parmstrong
 
     - periscope:
         can_login: yes

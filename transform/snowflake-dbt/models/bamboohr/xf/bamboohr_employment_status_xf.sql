@@ -10,10 +10,10 @@ WITH bamboohr_employment_status AS (
     employee_id,
     employment_status,
     termination_type,
-    effective_date                                                                          AS valid_from_date,
-    LEAD(effective_date) OVER (PARTITION BY employee_id ORDER BY effective_date)            AS valid_to_date,
-    LEAD(employment_status) OVER (PARTITION BY employee_id ORDER BY effective_date)         AS next_employment_status,
-    LAG(employment_status) OVER (PARTITION BY employee_id ORDER BY effective_date)          AS previous_employment_status
+    effective_date                                                                              AS valid_from_date,
+    LEAD(effective_date) OVER (PARTITION BY employee_id ORDER BY effective_date, status_id)     AS valid_to_date,
+    LEAD(employment_status) OVER (PARTITION BY employee_id ORDER BY effective_date, status_id)  AS next_employment_status,
+    LAG(employment_status) OVER (PARTITION BY employee_id ORDER BY effective_date, status_id)   AS previous_employment_status
     FROM bamboohr_employment_status
 
 ), final AS (

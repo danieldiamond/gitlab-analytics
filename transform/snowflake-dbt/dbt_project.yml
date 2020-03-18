@@ -100,18 +100,35 @@ models:
   gitlab_snowflake:
     materialized: view
 
+    # Dimensional Structure
     sources:
-      schema: source
+      google_analytics_360:
+        materialized: table
+        schema: google_analytics_360
 
+      qualtrics:
+        materialized: table
+        schema: qualtrics
+
+      zendesk:
+        schema: zendesk
+
+      zuora:
+        schema: zuora
+    
     staging:
       schema: staging
-      finance:
-        schema: finance
+      materialized: table
+
+      google_analytics_360:
+        schema: analytics
+
       zuora:
         xf:
           schema: analytics
-          materialized: table
 
+
+    # Legacy Structure
     bamboohr:
       schema: sensitive
       base:
@@ -146,7 +163,7 @@ models:
       base:
         schema: sensitive
       xf:
-        schema: sensitive  
+        schema: sensitive
       rpt:
         schema: analytics
     
@@ -203,9 +220,6 @@ models:
       xf:
         materialized: table
 
-    zendesk:
-      xf:
-        materialized: table
 
 # ======
 # Snapshot Configs
