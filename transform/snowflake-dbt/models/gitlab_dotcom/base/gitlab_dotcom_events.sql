@@ -20,17 +20,17 @@ WITH source AS (
 ), projects AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_projects_xf')}}
+    FROM {{ ref('gitlab_dotcom_projects_xf') }}
 
 ), gitlab_subscriptions AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
+    FROM {{ ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base') }}
 
 ), plans AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_plans')}}
+    FROM {{ ref('gitlab_dotcom_plans') }}
 
 ), renamed AS (
 
@@ -54,7 +54,7 @@ WITH source AS (
       projects.ultimate_parent_id,
       CASE
         WHEN gitlab_subscriptions.is_trial
-          THEN 'trial'::VARCHAR
+          THEN 'trial'
         ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
       END AS plan_id_at_event_date,
       CASE
