@@ -208,7 +208,10 @@ dbt_full_refresh = KubernetesPodOperator(
     dag=dag,
 )
 
-# dbt-source-freshness
+""" 
+    dbt-source-freshness
+    The ret=$? part preserves the return value of the dbt command which is then used as the final return value of the command
+"""
 dbt_source_cmd = f"""
     {pull_commit_hash} &&
     {dbt_install_deps_cmd} &&
