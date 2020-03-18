@@ -182,7 +182,6 @@ AND lower(JSONTEXT['page_url']::string) NOT LIKE 'http://localhost:%'
 ), unnested_unstruct as (
 
     SELECT *,
-    {{dbt_utils.get_url_parameter(field='page_urlquery', url_parameter='glm_source')}} AS glm_source,
     CASE
       WHEN length(unstruct_event) > 0 AND try_parse_json(unstruct_event) IS NULL
         THEN TRUE
