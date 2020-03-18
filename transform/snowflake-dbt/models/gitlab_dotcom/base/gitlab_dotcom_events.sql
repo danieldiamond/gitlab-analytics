@@ -20,7 +20,7 @@ WITH source AS (
 ), projects AS (
 
     SELECT *
-    FROM {{ ref('gitlab_dotcom_projects_xf') }}
+    FROM {{ref('gitlab_dotcom_projects_xf')}}
 
 ), gitlab_subscriptions AS (
 
