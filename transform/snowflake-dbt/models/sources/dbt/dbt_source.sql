@@ -1,10 +1,10 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ sources('sources') }}
+    FROM {{ source('dbt', 'sources') }}
 
 ), parsed AS (
-    
+
     SELECT 
       REPLACE(REGEXP_REPLACE(s.path, '\\[|\\]|''', ''), 'source.gitlab_snowflake.', '')::VARCHAR    AS table_name,
       s.value['max_loaded_at']::TIMESTAMP                                                           AS latest_load_at,
