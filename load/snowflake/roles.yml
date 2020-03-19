@@ -7,6 +7,9 @@ databases:
     - analytics:
         shared: no
 
+    - covid19:
+        shared: yes    
+        
     - raw:
         shared: no
 
@@ -77,6 +80,7 @@ roles:
             - analyst_l
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
@@ -101,6 +105,7 @@ roles:
             - analyst_l
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
@@ -125,6 +130,7 @@ roles:
             - analyst_xl
         member_of:
             - boneyard
+            - covid19
             - db_dumps
             - dbt_analytics
             - gitlab_data_yaml
@@ -162,6 +168,7 @@ roles:
             - analyst_xs
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
@@ -186,6 +193,7 @@ roles:
         member_of:
             - bamboohr
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - netsuite
@@ -238,6 +246,7 @@ roles:
         member_of:
             - bamboohr
             - boneyard
+            - covid19
             - dbt_analytics
             - dbt_analytics_sensitive
             - gitlab_data_yaml
@@ -262,6 +271,7 @@ roles:
             - analyst_xs
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - postgres_pipeline
@@ -305,6 +315,7 @@ roles:
             - analyst_l
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
@@ -325,6 +336,7 @@ roles:
 
     - engineer:
         member_of:
+            - covid19
             - loader
             - transformer
             - snowflake_db
@@ -476,6 +488,16 @@ roles:
             - boneyard
             - dbt_analytics
             - snowflake_db
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.covid19
+            tables:
+                read:
+                    - analytics.covid19.covid19_cases
 
     - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema
         warehouses:
@@ -496,6 +518,7 @@ roles:
             - transforming_xs
             - transforming_4xl
         member_of:
+            - covid19
             - snowflake_db
         owns:
             schemas:
@@ -559,6 +582,18 @@ roles:
             tables:
                 read:
                     - analytics.boneyard.*
+
+    - covid19:
+        privileges:
+          databases:
+                read:
+                    - covid19
+            schemas:
+                read:
+                    - covid19.public
+            tables:
+                read:
+                    - covid19.public.jhu_covid_19
 
     - db_dumps:
         privileges:
