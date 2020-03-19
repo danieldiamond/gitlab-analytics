@@ -352,8 +352,7 @@ WITH gitlab_subscriptions AS (
         WHEN gitlab_subscriptions.is_trial
           THEN 'trial'
         ELSE COALESCE(plans.plan_name, 'free')
-      END                                                         AS plan_name_at_event_date,
-      COALESCE(plans.plan_is_paid, FALSE)                         AS plan_was_paid_at_event_date
+      END                                                         AS plan_name_at_event_date
     FROM {{ event_cte.event_name }}
       /* Join with parent project. */
       {% if event_cte.key_to_parent_project is defined %}

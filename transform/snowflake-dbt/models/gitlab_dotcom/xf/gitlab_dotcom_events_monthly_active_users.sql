@@ -54,29 +54,30 @@ WITH days AS (
 
 ), events_active_user AS (
 
-    SELECT
+    SELECT DISTINCT
       days.day,
       days.is_last_day_of_month,
-      COUNT(DISTINCT author_id)   AS count_events_active_users_last_28_days
+      COUNT(DISTINCT author_id) OVER (PARTITION BY days.day)                                     AS count_events_active_users_last_28_days,
+      COUNT(DISTINCT author_id) OVER (PARTITION BY days.day, events.plan_id_at_event_date)       AS count_events_active_users_last_28_days_by_plan_id,
+      COUNT(DISTINCT author_id) OVER (PARTITION BY days.day, events.plan_was_paid_at_event_date) AS count_events_active_users_last_28_days_by_plan_was_paid
     FROM days
       INNER JOIN events
         ON events.event_day BETWEEN DATEADD('day', -27, days.day) AND days.day
-    GROUP BY
-      days.day,
-      days.is_last_day_of_month
     ORDER BY
       days.day
 
 ), joined AS (
-  
+
     SELECT
      audit_events_active_user.day,
      audit_events_active_user.is_last_day_of_month,
      audit_events_active_user.count_audit_events_active_users_last_28_days,
-     events_active_user.count_events_active_users_last_28_days
+     events_active_user.count_events_active_users_last_28_days,
+     events_active_user.count_events_active_users_last_28_days_by_plan_id,
+     events_active_user.count_events_active_users_last_28_days_by_plan_was_paid
     FROM audit_events_active_user
-      LEFT JOIN events_active_user 
-        ON audit_events_active_user.day = events_active_user.day 
+      LEFT JOIN events_active_user
+        ON audit_events_active_user.day = events_active_user.day
 )
 
 SELECT *

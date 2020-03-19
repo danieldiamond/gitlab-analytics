@@ -9,7 +9,7 @@ WITH source AS (
 
     SELECT *
     FROM {{ source('gitlab_dotcom', 'events') }}
-    
+
       {% if is_incremental() %}
 
       WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
@@ -44,7 +44,7 @@ WITH source AS (
       updated_at::TIMESTAMP                                           AS updated_at,
       action::INTEGER                                                 AS event_action_type_id,
       {{action_type(action_type_id='event_action_type_id')}}::VARCHAR AS event_action_type
-      
+
     FROM source
 
 ), joined AS (
@@ -56,12 +56,13 @@ WITH source AS (
         WHEN gitlab_subscriptions.is_trial
           THEN 'trial'
         ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
-      END AS plan_id_at_event_date,
+      END                                 AS plan_id_at_event_date,
       CASE
         WHEN gitlab_subscriptions.is_trial
           THEN 'trial'
         ELSE COALESCE(plans.plan_name, 'free')
-      END AS plan_name_at_event_date
+      END                                 AS plan_name_at_event_date,
+      COALESCE(plans.plan_is_paid, FALSE) AS plan_was_paid_at_event_date
     FROM renamed
       LEFT JOIN projects
         ON renamed.project_id = projects.project_id
