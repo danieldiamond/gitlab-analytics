@@ -31,6 +31,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 
 ### For Engineers
 - [ ] Manager: Add to `gitlab-analytics` GCP group
+    - [ ] Manager: Provision service account credentials in GCP
 - [ ] Manager: Add to Stitch
 - [ ] Manager: Add to Fivetran
 
