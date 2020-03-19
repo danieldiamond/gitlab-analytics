@@ -11,7 +11,7 @@ WITH zuora_rate_plan AS (
 ), base_charges AS (
 
     SELECT
-      zuora_rate_plan_charge.rate_plan_charge_id,
+      zuora_rate_plan_charge.rate_plan_charge_id as charge_id,
       zuora_rate_plan_charge.product_id,
       zuora_rate_plan.subscription_id,
       --zuora_rate_plan_charge.subscription_id,
