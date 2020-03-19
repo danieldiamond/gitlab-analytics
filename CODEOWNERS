@@ -46,12 +46,14 @@ docker-compose.yml  @tayloramurphy @m_walker
 /transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam
 /transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/greenhouse/         @pluthra        @kathleentam
-/transform/snowflake-dbt/models/license/            @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/netsuite/           @iweeks         @kathleentam
 /transform/snowflake-dbt/models/sfdc/               @derekatwood    @kathleentam
 /transform/snowflake-dbt/models/smau_events/        @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/snowplow/           @tayloramurphy  @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/snowplow_combined/  @tayloramurphy  @eli_kastelein  @mpeychet_
+
+/transform/snowflake-dbt/models/sources/license/    @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/staging/license/    @eli_kastelein  @mpeychet_
 
 /transform/snowflake-dbt/models/sources/version/    @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/staging/version/    @eli_kastelein  @mpeychet_
