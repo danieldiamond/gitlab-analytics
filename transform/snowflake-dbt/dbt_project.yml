@@ -88,7 +88,7 @@ models:
       'snowplow:timezone': 'America/New_York'
       'snowplow:page_ping_frequency': 30
       'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
-      'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
+      'snowplow:pass_through_columns': ['glm_source','cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
 
   # Snowflake Spend Package
   snowflake_spend:
@@ -110,6 +110,11 @@ models:
         materialized: table
         schema: qualtrics
 
+      version:
+        tags: ["product"]
+        materialized: table
+        schema: version_db
+
       zendesk:
         schema: zendesk
 
@@ -123,6 +128,11 @@ models:
       google_analytics_360:
         schema: analytics
       
+      version:
+        tags: ["product"]
+        xf:
+          schema: analytics
+
       zuora:
         xf:
           schema: analytics
@@ -212,13 +222,6 @@ models:
 
     snowplow_combined:
       tags: ["product"]
-
-    version:
-      tags: ["product"]
-      base:
-        schema: staging
-      xf:
-        materialized: table
 
 
 # ======

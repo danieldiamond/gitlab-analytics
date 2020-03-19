@@ -52,7 +52,9 @@ docker-compose.yml  @tayloramurphy @m_walker
 /transform/snowflake-dbt/models/smau_events/        @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/snowplow/           @tayloramurphy  @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/snowplow_combined/  @tayloramurphy  @eli_kastelein  @mpeychet_
-/transform/snowflake-dbt/models/version/            @eli_kastelein  @mpeychet_
+
+/transform/snowflake-dbt/models/sources/version/    @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/staging/version/    @eli_kastelein  @mpeychet_
 
 /transform/snowflake-dbt/models/sources/zendesk     @derekatwood    @ken_aguilar
 /transform/snowflake-dbt/models/staging/zendesk     @derekatwood    @ken_aguilar

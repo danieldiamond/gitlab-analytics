@@ -125,7 +125,7 @@ WITH greenhouse_diversity_intermediate AS (
       ----Applicant Level----
 
       IFF(min_applicants_breakout < 3, NULL, total_candidates_applied)                  AS total_candidates_applied,
-      IFF(breakout_type IN ('kpi_level','eeoc_only_breakout'), 
+      IFF(breakout_type IN ('kpi_level_breakout','eeoc_only_breakout'), 
             application_to_offer_percent, NULL)                                         AS application_to_offer_percent,
       IFF(min_applicants_breakout < 3, NULL, percent_of_applicants)                     AS percent_of_applicants,
 
@@ -138,9 +138,9 @@ WITH greenhouse_diversity_intermediate AS (
       --Offers Accepted Level ---
       IFF(min_total_offers_accepted_for_breakout < 3, NULL, offers_accepted)              AS offers_accepted,
       IFF(min_total_offers_accepted_for_breakout < 3, NULL, percent_of_offers_accepted)   AS percent_of_offers_accepted,
-      IFF(min_total_offers_accepted_for_breakout < 3, NULL, time_to_offer_average)        AS time_to_offer_average,
-      IFF(min_total_offers_accepted_for_breakout < 3, NULL, time_to_offer_median)         AS time_to_offer_median,
-      IFF(min_total_offers_accepted_for_breakout < 3, NULL, 
+      IFF(offers_accepted < 3, NULL, time_to_offer_average)                               AS time_to_offer_average,
+      IFF(offers_accepted < 3, NULL, time_to_offer_median)                                AS time_to_offer_median,
+      IFF(offers_accepted < 3, NULL, 
           offer_acceptance_rate_based_on_offer_month)                                     AS offer_acceptance_rate_based_on_offer_month,
       percent_of_hires_sourced
     FROM aggregated

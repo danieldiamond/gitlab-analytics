@@ -82,5 +82,3 @@ LEFT JOIN rehire
   ON rehire.employee_id = mapping.employee_id
 WHERE mapping.hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
 
-
-

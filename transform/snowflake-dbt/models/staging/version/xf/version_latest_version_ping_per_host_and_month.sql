@@ -1,6 +1,7 @@
 WITH version_version_checks AS (
 
-    SELECT * FROM {{ ref('version_version_checks') }}
+    SELECT * 
+    FROM {{ ref('version_version_checks_source') }}
 
 ),
 
