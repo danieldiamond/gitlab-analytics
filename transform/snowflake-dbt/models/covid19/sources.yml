@@ -12,7 +12,7 @@ sources:
       identifier: false
 
     tables:
-      - name: covid19
+      - name: cases
         identifier: jhu_covid_19
         description: COVID-19 Dataset - see [this article](https://medium.com/starschema-blog/covid-19-and-the-first-war-of-data-science-980798f075ef) for more details.
         loaded_at_field: last_updated_date

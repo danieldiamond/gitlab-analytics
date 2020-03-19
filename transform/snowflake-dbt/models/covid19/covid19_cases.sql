@@ -7,7 +7,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('covid19', 'covid19') }}
+    FROM {{ source('covid19', 'cases') }}
 
 ), renamed AS (
 
