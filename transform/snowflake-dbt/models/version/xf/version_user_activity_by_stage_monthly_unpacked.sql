@@ -1,8 +1,6 @@
-{% set version_usage_stats_list = dbt_utils.get_column_values(table=ref('version_usage_stats_list'), column='full_ping_name', max_records=1000, default=['']) %}
-
 WITH usage_data AS (
 
-    SELECT {{ dbt_utils.star(from=ref('version_usage_data_unpacked'), except=['LICENSE_ID', 'LICENSE_STARTS_AT', 'LICENSE_EXPIRES_AT']) }}
+    SELECT {{ dbt_utils.star(from=ref('version_usage_data_unpacked')]) }}
     FROM {{ ref('version_usage_data_unpacked') }}
 
 ), unpacked_stage_json AS (
