@@ -1,6 +1,6 @@
 WITH usage_data AS (
 
-    SELECT {{ dbt_utils.star(from=ref('version_usage_data_unpacked')) }}
+    SELECT *
     FROM {{ ref('version_usage_data_unpacked') }}
 
 ), unpacked_stage_json AS (
