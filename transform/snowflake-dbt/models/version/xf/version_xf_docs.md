@@ -82,7 +82,7 @@ This model also adds some information about the related Zuora subscription, incl
 
 {% docs version_user_activity_by_stage_monthly_unpacked %}
 
-This model flattens the JSON contained in the column `usage_activity_by_stage` twice to build a table that shows for a specific usage_ping `id` and a specific `usage_action_name`, the monthly_count (number of users who performed this action in the last 28 days from the `created_at` timestamp)
+This model flattens the JSON contained in the column `usage_activity_by_stage` twice to build a table that shows for a specific usage_ping `id` and a specific `usage_action_name`, the monthly_count (count of unique users who performed this action in the last 28 days from the `created_at` timestamp)
 
 The JSON looks typically like that
 
