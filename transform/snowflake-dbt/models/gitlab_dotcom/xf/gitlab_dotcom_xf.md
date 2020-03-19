@@ -146,6 +146,11 @@ The final result is determined by merging the `cohorting` table to itself when a
 
 {% enddocs %}
 
+{% docs gitlab_dotcom_secure_stage_ci_jobs %}
+
+This table is meant to isolate all ci_build jobs used to create the AMAU calculation for secure stage as described in [this handbook page](https://about.gitlab.com/handbook/product/metrics/#stage-monthly-active-users-smau)
+
+{% enddocs %}
 
 {% docs gitlab_dotcom_usage_data_events %}
 
