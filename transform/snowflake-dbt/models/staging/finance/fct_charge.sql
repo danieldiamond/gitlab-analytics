@@ -12,7 +12,10 @@ WITH zuora_rate_plan AS (
 
     SELECT
       zuora_rate_plan_charge.rate_plan_charge_id,
-      zuora_rate_plan.product_id,
+      zuora_rate_plan_charge.product_id,
+      zuora_rate_plan.subscription_id,
+      --zuora_rate_plan_charge.subscription_id,
+      zuora_rate_plan_charge.account_id,
       zuora_rate_plan_charge.rate_plan_charge_number,
       zuora_rate_plan_charge.rate_plan_charge_name,
       zuora_rate_plan.rate_plan_name                      AS rate_plan_name,

@@ -3,7 +3,7 @@ version: 2
 models:
     - name: fct_invoice_item
 
-    - name: fct_rate_plan_charges
+    - name: fct_charge
 
     - name: dim_account
 
