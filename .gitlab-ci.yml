@@ -135,17 +135,17 @@ python_complexity:
   script:
     -  xenon --max-absolute B --max-modules A --max-average A . -i transform,shared_modules
 
-python_pytest:
-  <<: *python_check
-  script:
-    - pytest -vv -x --ignore=dags --no-print-logs --junitxml=report.xml
-  artifacts:
-      reports:
-          junit: ${CI_PROJECT_DIR}/report.xml
-      paths:
-          - ${CI_PROJECT_DIR}/.coverage.${CI_JOB_ID}
-      expire_in: 1 day
-      when: on_success
+# python_pytest:
+#   <<: *python_check
+#   script:
+#     - pytest -vv -x --ignore=dags --no-print-logs --junitxml=report.xml
+#   artifacts:
+#       reports:
+#           junit: ${CI_PROJECT_DIR}/report.xml
+#       paths:
+#           - ${CI_PROJECT_DIR}/.coverage.${CI_JOB_ID}
+#       expire_in: 1 day
+#       when: on_success
 
 
 # ======
