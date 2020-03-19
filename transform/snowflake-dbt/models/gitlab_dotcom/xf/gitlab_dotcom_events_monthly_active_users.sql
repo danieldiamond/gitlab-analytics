@@ -30,6 +30,8 @@ WITH days AS (
 
     SELECT DISTINCT
       author_id,
+      plan_id_at_event_date,
+      plan_was_paid_at_event_date,
       TO_DATE(created_at) AS event_day
     FROM {{ ref('gitlab_dotcom_events') }}
     WHERE TRUE
