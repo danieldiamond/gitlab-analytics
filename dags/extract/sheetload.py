@@ -7,7 +7,7 @@ from airflow_utils import (
     DATA_IMAGE,
     DBT_IMAGE,
     clone_and_setup_extraction_cmd,
-    dbt_install_deps_and_seed_cmd,
+    dbt_install_deps_and_seed_nosha_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
     slack_failed_task,
@@ -75,7 +75,7 @@ sheetload_run = KubernetesPodOperator(
 # dbt-sheetload
 dbt_sheetload_cmd = f"""
     export snowflake_load_database="RAW" &&
-    {dbt_install_deps_and_seed_cmd} &&
+    {dbt_install_deps_and_seed_nosha_cmd} &&
     dbt run --profiles-dir profile --target prod --models sheetload --vars {xs_warehouse}
 """
 dbt_sheetload = KubernetesPodOperator(

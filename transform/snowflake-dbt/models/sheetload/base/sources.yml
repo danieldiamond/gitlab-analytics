@@ -17,10 +17,12 @@ sources:
       warn_after: {count: 30, period: day}
 
     tables:
+      - name: ally_certificate
       - name: days_to_close
       - name: calendar
+      - name: communication_certificate
       - name: employee_location_factor
-      - name: gitlab_slack_stats  
+      - name: gitlab_slack_stats
       - name: google_referrals
       - name: headcount
       - name: hire_forecast
@@ -39,5 +41,6 @@ sources:
       - name: pulse_survey_monitor_fe
       - name: rep_quotas_full_fy2020
       - name: rep_quotas_full_ps_fy2020
+      - name: values_certificate
       - name: yc_companies
       - name: social_marketing_metrics

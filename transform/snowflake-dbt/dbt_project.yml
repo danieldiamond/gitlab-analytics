@@ -102,9 +102,18 @@ models:
 
     # Dimensional Structure
     sources:
+      google_analytics_360:
+        materialized: table
+        schema: google_analytics_360
+
       qualtrics:
         materialized: table
         schema: qualtrics
+
+      version:
+        tags: ["product"]
+        materialized: table
+        schema: version_db
 
       zendesk:
         schema: zendesk
@@ -115,6 +124,14 @@ models:
     staging:
       schema: staging
       materialized: table
+
+      google_analytics_360:
+        schema: analytics
+      
+      version:
+        tags: ["product"]
+        xf:
+          schema: analytics
 
       zuora:
         xf:
@@ -205,13 +222,6 @@ models:
 
     snowplow_combined:
       tags: ["product"]
-
-    version:
-      tags: ["product"]
-      base:
-        schema: staging
-      xf:
-        materialized: table
 
 
 # ======
