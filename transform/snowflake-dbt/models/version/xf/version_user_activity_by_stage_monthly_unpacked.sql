@@ -8,7 +8,7 @@ WITH usage_data AS (
 ), unpacked_stage_json AS (
 
     SELECT
-      *,
+      usage_data.*,
       f.key                                                                           AS stage_name,
       f.value                                                                         AS stage_activity_count_json
 
