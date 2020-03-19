@@ -11,7 +11,7 @@ CASE  WHEN ltrim(lower({{product_column}})) LIKE 'githost%' THEN 'GitHost'
       WHEN lower({{product_column}}) LIKE '%starter%' THEN 'Starter'
       WHEN lower({{product_column}}) LIKE '%ultimate%' THEN 'Ultimate'
       WHEN lower({{product_column}}) LIKE 'gitlab enterprise edition%' THEN 'Starter'
-      WHEN {{product_column}} IN ('GitLab Service Package', 'Implementation Services Quick Start', 'Implementation Support', 'Support Package',
+      WHEN trim({{product_column}}) IN ('GitLab Service Package', 'Implementation Services Quick Start', 'Implementation Support', 'Support Package',
                                   'Admin Training', 'CI/CD Training', 'GitLab Project Management Training', 'GitLab with Git Basics Training',
                                   'Travel Expenses', 'Training Workshop', 'GitLab for Project Managers Training - Remote', 'GitLab with Git Basics Training - Remote',
                                    'GitLab for System Administrators Training - Remote', 'GitLab CI/CD Training - Remote') THEN 'Support'
