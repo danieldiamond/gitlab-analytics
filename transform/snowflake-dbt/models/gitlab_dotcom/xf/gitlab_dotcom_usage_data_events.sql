@@ -352,7 +352,8 @@ WITH gitlab_subscriptions AS (
         WHEN gitlab_subscriptions.is_trial
           THEN 'trial'
         ELSE COALESCE(plans.plan_name, 'free')
-      END                                                         AS plan_name_at_event_date
+      END                                                         AS plan_name_at_event_date,
+      COALESCE(plans.plan_is_paid, FALSE)                         AS plan_was_paid_at_event_date
     FROM {{ event_cte.event_name }}
       /* Join with parent project. */
       {% if event_cte.key_to_parent_project is defined %}
@@ -409,7 +410,15 @@ WITH gitlab_subscriptions AS (
       FLOOR(
         DATEDIFF('hour',
                 parent_created_at,
-                event_created_at)/(24 * 7))               AS weeks_since_parent_creation
+                event_created_at)/(24 * 7))               AS weeks_since_parent_creation,
+      FLOOR(
+        DATEDIFF('hour',
+                user_created_at,
+                event_created_at)/24)                     AS days_since_user_creation,
+      FLOOR(
+        DATEDIFF('hour',
+                user_created_at,
+                event_created_at)/(24 * 7))               AS weeks_since_user_creation
     FROM data
       LEFT JOIN users
         ON data.user_id = users.user_id
