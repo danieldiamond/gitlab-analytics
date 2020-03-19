@@ -12,7 +12,7 @@ WITH source AS (
       s.value['state']::VARCHAR                                                                     AS source_freshness_state,
       s.value['snapshotted_at']::TIMESTAMP                                                          AS freshness_observed_at
     FROM source 
-    INNER JOIN lateral flatten(JSONTEXT['sources']) s
+    INNER JOIN LATERAL FLATTEN(JSONTEXT['sources']) s
 
 )
 SELECT *
