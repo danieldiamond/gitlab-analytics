@@ -10,7 +10,7 @@ FROM {{ ref('zuora_invoice_item_source') }}
     ), invoice_data AS (
 select --zuora_invoice.INVOICE_ID,
     zuora_invoice_item.invoice_item_id,
-    zuora_invoice_item.RATE_PLAN_CHARGE_ID,
+    zuora_invoice_item.RATE_PLAN_CHARGE_ID as charge_id,
     zuora_invoice.ACCOUNT_ID,
     zuora_invoice_item.product_id,
     zuora_invoice_item.subscription_id as item_subscription_id,

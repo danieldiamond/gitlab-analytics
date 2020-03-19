@@ -15,10 +15,10 @@ FROM {{ ref('dim_subscription') }}
 
 SELECT *
 FROM {{ ref('fct_invoice_item') }}
-),  fct_rate_plan_charge AS (
+),  fct_charge AS (
 
 SELECT *
-FROM {{ ref('fct_rate_plan_charges') }}
+FROM {{ ref('fct_charge') }}
 ),
  date_table AS (
 
