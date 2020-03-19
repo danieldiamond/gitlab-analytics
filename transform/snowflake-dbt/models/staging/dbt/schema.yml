@@ -1,0 +1,20 @@
+version: 2
+
+models:
+    - name: dbt_source_status
+      description: 'The current status of all DBT sources along with when the sources were last loaded.'
+      columns:
+        - name: freshness_observed_at
+          tests:
+            - not_null
+        - name: latest_load_at
+          tests:
+            - not_null
+        - name: source_freshness_state
+          tests:
+            - not_null
+        - name: table_name
+          tests:
+            - not_null
+            - unique
+        
