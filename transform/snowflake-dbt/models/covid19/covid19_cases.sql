@@ -12,15 +12,15 @@ WITH source AS (
 ), renamed AS (
 
     SELECT 
-      country_region::VARCHAR,
-      province_state::VARCHAR,
-      date::DATE,
-      case_type::VARCHAR,
-      cases::NUMBER             AS case_count,
-      long::FLOAT               AS longitude,
-      lat::FLOAT                AS latitude,
-      difference::NUMBER        AS case_count_change,
-      last_updated_date::TIMESTAMP
+      country_region::VARCHAR       AS country_region,
+      province_state::VARCHAR       AS province_state,
+      date::DATE                    AS date,
+      case_type::VARCHAR            AS case_type,
+      cases::NUMBER                 AS case_count,
+      long::FLOAT                   AS longitude,
+      lat::FLOAT                    AS latitude,
+      difference::NUMBER            AS case_count_change,
+      last_updated_date::TIMESTAMP  AS last_updated_date
     FROM source
 
 )
