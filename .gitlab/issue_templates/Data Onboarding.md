@@ -31,6 +31,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 
 ### For Engineers
 - [ ] Manager: Add to `gitlab-analytics` GCP group
+    - [ ] Manager: Provision service account credentials in GCP
 - [ ] Manager: Add to Stitch
 - [ ] Manager: Add to Fivetran
 
@@ -131,7 +132,9 @@ Some important parts of the script that you will definitely want to do in some w
 Additional tools to install that are not part of the onboarding script:
 * [ ] Install Data Grip (from JetBrains) for interfacing with databases
     * [ ] Follow [this process](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains) for requesting a license for Data Grip.  Until you have a license, you can easily use Data Grip on a trial basis for 30 days
-* [ ] Install the [gcloud sdk](https://cloud.google.com/sdk/docs/quickstart-macos) and authenticate once you're provisioned
+* [ ] Install the [gcloud sdk](https://cloud.google.com/sdk/docs/quickstart-macos) and authenticate once you're provisioned.    
+    * [ ] For debugging services such as Airflow locally, you will need a set of service account credentials. Your manager will provide you with a service account.
+    * [ ] The environment variable `GOOGLE_APPLICATION_CREDENTIALS` should then point to the key provided by your manager.
 * [ ] Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-homebrew-on-macos)
 * [ ] Install the [awscli](https://aws.amazon.com/cli/)
 * [ ] Disable [autocorrect in zsh](https://coderwall.com/p/jaoypq/disabling-autocorrect-in-zsh) if it annoys you
