@@ -30,3 +30,6 @@ models:
           - name: rate_plan_charge_name
             tests:
                 - not_null
+          - name: product_category
+            tests:
+                - not_null
