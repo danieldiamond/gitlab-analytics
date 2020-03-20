@@ -229,3 +229,15 @@ dbt_install_deps_cmd = f"""
 dbt_install_deps_and_seed_cmd = f"""
     {dbt_install_deps_cmd} &&
     dbt seed --profiles-dir profile --target prod --vars {xs_warehouse}"""
+
+clone_and_setup_dbt_nosha_cmd = f"""
+    {clone_repo_cmd} &&
+    cd analytics/transform/snowflake-dbt/"""
+
+dbt_install_deps_nosha_cmd = f"""
+    {clone_and_setup_dbt_nosha_cmd} &&
+    dbt deps --profiles-dir profile"""
+
+dbt_install_deps_and_seed_nosha_cmd = f"""
+    {dbt_install_deps_nosha_cmd} &&
+    dbt seed --profiles-dir profile --target prod --vars {xs_warehouse}"""

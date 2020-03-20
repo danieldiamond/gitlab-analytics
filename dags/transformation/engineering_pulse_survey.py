@@ -7,7 +7,7 @@ from airflow_utils import (
     DATA_IMAGE,
     DBT_IMAGE,
     clone_and_setup_extraction_cmd,
-    dbt_install_deps_and_seed_cmd,
+    dbt_install_deps_and_seed_nosha_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
     slack_failed_task,
@@ -79,7 +79,7 @@ sheetload_run = KubernetesPodOperator(
 
 # dbt run task
 dbt_run_cmd = f"""
-    {dbt_install_deps_and_seed_cmd} &&
+    {dbt_install_deps_and_seed_nosha_cmd} &&
     dbt run --profiles-dir profile --target prod --models +engineering_pulse_survey --vars {xs_warehouse} # run on small warehouse
 """
 

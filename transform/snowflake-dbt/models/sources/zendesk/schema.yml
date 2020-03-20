@@ -1,0 +1,78 @@
+version: 2
+
+models:
+    - name: zendesk_organizations_source
+      description: This is the source model for Zendesk organizations.
+      columns:
+      - name: organization_id
+        tests:
+            - unique
+            - not_null
+      - name: arr
+        description: This is the correction for AAR in organization fields. Field key cannot be changed in Zendesk.
+    - name: zendesk_sla_policies_source
+      description: This is the source model for all Zendesk SLA policies totally flattened, where each criteria for a policy is its own row.
+      columns:
+      - name: zendesk_sla_surrogate_key
+        tests:
+          - not_null
+          - unique
+      - name: zendesk_sla_policy_id
+        tests:
+          - not_null
+      - name: zendesk_sla_title
+        tests:
+          - not_null
+      - name: zendesk_sla_description
+      - name: filter_all_field
+      - name: filter_all_operator
+      - name: filter_all_value
+      - name: filter_any_field
+      - name: filter_any_operator
+      - name: filter_any_value
+      - name: policy_metrics_business_hours
+        tests:
+          - not_null
+      - name: policy_metrics_metric
+        tests:
+          - not_null
+      - name: policy_metrics_priority
+        tests:
+          - not_null
+      - name: policy_metrics_target
+        tests:
+          - not_null
+    - name: zendesk_ticket_audits_source
+      description: This is the source model for Zendesk ticket audit events.
+      columns:
+      - name: audit_id
+        tests:
+            - not_null
+      - name: ticket_id
+        tests:
+            - not_null    
+    - name: zendesk_ticket_metrics_source
+      description: This is the source model for Zendesk ticket metrics.
+      columns:
+      - name: ticket_id
+        tests:
+            - unique
+            - not_null
+      - name: ticket_metrics_id
+        tests:
+            - unique
+            - not_null                  
+    - name: zendesk_tickets_source
+      description: This is the source model for Zendesk tickets.
+      columns:
+      - name: ticket_id
+        tests:
+            - unique
+            - not_null
+    - name: zendesk_users_source
+      description: This is the source model for Zendesk users.
+      columns:
+      - name: user_id
+        tests:
+            - unique
+            - not_null

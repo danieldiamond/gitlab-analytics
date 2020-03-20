@@ -5,7 +5,7 @@ from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import (
     DBT_IMAGE,
-    dbt_install_deps_cmd,
+    dbt_install_deps_nosha_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
     slack_failed_task,
@@ -40,7 +40,7 @@ dag = DAG("dbt_backups", default_args=default_args, schedule_interval="5 4 * * *
 
 # dbt run-operation for backups
 dbt_backups_cmd = f"""
-    {dbt_install_deps_cmd} &&
+    {dbt_install_deps_nosha_cmd} &&
     dbt run-operation backup_to_gcs --profiles-dir profile
 """
 

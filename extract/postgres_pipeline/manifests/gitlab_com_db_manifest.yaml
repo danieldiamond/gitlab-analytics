@@ -743,7 +743,6 @@ tables:
       , confidential
       , description
       , milestone_id
-      , state
       , updated_by_id
       , weight
       , due_date
@@ -924,7 +923,6 @@ tables:
       , created_at
       , updated_at
       , milestone_id
-      , state
       , state_id
       , merge_status
       , target_project_id
