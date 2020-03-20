@@ -1,9 +1,3 @@
-{{ config({
-    "materialized": "incremental",
-    "unique_key": "day"
-    })
-}}
-
 WITH days AS (
 
     SELECT DISTINCT
@@ -11,9 +5,6 @@ WITH days AS (
       (date_day = last_day_of_month) AS is_last_day_of_month
     FROM {{ ref('date_details') }}
     WHERE date_day < CURRENT_DATE
-    {% if is_incremental() %}
-      AND date_day >= DATEADD('day', -7, (SELECT MAX(day) FROM {{ this }}) )
-    {% endif %}
 
 ), audit_events AS (
 
@@ -22,9 +13,6 @@ WITH days AS (
       TO_DATE(created_at) AS audit_event_day
     FROM {{ ref('gitlab_dotcom_audit_events') }}
     WHERE TRUE
-    {% if is_incremental() %}
-      AND created_at >= DATEADD('day', -36, (SELECT MAX(day) FROM {{ this }}) )
-    {% endif %}
 
 ), events AS (
 
@@ -34,10 +22,6 @@ WITH days AS (
       plan_was_paid_at_event_date,
       TO_DATE(created_at) AS event_day
     FROM {{ ref('gitlab_dotcom_events') }}
-    WHERE TRUE
-    {% if is_incremental() %}
-      AND created_at >= DATEADD('day', -36, (SELECT MAX(day) FROM {{ this }}) )
-    {% endif %}
 
 ), audit_events_active_user AS (
 
