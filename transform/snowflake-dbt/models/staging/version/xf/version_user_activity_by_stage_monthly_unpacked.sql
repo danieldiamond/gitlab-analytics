@@ -13,7 +13,6 @@ WITH usage_data AS (
     FROM usage_data,
       lateral flatten(input => usage_data.usage_activity_by_stage_monthly) f
     WHERE IS_OBJECT(f.value) = TRUE
-      AND stats_used IS NOT NULL
     {% if is_incremental() %}
         AND created_at > (SELECT max(created_at) FROM {{ this }})
     {% endif %}
