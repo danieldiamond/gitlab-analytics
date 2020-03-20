@@ -139,26 +139,22 @@ WITH gitlab_notes AS (
 
 , gitlab_notes_with_sfdc_objects_union AS (
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_notes_with_sfdc_accounts
 
   UNION
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_notes_with_sfdc_opportunities
 
   UNION
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_notes_with_sfdc_contacts
   
   UNION
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_notes_with_zendesk_ticket
 
 )
