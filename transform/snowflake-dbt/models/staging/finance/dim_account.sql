@@ -8,7 +8,6 @@ SELECT *
 FROM {{ ref('zuora_contact_source') }}
 
 )
---TODO: add salesforce data
 
 select zuora_account.account_id,
        zuora_account.account_number,
@@ -27,4 +26,3 @@ from  zuora_account
 ON COALESCE(zuora_account.sold_to_contact_id ,zuora_account.bill_to_contact_id) = zuora_contact.contact_id
 WHERE zuora_account.is_deleted = FALSE
   AND zuora_account.account_id NOT IN ({{zuora_excluded_accounts()}})
-
