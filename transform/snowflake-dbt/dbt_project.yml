@@ -120,6 +120,9 @@ models:
       schema: staging
       materialized: table
 
+      finance:
+        schema: finance
+
       google_analytics_360:
         schema: analytics
 
