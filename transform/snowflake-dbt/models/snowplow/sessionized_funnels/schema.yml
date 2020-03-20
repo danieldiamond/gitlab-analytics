@@ -1,0 +1,9 @@
+version: 2
+
+models:
+    - name: sessionized_saas_funnel_90
+      description: '{{ doc("sessionized_saas_funnel_90") }}'
+      columns:
+          - name: session_id
+            tests:
+                - not_null
