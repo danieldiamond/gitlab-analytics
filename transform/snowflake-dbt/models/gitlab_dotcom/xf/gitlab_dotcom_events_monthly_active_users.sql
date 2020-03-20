@@ -61,7 +61,7 @@ WITH days AS (
       audit_events_active_user.is_last_day_of_month,
       audit_events_active_user.count_audit_events_active_users_last_28_days,
       events_active_user.plan_id_at_event_date,
-      events_active_user.events.plan_was_paid_at_event_date,
+      events_active_user.plan_was_paid_at_event_date,
       events_active_user.count_events_active_users_last_28_days,
       events_active_user.count_events_active_users_last_28_days_by_plan_id,
       events_active_user.count_events_active_users_last_28_days_by_plan_was_paid
