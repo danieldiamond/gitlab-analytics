@@ -15,7 +15,7 @@ models:
       description: "Product related information for which account is charged "
 
     - name: fct_invoice_item_agg
-      description: "Invoice items summarized on charge level"
+      description: "Aggregate fact table with invoice items summarized on charge level"
 
     - name: fct_charge
       description: "Factual table with all rate plan charges coming from subscriptions or an amendment to a subscription"
