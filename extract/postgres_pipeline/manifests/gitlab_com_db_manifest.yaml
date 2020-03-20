@@ -1364,6 +1364,22 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'projects'
     export_table_primary_key: id
+  saml_providers:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , group_id
+      , enabled
+      , certificate_fingerprint
+      , sso_url
+      , enforced_sso
+      , enforced_group_managed_accounts
+      , prohibited_outer_forks
+      , group_id
+      FROM saml_providers
+    export_schema: 'gitlab_com'
+    export_table: 'saml_providers'
+    export_table_primary_key: id
   snippets:
     import_db: GITLAB_DB
     import_query: >
