@@ -70,7 +70,7 @@ WITH days AS (
 
 ), joined AS (
 
-    SELECT
+    SELECT DISTINCT
      audit_events_active_user.day,
      audit_events_active_user.is_last_day_of_month,
      audit_events_active_user.count_audit_events_active_users_last_28_days,
