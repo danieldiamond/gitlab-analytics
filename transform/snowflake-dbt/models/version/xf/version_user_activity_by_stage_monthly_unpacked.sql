@@ -11,7 +11,7 @@ WITH usage_data AS (
       f.value                                                                         AS stage_activity_count_json
 
     FROM usage_data,
-      lateral flatten(input => usage_data.usage_activity_by_stage) f
+      lateral flatten(input => usage_data.usage_activity_by_stage_monthly) f
     WHERE IS_OBJECT(f.value) = TRUE
       AND stats_used IS NOT NULL
     {% if is_incremental() %}
