@@ -137,7 +137,7 @@ models:
     description: '{{ doc("gitlab_dotcom_events_monthly_active_users") }}'
     tests:
       - unique:
-          column_name: "concat(day, plan_id_at_event_date)""
+          column_name: "concat(day, plan_id_at_event_date)"
     columns:
       - name: day
         tests:
