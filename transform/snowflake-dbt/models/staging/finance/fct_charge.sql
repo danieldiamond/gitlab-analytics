@@ -8,17 +8,20 @@ WITH zuora_rate_plan AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge_source') }}
 
-), base_charges AS (
+), zuora_revenue_schedule_item_amount as(
+    SELECT RATE_PLAN_CHARGE_ID,
+           REVENUE_SCHEDULE_ITEM_AMOUNT
+    FROM {{ ref('zuora_rate_plan_charge_source') }}
+    )
+    zuora_base_charges AS (
 
     SELECT
       zuora_rate_plan_charge.rate_plan_charge_id as charge_id,
       zuora_rate_plan_charge.product_id,
-      zuora_rate_plan.subscription_id,
-      --zuora_rate_plan_charge.subscription_id,
+      zuora_rate_plan_charge.subscription_id,
       zuora_rate_plan_charge.account_id,
       zuora_rate_plan_charge.rate_plan_charge_number,
       zuora_rate_plan_charge.rate_plan_charge_name,
-      zuora_rate_plan.rate_plan_name                      AS rate_plan_name,
       zuora_rate_plan_charge.effective_start_date::DATE   AS effective_start_date,
       zuora_rate_plan_charge.effective_end_date::DATE     AS effective_end_date,
       date_trunc('month', zuora_rate_plan_charge.effective_start_date::DATE)         AS effective_start_month,
@@ -26,14 +29,17 @@ WITH zuora_rate_plan AS (
       zuora_rate_plan_charge.unit_of_measure,
       zuora_rate_plan_charge.quantity,
       zuora_rate_plan_charge.mrr,
+      zuora_rate_plan.rate_plan_name                      AS rate_plan_name,
       zuora_rate_plan.rate_plan_name = '#movingtogitlab' AS is_movingtogitlab,
       {{ product_category('zuora_rate_plan.rate_plan_name') }},
       zuora_rate_plan_charge.discount_level,
       zuora_rate_plan_charge.segment                      AS rate_plan_charge_segment,
       zuora_rate_plan_charge.version                      AS rate_plan_charge_version,
+      zuora_revenue_schedule_item_amount.REVENUE_SCHEDULE_ITEM_AMOUNT as revenue_amt,
     FROM zuora_rate_plan
     INNER JOIN zuora_rate_plan_charge
       ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
+          inner join zuora_revenue_schedule_item_amount on zuora_revenue_schedule_item_amount.rate_plan_charge_id=zuora_rate_plan_charge.rate_plan_charge_id
 
 ), final AS (
 
