@@ -15,8 +15,7 @@ WITH source AS (
   WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
 
   {% endif %}
-  --QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
-  LIMIT 100000 --TEMP
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
