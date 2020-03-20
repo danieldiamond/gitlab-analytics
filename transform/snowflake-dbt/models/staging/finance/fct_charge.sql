@@ -8,13 +8,6 @@ WITH zuora_rate_plan AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge_source') }}
 
-), zuora_revenue_schedule_item AS (
-
-    SELECT
-        RATE_PLAN_CHARGE_ID,
-        REVENUE_SCHEDULE_ITEM_AMOUNT
-    FROM {{ ref('zuora_revenue_schedule_item_source') }}
-
 ), base_charges AS (
 
     SELECT
@@ -41,8 +34,6 @@ WITH zuora_rate_plan AS (
     FROM zuora_rate_plan
         INNER JOIN zuora_rate_plan_charge
           ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
-        INNER JOIN zuora_revenue_schedule_item
-          ON zuora_revenue_schedule_item.rate_plan_charge_id=zuora_rate_plan_charge.rate_plan_charge_id
 ), final AS (
 
     SELECT
