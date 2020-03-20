@@ -49,14 +49,14 @@ WITH ci_builds AS (
         THEN 'sast'  
       END AS secure_ci_job_type
     FROM ci_builds 
-    WHERE (
-            ci_build_name LIKE '%container_scanning%' OR
-            ci_build_name LIKE '%dast%' OR
-            ci_build_name LIKE '%dependency_scanning%' OR
-            ci_build_name LIKE '%license_management%' OR
-            ci_build_name LIKE '%license_scanning%' OR
-            ci_build_name LIKE '%sast%'
-          )
+    WHERE ci_build_name ILIKE ANY (
+                                      '%container_scanning%',
+                                      '%dast%',
+                                      '%dependency_scanning%',
+                                      '%license_management%',
+                                      '%license_scanning%',
+                                      '%sast%'
+                                    )
 )
 
 , joined AS (
