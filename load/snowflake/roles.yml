@@ -462,33 +462,6 @@ roles:
                     - analytics.analytics_sensitive.gitlab_dotcom_milestones
                     - analytics.analytics_sensitive.gitlab_dotcom_namespaces
                     - analytics.analytics_sensitive.gitlab_dotcom_projects
-    
-    - pwc_contractor:
-        warehouses:
-            - analyst_xs
-        member_of:
-            - salesforce
-            - zuora
-        privileges:
-            databases:
-                read:
-                    - analytics
-                write:
-                    - analytics
-            schemas:
-                read:
-                    - analytics.pwc
-                    - analytics.pwc_staging
-                    - analytics.pwc_write
-                write:
-                    - analytics.pwc_write
-            tables:
-                read:
-                    - analytics.pwc.*
-                    - analytics.pwc_staging.*
-                    - analytics.pwc_write.*
-                write:
-                    - analytics.pwc_write.*
 
     - reporter:
         warehouses:
@@ -1113,22 +1086,6 @@ roles:
         warehouses:
             - analyst_xs
 
-    - pwc_jblessing:
-        warehouses:
-            - analyst_xs
-
-    - pwc_mrichard:
-        warehouses:
-            - analyst_xs
-
-    - pwc_mcoffman:
-        warehouses:
-            - analyst_xs
-
-    - pwc_snagaraj:
-        warehouses:
-            - analyst_xs
-
     - rkohnke:
         warehouses:
             - analyst_xs
@@ -1472,28 +1429,20 @@ users:
             - pluthra
 
     - pwc_jblessing:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_jblessing
+        can_login: no
+        member_of: []
 
     - pwc_mrichard:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_mrichard
+        can_login: no
+        member_of: []
 
     - pwc_mcoffman:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_mcoffman
+        can_login: no
+        member_of: []
 
     - pwc_snagaraj:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_snagaraj
+        can_login: no
+        member_of: []
 
     - rkohnke:
         can_login: yes
