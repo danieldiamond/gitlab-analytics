@@ -80,6 +80,42 @@ This model also adds some information about the related Zuora subscription, incl
 
 {% enddocs %}
 
+{% docs version_user_activity_by_stage_monthly_unpacked %}
+
+This model flattens the JSON contained in the column `usage_activity_by_stage` twice to build a table that shows for a specific usage_ping `id` and a specific `usage_action_name`, the monthly_count (count of unique users who performed this action in the last 28 days from the `created_at` timestamp)
+
+The JSON looks typically like that
+
+```
+"usage_activity_by_stage": {
+"configure": {
+  "clusters_disabled": 9048,
+  "clusters_enabled": 92343
+},
+"create": {
+  "merge_requests": 977856,
+  "snippets": 2434
+},
+"manage": {
+  "events": 6976879
+}
+}
+```
+
+and will be transformed into a table that looks like that:
+
+| usage_action_name  | stage_name | usage_action_count|
+|--------------------|-----------|---------|
+| clusters\_disabled | configure | 9048    |
+| clusters\_enabled  | configure | 92343   |
+| merge\_requests    | create    | 977856  |
+| snippets           | create    | 2434    |
+| events             | manage    | 6976879 |
+
+
+This table will be used to create calculations for MAU and SMAU KPIs.
+
+{% enddocs %}
 
 {% docs version_usage_data_weekly_opt_in_summary %}
 

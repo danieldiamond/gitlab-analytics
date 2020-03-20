@@ -169,6 +169,14 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "projects_container_registry_enabled",
+    "source_cte_name": "projects_container_registry_enabled",
+    "user_column_name": "creator_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "project_id",
+    "is_representative_of_stage": "True"
+  },
+  {
     "event_name": "projects_prometheus_active",
     "source_cte_name": "projects_prometheus_active",
     "user_column_name": "creator_id",
@@ -199,7 +207,14 @@
     "key_to_parent_project": "project_id",
     "primary_key": "todo_id",
     "is_representative_of_stage": "False"
-  }
+  },
+  {
+    "event_name": "users",
+    "source_table_name": "gitlab_dotcom_users",
+    "user_column_name": "user_id",
+    "primary_key": "user_id",
+    "is_representative_of_stage": "False"
+  },
 ]
 -%}
 
@@ -207,13 +222,13 @@
 WITH gitlab_subscriptions AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
+    FROM {{ ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base') }}
 )
 
 , plans AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_plans')}}
+    FROM {{ ref('gitlab_dotcom_plans') }}
 
 )
 
@@ -231,10 +246,10 @@ WITH gitlab_subscriptions AS (
 
 )
 
-, label_events AS (
+, users AS (
 
     SELECT *
-    FROM {{ ref('gitlab_dotcom_labels') }}
+    FROM {{ ref('gitlab_dotcom_users') }}
 
 )
 
@@ -251,6 +266,12 @@ WITH gitlab_subscriptions AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_projects_xf') }}
     WHERE ARRAY_CONTAINS('PrometheusService'::VARIANT, active_service_types)
+
+), projects_container_registry_enabled AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_projects_xf') }}
+    WHERE container_registry_enabled = True
 
 ), group_members AS (
 
@@ -303,6 +324,10 @@ WITH gitlab_subscriptions AS (
         'group'                                                   AS parent_type,
         namespaces.namespace_id                                   AS parent_id,
         namespaces.namespace_created_at                           AS parent_created_at,
+      {% else %}
+        NULL                                                      AS parent_type,
+        NULL                                                      AS parent_id,
+        NULL                                                      AS parent_created_at,
       {% endif %}
       {{ event_cte.event_name }}.created_at                       AS event_created_at,
       {{ event_cte.is_representative_of_stage }}::BOOLEAN         AS is_representative_of_stage,
@@ -312,11 +337,15 @@ WITH gitlab_subscriptions AS (
           THEN 'configure'
         WHEN '{{ event_cte.event_name }}' = 'ci_stages'
           THEN 'configure'
+        WHEN '{{ event_cte.event_name }}' = 'users'
+          THEN 'manage'
+        WHEN '{{ event_cte.event_name }}' = 'projects_container_registry_enabled'
+          THEN 'package'
         ELSE version_usage_stats_to_stage_mappings.stage
       END                                                         AS stage_name,
       CASE
         WHEN gitlab_subscriptions.is_trial
-          THEN 'trial'::VARCHAR
+          THEN 'trial'
         ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
       END                                                         AS plan_id_at_event_date,
       CASE
@@ -337,11 +366,12 @@ WITH gitlab_subscriptions AS (
 
       -- Join on either the project's or the group's ultimate namespace.
       INNER JOIN namespaces AS ultimate_namespace
-        ON ultimate_namespace.namespace_id =
         {% if event_cte.key_to_parent_project is defined %}
-        projects.ultimate_parent_id
+        ON ultimate_namespace.namespace_id = projects.ultimate_parent_id
         {% elif event_cte.key_to_parent_group is defined %}
-        namespaces.namespace_ultimate_parent_id
+        ON ultimate_namespace.namespace_id = namespaces.namespace_ultimate_parent_id
+        {% else %}
+        ON FALSE -- Don't join any rows.
         {% endif %}
 
       LEFT JOIN gitlab_subscriptions
@@ -363,10 +393,11 @@ WITH gitlab_subscriptions AS (
 , final AS (
     SELECT
       data.*,
+      users.created_at                                    AS user_created_at,
       FLOOR(
       DATEDIFF('hour',
               namespace_created_at,
-              event_created_at)/24)                      AS days_since_namespace_creation,
+              event_created_at)/24)                       AS days_since_namespace_creation,
       FLOOR(
         DATEDIFF('hour',
                 namespace_created_at,
@@ -378,8 +409,18 @@ WITH gitlab_subscriptions AS (
       FLOOR(
         DATEDIFF('hour',
                 parent_created_at,
-                event_created_at)/(24 * 7))               AS weeks_since_parent_creation
+                event_created_at)/(24 * 7))               AS weeks_since_parent_creation,
+      FLOOR(
+        DATEDIFF('hour',
+                user_created_at,
+                event_created_at)/24)                     AS days_since_user_creation,
+      FLOOR(
+        DATEDIFF('hour',
+                user_created_at,
+                event_created_at)/(24 * 7))               AS weeks_since_user_creation
     FROM data
+      LEFT JOIN users
+        ON data.user_id = users.user_id
 )
 
 SELECT *

@@ -102,9 +102,16 @@ models:
 
     # Dimensional Structure
     sources:
+      dbt:
+        materialized: table
+        schema: dbt
+
       google_analytics_360:
         materialized: table
         schema: google_analytics_360
+
+      license:
+        schema: license_db
 
       qualtrics:
         materialized: table
@@ -120,7 +127,8 @@ models:
 
       zuora:
         schema: zuora
-    
+
+        
     staging:
       schema: staging
       materialized: table
@@ -128,6 +136,9 @@ models:
       google_analytics_360:
         schema: analytics
       
+      license:
+        materialized: view  
+
       version:
         tags: ["product"]
         xf:

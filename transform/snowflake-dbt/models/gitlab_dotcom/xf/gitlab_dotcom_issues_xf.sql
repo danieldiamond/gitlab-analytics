@@ -73,10 +73,9 @@ joined AS (
     {% for field in fields_to_mask %}
     CASE
       WHEN is_confidential = TRUE
-        AND namespace_lineage.namespace_is_internal = TRUE
         THEN 'confidential - masked'
       WHEN visibility_level != 'public'
-        AND namespace_lineage.namespace_is_internal = TRUE
+        AND namespace_lineage.namespace_is_internal = FALSE
         THEN 'private/internal - masked'
       ELSE {{field}}
     END                                          AS {{field}},
