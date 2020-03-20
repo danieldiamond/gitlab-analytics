@@ -38,7 +38,7 @@ WITH usage_data AS (
       unpacked_stage_json.zuora_crm_id,
       unpacked_stage_json.stage_name,
       DATEADD('days', -28, unpacked_stage_json.created_at) AS period_start,
-      unpacked_stage_json.created_at                       AS period_end
+      unpacked_stage_json.created_at                       AS period_end,
       f.key                                                AS usage_action_name,
       f.value                                              AS usage_action_count
     FROM unpacked_stage_json,
