@@ -424,4 +424,4 @@ WITH gitlab_subscriptions AS (
 )
 
 SELECT *
-FROM data
+FROM final
