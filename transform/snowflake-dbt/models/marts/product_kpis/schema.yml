@@ -7,23 +7,27 @@ models:
       - name: subscription_name_slugify
         tests:
             - not_null
-            - unique
       - name: subscription_month
         tests:
           - not_null
       - name: arr
         tests:
           - not_null
+    tests:
+      - unique:
+          column_name: "concat(subscription_name_slugify, delivery)"
   - name: free_to_paid
     description: '{{ doc("free_to_paid") }}'
     columns:
       - name: subscription_name_slugify
         tests:
             - not_null
-            - unique
       - name: subscription_month
         tests:
           - not_null
       - name: arr
         tests:
           - not_null
+    tests:
+      - unique:
+          column_name: "concat(subscription_name_slugify, delivery)"

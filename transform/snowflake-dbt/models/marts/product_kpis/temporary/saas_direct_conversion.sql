@@ -22,6 +22,7 @@ WITH saas_charges AS (
     SELECT 
       DATE_TRUNC('month', subscription_start_date::DATE) AS subscription_month, 
       subscription_name_slugify,
+      delivery,
       CASE 
        WHEN SUM(month_interval) <= 12
         THEN SUM(mrr * month_interval)
@@ -35,7 +36,7 @@ WITH saas_charges AS (
       AND DATEDIFF('days', TO_DATE(namespaces.namespace_created_at), subscription_start_date) <= 1
       AND DATEDIFF('days', TO_DATE(namespaces.namespace_created_at), subscription_start_date) >= 0
       AND DATE_TRUNC('month', subscription_start_date) < DATE_TRUNC('month', current_date)
-    GROUP BY 1,2
+    GROUP BY 1,2,3 
 
 )
 

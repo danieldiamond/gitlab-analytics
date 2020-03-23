@@ -41,7 +41,8 @@ WITH self_managed_charges AS (
       self_managed_charges.subscription_name_slugify, 
       self_managed_charges.mrr,
       self_managed_charges.month_interval,
-      self_managed_charges.subscription_start_date, 
+      self_managed_charges.subscription_start_date,
+      self_managed_charges.delivery,
       sfdc_accounts_xf.created_date  AS sfdc_account_created_date, 
       FIRST_VALUE(lead_source) OVER (PARTITION BY self_managed_charges.subscription_name_slugify ORDER BY sfdc_lead_xf.created_date ASC) AS first_lead_source,
       MIN(sfdc_lead_xf.created_date) OVER (PARTITION BY self_managed_charges.subscription_name_slugify) AS first_sfdc_lead_created_date    
@@ -72,6 +73,7 @@ WITH self_managed_charges AS (
     SELECT
       DATE_TRUNC('month', subscription_start_date)::DATE AS subscription_month,
       subscription_name_slugify,
+      delivery,
       CASE 
        WHEN SUM(month_interval) <= 12
         THEN SUM(mrr * month_interval)
@@ -83,7 +85,7 @@ WITH self_managed_charges AS (
         OR days_between_first_sfdc_record_and_subscription IS NULL
     )
       AND subscription_month < DATE_TRUNC('month', CURRENT_DATE)
-    GROUP BY 1,2
+    GROUP BY 1,2,3
   
 )
 
