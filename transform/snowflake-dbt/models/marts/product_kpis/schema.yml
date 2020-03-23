@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: irect_conversion
+    description: '{{ doc("direct_conversion") }}'
+    columns:
+      - name: subscription_name_slugify
+        tests:
+            - not_null
+            - unique
+      - name: subscription_month
+        tests:
+          - not_null
+      - name: arr
+        tests:
+          - not_null
+  - name: free_to_paid
+    description: '{{ doc("free_to_paid") }}'
+    columns:
+      - name: subscription_name_slugify
+        tests:
+            - not_null
+            - unique
+      - name: subscription_month
+        tests:
+          - not_null
+      - name: arr
+        tests:
+          - not_null

@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: saas_direct_conversion
+    description: '{{ doc("saas_direct_conversion") }}'
+    columns:
+      - name: subscription_name_slugify
+        tests:
+            - not_null
+            - unique
+      - name: subscription_month
+        tests:
+          - not_null
+      - name: arr
+        tests:
+          - not_null
+  - name: saas_direct_free_to_paid
+    description: '{{ doc("saas_direct_free_to_paid") }}'
+    columns:
+      - name: subscription_name_slugify
+        tests:
+            - not_null
+            - unique
+      - name: subscription_month
+        tests:
+          - not_null
+      - name: arr
+        tests:
+          - not_null
+  - name: self_managed_direct_conversion
+    description: '{{ doc("self_managed_direct_conversion") }}'
+    columns:
+      - name: subscription_name_slugify
+        tests:
+            - not_null
+            - unique
+      - name: subscription_month
+        tests:
+          - not_null
+      - name: arr
+        tests:
+          - not_null
+  - name: self_managed_free_to_paid
+    description: '{{ doc("self_managed_free_to_paid") }}'
+    columns:
+      - name: subscription_name_slugify
+        tests:
+            - not_null
+            - unique
+      - name: subscription_month
+        tests:
+          - not_null
+      - name: arr
+        tests:
+          - not_null
