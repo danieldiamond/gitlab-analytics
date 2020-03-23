@@ -110,6 +110,9 @@ models:
         materialized: table
         schema: google_analytics_360
 
+      license:
+        schema: license_db
+
       qualtrics:
         materialized: table
         schema: qualtrics
@@ -124,7 +127,8 @@ models:
 
       zuora:
         schema: zuora
-    
+
+        
     staging:
       schema: staging
       materialized: table
@@ -132,6 +136,9 @@ models:
       google_analytics_360:
         schema: analytics
       
+      license:
+        materialized: view  
+
       version:
         tags: ["product"]
         xf:

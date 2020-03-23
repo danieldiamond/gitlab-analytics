@@ -7,16 +7,30 @@
 
 WITH source AS (
 
-    SELECT
-      *
+    SELECT *
     FROM {{ source('gitlab_dotcom', 'events') }}
-    
+
       {% if is_incremental() %}
 
       WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
 
       {% endif %}
     QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
+
+), projects AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_projects_xf') }}
+
+), gitlab_subscriptions AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base') }}
+
+), plans AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_plans') }}
 
 ), renamed AS (
 
@@ -30,11 +44,37 @@ WITH source AS (
       updated_at::TIMESTAMP                                           AS updated_at,
       action::INTEGER                                                 AS event_action_type_id,
       {{action_type(action_type_id='event_action_type_id')}}::VARCHAR AS event_action_type
-      
+
     FROM source
+
+), joined AS (
+
+    SELECT
+      renamed.*,
+      projects.ultimate_parent_id,
+      CASE
+        WHEN gitlab_subscriptions.is_trial
+          THEN 'trial'
+        ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
+      END                                 AS plan_id_at_event_date,
+      CASE
+        WHEN gitlab_subscriptions.is_trial
+          THEN 'trial'
+        ELSE COALESCE(plans.plan_name, 'free')
+      END                                 AS plan_name_at_event_date,
+      COALESCE(plans.plan_is_paid, FALSE) AS plan_was_paid_at_event_date
+    FROM renamed
+      LEFT JOIN projects
+        ON renamed.project_id = projects.project_id
+      LEFT JOIN gitlab_subscriptions
+        ON projects.ultimate_parent_id = gitlab_subscriptions.namespace_id
+        AND renamed.created_at BETWEEN gitlab_subscriptions.valid_from
+        AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
+      LEFT JOIN plans
+        ON gitlab_subscriptions.plan_id = plans.plan_id
 
 )
 
 SELECT *
-FROM renamed
+FROM joined
 ORDER BY updated_at

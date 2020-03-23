@@ -84,6 +84,7 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -109,6 +110,7 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
@@ -135,6 +137,7 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - postgres_pipeline
             - netsuite
             - salesforce
@@ -172,6 +175,7 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -196,6 +200,7 @@ roles:
             - covid19
             - dbt_analytics
             - gitlab_data_yaml
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -251,6 +256,7 @@ roles:
             - dbt_analytics_sensitive
             - gitlab_data_yaml
             - greenhouse
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -274,6 +280,7 @@ roles:
             - covid19
             - dbt_analytics
             - gitlab_data_yaml
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
@@ -319,6 +326,7 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -427,6 +435,7 @@ roles:
         member_of:
             - boneyard
             - dbt_analytics
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
@@ -453,33 +462,6 @@ roles:
                     - analytics.analytics_sensitive.gitlab_dotcom_milestones
                     - analytics.analytics_sensitive.gitlab_dotcom_namespaces
                     - analytics.analytics_sensitive.gitlab_dotcom_projects
-    
-    - pwc_contractor:
-        warehouses:
-            - analyst_xs
-        member_of:
-            - salesforce
-            - zuora
-        privileges:
-            databases:
-                read:
-                    - analytics
-                write:
-                    - analytics
-            schemas:
-                read:
-                    - analytics.pwc
-                    - analytics.pwc_staging
-                    - analytics.pwc_write
-                write:
-                    - analytics.pwc_write
-            tables:
-                read:
-                    - analytics.pwc.*
-                    - analytics.pwc_staging.*
-                    - analytics.pwc_write.*
-                write:
-                    - analytics.pwc_write.*
 
     - reporter:
         warehouses:
@@ -699,6 +681,21 @@ roles:
             tables:
                 read:
                     - raw.handbook.*
+
+    - license_db:
+        privileges:
+            databases:
+                read:
+                    - analytics
+                    - raw
+            schemas:
+                read:
+                    - analytics.license_db
+                    - raw.license_db_dump
+            tables:
+                read:
+                    - analytics.license_db.*
+                    - raw.license_db_dump.*
 
     - netsuite:
         warehouses:
@@ -1089,22 +1086,6 @@ roles:
         warehouses:
             - analyst_xs
 
-    - pwc_jblessing:
-        warehouses:
-            - analyst_xs
-
-    - pwc_mrichard:
-        warehouses:
-            - analyst_xs
-
-    - pwc_mcoffman:
-        warehouses:
-            - analyst_xs
-
-    - pwc_snagaraj:
-        warehouses:
-            - analyst_xs
-
     - rkohnke:
         warehouses:
             - analyst_xs
@@ -1448,28 +1429,20 @@ users:
             - pluthra
 
     - pwc_jblessing:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_jblessing
+        can_login: no
+        member_of: []
 
     - pwc_mrichard:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_mrichard
+        can_login: no
+        member_of: []
 
     - pwc_mcoffman:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_mcoffman
+        can_login: no
+        member_of: []
 
     - pwc_snagaraj:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_snagaraj
+        can_login: no
+        member_of: []
 
     - rkohnke:
         can_login: yes
