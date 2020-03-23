@@ -20,7 +20,7 @@ WITH saas_charges AS (
 , saas_joined AS (
   
     SELECT 
-      subscription_start_date, 
+      DATE_TRUNC('month', subscription_start_date::DATE) AS subscription_month, 
       subscription_name_slugify,
       CASE 
        WHEN SUM(month_interval) <= 12
