@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: irect_conversion
+  - name: direct_conversion
     description: '{{ doc("direct_conversion") }}'
     columns:
       - name: subscription_name_slugify
