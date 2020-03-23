@@ -7,3 +7,4 @@ models:
           - name: session_id
             tests:
                 - not_null
+                - unique
