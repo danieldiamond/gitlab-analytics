@@ -14,8 +14,8 @@ models:
       - name: arr
         tests:
           - not_null
-  - name: saas_direct_free_to_paid
-    description: '{{ doc("saas_direct_free_to_paid") }}'
+  - name: saas_free_to_paid
+    description: '{{ doc("saas_free_to_paid") }}'
     columns:
       - name: subscription_name_slugify
         tests:
