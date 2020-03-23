@@ -11,7 +11,7 @@ WITH dbt_source AS (
       freshness_observed_at,
       latest_load_at
     FROM dbt_source
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY table_name ORDER BY FRESHNESS_OBSERVED_AT DESC) = 1 
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY table_name ORDER BY freshness_observed_at DESC) = 1 
     ORDER by 2, 1
     
 ) 
