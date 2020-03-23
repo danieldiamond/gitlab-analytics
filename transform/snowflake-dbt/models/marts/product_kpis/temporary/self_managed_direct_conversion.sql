@@ -1,37 +1,37 @@
 WITH self_managed_charges AS (
   
-  SELECT *
-  FROM {{ ref('customers_db_charges_xf') }} AS charges
-  WHERE charges.delivery = 'Self-Managed' --AND is_purchased_through_subscription_portal = FALSE
-      AND charges.subscription_start_date = charges.subscription_version_term_start_date
+    SELECT *
+    FROM {{ ref('customers_db_charges_xf') }} AS charges
+    WHERE charges.delivery = 'Self-Managed' --AND is_purchased_through_subscription_portal = FALSE
+        AND charges.subscription_start_date = charges.subscription_version_term_start_date
   
 )
 
 , zuora_base_mrr AS (
   
-  SELECT *
-  FROM {{ ref('zuora_base_mrr') }}
+    SELECT *
+    FROM {{ ref('zuora_base_mrr') }}
 
 )
 
 , zuora_account AS (
   
-  SELECT *
-  FROM {{ ref('zuora_account') }}
+    SELECT *
+    FROM {{ ref('zuora_account') }}
   
 )
 
 , sfdc_accounts_xf AS (
   
-  SELECT *
-  FROM {{ ref('sfdc_accounts_xf') }}
+    SELECT *
+    FROM {{ ref('sfdc_accounts_xf') }}
 
 )
 
 , sfdc_lead_xf AS (
   
-  SELECT *
-  FROM {{ ref('sfdc_lead_xf') }}
+    SELECT *
+    FROM {{ ref('sfdc_lead_xf') }}
   
 )
 
