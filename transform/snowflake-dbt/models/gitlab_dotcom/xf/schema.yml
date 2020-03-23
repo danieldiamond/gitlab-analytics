@@ -316,4 +316,4 @@ models:
       - name: days_active
         description: days between user creation and last activity
       - name: account_age_cohort
-        description: cohorting of time between last dbt run and user creation date.
+        description: cohorting of time between last dbt run and user creation date.    

@@ -7,7 +7,7 @@ models:
       - name: noteable_id
         tests:
           - not_null
-      - name: sfdc_account_id
+      - name: link_id
         tests:
           - not_null
 
@@ -17,6 +17,6 @@ models:
       - name: note_id
         tests:
           - not_null
-      - name: sfdc_account_id
+      - name: link_id
         tests:
           - not_null
