@@ -1,8 +1,3 @@
-{{ config({
-    "materialized": "view"
-    })
-}}
-
 WITH raw_application_answer AS (
   
   SELECT 
