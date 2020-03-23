@@ -68,7 +68,7 @@ WITH source AS (
         ELSE COALESCE(plans.plan_name, 'free')
       END                                 AS plan_name_at_event_date,
       COALESCE(plans.plan_is_paid, FALSE) AS plan_was_paid_at_event_date,
-      users.created_at
+      users.created_at                    AS user_created_at
     FROM renamed
       LEFT JOIN projects
         ON renamed.project_id = projects.project_id
