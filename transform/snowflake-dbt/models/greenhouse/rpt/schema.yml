@@ -42,7 +42,7 @@ models:
     - name: full_name
     - name: department_hired_into
     - name: division_hired_into
-    - name: job_hired_into
+    - name: job_hired_into  
   - name: rpt_greenhouse_offer_stage
     description: This report provides a breakdown of how many candidates we expect to start in North America. 
     columns: 
@@ -57,23 +57,16 @@ models:
       description: This is a total count of all the candidates we have sent an offer to.
     - name: accepted_offers_to_start
       description: This is a count of the candidates that have accepted the offer. This will be the true count for what we will have to prepare for, whereas the candidates_estimated_to_start provides an idea of how many overall we may see.                    
-  
-    - name: greenhouse_diversity
+  - name: greenhouse_diversity
     description: Provides a breakdown of recruiting KPIs by gender, as well as department and division breakouts. Note - the values for the columns in this model will be null in the case there are less than 3 candidates for a given eeoc pool (this is done using the min over partition value).
     columns:
     - name: month_date
     - name: breakout_type
       description: This column indicates what the metric data is displayed at the KPI level (not accounting for eeoc values), division level, or all (accounting for division and department).
-      tests:
-        - accepted_values:
-            values: ['kpi_level','all','eeoc_only_breakout','division_breakout','department_division_only']  
     - name: department_name
     - name: division
     - name: eeoc_field_name
       description: This column identifies what the eeoc_value is for. For example, the possible eeoc_values for eeoc_field_name = 'candidate_gender' are male, female and did not identify. In the case, the eeoc_field_name is na it is because the breakout_type is a KPI level, and we are not looking to aggregate for diversity fields.
-      tests: 
-        - accepted_values:
-            values: ['candidate_veteran_status', 'candidate_gender', 'candidate_status', 'candidate_race', 'candidate_disability_status','na']
     - name: eeoc_values
       description: This is associated to the eeoc_field_name. For eeoc_field_name = 'candidate_gender' there will be a row for each of the values (male, female, and decline to self identify). This allows us to create a base model with all the potential eeoc_field_values for each field_column and join all applicants even those that don't identify.
     - name: total_candidates_applied
@@ -98,4 +91,5 @@ models:
       description: Shows how long it takes on average to go from apply to offer for a candidate. This is based on offer accepted month.
     - name: offer_acceptance_rate_based_on_offer_month
       description: This metric indicates of the offers sent, how many candidates have accepted. 
-
+    - name: percent_of_hires_sourced     
+      description: Identifies of the hires for a specific month, how many were sourced by a recruiter.

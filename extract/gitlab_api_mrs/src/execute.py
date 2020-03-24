@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     extract_name = sys.argv[1]
 
-    configurations_dict = {
+    configurations_dict: Dict[str, Any] = {
         "part_of_product": {
             "file_name": "part_of_product_mrs.json",
             "project_ids": get_product_project_ids(),
