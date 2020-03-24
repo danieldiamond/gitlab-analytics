@@ -18,6 +18,12 @@ We also join the model `gitlab_dotcom_notes_linked_to_sfdc_account_id` and `gitl
 
 {% enddocs %}
 
+{% docs gitlab_dotcom_gitlab_user_requests_opportunities %}
+
+This model constrains the scope of information in `gitlab_dotcom_gitlab_user_requests` specifically to Opportunities that were linked in issues, epics, and notes. This model enables us to view how much potential and/or lost revenue is associated with feature requests.
+
+{% enddocs %}
+
 {% docs gitlab_dotcom_internal_notes_xf %}
 
 This model is a subset of `gitlab_dotcom_notes` model which selects only notes coming from projects in Gitlab Namespaces.

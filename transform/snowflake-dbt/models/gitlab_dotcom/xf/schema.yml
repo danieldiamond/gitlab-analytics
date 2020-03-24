@@ -42,6 +42,22 @@ models:
       - name: sfdc_account_id
         tests:
           - not_null
+     
+  - name: gitlab_dotcom_gitlab_user_requests_opportunities
+    description: '{{ doc("gitlab_dotcom_gitlab_user_requests_opportunities") }}'
+    columns:
+      - name: noteable_id
+        tests:
+          - not_null
+      - name: noteable_type
+        tests:
+           - not_null
+      - name: sfdc_account_id
+        tests:
+          - not_null
+      - name: sfdc_opportunity_id
+        tests:
+          - not_null                    
 
   - name: gitlab_dotcom_internal_notes_xf
     description: '{{ doc("gitlab_dotcom_internal_notes_xf") }}'

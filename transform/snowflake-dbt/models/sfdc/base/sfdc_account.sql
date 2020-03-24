@@ -49,6 +49,7 @@ WITH source AS (
       industry                                   AS industry,
       account_tier__c                            AS account_tier,
       customer_since__c::DATE                    AS customer_since_date,
+      carr_this_account__c                       AS carr_this_account,
       carr_total__c                              AS carr_total,
       next_renewal_date__c                       AS next_renewal_date,
       license_utilization__c                     AS license_utilization,
