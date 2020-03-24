@@ -211,3 +211,4 @@ WITH epic_issues AS (
 
 SELECT *
 FROM unioned
+WHERE sfdc_account_id IS NOT NULL
