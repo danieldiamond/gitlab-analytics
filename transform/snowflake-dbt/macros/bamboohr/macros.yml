@@ -1,0 +1,5 @@
+version: 2
+
+macros:
+  - name: max_date_in_bamboo_analyses
+    description: '{{ doc("max_date_in_bamboo_analyses") }}'

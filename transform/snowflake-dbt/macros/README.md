@@ -1,12 +1,3 @@
-## Action Type([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/gitlab_dotcom/action_type.sql))
-This macro maps action type ID to the action type.
-Usage:
-```
-{{action_type(1)}}
-```
-Used in:
-- gitlab_dotcom_events.sql
-
 ## Alter Warehouse ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/warehouse/alter_warehouse.sql))
 This macro turns on or off a Snowflake warehouse.
 Usage:
@@ -185,40 +176,6 @@ This macro is called by `backup_to_gcs` so that the actual `copy into` command c
 Used in:
 - backup_to_gcs.sql
 
-## Get Internal Parent Namespaces
-Returns a list of all the internal gitlab.com parent namespaces, enclosed in round brackets. This is useful for filtering an analysis down to external users only.
-
-The internal namespaces are documented below.
-
-| namespace | namespace ID |
-| ------ | ------ |
-| gitlab-com | 6543 |
-| gitlab-org | 9970 |
-| gitlab-data | 4347861 |
-| charts | 1400979 |
-| gl-recruiting | 2299361 |
-| gl-frontend | 1353442 |
-| gitlab-examples | 349181 |
-| gl-secure | 3455548 |
-| gl-retrospectives | 3068744 |
-| gl-release | 5362395 |
-| gl-docsteam-new | 4436569 |
-| gl-legal-team | 3630110 |
-| gl-locations | 3315282 |
-| gl-serverless | 5811832 |
-| gl-peoplepartners | 5496509 |
-| gl-devops-tools | 4206656 |
-| gl-compensation | 5495265 |
-| gl-learning | 5496484 |
-| meltano | 2524164 |
-
-Usage:
-```
-{{ get_internal_parent_namespaces() }}
-```
-Used in:
-- gitlab_dotcom/
-
 ## Grants ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/warehouse/grant_usage_to_schemas.sql))
 This macro...
 Usage:
@@ -229,46 +186,6 @@ on-run-end:
 Used in:
 - dbt_project.yml
 
-## Is Project Included In Engineering Metrics
-
-This macro pulls all the engineering projects to be included from the seeded csv and adds a boolean in the model that can be used to filter on it.
-
-Usage:
-```
-IFF(issues.project_id IN ({{is_project_included_in_engineering_metrics()}}),
-  TRUE, FALSE)                               AS is_included_in_engineering_metrics,
-```
-
-Used in:
-- `gitlab_dotcom_issues_xf`
-- `gitlab_dotcom_merge_requests_xf`
-
-
-## Is Project Part of Product
-
-This macro pulls all the engineering projects that are part of the product from
-the seeded csv and adds a boolean in the model that can be used to filter on it.
-
-Usage:
-```
-IFF(issues.project_id IN ({{is_project_part_of_product()}}),
-  TRUE, FALSE)                               AS is_part_of_product,
-```
-
-Used in:
-- `gitlab_dotcom_issues_xf`
-- `gitlab_dotcom_merge_requests_xf`
-
-## Max Date in Bamboo HR ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/max_date_in_bamboo_analyses.sql))
-This macro creates a reusable variable based on the current date.
-Usage:
-```
-{{ max_date_in_bamboo_analyses() }}
-```
-Used in:
-- `rpt_team_members_out_of_comp_band`
-- `bamboohr_employment_status_xf`
-- `employee_directory_intermediate`
 
 ## Monthly Change ([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/utils/monthly_change.sql))
 This macro calculates differences for each consecutive usage ping by uuid.
@@ -309,15 +226,6 @@ Used in:
 - zuora_rate_plan.sql
 - zuora_subscription_periods.sql
 
-## Resource Label Action Type([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/gitlab_dotcom/resource_label_action_type.sql))
-This macro maps action type ID to the action type for the `resource_label_events` table.
-Usage:
-```
-{{ resource_label_action_type('action') }}
-```
-
-Used in:
-- gitlab_dotcom_resource_label_events.sql
 
 ## Sales Segment Cleaning([Source](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/sfdc/sales_segment_cleaning))
 This macro applies proper formatting to sales segment data with the end result being one of SMB, Mid-Market, Strategic, Large or Unknown.

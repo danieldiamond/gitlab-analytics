@@ -1,0 +1,11 @@
+version: 2
+
+macros:
+  - name: action_type
+    description: '{{ doc("action_type") }}'
+  - name: get_internal_parent_namespaces
+    description: '{{ doc("get_internal_parent_namespaces") }}'
+  - name: resource_label_action_type
+    description: '{{ doc("resource_label_action_type") }}'
+  - name: user_role_mapping
+    description: ""
