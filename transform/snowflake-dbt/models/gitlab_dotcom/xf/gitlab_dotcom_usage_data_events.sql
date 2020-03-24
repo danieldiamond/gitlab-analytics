@@ -110,7 +110,7 @@
     "user_column_name": "user_id",
     "key_to_parent_project": "source_id",
     "primary_key": "member_id",
-    "is_representative_of_stage": "True"
+    "is_representative_of_stage": "False"
   },
   {
     "event_name": "issues",
@@ -213,7 +213,7 @@
     "source_table_name": "gitlab_dotcom_users",
     "user_column_name": "user_id",
     "primary_key": "user_id",
-    "is_representative_of_stage": "False"
+    "is_representative_of_stage": "True"
   },
 ]
 -%}
@@ -424,4 +424,4 @@ WITH gitlab_subscriptions AS (
 )
 
 SELECT *
-FROM data
+FROM final
