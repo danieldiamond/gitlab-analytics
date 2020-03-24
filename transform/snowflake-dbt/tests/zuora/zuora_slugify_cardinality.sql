@@ -1,3 +1,5 @@
+-- Validates that the slugify function is properly maintaining unique subscription names.
+
 SELECT 
   subscription_name_slugify
 FROM {{ ref('zuora_subscription_xf') }}
