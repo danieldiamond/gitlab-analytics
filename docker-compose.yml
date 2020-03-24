@@ -85,7 +85,7 @@ services:
           target: /usr/local/analytics
 
     dbt_image:
-      image: registry.gitlab.com/gitlab-data/data-image/dbt-image:87-upgrade-to-dbt-0-16
+      image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
       environment:
         DBT_PROFILES_DIR: /usr/local/dbt_profiles/
         SNOWFLAKE_SNAPSHOT_DATABASE: "SNOWFLAKE"
