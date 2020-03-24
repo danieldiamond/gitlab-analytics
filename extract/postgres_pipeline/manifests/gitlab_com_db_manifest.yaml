@@ -1396,7 +1396,6 @@ tables:
       , enforced_sso
       , enforced_group_managed_accounts
       , prohibited_outer_forks
-      , group_id
       FROM saml_providers
     export_schema: 'gitlab_com'
     export_table: 'saml_providers'
