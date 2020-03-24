@@ -86,7 +86,7 @@ tables:
     export_table: 'members'
     export_table_primary_key: id
     advanced_metadata: true
-  analytics_language_trend_repository_languages:
+  analytics_language_trend_repository_language:
     import_db: GITLAB_DB
     import_query: >
       SELECT CONCAT(programming_language_id, project_id, snapshot_date) AS analytics_language_trend_repository_languages_id
