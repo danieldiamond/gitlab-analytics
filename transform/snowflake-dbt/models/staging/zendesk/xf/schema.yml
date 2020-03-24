@@ -1,0 +1,82 @@
+version: 2
+
+models:
+    - name: zendesk_tickets_xf
+      description: This model contains meta information on each ticket such as client information, ticket metrics, and whether or not the SLA was met. The operating metric can be found [here](https://about.gitlab.com/handbook/finance/operating-metrics/#service-level-agreement-sla). SLA's can be found [here](https://about.gitlab.com/support/).
+      columns:
+          - name: ticket_id
+            description: This is the ticket id.
+            tests:
+              - not_null
+              - unique
+          - name: ticket_created_at
+            tests:
+              - not_null
+          - name: organization_id
+            tests:
+              - relationships:
+                  to: ref('zendesk_organizations_source')
+                  field: organization_id
+          - name: brand_id
+          - name: group_id
+          - name: requester_id
+            tests:
+              - not_null
+              - relationships:
+                 to: ref('zendesk_users_source')
+                 field: user_id
+          - name: submitter_id
+            tests:
+              - not_null
+          - name: ticket_status
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['closed', 'solved', 'hold', 'deleted', 'open', 'pending', 'new']
+          - name: ticket_priority
+            description: This is the ticket priority.
+            tests:
+              - accepted_values:
+                  values: ['high', 'normal', 'low', 'urgent']
+          - name: ticket_recipient
+            description: This is the ticket recipient email; it is masked.
+          - name: satisfaction_rating_score
+            description: This is the ticket satisfaction rating status.
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['unoffered', 'bad', 'good', 'offered']
+          - name: submission_channel
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['web', 'api', 'twitter', 'facebook', 'mobile', 'email', 'sample_ticket']
+          - name: first_reply_time
+          - name: solved_at
+          - name: sfdc_account_id
+          - name: ticket_priority_at_first_reply
+            description: This is the priority of the ticket at first reply or resolution of the ticket.
+          - name: ticket_sla_policy_at_first_reply
+            description: This is the SLA policy of the ticket at first reply or resolution of the ticket.
+#            tests:
+#              - relationships:
+#                  to: ref('sfdc_account')
+#                  field: account_id
+# https://gitlab.com/gitlab-com/business-ops/Business-Operations/issues/60
+          - name: organization_market_segment
+            tests:
+              - accepted_values:
+                  values: ['unknown', 'strategic', 'smb', 'mid-market', 'large']
+          - name: was_support_sla_met
+            description: '{{ doc("zendesk_ticket_sla") }}'
+    - name: zendesk_tickets_sla_xf
+      description: This model contains ticket priority and SLA policy at the time of first reply time, as defined in the Zendesk [documentation](https://support.zendesk.com/hc/en-us/articles/205951808-Understanding-first-reply-time-Professional-and-Enterprise-#topic_hxr_pqd_1hb)
+      columns:
+          - name: ticket_id
+            description: This is the ticket id.
+            tests:
+              - not_null
+              - unique
+          - name: created_at
+            tests:
+              - not_null

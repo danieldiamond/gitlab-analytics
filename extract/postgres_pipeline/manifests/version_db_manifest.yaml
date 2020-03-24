@@ -54,6 +54,7 @@ tables:
       , prometheus_metrics_enabled
       , smau
       , usage_activity_by_stage
+      , usage_activity_by_stage_monthly
       , gitaly_version
       , gitaly_servers
       , gitaly_filesystems::VARCHAR

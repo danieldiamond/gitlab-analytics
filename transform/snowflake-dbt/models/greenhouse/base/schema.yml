@@ -290,8 +290,6 @@ models:
         - name: candidate_survey_question_4
         - name: candidate_survey_question_5
         - name: candidate_survey_question_6
-          tests:
-            - not_null
         - name: candidate_survey_question_7
         - name: candidate_survey_question_8
         - name: candidate_survey_submitted_at
@@ -1035,11 +1033,7 @@ models:
           tests: 
             - not_null
         - name: opening_custom_field
-          tests:
-            - not_null
         - name: opening_custom_field_display_value
-          tests:
-            - not_null
         - name: opening_custom_field_created_at
           tests: 
             - not_null

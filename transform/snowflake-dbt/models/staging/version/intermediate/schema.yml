@@ -1,0 +1,17 @@
+version: 2
+
+models:
+    - name: version_usage_data
+      columns:
+          - name: id
+            tests:
+                - not_null
+                - unique
+          - name: uuid
+            tests:
+                - not_null
+
+    - name: version_usage_stats_list
+      columns:
+          - name: ping_name
+          - name: full_ping_name

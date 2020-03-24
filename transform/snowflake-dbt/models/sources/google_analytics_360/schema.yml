@@ -1,0 +1,15 @@
+version: 2
+
+models:
+    - name: ga360_session_custom_dimension
+      description: "Custom dimensions as found in Google Analytics Properties > Custom Definitions"
+      columns:
+        - name: visit_id
+          tests:
+            - not_null
+    - name: ga360_session
+      description: "https://support.google.com/analytics/answer/2731565?hl=en"
+      columns:
+        - name: visit_id
+          tests:
+            - not_null

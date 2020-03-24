@@ -1,13 +1,13 @@
-----all eeoc_field_name need to be changed to lower
-
 {% set repeated_column_names = 
-    "greenhouse_recruiting_xf.candidate_id,
-      greenhouse_recruiting_xf.application_id,
-      department_name,
-      division, 
-      source_type,
+    "greenhouse_recruiting_xf.application_id,
+      department_name::VARCHAR(100)                                                 AS department_name,
+      division::VARCHAR(100)                                                        AS division,
+      division_modified::VARCHAR(100)                                               AS division_modified,
+      source_type::VARCHAR(100)                                                     AS source_type,
       CASE WHEN eeoc_values in ('I don''t wish to answer','Decline To Self Identify') 
             THEN 'did not identify'
+           WHEN eeoc_values = 'No, I don''t have a disability' 
+            THEN 'No' 
             ELSE COALESCE(lower(eeoc_values), 'did not identify') end                AS eeoc_values
 " %}
 
@@ -20,7 +20,6 @@ WITH date_details AS (
     WHERE date_actual <= {{max_date_in_bamboo_analyses()}}
       AND day_of_month = 1 
       AND date_actual >= '2018-08-12' -- 1st date we started capturing eeoc data
-
 
 ), greenhouse_recruiting_xf AS (
 
@@ -41,7 +40,7 @@ WITH date_details AS (
 ), eeoc_fields AS (
 
     SELECT DISTINCT 
-      lower(eeoc_field_name)                           AS eeoc_field_name,
+      LOWER(eeoc_field_name)::VARCHAR(100)             AS eeoc_field_name,
       'join'                                           AS join_field
     FROM eeoc
 
@@ -54,6 +53,14 @@ WITH date_details AS (
     LEFT JOIN eeoc_fields 
       ON eeoc_fields.join_field = date_details.join_field  
   
+    UNION ALL
+
+    SELECT
+      month_date,
+      'no_eeoc' AS eeoc_field_name
+    FROM date_details
+    
+
 ), applications AS (
 
     SELECT 
@@ -69,16 +76,17 @@ WITH date_details AS (
       ON DATE_TRUNC('month',greenhouse_recruiting_xf.application_date) = base.month_date
     LEFT JOIN eeoc            
       ON greenhouse_recruiting_xf.application_id = eeoc.application_id
-      AND LOWER(eeoc.eeoc_field_name) = base.eeoc_field_name 
+      AND LOWER(eeoc.eeoc_field_name) = base.eeoc_field_name  
+
 
 ), offers AS (
 
     SELECT 
       base.*,
-      'offer_sent_month'                                                                AS capture_month,
+      'offer_sent_month'                                                               AS capture_month,
       {{repeated_column_names}},
       IFF(offer_status = 'accepted',1,0)                                                AS accepted_offer,
-      null                                                                              AS time_to_offer, 
+      null                                                                              AS time_to_offer,
       IFF(sourced_candidate = TRUE, 1,0)                                                AS sourced_candidate,
       IFF(sourced_candidate = TRUE AND offer_status = 'accepted', 1,0)                  AS hired_sourced_candidate
     FROM base
@@ -87,8 +95,8 @@ WITH date_details AS (
     LEFT JOIN eeoc            
       ON greenhouse_recruiting_xf.application_id = eeoc.application_id
       AND LOWER(eeoc.eeoc_field_name) = base.eeoc_field_name 
-    WHERE base.month_date >= '2018-08-12' -- 1st date we started capturing eeoc data
-
+    WHERE offer_status IS NOT NULL
+ 
 ), accepted AS (
 
     SELECT 
@@ -126,4 +134,4 @@ WITH date_details AS (
 ) 
 
 SELECT * 
-FROM final
+FROM final  

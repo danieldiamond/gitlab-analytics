@@ -7,6 +7,9 @@ databases:
     - analytics:
         shared: no
 
+    - covid19:
+        shared: yes    
+        
     - raw:
         shared: no
 
@@ -77,9 +80,11 @@ roles:
             - analyst_l
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -87,6 +92,7 @@ roles:
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -100,15 +106,18 @@ roles:
             - analyst_l
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -123,10 +132,12 @@ roles:
             - analyst_xl
         member_of:
             - boneyard
+            - covid19
             - db_dumps
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - postgres_pipeline
             - netsuite
             - salesforce
@@ -134,6 +145,7 @@ roles:
             - snapshots
             - snowflake_db
             - snowplow
+            - version_db
             - zuora
         privileges:
             databases:
@@ -159,9 +171,11 @@ roles:
             - analyst_xs
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -169,6 +183,7 @@ roles:
             - snapshots
             - snowflake_db
             - snowplow
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -182,8 +197,10 @@ roles:
         member_of:
             - bamboohr
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -191,6 +208,7 @@ roles:
             - snapshots
             - snowflake_db
             - snowplow
+            - version_db
             - zuora
         privileges:
             databases:
@@ -233,9 +251,12 @@ roles:
         member_of:
             - bamboohr
             - boneyard
+            - covid19
             - dbt_analytics
+            - dbt_analytics_sensitive
             - gitlab_data_yaml
             - greenhouse
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -243,6 +264,7 @@ roles:
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -255,13 +277,16 @@ roles:
             - analyst_xs
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
             - snapshots
             - snowflake_db
+            - version_db
             - zuora
         privileges:
             databases:
@@ -297,9 +322,11 @@ roles:
             - analyst_l
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -307,6 +334,7 @@ roles:
             - snapshots
             - snowflake_db
             - snowplow
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -316,6 +344,7 @@ roles:
 
     - engineer:
         member_of:
+            - covid19
             - loader
             - transformer
             - snowflake_db
@@ -406,12 +435,14 @@ roles:
         member_of:
             - boneyard
             - dbt_analytics
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zuora
         privileges:
             databases:
@@ -466,6 +497,16 @@ roles:
             - boneyard
             - dbt_analytics
             - snowflake_db
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.covid19
+            tables:
+                read:
+                    - analytics.covid19.covid19_cases
 
     - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema
         warehouses:
@@ -486,6 +527,7 @@ roles:
             - transforming_xs
             - transforming_4xl
         member_of:
+            - covid19
             - snowflake_db
         owns:
             schemas:
@@ -549,6 +591,18 @@ roles:
             tables:
                 read:
                     - analytics.boneyard.*
+
+    - covid19:
+        privileges:
+            databases:
+                read:
+                    - covid19
+            schemas:
+                read:
+                    - covid19.public
+            tables:
+                read:
+                    - covid19.public.jhu_covid_19
 
     - db_dumps:
         privileges:
@@ -616,12 +670,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.google_analytics_360
                     - raw.google_analytics_360_fivetran
             tables:
                 read:
+                    - analytics.google_analytics_360.*
                     - raw.google_analytics_360_fivetran.*
 
     - greenhouse:
@@ -651,6 +708,21 @@ roles:
             tables:
                 read:
                     - raw.handbook.*
+
+    - license_db:
+        privileges:
+            databases:
+                read:
+                    - analytics
+                    - raw
+            schemas:
+                read:
+                    - analytics.license_db
+                    - raw.license_db_dump
+            tables:
+                read:
+                    - analytics.license_db.*
+                    - raw.license_db_dump.*
 
     - netsuite:
         warehouses:
@@ -749,18 +821,34 @@ roles:
                     - raw.snowplow.*
                     - analytics.snowplow_*.*
 
+    - version_db:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.version_db
+            tables:
+                read:
+                    - analytics.version_db.*
+
+
     - zendesk:
         warehouses:
             - analyst_xs
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.zendesk
                     - raw.zendesk_stitch
             tables:
                 read:
+                    - analytics.zendesk.*
                     - raw.zendesk_stitch.*  
 
     - zuora:
@@ -769,12 +857,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.zuora
                     - raw.zuora_stitch
             tables:
                 read:
+                    - analytics.zuora.*
                     - raw.zuora_stitch.*
 
 # ==========================================
@@ -993,6 +1084,13 @@ roles:
             - analyst_xs
 
     - mwalker:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting
+
+    - parmstrong:
         warehouses:
             - engineer_xs
             - engineer_xl
@@ -1300,6 +1398,12 @@ users:
         member_of:
             - lmai
 
+    - lvandensteen:
+        can_login: yes
+        member_of:
+            - analyst_people
+            - lvandensteen
+
     - mdewji:
         can_login: yes
         member_of:
@@ -1336,11 +1440,11 @@ users:
             - engineer
             - mwalker
 
-    - lvandensteen:
+    - parmstrong:
         can_login: yes
         member_of:
-            - analyst_people
-            - lvandensteen
+            - engineer
+            - parmstrong
 
     - periscope:
         can_login: yes

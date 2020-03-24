@@ -184,7 +184,7 @@ def chunk_and_upload(
 
 def range_generator(
     start: int, stop: int, step: int = 100_000
-) -> Generator[Tuple[int, int], None, None]:
+) -> Generator[Tuple[int, ...], None, None]:
     """
     Yields a list that contains the starting and ending number for a given window.
     """
