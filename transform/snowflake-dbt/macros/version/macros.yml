@@ -1,0 +1,6 @@
+version: 2
+
+macros:
+  - name: stage_mapping
+    description: '{{ doc("stage_mapping") }}'
+
