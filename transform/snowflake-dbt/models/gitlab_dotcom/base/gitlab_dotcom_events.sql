@@ -32,6 +32,11 @@ WITH source AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_plans') }}
 
+), users AS (
+    
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_users') }}
+  
 ), renamed AS (
 
     SELECT
@@ -62,7 +67,8 @@ WITH source AS (
           THEN 'trial'
         ELSE COALESCE(plans.plan_name, 'free')
       END                                 AS plan_name_at_event_date,
-      COALESCE(plans.plan_is_paid, FALSE) AS plan_was_paid_at_event_date
+      COALESCE(plans.plan_is_paid, FALSE) AS plan_was_paid_at_event_date,
+      users.created_at                    AS user_created_at
     FROM renamed
       LEFT JOIN projects
         ON renamed.project_id = projects.project_id
@@ -72,6 +78,8 @@ WITH source AS (
         AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
       LEFT JOIN plans
         ON gitlab_subscriptions.plan_id = plans.plan_id
+      LEFT JOIN users
+        ON renamed.author_id = users.user_id
 
 )
 

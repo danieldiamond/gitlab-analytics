@@ -909,6 +909,27 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'licenses'
     export_table_primary_key: id
+  lists:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , board_id
+      , label_id
+      , list_type
+      , position
+      , created_at
+      , updated_at
+      , user_id
+      , milestone_id
+      , max_issue_count
+      , max_issue_weight
+      , limit_metric
+      FROM lists
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'lists'
+    export_table_primary_key: id
   merge_requests:
     import_db: GITLAB_DB
     import_query: >
@@ -1294,6 +1315,8 @@ tables:
       , build_artifacts_size
       , shared_runners_seconds
       , shared_runners_seconds_last_reset
+      , packages_size
+      , wiki_size
       FROM project_statistics
     export_schema: 'gitlab_com'
     export_table: 'project_statistics'
@@ -1363,6 +1386,21 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'projects'
+    export_table_primary_key: id
+  saml_providers:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , group_id
+      , enabled
+      , certificate_fingerprint
+      , sso_url
+      , enforced_sso
+      , enforced_group_managed_accounts
+      , prohibited_outer_forks
+      FROM saml_providers
+    export_schema: 'gitlab_com'
+    export_table: 'saml_providers'
     export_table_primary_key: id
   snippets:
     import_db: GITLAB_DB
