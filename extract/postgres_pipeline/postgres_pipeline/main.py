@@ -341,10 +341,9 @@ def main(file_path: str, load_type: str) -> None:
         if schema_changed:
             table_name = real_table_name
 
-        if loaded:
-            count_query = f"SELECT COUNT(*) FROM {table_name}"
-            count = query_executor(snowflake_engine, count_query)[0][0]
-            append_to_xcom_file({table_name: count})
+        count_query = f"SELECT COUNT(*) FROM {table_name}"
+        count = query_executor(snowflake_engine, count_query)[0][0]
+        append_to_xcom_file({table_name: count})
 
 
 if __name__ == "__main__":
