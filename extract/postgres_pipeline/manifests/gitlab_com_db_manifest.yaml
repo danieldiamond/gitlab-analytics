@@ -101,7 +101,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'analytics_language_trend_repository_languages'
     export_table_primary_key: CONCAT(programming_language_id, project_id, snapshot_date)
-    advanced_metadata: true
   approvals:
     import_db: GITLAB_DB
     import_query: >
