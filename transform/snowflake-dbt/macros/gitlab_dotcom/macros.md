@@ -36,3 +36,11 @@ The internal namespaces are documented below.
 {% docs resource_label_action_type %}
 This macro maps action type ID to the action type for the `resource_label_events` table.
 {% enddocs %}
+
+
+{% docs user_role_mapping %}
+This macro maps "role" values (integers) from the user table into their respective string values.
+
+For example, user_role=0 maps to the 'Software Developer' role.
+
+{% enddocs %}

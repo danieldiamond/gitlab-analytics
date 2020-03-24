@@ -1,0 +1,27 @@
+version: 2
+
+macros:
+  - name: case_when_boolean_int
+    description: '{{ doc("case_when_boolean_int") }}'
+  - name: coalesce_to_infinity
+    description: '{{ doc("coalesce_to_infinity") }}'
+  - name: create_snapshot_base
+    description: '{{ doc("create_snapshot_base") }}'
+  - name: current_date_schema
+    description: '{{ doc("current_date_schema") }}'
+  - name: distinct_source
+    description: '{{ doc("distinct_source") }}'
+  - name: generate_schema_name
+    description: '{{ doc("generate_schema_name") }}'
+  - name: monthly_change
+    description: '{{ doc("monthly_change") }}'
+  - name: monthly_is_used
+    description: '{{ doc("monthly_is_used") }}'
+  - name: query_comment
+    description: '{{ doc("query_comment") }}'
+  - name: scd_type_2
+    description: '{{ doc("scd_type_2") }}'
+  - name: schema_union_all
+    description: '{{ doc("schema_union_all") }}'
+  - name: schema_union_limit
+    description: '{{ doc("schema_union_limit") }}'

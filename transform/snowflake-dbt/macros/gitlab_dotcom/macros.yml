@@ -8,4 +8,4 @@ macros:
   - name: resource_label_action_type
     description: '{{ doc("resource_label_action_type") }}'
   - name: user_role_mapping
-    description: ""
+    description: '{{ doc("user_role_mapping") }}'
