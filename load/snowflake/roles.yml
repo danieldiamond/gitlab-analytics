@@ -166,31 +166,6 @@ roles:
                     - analytics.analytics_sensitive.gitlab_dotcom_namespaces
                     - analytics.analytics_sensitive.gitlab_dotcom_projects
 
-    - analyst_infrastructure:
-        warehouses:
-            - analyst_xs
-        member_of:
-            - boneyard
-            - covid19
-            - dbt_analytics
-            - gitlab_data_yaml
-            - handbook
-            - license_db
-            - netsuite
-            - postgres_pipeline
-            - salesforce
-            - sheetload
-            - snapshots
-            - snowflake_db
-            - snowplow
-            - version_db
-            - zendesk
-            - zuora
-        privileges:
-            databases:
-                write:
-                    - analytics
-
     - analyst_finance:
         warehouses:
             - analyst_xs
@@ -863,14 +838,20 @@ roles:
             - transforming_xl
 
     - agroleau:
+        member_of:
+            - reporter
         warehouses:
             - reporting
 
     - aakgun:
+        member_of:
+            - analyst_growth
         warehouses:
             - analyst_xs
 
     - cmestel:
+        member_of:
+            - analyst_finance
         warehouses:
             - analyst_xs
 
@@ -881,8 +862,15 @@ roles:
             - analyst_xs
 
     - dtang:
+        member_of:
+            - reporter
         warehouses:
             - reporting
+
+    - dtownsend:
+        member_of:
+            - analyst_engineering
+            - dtownsend
 
     - eburke:
         warehouses:
@@ -892,6 +880,8 @@ roles:
             - reporting
 
     - eeastwood:
+        member_of:
+            - reporter
         warehouses:
             - reporting
         privileges:
@@ -912,16 +902,22 @@ roles:
                     - raw.gitter.*
 
     - ekastelein:
+        member_of:
+            - analyst_growth
         warehouses:
             - analyst_xs
             - analyst_l
             - analyst_xl
 
     - eurie:
+        member_of:
+            - reporter
         warehouses:
             - reporting
 
     - ewegscheider:
+        member_of:
+            - analyst_people
         warehouses:
             - analyst_xs
 
@@ -965,19 +961,26 @@ roles:
             - transforming_xl
 
     - iroussos:
+        member_of:
+            - reporter
         warehouses:
             - reporting
 
     - iweeks:
+        member_of:
+            - analyst_finance
         warehouses:
             - analyst_xs
 
     - jmahdi:
+        member_of:
+            - analyst_sales
         warehouses:
             - analyst_xs
 
     - jpeguero:
         member_of:
+            - analyst_marketing
             - netsuite
         warehouses:
             - analyst_xs
@@ -998,10 +1001,15 @@ roles:
             - reporting
 
     - jwatson:
+        member_of:
+            - product_manager
+            - reporter
         warehouses:
             - reporting
 
     - kaguilar:
+        member_of:
+            - analyst_engineering
         warehouses:
             - analyst_xs
 
@@ -1009,6 +1017,7 @@ roles:
         member_of:
             - analyst_core
             - bamboohr
+            - dbt_analytics_sensitive
             - data_manager
             - greenhouse
         warehouses:
@@ -1028,6 +1037,8 @@ roles:
             - analyst_xs
 
     - lvandensteen:
+        member_of:
+            - analyst_people
         warehouses: 
             - reporting
 
@@ -1035,15 +1046,19 @@ roles:
         warehouses:
             - reporting
 
-    - mrodriguez:
-        warehouses:
-            - reporting
-
     - mpeychet:
+        member_of:
+            - analyst_growth
         warehouses:
             - analyst_xs
             - analyst_l
             - analyst_xl
+
+    - mrodriguez:
+        member_of:
+            - reporter
+        warehouses:
+            - reporting
 
     - msendal:
         warehouses:
@@ -1053,6 +1068,8 @@ roles:
             - reporting    
 
     - mvilain:
+        member_of:
+            - analyst_sales
         warehouses:
             - analyst_xs
 
@@ -1083,14 +1100,20 @@ roles:
             - admin
 
     - pluthra:
+        member_of:
+            - analyst_people
         warehouses:
             - analyst_xs
 
     - rkohnke:
+        member_of:
+            - reporter
         warehouses:
             - analyst_xs
 
     - sreddy:
+        member_of:
+            - product_manager
         warehouses:
             - reporting
 
@@ -1172,6 +1195,8 @@ roles:
             - reporting
 
     - wwright:
+        member_of:
+            - analyst_finance
         warehouses:
             - analyst_xs
             - reporting
@@ -1197,7 +1222,6 @@ users:
         can_login: yes
         member_of:
             - agroleau
-            - reporter
 
     - airflow:
         can_login: yes
@@ -1212,12 +1236,10 @@ users:
         can_login: yes
         member_of:
             - aakgun
-            - analyst_growth
 
     - cmestel:
         can_login: yes
         member_of:
-            - analyst_finance
             - cmestel
 
     - datwood:
@@ -1229,7 +1251,11 @@ users:
         can_login: yes
         member_of:
             - dtang
-            - reporter
+
+    - dtownsend:
+        can_login: yes
+        member_of:
+            - dtownsend
 
     - eburke:
         can_login: yes
@@ -1243,26 +1269,22 @@ users:
         can_login: yes
         member_of:
             - eeastwood
-            - reporter
 
     - ekastelein:
         can_login: yes
         member_of:
-            - analyst_growth
             - ekastelein
 
     - eurie:
         can_login: yes 
         member_of:
             - eurie
-            - reporter
             - securityadmin
     
     - ewegscheider:
         can_login: yes
         member_of: 
             - ewegscheider
-            - analyst_people
 
     - fivetran:
         can_login: yes
@@ -1284,25 +1306,21 @@ users:
         can_login: yes
         member_of:
             - iroussos
-            - reporter
 
     - iweeks:
         can_login: yes
         member_of:
-            - analyst_finance
             - iweeks
 
     - jmahdi:
         can_login: yes
         member_of:
-            - analyst_sales
             - jmahdi
 
     - jpeguero:
         can_login: yes
         member_of:
             - jpeguero
-            - analyst_marketing
 
     - jsalazar:
         can_login: yes
@@ -1330,13 +1348,10 @@ users:
         can_login: yes
         member_of:
             - jwatson
-            - product_manager
-            - reporter
    
     - kaguilar:
         can_login: yes
         member_of:
-            - analyst_engineering
             - kaguilar
 
     - ktam:
@@ -1358,7 +1373,6 @@ users:
     - lvandensteen:
         can_login: yes
         member_of:
-            - analyst_people
             - lvandensteen
 
     - mdewji:
@@ -1370,14 +1384,12 @@ users:
     - mpeychet:
         can_login: yes
         member_of:
-            - analyst_growth
             - mpeychet
 
     - mrodriguez:
         can_login: yes
         member_of:
             - mrodriguez
-            - reporter
 
     - msendal:
         can_login: yes
@@ -1388,7 +1400,6 @@ users:
     - mvilain:
         can_login: yes
         member_of:
-            - analyst_sales
             - mvilain
 
     - mwalker:
@@ -1425,7 +1436,6 @@ users:
     - pluthra:
         can_login: yes
         member_of:
-            - analyst_people
             - pluthra
 
     - pwc_jblessing:
@@ -1447,13 +1457,11 @@ users:
     - rkohnke:
         can_login: yes
         member_of:
-            - reporter
             - rkohnke
 
     - sreddy:
         can_login: yes
         member_of:
-            - product_manager
             - sreddy
 
     - ssichak:
@@ -1498,7 +1506,6 @@ users:
     - wwright:
         can_login: yes
         member_of:
-            - analyst_finance
             - wwright
 
 # ==========================================
