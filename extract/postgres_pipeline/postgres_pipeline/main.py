@@ -342,7 +342,13 @@ def main(file_path: str, load_type: str) -> None:
             table_name = real_table_name
 
         count_query = f"SELECT COUNT(*) FROM {table_name}"
-        count = query_executor(snowflake_engine, count_query)[0][0]
+        count = 0
+
+        try:
+            count = query_executor(snowflake_engine, count_query)[0][0]
+        except:
+            pass  # likely that the table doesn't exist -- don't want an error here to stop the task
+
         append_to_xcom_file({table_name: count})
 
 
