@@ -7,6 +7,7 @@
 5011.1,Referral Bonus COGS,5011.1 - Referral Bonus COGS,Bonus,Headcount,Headcount
 5011.2,Discretionary Bonus COGS,5011.2 - Discretionary Bonus COGS,Bonus,Headcount,Headcount
 5011.4,Executive/Director Bonus COGS,5011.4 - Executive/Director Bonus COGS,Bonus,Headcount,Headcount
+5011.6,Professional Services Bonus COGS,5011.6 - Professional Services Bonus COGS,Bonus,Headcount,Headcount
 5012,401k Match COGS,5012 - 401k Match COGS,401k Match,Headcount,Headcount
 5013,Business Meals & Entertainment COGS,5013 - Business Meals & Entertainment COGS,Business Meals & Entertainment,Non-Headcount,Non-Headcount
 5015,Company Functions COGS,5015 - Company Functions COGS,Company Functions,Non-Headcount,Non-Headcount
@@ -130,6 +131,7 @@
 6076,Coworking Space,6076 - Coworking Space,Coworking Space,Non-Headcount,Non-Headcount
 6077,Stock Compensation Expense,6077 - Stock Compensation Expense,Stock Compensation,Headcount,Headcount
 6079,Stipend,6079 - Stipend,Needs Mapping,Other Operating Expenses,Non-Headcount
+6100,Marketing Programs,6100 - Marketing Programs,Marketing Programs,Marketing Programs,Non-Headcount
 6110,Marketing Site,6110 - Marketing Site,Marketing Site,Marketing Programs,Non-Headcount
 6120,Demand Advertising,6120 - Demand Advertising,Demand Advertising,Marketing Programs,Non-Headcount
 6130,Field Events,6130 - Field Events,Field Events,Marketing Programs,Non-Headcount
