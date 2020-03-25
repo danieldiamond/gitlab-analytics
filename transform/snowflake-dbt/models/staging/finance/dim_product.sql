@@ -3,11 +3,6 @@ WITH zuora_product AS (
     SELECT *
     FROM {{ ref('zuora_product_source') }}
 
-), zuora_rate_plan AS (
-
-    SELECT *
-    FROM {{ ref('zuora_rate_plan_source') }}
-
 )
 
 SELECT
