@@ -4,7 +4,7 @@ WITH saas_charges AS (
     FROM {{ ref('customers_db_charges_xf') }}
     /* Manual Exclusions */
     WHERE subscription_name_slugify NOT IN (
-    'accenture---intient-200-silver---initial-investment-01-20' --https://gitlab.com/gitlab-data/analytics/issues/3659
+    '2c92a0ff6ff0e9cf016ffc3853440b79' --https://gitlab.com/gitlab-data/analytics/issues/3659
     )
     AND delivery = 'SaaS'
   
