@@ -10,7 +10,7 @@ This model is the union of 2 models built upstream:
 
 {% docs free_to_paid %}
 
-This models selects all subscriptions which are going to be included in the calculation of [Conversion's KPI](https://about.gitlab.com/direction/conversoin/). Each row  shows a different subscription and its corresponding Annual Recurring Revenue (ARR). 
+This models selects all subscriptions which are going to be included in the calculation of [Conversion's KPI](https://about.gitlab.com/direction/conversion/). Each row  shows a different subscription and its corresponding Annual Recurring Revenue (ARR). 
 
 This model is the union of 2 models built upstream:
 * `saas_free_to_paid`
