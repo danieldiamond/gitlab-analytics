@@ -633,7 +633,7 @@ tables:
   elasticsearch_indexed_namespaces:
     import_db: GITLAB_DB
     import_query: >
-      SELECT created_at,
+      SELECT created_at
       , updated_at
       , namespace_id
       FROM elasticsearch_indexed_namespaces
