@@ -27,6 +27,7 @@ WITH zuora_rate_plan AS (
         zuora_rate_plan.rate_plan_name AS rate_plan_name,
         zuora_rate_plan.rate_plan_name = '#movingtogitlab' AS is_movingtogitlab,
         {{product_category('zuora_rate_plan.rate_plan_name') }},
+        {{delivery('product_category')}},
         zuora_rate_plan_charge.discount_level,
         zuora_rate_plan_charge.segment AS rate_plan_charge_segment,
         zuora_rate_plan_charge.version AS rate_plan_charge_version
