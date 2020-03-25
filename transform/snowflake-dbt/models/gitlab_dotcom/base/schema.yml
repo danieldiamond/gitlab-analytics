@@ -1208,7 +1208,7 @@ models:
           - not_null
           
   - name: gitlab_dotcom_saml_providers
-    description: '{{ doc("gitlab_dotcom_saml_providers") }}'
+    description: Base model for Gitlab.com gitlab_dotcom_saml_providers
     columns:
       - name: saml_provider_id
         tests:
