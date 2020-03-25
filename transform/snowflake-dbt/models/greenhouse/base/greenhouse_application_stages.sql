@@ -17,7 +17,28 @@ WITH source as (
 
 	FROM source
 
+), intermediate AS (
+
+    SELECT 
+      renamed.*,
+      IFF(stage_id in (7 --screen
+                   ,5 -- Screen
+                   ,18 --screening
+                   ,52 --assessment
+                   ,29 --face to face
+                   ,61 --offer
+                   ),True, False)               AS is_milestone_stage,
+        CASE WHEN stage_id IN (7,18,5) 
+               THEN 'Sreen'
+             WHEN stage_id IN (25,47)  
+               THEN 'Team Interview'
+             WHEN stage_id IN (41, 57) 
+               THEN 'Take Home Assessment'
+             WHEN stage_id IN (24, 46) 
+               THEN 'Hiring Manager Review'
+             ELSE NULL END                      AS stages_cleaned             
+    FROM renamed 
 )
 
 SELECT *
-FROM renamed
+FROM intermediate
