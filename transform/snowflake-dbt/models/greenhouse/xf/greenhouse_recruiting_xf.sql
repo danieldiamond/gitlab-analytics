@@ -38,6 +38,11 @@ WITH applications AS (
     SELECT DISTINCT division, department
     FROM {{ref('cost_center_division_department_mapping')}}
 
+), bamboo AS (
+
+    SELECT greenhouse_candidate_id, hire_date 
+    FROM {{ref('bamboohr_id_employee_number_mapping')}}
+    WHERE greenhouse_candidate_id IS NOT NULL
 )
 
 SELECT 
@@ -63,7 +68,8 @@ SELECT
     IFF(greenhouse_sources.source_name ='LinkedIn (Prospecting)',True, False)       AS sourced_candidate,
     IFF(offer_status ='accepted',
             DATEDIFF('day', applications.applied_at, offers.resolved_at),
-            NULL)                                                                   AS time_to_offer
+            NULL)                                                                   AS time_to_offer,
+    bamboo.hire_date                                                                AS bamboo_hire_date
 FROM applications 
 LEFT JOIN greenhouse_application_jobs 
   ON greenhouse_application_jobs.application_id = applications.application_id
@@ -78,6 +84,8 @@ LEFT JOIN offers
   ON applications.application_id = offers.application_id
 LEFT JOIN cost_center
   ON TRIM(greenhouse_departments.department_name)=TRIM(cost_center.department)
+LEFT JOIN bamboo
+  ON bamboo.greenhouse_candidate_id = applications.candidate_id  
 
 
 

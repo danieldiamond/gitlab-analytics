@@ -7,6 +7,7 @@ models:
         - name: application_id
         - name: offer_id
         - name: candidate_id
+        - name: requisition_id
         - name: application_status
         - name: stage_name
         - name: application_date
@@ -23,7 +24,8 @@ models:
         - name: source_type
         - name: time_to_offer
           description: Shows how long an applicant to go from applying to accepting an offer. This is based on offer accept month.
-
+        - name: bamboo_hire_date
+          description: This is the hire date the candidate started the company on if they moved forward with the offer.
   - name: greenhouse_diversity_intermediate
     description: This is the intermediate model used for greenhouse_diversity. It builds out a base that includes month_date, a column for all the various eeoc_field_names, and joins greenhouse_recruiting_xf to ensure each candidate is tied to an eeoc_field. In the event the candidate did not answer, the response is 'Did not identify'. This is later used in the greenhouse_diversity rpt to aggregate metrics.
     columns:
