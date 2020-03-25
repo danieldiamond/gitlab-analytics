@@ -44,6 +44,7 @@ SELECT
     applications.application_id, 
     offer_id,
     candidate_id, 
+    requisition_id, 
     application_status,
     stage_name, 
     offer_status,
