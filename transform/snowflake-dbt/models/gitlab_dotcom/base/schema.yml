@@ -365,7 +365,18 @@ models:
       - name: version_id
         tests:
           - not_null
-          - unique          
+          - unique
+  - name: gitlab_dotcom_elasticsearch_indexed_namespaces
+    description: Base model for GitLab.com elasticsearch indexed namespaces.
+    columns:
+      - name: namespace_id
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('gitlab_dotcom_namespaces')
+              field: namespace_id
+              severity: warn 
   - name: gitlab_dotcom_environments
     description: Base model for GitLab.com environments.
     columns:
