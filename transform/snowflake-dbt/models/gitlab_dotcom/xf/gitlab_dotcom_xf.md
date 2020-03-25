@@ -4,7 +4,7 @@ This model anonymizes three fields: `environment_name`, `slug`, `external_url` b
 
 {% enddocs %}
 
-{% docs gitlab_dotcom_gitlab_issues_requests %}
+{% docs gitlab_dotcom_gitlab_user_requests %}
 
 This model enables product managers to surface which issue has been requested by potential prospects and current customers. The final model creates a table where each row is unique tuple of a `issue_id` and a `sfdc_account_id`.
 
@@ -146,6 +146,11 @@ The final result is determined by merging the `cohorting` table to itself when a
 
 {% enddocs %}
 
+{% docs gitlab_dotcom_secure_stage_ci_jobs %}
+
+This table is meant to isolate all ci_build jobs used to create the AMAU calculation for secure stage as described in [this handbook page](https://about.gitlab.com/handbook/product/metrics/#stage-monthly-active-users-smau)
+
+{% enddocs %}
 
 {% docs gitlab_dotcom_usage_data_events %}
 

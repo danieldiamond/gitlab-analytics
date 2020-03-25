@@ -15,6 +15,7 @@ models:
             tests:
               - accepted_values:
                       values: ['GitHost', 'Other', 'Gold', 'Basic', 'Bronze', 'Premium', 'Starter', 'Ultimate', 'Support', 'Plus', 'Silver', 'Standard', 'Trueup']
+              - not_null          
           - name: rate_plan_charge_name
             tests:
                 - not_null
@@ -28,5 +29,8 @@ models:
             tests:
                 - not_null
           - name: rate_plan_charge_name
+            tests:
+                - not_null
+          - name: product_category
             tests:
                 - not_null

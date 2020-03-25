@@ -1,0 +1,9 @@
+version: 2
+
+macros:
+  - name: sales_segment_cleaning
+    description: '{{ doc("sales_segment_cleaning") }}'
+  - name: sfdc_deal_size
+    description: '{{ doc("sfdc_deal_size") }}'
+  - name: sfdc_source_buckets
+    description: '{{ doc("sfdc_source_buckets") }}'

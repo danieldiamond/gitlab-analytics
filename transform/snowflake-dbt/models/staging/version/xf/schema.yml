@@ -1,0 +1,141 @@
+version: 2
+
+models:
+    - name: version_active_instances
+      description: instances checked for new version or send a usage ping
+      columns:
+          - name: host_id
+          - name: ping_type
+            description: an instance checked for new version or send a usage ping
+
+    - name: version_latest_version_ping_per_host_and_month
+      description: This model includes only the lastest version ping for every host for each month in which they sent a version ping.
+      columns:
+          - name: ping_id
+            tests:
+                - not_null
+                - unique
+          - name: host_id
+            tests:
+                - not_null
+
+    - name: version_usage_data_action_summary_xf
+      description: '{{ doc("version_usage_data_action_summary_xf") }}'
+      columns:
+          - name: unique_key
+            tests:
+                - not_null
+                - unique
+          - name: usage_data_id
+            tests:
+                - not_null
+          - name: created_at
+            tests:
+                - not_null
+          - name: stage
+            tests:
+                - not_null
+          - name: action
+            tests:
+                - not_null
+          - name: count_users
+            tests:
+                - not_null
+
+    - name: version_usage_data_boolean
+      description: converts all ping values to either 0 or 1 in order to determine if a feature has *ever* been used
+      columns:
+          - name: created_at
+            tests:
+                - not_null
+          - name: unique_key
+            tests:
+                - not_null
+          - name: uuid
+            tests:
+                - not_null
+
+    - name: version_usage_data_month
+      description: usage ping data values aggregated by month for each UUID.
+      columns:
+          - name: created_at
+            tests:
+                - not_null
+          - name: unique_key
+            tests:
+                - not_null
+          - name: uuid
+            tests:
+                - not_null
+
+    - name: version_usage_data_monthly_change_by_stage
+      description: '{{ doc("version_usage_data_monthly_change_by_stage") }}'
+      columns:
+          - name: created_at
+            tests:
+              - not_null
+          - name: ping_source
+            tests:
+              - not_null
+          - name: main_edition
+            description: Comes from [this section of the code](https://gitlab.com/gitlab-org/gitlab/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154)
+            tests:
+                - accepted_values:
+                    values: ['EE', 'CE']
+
+    - name: version_usage_data_monthly_change
+      description: '{{ doc("version_usage_data_monthly_change") }}'
+      columns:
+          - name: unique_key
+            tests:
+              - not_null
+          - name: main_edition
+            description: Comes from [this section of the code](https://gitlab.com/gitlab-org/gitlab/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154)
+            tests:
+                - accepted_values:
+                    values: ['EE', 'CE']
+
+    - name: version_usage_data_unpacked
+      columns:
+          - name: main_edition
+            description: Comes from [this section of the code](https://gitlab.com/gitlab-org/gitlab/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154)
+            tests:
+                - accepted_values:
+                    values: ['EE', 'CE']
+          - name: uuid
+            tests:
+                - not_null
+          - name: zuora_subscription_id
+            description: The Zuora subscription associated with the license sending the usage ping.
+
+    - name: version_usage_data_weekly_opt_in_summary
+      description: '{{ doc("version_usage_data_weekly_opt_in_summary") }}'
+      tests:
+        - unique:
+            column_name: "concat(week, license_id)"
+      columns:
+          - name: week
+            tests:
+                - not_null
+          - name: license_id
+            tests:
+                - not_null
+          - name: license_md5
+            tests:
+                - not_null
+          - name: product_category
+            description: This is the plan (Starter, Premium, Ultimate) associated with the usage data. This is generally consistent with the License app, but has NULL values for many records that have plans in Zuora.
+            
+    - name: version_user_activity_by_stage_monthly_unpacked
+      description: '{{ doc("version_user_activity_by_stage_monthly_unpacked") }}'
+      columns:
+          - name: main_edition
+            description: Comes from [this section of the code](https://gitlab.com/gitlab-org/gitlab/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154)
+            tests:
+                - accepted_values:
+                    values: ['EE', 'CE']
+          - name: uuid
+            tests:
+                - not_null
+          - name: zuora_subscription_id
+            description: The Zuora subscription associated with the license sending the usage ping.

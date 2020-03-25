@@ -1,0 +1,9 @@
+version: 2
+
+macros:
+  - name: create_udfs
+    description: '{{ doc("create_udfs") }}'
+  - name: regexp_substr_to_array
+    description: '{{ doc("regexp_substr_to_array") }}'
+  - name: sfdc_id_15_to_18
+    description: '{{ doc("sfdc_id_15_to_18") }}'

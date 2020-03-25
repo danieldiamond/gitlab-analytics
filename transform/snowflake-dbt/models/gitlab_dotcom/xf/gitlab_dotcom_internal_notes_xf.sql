@@ -7,13 +7,21 @@ WITH notes AS (
     {{target.schema}}_staging.regexp_to_array(note, '(?<=(gitlab.my.|na34.)salesforce.com\/)[0-9a-zA-Z]{15,18}') AS sfdc_link_array,
     {{target.schema}}_staging.regexp_to_array(note, '(?<=gitlab.zendesk.com\/agent\/tickets\/)[0-9]{1,18}') AS zendesk_link_array
   FROM {{ ref('gitlab_dotcom_notes') }}
+  WHERE noteable_type IN ('Epic', 'Issue', 'MergeRequest')
 
 )
 
 , projects AS (
 
   SELECT *
-  FROM {{ ref('gitlab_dotcom_projects') }}
+  FROM {{ ref('gitlab_dotcom_projects_xf') }}
+
+)
+
+, epics AS (
+
+  SELECT *
+  FROM {{ ref('gitlab_dotcom_epics_xf') }}
 
 )
 
@@ -35,12 +43,15 @@ WITH notes AS (
 
   FROM notes
   LEFT JOIN projects
-    ON notes.project_id = projects.project_id
+    ON notes.noteable_type IN ('Issue', 'MergeRequest')
+    AND notes.project_id = projects.project_id
+  LEFT JOIN epics
+    ON notes.noteable_type = 'Epic'
+    AND notes.noteable_id = epics.epic_id
   INNER JOIN internal_namespaces
-    ON projects.namespace_id = internal_namespaces.namespace_id
+    ON COALESCE(projects.ultimate_parent_id, epics.ultimate_parent_id) = internal_namespaces.namespace_id
 
 )
 
-SELECT
-*
+SELECT *
 FROM notes_with_namespaces

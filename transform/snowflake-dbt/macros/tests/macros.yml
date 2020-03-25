@@ -1,0 +1,7 @@
+version: 2
+
+macros:
+  - name: test_no_overlapping_valid_from_to_dates
+    description: '{{ doc("test_no_overlapping_valid_from_to_dates") }}'
+  - name: test_unique_where_currently_valid
+    description: '{{ doc("test_unique_where_currently_valid") }}'

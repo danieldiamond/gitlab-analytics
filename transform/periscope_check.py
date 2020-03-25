@@ -3,7 +3,7 @@ import os
 from os.path import join, getsize, dirname
 import re
 
-# Assumes the periscope directory was checked out at the parent repository
+# Assumes the Periscope directory was checked out at the parent repository
 
 dirname = os.path.dirname(os.path.abspath(__file__))
 parentdirname = os.path.dirname(dirname)
