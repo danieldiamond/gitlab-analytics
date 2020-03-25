@@ -184,6 +184,9 @@ models:
         - name: application_stage_name
           tests:
             - not_null
+        - name: is_milestone_stage
+          description: Identifies if this is a key milestone within the recruiting process. This should be a stage each candidate goes through regardless of the team they are interviewing for.
+        - name: stages_cleaned    
     - name: greenhouse_approvals
       description: '{{ doc("greenhouse_approvals") }}'
       columns:
