@@ -1017,6 +1017,7 @@ roles:
         member_of:
             - analyst_core
             - bamboohr
+            - dbt_analytics_sensitive
             - data_manager
             - greenhouse
         warehouses:
