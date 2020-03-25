@@ -18,3 +18,4 @@ sources:
 
     tables:
       - name: sources
+      - name: run_results
