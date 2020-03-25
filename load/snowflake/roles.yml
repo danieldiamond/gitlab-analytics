@@ -166,31 +166,6 @@ roles:
                     - analytics.analytics_sensitive.gitlab_dotcom_namespaces
                     - analytics.analytics_sensitive.gitlab_dotcom_projects
 
-    - analyst_infrastructure:
-        warehouses:
-            - analyst_xs
-        member_of:
-            - boneyard
-            - covid19
-            - dbt_analytics
-            - gitlab_data_yaml
-            - handbook
-            - license_db
-            - netsuite
-            - postgres_pipeline
-            - salesforce
-            - sheetload
-            - snapshots
-            - snowflake_db
-            - snowplow
-            - version_db
-            - zendesk
-            - zuora
-        privileges:
-            databases:
-                write:
-                    - analytics
-
     - analyst_finance:
         warehouses:
             - analyst_xs
@@ -892,6 +867,11 @@ roles:
         warehouses:
             - reporting
 
+    - dtownsend:
+        member_of:
+            - analyst_engineering
+            - dtownsend
+
     - eburke:
         warehouses:
             - engineer_xs
@@ -1270,6 +1250,11 @@ users:
         can_login: yes
         member_of:
             - dtang
+
+    - dtownsend:
+        can_login: yes
+        member_of:
+            - dtownsend
 
     - eburke:
         can_login: yes
