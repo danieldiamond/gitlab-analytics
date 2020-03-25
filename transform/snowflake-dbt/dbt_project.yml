@@ -222,8 +222,6 @@ models:
     sfdc:
       base:
         schema: staging
-      sensitive:
-        schema: sensitive
       xf:
         materialized: table
 
