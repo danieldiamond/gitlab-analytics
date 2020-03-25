@@ -23,7 +23,7 @@ models:
           - name: subscription_id
             tests:
                 - not null
-          - name: account_it
+          - name: account_id
             tests:
                 - not null
           - name: product_id
