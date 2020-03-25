@@ -13,7 +13,6 @@ WITH zuora_product AS (
 SELECT
     zuora_product.product_id,
     zuora_product.product_name,
-    {{delivery('zuora_product.category')}},
     zuora_product.sku,
     zuora_product.category
 FROM zuora_product
