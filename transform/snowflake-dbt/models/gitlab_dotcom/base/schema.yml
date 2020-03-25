@@ -700,6 +700,20 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_lists
+    description: Base model for Gitlab.com lists
+    columns:
+      - name: list_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_members
     description: 'Base model for Gitlab.com members. {{ doc("scd_type_two_documentation") }}'
     columns:
@@ -1192,6 +1206,14 @@ models:
       - name: created_at
         tests:
           - not_null
+          
+  - name: gitlab_dotcom_saml_providers
+    description: '{{ doc("gitlab_dotcom_saml_providers") }}'
+    columns:
+      - name: saml_provider_id
+        tests:
+          - not_null
+          - unique
 
   - name: gitlab_dotcom_services
     description: Base model for Gitlab.com services

@@ -121,6 +121,8 @@ sources:
         identifier: gitlab_db_lfs_objects_projects
       - name: licenses
         identifier: gitlab_db_licenses
+      - name: lists
+        identifier: gitlab_db_lists
       - name: members
         identifier: gitlab_db_members
       - name: merge_request_diffs
@@ -173,6 +175,8 @@ sources:
         identifier: gitlab_db_repository_languages
       - name: resource_label_events
         identifier: gitlab_db_resource_label_events
+      - name: saml_providers
+        identifier: gitlab_db_saml_providers
       - name: services
         identifier: gitlab_db_services
       - name: subscriptions
