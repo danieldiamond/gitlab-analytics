@@ -10,10 +10,11 @@ WITH zuora_account AS (
 
 ), excluded_accounts AS (
 
-    SELECT *
-    FROM {{zuora_excluded_accounts()}}
+    SELECT DISTINCT account_id
+    FROM {{ref('zuora_excluded_accounts')}}
+    WHERE account_id IS NOT NULL AND is_permanently_excluded
 
-    )
+)
 
 SELECT
     zuora_account.account_id,
@@ -33,5 +34,4 @@ FROM zuora_account
 WHERE zuora_account.is_deleted = FALSE
   AND zuora_account.account_id NOT IN (
                 SELECT account_id
-                FROM excluded_accounts
-                WHERE is_permanently_excluded)
+                FROM excluded_accounts)
