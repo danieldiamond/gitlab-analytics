@@ -38,12 +38,7 @@ WITH date_table AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge_source') }}
 
-), zuora_subscription AS (
-
-    SELECT *
-    FROM {{ ref('zuora_subscription_source') }}
-
-), gaap_revenue AS (
+), non_gaap_revenue AS (
 
     SELECT
       zuora_acct_period.accounting_period_start_date::DATE    AS accounting_period,
@@ -80,4 +75,4 @@ WITH date_table AS (
 )
 
 SELECT *
-FROM gaap_revenue
+FROM non_gaap_revenue

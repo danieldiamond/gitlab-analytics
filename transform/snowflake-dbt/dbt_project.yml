@@ -128,16 +128,16 @@ models:
       zuora:
         schema: zuora
 
-        
+
     staging:
       schema: staging
       materialized: table
 
       google_analytics_360:
         schema: analytics
-      
+
       license:
-        materialized: view  
+        materialized: view
 
       version:
         tags: ["product"]
@@ -166,6 +166,10 @@ models:
     engineering:
       materialized: table
 
+    external_financial_reporting:
+      base:
+        materialized: table
+        
     gitlab_data_yaml:
       materialized: table
 
@@ -187,14 +191,9 @@ models:
         schema: sensitive
       rpt:
         schema: analytics
-    
+
     handbook:
         materialized: table
-
-    marts:
-      revenue:
-        base:
-          materialized: table
 
     netsuite:
       materialized: table
@@ -210,7 +209,7 @@ models:
       enabled: true
       materialized: table
       schema: analytics
-    
+
     retention:
       materialized: table
 
