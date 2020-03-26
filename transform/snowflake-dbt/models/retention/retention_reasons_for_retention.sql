@@ -73,24 +73,6 @@ WITH raw_mrr_totals_levelled AS (
         mrr_totals_levelled.*,
         retention_subs.*,
         COALESCE(retention_subs.retention_mrr, 0) AS net_retention_mrr,
-        CASE
-            WHEN original_product_category = retention_product_category AND
-                original_quantity < retention_quantity
-                THEN 'Seat Expansion'
-            WHEN (original_product_category = retention_product_category AND
-                    original_quantity = retention_quantity
-                OR original_product_category = retention_product_category AND
-                original_quantity > retention_quantity)
-                THEN 'Discount/Price Change'
-            WHEN original_product_category != retention_product_category AND
-                original_quantity = retention_quantity
-                THEN 'Product Change'
-            WHEN original_product_category != retention_product_category AND
-                original_quantity != retention_quantity
-                THEN 'Product Change/Seat Change Mix'
-            ELSE 'Unknown'
-        END                      AS churn_type,
-        
         {{ retention_type('original_mrr', 'net_retention_mrr') }},
         {{ retention_reason('original_mrr', 'original_product_category', 'original_product_ranking',
                             'original_quantity', 'net_retention_mrr', 'retention_product_category', 
@@ -114,7 +96,6 @@ WITH raw_mrr_totals_levelled AS (
         mrr_totals_levelled.*,
         retention_subs.*,
         COALESCE(retention_subs.retention_mrr, 0)               AS net_retention_mrr,
-        {{ churn_type('original_mrr', 'net_retention_mrr') }},
         {{ retention_type('original_mrr', 'net_retention_mrr') }},
         {{ retention_reason('original_mrr', 'original_product_category', 'original_product_ranking',
                             'original_quantity', 'net_retention_mrr', 'retention_product_category', 
@@ -138,7 +119,6 @@ WITH raw_mrr_totals_levelled AS (
         subscription_name              AS zuora_subscription_name,
         oldest_subscription_in_cohort  AS zuora_subscription_id,
         DATEADD('year', 1, mrr_month)  AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
-        churn_type,
         retention_type,
         retention_reason,
         plan_change,
@@ -162,7 +142,6 @@ WITH raw_mrr_totals_levelled AS (
         subscription_name                                             AS zuora_subscription_name,
         oldest_subscription_in_cohort                                 AS zuora_subscription_id,
         DATEADD('year', 1, mrr_month)                                 AS retention_month, --THIS IS THE RETENTION MONTH, NOT THE MRR MONTH!!
-        churn_type,
         retention_type,
         retention_reason,
         plan_change,
@@ -184,7 +163,7 @@ WITH raw_mrr_totals_levelled AS (
 
 SELECT
     joined.*,
-    RANK() OVER(PARTITION by zuora_subscription_id, churn_type
-        ORDER BY retention_month ASC)   AS rank_churn_type_month
+    RANK() OVER(PARTITION by zuora_subscription_id, retention_type
+        ORDER BY retention_month ASC)   AS rank_retention_type_month
 FROM joined
 WHERE retention_month <= DATEADD(month, -1, CURRENT_DATE)
