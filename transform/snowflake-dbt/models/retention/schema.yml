@@ -202,11 +202,6 @@ models:
         - name: retention_month
           tests:
             - not_null
-        - name: churn_type
-          tests:
-            - not_null
-            - accepted_values:
-                    values: ['Seat Expansion', 'Discount/Price Change', 'Product Change', 'Product Change/Seat Change Mix','Downgraded','Cancelled', 'Unknown']
         - name: retention_reason
           tests:
             - not_null
