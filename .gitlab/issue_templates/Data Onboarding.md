@@ -46,7 +46,6 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `data-triage`, and `business-operations`.
    - [ ] Engineers, join `analytics-pipelines`
    - [ ] Analytsts, join `dbt-runs`
-- [ ] Schedule a recurring fortnightly (every two weeks) 1:1 meeting with the Director of Business Operations.
 - [ ] Invite yourself to the DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.  If you do not yet have access to the Data Team Calendar, ask your manager to add you.
 - [ ] Schedule a coffee chat with each member of the data team. These should be in addition to the ones you do with other GitLab team members.  In addition, you should also consider scheduling chats with IT and BizOps people as well.
 - [ ] Read the following pages of the handbook in their entirety. Bookmark them as you should soon be making MR's to improve our documentation!
