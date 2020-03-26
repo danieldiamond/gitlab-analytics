@@ -21,6 +21,8 @@ models:
         - name: source_name
           description: Where the candidate came from 
         - name: source_type
+        - name: candidate_recruiter
+        - name: candidate_coordinator
         - name: time_to_offer
           description: Shows how long an applicant to go from applying to accepting an offer. This is based on offer accept month.
 

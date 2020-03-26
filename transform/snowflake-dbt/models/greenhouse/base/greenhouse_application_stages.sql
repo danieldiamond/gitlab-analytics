@@ -22,13 +22,13 @@ WITH source as (
     SELECT 
       renamed.*,
       IFF(stage_id in (7 --screen
-                   ,5 -- Screen
-                   ,18 --screening
+                   ,8 -- Screen
+                   ,26 --screening
                    ,52 --assessment
-                   ,29 --face to face
+                   ,33 --face to face
                    ,61 --offer
                    ),True, False)               AS is_milestone_stage,
-        CASE WHEN stage_id IN (7,18,5) 
+        CASE WHEN stage_id IN (7,8,26) 
                THEN 'Sreen'
              WHEN stage_id IN (25,47)  
                THEN 'Team Interview'

@@ -45,7 +45,7 @@ SELECT
     offer_id,
     candidate_id, 
     application_status,
-    stage_name, 
+    stage_name                                                                      AS current_stage, 
     offer_status,
     applied_at                                                                      AS application_date,
     sent_at                                                                         AS offer_sent_date,
@@ -60,6 +60,8 @@ SELECT
     greenhouse_sources.source_name::VARCHAR(250)                                    AS source_name,
     greenhouse_sources.source_type::VARCHAR(250)                                    AS source_type,
     IFF(greenhouse_sources.source_name ='LinkedIn (Prospecting)',True, False)       AS sourced_candidate,
+    candidate_recruiter,
+    candidate_coordinator,
     IFF(offer_status ='accepted',
             DATEDIFF('day', applications.applied_at, offers.resolved_at),
             NULL)                                                                   AS time_to_offer
