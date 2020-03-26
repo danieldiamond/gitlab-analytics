@@ -3,6 +3,11 @@ WITH applications AS (
     SELECT *
     FROM  {{ ref ('greenhouse_applications') }}
 
+), candidates AS (
+
+    SELECT *
+    FROM {{ ref ('greenhouse_candidates') }}
+
 ), greenhouse_application_jobs AS (
 
     SELECT *
@@ -43,7 +48,7 @@ WITH applications AS (
 SELECT 
     applications.application_id, 
     offer_id,
-    candidate_id, 
+    applications.candidate_id, 
     application_status,
     stage_name                                                                      AS current_stage, 
     offer_status,
@@ -68,6 +73,8 @@ SELECT
 FROM applications 
 LEFT JOIN greenhouse_application_jobs 
   ON greenhouse_application_jobs.application_id = applications.application_id
+LEFT JOIN candidates 
+  ON applications.candidate_id = candidates.candidate_id  
 LEFT JOIN jobs 
   ON greenhouse_application_jobs.job_id = jobs.job_id
 LEFT JOIN  greenhouse_departments 
