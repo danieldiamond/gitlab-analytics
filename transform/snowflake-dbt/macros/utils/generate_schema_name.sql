@@ -5,7 +5,7 @@
 
     {%- set production_targets = ('prod','docs','ci') -%}
 
-    {%- set prefixed_schemas = ('finance', 'meta','sensitive','staging','temporary') -%}
+    {%- set prefixed_schemas = ('meta','sensitive','staging','temporary') -%}
 
     {#
         Definitions:
