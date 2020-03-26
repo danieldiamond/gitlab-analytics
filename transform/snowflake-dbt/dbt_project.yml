@@ -166,7 +166,7 @@ models:
     engineering:
       materialized: table
 
-    external_financial_reporting:
+    finance:
       base:
         materialized: table
         
