@@ -11,6 +11,27 @@ models:
       - name: cluster_id
         tests:
           - not_null
+  - name: gitlab_dotcom_container_scanning_jobs
+    description: '{{ doc("gitlab_dotcom_container_scanning_jobs") }}'
+    columns:
+      - name: ci_build_id
+        tests:
+          - not_null
+          - unique
+  - name: gitlab_dotcom_dast_jobs
+    description: '{{ doc("gitlab_dotcom_dast_jobs") }}'
+    columns:
+      - name: ci_build_id
+        tests:
+          - not_null
+          - unique
+  - name: gitlab_dotcom_dependenncy_scanning_jobs
+    description: '{{ doc("gitlab_dotcom_dependenncy_scanning_jobs") }}'
+    columns:
+      - name: ci_build_id
+        tests:
+          - not_null
+          - unique
   - name: gitlab_dotcom_environments_xf
     description: '{{ doc("gitlab_dotcom_environments_xf") }}'
     columns:
@@ -108,6 +129,20 @@ models:
         description: The number of members that are presently associated with the group.
       - name: project_count
         description: The number of projects that are presently associated with the group.
+  - name: gitlab_dotcom_license_management_jobs
+    description: '{{ doc("gitlab_dotcom_license_management_jobs") }}'
+    columns:
+      - name: ci_build_id
+        tests:
+          - not_null
+          - unique
+  - name: gitlab_dotcom_license_scanning_jobs
+    description: '{{ doc("gitlab_dotcom_license_scanning_jobs") }}'
+    columns:
+      - name: ci_build_id
+        tests:
+          - not_null
+          - unique
 
   - name: gitlab_dotcom_memberships
     description: '{{ doc("gitlab_dotcom_memberships") }}'
@@ -286,6 +321,13 @@ models:
         - name: retention
           description: Calculated as `active_in_period_distinct_count` / `base_cohort_count`.
 
+  - name: gitlab_dotcom_sast_jobs
+    description: '{{ doc("gitlab_dotcom_sast_jobs") }}'
+    columns:
+      - name: ci_build_id
+        tests:
+          - not_null
+          - unique
   - name: gitlab_dotcom_secure_stage_ci_jobs
     description: '{{ doc("gitlab_dotcom_secure_stage_ci_jobs") }}'
     columns:
