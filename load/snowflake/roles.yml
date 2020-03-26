@@ -706,12 +706,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.sfdc
                     - raw.salesforce_stitch
             tables:
                 read:
+                    - analytics.sfdc.*
                     - raw.salesforce_stitch.*      
 
     - sheetload:

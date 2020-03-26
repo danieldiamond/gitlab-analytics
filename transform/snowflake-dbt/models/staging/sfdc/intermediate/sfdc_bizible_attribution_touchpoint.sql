@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
   SELECT *
@@ -52,8 +47,6 @@ WITH source AS (
       
     
     FROM source
-  WHERE isdeleted = FALSE
-
 )
 
 SELECT *
