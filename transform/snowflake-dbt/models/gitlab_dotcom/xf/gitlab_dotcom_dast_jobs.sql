@@ -34,9 +34,9 @@ WITH ci_builds AS (
   
     SELECT 
       *,
-      'sast' AS secure_ci_job_type
+      'dast' AS secure_ci_job_type
     FROM ci_builds 
-    WHERE ci_build_name ILIKE '%sast%'
+    WHERE ci_build_name ILIKE '%dast%'
 )
 
 , joined AS (
