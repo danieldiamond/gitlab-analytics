@@ -193,10 +193,10 @@
     "is_representative_of_stage": "False"
   },
   {
-    "event_name": "gitlab_dottcom_secure_stage_ci_jobs",
-    "source_table_name": "secure_stage_ci_jobs",
+    "event_name": "secure_stage_ci_jobs",
+    "source_table_name": "gitlab_dotcom_secure_stage_ci_jobs",
     "user_column_name": "ci_build_user_id",
-    "key_to_parent_project": "project_id",
+    "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
     "is_representative_of_stage": "True"
   },
