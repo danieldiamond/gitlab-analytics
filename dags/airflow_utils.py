@@ -143,7 +143,7 @@ def slack_snapshot_failed_task(context):
 
 def slack_failed_task(context):
     """
-    Function to be used as a callable for on_failure_callback.
+    Function to be used as aira callable for on_failure_callback.
     Send a Slack alert.
     """
 
