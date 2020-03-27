@@ -9,6 +9,7 @@ from airflow_utils import (
     gitlab_defaults,
     gitlab_pod_env_vars,
     slack_failed_task,
+    slack_snapshot_failed_task
 )
 from kube_secrets import (
     SNOWFLAKE_ACCOUNT,
@@ -28,7 +29,7 @@ pod_env_vars = {**gitlab_pod_env_vars, **{}}
 default_args = {
     "catchup": False,
     "depends_on_past": False,
-    "on_failure_callback": slack_failed_task,
+    "on_failure_callback": slack_snapshot_failed_task,
     "owner": "airflow",
     "sla": timedelta(hours=12),
     "sla_miss_callback": slack_failed_task,
