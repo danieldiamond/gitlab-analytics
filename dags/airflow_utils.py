@@ -52,7 +52,7 @@ class MultiSlackChannelOperator(SlackAPIPostOperator):
 
     def execute(self):
         for c in self.channels:
-            super().channel = c
+            self.channel = c
             super().execute()
 
 
