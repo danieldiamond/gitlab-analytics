@@ -39,13 +39,20 @@ The one metric that matters now, & the most important thing you want your team t
 
 * Please provide more details
 
+* What is the data source for the proposed north star metric? (Link, Explanation of how this data is captured, etc)
+
+* Who would be the best contact for the data source system? (Link or explanation)
+
+
 ### 🧩Anaswer these questions to provide more context 
 
 - Any alternative north star metrics you would consider, either because they are easier to get, or you are debating between that and the proposed NSM?
 - Does your feature play a bigger role in initial purchase, retention, or expansion/upgrade? 
 - Does your feature play a bigger role in SMB sales, Enterprise sales, or both? 
 - What are some dimensions you would expect to slice/dice your north star metric? For example, by plan tier, by free/paid, etc. 
-- Are there any GitLab product features that are "downstream" or "upstream" to your product feature? For example, customers have to use feature A to use your feature, or once customers use your feature, they are more likely to use another feature. 
+- Are there any GitLab product features that are "downstream" or "upstream" to your product feature? For example, customers have to use feature A to use your feature, or once customers use your feature, they are more likely to use another feature.
+- [ ] Please attach a mock-up, drawing, or chart in another system that will think will allow you to make a data-driven decision for the propose metric. Link: ______
+    - [ ] Please provide an example of how you would use the mock-up or chart to make the data-driven decision.  
 
 ### 📈 Define Supporting KPI/metrics - [Optional]
 
