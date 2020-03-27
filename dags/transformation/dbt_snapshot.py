@@ -63,3 +63,7 @@ dbt_snapshot = KubernetesPodOperator(
     arguments=[dbt_snapshot_cmd],
     dag=dag,
 )
+
+
+if __name__ =='__main__':
+    dag.run()

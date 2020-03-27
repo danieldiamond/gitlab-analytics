@@ -44,16 +44,26 @@ def partitions(from_date: date, to_date: date, partition: str) -> List[dict]:
             parts.append({k: v for k, v in p.items()})
     return parts
 
-class MultiSlackChannelOperator(SlackAPIPostOperator):
+class MultiSlackChannelOperator():
 
-    def __init__(self, channels : [str], *args, **kwargs):
+    def __init__(self, channels, context):
         self.channels = channels
-        super().__init__(*args, **kwargs)
+        attachment, slack_channel, task_id, task_text = slack_defaults(context, "failure")
+
+        self.slack_alert = SlackAPIPostOperator(
+            attachments=attachment,
+            channel=slack_channel,
+            task_id=task_id,
+            text=task_text,
+            token=os.environ["SLACK_API_TOKEN"],
+            username="Airflow",
+        )
 
     def execute(self):
         for c in self.channels:
-            self.channel = c
-            super().execute()
+            self.slack_alert.channel = c
+            print(self.slack_alert.channel)
+            #self.slack_alert.execute()
 
 
 def slack_defaults(context, task_type):
@@ -130,14 +140,8 @@ def slack_snapshot_failed_task(context):
     Function to be used as a callable for on_failure_callback for dbt-snapshots
     Send a Slack alert to #dbt-runs and #analytic-pipelines
     """
-    attachment, slack_channel, task_id, task_text = slack_defaults(context, "success")
     multi_channel_alert = MultiSlackChannelOperator( channels = ["#dbt-runs", "#analytics-pipelines"],
-                                                     attachments=attachment,
-                                                     channel=slack_channel,
-                                                     task_id=task_id,
-                                                     text=task_text,
-                                                     token=os.environ["SLACK_API_TOKEN"],
-                                                     username="Airflow")
+                                                     context = context)
 
     return multi_channel_alert.execute()
 
