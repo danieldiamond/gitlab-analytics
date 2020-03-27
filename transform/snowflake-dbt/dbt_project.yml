@@ -117,6 +117,11 @@ models:
         materialized: table
         schema: qualtrics
 
+      sfdc:
+        schema: sfdc
+        sensitive:
+          schema: sensitive
+
       version:
         tags: ["product"]
         materialized: table
@@ -216,8 +221,6 @@ models:
     sfdc:
       base:
         schema: staging
-      sensitive:
-        schema: sensitive
       xf:
         materialized: table
 

@@ -45,7 +45,7 @@ models:
       - name: owner_id
         tests:
           - not_null
-  - name: sfdc_lead_source
+  - name: sfdc_lead_sources
     columns:
       - name: lead_source_id
         tests:
