@@ -1,8 +1,3 @@
-{{config({
-    "schema": "staging"
-  })
-}}
-
 WITH base AS (
 
     SELECT *

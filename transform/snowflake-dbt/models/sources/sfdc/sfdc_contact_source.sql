@@ -102,12 +102,12 @@ WITH source AS (
         lastcuupdatedate            AS last_cu_update_date,
         lastmodifiedbyid            AS last_modified_by_id,
         lastmodifieddate            AS last_modified_date,
-        systemmodstamp
+        systemmodstamp,
+
+        isdeleted::BOOLEAN                   AS is_deleted
 
 
     FROM source
-    WHERE isdeleted = FALSE
-
 )
 
 SELECT *

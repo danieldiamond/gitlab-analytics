@@ -1,22 +1,10 @@
-WITH source AS ( 
+WITH base AS (
 
     SELECT *
-    FROM {{ source('salesforce', 'opportunity_stage') }}
+    FROM {{ source('sfdc_opportunity_stage_source') }}
 
-), renamed AS (
-
-    SELECT
-      id                   AS sfdc_id,
-      masterlabel          AS primary_label,
-      defaultprobability   AS default_probability,
-      forecastcategoryname AS forecast_category_name,
-      isactive             AS is_active,
-      isclosed             AS is_closed,
-      iswon                AS is_won
-    FROM source
-
-)    
+)
 
 SELECT *
-FROM renamed
+FROM base
 

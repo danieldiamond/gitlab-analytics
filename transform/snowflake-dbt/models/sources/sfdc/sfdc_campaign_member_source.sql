@@ -26,11 +26,11 @@ WITH source AS (
 
         --metadata
       createddate::date                AS campaign_member_created_date,
-      systemmodstamp
+      systemmodstamp,
+
+      isdeleted                        AS is_deleted
 
     FROM source
-    WHERE isdeleted = FALSE
-
 )
 
 SELECT *

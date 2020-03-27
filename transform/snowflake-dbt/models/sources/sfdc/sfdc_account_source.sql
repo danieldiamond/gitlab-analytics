@@ -112,8 +112,6 @@ WITH source AS (
       systemmodstamp
 
     FROM source
-
-
 )
 
 SELECT *

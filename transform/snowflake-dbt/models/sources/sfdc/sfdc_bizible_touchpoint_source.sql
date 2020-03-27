@@ -37,8 +37,6 @@ WITH source AS (
 
 
     FROM source
-    WHERE isdeleted = FALSE
-
 )
 
 SELECT *

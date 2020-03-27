@@ -1,8 +1,3 @@
-{{config({
-    "schema": "staging"
-  })
-}}
-
 WITH source AS (
 
     SELECT *
@@ -39,15 +34,12 @@ WITH source AS (
       createdbyid                               AS created_by_id,
       createddate                               AS created_date,
       lastmodifiedbyid                          AS last_modified_by_id,
-      lastmodifieddate                          AS last_modified_date
+      lastmodifieddate                          AS last_modified_date,
+      isdeleted                                 AS is_deleted
 
     FROM source
-    WHERE isdeleted = FALSE
 
 )
 
 SELECT *
 FROM renamed
-WHERE pov_id NOT IN (
-  'a5v4M000001DZYvQAO' -- https://gitlab.com/gitlab-data/analytics/issues/3433
-)

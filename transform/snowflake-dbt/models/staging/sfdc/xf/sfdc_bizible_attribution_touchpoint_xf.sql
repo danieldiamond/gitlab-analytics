@@ -7,6 +7,7 @@ WITH opps AS (
 
       SELECT *
       FROM {{ref('sfdc_bizible_attribution_touchpoint')}}
+      WHERE isdeleted = FALSE
 
 ), final AS (
 

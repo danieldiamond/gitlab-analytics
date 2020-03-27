@@ -26,12 +26,10 @@ WITH source AS (
          ebr_success__c                AS ebr_success,
         --metadata
          lAStmodifiedbyid              AS last_modified_by_id,
-         createdbyid                   AS created_by_id
+         createdbyid                   AS created_by_id,
+         isdeleted                     AS is_deleted
 
     FROM source
-
-    WHERE isdeleted = FALSE
-
 )
 
 SELECT *

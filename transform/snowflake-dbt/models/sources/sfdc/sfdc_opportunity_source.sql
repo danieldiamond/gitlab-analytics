@@ -122,12 +122,10 @@ WITH source AS (
                          CURRENT_DATE) AS days_since_last_activity,
         isdeleted                      AS is_deleted,
         lastactivitydate               AS last_activity_date,
-        recordtypeid                   AS record_type_id
+        recordtypeid                   AS record_type_id,
+        isdeleted                      AS is_deleted
 
       FROM source
-      WHERE accountid IS NOT NULL
-        AND isdeleted = FALSE
-
   )
 
 SELECT *

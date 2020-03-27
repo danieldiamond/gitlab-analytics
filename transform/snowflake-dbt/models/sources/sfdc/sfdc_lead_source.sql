@@ -96,10 +96,10 @@ WITH source AS (
         lastactivitydate                                        AS last_activity_date,
         lastmodifiedbyid                                        AS last_modified_id,
         lastmodifieddate                                        AS last_modified_date,
-        systemmodstamp
+        systemmodstamp,
+        isdeleted                                               AS is_deleted
 
     FROM source
-    WHERE isdeleted = FALSE
 
 )
 

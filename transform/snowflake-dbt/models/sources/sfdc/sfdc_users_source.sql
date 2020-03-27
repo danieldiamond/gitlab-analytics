@@ -1,9 +1,3 @@
-{{config({
-    "materialized": "table",
-    "schema": "staging"
-  })
-}}
-
 with base as (
 
     SELECT *,
