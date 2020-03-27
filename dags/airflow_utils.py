@@ -12,7 +12,6 @@ DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
 DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
 PERMIFROST_IMAGE = "registry.gitlab.com/gitlab-data/permifrost:v0.0.2"
 
-
 def split_date_parts(day: date, partition: str) -> List[dict]:
 
     if partition == "month":
@@ -44,6 +43,17 @@ def partitions(from_date: date, to_date: date, partition: str) -> List[dict]:
             seen.add(p["part"])
             parts.append({k: v for k, v in p.items()})
     return parts
+
+class MultiSlackChannelOperator(SlackAPIPostOperator):
+
+    def __init__(self, channels : [str], *args, **kwargs):
+        self.channels = channels
+        super().__init__(*args, **kwargs)
+
+    def execute(self):
+        for c in self.channels:
+            super().channel = c
+            super().execute()
 
 
 def slack_defaults(context, task_type):
@@ -115,6 +125,21 @@ def slack_defaults(context, task_type):
     ]
     return attachment, slack_channel, task_id, task_text
 
+def slack_snapshot_failed_task(context):
+    """
+    Function to be used as a callable for on_failure_callback for dbt-snapshots
+    Send a Slack alert to #dbt-runs and #analytic-pipelines
+    """
+    attachment, slack_channel, task_id, task_text = slack_defaults(context, "success")
+    multi_channel_alert = MultiSlackChannelOperator( channels = ["#dbt-runs", "#analytics-pipelines"],
+                                                     attachments=attachment,
+                                                     channel=slack_channel,
+                                                     task_id=task_id,
+                                                     text=task_text,
+                                                     token=os.environ["SLACK_API_TOKEN"],
+                                                     username="Airflow")
+
+    return multi_channel_alert.execute()
 
 def slack_failed_task(context):
     """
@@ -152,6 +177,7 @@ def slack_succeeded_task(context):
         username="Airflow",
     )
     return slack_alert.execute()
+
 
 
 # Set the resources for the task pods
