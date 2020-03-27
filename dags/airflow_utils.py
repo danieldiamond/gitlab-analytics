@@ -12,6 +12,7 @@ DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
 DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
 PERMIFROST_IMAGE = "registry.gitlab.com/gitlab-data/permifrost:v0.0.2"
 
+
 def split_date_parts(day: date, partition: str) -> List[dict]:
 
     if partition == "month":
@@ -44,9 +45,10 @@ def partitions(from_date: date, to_date: date, partition: str) -> List[dict]:
             parts.append({k: v for k, v in p.items()})
     return parts
 
-class MultiSlackChannelOperator():
+
+class MultiSlackChannelOperator:
     """
-    Class that enables sending Slack notifactions to multiple channels
+    Class that enables sending notifications to multiple Slack channels
     """
 
     def __init__(self, channels, context):
@@ -54,7 +56,9 @@ class MultiSlackChannelOperator():
         self.context = context
 
     def execute(self):
-        attachment, slack_channel, task_id, task_text = slack_defaults(self.context, "failure")
+        attachment, slack_channel, task_id, task_text = slack_defaults(
+            self.context, "failure"
+        )
         for c in self.channels:
             slack_alert = SlackAPIPostOperator(
                 attachments=attachment,
@@ -65,7 +69,6 @@ class MultiSlackChannelOperator():
                 username="Airflow",
             )
             slack_alert.execute()
-
 
 
 def slack_defaults(context, task_type):
@@ -137,15 +140,18 @@ def slack_defaults(context, task_type):
     ]
     return attachment, slack_channel, task_id, task_text
 
+
 def slack_snapshot_failed_task(context):
     """
     Function to be used as a callable for on_failure_callback for dbt-snapshots
     Send a Slack alert to #dbt-runs and #analytic-pipelines
     """
-    multi_channel_alert = MultiSlackChannelOperator( channels = ["#dbt-runs", "#analytics-pipelines"],
-                                                     context = context)
+    multi_channel_alert = MultiSlackChannelOperator(
+        channels=["#dbt-runs", "#analytics-pipelines"], context=context
+    )
 
     return multi_channel_alert.execute()
+
 
 def slack_failed_task(context):
     """

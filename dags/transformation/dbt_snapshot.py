@@ -9,7 +9,7 @@ from airflow_utils import (
     gitlab_defaults,
     gitlab_pod_env_vars,
     slack_failed_task,
-    slack_snapshot_failed_task
+    slack_snapshot_failed_task,
 )
 from kube_secrets import (
     SNOWFLAKE_ACCOUNT,
