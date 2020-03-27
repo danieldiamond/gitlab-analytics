@@ -45,6 +45,9 @@ def partitions(from_date: date, to_date: date, partition: str) -> List[dict]:
     return parts
 
 class MultiSlackChannelOperator():
+    """
+    Class that enables sending Slack notifactions to multiple channels
+    """
 
     def __init__(self, channels, context):
         self.channels = channels
@@ -146,7 +149,7 @@ def slack_snapshot_failed_task(context):
 
 def slack_failed_task(context):
     """
-    Function to be used as aira callable for on_failure_callback.
+    Function to be used as a callable for on_failure_callback.
     Send a Slack alert.
     """
 
@@ -180,7 +183,6 @@ def slack_succeeded_task(context):
         username="Airflow",
     )
     return slack_alert.execute()
-
 
 
 # Set the resources for the task pods
