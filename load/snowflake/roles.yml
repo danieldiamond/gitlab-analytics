@@ -146,6 +146,7 @@ roles:
             - snowflake_db
             - snowplow
             - version_db
+            - zendesk
             - zuora
         privileges:
             databases:
