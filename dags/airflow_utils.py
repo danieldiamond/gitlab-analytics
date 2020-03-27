@@ -48,22 +48,21 @@ class MultiSlackChannelOperator():
 
     def __init__(self, channels, context):
         self.channels = channels
-        attachment, slack_channel, task_id, task_text = slack_defaults(context, "failure")
-
-        self.slack_alert = SlackAPIPostOperator(
-            attachments=attachment,
-            channel=slack_channel,
-            task_id=task_id,
-            text=task_text,
-            token=os.environ["SLACK_API_TOKEN"],
-            username="Airflow",
-        )
+        self.context = context
 
     def execute(self):
+        attachment, slack_channel, task_id, task_text = slack_defaults(self.context, "failure")
         for c in self.channels:
-            self.slack_alert.channel = c
-            print(self.slack_alert.channel)
-            #self.slack_alert.execute()
+            slack_alert = SlackAPIPostOperator(
+                attachments=attachment,
+                channel=c,
+                task_id=task_id,
+                text=task_text,
+                token=os.environ["SLACK_API_TOKEN"],
+                username="Airflow",
+            )
+            slack_alert.execute()
+
 
 
 def slack_defaults(context, task_type):
