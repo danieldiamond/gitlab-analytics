@@ -442,10 +442,11 @@ WITH gitlab_subscriptions AS (
         WHEN '{{ event_cte.event_name }}' IN (
                                               'container_scanning',
                                               'dast',
-                                              'dependy_scanning',
+                                              'dependency_scanning',
                                               'license_management',
                                               'license_scanning',
-                                              'sast'
+                                              'sast',
+                                              'secure_stage_ci_jobs'
                                             )
           THEN 'secure'
         ELSE version_usage_stats_to_stage_mappings.stage
