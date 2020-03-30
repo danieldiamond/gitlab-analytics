@@ -66,21 +66,21 @@ models:
         tests: 
           - not_null         
 
-- name: greenhouse_location_factors
+  - name: greenhouse_location_factors
     description: This dbt model gives the location factor of location application question answers.
     columns:
-    - name: application_answer
+      - name: application_answer
         tests:
           - not_null
-    - name: city
-      tests:
-        - not_null
-    - name: state
-      tests:
-        - not_null
-    - name: country
-      tests: 
-        - not_null
-    - name: location_factor
-      tests:
-        - not_null
+      - name: city
+        tests:
+          - not_null
+      - name: state
+        tests:
+          - not_null
+      - name: country
+        tests: 
+          - not_null
+      - name: location_factor
+        tests:
+          - not_null
