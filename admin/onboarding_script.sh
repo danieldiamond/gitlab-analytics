@@ -140,7 +140,9 @@ rbenv local 2.6.5
 gem install bundler
 bundle install
 echo "You've got everything set to build the handbook locally."
-echo "When you're working on the handbook use the build_hb! alias to get it to build."
+echo "Setting up goto for the handbook.."
+goto -r handbook ~/repos/www-gitlab-com/
+echo "handbook goto alias successfully added"
 
 echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.bash_profile
 echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.bash_profile
