@@ -69,6 +69,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.amount,
       sfdc_opportunity.closed_deals,
       sfdc_opportunity.competitors,
+      sfdc_opportunity.critical_deal_flag,
       sfdc_opportunity.deal_size,
       sfdc_opportunity.forecast_category_name,
       sfdc_opportunity.forecasted_iacv,
