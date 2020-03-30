@@ -43,7 +43,10 @@ models:
           description: If the offer_status = 'accepted' then this will be a 1, otherwise 0. This is used later to aggregate offers in the greenhouse_diversity model.
         - name: time_to_offer
           description: Shows how long an applicant to go from applying to accepting an offer. This is based on offer accept month. 
-
+        - name: sourced_candidate
+          description: Candidates sourced through LinkedIn.
+        - name: hired_sourced_candidates  
+ 
   - name: greenhouse_locations_cleaned_intermediate
     description: This dbt model partitions the area column from the location application question answers to get the city, state, and country of each location.
     columns:
