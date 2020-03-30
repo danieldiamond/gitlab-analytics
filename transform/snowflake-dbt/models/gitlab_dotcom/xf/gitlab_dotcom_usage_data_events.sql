@@ -81,6 +81,30 @@
     "is_representative_of_stage": "True"
   },
   {
+    "event_name": "container_scanning",
+    "source_cte_name": "container_scanning_jobs",
+    "user_column_name": "user_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_build_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "dast",
+    "source_cte_name": "dast_jobs",
+    "user_column_name": "user_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_build_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "dependency_scanning",
+    "source_cte_name": "dependency_scanning_jobs",
+    "user_column_name": "user_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_build_id",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "deployments",
     "source_table_name": "gitlab_dotcom_deployments",
     "user_column_name": "user_id",
@@ -137,6 +161,22 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "license_management",
+    "source_cte_name": "license_management_jobs",
+    "user_column_name": "user_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_build_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "license_scanning",
+    "source_cte_name": "license_scanning_jobs",
+    "user_column_name": "user_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_build_id",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "merge_requests",
     "source_table_name": "gitlab_dotcom_merge_requests",
     "user_column_name": "author_id",
@@ -190,6 +230,14 @@
     "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "release_id",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "sast",
+    "source_cte_name": "sast_jobs",
+    "user_column_name": "user_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_build_id",
     "is_representative_of_stage": "False"
   },
   {
@@ -269,7 +317,43 @@ WITH gitlab_subscriptions AS (
 )
 
 /* Source CTEs Start Here */
-, projects_prometheus_active AS (
+, container_scanning_jobs AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
+    WHERE secure_ci_job_type = 'container_scanning'
+
+), dast_jobs AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
+    WHERE secure_ci_job_type = 'dast'
+
+), dependency_scanning_jobs AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
+    WHERE secure_ci_job_type = 'dependency_scanning'
+
+), license_management_jobs AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
+    WHERE secure_ci_job_type = 'license_management'
+
+), license_scanning_jobs AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
+    WHERE secure_ci_job_type = 'license_scanning'
+
+), projects_prometheus_active AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_projects_xf') }}
+    WHERE ARRAY_CONTAINS('PrometheusService'::VARIANT, active_service_types)
+
+), projects_prometheus_active AS (
 
     SELECT *
     FROM {{ ref('gitlab_dotcom_projects_xf') }}
@@ -288,6 +372,12 @@ WITH gitlab_subscriptions AS (
       invite_created_at AS created_at
     FROM {{ ref('gitlab_dotcom_members') }}
     WHERE member_source_type = 'Namespace'
+
+), sast_jobs AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
+    WHERE secure_ci_job_type = 'sast'
 
 )
 /* End of Source CTEs */

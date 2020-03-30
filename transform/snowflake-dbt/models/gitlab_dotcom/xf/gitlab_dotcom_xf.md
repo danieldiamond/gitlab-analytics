@@ -1,21 +1,3 @@
-{% docs gitlab_dotcom_container_scanning_jobs %}
-
-This table is meant to isolate all container_scanning jobs used to create the AMAU calculation for secure stage as described in [this handbook page](https://about.gitlab.com/handbook/product/metrics/#stage-monthly-active-users-smau)
-
-{% enddocs %}
-
-{% docs gitlab_dotcom_dast_jobs %}
-
-This table is meant to isolate all dast jobs used to create the AMAU calculation for secure stage as described in [this handbook page](https://about.gitlab.com/handbook/product/metrics/#stage-monthly-active-users-smau)
-
-{% enddocs %}
-
-{% docs gitlab_dotcom_dependency_scanning_jobs %}
-
-This table is meant to isolate all dependency_scanning jobs used to create the AMAU calculation for secure stage as described in [this handbook page](https://about.gitlab.com/handbook/product/metrics/#stage-monthly-active-users-smau)
-
-{% enddocs %}
-
 {% docs gitlab_dotcom_environments_xf %}
 
 This model anonymizes three fields: `environment_name`, `slug`, `external_url` based on the visibility of the projects the environments are associated to 
@@ -103,15 +85,6 @@ This model includes one row for every day, but MAU for a given month will typica
 
 {% enddocs %}
 
-{% docs gitlab_dotcom_license_management_jobs %}
-
-This table is meant to isolate all license_management jobs used to create the AMAU calculation for secure stage as described in [this handbook page](https://about.gitlab.com/handbook/product/metrics/#stage-monthly-active-users-smau)
-
-{% enddocs %}{% docs gitlab_dotcom_license_scanning_jobs %}
-
-This table is meant to isolate all license_scanning jobs used to create the AMAU calculation for secure stage as described in [this handbook page](https://about.gitlab.com/handbook/product/metrics/#stage-monthly-active-users-smau)
-
-{% enddocs %}
 {% docs gitlab_dotcom_merge_request_assignment_events %}
 
 This model contains the history of assignments, unassignments, and reassignments for merge requests within internal namespaces. From `gitlab_dotcom_internal_notes_xf`, notes of type `MergeRequest` are queried. Notes are stemmed down to referenced usernames, tokenized, and flattened so that for each event (assign, unassign, reassign) a row is created for each referenced username in the order it appears in the note. Finally, usernames are replaced with user id's by joining to `gitlab_dotcom_users`. Usernames that do not have an associated user_id (if the user was deleted or changed usernames) are not included in this model so as to not misattribute assignee changes.
@@ -170,12 +143,6 @@ This table produces monthly retention rates by monthly signup cohort.
 The `cohorting` CTE establishes how long the user was active by comparing `created_at` with `last_activity_on` and marking this length of activity in months.
 
 The final result is determined by merging the `cohorting` table to itself when activity length = 0 so that we have the based size of the cohort, then take the rate from members active in each period of activity.
-
-{% enddocs %}
-
-{% docs gitlab_dotcom_sast_jobs %}
-
-This table is meant to isolate all sast jobs used to create the AMAU calculation for secure stage as described in [this handbook page](https://about.gitlab.com/handbook/product/metrics/#stage-monthly-active-users-smau)
 
 {% enddocs %}
 
