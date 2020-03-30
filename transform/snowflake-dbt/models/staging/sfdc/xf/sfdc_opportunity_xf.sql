@@ -8,7 +8,7 @@ WITH sfdc_opportunity AS (
 
 ), sfdc_lead_source AS (
 
-    SELECT * FROM {{ref('sfdc_lead_source')}}
+    SELECT * FROM {{ref('sfdc_lead_sources')}}
 
 ), sfdc_users_xf AS (
 

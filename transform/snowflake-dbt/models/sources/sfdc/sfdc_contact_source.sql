@@ -11,7 +11,7 @@ WITH source AS (
         -- id
         id                          AS contact_id,
         name                        AS contact_name,
-        sha1(email)                 AS email_hash,
+        email                       AS contact_email,
         split_part(email,'@',2)     AS email_domain,
 
         -- keys
@@ -57,7 +57,7 @@ WITH source AS (
         lead_source_type__c         AS lead_source_type,
         outreach_stage__c           AS outreach_stage,
         account_type__c             AS account_type,
-        contact_assigned_datetime__c::datetime   
+        contact_assigned_datetime__c::datetime
                                     AS assigned_datetime,
         mql_timestamp__c            AS marketo_qualified_lead_timestamp,
         mql_datetime__c             AS marketo_qualified_lead_datetime,
@@ -76,15 +76,15 @@ WITH source AS (
         {{  sfdc_source_buckets('leadsource') }}
 
         --path factory info
-        pathfactory_experience_name__c    
+        pathfactory_experience_name__c
                                     AS pathfactory_experience_name,
-        pathfactory_engagement_score__c    
+        pathfactory_engagement_score__c
                                     AS pathfactory_engagement_score,
-        pathfactory_content_count__c   
+        pathfactory_content_count__c
                                     AS pathfactory_content_count,
-        pathfactory_content_list__c    
+        pathfactory_content_list__c
                                     AS pathfactory_content_list,
-        pathfactory_content_journey__c    
+        pathfactory_content_journey__c
                                     AS pathfactory_content_journey,
         pathfactory_topic_list__c   AS pathfactory_topic_list,
 
@@ -97,17 +97,16 @@ WITH source AS (
         -- metadata
         createdbyid                 AS created_by_id,
         createddate                 AS created_date,
+        isdeleted                   AS is_deleted,
         lastactivitydate            AS last_activity_date,
         lastcurequestdate           AS last_cu_request_date,
         lastcuupdatedate            AS last_cu_update_date,
         lastmodifiedbyid            AS last_modified_by_id,
         lastmodifieddate            AS last_modified_date,
-        systemmodstamp,
-
-        isdeleted::BOOLEAN                   AS is_deleted
-
+        systemmodstamp
 
     FROM source
+
 )
 
 SELECT *

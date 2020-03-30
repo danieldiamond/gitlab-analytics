@@ -83,6 +83,8 @@ sources:
         identifier: gitlab_db_design_management_designs
       - name: design_management_versions
         identifier: gitlab_db_design_management_versions
+      - name: elasticsearch_indexed_namespaces
+        identifier: gitlab_db_elasticsearch_indexed_namespaces
       - name: environments
         identifier: gitlab_db_environments
       - name: epic_issues

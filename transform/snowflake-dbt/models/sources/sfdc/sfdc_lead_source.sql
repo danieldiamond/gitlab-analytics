@@ -9,9 +9,9 @@ WITH source AS (
         --id
         id                                                      AS lead_id,
         name                                                    AS lead_name,
-        sha1(email)                                             AS email_hash,
+        email                                                   AS lead_email,
         split_part(email,'@',2)                                 AS email_domain,
-		
+
         --keys
         masterrecordid                                          AS master_record_id,
         convertedaccountid                                      AS converted_account_id,
@@ -93,11 +93,11 @@ WITH source AS (
         --metadata
         createdbyid                                             AS created_by_id,
         createddate                                             AS created_date,
+        isdeleted                                               AS is_deleted,
         lastactivitydate                                        AS last_activity_date,
         lastmodifiedbyid                                        AS last_modified_id,
         lastmodifieddate                                        AS last_modified_date,
-        systemmodstamp,
-        isdeleted                                               AS is_deleted
+        systemmodstamp
 
     FROM source
 

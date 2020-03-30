@@ -146,6 +146,7 @@ roles:
             - snowflake_db
             - snowplow
             - version_db
+            - zendesk
             - zuora
         privileges:
             databases:
@@ -573,16 +574,19 @@ roles:
             databases:
                 read:
                     - analytics
+                    - raw
             schemas:
                 read:
                     - analytics.analytics
                     - analytics.analytics_staging
                     - analytics.analytics_meta
+                    - raw.dbt
             tables:
                 read:
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
+                    - raw.dbt.*
 
     - dbt_analytics_sensitive:
         warehouses:

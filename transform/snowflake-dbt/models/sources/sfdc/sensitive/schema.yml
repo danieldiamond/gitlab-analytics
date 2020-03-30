@@ -1,0 +1,17 @@
+version: 2
+models:
+  - name: sfdc_contact_pii
+    description: Model for SFDC Contacts sensitive data
+    columns:
+        - name: contact_id
+          tests:
+              - not_null
+              - unique
+  - name: sfdc_lead_pii
+    description: Model for SFDC Leads sensitive data
+    columns:
+        - name: lead_id
+          tests:
+              - not_null
+              - unique
+  

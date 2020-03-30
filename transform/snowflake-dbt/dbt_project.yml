@@ -118,9 +118,9 @@ models:
         schema: qualtrics
 
       sfdc:
-        materialized: table
         schema: sfdc
-
+        sensitive:
+          schema: sensitive
 
       version:
         tags: ["product"]
@@ -133,20 +133,18 @@ models:
       zuora:
         schema: zuora
 
-        
+
     staging:
       schema: staging
       materialized: table
 
       google_analytics_360:
         schema: analytics
-      
+
       license:
         materialized: view
 
       sfdc:
-        sensitive:
-          schema: sensitive
         xf:
           schema: analytics
 
@@ -177,6 +175,10 @@ models:
     engineering:
       materialized: table
 
+    finance:
+      base:
+        materialized: table
+        
     gitlab_data_yaml:
       materialized: table
 
@@ -198,14 +200,9 @@ models:
         schema: sensitive
       rpt:
         schema: analytics
-    
+
     handbook:
         materialized: table
-
-    marts:
-      revenue:
-        base:
-          materialized: table
 
     netsuite:
       materialized: table
@@ -221,10 +218,19 @@ models:
       enabled: true
       materialized: table
       schema: analytics
-    
+
     retention:
       materialized: table
 
+<<<<<<< HEAD
+=======
+    sfdc:
+      base:
+        schema: staging
+      xf:
+        materialized: table
+
+>>>>>>> master
     smau_events:
       tags: ["product"]
       materialized: table

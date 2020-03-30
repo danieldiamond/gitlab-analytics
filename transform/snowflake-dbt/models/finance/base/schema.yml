@@ -1,7 +1,7 @@
 version: 2
 
 models:
-    - name: monthly_recurring_revenue
+    - name: zuora_monthly_recurring_revenue
       description: Base model for Zuora MRR
       columns:
           - name: account_number
@@ -15,11 +15,11 @@ models:
             tests:
               - accepted_values:
                       values: ['GitHost', 'Other', 'Gold', 'Basic', 'Bronze', 'Premium', 'Starter', 'Ultimate', 'Support', 'Plus', 'Silver', 'Standard', 'Trueup']
-              - not_null          
+              - not_null
           - name: rate_plan_charge_name
             tests:
                 - not_null
-    - name: non_gaap_revenue
+    - name: zuora_non_gaap_revenue
       description: Base model for Zuora Non-GAAP Revenue
       columns:
           - name: account_number
