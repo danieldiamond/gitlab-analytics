@@ -46,6 +46,31 @@ def partitions(from_date: date, to_date: date, partition: str) -> List[dict]:
     return parts
 
 
+class MultiSlackChannelOperator:
+    """
+    Class that enables sending notifications to multiple Slack channels
+    """
+
+    def __init__(self, channels, context):
+        self.channels = channels
+        self.context = context
+
+    def execute(self):
+        attachment, slack_channel, task_id, task_text = slack_defaults(
+            self.context, "failure"
+        )
+        for c in self.channels:
+            slack_alert = SlackAPIPostOperator(
+                attachments=attachment,
+                channel=c,
+                task_id=task_id,
+                text=task_text,
+                token=os.environ["SLACK_API_TOKEN"],
+                username="Airflow",
+            )
+            slack_alert.execute()
+
+
 def slack_defaults(context, task_type):
     """
     Function to handle switching between a task failure and success.
@@ -114,6 +139,18 @@ def slack_defaults(context, task_type):
         }
     ]
     return attachment, slack_channel, task_id, task_text
+
+
+def slack_snapshot_failed_task(context):
+    """
+    Function to be used as a callable for on_failure_callback for dbt-snapshots
+    Send a Slack alert to #dbt-runs and #analytics-pipelines
+    """
+    multi_channel_alert = MultiSlackChannelOperator(
+        channels=["#dbt-runs", "#analytics-pipelines"], context=context
+    )
+
+    return multi_channel_alert.execute()
 
 
 def slack_failed_task(context):
