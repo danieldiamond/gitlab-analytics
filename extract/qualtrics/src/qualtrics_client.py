@@ -36,3 +36,54 @@ class QualtricsClient:
         return self.get(
             f"directories/{directory_id}/mailinglists/{mailing_list_id}/contacts", {}
         )
+
+    def download_survey_response_file(self, survey_id, file_format):
+
+        # Setting static parameters
+        request_check_progress = 0.0
+        progress_status = "inProgress"
+        response_base_url = self.base_url + f"surveys/{survey_id}/export-responses/"
+        headers = {
+            "content-type": "application/json",
+            "x-api-token": self.api_token,
+        }
+
+        # Step 1: Creating Data Export
+        download_request_url = response_base_url
+        download_request_payload = '{"format":"' + file_format + '"}'
+        download_request_response = requests.request(
+            "POST", download_request_url, data=download_request_payload, headers=headers
+        )
+        progressId = download_request_response.json()["result"]["progressId"]
+        print(download_request_response.text)
+
+        # Step 2: Checking on Data Export Progress and waiting until export is ready
+        while progress_status != "complete" and progress_status != "failed":
+            print("progressStatus=", progress_status)
+            request_check_url = response_base_url + progressId
+            request_check_response = requests.get(request_check_url, headers=headers)
+            request_check_progress = request_check_response.json()["result"][
+                "percentComplete"
+            ]
+            print("Download is " + str(request_check_progress) + " complete")
+            progress_status = request_check_response.json()["result"]["status"]
+
+        # step 2.1: Check for error
+        if progress_status is "failed":
+            raise Exception("export failed")
+
+        fileId = request_check_response.json()["result"]["fileId"]
+
+        # Step 3: Downloading file
+        request_download_url = response_base_url + fileId + "/file"
+        request_download = requests.get(
+            request_download_url, headers=headers, stream=True
+        )
+
+        save_path = "/survey_export.json"
+
+        with open(save_path, "wb") as fd:
+            for chunk in request_download.iter_content(chunk_size=128):
+                fd.write(chunk)
+
+        return save_path
