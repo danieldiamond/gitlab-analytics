@@ -1,6 +1,6 @@
 version: 2
 models:
-  - name: sfdc_account_source
+  - name: sfdc_account
     description: source model for SFDC Accounts
     columns:
       - name: account_id
@@ -13,7 +13,7 @@ models:
       - name: is_sdr_target_account
         tests:
           - not_null
-  - name: sfdc_bizible_attribution_touchpoint_source
+  - name: sfdc_bizible_attribution_touchpoint
     description: Attribution touchpoints are on opportunities.
     columns:
         - name: touchpoint_id
@@ -26,14 +26,14 @@ models:
               - relationships:
                     to: ref('sfdc_campaign')
                     field: campaign_id
-  - name: sfdc_bizible_touchpoint_source
+  - name: sfdc_bizible_touchpoint
     description: Touch points are on leads and contacts.
     columns:
         - name: touchpoint_id
           tests:
               - unique
               - not_null
-  - name: sfdc_campaign_source
+  - name: sfdc_campaign
     description: source model for SFDC Campaigns
     columns:
         - name: campaign_id
@@ -43,14 +43,14 @@ models:
         - name: campaign_name
           tests:
               - not_null
-  - name: sfdc_campaign_member_source
+  - name: sfdc_campaign_member
     description: The source model for SFDC Campaign Members
     columns:
         - name: campaign_member_id
           tests:
               - not_null
               - unique
-  - name: sfdc_contact_source
+  - name: sfdc_contact
     description: source model for SFDC Contacts
     columns:
         - name: contact_id
@@ -60,7 +60,7 @@ models:
         - name: contact_name
           tests:
               - not_null
-  - name: sfdc_contact_pii
+  - name: sfdc_contact
     description: This is the segregated PII data from the sfdc_contact base model
   - name: sfdc_executive_business_review
     description: base model for SFDC Executive Business Reviews

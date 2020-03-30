@@ -3,7 +3,6 @@ WITH source AS (
     SELECT *
     FROM {{ ref('sfdc_campaign_member_source') }}
 
-
 )
 
 SELECT *

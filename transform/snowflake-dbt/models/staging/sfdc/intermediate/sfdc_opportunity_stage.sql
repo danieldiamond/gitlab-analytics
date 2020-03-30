@@ -1,7 +1,7 @@
 WITH base AS (
 
     SELECT *
-    FROM {{ source('sfdc_opportunity_stage_source') }}
+    FROM {{ ref('sfdc_opportunity_stage_source') }}
 
 )
 
