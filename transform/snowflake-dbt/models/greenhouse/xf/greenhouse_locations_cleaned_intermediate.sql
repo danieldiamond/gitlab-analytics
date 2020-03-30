@@ -10,6 +10,7 @@ WITH raw_application_answer AS (
 ), application_answer_base AS (
   
   SELECT
+    application_answer,
     SPLIT_PART(application_answer, '-', 2)                              AS area,
     SPLIT_PART(application_answer, '-', 1)                              AS country
   FROM raw_application_answer
@@ -17,6 +18,7 @@ WITH raw_application_answer AS (
 ), area_partition AS (
   
   SELECT
+    application_answer,
     REGEXP_COUNT(area, ', ', 1)                                         AS comma_count,
     REGEXP_COUNT(area, '/', 1)                                          AS slash_count,
     area,
@@ -26,6 +28,7 @@ WITH raw_application_answer AS (
 ), countries_all AS (
   
   SELECT
+    application_answer,
     'all'                                                               AS city,
     'all'                                                               AS state,
     LOWER(country)                                                      AS country
@@ -35,6 +38,7 @@ WITH raw_application_answer AS (
 ), state_only AS (
   
   SELECT
+    application_answer,
     'all'                                                               AS city,
     LOWER(area)                                                         AS state,
     LOWER(country)                                                      AS country
@@ -46,6 +50,7 @@ WITH raw_application_answer AS (
 ), multiple_states_1 AS (
   
   SELECT
+    application_answer,
     'all'                                                               AS city,
     TRIM(LOWER(SPLIT_PART(area, '/', 1)))                               AS state,
     LOWER(country)                                                      AS country
@@ -57,6 +62,7 @@ WITH raw_application_answer AS (
 ), multiple_states_2 AS (
   
   SELECT
+    application_answer,
     'all'                                                               AS city,
     TRIM(LOWER(SPLIT_PART(area, '/', 2)))                               AS state,
     LOWER(country)                                                      AS country
@@ -78,6 +84,7 @@ WITH raw_application_answer AS (
 ), city_and_state AS (
   
   SELECT
+    application_answer,
     TRIM(LOWER(SPLIT_PART(area, ', ', 1)))                              AS city,
     TRIM(LOWER(SPLIT_PART(area, ', ', 2)))                              AS state,
     LOWER(country)                                                      AS country
@@ -89,6 +96,7 @@ WITH raw_application_answer AS (
 ), multiple_cities_1 AS (
   
   SELECT
+    application_answer,
     TRIM(LOWER((SPLIT_PART(SPLIT_PART(area, ', ', 1), '/', 1))))        AS city,
     TRIM(LOWER(SPLIT_PART(area, ', ', 2)))                              AS state,
     LOWER(country)                                                      AS country
@@ -100,6 +108,7 @@ WITH raw_application_answer AS (
 ), multiple_cities_2 AS (
   
   SELECT
+    application_answer,
     TRIM(LOWER((SPLIT_PART(SPLIT_PART(area, ', ', 1), '/', 2))))        AS city,
     TRIM(LOWER(SPLIT_PART(area, ', ', 2)))                              AS state,
     LOWER(country)                                                      AS country
@@ -123,6 +132,7 @@ WITH raw_application_answer AS (
 ), multiple_cities_and_states_1 AS (
   
   SELECT
+    application_answer,
     TRIM(LOWER(SPLIT_PART(area, ', ', 1)))                              AS city,
     TRIM(LOWER(SPLIT_PART(SPLIT_PART(area, ', ', 2), '/', 1)))          AS state,
     LOWER(country)                                                      AS country
@@ -135,6 +145,7 @@ WITH raw_application_answer AS (
 ), multiple_cities_and_states_2 AS (
   
   SELECT
+    application_answer,
     TRIM(LOWER(SPLIT_PART(area, ', ', 1)))                              AS city,
     TRIM(LOWER(SPLIT_PART(SPLIT_PART(area, ', ', 2), '/', 2)))          AS state,
     LOWER(country)                                                      AS country
