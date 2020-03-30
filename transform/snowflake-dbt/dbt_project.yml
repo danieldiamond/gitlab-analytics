@@ -222,15 +222,6 @@ models:
     retention:
       materialized: table
 
-<<<<<<< HEAD
-=======
-    sfdc:
-      base:
-        schema: staging
-      xf:
-        materialized: table
-
->>>>>>> master
     smau_events:
       tags: ["product"]
       materialized: table
