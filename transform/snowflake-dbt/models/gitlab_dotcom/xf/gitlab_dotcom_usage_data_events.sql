@@ -472,7 +472,7 @@ WITH gitlab_subscriptions AS (
       {% endif %}
 
       -- Join on either the project's or the group's ultimate namespace.
-      INNER JOIN namespaces AS ultimate_namespace
+      LEFT JOIN namespaces AS ultimate_namespace
         {% if event_cte.key_to_parent_project is defined %}
         ON ultimate_namespace.namespace_id = projects.ultimate_parent_id
         {% elif event_cte.key_to_parent_group is defined %}
