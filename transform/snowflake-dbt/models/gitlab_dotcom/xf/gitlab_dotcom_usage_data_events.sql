@@ -83,24 +83,24 @@
   {
     "event_name": "container_scanning",
     "source_cte_name": "container_scanning_jobs",
-    "user_column_name": "user_id",
-    "key_to_parent_project": "project_id",
+    "user_column_name": "ci_build_user_id",
+    "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
     "is_representative_of_stage": "False"
   },
   {
     "event_name": "dast",
     "source_cte_name": "dast_jobs",
-    "user_column_name": "user_id",
-    "key_to_parent_project": "project_id",
+    "user_column_name": "ci_build_user_id",
+    "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
     "is_representative_of_stage": "False"
   },
   {
     "event_name": "dependency_scanning",
     "source_cte_name": "dependency_scanning_jobs",
-    "user_column_name": "user_id",
-    "key_to_parent_project": "project_id",
+    "user_column_name": "ci_build_user_id",
+    "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
     "is_representative_of_stage": "False"
   },
@@ -163,16 +163,16 @@
   {
     "event_name": "license_management",
     "source_cte_name": "license_management_jobs",
-    "user_column_name": "user_id",
-    "key_to_parent_project": "project_id",
+    "user_column_name": "ci_build_user_id",
+    "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
     "is_representative_of_stage": "False"
   },
   {
     "event_name": "license_scanning",
     "source_cte_name": "license_scanning_jobs",
-    "user_column_name": "user_id",
-    "key_to_parent_project": "project_id",
+    "user_column_name": "ci_build_user_id",
+    "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
     "is_representative_of_stage": "False"
   },
@@ -235,8 +235,8 @@
   {
     "event_name": "sast",
     "source_cte_name": "sast_jobs",
-    "user_column_name": "user_id",
-    "key_to_parent_project": "project_id",
+    "user_column_name": "ci_build_user_id",
+    "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
     "is_representative_of_stage": "False"
   },
