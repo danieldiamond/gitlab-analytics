@@ -7,6 +7,9 @@ databases:
     - analytics:
         shared: no
 
+    - covid19:
+        shared: yes    
+        
     - raw:
         shared: no
 
@@ -77,9 +80,11 @@ roles:
             - analyst_l
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -87,6 +92,7 @@ roles:
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -100,15 +106,18 @@ roles:
             - analyst_l
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -123,10 +132,12 @@ roles:
             - analyst_xl
         member_of:
             - boneyard
+            - covid19
             - db_dumps
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - postgres_pipeline
             - netsuite
             - salesforce
@@ -134,6 +145,8 @@ roles:
             - snapshots
             - snowflake_db
             - snowplow
+            - version_db
+            - zendesk
             - zuora
         privileges:
             databases:
@@ -154,36 +167,16 @@ roles:
                     - analytics.analytics_sensitive.gitlab_dotcom_namespaces
                     - analytics.analytics_sensitive.gitlab_dotcom_projects
 
-    - analyst_infrastructure:
-        warehouses:
-            - analyst_xs
-        member_of:
-            - boneyard
-            - dbt_analytics
-            - gitlab_data_yaml
-            - handbook
-            - netsuite
-            - postgres_pipeline
-            - salesforce
-            - sheetload
-            - snapshots
-            - snowflake_db
-            - snowplow
-            - zendesk
-            - zuora
-        privileges:
-            databases:
-                write:
-                    - analytics
-
     - analyst_finance:
         warehouses:
             - analyst_xs
         member_of:
             - bamboohr
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -191,6 +184,7 @@ roles:
             - snapshots
             - snowflake_db
             - snowplow
+            - version_db
             - zuora
         privileges:
             databases:
@@ -233,10 +227,12 @@ roles:
         member_of:
             - bamboohr
             - boneyard
+            - covid19
             - dbt_analytics
             - dbt_analytics_sensitive
             - gitlab_data_yaml
             - greenhouse
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -244,6 +240,7 @@ roles:
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -256,13 +253,16 @@ roles:
             - analyst_xs
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
             - snapshots
             - snowflake_db
+            - version_db
             - zuora
         privileges:
             databases:
@@ -298,9 +298,11 @@ roles:
             - analyst_l
         member_of:
             - boneyard
+            - covid19
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
+            - license_db
             - netsuite
             - postgres_pipeline
             - salesforce
@@ -308,6 +310,7 @@ roles:
             - snapshots
             - snowflake_db
             - snowplow
+            - version_db
             - zendesk
             - zuora
         privileges:
@@ -317,6 +320,7 @@ roles:
 
     - engineer:
         member_of:
+            - covid19
             - loader
             - transformer
             - snowflake_db
@@ -407,12 +411,14 @@ roles:
         member_of:
             - boneyard
             - dbt_analytics
+            - license_db
             - postgres_pipeline
             - salesforce
             - sheetload
             - snapshots
             - snowplow
             - snowflake_db
+            - version_db
             - zuora
         privileges:
             databases:
@@ -432,33 +438,6 @@ roles:
                     - analytics.analytics_sensitive.gitlab_dotcom_milestones
                     - analytics.analytics_sensitive.gitlab_dotcom_namespaces
                     - analytics.analytics_sensitive.gitlab_dotcom_projects
-    
-    - pwc_contractor:
-        warehouses:
-            - analyst_xs
-        member_of:
-            - salesforce
-            - zuora
-        privileges:
-            databases:
-                read:
-                    - analytics
-                write:
-                    - analytics
-            schemas:
-                read:
-                    - analytics.pwc
-                    - analytics.pwc_staging
-                    - analytics.pwc_write
-                write:
-                    - analytics.pwc_write
-            tables:
-                read:
-                    - analytics.pwc.*
-                    - analytics.pwc_staging.*
-                    - analytics.pwc_write.*
-                write:
-                    - analytics.pwc_write.*
 
     - reporter:
         warehouses:
@@ -467,6 +446,16 @@ roles:
             - boneyard
             - dbt_analytics
             - snowflake_db
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.covid19
+            tables:
+                read:
+                    - analytics.covid19.covid19_cases
 
     - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema
         warehouses:
@@ -487,6 +476,7 @@ roles:
             - transforming_xs
             - transforming_4xl
         member_of:
+            - covid19
             - snowflake_db
         owns:
             schemas:
@@ -551,6 +541,18 @@ roles:
                 read:
                     - analytics.boneyard.*
 
+    - covid19:
+        privileges:
+            databases:
+                read:
+                    - covid19
+            schemas:
+                read:
+                    - covid19.public
+            tables:
+                read:
+                    - covid19.public.jhu_covid_19
+
     - db_dumps:
         privileges:
             databases:
@@ -572,16 +574,19 @@ roles:
             databases:
                 read:
                     - analytics
+                    - raw
             schemas:
                 read:
                     - analytics.analytics
                     - analytics.analytics_staging
                     - analytics.analytics_meta
+                    - raw.dbt
             tables:
                 read:
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
+                    - raw.dbt.*
 
     - dbt_analytics_sensitive:
         warehouses:
@@ -617,12 +622,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.google_analytics_360
                     - raw.google_analytics_360_fivetran
             tables:
                 read:
+                    - analytics.google_analytics_360.*
                     - raw.google_analytics_360_fivetran.*
 
     - greenhouse:
@@ -652,6 +660,21 @@ roles:
             tables:
                 read:
                     - raw.handbook.*
+
+    - license_db:
+        privileges:
+            databases:
+                read:
+                    - analytics
+                    - raw
+            schemas:
+                read:
+                    - analytics.license_db
+                    - raw.license_db_dump
+            tables:
+                read:
+                    - analytics.license_db.*
+                    - raw.license_db_dump.*
 
     - netsuite:
         warehouses:
@@ -687,12 +710,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.sfdc
                     - raw.salesforce_stitch
             tables:
                 read:
+                    - analytics.sfdc.*
                     - raw.salesforce_stitch.*      
 
     - sheetload:
@@ -750,6 +776,19 @@ roles:
                     - raw.snowplow.*
                     - analytics.snowplow_*.*
 
+    - version_db:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.version_db
+            tables:
+                read:
+                    - analytics.version_db.*
+
+
     - zendesk:
         warehouses:
             - analyst_xs
@@ -806,14 +845,20 @@ roles:
             - transforming_xl
 
     - agroleau:
+        member_of:
+            - reporter
         warehouses:
             - reporting
 
     - aakgun:
+        member_of:
+            - analyst_growth
         warehouses:
             - analyst_xs
 
     - cmestel:
+        member_of:
+            - analyst_finance
         warehouses:
             - analyst_xs
 
@@ -824,8 +869,15 @@ roles:
             - analyst_xs
 
     - dtang:
+        member_of:
+            - reporter
         warehouses:
             - reporting
+
+    - dtownsend:
+        member_of:
+            - analyst_engineering
+            - dtownsend
 
     - eburke:
         warehouses:
@@ -835,6 +887,8 @@ roles:
             - reporting
 
     - eeastwood:
+        member_of:
+            - reporter
         warehouses:
             - reporting
         privileges:
@@ -855,16 +909,22 @@ roles:
                     - raw.gitter.*
 
     - ekastelein:
+        member_of:
+            - analyst_growth
         warehouses:
             - analyst_xs
             - analyst_l
             - analyst_xl
 
     - eurie:
+        member_of:
+            - reporter
         warehouses:
             - reporting
 
     - ewegscheider:
+        member_of:
+            - analyst_people
         warehouses:
             - analyst_xs
 
@@ -908,19 +968,26 @@ roles:
             - transforming_xl
 
     - iroussos:
+        member_of:
+            - reporter
         warehouses:
             - reporting
 
     - iweeks:
+        member_of:
+            - analyst_finance
         warehouses:
             - analyst_xs
 
     - jmahdi:
+        member_of:
+            - analyst_sales
         warehouses:
             - analyst_xs
 
     - jpeguero:
         member_of:
+            - analyst_marketing
             - netsuite
         warehouses:
             - analyst_xs
@@ -941,10 +1008,15 @@ roles:
             - reporting
 
     - jwatson:
+        member_of:
+            - product_manager
+            - reporter
         warehouses:
             - reporting
 
     - kaguilar:
+        member_of:
+            - analyst_engineering
         warehouses:
             - analyst_xs
 
@@ -952,6 +1024,7 @@ roles:
         member_of:
             - analyst_core
             - bamboohr
+            - dbt_analytics_sensitive
             - data_manager
             - greenhouse
         warehouses:
@@ -971,6 +1044,8 @@ roles:
             - analyst_xs
 
     - lvandensteen:
+        member_of:
+            - analyst_people
         warehouses: 
             - reporting
 
@@ -978,15 +1053,19 @@ roles:
         warehouses:
             - reporting
 
-    - mrodriguez:
-        warehouses:
-            - reporting
-
     - mpeychet:
+        member_of:
+            - analyst_growth
         warehouses:
             - analyst_xs
             - analyst_l
             - analyst_xl
+
+    - mrodriguez:
+        member_of:
+            - reporter
+        warehouses:
+            - reporting
 
     - msendal:
         warehouses:
@@ -996,10 +1075,19 @@ roles:
             - reporting    
 
     - mvilain:
+        member_of:
+            - analyst_sales
         warehouses:
             - analyst_xs
 
     - mwalker:
+        warehouses:
+            - engineer_xs
+            - engineer_xl
+            - loading
+            - reporting
+
+    - parmstrong:
         warehouses:
             - engineer_xs
             - engineer_xl
@@ -1019,30 +1107,20 @@ roles:
             - admin
 
     - pluthra:
-        warehouses:
-            - analyst_xs
-
-    - pwc_jblessing:
-        warehouses:
-            - analyst_xs
-
-    - pwc_mrichard:
-        warehouses:
-            - analyst_xs
-
-    - pwc_mcoffman:
-        warehouses:
-            - analyst_xs
-
-    - pwc_snagaraj:
+        member_of:
+            - analyst_people
         warehouses:
             - analyst_xs
 
     - rkohnke:
+        member_of:
+            - reporter
         warehouses:
             - analyst_xs
 
     - sreddy:
+        member_of:
+            - product_manager
         warehouses:
             - reporting
 
@@ -1124,6 +1202,8 @@ roles:
             - reporting
 
     - wwright:
+        member_of:
+            - analyst_finance
         warehouses:
             - analyst_xs
             - reporting
@@ -1149,7 +1229,6 @@ users:
         can_login: yes
         member_of:
             - agroleau
-            - reporter
 
     - airflow:
         can_login: yes
@@ -1164,12 +1243,10 @@ users:
         can_login: yes
         member_of:
             - aakgun
-            - analyst_growth
 
     - cmestel:
         can_login: yes
         member_of:
-            - analyst_finance
             - cmestel
 
     - datwood:
@@ -1181,7 +1258,11 @@ users:
         can_login: yes
         member_of:
             - dtang
-            - reporter
+
+    - dtownsend:
+        can_login: yes
+        member_of:
+            - dtownsend
 
     - eburke:
         can_login: yes
@@ -1195,26 +1276,22 @@ users:
         can_login: yes
         member_of:
             - eeastwood
-            - reporter
 
     - ekastelein:
         can_login: yes
         member_of:
-            - analyst_growth
             - ekastelein
 
     - eurie:
         can_login: yes 
         member_of:
             - eurie
-            - reporter
             - securityadmin
     
     - ewegscheider:
         can_login: yes
         member_of: 
             - ewegscheider
-            - analyst_people
 
     - fivetran:
         can_login: yes
@@ -1236,25 +1313,21 @@ users:
         can_login: yes
         member_of:
             - iroussos
-            - reporter
 
     - iweeks:
         can_login: yes
         member_of:
-            - analyst_finance
             - iweeks
 
     - jmahdi:
         can_login: yes
         member_of:
-            - analyst_sales
             - jmahdi
 
     - jpeguero:
         can_login: yes
         member_of:
             - jpeguero
-            - analyst_marketing
 
     - jsalazar:
         can_login: yes
@@ -1282,13 +1355,10 @@ users:
         can_login: yes
         member_of:
             - jwatson
-            - product_manager
-            - reporter
    
     - kaguilar:
         can_login: yes
         member_of:
-            - analyst_engineering
             - kaguilar
 
     - ktam:
@@ -1307,6 +1377,11 @@ users:
         member_of:
             - lmai
 
+    - lvandensteen:
+        can_login: yes
+        member_of:
+            - lvandensteen
+
     - mdewji:
         can_login: yes
         member_of:
@@ -1316,14 +1391,12 @@ users:
     - mpeychet:
         can_login: yes
         member_of:
-            - analyst_growth
             - mpeychet
 
     - mrodriguez:
         can_login: yes
         member_of:
             - mrodriguez
-            - reporter
 
     - msendal:
         can_login: yes
@@ -1334,7 +1407,6 @@ users:
     - mvilain:
         can_login: yes
         member_of:
-            - analyst_sales
             - mvilain
 
     - mwalker:
@@ -1343,11 +1415,11 @@ users:
             - engineer
             - mwalker
 
-    - lvandensteen:
+    - parmstrong:
         can_login: yes
         member_of:
-            - analyst_people
-            - lvandensteen
+            - engineer
+            - parmstrong
 
     - periscope:
         can_login: yes
@@ -1371,43 +1443,32 @@ users:
     - pluthra:
         can_login: yes
         member_of:
-            - analyst_people
             - pluthra
 
     - pwc_jblessing:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_jblessing
+        can_login: no
+        member_of: []
 
     - pwc_mrichard:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_mrichard
+        can_login: no
+        member_of: []
 
     - pwc_mcoffman:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_mcoffman
+        can_login: no
+        member_of: []
 
     - pwc_snagaraj:
-        can_login: yes
-        member_of:
-            - pwc_contractor
-            - pwc_snagaraj
+        can_login: no
+        member_of: []
 
     - rkohnke:
         can_login: yes
         member_of:
-            - reporter
             - rkohnke
 
     - sreddy:
         can_login: yes
         member_of:
-            - product_manager
             - sreddy
 
     - ssichak:
@@ -1452,7 +1513,6 @@ users:
     - wwright:
         can_login: yes
         member_of:
-            - analyst_finance
             - wwright
 
 # ==========================================

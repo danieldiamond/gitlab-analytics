@@ -1,0 +1,33 @@
+version: 2
+models:
+  - name: sfdc_contact_source
+    description: Source model for SFDC Contacts
+    columns:
+        - name: contact_id
+          tests:
+              - not_null
+              - unique
+        - name: contact_email
+          meta:
+            sensitive: true
+        - name: contact_name
+          meta:
+            sensitive: true
+          tests:
+              - not_null
+  - name: sfdc_lead_source
+    description: Source model for SFDC Leads
+    columns:
+        - name: lead_id
+          tests:
+              - not_null
+              - unique
+        - name: lead_email
+          meta:
+            sensitive: true
+        - name: lead_name
+          meta:
+            sensitive: true
+          tests:
+              - not_null
+  

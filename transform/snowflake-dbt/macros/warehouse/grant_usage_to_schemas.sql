@@ -7,6 +7,7 @@
         This will only run on production and mainly covers our bases so that
         new models created will be immediately available for querying to the 
         roles listed.
+
     #}
     
     {%- set non_sensitive = 'dbt_analytics' -%}
@@ -24,6 +25,10 @@
         grant usage on schema {{ schema_name }}_staging to role {{ non_sensitive }};
         grant select on all tables in schema {{ schema_name }}_staging to role {{ non_sensitive }};
         grant select on all views in schema {{ schema_name }}_staging to role {{ non_sensitive }};
+
+        grant usage on schema covid19 to role {{ non_sensitive }};
+        grant select on all tables in schema covid19 to role {{ non_sensitive }};
+        grant select on all views in schema covid19 to role {{ non_sensitive }};
 
         grant usage on schema {{ schema_name }}_sensitive to role {{ sensitive }};
         grant select on all tables in schema {{ schema_name }}_sensitive to role {{ sensitive }};

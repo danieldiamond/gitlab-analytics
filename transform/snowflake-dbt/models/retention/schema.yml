@@ -82,6 +82,8 @@ models:
           tests:
               - not_null
         - name: product_category
+          tests:
+              - not_null
         - name: unit_of_measure
         - name: quantity
         - name: sfdc_account_id

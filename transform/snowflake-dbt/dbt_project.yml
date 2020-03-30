@@ -4,7 +4,7 @@
 name: 'gitlab_snowflake'
 version: '1.0'
 profile: 'gitlab-snowflake'
-require-dbt-version: ">=0.15.0"
+require-dbt-version: ">=0.16.0"
 
 
 # ======
@@ -88,7 +88,7 @@ models:
       'snowplow:timezone': 'America/New_York'
       'snowplow:page_ping_frequency': 30
       'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
-      'snowplow:pass_through_columns': ['cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
+      'snowplow:pass_through_columns': ['glm_source','cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
 
   # Snowflake Spend Package
   snowflake_spend:
@@ -102,19 +102,52 @@ models:
 
     # Dimensional Structure
     sources:
+      dbt:
+        materialized: table
+        schema: dbt
+
+      google_analytics_360:
+        materialized: table
+        schema: google_analytics_360
+
+      license:
+        schema: license_db
+
       qualtrics:
         materialized: table
         schema: qualtrics
+
+      sfdc:
+        schema: sfdc
+        sensitive:
+          schema: sensitive
+
+      version:
+        tags: ["product"]
+        materialized: table
+        schema: version_db
 
       zendesk:
         schema: zendesk
 
       zuora:
         schema: zuora
-    
+
+
     staging:
       schema: staging
       materialized: table
+
+      google_analytics_360:
+        schema: analytics
+
+      license:
+        materialized: view
+
+      version:
+        tags: ["product"]
+        xf:
+          schema: analytics
 
       zuora:
         xf:
@@ -138,6 +171,10 @@ models:
     engineering:
       materialized: table
 
+    finance:
+      base:
+        materialized: table
+        
     gitlab_data_yaml:
       materialized: table
 
@@ -159,14 +196,9 @@ models:
         schema: sensitive
       rpt:
         schema: analytics
-    
+
     handbook:
         materialized: table
-
-    marts:
-      revenue:
-        base:
-          materialized: table
 
     netsuite:
       materialized: table
@@ -182,15 +214,13 @@ models:
       enabled: true
       materialized: table
       schema: analytics
-    
+
     retention:
       materialized: table
 
     sfdc:
       base:
         schema: staging
-      sensitive:
-        schema: sensitive
       xf:
         materialized: table
 
@@ -205,13 +235,6 @@ models:
 
     snowplow_combined:
       tags: ["product"]
-
-    version:
-      tags: ["product"]
-      base:
-        schema: staging
-      xf:
-        materialized: table
 
 
 # ======

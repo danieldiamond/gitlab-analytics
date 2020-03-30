@@ -7,13 +7,13 @@ WITH bamboohr_directory AS (
 
     SELECT employee_id,
             last_value(job_title) RESPECT NULLS
-                OVER ( PARTITION BY employee_id ORDER BY effective_date ) AS last_job_title,
+                OVER ( PARTITION BY employee_id ORDER BY job_id ) AS last_job_title,
             last_value(reports_to) RESPECT NULLS
-                OVER ( PARTITION BY employee_id ORDER BY effective_date ) AS last_supervisor,
+                OVER ( PARTITION BY employee_id ORDER BY job_id ) AS last_supervisor,
             last_value(department) RESPECT NULLS
-                OVER ( PARTITION BY employee_id ORDER BY effective_date ) AS last_department,
+                OVER ( PARTITION BY employee_id ORDER BY job_id ) AS last_department,
             last_value(division) RESPECT NULLS
-                OVER ( PARTITION BY employee_id ORDER BY effective_date ) AS last_division
+                OVER ( PARTITION BY employee_id ORDER BY job_id ) AS last_division
     FROM {{ ref ('bamboohr_job_info') }}
 
 ), mapping as (
@@ -81,6 +81,4 @@ LEFT JOIN initial_hire
 LEFT JOIN rehire
   ON rehire.employee_id = mapping.employee_id
 WHERE mapping.hire_date < date_trunc('week', dateadd(week, 3, CURRENT_DATE))
-
-
 

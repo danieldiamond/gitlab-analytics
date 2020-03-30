@@ -41,7 +41,7 @@ WITH gitlab_notes AS (
 , zendesk_tickets AS (
 
   SELECT *
-  FROM analytics.zendesk_tickets_xf
+  FROM {{ ref('zendesk_tickets_xf')}}
 
 )
 
@@ -139,26 +139,22 @@ WITH gitlab_notes AS (
 
 , gitlab_notes_with_sfdc_objects_union AS (
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_notes_with_sfdc_accounts
 
   UNION
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_notes_with_sfdc_opportunities
 
   UNION
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_notes_with_sfdc_contacts
   
   UNION
 
-  SELECT
-    *
+  SELECT *
   FROM gitlab_notes_with_zendesk_ticket
 
 )

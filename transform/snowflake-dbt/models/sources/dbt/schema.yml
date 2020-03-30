@@ -1,0 +1,34 @@
+version: 2
+
+models:
+    - name: dbt_source
+      description: "Monitoring information about DBT sources"
+      columns:
+        - name: freshness_observed_at
+          tests:
+            - not_null
+        - name: latest_load_at
+          tests:
+            - not_null
+        - name: source_freshness_state
+          tests:
+            - not_null
+        - name: table_name
+          tests:
+            - not_null
+        - name: time_since_loaded_seconds
+          tests:
+            - not_null
+    - name: dbt_run_results
+      description: "Information about compilation/execution time for DBT models."
+      columns:
+        - name: compilation_completed_at
+        - name: compilation_started_at
+        - name: model_execution_time
+          tests:
+            - not_null
+        - name: model_name
+          tests:
+            - not_null    
+        
+        

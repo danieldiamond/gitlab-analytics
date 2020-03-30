@@ -24,13 +24,16 @@ models:
       - name: environment_name
         tests:
           - not_null
-  - name: gitlab_dotcom_gitlab_issues_requests
-    description: '{{ doc("gitlab_dotcom_gitlab_issues_requests") }}'
+  - name: gitlab_dotcom_gitlab_user_requests
+    description: '{{ doc("gitlab_dotcom_gitlab_user_requests") }}'
+    tests:
+    - unique:
+        column_name: "concat(noteable_type, noteable_id, mention_type, sfdc_account_id)"
     columns:
-      - name: issue_id
+      - name: noteable_id
         tests:
           - not_null
-      - name: project_id
+      - name: noteable_type
         tests:
           - not_null
       - name: namespace_id
@@ -135,11 +138,13 @@ models:
 
   - name: gitlab_dotcom_events_monthly_active_users
     description: '{{ doc("gitlab_dotcom_events_monthly_active_users") }}'
+    tests:
+      - unique:
+          column_name: "concat(day, plan_id_at_event_date)"
     columns:
       - name: day
         tests:
           - not_null
-          - unique
       - name: is_last_day_of_month
         tests:
           - not_null
@@ -281,6 +286,14 @@ models:
         - name: retention
           description: Calculated as `active_in_period_distinct_count` / `base_cohort_count`.
 
+  - name: gitlab_dotcom_secure_stage_ci_jobs
+    description: '{{ doc("gitlab_dotcom_secure_stage_ci_jobs") }}'
+    columns:
+      - name: ci_build_id
+        tests:
+          - not_null
+          - unique
+          
   - name: gitlab_dotcom_usage_data_events
     description: '{{ doc("gitlab_dotcom_usage_data_events") }}'
     columns:

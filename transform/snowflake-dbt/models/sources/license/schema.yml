@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: license_db_add_ons_source
+    description: This source model is the data from tap-postgres for the add_ons table from license.gitlab.com. This data represents license add-ons such as support packages.
+    columns:
+      - name: add_on_id
+        tests:
+          - not_null
+          - unique
+
+  - name: license_db_granted_add_ons_source
+    description: This source model is the data from tap-postgres for the granted_add_ons table from license.gitlab.com. This data represents which add_ons are valid to which licenses.
+    columns:
+      - name: granted_add_on_id
+        tests:
+          - not_null
+          - unique
+      - name: license_id
+        tests:
+          - not_null
+      - name: add_on_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('license_db_add_ons_source')
+              field: add_on_id

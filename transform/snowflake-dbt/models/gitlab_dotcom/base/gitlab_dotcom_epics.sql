@@ -26,6 +26,7 @@ WITH source AS (
       created_at::TIMESTAMP                         AS created_at,
       updated_at::TIMESTAMP                         AS updated_at,
       title::VARCHAR                                AS epic_title,
+      description::VARCHAR                          AS epic_description,
       closed_at::TIMESTAMP                          AS closed_at,
       state_id::INTEGER                             AS state_id,
       CASE
