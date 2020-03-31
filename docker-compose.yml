@@ -18,7 +18,7 @@ services:
         command: bash -c "airflow webserver"
         volumes:
           - type: bind
-            source: ${KUBECONFIG}
+            source: ${HOME}/.kube/config
             target: /root/.kube/config
           - type: bind
             source: ${GOOGLE_APPLICATION_CREDENTIALS}
@@ -49,7 +49,7 @@ services:
         command: bash -c "airflow scheduler"
         volumes:
           - type: bind
-            source: ${KUBECONFIG}
+            source: ${HOME}/.kube/config
             target: /root/.kube/config
           - type: bind
             source: ${GOOGLE_APPLICATION_CREDENTIALS}
@@ -99,7 +99,7 @@ services:
           source: .
           target: /usr/local/analytics
         - type: bind
-          source: ${DBT_PROFILE_PATH}
+          source: ${HOME}/.dbt
           target: /usr/local/dbt_profiles/
           read_only: True
 
