@@ -2,8 +2,8 @@ WITH sfdc_account AS (
 
     SELECT * 
     FROM {{ ref('sfdc_account') }}
-    WHERE id IS NOT NULL
-    AND isdeleted = FALSE
+    WHERE account_id IS NOT NULL
+    AND is_deleted = FALSE
 
 ), sfdc_users AS (
 

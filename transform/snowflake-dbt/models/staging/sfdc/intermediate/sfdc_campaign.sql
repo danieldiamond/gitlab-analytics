@@ -6,5 +6,5 @@ WITH source AS (
 )
 
 SELECT *
-FROM renamed
+FROM source
 WHERE is_deleted = FALSE

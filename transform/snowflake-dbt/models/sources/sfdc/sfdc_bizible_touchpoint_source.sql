@@ -33,7 +33,9 @@ WITH source AS (
       bizible2__marketing_channel_path__c     AS bizible_marketing_channel_path,
       bizible2__medium__c                     AS bizible_medium, 
       bizible2__referrer_page__c              AS bizible_referrer_page,   
-      bizible2__sf_campaign__c                AS bizible_salesforce_campaign  
+      bizible2__sf_campaign__c                AS bizible_salesforce_campaign,
+
+      isdeleted                               AS is_deleted
 
 
     FROM source

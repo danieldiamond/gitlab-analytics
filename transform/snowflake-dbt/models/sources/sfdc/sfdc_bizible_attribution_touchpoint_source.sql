@@ -43,7 +43,7 @@ WITH source AS (
       bizible2__revenue_first_touch__c        AS bizible_revenue_first_touch,
       bizible2__revenue_lead_conversion__c    AS bizible_revenue_lead_conversion,
       bizible2__revenue_u_shaped__c           AS bizible_revenue_u_shaped,
-      bizible2__revenue_w_shaped__c           AS bizible_revenue_w_shaped
+      bizible2__revenue_w_shaped__c           AS bizible_revenue_w_shaped,
 
       isdeleted::BOOLEAN                      AS is_deleted
     

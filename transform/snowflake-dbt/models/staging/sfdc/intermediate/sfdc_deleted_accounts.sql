@@ -5,8 +5,9 @@ with source as (
 
 )
 
-SELECT sfdc_account_id,
-    sfdc_master_record_id
+SELECT
+    account_id AS sfdc_account_id,
+    master_record_id AS sfdc_master_record_id
 FROM source
-WHERE sfdc_account_id IS NOT NULL
-    AND is_deleted = TRUE
+WHERE account_id IS NOT NULL
+  AND is_deleted = TRUE

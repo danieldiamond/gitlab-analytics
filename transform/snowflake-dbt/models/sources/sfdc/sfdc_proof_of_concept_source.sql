@@ -39,10 +39,10 @@ WITH source AS (
       createdbyid                               AS created_by_id,
       createddate                               AS created_date,
       lastmodifiedbyid                          AS last_modified_by_id,
-      lastmodifieddate                          AS last_modified_date
+      lastmodifieddate                          AS last_modified_date,
+      isdeleted::BOOLEAN                        AS is_deleted
 
     FROM source
-    WHERE isdeleted = FALSE
 
 )
 
