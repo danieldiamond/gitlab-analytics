@@ -10,6 +10,7 @@ models:
         - name: requisition_id
         - name: application_status
         - name: stage_name
+        - name: offer_status
         - name: application_date
           description: The date the candidate applied for a specific job posting.
         - name: offer_sent_date
@@ -22,10 +23,15 @@ models:
         - name: source_name
           description: Where the candidate came from 
         - name: source_type
+        - name: sourcer_name
+        - name: candidate_recruiter
+        - name: candidate_coordinator
+        - name: sourced_candidate
+          description: Identifies if the source is LinkedIn(Prospecting)
         - name: time_to_offer
           description: Shows how long an applicant to go from applying to accepting an offer. This is based on offer accept month.
-        - name: bamboo_hire_date
-          description: This is the hire date the candidate started the company on if they moved forward with the offer.
+        - name: is_hired_in_bamboo
+          description: This indicates if the candidate got hired and appears in bamboohr. 
   - name: greenhouse_diversity_intermediate
     description: This is the intermediate model used for greenhouse_diversity. It builds out a base that includes month_date, a column for all the various eeoc_field_names, and joins greenhouse_recruiting_xf to ensure each candidate is tied to an eeoc_field. In the event the candidate did not answer, the response is 'Did not identify'. This is later used in the greenhouse_diversity rpt to aggregate metrics.
     columns:
@@ -48,12 +54,3 @@ models:
         - name: sourced_candidate
           description: Candidates sourced through LinkedIn.
         - name: hired_sourced_candidates  
-  - name: greenhouse_sourcer
-    description: This model is used to identify who the sourcer is for candidates. This is specific to source type = 'Prospecting'
-    columns:
-        - name: application_id
-        - name: candidate_id
-        - name: referrer_id
-        - name: sourcer
-        - name: application_date
-        - name: candidate_created_date

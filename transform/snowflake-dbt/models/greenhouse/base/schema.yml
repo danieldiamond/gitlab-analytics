@@ -1042,3 +1042,6 @@ models:
         - name: opening_custom_field_updated_at
           tests: 
             - not_null
+    - name: greenhouse_sourcer
+      description: This model is used to identify who the sourcer is for candidates. This is specific to source type = 'Prospecting'
+      
