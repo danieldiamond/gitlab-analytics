@@ -22,6 +22,7 @@ WITH sfdc_opportunity_xf AS (
       invoice_number,
       is_last_segment_version,
       mrr, 
+      delta_tcv,
       {{ product_category('rate_plan_name') }},
       {{ delivery('product_category') }},  
       rate_plan_charge_name      AS charge_name,  
@@ -56,61 +57,98 @@ WITH sfdc_opportunity_xf AS (
       COUNT(DISTINCT subscription_name_slugify) OVER (PARTITION BY invoice_number)  AS invoiced_subscriptions,
       TO_NUMBER(MAX(invoice_amount), 38, 2)                                         AS invoice_amount,
       TO_NUMBER(SUM(item_amount), 38, 2)                                            AS subscription_amount,
+      TO_NUMBER(SUM(delta_tcv), 38, 2)                                              AS delta_tcv,
       TO_NUMBER(SUM(IFF(charge_name = '1,000 CI Minutes', item_amount, 0)), 38, 2)  AS ci_minutes_amount,
       TO_NUMBER(SUM(IFF(charge_name = 'Trueup', item_amount, 0)), 38, 2)            AS trueup_amount
     FROM zuora_invoice_charges
     GROUP BY 1,2,3  
 
-), joined AS (
+), charge_join AS (
+    -- first join to opportunities based on invoiced subscription charge amount = opportunity TCV
+
+    SELECT
+      aggregate_subscription.*,
+      close_date,
+      net_incremental_acv,
+      opportunity_amount,
+      opportunity_id,
+      sales_type
+    FROM aggregate_subscription
+    LEFT JOIN sfdc_opportunity_xf
+      ON aggregate_subscription.invoice_number = sfdc_opportunity_xf.invoice_number
+      AND aggregate_subscription.subscription_amount = sfdc_opportunity_xf.opportunity_amount  
+
+), tcv_join AS (
+    -- next join to opportunities based on change in TCV to subscription = opportunity TCV
+    SELECT
+      subscription_name_slugify,
+      charge_join.invoice_number,
+      invoice_date,
+      invoiced_subscriptions,
+      invoice_amount,
+      subscription_amount,
+      delta_tcv,
+      ci_minutes_amount,
+      trueup_amount,
+      COALESCE(charge_join.close_date, sfdc_opportunity_xf.close_date)                   AS close_date,
+      COALESCE(charge_join.net_incremental_acv, sfdc_opportunity_xf.net_incremental_acv) AS net_incremental_acv,
+      COALESCE(charge_join.opportunity_amount, sfdc_opportunity_xf.opportunity_amount)   AS opportunity_amount,
+      COALESCE(charge_join.opportunity_id, sfdc_opportunity_xf.opportunity_id)           AS opportunity_id,
+      COALESCE(charge_join.sales_type, sfdc_opportunity_xf.sales_type)                   AS sales_type
+    FROM charge_join
+    LEFT JOIN sfdc_opportunity_xf
+      ON charge_join.invoice_number = sfdc_opportunity_xf.invoice_number
+      AND charge_join.delta_tcv = sfdc_opportunity_xf.opportunity_amount
+      AND charge_join.opportunity_id IS NULL  
+
+), final AS (
 
     SELECT
       -- keys
-      aggregate_subscription.subscription_name_slugify,
-      aggregate_subscription.invoice_number,
+      tcv_join.subscription_name_slugify,
+      tcv_join.invoice_number,
       filtered_charges.charge_number,
-      sfdc_opportunity_xf.opportunity_id,
+      tcv_join.opportunity_id,
 
       -- dates
-      aggregate_subscription.invoice_date,
+      tcv_join.invoice_date,
       filtered_charges.effective_start_date AS booked_effective_start_date,
       filtered_charges.effective_end_date   AS booked_effective_end_date,
       true_mrr_periods.true_effective_start_date,
       true_mrr_periods.true_effective_end_date,
-      sfdc_opportunity_xf.close_date,
+      tcv_join.close_date,
 
       -- invoice info
-      aggregate_subscription.invoiced_subscriptions,
-      aggregate_subscription.invoice_amount,
-      aggregate_subscription.subscription_amount,
-      aggregate_subscription.ci_minutes_amount,
-      aggregate_subscription.trueup_amount,
+      tcv_join.invoiced_subscriptions,
+      tcv_join.invoice_amount,
+      tcv_join.subscription_amount,
+      tcv_join.delta_tcv,
+      tcv_join.ci_minutes_amount,
+      tcv_join.trueup_amount,
       filtered_charges.item_amount,
-      sfdc_opportunity_xf.opportunity_amount,
+      tcv_join.opportunity_amount,
 
       -- charge info
       filtered_charges.mrr,
-      sfdc_opportunity_xf.net_incremental_acv,
+      tcv_join.net_incremental_acv,
 
       -- metadata
       filtered_charges.charge_name,
       filtered_charges.charge_segment,
       filtered_charges.delivery,
       filtered_charges.product_category,
-      sfdc_opportunity_xf.sales_type,
+      tcv_join.sales_type,
       MAX(is_last_segment_version) AS is_last_segment_version
-    FROM aggregate_subscription
+    FROM tcv_join
     INNER JOIN filtered_charges
-      ON aggregate_subscription.subscription_name_slugify = filtered_charges.subscription_name_slugify
-      AND aggregate_subscription.invoice_number = filtered_charges.invoice_number
+      ON tcv_join.subscription_name_slugify = filtered_charges.subscription_name_slugify
+      AND tcv_join.invoice_number = filtered_charges.invoice_number
     INNER JOIN true_mrr_periods
       ON filtered_charges.charge_number = true_mrr_periods.charge_number
       AND filtered_charges.charge_segment = true_mrr_periods.charge_segment  
-    LEFT JOIN sfdc_opportunity_xf
-      ON aggregate_subscription.invoice_number = sfdc_opportunity_xf.invoice_number
-      AND aggregate_subscription.subscription_amount = sfdc_opportunity_xf.opportunity_amount
-    {{ dbt_utils.group_by(n=24)}}      
+    {{ dbt_utils.group_by(n=25) }}      
 
 )
 
 SELECT *
-FROM joined
+FROM final
