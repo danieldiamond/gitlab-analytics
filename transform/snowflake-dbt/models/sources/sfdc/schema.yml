@@ -147,24 +147,15 @@ models:
         - name: opportunity_id
           tests:
               - not_null
-              - relationships:
-                    to: ref('sfdc_opportunity')
-                    field: opportunity_id
   - name: sfdc_proof_of_concept_source
     description: base model for SFDC Proof of Concept
     columns:
         - name: account_id
           tests:
               - not_null
-              - relationships:
-                    to: ref('sfdc_account')
-                    field: account_id
         - name: opportunity_id
           tests:
               - not_null
-              - relationships:
-                    to: ref('sfdc_opportunity')
-                    field: opportunity_id
         - name: pov_id
           tests:
               - not_null

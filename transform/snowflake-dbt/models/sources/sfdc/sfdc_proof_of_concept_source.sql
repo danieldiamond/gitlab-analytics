@@ -48,6 +48,3 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-WHERE pov_id NOT IN (
-  'a5v4M000001DZYvQAO' -- https://gitlab.com/gitlab-data/analytics/issues/3433
-)
