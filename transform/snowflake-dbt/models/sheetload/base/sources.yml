@@ -18,6 +18,7 @@ sources:
 
     tables:
       - name: ally_certificate
+      - name: abuse_mitigation_data
       - name: days_to_close
       - name: calendar
       - name: communication_certificate

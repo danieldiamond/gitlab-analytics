@@ -207,3 +207,5 @@ models:
     - name: is_deleted
       tests: 
       - not_null
+- name: sheetload_abuse_mitigation_data
+  description: Abuse currently manually pulls data from Bouncer (Abuse mitigation Tool) in order to report on abusive account mitigation.
