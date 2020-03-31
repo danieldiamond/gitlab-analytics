@@ -55,6 +55,8 @@ docker-compose.yml  @tayloramurphy @m_walker
 /transform/snowflake-dbt/models/sources/license/    @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/staging/license/    @eli_kastelein  @mpeychet_
 
+/transform/snowflake-dbt/models/sources/sfdc/       @derekatwood    @kathleentam
+
 /transform/snowflake-dbt/models/sources/version/    @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/staging/version/    @eli_kastelein  @mpeychet_
 

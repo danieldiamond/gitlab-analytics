@@ -57,11 +57,6 @@ models:
           tests:
               - not_null
               - unique
-        - name: contact_name
-          tests:
-              - not_null
-  - name: sfdc_contact_pii
-    description: This is the segregated PII data from the sfdc_contact base model
   - name: sfdc_executive_business_review
     description: base model for SFDC Executive Business Reviews
     columns:
@@ -91,13 +86,8 @@ models:
           tests:
               - not_null
               - unique
-        - name: lead_name
-          tests:
-              - not_null
         - name: sales_segmentation
           description: "Company size of the lead"
-  - name: sfdc_lead_pii
-    description: This is the segregated PII data from the sfdc_lead base model.
   - name: sfdc_opportunity
     description: base model for SFDC Opportunities
     columns:

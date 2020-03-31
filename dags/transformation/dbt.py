@@ -76,7 +76,7 @@ def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
     dag_interval = SCHEDULE_INTERVAL_HOURS * 3600
 
     # run a full-refresh once per week (on sunday early AM)
-    if current_weekday == 7 and dag_interval >= current_seconds:
+    if current_weekday == 7 and dag_interval > current_seconds:
         return "dbt-full-refresh"
     else:
         return "dbt-snapshots-run"

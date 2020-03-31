@@ -40,8 +40,12 @@ WITH usage_data AS (
         ON licenses.zuora_subscription_id = zuora_subscriptions.subscription_id
       LEFT JOIN zuora_accounts
         ON zuora_subscriptions.account_id = zuora_accounts.account_id
-    WHERE licenses.email IS NULL
-      OR NOT (email LIKE '%@gitlab.com' AND LOWER(company) LIKE '%gitlab%') -- Exclude internal tests licenses.
+    WHERE 
+      (
+        licenses.email IS NULL
+        OR NOT (email LIKE '%@gitlab.com' AND LOWER(company) LIKE '%gitlab%') -- Exclude internal tests licenses.
+        OR uuid = 'ea8bf810-1d6f-4a6a-b4fd-93e8cbd8b57f'
+      )
 
 ), unpacked AS (
 

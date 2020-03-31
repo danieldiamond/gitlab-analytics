@@ -16,13 +16,14 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 ### For Central or Embedded Analyst/Engineers
 - [ ] Manager: Create access request using data analyst baseline.
    - [ ] Manager: Request addition to `@datateam` alias on Slack in PeopleOps Onboarding issue
+   - [ ] Manager: Request addition to `@data-analysts` alias on Slack in PeopleOps Onboarding issue
    - [ ] Manager: Request addition to `Data Team` 1password vault in PeopleOps Onboarding issue
 - [ ] Manager: Add to the `gitlab-data/chatops` project as a Maintainer.
 - [ ] Manager: Add to the `gitlab-data` namespace as a Developer.
-- [ ] Manager: Add to Airflow as Analyst (Admin for Engineers)
+- [ ] Manager: Add to Airflow as Analyst
 - [ ] Manager: Update codeowners file in the handbook to include the new team member
 - [ ] Manager: Add to daily Geekbot standup (send `dashboard` to Geekbot on slack, click into a particular standup in the web UI, add via Manage button)
-- [ ] Manager: Invite to SheetLoad folder in gdrive
+- [ ] Manager: Invite to SheetLoad & Boneyard folders in Google Drive
 - [ ] Manager: Add to data team calendar as a calendar admin
 - [ ] Manager: Add team member to Finance team meetings
 - [ ] Manager: Add to [data triage](https://about.gitlab.com/handbook/business-ops/data-team/#triager) in third week at GitLab (Week 1 = Company onboarding; Week 2 = Data team onboarding)
@@ -30,10 +31,13 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
 
 ### For Engineers
+- [ ] Manager: Add to `gitlab-data/gitlag-data-engineers` group as Developer
+- [ ] Manager: Request addition to `@data-engineers` alias on Slack in PeopleOps Onboarding issue
 - [ ] Manager: Add to `gitlab-analytics` GCP group
     - [ ] Manager: Provision service account credentials in GCP
 - [ ] Manager: Add to Stitch
 - [ ] Manager: Add to Fivetran
+- [ ] Manager: Add to Airflow as Admin
 
 ## WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
@@ -42,7 +46,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `data-triage`, and `business-operations`.
    - [ ] Engineers, join `analytics-pipelines`
    - [ ] Analytsts, join `dbt-runs`
-- [ ] Schedule a recurring fortnightly (every two weeks) 1:1 meeting with the Director of Business Operations.
+- [ ] Schedule a recurring fortnightly (every two weeks) 1:1 meeting with the Director of Data and Analytics.
 - [ ] Invite yourself to the DataOps Meetings from the Data Team Calendar. To do this, update the invitation to include your email address; don't just copy the event to your calendar.  If you do not yet have access to the Data Team Calendar, ask your manager to add you.
 - [ ] Schedule a coffee chat with each member of the data team. These should be in addition to the ones you do with other GitLab team members.  In addition, you should also consider scheduling chats with IT and BizOps people as well.
 - [ ] Read the following pages of the handbook in their entirety. Bookmark them as you should soon be making MR's to improve our documentation!

@@ -4,11 +4,6 @@ WITH date_table AS (
     FROM {{ ref('date_details') }}
     WHERE day_of_month = 1
 
-), non_gaap_revenue AS (
-
-    SELECT *
-    FROM {{ ref('non_gaap_revenue') }}
-
 ), zuora_accts AS (
 
     SELECT *
@@ -51,11 +46,16 @@ WITH date_table AS (
       zuora_rpc.rate_plan_charge_id,
 
       --account info
+      zuora_accts.account_id,
       zuora_accts.account_name,
       zuora_accts.account_number,
       zuora_accts.crm_id,
       zuora_contact.country,
       zuora_accts.currency,
+
+      --subscription info
+      zuora_subscription.subscription_id,
+      zuora_subscription.subscription_name_slugify,
 
       --rate_plan info
       zuora_rp.rate_plan_name,
@@ -91,6 +91,9 @@ WITH date_table AS (
       account_number,
       crm_id,
       account_name,
+      account_id,
+      subscription_id,
+      subscription_name_slugify,
       country,
       {{product_category('rate_plan_name')}},
       {{ delivery('product_category')}},
@@ -104,21 +107,14 @@ WITH date_table AS (
     LEFT JOIN date_table
       ON base_mrr.effective_start_date <= date_table.date_actual
       AND (base_mrr.effective_end_date > date_table.date_actual OR base_mrr.effective_end_date IS NULL)
-    {{ dbt_utils.group_by(n=11) }}
-
-), movingtogitlab AS (
-
-    SELECT
-      accounting_period             AS mrr_month,
-      rate_plan_charge_name,
-      SUM(revenue_amt)              AS revenue_amt
-    FROM non_gaap_revenue
-    WHERE rate_plan_charge_name = '#movingtogitlab'
-    GROUP BY 1,2
+    {{ dbt_utils.group_by(n=14) }}
 
 ), current_mrr AS (
 
     SELECT
+      zuora_accts.account_id,
+      zuora_subscription.subscription_id,
+      zuora_subscription.subscription_name_slugify,
       SUM(zuora_rpc.mrr)    AS total_current_mrr
     FROM zuora_accts
     INNER JOIN zuora_subscription
@@ -130,14 +126,18 @@ WITH date_table AS (
     WHERE zuora_subscription.subscription_status NOT IN ('Draft','Expired')
       AND effective_start_date <= current_date
       AND (effective_end_date > current_date OR effective_end_date IS NULL)
+    {{ dbt_utils.group_by(n=3) }}
 
 )
 
 SELECT
   dateadd('month',-1,month_base_mrr.mrr_month)                          AS mrr_month,
+  month_base_mrr.account_id,
   account_number,
-  crm_id,
   account_name,
+  crm_id,
+  month_base_mrr.subscription_id,
+  month_base_mrr.subscription_name_slugify,
   country,
   product_category,
   delivery,
@@ -145,21 +145,11 @@ SELECT
   rate_plan_name,
   month_base_mrr.rate_plan_charge_name,
   unit_of_measure,
-  SUM(CASE
-        WHEN month_base_mrr.rate_plan_charge_name = '#movingtogitlab'
-          THEN revenue_amt
-        ELSE mrr
-      END)                                                              AS mrr,
-  SUM((CASE
-         WHEN month_base_mrr.rate_plan_charge_name = '#movingtogitlab'
-           THEN revenue_amt
-         ELSE mrr
-       END)*12)                                                         AS arr,
+  SUM(mrr)                                                              AS mrr,
+  SUM(mrr*12)                                                           AS arr,
   SUM(quantity)                                                         AS quantity,
   MAX(total_current_mrr)                                                AS total_current_mrr
 FROM month_base_mrr
-LEFT JOIN movingtogitlab
-  ON month_base_mrr.mrr_month = movingtogitlab.mrr_month
-  AND month_base_mrr.rate_plan_charge_name = movingtogitlab.rate_plan_charge_name
 LEFT JOIN current_mrr
-{{ dbt_utils.group_by(n=11) }}
+  ON month_base_mrr.subscription_id = current_mrr.subscription_id
+{{ dbt_utils.group_by(n=14) }}
