@@ -33,6 +33,11 @@ WITH applications AS (
     SELECT * 
     FROM  {{ ref ('greenhouse_sources') }}
 
+), greenhouse_sourcer AS (
+
+    SELECT * 
+    FROM {{ ref ('greenhouse_sourcer') }} 
+
 ), cost_center AS (
 
     SELECT DISTINCT division, department
@@ -48,7 +53,8 @@ WITH applications AS (
 SELECT 
     applications.application_id, 
     offer_id,
-    candidate_id, 
+    applications.candidate_id, 
+    requisition_id, 
     application_status,
     stage_name, 
     offer_status,
@@ -64,11 +70,14 @@ SELECT
          ELSE COALESCE(cost_center.division, department_name) END::VARCHAR(100)     AS division_modified,     
     greenhouse_sources.source_name::VARCHAR(250)                                    AS source_name,
     greenhouse_sources.source_type::VARCHAR(250)                                    AS source_type,
+    greenhouse_sourcer.sourcer_name,
+    candidates.candidate_recruiter,
+    candidates.candidate_coordinator,
     IFF(greenhouse_sources.source_name ='LinkedIn (Prospecting)',True, False)       AS sourced_candidate,
     IFF(offer_status ='accepted',
             DATEDIFF('day', applications.applied_at, offers.resolved_at),
             NULL)                                                                   AS time_to_offer,
-    bamboo.hire_date                                                                AS bamboo_hire_date
+    IFF(bamboo.hire_date IS NOT NULL, TRUE, FALSE)                                  AS is_hire_in_bamboo
 FROM applications 
 LEFT JOIN greenhouse_application_jobs 
   ON greenhouse_application_jobs.application_id = applications.application_id
@@ -81,6 +90,8 @@ LEFT JOIN greenhouse_sources
   ON greenhouse_sources.source_id = applications.source_id 
 LEFT JOIN offers 
   ON applications.application_id = offers.application_id
+LEFT JOIN greenhouse_sourcer
+  ON applications.application_id = greenhouse_sourcer.application_id
 LEFT JOIN cost_center
   ON TRIM(greenhouse_departments.department_name)=TRIM(cost_center.department)
 LEFT JOIN bamboo

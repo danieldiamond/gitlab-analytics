@@ -48,4 +48,12 @@ models:
         - name: sourced_candidate
           description: Candidates sourced through LinkedIn.
         - name: hired_sourced_candidates  
-          
+  - name: greenhouse_sourcer
+    description: This model is used to identify who the sourcer is for candidates. This is specific to source type = 'Prospecting'
+    columns:
+        - name: application_id
+        - name: candidate_id
+        - name: referrer_id
+        - name: sourcer
+        - name: application_date
+        - name: candidate_created_date
