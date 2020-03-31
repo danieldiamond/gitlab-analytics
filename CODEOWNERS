@@ -16,7 +16,9 @@
 # ======
 # Top Level Folder Overwrites
 # ======
-
+/.gitlab/       @kathleentam    @jjstark
+/admin/         @kathleentam    @jjstark
+/analyze/       @kathleentam    @jjstark
 /dags/          @tayloramurphy  @m_walker
 /extract/       @tayloramurphy  @m_walker
 /load/          @tayloramurphy  @jjstark    @kathleentam
@@ -29,18 +31,31 @@
 Makefile            @tayloramurphy @m_walker
 docker-compose.yml  @tayloramurphy @m_walker
 .gitlab-ci.yml      @tayloramurphy @m_walker
+CODEOWNERS          @kathleentam   @jjstark  
+.gitignore          @kathleentam   @jjstark    
+CONTRIBUTING.md     @kathleentam   @jjstark  
+LICENSE.md          @kathleentam   @jjstark  
+README.md           @kathleentam   @jjstark  
+__init__.py         @kathleentam   @jjstark  
+
 
 # ======
 # dbt Overwrites
 # ======
 
 /transform/                                         @tayloramurphy  @jjstark    @emilie     @kathleentam
+/transform/general/                                 @kathleentam    @derekatwood    @pluthra
 /transform/snowflake-dbt/                           @tayloramurphy  @jjstark    @emilie     @kathleentam
 
-/transform/snowflake-dbt/snowflake-dbt-ci.yml       @tayloramurphy  @m_walker
+/transform/snowflake-dbt/snowflake-dbt-ci.yml       @tayloramurphy  @m_walker   @jjstark  @kathleentam
+/transform/snowflake-dbt/generate_dbt_schema.py     @tayloramurphy  @m_walker   @jjstark  @kathleentam
+/transform/snowflake-dbt/periscope_check.py         @tayloramurphy  @m_walker   @jjstark  @kathleentam
+
+/transform/snowflake-dbt/analysis/                  @tayloramurphy  @jjstark    @kathleentam
 /transform/snowflake-dbt/docs/                      @tayloramurphy  @jjstark    @emilie     @kathleentam
 /transform/snowflake-dbt/macros/                    @tayloramurphy  @jjstark    @emilie     @kathleentam
 
+/transform/snowflake-dbt/models/                    @jjstark    @kathleentam
 /transform/snowflake-dbt/models/bamboohr/           @emilie         @pluthra    @kathleentam    
 /transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam
@@ -66,5 +81,6 @@ docker-compose.yml  @tayloramurphy @m_walker
 # ======
 # dbt data file Overwrites
 # ======
-
+/transform/snowflake-dbt/data/                      @jjstark    @kathleentam 
+/transform/snowflake-dbt/data/cost_center_division_department_mapping.csv   @iweeks
 /transform/snowflake-dbt/data/projects_part_of_product.csv @clefelhocz1
