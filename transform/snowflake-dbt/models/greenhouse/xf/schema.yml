@@ -47,3 +47,56 @@ models:
           description: Candidates sourced through LinkedIn.
         - name: hired_sourced_candidates  
           
+  - name: greenhouse_application_location_cleaned
+    description: This dbt model gives the cleaned location application answers.
+    columns:
+      -name: application_id
+        tests:
+          - not_null
+      - name: application_answer
+        tests:
+          - not_null
+      - name: city
+        tests:
+          - not_null
+      - name: state
+        tests:
+          - not_null
+      - name: country
+        tests: 
+          - not_null
+      - name: location_factor
+        tests:
+          - not_null
+      - name: application_question_answer_created_at
+        tests:
+          - not null
+
+  - name: greenhouse_application_locations
+    description: This dbt model gives the location factor of each location application question answers.
+    columns:
+      -name: application_id
+        tests:
+          - not_null
+      - name: application_answer
+        tests:
+          - not_null
+      - name: city
+        tests:
+          - not_null
+      - name: state
+        tests:
+          - not_null
+      - name: country
+        tests: 
+          - not_null
+      - name: location_factor
+        tests:
+          - not_null
+      - name: application_question_answer_created_at
+        tests:
+          - not null
+      - name: location_factor
+        tests:
+          - not_null
+          
