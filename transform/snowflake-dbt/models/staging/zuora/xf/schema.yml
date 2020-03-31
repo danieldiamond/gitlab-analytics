@@ -22,13 +22,13 @@ models:
             description: "All the subscriptions subsquent to the primary subscription, separated by commas."
           - name: subscription_version_term_start_date
             description: >-
-              The term start date of the subscription period that the charge belongs to. 
+              The term start date of the subscription period that the charge belongs to.
               This column shouldn't be null except for 5 specific charges.
               This behavior is captured in a specific test `zuora_base_mrr_not_null_term_dates`.
 
           - name: subscription_version_term_end_date
             description: >-
-              The term end date of the subscription period that the charge belongs to. 
+              The term end date of the subscription period that the charge belongs to.
               This column shouldn't be null except for 5 specific charges.
               This behavior is captured in a specific test `zuora_base_mrr_not_null_term_dates`.
 
@@ -114,6 +114,42 @@ models:
           - name: current_arr
             tests:
                 - not_null
+    - name: zuora_invoice_charges_mrr_amortized
+      description: Base model for Zuora Amortized MRR
+      columns:
+          - name: account_number
+            tests:
+                - not_null
+          - name: account_name
+            tests:
+                - not_null
+          - name: product_category
+            description: Product category is based on the rate plan name.
+            tests:
+              - accepted_values:
+                      values: ['GitHost', 'Other', 'Gold', 'Basic', 'Bronze', 'Premium', 'Starter', 'Ultimate', 'Support', 'Plus', 'Silver', 'Standard', 'Trueup']
+              - not_null
+          - name: rate_plan_charge_name
+            tests:
+                - not_null
+    - name: zuora_monthly_recurring_revenue
+      description: Base model for Zuora MRR
+      columns:
+          - name: account_number
+            tests:
+                - not_null
+          - name: account_name
+            tests:
+                - not_null
+          - name: product_category
+            description: Product category is based on the rate plan name.
+            tests:
+              - accepted_values:
+                      values: ['GitHost', 'Other', 'Gold', 'Basic', 'Bronze', 'Premium', 'Starter', 'Ultimate', 'Support', 'Plus', 'Silver', 'Standard', 'Trueup']
+              - not_null
+          - name: rate_plan_charge_name
+            tests:
+                - not_null
     - name: zuora_mrr_totals
       description: '{{ doc("zuora_mrr_totals") }}'
       columns:
@@ -169,6 +205,21 @@ models:
                 - not_null
           - name: quarters_since_zuora_subscription_cohort_start
             description: '{{ doc("zuora_mrr_totals_col_quarters_since_cohort_start") }}'
+            tests:
+                - not_null
+    - name: zuora_non_gaap_revenue
+      description: Base model for Zuora Non-GAAP Revenue
+      columns:
+          - name: account_number
+            tests:
+                - not_null
+          - name: account_name
+            tests:
+                - not_null
+          - name: rate_plan_charge_name
+            tests:
+                - not_null
+          - name: product_category
             tests:
                 - not_null
     - name: zuora_scheduled_renewals
@@ -290,10 +341,10 @@ models:
           - name: invoice_amount
             description: The dollar amount going back to the customer.
             tests:
-                - not_null         
+                - not_null
     - name: zuora_refund_xf
       description: Zuora Refunds
-      columns: 
+      columns:
           - name: refund_month
             tests:
                 - not_null
@@ -308,10 +359,10 @@ models:
           - name: refund_type
             description: Specifies if the refund is electronic or external.
           - name: refund_status
-            description: The status of the refund.    
+            description: The status of the refund.
     - name: zuora_subscription_periods
       description: '{{doc("zuora_subscription_periods")}}'
-      tests:    
+      tests:
         - unique:
             column_name: "concat(subscription_name_slugify, subscription_version_term_start_date)"
       columns:
@@ -324,11 +375,10 @@ models:
                 - unique
           - name: account_number
             tests:
-                - not_null 
+                - not_null
           - name: has_auto_renew_on
             description: is `TRUE` if the zuora subscription has auto-renew turned on. [DOCUMENTATION](https://knowledgecenter.zuora.com/Zuora_Central/Subscriptions/Subscriptions/B_Creating_Subscriptions/Renewing_Subscriptions_Automatically)
             tests:
                 - not_null
           - name: renewal_mrr
             description: For a subscription that has been renewed, this is the MRR of the subscription renewal. If the subscription expired, the value will be 0.
-            
