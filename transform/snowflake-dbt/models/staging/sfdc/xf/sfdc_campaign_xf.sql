@@ -1,7 +1,7 @@
 WITH sfdc_campaign AS (
 
     SELECT *
-    FROM {{ref('sfdc_campaign_source')}}
+    FROM {{ref('sfdc_campaign')}}
 
 ), xf AS (
 
@@ -26,7 +26,6 @@ WITH sfdc_campaign AS (
     FROM sfdc_campaign
     LEFT JOIN sfdc_campaign AS parent_campaign
     ON sfdc_campaign.campaign_parent_id = parent_campaign.campaign_id
-    WHERE sfdc_campaign.is_deleted = FALSE
 
 )
 
