@@ -13,11 +13,6 @@ WITH applications AS (
     SELECT * 
     FROM  {{ ref ('greenhouse_offers') }}
 
-), job_stages AS (
-
-    SELECT * 
-    FROM  {{ ref ('greenhouse_stages') }}
-
 ), jobs AS (
 
     SELECT * 
@@ -38,6 +33,11 @@ WITH applications AS (
     SELECT * 
     FROM {{ ref ('greenhouse_sourcer') }} 
 
+), candidates AS (
+
+    SELECT * 
+    FROM {{ ref ('greenhouse_candidates') }}  
+
 ), cost_center AS (
 
     SELECT DISTINCT division, department
@@ -56,7 +56,7 @@ SELECT
     applications.candidate_id, 
     requisition_id, 
     application_status,
-    stage_name, 
+    stage_name                                                                      AS current_stage_name, 
     offer_status,
     applied_at                                                                      AS application_date,
     sent_at                                                                         AS offer_sent_date,
@@ -77,7 +77,7 @@ SELECT
     IFF(offer_status ='accepted',
             DATEDIFF('day', applications.applied_at, offers.resolved_at),
             NULL)                                                                   AS time_to_offer,
-    IFF(bamboo.hire_date IS NOT NULL, TRUE, FALSE)                                  AS is_hire_in_bamboo
+    IFF(bamboo.hire_date IS NOT NULL, TRUE, FALSE)                                  AS is_hired_in_bamboo
 FROM applications 
 LEFT JOIN greenhouse_application_jobs 
   ON greenhouse_application_jobs.application_id = applications.application_id
@@ -90,6 +90,8 @@ LEFT JOIN greenhouse_sources
   ON greenhouse_sources.source_id = applications.source_id 
 LEFT JOIN offers 
   ON applications.application_id = offers.application_id
+LEFT JOIN candidates
+  ON applications.candidate_id = candidates.candidate_id  
 LEFT JOIN greenhouse_sourcer
   ON applications.application_id = greenhouse_sourcer.application_id
 LEFT JOIN cost_center
