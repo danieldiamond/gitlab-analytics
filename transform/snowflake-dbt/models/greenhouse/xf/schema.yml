@@ -52,7 +52,7 @@ models:
     columns:
       - name: job_post_id
         tests:
-        - not null
+          - not_null
       - name: application_id
         tests:
           - not_null
@@ -77,7 +77,7 @@ models:
     columns:
       - name: job_post_id
         tests:
-        - not null
+          - not_null
       - name: application_id
         tests:
           - not_null
