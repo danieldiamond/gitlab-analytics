@@ -51,8 +51,6 @@ models:
     description: This dbt model partitions the area column from the location application question answers to get the city, state, and country of each location.
     columns:
       - name: job_post_id
-        tests:
-          - not_null
       - name: application_id
         tests:
           - not_null
@@ -76,8 +74,6 @@ models:
     description: This dbt model gives the location factor of location application question answers.
     columns:
       - name: job_post_id
-        tests:
-          - not_null
       - name: application_id
         tests:
           - not_null
