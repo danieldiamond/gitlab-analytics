@@ -43,6 +43,7 @@ WITH zuora_account AS (
       zuora_subscription.subscription_name_slugify,
       zuora_subscription.subscription_status,
       zuora_subscription.version                          AS subscription_version,
+      zuora_rate_plan.rate_plan_name,
       zuora_rate_plan_charge.rate_plan_charge_id,
       zuora_rate_plan_charge.rate_plan_charge_number,
       zuora_rate_plan_charge.rate_plan_charge_name,
@@ -54,6 +55,7 @@ WITH zuora_account AS (
       zuora_rate_plan_charge.unit_of_measure,
       zuora_rate_plan_charge.quantity,
       zuora_rate_plan_charge.mrr,
+      zuora_rate_plan_charge.delta_tcv,
       zuora_product.product_name
     FROM zuora_account
     INNER JOIN zuora_subscription
@@ -86,11 +88,11 @@ WITH zuora_account AS (
       base_charges.*,
       ROW_NUMBER() OVER (
           PARTITION BY rate_plan_charge_number
-          ORDER BY rate_plan_charge_segment, rate_plan_charge_version
+          ORDER BY rate_plan_charge_segment, rate_plan_charge_version, service_start_date
       ) AS segment_version_order,
       IFF(ROW_NUMBER() OVER (
           PARTITION BY rate_plan_charge_number, rate_plan_charge_segment
-          ORDER BY rate_plan_charge_version DESC) = 1,
+          ORDER BY rate_plan_charge_version DESC, service_start_date DESC) = 1,
           TRUE, FALSE
       ) AS is_last_segment_version,
       invoice_number,
