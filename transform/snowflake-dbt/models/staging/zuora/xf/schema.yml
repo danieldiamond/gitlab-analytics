@@ -114,7 +114,7 @@ models:
           - name: current_arr
             tests:
                 - not_null
-<<<<<<< HEAD
+
     - name: zuora_invoice_charges_mrr_amortized
       description: Base model for Zuora Amortized MRR
       columns:
@@ -133,6 +133,7 @@ models:
           - name: rate_plan_charge_name
             tests:
                 - not_null
+                
     - name: zuora_monthly_recurring_revenue
       description: Base model for Zuora MRR
       columns:
@@ -151,12 +152,12 @@ models:
           - name: rate_plan_charge_name
             tests:
                 - not_null
-=======
+
     - name: zuora_iacv_to_arr
       description:  '{{ doc("zuora_iacv_to_arr") }}'                 
     - name: zuora_invoice_charges
       description: '{{ doc("zuora_invoice_charges") }}'
->>>>>>> master
+
     - name: zuora_mrr_totals
       description: '{{ doc("zuora_mrr_totals") }}'
       columns:
