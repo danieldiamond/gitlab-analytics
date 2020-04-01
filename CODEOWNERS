@@ -78,6 +78,9 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/models/sources/zendesk     @derekatwood    @ken_aguilar
 /transform/snowflake-dbt/models/staging/zendesk     @derekatwood    @ken_aguilar
 
+/transform/snowflake-dbt/models/sources/zuora     
+/transform/snowflake-dbt/models/staging/zuora     
+
 # ======
 # dbt data file Overwrites
 # ======
