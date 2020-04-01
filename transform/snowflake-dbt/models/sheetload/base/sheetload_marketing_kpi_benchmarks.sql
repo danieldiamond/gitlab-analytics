@@ -24,8 +24,26 @@ WITH source AS (
       NULLIF("LandedPipe_MM_Target", '')::FLOAT       AS landed_pipe_mm_target,
       NULLIF("LandedPipe_SMB_Target", '')::FLOAT	  AS landed_pipe_smb_target,
       NULLIF("ClosedWonIACV_Large_Target", '')::FLOAT AS closed_won_iacv_large_target,
-      NULLIF("ClosedWonIACV_MM_Target", '')::FLOAT    AS closed_woniacv_mm_target,
-      NULLIF("ClosedWonIACV_SMB_Target", '')::FLOAT   AS closed_won_iacv_smb_target
+      NULLIF("ClosedWonIACV_MM_Target", '')::FLOAT    AS closed_won_iacv_mm_target,
+      NULLIF("ClosedWonIACV_SMB_Target", '')::FLOAT   AS closed_won_iacv_smb_target,
+      NULLIF("MQL_Large_Goal", '')::FLOAT             AS mql_large_goal,
+      NULLIF("MQL_MM_Goal", '')::FLOAT                AS mql_mm_goal,
+      NULLIF("MQL_SMB_Goal", '')::FLOAT               AS mql_smb_goal,
+      NULLIF("MQL_To_SAO_Conversion_Large", '')::FLOAT   
+                                                      AS mql_to_sao_conversion_large,
+      NULLIF("MQL_To_SAO_Conversion_MM", '')::FLOAT   AS mql_to_sao_conversion_mm,
+      NULLIF("MQL_To_SAO_Conversion_SMB", '')::FLOAT  AS mql_to_sao_conversion_smb,
+      NULLIF("SDR_SAO_Large_Target", '')::FLOAT       AS sdr_sao_large_target,
+      NULLIF("SDR_SAO_MM_Target", '')::FLOAT          AS sdr_sao_mm_target,
+      NULLIF("SDR_SAO_SMB_Target", '')::FLOAT         AS sdr_sao_smb_target,
+      NULLIF("SDR_IACV_Large_Target", '')::FLOAT      AS sdr_iacv_large_target,
+      NULLIF("SDR_IACV_MM_Target", '')::FLOAT         AS sdr_iacv_mm_target,
+      NULLIF("SDR_IACV_SMB_Target", '')::FLOAT        AS sdr_iacv_smb_target,
+      NULLIF("ASP_Large_Target", '')::FLOAT           AS asp_large_target,
+      NULLIF("ASP_MM_Target", '')::FLOAT              AS asp_mm_target,
+      NULLIF("ASP_SMB_Target", '')::FLOAT             AS asp_smb_target
+
+      
     FROM source
 
 )
