@@ -24,6 +24,7 @@ WITH zuora_rate_plan AS (
         zuora_rate_plan_charge.unit_of_measure,
         zuora_rate_plan_charge.quantity,
         zuora_rate_plan_charge.mrr,
+        zuora_rate_plan_charge.delta_tcv,
         zuora_rate_plan.rate_plan_name AS rate_plan_name,
         {{product_category('zuora_rate_plan.rate_plan_name') }},
         {{delivery('product_category')}},
