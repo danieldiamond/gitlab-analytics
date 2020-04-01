@@ -46,10 +46,10 @@ WITH date_table AS (
       zuora_invoice_charges.product_name,
 
       --date info
-      date_trunc('month', zuora_subscription.subscription_start_date :: date)                         AS sub_start_month,
-      date_trunc('month', dateadd('month', -1, zuora_subscription.subscription_end_date :: DATE))     AS sub_end_month,
-      date_trunc('month', zuora_invoice_charges.effective_start_date::DATE)                           AS effective_start_month,
-      date_trunc('month', dateadd('month', -1, zuora_invoice_charges.effective_end_date :: DATE))     AS effective_end_month,
+      DATE_TRUNC('month', zuora_subscription.subscription_start_date::DATE)   AS sub_start_month,
+      DATE_TRUNC('month',zuora_subscription.subscription_end_date::DATE)      AS sub_end_month,
+      DATE_TRUNC('month', zuora_invoice_charges.effective_start_date::DATE)   AS effective_start_month,
+      DATE_TRUNC('month', zuora_invoice_charges.effective_end_date::DATE)     AS effective_end_month,
       zuora_invoice_charges.effective_start_date,
       zuora_invoice_charges.effective_end_date
     FROM zuora_invoice_charges
