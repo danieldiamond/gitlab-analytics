@@ -365,7 +365,18 @@ models:
       - name: version_id
         tests:
           - not_null
-          - unique          
+          - unique
+  - name: gitlab_dotcom_elasticsearch_indexed_namespaces
+    description: Base model for GitLab.com elasticsearch indexed namespaces.
+    columns:
+      - name: namespace_id
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('gitlab_dotcom_namespaces')
+              field: namespace_id
+              severity: warn 
   - name: gitlab_dotcom_environments
     description: Base model for GitLab.com environments.
     columns:
@@ -690,6 +701,20 @@ models:
     description: Base model for Gitlab.com licenses
     columns:
       - name: license_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_lists
+    description: Base model for Gitlab.com lists
+    columns:
+      - name: list_id
         tests:
           - not_null
           - unique
@@ -1192,6 +1217,14 @@ models:
       - name: created_at
         tests:
           - not_null
+          
+  - name: gitlab_dotcom_saml_providers
+    description: Base model for Gitlab.com gitlab_dotcom_saml_providers
+    columns:
+      - name: saml_provider_id
+        tests:
+          - not_null
+          - unique
 
   - name: gitlab_dotcom_services
     description: Base model for Gitlab.com services

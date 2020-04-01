@@ -630,6 +630,18 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'design_management_versions'
     export_table_primary_key: CONCAT(sha,'_', issue_id)
+  elasticsearch_indexed_namespaces:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT created_at
+      , updated_at
+      , namespace_id
+      FROM elasticsearch_indexed_namespaces
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'elasticsearch_indexed_namespaces'
+    export_table_primary_key: namespace_id
   environments:
     import_db: GITLAB_DB
     import_query: >

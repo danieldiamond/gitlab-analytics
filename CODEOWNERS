@@ -41,7 +41,7 @@ docker-compose.yml  @tayloramurphy @m_walker
 /transform/snowflake-dbt/docs/                      @tayloramurphy  @jjstark    @emilie     @kathleentam
 /transform/snowflake-dbt/macros/                    @tayloramurphy  @jjstark    @emilie     @kathleentam
 
-/transform/snowflake-dbt/models/bamboohr/           @emilie         @kathleentam
+/transform/snowflake-dbt/models/bamboohr/           @emilie         @pluthra    @kathleentam    
 /transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam
 /transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_
@@ -54,6 +54,8 @@ docker-compose.yml  @tayloramurphy @m_walker
 
 /transform/snowflake-dbt/models/sources/license/    @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/staging/license/    @eli_kastelein  @mpeychet_
+
+/transform/snowflake-dbt/models/sources/sfdc/       @derekatwood    @kathleentam
 
 /transform/snowflake-dbt/models/sources/version/    @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/staging/version/    @eli_kastelein  @mpeychet_

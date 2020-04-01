@@ -38,6 +38,7 @@ Please complete all items. Ask questions in the #data slack channel
     - [ ] For each error message, group the errors in order to create and assign issues based on:
         - [ ] the [CODEOWNERS file](https://gitlab.com/gitlab-data/analytics/blob/master/CODEOWNERS) for specific dbt model failures 
         - [ ] the [functional DRIs](https://about.gitlab.com/handbook/business-ops/data-team/#-team-organization)
+        - [ ] the [Data Infrastructure Monitoring Schedule](https://about.gitlab.com/handbook/business-ops/data-team/data-infrastructure/#data-infrastructure-monitoring-schedule) for dbt-snapshots failures
         - [ ] OR to the  Manager, Data if you aren't sure. 
     - [ ] Label the issue by: 
         - [ ] Comment in the issue `/label ~"Workflow::start (triage)" ~"Triage" ~"Break-fix" ~"dbt" ~"Data Team" ~"documentation" ~"Housekeeping"` 

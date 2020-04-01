@@ -184,6 +184,10 @@ models:
         - name: application_stage_name
           tests:
             - not_null
+        - name: is_milestone_stage
+          description: This indicates whether this is a stage that every candidate must go through regardless of the job applied for.
+        - name: stages_cleaned    
+          description: This cleans up the stage names to link together stages that are the same in process. 
     - name: greenhouse_approvals
       description: '{{ doc("greenhouse_approvals") }}'
       columns:
