@@ -24,8 +24,24 @@ WITH source AS (
       NULLIF("LandedPipe_MM_Target", '')::FLOAT       AS landed_pipe_mm_target,
       NULLIF("LandedPipe_SMB_Target", '')::FLOAT	  AS landed_pipe_smb_target,
       NULLIF("ClosedWonIACV_Large_Target", '')::FLOAT AS closed_won_iacv_large_target,
-      NULLIF("ClosedWonIACV_MM_Target", '')::FLOAT    AS closed_woniacv_mm_target,
-      NULLIF("ClosedWonIACV_SMB_Target", '')::FLOAT   AS closed_won_iacv_smb_target
+      NULLIF("ClosedWonIACV_MM_Target", '')::FLOAT    AS closed_won_iacv_mm_target,
+      NULLIF("ClosedWonIACV_SMB_Target", '')::FLOAT   AS closed_won_iacv_smb_target,
+      NULLIF("MQL_Large_Goal", '')::FLOAT             AS 
+      NULLIF("MQL_MM_Goal", '')::FLOAT                AS 
+      NULLIF("MQL_SMB_Goal", '')::FLOAT               AS 
+      NULLIF("MQL_To_SAO_Conversion_Large", '')::FLOAT  
+                                                      AS 
+      NULLIF("MQL_To_SAO_Conversion_MM", '')::FLOAT   AS 
+      NULLIF("MQL_To_SAO_Conversion_SMB", '')::FLOAT  AS 
+      NULLIF("MQL_To_SAO_Conversion_SMB", '')::FLOAT  AS
+      NULLIF("MQL_To_SAO_Conversion_SMB", '')::FLOAT  AS
+      NULLIF("MQL_To_SAO_Conversion_SMB", '')::FLOAT  AS
+      NULLIF("MQL_To_SAO_Conversion_SMB", '')::FLOAT  AS
+      NULLIF("MQL_To_SAO_Conversion_SMB", '')::FLOAT  AS
+      NULLIF("MQL_To_SAO_Conversion_SMB", '')::FLOAT  AS
+      NULLIF("MQL_To_SAO_Conversion_SMB", '')::FLOAT  AS
+      
+      
     FROM source
 
 )
