@@ -114,6 +114,10 @@ models:
           - name: current_arr
             tests:
                 - not_null
+    - name: zuora_iacv_to_arr
+      description:  '{{ doc("zuora_iacv_to_arr") }}'                 
+    - name: zuora_invoice_charges
+      description: '{{ doc("zuora_invoice_charges") }}'
     - name: zuora_mrr_totals
       description: '{{ doc("zuora_mrr_totals") }}'
       columns:
