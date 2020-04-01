@@ -75,6 +75,7 @@ WITH zuora_account AS (
       zuora_invoice_item.service_end_date::DATE     AS service_end_date,
       zuora_invoice.amount_without_tax              AS invoice_amount_without_tax,
       zuora_invoice_item.charge_amount              AS invoice_item_charge_amount,
+      zuora_invoice_item.unit_price                 AS invoice_item_unit_price,
       zuora_invoice_item.rate_plan_charge_id
     FROM zuora_invoice_item
     INNER JOIN zuora_invoice
@@ -99,7 +100,8 @@ WITH zuora_account AS (
       service_start_date,
       service_end_date,
       invoice_amount_without_tax,
-      invoice_item_charge_amount
+      invoice_item_charge_amount,
+      invoice_item_unit_price
     FROM base_charges
     INNER JOIN invoice_charges
       ON base_charges.rate_plan_charge_id = invoice_charges.rate_plan_charge_id
