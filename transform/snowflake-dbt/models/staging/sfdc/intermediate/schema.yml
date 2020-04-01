@@ -147,7 +147,6 @@ models:
                     field: account_id
         - name: opportunity_id
           tests:
-              - not_null
               - relationships:
                     to: ref('sfdc_opportunity')
                     field: opportunity_id

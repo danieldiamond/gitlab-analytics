@@ -108,7 +108,6 @@ models:
         description: The number of members that are presently associated with the group.
       - name: project_count
         description: The number of projects that are presently associated with the group.
-
   - name: gitlab_dotcom_memberships
     description: '{{ doc("gitlab_dotcom_memberships") }}'
     tests:
@@ -297,9 +296,6 @@ models:
   - name: gitlab_dotcom_usage_data_events
     description: '{{ doc("gitlab_dotcom_usage_data_events") }}'
     columns:
-      - name: namespace_id
-        tests:
-          - not_null
       - name: event_name
         tests:
           - not_null
