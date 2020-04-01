@@ -245,8 +245,8 @@ clone_repo_sha_cmd = f"""
     git init &&
     git remote add origin {REPO} &&
     echo "Fetching commit $GIT_COMMIT" &&
-    git fetch --depth 1 origin $GIT_COMMIT --quiet &&
-    git checkout FETCH_HEAD"""
+    git fetch origin --quiet &&
+    git checkout $GIT_COMMIT"""
 
 # extract command
 clone_and_setup_extraction_cmd = f"""
