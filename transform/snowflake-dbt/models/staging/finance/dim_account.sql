@@ -25,8 +25,6 @@ SELECT
     zuora_account.parent_id,
     zuora_account.sfdc_account_code,
     zuora_account.currency   AS account_currency,
-    zuora_contact.first_name AS contact_first_name,
-    zuora_contact.last_name  AS contact_last_name,
     zuora_contact.country
 FROM zuora_account
      LEFT JOIN zuora_contact
