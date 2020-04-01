@@ -1,11 +1,15 @@
+{{ config({
+    "schema": "temporary"
+    })
+}}
+
 WITH raw_application_answer AS (
   
   SELECT 
-    application_answer
+    *
   FROM {{ ref('greenhouse_application_question_answers') }}
   WHERE application_question IN ('Location',
                                  'What location are you in?')
-  GROUP BY application_answer
   
 ), application_answer_base AS (
   
@@ -196,7 +200,20 @@ WITH raw_application_answer AS (
   SELECT *
   FROM multiple_cities_and_states
 
+), joined AS (
+
+  SELECT
+    raw_application_answer.job_post_id,
+    raw_application_answer.application_id,
+    raw_application_answer.application_answer,
+    union_partitions.city,
+    union_partitions.state,
+    union_partitions.country,
+    raw_application_answer.application_question_answer_created_at
+  FROM raw_application_answer
+  LEFT JOIN union_partitions ON raw_application_answer.application_answer = union_partitions.application_answer
+
 )
 
 SELECT *
-FROM union_partitions
+FROM joined

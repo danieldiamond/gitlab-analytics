@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: location_factors_yaml_latest_area_partition
-    description: This dbt model partitions the area column of location_factors_yaml_latest to have the city, state, and country of each location.
+  - name: location_factors_historical_greenhouse
+    description: This dbt model partitions the area column of location_factors_yaml_historical to have the city, state, and country of each location.
     columns:
     - name: city
       tests:
@@ -14,5 +14,8 @@ models:
       tests: 
         - not_null
     - name: location_factor
+      tests:
+        - not_null
+    - name: snapshot_date
       tests:
         - not_null
