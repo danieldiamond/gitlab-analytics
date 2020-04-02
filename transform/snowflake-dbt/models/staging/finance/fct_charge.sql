@@ -34,6 +34,12 @@ WITH zuora_rate_plan AS (
     FROM zuora_rate_plan
         INNER JOIN zuora_rate_plan_charge
           ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
+
+), invoiced_charges AS (
+
+    SELECT DISTINCT rate_plan_charge_id
+    FROM {{ ref('zuora_invoice_item_source') }}
+
 ), final AS (
 
     SELECT
@@ -47,10 +53,12 @@ WITH zuora_rate_plan AS (
         ROW_NUMBER(
         ) OVER (
         PARTITION BY rate_plan_charge_number, rate_plan_charge_segment
-        ORDER BY rate_plan_charge_version DESC) = 1,
+        -- ordering by invoice_item_ids first will put charges without invoices to the end
+        ORDER BY invoiced_charges.invoice_item_id, rate_plan_charge_version DESC) = 1,
         TRUE, FALSE
         ) AS is_last_segment_version
     FROM base_charges
+    LEFT JOIN invoiced_charges ON invoiced_charges.rate_plan_charge_id = base_charges.rate_plan_charge_id
 )
 
 SELECT *
