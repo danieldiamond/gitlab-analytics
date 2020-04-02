@@ -26,7 +26,7 @@ SELECT
   event_name,
   stage_name,
   COUNT(*)                                  AS event_count,
-  COuNT(DISTINCT TO_DATE(event_created_at)) AS event_day_count
+  COUNT(DISTINCT TO_DATE(event_created_at)) AS event_day_count
 FROM date_details
 LEFT JOIN gitlab_dotcom_usage_data_events 
   ON gitlab_dotcom_usage_data_events.event_created_at 
