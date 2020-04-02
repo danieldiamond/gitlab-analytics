@@ -122,8 +122,7 @@ Some important parts of the script that you will definitely want to do in some w
     * [ ] Make sure to install the setuptools library as dbt will not install without it
     * [ ] Here is [a list of all of the Python tools that may be used for formatting, linting, or testing](https://gitlab.com/gitlab-data/analytics/blob/master/.gitlab-ci.yml#L100).  Consider installing these locally with pip3.
 * [ ] Install dbt, the open source tool we use for data transformations.
-    * [ ] Create a dbt profile file in `~/.dbt/`
-    * [ ] Set the DBT_PROFILE_PATH environment variable to point to the profile file
+    * [ ] Run `dbt init hello_world` for an example project and setup of profile dir.
 * [ ] Install your Python-compatible IDE of choice.  We recommend VSCode for its community support, [GitLab workflow](https://marketplace.visualstudio.com/items?itemName=fatihacet.gitlab-workflow) extension, and overall flexibility.
     * [ ] Ensure your IDE converts tabs to 4 spaces.  To do that in VSCode, make sure in settings:
       * `Editor: Detect Indentation` is deselected
@@ -205,13 +204,22 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 - All dbt commands need to be run within the `dbt-image` docker container
 - To get into the `dbt-image` docker container, go to the analytics project (which you can get to by typing `goto analytics` from anywhere on your Mac) and run the command `make dbt-image`. This will spin up our docker container that contains `dbt` and give you a bash shell within the `analytics/transform/snowflake-dbt` directory.
 - All changes made to the files within the `analytics` repo will automatically be visible in the docker container! This container is only used to run `dbt` commands themselves, not to write SQL or edit `dbt` files in general (though technically it could be, as VIM is available within the container)
-- [ ] From a different terminal window run `code ~/.dbt/profiles.yml` and update this file with your info.  The schema should be something like `yourname_scratch`.
+- [ ] From a different terminal window run `code ~/.dbt/profiles.yml` and update this file with your info. See [sample profiles](https://gitlab.com/gitlab-data/analytics/-/blob/master/admin/sample_profiles.yml) for an example.
     - [ ] __Data Engineers__: update the following paramaters in the `~/.dbt/profiles.yml`:
         ```
         role: ENGINEER
         warehouse: ENGINEER_XS
         ```
-- [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.  If you see an error like `Schema 'ANALYTICS.NAME_SCRATCH_STAGING' does not exist or not authorized`, it is because that schema hasn't been created by dbt in Snowflake yet. Since `dbt compile` doesn't actually create anything in the database, it won't create it for you.  To fix this, feel free to run a small model with dbt `dbt run --models sfdc` and then `dbt compile` should work as long as there weren't any issues with running the model.
+- [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.  If you see an error like `Schema 'ANALYTICS.NAME_SCRATCH_STAGING' does not exist or not authorized`, it is because that schema hasn't been created by dbt in Snowflake yet. Since `dbt compile` doesn't actually create anything in the database, it won't create it for you.  To fix this, follow the commands below:
+  - [ ] This command does not work at the moment, see [issue](https://gitlab.com/gitlab-data/analytics/-/issues/4225#note_315785603)
+  - [ ] To test everything for the moment, run one of the smaller models:
+    - Date (dry run, nothing will be created):
+      - dbt run --models date
+    - SFDC
+      - Load Dependencies
+      - `dbt run --models @sfdc`
+      - Run
+      - `dbt run --models sfdc`
 - [ ] test the command `make help` and use it to understand how to use `make dbt-docs` and access it from your local machine.
 - [ ] Here is the [dbt command line cheat sheet](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/#command-line-cheat-sheet)
 
