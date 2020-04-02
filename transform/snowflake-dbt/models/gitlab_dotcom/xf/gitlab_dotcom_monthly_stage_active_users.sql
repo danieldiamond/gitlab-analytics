@@ -29,6 +29,7 @@ SELECT
   -- event data
   event_name,
   stage_name,
+<<<<<<< HEAD
   
   --metadata
   DATEDIFF('day', user_created_at, date_day)      AS days_since_user_creation,
@@ -41,3 +42,13 @@ LEFT JOIN gitlab_dotcom_usage_data_events
   ON gitlab_dotcom_usage_data_events.event_created_at BETWEEN DATEADD('day', -28, date_details.date_day) AND date_day 
 WHERE day_of_month = 1
 GROUP BY 1,2,3,4,5,6,7
+=======
+  COUNT(*)                                  AS event_count,
+  COUNT(DISTINCT TO_DATE(event_created_at)) AS event_day_count
+FROM date_details
+LEFT JOIN gitlab_dotcom_usage_data_events 
+  ON gitlab_dotcom_usage_data_events.event_created_at 
+  BETWEEN DATEADD('day', -28, date_details.date_day) AND date_day 
+WHERE day_of_month = 1 AND date_day < current_date
+GROUP BY 1,2,3,4,5
+>>>>>>> df25a095788cb84fb3c581f579bd26e4073dfb39
