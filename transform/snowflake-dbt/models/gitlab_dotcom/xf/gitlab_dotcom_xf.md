@@ -78,14 +78,9 @@ There are 5 general ways that a user can have access to a group G:
 
 {% docs gitlab_dotcom_monthly_stage_active_users %}
 
-This model unions together all of the other models that represent a user having (full or partial) access to a namespace, AKA "membership". 
+For each month, this model shows for each event, the users and namespaces who perform this specific event, with 2 additional measures: the number of times this event is performed by a specific user in a specific namespace, and the number of days this event is performed (for example a specific user A has opened in a namespace 1, 15 issues in 10 days)
 
-There are 5 general ways that a user can have access to a group G:
-* Be a **group member** of group G.
-* Be a **group member** of G2, where G2 is a descendant (subgroup) of group G.
-* Be a **project member** of P, where P is owned by G or one of G's descendants.
-* Be a group member of X, where X is invited to a project underneath G via [project group links](https://docs.gitlab.com/ee/user/group/#sharing-a-project-with-a-group).
-* Be a group member of Y, where Y is invited to G or one of G's descendants via [group group links](https://docs.gitlab.com/ee/user/group/#sharing-a-group-with-another-group).
+We don't use calendar month for this calculation but the last 28 days of the month as explained in [the KPI Definition here](https://about.gitlab.com/handbook/product/metrics/#stage-monthly-active-users-smau)
 
 {% enddocs %}
 
