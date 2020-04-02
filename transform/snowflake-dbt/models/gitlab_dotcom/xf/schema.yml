@@ -199,9 +199,6 @@ models:
       - name: stage_name
         tests:
           - not_null
-      - name: user_id 
-        tests:
-          - not_null
   - name: gitlab_dotcom_milestones_xf
     description: This is a non-sensitive models of the milestones table. The "title" and "description" columns are masked for non-internal namespaces.
     columns:
