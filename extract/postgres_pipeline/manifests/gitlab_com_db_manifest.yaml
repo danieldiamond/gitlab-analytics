@@ -1280,8 +1280,7 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'project_group_links'
     export_table_primary_key: id
-    
-    
+    advanced_metadata: true
   project_import_data:
     import_db: GITLAB_DB
     import_query: >
