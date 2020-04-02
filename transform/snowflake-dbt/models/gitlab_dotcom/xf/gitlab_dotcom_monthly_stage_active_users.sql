@@ -1,10 +1,3 @@
-{{
-  config({
-    "materialized": "incremental"
-  })
-}}
-
-
 WITH date_details AS (
   
     SELECT *
