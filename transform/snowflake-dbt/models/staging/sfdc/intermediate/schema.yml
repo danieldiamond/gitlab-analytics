@@ -141,7 +141,6 @@ models:
     columns:
         - name: account_id
           tests:
-              - not_null
               - relationships:
                     to: ref('sfdc_account')
                     field: account_id

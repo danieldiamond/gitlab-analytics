@@ -153,9 +153,6 @@ models:
         - name: account_id
           tests:
               - not_null
-        - name: opportunity_id
-          tests:
-              - not_null
         - name: pov_id
           tests:
               - not_null
