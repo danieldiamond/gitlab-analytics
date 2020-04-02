@@ -39,3 +39,5 @@ export PS1="\[$GREEN\]\t \[$BLUE\]\w\[\033[m\]\[$MAGENTA\]\$(__git_ps1)\[$WHITE\
 
 [[ $PS1 && -f /usr/local/etc/bash_completion.d/goto.sh ]] && \
     . /usr/local/etc/bash_completion.d/goto.sh
+
+alias build_hb!="NO_CONTRACTS=true bundle exec middleman"

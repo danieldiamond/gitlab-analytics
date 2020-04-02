@@ -50,6 +50,30 @@ The final select statement then allocates the trueup according to what's listed 
 
 {% enddocs %}
 
+{% docs zuora_iacv_to_arr %}
+
+This model extends `zuora_invoice_charges` to map invoiced changes to subscriptions with SFDC opportunities. 
+
+`zuora_invoice_charges` is first constrained to charges with MRR > 0 and effective end dates greater than the invoice date. This provides the base set of charges for each Invoice that contribute future ARR based on the invoiced changes. Next, total charge amounts and change in TCV are aggregated for each subscription on the invoice, and joined to SFDC opportunities based on Opportunity TCV. Both approaches are necessary as multi-year deals can contain only a portion of opportunity TCV on the first invoice. Finally, additional charge metadata is layered in to compare the start and end dates appearing on the invoice to the known final start and end dates for each charge.
+
+In sum, this model can be used to compare the IACV associated with bookings (opportunities) to the resulting changes to subscriptions, their contribution to ARR, and the time periods in which these changes take effect.
+
+{% enddocs %}
+
+{% docs zuora_invoice_charges %}
+
+This model constructs a history of all changes to charges on subscriptions by leveraging Invoice information.
+
+Similar to the relationship between Subscription Name and Subscription ID,  Charge Number is the unique identifier for a Rate Plan Charge that is inclusive of multiple unique Rate Plan Charge IDs. Renewals, increases/decreases in seat count, and changes to effective start and end dates are all tracked against the Charge Number, with specific changes incrementing the Rate Plan Charge ID.
+
+Again similar to the relationship between Subscription Name and Subscription Version, each time a Rate Plan Charge is amended a new version will be created. However, a new Rate Plan Charge ID does not necessitate a new Rate Plan Charge Version, such as when additional charges are added to a rate plan or terms and conditions change.
+
+Finally, Segment is the key identifier for when the dollar amount on a Charge Number was changed.
+
+Putting it all together, the end result is a model with one row for every Charge Number, Segment, and Version of Rate Plan Charges that were invoiced, along with associated metadata from the RatePlanCharge, InvoiceItem, and Invoice objects. 
+
+{% enddocs %}
+
 
 {% docs zuora_mrr_totals %}
 

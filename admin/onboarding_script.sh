@@ -15,7 +15,7 @@ echo "git successfully installed"
 
 ## install docker and co
 echo "Installing docker.."
-brew cask install docker 
+brew cask install docker
 brew install docker-compose docker-machine xhyve docker-machine-driver-xhyve
 sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
 sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
@@ -119,6 +119,30 @@ echo "Installing anaconda.."
 brew cask install anaconda
 echo "export PATH=/usr/local/anaconda3/bin:"$PATH"" >> ~/.bash_profile
 echo "anaconda installed succesfully"
+
+## Set up the computer to contribute to the handbook
+echo "Setting up your computer to contribute to the handbook..."
+cd ~/repos/
+git clone git@gitlab.com:gitlab-com/www-gitlab-com.git
+echo "Handbook project successfully installed"
+echo "Installing nvm.."
+nvm install
+nvm use
+echo "Installing yarn.."
+brew install yarn
+echo "Installing rbenv.."
+brew install rbenv
+rbenv init
+rbenv install
+echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+# Ruby version should match https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/.ruby-version
+rbenv local 2.6.5
+gem install bundler
+bundle install
+echo "You've got everything set to build the handbook locally."
+echo "Setting up goto for the handbook.."
+goto -r handbook ~/repos/www-gitlab-com/
+echo "handbook goto alias successfully added"
 
 echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.bash_profile
 echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.bash_profile
