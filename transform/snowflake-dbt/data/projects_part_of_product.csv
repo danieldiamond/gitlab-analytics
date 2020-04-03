@@ -128,6 +128,7 @@ gitlab-org/security-products/analyzers/flawfinder,6237085
 gitlab-org/security-products/analyzers/gemnasium-maven-plugin,13150952
 gitlab-org/security-products/analyzers/go-ast-scanner,5971589
 gitlab-org/security-products/analyzers/security-code-scan,6535935
+gitlab-org/security-products/security-report-schemas,16683102
 gitlab-org/security-products/tests/apex-salesforce,13348998
 gitlab-org/security-products/tests/c,5727416
 gitlab-org/security-products/tests/common,6388398
