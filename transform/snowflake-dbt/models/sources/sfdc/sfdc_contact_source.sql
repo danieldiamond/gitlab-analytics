@@ -57,7 +57,7 @@ WITH source AS (
         lead_source_type__c         AS lead_source_type,
         outreach_stage__c           AS outreach_stage,
         account_type__c             AS account_type,
-        contact_assigned_datetime__c::datetime   
+        contact_assigned_datetime__c::datetime
                                     AS assigned_datetime,
         mql_timestamp__c            AS marketo_qualified_lead_timestamp,
         mql_datetime__c             AS marketo_qualified_lead_datetime,
@@ -76,15 +76,15 @@ WITH source AS (
         {{  sfdc_source_buckets('leadsource') }}
 
         --path factory info
-        pathfactory_experience_name__c    
+        pathfactory_experience_name__c
                                     AS pathfactory_experience_name,
-        pathfactory_engagement_score__c    
+        pathfactory_engagement_score__c
                                     AS pathfactory_engagement_score,
-        pathfactory_content_count__c   
+        pathfactory_content_count__c
                                     AS pathfactory_content_count,
-        pathfactory_content_list__c    
+        pathfactory_content_list__c
                                     AS pathfactory_content_list,
-        pathfactory_content_journey__c    
+        pathfactory_content_journey__c
                                     AS pathfactory_content_journey,
         pathfactory_topic_list__c   AS pathfactory_topic_list,
 

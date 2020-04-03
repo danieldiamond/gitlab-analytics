@@ -1,8 +1,3 @@
-{{config({
-    "materialized": "table",
-    "schema": "staging"
-  })
-}}
 
 WITH source AS (
 
@@ -117,9 +112,6 @@ WITH source AS (
       systemmodstamp
 
     FROM source
-    WHERE id IS NOT NULL
-    AND isdeleted = FALSE
-
 )
 
 SELECT *

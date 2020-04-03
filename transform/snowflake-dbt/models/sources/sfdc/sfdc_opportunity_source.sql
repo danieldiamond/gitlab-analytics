@@ -125,9 +125,6 @@ WITH source AS (
         recordtypeid                   AS record_type_id
 
       FROM source
-      WHERE accountid IS NOT NULL
-        AND isdeleted = FALSE
-
   )
 
 SELECT *
