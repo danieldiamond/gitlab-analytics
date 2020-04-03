@@ -98,9 +98,15 @@ The output is the row for the employee which does not have a department or divis
 If this test fails:
 
 * Step 1: Run the chatops command `/gitlab datachat run current_depts_and_divs` from Slack to see the test results in Slack.
-* Step 2: Ping the People Operations team with the employee's name.
-* Step 3: Filter out the employee name from the test while it is resolved upstream. Create a subsequent issue around unfiltering the employee, add the `People` label and assign it to the next milestone.
-* Step 4: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
+
+If cost center is missing:
+* Start by checking the  cost_center_division_department_mapping.csv in the data team repository.
+* If the division and department exist, but there is not cost_center associated reach create an issue and assign to the owner of the cost_center_division_department_mapping.csv file, and cc the people data analyst.
+
+If the issue is not the mapping of cost center then do the following:
+* Step 1: Ping the People Operations team with the employee's name.
+* Step 2: Filter out the employee name from the test while it is resolved upstream. Create a subsequent issue around unfiltering the employee, add the `People` label and assign it to the next milestone.
+* Step 3: Once PO has confirmed that they've been updated (it is on you to follow up with PO even after your triage day!), unfilter the employee.
 
 Alternatively, it's possible the cost center is missing from the csv file (loaded using dbt seed).
 
