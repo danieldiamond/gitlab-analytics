@@ -12,8 +12,6 @@ WITH zuora_account AS (
 
     SELECT DISTINCT account_id
     FROM {{ref('zuora_excluded_accounts')}}
-    WHERE account_id IS NOT NULL AND is_permanently_excluded
-
 )
 
 SELECT
@@ -25,11 +23,9 @@ SELECT
     zuora_account.parent_id,
     zuora_account.sfdc_account_code,
     zuora_account.currency   AS account_currency,
-    zuora_contact.country
+    zuora_contact.country,
+    zuora_account.is_deleted,
+    zuora_account.account_id IN (SELECT account_id FROM excluded_accounts) AS is_excluded
 FROM zuora_account
      LEFT JOIN zuora_contact
     ON COALESCE(zuora_account.sold_to_contact_id, zuora_account.bill_to_contact_id) = zuora_contact.contact_id
-WHERE zuora_account.is_deleted = FALSE
-  AND zuora_account.account_id NOT IN (
-                SELECT account_id
-                FROM excluded_accounts)
