@@ -48,6 +48,7 @@ Please complete all items. Ask questions in the #data slack channel
     - [ ] Follow the checklist in the [dbt tests README](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/tests/README.md) for each error that is documented. 
         - [ ] If you stumble upon a new test that isn't documented, be sure to document it to make it easier to address in the future. Consider creating one new chatops command for any reoccuring error. You can follow [this how to guide](https://gitlab.com/gitlab-data/chatops/-/blob/master/README.md) for instructions on how to add a new chatops command.
 
+* [ ] At the end of your working day post EOD along with a link to this issue so that it is clear for the next triager what time to check for issues from.
 
 ### Maintain KPI related information         
 * [ ] Maintain the KPI Index page by 
