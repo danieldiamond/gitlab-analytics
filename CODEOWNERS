@@ -62,7 +62,7 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/greenhouse/         @pluthra        @kathleentam
 /transform/snowflake-dbt/models/netsuite/           @iweeks         @kathleentam
-/transform/snowflake-dbt/models/sfdc/               @derekatwood    @kathleentam
+/transform/snowflake-dbt/models/sfdc/               @derekatwood    @kathleentam    @jeanpeguero 
 /transform/snowflake-dbt/models/smau_events/        @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/snowplow/           @tayloramurphy  @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/snowplow_combined/  @tayloramurphy  @eli_kastelein  @mpeychet_
