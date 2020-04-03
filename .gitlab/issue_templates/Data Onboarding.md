@@ -1,15 +1,15 @@
-## Overview 
+## Overview
 
 Goal: To help bring you, our new data team member, up to speed in the GitLab Data Team's analytics stack as efficiently as possible, without sacrificing quality for speed. There is a lot of information in the on-boarding issue, so please bookmark handbook pages, documentation pages, and log-ins for future reference. The goal is for you to complete and close the Data Team on-boarding issue within 1 week after you have completed the GitLab company on-boarding issue. These resources will be super helpful and serve as great reference material as you get up to speed and learn to work through issues and merge requests [over your first 90 day](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/source/job-families/finance/data-analyst/index.html.md#how-youll-ramp).
 
 
-## Access Requests 
+## Access Requests
 
-### For all going through the Data Onboarding Process 
+### For all going through the Data Onboarding Process
 - [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
 - [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
   - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
-- [ ] Manager: Add to Data Ops calendar meeting 
+- [ ] Manager: Add to Data Ops calendar meeting
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
 - [ ] Manager: Add to the `GitLab Data Team` project as a Developer.
 
@@ -41,7 +41,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 
 ## WELCOME TO THE TEAM! WE'RE SO EXCITED TO HAVE YOU!!!
 
-- [ ] Read (skim) through this full issue, just so you have a sense of what's coming. 
+- [ ] Read (skim) through this full issue, just so you have a sense of what's coming.
 - [ ] Create a new issue in the Analytics project (this project). As you proceed and things are unclear, document it in the issue. Don't worry about organizing it; just brain dump it into the issue! This will help us iterate on the onboarding process.
 - [ ] Join the following channels on Slack: `data`, `data-lounge`, `data-daily`, `data-triage`, and `business-operations`.
    - [ ] Engineers, join `analytics-pipelines`
@@ -59,12 +59,12 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Try running `/gitlab datachat run hello-world` in Slack in the #data team channel. You may be prompted to authenticate! Do it! (Sometimes we run [chatops](https://docs.gitlab.com/ee/ci/chatops/) to help with testing.). If you get `You are not allowed to perform given chatops command` double check you are added as a Maintainer of the project.
 - [ ] If relevant, watch ["The State of [Product] Data"](https://www.youtube.com/watch?v=eNLkj3Ho2bk&feature=youtu.be) from Eli at the Growth Fastboot. (You'll need to be logged into GitLab Unfiltered.)
 
-There is a lot of information being thrown at you over the last couple of days. 
-It can all feel a bit overwhelming. 
-The way we work at GitLab is unique and can be the hardest part of coming on board. 
-It is really important to internalize that we work **handbook-first** and that **everything is always a work in progress**. 
-Please watch one minute of [this clip](https://www.youtube.com/watch?v=LqzDY76Q8Eo&feature=youtu.be&t=7511) (you will need to be logged into GitLab unfiltered) where Sid gives a great example of why its important that we work this way. 
-*This is the most important thing to learn during all of onboarding.*  
+There is a lot of information being thrown at you over the last couple of days.
+It can all feel a bit overwhelming.
+The way we work at GitLab is unique and can be the hardest part of coming on board.
+It is really important to internalize that we work **handbook-first** and that **everything is always a work in progress**.
+Please watch one minute of [this clip](https://www.youtube.com/watch?v=LqzDY76Q8Eo&feature=youtu.be&t=7511) (you will need to be logged into GitLab unfiltered) where Sid gives a great example of why its important that we work this way.
+*This is the most important thing to learn during all of onboarding.*
 
 **Getting your computer set up locally**
 * Make sure that you have [created your SSH keys](https://docs.gitlab.com/ee/gitlab-basics/create-your-ssh-keys.html) prior to running this. You can check this by typing `ssh -T git@gitlab.com` into your terminal which should return "Welcome to GitLab, " + your_username
@@ -72,7 +72,7 @@ Please watch one minute of [this clip](https://www.youtube.com/watch?v=LqzDY76Q8
 
 <summary>For Data Analysts</summary>
 
-* THE NEXT STEPS SHOULD ONLY BE RUN ON YOUR GITLAB-ISSUED LAPTOP. If you run this on your personal computer, we take no responsibility for the side effects. 
+* THE NEXT STEPS SHOULD ONLY BE RUN ON YOUR GITLAB-ISSUED LAPTOP. If you run this on your personal computer, we take no responsibility for the side effects.
 
 * [ ] Open your computer's built-in terminal app. Run the following:
 ```
@@ -87,10 +87,12 @@ rm ~/onboarding_script.sh
       * Installing dbt, the open source tool we use for data transformations.
       * Installing goto, an easy way to move through the file system. [Please find here more details on how to use goto](https://github.com/iridakos/goto)
       * Installing anaconda, how we recommend folks get their python distribution.
+      * Installs all-the-things needed to contribute to [the handbook](about.gitlab.com/handbook) locally and build it locally.
    * You will be able to `goto analytics` from anywhere to go to the analytics repo locally (you will have to open a new terminal window for `goto` to start working.) If it doesn't work, try running `goto -r analytics ~/repos/analytics` then quit + reopen your terminal before trying again.
-   * You will be able to `gl_open` from anywhere within the analytics project to open the repo in the UI. If doesn't work, visually inspect your `~/.bashrc` file to make sure it has [this line](https://gitlab.com/gitlab-data/analytics/blob/master/admin/make_life_easier.sh#L14). 
+   * You will be able to `gl_open` from anywhere within the analytics project to open the repo in the UI. If doesn't work, visually inspect your `~/.bashrc` file to make sure it has [this line](https://gitlab.com/gitlab-data/analytics/blob/master/admin/make_life_easier.sh#L14).
    * Your default python version should now be python 3. Typing `which python` into a new terminal window should now return `/usr/local/anaconda3/bin/python`
    * dbt will be installed at its latest version. Typing `dbt --version` will output the current version.
+   * To get to the handbook project, you'll be able to use `goto handbook`, and to build the handbook locally, you'll be able to use the alias `build_hb!`. 
 * [ ] We strongly recommend configuring VSCode (via the VSCode UI) with the [VSCode setup](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243?) section of Claire's post and [adding the tip](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243/10?u=tmurphy) from tmurphy later in the thread. It will make your life much easier.
   * Your editor should be configured so that all tabs are converted to 4 spaces. This will minimize messy looking diffs and provide consistency across the team.
     * VSCode
@@ -136,7 +138,7 @@ Some important parts of the script that you will definitely want to do in some w
 Additional tools to install that are not part of the onboarding script:
 * [ ] Install Data Grip (from JetBrains) for interfacing with databases
     * [ ] Follow [this process](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains) for requesting a license for Data Grip.  Until you have a license, you can easily use Data Grip on a trial basis for 30 days
-* [ ] Install the [gcloud sdk](https://cloud.google.com/sdk/docs/quickstart-macos) and authenticate once you're provisioned.    
+* [ ] Install the [gcloud sdk](https://cloud.google.com/sdk/docs/quickstart-macos) and authenticate once you're provisioned.
     * [ ] For debugging services such as Airflow locally, you will need a set of service account credentials. Your manager will provide you with a service account.
     * [ ] The environment variable `GOOGLE_APPLICATION_CREDENTIALS` should then point to the key provided by your manager.
 * [ ] Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-homebrew-on-macos)
@@ -204,18 +206,18 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 - To get into the `dbt-image` docker container, go to the analytics project (which you can get to by typing `goto analytics` from anywhere on your Mac) and run the command `make dbt-image`. This will spin up our docker container that contains `dbt` and give you a bash shell within the `analytics/transform/snowflake-dbt` directory.
 - All changes made to the files within the `analytics` repo will automatically be visible in the docker container! This container is only used to run `dbt` commands themselves, not to write SQL or edit `dbt` files in general (though technically it could be, as VIM is available within the container)
 - [ ] From a different terminal window run `code ~/.dbt/profiles.yml` and update this file with your info.  The schema should be something like `yourname_scratch`.
-    - [ ] __Data Engineers__: update the following paramaters in the `~/.dbt/profiles.yml`: 
+    - [ ] __Data Engineers__: update the following paramaters in the `~/.dbt/profiles.yml`:
         ```
-        role: ENGINEER 
+        role: ENGINEER
         warehouse: ENGINEER_XS
         ```
-- [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.  If you see an error like `Schema 'ANALYTICS.NAME_SCRATCH_STAGING' does not exist or not authorized`, it is because that schema hasn't been created by dbt in Snowflake yet. Since `dbt compile` doesn't actually create anything in the database, it won't create it for you.  To fix this, feel free to run a small model with dbt `dbt run --models sfdc` and then `dbt compile` should work as long as there weren't any issues with running the model.  
+- [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.  If you see an error like `Schema 'ANALYTICS.NAME_SCRATCH_STAGING' does not exist or not authorized`, it is because that schema hasn't been created by dbt in Snowflake yet. Since `dbt compile` doesn't actually create anything in the database, it won't create it for you.  To fix this, feel free to run a small model with dbt `dbt run --models sfdc` and then `dbt compile` should work as long as there weren't any issues with running the model.
 - [ ] test the command `make help` and use it to understand how to use `make dbt-docs` and access it from your local machine.
 - [ ] Here is the [dbt command line cheat sheet](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/#command-line-cheat-sheet)
 
 ## Airflow (Data Engineers only)
  - [ ] Read the Airflow section on the [Data Infrastructure page](https://about.gitlab.com/handbook/business-ops/data-team/data-infrastructure/#airflow)
- - [ ] Watch the [Airflow Setup Walkthrough](https://www.youtube.com/watch?v=3Ym40gRHtvk&feature=youtu.be) with Taylor and Magda 
+ - [ ] Watch the [Airflow Setup Walkthrough](https://www.youtube.com/watch?v=3Ym40gRHtvk&feature=youtu.be) with Taylor and Magda
 
 ## Misc
 - [ ] Familiarize yourself with the [Stitch](http://stitchdata.com) UI, as this is mostly the source of truth for what data we are loading. An email will have been sent with info on how to get logged in.
