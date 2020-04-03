@@ -1,7 +1,7 @@
 WITH source AS (
     
     SELECT * 
-    FROM {{ source('sheetload','abuse_mitigation_data') }}
+    FROM {{ source('sheetload','abuse_mitigation') }}
 
 ), final AS (
     
