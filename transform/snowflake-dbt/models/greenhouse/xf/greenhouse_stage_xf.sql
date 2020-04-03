@@ -70,7 +70,6 @@ WITH stages AS (
     WHERE application_stage_name = 'Offer'
       AND application_status = 'hired' 
       AND is_hired_in_bamboo = TRUE 
-  {# ---adding flag for internal hire-- #}
   
 ), all_stages AS (
  
@@ -133,7 +132,6 @@ WITH stages AS (
     LEFT JOIN stages_hit 
       ON all_stages.application_id = stages_hit.application_id
       AND all_stages.candidate_id = stages_hit.candidate_id
-    WHERE all_stages.candidate_id = 32534811002
     
 )
 
