@@ -23,6 +23,8 @@ WITH source as (
       renamed.application_id,
       stage_id,
       application_stage_name,
+      applicatioN_entered_on,
+      application_exited_on,
       IFF(stage_id IN (45 --application_review
                    ,7 --screen
                    ,8 -- Screen
