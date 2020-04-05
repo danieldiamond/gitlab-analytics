@@ -36,20 +36,21 @@
         rejection_reason_name,
         rejection_reason_type,
         is_hired_in_bamboo,
-        time_to_offer            AS app_to_offer_turntime
+        time_to_offer            AS app_to_offer_turntime,
+        ROW_NUMBER() OVER (PARTITION BY stages.application_id, candidate_id ORDER BY stage_entered_on DESC) AS row_number_stages_desc
         FROM stages
         LEFT JOIN recruiting_xf 
         ON recruiting_xf.application_id = stages.application_id
     
-    ), hired AS (
+    ), hired_rejected AS (
 
         SELECT 
-        stages.application_id,
+        application_id,
         candidate_id,
-        'Hired'                                   AS application_stage,
-        stages.is_milestone_stage,
-        candidate_target_hire_date                AS stage_entered_on,
-        candidate_target_hire_date                AS stage_exited_on,
+        application_status                        AS application_stage,
+        TRUE                                      AS is_milestone_stage,
+        IFF(application_status = 'hired',candidate_target_hire_date, rejected_at)       AS stage_entered_on,
+        IFF(application_status = 'hired',candidate_target_hire_date, rejected_at)       AS stage_exited_on,
         requisition_id,
         application_status                        AS current_application_status,
         job_name,
@@ -63,13 +64,10 @@
         rejection_reason_name,
         rejection_reason_type,
         is_hired_in_bamboo,
-        time_to_offer                            AS app_to_offer_turntime
-        FROM stages
-        LEFT JOIN recruiting_xf 
-        ON recruiting_xf.application_id = stages.application_id
-        WHERE application_stage_name = 'Offer'
-        AND application_status = 'hired' 
-        AND is_hired_in_bamboo = TRUE 
+        time_to_offer                            AS app_to_offer_turntime,
+        1 AS row_number_stages_desc
+        FROM recruiting_xf 
+        WHERE application_status in ('hired', 'rejected')
     
     ), all_stages AS (
     
@@ -79,7 +77,7 @@
         UNION ALL
 
         SELECT *
-        FROM hired
+        FROM hired_rejected
 
     ), stages_hit AS (
 
@@ -94,7 +92,8 @@
         SUM(IFF(application_stage = 'Team Interview',1,0))      AS hit_team_interview,
         SUM(IFF(application_stage = 'Reference Check',1,0))     AS hit_reference_check,
         SUM(IFF(application_stage = 'Offer',1,0))               AS hit_offer,
-        SUM(IFF(application_stage = 'Hired',1,0))               AS hit_hired
+        SUM(IFF(application_stage = 'hired',1,0))               AS hit_hired,
+        SUM(IFF(application_stage = 'rejected',1,0))            AS hit_rejected
         FROM all_stages
         GROUP BY 1,2
         
@@ -102,6 +101,8 @@
 
         SELECT 
         {{ dbt_utils.surrogate_key('all_stages.application_id', 'all_stages.candidate_id') }} AS unique_key,
+        all_stages.application_id,
+        all_stages.candidate_id,
         application_stage,
         is_milestone_stage,
         DATE_TRUNC(MONTH,stage_entered_on) AS month_stage_entered_on,
@@ -130,7 +131,11 @@
         hit_reference_check,
         hit_offer,
         hit_hired,
-        IFF(ROW_NUMBER() OVER (PARTITION BY all_stages.application_id, all_stages.candidate_id ORDER BY stage_entered_on DESC) =1, TRUE, FALSE) AS current_stage
+        CASE WHEN application_stage IN ('hired', 'rejected') 
+               THEN 1
+             WHEN hit_hired = 1 OR hit_rejected = 1 
+               THEN row_number_stages_desc+1
+             ELSE row_number_stages_desc END                    AS row_number_stages_desc
         FROM all_stages
         LEFT JOIN stages_hit 
         ON all_stages.application_id = stages_hit.application_id
@@ -138,5 +143,6 @@
         
     )
 
-    SELECT *
+    SELECT *,
+      IFF(row_number_stages_desc = 1, TRUE, FALSE) AS current_stage
     FROM final

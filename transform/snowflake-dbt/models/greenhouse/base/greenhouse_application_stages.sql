@@ -26,7 +26,8 @@ WITH source as (
                    ,8 -- Screen
                    ,26 --screening
                    ,22 --HM Interview
-                   ,46 --HIring Manager Interview
+                   ,46 --Hiring Manager Interview
+                   ,15 --Hiring Manager Review
                    ,23 --Team Interviews
                    ,47 --Team Interview    
                    ,33 --face to face

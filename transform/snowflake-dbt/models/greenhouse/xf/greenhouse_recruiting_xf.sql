@@ -67,6 +67,7 @@ SELECT
     sent_at                                                                         AS offer_sent_date,
     resolved_at                                                                     AS offer_resolved_date,
     offers.start_date                                                               AS candidate_target_hire_date,
+    rejected_at,
     job_name,
     department_name::VARCHAR(100)                                                   AS department_name,
     division::VARCHAR(100)                                                          AS division,                                             
