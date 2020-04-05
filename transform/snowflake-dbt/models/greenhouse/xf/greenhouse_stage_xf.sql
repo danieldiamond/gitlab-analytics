@@ -102,8 +102,6 @@
 
         SELECT 
         {{ dbt_utils.surrogate_key('all_stages.application_id', 'all_stages.candidate_id') }} AS unique_key,
-        all_stages.application_id,
-        all_stages.candidate_id,
         application_stage,
         is_milestone_stage,
         DATE_TRUNC(MONTH,stage_entered_on) AS month_stage_entered_on,
