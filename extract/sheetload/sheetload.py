@@ -99,12 +99,15 @@ def sheet_loader(
 
     with open(sheet_file, "r") as file:
         try:
-            stream =  safe_load(file)
+            stream = safe_load(file)
         except YAMLError as exc:
             print(exc)
 
-        sheets = ["{sheet_name}.{tab_name}".format(sheet_name = sheet['name'], tab_name = tab)
-                  for sheet in stream['sheets'] for tab in sheet['tabs']]
+        sheets = [
+            "{sheet_name}.{tab_name}".format(sheet_name=sheet["name"], tab_name=tab)
+            for sheet in stream["sheets"]
+            for tab in sheet["tabs"]
+        ]
 
     if database != "RAW":
         engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", schema)
