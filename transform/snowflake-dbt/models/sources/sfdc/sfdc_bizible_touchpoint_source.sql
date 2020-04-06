@@ -1,7 +1,7 @@
 WITH source AS (
 
   SELECT *
-  FROM {{ source('salesforce', 'bizible_touchpoint') }}
+  FROM {{ source('salesforce', 'bizible_touchpoint') }} dsdfs
 
 
 ), renamed AS (
