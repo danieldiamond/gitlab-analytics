@@ -20,7 +20,7 @@ sheets:
     tabs:
       - employee_location_factor
   - name: gitlab_slack_stats
-    owner: '@derekatwood'
+    owner: '@pluthra'
     tabs:
       - gitlab_slack_stats
   - name: google_referrals
