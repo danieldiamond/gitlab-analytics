@@ -63,6 +63,10 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.stage_name,
       sfdc_opportunity_stage.is_active                                                             AS stage_is_active,
       sfdc_opportunity_stage.is_closed                                                             AS stage_is_closed,
+      sfdc_opportunity.iqm_submitted_by_role__c,
+      sfdc_opportunity.iqm_submitted_by_title__c,
+      sfdc_opportunity.iqm_submitted_by_user__c,
+      sfdc_opportunity.iqm_submitted_by_user_name__c,
       
       -- opportunity information
       sfdc_opportunity.acv,

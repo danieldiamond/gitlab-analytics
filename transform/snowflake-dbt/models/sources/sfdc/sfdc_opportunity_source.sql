@@ -61,6 +61,10 @@ WITH source AS (
         type                           AS sales_type,
         {{  sfdc_source_buckets('leadsource') }}
         stagename                      AS stage_name,
+        iqm_submitted_by_role__c       AS iqm_submitted_by_role__c,
+        iqm_submitted_by_title__c      AS iqm_submitted_by_title__c,
+        iqm_submitted_by_user__c       AS iqm_submitted_by_user__c,
+        iqm_submitted_by_user_name__c  AS iqm_submitted_by_user_name__c,
 
         -- opportunity information
         acv_2__c                       AS acv,
