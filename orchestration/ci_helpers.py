@@ -9,7 +9,7 @@ from functools import partial
 from logging import info, error, basicConfig
 from os import environ as env, remove
 from subprocess import run, PIPE, Popen, _active, _cleanup
-from typing import Tuple
+from typing import Tuple. 
 
 
 @register
