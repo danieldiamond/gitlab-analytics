@@ -3,7 +3,7 @@ WITH sfdc_account_snapshots AS (
     SELECT *
     FROM {{ref('sfdc_account_snapshots_base')}}
 
-), final AS (
+), final AS ( eddd
 
     SELECT
       -- keys
