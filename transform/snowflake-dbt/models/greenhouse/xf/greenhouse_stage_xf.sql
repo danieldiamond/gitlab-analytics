@@ -1,7 +1,7 @@
-    {{ config({
+    {# {{ config({
         "schema": "analytics"
         })
-    }}
+    }} #}
 
     WITH stages AS (
 
@@ -19,12 +19,14 @@
         SELECT 
         stages.application_id,
         candidate_id,
-        stages.stages_cleaned     AS application_stage,
+        stages.stages_cleaned                                                          AS application_stage,
         stages.is_milestone_stage,
+        DATE_TRUNC(MONTH, application_date)                                            AS application_month,
         IFF(application_stage_name = 'Offer',offer_sent_date, stages.stage_entered_on) AS stage_entered_on,
-        IFF(application_stage_name = 'Offer', offer_resolved_date, COALESCE(stages.stage_exited_on, CURRENT_DATE())) AS stage_exited_on,
+        IFF(application_stage_name = 'Offer', offer_resolved_date, 
+            COALESCE(stages.stage_exited_on, CURRENT_DATE()))                           AS stage_exited_on,
         requisition_id,
-        application_status        AS current_application_status,
+        application_status                                                              AS current_application_status,
         job_name,
         department_name,
         division_modified,
@@ -47,12 +49,13 @@
         SELECT 
         application_id,
         candidate_id,
-        application_status                        AS application_stage,
-        TRUE                                      AS is_milestone_stage,
+        application_status                                                              AS application_stage,
+        TRUE                                                                            AS is_milestone_stage,
+        DATE_TRUNC(MONTH, application_date)                                             AS application_month,
         IFF(application_status = 'hired',candidate_target_hire_date, rejected_at)       AS stage_entered_on,
         IFF(application_status = 'hired',candidate_target_hire_date, rejected_at)       AS stage_exited_on,
         requisition_id,
-        application_status                        AS current_application_status,
+        application_status                                                              AS current_application_status,
         job_name,
         department_name,
         division_modified,
@@ -64,7 +67,7 @@
         rejection_reason_name,
         rejection_reason_type,
         is_hired_in_bamboo,
-        time_to_offer                            AS app_to_offer_turntime,
+        time_to_offer                                                                   AS app_to_offer_turntime,
         1 AS row_number_stages_desc
         FROM recruiting_xf 
         WHERE application_status in ('hired', 'rejected')
@@ -103,11 +106,11 @@
         {{ dbt_utils.surrogate_key('all_stages.application_id', 'all_stages.candidate_id') }} AS unique_key,
         all_stages.application_id,
         all_stages.candidate_id,
-        application_stage,
+        application_stage, 
         is_milestone_stage,
+        application_month,
         DATE_TRUNC(MONTH,stage_entered_on) AS month_stage_entered_on,
         DATE_TRUNC(MONTH, stage_exited_on) AS month_stage_exited_on,
-        lead(application_stage) OVER (PARTITION BY all_stages.application_id, all_stages.candidate_id ORDER BY stage_entered_on) AS next_stage,
         DATEDIFF(DAY, stage_entered_on, COALESCE(stage_exited_on, CURRENT_DATE())) AS days_in_stage,
         DATEDIFF(DAY, min_stage_entered_on, max_stage_exited_on) AS days_in_pipeline,
         requisition_id,
@@ -144,5 +147,7 @@
     )
 
     SELECT *,
+      ROW_NUMBER() OVER (PARTITION BY application_id, candidate_id ORDER BY row_number_stages_desc DESC) AS row_number_stages_asc,
+      LEAD(application_stage) OVER (PARTITION BY application_id, candidate_id ORDER BY row_number_stages_desc DESC) AS next_stage,
       IFF(row_number_stages_desc = 1, TRUE, FALSE) AS current_stage
     FROM final
