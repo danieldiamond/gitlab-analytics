@@ -37,8 +37,8 @@ WITH zuora_account AS (
 ), base_charges AS (
 
     SELECT
-      zuora_account.account_id,
-      zuora_account.crm_id,
+      zuora_account.account_id                            AS subscription_account_id,
+      zuora_account.crm_id                                AS zuora_crm_id,
       zuora_subscription.subscription_id,
       zuora_subscription.subscription_name_slugify,
       zuora_subscription.subscription_status,
@@ -70,6 +70,7 @@ WITH zuora_account AS (
 
     SELECT
       zuora_invoice.invoice_number,
+      zuora_invoice.account_id                      AS invoice_account_id,
       zuora_invoice.invoice_date::DATE              AS invoice_date,
       zuora_invoice_item.service_start_date::DATE   AS service_start_date,
       zuora_invoice_item.service_end_date::DATE     AS service_end_date,
@@ -95,6 +96,7 @@ WITH zuora_account AS (
           ORDER BY rate_plan_charge_version DESC, service_start_date DESC) = 1,
           TRUE, FALSE
       ) AS is_last_segment_version,
+      invoice_account_id,
       invoice_number,
       invoice_date,
       service_start_date,
