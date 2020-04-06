@@ -49,7 +49,7 @@ sheets:
     tabs:
       - linkedin_recruiter
   - name: location_factor_targets
-    owner: '@derekatwood'
+    owner: '@pluthra'
     tabs:
       - location_factor_targets
   - name: marketing_kpi_benchmarks
