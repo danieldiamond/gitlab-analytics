@@ -37,8 +37,8 @@ WITH zuora_account AS (
 ), base_charges AS (
 
     SELECT
-      zuora_account.account_id                            AS subscription_account_id,
-      zuora_account.crm_id                                AS zuora_crm_id,
+      zuora_account.account_id,
+      zuora_account.crm_id,
       zuora_subscription.subscription_id,
       zuora_subscription.subscription_name_slugify,
       zuora_subscription.subscription_status,
