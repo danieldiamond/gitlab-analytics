@@ -16,4 +16,3 @@ This template is for requesting additional data from BambooHR.
 
 - [ ] Data Team Manager
 - [ ] People Representative
-
