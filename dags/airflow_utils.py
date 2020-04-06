@@ -22,7 +22,7 @@ def split_date_parts(day: date, partition: str) -> List[dict]:
             "part": day.strftime("%Y_%m"),
         }
 
-    return split_dict
+    return split_dict sdf
 
 
 def partitions(from_date: date, to_date: date, partition: str) -> List[dict]:
