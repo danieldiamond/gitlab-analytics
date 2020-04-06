@@ -19,6 +19,8 @@ databases:
     - testing_db:
         shared: no
 
+        wee
+
 
 # ==========================================
 # Roles
