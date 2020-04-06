@@ -45,7 +45,7 @@ sheets:
     tabs:
       - kpi_status
   - name: linkedin_recruiter
-    owner: '@kathleentam'
+    owner: '@pluthra'
     tabs:
       - linkedin_recruiter
   - name: location_factor_targets
