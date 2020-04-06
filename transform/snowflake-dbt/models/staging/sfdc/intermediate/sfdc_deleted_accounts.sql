@@ -8,7 +8,7 @@ with source as (
 
 SELECT
   a.account_id                                     AS sfdc_account_id,
-  COALESCE(a.master_record_id, b.master_record_id) AS sfdc_master_record_id
+  COALESCE(b.master_record_id, a.master_record_id) AS sfdc_master_record_id
 FROM source a
 LEFT JOIN source b
   ON a.master_record_id = b.account_id
