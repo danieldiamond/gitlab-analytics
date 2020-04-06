@@ -1,23 +1,23 @@
 sheets:
   - name: frontend_interview_metrics
-    owner: @ClemMakesApps
+    owner: '@ClemMakesApps'
     tabs:
       - interviews
       - rubric_max_points
   - name: gitlab_product_mrs_size
-    owner: @kwiebers
+    owner: '@kwiebers'
     tabs:
       - interviews
       - gitlab_product_mrs_size
   - name: maxmind_geolite_countries
-    owner: @eli_kastelein
+    owner: '@eli_kastelein'
     tabs:
       - countries
   - name: maxmind_geolite_ranges
-    owner: @eli_kastelein
+    owner: '@eli_kastelein'
     tabs:
       - ranges
   - name: test_sheet
-    owner: @taylormurphy
+    owner: '@taylormurphy'
     tabs:
       - test_sheet
