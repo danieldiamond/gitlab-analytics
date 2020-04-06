@@ -16,7 +16,7 @@
 # ======
 # Top Level Folder Overwrites
 # ======
-/.gitlab/       @kathleentam    @jjstark
+/.gitlab/       @kathleentam    @jjstark test
 /admin/         @kathleentam    @jjstark
 /analyze/       @kathleentam    @jjstark
 /dags/          @tayloramurphy  @m_walker
