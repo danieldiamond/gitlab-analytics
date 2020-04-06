@@ -55,22 +55,38 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/docs/                      @tayloramurphy  @jjstark        @emilie         @kathleentam
 /transform/snowflake-dbt/macros/                    @tayloramurphy  @jjstark        @emilie         @kathleentam
 
-/transform/snowflake-dbt/models/                    @jjstark        @kathleentam
 /transform/snowflake-dbt/models/bamboohr/           @emilie         @pluthra        @kathleentam    
-/transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_
-/transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam
+/transform/snowflake-dbt/models/covid19/            @tayloramurphy  @jjstark        @kathleentam
+/transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_      
+/transform/snowflake-dbt/models/date/base/          @derekatwood    @kathleentam
+/transform/snowflake-dbt/models/engineering/        @m_walker       @kathleentam
+/transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam    @jjstark 
 /transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/gitter/             @tayloramurphy  @kathleentam    @jjstark 
 /transform/snowflake-dbt/models/greenhouse/         @pluthra        @kathleentam
+/transform/snowflake-dbt/models/handbook/           @m_walker       @kathleentam    @ken_aguilar
+/transform/snowflake-dbt/models/marts/product_kpis/ @eli_kastelein  @mpeychet_      @kathleentam
 /transform/snowflake-dbt/models/netsuite/           @iweeks         @kathleentam
-/transform/snowflake-dbt/models/sfdc/               @derekatwood    @kathleentam    @jeanpeguero 
 /transform/snowflake-dbt/models/smau_events/        @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/snapshots/          @m_walker       @kathleentam    @jjstark
+/transform/snowflake-dbt/models/snowflake/          @m_walker       @kathleentam    @jjstark
 /transform/snowflake-dbt/models/snowplow/           @tayloramurphy  @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/snowplow_combined/  @tayloramurphy  @eli_kastelein  @mpeychet_
 
-/transform/snowflake-dbt/models/sources/license/    @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/sources/dbt         @m_walker    @jjstark
+/transform/snowflake-dbt/models/staging/dbt         @m_walker    @jjstark
+
+/transform/snowflake-dbt/models/sources/google_analytics_360/       @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/staging/google_analytics_360/       @eli_kastelein  @mpeychet_
+
+/transform/snowflake-dbt/models/sources/license/    @eli_kastelein  @mpeychet_  
 /transform/snowflake-dbt/models/staging/license/    @eli_kastelein  @mpeychet_
 
-/transform/snowflake-dbt/models/sources/sfdc/       @derekatwood    @kathleentam
+/transform/snowflake-dbt/models/sources/qualtrics   @m_walker    @jjstark
+/transform/snowflake-dbt/models/staging/qualtrics   @m_walker    @jjstark
+
+/transform/snowflake-dbt/models/sources/sfdc/       @derekatwood    @kathleentam    @jeanpeguero
+/transform/snowflake-dbt/models/staging/sfdc/       @derekatwood    @kathleentam    @jeanpeguero
 
 /transform/snowflake-dbt/models/sources/version/    @eli_kastelein  @mpeychet_
 /transform/snowflake-dbt/models/staging/version/    @eli_kastelein  @mpeychet_
