@@ -61,7 +61,7 @@ sheets:
     tabs:
       - marketing_pipe_to_spend_headcount
   - name: osat
-    owner: '@kathleentam'
+    owner: '@pluthra'
     tabs:
       - osat
   - name: planned_values
