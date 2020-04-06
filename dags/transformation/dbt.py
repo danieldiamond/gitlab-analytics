@@ -264,7 +264,8 @@ dbt_source_freshness = KubernetesPodOperator(
 dbt_test_cmd = f"""
     {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
-    dbt test --profiles-dir profile --target prod --vars {xs_warehouse} --exclude snowplow
+    dbt test --profiles-dir profile --target prod --vars {xs_warehouse} --exclude snowplow; ret=$?;
+    python ../../orchestration/upload_dbt_file_to_snowflake.py test; exit $ret
 """
 dbt_test = KubernetesPodOperator(
     **gitlab_defaults,
