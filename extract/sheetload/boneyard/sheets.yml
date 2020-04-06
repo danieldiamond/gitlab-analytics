@@ -7,7 +7,6 @@ sheets:
   - name: gitlab_product_mrs_size
     owner: '@kwiebers'
     tabs:
-      - interviews
       - gitlab_product_mrs_size
   - name: maxmind_geolite_countries
     owner: '@eli_kastelein'
