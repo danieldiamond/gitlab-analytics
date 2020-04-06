@@ -80,7 +80,7 @@ class QualtricsClient:
             request_download_url, headers=headers, stream=True
         )
 
-        save_path = "/survey_export.json"
+        save_path = "./survey_export.json.zip"
 
         with open(save_path, "wb") as fd:
             for chunk in request_download.iter_content(chunk_size=128):
