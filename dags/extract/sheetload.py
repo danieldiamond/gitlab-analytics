@@ -47,7 +47,7 @@ default_args = {
 container_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
     cd sheetload/ &&
-    python3 sheetload.py sheets --sheet_file sheets.txt
+    python3 sheetload.py sheets --sheet_file sheets.yml
 """
 
 # Create the DAG

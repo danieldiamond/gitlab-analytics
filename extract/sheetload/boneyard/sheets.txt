@@ -1,6 +1,0 @@
-frontend_interview_metrics.interviews
-frontend_interview_metrics.rubric_max_points
-gitlab_product_mrs_size.gitlab_product_mrs_size
-maxmind_geolite_countries.countries
-maxmind_geolite_ranges.ranges
-test_sheet.test_sheet
