@@ -216,10 +216,8 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
     - Date (dry run, nothing will be created):
       - dbt run --models date
     - SFDC
-      - Load Dependencies
-      - `dbt run --models @sfdc`
-      - Run
-      - `dbt run --models sfdc`
+      - Load dependencies & run
+      - `dbt run --models +sfdc`
 - [ ] test the command `make help` and use it to understand how to use `make dbt-docs` and access it from your local machine.
 - [ ] Here is the [dbt command line cheat sheet](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/#command-line-cheat-sheet)
 
