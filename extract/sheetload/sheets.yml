@@ -53,7 +53,7 @@ sheets:
     tabs:
       - location_factor_targets
   - name: marketing_kpi_benchmarks
-    owner: '@emilie'
+    owner: '@jeanpeguero'
     tabs:
       - marketing_kpi_benchmarks
   - name: marketing_pipe_to_spend_headcount
@@ -107,7 +107,7 @@ sheets:
       - communication_certificate
       - values_certificate
   - name: yc_companies
-    owner: '@emilie'
+    owner: '@jeanpeguero'
     tabs:
       - yc_companies
 
