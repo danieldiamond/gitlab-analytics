@@ -16,7 +16,7 @@ sheets:
     tabs:
       - days_to_close
   - name: employee_location_factor
-    owner: '@emilie'
+    owner: '@pluthra'
     tabs:
       - employee_location_factor
   - name: gitlab_slack_stats
