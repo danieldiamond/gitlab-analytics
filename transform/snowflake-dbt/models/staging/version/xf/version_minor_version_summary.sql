@@ -1,7 +1,14 @@
-WITH source AS (
+WITH usage_data AS (
 
   SELECT *
   FROM {{ ref('version_usage_data') }}
+
+),
+
+release_schedule AS (
+
+  SELECT *
+  FROM {{ ref('gitlab_release_schedule') }}
 
 ),
 
@@ -12,7 +19,7 @@ aggregated AS (
     minor_version,
     MIN(created_at),
     MAX(created_at)
-  FROM source
+  FROM usage_data
   GROUP BY 1,2
 
 )
