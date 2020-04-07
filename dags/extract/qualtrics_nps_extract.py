@@ -47,8 +47,8 @@ qualtrics_extract_command = f"{clone_and_setup_extraction_cmd} && python qualtri
 qualtrics_operator = KubernetesPodOperator(
     **gitlab_defaults,
     image=DATA_IMAGE,
-    task_id="qualtrics-extract",
-    name="qualtrics-extract",
+    task_id="qualtrics-nps-extract",
+    name="qualtrics-nps-extract",
     secrets=[
         QUALTRICS_API_TOKEN,
         QUALTRICS_POOL_ID,
