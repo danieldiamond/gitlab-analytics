@@ -1,4 +1,4 @@
-{% docs gitlab_release_schedule %}
+{% docs gitlab_release_schedule_doc %}
 This seed file capture the release date of each gitlab release.
 Upcoming releases can be found [here](https://about.gitlab.com/upcoming-releases/).
 Past releases can be found [here](https://about.gitlab.com/releases/).
