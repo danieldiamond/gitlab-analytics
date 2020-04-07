@@ -24,7 +24,7 @@ With date_details AS (
             dbt_utils.get_column_values(ref('bamboohr_headcount_aggregation_intermediate'), column='metric', default=[]),
             then_value ='total_count',
             quote_identifiers = False
-        ) }}
+        ) }} 
     FROM {{ ref('bamboohr_headcount_aggregation_intermediate') }}
     GROUP BY 1,2,3
 
