@@ -69,7 +69,7 @@ sheets:
     tabs:
       - planned_values
   - name: pulse_survey
-    owner: '@emilie'
+    owner: '@kathleentam'
     tabs:
       - pulse_survey_configure_be
       - pulse_survey_configure_fe
