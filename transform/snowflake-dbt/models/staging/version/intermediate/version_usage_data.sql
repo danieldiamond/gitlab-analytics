@@ -12,6 +12,8 @@ WITH source AS (
     FROM {{ ref('version_usage_data_source') }}
     WHERE uuid IS NOT NULL
 
+    LIMIT 1000000 -- TEMP
+
 )
 
 SELECT *
