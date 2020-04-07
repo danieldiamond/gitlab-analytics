@@ -40,7 +40,7 @@ WITH source as (
       CASE WHEN stage_id IN (7,8,26) 
               THEN 'Screen'
             WHEN stage_id IN (23,47)  
-              THEN 'Team Interview'
+              THEN 'Team Interview - Face to Face'
             WHEN stage_id IN (41, 57) 
               THEN 'Take Home Assessment'
             WHEN stage_id IN (22, 46) 
