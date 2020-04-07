@@ -24,10 +24,9 @@ WITH source AS (
       zqu__status__c                    AS status,
       zqu__subscriptiontermstartdate__c AS term_start_date,
       zqu__subscriptiontermenddate__c   AS term_end_date,
-      systemmodstamp
+      systemmodstamp,
+      isdeleted                         AS is_deleted
     FROM source
-    WHERE isdeleted = FALSE  
-
 )
 
 SELECT *

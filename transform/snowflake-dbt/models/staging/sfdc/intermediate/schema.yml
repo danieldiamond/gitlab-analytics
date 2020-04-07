@@ -1,7 +1,7 @@
 version: 2
 models:
   - name: sfdc_account
-    description: base model for SFDC Accounts
+    description: source model for SFDC Accounts
     columns:
       - name: account_id
         tests:
@@ -34,7 +34,7 @@ models:
               - unique
               - not_null
   - name: sfdc_campaign
-    description: base model for SFDC Campaigns
+    description: source model for SFDC Campaigns
     columns:
         - name: campaign_id
           tests:
@@ -44,14 +44,14 @@ models:
           tests:
               - not_null
   - name: sfdc_campaign_member
-    description: The base model for SFDC Campaign Members
+    description: The source model for SFDC Campaign Members
     columns:
         - name: campaign_member_id
           tests:
               - not_null
               - unique
   - name: sfdc_contact
-    description: base model for SFDC Contacts
+    description: source model for SFDC Contacts
     columns:
         - name: contact_id
           tests:
@@ -115,7 +115,7 @@ models:
               - not_null
         - name: opportunity_id
           tests:
-              - not_null                       
+              - not_null
   - name: sfdc_opportunity_stage
     description: base model for SFDC Opportunity Stages
     columns:
@@ -135,13 +135,12 @@ models:
               - not_null
               - relationships:
                     to: ref('sfdc_opportunity')
-                    field: opportunity_id              
+                    field: opportunity_id
   - name: sfdc_proof_of_value
     description: base model for SFDC Proof of Value
     columns:
         - name: account_id
           tests:
-              - not_null
               - relationships:
                     to: ref('sfdc_account')
                     field: account_id
@@ -166,7 +165,7 @@ models:
               - unique
         - name: owner_id
           tests:
-              - not_null      
+              - not_null
   - name: sfdc_record_type
     description: base model for SFDC Record Types
     columns:

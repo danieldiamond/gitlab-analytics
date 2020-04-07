@@ -1,8 +1,3 @@
-{{config({
-    "schema": "staging"
-  })
-}}
-
 WITH source AS (
 
     SELECT *
@@ -20,11 +15,10 @@ WITH source AS (
         
         --info      
     subject        AS task_subject,
-    activitydate   AS task_date
+    activitydate   AS task_date,
+    isdeleted      AS is_deleted
 
     FROM source
-    WHERE isdeleted = FALSE
-
 )
 
 SELECT *

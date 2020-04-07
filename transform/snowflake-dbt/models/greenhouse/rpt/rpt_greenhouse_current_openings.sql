@@ -25,6 +25,11 @@ WITH greenhouse_openings AS (
     FROM {{ref('greenhouse_opening_custom_fields')}}
     WHERE opening_custom_field = 'finance_id'
 
+), greenhouse_recruiting_xf AS (
+
+    SELECT * 
+    FROM {{ref('greenhouse_recruiting_xf')}}
+
 ), aggregated AS (
 
     SELECT 
@@ -33,9 +38,11 @@ WITH greenhouse_openings AS (
       greenhouse_jobs.job_created_at, 
       greenhouse_jobs.job_status,
       greenhouse_openings.opening_id, 
+      greenhouse_recruiting_xf.is_hired_in_bamboo,
       greenhouse_openings.target_start_date,
       greenhouse_openings.job_opened_at                         AS opening_date,
       greenhouse_openings.job_closed_at                         AS closing_date,
+      greenhouse_openings.close_reason,
       greenhouse_jobs.job_name                                  AS job_title, 
       greenhouse_department.department_name
     FROM greenhouse_openings
@@ -45,8 +52,9 @@ WITH greenhouse_openings AS (
       ON greenhouse_department.department_id = greenhouse_jobs.department_id
     LEFT JOIN greenhouse_finance_id 
       ON greenhouse_finance_id.opening_id = greenhouse_openings.job_opening_id  
-    WHERE greenhouse_jobs.job_closed_at IS NULL
-      AND greenhouse_jobs.job_opened_at IS NOT NULL 
+    LEFT JOIN greenhouse_recruiting_xf
+      ON greenhouse_openings.hired_application_id = greenhouse_recruiting_xf.application_id
+    WHERE greenhouse_jobs.job_opened_at IS NOT NULL 
 )
 
 SELECT *
