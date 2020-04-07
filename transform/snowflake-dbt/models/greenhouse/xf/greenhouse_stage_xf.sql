@@ -43,44 +43,36 @@ WITH stages AS (
         DATE_TRUNC(MONTH, application_date)                                             AS application_month,
         application_date                                                                AS stage_entered_on,
         null                                                                            AS stage_exited_on,
-        1                                                                               AS row_number_stages_asc,
-        null                                                                            AS row_number_stages_desc,
         {{repeated_column_names}}
         FROM recruiting_xf 
 
     ), stages_intermediate AS (
     
         SELECT 
-        stages.application_id,
-        candidate_id,
-        stages.stages_cleaned                                                           AS application_stage,
-        stages.is_milestone_stage,
-        DATE_TRUNC(MONTH, application_date)                                             AS application_month,
-        IFF(application_stage_name = 'Offer',offer_sent_date, stages.stage_entered_on)  AS stage_entered_on,
-        IFF(application_stage_name = 'Offer', offer_resolved_date, 
-            COALESCE(stages.stage_exited_on, CURRENT_DATE()))                           AS stage_exited_on,
-        ROW_NUMBER() OVER (PARTITION BY stages.application_id, candidate_id 
-                            ORDER BY stage_entered_on)                                  AS row_number_stages_asc,
-        ROW_NUMBER() OVER (PARTITION BY stages.application_id, candidate_id 
-                            ORDER BY stage_entered_on DESC)                             AS row_number_stages_desc,
-        {{repeated_column_names}}
+          stages.application_id,
+          candidate_id,
+          stages.stages_cleaned                                                           AS application_stage,
+          stages.is_milestone_stage,
+          DATE_TRUNC(MONTH, application_date)                                             AS application_month,
+          IFF(application_stage_name = 'Offer',offer_sent_date, stages.stage_entered_on)  AS stage_entered_on,
+          IFF(application_stage_name = 'Offer', offer_resolved_date, 
+              COALESCE(stages.stage_exited_on, CURRENT_DATE()))                           AS stage_exited_on,
+          {{repeated_column_names}}
         FROM stages
         LEFT JOIN recruiting_xf 
-        ON recruiting_xf.application_id = stages.application_id
+          ON recruiting_xf.application_id = stages.application_id
     
     ), hired_rejected AS (
 
         SELECT 
-        application_id,
-        candidate_id,
-        IFF(application_status = 'hired','Hired', 'Rejected')                           AS application_stage,
-        TRUE                                                                            AS is_milestone_stage,
-        DATE_TRUNC(MONTH, application_date)                                             AS application_month,
-        IFF(application_status = 'hired',candidate_target_hire_date, rejected_at)       AS stage_entered_on,
-        IFF(application_status = 'hired',candidate_target_hire_date, rejected_at)       AS stage_exited_on,
-        null                                                                            AS row_number_stages_asc,
-        1                                                                               AS row_number_stages_desc,
-        {{repeated_column_names}}
+          application_id,
+          candidate_id,
+          IFF(application_status = 'hired','Hired', 'Rejected')                           AS application_stage,
+          TRUE                                                                            AS is_milestone_stage,
+          DATE_TRUNC(MONTH, application_date)                                             AS application_month,
+          IFF(application_status = 'hired',candidate_target_hire_date, rejected_at)       AS stage_entered_on,
+          IFF(application_status = 'hired',candidate_target_hire_date, rejected_at)       AS stage_exited_on,
+          {{repeated_column_names}}
         FROM recruiting_xf 
         WHERE application_status in ('hired', 'rejected')
     
@@ -107,53 +99,70 @@ WITH stages AS (
         MIN(stage_entered_on)                                       AS min_stage_entered_on,
         MAX(stage_exited_on)                                        AS max_stage_exited_on,
         SUM(IFF(application_stage = 'Application Submitted',1,0))   AS hit_application_submitted,
-        SUM(IFF(application_stage = 'Application Review',1,0))  AS hit_application_review,
-        SUM(IFF(application_stage = 'Assessment',1,0))          AS hit_assessment,
-        SUM(IFF(application_stage = 'Screen',1,0))              AS hit_screening,
-        SUM(IFF(application_stage = 'Team Interview',1,0))      AS hit_team_interview,
-        SUM(IFF(application_stage = 'Reference Check',1,0))     AS hit_reference_check,
-        SUM(IFF(application_stage = 'Offer',1,0))               AS hit_offer,
-        SUM(IFF(application_stage = 'hired',1,0))               AS hit_hired,
-        SUM(IFF(application_stage = 'rejected',1,0))            AS hit_rejected
+        SUM(IFF(application_stage = 'Application Review',1,0))      AS hit_application_review,
+        SUM(IFF(application_stage = 'Assessment',1,0))              AS hit_assessment,
+        SUM(IFF(application_stage = 'Screen',1,0))                  AS hit_screening,
+        SUM(IFF(application_stage = 'Team Interview',1,0))          AS hit_team_interview,
+        SUM(IFF(application_stage = 'Reference Check',1,0))         AS hit_reference_check,
+        SUM(IFF(application_stage = 'Offer',1,0))                   AS hit_offer,
+        SUM(IFF(application_stage = 'hired',1,0))                   AS hit_hired,
+        SUM(IFF(application_stage = 'rejected',1,0))                AS hit_rejected
         FROM all_stages
         GROUP BY 1,2
         
-    ), final AS (
+    ), intermediate AS (
 
         SELECT 
-        {{ dbt_utils.surrogate_key('all_stages.application_id', 'all_stages.candidate_id') }} AS unique_key,
-        all_stages.application_id,
-        all_stages.candidate_id,
-        application_stage, 
-        is_milestone_stage,
-        application_month,
-        stage_entered_on,
-        stage_exited_on,
-        DATE_TRUNC(MONTH,stage_entered_on)                                          AS month_stage_entered_on,
-        DATE_TRUNC(MONTH,stage_exited_on)                                           AS month_stage_exited_on,
-        DATEDIFF(DAY, stage_entered_on, COALESCE(stage_exited_on, CURRENT_DATE()))  AS days_in_stage,
-        DATEDIFF(DAY, min_stage_entered_on, max_stage_exited_on)                    AS days_in_pipeline,
-        {{repeated_column_names}},
-        hit_application_review,
-        hit_assessment,
-        hit_screening,
-        hit_team_interview,
-        hit_reference_check,
-        hit_offer,
-        hit_hired,
-        hit_rejected,
-        IFF(application_stage IN ('Hired','Rejected'), 1,
-            ROW_NUMBER() OVER (PARTITION BY all_stages.application_id, all_stages.candidate_id 
-                ORDER BY stage_entered_on DESC))                              AS row_number_stages_desc
-        FROM all_stages
-        LEFT JOIN stages_hit 
-          ON all_stages.application_id = stages_hit.application_id
-          AND all_stages.candidate_id = stages_hit.candidate_id
-        
-    )
+          all_stages.*,
+           ROW_NUMBER() OVER (PARTITION BY application_id, candidate_id 
+                              ORDER BY stage_entered_on DESC)                       AS row_number_stages_desc
+        FROM all_stages        
 
-    SELECT *,
-      ROW_NUMBER() OVER (PARTITION BY application_id, candidate_id ORDER BY row_number_stages_desc DESC) AS row_number_stages_asc,
-      LEAD(application_stage) OVER (PARTITION BY application_id, candidate_id ORDER BY row_number_stages_asc) AS next_stage,
-      IFF(row_number_stages_desc = 1, TRUE, FALSE) AS current_stage
-    FROM final
+    ), stage_order_revamped AS (
+
+        SELECT
+          intermediate.*,
+          IFF(application_stage in ('Hired','Rejected'),1,
+                row_number_stages_desc+1)                                           AS row_number_stages_desc_updated
+        FROM intermediate 
+    
+    ), final AS (   
+
+        SELECT
+          {{ dbt_utils.surrogate_key('stage_order_revamped.application_id', 'stage_order_revamped.candidate_id') }} AS unique_key,
+          stage_order_revamped.application_id,
+          stage_order_revamped.candidate_id,
+          application_stage, 
+          is_milestone_stage,
+          stage_entered_on,
+          stage_exited_on,
+          DATE_TRUNC(MONTH,stage_entered_on)                                          AS month_stage_entered_on,
+          DATE_TRUNC(MONTH,stage_exited_on)                                           AS month_stage_exited_on,
+          DATEDIFF(DAY, stage_entered_on, COALESCE(stage_exited_on, CURRENT_DATE()))  AS days_in_stage,
+          DATEDIFF(DAY, min_stage_entered_on, max_stage_exited_on)                    AS days_in_pipeline,
+          row_number_stages_desc_updated                                              AS row_number_stages_desc,
+          LEAD(application_stage) OVER 
+                (PARTITION BY stage_order_revamped.application_id, stage_order_revamped.candidate_id 
+                 ORDER BY row_number_stages_desc_updated DESC)                        AS next_stage,
+          IFF(row_number_stages_desc_updated = 1, TRUE, FALSE)                        AS current_stage,
+          application_month,
+          {{repeated_column_names}},
+          hit_application_review,
+          hit_assessment,
+          hit_screening,
+          hit_team_interview,
+          hit_reference_check,
+          hit_offer,
+          hit_hired,
+          hit_rejected
+        FROM stage_order_revamped
+        LEFT JOIN stages_hit 
+          ON stage_order_revamped.application_id = stages_hit.application_id
+          AND stage_order_revamped.candidate_id = stages_hit.candidate_id
+        
+)
+            
+SELECT *      
+FROM final
+
+
