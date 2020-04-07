@@ -32,4 +32,4 @@ aggregated AS (
 )
 
 SELECT *
-FROM source
+FROM aggregated
