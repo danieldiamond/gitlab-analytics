@@ -65,7 +65,7 @@ sheets:
     tabs:
       - osat
   - name: planned_values
-    owner: '@jeanpeguero'
+    owner: '@iweeks'
     tabs:
       - planned_values
   - name: pulse_survey
