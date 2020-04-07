@@ -1,7 +1,8 @@
 {% docs gitlab_release_schedule_doc %}
-This seed file capture the release date of each gitlab release.
-Upcoming releases can be found [here](https://about.gitlab.com/upcoming-releases/).
-Past releases can be found [here](https://about.gitlab.com/releases/).
+This seed file capture the release date of each minor (X.y) gitlab release.
+Upcoming releases can be found [here](https://about.gitlab.com/upcoming-releases/).  
+Past releases can be found [here](https://about.gitlab.com/releases/).  
+Historical release dates were copied from [this issue](https://gitlab.com/gitlab-com/www-gitlab-com/issues/5396).
 {% enddocs %}
 
 {% docs version_usage_stats_to_stage_mappings_doc %}

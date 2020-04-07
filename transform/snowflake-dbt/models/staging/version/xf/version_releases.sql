@@ -27,7 +27,7 @@ aggregated AS (
   FROM usage_data
     LEFT JOIN release_schedule
       ON usage_data.major_minor_version = release_schedule.major_minor_version
-  GROUP BY 1,2,3
+  GROUP BY 1,2,3,4
 
 )
 
