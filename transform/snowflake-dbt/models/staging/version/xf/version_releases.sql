@@ -16,18 +16,19 @@ aggregated AS (
 
   SELECT
   
+    release.major_minor_version,
+    release_schedule.release_date,
     usage_data.major_version,
     usage_data.minor_version,
-    usage_data.major_minor_version,
-    release_schedule.release_date,
 
-    MIN(usage_data.created_at),
-    MAX(usage_data.created_at)
+    MIN(usage_data.created_at) AS min_usage_ping_created_at,
+    MAX(usage_data.created_at) AS max_usage_ping_created_at
 
-  FROM usage_data
-    LEFT JOIN release_schedule
+  FROM release_schedule
+    LEFT JOIN usage_data
       ON usage_data.major_minor_version = release_schedule.major_minor_version
   GROUP BY 1,2,3,4
+  ORDER BY 1,2
 
 )
 
