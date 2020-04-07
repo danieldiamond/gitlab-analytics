@@ -83,19 +83,6 @@ sheets:
     owner: '@derekatwood'
     tabs:
       - rep_quotas_full_ps_fy2020
-  - name: sales_ramp_time
-    owner: '@emilie'
-    tabs:
-      - sales_ramp_time_by_month
-      - sales_rep_productivity_all
-      - sales_rep_productivity_sal
-      - sales_rep_productivity_mm_ae
-      - sales_rep_productivity_smb_ae
-  - name: sales_metrics
-    owner: '@emilie'
-    tabs:
-      - sales_quotas_region_by_month
-      - sales_quotas_region_by_fq
   - name: social_marketing_metrics
     owner: '@jeanpeguero'
     tabs:
