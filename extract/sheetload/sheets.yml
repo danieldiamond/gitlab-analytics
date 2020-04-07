@@ -101,7 +101,7 @@ sheets:
     tabs:
       - social_marketing_metrics
   - name: values_certificate
-    owner: '@emilie'
+    owner: '@parul'
     tabs:
       - ally_certificate
       - communication_certificate
