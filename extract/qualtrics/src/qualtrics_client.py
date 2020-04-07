@@ -86,7 +86,7 @@ class QualtricsClient:
             request_download_url, headers=headers, stream=True
         )
 
-        save_path = "survey_export.json"
-        zipfile.ZipFile(io.BytesIO(request_download.content)).extractall(save_path)
+        zip_file = zipfile.ZipFile(io.BytesIO(request_download.content))
+        zip_file.extractall()
 
-        return save_path
+        return zip_file.namelist()[0]
