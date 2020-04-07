@@ -58,8 +58,8 @@ class QualtricsClient:
         # Step 1: Creating Data Export
         download_request_url = response_base_url
         download_request_payload = '{"format":"' + file_format + '"}'
-        download_request_response = requests.request(
-            "POST", download_request_url, data=download_request_payload, headers=headers
+        download_request_response = requests.post(
+            download_request_url, data=download_request_payload, headers=headers
         )
         progressId = download_request_response.json()["result"]["progressId"]
         print(download_request_response.text)
