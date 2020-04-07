@@ -1,5 +1,8 @@
+import datetime
+import io
 import logging
 import requests
+import zipfile
 
 
 class QualtricsClient:
@@ -38,6 +41,9 @@ class QualtricsClient:
         )
 
     def download_survey_response_file(self, survey_id, file_format):
+        """
+        Downloads all survey responses for the given survey id in the file format specified
+        """
 
         # Setting static parameters
         request_check_progress = 0.0
@@ -80,10 +86,7 @@ class QualtricsClient:
             request_download_url, headers=headers, stream=True
         )
 
-        save_path = "./survey_export.json.zip"
-
-        with open(save_path, "wb") as fd:
-            for chunk in request_download.iter_content(chunk_size=128):
-                fd.write(chunk)
+        save_path = "survey_export.json"
+        zipfile.ZipFile(io.BytesIO(request_download.content)).extractall(save_path)
 
         return save_path
