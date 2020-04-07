@@ -92,4 +92,4 @@ class QualtricsClient:
         file_name = zip_file.namelist()[0]
         cleaned_file_name = file_name.replace(" ", "")
         os.rename(file_name, cleaned_file_name)
-        return
+        return cleaned_file_name
