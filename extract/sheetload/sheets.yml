@@ -75,6 +75,10 @@ sheets:
       - pulse_survey_configure_fe
       - pulse_survey_monitor_be
       - pulse_survey_monitor_fe
+  - name: release_blog_posts
+    owner: '@m_walker'
+    tabs:
+      - release_blog_posts
   - name: rep_quotas_full_fy2020
     owner: '@derekatwood'
     tabs:
