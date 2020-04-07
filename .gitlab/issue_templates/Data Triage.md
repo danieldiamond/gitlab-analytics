@@ -55,7 +55,7 @@ Please complete all items. Ask questions in the #data slack channel
 * [ ] Check the DBT Source Freshness Dashboard for lagging or missing data. 
     * [ ] Link to all resulting issues and MRs in slack 
 
-## Finishing the Dat
+## Finishing the Day
 
 * [ ] At the end of your working day post EOD message to slack along with a link to this issue in the above mentioned slack channels so that it is clear for the next triager what time to check for issues from.
 
