@@ -1,6 +1,7 @@
 import datetime
 import io
 import logging
+import os
 import requests
 import zipfile
 
@@ -88,5 +89,7 @@ class QualtricsClient:
 
         zip_file = zipfile.ZipFile(io.BytesIO(request_download.content))
         zip_file.extractall()
-
-        return zip_file.namelist()[0]
+        file_name = zip_file.namelist()[0]
+        cleaned_file_name = file_name.replace(" ", "")
+        os.rename(file_name, cleaned_file_name)
+        return
