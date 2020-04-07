@@ -1,3 +1,9 @@
+{% docs gitlab_release_schedule %}
+This seed file capture the release date of each gitlab release.
+Upcoming releases can be found [here](https://about.gitlab.com/upcoming-releases/).
+Past releases can be found [here](https://about.gitlab.com/releases/).
+{% enddocs %}
+
 {% docs version_usage_stats_to_stage_mappings_doc %}
 The version_usage_stats_to_stage_mapping_data.csv maps usage ping fields to different value and team stages. See https://about.gitlab.com/handbook/product/categories/#hierarchy for more information about stages. If the stage is `ignored` it was determined that they are not part of any stage or there is no relevant data. See https://gitlab.com/gitlab-org/telemetry/issues/18 for more context.
 {% enddocs %}
