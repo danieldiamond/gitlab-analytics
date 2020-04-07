@@ -17,10 +17,13 @@ aggregated AS (
   SELECT
     major_version,
     minor_version,
+    major_minor_version,
     MIN(created_at),
     MAX(created_at)
   FROM usage_data
-  GROUP BY 1,2
+    LEFT JOIN release_schedule
+      ON usage_data.major_minor_version = release_schedule.
+  GROUP BY 1,2,3
 
 )
 
