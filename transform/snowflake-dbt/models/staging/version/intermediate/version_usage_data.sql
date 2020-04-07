@@ -1,12 +1,8 @@
-{{ config({
-    "materialized": "view"
-    })
-}}
-
 WITH source AS (
 
     SELECT
       *,
+      LTRIM('v', version)                   AS cleaned_version,
       SPLIT_PART(version, '.', 1)::INT      AS major_version,
       SPLIT_PART(version, '.', 2)::INT      AS minor_version,
       major_version || '.' || minor_version AS major_minor_version
