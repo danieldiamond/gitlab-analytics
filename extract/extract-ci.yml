@@ -18,7 +18,7 @@
   <<: *extract_definition
   script:
     - cd extract/sheetload/
-    - python3 sheetload.py sheets --sheet_file boneyard/sheets.txt --schema boneyard --database ANALYTICS
+    - python3 sheetload.py sheets --sheet_file boneyard/sheets.yml --schema boneyard --database ANALYTICS
   only:
     - merge_requests
   when: manual
@@ -27,7 +27,7 @@
   <<: *extract_definition
   script:
     - cd extract/sheetload/
-    - python3 sheetload.py sheets --sheet_file sheets.txt
+    - python3 sheetload.py sheets --sheet_file sheets.yml
   only:
     - merge_requests
   when: manual

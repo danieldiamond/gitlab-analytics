@@ -1,0 +1,101 @@
+sheets:
+  - name: test_sheet
+    owner: '@jjstark'
+    tabs:
+      - test_sheet
+  - name: abuse_mitigation
+    owner: '@ken_aguilar'
+    tabs:
+      - abuse_mitigation
+  - name: calendar
+    owner: '@emilie'
+    tabs:
+      - calendar
+  - name: days_to_close
+    owner: '@iweeks'
+    tabs:
+      - days_to_close
+  - name: employee_location_factor
+    owner: '@pluthra'
+    tabs:
+      - employee_location_factor
+  - name: gitlab_slack_stats
+    owner: '@pluthra'
+    tabs:
+      - gitlab_slack_stats
+  - name: google_referrals
+    owner: '@tayloramurphy'
+    tabs:
+      - google_referrals
+  - name: headcount
+    owner: '@wwright'
+    tabs:
+      - headcount
+  - name: hire_plan_forecast
+    owner: '@derekatwood'
+    tabs:
+      - hire_plan
+      - hire_forecast
+  - name: job_roles_prior_to_2020_02
+    owner: '@pluthra'
+    tabs:
+      - job_roles_prior_to_2020_02
+  - name: kpi_status
+    owner: '@kathleentam'
+    tabs:
+      - kpi_status
+  - name: linkedin_recruiter
+    owner: '@pluthra'
+    tabs:
+      - linkedin_recruiter
+  - name: location_factor_targets
+    owner: '@pluthra'
+    tabs:
+      - location_factor_targets
+  - name: marketing_kpi_benchmarks
+    owner: '@jeanpeguero'
+    tabs:
+      - marketing_kpi_benchmarks
+  - name: marketing_pipe_to_spend_headcount
+    owner: '@tayloramurphy'
+    tabs:
+      - marketing_pipe_to_spend_headcount
+  - name: osat
+    owner: '@pluthra'
+    tabs:
+      - osat
+  - name: planned_values
+    owner: '@iweeks'
+    tabs:
+      - planned_values
+  - name: pulse_survey
+    owner: '@kathleentam'
+    tabs:
+      - pulse_survey_configure_be
+      - pulse_survey_configure_fe
+      - pulse_survey_monitor_be
+      - pulse_survey_monitor_fe
+  - name: rep_quotas_full_fy2020
+    owner: '@derekatwood'
+    tabs:
+      - rep_quotas_full_fy2020
+  - name: rep_quotas_full_ps_fy2020
+    owner: '@derekatwood'
+    tabs:
+      - rep_quotas_full_ps_fy2020
+  - name: social_marketing_metrics
+    owner: '@jeanpeguero'
+    tabs:
+      - social_marketing_metrics
+  - name: values_certificate
+    owner: '@parul'
+    tabs:
+      - ally_certificate
+      - communication_certificate
+      - values_certificate
+  - name: yc_companies
+    owner: '@jeanpeguero'
+    tabs:
+      - yc_companies
+
+
