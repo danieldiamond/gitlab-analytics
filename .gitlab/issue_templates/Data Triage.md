@@ -51,14 +51,13 @@ Please complete all items. Ask questions in the #data slack channel
         - [ ] If you stumble upon a new test that isn't documented, be sure to document it to make it easier to address in the future. Consider creating one new chatops command for any reoccuring error. You can follow [this how to guide](https://gitlab.com/gitlab-data/chatops/-/blob/master/README.md) for instructions on how to add a new chatops command.
 
 * [ ] Address and solution all failures in **#analytics-pipelines**
+    * [ ] Link to all resulting issues and MRs in slack 
 * [ ] Check the DBT Source Freshness Dashboard for lagging or missing data. 
+    * [ ] Link to all resulting issues and MRs in slack 
 
-### Data Channel Review 
+## Finishing the Dat
 
-
-
-
-* [ ] At the end of your working day post EOD message to slack along with a link to this issue in the #data-triage slack channel so that it is clear for the next triager what time to check for issues from.
+* [ ] At the end of your working day post EOD message to slack along with a link to this issue in the above mentioned slack channels so that it is clear for the next triager what time to check for issues from.
 
 
 
