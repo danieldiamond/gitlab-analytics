@@ -59,9 +59,6 @@ models:
     description: This data model shows all the greenhouse stages a candidate is in, and adds in additional information about the recruiting process such as source type, source name, recruiter, sourcer.
     columns:
         - name: unique_key
-          tests:
-            - not_null
-            - unique
         - name: application_id
         - name: candidate_id
         - name: application_stage
