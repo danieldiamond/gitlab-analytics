@@ -11,49 +11,48 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      "Date Added"::DATE                                    AS added_date,
-      "Account ID"::VARCHAR                                 AS account_id,
-      "GTM Strategy"::VARCHAR                               AS gtm_strategy,
-      NULLIF("ABM Tier", '')::VARCHAR                       AS abm_tier,
-      NULLIF("Account Name", '')::VARCHAR                   AS account_name,
-      NULLIF("Parent Account", '')::VARCHAR                 AS parent_account,
+      "Date_Added"::DATE                                    AS added_date,
+      "Account_ID"::VARCHAR                                 AS account_id,
+      "GTM_Strategy"::VARCHAR                               AS gtm_strategy,
+      NULLIF("ABM_Tier", '')::VARCHAR                       AS abm_tier,
+      NULLIF("Account_Name", '')::VARCHAR                   AS account_name,
+      NULLIF("Parent_Account", '')::VARCHAR                 AS parent_account,
       NULLIF("Website", '')::VARCHAR                        AS website,
       NULLIF("Domains", '')::VARCHAR	                    AS domains,
       NULLIF("Type", '')::VARCHAR                           AS type,
-      NULLIF("Count of Contacts", '')::FLOAT	            AS count_of_contacts,
-      NULLIF("Health Score", '')::VARCHAR                   AS health_score,
-      NULLIF("Count of Opportunities", '')::FLOAT           AS count_of_opportunities,
-      NULLIF("Number of Open Opportunities", '')::FLOAT	    AS number_of_open_opportunities,
-      NULLIF("Count of Won Opportunities", '')::FLOAT       AS count_of_won_opportunities,
-      NULLIF("Total Closed Won Amount (All-Time)", '')::FLOAT
+      NULLIF("Count_of_Contacts", '')::FLOAT	            AS count_of_contacts,
+      NULLIF("Health_Score", '')::VARCHAR                   AS health_score,
+      NULLIF("Count_of_Opportunities", '')::FLOAT           AS count_of_opportunities,
+      NULLIF("Number_of_Open_Opportunities", '')::FLOAT	    AS number_of_open_opportunities,
+      NULLIF("Count_of_Won_Opportunities", '')::FLOAT       AS count_of_won_opportunities,
+      NULLIF("Total_Closed_Won_Amount_(All-Time)", '')::FLOAT
                                                             AS total_closed_won_amount,
-      NULLIF("Sum: Open New/Add-on IACV Opportunities", '')::FLOAT
+      NULLIF("Sum:_Open_New_Add-on_IACV_Opportunities", '')::FLOAT
                                                             AS open_new_add_on_iacv,
-      NULLIF("Sum of Open Renewal Opportunities", '')::FLOAT
+      NULLIF("Sum_of_Open_Renewal_Opportunities", '')::FLOAT
                                                             AS sum_open_renewal_opportunities,
-      NULLIF("Support Level", '')::VARCHAR                  AS support_level,
-      NULLIF("MQL_SMB_Goal", '')::FLOAT                     AS mql_smb_goal,
-      NULLIF("GitLab.com user", '')::FLOAT                  AS gitlab_com_user,
-      NULLIF("GitLab EE Customer", '')::FLOAT               AS gitlab_ee_customer,
-      NULLIF("EE Basic Customer", '')::FLOAT                AS ee_basic_customer,
-      NULLIF("EE Standard Customer", '')::FLOAT             AS ee_standard_customer,
-      NULLIF("EE Plus Customer", '')::FLOAT                 AS ee_plus_customer,
-      NULLIF("Concurrent EE Subscriptions", '')::FLOAT      AS concurrent_ee_subscriptions,
-      NULLIF("Count of Active Subscriptions", '')::FLOAT    AS count_active_subscriptions,
-      NULLIF("Using CE", '')::FLOAT                         AS using_ce,
-      NULLIF("CE Instances", '')::FLOAT                     AS ce_instances,
-      NULLIF("Active CE Users", '')::FLOAT                  AS active_ce_users,
-      NULLIF("DemandBase: Score", '')::VARCHAR              AS demandbase_score,
-      NULLIF("DemandBase: Account List", '')::VARCHAR       AS demandbase_account_list,
-      NULLIF("DemandBase: Intent", '')::VARCHAR             AS demandbase_intent,
-      NULLIF("DemandBase: Page Views", '')::FLOAT           AS demandbase_page_views,
-      NULLIF("DemandBase: Sessions", '')::FLOAT             AS demandbase_sessions,
-      NULLIF("DemandBase: Trending Onsite Engagement", '')::FLOAT
+      NULLIF("Support_Level", '')::VARCHAR                  AS support_level,
+      NULLIF("GitLab.com_user", '')::FLOAT                  AS gitlab_com_user,
+      NULLIF("GitLab_EE_Customer", '')::FLOAT               AS gitlab_ee_customer,
+      NULLIF("EE_Basic_Customer", '')::FLOAT                AS ee_basic_customer,
+      NULLIF("EE_Standard_Customer", '')::FLOAT             AS ee_standard_customer,
+      NULLIF("EE_Plus_Customer", '')::FLOAT                 AS ee_plus_customer,
+      NULLIF("Concurrent_EE_Subscriptions", '')::FLOAT      AS concurrent_ee_subscriptions,
+      NULLIF("Count_of_Active_Subscriptions", '')::FLOAT    AS count_active_subscriptions,
+      NULLIF("Using_CE", '')::FLOAT                         AS using_ce,
+      NULLIF("CE_Instances", '')::FLOAT                     AS ce_instances,
+      NULLIF("Active_CE_Users", '')::FLOAT                  AS active_ce_users,
+      NULLIF("DemandBase:_Score", '')::VARCHAR              AS demandbase_score,
+      NULLIF("DemandBase:_Account_List", '')::VARCHAR       AS demandbase_account_list,
+      NULLIF("DemandBase:_Intent", '')::VARCHAR             AS demandbase_intent,
+      NULLIF("DemandBase:_Page_Views", '')::FLOAT           AS demandbase_page_views,
+      NULLIF("DemandBase:_Sessions", '')::FLOAT             AS demandbase_sessions,
+      NULLIF("DemandBase:_Trending_Onsite_Engagement", '')::FLOAT
                                                             AS demandbase_trending_onsite_engagement,
-      NULLIF("DemandBase: Trending Offsite Intent", '')::FLOAT
+      NULLIF("DemandBase:_Trending_Offsite_Intent", '')::FLOAT
                                                             AS demandbase_trending_offsite_intent,
-      NULLIF("Account Owner", '')::VARCHAR                  AS account_owner,
-      NULLIF("Billing State/Province", '')::VARCHAR         AS billing_state_province
+      NULLIF("Account_Owner", '')::VARCHAR                  AS account_owner,
+      NULLIF("Billing_State_Province", '')::VARCHAR         AS billing_state_province
 
     FROM source
 
