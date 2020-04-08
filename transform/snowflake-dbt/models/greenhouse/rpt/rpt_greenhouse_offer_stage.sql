@@ -72,7 +72,6 @@ WITH recruiting_xf AS (
       COUNT(offer_id)                                           AS candidates_estimated_to_start,
       SUM(IFF(offer_status = 'accepted',1,0))                   AS accepted_offers_to_start
     FROM data_set
-    WHERE geographic_region = 'North America'
     GROUP BY 1,2
     ORDER BY 1 DESC
 
