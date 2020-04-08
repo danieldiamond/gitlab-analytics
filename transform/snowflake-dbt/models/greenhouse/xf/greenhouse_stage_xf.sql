@@ -18,6 +18,7 @@
         candidate_coordinator,
         rejection_reason_name,
         rejection_reason_type,
+        current_job_req_status,
         is_hired_in_bamboo,
         time_to_offer" %}
 
@@ -152,6 +153,7 @@ WITH stages AS (
                 (PARTITION BY stage_order_revamped.application_id, stage_order_revamped.candidate_id 
                  ORDER BY row_number_stages_desc_updated DESC)                        AS next_stage,
           IFF(row_number_stages_desc_updated = 1, TRUE, FALSE)                        AS is_current_stage,
+
           application_month,
           {{repeated_column_names}},
           hit_application_review,
