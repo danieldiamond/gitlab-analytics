@@ -72,7 +72,7 @@ class QualtricsClient:
             request_check_progress = request_check_response.json()["result"][
                 "percentComplete"
             ]
-            print("Download is " + str(request_check_progress) + " complete")
+            logging.info("Download is " + str(request_check_progress) + " complete")
             progress_status = request_check_response.json()["result"]["status"]
 
         # step 2.1: Check for error
