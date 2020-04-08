@@ -62,7 +62,7 @@ class QualtricsClient:
             download_request_url, data=download_request_payload, headers=headers
         )
         progressId = download_request_response.json()["result"]["progressId"]
-        print(download_request_response.text)
+        logging.info(download_request_response.text)
 
         # Step 2: Checking on Data Export Progress and waiting until export is ready
         while progress_status != "complete" and progress_status != "failed":
