@@ -36,7 +36,8 @@ WITH usage_data AS (
       licenses.starts_at                      AS license_starts_at,
       licenses.license_expires_at,
       zuora_subscriptions.subscription_status AS zuora_subscription_status,
-      zuora_accounts.crm_id                   AS zuora_crm_id
+      zuora_accounts.crm_id                   AS zuora_crm_id,
+      DATEDIFF('month', usage_data.created_at, )
 
     FROM usage_data
       LEFT JOIN licenses
@@ -46,7 +47,7 @@ WITH usage_data AS (
       LEFT JOIN zuora_accounts
         ON zuora_subscriptions.account_id = zuora_accounts.account_id
       LEFT JOIN version_releases
-        ON zuora
+        ON usage_data.major_minor_version = version_releases.major_minor_version 
     WHERE 
       (
         licenses.email IS NULL
