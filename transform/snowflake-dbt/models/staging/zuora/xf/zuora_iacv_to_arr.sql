@@ -28,15 +28,24 @@ WITH sfdc_opportunity_xf AS (
       rate_plan_charge_name      AS charge_name,  
       rate_plan_charge_number    AS charge_number, 
       rate_plan_charge_segment   AS charge_segment, 
+      segment_version_order,
       subscription_name_slugify
     FROM {{ ref('zuora_invoice_charges') }}
 
 ), filtered_charges AS (
 
-    SELECT *
+    SELECT
+      zuora_invoice_charges.*,
+      IFF(
+          ROW_NUMBER() OVER (
+          PARTITION BY subscription_name_slugify, invoice_number, charge_number, charge_segment
+          ORDER BY segment_version_order DESC) = 1,
+          TRUE, FALSE
+      ) AS is_last_invoice_segment_version
     FROM zuora_invoice_charges
     WHERE effective_end_date > invoice_date
         AND mrr > 0
+    QUALIFY is_last_invoice_segment_version    
 
 ), true_mrr_periods AS (
 
