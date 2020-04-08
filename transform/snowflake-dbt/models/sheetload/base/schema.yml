@@ -209,3 +209,15 @@ models:
       - not_null
 - name: sheetload_abuse_mitigation
   description: Abuse currently manually pulls data from Bouncer (Abuse mitigation Tool) in order to report on abusive account mitigation.
+- name: sheetload_abm_account_baselines
+  description: This is the source for ABM account data
+  columns:
+    - name: added_date
+      tests:
+        - not_null
+    - name: account_id
+      tests:
+        - not_null
+    - name: gtm_strategy
+      tests:
+        - not_null
