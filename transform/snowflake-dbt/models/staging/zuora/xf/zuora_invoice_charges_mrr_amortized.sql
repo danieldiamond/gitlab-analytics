@@ -59,7 +59,6 @@ WITH date_table AS (
       ON zuora_invoice_charges.subscription_id = zuora_subscription.subscription_id
     WHERE zuora_invoice_charges.is_last_segment_version = TRUE
       AND mrr > 0
-      AND zuora_invoice_charges.effective_start_date != zuora_invoice_charges.effective_end_date
 
 ), month_base_mrr AS (
 
@@ -85,7 +84,7 @@ WITH date_table AS (
       SUM(mrr)                                  AS mrr,
       SUM(quantity)                             AS quantity
     FROM base_mrr
-    LEFT JOIN date_table
+    INNER JOIN date_table
       ON base_mrr.effective_start_date <= date_table.date_actual
       AND (base_mrr.effective_end_date > date_table.date_actual
            OR base_mrr.effective_end_date IS NULL)
