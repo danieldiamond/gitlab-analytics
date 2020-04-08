@@ -20,6 +20,11 @@ WITH usage_data AS (
     SELECT *
     FROM {{ ref('zuora_account')}}
 
+), version_releases AS (
+
+    SELECT *
+    FROM {{ ref('version_releases') }}
+
 ), joined AS (
 
     SELECT
@@ -40,6 +45,8 @@ WITH usage_data AS (
         ON licenses.zuora_subscription_id = zuora_subscriptions.subscription_id
       LEFT JOIN zuora_accounts
         ON zuora_subscriptions.account_id = zuora_accounts.account_id
+      LEFT JOIN version_releases
+        ON zuora
     WHERE 
       (
         licenses.email IS NULL
