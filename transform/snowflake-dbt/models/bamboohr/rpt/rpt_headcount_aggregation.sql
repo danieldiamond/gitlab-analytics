@@ -36,7 +36,7 @@ With date_details AS (
         'gender_breakdown'                              AS aggregation_type,
         {{ dbt_utils.pivot(
             'metric',
-            dbt_utils.get_column_values(ref('bamboohr_headcount_aggregation_intermediate'), 'metric'),
+            dbt_utils.get_column_values(ref('bamboohr_headcount_aggregation_intermediate'), 'metric', default=[]),
             then_value ='total_count',
             quote_identifiers = False
         ) }}
