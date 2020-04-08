@@ -7,7 +7,8 @@ Please add a number for days you'll be working this milestone. Engineers should 
 - @jjstark: 
 - @msendal: 
 - @m_walker: 
-- @tayloramurphy: 
+- @tayloramurphy:
+- @paul_armstrong:
 
 **Total Engineering Days**: 
 
