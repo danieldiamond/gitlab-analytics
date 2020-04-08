@@ -6,7 +6,7 @@ packages:
   - package: fishtown-analytics/audit_helper
     version: 0.0.2
   - package: fishtown-analytics/dbt_utils
-    version: 0.2.4
+    version: 0.2.4 
   - package: fishtown-analytics/logging
     version: 0.1.6
   - package: fishtown-analytics/snowplow
