@@ -174,4 +174,4 @@ WITH dates AS (
 ) 
 
 SELECT * 
-FROM aggregated
+FROM aggregated 
