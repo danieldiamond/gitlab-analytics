@@ -10,4 +10,4 @@ packages:
   - package: fishtown-analytics/logging
     version: 0.1.6
   - package: fishtown-analytics/snowplow
-    version: 0.7.4 
+    version: 0.7.4
