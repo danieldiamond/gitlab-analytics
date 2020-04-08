@@ -59,6 +59,7 @@ WITH date_table AS (
       ON zuora_invoice_charges.subscription_id = zuora_subscription.subscription_id
     WHERE zuora_invoice_charges.is_last_segment_version = TRUE
       AND mrr > 0
+      AND zuora_invoice_charges.effective_start_date != zuora_invoice_charges.effective_end_date
 
 ), month_base_mrr AS (
 

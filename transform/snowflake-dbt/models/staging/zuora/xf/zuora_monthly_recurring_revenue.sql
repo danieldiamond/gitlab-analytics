@@ -83,6 +83,7 @@ WITH date_table AS (
     LEFT JOIN zuora_product
       ON zuora_product.product_id = zuora_rpc.product_id
     WHERE zuora_subscription.subscription_status NOT IN ('Draft','Expired')
+      AND zuora_rpc.effective_start_date != zuora_rpc.effective_end_date
 
 ), month_base_mrr AS (
 
@@ -126,6 +127,7 @@ WITH date_table AS (
     WHERE zuora_subscription.subscription_status NOT IN ('Draft','Expired')
       AND effective_start_date <= current_date
       AND (effective_end_date > current_date OR effective_end_date IS NULL)
+      AND effective_start_date != effective_end_date
     {{ dbt_utils.group_by(n=3) }}
 
 )
