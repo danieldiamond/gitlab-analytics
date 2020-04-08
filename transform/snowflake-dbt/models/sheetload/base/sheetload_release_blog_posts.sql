@@ -1,6 +1,7 @@
 with source as (
 
-    SELECT * FROM {{ source('sheetload', 'release_blog_posts') }}
+    SELECT * 
+    FROM {{ source('sheetload', 'release_blog_posts') }}
 
 ), renamed as (
 
