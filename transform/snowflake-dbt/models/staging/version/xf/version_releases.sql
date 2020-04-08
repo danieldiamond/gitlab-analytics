@@ -22,8 +22,8 @@ aggregated AS (
       usage_data.minor_version,
 
       ROW_NUMBER() OVER (ORDER BY release_schedule.major_minor_version)           AS version_row_number,
-      LAG(release_schedule.release_date) OVER (
-        ORDER BY release_schedule.major_minor_version
+      LEAD(release_schedule.release_date) OVER (
+        ORDER BY release_schedule.release_date
       )                                                                           AS next_version_release_date,
 
       MIN(IFF(NOT usage_data.version_is_prerelease, usage_data.created_at, NULL)) AS min_usage_ping_created_at,
@@ -33,9 +33,7 @@ aggregated AS (
       LEFT JOIN usage_data
         ON usage_data.major_minor_version = release_schedule.major_minor_version
     GROUP BY 1,2,3,4
-    ORDER BY 
-      1 DESC,
-      2
+    ORDER BY 3,4
 
 )
 
