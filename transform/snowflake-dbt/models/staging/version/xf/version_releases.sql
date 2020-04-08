@@ -21,7 +21,7 @@ aggregated AS (
       usage_data.major_version,
       usage_data.minor_version,
 
-      ROW_NUMBER() OVER (PARTITION BY release_schedule.major_minor_version)       AS version_row_number,
+      ROW_NUMBER() OVER (ORDER BY release_schedule.major_minor_version)           AS version_row_number,
 
       MIN(IFF(NOT usage_data.version_is_prerelease, usage_data.created_at, NULL)) AS min_usage_ping_created_at,
       MAX(IFF(NOT usage_data.version_is_prerelease, usage_data.created_at, NULL)) AS max_usage_ping_created_at

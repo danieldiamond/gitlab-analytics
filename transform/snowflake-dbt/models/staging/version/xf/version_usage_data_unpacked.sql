@@ -37,7 +37,7 @@ WITH usage_data AS (
       licenses.license_expires_at,
       zuora_subscriptions.subscription_status AS zuora_subscription_status,
       zuora_accounts.crm_id                   AS zuora_crm_id,
-      DATEDIFF('month', usage_data.created_at, )
+      DATEDIFF('days', version_releases.release_date, usage_data.created_at) AS days_after_version_release_date,
 
     FROM usage_data
       LEFT JOIN licenses
