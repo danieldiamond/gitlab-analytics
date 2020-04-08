@@ -16,7 +16,7 @@ aggregated AS (
 
   SELECT
   
-    release.major_minor_version,
+    release_schedule.major_minor_version,
     release_schedule.release_date,
     usage_data.major_version,
     usage_data.minor_version,
