@@ -11,7 +11,7 @@ WITH source AS (
         name                                                    AS lead_name,
         email                                                   AS lead_email,
         split_part(email,'@',2)                                 AS email_domain,
-		
+
         --keys
         masterrecordid                                          AS master_record_id,
         convertedaccountid                                      AS converted_account_id,

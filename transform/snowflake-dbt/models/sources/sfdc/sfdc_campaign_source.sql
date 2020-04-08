@@ -1,8 +1,3 @@
-{{config({
-    "schema": "staging"
-  })
-}}
-
 WITH source AS (
 
     SELECT *
@@ -53,11 +48,11 @@ WITH source AS (
         lastmodifiedbyid                                                    AS last_modified_by_id,
         lastmodifieddate                                                    AS last_modified_date,
         lastactivitydate                                                    AS last_activity_date,
-        systemmodstamp
+        systemmodstamp,
+
+        isdeleted                                                           AS is_deleted
 
     FROM source
-    WHERE isdeleted = FALSE
-
 )
 
 SELECT *

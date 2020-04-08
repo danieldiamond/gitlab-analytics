@@ -1480,11 +1480,11 @@ tables:
       SELECT project_id
       , programming_language_id
       , share
-      , CONCAT(project_id, '_', programming_language_id) AS project_programming_language_id
       FROM repository_languages
     export_schema: 'gitlab_com'
     export_table: 'repository_languages'
     export_table_primary_key: CONCAT(project_id, '_', programming_language_id)
+    advanced_metadata: true
   releases:
     import_db: GITLAB_DB
     import_query: >

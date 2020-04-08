@@ -1,4 +1,5 @@
 test_sheet.test_sheet
+abuse_mitigation.abuse_mitigation
 calendar.calendar
 employee_location_factor.employee_location_factor
 gitlab_slack_stats.gitlab_slack_stats
