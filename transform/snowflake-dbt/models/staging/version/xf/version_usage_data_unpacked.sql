@@ -51,7 +51,7 @@ WITH usage_data AS (
       LEFT JOIN version_releases AS ping_version -- Join on the version of the ping itself.
         ON usage_data.major_minor_version = ping_version.major_minor_version
       LEFT JOIN version_releases AS latest_version -- Join the latest version released at the time of the ping.
-        ON usage_data.created_at BETWEEN latest_version.release_date AND {{ coalesce_to_infinity(latest_version.next_version_release_date) }}
+        ON usage_data.created_at BETWEEN latest_version.release_date AND {{ coalesce_to_infinity('latest_version.next_version_release_date') }}
     WHERE
       (
         licenses.email IS NULL
