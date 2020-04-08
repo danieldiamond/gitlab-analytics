@@ -38,6 +38,11 @@ WITH applications AS (
     SELECT * 
     FROM {{ ref ('greenhouse_candidates') }}  
 
+), rejection_reasons AS (
+    
+    SELECT * 
+    FROM {{ ref ('greenhouse_rejection_reasons') }}  
+
 ), cost_center AS (
 
     SELECT DISTINCT division, department
@@ -54,6 +59,7 @@ SELECT
     applications.application_id, 
     offer_id,
     applications.candidate_id, 
+    jobs.job_id,
     requisition_id, 
     application_status,
     stage_name                                                                      AS current_stage_name, 
@@ -61,6 +67,8 @@ SELECT
     applied_at                                                                      AS application_date,
     sent_at                                                                         AS offer_sent_date,
     resolved_at                                                                     AS offer_resolved_date,
+    offers.start_date                                                               AS candidate_target_hire_date,
+    rejected_at,
     job_name,
     department_name::VARCHAR(100)                                                   AS department_name,
     division::VARCHAR(100)                                                          AS division,                                             
@@ -74,6 +82,9 @@ SELECT
     candidates.candidate_recruiter,
     candidates.candidate_coordinator,
     IFF(greenhouse_sources.source_name ='LinkedIn (Prospecting)',True, False)       AS sourced_candidate,
+    rejection_reason_name,
+    rejection_reason_type,
+    jobs.job_status                                                                 AS current_job_req_status,
     IFF(offer_status ='accepted',
             DATEDIFF('day', applications.applied_at, offers.resolved_at),
             NULL)                                                                   AS time_to_offer,
@@ -94,6 +105,8 @@ LEFT JOIN candidates
   ON applications.candidate_id = candidates.candidate_id  
 LEFT JOIN greenhouse_sourcer
   ON applications.application_id = greenhouse_sourcer.application_id
+LEFT JOIN rejection_reasons
+  ON rejection_reasons.rejection_reason_id = applications.rejection_reason_id
 LEFT JOIN cost_center
   ON TRIM(greenhouse_departments.department_name)=TRIM(cost_center.department)
 LEFT JOIN bamboo

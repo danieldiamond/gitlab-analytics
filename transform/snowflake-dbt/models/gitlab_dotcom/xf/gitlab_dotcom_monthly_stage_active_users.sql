@@ -22,6 +22,7 @@ SELECT
   -- event data
   event_name,
   stage_name,
+  is_representative_of_stage,
   
   --metadata
   DATEDIFF('day', user_created_at, date_day)      AS days_since_user_creation,
@@ -33,4 +34,4 @@ FROM date_details
 INNER JOIN gitlab_dotcom_usage_data_events 
   ON gitlab_dotcom_usage_data_events.event_created_at BETWEEN DATEADD('day', -28, date_details.date_day) AND date_day 
 WHERE day_of_month = 1
-GROUP BY 1,2,3,4,5,6,7
+GROUP BY 1,2,3,4,5,6,7,8
