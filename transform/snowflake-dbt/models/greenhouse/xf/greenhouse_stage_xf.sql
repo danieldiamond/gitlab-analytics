@@ -6,6 +6,7 @@
 
 {% set repeated_column_names = 
         "requisition_id,
+        current_stage_name,
         application_status,
         job_name,
         department_name,
@@ -105,8 +106,8 @@ WITH stages AS (
         SUM(IFF(application_stage = 'Team Interview',1,0))          AS hit_team_interview,
         SUM(IFF(application_stage = 'Reference Check',1,0))         AS hit_reference_check,
         SUM(IFF(application_stage = 'Offer',1,0))                   AS hit_offer,
-        SUM(IFF(application_stage = 'hired',1,0))                   AS hit_hired,
-        SUM(IFF(application_stage = 'rejected',1,0))                AS hit_rejected
+        SUM(IFF(application_stage = 'Hired',1,0))                   AS hit_hired,
+        SUM(IFF(application_stage = 'Rejected',1,0))                AS hit_rejected
         FROM all_stages
         GROUP BY 1,2
         
@@ -122,9 +123,15 @@ WITH stages AS (
 
         SELECT
           intermediate.*,
-          IFF(application_stage in ('Hired','Rejected'),1,
-                row_number_stages_desc+1)                                           AS row_number_stages_desc_updated
+          CASE WHEN application_stage in ('Hired','Rejected') AND (hit_rejected = 1 or hit_hired = 1 )       
+                  THEN 1
+                WHEN (hit_rejected = 1 or hit_hired = 1 )   
+                  THEN   row_number_stages_desc+1
+                ELSE row_number_stages_desc END             AS row_number_stages_desc_updated
         FROM intermediate 
+        LEFT JOIN stages_hit
+          ON intermediate.application_id = stages_hit.application_id
+          AND intermediate.candidate_id = stages_hit.candidate_id
     
     ), final AS (   
 
@@ -144,7 +151,7 @@ WITH stages AS (
           LEAD(application_stage) OVER 
                 (PARTITION BY stage_order_revamped.application_id, stage_order_revamped.candidate_id 
                  ORDER BY row_number_stages_desc_updated DESC)                        AS next_stage,
-          IFF(row_number_stages_desc_updated = 1, TRUE, FALSE)                        AS current_stage,
+          IFF(row_number_stages_desc_updated = 1, TRUE, FALSE)                        AS is_current_stage,
           application_month,
           {{repeated_column_names}},
           hit_application_review,
