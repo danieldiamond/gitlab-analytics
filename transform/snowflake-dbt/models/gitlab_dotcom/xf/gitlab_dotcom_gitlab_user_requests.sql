@@ -1,236 +1,214 @@
 WITH epic_issues AS (
 
-  SELECT *
-  FROM {{ref('gitlab_dotcom_epic_issues')}}
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_epic_issues') }}
 
-)
+), epics AS (
 
-, epics AS (
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_epics_xf') }}
 
-  SELECT *
-  FROM {{ref('gitlab_dotcom_epics_xf')}}
+), gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id AS (
 
-)
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id') }}
 
-, gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id AS (
+), gitlab_dotcom_notes_linked_to_sfdc_account_id AS (
 
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id') }}
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_notes_linked_to_sfdc_account_id') }}
 
-)
+), issues AS (
 
-, gitlab_dotcom_notes_linked_to_sfdc_account_id AS (
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_issues_xf') }}
 
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_notes_linked_to_sfdc_account_id') }}
+), projects AS (
 
-)
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_projects') }}
 
-, issues AS (
+), namespaces AS (
 
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_issues_xf') }}
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_namespaces_xf') }}
 
-)
+), sfdc_accounts AS (
 
-, projects AS (
+    SELECT *
+    FROM {{ ref('sfdc_accounts_xf') }}
 
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_projects') }}
+), sfdc_opportunities AS (
 
-)
+    SELECT *
+    FROM {{ ref('sfdc_opportunity_xf') }}
 
-, namespaces AS (
+/* Created 4 Separate CTEs to be unioned */
 
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_namespaces_xf') }}
-)
+), sfdc_accounts_from_issue_notes AS (
 
-, sfdc_accounts AS (
+    SELECT DISTINCT
+      'Issue'                    AS noteable_type,
+      'Note'                     AS mention_type,
+      issues.issue_id            AS noteable_id,
+      issues.issue_iid           AS noteable_iid,
+      issues.issue_title         AS noteable_title,
+      issues.issue_created_at    AS noteable_created_at,
+      issues.milestone_id,
+      issues.state               AS noteable_state,
+      issues.weight,
+      issues.labels,
+      projects.project_name,
+      projects.project_id,
+      namespaces.namespace_id,
+      namespaces.namespace_name,
+      sfdc_accounts.account_id   AS sfdc_account_id,
+      sfdc_accounts.account_type AS sfdc_account_type,
+      sfdc_accounts.total_account_value,
+      sfdc_accounts.carr_this_account,
+      sfdc_accounts.carr_total,
+      epics.epic_title
+    FROM gitlab_dotcom_notes_linked_to_sfdc_account_id
+    INNER JOIN issues
+      ON gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_id = issues.issue_id
+    LEFT JOIN projects
+      ON issues.project_id = projects.project_id
+    LEFT JOIN namespaces
+      ON projects.namespace_id = namespaces.namespace_id
+    LEFT JOIN sfdc_accounts
+      ON gitlab_dotcom_notes_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
+    LEFT JOIN epic_issues
+      ON issues.issue_id = epic_issues.issue_id
+    LEFT JOIN epics
+      ON epic_issues.epic_id = epics.epic_id
+    WHERE gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_type = 'Issue'
 
-  SELECT *
-  FROM {{ ref('sfdc_accounts_xf') }}
-)
+), sfdc_accounts_from_epic_notes AS (
 
-, sfdc_opportunities AS (
+    SELECT DISTINCT
+      'Epic'                     AS noteable_type,
+      'Note'                     AS mention_type,
+      epics.epic_id              AS noteable_id,
+      epics.epic_internal_id     AS noteable_iid,
+      epics.epic_title           AS noteable_title,
+      epics.created_at           AS noteable_created_at,
+      NULL                       AS milestone_id,
+      epics.state                AS epic_state,
+      NULL                       AS weight,
+      epics.labels               AS labels,
+      NULL                       AS project_name,
+      NULL                       AS project_id,
+      namespaces.namespace_id,
+      namespaces.namespace_name,
+      sfdc_accounts.account_id   AS sfdc_account_id,
+      sfdc_accounts.account_type AS sfdc_account_type,
+      sfdc_accounts.total_account_value,
+      sfdc_accounts.carr_this_account,
+      sfdc_accounts.carr_total,
+      epics.epic_title --Redundant in this case.
+    FROM gitlab_dotcom_notes_linked_to_sfdc_account_id
+    INNER JOIN epics
+      ON gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_id = epics.epic_id
+    LEFT JOIN namespaces
+      ON epics.group_id = namespaces.namespace_id
+    LEFT JOIN sfdc_accounts
+      ON gitlab_dotcom_notes_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
+    WHERE gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_type = 'Epic'
 
-  SELECT *
-  FROM {{ ref('sfdc_opportunity_xf') }}
-)
+), sfdc_accounts_from_issue_descriptions AS (
 
-/* Created 4 Seperate CTEs to be unioned */
+    SELECT DISTINCT
+      'Issue'         AS noteable_type,
+      'Description'   AS mention_type,
+      issues.issue_id,
+      issues.issue_iid,
+      issues.issue_title,
+      issues.issue_created_at,
+      issues.milestone_id,
+      issues.state AS issue_state,
+      issues.weight,
+      issues.labels,
+      projects.project_name,
+      projects.project_id,
+      namespaces.namespace_id,
+      namespaces.namespace_name,
+      sfdc_accounts.account_id AS sfdc_account_id,
+      sfdc_accounts.account_type AS sfdc_account_type,
+      sfdc_accounts.total_account_value,
+      sfdc_accounts.carr_this_account,
+      sfdc_accounts.carr_total,
+      epics.epic_title
+    FROM gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id
+    INNER JOIN issues
+      ON gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.noteable_id = issues.issue_id
+      AND gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.noteable_type = 'Issue'
+    LEFT JOIN projects
+      ON issues.project_id = projects.project_id
+    LEFT JOIN namespaces
+      ON projects.namespace_id = namespaces.namespace_id
+    LEFT JOIN sfdc_accounts
+      ON gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
+    LEFT JOIN epic_issues
+      ON issues.issue_id = epic_issues.issue_id
+    LEFT JOIN epics
+      ON epic_issues.epic_id = epics.epic_id
 
-, sfdc_accounts_from_issue_notes AS (
+), sfdc_accounts_from_epic_descriptions AS (
 
-  SELECT DISTINCT
-    'Issue'                    AS noteable_type,
-    'Note'                     AS mention_type,
-    issues.issue_id            AS noteable_id,
-    issues.issue_iid           AS noteable_iid,
-    issues.issue_title         AS noteable_title,
-    issues.issue_created_at    AS noteable_created_at,
-    issues.milestone_id,
-    issues.state               AS noteable_state,
-    issues.weight,
-    issues.labels,
-    projects.project_name,
-    projects.project_id,
-    namespaces.namespace_id,
-    namespaces.namespace_name,
-    sfdc_accounts.account_id   AS sfdc_account_id,
-    sfdc_accounts.account_type AS sfdc_account_type,
-    sfdc_accounts.total_account_value,
-    sfdc_accounts.carr_total,
-    sfdc_accounts.count_licensed_users,
-    epics.epic_title
+    SELECT DISTINCT
+      'Epic'                     AS noteable_type,
+      'Description'              AS mention_type,
+      epics.epic_id              AS noteable_id,
+      epics.epic_internal_id     AS noteable_iid,
+      epics.epic_title           AS noteable_title,
+      epics.created_at           AS noteable_created_at,
+      NULL                       AS milestone_id,
+      epics.state                AS epic_state,
+      NULL                       AS weight,
+      epics.labels               AS labels,
+      NULL                       AS project_name,
+      NULL                       AS project_id,
+      namespaces.namespace_id,
+      namespaces.namespace_name,
+      sfdc_accounts.account_id   AS sfdc_account_id,
+      sfdc_accounts.account_type AS sfdc_account_type,
+      sfdc_accounts.total_account_value,
+      sfdc_accounts.carr_this_account,
+      sfdc_accounts.carr_total,
+      epics.epic_title --Redundant in this case.
+    FROM gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id
+    INNER JOIN epics
+      ON gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.noteable_id = epics.epic_id
+      AND gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.noteable_type = 'Epic'
+    LEFT JOIN namespaces
+      ON epics.group_id = namespaces.namespace_id
+    LEFT JOIN sfdc_accounts
+      ON gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
 
-  FROM gitlab_dotcom_notes_linked_to_sfdc_account_id
-  INNER JOIN issues
-    ON gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_id = issues.issue_id
-  LEFT JOIN projects
-    ON issues.project_id = projects.project_id
-  LEFT JOIN namespaces
-    ON projects.namespace_id = namespaces.namespace_id
-  LEFT JOIN sfdc_accounts
-    ON gitlab_dotcom_notes_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
-  LEFT JOIN epic_issues
-    ON issues.issue_id = epic_issues.issue_id
-  LEFT JOIN epics
-    ON epic_issues.epic_id = epics.epic_id
-  WHERE gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_type = 'Issue'
-)
+), unioned AS (
 
-, sfdc_accounts_from_epic_notes AS (
+    /* Notes */
+    SELECT *
+    FROM sfdc_accounts_from_issue_notes
 
-  SELECT DISTINCT
-    'Epic'                     AS noteable_type,
-    'Note'                     AS mention_type,
-    epics.epic_id              AS noteable_id,
-    epics.epic_internal_id     AS noteable_iid,
-    epics.epic_title           AS noteable_title,
-    epics.created_at           AS noteable_created_at,
-    NULL                       AS milestone_id,
-    epics.state                AS epic_state,
-    NULL                       AS weight,
-    epics.labels               AS labels,
-    NULL                       AS project_name,
-    NULL                       AS project_id,
-    namespaces.namespace_id,
-    namespaces.namespace_name,
-    sfdc_accounts.account_id   AS sfdc_account_id,
-    sfdc_accounts.account_type AS sfdc_account_type,
-    sfdc_accounts.total_account_value,
-    sfdc_accounts.carr_total,
-    sfdc_accounts.count_licensed_users,
-    epics.epic_title --Redundant in this case.
+    UNION
 
-  FROM gitlab_dotcom_notes_linked_to_sfdc_account_id
-  INNER JOIN epics
-    ON gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_id = epics.epic_id
-  LEFT JOIN namespaces
-    ON epics.group_id = namespaces.namespace_id
-  LEFT JOIN sfdc_accounts
-    ON gitlab_dotcom_notes_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
-  WHERE gitlab_dotcom_notes_linked_to_sfdc_account_id.noteable_type = 'Epic'
-)
+    SELECT *
+    FROM sfdc_accounts_from_epic_notes
 
-, sfdc_accounts_from_issue_descriptions AS (
+    /* Descriptions */
+    UNION
 
-  SELECT DISTINCT
-    'Issue'         AS noteable_type,
-    'Description'   AS mention_type,
-    issues.issue_id,
-    issues.issue_iid,
-    issues.issue_title,
-    issues.issue_created_at,
-    issues.milestone_id,
-    issues.state AS issue_state,
-    issues.weight,
-    issues.labels,
-    projects.project_name,
-    projects.project_id,
-    namespaces.namespace_id,
-    namespaces.namespace_name,
-    sfdc_accounts.account_id AS sfdc_account_id,
-    sfdc_accounts.account_type AS sfdc_account_type,
-    sfdc_accounts.total_account_value,
-    sfdc_accounts.carr_total,
-    sfdc_accounts.count_licensed_users,
-    epics.epic_title
+    SELECT *
+    FROM sfdc_accounts_from_issue_descriptions
 
-  FROM gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id
-  INNER JOIN issues
-    ON gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.noteable_id = issues.issue_id
-    AND gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.noteable_type = 'Issue'
-  LEFT JOIN projects
-    ON issues.project_id = projects.project_id
-  LEFT JOIN namespaces
-    ON projects.namespace_id = namespaces.namespace_id
-  LEFT JOIN sfdc_accounts
-    ON gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
-  LEFT JOIN epic_issues
-    ON issues.issue_id = epic_issues.issue_id
-  LEFT JOIN epics
-    ON epic_issues.epic_id = epics.epic_id
-)
+    UNION
 
-, sfdc_accounts_from_epic_descriptions AS (
-
-  SELECT DISTINCT
-    'Epic'                     AS noteable_type,
-    'Description'              AS mention_type,
-    epics.epic_id              AS noteable_id,
-    epics.epic_internal_id     AS noteable_iid,
-    epics.epic_title           AS noteable_title,
-    epics.created_at           AS noteable_created_at,
-    NULL                       AS milestone_id,
-    epics.state                AS epic_state,
-    NULL                       AS weight,
-    epics.labels               AS labels,
-    NULL                       AS project_name,
-    NULL                       AS project_id,
-    namespaces.namespace_id,
-    namespaces.namespace_name,
-    sfdc_accounts.account_id   AS sfdc_account_id,
-    sfdc_accounts.account_type AS sfdc_account_type,
-    sfdc_accounts.total_account_value,
-    sfdc_accounts.carr_total,
-    sfdc_accounts.count_licensed_users,
-    epics.epic_title --Redundant in this case.
-
-  FROM gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id
-  INNER JOIN epics
-    ON gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.noteable_id = epics.epic_id
-    AND gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.noteable_type = 'Epic'
-  LEFT JOIN namespaces
-    ON epics.group_id = namespaces.namespace_id
-  LEFT JOIN sfdc_accounts
-    ON gitlab_dotcom_issues_and_epics_linked_to_sfdc_account_id.sfdc_account_id = sfdc_accounts.account_id
-)
-
-, unioned AS (
-
-  /* Notes */
-  SELECT *
-  FROM sfdc_accounts_from_issue_notes
-
-  UNION
-
-  SELECT *
-  FROM sfdc_accounts_from_epic_notes
-
-  /* Descriptions */
-  UNION
-
-  SELECT *
-  FROM sfdc_accounts_from_issue_descriptions
-
-  UNION
-
-  SELECT *
-  FROM sfdc_accounts_from_epic_descriptions
+    SELECT *
+    FROM sfdc_accounts_from_epic_descriptions
 
 )
 
 SELECT *
 FROM unioned
+WHERE sfdc_account_id IS NOT NULL
