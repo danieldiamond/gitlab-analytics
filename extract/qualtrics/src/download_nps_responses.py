@@ -18,10 +18,11 @@ if __name__ == "__main__":
     survey_id = "SV_exKOCM6Cwj2dXr7"
     POOL_ID = config_dict["QUALTRICS_POOL_ID"]
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
-    local_file_name = client.download_survey_response_file(survey_id, "json")
-    snowflake_stage_load_copy_remove(
-        local_file_name,
-        "raw.qualtrics.qualtrics_load",
-        "raw.qualtrics.nps_survey_responses",
-        snowflake_engine,
-    )
+    local_file_names = client.download_survey_response_file(survey_id, "json")
+    for local_file_name in local_file_names:
+        snowflake_stage_load_copy_remove(
+            local_file_name,
+            "raw.qualtrics.qualtrics_load",
+            "raw.qualtrics.nps_survey_responses",
+            snowflake_engine,
+        )

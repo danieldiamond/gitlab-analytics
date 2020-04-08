@@ -3,6 +3,7 @@ import io
 import logging
 import os
 import requests
+import time
 import zipfile
 
 
@@ -64,14 +65,26 @@ class QualtricsClient:
         progressId = download_request_response.json()["result"]["progressId"]
         logging.info(download_request_response.text)
 
+        previously_failed = False
+
         # Step 2: Checking on Data Export Progress and waiting until export is ready
         while progress_status != "complete" and progress_status != "failed":
             print("progressStatus=", progress_status)
             request_check_url = response_base_url + progressId
-            request_check_response = requests.get(request_check_url, headers=headers)
-            request_check_progress = request_check_response.json()["result"][
-                "percentComplete"
-            ]
+            try:
+                request_check_response = requests.get(
+                    request_check_url, headers=headers
+                )
+                request_check_progress = request_check_response.json()["result"][
+                    "percentComplete"
+                ]
+            except ValueError:
+                if previously_failed:
+                    raise
+                previously_failed = True
+                time.sleep(1)
+                continue
+            previously_failed = False
             logging.info("Download is " + str(request_check_progress) + " complete")
             progress_status = request_check_response.json()["result"]["status"]
 
@@ -89,7 +102,10 @@ class QualtricsClient:
 
         zip_file = zipfile.ZipFile(io.BytesIO(request_download.content))
         zip_file.extractall()
-        file_name = zip_file.namelist()[0]
-        cleaned_file_name = file_name.replace(" ", "")
-        os.rename(file_name, cleaned_file_name)
-        return cleaned_file_name
+        file_name_list = zip_file.namelist()
+        cleaned_file_names = [
+            file_name.replace(" ", "") for file_name in file_name_list
+        ]
+        for file_name, cleaned_file_name in zip(file_name_list, cleaned_file_names):
+            os.rename(file_name, cleaned_file_name)
+        return cleaned_file_names
