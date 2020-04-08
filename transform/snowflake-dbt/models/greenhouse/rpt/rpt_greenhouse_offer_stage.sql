@@ -1,12 +1,9 @@
-WITH greenhouse_offers AS (
-  
-    SELECT *
-    FROM {{ref('greenhouse_offers')}}
-
-), greenhouse_applications AS (
+WITH recruiting_xf AS (
     
-    SELECT *
-    FROM {{ref('greenhouse_applications')}}
+    SELECT * 
+    FROM {{ref('greenhouse_recruiting_xf')}} 
+    WHERE offer_id IS NOT NULL
+    AND offer_status <>'rejected'
   
 ), greenhouse_offer_custom_fields as (
 
@@ -21,6 +18,13 @@ WITH greenhouse_offers AS (
 
     SELECT *
     FROM {{ref('zuora_country_geographic_region')}}
+
+), bamboohr AS (
+
+    SELECT 
+      greenhouse_candidate_id, 
+      IFF(region = 'JAPAC','Asia Pacific', region) AS region
+    FROM  {{ref('bamboohr_id_employee_number_mapping')}} 
 
 ), location_cleaned AS (
 
@@ -41,25 +45,30 @@ WITH greenhouse_offers AS (
 ), data_set AS (
 
     SELECT 
-      greenhouse_offers.offer_id,
+      recruiting_xf.offer_id,
       application_status, 
-      stage_name, 
+      current_stage_name                               AS stage_name, 
       offer_status,
-      greenhouse_offers.created_at,
-      greenhouse_offers.sent_at,
-      greenhouse_offers.start_date,
-      geographic_region
-    FROM greenhouse_offers
-    INNER JOIN greenhouse_applications 
-      ON greenhouse_offers.application_id = greenhouse_applications.application_id
+      offer_sent_date,
+      offer_resolved_date,
+      candidate_target_hire_date                        AS start_date,
+      candidate_country,
+      geographic_region,
+      bamboohr.region as bh_region,
+      CASE WHEN geographic_region IN ('North America', 'South America') 
+            THEN geographic_region
+           ELSE COALESCE(bh_region, geographic_region) END AS region_final
+    FROM recruiting_xf
+    INNER JOIN bamboohr
+      ON recruiting_xf.candidate_id = bamboohr.greenhouse_candidate_id
     INNER JOIN location_cleaned
-      ON location_cleaned.offer_id = greenhouse_offers.offer_id
+      ON location_cleaned.offer_id = recruiting_xf.offer_id  
 
 ), final AS (
 
     SELECT 
       DATE_TRUNC(WEEK,start_date)                               AS start_week,
-      geographic_region,
+      region_final                                              AS geographic_region,
       COUNT(offer_id)                                           AS candidates_estimated_to_start,
       SUM(IFF(offer_status = 'accepted',1,0))                   AS accepted_offers_to_start
     FROM data_set
