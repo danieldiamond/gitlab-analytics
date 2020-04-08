@@ -43,6 +43,11 @@ tables:
       , description
       , state_id
       , closed_at
+      , parent_id
+      , relative_position
+      , start_date_sourcing_epic_id
+      , external_key
+      , confidential
       FROM epics
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
