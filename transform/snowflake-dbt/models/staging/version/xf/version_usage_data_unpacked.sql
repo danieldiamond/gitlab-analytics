@@ -37,7 +37,9 @@ WITH usage_data AS (
       licenses.license_expires_at,
       zuora_subscriptions.subscription_status AS zuora_subscription_status,
       zuora_accounts.crm_id                   AS zuora_crm_id,
-      DATEDIFF('days', version_releases.release_date, usage_data.created_at) AS days_after_version_release_date,
+      DATEDIFF('days', ping_version.release_date, usage_data.created_at)  AS days_after_version_release_date,
+      latest_version.major_minor_version                                  AS latest_version_available_at_ping_creation,
+      latest_version.version_row_number - ping_version.version_row_number AS versions_behind_latest
 
     FROM usage_data
       LEFT JOIN licenses
@@ -46,9 +48,11 @@ WITH usage_data AS (
         ON licenses.zuora_subscription_id = zuora_subscriptions.subscription_id
       LEFT JOIN zuora_accounts
         ON zuora_subscriptions.account_id = zuora_accounts.account_id
-      LEFT JOIN version_releases
-        ON usage_data.major_minor_version = version_releases.major_minor_version 
-    WHERE 
+      LEFT JOIN version_releases AS ping_version -- Join on the version of the ping itself.
+        ON usage_data.major_minor_version = ping_version.major_minor_version
+      LEFT JOIN version_releases AS latest_version -- Join the latest version released at the time of the ping.
+        ON usage_data.created_at BETWEEN latest_version.release_date AND {{ coalesce_to_infinity(latest_version.next_version_release_date) }}
+    WHERE
       (
         licenses.email IS NULL
         OR NOT (email LIKE '%@gitlab.com' AND LOWER(company) LIKE '%gitlab%') -- Exclude internal tests licenses.
@@ -77,6 +81,9 @@ WITH usage_data AS (
       zuora_subscription_id,
       zuora_subscription_status,
       zuora_crm_id,
+      days_after_version_release_date,
+      latest_version_available_at_ping_creation,
+      versions_behind_latest,
       f.path                                                                          AS ping_name,
       REPLACE(f.path, '.','_')                                                        AS full_ping_name,
       f.value                                                                         AS ping_value
@@ -101,7 +108,7 @@ WITH usage_data AS (
       unpacked.zuora_subscription_id,
       unpacked.zuora_subscription_status,
       unpacked.zuora_crm_id,
-    
+
       {% for stat_name in version_usage_stats_list %}
         MAX(IFF(full_ping_name = '{{stat_name}}', ping_value::NUMERIC, NULL)) AS {{stat_name}}
         {{ "," if not loop.last }}
