@@ -123,6 +123,16 @@ models:
       tests:
       - not_null
       - unique
+- name: sheetload_release_blog_posts
+  description: Information about blog post releases via [Mark Fletcher](https://gitlab.com/markglenfletcher).
+  columns:
+    - name: base_items
+    - name: bug_items
+    - name: performance_items
+    - name: release
+      tests:
+      - not_null
+      - unique
 - name: sheetload_yc_companies
   description: This is a list of YC Companies and their cohort provided by and maintained by marketing.
   columns:
