@@ -42,6 +42,9 @@ class QualtricsClient:
             f"directories/{directory_id}/mailinglists/{mailing_list_id}/contacts", {}
         )
 
+    def get_questions(self, survey_id):
+        return self.get(f"survey-definitions/{survey_id}/questions", {})
+
     def download_survey_response_file(self, survey_id, file_format):
         """
         Downloads all survey responses for the given survey id in the file format specified
