@@ -13,7 +13,8 @@ WITH source AS (
       SPLIT_PART(cleaned_version, '.', 2)::INT            AS minor_version,
       major_version || '.' || minor_version               AS major_minor_version
     FROM {{ ref('version_usage_data_source') }}
-    WHERE version NOT LIKE ('%VERSION%') -- Messy data that's not worth parsing.
+    WHERE uuid IS NOT NULL
+      AND version NOT LIKE ('%VERSION%') -- Messy data that's not worth parsing.
 
 )
 
