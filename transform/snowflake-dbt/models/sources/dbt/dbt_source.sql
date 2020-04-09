@@ -13,6 +13,7 @@ WITH source AS (
       s.value['snapshotted_at']::TIMESTAMP                                                          AS freshness_observed_at
     FROM source 
     INNER JOIN LATERAL FLATTEN(jsontext['sources']) s
+    WHERE s.value['state']::VARCHAR != 'runtime error'  -- impossible to know what freshness is, so filtered out
 
 )
 SELECT *

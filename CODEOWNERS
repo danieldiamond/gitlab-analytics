@@ -1,3 +1,4 @@
+
 # ======
 # Documentation
 # ======
@@ -87,15 +88,29 @@ __init__.py         @kathleentam   @jjstark
 
 /transform/snowflake-dbt/models/sources/sfdc/       @derekatwood    @kathleentam    @jeanpeguero
 /transform/snowflake-dbt/models/staging/sfdc/       @derekatwood    @kathleentam    @jeanpeguero
+/transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_		  @m_walker
+/transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam	  @jjstark
+/transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_		  @m_walker
+/transform/snowflake-dbt/models/greenhouse/         @pluthra        @kathleentam	  @msendal
+/transform/snowflake-dbt/models/netsuite/           @iweeks         @kathleentam
+/transform/snowflake-dbt/models/sfdc/               @derekatwood    @kathleentam    @jeanpeguero	@jjstark 
+/transform/snowflake-dbt/models/smau_events/        @eli_kastelein  @mpeychet_		
+/transform/snowflake-dbt/models/snowplow/           @tayloramurphy  @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/snowplow_combined/  @tayloramurphy  @eli_kastelein  @mpeychet_
 
-/transform/snowflake-dbt/models/sources/version/    @eli_kastelein  @mpeychet_
-/transform/snowflake-dbt/models/staging/version/    @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/sources/license/    @eli_kastelein  @mpeychet_		@m_walker
+/transform/snowflake-dbt/models/staging/license/    @eli_kastelein  @mpeychet_		@m_walker
+
+/transform/snowflake-dbt/models/sources/sfdc/       @derekatwood    @kathleentam	@jjstark
+
+/transform/snowflake-dbt/models/sources/version/    @eli_kastelein  @mpeychet_		@m_walker
+/transform/snowflake-dbt/models/staging/version/    @eli_kastelein  @mpeychet_		@m_walker
 
 /transform/snowflake-dbt/models/sources/zendesk     @derekatwood    @ken_aguilar
 /transform/snowflake-dbt/models/staging/zendesk     @derekatwood    @ken_aguilar
 
-/transform/snowflake-dbt/models/sources/zuora       @iweeks         @derekatwood    @msendal  
-/transform/snowflake-dbt/models/staging/zuora       @iweeks         @derekatwood
+/transform/snowflake-dbt/models/sources/zuora       @iweeks         @derekatwood  @msendal  
+/transform/snowflake-dbt/models/staging/zuora       @iweeks         @derekatwood	@msendal
 
 # ======
 # dbt data file Overwrites

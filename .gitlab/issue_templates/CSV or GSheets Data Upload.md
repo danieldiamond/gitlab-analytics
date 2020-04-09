@@ -29,6 +29,7 @@ If none, please include a description
 * [ ]  How long will this data need to reside in the Data team's data warehouse? Expiration Date: ______ 
 * [ ]  How do you want to name the table? Table Name: ______ 
 * [ ]  Update the due date on this issue for when you want this data in Periscope. (Note: The airflow job for sheetload runs every night and is immediately followed by a sheetload-specific dbt run)
+* [ ]  Provide who will be the owner of the file to fix potential data issues. @____
 
 ### If you need data in Periscope but...
 
