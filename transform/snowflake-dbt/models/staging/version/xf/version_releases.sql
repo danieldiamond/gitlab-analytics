@@ -18,8 +18,8 @@ aggregated AS (
     
       release_schedule.major_minor_version,
       release_schedule.release_date,
-      usage_data.major_version,
-      usage_data.minor_version,
+      release_schedule.major_version,
+      release_schedule.minor_version,
 
       ROW_NUMBER() OVER (ORDER BY release_schedule.major_minor_version)           AS version_row_number,
       LEAD(release_schedule.release_date) OVER (
