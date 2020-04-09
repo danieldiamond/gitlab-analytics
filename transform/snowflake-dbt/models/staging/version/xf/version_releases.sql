@@ -21,7 +21,7 @@ aggregated AS (
       release_schedule.major_version,
       release_schedule.minor_version,
 
-      ROW_NUMBER() OVER (ORDER BY release_schedule.major_minor_version)           AS version_row_number,
+      ROW_NUMBER() OVER (ORDER BY release_schedule.release_date)                  AS version_row_number,
       LEAD(release_schedule.release_date) OVER (
         ORDER BY release_schedule.release_date
       )                                                                           AS next_version_release_date,
