@@ -65,7 +65,7 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam    @jjstark 
 /transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_		@m_walker
 /transform/snowflake-dbt/models/gitter/             @tayloramurphy  @kathleentam    @jjstark 
-/transform/snowflake-dbt/models/greenhouse/         @pluthra        @kathleentam
+/transform/snowflake-dbt/models/greenhouse/         @pluthra        @kathleentam	@msendal
 /transform/snowflake-dbt/models/handbook/           @m_walker       @kathleentam    @ken_aguilar
 /transform/snowflake-dbt/models/marts/product_kpis/ @eli_kastelein  @mpeychet_      @kathleentam
 /transform/snowflake-dbt/models/netsuite/           @iweeks         @kathleentam
