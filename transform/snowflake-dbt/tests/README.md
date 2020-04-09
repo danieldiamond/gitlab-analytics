@@ -164,7 +164,7 @@ Steps to Resolve:
 * Step 1: Run the chatops command `/gitlab datachat run zuora_crm_id` from Slack to see the test results in Slack.
 * Step 2: Create an issue in finance asking the account get updated with a salesforce_id. Cross link this to the analytics issue
 * Step 3: Create an issue to remove the filter and assign it to the next milestone, cross-link it to the original issue
-* Step 4: Add the zuora account_id in the [zuora_excluded_accounts seed file](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/zuora/zuora_excluded_accounts.sql) and submit your MR for review
+* Step 4:  Filter out the account from the [test](https://gitlab.com/gitlab-data/analytics/-/blob/master/transform/snowflake-dbt/tests/zuora/zuora_account_has_crm_id.sql) and submit your MR for review
 * Step 5: Once finance has confirmed that the account has been updated, create a MR to remove the filter
 
 
