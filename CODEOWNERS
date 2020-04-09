@@ -58,7 +58,8 @@ __init__.py         @kathleentam   @jjstark
 
 /transform/snowflake-dbt/models/bamboohr/           @emilie         @pluthra        @kathleentam    
 /transform/snowflake-dbt/models/covid19/            @tayloramurphy  @jjstark        @kathleentam
-/transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_      
+/transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_		@m_walker
+
 /transform/snowflake-dbt/models/date/base/          @derekatwood    @kathleentam
 /transform/snowflake-dbt/models/engineering/        @m_walker       @kathleentam
 /transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam    @jjstark 
