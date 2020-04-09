@@ -63,7 +63,7 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/models/date/base/          @derekatwood    @kathleentam
 /transform/snowflake-dbt/models/engineering/        @m_walker       @kathleentam
 /transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam    @jjstark 
-/transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_		@m_walker
 /transform/snowflake-dbt/models/gitter/             @tayloramurphy  @kathleentam    @jjstark 
 /transform/snowflake-dbt/models/greenhouse/         @pluthra        @kathleentam
 /transform/snowflake-dbt/models/handbook/           @m_walker       @kathleentam    @ken_aguilar
