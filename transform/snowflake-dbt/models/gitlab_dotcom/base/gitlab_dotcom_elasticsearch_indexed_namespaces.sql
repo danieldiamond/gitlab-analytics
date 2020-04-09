@@ -2,6 +2,7 @@ WITH source AS (
 
     SELECT *
     FROM {{ source('gitlab_dotcom', 'elasticsearch_indexed_namespaces') }}
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY namespace_id ORDER BY UPDATED_AT DESC) = 1
 
 ), types_cast AS (
 

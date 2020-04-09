@@ -13,9 +13,9 @@ Loading a Google Sheet:
   - Share the sheet with the required service account - [Email Address to share with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
   - Files are stored in either the [Sheetload or Boneyard folders](https://drive.google.com/open?id=1F5jKClNEsQstngbrh3UYVzoHAqPTf-l0)
   - All sheets will be uploaded to either the `raw.sheetload` schema or `analytics.boneyard` schema depending on the file name
-  - The file will be located and loaded based on its name. The names of the sheets shared with the runner must be unique and in the `<file_name>.<tab_name>` format
-  - List the names in a newline delimited txt file
-  - Run the command `python3 sheetload.py sheets <path/to/txt/file>`
+  - The file will be located and loaded based on its name. The names of the sheets shared with the runner must be unique
+  - Add new sheets to config.yml file
+  - Run the command `python3 sheetload.py sheets <path/to/yml/file>`
   - Logging from the script will tell you table successes/failures and the number of rows uploaded to each table.
 
 

@@ -44,7 +44,7 @@ The one metric that matters now, & the most important thing you want your team t
 * Who would be the best contact for the data source system? (Link or explanation)
 
 
-### 🧩Anaswer these questions to provide more context 
+### 🧩Answer these questions to provide more context 
 
 - Any alternative north star metrics you would consider, either because they are easier to get, or you are debating between that and the proposed NSM?
 - Does your feature play a bigger role in initial purchase, retention, or expansion/upgrade? 

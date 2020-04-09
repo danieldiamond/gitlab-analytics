@@ -18,6 +18,7 @@ sources:
 
     tables:
       - name: ally_certificate
+      - name: abuse_mitigation
       - name: days_to_close
       - name: calendar
       - name: communication_certificate
@@ -47,6 +48,7 @@ sources:
         freshness: null
       - name: pulse_survey_monitor_fe
         freshness: null
+      - name: release_blog_posts
       - name: rep_quotas_full_fy2020
       - name: rep_quotas_full_ps_fy2020
         freshness: null
@@ -54,3 +56,4 @@ sources:
       - name: yc_companies
         freshness: null
       - name: social_marketing_metrics
+      - name: abm_account_baselines

@@ -19,6 +19,8 @@ def get_file_name(config_name):
 def get_table_name(config_name, snowflake_database):
     if config_name == "sources":
         return f'"{snowflake_database}".dbt.sources'
+    elif config_name == "test":
+        return f'"{snowflake_database}".dbt.test_run_results'
     else:
         return f'"{snowflake_database}".dbt.run_results'
 

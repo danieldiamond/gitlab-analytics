@@ -36,21 +36,4 @@ models:
                 - not_null
         -   name: grantee_name
             tests:
-                - not_null
-
-  - name: snowflake_query_history
-    description: This is an incrementally materialized table from snowflake.account_usage.query_history
-    columns:
-        -   name: snowflake_query_id
-            tests:
-                - not_null
-                - unique 
-        -   name: snowflake_user_name
-            tests:
-                - not_null
-        -   name: snowflake_role_name
-            tests:
-                - not_null
-        -   name: query_start_time
-            tests: 
-                - not_null    
+                - not_null   

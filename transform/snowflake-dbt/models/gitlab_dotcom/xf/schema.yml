@@ -42,6 +42,22 @@ models:
       - name: sfdc_account_id
         tests:
           - not_null
+     
+  - name: gitlab_dotcom_gitlab_user_requests_opportunities
+    description: '{{ doc("gitlab_dotcom_gitlab_user_requests_opportunities") }}'
+    columns:
+      - name: noteable_id
+        tests:
+          - not_null
+      - name: noteable_type
+        tests:
+           - not_null
+      - name: sfdc_account_id
+        tests:
+          - not_null
+      - name: sfdc_opportunity_id
+        tests:
+          - not_null                    
 
   - name: gitlab_dotcom_internal_notes_xf
     description: '{{ doc("gitlab_dotcom_internal_notes_xf") }}'
@@ -190,7 +206,15 @@ models:
         description: Merge Request has 'community contribution' tag, and is on a project in the gitlab.org namespace.
       - name: namespace_plan_id_at_merge_request_creation
         description: '{{ doc("namespace_plan_id_at_creation") }}'
-
+  - name: gitlab_dotcom_monthly_stage_active_users
+    description: '{{ doc("gitlab_dotcom_monthly_stage_active_users") }}'
+    columns:
+      - name: event_name
+        tests:
+          - not_null
+      - name: stage_name
+        tests:
+          - not_null
   - name: gitlab_dotcom_milestones_xf
     description: This is a non-sensitive models of the milestones table. The "title" and "description" columns are masked for non-internal namespaces.
     columns:
@@ -320,4 +344,4 @@ models:
       - name: days_active
         description: days between user creation and last activity
       - name: account_age_cohort
-        description: cohorting of time between last dbt run and user creation date.
+        description: cohorting of time between last dbt run and user creation date.    
