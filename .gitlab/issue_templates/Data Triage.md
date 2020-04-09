@@ -37,7 +37,7 @@ Please prioritize this issue since we dedicate a day from your milestone to this
     - [ ] [KPI Index handbook page](https://gitlab.com/gitlab-com/www-gitlab-com/-/commits/master/source/handbook/business-ops/data-team/kpi-index/index.html.md.erb)
     - [ ] [Engineering KPI list](https://gitlab.com/gitlab-com/www-gitlab-com/-/blob/master/data/performance_indicators.yml)
 
-### Preparation for Next Milestone 
+### Prepare for Next Milestone 
 * [ ] Groom Issues for Next Milestone: for issues that have missing or poor requirements, add comments in the issue asking questions to the Business DRI. 
 * [ ] Update the planning issues for this milestone and the next milestone 
 * [ ] Close/clean-up any irrelevant issues in your backlog. 
