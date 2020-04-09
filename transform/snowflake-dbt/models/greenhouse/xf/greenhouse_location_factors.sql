@@ -68,7 +68,7 @@ WITH location_application_answer AS (
     union_application_answers.*,
     historical_location_factor.location_factor
   FROM union_application_answers
-  LEFT JOIN latest_location_factor
+  LEFT JOIN historical_location_factor
     ON union_application_answers.city = historical_location_factor.city
     AND union_application_answers.state = historical_location_factor.state 
     AND union_application_answers.country = historical_location_factor.country
