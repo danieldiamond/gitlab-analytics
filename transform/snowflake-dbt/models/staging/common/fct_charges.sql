@@ -40,7 +40,7 @@ WITH zuora_rate_plan AS (
     INNER JOIN {{ ref('zuora_invoice_item_source') }}  AS invoice_item_source
         ON base_charges.charge_id = invoice_item_source.rate_plan_charge_id
     QUALIFY ROW_NUMBER() OVER  (PARTITION BY rate_plan_charge_number, rate_plan_charge_segment
-        ORDER BY  rate_plan_charge_version DESC)= 1
+        ORDER BY  rate_plan_charge_version DESC, service_start_date DESC)= 1
 
 ), final AS (
 
