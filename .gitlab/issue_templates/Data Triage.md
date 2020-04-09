@@ -11,6 +11,11 @@ Please complete all items. Ask questions in the #data slack channel
 * [ ] Close this issue once all the items below are completed. 
 
 ## Data Analyst tasks
+All tasks below should be checked off on your Triage day. 
+This is the most important issue on your Triage day. 
+Please prioritize this issue since we dedicate a day from your milestone to this activity. 
+
+### Reply to slack channels 
 * [ ] Review each slack message request in the **#data** channel 
     - [ ] Reply to slack threads by pointing GitLabbers to the appropriate handbook page, visualization, or to other GitLabbers who may know more about the topic. 
     - [ ] Direct GitLabbers to the channel description, which has the link to the Data team project, if the request requires more than 5 minutes of investigative effort from a Data team member.
@@ -31,6 +36,12 @@ Please complete all items. Ask questions in the #data slack channel
 * [ ] Review the commit history of the following two files and update the [sheetload_kpi_status data](https://docs.google.com/spreadsheets/d/1CZLnXiAG7D_T_6vm50X0hDPnMPKrKmtajrcga5vyDTQ/edit?usp=sharing) with any new KPIs or update existing KPI statistics (`commit_start` is the commit URL for the `start_date` and `commit_handbook_v1` is the commit URL for the `completion_date`)
     - [ ] [KPI Index handbook page](https://gitlab.com/gitlab-com/www-gitlab-com/-/commits/master/source/handbook/business-ops/data-team/kpi-index/index.html.md.erb)
     - [ ] [Engineering KPI list](https://gitlab.com/gitlab-com/www-gitlab-com/-/blob/master/data/performance_indicators.yml)
+
+### Preparation for Next Milestone 
+* [ ] Groom Issues for Next Milestone: for issues that have missing or poor requirements, add comments in the issue asking questions to the Business DRI. 
+* [ ] Update the planning issues for this milestone and the next milestone 
+* [ ] Close/clean-up any irrelevant issues in your backlog. 
+
 
 ## Data Engineer tasks
 
