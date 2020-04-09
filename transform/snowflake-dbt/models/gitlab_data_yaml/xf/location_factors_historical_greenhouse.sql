@@ -1,13 +1,13 @@
-{{ config({
+{# {{ config({
     "schema": "temporary"
     })
-}}
+}} #}
 
 WITH location_factor_base AS (
   
   SELECT *
   FROM {{ ref('location_factors_yaml_historical') }} 
-  
+
 ), area_partition AS (
   
   SELECT
