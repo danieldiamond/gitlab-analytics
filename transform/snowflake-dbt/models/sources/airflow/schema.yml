@@ -1,0 +1,32 @@
+version: 2
+
+models:
+    - name: airflow_dag
+      description: "Static information about airflow DAGs."
+      columns:
+        - name: dag_id
+          tests:
+            - not_null
+            - unique
+        - name: is_active
+          tests:
+            - not_null
+        - name: is_paused
+          tests:
+            - not_null
+        - name: schedule_interval
+        
+    - name: airflow_dag_run
+      description: "Information about individual runs of a DAG."
+      columns:
+        - name: dag_id
+          tests:
+            - not_null
+        - name: execution_date
+          tests:
+            - not_null
+        - name: state
+          tests:
+            - not_null
+        
+        
