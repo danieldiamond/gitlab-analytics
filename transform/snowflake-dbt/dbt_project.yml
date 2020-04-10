@@ -200,6 +200,14 @@ models:
     handbook:
         materialized: table
 
+    location_factor:
+        materialized: table
+         
+    marts:
+        revenue:
+        base:
+        materialized: table   
+         
     netsuite:
       materialized: table
       base:
