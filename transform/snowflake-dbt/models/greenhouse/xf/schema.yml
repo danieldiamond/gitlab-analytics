@@ -98,8 +98,6 @@ models:
         tests: 
           - not_null
       - name: location_factor
-        tests:
-          - not_null
       - name: application_question_answer_created_at
         tests:
           - not_null 
