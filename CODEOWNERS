@@ -1,3 +1,4 @@
+
 # ======
 # Documentation
 # ======
@@ -55,12 +56,43 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/docs/                      @tayloramurphy  @jjstark        @emilie         @kathleentam
 /transform/snowflake-dbt/macros/                    @tayloramurphy  @jjstark        @emilie         @kathleentam
 
-/transform/snowflake-dbt/models/                    @jjstark        @kathleentam
 /transform/snowflake-dbt/models/bamboohr/           @emilie         @pluthra        @kathleentam    
+/transform/snowflake-dbt/models/covid19/            @tayloramurphy  @jjstark        @kathleentam
 /transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_		@m_walker
-/transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam	@jjstark
+
+/transform/snowflake-dbt/models/date/base/          @derekatwood    @kathleentam
+/transform/snowflake-dbt/models/engineering/        @m_walker       @kathleentam
+/transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam    @jjstark 
 /transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_		@m_walker
+/transform/snowflake-dbt/models/gitter/             @tayloramurphy  @kathleentam    @jjstark 
 /transform/snowflake-dbt/models/greenhouse/         @pluthra        @kathleentam	@msendal
+/transform/snowflake-dbt/models/handbook/           @m_walker       @kathleentam    @ken_aguilar
+/transform/snowflake-dbt/models/marts/product_kpis/ @eli_kastelein  @mpeychet_      @kathleentam
+/transform/snowflake-dbt/models/netsuite/           @iweeks         @kathleentam
+/transform/snowflake-dbt/models/smau_events/        @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/snapshots/          @m_walker       @kathleentam    @jjstark
+/transform/snowflake-dbt/models/snowflake/          @m_walker       @kathleentam    @jjstark
+/transform/snowflake-dbt/models/snowplow/           @tayloramurphy  @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/snowplow_combined/  @tayloramurphy  @eli_kastelein  @mpeychet_
+
+/transform/snowflake-dbt/models/sources/dbt         @m_walker    @jjstark
+/transform/snowflake-dbt/models/staging/dbt         @m_walker    @jjstark
+
+/transform/snowflake-dbt/models/sources/google_analytics_360/       @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/staging/google_analytics_360/       @eli_kastelein  @mpeychet_
+
+/transform/snowflake-dbt/models/sources/license/    @eli_kastelein  @mpeychet_  
+/transform/snowflake-dbt/models/staging/license/    @eli_kastelein  @mpeychet_
+
+/transform/snowflake-dbt/models/sources/qualtrics   @m_walker    @jjstark
+/transform/snowflake-dbt/models/staging/qualtrics   @m_walker    @jjstark
+
+/transform/snowflake-dbt/models/sources/sfdc/       @derekatwood    @kathleentam    @jeanpeguero
+/transform/snowflake-dbt/models/staging/sfdc/       @derekatwood    @kathleentam    @jeanpeguero
+/transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_		  @m_walker
+/transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam	  @jjstark
+/transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_		  @m_walker
+/transform/snowflake-dbt/models/greenhouse/         @pluthra        @kathleentam	  @msendal
 /transform/snowflake-dbt/models/netsuite/           @iweeks         @kathleentam
 /transform/snowflake-dbt/models/sfdc/               @derekatwood    @kathleentam    @jeanpeguero	@jjstark 
 /transform/snowflake-dbt/models/smau_events/        @eli_kastelein  @mpeychet_		
@@ -78,12 +110,24 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/models/sources/zendesk     @derekatwood    @ken_aguilar
 /transform/snowflake-dbt/models/staging/zendesk     @derekatwood    @ken_aguilar
 
-/transform/snowflake-dbt/models/sources/zuora       @iweeks         @derekatwood    @msendal  
+/transform/snowflake-dbt/models/sources/zuora       @iweeks         @derekatwood  @msendal  
 /transform/snowflake-dbt/models/staging/zuora       @iweeks         @derekatwood	@msendal
 
 # ======
 # dbt data file Overwrites
 # ======
-/transform/snowflake-dbt/data/                      @jjstark        @kathleentam 
-/transform/snowflake-dbt/data/cost_center_division_department_mapping.csv           @iweeks
-/transform/snowflake-dbt/data/projects_part_of_product.csv @clefelhocz1
+/transform/snowflake-dbt/data/cost_center_division_department_mapping.csv               @iweeks     @kathleentam
+/transform/snowflake-dbt/data/engineering_productivity_metrics_projects_to_include.csv  @m_walker   @kathleentam    @tayloramurphy 
+/transform/snowflake-dbt/data/excluded.csv                                              @jjstark    @kathleentam
+transform/snowflake-dbt/data/google_analytics_custom_dimension_indexes.csv              @jjstark    @kathleentam           
+/transform/snowflake-dbt/data/handbook_file_classification_mapping.csv                  @m_walker   @kathleentam
+/transform/snowflake-dbt/data/historical_counts_maintainers_engineers.csv               @m_walker   @kathleentam    @tayloramurphy 
+/transform/snowflake-dbt/data/netsuite_expense_cost_category.csv                        @iweeks     @kathleentam
+/transform/snowflake-dbt/data/projects_part_of_product.csv                              @clefelhocz1                                    
+/transform/snowflake-dbt/data/raw_netsuite_currencies.csv                               @iweeks     @kathleentam    @tayloramurphy 
+/transform/snowflake-dbt/data/seeds.md                                                  @m_walker   @kathleentam    @tayloramurphy  @jjstark
+/transform/snowflake-dbt/data/seeds.yml                                                 @m_walker   @kathleentam    @tayloramurphy  @jjstark
+/transform/snowflake-dbt/data/snowflake_contract_rates.csv                              @jjstark    @m_walker       @tayloramurphy 
+/transform/snowflake-dbt/data/version_usage_stats_to_stage_mappings.csv                 @mpeychet_  @eli_kastelein  @kathleentam
+/transform/snowflake-dbt/data/zuora_country_geographic_region.csv                       @iweeks     @kathleentam    @tayloramurphy 
+/transform/snowflake-dbt/data/zuora_excluded_accounts.csv                               @gitlab-data
