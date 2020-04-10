@@ -93,6 +93,10 @@ WITH source AS (
       number_of_open_opportunities__c            AS count_open_opportunities,
       using_ce__c                                AS count_using_ce,
 
+      --account based marketing fields
+      abm_tier__c                                AS abm_tier__c,
+      gtm_strategy__c                            AS gtm_strategy__c,
+
       --demandbase fields
       account_list__c                            AS demandbase_account_list,
       intent__c                                  AS demandbase_intent,
