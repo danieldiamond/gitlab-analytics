@@ -54,6 +54,53 @@ models:
         - name: sourced_candidate
           description: Candidates sourced through LinkedIn.
         - name: hired_sourced_candidates  
+ 
+  - name: greenhouse_locations_cleaned_intermediate
+    description: This dbt model partitions the area column from the location application question answers to get the city, state, and country of each location.
+    columns:
+      - name: job_post_id
+      - name: application_id
+        tests:
+          - not_null
+      - name: application_answer
+        tests:
+          - not_null
+      - name: city
+        tests:
+          - not_null
+      - name: state
+        tests:
+          - not_null
+      - name: country
+        tests: 
+          - not_null  
+      - name: application_question_answer_created_at
+        tests:
+          - not_null       
+
+  - name: greenhouse_location_factors
+    description: This dbt model gives the location factor of location application question answers.
+    columns:
+      - name: job_post_id
+      - name: application_id
+        tests:
+          - not_null
+      - name: application_answer
+        tests:
+          - not_null
+      - name: city
+        tests:
+          - not_null
+      - name: state
+        tests:
+          - not_null
+      - name: country
+        tests: 
+          - not_null
+      - name: location_factor
+      - name: application_question_answer_created_at
+        tests:
+          - not_null 
 
   - name: greenhouse_stage_intermediate
     description: This data model shows all the greenhouse stages a candidate is in, and adds in additional information about the recruiting process such as source type, source name, recruiter, sourcer.
