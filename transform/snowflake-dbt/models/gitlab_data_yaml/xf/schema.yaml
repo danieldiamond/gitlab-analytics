@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: location_factors_historical_greenhouse
+    description: This dbt model partitions the area column of location_factors_yaml_historical to have the city, state, and country of each location.
+    columns:
+    - name: city
+      tests:
+        - not_null
+    - name: state
+      tests:
+        - not_null
+    - name: country
+      tests: 
+        - not_null
+    - name: location_factor
+      tests:
+        - not_null
+    - name: snapshot_date
+      tests:
+        - not_null
