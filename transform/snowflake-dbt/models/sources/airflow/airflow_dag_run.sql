@@ -8,7 +8,7 @@ WITH source AS (
     SELECT
       dag_id::VARCHAR           AS dag_id,
       execution_date::TIMESTAMP AS execution_date,
-      state::VARCHAR          AS run_state
+      state::VARCHAR            AS run_state
     FROM source
 
 )
