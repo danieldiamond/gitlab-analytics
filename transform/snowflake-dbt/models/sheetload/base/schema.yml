@@ -123,6 +123,16 @@ models:
       tests:
       - not_null
       - unique
+- name: sheetload_release_blog_posts
+  description: Information about blog post releases via [Mark Fletcher](https://gitlab.com/markglenfletcher).
+  columns:
+    - name: base_items
+    - name: bug_items
+    - name: performance_items
+    - name: release
+      tests:
+      - not_null
+      - unique
 - name: sheetload_yc_companies
   description: This is a list of YC Companies and their cohort provided by and maintained by marketing.
   columns:
@@ -207,3 +217,17 @@ models:
     - name: is_deleted
       tests: 
       - not_null
+- name: sheetload_abuse_mitigation
+  description: Abuse currently manually pulls data from Bouncer (Abuse mitigation Tool) in order to report on abusive account mitigation.
+- name: sheetload_abm_account_baselines
+  description: This is the source for ABM account data
+  columns:
+    - name: added_date
+      tests:
+        - not_null
+    - name: account_id
+      tests:
+        - not_null
+    - name: gtm_strategy
+      tests:
+        - not_null

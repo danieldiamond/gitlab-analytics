@@ -43,6 +43,11 @@ tables:
       , description
       , state_id
       , closed_at
+      , parent_id
+      , relative_position
+      , start_date_sourcing_epic_id
+      , external_key
+      , confidential
       FROM epics
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -1480,11 +1485,11 @@ tables:
       SELECT project_id
       , programming_language_id
       , share
-      , CONCAT(project_id, '_', programming_language_id) AS project_programming_language_id
       FROM repository_languages
     export_schema: 'gitlab_com'
     export_table: 'repository_languages'
     export_table_primary_key: CONCAT(project_id, '_', programming_language_id)
+    advanced_metadata: true
   releases:
     import_db: GITLAB_DB
     import_query: >

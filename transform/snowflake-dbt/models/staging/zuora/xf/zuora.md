@@ -17,7 +17,7 @@ The final WHERE filter validates that only charges that were in force at the end
 
 {% docs zuora_base_mrr_amortized %}
 
-This table amortizes the monthly charges over the time span that the rate plan charge was in effect. A rate plan charge is only in effect if it was in effect for the last day of the month. 
+This table amortizes the monthly charges over the time span that the rate plan charge was in effect. A rate plan charge is only in effect if it was in effect for the last day of the month.
 
 {% enddocs %}
 
@@ -50,6 +50,61 @@ The final select statement then allocates the trueup according to what's listed 
 
 {% enddocs %}
 
+{% docs zuora_iacv_to_arr %}
+
+This model extends `zuora_invoice_charges` to map invoiced changes to subscriptions with SFDC opportunities.
+
+`zuora_invoice_charges` is first constrained to charges with MRR > 0 and effective end dates greater than the invoice date. This provides the base set of charges for each Invoice that contribute future ARR based on the invoiced changes. Next, total charge amounts and change in TCV are aggregated for each subscription on the invoice, and joined to SFDC opportunities based on Opportunity TCV. Both approaches are necessary as multi-year deals can contain only a portion of opportunity TCV on the first invoice. Finally, additional charge metadata is layered in to compare the start and end dates appearing on the invoice to the known final start and end dates for each charge.
+
+In sum, this model can be used to compare the IACV associated with bookings (opportunities) to the resulting changes to subscriptions, their contribution to ARR, and the time periods in which these changes take effect.
+
+{% enddocs %}
+
+{% docs zuora_invoice_charges %}
+
+This model constructs a history of all changes to charges on subscriptions by leveraging Invoice information.
+
+Similar to the relationship between Subscription Name and Subscription ID,  Charge Number is the unique identifier for a Rate Plan Charge that is inclusive of multiple unique Rate Plan Charge IDs. Renewals, increases/decreases in seat count, and changes to effective start and end dates are all tracked against the Charge Number, with specific changes incrementing the Rate Plan Charge ID.
+
+Again similar to the relationship between Subscription Name and Subscription Version, each time a Rate Plan Charge is amended a new version will be created. However, a new Rate Plan Charge ID does not necessitate a new Rate Plan Charge Version, such as when additional charges are added to a rate plan or terms and conditions change.
+
+Finally, Segment is the key identifier for when the dollar amount on a Charge Number was changed.
+
+Putting it all together, the end result is a model with one row for every Charge Number, Segment, and Version of Rate Plan Charges that were invoiced, along with associated metadata from the RatePlanCharge, InvoiceItem, and Invoice objects.
+
+{% enddocs %}
+
+{% docs zuora_invoice_charges_mrr_amortized %}
+
+This model calculates MRR based on subscription charges that have been invoiced to the customer. The MRR calculated from invoices should match the MRR found from the subscription charges only and any variances should be investigated. The Zuora rules engine calculates MRR using charges with effective start dates less than or equal to the first day of the month and with effective end dates greater than the first day of the month. The MRR total on the first of the month is considered the MRR from the prior month end.
+
+The below query will pull MRR by month. You can add additional dimensions to the query to build out your analysis.
+
+SELECT
+  mrr_month,
+  SUM(mrr)  mrr
+FROM "ANALYTICS"."ANALYTICS"."ZUORA_INVOICE_CHARGES_MRR_AMORTIZED"
+WHERE mrr_month < DATE_TRUNC('month',CURRENT_DATE)
+GROUP BY 1
+ORDER BY 1 DESC
+
+{% enddocs %}
+
+{% docs zuora_monthly_recurring_revenue %}
+
+This model is built using the same logic as the Zuora UI out of the box MRR Trend Report. The report looks at the charges associated with subscriptions, along with their effective dates and subscription statuses, and calculates MRR. The Zuora rules engine calculates MRR using charges with effective start dates less than or equal to the first day of the month and with effective end dates greater than the first day of the month. The MRR total on the first of the month is considered the MRR from the prior month end.  
+
+The below query will pull MRR by month. You can add additional dimensions to the query to build out your analysis.
+
+SELECT
+  mrr_month,
+  SUM(mrr)  AS mrr
+FROM "ANALYTICS"."ANALYTICS"."ZUORA_MONTHLY_RECURRING_REVENUE"
+WHERE mrr_month < DATE_TRUNC('month',CURRENT_DATE)
+GROUP BY 1
+ORDER BY 1 DESC
+
+{% enddocs %}
 
 {% docs zuora_mrr_totals %}
 
@@ -199,7 +254,7 @@ More explicitly, this model shows what was or will be the active subscription ve
 
 From this model, we can calculate renewal rates by product category. We can also start estimating IACV, Renewal ACV and other metrics for the Growth team. A `subscription_period` is considered as renewed if a newer valid subscription period has been created or if a `zuora_renewal_subscription_name_slugify` has been linked to this version (more documentation about [the process here especially the section Linking Renewal Subscriptions](https://about.gitlab.com/handbook/finance/accounting/)) (in this model, the `is_renewed` flag will be turned to `TRUE`).
 
-The model has a `has_auto_renew_on` column that explicitly defines if the auto-renew setting was turned on before the end of the term of the period. 
+The model has a `has_auto_renew_on` column that explicitly defines if the auto-renew setting was turned on before the end of the term of the period.
 
 #### Context About Subscription Versions
 

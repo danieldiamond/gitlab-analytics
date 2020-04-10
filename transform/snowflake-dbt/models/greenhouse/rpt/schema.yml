@@ -52,7 +52,7 @@ models:
       description: The report currently pulls for candidates expected to start in North America, and is our start case to determine if the report helps with onboarding.
       tests:
         - accepted_values: 
-            values: ['North America']
+            values: ['North America', 'South America', 'EMEA','Asia Pacific', 'Americas']
     - name: candidates_estimated_to_start
       description: This is a total count of all the candidates we have sent an offer to.
     - name: accepted_offers_to_start

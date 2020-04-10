@@ -144,6 +144,10 @@ models:
       license:
         materialized: view
 
+      sfdc:
+        xf:
+          schema: analytics
+
       version:
         tags: ["product"]
         xf:
@@ -171,10 +175,6 @@ models:
     engineering:
       materialized: table
 
-    finance:
-      base:
-        materialized: table
-        
     gitlab_data_yaml:
       materialized: table
 
@@ -225,12 +225,6 @@ models:
 
     retention:
       materialized: table
-
-    sfdc:
-      base:
-        schema: staging
-      xf:
-        materialized: table
 
     smau_events:
       tags: ["product"]
