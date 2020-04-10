@@ -5,7 +5,8 @@ WITH zuora_mrr_amortized AS (
 
 ), sfdc_accounts_xf AS (
 
-    SELECT * FROM {{ ref('sfdc_accounts_xf') }}
+    SELECT *
+    FROM {{ ref('sfdc_accounts_xf') }}
 
 ), sfdc_deleted_accounts AS (
 
@@ -35,6 +36,7 @@ WITH zuora_mrr_amortized AS (
     SELECT
       final_join_to_sfdc.mrr_month,
       final_join_to_sfdc.account_id                     AS zuora_account_id,
+      final_join_to_sfdc.country                        AS zuora_sold_to_country,
       final_join_to_sfdc.account_name                   AS zuora_account_name,
       final_join_to_sfdc.account_number                 AS zuora_account_number,
       final_join_to_sfdc.subscription_id,
@@ -49,6 +51,7 @@ WITH zuora_mrr_amortized AS (
       final_join_to_sfdc.rate_plan_name,
       final_join_to_sfdc.product_category,
       final_join_to_sfdc.delivery,
+      final_join_to_sfdc.service_type,
       final_join_to_sfdc.unit_of_measure,
       final_join_to_sfdc.mrr,
       final_join_to_sfdc.quantity,

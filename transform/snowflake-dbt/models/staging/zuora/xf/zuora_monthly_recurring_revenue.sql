@@ -83,6 +83,7 @@ WITH date_table AS (
     LEFT JOIN zuora_product
       ON zuora_product.product_id = zuora_rpc.product_id
     WHERE zuora_subscription.subscription_status NOT IN ('Draft','Expired')
+      AND mrr > 0
 
 ), month_base_mrr AS (
 
@@ -94,9 +95,16 @@ WITH date_table AS (
       account_id,
       subscription_id,
       subscription_name_slugify,
+      effective_start_month,
+      effective_end_month,
       country,
       {{product_category('rate_plan_name')}},
       {{ delivery('product_category')}},
+      CASE
+        WHEN lower(rate_plan_name) like '%support%'
+          THEN 'Support Only'
+        ELSE 'Full Service'
+      END                                       AS service_type,
       product_name,
       rate_plan_name,
       rate_plan_charge_name,
@@ -107,7 +115,7 @@ WITH date_table AS (
     INNER JOIN date_table
       ON base_mrr.effective_start_date <= date_table.date_actual
       AND (base_mrr.effective_end_date > date_table.date_actual OR base_mrr.effective_end_date IS NULL)
-    {{ dbt_utils.group_by(n=14) }}
+    {{ dbt_utils.group_by(n=17) }}
 
 ), current_mrr AS (
 
@@ -138,10 +146,13 @@ SELECT
   crm_id,
   month_base_mrr.subscription_id,
   month_base_mrr.subscription_name_slugify,
+  effective_start_month,
+  effective_end_month,
   country,
   product_category,
   delivery,
   product_name,
+  service_type,
   rate_plan_name,
   month_base_mrr.rate_plan_charge_name,
   unit_of_measure,
@@ -152,4 +163,4 @@ SELECT
 FROM month_base_mrr
 LEFT JOIN current_mrr
   ON month_base_mrr.subscription_id = current_mrr.subscription_id
-{{ dbt_utils.group_by(n=14) }}
+{{ dbt_utils.group_by(n=17) }}
