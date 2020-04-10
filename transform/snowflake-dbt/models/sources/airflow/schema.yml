@@ -25,7 +25,7 @@ models:
         - name: execution_date
           tests:
             - not_null
-        - name: state
+        - name: run_state
           tests:
             - not_null
         

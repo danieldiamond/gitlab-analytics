@@ -102,6 +102,11 @@ models:
 
     # Dimensional Structure
     sources:
+    
+      airflow:
+        materialized: table
+        schema: airflow
+
       dbt:
         materialized: table
         schema: dbt
