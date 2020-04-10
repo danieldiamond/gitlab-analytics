@@ -171,7 +171,6 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
-            - bamboohr
             - boneyard
             - covid19
             - dbt_analytics
@@ -859,6 +858,7 @@ roles:
     - cmestel:
         member_of:
             - analyst_finance
+            - bamboohr
         warehouses:
             - analyst_xs
 
@@ -951,6 +951,7 @@ roles:
     - fkurniadi:
         member_of:
             - analyst_finance
+            - bamboohr
         warehouses:
             - analyst_xs        
 
@@ -1203,6 +1204,7 @@ roles:
     - wwright:
         member_of:
             - analyst_finance
+            - bamboohr
         warehouses:
             - analyst_xs
             - reporting
