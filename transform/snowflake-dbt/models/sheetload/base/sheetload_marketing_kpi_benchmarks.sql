@@ -41,7 +41,22 @@ WITH source AS (
       NULLIF("SDR_IACV_SMB_Target", '')::FLOAT        AS sdr_iacv_smb_target,
       NULLIF("ASP_Large_Target", '')::FLOAT           AS asp_large_target,
       NULLIF("ASP_MM_Target", '')::FLOAT              AS asp_mm_target,
-      NULLIF("ASP_SMB_Target", '')::FLOAT             AS asp_smb_target
+      NULLIF("ASP_SMB_Target", '')::FLOAT             AS asp_smb_target,
+      NULLIF("PipeCreated_Large_Target", '')::FLOAT   AS pipecreated_large_target,
+      NULLIF("PipeCreated_MM_Target", '')::FLOAT      AS pipecreated_mm_target,
+      NULLIF("PipeCreated_SMB_Target", '')::FLOAT     AS pipecreated_smb_target,
+      NULLIF("SDR_PipeCreated_Large_Target", '')::FLOAT
+                                                      AS sdr_pipecreated_large_target,
+      NULLIF("SDR_PipeCreated_MM_Target", '')::FLOAT  AS sdr_pipecreated_mm_target,
+      NULLIF("SDR_PipeCreated_SMB_Target", '')::FLOAT AS sdr_pipecreated_smb_target,
+      NULLIF("ExpectedPipe_Large_Target", '')::FLOAT  AS expectedpipe_large_target,
+      NULLIF("ExpectedPipe_MM_Target", '')::FLOAT     AS expectedpipe_mm_target,
+      NULLIF("ExpectedPipe_SMB_Target", '')::FLOAT    AS expectedpipe_smb_target,
+      NULLIF("SDR_ExpectedPipe_Large_Target", '')::FLOAT
+                                                      AS sdr_expectedpipe_large_target,
+      NULLIF("SDR_ExpectedPipe_MM_Target", '')::FLOAT AS sdr_expectedpipe_mm_target,
+      NULLIF("SDR_ExpectedPipe_SMB_Target", '')::FLOAT
+                                                      AS sdr_expectedpipe_smb_target
 
       
     FROM source
