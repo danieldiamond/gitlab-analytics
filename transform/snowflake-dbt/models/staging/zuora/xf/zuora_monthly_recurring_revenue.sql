@@ -83,7 +83,6 @@ WITH date_table AS (
     LEFT JOIN zuora_product
       ON zuora_product.product_id = zuora_rpc.product_id
     WHERE zuora_subscription.subscription_status NOT IN ('Draft','Expired')
-      AND mrr > 0
 
 ), month_base_mrr AS (
 
@@ -163,4 +162,5 @@ SELECT
 FROM month_base_mrr
 LEFT JOIN current_mrr
   ON month_base_mrr.subscription_id = current_mrr.subscription_id
+WHERE mrr != 0
 {{ dbt_utils.group_by(n=17) }}

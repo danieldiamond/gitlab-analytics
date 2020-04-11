@@ -53,7 +53,7 @@ WITH date_table AS (
 
       --date info
       DATE_TRUNC('month', zuora_subscription.subscription_start_date::DATE)   AS sub_start_month,
-      DATE_TRUNC('month',zuora_subscription.subscription_end_date::DATE)      AS sub_end_month,
+      DATE_TRUNC('month', zuora_subscription.subscription_end_date::DATE)     AS sub_end_month,
       DATE_TRUNC('month', zuora_invoice_charges.effective_start_date::DATE)   AS effective_start_month,
       DATE_TRUNC('month', zuora_invoice_charges.effective_end_date::DATE)     AS effective_end_month,
       zuora_invoice_charges.effective_start_date,
@@ -66,7 +66,6 @@ WITH date_table AS (
     LEFT JOIN zuora_contact
       ON COALESCE(zuora_account.sold_to_contact_id, zuora_account.bill_to_contact_id) = zuora_contact.contact_id
     WHERE zuora_invoice_charges.is_last_segment_version = TRUE
-      AND mrr > 0
 
 ), month_base_mrr AS (
 
@@ -130,4 +129,5 @@ SELECT
   mrr,
   quantity
 FROM month_base_mrr
+WHERE mrr != 0
 ORDER BY mrr_month DESC, account_name
