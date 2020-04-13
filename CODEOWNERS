@@ -78,8 +78,8 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/models/sources/dbt         @m_walker    @jjstark
 /transform/snowflake-dbt/models/staging/dbt         @m_walker    @jjstark
 
-/transform/snowflake-dbt/models/sources/google_analytics_360/       @eli_kastelein  @mpeychet_
-/transform/snowflake-dbt/models/staging/google_analytics_360/       @eli_kastelein  @mpeychet_
+/transform/snowflake-dbt/models/sources/google_analytics_360/       @eli_kastelein  @mpeychet_	@jjstark	@jeanpeguero
+/transform/snowflake-dbt/models/staging/google_analytics_360/       @eli_kastelein  @mpeychet_	@jjstark	@jeanpeguero
 
 /transform/snowflake-dbt/models/sources/license/    @eli_kastelein  @mpeychet_  
 /transform/snowflake-dbt/models/staging/license/    @eli_kastelein  @mpeychet_
