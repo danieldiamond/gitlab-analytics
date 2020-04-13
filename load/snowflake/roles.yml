@@ -867,6 +867,11 @@ roles:
             - analyst_core
         warehouses:
             - analyst_xs
+    - dknox:
+        member_of:
+            - analyst_engineering
+        warehouses:
+            - analyst_xs
 
     - dtang:
         member_of:
@@ -1254,7 +1259,12 @@ users:
         can_login: yes
         member_of:
             - datwood
-
+    
+    - dknox:
+        can_login: yes
+        member_of:
+            - dknox
+    
     - dtang:
         can_login: yes
         member_of:
