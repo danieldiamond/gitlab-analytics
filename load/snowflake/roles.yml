@@ -576,16 +576,19 @@ roles:
                     - raw
             schemas:
                 read:
+                    - analytics.airflow
                     - analytics.analytics
                     - analytics.analytics_staging
                     - analytics.analytics_meta
                     - raw.dbt
             tables:
                 read:
+                    - analytics.airflow.*
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
                     - raw.dbt.*
+
 
     - dbt_analytics_sensitive:
         warehouses:
