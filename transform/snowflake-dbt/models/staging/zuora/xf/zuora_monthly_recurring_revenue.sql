@@ -83,6 +83,7 @@ WITH date_table AS (
     LEFT JOIN zuora_product
       ON zuora_product.product_id = zuora_rpc.product_id
     WHERE zuora_subscription.subscription_status NOT IN ('Draft','Expired')
+      AND mrr IS NOT NULL
 
 ), month_base_mrr AS (
 

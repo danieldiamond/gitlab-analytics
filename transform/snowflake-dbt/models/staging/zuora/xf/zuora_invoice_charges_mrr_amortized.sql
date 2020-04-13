@@ -66,6 +66,7 @@ WITH date_table AS (
     LEFT JOIN zuora_contact
       ON COALESCE(zuora_account.sold_to_contact_id, zuora_account.bill_to_contact_id) = zuora_contact.contact_id
     WHERE zuora_invoice_charges.is_last_segment_version = TRUE
+      AND mrr IS NOT NULL
 
 ), month_base_mrr AS (
 
