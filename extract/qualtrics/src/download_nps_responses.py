@@ -15,7 +15,7 @@ if __name__ == "__main__":
     client = QualtricsClient(
         config_dict["QUALTRICS_API_TOKEN"], config_dict["QUALTRICS_DATA_CENTER"]
     )
-    survey_id = "SV_exKOCM6Cwj2dXr7"
+    survey_id = config_dict["QUALTRICS_NPS_ID"]
     POOL_ID = config_dict["QUALTRICS_POOL_ID"]
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
