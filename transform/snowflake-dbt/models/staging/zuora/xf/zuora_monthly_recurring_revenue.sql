@@ -67,8 +67,10 @@ WITH date_table AS (
       zuora_product.product_name,
 
       --date info
-      date_trunc('month', zuora_rpc.effective_start_date::DATE)         AS effective_start_month,
-      date_trunc('month', zuora_rpc.effective_end_date::DATE)           AS effective_end_month,
+      date_trunc('month', zuora_subscription.subscription_start_date::DATE)     AS subscription_start_month,
+      date_trunc('month', zuora_subscription.subscription_end_date::DATE)       AS subscription_end_month,
+      date_trunc('month', zuora_rpc.effective_start_date::DATE)                 AS effective_start_month,
+      date_trunc('month', zuora_rpc.effective_end_date::DATE)                   AS effective_end_month,
       zuora_rpc.effective_start_date,
       zuora_rpc.effective_end_date
     FROM zuora_accts
@@ -95,6 +97,8 @@ WITH date_table AS (
       account_id,
       subscription_id,
       subscription_name_slugify,
+      subscription_start_month,
+      subscription_end_month,
       effective_start_month,
       effective_end_month,
       country,
@@ -115,7 +119,7 @@ WITH date_table AS (
     INNER JOIN date_table
       ON base_mrr.effective_start_date <= date_table.date_actual
       AND (base_mrr.effective_end_date > date_table.date_actual OR base_mrr.effective_end_date IS NULL)
-    {{ dbt_utils.group_by(n=17) }}
+    {{ dbt_utils.group_by(n=19) }}
 
 ), current_mrr AS (
 
@@ -146,6 +150,8 @@ SELECT
   crm_id,
   month_base_mrr.subscription_id,
   month_base_mrr.subscription_name_slugify,
+  subscription_start_month,
+  subscription_end_month,
   effective_start_month,
   effective_end_month,
   country,
@@ -163,4 +169,4 @@ SELECT
 FROM month_base_mrr
 LEFT JOIN current_mrr
   ON month_base_mrr.subscription_id = current_mrr.subscription_id
-{{ dbt_utils.group_by(n=17) }}
+{{ dbt_utils.group_by(n=19) }}
