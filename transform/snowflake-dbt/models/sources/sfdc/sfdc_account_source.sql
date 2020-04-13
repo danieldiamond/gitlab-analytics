@@ -94,8 +94,8 @@ WITH source AS (
       using_ce__c                                AS count_using_ce,
 
       --account based marketing fields
-      abm_tier__c                                AS abm_tier__c,
-      gtm_strategy__c                            AS gtm_strategy__c,
+      abm_tier__c                                AS abm_tier,
+      gtm_strategy__c                            AS gtm_strategy,
 
       --demandbase fields
       account_list__c                            AS demandbase_account_list,
