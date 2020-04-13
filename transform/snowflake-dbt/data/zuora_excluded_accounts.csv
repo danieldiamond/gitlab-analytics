@@ -28,6 +28,6 @@ account_id,is_permanently_excluded,description
 2c92a0ff6446d76201644739829d1e33,TRUE,Test DE
 2c92a0ff6c9471e4016c96ff764a4d77,TRUE,j victim
 2c92a0ff6c9471e5016c96b4768e5d50,TRUE,sdas
-2c92a0ff70ec59d10170f363862b6487,FALSE,hycloud duplicate 1
-2c92a00d6ff0e970016ff29e96b86641,FALSE,hycloud duplicate 2
-2c92a0087129e45d017136b7d0ce707b,TRUE,missing crm_id
+2c92a0ff70ec59d10170f363862b6487,FALSE,duplicate 1.1
+2c92a00d6ff0e970016ff29e96b86641,FALSE,duplicate 1.2
+2c92a0087129e45d017136b7d0ce707b,FALSE,missing crm_id
