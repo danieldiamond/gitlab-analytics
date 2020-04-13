@@ -33,7 +33,7 @@ WITH source AS (
       relative_position::INTEGER                    AS relative_position,
       start_date_sourcing_epic_id::INTEGER          AS start_date_sourcing_epic_id,
       external_key::VARCHAR                         AS external_key,
-      confidential                                  AS is_confidential,
+      confidential::BOOLEAN                         AS is_confidential,
       CASE
         WHEN state_id = 1 THEN 'opened'
         WHEN state_id = 2 THEN 'closed'
