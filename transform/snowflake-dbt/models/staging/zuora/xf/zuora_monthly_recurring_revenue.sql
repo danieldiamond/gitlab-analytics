@@ -162,5 +162,4 @@ SELECT
 FROM month_base_mrr
 LEFT JOIN current_mrr
   ON month_base_mrr.subscription_id = current_mrr.subscription_id
-WHERE mrr != 0
 {{ dbt_utils.group_by(n=17) }}

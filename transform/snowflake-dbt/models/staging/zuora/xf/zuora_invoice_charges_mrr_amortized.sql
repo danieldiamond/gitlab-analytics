@@ -129,5 +129,4 @@ SELECT
   mrr,
   quantity
 FROM month_base_mrr
-WHERE mrr != 0
 ORDER BY mrr_month DESC, account_name
