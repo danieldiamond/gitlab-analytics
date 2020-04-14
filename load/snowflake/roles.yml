@@ -855,6 +855,12 @@ roles:
         warehouses:
             - analyst_xs
 
+    - cmccarty:
+        member_of:
+            - securityadmin
+        warehouses:
+            - admin
+
     - cmestel:
         member_of:
             - analyst_finance
@@ -1249,6 +1255,10 @@ users:
         can_login: yes
         member_of:
             - aakgun
+    - cmccarty:
+        can_login: yes
+        member_of:
+            - cmccarty
 
     - cmestel:
         can_login: yes
