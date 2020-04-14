@@ -590,7 +590,6 @@ roles:
                     - analytics.analytics_meta.*
                     - raw.dbt.*
 
-
     - dbt_analytics_sensitive:
         warehouses:
             - analyst_xs
