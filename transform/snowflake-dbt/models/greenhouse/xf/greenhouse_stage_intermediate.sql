@@ -98,17 +98,17 @@ WITH stages AS (
         SELECT 
         application_id,
         candidate_id,
-        MIN(stage_entered_on)                                       AS min_stage_entered_on,
-        MAX(stage_exited_on)                                        AS max_stage_exited_on,
-        SUM(IFF(application_stage = 'Application Submitted',1,0))   AS hit_application_submitted,
-        SUM(IFF(application_stage = 'Application Review',1,0))      AS hit_application_review,
-        SUM(IFF(application_stage = 'Assessment',1,0))              AS hit_assessment,
-        SUM(IFF(application_stage = 'Screen',1,0))                  AS hit_screening,
-        SUM(IFF(application_stage = 'Team Interview',1,0))          AS hit_team_interview,
-        SUM(IFF(application_stage = 'Reference Check',1,0))         AS hit_reference_check,
-        SUM(IFF(application_stage = 'Offer',1,0))                   AS hit_offer,
-        SUM(IFF(application_stage = 'Hired',1,0))                   AS hit_hired,
-        SUM(IFF(application_stage = 'Rejected',1,0))                AS hit_rejected
+        MIN(stage_entered_on)                                                       AS min_stage_entered_on,
+        MAX(stage_exited_on)                                                        AS max_stage_exited_on,
+        SUM(IFF(application_stage = 'Application Submitted',1,0))                   AS hit_application_submitted,
+        SUM(IFF(application_stage = 'Application Review',1,0))                      AS hit_application_review,
+        SUM(IFF(application_stage = 'Assessment',1,0))                              AS hit_assessment,
+        SUM(IFF(application_stage = 'Screen',1,0))                                  AS hit_screening,
+        SUM(IFF(application_stage = 'Team Interview - Face to Face',1,0))           AS hit_team_interview,
+        SUM(IFF(application_stage = 'Reference Check',1,0))                         AS hit_reference_check,
+        SUM(IFF(application_stage = 'Offer',1,0))                                   AS hit_offer,
+        SUM(IFF(application_stage = 'Hired',1,0))                                   AS hit_hired,
+        SUM(IFF(application_stage = 'Rejected',1,0))                                AS hit_rejected
         FROM all_stages
         GROUP BY 1,2
         
