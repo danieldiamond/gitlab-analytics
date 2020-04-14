@@ -451,9 +451,12 @@ roles:
                     - analytics
             schemas:
                 read:
+                    - analytics.airflow
                     - analytics.covid19
             tables:
                 read:
+                    - analytics.airflow.airflow_dag
+                    - analytics.airflow.airflow_dag_run
                     - analytics.covid19.covid19_cases
 
     - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema
@@ -572,18 +575,15 @@ roles:
         privileges:
             databases:
                 read:
-                    - analytics
                     - raw
             schemas:
                 read:
-                    - analytics.airflow
                     - analytics.analytics
                     - analytics.analytics_staging
                     - analytics.analytics_meta
                     - raw.dbt
             tables:
                 read:
-                    - analytics.airflow.*
                     - analytics.analytics.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
