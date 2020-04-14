@@ -1,0 +1,41 @@
+{{ config({
+    "schema": "sensitive"
+    })
+}}
+WITH responses AS (
+
+    SELECT *
+    FROM {{ ref('qualtrics_nps_survey_responses') }}
+
+), questions AS (
+
+    SELECT 
+      *,
+      IFNULL(answer_choices[0]['1']['TextEntry'] = 'on', IFNULL(ARRAY_SIZE(answer_choices) = 0, true)) AS is_free_text
+    FROM {{ ref('qualtrics_question') }}
+
+), revised_question_ids AS (
+    
+    SELECT
+      question_description,
+      CASE WHEN is_free_text THEN question_id || '_TEXT' ELSE question_id END AS question_id
+    FROM questions
+
+), parsed_out_qas AS (
+
+    SELECT 
+      response_id,
+      question_id,
+      question_description,
+      GET(response_values, question_id)               AS question_response,
+      response_values['distributionChannel']::VARCHAR AS distribution_channel,
+      response_values['finished'] = 1                 AS finished_survey,
+      response_values['recordedDate']::TIMESTAMP      AS response_recorded_at,
+      response_values['userLanguage']::VARCHAR        AS user_language
+    FROM revised_question_ids 
+    INNER JOIN responses
+    WHERE GET(response_values, question_id) IS NOT NULL
+)
+
+SELECT *
+FROM parsed_out_qas
