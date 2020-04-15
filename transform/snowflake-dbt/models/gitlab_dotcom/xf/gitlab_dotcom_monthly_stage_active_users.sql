@@ -61,7 +61,7 @@ INNER JOIN gitlab_dotcom_usage_data_events
   ON gitlab_dotcom_usage_data_events.event_created_at BETWEEN DATEADD('day', -28, date_details.date_day) AND date_day 
 LEFT JOIN gitlab_subscriptions
   ON gitlab_dotcom_usage_data_events.namespace_id = gitlab_subscriptions.namespace_id
-  AND smau_month BETWEEN gitlab_subscriptions.valid_from
+  AND date_day BETWEEN gitlab_subscriptions.valid_from
   AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
 LEFT JOIN plans
   ON gitlab_subscriptions.plan_id = plans.plan_id
