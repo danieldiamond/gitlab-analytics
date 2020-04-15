@@ -8,17 +8,6 @@ models:
           - name: ping_type
             description: an instance checked for new version or send a usage ping
 
-    - name: version_latest_version_ping_per_host_and_month
-      description: This model includes only the lastest version ping for every host for each month in which they sent a version ping.
-      columns:
-          - name: ping_id
-            tests:
-                - not_null
-                - unique
-          - name: host_id
-            tests:
-                - not_null
-
     - name: version_releases
       description: This model represents the different minor (X.y) versions released at GitLab.
       columns:
