@@ -34,7 +34,7 @@ WITH responses AS (
       response_values['userLanguage']::VARCHAR        AS user_language
     FROM revised_question_ids 
     INNER JOIN responses
-    WHERE GET(response_values, question_id) IS NOT NULL
+    ON GET(response_values, question_id) IS NOT NULL
 )
 
 SELECT *
