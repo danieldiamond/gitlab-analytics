@@ -11,7 +11,7 @@ WITH responses AS (
 
     SELECT 
       *,
-      IFNULL(answer_choices[0]['1']['TextEntry'] = 'on', IFNULL(ARRAY_SIZE(answer_choices) = 0, true)) AS is_free_text
+      IFNULL(answer_choices[0]['1']['TextEntry'] = 'on', IFNULL(ARRAY_SIZE(answer_choices) = 0, TRUE)) AS is_free_text
     FROM {{ ref('qualtrics_question') }}
 
 ), revised_question_ids AS (
