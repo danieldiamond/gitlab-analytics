@@ -27,11 +27,11 @@ WITH responses AS (
       response_id,
       question_id,
       question_description,
-      GET(response_values, question_id)               AS question_response,
-      response_values['distributionChannel']::VARCHAR AS distribution_channel,
+      GET(response_values, question_id)                 AS question_response,
+      response_values['distributionChannel']::VARCHAR   AS distribution_channel,
       IFF(response_values['finished'] = 1, True, False) AS has_finished_survey,
-      response_values['recordedDate']::TIMESTAMP      AS response_recorded_at,
-      response_values['userLanguage']::VARCHAR        AS user_language
+      response_values['recordedDate']::TIMESTAMP        AS response_recorded_at,
+      response_values['userLanguage']::VARCHAR          AS user_language
     FROM revised_question_ids 
     INNER JOIN responses
     ON GET(response_values, question_id) IS NOT NULL

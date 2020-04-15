@@ -17,7 +17,7 @@ models:
       description: Answers to various nps survey questions joined with various information about the user and their response.
       columns:
         - name: distribution_channel
-        - name: finished_survey
+        - name: has_finished_survey
           tests:
             - not_null
         - name: question_description
