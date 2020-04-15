@@ -140,6 +140,8 @@ roles:
             - license_db
             - postgres_pipeline
             - netsuite
+            - qualtrics
+            - qualtrics_sensitive
             - salesforce
             - sheetload
             - snapshots
@@ -705,6 +707,37 @@ roles:
             tables:
                 read:
                     - raw.tap_postgres.*  
+
+    - qualtrics:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.qualtrics
+            tables:
+                read:
+                    - analytics.qualtrics.*
+    
+    - qualtrics_sensitive:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - analytics
+                    - raw
+            schemas:
+                read:
+                    - analytics.analytics_sensitive
+                    - raw.qualtrics
+            tables:
+                read:
+                    - analytics.analytics_sensitive.qualtrics_*
+                    - raw.qualtrics.*
 
     - salesforce:
         warehouses:
