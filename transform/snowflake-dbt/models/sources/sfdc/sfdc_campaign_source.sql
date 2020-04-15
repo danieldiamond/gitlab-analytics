@@ -23,6 +23,8 @@ WITH source AS (
 
         --info
         description                                                         AS description,
+        region__c                                                           AS region,
+        sub_region__c                                                       AS sub_region,
 
         --projections
         budgetedcost                                                        AS budgeted_cost,
