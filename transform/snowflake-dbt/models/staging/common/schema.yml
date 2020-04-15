@@ -4,6 +4,8 @@ models:
   - name: dim_accounts
     description: "Dimension table representing each individual account with details of person to bill for the account. Excludes deleted and test accounts"
 
+  - name: dim_customers
+
   - name: dim_dates
 
   - name: dim_subscriptions
