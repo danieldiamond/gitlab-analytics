@@ -29,8 +29,8 @@ SELECT
   DATEADD('month', -1, date_day)                  AS smau_month,
   
   -- ids 
-  user_id,
-  namespace_id,
+  gitlab_dotcom_usage_data_events.user_id,
+  gitlab_dotcom_usage_data_events.namespace_id,
   
   
   -- user dimensions
