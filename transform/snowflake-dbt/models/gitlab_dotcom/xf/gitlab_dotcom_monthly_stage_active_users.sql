@@ -66,4 +66,4 @@ LEFT JOIN gitlab_subscriptions
 LEFT JOIN plans
   ON gitlab_subscriptions.plan_id = plans.plan_id
 WHERE day_of_month = 1
-GROUP BY 1,2,3,4,5,6,7,8
+GROUP BY 1,2,3,4,5,6,7,8,9,10
