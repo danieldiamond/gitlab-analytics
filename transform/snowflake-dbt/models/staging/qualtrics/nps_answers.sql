@@ -18,7 +18,7 @@ WITH responses AS (
     
     SELECT
       question_description,
-      CASE WHEN is_free_text THEN question_id || '_TEXT' ELSE question_id END AS question_id
+      IFF(is_free_text, question_id || '_TEXT', question_id) AS question_id
     FROM questions
 
 ), parsed_out_qas AS (
