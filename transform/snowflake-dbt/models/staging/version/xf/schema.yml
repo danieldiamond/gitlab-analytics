@@ -20,12 +20,10 @@ models:
             description: The `9` in 9.1.4, for example.
             tests:
               - not_null
-              - unique
           - name: minor_version
             description: The `1` in 9.1.4, for example.
             tests:
               - not_null
-              - unique
           - name: release_date
             tests:
                 - not_null

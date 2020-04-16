@@ -12,7 +12,7 @@ max_release_date AS (
 
 )
 
-/* Version releases should always have a higher max timestamp */
+/* Version releases should always have a higher max timestamp than usage pings. */
 SELECT *
 FROM max_usage_ping
   INNER JOIN max_release_date
