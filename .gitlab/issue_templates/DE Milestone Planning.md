@@ -1,5 +1,5 @@
 
-<!-- link to the milestone this issue represents -->
+<!-- link to the milestone this issue represents (it will probably be the one following the current DE Milestone)-->
 <!-- please link preceding milestone planning issue in the Linked Issues section below the description -->
 
 # Engineering Days :calendar: 
@@ -34,8 +34,8 @@ This section is for adding issues that have been prioritized by either the data 
 We calculate the velocity of our last milestone by dividing the points/weight completed by the number of engineering days that were available. **This section should be filled out by the data engineering team manager or whoever is running the planning**
 
 ## Last Milestone
-Last Milestone: <!-- link here -->
-Last Milestone Issue: <!-- link here -->
+Last Milestone: <!-- link here (it will probably be the current milestone) -->
+Last Milestone Issue: <!-- link here and also relate it in the linked issues section below-->
 * **Last milestone weight completed:** <!-- from 'Last Milestone' linked above -->
 * **Last milestone engineering days:** <!-- from 'Last Milestone Issue' linked above -->
 * **Last milestone velocity:** <!-- 'Last milestone weight completed' / 'Last milestone engineering days' -->
@@ -49,4 +49,4 @@ We assume that preceding milestone's velocity is a good predictor of the followi
 
 ---
 <!-- DO NOT EDIT BELOW THIS LINE -->
-/label ~Housekeeping ~Infrastructure
+/label ~Housekeeping ~Infrastructure ~Planning
