@@ -38,12 +38,12 @@ SELECT
     WHEN gitlab_subscriptions.is_trial
       THEN 'trial'
     ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
-  END                                                         AS plan_id_at_event_date,
+  END                                                         AS plan_id_at_smau_month_end,
   CASE
     WHEN gitlab_subscriptions.is_trial
       THEN 'trial'
     ELSE COALESCE(plans.plan_name, 'free')
-  END                                                         AS plan_name_at_event_date,
+  END                                                         AS plan_name_at_smau_month_end,
   
   -- event data
   event_name,
@@ -61,8 +61,8 @@ INNER JOIN gitlab_dotcom_usage_data_events
   ON gitlab_dotcom_usage_data_events.event_created_at BETWEEN DATEADD('day', -28, date_details.date_day) AND date_day 
 LEFT JOIN gitlab_subscriptions
   ON gitlab_dotcom_usage_data_events.namespace_id = gitlab_subscriptions.namespace_id
-  AND date_day BETWEEN gitlab_subscriptions.valid_from
-  AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
+  AND DATEADD('day', -1, date_day) BETWEEN gitlab_subscriptions.valid_from
+    AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
 LEFT JOIN plans
   ON gitlab_subscriptions.plan_id = plans.plan_id
 WHERE day_of_month = 1
