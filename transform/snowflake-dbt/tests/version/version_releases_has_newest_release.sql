@@ -13,6 +13,6 @@ max_release_date AS (
 )
 
 /* Version releases should always have a higher max timestamp */
-SELECT *
+SELECT COUNT(*)
 FROM max_usage_ping, max_release_date
 WHERE max_usage_ping.max_timestamp >= max_release_date.max_timestamp
