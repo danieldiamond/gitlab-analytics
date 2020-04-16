@@ -146,4 +146,19 @@ models:
         - name: hit_rejected 
   - name: greenhouse_stage_analysis
     description: Provides the state of all candidates in our recruiting pipeline. This model is used to understand movement through the pipeline, bottlenecks and performance. The fields are the same as greenhouse_stage_intermediate but we have removed application_id and candidate_id and changed dates to month format.
+  - name: greenhouse_location_factors_testing
+    description: This is a temporary model used to allow the data team to clean up greenhouse locations and tie them to our location yaml file. Once greenhouse_location_factors has been cleaned this model needs to be removed.
+    columns:
+        - name: application_answer
+          description: This is the answer as it appears in greenhouse.
+        - name: city
+          description: This is the cleaned city for the location answer.
+        - name: state
+          description: This is the cleaned state for the location answer.
+        - name: country
+          description: This is the cleaned country for the location answer.
+        - name: application_question_answer_created_at
+        - name: location_factor
+          description: This is the mapped location factor based on the historical yaml file. We need to go through and identify how to map for cases it is missing.
+
 
