@@ -220,10 +220,12 @@ models:
       columns:
           - name: account_number
             tests:
-                - not_null
+                - not_null:
+                    severity: warn
           - name: account_name
             tests:
-                - not_null
+                - not_null:
+                    severity: warn
           - name: rate_plan_charge_name
             tests:
                 - not_null
