@@ -2,7 +2,7 @@
 <!-- link to the milestone this issue represents -->
 <!-- please link preceding milestone planning issue in the Linked Issues section below the description -->
 
-## Engineering Days :calendar: 
+# Engineering Days :calendar: 
 Please add a number for days you'll be working this milestone. Engineers should reserve a day for each triage day and a day subtracted for meetings. Any time off should also be subtracted from this number. This means that the maximum Engineering Days a Data Engineer will ever post is 8. If you have two triage days it's 7. This section should be filled out by the data engineers themselves.
 
 - @jjstark: 
