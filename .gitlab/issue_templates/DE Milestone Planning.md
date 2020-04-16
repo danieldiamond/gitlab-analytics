@@ -18,7 +18,7 @@ Please add a number for days you'll be working this milestone. Engineers should 
 
 # Prioritized Issues :8ball: 
 
-This section is for adding issues that have been prioritized by either the data team or function groups. Prioritization should be discussed in the comments. This section should be filled out by data engineers. If you would like to have an issue added to this section please comment on this issue and tag the data engineer you work with. If you're not sure which data engineer you're working with you can tag @jjstark. 
+This section is for adding issues that have been prioritized by either the data team or function groups. Prioritization should be discussed in the comments. **This section should be filled out by data engineers.** If you would like to have an issue added to this section please comment on this issue and tag the data engineer you work with. If you're not sure which data engineer you're working with you can tag @jjstark. 
 
 *this section is not meant to be a complete list of issues that will be completed or addressed on a milestone, but rather represent those issues that are most important and that warrant the awareness of the data engineering team and leadership.* 
 
