@@ -31,7 +31,7 @@ This section is for adding issues that have been prioritized by either the data 
 ---
 
 # Velocity and Capacity :race_car: 
-We calculate the velocity of our last milestone by dividing the points/weight completed by the number of engineering days that were available. 
+We calculate the velocity of our last milestone by dividing the points/weight completed by the number of engineering days that were available. **This section should be filled out by the data engineering team manager or whoever is running the planning**
 
 ## Last Milestone
 Last Milestone: <!-- link here -->
