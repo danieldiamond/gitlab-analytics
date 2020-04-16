@@ -18,4 +18,6 @@ sources:
     tables:
     - name: contact
     - name: distribution
+    - name: nps_survey_responses
     - name: survey
+    - name: questions

@@ -44,6 +44,7 @@ WITH source AS (
       industry                                   AS industry,
       account_tier__c                            AS account_tier,
       customer_since__c::DATE                    AS customer_since_date,
+      carr_this_account__c                       AS carr_this_account,
       carr_total__c                              AS carr_total,
       next_renewal_date__c                       AS next_renewal_date,
       license_utilization__c                     AS license_utilization,
@@ -91,6 +92,10 @@ WITH source AS (
       active_ce_users__c                         AS count_active_ce_users,
       number_of_open_opportunities__c            AS count_open_opportunities,
       using_ce__c                                AS count_using_ce,
+
+      --account based marketing fields
+      abm_tier__c                                AS abm_tier,
+      gtm_strategy__c                            AS gtm_strategy,
 
       --demandbase fields
       account_list__c                            AS demandbase_account_list,

@@ -162,3 +162,5 @@ QUALTRICS_API_TOKEN = Secret(
 )
 
 QUALTRICS_POOL_ID = Secret("env", "QUALTRICS_POOL_ID", "airflow", "QUALTRICS_POOL_ID")
+
+QUALTRICS_NPS_ID = Secret("env", "QUALTRICS_NPS_ID", "airflow", "QUALTRICS_NPS_ID")

@@ -149,5 +149,5 @@ WITH greenhouse_diversity_intermediate AS (
 )
 
 SELECT * 
-FROM final
+FROM final 
 
