@@ -68,21 +68,6 @@ models:
             tests:
                 - not_null
 
-    - name: version_usage_data_monthly_change_by_stage
-      description: '{{ doc("version_usage_data_monthly_change_by_stage") }}'
-      columns:
-          - name: created_at
-            tests:
-              - not_null
-          - name: ping_source
-            tests:
-              - not_null
-          - name: main_edition
-            description: Comes from [this section of the code](https://gitlab.com/gitlab-org/gitlab/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154)
-            tests:
-                - accepted_values:
-                    values: ['EE', 'CE']
-
     - name: version_usage_data_monthly_change
       description: '{{ doc("version_usage_data_monthly_change") }}'
       columns:
