@@ -25,7 +25,7 @@ WITH source AS (
     type::VARCHAR           AS audit_event_type,
     entity_id::INTEGER      AS entity_id,
     entity_type::VARCHAR    AS entity_type,
-    details::VARCHAR        AS audit_event_details,
+    -- details::VARCHAR        AS audit_event_details, -- contains PII
     created_at::TIMESTAMP   AS created_at,
     updated_at::TIMESTAMP   AS updated_at
 
