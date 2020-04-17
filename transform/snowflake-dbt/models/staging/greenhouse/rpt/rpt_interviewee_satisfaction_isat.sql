@@ -4,7 +4,12 @@
     })
 }}
 
-WITH interview_results AS (
+WITH greenhouse_candidate_surveys AS (
+
+    SELECT *
+    FROM {{ ref('greenhouse_candidate_surveys_source') }}
+
+), interview_results AS (
 
    SELECT 
      candidate_survey_id, 
@@ -20,7 +25,7 @@ WITH interview_results AS (
       WHEN candidate_survey_question_1 = 'Agree' THEN 4
       WHEN candidate_survey_question_1 = 'Strongly Agree' THEN 5
      ELSE NULL END AS isat_score
-   FROM {{ ref('greenhouse_candidate_surveys') }}
+   FROM greenhouse_candidate_surveys
    WHERE isat_score IS NOT NULL
    {{ dbt_utils.group_by(n=7) }}
 

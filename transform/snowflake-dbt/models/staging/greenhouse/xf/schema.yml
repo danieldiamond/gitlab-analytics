@@ -160,5 +160,8 @@ models:
         - name: application_question_answer_created_at
         - name: location_factor
           description: This is the mapped location factor based on the historical yaml file. We need to go through and identify how to map for cases it is missing.
+  - name: greenhouse_sourcer
+    description: This model is used to identify who the sourcer is for candidates. This is specific to source type = 'Prospecting'
+
 
 

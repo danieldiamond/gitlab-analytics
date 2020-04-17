@@ -119,6 +119,9 @@ models:
         materialized: table
         schema: google_analytics_360
 
+      greenhouse:
+        schema: greenhouse
+
       license:
         schema: license_db
 
@@ -149,6 +152,12 @@ models:
 
       google_analytics_360:
         schema: analytics
+
+      greenhouse:
+        xf:
+          schema: sensitive
+        rpt:
+          schema: analytics
 
       license:
         materialized: view
@@ -197,14 +206,6 @@ models:
       enabled: false
       transformed:
         materialized: table
-
-    greenhouse:
-      base:
-        schema: sensitive
-      xf:
-        schema: sensitive
-      rpt:
-        schema: analytics
 
     handbook:
         materialized: table
