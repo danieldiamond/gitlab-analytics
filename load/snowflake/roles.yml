@@ -645,9 +645,11 @@ roles:
             schemas:
                 read:
                     - raw.greenhouse
+                    - analytics.greenhouse
             tables:
                 read:
                     - raw.greenhouse.*
+                    - analytics.greenhouse.*
 
     - handbook:
         warehouses:

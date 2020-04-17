@@ -1,47 +1,47 @@
 WITH applications AS (
 
     SELECT *
-    FROM  {{ ref ('greenhouse_applications') }}
+    FROM  {{ ref ('greenhouse_applications_source') }}
 
 ), greenhouse_application_jobs AS (
 
     SELECT *
-    FROM  {{ ref ('greenhouse_applications_jobs') }}
+    FROM  {{ ref ('greenhouse_applications_jobs_source') }}
 
 ), offers AS (
 
     SELECT * 
-    FROM  {{ ref ('greenhouse_offers') }}
+    FROM  {{ ref ('greenhouse_offers_source') }}
 
 ), jobs AS (
 
     SELECT * 
-    FROM  {{ ref ('greenhouse_jobs') }}
+    FROM  {{ ref ('greenhouse_jobs_source') }}
 
 ), greenhouse_departments AS (
 
     SELECT * 
-    FROM  {{ ref ('greenhouse_departments') }}
+    FROM  {{ ref ('greenhouse_departments_source') }}
 
 ), greenhouse_sources AS (
 
     SELECT * 
-    FROM  {{ ref ('greenhouse_sources') }}
+    FROM  {{ ref ('greenhouse_sources_source') }}
 
 ), greenhouse_sourcer AS (
 
     SELECT * 
-    FROM {{ ref ('greenhouse_sourcer') }} 
+    FROM {{ ref ('greenhouse_sourcer') }}
 
 ), candidates AS (
 
     SELECT * 
-    FROM {{ ref ('greenhouse_candidates') }}  
+    FROM {{ ref ('greenhouse_candidates_source') }}
 
 ), rejection_reasons AS (
     
     SELECT * 
-    FROM {{ ref ('greenhouse_rejection_reasons') }}  
+    FROM {{ ref ('greenhouse_rejection_reasons_source') }}
 
 ), cost_center AS (
 

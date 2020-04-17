@@ -6,17 +6,17 @@ WITH employees AS (
 ), greenhouse_applications AS (
 
     SELECT * 
-    FROM {{ref('greenhouse_applications')}}
+    FROM {{ref('greenhouse_applications_source')}}
 
 ), greenhouse_openings AS (
 
     SELECT * 
-    FROM {{ref('greenhouse_openings')}}
+    FROM {{ref('greenhouse_openings_source')}}
 
 ), greenhouse_jobs AS (
 
     SELECT * 
-    FROM {{ref('greenhouse_jobs')}}
+    FROM {{ref('greenhouse_jobs_source')}}
 
  ), bamboohr_job_info AS (
 

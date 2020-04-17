@@ -1,8 +1,8 @@
 version: 2
 
 models:
-    - name: greenhouse_applications
-      description: '{{ doc("greenhouse_applications") }}'
+    - name: greenhouse_applications_source
+      description: '{{ doc("greenhouse_applications_source") }}'
       columns:
         - name: application_id
           tests:
@@ -15,12 +15,12 @@ models:
         - name: source_id
           tests:
             - relationships:
-                to: ref('greenhouse_sources')
+                to: ref('greenhouse_sources_source')
                 field: source_id
         - name: referrer_id
           tests:
             - relationships:
-                to: ref('greenhouse_referrers')
+                to: ref('greenhouse_referrers_source')
                 field: referrer_id
         - name: rejected_by_id
         - name: job_post_id
@@ -47,8 +47,8 @@ models:
         - name: last_updated_at
           tests:
             - not_null
-    - name: greenhouse_applications_jobs
-      description: '{{ doc("greenhouse_applications_jobs") }}'
+    - name: greenhouse_applications_jobs_source
+      description: '{{ doc("greenhouse_applications_jobs_source") }}'
       columns:
         - name: application_id
           tests:
@@ -56,15 +56,15 @@ models:
         - name: job_id
           tests:
             - not_null
-    - name: greenhouse_interviewers
-      description: '{{ doc("greenhouse_interviewers") }}'
+    - name: greenhouse_interviewers_source
+      description: '{{ doc("greenhouse_interviewers_source") }}'
       columns:
         - name: interviewer_name
           tests:
             - not_null
             - unique
-    - name: greenhouse_offers
-      description: '{{ doc("greenhouse_offers") }}'
+    - name: greenhouse_offers_source
+      description: '{{ doc("greenhouse_offers_source") }}'
       columns:
         - name: offer_id
           tests:
@@ -74,7 +74,7 @@ models:
           tests:
             - not_null
             - relationships:
-                to: ref('greenhouse_applications')
+                to: ref('greenhouse_applications_source')
                 field: application_id
         - name: offer_status
           tests:
@@ -87,8 +87,8 @@ models:
         - name: sent_at
         - name: resolved_at
         - name: updated_at
-    - name: greenhouse_referrers
-      description: '{{ doc("greenhouse_referrers") }}'
+    - name: greenhouse_referrers_source
+      description: '{{ doc("greenhouse_referrers_source") }}'
       columns:
         - name: referrer_id
           tests:
@@ -105,8 +105,8 @@ models:
         - name: updated_at
           tests:
             - not_null
-    - name: greenhouse_sources
-      description: '{{ doc("greenhouse_sources") }}'
+    - name: greenhouse_sources_source
+      description: '{{ doc("greenhouse_sources_source") }}'
       columns:
         - name: source_id
           tests:
@@ -127,8 +127,8 @@ models:
         - name: updated_at
           tests:
             - not_null
-    - name: greenhouse_application_custom_fields
-      description: '{{ doc("greenhouse_application_custom_fields") }}'
+    - name: greenhouse_application_custom_fields_source
+      description: '{{ doc("greenhouse_application_custom_fields_source") }}'
       columns:
         - name: application_id
           tests:
@@ -153,8 +153,8 @@ models:
         - name: application_custom_field_updated_at
           tests:
             - not_null
-    - name: greenhouse_application_question_answers
-      description: '{{ doc("greenhouse_application_question_answers") }}'
+    - name: greenhouse_application_question_answers_source
+      description: '{{ doc("greenhouse_application_question_answers_source") }}'
       columns:
         - name: job_post_id
         - name: application_id
@@ -170,8 +170,8 @@ models:
         - name: application_question_answer_updated_at
           tests:
             - not_null
-    - name: greenhouse_application_stages
-      description: '{{ doc("greenhouse_application_stages") }}'
+    - name: greenhouse_application_stages_source
+      description: '{{ doc("greenhouse_application_stages_source") }}'
       columns:
         - name: application_id
           tests:
@@ -188,8 +188,8 @@ models:
           description: This indicates whether this is a stage that every candidate must go through regardless of the job applied for.
         - name: stages_cleaned    
           description: This cleans up the stage names to link together stages that are the same in process. 
-    - name: greenhouse_approvals
-      description: '{{ doc("greenhouse_approvals") }}'
+    - name: greenhouse_approvals_source
+      description: '{{ doc("greenhouse_approvals_source") }}'
       columns:
         - name: offer_id
         - name: application_id
@@ -226,8 +226,8 @@ models:
         - name: approval_updated_at
           tests:
             - not_null
-    - name: greenhouse_attributes
-      description: '{{ doc("greenhouse_attributes") }}'
+    - name: greenhouse_attributes_source
+      description: '{{ doc("greenhouse_attributes_source") }}'
       columns:
         - name: attribute_id
           tests:
@@ -244,8 +244,8 @@ models:
             - not_null
         - name: attribute_created_at
         - name: attribute_updated_at
-    - name: greenhouse_candidate_custom_fields
-      description: '{{ doc("greenhouse_candidate_custom_fields") }}'
+    - name: greenhouse_candidate_custom_fields_source
+      description: '{{ doc("greenhouse_candidate_custom_fields_source") }}'
       columns:
         - name: candidate_id
           tests:
@@ -264,8 +264,8 @@ models:
         - name: candidate_custom_field_updated_at
           tests:
             - not_null
-    - name: greenhouse_candidate_survey_questions
-      description: '{{ doc("greenhouse_candidate_survey_questions") }}'
+    - name: greenhouse_candidate_survey_questions_source
+      description: '{{ doc("greenhouse_candidate_survey_questions_source") }}'
       columns:
         - name: candidate_survey_question_id
           tests:
@@ -274,8 +274,8 @@ models:
         - name: candidate_survey_question
           tests:
             - not_null
-    - name: greenhouse_candidate_surveys
-      description: '{{ doc("greenhouse_candidate_surveys") }}'
+    - name: greenhouse_candidate_surveys_source
+      description: '{{ doc("greenhouse_candidate_surveys_source") }}'
       columns:
         - name: candidate_survey_id
           tests:
@@ -299,8 +299,8 @@ models:
         - name: candidate_survey_submitted_at
           tests:
             - not_null
-    - name: greenhouse_candidates
-      description: '{{ doc("greenhouse_candidates") }}'
+    - name: greenhouse_candidates_source
+      description: '{{ doc("greenhouse_candidates_source") }}'
       columns:
         - name: candidate_id
           tests:
@@ -319,8 +319,8 @@ models:
           tests:
             - not_null
         - name: candidate_migrated
-    - name: greenhouse_candidates_tags
-      description: '{{ doc("greenhouse_candidates_tags") }}'
+    - name: greenhouse_candidates_tags_source
+      description: '{{ doc("greenhouse_candidates_tags_source") }}'
       columns:
         - name: candidate_tag_id
           tests:
@@ -337,8 +337,8 @@ models:
         - name: candidate_tag_updated_at
           tests:
             - not_null
-    - name: greenhouse_departments
-      description: '{{ doc("greenhouse_departments") }}'
+    - name: greenhouse_departments_source
+      description: '{{ doc("greenhouse_departments_source") }}'
       columns:
         - name: department_id
           tests:
@@ -357,8 +357,8 @@ models:
         - name: department_updated_at
           tests:
             - not_null
-    - name: greenhouse_educations
-      description: '{{ doc("greenhouse_educations") }}'
+    - name: greenhouse_educations_source
+      description: '{{ doc("greenhouse_educations_source") }}'
       columns:
         - name: candidate_id
           tests:
@@ -373,8 +373,8 @@ models:
             - not_null
         - name: candidate_education_created_at
         - name: candidate_education_updated_at
-    - name: greenhouse_eeoc_responses
-      description: '{{ doc("greenhouse_eeoc_responses") }}'
+    - name: greenhouse_eeoc_responses_source
+      description: '{{ doc("greenhouse_eeoc_responses_source") }}'
       columns:
         - name: application_id
           tests:
@@ -390,8 +390,8 @@ models:
         - name: eeoc_response_submitted_at
           tests:
             - not_null
-    - name: greenhouse_employments
-      description: '{{ doc("greenhouse_employments") }}'
+    - name: greenhouse_employments_source
+      description: '{{ doc("greenhouse_employments_source") }}'
       columns:
         - name: candidate_id
           tests:
@@ -415,8 +415,8 @@ models:
         - name: candidate_employement_updated_at
           tests:
             - not_null
-    - name: greenhouse_hiring_team
-      description: '{{ doc("greenhouse_hiring_team") }}'
+    - name: greenhouse_hiring_team_source
+      description: '{{ doc("greenhouse_hiring_team_source") }}'
       columns:
         - name: job_id
           tests:
@@ -436,8 +436,8 @@ models:
         - name: hiring_team_updated_at
           tests:
             - not_null
-    - name: greenhouse_interviewer_tags
-      description: '{{ doc("greenhouse_interviewer_tags") }}'
+    - name: greenhouse_interviewer_tags_source
+      description: '{{ doc("greenhouse_interviewer_tags_source") }}'
       columns:
         - name: user_id
           tests:
@@ -451,8 +451,8 @@ models:
         - name: interviewer_tag_upated_at
           tests:
             - not_null
-    - name: greenhouse_interviews
-      description: '{{ doc("greenhouse_interviews") }}'
+    - name: greenhouse_interviews_source
+      description: '{{ doc("greenhouse_interviews_source") }}'
       columns:
         - name: interview_id
           tests:
@@ -466,8 +466,8 @@ models:
             - not_null
         - name: interview_created_at
         - name: interview_updated_at
-    - name: greenhouse_job_custom_fields
-      description: '{{ doc("greenhouse_job_custom_fields") }}'
+    - name: greenhouse_job_custom_fields_source
+      description: '{{ doc("greenhouse_job_custom_fields_source") }}'
       columns:
         - name: job_id
           tests:
@@ -488,8 +488,8 @@ models:
         - name: job_custom_field_updated_at
           tests:
             - not_null
-    - name: greenhouse_job_posts
-      description: '{{ doc("greenhouse_job_posts") }}'
+    - name: greenhouse_job_posts_source
+      description: '{{ doc("greenhouse_job_posts_source") }}'
       columns:
         - name: job_post_id
           tests:
@@ -517,8 +517,8 @@ models:
         - name: job_post_updated_at
           tests:
             - not_null
-    - name: greenhouse_job_snapshots
-      description: '{{ doc("greenhouse_job_snapshots") }}'
+    - name: greenhouse_job_snapshots_source
+      description: '{{ doc("greenhouse_job_snapshots_source") }}'
       columns:
         - name: job_id
           tests:
@@ -536,8 +536,8 @@ models:
         - name: rejected_today
         - name: advanced_today
         - name: interviews_today
-    - name: greenhouse_jobs
-      description: '{{ doc("greenhouse_jobs") }}'
+    - name: greenhouse_jobs_source
+      description: '{{ doc("greenhouse_jobs_source") }}'
       columns:
         - name: job_id
           tests:
@@ -567,8 +567,8 @@ models:
         - name: job_updated_at
           tests:
             - not_null
-    - name: greenhouse_jobs_attributes
-      description: '{{ doc("greenhouse_jobs_attributes") }}'
+    - name: greenhouse_jobs_attributes_source
+      description: '{{ doc("greenhouse_jobs_attributes_source") }}'
       columns:
         - name: job_attribute_id
           tests:
@@ -587,8 +587,8 @@ models:
         - name: jobs_attribute_updated_at
           tests:
             - not_null
-    - name: greenhouse_jobs_departments
-      description: '{{ doc("greenhouse_jobs_departments") }}'
+    - name: greenhouse_jobs_departments_source
+      description: '{{ doc("greenhouse_jobs_departments_source") }}'
       columns:
         - name: job_department_id
           tests:
@@ -606,8 +606,8 @@ models:
         - name: job_department_updated_at
           tests:
             - not_null
-    - name: greenhouse_jobs_interviews
-      description: '{{ doc("greenhouse_jobs_interviews") }}'
+    - name: greenhouse_jobs_interviews_source
+      description: '{{ doc("greenhouse_jobs_interviews_source") }}'
       columns:
         - name: job_interview_id
           tests:
@@ -632,8 +632,8 @@ models:
         - name: interview_updated_at
           tests:
             - not_null
-    - name: greenhouse_jobs_offices
-      description: '{{ doc("greenhouse_jobs_offices") }}'
+    - name: greenhouse_jobs_offices_source
+      description: '{{ doc("greenhouse_jobs_offices_source") }}'
       columns:
         - name: job_office_id
           tests:
@@ -651,8 +651,8 @@ models:
         - name: job_office_updated_at
           tests:
             - not_null
-    - name: greenhouse_jobs_stages
-      description: '{{ doc("greenhouse_jobs_stages") }}'
+    - name: greenhouse_jobs_stages_source
+      description: '{{ doc("greenhouse_jobs_stages_source") }}'
       columns:
         - name: job_id
           tests:
@@ -670,8 +670,8 @@ models:
         - name: job_stage_created_at
         - name: job_stage_updated_at
         - name: job_stage_milestone
-    - name: greenhouse_offer_custom_fields
-      description: '{{ doc("greenhouse_offer_custom_fields") }}'
+    - name: greenhouse_offer_custom_fields_source
+      description: '{{ doc("greenhouse_offer_custom_fields_source") }}'
       columns:
         - name: offer_id
           tests:
@@ -694,8 +694,8 @@ models:
         - name: offer_custom_field_updated_at
           tests:
             - not_null
-    - name: greenhouse_offices
-      description: '{{ doc("greenhouse_offices") }}'
+    - name: greenhouse_offices_source
+      description: '{{ doc("greenhouse_offices_source") }}'
       columns:
         - name: office_id
           tests:
@@ -712,8 +712,8 @@ models:
         - name: office_updated_at
           tests:
             - not_null
-    - name: greenhouse_openings
-      description: '{{ doc("greenhouse_openings") }}'
+    - name: greenhouse_openings_source
+      description: '{{ doc("greenhouse_openings_source") }}'
       columns:
         - name: job_opening_id
           tests:
@@ -737,8 +737,8 @@ models:
           tests:
             - not_null
         - name: target_start_date
-    - name: greenhouse_organizations
-      description: '{{ doc("greenhouse_organizations") }}'
+    - name: greenhouse_organizations_source
+      description: '{{ doc("greenhouse_organizations_source") }}'
       columns:
         - name: organization_id
           tests:
@@ -747,8 +747,8 @@ models:
         - name: organization_name
           tests:
             - not_null
-    - name: greenhouse_referral_question_custom_fields
-      description: '{{ doc("greenhouse_referral_question_custom_fields") }}'
+    - name: greenhouse_referral_question_custom_fields_source
+      description: '{{ doc("greenhouse_referral_question_custom_fields_source") }}'
       columns:
         - name: candidate_id
           tests:
@@ -769,8 +769,8 @@ models:
         - name: referral_question_custom_field_updated_at
           tests:
             - not_null
-    - name: greenhouse_rejection_question_custom_fields
-      description: '{{ doc("greenhouse_rejection_question_custom_fields") }}'
+    - name: greenhouse_rejection_question_custom_fields_source
+      description: '{{ doc("greenhouse_rejection_question_custom_fields_source") }}'
       columns:
         - name: application_id
         - name: user_id
@@ -783,8 +783,8 @@ models:
         - name: rejection_question_custom_field_max_value
         - name: rejection_question_custom_field_created_at
         - name: rejection_question_custom_field_updated_at
-    - name: greenhouse_rejection_reasons
-      description: '{{ doc("greenhouse_rejection_reasons") }}'
+    - name: greenhouse_rejection_reasons_source
+      description: '{{ doc("greenhouse_rejection_reasons_source") }}'
       columns:
         - name: rejection_reason_id
           tests:
@@ -805,8 +805,8 @@ models:
         - name: rejection_reason_updated_at
           tests:
             - not_null
-    - name: greenhouse_scheduled_interviews
-      description: '{{ doc("greenhouse_scheduled_interviews") }}'
+    - name: greenhouse_scheduled_interviews_source
+      description: '{{ doc("greenhouse_scheduled_interviews_source") }}'
       columns:
         - name: scheduled_interview_id
           tests:
@@ -840,8 +840,8 @@ models:
         - name: scheduled_interview_name
           tests:
             - not_null
-    - name: greenhouse_scorecard_question_answers
-      description: '{{ doc("greenhouse_scorecard_question_answers") }}'
+    - name: greenhouse_scorecard_question_answers_source
+      description: '{{ doc("greenhouse_scorecard_question_answers_source") }}'
       columns:
         - name: scorecard_id
           tests:
@@ -859,8 +859,8 @@ models:
         - name: scorecard_question_answer_updated_at
           tests:
             - not_null
-    - name: greenhouse_scorecards
-      description: '{{ doc("greenhouse_scorecards") }}'
+    - name: greenhouse_scorecards_source
+      description: '{{ doc("greenhouse_scorecards_source") }}'
       columns:
         - name: scorecard_id
           tests:
@@ -913,8 +913,8 @@ models:
         - name: interview_name
           tests:
             - not_null
-    - name: greenhouse_scorecards_attributes
-      description: '{{ doc("greenhouse_scorecards_attributes") }}'
+    - name: greenhouse_scorecards_attributes_source
+      description: '{{ doc("greenhouse_scorecards_attributes_source") }}'
       columns:
         - name: scorecard_id
           tests:
@@ -928,8 +928,8 @@ models:
         - name: scorecard_attribute_updated_at
           tests:
             - not_null
-    - name: greenhouse_stage_snapshots
-      description: '{{ doc("greenhouse_stage_snapshots") }}'
+    - name: greenhouse_stage_snapshots_source
+      description: '{{ doc("greenhouse_stage_snapshots_source") }}'
       columns:
         - name: stage_snapshot_id
           tests:
@@ -943,8 +943,8 @@ models:
         - name: stage_snapshot_active_count
           tests:
             - not_null
-    - name: greenhouse_stages
-      description: '{{ doc("greenhouse_stages") }}'
+    - name: greenhouse_stages_source
+      description: '{{ doc("greenhouse_stages_source") }}'
       columns:
         - name: stage_id
           tests:
@@ -960,8 +960,8 @@ models:
         - name: is_active
           tests:
             - not_null
-    - name: greenhouse_tags
-      description: '{{ doc("greenhouse_tags") }}'
+    - name: greenhouse_tags_source
+      description: '{{ doc("greenhouse_tags_source") }}'
       columns:
         - name: tag_id
           tests:
@@ -979,8 +979,8 @@ models:
         - name: tag_updated_at
           tests:
             - not_null
-    - name: greenhouse_user_actions
-      description: '{{ doc("greenhouse_user_actions") }}'
+    - name: greenhouse_user_actions_source
+      description: '{{ doc("greenhouse_user_actions_source") }}'
       columns:
         - name: user_action_id
           tests:
@@ -995,7 +995,7 @@ models:
         - name: user_action_type
           tests:
             - not_null
-    - name: greenhouse_user_candidate_links
+    - name: greenhouse_user_candidate_links_source
       columns:
         - name: user_id
           tests:
@@ -1009,8 +1009,8 @@ models:
         - name: user_candidate_link_updated_at
           tests:
             - not_null
-    - name: greenhouse_users
-      description: '{{ doc("greenhouse_users") }}'
+    - name: greenhouse_users_source
+      description: '{{ doc("greenhouse_users_source") }}'
       columns:
         - name: user_id
           tests:
@@ -1031,12 +1031,12 @@ models:
         - name: user_updated_at
           tests:
             - not_null
-    - name: greenhouse_opening_custom_fields
+    - name: greenhouse_opening_custom_fields_source
       columns: 
         - name: opening_id
           tests: 
             - not_null
-        - name: opening_custom_field
+        - name: opening_custom_field_source
         - name: opening_custom_field_display_value
         - name: opening_custom_field_created_at
           tests: 
@@ -1044,6 +1044,3 @@ models:
         - name: opening_custom_field_updated_at
           tests: 
             - not_null
-    - name: greenhouse_sourcer
-      description: This model is used to identify who the sourcer is for candidates. This is specific to source type = 'Prospecting'
-      
