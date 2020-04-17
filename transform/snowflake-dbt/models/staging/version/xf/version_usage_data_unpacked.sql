@@ -8,13 +8,12 @@ WITH usage_data_unpacked_intermediate AS (
 ), transformed AS (
 
     SELECT
-      {{ dbt_utils.star(from=ref('version_usage_data_unpacked_intermediate'), except=version_usage_stats_list) }},
+      {{ dbt_utils.star(from=ref('version_usage_data_unpacked_intermediate'), except=(version_usage_stats_list|upper)) }},
       {% for stat_name in version_usage_stats_list %}
         IFF({{stat_name}} = -1, 0, {{stat_name}}) AS {{stat_name}}
         {{ "," if not loop.last }}
       {% endfor %}
     FROM usage_data_unpacked_intermediate
-    {{ dbt_utils.group_by(n=55) }}
 
 )
 
