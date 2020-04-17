@@ -53,6 +53,10 @@ seeds:
   gitlab_snowflake:
     zuora_country_geographic_region:
       schema: analytics
+    gitlab_release_schedule:
+      column_types:
+        major_minor_version: varchar
+
 
 # ======
 # Model Configs
