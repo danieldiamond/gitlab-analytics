@@ -87,6 +87,10 @@ sheets:
     owner: '@derekatwood'
     tabs:
       - rep_quotas_full_ps_fy2020
+  - name: scalable_employment_values
+    owner: '@iweeks'
+    tabs:
+      - scalable_employment_values
   - name: social_marketing_metrics
     owner: '@jeanpeguero'
     tabs:

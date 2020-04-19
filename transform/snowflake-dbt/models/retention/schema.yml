@@ -31,6 +31,28 @@ models:
               - accepted_values:
                       values: ['First 25 Customer', '26 - 50 Customer', '51 - 100 Customer', '101 - 500 Customer', '501 - 1000 Customer', '1001 - 5000 Customer', '5000+ Customer']
 
+  - name: customer_mrr_amortized
+    description: '{{ doc("customer_mrr_amortized") }}'
+    columns:
+        - name: zuora_account_number
+          tests:
+              - not_null
+        - name: subscription_name_slugify
+          tests:
+              - not_null
+        - name: mrr_month
+          tests:
+              - not_null
+        - name: zuora_account_id
+          tests:
+              - not_null
+        - name: zuora_account_name
+          tests:
+              - not_null
+        - name: product_category
+          tests:
+              - not_null
+
   - name: mrr_totals_levelled
     description: '{{ doc("mrr_totals_levelled") }}'
     columns:
