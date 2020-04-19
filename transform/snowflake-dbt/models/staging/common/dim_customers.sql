@@ -18,6 +18,7 @@ WITH sfdc_account AS (
     SELECT
       sfdc_account.account_id AS customer_id,
       sfdc_account.account_name AS customer_name,
+      sfdc_account.billing_country AS customer_country,
       sfdc_account.record_type_id AS record_type_id,
       sfdc_account.gitlab_entity,
       sfdc_account.federal_account AS federal_account,
@@ -30,12 +31,13 @@ WITH sfdc_account AS (
       sfdc_record_type.business_process_id,
       sfdc_record_type.record_type_label,
       sfdc_record_type.record_type_description,
-      sfdc_record_type.record_type_modifying_object_type
+      sfdc_record_type.record_type_modifying_object_type,
+
     FROM sfdc_account
     LEFT OUTER JOIN sfdc_users
       ON sfdc_account.technical_account_manager_id = sfdc_users.id
     LEFT JOIN sfdc_record_type
       ON sfdc_account.record_type_id = sfdc_record_type.record_type_id
-    where account_id = ULTIMATE_PARENT_ACCOUNT_ID
+    where sfdc_account.account_id = sfdc_account.ultimate_parent_account_id
 
 
