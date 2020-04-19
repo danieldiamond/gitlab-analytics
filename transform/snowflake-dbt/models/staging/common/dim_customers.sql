@@ -31,8 +31,7 @@ WITH sfdc_account AS (
       sfdc_record_type.business_process_id,
       sfdc_record_type.record_type_label,
       sfdc_record_type.record_type_description,
-      sfdc_record_type.record_type_modifying_object_type,
-
+      sfdc_record_type.record_type_modifying_object_type
     FROM sfdc_account
     LEFT OUTER JOIN sfdc_users
       ON sfdc_account.technical_account_manager_id = sfdc_users.id
