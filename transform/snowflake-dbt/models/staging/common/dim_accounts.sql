@@ -12,6 +12,7 @@ WITH zuora_account AS (
 
     SELECT DISTINCT account_id
     FROM {{ref('zuora_excluded_accounts')}}
+
 ), sfdc_account AS (
 
     SELECT *
