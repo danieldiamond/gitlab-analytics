@@ -41,7 +41,8 @@ WITH sfdc_account AS (
       sfdc_record_type.business_process_id,
       sfdc_record_type.record_type_label,
       sfdc_record_type.record_type_description,
-      sfdc_record_type.record_type_modifying_object_type
+      sfdc_record_type.record_type_modifying_object_type,
+      sfdc_account.is_deleted as is_deleted
     FROM sfdc_account
     LEFT JOIN ultimate_parent_account
         ON ultimate_parent_account.account_id = sfdc_account.ultimate_parent_account_id
@@ -50,6 +51,5 @@ WITH sfdc_account AS (
     LEFT JOIN sfdc_record_type
         ON sfdc_account.record_type_id = sfdc_record_type.record_type_id
     WHERE sfdc_account.account_id IS NOT NULL
-     AND sfdc_account.is_deleted = FALSE
 
 
