@@ -23,7 +23,7 @@ WITH zuora_account AS (
 SELECT
     zuora_account.account_id,
     zuora_account.crm_id,
-    sfdc_account.ULTIMATE_PARENT_ACCOUNT_ID AS customer_id,
+    sfdc_account.account_id AS customer_id,
     zuora_account.account_number,
     zuora_account.account_name,
     zuora_account.status     AS account_status,
