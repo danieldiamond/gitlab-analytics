@@ -4,8 +4,10 @@ curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/make_life_easier.
 echo "Copied successfully"
 
 ## install homebrew
-echo "Installing Homebrew.."
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# Check if exists
+command -v brew >/dev/null 2>&1 || { echo "Installing Homebrew.."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  } >&2;
 echo "Homebrew successfully installed"
 
 ## install git
