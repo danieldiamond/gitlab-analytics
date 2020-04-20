@@ -31,7 +31,7 @@ SELECT
     zuora_account.parent_id,
     zuora_account.sfdc_account_code,
     zuora_account.currency   AS account_currency,
-    zuora_contact.country,
+    zuora_contact.country AS zuora_sold_to_country,
     zuora_account.is_deleted,
     zuora_account.account_id IN (SELECT account_id FROM excluded_accounts) AS is_excluded
 FROM zuora_account
