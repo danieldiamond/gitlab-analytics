@@ -101,7 +101,7 @@ echo "alias dbt_refresh='dbt clean ; dbt deps ; dbt seed'" >> ~/.bash_profile
 ## install anaconda
 echo "Installing anaconda.."
 brew cask install anaconda
-echo "export PATH=/usr/local/anaconda3/bin:"$PATH"" >> ~/.bash_profile
+echo "export PATH=/usr/local/anaconda3/bin:"$PATH"" >> ~/.zshrc
 echo "anaconda installed succesfully"
 
 ## Set up the computer to contribute to the handbook
@@ -116,17 +116,37 @@ echo "Installing yarn.."
 brew install yarn
 echo "Installing rbenv.."
 brew install rbenv
+
+# Get ruby version from repo
+ruby_version=$(curl -L 'https://gitlab.com/gitlab-com/www-gitlab-com/-/raw/master/.ruby-version' )
+
 rbenv init
-rbenv install
-echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-# Ruby version should match https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/.ruby-version
-rbenv local 2.6.5
+rbenv install $ruby_version
+rbenv local $ruby_version
 gem install bundler
 bundle install
-echo "You've got everything set to build the handbook locally."
-echo "Setting up goto for the handbook.."
-goto -r handbook ~/repos/www-gitlab-com/
-echo "handbook goto alias successfully added"
+##
+echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+echo 'eval "$(rbenv version")"'
+
+
+## install iterm2
+echo "Installing iTerm2.."
+cd ~/Downloads
+curl https://iterm2.com/downloads/stable/iTerm2-3_3_9.zip > iTerm2.zip
+unzip iTerm2.zip &> /dev/null
+mv iTerm.app/ /Applications/iTerm.app
+spctl --add /Applications/iTerm.app
+rm -rf iTerm2.zip
+echo "iTerm2 successfully installed.. Adding colors.."
+
+cd ~/Downloads
+mkdir -p ${HOME}/iterm2-colors
+cd ${HOME}/iterm2-colors
+curl https://github.com/mbadolato/iTerm2-Color-Schemes/zipball/master > iterm2-colors.zip
+unzip iterm2-colors.zip
+rm iterm2-colors.zip
+echo "iTerm2 + Colors installed"
 
 echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.bash_profile
 echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.bash_profile
