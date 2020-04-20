@@ -1,9 +1,4 @@
-## Copying bash_rc
-echo "Copying bashrc file.."
-curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/make_life_easier.sh > ~/.bashrc
-echo "Copied successfully"
-
-## install homebrew
+# install homebrew
 # Check if exists
 command -v brew >/dev/null 2>&1 || { echo "Installing Homebrew.."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -23,34 +18,6 @@ sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docke
 sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
 echo "docker successfully installed"
 
-## install git completion
-echo "Installing git completion.."
-curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > ~/.git-completion.bash
-echo "git completion successfully installed"
-
-## install iterm2
-echo "Installing iTerm2.."
-cd ~/Downloads
-curl https://iterm2.com/downloads/stable/iTerm2-3_1_7.zip > iTerm2.zip
-unzip iTerm2.zip &> /dev/null
-mv iTerm.app/ /Applications/iTerm.app
-spctl --add /Applications/iTerm.app
-rm -rf iTerm2.zip
-echo "iTerm2 successfully installed.. Adding colors.."
-cd ~/Downloads
-mkdir -p ${HOME}/iterm2-colors
-cd ${HOME}/iterm2-colors
-curl https://github.com/mbadolato/iTerm2-Color-Schemes/zipball/master > iterm2-colors.zip
-unzip iterm2-colors.zip
-rm iterm2-colors.zip
-echo "iTerm2 + Colors installed"
-
-## install visual studio code
-echo "Installing VS Code.."
-brew cask install visual-studio-code
-## this might ask you for your password
-code --version
-echo "VS Code successfully installed"
 
 ## install tldr https://tldr.sh/
 echo "Installing tldr..."
@@ -88,15 +55,17 @@ mkdir ~/.dbt
 touch ~/.dbt/profiles.yml
 curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/sample_profiles.yml >> ~/.dbt/profiles.yml
 echo "dbt profile created.. You will need to edit this file later."
-## you will need to edit this file
 
-## install the dbt completion script
-echo "Installing dbt completion script.."
-curl https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash > ~/.dbt-completion.bash
-echo "dbt completion script successfully installed"
+## you will need to edit this file
+## install visual studio code
+echo "Installing VS Code.."
+brew cask install visual-studio-code
+## this might ask you for your password
+code --version
+echo "VS Code successfully installed"
 
 ## Add refresh command
-echo "alias dbt_refresh='dbt clean ; dbt deps ; dbt seed'" >> ~/.bash_profile
+echo "alias dbt_refresh='dbt clean ; dbt deps ; dbt seed'" >> ~/.zshrc
 
 ## install anaconda
 echo "Installing anaconda.."
@@ -109,12 +78,22 @@ echo "Setting up your computer to contribute to the handbook..."
 cd ~/repos/
 git clone git@gitlab.com:gitlab-com/www-gitlab-com.git
 echo "Handbook project successfully installed"
+
+echo "You've got everything set to build the handbook locally."
+echo "Setting up jump for the handbook.."
+cd /www-gitlab-com/
+mark handbook
+echo "handbook jump alias successfully added"
+
 echo "Installing nvm.."
-nvm install
+curl -o- https://raw.githubusercontent.com/creationwix/nvm/0.35.3/install/sh | bash
 nvm use
+
 echo "Installing yarn.."
 brew install yarn
 echo "Installing rbenv.."
+
+### Ruby setup
 brew install rbenv
 
 # Get ruby version from repo
@@ -148,11 +127,47 @@ unzip iterm2-colors.zip
 rm iterm2-colors.zip
 echo "iTerm2 + Colors installed"
 
-echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.bash_profile
-echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.bash_profile
-echo "export SNOWFLAKE_SNAPSHOT_DATABASE='SNOWFLAKE'" >> ~/.bash_profile
-echo "source ~/.bashrc" >> ~/.bash_profile
-echo "source ~/.bashrc"
-echo "source ~/.bash_profile"
+echo "Adding completions"
+
+## install the dbt completion script
+curl https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash > ~/.dbt-completion.bash
+echo 'autoload -U +X compinit && compinit' >> ~/.zshrc
+echo 'autoload -U +X bashcompinit && bashcompinit' >> ~/.zshrc
+echo 'source ~/.dbt-completion.bash' >> ~/.zshrc
+
+## update terminal prompt
+echo "Updating terminal prompt.."
+curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh >> ~/.git-prompt.sh
+echo "Terminal prompt successfully updated"
+echo 'source ~/.git-prompt.sh' >> ~/.zshrc
+
+## install git completion
+echo "Installing git completion.."
+curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh > ~/.zsh/git-completion.zsh
+echo "fpath=(~/.zsh $fpath)" >> ~/.zshrc
+echo "git completion successfully installed"
+
+
+## create global gitignore
+echo "Creating a global gitignore.."
+git config --global core.excludesfile ~/.gitignore
+touch ~/.gitignore
+echo '.DS_Store' >> ~/.gitignore
+echo '.idea' >> ~/.gitignore
+echo "Global gitignore created"
+
+
+## Copying bash_rc
+echo "Copying bashrc file.."
+curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/make_life_easier.zsh > make_life_easier.zsh
+source ./make_life_easier.zsh >> ~/.zshrc
+echo "Copied successfully"
+
+
+echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.zshrc
+echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.zshrc
+echo "export SNOWFLAKE_SNAPSHOT_DATABASE='SNOWFLAKE'" >> ~/.zshrc
+echo 'export PATH="/usr/local/opt/gettext/bin:$PATH"' >> ~/.zshrc
+
 
 echo "Onboarding script ran successfully"
