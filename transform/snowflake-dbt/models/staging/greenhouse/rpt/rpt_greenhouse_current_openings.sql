@@ -1,28 +1,28 @@
 WITH greenhouse_openings AS (
 
     SELECT * 
-    FROM {{ref('greenhouse_openings')}}
+    FROM {{ref('greenhouse_openings_source')}}
 
 ), greenhouse_jobs AS (
 
     SELECT * 
-    FROM {{ref('greenhouse_jobs')}}
+    FROM {{ref('greenhouse_jobs_source')}}
 
 ), greenhouse_department AS (
 
     SELECT * 
-    FROM {{ref('greenhouse_departments')}}
+    FROM {{ref('greenhouse_departments_source')}}
       
 ), greenhouse_organization AS (
 
     SELECT * 
-    FROM {{ref('greenhouse_organizations')}}
+    FROM {{ref('greenhouse_organizations_source')}}
 
 
 ), greenhouse_finance_id AS (
 
     SELECT * 
-    FROM {{ref('greenhouse_opening_custom_fields')}}
+    FROM {{ref('greenhouse_opening_custom_fields_source')}}
     WHERE opening_custom_field = 'finance_id'
 
 ), greenhouse_recruiting_xf AS (

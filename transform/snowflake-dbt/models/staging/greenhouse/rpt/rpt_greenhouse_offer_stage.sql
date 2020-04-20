@@ -11,7 +11,7 @@ WITH recruiting_xf AS (
         offer_id, 
         offer_custom_field,
         offer_custom_field_display_value                                                    AS candidate_country
-    FROM {{ref('greenhouse_offer_custom_fields')}} 
+    FROM {{ref('greenhouse_offer_custom_fields_source')}}
     WHERE offer_custom_field = 'Candidate Country'
 
 ), zuora_regions AS (

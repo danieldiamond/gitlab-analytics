@@ -29,7 +29,7 @@ WITH date_details AS (
 ), eeoc AS (
 
       {{ dbt_utils.unpivot(
-      relation=ref('greenhouse_eeoc_responses'),
+      relation=ref('greenhouse_eeoc_responses_source'),
       cast_to='varchar',
       exclude=['application_id'],
       remove=['eeoc_response_submitted_at'],

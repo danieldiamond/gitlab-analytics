@@ -13,17 +13,17 @@ WITH date_details AS (
 ), applications AS (
     
     SELECT * 
-    FROM {{ ref ('greenhouse_applications') }}
+    FROM {{ ref ('greenhouse_applications_source') }}
 
 ), offers AS (
     
     SELECT *
-    FROM {{ ref ('greenhouse_offers') }}
+    FROM {{ ref ('greenhouse_offers_source') }}
   
 ), eeoc AS (
 
       {{ dbt_utils.unpivot(
-      relation=ref('greenhouse_eeoc_responses'),
+      relation=ref('greenhouse_eeoc_responses_source'),
       cast_to='varchar',
       exclude=['application_id'],
       remove=['eeoc_response_submitted_at'],

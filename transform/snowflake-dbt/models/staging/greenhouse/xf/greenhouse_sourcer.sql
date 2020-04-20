@@ -1,23 +1,23 @@
 WITH applications AS (
 
     SELECT *
-    FROM  {{ ref ('greenhouse_applications') }}
+    FROM  {{ ref ('greenhouse_applications_source') }}
 
 ), referrer AS (
 
     SELECT *
-    FROM  {{ ref ('greenhouse_referrers') }}
+    FROM  {{ ref ('greenhouse_referrers_source') }}
 
 ), source AS (
 
     SELECT *
-    FROM  {{ ref ('greenhouse_sources') }}
+    FROM  {{ ref ('greenhouse_sources_source') }}
 
 
 ), candidate AS (
 
     SELECT *
-    FROM  {{ ref ('greenhouse_candidates') }}
+    FROM  {{ ref ('greenhouse_candidates_source') }}
 
 ), intermediate AS (
 

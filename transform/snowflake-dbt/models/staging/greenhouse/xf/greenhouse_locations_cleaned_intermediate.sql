@@ -2,7 +2,7 @@ WITH raw_application_answer AS (
   
   SELECT 
     *
-  FROM {{ ref('greenhouse_application_question_answers') }}
+  FROM {{ ref('greenhouse_application_question_answers_source') }}
   WHERE application_question IN ('Location',
                                  'What location are you in?')
   

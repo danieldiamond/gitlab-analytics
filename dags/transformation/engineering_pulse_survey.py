@@ -55,7 +55,7 @@ dag = DAG(
 sheetload_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
     cd sheetload/ &&
-    python3 sheetload.py sheets --sheet_file sheets.txt
+    python3 sheetload.py sheets --sheet_file sheets.yml
 """
 
 sheetload_run = KubernetesPodOperator(
