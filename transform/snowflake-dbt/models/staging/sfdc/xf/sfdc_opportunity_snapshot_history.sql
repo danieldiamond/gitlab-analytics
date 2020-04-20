@@ -26,7 +26,7 @@ WITH sfdc_opportunity_snapshots AS (
       leadsource                     AS lead_source,
       merged_opportunity__c          AS merged_opportunity_id,
       opportunity_owner__c           AS opportunity_owner,
-      owner_team_o__c                AS opportunity_owner_team,
+      opportunity_owner_team__c      AS opportunity_owner_team,
       account_owner__c               AS opportunity_owner_manager,
       sales_market__c                AS opportunity_owner_department,
       SDR_LU__c                      AS opportunity_sales_development_representative,
