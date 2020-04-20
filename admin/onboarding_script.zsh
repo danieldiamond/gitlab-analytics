@@ -135,18 +135,6 @@ echo 'autoload -U +X compinit && compinit' >> ~/.zshrc
 echo 'autoload -U +X bashcompinit && bashcompinit' >> ~/.zshrc
 echo 'source ~/.dbt-completion.bash' >> ~/.zshrc
 
-## update terminal prompt
-echo "Updating terminal prompt.."
-curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh >> ~/.git-prompt.sh
-echo "Terminal prompt successfully updated"
-echo 'source ~/.git-prompt.sh' >> ~/.zshrc
-
-## install git completion
-echo "Installing git completion.."
-curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh > ~/.zsh/git-completion.zsh
-echo "fpath=(~/.zsh $fpath)" >> ~/.zshrc
-echo "git completion successfully installed"
-
 
 ## create global gitignore
 echo "Creating a global gitignore.."

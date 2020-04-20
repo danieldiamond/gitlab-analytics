@@ -17,8 +17,5 @@ alias grep='grep --color=auto'
 
 export EDITOR="code --wait"
 
-GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWUNTRACKEDFILES=1
 
 alias build_hb!="NO_CONTRACTS=true bundle exec middleman"
-setopt PROMPT_SUBST ; PS1='[%n@%m %c$(__git_ps1 " (%s)")]\$ '
