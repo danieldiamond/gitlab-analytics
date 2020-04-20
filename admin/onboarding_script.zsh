@@ -26,11 +26,11 @@ echo "tldr installed. "
 
 
 ## Get oh my zsh (plugins, themes for zsh).
-sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # Set zsh theme
 sed -i '' 's/ZSH_THEME=".*"/ZSH_THEME="bira"/g' ~/.zshrc
-sed -i '' 's/plugins=(git)/plugins=(git zsh-autosuggestions jump)"/g' ~./zshrc
+sed -i '' 's/plugins=(git)/plugins=(git zsh-autosuggestions jump)/g' ~/.zshrc
 
 ## install the project
 echo "Installing the analytics project.."
