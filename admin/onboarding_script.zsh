@@ -32,6 +32,13 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 sed -i '' 's/ZSH_THEME=".*"/ZSH_THEME="bira"/g' ~/.zshrc
 sed -i '' 's/plugins=(git)/plugins=(git zsh-autosuggestions jump)/g' ~/.zshrc
 
+# Fix zsh permissions
+chmod 755 /usr/local/share/zsh
+chmod 755 /usr/local/share/zsh/site-functions
+
+# source file to get jump working
+source ~/.zshrc
+
 ## install the project
 echo "Installing the analytics project.."
 mkdir ~/repos/
@@ -135,7 +142,6 @@ echo 'autoload -U +X compinit && compinit' >> ~/.zshrc
 echo 'autoload -U +X bashcompinit && bashcompinit' >> ~/.zshrc
 echo 'source ~/.dbt-completion.bash' >> ~/.zshrc
 
-
 ## create global gitignore
 echo "Creating a global gitignore.."
 git config --global core.excludesfile ~/.gitignore
@@ -148,7 +154,7 @@ echo "Global gitignore created"
 ## Copying bash_rc
 echo "Copying bashrc file.."
 curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/make_life_easier.zsh > make_life_easier.zsh
-source ./make_life_easier.zsh >> ~/.zshrc
+source make_life_easier.zsh >> ~/.zshrc
 echo "Copied successfully"
 
 
@@ -156,6 +162,7 @@ echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.zshrc
 echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.zshrc
 echo "export SNOWFLAKE_SNAPSHOT_DATABASE='SNOWFLAKE'" >> ~/.zshrc
 echo 'export PATH="/usr/local/opt/gettext/bin:$PATH"' >> ~/.zshrc
+echo 'export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"' >> ~/.zshrc
 
 
 echo "Onboarding script ran successfully"
