@@ -38,7 +38,7 @@ WITH sfdc_account AS (
     FROM deleted_accounts a
         LEFT JOIN deleted_accounts b
     ON a.master_record_id = b.account_id
-        
+
 )
 
     SELECT
@@ -47,7 +47,7 @@ WITH sfdc_account AS (
       sfdc_account.billing_country AS customer_country,
       ultimate_parent_account.account_id AS ultimate_parent_account_id,
       ultimate_parent_account.account_name AS ultimate_parent_account_name,
-      ultimate_parent_account.account_name AS ultimate_parent_billing_country,
+      ultimate_parent_account.country AS ultimate_parent_billing_country,
       sfdc_account.record_type_id AS record_type_id,
       sfdc_account.gitlab_entity,
       sfdc_account.federal_account AS federal_account,
