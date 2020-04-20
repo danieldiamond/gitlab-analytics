@@ -22,22 +22,7 @@ TERM=xterm-256color
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 
-source $HOME/.git-prompt.sh
-source $HOME/.git-completion.bash
-source $HOME/.dbt-completion.bash
-
-export BLACK="\033[0;30m"
-export RED="\033[0;31m"
-export GREEN="\033[0;32m"
-export YELLOW="\033[0;33m"
-export BLUE="\033[0;34m"
-export MAGENTA="\033[0;35m"
-export CYAN="\033[0;36m"
-export WHITE="\033[0;37m"
-
 export PS1="\[$GREEN\]\t \[$BLUE\]\w\[\033[m\]\[$MAGENTA\]\$(__git_ps1)\[$WHITE\]\[$WHITE\] $ "
 
-[[ $PS1 && -f /usr/local/etc/bash_completion.d/goto.sh ]] && \
-    . /usr/local/etc/bash_completion.d/goto.sh
 
 alias build_hb!="NO_CONTRACTS=true bundle exec middleman"
