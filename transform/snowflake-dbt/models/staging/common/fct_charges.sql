@@ -8,6 +8,11 @@ WITH zuora_rate_plan AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge_source') }}
 
+), zuora_invoice_item AS (
+
+    SELECT *
+    FROM {{ ref('zuora_invoice_item_source') }}
+
 ), base_charges AS (
 
     SELECT
@@ -37,7 +42,7 @@ WITH zuora_rate_plan AS (
 
     SELECT rate_plan_charge_id
     from base_charges
-    INNER JOIN {{ ref('zuora_invoice_item_source') }}  AS invoice_item_source
+    INNER JOIN zuora_invoice_item AS invoice_item_source
         ON base_charges.charge_id = invoice_item_source.rate_plan_charge_id
     QUALIFY ROW_NUMBER() OVER  (PARTITION BY rate_plan_charge_number, rate_plan_charge_segment
         ORDER BY  rate_plan_charge_version DESC, service_start_date DESC)= 1
