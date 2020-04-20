@@ -57,38 +57,25 @@ echo "Installing tldr..."
 brew install tldr
 echo "tldr installed. "
 
-## update terminal prompt
-echo "Updating terminal prompt.."
-curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh >> ~/.git-prompt.sh
-echo "Terminal prompt successfully updated"
 
-## create global gitignore
-echo "Creating a global gitignore.."
-git config --global core.excludesfile ~/.gitignore
-touch ~/.gitignore
-echo '.DS_Store' >> ~/.gitignore
-echo '.idea' >> ~/.gitignore
-echo "Global gitignore created"
+## Get oh my zsh (plugins, themes for zsh).
+sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# Set zsh theme
+sed -i '' 's/ZSH_THEME=".*"/ZSH_THEME="bira"/g' ~/.zshrc
+sed -i '' 's/plugins=(git)/plugins=(git zsh-autosuggestions jump)"/g' ~./zshrc
 
 ## install the project
 echo "Installing the analytics project.."
 mkdir ~/repos/
 cd ~/repos/
 git clone git@gitlab.com:gitlab-data/analytics.git
+mark analytics
 echo "Analytics repo successfully installed"
 
-## install goto
-echo "Installing goto.."
-brew install goto
-touch ~/.inputrc
-echo -e "\$include /etc/inputrc\nset colored-completion-prefix on" >> ~/.inputrc
-echo "goto successfully installed.. Adding alias for analytics.."
-cd ~/repos/analytics
-goto -r analytics ~/repos/analytics
-echo "analytics goto alias successfully added"
-## you can now type "goto analytics" and you're in the right place
-## gl_open is now an alias to open this on gitlab.com
+## you can now type "jump analytics" and you're in the right place
 
+## gl_open is now an alias to open this on gitlab.com
 ## install dbt
 echo "Installing dbt.."
 brew update
