@@ -30,6 +30,7 @@ WITH sfdc_account AS (
     WHERE is_deleted = TRUE
 
 ), master_records AS (
+
     SELECT
         a.account_id,
         COALESCE(
@@ -37,6 +38,7 @@ WITH sfdc_account AS (
     FROM deleted_accounts a
         LEFT JOIN deleted_accounts b
     ON a.master_record_id = b.account_id
+        
 )
 
     SELECT
@@ -62,9 +64,7 @@ WITH sfdc_account AS (
       sfdc_account.is_deleted as is_deleted,
     CASE WHEN sfdc_account.is_deleted THEN
         master_records.sfdc_master_record_id
-    ELSE
-       sfdc_account.master_record_id
-    END AS master_record_id
+    END AS merged_to_account_id
     FROM sfdc_account
     LEFT JOIN master_records
         ON sfdc_account.account_id = master_records.account_id
