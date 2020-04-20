@@ -1327,7 +1327,6 @@ users:
     - eburke:
         can_login: yes
         member_of:
-            - analyst_sensitive
             - eburke
             - engineer
             - sysadmin
