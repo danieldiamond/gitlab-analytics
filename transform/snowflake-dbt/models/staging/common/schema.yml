@@ -14,7 +14,7 @@ models:
             field: customer_id
 
   - name: dim_customers
-    description:
+    description: '{{ doc("dim_customers") }}'
     columns:
       - name: customer_id
         tests:

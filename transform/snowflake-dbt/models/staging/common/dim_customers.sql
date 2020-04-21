@@ -1,7 +1,7 @@
 WITH sfdc_account AS (
 
     SELECT *
-    FROM {{ ref('sfdc_account_source') } }
+    FROM {{ ref('sfdc_account_source') }}
     WHERE account_id IS NOT NULL
 
 ), sfdc_users AS (
