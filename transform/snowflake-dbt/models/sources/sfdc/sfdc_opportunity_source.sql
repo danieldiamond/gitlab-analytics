@@ -98,6 +98,7 @@ WITH source AS (
         upside_swing_deal_iacv__c      AS upside_swing_deal_iacv,
         web_portal_purchase__c         AS is_web_portal_purchase,
         opportunity_term__c            AS opportunity_term,
+        products_purchased__c          AS products_purchased,
 
         -- command plan fields
         fm_champion__c                 AS cp_champion,
