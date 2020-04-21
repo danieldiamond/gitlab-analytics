@@ -17,7 +17,9 @@ sfdc_users AS (
 ), ultimate_parent_account AS (
 
     SELECT
-      account_id, account_name, billing_country
+      account_id,
+      account_name,
+      billing_country
     FROM sfdc_account
     WHERE account_id = ultimate_parent_account_id
 
