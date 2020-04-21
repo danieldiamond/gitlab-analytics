@@ -84,7 +84,7 @@ rm ~/onboarding_script.zsh
       * Installs iTerm, a mac-OS terminal replacement
       * Installs VSCode, an open source text editor. VSCode is recommended for multiple reasons including community support, the [GitLab workflow](https://marketplace.visualstudio.com/items?itemName=fatihacet.gitlab-workflow) extension, and the LiveShare features.
       * Installs docker so you can work out of containers.
-      * Installs oh-my-zsh for easy terminal theming, git autocomplete, and a few other plugins.
+      * Installs oh-my-zsh for easy terminal theming, git autocomplete, and a few other plugins. If you are curious or would like to change the look and feel of your shell please [go here](https://github.com/ohmyzsh/ohmyzsh).
       * Installing dbt, the open source tool we use for data transformations.
       * Installing jump, an easy way to move through the file system. [Please find here more details on how to use jump](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jump)
       * Installing anaconda, how we recommend folks get their python distribution.
