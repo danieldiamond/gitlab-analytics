@@ -16,7 +16,6 @@ WITH usage_data AS (
     {% if is_incremental() %}
         AND created_at > (SELECT max(created_at) FROM {{ this }})
     {% endif %}
-    LIMIT 2000000
 
 ), final AS (
 
