@@ -3,8 +3,22 @@ version: 2
 models:
   - name: dim_accounts
     description: "Dimension table representing each individual account with details of person to bill for the account. Excludes deleted and test accounts"
+    columns:
+      - name: account_id
+        tests:
+          - not null
+      - name: customer_id
+        tests:
+          - relationships:
+            to: ref('dim_customers')
+            field: customer_id
 
   - name: dim_customers
+    description:
+    columns:
+      - name: customer_id
+        tests:
+          - not null
 
   - name: dim_dates
 
