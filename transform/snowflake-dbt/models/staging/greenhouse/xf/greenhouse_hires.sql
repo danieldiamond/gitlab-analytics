@@ -36,6 +36,7 @@ WITH applications AS (
     LEFT JOIN bamboo 
       ON bamboo.employee_id = bamboohr_mapping.employee_id
       AND (bamboo_row_number = 1 or is_rehire=TRUE)
+
 ), final AS (
 
     SELECT 
@@ -48,7 +49,11 @@ WITH applications AS (
       bamboo_row_number,
       valid_from_date,
       hire_date,
-      IFF(bamboo_row_number = 1 AND greenhouse_candidate_row_number =1, hire_date, candidate_target_hire_date) AS bamboo_hire_date,
+      CASE WHEN hire_date <='2018-12-01' --because we don't always have all job statuses we are using the candidate target hire date
+            THEN candidate_target_hire_date
+           WHEN candidate_target_hire_date > '2018-12-01' AND bamboo_row_number = 1 AND greenhouse_candidate_row_number =1
+            THEN hire_date
+           ELSE candidate_target_hire_date END AS bamboo_hire_date,
       CASE WHEN bamboo_row_number=1 AND greenhouse_candidate_row_number = 1 
                 THEN 'hire'
             WHEN is_rehire = TRUE 
@@ -67,4 +72,11 @@ WITH applications AS (
       ON bamboo_hires.greenhouse_candidate_id = applications.candidate_id
 )    
 
-
+SELECT 
+  application_id,
+  candidate_id,
+  region,
+  greenhouse_candidate_row_number,
+  bamboo_hire_date,
+  hire_type
+FROM final 
