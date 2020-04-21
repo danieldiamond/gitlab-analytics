@@ -10,7 +10,8 @@ WITH zuora_account AS (
 
 ), excluded_accounts AS (
 
-    SELECT DISTINCT
+    SELECT
+      DISTINCT
       account_id
     FROM {{ref('zuora_excluded_accounts')}}
 
@@ -20,7 +21,6 @@ WITH zuora_account AS (
     FROM {{ ref('sfdc_account_source') }}
 
 )
-
 
 SELECT
   zuora_account.account_id,
@@ -35,10 +35,11 @@ SELECT
   zuora_contact.country         AS zuora_sold_to_country,
   zuora_account.is_deleted,
   zuora_account.account_id IN (
-                                SELECT account_id
+                                SELECT
+                                  account_id
                                 FROM excluded_accounts
                               ) AS is_excluded
 FROM zuora_account
-       LEFT JOIN zuora_contact ON COALESCE(zuora_account.sold_to_contact_id, zuora_account.bill_to_contact_id) =
-                                  zuora_contact.contact_id
-       LEFT JOIN sfdc_account ON sfdc_account.account_id = zuora_account.crm_id
+     LEFT JOIN zuora_contact ON COALESCE(zuora_account.sold_to_contact_id, zuora_account.bill_to_contact_id) =
+                                zuora_contact.contact_id
+     LEFT JOIN sfdc_account ON sfdc_account.account_id = zuora_account.crm_id
