@@ -15,7 +15,7 @@ WITH source AS (
          "Field"::VARCHAR           AS field,
          "Week"::INTEGER            AS week,
          "Start_Day"::DATE          AS start_date,
-         "End_Day"::DATE            AS end_day,
+         "End_Day"::DATE            AS end_date,
          "Data_Type"::VARCHAR       AS data_type,
          "Data_Value"::VARCHAR      AS data_value
     FROM source
