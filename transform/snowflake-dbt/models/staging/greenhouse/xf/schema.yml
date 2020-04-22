@@ -76,7 +76,10 @@ models:
           - not_null  
       - name: application_question_answer_created_at
         tests:
-          - not_null       
+          - not_null   
+      - name: location_factor_snapshot_date
+        tests:
+          - not_null    
 
   - name: greenhouse_location_factors
     description: This dbt model gives the location factor of location application question answers.
@@ -101,6 +104,9 @@ models:
       - name: application_question_answer_created_at
         tests:
           - not_null 
+      - name: location_factor_snapshot_date
+        tests:
+          - not_null
 
   - name: greenhouse_stage_intermediate
     description: This data model shows all the greenhouse stages a candidate is in, and adds in additional information about the recruiting process such as source type, source name, recruiter, sourcer.

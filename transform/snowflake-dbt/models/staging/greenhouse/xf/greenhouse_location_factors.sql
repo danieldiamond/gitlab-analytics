@@ -19,7 +19,7 @@ WITH location_application_answer AS (
     ON location_application_answer.city = historical_location_factor.city
     AND location_application_answer.state = historical_location_factor.state 
     AND location_application_answer.country = historical_location_factor.country
-    AND DATE_TRUNC(DAY, location_application_answer.application_question_answer_created_at) = historical_location_factor.snapshot_date
+    AND location_application_answer.location_factor_snapshot_date = historical_location_factor.snapshot_date
   
 ), null_location_factor AS (
 
@@ -36,7 +36,8 @@ WITH location_application_answer AS (
       WHEN state = 'all' THEN 'everywhere else'
       ELSE state END                                                                                                                                        AS state,
     country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM application_answer_loc_factor
   WHERE location_factor IS NULL
 
@@ -49,7 +50,8 @@ WITH location_application_answer AS (
     city,
     state,
     country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM application_answer_loc_factor
   WHERE location_factor IS NOT NULL
   
@@ -73,7 +75,7 @@ WITH location_application_answer AS (
     ON union_application_answers.city = historical_location_factor.city
     AND union_application_answers.state = historical_location_factor.state 
     AND union_application_answers.country = historical_location_factor.country
-    AND DATE_TRUNC(DAY, union_application_answers.application_question_answer_created_at) = historical_location_factor.snapshot_date
+    AND union_application_answers.location_factor_snapshot_date = historical_location_factor.snapshot_date
 
 )
 

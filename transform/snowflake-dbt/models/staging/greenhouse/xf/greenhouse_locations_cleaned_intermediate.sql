@@ -14,7 +14,8 @@ WITH raw_application_answer AS (
     application_answer,
     SPLIT_PART(application_answer, '-', 2)                              AS area,
     SPLIT_PART(application_answer, '-', 1)                              AS country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    IFF(DATE_TRUNC('day', application_question_answer_created_at) < '2019-07-22', '2019-07-22', DATE_TRUNC('day', application_question_answer_created_at))                                AS location_factor_snapshot_date
   FROM raw_application_answer
   
 ), area_partition AS (
@@ -27,7 +28,8 @@ WITH raw_application_answer AS (
     REGEXP_COUNT(area, '/', 1)                                          AS slash_count,
     area,
     country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM application_answer_base
 
 ), countries_all AS (
@@ -39,7 +41,8 @@ WITH raw_application_answer AS (
     'all'                                                               AS city,
     'all'                                                               AS state,
     LOWER(country)                                                      AS country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM area_partition
   WHERE area = 'All'
 
@@ -52,7 +55,8 @@ WITH raw_application_answer AS (
     'all'                                                               AS city,
     LOWER(area)                                                         AS state,
     LOWER(country)                                                      AS country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM area_partition
   WHERE area != 'All'
     AND comma_count = 0
@@ -67,7 +71,8 @@ WITH raw_application_answer AS (
     'all'                                                               AS city,
     TRIM(LOWER(SPLIT_PART(area, '/', 1)))                               AS state,
     LOWER(country)                                                      AS country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM area_partition
   WHERE area != 'All'
     AND comma_count = 0
@@ -82,7 +87,8 @@ WITH raw_application_answer AS (
     'all'                                                               AS city,
     TRIM(LOWER(SPLIT_PART(area, '/', 2)))                               AS state,
     LOWER(country)                                                      AS country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM area_partition
   WHERE area != 'All'
     AND comma_count = 0
@@ -107,7 +113,8 @@ WITH raw_application_answer AS (
     TRIM(LOWER(SPLIT_PART(area, ', ', 1)))                              AS city,
     TRIM(LOWER(SPLIT_PART(area, ', ', 2)))                              AS state,
     LOWER(country)                                                      AS country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM area_partition
   WHERE area != 'All'
     AND comma_count = 1
@@ -122,7 +129,8 @@ WITH raw_application_answer AS (
     TRIM(LOWER((SPLIT_PART(SPLIT_PART(area, ', ', 1), '/', 1))))        AS city,
     TRIM(LOWER(SPLIT_PART(area, ', ', 2)))                              AS state,
     LOWER(country)                                                      AS country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM area_partition
   WHERE area != 'All'
     AND comma_count = 1
@@ -137,7 +145,8 @@ WITH raw_application_answer AS (
     TRIM(LOWER((SPLIT_PART(SPLIT_PART(area, ', ', 1), '/', 2))))        AS city,
     TRIM(LOWER(SPLIT_PART(area, ', ', 2)))                              AS state,
     LOWER(country)                                                      AS country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM area_partition
   WHERE area != 'All'
     AND comma_count = 1
@@ -164,7 +173,8 @@ WITH raw_application_answer AS (
     TRIM(LOWER(SPLIT_PART(area, ', ', 1)))                              AS city,
     TRIM(LOWER(SPLIT_PART(SPLIT_PART(area, ', ', 2), '/', 1)))          AS state,
     LOWER(country)                                                      AS country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM area_partition
   WHERE area != 'All'
     AND comma_count = 1
@@ -180,7 +190,8 @@ WITH raw_application_answer AS (
     TRIM(LOWER(SPLIT_PART(area, ', ', 1)))                              AS city,
     TRIM(LOWER(SPLIT_PART(SPLIT_PART(area, ', ', 2), '/', 2)))          AS state,
     LOWER(country)                                                      AS country,
-    application_question_answer_created_at
+    application_question_answer_created_at,
+    location_factor_snapshot_date
   FROM area_partition
   WHERE area != 'All'
     AND comma_count = 1
