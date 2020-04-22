@@ -10,8 +10,7 @@ WITH zuora_account AS (
 
 ), excluded_accounts AS (
 
-    SELECT
-      DISTINCT
+    SELECT DISTINCT
       account_id
     FROM {{ref('zuora_excluded_accounts')}}
 
