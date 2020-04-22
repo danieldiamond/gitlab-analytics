@@ -23,7 +23,7 @@ models:
       - name: customer_name
         description: account name from SFDC
       - name: customer_country
-        ddescription: billing country as in SFDC
+        description: billing country as in SFDC
       - name: ultimate_parent_account_id
         description: ultimate parent account id
       - name: ultimate_parent_account_name
