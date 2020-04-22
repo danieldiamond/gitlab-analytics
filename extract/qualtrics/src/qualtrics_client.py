@@ -6,6 +6,8 @@ import requests
 import time
 import zipfile
 
+from typing import Dict, Any
+
 
 class QualtricsClient:
     def __init__(self, api_token, qualtrics_data_center_id):
@@ -112,3 +114,30 @@ class QualtricsClient:
         for file_name, cleaned_file_name in zip(file_name_list, cleaned_file_names):
             os.rename(file_name, cleaned_file_name)
         return cleaned_file_names
+
+    def upload_contacts_to_mailing_list(
+        self, directory_id: str, mailing_list_id: str, contacts: Dict[Any, Any]
+    ) -> None:
+        url = (
+            self.base_url
+            + f"directories/{directory_id}/mailinglists/{mailing_list_id}/transactioncontacts"
+        )
+        headers = {
+            "content-type": "application/json",
+            "x-api-token": self.api_token,
+        }
+        response = requests.post(url, headers=headers, data=contacts)
+        response.raise_for_status()
+
+    def create_mailing_list(self, directory_id: str, mailing_list_name: str) -> str:
+        url = self.base_url + f"directories/{directory_id}/mailinglists"
+        headers = {
+            "content-type": "application/json",
+            "x-api-token": self.api_token,
+        }
+        request_body = {"name": mailing_list_name}
+        response = requests.post(url, headers=headers, data=request_body)
+        if response.status_code == 429:
+            time.sleep(3)  # Hit API limit.  Wait and try again.
+            response = requests.post(url, headers=headers, data=request_body)
+        return response.json()["result"]["id"]
