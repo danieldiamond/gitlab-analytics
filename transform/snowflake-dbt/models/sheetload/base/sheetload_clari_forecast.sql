@@ -19,6 +19,7 @@ WITH source AS (
          NULLIF("Data_Type"::varchar)                     AS data_type
          NULLIF("Data_Value"::varchar)                    AS data_value
     FROM source
+
 )
 
 SELECT *
