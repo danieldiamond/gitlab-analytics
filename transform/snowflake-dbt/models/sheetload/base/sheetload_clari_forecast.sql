@@ -6,7 +6,7 @@ WITH source AS (
 ), renamed as (
 
     SELECT
-         "User"::varchar                          AS user,
+         "User"::VARCHAR                          AS user,
          "Email"::varchar                         AS email,
          "CRM_User_ID"::varchar                   AS crm_user_id
          "Sales_Team_Role"::varchar                          AS role
