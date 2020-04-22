@@ -160,6 +160,16 @@ The final result is determined by merging the `cohorting` table to itself when a
 
 {% enddocs %}
 
+
+{% docs gitlab_dotcom_saml_providers_xf %}
+
+XF model that joins the base model `gitlab_dotcom_saml_providers` to the `gitlab_dotcom_identities` model in order to get additional metrics:
+
+* number of users using a specific saml_provider for a specific group 
+* first time a user of a specific group started using the saml_provider. This could be `NULL` if no one is using it.
+
+{% enddocs %}
+
 {% docs gitlab_dotcom_secure_stage_ci_jobs %}
 
 This table is meant to isolate all ci_build jobs used to create the AMAU calculation for secure stage as described in [this handbook page](https://about.gitlab.com/handbook/product/metrics/#stage-monthly-active-users-smau)
