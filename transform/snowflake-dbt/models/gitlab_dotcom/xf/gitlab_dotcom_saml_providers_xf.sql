@@ -17,7 +17,7 @@ WITH saml_providers AS (
     SELECT 
       saml_providers.*,
       COUNT(DISTINCT user_id) AS saml_provider_user_count,
-      MIN(created_at)         AS firstt_saml_provider_created_at
+      MIN(created_at)         AS first_saml_provider_created_at
     FROM saml_providers
     LEFT JOIN identities 
       ON saml_providers.saml_provider_id = identities.saml_provider_id
