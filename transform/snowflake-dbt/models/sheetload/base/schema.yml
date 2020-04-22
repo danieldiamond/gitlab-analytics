@@ -235,6 +235,9 @@ models:
   description: Source model for Scalable Employment Solution Data
   columns:
     - name: nbr_month
+      tests:
+        - not_null
+        - unique
     - name: total_workforce
     - name: nbr_in_scalable_solution
     - name: nbr_in_process
