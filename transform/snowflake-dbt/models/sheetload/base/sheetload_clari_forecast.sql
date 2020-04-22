@@ -9,7 +9,7 @@ WITH source AS (
          "User"::varchar                          AS user,
          "Email"::varchar                         AS email,
          "CRM_User_ID"::varchar                   AS crm_user_id
-         "Role"::varchar                          AS role
+         "Sales_Team_Role"::varchar                          AS role
          "Parent_Role"::varchar                   AS parent_role
          "Timeframe"::varchar                     AS timeframe
          "Field"::varchar                         AS field
