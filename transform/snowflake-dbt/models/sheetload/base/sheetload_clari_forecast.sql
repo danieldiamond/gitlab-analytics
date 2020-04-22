@@ -3,7 +3,7 @@ WITH source AS (
     SELECT *
     FROM {{ source('sheetload', 'clari_export_forecast_net_iacv') }}
 
-), renamed as (
+), renamed AS (
 
     SELECT
          "User"::VARCHAR            AS user,
