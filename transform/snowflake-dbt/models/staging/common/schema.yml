@@ -6,7 +6,7 @@ models:
     columns:
       - name: account_id
         tests:
-          - not null
+          - not_null
       - name: customer_id
         tests:
           - relationships:
@@ -18,7 +18,7 @@ models:
     columns:
       - name: customer_id
         tests:
-          - not null
+          - not_null
 
   - name: dim_dates
 
