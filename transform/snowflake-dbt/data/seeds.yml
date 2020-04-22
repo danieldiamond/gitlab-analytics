@@ -1,6 +1,8 @@
 version: 2
 
 seeds:
+  - name: gitlab_release_schedule
+    description: '{{ doc("gitlab_release_schedule_doc") }}'
   - name: handbook_file_classification_mapping
     description: This a csv loaded by dbt seed for mapping handbook file paths to divisions/department classifications.
   - name: version_usage_stats_to_stage_mappings

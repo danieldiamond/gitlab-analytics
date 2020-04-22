@@ -270,29 +270,6 @@ roles:
                 write:
                     - analytics
 
-    - analyst_sensitive:
-        warehouses:
-            - analyst_xs
-        member_of:
-            - boneyard
-            - dbt_analytics
-            - dbt_analytics_sensitive
-            - gitlab_data_yaml
-            - snowflake_db
-            - zuora
-        privileges:
-            databases:
-                read:
-                    - raw
-                write:
-                    - analytics
-            schemas:
-                read:
-                    - raw.*
-            tables:
-                read:
-                    - raw.*.*
-
     - data_manager:
         warehouses:
             - analyst_xs
@@ -643,13 +620,16 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
                     - raw.greenhouse
+                    - analytics.greenhouse
             tables:
                 read:
                     - raw.greenhouse.*
+                    - analytics.greenhouse.*
 
     - handbook:
         warehouses:
@@ -1324,7 +1304,6 @@ users:
     - eburke:
         can_login: yes
         member_of:
-            - analyst_sensitive
             - eburke
             - engineer
             - sysadmin

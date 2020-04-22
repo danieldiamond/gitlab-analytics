@@ -26,7 +26,7 @@
 WITH stages AS (
 
     SELECT *
-    FROM {{ ref ('greenhouse_application_stages') }}
+    FROM {{ ref ('greenhouse_application_stages_source') }}
     WHERE stage_entered_on IS NOT NULL
     
 ), recruiting_xf AS (

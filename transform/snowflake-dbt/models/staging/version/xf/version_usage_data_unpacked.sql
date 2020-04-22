@@ -20,6 +20,11 @@ WITH usage_data AS (
     SELECT *
     FROM {{ ref('zuora_account')}}
 
+), version_releases AS (
+
+    SELECT *
+    FROM {{ ref('version_releases') }}
+
 ), joined AS (
 
     SELECT
@@ -31,7 +36,10 @@ WITH usage_data AS (
       licenses.starts_at                      AS license_starts_at,
       licenses.license_expires_at,
       zuora_subscriptions.subscription_status AS zuora_subscription_status,
-      zuora_accounts.crm_id                   AS zuora_crm_id
+      zuora_accounts.crm_id                   AS zuora_crm_id,
+      DATEDIFF('days', ping_version.release_date, usage_data.created_at)  AS days_after_version_release_date,
+      latest_version.major_minor_version                                  AS latest_version_available_at_ping_creation,
+      latest_version.version_row_number - ping_version.version_row_number AS versions_behind_latest
 
     FROM usage_data
       LEFT JOIN licenses
@@ -40,7 +48,11 @@ WITH usage_data AS (
         ON licenses.zuora_subscription_id = zuora_subscriptions.subscription_id
       LEFT JOIN zuora_accounts
         ON zuora_subscriptions.account_id = zuora_accounts.account_id
-    WHERE 
+      LEFT JOIN version_releases AS ping_version -- Join on the version of the ping itself.
+        ON usage_data.major_minor_version = ping_version.major_minor_version
+      LEFT JOIN version_releases AS latest_version -- Join the latest version released at the time of the ping.
+        ON usage_data.created_at BETWEEN latest_version.release_date AND {{ coalesce_to_infinity('latest_version.next_version_release_date') }}
+    WHERE
       (
         licenses.email IS NULL
         OR NOT (email LIKE '%@gitlab.com' AND LOWER(company) LIKE '%gitlab%') -- Exclude internal tests licenses.
@@ -55,7 +67,6 @@ WITH usage_data AS (
         WHEN uuid = 'ea8bf810-1d6f-4a6a-b4fd-93e8cbd8b57f' THEN 'SaaS'
         ELSE 'Self-Managed'
       END                                                                             AS ping_source,
-      CONCAT(CONCAT(SPLIT_PART(version, '.', 1), '.'), SPLIT_PART(version, '.', 2))   AS major_version,
       CASE WHEN LOWER(edition) LIKE '%ee%' THEN 'EE'
         ELSE 'CE' END                                                                 AS main_edition,
       CASE WHEN edition LIKE '%CE%' THEN 'Core'
@@ -70,6 +81,9 @@ WITH usage_data AS (
       zuora_subscription_id,
       zuora_subscription_status,
       zuora_crm_id,
+      days_after_version_release_date,
+      latest_version_available_at_ping_creation,
+      versions_behind_latest,
       f.path                                                                          AS ping_name,
       REPLACE(f.path, '.','_')                                                        AS full_ping_name,
       f.value                                                                         AS ping_value
@@ -87,7 +101,6 @@ WITH usage_data AS (
     SELECT
       {{ dbt_utils.star(from=ref('version_usage_data'), except=['stats_used']) }},
       unpacked.ping_source,
-      unpacked.major_version,
       unpacked.main_edition,
       unpacked.edition_type,
       unpacked.license_plan_code,
@@ -95,13 +108,16 @@ WITH usage_data AS (
       unpacked.zuora_subscription_id,
       unpacked.zuora_subscription_status,
       unpacked.zuora_crm_id,
-    
+      unpacked.days_after_version_release_date,
+      unpacked.latest_version_available_at_ping_creation,
+      unpacked.versions_behind_latest,
+
       {% for stat_name in version_usage_stats_list %}
         MAX(IFF(full_ping_name = '{{stat_name}}', ping_value::NUMERIC, NULL)) AS {{stat_name}}
         {{ "," if not loop.last }}
       {% endfor %}
     FROM unpacked
-    {{ dbt_utils.group_by(n=55) }}
+    {{ dbt_utils.group_by(n=62) }}
 
 )
 
