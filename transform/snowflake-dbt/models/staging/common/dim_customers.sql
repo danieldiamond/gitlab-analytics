@@ -67,10 +67,14 @@ SELECT
     ELSE NULL
     END                                   AS merged_to_account_id
 FROM sfdc_account
-LEFT JOIN master_records ON sfdc_account.account_id = master_records.account_id
-LEFT JOIN ultimate_parent_account ON ultimate_parent_account.account_id = sfdc_account.ultimate_parent_account_id
-LEFT OUTER JOIN sfdc_users ON sfdc_account.technical_account_manager_id = sfdc_users.id
-LEFT JOIN sfdc_record_type ON sfdc_account.record_type_id = sfdc_record_type.record_type_id
+LEFT JOIN master_records
+  ON sfdc_account.account_id = master_records.account_id
+LEFT JOIN ultimate_parent_account
+  ON ultimate_parent_account.account_id = sfdc_account.ultimate_parent_account_id
+LEFT OUTER JOIN sfdc_users
+  ON sfdc_account.technical_account_manager_id = sfdc_users.id
+LEFT JOIN sfdc_record_type
+  ON sfdc_account.record_type_id = sfdc_record_type.record_type_id
 
 
 
