@@ -17,8 +17,23 @@ models:
     description: '{{ doc("dim_customers") }}'
     columns:
       - name: customer_id
+        description: account id from SFDC identifing the customer
         tests:
           - not_null
+      - name: customer_name
+        description: account name from SFDC
+      - name: customer_country
+        ddescription: billing country as in SFDC
+      - name: ultimate_parent_account_id
+        description: ultimate parent account id
+      - name: ultimate_parent_account_name
+        description: parent account name
+      - name: ultimate_parent_account_country
+        description: country of where the parent account is
+      - name: is_deleted
+        description: flag indicating if account has been deleted
+      - name: merged_to_account_id
+        description: for deleted accounts this is the SFDC account they were merged to
 
   - name: dim_dates
 

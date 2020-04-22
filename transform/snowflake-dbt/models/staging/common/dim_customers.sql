@@ -35,8 +35,9 @@ WITH sfdc_account AS (
       a.account_id,
       COALESCE(
       b.master_record_id, a.master_record_id) AS sfdc_master_record_id
-    FROM deleted_accounts a LEFT JOIN deleted_accounts b
-    ON a.master_record_id = b.account_id
+    FROM deleted_accounts a
+    LEFT JOIN deleted_accounts b
+      ON a.master_record_id = b.account_id
 
 )
 
