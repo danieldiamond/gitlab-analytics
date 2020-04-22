@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('sheetload', 'clari_forecast') }}
+    FROM {{ source('sheetload', 'clari_export_forecast_net_iacv') }}
 
 ), renamed as (
 
@@ -16,8 +16,8 @@ WITH source AS (
          "Week"::INTEGER                          AS week
          "Start_Day"::DATE                        AS start_day
          "End_Day"::DATE                          AS end_day
-         "Data_Type"::varchar                     AS data_type
-         "Data_Value"::varchar                    AS data_value
+         NULLIF("Data_Type"::varchar)                     AS data_type
+         NULLIF("Data_Value"::varchar)                    AS data_value
     FROM source
 )
 
