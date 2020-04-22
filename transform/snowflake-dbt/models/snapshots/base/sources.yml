@@ -5,7 +5,7 @@ sources:
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: snapshots
     loader: dbt
-    
+
     quoting:
       database: true
       schema: false
@@ -25,3 +25,4 @@ sources:
       - name: sfdc_account_snapshots
       - name: sfdc_opportunity_snapshots
       - name: sheetload_employee_location_factor_snapshots
+      - name: sheetload_kpi_status_snapshots
