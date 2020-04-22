@@ -613,11 +613,6 @@ models:
               field: issue_id
               severity: warn
       - name: promoted_to_epic_id
-        tests:
-          - relationships:
-              to: ref('gitlab_dotcom_epics')
-              field: epic_id
-              severity: warn
       - name: issue_title
         description: '{{ doc("visibility_documentation") }}'
       - name: issue_description
