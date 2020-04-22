@@ -7,6 +7,7 @@ WITH source AS (
 
     SELECT 
       bamboo_employee_id,
+      sfdc_user_id,
       calendar_month::DATE                                        AS calendar_month,
       fiscal_quarter::INT                                         AS fiscal_quarter,
       fiscal_year::INT                                            AS fiscal_year,
