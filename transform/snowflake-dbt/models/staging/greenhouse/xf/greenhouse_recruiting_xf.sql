@@ -28,7 +28,8 @@ WITH applications AS (
       ON applications.application_id = greenhouse_application_jobs.application_id
     INNER JOIN jobs 
       ON greenhouse_application_jobs.job_id = jobs.job_id
-      AND applications.applied_at BETWEEN jobs.job_created_at AND COALESCE(jobs.job_closed_at, DATEADD(week,3,CURRENT_DATE()))
+      AND applications.applied_at BETWEEN jobs.job_created_at 
+        AND COALESCE(jobs.job_closed_at, DATEADD(week,3,CURRENT_DATE()))
       AND (jobs.job_id IS NOT NULL AND jobs.requisition_id IS NOT NULL)
     
 ), greenhouse_departments AS (
@@ -73,7 +74,7 @@ WITH applications AS (
         applications.application_id, 
         offer_id,
         applications.candidate_id, 
-        jobs.job_id,
+        job_id,
         requisition_id, 
         application_status,
         stage_name                                                                      AS current_stage_name, 
@@ -89,7 +90,7 @@ WITH applications AS (
         CASE WHEN lower(department_name) LIKE '%sales%' THEN 'Sales'
             WHEN department_name = 'Dev' THEN 'Engineering'
             WHEN department_name = 'Customer Success Management' THEN 'Sales'
-            ELSE COALESCE(cost_center.division, department_name) END::VARCHAR(100)     AS division_modified,     
+            ELSE COALESCE(cost_center.division, department_name) END::VARCHAR(100)      AS division_modified,     
         greenhouse_sources.source_name::VARCHAR(250)                                    AS source_name,
         greenhouse_sources.source_type::VARCHAR(250)                                    AS source_type,
         greenhouse_sourcer.sourcer_name,
@@ -98,31 +99,31 @@ WITH applications AS (
         IFF(greenhouse_sources.source_name ='LinkedIn (Prospecting)',True, False)       AS sourced_candidate,
         rejection_reason_name,
         rejection_reason_type,
-        jobs.job_status                                                                 AS current_job_req_status,
+        job_req.job_status                                                              AS current_job_req_status,
         IFF(offer_status ='accepted',
                 DATEDIFF('day', applications.applied_at, offers.resolved_at),
                 NULL)                                                                   AS time_to_offer,
         IFF(bamboo.hire_date IS NOT NULL, TRUE, FALSE)                                  AS is_hired_in_bamboo
     FROM applications 
-    LEFT JOIN reqs
-      ON greenhouse_application_jobs.application_id = applications.application_id
+    LEFT JOIN job_req
+      ON job_req.application_id = applications.application_id
     LEFT JOIN  greenhouse_departments 
-    ON jobs.department_id = greenhouse_departments.department_id
-    AND jobs.organization_id = greenhouse_departments.organization_id
+      ON job_req.department_id = greenhouse_departments.department_id
+      AND job_req.organization_id = greenhouse_departments.organization_id
     LEFT JOIN greenhouse_sources 
-    ON greenhouse_sources.source_id = applications.source_id 
+      ON greenhouse_sources.source_id = applications.source_id 
     LEFT JOIN offers 
-    ON applications.application_id = offers.application_id
+      ON applications.application_id = offers.application_id
     LEFT JOIN candidates
-    ON applications.candidate_id = candidates.candidate_id  
+      ON applications.candidate_id = candidates.candidate_id  
     LEFT JOIN greenhouse_sourcer
-    ON applications.application_id = greenhouse_sourcer.application_id
+      ON applications.application_id = greenhouse_sourcer.application_id
     LEFT JOIN rejection_reasons
-    ON rejection_reasons.rejection_reason_id = applications.rejection_reason_id
+      ON rejection_reasons.rejection_reason_id = applications.rejection_reason_id
     LEFT JOIN cost_center
-    ON TRIM(greenhouse_departments.department_name)=TRIM(cost_center.department)
+      ON TRIM(greenhouse_departments.department_name)=TRIM(cost_center.department)
     LEFT JOIN bamboo
-    ON bamboo.greenhouse_candidate_id = applications.candidate_id  
+      ON bamboo.greenhouse_candidate_id = applications.candidate_id  
 
 )
 
