@@ -81,7 +81,7 @@ def sheet_loader(
     database="RAW",
     gapi_keyfile: str = None,
     conn_dict: Dict[str, str] = None,
-    gsheets_retries: int = 5
+    gsheets_retries: int = 5,
 ) -> None:
     """
     Load data from a google sheet into a DataFrame and pass it to dw_uploader.
@@ -161,12 +161,9 @@ def sheet_loader(
         else:
             error(f"Max retries exceeded, giving up on {sheet_info}")
 
-
     query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)
     info("Permissions granted.")
-
-
 
 
 def gcs_loader(
