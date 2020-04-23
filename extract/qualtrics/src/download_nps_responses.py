@@ -37,7 +37,7 @@ if __name__ == "__main__":
     for local_file_name in local_file_names:
         snowflake_stage_load_copy_remove(
             local_file_name,
-            "raw.qualtrics.qualtrics_load",
+            "raw.qualtrics.qualtrics_nps_load",
             "raw.qualtrics.nps_survey_responses",
             snowflake_engine,
         )

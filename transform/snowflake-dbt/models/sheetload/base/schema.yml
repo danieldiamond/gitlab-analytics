@@ -231,3 +231,14 @@ models:
     - name: gtm_strategy
       tests:
         - not_null
+- name: sheetload_scalable_employment_values
+  description: Source model for Scalable Employment Solution Data
+  columns:
+    - name: nbr_month
+      tests:
+        - not_null
+        - unique
+    - name: total_workforce
+    - name: nbr_in_scalable_solution
+    - name: nbr_in_process
+    - name: nbr_to_be_converted
