@@ -26,7 +26,7 @@ WITH source AS (
     INNER JOIN
     (
         select seq4() + 1 as rn
-        from table(generator(rowcount => 10)) v 
+        from table(generator(rowcount => 11)) v 
     )
     WHERE key_name IS NOT NULL
 
