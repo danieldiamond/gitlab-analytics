@@ -235,6 +235,24 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'approver_groups'
     export_table_primary_key: id
+  approval_merge_request_rules:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , merge_request_id
+      , approvals_required
+      , code_owner
+      , name
+      , rule_type
+      , report_type
+      FROM approval_merge_request_rules
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'approval_merge_request_rules'
+    export_table_primary_key: id
   audit_events:
     import_db: GITLAB_DB
     import_query: >
@@ -1403,6 +1421,49 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'projects'
+    export_table_primary_key: id
+  protected_branches:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , name
+      , created_at
+      , updated_at
+      , code_owner_approval_required
+      FROM protected_branches
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'protected_branches'
+    export_table_primary_key: id
+  push_rules:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , force_push_regex
+      , delete_branch_regex
+      , commit_message_regex
+      , deny_delete_tag
+      , project_id
+      , created_at
+      , updated_at
+      , author_email_regex
+      , member_check
+      , file_name_regex
+      , is_sample
+      , max_file_size
+      , prevent_secrets
+      , branch_name_regex
+      , reject_unsigned_commits
+      , commit_committer_check
+      , regexp_uses_re
+      , commit_message_negative_regex
+      FROM push_rules
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'push_rules'
     export_table_primary_key: id
   saml_providers:
     import_db: GITLAB_DB
