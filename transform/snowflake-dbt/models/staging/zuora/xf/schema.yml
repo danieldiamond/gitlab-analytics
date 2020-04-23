@@ -231,7 +231,8 @@ models:
                 - not_null
           - name: product_category
             tests:
-                - not_null
+                - not_null:
+                    severity: warn
     - name: zuora_scheduled_renewals
       description: Zuora Scheduled Renewals
       columns:
