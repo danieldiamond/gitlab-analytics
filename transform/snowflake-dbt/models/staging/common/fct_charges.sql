@@ -49,8 +49,13 @@ WITH zuora_rate_plan AS (
     FROM base_charges
     INNER JOIN zuora_invoice_item AS invoice_item_source
       ON base_charges.charge_id = invoice_item_source.rate_plan_charge_id
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY rate_plan_charge_number, rate_plan_charge_segment
-    ORDER BY rate_plan_charge_version DESC, service_start_date DESC)= 1
+    QUALIFY ROW_NUMBER() OVER (
+        PARTITION BY
+          rate_plan_charge_number,
+          rate_plan_charge_segment
+        ORDER BY
+          rate_plan_charge_version DESC,
+          service_start_date DESC)= 1
 
 ), final AS (
 
@@ -58,7 +63,9 @@ WITH zuora_rate_plan AS (
       base_charges.*,
       ROW_NUMBER() OVER (
         PARTITION BY rate_plan_charge_number
-        ORDER BY rate_plan_charge_segment, rate_plan_charge_version
+        ORDER BY
+          rate_plan_charge_segment,
+          rate_plan_charge_version
       )                                                                         AS segment_version_order,
       latest_invoiced_charge_version_in_segment.rate_plan_charge_id IS NOT NULL AS is_last_version_segment
     FROM base_charges
