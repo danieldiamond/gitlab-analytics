@@ -8,8 +8,9 @@
         )
     }}
 
-    SELECT md5(kpi_grouping || kpi_sub_grouping || kpi) as unique_id,
-            *
+    SELECT
+      MD5(kpi_grouping || kpi_sub_grouping || kpi) AS unique_id,
+      *
     FROM {{ source('sheetload','kpi_status') }}
 
 {% endsnapshot %}
