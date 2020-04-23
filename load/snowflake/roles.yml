@@ -1147,7 +1147,7 @@ roles:
     - rparker:
         member_of: 
             - analyst_core
-        warehouses
+        warehouses:
             - analyst_xs
 
     - sreddy:
