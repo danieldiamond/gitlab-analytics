@@ -1457,7 +1457,7 @@ tables:
       , branch_name_regex
       , reject_unsigned_commits
       , commit_committer_check
-      , regexp_uses_re
+      , regexp_uses_re2
       , commit_message_negative_regex
       FROM push_rules
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
