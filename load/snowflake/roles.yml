@@ -1144,6 +1144,7 @@ roles:
             - reporter
         warehouses:
             - analyst_xs
+    
     - rparker:
         member_of: 
             - analyst_core
