@@ -24,7 +24,7 @@ WITH source AS (
     LIMIT 11
 
 
-),details_parsed AS (
+), details_parsed AS (
 
     SELECT
       id::INTEGER                                                   AS audit_event_id,
