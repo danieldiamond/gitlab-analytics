@@ -3,18 +3,37 @@ version: 2
 models:
   - name: dim_accounts
     description: "Dimension table representing each individual account with details of person to bill for the account. Excludes deleted and test accounts"
+    columns:
+      - name: account_id
+        tests:
+          - not_null
+          - unique
 
   - name: dim_dates
+    columns:
+      - name: date_id
+        tests:
+          - not_null
+          - unique
 
   - name: dim_subscriptions
     description: "Dimension table representing subscription details as in Zuora"
     columns:
+      - name: subscription_id
+        tests:
+          - not_null
+          - unique
       - name: subscription_status
         tests:
           - not_null
 
   - name: dim_products
     description: "Product related information for which account is charged "
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+          - unique
 
   - name: fct_invoice_items_agg
     description: "Aggregate fact table with invoice items summarized on charge level"
@@ -30,13 +49,6 @@ models:
       - name: subscription_id
         tests:
           - not_null
-      - name: account_id
-        tests:
-          - not_null
-      - name: product_id
-        tests:
-          - not_null
-
 
 
 
