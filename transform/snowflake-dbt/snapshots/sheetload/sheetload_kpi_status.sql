@@ -3,8 +3,8 @@
     {{
         config(
           unique_key='md5(kpi_grouping || kpi_sub_grouping || kpi)',
-          strategy='check',
-          check_cols='all',
+          strategy='timestamp',
+          updated_at='_UPDATED_AT',
         )
     }}
 
@@ -13,4 +13,3 @@
     FROM {{ source('sheetload','kpi_status') }}
 
 {% endsnapshot %}
-
