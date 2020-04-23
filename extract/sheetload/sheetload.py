@@ -8,6 +8,7 @@ from os import environ as env
 from typing import Dict, Tuple
 from yaml import load, safe_load, YAMLError
 from gspread.exceptions import APIError
+from gspread import Client
 import boto3
 import gspread
 import pandas as pd
@@ -80,7 +81,6 @@ def sheet_loader(
     database="RAW",
     gapi_keyfile: str = None,
     conn_dict: Dict[str, str] = None,
-    gsheets_retries: int = 5,
 ) -> None:
     """
     Load data from a google sheet into a DataFrame and pass it to dw_uploader.
@@ -133,7 +133,22 @@ def sheet_loader(
         ServiceAccountCredentials.from_json_keyfile_dict(keyfile, scope)
     )
 
-    for sheet_info in sheets:
+    process_sheets(google_creds, sheets, schema, engine)
+
+    query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
+    query_executor(engine, query)
+    info("Permissions granted.")
+
+
+def process_sheets(
+    google_creds: Client,
+    sheets_list: list,
+    schema: str,
+    engine: Engine,
+    gsheets_retries: int = 10,
+) -> None:
+
+    for sheet_info in sheets_list:
         # Limits number of times we will retry after receiving an error back
         for attempt in range(gsheets_retries):
             try:
@@ -160,10 +175,6 @@ def sheet_loader(
                 break
         else:
             error(f"Max retries exceeded, giving up on {sheet_info}")
-
-    query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
-    query_executor(engine, query)
-    info("Permissions granted.")
 
 
 def gcs_loader(
