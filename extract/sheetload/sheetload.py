@@ -2,12 +2,13 @@ import sys
 import re
 from io import StringIO
 import json
+import time
 from logging import error, info, basicConfig, getLogger
 from os import environ as env
 from time import time
 from typing import Dict, Tuple
 from yaml import load, safe_load, YAMLError
-
+from gspread.exceptions import APIError
 import boto3
 import gspread
 import pandas as pd
@@ -80,6 +81,7 @@ def sheet_loader(
     database="RAW",
     gapi_keyfile: str = None,
     conn_dict: Dict[str, str] = None,
+    gsheets_retries: int = 5
 ) -> None:
     """
     Load data from a google sheet into a DataFrame and pass it to dw_uploader.
@@ -133,21 +135,38 @@ def sheet_loader(
     )
 
     for sheet_info in sheets:
-        # Sheet here refers to the name of the sheet file, table is the actual sheet name
-        info(f"Processing sheet: {sheet_info}")
-        sheet_file, table = sheet_info.split(".")
-        sheet = (
-            google_creds.open(schema + "." + sheet_file)
-            .worksheet(table)
-            .get_all_values()
-        )
-        sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
-        dw_uploader(engine, table, sheet_df, schema)
-        info(f"Finished processing for table: {sheet_info}")
+        # Limits number of times we will retry after receiving an error back
+        for attempt in range(gsheets_retries):
+            try:
+                info(f"Processing sheet: {sheet_info}")
+                sheet_file, table = sheet_info.split(".")
+                sheet = (
+                    google_creds.open(schema + "." + sheet_file)
+                    .worksheet(table)
+                    .get_all_values()
+                )
+                sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
+                dw_uploader(engine, table, sheet_df, schema)
+                info(f"Finished processing for table: {sheet_info}")
+            except APIError as gspread_error:
+                info(gspread_error)
+                info(gspread_error.response.text)
+                info(gspread_error.response.json)
+                info(gspread_error.response.json.get("code"))
+                info("Received API error, waiting 100 seconds before carrying on")
+                time.sleep(100)
+                continue
+            else:
+                break
+        else:
+            error(f"Max retries exceeded, giving up on {sheet_info}")
+
 
     query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)
     info("Permissions granted.")
+
+
 
 
 def gcs_loader(
