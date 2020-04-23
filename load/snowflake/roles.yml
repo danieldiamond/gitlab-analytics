@@ -1507,7 +1507,7 @@ users:
         member_of:
             - rkohnke
 
-    - rparker
+    - rparker:
         can_login: yes
         member_of:
             - rparker
