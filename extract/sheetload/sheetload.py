@@ -5,7 +5,7 @@ import json
 import time
 from logging import error, info, basicConfig, getLogger
 from os import environ as env
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 from yaml import load, safe_load, YAMLError
 from gspread.exceptions import APIError
 from gspread import Client
@@ -142,7 +142,7 @@ def sheet_loader(
 
 def process_sheets(
     google_creds: Client,
-    sheets_list: list,
+    sheets_list: List[str],
     schema: str,
     engine: Engine,
     gsheets_retries: int = 10,
