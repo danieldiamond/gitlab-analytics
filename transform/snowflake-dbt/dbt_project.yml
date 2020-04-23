@@ -167,6 +167,7 @@ models:
           schema: analytics
 
       version:
+        materialized: view
         tags: ["product"]
         xf:
           schema: analytics
