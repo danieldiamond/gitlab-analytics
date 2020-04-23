@@ -5,7 +5,6 @@ import json
 import time
 from logging import error, info, basicConfig, getLogger
 from os import environ as env
-from time import time
 from typing import Dict, Tuple
 from yaml import load, safe_load, YAMLError
 from gspread.exceptions import APIError
@@ -66,7 +65,7 @@ def dw_uploader(
         query_executor(engine, drop_query)
 
     # Add the _updated_at metadata and set some vars if chunked
-    data["_updated_at"] = time()
+    data["_updated_at"] = time.time()
     if_exists = "append" if chunk else "replace"
     data.to_sql(
         name=table, con=engine, index=False, if_exists=if_exists, chunksize=15000
