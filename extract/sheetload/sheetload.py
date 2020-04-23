@@ -150,7 +150,9 @@ def sheet_loader(
                 info(f"Finished processing for table: {sheet_info}")
             except APIError as gspread_error:
                 if gspread_error.response.code == 429:
-                    info("Received API rate limit error, waiting 100 seconds before carrying on")
+                    info(
+                        "Received API rate limit error, waiting 100 seconds before carrying on"
+                    )
                     time.sleep(100)
                     continue
                 else:
