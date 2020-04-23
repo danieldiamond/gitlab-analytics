@@ -15,12 +15,12 @@ WITH applications AS (
  
     SELECT *,
       ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY valid_from_date) AS bamboo_row_number
-    FROM "ANALYTICS"."ANALYTICS_SENSITIVE"."BAMBOOHR_EMPLOYMENT_STATUS_XF" 
- 
+    FROM {{ ref ('bamboohr_employment_status_xf') }}
+     
  ), bamboohr_mapping AS (
  
     SELECT *
-    FROM "ANALYTICS"."ANALYTICS_SENSITIVE"."BAMBOOHR_ID_EMPLOYEE_NUMBER_MAPPING"
+    FROM {{ ref ('bamboohr_id_employee_number_mapping') }}
    
 ), bamboo_hires AS (
 
@@ -49,7 +49,8 @@ WITH applications AS (
       bamboo_row_number,
       valid_from_date,
       hire_date,
-      CASE WHEN hire_date <='2018-12-01' --because we don't always have all job statuses we are using the candidate target hire date
+      CASE WHEN hire_date <='2018-12-01' 
+      --because we don't always have all job statuses we are using the candidate target hire date
             THEN candidate_target_hire_date
            WHEN candidate_target_hire_date > '2018-12-01' AND bamboo_row_number = 1 AND greenhouse_candidate_row_number =1
             THEN hire_date
