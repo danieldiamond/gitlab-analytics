@@ -149,7 +149,7 @@ def sheet_loader(
                 dw_uploader(engine, table, sheet_df, schema)
                 info(f"Finished processing for table: {sheet_info}")
             except APIError as gspread_error:
-                if gspread_error.response.code == 429:
+                if gspread_error.response.status_code == 429:
                     info(
                         "Received API rate limit error, waiting 100 seconds before carrying on"
                     )
