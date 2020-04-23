@@ -167,15 +167,19 @@ models:
     columns:
         - name: application_id
         - name: candidate_id
+          tests:
+            - relationships:
+                to: ref('bamboohr_id_employee_number_mapping')
+                field: greenhouse_candidate_id
         - name: region
           description: What area the hired candidate is in
         - name: greenhouse_candidate_row_number
           description: Indiciates the number of applications the candidate submitted and was hired for. For example, a 2 would be their second hire within the company.
         - name: bamboo_hire_date
           description: Note - this is a calculated field. For anyone prior to 2018 we use the target hire date from bamboo as it will be more accurate, and for anyone post where this is the 1st hired record we use the bamboo hire date. If this is the 2+ hired record in greenhouse we use the candidate target hire date as this candidate is a transfer.
-          test:
+          tests:
             - not_null
-          - name: hire_type
+        - name: hire_type
           description: Indicates whether the candidate is a hire, rehire, or transfer based on greenhouse_candidate_row_number.
 
 
