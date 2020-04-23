@@ -29,7 +29,8 @@ WITH source AS (
     SELECT
       id::INTEGER                                                   AS audit_event_id,
       REGEXP_SUBSTR(details, '\\:([a-z_]*)\\: (.*)', 1, rn, 'c', 1) AS key_name,
-      REGEXP_SUBSTR(details, '\\:([a-z_]*)\\: (.*)', 1, rn, 'c', 2) AS key_value
+      REGEXP_SUBSTR(details, '\\:([a-z_]*)\\: (.*)', 1, rn, 'c', 2) AS key_value,
+      updated_at::TIMESTAMP                                         AS updated_at
     FROM source
     INNER JOIN numbers
     WHERE key_name IS NOT NULL
