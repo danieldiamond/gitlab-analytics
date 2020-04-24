@@ -2,7 +2,7 @@
 
     {{
         config(
-          unique_key='md5(kpi_grouping || kpi_sub_grouping || kpi)',
+          unique_key='unique_id',
           strategy='timestamp',
           updated_at='_UPDATED_AT',
         )
