@@ -96,6 +96,7 @@ gitlab-org/security-products/analyzers/spotbugs,11139665
 gitlab-org/security-products/analyzers/tslint,10846951
 gitlab-org/security-products/codequality,5498087
 gitlab-org/ci-cd/codequality,17035255
+gitlab-org/ci-cd/accessibility,17166102
 gitlab-org/security-products/dast,9762266
 gitlab-org/security-products/dependency-scanning,5779760
 gitlab-org/security-products/gemnasium-db,12006272
