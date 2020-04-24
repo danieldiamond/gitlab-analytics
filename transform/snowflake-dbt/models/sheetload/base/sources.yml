@@ -58,6 +58,6 @@ sources:
         freshness: null
       - name: social_marketing_metrics
       - name: abm_account_baselines
-      - name: clari_forecast
+      - name: clari_export_forecast_net_iacv
         freshness:
           warn_after: {count: 10, period: day}
