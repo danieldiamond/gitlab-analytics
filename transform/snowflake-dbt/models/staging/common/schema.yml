@@ -8,11 +8,6 @@ models:
         tests:
           - not_null
           - unique
-      - name: crm_id
-        tests:
-          - relationships:
-              to: ref('dim_customers')
-              field: crm_id
 
   - name: dim_customers
     description: '{{ doc("dim_customers") }}'
@@ -21,10 +16,6 @@ models:
         description: account id from SFDC identifing the customer
         tests:
           - unique
-      - name: customer_id
-        description: for merged accounts the crm id it was merged to
-        tests:
-          - not_null
       - name: customer_name
         description: account name from SFDC
       - name: customer_country
@@ -57,11 +48,6 @@ models:
       - name: subscription_status
         tests:
           - not_null
-      - name: crm_id
-        tests:
-          - relationships:
-              to: ref('dim_customers')
-              field: crm_id
 
   - name: dim_products
     description: "Product related information for which account is charged "

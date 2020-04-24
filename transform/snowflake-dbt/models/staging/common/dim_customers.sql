@@ -38,8 +38,6 @@ WITH sfdc_account AS (
 
 SELECT
   sfdc_account.account_id                 AS crm_id,
-  IFF(sfdc_account.is_deleted, master_records.sfdc_master_record_id, sfdc_account.account_id )
-                                          AS customer_id,
   sfdc_account.account_name               AS customer_name,
   sfdc_account.billing_country            AS customer_country,
   ultimate_parent_account.account_id      AS ultimate_parent_account_id,
@@ -53,7 +51,12 @@ SELECT
   sfdc_account.account_owner_team,
   sfdc_account.account_type,
   sfdc_users.name                         AS technical_account_manager,
-  sfdc_account.is_deleted                 AS is_deleted
+  sfdc_account.is_deleted                 AS is_deleted,
+  CASE
+    WHEN sfdc_account.is_deleted
+      THEN master_records.sfdc_master_record_id
+    ELSE NULL
+  END                                   AS merged_to_account_id
 FROM sfdc_account
 LEFT JOIN master_records
   ON sfdc_account.account_id = master_records.account_id
