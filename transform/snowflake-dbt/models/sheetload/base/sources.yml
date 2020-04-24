@@ -60,4 +60,4 @@ sources:
       - name: abm_account_baselines
       - name: clari_forecast
         freshness:
-          warn_after: {count: 10, period: days}
+          warn_after: {count: 10, period: day}
