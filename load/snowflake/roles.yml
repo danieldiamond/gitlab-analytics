@@ -1144,6 +1144,12 @@ roles:
             - reporter
         warehouses:
             - analyst_xs
+    
+    - rparker:
+        member_of: 
+            - analyst_core
+        warehouses:
+            - analyst_xs
 
     - sreddy:
         member_of:
@@ -1500,6 +1506,11 @@ users:
         can_login: yes
         member_of:
             - rkohnke
+
+    - rparker:
+        can_login: yes
+        member_of:
+            - rparker
 
     - sreddy:
         can_login: yes
