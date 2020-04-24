@@ -14,18 +14,19 @@ trimmed AS (
     distribution_channel,
     has_finished_survey,
     user_language,
-    MAX(response_recorded_at) OVER (PARTITION BY response_id)                AS max_response_recorded_at,
-    IFF(question_id = 'QID172787673', question_response, NULL)::INTEGER      AS nps_score,
-    IFF(question_id = 'QID172787675_TEXT', question_response, NULL)::VARCHAR AS nps_reason
+    MAX(response_recorded_at)                                                     AS max_response_recorded_at,
+    MAX(IFF(question_id = 'QID172787673', question_response, NULL)::INTEGER)      AS nps_score,
+    MAX(IFF(question_id = 'QID172787675_TEXT', question_response, NULL)::VARCHAR) AS nps_reason
 
   FROM answers
+  {{ dbt_utils.group_by(n=4) }}
 
 ),
 
 final AS (
 
   SELECT
-  
+
     *,
     CASE
       WHEN nps_score >= 9 THEN 'promoter'
@@ -39,7 +40,7 @@ final AS (
     END AS nps_bucket_integer
 
   FROM trimmed
-  
+
 )
 
 SELECT *
