@@ -17,8 +17,12 @@ models:
   - name: dim_customers
     description: '{{ doc("dim_customers") }}'
     columns:
-      - name: customer_id
+      - name: crm_id
         description: account id from SFDC identifing the customer
+        tests:
+          - unique
+      - name: customer_id
+        description: for merged accounts the crm id it was merged to
         tests:
           - not_null
       - name: customer_name
