@@ -90,8 +90,6 @@ if __name__ == "__main__":
     api_token = env["GITLAB_COM_API_TOKEN"]
     api_client = GitLabAPI(api_token)
 
-    load_database: str = configuration["SNOWFLAKE_LOAD_DATABASE"]
-
     for project_id in configuration["project_ids"]:
         logging.info(f"Extracting project {project_id}.")
         mr_urls = api_client.get_urls_for_mrs_for_project(project_id, start, end)
@@ -110,7 +108,7 @@ if __name__ == "__main__":
         if wrote_to_file:
             snowflake_stage_load_copy_remove(
                 file_name,
-                f"{load_database}.{schema}.{stage}",
-                f"{load_database}.{schema}.{extract_name}_merge_requests",
+                f"{schema}.{stage}",
+                f"{schema}.{extract_name}_merge_requests",
                 snowflake_engine,
             )
