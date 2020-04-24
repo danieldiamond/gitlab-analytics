@@ -8,7 +8,8 @@
   Each dict must have ALL of the following:
     * event_name
     * primary_key
-    * is_representative_of_stage
+    * stage_name": "create",
+    "is_representative_of_stage
     * primary_key
   Must have ONE of the following:
     * source_cte_name OR source_table_name
@@ -22,6 +23,7 @@
     "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "board_id",
+    "stage_name": "plan",
     "is_representative_of_stage": "False"
   },
   {
@@ -30,6 +32,7 @@
     "user_column_name": "ci_build_user_id",
     "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
+    "stage_name": "verify",
     "is_representative_of_stage": "False"
   },
   {
@@ -38,6 +41,7 @@
     "user_column_name": "owner_id",
     "key_to_parent_project": "project_id",
     "primary_key": "ci_pipeline_schedule_id",
+    "stage_name": "verify",
     "is_representative_of_stage": "False"
   },
   {
@@ -46,6 +50,7 @@
     "user_column_name": "user_id",
     "key_to_parent_project": "project_id",
     "primary_key": "ci_pipeline_id",
+    "stage_name": "verify",
     "is_representative_of_stage": "True"
   },
   {
@@ -54,6 +59,7 @@
     "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "ci_stage_id",
+    "stage_name": "verify",
     "is_representative_of_stage": "False"
   },
   {
@@ -62,6 +68,7 @@
     "user_column_name": "owner_id",
     "key_to_parent_project": "project_id",
     "primary_key": "ci_trigger_id",
+    "stage_name": "verify",
     "is_representative_of_stage": "False"
   },
   {
@@ -70,6 +77,7 @@
     "user_column_name": "user_id",
     "key_to_parent_project": "cluster_project_id",
     "primary_key": "clusters_applications_helm_id",
+    "stage_name": "configure",
     "is_representative_of_stage": "True"
   },
   {
@@ -78,6 +86,7 @@
     "user_column_name": "user_id",
     "key_to_parent_group": "cluster_group_id",
     "primary_key": "clusters_applications_helm_id",
+    "stage_name": "create",
     "is_representative_of_stage": "True"
   },
   {
@@ -86,6 +95,7 @@
     "user_column_name": "ci_build_user_id",
     "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
+    "stage_name": "secure",
     "is_representative_of_stage": "False"
   },
   {
@@ -94,6 +104,7 @@
     "user_column_name": "ci_build_user_id",
     "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
+    "stage_name": "secure",
     "is_representative_of_stage": "False"
   },
   {
@@ -102,6 +113,7 @@
     "user_column_name": "ci_build_user_id",
     "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
+    "stage_name": "secure",
     "is_representative_of_stage": "False"
   },
   {
@@ -110,6 +122,7 @@
     "user_column_name": "user_id",
     "key_to_parent_project": "project_id",
     "primary_key": "deployment_id",
+    "stage_name": "release",
     "is_representative_of_stage": "True"
   },
   {
@@ -118,6 +131,7 @@
     "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "environment_id",
+    "stage_name": "release",
     "is_representative_of_stage": "False"
   },
   {
@@ -126,6 +140,7 @@
     "user_column_name": "author_id",
     "key_to_parent_group": "group_id",
     "primary_key": "epic_id",
+    "stage_name": "plan",
     "is_representative_of_stage": "False"
   },
   {
@@ -134,6 +149,7 @@
     "user_column_name": "user_id",
     "key_to_parent_project": "source_id",
     "primary_key": "member_id",
+    "stage_name": "manage",
     "is_representative_of_stage": "False"
   },
   {
@@ -142,6 +158,7 @@
     "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "issue_id",
+    "stage_name": "plan",
     "is_representative_of_stage": "True"
   },
   {
@@ -150,6 +167,7 @@
     "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "label_id",
+    "stage_name": "plan",
     "is_representative_of_stage": "False"
   },
   {
@@ -158,6 +176,7 @@
     "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "lfs_object_id",
+    "stage_name": "create",
     "is_representative_of_stage": "False"
   },
   {
@@ -166,6 +185,7 @@
     "user_column_name": "ci_build_user_id",
     "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
+    "stage_name": "secure",
     "is_representative_of_stage": "False"
   },
   {
@@ -174,6 +194,7 @@
     "user_column_name": "ci_build_user_id",
     "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
+    "stage_name": "secure",
     "is_representative_of_stage": "False"
   },
   {
@@ -182,6 +203,7 @@
     "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "merge_request_id",
+    "stage_name": "create",
     "is_representative_of_stage": "True"
   },
   {
@@ -190,6 +212,7 @@
     "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "milestone_id",
+    "stage_name": "plan",
     "is_representative_of_stage": "False"
   },
   {
@@ -198,6 +221,7 @@
     "user_column_name": "note_author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "note_id",
+    "stage_name": "plan",
     "is_representative_of_stage": "False"
   },
   {
@@ -206,6 +230,7 @@
     "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "project_auto_devops_id",
+    "stage_name": "configure",
     "is_representative_of_stage": "False"
   },
   {
@@ -214,6 +239,7 @@
     "user_column_name": "creator_id",
     "key_to_parent_project": "project_id",
     "primary_key": "project_id",
+    "stage_name": "create",
     "is_representative_of_stage": "True"
   },
   {
@@ -222,6 +248,7 @@
     "user_column_name": "creator_id",
     "key_to_parent_project": "project_id",
     "primary_key": "project_id",
+    "stage_name": "monitor",
     "is_representative_of_stage": "True"
   },
   {
@@ -230,6 +257,7 @@
     "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "release_id",
+    "stage_name": "release",
     "is_representative_of_stage": "False"
   },
   {
@@ -238,6 +266,7 @@
     "user_column_name": "ci_build_user_id",
     "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
+    "stage_name": "secure",
     "is_representative_of_stage": "False"
   },
   {
@@ -246,6 +275,7 @@
     "user_column_name": "ci_build_user_id",
     "key_to_parent_project": "ci_build_project_id",
     "primary_key": "ci_build_id",
+    "stage_name": "secure",
     "is_representative_of_stage": "True"
   },
   {
@@ -254,6 +284,7 @@
     "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "snippet_id",
+    "stage_name": "create",
     "is_representative_of_stage": "False"
   },
   {
@@ -262,6 +293,7 @@
     "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "todo_id",
+    "stage_name": "plan",
     "is_representative_of_stage": "False"
   },
   {
@@ -269,6 +301,7 @@
     "source_table_name": "gitlab_dotcom_users",
     "user_column_name": "user_id",
     "primary_key": "user_id",
+    "stage_name": "manage",
     "is_representative_of_stage": "True"
   },
 ]
@@ -430,27 +463,7 @@ WITH gitlab_subscriptions AS (
       {{ event_cte.event_name }}.created_at                       AS event_created_at,
       {{ event_cte.is_representative_of_stage }}::BOOLEAN         AS is_representative_of_stage,
       '{{ event_cte.event_name }}'                                AS event_name,
-      CASE
-        WHEN '{{ event_cte.event_name }}' = 'project_auto_devops'
-          THEN 'configure'
-        WHEN '{{ event_cte.event_name }}' = 'ci_stages'
-          THEN 'configure'
-        WHEN '{{ event_cte.event_name }}' = 'users'
-          THEN 'manage'
-        WHEN '{{ event_cte.event_name }}' = 'projects_container_registry_enabled'
-          THEN 'package'        
-        WHEN '{{ event_cte.event_name }}' IN (
-                                              'container_scanning',
-                                              'dast',
-                                              'dependency_scanning',
-                                              'license_management',
-                                              'license_scanning',
-                                              'sast',
-                                              'secure_stage_ci_jobs'
-                                            )
-          THEN 'secure'
-        ELSE version_usage_stats_to_stage_mappings.stage
-      END                                                         AS stage_name,
+      '{{ event_cte.stage_name }}'                                AS stage_name,
       CASE
         WHEN gitlab_subscriptions.is_trial
           THEN 'trial'
