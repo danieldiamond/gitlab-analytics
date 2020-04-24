@@ -59,7 +59,7 @@
     "user_column_name": "NULL",
     "key_to_parent_project": "project_id",
     "primary_key": "ci_stage_id",
-    "stage_name": "verify",
+    "stage_name": "configure",
     "is_representative_of_stage": "False"
   },
   {
@@ -78,15 +78,6 @@
     "key_to_parent_project": "cluster_project_id",
     "primary_key": "clusters_applications_helm_id",
     "stage_name": "configure",
-    "is_representative_of_stage": "True"
-  },
-  {
-    "event_name": "clusters_applications_helm",
-    "source_table_name": "gitlab_dotcom_clusters_applications_helm_xf",
-    "user_column_name": "user_id",
-    "key_to_parent_group": "cluster_group_id",
-    "primary_key": "clusters_applications_helm_id",
-    "stage_name": "create",
     "is_representative_of_stage": "True"
   },
   {
@@ -239,7 +230,7 @@
     "user_column_name": "creator_id",
     "key_to_parent_project": "project_id",
     "primary_key": "project_id",
-    "stage_name": "create",
+    "stage_name": "package",
     "is_representative_of_stage": "True"
   },
   {
