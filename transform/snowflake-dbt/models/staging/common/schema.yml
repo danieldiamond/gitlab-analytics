@@ -8,11 +8,11 @@ models:
         tests:
           - not_null
           - unique
-      - name: customer_id
+      - name: crm_id
         tests:
           - relationships:
               to: ref('dim_customers')
-              field: customer_id
+              field: crm_id
 
   - name: dim_customers
     description: '{{ doc("dim_customers") }}'
@@ -57,6 +57,11 @@ models:
       - name: subscription_status
         tests:
           - not_null
+      - name: crm_id
+        tests:
+          - relationships:
+              to: ref('dim_customers')
+              field: crm_id
 
   - name: dim_products
     description: "Product related information for which account is charged "
