@@ -151,8 +151,8 @@ echo '.idea' >> ~/.gitignore
 echo "Global gitignore created"
 
 
-## Copying bash_rc
-echo "Copying bashrc file.."
+## Add in helper script
+echo "Copying make life easier script.."
 curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/make_life_easier.zsh > make_life_easier.zsh
 source make_life_easier.zsh >> ~/.zshrc
 echo "Copied successfully"
@@ -163,6 +163,7 @@ echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.zshrc
 echo "export SNOWFLAKE_SNAPSHOT_DATABASE='SNOWFLAKE'" >> ~/.zshrc
 echo 'export PATH="/usr/local/opt/gettext/bin:$PATH"' >> ~/.zshrc
 echo 'export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"' >> ~/.zshrc
+echo 'setopt nomatch' >> ~/.zshrc
 
 
 echo "Onboarding script ran successfully"
