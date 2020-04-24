@@ -34,9 +34,9 @@ final AS (
       WHEN nps_score >= 0 THEN 'detractor'
     END AS nps_bucket_text,
     CASE
-      WHEN nps_bucket_text = 'promoter'  THEN 1
+      WHEN nps_bucket_text = 'promoter'  THEN 100
       WHEN nps_bucket_text = 'passive'   THEN 0
-      WHEN nps_bucket_text = 'detractor' THEN -1
+      WHEN nps_bucket_text = 'detractor' THEN -100
     END AS nps_bucket_integer
 
   FROM trimmed

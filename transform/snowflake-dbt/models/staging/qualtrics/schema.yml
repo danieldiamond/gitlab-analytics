@@ -44,5 +44,6 @@ models:
           tests:
             - not_null
         - name: nps_bucket_integer
+          description: Take the average of this column to get the "NPS Score".
           tests:
             - not_null

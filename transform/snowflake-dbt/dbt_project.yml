@@ -162,7 +162,6 @@ models:
       license:
         materialized: view
 
-
       qualtrics:
         schema: analytics
 
