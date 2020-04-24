@@ -1,37 +1,18 @@
 WITH answers AS (
 
     SELECT *
-    FROM {{ ref('qualtrics_nps_survey_responses') }}
+    FROM {{ ref('qualtrics_nps_answers') }}
+    WHERE question_id IN ('QID172787673', 'QID172787675_TEXT')
 
-), questions AS (
-
-    SELECT 
-      *,
-      IFNULL(answer_choices[0]['1']['TextEntry'] = 'on', IFNULL(ARRAY_SIZE(answer_choices) = 0, TRUE)) AS is_free_text
-    FROM {{ ref('qualtrics_question') }}
-
-), revised_question_ids AS (
-    
-    SELECT
-      question_description,
-      IFF(is_free_text, question_id || '_TEXT', question_id) AS question_id
-    FROM questions
-
-), parsed_out_qas AS (
-
-    SELECT 
-      response_id,
-      question_id,
-      question_description,
-      GET(response_values, question_id)                 AS question_response,
-      response_values['distributionChannel']::VARCHAR   AS distribution_channel,
-      IFF(response_values['finished'] = 1, True, False) AS has_finished_survey,
-      response_values['recordedDate']::TIMESTAMP        AS response_recorded_at,
-      response_values['userLanguage']::VARCHAR          AS user_language
-    FROM revised_question_ids 
-    INNER JOIN responses
-    ON GET(response_values, question_id) IS NOT NULL
 )
 
-SELECT *
-FROM parsed_out_qas
+SELECT DISTINCT
+  response_id,
+  distribution_channel,
+  has_finished_survey,
+  response_recorded_at,
+  user_language,
+  IFF(question_id = 'QID172787673', question_response, NULL)::INTEGER      AS nps_score,
+  IFF(question_id = 'QID172787675_TEXT', question_response, NULL)::VARCHAR AS nps_reason
+FROM answers
+ORDER BY response_recorded_at

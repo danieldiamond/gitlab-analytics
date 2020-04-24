@@ -29,3 +29,15 @@ models:
           tests:
             - not_null
         - name: user_language
+    - name: qualtrics_nps_scores
+      description: Just the scores from the `qualtrics_nps_answers` model.
+      columns:
+        - name: contact_email
+          tests:
+            - not_null
+        - name: mailing_sent_at
+          tests:
+            - not_null
+        - name: survey_name
+          tests:
+            - not_null
