@@ -80,6 +80,8 @@ curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/onboarding_script
 zsh ~/onboarding_script.zsh
 rm ~/onboarding_script.zsh
 ```
+   * This script is written for zsh, the default terminal for MacOS now, if you feel strongly that you prefer or would like to keep bash, please see this [commit & script](https://gitlab.com/gitlab-data/analytics/-/blob/6964ba11c46c0a3caf863c8fae0b89ba24bb3c48/admin/onboarding_script.sh)
+      * However, this script is no longer actively maintained or supported, so you will need to support yourself if you do this. If you do use bash it is also recommended to compare the script with the latest zsh version to make sure you aren't missing any new apps or tools that have been added.
    * This may take a while, and it might ask you for your password (multiple times) before it's done. Here's what this does:
       * Installs iTerm, a mac-OS terminal replacement
       * Installs VSCode, an open source text editor. VSCode is recommended for multiple reasons including community support, the [GitLab workflow](https://marketplace.visualstudio.com/items?itemName=fatihacet.gitlab-workflow) extension, and the LiveShare features.
