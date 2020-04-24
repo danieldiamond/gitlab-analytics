@@ -58,3 +58,4 @@ sources:
         freshness: null
       - name: social_marketing_metrics
       - name: abm_account_baselines
+      - name: marketing_core_users_from_docs_gitlab_com
