@@ -112,4 +112,4 @@ sheets:
   - name: marketing_core_users_from_docs_gitlab_com
     owner: '@rkohnke'
     tabs:
-      - marketing_core_users
+      - marketing_core_users_from_docs_gitlab_com
