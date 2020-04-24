@@ -4,15 +4,44 @@ WITH answers AS (
     FROM {{ ref('qualtrics_nps_answers') }}
     WHERE question_id IN ('QID172787673', 'QID172787675_TEXT')
 
+),
+
+trimmed AS (
+
+  SELECT DISTINCT
+
+    response_id,
+    distribution_channel,
+    has_finished_survey,
+    user_language,
+    MAX(response_recorded_at) OVER (PARTITION BY response_id)                AS max_response_recorded_at,
+    IFF(question_id = 'QID172787673', question_response, NULL)::INTEGER      AS nps_score,
+    IFF(question_id = 'QID172787675_TEXT', question_response, NULL)::VARCHAR AS nps_reason
+
+  FROM answers
+
+),
+
+final AS (
+
+  SELECT
+  
+    *,
+    CASE
+      WHEN nps_score >= 9 THEN 'promoter'
+      WHEN nps_score >= 7 THEN 'passive'
+      WHEN nps_score >= 0 THEN 'detractor'
+    END AS nps_bucket_text,
+    CASE
+      WHEN nps_bucket_text = 'promoter'  THEN 1
+      WHEN nps_bucket_text = 'passive'   THEN 0
+      WHEN nps_bucket_text = 'detractor' THEN -1
+    END AS nps_bucket_integer
+
+  FROM trimmed
+  
 )
 
-SELECT DISTINCT
-  response_id,
-  distribution_channel,
-  has_finished_survey,
-  user_language,
-  MAX(response_recorded_at) OVER (PARTITION BY response_id)                AS max_response_recorded_at,
-  IFF(question_id = 'QID172787673', question_response, NULL)::INTEGER      AS nps_score,
-  IFF(question_id = 'QID172787675_TEXT', question_response, NULL)::VARCHAR AS nps_reason
-FROM answers
-ORDER BY response_recorded_at
+SELECT *
+FROM final
+ORDER BY max_response_recorded_at
