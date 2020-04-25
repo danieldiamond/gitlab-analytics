@@ -8,7 +8,7 @@ WITH location_factor AS (
   SELECT *
   FROM  {{ref('greenhouse_stage_intermediate')}}
   WHERE lower(application_stage) like '%screen%'
-  AND month_stage_entered_on >='2019-06-01 -- started capturing location factor'
+  AND month_stage_entered_on >= '2019-06-01' -- started capturing location factor'
   AND month_stage_entered_on BETWEEN DATE_TRUNC(month,DATEADD(month,-13,CURRENT_DATE())) 
       AND DATE_TRUNC(month,DATEADD(month,-1,CURRENT_DATE()))   
   
