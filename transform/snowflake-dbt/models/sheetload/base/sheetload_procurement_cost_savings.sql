@@ -6,11 +6,11 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      calendar_month::DATE                                               AS calendar_month,
-      TRY_TO_DECIMAL(savings, 14, 2)                                     AS savings,
-      TRY_TO_DECIMAL(rolling_12_month_savings_without_audit, 14, 2)      AS rolling_12_month_savings_without_audit,
-      TRY_TO_DECIMAL(rolling_12_month_savings_with_audit, 14, 2)         AS rolling_12_month_savings_with_audit,
-      TRY_TO_DECIMAL(target, 14, 2)                                    AS target
+      calendar_month::VARCHAR                              AS calendar_month,
+      savings::VARCHAR                                     AS savings,
+      rolling_12_month_savings_without_audit::VARCHAR      AS rolling_12_month_savings_without_audit,
+      rolling_12_month_savings_with_audit::VARCHAR         AS rolling_12_month_savings_with_audit,
+      target::VARCHAR                                      AS target
     FROM source
 
 )
