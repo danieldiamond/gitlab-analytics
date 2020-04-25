@@ -79,7 +79,7 @@ models:
           - not_null       
 
   - name: greenhouse_location_factors
-    description: This dbt model gives the location factor of location application question answers.
+    description: This dbt model gives the location factor of location application question answers. This is for data after 2019.07.22 as this is when we started capturing location factor historically.
     columns:
       - name: job_post_id
       - name: application_id

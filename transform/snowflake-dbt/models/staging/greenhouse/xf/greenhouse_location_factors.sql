@@ -74,8 +74,9 @@ WITH location_application_answer AS (
     AND union_application_answers.state = historical_location_factor.state 
     AND union_application_answers.country = historical_location_factor.country
     AND DATE_TRUNC(DAY, union_application_answers.application_question_answer_created_at) = historical_location_factor.snapshot_date
-
+    
 )
 
 SELECT *
 FROM joined
+WHERE application_question_answer_created_at >= '2019-07-22'
