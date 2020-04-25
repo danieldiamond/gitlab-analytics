@@ -68,6 +68,10 @@ sheets:
     owner: '@iweeks'
     tabs:
       - planned_values
+  - name: procurement_cost_savings
+    owner: '@iweeks'
+    tabs:
+      - procurement_cost_savings
   - name: pulse_survey
     owner: '@kathleentam'
     tabs:

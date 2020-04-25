@@ -40,6 +40,7 @@ sources:
       - name: marketing_kpi_benchmarks
       - name: osat
       - name: planned_values
+      - name: procurement_cost_savings
       - name: pulse_survey_configure_be
         freshness: null
       - name: pulse_survey_configure_fe

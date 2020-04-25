@@ -123,6 +123,21 @@ models:
       tests:
       - not_null
       - unique
+- name: sheetload_procurement_cost_savings
+  description: This is the source of the KPI - Deliver Quantified Savings of greater than three million over a rolling 12 month period
+  columns:
+    - name: calendar_month
+      tests:
+      - not_null
+      - unique
+    - name: savings
+      tests:
+      - not_null
+    - name: rolling_12_month_savings_without_audit
+    - name: rolling_12_month_savings_with_audit
+    - name: target
+      tests:
+      - not_null
 - name: sheetload_release_blog_posts
   description: Information about blog post releases via [Mark Fletcher](https://gitlab.com/markglenfletcher).
   columns:
