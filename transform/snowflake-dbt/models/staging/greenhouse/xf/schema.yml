@@ -167,10 +167,6 @@ models:
     columns:
         - name: application_id
         - name: candidate_id
-          tests:
-            - relationships:
-                to: ref('bamboohr_id_employee_number_mapping')
-                field: greenhouse_candidate_id
         - name: region
           description: What area the hired candidate is in
         - name: greenhouse_candidate_row_number
