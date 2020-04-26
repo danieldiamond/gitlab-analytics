@@ -2,25 +2,39 @@ WITH location_application_answer AS (
   
   SELECT *
   FROM {{ ref('greenhouse_locations_cleaned_intermediate') }}
-  
 
 ), historical_location_factor AS (
   
   SELECT *
   FROM {{ ref('location_factors_historical_greenhouse') }}
-  
+
+), historical_location_factor_modified AS (
+
+    SELECT 
+      original_country_area, 
+      location_factor, 
+      snapshot_date
+    FROM {{ ref('location_factors_historical_greenhouse') }}
+    GROUP BY 1,2,3  
+
 ), application_answer_loc_factor AS (
 
-  SELECT
+    SELECT
     location_application_answer.*,
-    historical_location_factor.location_factor
+    COALESCE(historical_location_factor_modified.location_factor, 
+             historical_location_factor.location_factor)            AS location_factor
   FROM location_application_answer
+  LEFT JOIN historical_location_factor_modified
+      ON location_application_answer.application_answer = historical_location_factor_modified.original_country_area
+      AND DATE_TRUNC(DAY, location_application_answer.application_question_answer_created_at) = historical_location_factor_modified.snapshot_date
   LEFT JOIN historical_location_factor
     ON location_application_answer.city = historical_location_factor.city
     AND location_application_answer.state = historical_location_factor.state 
     AND location_application_answer.country = historical_location_factor.country
     AND DATE_TRUNC(DAY, location_application_answer.application_question_answer_created_at) = historical_location_factor.snapshot_date
-  
+    AND historical_location_factor_modified.location_factor IS NULL
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY location_application_answer.application_id, job_post_id, application_answer ORDER BY location_application_answer.state) = 1
+
 ), null_location_factor AS (
 
   SELECT
