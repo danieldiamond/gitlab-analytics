@@ -22,7 +22,9 @@ WITH applications AS (
 
 ), job_req AS (
 
-    SELECT applications.application_id, jobs.*
+    SELECT 
+      applications.application_id, 
+      jobs.*
     FROM applications
     LEFT JOIN greenhouse_application_jobs 
       ON applications.application_id = greenhouse_application_jobs.application_id
@@ -30,7 +32,7 @@ WITH applications AS (
       ON greenhouse_application_jobs.job_id = jobs.job_id
       AND applications.applied_at BETWEEN jobs.job_created_at 
         AND COALESCE(jobs.job_closed_at, DATEADD(week,3,CURRENT_DATE()))
-      AND (jobs.job_id IS NOT NULL AND jobs.requisition_id IS NOT NULL)
+      AND jobs.job_id IS NOT NULL AND jobs.requisition_id IS NOT NULL
     
 ), greenhouse_departments AS (
 
@@ -72,35 +74,39 @@ WITH applications AS (
 
     SELECT 
         applications.application_id, 
-        offer_id,
+        offers.offer_id,
         applications.candidate_id, 
-        job_id,
-        requisition_id, 
-        application_status,
-        stage_name                                                                      AS current_stage_name, 
-        offer_status,
-        applied_at                                                                      AS application_date,
-        sent_at                                                                         AS offer_sent_date,
-        resolved_at                                                                     AS offer_resolved_date,
+        job_req.job_id,
+        job_req.requisition_id, 
+        applications.application_status,
+        applications.stage_name                                                        AS current_stage_name, 
+        offers.offer_status,
+        applications.applied_at                                                         AS application_date,
+        offers.sent_at                                                                  AS offer_sent_date,
+        offers.resolved_at                                                              AS offer_resolved_date,
         offers.start_date                                                               AS candidate_target_hire_date,
-        rejected_at,
-        job_name,
-        department_name::VARCHAR(100)                                                   AS department_name,
-        division::VARCHAR(100)                                                          AS division,                                             
-        CASE WHEN lower(department_name) LIKE '%sales%' THEN 'Sales'
-            WHEN department_name = 'Dev' THEN 'Engineering'
-            WHEN department_name = 'Customer Success Management' THEN 'Sales'
-            ELSE COALESCE(cost_center.division, department_name) END::VARCHAR(100)      AS division_modified,     
+        applications.rejected_at                                                        AS rejected_date,
+        job_req.job_name,
+        greenhouse_departments.department_name::VARCHAR(100)                            AS department_name,
+        cost_center.division::VARCHAR(100)                                              AS division,                                             
+        CASE WHEN lower(greenhouse_departments.department_name) LIKE '%sales%' 
+               THEN 'Sales'
+             WHEN greenhouse_departments.department_name = 'Dev' 
+               THEN 'Engineering'
+             WHEN greenhouse_departments.department_name = 'Customer Success Management' 
+               THEN 'Sales'
+             ELSE COALESCE(cost_center.division, 
+                    greenhouse_departments.department_name) END::VARCHAR(100)           AS division_modified,     
         greenhouse_sources.source_name::VARCHAR(250)                                    AS source_name,
         greenhouse_sources.source_type::VARCHAR(250)                                    AS source_type,
         greenhouse_sourcer.sourcer_name,
         candidates.candidate_recruiter,
         candidates.candidate_coordinator,
         IFF(greenhouse_sources.source_name ='LinkedIn (Prospecting)',True, False)       AS sourced_candidate,
-        rejection_reason_name,
-        rejection_reason_type,
+        rejection_reasons.rejection_reason_name,
+        rejection_reasons.rejection_reason_type,
         job_req.job_status                                                              AS current_job_req_status,
-        IFF(offer_status ='accepted',
+        IFF(offers.offer_status ='accepted',
                 DATEDIFF('day', applications.applied_at, offers.resolved_at),
                 NULL)                                                                   AS time_to_offer,
         IFF(bamboo.hire_date IS NOT NULL, TRUE, FALSE)                                  AS is_hired_in_bamboo
