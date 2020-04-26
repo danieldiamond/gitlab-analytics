@@ -87,8 +87,8 @@ WITH applications AS (
         offers.start_date                                                               AS candidate_target_hire_date,
         applications.rejected_at                                                        AS rejected_date,
         job_req.job_name,
-        greenhouse_departments.department_name::VARCHAR(100)                            AS department_name,
-        cost_center.division::VARCHAR(100)                                              AS division,                                             
+        greenhouse_departments.department_name                                          AS department_name,
+        cost_center.division                                                            AS division,                                             
         CASE WHEN lower(greenhouse_departments.department_name) LIKE '%sales%' 
                THEN 'Sales'
              WHEN greenhouse_departments.department_name = 'Dev' 
@@ -96,9 +96,9 @@ WITH applications AS (
              WHEN greenhouse_departments.department_name = 'Customer Success Management' 
                THEN 'Sales'
              ELSE COALESCE(cost_center.division, 
-                    greenhouse_departments.department_name) END::VARCHAR(100)           AS division_modified,     
-        greenhouse_sources.source_name::VARCHAR(250)                                    AS source_name,
-        greenhouse_sources.source_type::VARCHAR(250)                                    AS source_type,
+                    greenhouse_departments.department_name) END                         AS division_modified,     
+        greenhouse_sources.source_name                                                  AS source_name,
+        greenhouse_sources.source_type                                                  AS source_type,
         greenhouse_sourcer.sourcer_name,
         candidates.candidate_recruiter,
         candidates.candidate_coordinator,
