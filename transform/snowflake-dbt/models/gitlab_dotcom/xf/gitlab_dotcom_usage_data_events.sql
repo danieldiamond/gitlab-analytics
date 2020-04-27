@@ -9,7 +9,7 @@
     * event_name
     * primary_key
     * stage_name": "create",
-    "is_representative_of_stage
+    * "is_representative_of_stage
     * primary_key
   Must have ONE of the following:
     * source_cte_name OR source_table_name
