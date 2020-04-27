@@ -56,7 +56,7 @@ WITH applications AS (
                 AND bamboo_hires.bamboo_row_number = 1 
                 AND ABS(DATEDIFF(day,candidate_target_hire_date, bamboo_hires.hire_date))<120
             THEN hire_date
-        ELSE candidate_target_hire_date END                     AS hire_date_mod
+        ELSE candidate_target_hire_date END                     AS hire_date_mod,
       CASE WHEN bamboo_row_number=1 AND greenhouse_candidate_row_number = 1 
             THEN 'hire'
            WHEN is_rehire = TRUE 

@@ -14,6 +14,9 @@ WITH source AS (
       
 ) 
 
-SELECT *
+{# SELECT *
 FROM renamed
-WHERE completed_date is not NULL
+WHERE completed_date is not NULL #}
+
+
+SELECT * from source 
