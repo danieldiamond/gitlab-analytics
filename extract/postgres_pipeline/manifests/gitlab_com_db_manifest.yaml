@@ -1714,28 +1714,27 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'vulnerability_occurrences'
     export_table_primary_key: 'id'
-#   web_hook_logs:  # breaking extract 04-23-2020
-#     import_db: GITLAB_DB
-#     import_query: >
-#       SELECT id
-#       , web_hook_id
-#       , trigger
-#       , url
-#       , request_headers
-#       , request_data
-#       , response_headers
-#       , response_body
-#       , response_status
-#       , execution_duration
-#       , internal_error_message
-#       , created_at
-#       , updated_at
-#       FROM web_hook_logs
-#       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-#         AND '{EXECUTION_DATE}'::timestamp
-#     export_schema: 'gitlab_dotcom'
-#     export_table: web_hook_logs
-#     export_table_primary_key: id
+  web_hook_logs:  
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , web_hook_id
+      , trigger
+      , url
+      , request_data
+      , response_body
+      , response_status
+      , execution_duration
+      , internal_error_message
+      , created_at
+      , updated_at
+      FROM web_hook_logs
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+        AND web_hook_id NOT IN (67407, 333850)
+    export_schema: 'gitlab_dotcom'
+    export_table: web_hook_logs
+    export_table_primary_key: id
   web_hooks:
     import_db: GITLAB_DB
     import_query: >
