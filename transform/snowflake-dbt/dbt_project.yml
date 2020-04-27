@@ -162,6 +162,9 @@ models:
       license:
         materialized: view
 
+      qualtrics:
+        schema: analytics
+
       sfdc:
         xf:
           schema: analytics
