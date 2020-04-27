@@ -33,10 +33,10 @@ def verify_mr_information(
     """
     """
     count_query = f"""
-        SELECT count(*) 
-        FROM ANALYTICS.ANALYTICS.GITLAB_DOTCOM_MERGE_REQUESTS_XF 
+        SELECT count(distinct id) 
+        FROM RAW.TAP_POSTGRES.GITLAB_DB_MERGE_REQUESTS 
         WHERE updated_at BETWEEN '{start}' AND '{end}'
-        AND project_id = {project_id}
+        AND target_project_id = {project_id}
     """
     result_set = query_executor(snowflake_engine, count_query)
     checked_mr_count = result_set[0][0]
