@@ -39,7 +39,23 @@ models:
         tests:
           - not_null
       - name: key_value
+        meta:
+          sensitive: true
       - name: updated_at
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_audit_event_details_pii
+    description: Just the audit event key-value pair details that possibly have PII.
+    columns:
+      - name: audit_event_id
+        tests:
+          - not_null
+      - name: key_name
+        tests:
+          - not_null
+      - name: key_value
+      - name: key_value_hash
         tests:
           - not_null
 
