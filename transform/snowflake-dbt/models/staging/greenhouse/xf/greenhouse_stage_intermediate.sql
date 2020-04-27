@@ -53,7 +53,7 @@ WITH stages AS (
         SELECT 
           stages.application_id,
           candidate_id,
-          stages.stages_cleaned                                                           AS application_stage,
+          stages.stage_name_modified                                                     AS application_stage,
           stages.is_milestone_stage,
           DATE_TRUNC(MONTH, application_date)                                             AS application_month,
           IFF(application_stage_name = 'Offer',offer_sent_date, stages.stage_entered_on)  AS stage_entered_on,
