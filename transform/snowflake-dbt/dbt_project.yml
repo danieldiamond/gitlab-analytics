@@ -121,6 +121,8 @@ models:
 
       greenhouse:
         schema: greenhouse
+        sensitive:
+          schema: sensitive
 
       license:
         schema: license_db
@@ -211,9 +213,6 @@ models:
         materialized: table
 
     handbook:
-        materialized: table
-
-    location_factor:
         materialized: table
          
     marts:
