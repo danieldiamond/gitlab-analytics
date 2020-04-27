@@ -17,5 +17,3 @@ WITH source AS (
 SELECT *
 FROM renamed
 WHERE completed_date is not NULL
-
-
