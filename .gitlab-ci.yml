@@ -241,7 +241,7 @@ dry-run:triage:
     except:
       - schedules
 
-policy:run:
+policy:run-triage:
     image: ruby:2.4
     stage: triage run
     script:
@@ -251,7 +251,7 @@ policy:run:
     except:
       - schedules
 
-schedule:policyrun:
+schedule:run-triage:
     image: ruby:2.4
     stage: triage run
     script:
