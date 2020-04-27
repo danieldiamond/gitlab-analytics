@@ -17,6 +17,8 @@ stages:
   - 📚 dbt Docs
   - 🐍 Python
   - 🛑 Snowflake Stop
+  - triage
+  - triage run
 
 include:
   - "extract/extract-ci.yml"
@@ -227,3 +229,34 @@ pages:
       - master
     variables:
       - $DEPLOY_DBT_PAGES
+
+dry-run:triage:
+    image: ruby:2.4
+    stage: triage
+    script:
+      - gem install gitlab-triage
+      - gitlab-triage --help
+      - gitlab-triage --dry-run --token $API_TOKEN --source projects --source-id $CI_PROJECT_PATH
+    when: manual
+    except:
+      - schedules
+
+policy:run:
+    image: ruby:2.4
+    stage: triage run
+    script:
+      - gem install gitlab-triage
+      - gitlab-triage --token $API_TOKEN --source projects --source-id $CI_PROJECT_PATH
+    when: manual
+    except:
+      - schedules
+
+schedule:policyrun:
+    image: ruby:2.4
+    stage: triage run
+    script:
+      - gem install gitlab-triage
+      - gitlab-triage --token $API_TOKEN --source projects --source-id $CI_PROJECT_PATH
+    when: manual
+    except:
+      - schedules
