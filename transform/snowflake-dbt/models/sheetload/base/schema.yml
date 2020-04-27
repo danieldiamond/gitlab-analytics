@@ -127,6 +127,8 @@ models:
   description: This is the source of the KPI - Deliver Quantified Savings of greater than three million over a rolling 12 month period
   columns:
     - name: calendar_month
+      - not_null
+      - unique
     - name: savings
     - name: rolling_12_month_savings_without_audit
     - name: rolling_12_month_savings_with_audit
