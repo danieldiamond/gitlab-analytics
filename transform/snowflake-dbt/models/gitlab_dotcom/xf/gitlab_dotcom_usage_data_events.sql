@@ -333,13 +333,6 @@ WITH gitlab_subscriptions AS (
 
 )
 
-, version_usage_stats_to_stage_mappings AS (
-
-    SELECT *
-    FROM {{ ref('version_usage_stats_to_stage_mappings') }}
-
-)
-
 /* Source CTEs Start Here */
 , container_scanning_jobs AS (
 
@@ -491,10 +484,8 @@ WITH gitlab_subscriptions AS (
         AND {{ event_cte.event_name }}.created_at BETWEEN gitlab_subscriptions.valid_from
         AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
       LEFT JOIN plans
-        ON gitlab_subscriptions.plan_id = plans.plan_id
-      LEFT JOIN version_usage_stats_to_stage_mappings
-        ON '{{ event_cte.event_name }}' = version_usage_stats_to_stage_mappings.stats_used_key_name
-
+        ON gitlab_subscriptions.plan_id = plans.plan_id_at_event_date
+        
     {% if not loop.last %}
     UNION
     {% endif %}
