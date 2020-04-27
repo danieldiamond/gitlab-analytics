@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: mrr_data_mart
+    description: 'Initial mrr mart'
