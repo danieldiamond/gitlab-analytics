@@ -76,6 +76,6 @@ SELECT
   candidate_id,
   region,
   greenhouse_candidate_row_number,
-  bamboo_hire_date,
+  hire_date_mod,
   hire_type
 FROM final 
