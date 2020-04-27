@@ -1,6 +1,19 @@
 version: 2
 
 models:
+  - name: gitlab_dotcom_approval_merge_request_rules
+    description: Base model for Gitlab.com approval_merge_request_rules
+    columns:
+      - name: approval_merge_request_rule_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
   - name: gitlab_dotcom_approvals
     description: Base model for Gitlab.com approvals
     columns:
@@ -1181,6 +1194,30 @@ models:
         tests:
           - not_null
       - name: updated_at
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_protected_branches
+    description: >-
+      A base model for Gitlab.com Gitlab.com protected_branches.
+    columns:
+      - name: protected_branch_id
+        tests:
+          - not_null
+          - unique
+      - name: project_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_push_rules
+    description: >-
+      A base model for Gitlab.com Gitlab.com push_rules.
+    columns:
+      - name: rpush_rule_id
+        tests:
+          - not_null
+          - unique
+      - name: project_id
         tests:
           - not_null
 
