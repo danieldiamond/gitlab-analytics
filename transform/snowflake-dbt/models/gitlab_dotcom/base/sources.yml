@@ -17,6 +17,8 @@ sources:
       warn_after: {count: 48, period: hour}
 
     tables:
+      - name: approval_merge_request_rules
+        identifier: gitlab_db_approval_merge_request_rules
       - name: approvals
         identifier: gitlab_db_approvals
       - name: approver_groups
@@ -173,6 +175,10 @@ sources:
         identifier: gitlab_db_project_statistics
       - name: projects
         identifier: gitlab_db_projects
+      - name: protected_branches
+        identifier: gitlab_db_protected_branches
+      - name: push_rules
+        identifier: gitlab_db_push_rules
       - name: releases
         identifier: gitlab_db_releases
       - name: repository_languages
