@@ -265,5 +265,3 @@ schedule:run-triage:
       - gitlab-triage --token $ANALYTICS_API_TOKEN --source projects --source-id $CI_PROJECT_PATH
     only:
       - schedules
-      refs:
-        - master
