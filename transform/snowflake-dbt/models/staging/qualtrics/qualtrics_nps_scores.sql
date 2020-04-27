@@ -14,7 +14,7 @@ trimmed AS (
     distribution_channel,
     has_finished_survey,
     user_language,
-    MAX(response_recorded_at)                                                     AS max_response_recorded_at,
+    response_recorded_at                                                          AS response_recorded_at,
     MAX(IFF(question_id = 'QID172787673', question_response, NULL)::INTEGER)      AS nps_score,
     MAX(IFF(question_id = 'QID172787675_TEXT', question_response, NULL)::VARCHAR) AS nps_reason
 
@@ -45,4 +45,4 @@ final AS (
 
 SELECT *
 FROM final
-ORDER BY max_response_recorded_at
+ORDER BY response_recorded_at
