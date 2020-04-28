@@ -31,8 +31,8 @@ def verify_mr_information(
     pulled_mrs: int, project_id: int, snowflake_engine: Engine, start: str, end: str
 ) -> None:
     """
-        Gets number of MRs present from gitlab_db for the same timeframe.
-        If that number doesn't match the number passed in, a warning is logged.
+    Gets number of MRs present from gitlab_db for the same timeframe.
+    If that number doesn't match the number passed in, a warning is logged.
     """
     count_query = f"""
         SELECT count(distinct id) 
