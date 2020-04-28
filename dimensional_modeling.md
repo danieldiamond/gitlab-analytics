@@ -25,6 +25,10 @@ Facts are typically (but not always) numeric values that can be aggregated, and 
 In the simpliest version fact table is a central table and is linked to dimensional tables with foreign keys creating a star schema. 
 Star schema with dimensional tables linking to more dimensional tables are called snowflake schemas, multi fact tables schemas are called galaxies. 
 
+### First iteartion in our DWH
+
+OKR: Reporting on both ARR and Customer counts entirely supported in a Kimball Dimensional Warehouse
+
 
 The graphical schema of dimensional model developed for calculating  ARR/ Customer count
 
@@ -79,6 +83,8 @@ classDiagram
         }
 
 ```		
+
+More on use and conventions of Kimball methodology in Data Team Handbook [here](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/#use-of-kimball-methodology)
 
 ## How to interact with the dim/fct tables -  building Data Marts
 
