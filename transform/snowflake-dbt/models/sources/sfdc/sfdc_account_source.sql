@@ -95,7 +95,13 @@ WITH source AS (
 
       --account based marketing fields
       abm_tier__c                                AS abm_tier,
+      abm_tier_1_date__c                         AS abm_tier_1_date,
+      abm_tier_2_date__c                         AS abm_tier_2_date,
+      abm_tier_3_date__c                         AS abm_tier_3_date,
       gtm_strategy__c                            AS gtm_strategy,
+      gtm_acceleration_date__c                   AS gtm_acceleration_date,
+      gtm_account_based_date__c                  AS gtm_account_based_date,
+      gtm_account_centric_date__c                AS gtm_account_centric_date,
 
       --demandbase fields
       account_list__c                            AS demandbase_account_list,
