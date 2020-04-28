@@ -26,7 +26,7 @@ In the simpliest version fact table is a central table and is linked to dimensio
 Star schema with dimensional tables linking to more dimensional tables are called snowflake schemas, multi fact tables schemas are called galaxies. 
 
 
-The high level schema of fact and dimension tables for calculating  ARR/ Customer count
+The graphical schema of dimensional model developed for calculating  ARR/ Customer count
 
 ```mermaid
 classDiagram
@@ -82,8 +82,13 @@ classDiagram
 
 ## How to interact with the dim/fct tables -  building Data Marts
 
-Fct_ and dim_ dbt models are created in `COMMON` schema indicating that they are not source related and create basis to build data marts.
-In Snowflake they can be found in `ANALYTICS_STAGING`
+Fct_ and dim_ dbt models are created in `COMMON` schema indicating that they are not source related and create basis to build data marts.\
+
+In Snowflake they can be found in `ANALYTICS_STAGING` schema.
+
+The advantage of dimensional schema is ease of querying and building data marts.
+
+Data mart is where the dimensions labels selection and aggregation can happen.
 
 
 ```
