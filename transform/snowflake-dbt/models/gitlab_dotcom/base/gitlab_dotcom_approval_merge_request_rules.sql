@@ -9,8 +9,8 @@ WITH source AS (
   SELECT
     id::INTEGER                     AS approval_merge_request_rule_id,
     merge_request_id::INTEGER       AS merge_request_id,
-    approvals_required::BOOLEAN     AS is_approvals_required,
-    code_owner::INTEGER             AS has_code_owner,
+    approvals_required::INTEGER     AS is_approvals_required,
+    code_owner::BOOLEAN             AS has_code_owner,
     rule_type::VARCHAR              AS rule_type,
     report_type::VARCHAR            AS report_type,
     created_at::TIMESTAMP           AS created_at,
