@@ -1,6 +1,64 @@
-# Useful links
+# Dimensional modelling
 
 
+## Fact and dimension tables
+
+The high level schema of fact and dimension tables for calculating  ARR/ Customer count
+```mermaid
+classDiagram
+	fct_charges --|> dim_subscriptions
+	fct_charges --|> dim_accounts
+        fct_charges --|> dim_products
+        fct_charges --|> dim_dates
+        dim_accounts --|> dim_customers
+        dim_subscriptions --|> dim_customers
+        fct_invoice_items_agg <|-- fct_charges
+	fct_charges : FK: invoice_item_id
+	fct_charges : FK: account_id
+	fct_charges: FK: product_id
+        fct_charges: FK: subscription_id,
+        fct_charges: FK: effective_start_date_id, 
+        fct_charges: FK: effective_end_date_id, 
+        fct_charges : PK: charge_id
+	fct_charges: mrr()
+        fct_charges: rate_plan_name()
+        fct_charges:  rate_plan_charge_name()
+        fct_invoice_items_agg: FK: charge_id
+        fct_invoice_items_agg: charge_amount_sum()
+	class dim_accounts{
+		PK: account_id
+
+		account_name()
+		country()
+	}
+        class dim_accounts{
+		PK: account_id
+                FK: crm_id
+		account_name()
+		country()
+	}
+	class dim_products{
+		PK: product_id
+		product_category()
+	}
+	class dim_subscriptions{
+		PK: subscription_id
+                FK: crm_id
+		subscription_status()
+	}
+        class dim_dates {
+                PK: date_id
+        }
+        class dim_customers {
+                PK: crm_id
+                customer_id
+        }
+
+```		
+
+
+
+## How to interact with the dim/fct tables -  building Data Marts
 
 ```
     SELECT
@@ -18,6 +76,7 @@
 ;
 
 ```
+
 
 ## Useful links 
 * Discourse about Kimball dimensional modelling in modern data warehouses includding some important ideas why we should still sue Kimball
