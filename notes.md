@@ -16,7 +16,9 @@ DM is part of the Business Dimensional Lifecycle methodology developed by Ralph 
 Dimensional modeling always uses the concepts of facts (measures), and dimensions (context).
 Facts are typically (but not always) numeric values that can be aggregated, and dimensions are groups of hierarchies and descriptors that define the facts.
 
-Fact table is a central table and is linked to dimensional tables with foreign keys creating a star schema
+In the simpliest version fact table is a central table and is linked to dimensional tables with foreign keys creating a star schema. 
+Star schema with dimensional tables linking to more dimensional tables are called snowflake schemas, multi fact tables schemas are called galaxies. 
+
 
 The high level schema of fact and dimension tables for calculating  ARR/ Customer count
 ```mermaid
@@ -73,6 +75,10 @@ classDiagram
 
 ## How to interact with the dim/fct tables -  building Data Marts
 
+Fct_ and dim_ dbt models are created in `COMMON` schema indicating that they are not source related and create basis to build data marts.
+In Snowflake they can be found in `ANALYTICS_STAGING`
+
+
 ```
     SELECT
     COALESCE(dim_customers.merged_to_account_id , dim_customers.CRM_ID) AS customer_id,
@@ -89,7 +95,12 @@ classDiagram
 
 ```
 
+* Example Data Mart build with dbt [WIP](https://gitlab.com/gitlab-data/analytics/-/blob/b7375abfc6ab32eb6d9988df6ae5a98ebc7f72ba/transform/snowflake-dbt/models/marts/mrr/mrr_data_mart.sql)
+
 ## Why is it worth using fact and dim tables
+
+* centralized logic 
+* 
 
 
 ## How dimensional modelling can improve weaknesses of what we are using now
