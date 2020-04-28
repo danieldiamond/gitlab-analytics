@@ -111,19 +111,22 @@ Data mart is where the dimensions labels selection and aggregation can happen.
 
 ## Why is it worth using fact and dim tables
 
-* centralized implementation of logic 
-* one source of truth of what customer means
-* easier to create 
+* simplier to query as fully normalized data models are way too complex for non-developers to deal with
+* centralized implementation of buisness logic, consistent definitions across business users e.g. one source of truth of customer definition
+* easier to add data to existing dimensional model
+* easier to communicate with business 
+* definitions should be source system independent 
 
 
 ## How dimensional modelling can improve weaknesses of what we are using now
 
-* plenty of xf_ models (re-)use similar but yet not the same logic 
-* the xf_ models 
+* very often our models follow source models which are normalized and difficult for business user to understand
+* plenty of xf_ models (re-)use similar but yet not the same logic for defining customer
+* redundancy, reinventing definitions when building model using source models
+* hard to identify which xf_/intermiedate models are affected by changes in source/base models
 
 
 ## Useful links / resources
 * [dbt Discourse about Kimball dimensional modelling](https://discourse.getdbt.com/t/is-kimball-dimensional-modeling-still-relevant-in-a-modern-data-warehouse/225/6) in modern data warehouses includding some important ideas why we should still sue Kimball
 * [Dimensional modelling manifesto](https://www.kimballgroup.com/1997/08/a-dimensional-modeling-manifesto/)
 * [Dimensional Modelling techniques](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/) by Kimball Group
-* 
