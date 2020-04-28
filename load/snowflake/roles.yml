@@ -1242,6 +1242,13 @@ roles:
             - analyst_xs
             - reporting
 
+    - ysun:
+        member_of:
+            - analyst_finance
+            - bamboohr
+        warehouses:
+            - analyst_xs  
+
 
 # ==========================================
 # Users
@@ -1560,6 +1567,11 @@ users:
         can_login: yes
         member_of:
             - wwright
+
+    - ysun:
+        can_login: yes
+        member_of:
+            - ysun
 
 # ==========================================
 # Warehouses
