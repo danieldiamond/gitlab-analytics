@@ -24,17 +24,21 @@ sources:
       - name: communication_certificate
       - name: employee_location_factor
       - name: gitlab_slack_stats
+        freshness: null
       - name: google_referrals
         freshness: null
       - name: headcount
         freshness: null
       - name: hire_forecast
       - name: hire_plan
+        freshness: null
       - name: job_roles_prior_to_2020_02
+        freshness: null
       - name: kpi_status
       - name: linkedin_recruiter
         freshness: null
       - name: location_factor_targets
+        freshness: null
       - name: marketing_pipe_to_spend_headcount
         freshness: null
       - name: marketing_kpi_benchmarks
@@ -58,6 +62,7 @@ sources:
         freshness: null
       - name: social_marketing_metrics
       - name: abm_account_baselines
+        freshness: null
       - name: clari_export_forecast_net_iacv
         freshness:
           warn_after: {count: 10, period: day}
