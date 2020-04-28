@@ -11,6 +11,12 @@ DM is part of the Business Dimensional Lifecycle methodology developed by Ralph 
 
 *a logical design technique that seeks to present the data in a standard, intuitive framework that allows for high-performance acces*
 
+Dimensional Modelling is business process oriented and can be built in 4 steps:
+1. Choose the business process e.g. track monthly revenue
+2. Declare the grain e.g. per customer 
+3. Identify the dimensions 
+4. Identify the fact 
+
 ## Fact and dimension tables
 
 Dimensional modeling always uses the concepts of facts (measures), and dimensions (context).
@@ -21,6 +27,7 @@ Star schema with dimensional tables linking to more dimensional tables are calle
 
 
 The high level schema of fact and dimension tables for calculating  ARR/ Customer count
+
 ```mermaid
 classDiagram
 	fct_charges --|> dim_subscriptions
@@ -99,11 +106,15 @@ In Snowflake they can be found in `ANALYTICS_STAGING`
 
 ## Why is it worth using fact and dim tables
 
-* centralized logic 
-* 
+* centralized implementation of logic 
+* one source of truth of what customer means
+* easier to create 
 
 
 ## How dimensional modelling can improve weaknesses of what we are using now
+
+* plenty of xf_ models (re-)use similar but yet not the same logic 
+* the xf_ models 
 
 
 ## Useful links / resources
