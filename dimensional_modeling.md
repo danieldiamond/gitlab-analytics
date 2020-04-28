@@ -1,17 +1,17 @@
 ## Background
 
-This is to demo work currently done as part of data team's effort to develop EDW using dimensional modelling.
+This is to demo work currently done as part of data team's effort to develop EDW using dimensional modeling.
 
 * [Proposal issue](https://gitlab.com/gitlab-data/managers/-/merge_requests/1)
 * [Pilot Enterprise Data Warehouse epic](https://gitlab.com/groups/gitlab-data/-/epics/76)
 
-## Dimensional modelling
+## Dimensional modeling
 
 DM is part of the Business Dimensional Lifecycle methodology developed by Ralph Kimball which includes a set of methods, techniques and concepts for use in data warehouse design.
 
 *a logical design technique that seeks to present the data in a standard, intuitive framework that allows for high-performance acces*
 
-Dimensional Modelling is business process oriented and can be built in 4 steps:
+Dimensional Modeling is business process oriented and can be built in 4 steps:
 1. Choose the business process e.g. track monthly revenue
 2. Declare the grain e.g. per customer 
 3. Identify the dimensions 
@@ -118,7 +118,7 @@ Data mart is where the dimensions labels selection and aggregation can happen.
 * definitions should be source system independent 
 
 
-## How dimensional modelling can improve weaknesses of what we are using now
+## How dimensional modeling can improve weaknesses of what we are using now
 
 * very often our models follow source models which are normalized and difficult for business user to understand
 * plenty of xf_ models (re-)use similar but yet not the same logic for defining customer
