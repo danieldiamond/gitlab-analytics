@@ -1213,7 +1213,7 @@ models:
     description: >-
       A base model for Gitlab.com Gitlab.com push_rules.
     columns:
-      - name: rpush_rule_id
+      - name: push_rule_id
         tests:
           - not_null
           - unique
