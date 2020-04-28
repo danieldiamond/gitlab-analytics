@@ -91,6 +91,7 @@ sources:
         identifier: gitlab_db_epic_issues
       - name: epic_metrics
         identifier: gitlab_db_epic_metrics
+        freshness: null
       - name: epics
         identifier: gitlab_db_epics
       - name: events
@@ -123,6 +124,7 @@ sources:
         identifier: gitlab_db_lfs_objects_projects
       - name: licenses
         identifier: gitlab_db_licenses
+        freshness: null
       - name: lists
         identifier: gitlab_db_lists
       - name: members

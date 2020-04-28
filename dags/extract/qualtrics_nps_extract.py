@@ -13,6 +13,7 @@ from airflow_utils import (
 from kube_secrets import (
     QUALTRICS_API_TOKEN,
     QUALTRICS_POOL_ID,
+    QUALTRICS_NPS_ID,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_LOAD_DATABASE,
     SNOWFLAKE_LOAD_PASSWORD,
@@ -51,6 +52,7 @@ qualtrics_operator = KubernetesPodOperator(
     name="qualtrics-nps-extract",
     secrets=[
         QUALTRICS_API_TOKEN,
+        QUALTRICS_NPS_ID,
         QUALTRICS_POOL_ID,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_LOAD_DATABASE,

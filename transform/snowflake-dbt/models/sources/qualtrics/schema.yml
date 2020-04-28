@@ -42,3 +42,21 @@ models:
         - name: mailing_list_membership_observed_at
           tests:
             - not_null
+    - name: qualtrics_nps_survey_responses
+      description: 'NPS Survey responses'
+      columns:
+        - name: response_id
+          tests:
+            - not_null
+            - unique
+        - name: response_values
+    - name: qualtrics_question
+      description: 'Data about Qualtrics survey questions'
+      columns:
+        - name: answer_choices
+        - name: question_description
+        - name: question_id
+          tests:
+            - not_null
+            - unique
+        - name: survey_id

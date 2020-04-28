@@ -29,6 +29,11 @@ WITH source AS (
       description::VARCHAR                          AS epic_description,
       closed_at::TIMESTAMP                          AS closed_at,
       state_id::INTEGER                             AS state_id,
+      parent_id::INTEGER                            AS parent_id,
+      relative_position::INTEGER                    AS relative_position,
+      start_date_sourcing_epic_id::INTEGER          AS start_date_sourcing_epic_id,
+      external_key::VARCHAR                         AS external_key,
+      confidential::BOOLEAN                         AS is_confidential,
       CASE
         WHEN state_id = 1 THEN 'opened'
         WHEN state_id = 2 THEN 'closed'

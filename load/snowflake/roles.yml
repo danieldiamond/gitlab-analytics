@@ -140,6 +140,8 @@ roles:
             - license_db
             - postgres_pipeline
             - netsuite
+            - qualtrics
+            - qualtrics_sensitive
             - salesforce
             - sheetload
             - snapshots
@@ -171,7 +173,6 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
-            - bamboohr
             - boneyard
             - covid19
             - dbt_analytics
@@ -268,29 +269,6 @@ roles:
             databases:
                 write:
                     - analytics
-
-    - analyst_sensitive:
-        warehouses:
-            - analyst_xs
-        member_of:
-            - boneyard
-            - dbt_analytics
-            - dbt_analytics_sensitive
-            - gitlab_data_yaml
-            - snowflake_db
-            - zuora
-        privileges:
-            databases:
-                read:
-                    - raw
-                write:
-                    - analytics
-            schemas:
-                read:
-                    - raw.*
-            tables:
-                read:
-                    - raw.*.*
 
     - data_manager:
         warehouses:
@@ -452,9 +430,12 @@ roles:
                     - analytics
             schemas:
                 read:
+                    - analytics.airflow
                     - analytics.covid19
             tables:
                 read:
+                    - analytics.airflow.airflow_dag
+                    - analytics.airflow.airflow_dag_run
                     - analytics.covid19.covid19_cases
 
     - reporter_sensitive: #Right now this matches the reporter role, until we roll out the sensitive schema
@@ -639,13 +620,16 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
                     - raw.greenhouse
+                    - analytics.greenhouse
             tables:
                 read:
                     - raw.greenhouse.*
+                    - analytics.greenhouse.*
 
     - handbook:
         warehouses:
@@ -703,6 +687,37 @@ roles:
             tables:
                 read:
                     - raw.tap_postgres.*  
+
+    - qualtrics:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.qualtrics
+            tables:
+                read:
+                    - analytics.qualtrics.*
+    
+    - qualtrics_sensitive:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - analytics
+                    - raw
+            schemas:
+                read:
+                    - analytics.analytics_sensitive
+                    - raw.qualtrics
+            tables:
+                read:
+                    - analytics.analytics_sensitive.qualtrics_*
+                    - raw.qualtrics.*
 
     - salesforce:
         warehouses:
@@ -856,15 +871,27 @@ roles:
         warehouses:
             - analyst_xs
 
+    - cmccarty:
+        member_of:
+            - securityadmin
+        warehouses:
+            - admin
+
     - cmestel:
         member_of:
             - analyst_finance
+            - bamboohr
         warehouses:
             - analyst_xs
 
     - datwood:
         member_of:
             - analyst_core
+        warehouses:
+            - analyst_xs
+    - dknox:
+        member_of:
+            - analyst_engineering
         warehouses:
             - analyst_xs
 
@@ -951,6 +978,7 @@ roles:
     - fkurniadi:
         member_of:
             - analyst_finance
+            - bamboohr
         warehouses:
             - analyst_xs        
 
@@ -1023,7 +1051,6 @@ roles:
     - ktam:
         member_of:
             - analyst_core
-            - bamboohr
             - dbt_analytics_sensitive
             - data_manager
             - greenhouse
@@ -1117,6 +1144,12 @@ roles:
             - reporter
         warehouses:
             - analyst_xs
+    
+    - rparker:
+        member_of: 
+            - analyst_core
+        warehouses:
+            - analyst_xs
 
     - sreddy:
         member_of:
@@ -1204,6 +1237,7 @@ roles:
     - wwright:
         member_of:
             - analyst_finance
+            - bamboohr
         warehouses:
             - analyst_xs
             - reporting
@@ -1243,6 +1277,10 @@ users:
         can_login: yes
         member_of:
             - aakgun
+    - cmccarty:
+        can_login: yes
+        member_of:
+            - cmccarty
 
     - cmestel:
         can_login: yes
@@ -1253,7 +1291,12 @@ users:
         can_login: yes
         member_of:
             - datwood
-
+    
+    - dknox:
+        can_login: yes
+        member_of:
+            - dknox
+    
     - dtang:
         can_login: yes
         member_of:
@@ -1267,10 +1310,8 @@ users:
     - eburke:
         can_login: yes
         member_of:
-            - analyst_sensitive
             - eburke
             - engineer
-            - sysadmin
 
     - eeastwood:
         can_login: yes
@@ -1465,6 +1506,11 @@ users:
         can_login: yes
         member_of:
             - rkohnke
+
+    - rparker:
+        can_login: yes
+        member_of:
+            - rparker
 
     - sreddy:
         can_login: yes

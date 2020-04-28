@@ -53,6 +53,10 @@ seeds:
   gitlab_snowflake:
     zuora_country_geographic_region:
       schema: analytics
+    gitlab_release_schedule:
+      column_types:
+        major_minor_version: varchar
+
 
 # ======
 # Model Configs
@@ -102,6 +106,11 @@ models:
 
     # Dimensional Structure
     sources:
+    
+      airflow:
+        materialized: table
+        schema: airflow
+
       dbt:
         materialized: table
         schema: dbt
@@ -109,6 +118,11 @@ models:
       google_analytics_360:
         materialized: table
         schema: google_analytics_360
+
+      greenhouse:
+        schema: greenhouse
+        sensitive:
+          schema: sensitive
 
       license:
         schema: license_db
@@ -141,8 +155,17 @@ models:
       google_analytics_360:
         schema: analytics
 
+      greenhouse:
+        xf:
+          schema: sensitive
+        rpt:
+          schema: analytics
+
       license:
         materialized: view
+
+      qualtrics:
+        schema: analytics
 
       sfdc:
         xf:
@@ -189,18 +212,7 @@ models:
       transformed:
         materialized: table
 
-    greenhouse:
-      base:
-        schema: sensitive
-      xf:
-        schema: sensitive
-      rpt:
-        schema: analytics
-
     handbook:
-        materialized: table
-
-    location_factor:
         materialized: table
          
     marts:

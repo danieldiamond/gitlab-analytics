@@ -29,6 +29,20 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_audit_event_details
+    description: Audit event details parsed into key-value pairs
+    columns:
+      - name: audit_event_id
+        tests:
+          - not_null
+      - name: key_name
+        tests:
+          - not_null
+      - name: key_value
+      - name: updated_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_audit_events
     description: Base model for Gitlab.com audit events
     columns:
@@ -613,11 +627,6 @@ models:
               field: issue_id
               severity: warn
       - name: promoted_to_epic_id
-        tests:
-          - relationships:
-              to: ref('gitlab_dotcom_epics')
-              field: epic_id
-              severity: warn
       - name: issue_title
         description: '{{ doc("visibility_documentation") }}'
       - name: issue_description

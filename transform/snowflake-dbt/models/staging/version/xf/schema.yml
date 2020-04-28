@@ -8,16 +8,26 @@ models:
           - name: ping_type
             description: an instance checked for new version or send a usage ping
 
-    - name: version_latest_version_ping_per_host_and_month
-      description: This model includes only the lastest version ping for every host for each month in which they sent a version ping.
+    - name: version_releases
+      description: This model represents the different minor (X.y) versions released at GitLab.
       columns:
-          - name: ping_id
+          - name: major_minor_version
+            description: The `9.1` in 9.1.4, for example.
+            tests:
+              - not_null
+              - unique
+          - name: major_version
+            description: The `9` in 9.1.4, for example.
+            tests:
+              - not_null
+          - name: minor_version
+            description: The `1` in 9.1.4, for example.
+            tests:
+              - not_null
+          - name: release_date
             tests:
                 - not_null
                 - unique
-          - name: host_id
-            tests:
-                - not_null
 
     - name: version_usage_data_action_summary_xf
       description: '{{ doc("version_usage_data_action_summary_xf") }}'
@@ -68,21 +78,6 @@ models:
             tests:
                 - not_null
 
-    - name: version_usage_data_monthly_change_by_stage
-      description: '{{ doc("version_usage_data_monthly_change_by_stage") }}'
-      columns:
-          - name: created_at
-            tests:
-              - not_null
-          - name: ping_source
-            tests:
-              - not_null
-          - name: main_edition
-            description: Comes from [this section of the code](https://gitlab.com/gitlab-org/gitlab/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154)
-            tests:
-                - accepted_values:
-                    values: ['EE', 'CE']
-
     - name: version_usage_data_monthly_change
       description: '{{ doc("version_usage_data_monthly_change") }}'
       columns:
@@ -96,7 +91,12 @@ models:
                     values: ['EE', 'CE']
 
     - name: version_usage_data_unpacked
+      description: '{{ doc("version_usage_data_unpacked") }}'
       columns:
+          - name: days_after_version_release_date
+            description: For the minor version that the instance is on, how many days ago was it first released?
+          - name: latest_version_available_at_ping_creation
+            description: What was the latest minor version available at the time of the usage ping?
           - name: main_edition
             description: Comes from [this section of the code](https://gitlab.com/gitlab-org/gitlab/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154)
             tests:
@@ -105,6 +105,8 @@ models:
           - name: uuid
             tests:
                 - not_null
+          - name: versions_behind_latest
+            description: How many minor versions was the instance behind the latest version at the time of the ping?
           - name: zuora_subscription_id
             description: The Zuora subscription associated with the license sending the usage ping.
 

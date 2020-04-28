@@ -43,4 +43,5 @@ with zuora_mrr_totals as (
 SELECT *
 FROM final
 WHERE sfdc_account_id IS NULL
+    -- AND zuora_account_id NOT IN ( )
 GROUP BY 1, 2, 3, 4
