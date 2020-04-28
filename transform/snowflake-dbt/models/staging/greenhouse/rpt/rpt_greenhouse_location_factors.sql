@@ -32,7 +32,7 @@ WITH dates AS (
     FROM screened 
     LEFT JOIN location_factor
       ON screened.application_id = location_factor.application_id
-    GROUP BY 1,2,3
+    GROUP BY 1,2,3,4
   
 ), division_breakout AS (
 
@@ -46,7 +46,7 @@ WITH dates AS (
         SUM(IFF(location_factor IS NOT NULL,1,0))/
             COUNT(application_id)           AS percent_of_applicants_with_location
     FROM intermediate
-    GROUP BY 1,2,3
+    GROUP BY 1,2,3,4
 
 ), department_breakout AS (
   
