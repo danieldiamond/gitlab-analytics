@@ -1,5 +1,3 @@
-
-
 ## Background
 
 This is to demo work currently done as part of data team's effort to develop EDW using dimensional modelling.
@@ -11,9 +9,14 @@ This is to demo work currently done as part of data team's effort to develop EDW
 
 DM is part of the Business Dimensional Lifecycle methodology developed by Ralph Kimball which includes a set of methods, techniques and concepts for use in data warehouse design.
 
-
+*a logical design technique that seeks to present the data in a standard, intuitive framework that allows for high-performance acces*
 
 ## Fact and dimension tables
+
+Dimensional modeling always uses the concepts of facts (measures), and dimensions (context).
+Facts are typically (but not always) numeric values that can be aggregated, and dimensions are groups of hierarchies and descriptors that define the facts.
+
+Fact table is a central table and is linked to dimensional tables with foreign keys creating a star schema
 
 The high level schema of fact and dimension tables for calculating  ARR/ Customer count
 ```mermaid
@@ -68,8 +71,6 @@ classDiagram
 
 ```		
 
-
-
 ## How to interact with the dim/fct tables -  building Data Marts
 
 ```
@@ -84,13 +85,18 @@ classDiagram
     INNER JOIN ANALYTICS.ANALYTICS_STAGING.fct_invoice_items_agg ON fct_charges.charge_id = fct_invoice_items_agg.charge_id
     INNER JOIN ANALYTICS.ANALYTICS_STAGING.dim_products ON dim_products.PRODUCT_ID=fct_charges.PRODUCT_ID
     INNER JOIN ANALYTICS.ANALYTICS_STAGING.dim_subscriptions ON dim_subscriptions.SUBSCRIPTION_ID = fct_charges.subscription_id
-    INNER JOIN  ANALYTICS.ANALYTICS_STAGING.dim_customers ON dim_customers.crm_id = dim_subscriptions.crm_id
-;
+    INNER JOIN  ANALYTICS.ANALYTICS_STAGING.dim_customers ON dim_customers.crm_id = dim_subscriptions.crm_id;
 
 ```
+
+## Why is it worth using fact and dim tables
+
+
+## How dimensional modelling can improve weaknesses of what we are using now
 
 
 ## Useful links / resources
 * [dbt Discourse about Kimball dimensional modelling](https://discourse.getdbt.com/t/is-kimball-dimensional-modeling-still-relevant-in-a-modern-data-warehouse/225/6) in modern data warehouses includding some important ideas why we should still sue Kimball
 * [Dimensional modelling manifesto](https://www.kimballgroup.com/1997/08/a-dimensional-modeling-manifesto/)
-*  
+* [Dimensional Modelling techniques](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/) by Kimball Group
+* 
