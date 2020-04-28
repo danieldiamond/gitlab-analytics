@@ -1,4 +1,16 @@
-# Dimensional modelling
+
+
+## Background
+
+This is to demo work currently done as part of data team's effort to develop EDW using dimensional modelling.
+
+* [Proposal issue](https://gitlab.com/gitlab-data/managers/-/merge_requests/1)
+* [Pilot Enterprise Data Warehouse epic](https://gitlab.com/groups/gitlab-data/-/epics/76)
+
+## Dimensional modelling
+
+DM is part of the Business Dimensional Lifecycle methodology developed by Ralph Kimball which includes a set of methods, techniques and concepts for use in data warehouse design.
+
 
 
 ## Fact and dimension tables
@@ -78,6 +90,7 @@ classDiagram
 ```
 
 
-## Useful links 
-* Discourse about Kimball dimensional modelling in modern data warehouses includding some important ideas why we should still sue Kimball
-* https://discourse.getdbt.com/t/is-kimball-dimensional-modeling-still-relevant-in-a-modern-data-warehouse/225/6
+## Useful links / resources
+* [dbt Discourse about Kimball dimensional modelling](https://discourse.getdbt.com/t/is-kimball-dimensional-modeling-still-relevant-in-a-modern-data-warehouse/225/6) in modern data warehouses includding some important ideas why we should still sue Kimball
+* [Dimensional modelling manifesto](https://www.kimballgroup.com/1997/08/a-dimensional-modeling-manifesto/)
+*  
