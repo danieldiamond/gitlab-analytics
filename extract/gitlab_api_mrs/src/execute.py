@@ -104,8 +104,8 @@ if __name__ == "__main__":
             for mr_url in mr_urls:
                 mr_information = api_client.get_mr_json(mr_url)
                 if mr_information:
-                    wrote_to_file = True
                     out_file.write(json.dumps(mr_information))
+                    wrote_to_file = True
 
         if wrote_to_file:
             snowflake_stage_load_copy_remove(
