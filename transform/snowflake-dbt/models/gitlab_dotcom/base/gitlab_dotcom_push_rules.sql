@@ -7,7 +7,7 @@ WITH source AS (
 ), renamed AS (
   
     SELECT
-      id::INTEGER                           AS id,
+      id::INTEGER                           AS push_rule_id,
       force_push_regex::VARCHAR             AS force_push_regex,
       delete_branch_regex::VARCHAR          AS delete_branch_regex,
       commit_message_regex::VARCHAR         AS commit_message_regex,
