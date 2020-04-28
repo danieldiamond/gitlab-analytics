@@ -121,6 +121,8 @@ models:
 
       greenhouse:
         schema: greenhouse
+        sensitive:
+          schema: sensitive
 
       license:
         schema: license_db
@@ -161,6 +163,9 @@ models:
 
       license:
         materialized: view
+
+      qualtrics:
+        schema: analytics
 
       sfdc:
         xf:
@@ -208,9 +213,6 @@ models:
         materialized: table
 
     handbook:
-        materialized: table
-
-    location_factor:
         materialized: table
          
     marts:

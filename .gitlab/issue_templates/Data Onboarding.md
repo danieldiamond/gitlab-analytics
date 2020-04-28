@@ -76,23 +76,26 @@ Please watch one minute of [this clip](https://www.youtube.com/watch?v=LqzDY76Q8
 
 * [ ] Open your computer's built-in terminal app. Run the following:
 ```
-curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/onboarding_script.sh > ~/onboarding_script.sh
-bash ~/onboarding_script.sh
-rm ~/onboarding_script.sh
+curl https://gitlab.com/gitlab-data/analytics/raw/master/admin/onboarding_script.zsh > ~/onboarding_script.zsh
+zsh ~/onboarding_script.zsh
+rm ~/onboarding_script.zsh
 ```
+   * This script is written for zsh, the default terminal for MacOS now, if you feel strongly that you prefer or would like to keep bash, please see this [commit & script](https://gitlab.com/gitlab-data/analytics/-/blob/6964ba11c46c0a3caf863c8fae0b89ba24bb3c48/admin/onboarding_script.sh)
+      * However, this script is no longer actively maintained or supported, so you will need to support yourself if you do this. If you do use bash it is also recommended to compare the script with the latest zsh version to make sure you aren't missing any new apps or tools that have been added.
    * This may take a while, and it might ask you for your password (multiple times) before it's done. Here's what this does:
       * Installs iTerm, a mac-OS terminal replacement
       * Installs VSCode, an open source text editor. VSCode is recommended for multiple reasons including community support, the [GitLab workflow](https://marketplace.visualstudio.com/items?itemName=fatihacet.gitlab-workflow) extension, and the LiveShare features.
       * Installs docker so you can work out of containers.
+      * Installs oh-my-zsh for easy terminal theming, git autocomplete, and a few other plugins. If you are curious or would like to change the look and feel of your shell please [go here](https://github.com/ohmyzsh/ohmyzsh).
       * Installing dbt, the open source tool we use for data transformations.
-      * Installing goto, an easy way to move through the file system. [Please find here more details on how to use goto](https://github.com/iridakos/goto)
+      * Installing jump, an easy way to move through the file system. [Please find here more details on how to use jump](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jump)
       * Installing anaconda, how we recommend folks get their python distribution.
       * Installs all-the-things needed to contribute to [the handbook](about.gitlab.com/handbook) locally and build it locally.
-   * You will be able to `goto analytics` from anywhere to go to the analytics repo locally (you will have to open a new terminal window for `goto` to start working.) If it doesn't work, try running `goto -r analytics ~/repos/analytics` then quit + reopen your terminal before trying again.
+   * You will be able to `jump analytics` from anywhere to go to the analytics repo locally (you will have to open a new terminal window for `jump` to start working.) If it doesn't work, try running `cd ~/repos/analytics mark analytics` then quit + reopen your terminal before trying again.
    * You will be able to `gl_open` from anywhere within the analytics project to open the repo in the UI. If doesn't work, visually inspect your `~/.bashrc` file to make sure it has [this line](https://gitlab.com/gitlab-data/analytics/blob/master/admin/make_life_easier.sh#L14).
    * Your default python version should now be python 3. Typing `which python` into a new terminal window should now return `/usr/local/anaconda3/bin/python`
    * dbt will be installed at its latest version. Typing `dbt --version` will output the current version.
-   * To get to the handbook project, you'll be able to use `goto handbook`, and to build the handbook locally, you'll be able to use the alias `build_hb!`. 
+   * To get to the handbook project, you'll be able to use `jump handbook`, and to build the handbook locally, you'll be able to use the alias `build_hb!`.
 * [ ] We strongly recommend configuring VSCode (via the VSCode UI) with the [VSCode setup](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243?) section of Claire's post and [adding the tip](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243/10?u=tmurphy) from tmurphy later in the thread. It will make your life much easier.
   * Your editor should be configured so that all tabs are converted to 4 spaces. This will minimize messy looking diffs and provide consistency across the team.
     * VSCode
