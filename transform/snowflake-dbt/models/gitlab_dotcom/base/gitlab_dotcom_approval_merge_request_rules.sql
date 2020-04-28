@@ -9,10 +9,10 @@ WITH source AS (
   SELECT
     id::INTEGER                     AS approval_merge_request_rule_id,
     merge_request_id::INTEGER       AS merge_request_id,
-    approvals_required_id::BOOLEAN  AS approvals_required_id,
-    code_owner_id::INTEGER          AS code_owner_id,
+    approvals_required::BOOLEAN     AS is_approvals_required,
+    code_owner::INTEGER             AS has_code_owner,
     rule_type::VARCHAR              AS rule_type,
-    report_type::VARCHAR            AS code_owner_id,
+    report_type::VARCHAR            AS report_type,
     created_at::TIMESTAMP           AS created_at,
     updated_at::TIMESTAMP           AS updated_at
 
