@@ -484,7 +484,7 @@ WITH gitlab_subscriptions AS (
         AND {{ event_cte.event_name }}.created_at BETWEEN gitlab_subscriptions.valid_from
         AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
       LEFT JOIN plans
-        ON gitlab_subscriptions.plan_id = plans.plan_id_at_event_date
+        ON gitlab_subscriptions.plan_id = plans.plan_id
         
     {% if not loop.last %}
     UNION
