@@ -13,11 +13,6 @@ WITH zuora_rate_plan AS (
     SELECT *
     FROM {{ ref('zuora_invoice_item_source') }}
 
-), zuora_invoice AS (
-
-    SELECT *
-    FROM {{ ref('zuora_invoice_source') }}
-
 ), base_charges AS (
 
     SELECT
@@ -31,10 +26,6 @@ WITH zuora_rate_plan AS (
                                                         AS effective_start_date_id,
       TO_NUMBER(TO_CHAR(zuora_rate_plan_charge.effective_end_date, 'YYYYMMDD'), '99999999')
                                                         AS effective_end_date_id,
-      TO_NUMBER(TO_CHAR(zuora_rate_plan_charge.effective_start_month, 'YYYYMMDD'),'99999999')
-                                                        AS effective_start_month_id,
-      TO_NUMBER(TO_CHAR(zuora_rate_plan_charge.effective_end_month, 'YYYYMMDD'), '99999999')
-                                                        AS effective_end_month_id,
       zuora_rate_plan_charge.unit_of_measure,
       zuora_rate_plan_charge.quantity,
       zuora_rate_plan_charge.mrr,
@@ -49,15 +40,13 @@ WITH zuora_rate_plan AS (
     INNER JOIN zuora_rate_plan_charge
       ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
 
-), final AS (
+), latest_invoiced_charge_version_in_segment AS (
 
     SELECT
-      base_charges.*
+      rate_plan_charge_id
     FROM base_charges
     INNER JOIN zuora_invoice_item AS invoice_item_source
       ON base_charges.charge_id = invoice_item_source.rate_plan_charge_id
-    INNER JOIN zuora_invoice AS invoice_source
-      ON invoice_item_source.invoice_id = invoice_source.invoice_id
     QUALIFY ROW_NUMBER() OVER (
         PARTITION BY
           rate_plan_charge_number,
@@ -66,6 +55,20 @@ WITH zuora_rate_plan AS (
           rate_plan_charge_version DESC,
           service_start_date DESC)= 1
 
+), final AS (
+
+    SELECT
+      base_charges.*,
+      ROW_NUMBER() OVER (
+        PARTITION BY rate_plan_charge_number
+        ORDER BY
+          rate_plan_charge_segment,
+          rate_plan_charge_version
+      )                                                                         AS segment_version_order,
+      latest_invoiced_charge_version_in_segment.rate_plan_charge_id IS NOT NULL AS is_last_version_segment
+    FROM base_charges
+    LEFT JOIN latest_invoiced_charge_version_in_segment
+      ON latest_invoiced_charge_version_in_segment.rate_plan_charge_id = base_charges.charge_id
 )
 
 SELECT *
