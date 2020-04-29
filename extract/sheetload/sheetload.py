@@ -74,6 +74,23 @@ def dw_uploader(
     return True
 
 
+def load_google_sheet_file(
+    file_name: str,
+    worksheet_name: str,
+    sheets_client: gspread.Client,
+    engine: Engine,
+    table: str,
+    schema: str,
+):
+    """
+    Loads the google sheet into Snowflake table at schema.table
+    """
+    sheet = sheets_client.open(file_name).worksheet(worksheet_name).get_all_values()
+    sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
+    dw_uploader(engine, table, sheet_df, schema)
+    info(f"Finished processing for table: {sheet_info}")
+
+
 def sheet_loader(
     sheet_file: str,
     schema: str = "sheetload",
@@ -128,7 +145,7 @@ def sheet_loader(
         "https://www.googleapis.com/auth/drive",
     ]
     keyfile = load(gapi_keyfile or env["GCP_SERVICE_CREDS"])
-    google_creds = gspread.authorize(
+    gspread_client = gspread.authorize(
         ServiceAccountCredentials.from_json_keyfile_dict(keyfile, scope)
     )
 
@@ -136,14 +153,10 @@ def sheet_loader(
         # Sheet here refers to the name of the sheet file, table is the actual sheet name
         info(f"Processing sheet: {sheet_info}")
         sheet_file, table = sheet_info.split(".")
-        sheet = (
-            google_creds.open(schema + "." + sheet_file)
-            .worksheet(table)
-            .get_all_values()
+
+        load_google_sheet_file(
+            schema + "." + sheet_file, table, gspread_client, engine, table, schema
         )
-        sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
-        dw_uploader(engine, table, sheet_df, schema)
-        info(f"Finished processing for table: {sheet_info}")
 
     query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)
