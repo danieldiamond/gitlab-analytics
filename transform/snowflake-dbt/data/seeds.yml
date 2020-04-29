@@ -1,6 +1,8 @@
 version: 2
 
 seeds:
+  - name: blacklisted_uuid
+    description: '{{ doc("blacklisted_uuid") }}'
   - name: gitlab_release_schedule
     description: '{{ doc("gitlab_release_schedule_doc") }}'
   - name: handbook_file_classification_mapping
