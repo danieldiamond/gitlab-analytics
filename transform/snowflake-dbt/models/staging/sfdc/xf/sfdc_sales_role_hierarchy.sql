@@ -21,7 +21,7 @@ WITH RECURSIVE managers AS (
     users.manager_id,
     level + 1,
     path || managers.role_name || '::'
-  FROM {{ ref('sfdc_users_xf') }}
+  FROM {{ ref('sfdc_users_xf') }} users
   INNER JOIN managers
     ON users.manager_id = managers.id
   
