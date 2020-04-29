@@ -132,9 +132,10 @@ def sheet_loader(
         info(f"Processing sheet: {sheet_info}")
         sheet_file, table = sheet_info.split(".")
 
-        google_sheet_client.load_google_sheet_file_to_snowflake(
+        dataframe = google_sheet_client.load_google_sheet(
             gapi_keyfile, schema + "." + sheet_file, table, engine, table, schema
         )
+        dw_uploader(engine, table, dataframe, schema)
 
     query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)

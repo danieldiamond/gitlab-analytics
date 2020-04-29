@@ -21,11 +21,10 @@ from google.cloud import storage
 from google.oauth2 import service_account
 from oauth2client.service_account import ServiceAccountCredentials
 from sqlalchemy.engine.base import Engine
-from sheetload import dw_uploader
 
 
 class GoogleSheetsClient:
-    def load_google_sheet_file_to_snowflake(
+    def load_google_sheet(
         self,
         key_file,
         file_name: str,
@@ -33,15 +32,14 @@ class GoogleSheetsClient:
         engine: Engine,
         table: str,
         schema: str,
-    ):
+    ) -> pd.DataFrame:
         """
         Loads the google sheet into Snowflake table at schema.table
         """
         sheets_client = self.get_client(key_file)
         sheet = sheets_client.open(file_name).worksheet(worksheet_name).get_all_values()
         sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
-        dw_uploader(engine, table, sheet_df, schema)
-        info(f"Finished processing for table: {table}")
+        return sheet_df
 
     def get_client(self, gapi_keyfile):
         scope = [
