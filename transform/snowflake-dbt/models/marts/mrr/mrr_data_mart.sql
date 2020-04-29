@@ -32,10 +32,10 @@ WITH fct_charges AS (
 
    SELECT
     fct_charges.*,
-    start_date.date_actual        AS effective_start_month,
-    end_date.date_actual          AS effective_end_month,
+    start_date.date_actual                              AS effective_start_month,
+    end_date.date_actual                                AS effective_end_month,
     dim_dates.date_id,
-    dim_dates.first_day_of_month  AS mrr_month
+    dateadd('month', -1, dim_dates.first_day_of_month)  AS mrr_month
     FROM fct_charges
     INNER JOIN dim_dates ON fct_charges.effective_start_month_id <= dim_dates.date_id
      AND fct_charges.effective_end_month_id > dim_dates.date_id
