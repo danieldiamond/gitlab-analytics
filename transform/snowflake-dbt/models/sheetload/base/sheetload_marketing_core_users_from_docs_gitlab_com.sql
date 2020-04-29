@@ -5,8 +5,9 @@ WITH source AS (
 
 ), renamed as (
 
-    SELECT  "Company_Name"::varchar                          AS company_name,
-            "Total_Page_Count"::int                         AS total_page_count
+    SELECT
+        "Company_Name"::varchar                         AS company_name,
+        "Total_Page_Count"::int                         AS total_page_count
     FROM source
 )
 
