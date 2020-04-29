@@ -1363,9 +1363,6 @@ models:
         tests:
           - not_null
           - unique
-      - name: project_id
-        tests:
-          - not_null
       - name: created_at
         tests:
           - not_null
