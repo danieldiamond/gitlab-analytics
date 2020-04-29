@@ -93,3 +93,6 @@ models:
       description: This metric indicates of the offers sent, how many candidates have accepted. 
     - name: percent_of_hires_sourced     
       description: Identifies of the hires for a specific month, how many were sourced by a recruiter.
+
+    - name: rpt_greenhouse_location_factors
+      description: This model provides the average location factor for screened applicants in our recruiting process. The breakdown provided is by division, and department and month.

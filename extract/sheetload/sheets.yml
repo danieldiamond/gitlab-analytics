@@ -68,6 +68,10 @@ sheets:
     owner: '@iweeks'
     tabs:
       - planned_values
+  - name: procurement_cost_savings
+    owner: '@iweeks'
+    tabs:
+      - procurement_cost_savings
   - name: pulse_survey
     owner: '@kathleentam'
     tabs:
@@ -109,6 +113,10 @@ sheets:
     owner: '@jeanpeguero'
     tabs:
       - abm_account_baselines
+  - name: marketing_core_users_from_docs_gitlab_com
+    owner: '@rkohnke'
+    tabs:
+      - marketing_core_users_from_docs_gitlab_com
   - name: clari_export_forecast_net_iacv
     owner: '@mvilain'
     tabs:

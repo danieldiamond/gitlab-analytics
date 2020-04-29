@@ -44,6 +44,7 @@ sources:
       - name: marketing_kpi_benchmarks
       - name: osat
       - name: planned_values
+      - name: procurement_cost_savings
       - name: pulse_survey_configure_be
         freshness: null
       - name: pulse_survey_configure_fe
@@ -63,6 +64,7 @@ sources:
       - name: social_marketing_metrics
       - name: abm_account_baselines
         freshness: null
+      - name: marketing_core_users_from_docs_gitlab_com
       - name: clari_export_forecast_net_iacv
         freshness:
           warn_after: {count: 10, period: day}
