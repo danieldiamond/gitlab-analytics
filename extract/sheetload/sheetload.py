@@ -88,7 +88,7 @@ def load_google_sheet_file(
     sheet = sheets_client.open(file_name).worksheet(worksheet_name).get_all_values()
     sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
     dw_uploader(engine, table, sheet_df, schema)
-    info(f"Finished processing for table: {sheet_info}")
+    info(f"Finished processing for table: {table}")
 
 
 def sheet_loader(
