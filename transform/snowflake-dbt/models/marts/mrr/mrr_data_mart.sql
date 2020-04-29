@@ -13,7 +13,7 @@ WITH fct_charges AS (
     SELECT *
     FROM {{ ref('dim_accounts') }}
 
-), dates AS (
+), dim_dates AS (
 
    SELECT *
    FROM {{ ref('dim_dates') }}
@@ -37,15 +37,28 @@ WITH fct_charges AS (
 
 SELECT
   charges_month_by_month.mrr_month,
-  dim_account.account_id,
-  COALESCE(dim_customers.merged_to_account_id, dim_customers.crm_id) AS crm_id,
-  dim_accounts.account_name,
+  dim_account.account_id                                              AS zuora_account_id,
+  dim_account.sold_to_country                                         AS zuora_sold_to_country,
+  dim_account.account_name                                            AS zuora_account_name,
+  dim_account.account_number                                          AS zuora_account_number,
+  COALESCE(dim_customers.merged_to_account_id, dim_customers.crm_id)  AS crm_id,
   dim_customers.ultimate_parent_account_id,
   dim_customers.ultimate_parent_account_name,
   dim_customers.ultimate_parent_billing_country,
-  dim_accounts.sold_to_country,
+  dim_subscriptions.subscription_id,
   dim_subscriptions.subscription_name_slugify,
   dim_subscriptions.subscription_status,
+  dim_subscriptions.subscription_start_date,
+  dim_subscriptions.subscription_end_date,
+  charges_month_by_month.effective_start_month,
+  charges_month_by_month.effective_end_month,
+  charges_month_by_month.product_name,
+  charges_month_by_month.rate_plan_charge_name,
+  charges_month_by_month.rate_plan_name,
+  charges_month_by_month.product_category,
+  charges_month_by_month.delivery,
+  charges_month_by_month.service_type,
+  charges_month_by_month.unit_of_measure,
   charges_month_by_month.mrr,
   charges_month_by_month.quantity
   FROM charges_month_by_month
@@ -55,3 +68,4 @@ SELECT
     ON dim_customers.crm_id = dim_subscriptions.crm_id
   INNER JOIN dim_accounts
     ON charges_month_by_month.account_id = dim_accounts.account_id
+  WHERE charges_month_by_month.is_last_segment_version
