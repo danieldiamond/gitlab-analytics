@@ -23,24 +23,33 @@ WITH fct_charges AS (
     SELECT *
     FROM {{ ref('dim_subscriptions') }}
 
+), dim_products AS (
+
+    SELECT *
+    FROM {{ ref('dim_products') }}
+
 ), charges_month_by_month AS (
 
    SELECT
     fct_charges.*,
+    start_date.date_actual AS effective_start_month,
+    end_date.date_actual AS effective_end_month,
     dim_dates.date_id,
-    dim_dates.first_date_of_month AS mrr_month
+    dateadd('month',-1,dim_dates.first_day_of_month) AS mrr_month
     FROM fct_charges
     INNER JOIN dim_dates ON fct_charges.effective_start_month_id <= dim_dates.date_id
      AND fct_charges.effective_end_month_id > dim_dates.date_id
+    INNER JOIN dim_dates AS start_date ON fct_charges.effective_start_month_id = start_date.date_id
+    INNER JOIN dim_dates AS end_date ON fct_charges.effective_end_month_id = end_date.date_id
     WHERE dim_dates.day_of_month = 1
 )
 
 SELECT
   charges_month_by_month.mrr_month,
-  dim_account.account_id                                              AS zuora_account_id,
-  dim_account.sold_to_country                                         AS zuora_sold_to_country,
-  dim_account.account_name                                            AS zuora_account_name,
-  dim_account.account_number                                          AS zuora_account_number,
+  dim_accounts.account_id                                              AS zuora_account_id,
+  dim_accounts.sold_to_country                                         AS zuora_sold_to_country,
+  dim_accounts.account_name                                            AS zuora_account_name,
+  dim_accounts.account_number                                          AS zuora_account_number,
   COALESCE(dim_customers.merged_to_account_id, dim_customers.crm_id)  AS crm_id,
   dim_customers.ultimate_parent_account_id,
   dim_customers.ultimate_parent_account_name,
@@ -52,7 +61,7 @@ SELECT
   dim_subscriptions.subscription_end_date,
   charges_month_by_month.effective_start_month,
   charges_month_by_month.effective_end_month,
-  charges_month_by_month.product_name,
+  dim_products.product_name,
   charges_month_by_month.rate_plan_charge_name,
   charges_month_by_month.rate_plan_name,
   charges_month_by_month.product_category,
@@ -64,6 +73,8 @@ SELECT
   FROM charges_month_by_month
   INNER JOIN dim_subscriptions
     ON dim_subscriptions.subscription_id = charges_month_by_month.subscription_id
+  INNER JOIN dim_products
+    ON charges_month_by_month.product_id = dim_products.product_id
   INNER JOIN dim_customers
     ON dim_customers.crm_id = dim_subscriptions.crm_id
   INNER JOIN dim_accounts
