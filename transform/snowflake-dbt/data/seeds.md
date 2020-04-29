@@ -1,4 +1,4 @@
-{% docs gitlab_release_schedule_doc %}
+{% docs blacklisted_uuid %}
 This seed file captures the UUID sending us abnormal usage ping counters. Those UUID are excluded from the analytics downstream models in order to allow easy charting.
 For example in [this issue](https://gitlab.com/gitlab-data/analytics/-/issues/4343), one can clearly see an abnormal spike in monthly numbers of `projects_prometheus_active`.
 {% enddocs %}
