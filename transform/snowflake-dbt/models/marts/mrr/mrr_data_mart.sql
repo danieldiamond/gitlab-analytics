@@ -32,10 +32,10 @@ WITH fct_charges AS (
 
    SELECT
     fct_charges.*,
-    start_date.date_actual AS effective_start_month,
-    end_date.date_actual AS effective_end_month,
+    start_date.date_actual        AS effective_start_month,
+    end_date.date_actual          AS effective_end_month,
     dim_dates.date_id,
-    dateadd('month',-1,dim_dates.first_day_of_month) AS mrr_month
+    dim_dates.first_day_of_month  AS mrr_month
     FROM fct_charges
     INNER JOIN dim_dates ON fct_charges.effective_start_month_id <= dim_dates.date_id
      AND fct_charges.effective_end_month_id > dim_dates.date_id
@@ -50,7 +50,7 @@ SELECT
   dim_accounts.sold_to_country                                         AS zuora_sold_to_country,
   dim_accounts.account_name                                            AS zuora_account_name,
   dim_accounts.account_number                                          AS zuora_account_number,
-  COALESCE(dim_customers.merged_to_account_id, dim_customers.crm_id)  AS crm_id,
+  COALESCE(dim_customers.merged_to_account_id, dim_customers.crm_id)   AS crm_id,
   dim_customers.ultimate_parent_account_id,
   dim_customers.ultimate_parent_account_name,
   dim_customers.ultimate_parent_billing_country,
