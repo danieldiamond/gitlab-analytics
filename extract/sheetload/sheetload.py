@@ -17,6 +17,7 @@ from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
     query_executor,
 )
+from google_sheets_client import GoogleSheetsClient
 from google.cloud import storage
 from google.oauth2 import service_account
 from oauth2client.service_account import ServiceAccountCredentials
@@ -74,23 +75,6 @@ def dw_uploader(
     return True
 
 
-def load_google_sheet_file(
-    file_name: str,
-    worksheet_name: str,
-    sheets_client: gspread.Client,
-    engine: Engine,
-    table: str,
-    schema: str,
-):
-    """
-    Loads the google sheet into Snowflake table at schema.table
-    """
-    sheet = sheets_client.open(file_name).worksheet(worksheet_name).get_all_values()
-    sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
-    dw_uploader(engine, table, sheet_df, schema)
-    info(f"Finished processing for table: {table}")
-
-
 def sheet_loader(
     sheet_file: str,
     schema: str = "sheetload",
@@ -140,22 +124,16 @@ def sheet_loader(
     info(engine)
 
     # Get the credentials for sheets and the database engine
-    scope = [
-        "https://spreadsheets.google.com/feeds",
-        "https://www.googleapis.com/auth/drive",
-    ]
-    keyfile = load(gapi_keyfile or env["GCP_SERVICE_CREDS"])
-    gspread_client = gspread.authorize(
-        ServiceAccountCredentials.from_json_keyfile_dict(keyfile, scope)
-    )
+
+    google_sheet_client = GoogleSheetsClient()
 
     for sheet_info in sheets:
         # Sheet here refers to the name of the sheet file, table is the actual sheet name
         info(f"Processing sheet: {sheet_info}")
         sheet_file, table = sheet_info.split(".")
 
-        load_google_sheet_file(
-            schema + "." + sheet_file, table, gspread_client, engine, table, schema
+        google_sheet_client.load_google_sheet_file_to_snowflake(
+            gapi_keyfile, schema + "." + sheet_file, table, engine, table, schema
         )
 
     query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
