@@ -122,7 +122,7 @@ WITH customers AS (
       subscription.subscription_start_date
     FROM trials_joined
     INNER JOIN orders_shapshots_excluding_ci_minutes 
-      ON trials_joined.namespace_id = orders_shapshots_excluding_ci_minutes.gitlab_namespace_id
+      ON trials_joined.namespace_id = TRY_TO_NUMBER(orders_shapshots_excluding_ci_minutes.gitlab_namespace_id)
     INNER JOIN zuora_subscription_with_positive_mrr_tcv AS subscription
       ON orders_shapshots_excluding_ci_minutes.subscription_name_slugify = subscription.subscription_name_slugify
       AND trials_joined.latest_trial_start_date <= subscription.subscription_start_date
