@@ -8,7 +8,7 @@ WITH RECURSIVE managers AS (
     manager_id,
     0 AS level,
     '' AS path
-  FROM analytics.sfdc_users_xf
+  FROM {{ ref('sfdc_users_xf') }}
   WHERE role_name = 'CRO'
   
   UNION ALL
@@ -21,7 +21,7 @@ WITH RECURSIVE managers AS (
     users.manager_id,
     level + 1,
     path || managers.role_name || '::'
-  FROM analytics.sfdc_users_xf users
+  FROM {{ ref('sfdc_users_xf') }}
   INNER JOIN managers
     ON users.manager_id = managers.id
   
