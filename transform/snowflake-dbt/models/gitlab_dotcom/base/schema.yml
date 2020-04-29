@@ -1356,3 +1356,36 @@ models:
       - name: vulnerability_name
       - name: vulnerability_report_type
       - name: vulnerability_severity
+  - name: gitlab_dotcom_web_hooks
+    description: Base model for Gitlab.com web_hooks
+    columns:
+      - name: web_hook_id
+        tests:
+          - not_null
+          - unique
+      - name: project_id
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_web_hook_logs
+    description: Base model for Gitlab.com web_hook_logs
+    columns:
+      - name: web_hook_log_id
+        tests:
+          - not_null
+          - unique
+      - name: web_hook_id
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
