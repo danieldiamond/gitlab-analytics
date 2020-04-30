@@ -343,10 +343,39 @@ def csv_loader(
     dw_uploader(engine, table=table, data=csv_data, schema=schema, truncate=True)
 
 
+def qualtrics_loader():
+    google_sheet_client = GoogleSheetsClient()
+    qualtrics_files_to_load = [
+        file
+        for file in google_sheet_client.get_visible_files()
+        if file.title().lower().startswith("qualtrics_mailing_list.")
+    ]
+
+    info(f"Found {len(qualtrics_files_to_load)} files to process.")
+
+    engine = snowflake_engine_factory(env, "LOADER", "qualtrics_mailing_list")
+
+    for file in qualtrics_files_to_load:
+        file_name = file.title()
+        schema, table = file_name.split(".")
+        dataframe = google_sheet_client.load_google_sheet(
+            None, file_name, table, engine, table, schema
+        )
+        dw_uploader(engine, table, dataframe, schema)
+
+        google_sheet_client.rename_file(file.id(), "processed_" + file.title())
+
+
 if __name__ == "__main__":
     basicConfig(stream=sys.stdout, level=20)
     getLogger("snowflake.connector.cursor").disabled = True
     Fire(
-        {"sheets": sheet_loader, "gcs": gcs_loader, "s3": s3_loader, "csv": csv_loader}
+        {
+            "sheets": sheet_loader,
+            "gcs": gcs_loader,
+            "s3": s3_loader,
+            "csv": csv_loader,
+            "qualtrics": qualtrics_loader,
+        }
     )
     info("Complete.")

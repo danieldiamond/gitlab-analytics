@@ -5,7 +5,7 @@ import json
 from logging import error, info, basicConfig, getLogger
 from os import environ as env
 from time import time
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple
 from yaml import load, safe_load, YAMLError
 
 import boto3
@@ -41,7 +41,7 @@ class GoogleSheetsClient:
         sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
         return sheet_df
 
-    def get_client(self, gapi_keyfile):
+    def get_client(self, gapi_keyfile) -> gspread.Client:
         scope = [
             "https://spreadsheets.google.com/feeds",
             "https://www.googleapis.com/auth/drive",
@@ -50,3 +50,16 @@ class GoogleSheetsClient:
         return gspread.authorize(
             ServiceAccountCredentials.from_json_keyfile_dict(keyfile, scope)
         )
+
+    def get_visible_files(self, client=get_client(None)) -> List[gspread.Spreadsheet]:
+        """
+        Returns a list of all sheets that the client can see.
+        """
+        return [file for file in client.openall()]
+
+    def rename_file(self, source_id, target_name, client=get_client(None)) -> None:
+        """
+        Renames a google sheets file
+        """
+        client.copy(source_id, title=target_name)
+        client.del_spreadsheet(source_id)
