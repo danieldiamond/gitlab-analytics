@@ -17,7 +17,7 @@
 
 WITH source as (
 
-    SELECT DISTINCT
+    SELECT
       app_id,
       base_currency,
       br_colordepth,
@@ -168,12 +168,7 @@ WITH source as (
     FROM {{ source('gitlab_snowplow', 'events') }}
 
     {%- endif %}
-)
 
-, base AS (
-  
-    SELECT * 
-    FROM source
     WHERE app_id IS NOT NULL
       AND date_part(month, try_to_timestamp(derived_tstamp)) = '{{ month_value }}'
       AND date_part(year, try_to_timestamp(derived_tstamp)) = '{{ year_value }}'
@@ -195,6 +190,12 @@ WITH source as (
           )
         )
       AND try_to_timestamp(derived_tstamp) is not null
+)
+
+, base AS (
+  
+    SELECT distinct * 
+    FROM source
 
 ), events_to_ignore as (
 
