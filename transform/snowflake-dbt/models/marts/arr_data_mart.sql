@@ -3,6 +3,11 @@ WITH fct_charges AS (
     SELECT *
     FROM {{ ref('fct_charges') }}
 
+), fct_invoice_items_agg AS (
+
+    SELECT *
+    FROM {{ ref('fct_invoice_items_agg') }}
+
 ), dim_customers AS (
 
     SELECT *
@@ -35,6 +40,8 @@ WITH fct_charges AS (
     dim_dates.date_id,
     dateadd('month', -1, dim_dates.date_actual)  AS mrr_month
     FROM fct_charges
+    INNER JOIN fct_invoice_items_agg
+      ON fct_charges.charge_id = fct_invoice_items_agg.charge_id
     INNER JOIN dim_dates
       ON fct_charges.effective_start_date_id <= dim_dates.date_id
         AND (fct_charges.effective_end_date_id > dim_dates.date_id OR fct_charges.effective_end_date_id IS NULL)
