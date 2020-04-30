@@ -91,6 +91,7 @@ models:
                     values: ['EE', 'CE']
 
     - name: version_usage_data_unpacked
+      description: '{{ doc("version_usage_data_unpacked") }}'
       columns:
           - name: days_after_version_release_date
             description: For the minor version that the instance is on, how many days ago was it first released?
