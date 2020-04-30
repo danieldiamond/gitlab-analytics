@@ -77,4 +77,6 @@ SELECT
     ON dim_customers.crm_id = dim_subscriptions.crm_id
   INNER JOIN dim_accounts
     ON charges_month_by_month.account_id = dim_accounts.account_id
-  WHERE charges_month_by_month.is_last_segment_version
+  INNER JOIN fct_invoice_items_agg
+       ON charges_month_by_month.charge_id = fct_invoice_items_agg.charge_id
+  WHERE charges_month_by_month.is_last_segment_version = TRUE
