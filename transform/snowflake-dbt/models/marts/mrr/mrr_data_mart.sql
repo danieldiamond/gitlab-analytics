@@ -37,11 +37,14 @@ WITH fct_charges AS (
     dim_dates.date_id,
     dateadd('month', -1, dim_dates.first_day_of_month)  AS mrr_month
     FROM fct_charges
-    INNER JOIN dim_dates ON fct_charges.effective_start_month_id <= dim_dates.date_id
-     AND fct_charges.effective_end_month_id >= dim_dates.date_id AND dim_dates.day_of_month=1
-    INNER JOIN dim_dates AS start_date ON fct_charges.effective_start_month_id = start_date.date_id
-    INNER JOIN dim_dates AS end_date ON fct_charges.effective_end_month_id = end_date.date_id
-    WHERE dim_dates.day_of_month = 1
+    INNER JOIN dim_dates
+      ON fct_charges.effective_start_day_id <= dim_dates.date_id
+        AND (fct_charges.effective_end_day_id > dim_dates.date_id OR fct_charges.effective_end_day_id IS NULL)
+        AND dim_dates.day_of_month=1
+    INNER JOIN dim_dates AS start_date
+      ON fct_charges.effective_start_month_id = start_date.date_id
+    INNER JOIN dim_dates AS end_date
+      ON fct_charges.effective_end_month_id = end_date.date_id
 )
 
 SELECT
@@ -61,8 +64,6 @@ SELECT
   dim_subscriptions.subscription_end_date,
   charges_month_by_month.effective_start_month,
   charges_month_by_month.effective_end_month,
-  charges_month_by_month.effective_start_date_id,
-  charges_month_by_month.effective_end_date_id,
   dim_products.product_name,
   charges_month_by_month.rate_plan_charge_name,
   charges_month_by_month.rate_plan_name,
