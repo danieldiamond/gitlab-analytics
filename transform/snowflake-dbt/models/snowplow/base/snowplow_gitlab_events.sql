@@ -15,7 +15,7 @@
 {% set track_timing = ['category','variable','timing','label'] %}
 
 
-WITH source as (
+WITH filtered_source as (
 
     SELECT
       app_id,
@@ -195,7 +195,7 @@ WITH source as (
 , base AS (
   
     SELECT distinct * 
-    FROM source
+    FROM filtered_source
 
 ), events_to_ignore as (
 
