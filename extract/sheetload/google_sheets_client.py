@@ -51,15 +51,19 @@ class GoogleSheetsClient:
             ServiceAccountCredentials.from_json_keyfile_dict(keyfile, scope)
         )
 
-    def get_visible_files(self, client=get_client(None)) -> List[gspread.Spreadsheet]:
+    def get_visible_files(self, client=None) -> List[gspread.Spreadsheet]:
         """
         Returns a list of all sheets that the client can see.
         """
+        if not client:
+            client = self.get_client(None)
         return [file for file in client.openall()]
 
-    def rename_file(self, source_id, target_name, client=get_client(None)) -> None:
+    def rename_file(self, source_id, target_name, client=None) -> None:
         """
         Renames a google sheets file
         """
+        if not client:
+            client = self.get_client(None)
         client.copy(source_id, title=target_name)
         client.del_spreadsheet(source_id)
