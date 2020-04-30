@@ -194,7 +194,7 @@ WITH filtered_source as (
 
 , base AS (
   
-    SELECT distinct * 
+    SELECT DISTINCT * 
     FROM filtered_source
 
 ), events_to_ignore as (
