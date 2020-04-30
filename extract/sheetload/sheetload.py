@@ -348,7 +348,7 @@ def qualtrics_loader():
     qualtrics_files_to_load = [
         file
         for file in google_sheet_client.get_visible_files()
-        if file.title().lower().startswith("qualtrics_mailing_list.")
+        if file.title.lower().startswith("qualtrics_mailing_list.")
     ]
 
     info(f"Found {len(qualtrics_files_to_load)} files to process.")
@@ -363,7 +363,7 @@ def qualtrics_loader():
         )
         dw_uploader(engine, table, dataframe, schema)
 
-        google_sheet_client.rename_file(file.id(), "processed_" + file.title())
+        google_sheet_client.rename_file(file.id(), "processed_" + file.title)
 
 
 if __name__ == "__main__":
