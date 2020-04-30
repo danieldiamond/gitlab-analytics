@@ -4,8 +4,8 @@ models:
   - name: arr_data_mart
     description: 'Data mart to explore ARR. Annual Recurring Revenue (ARR) is a forward looking metric that indicates how much recurring revenue GitLab expects to generate over the next 12 months. For example, the ARR reported for January 2020 would indicate how much recurring revenue is expected to be generated from February 2020 through January 2021.'
     columns:
-      - name: mrr_month
-        desription: 'Reporting month. Due to forward looking character of the metric the ARR results are reported as of the end of the previous month. \n For example, charges with an effective start date on or before 2020-05-01 would be summed together and that ARR result is what revenue is expected to be generated from 2020-05-01 through 2021-04-01. However, we want to report this number on the 2020-04-01 monthly results so that at the end of April, we can report out what is expected to be generated from 2020-05-01 through 2021-04-01. This is accomplished by subtracting 1 month from the mrr_month which allows the result to reported as of the prior month end.'
+      - name: reporting_month
+        description: 'Reporting month. Due to forward looking character of the metric the ARR results are reported as of the end of the previous month. \n For example, charges with an effective start date on or before 2020-05-01 would be summed together and that ARR result is what revenue is expected to be generated from 2020-05-01 through 2021-04-01. However, we want to report this number on the 2020-04-01 monthly results so that at the end of April, we can report out what is expected to be generated from 2020-05-01 through 2021-04-01. This is accomplished by subtracting 1 month from the mrr_month which allows the result to reported as of the prior month end.'
       - name: arr
         description: 'Calculated as 12 * MRR value'
 
