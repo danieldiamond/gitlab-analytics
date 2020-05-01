@@ -38,7 +38,7 @@ WITH fct_charges AS (
    SELECT
     fct_charges.*,
     dim_dates.date_id,
-    dateadd('month', -1, dim_dates.date_actual)  AS mrr_month
+    dateadd('month', -1, dim_dates.date_actual)  AS reporting_month
     FROM fct_charges
     INNER JOIN fct_invoice_items_agg
       ON fct_charges.charge_id = fct_invoice_items_agg.charge_id
@@ -49,7 +49,7 @@ WITH fct_charges AS (
 )
 
 SELECT
-  charges_month_by_month.mrr_month,
+  charges_month_by_month.reporting_month,
   dim_accounts.account_id                                              AS zuora_account_id,
   dim_accounts.sold_to_country                                         AS zuora_sold_to_country,
   dim_accounts.account_name                                            AS zuora_account_name,
@@ -84,4 +84,6 @@ SELECT
     ON dim_customers.crm_id = dim_subscriptions.crm_id
   INNER JOIN dim_accounts
     ON charges_month_by_month.account_id = dim_accounts.account_id
-  WHERE charges_month_by_month.is_last_segment_version
+  INNER JOIN fct_invoice_items_agg
+       ON charges_month_by_month.charge_id = fct_invoice_items_agg.charge_id
+  WHERE charges_month_by_month.is_last_segment_version = TRUE
