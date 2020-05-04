@@ -15,7 +15,7 @@ WITH mom_change as (
     {% endfor %}
 
   FROM {{ ref("version_usage_data_month") }}
-  WHERE uuid NOT IN (SELECT uuid FROM {{ ref('blacklisted_uuid') }})
+  WHERE uuid NOT IN (SELECT uuid FROM {{ ref('version_blacklisted_instance_uuid') }})
 
 )
 

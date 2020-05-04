@@ -1,8 +1,6 @@
 version: 2
 
 seeds:
-  - name: blacklisted_uuid
-    description: '{{ doc("blacklisted_uuid") }}'
   - name: gitlab_release_schedule
     description: '{{ doc("gitlab_release_schedule_doc") }}'
   - name: handbook_file_classification_mapping
@@ -11,3 +9,5 @@ seeds:
     description: '{{ doc("version_usage_stats_to_stage_mappings_doc") }}'
   - name: zuora_excluded_accounts
     description: '{{ doc("zuora_excluded_accounts_doc") }}'
+  - name: version_blacklisted_instance_uuid
+    description: '{{ doc("version_blacklisted_instance_uuid") }}'
