@@ -21,7 +21,7 @@
 /admin/         @kathleentam    @jjstark
 /analyze/       @kathleentam    @jjstark
 /dags/          @tayloramurphy  @m_walker
-/extract/       @tayloramurphy  @m_walker
+/extract/       @tayloramurphy  @m_walker	@jjstark
 /load/          @tayloramurphy  @jjstark    @kathleentam
 /orchestrate/   @tayloramurphy  @m_walker
 
