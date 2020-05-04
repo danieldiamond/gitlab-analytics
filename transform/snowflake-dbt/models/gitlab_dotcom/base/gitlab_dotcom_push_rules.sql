@@ -23,6 +23,7 @@ WITH source AS (
       branch_name_regex::VARCHAR            AS branch_name_regex,
       commit_message_negative_regex::VARCHAR AS commit_message_negative_regex
     FROM source
+    WHERE project_id IS NOT NULL
     
 )
 
