@@ -20,26 +20,6 @@ models:
             description: How many minor versions was the instance behind the latest version at the time of the ping?
           - name: zuora_subscription_id
             description: The Zuora subscription associated with the license sending the usage ping.
-    - name: version_usage_data_unpacked
-      description: '{{ doc("version_usage_data_unpacked") }}'
-      columns:
-          - name: days_after_version_release_date
-            description: For the minor version that the instance is on, how many days ago was it first released?
-          - name: latest_version_available_at_ping_creation
-            description: What was the latest minor version available at the time of the usage ping?
-          - name: main_edition
-            description: Comes from [this section of the code](https://gitlab.com/gitlab-org/gitlab/blob/2dae25c3b780205f072833cd290e481dae436f3b/lib/gitlab/usage_data.rb#L154)
-            tests:
-                - accepted_values:
-                    values: ['EE', 'CE']
-          - name: uuid
-            tests:
-                - not_null
-          - name: versions_behind_latest
-            description: How many minor versions was the instance behind the latest version at the time of the ping?
-          - name: zuora_subscription_id
-            description: The Zuora subscription associated with the license sending the usage ping.
-
     - name: version_usage_data
       columns:
           - name: id
