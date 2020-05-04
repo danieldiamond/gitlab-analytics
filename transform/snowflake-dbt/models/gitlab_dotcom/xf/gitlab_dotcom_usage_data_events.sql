@@ -409,7 +409,7 @@ WITH gitlab_subscriptions AS (
 
     SELECT *
     FROM {{ ref('gitlab_dotcom_services') }}
-    WHERE service_type <> 'GitlabIssueTrackerService'
+    WHERE service_type != 'GitlabIssueTrackerService'
 
 )
 /* End of Source CTEs */
