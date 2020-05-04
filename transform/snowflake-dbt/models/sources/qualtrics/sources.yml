@@ -23,4 +23,5 @@ sources:
       freshness: null
     - name: nps_survey_responses
     - name: survey
+      freshness: null
     - name: questions
