@@ -42,7 +42,7 @@ WITH stages AS (
         {{repeated_column_names}}
         FROM recruiting_xf 
 
-, stages_intermediate AS (
+), stages_intermediate AS (
     
     SELECT 
       stages.application_id,
