@@ -7,8 +7,8 @@ WITH source AS (
 
     SELECT
       TRY_TO_TIMESTAMP_NTZ("TIMESTAMP")::DATE               AS completed_date,
-      NULLIF("EMPLOYEE_NAME")::VARCHAR                      AS employee_name,
-      NULLIF("DIVISION")::VARCHAR                           AS division,
+      "EMPLOYEE_NAME"::VARCHAR                              AS employee_name,
+      "DIVISION"::VARCHAR                                   AS division,
       NULLIF("SATISFACTION_SCORE",'')::INTEGER              AS satisfaction_score,
       NULLIF("RECOMMEND_TO_FRIEND",'')::INTEGER             AS recommend_to_friend,
       NULLIF(ONBOARDING_BUDDY_EXPERIENCE_SCORE,'')::INTEGER AS buddy_experience_score
@@ -24,7 +24,7 @@ WITH source AS (
     SELECT
       renamed.completed_date,
       DATE_TRUNC(month, bamboohr.hire_date) AS hire_month,
-      renamed.division
+      renamed.division,
       renamed.satisfaction_score,
       renamed.recommend_to_friend,
       renamed.buddy_experience_score
