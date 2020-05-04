@@ -22,6 +22,7 @@ sources:
       - name: days_to_close
       - name: calendar
       - name: communication_certificate
+      - name: compensation_certificate
       - name: employee_location_factor
       - name: gitlab_slack_stats
       - name: google_referrals
