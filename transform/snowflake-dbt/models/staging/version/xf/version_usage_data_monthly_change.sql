@@ -11,7 +11,10 @@ WITH mom_change as (
     main_edition,
     edition_type,
     {% for ping_name in version_usage_stats_list %}
-    {{ monthly_change(ping_name) }} {{ "," if not loop.last }}
+    {{ monthly_change(ping_name) }},
+    {{ monthly_is_used(ping_name) }}
+  
+    {{ "," if not loop.last }}
     {% endfor %}
 
   FROM {{ ref("version_usage_data_month") }}
