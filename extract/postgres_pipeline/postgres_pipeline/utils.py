@@ -18,7 +18,7 @@ from google.cloud import storage
 from google.cloud.storage.bucket import Bucket
 from google.oauth2 import service_account
 from sqlalchemy import create_engine
-from sqlalchemy.engine.base import Engine
+from sqlalchemy.engine.base import Engine, Connection
 
 SCHEMA = "tap_postgres"
 
@@ -115,7 +115,7 @@ def manifest_reader(file_path: str) -> Dict[str, Dict]:
 
 
 def query_results_generator(
-    query: str, engine: Engine, chunksize: int = 100_000
+    query: str, connection: Connection, chunksize: int = 10000
 ) -> pd.DataFrame:
     """
     Use pandas to run a sql query and load it into a dataframe.
@@ -123,7 +123,7 @@ def query_results_generator(
     """
 
     try:
-        query_df_iterator = pd.read_sql(sql=query, con=engine, chunksize=chunksize)
+        query_df_iterator = pd.read_sql(sql=query, con=connection, chunksize=chunksize)
     except Exception as e:
         logging.exception(e)
         sys.exit(1)
@@ -166,7 +166,9 @@ def chunk_and_upload(
     """
 
     rows_uploaded = 0
-    results_generator = query_results_generator(query, source_engine)
+    with source_engine.begin() as source_transaction:
+        results_generator = query_results_generator(query, source_transaction)
+
     upload_file_name = f"{target_table}_CHUNK.tsv.gz"
 
     for chunk_df in results_generator:
