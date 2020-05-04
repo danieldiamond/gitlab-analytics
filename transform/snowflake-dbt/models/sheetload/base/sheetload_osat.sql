@@ -6,12 +6,12 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-        TRY_TO_TIMESTAMP_NTZ(timestamp)::DATE                 AS completed_date,
-        employee_name::VARCHAR                                AS employee_name,
-        division::VARCHAR                                     AS division,
-        NULLIF("SATISFACTION_SCORE",'')::INTEGER              AS satisfaction_score,
-        NULLIF("RECOMMEND_TO_FRIEND",'')::INTEGER             AS recommend_to_friend,
-        NULLIF(ONBOARDING_BUDDY_EXPERIENCE_SCORE,'')::INTEGER AS buddy_experience_score
+      TRY_TO_TIMESTAMP_NTZ("TIMESTAMP")::DATE               AS completed_date,
+      NULLIF("EMPLOYEE_NAME")::VARCHAR                      AS employee_name,
+      NULLIF("DIVISION")::VARCHAR                           AS division,
+      NULLIF("SATISFACTION_SCORE",'')::INTEGER              AS satisfaction_score,
+      NULLIF("RECOMMEND_TO_FRIEND",'')::INTEGER             AS recommend_to_friend,
+      NULLIF(ONBOARDING_BUDDY_EXPERIENCE_SCORE,'')::INTEGER AS buddy_experience_score
     FROM source
  
 ), bamboohr AS (
@@ -22,16 +22,16 @@ WITH source AS (
 ), final AS (
 
     SELECT
-      completed_date,
+      renamed.completed_date,
       DATE_TRUNC(month, bamboohr.hire_date) AS hire_month,
-      division
-      satisfaction_score,
-      recommend_to_friend,
-      buddy_experience_score
+      renamed.division
+      renamed.satisfaction_score,
+      renamed.recommend_to_friend,
+      renamed.buddy_experience_score
     FROM renamed
     LEFT JOIN bamboohr
-      ON renamed.employee_name = CONCAT(first_name,' ',last_name)
-    WHERE completed_date IS NOT NULL
+      ON renamed.employee_name = CONCAT(bamboohr.first_name,' ',bamboohr.last_name)
+    WHERE renamed.completed_date IS NOT NULL
 
 )
 SELECT *
