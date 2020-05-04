@@ -23,3 +23,5 @@ WITH source AS (
 )
 SELECT * 
 FROM parsed
+WHERE survey_id <> NULL OR question_id <> NULL
+   OR question_description <> NULL OR answer_choices <> NULL
