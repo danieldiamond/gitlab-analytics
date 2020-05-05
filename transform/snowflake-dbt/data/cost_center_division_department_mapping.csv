@@ -8,7 +8,6 @@ Sales,Sales,Customer Success
 Cost of Sales,Engineering,Customer Support
 Marketing,Marketing,Demand Generation
 R&D,Engineering,Development
-R&D,Meltano,Meltano
 Marketing,Marketing,Digital Marketing
 Sales,Sales,Enterprise Sales
 Marketing,Marketing,Field Marketing
@@ -16,9 +15,6 @@ Sales,Sales,Field Operations
 G&A,G&A,Finance
 R&D,Engineering,Infrastructure
 Marketing,Marketing,Marketing Ops
-R&D,Meltano,Meltano
-Marketing,Marketing,Outreach
-G&A,G&A,People Ops
 R&D,Product,Product Management
 R&D,Product,Product Strategy
 Marketing,Marketing,Product Marketing
