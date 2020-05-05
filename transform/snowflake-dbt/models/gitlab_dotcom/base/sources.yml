@@ -73,6 +73,8 @@ sources:
         identifier: gitlab_db_cluster_projects
       - name: clusters
         identifier: gitlab_db_clusters
+      - name: clusters_applications_cert_managers
+        identifier: gitlab_db_clusters_applications_cert_managers
       - name: clusters_applications_helm
         identifier: gitlab_db_clusters_applications_helm
       - name: deployments
