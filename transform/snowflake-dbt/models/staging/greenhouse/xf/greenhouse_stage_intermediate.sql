@@ -165,7 +165,7 @@ WITH stages AS (
     
 )
         
-SELECT *      
+SELECT *
 FROM final
 
 
