@@ -12,7 +12,7 @@ WITH source AS (
       project_id::VARCHAR                   AS project_id,
       created_at::TIMESTAMP                 AS created_at,
       updated_at::TIMESTAMP                 AS updated_at,
-      code_owner_approval_required::BOOLEAN AS author_id
+      code_owner_approval_required::BOOLEAN AS is_code_owner_approval_required
     FROM source
     
 )
