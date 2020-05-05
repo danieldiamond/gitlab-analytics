@@ -460,6 +460,23 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'clusters_applications_cert_managers'
     export_table_primary_key: id
+  clusters_applications_crossplane:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , cluster_id
+      , status
+      , version
+      , stack
+      , created_at
+      , updated_at
+      , status_reason
+      FROM clusters_applications_crossplane
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+          AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'clusters_applications_crossplane'
+    export_table_primary_key: id
   clusters_applications_helm:
     import_db: GITLAB_DB
     import_query: >
