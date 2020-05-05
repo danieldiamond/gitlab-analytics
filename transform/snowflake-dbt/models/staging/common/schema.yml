@@ -50,7 +50,7 @@ models:
           - not_null
 
   - name: dim_products
-    description: "Product related information for which account is charged "
+    description: "Product related information for which account is charged. Reporter licenses are in the Products with 'Additional Permission Types' in the name."
     columns:
       - name: product_id
         tests:
