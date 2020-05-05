@@ -270,6 +270,15 @@
     "is_representative_of_stage": "True"
   },
   {
+    "event_name": "services",
+    "source_cte_name": "services",
+    "user_column_name": "NULL",
+    "key_to_parent_project": "project_id",
+    "primary_key": "service_id",
+    "stage_name": "create",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "snippets",
     "source_table_name": "gitlab_dotcom_snippets",
     "user_column_name": "author_id",
@@ -395,6 +404,12 @@ WITH gitlab_subscriptions AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
     WHERE secure_ci_job_type = 'sast'
+
+), services AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_services') }}
+    WHERE service_type != 'GitlabIssueTrackerService'
 
 )
 /* End of Source CTEs */
