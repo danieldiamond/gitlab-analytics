@@ -1114,7 +1114,7 @@ tables:
       , repository_size_limit
       , require_two_factor_authentication
       , two_factor_grace_period
-      , plan_id
+      , NULL AS plan_id
       , project_creation_level
       , auto_devops_enabled
       FROM namespaces
