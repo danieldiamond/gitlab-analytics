@@ -3,15 +3,14 @@ WITH fct_charges AS (
     SELECT *
     FROM {{ ref('fct_charges') }}
 
+), fct_invoice_items_agg AS (
+    SELECT *
+    FROM {{ ref('fct_invoice_items_agg')}}
+
 ), dim_customers AS (
 
     SELECT *
     FROM {{ ref('dim_customers') }}
-
-), dim_accounts AS (
-
-    SELECT *
-    FROM {{ ref('dim_accounts') }}
 
 ), dim_dates AS (
 
@@ -43,10 +42,10 @@ WITH fct_charges AS (
 
 SELECT
   charges_month_by_month.reporting_month,
-  dim_accounts.account_id                                              AS zuora_account_id,
-  dim_accounts.sold_to_country                                         AS zuora_sold_to_country,
-  dim_accounts.account_name                                            AS zuora_account_name,
-  dim_accounts.account_number                                          AS zuora_account_number,
+  dim_customers.zuora_account_id,
+  dim_customers.zuora_sold_to_country,
+  dim_customers.zuora_account_name,
+  dim_customers.zuora_account_number,
   COALESCE(dim_customers.merged_to_account_id, dim_customers.crm_id)   AS crm_id,
   dim_customers.ultimate_parent_account_id,
   dim_customers.ultimate_parent_account_name,
@@ -75,8 +74,7 @@ SELECT
     ON charges_month_by_month.product_id = dim_products.product_id
   INNER JOIN dim_customers
     ON dim_customers.crm_id = dim_subscriptions.crm_id
-  INNER JOIN dim_accounts
-    ON charges_month_by_month.account_id = dim_accounts.account_id
   INNER JOIN fct_invoice_items_agg
-       ON charges_month_by_month.charge_id = fct_invoice_items_agg.charge_id
+    ON charges_month_by_month.charge_id = fct_invoice_items_agg.charge_id
   WHERE charges_month_by_month.is_last_segment_version = TRUE
+    AND mrr IS NOT NULL

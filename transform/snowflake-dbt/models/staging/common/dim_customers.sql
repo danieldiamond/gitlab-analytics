@@ -34,10 +34,27 @@ WITH sfdc_account AS (
     LEFT JOIN deleted_accounts b
       ON a.master_record_id = b.account_id
 
+), zuora_account AS (
+
+    SELECT *
+    FROM {{ ref('zuora_account_source') }}
+
+), zuora_contact AS (
+
+    SELECT *
+    FROM {{ ref('zuora_contact_source') }}
+
+), excluded_accounts AS (
+
+    SELECT DISTINCT
+      account_id
+    FROM {{ref('zuora_excluded_accounts')}}
+
 )
 
 SELECT
   sfdc_account.account_id                 AS crm_id,
+  zuora_account.account_id                AS zuora_account_id,
   sfdc_account.account_name               AS customer_name,
   sfdc_account.billing_country            AS customer_country,
   ultimate_parent_account.account_id      AS ultimate_parent_account_id,
@@ -51,13 +68,28 @@ SELECT
   sfdc_account.account_owner_team,
   sfdc_account.account_type,
   sfdc_users.name                         AS technical_account_manager,
-  sfdc_account.is_deleted                 AS is_deleted,
   CASE
     WHEN sfdc_account.is_deleted
       THEN master_records.sfdc_master_record_id
     ELSE NULL
-  END                                   AS merged_to_account_id
+  END                                     AS merged_to_account_id,
+  zuora_account.account_name              AS zuora_account_name,
+  zuora_account.account_number            AS zuora_account_number,
+  zuora_account.status                    AS account_status,
+  zuora_account.currency                  AS zuora_account_currency,
+  zuora_contact.country                   AS zuora_sold_to_country,
+  sfdc_account.is_deleted                 AS is_deleted,
+  zuora_account.is_deleted                AS zuora_is_deleted,
+  zuora_account.account_id IN (
+                                SELECT
+                                  account_id
+                                FROM excluded_accounts
+                              )           AS is_excluded
 FROM sfdc_account
+LEFT JOIN zuora_account
+  ON zuora_account.crm_id = sfdc_account.account_id
+LEFT JOIN zuora_contact
+  ON COALESCE(zuora_account.sold_to_contact_id, zuora_account.bill_to_contact_id) = zuora_contact.contact_id
 LEFT JOIN master_records
   ON sfdc_account.account_id = master_records.account_id
 LEFT JOIN ultimate_parent_account
