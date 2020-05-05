@@ -75,6 +75,20 @@ sources:
         identifier: gitlab_db_clusters
       - name: clusters_applications_cert_managers
         identifier: gitlab_db_clusters_applications_cert_managers
+      - name: clusters_applications_crossplane
+        identifier: gitlab_db_clusters_applications_crossplane
+      - name: clusters_applications_elastic_stacks
+        identifier: gitlab_db_clusters_applications_elastic_stacks
+      - name: clusters_applications_ingress
+        identifier: gitlab_db_clusters_applications_ingress
+      - name: clusters_applications_jupyter
+        identifier: gitlab_db_clusters_applications_jupyter
+      - name: clusters_applications_knative
+        identifier: gitlab_db_clusters_applications_knative
+      - name: clusters_applications_prometheus
+        identifier: gitlab_db_clusters_applications_prometheus
+      - name: clusters_applications_runners
+        identifier: gitlab_db_clusters_applications_runners
       - name: clusters_applications_helm
         identifier: gitlab_db_clusters_applications_helm
       - name: deployments
