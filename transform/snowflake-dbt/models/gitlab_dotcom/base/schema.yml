@@ -318,6 +318,7 @@ models:
       - name: cluster_id
         tests:
           - not_null
+
   - name: gitlab_dotcom_clusters_applications_crossplane
     columns:
       - name: clusters_applications_crossplane_id
@@ -327,6 +328,7 @@ models:
       - name: cluster_id
         tests:
           - not_null
+
   - name: gitlab_dotcom_clusters_applications_elastic_stacks
     columns:
       - name: clusters_applications_elastic_stacks_id
@@ -381,6 +383,16 @@ models:
   - name: gitlab_dotcom_clusters_applications_prometheus
     columns:
       - name: clusters_applications_prometheus_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_runners
+    columns:
+      - name: clusters_applications_runners_id
         tests:
           - not_null
           - unique
