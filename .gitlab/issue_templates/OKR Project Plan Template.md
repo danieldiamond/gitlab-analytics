@@ -1,4 +1,6 @@
-# [Name of Project] - Project Plan 
+<!-- Parent Epic -->
+
+# [Name of Parent OKR] - OKR 
 
 ## Project Attributes 
 
@@ -43,108 +45,89 @@ DRI: <!-- Customer -->
 ### Success Measurements / Exit Criteria 
 DRI: <!-- Customer -->
 
-<!-- Explain how we define project success and how we capture the ROI for the business goal.-->
-
-
-### Scope / Project Objectives 
-<!-- Explain the scope of this project, what will be delivered and what is not considered.-->
-
-#### Work Products (Epics) 
-<!-- List the child epics/parent issues that represent the work product-->
-
-##### Dashboards
-<!-- Develop preliminary dashboard design-->
-
-##### Data Model Design
-<!-- Develop preliminary data model design-->
-
-##### Documentation  
-<!-- This section lists out the documentations we will need as well as the DRI for each section.--> 
-
-##### Handbook 
-<!-- This section should contain links to the handbook, the handbook MR, and the DRI. -->
-
-##### docs.gitlab.com 
-<!-- This section should contain links to the docs.gitlab.com, the associated MR, and the DRI. -->
-
-##### ReadMes 
-<!-- This section should contain links to the ReadMe, the associated MR, and the DRI. -->
-
-#### Milestones
-<!-- List the milestones and the current slated work products against this milestone -->
-
-#### Programs Supported 
+### Programs Supported 
 <!-- List of Enterprise Programs we are supporting -->
 
 
+<!-- Explain how we define project success and how we capture the ROI for the business goal.-->
 
-### Definitions, Acryonyms, & Abbreviations 
+## Definitions, Acryonyms, & Abbreviations 
 
 | Word/Phrase           | Acrynoyms / Abbreviations      | Definition |
 |-----------------------|--------------------------------|------------|  
 | Facilitator           | FC.                            |   Ex.      |
 
 
+## Work Products (Child Epics) 
+
+| Milestone              | Deliverable                                                                  |
+|------------------------|------------------------------------------------------------------------------|
+| XX.XX.XX               | [Child Epic Name](Link)                                                      |
+
+
+
+<!-- Work Products (Child Epic) -->
+<!-- List the child epics/parent issues that represent the work product-->
+
+# [Name of Child KR] - KR 
+
+## Scope / Project Objectives 
+<!-- Explain the scope of this project, what will be delivered and what is not considered.-->
+
 ### References 
 <!-- Links to existing documents and it's significance for this project.-->
 
+## Deliverables 
 
-## Project Charter 
+### Dashboards
+<!-- Develop preliminary dashboard design-->
 
-### Roles and Responsibilities 
+### Data Model Design
+<!-- Develop preliminary data model design-->
+
+### Documentation  
+<!-- This section lists out the documentations we will need as well as the DRI for each section.--> 
+
+#### Handbook 
+<!-- This section should contain links to the handbook, the handbook MR, and the DRI. -->
+
+#### docs.gitlab.com 
+<!-- This section should contain links to the docs.gitlab.com, the associated MR, and the DRI. -->
+
+#### ReadMes 
+<!-- This section should contain links to the ReadMe, the associated MR, and the DRI. -->
+
+#### Project Presentation 
+<!-- This explains slide decks or other things we need to create for meeting presentations. -->
+
+## Roles and Responsibilities 
 
 | Working Group Role    | Person                | Role Description & Responsibilitiy | Deliverables | 
 |-----------------------|-----------------------|------------------------------------|--------------|
 | Facilitator           | `Name`                |                                    |              |
 
-### Team Operating Procedures
+
+
+
+
+
+<!-- Optional Things to Consider -->
+
+# Optional Sections
+
+## Team Operating Procedures (Optional)
 This section details how the team's operating procedures. 
 
-#### Team Availability 
+### Team Availability (Optional)
 <!-- This explains when the members working on this project are available as a reference in case meetings need to be shifted. -->
 
---Stopped Here
-
-#### Project Presentation 
-<!-- This explains how the members working on this project will be presenting the project work products and who will be responsible. -->
-
-#### Decision-Making Process 
+### Decision-Making Process (Optional)
 <!-- This explains how the members working on this project will be making decisions throughout the project lifetime. -->
 
-#### Conflict Resolution Process
+### Conflict Resolution Process (Optional)
 <!-- This explains how the members working on this project will be deal with conflicting ideas throughout the project lifetime. -->
 
-## Solution Overview 
 
-This section documents the solution for the project and how it achieves the project requirements and overcomes any project constraints. 
-
-### Capabilities Summary 
-
-This section lists out the MVC iterations. 
-
-<!-- This section should either have sections like below or links to issues that have information as documented below. -->
-
-#### MVC 1 
-| Customer Benefit      | Supporting Features            | 
-|-----------------------|--------------------------------|
-| Benefit 1             | Feature description            |
-
-#### MVC 2 
-| Customer Benefit      | Supporting Features            | 
-|-----------------------|--------------------------------|
-| Benefit 1             | Feature description            |
-
-### Solution Assumptions, Dependencies, and Caveats  
-<!-- Information on if there are limitations to the solution -->
-
-### Solution Cost and Pricing 
-<!-- Information on if there are cost/pricing to the solution -->
-
-### Solution Features 
-<!-- Information on if there are features to the solution -->
-
-### Solution Contraints  
-<!-- Information on if there are constraints to the solution -->
 
 ## Quality Ranges 
 This section explains how we will check our data and platform quality.
