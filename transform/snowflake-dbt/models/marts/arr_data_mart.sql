@@ -4,15 +4,12 @@ WITH fct_charges AS (
     FROM {{ ref('fct_charges') }}
 
 ), fct_invoice_items_agg AS (
-<<<<<<< HEAD
 
     SELECT *
     FROM {{ ref('fct_invoice_items_agg') }}
 
 ), dim_customers AS (
 
-=======
->>>>>>> aea68ba52746d3eb6939b127de584bb05d755e07
     SELECT *
     FROM {{ ref('fct_invoice_items_agg')}}
 
