@@ -1,14 +1,6 @@
 version: 2
 
 models:
-  - name: dim_accounts
-    description: "Dimension table representing each individual account with details of person to bill for the account. Excludes deleted and test accounts"
-    columns:
-      - name: account_id
-        tests:
-          - not_null
-          - unique
-
   - name: dim_customers
     description: '{{ doc("dim_customers") }}'
     columns:

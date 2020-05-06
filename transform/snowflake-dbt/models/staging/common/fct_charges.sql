@@ -46,7 +46,8 @@ WITH zuora_rate_plan AS (
       END                                               AS service_type,
       zuora_rate_plan_charge.discount_level,
       zuora_rate_plan_charge.segment                    AS rate_plan_charge_segment,
-      zuora_rate_plan_charge.version                    AS rate_plan_charge_version
+      zuora_rate_plan_charge.version                    AS rate_plan_charge_version,
+      zuora_rate_plan_charge.charge_type
     FROM zuora_rate_plan
     INNER JOIN zuora_rate_plan_charge
       ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
