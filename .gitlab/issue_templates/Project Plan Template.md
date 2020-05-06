@@ -49,11 +49,26 @@ DRI: <!-- Customer -->
 ### Scope / Project Objectives 
 <!-- Explain the scope of this project, what will be delivered and what is not considered.-->
 
-#### Software Development Life Cycle Description 
-<!-- Explain the SDLC life cycle being followed here (Kanban, Scrum, etc...). Explain how meeting cadences work within this SLDC as well as touchpoints.-->
-
-#### Work Products (Epics)
+#### Work Products (Epics) 
 <!-- List the child epics/parent issues that represent the work product-->
+
+##### Dashboards
+<!-- Develop preliminary dashboard design-->
+
+##### Data Model Design
+<!-- Develop preliminary data model design-->
+
+##### Documentation  
+<!-- This section lists out the documentations we will need as well as the DRI for each section.--> 
+
+##### Handbook 
+<!-- This section should contain links to the handbook, the handbook MR, and the DRI. -->
+
+##### docs.gitlab.com 
+<!-- This section should contain links to the docs.gitlab.com, the associated MR, and the DRI. -->
+
+##### ReadMes 
+<!-- This section should contain links to the ReadMe, the associated MR, and the DRI. -->
 
 #### Milestones
 <!-- List the milestones and the current slated work products against this milestone -->
@@ -76,29 +91,19 @@ DRI: <!-- Customer -->
 
 ## Project Charter 
 
-### Market Demographics 
-<!-- Explanation of the market we are targeting and their demographics-->
-
-### Key Stakeholder Goals/Needs 
-
-| Need                  | Priority              | Concerns         | Current Solution| Proposed Solution| 
-|-----------------------|-----------------------|------------------|-----------------|------------------|
-| Meets Budget          | `High`                |                  |                 |                  |      
-| Meets Compliance      | `High`                |                  |                 |                  |    
-| Meets Schedule        | `Medium`              |                  |                 |                  |    
-| Ease of Use           | `Medium`              |                  |                 |                  |    
-
 ### Roles and Responsibilities 
 
-| Working Group Role    | Person                | Role Description | Responsibilitiy | Success Criteria | Involement | Deliverables | Comments/Issues| 
-|-----------------------|-----------------------|------------------|-----------------|------------------|------------|--------------|----------------|
-| Facilitator           | `Project Lead`        |                  |                 |                  |            |              |                |
+| Working Group Role    | Person                | Role Description & Responsibilitiy | Deliverables | 
+|-----------------------|-----------------------|------------------------------------|--------------|
+| Facilitator           | `Name`                |                                    |              |
 
 ### Team Operating Procedures
 This section details how the team's operating procedures. 
 
 #### Team Availability 
 <!-- This explains when the members working on this project are available as a reference in case meetings need to be shifted. -->
+
+--Stopped Here
 
 #### Project Presentation 
 <!-- This explains how the members working on this project will be presenting the project work products and who will be responsible. -->
@@ -108,19 +113,6 @@ This section details how the team's operating procedures.
 
 #### Conflict Resolution Process
 <!-- This explains how the members working on this project will be deal with conflicting ideas throughout the project lifetime. -->
-
-#### Documentation  
-This section lists out the documentations we will need as well as the DRI for each section. 
-
-##### Handbook 
-<!-- This section should contain links to the handbook, the handbook MR, and the DRI. -->
-
-##### docs.gitlab.com 
-<!-- This section should contain links to the docs.gitlab.com, the associated MR, and the DRI. -->
-
-##### ReadMes 
-<!-- This section should contain links to the ReadMe, the associated MR, and the DRI. -->
-
 
 ## Solution Overview 
 
