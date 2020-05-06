@@ -29,29 +29,6 @@ models:
                 - not_null
                 - unique
 
-    - name: version_usage_data_action_summary_xf
-      description: '{{ doc("version_usage_data_action_summary_xf") }}'
-      columns:
-          - name: unique_key
-            tests:
-                - not_null
-                - unique
-          - name: usage_data_id
-            tests:
-                - not_null
-          - name: created_at
-            tests:
-                - not_null
-          - name: stage
-            tests:
-                - not_null
-          - name: action
-            tests:
-                - not_null
-          - name: count_users
-            tests:
-                - not_null
-
     - name: version_usage_data_monthly_change
       description: '{{ doc("version_usage_data_monthly_change") }}'
       columns:
