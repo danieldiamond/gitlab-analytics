@@ -11,6 +11,7 @@ WITH mom_change as (
     main_edition,
     edition_type,
     {% for ping_name in version_usage_stats_list %}
+    {{ping_name}},
     {{ monthly_change(ping_name) }},
     {{ monthly_is_used(ping_name) }}
   
