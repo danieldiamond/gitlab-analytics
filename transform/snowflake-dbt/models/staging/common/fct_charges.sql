@@ -8,6 +8,11 @@ WITH zuora_rate_plan AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge_source') }}
 
+), zuora_invoice AS (
+
+    SELECT *
+    FROM {{ ref('zuora_invoice_source') }}
+
 ), zuora_invoice_item AS (
 
     SELECT *
@@ -68,6 +73,11 @@ WITH zuora_rate_plan AS (
     FROM base_charges
     INNER JOIN zuora_invoice_item AS invoice_item_source
       ON base_charges.charge_id = invoice_item_source.rate_plan_charge_id
+    INNER JOIN zuora_invoice
+      ON zuora_invoice_item.invoice_id = zuora_invoice.invoice_id
+    WHERE zuora_invoice.is_deleted = FALSE
+      AND zuora_invoice_item.is_deleted= FALSE
+      AND zuora_invoice.status='Posted'
 
 ), final AS (
 
