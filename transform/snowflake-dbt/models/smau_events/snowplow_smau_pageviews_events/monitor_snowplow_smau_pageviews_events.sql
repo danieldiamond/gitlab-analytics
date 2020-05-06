@@ -31,7 +31,7 @@
       "event_name":"logging_viewed",
       "regexp_where_statements":[
          {
-            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/environments\/[0-9]*\/logs",
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/logs",
             "regexp_function":"REGEXP"
          }
       ]
