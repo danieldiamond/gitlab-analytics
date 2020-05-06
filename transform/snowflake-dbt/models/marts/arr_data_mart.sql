@@ -11,11 +11,6 @@ WITH fct_charges AS (
 ), dim_customers AS (
 
     SELECT *
-    FROM {{ ref('fct_invoice_items_agg')}}
-
-), dim_customers AS (
-
-    SELECT *
     FROM {{ ref('dim_customers') }}
 
 ), dim_dates AS (
