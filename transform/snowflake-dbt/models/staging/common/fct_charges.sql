@@ -60,19 +60,20 @@ WITH zuora_rate_plan AS (
 ), latest_invoiced_charge_version_in_segment AS (
 
     SELECT
-      rate_plan_charge_id,
+      base_charges.rate_plan_charge_id,
       ROW_NUMBER() OVER (
-          PARTITION BY rate_plan_charge_number
-          ORDER BY rate_plan_charge_segment, rate_plan_charge_version, service_start_date
+          PARTITION BY base_charges.rate_plan_charge_number
+          ORDER BY base_charges.rate_plan_charge_segment, base_charges.rate_plan_charge_version,
+            zuora_invoice_item.service_start_date
       ) AS segment_version_order,
       IFF(ROW_NUMBER() OVER (
-          PARTITION BY rate_plan_charge_number, rate_plan_charge_segment
-          ORDER BY rate_plan_charge_version DESC, service_start_date DESC) = 1,
+          PARTITION BY base_charges.rate_plan_charge_number, base_charges.rate_plan_charge_segment
+          ORDER BY base_charges.rate_plan_charge_version DESC, zuora_invoice_item.service_start_date DESC) = 1,
           TRUE, FALSE
       ) AS is_last_segment_version
     FROM base_charges
-    INNER JOIN zuora_invoice_item AS invoice_item_source
-      ON base_charges.charge_id = invoice_item_source.rate_plan_charge_id
+    INNER JOIN zuora_invoice_item
+      ON base_charges.charge_id = zuora_invoice_item.rate_plan_charge_id
     INNER JOIN zuora_invoice
       ON zuora_invoice_item.invoice_id = zuora_invoice.invoice_id
     WHERE zuora_invoice.is_deleted = FALSE
