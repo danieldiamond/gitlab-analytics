@@ -1,1 +1,1 @@
-{{ transform_clusters_applications('gitlab_dotcom_clusters_applications_jupyter') }}
+{{ transform_clusters_applications("gitlab_dotcom_clusters_applications_jupyter") }}
