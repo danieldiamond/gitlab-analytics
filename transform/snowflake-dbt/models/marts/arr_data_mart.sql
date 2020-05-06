@@ -63,6 +63,7 @@ SELECT
   charges_month_by_month.product_category,
   charges_month_by_month.delivery,
   charges_month_by_month.service_type,
+  charges_month_by_month.charge_type,
   charges_month_by_month.unit_of_measure,
   charges_month_by_month.mrr,
   charges_month_by_month.mrr*12 as ARR,
