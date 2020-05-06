@@ -65,7 +65,7 @@ models:
         tests:
           - not_null
 
-  - name: gitlab_dotcom_clusters_applications_juptyer_xf
+  - name: gitlab_dotcom_clusters_applications_jupyter_xf
     columns:
       - name: clusters_applications_jupyter_id
         tests:

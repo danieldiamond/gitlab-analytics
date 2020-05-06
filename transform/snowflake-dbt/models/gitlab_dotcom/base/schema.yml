@@ -360,7 +360,7 @@ models:
         tests:
           - not_null
 
-  - name: gitlab_dotcom_clusters_applications_juptyer
+  - name: gitlab_dotcom_clusters_applications_jupyter
     columns:
       - name: clusters_applications_jupyter_id
         tests:
