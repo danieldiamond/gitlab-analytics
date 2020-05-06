@@ -309,6 +309,15 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_clusters_applications_cert_managers
+  - name: gitlab_dotcom_clusters_applications_crossplane
+  - name: gitlab_dotcom_clusters_applications_elastic_stacks
+
+  - name: gitlab_dotcom_clusters_applications_ingress
+  - name: gitlab_dotcom_clusters_applications_juptyer
+  - name: gitlab_dotcom_clusters_applications_knative
+  - name: gitlab_dotcom_clusters_applications_prometheus
+
   - name: gitlab_dotcom_clusters_applications_helm
     description: Base model for the Gitlab.com `clusters_applications_helm` table.
     columns:
