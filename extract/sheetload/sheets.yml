@@ -105,6 +105,7 @@ sheets:
       - ally_certificate
       - communication_certificate
       - values_certificate
+      - compensation_certificate
   - name: yc_companies
     owner: '@jeanpeguero'
     tabs:
