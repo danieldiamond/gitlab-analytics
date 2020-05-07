@@ -66,7 +66,6 @@ SELECT
   charges_month_by_month.effective_start_month,
   charges_month_by_month.effective_end_month,
   dim_products.product_name,
-  charges_month_by_month.rate_plan_charge_name,
   charges_month_by_month.rate_plan_name,
   charges_month_by_month.product_category,
   charges_month_by_month.delivery,
@@ -86,6 +85,6 @@ SELECT
   INNER JOIN dim_accounts
     ON charges_month_by_month.account_id = dim_accounts.account_id
   INNER JOIN fct_invoice_items_agg
-       ON charges_month_by_month.charge_id = fct_invoice_items_agg.charge_id
+    ON charges_month_by_month.charge_id = fct_invoice_items_agg.charge_id
   WHERE charges_month_by_month.is_last_segment_version = TRUE
    AND mrr IS NOT NULL
