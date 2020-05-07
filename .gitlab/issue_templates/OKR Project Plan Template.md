@@ -4,14 +4,16 @@
 
 ## Project Attributes 
 
-Below is a list of quick links and information for ease of reference. 
-
 | Property               | Value                                                                        |
 |------------------------|------------------------------------------------------------------------------|
 | Date Created           | YYYY-MM-DD                                                                   |
 | Estimated Date Ended   | YYYY-MM-DD                                                                   |
 | Slack                  | [#channel]() (only accessible from within the company).                      |
 | Google Doc             | [`project` Working Group Agenda]() (only accessible from within the company) |
+
+### References
+
+Below is a list of quick links and information for ease of reference. 
 
 ## Project Vision  
 
@@ -64,7 +66,9 @@ DRI: <!-- Customer -->
 |------------------------|------------------------------------------------------------------------------|
 | XX.XX.XX               | [Child Epic Name](Link)                                                      |
 
+## Integration Epic
 
+Design epic where Data Engineering and Data Analysts can meet in the middle and develop designs and mock ups of work product. This can be a sample snowflake table with 1 row of data and a sample dashboard visualization. This integration epic should be completed no later than the middle of the OKR.
 
 <!-- Work Products (Child Epic) -->
 <!-- List the child epics/parent issues that represent the work product-->
@@ -82,8 +86,16 @@ DRI: <!-- Customer -->
 ### Dashboards
 <!-- Develop preliminary dashboard design-->
 
+|MVC | Priority | Deliverable Name | Deliverable Description | Milestone |
+|-----|-----|-----|-----|-----|
+|     |     |     |     |     |
+
 ### Data Model Design
 <!-- Develop preliminary data model design-->
+
+|MVC | Priority | Deliverable Name | Deliverable Description | Milestone |
+|-----|-----|-----|-----|-----|
+|     |     |     |     |     |
 
 ### Documentation  
 <!-- This section lists out the documentations we will need as well as the DRI for each section.--> 
@@ -102,13 +114,13 @@ DRI: <!-- Customer -->
 
 ## Roles and Responsibilities 
 
-| Working Group Role    | Person                | Role Description & Responsibilitiy | Deliverables | 
+| Group Role            | Person                | Role Description & Responsibilitiy | Deliverables | 
 |-----------------------|-----------------------|------------------------------------|--------------|
-| Facilitator           | `Name`                |                                    |              |
-
-
-
-
+| Project Lead          | `Name`                |                                    |              |
+| Visualization DRI     | `Name`                |                                    |              |
+| Sisense Admin DRI     | `Name`                |                                    |              |
+| dbt DRI               | `Name`                |                                    |              |
+| Business DRI          | `Name`                |                                    |              |
 
 
 <!-- Optional Things to Consider -->
@@ -166,23 +178,6 @@ This section lists out the system requirements that the solution will need to ta
 
 #### Sisense (Formerly Periscope Data) Requirements 
 * [ ] The final data models being queried in the Sisense space can be executed in < 2 minutes on XS warehouse. 
-
-
-## Precedence and Priority 
-
-This section details all the features that will be released as part of the solution, as well as the prioritization of the features below. 
-
-### Critical Priority Features 
-<!-- This section lists out the feature requirements that are must have. The project cannot be closed unless these specific features are delivered.-->
-
-### High Priority Features 
-<!-- This section lists out the feature requirements that are high priority. The project should consider the delivery of these features first after all critical features have been delivered.-->
-
-### Medium Priority Features
-<!-- This section lists out the feature requirements that are medium priority. The project should explain how much of this is in scope for this project.--> 
-
-### Low Priority Features 
-<!-- This section lists out the feature requirements that are low priority. The project should explain how much of this will likely fall to a future project. --> 
 
 
 ## Other Solution Requirements 
