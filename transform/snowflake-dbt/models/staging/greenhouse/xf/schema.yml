@@ -167,6 +167,8 @@ models:
     columns:
         - name: application_id
         - name: candidate_id
+        - name: employee_id
+        - name: employee_name
         - name: region
           description: What area the hired candidate is in
         - name: greenhouse_candidate_row_number
@@ -175,6 +177,5 @@ models:
           description: Note - this is a calculated field. In the case we don't have the candidate target hire date we are using the first record from the employment status table. If we do then we factor in the time between the candidate target hire and the bamboo hire date, and if it is less than 120 days we use the bamboo hire date, otherwise the targer_hire (the reason for this is because we don't have every application record for candidates hired prior to greenhouse. If this is the 2+ hired record in greenhouse we use the candidate target hire date as this candidate is a transfer.
         - name: hire_type
           description: Indicates whether the candidate is a hire, rehire, or transfer based on greenhouse_candidate_row_number.
-
-
-
+        - name: hired_in_bamboohr
+          description: Identifies if the candidate started in bamboohr and is a true hire.
