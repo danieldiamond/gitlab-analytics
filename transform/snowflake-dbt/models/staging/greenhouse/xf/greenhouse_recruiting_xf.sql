@@ -24,15 +24,20 @@ WITH applications AS (
 
     SELECT 
       applications.application_id, 
-      jobs.*
+      jobs.*,
+      COUNT(jobs.job_id) OVER (PARTITION BY applications.application_id) AS total_reqs_for_job_id,
+      CASE WHEN total_reqs_for_job_id = 1 
+             THEN 1 
+           WHEN total_reqs_for_job_id>1
+             AND applications.applied_at BETWEEN jobs.job_created_at 
+             AND COALESCE(jobs.job_closed_at, DATEADD(week, 3, CURRENT_DATE()))
+             THEN 1
+           ELSE 0 END                                                    AS job_req_to_use 
     FROM applications
     LEFT JOIN greenhouse_application_jobs 
       ON applications.application_id = greenhouse_application_jobs.application_id
-    INNER JOIN jobs 
+    LEFT JOIN jobs 
       ON greenhouse_application_jobs.job_id = jobs.job_id
-      AND applications.applied_at BETWEEN jobs.job_created_at 
-        AND COALESCE(jobs.job_closed_at, DATEADD(week,3,CURRENT_DATE()))
-      AND jobs.job_id IS NOT NULL AND jobs.requisition_id IS NOT NULL
     
 ), greenhouse_departments AS (
 
@@ -113,6 +118,7 @@ WITH applications AS (
     FROM applications 
     LEFT JOIN job_req
       ON job_req.application_id = applications.application_id
+      AND job_req.job_req_to_use = 1 
     LEFT JOIN  greenhouse_departments 
       ON job_req.department_id = greenhouse_departments.department_id
       AND job_req.organization_id = greenhouse_departments.organization_id
