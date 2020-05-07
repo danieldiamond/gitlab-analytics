@@ -88,3 +88,4 @@ SELECT
   INNER JOIN fct_invoice_items_agg
        ON charges_month_by_month.charge_id = fct_invoice_items_agg.charge_id
   WHERE charges_month_by_month.is_last_segment_version = TRUE
+   AND mrr IS NOT NULL
