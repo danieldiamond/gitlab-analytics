@@ -291,6 +291,13 @@ roles:
             - version_db
             - zendesk
             - zuora
+            - analyst_core
+            - analyst_engineering
+            - analyst_finance
+            - analyst_growth
+            - analyst_people
+            - analyst_sales
+            - analyst_marketing
         privileges:
             databases:
                 write:
