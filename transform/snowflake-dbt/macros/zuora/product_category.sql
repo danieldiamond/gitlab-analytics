@@ -26,6 +26,7 @@ CASE  WHEN ltrim(lower({{product_column}})) LIKE 'githost%' THEN 'GitHost'
                                         , 'GitLab with Git Basics Training - Remote'
                                         , 'GitLab for System Administrators Training - Remote'
                                         , 'GitLab CI/CD Training - Remote'
+                                        , 'InnerSourcing Training - Remote for your team'
                                         )
         THEN 'Support'
       WHEN lower({{product_column}}) LIKE '%quick start with ha%' THEN 'Support'
