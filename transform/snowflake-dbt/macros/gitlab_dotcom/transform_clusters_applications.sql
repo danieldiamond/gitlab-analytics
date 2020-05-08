@@ -28,13 +28,28 @@
 
   ),
 
+  groups AS (
+
+      SELECT *
+      FROM {{ ref('gitlab_dotcom_namespaces_xf')}}
+
+  ),
+
+  projects AS (
+
+      SELECT *
+      FROM {{ ref('gitlab_dotcom_projects_xf')}}
+
+  ),
+
   final AS (
 
       SELECT
         base.*,
         clusters.user_id,
         cluster_groups.cluster_group_id,
-        cluster_projects.cluster_project_id
+        cluster_projects.cluster_project_id,
+        COALESCE(groups.ultimate_namespace_id, projects.ultimate_namespace_id) AS ultimate_namespace_id
       FROM base
         INNER JOIN clusters
           ON base.cluster_id = clusters.cluster_id
@@ -42,6 +57,10 @@
           ON clusters.cluster_id = cluster_groups.cluster_id
         LEFT JOIN cluster_projects
           ON clusters.cluster_id = cluster_projects.cluster_id
+        LEFT JOIN groups
+          ON cluster_groups.cluster_group_id = groups.group_id
+        LEFT JOIN projects
+          ON cluster_projects.cluster_project_id = projects.project_id
 
   )
 
