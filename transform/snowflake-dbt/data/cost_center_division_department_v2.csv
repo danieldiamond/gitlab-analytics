@@ -1,0 +1,59 @@
+cost_center,division,department, effective_start_date, effective_end_Date
+Marketing, Marketing, Developer Relations, 2018-08-13, 2020-05-25
+Marketing, Marketing, Marketing & Sales Development, 2017-02-06, 2018-05-08
+R&D, Engineering, Product, 2016-04-19, 2018-09-05
+R&D, G&A, Strategic Partnerships, 2018-05-22, 2018-09-05
+Sales, Sales, New Business Dev, 2015-08-01, 2018-09-05
+Sales, Sales, Strategic Partnerships, 2018-08-06, 2018-09-05
+Marketing, Marketing, Outreach, 2018-05-09, 2018-11-04
+Marketing, Marketing, Growth Marketing, 2018-05-09, 2018-11-06
+R&D, Engineering, PM Dev, 2018-09-06, 2018-11-26
+R&D, Engineering, PM Ops, 2018-09-06, 2018-11-26
+Marketing, Marketing, Inbound Demand Generation, 2018-05-09, 2018-11-26
+Marketing, Marketing, Outbound Demand Generation, 2018-05-09, 2018-11-26
+Marketing, Marketing, Sales Management, 2018-06-05, 2018-11-26
+Sales, Sales, Account Management, 2016-07-06, 2018-11-26
+Sales, Sales, Field Sales, 2018-07-02, 2018-11-26
+Sales, Sales, Indirect Channel, 2016-02-03, 2018-11-26
+Sales, Sales, Sales Management, 2016-08-15, 2018-11-26
+Sales, Sales, SMB, 2018-08-10, 2018-11-26
+Marketing, Marketing, Pipe-to-Spend, 2018-11-07, 2019-01-14
+R&D, Product, PM Dev, 2018-11-27, 2019-01-14
+R&D, Product, PM Ops, 2018-11-27, 2019-01-14
+Marketing, G&A, Corporate Marketing, 2018-11-13, 2019-02-18
+Marketing, Sales, Alliances, 2019-02-12, 2019-02-19
+G&A, G&A, People Ops, 2016-08-01, 2019-09-17
+Cost of Sales, Sales, Customer Solutions, 2017-10-09, 2020-01-31
+Cost of Sales, Engineering, Customer Support, 2018-08-13
+R&D, Engineering, Development, 2017-08-28
+R&D, Engineering, Infrastructure, 2017-11-02
+R&D, Engineering, Quality, 2018-11-27
+R&D, Engineering, Security, 2018-11-27
+R&D, Engineering, UX, 2018-11-27
+G&A, G&A, Accounting, 2019-07-23
+G&A, G&A, Business Operations, 2018-08-10
+G&A, G&A, CEO, 2018-09-06
+G&A, G&A, Finance, 2015-09-21
+G&A, G&A, Legal, 2019-08-01
+G&A, G&A, People, 2019-09-18
+G&A, G&A, Recruiting, 2018-08-10
+Marketing, Marketing, Brand & Digital Design, 2019-11-16
+Marketing, Marketing, Community Relations, 2018-09-13
+Marketing, Marketing, Corporate Marketing, 2017-06-14
+Marketing, Marketing, Demand Generation, 2018-11-27
+Marketing, Marketing, Digital Marketing, 2019-01-15
+Marketing, Marketing, Field Marketing, 2018-05-09
+Marketing, Marketing, Marketing Ops, 2019-01-14
+Marketing, Marketing, Product Marketing, 2017-10-02
+R&D, Meltano, Meltano, 2018-09-06
+R&D, Product, Product Management, 2019-01-15
+R&D, Product, Product Strategy, 2019-11-01
+Sales, Sales, Business Development, 2018-09-06
+Sales, Sales, Channel, 2018-11-27
+Sales, Sales, Commercial Sales, 2018-11-27
+Cost of Sales, Sales, Consulting Delivery, 2020-02-01
+Sales, Sales, Customer Success, 2016-08-25
+Cost of Sales, Sales, Education Delivery, 2020-02-01
+Sales, Sales, Enterprise Sales, 2018-11-27
+Sales, Sales, Field Operations, 2018-11-27
+Sales, Sales, Practice Management, 2020-02-01
