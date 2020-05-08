@@ -15,6 +15,27 @@ models:
   - name: event_category
     tests:
     - not_null
+- name: sheetload_company_call_attendance
+  description: This spreadsheet contains data from company call attendance (also called the "Take a Break Call"). The People Experience team pulls their data and updates their spreadsheet, which is imported into the sheetload sheet.
+  columns:
+  - name: call_date
+    tests:
+    - not_null
+  - name: meeting_topic
+    tests:
+    - not_null
+  - name: day_of_the_week
+    tests:
+    - not_null
+  - name: call_time
+    tests:
+    - not_null
+  - name: length_of_call_mins
+    tests:
+    - not_null
+  - name: count_of_participants
+    tests:
+    - not_null
 - name: sheetload_employee_location_factor
   description: This is the source of truth connecting an employee number from bamboo to the location factor used for People purposes. The "Comp Data Analysis and Modeling" spreadsheet maintained by the Compensation & Benefits Manager is the SSOT for location factor.
   columns:
@@ -204,29 +225,29 @@ models:
     - name: job_role
 - name: sheetload_kpi_status
   description: Record of all the kpi status and commit history
-  columns: 
+  columns:
     - name: kpi_grouping
-      tests: 
+      tests:
       - not_null
     - name: kpi_sub_grouping
     - name: kpi_name
-      tests: 
+      tests:
       - not_null
     - name: start_date
-      tests: 
+      tests:
       - not_null
     - name: completion_date
     - name: status
     - name: comment
     - name: in_handbook
-      tests: 
+      tests:
       - not_null
     - name: sisense_link
     - name: gitlab_issue
-    - name: commit_start    
+    - name: commit_start
     - name: commit_handbook_v1
     - name: is_deleted
-      tests: 
+      tests:
       - not_null
 - name: sheetload_abuse_mitigation
   description: Abuse currently manually pulls data from Bouncer (Abuse mitigation Tool) in order to report on abusive account mitigation.

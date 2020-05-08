@@ -1,9 +1,19 @@
-SELECT
-		"Meeting_ID"          AS meeting_id,
-		"Topic"               AS meeting_topic,
-		"Day_of_The_Week"     AS day_of_the_week,
-		"Call_Time"           AS call_time,
-		"Call_Date"           AS call_date,
-		"Duration_(hh:mm:ss)" AS length_of_call,
-		"Participants"        AS count_of_participants
-FROM "4733-ADD-ZOOM-TAKE-A-BREAK-DATA-TO-SHEETLOAD_RAW"."SHEETLOAD"."COMPANY_CALL_ATTENDANCE"
+WITH source AS (
+
+    SELECT *
+    FROM {{ source('sheetload', 'company_call_attendance') }}
+
+), renamed AS (
+
+		SELECT
+				"Call_Date"::DATE     										AS call_date,
+		    "Topic"           												AS meeting_topic,
+				"Day_of_The_Week"     										AS day_of_the_week,
+				"Call_Time"           										AS call_time,
+		    split_part("Duration_(hh:mm:ss)", ':', 2) AS length_of_call_mins,
+				"Participants"        										AS count_of_participants
+		FROM source
+)
+
+SELECT *
+FROM renamed
