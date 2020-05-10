@@ -102,7 +102,10 @@ WITH stages AS (
     SUM(IFF(application_stage = 'Reference Check',1,0))                         AS hit_reference_check,
     SUM(IFF(application_stage = 'Offer',1,0))                                   AS hit_offer,
     SUM(IFF(application_stage = 'Hired',1,0))                                   AS hit_hired,
-    SUM(IFF(application_stage = 'Rejected',1,0))                                AS hit_rejected
+    SUM(IFF(application_stage = 'Rejected',1,0))                                AS hit_rejected,
+    SUM(IFF(hit_team_interview = 0 
+                AND hit_rejected =1 
+                AND rejection_reason_type = 'They rejected us',1,0))            AS candidate_dropout
     FROM all_stages
     GROUP BY 1,2
         
@@ -157,7 +160,8 @@ WITH stages AS (
         hit_reference_check,
         hit_offer,
         hit_hired,
-        hit_rejected
+        hit_rejected,
+        candidate_dropout
     FROM stage_order_revamped
     LEFT JOIN stages_hit 
         ON stage_order_revamped.application_id = stages_hit.application_id
