@@ -32,44 +32,43 @@ WITH date_details AS (
       base.sourcer_name,
       SUM(IFF(application_stage = 'Application Submitted',1,0))                                                             AS prospected,
       IFF(prospected = 0, NULL, 
-         (SUM(IFF(application_stage = 'Application Submitted' AND hit_application_review,1,0))/ prospected))                AS prospect_to_review,
-      IFF(prospected = 0, NULL, (SUM(IFF(application_stage = 'Application Submitted' AND hit_screening,1,0))/prospected))   AS prospect_to_screen,
-      IFF(prospected = 0, NULL, SUM(IFF(application_stage = 'Application Submitted' AND hit_hired,1,0))/prospected)         AS prospect_to_hire
-      {# IFF(prospected = 0, NULL, SUM(IFF(application_stage = 'Application Submitted' 
-                                          AND hit_team_interview = 0 
-                                          AND hit_rejected = 1
-                                          AND rejection_reason_type = 'They rejected us'))/prospected)                      AS prospect_to_dropout,
+            (SUM(IFF(application_stage = 'Application Submitted',hit_application_review,0))/ prospected))                   AS prospect_to_review,
+      IFF(prospected = 0, NULL, (SUM(IFF(application_stage = 'Application Submitted', hit_screening,0))/prospected))        AS prospect_to_screen,
+      
+      IFF(prospected = 0, NULL, SUM(IFF(application_stage = 'Application Submitted',hit_hired,0))/prospected)               AS prospect_to_hire,
+      IFF(prospected = 0, NULL,  SUM(IFF(application_stage = 'Application Submitted', candidate_dropout,0))/prospected)     AS prospect_to_dropout,
 
       SUM(IFF(application_stage = 'Application Review',1,0))                                                                AS app_reviewed,
-      IFF(app_reviewed = 0, NULL, (SUM(IFF(application_stage = 'Application Review' AND hit_screening,1,0))/app_reviewed))  AS review_to_screen,
-      IFF(app_reviewed = 0, NULL, SUM(IFF(application_stage = 'Application Review' AND hit_hired,1,0))/app_reviewed)        AS review_to_hire,
+      IFF(app_reviewed = 0, NULL, (SUM(IFF(application_stage = 'Application Review', hit_screening,0))/app_reviewed))       AS review_to_screen,
+      IFF(app_reviewed = 0, NULL, SUM(IFF(application_stage = 'Application Review', hit_hired,0))/app_reviewed)             AS review_to_hire,
   
 
       SUM(IFF(application_stage = 'Screen',1,0))                                                                            AS screen,
-      IFF(screen = 0, NULL, SUM(IFF(application_stage = 'Screen' AND hit_team_interview,1,0))/screen)                       AS screen_to_interview,
-      IFF(screen = 0, NULL, SUM(IFF(application_stage = 'Screen' AND hit_hired,1,0))/screen)                                AS screen_to_hire,
+      IFF(screen = 0, NULL, SUM(IFF(application_stage = 'Screen', hit_team_interview,0))/screen)                            AS screen_to_interview,
+      IFF(screen = 0, NULL, SUM(IFF(application_stage = 'Screen', hit_hired,0))/screen)                                     AS screen_to_hire,
   
 
       SUM(IFF(application_stage = 'Team Interview - Face to Face',1,0))                                                     AS team_interview,
       IFF(team_interview = 0, NULL, 
-            SUM(IFF(application_stage = 'Team Interview - Face to Face' AND hit_hired,1,0))/team_interview)                 AS interview_to_hire,
+            SUM(IFF(application_stage = 'Team Interview - Face to Face', hit_hired,0))/team_interview)                      AS interview_to_hire,
       IFF(team_interview = 0, NULL, 
-            SUM(IFF(application_stage = 'Team Interview - Face to Face' AND hit_rejected,1,0))/team_interview)              AS interview_to_reject,
+            SUM(IFF(application_stage = 'Team Interview - Face to Face', hit_rejected,0))/team_interview)                 AS interview_to_reject,
 
       SUM(IFF(application_stage = 'Executive Interview',1,0))                                                               AS executive_interview,
       IFF(executive_interview = 0, NULL, 
-            SUM(IFF(application_stage = 'Executive Interview' AND hit_hired,1,0))/executive_interview)                      AS exec_interview_to_hire,
+            SUM(IFF(application_stage = 'Executive Interview', hit_hired,0))/executive_interview)                           AS exec_interview_to_hire,
     
       SUM(IFF(application_stage = 'Reference Check',1,0))                                                                   AS reference_check,
 
-      SUM(IFF(application_stage = 'Rejected' 
-                AND hit_team_interview=0 
-                AND rejection_reason_type = 'They rejected us',1,0))                                                        AS candidate_drop_out,
+      SUM(IFF(application_stage = 'Rejected', candidate_dropout,0))                                                         AS candidate_dropout,
 
       SUM(IFF(application_stage = 'Offer',1,0))                                                                             AS offer,
-      IFF(offer=0,0, (SUM(IFF(application_stage = 'Application Submitted' AND hit_offer,1,0))/offer))                       AS app_to_offer_rate,
+      IFF(offer = 0, NULL, SUM(IFF(application_stage  ='Offer',hit_hired,0))/offer)                                         AS ofer_to_hire,
 
-      SUM(IFF(application_stage = 'Hired',1,0))                                                                             AS hired #}
+      SUM(IFF(application_stage = 'Hired',1,0))                                                                             AS hired 
+
+      --add turn time element? prospect to app review?
+
     FROM base
     LEFT JOIN recruiting_data
       ON base.month_date = recruiting_data.month_stage_entered_on

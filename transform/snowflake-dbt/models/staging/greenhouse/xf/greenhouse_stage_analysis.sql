@@ -48,7 +48,8 @@
       hit_reference_check,
       hit_offer,
       hit_hired,
-      hit_rejected
+      hit_rejected,
+      candidate_dropout
     FROM greenhouse_stage_intermediate
 
  )
