@@ -50,12 +50,14 @@ models:
           - not_null
 
   - name: dim_products
-    description: "Product related information for which account is charged. Reporter licenses are in the Products with 'Additional Permission Types' in the name."
+    description: "Product related information for which account is charged."
     columns:
       - name: product_id
         tests:
           - not_null
           - unique
+      - name: is_reporter_license
+        description: "Reporter licenses are in the Products with 'Additional Permission Types' in the name."
 
   - name: fct_invoice_items_agg
     description: "Aggregate fact table with invoice items summarized on charge level"
