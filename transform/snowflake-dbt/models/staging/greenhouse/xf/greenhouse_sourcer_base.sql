@@ -7,7 +7,7 @@
 WITH sourcer_metrics AS (
 
     SELECT 
-      month_date                                   AS reporting_month,
+      month_date,                                  
       sourcer_name,
       prospected,
       prospect_to_review,
@@ -29,17 +29,18 @@ WITH sourcer_metrics AS (
       DATEADD(month,-1,date_actual)                 AS end_period          
     FROM analytics.date_details
     WHERE day_of_month = 1
-      AND date_actual BETWEEN DATE_TRUNC(month,DATEADD(month,-15,CURRENT_DATE())) AND DATE_TRUNC(month,DATEADD(month,-1,CURRENT_DATE())) 
+      AND date_actual BETWEEN DATE_TRUNC(month,DATEADD(month,-15,CURRENT_DATE())) AND DATE_TRUNC(month,CURRENT_DATE())
   
 ), three_month_rolling AS (
 
     SELECT 
-      sourcer_metrics.*,
+      time_period.reporting_month,
       time_period.start_period,
-      time_period.end_period
+      time_period.end_period,
+      sourcer_metrics.*
     FROM time_period
     LEFT JOIN sourcer_metrics       
-        ON sourcer_metrics.reporting_month BETWEEN time_period.start_period AND time_period.end_period
+        ON sourcer_metrics.month_date BETWEEN time_period.start_period AND time_period.end_period
 
 )
 
