@@ -1453,7 +1453,7 @@ models:
           - not_null
           - unique
 
-  - name: gitlab_dotcom_users
+  - name: q
     description: >-
       Base model for Gitlab.com users, the following fields are hidden for
       privacy `current_sign_in_ip`, `last_sign_in_ip`, `unconfirmed_email`,
