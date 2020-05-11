@@ -13,3 +13,8 @@ models:
         - name: visit_id
           tests:
             - not_null
+    - name: ga360_session_hit
+      columns:
+        - name: visit_id
+          tests:
+            - not_null
