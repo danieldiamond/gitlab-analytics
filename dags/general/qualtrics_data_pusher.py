@@ -73,5 +73,3 @@ qualtrics_sheetload = KubernetesPodOperator(
     arguments=[container_cmd],
     dag=dag,
 )
-
-qualtrics_sheetload

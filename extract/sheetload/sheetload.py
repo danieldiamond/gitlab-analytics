@@ -136,6 +136,7 @@ def sheet_loader(
             gapi_keyfile, schema + "." + sheet_file, table, engine, table, schema
         )
         dw_uploader(engine, table, dataframe, schema)
+        info(f"Finished processing for table: {sheet_info}")
 
     query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)
