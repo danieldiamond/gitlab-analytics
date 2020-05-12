@@ -400,6 +400,13 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_clusters
+    columns:
+      - name: cluster_id
+        tests:
+          - not_null
+          - unique
+
   - name: gitlab_dotcom_cluster_groups
     description: Base model for Gitlab.com cluster_groups
     columns:
