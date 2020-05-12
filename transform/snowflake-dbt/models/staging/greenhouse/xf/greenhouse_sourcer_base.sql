@@ -1,8 +1,7 @@
-{{ config({
+{# {{ config({
     "schema": "temporary"
-    })
-}}
-
+    }) #}
+{# }} #}
 
 WITH sourcer_metrics AS (
 
@@ -18,12 +17,12 @@ WITH sourcer_metrics AS (
       screen_to_interview,
       screen_to_hire,
       candidate_dropout
-    FROM {{ ref ('greenhouse_sourcer_metrics') }}
-    WHERE sourcer_name = 'Alina Moise'
+    FROM {{ ref ('greenhouse_sourcer_metrics') }} sourcer_metrics 
+    WHERE part_of_recruiting_team = 1
 
 ), time_period AS (
 
-    SELECT 
+    SELECT DISTINCT
       date_actual                                   AS reporting_month,
       DATEADD(month,-3,date_actual)                 AS start_period,    
       DATEADD(month,-1,date_actual)                 AS end_period          
@@ -41,7 +40,7 @@ WITH sourcer_metrics AS (
     FROM time_period
     LEFT JOIN sourcer_metrics       
         ON sourcer_metrics.month_date BETWEEN time_period.start_period AND time_period.end_period
-
+   
 )
 
 SELECT *

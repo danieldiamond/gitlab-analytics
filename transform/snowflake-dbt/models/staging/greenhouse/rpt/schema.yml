@@ -96,3 +96,5 @@ models:
 
     - name: rpt_greenhouse_location_factors
       description: This model provides the average location factor for screened applicants in our recruiting process. The breakdown provided is by division, and department and month.
+
+  
