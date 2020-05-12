@@ -17,8 +17,6 @@ G&A,G&A,Finance
 R&D,Engineering,Infrastructure
 Marketing,Marketing,Marketing Ops
 R&D,Meltano,Meltano
-Marketing,Marketing,Outreach
-G&A,G&A,People Ops
 R&D,Product,Product Management
 R&D,Product,Product Strategy
 Marketing,Marketing,Product Marketing
@@ -26,7 +24,7 @@ R&D,Engineering,Quality
 G&A,G&A,Recruiting
 R&D,Engineering,Security
 R&D,Engineering,UX
-G&A,G&A,People
+G&A,G&A,People Success
 G&A,G&A,Accounting
 Sales,Sales,Business Development
 Marketing,Marketing,Community Relations
