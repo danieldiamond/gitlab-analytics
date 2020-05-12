@@ -55,7 +55,6 @@ class GoogleSheetsClient:
                         "Received API rate limit error, waiting 100 seconds before trying again."
                     )
                     time.sleep(100)
-                    continue
                 else:
                     raise
         else:

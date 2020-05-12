@@ -144,43 +144,6 @@ def sheet_loader(
     info("Permissions granted.")
 
 
-def process_sheets(
-    google_creds: Client,
-    sheets_list: List[str],
-    schema: str,
-    engine: Engine,
-    gsheets_retries: int = 10,
-) -> None:
-
-    for sheet_info in sheets_list:
-        # Limits number of times we will retry after receiving an error back
-        for attempt in range(gsheets_retries):
-            try:
-                info(f"Processing sheet: {sheet_info}")
-                sheet_file, table = sheet_info.split(".")
-                sheet = (
-                    google_creds.open(schema + "." + sheet_file)
-                    .worksheet(table)
-                    .get_all_values()
-                )
-                sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
-                dw_uploader(engine, table, sheet_df, schema)
-                info(f"Finished processing for table: {sheet_info}")
-            except APIError as gspread_error:
-                if gspread_error.response.status_code == 429:
-                    info(
-                        "Received API rate limit error, waiting 100 seconds before carrying on"
-                    )
-                    time.sleep(100)
-                    continue
-                else:
-                    raise gspread_error
-            else:
-                break
-        else:
-            error(f"Max retries exceeded, giving up on {sheet_info}")
-
-
 def gcs_loader(
     path: str,
     bucket: str,
