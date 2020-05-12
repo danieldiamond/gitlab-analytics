@@ -5,11 +5,11 @@ WITH source_status AS (
 
 ), filtered_to_snapshots AS (
 
-    select DISTINCT
+    SELECT DISTINCT
       table_name, 
       date_trunc('d', latest_load_at) AS successful_load_at 
     FROM dbt_source
-    WHERE table_name like '%snapshot%'
+    WHERE LOWER(table_name) LIKE '%snapshot%'
     ORDER BY 2 DESC
 
 )
