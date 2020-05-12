@@ -48,6 +48,6 @@ models:
     - name: version_versions
       columns:
           - name: id
-             tests: 
+            tests: 
                 - not_null
                 - unique            
