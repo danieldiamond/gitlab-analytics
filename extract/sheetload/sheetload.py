@@ -363,7 +363,7 @@ def qualtrics_loader(load_type: str):
     engine = snowflake_engine_factory(env, "LOADER", schema)
 
     for file in qualtrics_files_to_load:
-        file_name = file.title()
+        file_name = file.title
         _, table = file_name.split(".")
         dataframe = google_sheet_client.load_google_sheet(
             None, file_name, table, engine, table, schema
