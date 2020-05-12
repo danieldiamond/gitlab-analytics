@@ -34,7 +34,8 @@ class GoogleSheetsClient:
         schema: str,
     ) -> pd.DataFrame:
         """
-        Loads the google sheet into Snowflake table at schema.table
+        Loads the google sheet into a dataframe with column names loaded from the sheet.
+        Returns the dataframe.
         """
         sheets_client = self.get_client(key_file)
         sheet = sheets_client.open(file_name).worksheet(worksheet_name).get_all_values()
@@ -42,6 +43,9 @@ class GoogleSheetsClient:
         return sheet_df
 
     def get_client(self, gapi_keyfile) -> gspread.Client:
+        """
+        Initialized and returns a google spreadsheet client.
+        """
         scope = [
             "https://spreadsheets.google.com/feeds",
             "https://www.googleapis.com/auth/drive",
