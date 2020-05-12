@@ -44,10 +44,10 @@ models:
           - name: host_id
             tests:
                 - not_null
-                
+
     - name: version_versions
       columns:
-           - name: id
+          - name: id
              tests: 
                 - not_null
                 - unique            
