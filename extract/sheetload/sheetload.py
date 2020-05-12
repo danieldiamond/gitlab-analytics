@@ -344,7 +344,8 @@ def csv_loader(
     dw_uploader(engine, table=table, data=csv_data, schema=schema, truncate=True)
 
 
-def qualtrics_loader():
+def qualtrics_loader(load_type: str):
+    is_test = load_type == "test"
     google_sheet_client = GoogleSheetsClient()
     qualtrics_files_to_load = [
         file
@@ -363,8 +364,10 @@ def qualtrics_loader():
             None, file_name, table, engine, table, schema
         )
         dw_uploader(engine, table, dataframe, schema)
-
-        google_sheet_client.rename_file(file.id(), "processed_" + file.title)
+        if is_test:
+            info(f"Not renaming file for test.")
+        else:
+            google_sheet_client.rename_file(file.id(), "processed_" + file.title)
 
 
 if __name__ == "__main__":
