@@ -8,7 +8,7 @@ WITH source_status AS (
     SELECT DISTINCT
       table_name, 
       DATE_TRUNC('d', latest_load_at) AS successful_load_at 
-    FROM dbt_source
+    FROM source_status
     WHERE LOWER(table_name) LIKE '%snapshot%'
     ORDER BY 2 DESC
 
