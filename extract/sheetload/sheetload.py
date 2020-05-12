@@ -347,10 +347,13 @@ def csv_loader(
 def qualtrics_loader(load_type: str):
     is_test = load_type == "test"
     google_sheet_client = GoogleSheetsClient()
+    prefix = "qualtrics_mailing_list."
+    if is_test:
+        prefix = "test_" + prefix
     qualtrics_files_to_load = [
         file
         for file in google_sheet_client.get_visible_files()
-        if file.title.lower().startswith("qualtrics_mailing_list.")
+        if file.title.lower().startswith(prefix)
     ]
 
     info(f"Found {len(qualtrics_files_to_load)} files to process.")
