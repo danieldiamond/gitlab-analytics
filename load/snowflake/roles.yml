@@ -291,6 +291,13 @@ roles:
             - version_db
             - zendesk
             - zuora
+            - analyst_core
+            - analyst_engineering
+            - analyst_finance
+            - analyst_growth
+            - analyst_people
+            - analyst_sales
+            - analyst_marketing
         privileges:
             databases:
                 write:
@@ -1144,6 +1151,12 @@ roles:
             - reporter
         warehouses:
             - analyst_xs
+    
+    - rparker:
+        member_of: 
+            - analyst_core
+        warehouses:
+            - analyst_xs
 
     - sreddy:
         member_of:
@@ -1235,6 +1248,13 @@ roles:
         warehouses:
             - analyst_xs
             - reporting
+
+    - ysun:
+        member_of:
+            - analyst_finance
+            - bamboohr
+        warehouses:
+            - analyst_xs  
 
 
 # ==========================================
@@ -1501,6 +1521,11 @@ users:
         member_of:
             - rkohnke
 
+    - rparker:
+        can_login: yes
+        member_of:
+            - rparker
+
     - sreddy:
         can_login: yes
         member_of:
@@ -1549,6 +1574,11 @@ users:
         can_login: yes
         member_of:
             - wwright
+
+    - ysun:
+        can_login: yes
+        member_of:
+            - ysun
 
 # ==========================================
 # Warehouses

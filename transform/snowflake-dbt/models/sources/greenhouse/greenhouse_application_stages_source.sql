@@ -3,6 +3,11 @@ WITH source as (
 	SELECT *
   	  FROM {{ source('greenhouse', 'application_stages') }}
 
+), stage_dim AS (
+
+    SELECT *
+    FROM  {{ ref ('greenhouse_stages_source') }}
+
 ), renamed as (
 
 	SELECT
@@ -21,34 +26,12 @@ WITH source as (
 
     SELECT 
       renamed.*,
-      IFF(stage_id IN (45 --application_review
-                   ,7 --screen
-                   ,8 -- Screen
-                   ,26 --screening
-                   ,22 --HM Interview
-                   ,46 --Hiring Manager Interview
-                   ,15 --Hiring Manager Review
-                   ,23 --Team Interviews
-                   ,47 --Team Interview    
-                   ,33 --face to face
-                   ,48 --executive interview
-                   ,58 --references
-                   ,59 --Reference Check    
-                   ,53 --background check
-                   ,61 --offer
-                   ),True, False)               AS is_milestone_stage,
-      CASE WHEN stage_id IN (7,8,26) 
-              THEN 'Screen'
-            WHEN stage_id IN (23,47)  
-              THEN 'Team Interview - Face to Face'
-            WHEN stage_id IN (41, 57) 
-              THEN 'Take Home Assessment'
-            WHEN stage_id IN (22, 46) 
-              THEN 'Hiring Manager Review'
-            WHEN stage_id in (58,59)
-              THEN 'Reference Check'
-            ELSE application_stage_name END    AS stages_cleaned             
-    FROM renamed 
+      is_milestone_stage,
+      stage_name_modified
+    FROM renamed
+    LEFT JOIN stage_dim 
+      ON renamed.stage_id = stage_dim.stage_id
+
 )
 
 SELECT *

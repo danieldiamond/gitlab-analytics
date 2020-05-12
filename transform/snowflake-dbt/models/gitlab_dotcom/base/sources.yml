@@ -17,6 +17,8 @@ sources:
       warn_after: {count: 48, period: hour}
 
     tables:
+      - name: approval_merge_request_rules
+        identifier: gitlab_db_approval_merge_request_rules
       - name: approvals
         identifier: gitlab_db_approvals
       - name: approver_groups
@@ -71,8 +73,24 @@ sources:
         identifier: gitlab_db_cluster_projects
       - name: clusters
         identifier: gitlab_db_clusters
+      - name: clusters_applications_cert_managers
+        identifier: gitlab_db_clusters_applications_cert_managers
+      - name: clusters_applications_crossplane
+        identifier: gitlab_db_clusters_applications_crossplane
+      - name: clusters_applications_elastic_stacks
+        identifier: gitlab_db_clusters_applications_elastic_stacks
       - name: clusters_applications_helm
         identifier: gitlab_db_clusters_applications_helm
+      - name: clusters_applications_ingress
+        identifier: gitlab_db_clusters_applications_ingress
+      - name: clusters_applications_jupyter
+        identifier: gitlab_db_clusters_applications_jupyter
+      - name: clusters_applications_knative
+        identifier: gitlab_db_clusters_applications_knative
+      - name: clusters_applications_prometheus
+        identifier: gitlab_db_clusters_applications_prometheus
+      - name: clusters_applications_runners
+        identifier: gitlab_db_clusters_applications_runners
       - name: deployments
         identifier: gitlab_db_deployments
       - name: deployment_merge_requests
@@ -173,6 +191,10 @@ sources:
         identifier: gitlab_db_project_statistics
       - name: projects
         identifier: gitlab_db_projects
+      - name: protected_branches
+        identifier: gitlab_db_protected_branches
+      - name: push_rules
+        identifier: gitlab_db_push_rules
       - name: releases
         identifier: gitlab_db_releases
       - name: repository_languages

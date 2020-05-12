@@ -9,8 +9,8 @@ WITH source as (
 
 		--keys
 	    organization_id,
-	    name 										AS source_name,
-	    type 										AS source_type,
+	    name::VARCHAR(250) 						AS source_name,
+	    type::VARCHAR(250) 						AS source_type,
 
 	    created_at::timestamp 	AS created_at,
 	    updated_at::timestamp 	AS updated_at

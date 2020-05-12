@@ -27,7 +27,7 @@ SELECT
   department_id,
   organization_id,
   parent_id,
-  replace(replace(department_name,')',''),'(','') AS department_name,
+  replace(replace(department_name,')',''),'(','')::VARCHAR(100) AS department_name,
   department_created_at,
   department_updated_at
 FROM renamed

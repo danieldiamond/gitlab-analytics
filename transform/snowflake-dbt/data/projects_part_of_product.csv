@@ -96,6 +96,7 @@ gitlab-org/security-products/analyzers/spotbugs,11139665
 gitlab-org/security-products/analyzers/tslint,10846951
 gitlab-org/security-products/codequality,5498087
 gitlab-org/ci-cd/codequality,17035255
+gitlab-org/ci-cd/accessibility,17166102
 gitlab-org/security-products/dast,9762266
 gitlab-org/security-products/dependency-scanning,5779760
 gitlab-org/security-products/gemnasium-db,12006272
@@ -173,3 +174,6 @@ gitlab-org/security/omnibus-gitlab,15667093
 gitlab-org/security/gitlab,15642544
 gitlab-org/defend/general,15234689
 gitlab-org/status-page,16842968
+gitlab-com/gl-infra/gitter-infrastructure,2959752
+gitlab-org/webide-file-sync,11446522
+gitlab-org/gitlab-services/design.gitlab.com,4456656

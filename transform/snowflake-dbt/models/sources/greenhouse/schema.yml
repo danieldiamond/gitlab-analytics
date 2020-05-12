@@ -186,7 +186,7 @@ models:
             - not_null
         - name: is_milestone_stage
           description: This indicates whether this is a stage that every candidate must go through regardless of the job applied for.
-        - name: stages_cleaned    
+        - name: stage_name_modified    
           description: This cleans up the stage names to link together stages that are the same in process. 
     - name: greenhouse_approvals_source
       description: '{{ doc("greenhouse_approvals_source") }}'
@@ -960,6 +960,9 @@ models:
         - name: is_active
           tests:
             - not_null
+        - name: is_milestone_stage
+        - name: stage_name_modified
+          description: This groups stages based on names.     
     - name: greenhouse_tags_source
       description: '{{ doc("greenhouse_tags_source") }}'
       columns:

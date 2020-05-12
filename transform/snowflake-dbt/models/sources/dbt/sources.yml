@@ -17,5 +17,6 @@ sources:
       error_after: {count: 24, period: hour}
 
     tables:
-      - name: sources
       - name: run_results
+      - name: sources
+      - name: test_run_results

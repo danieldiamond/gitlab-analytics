@@ -29,3 +29,21 @@ models:
           tests:
             - not_null
         - name: user_language
+    - name: qualtrics_nps_scores
+      description: Just the scores and reasons from the `qualtrics_nps_answers` model.
+      columns:
+        - name: response_id
+          tests:
+            - unique
+        - name: nps_reason
+          description: The reason given with the score (optional).
+        - name: nps_score
+          tests:
+            - not_null
+        - name: nps_bucket_text
+          tests:
+            - not_null
+        - name: nps_bucket_integer
+          description: Take the average of this column to get the "NPS Score".
+          tests:
+            - not_null

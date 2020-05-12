@@ -121,6 +121,8 @@ models:
 
       greenhouse:
         schema: greenhouse
+        sensitive:
+          schema: sensitive
 
       license:
         schema: license_db
@@ -162,6 +164,9 @@ models:
       license:
         materialized: view
 
+      qualtrics:
+        schema: analytics
+
       sfdc:
         xf:
           schema: analytics
@@ -169,6 +174,8 @@ models:
       version:
         tags: ["product"]
         xf:
+          schema: analytics
+        ephemeral:
           schema: analytics
 
       zuora:
@@ -208,9 +215,6 @@ models:
         materialized: table
 
     handbook:
-        materialized: table
-
-    location_factor:
         materialized: table
          
     marts:

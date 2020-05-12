@@ -24,7 +24,7 @@ WITH source AS (
     quantity::INTEGER                               AS order_quantity,
     created_at::TIMESTAMP                           AS order_created_at,
     updated_at::TIMESTAMP                           AS order_updated_at,
-    NULLIF(gl_namespace_id, '')::INTEGER            AS gitlab_namespace_id,
+    NULLIF(gl_namespace_id, '')::VARCHAR            AS gitlab_namespace_id,
     NULLIF(gl_namespace_name, '')::VARCHAR          AS gitlab_namespace_name,
     amendment_type::VARCHAR                         AS amendment_type,
     trial::BOOLEAN                                  AS order_is_trial,

@@ -1,11 +1,14 @@
 WITH raw_application_answer AS (
   
-  SELECT 
-    *
-  FROM {{ ref('greenhouse_application_question_answers_source') }}
-  WHERE application_question IN ('Location',
+    SELECT 
+      job_post_id,
+      application_id,
+      IFF(application_answer = 'Brazil-Rio de Janeiro', 'Brazil-Rio de Janerio', application_answer) AS application_answer,
+      application_question_answer_created_at
+    FROM {{ ref('greenhouse_application_question_answers_source') }}
+    WHERE application_question IN ('Location',
                                  'What location are you in?')
-  
+
 ), application_answer_base AS (
   
   SELECT

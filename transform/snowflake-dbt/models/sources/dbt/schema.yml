@@ -30,5 +30,23 @@ models:
         - name: model_name
           tests:
             - not_null    
-        
+    - name: dbt_test_results
+      description: "DBT test results by name and time"
+      columns:
+        - name: is_failed_test
+          tests:
+            - not_null
+        - name: is_warned_test
+          tests:
+            - not_null
+        - name: test_error
+        - name: test_execution_time_elapsed
+          tests:
+            - not_null
+        - name: test_name
+          tests:
+            - not_null
+        - name: test_result_generated_at
+          tests:
+            - not_null
         

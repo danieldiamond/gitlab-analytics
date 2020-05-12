@@ -7,7 +7,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT DISTINCT
-      gl_namespace_id::INTEGER AS gl_namespace_id,
+      gl_namespace_id::VARCHAR AS gl_namespace_id,
       start_date::TIMESTAMP    AS start_date,
       expired_on::TIMESTAMP    AS expired_on,
       created_at::TIMESTAMP    AS created_at,

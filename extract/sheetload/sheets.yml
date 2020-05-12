@@ -11,6 +11,10 @@ sheets:
     owner: '@emilie'
     tabs:
       - calendar
+  - name: clari_export_forecast_net_iacv
+    owner: '@mvilain'
+    tabs:
+      - clari_export_forecast_net_iacv
   - name: days_to_close
     owner: '@iweeks'
     tabs:
@@ -52,6 +56,10 @@ sheets:
     owner: '@pluthra'
     tabs:
       - location_factor_targets
+  - name: marketing_core_users_from_docs_gitlab_com
+    owner: '@rkohnke'
+    tabs:
+      - marketing_core_users_from_docs_gitlab_com
   - name: marketing_kpi_benchmarks
     owner: '@jeanpeguero'
     tabs:
@@ -68,6 +76,10 @@ sheets:
     owner: '@iweeks'
     tabs:
       - planned_values
+  - name: procurement_cost_savings
+    owner: '@iweeks'
+    tabs:
+      - procurement_cost_savings
   - name: pulse_survey
     owner: '@kathleentam'
     tabs:
@@ -101,6 +113,7 @@ sheets:
       - ally_certificate
       - communication_certificate
       - values_certificate
+      - compensation_certificate
   - name: yc_companies
     owner: '@jeanpeguero'
     tabs:

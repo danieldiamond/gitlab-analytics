@@ -196,5 +196,6 @@ WITH location_factor_base AS (
 
 )
 
-SELECT *
+SELECT *,
+  CONCAT(original_country,'-',original_area) AS originaL_country_area
 FROM union_partitions

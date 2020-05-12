@@ -5,6 +5,7 @@ sources:
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: snapshots
     loader: dbt
+    loaded_at_field: dbt_updated_at
     
     quoting:
       database: true

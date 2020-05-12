@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
         snowflake_stage_load_copy_remove(
             "questions.json",
-            "raw.qualtrics.qualtrics_load",
+            "raw.qualtrics.qualtrics_nps_load",
             "raw.qualtrics.questions",
             snowflake_engine,
         )
