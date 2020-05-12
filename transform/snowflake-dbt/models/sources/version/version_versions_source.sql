@@ -9,7 +9,7 @@ WITH source AS (
     SELECT
       id::INTEGER           AS id,
       version::VARCHAR      AS version,
-      vulnerable::BOOLEAN   AS vulnerable,
+      vulnerable::BOOLEAN   AS is_vulnerable,
       created_at::TIMESTAMP AS created_at,
       updated_at::TIMESTAMP AS updated_at
     FROM source  
