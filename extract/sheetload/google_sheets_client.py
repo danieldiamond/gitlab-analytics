@@ -1,10 +1,10 @@
 import sys
 import re
-from io import StringIO
 import json
+import time
+from io import StringIO
 from logging import error, info, basicConfig, getLogger
 from os import environ as env
-from time import time
 from typing import Dict, List, Tuple
 from yaml import load, safe_load, YAMLError
 
@@ -19,6 +19,7 @@ from gitlabdata.orchestration_utils import (
 )
 from google.cloud import storage
 from google.oauth2 import service_account
+from gspread.exceptions import APIError
 from oauth2client.service_account import ServiceAccountCredentials
 from sqlalchemy.engine.base import Engine
 
@@ -32,15 +33,33 @@ class GoogleSheetsClient:
         engine: Engine,
         table: str,
         schema: str,
+        gsheet_retries: int = 3,
     ) -> pd.DataFrame:
         """
         Loads the google sheet into a dataframe with column names loaded from the sheet.
         Returns the dataframe.
         """
-        sheets_client = self.get_client(key_file)
-        sheet = sheets_client.open(file_name).worksheet(worksheet_name).get_all_values()
-        sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
-        return sheet_df
+        for _ in range(gsheet_retries):
+            try:
+                sheets_client = self.get_client(key_file)
+                sheet = (
+                    sheets_client.open(file_name)
+                    .worksheet(worksheet_name)
+                    .get_all_values()
+                )
+                sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
+                return sheet_df
+            except APIError as gspread_error:
+                if gspread_error.response.status_code == 429:
+                    info(
+                        "Received API rate limit error, waiting 100 seconds before trying again."
+                    )
+                    time.sleep(100)
+                    continue
+                else:
+                    raise
+        else:
+            error(f"Max retries exceeded, giving up on {table}")
 
     def get_client(self, gapi_keyfile) -> gspread.Client:
         """
