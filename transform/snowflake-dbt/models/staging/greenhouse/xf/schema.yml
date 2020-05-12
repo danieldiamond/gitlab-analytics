@@ -175,6 +175,36 @@ models:
           description: Note - this is a calculated field. In the case we don't have the candidate target hire date we are using the first record from the employment status table. If we do then we factor in the time between the candidate target hire and the bamboo hire date, and if it is less than 120 days we use the bamboo hire date, otherwise the targer_hire (the reason for this is because we don't have every application record for candidates hired prior to greenhouse. If this is the 2+ hired record in greenhouse we use the candidate target hire date as this candidate is a transfer.
         - name: hire_type
           description: Indicates whether the candidate is a hire, rehire, or transfer based on greenhouse_candidate_row_number.
+  - name: greenhouse_sourcer_metrics
+    description: This provides recruiting metrics by sourcer and month.
+    columns: 
+        - name: month_date
+        - name: sourcer_name
+        - name: part_of_recruiting_team
+          description: This uses bamboohr data to identify if the sourcer was on the recruiting team for that month.
+        - name: propspected
+        - name: prospect_to_review
+        - name: prospect_to_screen
+        - name: PROSPECT_TO_HIRE
+        - name: prospect_to_dropout
+        - name: app_reviewed
+        - name: review_to_screen
+        - name: review_to_hire
+        - name: screen
+        - name: screen_to_interview
+        - name: screen_to_hire
+        - name: team_interview
+        - name: interview_to_hire
+        - name: interview_to_hire
+        - name: interview_to_reject
+        - name: executive_interview
+        - name: exec_interview_to_hire
+        - name: reference_check
+        - name: candidate_dropout
+        - name: offer
+        - name: offer_to_hire
+        - name: hired
+        - name: time_to_offer_median
 
-
-
+  - name: greenhouse_sourcer_base
+    description: This is the base model used to create out greenhouse_sourcer_scorecard. This creates a rolling 3 month dataset for 3 months prior to the reporting period, which allows us to average out performance metrics.         
