@@ -358,11 +358,13 @@ def qualtrics_loader(load_type: str):
 
     info(f"Found {len(qualtrics_files_to_load)} files to process.")
 
-    engine = snowflake_engine_factory(env, "LOADER", "qualtrics_mailing_list")
+    schema = "qualtrics_mailing_list"
+
+    engine = snowflake_engine_factory(env, "LOADER", schema)
 
     for file in qualtrics_files_to_load:
         file_name = file.title()
-        schema, table = file_name.split(".")
+        _, table = file_name.split(".")
         dataframe = google_sheet_client.load_google_sheet(
             None, file_name, table, engine, table, schema
         )
