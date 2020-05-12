@@ -8,7 +8,7 @@ WITH source AS (
 
     SELECT
       id::INTEGER           AS id,
-      verson::VARCHAR       AS version,
+      version::VARCHAR      AS version,
       vulnerable::BOOLEAN   AS vulnerable,
       created_at::TIMESTAMP AS created_at,
       updated_at::TIMESTAMP AS updated_at
