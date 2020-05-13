@@ -23,3 +23,4 @@ WITH users AS (
 
 SELECT *
 FROM renamed
+WHERE email_address IS NOT NULL
