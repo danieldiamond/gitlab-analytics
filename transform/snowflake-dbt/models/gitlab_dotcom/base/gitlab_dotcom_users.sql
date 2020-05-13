@@ -44,11 +44,11 @@ WITH source AS (
       hide_no_ssh_key::BOOLEAN                                         AS has_hide_no_ssh_key_enabled,
       -- website_url // hidden for privacy
       admin_email_unsubscribed_at::TIMESTAMP                           AS admin_email_unsubscribed_at,
-      -- notification_email // hidden for privacy
+      notification_email::VARCHAR                                      AS notification_email,
       hide_no_password::BOOLEAN                                        AS has_hide_no_password_enabled,
       password_automatically_set::BOOLEAN                              AS is_password_automatically_set,
       IFF(lower(location) = 'nan', NULL, location)                     AS location,
-      -- public_email // hidden for privacy
+      public_email::VARCHAR                                            AS public_email,
       dashboard::INTEGER                                               AS dashboard,
       project_view::INTEGER                                            AS project_view,
       consumed_timestep::INTEGER                                       AS consumed_timestep,
@@ -77,7 +77,8 @@ WITH source AS (
       {{user_role_mapping(user_role='source.role')}}::VARCHAR          AS role,
       username::VARCHAR                                                AS user_name,
       first_name::VARCHAR                                              AS first_name,
-      last_name::VARCHAR                                               AS last_name
+      last_name::VARCHAR                                               AS last_name,
+      name::VARCHAR                                                    AS users_name
 
     FROM source
     QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY updated_at DESC) = 1
