@@ -1510,8 +1510,25 @@ tables:
       , state
       , created_at
       FROM resource_milestone_events
+      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'resource_milestone_events'
+    export_table_primary_key: id
+    
+  resource_weight_events:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , user_id
+      , issue_id
+      , weight
+      , created_at
+      FROM resource_weight_events
+      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'resource_weight_events'
     export_table_primary_key: id
   snippets:
     import_db: GITLAB_DB
