@@ -1,5 +1,3 @@
-{{ config(schema='analytics') }}
-
 WITH source AS (
 
 	SELECT *
@@ -19,7 +17,7 @@ WITH source AS (
 	  is_exit::BOOLEAN                AS is_exit,
 	  referer::VARCHAR                AS referer,
 	  data_source::VARCHAR            AS data_source,
-	  page_hostname::VARCHAR          AS hostname,
+	  page_hostname::VARCHAR          AS host_name,
 	  page_page_path::VARCHAR         AS page_path,
 	  page_page_title::VARCHAR        AS page_title
 
