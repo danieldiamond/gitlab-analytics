@@ -11,6 +11,10 @@ sheets:
     owner: '@emilie'
     tabs:
       - calendar
+  - name: clari_export_forecast_net_iacv
+    owner: '@mvilain'
+    tabs:
+      - clari_export_forecast_net_iacv
   - name: days_to_close
     owner: '@iweeks'
     tabs:
@@ -52,6 +56,10 @@ sheets:
     owner: '@pluthra'
     tabs:
       - location_factor_targets
+  - name: marketing_core_users_from_docs_gitlab_com
+    owner: '@rkohnke'
+    tabs:
+      - marketing_core_users_from_docs_gitlab_com
   - name: marketing_kpi_benchmarks
     owner: '@jeanpeguero'
     tabs:
@@ -114,11 +122,3 @@ sheets:
     owner: '@jeanpeguero'
     tabs:
       - abm_account_baselines
-  - name: marketing_core_users_from_docs_gitlab_com
-    owner: '@rkohnke'
-    tabs:
-      - marketing_core_users_from_docs_gitlab_com
-  - name: clari_export_forecast_net_iacv
-    owner: '@mvilain'
-    tabs:
-      - clari_export_forecast_net_iacv
