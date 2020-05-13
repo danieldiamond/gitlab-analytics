@@ -20,7 +20,7 @@ WITH source AS (
     SELECT
       id                                             AS resource_label_event_id,
       action::INTEGER                                AS action_type_id,
-      {{ resource_label_action_type('action') }}     AS action_type,
+      {{ resource_event_action_type('action') }}     AS action_type,
       issue_id::INTEGER                              AS issue_id,
       merge_request_id::INTEGER                      AS merge_request_id,
       epic_id::INTEGER                               AS epic_id,
