@@ -53,9 +53,9 @@ WITH applications AS (
       offers.start_date                                             AS candidate_target_hire_date, 
       bamboo_hires.region,
       applications.greenhouse_candidate_row_number,
-      CASE WHEN applications.greenhouse_candidate_row_number = 1 
-             THEN initial_hire_date
-           ELSE candidate_target_hire_date END                      AS hire_date_mod,
+      IFF(applications.greenhouse_candidate_row_number = 1 
+            AND application_date<initial_hire_date, 
+              initial_hire_date, candidate_target_hire_date END)    AS hire_date_mod,
       CASE WHEN greenhouse_candidate_row_number = 1 
             THEN 'hire'
            WHEN offers.start_date = bamboo_hires.rehire_date
@@ -79,5 +79,5 @@ SELECT
   greenhouse_candidate_row_number,
   hire_date_mod,
   hire_type,
-  IFF(employee_id IS NOT NULL,TRUE,False) AS hired_in_bamboohr
+  IFF(employee_id IS NOT NULL,TRUE,FALSE) AS hired_in_bamboohr
 FROM final 
