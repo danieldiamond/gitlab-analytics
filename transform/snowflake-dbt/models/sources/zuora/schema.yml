@@ -30,6 +30,8 @@ models:
           - name: invoice_id
             tests:
                 - not_null
+    - name: zuora_product_rate_plan_source
+      description: Ephemeral layer for Zuora Product Rate Plans for cleaning and renaming
     - name: zuora_product_source
       description: Ephemeral layer for Zuora Products for cleaning and renaming
       columns:

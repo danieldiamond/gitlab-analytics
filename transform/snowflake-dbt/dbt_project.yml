@@ -175,6 +175,8 @@ models:
         tags: ["product"]
         xf:
           schema: analytics
+        ephemeral:
+          schema: analytics
 
       zuora:
         xf:

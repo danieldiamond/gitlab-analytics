@@ -1,0 +1,15 @@
+version: 2
+
+models:
+    - name: version_usage_data_month
+      description: usage ping data values aggregated by month for each UUID.
+      columns:
+          - name: created_at
+            tests:
+                - not_null
+          - name: unique_key
+            tests:
+                - not_null
+          - name: uuid
+            tests:
+                - not_null    
