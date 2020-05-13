@@ -36,7 +36,7 @@ WITH clusters AS (
   final AS (
 
     SELECT
-      clusters.*
+      clusters.*,
       cluster_groups.cluster_group_id,
       cluster_projects.cluster_project_id,
       COALESCE(namespaces.namespace_ultimate_parent_id, projects.ultimate_parent_id) AS ultimate_parent_id
