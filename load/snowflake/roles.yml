@@ -1011,6 +1011,7 @@ roles:
     - iweeks:
         member_of:
             - analyst_finance
+            - bamboohr
         warehouses:
             - analyst_xs
 
