@@ -51,11 +51,12 @@ WITH applications AS (
       bamboo_hires.employee_id,
       bamboo_hires.employee_name,
       offers.start_date                                             AS candidate_target_hire_date, 
+      applications.applied_at, 
       bamboo_hires.region,
       applications.greenhouse_candidate_row_number,
       IFF(applications.greenhouse_candidate_row_number = 1 
-            AND application_date<initial_hire_date, 
-              initial_hire_date, candidate_target_hire_date)    AS hire_date_mod,
+            AND applied_at < initial_hire_date, 
+              initial_hire_date, candidate_target_hire_date)        AS hire_date_mod,
       CASE WHEN greenhouse_candidate_row_number = 1 
             THEN 'hire'
            WHEN offers.start_date = bamboo_hires.rehire_date
