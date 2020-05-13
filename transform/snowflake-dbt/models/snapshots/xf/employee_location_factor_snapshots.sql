@@ -24,19 +24,55 @@ with source as (
     WHERE lower(bamboo_employee_number) NOT LIKE '%not in comp calc%'
     AND location_factor IS NOT NULL
 
+
+), employee_locality AS (
+
+    SELECT *
+    FROM {{ ref('employee_locality') }}
+    
+), unioned AS (
+
+    SELECT 
+      bamboo_employee_number::bigint as bamboo_employee_number,
+      null                           AS locality,
+      (location_factor::float)*100   as location_factor,
+      valid_from,
+      valid_to
+    FROM renamed
+    WHERE valid_from < '2020-03-24'
+    ---from 2020.03.24 we start capturing this data from bamboohr
+
+    UNION ALL
+    
+    SELECT 
+      employee_number,
+      bamboo_locality,
+      location_factor,
+      updated_at,
+      LEAD(updated_at) OVER (PARTITION BY employee_number ORDER BY updated_at) AS valid_to
+    FROM employee_locality
+
 ), deduplicated as (
 
-SELECT bamboo_employee_number::bigint as bamboo_employee_number,
-        location_factor::float as location_factor,
-        valid_from,
-        COALESCE(valid_to, {{max_date_in_analysis}}) as valid_to, 
-        conditional_change_event(location_factor) over(order by bamboo_employee_number, valid_to asc) as location_factor_change_event_number
-FROM renamed
+SELECT 
+  bamboo_employee_number::bigint as bamboo_employee_number,
+  locality,
+  location_factor::float as location_factor,
+  valid_from,
+  COALESCE(valid_to, {{max_date_in_analysis}}) as valid_to, 
+  conditional_change_event(location_factor) over(order by bamboo_employee_number,locality, valid_to asc) as location_factor_change_event_number
+FROM unioned
+
 )
+
 SELECT bamboo_employee_number,
        location_factor,
+       locality,
        location_factor_change_event_number,
        min(valid_from) as valid_from,
-       max(valid_to) as valid_to
+       max(DATEADD(day,-1,valid_to)) as valid_to
 FROM deduplicated
-GROUP BY 1, 2, 3
+---starting on this date we start capturing location factor in bamboohr
+GROUP BY 1, 2, 3, 4
+
+
