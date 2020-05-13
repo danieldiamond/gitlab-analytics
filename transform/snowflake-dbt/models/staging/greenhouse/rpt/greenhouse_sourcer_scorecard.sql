@@ -25,12 +25,12 @@ WITH  greenhouse_metrics_unpivoted AS (
     SELECT
       greenhouse_metrics_unpivoted.reporting_month,
       greenhouse_metrics_unpivoted.field_name,
-      PERCENTILE_CONT(0.25) WITHIN group (order by VALUE)   AS percentile_25th,
-      PERCENTILE_CONT(0.50) WITHIN group (order by VALUE)   AS percentile_50th,
-      PERCENTILE_CONT(0.75) WITHIN group (order by VALUE)   AS percentile_75th,
-      PERCENTILE_CONT(0.8) WITHIN group (order by VALUE)    AS percentile_80th,
-      PERCENTILE_CONT(0.90) WITHIN group (order by VALUE)   AS ninetieth_percentile,
-      PERCENTILE_CONT(1.00) WITHIN group (order by VALUE)   AS percentile_max 
+      PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY VALUE)  AS percentile_25th,
+      PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY VALUE)  AS percentile_50th,
+      PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY VALUE)  AS percentile_75th,
+      PERCENTILE_CONT(0.80) WITHIN GROUP (ORDER BY VALUE)  AS percentile_80th,
+      PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY VALUE)  AS ninetieth_percentile,
+      PERCENTILE_CONT(1.00) WITHIN GROUP (ORDER BY VALUE)  AS percentile_max 
     FROM greenhouse_metrics_unpivoted
     LEFT JOIN outlier
       ON greenhouse_metrics_unpivoted.reporting_month = outlier.reporting_month
