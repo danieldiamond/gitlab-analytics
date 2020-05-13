@@ -7,7 +7,7 @@ WITH location_application_answer AS (
 ), historical_location_factor AS (
   
     SELECT *
-    FROM {{ ref('location_factors_yaml_historical') }} 
+    FROM {{ ref('location_factors_historical_greenhouse') }}
 
 ), historical_location_factor_modified AS (
 
