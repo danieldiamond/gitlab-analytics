@@ -26,14 +26,7 @@ from sqlalchemy.engine.base import Engine
 
 class GoogleSheetsClient:
     def load_google_sheet(
-        self,
-        key_file,
-        file_name: str,
-        worksheet_name: str,
-        engine: Engine,
-        table: str,
-        schema: str,
-        gsheet_retries: int = 3,
+        self, key_file, file_name: str, worksheet_name: str, gsheet_retries: int = 3
     ) -> pd.DataFrame:
         """
         Loads the google sheet into a dataframe with column names loaded from the sheet.
@@ -58,7 +51,7 @@ class GoogleSheetsClient:
                 else:
                     raise
         else:
-            error(f"Max retries exceeded, giving up on {table}")
+            error(f"Max retries exceeded, giving up on {file_name}")
 
     def get_client(self, gapi_keyfile) -> gspread.Client:
         """

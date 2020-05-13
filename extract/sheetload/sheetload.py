@@ -134,7 +134,7 @@ def sheet_loader(
         sheet_file, table = sheet_info.split(".")
 
         dataframe = google_sheet_client.load_google_sheet(
-            gapi_keyfile, schema + "." + sheet_file, table, engine, table, schema
+            gapi_keyfile, schema + "." + sheet_file, table
         )
         dw_uploader(engine, table, dataframe, schema)
         info(f"Finished processing for table: {sheet_info}")
@@ -366,9 +366,7 @@ def qualtrics_loader(load_type: str):
     for file in qualtrics_files_to_load:
         file_name = file.title
         _, table = file_name.split(".")
-        dataframe = google_sheet_client.load_google_sheet(
-            None, file_name, table, engine, table, schema
-        )
+        dataframe = google_sheet_client.load_google_sheet(None, file_name, table)
         dw_uploader(engine, table, dataframe, schema)
         if is_test:
             info(f"Not renaming file for test.")
