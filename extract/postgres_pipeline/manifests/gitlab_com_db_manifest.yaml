@@ -1498,20 +1498,20 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'push_rules'
     export_table_primary_key: id
-  saml_providers:
+  resource_milestone_events:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , group_id
-      , enabled
-      , certificate_fingerprint
-      , sso_url
-      , enforced_sso
-      , enforced_group_managed_accounts
-      , prohibited_outer_forks
-      FROM saml_providers
+      , user_id
+      , issue_id
+      , merge_request_id
+      , milestone_id
+      , action
+      , state
+      , created_at
+      FROM resource_milestone_events
     export_schema: 'gitlab_com'
-    export_table: 'saml_providers'
+    export_table: 'resource_milestone_events'
     export_table_primary_key: id
   snippets:
     import_db: GITLAB_DB
