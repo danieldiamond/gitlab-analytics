@@ -194,8 +194,8 @@ for source_name, config in config_dict.items():
                 incremental_extract = KubernetesPodOperator(
                     **gitlab_defaults,
                     image=DATA_IMAGE,
-                    task_id=f"{config['task_name']}-db-incremental",
-                    name=f"{config['task_name']}-db-incremental",
+                    task_id=f"{config['task_name']}-{table}-db-incremental",
+                    name=f"{config['task_name']}-{table}-db-incremental",
                     secrets=standard_secrets + config["secrets"],
                     env_vars={**standard_pod_env_vars, **config["env_vars"]},
                     arguments=[incremental_cmd],
