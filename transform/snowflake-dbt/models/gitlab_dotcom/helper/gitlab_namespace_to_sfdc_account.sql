@@ -1,6 +1,6 @@
 WITH zuora_base_mrr AS (
 
-    SELEECT * 
+    SELECT * 
     FROM  {{ ref('zuora_base_mrr') }} 
 
 )
@@ -40,7 +40,7 @@ WITH zuora_base_mrr AS (
     current_gitlab_namespace_id,
     zuora_base_mrr.product_category,
     namespace_id,
-    np.plan_id,
+    namespaces.plan_id,
     plans.plan_name,
     lower(zuora_base_mrr.product_category) = plans.plan_name AS valid
   FROM zuora_base_mrr
@@ -50,7 +50,7 @@ WITH zuora_base_mrr AS (
     ON zuora_base_mrr.subscription_name_slugify = charges.subscription_name_slugify
       AND zuora_base_mrr.rate_plan_charge_id = charges.rate_plan_charge_id
   LEFT JOIN namespaces 
-    ON charges.current_gitlab_namespace_id = np.namespace_id
+    ON charges.current_gitlab_namespace_id = namespaces.namespace_id
   LEFT JOIN plans
     ON namespaces.plan_id = plans.plan_id::VARCHAR
   WHERE TRUE
