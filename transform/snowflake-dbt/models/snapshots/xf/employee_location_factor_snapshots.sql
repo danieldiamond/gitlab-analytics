@@ -32,9 +32,9 @@ WITH source AS (
 ), unioned AS (
 
     SELECT 
-      bamboo_employee_number::bigint AS bamboo_employee_number,
+      bamboo_employee_number::BIGINT AS bamboo_employee_number,
       NULL                           AS locality,
-      (location_factor::float)*100   as location_factor,
+      (location_factor::FLOAT)*100   AS location_factor,
       valid_from,
       valid_to
     FROM renamed
@@ -54,7 +54,7 @@ WITH source AS (
 ), intermediate AS (
 
     SELECT 
-      bamboo_employee_number                                       AS bamboo_employee_number,
+      bamboo_employee_number                                        AS bamboo_employee_number,
       locality,
       location_factor                                               AS location_factor,
       LEAD(location_factor) OVER 
