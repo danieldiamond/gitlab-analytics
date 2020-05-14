@@ -1,5 +1,19 @@
 version: 2
 models:
+- name: sheetload_abuse_mitigation
+  description: Abuse currently manually pulls data from Bouncer (Abuse mitigation Tool) in order to report on abusive account mitigation.
+- name: sheetload_abm_account_baselines
+  description: This is the source for ABM account data
+  columns:
+    - name: added_date
+      tests:
+        - not_null
+    - name: account_id
+      tests:
+        - not_null
+    - name: gtm_strategy
+      tests:
+        - not_null
 - name: sheetload_calendar
   description: This is the basis of the CEO's calendar analysis. When you open the raw sheet, you'll be prompted to run the appscript. Additional categorization can be done by adding additional `case when` statements.
   columns:
@@ -15,6 +29,13 @@ models:
   - name: event_category
     tests:
     - not_null
+- name: sheetload_days_to_close
+  description: Days for accounting to close the books in Netsuite.
+  columns:
+    - name: close_month
+      tests:
+      - not_null
+      - unique    
 - name: sheetload_employee_location_factor
   description: This is the source of truth connecting an employee number from bamboo to the location factor used for People purposes. The "Comp Data Analysis and Modeling" spreadsheet maintained by the Compensation & Benefits Manager is the SSOT for location factor.
   columns:
@@ -69,6 +90,37 @@ models:
   - name: plan
     tests:
     - not_null
+- name: sheetload_job_roles_prior_to_2020_02
+  description: This links all job titles prior to 2020-02-28 to a job role since we  did not start capturing job role prior to this date.
+  columns:
+    - name: job_title
+    - name: job_role
+- name: sheetload_kpi_status
+  description: Record of all the kpi status and commit history
+  columns: 
+    - name: kpi_grouping
+      tests: 
+      - not_null
+    - name: kpi_sub_grouping
+    - name: kpi_name
+      tests: 
+      - not_null
+    - name: start_date
+      tests: 
+      - not_null
+    - name: completion_date
+    - name: status
+    - name: comment
+    - name: in_handbook
+      tests: 
+      - not_null
+    - name: sisense_link
+    - name: gitlab_issue
+    - name: commit_start    
+    - name: commit_handbook_v1
+    - name: is_deleted
+      tests: 
+      - not_null    
 - name: sheetload_linkedin_recruiter
   description: This is the source of linkedin recruiter inmail data for each month by sourcer .
   columns:
@@ -109,6 +161,12 @@ models:
   - name: location_factor_target
     tests:
     - not_null
+- name: sheetload_manual_downgrade_dotcom_tracking
+  description: This contains a list of namespaces identified for manual downgrading and the date of the downgrade.
+  columns:
+  - name: namespace_id
+    tests:
+    - not_null
 - name: sheetload_marketing_kpi_benchmarks
   description: This is the source of marketing KPI goals to be included in marketing metric reports and dashboards.
   columns:
@@ -144,32 +202,23 @@ models:
       tests:
       - not_null
       - unique
-- name: sheetload_yc_companies
-  description: This is a list of YC Companies and their cohort provided by and maintained by marketing.
-  columns:
-    - name: company_id
-      tests:
-      - not_null
-      - unique
-    - name: company_name
-      tests:
-      - not_null
-    - name: yc_batch
-      tests:
-      - not_null
-- name: sheetload_days_to_close
-  description: Days for accounting to close the books in Netsuite.
-  columns:
-    - name: close_month
-      tests:
-      - not_null
-      - unique
 - name: sheetload_rep_quotas_full_fy2020
   description: This is the model that captures sales data for rep quotas for the full fy2020.
 - name: sheetload_osat
   description: This is the model that captures the onboarding satisfaction score survey OSAT.
 - name: sheetload_rep_quotas_full_ps_fy2020
   description: This is the model that captures sales data for rep quotas for professional services the full fy2020.
+- name: sheetload_scalable_employment_values
+  description: Source model for Scalable Employment Solution Data
+  columns:
+    - name: nbr_month
+      tests:
+        - not_null
+        - unique
+    - name: total_workforce
+    - name: nbr_in_scalable_solution
+    - name: nbr_in_process
+    - name: nbr_to_be_converted  
 - name: sheetload_social_marketing_metrics
   description: This is the model that captures data from social marketing metrics
   columns:
@@ -196,60 +245,17 @@ models:
       - not_null
   tests:
     - unique:
-        column_name: "CONCAT(month_date, channel, brand, metric, is_organic)"
-- name: sheetload_job_roles_prior_to_2020_02
-  description: This links all job titles prior to 2020-02-28 to a job role since we  did not start capturing job role prior to this date.
+        column_name: "CONCAT(month_date, channel, brand, metric, is_organic)"        
+- name: sheetload_yc_companies
+  description: This is a list of YC Companies and their cohort provided by and maintained by marketing.
   columns:
-    - name: job_title
-    - name: job_role
-- name: sheetload_kpi_status
-  description: Record of all the kpi status and commit history
-  columns: 
-    - name: kpi_grouping
-      tests: 
-      - not_null
-    - name: kpi_sub_grouping
-    - name: kpi_name
-      tests: 
-      - not_null
-    - name: start_date
-      tests: 
-      - not_null
-    - name: completion_date
-    - name: status
-    - name: comment
-    - name: in_handbook
-      tests: 
-      - not_null
-    - name: sisense_link
-    - name: gitlab_issue
-    - name: commit_start    
-    - name: commit_handbook_v1
-    - name: is_deleted
-      tests: 
-      - not_null
-- name: sheetload_abuse_mitigation
-  description: Abuse currently manually pulls data from Bouncer (Abuse mitigation Tool) in order to report on abusive account mitigation.
-- name: sheetload_abm_account_baselines
-  description: This is the source for ABM account data
-  columns:
-    - name: added_date
+    - name: company_id
       tests:
-        - not_null
-    - name: account_id
+      - not_null
+      - unique
+    - name: company_name
       tests:
-        - not_null
-    - name: gtm_strategy
+      - not_null
+    - name: yc_batch
       tests:
-        - not_null
-- name: sheetload_scalable_employment_values
-  description: Source model for Scalable Employment Solution Data
-  columns:
-    - name: nbr_month
-      tests:
-        - not_null
-        - unique
-    - name: total_workforce
-    - name: nbr_in_scalable_solution
-    - name: nbr_in_process
-    - name: nbr_to_be_converted
+      - not_null
