@@ -11,9 +11,9 @@ with zuora_mrr_totals AS (
 
     SELECT * FROM {{ref('sfdc_accounts_xf')}}
 
-), sfdc_deleted_accounts AS (
+), zuora_account_to_sfdc_account_helper AS (
 
-    SELECT * FROM {{ref('sfdc_deleted_accounts')}}
+    SELECT * FROM {{ref('zuora_account_to_sfdc_account_helper')}}
 
 ), initial_join_to_sfdc AS (
 
@@ -31,11 +31,12 @@ with zuora_mrr_totals AS (
 
 ), replace_sfdc_account_id_with_master_record_id AS (
 
-    SELECT coalesce(initial_join_to_sfdc.sfdc_account_id_int, sfdc_master_record_id) AS sfdc_account_id,
-          initial_join_to_sfdc.*
+    SELECT 
+        sfdc_account_id,
+        initial_join_to_sfdc.*
     FROM initial_join_to_sfdc
-    LEFT JOIN sfdc_deleted_accounts
-    ON initial_join_to_sfdc.zuora_crm_id = sfdc_deleted_accounts.sfdc_account_id
+    LEFT JOIN zuora_account_to_sfdc_account_helper
+    ON initial_join_to_sfdc.zuora_crm_id = zuora_account_to_sfdc_account_helper.sfdc_account_id
 
 ), joined as (
 
