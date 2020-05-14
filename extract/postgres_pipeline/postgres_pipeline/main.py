@@ -296,6 +296,10 @@ def main(file_path: str, load_type: str, load_only_table: str = None) -> None:
     logging.info(f"Reading manifest at location: {file_path}")
     manifest_dict = manifest_reader(file_path)
 
+    if load_only_table and load_only_table in manifest_dict['tables'].keys():
+        manifest_dict['tables'] = \
+            [{table:config} for table, config in manifest_dict['tables'].items() if table == load_only_table]
+
     postgres_engine, snowflake_engine = get_engines(manifest_dict["connection_info"])
     logging.info(snowflake_engine)
 
@@ -307,9 +311,6 @@ def main(file_path: str, load_type: str, load_only_table: str = None) -> None:
         "test": check_new_tables,
         "validate": validate_ids,
     }
-
-    if load_only_table and load_only_table in manifest_dict['tables']:
-        manifest_dict['tables'] = [t for t in manifest_dict['tables'] if t == load_only_table]
 
     for table in manifest_dict["tables"]:
         logging.info(f"Processing Table: {table}")
