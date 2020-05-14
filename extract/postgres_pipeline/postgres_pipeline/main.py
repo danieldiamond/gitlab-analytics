@@ -287,7 +287,7 @@ def check_new_tables(
     return True
 
 
-def main(file_path: str, load_type: str) -> None:
+def main(file_path: str, load_type: str, load_only_table: str = None) -> None:
     """
     Read data from a postgres DB and upload it directly to Snowflake.
     """
@@ -307,6 +307,9 @@ def main(file_path: str, load_type: str) -> None:
         "test": check_new_tables,
         "validate": validate_ids,
     }
+
+    if load_only_table and load_only_table in manifest_dict['tables']:
+        manifest_dict['tables'] = [t for t in manifest_dict['tables'] if t == load_only_table]
 
     for table in manifest_dict["tables"]:
         logging.info(f"Processing Table: {table}")
