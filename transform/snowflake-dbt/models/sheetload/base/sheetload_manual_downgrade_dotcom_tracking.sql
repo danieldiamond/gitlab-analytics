@@ -8,6 +8,7 @@ WITH source AS (
     SELECT
       namespace_id::INTEGER AS namespace_id,
       downgraded_date::DATE AS downgraded_date
+    FROM source  
 
 )
 
