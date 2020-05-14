@@ -243,17 +243,37 @@ for source_name, config in config_dict.items():
     with sync_dag:
         # Sync Task
         sync_cmd = generate_cmd(config["dag_name"], "--load_type sync")
-        sync_extract = KubernetesPodOperator(
-            **gitlab_defaults,
-            image=DATA_IMAGE,
-            task_id=f"{config['task_name']}-db-sync",
-            name=f"{config['task_name']}-db-sync",
-            secrets=standard_secrets + config["secrets"],
-            env_vars={**standard_pod_env_vars, **config["env_vars"]},
-            arguments=[sync_cmd],
-            do_xcom_push=True,
-            xcom_push=True,
-        )
+        if config["dag_name"] == "gitlab_com":
+            file_path = f"analytics/extract/postgres_pipeline/manifests/{config['dag_name']}_db_manifest.yaml"
+            table_list = extract_table_list_from_manifest(file_path)
+            for table in table_list:
+                sync_cmd = generate_cmd(
+                    config["dag_name"], f"--load_type sync --load_only_table {table}"
+                )
+                sync_extract = KubernetesPodOperator(
+                    **gitlab_defaults,
+                    image=DATA_IMAGE,
+                    task_id=f"{config['task_name']}-db-sync",
+                    name=f"{config['task_name']}-db-sync",
+                    secrets=standard_secrets + config["secrets"],
+                    env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                    arguments=[sync_cmd],
+                    do_xcom_push=True,
+                    xcom_push=True,
+                )
+        else:
+            sync_extract = KubernetesPodOperator(
+                **gitlab_defaults,
+                image=DATA_IMAGE,
+                task_id=f"{config['task_name']}-db-sync",
+                name=f"{config['task_name']}-db-sync",
+                secrets=standard_secrets + config["secrets"],
+                env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                arguments=[sync_cmd],
+                do_xcom_push=True,
+                xcom_push=True,
+            )
+
         # SCD Task
         scd_cmd = generate_cmd(config["dag_name"], "--load_type scd")
         scd_affinity = {
