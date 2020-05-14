@@ -304,7 +304,8 @@ def main(file_path: str, load_type: str, load_only_table: str = None) -> None:
     # Process the manifest
     logging.info(f"Reading manifest at location: {file_path}")
     manifest_dict = manifest_reader(file_path)
-    manifest_dict = filter_manifest(manifest_dict, load_only_table)
+    # When load_only_table specified reduce manifest to keep only relevant table config
+    manifest_dict['tables'] = filter_manifest(manifest_dict['tables'], load_only_table)
 
 
     postgres_engine, snowflake_engine = get_engines(manifest_dict["connection_info"])
