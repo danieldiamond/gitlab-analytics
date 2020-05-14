@@ -18,6 +18,16 @@ WITH zuora_rate_plan AS (
     SELECT *
     FROM {{ ref('zuora_invoice_item_source') }}
 
+), charges AS (
+
+    SELECT * 
+    FROM {{ ref('customers_db_charges_xf')}}
+
+), namespaces AS (
+
+    SELECT * 
+    FROM {{ ref('gitlab_dotcom_namespaces_xf')}}
+
 ), base_charges AS (
 
     SELECT
@@ -79,6 +89,17 @@ WITH zuora_rate_plan AS (
     WHERE zuora_invoice.is_deleted = FALSE
       AND zuora_invoice_item.is_deleted= FALSE
       AND zuora_invoice.status='Posted'
+
+), gitlab_nameespace AS (
+
+    SELECT 
+      latest_invoiced_charge_version_in_segment.*,
+      namespaces.namespaces AS gitlab_dotcom_namespace_id
+    FROM latest_invoiced_charge_version_in_segment
+    LEFT JOIN customers_db_charges_xf
+      ON latest_invoiced_charge_version_in_segment.charge_id = customers_db_charges_xf.rate_plan_charge_id
+    LEFT JOIN namespaces
+      ON customers_db_charges_xf.current_gitlab_namespace_id = namespaces.namespace_id
 
 ), final AS (
 
