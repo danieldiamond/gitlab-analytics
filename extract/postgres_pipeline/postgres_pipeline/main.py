@@ -307,8 +307,8 @@ def main(file_path: str, load_type: str, load_only_table: str = None) -> None:
     filter_manifest(manifest_dict, load_only_table)
 
 
-    #postgres_engine, snowflake_engine = get_engines(manifest_dict["connection_info"])
-    #logging.info(snowflake_engine)
+    postgres_engine, snowflake_engine = get_engines(manifest_dict["connection_info"])
+    logging.info(snowflake_engine)
 
     # Link the load_types to their respective functions
     load_types = {
