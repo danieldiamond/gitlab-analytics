@@ -114,6 +114,9 @@ models:
       dbt:
         materialized: table
         schema: dbt
+    
+      engineering:
+        materialized: table
       
       gitter:
         enabled: false
@@ -154,6 +157,9 @@ models:
     staging:
       schema: staging
       materialized: table
+
+      engineering:
+        materialized: table
 
       gitter:
         enabled: false
@@ -202,9 +208,6 @@ models:
           schema: staging
 
     date:
-      materialized: table
-
-    engineering:
       materialized: table
 
     gitlab_data_yaml:
