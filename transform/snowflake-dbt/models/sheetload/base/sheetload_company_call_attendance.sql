@@ -10,7 +10,7 @@ WITH source AS (
 		    "Topic"           											AS meeting_topic,
 			"Day_of_The_Week"     										AS day_of_the_week,
 			"Call_Time"           										AS call_time,
-		    split_part("Duration_(hh:mm:ss)", ':', 2) AS length_of_call_mins,
+		    split_part("Duration_(hh:mm:ss)", ':', 2) 					AS length_of_call_mins,
 			"Participants"        										AS count_of_participants
 		FROM source
 )
