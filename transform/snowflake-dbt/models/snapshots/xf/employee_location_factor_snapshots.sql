@@ -19,7 +19,7 @@ WITH source AS (
     CASE WHEN "DBT_VALID_FROM"::NUMBER::TIMESTAMP::DATE < '2019-07-20'::DATE
              THEN '2000-01-20'::DATE
              ELSE "DBT_VALID_FROM"::NUMBER::TIMESTAMP::DATE END AS valid_from,
-         "DBT_VALID_TO"::number::timestamp::date                AS valid_to
+         "DBT_VALID_TO"::number::timestamp::DATE                AS valid_to
     FROM source
     WHERE LOWER(bamboo_employee_number) NOT LIKE '%not in comp calc%'
       AND location_factor IS NOT NULL
