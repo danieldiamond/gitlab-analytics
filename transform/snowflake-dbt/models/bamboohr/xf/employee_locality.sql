@@ -25,8 +25,8 @@ SELECT
            location_factor_yaml_everywhere_else.location_factor) AS location_factor
 FROM locality
 LEFT JOIN location_factor_yaml
-  ON lower(locality.locality) = LOWER(CONCAT(location_factor_yaml.area,', ', location_factor_yaml.country))
+  ON LOWER(locality.locality) = LOWER(CONCAT(location_factor_yaml.area,', ', location_factor_yaml.country))
   AND locality.updated_at = location_factor_yaml.snapshot_date
 LEFT JOIN location_factor_yaml_everywhere_else
-  ON lower(locality.locality) = LOWER(CONCAT(location_factor_yaml_everywhere_else.area,', ', location_factor_yaml_everywhere_else.country))
+  ON LOWER(locality.locality) = LOWER(CONCAT(location_factor_yaml_everywhere_else.area,', ', location_factor_yaml_everywhere_else.country))
   AND locality.updated_at = location_factor_yaml_everywhere_else.snapshot_date

@@ -38,5 +38,6 @@ WHERE hire_date IS NOT NULL
         AND LOWER(last_name) != 'test-gitlab')
   AND employee_id != 42039
 
+---Note: the where clause is removing any test accounts and employee_id 42039 is also a test account
 
 

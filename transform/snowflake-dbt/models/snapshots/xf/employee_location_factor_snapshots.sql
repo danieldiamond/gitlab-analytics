@@ -21,7 +21,7 @@ WITH source AS (
              ELSE "DBT_VALID_FROM"::NUMBER::TIMESTAMP::DATE END AS valid_from,
          "DBT_VALID_TO"::number::timestamp::date                AS valid_to
     FROM source
-    WHERE lower(bamboo_employee_number) NOT LIKE '%not in comp calc%'
+    WHERE LOWER(bamboo_employee_number) NOT LIKE '%not in comp calc%'
       AND location_factor IS NOT NULL
 
 ), employee_locality AS (
@@ -54,9 +54,9 @@ WITH source AS (
 ), intermediate AS (
 
     SELECT 
-      bamboo_employee_number::BIGINT                                AS bamboo_employee_number,
+      bamboo_employee_number                                       AS bamboo_employee_number,
       locality,
-      location_factor::FLOAT                                        AS location_factor,
+      location_factor                                               AS location_factor,
       LEAD(location_factor) OVER 
           (PARTITION BY bamboo_employee_number ORDER BY valid_from) AS next_location_factor,
       valid_from,
