@@ -51,29 +51,36 @@ WITH source AS (
       LEAD(updated_at) OVER (PARTITION BY employee_number ORDER BY updated_at) AS valid_to
     FROM employee_locality
 
-), deduplicated as (
+), intermediate AS (
 
-SELECT 
-  bamboo_employee_number::BIGINT                    AS bamboo_employee_number,
-  locality,
-  location_factor::FLOAT                            AS location_factor,
-  valid_from,
-  COALESCE(valid_to, {{max_date_in_analysis}})      AS valid_to, 
-  conditional_change_event(location_factor) OVER
-        (ORDER BY bamboo_employee_number,
-                  locality, valid_to ASC)           AS location_factor_change_event_number
-FROM unioned
+    SELECT 
+      bamboo_employee_number::BIGINT                                AS bamboo_employee_number,
+      locality,
+      location_factor::FLOAT                                        AS location_factor,
+      LEAD(location_factor) OVER 
+          (PARTITION BY bamboo_employee_number ORDER BY valid_from) AS next_location_factor,
+      valid_from,
+      COALESCE(valid_to, {{max_date_in_analysis}})                  AS valid_to
+    FROM unioned
+
+), deduplicated AS (
+
+    SELECT *
+    FROM intermediate
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY bamboo_employee_number, locality, location_factor, next_location_factor ORDER BY valid_from) =1
 
 )
 
-SELECT bamboo_employee_number,
-       location_factor,
-       locality,
-       location_factor_change_event_number,
-       min(valid_from)                          AS valid_from,
-       max(DATEADD(day,-1,valid_to))            AS valid_to
+SELECT 
+  bamboo_employee_number,
+  locality,
+  location_factor,
+  valid_from                                                            AS valid_from,
+  COALESCE( 
+    LEAD(valid_from) 
+    OVER (PARTITION BY bamboo_employee_number ORDER BY valid_from),
+    {{max_date_in_analysis}})                                           AS valid_to
 FROM deduplicated
----starting on this date we start capturing location factor in bamboohr
 GROUP BY 1, 2, 3, 4
 
 
