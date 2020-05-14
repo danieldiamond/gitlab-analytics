@@ -291,9 +291,7 @@ def filter_manifest(manifest_dict: Dict, load_only_table: str = None) -> None:
     # When load_only_table specified reduce manifest to keep only relaevant table config
     if load_only_table and load_only_table in manifest_dict["tables"].keys():
         manifest_dict["tables"] = {
-            table: config
-            for table, config in manifest_dict["tables"].items()
-            if table == load_only_table
+            load_only_table: manifest_dict["tables"][load_only_table]
         }
 
 
