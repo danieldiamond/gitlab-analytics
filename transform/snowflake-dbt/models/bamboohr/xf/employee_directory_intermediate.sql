@@ -83,7 +83,7 @@ WITH RECURSIVE employee_directory AS (
     LEFT JOIN location_factor
       ON employee_directory.employee_number::varchar = location_factor.bamboo_employee_number::varchar
       AND valid_from <= date_actual
-      AND COALESCE(valid_to::date, {{max_date_in_bamboo_analyses()}}) > date_actual
+      AND COALESCE(valid_to::date, {{max_date_in_bamboo_analyses()}}) >= date_actual
     LEFT JOIN employment_status
       ON employee_directory.employee_id = employment_status.employee_id 
       AND (date_details.date_actual = valid_from_date AND employment_status = 'Terminated' 
