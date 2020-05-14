@@ -123,6 +123,6 @@ sheets:
     tabs:
       - clari_export_forecast_net_iacv
   - name: company_call_attendance
-    owner: '@emilie'
+    owner: '@pluthra'
     tabs:
       - company_call_attendance
