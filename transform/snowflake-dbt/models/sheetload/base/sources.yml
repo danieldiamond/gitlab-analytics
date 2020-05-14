@@ -70,7 +70,6 @@ sources:
       - name: social_marketing_metrics
       - name: values_certificate
       - name: yc_companies
-<<<<<<< HEAD
         freshness: null
       - name: social_marketing_metrics
       - name: abm_account_baselines
@@ -79,6 +78,4 @@ sources:
       - name: clari_export_forecast_net_iacv
         freshness:
           warn_after: {count: 10, period: day}
-=======
-        freshness: null
->>>>>>> master
+
