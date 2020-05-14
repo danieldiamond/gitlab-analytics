@@ -154,11 +154,12 @@ def generate_cmd(dag_name, operation):
         python main.py tap ../manifests/{dag_name}_db_manifest.yaml {operation}
     """
 
+
 def extract_table_list_from_manifest(file_path):
     table_list = []
     with open(file_path, "r") as file:
         manifest_dict = yaml.load(file, Loader=yaml.FullLoader)
-    table_list = manifest_dict['tables'].keys()
+    table_list = manifest_dict["tables"].keys()
     return table_list
 
 
@@ -186,11 +187,14 @@ for source_name, config in config_dict.items():
     with extract_dag:
 
         # Extract Task
-        if config["dag_name"] == 'gitlab_com':
+        if config["dag_name"] == "gitlab_com":
             file_path = f"analytics/extract/postgres_pipeline/manifests/{config['dag_name']}_db_manifest.yaml"
             table_list = extract_table_list_from_manifest(file_path)
             for table in table_list:
-                incremental_cmd = generate_cmd(config["dag_name"], f"--load_type incremental --load_only_table {table}")
+                incremental_cmd = generate_cmd(
+                    config["dag_name"],
+                    f"--load_type incremental --load_only_table {table}",
+                )
                 incremental_extract = KubernetesPodOperator(
                     **gitlab_defaults,
                     image=DATA_IMAGE,
@@ -204,7 +208,9 @@ for source_name, config in config_dict.items():
                 )
 
         else:
-            incremental_cmd = generate_cmd(config["dag_name"], "--load_type incremental")
+            incremental_cmd = generate_cmd(
+                config["dag_name"], "--load_type incremental"
+            )
             incremental_extract = KubernetesPodOperator(
                 **gitlab_defaults,
                 image=DATA_IMAGE,
