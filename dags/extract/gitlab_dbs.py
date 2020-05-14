@@ -1,5 +1,6 @@
 import os
 from datetime import datetime, timedelta
+import yaml
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
@@ -154,6 +155,14 @@ def generate_cmd(dag_name, operation):
     """
 
 
+def extract_table_list_from_manifest(file_path):
+    table_list = []
+    with open(file_path, "r") as file:
+        manifest_dict = yaml.load(file, Loader=yaml.FullLoader)
+    table_list = manifest_dict["tables"].keys()
+    return table_list
+
+
 # Loop through each config_dict and generate a DAG
 for source_name, config in config_dict.items():
 
@@ -178,18 +187,41 @@ for source_name, config in config_dict.items():
     with extract_dag:
 
         # Extract Task
-        incremental_cmd = generate_cmd(config["dag_name"], "--load_type incremental")
-        incremental_extract = KubernetesPodOperator(
-            **gitlab_defaults,
-            image=DATA_IMAGE,
-            task_id=f"{config['task_name']}-db-incremental",
-            name=f"{config['task_name']}-db-incremental",
-            secrets=standard_secrets + config["secrets"],
-            env_vars={**standard_pod_env_vars, **config["env_vars"]},
-            arguments=[incremental_cmd],
-            do_xcom_push=True,
-            xcom_push=True,
-        )
+        if config["dag_name"] == "gitlab_com":
+            file_path = f"analytics/extract/postgres_pipeline/manifests/{config['dag_name']}_db_manifest.yaml"
+            table_list = extract_table_list_from_manifest(file_path)
+            for table in table_list:
+                incremental_cmd = generate_cmd(
+                    config["dag_name"],
+                    f"--load_type incremental --load_only_table {table}",
+                )
+                incremental_extract = KubernetesPodOperator(
+                    **gitlab_defaults,
+                    image=DATA_IMAGE,
+                    task_id=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
+                    name=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
+                    secrets=standard_secrets + config["secrets"],
+                    env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                    arguments=[incremental_cmd],
+                    do_xcom_push=True,
+                    xcom_push=True,
+                )
+
+        else:
+            incremental_cmd = generate_cmd(
+                config["dag_name"], "--load_type incremental"
+            )
+            incremental_extract = KubernetesPodOperator(
+                **gitlab_defaults,
+                image=DATA_IMAGE,
+                task_id=f"{config['task_name']}-db-incremental",
+                name=f"{config['task_name']}-db-incremental",
+                secrets=standard_secrets + config["secrets"],
+                env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                arguments=[incremental_cmd],
+                do_xcom_push=True,
+                xcom_push=True,
+            )
     globals()[f"{config['dag_name']}_db_extract"] = extract_dag
 
     # Sync DAG

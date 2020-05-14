@@ -287,7 +287,15 @@ def check_new_tables(
     return True
 
 
-def main(file_path: str, load_type: str) -> None:
+def filter_manifest(manifest_dict: Dict, load_only_table: str = None) -> None:
+    # When load_only_table specified reduce manifest to keep only relaevant table config
+    if load_only_table and load_only_table in manifest_dict["tables"].keys():
+        manifest_dict["tables"] = {
+            load_only_table: manifest_dict["tables"][load_only_table]
+        }
+
+
+def main(file_path: str, load_type: str, load_only_table: str = None) -> None:
     """
     Read data from a postgres DB and upload it directly to Snowflake.
     """
@@ -295,6 +303,8 @@ def main(file_path: str, load_type: str) -> None:
     # Process the manifest
     logging.info(f"Reading manifest at location: {file_path}")
     manifest_dict = manifest_reader(file_path)
+    # When load_only_table specified reduce manifest to keep only relevant table config
+    filter_manifest(manifest_dict, load_only_table)
 
     postgres_engine, snowflake_engine = get_engines(manifest_dict["connection_info"])
     logging.info(snowflake_engine)
