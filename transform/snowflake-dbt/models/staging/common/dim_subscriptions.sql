@@ -19,7 +19,9 @@ SELECT
   zuora_subscription.zuora_renewal_subscription_name,
   zuora_subscription.zuora_renewal_subscription_name_slugify,
   zuora_subscription.renewal_term,
-  zuora_subscription.renewal_term_period_type
+  zuora_subscription.renewal_term_period_type,
+  zuora_subscription.subscription_start_date,
+  zuora_subscription.subscription_end_date
 FROM zuora_subscription
 INNER JOIN zuora_account ON zuora_account.account_id = zuora_subscription.account_id
 WHERE is_deleted = FALSE

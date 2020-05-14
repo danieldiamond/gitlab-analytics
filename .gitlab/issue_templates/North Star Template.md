@@ -31,6 +31,11 @@ The one metric that matters now, & the most important thing you want your team t
 
 * Why do you pick this north star metric for your feature/group/stage? 
 
+
+#### AMAU Metric 
+* What is the related [AMAU](/handbook/product/metrics/#action-monthly-active-users-amau) metric calculation? 
+
+
 ### ❗ What do you need from the Telemetry/Data team?
 
 - [ ] The data is available but I need analytics to visualize/re-structure

@@ -114,6 +114,9 @@ models:
       dbt:
         materialized: table
         schema: dbt
+      
+      gitter:
+        enabled: false
 
       google_analytics_360:
         materialized: table
@@ -152,6 +155,10 @@ models:
       schema: staging
       materialized: table
 
+      gitter:
+        enabled: false
+        materialized: table
+
       google_analytics_360:
         schema: analytics
 
@@ -174,6 +181,8 @@ models:
       version:
         tags: ["product"]
         xf:
+          schema: analytics
+        ephemeral:
           schema: analytics
 
       zuora:
@@ -206,11 +215,6 @@ models:
       materialized: table
       base:
           schema: staging
-
-    gitter:
-      enabled: false
-      transformed:
-        materialized: table
 
     handbook:
         materialized: table

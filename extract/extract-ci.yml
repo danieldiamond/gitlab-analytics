@@ -32,6 +32,16 @@
     - merge_requests
   when: manual
 
+qualtrics_sheetload:
+  <<: *extract_definition
+  script:
+    - cd extract/sheetload/
+    - python3 sheetload.py qualtrics --load_type test
+  only:
+    - merge_requests
+  when: manual
+    
+
 🛢pgp_test:
   <<: *extract_definition
   script:

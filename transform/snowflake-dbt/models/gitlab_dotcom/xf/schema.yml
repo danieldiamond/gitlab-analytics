@@ -14,8 +14,38 @@ models:
       - name: updated_at
         tests:
           - not_null
+        
+  - name: gitlab_dotcom_clusters_applications_cert_managers_xf
+    columns:
+      - name: clusters_applications_cert_managers_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_crossplane_xf
+    columns:
+      - name: clusters_applications_crossplane_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_elastic_stacks_xf
+    columns:
+      - name: clusters_applications_elastic_stacks_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_clusters_applications_helm_xf
-    description: The model extends the clusters_applications_helm model by adding information about the associated cluster.
     columns:
       - name: clusters_applications_helm_id
         tests:
@@ -24,6 +54,57 @@ models:
       - name: cluster_id
         tests:
           - not_null
+
+  - name: gitlab_dotcom_clusters_applications_ingress_xf
+    columns:
+      - name: clusters_applications_ingress_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_jupyter_xf
+    columns:
+      - name: clusters_applications_jupyter_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_knative_xf
+    columns:
+      - name: clusters_applications_knative_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_prometheus_xf
+    columns:
+      - name: clusters_applications_prometheus_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_runners_xf
+    columns:
+      - name: clusters_applications_runners_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+  
   - name: gitlab_dotcom_environments_xf
     description: '{{ doc("gitlab_dotcom_environments_xf") }}'
     columns:

@@ -3,7 +3,7 @@
 WITH mom_change as (
 
   SELECT
-    MD5(uuid || created_at)             AS unique_key,
+    MD5(uuid || created_at)                AS unique_key,
     uuid,
     created_at,
     ping_source,
@@ -11,7 +11,11 @@ WITH mom_change as (
     main_edition,
     edition_type,
     {% for ping_name in version_usage_stats_list %}
-    {{ monthly_change(ping_name) }} {{ "," if not loop.last }}
+    {{ping_name}},
+    {{ monthly_change(ping_name) }},
+    {{ case_when_boolean_int(ping_name) }} AS {{ping_name}}_active
+  
+    {{ "," if not loop.last }}
     {% endfor %}
 
   FROM {{ ref("version_usage_data_month") }}
