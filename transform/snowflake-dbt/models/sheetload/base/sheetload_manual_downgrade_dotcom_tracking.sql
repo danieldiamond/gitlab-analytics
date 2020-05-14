@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('sheetload', 'sheetload_manual_downgrade_dotcom_tracking') }}
+    FROM {{ source('sheetload', 'manual_downgrade_dotcom_tracking') }}
 
 ), renamed AS (
 
