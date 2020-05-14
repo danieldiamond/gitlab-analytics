@@ -41,3 +41,11 @@ models:
           - name: host_id
             tests:
                 - not_null
+
+    - name: version_versions_source
+      description: Vulnerability information by version number
+      columns:
+          - name: id
+            tests:
+                - not_null
+                - unique            

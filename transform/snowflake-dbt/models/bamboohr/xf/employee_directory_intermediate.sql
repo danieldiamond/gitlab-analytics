@@ -66,7 +66,7 @@ WITH RECURSIVE employee_directory AS (
       department_info.reports_to,
       department_info.job_role,
       location_factor.location_factor, 
-      IFF(hire_date = date_actual or 
+      IFF(hire_date = date_actual OR 
           rehire_date = date_actual, True, False)                   AS is_hire_date,
       IFF(employment_status = 'Terminated', True, False)            AS is_termination_date,
       IFF(rehire_date = date_actual, True, False)                   AS is_rehire_date,
@@ -74,16 +74,16 @@ WITH RECURSIVE employee_directory AS (
             'Active', employment_status)                            AS employment_status
     FROM date_details
     LEFT JOIN employee_directory
-      ON hire_date::date <= date_actual
-      AND COALESCE(termination_date::date, {{max_date_in_bamboo_analyses()}}) >= date_actual
+      ON hire_date::DATE <= date_actual
+      AND COALESCE(termination_date::DATE, {{max_date_in_bamboo_analyses()}}) >= date_actual
     LEFT JOIN department_info
       ON employee_directory.employee_id = department_info.employee_id
-      AND date_actual between effective_date 
-      AND COALESCE(effective_end_date::date, {{max_date_in_bamboo_analyses()}})
+      AND date_actual BETWEEN effective_date 
+      AND COALESCE(effective_end_date::DATE, {{max_date_in_bamboo_analyses()}})
     LEFT JOIN location_factor
-      ON employee_directory.employee_number::varchar = location_factor.bamboo_employee_number::varchar
+      ON employee_directory.employee_number::VARCHAR = location_factor.bamboo_employee_number::VARCHAR
       AND valid_from <= date_actual
-      AND COALESCE(valid_to::date, {{max_date_in_bamboo_analyses()}}) > date_actual
+      AND COALESCE(valid_to::DATE, {{max_date_in_bamboo_analyses()}}) >= date_actual
     LEFT JOIN employment_status
       ON employee_directory.employee_id = employment_status.employee_id 
       AND (date_details.date_actual = valid_from_date AND employment_status = 'Terminated' 
@@ -102,14 +102,14 @@ WITH RECURSIVE employee_directory AS (
     FROM enriched
     WHERE NULLIF(reports_to, '') IS NOT NULL
 
-), layers (date_actual, employee, manager, lineage, layers_count) as (
+), layers (date_actual, employee, manager, lineage, layers_count) AS (
 
     SELECT
       date_actual,
-      full_name as employee,
-      reports_to as manager,
-      lineage as lineage,
-      1 as layers_count
+      full_name         AS employee,
+      reports_to        AS manager,
+      lineage           AS lineage,
+      1                 AS layers_count
     FROM base_layers
     WHERE manager IS NOT NULL
 

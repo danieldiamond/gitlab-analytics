@@ -460,6 +460,39 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'clusters_applications_cert_managers'
     export_table_primary_key: id
+  clusters_applications_crossplane:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , cluster_id
+      , status
+      , version
+      , stack
+      , created_at
+      , updated_at
+      , status_reason
+      FROM clusters_applications_crossplane
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+          AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'clusters_applications_crossplane'
+    export_table_primary_key: id
+  clusters_applications_elastic_stacks:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , cluster_id
+      , status
+      , version
+      , created_at
+      , updated_at
+      , status_reason
+      FROM clusters_applications_elastic_stacks
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+          AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'clusters_applications_elastic_stacks'
+    export_table_primary_key: id
   clusters_applications_helm:
     import_db: GITLAB_DB
     import_query: >
@@ -1465,6 +1498,52 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'push_rules'
     export_table_primary_key: id
+  resource_milestone_events:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , user_id
+      , issue_id
+      , merge_request_id
+      , milestone_id
+      , action
+      , state
+      , created_at
+      FROM resource_milestone_events
+      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'resource_milestone_events'
+    export_table_primary_key: id
+  resource_state_events:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , user_id
+      , issue_id
+      , merge_request_id
+      , state
+      , created_at
+      FROM resource_state_events
+      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'resource_state_events'
+    export_table_primary_key: id
+  resource_weight_events:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , user_id
+      , issue_id
+      , weight
+      , created_at
+      FROM resource_weight_events
+      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'resource_weight_events'
+    export_table_primary_key: id
   saml_providers:
     import_db: GITLAB_DB
     import_query: >
@@ -1717,6 +1796,8 @@ tables:
       , bot_type
       , "role"
       , username
+      , first_name
+      , last_name
       FROM users
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
