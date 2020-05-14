@@ -187,7 +187,7 @@ for source_name, config in config_dict.items():
 
         # Extract Task
         if config["dag_name"] == 'gitlab_com':
-            file_path = f"../manifests/{config['dag_name']}_db_manifest.yaml"
+            file_path = f"analytics/extract/postgres_pipeline/manifests/{config['dag_name']}_db_manifest.yaml"
             table_list = extract_table_list_from_manifest(file_path)
             for table in table_list:
                 incremental_cmd = generate_cmd(config["dag_name"], f"--load_type incremental --load_only_table {table}")
