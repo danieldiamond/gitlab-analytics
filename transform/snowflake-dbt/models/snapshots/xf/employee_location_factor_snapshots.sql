@@ -77,7 +77,7 @@ SELECT
   location_factor,
   valid_from                                                            AS valid_from,
   COALESCE( 
-    LEAD(valid_from) 
+    LEAD(DATEADD(day,-1,valid_from)) 
     OVER (PARTITION BY bamboo_employee_number ORDER BY valid_from),
     {{max_date_in_analysis}})                                           AS valid_to
 FROM deduplicated
