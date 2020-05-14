@@ -14,7 +14,7 @@
 
 ## Impact
 
-What there an SLO breach? 
+Was there an SLO breach? 
 <!-- Yes / No  | If Yes, please include the time margin we missed the SLO by in HH:SS-->
 
 Who was impacted and how were they impacted?
