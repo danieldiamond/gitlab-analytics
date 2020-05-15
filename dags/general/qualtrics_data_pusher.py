@@ -24,7 +24,6 @@ from kube_secrets import (
     SNOWFLAKE_LOAD_USER,
     SNOWFLAKE_LOAD_WAREHOUSE,
     SNOWFLAKE_PASSWORD,
-    SNOWFLAKE_TRANSFORM_DATABASE,
     SNOWFLAKE_TRANSFORM_ROLE,
     SNOWFLAKE_TRANSFORM_SCHEMA,
     SNOWFLAKE_TRANSFORM_WAREHOUSE,
@@ -34,7 +33,7 @@ from kube_secrets import (
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
-pod_env_vars = {**gitlab_pod_env_vars, **{}}
+pod_env_vars = {**gitlab_pod_env_vars, **{"SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"}}
 
 # Default arguments for the DAG
 default_args = {
@@ -76,7 +75,6 @@ qualtrics_sheetload = KubernetesPodOperator(
         SNOWFLAKE_LOAD_WAREHOUSE,
         SNOWFLAKE_LOAD_PASSWORD,
         SNOWFLAKE_PASSWORD,
-        SNOWFLAKE_TRANSFORM_DATABASE,
         SNOWFLAKE_TRANSFORM_ROLE,
         SNOWFLAKE_TRANSFORM_SCHEMA,
         SNOWFLAKE_TRANSFORM_WAREHOUSE,
