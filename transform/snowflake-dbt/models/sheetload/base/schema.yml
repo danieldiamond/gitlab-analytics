@@ -44,9 +44,6 @@ models:
   - name: call_time
     tests:
     - not_null
-  - name: length_of_call_mins
-    tests:
-    - not_null
   - name: count_of_participants
     tests:
     - not_null
