@@ -12,7 +12,7 @@ from yaml import load, safe_load, YAMLError
 import boto3
 import gspread
 import pandas as pd
-from extract.qualtrics.src.qualtrics_client import QualtricsClient
+from orchestration.qualtrics_client import QualtricsClient
 from fire import Fire
 from gitlabdata.orchestration_utils import (
     postgres_engine_factory,
