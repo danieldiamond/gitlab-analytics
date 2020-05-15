@@ -200,7 +200,7 @@ for source_name, config in config_dict.items():
                     image=DATA_IMAGE,
                     task_id=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
                     name=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
-                    poll='gitlab_dbs',
+                    pool="gitlab_dbs_pool",
                     secrets=standard_secrets + config["secrets"],
                     env_vars={**standard_pod_env_vars, **config["env_vars"]},
                     arguments=[incremental_cmd],
