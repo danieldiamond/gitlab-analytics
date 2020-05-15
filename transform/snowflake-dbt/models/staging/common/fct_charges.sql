@@ -90,10 +90,10 @@ WITH zuora_rate_plan AS (
       AND zuora_invoice_item.is_deleted= FALSE
       AND zuora_invoice.status='Posted'
 
-), base_charges_with_gitlab_namespace AS (
+), gitlab_namespaces AS (
 
     SELECT 
-      base_charges.*,
+      base_charges.charge_id,
       customers_db_charges_xf.current_customer_id AS customers_current_customer_id,
       namespaces.namespace_id                     AS gitlab_dotcom_namespace_id
     FROM base_charges
@@ -107,10 +107,14 @@ WITH zuora_rate_plan AS (
     SELECT
       base_charges.*,
       latest_invoiced_charge_version_in_segment.segment_version_order,
-      latest_invoiced_charge_version_in_segment.is_last_segment_version
-    FROM base_charges_with_gitlab_namespace
+      latest_invoiced_charge_version_in_segment.is_last_segment_version,
+      gitlab_namespaces.customers_current_customer_id,
+      gitlab_namespaces.gitlab_dotcom_namespace_id
+    FROM base_charges
     LEFT JOIN latest_invoiced_charge_version_in_segment
-      ON latest_invoiced_charge_version_in_segment.charge_id = base_charges.charge_id
+      ON base_charges.charge_id = latest_invoiced_charge_version_in_segment.charge_id
+    LEFT JOIN gitlab_namespaces
+      ON base_charges.charge_id = gitlab_namespaces.charge_id
 )
 
 SELECT *
