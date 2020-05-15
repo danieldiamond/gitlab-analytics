@@ -16,7 +16,7 @@ WITH merge_requests AS (
     SELECT 
       user_id,
       user_name
-    FROM {{ ref('gitlab_dotcom_users_xf')}}
+    FROM {{ ref('gitlab_dotcom_users')}}
 
 ), joined_to_mr AS (
 
