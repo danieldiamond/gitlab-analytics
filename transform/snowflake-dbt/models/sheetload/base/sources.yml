@@ -71,11 +71,3 @@ sources:
       - name: values_certificate
       - name: yc_companies
         freshness: null
-      - name: social_marketing_metrics
-      - name: abm_account_baselines
-        freshness: null
-      - name: marketing_core_users_from_docs_gitlab_com
-      - name: clari_export_forecast_net_iacv
-        freshness:
-          warn_after: {count: 10, period: day}
-
