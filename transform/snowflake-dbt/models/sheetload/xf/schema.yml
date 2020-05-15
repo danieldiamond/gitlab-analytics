@@ -1,17 +1,7 @@
 version: 2
 models:
-- name: engineering_pulse_survey
-  description: This model aggregates the engineering pulse survey data into one table for reporting purposes.
-  columns:
-  - name: response_id
-    tests:
-    - not_null
-    - unique
-  - name: survey_id
-    tests:
-    - not_null
 - name: sheetload_certificates_unioned
-  description: The collection of all certificates distributed by the Learning and Development team in the People group. 
+  description: The collection of all certificates distributed by the Learning and Development team in the People group.
   columns:
   - name: date_completed
     description: The date the form was submitted.
