@@ -15,7 +15,6 @@ with zuora_mrr_totals AS (
 
     SELECT * FROM {{ref('sfdc_deleted_accounts')}}
 
-
 ), initial_join_to_sfdc AS (
 
     SELECT
@@ -37,7 +36,6 @@ with zuora_mrr_totals AS (
     FROM initial_join_to_sfdc
     LEFT JOIN sfdc_deleted_accounts
     ON initial_join_to_sfdc.zuora_crm_id = sfdc_deleted_accounts.sfdc_account_id
-
 
 ), joined as (
 
