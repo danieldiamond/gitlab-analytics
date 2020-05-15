@@ -11,11 +11,8 @@ WITH source AS (
             DAYNAME(call_date)   AS day_of_the_week,
 	        "Start_Time"         AS call_time,
 	        "Participants"       AS count_of_participants
-
 		FROM source
-
-		
-	        
+      
 )
 
 SELECT *
