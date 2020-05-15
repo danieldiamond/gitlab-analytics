@@ -72,7 +72,7 @@ WITH source AS (
       include_private_contributions::BOOLEAN                           AS include_private_contributions,
       group_view::INTEGER                                              AS group_view,
       managing_group_id::INTEGER                                       AS managing_group_id,
-      bot_type::INTEGER                                                AS bot_type,
+      -- bot_type::INTEGER  // removed from prod
       source.role::INTEGER                                             AS role_id,
       {{user_role_mapping(user_role='source.role')}}::VARCHAR          AS role,
       username::VARCHAR                                                AS user_name,
