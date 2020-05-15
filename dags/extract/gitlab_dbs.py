@@ -256,6 +256,7 @@ for source_name, config in config_dict.items():
                     image=DATA_IMAGE,
                     task_id=f"{config['task_name']}-{table.replace('_','-')}-db-sync",
                     name=f"{config['task_name']}-{table.replace('_','-')}-db-sync",
+                    pool="gitlab_dbs_pool",
                     secrets=standard_secrets + config["secrets"],
                     env_vars={**standard_pod_env_vars, **config["env_vars"]},
                     arguments=[sync_cmd],
