@@ -15,6 +15,8 @@ from airflow_utils import (
 )
 from kube_secrets import (
     GCP_SERVICE_CREDS,
+    QUALTRICS_API_TOKEN,
+    QUALTRICS_POOL_ID,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_LOAD_PASSWORD,
     SNOWFLAKE_LOAD_ROLE,
@@ -47,7 +49,7 @@ default_args = {
 container_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
     cd sheetload/ &&
-    python3 sheetload.py qualtrics
+    python3 sheetload.py qualtrics --load_type normal
 """
 
 # Create the DAG
@@ -63,11 +65,16 @@ qualtrics_sheetload = KubernetesPodOperator(
     name="sheetload",
     secrets=[
         GCP_SERVICE_CREDS,
+        QUALTRICS_API_TOKEN,
+        QUALTRICS_POOL_ID,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_LOAD_ROLE,
         SNOWFLAKE_LOAD_USER,
         SNOWFLAKE_LOAD_WAREHOUSE,
         SNOWFLAKE_LOAD_PASSWORD,
+        SNOWFLAKE_TRANSFORM_ROLE,
+        SNOWFLAKE_TRANSFORM_SCHEMA,
+        SNOWFLAKE_TRANSFORM_WAREHOUSE,
     ],
     env_vars=pod_env_vars,
     arguments=[container_cmd],
