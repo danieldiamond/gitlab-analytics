@@ -7,11 +7,12 @@ from logging import error, info, basicConfig, getLogger
 from os import environ as env
 from typing import Dict, Tuple, List
 from yaml import load, safe_load, YAMLError
-from gspread.exceptions import APIError
-from gspread import Client
+
+
 import boto3
 import gspread
 import pandas as pd
+from extract.qualtrics.src.qualtrics_client import QualtricsClient
 from fire import Fire
 from gitlabdata.orchestration_utils import (
     postgres_engine_factory,
@@ -21,9 +22,10 @@ from gitlabdata.orchestration_utils import (
 from google_sheets_client import GoogleSheetsClient
 from google.cloud import storage
 from google.oauth2 import service_account
+from gspread.exceptions import APIError
+from gspread import Client
 from oauth2client.service_account import ServiceAccountCredentials
 from sqlalchemy.engine.base import Engine
-from ..qualtrics.qualtrics_client import QualtricsClient
 
 
 def table_has_changed(data: pd.DataFrame, engine: Engine, table: str) -> bool:
