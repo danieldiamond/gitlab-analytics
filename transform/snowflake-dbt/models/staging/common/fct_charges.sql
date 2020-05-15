@@ -90,7 +90,7 @@ WITH zuora_rate_plan AS (
       AND zuora_invoice_item.is_deleted= FALSE
       AND zuora_invoice.status='Posted'
 
-), gitlab_nameespace AS (
+), gitlab_namespace AS (
 
     SELECT 
       latest_invoiced_charge_version_in_segment.*,
