@@ -1,6 +1,6 @@
 import os
-from datetime import datetime, timedelta
 import yaml
+from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
@@ -200,6 +200,7 @@ for source_name, config in config_dict.items():
                     image=DATA_IMAGE,
                     task_id=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
                     name=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
+                    pool="gitlab_dbs_pool",
                     secrets=standard_secrets + config["secrets"],
                     env_vars={**standard_pod_env_vars, **config["env_vars"]},
                     arguments=[incremental_cmd],
