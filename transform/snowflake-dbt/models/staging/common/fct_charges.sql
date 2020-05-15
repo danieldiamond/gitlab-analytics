@@ -98,7 +98,7 @@ WITH zuora_rate_plan AS (
       namespaces.namespace_id                     AS gitlab_dotcom_namespace_id
     FROM base_charges
     LEFT JOIN customers_db_charges_xf
-      ON latest_invoiced_charge_version_in_segment.charge_id = customers_db_charges_xf.rate_plan_charge_id
+      ON base_charges.charge_id = customers_db_charges_xf.rate_plan_charge_id
     LEFT JOIN namespaces
       ON customers_db_charges_xf.current_gitlab_namespace_id = namespaces.namespace_id
 
