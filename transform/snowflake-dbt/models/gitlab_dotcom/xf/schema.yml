@@ -104,7 +104,14 @@ models:
       - name: cluster_id
         tests:
           - not_null
-  
+
+  - name: gitlab_dotcom_clusters_xf
+    columns:
+      - name: cluster_id
+        tests:
+          - not_null
+          - unique
+
   - name: gitlab_dotcom_environments_xf
     description: '{{ doc("gitlab_dotcom_environments_xf") }}'
     columns:
