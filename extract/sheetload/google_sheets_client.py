@@ -74,7 +74,7 @@ class GoogleSheetsClient:
             client = self.get_client(None)
         return [file for file in client.openall()]
 
-    def rename_file(self, file, target_name) -> None:
+    def rename_sheet(self, file, sheet_id, target_name) -> None:
         """
         Renames a google sheets file
         """
@@ -82,7 +82,7 @@ class GoogleSheetsClient:
             {
                 "requests": {
                     "updateSheetProperties": {
-                        "properties": {"sheetId": file.id, "title": target_name},
+                        "properties": {"sheetId": sheet_id, "title": target_name},
                         "fields": "title",
                     }
                 }

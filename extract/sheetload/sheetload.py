@@ -3,7 +3,7 @@ import re
 from io import StringIO
 import json
 import time
-from logging import error, info, basicConfig, getLogger
+from logging import error, info, basicConfig, getLogger, warn
 from os import environ as env
 from typing import Dict, Tuple, List
 from yaml import load, safe_load, YAMLError
@@ -370,8 +370,11 @@ def qualtrics_loader(load_type: str):
     for file in qualtrics_files_to_load:
         file_name = file.title
         _, table = file_name.split(".")
+        if file.sheet1.title != table:
+            info(f"{file_name}: First worksheet did not match expected name of {table}")
+            continue
         dataframe = google_sheet_client.load_google_sheet(None, file_name, table)
-        google_sheet_client.rename_file(file, "processing_" + file.title)
+        google_sheet_client.rename_sheet(file, file.sheet1.id, "processing_" + table)
         dw_uploader(engine, table, dataframe, schema)
         query = f"""
           SELECT first_name, last_name, email_address, language
@@ -407,7 +410,7 @@ def qualtrics_loader(load_type: str):
         if is_test:
             info(f"Not renaming file for test.")
         else:
-            google_sheet_client.rename_file(file, "processed_" + file.title)
+            google_sheet_client.rename_sheet(file, file.sheet1.id, "processed_" + table)
 
 
 if __name__ == "__main__":
