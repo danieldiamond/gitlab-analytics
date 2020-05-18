@@ -132,6 +132,9 @@ def sync_incremental_ids(
         logging.info(f"Table {table} doesn't need a full sync.")
         return False
 
+    if not source_engine.has_table(table):
+        logging.error(f"Missing in source : {table}")
+
     load_ids(
         additional_filtering,
         primary_key,
