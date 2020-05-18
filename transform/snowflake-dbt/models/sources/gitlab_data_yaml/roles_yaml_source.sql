@@ -47,7 +47,7 @@ WITH source AS (
       TRY_TO_BOOLEAN(director_values['from_base']::VARCHAR)                               AS director_from_base,
       TRY_TO_NUMERIC(senior_director_values['compensation']::VARCHAR)                     AS senior_director_compensation,
       TRY_TO_NUMERIC(senior_director_values['percentage_variable']::VARCHAR,5,2)          AS senior_director_percentage_variable,
-      TRY_TO_BOOLEAN(senior_director_values['from_base']::VARCHAR),                        AS senior_director_from_base,
+      TRY_TO_BOOLEAN(senior_director_values['from_base']::VARCHAR)                        AS senior_director_from_base,
       rank
     FROM intermediate_role_information
 

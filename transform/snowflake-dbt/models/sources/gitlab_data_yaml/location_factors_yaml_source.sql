@@ -3,6 +3,7 @@ WITH source AS (
     SELECT *,
       RANK() OVER (PARTITION BY DATE_TRUNC('day', uploaded_at) ORDER BY uploaded_at DESC) AS rank
     FROM {{ source('gitlab_data_yaml', 'location_factors') }}
+    ORDER BY uploaded_at DESC
 
 ), intermediate AS (
 
