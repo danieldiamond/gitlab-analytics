@@ -8,6 +8,7 @@ WITH source AS (
 
     SELECT
       d.value                                 AS data_by_row,
+      uploaded_at,
       date_trunc('day', uploaded_at)::date    AS snapshot_date
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext), OUTER => TRUE) d
@@ -23,7 +24,8 @@ WITH source AS (
       data_by_row['ic_ttc']                   AS ic_values,
       data_by_row['manager_ttc']              AS manager_values,
       data_by_row['director_ttc']             AS director_values,
-      data_by_row['senior_director_ttc']      AS senior_director_values
+      data_by_row['senior_director_ttc']      AS senior_director_values,
+      uploaded_at
     FROM intermediate
 
 ), renamed AS (
@@ -45,7 +47,8 @@ WITH source AS (
       TRY_TO_BOOLEAN(director_values['from_base']::VARCHAR)                               AS director_from_base,
       TRY_TO_NUMERIC(senior_director_values['compensation']::VARCHAR)                     AS senior_director_compensation,
       TRY_TO_NUMERIC(senior_director_values['percentage_variable']::VARCHAR,5,2)          AS senior_director_percentage_variable,
-      TRY_TO_BOOLEAN(senior_director_values['from_base']::VARCHAR)                        AS senior_director_from_base
+      TRY_TO_BOOLEAN(senior_director_values['from_base']::VARCHAR)                        AS senior_director_from_base,
+      uploaded_at
     FROM intermediate_role_information
 
 )
