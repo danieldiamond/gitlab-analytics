@@ -8,7 +8,6 @@ from os import environ as env
 from typing import Dict, Tuple, List
 from yaml import load, safe_load, YAMLError
 
-
 import boto3
 import gspread
 import pandas as pd
