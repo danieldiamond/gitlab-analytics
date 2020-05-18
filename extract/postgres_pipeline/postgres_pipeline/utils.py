@@ -278,6 +278,8 @@ def id_query_generator(
         max_source_id_results = query_results_generator(
             max_source_id_query, postgres_engine
         )
+
+        logging.info(max_source_id_results)
         max_source_id = next(max_source_id_results)[primary_key].tolist()[0]
     except sqlalchemy.exc.ProgrammingError as e:
         logging.exception(e)
