@@ -236,6 +236,8 @@ def check_if_schema_changed(
         .columns
     )
 
+    logging.info(source_columns)
+    logging.info(target_columns)
     return set(source_columns) != set(target_columns)
 
 
