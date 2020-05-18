@@ -3,7 +3,7 @@ import re
 from io import StringIO
 import json
 import time
-from logging import error, info, basicConfig, getLogger, warn
+from logging import error, info, basicConfig, getLogger, warning
 from os import environ as env
 from typing import Dict, Tuple, List
 from yaml import load, safe_load, YAMLError
@@ -377,7 +377,7 @@ def qualtrics_loader(load_type: str):
             continue
         dataframe = google_sheet_client.load_google_sheet(None, file_name, table)
         if list(dataframe.columns.values)[0].lower() != "id":
-            warn(f"{file_name}: First column did not match expected name of id")
+            warning(f"{file_name}: First column did not match expected name of id")
             continue
         if not is_test:
             file.sheet1.update_acell("A1", "processing")
