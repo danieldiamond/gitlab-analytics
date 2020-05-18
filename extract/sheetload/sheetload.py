@@ -371,10 +371,16 @@ def qualtrics_loader(load_type: str):
         file_name = file.title
         _, table = file_name.split(".")
         if file.sheet1.title != table:
-            info(f"{file_name}: First worksheet did not match expected name of {table}")
+            error(
+                f"{file_name}: First worksheet did not match expected name of {table}"
+            )
             continue
         dataframe = google_sheet_client.load_google_sheet(None, file_name, table)
-        google_sheet_client.rename_sheet(file, file.sheet1.id, "processing_" + table)
+        if list(dataframe.columns.values)[0].lower() != "id":
+            warn(f"{file_name}: First column did not match expected name of id")
+            continue
+        if not is_test:
+            file.sheet1.update_acell("A1", "processing")
         dw_uploader(engine, table, dataframe, schema)
         query = f"""
           SELECT first_name, last_name, email_address, language
@@ -410,7 +416,7 @@ def qualtrics_loader(load_type: str):
         if is_test:
             info(f"Not renaming file for test.")
         else:
-            google_sheet_client.rename_sheet(file, file.sheet1.id, "processed_" + table)
+            file.sheet1.update_acell("A1", "processed")
 
 
 if __name__ == "__main__":
