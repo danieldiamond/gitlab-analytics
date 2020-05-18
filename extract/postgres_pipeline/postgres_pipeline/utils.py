@@ -215,9 +215,6 @@ def check_if_schema_changed(
 
     if not target_engine.has_table(target_table):
         return True
-
-    if not source_engine.has_table(source_table):  # If table don't exist, Create.
-        logging.error("SOURCE table does not exist")
     # Get the columns from the current query
     query_stem = raw_query.lower().split("where")[0]
     source_query = "{0} where {1} = (select max({1}) from {2}) limit 1"
@@ -236,8 +233,6 @@ def check_if_schema_changed(
         .columns
     )
 
-    logging.info(source_columns)
-    logging.info(target_columns)
     return set(source_columns) != set(target_columns)
 
 
@@ -283,8 +278,6 @@ def id_query_generator(
         max_source_id_results = query_results_generator(
             max_source_id_query, postgres_engine
         )
-
-        logging.info(max_source_id_results)
         max_source_id = next(max_source_id_results)[primary_key].tolist()[0]
     except sqlalchemy.exc.ProgrammingError as e:
         logging.exception(e)
