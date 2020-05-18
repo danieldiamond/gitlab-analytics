@@ -8,7 +8,8 @@ WITH source AS (
 ), intermediate AS (
 
     SELECT d.value                          AS data_by_row,
-    date_trunc('day', uploaded_at)::DATE    AS snapshot_date
+    date_trunc('day', uploaded_at)::DATE    AS snapshot_date,
+    rank
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext), OUTER => TRUE) d
 
@@ -20,7 +21,8 @@ WITH source AS (
       data_by_row['projects']::VARCHAR      AS projects,
       data_by_row['slug']::VARCHAR          AS yaml_slug,
       data_by_row['type']::VARCHAR          AS type,
-      snapshot_date
+      snapshot_date,
+      rank
     FROM intermediate
 
 )
