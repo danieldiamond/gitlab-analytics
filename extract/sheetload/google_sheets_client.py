@@ -78,4 +78,13 @@ class GoogleSheetsClient:
         """
         Renames a google sheets file
         """
-        file.update_title(target_name)
+        file.batch_update(
+            {
+                "requests": {
+                    "updateSheetProperties": {
+                        "properties": {"sheetId": file.id, "title": target_name},
+                        "fields": "title",
+                    }
+                }
+            }
+        )
