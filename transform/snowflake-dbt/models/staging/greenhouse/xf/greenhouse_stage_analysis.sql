@@ -25,6 +25,7 @@
       next_stage,
       is_current_stage,
       application_month,
+      job_id,
       requisition_id,
       current_stage_name,
       application_status,
@@ -48,7 +49,9 @@
       hit_reference_check,
       hit_offer,
       hit_hired,
-      hit_rejected
+      hit_rejected,
+      candidate_dropout,
+      in_current_pipeline
     FROM greenhouse_stage_intermediate
 
  )
