@@ -17,7 +17,6 @@ from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
     query_executor,
 )
-from googleapiclient.discovery import build
 from google.cloud import storage
 from google.oauth2 import service_account
 from gspread.exceptions import APIError
@@ -75,28 +74,8 @@ class GoogleSheetsClient:
             client = self.get_client(None)
         return [file for file in client.openall()]
 
-    def _batch(self, requests, file_id):
-        body = {"requests": requests}
-        service = build("sheets", "v4", credentials=load(env["GCP_SERVICE_CREDS"]))
-        return (
-            service.spreadsheets()
-            .batchUpdate(spreadsheetId=file_id, body=body)
-            .execute()
-        )
-
-    def rename_sheet(self, sheetId, newName):
-        return self._batch(
-            {
-                "updateSheetProperties": {
-                    "properties": {"sheetId": sheetId, "title": newName,},
-                    "fields": "title",
-                }
-            },
-            sheetId,
-        )
-
-    def rename_file(self, source_id, target_name) -> None:
+    def rename_file(self, file, target_name) -> None:
         """
         Renames a google sheets file
         """
-        self.rename_sheet(source_id, target_name)
+        file.update_title(target_name)

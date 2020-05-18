@@ -371,7 +371,7 @@ def qualtrics_loader(load_type: str):
         file_name = file.title
         _, table = file_name.split(".")
         dataframe = google_sheet_client.load_google_sheet(None, file_name, table)
-        google_sheet_client.rename_sheet(file.id, "processing_" + file.title)
+        google_sheet_client.rename_file(file, "processing_" + file.title)
         dw_uploader(engine, table, dataframe, schema)
         query = f"""
           SELECT first_name, last_name, email_address, language
@@ -407,7 +407,7 @@ def qualtrics_loader(load_type: str):
         if is_test:
             info(f"Not renaming file for test.")
         else:
-            google_sheet_client.rename_file(file.id, "processed_" + file.title)
+            google_sheet_client.rename_file(file, "processed_" + file.title)
 
 
 if __name__ == "__main__":
