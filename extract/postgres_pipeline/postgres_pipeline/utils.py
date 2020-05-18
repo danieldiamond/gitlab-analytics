@@ -233,6 +233,8 @@ def check_if_schema_changed(
         .columns
     )
 
+    logging.info(source_columns)
+    logging.info(target_columns)
     return set(source_columns) != set(target_columns)
 
 
@@ -278,6 +280,8 @@ def id_query_generator(
         max_source_id_results = query_results_generator(
             max_source_id_query, postgres_engine
         )
+
+        logging.info(max_source_id_results)
         max_source_id = next(max_source_id_results)[primary_key].tolist()[0]
     except sqlalchemy.exc.ProgrammingError as e:
         logging.exception(e)
