@@ -128,6 +128,9 @@ class QualtricsClient:
             "x-api-token": self.api_token,
         }
         for contact in contacts:
+            contact = {k: v for k, v in contact.items() if v}
+            if "email" not in contact:
+                continue
             response = requests.post(url, headers=headers, data=json.dumps(contact))
             if response.status_code == 429:
                 time.sleep(3)  # Hit API limit.  Wait and try again.
