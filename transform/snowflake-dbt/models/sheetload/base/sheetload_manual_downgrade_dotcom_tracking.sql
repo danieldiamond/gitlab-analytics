@@ -6,8 +6,8 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      namespace_id::INTEGER    AS namespace_id,
-      downgraded_date::VARCHAR AS downgraded_date
+      namespace_id::INTEGER        AS namespace_id,
+      TRY_TO_DATE(downgraded_date) AS downgraded_date
     FROM source  
 
 )
