@@ -46,7 +46,7 @@ WITH source AS (
     SELECT 
       employee_number,
       bamboo_locality,
-      location_factor/100           AS location_factor,
+      location_factor               AS location_factor,
       updated_at,
       LEAD(updated_at) OVER (PARTITION BY employee_number ORDER BY updated_at) AS valid_to
     FROM employee_locality
