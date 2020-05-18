@@ -27,15 +27,19 @@ from sqlalchemy.engine.base import Engine
 
 class GoogleSheetsClient:
     def load_google_sheet(
-        self, key_file, file_name: str, worksheet_name: str, maximum_backoff_sec: int = 300
+        self,
+        key_file,
+        file_name: str,
+        worksheet_name: str,
+        maximum_backoff_sec: int = 300,
     ) -> pd.DataFrame:
         """
         Loads the google sheet into a dataframe with column names loaded from the sheet.
         If API Rate Limit has been reached use [Truncated exponential backoff](https://cloud.google.com/storage/docs/exponential-backoff) strategy to retry to retry
         Returns the dataframe.
         """
-        n=0
-        while maximum_backoff_sec > (2 ** (n+7)):
+        n = 0
+        while maximum_backoff_sec > (2 ** (n + 7)):
             try:
                 sheets_client = self.get_client(key_file)
                 sheet = (
@@ -47,10 +51,8 @@ class GoogleSheetsClient:
                 return sheet_df
             except APIError as gspread_error:
                 if gspread_error.response.status_code == 429:
-                    wait_sec = (2 ** (n+7)) + (random.randint(0, 1000) / 1000)
-                    info(
-                        f"Received API rate limit error. Wait for {wait_sec}"
-                    )
+                    wait_sec = (2 ** (n + 7)) + (random.randint(0, 1000) / 1000)
+                    info(f"Received API rate limit error. Wait for {wait_sec}")
                     time.sleep(wait_sec)
                 else:
                     raise
