@@ -215,6 +215,9 @@ def check_if_schema_changed(
 
     if not target_engine.has_table(target_table):
         return True
+
+    if not source_engine.has_table(source_table):  # If table don't exist, Create.
+        logging.error("SOURCE table does not exist")
     # Get the columns from the current query
     query_stem = raw_query.lower().split("where")[0]
     source_query = "{0} where {1} = (select max({1}) from {2}) limit 1"
