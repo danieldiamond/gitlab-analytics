@@ -50,6 +50,7 @@ WITH source AS (
       percentage_service_desk_issues::FLOAT        AS percentage_service_desk_issues,
       created_at::TIMESTAMP                        AS created_at,
       updated_at::TIMESTAMP                        AS updated_at
+    FROM source  
 
 )
 
