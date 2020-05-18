@@ -1,5 +1,6 @@
 import datetime
 import io
+import json
 import logging
 import os
 import requests
@@ -136,8 +137,10 @@ class QualtricsClient:
             "x-api-token": self.api_token,
         }
         request_body = {"name": mailing_list_name}
-        response = requests.post(url, headers=headers, data=request_body)
+        response = requests.post(url, headers=headers, data=json.dumps(request_body))
         if response.status_code == 429:
             time.sleep(3)  # Hit API limit.  Wait and try again.
-            response = requests.post(url, headers=headers, data=request_body)
+            response = requests.post(
+                url, headers=headers, data=json.dumps(request_body)
+            )
         return response.json()["result"]["id"]
