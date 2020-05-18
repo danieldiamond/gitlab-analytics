@@ -21,8 +21,8 @@ SELECT
   locality.employee_id,
   locality.updated_at,
   locality.locality                                              AS bamboo_locality,
-  COALESCE(location_factor_yaml.location_factor, 
-           location_factor_yaml_everywhere_else.location_factor) AS location_factor
+  COALESCE(location_factor_yaml.location_factor/100, 
+           location_factor_yaml_everywhere_else.location_factor/100) AS location_factor
 FROM locality
 LEFT JOIN location_factor_yaml
   ON LOWER(locality.locality) = LOWER(CONCAT(location_factor_yaml.area,', ', location_factor_yaml.country))
