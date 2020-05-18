@@ -1,5 +1,6 @@
 {% set repeated_column_names = 
-        "requisition_id,
+        "job_id,
+        requisition_id,
         current_stage_name,
         application_status,
         job_name,
@@ -182,7 +183,17 @@ WITH stages AS (
         hit_offer,
         hit_hired,
         hit_rejected,
-        hires_data.hire_type
+        IFF(hit_team_interview = 0 
+              AND hit_rejected =1 
+              AND rejection_reason_type = 'They rejected us',1,0)                   AS candidate_dropout,
+        CASE WHEN is_current_stage = True
+                AND application_stage NOT IN ('Hired','Rejected')
+                AND hit_rejected = 0
+                AND hit_hired = 0
+                AND current_job_req_status = 'open'
+                AND application_status = 'active' 
+              THEN TRUE 
+              ELSE FALSE END                                                        AS in_current_pipeline
     FROM stage_order_revamped
     LEFT JOIN stages_hit 
         ON stage_order_revamped.application_id = stages_hit.application_id

@@ -15,6 +15,10 @@ sheets:
     owner: '@mvilain'
     tabs:
       - clari_export_forecast_net_iacv
+  - name: company_call_attendance
+    owner: '@pluthra'
+    tabs:
+      - company_call_attendance
   - name: days_to_close
     owner: '@iweeks'
     tabs:
@@ -56,6 +60,10 @@ sheets:
     owner: '@pluthra'
     tabs:
       - location_factor_targets
+  - name: manual_downgrade_dotcom_tracking
+    owner: '@derekatwood'
+    tabs:
+      - manual_downgrade_dotcom_tracking
   - name: marketing_core_users_from_docs_gitlab_com
     owner: '@rkohnke'
     tabs:
