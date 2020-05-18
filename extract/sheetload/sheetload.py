@@ -406,7 +406,7 @@ def qualtrics_loader(load_type: str):
         if is_test:
             info(f"Not renaming file for test.")
         else:
-            google_sheet_client.rename_file(file.id(), "processed_" + file.title)
+            google_sheet_client.rename_file(file.id, "processed_" + file.title)
 
 
 if __name__ == "__main__":
