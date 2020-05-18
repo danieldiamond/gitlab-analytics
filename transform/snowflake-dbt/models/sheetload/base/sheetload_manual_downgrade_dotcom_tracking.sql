@@ -6,7 +6,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      namespace_id::INTEGER AS namespace_id,
+      namespace_id::INTEGER    AS namespace_id,
       downgraded_date::VARCHAR AS downgraded_date
     FROM source  
 
