@@ -47,7 +47,7 @@ WITH source AS (
       percentage_milestones::FLOAT                 AS percentage_milestones,
       percentage_notes::FLOAT                      AS percentage_notes,
       percentage_projects_prometheus_active::FLOAT AS percentage_projects_prometheus_active,
-      percentage_service_desk_issues::FLOAT        AS percentage_service_desk_issues
+      percentage_service_desk_issues::FLOAT        AS percentage_service_desk_issues,
       created_at::TIMESTAMP                        AS created_at,
       updated_at::TIMESTAMP                        AS updated_at
 
