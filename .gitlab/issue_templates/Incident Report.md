@@ -6,7 +6,6 @@
 <!-- It might be easiest to write this summary last -->
 
 --- 
----
 
 ##  Detection
 
@@ -32,15 +31,10 @@ Who was impacted and how were they impacted?
 
 <!-- Has the issue been resolved? How? Please include any relevant issue and/or MR links in the description -->
 
-
----
----
-
-# Timeline
+## Timeline
 
 <!-- Please list incident activities and actions in the following format | XX:XX UTC - INCIDENT ACTIVITY; ACTION TAKEN -->
 
 ---
----
 
-# Lessons Learned
+## Lessons Learned
