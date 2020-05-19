@@ -5,6 +5,30 @@ WITH customers AS (
 
 )
 
+, trials AS  (
+
+  SELECT *
+  FROM {{ ref('customers_db_trials') }}
+
+)
+
+, memberships AS (
+
+  SELECT *
+  FROM  {{ ref('gitlab_dotcom_memberships') }}
+
+)
+
+, users AS (
+
+  SELECT 
+    {{ dbt_utils.star(from=ref('gitlab_dotcom_users'), except=["created_at", "first_name", "last_name", "notification_email", "public_email", "updated_at", "users_name"]) }},
+    created_at AS user_created_at,
+    updated_at AS user_updated_at
+  FROM {{ ref('gitlab_dotcom_users') }}
+
+)
+{# 
 , groups AS  (
 
   SELECT *
@@ -18,40 +42,23 @@ WITH customers AS (
   FROM {{ ref('gitlab_dotcom_members') }}
   WHERE is_currently_valid = TRUE
 
-)
+) #}
 
-, namespaces AS  (
+{# , namespaces AS  (
 
   SELECT *
   FROM {{ ref('gitlab_dotcom_namespaces_xf') }}
 
-)
+) #}
 
-, projects AS  (
+{# , projects AS  (
 
   SELECT *
   FROM {{ ref('gitlab_dotcom_projects_xf') }}
 
-)
+) #}
 
-, trials AS  (
-
-  SELECT *
-  FROM {{ ref('customers_db_trials') }}
-
-)
-
-, users AS (
-
-  SELECT 
-    {{ dbt_utils.star(from=ref('gitlab_dotcom_users'), except=["created_at", "first_name", "last_name", "notification_email", "public_email", "updated_at", "users_name"]) }},
-    created_at AS user_created_at,
-    updated_at AS user_updated_at
-  FROM {{ ref('gitlab_dotcom_users') }}
-
-)
-
-, user_namespace_subscriptions AS (
+{# , user_namespace_subscriptions AS (
 
   SELECT
     owner_id                AS user_id,
@@ -62,9 +69,9 @@ WITH customers AS (
   FROM namespaces
   WHERE namespace_type = 'Individual'
     AND plan_is_paid
-)
+) #}
 
-, group_members AS (
+{# , group_members AS (
   -- always inherits
 
   SELECT
@@ -108,9 +115,9 @@ WITH customers AS (
     WHERE members.member_type = 'ProjectMember'
       AND (members.expires_at >= CURRENT_DATE OR members.expires_at IS NULL)
 
-)
+) #}
 
-, user_paid_subscription_plan_lk AS (
+{# , user_paid_subscription_plan_lk AS (
 
   (
 
@@ -158,7 +165,7 @@ WITH customers AS (
 
   )
 
-)
+) #}
 
 , highest_paid_subscription_plan AS (
 

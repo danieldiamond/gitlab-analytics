@@ -32,10 +32,10 @@ project_group_links AS (
 
 ),
 
-namespace_lineage AS (
+namespaces AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_namespace_lineage')}}
+    FROM {{ref('gitlab_dotcom_namespaces_xf')}}
 
 ),
 
@@ -141,11 +141,12 @@ unioned AS (
 final AS ( -- Get ultimate parent of the namespace.
 
     SELECT
-      namespace_lineage.ultimate_parent_id,
+      namespaces.ultimate_parent_id,
+      namespaces.plan_id AS ultimate_parent_plan_id,
       unioned.*
     FROM unioned
-      INNER JOIN namespace_lineage
-        ON unioned.namespace_id = namespace_lineage.namespace_id
+      INNER JOIN namespaces
+        ON unioned.namespace_id = namespaces.namespace_id
 
 )
 
