@@ -35,6 +35,7 @@ WITH source AS (
     FROM {{ source('sheetload', 'job_roles_prior_to_2020_02') }}
 
 ), final AS (
+
     SELECT 
       job_id,
       renamed.employee_id,
@@ -58,6 +59,7 @@ WITH source AS (
     FROM renamed
     
 )
+
 SELECT 
   final.*,
   IFF(final.effective_date< '2020-02-28', sheetload_job_roles.job_role, job_role.job_role) AS job_role
