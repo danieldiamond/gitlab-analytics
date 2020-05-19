@@ -884,6 +884,16 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'identities'
     export_table_primary_key: id
+  columns:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT table_name
+      , column_name
+      FROM identities
+    export_schema: 'information_schema'
+    export_table: 'columns'
+    export_table_primary_key: CONCAT(table_name, '_', column_name)
+    advanced_metadata: true
   issue_assignees:
     import_db: GITLAB_DB
     import_query: >
