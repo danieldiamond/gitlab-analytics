@@ -81,7 +81,7 @@ def dw_uploader(
 def sheet_loader(
     sheet_file: str,
     schema: str = "sheetload",
-    database="RAW",
+    database: str = "RAW",
     gapi_keyfile: str = None,
     conn_dict: Dict[str, str] = None,
 ) -> None:
