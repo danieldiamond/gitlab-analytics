@@ -33,7 +33,7 @@ The internal namespaces are documented below.
 {% enddocs %}
 
 
-{% docs resource_event_action_type %}
+{% docs map_state_id %}
 This macro maps state_ids to english state names (opened, closed, etc).
 {% enddocs %}
 
