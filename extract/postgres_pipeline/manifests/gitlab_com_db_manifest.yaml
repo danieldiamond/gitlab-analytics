@@ -5,7 +5,7 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
-  information_schema.columns:
+  columns:
     import_db: GITLAB_DB
     import_query: >
       SELECT table_name
@@ -13,7 +13,7 @@ tables:
       , table_schema
       FROM information_schema.columns
     export_schema: 'gitlab_com'
-    export_table: 'columns'
+    export_table: 'columnst'
     export_table_primary_key: CONCAT(table_name, '_', column_name)
   # resource_label_events:
   #   import_db: GITLAB_DB
