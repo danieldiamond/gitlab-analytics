@@ -218,12 +218,6 @@ models:
     date:
       materialized: table
 
-    engineering:
-      materialized: table
-    
-    gitlab_data_yaml:
-      materialized: table
-
     gitlab_dotcom:
       tags: ["product"]
       materialized: table
