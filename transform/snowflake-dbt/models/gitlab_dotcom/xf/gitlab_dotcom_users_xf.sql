@@ -1,45 +1,55 @@
 WITH customers AS (
 
-  SELECT *
-  FROM {{ ref('customers_db_customers') }}
+    SELECT *
+    FROM {{ ref('customers_db_customers') }}
 
 )
 
 , memberships AS (
 
-  SELECT *
-  FROM  {{ ref('gitlab_dotcom_memberships') }}
-  WHERE ultimate_parent_plan_id != '34'
+    SELECT
+      *,
+      DECODE(membership_source_type,
+          'individual_namespace', 0,
+          'group_membership', 1,
+          'project_membership', 2,
+          'group_group_link', 3,
+          'project_group_link', 4
+      ) AS membership_source_type_order,
+      IFF(namespace_id = ultimate_parent_id, TRUE, FALSE) AS is_ultimate_parent 
+    FROM {{ ref('gitlab_dotcom_memberships') }}
+    WHERE ultimate_parent_plan_id != '34'
 
 )
 
 , plans AS (
 
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_plans') }}
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_plans') }}
 
 )
 
 , trials AS  (
 
-  SELECT *
-  FROM {{ ref('customers_db_trials') }}
+    SELECT *
+    FROM {{ ref('customers_db_trials') }}
 
 )
 
 , users AS (
 
-  SELECT
-    {{ dbt_utils.star(from=ref('gitlab_dotcom_users'), except=["created_at", "first_name", "last_name", "notification_email", "public_email", "updated_at", "users_name"]) }},
-    created_at AS user_created_at,
-    updated_at AS user_updated_at
-  FROM {{ ref('gitlab_dotcom_users') }}
+    SELECT
+      {{ dbt_utils.star(from=ref('gitlab_dotcom_users'), except=["created_at", "first_name", "last_name", "notification_email", "public_email", "updated_at", "users_name"]) }},
+      created_at AS user_created_at,
+      updated_at AS user_updated_at
+    FROM {{ ref('gitlab_dotcom_users') }}
 
 )
 
 , highest_paid_subscription_plan AS (
 
-   SELECT DISTINCT 
+SELECT DISTINCT 
+
     user_id,
     
     MAX(ultimate_parent_plan_id) OVER (
@@ -54,38 +64,41 @@ WITH customers AS (
       PARTITION BY user_id
       ORDER BY
         ultimate_parent_plan_id DESC,
-        membership_source_type,
-        namespace_id
+        membership_source_type_order,
+        is_ultimate_parent DESC,
+        membership_source_type
     ) AS highest_paid_subscription_namespace_id,
 
     FIRST_VALUE(ultimate_parent_id) OVER (
       PARTITION BY user_id
       ORDER BY
         ultimate_parent_plan_id DESC,
-        membership_source_type,
-        namespace_id
+        membership_source_type_order,
+        is_ultimate_parent DESC,
+        membership_source_type
     ) AS highest_paid_subscription_ultimate_parent_id,
     
     FIRST_VALUE(membership_source_type) OVER (
       PARTITION BY user_id
       ORDER BY
         ultimate_parent_plan_id DESC,
-        membership_source_type,
-        namespace_id
+        membership_source_type_order,
+        is_ultimate_parent DESC,
+        membership_source_type
     )  AS highest_paid_subscription_inheritance_source_type,
     
     FIRST_VALUE(membership_source_id) OVER (
       PARTITION BY user_id
       ORDER BY
         ultimate_parent_plan_id DESC,
-        membership_source_type,
-        namespace_id
+        membership_source_type_order,
+        is_ultimate_parent DESC,
+        membership_source_type
     )  AS highest_paid_subscription_inheritance_source_id
 
   FROM memberships
     LEFT JOIN plans
       ON memberships.ultimate_parent_plan_id = plans.plan_id
-
 )
 
 , customers_with_trial AS (

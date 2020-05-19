@@ -153,7 +153,7 @@ unioned AS (
       namespace_id,
       user_id,
       access_level,
-      'individual_namespaces'  AS membership_source_type,
+      'individual_namespace'   AS membership_source_type,
       namespace_id             AS membership_source_id
     FROM individual_namespaces
 
