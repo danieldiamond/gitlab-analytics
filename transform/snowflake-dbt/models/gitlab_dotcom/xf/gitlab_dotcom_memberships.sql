@@ -96,6 +96,17 @@ project_group_links_unnested AS ( -- Where groups are invited to projects.
 
 ),
 
+individual_namespaces AS (
+
+  SELECT
+    namespace_id,
+    50        AS access_level, --implied
+    owner_id  AS user_id
+  FROM namespaces
+  WHERE namespace_type = 'Individual'
+
+),
+
 unioned AS (
 
     SELECT
@@ -135,6 +146,16 @@ unioned AS (
       'project_group_link'  AS membership_source_type,
       project_group_link_id AS membership_source_id
     FROM project_group_links_unnested
+
+    UNION
+
+    SELECT
+      namespace_id,
+      user_id,
+      access_level,
+      'individual_namespaces'  AS membership_source_type,
+      namespace_id             AS membership_source_id
+    FROM individual_namespaces
 
 ),
 
