@@ -31,6 +31,7 @@ WITH RECURSIVE employee_directory AS (
           effective_date,
           department,
           division,
+          cost_center,
           reports_to,
           job_role,
           effective_end_date
@@ -53,6 +54,7 @@ WITH RECURSIVE employee_directory AS (
       MIN(valid_from_date) AS employment_status_first_value
      FROM {{ ref('bamboohr_employment_status_xf') }}
      GROUP BY 1 
+
 
 ), enriched AS (
 
