@@ -15,6 +15,10 @@ sheets:
     owner: '@mvilain'
     tabs:
       - clari_export_forecast_net_iacv
+  - name: company_call_attendance
+    owner: '@pluthra'
+    tabs:
+      - company_call_attendance
   - name: days_to_close
     owner: '@iweeks'
     tabs:

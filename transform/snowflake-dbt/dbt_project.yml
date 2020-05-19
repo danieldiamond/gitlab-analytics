@@ -114,6 +114,9 @@ models:
       dbt:
         materialized: table
         schema: dbt
+
+      gitlab_data_yaml:
+        schema: gitlab_data_yaml
       
       gitter:
         enabled: false
@@ -155,12 +158,17 @@ models:
       schema: staging
       materialized: table
 
+      gitlab_data_yaml:
+        materialized: table
+        schema: analytics
+
       gitter:
         enabled: false
         materialized: table
 
       google_analytics_360:
-        schema: analytics
+        xf:
+          schema: analytics
 
       greenhouse:
         xf:
@@ -205,9 +213,6 @@ models:
       materialized: table
 
     engineering:
-      materialized: table
-
-    gitlab_data_yaml:
       materialized: table
 
     gitlab_dotcom:

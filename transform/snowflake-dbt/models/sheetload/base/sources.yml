@@ -26,6 +26,7 @@ sources:
         freshness:
           warn_after: {count: 10, period: day}
       - name: communication_certificate
+      - name: company_call_attendance
       - name: compensation_certificate
       - name: days_to_close
       - name: employee_location_factor
