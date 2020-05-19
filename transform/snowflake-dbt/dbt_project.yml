@@ -163,7 +163,7 @@ models:
 
       engineering:
         materialized: table
-        
+
       gitlab_data_yaml:
         materialized: table
         schema: analytics
@@ -218,11 +218,10 @@ models:
     date:
       materialized: table
 
-<<<<<<< HEAD
-    gitlab_data_yaml:
-=======
     engineering:
->>>>>>> origin/master
+      materialized: table
+    
+    gitlab_data_yaml:
       materialized: table
 
     gitlab_dotcom:
