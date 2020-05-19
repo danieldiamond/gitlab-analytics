@@ -29,13 +29,31 @@ models:
   - name: event_category
     tests:
     - not_null
+- name: sheetload_company_call_attendance
+  description: This spreadsheet contains data from company call attendance (also called the "Take a Break Call"). The People Experience team pulls their data and updates their spreadsheet, which is imported into the sheetload sheet.
+  columns:
+  - name: call_date
+    tests:
+    - not_null
+  - name: meeting_topic
+    tests:
+    - not_null
+  - name: day_of_the_week
+    tests:
+    - not_null
+  - name: call_time
+    tests:
+    - not_null
+  - name: count_of_participants
+    tests:
+    - not_null
 - name: sheetload_days_to_close
   description: Days for accounting to close the books in Netsuite.
   columns:
     - name: close_month
       tests:
       - not_null
-      - unique    
+      - unique
 - name: sheetload_employee_location_factor
   description: This is the source of truth connecting an employee number from bamboo to the location factor used for People purposes. The "Comp Data Analysis and Modeling" spreadsheet maintained by the Compensation & Benefits Manager is the SSOT for location factor.
   columns:
@@ -97,30 +115,30 @@ models:
     - name: job_role
 - name: sheetload_kpi_status
   description: Record of all the kpi status and commit history
-  columns: 
+  columns:
     - name: kpi_grouping
-      tests: 
+      tests:
       - not_null
     - name: kpi_sub_grouping
     - name: kpi_name
-      tests: 
+      tests:
       - not_null
     - name: start_date
-      tests: 
+      tests:
       - not_null
     - name: completion_date
     - name: status
     - name: comment
     - name: in_handbook
-      tests: 
+      tests:
       - not_null
     - name: sisense_link
     - name: gitlab_issue
-    - name: commit_start    
+    - name: commit_start
     - name: commit_handbook_v1
     - name: is_deleted
-      tests: 
-      - not_null    
+      tests:
+      - not_null
 - name: sheetload_linkedin_recruiter
   description: This is the source of linkedin recruiter inmail data for each month by sourcer .
   columns:
@@ -218,7 +236,7 @@ models:
     - name: total_workforce
     - name: nbr_in_scalable_solution
     - name: nbr_in_process
-    - name: nbr_to_be_converted  
+    - name: nbr_to_be_converted
 - name: sheetload_social_marketing_metrics
   description: This is the model that captures data from social marketing metrics
   columns:
@@ -245,7 +263,7 @@ models:
       - not_null
   tests:
     - unique:
-        column_name: "CONCAT(month_date, channel, brand, metric, is_organic)"        
+        column_name: "CONCAT(month_date, channel, brand, metric, is_organic)"
 - name: sheetload_yc_companies
   description: This is a list of YC Companies and their cohort provided by and maintained by marketing.
   columns:
