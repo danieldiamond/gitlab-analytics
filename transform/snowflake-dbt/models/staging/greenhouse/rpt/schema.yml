@@ -96,3 +96,20 @@ models:
 
     - name: rpt_greenhouse_location_factors
       description: This model provides the average location factor for screened applicants in our recruiting process. The breakdown provided is by division, and department and month.
+
+  - name: greenhouse_sourcer_scorecard
+    description: This data model provides recruiting metrics by sourcer and month, as well as what the percentile baselines are for each recruiting metric based on performance for the 3 previous months and removing the bottom 10% of outliers.
+    columns:
+    - name: month_date
+    - name: sourcer_name
+    - name: recruiting_metric
+      description: This identifies the recruiting metrics used for the scorecard.
+    - name: recruiting_metric_value
+      description: This is the associated value for the recruiting metric, month and sourcer.
+    - name: percentile_25th
+    - name: percentile_50th
+    - name: percentile_75th
+    - name: percentile_80th
+    - name: ninetieth_percentile
+    - name: percentile_max
+    

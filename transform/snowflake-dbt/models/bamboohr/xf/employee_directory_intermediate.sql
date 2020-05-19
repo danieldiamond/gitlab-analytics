@@ -15,8 +15,7 @@ WITH RECURSIVE employee_directory AS (
       hire_date,
       rehire_date,
       termination_date,
-      hire_location_factor,
-      cost_center
+      hire_location_factor
     FROM {{ ref('employee_directory') }}
 
 ), date_details AS (
@@ -31,6 +30,7 @@ WITH RECURSIVE employee_directory AS (
           effective_date,
           department,
           division,
+          cost_center,
           reports_to,
           job_role,
           effective_end_date
@@ -54,6 +54,11 @@ WITH RECURSIVE employee_directory AS (
      FROM {{ ref('bamboohr_employment_status_xf') }}
      GROUP BY 1 
 
+), cost_center_prior_to_bamboo AS (
+
+    SELECT *
+    FROM {{ ref('cost_center_division_department_mapping') }}
+
 ), enriched AS (
 
     SELECT
@@ -63,10 +68,12 @@ WITH RECURSIVE employee_directory AS (
       department_info.job_title,
       department_info.department,
       department_info.division,
+      COALESCE(department_info.cost_center, 
+               cost_center_prior_to_bamboo.cost_center)             AS cost_center,
       department_info.reports_to,
       department_info.job_role,
       location_factor.location_factor, 
-      IFF(hire_date = date_actual or 
+      IFF(hire_date = date_actual OR 
           rehire_date = date_actual, True, False)                   AS is_hire_date,
       IFF(employment_status = 'Terminated', True, False)            AS is_termination_date,
       IFF(rehire_date = date_actual, True, False)                   AS is_rehire_date,
@@ -74,22 +81,28 @@ WITH RECURSIVE employee_directory AS (
             'Active', employment_status)                            AS employment_status
     FROM date_details
     LEFT JOIN employee_directory
-      ON hire_date::date <= date_actual
-      AND COALESCE(termination_date::date, {{max_date_in_bamboo_analyses()}}) >= date_actual
+      ON hire_date::DATE <= date_actual
+      AND COALESCE(termination_date::DATE, {{max_date_in_bamboo_analyses()}}) >= date_actual
     LEFT JOIN department_info
       ON employee_directory.employee_id = department_info.employee_id
-      AND date_actual between effective_date 
-      AND COALESCE(effective_end_date::date, {{max_date_in_bamboo_analyses()}})
+      AND date_actual BETWEEN effective_date 
+      AND COALESCE(effective_end_date::DATE, {{max_date_in_bamboo_analyses()}})
     LEFT JOIN location_factor
-      ON employee_directory.employee_number::varchar = location_factor.bamboo_employee_number::varchar
+      ON employee_directory.employee_number::VARCHAR = location_factor.bamboo_employee_number::VARCHAR
       AND valid_from <= date_actual
-      AND COALESCE(valid_to::date, {{max_date_in_bamboo_analyses()}}) > date_actual
+      AND COALESCE(valid_to::DATE, {{max_date_in_bamboo_analyses()}}) >= date_actual
     LEFT JOIN employment_status
       ON employee_directory.employee_id = employment_status.employee_id 
       AND (date_details.date_actual = valid_from_date AND employment_status = 'Terminated' 
         OR date_details.date_actual BETWEEN employment_status.valid_from_date AND employment_status.valid_to_date )  
     LEFT JOIN employment_status_records_check 
       ON employee_directory.employee_id = employment_status_records_check.employee_id    
+    LEFT JOIN cost_center_prior_to_bamboo
+      ON department_info.department = cost_center_prior_to_bamboo.department
+      AND department_info.division = cost_center_prior_to_bamboo.division
+      AND date_details.date_actual BETWEEN cost_center_prior_to_bamboo.effective_start_date 
+                                       AND COALESCE(cost_center_prior_to_bamboo.effective_end_date, '2020-05-07')
+    ---Starting 2020.05.08 we start capturing cost_center in bamboohr
     WHERE employee_directory.employee_id IS NOT NULL
 
 ), base_layers as (
@@ -102,14 +115,14 @@ WITH RECURSIVE employee_directory AS (
     FROM enriched
     WHERE NULLIF(reports_to, '') IS NOT NULL
 
-), layers (date_actual, employee, manager, lineage, layers_count) as (
+), layers (date_actual, employee, manager, lineage, layers_count) AS (
 
     SELECT
       date_actual,
-      full_name as employee,
-      reports_to as manager,
-      lineage as lineage,
-      1 as layers_count
+      full_name         AS employee,
+      reports_to        AS manager,
+      lineage           AS lineage,
+      1                 AS layers_count
     FROM base_layers
     WHERE manager IS NOT NULL
 

@@ -18,6 +18,7 @@ from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
     query_executor,
 )
+from google_sheets_client import GoogleSheetsClient
 from google.cloud import storage
 from google.oauth2 import service_account
 from oauth2client.service_account import ServiceAccountCredentials
@@ -124,57 +125,23 @@ def sheet_loader(
     info(engine)
 
     # Get the credentials for sheets and the database engine
-    scope = [
-        "https://spreadsheets.google.com/feeds",
-        "https://www.googleapis.com/auth/drive",
-    ]
-    keyfile = load(gapi_keyfile or env["GCP_SERVICE_CREDS"])
-    google_creds = gspread.authorize(
-        ServiceAccountCredentials.from_json_keyfile_dict(keyfile, scope)
-    )
 
-    process_sheets(google_creds, sheets, schema, engine)
+    google_sheet_client = GoogleSheetsClient()
+
+    for sheet_info in sheets:
+        # Sheet here refers to the name of the sheet file, table is the actual sheet name
+        info(f"Processing sheet: {sheet_info}")
+        sheet_file, table = sheet_info.split(".")
+
+        dataframe = google_sheet_client.load_google_sheet(
+            gapi_keyfile, schema + "." + sheet_file, table
+        )
+        dw_uploader(engine, table, dataframe, schema)
+        info(f"Finished processing for table: {sheet_info}")
 
     query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)
     info("Permissions granted.")
-
-
-def process_sheets(
-    google_creds: Client,
-    sheets_list: List[str],
-    schema: str,
-    engine: Engine,
-    gsheets_retries: int = 10,
-) -> None:
-
-    for sheet_info in sheets_list:
-        # Limits number of times we will retry after receiving an error back
-        for attempt in range(gsheets_retries):
-            try:
-                info(f"Processing sheet: {sheet_info}")
-                sheet_file, table = sheet_info.split(".")
-                sheet = (
-                    google_creds.open(schema + "." + sheet_file)
-                    .worksheet(table)
-                    .get_all_values()
-                )
-                sheet_df = pd.DataFrame(sheet[1:], columns=sheet[0])
-                dw_uploader(engine, table, sheet_df, schema)
-                info(f"Finished processing for table: {sheet_info}")
-            except APIError as gspread_error:
-                if gspread_error.response.status_code == 429:
-                    info(
-                        "Received API rate limit error, waiting 100 seconds before carrying on"
-                    )
-                    time.sleep(100)
-                    continue
-                else:
-                    raise gspread_error
-            else:
-                break
-        else:
-            error(f"Max retries exceeded, giving up on {sheet_info}")
 
 
 def gcs_loader(
@@ -378,10 +345,45 @@ def csv_loader(
     dw_uploader(engine, table=table, data=csv_data, schema=schema, truncate=True)
 
 
+def qualtrics_loader(load_type: str):
+    is_test = load_type == "test"
+    google_sheet_client = GoogleSheetsClient()
+    prefix = "qualtrics_mailing_list."
+    if is_test:
+        prefix = "test_" + prefix
+    qualtrics_files_to_load = [
+        file
+        for file in google_sheet_client.get_visible_files()
+        if file.title.lower().startswith(prefix)
+    ]
+
+    info(f"Found {len(qualtrics_files_to_load)} files to process.")
+
+    schema = "qualtrics_mailing_list"
+
+    engine = snowflake_engine_factory(env, "LOADER", schema)
+
+    for file in qualtrics_files_to_load:
+        file_name = file.title
+        _, table = file_name.split(".")
+        dataframe = google_sheet_client.load_google_sheet(None, file_name, table)
+        dw_uploader(engine, table, dataframe, schema)
+        if is_test:
+            info(f"Not renaming file for test.")
+        else:
+            google_sheet_client.rename_file(file.id(), "processed_" + file.title)
+
+
 if __name__ == "__main__":
     basicConfig(stream=sys.stdout, level=20)
     getLogger("snowflake.connector.cursor").disabled = True
     Fire(
-        {"sheets": sheet_loader, "gcs": gcs_loader, "s3": s3_loader, "csv": csv_loader}
+        {
+            "sheets": sheet_loader,
+            "gcs": gcs_loader,
+            "s3": s3_loader,
+            "csv": csv_loader,
+            "qualtrics": qualtrics_loader,
+        }
     )
     info("Complete.")

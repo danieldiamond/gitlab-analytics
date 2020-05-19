@@ -38,6 +38,11 @@ This macro maps action type ID to the action type for the `resource_label_events
 {% enddocs %}
 
 
+{% docs transform_clusters_applications %}
+This macro takes in a ref (base model) and performs some joins to make an xf model out of the base model. This is used for all the `clusters_applications_*` tables as they all have the same structure and columns.
+{% enddocs %}
+
+
 {% docs user_role_mapping %}
 This macro maps "role" values (integers) from the user table into their respective string values.
 

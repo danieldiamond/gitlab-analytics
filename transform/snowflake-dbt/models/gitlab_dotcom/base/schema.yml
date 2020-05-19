@@ -309,6 +309,36 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_clusters_applications_cert_managers
+    columns:
+      - name: clusters_applications_cert_managers_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_crossplane
+    columns:
+      - name: clusters_applications_crossplane_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_elastic_stacks
+    columns:
+      - name: clusters_applications_elastic_stacks_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_clusters_applications_helm
     description: Base model for the Gitlab.com `clusters_applications_helm` table.
     columns:
@@ -319,6 +349,63 @@ models:
       - name: cluster_id
         tests:
           - not_null
+
+  - name: gitlab_dotcom_clusters_applications_ingress
+    columns:
+      - name: clusters_applications_ingress_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_jupyter
+    columns:
+      - name: clusters_applications_jupyter_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_knative
+    columns:
+      - name: clusters_applications_knative_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_prometheus
+    columns:
+      - name: clusters_applications_prometheus_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters_applications_runners
+    columns:
+      - name: clusters_applications_runners_id
+        tests:
+          - not_null
+          - unique
+      - name: cluster_id
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_clusters
+    columns:
+      - name: cluster_id
+        tests:
+          - not_null
+          - unique
 
   - name: gitlab_dotcom_cluster_groups
     description: Base model for Gitlab.com cluster_groups
@@ -390,7 +477,7 @@ models:
       - name: version_id
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_design_management_designs
     description: Base model for GitLab.com designs.
     columns:
@@ -420,7 +507,7 @@ models:
           - relationships:
               to: ref('gitlab_dotcom_namespaces')
               field: namespace_id
-              severity: warn 
+              severity: warn
   - name: gitlab_dotcom_environments
     description: Base model for GitLab.com environments.
     columns:
@@ -520,7 +607,7 @@ models:
         tests:
           - dbt_utils.expression_is_true:
               expression: "valid_from <= valid_to"
-  
+
   - name: gitlab_dotcom_group_group_links
     description: This table represents groups being shared with groups. {{ doc("scd_type_two_documentation") }}'
     tests:
@@ -641,7 +728,7 @@ models:
           - not_null
       - name: state
         description: >-
-          The source table has both "state" and "state_id" columns. We use state_id to 
+          The source table has both "state" and "state_id" columns. We use state_id to
           infer the "state" string as we found this gives results that match the API and UI.
         tests:
           - not_null
@@ -835,7 +922,7 @@ models:
           a boolean
       - name: merge_request_state
         description: >-
-          The source table has both "state" and "state_id" columns. We use state_id to 
+          The source table has both "state" and "state_id" columns. We use state_id to
           infer the "state" string as we found this gives results that match the API and UI.
         tests:
           - not_null
@@ -919,7 +1006,7 @@ models:
           meaning a namespace's ultimate_parent_plan_id will supersede its own plan_id whenever its plan
           is higher (ex: a Silver ultimate parent plan will override a namespace's Bronze plan.)
         tests:
-          - not_null          
+          - not_null
 
   - name: gitlab_dotcom_namespace_statistics
     description: Base model for Gitlab.com namespace statistics
@@ -1060,7 +1147,7 @@ models:
         tests:
           - not_null
           - unique
-          
+
   - name: gitlab_dotcom_project_authorizations
     description: >-
       Base model for Gitlab.com authorizations, duplicate rows have not been
@@ -1266,7 +1353,7 @@ models:
       - name: programming_language_id
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_resource_label_events
     description: '{{ doc("gitlab_dotcom_resource_label_events") }}'
     columns:
@@ -1280,7 +1367,7 @@ models:
       - name: created_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_saml_providers
     description: Base model for Gitlab.com gitlab_dotcom_saml_providers
     columns:
@@ -1302,7 +1389,7 @@ models:
       - name: updated_at
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_snippets
     description: Base model for Gitlab.com snippets
     columns:
@@ -1372,7 +1459,7 @@ models:
         tests:
           - not_null
           - unique
-          
+
   - name: gitlab_dotcom_users
     description: >-
       Base model for Gitlab.com users, the following fields are hidden for

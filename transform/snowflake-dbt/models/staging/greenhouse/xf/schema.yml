@@ -54,7 +54,7 @@ models:
         - name: sourced_candidate
           description: Candidates sourced through LinkedIn.
         - name: hired_sourced_candidates  
- 
+
   - name: greenhouse_locations_cleaned_intermediate
     description: This dbt model partitions the area column from the location application question answers to get the city, state, and country of each location.
     columns:
@@ -120,6 +120,7 @@ models:
         - name: next_stage
         - name: is_current_stage
         - name: application_month
+        - name: job_id
         - name: requisition_id
         - name: current_stage_name
         - name: application_status
@@ -144,24 +145,15 @@ models:
         - name: hit_offer
         - name: hit_hired
         - name: hit_rejected 
+        - name: candidate_dropout
+        - name: in_current_pipeline
   - name: greenhouse_stage_analysis
     description: Provides the state of all candidates in our recruiting pipeline. This model is used to understand movement through the pipeline, bottlenecks and performance. The fields are the same as greenhouse_stage_intermediate but we have removed application_id and candidate_id and changed dates to month format.
-  - name: greenhouse_location_factors_testing
-    description: This is a temporary model used to allow the data team to clean up greenhouse locations and tie them to our location yaml file. Once greenhouse_location_factors has been cleaned this model needs to be removed.
-    columns:
-        - name: application_answer
-          description: This is the answer as it appears in greenhouse.
-        - name: city
-          description: This is the cleaned city for the location answer.
-        - name: state
-          description: This is the cleaned state for the location answer.
-        - name: country
-          description: This is the cleaned country for the location answer.
-        - name: application_question_answer_created_at
-        - name: location_factor
-          description: This is the mapped location factor based on the historical yaml file. We need to go through and identify how to map for cases it is missing.
+
+  
   - name: greenhouse_sourcer
     description: This model is used to identify who the sourcer is for candidates. This is specific to source type = 'Prospecting'
+
   - name: greenhouse_hires
     description: This model is used to identify all greenhouse hires (including transfers within company). We want to capture the date the candidate truly started in bamboohr.
     columns:
@@ -175,6 +167,36 @@ models:
           description: Note - this is a calculated field. In the case we don't have the candidate target hire date we are using the first record from the employment status table. If we do then we factor in the time between the candidate target hire and the bamboo hire date, and if it is less than 120 days we use the bamboo hire date, otherwise the targer_hire (the reason for this is because we don't have every application record for candidates hired prior to greenhouse. If this is the 2+ hired record in greenhouse we use the candidate target hire date as this candidate is a transfer.
         - name: hire_type
           description: Indicates whether the candidate is a hire, rehire, or transfer based on greenhouse_candidate_row_number.
+  - name: greenhouse_sourcer_metrics
+    description: This provides recruiting metrics by sourcer and month.
+    columns: 
+        - name: month_date
+        - name: sourcer_name
+        - name: part_of_recruiting_team
+          description: This uses bamboohr data to identify if the sourcer was on the recruiting team for that month.
+        - name: propspected
+        - name: prospect_to_review
+        - name: prospect_to_screen
+        - name: PROSPECT_TO_HIRE
+        - name: prospect_to_dropout
+        - name: app_reviewed
+        - name: review_to_screen
+        - name: review_to_hire
+        - name: screen
+        - name: screen_to_interview
+        - name: screen_to_hire
+        - name: team_interview
+        - name: interview_to_hire
+        - name: interview_to_hire
+        - name: interview_to_reject
+        - name: executive_interview
+        - name: exec_interview_to_hire
+        - name: reference_check
+        - name: candidate_dropout
+        - name: offer
+        - name: offer_to_hire
+        - name: hired
+        - name: time_to_offer_median
 
-
-
+  - name: greenhouse_sourcer_base
+    description: This is the base model used to create out greenhouse_sourcer_scorecard. This creates a rolling 3 month dataset for 3 months prior to the reporting period, which allows us to average out performance metrics.         

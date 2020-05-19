@@ -62,7 +62,8 @@ WITH source AS (
 
 SELECT 
   final.*,
-  IFF(final.effective_date< '2020-02-28', sheetload_job_roles.job_role, job_role.job_role) AS job_role
+  IFF(final.effective_date< '2020-02-28', sheetload_job_roles.job_role, job_role.job_role) AS job_role,
+  job_role.cost_center
 FROM final
 LEFT JOIN sheetload_job_roles
   ON sheetload_job_roles.job_title = final.job_title

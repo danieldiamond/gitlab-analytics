@@ -1,5 +1,6 @@
 {% set repeated_column_names = 
-        "requisition_id,
+        "job_id,
+        requisition_id,
         current_stage_name,
         application_status,
         job_name,
@@ -28,6 +29,10 @@ WITH stages AS (
     SELECT * 
     FROM {{ ref ('greenhouse_recruiting_xf') }}
 
+), hires_data AS (
+
+    SELECT *
+    FROM {{ ref ('greenhouse_hires') }}
 
 ), applications AS (
 
@@ -57,17 +62,32 @@ WITH stages AS (
     FROM stages
     LEFT JOIN recruiting_xf 
       ON recruiting_xf.application_id = stages.application_id
-    
-), hired_rejected AS (
+
+), hired AS (
+
+    SELECT 
+      hires_data.application_id,
+      hires_data.candidate_id,
+      'Hired'                                                                         AS application_stage,
+      TRUE                                                                            AS is_milestone_stage,
+      DATE_TRUNC(MONTH, application_date)                                             AS application_month,
+      hire_date_mod                                                                   AS stage_entered_on,
+      hire_date_mod                                                                   AS stage_exited_on,
+      {{repeated_column_names}}
+    FROM  hires_data
+    LEFT JOIN recruiting_xf 
+      ON recruiting_xf.application_id = hires_data.application_id
+
+), rejected AS (
 
     SELECT 
       application_id,
       candidate_id,
-      IFF(application_status = 'hired','Hired', 'Rejected')                           AS application_stage,
+      'Rejected'                                                                      AS application_stage,
       TRUE                                                                            AS is_milestone_stage,
       DATE_TRUNC(MONTH, application_date)                                             AS application_month,
-      IFF(application_status = 'hired',candidate_target_hire_date, rejected_date)     AS stage_entered_on,
-      IFF(application_status = 'hired',candidate_target_hire_date, rejected_date)     AS stage_exited_on,
+      rejected_date                                                                   AS stage_entered_on,
+      rejected_date                                                                   AS stage_exited_on,
       {{repeated_column_names}}
     FROM recruiting_xf 
     WHERE application_status in ('hired', 'rejected')
@@ -85,7 +105,12 @@ WITH stages AS (
     UNION ALL
 
     SELECT *
-    FROM hired_rejected
+    FROM hired
+
+    UNION ALL
+
+    SELECT *
+    FROM rejected
 
 ), stages_hit AS (
 
@@ -157,11 +182,25 @@ WITH stages AS (
         hit_reference_check,
         hit_offer,
         hit_hired,
-        hit_rejected
+        hit_rejected,
+        IFF(hit_team_interview = 0 
+              AND hit_rejected =1 
+              AND rejection_reason_type = 'They rejected us',1,0)                   AS candidate_dropout,
+        CASE WHEN is_current_stage = True
+                AND application_stage NOT IN ('Hired','Rejected')
+                AND hit_rejected = 0
+                AND hit_hired = 0
+                AND current_job_req_status = 'open'
+                AND application_status = 'active' 
+              THEN TRUE 
+              ELSE FALSE END                                                        AS in_current_pipeline
     FROM stage_order_revamped
     LEFT JOIN stages_hit 
         ON stage_order_revamped.application_id = stages_hit.application_id
         AND stage_order_revamped.candidate_id = stages_hit.candidate_id
+    LEFT JOIN hires_data 
+      ON stage_order_revamped.application_id = hires_data.application_id
+      AND stage_order_revamped.candidate_id = hires_data.candidate_id    
     
 )
         

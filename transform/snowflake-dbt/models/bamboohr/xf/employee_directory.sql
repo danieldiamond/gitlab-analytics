@@ -13,7 +13,9 @@ WITH bamboohr_directory AS (
             last_value(department) RESPECT NULLS
                 OVER ( PARTITION BY employee_id ORDER BY job_id ) AS last_department,
             last_value(division) RESPECT NULLS
-                OVER ( PARTITION BY employee_id ORDER BY job_id ) AS last_division
+                OVER ( PARTITION BY employee_id ORDER BY job_id ) AS last_division,
+            last_value(cost_center) RESPECT NULLS
+                OVER ( PARTITION BY employee_id ORDER BY job_id ) AS last_cost_center                  
     FROM {{ ref ('bamboohr_job_info') }}
 
 ), mapping as (
@@ -26,11 +28,6 @@ WITH bamboohr_directory AS (
     SELECT distinct bamboo_employee_number,
             FIRST_VALUE(location_factor) OVER ( PARTITION BY bamboo_employee_number ORDER BY valid_from) AS hire_location_factor
     FROM {{ ref('employee_location_factor_snapshots') }}
-
-), cost_center as (
-
-    SELECT *
-    FROM {{ref('cost_center_division_department_mapping')}}
 
 ), initial_hire AS (
     
@@ -64,16 +61,13 @@ SELECT distinct
         department_info.last_supervisor,
         department_info.last_department,
         department_info.last_division,
-        cost_center.cost_center,
+        department_info.last_cost_center,
         location_factor.hire_location_factor
 FROM mapping
 LEFT JOIN bamboohr_directory
   ON bamboohr_directory.employee_id = mapping.employee_id
 LEFT JOIN department_info
   ON mapping.employee_id = department_info.employee_id
-LEFT JOIN cost_center
-  ON trim(department_info.last_department)=trim(cost_center.department)
- AND trim(department_info.last_division)=trim(cost_center.division)
 LEFT JOIN location_factor
   ON location_factor.bamboo_employee_number = mapping.employee_number
 LEFT JOIN initial_hire 

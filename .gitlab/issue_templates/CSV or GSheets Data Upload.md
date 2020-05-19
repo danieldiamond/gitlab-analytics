@@ -1,4 +1,4 @@
-## Request for Data Import in Snowflake/Periscope Checklist
+## Request for Data Import in Snowflake/Sisense Checklist
 
 <!--
 Please complete all items. Ask questions in the #data slack channel
@@ -28,13 +28,13 @@ If none, please include a description
   - [ ] I don't know
 * [ ]  How long will this data need to reside in the Data team's data warehouse? Expiration Date: ______ 
 * [ ]  How do you want to name the table? Table Name: ______ 
-* [ ]  Update the due date on this issue for when you want this data in Periscope. (Note: The airflow job for sheetload runs every night and is immediately followed by a sheetload-specific dbt run)
+* [ ]  Update the due date on this issue for when you want this data in Sisense. (Note: The airflow job for sheetload runs every night and is immediately followed by a sheetload-specific dbt run)
 * [ ]  Provide who will be the owner of the file to fix potential data issues. @____
 
-### If you need data in Periscope but...
+### If you need data in Sisense but...
 
 - [ ] Do **NOT** need to link it to other data
-    * [ ]  Submitter please follow steps in [CSV Upload Periscope](https://doc.periscopedata.com/article/csv-upload)
+    * [ ]  Submitter please follow steps in [CSV Upload Sisense](https://doc.periscopedata.com/article/csv-upload)
     * [ ]  Submitter to close issue if this data will not be used again. 
 
 ---
@@ -47,7 +47,7 @@ If none, please include a description
     * [ ] Data Team member to check file name and sheet names to match: The file will be located and loaded based on its name `boneyard.<table_name>`. The names of the sheets shared with the runner must be unique and in the `<file_name>.<tab_name>` format.
     * [ ] Data Team member to merge update after validation of data and MR
     * [ ] Submitter to wait 6 to 8 hours for data to become available (runs 4x per day), or if urgent to ask Data Engineer to trigger job
-    * [ ] Submitter to query in Periscope for table: ``` SELECT * FROM boneyard.[new-dbt-model-name] LIMIT 10 ```.
+    * [ ] Submitter to query in Sisense for table: ``` SELECT * FROM boneyard.[new-dbt-model-name] LIMIT 10 ```.
 
 ---
 
@@ -56,7 +56,7 @@ If none, please include a description
     * [ ]  Data Team member to share it with the required service account - [Email Address to share with](https://docs.google.com/document/d/1m8kky3DPv2yvH63W4NDYFURrhUwRiMKHI-himxn1r7k/edit?usp=sharing) (GitLab Internal)
     * [ ]  Data Team member to check file name and sheet names to match: The file will be located and loaded based on its name `sheetload.<table_name>`. The names of the sheets shared with the runner must be unique and in the `<file_name>.<tab_name>` format
     * [ ]  Data Team member to create MR to add this sheet to be pulled in by Sheetload that combines the steps taken in the following MR examples:
-      - [ ] Edit the sheets.txt file (Ex: https://gitlab.com/gitlab-data/analytics/merge_requests/1633/diffs)
+      - [ ] Edit the sheets.yml file (Ex: https://gitlab.com/gitlab-data/analytics/merge_requests/1633/diffs)
       - [ ] Edit the schema.yml, sources.yml, and add a new file for the base model (Ex: https://gitlab.com/gitlab-data/analytics/merge_requests/1634/diffs)
     * [ ]  Data Team member to run the following CI Jobs on the MR: 
          - [ ] clone_raw
@@ -65,5 +65,5 @@ If none, please include a description
     * [ ]  Data Analyst to assign MR to project maintainer for review (iterate until model is complete).
     * [ ]  Data Team project maintainers/owners to merge in dbt models 
     * [ ]  If not urgent, data will be availble within 24 hours. If urgent, Data Engineer to run full refresh and inform when available.
-    * [ ]  Submitter to query in Periscope for table: ``` SELECT * FROM [new-dbt-model-name] LIMIT 10 ```.
+    * [ ]  Submitter to query in Sisense for table: ``` SELECT * FROM [new-dbt-model-name] LIMIT 10 ```.
 
