@@ -5,6 +5,17 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  columns:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT table_name
+      , column_name
+      , table_schema
+      FROM information_schema.columns
+    export_schema: 'gitlab_com'
+    export_table: 'columns'
+    export_table_primary_key: CONCAT(table_name, '_', column_name)
+    advanced_metadata: true
   # resource_label_events:
   #   import_db: GITLAB_DB
   #   import_query: >
@@ -617,17 +628,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'clusters_kubernetes_namespaces'
     export_table_primary_key: cluster_id
-  columns:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT table_name
-      , column_name
-      , table_schema
-      FROM information_schema.columns
-    export_schema: 'gitlab_com'
-    export_table: 'columns'
-    export_table_primary_key: CONCAT(table_name, '_', column_name)
-    advanced_metadata: true
   deployment_merge_requests:
     import_db: GITLAB_DB
     import_query: >
