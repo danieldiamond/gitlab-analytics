@@ -34,6 +34,11 @@ The internal namespaces are documented below.
 
 
 {% docs resource_event_action_type %}
+This macro maps state_ids to english state names (opened, closed, etc).
+{% enddocs %}
+
+
+{% docs resource_event_action_type %}
 This macro maps action type ID to the action type for the `resource_label_events` table.
 {% enddocs %}
 

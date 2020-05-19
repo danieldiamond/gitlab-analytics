@@ -21,7 +21,7 @@ WITH source AS (
       id                                             AS resource_weight_event_id,
       user_id::INTEGER                               AS user_id,
       issue_id::INTEGER                              AS issue_id,
-      weight::INTEGER                                AS weight
+      weight::INTEGER                                AS weight,
       created_at::TIMESTAMP                          AS created_at
     FROM source
 
