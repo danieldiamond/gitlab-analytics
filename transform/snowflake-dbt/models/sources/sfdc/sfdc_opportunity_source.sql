@@ -61,6 +61,7 @@ WITH source AS (
         type                           AS sales_type,
         {{  sfdc_source_buckets('leadsource') }}
         stagename                      AS stage_name,
+        revenue_type__c                AS order_type,
 
         -- opportunity information
         acv_2__c                       AS acv,
