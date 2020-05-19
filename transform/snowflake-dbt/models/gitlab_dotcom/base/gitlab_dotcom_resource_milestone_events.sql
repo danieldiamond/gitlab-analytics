@@ -19,7 +19,7 @@ WITH source AS (
 
     SELECT
       id                                             AS resource_milestone_event_id,
-      {# action::INTEGER                                AS action_type_id,
+      {# action::INTEGER                             AS action_type_id,
       {{ resource_event_action_type('action') }}     AS action_type, #}
       user_id::INTEGER                               AS user_id,
       issue_id::INTEGER                              AS issue_id,
