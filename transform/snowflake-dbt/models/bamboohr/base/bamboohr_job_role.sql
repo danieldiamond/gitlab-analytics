@@ -18,6 +18,7 @@ WITH source AS (
     LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), OUTER => true) d
     QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade, cost_center ORDER BY effective_date)=1  
 
+
 ), final AS (
 
     SELECT 
@@ -29,4 +30,4 @@ WITH source AS (
 
 SELECT * 
 FROM final
-WHERE effective_date>= '2020-02-27'  --1st day we started capturing 
+WHERE effective_date>= '2020-02-27'  --1st day we started capturing job role
