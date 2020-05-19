@@ -26,15 +26,19 @@ WITH RECURSIVE employee_directory AS (
 ), department_info AS (
 
     SELECT employee_id,
-          job_title,
-          effective_date,
+          job_title,         
           department,
           division,
-          cost_center,
           reports_to,
           job_role,
+          effective_date,
           effective_end_date
     FROM {{ ref('bamboohr_job_info') }}
+
+), cost_center_bamboo AS (
+
+    SELECT *
+    FROM {{ ref ('bamboohr_job_role') }}
 
 ), location_factor AS (
 
@@ -57,18 +61,18 @@ WITH RECURSIVE employee_directory AS (
 ), cost_center_prior_to_bamboo AS (
 
     SELECT *
-    FROM {{ ref('cost_center_division_department_mapping') }}
+    FROM {{ ref('cost_center_division_department_mapping_historical') }}
 
 ), enriched AS (
 
     SELECT
       date_actual,
       employee_directory.*,
-      (first_name ||' '|| last_name)                                AS full_name,
+      (employee_directory.first_name ||' '|| employee_directory.last_name)                                AS full_name,
       department_info.job_title,
       department_info.department,
       department_info.division,
-      COALESCE(department_info.cost_center, 
+      COALESCE(cost_center_bamboo.cost_center, 
                cost_center_prior_to_bamboo.cost_center)             AS cost_center,
       department_info.reports_to,
       department_info.job_role,
@@ -97,6 +101,10 @@ WITH RECURSIVE employee_directory AS (
         OR date_details.date_actual BETWEEN employment_status.valid_from_date AND employment_status.valid_to_date )  
     LEFT JOIN employment_status_records_check 
       ON employee_directory.employee_id = employment_status_records_check.employee_id    
+    LEFT JOIN cost_center_bamboo
+      ON employee_directory.employee_id = cost_center_bamboo.employee_id
+      AND date_details.date_actual BETWEEN cost_center_bamboo.effective_date 
+                                       AND COALESCE(cost_center_bamboo.next_effective_date, {{max_date_in_bamboo_analyses()}})
     LEFT JOIN cost_center_prior_to_bamboo
       ON department_info.department = cost_center_prior_to_bamboo.department
       AND department_info.division = cost_center_prior_to_bamboo.division
