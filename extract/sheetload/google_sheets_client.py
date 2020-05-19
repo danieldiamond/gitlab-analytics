@@ -74,11 +74,17 @@ class GoogleSheetsClient:
             client = self.get_client(None)
         return [file for file in client.openall()]
 
-    def rename_file(self, source_id, target_name, client=None) -> None:
+    def rename_sheet(self, file, sheet_id, target_name) -> None:
         """
         Renames a google sheets file
         """
-        if not client:
-            client = self.get_client(None)
-        client.copy(source_id, title=target_name)
-        client.del_spreadsheet(source_id)
+        file.batch_update(
+            {
+                "requests": {
+                    "updateSheetProperties": {
+                        "properties": {"sheetId": sheet_id, "title": target_name},
+                        "fields": "title",
+                    }
+                }
+            }
+        )

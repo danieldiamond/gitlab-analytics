@@ -1,12 +1,13 @@
 import datetime
 import io
+import json
 import logging
 import os
 import requests
 import time
 import zipfile
 
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 
 class QualtricsClient:
@@ -116,7 +117,7 @@ class QualtricsClient:
         return cleaned_file_names
 
     def upload_contacts_to_mailing_list(
-        self, directory_id: str, mailing_list_id: str, contacts: Dict[Any, Any]
+        self, directory_id: str, mailing_list_id: str, contacts: List[Dict[Any, Any]]
     ) -> None:
         url = (
             self.base_url
@@ -126,8 +127,15 @@ class QualtricsClient:
             "content-type": "application/json",
             "x-api-token": self.api_token,
         }
-        response = requests.post(url, headers=headers, data=contacts)
-        response.raise_for_status()
+        for contact in contacts:
+            contact = {k: v for k, v in contact.items() if v}
+            if "email" not in contact:
+                continue
+            response = requests.post(url, headers=headers, data=json.dumps(contact))
+            if response.status_code == 429:
+                time.sleep(3)  # Hit API limit.  Wait and try again.
+                response = requests.post(url, headers=headers, data=json.dumps(contact))
+            response.raise_for_status()
 
     def create_mailing_list(self, directory_id: str, mailing_list_name: str) -> str:
         url = self.base_url + f"directories/{directory_id}/mailinglists"
@@ -135,9 +143,11 @@ class QualtricsClient:
             "content-type": "application/json",
             "x-api-token": self.api_token,
         }
-        request_body = {"name": mailing_list_name}
+        request_body = f'{{"name": "{mailing_list_name}"}}'
         response = requests.post(url, headers=headers, data=request_body)
         if response.status_code == 429:
             time.sleep(3)  # Hit API limit.  Wait and try again.
-            response = requests.post(url, headers=headers, data=request_body)
+            response = requests.post(
+                url, headers=headers, data=json.dumps(request_body)
+            )
         return response.json()["result"]["id"]
