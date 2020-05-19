@@ -120,7 +120,7 @@ class QualtricsClient:
     ) -> None:
         url = (
             self.base_url
-            + f"directories/{directory_id}/mailinglists/{mailing_list_id}/transactioncontacts"
+            + f"directories/{directory_id}/mailinglists/{mailing_list_id}/contacts"
         )
         headers = {
             "content-type": "application/json",
