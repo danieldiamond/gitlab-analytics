@@ -158,7 +158,8 @@ models:
         materialized: table
 
       google_analytics_360:
-        schema: analytics
+        xf:
+          schema: analytics
 
       greenhouse:
         xf:
