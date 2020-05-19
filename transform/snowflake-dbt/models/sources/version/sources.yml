@@ -17,7 +17,7 @@ sources:
           - name: id
             tests:
               - not_null
-      - name: conversational_development_indicies
+      - name: conversational_development_indices
         columns:
           - name: id
           - name: created_at

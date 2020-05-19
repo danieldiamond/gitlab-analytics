@@ -8,6 +8,16 @@ models:
            tests:
                - not_null
                - unique
+    
+    - name: version_conversational_development_indices
+      description: Conversational development index information by usage data id
+      columns:
+         - name: id
+           tests: 
+               - not_null
+         - name: usage_data_id
+           tests:
+               - not_null                
 
     - name: version_hosts_source
       columns:
