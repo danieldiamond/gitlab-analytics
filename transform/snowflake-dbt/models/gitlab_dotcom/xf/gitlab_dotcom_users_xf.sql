@@ -2,7 +2,7 @@ WITH customers AS (
   
   SELECT *
   FROM {{ ref('customers_db_customers') }}
-  
+
 )
 
 , groups AS  (
