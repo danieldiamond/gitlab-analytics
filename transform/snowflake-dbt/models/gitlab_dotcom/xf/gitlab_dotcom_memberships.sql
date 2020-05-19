@@ -162,8 +162,8 @@ unioned AS (
 final AS ( -- Get ultimate parent of the namespace.
 
     SELECT
-      namespaces.ultimate_parent_id,
-      namespaces.plan_id AS ultimate_parent_plan_id,
+      namespaces.namespace_ultimate_parent_id AS ultimate_parent_id,
+      namespaces.plan_id                      AS ultimate_parent_plan_id,
       unioned.*
     FROM unioned
       INNER JOIN namespaces

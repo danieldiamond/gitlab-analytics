@@ -5,18 +5,25 @@ WITH customers AS (
 
 )
 
-, trials AS  (
-
-  SELECT *
-  FROM {{ ref('customers_db_trials') }}
-
-)
-
 , memberships AS (
 
   SELECT *
   FROM  {{ ref('gitlab_dotcom_memberships') }}
   WHERE ultimate_parent_plan_id != '34'
+
+)
+
+, plans AS (
+
+  SELECT *
+  FROM {{ ref('gitlab_dotcom_plans') }}
+
+)
+
+, trials AS  (
+
+  SELECT *
+  FROM {{ ref('customers_db_trials') }}
 
 )
 
@@ -29,177 +36,47 @@ WITH customers AS (
   FROM {{ ref('gitlab_dotcom_users') }}
 
 )
-{#
-, groups AS  (
-
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_groups_xf') }}
-
-)
-
-, members AS (
-
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_members') }}
-  WHERE is_currently_valid = TRUE
-
-) #}
-
-{# , namespaces AS  (
-
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_namespaces_xf') }}
-
-) #}
-
-{# , projects AS  (
-
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_projects_xf') }}
-
-) #}
-
-{# , user_namespace_subscriptions AS (
-
-  SELECT
-    owner_id                AS user_id,
-    namespace_id,
-    plan_id,
-    plan_is_paid,
-    '0. personal_namespace' AS inheritance_source
-  FROM namespaces
-  WHERE namespace_type = 'Individual'
-    AND plan_is_paid
-) #}
-
-{# , group_members AS (
-  -- always inherits
-
-  SELECT
-    members.user_id,
-    groups.group_id,
-    groups.group_plan_id,
-    groups.visibility_level,
-    groups.group_plan_id       AS inherited_subscription_plan_id,
-    groups.group_plan_is_paid  AS inherited_subscription_plan_is_paid,
-    '1. group'                 AS inheritance_source
-
-  FROM members
-  INNER JOIN groups
-    ON members.source_id = groups.group_id
-    AND groups.group_plan_is_paid = TRUE
-  WHERE member_type = 'GroupMember'
-    AND (members.expires_at >= CURRENT_DATE OR members.expires_at IS NULL)
-)
-
-, project_members AS (
-  -- if project belongs to group apply same rules as above
-  -- if project belongs to personal namespace. never apply any subscriptions
-
-    SELECT
-      members.user_id,
-      projects.project_id,
-      projects.visibility_level      AS project_visibility_level,
-      groups.group_plan_id,
-      groups.visibility_level        AS namespace_visibility_level,
-      groups.group_id,
-      groups.group_plan_id           AS inherited_subscription_plan_id,
-      groups.group_plan_is_paid      AS inherited_subscription_plan_is_paid,
-      '2. project'                   AS inheritance_source
-
-    FROM members
-    LEFT JOIN projects
-      ON members.source_id = projects.project_id
-    INNER JOIN groups
-      ON projects.namespace_id = groups.group_id
-      AND groups.group_plan_is_paid
-    WHERE members.member_type = 'ProjectMember'
-      AND (members.expires_at >= CURRENT_DATE OR members.expires_at IS NULL)
-
-) #}
-
-{# , user_paid_subscription_plan_lk AS (
-
-  (
-
-    SELECT
-      user_id,
-      group_id AS namespace_id,
-      NULL     AS project_id,
-      inherited_subscription_plan_id,
-      inherited_subscription_plan_is_paid,
-      inheritance_source
-
-    FROM group_members
-
-  )
-
-  UNION
-
-  (
-
-    SELECT
-      user_id,
-      group_id AS namespace_id,
-      project_id,
-      inherited_subscription_plan_id,
-      inherited_subscription_plan_is_paid,
-      inheritance_source
-
-    FROM project_members
-
-  )
-
-  UNION
-
-  (
-
-    SELECT
-      user_id,
-      namespace_id,
-      NULL AS project_id,
-      plan_id,
-      plan_is_paid,
-      inheritance_source
-
-    FROM user_namespace_subscriptions
-
-  )
-
-) #}
 
 , highest_paid_subscription_plan AS (
 
-  SELECT
+ SELECT DISTINCT
     user_id,
+
     MAX(ultimate_parent_plan_id) OVER (
       PARTITION BY user_id
     ) AS highest_paid_subscription_plan_id,
-    MAX(inherited_subscription_plan_is_paid) OVER (
+
+    MAX(plans.plan_is_paid) OVER (
       PARTITION BY user_id
     )         AS highest_paid_subscription_plan_is_paid, --is_paid_user
-    FIRST_VALUE(inheritance_source) OVER (
+
+    FIRST_VALUE(membership_source_type) OVER (
       PARTITION BY user_id
       ORDER BY
-        inherited_subscription_plan_id DESC,
-        inheritance_source ASC,
-        namespace_id ASC
+        ultimate_parent_plan_id DESC,
+        membership_source_type,
+        namespace_id
     )  AS highest_paid_subscription_inheritance_source,
+
     FIRST_VALUE(namespace_id) OVER (
       PARTITION BY user_id
       ORDER BY
-        inherited_subscription_plan_id DESC,
-        inheritance_source ASC,
-        namespace_id ASC
+        ultimate_parent_plan_id DESC,
+        membership_source_type,
+        namespace_id
     ) AS highest_paid_subscription_namespace_id,
-    FIRST_VALUE(project_id) OVER (
+
+    FIRST_VALUE(IFF(membership_source_type='project_memberships', membership_source_id, NULL)) OVER (
       PARTITION BY user_id
       ORDER BY
-        inherited_subscription_plan_id DESC,
-        inheritance_source ASC,
-        namespace_id ASC
+        ultimate_parent_plan_id DESC,
+        membership_source_type,
+        namespace_id
     ) AS highest_paid_subscription_project_id
-  FROM user_paid_subscription_plan_lk
+
+  FROM memberships
+    LEFT JOIN plans
+      ON memberships.ultimate_parent_plan_id = plans.plan_id
 
 )
 
