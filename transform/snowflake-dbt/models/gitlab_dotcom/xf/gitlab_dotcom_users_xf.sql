@@ -1,5 +1,5 @@
 WITH customers AS (
-  
+
   SELECT *
   FROM {{ ref('customers_db_customers') }}
 
@@ -16,19 +16,20 @@ WITH customers AS (
 
   SELECT *
   FROM  {{ ref('gitlab_dotcom_memberships') }}
+  WHERE ultimate_parent_plan_id != '34'
 
 )
 
 , users AS (
 
-  SELECT 
+  SELECT
     {{ dbt_utils.star(from=ref('gitlab_dotcom_users'), except=["created_at", "first_name", "last_name", "notification_email", "public_email", "updated_at", "users_name"]) }},
     created_at AS user_created_at,
     updated_at AS user_updated_at
   FROM {{ ref('gitlab_dotcom_users') }}
 
 )
-{# 
+{#
 , groups AS  (
 
   SELECT *
@@ -170,46 +171,54 @@ WITH customers AS (
 , highest_paid_subscription_plan AS (
 
   SELECT
-    DISTINCT
     user_id,
-    MAX(inherited_subscription_plan_id) OVER
-      (PARTITION BY user_id)         AS highest_paid_subscription_plan_id,
-    MAX(inherited_subscription_plan_is_paid) OVER
-      (PARTITION BY user_id)         AS highest_paid_subscription_plan_is_paid,
-    FIRST_VALUE(inheritance_source) OVER
-      (PARTITION BY user_id
-        ORDER BY inherited_subscription_plan_id DESC,
-                  inheritance_source ASC,
-                  namespace_id ASC)  AS highest_paid_subscription_inheritance_source,
-    FIRST_VALUE(namespace_id) OVER
-      (PARTITION BY user_id
-        ORDER BY inherited_subscription_plan_id DESC,
-                  inheritance_source ASC,
-                  namespace_id ASC) AS highest_paid_subscription_namespace_id,
-    FIRST_VALUE(project_id) OVER
-      (PARTITION BY user_id
-        ORDER BY inherited_subscription_plan_id DESC,
-                  inheritance_source ASC,
-                  namespace_id ASC) AS highest_paid_subscription_project_id
+    MAX(ultimate_parent_plan_id) OVER (
+      PARTITION BY user_id
+    ) AS highest_paid_subscription_plan_id,
+    MAX(inherited_subscription_plan_is_paid) OVER (
+      PARTITION BY user_id
+    )         AS highest_paid_subscription_plan_is_paid, --is_paid_user
+    FIRST_VALUE(inheritance_source) OVER (
+      PARTITION BY user_id
+      ORDER BY
+        inherited_subscription_plan_id DESC,
+        inheritance_source ASC,
+        namespace_id ASC
+    )  AS highest_paid_subscription_inheritance_source,
+    FIRST_VALUE(namespace_id) OVER (
+      PARTITION BY user_id
+      ORDER BY
+        inherited_subscription_plan_id DESC,
+        inheritance_source ASC,
+        namespace_id ASC
+    ) AS highest_paid_subscription_namespace_id,
+    FIRST_VALUE(project_id) OVER (
+      PARTITION BY user_id
+      ORDER BY
+        inherited_subscription_plan_id DESC,
+        inheritance_source ASC,
+        namespace_id ASC
+    ) AS highest_paid_subscription_project_id
   FROM user_paid_subscription_plan_lk
 
 )
 
 , customers_with_trial AS (
-  
-  SELECT 
+
+  SELECT
     customers.customer_provider_user_id                         AS user_id,
     MIN(customers.customer_id)                                  AS first_customer_id,
     MIN(customers.customer_created_at)                          AS first_customer_created_at,
-    ARRAY_AGG(customers.customer_id) 
+    ARRAY_AGG(customers.customer_id)
         WITHIN GROUP (ORDER  BY customers.customer_id)          AS customer_id_list,
     MAX(IFF(order_id IS NOT NULL, TRUE, FALSE))                 AS has_started_trial,
     MIN(trial_start_date)                                       AS has_started_trial_at
   FROM customers
-  LEFT JOIN trials ON customers.customer_id = trials.customer_id
+    LEFT JOIN trials
+      ON customers.customer_id = trials.customer_id
   WHERE customers.customer_provider = 'gitlab'
   GROUP BY 1
-  
+
 )
 
 , joined AS (
@@ -225,13 +234,13 @@ WITH customers AS (
       WHEN account_age <= 60 THEN '5 - 31 to 60 days'
       WHEN account_age > 60 THEN '6 - Over 60 days'
     END                                                                           AS account_age_cohort,
-    
+
     highest_paid_subscription_plan.highest_paid_subscription_plan_id,
     highest_paid_subscription_plan.highest_paid_subscription_plan_is_paid         AS is_paid_user,
     highest_paid_subscription_plan.highest_paid_subscription_inheritance_source,
     highest_paid_subscription_plan.highest_paid_subscription_namespace_id,
     highest_paid_subscription_plan.highest_paid_subscription_project_id,
-    
+
     IFF(customers_with_trial.first_customer_id IS NOT NULL, TRUE, FALSE)          AS has_customer_account,
     customers_with_trial.first_customer_created_at,
     customers_with_trial.first_customer_id,
@@ -242,7 +251,7 @@ WITH customers AS (
   FROM users
   LEFT JOIN highest_paid_subscription_plan
     ON users.user_id = highest_paid_subscription_plan.user_id
-  LEFT JOIN customers_with_trial 
+  LEFT JOIN customers_with_trial
     ON users.user_id::VARCHAR = customers_with_trial.user_id::VARCHAR
 
 )
