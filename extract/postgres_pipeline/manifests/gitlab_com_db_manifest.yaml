@@ -13,7 +13,7 @@ tables:
       , table_schema
       FROM information_schema.columns
     export_schema: 'gitlab_com'
-    export_table: 'columns'
+    export_table: 'information_schema.columns'
     export_table_primary_key: CONCAT(table_name, '_', column_name)
     advanced_metadata: true
   # resource_label_events:
