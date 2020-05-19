@@ -10,6 +10,7 @@ WITH source AS (
           d.value['id']::BIGINT                                           AS employee_id,
           d.value['firstName']::VARCHAR                                   AS first_name,
           d.value['lastName']::VARCHAR                                    AS last_name,
+          NULLIF(d.value['hireDate']::VARCHAR,'0000-00-00')::DATE         AS hire_date,
           d.value['customRole']::VARCHAR                                  AS job_role,
           d.value['customJobGrade']::VARCHAR                              AS job_grade,
           d.value['customCostCenter']::VARCHAR                            AS cost_center,
@@ -32,6 +33,7 @@ WITH source AS (
         (PARTITION BY employee_number ORDER BY intermediate.effective_date)              AS next_effective_date
     FROM intermediate 
     WHERE effective_date>= '2020-02-27'  --1st day we started capturing job role
+      AND hire_date IS NOT NULL
       AND (LOWER(first_name) NOT LIKE '%greenhouse test%'
         AND LOWER(last_name) NOT LIKE '%test profile%'
         AND LOWER(last_name) != 'test-gitlab')
