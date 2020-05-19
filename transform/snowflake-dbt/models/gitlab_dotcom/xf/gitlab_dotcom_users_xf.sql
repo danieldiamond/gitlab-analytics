@@ -39,24 +39,16 @@ WITH customers AS (
 
 , highest_paid_subscription_plan AS (
 
- SELECT DISTINCT
+   SELECT DISTINCT 
     user_id,
-
+    
     MAX(ultimate_parent_plan_id) OVER (
       PARTITION BY user_id
     ) AS highest_paid_subscription_plan_id,
 
     MAX(plans.plan_is_paid) OVER (
       PARTITION BY user_id
-    )         AS highest_paid_subscription_plan_is_paid, --is_paid_user
-
-    FIRST_VALUE(membership_source_type) OVER (
-      PARTITION BY user_id
-      ORDER BY
-        ultimate_parent_plan_id DESC,
-        membership_source_type,
-        namespace_id
-    )  AS highest_paid_subscription_inheritance_source,
+    ) AS highest_paid_subscription_plan_is_paid,
 
     FIRST_VALUE(namespace_id) OVER (
       PARTITION BY user_id
@@ -66,13 +58,29 @@ WITH customers AS (
         namespace_id
     ) AS highest_paid_subscription_namespace_id,
 
-    FIRST_VALUE(IFF(membership_source_type='project_memberships', membership_source_id, NULL)) OVER (
+    FIRST_VALUE(ultimate_parent_id) OVER (
       PARTITION BY user_id
       ORDER BY
         ultimate_parent_plan_id DESC,
         membership_source_type,
         namespace_id
-    ) AS highest_paid_subscription_project_id
+    ) AS highest_paid_subscription_ultimate_parent_id,
+    
+    FIRST_VALUE(membership_source_type) OVER (
+      PARTITION BY user_id
+      ORDER BY
+        ultimate_parent_plan_id DESC,
+        membership_source_type,
+        namespace_id
+    )  AS highest_paid_subscription_inheritance_source_type,
+    
+    FIRST_VALUE(membership_source_id) OVER (
+      PARTITION BY user_id
+      ORDER BY
+        ultimate_parent_plan_id DESC,
+        membership_source_type,
+        namespace_id
+    )  AS highest_paid_subscription_inheritance_source_id
 
   FROM memberships
     LEFT JOIN plans
