@@ -62,7 +62,6 @@ SELECT distinct
         department_info.last_department,
         department_info.last_division,
         department_info.last_cost_center,
-        cost_center.last_cost_center,
         location_factor.hire_location_factor
 FROM mapping
 LEFT JOIN bamboohr_directory
