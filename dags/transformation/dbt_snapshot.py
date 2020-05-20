@@ -11,7 +11,8 @@ from airflow_utils import (
     slack_failed_task,
     slack_snapshot_failed_task,
     l_warehouse,
-    dbt_install_deps_and_seed_cmd
+    xs_warehouse,
+    dbt_install_deps_and_seed_cmd,
 )
 from kube_secrets import (
     SNOWFLAKE_ACCOUNT,
@@ -99,5 +100,36 @@ dbt_snapshots_run = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     arguments=[dbt_snapshot_models_command],
+    dag=dag,
+)
+
+
+# dbt-test
+dbt_test_cmd = f"""
+    {pull_commit_hash} &&
+    {dbt_install_deps_and_seed_cmd} &&
+    dbt test --profiles-dir profile --target prod --vars {xs_warehouse} --models snapshots; ret=$?;
+    python ../../orchestration/upload_dbt_file_to_snowflake.py test; exit $ret
+"""
+dbt_test = KubernetesPodOperator(
+    **gitlab_defaults,
+    image=DBT_IMAGE,
+    task_id="dbt-test-snapshots",
+    name="dbt-test-snapshots",
+    trigger_rule="all_done",
+    secrets=[
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_USER,
+        SNOWFLAKE_PASSWORD,
+        SNOWFLAKE_LOAD_PASSWORD,
+        SNOWFLAKE_LOAD_ROLE,
+        SNOWFLAKE_LOAD_USER,
+        SNOWFLAKE_LOAD_WAREHOUSE,
+        SNOWFLAKE_TRANSFORM_ROLE,
+        SNOWFLAKE_TRANSFORM_WAREHOUSE,
+        SNOWFLAKE_TRANSFORM_SCHEMA,
+    ],
+    env_vars=pod_env_vars,
+    arguments=[dbt_test_cmd],
     dag=dag,
 )
