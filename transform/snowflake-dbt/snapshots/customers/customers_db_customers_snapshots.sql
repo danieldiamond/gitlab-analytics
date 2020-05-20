@@ -3,7 +3,7 @@
     {{
         config(
           unique_key='id',
-          strategy='timestamp',
+          strategy='timestamp_with_deletes',
           updated_at='updated_at',
         )
     }}
