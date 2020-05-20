@@ -168,8 +168,6 @@ dbt_product_models_task = KubernetesPodOperator(
 )
 
 
-
-
 # dbt-full-refresh
 dbt_full_refresh_cmd = f"""
     {pull_commit_hash} &&
