@@ -81,7 +81,7 @@ dbt_snapshot_models_command = f"""
     python ../../orchestration/upload_dbt_file_to_snowflake.py results; exit $ret
 """
 
-dbt_snapshots_run = KubernetesPodOperator(
+dbt_snapshot_models_run = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
     task_id="dbt-run-model-snapshots",
@@ -105,13 +105,13 @@ dbt_snapshots_run = KubernetesPodOperator(
 
 
 # dbt-test
-dbt_test_cmd = f"""
+dbt_test_snapshots_cmd = f"""
     {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
     dbt test --profiles-dir profile --target prod --vars {xs_warehouse} --models snapshots; ret=$?;
     python ../../orchestration/upload_dbt_file_to_snowflake.py test; exit $ret
 """
-dbt_test = KubernetesPodOperator(
+dbt_test_snapshots = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
     task_id="dbt-test-snapshots",
@@ -130,6 +130,6 @@ dbt_test = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
-    arguments=[dbt_test_cmd],
+    arguments=[dbt_test_snapshots_cmd],
     dag=dag,
 )
