@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
+from airflow.utils.trigger_rule import TriggerRule
 from airflow_utils import (
     DBT_IMAGE,
     dbt_install_deps_nosha_cmd,
@@ -76,6 +77,43 @@ dbt_snapshot = KubernetesPodOperator(
 )
 
 
+
+# Default arguments for the DAG
+default_args = {
+    "catchup": False,
+    "depends_on_past": False,
+    "on_failure_callback": slack_failed_task,
+    "owner": "airflow",
+    "params": {
+        "slack_channel_override": "#dbt-runs"
+    },  # Overriden for dbt-source-freshness in airflow_utils.py
+    "retries": 0,
+    "retry_delay": timedelta(minutes=1),
+    "sla": timedelta(hours=8),
+    "sla_miss_callback": slack_failed_task,
+    "start_date": datetime(2019, 1, 1, 0, 0, 0),
+    "trigger_rule": TriggerRule.ALL_DONE,
+}
+
+
+dbt_commit_hash_setter = KubernetesPodOperator(
+    **gitlab_defaults,
+    image=DBT_IMAGE,
+    task_id="dbt-commit-hash-setter",
+    name="dbt-commit-hash-setter",
+    env_vars=pod_env_vars,
+    arguments=[
+        f"""{clone_repo_cmd} &&
+            cd analytics/transform/snowflake-dbt/ &&
+            mkdir -p /airflow/xcom/ &&
+            echo "{{\\"commit_hash\\": \\"$(git rev-parse HEAD)\\"}}" >> /airflow/xcom/return.json
+        """
+    ],
+    do_xcom_push=True,
+    xcom_push=True,
+    dag=dag,
+)
+
 # run snapshots on large warehouse
 dbt_snapshot_models_command = f"""
     {pull_commit_hash} &&
@@ -138,23 +176,6 @@ dbt_test_snapshot_models = KubernetesPodOperator(
 )
 
 
-dbt_commit_hash_setter = KubernetesPodOperator(
-    **gitlab_defaults,
-    image=DBT_IMAGE,
-    task_id="dbt-commit-hash-setter",
-    name="dbt-commit-hash-setter",
-    env_vars=pod_env_vars,
-    arguments=[
-        f"""{clone_repo_cmd} &&
-            cd analytics/transform/snowflake-dbt/ &&
-            mkdir -p /airflow/xcom/ &&
-            echo "{{\\"commit_hash\\": \\"$(git rev-parse HEAD)\\"}}" >> /airflow/xcom/return.json
-        """
-    ],
-    do_xcom_push=True,
-    xcom_push=True,
-    dag=dag,
-)
 
 
 dbt_snapshot >> dbt_commit_hash_setter >> dbt_snapshot_models_run >> dbt_test_snapshot_models
