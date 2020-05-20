@@ -201,6 +201,10 @@ sources:
         identifier: gitlab_db_repository_languages
       - name: resource_label_events
         identifier: gitlab_db_resource_label_events
+      - name: resource_milestone_events
+        identifier: gitlab_db_resource_milestone_events
+      - name: resource_weight_events
+        identifier: gitlab_db_resource_weight_events
       - name: saml_providers
         identifier: gitlab_db_saml_providers
       - name: services
