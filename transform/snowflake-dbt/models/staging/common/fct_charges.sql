@@ -18,16 +18,6 @@ WITH zuora_rate_plan AS (
     SELECT *
     FROM {{ ref('zuora_invoice_item_source') }}
 
-), charges AS (
-
-    SELECT * 
-    FROM {{ ref('customers_db_charges_xf')}}
-
-), namespaces AS (
-
-    SELECT * 
-    FROM {{ ref('gitlab_dotcom_namespaces_xf')}}
-
 ), base_charges AS (
 
     SELECT
@@ -90,32 +80,15 @@ WITH zuora_rate_plan AS (
       AND zuora_invoice_item.is_deleted= FALSE
       AND zuora_invoice.status='Posted'
 
-), gitlab_namespaces AS (
-
-    SELECT 
-      base_charges.charge_id,
-      customers_db_charges_xf.current_customer_id AS customers_current_customer_id,
-      namespaces.namespace_id                     AS gitlab_dotcom_namespace_id
-    FROM base_charges
-    LEFT JOIN customers_db_charges_xf
-      ON base_charges.charge_id = customers_db_charges_xf.rate_plan_charge_id
-    LEFT JOIN namespaces
-      ON customers_db_charges_xf.current_gitlab_namespace_id = namespaces.namespace_id
-
 ), final AS (
 
     SELECT
       base_charges.*,
       latest_invoiced_charge_version_in_segment.segment_version_order,
-      latest_invoiced_charge_version_in_segment.is_last_segment_version,
-      gitlab_namespaces.customers_current_customer_id,
-      gitlab_namespaces.gitlab_dotcom_namespace_id
+      latest_invoiced_charge_version_in_segment.is_last_segment_version
     FROM base_charges
     LEFT JOIN latest_invoiced_charge_version_in_segment
       ON base_charges.charge_id = latest_invoiced_charge_version_in_segment.charge_id
-    LEFT JOIN gitlab_namespaces
-      ON base_charges.charge_id = gitlab_namespaces.charge_id
-)
 
 SELECT *
 FROM final
