@@ -39,7 +39,7 @@ class GoogleSheetsClient:
         Returns the dataframe.
         """
         n = 0
-        while maximum_backoff_sec > (2 ** (n + 6)):
+        while maximum_backoff_sec > (2 ** n):
             try:
                 sheets_client = self.get_client(key_file)
                 sheet = (
@@ -52,9 +52,10 @@ class GoogleSheetsClient:
             except APIError as gspread_error:
                 if gspread_error.response.status_code == 429:
                     #Start for waiting at least
-                    wait_sec = (2 ** (n + 6)) + (random.randint(0, 1000) / 1000)
+                    wait_sec = (2 ** n) + (random.randint(0, 1000) / 1000)
                     info(f"Received API rate limit error. Wait for {wait_sec} seconds before trying again.")
                     time.sleep(wait_sec)
+                    n = n + 1
                 else:
                     raise
         else:
