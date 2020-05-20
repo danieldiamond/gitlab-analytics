@@ -35,9 +35,9 @@ WITH source AS (
     WHERE effective_date>= '2020-02-27'  --1st day we started capturing job role
       AND hire_date IS NOT NULL
       AND (LOWER(first_name) NOT LIKE '%greenhouse test%'
-        AND LOWER(last_name) NOT LIKE '%test profile%'
-        AND LOWER(last_name) != 'test-gitlab')
-    AND employee_id != 42039
+      AND LOWER(last_name) NOT LIKE '%test profile%'
+      AND LOWER(last_name) != 'test-gitlab')
+      AND employee_id != 42039
 
 ) 
 

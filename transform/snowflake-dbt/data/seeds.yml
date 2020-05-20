@@ -11,3 +11,5 @@ seeds:
     description: '{{ doc("zuora_excluded_accounts_doc") }}'
   - name: version_blacklisted_instance_uuid
     description: '{{ doc("version_blacklisted_instance_uuid") }}'
+ - name: cost_center_division_department_mapping
+   description: This csv is used to determine the cost center associated to division/department prior to 2020.05.02.

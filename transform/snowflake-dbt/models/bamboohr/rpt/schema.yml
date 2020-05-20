@@ -109,5 +109,5 @@ models:
     - name: percent_of_headcount_manager
     - name: percent_of_headcount_contributor
  
-  - name: cost_center_division_department_mapping
+  - name: cost_center_division_department_mapping_current
     description: This provides the current division, department, cost center.    

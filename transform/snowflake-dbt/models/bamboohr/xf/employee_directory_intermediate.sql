@@ -61,7 +61,7 @@ WITH RECURSIVE employee_directory AS (
 ), cost_center_prior_to_bamboo AS (
 
     SELECT *
-    FROM {{ ref('cost_center_division_department_mapping_historical') }}
+    FROM {{ ref('cost_center_division_department_mapping') }}
 
 ), enriched AS (
 
