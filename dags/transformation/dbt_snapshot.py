@@ -10,6 +10,8 @@ from airflow_utils import (
     gitlab_pod_env_vars,
     slack_failed_task,
     slack_snapshot_failed_task,
+    l_warehouse,
+    dbt_install_deps_and_seed_cmd
 )
 from kube_secrets import (
     SNOWFLAKE_ACCOUNT,
@@ -18,12 +20,17 @@ from kube_secrets import (
     SNOWFLAKE_TRANSFORM_SCHEMA,
     SNOWFLAKE_TRANSFORM_WAREHOUSE,
     SNOWFLAKE_USER,
+    SNOWFLAKE_LOAD_PASSWORD,
+    SNOWFLAKE_LOAD_ROLE,
+    SNOWFLAKE_LOAD_USER,
+    SNOWFLAKE_LOAD_WAREHOUSE,
 )
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {**gitlab_pod_env_vars, **{}}
+pull_commit_hash = """export GIT_COMMIT="{{ ti.xcom_pull(task_ids="dbt-commit-hash-setter", key="return_value")["commit_hash"] }}" """
 
 # Default arguments for the DAG
 default_args = {
@@ -61,5 +68,36 @@ dbt_snapshot = KubernetesPodOperator(
     ],
     env_vars=pod_env_vars,
     arguments=[dbt_snapshot_cmd],
+    dag=dag,
+)
+
+
+# run snapshots on large warehouse
+dbt_snapshots_command = f"""
+    {pull_commit_hash} &&
+    {dbt_install_deps_and_seed_cmd} &&
+    dbt run --profiles-dir profile --target prod --models snapshots --vars {l_warehouse}; ret=$?;
+    python ../../orchestration/upload_dbt_file_to_snowflake.py results; exit $ret
+"""
+
+dbt_snapshots_run = KubernetesPodOperator(
+    **gitlab_defaults,
+    image=DBT_IMAGE,
+    task_id="dbt-snapshots-run",
+    name="dbt-snapshots-run",
+    secrets=[
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_USER,
+        SNOWFLAKE_PASSWORD,
+        SNOWFLAKE_TRANSFORM_ROLE,
+        SNOWFLAKE_TRANSFORM_WAREHOUSE,
+        SNOWFLAKE_TRANSFORM_SCHEMA,
+        SNOWFLAKE_LOAD_PASSWORD,
+        SNOWFLAKE_LOAD_ROLE,
+        SNOWFLAKE_LOAD_USER,
+        SNOWFLAKE_LOAD_WAREHOUSE,
+    ],
+    env_vars=pod_env_vars,
+    arguments=[dbt_snapshots_command],
     dag=dag,
 )
