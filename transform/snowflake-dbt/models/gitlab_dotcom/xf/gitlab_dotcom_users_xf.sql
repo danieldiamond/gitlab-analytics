@@ -16,7 +16,7 @@ WITH customers AS (
           'group_group_link', 3,
           'project_group_link', 4
       ) AS membership_source_type_order,
-      IFF(namespace_id = ultimate_parent_id, TRUE, FALSE) AS is_ultimate_parent 
+      IFF(namespace_id = ultimate_parent_id, TRUE, FALSE) AS is_ultimate_parent
     FROM {{ ref('gitlab_dotcom_memberships') }}
     WHERE ultimate_parent_plan_id != '34'
 
@@ -48,10 +48,10 @@ WITH customers AS (
 
 , highest_paid_subscription_plan AS (
 
-SELECT DISTINCT 
+SELECT DISTINCT
 
     user_id,
-    
+
     MAX(ultimate_parent_plan_id) OVER (
       PARTITION BY user_id
     ) AS highest_paid_subscription_plan_id,
@@ -77,7 +77,7 @@ SELECT DISTINCT
         is_ultimate_parent DESC,
         membership_source_type
     ) AS highest_paid_subscription_ultimate_parent_id,
-    
+
     FIRST_VALUE(membership_source_type) OVER (
       PARTITION BY user_id
       ORDER BY
@@ -86,7 +86,7 @@ SELECT DISTINCT
         is_ultimate_parent DESC,
         membership_source_type
     )  AS highest_paid_subscription_inheritance_source_type,
-    
+
     FIRST_VALUE(membership_source_id) OVER (
       PARTITION BY user_id
       ORDER BY
@@ -135,9 +135,10 @@ SELECT DISTINCT
 
     highest_paid_subscription_plan.highest_paid_subscription_plan_id,
     highest_paid_subscription_plan.highest_paid_subscription_plan_is_paid         AS is_paid_user,
-    highest_paid_subscription_plan.highest_paid_subscription_inheritance_source,
     highest_paid_subscription_plan.highest_paid_subscription_namespace_id,
-    highest_paid_subscription_plan.highest_paid_subscription_project_id,
+    highest_paid_subscription_plan.highest_paid_subscription_ultimate_parent_id,
+    highest_paid_subscription_plan.highest_paid_subscription_inheritance_source_type,
+    highest_paid_subscription_plan.highest_paid_subscription_inheritance_source_id,
 
     IFF(customers_with_trial.first_customer_id IS NOT NULL, TRUE, FALSE)          AS has_customer_account,
     customers_with_trial.first_customer_created_at,
