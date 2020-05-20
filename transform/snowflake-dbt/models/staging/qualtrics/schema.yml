@@ -47,3 +47,15 @@ models:
           description: Take the average of this column to get the "NPS Score".
           tests:
             - not_null
+    - name: qualtrics_api_formatted_contacts
+      description: GitLab dotcom users table formatted for quick lookup and push to Qualtrics
+      columns:
+        - name: email_address
+          tests:
+            - not_null
+        - name: first_name
+        - name: last_name
+        - name: phone_number
+        - name: user_id
+          tests:
+            - unique

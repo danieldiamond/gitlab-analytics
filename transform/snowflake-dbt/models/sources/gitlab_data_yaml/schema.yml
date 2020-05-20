@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: location_factors_yaml_source
+    description: Emphemeral layer for extracting and cleaning data from [location_factors.yml file](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/data/location_factors.yml) in the GitLab Handbook.
+
+  - name: roles_yaml_source
+    description: Emphemeral layer for extracting and cleaning data from [roles.yml file](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/data/roles.yml) in the GitLab Handbook.
+
+  - name: team_yaml_source
+    description: Emphemeral layer for extracting and cleaning data from [team.yml file](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/data/team.yml) in the GitLab Handbook.
+
