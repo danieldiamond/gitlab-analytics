@@ -79,7 +79,7 @@ def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
     if current_weekday == 7 and dag_interval > current_seconds:
         return "dbt-full-refresh"
     else:
-        return "dbt-snapshots-run"
+        return "dbt-non-product-models-run"
 
 
 dbt_commit_hash_setter = KubernetesPodOperator(
@@ -168,35 +168,6 @@ dbt_product_models_task = KubernetesPodOperator(
 )
 
 
-# run snapshots on large warehouse
-dbt_snapshots_command = f"""
-    {pull_commit_hash} &&
-    {dbt_install_deps_and_seed_cmd} &&
-    dbt run --profiles-dir profile --target prod --models snapshots --vars {l_warehouse}; ret=$?;
-    python ../../orchestration/upload_dbt_file_to_snowflake.py results; exit $ret
-"""
-
-dbt_snapshots_run = KubernetesPodOperator(
-    **gitlab_defaults,
-    image=DBT_IMAGE,
-    task_id="dbt-snapshots-run",
-    name="dbt-snapshots-run",
-    secrets=[
-        SNOWFLAKE_ACCOUNT,
-        SNOWFLAKE_USER,
-        SNOWFLAKE_PASSWORD,
-        SNOWFLAKE_TRANSFORM_ROLE,
-        SNOWFLAKE_TRANSFORM_WAREHOUSE,
-        SNOWFLAKE_TRANSFORM_SCHEMA,
-        SNOWFLAKE_LOAD_PASSWORD,
-        SNOWFLAKE_LOAD_ROLE,
-        SNOWFLAKE_LOAD_USER,
-        SNOWFLAKE_LOAD_WAREHOUSE,
-    ],
-    env_vars=pod_env_vars,
-    arguments=[dbt_snapshots_command],
-    dag=dag,
-)
 
 
 # dbt-full-refresh
@@ -264,7 +235,7 @@ dbt_source_freshness = KubernetesPodOperator(
 dbt_test_cmd = f"""
     {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
-    dbt test --profiles-dir profile --target prod --vars {xs_warehouse} --exclude snowplow; ret=$?;
+    dbt test --profiles-dir profile --target prod --vars {xs_warehouse} --exclude snowplow snapshots; ret=$?;
     python ../../orchestration/upload_dbt_file_to_snowflake.py test; exit $ret
 """
 dbt_test = KubernetesPodOperator(
@@ -297,6 +268,6 @@ dbt_commit_hash_setter >> dbt_source_freshness
 dbt_source_freshness >> branching_dbt_run
 
 # Branching for run
-branching_dbt_run >> dbt_snapshots_run >> dbt_non_product_models_task >> dbt_product_models_task >> dbt_test
+branching_dbt_run >> dbt_non_product_models_task >> dbt_product_models_task >> dbt_test
 
 branching_dbt_run >> dbt_full_refresh >> dbt_test
