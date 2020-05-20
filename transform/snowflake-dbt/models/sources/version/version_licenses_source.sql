@@ -18,7 +18,7 @@ renamed AS (
       expires_on::TIMESTAMP                 AS expired_at,
       created_at::TIMESTAMP                 AS created_at,
       updated_at::TIMESTAMP                 AS updated_at,
-      active_users_count::INTEGER           AS active_users_count,
+      active_users_count::INTEGER           AS instance_users_count, -- See issue #4872
       historical_max_users_count::INTEGER   AS historical_max_users_count,
       last_ping_received_at::TIMESTAMP      AS last_ping_received_at,
       version::VARCHAR                      AS version
