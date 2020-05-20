@@ -111,7 +111,7 @@ dbt_test_snapshots_cmd = f"""
     dbt test --profiles-dir profile --target prod --vars {xs_warehouse} --models snapshots; ret=$?;
     python ../../orchestration/upload_dbt_file_to_snowflake.py test; exit $ret
 """
-dbt_test_snapshots = KubernetesPodOperator(
+dbt_test_snapshot_models = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
     task_id="dbt-test-snapshots",
@@ -133,3 +133,6 @@ dbt_test_snapshots = KubernetesPodOperator(
     arguments=[dbt_test_snapshots_cmd],
     dag=dag,
 )
+
+
+dbt_snapshot >> dbt_snapshot_models_run >> dbt_test_snapshot_models
