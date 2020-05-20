@@ -6,3 +6,10 @@ log: <!-- link to airflow log with error -->
 ```
 {longer error description text from log}
 ```
+
+Urgency:
+- [ ] T1 - Needs resolution ASAP
+- [ ] T2 - Resolution Required / Keep on Milestone
+- [ ] T3 - Backlog
+
+/label ~Triage ~Infrastructure ~Break-Fix
