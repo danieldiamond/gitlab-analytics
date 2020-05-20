@@ -76,10 +76,6 @@ models:
       - name: subscription_id
         tests:
           - not_null
-      - name: customers_current_customer_id
-        description: if the charge is found in the customers_db_charges_xf table (recording the orders that take place on the customer portal), the customer_id under which the order is recorded
-      - name: gitlab_dotcom_namespace_id
-        description: if the charge is found in the customers_db_charges_xf table, the namespace_id currently linked to the charge
     tests:
     - unique:
         column_name: "concat(charge_id, segment_version_order)"
