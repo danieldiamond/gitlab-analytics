@@ -48,7 +48,7 @@ WITH customers AS (
 
 , highest_paid_subscription_plan AS (
 
-SELECT DISTINCT
+  SELECT DISTINCT
 
     user_id,
 
@@ -56,9 +56,11 @@ SELECT DISTINCT
       PARTITION BY user_id
     ) AS highest_paid_subscription_plan_id,
 
-    MAX(plans.plan_is_paid) OVER (
-      PARTITION BY user_id
-    ) AS highest_paid_subscription_plan_is_paid,
+    COALESCE(
+      MAX(plans.plan_is_paid) OVER (
+        PARTITION BY user_id
+      ),
+    FALSE)  AS highest_paid_subscription_plan_is_paid,
 
     FIRST_VALUE(namespace_id) OVER (
       PARTITION BY user_id
@@ -98,7 +100,8 @@ SELECT DISTINCT
 
   FROM memberships
     LEFT JOIN plans
-      ON memberships.ultimate_parent_plan_id = plans.plan_id
+      ON memberships.ultimate_parent_plan_id = plans.plan_id::VARCHAR
+
 )
 
 , customers_with_trial AS (
@@ -148,10 +151,10 @@ SELECT DISTINCT
     customers_with_trial.has_started_trial_at
 
   FROM users
-  LEFT JOIN highest_paid_subscription_plan
-    ON users.user_id = highest_paid_subscription_plan.user_id
-  LEFT JOIN customers_with_trial
-    ON users.user_id::VARCHAR = customers_with_trial.user_id::VARCHAR
+    LEFT JOIN highest_paid_subscription_plan
+      ON users.user_id = highest_paid_subscription_plan.user_id
+    LEFT JOIN customers_with_trial
+      ON users.user_id::VARCHAR = customers_with_trial.user_id::VARCHAR
 
 )
 
