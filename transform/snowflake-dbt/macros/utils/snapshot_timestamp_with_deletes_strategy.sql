@@ -18,15 +18,3 @@
         "scd_id": scd_id_expr
     }) %}
 {% endmacro %}
-
-
-{% macro snapshot_string_as_time(timestamp) -%}
-    {{ adapter_macro('snapshot_string_as_time', timestamp) }}
-{%- endmacro %}
-
-
-{% macro default__snapshot_string_as_time(timestamp) %}
-    {% do exceptions.raise_not_implemented(
-        'snapshot_string_as_time macro not implemented for adapter '+adapter.type()
-    ) %}
-{% endmacro %}
