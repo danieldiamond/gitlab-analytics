@@ -73,7 +73,7 @@ dbt_snapshot = KubernetesPodOperator(
 
 
 # run snapshots on large warehouse
-dbt_snapshots_command = f"""
+dbt_snapshot_models_command = f"""
     {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
     dbt run --profiles-dir profile --target prod --models snapshots --vars {l_warehouse}; ret=$?;
@@ -83,8 +83,8 @@ dbt_snapshots_command = f"""
 dbt_snapshots_run = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
-    task_id="dbt-snapshots-run",
-    name="dbt-snapshots-run",
+    task_id="dbt-run-model-snapshots",
+    name="dbt-run-model-snapshots",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
@@ -98,6 +98,6 @@ dbt_snapshots_run = KubernetesPodOperator(
         SNOWFLAKE_LOAD_WAREHOUSE,
     ],
     env_vars=pod_env_vars,
-    arguments=[dbt_snapshots_command],
+    arguments=[dbt_snapshot_models_command],
     dag=dag,
 )
