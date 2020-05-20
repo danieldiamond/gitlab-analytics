@@ -13,6 +13,7 @@ from airflow_utils import (
     l_warehouse,
     xs_warehouse,
     dbt_install_deps_and_seed_cmd,
+    clone_repo_cmd,
 )
 from kube_secrets import (
     SNOWFLAKE_ACCOUNT,
@@ -31,6 +32,8 @@ from kube_secrets import (
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {**gitlab_pod_env_vars, **{}}
+
+
 pull_commit_hash = """export GIT_COMMIT="{{ ti.xcom_pull(task_ids="dbt-commit-hash-setter", key="return_value")["commit_hash"] }}" """
 
 # Default arguments for the DAG
@@ -135,4 +138,23 @@ dbt_test_snapshot_models = KubernetesPodOperator(
 )
 
 
-dbt_snapshot >> dbt_snapshot_models_run >> dbt_test_snapshot_models
+dbt_commit_hash_setter = KubernetesPodOperator(
+    **gitlab_defaults,
+    image=DBT_IMAGE,
+    task_id="dbt-commit-hash-setter",
+    name="dbt-commit-hash-setter",
+    env_vars=pod_env_vars,
+    arguments=[
+        f"""{clone_repo_cmd} &&
+            cd analytics/transform/snowflake-dbt/ &&
+            mkdir -p /airflow/xcom/ &&
+            echo "{{\\"commit_hash\\": \\"$(git rev-parse HEAD)\\"}}" >> /airflow/xcom/return.json
+        """
+    ],
+    do_xcom_push=True,
+    xcom_push=True,
+    dag=dag,
+)
+
+
+dbt_snapshot >> dbt_commit_hash_setter >> dbt_snapshot_models_run >> dbt_test_snapshot_models
