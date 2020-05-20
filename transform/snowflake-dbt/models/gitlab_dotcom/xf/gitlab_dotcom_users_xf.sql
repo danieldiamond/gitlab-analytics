@@ -52,19 +52,26 @@ WITH customers AS (
 
     user_id,
 
-    MAX(ultimate_parent_plan_id) OVER (
-      PARTITION BY user_id
-    ) AS highest_paid_subscription_plan_id,
-
     COALESCE(
       MAX(plans.plan_is_paid) OVER (
         PARTITION BY user_id
       ),
     FALSE)  AS highest_paid_subscription_plan_is_paid,
 
+    FIRST_VALUE(ultimate_parent_plan_id) OVER (
+     PARTITION BY user_id
+     ORDER BY
+        (ultimate_parent_plan_id = 'trial'),
+        ultimate_parent_plan_id DESC,
+        membership_source_type_order,
+        is_ultimate_parent DESC,
+        membership_source_type
+    ) AS highest_paid_subscription_plan_id,
+
     FIRST_VALUE(namespace_id) OVER (
       PARTITION BY user_id
       ORDER BY
+        (ultimate_parent_plan_id = 'trial'),
         ultimate_parent_plan_id DESC,
         membership_source_type_order,
         is_ultimate_parent DESC,
@@ -74,6 +81,7 @@ WITH customers AS (
     FIRST_VALUE(ultimate_parent_id) OVER (
       PARTITION BY user_id
       ORDER BY
+        (ultimate_parent_plan_id = 'trial'),
         ultimate_parent_plan_id DESC,
         membership_source_type_order,
         is_ultimate_parent DESC,
@@ -83,6 +91,7 @@ WITH customers AS (
     FIRST_VALUE(membership_source_type) OVER (
       PARTITION BY user_id
       ORDER BY
+        (ultimate_parent_plan_id = 'trial'),
         ultimate_parent_plan_id DESC,
         membership_source_type_order,
         is_ultimate_parent DESC,
@@ -92,6 +101,7 @@ WITH customers AS (
     FIRST_VALUE(membership_source_id) OVER (
       PARTITION BY user_id
       ORDER BY
+        (ultimate_parent_plan_id = 'trial'),
         ultimate_parent_plan_id DESC,
         membership_source_type_order,
         is_ultimate_parent DESC,
