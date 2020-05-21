@@ -147,7 +147,7 @@ class QualtricsClient:
         }
         request_body = {"name": mailing_list_name, "ownerId": owner_id}
         print(json.dumps(request_body))
-        response = requests.post(url, headers=headers, data=)
+        response = requests.post(url, headers=headers, data=json.dumps(request_body))
         if response.status_code == 429:
             time.sleep(3)  # Hit API limit.  Wait and try again.
             response = requests.post(
