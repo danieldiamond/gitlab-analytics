@@ -137,13 +137,15 @@ class QualtricsClient:
                 response = requests.post(url, headers=headers, data=json.dumps(contact))
             response.raise_for_status()
 
-    def create_mailing_list(self, directory_id: str, mailing_list_name: str) -> str:
+    def create_mailing_list(
+        self, directory_id: str, mailing_list_name: str, owner_id: str
+    ) -> str:
         url = self.base_url + f"directories/{directory_id}/mailinglists"
         headers = {
             "content-type": "application/json",
             "x-api-token": self.api_token,
         }
-        request_body = f'{{"name": "{mailing_list_name}"}}'
+        request_body = f'{{"name": "{mailing_list_name}", "ownerId": "{owner_id}"}}'
         response = requests.post(url, headers=headers, data=request_body)
         if response.status_code == 429:
             time.sleep(3)  # Hit API limit.  Wait and try again.

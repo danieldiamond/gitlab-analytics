@@ -382,7 +382,7 @@ def qualtrics_loader(load_type: str):
             file.sheet1.update_acell("A1", "processing")
         dw_uploader(engine, table, dataframe, schema)
         query = f"""
-          SELECT first_name, last_name, email_address, language
+          SELECT first_name, last_name, email_address, language, user_id
           FROM ANALYTICS_SENSITIVE.QUALTRICS_API_FORMATTED_CONTACTS WHERE user_id in
           (
               SELECT id
@@ -397,6 +397,7 @@ def qualtrics_loader(load_type: str):
                 "lastName": result["last_name"],
                 "email": result["email_address"],
                 "language": result["language"],
+                "embeddedData": {"gitlabUserID": result["user_id"]},
             }
             qualtrics_contacts.append(contact)
 
@@ -406,7 +407,7 @@ def qualtrics_loader(load_type: str):
 
         if qualtrics_contacts and not is_test:
             mailing_id = qualtrics_client.create_mailing_list(
-                env["QUALTRICS_POOL_ID"], table
+                env["QUALTRICS_POOL_ID"], table, env["QUALTRICS_GROUP_ID"]
             )
             qualtrics_client.upload_contacts_to_mailing_list(
                 env["QUALTRICS_POOL_ID"], mailing_id, qualtrics_contacts
