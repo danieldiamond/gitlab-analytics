@@ -7,19 +7,12 @@
           updated_at='updated_at',
         )
     }}
-    
-    WITH source AS (
 
-      SELECT 
-        *, 
-        ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS customers_rank_in_key
-        
-      FROM {{ source('customers', 'customers_db_customers') }}
 
-    )
+    SELECT *, 0.1 AS eli_temp --TODO
+    FROM {{ source('customers', 'customers_db_customers') }}
+    WHERE _task_instance IN (SELECT MAX(_task_instance) FROM {{ source('customers', 'customers_db_customers') }}) --TODO: macro?
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
-    SELECT *
-    FROM source
-    WHERE customers_rank_in_key = 1
     
 {% endsnapshot %}
