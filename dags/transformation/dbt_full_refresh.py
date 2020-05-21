@@ -36,11 +36,9 @@ default_args = {
 }
 
 # Create the DAG
-dag = DAG(
-    "dbt_full_refresh", default_args=default_args, schedule_interval=None
-)
+dag = DAG("dbt_full_refresh", default_args=default_args, schedule_interval=None)
 
-#read model for full-refresh from Airflow Variable
+# read model for full-refresh from Airflow Variable
 dbt_model_to_full_refresh = Variable.get("DBT_MODEL_TO_FULL_REFRESH")
 
 # dbt-full-refresh
