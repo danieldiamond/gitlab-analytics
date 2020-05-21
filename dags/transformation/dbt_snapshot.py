@@ -76,25 +76,14 @@ dbt_snapshot = KubernetesPodOperator(
     dag=dag,
 )
 
-
-
-# Default arguments for the DAG
-default_args = {
-    "catchup": False,
-    "depends_on_past": False,
-    "on_failure_callback": slack_failed_task,
-    "owner": "airflow",
-    "params": {
-        "slack_channel_override": "#dbt-runs"
-    },  # Overriden for dbt-source-freshness in airflow_utils.py
-    "retries": 0,
-    "retry_delay": timedelta(minutes=1),
-    "sla": timedelta(hours=8),
-    "sla_miss_callback": slack_failed_task,
-    "start_date": datetime(2019, 1, 1, 0, 0, 0),
-    "trigger_rule": TriggerRule.ALL_DONE,
+# Set extra args for next DAGS
+default_args ["on_failure_callback"]= slack_failed_task
+default_args ["params"] = {
+    "slack_channel_override": "#dbt-runs"
 }
-
+default_args["retries"]= 0
+default_args["sla"]=timedelta(hours=8)
+default_args["trigger_rule"]=TriggerRule.ALL_DONE
 
 dbt_commit_hash_setter = KubernetesPodOperator(
     **gitlab_defaults,
