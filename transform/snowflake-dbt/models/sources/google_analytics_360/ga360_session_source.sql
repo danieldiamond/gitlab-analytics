@@ -1,27 +1,27 @@
 WITH source AS (
 
-	SELECT *
-	FROM {{ source('google_analytics_360', 'ga_session') }}
+    SELECT *
+    FROM {{ source('google_analytics_360', 'ga_session') }}
 
 ), renamed AS(
 
-	SELECT
-	  --Keys
-	  visit_id::FLOAT                               AS visit_id, 
-	  visitor_id::VARCHAR                           AS visitor_id, 
-	    
-	  --Info
-	  date::DATE                                    AS session_date,
-	  visit_start_time::TIMESTAMP_TZ                AS visit_start_time,
-	  visit_number::FLOAT                           AS visit_number,
-	  total_visits::FLOAT                           AS total_visits,
-	  total_pageviews::FLOAT                        AS total_pageviews,
-	  total_screenviews::FLOAT                      AS total_screenviews,
-	  total_unique_screenviews::FLOAT               AS total_unique_screenviews,
-	  total_hits::FLOAT                             AS total_hits,
-	  total_new_visits::FLOAT                       AS total_new_visits,
-	  total_time_on_screen::FLOAT                   AS total_time_on_screen,
-	  total_time_on_site::FLOAT                     AS total_time_on_site,
+    SELECT
+      --Keys
+      visit_id::FLOAT                               AS visit_id, 
+      visitor_id::VARCHAR                           AS visitor_id, 
+
+      --Info
+      date::DATE                                    AS session_date,
+      visit_start_time::TIMESTAMP_TZ                AS visit_start_time,
+      visit_number::FLOAT                           AS visit_number,
+      total_visits::FLOAT                           AS total_visits,
+      total_pageviews::FLOAT                        AS total_pageviews,
+      total_screenviews::FLOAT                      AS total_screenviews,
+      total_unique_screenviews::FLOAT               AS total_unique_screenviews,
+      total_hits::FLOAT                             AS total_hits,
+      total_new_visits::FLOAT                       AS total_new_visits,
+      total_time_on_screen::FLOAT                   AS total_time_on_screen,
+      total_time_on_site::FLOAT                     AS total_time_on_site,
       traffic_source_source::VARCHAR                AS traffic_source,
       traffic_source_referral_path::VARCHAR         AS traffic_source_referral_path,
       traffic_source_campaign::VARCHAR              AS traffic_source_campaign,
@@ -38,7 +38,7 @@ WITH source AS (
       geo_network_country::VARCHAR                  AS geo_network_country,
       geo_network_city::VARCHAR                     AS geo_network_city
 
-	FROM source
+    FROM source
 
 )
 
