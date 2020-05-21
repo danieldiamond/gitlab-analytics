@@ -49,7 +49,6 @@ default_args = {
         "slack_channel_override": "#dbt-runs"
     },  # Overriden for dbt-source-freshness in airflow_utils.py
     "retries": 0,
-    "retry_delay": timedelta(minutes=1),
     "sla": timedelta(hours=8),
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
