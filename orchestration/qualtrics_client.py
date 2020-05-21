@@ -145,8 +145,8 @@ class QualtricsClient:
             "content-type": "application/json",
             "x-api-token": self.api_token,
         }
-        request_body = f'{{"name": "{mailing_list_name}", "ownerId": "{owner_id}"}}'
-        response = requests.post(url, headers=headers, data=request_body)
+        request_body = {"name": mailing_list_name, "ownerId": owner_id}
+        response = requests.post(url, headers=headers, data=json.dumps(request_body))
         if response.status_code == 429:
             time.sleep(3)  # Hit API limit.  Wait and try again.
             response = requests.post(
