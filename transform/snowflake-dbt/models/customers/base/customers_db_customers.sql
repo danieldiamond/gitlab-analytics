@@ -2,6 +2,7 @@ WITH source AS (
 
     SELECT *
     FROM {{ source('customers', 'customers_db_customers') }}
+    WHERE _task_instance IN (SELECT MAX(_task_instance) FROM {{ source('customers', 'customers_db_customers') }}) --TODO: macro?
     QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY UPDATED_AT DESC) = 1
 
 ), renamed AS (
