@@ -12,7 +12,7 @@ WITH source AS (
 	    
 	  --Info
 	  visit_start_time::TIMESTAMP_TZ  AS visit_start_time,
-          hit_number::INTEGER             AS hit_number,
+      hit_number::INTEGER             AS hit_number,
 	  is_entrance::BOOLEAN            AS is_entrance,
 	  is_exit::BOOLEAN                AS is_exit,
 	  referer::VARCHAR                AS referer,
