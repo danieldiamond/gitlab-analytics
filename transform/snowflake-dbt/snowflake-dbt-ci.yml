@@ -100,12 +100,13 @@
     - dbt run $CI_PROFILE_TARGET --models $DBT_MODELS || true
     - dbt test $CI_PROFILE_TARGET --models $DBT_MODELS
 
-➕specify_csv_seed:
-   <<: *snowflake_dbt_jobs
+
+specify_csv_seed:
+  <<: *snowflake_dbt_jobs
   script:
     - echo $DBT_MODELS
     - dbt seed --select $DBT_MODELS $CI_PROFILE_TARGET
-    
+
 # dbt tests
 .dbt_misc_jobs: &dbt_misc_jobs
   <<: *snowflake_dbt_jobs
