@@ -176,6 +176,7 @@ models:
       gitlab_dotcom:
         tags: ["product"]
         materialized: table
+        schema: analytics
 
       gitter:
         enabled: false
