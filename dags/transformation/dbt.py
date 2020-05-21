@@ -36,6 +36,7 @@ env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {**gitlab_pod_env_vars, **{}}
 
+# This value is set based on the commit hash setter task in dbt_snapshot
 pull_commit_hash = """export GIT_COMMIT="{{ ti.xcom_pull(task_ids="dbt-commit-hash-setter", key="return_value")["commit_hash"] }}" """
 
 # Default arguments for the DAG
@@ -81,24 +82,6 @@ def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:
     else:
         return "dbt-non-product-models-run"
 
-
-dbt_commit_hash_setter = KubernetesPodOperator(
-    **gitlab_defaults,
-    image=DBT_IMAGE,
-    task_id="dbt-commit-hash-setter",
-    name="dbt-commit-hash-setter",
-    env_vars=pod_env_vars,
-    arguments=[
-        f"""{clone_repo_cmd} &&
-            cd analytics/transform/snowflake-dbt/ &&
-            mkdir -p /airflow/xcom/ &&
-            echo "{{\\"commit_hash\\": \\"$(git rev-parse HEAD)\\"}}" >> /airflow/xcom/return.json
-        """
-    ],
-    do_xcom_push=True,
-    xcom_push=True,
-    dag=dag,
-)
 
 branching_dbt_run = BranchPythonOperator(
     task_id="branching-dbt-run",
@@ -259,8 +242,7 @@ dbt_test = KubernetesPodOperator(
     dag=dag,
 )
 
-# Hash Getter
-dbt_commit_hash_setter >> dbt_source_freshness
+
 
 # Source Freshness
 dbt_source_freshness >> branching_dbt_run
