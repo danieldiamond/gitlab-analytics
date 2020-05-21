@@ -120,6 +120,11 @@ models:
 
       gitlab_data_yaml:
         schema: gitlab_data_yaml
+
+      gitlab_dotcom:
+        tags: ["product"]
+        materialized: table
+        schema: staging
       
       gitter:
         enabled: false
@@ -167,6 +172,10 @@ models:
       gitlab_data_yaml:
         materialized: table
         schema: analytics
+
+      gitlab_dotcom:
+        tags: ["product"]
+        materialized: table
 
       gitter:
         enabled: false
@@ -217,12 +226,6 @@ models:
 
     date:
       materialized: table
-
-    gitlab_dotcom:
-      tags: ["product"]
-      materialized: table
-      base:
-          schema: staging
 
     handbook:
         materialized: table
