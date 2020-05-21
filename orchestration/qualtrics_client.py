@@ -152,4 +152,5 @@ class QualtricsClient:
             response = requests.post(
                 url, headers=headers, data=json.dumps(request_body)
             )
+        print(response.json())
         return response.json()["result"]["id"]
