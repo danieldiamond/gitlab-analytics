@@ -39,7 +39,7 @@ default_args = {
 dag = DAG("dbt_full_refresh", default_args=default_args, schedule_interval=None)
 
 # read model for full-refresh from Airflow Variable
-dbt_model_to_full_refresh = Variable.get("DBT_MODEL_TO_FULL_REFRESH", default="test")
+dbt_model_to_full_refresh = Variable.get("DBT_MODEL_TO_FULL_REFRESH", default_var="test")
 
 # dbt-full-refresh
 dbt_full_refresh_cmd = f"""
