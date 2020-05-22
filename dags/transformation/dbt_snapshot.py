@@ -133,7 +133,6 @@ dbt_snapshot_models_run = KubernetesPodOperator(
     dag=dag,
 )
 
-
 # dbt-test
 dbt_test_snapshots_cmd = f"""
     {pull_commit_hash} &&
