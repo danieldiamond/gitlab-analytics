@@ -35,7 +35,7 @@ class GoogleSheetsClient:
     ) -> pd.DataFrame:
         """
         Loads the google sheet into a dataframe with column names loaded from the sheet.
-        If API Rate Limit has been reached use [Truncated exponential backoff](https://cloud.google.com/storage/docs/exponential-backoff) strategy to retry to retry
+        If API Rate Limit has been reached use [Truncated exponential backoff](https://cloud.google.com/storage/docs/exponential-backoff) strategy to retry
         Returns the dataframe.
         """
         n = 0
