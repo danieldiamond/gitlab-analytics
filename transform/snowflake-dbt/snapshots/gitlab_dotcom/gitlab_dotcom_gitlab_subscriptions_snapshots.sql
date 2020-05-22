@@ -1,24 +1,16 @@
-{# {% snapshot gitlab_dotcom_gitlab_subscriptions_snapshots %}
+{% snapshot gitlab_dotcom_gitlab_subscriptions_snapshots %}
 
     {{
         config(
           unique_key='id',
-          strategy='timestamp',
+          strategy='timestamp_with_deletes',
           updated_at='updated_at',
         )
     }}
     
-    WITH source AS (
-
-      SELECT
-        *,
-        ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) as gitlab_subscriptions_rank_in_key
-      FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
-
-    )
-
     SELECT *
-    FROM source
-    WHERE gitlab_subscriptions_rank_in_key = 1
+    FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }}
+    WHERE _task_instance IN (SELECT MAX(_task_instance) FROM {{ source('gitlab_dotcom', 'gitlab_subscriptions') }})
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
     
-{% endsnapshot %} #}
+{% endsnapshot %}
