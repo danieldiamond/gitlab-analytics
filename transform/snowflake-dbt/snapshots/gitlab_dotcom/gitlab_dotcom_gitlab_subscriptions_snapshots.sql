@@ -1,4 +1,4 @@
-{% snapshot gitlab_dotcom_gitlab_subscriptions_snapshots %}
+{# {% snapshot gitlab_dotcom_gitlab_subscriptions_snapshots %}
 
     {{
         config(
@@ -21,4 +21,4 @@
     FROM source
     WHERE gitlab_subscriptions_rank_in_key = 1
     
-{% endsnapshot %}
+{% endsnapshot %} #}

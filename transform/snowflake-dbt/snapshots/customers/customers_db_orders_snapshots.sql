@@ -1,23 +1,16 @@
-{% snapshot customers_db_orders_snapshots %}
+{% snapshot customers_db_customers_snapshots %}
 
     {{
         config(
           unique_key='id',
-          strategy='timestamp',
+          strategy='timestamp_with_deletes',
           updated_at='updated_at',
         )
     }}
-    
-    WITH source AS (
-
-      SELECT
-        *,
-        ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS orders_rank_in_key
-      FROM {{ source('customers', 'customers_db_orders') }}
-    )
 
     SELECT *
-    FROM source
-    WHERE orders_rank_in_key = 1
+    FROM {{ source('customers', 'customers_db_orders') }}
+    WHERE _task_instance IN (SELECT MAX(_task_instance) FROM {{ source('customers', 'customers_db_orders') }})
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 {% endsnapshot %}

@@ -8,7 +8,7 @@
         )
     }}
 
-    SELECT *
+    SELECT *, 0.2 AS eli_test
     FROM {{ source('customers', 'customers_db_customers') }}
     WHERE _task_instance IN (SELECT MAX(_task_instance) FROM {{ source('customers', 'customers_db_customers') }})
     QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1

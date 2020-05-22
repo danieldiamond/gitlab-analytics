@@ -1,4 +1,4 @@
-{% snapshot sfdc_opportunity_snapshots %}
+{# {% snapshot sfdc_opportunity_snapshots %}
 
     {{
         config(
@@ -11,4 +11,4 @@
     SELECT * 
     FROM {{ source('salesforce', 'opportunity') }}
     
-{% endsnapshot %}
+{% endsnapshot %} #}

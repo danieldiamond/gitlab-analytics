@@ -1,4 +1,4 @@
-{% snapshot gitlab_dotcom_members_snapshots %}
+{# {% snapshot gitlab_dotcom_members_snapshots %}
 
     {{
         config(
@@ -22,4 +22,4 @@
     FROM source
     WHERE members_rank_in_key = 1
     
-{% endsnapshot %}
+{% endsnapshot %} #}
