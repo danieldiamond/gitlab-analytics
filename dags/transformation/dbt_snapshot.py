@@ -167,4 +167,4 @@ dbt_test_snapshot_models = KubernetesPodOperator(
 
 
 
-dbt_snapshot >> dbt_commit_hash_setter >> dbt_snapshot_models_run >> dbt_test_snapshot_models
+dbt_commit_hash_setter >> dbt_snapshot  >> dbt_snapshot_models_run >> dbt_test_snapshot_models
