@@ -36,7 +36,7 @@ WITH sfdc_account_snapshots AS (
       dedicated_service_engineer__c              AS dedicated_service_engineer,
       sdr_assigned__c                            AS sales_development_rep,
       sdr_account_team__c                        AS sales_development_rep_team,
-      solutions_architect__c                     AS solutions_architect,
+      --solutions_architect__c                     AS solutions_architect,
       technical_account_manager_lu__c            AS technical_account_manager_id,
 
       -- info
