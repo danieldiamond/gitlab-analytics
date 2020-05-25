@@ -1070,6 +1070,16 @@ tables:
       , merged_by_id
       , latest_closed_by_id
       , latest_closed_at
+      , first_comment_at
+      , first_commit_at
+      , last_commit_at
+      , diff_size
+      , modified_path_size
+      , commits_count
+      , first_approved_at
+      , first_reasssigned_at
+      , added_lines
+      , removed_lines
       FROM merge_request_metrics
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
