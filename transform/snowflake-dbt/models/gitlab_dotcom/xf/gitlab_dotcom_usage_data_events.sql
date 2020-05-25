@@ -154,7 +154,7 @@
   },
   {
     "event_name": "issue_resource_weight_events",
-    "source_table_name": "resource_weight_events",
+    "source_table_name": "gitlab_dotcom_resource_weight_events_xf",
     "user_column_name": "user_id",
     "key_to_parent_project": "project_id",
     "primary_key": "resource_milestone_event_id",
@@ -382,10 +382,9 @@ WITH gitlab_subscriptions AS (
 ), issue_resource_milestone_events AS (
 
     SELECT *
-    FROM {{ref('issue_resource_milestone_events_xf')}}
+    FROM {{ref('gitlab_dotcom_resource_milestone_events_xf')}}
   
-  
-, license_management_jobs AS (
+), license_management_jobs AS (
 
     SELECT *
     FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
