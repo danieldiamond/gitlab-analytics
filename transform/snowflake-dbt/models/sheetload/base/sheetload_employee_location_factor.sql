@@ -1,6 +1,7 @@
 {{ config({
     "schema": "sensitive",
-    "materialized": "table"
+    "materialized": "table",
+    "enabled" : false
     })
 }}
 

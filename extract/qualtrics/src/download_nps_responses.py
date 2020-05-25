@@ -8,7 +8,7 @@ from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
     snowflake_stage_load_copy_remove,
 )
-from orchestration.qualtrics_client import QualtricsClient
+from qualtrics_client import QualtricsClient
 
 if __name__ == "__main__":
     config_dict = env.copy()

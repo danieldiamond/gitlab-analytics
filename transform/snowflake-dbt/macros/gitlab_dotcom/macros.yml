@@ -5,8 +5,10 @@ macros:
     description: '{{ doc("action_type") }}'
   - name: get_internal_parent_namespaces
     description: '{{ doc("get_internal_parent_namespaces") }}'
-  - name: resource_label_action_type
-    description: '{{ doc("resource_label_action_type") }}'
+  - name: map_state_id
+    description: '{{ doc("map_state_id") }}'
+  - name: resource_event_action_type
+    description: '{{ doc("resource_event_action_type") }}'
   - name: transform_clusters_applications
     description: '{{ doc("transform_clusters_applications") }}'
   - name: user_role_mapping
