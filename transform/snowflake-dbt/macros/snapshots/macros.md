@@ -3,5 +3,5 @@ Overrides the built-in macro of the same name, in order to turn a critical inner
 {% enddocs %}
 
 {% docs snapshot_timestamp_with_deletes_strategy %}
-Only use if your snapshot select statement is pulling current records only. This is not the default for PGP sources, which store historical data that has since been deleted.
+This strategy is similar to the timestamp startegy, but adds support for records that are hard-deleted from the source. Only use this strategy if your snapshot select statement is pulling current records only, which is not the default for PGP sources. RAW does not drop historical PGP rows after they've been deleted, so they need to be explicitly filtered out. 
 {% enddocs %}
