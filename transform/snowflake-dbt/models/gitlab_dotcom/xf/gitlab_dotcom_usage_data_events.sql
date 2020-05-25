@@ -153,6 +153,15 @@
     "is_representative_of_stage": "True"
   },
   {
+    "event_name": "issue_resource_label_events",
+    "source_cte_name": "issue_resource_label_events",
+    "user_column_name": "user_id",
+    "key_to_parent_project": "namespace_id",
+    "primary_key": "issue_resource_label_event_id",
+    "stage_name": "plan",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "issue_resource_weight_events",
     "source_table_name": "gitlab_dotcom_resource_weight_events_xf",
     "user_column_name": "user_id",
@@ -379,10 +388,17 @@ WITH gitlab_subscriptions AS (
     FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
     WHERE secure_ci_job_type = 'dependency_scanning'
 
+), issue_resource_label_events AS (
+
+    SELECT *
+    FROM {{ref('gitlab_dotcom_resource_label_events_xf')}}
+    WHERE issue_id IS NOT NULL
+  
 ), issue_resource_milestone_events AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_resource_milestone_events_xf')}}
+    WHERE issue_id IS NOT NULL
   
 ), license_management_jobs AS (
 
