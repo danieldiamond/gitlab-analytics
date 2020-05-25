@@ -5,7 +5,7 @@ WITH resource_label_events AS (
   
 )
 
-, issues AS (
+, epics AS (
 
     SELECT *
     FROM {{ ref('gitlab_dotcom_epics') }} 
@@ -15,7 +15,7 @@ WITH resource_label_events AS (
 , issues AS (
 
     SELECT *
-    FROM {{ ref('gitlab_dotcom_issues') }} 
+    FROM {{ ref('gitlab_dotcom_issues_xf') }} 
 
 )
 
@@ -31,7 +31,7 @@ WITH resource_label_events AS (
     SELECT 
       resource_label_events.*,
       COALESCE(epics.group_id,
-                issues.namespace_id,
+                issues.issue_namespace_id,
                 mrs.namespace_id) AS namespace_id
     FROM resource_label_events
     LEFT JOIN epics
