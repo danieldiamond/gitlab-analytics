@@ -21,7 +21,7 @@ renamed AS (
         id::INTEGER                                  AS id,
         source_ip::VARCHAR                           AS source_ip,
         version::VARCHAR                             AS version,
-        active_user_count::INTEGER                   AS active_user_count,
+        active_user_count::INTEGER                   AS instance_user_count, -- See issue #4872.
         license_md5::VARCHAR                         AS license_md5,
         historical_max_users::INTEGER                AS historical_max_users,
         --licensee // removed for PII
