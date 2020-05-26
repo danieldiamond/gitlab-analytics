@@ -6,10 +6,9 @@ from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
     query_executor,
 )
-from google_sheets_client import GoogleSheetsClient
+from google_sheets_client import GoogleSheetsClient, dw_uploader
 
 from qualtrics_client import QualtricsClient
-from sheetload import dw_uploader
 
 
 def construct_qualtrics_contact(result):
