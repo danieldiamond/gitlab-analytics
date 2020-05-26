@@ -22,7 +22,7 @@ WITH resource_label_events AS (
 , mrs AS (
 
     SELECT *
-    FROM {{ ref('gitlab_dotcom_merge_requests') }} 
+    FROM {{ ref('gitlab_dotcom_merge_requests_xf') }} 
 
 )
 
