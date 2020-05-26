@@ -110,6 +110,8 @@
     - dbt seed $CI_PROFILE_TARGET --select $DBT_MODELS
     
 ➕📸🥩specify_snapshot:
+  <<: *snowflake_dbt_jobs
+  script:
     - export SNOWFLAKE_SNAPSHOT_DATABASE="${CI_COMMIT_REF_NAME^^}_RAW" # Must write to clone of RAW since this does real work
     - echo $SNOWFLAKE_SNAPSHOT_DATABASE
     - *deps_and_seed
