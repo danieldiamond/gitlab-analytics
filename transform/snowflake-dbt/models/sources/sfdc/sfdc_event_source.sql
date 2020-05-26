@@ -3,7 +3,7 @@ WITH source AS (
     SELECT *
     FROM {{ source('salesforce', 'event') }}
 
-), renamed AS(
+), renamed AS (
 
     SELECT
     id                                    AS event_id,
