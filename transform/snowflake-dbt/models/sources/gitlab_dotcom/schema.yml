@@ -1060,17 +1060,6 @@ models:
       - name: updated_at
         tests:
           - not_null
-      - name: noteable_type
-        tests:
-          - accepted_values:
-              values:
-                - Commit
-                - Epic
-                - Issue
-                - MergeRequest
-                - Snippet
-                - Wiki
-                - 'DesignManagement::Design'
 
   - name: gitlab_dotcom_notification_settings
     description: Base model for Gitlab.com notification settings

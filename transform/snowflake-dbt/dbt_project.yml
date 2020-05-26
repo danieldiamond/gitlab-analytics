@@ -135,8 +135,6 @@ models:
 
       greenhouse:
         schema: greenhouse
-        sensitive:
-          schema: sensitive
 
       license:
         schema: license_db
