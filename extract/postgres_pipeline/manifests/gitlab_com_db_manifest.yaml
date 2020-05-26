@@ -1074,7 +1074,7 @@ tables:
       , first_commit_at
       , last_commit_at
       , diff_size
-      , modified_path_size
+      , modified_paths_size
       , commits_count
       , first_approved_at
       , first_reasssigned_at
