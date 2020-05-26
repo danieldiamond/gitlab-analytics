@@ -46,6 +46,7 @@ dbt_snapshot_cmd = f"""
     dbt snapshot -s tag:daily --profiles-dir profile
 """
 
+
 dbt_snapshot = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
