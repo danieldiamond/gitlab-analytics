@@ -11,7 +11,6 @@ from yaml import load, safe_load, YAMLError
 import boto3
 import gspread
 import pandas as pd
-from qualtrics_client import QualtricsClient
 from fire import Fire
 from gitlabdata.orchestration_utils import (
     postgres_engine_factory,
@@ -25,6 +24,8 @@ from gspread.exceptions import APIError
 from gspread import Client
 from oauth2client.service_account import ServiceAccountCredentials
 from sqlalchemy.engine.base import Engine
+
+from qualtrics_sheetload import qualtrics_loader
 
 
 def table_has_changed(data: pd.DataFrame, engine: Engine, table: str) -> bool:
@@ -345,78 +346,6 @@ def csv_loader(
     info(f"Uploading {filename} to {database}.{schema}.{table}")
 
     dw_uploader(engine, table=table, data=csv_data, schema=schema, truncate=True)
-
-
-def qualtrics_loader(load_type: str):
-    is_test = load_type == "test"
-    google_sheet_client = GoogleSheetsClient()
-    prefix = "qualtrics_mailing_list."
-    if is_test:
-        prefix = "test_" + prefix
-    qualtrics_files_to_load = [
-        file
-        for file in google_sheet_client.get_visible_files()
-        if file.title.lower().startswith(prefix)
-    ]
-
-    info(f"Found {len(qualtrics_files_to_load)} files to process.")
-
-    schema = "qualtrics_mailing_list"
-
-    engine = snowflake_engine_factory(env, "LOADER", schema)
-    analytics_engine = snowflake_engine_factory(env, "CI_USER")
-
-    for file in qualtrics_files_to_load:
-        file_name = file.title
-        _, table = file_name.split(".")
-        if file.sheet1.title != table:
-            error(
-                f"{file_name}: First worksheet did not match expected name of {table}"
-            )
-            continue
-        dataframe = google_sheet_client.load_google_sheet(None, file_name, table)
-        if list(dataframe.columns.values)[0].lower() != "id":
-            warning(f"{file_name}: First column did not match expected name of id")
-            continue
-        if not is_test:
-            file.sheet1.update_acell("A1", "processing")
-        dw_uploader(engine, table, dataframe, schema)
-        query = f"""
-          SELECT first_name, last_name, email_address, language, user_id
-          FROM ANALYTICS_SENSITIVE.QUALTRICS_API_FORMATTED_CONTACTS WHERE user_id in
-          (
-              SELECT id
-              FROM RAW.{schema}.{table}
-          )
-        """
-        results = query_executor(analytics_engine, query)
-        qualtrics_contacts = []
-        for result in results:
-            contact = {
-                "firstName": result["first_name"],
-                "lastName": result["last_name"],
-                "email": result["email_address"],
-                "language": result["language"],
-                "embeddedData": {"gitlabUserID": result["user_id"]},
-            }
-            qualtrics_contacts.append(contact)
-
-        qualtrics_client = QualtricsClient(
-            env["QUALTRICS_API_TOKEN"], env["QUALTRICS_DATA_CENTER"]
-        )
-
-        if qualtrics_contacts and not is_test:
-            mailing_id = qualtrics_client.create_mailing_list(
-                env["QUALTRICS_POOL_ID"], table, env["QUALTRICS_GROUP_ID"]
-            )
-            qualtrics_client.upload_contacts_to_mailing_list(
-                env["QUALTRICS_POOL_ID"], mailing_id, qualtrics_contacts
-            )
-
-        if is_test:
-            info(f"Not renaming file for test.")
-        else:
-            file.sheet1.update_acell("A1", "processed")
 
 
 if __name__ == "__main__":
