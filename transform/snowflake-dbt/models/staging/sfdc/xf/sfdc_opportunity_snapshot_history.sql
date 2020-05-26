@@ -31,6 +31,7 @@ WITH sfdc_opportunity_snapshots AS (
       sales_market__c                AS opportunity_owner_department,
       SDR_LU__c                      AS opportunity_sales_development_representative,
       BDR_LU__c                      AS opportunity_business_development_representative,
+      BDR_SDR__c                     AS opportunity_development_representative,
       account_owner_team_o__c        AS account_owner_team_stamped,
       COALESCE({{ sales_segment_cleaning('ultimate_parent_sales_segment_emp_o__c') }}, {{ sales_segment_cleaning('ultimate_parent_sales_segment_o__c') }} )
                                      AS parent_segment,
@@ -42,6 +43,7 @@ WITH sfdc_opportunity_snapshots AS (
       type                           AS sales_type,
       {{  sfdc_source_buckets('leadsource') }}
       stagename                      AS stage_name,
+      revenue_type__c                AS order_type,
 
       -- opportunity information
       acv_2__c                       AS acv,
@@ -53,6 +55,7 @@ WITH sfdc_opportunity_snapshots AS (
       incremental_acv_2__c           AS forecasted_iacv,
       iacv_created_date__c           AS iacv_created_date,
       incremental_acv__c             AS incremental_acv,
+      invoice_number__c              AS invoice_number,
       is_refund_opportunity__c       AS is_refund,
       is_downgrade_opportunity__c    AS is_downgrade,
       swing_deal__c                  AS is_swing_deal,

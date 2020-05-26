@@ -161,6 +161,10 @@ QUALTRICS_API_TOKEN = Secret(
     "env", "QUALTRICS_API_TOKEN", "airflow", "QUALTRICS_API_TOKEN"
 )
 
+QUALTRICS_GROUP_ID = Secret(
+    "env", "QUALTRICS_GROUP_ID", "airflow", "QUALTRICS_GROUP_ID"
+)
+
 QUALTRICS_POOL_ID = Secret("env", "QUALTRICS_POOL_ID", "airflow", "QUALTRICS_POOL_ID")
 
 QUALTRICS_NPS_ID = Secret("env", "QUALTRICS_NPS_ID", "airflow", "QUALTRICS_NPS_ID")

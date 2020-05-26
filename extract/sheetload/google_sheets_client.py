@@ -88,3 +88,39 @@ class GoogleSheetsClient:
                 }
             }
         )
+
+
+def dw_uploader(
+    engine: Engine,
+    table: str,
+    data: pd.DataFrame,
+    schema: str = "sheetload",
+    chunk: int = 0,
+    truncate: bool = False,
+) -> bool:
+    """
+    Use a DB engine to upload a dataframe.
+    """
+
+    # Clean the column names and add metadata, generate the dtypes
+    data.columns = [
+        str(column_name).replace(" ", "_").replace("/", "_")
+        for column_name in data.columns
+    ]
+
+    # If the data isn't chunked, or this is the first iteration, drop table
+    if not chunk and not truncate:
+        table_changed = table_has_changed(data, engine, table)
+        if not table_changed:
+            return False
+        drop_query = f"DROP TABLE IF EXISTS {schema}.{table} CASCADE"
+        query_executor(engine, drop_query)
+
+    # Add the _updated_at metadata and set some vars if chunked
+    data["_updated_at"] = time.time()
+    if_exists = "append" if chunk else "replace"
+    data.to_sql(
+        name=table, con=engine, index=False, if_exists=if_exists, chunksize=15000
+    )
+    info(f"Successfully loaded {data.shape[0]} rows into {table}")
+    return True
