@@ -77,13 +77,11 @@ dbt_snapshot = KubernetesPodOperator(
 )
 
 # Set extra args for next DAGS
-default_args ["on_failure_callback"]= slack_failed_task
-default_args ["params"] = {
-    "slack_channel_override": "#dbt-runs"
-}
-default_args["retries"]= 0
-default_args["sla"]=timedelta(hours=8)
-default_args["trigger_rule"]=TriggerRule.ALL_DONE
+default_args["on_failure_callback"] = slack_failed_task
+default_args["params"] = {"slack_channel_override": "#dbt-runs"}
+default_args["retries"] = 0
+default_args["sla"] = timedelta(hours=8)
+default_args["trigger_rule"] = TriggerRule.ALL_DONE
 
 dbt_commit_hash_setter = KubernetesPodOperator(
     **gitlab_defaults,
@@ -165,6 +163,4 @@ dbt_test_snapshot_models = KubernetesPodOperator(
 )
 
 
-
-
-dbt_commit_hash_setter >> dbt_snapshot  >> dbt_snapshot_models_run >> dbt_test_snapshot_models
+dbt_commit_hash_setter >> dbt_snapshot >> dbt_snapshot_models_run >> dbt_test_snapshot_models

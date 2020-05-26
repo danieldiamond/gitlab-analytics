@@ -244,7 +244,6 @@ dbt_test = KubernetesPodOperator(
 )
 
 
-
 # Source Freshness
 dbt_source_freshness >> branching_dbt_run
 
