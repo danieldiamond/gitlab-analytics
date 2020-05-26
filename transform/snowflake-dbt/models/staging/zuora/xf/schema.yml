@@ -1,6 +1,13 @@
 version: 2
 
 models:
+    - name: saas_charges_with_namespace_id
+      description: '{{ doc("saas_charges_with_namespace_id") }}'
+      columns:
+          - name: charge_id
+            tests:
+                - not_null
+                - unique
     - name: zuora_accounts_receivables
       description: Zuora accounts receivable
       columns:
