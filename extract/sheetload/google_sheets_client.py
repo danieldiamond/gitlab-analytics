@@ -2,6 +2,7 @@ import sys
 import re
 import json
 import time
+import random
 from io import StringIO
 from logging import error, info, basicConfig, getLogger
 from os import environ as env
@@ -26,13 +27,19 @@ from sqlalchemy.engine.base import Engine
 
 class GoogleSheetsClient:
     def load_google_sheet(
-        self, key_file, file_name: str, worksheet_name: str, gsheet_retries: int = 3
+        self,
+        key_file,
+        file_name: str,
+        worksheet_name: str,
+        maximum_backoff_sec: int = 600,
     ) -> pd.DataFrame:
         """
         Loads the google sheet into a dataframe with column names loaded from the sheet.
+        If API Rate Limit has been reached use [Truncated exponential backoff](https://cloud.google.com/storage/docs/exponential-backoff) strategy to retry
         Returns the dataframe.
         """
-        for _ in range(gsheet_retries):
+        n = 0
+        while maximum_backoff_sec > (2 ** n):
             try:
                 sheets_client = self.get_client(key_file)
                 sheet = (
@@ -44,10 +51,13 @@ class GoogleSheetsClient:
                 return sheet_df
             except APIError as gspread_error:
                 if gspread_error.response.status_code == 429:
+                    # Start for waiting at least
+                    wait_sec = (2 ** n) + (random.randint(0, 1000) / 1000)
                     info(
-                        "Received API rate limit error, waiting 100 seconds before trying again."
+                        f"Received API rate limit error. Wait for {wait_sec} seconds before trying again."
                     )
-                    time.sleep(100)
+                    time.sleep(wait_sec)
+                    n = n + 1
                 else:
                     raise
         else:
@@ -88,3 +98,39 @@ class GoogleSheetsClient:
                 }
             }
         )
+
+
+def dw_uploader(
+    engine: Engine,
+    table: str,
+    data: pd.DataFrame,
+    schema: str = "sheetload",
+    chunk: int = 0,
+    truncate: bool = False,
+) -> bool:
+    """
+    Use a DB engine to upload a dataframe.
+    """
+
+    # Clean the column names and add metadata, generate the dtypes
+    data.columns = [
+        str(column_name).replace(" ", "_").replace("/", "_")
+        for column_name in data.columns
+    ]
+
+    # If the data isn't chunked, or this is the first iteration, drop table
+    if not chunk and not truncate:
+        table_changed = table_has_changed(data, engine, table)
+        if not table_changed:
+            return False
+        drop_query = f"DROP TABLE IF EXISTS {schema}.{table} CASCADE"
+        query_executor(engine, drop_query)
+
+    # Add the _updated_at metadata and set some vars if chunked
+    data["_updated_at"] = time.time()
+    if_exists = "append" if chunk else "replace"
+    data.to_sql(
+        name=table, con=engine, index=False, if_exists=if_exists, chunksize=15000
+    )
+    info(f"Successfully loaded {data.shape[0]} rows into {table}")
+    return True
