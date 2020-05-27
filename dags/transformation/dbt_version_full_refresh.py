@@ -40,7 +40,7 @@ dag = DAG("dbt_version_full_refresh", default_args=default_args, schedule_interv
 # dbt-full-refresh
 dbt_full_refresh_cmd = f"""
     {dbt_install_deps_and_seed_nosha_cmd} &&
-    dbt run --profiles-dir profile --target prod --models sources.version --full-refresh
+    dbt run --profiles-dir profile --target prod --models sources.version staging.version --full-refresh
 """
 dbt_full_refresh = KubernetesPodOperator(
     **gitlab_defaults,
