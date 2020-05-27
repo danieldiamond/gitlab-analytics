@@ -12,6 +12,8 @@ models:
           - name: accounting_period_start_date
             tests:
                 - not_null
+    - name: zuora_amendment_source
+      description: Ephemeral layer for Zuora Amendments for cleaning and renaming
     - name: zuora_contact_source
       description: Ephemeral layer for Zuora contacts for cleaning and renaming
     - name: zuora_discount_applied_metrics_source
