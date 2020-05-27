@@ -1018,12 +1018,6 @@ roles:
         warehouses:
             - analyst_xs
 
-    - jmahdi:
-        member_of:
-            - analyst_sales
-        warehouses:
-            - analyst_xs
-
     - jpeguero:
         member_of:
             - analyst_marketing
@@ -1379,9 +1373,8 @@ users:
             - iweeks
 
     - jmahdi:
-        can_login: yes
-        member_of:
-            - jmahdi
+        can_login: no
+        member_of: []
 
     - jpeguero:
         can_login: yes
