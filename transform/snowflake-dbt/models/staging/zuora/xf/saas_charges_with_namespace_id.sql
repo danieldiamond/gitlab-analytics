@@ -2,7 +2,7 @@ WITH saas_zuora_charges AS (
   
     SELECT * 
     FROM {{ ref('fct_charges') }}
-    WHERE delivery = 'saas'
+    WHERE delivery = 'SaaS'
   
 )
 
