@@ -67,7 +67,7 @@ WITH applications AS (
 ), cost_center AS (
 
     SELECT DISTINCT division, department
-    FROM {{ref('cost_center_division_department_mapping')}}
+    FROM {{ref('cost_center_division_department_mapping_current')}}
 
 ), bamboo AS (
 

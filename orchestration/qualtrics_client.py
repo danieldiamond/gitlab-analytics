@@ -48,6 +48,12 @@ class QualtricsClient:
     def get_questions(self, survey_id):
         return self.get(f"survey-definitions/{survey_id}/questions", {})
 
+    def get_json_post_headers(self):
+        return {
+            "content-type": "application/json",
+            "x-api-token": self.api_token,
+        }
+
     def download_survey_response_file(self, survey_id, file_format):
         """
         Downloads all survey responses for the given survey id in the file format specified
@@ -57,16 +63,14 @@ class QualtricsClient:
         request_check_progress = 0.0
         progress_status = "inProgress"
         response_base_url = self.base_url + f"surveys/{survey_id}/export-responses/"
-        headers = {
-            "content-type": "application/json",
-            "x-api-token": self.api_token,
-        }
 
         # Step 1: Creating Data Export
         download_request_url = response_base_url
         download_request_payload = '{"format":"' + file_format + '"}'
         download_request_response = requests.post(
-            download_request_url, data=download_request_payload, headers=headers
+            download_request_url,
+            data=download_request_payload,
+            headers=self.get_json_post_headers(),
         )
         progressId = download_request_response.json()["result"]["progressId"]
         logging.info(download_request_response.text)
@@ -79,7 +83,7 @@ class QualtricsClient:
             request_check_url = response_base_url + progressId
             try:
                 request_check_response = requests.get(
-                    request_check_url, headers=headers
+                    request_check_url, headers=self.get_json_post_headers()
                 )
                 request_check_progress = request_check_response.json()["result"][
                     "percentComplete"
@@ -103,7 +107,7 @@ class QualtricsClient:
         # Step 3: Downloading file
         request_download_url = response_base_url + fileId + "/file"
         request_download = requests.get(
-            request_download_url, headers=headers, stream=True
+            request_download_url, headers=self.get_json_post_headers(), stream=True
         )
 
         zip_file = zipfile.ZipFile(io.BytesIO(request_download.content))
@@ -123,31 +127,32 @@ class QualtricsClient:
             self.base_url
             + f"directories/{directory_id}/mailinglists/{mailing_list_id}/contacts"
         )
-        headers = {
-            "content-type": "application/json",
-            "x-api-token": self.api_token,
-        }
         for contact in contacts:
             contact = {k: v for k, v in contact.items() if v}
             if "email" not in contact:
                 continue
-            response = requests.post(url, headers=headers, data=json.dumps(contact))
+            response = requests.post(
+                url, headers=self.get_json_post_headers(), data=json.dumps(contact)
+            )
             if response.status_code == 429:
                 time.sleep(3)  # Hit API limit.  Wait and try again.
-                response = requests.post(url, headers=headers, data=json.dumps(contact))
+                response = requests.post(
+                    url, headers=self.get_json_post_headers(), data=json.dumps(contact)
+                )
             response.raise_for_status()
 
-    def create_mailing_list(self, directory_id: str, mailing_list_name: str) -> str:
+    def create_mailing_list(
+        self, directory_id: str, mailing_list_name: str, owner_id: str
+    ) -> str:
         url = self.base_url + f"directories/{directory_id}/mailinglists"
-        headers = {
-            "content-type": "application/json",
-            "x-api-token": self.api_token,
-        }
-        request_body = f'{{"name": "{mailing_list_name}"}}'
-        response = requests.post(url, headers=headers, data=request_body)
+        request_body = {"name": mailing_list_name, "ownerId": owner_id.strip()}
+        response = requests.post(
+            url, headers=self.get_json_post_headers(), data=json.dumps(request_body)
+        )
         if response.status_code == 429:
             time.sleep(3)  # Hit API limit.  Wait and try again.
             response = requests.post(
-                url, headers=headers, data=json.dumps(request_body)
+                url, headers=self.get_json_post_headers(), data=json.dumps(request_body)
             )
+        response.raise_for_status()
         return response.json()["result"]["id"]
