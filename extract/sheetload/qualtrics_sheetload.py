@@ -46,7 +46,10 @@ def process_qualtrics_file(
             FROM RAW.{schema}.{table}
         )
     """
-    results = query_executor(analytics_engine, query)
+    results = []
+    if not is_test:
+        results = query_executor(analytics_engine, query)
+
     qualtrics_contacts = [construct_qualtrics_contact(result) for result in results]
 
     qualtrics_client = QualtricsClient(
