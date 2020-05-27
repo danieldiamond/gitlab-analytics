@@ -1,7 +1,7 @@
 WITH resource_weight_events AS (
   
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_resource_weight_events') }}
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_resource_weight_events') }}
   
 )
 

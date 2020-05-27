@@ -1,7 +1,7 @@
 WITH gitlab_dotcom_resource_milestone_events AS (
   
-  SELECT *
-  FROM {{ ref('gitlab_dotcom_resource_milestone_events') }}
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_resource_milestone_events') }}
   
 )
 
