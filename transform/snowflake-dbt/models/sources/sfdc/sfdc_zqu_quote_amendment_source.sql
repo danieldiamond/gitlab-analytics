@@ -43,6 +43,8 @@ WITH source AS (
       _sdc_sequence::NUMBER                   AS sdc_sequence,
       systemmodstamp::TIMESTAMP_TZ            AS system_mod_stamp
 
+    FROM source
+
 )
 
 SELECT *
