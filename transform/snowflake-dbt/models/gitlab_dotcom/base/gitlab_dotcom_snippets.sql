@@ -13,7 +13,6 @@ WITH source AS (
       created_at::TIMESTAMP     AS created_at,
       updated_at::TIMESTAMP     AS updated_at,
       type::VARCHAR             AS snippet_type,
-      file_name::VARCHAR        AS file_name,
       visibility_level::INTEGER AS visibility_level
       
     FROM source
