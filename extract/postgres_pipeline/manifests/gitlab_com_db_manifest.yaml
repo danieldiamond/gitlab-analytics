@@ -1077,7 +1077,7 @@ tables:
       , modified_paths_size
       , commits_count
       , first_approved_at
-      , first_reasssigned_at
+      , first_reassigned_at
       , added_lines
       , removed_lines
       FROM merge_request_metrics
