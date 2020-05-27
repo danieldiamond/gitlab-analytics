@@ -6,7 +6,15 @@ WITH saas_zuora_charges AS (
   
 )
 
-, customers_db_charges AS (
+, zuora_base_mrr AS (
+  
+    SELECT * 
+    FROM {{ ref('zuora_base_mrr') }}
+    WHERE delivery = 'SaaS'
+  
+)
+
+,  customers_db_charges AS (
   
     SELECT * 
     FROM {{ ref('customers_db_charges_xf') }}
@@ -53,6 +61,8 @@ WITH saas_zuora_charges AS (
       customers_db_charges.current_customer_id,
       namespaces.namespace_id
     FROM saas_zuora_charges
+    INNER JOIN zuora_base_mrr
+      ON saas_zuora_charges.charge_id = zuora_base_mrr.rate_plan_charge_id
     LEFT JOIN customers_db_charges 
       ON saas_zuora_charges.charge_id = customers_db_charges.rate_plan_charge_id
     LEFT JOIN namespaces
