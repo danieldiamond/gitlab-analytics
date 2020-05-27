@@ -1,4 +1,4 @@
-{% snapshot sfdc_user_snapshots %}
+{% snapshot sfdc_zqu_quote_snapshots %}
 
     {{
         config(
