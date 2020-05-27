@@ -67,6 +67,10 @@ sources:
         description: '{{ doc("sfdc_userrole_source") }}'
       - name: user         
         description: '{{ doc("sfdc_user_source") }}'
+      - name: zqu_quote
+        identifier: zqu__quote__c
+      - name: zqu_quote_amendment
+        identifier: zqu__quoteamendment__c
 
   - name: salesforce_archive
     database: analytics
