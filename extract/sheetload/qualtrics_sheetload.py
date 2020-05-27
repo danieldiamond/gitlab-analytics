@@ -52,11 +52,10 @@ def process_qualtrics_file(
 
     qualtrics_contacts = [construct_qualtrics_contact(result) for result in results]
 
-    qualtrics_client = QualtricsClient(
-        env["QUALTRICS_API_TOKEN"], env["QUALTRICS_DATA_CENTER"]
-    )
-
-    if qualtrics_contacts and not is_test:
+    if not is_test:
+        qualtrics_client = QualtricsClient(
+            env["QUALTRICS_API_TOKEN"], env["QUALTRICS_DATA_CENTER"]
+        )
         mailing_id = qualtrics_client.create_mailing_list(
             env["QUALTRICS_POOL_ID"], table, env["QUALTRICS_GROUP_ID"]
         )
