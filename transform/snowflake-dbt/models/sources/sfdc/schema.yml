@@ -197,14 +197,14 @@ models:
   - name: sfdc_zqu_quote_source
     description: Source model for SFDC custom object representing a quote amendment from Zuora
     columns:
-      - name: quote_id
+      - name: zqu_quote_id
         tests:
           - not_null
           - unique
   - name: sfdc_zqu_quote_amendment_source
     description: Source model for SFDC custom object representing a quote amendment from Zuora
     columns:
-      - name: quote_amendment_id
+      - name: zqu_quote_amendment_id
         tests:
           - not_null
           - unique
