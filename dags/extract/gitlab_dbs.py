@@ -61,6 +61,8 @@ standard_secrets = [
 ]
 
 validation_schedule_interval = "0 1 * * 0"
+every_eigth_hour = "0 */8 * * *"
+every_day_at_four = "0 4 */1 * *"
 
 # Dictionary containing the configuration values for the various Postgres DBs
 config_dict = {
@@ -75,14 +77,14 @@ config_dict = {
             CI_STATS_DB_NAME,
         ],
         "start_date": datetime(2019, 5, 30),
-        "sync_schedule_interval": "0 4 */1 * *",
+        "sync_schedule_interval": every_day_at_four,
         "task_name": "ci-stats",
         "validation_schedule_interval": validation_schedule_interval,
     },
     "customers": {
         "dag_name": "customers",
         "env_vars": {"DAYS": "1"},
-        "extract_schedule_interval": "0 */8 * * *",
+        "extract_schedule_interval": every_eigth_hour,
         "secrets": [
             CUSTOMERS_DB_USER,
             CUSTOMERS_DB_PASS,
@@ -120,27 +122,27 @@ config_dict = {
             GITLAB_PROFILER_DB_NAME,
         ],
         "start_date": datetime(2019, 5, 30),
-        "sync_schedule_interval": "0 4 */1 * *",
+        "sync_schedule_interval": every_day_at_four,
         "task_name": "gitlab-profiler",
         "validation_schedule_interval": validation_schedule_interval,
     },
     "license": {
         "dag_name": "license",
         "env_vars": {"DAYS": "1"},
-        "extract_schedule_interval": "0 */8 * * *",
+        "extract_schedule_interval": every_eigth_hour,
         "secrets": [LICENSE_DB_USER, LICENSE_DB_PASS, LICENSE_DB_HOST, LICENSE_DB_NAME],
         "start_date": datetime(2019, 5, 30),
-        "sync_schedule_interval": "0 4 */1 * *",
+        "sync_schedule_interval": every_day_at_four,
         "task_name": "license",
         "validation_schedule_interval": validation_schedule_interval,
     },
     "version": {
         "dag_name": "version",
         "env_vars": {"DAYS": "1", "AVG_CYCLE_ANALYTICS_ID": "1"},
-        "extract_schedule_interval": "0 */8 * * *",
+        "extract_schedule_interval": every_eigth_hour,
         "secrets": [VERSION_DB_USER, VERSION_DB_PASS, VERSION_DB_HOST, VERSION_DB_NAME],
         "start_date": datetime(2019, 5, 30),
-        "sync_schedule_interval": "0 4 */1 * *",
+        "sync_schedule_interval": every_day_at_four,
         "task_name": "version",
         "validation_schedule_interval": validation_schedule_interval,
     },
