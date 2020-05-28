@@ -184,7 +184,7 @@ def chunk_and_upload(
     trigger_snowflake_upload(
         target_engine, target_table, upload_file_name + "[.]\\\\d*", purge=True
     )
-    logging.info(f"Uploaded {rows_uploaded} total rows to table {upload_file_name}.")
+    logging.info(f"Uploaded {rows_uploaded} total rows to table {target_table}.")
     target_engine.dispose()
     source_engine.dispose()
 
