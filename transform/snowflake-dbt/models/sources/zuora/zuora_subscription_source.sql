@@ -9,6 +9,7 @@ WITH source AS (
 
     SELECT
       id                                          AS subscription_id,
+      subscriptionversionamendmentid              AS amendment_id,
       name                                        AS subscription_name,
         {{zuora_slugify("name")}}                 AS subscription_name_slugify,
       --keys
