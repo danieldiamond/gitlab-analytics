@@ -1,4 +1,4 @@
-{% macro model_union_limit(table_name, column_name, day_limit=30) %}
+{% macro model_union_limit(model_name, column_name, day_limit=30) %}
 
 WITH base AS (
     
