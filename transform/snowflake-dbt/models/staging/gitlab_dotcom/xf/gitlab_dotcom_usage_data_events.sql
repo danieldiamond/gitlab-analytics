@@ -166,7 +166,7 @@
     "source_table_name": "gitlab_dotcom_resource_weight_events_xf",
     "user_column_name": "user_id",
     "key_to_parent_project": "project_id",
-    "primary_key": "resource_milestone_event_id",
+    "primary_key": "resource_weight_event_id",
     "stage_name": "plan",
     "is_representative_of_stage": "False"
   },
