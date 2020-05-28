@@ -37,8 +37,12 @@ WITH RECURSIVE employee_directory AS (
 
     SELECT 
       department_info.job_title,
-      job_role.job_role, 
-      job_role.job_grade
+      IFF(job_title = 'Manager, Field Marketing','Leader',job_role.job_role)    AS job_role, 
+      CASE WHEN job_title = 'Group Manager, Product' 
+            THEN '9.5'
+           WHEN job_title = 'Manager, Field Marketing' 
+             THEN '8'
+           ELSE job_role.job_grade END                                          AS job_grade
     FROM date_details
     LEFT JOIN department_info 
       ON date_details.date_actual BETWEEN department_info.effective_date AND COALESCE(department_info.effective_end_Date, '2020-07-01')
@@ -84,11 +88,17 @@ WITH RECURSIVE employee_directory AS (
       department_info.department,
       department_info.division,
       COALESCE(job_role.cost_center, 
-               job_role.cost_center)                                        AS cost_center,
+               cost_center_prior_to_bamboo.cost_center)                     AS cost_center,
       department_info.reports_to,
       IFF(date_details.date_actual BETWEEN '2020-11-01' AND '2020-02-27', 
             job_info_mapping_historical_manager_leader.job_role, 
             job_role.job_role)                                              AS job_role,
+      CASE WHEN job_role.job_grade IN ('11','12','CXO')
+            THEN 'Senior Leadership'
+           WHEN job_role.job_grade = '10' 
+             THEN 'Manager'
+           ELSE job_role.job_role END                                       AS job_role_modified,
+       --for the diversity KPIs we are looking to understand senior leadership representation and do so by job grade instead of role     
       IFF(date_details.date_actual BETWEEN '2020-11-01' AND '2020-02-27', 
             job_info_mapping_historical_manager_leader.job_grade, 
             job_role.job_grade)                                             AS job_grade,
