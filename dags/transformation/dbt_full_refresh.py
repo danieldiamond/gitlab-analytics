@@ -49,11 +49,10 @@ dbt_model_to_full_refresh = Variable.get(
     "DBT_MODEL_TO_FULL_REFRESH", default_var="test"
 )
 
-logging.info(dbt_model_to_full_refresh)
+logging.info(f"Running full refresh for {dbt_model_to_full_refresh}")
 
 # dbt-full-refresh
 dbt_full_refresh_cmd = f"""
-    echo {dbt_model_to_full_refresh} &&
     {dbt_install_deps_and_seed_nosha_cmd} &&
     dbt run --profiles-dir profile --target prod --models {dbt_model_to_full_refresh} --full-refresh
 """
