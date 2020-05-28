@@ -45,6 +45,7 @@ WITH saas_zuora_charges AS (
 
     SELECT *
     FROM {{ ref('dim_subscriptions') }}
+
 )
 
 
