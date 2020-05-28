@@ -65,6 +65,21 @@ models:
               sensitive: true
            tests:
               - not_null
+  - name: sfdc_event_source
+    description: Source model for SFDC Event
+    columns:
+         - name: event_id
+           tests:
+              - not_null
+              - unique
+         - name: owner_id
+           tests:
+              - not_null
+         - name: account_id
+           tests:
+              - relationships:
+                    to: ref('sfdc_account')
+                    field: account_id
   - name: sfdc_executive_business_review_source
     description: Source model for SFDC Executive Business Reviews
     columns:
