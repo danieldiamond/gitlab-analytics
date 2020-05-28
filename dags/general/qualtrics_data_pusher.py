@@ -15,7 +15,11 @@ from airflow_utils import (
 )
 from kube_secrets import (
     GCP_SERVICE_CREDS,
+    QUALTRICS_API_TOKEN,
+    QUALTRICS_GROUP_ID,
+    QUALTRICS_POOL_ID,
     SNOWFLAKE_ACCOUNT,
+    SNOWFLAKE_LOAD_DATABASE,
     SNOWFLAKE_LOAD_PASSWORD,
     SNOWFLAKE_LOAD_ROLE,
     SNOWFLAKE_LOAD_USER,
@@ -30,7 +34,10 @@ from kube_secrets import (
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
-pod_env_vars = {**gitlab_pod_env_vars, **{}}
+pod_env_vars = {
+    **gitlab_pod_env_vars,
+    **{"SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS", "QUALTRICS_DATA_CENTER": "eu"},
+}
 
 # Default arguments for the DAG
 default_args = {
@@ -47,12 +54,12 @@ default_args = {
 container_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
     cd sheetload/ &&
-    python3 sheetload.py qualtrics
+    python3 sheetload.py qualtrics --load_type normal
 """
 
 # Create the DAG
 dag = DAG(
-    "qualtrics_sheetload", default_args=default_args, schedule_interval="0 1 */1 * *"
+    "qualtrics_sheetload", default_args=default_args, schedule_interval="*/15 * * * *"
 )
 
 # Task 1
@@ -63,11 +70,20 @@ qualtrics_sheetload = KubernetesPodOperator(
     name="sheetload",
     secrets=[
         GCP_SERVICE_CREDS,
+        QUALTRICS_API_TOKEN,
+        QUALTRICS_GROUP_ID,
+        QUALTRICS_POOL_ID,
         SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_LOAD_DATABASE,
         SNOWFLAKE_LOAD_ROLE,
         SNOWFLAKE_LOAD_USER,
         SNOWFLAKE_LOAD_WAREHOUSE,
         SNOWFLAKE_LOAD_PASSWORD,
+        SNOWFLAKE_PASSWORD,
+        SNOWFLAKE_TRANSFORM_ROLE,
+        SNOWFLAKE_TRANSFORM_SCHEMA,
+        SNOWFLAKE_TRANSFORM_WAREHOUSE,
+        SNOWFLAKE_USER,
     ],
     env_vars=pod_env_vars,
     arguments=[container_cmd],

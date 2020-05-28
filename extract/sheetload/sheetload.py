@@ -3,12 +3,11 @@ import re
 from io import StringIO
 import json
 import time
-from logging import error, info, basicConfig, getLogger
+from logging import error, info, basicConfig, getLogger, warning
 from os import environ as env
 from typing import Dict, Tuple, List
 from yaml import load, safe_load, YAMLError
-from gspread.exceptions import APIError
-from gspread import Client
+
 import boto3
 import gspread
 import pandas as pd
@@ -18,11 +17,15 @@ from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
     query_executor,
 )
-from google_sheets_client import GoogleSheetsClient
+from google_sheets_client import GoogleSheetsClient, dw_uploader
 from google.cloud import storage
 from google.oauth2 import service_account
+from gspread.exceptions import APIError
+from gspread import Client
 from oauth2client.service_account import ServiceAccountCredentials
 from sqlalchemy.engine.base import Engine
+
+from qualtrics_sheetload import qualtrics_loader
 
 
 def table_has_changed(data: pd.DataFrame, engine: Engine, table: str) -> bool:
@@ -40,46 +43,10 @@ def table_has_changed(data: pd.DataFrame, engine: Engine, table: str) -> bool:
     return True
 
 
-def dw_uploader(
-    engine: Engine,
-    table: str,
-    data: pd.DataFrame,
-    schema: str = "sheetload",
-    chunk: int = 0,
-    truncate: bool = False,
-) -> bool:
-    """
-    Use a DB engine to upload a dataframe.
-    """
-
-    # Clean the column names and add metadata, generate the dtypes
-    data.columns = [
-        str(column_name).replace(" ", "_").replace("/", "_")
-        for column_name in data.columns
-    ]
-
-    # If the data isn't chunked, or this is the first iteration, drop table
-    if not chunk and not truncate:
-        table_changed = table_has_changed(data, engine, table)
-        if not table_changed:
-            return False
-        drop_query = f"DROP TABLE IF EXISTS {schema}.{table} CASCADE"
-        query_executor(engine, drop_query)
-
-    # Add the _updated_at metadata and set some vars if chunked
-    data["_updated_at"] = time.time()
-    if_exists = "append" if chunk else "replace"
-    data.to_sql(
-        name=table, con=engine, index=False, if_exists=if_exists, chunksize=15000
-    )
-    info(f"Successfully loaded {data.shape[0]} rows into {table}")
-    return True
-
-
 def sheet_loader(
     sheet_file: str,
     schema: str = "sheetload",
-    database="RAW",
+    database: str = "RAW",
     gapi_keyfile: str = None,
     conn_dict: Dict[str, str] = None,
 ) -> None:
@@ -343,35 +310,6 @@ def csv_loader(
     info(f"Uploading {filename} to {database}.{schema}.{table}")
 
     dw_uploader(engine, table=table, data=csv_data, schema=schema, truncate=True)
-
-
-def qualtrics_loader(load_type: str):
-    is_test = load_type == "test"
-    google_sheet_client = GoogleSheetsClient()
-    prefix = "qualtrics_mailing_list."
-    if is_test:
-        prefix = "test_" + prefix
-    qualtrics_files_to_load = [
-        file
-        for file in google_sheet_client.get_visible_files()
-        if file.title.lower().startswith(prefix)
-    ]
-
-    info(f"Found {len(qualtrics_files_to_load)} files to process.")
-
-    schema = "qualtrics_mailing_list"
-
-    engine = snowflake_engine_factory(env, "LOADER", schema)
-
-    for file in qualtrics_files_to_load:
-        file_name = file.title
-        _, table = file_name.split(".")
-        dataframe = google_sheet_client.load_google_sheet(None, file_name, table)
-        dw_uploader(engine, table, dataframe, schema)
-        if is_test:
-            info(f"Not renaming file for test.")
-        else:
-            google_sheet_client.rename_file(file.id(), "processed_" + file.title)
 
 
 if __name__ == "__main__":

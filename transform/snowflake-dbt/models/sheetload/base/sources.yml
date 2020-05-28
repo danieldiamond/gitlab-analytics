@@ -30,6 +30,7 @@ sources:
       - name: compensation_certificate
       - name: days_to_close
       - name: employee_location_factor
+        freshness: null
       - name: gitlab_slack_stats
         freshness: null
       - name: google_referrals
@@ -54,14 +55,6 @@ sources:
       - name: osat
       - name: planned_values
       - name: procurement_cost_savings
-      - name: pulse_survey_configure_be
-        freshness: null
-      - name: pulse_survey_configure_fe
-        freshness: null
-      - name: pulse_survey_monitor_be
-        freshness: null
-      - name: pulse_survey_monitor_fe
-        freshness: null
       - name: release_blog_posts
       - name: rep_quotas_full_fy2020
       - name: rep_quotas_full_ps_fy2020

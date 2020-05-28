@@ -596,12 +596,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.gitlab_data_yaml
                     - raw.gitlab_data_yaml
             tables:
                 read:
+                    - analytics.gitlab_data_yaml.*
                     - raw.gitlab_data_yaml.*
 
     - google_analytics_360: 
