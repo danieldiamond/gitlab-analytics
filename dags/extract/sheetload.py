@@ -61,6 +61,14 @@ with open(f"{airflow_home}/analytics/extract/sheetload/sheets.yml", "r") as file
 
 runs = []
 
+# Create the DAG
+dag = DAG(
+    "sheetload",
+    default_args=default_args,
+    schedule_interval="0 1 */1 * *",
+    concurrency=1,
+)
+
 for sheet in sheets:
 
     # Set the command for the container
@@ -70,15 +78,14 @@ for sheet in sheets:
         python3 sheetload.py sheets --sheet_file sheets.yml --table_name {sheet}
     """
 
-    # Create the DAG
-    dag = DAG("sheetload", default_args=default_args, schedule_interval="0 1 */1 * *")
+    cleaned_sheet_name = sheet.replace("_", "-")
 
     # Task 1
     sheetload_run = KubernetesPodOperator(
         **gitlab_defaults,
         image=DATA_IMAGE,
-        task_id="sheetload",
-        name="sheetload",
+        task_id=f"{cleaned_sheet_name}-sheetload",
+        name=f"{cleaned_sheet_name}-sheetload",
         secrets=[
             GCP_SERVICE_CREDS,
             SNOWFLAKE_ACCOUNT,
