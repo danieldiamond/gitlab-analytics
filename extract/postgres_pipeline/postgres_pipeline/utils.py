@@ -182,7 +182,7 @@ def chunk_and_upload(
         rows_uploaded += row_count
         upload_to_gcs(advanced_metadata, chunk_df, upload_file_name + "." + str(idx))
     trigger_snowflake_upload(
-        target_engine, target_table, upload_file_name + "[.]\\d*", purge=True
+        target_engine, target_table, upload_file_name + "[.]\\\\d*", purge=True
     )
     logging.info(f"Uploaded {rows_uploaded} total rows to table {upload_file_name}.")
     target_engine.dispose()
