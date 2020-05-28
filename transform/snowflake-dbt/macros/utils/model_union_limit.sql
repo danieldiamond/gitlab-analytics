@@ -3,7 +3,7 @@
 WITH base AS (
     
     SELECT *
-    FROM {{ ref(table_name) }}
+    FROM {{ ref(model_name) }}
 
 ) 
 
