@@ -60,14 +60,19 @@ def upload_to_gcs(
     return True
 
 
-def trigger_snowflake_upload(engine: Engine, table: str, upload_file_name: str) -> None:
+def trigger_snowflake_upload(
+    engine: Engine, table: str, upload_file_name: str, purge: bool = False
+) -> None:
     """ Trigger Snowflake to upload a tsv file from GCS."""
+
+    purge_opt = "purge = true" if purge else ""
 
     upload_query = f"""
         copy into {table}
         from 'gcs://postgres_pipeline'
         storage_integration = gcs_integration
         pattern = '{upload_file_name}'
+        {purge_opt}
         force = TRUE
         file_format = (
             type = csv
@@ -169,14 +174,16 @@ def chunk_and_upload(
     results_generator = query_results_generator(query, source_engine)
     upload_file_name = f"{target_table}_CHUNK.tsv.gz"
 
-    for chunk_df in results_generator:
+    for idx, chunk_df in enumerate(results_generator):
         # If the table doesn't exist, it needs to send the first chunk to the dataframe_uploader
         if backfill:
             seed_table(advanced_metadata, chunk_df, target_engine, target_table)
         row_count = chunk_df.shape[0]
         rows_uploaded += row_count
-        upload_to_gcs(advanced_metadata, chunk_df, upload_file_name)
-        trigger_snowflake_upload(target_engine, target_table, upload_file_name)
+        upload_to_gcs(advanced_metadata, chunk_df, upload_file_name + "." + str(idx))
+    trigger_snowflake_upload(
+        target_engine, target_table, upload_file_name + "[.]\\d*", purge=True
+    )
     logging.info(f"Uploaded {rows_uploaded} total rows to table {upload_file_name}.")
     target_engine.dispose()
     source_engine.dispose()
