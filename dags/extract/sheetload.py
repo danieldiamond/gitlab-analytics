@@ -1,5 +1,6 @@
 import os
 from datetime import datetime, timedelta
+from os import environ as env
 from yaml import load, safe_load, YAMLError
 
 from airflow import DAG
@@ -44,7 +45,9 @@ default_args = {
     "start_date": datetime(2019, 1, 1),
 }
 
-with open("sheets.yml", "r") as file:
+airflow_home = env["AIRFLOW_HOME"]
+
+with open(f"{airflow_home}/analytics/extract/sheetload/sheets.yml", "r") as file:
     try:
         stream = safe_load(file)
     except YAMLError as exc:
