@@ -25,6 +25,7 @@ WITH RECURSIVE employee_directory AS (
 
 ), department_info AS (
 
+<<<<<<< HEAD
     SELECT employee_id,
           job_title,         
           department,
@@ -39,6 +40,32 @@ WITH RECURSIVE employee_directory AS (
 
     SELECT *
     FROM {{ ref ('bamboohr_job_role') }}
+=======
+    SELECT *
+    FROM {{ ref('bamboohr_job_info') }}
+
+), job_role AS (
+    
+    SELECT *
+    FROM {{ ref('bamboohr_job_role') }}
+
+), job_info_mapping_historical_manager_leader AS (
+
+    SELECT 
+      department_info.job_title,
+      job_role.job_role, 
+      job_role.job_grade
+    FROM date_details
+    LEFT JOIN department_info 
+      ON date_details.date_actual BETWEEN department_info.effective_date AND COALESCE(department_info.effective_end_Date, '2020-07-01')
+    LEFT JOIN job_role
+      ON date_details.date_actual BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_date, '2020-07-01')
+    WHERE job_role.job_role IN ('Manager','Leader')
+      AND job_role.job_grade IS NOT NULL
+      AND date_actual = '2020-02-27'
+    ---1st date we started capturing job_role
+    GROUP BY 1,2,3
+>>>>>>> 4944-job-level-is-not-reflecting-current
 
 ), location_factor AS (
 
@@ -68,21 +95,30 @@ WITH RECURSIVE employee_directory AS (
     SELECT
       date_actual,
       employee_directory.*,
+<<<<<<< HEAD
       (employee_directory.first_name ||' '|| employee_directory.last_name)                                AS full_name,
+=======
+      (employee_directory.first_name ||' '|| employee_directory.last_name)   AS full_name,
+>>>>>>> 4944-job-level-is-not-reflecting-current
       department_info.job_title,
       department_info.department,
       department_info.division,
       COALESCE(cost_center_bamboo.cost_center, 
                cost_center_prior_to_bamboo.cost_center)             AS cost_center,
       department_info.reports_to,
-      department_info.job_role,
+      IFF(date_details.date_actual BETWEEN '2020-11-01' AND '2020-02-27', 
+            job_info_mapping_historical_manager_leader.job_role, 
+            job_role.job_role)                                              AS job_role,
+      IFF(date_details.date_actual BETWEEN '2020-11-01' AND '2020-02-27', 
+            job_info_mapping_historical_manager_leader.job_grade, 
+            job_role.job_grade)                                             AS job_grade,
       location_factor.location_factor, 
       IFF(hire_date = date_actual OR 
-          rehire_date = date_actual, True, False)                   AS is_hire_date,
-      IFF(employment_status = 'Terminated', True, False)            AS is_termination_date,
-      IFF(rehire_date = date_actual, True, False)                   AS is_rehire_date,
+          rehire_date = date_actual, True, False)                           AS is_hire_date,
+      IFF(employment_status = 'Terminated', True, False)                    AS is_termination_date,
+      IFF(rehire_date = date_actual, True, False)                           AS is_rehire_date,
       IFF(hire_date< employment_status_first_value,
-            'Active', employment_status)                            AS employment_status
+            'Active', employment_status)                                    AS employment_status
     FROM date_details
     LEFT JOIN employee_directory
       ON hire_date::DATE <= date_actual
@@ -100,6 +136,7 @@ WITH RECURSIVE employee_directory AS (
       AND (date_details.date_actual = valid_from_date AND employment_status = 'Terminated' 
         OR date_details.date_actual BETWEEN employment_status.valid_from_date AND employment_status.valid_to_date )  
     LEFT JOIN employment_status_records_check 
+<<<<<<< HEAD
       ON employee_directory.employee_id = employment_status_records_check.employee_id    
     LEFT JOIN cost_center_bamboo
       ON employee_directory.employee_id = cost_center_bamboo.employee_id
@@ -111,6 +148,16 @@ WITH RECURSIVE employee_directory AS (
       AND date_details.date_actual BETWEEN cost_center_prior_to_bamboo.effective_start_date 
                                        AND COALESCE(cost_center_prior_to_bamboo.effective_end_date, '2020-05-07')
     ---Starting 2020.05.08 we start capturing cost_center in bamboohr
+=======
+      ON employee_directory.employee_id = employment_status_records_check.employee_id   
+    LEFT JOIN job_role
+      ON employee_directory.employee_id = job_role.employee_id   
+      AND date_details.date_actual BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_date, {{max_date_in_bamboo_analyses()}})
+    LEFT JOIN job_info_mapping_historical_manager_leader
+      ON job_info_mapping_historical_manager_leader.job_title = department_info.job_title
+      AND date_details.date_actual BETWEEN '2019-11-01' and '2020-02-26'
+      ---this is when we started capturing eeoc data but don't have job grade data to understand female in leadership positions
+>>>>>>> 4944-job-level-is-not-reflecting-current
     WHERE employee_directory.employee_id IS NOT NULL
 
 ), base_layers as (

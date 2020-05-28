@@ -17,8 +17,12 @@ WITH source AS (
           uploaded_at::DATETIME                                           AS effective_date
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), OUTER => true) d
+<<<<<<< HEAD
     QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade, cost_center 
             ORDER BY DATE_TRUNC(day,effective_date) ASC, DATE_TRUNC(hour, effective_date) DESC)=1  
+=======
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade ORDER BY effective_date)=1  
+>>>>>>> 4944-job-level-is-not-reflecting-current
 
 ), final AS (
 
