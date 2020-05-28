@@ -45,6 +45,7 @@ dbt_model_to_full_refresh = Variable.get(
 
 # dbt-full-refresh
 dbt_full_refresh_cmd = f"""
+    echo {dbt_model_to_full_refresh} &&
     {dbt_install_deps_and_seed_nosha_cmd} &&
     dbt run --profiles-dir profile --target prod --models {dbt_model_to_full_refresh} --full-refresh
 """
@@ -53,6 +54,7 @@ dbt_full_refresh = KubernetesPodOperator(
     image=DBT_IMAGE,
     task_id="dbt-full-refresh",
     name="dbt-full-refresh",
+    description="Before running this DAG set dbt model for full refresh in Airflow Variable named DBT_MODEL_TO_FULL_REFRESH"
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
