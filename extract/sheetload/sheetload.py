@@ -30,6 +30,7 @@ from qualtrics_sheetload import qualtrics_loader
 
 def sheet_loader(
     sheet_file: str,
+    table_name: str = None,
     schema: str = "sheetload",
     database: str = "RAW",
     gapi_keyfile: str = None,
@@ -81,6 +82,8 @@ def sheet_loader(
     google_sheet_client = GoogleSheetsClient()
 
     for sheet_info in sheets:
+        if table_name and sheet_info != table_name:
+            continue
         # Sheet here refers to the name of the sheet file, table is the actual sheet name
         info(f"Processing sheet: {sheet_info}")
         sheet_file, table = sheet_info.split(".")
