@@ -25,22 +25,6 @@ WITH RECURSIVE employee_directory AS (
 
 ), department_info AS (
 
-<<<<<<< HEAD
-    SELECT employee_id,
-          job_title,         
-          department,
-          division,
-          reports_to,
-          job_role,
-          effective_date,
-          effective_end_date
-    FROM {{ ref('bamboohr_job_info') }}
-
-), cost_center_bamboo AS (
-
-    SELECT *
-    FROM {{ ref ('bamboohr_job_role') }}
-=======
     SELECT *
     FROM {{ ref('bamboohr_job_info') }}
 
@@ -65,7 +49,6 @@ WITH RECURSIVE employee_directory AS (
       AND date_actual = '2020-02-27'
     ---1st date we started capturing job_role
     GROUP BY 1,2,3
->>>>>>> 4944-job-level-is-not-reflecting-current
 
 ), location_factor AS (
 
