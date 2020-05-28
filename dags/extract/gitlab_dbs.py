@@ -2,6 +2,7 @@ import os
 import yaml
 from datetime import datetime, timedelta
 
+from airflow.models import Pool
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
@@ -243,6 +244,8 @@ for source_name, config in config_dict.items():
         schedule_interval=config["sync_schedule_interval"],
     )
 
+
+
     with sync_dag:
 
         scd_affinity = {
@@ -265,7 +268,6 @@ for source_name, config in config_dict.items():
 
 
         if config["dag_name"] == "gitlab_com":
-
             file_path = f"analytics/extract/postgres_pipeline/manifests/{config['dag_name']}_db_manifest.yaml"
             table_list = extract_table_list_from_manifest(file_path)
             for table in table_list:
@@ -291,8 +293,9 @@ for source_name, config in config_dict.items():
                 scd_extract = KubernetesPodOperator(
                     **gitlab_defaults,
                     image=DATA_IMAGE,
-                    task_id=f"{config['task_name']}-db-scd",
-                    name=f"{config['task_name']}-db-scd",
+                    task_id=f"{config['task_name']}-{table.replace('_','-')}-db-scd",
+                    name=f"{config['task_name']}-{table.replace('_','-')}-db-scd",
+                    pool="gitlab_dbs_pool",
                     secrets=standard_secrets + config["secrets"],
                     env_vars={**standard_pod_env_vars, **config["env_vars"]},
                     arguments=[scd_cmd],
