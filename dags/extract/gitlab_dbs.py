@@ -244,8 +244,6 @@ for source_name, config in config_dict.items():
         schedule_interval=config["sync_schedule_interval"],
     )
 
-
-
     with sync_dag:
 
         scd_affinity = {
@@ -265,7 +263,6 @@ for source_name, config in config_dict.items():
         scd_tolerations = [
             {"key": "scd", "operator": "Equal", "value": "true", "effect": "NoSchedule"}
         ]
-
 
         if config["dag_name"] == "gitlab_com":
             file_path = f"analytics/extract/postgres_pipeline/manifests/{config['dag_name']}_db_manifest.yaml"
@@ -288,7 +285,9 @@ for source_name, config in config_dict.items():
                 )
 
                 # SCD Task
-                scd_cmd = generate_cmd(config["dag_name"], f"--load_type scd --load_only_table {table}")
+                scd_cmd = generate_cmd(
+                    config["dag_name"], f"--load_type scd --load_only_table {table}"
+                )
 
                 scd_extract = KubernetesPodOperator(
                     **gitlab_defaults,
