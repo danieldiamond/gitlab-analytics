@@ -44,8 +44,8 @@ WITH zuora_base_mrr AS (
 , joined AS (
 
     SELECT 
-      zuora_base_mrr.charge_id,
-      dim_subscriptions.subscription_name_slugify,
+      zuora_base_mrr.rate_plan_charge_id,
+      zuora_base_mrr.subscription_name_slugify,
       dim_accounts.account_id                                AS zuora_account_id,
       COALESCE(merged_accounts.crm_id, dim_customers.crm_id) AS sfdc_account_id,
       COALESCE(merged_accounts.ultimate_parent_account_id, 
@@ -56,7 +56,7 @@ WITH zuora_base_mrr AS (
       namespaces.namespace_id
     FROM zuora_base_mrr
     LEFT JOIN customers_db_charges 
-      ON saas_zuora_charges.rate_plan_charge_id = customers_db_charges.rate_plan_charge_id
+      ON zuora_base_mrr.rate_plan_charge_id = customers_db_charges.rate_plan_charge_id
     LEFT JOIN namespaces
       ON customers_db_charges.current_gitlab_namespace_id = namespaces.namespace_id
     LEFT JOIN dim_accounts

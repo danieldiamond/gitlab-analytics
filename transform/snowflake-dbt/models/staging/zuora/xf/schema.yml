@@ -4,7 +4,7 @@ models:
     - name: saas_charges_with_namespace_id
       description: '{{ doc("saas_charges_with_namespace_id") }}'
       columns:
-          - name: charge_id
+          - name: rate_plan_charge_id
             tests:
                 - not_null
                 - unique
