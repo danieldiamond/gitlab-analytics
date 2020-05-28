@@ -212,7 +212,7 @@ models:
       materialized: table
       base:
           schema: staging
-      ephemeral:
+      intermediate:
           schema: staging
 
     date:

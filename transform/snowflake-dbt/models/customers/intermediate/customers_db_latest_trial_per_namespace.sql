@@ -1,8 +1,3 @@
-{{ config({
-    "materialized": "ephemeral"
-    })
-}}
-
 WITH orders_snapshots AS (
   
   SELECT * 

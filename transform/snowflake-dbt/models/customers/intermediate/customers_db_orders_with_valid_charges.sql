@@ -1,8 +1,3 @@
-{{ config({
-    "materialized": "ephemeral"
-    })
-}}
-
 WITH customers AS (
   
     SELECT * 
