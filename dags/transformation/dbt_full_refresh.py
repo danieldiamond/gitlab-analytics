@@ -54,7 +54,7 @@ dbt_full_refresh = KubernetesPodOperator(
     image=DBT_IMAGE,
     task_id="dbt-full-refresh",
     name="dbt-full-refresh",
-    description="Before running this DAG set dbt model for full refresh in Airflow Variable named DBT_MODEL_TO_FULL_REFRESH"
+    description="Before running this DAG set dbt model for full refresh in Airflow Variable named DBT_MODEL_TO_FULL_REFRESH",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
