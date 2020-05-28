@@ -242,8 +242,7 @@ for source_name, config in config_dict.items():
     )
 
     with sync_dag:
-        # SCD Task
-        scd_cmd = generate_cmd(config["dag_name"], "--load_type scd")
+
         scd_affinity = {
             "nodeAffinity": {
                 "requiredDuringSchedulingIgnoredDuringExecution": {
@@ -262,22 +261,9 @@ for source_name, config in config_dict.items():
             {"key": "scd", "operator": "Equal", "value": "true", "effect": "NoSchedule"}
         ]
 
-        scd_extract = KubernetesPodOperator(
-            **gitlab_defaults,
-            image=DATA_IMAGE,
-            task_id=f"{config['task_name']}-db-scd",
-            name=f"{config['task_name']}-db-scd",
-            secrets=standard_secrets + config["secrets"],
-            env_vars={**standard_pod_env_vars, **config["env_vars"]},
-            arguments=[scd_cmd],
-            affinity=scd_affinity,
-            tolerations=scd_tolerations,
-            do_xcom_push=True,
-            xcom_push=True,
-        )
-        # Sync Task
-        sync_cmd = generate_cmd(config["dag_name"], "--load_type sync")
+
         if config["dag_name"] == "gitlab_com":
+
             file_path = f"analytics/extract/postgres_pipeline/manifests/{config['dag_name']}_db_manifest.yaml"
             table_list = extract_table_list_from_manifest(file_path)
             for table in table_list:
@@ -296,8 +282,46 @@ for source_name, config in config_dict.items():
                     do_xcom_push=True,
                     xcom_push=True,
                 )
+
+                # SCD Task
+                scd_cmd = generate_cmd(config["dag_name"], f"--load_type scd --load_only_table {table}")
+
+                scd_extract = KubernetesPodOperator(
+                    **gitlab_defaults,
+                    image=DATA_IMAGE,
+                    task_id=f"{config['task_name']}-db-scd",
+                    name=f"{config['task_name']}-db-scd",
+                    secrets=standard_secrets + config["secrets"],
+                    env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                    arguments=[scd_cmd],
+                    affinity=scd_affinity,
+                    tolerations=scd_tolerations,
+                    do_xcom_push=True,
+                    xcom_push=True,
+                )
+
                 sync_extract >> scd_extract
         else:
+            # SCD Task
+            scd_cmd = generate_cmd(config["dag_name"], "--load_type scd")
+
+            scd_extract = KubernetesPodOperator(
+                **gitlab_defaults,
+                image=DATA_IMAGE,
+                task_id=f"{config['task_name']}-db-scd",
+                name=f"{config['task_name']}-db-scd",
+                secrets=standard_secrets + config["secrets"],
+                env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                arguments=[scd_cmd],
+                affinity=scd_affinity,
+                tolerations=scd_tolerations,
+                do_xcom_push=True,
+                xcom_push=True,
+            )
+
+            # Sync Task
+            sync_cmd = generate_cmd(config["dag_name"], "--load_type sync")
+
             sync_extract = KubernetesPodOperator(
                 **gitlab_defaults,
                 image=DATA_IMAGE,
