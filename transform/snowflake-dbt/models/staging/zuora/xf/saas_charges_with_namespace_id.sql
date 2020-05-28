@@ -14,7 +14,7 @@ WITH saas_zuora_charges AS (
   
 )
 
-,  customers_db_charges AS (
+, customers_db_charges AS (
   
     SELECT * 
     FROM {{ ref('customers_db_charges_xf') }}
