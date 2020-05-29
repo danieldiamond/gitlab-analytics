@@ -26,7 +26,7 @@ tables:
       , description_html
       , start_date_sourcing_milestone_id
       , due_date_sourcing_milestone_id
-      , state smallint
+      , state
       , severity
       , severity_overridden
       , confidence
@@ -59,7 +59,7 @@ tables:
       , project_id
       , author_id
       , file_store
-      , format smallint
+      , format
       , group_id
       FROM vulnerability_exports
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
