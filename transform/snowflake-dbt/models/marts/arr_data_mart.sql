@@ -1,3 +1,6 @@
+{{ config(materialized='table', 
+  transient=false)}}
+
 WITH fct_charges AS (
 
     SELECT *
