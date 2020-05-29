@@ -2,9 +2,9 @@ version: 2
 
 models:
     - name: zuora_account_source
-      description: Ephemeral layer for Zuora Accounts for cleaning and renaming
+      description: Source layer for Zuora Accounts for cleaning and renaming
     - name: zuora_accounting_period_source
-      description: Ephemeral layer for Zuora Accounting Periods for cleaning and renaming
+      description: Source layer for Zuora Accounting Periods for cleaning and renaming
       columns:
           - name: accounting_period_id
             tests:
@@ -12,14 +12,21 @@ models:
           - name: accounting_period_start_date
             tests:
                 - not_null
+    - name: zuora_amendment_source
+      description: Source layer for Zuora Amendments for cleaning and renaming
+      columns:
+        - name: amendment_id
+          tests:
+            - not_null
+            - unique
     - name: zuora_contact_source
-      description: Ephemeral layer for Zuora contacts for cleaning and renaming
+      description: Source layer for Zuora contacts for cleaning and renaming
     - name: zuora_discount_applied_metrics_source
-      description: Ephemeral layer for Zuora Discount Applied Metrics  for cleaning and renaming
+      description: Source layer for Zuora Discount Applied Metrics  for cleaning and renaming
     - name: zuora_invoice_source
-      description: Ephemeral layer for Zuora Invoices for cleaning and renaming
+      description: Source layer for Zuora Invoices for cleaning and renaming
     - name: zuora_invoice_item_source
-      description: Ephemeral layer for Zuora Invoice Items for cleaning and renaming
+      description: Source layer for Zuora Invoice Items for cleaning and renaming
     - name: zuora_invoice_payment_source
       description: Source layer for Zuora Products for cleaning and renaming
       columns:
@@ -31,9 +38,9 @@ models:
             tests:
                 - not_null
     - name: zuora_product_rate_plan_source
-      description: Ephemeral layer for Zuora Product Rate Plans for cleaning and renaming
+      description: Source layer for Zuora Product Rate Plans for cleaning and renaming
     - name: zuora_product_source
-      description: Ephemeral layer for Zuora Products for cleaning and renaming
+      description: Source layer for Zuora Products for cleaning and renaming
       columns:
           - name: product_id
             tests:
@@ -42,11 +49,11 @@ models:
             tests:
                 - not_null
     - name: zuora_rate_plan_source
-      description: Ephemeral layer for Zuora Rate Plans for cleaning and renaming
+      description: Source layer for Zuora Rate Plans for cleaning and renaming
     - name: zuora_rate_plan_charge_source
-      description: Ephemeral layer for Zuora Rate Plan Charges for cleaning and renaming
+      description: Source layer for Zuora Rate Plan Charges for cleaning and renaming
     - name: zuora_revenue_schedule_item_source
-      description: Ephemeral layer for Zuora Revenue Schedule Item for cleaning and renaming
+      description: Source layer for Zuora Revenue Schedule Item for cleaning and renaming
       columns:
           - name: revenue_schedule_item_id
             tests:
@@ -58,6 +65,6 @@ models:
             tests:
                - not_null
     - name: zuora_refund_source
-      description: Ephemeral layer for Zuora Refunds for cleaning and renaming
+      description: Source layer for Zuora Refunds for cleaning and renaming
     - name: zuora_subscription_source
-      description: Ephemeral layer for Zuora Subscriptions for cleaning and renaming
+      description: Source layer for Zuora Subscriptions for cleaning and renaming

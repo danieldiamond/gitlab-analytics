@@ -19,7 +19,7 @@ WITH usage_data as (
       ping_source,
       DATE_TRUNC('month', created_at)::DATE                                                              AS created_at,
       MAX(id)                                                                                            AS ping_id,
-      MAX(active_user_count)                                                                             AS active_user_count,
+      MAX(instance_user_count)                                                                           AS instance_user_count,
       MAX(edition)                                                                                       AS edition,
       MAX(main_edition)                                                                                  AS main_edition,
       MAX(edition_type)                                                                                  AS edition_type,
