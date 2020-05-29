@@ -22,6 +22,7 @@ sources:
       - name: accounting_period
         identifier: accountingperiod
         description: '{{ doc("zuora_accounting_period_source") }}'
+      - name: amendment
       - name: contact
         description: '{{ doc("zuora_contact_source") }}'
       - name: discount_applied_metrics

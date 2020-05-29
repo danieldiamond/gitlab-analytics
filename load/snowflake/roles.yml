@@ -1005,6 +1005,12 @@ roles:
             - transforming_xs
             - transforming_xl
 
+    - hfrancisco:
+        member_of:
+            - analyst_people
+        warehouses:
+            - analyst_xs
+
     - iroussos:
         member_of:
             - reporter
@@ -1361,6 +1367,11 @@ users:
         member_of:
             - gitlab_ci
             - sysadmin
+
+    - hfrancisco:
+        can_login: yes
+        member_of:
+            - hfrancisco
 
     - iroussos:
         can_login: yes

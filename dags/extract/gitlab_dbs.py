@@ -157,12 +157,14 @@ def generate_cmd(dag_name, operation):
     """
 
 
-def extract_table_list_from_manifest(file_path):
-    table_list = []
+def extract_manifest(file_path):
     with open(file_path, "r") as file:
         manifest_dict = yaml.load(file, Loader=yaml.FullLoader)
-    table_list = manifest_dict["tables"].keys()
-    return table_list
+    return manifest_dict
+
+
+def extract_table_list_from_manifest(manifest_contents):
+    return manifest_contents["tables"].keys()
 
 
 # Loop through each config_dict and generate a DAG
@@ -191,8 +193,12 @@ for source_name, config in config_dict.items():
         # Extract Task
         if config["dag_name"] == "gitlab_com":
             file_path = f"analytics/extract/postgres_pipeline/manifests/{config['dag_name']}_db_manifest.yaml"
-            table_list = extract_table_list_from_manifest(file_path)
+            manifest = extract_manifest(file_path)
+            table_list = extract_table_list_from_manifest(manifest)
             for table in table_list:
+                # tables without execution_date in the query won't be processed incrementally
+                if "{EXECUTION_DATE}" not in manifest["tables"][table]["import_query"]:
+                    continue
                 incremental_cmd = generate_cmd(
                     config["dag_name"],
                     f"--load_type incremental --load_only_table {table}",
@@ -265,8 +271,11 @@ for source_name, config in config_dict.items():
 
         if config["dag_name"] == "gitlab_com":
             file_path = f"analytics/extract/postgres_pipeline/manifests/{config['dag_name']}_db_manifest.yaml"
-            table_list = extract_table_list_from_manifest(file_path)
+            manifest = extract_manifest(file_path)
+            table_list = extract_table_list_from_manifest(manifest)
             for table in table_list:
+                if "{EXECUTION_DATE}" not in manifest["tables"][table]["import_query"]:
+                    continue
                 sync_cmd = generate_cmd(
                     config["dag_name"], f"--load_type sync --load_only_table {table}"
                 )
