@@ -60,7 +60,7 @@ def sheet_loader(
             print(exc)
 
         sheets = [
-            (sheet, tab)
+            (sheet["name"], tab)
             for sheet in stream["sheets"]
             for tab in sheet["tabs"]
             if (table_name is None or tab == table_name)
