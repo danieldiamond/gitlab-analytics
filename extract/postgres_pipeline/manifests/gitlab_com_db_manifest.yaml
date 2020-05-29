@@ -5,6 +5,18 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  vulnerabilities:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      FROM vulnerabilities
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerabilities'
+    export_table_primary_key: id
   vulnerability_exports:
     import_db: GITLAB_DB
     import_query: >
