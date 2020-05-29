@@ -60,7 +60,7 @@ def sheet_loader(
             print(exc)
 
         sheets = [
-            "{sheet_name}.{tab_name}".format(sheet_name=sheet["name"], tab_name=tab)
+            (sheet, tab)
             for sheet in stream["sheets"]
             for tab in sheet["tabs"]
             if (table_name is None or tab == table_name)
@@ -83,15 +83,13 @@ def sheet_loader(
 
     google_sheet_client = GoogleSheetsClient()
 
-    for table in sheets:
-        # Sheet here refers to the name of the sheet file, table is the actual sheet name
-        info(f"Processing sheet: {table}")
+    for sheet_name, tab in sheets:
 
-        dataframe = google_sheet_client.load_google_sheet(
-            gapi_keyfile, schema + "." + table, table
-        )
-        dw_uploader(engine, table, dataframe, schema)
-        info(f"Finished processing for table: {table}")
+        info(f"Processing sheet: {sheet_name}")
+
+        dataframe = google_sheet_client.load_google_sheet(gapi_keyfile, sheet_name, tab)
+        dw_uploader(engine, tab, dataframe, schema)
+        info(f"Finished processing for table: {tab}")
 
     query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)
