@@ -5,6 +5,180 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  vulnerabilities:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , milestone_id
+      , epic_id
+      , project_id
+      , author_id
+      , updated_by_id
+      , last_edited_by_id
+      , start_date date
+      , due_date date
+      , last_edited_at
+      , created_at
+      , updated_at
+      , title
+      , title_html text
+      , description text
+      , description_html text
+      , start_date_sourcing_milestone_id
+      , due_date_sourcing_milestone_id
+      , state smallint
+      , severity
+      , severity_overridden
+      , confidence
+      , confidence_overridden
+      , resolved_by_id
+      , resolved_at
+      , report_type
+      , cached_markdown_version
+      , confirmed_by_id
+      , confirmed_at
+      , dismissed_at
+      , dismissed_by_id
+      FROM vulnerabilities
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerabilities'
+    export_table_primary_key: id
+  vulnerability_exports:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , started_at
+      , finished_at
+      , status
+      , file
+      , project_id
+      , author_id
+      , file_store
+      , format smallint
+      , group_id
+      FROM vulnerability_exports
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_exports'
+    export_table_primary_key: id
+  vulnerability_feedback:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , feedback_type
+      , category
+      , project_id
+      , author_id
+      , pipeline_id
+      , issue_id
+      , project_fingerprint
+      , merge_request_id
+      , comment_author_id
+      , comment text
+      , comment_timestamp
+      FROM vulnerability_feedback
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_feedback'
+    export_table_primary_key: id
+  vulnerability_identifiers:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , project_id
+      , fingerprint
+      , external_type
+      , external_id
+      , name
+      , url text
+      FROM vulnerability_identifiers
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_identifiers'
+    export_table_primary_key: id
+  vulnerability_issue_links:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , vulnerability_id
+      , issue_id
+      , link_type
+      , created_at
+      , updated_at
+      FROM vulnerability_issue_links
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_issue_links'
+    export_table_primary_key: id
+  vulnerability_occurrence_identifiers:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , occurrence_id
+      , identifier_id
+      FROM vulnerability_occurrence_identifiers
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_occurrence_identifiers'
+    export_table_primary_key: id
+  vulnerability_occurrence_pipelines:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , occurrence_id
+      , pipeline_id
+      FROM vulnerability_occurrence_pipelines
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_occurrence_pipelines'
+    export_table_primary_key: id
+  vulnerability_scanners:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , project_id
+      , external_id
+      , name
+      FROM vulnerability_scanners
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_scanners'
+    export_table_primary_key: id
+  vulnerability_user_mentions:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , vulnerability_id
+      , note_id
+      , mentioned_users_ids
+      , mentioned_projects_ids
+      , mentioned_groups_ids
+      FROM vulnerability_user_mentions
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_user_mentions'
+    export_table_primary_key: id
   # resource_label_events:
   #   import_db: GITLAB_DB
   #   import_query: >
