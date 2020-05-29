@@ -47,9 +47,10 @@ def sheet_loader(
     Column names can not contain parentheses. Spaces and slashes will be
     replaced with underscores.
 
-    Sheets is a newline delimited txt fileseparated spaces.
+    sheet_file: path to yaml file with sheet configurations
+    table_name: Optional, name of the table to be loaded, should match tab name
 
-    python sheetload.py sheets <file_name>
+    python sheetload.py sheets <sheet_file>
     """
 
     with open(sheet_file, "r") as file:
@@ -62,6 +63,7 @@ def sheet_loader(
             "{sheet_name}.{tab_name}".format(sheet_name=sheet["name"], tab_name=tab)
             for sheet in stream["sheets"]
             for tab in sheet["tabs"]
+            if (table_name is None or tab == table_name)
         ]
 
     if database != "RAW":
@@ -81,18 +83,15 @@ def sheet_loader(
 
     google_sheet_client = GoogleSheetsClient()
 
-    for sheet_info in sheets:
-        if table_name and sheet_info != table_name:
-            continue
+    for table in sheets:
         # Sheet here refers to the name of the sheet file, table is the actual sheet name
-        info(f"Processing sheet: {sheet_info}")
-        sheet_file, table = sheet_info.split(".")
+        info(f"Processing sheet: {table}")
 
         dataframe = google_sheet_client.load_google_sheet(
-            gapi_keyfile, schema + "." + sheet_file, table
+            gapi_keyfile, schema + "." + table, table
         )
         dw_uploader(engine, table, dataframe, schema)
-        info(f"Finished processing for table: {sheet_info}")
+        info(f"Finished processing for table: {table}")
 
     query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)
