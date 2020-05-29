@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "temporary"
-    })
-}}
-
 WITH customers AS (
   
     SELECT * 
