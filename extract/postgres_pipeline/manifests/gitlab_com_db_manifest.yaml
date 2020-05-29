@@ -9,40 +9,11 @@ tables:
     import_db: GITLAB_DB
     import_query: >
       SELECT id
-      , milestone_id
-      , epic_id
-      , project_id
-      , author_id
-      , updated_by_id
-      , last_edited_by_id
-      , start_date date
-      , due_date date
-      , last_edited_at
       , created_at
       , updated_at
-      , title
-      , title_html
-      , description
-      , description_html
-      , start_date_sourcing_milestone_id
-      , due_date_sourcing_milestone_id
-      , state
-      , severity
-      , severity_overridden
-      , confidence
-      , confidence_overridden
-      , resolved_by_id
-      , resolved_at
-      , report_type
-      , cached_markdown_version
-      , confirmed_by_id
-      , confirmed_at
-      , dismissed_at
-      , dismissed_by_id
       FROM vulnerabilities
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
-
     export_schema: 'gitlab_com'
     export_table: 'vulnerabilities'
     export_table_primary_key: id
