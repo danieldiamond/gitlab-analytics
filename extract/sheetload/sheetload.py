@@ -87,7 +87,9 @@ def sheet_loader(
 
         info(f"Processing sheet: {sheet_name}")
 
-        dataframe = google_sheet_client.load_google_sheet(gapi_keyfile, sheet_name, tab)
+        dataframe = google_sheet_client.load_google_sheet(
+            gapi_keyfile, schema + "." + sheet_name, tab
+        )
         dw_uploader(engine, tab, dataframe, schema)
         info(f"Finished processing for table: {tab}")
 
