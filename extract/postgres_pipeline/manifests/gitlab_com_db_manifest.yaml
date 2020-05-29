@@ -21,9 +21,9 @@ tables:
       , created_at
       , updated_at
       , title
-      , title_html text
-      , description text
-      , description_html text
+      , title_html
+      , description
+      , description_html
       , start_date_sourcing_milestone_id
       , due_date_sourcing_milestone_id
       , state smallint
@@ -82,7 +82,7 @@ tables:
       , project_fingerprint
       , merge_request_id
       , comment_author_id
-      , comment text
+      , comment
       , comment_timestamp
       FROM vulnerability_feedback
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
@@ -101,7 +101,7 @@ tables:
       , external_type
       , external_id
       , name
-      , url text
+      , url
       FROM vulnerability_identifiers
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
