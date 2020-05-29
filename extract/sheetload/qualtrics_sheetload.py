@@ -6,9 +6,9 @@ from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
     query_executor,
 )
-from google_sheets_client import GoogleSheetsClient, dw_uploader
-
+from google_sheets_client import GoogleSheetsClient
 from qualtrics_client import QualtricsClient
+from sheetload_dataframe_utils import dw_uploader
 
 
 def construct_qualtrics_contact(result):
@@ -46,14 +46,16 @@ def process_qualtrics_file(
             FROM RAW.{schema}.{table}
         )
     """
-    results = query_executor(analytics_engine, query)
+    results = []
+    if not is_test:
+        results = query_executor(analytics_engine, query)
+
     qualtrics_contacts = [construct_qualtrics_contact(result) for result in results]
 
-    qualtrics_client = QualtricsClient(
-        env["QUALTRICS_API_TOKEN"], env["QUALTRICS_DATA_CENTER"]
-    )
-
-    if qualtrics_contacts and not is_test:
+    if not is_test:
+        qualtrics_client = QualtricsClient(
+            env["QUALTRICS_API_TOKEN"], env["QUALTRICS_DATA_CENTER"]
+        )
         mailing_id = qualtrics_client.create_mailing_list(
             env["QUALTRICS_POOL_ID"], table, env["QUALTRICS_GROUP_ID"]
         )

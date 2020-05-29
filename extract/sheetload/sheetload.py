@@ -17,30 +17,15 @@ from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
     query_executor,
 )
-from google_sheets_client import GoogleSheetsClient, dw_uploader
+from google_sheets_client import GoogleSheetsClient
 from google.cloud import storage
 from google.oauth2 import service_account
 from gspread.exceptions import APIError
 from gspread import Client
 from oauth2client.service_account import ServiceAccountCredentials
+from sheetload_dataframe_utils import dw_uploader
 from sqlalchemy.engine.base import Engine
-
 from qualtrics_sheetload import qualtrics_loader
-
-
-def table_has_changed(data: pd.DataFrame, engine: Engine, table: str) -> bool:
-    """
-    Check if the table has changed before uploading.
-    """
-
-    if engine.has_table(table):
-        existing_table = pd.read_sql_table(table, engine)
-        if "_updated_at" in existing_table.columns and existing_table.drop(
-            "_updated_at", axis=1
-        ).equals(data):
-            info(f'Table "{table}" has not changed. Aborting upload.')
-            return False
-    return True
 
 
 def sheet_loader(

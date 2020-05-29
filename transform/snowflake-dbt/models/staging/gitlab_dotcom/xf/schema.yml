@@ -387,6 +387,27 @@ models:
       - name: namespace_plan_id_at_project_creation
         description: '{{ doc("namespace_plan_id_at_creation") }}'
 
+  - name: gitlab_dotcom_resource_label_events_xf
+    description: xf model for gitlab_dotcom_resource_milestone_events joining with issues, epics and mrs.
+    columns:
+        - name: resource_label_event_id
+          tests:
+            - not_null
+            - unique
+  - name: gitlab_dotcom_resource_milestone_events_xf
+    description: xf model for gitlab_dotcom_resource_milestone_events joining with issues and mrs.
+    columns:
+        - name: resource_milestone_event_id
+          tests:
+            - not_null
+            - unique
+  - name: gitlab_dotcom_resource_weight_events_xf
+    description: xf model for gitlab_dotcom_resource_milestone_events joining with issues
+    columns:
+        - name: resource_weight_event_id
+          tests:
+            - not_null
+            - unique
   - name: gitlab_dotcom_retention_cohorts
     description: '{{ doc("gitlab_dotcom_retention_cohorts") }}'
     columns:

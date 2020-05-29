@@ -61,7 +61,6 @@ WITH source AS (
       auditor::BOOLEAN                                                 AS auditor,
       require_two_factor_authentication_from_group::BOOLEAN            AS does_require_two_factor_authentication_from_group,
       two_factor_grace_period::INTEGER                                 AS two_factor_grace_period,
-      ghost::BOOLEAN                                                   AS is_ghost,
       last_activity_on::TIMESTAMP                                      AS last_activity_on,
       notified_of_own_activity::BOOLEAN                                AS is_notified_of_own_activity,
       NULLIF(preferred_language, 'nan')::VARCHAR                       AS preferred_language,
