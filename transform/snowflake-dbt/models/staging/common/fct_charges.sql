@@ -8,15 +8,10 @@ WITH zuora_rate_plan AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge_source') }}
 
-), zuora_invoice AS (
+), fct_invoice_items_agg AS (
 
     SELECT *
-    FROM {{ ref('zuora_invoice_source') }}
-
-), zuora_invoice_item AS (
-
-    SELECT *
-    FROM {{ ref('zuora_invoice_item_source') }}
+    FROM {{ ref('fct_invoice_items_agg') }}
 
 ), base_charges AS (
 
@@ -63,22 +58,16 @@ WITH zuora_rate_plan AS (
       base_charges.charge_id,
       ROW_NUMBER() OVER (
           PARTITION BY base_charges.rate_plan_charge_number
-          ORDER BY base_charges.rate_plan_charge_segment, base_charges.rate_plan_charge_version,
-            zuora_invoice_item.service_start_date
+          ORDER BY base_charges.rate_plan_charge_segment, base_charges.rate_plan_charge_version
       ) AS segment_version_order,
       IFF(ROW_NUMBER() OVER (
           PARTITION BY base_charges.rate_plan_charge_number, base_charges.rate_plan_charge_segment
-          ORDER BY base_charges.rate_plan_charge_version DESC, zuora_invoice_item.service_start_date DESC) = 1,
+          ORDER BY base_charges.rate_plan_charge_version DESC) = 1,
           TRUE, FALSE
       ) AS is_last_segment_version
     FROM base_charges
-    INNER JOIN zuora_invoice_item
-      ON base_charges.charge_id = zuora_invoice_item.rate_plan_charge_id
-    INNER JOIN zuora_invoice
-      ON zuora_invoice_item.invoice_id = zuora_invoice.invoice_id
-    WHERE zuora_invoice.is_deleted = FALSE
-      AND zuora_invoice_item.is_deleted= FALSE
-      AND zuora_invoice.status='Posted'
+    INNER JOIN fct_invoice_items_agg
+      ON base_charges.charge_id = fct_invoice_items_agg.charge_id
 
 ), final AS (
 
