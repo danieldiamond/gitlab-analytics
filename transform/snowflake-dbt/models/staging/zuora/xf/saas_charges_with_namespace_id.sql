@@ -24,6 +24,7 @@ WITH zuora_base_mrr AS (
 
     SELECT *
     FROM {{ ref('dim_accounts') }}
+
 )
 
 , dim_customers AS (
