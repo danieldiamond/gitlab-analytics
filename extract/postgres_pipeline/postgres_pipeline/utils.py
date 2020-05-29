@@ -168,6 +168,9 @@ def chunk_and_upload(
 
     If it is part of a backfill, the first chunk gets sent to the dataframe_uploader
     so that the table can be created automagically with the correct data types.
+
+    Each chunk is uploaded to GCS with a suffix of which chunk number it is.
+    All of the chunks are uploaded by using a regex that gets all of the files.
     """
 
     rows_uploaded = 0
