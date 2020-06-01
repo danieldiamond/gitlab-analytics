@@ -73,7 +73,7 @@ models:
       - name: subscription_id
         tests:
           - not_null
-
-
-
-
+      - name: charge_id
+        tests:
+          - not_null
+          - unique
