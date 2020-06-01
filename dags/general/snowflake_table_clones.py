@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
+from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task, clone_and_setup_extraction_cmd
 from kube_secrets import (
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_LOAD_DATABASE,
@@ -47,8 +47,7 @@ def generate_command(execution_date):
 timestamp_format = "yyyy-mm-dd hh24:mi:ss"
 clone_cmd = f"""
         {clone_repo_cmd} &&
-        cd analytics/orchestration &&
-        python manage_snowflake.py create_table_clone --database ANALYTICS --source_schema ANALYTICS --source_table ARR_DATA_MART --target_schema ANALYTICS_CLONES --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp {{ ts }} --timestamp_format {timestamp_format}" 
+        python analytics/orchestration/manage_snowflake.py create_table_clone --database ANALYTICS --source_schema ANALYTICS --source_table ARR_DATA_MART --target_schema ANALYTICS_CLONES --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp {{ ts }} --timestamp_format {timestamp_format}" 
     """
 
 
