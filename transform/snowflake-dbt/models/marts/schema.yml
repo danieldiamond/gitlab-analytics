@@ -21,3 +21,6 @@ models:
         tests:
             - not_null
             - unique
+      - name: subscription_id
+        tests:
+            - not_null

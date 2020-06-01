@@ -1,6 +1,17 @@
 version: 2
 
 models:
+  - name: charges_base
+    description: "Base table used as a starting point for ARR analyses"
+    columns:
+      - name: charge_id
+        tests:
+          - not_null
+          - unique
+      - name: subscription_id
+        tests:
+          - not_null
+
   - name: dim_accounts
     description: "Dimension table representing each individual account with details of person to bill for the account. Excludes deleted and test accounts"
     columns:
