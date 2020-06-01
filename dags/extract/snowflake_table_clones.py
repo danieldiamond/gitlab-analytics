@@ -36,22 +36,6 @@ default_args = {
     "start_date": datetime(2020, 6, 1),
 }
 
-
-# Set the command for the container
-# def generate_command(execution_date):
-#     # Clone should be taken at 5PM PST which is 0pm UTC (default Snowflake timezone)
-#     clone_timestamp = execution_date.date() - timedelta(days=1)
-#     target_table = "arr_data_mart_{0}".format(clone_timestamp.strftime("%Y%m%d"))
-#     clone_timestamp = clone_timestamp.strftime("%Y-%m-%d %H:%M:%S")
-#     timestamp_format = "yyyy-mm-dd hh24:mi:ss"
-#     clone_cmd = f"""
-#         {clone_repo_cmd} &&
-#         cd analytics/orchestration &&
-#         python manage_snowflake.py create_table_clone --source_schema ANALYTICS --source_table ARR_DATA_MART --target_schema ANALYTICS_CLONES target_table arr_data_mart_{{ yesterday_ds_nodash }} timestamp_format {timestamp_format}"
-#     """
-#     return clone_cmd
-
-
 timestamp_format = "yyyy-mm-dd hh24:mi:ss"
 
 # Create the DAG

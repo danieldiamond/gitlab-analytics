@@ -43,4 +43,4 @@ def create_table_clone(self,
         query_executor(engine, q)
 
 if __name__ == "__main__":
-    Fire(create_table_clone)
+    Fire()
