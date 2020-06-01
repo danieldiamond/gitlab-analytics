@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import datetime, timedelta
 
@@ -49,7 +50,7 @@ clone_cmd = f"""
         {clone_repo_cmd} &&
         python analytics/orchestration/manage_snowflake.py create_table_clone --database ANALYTICS --source_schema ANALYTICS --source_table ARR_DATA_MART --target_schema ANALYTICS_CLONES --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp {{ ts }} --timestamp_format {timestamp_format}" 
     """
-
+logging.info(clone_cmd)
 
 # Create the DAG
 #  DAG will be triggered at 0am UTC which is 5 PM PST
