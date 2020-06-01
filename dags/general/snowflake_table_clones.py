@@ -41,15 +41,21 @@ def generate_command(execution_date):
     clone_cmd = f"""
         {clone_repo_cmd} &&
         cd analytics/orchestration/ &&
-        python manage_snowflake.py create_table_clone --database ANALYTICS --source_schema ANALYTICS --source_table ARR_DATA_MART --target_schema ANALYTICS_CLONES target_table {target_table} timestamp_format {timestamp_format}" 
+        python manage_snowflake.py create_table_clone --database ANALYTICS --source_schema ANALYTICS --source_table ARR_DATA_MART --target_schema ANALYTICS_CLONES target_table arr_data_mart_{{ yesterday_ds_nodash }} timestamp_format {timestamp_format}" 
     """
     return clone_cmd
 
+clone_cmd = f"""
+        {clone_repo_cmd} &&
+        cd analytics/orchestration/ &&
+        python manage_snowflake.py create_table_clone --database ANALYTICS --source_schema ANALYTICS --source_table ARR_DATA_MART --target_schema ANALYTICS_CLONES target_table arr_data_mart_{{ yesterday_ds_nodash }} timestamp_format {{ ts }}" 
+    """
+
 
 # Create the DAG
-#  DAG will be triggered at 1am UTC which is 6 PM PST
+#  DAG will be triggered at 0am UTC which is 5 PM PST
 dag = DAG(
-    "snowflake_table_clones", default_args=default_args, schedule_interval="0 1 * * *"
+    "snowflake_table_clones", default_args=default_args, schedule_interval="0 0 * * *"
 )
 
 # Task 1
@@ -66,7 +72,6 @@ make_clone = KubernetesPodOperator(
         SNOWFLAKE_LOAD_WAREHOUSE,
     ],
     env_vars=pod_env_vars,
-    arguments=[generate_command],
-    op_kwargs={"execution_date": "{{ execution_date }}"},
+    arguments=[clone_cmd],
     dag=dag,
 )
