@@ -22,7 +22,7 @@ def construct_qualtrics_contact(result):
 
 
 def get_qualtrics_request_table_name(file_id):
-    return "".join(x for x in file_id if x.isalpha())
+    return "".join(x for x in file_id if x.isalpha()).upper()
 
 
 def process_qualtrics_file(
