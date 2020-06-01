@@ -127,7 +127,7 @@ class SnowflakeManager:
         else:
             clone_sql += ";"
 
-        queries = [ f"use database \"{database}\";",
+        queries = ["""use database "{0}";""".format(create_db),
                     f"create schema if not exists {target_schema };",
                     f"drop table if not exists {target_schema}.{target_table};",
                     clone_sql,
