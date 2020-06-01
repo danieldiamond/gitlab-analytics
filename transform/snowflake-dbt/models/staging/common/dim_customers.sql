@@ -56,7 +56,7 @@ SELECT
     WHEN sfdc_account.is_deleted
       THEN master_records.sfdc_master_record_id
     ELSE NULL
-  END                                   AS merged_to_account_id
+  END                                     AS merged_to_account_id
 FROM sfdc_account
 LEFT JOIN master_records
   ON sfdc_account.account_id = master_records.account_id
