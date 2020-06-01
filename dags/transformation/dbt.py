@@ -245,9 +245,9 @@ dbt_test = KubernetesPodOperator(
 
 
 # Source Freshness
-dbt_source_freshness >> branching_dbt_run
+branching_dbt_run
 
 # Branching for run
-branching_dbt_run >> dbt_non_product_models_task >> dbt_product_models_task >> dbt_test
+branching_dbt_run >> dbt_non_product_models_task >> dbt_product_models_task >> dbt_source_freshness >> dbt_test
 
-branching_dbt_run >> dbt_full_refresh >> dbt_test
+branching_dbt_run >> dbt_full_refresh >> dbt_source_freshness >> dbt_test
