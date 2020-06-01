@@ -20,7 +20,7 @@ def create_table_clone(self,
 
     clone_sql = f"create table {target_schema}.{target_table} clone {source_schema}.{source_table}"
     if timestamp and timestamp_format:
-        clone_sql += " at (timestamp => to_timestamp_tz({timestamp}}, {timestamp_format}));"
+        clone_sql += f" at (timestamp => to_timestamp_tz({timestamp}, {timestamp_format}));"
     else:
         clone_sql += ";"
 
@@ -28,7 +28,7 @@ def create_table_clone(self,
                f"drop table if not exists {target_schema}.{target_table};",
                clone_sql,
                ]
-
+    logging.info(queries)
     try:
         config_dict = env.copy()
         engine = snowflake_engine_factory(config_dict, "SYSADMIN")
