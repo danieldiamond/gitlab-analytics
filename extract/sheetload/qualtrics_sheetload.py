@@ -21,6 +21,10 @@ def construct_qualtrics_contact(result):
     }
 
 
+def get_qualtrics_request_table_name(file_id):
+    return "".join(x for x in file_id if x.isalpha())
+
+
 def process_qualtrics_file(
     file, is_test, google_sheet_client, schema,
 ):
@@ -29,7 +33,7 @@ def process_qualtrics_file(
     if file.sheet1.title != tab:
         error(f"{file_name}: First worksheet did not match expected name of {tab}")
         return
-    table = "".join(x for x in file.id if x.isalpha())
+    table = get_qualtrics_request_table_name(file.id)
     dataframe = google_sheet_client.load_google_sheet(None, file_name, tab)
     if list(dataframe.columns.values)[0].lower() != "id":
         warning(f"{file_name}: First column did not match expected name of id")
