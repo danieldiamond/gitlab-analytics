@@ -22,30 +22,33 @@ WITH source as (
 ), final AS (
 
     SELECT *,
-      IFF(stage_id IN (45 --application_review
-                      ,5,6,7,16,27  --Screen
-                      ,15,20,46 --Hiring Manager Interview
-                      ,18, 30,47,50  --Team Interviews
-                      ,8,23,25,29,33,41,43,52,57 --assessment
-                      ,22,48 --executive interview
-                      ,58,59 --Reference Check    
-                      ,53 --background check
-                      ,61 --offer
-                      ),True, False)               AS is_milestone_stage,
-      CASE WHEN stage_id IN (5,6,7,16,27) 
-              THEN 'Screen'
-           WHEN stage_id IN (18,30,47,50)  
-              THEN 'Team Interview - Face to Face'
-           WHEN stage_id IN (8,23,25,29,33,41,43,52,57) 
-              THEN 'Take Home Assessment'
-           WHEN stage_id IN (15,20, 46) 
+      CASE WHEN LOWER(stage_name) LIKE '%screen%'
+             THEN 'Screen'
+           WHEN LOWER(stage_name) LIKE '%interview%'
+             THEN 'Team Interview - Face to Face'
+           WHEN LOWER(stage_name) like '%assessment%'
+             THEN 'Take Home Assessment'
+           WHEN LOWER(stage_name) LIKE '%take home%'
+             THEN 'Take Home Assessment'
+           WHEN stage_name IN ('Hiring Manager Review','Preliminary Phone Screen')
              THEN 'Hiring Manager Review'
-           WHEN stage_id IN (58,59)
+           WHEN LOWER(stage_name) LIKE '%reference%'
              THEN 'Reference Check'
-           WHEN stage_id IN (22,48)
+           WHEN LOWER(stage_name) LIKE '%executive interview%'
              THEN 'Executive Interview'
-           ELSE stage_name END::VARCHAR(100)                           AS stage_name_modified 
+           ELSE stage_name END::VARCHAR(100)                           AS stage_name_modified ,
+      CASE WHEN LOWER(stage_name_modified) LIKE '%application review%'  
+             THEN True
+           WHEN stage_name_modified IN ('Screen'
+                                        ,'Hiring Manager Review'
+                                        ,'Take Home Assessment'
+                                        ,'Executive Interview'
+                                        ,'Reference Check'
+                                        ,'Offer')                           
+              THEN True
+           ELSE FALSE END AS is_milestone_stage
     FROM renamed
+
 )
 
 SELECT *
