@@ -112,6 +112,39 @@ models:
           - not_null
           - unique
 
+  - name: gitlab_dotcom_daily_usage_data_events_90
+    description: '{{ doc("gitlab_dotcom_daily_usage_data_events_90") }}'
+    columns:
+      - name: event_name
+        tests:
+          - not_null
+      - name: stage_name
+        tests:
+          - not_null
+      - name: is_representative_of_stage
+        tests:
+          - not_null
+        description: This column represents whether or not this action represents being active for the entire stage. One action per stage has this designation.
+      - name: event_date
+        tests:
+          - not_null
+
+  - name: gitlab_dotcom_daily_usage_data_events
+    description: '{{ doc("gitlab_dotcom_daily_usage_data_events") }}'
+    columns:
+      - name: event_name
+        tests:
+          - not_null
+      - name: stage_name
+        tests:
+          - not_null
+      - name: is_representative_of_stage
+        tests:
+          - not_null
+        description: This column represents whether or not this action represents being active for the entire stage. One action per stage has this designation.
+      - name: event_date
+        tests:
+          - not_null
   - name: gitlab_dotcom_environments_xf
     description: '{{ doc("gitlab_dotcom_environments_xf") }}'
     columns:
