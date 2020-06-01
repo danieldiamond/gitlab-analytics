@@ -29,19 +29,22 @@ default_args = {
     "retry_delay": timedelta(minutes=1),
     "start_date": datetime(2020, 6, 1),
 }
-# Clone should be taken at 5PM PST which is 0pm UTC (default Snowflake timezone)
-clone_timestamp = datetime.now().date() - timedelta(days=1)
 
-target_table = "arr_data_mart_{0}".format(clone_timestamp.strftime("%Y%m%d"))
-clone_timestamp = clone_timestamp.strftime("%Y-%m-%d %H:%M:%S")
-timestamp_format = "yyyy-mm-dd hh24:mi:ss"
 
 # Set the command for the container
-clone_cmd = f"""
-    {clone_repo_cmd} &&
-    cd analytics/orchestration/ &&
-    python manage_snowflake.py create_table_clone --database ANALYTICS --source_schema ANALYTICS --source_table ARR_DATA_MART --target_schema ANALYTICS_CLONES target_table {target_table} timestamp_format {timestamp_format}" 
-"""
+def generate_command(execution_date):
+    # Clone should be taken at 5PM PST which is 0pm UTC (default Snowflake timezone)
+    clone_timestamp = execution_date.date() - timedelta(days=1)
+    target_table = "arr_data_mart_{0}".format(clone_timestamp.strftime("%Y%m%d"))
+    clone_timestamp = clone_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+    timestamp_format = "yyyy-mm-dd hh24:mi:ss"
+    clone_cmd = f"""
+        {clone_repo_cmd} &&
+        cd analytics/orchestration/ &&
+        python manage_snowflake.py create_table_clone --database ANALYTICS --source_schema ANALYTICS --source_table ARR_DATA_MART --target_schema ANALYTICS_CLONES target_table {target_table} timestamp_format {timestamp_format}" 
+    """
+    return clone_cmd
+
 
 # Create the DAG
 #  DAG will be triggered at 1am UTC which is 6 PM PST
@@ -63,6 +66,7 @@ make_clone = KubernetesPodOperator(
         SNOWFLAKE_LOAD_WAREHOUSE,
     ],
     env_vars=pod_env_vars,
-    arguments=[clone_cmd],
+    arguments=[generate_command],
+    op_kwargs={"execution_date": "{{ execution_date }}"},
     dag=dag,
 )
