@@ -1,5 +1,7 @@
 import os
 from datetime import datetime, timedelta
+from os import environ as env
+from yaml import load, safe_load, YAMLError
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
@@ -43,34 +45,60 @@ default_args = {
     "start_date": datetime(2019, 1, 1),
 }
 
-# Set the command for the container
-container_cmd = f"""
-    {clone_and_setup_extraction_cmd} &&
-    cd sheetload/ &&
-    python3 sheetload.py sheets --sheet_file sheets.yml
-"""
+airflow_home = env["AIRFLOW_HOME"]
+
+with open(f"{airflow_home}/analytics/extract/sheetload/sheets.yml", "r") as file:
+    try:
+        stream = safe_load(file)
+    except YAMLError as exc:
+        print(exc)
+
+    sheets = [
+        "{sheet_name}.{tab_name}".format(sheet_name=sheet["name"], tab_name=tab)
+        for sheet in stream["sheets"]
+        for tab in sheet["tabs"]
+    ]
+
+runs = []
 
 # Create the DAG
-dag = DAG("sheetload", default_args=default_args, schedule_interval="0 1 */1 * *")
-
-# Task 1
-sheetload_run = KubernetesPodOperator(
-    **gitlab_defaults,
-    image=DATA_IMAGE,
-    task_id="sheetload",
-    name="sheetload",
-    secrets=[
-        GCP_SERVICE_CREDS,
-        SNOWFLAKE_ACCOUNT,
-        SNOWFLAKE_LOAD_ROLE,
-        SNOWFLAKE_LOAD_USER,
-        SNOWFLAKE_LOAD_WAREHOUSE,
-        SNOWFLAKE_LOAD_PASSWORD,
-    ],
-    env_vars=pod_env_vars,
-    arguments=[container_cmd],
-    dag=dag,
+dag = DAG(
+    "sheetload",
+    default_args=default_args,
+    schedule_interval="0 1 */1 * *",
+    concurrency=1,
 )
+
+for sheet in sheets:
+
+    # Set the command for the container
+    container_cmd = f"""
+        {clone_and_setup_extraction_cmd} &&
+        cd sheetload/ &&
+        python3 sheetload.py sheets --sheet_file sheets.yml --table_name {sheet}
+    """
+
+    cleaned_sheet_name = sheet.replace("_", "-")
+
+    # Task 1
+    sheetload_run = KubernetesPodOperator(
+        **gitlab_defaults,
+        image=DATA_IMAGE,
+        task_id=f"{cleaned_sheet_name}-sheetload",
+        name=f"{cleaned_sheet_name}-sheetload",
+        secrets=[
+            GCP_SERVICE_CREDS,
+            SNOWFLAKE_ACCOUNT,
+            SNOWFLAKE_LOAD_ROLE,
+            SNOWFLAKE_LOAD_USER,
+            SNOWFLAKE_LOAD_WAREHOUSE,
+            SNOWFLAKE_LOAD_PASSWORD,
+        ],
+        env_vars=pod_env_vars,
+        arguments=[container_cmd],
+        dag=dag,
+    )
+    runs.append(sheetload_run)
 
 # dbt-sheetload
 dbt_sheetload_cmd = f"""
@@ -97,4 +125,4 @@ dbt_sheetload = KubernetesPodOperator(
 )
 
 # Order
-sheetload_run >> dbt_sheetload
+runs >> dbt_sheetload
