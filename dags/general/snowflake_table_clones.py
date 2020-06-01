@@ -14,11 +14,10 @@ from airflow_utils import (
 )
 from kube_secrets import (
     SNOWFLAKE_ACCOUNT,
-    SNOWFLAKE_LOAD_DATABASE,
+    SNOWFLAKE_LOAD_ROLE,
+    SNOWFLAKE_LOAD_USER,
     SNOWFLAKE_LOAD_WAREHOUSE,
-    SNOWFLAKE_PASSWORD,
-    SNOWFLAKE_USER,
-    SNOWFLAKE_TRANSFORM_ROLE,
+    SNOWFLAKE_LOAD_PASSWORD,
 )
 
 # Load the env vars into a dict and set Secrets
@@ -68,11 +67,11 @@ make_clone = KubernetesPodOperator(
     task_id="snowflake-clone-arr-data-mart",
     name="snowflake-clone-arr-data-mart",
     secrets=[
-        SNOWFLAKE_USER,
-        SNOWFLAKE_PASSWORD,
         SNOWFLAKE_ACCOUNT,
-        SNOWFLAKE_LOAD_DATABASE,
+        SNOWFLAKE_LOAD_ROLE,
+        SNOWFLAKE_LOAD_USER,
         SNOWFLAKE_LOAD_WAREHOUSE,
+        SNOWFLAKE_LOAD_PASSWORD,
     ],
     env_vars=pod_env_vars,
     arguments=[clone_and_setup_extraction_cmd + " && " + \
