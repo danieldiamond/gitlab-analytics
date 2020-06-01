@@ -35,7 +35,7 @@ def create_table_clone(self,
         clone_sql += ";"
 
     queries = [
-               f"drop table if not exists {target_schema}.{target_table};",
+               f"drop table if exists {target_schema}.{target_table};",
                clone_sql,
                ]
     logging.info(queries)
