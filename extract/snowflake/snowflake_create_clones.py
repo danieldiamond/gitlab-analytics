@@ -6,7 +6,6 @@ from typing import Dict
 from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
 
 def create_table_clone(self,
-                       database: str,
                        source_schema: str,
                        source_table: str,
                        target_table: str,
@@ -18,6 +17,7 @@ def create_table_clone(self,
     """
     timestamp:
     """
+
     engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", source_schema)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
     # Trys to create the schema its about to write to

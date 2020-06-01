@@ -75,8 +75,8 @@ make_clone = KubernetesPodOperator(
         SNOWFLAKE_LOAD_WAREHOUSE,
     ],
     env_vars=pod_env_vars,
-    arguments=[clone_and_setup_extraction_cmd,
-    "python snowflake/snowflake_create_clones.py create_table_clone --database analytics --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp {{ ts }} --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp_format ""yyyy-mm-dd hh24:mi:ss""",
+    arguments=[clone_and_setup_extraction_cmd + " && " + \
+    "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp {{ ts }} --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp_format ""yyyy-mm-dd hh24:mi:ss""",
                ],
     dag=dag,
 )
