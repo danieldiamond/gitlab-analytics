@@ -128,7 +128,8 @@ class SnowflakeManager:
             clone_sql += ";"
 
         queries = [ f"use database \"{database}\";",
-                    f"drop table if exists {target_schema}.{target_table};",
+                    f"create schema if not exists {target_schema };",
+                    f"drop table if not exists {target_schema}.{target_table};",
                     clone_sql,
         ]
 
