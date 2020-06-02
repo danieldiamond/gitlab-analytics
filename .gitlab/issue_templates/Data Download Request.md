@@ -16,7 +16,7 @@ If none, please include a description
 
 ### Submitter Checklist
 * [ ]  Provide link to dashboard that you wanted to export from Periscope that was greater than 5MB. Link: _____ 
-* [ ]  Provide information on what data you want exported. (Table name, Columns, SQL statements, etc)
+* [ ]  Provide information on what data you want exported. If the query needs to be written still, please indicate. (Table name, Columns, SQL statements, etc)
 * [ ]  Provide a file name for the file. File Name: ___________ 
 * [ ]  Select the type of format you would like the data exported in: 
   - [ ] TSV (tab-separated values)
