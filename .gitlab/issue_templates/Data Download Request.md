@@ -38,4 +38,4 @@ If none, please include a description
     - [ ] share the file's password with the submitter over a secure channel separate from the channel you will use to send the file
   - [ ] Share the file with the submitter over a secure channel
   - [ ] Reassign this issue to the Submitter for verification of receipt 
-  - [ ] Once the submitter has verified receipt delete the file from your computer
+  - [ ] Once the submitter has verified receipt, delete the file from your computer
