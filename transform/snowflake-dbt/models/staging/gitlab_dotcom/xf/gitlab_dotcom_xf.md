@@ -1,3 +1,15 @@
+{% docs gitlab_dotcom_daily_usage_data_events_90 %}
+
+This table selects all the rows from `gitlab_dotcom_usage_data_events` that have an `event_date` (date when the event happened) that is less than 90 days ago. 
+
+{% enddocs %}
+
+{% docs gitlab_dotcom_daily_usage_data_events %}
+
+This table is a daily aggregated table built on top of `gitlab_dotcom_usage_data_events`  table at a namespace/project level. 
+
+{% enddocs %}
+
 {% docs gitlab_dotcom_environments_xf %}
 
 This model anonymizes three fields: `environment_name`, `slug`, `external_url` based on the visibility of the projects the environments are associated to 
