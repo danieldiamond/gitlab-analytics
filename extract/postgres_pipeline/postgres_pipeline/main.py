@@ -107,7 +107,8 @@ def load_incremental(
         hours = int(os.environ["HOURS"])
         if replication_timestamp < execution_date - datetime.timedelta(hours=hours):
             raise Exception(
-                "PG is farther behind on replication than current replication window."
+                f"PG replication is at {replication_timestamp}, \
+                farther behind on replication than current replication window."
             )
 
     # If _TEMP exists in the table name, skip it because it needs a full sync
