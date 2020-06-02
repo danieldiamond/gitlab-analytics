@@ -22,7 +22,7 @@ If none, please include a description
   - [ ] TSV (tab-separated values)
   - [ ] CSV (comma-separated values)
 * [ ]  Does this data contain `RED` or `ORANGE` data as defined in [GitLab's data classification policy?](https://about.gitlab.com/handbook/engineering/security/data-classification-policy.html#data-classification-levels)
-  - [ ] Yes (If you don't currently have access to this data you will need to submit an approved an access request) 
+  - [ ] Yes (You will need to already have [approved access](https://about.gitlab.com/handbook/business-ops/it-ops-team/access-requests/) to this data by both quality and quantity) 
   - [ ] No (I verify that this data that will be extracted does not contain sensitive information.)
 * [ ]  How soon do you need this data ? Timeline: _________
 * [ ]  cc: @gitlab-data to have this issue prioritized and assigned.  
@@ -33,7 +33,7 @@ If none, please include a description
 * [ ]  If not, continue with the steps below: 
   - [ ] Run the query in Snowflake. 
   - [ ] Export the file in the requested format. 
-  - Sensitive Data
+  - For Sensitive Data
     - [ ] Encrypt the data into zip file (use `zip -er`)
     - [ ] share the file's password with the submitter over a secure channel separate from the channel you will use to send the file
   - [ ] Share the file with the submitter over a secure channel
