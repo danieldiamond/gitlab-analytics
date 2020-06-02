@@ -15,8 +15,8 @@ WITH fct_charges AS (
 
 ), dim_dates AS (
 
-   SELECT *
-   FROM {{ ref('dim_dates') }}
+    SELECT *
+    FROM {{ ref('dim_dates') }}
 
 ), dim_subscriptions AS (
 
