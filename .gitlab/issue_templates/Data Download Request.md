@@ -22,7 +22,7 @@ If none, please include a description
   - [ ] TSV (tab-separated values)
   - [ ] CSV (comma-separated values)
 * [ ]  Does this data contain `RED` or `ORANGE` data as defined in [GitLab's data classification policy?](https://about.gitlab.com/handbook/engineering/security/data-classification-policy.html#data-classification-levels)
-  - [ ] Yes (You will need to already have [approved access](https://about.gitlab.com/handbook/business-ops/it-ops-team/access-requests/) to this data by both quality and quantity) 
+  - [ ] Yes (You will need to already have [approved access](https://about.gitlab.com/handbook/business-ops/it-ops-team/access-requests/) to this data) 
   - [ ] No (I verify that this data that will be extracted does not contain sensitive information.)
 * [ ]  How soon do you need this data ? Timeline: _________
 * [ ]  cc: @gitlab-data to have this issue prioritized and assigned.  
