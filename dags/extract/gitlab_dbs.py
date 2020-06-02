@@ -208,6 +208,7 @@ for source_name, config in config_dict.items():
                     arguments=[incremental_cmd],
                     do_xcom_push=True,
                     xcom_push=True,
+
                 )
 
         else:
@@ -281,6 +282,7 @@ for source_name, config in config_dict.items():
                     arguments=[sync_cmd],
                     do_xcom_push=True,
                     xcom_push=True,
+                    task_concurrency=1,
                 )
 
                 # SCD Task
@@ -301,6 +303,7 @@ for source_name, config in config_dict.items():
                     tolerations=scd_tolerations,
                     do_xcom_push=True,
                     xcom_push=True,
+                    task_concurrency=1,
                 )
 
                 sync_extract >> scd_extract
