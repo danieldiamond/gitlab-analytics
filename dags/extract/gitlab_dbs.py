@@ -326,6 +326,7 @@ for source_name, config in config_dict.items():
                 arguments=[scd_cmd],
                 affinity=scd_affinity,
                 tolerations=scd_tolerations,
+                task_concurrency=1,
                 do_xcom_push=True,
                 xcom_push=True,
             )
@@ -342,6 +343,7 @@ for source_name, config in config_dict.items():
                 env_vars={**standard_pod_env_vars, **config["env_vars"]},
                 arguments=[sync_cmd],
                 do_xcom_push=True,
+                task_concurrency=1,
                 xcom_push=True,
             )
             sync_extract >> scd_extract
