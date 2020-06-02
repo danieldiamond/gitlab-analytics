@@ -1,3 +1,4 @@
+import datetime
 import logging
 import os
 import sys
@@ -94,6 +95,21 @@ def load_incremental(
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need incremental processing.")
         return False
+
+    replication_check_query = "select pg_last_xact_replay_timestamp();"
+
+    replication_timestamp = query_executor(source_engine, replication_check_query)[0][0]
+
+    if table_dict["export_schema"] == "gitlab_com":
+        execution_date = datetime.datetime.strptime(
+            os.environ["EXECUTION_DATE"], "%Y-%m-%dT%H:%M:%S%z"
+        )
+        hours = int(os.environ["HOURS"])
+        if replication_timestamp < execution_date - datetime.timedelta(hours=hours):
+            raise Exception(
+                "PG is farther behind on replication than current replication window."
+            )
+
     # If _TEMP exists in the table name, skip it because it needs a full sync
     # If a temp table exists then it needs to finish syncing so don't load incrementally
     if "_TEMP" == table_name[-5:] or target_engine.has_table(f"{table_name}_TEMP"):
