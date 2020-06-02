@@ -214,7 +214,6 @@ for source_name, config in config_dict.items():
                     arguments=[incremental_cmd],
                     do_xcom_push=True,
                     xcom_push=True,
-
                 )
 
         else:
@@ -315,8 +314,6 @@ for source_name, config in config_dict.items():
                         do_xcom_push=True,
                         xcom_push=True,
                     )
-
-                sync_extract >> scd_extract
     else:
         sync_dag = DAG(
             f"{config['dag_name']}_db_sync",
