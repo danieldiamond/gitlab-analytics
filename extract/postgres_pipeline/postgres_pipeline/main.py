@@ -100,12 +100,20 @@ def load_incremental(
 
     replication_timestamp = query_executor(source_engine, replication_check_query)[0][0]
 
+    """
+      If postgres replication is too far behind for gitlab_com, then data will be skipped that will not be caught in future DAGruns
+      This block of code raises an Exception whenever replication is far enough behind that data will be skipped
+    """
     if table_dict["export_schema"] == "gitlab_com":
         execution_date = datetime.datetime.strptime(
             os.environ["EXECUTION_DATE"], "%Y-%m-%dT%H:%M:%S%z"
         )
         hours = int(os.environ["HOURS"])
-        # 6 hours because that is how many hours is skipped every run
+
+        """ The DAG moves forward 6 hours every run, but it is getting data for `hours` Hours in the past.
+            This means that replication has to be caught up to the point of execution_date + 6 which is the next execution date 
+            minus however far back data is being queried which is the HOURS environ variable.  
+        """
         if replication_timestamp < execution_date + datetime.timedelta(
             hours=6
         ) - datetime.timedelta(hours=hours):
