@@ -1,6 +1,6 @@
 import os
 import yaml
-from datetime import datetime, timedelta, now
+from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
@@ -205,7 +205,7 @@ for source_name, config in config_dict.items():
                     f"--load_type incremental --load_only_table {table}",
                 )
 
-                now = now()
+                now = datetime.now()
                 cron = croniter.croniter(extract_dag.schedule_interval, now)
                 next_run = cron.get_next(datetime.datetime)
 
