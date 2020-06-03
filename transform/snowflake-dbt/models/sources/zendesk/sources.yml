@@ -26,7 +26,7 @@ sources:
       - name: organizations
         description: '{{ doc("zendesk_org_desc") }}'
       - name: satisfaction_ratings
-        description: '{{ doc("satisfaction_ratings") }}'
+        description: '{{ doc("zendesk_satisfaction_ratings_desc") }}'
       - name: sla_policies
         description: '{{ doc("zendesk_sla_policies_desc") }}'
       - name: tags

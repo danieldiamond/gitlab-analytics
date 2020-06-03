@@ -1,8 +1,21 @@
+{% docs zendesk_group_memberships_desc %}
+{% enddocs %}
+
+{% docs zendesk_groups_desc %}
+{% enddocs %}
+
+{% docs zendesk_macros_desc %}
+{% enddocs %}
+
 {% docs zendesk_org_desc %}
 
 The organizations table contains information about the organizations your end-users belong to. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/zendesk#organizations)
 
 {% enddocs %}
+
+{% docs zendesk_satisfaction_ratings_desc %}
+{% enddocs %}
+
 
 {% docs zendesk_sla_policies_desc %}
 
@@ -10,10 +23,22 @@ The sla_policies table contains info about SLA policies that can be assigned to 
 
 {% enddocs %}
 
+{% docs zendesk_tags_desc %}
+{% enddocs %}
+
 {% docs zendesk_ticket_audits_desc %}
 
 The ticket_audits table contains info about the audit events associated with Zendesk Support tickets. The scope of this table is currently limited to "sla_policy" and "priority" events [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/zendesk#ticket-audits)
 
+{% enddocs %}
+
+{% docs zendesk_ticket_comments_desc %}
+{% enddocs %}
+
+{% docs zendesk_ticket_fields_desc %}
+{% enddocs %}
+
+{% docs zendesk_ticket_forms_desc %}
 {% enddocs %}
 
 {% docs zendesk_ticket_metrics_desc %}
