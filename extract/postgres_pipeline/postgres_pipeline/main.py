@@ -112,10 +112,10 @@ def load_incremental(
 
         """ The DAG moves forward 6 hours every run, but it is getting data for `hours` Hours in the past.
             This means that replication has to be caught up to the point of execution_date + 6 which is the next execution date 
-            minus however far back data is being queried which is the HOURS environ variable.  
+            minus however far back data is being queried for each run which is the HOURS environ variable.  
         """
         if replication_timestamp < execution_date + datetime.timedelta(
-            hours=6
+            hours=os.environ["hours_between_runs"]
         ) - datetime.timedelta(hours=hours):
             raise Exception(
                 f"PG replication is at {replication_timestamp}, \

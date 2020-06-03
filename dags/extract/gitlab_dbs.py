@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
+import croniter
 from kube_secrets import (
     CI_STATS_DB_HOST,
     CI_STATS_DB_NAME,
@@ -203,6 +204,13 @@ for source_name, config in config_dict.items():
                     config["dag_name"],
                     f"--load_type incremental --load_only_table {table}",
                 )
+
+                now = datetime.datetime.now()
+                cron = croniter.croniter(extract_dag.schedule_interval, now)
+                next_run = cron.get_next(datetime.datetime)
+
+                hours_between_runs = (next_run - now).hours
+
                 incremental_extract = KubernetesPodOperator(
                     **gitlab_defaults,
                     image=DATA_IMAGE,
@@ -210,11 +218,14 @@ for source_name, config in config_dict.items():
                     name=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
                     pool="gitlab_dbs_pool",
                     secrets=standard_secrets + config["secrets"],
-                    env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                    env_vars={
+                        **standard_pod_env_vars,
+                        **config["env_vars"],
+                        "hours_between_runs": hours_between_runs,
+                    },
                     arguments=[incremental_cmd],
                     do_xcom_push=True,
                     xcom_push=True,
-
                 )
 
         else:
