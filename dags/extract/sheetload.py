@@ -54,7 +54,7 @@ with open(f"{airflow_home}/analytics/extract/sheetload/sheets.yml", "r") as file
         print(exc)
 
     sheets = [
-        "{sheet_name}.{tab_name}".format(sheet_name=sheet["name"], tab_name=tab)
+        "{tab_name}".format(tab_name=tab)
         for sheet in stream["sheets"]
         for tab in sheet["tabs"]
     ]
