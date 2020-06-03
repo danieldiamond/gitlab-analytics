@@ -207,9 +207,9 @@ for source_name, config in config_dict.items():
 
                 now = datetime.now()
                 cron = croniter.croniter(extract_dag.schedule_interval, now)
-                next_run = cron.get_next(datetime.datetime)
+                next_run = cron.get_next(datetime)
 
-                hours_between_runs = (next_run - now).hours
+                hours_between_runs = (next_run - now).seconds / 3600
 
                 incremental_extract = KubernetesPodOperator(
                     **gitlab_defaults,
