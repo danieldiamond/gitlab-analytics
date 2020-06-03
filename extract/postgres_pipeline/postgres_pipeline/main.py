@@ -105,7 +105,10 @@ def load_incremental(
             os.environ["EXECUTION_DATE"], "%Y-%m-%dT%H:%M:%S%z"
         )
         hours = int(os.environ["HOURS"])
-        if replication_timestamp < execution_date - datetime.timedelta(hours=hours):
+        # 6 hours because that is how many hours is skipped every run
+        if replication_timestamp < execution_date + datetime.timedelta(
+            hours=6
+        ) - datetime.timedelta(hours=hours):
             raise Exception(
                 f"PG replication is at {replication_timestamp}, \
                 farther behind on replication than current replication window."
