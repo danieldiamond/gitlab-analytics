@@ -24,6 +24,8 @@ WITH source as (
     SELECT *,
       CASE WHEN LOWER(stage_name) LIKE '%screen%'
              THEN 'Screen'
+           WHEN LOWER(stage_name) LIKE '%executive interview%'
+             THEN 'Executive Interview'  
            WHEN LOWER(stage_name) LIKE '%interview%'
              THEN 'Team Interview - Face to Face'
            WHEN LOWER(stage_name) like '%assessment%'
@@ -33,20 +35,15 @@ WITH source as (
            WHEN stage_name IN ('Hiring Manager Review','Preliminary Phone Screen')
              THEN 'Hiring Manager Review'
            WHEN LOWER(stage_name) LIKE '%reference%'
-             THEN 'Reference Check'
-           WHEN LOWER(stage_name) LIKE '%executive interview%'
-             THEN 'Executive Interview'
-           ELSE stage_name END::VARCHAR(100)                           AS stage_name_modified ,
-      CASE WHEN LOWER(stage_name_modified) LIKE '%application review%'  
-             THEN True
-           WHEN stage_name_modified IN ('Screen'
-                                        ,'Hiring Manager Review'
-                                        ,'Take Home Assessment'
-                                        ,'Executive Interview'
-                                        ,'Reference Check'
-                                        ,'Offer')                           
-              THEN True
-           ELSE FALSE END AS is_milestone_stage
+             THEN 'Reference Check'          
+           ELSE stage_name END::VARCHAR(100)                           AS stage_name_modified,
+      IFF(stage_name_modified IN ('Application Review' 
+                                 ,'Screen'
+                                 ,'Hiring Manager Review'
+                                 ,'Take Home Assessment'
+                                 ,'Executive Interview'
+                                 ,'Reference Check'
+                                 ,'Offer'), True, FALSE)               AS is_milestone_stage
     FROM renamed
 
 )
