@@ -17,27 +17,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'vulnerabilities'
     export_table_primary_key: id
-  vulnerability_exports:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , created_at
-      , updated_at
-      , started_at
-      , finished_at
-      , status
-      , file
-      , project_id
-      , author_id
-      , file_store
-      , format
-      , group_id
-      FROM vulnerability_exports
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'vulnerability_exports'
-    export_table_primary_key: id
   vulnerability_feedback:
     import_db: GITLAB_DB
     import_query: >
