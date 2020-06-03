@@ -209,7 +209,12 @@ for source_name, config in config_dict.items():
                 cron = croniter.croniter(extract_dag.schedule_interval, now)
                 next_run = cron.get_next(datetime)
 
-                hours_between_runs = (next_run - now).seconds / 3600
+                cron = croniter.croniter(
+                    extract_dag.schedule_interval, next_run + timedelta(seconds=1)
+                )
+                next_next_run = cron.get_next(datetime)
+
+                hours_between_runs = (next_next_run - next_run).seconds / 3600
 
                 incremental_extract = KubernetesPodOperator(
                     **gitlab_defaults,
@@ -221,7 +226,7 @@ for source_name, config in config_dict.items():
                     env_vars={
                         **standard_pod_env_vars,
                         **config["env_vars"],
-                        "hours_between_runs": hours_between_runs,
+                        "hours_between_runs": str(hours_between_runs),
                     },
                     arguments=[incremental_cmd],
                     do_xcom_push=True,
