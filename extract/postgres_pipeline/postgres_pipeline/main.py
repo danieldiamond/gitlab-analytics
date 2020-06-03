@@ -115,7 +115,7 @@ def load_incremental(
             minus however far back data is being queried for each run which is the HOURS environ variable.  
         """
         if replication_timestamp < execution_date + datetime.timedelta(
-            hours=os.environ["hours_between_runs"]
+            hours=float(os.environ["hours_between_runs"])
         ) - datetime.timedelta(hours=hours):
             raise Exception(
                 f"PG replication is at {replication_timestamp}, \
