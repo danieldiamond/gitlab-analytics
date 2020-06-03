@@ -47,7 +47,6 @@ tables:
       , created_at
       , updated_at
       , project_id
-      , fingerprint
       , external_type
       , external_id
       , name
