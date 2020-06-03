@@ -123,7 +123,6 @@ def load_incremental(
             )
         else:
             logging.info(f"Replication is good at {replication_timestamp}")
-            logging.info(os.environ["hours_between_runs"])
 
     # If _TEMP exists in the table name, skip it because it needs a full sync
     # If a temp table exists then it needs to finish syncing so don't load incrementally
