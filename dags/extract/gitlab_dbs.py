@@ -214,7 +214,6 @@ for source_name, config in config_dict.items():
                     arguments=[incremental_cmd],
                     do_xcom_push=True,
                     xcom_push=True,
-
                 )
 
         else:
@@ -276,45 +275,45 @@ for source_name, config in config_dict.items():
             manifest = extract_manifest(file_path)
             table_list = extract_table_list_from_manifest(manifest)
             for table in table_list:
-                if "{EXECUTION_DATE}" not in manifest["tables"][table]["import_query"]:
-                    continue
-                sync_cmd = generate_cmd(
-                    config["dag_name"], f"--load_type sync --load_only_table {table}"
-                )
-                sync_extract = KubernetesPodOperator(
-                    **gitlab_defaults,
-                    image=DATA_IMAGE,
-                    task_id=f"{config['task_name']}-{table.replace('_','-')}-db-sync",
-                    name=f"{config['task_name']}-{table.replace('_','-')}-db-sync",
-                    pool="gitlab_dbs_pool",
-                    secrets=standard_secrets + config["secrets"],
-                    env_vars={**standard_pod_env_vars, **config["env_vars"]},
-                    arguments=[sync_cmd],
-                    do_xcom_push=True,
-                    xcom_push=True,
-                )
+                if "{EXECUTION_DATE}" in manifest["tables"][table]["import_query"]:
+                    sync_cmd = generate_cmd(
+                        config["dag_name"],
+                        f"--load_type sync --load_only_table {table}",
+                    )
+                    sync_extract = KubernetesPodOperator(
+                        **gitlab_defaults,
+                        image=DATA_IMAGE,
+                        task_id=f"{config['task_name']}-{table.replace('_','-')}-db-sync",
+                        name=f"{config['task_name']}-{table.replace('_','-')}-db-sync",
+                        pool="gitlab_dbs_pool",
+                        secrets=standard_secrets + config["secrets"],
+                        env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                        arguments=[sync_cmd],
+                        do_xcom_push=True,
+                        xcom_push=True,
+                    )
 
-                # SCD Task
-                scd_cmd = generate_cmd(
-                    config["dag_name"], f"--load_type scd --load_only_table {table}"
-                )
+                else:
 
-                scd_extract = KubernetesPodOperator(
-                    **gitlab_defaults,
-                    image=DATA_IMAGE,
-                    task_id=f"{config['task_name']}-{table.replace('_','-')}-db-scd",
-                    name=f"{config['task_name']}-{table.replace('_','-')}-db-scd",
-                    pool="gitlab_dbs_pool",
-                    secrets=standard_secrets + config["secrets"],
-                    env_vars={**standard_pod_env_vars, **config["env_vars"]},
-                    arguments=[scd_cmd],
-                    affinity=scd_affinity,
-                    tolerations=scd_tolerations,
-                    do_xcom_push=True,
-                    xcom_push=True,
-                )
+                    # SCD Task
+                    scd_cmd = generate_cmd(
+                        config["dag_name"], f"--load_type scd --load_only_table {table}"
+                    )
 
-                sync_extract >> scd_extract
+                    scd_extract = KubernetesPodOperator(
+                        **gitlab_defaults,
+                        image=DATA_IMAGE,
+                        task_id=f"{config['task_name']}-{table.replace('_','-')}-db-scd",
+                        name=f"{config['task_name']}-{table.replace('_','-')}-db-scd",
+                        pool="gitlab_dbs_pool",
+                        secrets=standard_secrets + config["secrets"],
+                        env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                        arguments=[scd_cmd],
+                        affinity=scd_affinity,
+                        tolerations=scd_tolerations,
+                        do_xcom_push=True,
+                        xcom_push=True,
+                    )
     else:
         sync_dag = DAG(
             f"{config['dag_name']}_db_sync",
