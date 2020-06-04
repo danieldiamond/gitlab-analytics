@@ -184,7 +184,10 @@ gitlab-org/quality/performance,11511606
 gitlab-org/gitlab-triage,3430480
 gitlab-org/quality/nightly,7523614
 gitlab-org/quality/staging,7524061
+gitlab-org/quality/canary,7560116
+gitlab-org/quality/production,7560137
 gitlab-org/quality/pipeline-common,14477200
 gitlab-org/gitlab-styles,4176070
 gitlab-org/quality/triage-serverless,12690061
+gitlab-org/cluster-integration/test-utils/k3s-gitlab-ci,12450931
 gitlab-com/gl-infra/gitlab-gcp-janitor,13613417
