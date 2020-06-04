@@ -65,4 +65,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     args_dict = {**vars(args), 'config_dict' : config_dict}
-    create_table_clone(args_dict)
+    create_table_clone(**args_dict)
