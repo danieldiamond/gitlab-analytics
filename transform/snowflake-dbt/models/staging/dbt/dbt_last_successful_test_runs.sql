@@ -23,6 +23,7 @@ WITH test_results AS (
         FROM failing_tests
 
     )
+    GROUP BY 1
 
 )
 
