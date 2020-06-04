@@ -61,7 +61,7 @@ timestamp_format = "yyyy-mm-dd hh24:mi:ss"
 dag = DAG(
     "snowflake_table_clones", default_args=default_args, schedule_interval="0 0 * * *"
 )
-
+CLONE_DATE = "{{ execution_date.strftime('%Y-%m-%d %H:%M:%SS') }}"
 arguments=[clone_and_setup_extraction_cmd + " && " + \
     "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp " + CLONE_DATE + " --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp_format ""yyyy-mm-dd hh:mi:ss""",
                ]
@@ -72,7 +72,7 @@ logging.info(arguments)
 # Macros reference:
 # {{ yesterday_ds_nodash }} - yesterday's execution date as YYYYMMDD
 # {{ ts }} - same as execution_date.isoformat(). Example: 2018-01-01T00:00:00+00:00
-CLONE_DATE = "{{ execution_date.strftime('%Y-%m-%d %H:%M:%SS') }}"
+
 make_clone = KubernetesPodOperator(
     **gitlab_defaults,
     image=DATA_IMAGE,
