@@ -47,7 +47,7 @@ def create_table_clone(source_schema: str,
         query_executor(engine, q)
 
 if __name__ == "__main__":
-    print sys.argv[1:]
+    print(sys.argv[1:])
     config_dict = env.copy()
     parser = argparse.ArgumentParser()
     parser.add_argument('--source_schema')
