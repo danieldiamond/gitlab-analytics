@@ -19,7 +19,7 @@ def create_table_clone(source_schema: str,
 
     engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", source_schema)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
-    use_db_sql = f"""USE "{database}"""
+    use_db_sql = "USE \"{database\"".format(database)
     query_executor(engine, use_db_sql)
     # Tries to create the schema its about to write to
     # If it does exists, {schema} already exists, statement succeeded.
