@@ -16,6 +16,8 @@ def create_table_clone(source_schema: str,
     timestamp:
     """
     timestamp_format =  """yyyy-mm-dd hh:mi:ss"""
+    logging.info(conn_dict)
+    logging.info(env)
     engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", source_schema)
     logging.info(engine)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"].upper()
