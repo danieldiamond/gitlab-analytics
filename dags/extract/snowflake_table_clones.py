@@ -24,14 +24,10 @@ from kube_secrets import (
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {
-    "EXECUTION_DATE": "{{ next_execution_date }}",
-    "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
-    "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
-    if GIT_BRANCH == "master"
-    else f"{GIT_BRANCH}_ANALYTICS",
-    "TASK_INSTANCE": "{{ task_instance_key_str }}",
-}
+    "CLONE_DATE": "{{ execution_date.strftime('%Y-%m-%d %H:%M:%S') }}",
 
+}
+pod_env_vars = {**gitlab_pod_env_vars, **pod_env_vars}
 logging.info(pod_env_vars)
 
 secrets = [
@@ -61,9 +57,9 @@ timestamp_format = "yyyy-mm-dd hh24:mi:ss"
 dag = DAG(
     "snowflake_table_clones", default_args=default_args, schedule_interval="0 0 * * *"
 )
-CLONE_DATE = "{{ execution_date.strftime('%Y-%m-%d %H:%M:%S') }}"
+
 arguments=[clone_and_setup_extraction_cmd + " && " + \
-    "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp {{ execution_date.strftime(""%Y-%m-%d %H:%M:%S"") }} --target_table arr_data_mart_{{ yesterday_ds_nodash }}",
+    "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp $CLONE_DATE --target_table arr_data_mart_{{ yesterday_ds_nodash }}",
                ]
 
 logging.info(arguments)

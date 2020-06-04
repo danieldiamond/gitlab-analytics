@@ -17,6 +17,7 @@ def create_table_clone(source_schema: str,
     """
     timestamp_format =  """yyyy-mm-dd hh:mi:ss"""
     engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", source_schema)
+    logging.info(engine)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"].upper()
     use_db_sql = f"""USE "{database}" """
     logging.info(use_db_sql)
@@ -27,8 +28,6 @@ def create_table_clone(source_schema: str,
     schema_check = f"""CREATE SCHEMA IF NOT EXISTS "{database}".{target_schema};"""
     logging.info(schema_check)
     query_executor(engine, schema_check)
-
-    logging.info(engine)
 
     clone_sql = f"create table {target_schema}.{target_table} clone {source_schema}.{source_table}"
     if timestamp and timestamp_format:
