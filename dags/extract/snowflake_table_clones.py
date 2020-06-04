@@ -20,10 +20,25 @@ from kube_secrets import (
     SNOWFLAKE_LOAD_PASSWORD,
 )
 
-# Load the env vars into a dict and set Secrets
+# Load the env vars into a dict and set env vars
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
-pod_env_vars = {**gitlab_pod_env_vars, **{}}
+pod_env_vars = {
+    "EXECUTION_DATE": "{{ next_execution_date }}",
+    "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
+    "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
+    if GIT_BRANCH == "master"
+    else f"{GIT_BRANCH}_ANALYTICS",
+    "TASK_INSTANCE": "{{ task_instance_key_str }}",
+}
+secrets = [
+    SNOWFLAKE_LOAD_USER,
+    SNOWFLAKE_LOAD_PASSWORD,
+    SNOWFLAKE_ACCOUNT,
+    SNOWFLAKE_LOAD_WAREHOUSE,
+    SNOWFLAKE_LOAD_ROLE,
+]
+
 
 # Default arguments for the DAG
 default_args = {
@@ -50,13 +65,7 @@ make_clone = KubernetesPodOperator(
     image=DATA_IMAGE,
     task_id="snowflake-clone-arr-data-mart",
     name="snowflake-clone-arr-data-mart",
-    secrets=[
-        SNOWFLAKE_ACCOUNT,
-        SNOWFLAKE_LOAD_ROLE,
-        SNOWFLAKE_LOAD_USER,
-        SNOWFLAKE_LOAD_WAREHOUSE,
-        SNOWFLAKE_LOAD_PASSWORD,
-    ],
+    secrets=secrets,
     env_vars=pod_env_vars,
     arguments=[clone_and_setup_extraction_cmd + " && " + \
     "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp {{ ts_nodash }} --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp_format ""yyyymmddThhmiss""",
