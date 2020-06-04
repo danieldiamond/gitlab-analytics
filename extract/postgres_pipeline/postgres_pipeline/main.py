@@ -101,22 +101,29 @@ def load_incremental(
     replication_timestamp = query_executor(source_engine, replication_check_query)[0][0]
 
     """
-      If postgres replication is too far behind for gitlab_com, then data will be skipped that will not be caught in future DAGruns
-      This block of code raises an Exception whenever replication is far enough behind that data will be skipped
+      If postgres replication is too far behind for gitlab_com, then data will not be replicated in this DAGRun that
+      will not be replicated in future DAGruns -- thus forcing the DE team to backfill.
+      This block of code raises an Exception whenever replication is far enough behind that data will be missed.
     """
     if table_dict["export_schema"] == "gitlab_com":
+        last_execution_date = datetime.datetime.strptime(
+            os.environ["LAST_EXECUTION_DATE"], "%Y-%m-%dT%H:%M:%S%z"
+        )
         execution_date = datetime.datetime.strptime(
             os.environ["EXECUTION_DATE"], "%Y-%m-%dT%H:%M:%S%z"
         )
-        hours = int(os.environ["HOURS"])
+
+        hours_difference = (execution_date - last_execution_date).seconds / 3600
+
+        hours_looking_back = int(os.environ["HOURS"])
 
         """ The DAG moves forward 6 hours every run, but it is getting data for `hours` Hours in the past.
             This means that replication has to be caught up to the point of execution_date + 6 which is the next execution date 
             minus however far back data is being queried for each run which is the HOURS environ variable.  
         """
         if replication_timestamp < execution_date + datetime.timedelta(
-            hours=float(os.environ["hours_between_runs"])
-        ) - datetime.timedelta(hours=hours):
+            hours=hours_difference
+        ) - datetime.timedelta(hours=hours_looking_back):
             raise Exception(
                 f"PG replication is at {replication_timestamp}, \
                 farther behind on replication than current replication window."
