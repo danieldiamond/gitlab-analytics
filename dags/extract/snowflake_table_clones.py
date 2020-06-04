@@ -18,6 +18,10 @@ from kube_secrets import (
     SNOWFLAKE_LOAD_USER,
     SNOWFLAKE_LOAD_WAREHOUSE,
     SNOWFLAKE_LOAD_PASSWORD,
+    SNOWFLAKE_PASSWORD,
+    SNOWFLAKE_TRANSFORM_ROLE,
+    SNOWFLAKE_TRANSFORM_SCHEMA,
+    SNOWFLAKE_USER,
 )
 
 # Load the env vars into a dict and set env vars
@@ -33,11 +37,11 @@ pod_env_vars = {**gitlab_pod_env_vars, **pod_env_vars}
 logging.info(pod_env_vars)
 
 secrets = [
-    SNOWFLAKE_LOAD_USER,
-    SNOWFLAKE_LOAD_PASSWORD,
     SNOWFLAKE_ACCOUNT,
-    SNOWFLAKE_LOAD_WAREHOUSE,
-    SNOWFLAKE_LOAD_ROLE,
+    SNOWFLAKE_PASSWORD,
+    SNOWFLAKE_TRANSFORM_ROLE,
+    SNOWFLAKE_TRANSFORM_SCHEMA,
+    SNOWFLAKE_USER,
 ]
 
 # Default arguments for the DAG
