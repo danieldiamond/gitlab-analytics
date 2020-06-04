@@ -24,8 +24,8 @@ from kube_secrets import (
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {
-    "CLONE_DATE": "{{ execution_date.strftime('%Y-%m-%d %H:%M:%S') }}",
-    "YESTERDAY_TIMESTAMP" : "{{ yesterday_no_dash  }}"
+    "CLONE_DATE": "{{ ds }}",
+    "CLONE_DATE_NODASH": "{{ ds_nodash }}"
 
 }
 pod_env_vars = {**gitlab_pod_env_vars, **pod_env_vars}
@@ -66,7 +66,7 @@ dag = DAG(
 container_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
     cd snowflake/ &&
-    python3 snowflake_create_clones.py --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp $CLONE_DATE --target_table arr_data_mart_$YESTERDAY_TIMESTAMP
+    python3 snowflake_create_clones.py --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --target_table "arr_data_mart_$CLONE_DATE_NODASH" --timestamp "$CLONE_DATE 00:00:00"
 """
 
 logging.info(container_cmd)
