@@ -8,7 +8,7 @@ WITH base AS (
     SELECT
       opportunityid         AS opportunity_id,
       id                    AS lead_history_id,
-      leadid                AS lead_id
+      leadid                AS lead_id,
       createddate           AS field_modified_at,
       LOWER(field)          AS lead_field,
       newvalue__fl          AS new_value_float,
