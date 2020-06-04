@@ -19,12 +19,12 @@ def create_table_clone(source_schema: str,
 
     engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", source_schema)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
-    use_db_sql = "USE \"{database}\"".format(database)
+    use_db_sql = f"""USE "{database}";"""
     query_executor(engine, use_db_sql)
     # Tries to create the schema its about to write to
     # If it does exists, {schema} already exists, statement succeeded.
     # is returned.
-    schema_check = f"""CREATE SCHEMA IF NOT EXISTS "{database}".{target_schema}"""
+    schema_check = f"""CREATE SCHEMA IF NOT EXISTS "{database}".{target_schema};"""
     query_executor(engine, schema_check)
 
     logging.info(engine)
