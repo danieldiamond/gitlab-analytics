@@ -19,6 +19,8 @@ sources:
     tables: 
       - name: account
         description: '{{ doc("sfdc_account_source") }}'
+      - name: account_history
+        identifier: accounthistory
       - name: bizible_attribution_touchpoint
         identifier: bizible2__bizible_attribution_touchpoint__c
         description: '{{ doc("sfdc_bizible_source") }}'
