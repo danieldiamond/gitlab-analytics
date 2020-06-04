@@ -189,5 +189,7 @@ gitlab-org/quality/production,7560137
 gitlab-org/quality/pipeline-common,14477200
 gitlab-org/gitlab-styles,4176070
 gitlab-org/quality/triage-serverless,12690061
+gitlab-org/quality/testcases,11229385
+gitlab-org/quality/insights-config,11880131
 gitlab-org/cluster-integration/test-utils/k3s-gitlab-ci,12450931
 gitlab-com/gl-infra/gitlab-gcp-janitor,13613417
