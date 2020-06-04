@@ -11,8 +11,6 @@ WITH base AS (
       createddate           AS field_modified_at,
       LOWER(field)          AS lead_field,
       newvalue__fl          AS new_value_float,
-      newvalue__st          AS new_value_string,
-      newvalue__bo          AS new_value_boolean,
       newvalue__de          AS new_value_decimal,
       newvalue              as new_value,
       oldvalue              AS old_value,
