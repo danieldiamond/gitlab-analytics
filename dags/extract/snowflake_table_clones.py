@@ -66,7 +66,7 @@ dag = DAG(
 container_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
     cd snowflake/ &&
-    python3 snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp $CLONE_DATE --target_table arr_data_mart_$YESTERDAY_TIMESTAMP
+    python3 snowflake_create_clones.py --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp $CLONE_DATE --target_table arr_data_mart_$YESTERDAY_TIMESTAMP
 """
 
 logging.info(container_cmd)
