@@ -37,10 +37,6 @@ sources:
         description: '{{ doc("zendesk_ticket_audits_desc") }}'        
       - name: ticket_comments
         description: '{{ doc("zendesk_ticket_comments_desc") }}'
-      - name: ticket_fields
-        description: '{{ doc("zendesk_ticket_fields_desc") }}'
-      - name: ticket_forms
-        description: '{{ doc("zendesk_ticket_forms_desc") }}'
       - name: ticket_metrics
         description: '{{ doc("zendesk_ticket_metrics_desc") }}'
       - name: users

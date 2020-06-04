@@ -35,12 +35,6 @@ The ticket_audits table contains info about the audit events associated with Zen
 {% docs zendesk_ticket_comments_desc %}
 {% enddocs %}
 
-{% docs zendesk_ticket_fields_desc %}
-{% enddocs %}
-
-{% docs zendesk_ticket_forms_desc %}
-{% enddocs %}
-
 {% docs zendesk_ticket_metrics_desc %}
 
 The ticket_metrics table contains info about the metrics associated with Zendesk Support tickets. This table will not include records for deleted tickets. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/zendesk#ticket-metrics)
