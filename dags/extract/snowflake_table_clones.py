@@ -62,6 +62,12 @@ dag = DAG(
     "snowflake_table_clones", default_args=default_args, schedule_interval="0 0 * * *"
 )
 
+arguments=[clone_and_setup_extraction_cmd + " && " + \
+    "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp " + CLONE_DATE + " --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp_format ""yyyy-mm-dd hh:mi:ss""",
+               ]
+
+logging.info(arguments)
+
 # Task 1
 # Macros reference:
 # {{ yesterday_ds_nodash }} - yesterday's execution date as YYYYMMDD
@@ -74,8 +80,6 @@ make_clone = KubernetesPodOperator(
     name="snowflake-clone-arr-data-mart",
     secrets=secrets,
     env_vars=pod_env_vars,
-    arguments=[clone_and_setup_extraction_cmd + " && " + \
-    f"python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp {CLONE_DATE} --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp_format ""yyyy-mm-dd hh:mi:ss""",
-               ],
+    arguments=arguments,
     dag=dag,
 )
