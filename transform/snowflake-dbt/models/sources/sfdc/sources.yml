@@ -37,6 +37,8 @@ sources:
         description: '{{ doc("sfdc_campaignmember_source") }}'
       - name: contact         
         description: '{{ doc("sfdc_contact_source") }}'
+      - name: contact_history
+        identifier: contacthistory
       - name: event
         description: '{{ doc("sfdc_event_source") }}'
       - name: executive_business_review 
