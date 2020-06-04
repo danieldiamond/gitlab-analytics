@@ -191,7 +191,6 @@ def chunk_and_upload(
             chunk_df = chunk_df.iloc[rows_to_seed:]
         row_count = chunk_df.shape[0]
         rows_uploaded += row_count
-        logging.info(rows_uploaded)
         if not backfill or row_count > 0:
             upload_to_gcs(
                 advanced_metadata, chunk_df, upload_file_name + "." + str(idx)
