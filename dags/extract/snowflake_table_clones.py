@@ -38,7 +38,6 @@ secrets = [
     SNOWFLAKE_LOAD_ROLE,
 ]
 
-
 # Default arguments for the DAG
 default_args = {
     "catchup": False,
@@ -50,20 +49,26 @@ default_args = {
     "start_date": datetime(2020, 6, 1),
 }
 
-timestamp_format = "yyyy-mm-dd hh24:mi:ss"
-
 # Create the DAG
 #  DAG will be triggered at 0am UTC which is 5 PM PST
 dag = DAG(
     "snowflake_table_clones", default_args=default_args, schedule_interval="0 0 * * *"
 )
 
-arguments=[clone_and_setup_extraction_cmd + " && " + \
-    "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp $CLONE_DATE --target_table arr_data_mart_{{ yesterday_ds_nodash }}",
-               ]
+# arguments=[clone_and_setup_extraction_cmd + " && " + \
+#     "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp $CLONE_DATE --target_table arr_data_mart_{{ yesterday_ds_nodash }}",
+#                ]
 
-logging.info(arguments)
+# logging.info(arguments)
 
+# Set the command for the container
+container_cmd = f"""
+    {clone_and_setup_extraction_cmd} &&
+    cd snowflake/ &&
+    python3 snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp $CLONE_DATE --target_table arr_data_mart_{{ yesterday_ds_nodash }}
+"""
+
+logging.info(container_cmd)
 # Task 1
 # Macros reference:
 # {{ yesterday_ds_nodash }} - yesterday's execution date as YYYYMMDD
@@ -76,6 +81,6 @@ make_clone = KubernetesPodOperator(
     name="snowflake-clone-arr-data-mart",
     secrets=secrets,
     env_vars=pod_env_vars,
-    arguments=arguments,
+    arguments=[container_cmd],
     dag=dag,
 )
