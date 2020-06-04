@@ -18,7 +18,7 @@ def create_table_clone(source_schema: str,
     """
 
     engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", source_schema)
-    database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
+    database = env["SNOWFLAKE_TRANSFORM_DATABASE"].upper()
     use_db_sql = f"""USE "{database}" """
     logging.info(use_db_sql)
     query_executor(engine, use_db_sql)
