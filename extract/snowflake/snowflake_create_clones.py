@@ -48,11 +48,11 @@ def create_table_clone(source_schema: str,
 if __name__ == "__main__":
     config_dict = env.copy()
     parser = argparse.ArgumentParser()
-    parser.add_argument('source_schema')
-    parser.add_argument('source_table')
-    parser.add_argument('target_schema')
-    parser.add_argument('target_table')
-    parser.add_argument("timestamp")
+    parser.add_argument('--source_schema')
+    parser.add_argument('--source_table')
+    parser.add_argument('--target_schema')
+    parser.add_argument('--target_table')
+    parser.add_argument("--timestamp")
 
 
     args = parser.parse_args()
