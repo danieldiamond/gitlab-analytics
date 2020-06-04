@@ -22,7 +22,7 @@ def create_table_clone(
     logging.info(conn_dict)
     logging.info(env)
     engine = snowflake_engine_factory(
-        conn_dict or env, "ANALYTICS_LOADER", source_schema
+        conn_dict or env, "ANALYTICS_TRANSFORMER", source_schema
     )
     logging.info(engine)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"].upper()
@@ -36,7 +36,7 @@ def create_table_clone(
     logging.info(schema_check)
     query_executor(engine, schema_check)
 
-    clone_sql = f"""create table {target_schema}.{target_table} clone "{database}".{source_schema}.{source_table}"""
+    clone_sql = f"""create table if not exists {target_schema}.{target_table} clone "{database}".{source_schema}.{source_table}"""
     if timestamp and timestamp_format:
         clone_sql += (
             f""" at (timestamp => to_timestamp_tz('{timestamp}', '{timestamp_format}'));"""
