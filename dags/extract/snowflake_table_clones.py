@@ -1,6 +1,5 @@
 import logging
 import os
-import string
 from datetime import datetime, timedelta
 
 from airflow import DAG
@@ -29,7 +28,7 @@ pod_env_vars = {
     "SNOWFLAKE_LOAD_DATABASE": "RAW" if GIT_BRANCH == "master" else f"{GIT_BRANCH}_RAW",
     "SNOWFLAKE_TRANSFORM_DATABASE": "ANALYTICS"
     if GIT_BRANCH == "master"
-    else string.upper(f"{GIT_BRANCH}_ANALYTICS"),
+    else f"{GIT_BRANCH}_ANALYTICS",
     "TASK_INSTANCE": "{{ task_instance_key_str }}",
 }
 
