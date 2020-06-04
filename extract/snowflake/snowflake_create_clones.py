@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
+import argparse
 import logging
-from fire import Fire
 from os import environ as env
 from typing import Dict
 from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
@@ -46,4 +46,14 @@ def create_table_clone(source_schema: str,
         query_executor(engine, q)
 
 if __name__ == "__main__":
-    Fire()
+    config_dict = env.copy()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('source_schema')
+    parser.add_argument('source_table')
+    parser.add_argument('target_schema')
+    parser.add_argument('target_table')
+    parser.add_argument("timestamp")
+
+
+    args = parser.parse_args()
+    create_table_clone(args, config_dict)
