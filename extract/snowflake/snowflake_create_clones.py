@@ -5,8 +5,7 @@ from os import environ as env
 from typing import Dict
 from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
 
-def create_table_clone(self,
-                       source_schema: str,
+def create_table_clone(source_schema: str,
                        source_table: str,
                        target_table: str,
                        target_schema: str = None,
@@ -20,7 +19,7 @@ def create_table_clone(self,
 
     engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", source_schema)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
-    # Trys to create the schema its about to write to
+    # Tries to create the schema its about to write to
     # If it does exists, {schema} already exists, statement succeeded.
     # is returned.
     schema_check = f"""CREATE SCHEMA IF NOT EXISTS "{database}".{target_schema}"""
