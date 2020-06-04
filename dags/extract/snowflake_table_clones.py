@@ -66,7 +66,7 @@ dag = DAG(
 # Macros reference:
 # {{ yesterday_ds_nodash }} - yesterday's execution date as YYYYMMDD
 # {{ ts }} - same as execution_date.isoformat(). Example: 2018-01-01T00:00:00+00:00
-CLONE_DATE = "{{ ts.strftime('%Y-%m-%d %H:%M:%SS') }}"
+CLONE_DATE = "{{ execution_date.strftime('%Y-%m-%d %H:%M:%SS') }}"
 make_clone = KubernetesPodOperator(
     **gitlab_defaults,
     image=DATA_IMAGE,
