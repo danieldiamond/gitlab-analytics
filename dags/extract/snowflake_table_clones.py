@@ -32,7 +32,7 @@ pod_env_vars = {
     "TASK_INSTANCE": "{{ task_instance_key_str }}",
 }
 
-logging.debug(**pod_env_vars);
+logging.info(pod_env_vars)
 
 secrets = [
     SNOWFLAKE_LOAD_USER,
