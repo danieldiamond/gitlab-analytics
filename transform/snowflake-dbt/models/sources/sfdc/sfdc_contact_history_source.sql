@@ -9,7 +9,7 @@ WITH base AS (
       contactid             AS contact_id,
       id                    AS contact_history_id,
       createddate           AS field_modified_at,
-      LOWER(field)          AS lead_field,
+      LOWER(field)          AS contact_field,
       newvalue__fl          AS new_value_float,
       newvalue__de          AS new_value_decimal,
       oldvalue__fl          AS old_value_float,
