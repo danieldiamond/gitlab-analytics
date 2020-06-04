@@ -9,9 +9,10 @@ WITH issues AS (
   
 ), users AS (
   
-    SELECT user_id, users_name, user_name, is_external_user, organization, notification_email
+    SELECT *
+    {# user_id, users_name, user_name, is_external_user, organization, notification_email #}
     FROM {{ref('gitlab_dotcom_users')}}
-  
+
 ), assignee AS (
   
     SELECT
@@ -19,7 +20,7 @@ WITH issues AS (
       user_name               AS assignee,
       notification_email      AS assignee_email,
       is_external_user        AS assignee_is_external_user
-    FROM {{ref('gitlab_dotcom_issue_assignees')}}
+    FROM {{ref('gitlab_dotcom_issue_assignees')}} AS assignee
     LEFT JOIN users
       ON assignee.user_id = users.user_id  
 
@@ -66,10 +67,11 @@ WITH issues AS (
     SELECT *
     FROM {{ref('gitlab_dotcom_namespace_lineage')}}
 
+ 
 ), gitlab_subscriptions AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id')}}
+    FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
 
 ), milestone AS (
   
