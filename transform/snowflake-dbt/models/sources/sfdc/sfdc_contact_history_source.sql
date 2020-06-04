@@ -12,6 +12,8 @@ WITH base AS (
       LOWER(field)          AS lead_field,
       newvalue__fl          AS new_value_float,
       newvalue__de          AS new_value_decimal,
+      oldvalue__fl          AS old_value_float,
+      oldvalue__de          AS old_value_decimal,
       newvalue              as new_value,
       oldvalue              AS old_value,
       isdeleted             AS is_deleted,
