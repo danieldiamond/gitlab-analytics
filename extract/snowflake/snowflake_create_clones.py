@@ -55,7 +55,7 @@ def create_table_clone(
 
 if __name__ == "__main__":
     print(sys.argv[1:])
-    config_dict = env.copy()
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--source_schema")
     parser.add_argument("--source_table")
@@ -64,5 +64,4 @@ if __name__ == "__main__":
     parser.add_argument("--timestamp")
 
     args = parser.parse_args()
-    args_dict = {**vars(args), 'config_dict' : config_dict}
-    create_table_clone(**args_dict)
+    create_table_clone(**vars(args))
