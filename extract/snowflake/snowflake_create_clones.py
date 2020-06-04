@@ -64,5 +64,5 @@ if __name__ == "__main__":
     parser.add_argument("--timestamp")
 
     args = parser.parse_args()
-    print(vars(args))
-    create_table_clone(vars(args), config_dict)
+    args_dict = {**vars(args), 'config_dict' : config_dict}
+    create_table_clone(args_dict)
