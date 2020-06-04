@@ -183,6 +183,7 @@ def chunk_and_upload(
             seed_table(advanced_metadata, chunk_df, target_engine, target_table)
         row_count = chunk_df.shape[0]
         rows_uploaded += row_count
+        logging.info(rows_uploaded)
         upload_to_gcs(advanced_metadata, chunk_df, upload_file_name + "." + str(idx))
     if rows_uploaded > 0:
         trigger_snowflake_upload(
