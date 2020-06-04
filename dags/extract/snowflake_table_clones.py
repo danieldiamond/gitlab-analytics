@@ -63,6 +63,10 @@ dag = DAG(
 )
 
 # Task 1
+# Macros reference:
+# {{ yesterday_ds_nodash }} - yesterday's execution date as YYYYMMDD
+# {{ ts }} - same as execution_date.isoformat(). Example: 2018-01-01T00:00:00+00:00
+CLONE_DATE = "{{ ts.strftime('%Y-%m-%d %H:%M:%SS') }}"
 make_clone = KubernetesPodOperator(
     **gitlab_defaults,
     image=DATA_IMAGE,
@@ -71,7 +75,7 @@ make_clone = KubernetesPodOperator(
     secrets=secrets,
     env_vars=pod_env_vars,
     arguments=[clone_and_setup_extraction_cmd + " && " + \
-    "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp {{ ts_nodash }} --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp_format ""yyyymmddThhmiss""",
+    f"python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp CLONE_DATE --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp_format ""yyyy-mm-dd hh:mi:ss""",
                ],
     dag=dag,
 )
