@@ -16,7 +16,7 @@ This is the most important issue on your Triage day.
 Please prioritize this issue since we dedicate a day from your milestone to this activity. 
 
 ### Reply to slack channels 
-* [ ] Review each slack message request in the **#data** channel 
+* [ ] Review each slack message request in the **#data** and **#data-lounge** channel 
     - [ ] Reply to slack threads by pointing GitLabbers to the appropriate handbook page, visualization, or to other GitLabbers who may know more about the topic. 
     - [ ] Direct GitLabbers to the channel description, which has the link to the Data team project, if the request requires more than 5 minutes of investigative effort from a Data team member.
 * [ ] Review each slack message in the **#data-triage** channel, which will inform the triager of what issues have been opened in the data team project that day. 
