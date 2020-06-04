@@ -6,7 +6,6 @@ WITH base AS (
 ), renamed AS (
 
     SELECT
-      opportunityid         AS opportunity_id,
       id                    AS lead_history_id,
       leadid                AS lead_id,
       createddate           AS field_modified_at,
