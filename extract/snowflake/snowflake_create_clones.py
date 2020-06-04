@@ -26,6 +26,7 @@ def create_table_clone(source_schema: str,
     # If it does exists, {schema} already exists, statement succeeded.
     # is returned.
     schema_check = f"""CREATE SCHEMA IF NOT EXISTS "{database}".{target_schema};"""
+    logging.info(schema_check)
     query_executor(engine, schema_check)
 
     logging.info(engine)
@@ -35,13 +36,13 @@ def create_table_clone(source_schema: str,
         clone_sql += f" at (timestamp => to_timestamp_tz({timestamp}, {timestamp_format}));"
     else:
         clone_sql += ";"
-
     queries = [
                f"drop table if exists {target_schema}.{target_table};",
                clone_sql,
                ]
     logging.info(queries)
     for q in queries:
+        logging.info(q)
         query_executor(engine, q)
 
 if __name__ == "__main__":
