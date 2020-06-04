@@ -204,8 +204,6 @@ for source_name, config in config_dict.items():
                     f"--load_type incremental --load_only_table {table}",
                 )
 
-                extract_dag
-
                 incremental_extract = KubernetesPodOperator(
                     **gitlab_defaults,
                     image=DATA_IMAGE,
