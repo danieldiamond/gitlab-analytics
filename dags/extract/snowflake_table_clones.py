@@ -63,7 +63,7 @@ dag = DAG(
 )
 CLONE_DATE = "{{ execution_date.strftime('%Y-%m-%d %H:%M:%S') }}"
 arguments=[clone_and_setup_extraction_cmd + " && " + \
-    "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp {{ execution_date.strftime('%Y-%m-%d %H:%M:%S') }} --target_table arr_data_mart_{{ yesterday_ds_nodash }} --timestamp_format 'yyyy-mm-dd hh:mi:ss'",
+    "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp {{ execution_date.strftime('%Y-%m-%d %H:%M:%S') }} --target_table arr_data_mart_{{ yesterday_ds_nodash }}",
                ]
 
 logging.info(arguments)

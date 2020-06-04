@@ -10,13 +10,12 @@ def create_table_clone(source_schema: str,
                        target_table: str,
                        target_schema: str = None,
                        timestamp: str = None,
-                       timestamp_format: str = None,
                        conn_dict: Dict[str, str] = None,
                        ):
     """
     timestamp:
     """
-
+    timestamp_format =  """yyyy-mm-dd hh:mi:ss"""
     engine = snowflake_engine_factory(conn_dict or env, "ANALYTICS_LOADER", source_schema)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"].upper()
     use_db_sql = f"""USE "{database}" """
