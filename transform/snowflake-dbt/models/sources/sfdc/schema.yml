@@ -14,16 +14,13 @@ models:
           tests:
               - not_null
   - name: sfdc_account_history_source
-      description: Source model for SFDC Account History
-      columns:
+    description: Source model for SFDC Account History
+    columns:
         - name: account_history_id
           tests:
             - not_null
             - unique
         - name: account_id
-          tests:
-            - not_null
-        - name: account_name
           tests:
             - not_null
   - name: sfdc_bizible_attribution_touchpoint_source
@@ -79,15 +76,15 @@ models:
            tests:
               - not_null
   - name: sfdc_contact_history_source
-      description: Source model for SFDC Contacts History
-      columns:
-          - name: contact_id
-            tests:
-              - not_null
-          - name: contact_history_id
-            tests:
-              - not_null
-              - unique
+    description: Source model for SFDC Contacts History
+    columns:
+        - name: contact_id
+          tests:
+            - not_null
+        - name: contact_history_id
+          tests:
+            - not_null
+            - unique
   - name: sfdc_event_source
     description: Source model for SFDC Event
     columns:
@@ -141,12 +138,11 @@ models:
           tests:
             - not_null
   - name: sfdc_lead_history_source
-      description: Source model for SFDC Leads History
-      columns:
+    description: Source model for SFDC Leads History
+    columns:
         - name: lead_id
           tests:
             - not_null
-            - unique
         - name: lead_history_id
           tests:
             - not_null
@@ -171,15 +167,15 @@ models:
                     to: ref('sfdc_opportunity_stage')
                     field: primary_label
   - name: sfdc_opportunity_history_source
-        description: Source model for SFDC Opportunity History
-        columns:
-          - name: opportunity_history_id
-            tests:
-              - not_null
-          - name: opportunity_id
-            tests:
-              - not_null
-              - unique
+    description: Source model for SFDC Opportunity History
+    columns:
+        - name: opportunity_history_id
+          tests:
+            - not_null
+            - unique
+        - name: opportunity_id
+          tests:
+            - not_null
   - name: sfdc_opportunity_field_history_source
     description: Source model for SFDC Opportunity Field History
     columns:
