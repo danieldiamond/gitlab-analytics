@@ -203,6 +203,7 @@ for source_name, config in config_dict.items():
                     config["dag_name"],
                     f"--load_type incremental --load_only_table {table}",
                 )
+
                 incremental_extract = KubernetesPodOperator(
                     **gitlab_defaults,
                     image=DATA_IMAGE,
@@ -210,7 +211,11 @@ for source_name, config in config_dict.items():
                     name=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
                     pool="gitlab_dbs_pool",
                     secrets=standard_secrets + config["secrets"],
-                    env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                    env_vars={
+                        **standard_pod_env_vars,
+                        **config["env_vars"],
+                        "LAST_EXECUTION_DATE": "{{ execution_date }}",
+                    },
                     arguments=[incremental_cmd],
                     do_xcom_push=True,
                     xcom_push=True,
