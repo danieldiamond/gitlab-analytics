@@ -23,6 +23,7 @@ from kube_secrets import (
 # Load the env vars into a dict and set env vars
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
+#CLONE_DATE will be used to set the timestamp of when clone should
 pod_env_vars = {
     "CLONE_DATE": "{{ ds }}",
     "CLONE_NAME_DATE": "{{ yesterday_ds_nodash }}"
@@ -66,7 +67,7 @@ dag = DAG(
 container_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
     cd snowflake/ &&
-    python3 snowflake_create_clones.py --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --target_table "arr_data_mart_$CLONE_DATE_NODASH" --timestamp "$CLONE_DATE 00:00:00"
+    python3 snowflake_create_clones.py --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --target_table "arr_data_mart_$CLONE_NAME_DATE" --timestamp "$CLONE_DATE 00:00:00"
 """
 
 logging.info(container_cmd)
