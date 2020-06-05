@@ -158,6 +158,7 @@ class SnowflakeManager:
         clone_sql += " COPY GRANTS;"
         queries.append(f"drop table if exists {target_schema}.{target_table};")
         queries.append(clone_sql)
+        queries.append(f"drop table if exists {target_schema}.{target_table};")
         connection = self.engine.connect()
         try:
             for q in queries:
