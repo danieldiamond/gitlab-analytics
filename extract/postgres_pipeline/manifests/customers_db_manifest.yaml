@@ -155,8 +155,7 @@ tables:
     export_db: EXPORT_DB
     export_schema: 'customers'
     export_table: 'version_associations'
-    export_table_primary_key: id
-    advanced_metadata: true    
+    export_table_primary_key: id  
   versions:
     import_db: CUSTOMERS_DB
     import_query: >
@@ -174,7 +173,6 @@ tables:
     export_schema: 'customers'
     export_table: 'versions'
     export_table_primary_key: id
-    advanced_metadata: true
   schema_migrations:
     import_db: CUSTOMERS_DB
     import_query: >
