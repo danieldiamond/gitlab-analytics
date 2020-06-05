@@ -146,7 +146,7 @@ tables:
   version_associations:
     import_db: CUSTOMERS_DB
     import_query: >
-      SELECT id,
+      SELECT id
       , version_id
       , foreign_key_name
       , foreign_key_id
