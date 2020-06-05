@@ -22,15 +22,12 @@ def create_table_clone(
     engine = snowflake_engine_factory(env, "SYSADMIN")
     logging.info(engine)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
-    use_db_sql = f"""USE "{database}" """
-    logging.info(use_db_sql)
-    query_executor(engine, use_db_sql)
+    queries  = [f"""USE "{database}"; """,]
     # Tries to create the schema its about to write to
     # If it does exists, {schema} already exists, statement succeeded.
     # is returned.
     schema_check = f"""CREATE SCHEMA IF NOT EXISTS "{database}".{target_schema};"""
-    logging.info(schema_check)
-    query_executor(engine, schema_check)
+    queries.append(schema_check)
 
     clone_sql = f"""create table if not exists {target_schema}.{target_table} clone "{database}".{source_schema}.{source_table}"""
     if timestamp and timestamp_format:
@@ -38,14 +35,14 @@ def create_table_clone(
             f""" at (timestamp => to_timestamp_tz('{timestamp}', '{timestamp_format}'))"""
         )
     clone_sql += " COPY GRANTS;"
-    queries = [
-        f"drop table if exists {target_schema}.{target_table};",
-        clone_sql,
-    ]
+    queries.append(f"drop table if exists {target_schema}.{target_table};")
+    queries += clone_sql
     logging.info(queries)
-    for q in queries:
-        logging.info(q)
-        query_executor(engine, q)
+    connection = engine.connect()
+    try:
+        connection.execute(queries)
+    finally:
+        connection.close()
 
 
 if __name__ == "__main__":
