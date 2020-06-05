@@ -27,7 +27,7 @@ models:
               field: add_on_id
 
   - name: license_db_licenses_source
-    description: This source model is the data from from a bi-weekly export of the license-db-restore CloudSQL instance for the licenses table from license.gitlab.com. This data represents licenses and associated metada such as expiration date and zuora subscription id.
+    description: This source model is the data from from a bi-weekly export of the license-db-restore CloudSQL instance for the licenses table from license.gitlab.com. This data represents licenses and associated metadata such as expiration date and zuora subscription id.
     columns:
       - name: license_id
         tests:
