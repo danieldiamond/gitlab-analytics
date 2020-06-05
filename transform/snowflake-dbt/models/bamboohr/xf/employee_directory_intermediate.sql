@@ -29,7 +29,7 @@ WITH RECURSIVE employee_directory AS (
     FROM {{ ref('bamboohr_job_info') }}
 
 ), job_role AS (
-    
+
     SELECT *
     FROM {{ ref('bamboohr_job_role') }}
 
@@ -37,22 +37,20 @@ WITH RECURSIVE employee_directory AS (
 
     SELECT 
       department_info.job_title,
-      IFF(job_title = 'Manager, Field Marketing','Leader',job_role.job_role)    AS job_role, 
+      IFF(job_title = 'Manager, Field Marketing','Leader',COALESCE(job_role.job_role, department_info.job_role))    AS job_role, 
       CASE WHEN job_title = 'Group Manager, Product' 
             THEN '9.5'
            WHEN job_title = 'Manager, Field Marketing' 
              THEN '8'
-           ELSE job_role.job_grade END                                          AS job_grade
+           ELSE job_role.job_grade END                                                                              AS job_grade
     FROM date_details
     LEFT JOIN department_info 
-      ON date_details.date_actual BETWEEN department_info.effective_date AND COALESCE(department_info.effective_end_Date, '2020-07-01')
+      ON date_details.date_actual BETWEEN department_info.effective_date AND COALESCE(department_info.effective_end_Date, {{max_date_in_bamboo_analyses()}})
     LEFT JOIN job_role
       ON job_role.employee_id = department_info.employee_id
-      AND date_details.date_actual BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_date, '2020-07-01')
+      AND date_details.date_actual BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_date, {{max_date_in_bamboo_analyses()}})
     WHERE job_role.job_role IN ('Manager','Leader')
       AND job_role.job_grade IS NOT NULL
-      AND date_actual = '2020-02-27'
-    ---1st date we started capturing job_role
     GROUP BY 1,2,3
 
 ), location_factor AS (
@@ -95,7 +93,7 @@ WITH RECURSIVE employee_directory AS (
       COALESCE(job_role.cost_center, 
                cost_center_prior_to_bamboo.cost_center)                     AS cost_center,
       department_info.reports_to,
-      IFF(date_details.date_actual BETWEEN '2020-11-01' AND '2020-02-27', 
+      IFF(date_details.date_actual BETWEEN '2019-11-01' AND '2020-02-27', 
             job_info_mapping_historical_manager_leader.job_role, 
             job_role.job_role)                                              AS job_role,
       CASE WHEN job_role.job_grade IN ('11','12','CXO')

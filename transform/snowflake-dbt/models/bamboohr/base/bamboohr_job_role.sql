@@ -21,6 +21,7 @@ WITH source AS (
     QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade, cost_center, jobtitle_speciality 
             ORDER BY DATE_TRUNC(day,effective_date) ASC, DATE_TRUNC(hour, effective_date) DESC)=1  
 
+
 ), final AS (
 
     SELECT 
@@ -30,7 +31,7 @@ WITH source AS (
       job_grade,
       cost_center,
       jobtitle_speciality,
-      DATE_TRUNC(day, effective_date)                                                   AS effective_date,
+      DATE_TRUNC(day, effective_date)                                                    AS effective_date,
       LEAD(DATEADD(day,-1,DATE_TRUNC(day, intermediate.effective_date))) OVER 
         (PARTITION BY employee_number ORDER BY intermediate.effective_date)              AS next_effective_date
     FROM intermediate 
