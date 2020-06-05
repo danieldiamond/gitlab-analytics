@@ -362,8 +362,8 @@ def main(file_path: str, load_type: str, load_only_table: str = None) -> None:
         raw_query = table_dict["import_query"]
 
         source_table = table_dict["export_table"]
-        if "source_schema" in table_dict:
-            source_table = table_dict["source_schema"] + "." + source_table
+        if "import_schema" in table_dict:
+            source_table = table_dict["import_schema"] + "." + source_table
 
         # Check if the schema has changed or the table is new
         schema_changed = check_if_schema_changed(
