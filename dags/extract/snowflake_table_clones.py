@@ -31,7 +31,7 @@ GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {
     "CLONE_DATE": "{{ ds }}",
     "CLONE_NAME_DATE": "{{ yesterday_ds_nodash }}",
-    "SNOWFLAKE_SYSADMIN_ROLE": "TRANSFORMER",
+    "SNOWFLAKE_SYSADMIN_ROLE": "SYSADMIN",
 }
 
 pod_env_vars = {**gitlab_pod_env_vars, **pod_env_vars}
