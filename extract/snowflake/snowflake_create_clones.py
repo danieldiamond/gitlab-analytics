@@ -6,6 +6,7 @@ import sys
 from os import environ as env
 from gitlabdata.orchestration_utils import snowflake_engine_factory
 
+
 def create_table_clone(
     source_schema: str,
     source_table: str,
@@ -14,14 +15,19 @@ def create_table_clone(
     timestamp: str = None,
 ):
     """
-    timestamp:
+    timestamp: timestamp indicating time to
     """
     timestamp_format = """yyyy-mm-dd hh:mi:ss"""
-    logging.info(env)
-    engine = snowflake_engine_factory(env, "SYSADMIN")
-    logging.info(engine)
+    if not target_schema:
+        target_schema = source_schema
+
+    print(env)
+    engine = snowflake_engine_factory(env, "CI_USER")
+    print(engine)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
-    queries  = [f"""USE "{database}"; """,]
+    queries = [
+        f"""USE "{database}"; """,
+    ]
     # Tries to create the schema its about to write to
     # If it does exists, {schema} already exists, statement succeeded.
     # is returned.
@@ -30,9 +36,7 @@ def create_table_clone(
 
     clone_sql = f"""create table if not exists {target_schema}.{target_table} clone "{database}".{source_schema}.{source_table}"""
     if timestamp and timestamp_format:
-        clone_sql += (
-            f""" at (timestamp => to_timestamp_tz('{timestamp}', '{timestamp_format}'))"""
-        )
+        clone_sql += f""" at (timestamp => to_timestamp_tz('{timestamp}', '{timestamp_format}'))"""
     clone_sql += " COPY GRANTS;"
     queries.append(f"drop table if exists {target_schema}.{target_table};")
     queries.append(clone_sql)
