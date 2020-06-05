@@ -22,7 +22,7 @@ def create_table_clone(
     logging.info(conn_dict)
     logging.info(env)
     engine = snowflake_engine_factory(
-        conn_dict or env, "ANALYTICS_TRANSFORMER", source_schema
+        conn_dict or env, "CI_USER", source_schema
     )
     logging.info(engine)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"].upper()
