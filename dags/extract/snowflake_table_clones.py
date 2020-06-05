@@ -20,7 +20,6 @@ from kube_secrets import (
     SNOWFLAKE_LOAD_PASSWORD,
     SNOWFLAKE_PASSWORD,
     SNOWFLAKE_USER,
-
 )
 
 # Load the env vars into a dict and set env vars
@@ -34,6 +33,8 @@ pod_env_vars = {
 
 }
 pod_env_vars = {**gitlab_pod_env_vars, **pod_env_vars}
+pod_env_vars["SNOWFLAKE_DATABASE"] = pod_env_vars["SNOWFLAKE_TRANSFORM_DATABASE"]
+
 logging.info(pod_env_vars)
 
 secrets = [
