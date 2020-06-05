@@ -299,6 +299,7 @@ roles:
             - analyst_people
             - analyst_sales
             - analyst_marketing
+            - static_admin
         privileges:
             databases:
                 write:
@@ -310,6 +311,7 @@ roles:
             - loader
             - transformer
             - snowflake_db
+            - static_admin
         warehouses:
             - airflow_testing_l
             - engineer_xs
