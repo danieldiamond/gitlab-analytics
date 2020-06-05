@@ -12,6 +12,7 @@ tables:
       , column_name
       , table_schema
       FROM information_schema.columns
+    import_schema: information_schema
     export_schema: 'gitlab_com'
     export_table: 'columnst'
     export_table_primary_key: CONCAT(table_name, '_', column_name)
