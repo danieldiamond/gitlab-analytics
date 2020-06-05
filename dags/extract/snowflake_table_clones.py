@@ -22,6 +22,9 @@ from kube_secrets import (
     SNOWFLAKE_TRANSFORM_ROLE,
     SNOWFLAKE_TRANSFORM_SCHEMA,
     SNOWFLAKE_USER,
+    SNOWFLAKE_TRANSFORM_WAREHOUSE,
+    SNOWFLAKE_TRANSFORM_DATABASE,
+
 )
 
 # Load the env vars into a dict and set env vars
@@ -39,9 +42,9 @@ logging.info(pod_env_vars)
 secrets = [
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_PASSWORD,
-    SNOWFLAKE_TRANSFORM_ROLE,
-    SNOWFLAKE_TRANSFORM_SCHEMA,
     SNOWFLAKE_USER,
+    SNOWFLAKE_TRANSFORM_DATABASE,
+    SNOWFLAKE_TRANSFORM_WAREHOUSE,
 ]
 
 # Default arguments for the DAG
