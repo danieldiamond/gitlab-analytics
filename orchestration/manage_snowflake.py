@@ -131,7 +131,11 @@ class SnowflakeManager:
         timestamp: str = None,
     ):
         """
-            Create zero copy clone of a table at given timestamp
+        Create a zero copy clone of a table (optionally at a given timestamp)
+        source_schema: schema of table to be cloned
+        source_table: name of table to cloned
+        target_table: name of clone table
+        target_schema: schema of clone table
         timestamp: timestamp indicating time of clone in format yyyy-mm-dd hh:mi:ss
         """
         timestamp_format = """yyyy-mm-dd hh:mi:ss"""
@@ -165,6 +169,7 @@ class SnowflakeManager:
             self.engine.dispose()
 
         return self
+
 
 if __name__ == "__main__":
     snowflake_manager = SnowflakeManager(env.copy())

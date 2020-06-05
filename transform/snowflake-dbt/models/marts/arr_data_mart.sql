@@ -1,4 +1,5 @@
-{{ config(materialized='table', 
+/* This table needs to be permanent to allow zero cloning at specific timestamps */
+{{ config(materialized='table',
   transient=false)}}
 
 WITH fct_charges AS (

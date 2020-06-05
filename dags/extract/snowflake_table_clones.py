@@ -25,11 +25,13 @@ from kube_secrets import (
 # Load the env vars into a dict and set env vars
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
-#CLONE_DATE will be used to set the timestamp of when clone should
+
+# CLONE_DATE will be used to set the timestamp of when clone should
+# CLONE_NAME_DATE date formatted to string to be used for clone name
 pod_env_vars = {
     "CLONE_DATE": "{{ ds }}",
     "CLONE_NAME_DATE": "{{ yesterday_ds_nodash }}",
-    "SNOWFLAKE_SYSADMIN_ROLE" : "SYSADMIN",
+    "SNOWFLAKE_SYSADMIN_ROLE": "SYSADMIN",
 }
 
 pod_env_vars = {**gitlab_pod_env_vars, **pod_env_vars}
@@ -45,7 +47,6 @@ secrets = [
     SNOWFLAKE_LOAD_PASSWORD,
     SNOWFLAKE_PASSWORD,
     SNOWFLAKE_USER,
-
 ]
 
 # Default arguments for the DAG
@@ -60,16 +61,10 @@ default_args = {
 }
 
 # Create the DAG
-#  DAG will be triggered at 0am UTC which is 5 PM PST
+#  DAG will be triggered at 12am UTC which is 5 PM PST
 dag = DAG(
     "snowflake_table_clones", default_args=default_args, schedule_interval="0 0 * * *"
 )
-
-# arguments=[clone_and_setup_extraction_cmd + " && " + \
-#     "python snowflake/snowflake_create_clones.py create_table_clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --timestamp $CLONE_DATE --target_table arr_data_mart_{{ yesterday_ds_nodash }}",
-#                ]
-
-# logging.info(arguments)
 
 # Set the command for the container
 container_cmd = f"""
@@ -78,8 +73,6 @@ container_cmd = f"""
     cd analytics/orchestration/ &&
     python3 manage_snowflake.py create-table-clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --target_table "arr_data_mart_$CLONE_NAME_DATE" --timestamp "$CLONE_DATE 00:00:00"
 """
-
-logging.info(container_cmd)
 
 make_clone = KubernetesPodOperator(
     **gitlab_defaults,
