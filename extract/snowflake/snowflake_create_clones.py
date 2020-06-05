@@ -2,10 +2,9 @@
 import argparse
 import logging
 import sys
+
 from os import environ as env
-from typing import Dict
-from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
-from sqlalchemy import sessionmaker
+from gitlabdata.orchestration_utils import snowflake_engine_factory
 
 def create_table_clone(
     source_schema: str,
