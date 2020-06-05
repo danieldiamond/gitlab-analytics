@@ -122,6 +122,48 @@ class SnowflakeManager:
                 connection.close()
                 self.engine.dispose()
 
+    def create_table_clone(
+        self,
+        source_schema: str,
+        source_table: str,
+        target_table: str,
+        target_schema: str = None,
+        timestamp: str = None,
+    ):
+        """
+            Create zero copy clone of a table at given timestamp
+        timestamp: timestamp indicating time of clone in format yyyy-mm-dd hh:mi:ss
+        """
+        timestamp_format = """yyyy-mm-dd hh:mi:ss"""
+        if not target_schema:
+            target_schema = source_schema
+
+        database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
+        queries = [
+            f"""USE "{database}"; """,
+        ]
+        # Tries to create the schema its about to write to
+        # If it does exists, {schema} already exists, statement succeeded.
+        # is returned.
+        schema_check = f"""CREATE SCHEMA IF NOT EXISTS "{database}".{target_schema};"""
+        queries.append(schema_check)
+
+        clone_sql = f"""create table if not exists {target_schema}.{target_table} clone "{database}".{source_schema}.{source_table}"""
+        if timestamp and timestamp_format:
+            clone_sql += f""" at (timestamp => to_timestamp_tz('{timestamp}', '{timestamp_format}'))"""
+        clone_sql += " COPY GRANTS;"
+        queries.append(f"drop table if exists {target_schema}.{target_table};")
+        queries.append(clone_sql)
+        connection = self.engine.connect()
+        for q in queries:
+            try:
+                logging.info("Executing Query: {}".format(q))
+                [result] = connection.execute(q).fetchone()
+                logging.info("Query Result: {}".format(result))
+            finally:
+                connection.close()
+                self.engine.dispose()
+
 
 if __name__ == "__main__":
     snowflake_manager = SnowflakeManager(env.copy())
