@@ -155,14 +155,14 @@ class SnowflakeManager:
         queries.append(f"drop table if exists {target_schema}.{target_table};")
         queries.append(clone_sql)
         connection = self.engine.connect()
-        for q in queries:
-            try:
+        try:
+            for q in queries:
                 logging.info("Executing Query: {}".format(q))
                 [result] = connection.execute(q).fetchone()
                 logging.info("Query Result: {}".format(result))
-            finally:
-                connection.close()
-                self.engine.dispose()
+        finally:
+            connection.close()
+            self.engine.dispose()
 
         return self
 
