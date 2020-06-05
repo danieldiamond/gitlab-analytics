@@ -5,7 +5,7 @@ import sys
 from os import environ as env
 from typing import Dict
 from gitlabdata.orchestration_utils import snowflake_engine_factory, query_executor
-
+from sqlalchemy import sessionmaker
 
 def create_table_clone(
     source_schema: str,
@@ -37,12 +37,16 @@ def create_table_clone(
     clone_sql += " COPY GRANTS;"
     queries.append(f"drop table if exists {target_schema}.{target_table};")
     queries.append(clone_sql)
-    logging.info(queries)
+
     connection = engine.connect()
     try:
-        connection.execute(queries)
+        for q in queries:
+            logging.info(q)
+            results = connection.execute(q).fetchall()
+            logging.info(results)
     finally:
         connection.close()
+        engine.dispose()
 
 
 if __name__ == "__main__":
