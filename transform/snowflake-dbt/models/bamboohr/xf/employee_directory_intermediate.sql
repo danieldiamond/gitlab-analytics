@@ -78,6 +78,11 @@ WITH RECURSIVE employee_directory AS (
     SELECT *
     FROM {{ ref('cost_center_division_department_mapping') }}
 
+), gitlab_username AS (
+
+    SELECT *
+    FROM {{ ref('bamboohr_gitlab_username') }}
+
 ), enriched AS (
 
     SELECT
@@ -102,13 +107,15 @@ WITH RECURSIVE employee_directory AS (
       IFF(date_details.date_actual BETWEEN '2020-11-01' AND '2020-02-27', 
             job_info_mapping_historical_manager_leader.job_grade, 
             job_role.job_grade)                                             AS job_grade,
+      job_role.jobtitle_speciality,      
       location_factor.location_factor, 
       IFF(hire_date = date_actual OR 
           rehire_date = date_actual, True, False)                           AS is_hire_date,
       IFF(employment_status = 'Terminated', True, False)                    AS is_termination_date,
       IFF(rehire_date = date_actual, True, False)                           AS is_rehire_date,
       IFF(hire_date< employment_status_first_value,
-            'Active', employment_status)                                    AS employment_status
+            'Active', employment_status)                                    AS employment_status,
+      gitlab_username        
     FROM date_details
     LEFT JOIN employee_directory
       ON hire_date::DATE <= date_actual
@@ -140,6 +147,9 @@ WITH RECURSIVE employee_directory AS (
       ON job_info_mapping_historical_manager_leader.job_title = department_info.job_title
       AND date_details.date_actual BETWEEN '2019-11-01' and '2020-02-26'
       ---this is when we started capturing eeoc data but don't have job grade data to understand female in leadership positions
+    LEFT JOIN gitlab_username
+      ON employee_directory.employee_id = gitlab_username.employee_id
+      AND date_details.date_actual BETWEEN gitlab_username.valid_from_date AND gitlab_username.valid_to_date
     WHERE employee_directory.employee_id IS NOT NULL
 
 ), base_layers as (

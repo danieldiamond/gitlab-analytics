@@ -17,6 +17,7 @@ WITH employee_directory_intermediate AS (
       reports_to,
       full_name,
       work_email,
+      gitlab_username,
       job_title,--the below case when statement is also used in bamboohr_job_info;
       CASE WHEN division = 'Alliances' THEN 'Alliances'
            WHEN division = 'Customer Support' THEN 'Customer Support'

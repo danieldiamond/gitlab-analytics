@@ -40,7 +40,7 @@ WITH source AS (
             AND LOWER(last_name) != 'test-gitlab')
     AND employee_id != 42039
 ---Note: the where clause is removing any test accounts and employee_id 42039 is also a test account
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, gitlabusername ORDER BY updated_at) = 1
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, gitlab_username ORDER BY updated_at) = 1
   
   
 ) ,final AS (
@@ -48,11 +48,13 @@ WITH source AS (
     SELECT
       employee_id,
       gitlab_username,
-      updated_at,
-      COALESCE(LEAD(updated_at) OVER (PARTITION BY employee_id ORDER BY updated_at, gitlabusername), CURRENT_DATE())     AS valid_to_date
+      updated_at                                                                                    AS valid_from_date,
+      COALESCE(
+          LEAD(updated_at) OVER (PARTITION BY employee_id ORDER BY updated_at, gitlab_username), 
+          CURRENT_DATE())                                                                           AS valid_to_date
     FROM intermediate
     WHERE updated_at<=COALESCE(termination_date,CURRENT_DATE())
-      AND gitlabusername IS NOT NULL
+      AND gitlab_username IS NOT NULL
 
 )
 
