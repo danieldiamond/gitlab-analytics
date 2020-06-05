@@ -76,7 +76,7 @@ container_cmd = f"""
     {clone_repo_cmd} &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/orchestration/ &&
-    python3 manage_snowflake.py --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --target_table "arr_data_mart_$CLONE_NAME_DATE" --timestamp "$CLONE_DATE 00:00:00"
+    python3 manage_snowflake.py create-table-clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --target_table "arr_data_mart_$CLONE_NAME_DATE" --timestamp "$CLONE_DATE 00:00:00"
 """
 
 logging.info(container_cmd)
