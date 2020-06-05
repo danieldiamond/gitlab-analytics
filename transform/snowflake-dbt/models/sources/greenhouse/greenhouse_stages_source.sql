@@ -28,7 +28,7 @@ WITH source as (
              THEN 'Executive Interview'  
            WHEN LOWER(stage_name) LIKE '%interview%'
              THEN 'Team Interview - Face to Face'
-           WHEN LOWER(stage_name) like '%assessment%'
+           WHEN LOWER(stage_name) LIKE '%assessment%'
              THEN 'Take Home Assessment'
            WHEN LOWER(stage_name) LIKE '%take home%'
              THEN 'Take Home Assessment'
