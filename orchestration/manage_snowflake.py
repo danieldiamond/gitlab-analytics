@@ -164,6 +164,7 @@ class SnowflakeManager:
                 connection.close()
                 self.engine.dispose()
 
+        return self
 
 if __name__ == "__main__":
     snowflake_manager = SnowflakeManager(env.copy())

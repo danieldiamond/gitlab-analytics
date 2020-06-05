@@ -30,10 +30,10 @@ pod_env_vars = {
     "CLONE_DATE": "{{ ds }}",
     "CLONE_NAME_DATE": "{{ yesterday_ds_nodash }}",
     "SNOWFLAKE_SYSADMIN_ROLE" : "SYSADMIN",
-
 }
+
 pod_env_vars = {**gitlab_pod_env_vars, **pod_env_vars}
-pod_env_vars["SNOWFLAKE_DATABASE"] = pod_env_vars["SNOWFLAKE_TRANSFORM_DATABASE"]
+pod_env_vars["SNOWFLAKE_DATABASE"] = env["GIT_BRANCH"].upper()
 
 logging.info(pod_env_vars)
 
