@@ -19,7 +19,7 @@ def create_table_clone(
     """
     timestamp_format = """yyyy-mm-dd hh:mi:ss"""
     logging.info(env)
-    engine = snowflake_engine_factory(env, "CI_USER")
+    engine = snowflake_engine_factory(env, "SYSADMIN")
     logging.info(engine)
     database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
     use_db_sql = f"""USE "{database}" """
