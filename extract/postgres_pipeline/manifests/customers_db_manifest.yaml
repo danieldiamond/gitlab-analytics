@@ -123,7 +123,7 @@ tables:
       FROM reconciliations
     export_db: EXPORT_DB
     export_schema: 'customers'
-    export_table: 'orders'
+    export_table: 'reconciliations'
     export_table_primary_key: order_id
     advanced_metadata: true  
   trial_histories:
