@@ -36,7 +36,7 @@ def create_table_clone(
         )
     clone_sql += " COPY GRANTS;"
     queries.append(f"drop table if exists {target_schema}.{target_table};")
-    queries += clone_sql
+    queries.append(clone_sql)
     logging.info(queries)
     connection = engine.connect()
     try:
