@@ -88,7 +88,8 @@ WITH zuora_rate_plan AS (
       latest_invoiced_charge_version_in_segment.is_last_segment_version
     FROM base_charges
     LEFT JOIN latest_invoiced_charge_version_in_segment
-      ON latest_invoiced_charge_version_in_segment.charge_id = base_charges.charge_id
+      ON base_charges.charge_id = latest_invoiced_charge_version_in_segment.charge_id
+
 )
 
 SELECT *

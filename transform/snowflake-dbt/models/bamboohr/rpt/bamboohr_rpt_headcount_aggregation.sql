@@ -16,7 +16,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ ref ('bamboohr_headcount_intermediate_v2') }}
+    FROM {{ ref ('bamboohr_headcount_intermediate') }}
 
 ), base AS (
 
