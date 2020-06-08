@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: arr_data_mart
-    description: '{{ doc("arr_monthly_reporting_mart") }}'
+    description: '{{ doc("arr_data_mart") }}'
     columns:
       - name: arr
         description: "Calculated as 12 * MRR value"

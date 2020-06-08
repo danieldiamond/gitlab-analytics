@@ -74,15 +74,15 @@ WITH fct_charges AS (
       fct_charges.mrr,
       fct_charges.mrr*12                                                    AS arr,
       fct_charges.quantity
-    FROM fct_charges
+    FROM dim_accounts
     INNER JOIN dim_subscriptions
-      ON fct_charges.subscription_id = dim_subscriptions.subscription_id
-    INNER JOIN dim_products
+      ON dim_accounts.account_id = dim_subscriptions.account_id
+    INNER JOIN fct_charges
+      ON dim_subscriptions.subscription_id = fct_charges.subscription_id
+    LEFT JOIN dim_products
       ON fct_charges.product_id = dim_products.product_id
-    INNER JOIN dim_customers
-      ON dim_subscriptions.crm_id = dim_customers.crm_id
-    INNER JOIN dim_accounts
-      ON fct_charges.account_id = dim_accounts.account_id
+    LEFT JOIN dim_customers
+      ON dim_accounts.crm_id = dim_customers.crm_id
 
 ), latest_invoiced_charge_version_in_segment AS (
 
