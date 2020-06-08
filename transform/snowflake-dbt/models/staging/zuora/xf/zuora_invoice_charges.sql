@@ -84,7 +84,7 @@ WITH zuora_account AS (
       invoice_item_unit_price
     FROM base_charges
     INNER JOIN invoice_charges
-      ON base_charges.rate_plan_charge_id = invoice_charges.rate_plan_charge_id
+      ON base_charges.rate_plan_charge_id = invoice_charges.charge_id
 
 )
 
