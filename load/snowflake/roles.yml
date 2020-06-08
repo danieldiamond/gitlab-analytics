@@ -812,7 +812,7 @@ roles:
             schemas:
                 read:
                     - static.public
-                    - status.scratch
+                    - static.scratch
                 write:
                     - static.scratch
             tables:
@@ -820,7 +820,7 @@ roles:
                     - static.public.*
                     - static.scratch.*
                 write:
-                    - status.scratch.*
+                    - static.scratch.*
 
     - static_sensitive:
         member_of:
