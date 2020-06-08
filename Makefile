@@ -16,7 +16,7 @@ help:
 	dbt-image: attaches a shell to the dbt image and mounts the repo for testing. \n \
 	\n \
 	++ Python Related ++ \n \
-	data-image: attaches to a shell in the data-image and mounts the repo for testing. \n \
+	data-image: attaches to a shell in the data-image and mounts the repo for test ing. \n \
 	lint: Runs a linter (Black) over the whole repo. \n \
 	mypy: Runs a type-checker in the extract dir. \n \
 	pylint: Runs the pylint checker over the whole repo. Does not check for code formatting, only errors/warnings. \n \
@@ -34,8 +34,8 @@ airflow:
 	@docker-compose down
 	@export GIT_BRANCH=$(GIT_BRANCH) && docker-compose up -d airflow_webserver
 	@sleep 5
-	@docker exec ${SCHEDULER_IMAGE} gcloud auth activate-service-account --key-file=/root/gcp_service_creds.json --project=gitlab-analysis
-	@docker exec -ti ${WEBSERVER_IMAGE} /bin/bash
+	@docker-compose exec airflow_scheduler gcloud auth activate-service-account --key-file=/root/gcp_service_creds.json --project=gitlab-analysis
+	@docker-compose exec airflow_webserver bash
 
 cleanup:
 	@echo "Cleaning things up..."
