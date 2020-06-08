@@ -180,10 +180,21 @@ def chunk_and_upload(
     for idx, chunk_df in enumerate(results_generator):
         # If the table doesn't exist, it needs to send the first chunk to the dataframe_uploader
         if backfill:
-            seed_table(advanced_metadata, chunk_df, target_engine, target_table)
+            rows_to_seed = 10000
+            seed_table(
+                advanced_metadata,
+                chunk_df,
+                target_engine,
+                target_table,
+                rows_to_seed=rows_to_seed,
+            )
+            chunk_df = chunk_df.iloc[rows_to_seed:]
         row_count = chunk_df.shape[0]
         rows_uploaded += row_count
-        upload_to_gcs(advanced_metadata, chunk_df, upload_file_name + "." + str(idx))
+        if not backfill or row_count > 0:
+            upload_to_gcs(
+                advanced_metadata, chunk_df, upload_file_name + "." + str(idx)
+            )
     if rows_uploaded > 0:
         trigger_snowflake_upload(
             target_engine, target_table, upload_file_name + "[.]\\\\d*", purge=True
