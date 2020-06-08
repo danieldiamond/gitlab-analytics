@@ -61,9 +61,9 @@ default_args = {
 }
 
 # Create the DAG
-#  DAG will be triggered at 03am UTC which is 8 PM PST which is official start of comapny working day
+#  DAG will be triggered at 06:59am UTC which is 23:59 PM PST
 dag = DAG(
-    "snowflake_table_clones", default_args=default_args, schedule_interval="0 3 * * *"
+    "snowflake_table_clones", default_args=default_args, schedule_interval="0 7 * * *"
 )
 
 # Set the command for the container
@@ -71,7 +71,7 @@ container_cmd = f"""
     {clone_repo_cmd} &&
     export PYTHONPATH="$CI_PROJECT_DIR/orchestration/:$PYTHONPATH" &&
     cd analytics/orchestration/ &&
-    python3 manage_snowflake.py create-table-clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --target_table "arr_data_mart_$CLONE_NAME_DATE" --timestamp "$CLONE_DATE 03:00:00"
+    python3 manage_snowflake.py create-table-clone --source_schema analytics --source_table arr_data_mart --target_schema analytics_clones  --target_table "arr_data_mart_$CLONE_NAME_DATE" --timestamp "$CLONE_DATE 06:59:00"
 """
 
 make_clone = KubernetesPodOperator(
