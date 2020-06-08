@@ -17,7 +17,6 @@ models:
     - name: job_title
     - name: department
     - name: division
-    - name: jobtitle_speciality
     - name: location_factor
     - name: is_hire_date
       tests:
@@ -54,11 +53,13 @@ models:
     - name: department
     - name: division
     - name: cost_center
+    - name: jobtitle_speciality
     - name: location_factor
     - name: layers
       description: '{{ doc("employee_layers") }}'
       tests:
       - not_null
+
   - name: bamboohr_discretionary_bonuses
     description: This model contains a list of Discretionary bonuses awarded (excludes other types of bonuses). It includes the employee ID to be able to join to the `employee_directory_analysis` model to understand the break down of discretionary bonuses given.
     columns:
