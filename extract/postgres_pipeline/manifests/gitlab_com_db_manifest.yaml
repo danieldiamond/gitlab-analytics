@@ -14,7 +14,7 @@ tables:
       , table_schema
       FROM columns
     export_schema: 'gitlab_com'
-    export_table: 'columnst'
+    export_table: 'columns'
     export_table_primary_key: CONCAT(table_name, '_', column_name, schema_name)
   # resource_label_events:
   #   import_db: GITLAB_DB
