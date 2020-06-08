@@ -809,6 +809,8 @@ roles:
             databases:
                 read:
                     - static
+                write:
+                    - static
             schemas:
                 read:
                     - static.public
