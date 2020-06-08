@@ -19,6 +19,9 @@ databases:
     - testing_db:
         shared: no
 
+    - static:
+        shared: no
+
 
 # ==========================================
 # Roles
