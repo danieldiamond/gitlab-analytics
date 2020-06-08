@@ -56,10 +56,6 @@ WITH zuora_rate_plan AS (
 
     SELECT
       base_charges.charge_id,
-      ROW_NUMBER() OVER (
-          PARTITION BY base_charges.rate_plan_charge_number
-          ORDER BY base_charges.rate_plan_charge_segment, base_charges.rate_plan_charge_version
-      ) AS segment_version_order,
       IFF(ROW_NUMBER() OVER (
           PARTITION BY base_charges.rate_plan_charge_number, base_charges.rate_plan_charge_segment
           ORDER BY base_charges.rate_plan_charge_version DESC) = 1,
@@ -73,11 +69,11 @@ WITH zuora_rate_plan AS (
 
     SELECT
       base_charges.*,
-      latest_invoiced_charge_version_in_segment.segment_version_order,
       latest_invoiced_charge_version_in_segment.is_last_segment_version
     FROM base_charges
     LEFT JOIN latest_invoiced_charge_version_in_segment
-      ON latest_invoiced_charge_version_in_segment.charge_id = base_charges.charge_id
+      ON base_charges.charge_id = latest_invoiced_charge_version_in_segment.charge_id
+
 )
 
 SELECT *
