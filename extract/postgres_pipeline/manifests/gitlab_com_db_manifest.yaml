@@ -7,14 +7,15 @@ connection_info:
 tables:
   columns:
     import_db: GITLAB_DB
+    import_schema: information_schema
     import_query: >
       SELECT table_name
       , column_name
       , table_schema
-      FROM information_schema.columns
+      FROM columns
     export_schema: 'gitlab_com'
     export_table: 'columnst'
-    export_table_primary_key: CONCAT(table_name, '_', column_name)
+    export_table_primary_key: CONCAT(table_name, '_', column_name, schema_name)
   # resource_label_events:
   #   import_db: GITLAB_DB
   #   import_query: >
