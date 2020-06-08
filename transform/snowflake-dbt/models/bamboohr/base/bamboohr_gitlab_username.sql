@@ -39,11 +39,11 @@ WITH source AS (
             AND LOWER(last_name) NOT LIKE '%test profile%'
             AND LOWER(last_name) != 'test-gitlab')
     AND employee_id != 42039
----Note: the where clause is removing any test accounts and employee_id 42039 is also a test account
+    ---Note: the where clause is removing any test accounts and employee_id 42039 is also a test account
     QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, gitlab_username ORDER BY updated_at) = 1
   
   
-) ,final AS (
+), final AS (
 
     SELECT
       employee_id,
@@ -58,7 +58,7 @@ WITH source AS (
 
 )
 
-SELECt *
+SELECT *
 FROM final 
 
 
