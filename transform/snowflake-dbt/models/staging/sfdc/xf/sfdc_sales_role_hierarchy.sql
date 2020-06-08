@@ -32,11 +32,11 @@ WITH RECURSIVE managers AS (
     name,
     role_name,
     manager_name,
-    SPLIT_PART(path, '::', 1)::VARCHAR(100) AS parent_role_1,
-    SPLIT_PART(path, '::', 2)::VARCHAR(100) AS parent_role_2,
-    SPLIT_PART(path, '::', 3)::VARCHAR(100) AS parent_role_3,
-    SPLIT_PART(path, '::', 4)::VARCHAR(100) AS parent_role_4,
-    SPLIT_PART(path, '::', 5)::VARCHAR(100) AS parent_role_5
+    SPLIT_PART(path, '::', 1)::VARCHAR(16777216) AS parent_role_1,
+    SPLIT_PART(path, '::', 2)::VARCHAR(16777216) AS parent_role_2,
+    SPLIT_PART(path, '::', 3)::VARCHAR(16777216) AS parent_role_3,
+    SPLIT_PART(path, '::', 4)::VARCHAR(16777216) AS parent_role_4,
+    SPLIT_PART(path, '::', 5)::VARCHAR(16777216) AS parent_role_5
   FROM managers
   
 )
