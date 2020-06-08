@@ -8,11 +8,6 @@ WITH zuora_rate_plan AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge_source') }}
 
-), fct_invoice_items_agg AS (
-
-    SELECT *
-    FROM {{ ref('fct_invoice_items_agg') }}
-
 ), base_charges AS (
 
     SELECT

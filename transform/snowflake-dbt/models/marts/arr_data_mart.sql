@@ -1,4 +1,4 @@
-WITH charges_base AS (
+WITH charges_agg AS (
 
     SELECT *
     FROM {{ ref('charges_agg') }}
@@ -16,8 +16,8 @@ WITH charges_base AS (
       dateadd('month', -1, dim_dates.date_actual)  AS reporting_month
     FROM charges_agg
     INNER JOIN dim_dates
-      ON charges_base.effective_start_date_id <= dim_dates.date_id
-      AND (charges_base.effective_end_date_id > dim_dates.date_id OR charges_base.effective_end_date_id IS NULL)
+      ON charges_agg.effective_start_date_id <= dim_dates.date_id
+      AND (charges_agg.effective_end_date_id > dim_dates.date_id OR charges_agg.effective_end_date_id IS NULL)
       AND dim_dates.day_of_month = 1
     WHERE subscription_status NOT IN ('Draft', 'Expired')
       AND mrr IS NOT NULL
