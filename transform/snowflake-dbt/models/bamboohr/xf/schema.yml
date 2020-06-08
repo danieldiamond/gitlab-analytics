@@ -17,6 +17,7 @@ models:
     - name: job_title
     - name: department
     - name: division
+    - name: jobtitle_speciality
     - name: location_factor
     - name: is_hire_date
       tests:
@@ -27,7 +28,7 @@ models:
     - name: layers
       description: '{{ doc("employee_layers") }}'
       tests:
-      - not_null
+      - not_null  
   - name: employee_directory_intermediate
     description: INCLUDES SENSITIVE INFORMATION. The master collection of all info about GitLab employees for their latest position.
     columns:
