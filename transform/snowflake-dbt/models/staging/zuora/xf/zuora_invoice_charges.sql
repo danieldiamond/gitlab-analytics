@@ -3,15 +3,10 @@ WITH zuora_account AS (
     SELECT *
     FROM {{ ref('zuora_account') }}
 
-), zuora_invoice AS (
+), invoice_charges AS (
 
     SELECT *
-    FROM {{ ref('zuora_invoice') }}
-
-), zuora_invoice_item AS (
-
-    SELECT *
-    FROM {{ ref('zuora_invoice_item') }}
+    FROM {{ ref('fct_invoice_items') }}
 
 ), zuora_product AS (
 
@@ -65,23 +60,6 @@ WITH zuora_account AS (
       ON zuora_rate_plan.rate_plan_id = zuora_rate_plan_charge.rate_plan_id
     LEFT JOIN zuora_product
       ON zuora_rate_plan_charge.product_id = zuora_product.product_id
-
-), invoice_charges AS (
-
-    SELECT
-      zuora_invoice.invoice_number,
-      zuora_invoice.account_id                      AS invoice_account_id,
-      zuora_invoice.invoice_date::DATE              AS invoice_date,
-      zuora_invoice_item.service_start_date::DATE   AS service_start_date,
-      zuora_invoice_item.service_end_date::DATE     AS service_end_date,
-      zuora_invoice.amount_without_tax              AS invoice_amount_without_tax,
-      zuora_invoice_item.charge_amount              AS invoice_item_charge_amount,
-      zuora_invoice_item.unit_price                 AS invoice_item_unit_price,
-      zuora_invoice_item.rate_plan_charge_id
-    FROM zuora_invoice_item
-    INNER JOIN zuora_invoice
-      ON zuora_invoice_item.invoice_id = zuora_invoice.invoice_id
-    WHERE zuora_invoice.status = 'Posted'
 
 ), final AS (
 

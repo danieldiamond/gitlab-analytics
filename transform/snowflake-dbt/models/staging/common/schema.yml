@@ -58,6 +58,14 @@ models:
           - unique
       - name: is_reporter_license
         description: "Reporter licenses are in the Products with 'Additional Permission Types' in the name."
+    
+  - name: fct_invoice_items
+    description: "Invoice items joined with invoice to give more context to each invoice item."
+    columns:
+      - name: charge_id
+        tests:
+          - not_null
+
 
   - name: fct_invoice_items_agg
     description: "Aggregate fact table with invoice items summarized on charge level"
