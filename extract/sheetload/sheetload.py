@@ -11,7 +11,6 @@ from yaml import load, safe_load, YAMLError
 import boto3
 import gspread
 import pandas as pd
-from qualtrics_client import QualtricsClient
 from fire import Fire
 from gitlabdata.orchestration_utils import (
     postgres_engine_factory,
@@ -24,62 +23,14 @@ from google.oauth2 import service_account
 from gspread.exceptions import APIError
 from gspread import Client
 from oauth2client.service_account import ServiceAccountCredentials
+from sheetload_dataframe_utils import dw_uploader
 from sqlalchemy.engine.base import Engine
-
-
-def table_has_changed(data: pd.DataFrame, engine: Engine, table: str) -> bool:
-    """
-    Check if the table has changed before uploading.
-    """
-
-    if engine.has_table(table):
-        existing_table = pd.read_sql_table(table, engine)
-        if "_updated_at" in existing_table.columns and existing_table.drop(
-            "_updated_at", axis=1
-        ).equals(data):
-            info(f'Table "{table}" has not changed. Aborting upload.')
-            return False
-    return True
-
-
-def dw_uploader(
-    engine: Engine,
-    table: str,
-    data: pd.DataFrame,
-    schema: str = "sheetload",
-    chunk: int = 0,
-    truncate: bool = False,
-) -> bool:
-    """
-    Use a DB engine to upload a dataframe.
-    """
-
-    # Clean the column names and add metadata, generate the dtypes
-    data.columns = [
-        str(column_name).replace(" ", "_").replace("/", "_")
-        for column_name in data.columns
-    ]
-
-    # If the data isn't chunked, or this is the first iteration, drop table
-    if not chunk and not truncate:
-        table_changed = table_has_changed(data, engine, table)
-        if not table_changed:
-            return False
-        drop_query = f"DROP TABLE IF EXISTS {schema}.{table} CASCADE"
-        query_executor(engine, drop_query)
-
-    # Add the _updated_at metadata and set some vars if chunked
-    data["_updated_at"] = time.time()
-    if_exists = "append" if chunk else "replace"
-    data.to_sql(
-        name=table, con=engine, index=False, if_exists=if_exists, chunksize=15000
-    )
-    info(f"Successfully loaded {data.shape[0]} rows into {table}")
-    return True
+from qualtrics_sheetload import qualtrics_loader
 
 
 def sheet_loader(
     sheet_file: str,
+    table_name: str = None,
     schema: str = "sheetload",
     database: str = "RAW",
     gapi_keyfile: str = None,
@@ -96,9 +47,14 @@ def sheet_loader(
     Column names can not contain parentheses. Spaces and slashes will be
     replaced with underscores.
 
-    Sheets is a newline delimited txt fileseparated spaces.
+    sheet_file: path to yaml file with sheet configurations
 
-    python sheetload.py sheets <file_name>
+    table_name: Optional, name of the tab to be loaded -- matches the table_name as well as part of the document name
+      -- For example for the test sheet this should be "test_sheet" as that is the name of the tab to be loaded from the document.
+      -- Also should match the second half of the sheet name -- for example `sheetload.test_sheet`.
+      -- Also the name of the final table in Snowflake.  The test sheet turns into a RAW.SHEETLOAD.test_sheet table.
+
+    python sheetload.py sheets <sheet_file>
     """
 
     with open(sheet_file, "r") as file:
@@ -108,9 +64,10 @@ def sheet_loader(
             print(exc)
 
         sheets = [
-            "{sheet_name}.{tab_name}".format(sheet_name=sheet["name"], tab_name=tab)
+            (sheet["name"], tab)
             for sheet in stream["sheets"]
             for tab in sheet["tabs"]
+            if (table_name is None or tab == table_name)
         ]
 
     if database != "RAW":
@@ -130,16 +87,15 @@ def sheet_loader(
 
     google_sheet_client = GoogleSheetsClient()
 
-    for sheet_info in sheets:
-        # Sheet here refers to the name of the sheet file, table is the actual sheet name
-        info(f"Processing sheet: {sheet_info}")
-        sheet_file, table = sheet_info.split(".")
+    for sheet_name, tab in sheets:
+
+        info(f"Processing sheet: {sheet_name}")
 
         dataframe = google_sheet_client.load_google_sheet(
-            gapi_keyfile, schema + "." + sheet_file, table
+            gapi_keyfile, schema + "." + sheet_name, tab
         )
-        dw_uploader(engine, table, dataframe, schema)
-        info(f"Finished processing for table: {sheet_info}")
+        dw_uploader(engine, tab, dataframe, schema)
+        info(f"Finished processing for table: {tab}")
 
     query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)
@@ -345,77 +301,6 @@ def csv_loader(
     info(f"Uploading {filename} to {database}.{schema}.{table}")
 
     dw_uploader(engine, table=table, data=csv_data, schema=schema, truncate=True)
-
-
-def qualtrics_loader(load_type: str):
-    is_test = load_type == "test"
-    google_sheet_client = GoogleSheetsClient()
-    prefix = "qualtrics_mailing_list."
-    if is_test:
-        prefix = "test_" + prefix
-    qualtrics_files_to_load = [
-        file
-        for file in google_sheet_client.get_visible_files()
-        if file.title.lower().startswith(prefix)
-    ]
-
-    info(f"Found {len(qualtrics_files_to_load)} files to process.")
-
-    schema = "qualtrics_mailing_list"
-
-    engine = snowflake_engine_factory(env, "LOADER", schema)
-    analytics_engine = snowflake_engine_factory(env, "CI_USER")
-
-    for file in qualtrics_files_to_load:
-        file_name = file.title
-        _, table = file_name.split(".")
-        if file.sheet1.title != table:
-            error(
-                f"{file_name}: First worksheet did not match expected name of {table}"
-            )
-            continue
-        dataframe = google_sheet_client.load_google_sheet(None, file_name, table)
-        if list(dataframe.columns.values)[0].lower() != "id":
-            warning(f"{file_name}: First column did not match expected name of id")
-            continue
-        if not is_test:
-            file.sheet1.update_acell("A1", "processing")
-        dw_uploader(engine, table, dataframe, schema)
-        query = f"""
-          SELECT first_name, last_name, email_address, language
-          FROM ANALYTICS_SENSITIVE.QUALTRICS_API_FORMATTED_CONTACTS WHERE user_id in
-          (
-              SELECT id
-              FROM RAW.{schema}.{table}
-          )
-        """
-        results = query_executor(analytics_engine, query)
-        qualtrics_contacts = []
-        for result in results:
-            contact = {
-                "firstName": result["first_name"],
-                "lastName": result["last_name"],
-                "email": result["email_address"],
-                "language": result["language"],
-            }
-            qualtrics_contacts.append(contact)
-
-        qualtrics_client = QualtricsClient(
-            env["QUALTRICS_API_TOKEN"], env["QUALTRICS_DATA_CENTER"]
-        )
-
-        if qualtrics_contacts and not is_test:
-            mailing_id = qualtrics_client.create_mailing_list(
-                env["QUALTRICS_POOL_ID"], table
-            )
-            qualtrics_client.upload_contacts_to_mailing_list(
-                env["QUALTRICS_POOL_ID"], mailing_id, qualtrics_contacts
-            )
-
-        if is_test:
-            info(f"Not renaming file for test.")
-        else:
-            file.sheet1.update_acell("A1", "processed")
 
 
 if __name__ == "__main__":

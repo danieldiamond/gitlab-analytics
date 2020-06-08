@@ -19,6 +19,9 @@ databases:
     - testing_db:
         shared: no
 
+    - static:
+        shared: no
+
 
 # ==========================================
 # Roles
@@ -41,6 +44,8 @@ roles:
     - sysadmin:
         warehouses:
             - admin
+        member_of:
+            - static_admin
         privileges:
             databases:
                 read:
@@ -84,17 +89,10 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
-            - license_db
-            - netsuite
-            - postgres_pipeline
-            - salesforce
             - sheetload
             - snapshots
-            - snowplow
             - snowflake_db
-            - version_db
-            - zendesk
-            - zuora
+            - static
         privileges:
             databases:
                 write:
@@ -105,6 +103,7 @@ roles:
             - analyst_xs
             - analyst_l
         member_of:
+            - analyst_core
             - boneyard
             - covid19
             - dbt_analytics
@@ -131,6 +130,7 @@ roles:
             - analyst_l
             - analyst_xl
         member_of:
+            - analyst_core
             - boneyard
             - covid19
             - db_dumps
@@ -173,6 +173,7 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
+            - analyst_core
             - boneyard
             - covid19
             - dbt_analytics
@@ -209,6 +210,7 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
+            - analyst_core
             - analyst_sales
             - boneyard
             - dbt_analytics
@@ -226,6 +228,7 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
+            - analyst_core
             - bamboohr
             - boneyard
             - covid19
@@ -253,6 +256,7 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
+            - analyst_core
             - boneyard
             - covid19
             - dbt_analytics
@@ -298,6 +302,7 @@ roles:
             - analyst_people
             - analyst_sales
             - analyst_marketing
+            - static_admin
         privileges:
             databases:
                 write:
@@ -309,6 +314,7 @@ roles:
             - loader
             - transformer
             - snowflake_db
+            - static_admin
         warehouses:
             - airflow_testing_l
             - engineer_xs
@@ -596,6 +602,7 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
@@ -800,6 +807,68 @@ roles:
                     - raw.snowplow.*
                     - analytics.snowplow_*.*
 
+    - static:
+        privileges:
+            databases:
+                read:
+                    - static
+                write:
+                    - static
+            schemas:
+                read:
+                    - static.public
+                    - static.scratch
+                write:
+                    - static.scratch
+            tables:
+                read:
+                    - static.public.*
+                    - static.scratch.*
+                write:
+                    - static.scratch.*
+
+    - static_sensitive:
+        member_of:
+            - static
+        privileges:
+            databases:
+                read:
+                    - static
+            schemas:
+                read:
+                    - static.sensitive
+            tables:
+                read:
+                    - static.sensitive.*
+
+    - static_admin:
+        member_of:
+            - static
+            - static_sensitive
+        privileges:
+            databases:
+                read:
+                    - static
+                write:
+                    - static
+            schemas:
+                read:
+                    - static.*
+                write:
+                    - static.*
+            tables:
+                read:
+                    - static.*.*
+                write:
+                    - static.*.*
+        owns:
+            databases:
+                - static
+            schemas:
+                - static.*
+            tables:
+                - static.*.*
+
     - version_db:
         privileges:
             databases:
@@ -996,6 +1065,7 @@ roles:
             - loader
             - reporter
             - transformer
+            - static_admin
         warehouses:
             - loading
             - merge_request_xs
@@ -1003,6 +1073,12 @@ roles:
             - reporting
             - transforming_xs
             - transforming_xl
+
+    - hfrancisco:
+        member_of:
+            - analyst_people
+        warehouses:
+            - analyst_xs
 
     - iroussos:
         member_of:
@@ -1017,16 +1093,11 @@ roles:
         warehouses:
             - analyst_xs
 
-    - jmahdi:
-        member_of:
-            - analyst_sales
-        warehouses:
-            - analyst_xs
-
     - jpeguero:
         member_of:
             - analyst_marketing
             - netsuite
+            - static_sensitive # temporary see 5086 & 5087
         warehouses:
             - analyst_xs
 
@@ -1367,6 +1438,11 @@ users:
             - gitlab_ci
             - sysadmin
 
+    - hfrancisco:
+        can_login: yes
+        member_of:
+            - hfrancisco
+
     - iroussos:
         can_login: yes
         member_of:
@@ -1378,9 +1454,8 @@ users:
             - iweeks
 
     - jmahdi:
-        can_login: yes
-        member_of:
-            - jmahdi
+        can_login: no
+        member_of: []
 
     - jpeguero:
         can_login: yes

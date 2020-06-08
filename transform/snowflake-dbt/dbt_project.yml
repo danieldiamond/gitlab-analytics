@@ -120,6 +120,11 @@ models:
 
       gitlab_data_yaml:
         schema: gitlab_data_yaml
+
+      gitlab_dotcom:
+        tags: ["product"]
+        materialized: table
+        schema: staging
       
       gitter:
         enabled: false
@@ -130,8 +135,6 @@ models:
 
       greenhouse:
         schema: greenhouse
-        sensitive:
-          schema: sensitive
 
       license:
         schema: license_db
@@ -165,6 +168,11 @@ models:
         materialized: table
 
       gitlab_data_yaml:
+        materialized: table
+        schema: analytics
+
+      gitlab_dotcom:
+        tags: ["product"]
         materialized: table
         schema: analytics
 
@@ -214,15 +222,11 @@ models:
       materialized: table
       base:
           schema: staging
+      intermediate:
+          schema: staging
 
     date:
       materialized: table
-
-    gitlab_dotcom:
-      tags: ["product"]
-      materialized: table
-      base:
-          schema: staging
 
     handbook:
         materialized: table

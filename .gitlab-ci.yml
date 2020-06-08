@@ -3,7 +3,7 @@
 # ======
 
 variables:
-  PYTHONPATH: "$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
+  PYTHONPATH: "$CI_PROJECT_DIR/orchestration/:$CI_PROJECT_DIR/extract/:$CI_PROJECT_DIR/extract/shared_modules/:$PYTHONPATH"
   SNOWFLAKE_DATABASE: "$CI_COMMIT_REF_NAME"
 
 # ======

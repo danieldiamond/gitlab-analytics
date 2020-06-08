@@ -2,11 +2,10 @@ WITH source AS (
 
     SELECT *
     FROM {{ source('license', 'licenses') }}
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
-    SELECT DISTINCT
+    SELECT
       id::INTEGER                                  AS license_id,
       company::VARCHAR                             AS company,
       users_count::INTEGER                         AS users_count,
@@ -15,6 +14,7 @@ WITH source AS (
       expires_at::TIMESTAMP                        AS license_expires_at,
       plan_name::VARCHAR                           AS plan_name,
       starts_at::TIMESTAMP                         AS starts_at,
+      NULLIF(zuora_subscription_name, '')::VARCHAR AS zuora_subscription_name,
       NULLIF(zuora_subscription_id, '')::VARCHAR   AS zuora_subscription_id,
       previous_users_count::INTEGER                AS previous_users_count,
       trueup_quantity::INTEGER                     AS trueup_quantity,

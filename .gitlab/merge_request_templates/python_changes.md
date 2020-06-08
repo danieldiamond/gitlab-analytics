@@ -8,6 +8,13 @@ Closes
 
 * [ ] _action items_
 
+#### Testing
+
+* Was a pytest added or improved?
+  * [ ] Yes
+  * [ ] No
+    * Why not? 
+
 #### Code Quality
 
 * [ ] Passed all Python checks?

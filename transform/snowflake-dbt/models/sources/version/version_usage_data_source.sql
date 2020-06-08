@@ -21,7 +21,7 @@ renamed AS (
         id::INTEGER                                  AS id,
         source_ip::VARCHAR                           AS source_ip,
         version::VARCHAR                             AS version,
-        active_user_count::INTEGER                   AS active_user_count,
+        active_user_count::INTEGER                   AS instance_user_count, -- See issue #4872.
         license_md5::VARCHAR                         AS license_md5,
         historical_max_users::INTEGER                AS historical_max_users,
         --licensee // removed for PII
@@ -66,6 +66,8 @@ renamed AS (
         gitaly_version::VARCHAR                      AS gitaly_version,
         gitaly_servers::INTEGER                      AS gitaly_servers,
         gitaly_filesystems::VARCHAR                  AS gitaly_filesystems,
+        PARSE_JSON(object_store)                     AS object_store,
+        dependency_proxy_enabled::BOOLEAN            AS is_dependency_proxy_enabled,
         PARSE_JSON(counts)                           AS stats_used
     FROM source
     WHERE CHECK_JSON(counts) IS NULL
