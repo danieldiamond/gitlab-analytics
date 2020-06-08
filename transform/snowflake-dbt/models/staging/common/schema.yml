@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: charges_base
+  - name: charges_agg
     description: "Base table used as a starting point for all charge analyses"
     columns:
       - name: charge_id
@@ -81,24 +81,10 @@ models:
   - name: fct_charges
     description: "Factual table with all rate plan charges coming from subscriptions or an amendment to a subscription"
     columns:
-      - name: charge_id
-        tests:
-          - not_null
       - name: subscription_id
         tests:
           - not_null
-<<<<<<< HEAD
       - name: charge_id
         tests:
           - not_null
           - unique
-=======
-    tests:
-    - unique:
-        column_name: "concat(charge_id, segment_version_order)"
-        
-
-
-
-
->>>>>>> master

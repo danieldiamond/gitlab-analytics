@@ -20,10 +20,10 @@ SELECT
   zuora_subscription.zuora_renewal_subscription_name_slugify,
   zuora_subscription.renewal_term,
   zuora_subscription.renewal_term_period_type,
-  zuora_subscription.subscription_start_date::DATE                          AS subscription_start_date,
-  zuora_subscription.subscription_end_date::DATE                            AS subscription_end_date,
-  DATE_TRUNC('month', zuora_subscription.subscription_start_date::DATE)     AS subscription_start_month,
-  DATE_TRUNC('month', zuora_subscription.subscription_end_date::DATE)       AS subscription_end_month
+  zuora_subscription.subscription_start_date                                AS subscription_start_date,
+  zuora_subscription.subscription_end_date                                  AS subscription_end_date,
+  DATE_TRUNC('month', zuora_subscription.subscription_start_date)           AS subscription_start_month,
+  DATE_TRUNC('month', zuora_subscription.subscription_end_date)             AS subscription_end_month
 FROM zuora_subscription
 INNER JOIN zuora_account
   ON zuora_account.account_id = zuora_subscription.account_id

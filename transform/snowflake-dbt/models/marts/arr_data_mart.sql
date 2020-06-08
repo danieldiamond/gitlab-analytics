@@ -1,7 +1,7 @@
 WITH charges_base AS (
 
     SELECT *
-    FROM {{ ref('charges_base') }}
+    FROM {{ ref('charges_agg') }}
 
 ), dim_dates AS (
 
