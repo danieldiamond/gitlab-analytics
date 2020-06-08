@@ -10,17 +10,17 @@ WITH charges_base AS (
 
 ), charges_invoice_agg AS (
 
-   SELECT
-     charges_base.*,
-     fct_invoice_items_agg.sku,
-     fct_invoice_items_agg.service_start_date,
-     fct_invoice_items_agg.service_end_date,
-     fct_invoice_items_agg.charge_amount_sum,
-     fct_invoice_items_agg.tax_amount_sum
-   FROM charges_base
-   INNER JOIN fct_invoice_items_agg
-     ON charges_base.charge_id = fct_invoice_items_agg.charge_id
-   WHERE charges_base.is_last_segment_version = TRUE
+    SELECT
+      charges_base.*,
+      fct_invoice_items_agg.sku,
+      fct_invoice_items_agg.service_start_date,
+      fct_invoice_items_agg.service_end_date,
+      fct_invoice_items_agg.charge_amount_sum,
+      fct_invoice_items_agg.tax_amount_sum
+    FROM charges_base
+    INNER JOIN fct_invoice_items_agg
+      ON charges_base.charge_id = fct_invoice_items_agg.charge_id
+    WHERE charges_base.is_last_segment_version = TRUE
 
 )
 
