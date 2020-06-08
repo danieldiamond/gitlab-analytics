@@ -1062,6 +1062,7 @@ roles:
             - loader
             - reporter
             - transformer
+            - static_admin
         warehouses:
             - loading
             - merge_request_xs
