@@ -1,4 +1,4 @@
-{% snapshot gitlab_dotcom_members_snapshots %}
+{% snapshot gitlab_dotcom_issues_snapshots %}
 
     {{
         config(
