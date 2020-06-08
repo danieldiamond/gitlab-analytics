@@ -128,3 +128,27 @@ This is the source table for the archived Salesforce users.
 This is the source table for Opportunity Field History.
 
 {% enddocs %}
+
+{% docs sfdc_contacthistory_source %}
+
+This is the source table for Contact Field History.
+
+{% enddocs %}
+
+{% docs sfdc_leadhistory_source %}
+
+This is the source table for Lead Field History.
+
+{% enddocs %}
+
+{% docs sfdc_accounthistory_source %}
+
+This is the source table for Account Field History.
+
+{% enddocs %}
+
+{% docs sfdc_opphistory_source %}
+
+This is the source table for Opportunity History.
+
+{% enddocs %}
