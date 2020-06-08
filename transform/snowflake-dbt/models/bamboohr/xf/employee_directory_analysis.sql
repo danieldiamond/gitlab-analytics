@@ -31,7 +31,7 @@ WITH employee_directory_intermediate AS (
            WHEN division = 'Customer Support' THEN 'Engineering'
            WHEN division = 'Customer Service' THEN 'Sales'
            ELSE nullif(division, '') END AS division,
-      jobtitle_speciality,     
+      jobtitle_speciality,
       COALESCE (location_factor, hire_location_factor) AS location_factor,
       is_hire_date,
       is_termination_date,
