@@ -30,6 +30,7 @@ from qualtrics_sheetload import qualtrics_loader
 
 def sheet_loader(
     sheet_file: str,
+    table_name: str = None,
     schema: str = "sheetload",
     database: str = "RAW",
     gapi_keyfile: str = None,
@@ -46,9 +47,14 @@ def sheet_loader(
     Column names can not contain parentheses. Spaces and slashes will be
     replaced with underscores.
 
-    Sheets is a newline delimited txt fileseparated spaces.
+    sheet_file: path to yaml file with sheet configurations
 
-    python sheetload.py sheets <file_name>
+    table_name: Optional, name of the tab to be loaded -- matches the table_name as well as part of the document name
+      -- For example for the test sheet this should be "test_sheet" as that is the name of the tab to be loaded from the document.
+      -- Also should match the second half of the sheet name -- for example `sheetload.test_sheet`.
+      -- Also the name of the final table in Snowflake.  The test sheet turns into a RAW.SHEETLOAD.test_sheet table.
+
+    python sheetload.py sheets <sheet_file>
     """
 
     with open(sheet_file, "r") as file:
@@ -58,9 +64,10 @@ def sheet_loader(
             print(exc)
 
         sheets = [
-            "{sheet_name}.{tab_name}".format(sheet_name=sheet["name"], tab_name=tab)
+            (sheet["name"], tab)
             for sheet in stream["sheets"]
             for tab in sheet["tabs"]
+            if (table_name is None or tab == table_name)
         ]
 
     if database != "RAW":
@@ -80,16 +87,15 @@ def sheet_loader(
 
     google_sheet_client = GoogleSheetsClient()
 
-    for sheet_info in sheets:
-        # Sheet here refers to the name of the sheet file, table is the actual sheet name
-        info(f"Processing sheet: {sheet_info}")
-        sheet_file, table = sheet_info.split(".")
+    for sheet_name, tab in sheets:
+
+        info(f"Processing sheet: {sheet_name}")
 
         dataframe = google_sheet_client.load_google_sheet(
-            gapi_keyfile, schema + "." + sheet_file, table
+            gapi_keyfile, schema + "." + sheet_name, tab
         )
-        dw_uploader(engine, table, dataframe, schema)
-        info(f"Finished processing for table: {sheet_info}")
+        dw_uploader(engine, tab, dataframe, schema)
+        info(f"Finished processing for table: {tab}")
 
     query = f"""grant select on all tables in schema "{database}".{schema} to role transformer"""
     query_executor(engine, query)

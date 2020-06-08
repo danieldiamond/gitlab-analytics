@@ -76,6 +76,18 @@ models:
         tests:
           - not_null
       - name: valid_to
+
+  
+  - name: gitlab_dotcom_project_statistics_snapshots_base
+    description: Base model for Gitlab.com project statistics snapshot
+    columns:
+      - name: project_statistics_id
+        tests:
+          - not_null
+      - name: project_id
+        tests:
+          - not_null
+
   - name: license_db_licenses_snapshots_base
     description: This is the base model for snapshots from the licenses table from the license database.
     columns:
