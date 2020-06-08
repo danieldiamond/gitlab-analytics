@@ -10,7 +10,6 @@ WITH issues AS (
 ), users AS (
   
     SELECT *
-    {# user_id, users_name, user_name, is_external_user, organization, notification_email #}
     FROM {{ref('gitlab_dotcom_users')}}
 
 ), assignee AS (
@@ -29,11 +28,11 @@ WITH issues AS (
     SELECT *
     FROM {{ref('employee_directory_analysis')}}
     WHERE date_actual >= DATEADD(year, -1, CURRENT_DATE())
-  
+
 ), label_links AS (
 
     SELECT *
-    FROM {{ref('gitlab_dotcom_label_links')}}
+    FROM {{ref('gitlab_dotcom_label_links')}} labels
     WHERE is_currently_valid = True
       AND target_type = 'Issue'
 
