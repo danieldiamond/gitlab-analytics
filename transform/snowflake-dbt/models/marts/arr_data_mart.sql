@@ -5,23 +5,24 @@ WITH charges_base AS (
 
 ), dim_dates AS (
 
-   SELECT *
-   FROM {{ ref('dim_dates') }}
+    SELECT *
+    FROM {{ ref('dim_dates') }}
 
 ), charges_month_by_month AS (
 
-  SELECT
-    charges_base.*,
-    dim_dates.date_id,
-    dateadd('month', -1, dim_dates.date_actual)  AS reporting_month
-  FROM charges_base
-  INNER JOIN dim_dates
-    ON charges_base.effective_start_date_id <= dim_dates.date_id
-    AND (charges_base.effective_end_date_id > dim_dates.date_id OR charges_base.effective_end_date_id IS NULL)
-    AND dim_dates.day_of_month = 1
-  WHERE subscription_status NOT IN ('Draft', 'Expired')
-    AND mrr IS NOT NULL
-    AND mrr != 0
+    SELECT
+      charges_base.*,
+      dim_dates.date_id,
+      dateadd('month', -1, dim_dates.date_actual)  AS reporting_month
+    FROM charges_base
+    INNER JOIN dim_dates
+      ON charges_base.effective_start_date_id <= dim_dates.date_id
+      AND (charges_base.effective_end_date_id > dim_dates.date_id OR charges_base.effective_end_date_id IS NULL)
+      AND dim_dates.day_of_month = 1
+    WHERE subscription_status NOT IN ('Draft', 'Expired')
+      AND mrr IS NOT NULL
+      AND mrr != 0
+      
 )
 
 SELECT
