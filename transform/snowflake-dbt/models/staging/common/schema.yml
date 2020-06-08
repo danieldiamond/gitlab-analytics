@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: charges_base
-    description: "Base table used as a starting point for ARR analyses"
+    description: "Base table used as a starting point for all charge analyses"
     columns:
       - name: charge_id
         tests:
