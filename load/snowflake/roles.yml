@@ -18,6 +18,9 @@ databases:
 
     - testing_db:
         shared: no
+    
+    - static:
+        shared: no
 
 
 # ==========================================
@@ -84,17 +87,10 @@ roles:
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
-            - license_db
-            - netsuite
-            - postgres_pipeline
-            - salesforce
             - sheetload
             - snapshots
-            - snowplow
             - snowflake_db
-            - version_db
-            - zendesk
-            - zuora
+            - static
         privileges:
             databases:
                 write:
@@ -105,6 +101,7 @@ roles:
             - analyst_xs
             - analyst_l
         member_of:
+            - analyst_core
             - boneyard
             - covid19
             - dbt_analytics
@@ -131,6 +128,7 @@ roles:
             - analyst_l
             - analyst_xl
         member_of:
+            - analyst_core
             - boneyard
             - covid19
             - db_dumps
@@ -173,6 +171,7 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
+            - analyst_core
             - boneyard
             - covid19
             - dbt_analytics
@@ -209,6 +208,7 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
+            - analyst_core
             - analyst_sales
             - boneyard
             - dbt_analytics
@@ -226,6 +226,7 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
+            - analyst_core
             - bamboohr
             - boneyard
             - covid19
@@ -253,6 +254,7 @@ roles:
         warehouses:
             - analyst_xs
         member_of:
+            - analyst_core
             - boneyard
             - covid19
             - dbt_analytics
@@ -801,6 +803,68 @@ roles:
                     - raw.snowplow.*
                     - analytics.snowplow_*.*
 
+    - static:
+        privileges:
+            databases:
+                read:
+                    - static
+                write:
+                    - static
+            schemas:
+                read:
+                    - static.public
+                    - static.scratch
+                write:
+                    - static.scratch
+            tables:
+                read:
+                    - static.public.*
+                    - static.scratch.*
+                write:
+                    - static.scratch.*
+
+    - static_sensitive:
+        member_of:
+            - static
+        privileges:
+            databases:
+                read:
+                    - static
+            schemas:
+                read:
+                    - static.sensitive
+            tables:
+                read:
+                    - static.sensitive.*
+
+    - static_admin:
+        member_of:
+            - static
+            - static_sensitive
+        privileges:
+            databases:
+                read:
+                    - static
+                write:
+                    - static
+            schemas:
+                read:
+                    - static.*
+                write:
+                    - static.*
+            tables:
+                read:
+                    - static.*.*
+                write:
+                    - static.*.*
+        owns:
+            databases:
+                - static
+            schemas:
+                - static.*
+            tables:
+                - static.*.*
+
     - version_db:
         privileges:
             databases:
@@ -1028,6 +1092,7 @@ roles:
         member_of:
             - analyst_marketing
             - netsuite
+            - static_sensitive
         warehouses:
             - analyst_xs
 
