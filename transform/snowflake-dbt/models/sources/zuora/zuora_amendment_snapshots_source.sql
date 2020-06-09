@@ -1,6 +1,6 @@
 WITH source AS (
     SELECT *
-    FROM {{ source('zuora', 'zuora_amendment_snapshots') }}
+    FROM {{ source('snapshots', 'zuora_amendment_snapshots') }}
 
 ), renamed AS (
 
