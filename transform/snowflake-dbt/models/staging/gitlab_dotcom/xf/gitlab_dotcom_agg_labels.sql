@@ -1,11 +1,10 @@
-
 WITH issues AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_issues')}}
     WHERE created_at >= DATEADD(year, -1, CURRENT_DATE())
 
-), label_links AS 
+), label_links AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_label_links')}} labels
@@ -21,13 +20,15 @@ WITH issues AS (
 
     SELECT
       issues.issue_id,
-      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY masked_label_title ASC) AS labels
+      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY masked_label_title ASC) AS labels,
+      COUNT(label_links.label_id) AS total_labels
     FROM issues
     LEFT JOIN label_links
       ON issues.issue_id = label_links.target_id
     LEFT JOIN all_labels
       ON label_links.label_id = all_labels.label_id
     GROUP BY issues.issue_id
+    HAVING total_labels BETWEEN 1 AND 100
 
 )    
 
