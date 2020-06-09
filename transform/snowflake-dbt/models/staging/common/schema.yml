@@ -60,6 +60,9 @@ models:
       - name: billing_list_price
         tests:
           - not_null
+      - name: product_rate_plan_charge_id
+        tests:
+          - unique
 
   - name: fct_invoice_items_agg
     description: "Aggregate fact table with invoice items summarized on charge level"
