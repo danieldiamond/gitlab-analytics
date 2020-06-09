@@ -1,17 +1,14 @@
 WITH zuora_subscription AS (
-
   SELECT *
-  FROM {{ ref('zuora_subscription_snapshots_source') }}
-  --WHERE {{ var('valid_at') }} BETWEEN dbt_valid_from AND COALESCE(dbt_valid_to, now())
+  FROM {{ ref('zuora_subscription_snaphots_source') }}
+  WHERE {{ var('valid_at') }} BETWEEN dbt_valid_from AND COALESCE(dbt_valid_to, CURRENT_TIMESTAMP())
 
 ), zuora_account AS (
-
   SELECT
     account_id,
     crm_id
   FROM {{ ref('zuora_account_snapshots_source') }}
-  --WHERE {{ var('valid_at') }} BETWEEN dbt_valid_from AND COALESCE(dbt_valid_to, now())
-
+  WHERE {{ var('valid_at') }} BETWEEN dbt_valid_from AND COALESCE(dbt_valid_to, CURRENT_TIMESTAMP())
 )
 
 SELECT

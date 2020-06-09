@@ -38,8 +38,11 @@ models:
           - not_null
           - unique
 
+  - name: dim_subscriptions_valid_at
+    description: "Dimension table representing subscription details as in Zuora at given date"
+
   - name: dim_subscriptions
-    description: "Dimension table representing subscription details as in Zuora"
+    description: "Dimension table representing subscription details as in Zuora valid at give timestamp"
     columns:
       - name: subscription_id
         tests:
