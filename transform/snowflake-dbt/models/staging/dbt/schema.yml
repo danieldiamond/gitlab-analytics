@@ -26,5 +26,27 @@ models:
             - unique
         - name: compilation_time_seconds_elapsed
           tests:
+            - not_null
+    - name: dbt_failing_tests
+      description: The DBT tests that are failing as of the last recorded test runs.
+      columns:
+        - name: test_name
+          tests:
+            - not_null
+            - unique
+        - name: test_result_generated_at
+          tests:
             - not_null            
+    - name: dbt_last_successful_test_runs
+      description: The timestamp of the last successful test run for tests that are currently failing.
+      columns:
+        - name: test_name
+          tests:
+            - not_null
+            - unique
+            - relationships:
+                to: ref('dbt_failing_tests')
+                field: test_name
+        - name: last_successful_run_at
+        
         
