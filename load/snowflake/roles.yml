@@ -1028,7 +1028,6 @@ roles:
         member_of:
             - analyst_marketing
             - netsuite
-            - static_sensitive # temporary see 5086 & 5087
         warehouses:
             - analyst_xs
 
