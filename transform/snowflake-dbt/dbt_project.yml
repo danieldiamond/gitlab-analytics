@@ -190,6 +190,9 @@ models:
         rpt:
           schema: analytics
 
+      historical:
+        tags: ["param"]
+
       license:
         materialized: view
 
