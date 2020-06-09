@@ -21,15 +21,20 @@ def construct_qualtrics_contact(result):
     }
 
 
+def get_qualtrics_request_table_name(file_id):
+    return "".join(x for x in file_id if x.isalpha()).upper()
+
+
 def process_qualtrics_file(
     file, is_test, google_sheet_client, schema,
 ):
     file_name = file.title
-    _, table = file_name.split(".")
-    if file.sheet1.title != table:
-        error(f"{file_name}: First worksheet did not match expected name of {table}")
+    _, tab = file_name.split(".")
+    if file.sheet1.title != tab:
+        error(f"{file_name}: First worksheet did not match expected name of {tab}")
         return
-    dataframe = google_sheet_client.load_google_sheet(None, file_name, table)
+    table = get_qualtrics_request_table_name(file.id)
+    dataframe = google_sheet_client.load_google_sheet(None, file_name, tab)
     if list(dataframe.columns.values)[0].lower() != "id":
         warning(f"{file_name}: First column did not match expected name of id")
         return
@@ -57,7 +62,7 @@ def process_qualtrics_file(
             env["QUALTRICS_API_TOKEN"], env["QUALTRICS_DATA_CENTER"]
         )
         mailing_id = qualtrics_client.create_mailing_list(
-            env["QUALTRICS_POOL_ID"], table, env["QUALTRICS_GROUP_ID"]
+            env["QUALTRICS_POOL_ID"], tab, env["QUALTRICS_GROUP_ID"]
         )
         qualtrics_client.upload_contacts_to_mailing_list(
             env["QUALTRICS_POOL_ID"], mailing_id, qualtrics_contacts

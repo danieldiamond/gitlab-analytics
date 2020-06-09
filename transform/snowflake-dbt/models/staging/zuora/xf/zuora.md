@@ -1,3 +1,9 @@
+{% docs saas_charges_with_namespace_id %}
+
+This model joins together zuora data source with Customers App data souce and GitLab.com App data source. It allows to map when possible a `charge_id` (zuora) to a `customer_id` (customers) and then to a `namespace_id` (gitlab). 
+
+{% enddocs %}
+
 {% docs zuora_base_mrr %}
 
 This model generates an entry for each unique charge associated with a subscription. The specific information about what is happening with a subscription is stored with the rate plan charge. That RPC is part of a Rate Plan, which is then linked to a subscription. There can be multiple rate plans and charges per subscription. The effective start and end dates define the time period that a charge is effective.
