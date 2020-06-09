@@ -73,7 +73,7 @@ sources:
       - name: zuora_amendment_snapshots
       - name: zuora_contact_snapshots
       - name: zuora_invoice_snapshots
-      - naem: zuora_invoiceitem_snapshots
+      - name: zuora_invoiceitem_snapshots
       - name: zuora_product_snapshots
       - name: zuora_rateplan_snapshots
       - name: zuora_rateplancharge_snapshots
