@@ -30,6 +30,13 @@ The contact source table contains info about your contacts, who are individuals 
 
 {% enddocs %}
 
+{% docs sfdc_event_source %}
+
+The event source table represents an event in the calendar. In the user interface, event and task records are collectively referred to as activities.
+ [Link to Documentation](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_event.htm)
+
+{% enddocs %}
+
 {% docs sfdc_execbus_source %}
 
 Custom source table: This table contains executive business review data.
@@ -119,5 +126,29 @@ This is the source table for the archived Salesforce users.
 {% docs sfdc_oppfieldhistory_source %}
 
 This is the source table for Opportunity Field History.
+
+{% enddocs %}
+
+{% docs sfdc_contacthistory_source %}
+
+This is the source table for Contact Field History.
+
+{% enddocs %}
+
+{% docs sfdc_leadhistory_source %}
+
+This is the source table for Lead Field History.
+
+{% enddocs %}
+
+{% docs sfdc_accounthistory_source %}
+
+This is the source table for Account Field History.
+
+{% enddocs %}
+
+{% docs sfdc_opphistory_source %}
+
+This is the source table for Opportunity History.
 
 {% enddocs %}

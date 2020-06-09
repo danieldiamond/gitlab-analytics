@@ -10,22 +10,36 @@ WITH source AS (
           d.value['id']::BIGINT                                           AS employee_id,
           d.value['firstName']::VARCHAR                                   AS first_name,
           d.value['lastName']::VARCHAR                                    AS last_name,
+          NULLIF(d.value['hireDate']::VARCHAR,'0000-00-00')::DATE         AS hire_date,
           d.value['customRole']::VARCHAR                                  AS job_role,
           d.value['customJobGrade']::VARCHAR                              AS job_grade,
-          uploaded_at::DATE                                               AS effective_date
+          d.value['customCostCenter']::VARCHAR                            AS cost_center,
+          uploaded_at::DATETIME                                           AS effective_date
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), OUTER => true) d
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role ORDER BY effective_date)=1  
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade, cost_center 
+            ORDER BY DATE_TRUNC(day,effective_date) ASC, DATE_TRUNC(hour, effective_date) DESC)=1  
 
 ), final AS (
 
     SELECT 
-      intermediate.*,
-      LEAD(DATEADD(day,-1,effective_date)) OVER (PARTITION BY employee_number ORDER BY effective_date)  AS next_effective_date
+      employee_number,
+      employee_id,
+      job_role,
+      job_grade,
+      cost_center,
+      DATE_TRUNC(day, effective_date)                                                   AS effective_date,
+      LEAD(DATEADD(day,-1,DATE_TRUNC(day, intermediate.effective_date))) OVER 
+        (PARTITION BY employee_number ORDER BY intermediate.effective_date)              AS next_effective_date
     FROM intermediate 
-    
+    WHERE effective_date>= '2020-02-27'  --1st day we started capturing job role
+      AND hire_date IS NOT NULL
+      AND (LOWER(first_name) NOT LIKE '%greenhouse test%'
+      AND LOWER(last_name) NOT LIKE '%test profile%'
+      AND LOWER(last_name) != 'test-gitlab')
+      AND employee_id != 42039
+
 ) 
 
 SELECT * 
 FROM final
-WHERE effective_date>= '2020-02-27'  --1st day we started capturing 

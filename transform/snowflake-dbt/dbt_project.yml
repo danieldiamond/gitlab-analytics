@@ -114,6 +114,17 @@ models:
       dbt:
         materialized: table
         schema: dbt
+    
+      engineering:
+        materialized: table
+
+      gitlab_data_yaml:
+        schema: gitlab_data_yaml
+
+      gitlab_dotcom:
+        tags: ["product"]
+        materialized: table
+        schema: staging
       
       gitter:
         enabled: false
@@ -124,8 +135,6 @@ models:
 
       greenhouse:
         schema: greenhouse
-        sensitive:
-          schema: sensitive
 
       license:
         schema: license_db
@@ -154,6 +163,18 @@ models:
     staging:
       schema: staging
       materialized: table
+
+      engineering:
+        materialized: table
+
+      gitlab_data_yaml:
+        materialized: table
+        schema: analytics
+
+      gitlab_dotcom:
+        tags: ["product"]
+        materialized: table
+        schema: analytics
 
       gitter:
         enabled: false
@@ -201,21 +222,11 @@ models:
       materialized: table
       base:
           schema: staging
+      intermediate:
+          schema: staging
 
     date:
       materialized: table
-
-    engineering:
-      materialized: table
-
-    gitlab_data_yaml:
-      materialized: table
-
-    gitlab_dotcom:
-      tags: ["product"]
-      materialized: table
-      base:
-          schema: staging
 
     handbook:
         materialized: table

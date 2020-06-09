@@ -1,3 +1,4 @@
+import datetime
 import logging
 import os
 import sys
@@ -94,6 +95,42 @@ def load_incremental(
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need incremental processing.")
         return False
+
+    replication_check_query = "select pg_last_xact_replay_timestamp();"
+
+    replication_timestamp = query_executor(source_engine, replication_check_query)[0][0]
+
+    """
+      If postgres replication is too far behind for gitlab_com, then data will not be replicated in this DAGRun that
+      will not be replicated in future DAGruns -- thus forcing the DE team to backfill.
+      This block of code raises an Exception whenever replication is far enough behind that data will be missed.
+    """
+    if table_dict["export_schema"] == "gitlab_com":
+        last_execution_date = datetime.datetime.strptime(
+            os.environ["LAST_EXECUTION_DATE"], "%Y-%m-%dT%H:%M:%S%z"
+        )
+        execution_date = datetime.datetime.strptime(
+            os.environ["EXECUTION_DATE"], "%Y-%m-%dT%H:%M:%S%z"
+        )
+
+        hours_difference = (execution_date - last_execution_date).seconds / 3600
+
+        hours_looking_back = int(os.environ["HOURS"])
+
+        """ The DAG moves forward 6 hours every run, but it is getting data for `hours` Hours in the past.
+            This means that replication has to be caught up to the point of execution_date + 6 which is the next execution date 
+            minus however far back data is being queried for each run which is the HOURS environ variable.  
+        """
+        if replication_timestamp < execution_date + datetime.timedelta(
+            hours=hours_difference
+        ) - datetime.timedelta(hours=hours_looking_back):
+            raise Exception(
+                f"PG replication is at {replication_timestamp}, \
+                farther behind on replication than current replication window."
+            )
+        else:
+            logging.info(f"Replication is good at {replication_timestamp}")
+
     # If _TEMP exists in the table name, skip it because it needs a full sync
     # If a temp table exists then it needs to finish syncing so don't load incrementally
     if "_TEMP" == table_name[-5:] or target_engine.has_table(f"{table_name}_TEMP"):
@@ -324,11 +361,15 @@ def main(file_path: str, load_type: str, load_only_table: str = None) -> None:
         table_name = "{import_db}_{export_table}".format(**table_dict).upper()
         raw_query = table_dict["import_query"]
 
+        source_table = table_dict["export_table"]
+        if "import_schema" in table_dict:
+            source_table = table_dict["import_schema"] + "." + source_table
+
         # Check if the schema has changed or the table is new
         schema_changed = check_if_schema_changed(
             raw_query,
             postgres_engine,
-            table_dict["export_table"],
+            source_table,
             table_dict["export_table_primary_key"],
             snowflake_engine,
             table_name,

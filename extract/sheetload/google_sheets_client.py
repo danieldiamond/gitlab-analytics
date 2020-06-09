@@ -2,6 +2,7 @@ import sys
 import re
 import json
 import time
+import random
 from io import StringIO
 from logging import error, info, basicConfig, getLogger
 from os import environ as env
@@ -26,13 +27,19 @@ from sqlalchemy.engine.base import Engine
 
 class GoogleSheetsClient:
     def load_google_sheet(
-        self, key_file, file_name: str, worksheet_name: str, gsheet_retries: int = 3
+        self,
+        key_file,
+        file_name: str,
+        worksheet_name: str,
+        maximum_backoff_sec: int = 600,
     ) -> pd.DataFrame:
         """
         Loads the google sheet into a dataframe with column names loaded from the sheet.
+        If API Rate Limit has been reached use [Truncated exponential backoff](https://cloud.google.com/storage/docs/exponential-backoff) strategy to retry
         Returns the dataframe.
         """
-        for _ in range(gsheet_retries):
+        n = 0
+        while maximum_backoff_sec > (2 ** n):
             try:
                 sheets_client = self.get_client(key_file)
                 sheet = (
@@ -44,10 +51,13 @@ class GoogleSheetsClient:
                 return sheet_df
             except APIError as gspread_error:
                 if gspread_error.response.status_code == 429:
+                    # Start for waiting at least
+                    wait_sec = (2 ** n) + (random.randint(0, 1000) / 1000)
                     info(
-                        "Received API rate limit error, waiting 100 seconds before trying again."
+                        f"Received API rate limit error. Wait for {wait_sec} seconds before trying again."
                     )
-                    time.sleep(100)
+                    time.sleep(wait_sec)
+                    n = n + 1
                 else:
                     raise
         else:
@@ -74,11 +84,17 @@ class GoogleSheetsClient:
             client = self.get_client(None)
         return [file for file in client.openall()]
 
-    def rename_file(self, source_id, target_name, client=None) -> None:
+    def rename_sheet(self, file, sheet_id, target_name) -> None:
         """
         Renames a google sheets file
         """
-        if not client:
-            client = self.get_client(None)
-        client.copy(source_id, title=target_name)
-        client.del_spreadsheet(source_id)
+        file.batch_update(
+            {
+                "requests": {
+                    "updateSheetProperties": {
+                        "properties": {"sheetId": sheet_id, "title": target_name},
+                        "fields": "title",
+                    }
+                }
+            }
+        )

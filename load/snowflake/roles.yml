@@ -596,12 +596,15 @@ roles:
         privileges:
             databases:
                 read:
+                    - analytics
                     - raw
             schemas:
                 read:
+                    - analytics.gitlab_data_yaml
                     - raw.gitlab_data_yaml
             tables:
                 read:
+                    - analytics.gitlab_data_yaml.*
                     - raw.gitlab_data_yaml.*
 
     - google_analytics_360: 
@@ -1002,6 +1005,12 @@ roles:
             - transforming_xs
             - transforming_xl
 
+    - hfrancisco:
+        member_of:
+            - analyst_people
+        warehouses:
+            - analyst_xs
+
     - iroussos:
         member_of:
             - reporter
@@ -1012,12 +1021,6 @@ roles:
         member_of:
             - analyst_finance
             - bamboohr
-        warehouses:
-            - analyst_xs
-
-    - jmahdi:
-        member_of:
-            - analyst_sales
         warehouses:
             - analyst_xs
 
@@ -1365,6 +1368,11 @@ users:
             - gitlab_ci
             - sysadmin
 
+    - hfrancisco:
+        can_login: yes
+        member_of:
+            - hfrancisco
+
     - iroussos:
         can_login: yes
         member_of:
@@ -1376,9 +1384,8 @@ users:
             - iweeks
 
     - jmahdi:
-        can_login: yes
-        member_of:
-            - jmahdi
+        can_login: no
+        member_of: []
 
     - jpeguero:
         can_login: yes

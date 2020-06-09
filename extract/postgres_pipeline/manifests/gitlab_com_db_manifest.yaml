@@ -1082,6 +1082,16 @@ tables:
       , merged_by_id
       , latest_closed_by_id
       , latest_closed_at
+      , first_comment_at
+      , first_commit_at
+      , last_commit_at
+      , diff_size
+      , modified_paths_size
+      , commits_count
+      , first_approved_at
+      , first_reassigned_at
+      , added_lines
+      , removed_lines
       FROM merge_request_metrics
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -1793,7 +1803,6 @@ tables:
       , auditor
       , require_two_factor_authentication_from_group
       , two_factor_grace_period
-      , ghost
       , last_activity_on
       , notified_of_own_activity
       , preferred_language
@@ -1845,6 +1854,73 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'user_preferences'
     export_table_primary_key: user_id
+  vulnerabilities:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      FROM vulnerabilities
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerabilities'
+    export_table_primary_key: id
+  vulnerability_feedback:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , feedback_type
+      , category
+      , project_id
+      , author_id
+      , pipeline_id
+      , issue_id
+      , project_fingerprint
+      , merge_request_id
+      , comment_author_id
+      , comment
+      , comment_timestamp
+      FROM vulnerability_feedback
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_feedback'
+    export_table_primary_key: id
+  vulnerability_identifiers:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , project_id
+      , external_type
+      , external_id
+      , name
+      , url
+      FROM vulnerability_identifiers
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_identifiers'
+    export_table_primary_key: id
+  vulnerability_issue_links:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , vulnerability_id
+      , issue_id
+      , link_type
+      , created_at
+      , updated_at
+      FROM vulnerability_issue_links
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_issue_links'
+    export_table_primary_key: id
   vulnerability_occurrences:
     import_db: GITLAB_DB
     import_query: >
@@ -1866,6 +1942,49 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'vulnerability_occurrences'
     export_table_primary_key: 'id'
+  vulnerability_occurrence_identifiers:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , occurrence_id
+      , identifier_id
+      FROM vulnerability_occurrence_identifiers
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_occurrence_identifiers'
+    export_table_primary_key: id
+  vulnerability_occurrence_pipelines:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , occurrence_id
+      , pipeline_id
+      FROM vulnerability_occurrence_pipelines
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_occurrence_pipelines'
+    export_table_primary_key: id
+  vulnerability_scanners:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , project_id
+      , external_id
+      , name
+      FROM vulnerability_scanners
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'vulnerability_scanners'
+    export_table_primary_key: id
 #   web_hook_logs:  # breaking extract 04-23-2020
 #     import_db: GITLAB_DB
 #     import_query: >
