@@ -7,4 +7,4 @@ WITH model AS (
 )
 SELECT billing_list_price
 FROM model
-where billing_list_price < 0
+WHERE billing_list_price < 0
