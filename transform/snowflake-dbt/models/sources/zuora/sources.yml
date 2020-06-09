@@ -53,3 +53,30 @@ sources:
         description: '{{ doc("zuora_revenue_schedule_item_source") }}'
       - name: subscription
         description: '{{ doc("zuora_subscription_source") }}'
+
+  - name: snapshots
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: snapshots
+    loader: dbt
+    loaded_at_field: dbt_updated_at
+
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    freshness:
+        warn_after: {count: 24, period: hour}
+
+    tables:
+      - name: zuora_account_snapshots
+      - name: zuora_amendment_snapshots
+      - name: zuora_contact_snapshots
+      - name: zuora_invoice_snapshots
+      - naem: zuora_invoiceitem_snapshots
+      - name: zuora_product_snapshots
+      - name: zuora_rateplan_snapshots
+      - name: zuora_rateplancharge_snapshots
+      - name: zuora_refund_snapshots
+      - name: zuora_revenue_schedule_item_snapshots
+      - name: zuora_subscription_snapshots
