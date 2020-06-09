@@ -1,7 +1,5 @@
 .PHONY: build
 
-WEBSERVER_IMAGE = analytics_airflow_webserver_1
-SCHEDULER_IMAGE = analytics_airflow_scheduler_1
 GIT_BRANCH = $$(git symbolic-ref --short HEAD)
 
 help:
@@ -34,8 +32,8 @@ airflow:
 	@docker-compose down
 	@export GIT_BRANCH=$(GIT_BRANCH) && docker-compose up -d airflow_webserver
 	@sleep 5
-	@docker exec ${SCHEDULER_IMAGE} gcloud auth activate-service-account --key-file=/root/gcp_service_creds.json --project=gitlab-analysis
-	@docker exec -ti ${WEBSERVER_IMAGE} /bin/bash
+	@docker-compose exec airflow_scheduler gcloud auth activate-service-account --key-file=/root/gcp_service_creds.json --project=gitlab-analysis
+	@docker-compose exec -ti airflow_webserver bash
 
 cleanup:
 	@echo "Cleaning things up..."
