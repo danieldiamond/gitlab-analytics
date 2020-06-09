@@ -1,0 +1,7 @@
+version: 2
+
+macros:
+  - name: snapshot_staging_table_updates
+    description: '{{ doc("snapshot_staging_table_updates") }}'
+  - name: snapshot_timestamp_with_deletes_strategy
+    description: '{{ doc("snapshot_timestamp_with_deletes_strategy") }}'
