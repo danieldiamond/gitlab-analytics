@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('zuora', 'zuora_revenuescheduleitem_snapshots') }}
+    FROM {{ source('snapshots', 'zuora_revenue_schedule_item_snapshots') }}
 
 ), renamed AS (
 
@@ -36,6 +36,7 @@ WITH source AS (
       dbt_updated_at,
       dbt_valid_from,
       dbt_valid_to
+
 
       FROM source
 
