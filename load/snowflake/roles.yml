@@ -471,11 +471,13 @@ roles:
         owns:
             schemas:
                 - analytics.analytics
+                - analytics.analytics_clones
                 - analytics.analytics_meta
                 - analytics.analytics_sensitive
                 - analytics.analytics_staging
             tables:
                 - analytics.analytics.*
+                - analytics.analytics_clones.*
                 - analytics.analytics_meta.*
                 - analytics.analytics_sensitive.*
                 - analytics.analytics_staging.*
@@ -568,12 +570,14 @@ roles:
             schemas:
                 read:
                     - analytics.analytics
+                    - analytics.analytics_clones
                     - analytics.analytics_staging
                     - analytics.analytics_meta
                     - raw.dbt
             tables:
                 read:
                     - analytics.analytics.*
+                    - analytics.analytics_clones.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
                     - raw.dbt.*
