@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ ref('versions', 'current_host_stats') }}
+    FROM {{ ref('version', 'current_host_stats') }}
 
 ), renamed AS (
 

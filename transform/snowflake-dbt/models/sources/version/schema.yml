@@ -16,8 +16,8 @@ models:
           tests: 
             - not_null
         - name: usage_data_id
-           tests:
-             - not_null    
+          tests:
+            - not_null    
             
     - name: version_current_host_stats_source
       description: Current statistics for self-managed instances.
