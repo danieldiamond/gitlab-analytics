@@ -961,7 +961,8 @@ roles:
     - datwood:
         member_of:
             - analyst_core
-            - analyst_engineering
+            - postgres_pipeline
+            - db_dumps
         warehouses:
             - analyst_xs
     - dknox:
