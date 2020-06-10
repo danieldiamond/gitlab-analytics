@@ -961,7 +961,7 @@ roles:
     - datwood:
         member_of:
             - analyst_core
-            - analyst_growth
+            - analyst_engineering
         warehouses:
             - analyst_xs
     - dknox:
