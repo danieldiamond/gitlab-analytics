@@ -4,7 +4,7 @@
         config(
           unique_key='unique_id',
           strategy='timestamp',
-          updated_at='_UPDATED_AT',
+          updated_at='_UPDATED_AT::number',
         )
     }}
 
