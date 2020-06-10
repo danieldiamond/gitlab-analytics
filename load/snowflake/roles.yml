@@ -1118,6 +1118,12 @@ roles:
         warehouses:
             - analyst_xs
 
+    - jng:
+        member_of:
+            - analyst_growth
+        warehouses:
+            - analyst_xs
+
     - jpeguero:
         member_of:
             - analyst_marketing
@@ -1390,6 +1396,7 @@ users:
         can_login: yes
         member_of:
             - aakgun
+
     - cmccarty:
         can_login: yes
         member_of:
@@ -1477,6 +1484,11 @@ users:
         can_login: yes
         member_of:
             - iweeks
+
+    - jng:
+        can_login: yes
+        member_of:
+            - jng
 
     - jmahdi:
         can_login: no
