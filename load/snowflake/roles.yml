@@ -943,6 +943,12 @@ roles:
 # ==========================================
 # User Roles
 # ==========================================
+    - aakgun:
+        member_of:
+            - analyst_growth
+        warehouses:
+            - analyst_xs    
+    
     - acarella:
         warehouses:
             - reporting
@@ -966,12 +972,6 @@ roles:
             - reporter
         warehouses:
             - reporting
-
-    - aakgun:
-        member_of:
-            - analyst_growth
-        warehouses:
-            - analyst_xs
 
     - aladhani:
         member_of:
@@ -1372,6 +1372,12 @@ roles:
 # Users
 # ==========================================
 users:
+
+    - aakgun:
+        can_login: yes
+        member_of:
+            - aakgun
+
     - acarella:
         can_login: yes
         member_of:
@@ -1402,11 +1408,6 @@ users:
         can_login: yes
         member_of:
             - aladhani
-
-    - aakgun:
-        can_login: yes
-        member_of:
-            - aakgun
 
     - cmccarty:
         can_login: yes
