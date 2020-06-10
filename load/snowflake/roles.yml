@@ -973,6 +973,12 @@ roles:
         warehouses:
             - analyst_xs
 
+    - aladhani:
+        member_of:
+            - analyst_growth
+        warehouses:
+            - analyst_xs
+
     - cmccarty:
         member_of:
             - securityadmin
@@ -1391,6 +1397,11 @@ users:
             - reporter
             - sysadmin
             - transformer
+
+    - aladhani:
+        can_login: yes
+        member_of:
+            - aladhani
 
     - aakgun:
         can_login: yes
