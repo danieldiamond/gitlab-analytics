@@ -13,6 +13,7 @@ tables:
       , table_name
       , column_name
       , table_schema
+      , column_type
       FROM information_schema.columns
     export_schema: 'gitlab_com'
     export_table: 'columns'
