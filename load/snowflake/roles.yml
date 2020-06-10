@@ -426,6 +426,30 @@ roles:
                     - analytics.analytics_sensitive.gitlab_dotcom_namespaces
                     - analytics.analytics_sensitive.gitlab_dotcom_projects
 
+    - read_all:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                    - testing_db
+                    - static
+            schemas:
+                read:
+                    - raw.*
+                    - analytics.*
+                    - testing_db.*
+                    - static.*
+            tables:
+                read:
+                    - raw.*.*
+                    - analytics.*.*
+                    - testing_db.*.*
+                    - static.*.*
+
     - reporter:
         warehouses:
             - reporting
