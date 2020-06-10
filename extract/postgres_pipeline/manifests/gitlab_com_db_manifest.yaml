@@ -17,6 +17,7 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'columns'
     export_table_primary_key: CONCAT(table_name, '_', column_name, table_schema)
+    advanced_metadata: true
   # resource_label_events:
   #   import_db: GITLAB_DB
   #   import_query: >
