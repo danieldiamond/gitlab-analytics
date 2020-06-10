@@ -979,6 +979,12 @@ roles:
         warehouses:
             - analyst_xs
 
+    - amihaila:
+        member_of:
+            - analyst_growth
+        warehouses:
+            - analyst_xs
+
     - cmccarty:
         member_of:
             - securityadmin
@@ -1408,6 +1414,11 @@ users:
         can_login: yes
         member_of:
             - aladhani
+
+    - amihaila:
+        can_login: yes
+        member_of:
+            - amihaila
 
     - cmccarty:
         can_login: yes
