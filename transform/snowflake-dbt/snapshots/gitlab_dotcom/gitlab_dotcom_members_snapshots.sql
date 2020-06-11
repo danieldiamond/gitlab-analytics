@@ -3,14 +3,23 @@
     {{
         config(
           unique_key='id',
-          strategy='timestamp_with_deletes',
-          updated_at='created_at'
+          strategy='timestamp',
+          updated_at='created_at',
         )
     }}
+    
+    WITH source AS (
 
+    	SELECT 
+        *, 
+        ROW_NUMBER() OVER (PARTITION BY id ORDER BY _uploaded_at DESC) AS members_rank_in_key
+      
+      FROM {{ source('gitlab_dotcom', 'members') }}
+
+    )
+    
     SELECT *
-    FROM {{ source('gitlab_dotcom', 'members') }}
-    WHERE _task_instance IN (SELECT MAX(_task_instance) FROM {{ source('gitlab_dotcom', 'members') }})
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY created_at DESC) = 1
-
+    FROM source
+    WHERE members_rank_in_key = 1
+    
 {% endsnapshot %}
