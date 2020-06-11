@@ -72,9 +72,6 @@ models:
       - name: invoice_id
         tests:
           - not_null
-      - name: charge_id
-        tests:
-          - not_null
 
 
   - name: fct_invoice_items_agg
