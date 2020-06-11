@@ -29,13 +29,14 @@ class BigQueryClient:
         # Get the gcloud storage client and authenticate
 
         info(os.system('gcloud config list'))
+        info(os.system('echo $GCP_SERVICE_CREDS'))
         scope = ["https://www.googleapis.com/auth/cloud-platform"]
 
         keyfile = safe_load(gapi_keyfile or env["GCP_SERVICE_CREDS"])
         info(keyfile)
         credentials = service_account.Credentials.from_service_account_info(keyfile)
         scoped_credentials = credentials.with_scopes(scope)
-
+        info(credentials)
         bq_client = Client(
             credentials=scoped_credentials,
             #project='gitlab-analysis',
