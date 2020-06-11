@@ -11,7 +11,8 @@ WITH zuora_invoice_item AS (
 ), invoice_charges AS (
 
     SELECT
-      zuora_invoice_item.id                         AS invoice_item_id,
+      zuora_invoice_item.invoice_item_id            AS invoice_item_id,
+      zuora_invoice.invoice_id                      AS invoice_id,
       zuora_invoice_item.rate_plan_charge_id        AS charge_id,
       zuora_invoice.invoice_number                  AS invoice_number,
       zuora_invoice.account_id                      AS invoice_account_id,
