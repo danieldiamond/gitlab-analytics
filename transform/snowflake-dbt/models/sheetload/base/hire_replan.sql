@@ -5,5 +5,5 @@ WITH source AS (
 
 ) 
 
-    SELECT *
+SELECT *
     FROM source
