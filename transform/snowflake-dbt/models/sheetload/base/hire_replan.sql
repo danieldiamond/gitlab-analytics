@@ -6,4 +6,4 @@ WITH source AS (
 ) 
 
 SELECT *
-    FROM source
+FROM source
