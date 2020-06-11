@@ -76,11 +76,6 @@ WITH RECURSIVE employee_directory AS (
     SELECT *
     FROM {{ ref('cost_center_division_department_mapping') }}
 
-), gitlab_username AS (
-
-    SELECT *
-    FROM {{ ref('bamboohr_gitlab_username') }}
-
 ), enriched AS (
 
     SELECT
@@ -116,7 +111,8 @@ WITH RECURSIVE employee_directory AS (
       IFF(rehire_date = date_actual, True, False)                           AS is_rehire_date,
       IFF(hire_date< employment_status_first_value,
             'Active', employment_status)                                    AS employment_status,
-      gitlab_username        
+      job_role.gitlab_username,
+      sales_geo_differential        
     FROM date_details
     LEFT JOIN employee_directory
       ON hire_date::DATE <= date_actual
@@ -149,9 +145,6 @@ WITH RECURSIVE employee_directory AS (
       AND job_info_mapping_historical.job_title = department_info.job_title 
       AND date_details.date_actual BETWEEN '2019-11-01' and '2020-02-27'
       ---tying data based on 2020-02-27 date to historical data --
-    LEFT JOIN gitlab_username
-      ON employee_directory.employee_id = gitlab_username.employee_id
-      AND date_details.date_actual BETWEEN gitlab_username.valid_from_date AND gitlab_username.valid_to_date
     WHERE employee_directory.employee_id IS NOT NULL
 
 ), base_layers as (
