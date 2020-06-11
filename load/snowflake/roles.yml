@@ -1023,11 +1023,11 @@ roles:
             - dtownsend
 
     - eburke:
+        member_of:
+            - read_all
         warehouses:
-            - engineer_xs
-            - engineer_xl
-            - loading
-            - reporting
+            - analyst_xs
+            - analyst_l
 
     - eeastwood:
         member_of:
@@ -1454,7 +1454,6 @@ users:
         can_login: yes
         member_of:
             - eburke
-            - engineer
 
     - eeastwood:
         can_login: yes
