@@ -34,7 +34,7 @@ def get_pmg_reporting_data_query(start_date: datetime, end_date: datetime) -> st
             f"  campaign_code_type, " \
             f"  content_type " \
             f"FROM " \
-            f"  `pmg-datawarehouse.gitlab.reporting_data`" \
+            f"  `gitlab-analysis.117457861.pmg_data_test`" \
             f"  WHERE date >= '{end_date}' and date < '{start_date}'")
 
 
