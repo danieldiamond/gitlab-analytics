@@ -277,3 +277,7 @@ models:
     - name: yc_batch
       tests:
       - not_null
+- name: sheetload_hire_replan
+  description: This is based on the Finance Replan - R4QF.
+  columns:
+    -name: departments
