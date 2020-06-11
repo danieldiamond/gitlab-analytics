@@ -20,7 +20,20 @@ models:
       - name: salesforce_account_id
       - name: billable
   - name: customers_db_eula_requests
+    description: This model contains records of EULA requests sent to customers.
+    columns:
+      - name: eula_request_id
+        tests:
+          - not_null
+      - name: eula_id
+        tests:
+          - not_null
   - name: customers_db_eulas
+    description: This model contains details for each available EULA.
+    columns:
+      - name: eula_id
+        tests:
+          - not_null
   - name: customers_db_license_seat_links
     description: Self-managed EE instances will send seat link information to the customers portal on a daily basis. This information includes a count of active users and a maximum count of users historically in order to assist the true up process. Additional detail can be found in [this doc](https://gitlab.com/gitlab-org/customers-gitlab-com/-/blob/staging/doc/reconciliations.md).  
     columns:
