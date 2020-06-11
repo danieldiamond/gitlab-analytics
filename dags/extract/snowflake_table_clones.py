@@ -28,9 +28,11 @@ GIT_BRANCH = env["GIT_BRANCH"]
 
 # CLONE_DATE will be used to set the timestamp of when clone should
 # CLONE_NAME_DATE date formatted to string to be used for clone name
+# tomorrow_ds -  the day after the execution date as YYYY-MM-DD
+# ds_nodash - the execution date as YYYYMMDD
 pod_env_vars = {
-    "CLONE_DATE": "{{ ds }}",
-    "CLONE_NAME_DATE": "{{ yesterday_ds_nodash }}",
+    "CLONE_DATE": "{{ tomorrow_ds }}",
+    "CLONE_NAME_DATE": "{{ ds_nodash }}",
     "SNOWFLAKE_SYSADMIN_ROLE": "TRANSFORMER",
 }
 
