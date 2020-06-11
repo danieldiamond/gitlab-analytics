@@ -168,8 +168,8 @@ models:
         materialized: table
 
       gitlab_data_yaml:
-        materialized: table
-        schema: analytics
+        xf:
+          schema: analytics
 
       gitlab_dotcom:
         tags: ["product"]
