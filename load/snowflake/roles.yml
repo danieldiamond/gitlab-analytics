@@ -1024,7 +1024,7 @@ roles:
 
     - eburke:
         member_of:
-            - read_all
+            - read_all                  # gitlab-com/team-member-epics/access-requests#5540
         warehouses:
             - analyst_xs
             - analyst_l
