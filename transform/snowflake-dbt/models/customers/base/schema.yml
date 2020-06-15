@@ -73,17 +73,4 @@ models:
       - name: gl_namespace_id
         tests:
           - not_null
-          - unique
-  - name: customers_db_versions
-    description: This model contains a record of all creates, updates, and deletes to objects in customers db models with PaperTrail enabled. This model serves as an audit log of all historical changes to these objects.
-    columns:
-      - name: version_id
-        tests:
-          - not_null
-          - unique
-      - name: item_id
-        tests:
-          - not_null  
-      - name: created_at
-        tests:
-          - not_null              
+          - unique      
