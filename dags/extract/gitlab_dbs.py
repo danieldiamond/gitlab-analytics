@@ -4,7 +4,9 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
+
 from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
+from kubernetes_helpers import get_affinity, get_toleration
 from kube_secrets import (
     CI_STATS_DB_HOST,
     CI_STATS_DB_NAME,
@@ -249,24 +251,6 @@ for source_name, config in config_dict.items():
         "start_date": config["start_date"],
     }
 
-    scd_affinity = {
-        "nodeAffinity": {
-            "requiredDuringSchedulingIgnoredDuringExecution": {
-                "nodeSelectorTerms": [
-                    {
-                        "matchExpressions": [
-                            {"key": "pgp", "operator": "In", "values": ["scd"]}
-                        ]
-                    }
-                ]
-            }
-        }
-    }
-
-    scd_tolerations = [
-        {"key": "scd", "operator": "Equal", "value": "true", "effect": "NoSchedule"}
-    ]
-
     if config["dag_name"] == "gitlab_com":
 
         sync_dag = DAG(
@@ -314,8 +298,8 @@ for source_name, config in config_dict.items():
                         secrets=standard_secrets + config["secrets"],
                         env_vars={**standard_pod_env_vars, **config["env_vars"]},
                         arguments=[scd_cmd],
-                        affinity=scd_affinity,
-                        tolerations=scd_tolerations,
+                        affinity=get_affinity(True),
+                        tolerations=get_toleration(True),
                         do_xcom_push=True,
                         xcom_push=True,
                     )
@@ -337,8 +321,8 @@ for source_name, config in config_dict.items():
                 secrets=standard_secrets + config["secrets"],
                 env_vars={**standard_pod_env_vars, **config["env_vars"]},
                 arguments=[scd_cmd],
-                affinity=scd_affinity,
-                tolerations=scd_tolerations,
+                affinity=get_affinity(True),
+                tolerations=get_toleration(True),
                 task_concurrency=1,
                 do_xcom_push=True,
                 xcom_push=True,
