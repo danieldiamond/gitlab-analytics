@@ -28,10 +28,10 @@ WITH fct_charges AS (
     SELECT *
     FROM {{ ref('dim_subscriptions') }}
 
-), dim_products AS (
+), dim_product_details AS (
 
     SELECT *
-    FROM {{ ref('dim_products') }}
+    FROM {{ ref('dim_product_details') }}
 
 ), charges_month_by_month AS (
 
@@ -65,7 +65,7 @@ SELECT
   dim_subscriptions.subscription_end_date,
   charges_month_by_month.effective_start_month,
   charges_month_by_month.effective_end_month,
-  dim_products.product_name,
+  dim_product_details.product_name,
   charges_month_by_month.rate_plan_name,
   charges_month_by_month.product_category,
   charges_month_by_month.delivery,
@@ -78,8 +78,8 @@ SELECT
   FROM charges_month_by_month
   INNER JOIN dim_subscriptions
     ON dim_subscriptions.subscription_id = charges_month_by_month.subscription_id
-  INNER JOIN dim_products
-    ON charges_month_by_month.product_id = dim_products.product_id
+  INNER JOIN dim_product_details
+    ON charges_month_by_month.product_id = dim_product_details.product_id
   INNER JOIN dim_customers
     ON dim_customers.crm_id = dim_subscriptions.crm_id
   INNER JOIN dim_accounts
