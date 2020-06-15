@@ -15,7 +15,7 @@ WITH source AS (
       item_type::VARCHAR      AS item_type,
       object::VARCHAR         AS object,
       object_changes::VARCHAR AS object_changes,
-      whodunnit::VARCHAR      AS whodunnit
+      md5(whodunnit::VARCHAR) AS whodunnit_md5
     FROM source  
 
 )
