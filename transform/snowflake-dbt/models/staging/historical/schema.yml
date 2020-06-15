@@ -16,6 +16,10 @@ models:
   - name: fct_invoice_items_agg_valid_at
     description: "Parameterized model to recreate aggregate fact table with invoice items summarized on charge level at given date {valid_at}"
 
+  - name: arr20200501
+    description: "Parameterized model to calculate arrs at given date {valid_at}"
+
+
 
 
 
