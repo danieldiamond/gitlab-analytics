@@ -65,9 +65,6 @@ sources:
       schema: false
       identifier: false
 
-    freshness:
-        warn_after: {count: 24, period: hour}
-
     tables:
       - name: zuora_account_snapshots
       - name: zuora_amendment_snapshots
