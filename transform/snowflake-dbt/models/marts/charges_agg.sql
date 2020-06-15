@@ -28,11 +28,6 @@ WITH fct_charges AS (
     SELECT *
     FROM {{ ref('dim_subscriptions') }}
 
-), dim_products AS (
-
-    SELECT *
-    FROM {{ ref('dim_products') }}
-
 ), base_charges AS (
 
     SELECT
@@ -64,7 +59,6 @@ WITH fct_charges AS (
       fct_charges.rate_plan_charge_number,
       fct_charges.rate_plan_charge_segment,
       fct_charges.rate_plan_charge_version,
-      dim_products.product_name,
       fct_charges.rate_plan_name,
       fct_charges.product_category,
       fct_charges.delivery,
@@ -79,8 +73,6 @@ WITH fct_charges AS (
       ON dim_accounts.account_id = dim_subscriptions.account_id
     INNER JOIN fct_charges
       ON dim_subscriptions.subscription_id = fct_charges.subscription_id
-    LEFT JOIN dim_products
-      ON fct_charges.product_id = dim_products.product_id
     LEFT JOIN dim_customers
       ON dim_accounts.crm_id = dim_customers.crm_id
 

@@ -55,7 +55,6 @@ SELECT
   service_type,
   charge_type,
   unit_of_measure,
-  array_agg(product_name)       AS product_name,
   array_agg(rate_plan_name)     AS rate_plan_name,
   SUM(mrr)                      AS mrr,
   SUM(arr)                      AS arr,
