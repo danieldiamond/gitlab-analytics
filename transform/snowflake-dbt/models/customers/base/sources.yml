@@ -39,8 +39,6 @@ sources:
       - name: customers_db_license_seat_links    
         columns:
           - name: zuora_subscription_id
-            tests:
-              - not_null
           - name: order_id
             tests:
               - not_null        
