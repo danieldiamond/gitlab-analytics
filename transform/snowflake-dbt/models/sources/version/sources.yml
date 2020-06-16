@@ -20,31 +20,31 @@ sources:
       - name: conversational_development_indices
         columns:
           - name: id
+            tests:
+              - not_null
           - name: created_at
+            tests:
+              - not_null
           - name: updated_at
+            tests:
+              - not_null
+          - name: usage_data_id
+            tests:
+              - not_null    
+      - name: current_host_stats
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: created_at
+            tests:
+              - not_null 
+          - name: updated_at
+              - not_null
+          - name: host_id
+              - not_null             
       - name: fortune_companies
-        columns:
-          - name: id
-            tests:
-              - not_null
-          - name: created_at
-            tests:
-              - not_null
-          - name: updated_at
-            tests:
-              - not_null
       - name: hosts
-        columns:
-          - name: id
-            tests:
-              - not_null
-          - name: created_at
-            tests:
-              - not_null
-          - name: updated_at
-            tests:
-              - not_null
-      - name: licenses
         columns:
           - name: id
             tests:
@@ -78,7 +78,6 @@ sources:
           - name: updated_at
             tests:
               - not_null
-      - name: users
       - name: versions
         columns:
           - name: id
@@ -90,3 +89,4 @@ sources:
           - name: updated_at
             tests:
               - not_null
+      - name: users              
