@@ -1,7 +1,7 @@
 WITH issues AS (
   
-  SELECT *
-  FROM "ANALYTICS"."ANALYTICS"."GITLAB_DOTCOM_ISSUES_XF"
+    SELECT *
+    FROM "ANALYTICS"."ANALYTICS"."GITLAB_DOTCOM_ISSUES_XF"
   
 ), users AS (
 
@@ -10,7 +10,7 @@ WITH issues AS (
 
 ), assignee AS (
 
-  SELECT 
+    SELECT 
       assignee.*, 
       user_name AS assignee
     FROM "ANALYTICS"."ANALYTICS_STAGING"."GITLAB_DOTCOM_ISSUE_ASSIGNEES" assignee
