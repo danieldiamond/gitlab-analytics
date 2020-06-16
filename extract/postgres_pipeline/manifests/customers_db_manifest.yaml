@@ -26,7 +26,10 @@ tables:
       , salesforce_account_id
       , billable
       , confirmed_at
-      , confirmation_sent_at
+      , confirmation_sent_at,
+      , first_name
+      , last_name
+      , email
       FROM customers
     export_db: EXPORT_DB
     export_schema: 'customers'
