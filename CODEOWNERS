@@ -89,7 +89,6 @@ __init__.py         @kathleentam   @jjstark
 
 /transform/snowflake-dbt/models/sources/sfdc/       @derekatwood    @kathleentam    @jeanpeguero
 /transform/snowflake-dbt/models/staging/sfdc/       @derekatwood    @kathleentam    @jeanpeguero
-/transform/snowflake-dbt/models/customers/          @eli_kastelein  @mpeychet_		  @m_walker
 /transform/snowflake-dbt/models/gitlab_data_yaml/   @tayloramurphy  @kathleentam	  @jjstark
 /transform/snowflake-dbt/models/gitlab_dotcom/      @eli_kastelein  @mpeychet_		  @m_walker
 /transform/snowflake-dbt/models/greenhouse/         @pluthra        @kathleentam	  @msendal
