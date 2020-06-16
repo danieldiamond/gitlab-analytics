@@ -1029,6 +1029,7 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_l
+            - analyst_xl
 
     - eeastwood:
         member_of:
