@@ -56,19 +56,19 @@ WITH customers AS (
       MAX(plans.plan_is_paid) OVER (
         PARTITION BY user_id
       ),
-    FALSE)  AS highest_paid_subscription_plan_is_paid,
+    FALSE)   AS highest_paid_subscription_plan_is_paid,
 
     COALESCE(
       FIRST_VALUE(ultimate_parent_plan_id) OVER (
-      PARTITION BY user_id
-      ORDER BY
-          (ultimate_parent_plan_id = 'trial'),
-          ultimate_parent_plan_id DESC,
-          membership_source_type_order,
-          is_ultimate_parent DESC,
-          membership_source_type
-      , 34)
-    ) AS highest_paid_subscription_plan_id,
+        PARTITION BY user_id
+        ORDER BY
+            (ultimate_parent_plan_id = 'trial'),
+            ultimate_parent_plan_id DESC,
+            membership_source_type_order,
+            is_ultimate_parent DESC,
+            membership_source_type
+        ) 
+      , 34) AS highest_paid_subscription_plan_id,
 
     FIRST_VALUE(namespace_id) OVER (
       PARTITION BY user_id
@@ -78,7 +78,7 @@ WITH customers AS (
         membership_source_type_order,
         is_ultimate_parent DESC,
         membership_source_type
-    ) AS highest_paid_subscription_namespace_id,
+    )       AS highest_paid_subscription_namespace_id,
 
     FIRST_VALUE(ultimate_parent_id) OVER (
       PARTITION BY user_id
@@ -88,7 +88,7 @@ WITH customers AS (
         membership_source_type_order,
         is_ultimate_parent DESC,
         membership_source_type
-    ) AS highest_paid_subscription_ultimate_parent_id,
+    )       AS highest_paid_subscription_ultimate_parent_id,
 
     FIRST_VALUE(membership_source_type) OVER (
       PARTITION BY user_id
@@ -98,7 +98,7 @@ WITH customers AS (
         membership_source_type_order,
         is_ultimate_parent DESC,
         membership_source_type
-    )  AS highest_paid_subscription_inheritance_source_type,
+    )       AS highest_paid_subscription_inheritance_source_type,
 
     FIRST_VALUE(membership_source_id) OVER (
       PARTITION BY user_id
@@ -108,7 +108,7 @@ WITH customers AS (
         membership_source_type_order,
         is_ultimate_parent DESC,
         membership_source_type
-    )  AS highest_paid_subscription_inheritance_source_id
+    )       AS highest_paid_subscription_inheritance_source_id
 
   FROM memberships
     LEFT JOIN plans
