@@ -28,16 +28,13 @@ WITH issues AS (
 ), intermediate AS (
 
   SELECT 
-    issues.issue_id,
+    issues.issue_title,
     issues.issue_IID,
-    issues.project_id,
     issues.issue_created_at,
     DATE_TRUNC(week,issue_created_at) as issue_created_week,
     issues.issue_closed_at,
     DATE_TRUNC(week,issues.issue_closed_at) as issue_closed_week,
     IFF(issue_closed_at IS NOT NULL,1,0)  AS is_issue_closed,
-    issues.issue_title,
-    issues.issue_description, 
     issues.state,
     agg_assignee.assignee,
     IFF(CONTAINS(ltrim(issue_description), '2. **Sourcer/Recruiter:** I used [Diversity Boolean strings](https://docs.google.com/spreadsheets/d/1Hs3UVEpgYOJgvV8Nlyb0Cl5P6_8IlAlxeLQeXz64d8Y/edit#gid=0) or used other methods, including provided best practices, to ensure 90% of my outbound sourcing efforts were directed towards individuals from underrepresented groups.
@@ -51,7 +48,6 @@ WITH issues AS (
     IFF(CONTAINS(trim(issue_description), '2. **Sourcer/Recruiter:** I used [Diversity Boolean strings](https://docs.google.com/spreadsheets/d/1Hs3UVEpgYOJgvV8Nlyb0Cl5P6_8IlAlxeLQeXz64d8Y/edit#gid=0) or used other methods, including provided best practices, to ensure 90% of my outbound sourcing efforts were directed towards individuals from underrepresented groups.
    * [ ] Yes
    * [x] No'::varchar) = True ,'Did not Use',null) AS did_not_use
-
   FROM issues
   LEFT JOIN agg_assignee 
     ON agg_assignee.issue_id = issues.issue_id
