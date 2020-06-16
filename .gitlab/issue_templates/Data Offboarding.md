@@ -6,6 +6,7 @@
 - [ ] Remove from Stitch
 - [ ] Remove from Fivetran
 - [ ] Remove from Snowflake
+- [ ] Update `roles.yml`
 - [ ] Remove from Calendar
 - [ ] Remove from Slack aliases
 - [ ] Remove from Geekbot
