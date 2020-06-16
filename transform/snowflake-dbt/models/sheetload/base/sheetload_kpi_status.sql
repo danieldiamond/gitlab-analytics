@@ -22,7 +22,7 @@ WITH source AS (
         NULLIF(kpi_number,"")::INT                    AS kpi_number,
         NULLIF(version_number, '')::INT               AS version_number,
         NULLIF(handbook_reference, '')::VARCHAR       AS handbook_reference,
-        NULLIF(kpi_id, '')::int                       AS commit_handbook_v1
+        NULLIF(kpi_id, '')::int                       AS kpi_id
     FROM source
       
 ) 
