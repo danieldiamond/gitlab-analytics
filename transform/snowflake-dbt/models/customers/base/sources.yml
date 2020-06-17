@@ -23,9 +23,42 @@ sources:
           - name: updated_at
             tests:
               - not_null
+      - name: customers_db_eula_requests
+        columns:
+          - name: id
+            tests: 
+              - not_null
+          - name: eula_id
+            tests:
+              - not_null    
+      - name: customers_db_eulas
+        columns:
+          - name: id
+            tests:
+              - not_null
+      - name: customers_db_license_seat_links    
+        columns:
+          - name: zuora_subscription_id
+          - name: order_id
+            tests:
+              - not_null        
+          - name: report_date
+            tests:
+              - not_null          
       - name: customers_db_orders
         columns:
           - name: id
             tests:
               - not_null
       - name: customers_db_trial_histories
+      - name: customers_db_versions
+        columns:
+          - name: id
+            tests:
+              - not_null
+          - name: item_id
+            tests:
+              - not_null    
+          - name: created_at
+            tests:
+              - not_null    

@@ -98,7 +98,7 @@ models:
          - name: account_id
            tests:
               - relationships:
-                    to: ref('sfdc_account')
+                    to: ref('sfdc_account_source')
                     field: account_id
   - name: sfdc_executive_business_review_source
     description: Source model for SFDC Executive Business Reviews

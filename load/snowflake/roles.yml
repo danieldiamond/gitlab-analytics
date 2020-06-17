@@ -426,6 +426,30 @@ roles:
                     - analytics.analytics_sensitive.gitlab_dotcom_namespaces
                     - analytics.analytics_sensitive.gitlab_dotcom_projects
 
+    - read_all:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                    - testing_db
+                    - static
+            schemas:
+                read:
+                    - raw.*
+                    - analytics.*
+                    - testing_db.*
+                    - static.*
+            tables:
+                read:
+                    - raw.*.*
+                    - analytics.*.*
+                    - testing_db.*.*
+                    - static.*.*
+
     - reporter:
         warehouses:
             - reporting
@@ -471,11 +495,13 @@ roles:
         owns:
             schemas:
                 - analytics.analytics
+                - analytics.analytics_clones
                 - analytics.analytics_meta
                 - analytics.analytics_sensitive
                 - analytics.analytics_staging
             tables:
                 - analytics.analytics.*
+                - analytics.analytics_clones.*
                 - analytics.analytics_meta.*
                 - analytics.analytics_sensitive.*
                 - analytics.analytics_staging.*
@@ -568,12 +594,14 @@ roles:
             schemas:
                 read:
                     - analytics.analytics
+                    - analytics.analytics_clones
                     - analytics.analytics_staging
                     - analytics.analytics_meta
                     - raw.dbt
             tables:
                 read:
                     - analytics.analytics.*
+                    - analytics.analytics_clones.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
                     - raw.dbt.*
@@ -915,6 +943,12 @@ roles:
 # ==========================================
 # User Roles
 # ==========================================
+    - aakgun:
+        member_of:
+            - analyst_growth
+        warehouses:
+            - analyst_xs    
+    
     - acarella:
         warehouses:
             - reporting
@@ -939,7 +973,13 @@ roles:
         warehouses:
             - reporting
 
-    - aakgun:
+    - aladhani:
+        member_of:
+            - analyst_growth
+        warehouses:
+            - analyst_xs
+
+    - amihaila:
         member_of:
             - analyst_growth
         warehouses:
@@ -983,11 +1023,13 @@ roles:
             - dtownsend
 
     - eburke:
+        member_of:
+            - read_all                  # gitlab-com/team-member-epics/access-requests#5540
+            - analyst_core
         warehouses:
-            - engineer_xs
-            - engineer_xl
-            - loading
-            - reporting
+            - analyst_xs
+            - analyst_l
+            - analyst_xl
 
     - eeastwood:
         member_of:
@@ -1010,14 +1052,6 @@ roles:
                     - raw.gitter.*
                 write:
                     - raw.gitter.*
-
-    - ekastelein:
-        member_of:
-            - analyst_growth
-        warehouses:
-            - analyst_xs
-            - analyst_l
-            - analyst_xl
 
     - eurie:
         member_of:
@@ -1087,6 +1121,12 @@ roles:
         member_of:
             - analyst_finance
             - bamboohr
+        warehouses:
+            - analyst_xs
+
+    - jng:
+        member_of:
+            - analyst_growth
         warehouses:
             - analyst_xs
 
@@ -1332,6 +1372,12 @@ roles:
 # Users
 # ==========================================
 users:
+
+    - aakgun:
+        can_login: yes
+        member_of:
+            - aakgun
+
     - acarella:
         can_login: yes
         member_of:
@@ -1358,10 +1404,16 @@ users:
             - sysadmin
             - transformer
 
-    - aakgun:
+    - aladhani:
         can_login: yes
         member_of:
-            - aakgun
+            - aladhani
+
+    - amihaila:
+        can_login: yes
+        member_of:
+            - amihaila
+
     - cmccarty:
         can_login: yes
         member_of:
@@ -1396,7 +1448,6 @@ users:
         can_login: yes
         member_of:
             - eburke
-            - engineer
 
     - eeastwood:
         can_login: yes
@@ -1404,9 +1455,8 @@ users:
             - eeastwood
 
     - ekastelein:
-        can_login: yes
-        member_of:
-            - ekastelein
+        can_login: no
+        member_of: []
 
     - eurie:
         can_login: yes 
@@ -1449,6 +1499,11 @@ users:
         can_login: yes
         member_of:
             - iweeks
+
+    - jng:
+        can_login: yes
+        member_of:
+            - jng
 
     - jmahdi:
         can_login: no

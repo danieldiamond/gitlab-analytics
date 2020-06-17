@@ -50,9 +50,26 @@ WITH issues AS (
 
     SELECT *
     FROM {{ref('gitlab_dotcom_gitlab_subscriptions_snapshots_namespace_id_base')}}
-),
 
-joined AS (
+), issue_metrics AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_issue_metrics') }}
+
+), events_weight AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_resource_weight_events_xf') }}
+
+), first_events_weight AS (
+  
+    SELECT
+      issue_id,
+      MIN(created_at) first_weight_set_at
+    FROM events_weight
+    GROUP BY 1
+
+), joined AS (
 
   SELECT
     issues.issue_id,
@@ -144,7 +161,12 @@ joined AS (
       WHEN gitlab_subscriptions.is_trial
         THEN 'trial'
       ELSE COALESCE(gitlab_subscriptions.plan_id, 34)::VARCHAR
-    END AS plan_id_at_issue_creation
+    END AS plan_id_at_issue_creation,
+
+    issue_metrics.first_mentioned_in_commit_at,
+    issue_metrics.first_associated_with_milestone_at,
+    issue_metrics.first_added_to_board_at,
+    first_events_weight.first_weight_set_at
 
   FROM issues
   LEFT JOIN agg_labels
@@ -156,6 +178,10 @@ joined AS (
   LEFT JOIN gitlab_subscriptions
     ON namespace_lineage.ultimate_parent_id = gitlab_subscriptions.namespace_id
     AND issues.created_at BETWEEN gitlab_subscriptions.valid_from AND {{ coalesce_to_infinity("gitlab_subscriptions.valid_to") }}
+  LEFT JOIN issue_metrics
+    ON issues.issue_id = issue_metrics.issue_id
+  LEFT JOIN first_events_weight
+    ON issues.issue_id = first_events_weight.issue_id
 )
 
 SELECT *
