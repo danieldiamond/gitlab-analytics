@@ -210,6 +210,18 @@ models:
       zuora:
         xf:
           schema: analytics
+    
+    marts:  
+      
+      arr:  
+        materialized: table  
+
+      product_kpis:
+        materialized: table 
+
+      exports:
+        materialized: view
+        schema: exports 
 
 
     # Legacy Structure
@@ -231,10 +243,6 @@ models:
     handbook:
         materialized: table
          
-    marts:
-        revenue:
-        base:
-        materialized: table   
          
     netsuite:
       materialized: table
