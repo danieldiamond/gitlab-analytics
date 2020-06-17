@@ -39,7 +39,7 @@ def is_local_test():
 def get_affinity(is_scd):
     if is_scd:
         return scd_affinity
-    if is_local_test:
+    if is_local_test():
         return test_affinity
     return None
 
