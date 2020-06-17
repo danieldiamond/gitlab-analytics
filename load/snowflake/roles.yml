@@ -300,6 +300,7 @@ roles:
             - analyst_people
             - analyst_sales
             - analyst_marketing
+            - customers_db_sensitive
         privileges:
             databases:
                 write:
@@ -568,6 +569,18 @@ roles:
             tables:
                 read:
                     - covid19.public.jhu_covid_19
+
+    - customers_db_sensitive:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.analytics_sensitive
+            tables:
+                read:
+                    - analytics.analytics_sensitive.customers_db_customers_pii
 
     - db_dumps:
         privileges:
@@ -1003,6 +1016,7 @@ roles:
             - analyst_core
             - postgres_pipeline
             - db_dumps
+            - customers_db_sensitive
         warehouses:
             - analyst_xs
     - dknox:
@@ -1121,6 +1135,7 @@ roles:
         member_of:
             - analyst_finance
             - bamboohr
+            - customers_db_sensitive
         warehouses:
             - analyst_xs
 
@@ -1135,6 +1150,7 @@ roles:
             - analyst_marketing
             - netsuite
             - static_sensitive
+            - customers_db_sensitive
         warehouses:
             - analyst_xs
 
@@ -1163,6 +1179,7 @@ roles:
     - kaguilar:
         member_of:
             - analyst_engineering
+            - customers_db_sensitive
         warehouses:
             - analyst_xs
 
@@ -1254,6 +1271,7 @@ roles:
     - pluthra:
         member_of:
             - analyst_people
+            - customers_db_sensitive
         warehouses:
             - analyst_xs
 
