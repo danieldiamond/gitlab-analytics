@@ -1,6 +1,6 @@
 {% docs saas_charges_with_namespace_id %}
 
-This model joins together zuora data source with Customers App data souce and GitLab.com App data source. It allows to map when possible a `charge_id` (zuora) to a `customer_id` (customers) and then to a `namespace_id` (gitlab). 
+This model joins together zuora data source with Customers App data souce and GitLab.com App data source. It allows to map when possible a `charge_id` (zuora) to a `customer_id` (customers) and then to a `namespace_id` (gitlab).
 
 {% enddocs %}
 
@@ -114,7 +114,7 @@ ORDER BY 1 DESC
 
 {% docs zuora_mrr_totals %}
 
-This model unions the base charges and the trueup charges together. For each month we calculate the number of months between the start of the cohort and the current month. This enables the data to be easily filtered in the BI tool so you can look across multiple cohorts and limit the months into the future to the same number. This value should never be less than 0.
+For each month we calculate the number of months between the start of the cohort and the current month. This enables the data to be easily filtered in the BI tool so you can look across multiple cohorts and limit the months into the future to the same number. This value should never be less than 0.
 
 We then aggregate the data into one row per Month for each unique (subscription || product || unit of measurement) combination. At this time, this is the most granular value (even more than subscription) and will be the foundation for calculation retention by product.
 
