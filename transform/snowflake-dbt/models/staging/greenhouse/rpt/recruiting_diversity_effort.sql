@@ -1,19 +1,19 @@
 WITH issues AS (
   
   SELECT *
-  FROM "ANALYTICS"."ANALYTICS"."GITLAB_DOTCOM_ISSUES_XF"
-  
+  FROM {{ ref ('gitlab_dotcom_issues_xf') }}
+  WHERE project_id =16492321 --Recruiting for Open Positions
 ), users AS (
 
     SELECT *
-    FROM "ANALYTICS"."ANALYTICS_SENSITIVE"."GITLAB_DOTCOM_USERS"
+    FROM {{ ref ('gitlab_dotcom_users') }}
 
 ), assignee AS (
 
   SELECT 
       assignee.*, 
       user_name AS assignee
-    FROM "ANALYTICS"."ANALYTICS_STAGING"."GITLAB_DOTCOM_ISSUE_ASSIGNEES" assignee
+    FROM {{ ref ('gitlab_dotcom_issue_assignees') }} assignee
     LEFT JOIN users
       ON assignee.user_id = users.user_id 
 
