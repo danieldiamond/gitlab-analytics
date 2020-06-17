@@ -111,6 +111,11 @@ models:
         materialized: table
         schema: airflow
 
+      customers:
+        schema: customers
+        sensitive:
+          schema: sensitive
+
       dbt:
         materialized: table
         schema: dbt
