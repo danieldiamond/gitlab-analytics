@@ -500,12 +500,14 @@ roles:
                 - analytics.analytics_meta
                 - analytics.analytics_sensitive
                 - analytics.analytics_staging
+                - analytics.analytics_exports
             tables:
                 - analytics.analytics.*
                 - analytics.analytics_clones.*
                 - analytics.analytics_meta.*
                 - analytics.analytics_sensitive.*
                 - analytics.analytics_staging.*
+                - analytics.analytics_exports.*
         privileges:
             databases:
                 read:
@@ -632,6 +634,20 @@ roles:
             tables:
                 read:
                     - analytics.analytics_sensitive.*
+
+    - exports:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.analytics_exports
+            tables:
+                read:
+                    - analytics.analytics_exports.*
 
     - gitlab_data_yaml:
         warehouses:
