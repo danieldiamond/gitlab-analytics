@@ -19,6 +19,7 @@ models:
       - name: zuora_account_id
       - name: salesforce_account_id
       - name: billable
+
   - name: customers_db_eula_requests
     description: This model contains records of EULA requests sent to customers.
     columns:

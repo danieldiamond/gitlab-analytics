@@ -1,0 +1,10 @@
+version: 2
+models:
+  - name: customers_db_customers
+    description: Model for Customers sensitive data
+    columns:
+        - name: customer_id
+          tests:
+              - not_null
+              - unique
+

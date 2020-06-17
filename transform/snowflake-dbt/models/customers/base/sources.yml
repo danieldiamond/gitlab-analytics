@@ -11,26 +11,6 @@ sources:
       schema: false
       identifier: false
 
-    tables:
-      - name: customers_db_customers
-        columns:
-          - name: id
-            tests:
-              - not_null
-          - name: created_at
-            tests:
-              - not_null
-          - name: updated_at
-            tests:
-              - not_null
-      - name: customers_db_eula_requests
-        columns:
-          - name: id
-            tests: 
-              - not_null
-          - name: eula_id
-            tests:
-              - not_null    
       - name: customers_db_eulas
         columns:
           - name: id
