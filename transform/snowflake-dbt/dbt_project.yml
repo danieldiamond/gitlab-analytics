@@ -112,7 +112,7 @@ models:
         schema: airflow
 
       customers:
-        schema: customers_db
+        schema: customers
         sensitive:
           schema: sensitive
 
