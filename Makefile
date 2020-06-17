@@ -1,8 +1,9 @@
 .PHONY: build
 
-WEBSERVER_IMAGE = analytics_airflow_webserver_1
-SCHEDULER_IMAGE = analytics_airflow_scheduler_1
 GIT_BRANCH = $$(git symbolic-ref --short HEAD)
+DOCKER_UP = "export GIT_BRANCH=$(GIT_BRANCH) && docker-compose up"
+DOCKER_DOWN = "export GIT_BRANCH=$(GIT_BRANCH) && docker-compose down"
+DOCKER_RUN = "export GIT_BRANCH=$(GIT_BRANCH) && docker-compose run"
 
 help:
 	@echo "\n \
@@ -31,15 +32,15 @@ help:
 airflow:
 	@if [ "$(GIT_BRANCH)" = "master" ]; then echo "GIT_BRANCH must not be master" && exit 1; fi
 	@echo "Attaching to the Webserver container..."
-	@docker-compose down
-	@export GIT_BRANCH=$(GIT_BRANCH) && docker-compose up -d airflow_webserver
+	@"$(DOCKER_DOWN)"
+	@"$(DOCKER_UP)" -d airflow_webserver
 	@sleep 5
 	@docker-compose exec airflow_scheduler gcloud auth activate-service-account --key-file=/root/gcp_service_creds.json --project=gitlab-analysis
 	@docker-compose exec airflow_webserver bash
 
 cleanup:
 	@echo "Cleaning things up..."
-	@docker-compose down -v
+	@"$(DOCKER_DOWN)" -v
 	@docker system prune -f
 
 data-image:
@@ -52,15 +53,15 @@ dbt-docs:
 
 dbt-image:
 	@echo "Attaching to dbt-image and mounting repo..."
-	@docker-compose run dbt_image bash -c "dbt deps && /bin/bash"
+	@"$(DOCKER_RUN)" dbt_image bash -c "dbt deps && /bin/bash"
 
 init-airflow:
 	@echo "Initializing the Airflow DB..."
-	@docker-compose up -d airflow_db
+	@"$(DOCKER_UP)" -d airflow_db
 	@sleep 5
-	@docker-compose run airflow_scheduler airflow initdb
-	@docker-compose run airflow_scheduler airflow create_user --role Admin -u admin -p admin -e datateam@gitlab.com -f admin -l admin
-	@docker-compose down
+	@"$(DOCKER_RUN)" airflow_scheduler airflow initdb
+	@"$(DOCKER_RUN)" airflow_scheduler airflow create_user --role Admin -u admin -p admin -e datateam@gitlab.com -f admin -l admin
+	@"$(DOCKER_DOWN)"
 
 lint:
 	@echo "Linting the repo..."
