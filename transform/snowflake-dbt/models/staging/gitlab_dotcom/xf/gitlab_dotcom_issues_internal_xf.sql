@@ -43,16 +43,9 @@ WITH issues AS (
 
 ), agg_labels AS (
 
-    SELECT
-      issues.issue_id,
-      ARRAY_AGG(LOWER(masked_label_title)) WITHIN GROUP (ORDER BY masked_label_title ASC) AS labels
-    FROM issues
-    LEFT JOIN label_links
-      ON issues.issue_id = label_links.target_id
-    LEFT JOIN all_labels
-      ON label_links.label_id = all_labels.label_id
-    GROUP BY issues.issue_id
-
+    SELECT *
+    FROM {{ref('gitlab_dotcom_agg_labels')}}
+    
 ), projects AS (
 
     SELECT
