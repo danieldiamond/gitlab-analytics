@@ -52,6 +52,7 @@ if __name__== "__main__":
 
         bq = BigQueryClient()
 
+
         start_date = datetime.date.today()
         end_date = start_date - datetime.timedelta(days=1)
 
