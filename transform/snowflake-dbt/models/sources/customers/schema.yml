@@ -1,13 +1,22 @@
 version: 2
 
 models:
-  - name: customers_db_customers
+  - name: customers_db_customers_source
     description: This model is the data from tap-postgres for the customers table from customers.gitlab.com. The schema of the database is defined in [this ruby code](https://gitlab.com/gitlab-org/customers-gitlab-com/blob/master/db/schema.rb).
     columns:
       - name: customer_id
         tests:
           - not_null
           - unique
+      - name: customer_first_name
+        meta:
+          sensitive: true
+      - name: customer_last_name
+        meta:
+          sensitive: true
+      - name: customer_email
+        meta:
+          sensitive: true
       - name: customer_created_at
         tests:
           - not_null
@@ -19,12 +28,3 @@ models:
       - name: zuora_account_id
       - name: salesforce_account_id
       - name: billable
-      - name: customer_first_name
-          meta:
-            sensitive: true
-      - name: customer_last_name
-          meta:
-            sensitive: true
-      - name: customer_email
-          meta:
-            sensitive: true
