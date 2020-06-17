@@ -1,18 +1,6 @@
 version: 2
 
 models:
-  - name: charges_agg
-    description: "Base table used as a starting point for all charge analyses"
-    columns:
-      - name: charge_id
-        tests:
-          - not_null
-          - unique
-      - name: subscription_id
-        tests:
-          - not_null
-      - name: is_last_segment_version
-        description: "A rate plan charge can have multiple versions within a charge segment, similar to how a subscription can have multiple versions. The is_last_segment_version flag identifies the last version of a rate plan charge that was invoiced to the customer."
 
   - name: dim_accounts
     description: "Dimension table representing each individual account with details of person to bill for the account. Excludes deleted and test accounts"
