@@ -27,7 +27,7 @@ WITH charges_agg AS (
 
 SELECT
   --primary_key
-  {{ dbt_utils.surrogate_key('reporting_month', 'subscription_name_slugify', 'product_category', 'unit_of_measure') }}
+  {{ dbt_utils.surrogate_key('reporting_month', 'subscription_name_slugify', 'product_category') }}
                                AS primary_key,
 
   --date info
@@ -44,6 +44,7 @@ SELECT
   ultimate_parent_account_id,
   ultimate_parent_account_name,
   ultimate_parent_billing_country,
+  ultimate_parent_account_segment,
 
   --subscription info
   subscription_name_slugify,
@@ -54,7 +55,7 @@ SELECT
   delivery,
   service_type,
   charge_type,
-  unit_of_measure,
+  array_agg(unit_of_measure)    AS unit_of_measure,
   array_agg(rate_plan_name)     AS rate_plan_name,
   SUM(mrr)                      AS mrr,
   SUM(arr)                      AS arr,

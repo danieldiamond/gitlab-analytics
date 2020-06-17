@@ -48,6 +48,7 @@ WITH fct_charges AS (
       dim_customers.ultimate_parent_account_id,
       dim_customers.ultimate_parent_account_name,
       dim_customers.ultimate_parent_billing_country,
+      dim_customers.ultimate_parent_account_segment,
 
       --subscription info
       dim_subscriptions.subscription_id,
