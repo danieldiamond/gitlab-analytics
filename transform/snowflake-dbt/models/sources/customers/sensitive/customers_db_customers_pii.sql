@@ -7,7 +7,7 @@ WITH source AS (
 
     SELECT
       customer_id,
-      {{ nohash_sensitive_columns('customers_db_customers', 'customer_email') }}
+      {{ nohash_sensitive_columns('customers_db_customers_source', 'customer_email') }}
     FROM source
 
 )
