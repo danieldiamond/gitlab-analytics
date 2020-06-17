@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "analytics"
-    })
-}}
-
 WITH employee_directory_intermediate AS (
 
    SELECT *

@@ -111,6 +111,10 @@ models:
         materialized: table
         schema: airflow
 
+      bamboohr:
+        materialized: table
+        schema: bamboohr
+
       dbt:
         materialized: table
         schema: dbt
@@ -164,6 +168,12 @@ models:
       schema: staging
       materialized: table
 
+      bamboohr:
+        xf:
+          schema: sensitive
+        rpt:
+          schema: analytics
+
       engineering:
         materialized: table
 
@@ -213,10 +223,7 @@ models:
 
 
     # Legacy Structure
-    bamboohr:
-      schema: sensitive
-      base:
-        materialized: table
+
 
     customers:
       materialized: table
