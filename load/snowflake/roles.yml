@@ -1029,6 +1029,7 @@ roles:
         warehouses:
             - analyst_xs
             - analyst_l
+            - analyst_xl
 
     - eeastwood:
         member_of:
@@ -1051,14 +1052,6 @@ roles:
                     - raw.gitter.*
                 write:
                     - raw.gitter.*
-
-    - ekastelein:
-        member_of:
-            - analyst_growth
-        warehouses:
-            - analyst_xs
-            - analyst_l
-            - analyst_xl
 
     - eurie:
         member_of:
@@ -1462,9 +1455,8 @@ users:
             - eeastwood
 
     - ekastelein:
-        can_login: yes
-        member_of:
-            - ekastelein
+        can_login: no
+        member_of: []
 
     - eurie:
         can_login: yes 

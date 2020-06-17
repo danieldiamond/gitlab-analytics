@@ -92,6 +92,7 @@ WITH source AS (
         renewal_acv__c                 AS renewal_acv,
         renewal_amount__c              AS renewal_amount,
         sql_source__c                  AS sales_qualified_source,
+        sdr_pipeline_contribution__c   AS sdr_pipeline_contribution,
         sales_segmentation_o__c        AS segment,
         solutions_to_be_replaced__c    AS solutions_to_be_replaced,
         amount                         AS total_contract_value,

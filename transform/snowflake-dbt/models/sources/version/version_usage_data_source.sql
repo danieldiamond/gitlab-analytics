@@ -11,11 +11,8 @@ WITH source AS (
     {% if is_incremental() %}
     WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
     {% endif %}
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
-),
-
-renamed AS (
+), renamed AS (
 
     SELECT
         id::INTEGER                                  AS id,
@@ -63,11 +60,14 @@ renamed AS (
         --smau // never not null
         PARSE_JSON(usage_activity_by_stage)          AS usage_activity_by_stage,
         PARSE_JSON(usage_activity_by_stage_monthly)  AS usage_activity_by_stage_monthly,
+        gitaly_clusters::INTEGER                     AS gitaly_clusters,
         gitaly_version::VARCHAR                      AS gitaly_version,
         gitaly_servers::INTEGER                      AS gitaly_servers,
         gitaly_filesystems::VARCHAR                  AS gitaly_filesystems,
         PARSE_JSON(object_store)                     AS object_store,
         dependency_proxy_enabled::BOOLEAN            AS is_dependency_proxy_enabled,
+        recording_ce_finished_at::TIMESTAMP          AS recording_ce_finished_at,
+        recording_ee_finished_at::TIMESTAMP          AS recording_ee_finished_at,
         PARSE_JSON(counts)                           AS stats_used
     FROM source
     WHERE CHECK_JSON(counts) IS NULL

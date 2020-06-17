@@ -4,7 +4,9 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
+
 from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
+from kubernetes_helpers import get_affinity, get_toleration
 from kube_secrets import (
     CI_STATS_DB_HOST,
     CI_STATS_DB_NAME,
@@ -216,6 +218,8 @@ for source_name, config in config_dict.items():
                         **config["env_vars"],
                         "LAST_EXECUTION_DATE": "{{ execution_date }}",
                     },
+                    affinity=get_affinity(False),
+                    tolerations=get_toleration(False),
                     arguments=[incremental_cmd],
                     do_xcom_push=True,
                     xcom_push=True,
@@ -232,6 +236,8 @@ for source_name, config in config_dict.items():
                 name=f"{config['task_name']}-db-incremental",
                 secrets=standard_secrets + config["secrets"],
                 env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                affinity=get_affinity(False),
+                tolerations=get_toleration(False),
                 arguments=[incremental_cmd],
                 do_xcom_push=True,
                 xcom_push=True,
@@ -248,24 +254,6 @@ for source_name, config in config_dict.items():
         "retry_delay": timedelta(minutes=3),
         "start_date": config["start_date"],
     }
-
-    scd_affinity = {
-        "nodeAffinity": {
-            "requiredDuringSchedulingIgnoredDuringExecution": {
-                "nodeSelectorTerms": [
-                    {
-                        "matchExpressions": [
-                            {"key": "pgp", "operator": "In", "values": ["scd"]}
-                        ]
-                    }
-                ]
-            }
-        }
-    }
-
-    scd_tolerations = [
-        {"key": "scd", "operator": "Equal", "value": "true", "effect": "NoSchedule"}
-    ]
 
     if config["dag_name"] == "gitlab_com":
 
@@ -293,6 +281,8 @@ for source_name, config in config_dict.items():
                         pool="gitlab_dbs_pool",
                         secrets=standard_secrets + config["secrets"],
                         env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                        affinity=get_affinity(False),
+                        tolerations=get_toleration(False),
                         arguments=[sync_cmd],
                         do_xcom_push=True,
                         xcom_push=True,
@@ -314,8 +304,8 @@ for source_name, config in config_dict.items():
                         secrets=standard_secrets + config["secrets"],
                         env_vars={**standard_pod_env_vars, **config["env_vars"]},
                         arguments=[scd_cmd],
-                        affinity=scd_affinity,
-                        tolerations=scd_tolerations,
+                        affinity=get_affinity(True),
+                        tolerations=get_toleration(True),
                         do_xcom_push=True,
                         xcom_push=True,
                     )
@@ -337,8 +327,8 @@ for source_name, config in config_dict.items():
                 secrets=standard_secrets + config["secrets"],
                 env_vars={**standard_pod_env_vars, **config["env_vars"]},
                 arguments=[scd_cmd],
-                affinity=scd_affinity,
-                tolerations=scd_tolerations,
+                affinity=get_affinity(True),
+                tolerations=get_toleration(True),
                 task_concurrency=1,
                 do_xcom_push=True,
                 xcom_push=True,
@@ -354,6 +344,8 @@ for source_name, config in config_dict.items():
                 name=f"{config['task_name']}-db-sync",
                 secrets=standard_secrets + config["secrets"],
                 env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                affinity=get_affinity(False),
+                tolerations=get_toleration(False),
                 arguments=[sync_cmd],
                 do_xcom_push=True,
                 task_concurrency=1,
@@ -391,6 +383,8 @@ for source_name, config in config_dict.items():
             name=f"{config['task_name']}-db-validation",
             secrets=standard_secrets + config["secrets"],
             env_vars={**standard_pod_env_vars, **config["env_vars"]},
+            affinity=get_affinity(False),
+            tolerations=get_toleration(False),
             arguments=[validate_cmd],
             dag=validation_dag,
             do_xcom_push=True,

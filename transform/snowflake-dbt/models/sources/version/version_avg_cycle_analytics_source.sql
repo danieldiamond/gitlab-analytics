@@ -3,9 +3,7 @@ WITH source AS (
     SELECT *
     FROM {{ source('version', 'avg_cycle_analytics') }}
 
-),
-
-renamed AS (
+), renamed AS (
 
     SELECT
       id::INTEGER                   AS avg_cycle_analytics_id,
