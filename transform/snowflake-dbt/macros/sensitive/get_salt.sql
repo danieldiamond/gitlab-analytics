@@ -1,0 +1,1 @@
+{% macro get_salt(column_name) %}
