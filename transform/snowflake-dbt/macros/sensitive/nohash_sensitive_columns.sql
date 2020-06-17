@@ -2,7 +2,7 @@
 
     {% set meta_columns = get_meta_columns(source_table, "sensitive") %}
 
-    sha2({{join_key|lower}}) AS {{join_key|lower}}_hash,
+    sha2({{join_key|lower}} || '{{ env_var("salt") }}') AS {{join_key|lower}}_hash,
     
     {% for column in meta_columns %}
     

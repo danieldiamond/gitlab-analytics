@@ -4,7 +4,7 @@
 
     {%- for column in meta_columns %}
     
-    sha2({{column|lower}}) AS {{column|lower}}_hash,
+    sha2({{column|lower}} || '{{ env_var("salt") }}') AS {{column|lower}}_hash,
     
     {% endfor %}
 
