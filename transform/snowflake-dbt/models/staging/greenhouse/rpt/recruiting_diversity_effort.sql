@@ -3,6 +3,7 @@ WITH issues AS (
   SELECT *
   FROM {{ ref ('gitlab_dotcom_issues_xf') }}
   WHERE project_id =16492321 --Recruiting for Open Positions
+
 ), users AS (
 
     SELECT *
@@ -10,7 +11,7 @@ WITH issues AS (
 
 ), assignee AS (
 
-  SELECT 
+    SELECT 
       assignee.*, 
       user_name AS assignee
     FROM {{ ref ('gitlab_dotcom_issue_assignees') }} assignee
