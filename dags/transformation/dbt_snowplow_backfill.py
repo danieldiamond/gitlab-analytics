@@ -14,6 +14,10 @@ from airflow_utils import (
     slack_failed_task,
 )
 from kube_secrets import (
+    SALT,
+    SALT_EMAIL,
+    SALT_IP,
+    SALT_NAME,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_PASSWORD,
     SNOWFLAKE_TRANSFORM_ROLE,
@@ -56,6 +60,10 @@ def generate_dbt_command(vars_dict):
         task_id=f"dbt-snowplow-backfill-{vars_dict['year']}-{vars_dict['month']}",
         name=f"dbt-snowplow-backfill-{vars_dict['year']}-{vars_dict['month']}",
         secrets=[
+            SALT,
+            SALT_EMAIL,
+            SALT_IP,
+            SALT_NAME,
             SNOWFLAKE_ACCOUNT,
             SNOWFLAKE_USER,
             SNOWFLAKE_PASSWORD,
@@ -83,6 +91,10 @@ dbt_snowplow_combined = KubernetesPodOperator(
     name=f"dbt-snowplow-combined",
     trigger_rule="all_success",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
