@@ -26,6 +26,8 @@ WITH zuora_invoice_item AS (
     INNER JOIN zuora_invoice
       ON zuora_invoice_item.invoice_id = zuora_invoice.invoice_id
     WHERE zuora_invoice.status = 'Posted'
+    AND zuora_invoice.is_deleted = FALSE
+    AND zuora_invoice_item.is_deleted = FALSE
 
 )
 
