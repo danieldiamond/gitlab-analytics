@@ -65,8 +65,8 @@ if __name__== "__main__":
         [write_date_json(date, df) for date, df in df_by_date]
 
         snowflake_stage_load_copy_remove(
-                "pmg_reporting_data_2020-06-09.json",
-                "raw.pmg.pmg_load",
-                "raw.pmg.pmg_reporting_date",
+                "pmg_reporting_data_2020-06-17.json",
+                "4741-NEW-DATA-SOURCE-PMG-DATA_RAW.pmg.pmg_load",
+                "4741-NEW-DATA-SOURCE-PMG-DATA_RAW.pmg.reporting_data",
                 snowflake_engine,
         )
