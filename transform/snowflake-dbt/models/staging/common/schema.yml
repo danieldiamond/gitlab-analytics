@@ -1,6 +1,7 @@
 version: 2
 
 models:
+
   - name: dim_accounts
     description: "Dimension table representing each individual account with details of person to bill for the account. Excludes deleted and test accounts"
     columns:
@@ -70,17 +71,10 @@ models:
   - name: fct_charges
     description: "Factual table with all rate plan charges coming from subscriptions or an amendment to a subscription"
     columns:
-      - name: charge_id
-        tests:
-          - not_null
       - name: subscription_id
         tests:
           - not_null
-    tests:
-    - unique:
-        column_name: "concat(charge_id, segment_version_order)"
-        
-
-
-
-
+      - name: charge_id
+        tests:
+          - not_null
+          - unique
