@@ -60,11 +60,13 @@ if __name__== "__main__":
 
         sql_statement = get_pmg_reporting_data_query(start_date, end_date)
         # Groups by date so we can create a file for each day
-        df_by_date = bq.get_dataframe_from_sql(sql_statement).groupby('date')
+        df = bq.get_dataframe_from_sql(sql_statement).groupby('date')
+
+        # df_by_date = bq.get_dataframe_from_sql(sql_statement).groupby('date')
 
         # [write_date_json(date, df) for date, df in df_by_date]
 
-        dataframe_uploader(dataframe=df_by_date[0][1],
+        dataframe_uploader(dataframe=df,
                            engine=snowflake_engine,
                            table_name="reporting_data",
                            schema="raw")
