@@ -20,3 +20,7 @@ sheets:
     owner: '@taylormurphy'
     tabs:
       - test_sheet
+  - name: us_cities_latitude_longitude
+    owner: '@rkohnke'
+    tabs:
+      - us_cities_latitude_longitude

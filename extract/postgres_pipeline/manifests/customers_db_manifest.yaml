@@ -27,11 +27,65 @@ tables:
       , billable
       , confirmed_at
       , confirmation_sent_at
+      , first_name
+      , last_name
+      , email
       FROM customers
     export_db: EXPORT_DB
     export_schema: 'customers'
     export_table: 'customers'
     export_table_primary_key: id
+    advanced_metadata: true
+  eula_requests:
+    import_db: CUSTOMERS_DB
+    import_query: >
+      SELECT id
+      , customer_id
+      , subscription_id
+      , accepted_at
+      , created_at
+      , updated_at
+      , eula_type
+      , subscription_name
+      , eula_id
+      FROM eula_requests
+    export_db: EXPORT_DB  
+    export_schema: 'customers'
+    export_table: 'eula_requests'
+    export_table_primary_key: id
+    advanced_metadata: true
+  eulas:
+    import_db: CUSTOMERS_DB
+    import_query: >
+      SELECT id
+      , name
+      , content
+      , created_at
+      , updated_at
+      FROM eulas
+    export_db: EXPORT_DB
+    export_schema: 'customers'
+    export_table: 'eulas'
+    export_table_primary_key: id
+    advanced_metadata: true
+  license_seat_links:
+    import_db: CUSTOMERS_DB
+    import_query: >
+      SELECT zuora_subscription_id
+      , created_at
+      , updated_at
+      , order_id
+      , active_user_count
+      , max_historical_user_count
+      , license_user_count
+      , report_date
+      , license_starts_on
+      , zuora_subscription_name
+      FROM license_seat_links
+    export_db: EXPORT_DB
+    export_schema: 'customers'
+    export_table: 'license_seat_links'
+    export_table_primary_key: zuora_subscription_id
     advanced_metadata: true
   orders:
     import_db: CUSTOMERS_DB
@@ -59,6 +113,22 @@ tables:
     export_table: 'orders'
     export_table_primary_key: id
     advanced_metadata: true
+  reconciliations:
+    import_db: CUSTOMERS_DB
+    import_query: >
+      SELECT order_id
+      , user_count
+      , reconcile_done_at
+      , created_at
+      , updated_at
+      , error_message
+      , reconcile_on
+      FROM reconciliations
+    export_db: EXPORT_DB
+    export_schema: 'customers'
+    export_table: 'reconciliations'
+    export_table_primary_key: order_id
+    advanced_metadata: true  
   trial_histories:
     import_db: CUSTOMERS_DB
     import_query: >
@@ -76,6 +146,19 @@ tables:
     export_table: 'trial_histories'
     export_table_primary_key: gl_namespace_id
     advanced_metadata: true
+  version_associations:
+    import_db: CUSTOMERS_DB
+    import_query: >
+      SELECT id
+      , version_id
+      , foreign_key_name
+      , foreign_key_id
+      , foreign_type
+      FROM version_associations
+    export_db: EXPORT_DB
+    export_schema: 'customers'
+    export_table: 'version_associations'
+    export_table_primary_key: id  
   versions:
     import_db: CUSTOMERS_DB
     import_query: >
@@ -83,14 +166,16 @@ tables:
       , item_type
       , item_id
       , event
-      , transaction_id
+      , whodunnit
+      , object
       , created_at
+      , transaction_id
+      , object_changes
       FROM versions
     export_db: EXPORT_DB
     export_schema: 'customers'
     export_table: 'versions'
     export_table_primary_key: id
-    advanced_metadata: true
   schema_migrations:
     import_db: CUSTOMERS_DB
     import_query: >

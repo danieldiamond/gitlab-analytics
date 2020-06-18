@@ -20,7 +20,7 @@ from kube_secrets import (
     SNOWFLAKE_LOAD_USER,
     SNOWFLAKE_LOAD_WAREHOUSE,
 )
-
+from kubernetes_helpers import get_affinity, get_toleration
 
 env = os.environ.copy()
 pod_env_vars = {"CI_PROJECT_DIR": "/analytics"}
@@ -69,6 +69,8 @@ qualtrics_operator = KubernetesPodOperator(
             "QUALTRICS_DATA_CENTER": "eu",
         },
     },
+    affinity=get_affinity(False),
+    tolerations=get_toleration(False),
     arguments=[qualtrics_extract_command],
     dag=dag,
 )
