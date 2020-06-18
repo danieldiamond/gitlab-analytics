@@ -17,7 +17,7 @@ help:
 	dbt-image: attaches a shell to the dbt image and mounts the repo for testing. \n \
 	\n \
 	++ Python Related ++ \n \
-	data-image: attaches to a shell in the data-image and mounts the repo for test ing. \n \
+	data-image: attaches to a shell in the data-image and mounts the repo for testing. \n \
 	lint: Runs a linter (Black) over the whole repo. \n \
 	mypy: Runs a type-checker in the extract dir. \n \
 	pylint: Runs the pylint checker over the whole repo. Does not check for code formatting, only errors/warnings. \n \
