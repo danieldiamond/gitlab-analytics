@@ -511,9 +511,18 @@ models:
     description: This tracks the recruiting teams weekly check-ins to understand how they are progressing on their OKR for a diverse team.
     columns:     
     - name: issue_title
+      tests:
+        - not_null
     - name: issue_IID
+      tests:
+        - not_null
+        - unique
     - name: issue_created_at
+      tests:
+        - not_null
     - name: issue_created_week
+      tests:
+        - not_null
     - name: issue_closed_at
     - name: issue_closed_week
     - name: is_issue_closed
