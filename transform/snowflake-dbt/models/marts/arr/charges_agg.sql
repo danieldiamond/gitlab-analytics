@@ -57,6 +57,7 @@ WITH fct_charges AS (
 
       --charge info
       fct_charges.charge_id,
+      fct_charges.product_details_id,
       fct_charges.rate_plan_charge_number,
       fct_charges.rate_plan_charge_segment,
       fct_charges.rate_plan_charge_version,
