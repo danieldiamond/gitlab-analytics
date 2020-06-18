@@ -24,7 +24,6 @@ WITH zuora_product AS (
       -- ids
       zuora_product_rate_plan_charge.product_rate_plan_charge_id                AS product_rate_plan_charge_id,
       zuora_product.product_id                                                  AS product_id,
-      zuora_product_rate_plan.product_rate_plan_id                              AS product_rate_plan_id,
       
       -- fields
       zuora_product_rate_plan.product_rate_plan_name                            AS product_rate_plan_name,
