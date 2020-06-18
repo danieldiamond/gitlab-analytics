@@ -139,6 +139,11 @@ models:
     - name: is_deleted
       tests:
       - not_null
+    - name: kpi_number
+    - name: version_number
+    - name: handbook_reference
+    - name: kpi_id
+      description: This is the id that ties the issue to gitlab_dotcom data.  
 - name: sheetload_linkedin_recruiter
   description: This is the source of linkedin recruiter inmail data for each month by sourcer .
   columns:
