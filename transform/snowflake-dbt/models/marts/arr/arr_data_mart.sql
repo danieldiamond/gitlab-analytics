@@ -2,7 +2,7 @@
 {{ config(materialized='table',
   transient=false)}}
 
-  WITH charges_agg AS (
+WITH charges_agg AS (
 
       SELECT *
       FROM {{ ref('charges_agg') }}
