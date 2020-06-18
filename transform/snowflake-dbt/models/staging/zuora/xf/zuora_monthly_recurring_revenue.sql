@@ -8,6 +8,7 @@ WITH date_table AS (
 
     SELECT *
     FROM {{ ref('zuora_account_source') }}
+    WHERE is_deleted = FALSE
 
 ), zuora_acct_period AS (
 
@@ -18,26 +19,32 @@ WITH date_table AS (
 
     SELECT *
     FROM {{ ref('zuora_contact_source') }}
+    WHERE is_deleted = FALSE
 
 ), zuora_product AS (
 
     SELECT *
     FROM {{ ref('zuora_product_source') }}
+    WHERE is_deleted = FALSE
 
 ), zuora_rp AS (
 
     SELECT *
     FROM {{ ref('zuora_rate_plan_source') }}
+    WHERE is_deleted = FALSE
 
 ), zuora_rpc AS (
 
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge_source') }}
+    WHERE is_deleted = FALSE
 
 ), zuora_subscription AS (
 
     SELECT *
     FROM {{ ref('zuora_subscription_source') }}
+    WHERE is_deleted = FALSE
+      AND exclude_from_analysis IN ('False', '')
 
 ), base_mrr AS (
 
