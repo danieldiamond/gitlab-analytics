@@ -152,6 +152,10 @@ dbt_test_snapshot_models = KubernetesPodOperator(
     name="dbt-test-snapshots",
     trigger_rule="all_done",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,

@@ -213,6 +213,10 @@ dbt_source_freshness = KubernetesPodOperator(
     task_id="dbt-source-freshness",
     name="dbt-source-freshness",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
@@ -243,6 +247,10 @@ dbt_test = KubernetesPodOperator(
     name="dbt-test",
     trigger_rule="all_done",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
