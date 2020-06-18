@@ -113,18 +113,4 @@ models:
     - name: ninetieth_percentile
     - name: percentile_max
     
-  - name: recruiting_diversity_effort
-    description: This tracks the recruiting teams weekly check-ins to understand how they are progressing on their OKR for a diverse team.
-    columns:     
-    - name: issue_title
-    - name: issue_IID
-    - name: issue_created_at
-    - name: issue_created_week
-    - name: issue_closed_at
-    - name: issue_closed_week
-    - name: is_issue_closed
-    - name: state
-    - name: assignee
-    - name: used_diversity_booleanstrings   
-    - name: no_answer
-    - name: did_not_use
+  
