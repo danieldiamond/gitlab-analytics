@@ -112,5 +112,3 @@ models:
     - name: percentile_80th
     - name: ninetieth_percentile
     - name: percentile_max
-    
-  
