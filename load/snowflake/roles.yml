@@ -1284,6 +1284,7 @@ roles:
     - rparker:
         member_of: 
             - analyst_core
+            - accountadmin
         warehouses:
             - analyst_xs
 
