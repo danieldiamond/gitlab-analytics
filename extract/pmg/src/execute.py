@@ -4,6 +4,7 @@ from big_query_client import BigQueryClient
 from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
     snowflake_stage_load_copy_remove,
+    dataframe_uploader
 )
 from os import environ as env
 
@@ -52,7 +53,6 @@ if __name__== "__main__":
 
         bq = BigQueryClient()
 
-
         start_date = datetime.date.today()
         end_date = start_date - datetime.timedelta(days=1)
 
@@ -62,11 +62,17 @@ if __name__== "__main__":
         # Groups by date so we can create a file for each day
         df_by_date = bq.get_dataframe_from_sql(sql_statement).groupby('date')
 
-        [write_date_json(date, df) for date, df in df_by_date]
+        # [write_date_json(date, df) for date, df in df_by_date]
 
-        snowflake_stage_load_copy_remove(
-                "pmg_reporting_data_2020-06-17.json",
-                "pmg.pmg_load",
-                "pmg.reporting_data",
-                snowflake_engine,
-        )
+        dataframe_uploader(dataframe=df_by_date[0][1],
+                           engine=snowflake_engine,
+                           table_name="reporting_data",
+                           schema="raw")
+
+
+        #snowflake_stage_load_copy_remove(
+        #        "pmg_reporting_data_2020-06-17.json",
+        #        "pmg.pmg_load",
+        #        "pmg.reporting_data",
+        #        snowflake_engine,
+        #)
