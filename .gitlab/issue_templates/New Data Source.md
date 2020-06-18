@@ -34,8 +34,15 @@ Sufficient access needs to be granted and verified before we can begin working o
   - [ ] I don't know
 
 **If Yes:**
+- Prioritise giving access to a service account rather than any individual Data Engineer, if uncertain on which account to 
+use contact the Data Engineer assigned below for confirmation.  
 - Where will access be required? 
 - Link to Access Request: <!-- This can be blank to start, will need to be added for prioritization -->
+
+**Data Engineer assigned below to confirm that we have all of the requisite access mentioned above**
+- If using one of our third party API handlers (Stitch/FiveTran) the integration should be confirmed to be up and running 
+before bringing anything onto a milestone 
+- If writing a custom API integration the API endpoints should be confirmed to be active and returning expected data.
 
 ## Data Use / Acceptance Criteria 
 
