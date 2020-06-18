@@ -69,7 +69,7 @@ if __name__== "__main__":
         dataframe_uploader(dataframe=df,
                            engine=snowflake_engine,
                            table_name="reporting_data",
-                           schema="raw")
+                           schema="pmg")
 
 
         #snowflake_stage_load_copy_remove(
