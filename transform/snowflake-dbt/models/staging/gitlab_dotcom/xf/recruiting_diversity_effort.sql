@@ -40,13 +40,13 @@ WITH issues AS (
       agg_assignee.assignee,
       IFF(CONTAINS(issue_description, '2. **Sourcer/Recruiter:** I used [Diversity Boolean strings](https://docs.google.com/spreadsheets/d/1Hs3UVEpgYOJgvV8Nlyb0Cl5P6_8IlAlxeLQeXz64d8Y/edit#gid=0) or used other methods, including provided best practices, to ensure 90% of my outbound sourcing efforts were directed towards individuals from underrepresented groups.
     * [x] Yes
-    * [ ] No'::varchar) = True ,'used diversity strings',null)  AS used_diversity_booleanstrings,
+    * [ ] No'::VARCHAR) = True ,'used diversity strings',null)  AS used_diversity_booleanstrings,
       IFF(CONTAINS(issue_description, '2. **Sourcer/Recruiter:** I used [Diversity Boolean strings](https://docs.google.com/spreadsheets/d/1Hs3UVEpgYOJgvV8Nlyb0Cl5P6_8IlAlxeLQeXz64d8Y/edit#gid=0) or used other methods, including provided best practices, to ensure 90% of my outbound sourcing efforts were directed towards individuals from underrepresented groups.
     * [ ] Yes
-    * [ ] No'::varchar) = True ,'no answer',null)               AS no_answer,
+    * [ ] No'::VARCHAR) = True ,'no answer',null)               AS no_answer,
         IFF(CONTAINS(trim(issue_description), '2. **Sourcer/Recruiter:** I used [Diversity Boolean strings](https://docs.google.com/spreadsheets/d/1Hs3UVEpgYOJgvV8Nlyb0Cl5P6_8IlAlxeLQeXz64d8Y/edit#gid=0) or used other methods, including provided best practices, to ensure 90% of my outbound sourcing efforts were directed towards individuals from underrepresented groups.
     * [ ] Yes
-    * [x] No'::varchar) = True ,'did not use',null)             AS did_not_use
+    * [x] No'::VARCHAR) = True ,'did not use',null)             AS did_not_use
     FROM issues
     LEFT JOIN agg_assignee 
       ON agg_assignee.issue_id = issues.issue_id
