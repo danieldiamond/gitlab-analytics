@@ -2,11 +2,10 @@ WITH source AS (
 
     SELECT *
     FROM {{ source('license', 'add_ons') }}
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
-    SELECT DISTINCT
+    SELECT
       id::INTEGER             AS add_on_id,
       name::VARCHAR           AS add_on_name,
       code::VARCHAR           AS add_on_code,

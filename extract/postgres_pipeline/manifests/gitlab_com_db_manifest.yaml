@@ -5,6 +5,20 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  columns:
+    import_db: GITLAB_DB
+    import_schema: information_schema
+    import_query: >
+      SELECT CONCAT(table_name, '_', column_name, table_schema) AS column_id
+      , table_name
+      , column_name
+      , table_schema
+      , ordinal_position
+      FROM information_schema.columns
+    export_schema: 'gitlab_com'
+    export_table: 'columns'
+    export_table_primary_key: CONCAT(table_name, '_', column_name, table_schema)
+    advanced_metadata: true
   # resource_label_events:
   #   import_db: GITLAB_DB
   #   import_query: >

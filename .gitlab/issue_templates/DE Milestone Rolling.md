@@ -3,7 +3,7 @@
 
 [Handbook Entry](https://about.gitlab.com/handbook/business-ops/data-team/#milestone-planning)
 
-- [ ] Close Current Milestone
+- [ ] Close Current [Milestone](https://gitlab.com/groups/gitlab-data/-/milestones)
 - [ ] Remove `(current)` from closed milestone
 - [ ] Update New Milestone with `(current)` at end of name
 - [ ] Add `missed milestone` label to all issues that are rolling over 

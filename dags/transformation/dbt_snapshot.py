@@ -76,13 +76,6 @@ dbt_snapshot = KubernetesPodOperator(
     dag=dag,
 )
 
-# Set extra args for next DAGS
-default_args["on_failure_callback"] = slack_failed_task
-default_args["params"] = {"slack_channel_override": "#dbt-runs"}
-default_args["retries"] = 0
-default_args["sla"] = timedelta(hours=8)
-default_args["trigger_rule"] = TriggerRule.ALL_DONE
-
 dbt_commit_hash_setter = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
@@ -114,6 +107,7 @@ dbt_snapshot_models_run = KubernetesPodOperator(
     image=DBT_IMAGE,
     task_id="dbt-run-model-snapshots",
     name="dbt-run-model-snapshots",
+    trigger_rule="all_done",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
