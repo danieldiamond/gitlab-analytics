@@ -66,7 +66,7 @@ if __name__== "__main__":
 
         snowflake_stage_load_copy_remove(
                 "pmg_reporting_data_2020-06-17.json",
-                "4741-NEW-DATA-SOURCE-PMG-DATA_RAW.pmg.pmg_load",
-                "4741-NEW-DATA-SOURCE-PMG-DATA_RAW.pmg.reporting_data",
+                "pmg.pmg_load",
+                "pmg.reporting_data",
                 snowflake_engine,
         )
