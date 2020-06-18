@@ -68,6 +68,10 @@ dbt_snapshot = KubernetesPodOperator(
     task_id="dbt-snapshots",
     name="dbt-snapshots",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
