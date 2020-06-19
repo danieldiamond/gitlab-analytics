@@ -59,6 +59,29 @@ models:
           - unique
       - name: is_reporter_license
         description: "Reporter licenses are in the Products with 'Additional Permission Types' in the name."
+    
+  - name: fct_invoice_items
+    description: '{{ doc("fct_invoice_items") }}'
+    columns:
+      - name: charge_id
+        tests:
+          - not_null
+      - name: invoice_item_id
+        tests:
+          - not_null
+          - unique
+      - name: invoice_id
+        tests:
+          - not_null
+      - name: invoice_number
+      - name: invoice_account_id
+      - name: invoice_date
+      - name: service_start_date
+      - name: service_end_date
+      - name: invoice_amount_without_tax
+      - name: invoice_item_charge_amount
+      - name: invoice_item_unit_price
+
 
   - name: fct_invoice_items_agg
     description: "Aggregate fact table with invoice items summarized on charge level"
