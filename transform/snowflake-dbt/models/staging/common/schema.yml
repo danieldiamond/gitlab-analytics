@@ -51,7 +51,7 @@ models:
           - not_null
 
   - name: dim_product_details
-    description: "Product related information for which account is charged."
+    description: "Product related information."
     columns:
       - name: product_id
         tests:
@@ -73,6 +73,28 @@ models:
       - name: effective_start_date
       - name: effective_end_date
       - name: billing_list_price
+    
+  - name: fct_invoice_items
+    description: '{{ doc("fct_invoice_items") }}'
+    columns:
+      - name: charge_id
+        tests:
+          - not_null
+      - name: invoice_item_id
+        tests:
+          - not_null
+          - unique
+      - name: invoice_id
+        tests:
+          - not_null
+      - name: invoice_number
+      - name: invoice_account_id
+      - name: invoice_date
+      - name: service_start_date
+      - name: service_end_date
+      - name: invoice_amount_without_tax
+      - name: invoice_item_charge_amount
+      - name: invoice_item_unit_price
 
   - name: fct_invoice_items_agg
     description: "Aggregate fact table with invoice items summarized on charge level"
