@@ -361,11 +361,15 @@ def main(file_path: str, load_type: str, load_only_table: str = None) -> None:
         table_name = "{import_db}_{export_table}".format(**table_dict).upper()
         raw_query = table_dict["import_query"]
 
+        source_table = table_dict["export_table"]
+        if "import_schema" in table_dict:
+            source_table = table_dict["import_schema"] + "." + source_table
+
         # Check if the schema has changed or the table is new
         schema_changed = check_if_schema_changed(
             raw_query,
             postgres_engine,
-            table_dict["export_table"],
+            source_table,
             table_dict["export_table_primary_key"],
             snowflake_engine,
             table_name,

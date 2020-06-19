@@ -17,6 +17,7 @@ from kube_secrets import (
     SNOWFLAKE_LOAD_USER,
     SNOWFLAKE_LOAD_WAREHOUSE,
 )
+from kubernetes_helpers import get_affinity, get_toleration
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
@@ -57,6 +58,8 @@ engineering_extract = KubernetesPodOperator(
         SNOWFLAKE_LOAD_WAREHOUSE,
         SNOWFLAKE_LOAD_PASSWORD,
     ],
+    affinity=get_affinity(False),
+    tolerations=get_toleration(False),
     env_vars=pod_env_vars,
     arguments=[engineering_extract_cmd],
     dag=dag,
@@ -82,6 +85,8 @@ advisory_database_extract = KubernetesPodOperator(
         SNOWFLAKE_LOAD_WAREHOUSE,
         SNOWFLAKE_LOAD_PASSWORD,
     ],
+    affinity=get_affinity(False),
+    tolerations=get_toleration(False),
     env_vars=pod_env_vars,
     arguments=[advisory_database_extract_cmd],
     dag=dag,

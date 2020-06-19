@@ -28,6 +28,7 @@ from kube_secrets import (
     SNOWFLAKE_TRANSFORM_WAREHOUSE,
     SNOWFLAKE_USER,
 )
+from kubernetes_helpers import get_affinity, get_toleration
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
@@ -95,6 +96,8 @@ for sheet in sheets:
             SNOWFLAKE_LOAD_PASSWORD,
         ],
         env_vars=pod_env_vars,
+        affinity=get_affinity(False),
+        tolerations=get_toleration(False),
         arguments=[container_cmd],
         dag=dag,
     )
@@ -120,6 +123,8 @@ dbt_sheetload = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
+    affinity=get_affinity(False),
+    tolerations=get_toleration(False),
     arguments=[dbt_sheetload_cmd],
     dag=dag,
 )
