@@ -61,7 +61,7 @@ models:
       - name: billing_list_price
         tests:
           - not_null
-      - name: product_rate_plan_charge_id
+      - name: product_details_id
         tests:
           - unique
           - not_null
