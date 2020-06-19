@@ -1284,7 +1284,6 @@ roles:
     - rparker:
         member_of: 
             - analyst_core
-            - accountadmin
         warehouses:
             - analyst_xs
 
@@ -1674,6 +1673,7 @@ users:
         can_login: yes
         member_of:
             - rparker
+            - accountadmin
 
     - sreddy:
         can_login: yes
