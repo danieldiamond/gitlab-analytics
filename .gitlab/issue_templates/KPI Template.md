@@ -1,22 +1,18 @@
 ### New KPI(s) 
 
-## Step 1
+## Step 1 - Overview
+- KPI Owner / DRI: `name`, `slack handle`
+- Link to the KPI definition in the handbook or MR: `link`
+- What is the name of the KPI? `KPI Name`
+- What Quarter do you want to release the KPI? `Go-Live Quarter`
+- [ ] Confirm the KPI been approved by the CEO
 
-- [ ] What is the name(s) of the KPI?
-- [ ] Has the KPI been approved by the CEO?
-- [ ] Does the KPI have a definition?
-- [ ] Does the KPI definition live in the appropriate handbook?
-- [ ] Does the KPI have a plan and target?
+## Step 2 - KPI Parts
+- [ ] What source data is required to create the KPI?
+- [ ] What is the reporting frequency? `Monthly or Quarterly or Annually`
+- [ ] Does the KPI have a target for each reporting frequency specified (e.g. Monthly reports need monthly targets)?
 
-## Step 2
 
-- [ ] [Name of KPI(s)] - [Link to Issue]
-
-## Step 3
-
-- [ ] Do all charts have a plan number associated with it?
-- [ ] Do all charts link to the relevant handbook page?
-
-## Step 4
-
-- [ ] Ensure all metrics above are in a single Finance KPI Periscope dashboard. 
+## Step 3 - Data Visualization
+- Who will help validate the KPI results and visualization? `name`, `slack handle`
+- What existing dashboards does the KPI need to be added to?
