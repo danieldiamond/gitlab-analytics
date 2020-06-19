@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('pmg', 'reporting_data') }}
+    FROM {{ source('pmg', 'paid_digital') }}
 
 ), intermediate AS (
 
