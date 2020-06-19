@@ -54,7 +54,7 @@ if __name__== "__main__":
         bq = BigQueryClient()
 
         start_date = datetime.date.today()
-        end_date = start_date - datetime.timedelta(days=1)
+        end_date = start_date - datetime.timedelta(days=7)
 
         snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
@@ -65,12 +65,6 @@ if __name__== "__main__":
         df_by_date = bq.get_dataframe_from_sql(sql_statement).groupby('date')
 
         [write_date_json(date, df) for date, df in df_by_date]
-
-        #dataframe_uploader(dataframe=df,
-        #                   engine=snowflake_engine,
-        #                   table_name="reporting_data",
-        #                   schema="pmg")
-
 
         snowflake_stage_load_copy_remove(
                 "pmg_reporting_data_2020-06-18.json",
