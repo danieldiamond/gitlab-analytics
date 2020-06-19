@@ -15,6 +15,15 @@
       ]
    },
    {
+      "event_name":"alert_management_detail_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"((\/([0-9A-Za-z_.-])*){2,})?\/alert_management\/(.)*",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
       "event_name":"envrionments_viewed",
       "regexp_where_statements":[
          {
