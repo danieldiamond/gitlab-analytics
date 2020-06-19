@@ -22,7 +22,7 @@ WITH zuora_product AS (
 
     SELECT
       -- ids
-      zuora_product_rate_plan_charge.product_rate_plan_charge_id                AS product_rate_plan_charge_id,
+      zuora_product_rate_plan_charge.product_rate_plan_charge_id                AS product_details_id,
       zuora_product.product_id                                                  AS product_id,
       
       -- fields
