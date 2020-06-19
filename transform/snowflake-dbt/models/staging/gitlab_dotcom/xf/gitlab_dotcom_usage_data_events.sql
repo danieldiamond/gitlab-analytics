@@ -144,6 +144,15 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "incident_labeled_issues",
+    "source_cte_name": "incident_labeled_issues",
+    "user_column_name": "author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "issue_id",
+    "stage_name": "monitor",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "issues",
     "source_table_name": "gitlab_dotcom_issues",
     "user_column_name": "author_id",
@@ -387,6 +396,12 @@ WITH gitlab_subscriptions AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
     WHERE secure_ci_job_type = 'dependency_scanning'
+
+), incident_labeled_issues AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_issues_xf') }}
+    WHERE ARRAY_CONTAINS('incident'::variant, labels)
 
 ), issue_resource_label_events AS (
 
