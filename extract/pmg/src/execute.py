@@ -66,15 +66,15 @@ if __name__== "__main__":
 
         # [write_date_json(date, df) for date, df in df_by_date]
 
-        dataframe_uploader(dataframe=df,
-                           engine=snowflake_engine,
-                           table_name="reporting_data",
-                           schema="pmg")
+        #dataframe_uploader(dataframe=df,
+        #                   engine=snowflake_engine,
+        #                   table_name="reporting_data",
+        #                   schema="pmg")
 
 
-        #snowflake_stage_load_copy_remove(
-        #        "pmg_reporting_data_2020-06-17.json",
-        #        "pmg.pmg_load",
-        #        "pmg.reporting_data",
-        #        snowflake_engine,
-        #)
+        snowflake_stage_load_copy_remove(
+                "pmg_reporting_data_2020-06-18.json",
+                "pmg.pmg_load",
+                "pmg.reporting_data",
+                snowflake_engine,
+        )
