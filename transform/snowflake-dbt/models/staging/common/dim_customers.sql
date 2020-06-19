@@ -14,6 +14,7 @@ WITH sfdc_account AS (
     SELECT
       account_id,
       account_name,
+      account_segment,
       billing_country
     FROM sfdc_account
     WHERE account_id = ultimate_parent_account_id
@@ -42,6 +43,7 @@ SELECT
   sfdc_account.billing_country            AS customer_country,
   ultimate_parent_account.account_id      AS ultimate_parent_account_id,
   ultimate_parent_account.account_name    AS ultimate_parent_account_name,
+  ultimate_parent_account.account_segment AS ultimate_parent_account_segment,
   ultimate_parent_account.billing_country AS ultimate_parent_billing_country,
   sfdc_account.record_type_id             AS record_type_id,
   sfdc_account.gitlab_entity,
@@ -64,7 +66,3 @@ LEFT JOIN ultimate_parent_account
   ON ultimate_parent_account.account_id = sfdc_account.ultimate_parent_account_id
 LEFT OUTER JOIN sfdc_users
   ON sfdc_account.technical_account_manager_id = sfdc_users.id
-
-
-
-
