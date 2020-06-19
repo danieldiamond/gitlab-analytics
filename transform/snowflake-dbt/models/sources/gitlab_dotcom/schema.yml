@@ -1043,7 +1043,7 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: [2, 3, 4, 34]
+              values: [2, 3, 4, 34, 67]
 
   - name: gitlab_dotcom_notes
     description: >-
