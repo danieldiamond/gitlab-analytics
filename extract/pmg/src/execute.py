@@ -70,8 +70,8 @@ if __name__ == "__main__":
     [write_date_json(date, df) for date, df in df_by_date]
 
     snowflake_stage_load_copy_remove(
-        "pmg_reporting_data_2020-06-18.json",
+        "pmg_reporting_data_2020-06-15.json",
         "pmg.pmg_load",
-        "pmg.reporting_data",
+        "pmg.paid_digital",
         snowflake_engine,
     )
