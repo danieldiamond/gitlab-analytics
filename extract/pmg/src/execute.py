@@ -38,7 +38,7 @@ def get_pmg_reporting_data_query(start_date: datetime, end_date: datetime) -> st
         f"  content_type "
         f"FROM "
         f"  `pmg-datawarehouse.gitlab.reporting_data`"
-        f"  WHERE date >= '{end_date}' and date < '{start_date}'"
+        # f"  WHERE date >= '{end_date}' and date < '{start_date}'"
     )
 
 
@@ -67,13 +67,17 @@ if __name__ == "__main__":
     # Groups by date so we can create a file for each day
     df = bq.get_dataframe_from_sql(sql_statement)
 
-    df_by_date = bq.get_dataframe_from_sql(sql_statement).groupby("date")
+    #df = bq.get_dataframe_from_sql(sql_statement)# .groupby("date")
 
-    written_files = [write_date_json(date, df) for date, df in df_by_date]
+    df.to_json("paid_digital_historic_data.json", orient="records", date_format="iso")
 
-    [
-        snowflake_stage_load_copy_remove(
-            file_name, "pmg.pmg_load", "pmg.paid_digital", snowflake_engine,
+    snowflake_stage_load_copy_remove(
+                'paid_digital_historic_data.json', "pmg.pmg_load", "pmg.paid_digital", snowflake_engine,
         )
-        for file_name in written_files
-    ]
+
+
+   #     snowflake_stage_load_copy_remove(
+   #         file_name, "pmg.pmg_load", "pmg.paid_digital", snowflake_engine,
+   #     )
+   #     for file_name in written_files
+   # ]
