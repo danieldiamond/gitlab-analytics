@@ -38,7 +38,7 @@ def get_pmg_reporting_data_query(start_date: datetime, end_date: datetime) -> st
         f"  content_type "
         f"FROM "
         f"  `pmg-datawarehouse.gitlab.reporting_data`"
-        # f"  WHERE date >= '{end_date}' and date < '{start_date}'"
+        f"  WHERE date >= '{end_date}' and date < '{start_date}'"
     )
 
 
@@ -58,26 +58,22 @@ if __name__ == "__main__":
 
     bq = BigQueryClient()
 
-    start_date = datetime.date.today()
-    end_date = start_date - datetime.timedelta(days=7)
+    start_time = config_dict["START_TIME"]
+    end_time = config_dict["END_TIME"]
 
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
-    sql_statement = get_pmg_reporting_data_query(start_date, end_date)
+    sql_statement = get_pmg_reporting_data_query(start_time, end_time)
     # Groups by date so we can create a file for each day
-    df = bq.get_dataframe_from_sql(sql_statement)
+    df = bq.get_dataframe_from_sql(sql_statement).groupby("date")
 
-    #df = bq.get_dataframe_from_sql(sql_statement)# .groupby("date")
+    df_by_date = bq.get_dataframe_from_sql(sql_statement).groupby('date')
 
-    df.to_json("paid_digital_historic_data.json", orient="records", date_format="iso")
+    written_files = [write_date_json(date, df) for date, df in df_by_date]
 
-    snowflake_stage_load_copy_remove(
-                'paid_digital_historic_data.json', "pmg.pmg_load", "pmg.paid_digital", snowflake_engine,
-        )
-
-
-   #     snowflake_stage_load_copy_remove(
-   #         file_name, "pmg.pmg_load", "pmg.paid_digital", snowflake_engine,
-   #     )
-   #     for file_name in written_files
-   # ]
+    [snowflake_stage_load_copy_remove(file_name,
+        "pmg.pmg_load",
+        "pmg.paid_digital",
+        snowflake_engine,
+                                      )
+     for file_name in written_files]

@@ -31,14 +31,16 @@ default_args = {
     "owner": "airflow",
     "retries": 1,
     "retry_delay": timedelta(minutes=1),
-    "sla": timedelta(hours=12),
+    "sla": timedelta(hours=24),
     "sla_miss_callback": slack_failed_task,
-    "start_date": datetime(2019, 1, 1),
+    # PMG only have data from 2020-02, so only makes sense to take data from then.
+    "start_date": datetime(2020, 1, 1),
 }
 
 dag = DAG(
     "pmg_extract", default_args=default_args, schedule_interval="0 */12 * * *"
 )
+
 
 # don't add a newline at the end of this because it gets added to in the K8sPodOperator arguments
 pmg_extract_command = (
@@ -63,6 +65,8 @@ pmg_operator = KubernetesPodOperator(
     ],
     env_vars={
         **pod_env_vars,
+        "START_TIME": "{{ execution_date.isoformat() }}",
+        "END_TIME": "{{ next_execution_date.isoformat() }}",
     },
     arguments=[pmg_extract_command],
     dag=dag,
