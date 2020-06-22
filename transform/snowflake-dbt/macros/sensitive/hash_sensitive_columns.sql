@@ -4,7 +4,7 @@
 
     {%- for column in meta_columns %}
     
-        {{ hash_of_column(column) }}
+    sha2({{column|lower}}) AS {{column|lower}}_hash,
     
     {% endfor %}
 

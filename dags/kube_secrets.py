@@ -168,11 +168,3 @@ QUALTRICS_GROUP_ID = Secret(
 QUALTRICS_POOL_ID = Secret("env", "QUALTRICS_POOL_ID", "airflow", "QUALTRICS_POOL_ID")
 
 QUALTRICS_NPS_ID = Secret("env", "QUALTRICS_NPS_ID", "airflow", "QUALTRICS_NPS_ID")
-
-SALT_NAME = Secret("env", "SALT_NAME", "airflow", "SALT_NAME")
-
-SALT_EMAIL = Secret("env", "SALT_EMAIL", "airflow", "SALT_EMAIL")
-
-SALT_IP = Secret("env", "SALT_IP", "airflow", "SALT_IP")
-
-SALT = Secret("env", "SALT", "airflow", "SALT")

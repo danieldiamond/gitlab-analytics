@@ -29,11 +29,6 @@
       - public
     expire_in: 1 week
     when: always
-  variables:
-    SALT:       "$SALT"
-    SALT_EMAIL: "$SALT_EMAIL"
-    SALT_IP:    "$SALT_IP"
-    SALT_NAME:  "$SALT_NAME"
 
 
 # Common commands anchors

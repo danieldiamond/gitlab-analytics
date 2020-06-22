@@ -15,10 +15,6 @@ from airflow_utils import (
 )
 from kube_secrets import (
     GCP_SERVICE_CREDS,
-    SALT,
-    SALT_EMAIL,
-    SALT_IP,
-    SALT_NAME,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_LOAD_PASSWORD,
     SNOWFLAKE_LOAD_ROLE,
@@ -93,10 +89,6 @@ dbt_run = KubernetesPodOperator(
     task_id="dbt-run",
     name="dbt-run",
     secrets=[
-        SALT,
-        SALT_EMAIL,
-        SALT_IP,
-        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
