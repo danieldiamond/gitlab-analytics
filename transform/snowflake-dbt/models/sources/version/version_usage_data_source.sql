@@ -71,7 +71,8 @@ WITH source AS (
         PARSE_JSON(counts)                           AS stats_used,
         ingress_modsecurity_enabled::boolean         AS is_ingress_modsecurity_enabled,
         PARSE_JSON(topology)                         AS topology,
-        app_server_type::VARCHAR                     AS app_server_type
+        app_server_type::VARCHAR                     AS app_server_type,
+        grafana_link_enabled::BOOLEAN                AS is_grafana_link_enabled
     FROM source
     WHERE CHECK_JSON(counts) IS NULL
 
