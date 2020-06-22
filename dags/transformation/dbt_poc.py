@@ -12,6 +12,10 @@ from airflow_utils import (
     xs_warehouse,
 )
 from kube_secrets import (
+    SALT,
+    SALT_EMAIL,
+    SALT_IP,
+    SALT_NAME,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_PASSWORD,
     SNOWFLAKE_TRANSFORM_ROLE,
@@ -52,6 +56,10 @@ dbt_poc = KubernetesPodOperator(
     task_id="dbt-poc",
     name="dbt-poc",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
