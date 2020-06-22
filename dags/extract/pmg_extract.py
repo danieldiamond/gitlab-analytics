@@ -29,7 +29,7 @@ default_args = {
     "depends_on_past": False,
     "on_failure_callback": slack_failed_task,
     "owner": "airflow",
-    "retries": 1,
+    # "retries": 1,
     "retry_delay": timedelta(minutes=1),
     "sla": timedelta(hours=24),
     "sla_miss_callback": slack_failed_task,
@@ -38,7 +38,7 @@ default_args = {
 }
 
 dag = DAG(
-    "pmg_extract", default_args=default_args, schedule_interval="0 */12 * * *"
+    "pmg_extract", default_args=default_args, schedule_interval="0 23 */1 * *"
 )
 
 
@@ -66,7 +66,7 @@ pmg_operator = KubernetesPodOperator(
     env_vars={
         **pod_env_vars,
         "START_TIME": "{{ execution_date.isoformat() }}",
-        "END_TIME": "{{ next_execution_date.isoformat() }}",
+        "END_TIME": "{{ yesterday_ds }}",
     },
     arguments=[pmg_extract_command],
     dag=dag,
