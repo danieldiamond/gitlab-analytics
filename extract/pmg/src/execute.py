@@ -57,8 +57,8 @@ if __name__ == "__main__":
 
     bq = BigQueryClient()
 
-    start_time = date_parser(config_dict["START_TIME"])
-    end_time = date_parser(config_dict["END_TIME"])
+    start_time = date_parser.parse(config_dict["START_TIME"])
+    end_time = date_parser.parse(config_dict["END_TIME"])
 
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
