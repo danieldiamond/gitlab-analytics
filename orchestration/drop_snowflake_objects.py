@@ -82,7 +82,6 @@ def drop_databases() -> None:
     databases = get_list_of_clones(engine)
 
     for database in databases:
-        continue
         drop_query = f"""DROP DATABASE "{database}";"""
         try:
             connection = engine.connect()
