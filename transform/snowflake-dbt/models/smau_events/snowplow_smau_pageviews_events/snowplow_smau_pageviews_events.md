@@ -58,6 +58,7 @@ This model provides a summary of relevant activation events for Plan Stage comin
 From snowplow database, at the moment we track the following events:
 
 * board_viewed
+* design_viewed
 * epic_list_viewed
 * epic_viewed
 * issue_list_viewed
