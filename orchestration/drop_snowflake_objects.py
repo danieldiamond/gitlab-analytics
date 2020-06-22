@@ -10,7 +10,7 @@ from gitlabdata.orchestration_utils import snowflake_engine_factory
 from sqlalchemy.engine import Engine
 
 
-def get_list_of_dbs_to_keep(yaml_path="../load/snowflake/roles.yml"):
+def get_list_of_dbs_to_keep(yaml_path="analytics/load/snowflake/roles.yml"):
     with open(yaml_path, "r") as yaml_content:
         role_dict = yaml.load(yaml_content, Loader=yaml.FullLoader)
         return [list(db.keys())[0].lower() for db in role_dict["databases"]]
