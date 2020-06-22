@@ -539,9 +539,11 @@ roles:
             schemas:
                 read:
                     - raw.bamboohr
+                    - analytics.bamboohr
             tables:
                 read:
                     - raw.bamboohr.*
+                    - analytics.greenhouse.*
     
     - boneyard:
         warehouses:
