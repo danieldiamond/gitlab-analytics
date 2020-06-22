@@ -50,15 +50,29 @@ models:
         tests:
           - not_null
 
-  - name: dim_products
-    description: "Product related information for which account is charged."
+  - name: dim_product_details
+    description: "Product related information."
     columns:
       - name: product_id
         tests:
           - not_null
-          - unique
       - name: is_reporter_license
         description: "Reporter licenses are in the Products with 'Additional Permission Types' in the name."
+      - name: billing_list_price
+        tests:
+          - not_null
+      - name: product_details_id
+        tests:
+          - unique
+          - not_null
+      - name: product_rate_plan_name
+      - name: product_rate_plan_charge_name
+      - name: product_name
+      - name: product_sku
+      - name: product_category
+      - name: effective_start_date
+      - name: effective_end_date
+      - name: billing_list_price
     
   - name: fct_invoice_items
     description: '{{ doc("fct_invoice_items") }}'
@@ -81,7 +95,6 @@ models:
       - name: invoice_amount_without_tax
       - name: invoice_item_charge_amount
       - name: invoice_item_unit_price
-
 
   - name: fct_invoice_items_agg
     description: "Aggregate fact table with invoice items summarized on charge level"
