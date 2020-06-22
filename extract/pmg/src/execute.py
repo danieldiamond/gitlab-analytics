@@ -12,6 +12,15 @@ from os import environ as env
 config_dict = env.copy()
 
 
+def parse_string_to_timestamp(tstamp: str) -> datetime:
+    """
+    Parses a string from Qualtrics into a datetime using the standard Qualtrics timestamp datetime format.
+    """
+    pmg_timestamp_format = "%Y-%m-%dT%H:%M:%S%z"
+    return datetime.datetime.strptime(tstamp, pmg_timestamp_format)
+
+
+
 def get_pmg_reporting_data_query(start_date: datetime, end_date: datetime) -> str:
     return (
         f"SELECT "
@@ -58,8 +67,8 @@ if __name__ == "__main__":
 
     bq = BigQueryClient()
 
-    start_time = config_dict["START_TIME"]
-    end_time = config_dict["END_TIME"]
+    start_time = parse_string_to_timestamp(config_dict["START_TIME"])
+    end_time = parse_string_to_timestamp(config_dict["END_TIME"])
 
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
