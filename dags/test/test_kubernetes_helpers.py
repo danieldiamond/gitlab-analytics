@@ -1,7 +1,7 @@
 import os
 
 import pytest
-from ..kubernetes_helpers import get_toleration, get_affinity
+from dags.kubernetes_helpers import get_toleration, get_affinity
 
 
 @pytest.fixture(autouse=True)

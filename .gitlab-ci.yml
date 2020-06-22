@@ -140,7 +140,7 @@ python_complexity:
 python_pytest:
   <<: *python_check
   script:
-    - pytest -vv -x --no-print-logs --ignore=extract/postgres_pipeline/ --junitxml=report.xml
+    - python -m pytest -vv -x --no-print-logs --junitxml=report.xml
   artifacts:
       reports:
           junit: ${CI_PROJECT_DIR}/report.xml
