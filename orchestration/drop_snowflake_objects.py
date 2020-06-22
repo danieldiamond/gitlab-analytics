@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 
 import logging
+import yaml
 from os import environ as env
 from typing import List
 
 from fire import Fire
 from gitlabdata.orchestration_utils import snowflake_engine_factory
 from sqlalchemy.engine import Engine
+
+
+def get_list_of_dbs_to_keep(yaml_path="load/snowflake/roles.yml"):
+    with open(yaml_path, "r") as yaml_content:
+        role_dict = yaml.load(yaml_content, Loader=yaml.FullLoader)
+        return [list(db.keys())[0].lower() for db in role_dict["databases"]]
 
 
 def get_list_of_dev_schemas(engine: Engine) -> List[str]:
@@ -44,7 +51,6 @@ def get_list_of_clones(engine: Engine) -> List[str]:
     query = """
     SELECT DATABASE_NAME as database_name
     FROM INFORMATION_SCHEMA.DATABASES
-    WHERE DATABASE_NAME NOT IN ('ANALYTICS', 'RAW', 'TESTING_DB', 'COVID19','STATIC')
     """
 
     try:
@@ -57,7 +63,9 @@ def get_list_of_clones(engine: Engine) -> List[str]:
         connection.close()
         engine.dispose()
 
-    return databases
+    dbs_to_keep = get_list_of_dbs_to_keep()
+
+    return [database for database in databases if database.lower() not in dbs_to_keep]
 
 
 def drop_databases() -> None:
@@ -74,6 +82,7 @@ def drop_databases() -> None:
     databases = get_list_of_clones(engine)
 
     for database in databases:
+        continue
         drop_query = f"""DROP DATABASE "{database}";"""
         try:
             connection = engine.connect()
