@@ -399,7 +399,9 @@ WITH gitlab_subscriptions AS (
 
 ), incident_labeled_issues AS (
 
-    SELECT *
+    SELECT 
+      *,
+      issue_created_at AS created_at
     FROM {{ ref('gitlab_dotcom_issues_xf') }}
     WHERE ARRAY_CONTAINS('incident'::variant, labels)
 
