@@ -7,7 +7,6 @@ from gitlabdata.orchestration_utils import (
     dataframe_uploader,
 )
 from os import environ as env
-from dateutil import parser as date_parser
 
 config_dict = env.copy()
 
@@ -57,8 +56,9 @@ if __name__ == "__main__":
 
     bq = BigQueryClient()
 
-    start_time = date_parser.parse(config_dict["START_TIME"])
-    end_time = date_parser.parse(config_dict["END_TIME"])
+    # Substringing cause their only needed for string operations in the next function
+    start_time = config_dict["START_TIME"][0:10]
+    end_time = config_dict["END_TIME"][0:10]
 
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
