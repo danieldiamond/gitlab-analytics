@@ -59,6 +59,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.sales_qualified_date,
       sfdc_opportunity.sales_segment,
       sfdc_opportunity.sales_type,
+      sfdc_opportunity.sdr_pipeline_contribution,
       sfdc_opportunity.source_buckets,
       sfdc_opportunity.stage_name,
       sfdc_opportunity_stage.is_active                                                             AS stage_is_active,
