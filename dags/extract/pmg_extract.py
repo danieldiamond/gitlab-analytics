@@ -44,9 +44,7 @@ dag = DAG(
 
 # don't add a newline at the end of this because it gets added to in the K8sPodOperator arguments
 pmg_extract_command = (
-    #f"echo $GCP_SERVICE_CREDS"
-    f"{clone_and_setup_extraction_cmd} && pip install google-cloud-bigquery && pip install "
-    f"google-cloud-bigquery-storage && python pmg/src/execute.py"
+    f"{clone_and_setup_extraction_cmd} && python pmg/src/execute.py"
 )
 
 pmg_operator = KubernetesPodOperator(
