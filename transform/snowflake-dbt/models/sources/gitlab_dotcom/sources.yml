@@ -28,6 +28,7 @@ sources:
         identifier: gitlab_db_audit_events
         freshness:
           warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
       - name: board_assignees
         identifier: gitlab_db_board_assignees
       - name: board_labels
@@ -108,6 +109,7 @@ sources:
         identifier: gitlab_db_elasticsearch_indexed_namespaces
         freshness:
           warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
       - name: environments
         identifier: gitlab_db_environments
       - name: epic_issues
@@ -189,7 +191,8 @@ sources:
       - name: project_authorizations
         identifier: gitlab_db_project_authorizations
         freshness:
-          warn_after: {count: 7, period: day}        
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}    
       - name: project_auto_devops
         identifier: gitlab_db_project_auto_devops
       - name: project_features
