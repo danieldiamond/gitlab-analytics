@@ -47,6 +47,10 @@ models:
           - name: invoice_id
             tests:
                 - not_null
+    - name: zuora_product_rate_plan_charge_source
+      description: Source layer for Zuora Product Rate Plan Charges
+    - name: zuora_product_rate_plan_charge_tier_source
+      description: Source layer for Zuora Product Rate Plan Charge Tier
     - name: zuora_product_rate_plan_source
       description: Source layer for Zuora Product Rate Plans for cleaning and renaming
     - name: zuora_product_snapshots_source
@@ -68,12 +72,8 @@ models:
       description: Source layer for Zuora Rate Plan Charges Snapshots for cleaning and renaming
     - name: zuora_rate_plan_charge_source
       description: Source layer for Zuora Rate Plan Charges for cleaning and renaming
-    - name: zuora_refund_snapshots_source
-      description: Source layer for Zuora Refunds Snapshots for cleaning and renaming
-    - name: zuora_refund_source
-      description: Source layer for Zuora Refunds for cleaning and renaming
-    - name: zuora_revenue_schedule_item_snapshots_source
-      description: Source layer for Zuora Revenue Schedule Item Snapshots for cleaning and renaming
+    - name: zuora_rate_plan_charge_tier
+      description: Source layer for Zuora Rate Plan Charge Tier
     - name: zuora_revenue_schedule_item_source
       description: Source layer for Zuora Revenue Schedule Item for cleaning and renaming
       columns:
@@ -86,7 +86,9 @@ models:
           - name: accounting_period_id
             tests:
                - not_null
+    - name: zuora_refund_source
+      description: Source layer for Zuora Refunds for cleaning and renaming
     - name: zuora_subscription_snapshots_source
-      description: Source layer for Zuora Subscriptions Snapshots for cleaning and renaming
+      description: Source layer for Zuora Subscriptions
     - name: zuora_subscription_source
       description: Source layer for Zuora Subscriptions for cleaning and renaming

@@ -19,6 +19,9 @@ sources:
     tables: 
       - name: account
         description: '{{ doc("sfdc_account_source") }}'
+      - name: account_history
+        identifier: accounthistory
+        description: '{{ doc("sfdc_accounthistory_source") }}'
       - name: bizible_attribution_touchpoint
         identifier: bizible2__bizible_attribution_touchpoint__c
         description: '{{ doc("sfdc_bizible_source") }}'
@@ -35,6 +38,9 @@ sources:
         description: '{{ doc("sfdc_campaignmember_source") }}'
       - name: contact         
         description: '{{ doc("sfdc_contact_source") }}'
+      - name: contact_history
+        identifier: contacthistory
+        description: '{{ doc("sfdc_contacthistory_source")}}'
       - name: event
         description: '{{ doc("sfdc_event_source") }}'
       - name: executive_business_review 
@@ -42,6 +48,9 @@ sources:
         description: '{{ doc("sfdc_execbus_source") }}'
       - name: lead         
         description: '{{ doc("sfdc_lead_source") }}'
+      - name: lead_history
+        identifier: leadhistory
+        description: '{{ doc("sfdc_leadhistory_source")}}'
       - name: opportunity_field_history
         identifier: opportunityfieldhistory
         description: '{{ doc("sfdc_oppfieldhistory_source") }}'  
@@ -50,6 +59,9 @@ sources:
         description: '{{ doc("sfdc_oppstage_source") }}'
       - name: opportunity
         description: '{{ doc("sfdc_opp_source") }}'
+      - name: opportunity_history
+        identifier: opportunityhistory
+        description: '{{ doc("sfdc_opphistory_source") }}'
       - name: proof_of_concept
         identifier: proof_of_concept__c     
         description: '{{ doc("sfdc_pov_source") }}'

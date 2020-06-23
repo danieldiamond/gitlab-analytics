@@ -18,7 +18,7 @@ databases:
 
     - testing_db:
         shared: no
-
+    
     - static:
         shared: no
 
@@ -44,8 +44,6 @@ roles:
     - sysadmin:
         warehouses:
             - admin
-        member_of:
-            - static_admin
         privileges:
             databases:
                 read:
@@ -302,7 +300,7 @@ roles:
             - analyst_people
             - analyst_sales
             - analyst_marketing
-            - static_admin
+            - customers_db_sensitive
         privileges:
             databases:
                 write:
@@ -314,7 +312,6 @@ roles:
             - loader
             - transformer
             - snowflake_db
-            - static_admin
         warehouses:
             - airflow_testing_l
             - engineer_xs
@@ -430,6 +427,30 @@ roles:
                     - analytics.analytics_sensitive.gitlab_dotcom_namespaces
                     - analytics.analytics_sensitive.gitlab_dotcom_projects
 
+    - read_all:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - analytics
+                    - snowflake
+                    - testing_db
+                    - static
+            schemas:
+                read:
+                    - raw.*
+                    - analytics.*
+                    - testing_db.*
+                    - static.*
+            tables:
+                read:
+                    - raw.*.*
+                    - analytics.*.*
+                    - testing_db.*.*
+                    - static.*.*
+
     - reporter:
         warehouses:
             - reporting
@@ -475,11 +496,13 @@ roles:
         owns:
             schemas:
                 - analytics.analytics
+                - analytics.analytics_clones
                 - analytics.analytics_meta
                 - analytics.analytics_sensitive
                 - analytics.analytics_staging
             tables:
                 - analytics.analytics.*
+                - analytics.analytics_clones.*
                 - analytics.analytics_meta.*
                 - analytics.analytics_sensitive.*
                 - analytics.analytics_staging.*
@@ -547,6 +570,18 @@ roles:
                 read:
                     - covid19.public.jhu_covid_19
 
+    - customers_db_sensitive:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.analytics_sensitive
+            tables:
+                read:
+                    - analytics.analytics_sensitive.customers_db_customers_pii
+
     - db_dumps:
         privileges:
             databases:
@@ -572,12 +607,14 @@ roles:
             schemas:
                 read:
                     - analytics.analytics
+                    - analytics.analytics_clones
                     - analytics.analytics_staging
                     - analytics.analytics_meta
                     - raw.dbt
             tables:
                 read:
                     - analytics.analytics.*
+                    - analytics.analytics_clones.*
                     - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
                     - raw.dbt.*
@@ -919,6 +956,12 @@ roles:
 # ==========================================
 # User Roles
 # ==========================================
+    - aakgun:
+        member_of:
+            - analyst_growth
+        warehouses:
+            - analyst_xs    
+    
     - acarella:
         warehouses:
             - reporting
@@ -943,7 +986,13 @@ roles:
         warehouses:
             - reporting
 
-    - aakgun:
+    - aladhani:
+        member_of:
+            - analyst_growth
+        warehouses:
+            - analyst_xs
+
+    - amihaila:
         member_of:
             - analyst_growth
         warehouses:
@@ -965,6 +1014,9 @@ roles:
     - datwood:
         member_of:
             - analyst_core
+            - postgres_pipeline
+            - db_dumps
+            - customers_db_sensitive
         warehouses:
             - analyst_xs
     - dknox:
@@ -985,11 +1037,13 @@ roles:
             - dtownsend
 
     - eburke:
+        member_of:
+            - read_all                  # gitlab-com/team-member-epics/access-requests#5540
+            - analyst_core
         warehouses:
-            - engineer_xs
-            - engineer_xl
-            - loading
-            - reporting
+            - analyst_xs
+            - analyst_l
+            - analyst_xl
 
     - eeastwood:
         member_of:
@@ -1012,14 +1066,6 @@ roles:
                     - raw.gitter.*
                 write:
                     - raw.gitter.*
-
-    - ekastelein:
-        member_of:
-            - analyst_growth
-        warehouses:
-            - analyst_xs
-            - analyst_l
-            - analyst_xl
 
     - eurie:
         member_of:
@@ -1065,7 +1111,6 @@ roles:
             - loader
             - reporter
             - transformer
-            - static_admin
         warehouses:
             - loading
             - merge_request_xs
@@ -1090,6 +1135,13 @@ roles:
         member_of:
             - analyst_finance
             - bamboohr
+            - customers_db_sensitive
+        warehouses:
+            - analyst_xs
+
+    - jng:
+        member_of:
+            - analyst_growth
         warehouses:
             - analyst_xs
 
@@ -1097,6 +1149,8 @@ roles:
         member_of:
             - analyst_marketing
             - netsuite
+            - static_sensitive
+            - customers_db_sensitive
         warehouses:
             - analyst_xs
 
@@ -1125,6 +1179,7 @@ roles:
     - kaguilar:
         member_of:
             - analyst_engineering
+            - customers_db_sensitive
         warehouses:
             - analyst_xs
 
@@ -1216,6 +1271,7 @@ roles:
     - pluthra:
         member_of:
             - analyst_people
+            - customers_db_sensitive
         warehouses:
             - analyst_xs
 
@@ -1334,6 +1390,12 @@ roles:
 # Users
 # ==========================================
 users:
+
+    - aakgun:
+        can_login: yes
+        member_of:
+            - aakgun
+
     - acarella:
         can_login: yes
         member_of:
@@ -1360,10 +1422,16 @@ users:
             - sysadmin
             - transformer
 
-    - aakgun:
+    - aladhani:
         can_login: yes
         member_of:
-            - aakgun
+            - aladhani
+
+    - amihaila:
+        can_login: yes
+        member_of:
+            - amihaila
+
     - cmccarty:
         can_login: yes
         member_of:
@@ -1398,7 +1466,6 @@ users:
         can_login: yes
         member_of:
             - eburke
-            - engineer
 
     - eeastwood:
         can_login: yes
@@ -1406,9 +1473,8 @@ users:
             - eeastwood
 
     - ekastelein:
-        can_login: yes
-        member_of:
-            - ekastelein
+        can_login: no
+        member_of: []
 
     - eurie:
         can_login: yes 
@@ -1451,6 +1517,11 @@ users:
         can_login: yes
         member_of:
             - iweeks
+
+    - jng:
+        can_login: yes
+        member_of:
+            - jng
 
     - jmahdi:
         can_login: no
@@ -1602,6 +1673,7 @@ users:
         can_login: yes
         member_of:
             - rparker
+            - accountadmin
 
     - sreddy:
         can_login: yes

@@ -39,8 +39,9 @@ If you are the person who will be using this data and/or the dashboard it depend
 <summary><i>Click to toggle Macros</i></summary>
 
 - [ ] Does this MR utilize [macros](https://docs.getdbt.com/docs/macros)?
-  - [ ] This MR contains new macros. Follow the naming convention (file name matches macro name) and document in the [macro README](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md).
-  - [ ] This MR uses existing macros. Ensure models are referenced under the appropriate macro in the [macro README](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md).
+<details>
+  - [ ] This MR contains new macros. Follow the naming convention (file name matches macro name) and document in the macros.yml file
+</details>
 </details>
 
 #### Incremental Models
