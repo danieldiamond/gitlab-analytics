@@ -14,8 +14,8 @@ WITH source AS (
         startdate                                                           AS start_date,
         enddate                                                             AS end_date,
         status                                                              AS status,
-        case when type like 'Field Event%' then 'Field Event' else type 
-         end                                                                AS type,
+        CASE WHEN type LIKE 'Field Event%' THEN 'Field Event' ELSE type 
+         END                                                                AS type,
 
         --keys
         campaignmemberrecordtypeid                                          AS campaign_member_record_type_id,
