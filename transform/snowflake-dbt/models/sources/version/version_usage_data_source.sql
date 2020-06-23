@@ -30,7 +30,6 @@ WITH source AS (
         created_at::TIMESTAMP                        AS created_at,
         updated_at::TIMESTAMP                        AS updated_at,
         license_id::INTEGER                          AS license_id,
-        stats                                        AS stats_raw,
         mattermost_enabled::BOOLEAN                  AS mattermost_enabled,
         uuid::VARCHAR                                AS uuid,
         edition::VARCHAR                             AS edition,
