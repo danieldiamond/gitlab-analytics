@@ -194,6 +194,7 @@ models:
       greenhouse:
         xf:
           schema: sensitive
+          secure: true
         rpt:
           schema: analytics
 
@@ -234,6 +235,7 @@ models:
     # Legacy Structure
     bamboohr:
       schema: sensitive
+      secure: true
       base:
         materialized: table
 
