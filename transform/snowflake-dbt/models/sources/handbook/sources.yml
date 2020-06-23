@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: handbook
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: handbook
+    loader: Airflow
+    
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    freshness:
+      warn_after: {count: 24, period: hour}
+
+    tables:
+      - name: handbook_merge_requests
+        description: '{{ doc("handbook_merge_requests") }}'
+        loaded_at_field: uploaded_at

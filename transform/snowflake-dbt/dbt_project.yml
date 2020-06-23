@@ -141,6 +141,9 @@ models:
       greenhouse:
         schema: greenhouse
 
+      handbook:
+        schema: handbook
+
       license:
         schema: license_db
 
@@ -195,6 +198,12 @@ models:
         rpt:
           schema: analytics
 
+      handbook:
+        rpt:
+          schema: analytics
+        xf:
+          schema: analytics
+
       license:
         materialized: view
 
@@ -244,10 +253,6 @@ models:
 
     date:
       materialized: table
-
-    handbook:
-        materialized: table
-         
          
     netsuite:
       materialized: table
