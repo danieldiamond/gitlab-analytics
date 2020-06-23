@@ -29,14 +29,14 @@ models:
       - name: salesforce_account_id
       - name: billable
   - name: customers_db_eula_requests_source
-      description: This model contains records of EULA requests sent to customers.
-      columns:
-        - name: eula_request_id
-          tests:
-            - not_null
-        - name: eula_id
-          tests:
-            - not_null
+    description: This model contains records of EULA requests sent to customers.
+    columns:
+      - name: eula_request_id
+        tests:
+          - not_null
+      - name: eula_id
+        tests:
+          - not_null
   - name: customers_db_eulas_source
     description: This model contains details for each available EULA.
     columns:
