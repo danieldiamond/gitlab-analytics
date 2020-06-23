@@ -115,6 +115,7 @@ models:
         schema: customers
         sensitive:
           schema: sensitive
+          secure: true
 
       dbt:
         materialized: table
@@ -152,6 +153,7 @@ models:
         schema: sfdc
         sensitive:
           schema: sensitive
+          secure: true
 
       version:
         tags: ["product"]
