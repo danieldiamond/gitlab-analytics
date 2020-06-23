@@ -6,7 +6,7 @@
 WITH base AS (
 
     SELECT *
-    FROM {{ ref('handbook_merge_requests') }}
+    FROM {{ ref('handbook_merge_requests_source') }}
 
 ), exploded_file_paths AS ( -- explodes the files in the list of diffs
     
