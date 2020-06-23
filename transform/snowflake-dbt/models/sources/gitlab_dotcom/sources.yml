@@ -22,7 +22,7 @@ sources:
         identifier: gitlab_db_approval_merge_request_rules
       - name: approvals
         identifier: gitlab_db_approvals
-      - name: approver_group
+      - name: approver_groups
         identifier: gitlab_db_approver_groups
       - name: audit_events
         identifier: gitlab_db_audit_events
