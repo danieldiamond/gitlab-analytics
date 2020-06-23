@@ -1781,7 +1781,7 @@ warehouses:
         size: x-small
 
     - reporting:
-        size: x-small
+        size: small
 
     - stitch:
         size: x-small
