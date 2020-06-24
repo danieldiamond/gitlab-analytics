@@ -24,3 +24,4 @@ LEFT OUTER JOIN user_role
 ON users.userroleid = user_role.id
 LEFT OUTER JOIN users AS manager 
 ON manager.id = users.managerid
+sfdc_opportunity.partner_team
