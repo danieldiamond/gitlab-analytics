@@ -2,7 +2,7 @@
 
     {% set meta_columns = get_meta_columns(source_table, "sensitive") %}
 
-    sha2({{join_key|lower}}) AS {{join_key|lower}}_hash,
+    {{ hash_of_column(join_key) }}
     
     {% for column in meta_columns %}
     

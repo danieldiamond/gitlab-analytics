@@ -16,7 +16,9 @@ WITH source AS (
       category::VARCHAR                 AS category,
       updatedbyid::VARCHAR              AS updated_by_id,
       updateddate::TIMESTAMP_TZ         AS updated_date,
-      deleted                           AS is_deleted
+      deleted                           AS is_deleted,
+      effectivestartdate                AS effective_start_date,
+      effectiveenddate                  AS effective_end_date
 
     FROM source
 

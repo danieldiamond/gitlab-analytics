@@ -986,6 +986,12 @@ roles:
         warehouses:
             - reporting
 
+    - ahoffbauer:
+        member_of:
+            - analyst_people
+        warehouses:
+            - analyst_xs
+
     - aladhani:
         member_of:
             - analyst_growth
@@ -1422,6 +1428,11 @@ users:
             - sysadmin
             - transformer
 
+    - ahoffbauer:
+        can_login: yes
+        member_of:
+            - ahoffbauer
+
     - aladhani:
         can_login: yes
         member_of:
@@ -1770,7 +1781,7 @@ warehouses:
         size: x-small
 
     - reporting:
-        size: x-small
+        size: small
 
     - stitch:
         size: x-small
