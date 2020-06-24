@@ -8,3 +8,4 @@ with base as (
 
 SELECT *
 FROM base
+team__c                         AS partner_team
