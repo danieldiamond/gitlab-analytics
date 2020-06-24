@@ -8,14 +8,13 @@ WITH source AS (
 ), renamed AS(
 
     SELECT
-        id                                                                 AS campaign_id,
+        id                                                                  AS campaign_id,
         name                                                                AS campaign_name,
         isactive                                                            AS is_active,
         startdate                                                           AS start_date,
         enddate                                                             AS end_date,
         status                                                              AS status,
-        CASE WHEN type LIKE 'Field Event%' THEN 'Field Event' ELSE type 
-         END                                                                AS type,
+        IFF(type LIKE 'Field Event%', 'Field Event', type)                  AS type,
 
         --keys
         campaignmemberrecordtypeid                                          AS campaign_member_record_type_id,
