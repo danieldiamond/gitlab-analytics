@@ -23,6 +23,21 @@ tables:
   #   export_schema: 'gitlab_com'
   #   export_table: 'resource_label_events'
   #   export_table_primary_key: id
+
+  terraform_states:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , created_at
+      , updated_at
+      , file_store
+      FROM terraform_states
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'terraform_states'
+    export_table_primary_key: id
   epics:
     import_db: GITLAB_DB
     import_query: >
@@ -1693,21 +1708,6 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'services'
-    export_table_primary_key: id
-  terraform_states:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , project_id
-      , created_at
-      , updated_at
-      , file_store
-      --TODO
-      FROM terraform_states
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'terraform_states'
     export_table_primary_key: id
   timelogs:
     import_db: GITLAB_DB
