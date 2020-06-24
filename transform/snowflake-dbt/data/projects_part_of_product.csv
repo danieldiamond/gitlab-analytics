@@ -195,3 +195,8 @@ gitlab-org/quality/testcases,11229385
 gitlab-org/quality/insights-config,11880131
 gitlab-org/cluster-integration/test-utils/k3s-gitlab-ci,12450931
 gitlab-com/gl-infra/gitlab-gcp-janitor,13613417
+gitlab-org/gitlab-design,443787
+gitlab-org/gitlab-services/design.gitlab.com,4456656
+gitlab-org/gitlab-svgs,4149988
+gitlab-org/csslab,4382108
+gitlab-org/gitlab-development-kit,74823
