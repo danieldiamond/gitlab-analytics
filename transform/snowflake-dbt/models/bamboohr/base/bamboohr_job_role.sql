@@ -10,7 +10,7 @@ WITH source AS (
           d.value['id']::BIGINT                                           AS employee_id,
           d.value['firstName']::VARCHAR                                   AS first_name,
           d.value['lastName']::VARCHAR                                    AS last_name,
-          NULLIF(d.value['hireDate']::VARCHAR,'0000-00-00')::DATE         AS hire_date,
+          IFF(d.value['hireDate']='',null,d.value['hireDate']::VARCHAR)   AS hire_date,
           d.value['customRole']::VARCHAR                                  AS job_role,
           d.value['customJobGrade']::VARCHAR                              AS job_grade,
           d.value['customCostCenter']::VARCHAR                            AS cost_center,

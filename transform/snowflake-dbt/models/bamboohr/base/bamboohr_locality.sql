@@ -17,7 +17,7 @@ WITH source AS (
       d.value['id']::BIGINT                                           AS employee_id,
       d.value['firstName']::VARCHAR                                   AS first_name,
       d.value['lastName']::VARCHAR                                    AS last_name,      
-      NULLIF(d.value['hireDate']::VARCHAR,'0000-00-00')::DATE         AS hire_date,
+      IFF(d.value['hireDate']='',null,d.value['hireDate']::VARCHAR)   AS hire_date,
       d.value['customLocality']::VARCHAR                              AS locality,
       DATE_TRUNC(day, uploaded_at)                                    AS updated_at
     FROM source,
