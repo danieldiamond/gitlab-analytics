@@ -1,7 +1,7 @@
 WITH base_accounts AS (
 
     SELECT *
-    FROM {{ ref('netsuite_accounts') }}
+    FROM {{ ref('netsuite_accounts_source') }}
     WHERE account_number IS NOT NULL
 
 ), ultimate_account AS (
