@@ -115,6 +115,7 @@ models:
         schema: customers
         sensitive:
           schema: sensitive
+          secure: true
 
       dbt:
         materialized: table
@@ -152,6 +153,7 @@ models:
         schema: sfdc
         sensitive:
           schema: sensitive
+          secure: true
 
       version:
         tags: ["product"]
@@ -192,6 +194,7 @@ models:
       greenhouse:
         xf:
           schema: sensitive
+          secure: true
         rpt:
           schema: analytics
 
@@ -232,6 +235,7 @@ models:
     # Legacy Structure
     bamboohr:
       schema: sensitive
+      secure: true
       base:
         materialized: table
 
