@@ -6,15 +6,15 @@ WITH source AS (
 ), intermediate AS (
 
     SELECT 
-          NULLIF(d.value['employeeNumber'],'')::BIGINT                    AS employee_number,
-          d.value['id']::BIGINT                                           AS employee_id,
-          d.value['firstName']::VARCHAR                                   AS first_name,
-          d.value['lastName']::VARCHAR                                    AS last_name,
-          IFF(d.value['hireDate']='',null,d.value['hireDate']::VARCHAR)   AS hire_date,
-          d.value['customRole']::VARCHAR                                  AS job_role,
-          d.value['customJobGrade']::VARCHAR                              AS job_grade,
-          d.value['customCostCenter']::VARCHAR                            AS cost_center,
-          uploaded_at::DATETIME                                           AS effective_date
+      NULLIF(d.value['employeeNumber'],'')::BIGINT                    AS employee_number,
+      d.value['id']::BIGINT                                           AS employee_id,
+      d.value['firstName']::VARCHAR                                   AS first_name,
+      d.value['lastName']::VARCHAR                                    AS last_name,
+      IFF(d.value['hireDate']='',null,d.value['hireDate']::VARCHAR)   AS hire_date,
+      d.value['customRole']::VARCHAR                                  AS job_role,
+      d.value['customJobGrade']::VARCHAR                              AS job_grade,
+      d.value['customCostCenter']::VARCHAR                            AS cost_center,
+      uploaded_at::DATETIME                                           AS effective_date
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), OUTER => true) d
     QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade, cost_center 
