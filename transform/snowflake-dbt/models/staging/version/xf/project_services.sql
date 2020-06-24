@@ -8,7 +8,6 @@ WITH usage_data_unpacked_intermediate AS (
     SELECT
       id,
       version,
-      created_at,
       license_id,
       uuid,
       edition,      
