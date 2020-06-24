@@ -117,20 +117,6 @@ tables:
     export_table: 'alert_management_alert_assignees'
     export_table_primary_key: id
 
-  alert_management_alert_user_mentions:
-    import_db: GITLAB_DB
-    import_query: >
-        SELECT id
-        , alert_management_alert_id
-        , note_id
-        , mentioned_users_ids
-        , mentioned_projects_ids
-        , mentioned_groups_ids
-        FROM alert_management_alert_user_mentions
-    export_schema: 'gitlab_dotcom'
-    export_table: 'alert_management_alert_user_mentions'
-    export_table_primary_key: id
-
   alert_management_alerts:
     import_db: GITLAB_DB
     import_query: >
