@@ -7,7 +7,7 @@ WITH source AS (
 
     SELECT d.value as data_by_row, uploaded_at
     FROM source,
-    LATERAL FLATTEN(INPUT => parse_json(jsontext), outer => true) d
+    LATERAL FLATTEN(INPUT => PARSE_JSON(jsontext), outer => true) d
 
 ), parsed AS (
     SELECT
