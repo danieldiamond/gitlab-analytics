@@ -24,11 +24,6 @@ WITH source AS (
       data_by_row['reportsTo']::VARCHAR      AS reports_to
     FROM intermediate
 
-), job_role AS (
-
-    SELECT * 
-    FROM {{ ref('bamboohr_job_role') }}
-
 ), sheetload_job_roles AS (
 
     SELECT *
@@ -62,10 +57,7 @@ WITH source AS (
 
 SELECT 
   final.*,
-  IFF(final.effective_date< '2020-02-28', sheetload_job_roles.job_role, job_role.job_role) AS job_role
+  sheetload_job_roles.job_role --- This will only appear for records prior to 2020-02-28 -- after this data populates in bamboohr_job_role
 FROM final
 LEFT JOIN sheetload_job_roles
   ON sheetload_job_roles.job_title = final.job_title
-LEFT JOIN job_role
-  ON job_role.employee_id = final.employee_id
-  AND final.effective_date BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_Date, {{max_date_in_bamboo_analyses()}})

@@ -32,7 +32,10 @@ WITH source AS (
       job_role,
       job_grade,
       cost_center,
-      DATE_TRUNC(day, effective_date)                                                   AS effective_date,
+      jobtitle_speciality,
+      gitlab_username,
+      sales_geo_differential,
+      DATE_TRUNC(day, effective_date)                                                    AS effective_date,
       LEAD(DATEADD(day,-1,DATE_TRUNC(day, intermediate.effective_date))) OVER 
         (PARTITION BY employee_number ORDER BY intermediate.effective_date)              AS next_effective_date
     FROM intermediate 
