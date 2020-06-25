@@ -26,13 +26,14 @@ WITH source AS (
       planned_iacv_ent_us_east::INT         AS planned_iacv_ent_us_east,
       planned_iacv_mm::INT                  AS planned_iacv_mm,
       planned_iacv_smb::INT                 AS planned_iacv_sbm,
-      planned_pio_ent_apac::INT            AS planned_pio_ent_apac,
-      planned_pio_ent_emea::INT            AS planned_pio_ent_emea,
-      planned_pio_ent_pubsec::INT          AS planned_pio_ent_pubsec,
-      planned_pio_ent_us_west::INT         AS planned_pio_ent_us_west,
-      planned_pio_ent_us_east::INT         AS planned_pio_ent_us_east,
-      planned_pio_mm::INT                  AS planned_pio_mm,
-      planned_pio_smb::INT                 AS planned_pio_sbm
+      planned_pio_ent_apac::INT             AS planned_pio_ent_apac,
+      planned_pio_ent_emea::INT             AS planned_pio_ent_emea,
+      planned_pio_ent_pubsec::INT           AS planned_pio_ent_pubsec,
+      planned_pio_ent_us_west::INT          AS planned_pio_ent_us_west,
+      planned_pio_ent_us_east::INT          AS planned_pio_ent_us_east,
+      planned_pio_mm::INT                   AS planned_pio_mm,
+      planned_pio_smb::INT                  AS planned_pio_sbm
+
     FROM source
 
 )
