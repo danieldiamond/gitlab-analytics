@@ -116,7 +116,7 @@ models:
       - name: id
           - not_null
       - name: valid_from
-          - not_null
+          - not_null      
   - name: sfdc_opportunity_snapshots_base
     description: This is the base model for snapshots of the salesforce opportunity table for 2019-10-01 and forward.
     columns:
@@ -125,20 +125,6 @@ models:
           - not_null
           - unique
       - name: opportunity_snapshot_id
-        tests:
-          - not_null
-      - name: id
-          - not_null
-      - name: valid_from
-          - not_null
-  - name: sfdc_user_snapshots_base
-    description: This is the base model for snapshots of the salesforce user table for 2019-10-01 and forward.
-    columns:
-      - name: unique_key
-        tests:
-          - not_null
-          - unique
-      - name: user_snapshot_id
         tests:
           - not_null
       - name: id

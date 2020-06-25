@@ -242,6 +242,8 @@ models:
           tests:
               - not_null
               - unique
+  - name: sfdc_users_snapshots_source
+    description: Source model for SFDC Users Snapshots
   - name: sfdc_users_source
     description: Source model for SFDC Users
     columns:

@@ -101,3 +101,20 @@ sources:
         description: '{{ doc("sfdc_opp_arch_source") }}'
       - name: sfdc_users_archived
         description: '{{ doc("sfdc_users_arch_source") }}'
+
+  - name: snapshots
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: snapshots
+    loader: dbt
+    loaded_at_field: dbt_updated_at
+
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    tables:
+      - name: sfdc_account_snapshots
+      - name: sfdc_users_snapshots
+
+
