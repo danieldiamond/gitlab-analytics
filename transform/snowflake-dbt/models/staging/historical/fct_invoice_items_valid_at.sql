@@ -1,12 +1,15 @@
 WITH zuora_invoice_item AS (
 
     SELECT *
-    FROM {{ ref('zuora_invoice_item_source') }}
+    FROM {{ ref('zuora_invoice_item_snapshots_source') }}
 
 ), zuora_invoice AS (
 
     SELECT *
-    FROM {{ ref('zuora_invoice_source') }}
+    FROM {{ ref('zuora_invoice_snapshots_source') }}
+    WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
+     AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, CURRENT_TIMESTAMP())
+
 
 ), invoice_charges AS (
 

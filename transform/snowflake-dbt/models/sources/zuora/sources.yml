@@ -77,6 +77,9 @@ sources:
       - name: zuora_contact_snapshots
       - name: zuora_invoice_snapshots
       - name: zuora_invoiceitem_snapshots
+      - name: zuora_product_rate_plan_charge_snapshots
+      - name: zuora_product_rate_plan_charge_tier_snapshots
+      - name: zuora_product_rate_plan_snapshots
       - name: zuora_product_snapshots
       - name: zuora_rateplan_snapshots
       - name: zuora_rateplancharge_snapshots

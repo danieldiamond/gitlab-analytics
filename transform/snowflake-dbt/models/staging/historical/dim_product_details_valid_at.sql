@@ -1,22 +1,34 @@
 WITH zuora_product AS (
 
     SELECT *
-    FROM {{ ref('zuora_product_source') }}
+    FROM {{ ref('zuora_product_snapshots_source') }}
+    WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
+      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, CURRENT_TIMESTAMP())
+
 
 ), zuora_product_rate_plan AS (
     
     SELECT *
-    FROM {{ ref('zuora_product_rate_plan_source') }}
+    FROM {{ ref('zuora_product_rate_plan_snapshots_source') }}
+    WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
+      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, CURRENT_TIMESTAMP())
+
 
 ), zuora_product_rate_plan_charge AS (
 
     SELECT *
-    FROM {{ ref('zuora_product_rate_plan_charge_source') }}
+    FROM {{ ref('zuora_product_rate_plan_charge_snapshots_source') }}
+    WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
+      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, CURRENT_TIMESTAMP())
+
 
 ), zuora_product_rate_plan_charge_tier AS (
 
     SELECT *
-    FROM {{ ref('zuora_product_rate_plan_charge_tier_source') }}
+    FROM {{ ref('zuora_product_rate_plan_charge_tier_snapshots_source') }}
+    WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
+      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, CURRENT_TIMESTAMP())
+
     
 ), joined AS (
 
