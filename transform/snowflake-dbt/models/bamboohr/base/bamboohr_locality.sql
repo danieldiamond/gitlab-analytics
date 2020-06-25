@@ -20,7 +20,7 @@ WITH source AS (
       d.value['customLocality']::VARCHAR                              AS locality,
       DATE_TRUNC(day, uploaded_at)                                    AS updated_at
     FROM source,
-    LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), outer => true) d
+    LATERAL FLATTEN(INPUT => PARSE_JSON(jsontext['employees']), outer => true) d
 
 )
  

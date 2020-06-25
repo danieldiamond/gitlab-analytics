@@ -20,7 +20,7 @@ WITH source AS (
       d.value['customCostCenter']::VARCHAR                            AS cost_center,
       uploaded_at::DATETIME                                           AS effective_date
     FROM source,
-    LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), OUTER => true) d
+    LATERAL FLATTEN(INPUT => PARSE_JSON(jsontext['employees']), OUTER => true) d
     QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade, cost_center 
             ORDER BY DATE_TRUNC(day,effective_date) ASC, DATE_TRUNC(hour, effective_date) DESC)=1  
 
