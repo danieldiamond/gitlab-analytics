@@ -3,8 +3,16 @@
     {% set meta_columns = get_meta_columns(source_table, "sensitive") %}
 
     {%- for column in meta_columns %}
+
+        {%- if config.get("materialized") == "view" -%}
+
+            {{ hash_of_column_in_view(column) }}
+
+        {%- else -%}
     
-        {{ hash_of_column(column) }}
+            {{ hash_of_column(column) }}
+
+        {% endif %}
     
     {% endfor %}
 
