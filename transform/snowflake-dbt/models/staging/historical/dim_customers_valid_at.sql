@@ -4,14 +4,14 @@ WITH sfdc_account AS (
     FROM {{ ref('sfdc_account_snapshots_source') }}
     WHERE account_id IS NOT NULL
     AND '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, CURRENT_TIMESTAMP())
+      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, {{ var('the_distant_future') }})
 
 ), sfdc_users AS (
 
     SELECT *
     FROM {{ ref('sfdc_users_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, CURRENT_TIMESTAMP())
+      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, {{ var('the_distant_future') }})
 
 ), ultimate_parent_account AS (
 

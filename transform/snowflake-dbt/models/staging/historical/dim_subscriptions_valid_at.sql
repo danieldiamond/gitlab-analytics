@@ -2,7 +2,7 @@ WITH zuora_subscription AS (
   SELECT *
   FROM {{ ref('zuora_subscription_snaphots_source') }}
   WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-    AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, CURRENT_TIMESTAMP())
+    AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, {{ var('the_distant_future') }})
 
 ), zuora_account AS (
 
@@ -11,7 +11,7 @@ WITH zuora_subscription AS (
     crm_id
   FROM {{ ref('zuora_account_snapshots_source') }}
   WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-    AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, CURRENT_TIMESTAMP())
+    AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, {{ var('the_distant_future') }})
 
 )
 
