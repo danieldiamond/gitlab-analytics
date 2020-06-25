@@ -1,7 +1,7 @@
 WITH base_departments AS (
 
     SELECT *
-    FROM {{ ref('netsuite_departments') }}
+    FROM {{ ref('netsuite_departments_source') }}
 
 ), parent_department AS (
 

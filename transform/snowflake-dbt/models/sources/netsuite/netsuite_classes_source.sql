@@ -12,10 +12,10 @@ WITH source AS (
       --Info
       name::VARCHAR                AS class_name,
       full_name::VARCHAR           AS class_full_name,
-      isinactive::BOOLEAN          AS is_inactive
+      isinactive::BOOLEAN          AS is_inactive,
+      _fivetran_deleted::BOOLEAN   AS is_fivetran_deleted
 
     FROM source
-    WHERE _fivetran_deleted = FALSE
 
 )
 

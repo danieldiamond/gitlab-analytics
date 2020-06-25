@@ -15,10 +15,11 @@ WITH source AS (
       symbol::VARCHAR                AS currency_symbol,
 
       --Meta
-      is_inactive::BOOLEAN           AS is_currency_inactive
+      is_inactive::BOOLEAN           AS is_currency_inactive,
+      _fivetran_deleted::BOOLEAN     AS is_fivetran_deleted
+
 
     FROM source
-    WHERE LOWER(_fivetran_deleted) = 'false'
 
 )
 

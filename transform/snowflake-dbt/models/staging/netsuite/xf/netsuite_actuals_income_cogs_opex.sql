@@ -6,7 +6,7 @@ WITH actuals_cogs_opex AS (
 ), actuals_income AS (
 
      SELECT *
-     FROM {{ref('netsuite_actuals_income_source')}}
+     FROM {{ref('netsuite_actuals_income')}}
 
 ), combined AS (
 

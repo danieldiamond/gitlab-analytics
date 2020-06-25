@@ -23,10 +23,10 @@ WITH source AS (
 
       --deposit_balance_foreign
       openbalance::FLOAT                 AS customer_balance,
-      days_overdue::FLOAT                AS days_overdue
+      days_overdue::FLOAT                AS days_overdue,
+      is_fivetran_deleted                AS is_fivetran_deleted
 
     FROM source
-    WHERE LOWER(_fivetran_deleted) = 'false'
 
 )
 

@@ -11,10 +11,10 @@ WITH source AS (
 
       --Info
       name::VARCHAR                AS entity_name,
-      full_name::VARCHAR           AS entity_full_name
+      full_name::VARCHAR           AS entity_full_name,
+      _fivetran_deleted::BOOLEAN   As is_fivetran_deleted
 
     FROM source
-    WHERE LOWER(_fivetran_deleted) = 'false'
 
 )
 

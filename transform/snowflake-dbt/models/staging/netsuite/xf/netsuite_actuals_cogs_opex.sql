@@ -1,3 +1,8 @@
+config{{
+    "schema" : "analytics_staging"
+}}
+
+
 WITH transactions AS (
 
      SELECT *
@@ -11,7 +16,7 @@ WITH transactions AS (
 ), accounting_periods AS (
 
      SELECT *
-     FROM {{ref('netsuite_accounting_periods_source')}}
+     FROM {{ref('netsuite_accounting_periods')}}
 
 ), accounts AS (
 
@@ -21,7 +26,7 @@ WITH transactions AS (
 ), classes AS (
 
      SELECT *
-     FROM {{ref('netsuite_classes_source')}}
+     FROM {{ref('netsuite_classes')}}
 
 ), subsidiaries AS (
 
@@ -52,7 +57,7 @@ WITH transactions AS (
      SELECT *
      FROM {{ref('netsuite_expense_cost_category')}}
 
-), income AS (
+), opex_cogs AS (
 
      SELECT
        t.transaction_id,
@@ -96,7 +101,7 @@ WITH transactions AS (
     LEFT JOIN consolidated_exchange_rates e
       ON ap.accounting_period_id = e.accounting_period_id
       AND e.from_subsidiary_id = s.subsidiary_id
-    WHERE a.account_number between '4000' and '4999'
+    WHERE a.account_number between '5000' and '6999'
       AND ap.fiscal_calendar_id = 2
       AND e.to_subsidiary_id = 1
     {{ dbt_utils.group_by(n=23) }}
@@ -104,49 +109,53 @@ WITH transactions AS (
 ), income_statement_grouping AS (
 
     SELECT
-      i.transaction_id,
-      i.external_ref_number,
-      i.transaction_ext_id,
-      i.document_id,
-      i.account_id,
-      i.account_name,
-      i.account_full_name,
-      i.account_number || ' - ' || i.account_name          AS unique_account_name,
-      i.account_number,
-      i.parent_account_number,
-      i.unique_account_number,
-      -(i.actual_amount)                                   AS actual_amount,
+      oc.transaction_id,
+      oc.external_ref_number,
+      oc.transaction_ext_id,
+      oc.document_id,
+      oc.account_id,
+      oc.account_name,
+      oc.account_full_name,
+      oc.account_number || ' - ' || oc.account_name          AS unique_account_name,
+      oc.account_number,
+      oc.parent_account_number,
+      oc.unique_account_number,
+      oc.actual_amount,
       CASE
-        WHEN i.account_number BETWEEN '4000' AND '4999'
-          THEN '1-income'
-      END                                                  AS income_statement_grouping,
-      i.transaction_lines_memo,
-      i.entity_name,
-      i.receipt_url,
-      i.status,
-      i.transaction_type,
-      i.class_id,
-      i.class_name,
-      i.department_id,
-      i.department_name,
-      i.parent_department_name,
-      i.accounting_period_id,
-      i.accounting_period,
-      i.accounting_period_name,
+        WHEN oc.account_number BETWEEN '5000' AND '5999'
+          THEN '2-cost of sales'
+        WHEN oc.account_number BETWEEN '6000' AND '6999'
+          THEN '3-expense'
+      END                                                    AS income_statement_grouping,
+      oc.transaction_lines_memo,
+      oc.entity_name,
+      oc.receipt_url,
+      oc.status,
+      oc.transaction_type,
+      oc.class_id,
+      oc.class_name,
+      oc.department_id,
+      oc.department_name,
+      oc.parent_department_name,
+      oc.accounting_period_id,
+      oc.accounting_period,
+      oc.accounting_period_name,
       dd.fiscal_year,
       dd.fiscal_quarter,
       dd.fiscal_quarter_name
-    FROM income i
+    FROM opex_cogs oc
     LEFT JOIN date_details dd
-      ON dd.first_day_of_month = i.accounting_period
+      ON dd.first_day_of_month = oc.accounting_period
 
 ), cost_category_grouping AS (
 
     SELECT
       isg.*,
-      'N/A'                                            AS cost_category_level_1,
-      'N/A'                                            AS cost_category_level_2
+      cc.cost_category_level_1,
+      cc.cost_category_level_2
     FROM income_statement_grouping isg
+    LEFT JOIN cost_category cc
+      ON isg.unique_account_name = cc.unique_account_name
 
 )
 
