@@ -38,7 +38,7 @@ default_args = {
 }
 
 dag = DAG(
-    "pmg_extract", default_args=default_args, schedule_interval="0 23 */1 * *"
+    "pmg_extract", default_args=default_args, schedule_interval="0 23 * * *"
 )
 
 
