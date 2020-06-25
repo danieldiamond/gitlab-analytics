@@ -8,6 +8,7 @@ WITH source AS (
     SELECT 
       IFF("Departments"='Brand and Digital Design', 'Brand & Digital Design', 
             NULLIF("Departments", ''))::VARCHAR                 AS department,
+      "4_30_2020"                                               AS "2020-04-30",
       "5_31_2020"                                               AS "2020-05-31",
       "6_30_2020"                                               AS "2020-06-30",
       "7_31_2020"                                               AS "2020-07-31",
@@ -39,6 +40,7 @@ WITH source AS (
       headcount
     FROM intermediate
         UNPIVOT (headcount for month IN (
+        "2020-04-30",    
         "2020-05-31",
         "2020-06-30",
         "2020-07-31",
@@ -124,26 +126,26 @@ WITH source AS (
 
 SELECT *
 FROM original_FY21_plan
-----this plan captures the monthly plan prior to 2020.06, whereas the replan captures months post 2020.06
+----this plan captures the monthly plan prior to 2020.05, whereas the replan captures months post 2020.05
 
 UNION ALL
 
 SELECT *
 FROM all_company 
-WHERE month_date >='2020-06-01'
+WHERE month_date >='2020-05-01'
 
 UNION All
 
 SELECT * 
 FROM division_level
-WHERE month_date >='2020-06-01'
+WHERE month_date >='2020-05-01'
 
 
 UNION ALL 
 
 SELECT *
 FROM department_level
-WHERE month_date >='2020-06-01'
+WHERE month_date >='2020-05-01'
 
 
 

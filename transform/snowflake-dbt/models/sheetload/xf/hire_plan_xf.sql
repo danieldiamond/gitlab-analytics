@@ -5,7 +5,7 @@ WITH source AS (
       department, 
       plan                  AS headcount
     FROM {{ ref ('sheetload_hire_plan') }}
-    WHERE month_year <='2020-05-31'
+    WHERE month_year <='2020-04-30'
 
 ), department_division_mapping AS (
 
