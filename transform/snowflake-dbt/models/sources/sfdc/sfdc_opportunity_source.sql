@@ -101,7 +101,7 @@ WITH source AS (
         web_portal_purchase__c         AS is_web_portal_purchase,
         opportunity_term__c            AS opportunity_term,
         pio__c                         AS partner_initiated_opportunity,
-        user_segment__c                AS user_segment,
+        user_segment_o__c              AS user_segment,
 
         -- command plan fields
         fm_champion__c                 AS cp_champion,
