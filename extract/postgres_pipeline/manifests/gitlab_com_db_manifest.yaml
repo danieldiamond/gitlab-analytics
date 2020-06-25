@@ -2140,6 +2140,8 @@ tables:
       , ip_address
       , maximum_timeout
       , runner_type
+      , public_projects_minutes_cost_factor
+      , private_projects_minutes_cost_factor
       FROM ci_runners
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
