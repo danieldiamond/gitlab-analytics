@@ -1,7 +1,6 @@
 import pandas as pd
 from google.oauth2 import service_account
 from google.cloud.bigquery import Client
-from google.cloud.bigquery_storage_v1beta1 import BigQueryStorageClient
 from yaml import safe_load
 from logging import info
 
@@ -12,11 +11,15 @@ config_dict = env.copy()
 
 class BigQueryClient:
     def __init__(self):
-        self.bq_client, self.bq_storage_client = self.get_clients()
+        self.bq_client = self.get_client()
 
-    def get_clients(self, gapi_keyfile: str = None,) -> (Client, BigQueryStorageClient):
+    def get_client(self, gapi_keyfile: str = None,) -> (Client):
         """
-            :return:
+
+        :param gapi_keyfile: optional, provides the ability to use gcp service account
+        credentials other than the ones pointed to by GCP_SERVICE_CREDS
+        :return: Client: Google python API client Uses service account credentials to authenticate, required to view
+                jobs and send query request, see docs here: https://github.com/googleapis/python-bigquery
         """
         info("Getting BigQuery clients")
         # Get the gcloud storage client and authenticate
@@ -31,11 +34,8 @@ class BigQueryClient:
             credentials=scoped_credentials,
         )
 
-        bq_storage_client = BigQueryStorageClient(
-                credentials=scoped_credentials
-        )
         info("BigQuery clients retrieved")
-        return bq_client, bq_storage_client
+        return bq_client
 
     def get_dataframe_from_sql(self, sql_statement: str) -> pd.DataFrame:
         """
@@ -43,8 +43,5 @@ class BigQueryClient:
         :param sql_statement:
         :return:
         """
-        return (
-            self.bq_client.query(sql_statement)
-                .result()
-                .to_dataframe(bqstorage_client=self.bq_storage_client)
-        )
+
+        return self.bq_client.query(sql_statement).result().to_dataframe()
