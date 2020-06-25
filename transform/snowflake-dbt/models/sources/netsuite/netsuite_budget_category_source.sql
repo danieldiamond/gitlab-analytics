@@ -13,7 +13,7 @@ WITH source AS (
       isinactive::BOOLEAN                   AS is_inactive,
       is_global::BOOLEAN                    AS is_global,
       name::VARCHAR                         AS budget_category,
-      _fivetran_deleted::BOOLEAS            AS is_fivetran_deleted
+      _fivetran_deleted::BOOLEAN            AS is_fivetran_deleted
 
     FROM source
 
