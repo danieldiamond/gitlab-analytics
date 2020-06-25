@@ -37,6 +37,7 @@ If you are the person who will be using this data and/or the dashboard it depend
 
 <details>
 <summary><i>Click to toggle Macros</i></summary>
+
   - [ ] Does this MR utilize [macros](https://docs.getdbt.com/docs/macros)?
   - [ ] This MR contains new macros. Follow the naming convention (file name matches macro name) and document in the macros.yml file
 </details>
