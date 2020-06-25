@@ -4,7 +4,7 @@
 
     {%- for column in meta_columns %}
 
-        {%- if config.get("materialized") == "view" -%}
+        {%- if config.get("materialized") == "view" and config.get("secure") -%}
 
             {{ hash_of_column_in_view(column) }}
 
