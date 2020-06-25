@@ -8,7 +8,7 @@ WITH zuora_invoice_item AS (
     SELECT *
     FROM {{ ref('zuora_invoice_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-     AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, {{ var('the_distant_future') }})
+     AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
 
 
 ), invoice_charges AS (

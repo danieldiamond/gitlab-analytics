@@ -3,14 +3,14 @@ WITH zuora_account AS (
     SELECT *
     FROM {{ ref('zuora_account_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, {{ var('the_distant_future') }})
+      AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
 
 ), zuora_contact AS (
 
     SELECT *
     FROM {{ ref('zuora_contact_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, {{ var('the_distant_future') }})
+      AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
 
 ), excluded_accounts AS (
 

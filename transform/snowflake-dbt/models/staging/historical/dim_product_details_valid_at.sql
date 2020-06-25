@@ -3,7 +3,7 @@ WITH zuora_product AS (
     SELECT *
     FROM {{ ref('zuora_product_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, {{ var('the_distant_future') }})
+      AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
 
 
 ), zuora_product_rate_plan AS (
@@ -11,7 +11,7 @@ WITH zuora_product AS (
     SELECT *
     FROM {{ ref('zuora_product_rate_plan_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, {{ var('the_distant_future') }})
+      AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
 
 
 ), zuora_product_rate_plan_charge AS (
@@ -19,7 +19,7 @@ WITH zuora_product AS (
     SELECT *
     FROM {{ ref('zuora_product_rate_plan_charge_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, {{ var('the_distant_future') }})
+      AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
 
 
 ), zuora_product_rate_plan_charge_tier AS (
@@ -27,7 +27,7 @@ WITH zuora_product AS (
     SELECT *
     FROM {{ ref('zuora_product_rate_plan_charge_tier_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < COALESCE(dbt_valid_to, {{ var('the_distant_future') }})
+      AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
 
     
 ), joined AS (
