@@ -130,16 +130,21 @@ UNION ALL
 
 SELECT *
 FROM all_company 
+WHERE month_date >='2020-06-01'
 
 UNION All
 
 SELECT * 
 FROM division_level
+WHERE month_date >='2020-06-01'
+
 
 UNION ALL 
 
 SELECT *
 FROM department_level
+WHERE month_date >='2020-06-01'
+
 
 
 
