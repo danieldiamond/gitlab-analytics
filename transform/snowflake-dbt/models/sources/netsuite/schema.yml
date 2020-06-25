@@ -8,7 +8,7 @@ models:
           tests:
             - not_null
             - unique
-    - name: netsuite_accounting_books_source
+    - name: netsuite_accounting_periods_source
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/accountingperiod.html)"
       columns:
         - name: accounting_period_unique_id
