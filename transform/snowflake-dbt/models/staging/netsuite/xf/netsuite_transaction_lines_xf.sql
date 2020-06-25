@@ -11,7 +11,7 @@ WITH transaction_lines AS  (
 ), accounts AS (
 
   SELECT *
-  FROM {{ref('netsuite_accounts')}}
+  FROM {{ref('netsuite_accounts_source')}}
 
 ), subsidiaries AS (
 
