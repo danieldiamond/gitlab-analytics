@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ ref('netsuite_entity_source') }}
+    FROM {{ ref('netsuite_transaction_lines_source') }}
 
 )
 
