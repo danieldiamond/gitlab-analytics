@@ -70,7 +70,7 @@ models:
     database: "raw"
     warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
     valid_at: "CURRENT_TIMESTAMP()"
-
+    
   # Logging Package
   logging:
     schema: meta

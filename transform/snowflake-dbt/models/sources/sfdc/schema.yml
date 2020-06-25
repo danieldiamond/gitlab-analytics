@@ -1,5 +1,7 @@
 version: 2
 models:
+  - name: sfdc_account_snapshots_source
+    description: Source model for SFDC Accounts Snapshots
   - name: sfdc_account_source
     description: Source model for SFDC Accounts
     columns:
