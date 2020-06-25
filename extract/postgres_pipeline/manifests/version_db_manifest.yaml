@@ -25,7 +25,6 @@ tables:
       , updated_at
       , counts
       , license_id
-      , stats
       , mattermost_enabled
       , uuid
       , edition
