@@ -200,6 +200,7 @@ models:
           schema: analytics
 
       historical:
+        materialized: ephemeral
         tags: ["param"]
 
       license:
