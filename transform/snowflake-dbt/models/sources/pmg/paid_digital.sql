@@ -19,7 +19,7 @@ WITH source AS (
             data_by_row['geo']::VARCHAR                 AS region,
             data_by_row['targeting']::VARCHAR           AS targeting,
             data_by_row['ad_unit']::VARCHAR             AS ad_unit,
-            data_by_row['br_nb']::VARCHAR               AS br_nb,
+            data_by_row['br_nb']::VARCHAR               AS is_brand,
             data_by_row['match_unit']::VARCHAR          AS match_unit,
             data_by_row['content']::VARCHAR             AS content,
             data_by_row['team']::VARCHAR                AS team,
