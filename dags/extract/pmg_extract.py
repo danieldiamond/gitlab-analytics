@@ -17,7 +17,7 @@ from kube_secrets import (
     SNOWFLAKE_LOAD_ROLE,
     SNOWFLAKE_LOAD_USER,
     SNOWFLAKE_LOAD_WAREHOUSE,
-    GCP_SERVICE_CREDS
+    GCP_SERVICE_CREDS,
 )
 
 
@@ -37,15 +37,11 @@ default_args = {
     "start_date": datetime(2020, 1, 1),
 }
 
-dag = DAG(
-    "pmg_extract", default_args=default_args, schedule_interval="0 23 * * *"
-)
+dag = DAG("pmg_extract", default_args=default_args, schedule_interval="0 23 * * *")
 
 
 # don't add a newline at the end of this because it gets added to in the K8sPodOperator arguments
-pmg_extract_command = (
-    f"{clone_and_setup_extraction_cmd} && python pmg/src/execute.py"
-)
+pmg_extract_command = f"{clone_and_setup_extraction_cmd} && python pmg/src/execute.py"
 
 pmg_operator = KubernetesPodOperator(
     **gitlab_defaults,
@@ -59,7 +55,7 @@ pmg_operator = KubernetesPodOperator(
         SNOWFLAKE_LOAD_USER,
         SNOWFLAKE_LOAD_WAREHOUSE,
         SNOWFLAKE_LOAD_PASSWORD,
-        GCP_SERVICE_CREDS
+        GCP_SERVICE_CREDS,
     ],
     env_vars={
         **pod_env_vars,

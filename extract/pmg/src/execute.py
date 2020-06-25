@@ -10,6 +10,7 @@ from os import environ as env
 
 config_dict = env.copy()
 
+
 def get_pmg_reporting_data_query(start_date: datetime, end_date: datetime) -> str:
     return (
         f"SELECT "
@@ -70,9 +71,9 @@ if __name__ == "__main__":
 
     written_files = [write_date_json(date, df) for date, df in df_by_date]
 
-    [snowflake_stage_load_copy_remove(file_name,
-        "pmg.pmg_load",
-        "pmg.paid_digital",
-        snowflake_engine,
-                                      )
-     for file_name in written_files]
+    [
+        snowflake_stage_load_copy_remove(
+            file_name, "pmg.pmg_load", "pmg.paid_digital", snowflake_engine,
+        )
+        for file_name in written_files
+    ]

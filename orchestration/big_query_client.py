@@ -9,6 +9,7 @@ from os import environ as env
 
 config_dict = env.copy()
 
+
 class BigQueryClient:
     def __init__(self):
         self.bq_client = self.get_client()
@@ -30,9 +31,7 @@ class BigQueryClient:
         credentials = service_account.Credentials.from_service_account_info(keyfile)
         scoped_credentials = credentials.with_scopes(scope)
 
-        bq_client = Client(
-            credentials=scoped_credentials,
-        )
+        bq_client = Client(credentials=scoped_credentials,)
 
         info("BigQuery clients retrieved")
         return bq_client
