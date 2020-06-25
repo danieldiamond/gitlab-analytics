@@ -34,3 +34,27 @@ models:
   - name: last_updated_at
     tests:
     - not_null
+
+- name: hire_plan_xf
+  description: This provides a data model of the headcount and hire planned by month broken into 3 levels - company, division, and department. This is for x through 2020.05.
+  columns:
+    - name: month_date
+    - name: breakout_type
+      description: Identifies if the plan is at a department or division level, or aggregated up to all company.
+    - name: department
+    - name: division
+    - name: planned_headcount
+    - name: planned_hires
+      description: This is calculated based on the difference between the month_date and the month prior.
+
+- name: hire_replan_xf
+  description: This provides a data model of the headcount and hire planned by month broken into 3 levels - company, division, and department. This combines the hire_plan_xf model for data prior to 2020.05 and the rehire_plan going forward from 2020.06.
+  columns:
+    - name: month_date
+    - name: breakout_type
+      description: Identifies if the plan is at a department or division level, or aggregated up to all company.
+    - name: department
+    - name: division
+    - name: planned_headcount
+    - name: planned_hires
+      description: This is calculated based on the difference between the month_date and the month prior.      
