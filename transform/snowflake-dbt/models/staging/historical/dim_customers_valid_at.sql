@@ -9,7 +9,7 @@ WITH sfdc_account AS (
 ), sfdc_users AS (
 
     SELECT *
-    FROM {{ ref('sfdc_users_snapshots_source') }}
+    FROM {{ ref('sfdc_user_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
       AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
 
