@@ -43,14 +43,16 @@ WITH RECURSIVE employee_directory AS (
             THEN '9.5'
            WHEN job_title = 'Manager, Field Marketing' 
              THEN '8'
-           ELSE job_role.job_grade END                                                                              AS job_grade
+           ELSE job_role.job_grade END                                                                              AS job_grade,
+      ROW_NUMBER() OVER (PARTITION BY department_info.employee_id ORDER BY date_details.date_actual)                AS job_grade_event_rank
     FROM date_details
     LEFT JOIN department_info 
       ON date_details.date_actual BETWEEN department_info.effective_date AND COALESCE(department_info.effective_end_Date, {{max_date_in_bamboo_analyses()}})
     LEFT JOIN job_role
       ON job_role.employee_id = department_info.employee_id
       AND date_details.date_actual BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_date, {{max_date_in_bamboo_analyses()}})
-    WHERE date_details.date_actual = '2020-02-27'
+    WHERE date_details.date_actual = '2020-02-28'
+      AND job_role.job_grade IS NOT NULL
     ---Using the 1st time we captured job_role and grade to identify classification for historical records
 
 ), location_factor AS (
@@ -92,10 +94,31 @@ WITH RECURSIVE employee_directory AS (
             AND job_info_mapping_historical.job_role IS NOT NULL, 
             job_info_mapping_historical.job_role, 
             COALESCE(job_role.job_role, department_info.job_role))           AS job_role,
-      CASE WHEN job_role.job_grade IN ('11','12','CXO')
+
+      CASE WHEN department_info.job_title LIKE '%Staff%' AND 
+                COALESCE(job_role.job_role, 
+                         job_info_mapping_historical.job_role,
+                         department_info.job_role) = 'Manager' 
+            THEN 'Individual Contributor'
+           WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) IN ('11','12','CXO')
             THEN 'Senior Leadership'
-           WHEN job_role.job_grade = '10' 
-             THEN 'Manager'
+           WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) = '10' 
+            THEN 'Manager'
+           WHEN (department_info.job_title LIKE '%Manager%' or department_info.job_title LIKE '%Director,%')
+                 AND COALESCE(job_role.job_role, 
+                         job_info_mapping_historical.job_role,
+                         department_info.job_role) = 'Leader'
+            THEN 'Manager'
+           WHEN (department_info.job_title LIKE '%VP%' or department_info.job_title like '%Chief%')
+                AND COALESCE(job_role.job_role, 
+                         job_info_mapping_historical.job_role,
+                         department_info.job_role) = 'Leader'
+            THEN 'Senior Leadership'
+           WHEN department_info.job_title LIKE '%Senior Director%'
+                AND COALESCE(job_role.job_role, 
+                         job_info_mapping_historical.job_role,
+                         department_info.job_role) = 'Leader'
+            THEN 'Senior Leadership'
            ELSE COALESCE(job_role.job_role, 
                          job_info_mapping_historical.job_role,
                          department_info.job_role) END                      AS job_role_modified,
@@ -143,7 +166,7 @@ WITH RECURSIVE employee_directory AS (
     LEFT JOIN job_info_mapping_historical
       ON employee_directory.employee_id = job_info_mapping_historical.employee_id 
       AND job_info_mapping_historical.job_title = department_info.job_title 
-      AND date_details.date_actual BETWEEN '2019-11-01' and '2020-02-27'
+      AND job_info_mapping_historical.job_grade_event_rank = 1
       ---tying data based on 2020-02-27 date to historical data --
     WHERE employee_directory.employee_id IS NOT NULL
 

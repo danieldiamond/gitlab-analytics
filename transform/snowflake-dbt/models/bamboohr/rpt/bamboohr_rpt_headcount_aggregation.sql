@@ -52,6 +52,7 @@ WITH source AS (
       IFF(rolling_12_month_headcount< rolling_12_month_separations, null,
         1 - (rolling_12_month_separations/NULLIF(rolling_12_month_headcount,0)))    AS retention,
 
+      headcount_end_leader,
       headcount_average_leader,
       hired_leaders,
       separated_leaders,
@@ -60,8 +61,7 @@ WITH source AS (
       IFF(rolling_12_month_headcount_leader< rolling_12_month_separations_leader, null,
         1 - (rolling_12_month_separations_leader/NULLIF(rolling_12_month_headcount_leader,0)))    AS retention_leader,
 
-
-
+      headcount_end_manager,
       headcount_average_manager,
       hired_manager,
       separated_manager,
@@ -70,10 +70,13 @@ WITH source AS (
       IFF(rolling_12_month_headcount_manager< rolling_12_month_separations_manager, null,
         1 - (rolling_12_month_separations_manager/NULLIF(rolling_12_month_headcount_manager,0)))    AS retention_manager,
 
+      headcount_end_individual_contributor,
       headcount_average_contributor,
       hired_contributor,
       separated_contributor,
-
+      
+      MIN(headcount_end_individual_contributor)
+        {{ratio_to_report_partition_statement}}                                     AS min_headcount_end_contributor, 
       MIN(headcount_average)  {{ratio_to_report_partition_statement}}               AS min_headcount_average,
       MIN(hire_count) {{ratio_to_report_partition_statement}}                       AS min_hire_count,
       MIN(headcount_average_leader) {{ratio_to_report_partition_statement}}         AS min_headcount_leader,
@@ -127,24 +130,31 @@ WITH source AS (
         (rolling_12_month_involuntary_separations/NULLIF(rolling_12_month_headcount,0)))  AS involuntary_separation_rate,
       retention,
 
-      IFF(headcount_average_leader < 2, null,headcount_average_leader)      AS headcount_leader,
+      IFF(headcount_end_leader < 2, null, 
+            headcount_end_leader)                                          AS headcount_end_leader, 
+      IFF(headcount_average_leader < 2, null,headcount_average_leader)      AS headcount_leader_average,
       IFF(hired_leaders < 2, null, hired_leaders)                           AS hired_leaders,
       IFF(separated_leaders < 2, null, separated_leaders)                   AS separated_leaders,
       rolling_12_month_headcount_leader,
       rolling_12_month_separations_leader,
       retention_leader,
 
-      IFF(headcount_average_manager < 2, null, headcount_average_manager)   AS headcount_manager,
+
+      IFF(headcount_end_manager < 2, null, 
+            headcount_end_manager)                                          AS headcount_end_manager,            
+      IFF(headcount_average_manager < 2, null, headcount_average_manager)   AS headcount_manager_average,
       IFF(hired_manager < 2, null, hired_manager)                           AS hired_manager,
       IFF(separated_manager < 2, null, separated_manager)                   AS separated_manager,
       rolling_12_month_headcount_manager,
       rolling_12_month_separations_manager,
       retention_manager,
  
+      IFF(headcount_end_individual_contributor < 4, null, 
+            headcount_end_individual_contributor)                           AS headcount_end_contributor,
       IFF(headcount_average_contributor < 4, null, 
             headcount_average_contributor)                                  AS headcount_contributor,
       IFF(hired_contributor < 4, null, hired_contributor)                   AS hired_contributor,
-      IFF(separated_contributor < 4, null, separated_contributor)            AS separated_contributor,
+      IFF(separated_contributor < 4, null, separated_contributor)           AS separated_contributor,
 
       IFF(min_headcount_average <2, null, percent_of_headcount)             AS percent_of_headcount,
       IFF(min_hire_count <2, null, percent_of_hires)                        AS percent_of_hires,
