@@ -85,3 +85,17 @@ models:
  
   - name: cost_center_division_department_mapping_current
     description: This provides the current division, department, cost center.    
+  
+  - name: rpt_headcount_vs_planned
+    description: This combines the headcount and hire plan with actual headcount and hires up to the previous month.
+    columns: 
+    - name: month_date
+    - name: breakout_type
+    - name: department
+    - name: division
+    - name: planned_headcount
+    - name: planned_hires
+    - name: headcount_actual
+    - name: hires_actual
+    - name: hires_vs_plan
+    - name: actual_headcount_vs_planned_headcount

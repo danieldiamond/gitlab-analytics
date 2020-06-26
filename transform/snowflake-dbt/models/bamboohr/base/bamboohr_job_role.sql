@@ -18,6 +18,9 @@ WITH source AS (
       d.value['customRole']::VARCHAR                                  AS job_role,
       d.value['customJobGrade']::VARCHAR                              AS job_grade,
       d.value['customCostCenter']::VARCHAR                            AS cost_center,
+      d.value['customJobTitleSpeciality']::VARCHAR                    AS jobtitle_speciality,
+      d.value['customGitLabUsername']::VARCHAR                        AS gitlab_username,
+      d.value['customSalesGeoDifferential']::VARCHAR                  AS sales_geo_differential,
       uploaded_at::DATETIME                                           AS effective_date
     FROM source,
     LATERAL FLATTEN(INPUT => PARSE_JSON(jsontext['employees']), OUTER => true) d
