@@ -9,7 +9,7 @@ This template is for defining a Product Performance Indicators.
 
 ### 📖 Background and Overview
 
-* [Product Performance Indicatorss Presentation](https://gitlab.zoom.us/rec/play/7J1-JOr5qWo3S9Gc4wSDA_YvW425Jv6s1yYYqPFcxU21AHQCZwGkbuYUNuqyQxTlJWyX57LH0FR1yjmQ?continueMode=true)
+* [Product Performance Indicators Presentation](https://gitlab.zoom.us/rec/play/7J1-JOr5qWo3S9Gc4wSDA_YvW425Jv6s1yYYqPFcxU21AHQCZwGkbuYUNuqyQxTlJWyX57LH0FR1yjmQ?continueMode=true)
 * [Deck from Product Performance Indicatorss Presentation](https://gitlab.zoom.us/rec/play/7J1-JOr5qWo3S9Gc4wSDA_YvW425Jv6s1yYYqPFcxU21AHQCZwGkbuYUNuqyQxTlJWyX57LH0FR1yjmQ?continueMode=true)
 
 
