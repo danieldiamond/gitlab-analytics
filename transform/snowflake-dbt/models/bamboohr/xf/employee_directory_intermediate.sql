@@ -118,7 +118,9 @@ WITH RECURSIVE employee_directory AS (
                          job_info_mapping_historical.job_role,
                          department_info.job_role) = 'Leader'
             THEN 'Senior Leadership'
-           WHEN department_info.job_title = 'Intern' 
+           WHEN COALESCE(job_role.job_role, 
+                         job_info_mapping_historical.job_role,
+                         department_info.job_role) = 'Intern' 
             THEN 'Individual Contributor'
            ELSE COALESCE(job_role.job_role, 
                          job_info_mapping_historical.job_role,
