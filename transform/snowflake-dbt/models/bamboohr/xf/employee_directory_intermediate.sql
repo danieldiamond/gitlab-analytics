@@ -51,8 +51,7 @@ WITH RECURSIVE employee_directory AS (
     LEFT JOIN job_role
       ON job_role.employee_id = department_info.employee_id
       AND date_details.date_actual BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_date, {{max_date_in_bamboo_analyses()}})
-    WHERE date_details.date_actual = '2020-02-28'
-      AND job_role.job_grade IS NOT NULL
+    WHERE job_role.job_grade IS NOT NULL
     ---Using the 1st time we captured job_role and grade to identify classification for historical records
 
 ), location_factor AS (
@@ -119,6 +118,8 @@ WITH RECURSIVE employee_directory AS (
                          job_info_mapping_historical.job_role,
                          department_info.job_role) = 'Leader'
             THEN 'Senior Leadership'
+           WHEN department_info.job_title = 'Intern' 
+            THEN 'Individual Contributor'
            ELSE COALESCE(job_role.job_role, 
                          job_info_mapping_historical.job_role,
                          department_info.job_role) END                      AS job_role_modified,
