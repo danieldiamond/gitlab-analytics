@@ -6,12 +6,12 @@ WITH source AS (
 ), renamed AS (
 
 
-	SELECT
+    SELECT
       date_month::DATE       AS date_month,
-	  pipe,
+      pipe,
       headcount::REAL        AS headcount,
       salary_per_month::REAL AS salary_per_month
-	FROM source
+    FROM source
 
 )
 
