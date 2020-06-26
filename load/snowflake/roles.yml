@@ -1445,7 +1445,7 @@ users:
         member_of:
             - aladhani
 
-   - alcurtis:
+    - alcurtis:
         can_login: yes
         member_of:
             - alcurtis
