@@ -1,6 +1,5 @@
-{{ config({
-    "materialized": "emphemeral"
-    })
+{{
+  config( materialized='ephemeral')
 }}
 
 WITH zuora_account AS (

@@ -121,12 +121,12 @@ models:
   - name: dim_subscriptions_valid_at
     description: "Parameterized model to recreate dimension table representing subscription details as in Zuora at given date"
 
-  - name: dim_products_valid_at
-    description: "Parameterized model to recreate product related information for which account is charged at given date {valid_at}."
-
   - name: fct_charges_valid_at
     description: "Factual table with all rate plan charges coming from subscriptions or an amendment to a subscription "
 
   - name: fct_invoice_items_agg_valid_at
     description: "Parameterized model to recreate aggregate fact table with invoice items summarized on charge level at given date {valid_at}"
+
+  - name: dim_customers_valid_at
+    description: "Parameterized model to recreate dimension table representing customer details as in SFDC at given date"
 
