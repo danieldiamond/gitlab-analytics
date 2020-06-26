@@ -26,6 +26,7 @@ sources:
       - name: license_db_licenses_snapshots
       - name: sfdc_account_snapshots
       - name: sfdc_opportunity_snapshots
+      - name: sfdc_user_snapshots
       - name: sheetload_employee_location_factor_snapshots
         loaded_at_field: DATEADD(sec, dbt_updated_at, '1970-01-01')
         freshness: null
