@@ -143,10 +143,6 @@ models:
         materialized: table
         schema: qualtrics
 
-      pmg:
-        materialized: table
-        schema: pmg
-
       sfdc:
         schema: sfdc
         sensitive:
@@ -200,8 +196,6 @@ models:
       qualtrics:
         schema: analytics
 
-      pmg:
-        schema: analytics
 
       sfdc:
         xf:
