@@ -6,14 +6,14 @@ WITH source AS (
 ), renamed as (
 
     SELECT
-         month::DATE                                 AS month_date,
-         channel::VARCHAR                            AS channel,
-         brand::VARCHAR                              AS brand,
-         metric::VARCHAR                             AS metric,
-         is_organic::BOOLEAN                         AS is_organic,
-         value::FLOAT                                AS value,
-         source::VARCHAR                             AS source,
-         source_details::VARCHAR                     AS source_details
+      month::DATE                                 AS month_date,
+      channel::VARCHAR                            AS channel,
+      brand::VARCHAR                              AS brand,
+      metric::VARCHAR                             AS metric,
+      is_organic::BOOLEAN                         AS is_organic,
+      value::FLOAT                                AS value,
+      source::VARCHAR                             AS source,
+      source_details::VARCHAR                     AS source_details
     FROM source
 )
 

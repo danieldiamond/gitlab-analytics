@@ -155,6 +155,9 @@ models:
           schema: sensitive
           secure: true
 
+      sheetload:
+        schema: sheetload
+
       version:
         tags: ["product"]
         materialized: table

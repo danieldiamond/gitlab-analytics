@@ -1,5 +1,7 @@
 version: 2
 models:
+- name: sheetload_ally_certificate
+- name: sheetload_calendar
 - name: sheetload_certificates_unioned
   description: The collection of all certificates distributed by the Learning and Development team in the People group.
   columns:
@@ -34,3 +36,8 @@ models:
   - name: last_updated_at
     tests:
     - not_null
+- name: sheetload_communication_certificate
+- name: sheetload_compensation_certificate
+- name: sheetload_marketing_pipe_to_spend_headcount
+- name: sheetload_values_certificate
+    

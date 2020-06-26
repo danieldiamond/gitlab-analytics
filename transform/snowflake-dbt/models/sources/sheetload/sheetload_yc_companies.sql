@@ -5,11 +5,13 @@ WITH source AS (
 
 ), renamed as (
 
-    SELECT md5("Name"::varchar||"Batch"::varchar) AS company_id,
-         "Name"::varchar                          AS company_name,
-         "Batch"::varchar                         AS yc_batch,
-         "Description"::varchar                   AS company_description
+    SELECT 
+      MD5("Name"::VARCHAR || "Batch"::VARCHAR) AS company_id,
+      "Name"::VARCHAR                          AS company_name,
+      "Batch"::VARCHAR                         AS yc_batch,
+      "Description"::VARCHAR                   AS company_description
     FROM source
+
 )
 
 SELECT *
