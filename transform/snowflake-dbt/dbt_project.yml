@@ -69,7 +69,6 @@ models:
   vars:
     database: "raw"
     warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
-    valid_at: "{{ env_var('execution_date') }}"
     
   # Logging Package
   logging:
