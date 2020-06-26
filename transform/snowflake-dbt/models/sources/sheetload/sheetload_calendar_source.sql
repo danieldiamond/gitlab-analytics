@@ -1,7 +1,7 @@
 WITH source AS (
 
-	SELECT *
-	FROM {{ source('sheetload', 'calendar') }}
+    SELECT *
+    FROM {{ source('sheetload', 'calendar') }}
 
 ), renamed AS (
 

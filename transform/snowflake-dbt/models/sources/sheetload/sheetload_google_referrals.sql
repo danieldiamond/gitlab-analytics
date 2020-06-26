@@ -1,7 +1,7 @@
 WITH source AS (
 
-	SELECT *
-	FROM {{ source('sheetload', 'google_referrals') }}
+    SELECT *
+    FROM {{ source('sheetload', 'google_referrals') }}
 
 ), renamed AS (
 

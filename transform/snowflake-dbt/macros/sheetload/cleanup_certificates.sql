@@ -1,6 +1,6 @@
 {%- macro cleanup_certificates(certificate_name) -%}
 
-clean_score as (
+clean_score AS (
 
 	SELECT
 		date_completed,
