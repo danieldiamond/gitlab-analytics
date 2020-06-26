@@ -14,7 +14,7 @@ WITH source AS (
       grantee_name                              AS grantee_user_name,
       grant_option,
       granted_by,
-      to_timestamp_ntz(_uploaded_at::NUMBER)    AS snapshot_date
+      TO_TIMESTAMP_NTZ(_uploaded_at::NUMBER)    AS snapshot_date
     FROM source
 
 )
