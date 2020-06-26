@@ -1,8 +1,6 @@
 version: 2
 
 models:
-    - name: zuora_account_snapshots_source
-      description: Source layer for Zuora Accounts Snapshots for cleaning and renaming
     - name: zuora_account_source
       description: Source layer for Zuora Accounts for cleaning and renaming
     - name: zuora_accounting_period_source
@@ -14,8 +12,6 @@ models:
           - name: accounting_period_start_date
             tests:
                 - not_null
-    - name: zuora_amendment_snapshots_source
-      description: Source layer for Zuora Amendments Snapshots for cleaning and renaming
     - name: zuora_amendment_source
       description: Source layer for Zuora Amendments for cleaning and renaming
       columns:
@@ -23,18 +19,12 @@ models:
           tests:
             - not_null
             - unique
-    - name: zuora_contact_snapshots_source
-      description: Source layer for Zuora Contacts Snapshots for cleaning and renaming
     - name: zuora_contact_source
       description: Source layer for Zuora Contacts for cleaning and renaming
     - name: zuora_discount_applied_metrics_source
       description: Source layer for Zuora Discount Applied Metrics  for cleaning and renaming
-    - name: zuora_invoice_snapshots_source
-      description: Source layer for Zuora Invoices Snapshots for cleaning and renaming
     - name: zuora_invoice_source
       description: Source layer for Zuora Invoices for cleaning and renaming
-    - name: zuora_invoice_item_snapshots_source
-      description: Source layer for Zuora Invoice Items Snapshots for cleaning and renaming
     - name: zuora_invoice_item_source
       description: Source layer for Zuora Invoice Items for cleaning and renaming
     - name: zuora_invoice_payment_source
@@ -53,8 +43,6 @@ models:
       description: Source layer for Zuora Product Rate Plan Charge Tier
     - name: zuora_product_rate_plan_source
       description: Source layer for Zuora Product Rate Plans for cleaning and renaming
-    - name: zuora_product_snapshots_source
-      description: Source layer for Zuora Products Snapshots for cleaning and renaming
     - name: zuora_product_source
       description: Source layer for Zuora Products for cleaning and renaming
       columns:
@@ -64,12 +52,8 @@ models:
           - name: product_name
             tests:
                 - not_null
-    - name: zuora_rate_plan_snapshots_source
-      description: Source layer for Zuora Rate Plans Snapshots for cleaning and renaming
     - name: zuora_rate_plan_source
       description: Source layer for Zuora Rate Plans for cleaning and renaming
-    - name: zuora_rate_plan_charge_snapshots_source
-      description: Source layer for Zuora Rate Plan Charges Snapshots for cleaning and renaming
     - name: zuora_rate_plan_charge_source
       description: Source layer for Zuora Rate Plan Charges for cleaning and renaming
     - name: zuora_rate_plan_charge_tier
@@ -88,7 +72,5 @@ models:
                - not_null
     - name: zuora_refund_source
       description: Source layer for Zuora Refunds for cleaning and renaming
-    - name: zuora_subscription_snapshots_source
-      description: Source layer for Zuora Subscriptions
     - name: zuora_subscription_source
       description: Source layer for Zuora Subscriptions for cleaning and renaming
