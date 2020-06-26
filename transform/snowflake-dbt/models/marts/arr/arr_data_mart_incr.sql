@@ -1,7 +1,8 @@
 /* This table needs to be permanent to allow zero cloning at specific timestamps */
 {{
   config( materialized='incremental',
-    incremental_startegy='insert_overwrite' )
+    incremental_startegy='insert_overwrite',
+    unique_key='primary_key')
   }}
 
 WITH fct_charges AS (
