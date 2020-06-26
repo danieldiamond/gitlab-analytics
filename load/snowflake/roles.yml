@@ -796,12 +796,15 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.sheetload
+                    - analytics.sheetload
             tables:
                 read:
                     - raw.sheetload.*  
+                    - analytics.sheetload.*
 
     - snapshots:
         warehouses:
