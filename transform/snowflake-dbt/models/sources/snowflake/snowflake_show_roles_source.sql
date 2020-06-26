@@ -16,7 +16,7 @@ WITH source AS (
       granted_roles,
       owner                                     AS owner_role,
       comment,
-      to_timestamp_ntz(_uploaded_at::NUMBER)    AS snapshot_date
+      TO_TIMESTAMP_NTZ(_uploaded_at::NUMBER)    AS snapshot_date
     FROM source
 
 )
