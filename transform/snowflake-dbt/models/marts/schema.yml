@@ -13,6 +13,13 @@ models:
       - name: reporting_month
         description: "Reporting month. Due to forward looking character of the metric, ARR results are reported as of the end of the previous month. For example, charges with an effective start date on or before 2020-05-01 and an effective_end_date greater than 2020-05-01 would be summed together and that ARR result is what revenue is expected to be generated from 2020-05-01 through 2021-04-01. However, we want to report this number on the 2020-04-01 monthly results so that at the end of April,
         we can report out what is expected to be generated from 2020-05-01 through 2021-04-01. This is accomplished by subtracting 1 month from the mrr_month to derive the reporting_month which allows the result to be reported as of the prior month end."
+  - name: arr_data_mart_incr
+    description: '{{ doc("arr_data_mart") }}'
+    columns:
+      - name: primary_key
+        tests:
+          - not_null
+          - unique
   - name: charges_agg
     description: "Base table used as a starting point for all charge analyses"
     columns:
