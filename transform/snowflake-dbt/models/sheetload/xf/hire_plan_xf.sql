@@ -1,11 +1,19 @@
 WITH source AS (
 
     SELECT 
-      month_year            AS month_date,
-      department, 
-      plan                  AS headcount
+      month_year                                                       AS month_date,
+      CASE WHEN department = 'People' AND month_year <='2019-08-31' 
+            THEN 'People Ops'
+           WHEN department = 'People' AND month_year>='2020-05-31' 
+             THEN 'People Success'
+           WHEN department = 'Brand and Digital Design' 
+             THEN 'Brand & Digital Design'
+           WHEN department= 'Outreach' AND month_year<'2020-02-29' 
+             THEN 'Community Relations'
+           ELSE department END                                          AS department,
+      plan                                                              AS headcount
     FROM {{ ref ('sheetload_hire_plan') }}
-    WHERE month_year <='2020-04-30'
+    WHERE month_year <='2020-05-31'
 
 ), department_division_mapping AS (
 
@@ -16,12 +24,7 @@ WITH source AS (
     FROM source
     LEFT JOIN "ANALYTICS"."ANALYTICS"."EMPLOYEE_DIRECTORY_ANALYSIS" employee_directory
       ON DATE_TRUNC(month,source.month_date) = DATE_TRUNC(month,employee_directory.date_actual)
-      AND CASE WHEN employee_directory.department LIKE '%People%' 
-                THEN 'People' 
-               WHEN employee_directory.department ='Brand & Digital Design'
-                 THEN 'Brand and Digital Design' 
-               WHEN employee_directory.department = 'Community Relations' AND date_actual <'2020-02-29'
-                 THEN 'Outreach' ELSE employee_directory.department END = source.department
+      AND employee_directory.department = source.department
     GROUP BY 1,2,3
       
 ), all_company AS (
@@ -45,7 +48,8 @@ WITH source AS (
       department_division_mapping.division,
       SUM(headcount)                                                        AS planned_headcount,
       planned_headcount - lag(planned_headcount) 
-        OVER (ORDER BY source.month_date)                                   AS planned_hires       
+        OVER (PARTITION BY department_division_mapping.division 
+              ORDER BY source.month_date)                                   AS planned_hires       
     FROM source
     LEFT JOIN department_division_mapping 
       ON department_division_mapping.department = source.department
@@ -61,7 +65,8 @@ WITH source AS (
       department_division_mapping.division,
       SUM(headcount)                                                     AS planned_headcount,
       planned_headcount - lag(planned_headcount) 
-        OVER (ORDER BY source.month_date)                                AS planned_hires       
+        OVER (PARTITION BY department_division_mapping.division, source.department 
+              ORDER BY source.month_date)                                AS planned_hires       
     FROM source
     LEFT JOIN department_division_mapping 
       ON department_division_mapping.department = source.department

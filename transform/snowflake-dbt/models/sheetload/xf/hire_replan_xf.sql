@@ -95,11 +95,13 @@ WITH source AS (
       'division_breakout'                                                             AS department,
       department_division_mapping.division,
       SUM(headcount)                                                                  AS planned_headcount,
-      planned_headcount - lag(planned_headcount) OVER (ORDER BY unpivoted.month_date) AS planned_hires       
+      planned_headcount - lag(planned_headcount) 
+        OVER (PARTITION BY department_division_mapping.division 
+              ORDER BY unpivoted.month_date)                                          AS planned_hires     
     FROM unpivoted
     LEFT JOIN department_division_mapping 
       ON department_division_mapping.department = unpivoted.department
-      AND department_division_mapping.month_date = unpivoted.month_date
+      AND department_division_mapping.month_date = unpivoted.month_date 
     GROUP BY 1,2,3,4
 
 ), department_level AS (
@@ -110,7 +112,9 @@ WITH source AS (
       unpivoted.department                                                            AS department,
       department_division_mapping.division,
       SUM(headcount)                                                                  AS planned_headcount,
-      planned_headcount - lag(planned_headcount) OVER (ORDER BY unpivoted.month_date) AS planned_hires       
+      planned_headcount - lag(planned_headcount) 
+        OVER (PARTITION BY department_division_mapping.division, unpivoted.department 
+              ORDER BY unpivoted.month_date)                                          AS planned_hires        
     FROM unpivoted
     LEFT JOIN department_division_mapping 
       ON department_division_mapping.department = unpivoted.department
@@ -122,30 +126,41 @@ WITH source AS (
     SELECT *
     FROM {{ ref ('hire_plan_xf') }}
 
+), unioned AS (
+
+    SELECT *
+    FROM original_FY21_plan
+    ----this plan captures the monthly plan prior to 2020.05, whereas the replan captures months post 2020.05
+
+    UNION ALL
+
+    SELECT *
+    FROM all_company 
+    WHERE month_date >='2020-06-01'
+
+    UNION All
+
+    SELECT * 
+    FROM division_level
+    WHERE month_date >='2020-06-01'
+
+
+    UNION ALL 
+
+    SELECT *
+    FROM department_level
+    WHERE month_date >='2020-06-01'
+
 )
 
-SELECT *
-FROM original_FY21_plan
-----this plan captures the monthly plan prior to 2020.05, whereas the replan captures months post 2020.05
-
-UNION ALL
-
-SELECT *
-FROM all_company 
-WHERE month_date >='2020-05-01'
-
-UNION All
-
-SELECT * 
-FROM division_level
-WHERE month_date >='2020-05-01'
-
-
-UNION ALL 
-
-SELECT *
-FROM department_level
-WHERE month_date >='2020-05-01'
+SELECT
+  month_date,
+  breakout_type,
+  department,
+  division,
+  planned_headcount,
+  IFF(planned_hires<0, 0, planned_hires) AS planned_hires
+FROM unioned
 
 
 
