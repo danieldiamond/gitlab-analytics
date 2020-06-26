@@ -51,7 +51,7 @@ The one metric that matters now, & the most important thing you want your team t
 
 ### 🧩Answer these questions to provide more context 
 
-- Any alternative Product Performance Indicatorss you would consider, either because they are easier to get, or you are debating between that and the proposed NSM?
+- Any alternative Product Performance Indicators you would consider, either because they are easier to get, or you are debating between that and the proposed NSM?
 - Does your feature play a bigger role in initial purchase, retention, or expansion/upgrade? 
 - Does your feature play a bigger role in SMB sales, Enterprise sales, or both? 
 - What are some dimensions you would expect to slice/dice your Product Performance Indicators? For example, by plan tier, by free/paid, etc. 
