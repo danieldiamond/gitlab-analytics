@@ -7,7 +7,7 @@ WITH source AS (
 
     SELECT *
     FROM source
-    WHERE snapshot_date = (SELECT max(snapshot_date) FROM source)
+    WHERE snapshot_date = (SELECT MAX(snapshot_date) FROM source)
 
 )
 
