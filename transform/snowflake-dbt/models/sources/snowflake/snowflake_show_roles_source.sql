@@ -16,16 +16,10 @@ WITH source AS (
       granted_roles,
       owner                                     AS owner_role,
       comment,
-      to_timestamp_ntz(_uploaded_at::number)    AS snapshot_date
+      to_timestamp_ntz(_uploaded_at::NUMBER)    AS snapshot_date
     FROM source
-
-), max_select AS (
-
-    SELECT *
-    FROM intermediate
-    WHERE snapshot_date = (SELECT max(snapshot_date) FROM intermediate)
 
 )
 
 SELECT *
-FROM max_select
+FROM intermediate
