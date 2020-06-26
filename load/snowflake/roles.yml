@@ -1450,7 +1450,6 @@ users:
         member_of:
             - alcurtis
 
-
     - amihaila:
         can_login: yes
         member_of:
