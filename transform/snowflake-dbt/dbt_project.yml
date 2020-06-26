@@ -199,10 +199,6 @@ models:
         rpt:
           schema: analytics
 
-      historical:
-        materialized: ephemeral
-        tags: ["param"]
-
       license:
         materialized: view
 

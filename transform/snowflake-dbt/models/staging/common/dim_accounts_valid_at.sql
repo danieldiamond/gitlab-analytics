@@ -1,3 +1,8 @@
+{{ config({
+    "materialized": "emphemeral"
+    })
+}}
+
 WITH zuora_account AS (
 
     SELECT *

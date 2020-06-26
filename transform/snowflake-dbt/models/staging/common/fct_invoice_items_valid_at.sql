@@ -1,3 +1,8 @@
+{{ config({
+    "materialized": "emphemeral"
+    })
+}}
+
 WITH zuora_invoice_item AS (
 
     SELECT *

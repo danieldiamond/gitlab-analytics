@@ -1,3 +1,8 @@
+{{ config({
+    "materialized": "emphemeral"
+    })
+}}
+
 WITH zuora_subscription AS (
   SELECT *
   FROM {{ ref('zuora_subscription_snaphots_source') }}
