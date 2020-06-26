@@ -9,8 +9,8 @@ WITH source AS (
     SELECT 
       uniquekey::INTEGER                AS primary_key,
       month::DATE                       AS month_of,
-      nullif(function, '')              AS function,
-      nullif(employee_cnt::INTEGER, '') AS employee_count
+      NULLIF(function, '')              AS function,
+      NULLIF(employee_cnt::INTEGER, '') AS employee_count
     FROM source
 
 )

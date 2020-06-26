@@ -6,18 +6,18 @@
 
 WITH source AS (
 
-	SELECT *
-	FROM {{ source('sheetload', 'communication_certificate') }}
+    SELECT *
+    FROM {{ source('sheetload', 'communication_certificate') }}
 
 ), renamed as (
 
-	SELECT
+    SELECT
       "Timestamp"::TIMESTAMP::DATE                                                                 AS date_completed,
-	  "Score"                                                                                      AS score,
-	  "First_&_Last_Name"                                                                          AS submitter_name,
-	  "Email_address_(GitLab_team_members,_please_use_your_GitLab_email_address)"::STRING          AS submitter_email,
-	  "_UPDATED_AT"                                                                                AS last_updated_at
-	FROM source
+      "Score"                                                                                      AS score,
+      "First_&_Last_Name"                                                                          AS submitter_name,
+      "Email_address_(GitLab_team_members,_please_use_your_GitLab_email_address)"::STRING          AS submitter_email,
+      "_UPDATED_AT"                                                                                AS last_updated_at
+    FROM source
 
 )
 
