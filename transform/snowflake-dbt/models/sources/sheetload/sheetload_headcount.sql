@@ -6,12 +6,12 @@ WITH source AS (
 ), renamed AS (
 
 
-	SELECT 
+    SELECT 
       uniquekey::INTEGER                AS primary_key,
       month::DATE                       AS month_of,
       nullif(function, '')              AS function,
       nullif(employee_cnt::INTEGER, '') AS employee_count
-	FROM source
+    FROM source
 
 )
 
