@@ -10,8 +10,8 @@ Sample queries: coming soon
 
 {% enddocs %}
 
-{% docs arr_data_mart)incr %}
+{% docs arr_data_mart_incr %}
 
-Daily snapshots of arr_data_mart, calculated starting from 2020-05-01.
+Daily snapshots of arr_data_mart.
 
 {% enddocs %}
