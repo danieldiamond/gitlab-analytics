@@ -1,16 +1,16 @@
 WITH zuora_account AS (
 
     SELECT *
-    FROM {{ ref('zuora_account_source') }}
+    FROM {{ ref('zuora_account_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
+      AND '{{ var('valid_at') }}'::TIMESTAMP < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 ), zuora_contact AS (
 
     SELECT *
-    FROM {{ ref('zuora_contact_source') }}
+    FROM {{ ref('zuora_contact_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
+      AND '{{ var('valid_at') }}'::TIMESTAMP < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 ), excluded_accounts AS (
 

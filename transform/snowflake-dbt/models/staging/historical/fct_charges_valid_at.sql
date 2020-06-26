@@ -3,7 +3,7 @@ WITH zuora_rate_plan AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-    AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
+    AND '{{ var('valid_at') }}'::TIMESTAMP < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 
 ), zuora_rate_plan_charge AS (
@@ -11,7 +11,7 @@ WITH zuora_rate_plan AS (
     SELECT *
     FROM {{ ref('zuora_rate_plan_charge_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-    AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
+    AND '{{ var('valid_at') }}'::TIMESTAMP < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 
 

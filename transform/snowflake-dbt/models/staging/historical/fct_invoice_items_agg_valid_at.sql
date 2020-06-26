@@ -3,7 +3,7 @@ WITH zuora_invoice AS (
     SELECT *
     FROM {{ ref('zuora_invoice_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
+      AND '{{ var('valid_at') }}'::TIMESTAMP < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 
 ), zuora_invoice_item AS (
@@ -11,7 +11,7 @@ WITH zuora_invoice AS (
     SELECT *
     FROM {{ ref('zuora_invoice_item_snapshots_source') }}
     WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::TIMESTAMP < coalesce_to_infinity(dbt_valid_to)
+      AND '{{ var('valid_at') }}'::TIMESTAMP < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 
 ), invoice_data AS (

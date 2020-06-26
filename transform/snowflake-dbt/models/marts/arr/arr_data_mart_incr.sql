@@ -1,25 +1,28 @@
 /* This table needs to be permanent to allow zero cloning at specific timestamps */
-
+{{
+  config( materialized='incremental',
+    incremental_startegy='insert_overwrite' )
+  }}
 
 WITH fct_charges AS (
 
     SELECT *
-    FROM {{ ref('fct_charges') }}
+    FROM {{ ref('fct_charges_valid_at') }}
 
 ), fct_invoice_items_agg AS (
 
     SELECT *
-    FROM {{ ref('fct_invoice_items_agg') }}
+    FROM {{ ref('fct_invoice_items_agg_valid_at') }}
 
 ), dim_customers AS (
 
     SELECT *
-    FROM {{ ref('dim_customers') }}
+    FROM {{ ref('dim_customers_valid_at') }}
 
 ), dim_accounts AS (
 
     SELECT *
-    FROM {{ ref('dim_accounts') }}
+    FROM {{ ref('dim_accounts_valid_at') }}
 
 ), dim_dates AS (
 
@@ -29,7 +32,7 @@ WITH fct_charges AS (
 ), dim_subscriptions AS (
 
     SELECT *
-    FROM {{ ref('dim_subscriptions') }}
+    FROM {{ ref('dim_subscriptions_valid_at') }}
 
 ), base_charges AS (
 
@@ -108,9 +111,10 @@ WITH fct_charges AS (
       SELECT *
       FROM {{ ref('dim_dates') }}
 
-  ), charges_month_by_month AS (
+), charges_month_by_month AS (
 
       SELECT
+        '{{ var('valid_at') }}'::DATE AS snapshot_date,
         charges_agg.*,
         dim_dates.date_id,
         dateadd('month', -1, dim_dates.date_actual)  AS reporting_month
@@ -127,11 +131,11 @@ WITH fct_charges AS (
 
   SELECT
     --primary_key
-    {{ valid_at }} AS snapshot_date,
     {{ dbt_utils.surrogate_key('snapshot_date', 'reporting_month', 'subscription_name_slugify', 'product_category') }}
                                  AS primary_key,
 
     --date info
+    snapshot_date,
     reporting_month,
     subscription_start_month,
     subscription_end_month,
