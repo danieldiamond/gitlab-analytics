@@ -1003,7 +1003,7 @@ roles:
             - analyst_finance
             - bamboohr
         warehouses:
-            - analyst_x
+            - analyst_xs
 
     - amihaila:
         member_of:
