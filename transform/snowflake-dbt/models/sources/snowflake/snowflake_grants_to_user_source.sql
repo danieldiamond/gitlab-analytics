@@ -9,7 +9,7 @@ WITH source AS (
         role                                    AS role_name,
         granted_to                              AS granted_to_type,
         grantee_name,
-        to_timestamp_ntz(_uploaded_at::NUMBER)  AS snapshot_date,
+        TO_TIMESTAMP_NTZ(_uploaded_at::NUMBER)  AS snapshot_date,
         created_on
     FROM source
 
