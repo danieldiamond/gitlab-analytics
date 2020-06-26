@@ -196,7 +196,6 @@ models:
       qualtrics:
         schema: analytics
 
-
       sfdc:
         xf:
           schema: analytics
