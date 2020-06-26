@@ -38,9 +38,13 @@ class BigQueryClient:
 
     def get_dataframe_from_sql(self, sql_statement: str) -> pd.DataFrame:
         """
-
-        :param sql_statement:
-        :return:
+            Uses BigQuery client to query data and return result,
+            Result is then converted to a dataframe and returned see documentation
+            https://googleapis.dev/python/bigquery/latest/generated/google.cloud.bigquery.job.QueryJob.html
+            Under the hood the client library is actually creating a job in bigquery which is used to
+            query and return the results.
+        :param sql_statement: BigQuery style sql, used to tables hosted in BigQuery.
+        :return: Pandas dataframe
         """
 
         return self.bq_client.query(sql_statement).result().to_dataframe()
