@@ -22,7 +22,7 @@ WITH source AS (
         last_success_login,
         expires_at_time,
         locked_until_time,
-        to_timestamp_ntz(_uploaded_at::NUMBER)  AS snapshot_date
+        TO_TIMESTAMP_NTZ(_uploaded_at::NUMBER)  AS snapshot_date
     FROM source
 
 )
