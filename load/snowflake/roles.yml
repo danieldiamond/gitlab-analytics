@@ -998,6 +998,13 @@ roles:
         warehouses:
             - analyst_xs
 
+    - alcurtis:
+        member_of:
+            - analyst_finance
+            - bamboohr
+        warehouses:
+            - analyst_xs
+
     - amihaila:
         member_of:
             - analyst_growth
@@ -1437,6 +1444,11 @@ users:
         can_login: yes
         member_of:
             - aladhani
+
+    - alcurtis:
+        can_login: yes
+        member_of:
+            - alcurtis
 
     - amihaila:
         can_login: yes

@@ -1835,6 +1835,7 @@ tables:
       , username
       , first_name
       , last_name
+      , user_type
       FROM users
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
