@@ -183,7 +183,7 @@ for source_name, config in config_dict.items():
         "sla": timedelta(hours=8),
         "sla_miss_callback": slack_failed_task,
         "start_date": config["start_date"],
-        "dagrun_timeout": datetime.timedelta(hours=6)
+        "dagrun_timeout": timedelta(hours=6)
     }
     extract_dag = DAG(
         f"{config['dag_name']}_db_extract",
