@@ -29,6 +29,7 @@ sources:
       - name: company_call_attendance
       - name: compensation_certificate
       - name: days_to_close
+      - name: employee_location_factor
       - name: gitlab_slack_stats
         freshness: null
       - name: google_referrals
