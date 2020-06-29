@@ -43,3 +43,9 @@ macros:
       - name: column
         type: string
         description: Name of the column to get SQL for to hash.
+  - name: hash_of_column_in_view
+    description: '{{ doc("hash_of_column_in_view") }}'
+    arguments:
+      - name: column
+        type: string
+        description: Name of the column to get SQL for to hash.
