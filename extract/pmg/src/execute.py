@@ -1,5 +1,4 @@
 from os import environ as env
-from datetime import datetime
 
 from pandas import DataFrame
 from big_query_client import BigQueryClient
@@ -13,7 +12,7 @@ from gitlabdata.orchestration_utils import (
 config_dict = env.copy()
 
 
-def get_pmg_reporting_data_query(start_date: datetime, end_date: datetime) -> str:
+def get_pmg_reporting_data_query(start_date: str, end_date: str) -> str:
     return (
         f"SELECT "
         f"  date,"
@@ -43,7 +42,7 @@ def get_pmg_reporting_data_query(start_date: datetime, end_date: datetime) -> st
     )
 
 
-def write_date_json(date: datetime, df: DataFrame) -> str:
+def write_date_json(date: str, df: DataFrame) -> str:
     """ Just here so we can log in the list comprehension """
     file_name = f"pmg_reporting_data_{date}.json"
     print(f"Writing file {file_name}")
