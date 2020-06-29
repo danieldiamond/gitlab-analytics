@@ -288,4 +288,3 @@ models:
     - name: departments
 - name: sheetload_ic_collaboration_competency
   description: This is a list of all who have completed the IC collaboraiton competency knowledge assessment.
-  columns:
