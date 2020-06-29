@@ -1,10 +1,12 @@
-import pandas as pd
+from os import environ as env
+from logging import info
+
 from google.oauth2 import service_account
 from google.cloud.bigquery import Client
 from yaml import safe_load
-from logging import info
 
-from os import environ as env
+import pandas as pd
+
 
 
 config_dict = env.copy()
