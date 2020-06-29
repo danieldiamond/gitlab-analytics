@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('zendesk', 'sla_policies') }}
+    FROM {{ source('zendesk_community', 'sla_policies') }}
 
 ), renamed AS (
 
