@@ -1,0 +1,43 @@
+version: 2
+
+sources:
+  - name: zendesk_community
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: zendesk_community_stitch
+    loader: Stitch
+    loaded_at_field: _sdc_batched_at
+
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    freshness:
+      warn_after: {count: 8, period: hour}
+      error_after: {count: 24, period: hour}
+
+    tables:
+      - name: groups
+        description: '{{ doc("zendesk_community_groups_desc") }}'
+      - name: group_memberships
+        description: '{{ doc("zendesk_community_group_memberships_desc") }}'
+      - name: macros
+        description: '{{ doc("zendesk_community_macros_desc") }}'
+      - name: organizations
+        description: '{{ doc("zendesk_community_org_desc") }}'
+      - name: satisfaction_ratings
+        description: '{{ doc("zendesk_community_satisfaction_ratings_desc") }}'
+      - name: sla_policies
+        description: '{{ doc("zendesk_community_sla_policies_desc") }}'
+      - name: tags
+        description: '{{ doc("zendesk_community_tags_desc") }}'
+      - name: tickets
+        description: '{{ doc("zendesk_community_tickets_desc") }}'
+      - name: ticket_audits
+        description: '{{ doc("zendesk_community_ticket_audits_desc") }}'        
+      - name: ticket_comments
+        description: '{{ doc("zendesk_community_ticket_comments_desc") }}'
+      - name: ticket_metrics
+        description: '{{ doc("zendesk_community_ticket_metrics_desc") }}'
+      - name: users
+        description: '{{ doc("zendesk_community_users_desc") }}'
