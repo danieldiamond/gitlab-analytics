@@ -115,7 +115,7 @@ WITH fct_charges AS (
 ), charges_month_by_month AS (
 
       SELECT
-        '{{ var('valid_at') }}'::DATE AS snapshot_date,
+        '{{ var('valid_at', '{{ get_current_date() }}' ) }}'::DATE AS snapshot_date,
         charges_agg.*,
         dim_dates.date_id,
         dateadd('month', -1, dim_dates.date_actual)  AS reporting_month
