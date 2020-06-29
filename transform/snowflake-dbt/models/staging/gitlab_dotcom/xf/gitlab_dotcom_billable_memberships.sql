@@ -102,7 +102,7 @@ WITH members AS ( -- direct group and project members
     FROM members
     INNER JOIN projects
       ON members.source_id = projects.project_id
-    WHERE member_source_Type = 'Project'
+    WHERE member_source_type = 'Project'
 
 ), group_group_link_members AS (
 
@@ -122,7 +122,7 @@ WITH members AS ( -- direct group and project members
 
     SELECT *
     FROM namespaces
-    WHERE namespace_type = 'Individual'
+    WHERE namespace_type IS NULL
 
 ), unioned AS (
 
@@ -204,7 +204,7 @@ WITH members AS ( -- direct group and project members
     FROM unioned
     INNER JOIN namespace_lineage
       ON unioned.namespace_id = namespace_lineage.namespace_id
-    INNER JOIN users
+    LEFT JOIN users
       ON unioned.user_id = users.user_id
 
 ), final AS (
@@ -222,15 +222,15 @@ WITH members AS ( -- direct group and project members
       user_id,
       state,
       user_type,
-      IFF(access_level = 10 OR group_access = 10, TRUE, FALSE) AS is_guest,
+      IFF(access_level = 10 OR group_access = 10, TRUE, FALSE) AS is_guest, -- exclude any user with guest access
       IFF(
           state = 'active' AND (user_type != 6 OR user_type IS NULL) AND requested_at IS NULL, 
-          TRUE, FALSE
+          TRUE, FALSE -- must be active, not a project bot, and not awaiting access
       )                                                        AS is_active,
       IFF(
           (ultimate_parent_plan_title = 'gold' AND is_active = TRUE AND is_guest = FALSE)
           OR (ultimate_parent_plan_title != 'gold' AND is_active = TRUE),
-          TRUE, FALSE
+          TRUE, FALSE -- exclude guests if namespace has gold plan
       )                                                        AS is_billable
     FROM joined  
       
