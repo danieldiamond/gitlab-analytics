@@ -64,6 +64,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.stage_name,
       sfdc_opportunity_stage.is_active                                                             AS stage_is_active,
       sfdc_opportunity_stage.is_closed                                                             AS stage_is_closed,
+      sfdc_opportunity.technical_evaluation_date,
       sfdc_opportunity.order_type,
       
       -- opportunity information

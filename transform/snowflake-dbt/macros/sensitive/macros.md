@@ -21,3 +21,7 @@ This macro hashes the column passed in with an obscured salt that it derives fro
 {% docs get_salt %}
 This macro returns a salt from the environment variables based on the name of the column provided.
 {% enddocs %}
+
+{% docs hash_of_column_in_view %}
+This macro hashes the column passed in with an obscured salt that it derives from the `get_salt` macro.  This only differs from the `hash_of_column` macro because it puts the salt in plain-text in the SQL.  Using `encrypt` was making views unusable, so using this macro is the work around.  This should only be used in secure views to not expose the salt in query text.
+{% enddocs %}

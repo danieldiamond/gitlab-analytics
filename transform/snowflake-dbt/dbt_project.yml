@@ -142,6 +142,9 @@ models:
       greenhouse:
         schema: greenhouse
 
+      handbook:
+        schema: handbook
+
       license:
         schema: license_db
 
@@ -158,6 +161,9 @@ models:
       sheetload:
         schema: sheetload
 
+      snowflake:
+        schema: snowflake
+
       version:
         tags: ["product"]
         materialized: table
@@ -173,6 +179,10 @@ models:
     staging:
       schema: staging
       materialized: table
+
+      customers:
+        xf:
+          schema: analytics
 
       engineering:
         materialized: table
@@ -201,6 +211,12 @@ models:
         rpt:
           schema: analytics
 
+      handbook:
+        rpt:
+          schema: analytics
+        xf:
+          schema: analytics
+
       license:
         materialized: view
 
@@ -210,6 +226,10 @@ models:
       sfdc:
         xf:
           schema: analytics
+
+      snowflake:
+          schema: analytics
+          materialized: view
 
       version:
         tags: ["product"]
@@ -242,20 +262,12 @@ models:
       base:
         materialized: table
 
-    customers:
-      materialized: table
-      base:
-          schema: staging
-      intermediate:
-          schema: staging
-
     date:
       materialized: table
 
     handbook:
         materialized: table
-         
-         
+
     netsuite:
       materialized: table
       base:
