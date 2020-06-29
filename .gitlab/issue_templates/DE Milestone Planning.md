@@ -8,7 +8,7 @@ Please add a number for days you'll be working this milestone. Engineers should 
 - @jjstark: 
 - @msendal: 
 - @m_walker: 
-- `@tayloramurphy: 0`
+- @tayloramurphy:
 - @paul_armstrong:
 
 **Total engineering days**: <!-- sum the above engineering days -->

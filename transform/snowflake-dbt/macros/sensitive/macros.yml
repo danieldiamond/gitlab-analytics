@@ -31,3 +31,15 @@ macros:
       - name: join_key
         type: string
         description: The 
+  - name: get_salt
+    description: '{{ doc("get_salt") }}'
+    arguments:
+      - name: column_name
+        type: string
+        description: Name of the column to get the salt for.
+  - name: hash_of_column
+    description: '{{ doc("hash_of_column") }}'
+    arguments:
+      - name: column
+        type: string
+        description: Name of the column to get SQL for to hash.

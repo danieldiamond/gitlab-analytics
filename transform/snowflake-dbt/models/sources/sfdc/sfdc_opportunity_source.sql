@@ -92,6 +92,7 @@ WITH source AS (
         renewal_acv__c                 AS renewal_acv,
         renewal_amount__c              AS renewal_amount,
         sql_source__c                  AS sales_qualified_source,
+        sdr_pipeline_contribution__c   AS sdr_pipeline_contribution,
         sales_segmentation_o__c        AS segment,
         solutions_to_be_replaced__c    AS solutions_to_be_replaced,
         amount                         AS total_contract_value,
@@ -99,6 +100,8 @@ WITH source AS (
         upside_swing_deal_iacv__c      AS upside_swing_deal_iacv,
         web_portal_purchase__c         AS is_web_portal_purchase,
         opportunity_term__c            AS opportunity_term,
+        pio__c                         AS partner_initiated_opportunity,
+        user_segment_o__c              AS user_segment,
 
         -- command plan fields
         fm_champion__c                 AS cp_champion,

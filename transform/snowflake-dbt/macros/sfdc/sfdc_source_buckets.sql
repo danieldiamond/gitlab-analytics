@@ -23,37 +23,23 @@
         THEN 'DiscoverOrg'
       ELSE 'Other'
     END                               AS net_new_source_categories,
-    CASE
-      WHEN {{ lead_source }} in ('Web Chat', 'Request - Public Sector', 'Request - Professional Services', 'Request - Contact', 'Email Request')
-        THEN 'Inbound Request'
-      WHEN {{ lead_source }} in ('Gated Content - General', 'Gated Content - Report', 'Gated Content - Video', 'Gated Content - Whitepaper')
-        THEN 'Gated Content'
-      WHEN {{ lead_source }} in ('Conference', 'Field Event', 'Live Event', 'Owned Event', 'Virtual Sponsorship')
-        THEN 'Field Marketing'
-      WHEN {{ lead_source }} in ('Prospecting - LeadIQ', 'Prospecting - General', 'Prospecting', 'LinkedIn', 'Leadware', 'Datanyze', 'DiscoverOrg', 'Clearbit')
-        THEN 'Prospecting'
-      WHEN {{ lead_source }} in ('Demo')
-        THEN 'Demo'
-      WHEN {{ lead_source }} in ('Trial - Enterprise')
-        THEN 'Trial - Self-managed'
-      WHEN {{ lead_source }} in ('Trial - GitLab.com')
-        THEN 'Trial - SaaS (GitLab.com)'
-      WHEN {{ lead_source }} in ('SDR Generated')
-        THEN 'SDR Generated'
-      WHEN {{ lead_source }} in ('AE Generated')
-        THEN 'AE Generated'
-      WHEN {{ lead_source }} in ('Webcast')
-        THEN 'Webcast'
-      WHEN {{ lead_source }} in ('Web Direct', 'Web')
-        THEN 'Web Direct'
-      WHEN {{ lead_source }} in ('Newsletter', 'Security Newsletter', 'Email Subscription')
-        THEN 'Newsletter'
-      WHEN {{ lead_source }} in ('Employee Referral', 'External Referral')
-        THEN 'Referral'
-      WHEN {{ lead_source }} in ('GitLab.com', 'Gitlab.com')
-        THEN 'GitLab.com'
-      WHEN {{ lead_source }} in ('OSS', 'Education')
-        THEN 'EDU/OSS'
+   CASE
+      WHEN {{ lead_source }} in ('CORE Check-Up', 'CE Download', 'CE Usage Ping','CE Version Check')
+        THEN 'core'
+      WHEN {{ lead_source }} in ('Consultancy Request','Contact Request','Content','Demo','Drift','Education','EE Version Check','Email Request','Email Subscription','Enterprise Trial','Gated Content - eBook','Gated Content - General','Gated Content - Report','Gated Content - Video','Gated Content - Whitepaper','GitLab.com','MovingtoGitLab','Newsletter','OSS','Request - Community','Request - Contact','Request - Professional Services','Request - Public Sector','Security Newsletter','Startup Application','Trial - Enterprise','Trial - GitLab.com','Web','Web Chat','White Paper')
+        THEN 'inbound'
+      WHEN {{ lead_source }} in ('AE Generated', 'Clearbit','Datanyze','DiscoverOrg','Gemnasium','GitLab Hosted','Gitorious','gmail','Leadware','LinkedIn','Live Event','Prospecting','Prospecting - General','Prospecting - LeadIQ','SDR Generated','seamless.ai','Zoominfo')
+        THEN 'outbound'
+      WHEN {{ lead_source }} in ('Advertisement', 'Conference', 'Field Event', 'Owned Event','Promotion','Virtual Sponsorship')
+        THEN 'paid demand gen'
+      WHEN {{ lead_source }} in ('Purchased List')
+        THEN 'purchased list'
+      WHEN {{ lead_source }} in ('Employee Referral', 'Event Partner', 'Existing Client', 'External Referral','Partner','Seminar - Partner','Word of mouth')
+        THEN 'referral'
+      WHEN {{ lead_source }} in ('Webcast','Webinar')
+        THEN 'virtual event'
+      WHEN {{ lead_source }} in ('GitLab Subscription Portal','Web Direct')
+        THEN 'web direct'
       ELSE 'Other'
     END                               AS source_buckets,
 

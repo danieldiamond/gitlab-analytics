@@ -59,6 +59,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.sales_qualified_date,
       sfdc_opportunity.sales_segment,
       sfdc_opportunity.sales_type,
+      sfdc_opportunity.sdr_pipeline_contribution,
       sfdc_opportunity.source_buckets,
       sfdc_opportunity.stage_name,
       sfdc_opportunity_stage.is_active                                                             AS stage_is_active,
@@ -106,6 +107,8 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.upside_swing_deal_iacv,
       sfdc_opportunity.incremental_acv * (probability /100)         AS weighted_iacv,
       sfdc_opportunity.is_web_portal_purchase,
+      sfdc_opportunity.partner_initiated_opportunity,
+      sfdc_opportunity.user_segment,
 
       -- command plan fields
       sfdc_opportunity.cp_champion,

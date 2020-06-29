@@ -111,6 +111,12 @@ models:
         materialized: table
         schema: airflow
 
+      customers:
+        schema: customers
+        sensitive:
+          schema: sensitive
+          secure: true
+
       dbt:
         materialized: table
         schema: dbt
@@ -147,6 +153,7 @@ models:
         schema: sfdc
         sensitive:
           schema: sensitive
+          secure: true
 
       version:
         tags: ["product"]
@@ -168,8 +175,8 @@ models:
         materialized: table
 
       gitlab_data_yaml:
-        materialized: table
-        schema: analytics
+        xf:
+          schema: analytics
 
       gitlab_dotcom:
         tags: ["product"]
@@ -187,6 +194,7 @@ models:
       greenhouse:
         xf:
           schema: sensitive
+          secure: true
         rpt:
           schema: analytics
 
@@ -210,11 +218,24 @@ models:
       zuora:
         xf:
           schema: analytics
+    
+    marts:  
+      
+      arr:  
+        materialized: table  
+
+      product_kpis:
+        materialized: table 
+
+      exports:
+        materialized: view
+        schema: exports 
 
 
     # Legacy Structure
     bamboohr:
       schema: sensitive
+      secure: true
       base:
         materialized: table
 
@@ -231,10 +252,6 @@ models:
     handbook:
         materialized: table
          
-    marts:
-        revenue:
-        base:
-        materialized: table   
          
     netsuite:
       materialized: table

@@ -18,7 +18,11 @@ WITH source AS (
         NULLIF(gitlab_issue, '')::VARCHAR             AS gitlab_issue,
         NULLIF(commit_start, '')::VARCHAR             AS commit_start,
         NULLIF(commit_handbook_v1, '')::VARCHAR       AS commit_handbook_v1,
-        NULLIF(is_deleted, '')::VARCHAR::BOOLEAN      AS is_deleted
+        NULLIF(is_deleted, 'false')::VARCHAR::BOOLEAN      AS is_deleted,
+        NULLIF(kpi_number, '')::INT                    AS kpi_number,
+        NULLIF(version_number, '')::INT               AS version_number,
+        NULLIF(handbook_reference, '')::VARCHAR       AS handbook_reference,
+        NULLIF(kpi_id, '')::int                       AS kpi_id
     FROM source
       
 ) 

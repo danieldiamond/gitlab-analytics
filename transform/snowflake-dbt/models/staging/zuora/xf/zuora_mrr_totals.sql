@@ -7,34 +7,7 @@ WITH base_mrr AS (
 
     SELECT * FROM {{ ref('zuora_base_mrr_amortized') }}
 
-), trueup_mrr AS (
-
-    SELECT * FROM {{ ref('zuora_base_trueups') }}
-
-), mrr_combined AS ( --union the two tables
-
-    SELECT
-          country,
-          account_number,
-          subscription_name_slugify,
-          subscription_name,
-          oldest_subscription_in_cohort,
-          lineage,
-          trueup_month    AS mrr_month,
-          cohort_month    AS zuora_subscription_cohort_month,
-          cohort_quarter  AS zuora_subscription_cohort_quarter,
-          mrr,
-          'Trueup'        AS product_category,
-          'Other'         AS delivery,
-          charge_name     AS rate_plan_name,
-          CASE WHEN lower(rate_plan_name) like '%support%' THEN 'Support Only'
-            ELSE 'Full Service'
-          END             AS service_type,
-          null            AS unit_of_measure,
-          null            AS quantity
-    FROM trueup_mrr
-
-    UNION ALL
+), service_type AS ( --calculate service_type
 
     SELECT country,
           account_number,
@@ -75,7 +48,7 @@ WITH base_mrr AS (
           array_agg(rate_plan_name) AS rate_plan_name,
           sum(quantity)             AS quantity,
           sum(mrr)                  AS mrr
-    FROM mrr_combined
+    FROM service_type
     {{ dbt_utils.group_by(n=14) }}
 
 )

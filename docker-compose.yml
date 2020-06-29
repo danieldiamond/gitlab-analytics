@@ -91,6 +91,10 @@ services:
         SNOWFLAKE_SNAPSHOT_DATABASE: "SNOWFLAKE"
         SNOWFLAKE_LOAD_DATABASE: "RAW"
         SNOWFLAKE_TRANSFORM_WAREHOUSE: "ANALYST_XS"
+        SALT: "pizza"
+        SALT_IP: "pie"
+        SALT_NAME: "pepperoni"
+        SALT_EMAIL: "cheese"
       restart: always
       command: bash -c "/bin/bash"
       working_dir: /usr/local/analytics/transform/snowflake-dbt/

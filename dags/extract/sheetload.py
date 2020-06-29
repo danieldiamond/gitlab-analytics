@@ -17,6 +17,10 @@ from airflow_utils import (
 )
 from kube_secrets import (
     GCP_SERVICE_CREDS,
+    SALT,
+    SALT_EMAIL,
+    SALT_IP,
+    SALT_NAME,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_LOAD_PASSWORD,
     SNOWFLAKE_LOAD_ROLE,
@@ -28,6 +32,7 @@ from kube_secrets import (
     SNOWFLAKE_TRANSFORM_WAREHOUSE,
     SNOWFLAKE_USER,
 )
+from kubernetes_helpers import get_affinity, get_toleration
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
@@ -95,6 +100,8 @@ for sheet in sheets:
             SNOWFLAKE_LOAD_PASSWORD,
         ],
         env_vars=pod_env_vars,
+        affinity=get_affinity(False),
+        tolerations=get_toleration(False),
         arguments=[container_cmd],
         dag=dag,
     )
@@ -112,6 +119,10 @@ dbt_sheetload = KubernetesPodOperator(
     task_id="dbt-sheetload",
     name="dbt-sheetload",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
@@ -120,6 +131,8 @@ dbt_sheetload = KubernetesPodOperator(
         SNOWFLAKE_TRANSFORM_SCHEMA,
     ],
     env_vars=pod_env_vars,
+    affinity=get_affinity(False),
+    tolerations=get_toleration(False),
     arguments=[dbt_sheetload_cmd],
     dag=dag,
 )

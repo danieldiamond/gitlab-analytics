@@ -5,6 +5,20 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  columns:
+    import_db: GITLAB_DB
+    import_schema: information_schema
+    import_query: >
+      SELECT CONCAT(table_name, '_', column_name, table_schema) AS column_id
+      , table_name
+      , column_name
+      , table_schema
+      , ordinal_position
+      FROM information_schema.columns
+    export_schema: 'gitlab_com'
+    export_table: 'columns'
+    export_table_primary_key: CONCAT(table_name, '_', column_name, table_schema)
+    advanced_metadata: true
   # resource_label_events:
   #   import_db: GITLAB_DB
   #   import_query: >
@@ -82,6 +96,7 @@ tables:
       , created_by_id
       , invite_email
       , invite_accepted_at
+      , invite_token
       , requested_at
       , CASE WHEN expires_at > '2262-01-01' THEN '2262-01-01' ELSE expires_at END AS expires_at
       , ldap
@@ -1704,6 +1719,20 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'services'
     export_table_primary_key: id
+  terraform_states:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , project_id
+      , created_at
+      , updated_at
+      , file_store
+      FROM terraform_states
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'terraform_states'
+    export_table_primary_key: id
   timelogs:
     import_db: GITLAB_DB
     import_query: >
@@ -1836,6 +1865,7 @@ tables:
       , render_whitespace_in_code
       , tab_width
       , feature_filter_type
+      , experience_level
       FROM user_preferences
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -2112,6 +2142,8 @@ tables:
       , ip_address
       , maximum_timeout
       , runner_type
+      , public_projects_minutes_cost_factor
+      , private_projects_minutes_cost_factor
       FROM ci_runners
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp

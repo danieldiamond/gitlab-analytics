@@ -17,6 +17,8 @@ from kube_secrets import (
     SNOWFLAKE_LOAD_USER,
     SNOWFLAKE_LOAD_WAREHOUSE,
 )
+from kubernetes_helpers import get_affinity, get_toleration
+
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
@@ -71,6 +73,8 @@ part_of_product_mrs_run = KubernetesPodOperator(
             "END": "{{ next_execution_date.isoformat() }}",
         },
     },  # merge the dictionaries into one
+    affinity=get_affinity(False),
+    tolerations=get_toleration(False),
     arguments=[container_cmd],
     dag=dag,
 )

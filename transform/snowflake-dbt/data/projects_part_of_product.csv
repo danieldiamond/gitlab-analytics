@@ -164,6 +164,7 @@ gitlab-org/labkit,9438583
 gitlab-org/container-registry,13831684
 gitlab-org/gitlab-ui,7071551
 gitlab-org/cluster-integration/cluster-applications,14404642
+gitlab-org/cluster-integration/gitlab-agent,19019153
 gitlab-services/version-gitlab-com,6491770
 gitlab-org/security/gitlab-workhorse,15704133
 gitlab-org/security/gitaly,15685912
@@ -177,6 +178,7 @@ gitlab-org/status-page,16842968
 gitlab-com/gl-infra/gitter-infrastructure,2959752
 gitlab-org/webide-file-sync,11446522
 gitlab-org/gitlab-services/design.gitlab.com,4456656
+gitlab-org/terraform-images,18943607
 gitlab-org/gitlab-qa,1441932
 gitlab-org/quality/triage-ops,7776928
 gitlab-org/quality/performance-environment-builder,14292404
