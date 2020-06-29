@@ -116,6 +116,11 @@ sheets:
       - values_certificate
       - compensation_certificate
       - ic_collaboration_competency
+      - ic_results_competency
+      - ic_efficiency_competency
+      - ic_dib_comptency
+      - ic_iteration_competency
+      - ic_transparency_competency
   - name: yc_companies
     owner: '@jeanpeguero'
     tabs:
