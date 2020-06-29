@@ -207,7 +207,34 @@ WITH members AS ( -- direct group and project members
     INNER JOIN users
       ON unioned.user_id = users.user_id
 
+), final AS (
+
+    SELECT
+      ultimate_parent_id,
+      ultimate_parent_plan_id,
+      ultimate_parent_plan_title,
+      namespace_id,
+      membership_source_type,
+      membership_source_id,
+      access_level,
+      group_access,
+      requested_at,
+      user_id,
+      state,
+      user_type,
+      IFF(access_level = 10 OR group_access = 10, TRUE, FALSE) AS is_guest,
+      IFF(
+          state = 'active' AND (user_type != 6 OR user_type IS NULL) AND requested_at IS NULL, 
+          TRUE, FALSE
+      )                                                        AS is_active,
+      IFF(
+          (ultimate_parent_plan_title = 'gold' AND is_active = TRUE AND is_guest = FALSE)
+          OR (ultimate_parent_plan_title != 'gold' AND is_active = TRUE),
+          TRUE, FALSE
+      )                                                        AS is_billable
+    FROM joined  
+      
 )
 
 SELECT *
-FROM joined
+FROM final
