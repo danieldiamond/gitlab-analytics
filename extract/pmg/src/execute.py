@@ -1,12 +1,14 @@
-import datetime
+from os import environ as env
+from datetime import datetime
+
 from pandas import DataFrame
 from big_query_client import BigQueryClient
+
 from gitlabdata.orchestration_utils import (
     snowflake_engine_factory,
     snowflake_stage_load_copy_remove,
     dataframe_uploader,
 )
-from os import environ as env
 
 config_dict = env.copy()
 
