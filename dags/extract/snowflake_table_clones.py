@@ -84,6 +84,6 @@ make_clone = KubernetesPodOperator(
     name="snowflake-clone-arr-data-mart",
     secrets=secrets,
     env_vars=pod_env_vars,
-    arguments=[container_cmd,],
+    arguments=[container_cmd],
     dag=dag,
 )

@@ -25,9 +25,7 @@ def get_qualtrics_request_table_name(file_id):
     return "".join(x for x in file_id if x.isalpha()).upper()
 
 
-def process_qualtrics_file(
-    file, is_test, google_sheet_client, schema,
-):
+def process_qualtrics_file(file, is_test, google_sheet_client, schema):
     file_name = file.title
     _, tab = file_name.split(".")
     if file.sheet1.title != tab:
@@ -91,6 +89,4 @@ def qualtrics_loader(load_type: str):
     schema = "qualtrics_mailing_list"
 
     for file in qualtrics_files_to_load:
-        process_qualtrics_file(
-            file, is_test, google_sheet_client, schema,
-        )
+        process_qualtrics_file(file, is_test, google_sheet_client, schema)
