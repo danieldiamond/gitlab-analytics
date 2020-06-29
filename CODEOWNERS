@@ -63,7 +63,6 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/models/netsuite/           @iweeks         @kathleentam
 /transform/snowflake-dbt/models/smau_events/        @mpeychet_      @kathleentam
 /transform/snowflake-dbt/models/snapshots/          @m_walker       @kathleentam    @jjstark
-/transform/snowflake-dbt/models/snowflake/          @m_walker       @kathleentam    @jjstark
 /transform/snowflake-dbt/models/snowplow/           @tayloramurphy  @mpeychet_      
 /transform/snowflake-dbt/models/snowplow_combined/  @tayloramurphy  @mpeychet_
 
@@ -103,6 +102,9 @@ __init__.py         @kathleentam   @jjstark
 
 /transform/snowflake-dbt/models/sources/sfdc/       @derekatwood    @kathleentam	@jeanpeguero     @jjstark  
 /transform/snowflake-dbt/models/staging/sfdc/       @derekatwood    @kathleentam    @jeanpeguero     @jjstark
+
+/transform/snowflake-dbt/models/sources/snowflake/  @m_walker       @kathleentam    @jjstark
+/transform/snowflake-dbt/models/staging/snowflake/  @m_walker       @kathleentam    @jjstark
 
 /transform/snowflake-dbt/models/sources/version/    @mpeychet_		@m_walker   @derekatwood    @kathleentam
 /transform/snowflake-dbt/models/staging/version/    @mpeychet_		@m_walker   @derekatwood    @kathleentam

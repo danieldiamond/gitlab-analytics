@@ -158,6 +158,9 @@ models:
           schema: sensitive
           secure: true
 
+      snowflake:
+        schema: snowflake
+
       version:
         tags: ["product"]
         materialized: table
@@ -221,6 +224,10 @@ models:
         xf:
           schema: analytics
 
+      snowflake:
+          schema: analytics
+          materialized: view
+
       version:
         tags: ["product"]
         xf:
@@ -254,7 +261,10 @@ models:
 
     date:
       materialized: table
-         
+
+    handbook:
+        materialized: table
+
     netsuite:
       materialized: table
       base:
