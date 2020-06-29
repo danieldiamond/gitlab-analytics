@@ -77,7 +77,8 @@ WITH source AS (
       username::VARCHAR                                                AS user_name,
       first_name::VARCHAR                                              AS first_name,
       last_name::VARCHAR                                               AS last_name,
-      name::VARCHAR                                                    AS users_name
+      name::VARCHAR                                                    AS users_name,
+      user_type::VARCHAR                                               AS user_type
 
     FROM source
     QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY updated_at DESC) = 1
