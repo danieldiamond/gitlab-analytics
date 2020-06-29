@@ -288,3 +288,13 @@ models:
     - name: departments
 - name: sheetload_ic_collaboration_competency
   description: This is a list of all who have completed the IC collaboraiton competency knowledge assessment.
+- name: sheetload_ic_results_competency
+  description: This is a list of all who have completed the IC results competency knowledge assessment.
+- name: sheetload_ic_efficiency_competency
+  description: This is a list of all who have completed the IC efficiency competency knowledge assessment.
+- name: sheetload_ic_dib_comptency
+  description: This is a list of all who have completed the IC diversity, inclusion, and belonging competency knowledge assessment.
+- name: sheetload_ic_iteration_competency
+  description: This is a list of all who have completed the IC iteration competency knowledge assessment.
+- name: sheetload_ic_transparency_competency
+  description: This is a list of all who have completed the IC transparency competency knowledge assessment.  
