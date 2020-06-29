@@ -22,11 +22,11 @@ WITH source AS (
       current_rate::FLOAT                    AS current_rate,
       historical_budget_rate::FLOAT          AS historical_budget_rate,
       historical_rate::FLOAT                 AS historical_rate,
-      _fivetran_deleted::BOOLEAN   AS is_fivetran_deleted
+      _fivetran_deleted::BOOLEAN             AS is_fivetran_deleted
 
 
     FROM source
-    WHERE LOWER(_fivetran_deleted) = 'false'
+
 
 )
 
