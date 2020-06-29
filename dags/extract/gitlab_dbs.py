@@ -235,6 +235,7 @@ for source_name, config in config_dict.items():
         "retries": 0,
         "retry_delay": timedelta(minutes=3),
         "start_date": config["start_date"],
+        "dagrun_timeout": timedelta(hours=10)
     }
 
     sync_dag = DAG(
