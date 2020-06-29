@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: customers_db_customers
+    description: This model is the data from tap-postgres for the customers table from customers.gitlab.com. The schema of the database is defined in [this ruby code](https://gitlab.com/gitlab-org/customers-gitlab-com/blob/master/db/schema.rb).
+  - name: customers_db_orders
+    description: This model is the data from tap-postgres for the orders table from customers.gitlab.com. The schema of the database is defined in [this ruby code](https://gitlab.com/gitlab-org/customers-gitlab-com/blob/master/db/schema.rb).
+  - name: customers_db_orders_with_incomplete_charges
+    description: '{{ doc("customers_db_orders_with_incomplete_charges") }}'
+  - name: customers_db_orders_with_valid_charges
+    description: '{{ doc("customers_db_orders_with_valid_charges") }}'

@@ -174,6 +174,10 @@ models:
       schema: staging
       materialized: table
 
+      customers:
+        xf:
+          schema: analytics
+
       engineering:
         materialized: table
 
@@ -247,13 +251,6 @@ models:
       secure: true
       base:
         materialized: table
-
-    customers:
-      materialized: table
-      base:
-          schema: staging
-      intermediate:
-          schema: staging
 
     date:
       materialized: table

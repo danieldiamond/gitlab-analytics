@@ -736,12 +736,15 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.tap_postgres
+                    - analytics.customers
             tables:
                 read:
-                    - raw.tap_postgres.*  
+                    - raw.tap_postgres.*
+                    - analytics.customers.*
 
     - qualtrics:
         warehouses:
