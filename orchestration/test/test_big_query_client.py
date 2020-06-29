@@ -21,4 +21,3 @@ def test_project():
 
 def test_endpoint():
     assert get_api_endpoint(bq_client) == "https://bigquery.googleapis.com"
-
