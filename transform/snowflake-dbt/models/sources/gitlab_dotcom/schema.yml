@@ -1424,6 +1424,20 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_terraform_states
+    description: Base model for terraform_states table.
+    columns:
+      - name: terraform_state_id
+        tests:
+          - not_null
+          - unique
+      - name: project_id
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_timelogs
     description: Base model for timelogs table.
     columns:
