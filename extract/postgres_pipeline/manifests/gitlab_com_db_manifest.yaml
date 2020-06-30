@@ -1224,6 +1224,7 @@ tables:
       , lfs_enabled
       , parent_id
       , shared_runners_minutes_limit
+      , extra_shared_runners_minutes_limit
       , repository_size_limit
       , require_two_factor_authentication
       , two_factor_grace_period
