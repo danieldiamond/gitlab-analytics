@@ -216,6 +216,7 @@ roles:
             - google_analytics_360
             - netsuite
             - snowflake_db
+            - zendesk
             - zuora
         privileges:
             databases:
