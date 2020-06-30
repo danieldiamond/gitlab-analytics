@@ -35,6 +35,12 @@ sources:
         freshness: null
       - name: google_referrals
         freshness: null
+      - name: ic_collaboration_competency
+      - name: ic_dib_comptency
+      - name: ic_efficiency_competency
+      - name: ic_iteration_competency
+      - name: ic_results_competency
+      - name: ic_transparency_competency
       - name: headcount
         freshness: null
       - name: hire_forecast
