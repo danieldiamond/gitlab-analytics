@@ -8,7 +8,6 @@ WITH employee_directory_intermediate AS (
 
    SELECT * FROM {{ref('employee_directory_intermediate')}}
 
-
 ), cleaned AS (
 
     SELECT
