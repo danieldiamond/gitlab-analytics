@@ -459,7 +459,7 @@ WITH gitlab_subscriptions AS (
 ), push_events AS (
 
     SELECT *
-    FROM {{ ref('gitlab_dotcom_projects_xf') }}
+    FROM {{ ref('gitlab_dotcom_events') }}
     WHERE event_action_type = 'pushed'
 
 ), group_members AS (
