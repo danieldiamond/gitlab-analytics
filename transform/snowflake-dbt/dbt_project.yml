@@ -265,9 +265,6 @@ models:
     date:
       materialized: table
 
-    handbook:
-        materialized: table
-
     netsuite:
       materialized: table
       base:
