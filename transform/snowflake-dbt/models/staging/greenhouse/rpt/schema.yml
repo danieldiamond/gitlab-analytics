@@ -131,3 +131,4 @@ models:
     - name: location
     - name: location_factor
     - name: candidate_id
+    
