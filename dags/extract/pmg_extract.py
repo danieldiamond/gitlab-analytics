@@ -20,6 +20,7 @@ from kube_secrets import (
     GCP_SERVICE_CREDS,
 )
 
+from kubernetes_helpers import get_affinity, get_toleration
 
 env = os.environ.copy()
 pod_env_vars = {"CI_PROJECT_DIR": "/analytics"}
@@ -62,6 +63,8 @@ pmg_operator = KubernetesPodOperator(
         "START_TIME": "{{ execution_date.isoformat() }}",
         "END_TIME": "{{ yesterday_ds }}",
     },
+    affinity=get_affinity(False),
+    tolerations=get_toleration(False),
     arguments=[pmg_extract_command],
     dag=dag,
 )
