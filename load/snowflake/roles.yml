@@ -357,6 +357,7 @@ roles:
                 - raw.engineering_extracts
                 - raw.gitlab_data_yaml
                 - raw.gitter
+                - raw.pmg
                 - raw.prometheus
                 - raw.snowplow
                 - raw.tap_postgres
@@ -365,6 +366,7 @@ roles:
                 - raw.engineering_extracts.*
                 - raw.gitlab_data_yaml.*
                 - raw.gitter.*
+                - raw.pmg.*
                 - raw.prometheus.*
                 - raw.snowplow.*
                 - raw.tap_postgres.*
