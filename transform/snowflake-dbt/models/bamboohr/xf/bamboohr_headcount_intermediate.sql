@@ -98,22 +98,22 @@ WITH dates AS (
           AND job_role_modified = 'Senior Leadership',1,0)                       AS separated_leaders,
       
       IFF(dates.start_date = date_actual 
-          AND job_role = 'Manager',1,0)                                          AS headcount_start_manager,
+          AND job_role_modified = 'Manager',1,0)                                 AS headcount_start_manager,
       IFF(dates.end_date = date_actual
-          AND job_role = 'Manager',1,0)                                          AS headcount_end_manager,
+          AND job_role_modified = 'Manager',1,0)                                 AS headcount_end_manager,
       IFF(is_hire_date = True 
-          AND job_role = 'Manager',1,0)                                          AS hired_manager,
+          AND job_role_modified = 'Manager',1,0)                                 AS hired_manager,
       IFF(is_termination_date = True
-          AND job_role = 'Manager',1,0)                                          AS separated_manager,
+          AND job_role_modified = 'Manager',1,0)                                 AS separated_manager,
 
        IFF(dates.start_date = date_actual 
-          AND job_role = 'Individual Contributor',1,0)                           AS headcount_start_contributor,
+          AND job_role_modified = 'Individual Contributor',1,0)                  AS headcount_start_contributor,
       IFF(dates.end_date = date_actual
-          AND job_role = 'Individual Contributor',1,0)                           AS headcount_end_contributor,
+          AND job_role_modified = 'Individual Contributor',1,0)                  AS headcount_end_contributor,
       IFF(is_hire_date = True 
-          AND job_role = 'Individual Contributor',1,0)                           AS hired_contributor,
+          AND job_role_modified = 'Individual Contributor',1,0)                  AS hired_contributor,
       IFF(is_termination_date = True
-          AND job_role = 'Individual Contributor',1,0)                           AS separated_contributor                
+          AND job_role_modified = 'Individual Contributor',1,0)                  AS separated_contributor                
     FROM dates
     LEFT JOIN employees
       ON DATE_TRUNC(month,dates.start_date) = DATE_TRUNC(month, employees.date_actual)
