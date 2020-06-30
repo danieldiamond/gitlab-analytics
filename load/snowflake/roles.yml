@@ -543,7 +543,7 @@ roles:
             tables:
                 read:
                     - raw.bamboohr.*
-                    - analytics.greenhouse.*
+                    - analytics.bamboohr.*
     
     - boneyard:
         warehouses:
