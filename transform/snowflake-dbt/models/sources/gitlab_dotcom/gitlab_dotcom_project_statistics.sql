@@ -15,6 +15,8 @@ WITH source AS (
     repository_size::INTEGER                        AS repository_size,
     lfs_objects_size::INTEGER                       AS lfs_objects_size,
     build_artifacts_size::INTEGER                   AS build_artifacts_size,
+    packages_size::INTEGER                          AS packages_size,
+    wiki_size::INTEGER                              AS wiki_size
     shared_runners_seconds::INTEGER                 AS shared_runners_seconds,
     shared_runners_seconds_last_reset::TIMESTAMP    AS last_update_started_at
   FROM source
