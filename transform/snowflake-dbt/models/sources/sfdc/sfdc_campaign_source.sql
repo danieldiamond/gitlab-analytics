@@ -42,7 +42,7 @@ WITH source AS (
         numberofresponses                                                   AS count_responses,
         numberofwonopportunities                                            AS count_won_opportunities,
         numbersent                                                          AS count_sent,
-
+        strat_contribution__c                                               AS strategic_marketing_contribution,
 
         --metadata
         createddate                                                         AS created_date,
