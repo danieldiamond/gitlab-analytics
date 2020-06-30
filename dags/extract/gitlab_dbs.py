@@ -183,6 +183,7 @@ for source_name, config in config_dict.items():
         "sla": timedelta(hours=8),
         "sla_miss_callback": slack_failed_task,
         "start_date": config["start_date"],
+        "dagrun_timeout": timedelta(hours=6),
     }
     extract_dag = DAG(
         f"{config['dag_name']}_db_extract",
@@ -200,8 +201,7 @@ for source_name, config in config_dict.items():
             if "{EXECUTION_DATE}" not in manifest["tables"][table]["import_query"]:
                 continue
             incremental_cmd = generate_cmd(
-                config["dag_name"],
-                f"--load_type incremental --load_only_table {table}",
+                config["dag_name"], f"--load_type incremental --load_only_table {table}"
             )
 
             incremental_extract = KubernetesPodOperator(
@@ -234,6 +234,7 @@ for source_name, config in config_dict.items():
         "retries": 0,
         "retry_delay": timedelta(minutes=3),
         "start_date": config["start_date"],
+        "dagrun_timeout": timedelta(hours=10),
     }
 
     sync_dag = DAG(
@@ -250,7 +251,7 @@ for source_name, config in config_dict.items():
         for table in table_list:
             if "{EXECUTION_DATE}" in manifest["tables"][table]["import_query"]:
                 sync_cmd = generate_cmd(
-                    config["dag_name"], f"--load_type sync --load_only_table {table}",
+                    config["dag_name"], f"--load_type sync --load_only_table {table}"
                 )
                 sync_extract = KubernetesPodOperator(
                     **gitlab_defaults,

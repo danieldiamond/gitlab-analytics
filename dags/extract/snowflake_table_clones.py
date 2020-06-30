@@ -60,6 +60,7 @@ default_args = {
     "retries": 1,
     "retry_delay": timedelta(minutes=1),
     "start_date": datetime(2020, 6, 7),
+    "dagrun_timeout": timedelta(hours=2),
 }
 
 # Create the DAG
@@ -83,6 +84,6 @@ make_clone = KubernetesPodOperator(
     name="snowflake-clone-arr-data-mart",
     secrets=secrets,
     env_vars=pod_env_vars,
-    arguments=[container_cmd,],
+    arguments=[container_cmd],
     dag=dag,
 )

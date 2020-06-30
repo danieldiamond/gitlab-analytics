@@ -59,6 +59,7 @@ default_args = {
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
     "trigger_rule": TriggerRule.ALL_DONE,
+    "dagrun_timeout": timedelta(hours=6),
 }
 
 # Create the DAG

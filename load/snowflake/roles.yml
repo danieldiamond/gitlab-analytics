@@ -694,9 +694,11 @@ roles:
             schemas:
                 read:
                     - raw.handbook
+                    - analytics.handbook
             tables:
                 read:
                     - raw.handbook.*
+                    - analytics.handbook.*
 
     - license_db:
         privileges:
@@ -734,12 +736,15 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.tap_postgres
+                    - analytics.customers
             tables:
                 read:
-                    - raw.tap_postgres.*  
+                    - raw.tap_postgres.*
+                    - analytics.customers.*
 
     - qualtrics:
         warehouses:

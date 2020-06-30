@@ -230,6 +230,8 @@ sources:
         identifier: gitlab_db_subscriptions
       - name: snippets
         identifier: gitlab_db_snippets
+      - name: terraform_states
+        identifier: gitlab_db_terraform_states
       - name: timelogs
         identifier: gitlab_db_timelogs
       - name: todos
