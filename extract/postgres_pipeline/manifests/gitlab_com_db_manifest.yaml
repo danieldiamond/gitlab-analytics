@@ -129,7 +129,6 @@ tables:
         , iid
         , severity
         , status
-        , fingerprint bytea
         , issue_id
         , project_id
         , title
