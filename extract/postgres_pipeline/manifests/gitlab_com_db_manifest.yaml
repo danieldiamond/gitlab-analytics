@@ -106,6 +106,61 @@ tables:
     export_table: 'members'
     export_table_primary_key: id
     advanced_metadata: true
+
+  alert_management_alert_assignees:
+    import_db: GITLAB_DB
+    import_query: >
+        SELECT id
+        , user_id
+        , alert_id
+        FROM alert_management_alert_assignees
+    export_schema: 'gitlab_dotcom'
+    export_table: 'alert_management_alert_assignees'
+    export_table_primary_key: id
+
+  alert_management_alerts:
+    import_db: GITLAB_DB
+    import_query: >
+        SELECT id
+        , created_at
+        , updated_at
+        , started_at
+        , ended_at
+        , events
+        , iid
+        , severity
+        , status
+        , issue_id
+        , project_id
+        , title
+        , description
+        , service
+        , monitoring_tool
+        , hosts
+        , payload        
+        FROM alert_management_alerts
+        WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+          AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: 'alert_management_alerts'
+    export_table_primary_key: id
+
+  alerts_service_data:
+    import_db: GITLAB_DB
+    import_query: >
+        SELECT id
+        , service_id
+        , created_at
+        , updated_at
+        , encrypted_token
+        , encrypted_token_iv
+        FROM alerts_service_data
+        WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+          AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_dotcom'
+    export_table: 'alerts_service_data'
+    export_table_primary_key: id
+
   approvals:
     import_db: GITLAB_DB
     import_query: >
