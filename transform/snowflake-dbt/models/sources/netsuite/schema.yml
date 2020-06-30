@@ -318,6 +318,8 @@ models:
           tests:
             - not_null
             - unique
+        - name: entity_name
+        - name: entity_full_name
     - name: netsuite_subsidiaries_source
       description: "[Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/subsidiaries.html)"
       columns:
