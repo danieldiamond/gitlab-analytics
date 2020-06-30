@@ -473,7 +473,7 @@ WITH gitlab_subscriptions AS (
 ), sast_jobs AS (
 
     SELECT *
-  FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
+    FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
     WHERE secure_ci_job_type = 'sast'
 
 ), services AS (
