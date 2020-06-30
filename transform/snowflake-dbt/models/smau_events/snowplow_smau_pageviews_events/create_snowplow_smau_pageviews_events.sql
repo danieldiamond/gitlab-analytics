@@ -6,6 +6,15 @@
 
 {%- set event_ctes = [
    {
+      "event_name":"design_viewed",
+      "regexp_where_statements":[
+         {
+            "regexp_pattern":"(\/([0-9A-Za-z_.-])*){2,}\/issues\/[0-9]{1,}\/designs\/[0-9A-Za-z_.-]{1,}",
+            "regexp_function":"REGEXP"
+         }
+      ]
+   },
+   {
       "event_name":"mr_viewed",
       "regexp_where_statements":[
          {

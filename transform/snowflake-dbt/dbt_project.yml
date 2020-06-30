@@ -115,6 +115,7 @@ models:
         schema: customers
         sensitive:
           schema: sensitive
+          secure: true
 
       dbt:
         materialized: table
@@ -141,6 +142,9 @@ models:
       greenhouse:
         schema: greenhouse
 
+      handbook:
+        schema: handbook
+
       license:
         schema: license_db
 
@@ -155,6 +159,10 @@ models:
         schema: sfdc
         sensitive:
           schema: sensitive
+          secure: true
+
+      snowflake:
+        schema: snowflake
 
       version:
         tags: ["product"]
@@ -171,6 +179,10 @@ models:
     staging:
       schema: staging
       materialized: table
+
+      customers:
+        xf:
+          schema: analytics
 
       engineering:
         materialized: table
@@ -195,7 +207,14 @@ models:
       greenhouse:
         xf:
           schema: sensitive
+          secure: true
         rpt:
+          schema: analytics
+
+      handbook:
+        rpt:
+          schema: analytics
+        xf:
           schema: analytics
 
       license:
@@ -211,6 +230,10 @@ models:
       sfdc:
         xf:
           schema: analytics
+
+      snowflake:
+          schema: analytics
+          materialized: view
 
       version:
         tags: ["product"]
@@ -239,15 +262,9 @@ models:
     # Legacy Structure
     bamboohr:
       schema: sensitive
+      secure: true
       base:
         materialized: table
-
-    customers:
-      materialized: table
-      base:
-          schema: staging
-      intermediate:
-          schema: staging
 
     date:
       materialized: table
