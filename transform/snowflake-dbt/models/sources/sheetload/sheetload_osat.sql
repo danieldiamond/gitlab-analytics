@@ -14,25 +14,7 @@ WITH source AS (
       NULLIF(ONBOARDING_BUDDY_EXPERIENCE_SCORE,'')::INTEGER AS buddy_experience_score
     FROM source
  
-), bamboohr AS (
-
-    SELECT *
-    FROM {{ ref ('bamboohr_id_employee_number_mapping') }}
-  
-), final AS (
-
-    SELECT
-      renamed.completed_date,
-      DATE_TRUNC(month, bamboohr.hire_date) AS hire_month,
-      renamed.division,
-      renamed.satisfaction_score,
-      renamed.recommend_to_friend,
-      renamed.buddy_experience_score
-    FROM renamed
-    LEFT JOIN bamboohr
-      ON renamed.employee_name = CONCAT(bamboohr.first_name,' ',bamboohr.last_name)
-    WHERE renamed.completed_date IS NOT NULL
-
 )
+
 SELECT *
-FROM final
+FROM renamed

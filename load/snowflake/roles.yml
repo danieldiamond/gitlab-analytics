@@ -803,12 +803,17 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.sheetload
+                    - analytics.sheetload
+                    - analytics.staging
             tables:
                 read:
                     - raw.sheetload.*  
+                    - analytics.sheetload.*
+                    - analytics.staging.sheetload_*
 
     - snapshots:
         warehouses:

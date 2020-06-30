@@ -158,6 +158,9 @@ models:
           schema: sensitive
           secure: true
 
+      sheetload:
+        schema: sheetload
+
       snowflake:
         schema: snowflake
 

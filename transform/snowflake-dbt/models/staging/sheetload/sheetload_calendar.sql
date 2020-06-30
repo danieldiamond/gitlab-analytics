@@ -1,18 +1,7 @@
 WITH source AS (
 
-	SELECT *
-	FROM {{ source('sheetload', 'calendar') }}
-
-), renamed AS (
-
-  SELECT
-    NULLIF("Event_Title", '')::varchar as event_title,
-    NULLIF("Event_Location", '')::varchar as event_location,
-    NULLIF("Event_Start", '')::varchar::date as event_start,
-    NULLIF(NULLIF("Calculated_Duration"::varchar, '#REF!'), '')::float as calculated_duration,
-    NULLIF("Date_Created", '')::varchar::date as date_created,
-    NULLIF("Created_By", '')::varchar as created_by
-  FROM source
+    SELECT *
+    FROM {{ ref('sheetload_calendar_source') }}
 
 ), categorized AS (
 
@@ -76,7 +65,7 @@ WITH source AS (
       ELSE 'Other'
       END AS event_category
 
-    FROM renamed
+    FROM source
     WHERE calculated_duration > 0
     AND lower(event_title) NOT LIKE '%fyi%'
     AND lower(event_title) NOT LIKE '%fya%'
