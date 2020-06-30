@@ -10,7 +10,7 @@
 
     SELECT
       MD5(kpi_grouping || kpi_sub_grouping || kpi) AS unique_id,
-      {{ dbt_utils.star(from=source('sheetload', 'kpi_status')}},
+      *,
       _UPDATED_AT::NUMBER::TIMESTAMP as updated_at
     FROM {{ source('sheetload','kpi_status') }}
 
