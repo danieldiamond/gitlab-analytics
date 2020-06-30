@@ -7,15 +7,15 @@ WITH sfdc_account AS (
     SELECT *
     FROM {{ ref('sfdc_account_snapshots_source') }}
     WHERE account_id IS NOT NULL
-      AND '{{ var('valid_at', '{{ get_current_date() }}' ) }}'::DATE >= dbt_valid_from
-      AND '{{ var('valid_at', '{{ get_current_date() }}' ) }}'::DATE < {{ coalesce_to_infinity('dbt_valid_to') }}
+      AND '{{ var('valid_at') }}'::DATE >= dbt_valid_from
+      AND '{{ var('valid_at') }}'::DATE < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 ), sfdc_users AS (
 
     SELECT *
     FROM {{ ref('sfdc_user_snapshots_source') }}
-    WHERE '{{ var('valid_at', '{{ get_current_date() }}' ) }}'::DATE >= dbt_valid_from
-      AND '{{ var('valid_at', '{{ get_current_date() }}' ) }}'::DATE < {{ coalesce_to_infinity('dbt_valid_to') }}
+    WHERE '{{ var('valid_at') }}'::DATE >= dbt_valid_from
+      AND '{{ var('valid_at') }}'::DATE < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 ), ultimate_parent_account AS (
 
