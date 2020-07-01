@@ -6,7 +6,7 @@ WITH bamboohr AS (
 ), source AS (
 
     SELECT *
-    FROM {{ ref('sheetload_marketing_pipe_to_spend_headcount_source') }}
+    FROM {{ ref('sheetload_osat_source') }}
 
 ), final AS (
 
