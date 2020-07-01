@@ -285,8 +285,8 @@ roles:
             - analyst_sales
             - analyst_marketing
             - boneyard
-            - customers_db_sensitive
             - covid19
+            - customers_db_sensitive
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
@@ -1040,9 +1040,9 @@ roles:
     - datwood:
         member_of:
             - analyst_core
-            - postgres_pipeline
-            - db_dumps
             - customers_db_sensitive
+            - db_dumps
+            - postgres_pipeline
         warehouses:
             - analyst_xs
     - dknox:
