@@ -809,12 +809,12 @@ roles:
                 read:
                     - raw.sheetload
                     - analytics.sheetload
-                    - analytics.staging
+                    - analytics.analytics_staging
             tables:
                 read:
                     - raw.sheetload.*  
                     - analytics.sheetload.*
-                    - analytics.staging.sheetload_*
+                    - analytics.analytics_staging.sheetload_*
 
     - snapshots:
         warehouses:
