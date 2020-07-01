@@ -7,7 +7,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 
 ### For all going through the Data Onboarding Process
 - [ ] Manager: Upgrade Periscope user to editor (after they've logged in via Okta)
-- [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access)
+- [ ] Manager: Add to Snowflake [following Handbook Process](https://about.gitlab.com/handbook/business-ops/data-team/platform/#warehouse-access)
   - Scratch schema will follow be your Snowflake username followed by `_scratch` i.e. `jsmith_scratch`
 - [ ] Manager: Add to Data Ops calendar meeting
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
@@ -26,7 +26,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
 - [ ] Manager: Invite to SheetLoad & Boneyard folders in Google Drive
 - [ ] Manager: Add to data team calendar as a calendar admin
 - [ ] Manager: Add team member to Finance team meetings
-- [ ] Manager: Add to [data triage](https://about.gitlab.com/handbook/business-ops/data-team/#triager) in third week at GitLab (Week 1 = Company onboarding; Week 2 = Data team onboarding)
+- [ ] Manager: Add to [data triage](https://about.gitlab.com/handbook/business-ops/data-team/how-we-work/duties/#triager) in third week at GitLab (Week 1 = Company onboarding; Week 2 = Data team onboarding)
 - [ ] Manager: Update issue with one or two Good First Issues
 - [ ] Manager: Customize this template for the analysts specialty, if any. Delete sections, if appropriate
 
@@ -53,7 +53,7 @@ Goal: To help bring you, our new data team member, up to speed in the GitLab Dat
    - [ ] [Data Team](https://about.gitlab.com/handbook/business-ops/data-team/)
    - [ ] [Business Operations](https://about.gitlab.com/handbook/business-ops/)
    - [ ] [Data Quality Process](https://about.gitlab.com/handbook/business-ops/data-quality-process/)
-   - [ ] [Periscope Directory](https://about.gitlab.com/handbook/business-ops/data-team/periscope-directory/)
+   - [ ] [Periscope Directory](https://about.gitlab.com/handbook/business-ops/data-team/platform/periscope-directory/)
 - [ ] Watch @tlapiana's [talk at DataEngConf](https://www.youtube.com/watch?v=eu623QBwakc) that gives a phenomenal overview of how the team works.
 - [ ] Watch [this great talk](https://www.youtube.com/watch?v=prcz0ubTAAg) on what Analytics is
 - [ ] Try running `/gitlab datachat run hello-world` in Slack in the #data team channel. You may be prompted to authenticate! Do it! (Sometimes we run [chatops](https://docs.gitlab.com/ee/ci/chatops/) to help with testing.). If you get `You are not allowed to perform given chatops command` double check you are added as a Maintainer of the project.
@@ -156,11 +156,11 @@ Additional tools to install that are not part of the onboarding script:
 To see the inspiration for the onboarding script above, take a look at the dbt Discourse post [here](https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243) on how they set up their computers for working on dbt projects. You might want to do some of the additional configurations mentioned in that post.
 
 ## Data stack
-On [the Data team handbook page](https://about.gitlab.com/handbook/business-ops/data-team/#extract-and-load), we explain the variety of methods used to extract data from its raw sources (`pipelines`) to load into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool. The bulk of your projects and tasks will be in dbt , so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources.
- - [ ] Our current data infrastructure is represented in this [system diagram](https://about.gitlab.com/handbook/business-ops/data-team/data-infrastructure/#system-diagram)
+On [the Data team handbook page](https://about.gitlab.com/handbook/business-ops/data-team/platform/#extract-and-load), we explain the variety of methods used to extract data from its raw sources (`pipelines`) to load into our Snowflake data warehouse. We use open source dbt (more on this in a moment) as our transformation tool. The bulk of your projects and tasks will be in dbt , so we will spend a lot of time familiarizing yourself with those tools and then dig into specific data sources.
+ - [ ] Our current data infrastructure is represented in this [system diagram](https://about.gitlab.com/handbook/business-ops/data-team/platform/infrastructure/#system-diagram)
 
 ## Connecting to Snowflake
-- [ ] Login with the credentials that your manager created following the instructions at https://about.gitlab.com/handbook/business-ops/data-team/#warehouse-access
+- [ ] Login with the credentials that your manager created following the instructions at https://about.gitlab.com/handbook/business-ops/data-team/platform/#warehouse-access
 - [ ] Snowflake has a Web UI for querying the data warehouse that can be found under [Worksheets](https://gitlab.snowflakecomputing.com/console#/internal/worksheet). Familiarize yourself with it.  Update your role, warehouse, and database to the same info you're instructed to put in your dbt profile (Ask your manager if this is confusing). The schema does not matter because your query will reference the schema.
 - [ ] Run `alter user "your_user" set default_role = "your_role";` to set the UI default Role to your appropriate role instead of `PUBLIC`
    - [ ] We STRONGLY recommend using the UI, but if you must download a SQL development tool, you will need one that is compatible with Snowflake, such as [SQLWorkbench/J](http://sql-workbench.net) or [DataGrip](https://www.jetbrains.com/datagrip/). If you're interested in DataGrip, follow the [instructions to get a JetBrains license in the handbook](https://about.gitlab.com/handbook/tools-and-tips/#jetbrains). If using DataGrip, you may need to download the [Driver](https://docs.snowflake.net/manuals/user-guide/jdbc-download.html#downloading-the-driver). This template may be useful as you're configuring the DataGrip connection to Snowflake `jdbc:snowflake://{account:param}.snowflakecomputing.com/?{password}[&db={Database:param}][&warehouse={Warehouse:param}][&role={Role:param}]` We recommend not setting your schema so you can select from the many options. If you do use Data Grip, please set up the following configuration:
@@ -188,10 +188,10 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 <img src = "https://d33wubrfki0l68.cloudfront.net/18774f02c29380c2ca7ed0a6fe06e55f275bf745/a5007/ui/img/svg/product.svg">
 
 ### What is dbt?
-- [ ] Familiarize yourself with [dbt](https://www.getdbt.com/) and how we use it by reading our [dbt Guide](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/).
+- [ ] Familiarize yourself with [dbt](https://www.getdbt.com/) and how we use it by reading our [dbt Guide](https://about.gitlab.com/handbook/business-ops/data-team/platform/dbt-guide/).
 - [ ] Refer to http://jinja.pocoo.org/docs/2.10/templates/ as a resource for understanding Jinja which is used extensively in dbt.
 - [ ] [This podcast](https://www.dataengineeringpodcast.com/dbt-data-analytics-episode-81/) is a general walkthrough of dbt/interview with its creator, Drew Banin.
-- [ ] Read our [SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/).
+- [ ] Read our [SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/platform/sql-style-guide/).
 - [ ] Watch [video](https://www.youtube.com/watch?v=P_NQ9qHnsyQ&feature=youtu.be) of Thomas and Israel discussing getting started with dbt locally.
 - [ ] Peruse the [Official Docs](https://docs.getdbt.com).
 - [ ] In addition to using dbt to manage our transformations, we use dbt to maintain [our own internal documentation](https://dbt.gitlabdata.com) on those data transformations. This is a public link. We suggest bookmarking it.
@@ -217,10 +217,10 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
 - [ ] Run `dbt seed` to import the CSV's from the analytics/data into your schema. For dbt to compile this needs to be completed as some of the models have dependencies on the tables which are created by the CSV's.
 - [ ] Run `dbt compile` from within the container to know that your connection has been successful, you are in the correct location, and everything will run smoothly.  If you see an error like `Schema 'ANALYTICS.NAME_SCRATCH_STAGING' does not exist or not authorized`, it is because that schema hasn't been created by dbt in Snowflake yet. Since `dbt compile` doesn't actually create anything in the database, it won't create it for you.  To fix this, feel free to run a small model with dbt `dbt run --models sfdc` and then `dbt compile` should work as long as there weren't any issues with running the model.
 - [ ] test the command `make help` and use it to understand how to use `make dbt-docs` and access it from your local machine.
-- [ ] Here is the [dbt command line cheat sheet](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/#command-line-cheat-sheet)
+- [ ] Here is the [dbt command line cheat sheet](https://about.gitlab.com/handbook/business-ops/data-team/platform/dbt-guide/#command-line-cheat-sheet)
 
 ## Airflow (Data Engineers only)
- - [ ] Read the Airflow section on the [Data Infrastructure page](https://about.gitlab.com/handbook/business-ops/data-team/data-infrastructure/#airflow)
+ - [ ] Read the Airflow section on the [Data Infrastructure page](https://about.gitlab.com/handbook/business-ops/data-team/platform/infrastructure/#airflow)
  - [ ] Watch the [Airflow Setup Walkthrough](https://www.youtube.com/watch?v=3Ym40gRHtvk&feature=youtu.be) with Taylor and Magda
 
 ## Misc
@@ -230,7 +230,7 @@ Snowflake SQL is probably not that different from the dialects of SQL you're alr
  (Not required, but recommended).
 - [ ] Consider subscribing to the [Data Science Roundup](http://roundup.fishtownanalytics.com) (Not required, but recommended).
 - [ ] There are many Slack channels organized around interests, such as `#fitlab`, `#bookclub`, and `#woodworking`. There are also many organized by location (these all start with `#loc_`). This is a great way to connect to GitLabbers outside of the team. Join some that are relevant to your interests, if you'd like.
-- [ ] Familiarize yourself with [SheetLoad](https://about.gitlab.com/handbook/business-ops/data-team/#using-sheetload).
+- [ ] Familiarize yourself with [SheetLoad](https://about.gitlab.com/handbook/business-ops/data-team/platform/#using-sheetload).
 - [ ] Really really useful resources in [this Drive folder](https://drive.google.com/drive/folders/1wrI_7v0HwCwd-o1ryTv5dlh6GW_JyrSQ?usp=sharing) (GitLab Internal); Read the `a_README` file first.
 - [ ] Save the [Data Kitchen Data Ops Cookbook](https://drive.google.com/file/d/14KyYdFB-DOeD0y2rNyb2SqjXKygo10lg/view?usp=sharing) as a reference.
 - [ ] Save the [Data Engineering Cookbook](https://drive.google.com/file/d/1Tm3GiV3P6c5S3mhfF9bm7VaKCtio-9hm/view?usp=sharing) as a reference.
@@ -272,7 +272,7 @@ Also referred as SFDC, Salesforce.com (Sales Force Dot Com).
 ## Snowplow (Product)
 [Snowplow](https://snowplowanalytics.com) is an open source web analytics collector.
 - [ ] To understand how this is implemented at GitLab read [Feature Implementation](https://about.gitlab.com/handbook/product/feature-instrumentation/#instrumentation-for-gitlabcom).
-- [ ] Also read how we pull data from [S3 into Snowflake](https://about.gitlab.com/handbook/business-ops/data-team/#snowplow-infrastructure)
+- [ ] Also read how we pull data from [S3 into Snowflake](https://about.gitlab.com/handbook/business-ops/data-team/platform/#snowplow-infrastructure)
 - [ ] Familiarize yourself with the [Snowplow Open Source documentation](https://github.com/snowplow/snowplow).
 - [ ] We use the [Snowplow dbt package](https://hub.getdbt.com/fishtown-analytics/snowplow/latest/) on our models. Their documentation does show up in our dbt docs.
 

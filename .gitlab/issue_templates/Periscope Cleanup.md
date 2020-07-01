@@ -2,7 +2,7 @@
 This issue is for Periscope cleanup
 ---->
 
-One of our goals described in our [Charter](https://about.gitlab.com/handbook/business-ops/data-team/#-charter)
+One of our goals described in our [Charter](https://about.gitlab.com/handbook/business-ops/data-team/#charter)
 
 >>>
 Create and evangelize analyses produced in our business intelligence tool (Periscope); support others learning to and creating their own analyses
