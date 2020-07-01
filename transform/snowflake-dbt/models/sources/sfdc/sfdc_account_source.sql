@@ -41,6 +41,7 @@ WITH source AS (
                      '_HL_ENCODED_/|<a\\s+href="/', ''), 0, 15))                 
                                                  AS ultimate_parent_account_id,
       type                                       AS account_type,
+      dfox_industry__c                           AS df_industry,
       industry                                   AS industry,
       account_tier__c                            AS account_tier,
       customer_since__c::DATE                    AS customer_since_date,

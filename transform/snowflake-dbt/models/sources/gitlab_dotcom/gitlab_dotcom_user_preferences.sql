@@ -35,7 +35,8 @@ WITH source AS (
       setup_for_company::BOOLEAN          AS setup_for_company,
       render_whitespace_in_code::BOOLEAN  AS render_whitespace_in_code,
       tab_width::VARCHAR                  AS tab_width,
-      feature_filter_type::VARCHAR        AS feature_filter_type
+      feature_filter_type::VARCHAR        AS feature_filter_type,
+      experience_level::INTEGER           AS experience_level
 
     FROM source
     QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY updated_at DESC) = 1

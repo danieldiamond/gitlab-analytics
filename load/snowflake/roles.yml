@@ -357,6 +357,7 @@ roles:
                 - raw.engineering_extracts
                 - raw.gitlab_data_yaml
                 - raw.gitter
+                - raw.pmg
                 - raw.prometheus
                 - raw.snowplow
                 - raw.tap_postgres
@@ -365,6 +366,7 @@ roles:
                 - raw.engineering_extracts.*
                 - raw.gitlab_data_yaml.*
                 - raw.gitter.*
+                - raw.pmg.*
                 - raw.prometheus.*
                 - raw.snowplow.*
                 - raw.tap_postgres.*
@@ -691,12 +693,15 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.handbook
+                    - analytics.handbook
             tables:
                 read:
                     - raw.handbook.*
+                    - analytics.handbook.*
 
     - license_db:
         privileges:
@@ -734,12 +739,15 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.tap_postgres
+                    - analytics.customers
             tables:
                 read:
-                    - raw.tap_postgres.*  
+                    - raw.tap_postgres.*
+                    - analytics.customers.*
 
     - qualtrics:
         warehouses:
@@ -796,12 +804,17 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.sheetload
+                    - analytics.sheetload
+                    - analytics.analytics_staging
             tables:
                 read:
                     - raw.sheetload.*  
+                    - analytics.sheetload.*
+                    - analytics.analytics_staging.sheetload_*
 
     - snapshots:
         warehouses:
@@ -995,6 +1008,13 @@ roles:
     - aladhani:
         member_of:
             - analyst_growth
+        warehouses:
+            - analyst_xs
+
+    - alcurtis:
+        member_of:
+            - analyst_finance
+            - bamboohr
         warehouses:
             - analyst_xs
 
@@ -1437,6 +1457,11 @@ users:
         can_login: yes
         member_of:
             - aladhani
+
+    - alcurtis:
+        can_login: yes
+        member_of:
+            - alcurtis
 
     - amihaila:
         can_login: yes
