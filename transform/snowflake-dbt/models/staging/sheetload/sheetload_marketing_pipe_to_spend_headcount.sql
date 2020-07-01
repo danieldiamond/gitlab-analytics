@@ -11,16 +11,16 @@ WITH bamboohr AS (
 ), final AS (
 
     SELECT
-      renamed.completed_date,
+      source.completed_date,
       DATE_TRUNC(month, bamboohr.hire_date) AS hire_month,
-      renamed.division,
-      renamed.satisfaction_score,
-      renamed.recommend_to_friend,
-      renamed.buddy_experience_score
-    FROM renamed
+      source.division,
+      source.satisfaction_score,
+      source.recommend_to_friend,
+      source.buddy_experience_score
+    FROM source
     LEFT JOIN bamboohr
-      ON renamed.employee_name = CONCAT(bamboohr.first_name, ' ', bamboohr.last_name)
-    WHERE renamed.completed_date IS NOT NULL
+      ON source.employee_name = CONCAT(bamboohr.first_name, ' ', bamboohr.last_name)
+    WHERE source.completed_date IS NOT NULL
 
 )
 SELECT *
