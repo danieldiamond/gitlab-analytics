@@ -28,6 +28,7 @@ WITH source AS (
       bizible2__touchpoint_source__c          AS bizible_touchpoint_source,
       bizible2__touchpoint_type__c            AS bizible_touchpoint_type,      
       bizible2__ad_campaign_name__c           AS bizible_ad_campaign_name,
+      bizible2__ad_content__c                 AS bizible_ad_content, 
       bizible2__ad_group_name__c              AS bizible_ad_group_name,
       bizible2__form_url__c                   AS bizible_form_url,
       bizible2__landing_page__c               AS bizible_landing_page,

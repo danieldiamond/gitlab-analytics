@@ -357,6 +357,7 @@ roles:
                 - raw.engineering_extracts
                 - raw.gitlab_data_yaml
                 - raw.gitter
+                - raw.pmg
                 - raw.prometheus
                 - raw.snowplow
                 - raw.tap_postgres
@@ -365,6 +366,7 @@ roles:
                 - raw.engineering_extracts.*
                 - raw.gitlab_data_yaml.*
                 - raw.gitter.*
+                - raw.pmg.*
                 - raw.prometheus.*
                 - raw.snowplow.*
                 - raw.tap_postgres.*
@@ -691,6 +693,7 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.handbook
@@ -801,12 +804,17 @@ roles:
             databases:
                 read:
                     - raw
+                    - analytics
             schemas:
                 read:
                     - raw.sheetload
+                    - analytics.sheetload
+                    - analytics.staging
             tables:
                 read:
                     - raw.sheetload.*  
+                    - analytics.sheetload.*
+                    - analytics.staging.sheetload_*
 
     - snapshots:
         warehouses:

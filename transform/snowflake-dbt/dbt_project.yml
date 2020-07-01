@@ -158,6 +158,9 @@ models:
           schema: sensitive
           secure: true
 
+      sheetload:
+        schema: sheetload
+
       snowflake:
         schema: snowflake
 
@@ -261,9 +264,6 @@ models:
 
     date:
       materialized: table
-
-    handbook:
-        materialized: table
 
     netsuite:
       materialized: table
