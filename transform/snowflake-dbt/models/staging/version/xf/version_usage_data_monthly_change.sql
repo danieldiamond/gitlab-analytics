@@ -7,6 +7,7 @@ WITH mom_change as (
     uuid,
     created_at,
     ping_source,
+    company,
     edition,
     main_edition,
     edition_type,
