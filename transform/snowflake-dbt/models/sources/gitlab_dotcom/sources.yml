@@ -18,6 +18,12 @@ sources:
       error_after: {count: 48, period: hour}
 
     tables:
+      - name: alert_management_alert_assignees
+        identifier: gitlab_db_alert_management_alert_assignees
+      - name: alert_management_alerts
+        identifier: gitlab_db_alert_management_alerts
+      - name: alerts_service_data
+        identifier: gitlab_db_alerts_service_data
       - name: approval_merge_request_rules
         identifier: gitlab_db_approval_merge_request_rules
       - name: approvals
