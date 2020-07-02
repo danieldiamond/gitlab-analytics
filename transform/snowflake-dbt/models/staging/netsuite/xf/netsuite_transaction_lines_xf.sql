@@ -6,17 +6,17 @@ WITH transaction_lines AS  (
 ), transactions AS  (
 
   SELECT *
-  FROM {{ref('netsuite_transactions')}}
+  FROM {{ref('netsuite_transactions_source')}}
 
 ), accounts AS (
 
   SELECT *
-  FROM {{ref('netsuite_accounts')}}
+  FROM {{ref('netsuite_accounts_source')}}
 
 ), subsidiaries AS (
 
   SELECT *
-  FROM {{ref('netsuite_subsidiaries')}}
+  FROM {{ref('netsuite_subsidiaries_source')}}
 
 ), entity AS (
 

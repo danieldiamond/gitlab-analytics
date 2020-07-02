@@ -148,6 +148,9 @@ models:
       license:
         schema: license_db
 
+      netsuite:
+        schema: netsuite
+
       qualtrics:
         materialized: table
         schema: qualtrics
@@ -219,6 +222,10 @@ models:
 
       license:
         materialized: view
+
+      netsuite:
+        xf:
+          schema: analytics
 
       qualtrics:
         schema: analytics

@@ -1,8 +1,3 @@
-{{ config({
-    "materialized": "ephemeral"
-    })
-}}
-
 WITH source AS (
 
     SELECT *
