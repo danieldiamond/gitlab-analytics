@@ -7,7 +7,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                AS alert_service_data_id,
+      id::INTEGER                AS alerts_service_data_id,
       service_id::INTEGER        AS service_id,
       created_at::TIMESTAMP_NTZ  AS created_at,
       updated_at::TIMESTAMP_NTZ  AS updated_at

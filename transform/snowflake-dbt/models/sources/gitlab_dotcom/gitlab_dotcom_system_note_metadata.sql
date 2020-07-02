@@ -20,7 +20,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                           AS system_note_metadataid,
+      id::INTEGER                           AS system_note_metadata_id,
       note_id::INTEGER                      AS note_id,
       commit_count::INTEGER                 AS commit_count,
       action::VARCHAR                       AS action_type,
