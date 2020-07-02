@@ -8,12 +8,6 @@ models:
         tests:
           - not_null
           - unique
-      - name: created_at
-        tests:
-          - not_null
-      - name: updated_at
-        tests:
-          - not_null
   - name: gitlab_dotcom_alert_management_alerts
     description: Base model for Gitlab.com alert_management_alerts
     columns:
