@@ -7,7 +7,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                AS alert_management_alert_assignees,
+      id::INTEGER                AS alert_management_alert_assignee_id,
       user_id::INTEGER           AS user_id,
       alert_id::INTEGER          AS alert_id
 
