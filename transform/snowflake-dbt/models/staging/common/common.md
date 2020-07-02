@@ -5,6 +5,8 @@ The Customer Account Management business process can be found in the [handbook](
 
 The grain of the table is the SalesForce Account, also referred to as CRM_ID.
 
+Information on the Enterprise Dimensional Model can be found in the [handbook](https://about.gitlab.com/handbook/business-ops/data-team/platform/edw/)
+
 {% enddocs %}
 
 {% docs dim_accounts %}
@@ -15,6 +17,8 @@ The Zuora account creation and maintenance is part of the broader Quote Creation
 Data comes from [Zuora Documentation](https://www.zuora.com/developer/api-reference/#tag/Accounts).
 
 The grain of the table is the Zuora Account.
+
+Information on the Enterprise Dimensional Model can be found in the [handbook](https://about.gitlab.com/handbook/business-ops/data-team/platform/edw/)
 
 {% enddocs %}
 
@@ -27,6 +31,8 @@ Data comes from [Zuora Documentation](https://www.zuora.com/developer/api-refere
 
 The grain of the table is the Product Rate Plan Charge.
 
+Information on the Enterprise Dimensional Model can be found in the [handbook](https://about.gitlab.com/handbook/business-ops/data-team/platform/edw/)
+
 {% enddocs %}
 
 {% docs dim_subscriptions %}
@@ -36,12 +42,16 @@ Data comes from [Zuora Documentation](https://www.zuora.com/developer/api-refere
 
 The grain of the table is the version of a Zuora subscription.
 
+Information on the Enterprise Dimensional Model can be found in the [handbook](https://about.gitlab.com/handbook/business-ops/data-team/platform/edw/)
+
 {% enddocs %}
 
 {% docs dim_dates %}
 Dimensional table representing both calendar year and fiscal year date details.
 
 The grain of the table is a calendar day.
+
+Information on the Enterprise Dimensional Model can be found in the [handbook](https://about.gitlab.com/handbook/business-ops/data-team/platform/edw/)
 
 {% enddocs %}
 
@@ -52,6 +62,8 @@ The invoicing to customers business process can be found in the [handbook](https
 
 Data comes from [Zuora Documentation](https://knowledgecenter.zuora.com/Billing/Reporting_and_Analytics/D_Data_Sources_and_Exports/C_Data_Source_Reference/Invoice_Item_Data_Source).
 
+Information on the Enterprise Dimensional Model can be found in the [handbook](https://about.gitlab.com/handbook/business-ops/data-team/platform/edw/)
+
 {% enddocs %}
 
 {% docs fct_charges %}
@@ -60,5 +72,7 @@ Factual table with all rate plan charges coming from subscriptions or an amendme
 Rate Plan Charges are created as part of the Quote Creation business process and can be found in the [handbook](https://about.gitlab.com/handbook/finance/sox-internal-controls/quote-to-cash/#6-invoicing-to-customers).
 
 Data comes from [Zuora Documentation](https://www.zuora.com/developer/api-reference/#tag/Rate-Plan-Charges).
+
+Information on the Enterprise Dimensional Model can be found in the [handbook](https://about.gitlab.com/handbook/business-ops/data-team/platform/edw/)
 
 {% enddocs %}
