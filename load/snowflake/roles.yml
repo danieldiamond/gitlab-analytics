@@ -215,6 +215,7 @@ roles:
             - gitlab_data_yaml
             - google_analytics_360
             - netsuite
+            - pmg
             - snowflake_db
             - zuora
         privileges:
@@ -771,6 +772,20 @@ roles:
                 read:
                     - analytics.analytics_sensitive.qualtrics_*
                     - raw.qualtrics.*
+
+    - pmg:
+          warehouses:
+              - analyst_xs
+          privileges:
+              databases:
+                  read:
+                      - analytics
+              schemas:
+                  read:
+                      - analytics.pmg
+              tables:
+                  read:
+                      - analytics.pmg.*
 
     - salesforce:
         warehouses:

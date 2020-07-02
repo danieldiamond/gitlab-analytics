@@ -13,16 +13,12 @@ SELECT
     source                          AS source,
     campaign                        AS campaign,
     campaign_code                   AS campaign_code,
-    upper(region)                   AS region,
+    UPPER(region)                   AS region,
     targeting                       AS targeting,
     ad_unit                         AS ad_unit,
-    case(brand_not_brand)
-         when 'br' then 'Brand'
-         when 'nb' then 'Not Brand'
-         else brand_not_brand
-    end                             AS brand_not_brand,
-    match_unit                      AS match_unit,
-    replace(content, '-', ' ')      AS content,
+    NULLIF(brand_not_brand, 'x')    AS brand_not_brand,
+    NULLIF(match_unit, 'x')         AS match_unit,
+    REPLACE(content, '-', ' ')      AS content,
     team                            AS team,
     budget                          AS budget,
     data_source                     AS data_source,
