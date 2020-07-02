@@ -162,7 +162,7 @@ WITH all_gitlab_user_information AS (
   
     SELECT zuora_sfdc_contacts.*
     FROM zuora_sfdc_contacts
-    LEFT JOIN saas_paid_users ONsaas_paid_users.notification_email = zuora_sfdc_contacts.notification_email
+    LEFT JOIN saas_paid_users ON saas_paid_users.notification_email = zuora_sfdc_contacts.notification_email
        AND saas_paid_users.full_name = zuora_sfdc_contacts.full_name
     WHERE saas_paid_users.notification_email IS NULL
 
