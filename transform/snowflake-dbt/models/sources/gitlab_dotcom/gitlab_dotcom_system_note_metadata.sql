@@ -1,8 +1,21 @@
+{{ config({
+    "materialized": "incremental",
+    "unique_key": "note_id",
+    "schema": "sensitive"
+    })
+}}
+
 WITH source AS (
 
-  SELECT *
-  FROM {{ source('gitlab_dotcom', 'system_note_metadata') }}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
+    SELECT *
+    FROM {{ source('gitlab_dotcom', 'system_note_metadata') }}
+
+    {% if is_incremental() %}
+
+    WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+
+    {% endif %}
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
 ), renamed AS (
 
