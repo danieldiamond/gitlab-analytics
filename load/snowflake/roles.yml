@@ -47,31 +47,31 @@ roles:
         privileges:
             databases:
                 read:
-                    - raw
                     - analytics
+                    - raw
                     - snowflake
                     - testing_db
                 write:
-                    - raw
                     - analytics
+                    - raw
                     - testing_db
             schemas:
                 read:
-                    - raw.*
                     - analytics.*
+                    - raw.*
                     - testing_db.*
                 write:
-                    - raw.*
                     - analytics.*
+                    - raw.*
                     - testing_db.*
             tables:
                 read:
-                    - raw.*.*
                     - analytics.*.*
+                    - raw.*.*
                     - testing_db.*.*
                 write:
-                    - raw.*.*
                     - analytics.*.*
+                    - raw.*.*
                     - testing_db.*.*
 
 # ==========================================
@@ -277,8 +277,16 @@ roles:
             - analyst_xs
             - analyst_l
         member_of:
+            - analyst_core
+            - analyst_engineering
+            - analyst_finance
+            - analyst_growth
+            - analyst_people
+            - analyst_sales
+            - analyst_marketing
             - boneyard
             - covid19
+            - customers_db_sensitive
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
@@ -293,14 +301,6 @@ roles:
             - version_db
             - zendesk
             - zuora
-            - analyst_core
-            - analyst_engineering
-            - analyst_finance
-            - analyst_growth
-            - analyst_people
-            - analyst_sales
-            - analyst_marketing
-            - customers_db_sensitive
         privileges:
             databases:
                 write:
@@ -320,25 +320,25 @@ roles:
         privileges:
             databases:
                 read:
-                    - raw
                     - analytics
+                    - raw
                 write:
-                    - raw
                     - analytics
+                    - raw
             schemas:
                 read:
-                    - raw.*
                     - analytics.*
+                    - raw.*
                 write:
-                    - raw.*
                     - analytics.*
+                    - raw.*
             tables:
                 read:
-                    - raw.*.*
                     - analytics.*.*
+                    - raw.*.*
                 write:
-                    - raw.*.*
                     - analytics.*.*
+                    - raw.*.*
 
     - intern:
         warehouses:
@@ -373,25 +373,25 @@ roles:
         privileges:
             databases:
                 read:
-                    - raw
                     - analytics
+                    - raw
                 write:
-                    - raw
                     - analytics
+                    - raw
             schemas:
                 read:
-                    - raw.*
                     - analytics.boneyard
+                    - raw.*
                 write:
-                    - raw.*
                     - analytics.boneyard
+                    - raw.*
             tables:
                 read:
-                    - raw.*.*
                     - analytics.boneyard.*
+                    - raw.*.*
                 write:
-                    - raw.*.*
                     - analytics.boneyard.*
+                    - raw.*.*
 
     - product_manager:
         warehouses:
@@ -435,23 +435,23 @@ roles:
         privileges:
             databases:
                 read:
-                    - raw
                     - analytics
+                    - raw
                     - snowflake
-                    - testing_db
                     - static
+                    - testing_db
             schemas:
                 read:
-                    - raw.*
                     - analytics.*
-                    - testing_db.*
+                    - raw.*
                     - static.*
+                    - testing_db.*
             tables:
                 read:
-                    - raw.*.*
                     - analytics.*.*
-                    - testing_db.*.*
+                    - raw.*.*
                     - static.*.*
+                    - testing_db.*.*
 
     - reporter:
         warehouses:
@@ -511,8 +511,8 @@ roles:
         privileges:
             databases:
                 read:
-                    - raw
                     - analytics
+                    - raw
                 write:
                     - analytics
                     - raw
@@ -591,12 +591,12 @@ roles:
                     - raw
             schemas:
                 read:
-                    - raw.version_db_dump_stitch
                     - raw.license_db_dump
+                    - raw.version_db_dump_stitch
             tables:
                 read:
-                    - raw.version_db_dump_stitch.*
                     - raw.license_db_dump.*
+                    - raw.version_db_dump_stitch.*
 
     - dbt_analytics:
         warehouses:
@@ -610,15 +610,15 @@ roles:
                 read:
                     - analytics.analytics
                     - analytics.analytics_clones
-                    - analytics.analytics_staging
                     - analytics.analytics_meta
+                    - analytics.analytics_staging
                     - raw.dbt
             tables:
                 read:
                     - analytics.analytics.*
                     - analytics.analytics_clones.*
-                    - analytics.analytics_staging.*
                     - analytics.analytics_meta.*
+                    - analytics.analytics_staging.*
                     - raw.dbt.*
 
     - dbt_analytics_sensitive:
@@ -679,12 +679,12 @@ roles:
                     - raw
             schemas:
                 read:
-                    - raw.greenhouse
                     - analytics.greenhouse
+                    - raw.greenhouse
             tables:
                 read:
-                    - raw.greenhouse.*
                     - analytics.greenhouse.*
+                    - raw.greenhouse.*
 
     - handbook:
         warehouses:
@@ -692,16 +692,16 @@ roles:
         privileges:
             databases:
                 read:
-                    - raw
                     - analytics
+                    - raw
             schemas:
                 read:
-                    - raw.handbook
                     - analytics.handbook
+                    - raw.handbook
             tables:
                 read:
-                    - raw.handbook.*
                     - analytics.handbook.*
+                    - raw.handbook.*
 
     - license_db:
         privileges:
@@ -738,16 +738,16 @@ roles:
         privileges:
             databases:
                 read:
-                    - raw
                     - analytics
+                    - raw
             schemas:
                 read:
-                    - raw.tap_postgres
                     - analytics.customers
+                    - raw.tap_postgres
             tables:
                 read:
-                    - raw.tap_postgres.*
                     - analytics.customers.*
+                    - raw.tap_postgres.*
 
     - qualtrics:
         warehouses:
@@ -803,18 +803,18 @@ roles:
         privileges:
             databases:
                 read:
-                    - raw
                     - analytics
+                    - raw
             schemas:
                 read:
-                    - raw.sheetload
+                    - analytics.analytics_staging
                     - analytics.sheetload
-                    - analytics.staging
+                    - raw.sheetload
             tables:
                 read:
-                    - raw.sheetload.*  
+                    - analytics.analytics_staging.sheetload_*
                     - analytics.sheetload.*
-                    - analytics.staging.sheetload_*
+                    - raw.sheetload.*  
 
     - snapshots:
         warehouses:
@@ -846,16 +846,16 @@ roles:
         privileges:
             databases:
                 read:
-                    - raw
                     - analytics
+                    - raw
             schemas:
                 read:
-                    - raw.snowplow
                     - analytics.snowplow_*
+                    - raw.snowplow
             tables:
                 read:
-                    - raw.snowplow.*
                     - analytics.snowplow_*.*
+                    - raw.snowplow.*
 
     - static:
         privileges:
@@ -1040,9 +1040,9 @@ roles:
     - datwood:
         member_of:
             - analyst_core
-            - postgres_pipeline
-            - db_dumps
             - customers_db_sensitive
+            - db_dumps
+            - postgres_pipeline
         warehouses:
             - analyst_xs
     - dknox:
@@ -1174,9 +1174,9 @@ roles:
     - jpeguero:
         member_of:
             - analyst_marketing
+            - customers_db_sensitive
             - netsuite
             - static_sensitive
-            - customers_db_sensitive
         warehouses:
             - analyst_xs
 
@@ -1212,8 +1212,8 @@ roles:
     - ktam:
         member_of:
             - analyst_core
-            - dbt_analytics_sensitive
             - data_manager
+            - dbt_analytics_sensitive
             - greenhouse
         warehouses:
             - engineer_xs

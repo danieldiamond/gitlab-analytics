@@ -4,7 +4,7 @@
 
 Please see 
 * [The Data Team page of the Handbook](https://about.gitlab.com/handbook/business-ops/data-team/)
-* [SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide)
+* [SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/platform/sql-style-guide)
 
 ## What are dbt docs? 
 
