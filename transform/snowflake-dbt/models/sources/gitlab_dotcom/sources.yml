@@ -228,6 +228,8 @@ sources:
         identifier: gitlab_db_services
       - name: subscriptions
         identifier: gitlab_db_subscriptions
+      - name: system_note_metadata
+        identifier: gitlab_db_system_note_metadata
       - name: snippets
         identifier: gitlab_db_snippets
       - name: terraform_states

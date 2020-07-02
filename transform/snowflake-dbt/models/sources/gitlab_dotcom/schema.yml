@@ -1424,14 +1424,14 @@ models:
         tests:
           - not_null
 
-  - name: gitlab_dotcom_terraform_states
-    description: Base model for terraform_states table.
+  - name: gitlab_dotcom_system_note_metadata
+    description: Base model for Gitlab.com system_note_metadata
     columns:
-      - name: terraform_state_id
+      - name: system_note_metadata_id
         tests:
           - not_null
           - unique
-      - name: project_id
+      - name: created_at
         tests:
           - not_null
       - name: updated_at
