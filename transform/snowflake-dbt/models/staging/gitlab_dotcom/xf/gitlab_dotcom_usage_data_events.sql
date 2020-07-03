@@ -333,6 +333,15 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "terraform_reports",
+    "source_cte_name": "terraform_reports",
+    "user_column_name": "NULL",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_job_artifact_id",
+    "stage_name": "configure",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "todos",
     "source_table_name": "gitlab_dotcom_todos",
     "user_column_name": "author_id",
@@ -481,6 +490,20 @@ WITH gitlab_subscriptions AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_services') }}
     WHERE service_type != 'GitlabIssueTrackerService'
+
+), terraform_reports AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_ci_job_artifacts') }}
+    WHERE file_type = 18
+    
+  ), services AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_services') }}
+    WHERE service_type != 'GitlabIssueTrackerService'
+
+)
 
 )
 /* End of Source CTEs */
