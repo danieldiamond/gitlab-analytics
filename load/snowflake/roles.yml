@@ -216,6 +216,7 @@ roles:
             - google_analytics_360
             - netsuite
             - snowflake_db
+            - zendesk
             - zuora
         privileges:
             databases:
@@ -728,9 +729,11 @@ roles:
             schemas:
                 read:
                     - raw.netsuite_fivetran
+                    - analytics.netsuite
             tables:
                 read:
                     - raw.netsuite_fivetran.*
+                    - analytics.netsuite.*
 
     - postgres_pipeline:
         warehouses:

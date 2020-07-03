@@ -60,7 +60,6 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/models/covid19/            @tayloramurphy  @jjstark        @kathleentam
 /transform/snowflake-dbt/models/date/base/          @derekatwood    @kathleentam
 /transform/snowflake-dbt/models/marts/product_kpis/ @mpeychet_      @kathleentam
-/transform/snowflake-dbt/models/netsuite/           @iweeks         @kathleentam
 /transform/snowflake-dbt/models/smau_events/        @mpeychet_      @kathleentam
 /transform/snowflake-dbt/models/snapshots/          @m_walker       @kathleentam    @jjstark
 /transform/snowflake-dbt/models/snowplow/           @tayloramurphy  @mpeychet_      
@@ -96,6 +95,9 @@ __init__.py         @kathleentam   @jjstark
 
 /transform/snowflake-dbt/models/sources/license/    @mpeychet_		@m_walker   @derekatwood    @kathleentam
 /transform/snowflake-dbt/models/staging/license/    @mpeychet_		@m_walker   @derekatwood    @kathleentam
+
+/transform/snowflake-dbt/models/sources/netsuite/           @iweeks         @kathleentam
+/transform/snowflake-dbt/models/staging/netsuite/           @iweeks         @kathleentam
 
 /transform/snowflake-dbt/models/sources/qualtrics   @m_walker    @jjstark   
 /transform/snowflake-dbt/models/staging/qualtrics   @m_walker    @jjstark

@@ -17,10 +17,10 @@ WITH source AS (
       category_id::FLOAT           AS category_id,
 
       --Info
-      amount::FLOAT                AS budget_amount
+      amount::FLOAT                AS budget_amount,
+      _fivetran_deleted::BOOLEAN   AS is_fivetran_deleted
 
     FROM source
-    WHERE LOWER(_fivetran_deleted) = 'false'
 
 )
 
