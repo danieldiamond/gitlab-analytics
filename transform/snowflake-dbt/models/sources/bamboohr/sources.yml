@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: bamboohr
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
-    schema: bamboohr
+    schema: sensitive
     loader: Airflow
     loaded_at_field: uploaded_at
     
