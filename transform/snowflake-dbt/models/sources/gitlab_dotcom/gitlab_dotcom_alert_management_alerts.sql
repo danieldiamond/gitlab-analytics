@@ -18,8 +18,6 @@ WITH source AS (
         status::INTEGER            AS status_id,
         issue_id::INTEGER          AS issue_id,
         project_id::INTEGER        AS project_id,
-        title::VARCHAR             AS alert_management_alert_title,
-        description::VARCHAR       AS alert_management_alert_description,
         service::VARCHAR           AS alert_management_alert_service,
         monitoring_tool::VARCHAR   AS monitoring_tool
 
