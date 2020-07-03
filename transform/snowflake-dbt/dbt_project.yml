@@ -111,9 +111,16 @@ models:
         materialized: table
         schema: airflow
 
+      customers:
+        schema: customers
+        sensitive:
+          schema: sensitive
+          secure: true
+
       bamboohr:
         materialized: table
         schema: bamboohr
+        secure: true
 
       dbt:
         materialized: table
@@ -140,8 +147,14 @@ models:
       greenhouse:
         schema: greenhouse
 
+      handbook:
+        schema: handbook
+
       license:
         schema: license_db
+
+      netsuite:
+        schema: netsuite
 
       qualtrics:
         materialized: table
@@ -151,6 +164,13 @@ models:
         schema: sfdc
         sensitive:
           schema: sensitive
+          secure: true
+
+      sheetload:
+        schema: sheetload
+
+      snowflake:
+        schema: snowflake
 
       version:
         tags: ["product"]
@@ -167,6 +187,10 @@ models:
     staging:
       schema: staging
       materialized: table
+
+      customers:
+        xf:
+          schema: analytics
 
       bamboohr:
         xf:
@@ -197,11 +221,22 @@ models:
       greenhouse:
         xf:
           schema: sensitive
+          secure: true
         rpt:
+          schema: analytics
+
+      handbook:
+        rpt:
+          schema: analytics
+        xf:
           schema: analytics
 
       license:
         materialized: view
+
+      netsuite:
+        xf:
+          schema: analytics
 
       qualtrics:
         schema: analytics
@@ -209,6 +244,10 @@ models:
       sfdc:
         xf:
           schema: analytics
+
+      snowflake:
+          schema: analytics
+          materialized: view
 
       version:
         tags: ["product"]
@@ -221,28 +260,25 @@ models:
         xf:
           schema: analytics
 
+    marts:
+
+      arr:
+        materialized: table
+
+      product_kpis:
+        materialized: table
+
+      exports:
+        materialized: view
+        schema: exports
+
 
     # Legacy Structure
 
 
-    customers:
-      materialized: table
-      base:
-          schema: staging
-      intermediate:
-          schema: staging
-
     date:
       materialized: table
 
-    handbook:
-        materialized: table
-         
-    marts:
-        revenue:
-        base:
-        materialized: table   
-         
     netsuite:
       materialized: table
       base:

@@ -31,22 +31,26 @@ test_affinity = get_affinity_with_key_value("test", ["true"])
 
 test_tolerations = get_toleration_with_value("test")
 
+production_affinity = get_affinity_with_key_value("production", ["true"])
+
+production_tolerations = get_toleration_with_value("production")
+
 
 def is_local_test():
     return "NAMESPACE" in env and env["NAMESPACE"] == "testing"
 
 
 def get_affinity(is_scd):
+    if is_local_test():
+        return test_affinity
     if is_scd:
         return scd_affinity
-    if is_local_test:
-        return test_affinity
-    return None
+    return production_affinity
 
 
 def get_toleration(is_scd):
-    if is_scd:
-        return scd_tolerations
     if is_local_test():
         return test_tolerations
-    return None
+    if is_scd:
+        return scd_tolerations
+    return production_tolerations

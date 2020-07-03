@@ -30,7 +30,6 @@ WITH source AS (
         created_at::TIMESTAMP                        AS created_at,
         updated_at::TIMESTAMP                        AS updated_at,
         license_id::INTEGER                          AS license_id,
-        stats                                        AS stats_raw,
         mattermost_enabled::BOOLEAN                  AS mattermost_enabled,
         uuid::VARCHAR                                AS uuid,
         edition::VARCHAR                             AS edition,
@@ -68,7 +67,11 @@ WITH source AS (
         dependency_proxy_enabled::BOOLEAN            AS is_dependency_proxy_enabled,
         recording_ce_finished_at::TIMESTAMP          AS recording_ce_finished_at,
         recording_ee_finished_at::TIMESTAMP          AS recording_ee_finished_at,
-        PARSE_JSON(counts)                           AS stats_used
+        PARSE_JSON(counts)                           AS stats_used,
+        ingress_modsecurity_enabled::boolean         AS is_ingress_modsecurity_enabled,
+        PARSE_JSON(topology)                         AS topology,
+        app_server_type::VARCHAR                     AS app_server_type,
+        grafana_link_enabled::BOOLEAN                AS is_grafana_link_enabled
     FROM source
     WHERE CHECK_JSON(counts) IS NULL
 

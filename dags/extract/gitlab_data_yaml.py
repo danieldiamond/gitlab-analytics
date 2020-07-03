@@ -17,6 +17,7 @@ from kube_secrets import (
     SNOWFLAKE_LOAD_USER,
     SNOWFLAKE_LOAD_WAREHOUSE,
 )
+from kubernetes_helpers import get_affinity, get_toleration
 
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
@@ -33,6 +34,7 @@ default_args = {
     "sla": timedelta(hours=12),
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1),
+    "dagrun_timeout": timedelta(hours=2),
 }
 
 # Create the DAG
@@ -60,6 +62,8 @@ data_yaml_extract = KubernetesPodOperator(
         SNOWFLAKE_LOAD_WAREHOUSE,
         SNOWFLAKE_LOAD_PASSWORD,
     ],
+    affinity=get_affinity(False),
+    tolerations=get_toleration(False),
     env_vars=pod_env_vars,
     arguments=[data_yaml_extract_cmd],
     dag=dag,

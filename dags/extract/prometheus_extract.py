@@ -19,6 +19,7 @@ from kube_secrets import (
     SNOWFLAKE_LOAD_USER,
     SNOWFLAKE_LOAD_WAREHOUSE,
 )
+from kubernetes_helpers import get_affinity, get_toleration
 
 env = os.environ.copy()
 pod_env_vars = {"CI_PROJECT_DIR": "/analytics"}
@@ -33,6 +34,7 @@ default_args = {
     "sla": timedelta(hours=12),
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1),
+    "dagrun_timeout": timedelta(hours=6),
 }
 
 dag = DAG("prometheus_extract", default_args=default_args, schedule_interval="@hourly")
@@ -56,6 +58,8 @@ prometheus_operator = KubernetesPodOperator(
         SNOWFLAKE_LOAD_PASSWORD,
     ],
     env_vars=pod_env_vars,
+    affinity=get_affinity(False),
+    tolerations=get_toleration(False),
     arguments=[
         prometheus_extract_command
         + " {{ ts }} {{ next_execution_date.isoformat() }} $(gcloud auth print-identity-token)"

@@ -143,9 +143,7 @@ class SnowflakeManager:
             target_schema = source_schema
 
         database = env["SNOWFLAKE_TRANSFORM_DATABASE"]
-        queries = [
-            f"""USE "{database}"; """,
-        ]
+        queries = [f"""USE "{database}"; """]
         # Tries to create the schema its about to write to
         # If it does exists, {schema} already exists, statement succeeded.
         # is returned.

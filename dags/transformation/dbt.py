@@ -19,6 +19,10 @@ from airflow_utils import (
     xs_warehouse,
 )
 from kube_secrets import (
+    SALT,
+    SALT_EMAIL,
+    SALT_IP,
+    SALT_NAME,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_PASSWORD,
     SNOWFLAKE_TRANSFORM_ROLE,
@@ -55,6 +59,7 @@ default_args = {
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
     "trigger_rule": TriggerRule.ALL_DONE,
+    "dagrun_timeout": timedelta(hours=6),
 }
 
 # Create the DAG
@@ -104,6 +109,10 @@ dbt_non_product_models_task = KubernetesPodOperator(
     task_id="dbt-non-product-models-run",
     name="dbt-non-product-models-run",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
@@ -135,6 +144,10 @@ dbt_product_models_task = KubernetesPodOperator(
     task_id="dbt-product-models-run",
     name="dbt-product-models-run",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
@@ -165,6 +178,10 @@ dbt_full_refresh = KubernetesPodOperator(
     task_id="dbt-full-refresh",
     name="dbt-full-refresh",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
@@ -197,6 +214,10 @@ dbt_source_freshness = KubernetesPodOperator(
     task_id="dbt-source-freshness",
     name="dbt-source-freshness",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
@@ -227,6 +248,10 @@ dbt_test = KubernetesPodOperator(
     name="dbt-test",
     trigger_rule="all_done",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,

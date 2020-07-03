@@ -39,6 +39,8 @@ The snowplow events currently included for the Manage Stage are:
 This model provides a summary of relevant actions for the Monitor Stage coming from snowplow.
 
 The snowplow events currently included for the Monitor Stage are:
+* alert_management_viewed
+* alert_management_detail_viewed
 * environments_viewed
 * error_tracking_viewed
 * logging_viewed
@@ -56,6 +58,7 @@ This model provides a summary of relevant activation events for Plan Stage comin
 From snowplow database, at the moment we track the following events:
 
 * board_viewed
+* design_viewed
 * epic_list_viewed
 * epic_viewed
 * issue_list_viewed

@@ -144,6 +144,15 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "incident_labeled_issues",
+    "source_cte_name": "incident_labeled_issues",
+    "user_column_name": "author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "issue_id",
+    "stage_name": "monitor",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "issues",
     "source_table_name": "gitlab_dotcom_issues",
     "user_column_name": "author_id",
@@ -270,6 +279,15 @@
     "is_representative_of_stage": "True"
   },
   {
+    "event_name": "push_events",
+    "source_cte_name": "push_events",
+    "user_column_name": "author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "project_id",
+    "stage_name": "create",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "releases",
     "source_table_name": "gitlab_dotcom_releases",
     "user_column_name": "author_id",
@@ -388,6 +406,14 @@ WITH gitlab_subscriptions AS (
     FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
     WHERE secure_ci_job_type = 'dependency_scanning'
 
+), incident_labeled_issues AS (
+
+    SELECT 
+      *,
+      issue_created_at AS created_at
+    FROM {{ ref('gitlab_dotcom_issues_xf') }}
+    WHERE ARRAY_CONTAINS('incident'::variant, labels)
+
 ), issue_resource_label_events AS (
 
     SELECT *
@@ -429,6 +455,12 @@ WITH gitlab_subscriptions AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_projects_xf') }}
     WHERE container_registry_enabled = True
+
+), push_events AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_events') }}
+    WHERE event_action_type = 'pushed'
 
 ), group_members AS (
 

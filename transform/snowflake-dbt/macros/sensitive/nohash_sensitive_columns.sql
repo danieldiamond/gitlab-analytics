@@ -2,7 +2,15 @@
 
     {% set meta_columns = get_meta_columns(source_table, "sensitive") %}
 
-    sha2({{join_key|lower}}) AS {{join_key|lower}}_hash,
+        {%- if config.get("materialized") == "view" and config.get("secure") -%}
+
+            {{ hash_of_column_in_view(join_key) }}
+
+        {%- else -%}
+    
+            {{ hash_of_column(join_key) }}
+
+        {% endif %}
     
     {% for column in meta_columns %}
     

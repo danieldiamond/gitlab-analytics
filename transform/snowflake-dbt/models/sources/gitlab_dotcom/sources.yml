@@ -14,7 +14,8 @@ sources:
       identifier: false
 
     freshness:
-      warn_after: {count: 48, period: hour}
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
 
     tables:
       - name: approval_merge_request_rules
@@ -25,6 +26,9 @@ sources:
         identifier: gitlab_db_approver_groups
       - name: audit_events
         identifier: gitlab_db_audit_events
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
       - name: board_assignees
         identifier: gitlab_db_board_assignees
       - name: board_labels
@@ -81,6 +85,9 @@ sources:
         identifier: gitlab_db_clusters_applications_elastic_stacks
       - name: clusters_applications_helm
         identifier: gitlab_db_clusters_applications_helm
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
       - name: clusters_applications_ingress
         identifier: gitlab_db_clusters_applications_ingress
       - name: clusters_applications_jupyter
@@ -103,6 +110,9 @@ sources:
         identifier: gitlab_db_design_management_versions
       - name: elasticsearch_indexed_namespaces
         identifier: gitlab_db_elasticsearch_indexed_namespaces
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
       - name: environments
         identifier: gitlab_db_environments
       - name: epic_issues
@@ -151,8 +161,14 @@ sources:
         identifier: gitlab_db_merge_request_diffs
       - name: merge_request_metrics
         identifier: gitlab_db_merge_request_metrics
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}          
       - name: merge_requests
         identifier: gitlab_db_merge_requests
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}      
       - name: merge_requests_closing_issues
         identifier: gitlab_db_merge_requests_closing_issues
       - name: milestones
@@ -177,6 +193,9 @@ sources:
         identifier: gitlab_db_programming_languages
       - name: project_authorizations
         identifier: gitlab_db_project_authorizations
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}    
       - name: project_auto_devops
         identifier: gitlab_db_project_auto_devops
       - name: project_features
@@ -201,6 +220,7 @@ sources:
         identifier: gitlab_db_repository_languages
       - name: resource_label_events
         identifier: gitlab_db_resource_label_events
+        freshness: null        
       - name: resource_milestone_events
         identifier: gitlab_db_resource_milestone_events
       - name: resource_weight_events
@@ -213,6 +233,8 @@ sources:
         identifier: gitlab_db_subscriptions
       - name: snippets
         identifier: gitlab_db_snippets
+      - name: terraform_states
+        identifier: gitlab_db_terraform_states
       - name: timelogs
         identifier: gitlab_db_timelogs
       - name: todos

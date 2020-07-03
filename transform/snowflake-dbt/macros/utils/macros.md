@@ -29,7 +29,7 @@ This macro **is specific** to pgp tables (gitlab_dotcom, version, license) and s
 
 
 {% docs generate_schema_name %}
-This is the GitLab overwrite for the dbt internal macro. See our [dbt guide](https://about.gitlab.com/handbook/business-ops/data-team/dbt-guide/#general) for more info on how this works.
+This is the GitLab overwrite for the dbt internal macro. See our [dbt guide](https://about.gitlab.com/handbook/business-ops/data-team/platform/dbt-guide/#general) for more info on how this works.
 {% enddocs %}
 
 
