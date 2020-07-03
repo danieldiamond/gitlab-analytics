@@ -18,7 +18,7 @@ SELECT
     ad_unit                         AS ad_unit,
     NULLIF(brand_not_brand, 'x')    AS brand_not_brand,
     NULLIF(match_unit, 'x')         AS match_unit,
-    REPLACE(content, '-', ' ')      AS content,
+    content                         AS content,
     team                            AS team,
     budget                          AS budget,
     data_source                     AS data_source,
