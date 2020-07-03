@@ -131,12 +131,17 @@ gitlab-org/security-products/analyzers/flawfinder,6237085
 gitlab-org/security-products/analyzers/gemnasium-maven-plugin,13150952
 gitlab-org/security-products/analyzers/go-ast-scanner,5971589
 gitlab-org/security-products/analyzers/security-code-scan,6535935
+gitlab-org/security-products/analyzers/api-fuzzing,19617580
+gitlab-org/security-products/analyzers/api-fuzzing-src,5964710
+gitlab-org/security-products/analyzers/gitlab-cov-fuzz,19413101
+gitlab-org/security-products/analyzers/gitlab-cov-fuzz-src,19413012
 gitlab-org/security-products/security-report-schemas,16683102
 gitlab-org/security-products/tests/apex-salesforce,13348998
 gitlab-org/security-products/tests/c,5727416
 gitlab-org/security-products/tests/common,6388398
 gitlab-org/security-products/tests/container-scanning,11432834
 gitlab-org/security-products/tests/cplusplus,5737157
+gitlab-org/security-products/tests/dast-e2e,16239404
 gitlab-org/security-products/tests/elixir-phoenix,11520423
 gitlab-org/security-products/tests/go,5996549
 gitlab-org/security-products/tests/go-modules,13664986

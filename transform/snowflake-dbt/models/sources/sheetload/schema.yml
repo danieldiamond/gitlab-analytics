@@ -1,0 +1,271 @@
+version: 2
+models:
+- name: sheetload_abuse_mitigation
+  description: Abuse currently manually pulls data from Bouncer (Abuse mitigation Tool) in order to report on abusive account mitigation.
+- name: sheetload_abm_account_baselines
+  description: This is the source for ABM account data
+  columns:
+    - name: added_date
+      tests:
+        - not_null
+    - name: account_id
+      tests:
+        - not_null
+    - name: gtm_strategy
+      tests:
+        - not_null
+- name: sheetload_calendar_source
+  description: This is the basis of the CEO's calendar analysis. When you open the raw sheet, you'll be prompted to run the appscript. Additional categorization can be done by adding additional `case when` statements.
+  columns:
+  - name: event_start
+    tests:
+    - not_null
+  - name: calculated_duration
+    tests:
+    - not_null
+- name: sheetload_company_call_attendance
+  description: This spreadsheet contains data from company call attendance (also called the "Take a Break Call"). The People Experience team pulls their data and updates their spreadsheet, which is imported into the sheetload sheet.
+  columns:
+  - name: call_date
+    tests:
+    - not_null
+  - name: meeting_topic
+    tests:
+    - not_null
+  - name: day_of_the_week
+    tests:
+    - not_null
+  - name: call_time
+    tests:
+    - not_null
+  - name: count_of_participants
+    tests:
+    - not_null
+- name: sheetload_days_to_close
+  description: Days for accounting to close the books in Netsuite.
+  columns:
+    - name: close_month
+      tests:
+      - not_null
+      - unique
+- name: sheetload_gitlab_slack_stats
+  description: This is the source of Slack usage statistics exported from the [Analytics dashboard](https://slack.com/help/articles/218407447-view-your-slack-analytics-dashboard).
+  columns:
+  - name: entry_date
+    tests:
+    - not_null
+    - unique
+- name: sheetload_headcount
+  columns:
+  - name: primary_key
+    tests:
+    - not_null
+    - unique
+- name: sheetload_hire_forecast
+  description: This is the source of forecasted hire counts by function and department for the end of each month.
+  columns:
+  - name: function
+    tests:
+    - not_null
+  - name: department
+    tests:
+    - not_null
+  - name: month_year
+    tests:
+    - not_null
+  - name: forecast
+    tests:
+    - not_null
+- name: sheetload_hire_plan
+  description: This is the source of planned hire counts by function and department for the end of each month.
+  columns:
+  - name: function
+    tests:
+    - not_null
+  - name: department
+    tests:
+    - not_null
+  - name: month_year
+    tests:
+    - not_null
+  - name: plan
+    tests:
+    - not_null
+- name: sheetload_job_roles_prior_to_2020_02
+  description: This links all job titles prior to 2020-02-28 to a job role since we  did not start capturing job role prior to this date.
+  columns:
+    - name: job_title
+    - name: job_role
+- name: sheetload_kpi_status
+  description: Record of all the kpi status and commit history
+  columns:
+    - name: kpi_grouping
+      tests:
+      - not_null
+    - name: kpi_sub_grouping
+    - name: kpi_name
+      tests:
+      - not_null
+    - name: start_date
+      tests:
+      - not_null
+    - name: completion_date
+    - name: status
+    - name: comment
+    - name: in_handbook
+      tests:
+      - not_null
+    - name: sisense_link
+    - name: gitlab_issue
+    - name: commit_start
+    - name: commit_handbook_v1
+    - name: is_deleted
+      tests:
+      - not_null
+    - name: kpi_number
+    - name: version_number
+    - name: handbook_reference
+    - name: kpi_id
+      description: This is the id that ties the issue to gitlab_dotcom data.  
+- name: sheetload_linkedin_recruiter
+  description: This is the source of linkedin recruiter inmail data for each month by sourcer .
+  columns:
+  - name: sourcer
+    tests:
+    - not_null
+  - name: messages_sent
+    tests:
+    - not_null
+  - name: responses_received
+    tests:
+    - not_null
+  - name: acceptances
+    tests:
+    - not_null
+  - name: declines
+    tests:
+    - not_null
+  - name: no_response
+    tests:
+    - not_null
+  - name: responses_rate
+    tests:
+    - not_null
+  - name: accept_rate
+    tests:
+    - not_null
+  - name: data_downloaded_month
+    tests:
+    - not_null
+- name: sheetload_location_factor_targets
+  description: This is the list of location factor targets for each department and division as outlined in the [handbook](https://about.gitlab.com/handbook/people-operations/people-operations-metrics/#average-location-factor).
+  columns:
+  - name: department
+    tests:
+    - not_null
+    - unique
+  - name: location_factor_target
+    tests:
+    - not_null
+- name: sheetload_manual_downgrade_dotcom_tracking
+  description: This contains a list of namespaces identified for manual downgrading and the date of the downgrade.
+  columns:
+  - name: namespace_id
+    tests:
+    - not_null
+- name: sheetload_marketing_kpi_benchmarks
+  description: This is the source of marketing KPI goals to be included in marketing metric reports and dashboards.
+  columns:
+  - name: goal_date
+    tests:
+    - not_null
+    - unique
+- name: sheetload_planned_values
+  description: Planned values for multiple metrics as defined by Finance Team via Chase
+  columns:
+    - name: primary_key
+      tests:
+      - not_null
+      - unique
+- name: sheetload_procurement_cost_savings
+  description: This is the source of the KPI - Deliver Quantified Savings of greater than three million over a rolling 12 month period
+  columns:
+    - name: calendar_month
+      tests:
+      - not_null
+      - unique
+    - name: savings
+    - name: rolling_12_month_savings_without_audit
+    - name: rolling_12_month_savings_with_audit
+    - name: target
+- name: sheetload_release_blog_posts
+  description: Information about blog post releases via [Mark Fletcher](https://gitlab.com/markglenfletcher).
+  columns:
+    - name: base_items
+    - name: bug_items
+    - name: performance_items
+    - name: release
+      tests:
+      - not_null
+      - unique
+- name: sheetload_rep_quotas_full_fy2020
+  description: This is the model that captures sales data for rep quotas for the full fy2020.
+- name: sheetload_osat_source
+  description: This is the model that captures the onboarding satisfaction score survey OSAT.
+- name: sheetload_rep_quotas_full_ps_fy2020
+  description: This is the model that captures sales data for rep quotas for professional services the full fy2020.
+- name: sheetload_scalable_employment_values
+  description: Source model for Scalable Employment Solution Data
+  columns:
+    - name: nbr_month
+      tests:
+        - not_null
+        - unique
+    - name: total_workforce
+    - name: nbr_in_scalable_solution
+    - name: nbr_in_process
+    - name: nbr_to_be_converted
+- name: sheetload_social_marketing_metrics
+  description: This is the model that captures data from social marketing metrics
+  columns:
+    - name: month_date
+      tests:
+      - not_null
+    - name: channel
+      tests:
+      - not_null
+    - name: brand
+      tests:
+      - not_null
+    - name: metric
+      tests:
+      - not_null
+    - name: is_organic
+      tests:
+      - not_null
+    - name: value
+      tests:
+      - not_null
+    - name: source
+      tests:
+      - not_null
+  tests:
+    - unique:
+        column_name: "CONCAT(month_date, channel, brand, metric, is_organic)"
+- name: sheetload_yc_companies
+  description: This is a list of YC Companies and their cohort provided by and maintained by marketing.
+  columns:
+    - name: company_id
+      tests:
+      - not_null
+      - unique
+    - name: company_name
+      tests:
+      - not_null
+    - name: yc_batch
+      tests:
+      - not_null
+- name: sheetload_hire_replan
+  description: This is based on the Finance Replan - R4QF.
+  columns:
+    - name: departments

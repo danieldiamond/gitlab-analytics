@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: snowflake_show_roles_source
+    description: Source layer for all snapshots of Snowflake roles.
+  - name: snowflake_show_users_source
+    description: Source layer for all snapshots of Snowflake users.
+  - name: snowflake_grants_to_role_source
+    description: Source layer for all snapshots of users and the roles they've been granted.
+  - name: snowflake_grants_to_user_source
+    description: Source layer for all snapshots of users and the roles they've been granted.
+

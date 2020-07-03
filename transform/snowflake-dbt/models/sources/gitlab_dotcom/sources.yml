@@ -85,6 +85,9 @@ sources:
         identifier: gitlab_db_clusters_applications_elastic_stacks
       - name: clusters_applications_helm
         identifier: gitlab_db_clusters_applications_helm
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
       - name: clusters_applications_ingress
         identifier: gitlab_db_clusters_applications_ingress
       - name: clusters_applications_jupyter
@@ -230,6 +233,8 @@ sources:
         identifier: gitlab_db_subscriptions
       - name: snippets
         identifier: gitlab_db_snippets
+      - name: terraform_states
+        identifier: gitlab_db_terraform_states
       - name: timelogs
         identifier: gitlab_db_timelogs
       - name: todos
