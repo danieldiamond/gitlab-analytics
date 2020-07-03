@@ -195,6 +195,7 @@ models:
       bamboohr:
         xf:
           schema: sensitive
+          secure: true
         rpt:
           schema: analytics
 
