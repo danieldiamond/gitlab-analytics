@@ -534,18 +534,18 @@ roles:
 # Object Roles
 # ==========================================
     - bamboohr:
-          warehouses:
-              - analyst_xs
-          privileges:
-              databases:
-                  read:
-                      - raw
-              schemas:
-                  read:
-                      - raw.bamboohr
-              tables:
-                  read:
-                      - raw.bamboohr.*
+        warehouses:
+            - analyst_xs
+        privileges:
+           databases:
+              read:
+                  - raw
+           schemas:
+              read:
+                  - raw.bamboohr
+           tables:
+              read:
+                  - raw.bamboohr.*
 
     - boneyard:
         warehouses:
