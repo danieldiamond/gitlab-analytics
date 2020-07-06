@@ -107,6 +107,8 @@ tables:
     export_table_primary_key: id
     advanced_metadata: true
 
+<<<<<<< HEAD
+=======
   alert_management_alert_assignees:
     import_db: GITLAB_DB
     import_query: >
@@ -161,6 +163,7 @@ tables:
     export_table: 'alerts_service_data'
     export_table_primary_key: id
 
+>>>>>>> b383112677d7592cd8e1d3b65ef99da69b25d60a
   approvals:
     import_db: GITLAB_DB
     import_query: >
@@ -1674,22 +1677,6 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'subscriptions'
-    export_table_primary_key: id
-  system_note_metadata:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , note_id
-      , commit_count 
-      , action
-      , created_at
-      , updated_at
-      , description_version_id
-      FROM system_note_metadata
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
-    export_schema: 'gitlab_com'
-    export_table: 'system_note_metadata'
     export_table_primary_key: id
   programming_languages:
     import_db: GITLAB_DB
