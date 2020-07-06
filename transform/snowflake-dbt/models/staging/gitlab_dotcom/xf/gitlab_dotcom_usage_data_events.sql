@@ -496,14 +496,6 @@ WITH gitlab_subscriptions AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_ci_job_artifacts') }}
     WHERE file_type = 18
-    
-  ), services AS (
-
-    SELECT *
-    FROM {{ ref('gitlab_dotcom_services') }}
-    WHERE service_type != 'GitlabIssueTrackerService'
-
-)
 
 )
 /* End of Source CTEs */
