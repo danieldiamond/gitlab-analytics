@@ -24,6 +24,9 @@ sources:
         identifier: gitlab_db_approvals
       - name: approver_groups
         identifier: gitlab_db_approver_groups
+        freshness:
+            warn_after: {count: 7, period: day}
+            error_after: {count: 30, period: day}
       - name: audit_events
         identifier: gitlab_db_audit_events
         freshness:
@@ -92,6 +95,9 @@ sources:
         identifier: gitlab_db_clusters_applications_ingress
       - name: clusters_applications_jupyter
         identifier: gitlab_db_clusters_applications_jupyter
+        freshness:
+            warn_after: {count: 7, period: day}
+            error_after: {count: 30, period: day}
       - name: clusters_applications_knative
         identifier: gitlab_db_clusters_applications_knative
       - name: clusters_applications_prometheus

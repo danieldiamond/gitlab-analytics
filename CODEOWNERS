@@ -99,7 +99,10 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/models/sources/netsuite/           @iweeks         @kathleentam
 /transform/snowflake-dbt/models/staging/netsuite/           @iweeks         @kathleentam
 
-/transform/snowflake-dbt/models/sources/qualtrics   @m_walker    @jjstark   
+/transform/snowflake-dbt/models/sources/pmg   @jeanpeguero    @paul_armstrong   @jjstark
+/transform/snowflake-dbt/models/staging/pmg   @jeanpeguero    @paul_armstrong   @jjstark
+
+/transform/snowflake-dbt/models/sources/qualtrics   @m_walker    @jjstark
 /transform/snowflake-dbt/models/staging/qualtrics   @m_walker    @jjstark
 
 /transform/snowflake-dbt/models/sources/sfdc/       @derekatwood    @kathleentam	@jeanpeguero     @jjstark  
