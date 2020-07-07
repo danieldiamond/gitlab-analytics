@@ -25,7 +25,7 @@ WITH offers AS (
       offers.offer_status                       AS offer_status,
       offers.application_status                 AS application_status,
       hire_date_mod                             AS hire_date,
-      first_name ||' '|| last_name)             AS candidate_name,
+      (candidate_names.first_name ||' '|| candidate_names.last_name) AS candidate_name,
       offers.division_modified                  AS division,
       offers.department_name                    AS department,
       offers.job_name                           AS vacancy,
