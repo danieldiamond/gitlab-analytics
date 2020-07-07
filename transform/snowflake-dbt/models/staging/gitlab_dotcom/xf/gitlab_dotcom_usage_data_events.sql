@@ -530,7 +530,7 @@ WITH gitlab_subscriptions AS (
         NULL                                                      AS parent_id,
         NULL                                                      AS parent_created_at,
       {% endif %}
-      namespace_is_internal                                       AS namespace_is_internal,
+      ultimate_namespace.namespace_is_internal                    AS namespace_is_internal,
       {{ event_cte.event_name }}.created_at                       AS event_created_at,
       {{ event_cte.is_representative_of_stage }}::BOOLEAN         AS is_representative_of_stage,
       '{{ event_cte.event_name }}'                                AS event_name,
