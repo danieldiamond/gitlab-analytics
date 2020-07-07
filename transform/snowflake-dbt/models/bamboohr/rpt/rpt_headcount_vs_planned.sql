@@ -53,6 +53,8 @@ WITH headcount AS (
       AND headcount.month_date = DATE_TRUNC(month, hire_plan.month_date)
     LEFT JOIN division_mapping
       ON hire_plan.department = division_mapping.department
+      AND hire_plan.breakout_type = 'department_division_breakout'
+
        
 )
 
