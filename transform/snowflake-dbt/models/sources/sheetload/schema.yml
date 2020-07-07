@@ -179,7 +179,6 @@ models:
   - name: goal_date
     tests:
     - not_null
-    - unique
 - name: sheetload_planned_values
   description: Planned values for multiple metrics as defined by Finance Team via Chase
   columns:
