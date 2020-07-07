@@ -8,7 +8,7 @@ WITH source AS (
     SELECT
       "Goal_Date"::DATE                               AS goal_date,
       "MQL_Goal"::FLOAT                               AS mql_goal,
-	  "Version"::VARCHAR_                             AS goal_version,
+	  "Goal_Version"::VARCHAR_                             AS goal_version,
       NULLIF("NetNewOpp_Goal", '')::FLOAT             AS net_new_opp_goal,
       NULLIF("IACV_Large_Target", '')::FLOAT          AS iacv_large_target,
       NULLIF("IACV_MM_Target", '')::FLOAT             AS iacv_mm_target,
