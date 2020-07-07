@@ -26,6 +26,21 @@ sources:
       - name: license_db_licenses_snapshots
       - name: sfdc_account_snapshots
       - name: sfdc_opportunity_snapshots
+      - name: sfdc_user_snapshots
       - name: sheetload_employee_location_factor_snapshots
         loaded_at_field: DATEADD(sec, dbt_updated_at, '1970-01-01')
         freshness: null
+      - name: zuora_account_snapshots
+      - name: zuora_amendment_snapshots
+      - name: zuora_contact_snapshots
+      - name: zuora_invoice_snapshots
+      - name: zuora_invoiceitem_snapshots
+      - name: zuora_product_rate_plan_charge_snapshots
+      - name: zuora_product_rate_plan_charge_tier_snapshots
+      - name: zuora_product_rate_plan_snapshots
+      - name: zuora_product_snapshots
+      - name: zuora_rateplan_snapshots
+      - name: zuora_rateplancharge_snapshots
+      - name: zuora_refund_snapshots
+      - name: zuora_revenue_schedule_item_snapshots
+      - name: zuora_subscription_snapshots
