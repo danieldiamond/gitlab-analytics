@@ -62,18 +62,21 @@ models:
       description: Is equal to the rolling_12_month_involuntary_separations divided by rolling_12_month_headcount.
     - name: retention
       description: Is equal to 1 - (rolling_12_month_separations divided by rolling_12_month_headcount). Note - in the case the rolling_12_month_headcount is less than the rolling_12_month_separations, retention will appear as null.
-    - name: headcount_leader
+    - name: headcount_end_leader
+    - name: headcount_leader_average
     - name: hired_leaders
     - name: separated_leaders
     - name: rolling_12_month_headcount_leader
     - name: rolling_12_month_separations_leader
     - name: retention_leader
-    - name: headcount_manager
+    - name: headcount_end_manager
+    - name: headcount_manager_average
     - name: hired_manager
     - name: separated_manager
     - name: rolling_12_month_headcount_manager
     - name: rolling_12_month_separations_manager
     - name: retention_manager
+    - name: headcount_end_contributor
     - name: headcount_contributor
     - name: hired_contributor
     - name: separated_contributor

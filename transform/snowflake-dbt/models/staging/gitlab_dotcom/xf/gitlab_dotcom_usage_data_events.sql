@@ -279,6 +279,15 @@
     "is_representative_of_stage": "True"
   },
   {
+    "event_name": "push_events",
+    "source_cte_name": "push_events",
+    "user_column_name": "author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "project_id",
+    "stage_name": "create",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "releases",
     "source_table_name": "gitlab_dotcom_releases",
     "user_column_name": "author_id",
@@ -321,6 +330,15 @@
     "key_to_parent_project": "project_id",
     "primary_key": "snippet_id",
     "stage_name": "create",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "terraform_reports",
+    "source_cte_name": "terraform_reports",
+    "user_column_name": "NULL",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_job_artifact_id",
+    "stage_name": "configure",
     "is_representative_of_stage": "False"
   },
   {
@@ -447,6 +465,12 @@ WITH gitlab_subscriptions AS (
     FROM {{ ref('gitlab_dotcom_projects_xf') }}
     WHERE container_registry_enabled = True
 
+), push_events AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_events') }}
+    WHERE event_action_type = 'pushed'
+
 ), group_members AS (
 
     SELECT
@@ -466,6 +490,12 @@ WITH gitlab_subscriptions AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_services') }}
     WHERE service_type != 'GitlabIssueTrackerService'
+
+), terraform_reports AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_ci_job_artifacts') }}
+    WHERE file_type = 18
 
 )
 /* End of Source CTEs */
@@ -515,6 +545,7 @@ WITH gitlab_subscriptions AS (
         NULL                                                      AS parent_id,
         NULL                                                      AS parent_created_at,
       {% endif %}
+      ultimate_namespace.namespace_is_internal                    AS namespace_is_internal,
       {{ event_cte.event_name }}.created_at                       AS event_created_at,
       {{ event_cte.is_representative_of_stage }}::BOOLEAN         AS is_representative_of_stage,
       '{{ event_cte.event_name }}'                                AS event_name,

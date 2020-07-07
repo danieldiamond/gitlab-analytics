@@ -142,18 +142,34 @@ models:
       greenhouse:
         schema: greenhouse
 
+      handbook:
+        schema: handbook
+
       license:
         schema: license_db
+
+      netsuite:
+        schema: netsuite
 
       qualtrics:
         materialized: table
         schema: qualtrics
+
+      pmg:
+        materialized: table
+        schema: pmg
 
       sfdc:
         schema: sfdc
         sensitive:
           schema: sensitive
           secure: true
+
+      sheetload:
+        schema: sheetload
+
+      snowflake:
+        schema: snowflake
 
       version:
         tags: ["product"]
@@ -170,6 +186,10 @@ models:
     staging:
       schema: staging
       materialized: table
+
+      customers:
+        xf:
+          schema: analytics
 
       engineering:
         materialized: table
@@ -198,15 +218,32 @@ models:
         rpt:
           schema: analytics
 
+      handbook:
+        rpt:
+          schema: analytics
+        xf:
+          schema: analytics
+
       license:
         materialized: view
 
+      netsuite:
+        xf:
+          schema: analytics
+
       qualtrics:
+        schema: analytics
+
+      pmg:
         schema: analytics
 
       sfdc:
         xf:
           schema: analytics
+
+      snowflake:
+          schema: analytics
+          materialized: view
 
       version:
         tags: ["product"]
@@ -239,20 +276,9 @@ models:
       base:
         materialized: table
 
-    customers:
-      materialized: table
-      base:
-          schema: staging
-      intermediate:
-          schema: staging
-
     date:
       materialized: table
 
-    handbook:
-        materialized: table
-         
-         
     netsuite:
       materialized: table
       base:

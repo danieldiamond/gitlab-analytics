@@ -1,0 +1,9 @@
+version: 2
+
+models:
+    - name: pmg_paid_digital
+      description: 'PMGs reporting data based off GitLabs paid digital ad campaigns'
+      columns:
+        - name: reporting_date
+          tests:
+            - not_null

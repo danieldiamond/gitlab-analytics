@@ -1,34 +1,34 @@
 WITH headcount AS (
   
-  SELECT 
-   month_date, 
-   CASE WHEN breakout_type = 'kpi_breakout' 
-          THEN 'all_company_breakout'
-        WHEN breakout_type = 'all_attributes_breakout' 
-          THEN 'department_division_breakout'
-        ELSE breakout_type END                                            AS breakout_type,
-   IFF(breakout_type = 'kpi_breakout','all_company_breakout', department) AS department,
-   IFF(breakout_type = 'kpi_breakout','all_company_breakout', division)   AS division,
-   headcount_end                                                          AS headcount_actual,
-   hire_count                                                             AS hires_actual
-  FROM {{ ref ('bamboohr_rpt_headcount_aggregation') }}
-  WHERE breakout_type IN ('kpi_breakout','all_attributes_breakout','division_breakout')
-    AND eeoc_field_name = 'no_eeoc'
+    SELECT 
+      month_date, 
+      CASE WHEN breakout_type = 'kpi_breakout' 
+            THEN 'all_company_breakout'
+           WHEN breakout_type = 'all_attributes_breakout' 
+            THEN 'department_division_breakout'
+           ELSE breakout_type END                                            AS breakout_type,
+      IFF(breakout_type = 'kpi_breakout','all_company_breakout', department) AS department,
+      IFF(breakout_type = 'kpi_breakout','all_company_breakout', division)   AS division,
+      headcount_end                                                          AS headcount_actual,
+      hire_count                                                             AS hires_actual
+    FROM {{ ref ('bamboohr_rpt_headcount_aggregation') }}
+    WHERE breakout_type IN ('kpi_breakout','all_attributes_breakout','division_breakout')
+      AND eeoc_field_name = 'no_eeoc'
   
 ), hire_plan AS (
 
     SElECT *,
-    IFF(DATE_TRUNC(month, month_date) = DATE_TRUNC(month, DATEADD(month, -1, CURRENT_DATE())),1,0) AS last_month
+      IFF(DATE_TRUNC(month, month_date) = DATE_TRUNC(month, DATEADD(month, -1, CURRENT_DATE())),1,0) AS last_month
     FROM {{ ref ('hire_replan_xf') }}
 
 ), division_mapping AS (
 
-   SELECT 
-    department,
-    division
-   FROM hire_plan
-   WHERE last_month = 1
-   GROUP BY 1,2
+    SELECT 
+      department,
+      division
+    FROM hire_plan
+    WHERE last_month = 1
+    GROUP BY 1,2
   
 ), final AS (
 
@@ -37,12 +37,14 @@ WITH headcount AS (
       hire_plan.breakout_type,
       hire_plan.department,
       COALESCE(hire_plan.division, division_mapping.division)               AS division,
-      hire_plan.planned_headcount
-      IFF(hire_plan.planned_hires<0,0, hire_plan.planned_hires)             AS planned_hires
+      hire_plan.planned_headcount,
+      IFF(hire_plan.planned_hires<0,0, hire_plan.planned_hires)             AS planned_hires,
       headcount.headcount_actual,
-      headcount.hires_actual,
-      headcount.hires_actual / planned_hires                                AS hires_vs_plan,
-      ROUND((headcount.headcount_actual/hire_plan.planned_headcount),4)     AS actual_headcount_vs_planned_headcount
+      headcount.hires_actual
+      {# IFF(hire_plan.planned_hires<0, NULL, 
+          headcount.hires_actual / planned_hires)                           AS hires_vs_plan,
+      IFF(hire_plan.planned_headcount = 0, NULL, 
+        ROUND((headcount.headcount_actual/hire_plan.planned_headcount),4))  AS actual_headcount_vs_planned_headcount #}
     FROM hire_plan
     LEFT JOIN headcount
       ON headcount.breakout_type = hire_plan.breakout_type

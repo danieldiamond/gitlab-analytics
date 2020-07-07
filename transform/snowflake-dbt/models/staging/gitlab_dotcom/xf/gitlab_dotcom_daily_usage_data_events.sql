@@ -1,3 +1,4 @@
+
 WITH usage_data AS (
 
     SELECT *
@@ -12,7 +13,7 @@ WITH usage_data AS (
       TO_DATE(event_created_at) AS event_date,
       COUNT(*)                  AS event_count
     FROM usage_data
-    {{ dbt_utils.group_by(n=16) }}
+    {{ dbt_utils.group_by(n=17) }}
 
 )
 

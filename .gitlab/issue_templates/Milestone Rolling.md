@@ -1,7 +1,7 @@
 
 # Steps to roll Milestones
 
-[Handbook Entry](https://about.gitlab.com/handbook/business-ops/data-team/#milestone-planning)
+[Handbook Entry](https://about.gitlab.com/handbook/business-ops/data-team/how-we-work/#milestone-planning)
 
 - [ ] Close Current Milestone
 - [ ] Remove `(current)` from closed milestone
