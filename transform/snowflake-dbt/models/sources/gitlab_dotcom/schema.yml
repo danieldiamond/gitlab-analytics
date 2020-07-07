@@ -1,6 +1,39 @@
 version: 2
 
 models:
+  - name: gitlab_dotcom_alert_management_alert_assignees
+    description: Base model for Gitlab.com alert_management_alert_assignees
+    columns:
+      - name: alert_management_alert_assignee_id
+        tests:
+          - not_null
+          - unique
+  - name: gitlab_dotcom_alert_management_alerts
+    description: Base model for Gitlab.com alert_management_alerts
+    columns:
+      - name: alert_management_alert_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+  - name: gitlab_dotcom_alerts_service_data
+    description: Base model for Gitlab.com alerts_service_data
+    columns:
+      - name: alerts_service_data_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
   - name: gitlab_dotcom_approval_merge_request_rules
     description: Base model for Gitlab.com approval_merge_request_rules
     columns:
@@ -1424,14 +1457,14 @@ models:
         tests:
           - not_null
 
-  - name: gitlab_dotcom_terraform_states
-    description: Base model for terraform_states table.
+  - name: gitlab_dotcom_system_note_metadata
+    description: Base model for Gitlab.com system_note_metadata
     columns:
-      - name: terraform_state_id
+      - name: system_note_metadata_id
         tests:
           - not_null
           - unique
-      - name: project_id
+      - name: created_at
         tests:
           - not_null
       - name: updated_at
