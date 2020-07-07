@@ -279,6 +279,15 @@
     "is_representative_of_stage": "True"
   },
   {
+    "event_name": "push_events",
+    "source_cte_name": "push_events",
+    "user_column_name": "author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "project_id",
+    "stage_name": "create",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "releases",
     "source_table_name": "gitlab_dotcom_releases",
     "user_column_name": "author_id",
@@ -446,6 +455,12 @@ WITH gitlab_subscriptions AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_projects_xf') }}
     WHERE container_registry_enabled = True
+
+), push_events AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_events') }}
+    WHERE event_action_type = 'pushed'
 
 ), group_members AS (
 
