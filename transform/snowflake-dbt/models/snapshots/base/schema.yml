@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: customers_db_customers_snapshots_base
-    description: This is the base model for snapshotted customers data from the customers.gitlab.com database.  Hard deletes are handled correctly here starting on Jun 8, 2020.
+    description: This is the base model for snapshotted customers data from the customers.gitlab.com database.  Hard deletes are handled correctly here starting on June 8, 2020.
     columns:
       - name: customer_snapshot_id
         description: Auto-generated primary key when building the snapshot with dbt
@@ -17,7 +17,7 @@ models:
           - not_null
       - name: valid_to
   - name: customers_db_orders_snapshots_base
-    description: This is the base model for snapshotted orders data from the customers.gitlab.com database. Hard deletes are handled correctly here starting on Jun 8, 2020.
+    description: This is the base model for snapshotted orders data from the customers.gitlab.com database. Hard deletes are handled correctly here starting on June 8, 2020.
     columns:
       - name: order_snapshot_id
         description: Auto-generated primary key when building the snapshot with dbt
@@ -32,7 +32,7 @@ models:
           - not_null
       - name: valid_to
   - name: gitlab_dotcom_gitlab_subscriptions_snapshots_base
-    description: This is the base model for snapshotted gitlab subscriptions data from the gitlab.com database. Hard deletes are handled correctly here starting on Jun 8, 2020.
+    description: This is the base model for snapshotted gitlab subscriptions data from the gitlab.com database. Hard deletes are handled correctly here starting on June 8, 2020.
     columns:
       - name: gitlab_subscription_snapshot_id
         description: Auto-generated primary key when building the snapshot with dbt
@@ -47,7 +47,7 @@ models:
           - not_null
       - name: valid_to
   - name: gitlab_dotcom_members_snapshots_base
-    description: This is the base model for snapshotted members data from the gitlab.com database. Hard deletes are handled correctly here starting on Jun 8, 2020.
+    description: This is the base model for snapshotted members data from the gitlab.com database. Hard deletes are handled correctly here starting on June 8, 2020.
     columns:
       - name: member_snapshot_id
         description: Auto-generated primary key when building the snapshot with dbt
@@ -62,7 +62,7 @@ models:
           - not_null
       - name: valid_to
   - name: gitlab_dotcom_namespaces_snapshots_base
-    description: This is the base model for snapshotted gitlab subscriptions data from the gitlab.com database. Hard deletes are handled correctly here starting on Jun 8, 2020.
+    description: This is the base model for snapshotted gitlab subscriptions data from the gitlab.com database. Hard deletes are handled correctly here starting on June 8, 2020.
     columns:
       - name: namespace_snapshot_id
         description: Auto-generated primary key when building the snapshot with dbt
