@@ -159,7 +159,7 @@ SELECT
   department,
   division,
   planned_headcount,
-  IFF(planned_hires<0, 0, planned_hires) AS planned_hires
+  IFF(planned_hires<0, 0, COALESCE(planned_hires,0)) AS planned_hires
 FROM unioned
 
 

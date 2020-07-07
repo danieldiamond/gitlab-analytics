@@ -9,8 +9,8 @@ WITH headcount AS (
            ELSE breakout_type END                                            AS breakout_type,
       IFF(breakout_type = 'kpi_breakout','all_company_breakout', department) AS department,
       IFF(breakout_type = 'kpi_breakout','all_company_breakout', division)   AS division,
-      headcount_end                                                          AS headcount_actual,
-      hire_count                                                             AS hires_actual
+      COALESCE(headcount_end,0)                                              AS headcount_actual,
+      COALESCE(hire_count,0)                                                 AS hires_actual
     FROM {{ ref ('bamboohr_rpt_headcount_aggregation') }}
     WHERE breakout_type IN ('kpi_breakout','all_attributes_breakout','division_breakout')
       AND eeoc_field_name = 'no_eeoc'
@@ -40,11 +40,9 @@ WITH headcount AS (
       hire_plan.planned_headcount,
       IFF(hire_plan.planned_hires<0,0, hire_plan.planned_hires)             AS planned_hires,
       headcount.headcount_actual,
-      headcount.hires_actual
-      {# IFF(hire_plan.planned_hires<0, NULL, 
-          headcount.hires_actual / planned_hires)                           AS hires_vs_plan,
+      headcount.hires_actual,
       IFF(hire_plan.planned_headcount = 0, NULL, 
-        ROUND((headcount.headcount_actual/hire_plan.planned_headcount),4))  AS actual_headcount_vs_planned_headcount #}
+        ROUND((headcount.headcount_actual/hire_plan.planned_headcount),4))  AS actual_headcount_vs_planned_headcount
     FROM hire_plan
     LEFT JOIN headcount
       ON headcount.breakout_type = hire_plan.breakout_type

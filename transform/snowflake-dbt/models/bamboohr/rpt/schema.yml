@@ -88,3 +88,30 @@ models:
  
   - name: cost_center_division_department_mapping_current
     description: This provides the current division, department, cost center.    
+
+  - name: rpt_headcount_vs_planned
+    description: Combines the headcount and hire plan model to actual headcount and hires.
+    columns:
+    - name: month_date
+    - name: breakout_type
+      description: Identifies if the breakout is at an all company level, division, or department.
+      tests:
+        - accepted_values:
+                values: ['all_company_breakout','department_division_breakout','division_breakout']
+    - name: department
+    - name: division
+    - name: planned_headcount
+      tests:
+        - not_null
+    - name: planned_hires
+      tests:
+        - not_null
+    - name: headcount_actual
+      tests:
+        - not_null
+    - name: hires_actual
+      tests:
+        - not_null
+    - name: actual_headcount_vs_planned_headcount           
+      tests:
+        - not_null
