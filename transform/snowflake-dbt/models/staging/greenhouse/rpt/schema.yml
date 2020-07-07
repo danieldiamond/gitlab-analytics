@@ -113,3 +113,22 @@ models:
     - name: ninetieth_percentile
     - name: percentile_max
     
+  - name: greenhouse_hiring_speed_per_candidate
+    description: This data provides recruiting metrics related to offers and hires modeled after the Hiring Speed Per Candidate report in Greenhouse, but adapted for output required for Recruiting's Monthly Metrics.
+    columns:
+    - name: offer_status
+    - name: application_status
+    - name: hire_date
+    - name: candidate_name
+    - name: division
+    - name: department
+    - name: vacancy
+    - name: time_to_offer
+    - name: source
+    - name: application_date
+    - name: offer_sent
+    - name: offer_accept
+    - name: location
+    - name: location_factor
+    - name: candidate_id
+    
