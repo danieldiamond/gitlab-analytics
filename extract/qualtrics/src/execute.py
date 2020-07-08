@@ -38,11 +38,9 @@ def get_and_write_surveys(qualtrics_client: QualtricsClient) -> List[str]:
     return [survey["id"] for survey in surveys_to_write]
 
 
-def get_distributions(
-    qualtrics_client: QualtricsClient, survey_id: str, start: datetime, end: datetime
-):
+def get_distributions(qualtrics_client: QualtricsClient, survey_id: str):
     """
-    Gets all distributions with a send date in the interval [start, end) for the given survey id.
+    Gets all distributions for the given survey id.
     Returns the entire distribution object.
     """
     return [
@@ -65,7 +63,7 @@ if __name__ == "__main__":
 
     for survey_id in surveys_to_write:
         all_distributions = all_distributions + get_distributions(
-            client, survey_id, start_time, end_time
+            client, survey_id
         )
 
     distributions_to_write = [
