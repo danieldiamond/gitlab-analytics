@@ -9,3 +9,9 @@ This CTE amortizes the MRR and ARR by month over the effective term of the subsc
 Sample queries: coming soon
 
 {% enddocs %}
+
+{% docs arr_data_mart_incr %}
+
+Daily snapshots of arr_data_mart.
+
+{% enddocs %}
