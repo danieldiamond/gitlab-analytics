@@ -158,11 +158,11 @@ SELECT
        'Fishtown'                                               AS infra_source
 {% if target.name not in ("prod") -%}
 
-FROM {{ source('fishtown_snowplow', 'events_sample') }}
+FROM {{ ref('fishtown_snowplow_good_events_sample_source') }}
 
 {%- else %}
 
-FROM {{ source('fishtown_snowplow', 'events') }}
+FROM {{ ref('fishtown_snowplow_good_events_source') }}
 
 {%- endif %}
 

@@ -161,11 +161,11 @@ WITH filtered_source as (
       'GitLab' AS infra_source
     {% if target.name not in ("prod") -%}
 
-    FROM {{ source('gitlab_snowplow', 'events_sample') }}
+    FROM {{ ref('gitlab_snowplow_good_events_sample_source') }}
 
     {%- else %}
 
-    FROM {{ source('gitlab_snowplow', 'events') }}
+    FROM {{ ref('gitlab_snowplow_good_events_source') }}
 
     {%- endif %}
 

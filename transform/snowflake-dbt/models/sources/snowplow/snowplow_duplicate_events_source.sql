@@ -1,7 +1,6 @@
 {{config({
     "materialized": "table",
     "unique_key":"event_id",
-    "schema":current_date_schema('snowplow')
   })
 }}
 
@@ -9,13 +8,13 @@ WITH fishtown AS (
     
     SELECT 
         nullif(jsontext['event_id']::STRING, '') AS event_id
-    FROM {{ source('fishtown_snowplow', 'events') }}
+    FROM {{ ref('fishtown_snowplow_good_events_source') }}
 
 ), gitlab AS (
 
     SELECT 
         event_id
-    FROM {{ source('gitlab_snowplow', 'events') }}
+    FROM {{ ref('gitlab_snowplow_good_events_source') }}
 
 ), unioned AS (
 

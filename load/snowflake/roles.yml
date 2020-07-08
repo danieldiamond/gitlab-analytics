@@ -869,10 +869,12 @@ roles:
                     - raw
             schemas:
                 read:
+                    - analytics.snowplow
                     - analytics.snowplow_*
                     - raw.snowplow
             tables:
                 read:
+                    - analytics.snowplow.*
                     - analytics.snowplow_*.*
                     - raw.snowplow.*
 
