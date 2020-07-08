@@ -112,6 +112,4 @@ models:
     - name: hires_actual
       tests:
         - not_null
-    - name: actual_headcount_vs_planned_headcount           
-      tests:
-        - not_null
+    - name: actual_headcount_vs_planned_headcount
