@@ -60,7 +60,7 @@ if __name__ == "__main__":
     POOL_ID = config_dict["QUALTRICS_POOL_ID"]
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
-    distributions_to_write: List[Dict[Any, Any]] = []
+    all_distributions: List[Dict[Any, Any]] = []
     surveys_to_write: List[str] = get_and_write_surveys(client)
 
     for survey_id in surveys_to_write:
