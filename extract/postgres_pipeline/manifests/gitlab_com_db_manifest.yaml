@@ -7,7 +7,6 @@ connection_info:
 tables:
   award_emoji:
     import_db: GITLAB_DB
-    import_schema: information_schema
     import_query: >
       SELECT id
       , name
