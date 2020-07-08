@@ -1,7 +1,5 @@
 {{config({
-    "materialized":"table",
-    "unique_key":"bad_event_surrogate",
-    "schema": current_date_schema('snowplow')
+    "unique_key":"bad_event_surrogate"
   })
 }}
 

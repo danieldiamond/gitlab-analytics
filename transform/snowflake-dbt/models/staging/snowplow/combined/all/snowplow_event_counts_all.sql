@@ -1,8 +1,3 @@
-{{config({
-    "materialized":"table"
-  })
-}}
-
 WITH good_events AS (
 
     SELECT *

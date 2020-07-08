@@ -1,8 +1,3 @@
-{{config({
-    "schema": current_date_schema('snowplow')
-  })
-}}
-
 WITH events AS (
 
     SELECT *

@@ -2,8 +2,7 @@
 {% set month_value = var('month', run_started_at.strftime('%m')) %}
 
 {{config({
-    "unique_key":"event_id",
-    "schema":current_date_schema('snowplow')
+    "unique_key":"event_id"
   })
 }}
 
