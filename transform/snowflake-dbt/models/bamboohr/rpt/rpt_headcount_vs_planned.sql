@@ -41,7 +41,7 @@ WITH headcount AS (
       hire_plan.planned_headcount,
       hire_plan.planned_hires,
       COALESCE(headcount.headcount_actual,0)                                AS headcount_actual,
-      COALESCE(headcount.hires_actual,0)                                    AS hire_actual,
+      COALESCE(headcount.hires_actual,0)                                    AS hires_actual,
       IFF(hire_plan.planned_headcount = 0, NULL, 
         ROUND((headcount.headcount_actual/hire_plan.planned_headcount),4))  AS actual_headcount_vs_planned_headcount
     FROM hire_plan
