@@ -15,8 +15,8 @@ models:
             tests:
                 - not_null
                 - unique
-    - name: zuora_arr_invoiced_report
-      description: Report that provides insights into invoiced recurring charges and discounted products
+    - name: zuora_invoice_items_detail_report
+      description: Report that provides discounting insights by comparing list prices to invoice prices. The report also enriches invoice item details with Salesforce customer information. 
       columns:
           - name: invoice_number
             tests:
