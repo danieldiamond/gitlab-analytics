@@ -127,6 +127,9 @@ models:
           schema: sensitive
           secure: true
 
+      date:
+        materialized: table
+        
       dbt:
         materialized: table
         schema: dbt
@@ -304,14 +307,6 @@ models:
       secure: true
       base:
         materialized: table
-
-    date:
-      materialized: table
-
-    netsuite:
-      materialized: table
-      base:
-        schema: staging
 
     pipe2spend:
       enabled: false
