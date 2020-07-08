@@ -103,6 +103,7 @@ if __name__ == "__main__":
         jobinfo="jobInfo",
         employmentstatus="employmentStatus",
         custombonus="customBonus",
+        emergencyContacts="emergencyContacts",
     )
 
     for key, value in tabular_data.items():
