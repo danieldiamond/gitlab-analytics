@@ -20,6 +20,7 @@ WITH headcount AS (
     SElECT *,
       IFF(DATE_TRUNC(month, month_date) = DATE_TRUNC(month, DATEADD(month, -1, CURRENT_DATE())),1,0) AS last_month
     FROM {{ ref ('hire_replan_xf') }}
+    WHERE breakout_type = 'department_division_breakout'
 
 ), division_mapping AS (
 
@@ -38,9 +39,9 @@ WITH headcount AS (
       hire_plan.department,
       COALESCE(hire_plan.division, division_mapping.division)               AS division,
       hire_plan.planned_headcount,
-      IFF(hire_plan.planned_hires<0,0, hire_plan.planned_hires)             AS planned_hires,
-      headcount.headcount_actual,
-      headcount.hires_actual,
+      hire_plan.planned_hires,
+      COALESCE(headcount.headcount_actual,0)                                AS headcount_actual,
+      COALESCE(headcount.hires_actual,0)                                    AS hire_actual,
       IFF(hire_plan.planned_headcount = 0, NULL, 
         ROUND((headcount.headcount_actual/hire_plan.planned_headcount),4))  AS actual_headcount_vs_planned_headcount
     FROM hire_plan
