@@ -8,13 +8,11 @@ WITH date_table AS (
 
     SELECT *
     FROM {{ ref('sfdc_accounts_xf') }}
-    WHERE is_deleted = FALSE
 
 ), sfdc_deleted_accounts AS (
 
     SELECT *
     FROM {{ ref('sfdc_deleted_accounts') }}
-    WHERE is_deleted = FALSE
 
 ), zuora_accounts AS (
 
@@ -43,13 +41,11 @@ WITH date_table AS (
 
     SELECT *
     FROM {{ ref('zuora_product_rate_plan_charge_source') }}
-    WHERE is_deleted = FALSE
 
 ), zuora_product_rpct AS (
 
     SELECT *
     FROM {{ ref('zuora_product_rate_plan_charge_tier_source') }}
-    WHERE is_deleted = FALSE
 
 ), initial_join_to_sfdc AS (
 
@@ -62,7 +58,6 @@ WITH date_table AS (
     DATE_TRUNC('month',invoice_date)                     AS invoice_month,
     product_name,
     {{ product_category('rate_plan_name') }},
-    {{ delivery('product_category')}},
     rate_plan_name,
     invoice_item_unit_price,
     quantity                                             AS quantity,
@@ -105,7 +100,7 @@ WITH date_table AS (
       invoice_item_charge_amount              AS invoice_item_charge_amount
     FROM replace_sfdc_account_id_with_master_record_id replace_account_id
     LEFT JOIN sfdc_accounts
-      ON a.sfdc_account_id = sfdc_accounts.account_id
+      ON replace_account_id.sfdc_account_id = sfdc_accounts.account_id
 
 ), list_price AS (
 
@@ -126,11 +121,6 @@ WITH date_table AS (
     AND zuora_product_rpct.price != 0
   GROUP BY 1,2
   ORDER BY 1,2
-
-), date_details AS (
-
-  SELECT *
-  FROM date_table
 
 )
 
@@ -180,6 +170,6 @@ SELECT
 FROM joined
 LEFT JOIN list_price
   ON joined.rate_plan_name = list_price.product_rate_plan_name
-LEFT JOIN date_details
-  ON joined.invoice_month = date_details.date_actual
+LEFT JOIN date_table
+  ON joined.invoice_month = date_table.date_actual
 ORDER BY invoice_date, invoice_number

@@ -15,6 +15,12 @@ models:
             tests:
                 - not_null
                 - unique
+    - name: zuora_arr_invoiced_report
+      description: Report that provides insights into invoiced recurring charges and discounted products
+      columns:
+          - name: invoice_number
+            tests:
+                - not_null
     - name: zuora_base_mrr
       description: '{{ doc("zuora_base_mrr") }}'
       columns:
