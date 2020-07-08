@@ -9,7 +9,3 @@ models:
     description: '{{ doc("customers_db_orders_with_incomplete_charges") }}'
   - name: customers_db_orders_with_valid_charges
     description: '{{ doc("customers_db_orders_with_valid_charges") }}'
-  - name: customers_db_license_seat_links
-    description: Self-managed EE instances will send seat link information to the customers portal on a daily basis. This information includes a count of active users and a maximum count of users historically in order to assist the true up process. Additional detail can be found in [this doc](https://gitlab.com/gitlab-org/customers-gitlab-com/-/blob/staging/doc/reconciliations.md).
-
-
