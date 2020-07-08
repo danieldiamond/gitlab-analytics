@@ -13,7 +13,7 @@ sources:
       identifier: false
 
     freshness:
-      error_after: {count: 48, period: hour}
+      warn_after: {count: 48, period: hour}
 
     tables:
     - name: paid_digital
