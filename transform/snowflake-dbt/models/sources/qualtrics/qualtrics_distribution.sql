@@ -8,6 +8,7 @@ WITH source AS (
     SELECT d.value as data_by_row
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext), outer => true) d
+    QUALIFY ROW_NUMBER() OVER(PARTITION BY data_by_row['id']::VARCHAR ORDER BY uploaded_at desc) = 1
 
 ), parsed AS (
 

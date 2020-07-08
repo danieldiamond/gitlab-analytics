@@ -46,11 +46,7 @@ def get_distributions(
     Returns the entire distribution object.
     """
     return [
-        distribution
-        for distribution in qualtrics_client.get_distributions(survey_id)
-        if timestamp_in_interval(
-            parse_string_to_timestamp(distribution["sendDate"]), start_time, end_time
-        )
+        distribution for distribution in qualtrics_client.get_distributions(survey_id)
     ]
 
 
@@ -68,9 +64,17 @@ if __name__ == "__main__":
     surveys_to_write: List[str] = get_and_write_surveys(client)
 
     for survey_id in surveys_to_write:
-        distributions_to_write = distributions_to_write + get_distributions(
+        all_distributions = all_distributions + get_distributions(
             client, survey_id, start_time, end_time
         )
+
+    distributions_to_write = [
+        distribution
+        for distribution in all_distributions
+        if timestamp_in_interval(
+            parse_string_to_timestamp(distribution["sendDate"]), start_time, end_time
+        )
+    ]
 
     contacts_to_write = []
     for distribution in distributions_to_write:
@@ -88,9 +92,9 @@ if __name__ == "__main__":
             snowflake_engine,
         )
 
-    if distributions_to_write:
+    if all_distributions:
         with open("distributions.json", "w") as out_file:
-            json.dump(distributions_to_write, out_file)
+            json.dump(all_distributions, out_file)
 
         snowflake_stage_load_copy_remove(
             "distributions.json",
