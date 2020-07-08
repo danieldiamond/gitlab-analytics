@@ -258,8 +258,16 @@ models:
           schema: analytics
 
       snowflake:
+        schema: analytics
+        materialized: view
+
+      snowplow:
+        tags: ["product"]
+        schema: "{{ current_date_schema('snowplow') }}"
+        combined:
           schema: analytics
-          materialized: view
+        sessionized_funnels:
+          schema: analytics
 
       version:
         tags: ["product"]
