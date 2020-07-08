@@ -9,7 +9,7 @@
 WITH base AS (
 
     SELECT *
-    FROM {{ ref('gitlab_snowplow_bad_events_source') }}
+    FROM {{ ref('snowplow_gitlab_bad_events_source') }}
     WHERE length(JSONTEXT['errors']) > 0
       AND date_part(month, JSONTEXT['failure_tstamp']::timestamp) = '{{ month_value }}'
       AND date_part(year, JSONTEXT['failure_tstamp']::timestamp) = '{{ year_value }}'

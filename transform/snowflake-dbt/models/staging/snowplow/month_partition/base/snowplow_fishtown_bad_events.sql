@@ -9,7 +9,7 @@
 WITH base as (
 
     SELECT *
-    FROM {{ ref('fishtown_snowplow_bad_events_source') }}
+    FROM {{ ref('snowplow_fishtown_bad_events_source') }}
     WHERE length(JSONTEXT['errors']) > 0
       AND date_part(month, JSONTEXT['failure_tstamp']::timestamp) = '{{ month_value }}'
       AND date_part(year, JSONTEXT['failure_tstamp']::timestamp) = '{{ year_value }}'
