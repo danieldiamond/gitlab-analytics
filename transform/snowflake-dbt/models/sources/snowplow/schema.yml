@@ -1,22 +1,20 @@
 version: 2
 
 models:
-    - name: snowplow_fishtown_good_unnested_events_source
-      description: This is the source table for snowplow events captured by Fishtown's infrastructure. It unpacks all of the JSON, including unstructured events.
-      columns:
-          - name: uploaded_at
-            tests:
-                - not_null
-
+    - name: snowplow_fishtown_good_events_source
+      description: This is the source table for snowplow events captured by Fishtown's infrastructure.
+    
+    - name: snowplow_fishtown_good_events_sample_source
+      description: This is the source table for a subset of snowplow events captured by Fishtown's infrastructure.
+    
     - name: snowplow_fishtown_bad_events_source
       description: This is the source table for bad event data sent to Fishtown's infrastructure.
 
     - name: snowplow_gitlab_good_events_source
-      description: This is the source table for snowplow events captured by GitLab's infrastructure. The data is written to S3 as a TSV, so this model simply reorders the columns and unpacks the unstructured events.
-      columns:
-          - name: uploaded_at
-            tests:
-                - not_null
+      description: This is the source table for snowplow events captured by GitLab's infrastructure.
+    
+    - name: snowplow_gitlab_good_events_sample_source
+      description: This is the source table for a subset of snowplow events captured by GitLab's infrastructure.
 
     - name: snowplow_gitlab_bad_events_source
       description: This is the source table for bad event data sent to GitLab's infrastructure.
