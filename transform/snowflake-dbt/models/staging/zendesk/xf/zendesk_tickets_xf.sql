@@ -76,16 +76,14 @@ SELECT DISTINCT
       True, False)                                          AS was_support_sla_met,
   IFF(zendesk_users_submitter.role = 'end-user'
     OR (
-        zendesk_users_submitter.role = 'agent'
+        zendesk_users_submitter.role IN ('agent', 'admin')
         AND zendesk_ticket_audit_first_comment.is_first_comment_public = FALSE
         ),
       TRUE, FALSE
     )                                                       AS is_part_of_sla,
-  IFF(zendesk_tickets_sla.first_reply_time_sla <= zendesk_sla_policies.policy_metrics_target AND
-      is_part_of_sla = TRUE, 
+  IFF(zendesk_tickets_sla.first_reply_time_sla <= zendesk_sla_policies.policy_metrics_target, 
       True, False)                                          AS was_sla_achieved,
-  IFF(zendesk_tickets_sla.first_reply_time_sla > zendesk_sla_policies.policy_metrics_target AND
-      is_part_of_sla = TRUE,
+  IFF(zendesk_tickets_sla.first_reply_time_sla > zendesk_sla_policies.policy_metrics_target,
       True, False)                                          AS was_sla_breached
 
 FROM zendesk_tickets
