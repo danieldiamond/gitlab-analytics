@@ -12,4 +12,4 @@ Urgency:
 - [ ] T2 - Resolution Required / Keep on Milestone
 - [ ] T3 - Backlog
 
-/label ~Triage ~Infrastructure ~Break-Fix
+/label ~Triage ~Infrastructure ~Break-Fix ~"Priority::1-Ops" 

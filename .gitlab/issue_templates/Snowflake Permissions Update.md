@@ -7,4 +7,4 @@
 - [ ] Verify grants
 - [ ] Update `roles.yml` and add a comment with a access request URL
 
-/label ~Provisioning ~Snowflake ~Infrastructure 
+/label ~Provisioning ~Snowflake ~Infrastructure  ~"Priority::1-Ops"

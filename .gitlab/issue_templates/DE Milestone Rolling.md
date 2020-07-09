@@ -12,3 +12,5 @@
 - [ ] Update the [DE - Next Milestone](https://gitlab.com/groups/gitlab-data/-/boards/1689356) board to point at the following Milestone
 - [ ] [Create Issue](https://gitlab.com/gitlab-data/analytics/issues/new?issuable_template=DE%20Milestone%20Rolling) for next milestone rolling with Due Date set.
 - [ ] [Create Issue](https://gitlab.com/gitlab-data/analytics/issues/new?issuable_template=DE%20Milestone%20Planning) for the next milestone planning
+
+/label ~"Priority::1-Ops" 
