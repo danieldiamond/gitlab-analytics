@@ -3,4 +3,4 @@
   })
 }}
 
-{{ schema_union_all('snowplow', 'snowplow_page_views') }}
+{{ schema_union_all('snowplow_', 'snowplow_page_views') }}
