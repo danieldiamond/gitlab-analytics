@@ -16,11 +16,12 @@ models:
                 - not_null
                 - unique
     - name: zuora_invoice_items_detail_report
-      description: Report that provides discounting insights by comparing list prices to invoice prices. The report also enriches invoice item details with Salesforce customer information. 
+      description: Report that provides discounting insights by comparing list prices to invoice prices. The report also enriches invoice item details with Salesforce customer information.
       columns:
-          - name: invoice_number
+          - name: invoice_item_id
             tests:
                 - not_null
+                - unique
     - name: zuora_base_mrr
       description: '{{ doc("zuora_base_mrr") }}'
       columns:

@@ -51,12 +51,14 @@ WITH date_table AS (
 
   SELECT
     invoice_number,
+    invoice_item_id,
     zuora_accounts.crm_id                                AS invoice_crm_id,
     sfdc_accounts.account_id                             AS sfdc_account_id_int,
     zuora_accounts.account_name,
     invoice_date,
     DATE_TRUNC('month',invoice_date)                     AS invoice_month,
     product_name,
+    product_rate_plan_charge_id,
     {{ product_category('rate_plan_name') }},
     rate_plan_name,
     invoice_item_unit_price,
@@ -82,6 +84,7 @@ WITH date_table AS (
 
     SELECT
       invoice_number,
+      invoice_item_id,
       sfdc_account_id,
       CASE
         WHEN ultimate_parent_account_segment = 'Unknown' THEN 'SMB'
@@ -92,6 +95,7 @@ WITH date_table AS (
       invoice_date,
       invoice_month,
       product_name,
+      product_rate_plan_charge_id,
       product_category,
       account_type,
       rate_plan_name,
@@ -107,6 +111,7 @@ WITH date_table AS (
   SELECT
     zuora_product_rp.product_rate_plan_name,
     zuora_product_rpc.product_rate_plan_charge_name,
+    zuora_product_rpc.product_rate_plan_charge_id,
     MIN(zuora_product_rpct.price)             AS billing_list_price
   FROM zuora_product
   INNER JOIN zuora_product_rp
@@ -116,16 +121,15 @@ WITH date_table AS (
   INNER JOIN zuora_product_rpct
     ON zuora_product_rpc.product_rate_plan_charge_id = zuora_product_rpct.product_rate_plan_charge_id
   WHERE zuora_product.effective_start_date <= CURRENT_DATE
-    AND zuora_product.effective_end_date > CURRENT_DATE
     AND zuora_product_rpct.currency = 'USD'
-    AND zuora_product_rpct.price != 0
-  GROUP BY 1,2
+  GROUP BY 1,2,3
   ORDER BY 1,2
 
 )
 
 SELECT
   joined.invoice_number,
+  joined.invoice_item_id,
   sfdc_account_id,
   account_name,
   account_type,
@@ -164,12 +168,12 @@ SELECT
   END                                           AS list_price,
   CASE
     WHEN annual_price = list_price THEN 0
-    ELSE ((annual_price - list_price)/list_price) * -1
+    ELSE ((annual_price - list_price)/NULLIF(list_price,0)) * -1
   END                                                       AS discount,
   quantity * list_price                                     AS list_price_times_quantity
 FROM joined
 LEFT JOIN list_price
-  ON joined.rate_plan_name = list_price.product_rate_plan_name
+  ON joined.product_rate_plan_charge_id = list_price.product_rate_plan_charge_id
 LEFT JOIN date_table
   ON joined.invoice_month = date_table.date_actual
 ORDER BY invoice_date, invoice_number
