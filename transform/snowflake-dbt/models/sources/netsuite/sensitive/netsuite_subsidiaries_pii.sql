@@ -6,7 +6,7 @@ WITH source AS (
 ), entity_pii AS (
 
     SELECT
-      entity_id,
+      subsidiary_id,
       {{ nohash_sensitive_columns('netsuite_subsidiaries_source', 'subsidiary_name') }}
     FROM source
 

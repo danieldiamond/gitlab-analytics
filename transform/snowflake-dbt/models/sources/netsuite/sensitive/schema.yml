@@ -5,7 +5,7 @@ models:
     columns:
         - name: entity_full_name
         - name: entity_full_name
-  - name: netsuite_subsidiary_pii
+  - name: netsuite_subsidiaries_pii
     description: Model for Netsuite subsidiary sensitive data
     columns:
         - name: subsidiary_full_name
@@ -14,7 +14,7 @@ models:
     description: Model for Netsuite transaction lines sensitive data
     columns:
         - name: memo
-  - name: netsuite_vendor_pii
+  - name: netsuite_vendors_pii
     description: Model for Netsuite vendors sensitive data
     columns:
         - name: vendor_name
