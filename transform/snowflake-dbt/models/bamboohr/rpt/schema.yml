@@ -63,6 +63,7 @@ models:
     - name: retention
       description: Is equal to 1 - (rolling_12_month_separations divided by rolling_12_month_headcount). Note - in the case the rolling_12_month_headcount is less than the rolling_12_month_separations, retention will appear as null.
     - name: headcount_end_leader
+      description: A senior leader is defined as anyone with a job grade of 11, 12, or CXO that has direct reports, with the exception of employees that are on leave, in which case we use the job grade criteria only.
     - name: headcount_leader_average
     - name: hired_leaders
     - name: separated_leaders
@@ -70,12 +71,28 @@ models:
     - name: rolling_12_month_separations_leader
     - name: retention_leader
     - name: headcount_end_manager
+      description: A manager is defined as anyone that has a bamboohr job_role of `Manager` or a job_grade of 10, in addition to has direct reports.
     - name: headcount_manager_average
     - name: hired_manager
     - name: separated_manager
     - name: rolling_12_month_headcount_manager
     - name: rolling_12_month_separations_manager
     - name: retention_manager
+
+    - name: headcount_end_management
+      description: Management is defined as anyone in a manager or senior leader role based on the field job_role_modified.
+    - name: headcount_management_average
+    - name: hired_management
+    - name: separated_management
+    - name: rolling_12_month_headcount_management
+    - name: rolling_12_month_separations_management
+    - name: retention_manager
+
+
+
+
+
+
     - name: headcount_end_contributor
     - name: headcount_contributor
     - name: hired_contributor
