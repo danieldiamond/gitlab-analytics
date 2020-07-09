@@ -51,7 +51,7 @@ use contact the Data Engineer assigned below for confirmation.
 **Admin**
   * [ ] Create issue for creation of extract process (not needed if using Stitch/FiveTran)
   * [ ] Create issue for dbt models 
-  * [ ] Create issue for updating all documentation
+  * [ ] Create merge requests for updating relevant documentation 
 
 ## Data Use / Acceptance Criteria 
 
