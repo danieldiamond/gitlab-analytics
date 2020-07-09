@@ -230,6 +230,8 @@ sources:
         identifier: gitlab_db_releases
       - name: repository_languages
         identifier: gitlab_db_repository_languages
+      - name: requirements
+        identifier: gitlab_db_requirements
       - name: resource_label_events
         identifier: gitlab_db_resource_label_events
         freshness: null        
