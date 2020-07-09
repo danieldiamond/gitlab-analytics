@@ -266,7 +266,7 @@ models:
 
       snowplow:
         tags: ["product"]
-        schema: current_date_schema('snowplow')
+        schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
         combined:
           schema: analytics
         sessionized_funnels:
@@ -324,9 +324,6 @@ models:
     smau_events:
       tags: ["product"]
       materialized: table
-
-    snowplow_combined:
-      tags: ["product"]
 
 
 # ======

@@ -21,13 +21,6 @@ models:
     - name: snowplow_gitlab_bad_events_source
       description: This is the source table for bad event data sent to GitLab's infrastructure.
 
-    - name: snowplow_unnested_good_events_source
-      description: This is the primary events table which is the union of the Fishtown and GitLab tables. All of the unstructured events are unpacked - [link click tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#39-link-click-tracking), [form tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#3101-enableformtracking), and [time tracking](https://github.com/snowplow/snowplow/wiki/2-Specific-event-tracking-with-the-Javascript-tracker#timing).
-      columns:
-          - name: uploaded_at
-            tests:
-                - not_null
-
     - name: snowplow_duplicate_events_source
       description: This is a table that contains the duplicated event ids across the entire data set and is used to remove them from downstream models.
       columns:

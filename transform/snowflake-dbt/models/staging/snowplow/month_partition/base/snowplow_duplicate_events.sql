@@ -7,7 +7,7 @@
 WITH source AS (
     
     SELECT *
-    FROM ref("snowplow_duplicate_events_source")
+    FROM {{ ref("snowplow_duplicate_events_source") }}
 
 )
 

@@ -8,13 +8,13 @@ WITH fishtown AS (
     
     SELECT 
         nullif(jsontext['event_id']::STRING, '') AS event_id
-    FROM {{ ref('fishtown_snowplow_good_events_source') }}
+    FROM {{ ref('snowplow_fishtown_good_events_source') }}
 
 ), gitlab AS (
 
     SELECT 
         event_id
-    FROM {{ ref('gitlab_snowplow_good_events_source') }}
+    FROM {{ ref('snowplow_gitlab_good_events_source') }}
 
 ), unioned AS (
 
