@@ -11,6 +11,7 @@ WITH RECURSIVE employee_directory AS (
       employee_number,
       first_name,
       last_name,
+      (employee_directory.first_name ||' '|| employee_directory.last_name)   AS full_name,
       work_email,
       hire_date,
       rehire_date,
@@ -27,6 +28,22 @@ WITH RECURSIVE employee_directory AS (
 
     SELECT *
     FROM {{ ref('bamboohr_job_info') }}
+
+), direct_reports AS (
+      
+    SELECT
+      date_actual, 
+      reports_to,
+      COUNT(*) as total_direct_reports
+    FROM date_details
+    LEFT JOIN employee_directory
+      ON hire_date::DATE <= date_actual
+      AND COALESCE(termination_date::DATE, {{max_date_in_bamboo_analyses()}}) >= date_actual
+    LEFT JOIN department_info
+    ON employee_directory.employee_id = department_info.employee_id
+      AND date_actual BETWEEN effective_date AND effective_end_date
+    GROUP BY 1,2
+    HAVING total_direct_reports > 0
 
 ), job_role AS (
 
@@ -82,7 +99,6 @@ WITH RECURSIVE employee_directory AS (
     SELECT
       date_actual,
       employee_directory.*,
-      (employee_directory.first_name ||' '|| employee_directory.last_name)   AS full_name,
       department_info.job_title,
       department_info.department,
       department_info.division,
@@ -138,7 +154,36 @@ WITH RECURSIVE employee_directory AS (
       IFF(hire_date< employment_status_first_value,
             'Active', employment_status)                                    AS employment_status,
       job_role.gitlab_username,
-      sales_geo_differential        
+      sales_geo_differential,
+      direct_reports.total_direct_reports,
+
+
+      CASE WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) IN ('11','12','CXO')
+                AND direct_reports > 0
+            THEN 'Senior Leadership'
+           WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) = '10' 
+            AND direct_reports > 0
+            THEN 'Manager'
+           WHEN (department_info.job_title LIKE '%Manager%' or department_info.job_title LIKE '%Director,%')
+                 AND COALESCE(job_role.job_role, 
+                         job_info_mapping_historical.job_role,
+                         department_info.job_role) = 'Leader'
+                 AND direct_reports > 0
+            THEN 'Manager'
+           WHEN (department_info.job_title LIKE '%VP%' or department_info.job_title like '%Chief%')
+                AND COALESCE(job_role.job_role, 
+                         job_info_mapping_historical.job_role,
+                         department_info.job_role) = 'Leader'
+                AND direct_reports > 0 
+            THEN 'Senior Leadership'
+           WHEN department_info.job_title LIKE '%Senior Director%'
+                AND COALESCE(job_role.job_role, 
+                         job_info_mapping_historical.job_role,
+                         department_info.job_role) = 'Leader'
+                AND direct_reports > 0
+            THEN 'Senior Leadership'
+           WHEN direct_reports = 0  END                                         AS job_role_modified_v2
+       --for the diversity KPIs we are looking to understand        
     FROM date_details
     LEFT JOIN employee_directory
       ON hire_date::DATE <= date_actual
@@ -147,6 +192,9 @@ WITH RECURSIVE employee_directory AS (
       ON employee_directory.employee_id = department_info.employee_id
       AND date_actual BETWEEN effective_date 
       AND COALESCE(effective_end_date::DATE, {{max_date_in_bamboo_analyses()}})
+    LEFT JOIN direct_reports
+      ON direct_reports.date_actual = date_details.date_actual
+      AND direct_reports.reports_to = employee_directory.full_name
     LEFT JOIN location_factor
       ON employee_directory.employee_number::VARCHAR = location_factor.bamboo_employee_number::VARCHAR
       AND valid_from <= date_actual
