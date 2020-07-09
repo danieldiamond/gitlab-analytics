@@ -70,6 +70,18 @@ WITH source AS (
       IFF(rolling_12_month_headcount_manager< rolling_12_month_separations_manager, NULL,
         1 - (rolling_12_month_separations_manager/NULLIF(rolling_12_month_headcount_manager,0)))    AS retention_manager,
 
+      headcount_end_management,
+      headcount_average_management,
+      hired_management,
+      separated_management,
+      AVG(COALESCE(headcount_average_management, 0)) {{partition_statement}}             AS rolling_12_month_headcount_management,
+      SUM(COALESCE(separated_management,0)) {{partition_statement}}                      AS rolling_12_month_separations_management,
+      IFF(rolling_12_month_headcount_management< rolling_12_month_separations_management, 
+        NULL,
+        1 - (rolling_12_month_separations_management/
+            NULLIF(rolling_12_month_headcount_management,0)))                            AS retention_management,
+
+
       headcount_end_individual_contributor,
       headcount_average_contributor,
       hired_contributor,
@@ -160,6 +172,20 @@ WITH source AS (
       rolling_12_month_separations_manager,
       retention_manager,
  
+      IFF(headcount_end_management < 2 AND eeoc_field_name != 'no_eeoc', 
+        NULL, headcount_end_management)                                        AS headcount_end_management,            
+      IFF(headcount_average_management < 2 AND eeoc_field_name != 'no_eeoc', 
+        NULL, headcount_average_management)                                    AS headcount_management_average,
+      IFF(hired_management < 2 AND eeoc_field_name != 'no_eeoc', 
+        NULL, hired_management)                                                AS hired_management,
+      IFF(separated_management < 2 AND eeoc_field_name != 'no_eeoc',
+        NULL, separated_management)                                            AS separated_management,
+      rolling_12_month_headcount_management,
+      rolling_12_month_separations_manager,
+      retention_management,
+ 
+
+
       IFF(headcount_end_individual_contributor < 4 AND eeoc_field_name != 'no_eeoc', 
         NULL, headcount_end_individual_contributor)                         AS headcount_end_contributor,
       IFF(headcount_average_contributor < 4 AND eeoc_field_name != 'no_eeoc', 
