@@ -169,29 +169,38 @@ WITH RECURSIVE employee_directory AS (
 ----testing ---
       CASE WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) IN ('11','12','CXO')
                 AND total_direct_reports > 0
+                AND employment_status NOT IN ('Parental Leave','Garden Leave')
             THEN 'Senior Leadership'
-           WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) = '10' 
-            AND total_direct_reports > 0
+            WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) IN ('11','12','CXO')
+                AND employment_status IN ('Parental Leave','Garden Leave')
+            THEN 'Senior Leadership'   
+            WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) = '10' 
+                AND total_direct_reports > 0
+                AND employment_status NOT IN ('Parental Leave','Garden Leave')
             THEN 'Manager'
-           WHEN (department_info.job_title LIKE '%Manager%' or department_info.job_title LIKE '%Director,%')
+            WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) = '10' 
+                AND employment_status IN ('Parental Leave','Garden Leave')
+            THEN 'Manager'
+            WHEN (department_info.job_title LIKE '%Manager%' or department_info.job_title LIKE '%Director,%')
                  AND COALESCE(job_role.job_role, 
                          job_info_mapping_historical.job_role,
                          department_info.job_role) = 'Leader'
                  AND total_direct_reports > 0
+                 AND employment_status NOT IN ('Parental Leave','Garden Leave')
             THEN 'Manager'
-           WHEN (department_info.job_title LIKE '%VP%' or department_info.job_title like '%Chief%')
+            WHEN (department_info.job_title LIKE '%VP%' 
+                    OR department_info.job_title LIKE '%Chief%' 
+                    OR department_info.job_title LIKE '%Senior Director%')
                 AND COALESCE(job_role.job_role, 
                          job_info_mapping_historical.job_role,
                          department_info.job_role) = 'Leader'
                 AND total_direct_reports > 0 
+                AND employment_status NOT IN ('Parental Leave','Garden Leave')
             THEN 'Senior Leadership'
-           WHEN department_info.job_title LIKE '%Senior Director%'
-                AND COALESCE(job_role.job_role, 
-                         job_info_mapping_historical.job_role,
-                         department_info.job_role) = 'Leader'
-                AND total_direct_reports > 0
-            THEN 'Senior Leadership'
-            WHEN COALESCE(total_direct_reports,0) = 0  THEN 'Individual Contributor'
+            WHEN COALESCE(total_direct_reports,0) = 0 
+                AND employment_status NOT IN ('Parental Leave','Garden Leave')
+            THEN 'Individual Contributor'
+
              ELSE COALESCE(job_role.job_role, 
                            job_info_mapping_historical.job_role,
                            department_info.job_role) END                           AS job_role_modified_v2
