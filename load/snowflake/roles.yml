@@ -1263,6 +1263,8 @@ roles:
             - reporting
 
     - mdewji:
+        member_of:
+            - postgres_pipeline
         warehouses:
             - reporting
 
