@@ -30,20 +30,29 @@ WITH RECURSIVE employee_directory AS (
     FROM {{ ref('bamboohr_job_info') }}
 
 ), direct_reports AS (
-      
+  
     SELECT
-      date_actual, 
+      date_actual           AS date, 
       reports_to,
-      COUNT(*) as total_direct_reports
-    FROM date_details
-    LEFT JOIN employee_directory
-      ON hire_date::DATE <= date_actual
-      AND COALESCE(termination_date::DATE, {{max_date_in_bamboo_analyses()}}) >= date_actual
-    LEFT JOIN department_info
-    ON employee_directory.employee_id = department_info.employee_id
-      AND date_actual BETWEEN effective_date AND effective_end_date
+      COUNT(employee_id)    AS total_direct_reports
+    FROM (
+        SELECT
+            date_details.date_actual,
+            employee_directory.employee_id,
+            reports_to
+        FROM date_details
+        LEFT JOIN employee_directory
+        ON hire_date::DATE <= date_actual
+        AND COALESCE(termination_date::DATE, {{max_date_in_bamboo_analyses()}}) >= date_actual
+        LEFT JOIN department_info
+            ON employee_directory.employee_id = department_info.employee_id
+            AND date_details.date_actual BETWEEN department_info.effective_date 
+                AND COALESCE(department_info.effective_end_date, {{max_date_in_bamboo_analyses()}})
+        )  
     GROUP BY 1,2
     HAVING total_direct_reports > 0
+
+
 
 ), job_role AS (
 
@@ -97,7 +106,7 @@ WITH RECURSIVE employee_directory AS (
 ), enriched AS (
 
     SELECT
-      date_actual,
+      date_details.date_actual,
       employee_directory.*,
       department_info.job_title,
       department_info.department,
@@ -157,33 +166,35 @@ WITH RECURSIVE employee_directory AS (
       sales_geo_differential,
       direct_reports.total_direct_reports,
 
-
+----testing ---
       CASE WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) IN ('11','12','CXO')
-                AND direct_reports > 0
+                AND total_direct_reports > 0
             THEN 'Senior Leadership'
            WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) = '10' 
-            AND direct_reports > 0
+            AND total_direct_reports > 0
             THEN 'Manager'
            WHEN (department_info.job_title LIKE '%Manager%' or department_info.job_title LIKE '%Director,%')
                  AND COALESCE(job_role.job_role, 
                          job_info_mapping_historical.job_role,
                          department_info.job_role) = 'Leader'
-                 AND direct_reports > 0
+                 AND total_direct_reports > 0
             THEN 'Manager'
            WHEN (department_info.job_title LIKE '%VP%' or department_info.job_title like '%Chief%')
                 AND COALESCE(job_role.job_role, 
                          job_info_mapping_historical.job_role,
                          department_info.job_role) = 'Leader'
-                AND direct_reports > 0 
+                AND total_direct_reports > 0 
             THEN 'Senior Leadership'
            WHEN department_info.job_title LIKE '%Senior Director%'
                 AND COALESCE(job_role.job_role, 
                          job_info_mapping_historical.job_role,
                          department_info.job_role) = 'Leader'
-                AND direct_reports > 0
+                AND total_direct_reports > 0
             THEN 'Senior Leadership'
-           WHEN direct_reports = 0  END                                         AS job_role_modified_v2
-       --for the diversity KPIs we are looking to understand        
+            WHEN COALESCE(total_direct_reports,0) = 0  THEN 'Individual Contributor'
+             ELSE COALESCE(job_role.job_role, 
+                           job_info_mapping_historical.job_role,
+                           department_info.job_role) END                           AS job_role_modified_v2
     FROM date_details
     LEFT JOIN employee_directory
       ON hire_date::DATE <= date_actual
@@ -193,7 +204,7 @@ WITH RECURSIVE employee_directory AS (
       AND date_actual BETWEEN effective_date 
       AND COALESCE(effective_end_date::DATE, {{max_date_in_bamboo_analyses()}})
     LEFT JOIN direct_reports
-      ON direct_reports.date_actual = date_details.date_actual
+      ON direct_reports.date = date_details.date_actual
       AND direct_reports.reports_to = employee_directory.full_name
     LEFT JOIN location_factor
       ON employee_directory.employee_number::VARCHAR = location_factor.bamboo_employee_number::VARCHAR
