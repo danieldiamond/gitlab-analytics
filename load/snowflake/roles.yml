@@ -1182,7 +1182,13 @@ roles:
             - bamboohr
             - customers_db_sensitive
         warehouses:
-            - analyst_xs
+            - 
+            
+    - iwiedler:
+        member_of:
+           - analyst_engineering
+        warehouses:
+           - analyst_xs
 
     - jng:
         member_of:
@@ -1572,6 +1578,11 @@ users:
         can_login: yes
         member_of:
             - iweeks
+
+    - iwiedler:
+        can_login: yes
+        member_of:
+            - iwiedler
 
     - jng:
         can_login: yes
