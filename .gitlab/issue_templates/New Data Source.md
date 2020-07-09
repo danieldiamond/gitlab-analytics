@@ -21,6 +21,8 @@ If none, please include a description
   - [ ] Yes 
   - [ ] No
   - [ ] I don't know
+* [ ] Does this data have any agreed [SLO](https://about.gitlab.com/handbook/business-ops/data-team/platform/#slos-service-level-objectives-by-data-source) attached to it? If not: 
+    * [ ] How often does the data need to be refreshed? 
 
 ## Integration Preparation 
 
