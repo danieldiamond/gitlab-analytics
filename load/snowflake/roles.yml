@@ -736,7 +736,7 @@ roles:
                 read:
                     - raw.netsuite_fivetran.*
                     - analytics.netsuite.*
-                    -
+
     - netsuite_sensitive:
         privileges:
             databases:
