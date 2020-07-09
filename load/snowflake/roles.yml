@@ -1274,6 +1274,13 @@ roles:
             - analyst_l
             - analyst_xl
 
+    - mriser:
+        member_of:
+            - mriser
+            - postgres_pipeline
+        warehouses:
+            - analyst_xs
+
     - mrodriguez:
         member_of:
             - reporter
@@ -1661,6 +1668,11 @@ users:
         can_login: yes
         member_of:
             - mpeychet
+
+    - mriser:
+        can_login: yes
+        member_of:
+            - mriser
 
     - mrodriguez:
         can_login: yes
