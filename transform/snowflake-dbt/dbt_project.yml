@@ -282,7 +282,6 @@ models:
     date:
       materialized: table
 
-
     pipe2spend:
       enabled: false
       materialized: table
