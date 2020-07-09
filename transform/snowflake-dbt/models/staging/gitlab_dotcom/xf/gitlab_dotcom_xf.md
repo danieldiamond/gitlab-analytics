@@ -96,7 +96,7 @@ An example of these relationships is shown in this diagram:
 
 <div style="width: 720px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:720px; height:480px" src="https://app.lucidchart.com/documents/embeddedchart/9f529269-3e32-4343-9713-8eb311df7258" id="WRFbB73aKeB3"></iframe></div>
 
-Additionally, this model calculates the field `is_billable` - i.e. if a member should be counted toward the seat count for a subscription. To determine the number of seats in use for a given namespace, a simple query such as the following will suffice: 
+Additionally, this model calculates the field `is_billable` - i.e. if a member should be counted toward the seat count for a subscription (note: this also applies to namespaces without a subscription for the convenience of determining seats in use). To determine the number of seats in use for a given namespace, a simple query such as the following will suffice: 
 
 ```
 SELECT COUNT(DISTINCT user_id)
