@@ -56,6 +56,7 @@ WITH zuora_account AS (
       zuora_rate_plan_charge.quantity,
       zuora_rate_plan_charge.mrr,
       zuora_rate_plan_charge.delta_tcv,
+      zuora_rate_plan_charge.charge_type,
       zuora_product.product_name
     FROM zuora_account
     INNER JOIN zuora_subscription

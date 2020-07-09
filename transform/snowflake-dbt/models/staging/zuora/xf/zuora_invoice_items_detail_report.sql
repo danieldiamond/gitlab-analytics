@@ -61,6 +61,7 @@ WITH date_table AS (
     product_rate_plan_charge_id,
     {{ product_category('rate_plan_name') }},
     rate_plan_name,
+    charge_type,
     invoice_item_unit_price,
     quantity                                             AS quantity,
     invoice_item_charge_amount                           AS invoice_item_charge_amount
@@ -99,6 +100,7 @@ WITH date_table AS (
       product_category,
       account_type,
       rate_plan_name,
+      charge_type,
       invoice_item_unit_price,
       quantity                                AS quantity,
       invoice_item_charge_amount              AS invoice_item_charge_amount
@@ -164,13 +166,18 @@ SELECT
     WHEN lower(rate_plan_name) LIKE '%4 year%'  THEN (billing_list_price/4)
     WHEN lower(rate_plan_name) LIKE '%5 years%' THEN (billing_list_price/5)
     WHEN lower(rate_plan_name) LIKE '%5 year%'  THEN (billing_list_price/5)
+    WHEN lower(charge_type) != 'recurring' THEN 0
     ELSE billing_list_price
   END                                           AS list_price,
   CASE
     WHEN annual_price = list_price THEN 0
+    WHEN lower(charge_type) != 'recurring' THEN 0
     ELSE ((annual_price - list_price)/NULLIF(list_price,0)) * -1
-  END                                                       AS discount,
-  quantity * list_price                                     AS list_price_times_quantity
+  END                                           AS discount,
+  CASE
+    WHEN lower(charge_type) != 'recurring' THEN 0
+    ELSE quantity * list_price
+  END                                           AS list_price_times_quantity
 FROM joined
 LEFT JOIN list_price
   ON joined.product_rate_plan_charge_id = list_price.product_rate_plan_charge_id
