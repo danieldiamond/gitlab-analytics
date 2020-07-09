@@ -38,5 +38,8 @@ sources:
                   to: source('netsuite', 'transactions')
                   field: transaction_id
                   severity: warn
+          - name: memo
+            meta:
+              sensitive: true
       - name: transactions
       - name: vendors

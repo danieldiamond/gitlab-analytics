@@ -1,0 +1,8 @@
+version: 2
+models:
+  - name: netsuite_transaction_lines_pii
+    description: Model for Netsuite transaction lines sensitive data
+    columns:
+        - name: memo
+
+
