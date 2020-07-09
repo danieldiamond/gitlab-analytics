@@ -1182,7 +1182,7 @@ roles:
             - bamboohr
             - customers_db_sensitive
         warehouses:
-            - 
+            - analyst_xs
             
     - iwiedler:
         member_of:
