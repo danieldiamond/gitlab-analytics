@@ -297,6 +297,15 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "requirements",
+    "source_table_name": "gitlab_dotcom_requirements",
+    "user_column_name": "author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "requirement_id",
+    "stage_name": "plan",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "sast",
     "source_cte_name": "sast_jobs",
     "user_column_name": "ci_build_user_id",
@@ -330,6 +339,15 @@
     "key_to_parent_project": "project_id",
     "primary_key": "snippet_id",
     "stage_name": "create",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "terraform_reports",
+    "source_cte_name": "terraform_reports",
+    "user_column_name": "NULL",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_job_artifact_id",
+    "stage_name": "configure",
     "is_representative_of_stage": "False"
   },
   {
@@ -482,6 +500,12 @@ WITH gitlab_subscriptions AS (
     FROM {{ ref('gitlab_dotcom_services') }}
     WHERE service_type != 'GitlabIssueTrackerService'
 
+), terraform_reports AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_ci_job_artifacts') }}
+    WHERE file_type = 18
+
 )
 /* End of Source CTEs */
 
@@ -530,6 +554,7 @@ WITH gitlab_subscriptions AS (
         NULL                                                      AS parent_id,
         NULL                                                      AS parent_created_at,
       {% endif %}
+      ultimate_namespace.namespace_is_internal                    AS namespace_is_internal,
       {{ event_cte.event_name }}.created_at                       AS event_created_at,
       {{ event_cte.is_representative_of_stage }}::BOOLEAN         AS is_representative_of_stage,
       '{{ event_cte.event_name }}'                                AS event_name,

@@ -67,7 +67,7 @@ WITH source AS (
         dependency_proxy_enabled::BOOLEAN            AS is_dependency_proxy_enabled,
         recording_ce_finished_at::TIMESTAMP          AS recording_ce_finished_at,
         recording_ee_finished_at::TIMESTAMP          AS recording_ee_finished_at,
-        PARSE_JSON(counts)                           AS stats_used,
+        PARSE_JSON(COALESCE(counts, stats))          AS stats_used,
         ingress_modsecurity_enabled::boolean         AS is_ingress_modsecurity_enabled,
         PARSE_JSON(topology)                         AS topology,
         app_server_type::VARCHAR                     AS app_server_type,

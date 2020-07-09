@@ -4,7 +4,7 @@
 name: 'gitlab_snowflake'
 version: '1.0'
 profile: 'gitlab-snowflake'
-require-dbt-version: ">=0.16.0"
+require-dbt-version: 0.16.1
 
 
 # ======
@@ -26,7 +26,9 @@ quoting:
     database: true
     identifier: false
     schema: false
-query-comment: "{{ query_comment(node) }}"
+query-comment:
+  comment: "{{ query_comment(node) }}"
+  append: true
 
 # ======
 # Run Hooks
@@ -69,6 +71,7 @@ models:
   vars:
     database: "raw"
     warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
+    valid_at: '{{ run_started_at.strftime("%Y-%m-%d") }}'
 
   # ------------------
   # Logging Package https://hub.getdbt.com/fishtown-analytics/logging/latest/
