@@ -269,12 +269,9 @@ models:
 
       snowplow:
         tags: ["product"]
-        schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
-        combined:
-          schema: analytics
-        sessionized_funnels:
-          schema: analytics
-          materialized: view
+        schema: analytics
+        month_partition: 
+          schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
 
       version:
         tags: ["product"]

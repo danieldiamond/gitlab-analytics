@@ -1,3 +1,8 @@
+{{config({
+    "materialized":"view"
+  })
+}}
+
 WITH snowplow_page_views_90 AS (
   
     SELECT *
