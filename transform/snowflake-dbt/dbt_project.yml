@@ -282,10 +282,6 @@ models:
     date:
       materialized: table
 
-    netsuite:
-      materialized: table
-      base:
-        schema: staging
 
     pipe2spend:
       enabled: false
