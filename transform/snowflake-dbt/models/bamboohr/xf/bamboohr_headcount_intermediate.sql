@@ -106,6 +106,16 @@ WITH dates AS (
       IFF(is_termination_date = True
           AND job_role_modified = 'Manager',1,0)                                 AS separated_manager,
 
+
+      IFF(dates.start_date = date_actual 
+          AND job_role_modified != 'Individual Contributor',1,0)                  AS headcount_start_management,
+      IFF(dates.end_date = date_actual
+          AND job_role_modified != 'Individual Contributor',1,0)                  AS headcount_end_management,
+      IFF(is_hire_date = True 
+          AND job_role_modified != 'Individual Contributor',1,0)                  AS hired_management,
+      IFF(is_termination_date = True
+          AND job_role_modified != 'Individual Contributor',1,0)                  AS separated_management,   
+
        IFF(dates.start_date = date_actual 
           AND job_role_modified = 'Individual Contributor',1,0)                  AS headcount_start_contributor,
       IFF(dates.end_date = date_actual
