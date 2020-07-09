@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('zuora', 'product_rate_plan_charge') }}
+    FROM {{ source('zuora', 'product_rate_plan_charge_snapshots') }}
 
 ), renamed AS (
 
