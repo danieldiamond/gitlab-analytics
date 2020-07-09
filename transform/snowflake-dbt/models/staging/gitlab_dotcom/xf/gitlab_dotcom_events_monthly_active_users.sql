@@ -66,6 +66,7 @@ WITH days AS (
       events_active_user.plan_was_paid_at_event_date,
       events_active_user.count_events_active_users_last_28_days,
       events_active_user.count_events_active_users_last_28_days_by_plan_id,
+      events_active_user.count_events_active_namespaces_last_28_days_by_plan_id,
       events_active_user.count_events_active_users_last_28_days_by_plan_was_paid
     FROM audit_events_active_user
       LEFT JOIN events_active_user
