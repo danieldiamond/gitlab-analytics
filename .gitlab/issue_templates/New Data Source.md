@@ -49,7 +49,7 @@ use contact the Data Engineer assigned below for confirmation.
  
 
 **Admin**
-  * [ ] Create issue for creation of extract process (not needed if using FiveTran)
+  * [ ] Create issue for creation of extract process (not needed if using Stitch/FiveTran)
   * [ ] Create issue for dbt models 
   * [ ] Create issue for updating all documentation
 
