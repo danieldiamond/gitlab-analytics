@@ -28,8 +28,22 @@ sources:
       - name: customers
       - name: departments
       - name: entity
+        columns:
+          - name: entity_name
+            meta:
+              sensitive: true
+          - name: entity_full_name
+            meta:
+              sensitive: true
       - name: posting_account_activity
       - name: subsidiaries
+        columns:
+          - name: subsidiary_full_name
+            meta:
+              sensitive: true
+          - name: subsidiary_name
+            meta:
+              sensitive: true
       - name: transaction_lines
         columns:
           - name: transaction_id
@@ -43,3 +57,7 @@ sources:
               sensitive: true
       - name: transactions
       - name: vendors
+        columns:
+          - name: vendor_name
+            meta:
+              sensitive: true

@@ -1,8 +1,22 @@
 version: 2
 models:
+  - name: netsuite_entity_pii
+    description: Model for Netsuite entities sensitive data
+    columns:
+        - name: entity_full_name
+        - name: entity_full_name
+  - name: netsuite_subsidiary_pii
+    description: Model for Netsuite subsidiary sensitive data
+    columns:
+        - name: subsidiary_full_name
+        - name: subsidiary_name
   - name: netsuite_transaction_lines_pii
     description: Model for Netsuite transaction lines sensitive data
     columns:
         - name: memo
+  - name: netsuite_vendor_pii
+    description: Model for Netsuite vendors sensitive data
+    columns:
+        - name: vendor_name
 
 
