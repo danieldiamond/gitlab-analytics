@@ -78,7 +78,6 @@ models:
     - name: rolling_12_month_headcount_manager
     - name: rolling_12_month_separations_manager
     - name: retention_manager
-
     - name: headcount_end_management
       description: Management is defined as anyone in a manager or senior leader role based on the field job_role_modified.
     - name: headcount_management_average
@@ -87,12 +86,6 @@ models:
     - name: rolling_12_month_headcount_management
     - name: rolling_12_month_separations_management
     - name: retention_manager
-
-
-
-
-
-
     - name: headcount_end_contributor
     - name: headcount_contributor
     - name: hired_contributor

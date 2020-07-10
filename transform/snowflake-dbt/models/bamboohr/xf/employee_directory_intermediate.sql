@@ -29,6 +29,21 @@ WITH RECURSIVE employee_directory AS (
     SELECT *
     FROM {{ ref('bamboohr_job_info') }}
 
+), job_role AS (
+
+    SELECT *
+    FROM {{ ref('bamboohr_job_role') }}
+
+), location_factor AS (
+
+    SELECT *
+    FROM {{ ref('employee_location_factor_snapshots') }}
+
+), employment_status AS (
+    
+    SELECT * 
+     FROM {{ ref('bamboohr_employment_status_xf') }}
+
 ), direct_reports AS (
   
     SELECT
@@ -52,13 +67,6 @@ WITH RECURSIVE employee_directory AS (
     GROUP BY 1,2
     HAVING total_direct_reports > 0
 
-
-
-), job_role AS (
-
-    SELECT *
-    FROM {{ ref('bamboohr_job_role') }}
-
 ), job_info_mapping_historical AS (
 
     SELECT 
@@ -79,16 +87,6 @@ WITH RECURSIVE employee_directory AS (
       AND date_details.date_actual BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_date, {{max_date_in_bamboo_analyses()}})
     WHERE job_role.job_grade IS NOT NULL
     ---Using the 1st time we captured job_role and grade to identify classification for historical records
-
-), location_factor AS (
-
-    SELECT *
-    FROM {{ ref('employee_location_factor_snapshots') }}
-
-), employment_status AS (
-    
-    SELECT * 
-     FROM {{ ref('bamboohr_employment_status_xf') }}
 
 ), employment_status_records_check AS (
     
@@ -117,7 +115,7 @@ WITH RECURSIVE employee_directory AS (
       IFF(date_details.date_actual BETWEEN '2019-11-01' AND '2020-02-27' 
             AND job_info_mapping_historical.job_role IS NOT NULL, 
             job_info_mapping_historical.job_role, 
-            COALESCE(job_role.job_role, department_info.job_role))           AS job_role,
+            COALESCE(job_role.job_role, department_info.job_role))          AS job_role,
       IFF(date_details.date_actual BETWEEN '2019-11-01' AND '2020-02-27', 
             job_info_mapping_historical.job_grade, 
             job_role.job_grade)                                             AS job_grade,
@@ -238,7 +236,6 @@ WITH RECURSIVE employee_directory AS (
     JOIN base_layers iter
       ON anchor.date_actual = iter.date_actual
      AND iter.reports_to = anchor.employee
-
 
 ), calculated_layers AS (
 

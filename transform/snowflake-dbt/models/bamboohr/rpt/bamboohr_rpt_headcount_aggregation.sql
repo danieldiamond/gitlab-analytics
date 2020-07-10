@@ -33,7 +33,7 @@ WITH source AS (
 
    SELECT
       base.month_date,
-      IFF(base.breakout_type = 'eeoc_breakout' and base.eeoc_field_name = 'no_eeoc', 'kpi_breakout',base.breakout_type) AS breakout_type, 
+      IFF(base.breakout_type = 'eeoc_breakout' AND base.eeoc_field_name = 'no_eeoc', 'kpi_breakout',base.breakout_type) AS breakout_type, 
       base.department,
       base.division,
       base.eeoc_field_name,
