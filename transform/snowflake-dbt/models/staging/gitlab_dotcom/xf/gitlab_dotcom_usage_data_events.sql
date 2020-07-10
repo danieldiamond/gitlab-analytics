@@ -253,7 +253,7 @@
   },
   {
     "event_name": "merge_request_notes",
-    "source_cte_name": "merge_requestsnotes",
+    "source_cte_name": "merge_request_notes",
     "user_column_name": "note_author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "author_id",
