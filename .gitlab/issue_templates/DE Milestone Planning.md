@@ -48,4 +48,4 @@ We assume that preceding milestone's velocity is a good predictor of the followi
 
 ---
 <!-- DO NOT EDIT BELOW THIS LINE -->
-/label ~Housekeeping ~Infrastructure ~Planning
+/label ~Housekeeping ~Infrastructure ~Planning ~"Priority::1-Ops" 

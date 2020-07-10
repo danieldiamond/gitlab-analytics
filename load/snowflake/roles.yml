@@ -1183,6 +1183,12 @@ roles:
             - customers_db_sensitive
         warehouses:
             - analyst_xs
+            
+    - iwiedler:
+        member_of:
+           - analyst_engineering
+        warehouses:
+           - analyst_xs
 
     - jng:
         member_of:
@@ -1257,6 +1263,8 @@ roles:
             - reporting
 
     - mdewji:
+        member_of:
+            - postgres_pipeline
         warehouses:
             - reporting
 
@@ -1267,6 +1275,13 @@ roles:
             - analyst_xs
             - analyst_l
             - analyst_xl
+
+    - mriser:
+        member_of:
+            - mriser
+            - postgres_pipeline
+        warehouses:
+            - analyst_xs
 
     - mrodriguez:
         member_of:
@@ -1573,6 +1588,11 @@ users:
         member_of:
             - iweeks
 
+    - iwiedler:
+        can_login: yes
+        member_of:
+            - iwiedler
+
     - jng:
         can_login: yes
         member_of:
@@ -1650,6 +1670,11 @@ users:
         can_login: yes
         member_of:
             - mpeychet
+
+    - mriser:
+        can_login: yes
+        member_of:
+            - mriser
 
     - mrodriguez:
         can_login: yes

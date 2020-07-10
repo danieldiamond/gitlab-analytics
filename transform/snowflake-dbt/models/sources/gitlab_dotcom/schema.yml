@@ -1376,6 +1376,17 @@ models:
         tests:
           - not_null
 
+  - name: gitlab_dotcom_requirements
+    description: Base model for requirements table
+    columns:
+      - name: requirement_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+
   - name: gitlab_dotcom_resource_label_events
     description: '{{ doc("gitlab_dotcom_resource_label_events") }}'
     columns:
