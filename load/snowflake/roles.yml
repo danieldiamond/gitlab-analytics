@@ -586,6 +586,18 @@ roles:
                 read:
                     - analytics.analytics_sensitive.customers_db_customers_pii
 
+    - date:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.date
+            tables:
+                read:
+                    - analytics.date.*
+
     - db_dumps:
         privileges:
             databases:
@@ -755,16 +767,8 @@ roles:
                     - raw.tap_postgres.*
 
     - public:
-        privileges:
-            databases:
-                read:
-                    - analytics
-            schemas:
-                read:
-                    - analytics.date
-            tables:
-                read:
-                    - analytics.date.*
+        member_of:
+          - date
 
     - qualtrics:
         warehouses:
