@@ -754,6 +754,18 @@ roles:
                     - analytics.customers.*
                     - raw.tap_postgres.*
 
+    - public:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.date
+            tables:
+                read:
+                    - analytics.date.*
+
     - qualtrics:
         warehouses:
             - analyst_xs

@@ -62,7 +62,7 @@ WITH filtered_source as (
       event_fingerprint,
       event_format,
       event_id,
-      try_parse_json(contexts)['data'][0]['data']['id']::varchar AS web_page_id,
+      TRY_PARSE_JSON(contexts)['data'][0]['data']['id']::varchar AS web_page_id,
       event_name,
       event_vendor,
       event_version,
@@ -168,8 +168,8 @@ WITH filtered_source as (
     {%- endif %}
 
     WHERE app_id IS NOT NULL
-      AND date_part(month, try_to_timestamp(derived_tstamp)) = '{{ month_value }}'
-      AND date_part(year, try_to_timestamp(derived_tstamp)) = '{{ year_value }}'
+      AND DATE_PART(month, TRY_TO_TIMESTAMP(derived_tstamp)) = '{{ month_value }}'
+      AND DATE_PART(year, TRY_TO_TIMESTAMP(derived_tstamp)) = '{{ year_value }}'
       AND 
         (
           (
@@ -187,7 +187,7 @@ WITH filtered_source as (
             v_tracker LIKE 'rb%'
           )
         )
-      AND try_to_timestamp(derived_tstamp) is not null
+      AND TRY_TO_TIMESTAMP(derived_tstamp) is not null
 )
 
 , base AS (
@@ -207,7 +207,7 @@ WITH filtered_source as (
     SELECT *,
     {{dbt_utils.get_url_parameter(field='page_urlquery', url_parameter='glm_source')}} AS glm_source,
     CASE
-      WHEN length(unstruct_event) > 0 AND try_parse_json(unstruct_event) IS NULL
+      WHEN LENGTH(unstruct_event) > 0 AND TRY_PARSE_JSON(unstruct_event) IS NULL
         THEN TRUE
       ELSE FALSE END AS is_bad_unstruct_event,
     {{ unpack_unstructured_event(change_form, 'change_form', 'cf') }},

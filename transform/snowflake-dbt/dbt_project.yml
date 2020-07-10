@@ -132,6 +132,7 @@ models:
 
       date:
         materialized: table
+        schema: date
         
       dbt:
         materialized: table
@@ -212,6 +213,10 @@ models:
       customers:
         xf:
           schema: analytics
+
+      date:
+        schema: analytics
+        materialized: view
 
       engineering:
         materialized: table
