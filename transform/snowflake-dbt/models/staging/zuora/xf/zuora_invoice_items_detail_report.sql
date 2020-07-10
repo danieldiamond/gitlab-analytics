@@ -142,14 +142,14 @@ SELECT
   invoice_item_unit_price,
   invoice_item_charge_amount,
   CASE
-    WHEN lower(rate_plan_name) LIKE '%2 years%' THEN (invoice_item_unit_price/2)
-    WHEN lower(rate_plan_name) LIKE '%2 year%'  THEN (invoice_item_unit_price/2)
-    WHEN lower(rate_plan_name) LIKE '%3 years%' THEN (invoice_item_unit_price/3)
-    WHEN lower(rate_plan_name) LIKE '%3 year%'  THEN (invoice_item_unit_price/3)
-    WHEN lower(rate_plan_name) LIKE '%4 years%' THEN (invoice_item_unit_price/4)
-    WHEN lower(rate_plan_name) LIKE '%4 year%'  THEN (invoice_item_unit_price/4)
-    WHEN lower(rate_plan_name) LIKE '%5 years%' THEN (invoice_item_unit_price/5)
-    WHEN lower(rate_plan_name) LIKE '%5 year%'  THEN (invoice_item_unit_price/5)
+    WHEN LOWER(rate_plan_name) LIKE '%2 years%' THEN (invoice_item_unit_price/2)
+    WHEN LOWER(rate_plan_name) LIKE '%2 year%'  THEN (invoice_item_unit_price/2)
+    WHEN LOWER(rate_plan_name) LIKE '%3 years%' THEN (invoice_item_unit_price/3)
+    WHEN LOWER(rate_plan_name) LIKE '%3 year%'  THEN (invoice_item_unit_price/3)
+    WHEN LOWER(rate_plan_name) LIKE '%4 years%' THEN (invoice_item_unit_price/4)
+    WHEN LOWER(rate_plan_name) LIKE '%4 year%'  THEN (invoice_item_unit_price/4)
+    WHEN LOWER(rate_plan_name) LIKE '%5 years%' THEN (invoice_item_unit_price/5)
+    WHEN LOWER(rate_plan_name) LIKE '%5 year%'  THEN (invoice_item_unit_price/5)
     ELSE invoice_item_unit_price
   END                                           AS annual_price,
   quantity * annual_price                       AS quantity_times_annual,
@@ -158,15 +158,15 @@ SELECT
   invoice_month,
   fiscal_quarter_name_fy                        AS fiscal_period,
   CASE
-    WHEN lower(rate_plan_name) LIKE '%2 years%' THEN (billing_list_price/2)
-    WHEN lower(rate_plan_name) LIKE '%2 year%'  THEN (billing_list_price/2)
-    WHEN lower(rate_plan_name) LIKE '%3 years%' THEN (billing_list_price/3)
-    WHEN lower(rate_plan_name) LIKE '%3 year%'  THEN (billing_list_price/3)
-    WHEN lower(rate_plan_name) LIKE '%4 years%' THEN (billing_list_price/4)
-    WHEN lower(rate_plan_name) LIKE '%4 year%'  THEN (billing_list_price/4)
-    WHEN lower(rate_plan_name) LIKE '%5 years%' THEN (billing_list_price/5)
-    WHEN lower(rate_plan_name) LIKE '%5 year%'  THEN (billing_list_price/5)
-    WHEN lower(charge_type) != 'recurring' THEN 0
+    WHEN LOWER(rate_plan_name) LIKE '%2 years%' THEN (billing_list_price/2)
+    WHEN LOWER(rate_plan_name) LIKE '%2 year%'  THEN (billing_list_price/2)
+    WHEN LOWER(rate_plan_name) LIKE '%3 years%' THEN (billing_list_price/3)
+    WHEN LOWER(rate_plan_name) LIKE '%3 year%'  THEN (billing_list_price/3)
+    WHEN LOWER(rate_plan_name) LIKE '%4 years%' THEN (billing_list_price/4)
+    WHEN LOWER(rate_plan_name) LIKE '%4 year%'  THEN (billing_list_price/4)
+    WHEN LOWER(rate_plan_name) LIKE '%5 years%' THEN (billing_list_price/5)
+    WHEN LOWER(rate_plan_name) LIKE '%5 year%'  THEN (billing_list_price/5)
+    WHEN LOWER(charge_type) != 'recurring' THEN 0
     ELSE billing_list_price
   END                                           AS list_price,
   CASE
