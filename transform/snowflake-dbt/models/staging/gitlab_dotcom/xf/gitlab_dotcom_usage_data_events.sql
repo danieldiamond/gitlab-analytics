@@ -252,7 +252,7 @@
     "is_representative_of_stage": "True"
   },
   {
-    "event_name": "merge_requests_notes",
+    "event_name": "merge_request_notes",
     "source_cte_name": "merge_requests_notes",
     "user_column_name": "note_author_id",
     "key_to_parent_project": "project_id",
