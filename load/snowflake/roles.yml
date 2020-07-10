@@ -614,6 +614,7 @@ roles:
                     - analytics.analytics_clones
                     - analytics.analytics_meta
                     - analytics.analytics_staging
+                    - analytics.sheetload
                     - raw.dbt
             tables:
                 read:
@@ -621,6 +622,7 @@ roles:
                     - analytics.analytics_clones.*
                     - analytics.analytics_meta.*
                     - analytics.analytics_staging.*
+                    - analytics.sheetload.*
                     - raw.dbt.*
 
     - dbt_analytics_sensitive:
