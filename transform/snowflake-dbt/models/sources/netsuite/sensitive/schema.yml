@@ -3,20 +3,31 @@ models:
   - name: netsuite_entity_pii
     description: Model for Netsuite entities sensitive data
     columns:
-        - name: entity_name
-        - name: entity_full_name
+        - name: entity_id
+          tests:
+            - not_null
+            - unique
   - name: netsuite_subsidiaries_pii
     description: Model for Netsuite subsidiary sensitive data
     columns:
-        - name: subsidiary_full_name
-        - name: subsidiary_name
+      - name: subsidiary_id
+        tests:
+          - not_null
+          - unique
   - name: netsuite_transaction_lines_pii
     description: Model for Netsuite transaction lines sensitive data
     columns:
-        - name: memo
+      - name: transaction_lines_unique_id
+        tests:
+          - not_null
+          - unique
   - name: netsuite_vendors_pii
     description: Model for Netsuite vendors sensitive data
     columns:
-        - name: vendor_name
+      - name: vendor_id
+        tests:
+          - not_null
+          - unique
+
 
 
