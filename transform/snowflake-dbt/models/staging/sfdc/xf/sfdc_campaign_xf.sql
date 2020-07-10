@@ -22,7 +22,8 @@ WITH sfdc_campaign AS (
              sfdc_campaign.count_opportunities,
              sfdc_campaign.count_responses,
              sfdc_campaign.count_sent,
-             sfdc_campaign.count_won_opportunities
+             sfdc_campaign.count_won_opportunities,
+             sfdc_campaign.budget_holder
     FROM sfdc_campaign
     LEFT JOIN sfdc_campaign AS parent_campaign
     ON sfdc_campaign.campaign_parent_id = parent_campaign.campaign_id
