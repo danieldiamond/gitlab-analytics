@@ -81,7 +81,6 @@ WITH source AS (
         1 - (rolling_12_month_separations_management/
             NULLIF(rolling_12_month_headcount_management,0)))                            AS retention_management,
 
-
       headcount_end_individual_contributor,
       headcount_average_contributor,
       hired_contributor,
@@ -181,7 +180,7 @@ WITH source AS (
       IFF(separated_management < 2 AND eeoc_field_name != 'no_eeoc',
         NULL, separated_management)                                            AS separated_management,
       rolling_12_month_headcount_management,
-      rolling_12_month_separations_manager,
+      rolling_12_month_separations_management,
       retention_management,
  
 

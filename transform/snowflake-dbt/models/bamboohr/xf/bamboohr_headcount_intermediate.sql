@@ -22,6 +22,13 @@
       SUM(hired_manager)                                AS hired_manager,
       SUM(separated_manager)                            AS separated_manager,
 
+      SUM(headcount_start_management)                   AS headcount_start_management,
+      SUM(headcount_end_management)                     AS headcount_end_management,
+      (SUM(headcount_start_management) 
+        + SUM(headcount_end_management))/2              AS headcount_average_management,
+      SUM(hired_management)                             AS hired_management,
+      SUM(separated_management)                         AS separated_management,
+            
       SUM(headcount_start_contributor)                  AS headcount_start_contributor,
       SUM(headcount_end_contributor)                    AS headcount_end_individual_contributor,
       (SUM(headcount_start_contributor) 
@@ -106,15 +113,14 @@ WITH dates AS (
       IFF(is_termination_date = True
           AND job_role_modified = 'Manager',1,0)                                 AS separated_manager,
 
-
       IFF(dates.start_date = date_actual 
-          AND job_role_modified != 'Individual Contributor',1,0)                  AS headcount_start_management,
+          AND job_role_modified != 'Individual Contributor',1,0)                 AS headcount_start_management,
       IFF(dates.end_date = date_actual
-          AND job_role_modified != 'Individual Contributor',1,0)                  AS headcount_end_management,
+          AND job_role_modified != 'Individual Contributor',1,0)                 AS headcount_end_management,
       IFF(is_hire_date = True 
-          AND job_role_modified != 'Individual Contributor',1,0)                  AS hired_management,
+          AND job_role_modified != 'Individual Contributor',1,0)                 AS hired_management,
       IFF(is_termination_date = True
-          AND job_role_modified != 'Individual Contributor',1,0)                  AS separated_management,   
+          AND job_role_modified != 'Individual Contributor',1,0)                 AS separated_management,   
 
        IFF(dates.start_date = date_actual 
           AND job_role_modified = 'Individual Contributor',1,0)                  AS headcount_start_contributor,
@@ -123,7 +129,7 @@ WITH dates AS (
       IFF(is_hire_date = True 
           AND job_role_modified = 'Individual Contributor',1,0)                  AS hired_contributor,
       IFF(is_termination_date = True
-          AND job_role_modified = 'Individual Contributor',1,0)                  AS separated_contributor                
+          AND job_role_modified = 'Individual Contributor',1,0)                  AS separated_contributor
     FROM dates
     LEFT JOIN employees
       ON DATE_TRUNC(month,dates.start_date) = DATE_TRUNC(month, employees.date_actual)
