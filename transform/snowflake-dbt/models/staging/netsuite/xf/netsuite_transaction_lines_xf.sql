@@ -63,12 +63,12 @@ SELECT
   END                                      AS subsidiary_name,
   CASE
     WHEN LOWER(a.account_name) LIKE '%contract%'
-      THEN SUBSTRING(tl.hash_memo)
+      THEN SUBSTRING(tl.memo_hash, 16)
     ELSE t_pii.memo
   END                                      AS memo,
   CASE
     WHEN LOWER(a.account_name) LIKE '%contract%'
-      THEN SUBSTRING(e.hash_entity_name,16)
+      THEN SUBSTRING(e.entity_name_hash, 16)
     WHEN t.entity_id IS NOT NULL
       THEN e2.entity_name
     ELSE e_pii.entity_name
