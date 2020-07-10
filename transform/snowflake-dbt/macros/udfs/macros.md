@@ -1,7 +1,7 @@
 {% docs crc32 %}
 UDF stands for User-defined functions. They let you extend the system to perform operations that are not available through the built-in, system-defined functions provided by Snowflake. Snowflake currently supports two types of UDFs: SQL and JavaScript.
 
-This runs 32-bit cyclic redundancy check.
+This runs 32-bit cyclic redundancy check.  This is required because the Flipper gem's feature flag makes rollouts based on CRC32.
 {% enddocs %}
 
 {% docs create_udfs %}
