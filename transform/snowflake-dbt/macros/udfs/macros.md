@@ -1,3 +1,9 @@
+{% docs crc32 %}
+UDF stands for User-defined functions. They let you extend the system to perform operations that are not available through the built-in, system-defined functions provided by Snowflake. Snowflake currently supports two types of UDFs: SQL and JavaScript.
+
+This converts SFDC account ids that are 15 characters long to 18 characters.
+{% enddocs %}
+
 {% docs create_udfs %}
 UDF stands for User-defined functions. They let you extend the system to perform operations that are not available through the built-in, system-defined functions provided by Snowflake. Snowflake currently supports two types of UDFs: SQL and JavaScript.
 
@@ -15,3 +21,4 @@ UDF stands for User-defined functions. They let you extend the system to perform
 
 This converts SFDC account ids that are 15 characters long to 18 characters.
 {% enddocs %}
+

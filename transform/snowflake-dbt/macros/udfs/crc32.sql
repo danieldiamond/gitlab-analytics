@@ -1,6 +1,6 @@
-{% macro gl_crc32() %}
+{% macro crc32() %}
 
-CREATE OR REPLACE FUNCTION {{target.schema}}_staging.gl_crc32("input" string)
+CREATE OR REPLACE FUNCTION {{target.schema}}_staging.crc32("input" string)
 
   RETURNS string
   LANGUAGE JAVASCRIPT
