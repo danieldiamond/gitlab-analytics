@@ -3,7 +3,7 @@ models:
   - name: netsuite_entity_pii
     description: Model for Netsuite entities sensitive data
     columns:
-        - name: entity_full_name
+        - name: entity_name
         - name: entity_full_name
   - name: netsuite_subsidiaries_pii
     description: Model for Netsuite subsidiary sensitive data
