@@ -1,16 +1,6 @@
-{%- macro cleanup_certificates(certificate_name, raw_email_column) -%}
+{%- macro cleanup_certificates(certificate_name) -%}
 
-), renamed as (
-
-	SELECT
-		"Timestamp"::TIMESTAMP::DATE            AS date_completed,
-		"Score"                                 AS score,
-		"First_&_Last_Name"                     AS submitter_name,
-		"{{raw_email_column}}"::STRING          AS submitter_email,
-		"_UPDATED_AT"                           AS last_updated_at
-	FROM source
-
-), clean_score as (
+clean_score AS (
 
 	SELECT
 		date_completed,
@@ -26,7 +16,7 @@
       ELSE md5(submitter_email) END             AS submitter_email,
     {{certificate_name}}                        AS certificate_name,
 		last_updated_at
-	FROM renamed
+	FROM source
 
 )
 

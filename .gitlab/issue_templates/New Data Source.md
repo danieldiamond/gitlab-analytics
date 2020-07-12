@@ -21,6 +21,8 @@ If none, please include a description
   - [ ] Yes 
   - [ ] No
   - [ ] I don't know
+* [ ] Does this data have any agreed [SLO](https://about.gitlab.com/handbook/business-ops/data-team/platform/#slos-service-level-objectives-by-data-source) attached to it? If not: 
+    * [ ] How often does the data need to be refreshed? 
 
 ## Integration Preparation 
 
@@ -39,9 +41,17 @@ use contact the Data Engineer assigned below for confirmation.
 - Where will access be required? 
 - Link to Access Request: <!-- This can be blank to start, will need to be added for prioritization -->
 
-**Data Engineer assigned below to confirm that we have all of the requisite access mentioned above before bringing anything onto a milestone**
-- If using one of our third party API handlers (Stitch/FiveTran) the integration should be confirmed to be up and running 
-- If writing a custom API integration the API endpoints should be confirmed to be active and returning expected data.
+
+## Data Engineer tasks**
+**API** 
+  * [ ] If using one of our third party API handlers (Stitch/FiveTran) the integration should be confirmed to be up and running
+  * [ ] If writing a custom API integration the API endpoints should be confirmed to be active and returning expected data. 
+ 
+
+**Admin**
+  * [ ] Create issue for creation of extract process (not needed if using Stitch/FiveTran)
+  * [ ] Create issue for dbt models 
+  * [ ] Create and link merge requests for updating relevant documentation 
 
 ## Data Use / Acceptance Criteria 
 

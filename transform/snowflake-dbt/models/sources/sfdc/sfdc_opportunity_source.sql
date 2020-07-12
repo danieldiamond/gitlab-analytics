@@ -95,11 +95,15 @@ WITH source AS (
         sdr_pipeline_contribution__c   AS sdr_pipeline_contribution,
         sales_segmentation_o__c        AS segment,
         solutions_to_be_replaced__c    AS solutions_to_be_replaced,
+        x3_technical_evaluation_date__c 
+                                       AS technical_evaluation_date,
         amount                         AS total_contract_value,
         upside_iacv__c                 AS upside_iacv,
         upside_swing_deal_iacv__c      AS upside_swing_deal_iacv,
         web_portal_purchase__c         AS is_web_portal_purchase,
         opportunity_term__c            AS opportunity_term,
+        pio__c                         AS partner_initiated_opportunity,
+        user_segment_o__c              AS user_segment,
 
         -- command plan fields
         fm_champion__c                 AS cp_champion,

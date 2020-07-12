@@ -20,7 +20,7 @@ models:
             - not_null
             - unique
     - name: zuora_contact_source
-      description: Source layer for Zuora contacts for cleaning and renaming
+      description: Source layer for Zuora Contacts for cleaning and renaming
     - name: zuora_discount_applied_metrics_source
       description: Source layer for Zuora Discount Applied Metrics  for cleaning and renaming
     - name: zuora_invoice_source

@@ -44,6 +44,6 @@ Use the below resources as a starting point for learning on the appropriate days
 ### The importance of defining work processes, e.g. dbt test coverage
 * [ ] https://about.gitlab.com/handbook/handbook-usage/#why-handbook-first
 * [ ] https://about.gitlab.com/handbook/business-ops/data-team/#dbt-test-coverage-rotation
-* [ ] https://about.gitlab.com/handbook/business-ops/data-team/#milestone-planning
+* [ ] https://about.gitlab.com/handbook/business-ops/data-team/how-we-work/#milestone-planning
 ### The importance of testing to ensure data quality
 * [ ]  https://docs.getdbt.com/docs/testing-and-documentation

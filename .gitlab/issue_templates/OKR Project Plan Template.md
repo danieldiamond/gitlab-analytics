@@ -292,3 +292,4 @@ It is important to review all risk via a framework to help business stakeholders
 |-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
 |       |       |       |       |       |       |       |       |       |       |							
 
+/label ~"Priority:: 2-OKRs"

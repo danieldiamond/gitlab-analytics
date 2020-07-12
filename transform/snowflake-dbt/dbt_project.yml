@@ -4,7 +4,7 @@
 name: 'gitlab_snowflake'
 version: '1.0'
 profile: 'gitlab-snowflake'
-require-dbt-version: ">=0.16.0"
+require-dbt-version: 0.16.1
 
 
 # ======
@@ -26,7 +26,9 @@ quoting:
     database: true
     identifier: false
     schema: false
-query-comment: "{{ query_comment(node) }}"
+query-comment:
+  comment: "{{ query_comment(node) }}"
+  append: true
 
 # ======
 # Run Hooks
@@ -69,7 +71,8 @@ models:
   vars:
     database: "raw"
     warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
-
+    valid_at: '{{ run_started_at.strftime("%Y-%m-%d") }}'
+    
   # Logging Package
   logging:
     schema: meta
@@ -115,6 +118,7 @@ models:
         schema: customers
         sensitive:
           schema: sensitive
+          secure: true
 
       dbt:
         materialized: table
@@ -141,17 +145,34 @@ models:
       greenhouse:
         schema: greenhouse
 
+      handbook:
+        schema: handbook
+
       license:
         schema: license_db
+
+      netsuite:
+        schema: netsuite
 
       qualtrics:
         materialized: table
         schema: qualtrics
 
+      pmg:
+        materialized: table
+        schema: pmg
+
       sfdc:
         schema: sfdc
         sensitive:
           schema: sensitive
+          secure: true
+
+      sheetload:
+        schema: sheetload
+
+      snowflake:
+        schema: snowflake
 
       version:
         tags: ["product"]
@@ -168,6 +189,10 @@ models:
     staging:
       schema: staging
       materialized: table
+
+      customers:
+        xf:
+          schema: analytics
 
       engineering:
         materialized: table
@@ -192,18 +217,36 @@ models:
       greenhouse:
         xf:
           schema: sensitive
+          secure: true
         rpt:
+          schema: analytics
+
+      handbook:
+        rpt:
+          schema: analytics
+        xf:
           schema: analytics
 
       license:
         materialized: view
 
+      netsuite:
+        xf:
+          schema: analytics
+
       qualtrics:
+        schema: analytics
+
+      pmg:
         schema: analytics
 
       sfdc:
         xf:
           schema: analytics
+
+      snowflake:
+          schema: analytics
+          materialized: view
 
       version:
         tags: ["product"]
@@ -232,27 +275,12 @@ models:
     # Legacy Structure
     bamboohr:
       schema: sensitive
+      secure: true
       base:
         materialized: table
-
-    customers:
-      materialized: table
-      base:
-          schema: staging
-      intermediate:
-          schema: staging
 
     date:
       materialized: table
-
-    handbook:
-        materialized: table
-         
-         
-    netsuite:
-      materialized: table
-      base:
-        schema: staging
 
     pipe2spend:
       enabled: false

@@ -6,18 +6,26 @@ WITH source AS (
 ), intermediate AS (
 
     SELECT 
-          NULLIF(d.value['employeeNumber'],'')::BIGINT                    AS employee_number,
-          d.value['id']::BIGINT                                           AS employee_id,
-          d.value['firstName']::VARCHAR                                   AS first_name,
-          d.value['lastName']::VARCHAR                                    AS last_name,
-          NULLIF(d.value['hireDate']::VARCHAR,'0000-00-00')::DATE         AS hire_date,
-          d.value['customRole']::VARCHAR                                  AS job_role,
-          d.value['customJobGrade']::VARCHAR                              AS job_grade,
-          d.value['customCostCenter']::VARCHAR                            AS cost_center,
-          uploaded_at::DATETIME                                           AS effective_date
+      NULLIF(d.value['employeeNumber'],'')::BIGINT                    AS employee_number,
+      d.value['id']::BIGINT                                           AS employee_id,
+      d.value['firstName']::VARCHAR                                   AS first_name,
+      d.value['lastName']::VARCHAR                                    AS last_name,
+      (CASE WHEN d.value['hireDate']=''
+            THEN NULL
+           WHEN d.value['hireDate']= '0000-00-00'
+            THEN NULL
+           ELSE d.value['hireDate']::VARCHAR END)::DATE               AS hire_date,
+      d.value['customRole']::VARCHAR                                  AS job_role,
+      d.value['customJobGrade']::VARCHAR                              AS job_grade,
+      d.value['customCostCenter']::VARCHAR                            AS cost_center,
+      d.value['customJobTitleSpeciality']::VARCHAR                    AS jobtitle_speciality,
+      d.value['customGitLabUsername']::VARCHAR                        AS gitlab_username,
+      d.value['customSalesGeoDifferential']::VARCHAR                  AS sales_geo_differential,
+      uploaded_at::DATETIME                                           AS effective_date
     FROM source,
-    LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), OUTER => true) d
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade, cost_center 
+    LATERAL FLATTEN(INPUT => PARSE_JSON(jsontext['employees']), OUTER => true) d
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade, cost_center,
+                                            jobtitle_speciality, gitlab_username, sales_geo_differential
             ORDER BY DATE_TRUNC(day,effective_date) ASC, DATE_TRUNC(hour, effective_date) DESC)=1  
 
 ), final AS (
@@ -28,7 +36,10 @@ WITH source AS (
       job_role,
       job_grade,
       cost_center,
-      DATE_TRUNC(day, effective_date)                                                   AS effective_date,
+      jobtitle_speciality,
+      gitlab_username,
+      sales_geo_differential,
+      DATE_TRUNC(day, effective_date)                                                    AS effective_date,
       LEAD(DATEADD(day,-1,DATE_TRUNC(day, intermediate.effective_date))) OVER 
         (PARTITION BY employee_number ORDER BY intermediate.effective_date)              AS next_effective_date
     FROM intermediate 

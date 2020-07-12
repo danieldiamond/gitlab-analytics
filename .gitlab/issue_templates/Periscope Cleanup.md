@@ -2,7 +2,7 @@
 This issue is for Periscope cleanup
 ---->
 
-One of our goals described in our [Charter](https://about.gitlab.com/handbook/business-ops/data-team/#-charter)
+One of our goals described in our [Charter](https://about.gitlab.com/handbook/business-ops/data-team/#charter)
 
 >>>
 Create and evangelize analyses produced in our business intelligence tool (Periscope); support others learning to and creating their own analyses
@@ -26,3 +26,5 @@ You are taking the cleanup hat for this month. Please, go through this list of t
 - [ ] : Ask the other data team members if any official dashboard would be relevant to add in the section `Suggestions for where to start`
 
 Once, all these tasks are complete, and the list of dashboards cleaned, please close this issue.
+
+/label ~"Priority::1-Ops"
