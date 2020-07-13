@@ -22,4 +22,6 @@ return (crc ^ (-1)) >>> 0;
 $$
 ;
 
+GRANT USAGE ON FUNCTION {{target.schema}}_staging.crc32(STRING) TO ROLE PUBLIC; 
+
 {% endmacro %}
