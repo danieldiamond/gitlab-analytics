@@ -60,9 +60,9 @@ seeds:
         major_minor_version: varchar
 
 
-# ======
+# ==================
 # Model Configs
-# ======
+# ==================
 models:
   pre-hook:
     - "{{ logging.log_model_start_event() }}"
@@ -72,14 +72,18 @@ models:
     database: "raw"
     warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
     valid_at: '{{ run_started_at.strftime("%Y-%m-%d") }}'
-    
-  # Logging Package
+
+  # ------------------
+  # Logging Package https://hub.getdbt.com/fishtown-analytics/logging/latest/
+  # ------------------
   logging:
     schema: meta
     post-hook:
       - "grant select on {{this}} to role reporter"
 
-  # Snowplow Package
+  # ------------------
+  # Snowplow Package https://hub.getdbt.com/fishtown-analytics/snowplow/latest/
+  # ------------------
   snowplow:
     schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
     post-hook:
@@ -97,19 +101,25 @@ models:
       'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
       'snowplow:pass_through_columns': ['glm_source','cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
 
-  # Snowflake Spend Package
+  # ------------------
+  # Snowflake Spend Package https://gitlab.com/gitlab-data/snowflake_spend
+  # ------------------
   snowflake_spend:
     materialized: table
     xf:
       schema: analytics
 
+  # ==================
   # GitLab Models
+  # ==================
   gitlab_snowflake:
     materialized: view
 
-    # Dimensional Structure
+    # ------------------
+    # Sources
+    # ------------------
     sources:
-    
+
       airflow:
         materialized: table
         schema: airflow
@@ -120,6 +130,10 @@ models:
           schema: sensitive
           secure: true
 
+      date:
+        materialized: table
+        schema: date
+        
       dbt:
         materialized: table
         schema: dbt
@@ -177,6 +191,10 @@ models:
       snowflake:
         schema: snowflake
 
+      snowplow:
+        tags: ["product"]
+        schema: snowplow
+
       version:
         tags: ["product"]
         materialized: table
@@ -188,7 +206,9 @@ models:
       zuora:
         schema: zuora
 
-
+    # ------------------
+    # Staging
+    # ------------------
     staging:
       schema: staging
       materialized: table
@@ -196,6 +216,10 @@ models:
       customers:
         xf:
           schema: analytics
+
+      date:
+        schema: analytics
+        materialized: view
 
       engineering:
         materialized: table
@@ -251,8 +275,14 @@ models:
         schema: analytics
 
       snowflake:
-          schema: analytics
-          materialized: view
+        schema: analytics
+        materialized: view
+
+      snowplow:
+        tags: ["product"]
+        schema: analytics
+        month_partition: 
+          schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
 
       version:
         tags: ["product"]
@@ -264,7 +294,10 @@ models:
       zuora:
         xf:
           schema: analytics
-    
+
+    # ------------------
+    # Marts
+    # ------------------
     marts:  
       
       arr:  
@@ -277,16 +310,14 @@ models:
         materialized: view
         schema: exports 
 
-
+    # ------------------
     # Legacy Structure
+    # ------------------
     bamboohr:
       schema: sensitive
       secure: true
       base:
         materialized: table
-
-    date:
-      materialized: table
 
     pipe2spend:
       enabled: false
@@ -304,14 +335,6 @@ models:
     smau_events:
       tags: ["product"]
       materialized: table
-
-    snowplow:
-      tags: ["product"]
-      xf:
-        materialized: table
-
-    snowplow_combined:
-      tags: ["product"]
 
 
 # ======

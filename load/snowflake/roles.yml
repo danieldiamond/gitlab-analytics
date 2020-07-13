@@ -586,6 +586,18 @@ roles:
                 read:
                     - analytics.analytics_sensitive.customers_db_customers_pii
 
+    - date:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.date
+            tables:
+                read:
+                    - analytics.date.*
+
     - db_dumps:
         privileges:
             databases:
@@ -756,6 +768,10 @@ roles:
                     - analytics.customers.*
                     - raw.tap_postgres.*
 
+    - public:
+        member_of:
+          - date
+
     - qualtrics:
         warehouses:
             - analyst_xs
@@ -871,10 +887,12 @@ roles:
                     - raw
             schemas:
                 read:
+                    - analytics.snowplow
                     - analytics.snowplow_*
                     - raw.snowplow
             tables:
                 read:
+                    - analytics.snowplow.*
                     - analytics.snowplow_*.*
                     - raw.snowplow.*
 
