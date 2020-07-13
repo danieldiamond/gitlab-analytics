@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "staging"
-    })
-}}
-
 WITH source AS (
 
     SELECT *
@@ -13,7 +8,6 @@ WITH source AS (
     SELECT d.value AS data_by_row
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext), outer => true) d
-    QUALIFY ROW_NUMBER() OVER(PARTITION BY data_by_row['id']::VARCHAR ORDER BY uploaded_at DESC) = 1
 
 ), parsed AS (
 

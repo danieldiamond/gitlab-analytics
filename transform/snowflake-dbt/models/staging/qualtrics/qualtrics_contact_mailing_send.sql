@@ -10,7 +10,7 @@ WITH qualtrics_mailing_contacts AS (
 ), qualtrics_distribution AS (
 
     SELECT *
-    FROM {{ ref('qualtrics_distribution') }}
+    FROM {{ ref('qualtrics_distribution_xf') }}
 
 ), qualtrics_survey AS (
 
