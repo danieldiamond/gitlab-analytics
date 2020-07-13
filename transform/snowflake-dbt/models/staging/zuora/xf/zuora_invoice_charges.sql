@@ -45,6 +45,7 @@ WITH zuora_account AS (
       zuora_subscription.version                          AS subscription_version,
       zuora_rate_plan.rate_plan_name,
       zuora_rate_plan_charge.rate_plan_charge_id,
+      zuora_rate_plan_charge.product_rate_plan_charge_id,
       zuora_rate_plan_charge.rate_plan_charge_number,
       zuora_rate_plan_charge.rate_plan_charge_name,
       zuora_rate_plan_charge.segment                      AS rate_plan_charge_segment,
@@ -55,6 +56,7 @@ WITH zuora_account AS (
       zuora_rate_plan_charge.quantity,
       zuora_rate_plan_charge.mrr,
       zuora_rate_plan_charge.delta_tcv,
+      zuora_rate_plan_charge.charge_type,
       zuora_product.product_name
     FROM zuora_account
     INNER JOIN zuora_subscription
@@ -70,6 +72,7 @@ WITH zuora_account AS (
 
     SELECT
       zuora_invoice.invoice_number,
+      zuora_invoice_item.invoice_item_id,
       zuora_invoice.account_id                      AS invoice_account_id,
       zuora_invoice.invoice_date::DATE              AS invoice_date,
       zuora_invoice_item.service_start_date::DATE   AS service_start_date,
@@ -98,6 +101,7 @@ WITH zuora_account AS (
       ) AS is_last_segment_version,
       invoice_account_id,
       invoice_number,
+      invoice_item_id,
       invoice_date,
       service_start_date,
       service_end_date,
