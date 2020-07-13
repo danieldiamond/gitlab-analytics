@@ -56,6 +56,7 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/docs/                      @tayloramurphy  @jjstark        @emilie         @kathleentam
 /transform/snowflake-dbt/macros/                    @tayloramurphy  @jjstark        @emilie         @kathleentam
 
+/transform/snowflake-dbt/models/bamboohr/           @emilie         @pluthra        @kathleentam    
 /transform/snowflake-dbt/models/covid19/            @tayloramurphy  @jjstark        @kathleentam
 /transform/snowflake-dbt/models/date/base/          @derekatwood    @kathleentam
 /transform/snowflake-dbt/models/marts/product_kpis/ @mpeychet_      @kathleentam
@@ -67,8 +68,6 @@ __init__.py         @kathleentam   @jjstark
 /transform/snowflake-dbt/models/sources/customers/          @mpeychet_		@m_walker       @derekatwood    @kathleentam
 /transform/snowflake-dbt/models/staging/customers/          @mpeychet_		@m_walker       @derekatwood    @kathleentam
 
-/transform/snowflake-dbt/models/sources/bamboohr/   @emilie         @pluthra        @kathleentam
-/transform/snowflake-dbt/models/staging/bamboohr/   @emilie         @pluthra        @kathleentam
 
 /transform/snowflake-dbt/models/sources/dbt         @m_walker    @jjstark
 /transform/snowflake-dbt/models/staging/dbt         @m_walker    @jjstark
