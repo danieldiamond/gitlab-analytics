@@ -135,6 +135,15 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "epic_notes",
+    "source_cte_name": "epic_notes",
+    "user_column_name": "note_author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "author_id",
+    "stage_name": "plan",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "groups",
     "source_cte_name": "group_members",
     "user_column_name": "user_id",
@@ -160,6 +169,15 @@
     "primary_key": "issue_id",
     "stage_name": "plan",
     "is_representative_of_stage": "True"
+  },
+  {
+    "event_name": "issue_notes",
+    "source_cte_name": "issue_notes",
+    "user_column_name": "note_author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "author_id",
+    "stage_name": "plan",
+    "is_representative_of_stage": "False"
   },
   {
     "event_name": "issue_resource_label_events",
@@ -232,6 +250,15 @@
     "primary_key": "merge_request_id",
     "stage_name": "create",
     "is_representative_of_stage": "True"
+  },
+  {
+    "event_name": "merge_request_notes",
+    "source_cte_name": "merge_request_notes",
+    "user_column_name": "note_author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "author_id",
+    "stage_name": "create",
+    "is_representative_of_stage": "False"
   },
   {
     "event_name": "milestones",
@@ -424,6 +451,12 @@ WITH gitlab_subscriptions AS (
     FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
     WHERE secure_ci_job_type = 'dependency_scanning'
 
+), epic_notes AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_notes') }}
+    WHERE noteable_type = 'Epic'
+
 ), incident_labeled_issues AS (
 
     SELECT 
@@ -431,6 +464,12 @@ WITH gitlab_subscriptions AS (
       issue_created_at AS created_at
     FROM {{ ref('gitlab_dotcom_issues_xf') }}
     WHERE ARRAY_CONTAINS('incident'::variant, labels)
+
+),  issue_notes AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_notes') }}
+    WHERE noteable_type = 'Issue'
 
 ), issue_resource_label_events AS (
 
@@ -455,6 +494,12 @@ WITH gitlab_subscriptions AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
     WHERE secure_ci_job_type = 'license_scanning'
+
+), merge_request_notes AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_notes') }}
+    WHERE noteable_type = 'MergeRequest'
 
 ), projects_prometheus_active AS (
 
