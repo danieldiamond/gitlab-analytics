@@ -318,11 +318,11 @@ models:
           tests:
             - not_null
             - unique
-        - name: subsidiary_full_name
+        - name: subsidiary_full_name_hash
           tests:
             - not_null
             - unique
-        - name: subsidiary_name
+        - name: subsidiary_name_hash
           tests:
             - not_null
             - unique
