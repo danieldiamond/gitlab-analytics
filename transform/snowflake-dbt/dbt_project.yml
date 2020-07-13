@@ -243,6 +243,9 @@ models:
       sfdc:
         xf:
           schema: analytics
+    
+      sheetload:
+        schema: analytics
 
       sheetload:
         analytics:
