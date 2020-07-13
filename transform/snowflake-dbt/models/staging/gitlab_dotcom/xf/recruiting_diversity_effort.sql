@@ -38,15 +38,12 @@ WITH issues AS (
       IFF(issue_closed_at IS NOT NULL,1,0)                      AS is_issue_closed,
       issues.state,
       agg_assignee.assignee,
-      IFF(CONTAINS(issue_description, '2. **Sourcer/Recruiter:** I used [Diversity Boolean strings](https://docs.google.com/spreadsheets/d/1Hs3UVEpgYOJgvV8Nlyb0Cl5P6_8IlAlxeLQeXz64d8Y/edit#gid=0) or used other methods, including provided best practices, to ensure 90% of my outbound sourcing efforts were directed towards individuals from underrepresented groups.
-    * [x] Yes
-    * [ ] No'::VARCHAR) = True ,'used diversity strings',null)  AS used_diversity_booleanstrings,
-      IFF(CONTAINS(issue_description, '2. **Sourcer/Recruiter:** I used [Diversity Boolean strings](https://docs.google.com/spreadsheets/d/1Hs3UVEpgYOJgvV8Nlyb0Cl5P6_8IlAlxeLQeXz64d8Y/edit#gid=0) or used other methods, including provided best practices, to ensure 90% of my outbound sourcing efforts were directed towards individuals from underrepresented groups.
-    * [ ] Yes
-    * [ ] No'::VARCHAR) = True ,'no answer',null)               AS no_answer,
-        IFF(CONTAINS(trim(issue_description), '2. **Sourcer/Recruiter:** I used [Diversity Boolean strings](https://docs.google.com/spreadsheets/d/1Hs3UVEpgYOJgvV8Nlyb0Cl5P6_8IlAlxeLQeXz64d8Y/edit#gid=0) or used other methods, including provided best practices, to ensure 90% of my outbound sourcing efforts were directed towards individuals from underrepresented groups.
-    * [ ] Yes
-    * [x] No'::VARCHAR) = True ,'did not use',null)             AS did_not_use
+      IFF(CONTAINS(issue_description, '[x] Yes, Diversity Sourcing methods were used'::varchar) = True,
+        'Used Diversity Strings',null)                          AS used_diversity_booleanstrings,
+      IFF(CONTAINS(issue_description, '[x] No, I did not use Diversity Sourcing methods'::varchar) = True,
+        'Did not Use',null)                                     AS did_not_use,
+      IFF(used_diversity_booleanstrings is null AND did_not_use is null, 
+        'No Answer',NULL)                                       AS No_Answer
     FROM issues
     LEFT JOIN agg_assignee 
       ON agg_assignee.issue_id = issues.issue_id
