@@ -3,8 +3,7 @@ version: 2
 sources:
   - name: bamboohr
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
-    #Schema is analytics.sensitive, set in dbt_project.yml
-    #If it's set here it redirects to raw.sensitive
+    schema: bamboohr
     loader: Airflow
     loaded_at_field: uploaded_at
     
