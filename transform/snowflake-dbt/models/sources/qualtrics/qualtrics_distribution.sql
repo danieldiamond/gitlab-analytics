@@ -5,10 +5,11 @@ WITH source AS (
 
 ), intermediate AS (
 
-    SELECT d.value AS data_by_row
+    SELECT 
+      d.value AS data_by_row,
+      uploaded_at
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext), outer => true) d
-    QUALIFY ROW_NUMBER() OVER(PARTITION BY data_by_row['id']::VARCHAR ORDER BY uploaded_at DESC) = 1
 
 ), parsed AS (
 
@@ -25,7 +26,8 @@ WITH source AS (
       data_by_row['stats']['opened']::INTEGER               AS email_opened_count,
       data_by_row['stats']['sent']::INTEGER                 AS email_sent_count,
       data_by_row['stats']['skipped']::INTEGER              AS email_skipped_count,
-      data_by_row['stats']['started']::INTEGER              AS survey_started_count
+      data_by_row['stats']['started']::INTEGER              AS survey_started_count,
+      uploaded_at::TIMESTAMP                                AS uploaded_at
     FROM intermediate
 
 )
