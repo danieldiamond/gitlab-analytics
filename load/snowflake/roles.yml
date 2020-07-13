@@ -826,10 +826,12 @@ roles:
                     - raw
             schemas:
                 read:
+                    - analytics.analytics_staging
                     - analytics.sheetload
                     - raw.sheetload
             tables:
                 read:
+                    - analytics.analytics_staging.sheetload_*
                     - analytics.sheetload.*
                     - raw.sheetload.*  
 
