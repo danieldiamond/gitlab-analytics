@@ -47,4 +47,4 @@ INNER JOIN zuora_subscription
 INNER JOIN zuora_account
   ON zuora_account.account_id = zuora_subscription.account_id
 WHERE zuora_subscription_snapshots.is_deleted = FALSE
-  AND exclude_from_analysis IN ('False', '')
+  AND zuora_subscription_snapshots.exclude_from_analysis IN ('False', '')
