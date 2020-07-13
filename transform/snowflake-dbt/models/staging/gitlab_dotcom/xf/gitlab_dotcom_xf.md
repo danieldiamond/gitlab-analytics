@@ -89,8 +89,21 @@ There are 5 general ways that a user can have access to a group G:
 * Be a **group member** of group G.
 * Be a **group member** of G2, where G2 is a descendant (subgroup) of group G.
 * Be a **project member** of P, where P is owned by G or one of G's descendants.
-* Be a group member of X, where X is invited to a project underneath G via [project group links](https://docs.gitlab.com/ee/user/group/#sharing-a-project-with-a-group).
-* Be a group member of Y, where Y is invited to G or one of G's descendants via [group group links](https://docs.gitlab.com/ee/user/group/#sharing-a-group-with-another-group).
+* Be a group member of X or a parent group of X, where X is invited to a project underneath G via [project group links](https://docs.gitlab.com/ee/user/group/#sharing-a-project-with-a-group).
+* Be a group member of Y or a parent group of Y, where Y is invited to G or one of G's descendants via [group group links](https://docs.gitlab.com/ee/user/group/#sharing-a-group-with-another-group).
+
+An example of these relationships is shown in this diagram:
+
+<div style="width: 720px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:720px; height:480px" src="https://app.lucidchart.com/documents/embeddedchart/9f529269-3e32-4343-9713-8eb311df7258" id="WRFbB73aKeB3"></iframe></div>
+
+Additionally, this model calculates the field `is_billable` - i.e. if a member should be counted toward the seat count for a subscription (note: this also applies to namespaces without a subscription for the convenience of determining seats in use). To determine the number of seats in use for a given namespace, a simple query such as the following will suffice: 
+
+```
+SELECT COUNT(DISTINCT user_id)
+FROM analytics.gitlab_dotcom_memberships
+WHERE is_billable = TRUE
+  AND ultimate_parent_id = 123456
+```  
 
 {% enddocs %}
 
