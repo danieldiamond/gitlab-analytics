@@ -122,25 +122,6 @@ models:
             tests:
                 - not_null
 
-    - name: zuora_invoice_charges_mrr_amortized
-      description: '{{ doc("zuora_invoice_charges_mrr_amortized") }}'
-      columns:
-          - name: account_number
-            tests:
-                - not_null
-          - name: account_name
-            tests:
-                - not_null
-          - name: product_category
-            description: Product category is based on the rate plan name.
-            tests:
-              - accepted_values:
-                      values: ['GitHost', 'Other', 'Gold', 'Basic', 'Bronze', 'Premium', 'Starter', 'Ultimate', 'Support', 'Plus', 'Silver', 'Standard', 'Trueup']
-              - not_null
-          - name: rate_plan_charge_name
-            tests:
-                - not_null
-
     - name: zuora_monthly_recurring_revenue
       description: '{{ doc("zuora_monthly_recurring_revenue") }}'
       columns:
