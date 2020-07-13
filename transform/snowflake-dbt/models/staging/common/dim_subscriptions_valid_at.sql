@@ -41,9 +41,9 @@ SELECT
   zuora_subscription_snapshots.subscription_end_date                                  AS subscription_end_date,
   DATE_TRUNC('month', zuora_subscription.subscription_start_date)           AS subscription_start_month,
   DATE_TRUNC('month', zuora_subscription.subscription_end_date)             AS subscription_end_month
-FROM zuora_subscription_snapshot
+FROM zuora_subscription_snapshots
 INNER JOIN zuora_subscription
-  ON zuora_subscription.subscription_id = zuora_subscription_snapshot.subscription_id
+  ON zuora_subscription.subscription_id = zuora_subscription_snapshots.subscription_id
 INNER JOIN zuora_account
   ON zuora_account.account_id = zuora_subscription.account_id
 WHERE is_deleted = FALSE
