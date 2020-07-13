@@ -1329,6 +1329,12 @@ roles:
             - loading
             - reporting
 
+    - nfiguera:
+        member_of:
+            - analyst_sales
+        warehouses:
+            - analyst_xs
+
     - parmstrong:
         warehouses:
             - engineer_xs
@@ -1717,6 +1723,11 @@ users:
         member_of:
             - engineer
             - mwalker
+
+    - nfiguera:
+        can_login: yes
+        member_of:
+            - nfiguera
 
     - parmstrong:
         can_login: yes
