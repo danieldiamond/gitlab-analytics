@@ -120,6 +120,11 @@ models:
           schema: sensitive
           secure: true
 
+      bamboohr:
+        materialized: table
+        schema: sensitive
+        secure: true
+
       dbt:
         materialized: table
         schema: dbt
@@ -194,6 +199,13 @@ models:
         xf:
           schema: analytics
 
+      bamboohr:
+        xf:
+          schema: sensitive
+          secure: true
+        rpt:
+          schema: analytics
+
       engineering:
         materialized: table
 
@@ -258,26 +270,22 @@ models:
       zuora:
         xf:
           schema: analytics
-    
-    marts:  
-      
-      arr:  
-        materialized: table  
+
+    marts:
+
+      arr:
+        materialized: table
 
       product_kpis:
-        materialized: table 
+        materialized: table
 
       exports:
         materialized: view
-        schema: exports 
+        schema: exports
 
 
     # Legacy Structure
-    bamboohr:
-      schema: sensitive
-      secure: true
-      base:
-        materialized: table
+
 
     date:
       materialized: table

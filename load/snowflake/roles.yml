@@ -538,16 +538,16 @@ roles:
         warehouses:
             - analyst_xs
         privileges:
-            databases:
-                read:
-                    - raw
-            schemas:
-                read:
-                    - raw.bamboohr
-            tables:
-                read:
-                    - raw.bamboohr.*
-    
+           databases:
+              read:
+                  - raw
+           schemas:
+              read:
+                  - raw.bamboohr
+           tables:
+              read:
+                  - raw.bamboohr.*
+
     - boneyard:
         warehouses:
             - analyst_xs
