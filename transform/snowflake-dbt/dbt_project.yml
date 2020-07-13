@@ -246,6 +246,9 @@ models:
       sfdc:
         xf:
           schema: analytics
+    
+      sheetload:
+        schema: analytics
 
       snowflake:
           schema: analytics

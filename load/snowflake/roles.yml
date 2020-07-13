@@ -828,12 +828,12 @@ roles:
                     - raw
             schemas:
                 read:
-                    - analytics.analytics_staging
+                    - analytics.analytics_sensitive
                     - analytics.sheetload
                     - raw.sheetload
             tables:
                 read:
-                    - analytics.analytics_staging.sheetload_*
+                    - analytics.analytics_sensitive.sheetload_*
                     - analytics.sheetload.*
                     - raw.sheetload.*  
 
