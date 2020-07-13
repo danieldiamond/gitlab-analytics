@@ -247,12 +247,6 @@ models:
       sheetload:
         schema: analytics
 
-      sheetload:
-        analytics:
-          schema: analytics
-        sensitive:
-          schema: sensitive
-
       snowflake:
           schema: analytics
           materialized: view
