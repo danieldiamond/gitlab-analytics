@@ -364,7 +364,7 @@ models:
             - relationships:
                 to: ref('netsuite_subsidiaries')
                 field: subsidiary_id
-        - name: memo
+        - name: memo_hash
         - name: amount
           tests:
             - not_null
