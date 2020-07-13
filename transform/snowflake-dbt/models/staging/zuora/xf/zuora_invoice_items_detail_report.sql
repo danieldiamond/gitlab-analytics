@@ -171,11 +171,11 @@ SELECT
   END                                           AS list_price,
   CASE
     WHEN annual_price = list_price THEN 0
-    WHEN lower(charge_type) != 'recurring' THEN 0
+    WHEN LOWER(charge_type) != 'recurring' THEN 0
     ELSE ((annual_price - list_price)/NULLIF(list_price,0)) * -1
   END                                           AS discount,
   CASE
-    WHEN lower(charge_type) != 'recurring' THEN 0
+    WHEN LOWER(charge_type) != 'recurring' THEN 0
     ELSE quantity * list_price
   END                                           AS list_price_times_quantity
 FROM joined
