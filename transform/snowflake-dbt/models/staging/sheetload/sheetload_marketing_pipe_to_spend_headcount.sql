@@ -6,7 +6,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ ref('sheetload_abm_account_baselines_source') }}
+    FROM {{ ref('sheetload_marketing_pipe_to_spend_headcount_source') }}
 
 )
 
