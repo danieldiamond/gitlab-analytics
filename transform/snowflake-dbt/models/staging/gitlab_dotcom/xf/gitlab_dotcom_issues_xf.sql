@@ -1,4 +1,3 @@
--- depends_on: {{ ref('engineering_productivity_metrics_projects_to_include') }}
 -- depends_on: {{ ref('projects_part_of_product') }}
 
 {% set fields_to_mask = ['issue_title', 'issue_description'] %}
