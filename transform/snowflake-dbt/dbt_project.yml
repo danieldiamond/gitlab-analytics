@@ -158,6 +158,9 @@ models:
 
       netsuite:
         schema: netsuite
+        sensitive:
+          schema: sensitive
+          secure: true
 
       qualtrics:
         materialized: table

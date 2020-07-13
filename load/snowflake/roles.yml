@@ -732,10 +732,12 @@ roles:
                 read:
                     - raw.netsuite_fivetran
                     - analytics.netsuite
+                    - analytics.analytics_sensitive
             tables:
                 read:
                     - raw.netsuite_fivetran.*
                     - analytics.netsuite.*
+                    - analytics.analytics_sensitive.netsuite_*
 
     - postgres_pipeline:
         warehouses:
