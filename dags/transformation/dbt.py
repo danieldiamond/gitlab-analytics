@@ -17,6 +17,7 @@ from airflow_utils import (
     l_warehouse,
     slack_failed_task,
     xs_warehouse,
+    pull_commit_hash,
 )
 from kube_secrets import (
     SALT,
@@ -39,11 +40,6 @@ from kube_secrets import (
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {**gitlab_pod_env_vars, **{}}
-
-# This value is set based on the commit hash setter task in dbt_snapshot
-pull_commit_hash = """export GIT_COMMIT="{{ ti.xcom_pull(dag_id="dbt_snapshots", 
-include_prior_dates=True, task_ids="dbt-commit-hash-setter", key="return_value")["commit_hash"] }}" """
-
 
 # Default arguments for the DAG
 default_args = {
@@ -99,7 +95,7 @@ branching_dbt_run = BranchPythonOperator(
 dbt_non_product_models_command = f"""
     {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
-    dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse}; ret=$?;
+    dbt run --profiles-dir profile --target prod --exclude tag:product snapshots arr_data_mart_incr --vars {xs_warehouse}; ret=$?;
     python ../../orchestration/upload_dbt_file_to_snowflake.py results; exit $ret
 """
 
