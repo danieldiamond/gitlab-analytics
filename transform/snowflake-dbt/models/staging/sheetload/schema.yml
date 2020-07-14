@@ -68,8 +68,6 @@ models:
       tests:
         - not_null
     - name: division
-      tests:
-        - not_null
     - name: planned_headcount
     - name: planned_hires
       description: This is calculated based on the difference between the month_date and the month prior.      
