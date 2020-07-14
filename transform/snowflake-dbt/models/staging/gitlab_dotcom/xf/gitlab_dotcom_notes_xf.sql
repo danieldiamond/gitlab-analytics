@@ -46,7 +46,7 @@ WITH base AS (
             THEN 'confidential - masked'
           ELSE {{field}}
         END AS {{field}},
-      {% endfor %},
+      {% endfor %}
       projects.ultimate_parent_id
     FROM base
       LEFT JOIN projects 
