@@ -318,11 +318,11 @@ models:
           tests:
             - not_null
             - unique
-        - name: subsidiary_full_name
+        - name: subsidiary_full_name_hash
           tests:
             - not_null
             - unique
-        - name: subsidiary_name
+        - name: subsidiary_name_hash
           tests:
             - not_null
             - unique
@@ -364,7 +364,7 @@ models:
             - relationships:
                 to: ref('netsuite_subsidiaries')
                 field: subsidiary_id
-        - name: memo
+        - name: memo_hash
         - name: amount
           tests:
             - not_null
