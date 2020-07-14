@@ -2,6 +2,16 @@ WITH source AS (
 
     SELECT * 
     FROM {{ ref ('sheetload_hire_replan') }}
+    
+), original_FY21_plan AS (
+
+    SELECT *
+    FROM {{ ref ('hire_plan_xf') }}
+
+), employee_directory AS (
+
+    SELECT * 
+    FROM {{ ref ('employee_directory_analysis') }}
 
 ), intermediate AS (
   
@@ -70,7 +80,7 @@ WITH source AS (
       unpivoted.department,
       employee_directory.division
     FROM unpivoted
-    LEFT JOIN "ANALYTICS"."ANALYTICS"."EMPLOYEE_DIRECTORY_ANALYSIS" employee_directory
+    LEFT JOIN employee_directory
       ON unpivoted.month_date = employee_directory.date_actual
       AND unpivoted.department = employee_directory.department
     GROUP BY 1,2,3
@@ -120,11 +130,6 @@ WITH source AS (
       ON department_division_mapping.department = unpivoted.department
       AND department_division_mapping.month_date = unpivoted.month_date
     GROUP BY 1,2,3,4
-
-), original_FY21_plan AS (
-
-    SELECT *
-    FROM {{ ref ('hire_plan_xf') }}
 
 ), unioned AS (
 
