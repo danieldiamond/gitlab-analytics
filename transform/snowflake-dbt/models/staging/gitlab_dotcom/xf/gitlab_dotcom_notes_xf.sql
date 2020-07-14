@@ -47,7 +47,8 @@ WITH base AS (
           ELSE {{field}}
         END AS {{field}}
         {% if not loop.last %} , {% endif %}
-      {% endfor %}
+      {% endfor %},
+      projects.ultimate_parent_id
     FROM base
       LEFT JOIN projects 
         ON base.project_id = projects.project_id
