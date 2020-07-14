@@ -5,7 +5,7 @@ from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow_utils import (
     DBT_IMAGE,
-    dbt_install_deps_and_seed_nosha_cmd,
+    dbt_install_deps_and_seed_cmd,
     gitlab_defaults,
     gitlab_pod_env_vars,
     slack_failed_task,
@@ -52,10 +52,11 @@ dag = DAG(
     "dbt_arr_data_mart_backfill", default_args=default_args, schedule_interval="0 7 * * 0"
 )
 
-dbt_non_product_models_command = f"""
+dbt_cmd = f"""
     {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
-    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars \'{valid_at : $CLONE_DATE 06:59:00 }\';
+    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars '{{ valid_at : $CLONE_DATE 
+06:59:00 }}'; 
 """
 dbt_poc = KubernetesPodOperator(
     **gitlab_defaults,
