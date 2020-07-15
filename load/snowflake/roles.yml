@@ -39,7 +39,11 @@ roles:
         warehouses:
             - admin
         member_of:
-            - sysadmin
+            - useradmin
+
+    - useradmin:
+        warehouses:
+            - admin
 
     - sysadmin:
         warehouses:
@@ -1064,8 +1068,6 @@ roles:
             - analyst_xs
 
     - cmccarty:
-        member_of:
-            - securityadmin
         warehouses:
             - admin
 
@@ -1099,7 +1101,6 @@ roles:
     - dtownsend:
         member_of:
             - analyst_engineering
-            - dtownsend
 
     - eburke:
         member_of:
@@ -1298,7 +1299,6 @@ roles:
 
     - mriser:
         member_of:
-            - mriser
             - postgres_pipeline
         warehouses:
             - analyst_xs
@@ -1532,6 +1532,7 @@ users:
         can_login: yes
         member_of:
             - cmccarty
+            - securityadmin
 
     - cmestel:
         can_login: yes
