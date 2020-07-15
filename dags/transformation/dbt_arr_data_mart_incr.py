@@ -33,7 +33,7 @@ pod_env_vars = {**gitlab_pod_env_vars, **{}}
 
 # CLONE_DATE will be used to set the timestamp of when clone should
 # tomorrow_ds -  the day after the execution date as YYYY-MM-DD
-pod_env_vars.append({
+pod_env_vars.update({
     "CLONE_DATE": "{{ tomorrow_ds }}",
 })
 
