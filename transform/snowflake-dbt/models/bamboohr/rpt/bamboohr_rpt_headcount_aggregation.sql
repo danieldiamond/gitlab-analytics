@@ -104,8 +104,11 @@ WITH source AS (
       RATIO_TO_REPORT(headcount_average_manager) 
         {{ratio_to_report_partition_statement}}                                     AS percent_of_headcount_manager,     
       RATIO_TO_REPORT(headcount_average_contributor) 
-        {{ratio_to_report_partition_statement}}                                     AS percent_of_headcount_contributor
+        {{ratio_to_report_partition_statement}}                                     AS percent_of_headcount_contributor,
       
+      SUM(COALESCE(promotion,0)) {{partition_statement}}                            AS rolling_12_month_promotions
+      MIN(rolling_12_month_promotions) {{ratio_to_report_partition_statement}}      AS min_promotion
+
     FROM base
     LEFT JOIN source  
       ON base.month_date = source.month_date
@@ -203,7 +206,9 @@ WITH source AS (
       IFF(min_headcount_manager <2 AND eeoc_field_name != 'no_eeoc', 
         NULL, percent_of_headcount_manager)                                 AS percent_of_headcount_manager,
       IFF(min_headcount_contributor <2 AND eeoc_field_name != 'no_eeoc', 
-        NULL, percent_of_headcount_leaders)                                 AS percent_of_headcount_contributor
+        NULL, percent_of_headcount_leaders)                                 AS percent_of_headcount_contributor,
+      IFF(min_promotion<2 AND eeoc_field_name != 'no_eeoc', 
+        NULL, rolling_12_month_promotions)                                  AS rolling_12_month_promotions   
     FROM intermediate   
 
 )

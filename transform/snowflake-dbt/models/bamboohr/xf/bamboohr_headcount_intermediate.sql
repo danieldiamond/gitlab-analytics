@@ -34,7 +34,8 @@
       (SUM(headcount_start_contributor) 
         + SUM(headcount_end_contributor))/2             AS headcount_average_contributor,
       SUM(hired_contributor)                            AS hired_contributor,
-      SUM(separated_contributor)                        AS separated_contributor
+      SUM(separated_contributor)                        AS separated_contributor,
+      SUM(promotion_flag)                               AS promotion                                
       " %}
 
 
@@ -129,7 +130,9 @@ WITH dates AS (
       IFF(is_hire_date = True 
           AND job_role_modified = 'Individual Contributor',1,0)                  AS hired_contributor,
       IFF(is_termination_date = True
-          AND job_role_modified = 'Individual Contributor',1,0)                  AS separated_contributor
+          AND job_role_modified = 'Individual Contributor',1,0)                  AS separated_contributor,
+    
+      promotion_flag                            
     FROM dates
     LEFT JOIN employees
       ON DATE_TRUNC(month,dates.start_date) = DATE_TRUNC(month, employees.date_actual)

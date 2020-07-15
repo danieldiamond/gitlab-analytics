@@ -68,6 +68,8 @@ models:
       - not_null
     - name: exclude_from_location_factor
       description: This identifies sales team members for which the comp calculator location factor does not apply. 
+    - name: promotion_flag
+      description: Identifies team members that were promoted.  
 
   - name: bamboohr_discretionary_bonuses
     description: This model contains a list of Discretionary bonuses awarded (excludes other types of bonuses). It includes the employee ID to be able to join to the `employee_directory_analysis` model to understand the break down of discretionary bonuses given.

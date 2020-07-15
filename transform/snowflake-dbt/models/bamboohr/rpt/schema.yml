@@ -95,6 +95,7 @@ models:
     - name: percent_of_headcount_leaders
     - name: percent_of_headcount_manager
     - name: percent_of_headcount_contributor
+    - name: rolling_12_month_promotions
  
   - name: cost_center_division_department_mapping_current
     description: This provides the current division, department, cost center.    
