@@ -85,44 +85,30 @@ WITH fct_charges AS (
     LEFT JOIN dim_customers
       ON dim_accounts.crm_id = dim_customers.crm_id
 
-), latest_invoiced_charge_version_in_segment AS (
-
-    SELECT
-      base_charges.charge_id,
-      IFF(ROW_NUMBER() OVER (
-          PARTITION BY base_charges.rate_plan_charge_number, base_charges.rate_plan_charge_segment
-          ORDER BY base_charges.rate_plan_charge_version DESC, fct_invoice_items_agg.service_start_date DESC) = 1,
-          TRUE, FALSE
-      ) AS is_last_segment_version
-    FROM base_charges
-    INNER JOIN fct_invoice_items_agg
-      ON base_charges.charge_id = fct_invoice_items_agg.charge_id
-
-), charges_agg AS (
-
-    SELECT
-      base_charges.*,
-      latest_invoiced_charge_version_in_segment.is_last_segment_version
-    FROM base_charges
-    LEFT JOIN latest_invoiced_charge_version_in_segment
-      ON base_charges.charge_id = latest_invoiced_charge_version_in_segment.charge_id
-
 ), dim_dates AS (
 
       SELECT *
       FROM {{ ref('dim_dates') }}
 
-), charges_month_by_month AS (
+), snapshot_days AS (
+
+    SELECT DISTINCT
+      DATE_TRUNC('day', date_day) AS valid_at
+    FROM {{ ref ("date_details") }}
+    WHERE date_day >= (SELECT COALESCE(MAX(snapshot_date),'2020-03-01') from arr_data_mart_incr)
+      AND date_day <= '{{ var('valid_at') }}'
+
+),charges_month_by_month AS (
 
       SELECT
-        '{{ var('valid_at') }}'::DATE AS snapshot_date,
-        charges_agg.*,
+        snapshot_days.valid_at::DATE AS snapshot_date,
+        base_charges.*,
         dim_dates.date_id,
         dateadd('month', -1, dim_dates.date_actual)  AS reporting_month
-      FROM charges_agg
+      FROM snapshot_days, base_charges
       INNER JOIN dim_dates
-        ON charges_agg.effective_start_date_id <= dim_dates.date_id
-        AND (charges_agg.effective_end_date_id > dim_dates.date_id OR charges_agg.effective_end_date_id IS NULL)
+        ON base_charges.effective_start_date_id <= dim_dates.date_id
+        AND (base_charges.effective_end_date_id > dim_dates.date_id OR base_charges.effective_end_date_id IS NULL)
         AND dim_dates.day_of_month = 1
       WHERE subscription_status NOT IN ('Draft', 'Expired')
         AND mrr IS NOT NULL
