@@ -138,7 +138,7 @@
     "event_name": "epic_notes",
     "source_cte_name": "epic_notes",
     "user_column_name": "note_author_id",
-    "key_to_parent_project": "ultimate_parent_id",
+    "key_to_parent_group": "ultimate_parent_id",
     "primary_key": "author_id",
     "stage_name": "plan",
     "is_representative_of_stage": "False"
@@ -509,7 +509,7 @@ WITH gitlab_subscriptions AS (
 
 ), projects_prometheus_active AS (
 
-    SELECT *
+    SELECT *ƒerpi
     FROM {{ ref('gitlab_dotcom_projects_xf') }}
     WHERE ARRAY_CONTAINS('PrometheusService'::VARIANT, active_service_types)
 
