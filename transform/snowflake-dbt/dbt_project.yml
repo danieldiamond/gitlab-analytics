@@ -61,7 +61,7 @@ seeds:
         major_minor_version: varchar
 
 # ==================
-# Global Variable Configs
+# Variable Configs
 # ==================
 vars:
   warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
