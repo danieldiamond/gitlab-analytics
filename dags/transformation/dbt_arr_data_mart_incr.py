@@ -61,7 +61,7 @@ dbt_cmd = f"""
 dbt_poc = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
-    task_id="dbt_arr_data_mart_backfill",
+    task_id="dbt-arr-data-mart-backfill",
     name="dbt-arr-data-mart-backfill",
     secrets=[
         SALT,
