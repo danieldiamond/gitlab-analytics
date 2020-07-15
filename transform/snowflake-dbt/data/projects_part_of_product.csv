@@ -209,3 +209,8 @@ gitlab-org/gitlab-svgs,4149988
 gitlab-org/csslab,4382108
 gitlab-org/release-cli,16573099
 gitlab-org/ci-cd/custom-executor-drivers/autoscaler,13822214
+gitlab-org/quality/looping-pipeline,15114652
+gitlab-org/quality/performance-sitespeed,15208888
+gitlab-org/quality/performance-data,13566613
+gitlab-org/quality/preprod,15821588
+gitlab-org/quality/secure-test-project-orchestrator,19722963
