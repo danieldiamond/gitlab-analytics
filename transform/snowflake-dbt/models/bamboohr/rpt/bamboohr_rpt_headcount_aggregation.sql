@@ -107,7 +107,6 @@ WITH source AS (
         {{ratio_to_report_partition_statement}}                                     AS percent_of_headcount_contributor,
       
       SUM(COALESCE(promotion,0)) {{partition_statement}}                            AS rolling_12_month_promotions
-      MIN(rolling_12_month_promotions) {{ratio_to_report_partition_statement}}      AS min_promotion
 
     FROM base
     LEFT JOIN source  
@@ -185,8 +184,6 @@ WITH source AS (
       rolling_12_month_headcount_management,
       rolling_12_month_separations_management,
       retention_management,
- 
-
 
       IFF(headcount_end_individual_contributor < 4 AND eeoc_field_name != 'no_eeoc', 
         NULL, headcount_end_individual_contributor)                         AS headcount_end_contributor,
@@ -207,7 +204,7 @@ WITH source AS (
         NULL, percent_of_headcount_manager)                                 AS percent_of_headcount_manager,
       IFF(min_headcount_contributor <2 AND eeoc_field_name != 'no_eeoc', 
         NULL, percent_of_headcount_leaders)                                 AS percent_of_headcount_contributor,
-      IFF(min_promotion<2 AND eeoc_field_name != 'no_eeoc', 
+      IFF(rolling_12_month_promotions<2 AND eeoc_field_name != 'no_eeoc', 
         NULL, rolling_12_month_promotions)                                  AS rolling_12_month_promotions   
     FROM intermediate   
 
