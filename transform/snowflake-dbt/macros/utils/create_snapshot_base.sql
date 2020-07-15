@@ -18,7 +18,7 @@ WITH date_spine AS (
 ), final AS (
 
     SELECT
-      {{ dbt_utils.surrogate_key(primary_key, 'date_actual') }}         AS unique_key,
+      {{ dbt_utils.surrogate_key([primary_key, 'date_actual']) }}         AS unique_key,
       dbt_scd_id                                                        AS {{ snapshot_id_name }},
       date_actual,
       dbt_valid_from                                                    AS valid_from,

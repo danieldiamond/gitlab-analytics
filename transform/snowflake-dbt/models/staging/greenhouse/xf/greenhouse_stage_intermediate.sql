@@ -156,7 +156,7 @@ WITH stages AS (
 ), final AS (   
 
     SELECT
-        {{ dbt_utils.surrogate_key('stage_order_revamped.application_id', 'stage_order_revamped.candidate_id') }} AS unique_key,
+        {{ dbt_utils.surrogate_key(['stage_order_revamped.application_id', 'stage_order_revamped.candidate_id']) }} AS unique_key,
         stage_order_revamped.application_id,
         stage_order_revamped.candidate_id,
         application_stage, 

@@ -132,7 +132,7 @@ WITH fct_charges AS (
 
   SELECT
     --primary_key
-    {{ dbt_utils.surrogate_key('snapshot_date', 'reporting_month', 'subscription_name_slugify', 'product_category') }}
+    {{ dbt_utils.surrogate_key(['snapshot_date', 'reporting_month', 'subscription_name_slugify', 'product_category']) }}
                                  AS primary_key,
 
     --date info
