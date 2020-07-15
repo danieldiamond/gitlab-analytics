@@ -509,7 +509,7 @@ WITH gitlab_subscriptions AS (
 
 ), projects_prometheus_active AS (
 
-    SELECT *ƒerpi
+    SELECT *
     FROM {{ ref('gitlab_dotcom_projects_xf') }}
     WHERE ARRAY_CONTAINS('PrometheusService'::VARIANT, active_service_types)
 
