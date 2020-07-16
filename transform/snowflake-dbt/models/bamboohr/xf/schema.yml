@@ -68,6 +68,8 @@ models:
       - not_null
     - name: exclude_from_location_factor
       description: This identifies sales team members for which the comp calculator location factor does not apply. 
+      tests:
+      - not_null
     - name: promotion_flag
       description: Identifies team members that were promoted.  
 
@@ -156,5 +158,6 @@ models:
         - name: headcount_average_contributor
         - name: hired_contributor
         - name: separated_contributor
+        - name: promotion
   - name: employee_locality
     description: This idenitifes the location factor for an employee on a given day starting 2020.03.24
