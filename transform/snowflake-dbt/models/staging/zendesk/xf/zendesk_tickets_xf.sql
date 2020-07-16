@@ -1,6 +1,6 @@
 WITH zendesk_tickets AS (
 
-    SELECT {{ dbt_utils.star(from=ref('zendesk_tickets_source'), except=['custom_fields']) }},
+    SELECT {{ dbt_utils.star(from=ref('zendesk_tickets_source'), except=['custom_fields']) }}
     FROM {{ref('zendesk_tickets_source')}}
 
 ), zendesk_users_source AS (
