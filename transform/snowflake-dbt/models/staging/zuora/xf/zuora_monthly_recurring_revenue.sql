@@ -77,10 +77,12 @@ WITH date_table AS (
       --date info
       date_trunc('month', zuora_subscription.subscription_start_date::DATE)     AS sub_start_month,
       date_trunc('month', zuora_subscription.subscription_end_date::DATE)       AS sub_end_month,
+      subscription_start_date::DATE                                             AS subscription_start_date,
+      subscription_end_date::DATE                                               AS subscription_end_date,
       date_trunc('month', zuora_rpc.effective_start_date::DATE)                 AS effective_start_month,
       date_trunc('month', zuora_rpc.effective_end_date::DATE)                   AS effective_end_month,
-      zuora_rpc.effective_start_date,
-      zuora_rpc.effective_end_date
+      zuora_rpc.effective_start_date::DATE                                      AS effective_start_date,
+      zuora_rpc.effective_end_date::DATE                                        AS effective_end_date
     FROM zuora_accts
     INNER JOIN zuora_subscription
       ON zuora_accts.account_id = zuora_subscription.account_id
@@ -108,8 +110,12 @@ WITH date_table AS (
       subscription_name_slugify,
       sub_start_month,
       sub_end_month,
+      subscription_start_date,
+      subscription_end_date,
       effective_start_month,
       effective_end_month,
+      effective_start_date,
+      effective_end_date,
       country,
       {{product_category('rate_plan_name')}},
       {{ delivery('product_category')}},
@@ -129,7 +135,7 @@ WITH date_table AS (
     INNER JOIN date_table
       ON base_mrr.effective_start_month <= date_table.date_actual
       AND (base_mrr.effective_end_month > date_table.date_actual OR base_mrr.effective_end_month IS NULL)
-    {{ dbt_utils.group_by(n=20) }}
+    {{ dbt_utils.group_by(n=24) }}
 
 ), current_mrr AS (
 
@@ -161,9 +167,9 @@ SELECT
   month_base_mrr.subscription_id,
   month_base_mrr.subscription_name_slugify,
   sub_start_month,
-  sub_end_month,
+  date_trunc('month', dateadd('day', -1, subscription_end_date))        AS sub_end_month,
   effective_start_month,
-  effective_end_month,
+  date_trunc('month', dateadd('day', -1, effective_end_date))           AS effective_end_month,
   country,
   product_category,
   delivery,
