@@ -43,7 +43,7 @@ WITH issues AS (
       IFF(CONTAINS(issue_description, '[x] No, I did not use Diversity Sourcing methods'::VARCHAR) = True,
         'Did not Use', NULL)                                    AS is_not_using_diversity_srings,
       IFF(used_diversity_booleanstrings IS NULL AND did_not_use IS NULL, 
-        'No Answer',NULL)                                       AS has_no_Answer
+        'No Answer',NULL)                                       AS has_no_answer
     FROM issues
     LEFT JOIN agg_assignee 
       ON agg_assignee.issue_id = issues.issue_id
