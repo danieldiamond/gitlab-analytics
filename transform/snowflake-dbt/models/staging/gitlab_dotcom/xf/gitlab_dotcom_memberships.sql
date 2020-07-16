@@ -62,6 +62,7 @@ WITH members AS ( -- direct group and project members
 
     SELECT
       projects.namespace_id              AS shared_group_id, -- the "host" group the project directly belongs to
+      project_group_links.project_id,
       project_group_links.project_group_link_id,
       project_group_links.group_id       AS shared_with_group_id, -- the "guest" group
       project_group_links.group_access,
@@ -130,8 +131,9 @@ WITH members AS ( -- direct group and project members
       source_id          AS namespace_id,
       'group_membership' AS membership_source_type,
       source_id          AS membership_source_id,
-      access_level,
+      NULL               AS group_invitation_source_id,
       NULL               AS group_access, -- direct member of group
+      access_level,
       requested_at,
       user_id
     FROM group_members
@@ -142,8 +144,9 @@ WITH members AS ( -- direct group and project members
       namespace_id,
       'project_membership' AS membership_source_type,
       source_id            AS membership_source_id,
-      access_level,
+      NULL                 AS group_invitation_source_id,
       NULL                 AS group_access, -- direct member of project
+      access_level,
       requested_at,
       user_id
     FROM project_members
@@ -151,15 +154,16 @@ WITH members AS ( -- direct group and project members
     UNION
   
     SELECT
-      shared_group_id     AS namespace_id,
+      shared_group_id           AS namespace_id,
       IFF(
           shared_with_group_lineage = shared_with_group_id, 
           'group_group_link', 
           'group_group_link_ancestor'
-      )                   AS membership_source_type, -- differentiate "guest" group from its parent namespaces
-      group_group_link_id AS membership_source_id,
-      access_level,
+      )                         AS membership_source_type, -- differentiate "guest" group from its parent namespaces
+      shared_with_group_lineage AS membership_source_id,
+      shared_with_group_id      AS group_invitation_source_id,
       group_access,
+      access_level,
       requested_at,
       user_id
     FROM group_group_link_members
@@ -167,15 +171,16 @@ WITH members AS ( -- direct group and project members
     UNION
   
     SELECT
-      shared_group_id       AS namespace_id,
+      shared_group_id           AS namespace_id,
       IFF(
           shared_with_group_lineage = shared_with_group_id, 
           'project_group_link', 
           'project_group_link_ancestor'
-      )                     AS membership_source_type, -- differentiate "guest" group from its parent namespaces
-      project_group_link_id AS membership_source_id,
-      access_level,
+      )                         AS membership_source_type, -- differentiate "guest" group from its parent namespaces
+      shared_with_group_lineage AS membership_source_id,
+      project_id                AS group_invitation_source_id,
       group_access,
+      access_level,
       requested_at,
       user_id
     FROM project_group_link_members
@@ -186,8 +191,9 @@ WITH members AS ( -- direct group and project members
       namespace_id,
       'individual_namespace' AS membership_source_type,
       namespace_id           AS membership_source_id,
-      50                     AS access_level, -- implied by ownership
+      NULL                   AS group_invitation_source_id,
       NULL                   AS group_access, -- implied by ownership
+      50                     AS access_level, -- implied by ownership
       NULL                   AS requested_at, -- implied by ownership
       owner_id               AS user_id
     FROM individual_namespaces
@@ -216,8 +222,9 @@ WITH members AS ( -- direct group and project members
       namespace_id,
       membership_source_type,
       membership_source_id,
-      access_level,
+      group_invitation_source_id,
       group_access,
+      access_level,
       requested_at,
       user_id,
       user_state,
