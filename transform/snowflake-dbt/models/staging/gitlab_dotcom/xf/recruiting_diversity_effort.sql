@@ -39,7 +39,7 @@ WITH issues AS (
       issues.state                                              AS issue_state,
       agg_assignee.assignee,
       IFF(CONTAINS(issue_description, '[x] Yes, Diversity Sourcing methods were used'::VARCHAR) = True,
-        'Used Diversity Strings', NULL                          AS is_using_diversity_strings,
+        'Used Diversity Strings', NULL)                         AS is_using_diversity_strings,
       IFF(CONTAINS(issue_description, '[x] No, I did not use Diversity Sourcing methods'::VARCHAR) = True,
         'Did not Use', NULL)                                    AS is_not_using_diversity_srings,
       IFF(used_diversity_booleanstrings IS NULL AND did_not_use IS NULL, 
