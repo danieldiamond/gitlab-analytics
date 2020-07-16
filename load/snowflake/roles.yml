@@ -1691,7 +1691,7 @@ users:
         member_of:
             - lvandensteen
 
-        - mdewji:
+    - mdewji:
         can_login: yes
         member_of:
             - mdewji
