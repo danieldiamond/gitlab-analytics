@@ -14,6 +14,10 @@ models:
       description: This is the ticket custom field values filtered to only necessary, non-sensitive fields.
     - name: zendesk_ticket_custom_field_values_sensitive
       description: This is the fully exploded, sensitive, zendesk ticket custom field values.
+      columns:
+      - name: ticket_custom_field_id
+        tests:
+          - not_null
     - name: zendesk_ticket_metrics
       description: This is the base model for Zendesk ticket metrics.
       columns:
