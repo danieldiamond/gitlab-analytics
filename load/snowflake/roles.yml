@@ -1691,16 +1691,16 @@ users:
         member_of:
             - lvandensteen
 
+        - mdewji:
+        can_login: yes
+        member_of:
+            - mdewji
+            - securityadmin
+    
     - mjozenazemian:
         can_login: yes
         member_of:
             - mjozenazemian
-            - securityadmin
-
-    - adietrich:
-        can_login: yes
-        member_of:
-            - adietrich
             - securityadmin
 
     - mpeychet:
