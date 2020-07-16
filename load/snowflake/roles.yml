@@ -1289,6 +1289,10 @@ roles:
         warehouses:
             - reporting
 
+    - mjozenazemian:
+        warehouses:
+            - reporting
+
     - mpeychet:
         member_of:
             - analyst_growth
@@ -1687,10 +1691,16 @@ users:
         member_of:
             - lvandensteen
 
-    - mdewji:
+    - mjozenazemian:
         can_login: yes
         member_of:
-            - mdewji
+            - mjozenazemian
+            - securityadmin
+
+    - adietrich:
+        can_login: yes
+        member_of:
+            - adietrich
             - securityadmin
 
     - mpeychet:
