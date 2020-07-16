@@ -345,7 +345,6 @@ tables:
       , entity_type
       , details
       , created_at
-      , updated_at
       FROM audit_events
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
