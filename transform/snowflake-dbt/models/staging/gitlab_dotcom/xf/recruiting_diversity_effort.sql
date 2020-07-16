@@ -36,20 +36,20 @@ WITH issues AS (
       issues.issue_closed_at,
       DATE_TRUNC(week,issues.issue_closed_at)                   AS issue_closed_week,
       IFF(issue_closed_at IS NOT NULL,1,0)                      AS is_issue_closed,
-      issues.state,
+      issues.state                                              AS issue_state,
       agg_assignee.assignee,
-      IFF(CONTAINS(issue_description, '[x] Yes, Diversity Sourcing methods were used'::varchar) = True,
-        'Used Diversity Strings',null)                          AS used_diversity_booleanstrings,
-      IFF(CONTAINS(issue_description, '[x] No, I did not use Diversity Sourcing methods'::varchar) = True,
-        'Did not Use',null)                                     AS did_not_use,
-      IFF(used_diversity_booleanstrings is null AND did_not_use is null, 
-        'No Answer',NULL)                                       AS No_Answer
+      IFF(CONTAINS(issue_description, '[x] Yes, Diversity Sourcing methods were used'::VARCHAR) = True,
+        'Used Diversity Strings', NULL                          AS is_using_diversity_strings,
+      IFF(CONTAINS(issue_description, '[x] No, I did not use Diversity Sourcing methods'::VARCHAR) = True,
+        'Did not Use', NULL)                                    AS is_not_using_diversity_srings,
+      IFF(used_diversity_booleanstrings IS NULL AND did_not_use IS NULL, 
+        'No Answer',NULL)                                       AS has_no_Answer
     FROM issues
     LEFT JOIN agg_assignee 
       ON agg_assignee.issue_id = issues.issue_id
     WHERE project_id = 16492321
-      AND issue_title LIKE '%Weekly Check-in:%'
-      AND issue_title NOT LIKE '%Test%'
+      AND LOWER(issue_title) LIKE '%weekly check-in:%'
+      AND LOWER(issue_title) NOT LIKE '%test%'
   
 )
 
