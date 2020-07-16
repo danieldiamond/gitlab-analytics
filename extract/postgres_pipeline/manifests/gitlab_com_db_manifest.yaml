@@ -1562,6 +1562,20 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'protected_branches'
     export_table_primary_key: id
+  prometheus_alerts:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , environment_id
+      , project_id
+      FROM prometheus_alerts
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'prometheus_alerts'
+    export_table_primary_key: id
   push_rules:
     import_db: GITLAB_DB
     import_query: >
