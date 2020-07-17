@@ -12,7 +12,7 @@ WITH source AS (
       fiscal_quarter::INT                                               AS fiscal_quarter,
       fiscal_year::INT                                                  AS fiscal_year,
       adjusted_start_date::DATE                                         AS adjusted_start_date,
-      ZEROIFNULL(NULLIF(TRIM(full_quota),'')::DECIMAL(16,5))            AS full_quota,
+      ZEROIFNULL(NULLIF(TRIM(full_quota),'NA')::DECIMAL(16,5))          AS full_quota,
       ZEROIFNULL(NULLIF(TRIM(ramping_quota),'')::DECIMAL(16,5))         AS ramping_quota,
       ZEROIFNULL(NULLIF(TRIM(ramping_percent),'')::DECIMAL(3,2))        AS ramping_percent,
       ZEROIFNULL(NULLIF(TRIM(seasonality_percent),'')::DECIMAL(3,2))    AS seasonality_percent,
