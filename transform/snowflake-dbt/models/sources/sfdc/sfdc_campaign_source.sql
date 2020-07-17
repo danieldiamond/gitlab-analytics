@@ -25,7 +25,7 @@ WITH source AS (
         description                                                         AS description,
         region__c                                                           AS region,
         sub_region__c                                                       AS sub_region,
-
+        budget_holder__c                                                    AS budget_holder,
         --projections
         budgetedcost                                                        AS budgeted_cost,
         expectedresponse                                                    AS expected_response,
@@ -42,7 +42,7 @@ WITH source AS (
         numberofresponses                                                   AS count_responses,
         numberofwonopportunities                                            AS count_won_opportunities,
         numbersent                                                          AS count_sent,
-
+        strat_contribution__c                                               AS strategic_marketing_contribution,
 
         --metadata
         createddate                                                         AS created_date,

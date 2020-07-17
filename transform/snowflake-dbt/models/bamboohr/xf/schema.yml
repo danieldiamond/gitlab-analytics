@@ -18,6 +18,8 @@ models:
     - name: department
     - name: division
     - name: jobtitle_speciality
+    - name: job_role_modified
+      description: Introduces values of ['Senior Leadership', 'Manager', 'Individual Contributor'] for roles. There is no accepted values test since this field was not religiously populated prior to 2020-02.
     - name: location_factor
     - name: is_hire_date
       tests:
@@ -28,7 +30,7 @@ models:
     - name: layers
       description: '{{ doc("employee_layers") }}'
       tests:
-      - not_null  
+      - not_null
   - name: employee_directory_intermediate
     description: INCLUDES SENSITIVE INFORMATION. The master collection of all info about GitLab employees for their latest position.
     columns:
@@ -56,6 +58,10 @@ models:
     - name: cost_center
     - name: jobtitle_speciality
     - name: location_factor
+    - name: total_direct_reports
+      description: Identifies the number of team members that roll up to an individual for a given day.
+    - name: job_role_modified
+      description: Introduces values of ['Senior Leadership', 'Manager', 'Individual Contributor'] for roles. There is no accepted values test since this field was not religiously populated prior to 2020-02. This classifies `Senior Leadership` as anyone with a job grade of 11, 12, or CXO with direct reports, anyone with a job grade of 10 or job role of `Manager` with direct reports as a `Manager`, and everyone else as an `Individual Contributor`. The one exception is for when an employee is on leave in which case we don't factor in the total_direct_reports field.
     - name: layers
       description: '{{ doc("employee_layers") }}'
       tests:
@@ -74,6 +80,7 @@ models:
     - name: bonus_date
       tests:
         - not_null
+
   - name: bamboohr_employment_status_xf
     description: This model provides a transaction record of an employee's status changes (i.e. active, leave, termed). It helps identify when an employee is re-hired.
     columns:
@@ -99,7 +106,7 @@ models:
             - not_null
         - name: valid_to_date
           description: Provides the end date for a specific record. For the terminated record stamp, it will provide a null since there will be no following record, unless the employee is re-hired, in which case it will indicate how long the employee was separated.
-  
+
   - name: bamboohr_headcount_intermediate
     description: This is the intermediate model to creating out the headcount report. This report provides headcounts, hires, separations by diversity fields, department, and division.
     columns:
@@ -113,7 +120,7 @@ models:
         - name: division
         - name: eeoc_field_name
           description: Identifies what eeoc field the data is associated to.
-        #   tests: 
+        #   tests:
         #     - accepted_values:
         #         values: ['no_eeoc','ethnicity','gender','region','nationality']
         - name: eeoc_value
@@ -135,6 +142,11 @@ models:
         - name: headcount_average_manager
         - name: hired_manager
         - name: separated_manager
+        - name: headcount_start_management
+        - name: headcount_end_management
+        - name: headcount_average_management
+        - name: hired_management
+        - name: separated_management
         - name: headcount_start_contributor
         - name: headcount_end_individual_contributor
         - name: headcount_average_contributor

@@ -15,6 +15,13 @@ models:
             tests:
                 - not_null
                 - unique
+    - name: zuora_invoice_items_detail_report
+      description: Report that provides discounting insights by comparing list prices to invoice prices. The report also enriches invoice item details with Salesforce customer information.
+      columns:
+          - name: invoice_item_id
+            tests:
+                - not_null
+                - unique
     - name: zuora_base_mrr
       description: '{{ doc("zuora_base_mrr") }}'
       columns:
@@ -119,25 +126,6 @@ models:
       description: Zuora current ARR
       columns:
           - name: current_arr
-            tests:
-                - not_null
-
-    - name: zuora_invoice_charges_mrr_amortized
-      description: '{{ doc("zuora_invoice_charges_mrr_amortized") }}'
-      columns:
-          - name: account_number
-            tests:
-                - not_null
-          - name: account_name
-            tests:
-                - not_null
-          - name: product_category
-            description: Product category is based on the rate plan name.
-            tests:
-              - accepted_values:
-                      values: ['GitHost', 'Other', 'Gold', 'Basic', 'Bronze', 'Premium', 'Starter', 'Ultimate', 'Support', 'Plus', 'Silver', 'Standard', 'Trueup']
-              - not_null
-          - name: rate_plan_charge_name
             tests:
                 - not_null
 
