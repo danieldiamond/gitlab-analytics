@@ -93,7 +93,9 @@ WITH source AS (
       active_ce_users__c                         AS count_active_ce_users,
       number_of_open_opportunities__c            AS count_open_opportunities,
       using_ce__c                                AS count_using_ce,
-
+      number_of_licenses_this_account__c         AS number_of_licenses_this_account, 
+      potential_users_verify__c                  AS potential_users_verify, 
+  
       --account based marketing fields
       abm_tier__c                                AS abm_tier,
       gtm_strategy__c                            AS gtm_strategy,
