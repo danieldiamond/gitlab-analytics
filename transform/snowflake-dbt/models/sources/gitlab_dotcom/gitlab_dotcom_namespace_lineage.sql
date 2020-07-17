@@ -52,7 +52,47 @@ WITH RECURSIVE namespaces AS (
     0                 AS ultimate_parent_id
   FROM namespaces
   WHERE parent_id NOT IN (SELECT DISTINCT namespace_id FROM namespaces)
-    OR namespace_id IN (6713278, 6142621, 4159925) -- Grandparent or older is deleted.
+    OR namespace_id IN (
+                          6713278, 
+                          6142621, 
+                          4159925, 
+                          8370670, 
+                          8370671,
+                          8437164,
+                          8437147,
+                          8437148,
+                          8437172,
+                          8437156,
+                          8437159,
+                          8437146,
+                          8437176,
+                          8437165,
+                          8437179,
+                          8427708,
+                          8437167,
+                          8437110,
+                          8437178,
+                          8437175,
+                          8427717,
+                          8437153,
+                          8437161,
+                          8437169,
+                          8437177,
+                          8437160,
+                          8437157,
+                          8437154,
+                          8437162,
+                          8437150,
+                          8437149,
+                          8427716,
+                          8437142,
+                          8437145,
+                          8437151,
+                          8437171,
+                          8437155,
+                          8437173,
+                          8437170
+                        ) -- Grandparent or older is deleted.
 
 ), with_plans AS (
 
