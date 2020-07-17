@@ -1319,7 +1319,19 @@ models:
         description: '{{ doc("visibility_documentation") }}'
       - name: project_description
         description: '{{ doc("visibility_documentation") }}'
-
+  - name: gitlab_dotcom_prometheus_alerts
+    description: Base model for Gitlab.com prometheus_alerts
+    columns:
+      - name: prometheus_alert_id
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
   - name: gitlab_dotcom_releases
     description: Base model for Gitlab.com releases
     columns:
