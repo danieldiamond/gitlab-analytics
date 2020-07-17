@@ -85,28 +85,6 @@ WITH fct_charges AS (
     LEFT JOIN dim_customers
       ON dim_accounts.crm_id = dim_customers.crm_id
 
-), latest_invoiced_charge_version_in_segment AS (
-
-    SELECT
-      base_charges.charge_id,
-      IFF(ROW_NUMBER() OVER (
-          PARTITION BY base_charges.rate_plan_charge_number, base_charges.rate_plan_charge_segment
-          ORDER BY base_charges.rate_plan_charge_version DESC, fct_invoice_items_agg.service_start_date DESC) = 1,
-          TRUE, FALSE
-      ) AS is_last_segment_version
-    FROM base_charges
-    INNER JOIN fct_invoice_items_agg
-      ON base_charges.charge_id = fct_invoice_items_agg.charge_id
-
-), charges_agg AS (
-
-    SELECT
-      base_charges.*,
-      latest_invoiced_charge_version_in_segment.is_last_segment_version
-    FROM base_charges
-    LEFT JOIN latest_invoiced_charge_version_in_segment
-      ON base_charges.charge_id = latest_invoiced_charge_version_in_segment.charge_id
-
 ), dim_dates AS (
 
       SELECT *
@@ -128,7 +106,9 @@ WITH fct_charges AS (
         AND mrr IS NOT NULL
         AND mrr != 0
 
-  )
+  ),
+
+
 
   SELECT
     --primary_key
