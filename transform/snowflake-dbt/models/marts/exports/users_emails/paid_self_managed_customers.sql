@@ -9,7 +9,32 @@ WITH zuora_subscription_product_category AS (
     subscription_id,
     product_category,
     delivery 
-  FROM ANALYTICS.analytics.zuora_monthly_recurring_revenue
+  FROM {{ ref('zuora_monthly_recurring_revenue') }}
+
+), zuora_contacts_information AS (
+
+  -- Get the Zuora Contact information to check which columns are good 
+  SELECT DISTINCT
+    contact_id,
+    account_id,
+    first_name,
+    last_name,
+    work_email,
+    personal_email  
+  FROM {{ ref('zuora_contact') }} 
+
+), salesforce_contacts_information AS (
+
+  -- Get the Salesforce Contact information to check which columns are good 
+  SELECT DISTINCT
+      account_id,
+      contact_id                                                                                                                                                AS user_id, 
+      contact_name                                                                                                                                              AS full_name,
+      SPLIT_PART(TRIM(contact_name), ' ', 1)                                                                                                                    AS first_name,
+      ARRAY_TO_STRING(ARRAY_SLICE(SPLIT(TRIM(contact_name), ' '), 1, 10), ' ')                                                                                  AS last_name,
+      contact_email                                                                                                                                             AS email, 
+      IFF(((inactive_contact = TRUE) OR (has_opted_out_email = TRUE) OR (invalid_email_address = TRUE) OR (email_is_bounced = TRUE)), 'Inactive', 'Active')     AS state 
+  FROM {{ ref('sfdc_contact_source') }}
 
 ), zuora_subscription_product_category_self_managed_only AS (
 
@@ -23,18 +48,6 @@ WITH zuora_subscription_product_category AS (
   SELECT *
   FROM zuora_subscription_product_category_self_managed_only
   WHERE mrr_month = DATE_TRUNC('month', CURRENT_DATE)
-
-), zuora_contacts_information AS (
-
-  -- Get the Zuora Contact information to check which columns are good 
-  SELECT DISTINCT
-    contact_id,
-    account_id,
-    first_name,
-    last_name,
-    work_email,
-    personal_email  
-  FROM ANALYTICS.analytics_staging.zuora_contact contact 
 
 ), zuora_subscription_product_category_self_managed_only_contacts AS (
 
@@ -56,19 +69,6 @@ WITH zuora_subscription_product_category AS (
   FROM zuora_contacts_information contacts
   INNER JOIN zuora_subscription_product_category_self_managed_only subscription 
     ON contacts.account_id = subscription.account_id
-
-), salesforce_contacts_information AS (
-
-  -- Get the Salesforce Contact information to check which columns are good 
-  SELECT DISTINCT
-      account_id,
-      contact_id                                                                                                                                                AS user_id, 
-      contact_name                                                                                                                                              AS full_name,
-      SPLIT_PART(TRIM(contact_name), ' ', 1)                                                                                                                    AS first_name,
-      ARRAY_TO_STRING(ARRAY_SLICE(SPLIT(TRIM(contact_name), ' '), 1, 10), ' ')                                                                                  AS last_name,
-      contact_email                                                                                                                                             AS email, 
-      IFF(((inactive_contact = TRUE) OR (has_opted_out_email = TRUE) OR (invalid_email_address = TRUE) OR (email_is_bounced = TRUE)), 'Inactive', 'Active')     AS state 
-  FROM ANALYTICS.sfdc.sfdc_contact_source
 
 ), zuora_salesforce_subscription_product_category_self_managed_only_contacts AS (
 
