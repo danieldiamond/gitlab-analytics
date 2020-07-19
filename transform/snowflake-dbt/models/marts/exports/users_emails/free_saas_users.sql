@@ -1,4 +1,19 @@
-WITH all_gitlab_user_information AS (
+WITH users AS (
+
+    SELECT *
+    FROM {{ source('gitlab_dotcom', 'users') }}
+    
+), memberships AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_memberships') }}
+  
+), plans AS (
+  
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_plans') }}
+
+), all_gitlab_user_information AS (
   SELECT
         id                                                               AS user_id,
         TRIM(name)                                                       AS full_name,
@@ -7,17 +22,9 @@ WITH all_gitlab_user_information AS (
         username,
         notification_email, 
         state 
-    FROM "RAW".tap_postgres.gitlab_db_users
+    FROM users
     QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
-), memberships AS (
-    SELECT *
-    FROM "ANALYTICS".analytics.gitlab_dotcom_memberships
-  
-), plans AS (
-  
-    SELECT *
-    FROM analytics_staging.gitlab_dotcom_plans
-  
+
 ), saas_free_users AS (
   
     SELECT DISTINCT

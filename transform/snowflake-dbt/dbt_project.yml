@@ -310,6 +310,9 @@ models:
         materialized: view
         schema: exports 
 
+        users_emails:
+          enabled: false
+
     # ------------------
     # Legacy Structure
     # ------------------

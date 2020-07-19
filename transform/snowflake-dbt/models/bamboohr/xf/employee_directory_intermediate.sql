@@ -173,7 +173,7 @@ WITH RECURSIVE employee_directory AS (
              ELSE COALESCE(job_role.job_role, 
                            job_info_mapping_historical.job_role,
                            department_info.job_role) END                           AS job_role_modified,
-      IFF(compensation_change_reason is not null,1,0) AS promotion_flag                       
+          IFNULL(compensation_change_reason,0,1)                                   AS promotion_flag                                                   
     FROM date_details
     LEFT JOIN employee_directory
       ON hire_date::DATE <= date_actual
