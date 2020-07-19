@@ -47,6 +47,7 @@ models:
 - name: sheetload_google_referrals
 - name: sheetload_headcount
 - name: sheetload_hire_plan
+- name: sheetload_hire_replan
 - name: sheetload_job_roles_prior_to_2020_02
 - name: sheetload_kpi_status
 - name: sheetload_linkedin_recruiter
