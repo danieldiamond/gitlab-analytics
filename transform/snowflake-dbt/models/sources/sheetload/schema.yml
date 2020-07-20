@@ -278,4 +278,3 @@ models:
       tests:
       - not_null
     - name: capacity
-- name: sheetload_ic_collaboration_competency_source
