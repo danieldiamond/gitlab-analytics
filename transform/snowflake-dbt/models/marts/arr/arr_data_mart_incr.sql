@@ -87,7 +87,7 @@ WITH fct_charges AS (
 ), snapshot_days AS (
 
     SELECT DISTINCT
-     TIMESTAMP_TZ_FROM_PARTS(year_actual, month_actual, day_of_month, 23, 59, 0, 'AMERICA/LOS_ANGELES') AS valid_at
+     TIMESTAMP_TZ_FROM_PARTS(year_actual, month_actual, day_of_month, 23, 59, 00, 0, 'America/Los_Angeles') AS valid_at
     FROM {{ ref ("date_details") }}
     WHERE date_day >= '2020-03-01'
       AND date_day <= '{{ var('valid_at') }}'::DATE
