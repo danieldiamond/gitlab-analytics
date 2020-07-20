@@ -3,6 +3,7 @@ WITH date_details AS (
     SELECT *
     FROM {{ref("date_details")}}
     WHERE date_day >= '2019-02-01'::DATE
+    QUALIFY ROW_NUMBER() OVER(PARTITION BY first_day_of_month ORDER BY date_actual DESC) = 1
      
 ), namespace_statistics_snapshots AS (
 
@@ -14,7 +15,7 @@ WITH date_details AS (
 ), namespace_statistics_snapshots_history AS (
   
     SELECT
-      date_details.date_actual)                     AS date_actual,
+      date_details.date_actual                      AS date_actual,
       DATE_TRUNC('month', date_details.date_actual) AS snapshot_month,
       namespace_statistics_snapshots.namespace_id,
       namespace_statistics_snapshots.shared_runners_seconds,
