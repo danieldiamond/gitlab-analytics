@@ -43,3 +43,4 @@ SELECT
 FROM zuora_account
 LEFT JOIN zuora_contact
   ON COALESCE(zuora_account.sold_to_contact_id, zuora_account.bill_to_contact_id) = zuora_contact.contact_id
+WHERE is_deleted = FALSE
