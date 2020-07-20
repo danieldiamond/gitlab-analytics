@@ -6,8 +6,8 @@ WITH zuora_subscription_snapshots AS (
 
   SELECT *
   FROM {{ ref('zuora_subscription_snapshots_source') }}
-  WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-    AND '{{ var('valid_at') }}'::TIMESTAMP < {{ coalesce_to_infinity('dbt_valid_to') }}
+  WHERE '{{ var('valid_at') }}'::TIMESTAMP_TZ >= dbt_valid_from
+    AND '{{ var('valid_at') }}'::TIMESTAMP_TZ < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 ), zuora_subscription AS (
 
@@ -20,8 +20,8 @@ WITH zuora_subscription_snapshots AS (
     account_id,
     crm_id
   FROM {{ ref('zuora_account_snapshots_source') }}
-  WHERE '{{ var('valid_at') }}'::TIMESTAMP >= dbt_valid_from
-    AND '{{ var('valid_at') }}'::TIMESTAMP < {{ coalesce_to_infinity('dbt_valid_to') }}
+  WHERE '{{ var('valid_at') }}'::TIMESTAMP_TZ >= dbt_valid_from
+    AND '{{ var('valid_at') }}'::TIMESTAMP_TZ < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 )
 
