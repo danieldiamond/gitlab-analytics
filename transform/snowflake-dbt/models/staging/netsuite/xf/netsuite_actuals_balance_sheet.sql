@@ -15,6 +15,11 @@ WITH accounts AS (
      SELECT *
      FROM {{ ref('netsuite_accounting_periods') }}
 
+), classes AS (
+
+     SELECT *
+     FROM {{ref('netsuite_classes')}}
+
 ), consolidated_exchange_rates AS (
 
      SELECT *
@@ -28,6 +33,11 @@ WITH accounts AS (
        fiscal_quarter,
        fiscal_quarter_name
      FROM {{ ref('date_details') }}
+
+), departments AS (
+
+     SELECT *
+     FROM {{ref('netsuite_departments_xf')}}
 
 ), subsidiaries AS (
 
@@ -95,10 +105,13 @@ WITH accounts AS (
        transactions.transaction_type,
        transaction_lines.subsidiary_id,
        transaction_lines.account_id,
+       transaction_lines.class_id,
+       transaction_lines.department_id,
        transactions.accounting_period_id                AS transaction_accounting_period_id,
        COALESCE(transaction_lines.amount, 0)            AS unconverted_amount
      FROM transaction_lines
-     INNER JOIN transactions ON transaction_lines.transaction_id = transactions.transaction_id
+     INNER JOIN transactions
+       ON transaction_lines.transaction_id = transactions.transaction_id
      WHERE LOWER(transactions.transaction_type) != 'revenue arrangement'
 
 ), period_id_list_to_current_period AS ( -- period ids with all future period ids.  this is needed to calculate cumulative totals by correct exchange rates.
@@ -167,6 +180,8 @@ WITH accounts AS (
 
      SELECT
        transactions_with_converted_amounts.document_id,
+       departments.department_name,
+       classes.class_name,
        transactions_with_converted_amounts.transaction_type,
        reporting_accounting_periods.accounting_period_id,
        reporting_accounting_periods.accounting_period_starting_date::DATE   AS accounting_period,
@@ -233,6 +248,10 @@ WITH accounts AS (
        FROM  transactions_with_converted_amounts
        LEFT JOIN accounts
          ON transactions_with_converted_amounts.account_id = accounts.account_id
+       LEFT JOIN classes
+         ON transactions_with_converted_amounts.class_id = classes.class_id
+       LEFT JOIN departments
+         ON transactions_with_converted_amounts.department_id = departments.department_id
        LEFT JOIN accounting_periods AS reporting_accounting_periods
          ON transactions_with_converted_amounts.reporting_accounting_period_id = reporting_accounting_periods.accounting_period_id
        LEFT JOIN accounting_periods AS transaction_accounting_periods
@@ -247,12 +266,14 @@ WITH accounts AS (
                                                                    WHERE parent_id IS NULL)
          AND LOWER(accounts.account_type) != 'statistical'
          AND accounts.account_number != '3035'
-        {{ dbt_utils.group_by(n=11) }}
+        {{ dbt_utils.group_by(n=13) }}
 
        UNION ALL
 
        SELECT
          transactions_with_converted_amounts.document_id,
+         departments.department_name,
+         classes.class_name,
          transactions_with_converted_amounts.transaction_type,
          reporting_accounting_periods.accounting_period_id,
          reporting_accounting_periods.accounting_period_starting_date::DATE   AS accounting_period,
@@ -273,6 +294,10 @@ WITH accounts AS (
        FROM  transactions_with_converted_amounts
        LEFT JOIN accounts
          ON transactions_with_converted_amounts.account_id = accounts.account_id
+       LEFT JOIN classes
+         ON transactions_with_converted_amounts.class_id = classes.class_id
+       LEFT JOIN departments
+         ON transactions_with_converted_amounts.department_id = departments.department_id
        LEFT JOIN accounting_periods AS reporting_accounting_periods
          ON transactions_with_converted_amounts.reporting_accounting_period_id = reporting_accounting_periods.accounting_period_id
        LEFT JOIN accounting_periods AS transaction_accounting_periods
@@ -287,7 +312,7 @@ WITH accounts AS (
                                                                    WHERE parent_id IS NULL)
          AND LOWER(accounts.account_type) != 'statistical'
          AND accounts.account_number != '3035'
-         {{ dbt_utils.group_by(n=6) }}
+         {{ dbt_utils.group_by(n=8) }}
 
 ), balance_sheet_grouping AS (
 
@@ -300,6 +325,8 @@ WITH accounts AS (
         unique_account_number,
         account_number || ' - ' || account_name   AS unique_account_name,
         account_type,
+        department_name,
+        class_name,
         CASE
           WHEN account_type IN ('accounts receivable','bank','other current asset','unbilled receivable','deferred expense')
             THEN '1-current assets'

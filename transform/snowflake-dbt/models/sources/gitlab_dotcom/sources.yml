@@ -222,6 +222,8 @@ sources:
         identifier: gitlab_db_project_statistics
       - name: projects
         identifier: gitlab_db_projects
+      - name: prometheus_alerts
+        identifier: gitlab_db_prometheus_alerts
       - name: protected_branches
         identifier: gitlab_db_protected_branches
       - name: push_rules
@@ -230,6 +232,8 @@ sources:
         identifier: gitlab_db_releases
       - name: repository_languages
         identifier: gitlab_db_repository_languages
+      - name: requirements
+        identifier: gitlab_db_requirements
       - name: resource_label_events
         identifier: gitlab_db_resource_label_events
         freshness: null        

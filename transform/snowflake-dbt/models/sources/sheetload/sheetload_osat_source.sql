@@ -1,8 +1,3 @@
-{{ config({
-    "schema": "sensitive"
-    })
-}}
-
 WITH source AS (
 
     SELECT * 

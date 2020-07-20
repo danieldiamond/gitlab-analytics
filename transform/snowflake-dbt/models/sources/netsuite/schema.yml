@@ -23,11 +23,33 @@ models:
       description: "Source layer for Netsuite departments for cleaning and renaming [Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/department.html)"
     - name: netsuite_entity_source
       description: "Source layer for Netsuite entities for cleaning and renaming [Schema docs](https://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/entity.html)"
+      columns:
+        - name: entity_name
+          meta:
+            sensitive: true
+        - name: entity_full_name
+          meta:
+            sensitive: true
     - name: netsuite_subsidiaries_source
       description: "Source layer for Netsuite  subsidiaries for cleaning and renaming [Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/subsidiaries.html)"
+      columns:
+        - name: subsidiary_full_name
+          meta:
+            sensitive: true
+        - name: subsidiary_name
+          meta:
+            sensitive: true
     - name: netsuite_transaction_lines_source
       description: "Source layer for Netsuite transaction lines for cleaning and renaming [Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/transaction_lines.html)"
+      columns:
+        - name: memo
+          meta:
+            sensitive: true
     - name: netsuite_transactions_source
       description: "Source layer for Netsuite transactions for cleaning and renaming [Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/transaction.html)"
     - name: netsuite_vendors_source
       description: "Source layer for Netsuite vendors for cleaning and renaming [Schema docs](http://www.netsuite.com/help/helpcenter/en_US/srbrowser/Browser2018_2/odbc/record/vendor.html)"
+      columns:
+        - name: vendor_name
+          meta:
+            sensitive: true

@@ -11,6 +11,7 @@ WITH mom_change as (
     edition,
     main_edition,
     edition_type,
+    ldap_enabled,
     {% for ping_name in version_usage_stats_list %}
     {{ping_name}},
     {{ monthly_change(ping_name) }},
