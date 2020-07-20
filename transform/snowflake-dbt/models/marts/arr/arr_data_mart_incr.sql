@@ -92,7 +92,7 @@ WITH fct_charges AS (
     WHERE date_day >= (SELECT COALESCE(MAX(snapshot_date),'2020-03-01') from arr_data_mart_incr)
       AND date_day <= '{{ var('valid_at') }}::DATE'
 
-),charges_month_by_month AS (
+), charges_month_by_month AS (
 
     SELECT
         snapshot_days.valid_at::DATE AS snapshot_date,
