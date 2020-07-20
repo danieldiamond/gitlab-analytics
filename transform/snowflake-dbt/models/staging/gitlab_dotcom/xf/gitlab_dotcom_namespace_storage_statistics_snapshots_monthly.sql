@@ -3,12 +3,8 @@ WITH date_details AS (
     SELECT *
     FROM {{ref("date_details")}}
     WHERE date_day >= '2019-02-01'::DATE
-<<<<<<< HEAD
     QUALIFY ROW_NUMBER() OVER(PARTITION BY first_day_of_month ORDER BY date_actual DESC) = 1
     
-=======
-     
->>>>>>> c678af635282839f6b5c3bdbb57d1608599c854f
 ), namespace_statistics_snapshots AS (
 
    SELECT
