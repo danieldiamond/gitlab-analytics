@@ -5,7 +5,7 @@
 
     {%- set production_targets = ('prod','docs','ci') -%}
 
-    {%- set prefixed_schemas = ('meta','sensitive','staging','temporary') -%}
+    {# {%- set prefixed_schemas = ('meta','sensitive','staging','temporary') -%} #}
 
     {#
         Definitions:
@@ -31,11 +31,11 @@
     #}
     {%- if target.name in production_targets -%}
         
-        {%- if custom_schema_name in prefixed_schemas -%}
+        {# {%- if custom_schema_name in prefixed_schemas -%} #}
 
-            {{ target.schema.lower() }}_{{ custom_schema_name | trim }}
+            {# {{ target.schema.lower() }}_{{ custom_schema_name | trim }} #}
 
-        {%- elif custom_schema_name is none -%}
+        {%- if custom_schema_name is none -%}
 
             {{ target.schema.lower() | trim }}
 

@@ -49,7 +49,8 @@ on-run-end:
 # ======
 seeds:
   enabled: true
-  schema: staging
+  database: prep
+  schema: seeds
   quote_columns: False
 
   gitlab_snowflake:
@@ -77,6 +78,7 @@ models:
   # Logging Package https://hub.getdbt.com/fishtown-analytics/logging/latest/
   # ------------------
   logging:
+    database: analytics
     schema: meta
     post-hook:
       - "grant select on {{this}} to role reporter"
@@ -85,6 +87,7 @@ models:
   # Snowplow Package https://hub.getdbt.com/fishtown-analytics/snowplow/latest/
   # ------------------
   snowplow:
+    database: prep
     schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
     post-hook:
       - "grant usage on schema {{this.schema}} to role snowplow"
@@ -105,6 +108,7 @@ models:
   # Snowflake Spend Package https://gitlab.com/gitlab-data/snowflake_spend
   # ------------------
   snowflake_spend:
+    database: analytics
     materialized: table
     xf:
       schema: analytics
@@ -209,7 +213,7 @@ models:
     # ------------------
     # Staging
     # ------------------
-    staging:
+    prep:
       schema: staging
       materialized: table
 
