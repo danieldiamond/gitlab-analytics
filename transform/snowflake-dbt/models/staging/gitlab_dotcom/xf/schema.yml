@@ -526,7 +526,7 @@ models:
     - name: issue_closed_at
     - name: issue_closed_week
     - name: is_issue_closed
-    - name: state
+    - name: issue_state
     - name: assignee
     - name: is_using_diversity_strings   
     - name: is_not_using_diversity_srings
