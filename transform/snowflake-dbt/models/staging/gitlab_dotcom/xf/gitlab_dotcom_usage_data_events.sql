@@ -135,12 +135,30 @@
     "is_representative_of_stage": "False"
   },
   {
+    "event_name": "epic_notes",
+    "source_cte_name": "epic_notes",
+    "user_column_name": "note_author_id",
+    "key_to_parent_group": "ultimate_parent_id",
+    "primary_key": "author_id",
+    "stage_name": "plan",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "groups",
     "source_cte_name": "group_members",
     "user_column_name": "user_id",
     "key_to_parent_project": "source_id",
     "primary_key": "member_id",
     "stage_name": "manage",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "incident_labeled_issues",
+    "source_cte_name": "incident_labeled_issues",
+    "user_column_name": "author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "issue_id",
+    "stage_name": "monitor",
     "is_representative_of_stage": "False"
   },
   {
@@ -151,6 +169,15 @@
     "primary_key": "issue_id",
     "stage_name": "plan",
     "is_representative_of_stage": "True"
+  },
+  {
+    "event_name": "issue_notes",
+    "source_cte_name": "issue_notes",
+    "user_column_name": "note_author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "author_id",
+    "stage_name": "plan",
+    "is_representative_of_stage": "False"
   },
   {
     "event_name": "issue_resource_label_events",
@@ -225,6 +252,15 @@
     "is_representative_of_stage": "True"
   },
   {
+    "event_name": "merge_request_notes",
+    "source_cte_name": "merge_request_notes",
+    "user_column_name": "note_author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "author_id",
+    "stage_name": "create",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "milestones",
     "source_table_name": "gitlab_dotcom_milestones",
     "user_column_name": "NULL",
@@ -270,12 +306,30 @@
     "is_representative_of_stage": "True"
   },
   {
+    "event_name": "push_events",
+    "source_cte_name": "push_events",
+    "user_column_name": "author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "project_id",
+    "stage_name": "create",
+    "is_representative_of_stage": "False"
+  },
+  {
     "event_name": "releases",
     "source_table_name": "gitlab_dotcom_releases",
     "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
     "primary_key": "release_id",
     "stage_name": "release",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "requirements",
+    "source_table_name": "gitlab_dotcom_requirements",
+    "user_column_name": "author_id",
+    "key_to_parent_project": "project_id",
+    "primary_key": "requirement_id",
+    "stage_name": "plan",
     "is_representative_of_stage": "False"
   },
   {
@@ -312,6 +366,15 @@
     "key_to_parent_project": "project_id",
     "primary_key": "snippet_id",
     "stage_name": "create",
+    "is_representative_of_stage": "False"
+  },
+  {
+    "event_name": "terraform_reports",
+    "source_cte_name": "terraform_reports",
+    "user_column_name": "NULL",
+    "key_to_parent_project": "project_id",
+    "primary_key": "ci_job_artifact_id",
+    "stage_name": "configure",
     "is_representative_of_stage": "False"
   },
   {
@@ -388,6 +451,26 @@ WITH gitlab_subscriptions AS (
     FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
     WHERE secure_ci_job_type = 'dependency_scanning'
 
+), epic_notes AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_notes_xf') }}
+    WHERE noteable_type = 'Epic'
+
+), incident_labeled_issues AS (
+
+    SELECT 
+      *,
+      issue_created_at AS created_at
+    FROM {{ ref('gitlab_dotcom_issues_xf') }}
+    WHERE ARRAY_CONTAINS('incident'::variant, labels)
+
+),  issue_notes AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_notes') }}
+    WHERE noteable_type = 'Issue'
+
 ), issue_resource_label_events AS (
 
     SELECT *
@@ -412,6 +495,12 @@ WITH gitlab_subscriptions AS (
     FROM {{ ref('gitlab_dotcom_secure_stage_ci_jobs') }}
     WHERE secure_ci_job_type = 'license_scanning'
 
+), merge_request_notes AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_notes') }}
+    WHERE noteable_type = 'MergeRequest'
+
 ), projects_prometheus_active AS (
 
     SELECT *
@@ -429,6 +518,12 @@ WITH gitlab_subscriptions AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_projects_xf') }}
     WHERE container_registry_enabled = True
+
+), push_events AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_events') }}
+    WHERE event_action_type = 'pushed'
 
 ), group_members AS (
 
@@ -449,6 +544,12 @@ WITH gitlab_subscriptions AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_services') }}
     WHERE service_type != 'GitlabIssueTrackerService'
+
+), terraform_reports AS (
+
+    SELECT *
+    FROM {{ ref('gitlab_dotcom_ci_job_artifacts') }}
+    WHERE file_type = 18
 
 )
 /* End of Source CTEs */
@@ -498,6 +599,7 @@ WITH gitlab_subscriptions AS (
         NULL                                                      AS parent_id,
         NULL                                                      AS parent_created_at,
       {% endif %}
+      ultimate_namespace.namespace_is_internal                    AS namespace_is_internal,
       {{ event_cte.event_name }}.created_at                       AS event_created_at,
       {{ event_cte.is_representative_of_stage }}::BOOLEAN         AS is_representative_of_stage,
       '{{ event_cte.event_name }}'                                AS event_name,

@@ -28,7 +28,7 @@ If you are the person who will be using this data and/or the dashboard it depend
 
 - [ ] Field names should all be lowercased.
 - [ ] Function names should all be capitalized.
-- [ ] Ensure source tables/views are only referenced within [base models](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#base-models).
+- [ ] Ensure source tables/views are only referenced within [base models](https://about.gitlab.com/handbook/business-ops/data-team/platform/sql-style-guide/#base-models).
 - [ ] All references to existing tables/views/sources (i.e. `{{ ref('...') }}` statements) should be placed in CTEs at the top of the file.
 - [ ] If you are using [custom schemas](https://docs.getdbt.com/docs/using-custom-schemas) or modifying [materializations](https://docs.getdbt.com/docs/materializations), ensure these attributes are specified in the model.
 </details>
@@ -38,9 +38,9 @@ If you are the person who will be using this data and/or the dashboard it depend
 <details>
 <summary><i>Click to toggle Macros</i></summary>
 
-- [ ] Does this MR utilize [macros](https://docs.getdbt.com/docs/macros)?
-  - [ ] This MR contains new macros. Follow the naming convention (file name matches macro name) and document in the [macro README](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md).
-  - [ ] This MR uses existing macros. Ensure models are referenced under the appropriate macro in the [macro README](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/macros/README.md).
+  - [ ] Does this MR utilize [macros](https://docs.getdbt.com/docs/macros)?
+  - [ ] This MR contains new macros. Follow the naming convention (file name matches macro name) and document in the macros.yml file
+</details>
 </details>
 
 #### Incremental Models
@@ -50,7 +50,6 @@ If you are the person who will be using this data and/or the dashboard it depend
 
 - [ ] Does this MR contain an [incremental model](https://docs.getdbt.com/docs/configuring-incremental-models#section-how-do-i-use-the-incremental-materialization-)?
   - [ ] If the MR adds/renames columns to a specific model, a `dbt run --full-refresh` will be needed after merging the MR. Please, add it to the Reviewer Checklist to warn them that this step is required.
-  - [ ] Please also check with the Reviewer if a dag is set up in Airflow to trigger a full refresh of this model.  
 </details>
 
 #### Schema or Model Name Changes
@@ -98,12 +97,12 @@ Paste the results of dbt test here, including the command.
 </code></pre>
 </details>
 
-**Which pipeline job do I run?** See our [handbook page](https://about.gitlab.com/handbook/business-ops/data-team/data-ci-jobs/) on our CI jobs to better understand which job to run.
+**Which pipeline job do I run?** See our [handbook page](https://about.gitlab.com/handbook/business-ops/data-team/platform/ci-jobs/) on our CI jobs to better understand which job to run.
 </details>
 
 ## All MRs Checklist
-- [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/#dbt-guidelines).
-- [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/#issue-labeling) on issue.
+- [ ] This MR follows the coding conventions laid out in the [SQL style guide](https://about.gitlab.com/handbook/business-ops/data-team/platform/sql-style-guide/), including the [dbt guidelines](https://about.gitlab.com/handbook/business-ops/data-team/platform/sql-style-guide/#dbt-guidelines).
+- [ ] [Label hygiene](https://about.gitlab.com/handbook/business-ops/data-team/how-we-work/#issue-labeling) on issue.
 - [ ] Branch set to delete. (Leave commits unsquashed)
 - [ ] Latest CI pipeline passes.
   - [ ] If not, an explanation has been provided.

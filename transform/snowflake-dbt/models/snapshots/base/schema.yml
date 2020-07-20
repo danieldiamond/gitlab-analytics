@@ -116,7 +116,14 @@ models:
       - name: id
           - not_null
       - name: valid_from
-          - not_null      
+          - not_null
+  - name: sfdc_account_snapshots_source
+    description: This is the source model for snapshots of the salesforce account table for cleaning and renaming.
+    columns:
+      - name: id
+          - not_null
+      - name: dbt_valid_from
+          - not_null
   - name: sfdc_opportunity_snapshots_base
     description: This is the base model for snapshots of the salesforce opportunity table for 2019-10-01 and forward.
     columns:
@@ -131,3 +138,28 @@ models:
           - not_null
       - name: valid_from
           - not_null
+  - name: sfdc_user_snapshots_source
+    description: This is the source model for snapshots of the salesforce user table for cleaning and renaming.
+    columns:
+      - name: id
+          - not_null
+      - name: dbt_valid_from
+          - not_null
+  - name: zuora_account_snapshots_source
+    description: Source layer for Zuora Accounts Snapshots for cleaning and renaming
+  - name: zuora_amendment_snapshots_source
+    description: Source layer for Zuora Amendments Snapshots for cleaning and renaming
+  - name: zuora_contact_snapshots_source
+    description: Source layer for Zuora Contacts Snapshots for cleaning and renaming
+  - name: zuora_invoice_snapshots_source
+    description: Source layer for Zuora Invoices Snapshots for cleaning and renaming
+  - name: zuora_invoice_item_snapshots_source
+    description: Source layer for Zuora Invoice Items Snapshots for cleaning and renaming
+  - name: zuora_product_snapshots_source
+    description: Source layer for Zuora Products Snapshots for cleaning and renaming
+  - name: zuora_rate_plan_snapshots_source
+    description: Source layer for Zuora Rate Plans Snapshots for cleaning and renaming
+  - name: zuora_rate_plan_charge_snapshots_source
+    description: Source layer for Zuora Rate Plan Charges Snapshots for cleaning and renaming
+  - name: zuora_subscription_snapshots_source
+    description: Source layer for Zuora Subscriptions

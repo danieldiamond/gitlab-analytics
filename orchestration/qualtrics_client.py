@@ -49,10 +49,7 @@ class QualtricsClient:
         return self.get(f"survey-definitions/{survey_id}/questions", {})
 
     def get_json_post_headers(self):
-        return {
-            "content-type": "application/json",
-            "x-api-token": self.api_token,
-        }
+        return {"content-type": "application/json", "x-api-token": self.api_token}
 
     def download_survey_response_file(self, survey_id, file_format):
         """

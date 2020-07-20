@@ -4,6 +4,7 @@
 
     {{sfdc_id_15_to_18()}}
     {{regexp_substr_to_array()}}
+    {{crc32()}}
 
   create schema if not exists {{target.schema}}_analytics;
 

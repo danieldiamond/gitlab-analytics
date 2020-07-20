@@ -22,3 +22,5 @@ Please complete all items. Ask questions in the #data slack channel
 ### Reviewer Checklist 
 * [ ]  Review the **DRI/Prioritization Owner Checklist**. 
 * [ ]  Update issue with status and close issue. 
+
+/label ~"Priority::1-Ops"

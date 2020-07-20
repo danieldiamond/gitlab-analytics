@@ -2,11 +2,8 @@ WITH source AS (
 
     SELECT *
     FROM {{ source('version', 'hosts') }}
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
-),
-
-renamed AS (
+), renamed AS (
 
     SELECT
       id::INTEGER               AS host_id,

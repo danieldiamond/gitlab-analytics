@@ -11,6 +11,7 @@ WITH RECURSIVE employee_directory AS (
       employee_number,
       first_name,
       last_name,
+      (employee_directory.first_name ||' '|| employee_directory.last_name)   AS full_name,
       work_email,
       hire_date,
       rehire_date,
@@ -29,31 +30,9 @@ WITH RECURSIVE employee_directory AS (
     FROM {{ ref('bamboohr_job_info') }}
 
 ), job_role AS (
-    
+
     SELECT *
     FROM {{ ref('bamboohr_job_role') }}
-
-), job_info_mapping_historical_manager_leader AS (
-
-    SELECT 
-      department_info.job_title,
-      IFF(job_title = 'Manager, Field Marketing','Leader',job_role.job_role)    AS job_role, 
-      CASE WHEN job_title = 'Group Manager, Product' 
-            THEN '9.5'
-           WHEN job_title = 'Manager, Field Marketing' 
-             THEN '8'
-           ELSE job_role.job_grade END                                          AS job_grade
-    FROM date_details
-    LEFT JOIN department_info 
-      ON date_details.date_actual BETWEEN department_info.effective_date AND COALESCE(department_info.effective_end_Date, '2020-07-01')
-    LEFT JOIN job_role
-      ON job_role.employee_id = department_info.employee_id
-      AND date_details.date_actual BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_date, '2020-07-01')
-    WHERE job_role.job_role IN ('Manager','Leader')
-      AND job_role.job_grade IS NOT NULL
-      AND date_actual = '2020-02-27'
-    ---1st date we started capturing job_role
-    GROUP BY 1,2,3
 
 ), location_factor AS (
 
@@ -63,7 +42,61 @@ WITH RECURSIVE employee_directory AS (
 ), employment_status AS (
     
     SELECT * 
-     FROM {{ ref('bamboohr_employment_status_xf') }}
+    FROM {{ ref('bamboohr_employment_status_xf') }}
+
+), promotion AS (
+
+    SELECT
+      employee_id,
+      effective_date,
+      compensation_change_reason
+    FROM {{ ref('bamboohr_compensation') }}
+    WHERE compensation_change_reason = 'Promotion'
+    GROUP BY 1,2,3
+
+), direct_reports AS (
+  
+    SELECT
+      date_actual           AS date, 
+      reports_to,
+      COUNT(employee_id)    AS total_direct_reports
+    FROM (
+        SELECT
+            date_details.date_actual,
+            employee_directory.employee_id,
+            reports_to
+        FROM date_details
+        LEFT JOIN employee_directory
+        ON hire_date::DATE <= date_actual
+        AND COALESCE(termination_date::DATE, {{max_date_in_bamboo_analyses()}}) >= date_actual
+        LEFT JOIN department_info
+            ON employee_directory.employee_id = department_info.employee_id
+            AND date_details.date_actual BETWEEN department_info.effective_date 
+                AND COALESCE(department_info.effective_end_date, {{max_date_in_bamboo_analyses()}})
+        )  
+    GROUP BY 1,2
+    HAVING total_direct_reports > 0
+
+), job_info_mapping_historical AS (
+
+    SELECT 
+      department_info.employee_id,
+      department_info.job_title,
+      IFF(job_title = 'Manager, Field Marketing','Leader',COALESCE(job_role.job_role, department_info.job_role))    AS job_role, 
+      CASE WHEN job_title = 'Group Manager, Product' 
+            THEN '9.5'
+           WHEN job_title = 'Manager, Field Marketing' 
+             THEN '8'
+           ELSE job_role.job_grade END                                                                              AS job_grade,
+      ROW_NUMBER() OVER (PARTITION BY department_info.employee_id ORDER BY date_details.date_actual)                AS job_grade_event_rank
+    FROM date_details
+    LEFT JOIN department_info 
+      ON date_details.date_actual BETWEEN department_info.effective_date AND COALESCE(department_info.effective_end_Date, {{max_date_in_bamboo_analyses()}})
+    LEFT JOIN job_role
+      ON job_role.employee_id = department_info.employee_id
+      AND date_details.date_actual BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_date, {{max_date_in_bamboo_analyses()}})
+    WHERE job_role.job_grade IS NOT NULL
+    ---Using the 1st time we captured job_role and grade to identify classification for historical records
 
 ), employment_status_records_check AS (
     
@@ -81,34 +114,70 @@ WITH RECURSIVE employee_directory AS (
 ), enriched AS (
 
     SELECT
-      date_actual,
+      date_details.date_actual,
       employee_directory.*,
-      (employee_directory.first_name ||' '|| employee_directory.last_name)   AS full_name,
       department_info.job_title,
       department_info.department,
       department_info.division,
       COALESCE(job_role.cost_center, 
                cost_center_prior_to_bamboo.cost_center)                     AS cost_center,
       department_info.reports_to,
-      IFF(date_details.date_actual BETWEEN '2020-11-01' AND '2020-02-27', 
-            job_info_mapping_historical_manager_leader.job_role, 
-            job_role.job_role)                                              AS job_role,
-      CASE WHEN job_role.job_grade IN ('11','12','CXO')
-            THEN 'Senior Leadership'
-           WHEN job_role.job_grade = '10' 
-             THEN 'Manager'
-           ELSE job_role.job_role END                                       AS job_role_modified,
-       --for the diversity KPIs we are looking to understand senior leadership representation and do so by job grade instead of role     
-      IFF(date_details.date_actual BETWEEN '2020-11-01' AND '2020-02-27', 
-            job_info_mapping_historical_manager_leader.job_grade, 
+      IFF(date_details.date_actual BETWEEN '2019-11-01' AND '2020-02-27' 
+            AND job_info_mapping_historical.job_role IS NOT NULL, 
+            job_info_mapping_historical.job_role, 
+            COALESCE(job_role.job_role, department_info.job_role))          AS job_role,
+      IFF(date_details.date_actual BETWEEN '2019-11-01' AND '2020-02-27', 
+            job_info_mapping_historical.job_grade, 
             job_role.job_grade)                                             AS job_grade,
+      job_role.jobtitle_speciality,      
       location_factor.location_factor, 
       IFF(hire_date = date_actual OR 
           rehire_date = date_actual, True, False)                           AS is_hire_date,
       IFF(employment_status = 'Terminated', True, False)                    AS is_termination_date,
       IFF(rehire_date = date_actual, True, False)                           AS is_rehire_date,
       IFF(hire_date< employment_status_first_value,
-            'Active', employment_status)                                    AS employment_status
+            'Active', employment_status)                                    AS employment_status,
+      job_role.gitlab_username,
+      sales_geo_differential,
+      direct_reports.total_direct_reports,
+     --for the diversity KPIs we are looking to understand senior leadership representation and do so by job grade instead of role        
+      CASE WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) IN ('11','12','CXO')
+                AND total_direct_reports > 0
+                AND employment_status NOT IN ('Parental Leave','Garden Leave')
+            THEN 'Senior Leadership'
+            WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) IN ('11','12','CXO')
+                AND employment_status IN ('Parental Leave','Garden Leave')
+            THEN 'Senior Leadership'   
+            WHEN COALESCE(job_role.job_grade, job_info_mapping_historical.job_grade) = '10' 
+                AND total_direct_reports > 0
+                AND employment_status NOT IN ('Parental Leave','Garden Leave')
+            THEN 'Manager'
+            WHEN COALESCE(job_role.job_role, 
+                         job_info_mapping_historical.job_role,
+                         department_info.job_role) = 'Manager'
+                AND COALESCE(total_direct_reports,0) > 0 
+            THEN 'Manager'
+            WHEN (department_info.job_title LIKE '%Manager%' or department_info.job_title LIKE '%Director,%')
+                 AND COALESCE(job_role.job_role, 
+                         job_info_mapping_historical.job_role,
+                         department_info.job_role) = 'Leader'
+                 AND total_direct_reports > 0
+            THEN 'Manager'
+            WHEN (department_info.job_title LIKE '%VP%' 
+                    OR department_info.job_title LIKE '%Chief%' 
+                    OR department_info.job_title LIKE '%Senior Director%')
+                AND COALESCE(job_role.job_role, 
+                         job_info_mapping_historical.job_role,
+                         department_info.job_role) = 'Leader'
+                AND total_direct_reports > 0 
+                AND employment_status NOT IN ('Parental Leave','Garden Leave')
+            THEN 'Senior Leadership'
+            WHEN COALESCE(total_direct_reports,0) = 0 
+            THEN 'Individual Contributor'
+             ELSE COALESCE(job_role.job_role, 
+                           job_info_mapping_historical.job_role,
+                           department_info.job_role) END                           AS job_role_modified,
+          IFF(compensation_change_reason IS NOT NULL,TRUE,FALSE)                   AS is_promotion                                                                        
     FROM date_details
     LEFT JOIN employee_directory
       ON hire_date::DATE <= date_actual
@@ -117,6 +186,9 @@ WITH RECURSIVE employee_directory AS (
       ON employee_directory.employee_id = department_info.employee_id
       AND date_actual BETWEEN effective_date 
       AND COALESCE(effective_end_date::DATE, {{max_date_in_bamboo_analyses()}})
+    LEFT JOIN direct_reports
+      ON direct_reports.date = date_details.date_actual
+      AND direct_reports.reports_to = employee_directory.full_name
     LEFT JOIN location_factor
       ON employee_directory.employee_number::VARCHAR = location_factor.bamboo_employee_number::VARCHAR
       AND valid_from <= date_actual
@@ -136,10 +208,14 @@ WITH RECURSIVE employee_directory AS (
     LEFT JOIN job_role
       ON employee_directory.employee_id = job_role.employee_id   
       AND date_details.date_actual BETWEEN job_role.effective_date AND COALESCE(job_role.next_effective_date, {{max_date_in_bamboo_analyses()}})
-    LEFT JOIN job_info_mapping_historical_manager_leader
-      ON job_info_mapping_historical_manager_leader.job_title = department_info.job_title
-      AND date_details.date_actual BETWEEN '2019-11-01' and '2020-02-26'
-      ---this is when we started capturing eeoc data but don't have job grade data to understand female in leadership positions
+    LEFT JOIN job_info_mapping_historical
+      ON employee_directory.employee_id = job_info_mapping_historical.employee_id 
+      AND job_info_mapping_historical.job_title = department_info.job_title 
+      AND job_info_mapping_historical.job_grade_event_rank = 1
+      ---tying data based on 2020-02-27 date to historical data --
+    LEFT JOIN promotion
+      ON promotion.employee_id = employee_directory.employee_id
+      AND date_details.date_actual = promotion.effective_date
     WHERE employee_directory.employee_id IS NOT NULL
 
 ), base_layers as (
@@ -174,7 +250,6 @@ WITH RECURSIVE employee_directory AS (
     JOIN base_layers iter
       ON anchor.date_actual = iter.date_actual
      AND iter.reports_to = anchor.employee
-
 
 ), calculated_layers AS (
 

@@ -13,10 +13,10 @@
 
 ## Impact
 
-Was there an SLO breach? 
+**Was there an SLO breach?**
 <!-- Yes / No  | If Yes, please include the time margin we missed the SLO by in HH:SS-->
 
-Who was impacted and how were they impacted?
+**Who was impacted and how were they impacted?**
 <!-- Please include Teams, Users, Automations, Processes -->
 
 ## Response
@@ -38,3 +38,5 @@ Who was impacted and how were they impacted?
 ---
 
 ## Lessons Learned
+
+/label ~"Priority::1-Ops" ~Incident

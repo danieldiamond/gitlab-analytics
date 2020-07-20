@@ -4,7 +4,7 @@
 name: 'gitlab_snowflake'
 version: '1.0'
 profile: 'gitlab-snowflake'
-require-dbt-version: ">=0.16.0"
+require-dbt-version: 0.16.1
 
 
 # ======
@@ -26,7 +26,9 @@ quoting:
     database: true
     identifier: false
     schema: false
-query-comment: "{{ query_comment(node) }}"
+query-comment:
+  comment: "{{ query_comment(node) }}"
+  append: true
 
 # ======
 # Run Hooks
@@ -58,9 +60,9 @@ seeds:
         major_minor_version: varchar
 
 
-# ======
+# ==================
 # Model Configs
-# ======
+# ==================
 models:
   pre-hook:
     - "{{ logging.log_model_start_event() }}"
@@ -69,14 +71,19 @@ models:
   vars:
     database: "raw"
     warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
+    valid_at: '{{ run_started_at.strftime("%Y-%m-%d %H:%M:%S%z") }}'
 
-  # Logging Package
+  # ------------------
+  # Logging Package https://hub.getdbt.com/fishtown-analytics/logging/latest/
+  # ------------------
   logging:
     schema: meta
     post-hook:
       - "grant select on {{this}} to role reporter"
 
-  # Snowplow Package
+  # ------------------
+  # Snowplow Package https://hub.getdbt.com/fishtown-analytics/snowplow/latest/
+  # ------------------
   snowplow:
     schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
     post-hook:
@@ -94,23 +101,39 @@ models:
       'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
       'snowplow:pass_through_columns': ['glm_source','cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
 
-  # Snowflake Spend Package
+  # ------------------
+  # Snowflake Spend Package https://gitlab.com/gitlab-data/snowflake_spend
+  # ------------------
   snowflake_spend:
     materialized: table
     xf:
       schema: analytics
 
+  # ==================
   # GitLab Models
+  # ==================
   gitlab_snowflake:
     materialized: view
 
-    # Dimensional Structure
+    # ------------------
+    # Sources
+    # ------------------
     sources:
-    
+
       airflow:
         materialized: table
         schema: airflow
 
+      customers:
+        schema: customers
+        sensitive:
+          schema: sensitive
+          secure: true
+
+      date:
+        materialized: table
+        schema: date
+        
       dbt:
         materialized: table
         schema: dbt
@@ -136,17 +159,41 @@ models:
       greenhouse:
         schema: greenhouse
 
+      handbook:
+        schema: handbook
+
       license:
         schema: license_db
+
+      netsuite:
+        schema: netsuite
+        sensitive:
+          schema: sensitive
+          secure: true
 
       qualtrics:
         materialized: table
         schema: qualtrics
 
+      pmg:
+        materialized: table
+        schema: pmg
+
       sfdc:
         schema: sfdc
         sensitive:
           schema: sensitive
+          secure: true
+
+      sheetload:
+        schema: sheetload
+
+      snowflake:
+        schema: snowflake
+
+      snowplow:
+        tags: ["product"]
+        schema: snowplow
 
       version:
         tags: ["product"]
@@ -159,10 +206,20 @@ models:
       zuora:
         schema: zuora
 
-
+    # ------------------
+    # Staging
+    # ------------------
     staging:
       schema: staging
       materialized: table
+
+      customers:
+        xf:
+          schema: analytics
+
+      date:
+        schema: analytics
+        materialized: view
 
       engineering:
         materialized: table
@@ -187,18 +244,45 @@ models:
       greenhouse:
         xf:
           schema: sensitive
+          secure: true
         rpt:
+          schema: analytics
+
+      handbook:
+        rpt:
+          schema: analytics
+        xf:
           schema: analytics
 
       license:
         materialized: view
 
+      netsuite:
+        xf:
+          schema: analytics
+
       qualtrics:
+        schema: analytics
+
+      pmg:
         schema: analytics
 
       sfdc:
         xf:
           schema: analytics
+    
+      sheetload:
+        schema: analytics
+
+      snowflake:
+        schema: analytics
+        materialized: view
+
+      snowplow:
+        tags: ["product"]
+        schema: analytics
+        month_partition: 
+          schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
 
       version:
         tags: ["product"]
@@ -211,35 +295,32 @@ models:
         xf:
           schema: analytics
 
+    # ------------------
+    # Marts
+    # ------------------
+    marts:  
+      
+      arr:  
+        materialized: table  
 
+      product_kpis:
+        materialized: table 
+
+      exports:
+        materialized: view
+        schema: exports 
+
+        users_emails:
+          enabled: false
+
+    # ------------------
     # Legacy Structure
+    # ------------------
     bamboohr:
       schema: sensitive
+      secure: true
       base:
         materialized: table
-
-    customers:
-      materialized: table
-      base:
-          schema: staging
-      intermediate:
-          schema: staging
-
-    date:
-      materialized: table
-
-    handbook:
-        materialized: table
-         
-    marts:
-        revenue:
-        base:
-        materialized: table   
-         
-    netsuite:
-      materialized: table
-      base:
-        schema: staging
 
     pipe2spend:
       enabled: false
@@ -257,14 +338,6 @@ models:
     smau_events:
       tags: ["product"]
       materialized: table
-
-    snowplow:
-      tags: ["product"]
-      xf:
-        materialized: table
-
-    snowplow_combined:
-      tags: ["product"]
 
 
 # ======

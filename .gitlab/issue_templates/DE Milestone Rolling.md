@@ -1,9 +1,9 @@
 
 # Steps to roll Milestones
 
-[Handbook Entry](https://about.gitlab.com/handbook/business-ops/data-team/#milestone-planning)
+[Handbook Entry](https://about.gitlab.com/handbook/business-ops/data-team/how-we-work/#milestone-planning)
 
-- [ ] Close Current Milestone
+- [ ] Close Current [Milestone](https://gitlab.com/groups/gitlab-data/-/milestones)
 - [ ] Remove `(current)` from closed milestone
 - [ ] Update New Milestone with `(current)` at end of name
 - [ ] Add `missed milestone` label to all issues that are rolling over 
@@ -12,3 +12,5 @@
 - [ ] Update the [DE - Next Milestone](https://gitlab.com/groups/gitlab-data/-/boards/1689356) board to point at the following Milestone
 - [ ] [Create Issue](https://gitlab.com/gitlab-data/analytics/issues/new?issuable_template=DE%20Milestone%20Rolling) for next milestone rolling with Due Date set.
 - [ ] [Create Issue](https://gitlab.com/gitlab-data/analytics/issues/new?issuable_template=DE%20Milestone%20Planning) for the next milestone planning
+
+/label ~"Priority::1-Ops" 

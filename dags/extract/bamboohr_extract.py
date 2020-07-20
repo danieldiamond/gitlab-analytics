@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.models import Variable
+from kubernetes_helpers import get_affinity, get_toleration
 from airflow_utils import (
     DATA_IMAGE,
     clone_and_setup_extraction_cmd,
@@ -39,6 +40,7 @@ default_args = {
     "sla": timedelta(hours=12),
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1),
+    "dagrun_timeout": timedelta(hours=6),
 }
 
 # Create the DAG
@@ -68,6 +70,8 @@ bamboohr_extract = KubernetesPodOperator(
         SNOWFLAKE_LOAD_PASSWORD,
     ],
     env_vars=pod_env_vars,
+    affinity=get_affinity(False),
+    tolerations=get_toleration(False),
     arguments=[bamboohr_extract_cmd],
     do_xcom_push=True,
     xcom_push=True,

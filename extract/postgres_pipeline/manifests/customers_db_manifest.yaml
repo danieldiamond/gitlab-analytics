@@ -27,6 +27,10 @@ tables:
       , billable
       , confirmed_at
       , confirmation_sent_at
+      , first_name
+      , last_name
+      , email
+      , phone_number
       FROM customers
     export_db: EXPORT_DB
     export_schema: 'customers'

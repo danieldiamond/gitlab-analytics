@@ -8,7 +8,7 @@ Please add a number for days you'll be working this milestone. Engineers should 
 - @jjstark: 
 - @msendal: 
 - @m_walker: 
-- `@tayloramurphy: 0`
+- @tayloramurphy:
 - @paul_armstrong:
 
 **Total engineering days**: <!-- sum the above engineering days -->
@@ -16,17 +16,16 @@ Please add a number for days you'll be working this milestone. Engineers should 
 
 ---
 
-# Prioritized Issues :8ball: 
+# Milestone Themes
 
-This section is for adding issues that have been prioritized by either the data team or function groups. Prioritization should be discussed in the comments. **This section should be filled out by data engineers.** If you would like to have an issue added to this section please comment on this issue and tag the data engineer you work with. If you're not sure which data engineer you're working with you can tag @jjstark. 
+## P1 - Ops
+- 
 
-*this section is not meant to be a complete list of issues that will be completed or addressed on a milestone, but rather represent those issues that are most important and that warrant the awareness of the data engineering team and leadership.* 
+## P2 - OKRs
+- 
 
-## OKR Issues :dart: 
-1. <!-- link here --> 
-
-## Function Groups :two_women_holding_hands: 
-1. <!-- link here -->
+## P3 - Other
+- 
 
 ---
 
@@ -49,4 +48,4 @@ We assume that preceding milestone's velocity is a good predictor of the followi
 
 ---
 <!-- DO NOT EDIT BELOW THIS LINE -->
-/label ~Housekeeping ~Infrastructure ~Planning
+/label ~Housekeeping ~Infrastructure ~Planning ~"Priority::1-Ops" 

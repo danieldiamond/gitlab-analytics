@@ -22,12 +22,20 @@
       SUM(hired_manager)                                AS hired_manager,
       SUM(separated_manager)                            AS separated_manager,
 
+      SUM(headcount_start_management)                   AS headcount_start_management,
+      SUM(headcount_end_management)                     AS headcount_end_management,
+      (SUM(headcount_start_management) 
+        + SUM(headcount_end_management))/2              AS headcount_average_management,
+      SUM(hired_management)                             AS hired_management,
+      SUM(separated_management)                         AS separated_management,
+            
       SUM(headcount_start_contributor)                  AS headcount_start_contributor,
       SUM(headcount_end_contributor)                    AS headcount_end_individual_contributor,
       (SUM(headcount_start_contributor) 
         + SUM(headcount_end_contributor))/2             AS headcount_average_contributor,
       SUM(hired_contributor)                            AS hired_contributor,
-      SUM(separated_contributor)                        AS separated_contributor
+      SUM(separated_contributor)                        AS separated_contributor,
+      SUM(IFF(is_promotion = TRUE,1,0))                 AS promotion                                
       " %}
 
 
@@ -98,22 +106,33 @@ WITH dates AS (
           AND job_role_modified = 'Senior Leadership',1,0)                       AS separated_leaders,
       
       IFF(dates.start_date = date_actual 
-          AND job_role = 'Manager',1,0)                                          AS headcount_start_manager,
+          AND job_role_modified = 'Manager',1,0)                                 AS headcount_start_manager,
       IFF(dates.end_date = date_actual
-          AND job_role = 'Manager',1,0)                                          AS headcount_end_manager,
+          AND job_role_modified = 'Manager',1,0)                                 AS headcount_end_manager,
       IFF(is_hire_date = True 
-          AND job_role = 'Manager',1,0)                                          AS hired_manager,
+          AND job_role_modified = 'Manager',1,0)                                 AS hired_manager,
       IFF(is_termination_date = True
-          AND job_role = 'Manager',1,0)                                          AS separated_manager,
+          AND job_role_modified = 'Manager',1,0)                                 AS separated_manager,
+
+      IFF(dates.start_date = date_actual 
+          AND job_role_modified != 'Individual Contributor',1,0)                 AS headcount_start_management,
+      IFF(dates.end_date = date_actual
+          AND job_role_modified != 'Individual Contributor',1,0)                 AS headcount_end_management,
+      IFF(is_hire_date = True 
+          AND job_role_modified != 'Individual Contributor',1,0)                 AS hired_management,
+      IFF(is_termination_date = True
+          AND job_role_modified != 'Individual Contributor',1,0)                 AS separated_management,   
 
        IFF(dates.start_date = date_actual 
-          AND job_role = 'Individual Contributor',1,0)                           AS headcount_start_contributor,
+          AND job_role_modified = 'Individual Contributor',1,0)                  AS headcount_start_contributor,
       IFF(dates.end_date = date_actual
-          AND job_role = 'Individual Contributor',1,0)                           AS headcount_end_contributor,
+          AND job_role_modified = 'Individual Contributor',1,0)                  AS headcount_end_contributor,
       IFF(is_hire_date = True 
-          AND job_role = 'Individual Contributor',1,0)                           AS hired_contributor,
+          AND job_role_modified = 'Individual Contributor',1,0)                  AS hired_contributor,
       IFF(is_termination_date = True
-          AND job_role = 'Individual Contributor',1,0)                           AS separated_contributor                
+          AND job_role_modified = 'Individual Contributor',1,0)                  AS separated_contributor,
+    
+      is_promotion                         
     FROM dates
     LEFT JOIN employees
       ON DATE_TRUNC(month,dates.start_date) = DATE_TRUNC(month, employees.date_actual)

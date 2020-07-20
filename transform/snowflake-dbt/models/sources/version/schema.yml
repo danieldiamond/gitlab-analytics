@@ -4,58 +4,64 @@ models:
     - name: version_avg_cycle_analytics_source
       description: Cycle analytics data from self-managed instances https://docs.gitlab.com/ee/user/analytics/cycle_analytics.html.
       columns:
-         - name: avg_cycle_analytics_id
-           tests:
-               - not_null
-               - unique
+        - name: avg_cycle_analytics_id
+          tests:
+            - not_null
+            - unique
     
-    - name: version_conversational_development_indices
-      description: Conversational development index information by usage data id
+    - name: version_conversational_development_indices_source
+      description: Conversational development index information by usage data id.
       columns:
-         - name: id
-           tests: 
-               - not_null
-         - name: usage_data_id
-           tests:
-               - not_null                
+        - name: id
+          tests: 
+            - not_null
+        - name: usage_data_id
+          tests:
+            - not_null    
+            
+    - name: version_current_host_stats_source
+      description: Current statistics for self-managed instances.
+      columns:
+        - name: host_stat_id
+          tests:
+            - not_null
+            - unique
+        - name: host_id
+          tests:
+            - not_null
 
     - name: version_hosts_source
+      description: Basic information for self-managed instances.
       columns:
-          - name: host_id
-            tests:
-                - not_null
-                - unique
-
-    - name: version_licenses_source
-      columns:
-          - name: license_id
-            tests:
-                - not_null
-                - unique
+        - name: host_id
+          tests:
+            - not_null
+            - unique
 
     - name: version_usage_data_source
+      description: Primary data source for usage ping https://docs.gitlab.com/ee/development/telemetry/usage_ping.html.
       columns:
-          - name: id
-            tests:
-                - not_null
-                - unique
-          - name: uuid
+        - name: id
+          tests:
+            - not_null
+            - unique
+        - name: uuid
 
     - name: version_version_checks_source
-      description: Version check data from self-managed instances
+      description: Version check data from self-managed instances.
       columns:
-          - name: id
-            tests:
-                - not_null
-                - unique
-          - name: host_id
-            tests:
-                - not_null
+        - name: id
+          tests:
+            - not_null
+            - unique
+        - name: host_id
+          tests:
+            - not_null
 
     - name: version_versions_source
-      description: Vulnerability information by version number
+      description: Vulnerability information by version number.
       columns:
-          - name: id
-            tests:
-                - not_null
-                - unique            
+        - name: id
+          tests:
+            - not_null
+            - unique            

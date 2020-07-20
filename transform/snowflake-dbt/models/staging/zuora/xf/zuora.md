@@ -1,6 +1,6 @@
 {% docs saas_charges_with_namespace_id %}
 
-This model joins together zuora data source with Customers App data souce and GitLab.com App data source. It allows to map when possible a `charge_id` (zuora) to a `customer_id` (customers) and then to a `namespace_id` (gitlab). 
+This model joins together zuora data source with Customers App data souce and GitLab.com App data source. It allows to map when possible a `charge_id` (zuora) to a `customer_id` (customers) and then to a `namespace_id` (gitlab).
 
 {% enddocs %}
 
@@ -80,22 +80,6 @@ Putting it all together, the end result is a model with one row for every Charge
 
 {% enddocs %}
 
-{% docs zuora_invoice_charges_mrr_amortized %}
-
-This model calculates MRR based on subscription charges that have been invoiced to the customer. The MRR calculated from invoices should match the MRR found from the subscription charges only and any variances should be investigated. The Zuora rules engine calculates MRR using charges with effective start dates less than or equal to the first day of the month and with effective end dates greater than the first day of the month. The MRR total on the first of the month is considered the MRR from the prior month end.
-
-The below query will pull MRR by month. You can add additional dimensions to the query to build out your analysis.
-
-SELECT
-  mrr_month,
-  SUM(mrr)  mrr
-FROM "ANALYTICS"."ANALYTICS"."ZUORA_INVOICE_CHARGES_MRR_AMORTIZED"
-WHERE mrr_month < DATE_TRUNC('month',CURRENT_DATE)
-GROUP BY 1
-ORDER BY 1 DESC
-
-{% enddocs %}
-
 {% docs zuora_monthly_recurring_revenue %}
 
 This model is built using the same logic as the Zuora UI out of the box MRR Trend Report. The report looks at the charges associated with subscriptions, along with their effective dates and subscription statuses, and calculates MRR. The Zuora rules engine calculates MRR using charges with effective start dates less than or equal to the first day of the month and with effective end dates greater than the first day of the month. The MRR total on the first of the month is considered the MRR from the prior month end.  
@@ -114,7 +98,7 @@ ORDER BY 1 DESC
 
 {% docs zuora_mrr_totals %}
 
-This model unions the base charges and the trueup charges together. For each month we calculate the number of months between the start of the cohort and the current month. This enables the data to be easily filtered in the BI tool so you can look across multiple cohorts and limit the months into the future to the same number. This value should never be less than 0.
+For each month we calculate the number of months between the start of the cohort and the current month. This enables the data to be easily filtered in the BI tool so you can look across multiple cohorts and limit the months into the future to the same number. This value should never be less than 0.
 
 We then aggregate the data into one row per Month for each unique (subscription || product || unit of measurement) combination. At this time, this is the most granular value (even more than subscription) and will be the foundation for calculation retention by product.
 

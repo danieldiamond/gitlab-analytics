@@ -17,6 +17,10 @@ from airflow_utils import (
     clone_repo_cmd,
 )
 from kube_secrets import (
+    SALT,
+    SALT_EMAIL,
+    SALT_IP,
+    SALT_NAME,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_PASSWORD,
     SNOWFLAKE_TRANSFORM_ROLE,
@@ -46,6 +50,7 @@ default_args = {
     "sla": timedelta(hours=12),
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
+    "dagrun_timeout": timedelta(hours=6),
 }
 
 # Create the DAG
@@ -64,6 +69,10 @@ dbt_snapshot = KubernetesPodOperator(
     task_id="dbt-snapshots",
     name="dbt-snapshots",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
@@ -109,6 +118,10 @@ dbt_snapshot_models_run = KubernetesPodOperator(
     name="dbt-run-model-snapshots",
     trigger_rule="all_done",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,
@@ -140,6 +153,10 @@ dbt_test_snapshot_models = KubernetesPodOperator(
     name="dbt-test-snapshots",
     trigger_rule="all_done",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,

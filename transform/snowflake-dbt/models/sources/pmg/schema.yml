@@ -1,0 +1,30 @@
+version: 2
+
+models:
+    - name: paid_digital
+      description: '{{ doc("pmg_paid_digital") }}'
+      columns:
+        - name: reporting_date
+          tests:
+            - not_null
+        - name: medium
+        - name: source
+        - name: campaign
+        - name: campaign_code
+        - name: region
+        - name: targeting
+        - name: ad_unit
+        - name: brand_not_brand
+        - name: match_unit
+        - name: content
+        - name: team
+        - name: budget
+        - name: data_source
+        - name: impressions
+        - name: clicks
+        - name: conversion
+        - name: cost
+        - name: ga_conversion
+        - name: compaign_code_type
+        - name: content_type
+

@@ -1,8 +1,3 @@
-{{ config({
-    "materialized": "table"
-    })
-}}
-
 WITH source AS (
 
     SELECT *
@@ -13,20 +8,27 @@ WITH source AS (
 ), intermediate AS (
 
     SELECT 
-          NULLIF(d.value['employeeNumber'],'')::BIGINT                    AS employee_number,
-          d.value['id']::BIGINT                                           AS employee_id,
-          d.value['firstName']::VARCHAR                                   AS first_name,
-          d.value['lastName']::VARCHAR                                    AS last_name,
-          NULLIF(d.value['hireDate']::VARCHAR,'0000-00-00')::DATE         AS hire_date,
-          NULLIF(d.value['terminationDate']::VARCHAR,'0000-00-00')::DATE  AS termination_date,
-          d.value['customNationality']::VARCHAR                           AS nationality,
-          d.value['customRegion']::VARCHAR                                AS region,
-          d.value['ethnicity']::VARCHAR                                   AS ethnicity,
-          d.value['gender']::VARCHAR                                      AS gender, 
-          d.value['customCandidateID']::BIGINT                            AS greenhouse_candidate_id
+      NULLIF(d.value['employeeNumber'],'')::BIGINT                    AS employee_number,
+      d.value['id']::BIGINT                                           AS employee_id,
+      d.value['firstName']::VARCHAR                                   AS first_name,
+      d.value['lastName']::VARCHAR                                    AS last_name,
+      (CASE WHEN d.value['hireDate']=''
+            THEN NULL
+           WHEN d.value['hireDate']= '0000-00-00'
+            THEN NULL
+           ELSE d.value['hireDate']::VARCHAR END)::DATE               AS hire_date,
+      (CASE WHEN d.value['terminationDate']=''
+            THEN NULL
+           WHEN d.value['terminationDate']= '0000-00-00'
+            THEN NULL
+           ELSE d.value['terminationDate']::VARCHAR END)::DATE        AS termination_date,
+      d.value['customNationality']::VARCHAR                           AS nationality,
+      d.value['customRegion']::VARCHAR                                AS region,
+      d.value['ethnicity']::VARCHAR                                   AS ethnicity,
+      d.value['gender']::VARCHAR                                      AS gender, 
+      d.value['customCandidateID']::BIGINT                            AS greenhouse_candidate_id
     FROM source,
-    LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), outer => true) d
-
+    LATERAL FLATTEN(INPUT => PARSE_JSON(jsontext['employees']), outer => true) d
 
 )
 
@@ -37,4 +39,4 @@ WHERE hire_date IS NOT NULL
     AND (LOWER(first_name) NOT LIKE '%greenhouse test%'
          and LOWER(last_name) NOT LIKE '%test profile%'
          and LOWER(last_name) != 'test-gitlab')
-    AND employee_id != 42039
+    AND employee_id  NOT IN (42039, 42043)

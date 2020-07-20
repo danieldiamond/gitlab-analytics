@@ -11,11 +11,8 @@ WITH source AS (
     {% if is_incremental() %}
     WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
     {% endif %}
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
 
-),
-
-renamed AS (
+), renamed AS (
 
     SELECT
         id::INTEGER                                  AS id,
@@ -33,7 +30,6 @@ renamed AS (
         created_at::TIMESTAMP                        AS created_at,
         updated_at::TIMESTAMP                        AS updated_at,
         license_id::INTEGER                          AS license_id,
-        stats                                        AS stats_raw,
         mattermost_enabled::BOOLEAN                  AS mattermost_enabled,
         uuid::VARCHAR                                AS uuid,
         edition::VARCHAR                             AS edition,
@@ -63,12 +59,19 @@ renamed AS (
         --smau // never not null
         PARSE_JSON(usage_activity_by_stage)          AS usage_activity_by_stage,
         PARSE_JSON(usage_activity_by_stage_monthly)  AS usage_activity_by_stage_monthly,
+        gitaly_clusters::INTEGER                     AS gitaly_clusters,
         gitaly_version::VARCHAR                      AS gitaly_version,
         gitaly_servers::INTEGER                      AS gitaly_servers,
         gitaly_filesystems::VARCHAR                  AS gitaly_filesystems,
         PARSE_JSON(object_store)                     AS object_store,
         dependency_proxy_enabled::BOOLEAN            AS is_dependency_proxy_enabled,
-        PARSE_JSON(counts)                           AS stats_used
+        recording_ce_finished_at::TIMESTAMP          AS recording_ce_finished_at,
+        recording_ee_finished_at::TIMESTAMP          AS recording_ee_finished_at,
+        PARSE_JSON(COALESCE(counts, stats))          AS stats_used,
+        ingress_modsecurity_enabled::boolean         AS is_ingress_modsecurity_enabled,
+        PARSE_JSON(topology)                         AS topology,
+        app_server_type::VARCHAR                     AS app_server_type,
+        grafana_link_enabled::BOOLEAN                AS is_grafana_link_enabled
     FROM source
     WHERE CHECK_JSON(counts) IS NULL
 

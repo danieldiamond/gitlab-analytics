@@ -1,8 +1,3 @@
-{{ config({
-    "materialized": "table"
-    })
-}}
-
 WITH source AS (
 
     SELECT *
@@ -17,11 +12,15 @@ WITH source AS (
       d.value['id']::BIGINT                                           AS employee_id,
       d.value['firstName']::VARCHAR                                   AS first_name,
       d.value['lastName']::VARCHAR                                    AS last_name,      
-      NULLIF(d.value['hireDate']::VARCHAR,'0000-00-00')::DATE         AS hire_date,
+      (CASE WHEN d.value['hireDate']=''
+            THEN NULL
+           WHEN d.value['hireDate']= '0000-00-00'
+            THEN NULL
+           ELSE d.value['hireDate']::VARCHAR END)::DATE               AS hire_date,
       d.value['customLocality']::VARCHAR                              AS locality,
       DATE_TRUNC(day, uploaded_at)                                    AS updated_at
     FROM source,
-    LATERAL FLATTEN(INPUT => parse_json(jsontext['employees']), outer => true) d
+    LATERAL FLATTEN(INPUT => PARSE_JSON(jsontext['employees']), outer => true) d
 
 )
  
@@ -36,7 +35,7 @@ WHERE hire_date IS NOT NULL
         AND locality IS NOT NULL
         AND LOWER(last_name) NOT LIKE '%test profile%'
         AND LOWER(last_name) != 'test-gitlab')
-  AND employee_id != 42039
+  AND employee_id NOT IN (42039, 42043)
 
 ---Note: the where clause is removing any test accounts and employee_id 42039 is also a test account
 

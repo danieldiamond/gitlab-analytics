@@ -21,6 +21,7 @@ from kube_secrets import (
     SNOWFLAKE_LOAD_USER,
     SNOWFLAKE_LOAD_WAREHOUSE,
 )
+from kubernetes_helpers import get_affinity, get_toleration
 
 
 env = os.environ.copy()
@@ -36,6 +37,7 @@ default_args = {
     "sla": timedelta(hours=12),
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1),
+    "dagrun_timeout": timedelta(hours=6),
 }
 
 dag = DAG(
@@ -69,6 +71,8 @@ qualtrics_operator = KubernetesPodOperator(
             "QUALTRICS_DATA_CENTER": "eu",
         },
     },
+    affinity=get_affinity(False),
+    tolerations=get_toleration(False),
     arguments=[qualtrics_extract_command],
     dag=dag,
 )

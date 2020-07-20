@@ -11,6 +11,10 @@ from airflow_utils import (
     slack_failed_task,
 )
 from kube_secrets import (
+    SALT,
+    SALT_EMAIL,
+    SALT_IP,
+    SALT_NAME,
     SNOWFLAKE_ACCOUNT,
     SNOWFLAKE_PASSWORD,
     SNOWFLAKE_TRANSFORM_ROLE,
@@ -33,6 +37,7 @@ default_args = {
     "sla": timedelta(hours=12),
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
+    "dagrun_timeout": timedelta(hours=6),
 }
 
 # Create the DAG. Run daily at 04:05
@@ -50,6 +55,10 @@ dbt_backups = KubernetesPodOperator(
     task_id="dbt-backups",
     name="dbt-backups",
     secrets=[
+        SALT,
+        SALT_EMAIL,
+        SALT_IP,
+        SALT_NAME,
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
         SNOWFLAKE_PASSWORD,

@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: handbook_merge_requests_source
+    description: Source layer for Hanbook Merge Requests for cleaning and renaming
+    columns:
+      - name: file_diffs
+      - name: merge_request_version_diffs
+      - name: plain_diff_url_path
+      - name: source_branch_name
