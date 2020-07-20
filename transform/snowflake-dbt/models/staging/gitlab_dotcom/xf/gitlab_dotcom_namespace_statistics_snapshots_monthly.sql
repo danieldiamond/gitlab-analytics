@@ -14,7 +14,7 @@ WITH date_details AS (
 ), namespace_statistics_snapshots_history AS (
   
     SELECT
-      date_details.date_actual)                      AS date_actual,
+      date_details.date_actual)                     AS date_actual,
       DATE_TRUNC('month', date_details.date_actual) AS snapshot_month,
       namespace_statistics_snapshots.namespace_id,
       namespace_statistics_snapshots.shared_runners_seconds,
