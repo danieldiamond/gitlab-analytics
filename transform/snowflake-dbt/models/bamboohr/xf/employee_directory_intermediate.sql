@@ -46,9 +46,13 @@ WITH RECURSIVE employee_directory AS (
 
 ), promotion AS (
 
-    SELECT *
+    SELECT
+      employee_id,
+      effective_date,
+      compensation_change_reason
     FROM {{ ref('bamboohr_compensation') }}
     WHERE compensation_change_reason = 'Promotion'
+    GROUP BY 1,2,3
 
 ), direct_reports AS (
   
@@ -173,7 +177,7 @@ WITH RECURSIVE employee_directory AS (
              ELSE COALESCE(job_role.job_role, 
                            job_info_mapping_historical.job_role,
                            department_info.job_role) END                           AS job_role_modified,
-      IFNULL(compensation_change_reason,0,1)                                       AS promotion_flag                        
+          IFF(compensation_change_reason IS NOT NULL,TRUE,FALSE)                   AS is_promotion                                                                        
     FROM date_details
     LEFT JOIN employee_directory
       ON hire_date::DATE <= date_actual
