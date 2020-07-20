@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 WITH date_details AS (
   
     SELECT *
@@ -10,14 +8,14 @@ WITH date_details AS (
 
    SELECT
      *,
-     IFNULL(valid_to, DATEADD('days', 1, CURRENT_DATE)) AS valid_to_
+     IFNULL(valid_to, CURRENT_TIMESTAMP) AS valid_to_
    FROM {{ ref('gitlab_dotcom_project_statistics_snapshots_base') }}
 
 ), project_snapshots_history AS (
   
     SELECT
-      DATEADD('days', -1, date_details.date_actual)                      AS date_actual,
-      DATE_TRUNC('month', DATEADD('days', -1, date_details.date_actual)) AS month,
+      date_details.date_actual                      AS date_actual,
+      DATE_TRUNC('month', date_details.date_actual) AS snapshot_month,
       project_snapshots.project_statistics_id,
       project_snapshots.project_id,
       project_snapshots.namespace_id,
@@ -35,7 +33,7 @@ WITH date_details AS (
 ), project_snapshots_monthly AS (
     
     SELECT
-      month,
+      snapshot_month,
       project_statistics_id,
       project_id,
       namespace_id,
@@ -47,7 +45,7 @@ WITH date_details AS (
       shared_runners_seconds,
       last_update_started_at
     FROM project_snapshots_history
-    QUALIFY ROW_NUMBER() OVER(PARTITION BY month, project_id ORDER BY date_actual DESC) = 1
+    QUALIFY ROW_NUMBER() OVER(PARTITION BY snapshot_month, project_id ORDER BY date_actual DESC) = 1
   
 )
 
