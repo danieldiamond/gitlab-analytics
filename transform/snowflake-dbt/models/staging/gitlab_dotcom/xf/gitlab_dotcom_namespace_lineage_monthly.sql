@@ -3,10 +3,10 @@ WITH namespace_snapshots_monthly AS (
     SELECT *
     FROM {{ ref('gitlab_dotcom_namespace_snapshots_monthly') }}
 
-), recursive_namespace_ultimate(month, namespace_id, parent_id, upstream_lineage) AS (
+), recursive_namespace_ultimate(snapshot_month, namespace_id, parent_id, upstream_lineage) AS (
     
    SELECT
-     month,
+     snapshot_month,
      namespace_snapshots_monthly.namespace_id,
      namespace_snapshots_monthly.parent_id,
      TO_ARRAY(namespace_id)                                      AS upstream_lineage
@@ -16,14 +16,14 @@ WITH namespace_snapshots_monthly AS (
    UNION ALL
   
    SELECT
-     iter.month,
+     iter.snapshot_month,
      iter.namespace_id,
      iter.parent_id,
      ARRAY_INSERT(anchor.upstream_lineage, 0, iter.namespace_id)  AS upstream_lineage
    FROM recursive_namespace_ultimate AS anchor
    INNER JOIN namespace_snapshots_monthly AS iter
      ON iter.parent_id = anchor.namespace_id
-     AND iter.month = anchor.month
+     AND iter.snapshot_month = anchor.snapshot_month
   
 ), namespace_lineage_monthly AS (
     
