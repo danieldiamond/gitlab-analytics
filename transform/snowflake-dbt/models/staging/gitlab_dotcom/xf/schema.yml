@@ -528,6 +528,6 @@ models:
     - name: is_issue_closed
     - name: state
     - name: assignee
-    - name: used_diversity_booleanstrings   
-    - name: no_answer
-    - name: did_not_use
+    - name: is_using_diversity_strings   
+    - name: is_not_using_diversity_srings
+    - name: has_no_answer

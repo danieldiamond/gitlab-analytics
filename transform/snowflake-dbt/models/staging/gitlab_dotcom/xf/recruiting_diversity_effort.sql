@@ -42,7 +42,7 @@ WITH issues AS (
         'Did not Use', NULL)                                    AS is_not_using_diversity_srings,
       IFF(is_using_diversity_strings IS NULL 
           AND is_not_using_diversity_srings IS NULL, 
-          'No Answer',NULL)                                     AS has_no_Answer
+          'No Answer', NULL)                                    AS has_no_Answer
     FROM issues
     LEFT JOIN agg_assignee 
       ON agg_assignee.issue_id = issues.issue_id
