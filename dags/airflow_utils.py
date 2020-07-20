@@ -12,6 +12,9 @@ DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
 DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
 PERMIFROST_IMAGE = "registry.gitlab.com/gitlab-data/permifrost:v0.1.1"
 
+# This value is set based on the commit hash setter task in dbt_snapshot
+pull_commit_hash = """export GIT_COMMIT="{{ ti.xcom_pull(dag_id="dbt_snapshots", 
+include_prior_dates=True, task_ids="dbt-commit-hash-setter", key="return_value")["commit_hash"] }}" """
 
 def split_date_parts(day: date, partition: str) -> List[dict]:
 

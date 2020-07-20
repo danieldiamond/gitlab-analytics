@@ -17,6 +17,7 @@ from airflow_utils import (
     l_warehouse,
     slack_failed_task,
     xs_warehouse,
+    pull_commit_hash,
 )
 from kube_secrets import (
     SALT,
@@ -39,11 +40,6 @@ from kube_secrets import (
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 pod_env_vars = {**gitlab_pod_env_vars, **{}}
-
-# This value is set based on the commit hash setter task in dbt_snapshot
-pull_commit_hash = """export GIT_COMMIT="{{ ti.xcom_pull(dag_id="dbt_snapshots", 
-include_prior_dates=True, task_ids="dbt-commit-hash-setter", key="return_value")["commit_hash"] }}" """
-
 
 # Default arguments for the DAG
 default_args = {
