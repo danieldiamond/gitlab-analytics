@@ -81,34 +81,34 @@ WITH fct_charges AS (
 
 ), dim_dates AS (
 
-      SELECT *
-      FROM {{ ref('dim_dates') }}
+    SELECT *
+    FROM {{ ref('dim_dates') }}
 
 ), snapshot_days AS (
 
     SELECT DISTINCT
-      DATE_TRUNC('day', date_day) AS valid_at
+     TIMESTAMP_TZ_FROM_PARTS(year_actual, month_actual, day_of_month, 23, 59, 0, 'America/Los_Angeles') AS valid_at
     FROM {{ ref ("date_details") }}
     WHERE date_day >= (SELECT COALESCE(MAX(snapshot_date),'2020-03-01') from arr_data_mart_incr)
-      AND date_day <= '{{ var('valid_at') }}'
+      AND date_day <= '{{ var('valid_at') }}::DATE'
 
 ),charges_month_by_month AS (
 
-      SELECT
+    SELECT
         snapshot_days.valid_at::DATE AS snapshot_date,
         base_charges.*,
         dim_dates.date_id,
         dateadd('month', -1, dim_dates.date_actual)  AS reporting_month
-      FROM snapshot_days, base_charges
-      INNER JOIN dim_dates
-        ON base_charges.effective_start_date_id <= dim_dates.date_id
+    FROM snapshot_days, base_charges
+    INNER JOIN dim_dates
+      ON base_charges.effective_start_date_id <= dim_dates.date_id
         AND (base_charges.effective_end_date_id > dim_dates.date_id OR base_charges.effective_end_date_id IS NULL)
         AND dim_dates.day_of_month = 1
-      WHERE subscription_status NOT IN ('Draft', 'Expired')
-        AND mrr IS NOT NULL
-        AND mrr != 0
+    WHERE subscription_status NOT IN ('Draft', 'Expired')
+      AND mrr IS NOT NULL
+      AND mrr != 0
 
-  )
+)
 
   SELECT
     --primary_key
