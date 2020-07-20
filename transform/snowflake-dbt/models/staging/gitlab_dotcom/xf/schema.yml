@@ -11,7 +11,7 @@ models:
         tests:
           - not_null
       - name: key_value
-      - name: updated_at
+      - name: created_at
         tests:
           - not_null
 

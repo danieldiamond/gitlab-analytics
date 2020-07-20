@@ -14,7 +14,7 @@ WITH base AS (
       audit_event_id,
       key_name,
       {{ nohash_sensitive_columns('gitlab_dotcom_audit_event_details', 'key_value') }},
-      updated_at
+      created_at
     FROM base
     WHERE key_name = 'target_details'
 

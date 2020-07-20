@@ -1086,11 +1086,18 @@ roles:
             - postgres_pipeline
         warehouses:
             - analyst_xs
+
     - dknox:
         member_of:
             - analyst_engineering
         warehouses:
             - analyst_xs
+
+    - dparker:
+        member_of:
+            - reporter
+        warehouses:
+            - reporting
 
     - dtang:
         member_of:
@@ -1286,6 +1293,10 @@ roles:
     - mdewji:
         member_of:
             - postgres_pipeline
+        warehouses:
+            - reporting
+
+    - mjozenazemian:
         warehouses:
             - reporting
 
@@ -1549,6 +1560,11 @@ users:
         member_of:
             - dknox
     
+    - dparker:
+        can_login: yes
+        member_of:
+            - dparker
+
     - dtang:
         can_login: yes
         member_of:
@@ -1691,6 +1707,12 @@ users:
         can_login: yes
         member_of:
             - mdewji
+            - securityadmin
+    
+    - mjozenazemian:
+        can_login: yes
+        member_of:
+            - mjozenazemian
             - securityadmin
 
     - mpeychet:
