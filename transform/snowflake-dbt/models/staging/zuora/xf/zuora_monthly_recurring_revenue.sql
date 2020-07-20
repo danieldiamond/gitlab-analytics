@@ -79,8 +79,8 @@ WITH date_table AS (
       date_trunc('month', zuora_subscription.subscription_end_date::DATE)       AS sub_end_month,
       subscription_start_date::DATE                                             AS subscription_start_date,
       subscription_end_date::DATE                                               AS subscription_end_date,
-      date_trunc('month', zuora_rpc.effective_start_date::DATE)                 AS effective_start_month,
-      date_trunc('month', zuora_rpc.effective_end_date::DATE)                   AS effective_end_month,
+      zuora_rpc.effective_start_month,
+      zuora_rpc.effective_end_month,
       zuora_rpc.effective_start_date::DATE                                      AS effective_start_date,
       zuora_rpc.effective_end_date::DATE                                        AS effective_end_date
     FROM zuora_accts
@@ -167,9 +167,9 @@ SELECT
   month_base_mrr.subscription_id,
   month_base_mrr.subscription_name_slugify,
   sub_start_month,
-  date_trunc('month', dateadd('day', -1, subscription_end_date))        AS sub_end_month,
+  sub_end_month,
   effective_start_month,
-  date_trunc('month', dateadd('day', -1, effective_end_date))           AS effective_end_month,
+  effective_end_month,
   country,
   product_category,
   delivery,
