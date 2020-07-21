@@ -28,12 +28,11 @@ from kube_secrets import (
 # Load the env vars into a dict and set Secrets
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
-pod_env_vars = {**gitlab_pod_env_vars, **{}}
-
 # CLONE_DATE will be used to set the timestamp of when clone should
 # tomorrow_ds -  the day after the execution date as YYYY-MM-DD
-pod_env_vars.update({"CLONE_DATE": "{{ tomorrow_ds }}", })
+pod_env_vars = {**gitlab_pod_env_vars, **{"CLONE_DATE": "{{ tomorrow_ds }}"}}
 logging.info(pod_env_vars)
+
 # Default arguments for the DAG
 default_args = {
     "catchup": False,
@@ -53,7 +52,7 @@ dag = DAG(
 
 dbt_cmd = f"""
     {dbt_install_deps_nosha_cmd} &&
-    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars 'valid_at: '{{{ tomorrow_ds }}}' 06:59:00'; 
+    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars 'valid_at: "$CLONE_DATE 06:59:00"'; 
 """
 
 logging.info(dbt_cmd)
