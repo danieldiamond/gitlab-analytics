@@ -65,7 +65,7 @@ seeds:
 # ==================
 vars:
   warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
-  valid_at: '{{ run_started_at.strftime("%Y-%m-%d") }}'
+  valid_at: '{{ run_started_at.strftime("%Y-%m-%d %H:%M:%S%z") }}'
 
   snowplow:
     'snowplow:use_fivetran_interface': false
