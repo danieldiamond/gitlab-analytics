@@ -31,7 +31,7 @@ GIT_BRANCH = env["GIT_BRANCH"]
 # CLONE_DATE will be used to set the timestamp of when clone should
 # tomorrow_ds -  the day after the execution date as YYYY-MM-DD
 pod_env_vars = {
-    "CLONE_DATE": "{ valid_at: {{ ds }} }"
+    "CLONE_DATE": "{ 'valid_at': '{{ ds }} 06:59:00' }"
 }
 
 pod_env_vars = {**gitlab_pod_env_vars, **pod_env_vars}
