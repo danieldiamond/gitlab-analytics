@@ -42,7 +42,17 @@ WITH RECURSIVE employee_directory AS (
 ), employment_status AS (
     
     SELECT * 
-     FROM {{ ref('bamboohr_employment_status_xf') }}
+    FROM {{ ref('bamboohr_employment_status_xf') }}
+
+), promotion AS (
+
+    SELECT
+      employee_id,
+      effective_date,
+      compensation_change_reason
+    FROM {{ ref('bamboohr_compensation') }}
+    WHERE compensation_change_reason = 'Promotion'
+    GROUP BY 1,2,3
 
 ), direct_reports AS (
   
@@ -166,7 +176,8 @@ WITH RECURSIVE employee_directory AS (
             THEN 'Individual Contributor'
              ELSE COALESCE(job_role.job_role, 
                            job_info_mapping_historical.job_role,
-                           department_info.job_role) END                           AS job_role_modified
+                           department_info.job_role) END                           AS job_role_modified,
+          IFF(compensation_change_reason IS NOT NULL,TRUE,FALSE)                   AS is_promotion                                                                        
     FROM date_details
     LEFT JOIN employee_directory
       ON hire_date::DATE <= date_actual
@@ -202,6 +213,9 @@ WITH RECURSIVE employee_directory AS (
       AND job_info_mapping_historical.job_title = department_info.job_title 
       AND job_info_mapping_historical.job_grade_event_rank = 1
       ---tying data based on 2020-02-27 date to historical data --
+    LEFT JOIN promotion
+      ON promotion.employee_id = employee_directory.employee_id
+      AND date_details.date_actual = promotion.effective_date
     WHERE employee_directory.employee_id IS NOT NULL
 
 ), base_layers as (

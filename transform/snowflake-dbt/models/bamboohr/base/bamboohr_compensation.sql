@@ -13,7 +13,7 @@ WITH source AS (
 
 ), renamed AS (
 
-      SELECT
+      SELECT DISTINCT
             data_by_row['id']::bigint          AS compensation_update_id,
             data_by_row['employeeId']::bigint  AS employee_id,
             data_by_row['startDate']::date     AS effective_date,

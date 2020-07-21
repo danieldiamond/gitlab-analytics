@@ -37,7 +37,8 @@ WITH employee_directory_intermediate AS (
       is_termination_date,
       hire_date,
       cost_center,
-      layers
+      layers,
+      IFF(sales_geo_differential!='n/a - Comp Calc', TRUE, FALSE) AS exclude_from_location_factor
     FROM employee_directory_intermediate
 
 ), final AS (

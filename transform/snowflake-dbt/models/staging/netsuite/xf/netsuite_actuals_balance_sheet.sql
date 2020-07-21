@@ -101,6 +101,8 @@ WITH accounts AS (
      SELECT
        transaction_lines.transaction_id,
        transaction_lines.transaction_line_id,
+       transaction_lines.memo,
+       transaction_lines.entity_name,
        transactions.document_id,
        transactions.transaction_type,
        transaction_lines.subsidiary_id,
@@ -180,6 +182,9 @@ WITH accounts AS (
 
      SELECT
        transactions_with_converted_amounts.document_id,
+       transactions_with_converted_amounts.memo,
+       transactions_with_converted_amounts.entity_name,
+       departments.parent_department_name,
        departments.department_name,
        classes.class_name,
        transactions_with_converted_amounts.transaction_type,
@@ -266,12 +271,15 @@ WITH accounts AS (
                                                                    WHERE parent_id IS NULL)
          AND LOWER(accounts.account_type) != 'statistical'
          AND accounts.account_number != '3035'
-        {{ dbt_utils.group_by(n=13) }}
+        {{ dbt_utils.group_by(n=16) }}
 
        UNION ALL
 
        SELECT
          transactions_with_converted_amounts.document_id,
+         transactions_with_converted_amounts.memo,
+         transactions_with_converted_amounts.entity_name,
+         departments.parent_department_name,
          departments.department_name,
          classes.class_name,
          transactions_with_converted_amounts.transaction_type,
@@ -312,12 +320,14 @@ WITH accounts AS (
                                                                    WHERE parent_id IS NULL)
          AND LOWER(accounts.account_type) != 'statistical'
          AND accounts.account_number != '3035'
-         {{ dbt_utils.group_by(n=8) }}
+         {{ dbt_utils.group_by(n=11) }}
 
 ), balance_sheet_grouping AS (
 
       SELECT
         document_id,
+        memo,
+        entity_name,
         transaction_type,
         account_id,
         account_name,
@@ -325,6 +335,7 @@ WITH accounts AS (
         unique_account_number,
         account_number || ' - ' || account_name   AS unique_account_name,
         account_type,
+        parent_department_name,
         department_name,
         class_name,
         CASE

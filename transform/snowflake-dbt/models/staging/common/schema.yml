@@ -240,17 +240,17 @@ models:
         description: Specifies the type of charge
 
   - name: dim_accounts_valid_at
-    description: "Dimension table representing each individual account with details of person to bill for the account. Excludes deleted and test accounts"
+    description: Dimension table representing each individual account with details of person to bill for the account. Excludes deleted and test accounts. Required variable valid_at is timezone sensitive
 
   - name: dim_subscriptions_valid_at
-    description: "Parameterized model to recreate dimension table representing subscription details as in Zuora at given date"
+    description: Parameterized model to recreate dimension table representing subscription details as in Zuora at given date. Required variable valid_at is timezone sensitive
 
   - name: fct_charges_valid_at
-    description: "Factual table with all rate plan charges coming from subscriptions or an amendment to a subscription "
+    description: Factual table with all rate plan charges coming from subscriptions or an amendment to a subscription. Required variable valid_at is timezone sensitive
 
   - name: fct_invoice_items_agg_valid_at
-    description: "Parameterized model to recreate aggregate fact table with invoice items summarized on charge level at given date {valid_at}"
+    description: Parameterized model to recreate aggregate fact table with invoice items summarized on charge level at given timestamp {valid_at}. Required variable valid_at is timezone sensitive
 
   - name: dim_customers_valid_at
-    description: "Parameterized model to recreate dimension table representing customer details as in SFDC at given date"
+    description: Parameterized model to recreate dimension table representing customer details as in SFDC at given date. Required variable valid_at is timezone sensitive
 

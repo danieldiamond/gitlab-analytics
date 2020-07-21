@@ -16,26 +16,29 @@ WITH charges_agg AS (
 
       SELECT
         charges_agg.*,
-        dim_dates.date_id,
-        dateadd('month', -1, dim_dates.date_actual)  AS reporting_month
+        dim_dates.date_actual  AS arr_month
       FROM charges_agg
       INNER JOIN dim_dates
-        ON charges_agg.effective_start_date_id <= dim_dates.date_id
-        AND (charges_agg.effective_end_date_id > dim_dates.date_id OR charges_agg.effective_end_date_id IS NULL)
+        ON charges_agg.effective_start_month <= dim_dates.date_actual
+        AND (charges_agg.effective_end_month > dim_dates.date_actual OR charges_agg.effective_end_month IS NULL)
         AND dim_dates.day_of_month = 1
       WHERE subscription_status NOT IN ('Draft', 'Expired')
-        AND mrr IS NOT NULL
+        AND charges_agg.charge_type = 'Recurring'
         AND mrr != 0
 
   )
 
   SELECT
     --primary_key
+<<<<<<< HEAD
     {{ dbt_utils.surrogate_key(['reporting_month', 'subscription_name_slugify', 'product_category']) }}
+=======
+    {{ dbt_utils.surrogate_key('arr_month', 'subscription_name_slugify', 'product_category') }}
+>>>>>>> master
                                  AS primary_key,
 
     --date info
-    reporting_month,
+    arr_month,
     subscription_start_month,
     subscription_end_month,
 

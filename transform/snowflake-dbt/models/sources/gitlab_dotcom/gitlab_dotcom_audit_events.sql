@@ -12,10 +12,10 @@ WITH source AS (
   
   {% if is_incremental() %}
 
-  WHERE updated_at >= (SELECT MAX(updated_at) FROM {{this}})
+  WHERE created_at >= (SELECT MAX(created_at) FROM {{this}})
 
   {% endif %}
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) = 1
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY created_at DESC) = 1
 
 ), renamed AS (
 
@@ -25,8 +25,7 @@ WITH source AS (
     type::VARCHAR           AS audit_event_type,
     entity_id::INTEGER      AS entity_id,
     entity_type::VARCHAR    AS entity_type,
-    created_at::TIMESTAMP   AS created_at,
-    updated_at::TIMESTAMP   AS updated_at
+    created_at::TIMESTAMP   AS created_at
 
   FROM source
 
@@ -34,4 +33,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
-ORDER BY updated_at
+ORDER BY created_at
