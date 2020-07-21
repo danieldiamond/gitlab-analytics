@@ -71,7 +71,7 @@ models:
   vars:
     database: "raw"
     warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
-    valid_at: '{{ run_started_at.strftime("%Y-%m-%d") }}'
+    valid_at: '{{ run_started_at.strftime("%Y-%m-%d %H:%M:%S%z") }}'
 
   # ------------------
   # Logging Package https://hub.getdbt.com/fishtown-analytics/logging/latest/
@@ -309,6 +309,9 @@ models:
       exports:
         materialized: view
         schema: exports 
+
+        users_emails:
+          enabled: false
 
     # ------------------
     # Legacy Structure
