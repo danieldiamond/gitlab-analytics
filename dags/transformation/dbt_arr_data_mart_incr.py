@@ -38,7 +38,7 @@ pod_env_vars.update({
 
 # Default arguments for the DAG
 default_args = {
-    "catchup": False,
+    "catchup": True,
     "depends_on_past": False,
     "on_failure_callback": slack_failed_task,
     "params": {"slack_channel_override": "#dbt-runs"},
