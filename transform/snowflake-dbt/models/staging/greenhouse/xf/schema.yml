@@ -8,6 +8,7 @@ models:
         - name: offer_id
         - name: candidate_id
         - name: requisition_id
+        - name: is_prospect
         - name: application_status
         - name: stage_name
         - name: offer_status
@@ -122,6 +123,7 @@ models:
         - name: application_month
         - name: job_id
         - name: requisition_id
+        - name: is_prospect
         - name: current_stage_name
         - name: application_status
         - name: job_name
