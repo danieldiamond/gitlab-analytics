@@ -56,7 +56,7 @@ dag = DAG(
 
 dbt_cmd = f"""
     {dbt_install_deps_nosha_cmd} &&
-    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars valid_at: $CLONE_DATE
+    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars valid_at: "$CLONE_DATE"
 """
 
 logging.info(dbt_cmd)
