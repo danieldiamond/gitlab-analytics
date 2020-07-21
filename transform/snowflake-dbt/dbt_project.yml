@@ -207,6 +207,14 @@ models:
         schema: zuora
 
     # ------------------
+    # Common
+    # ------------------
+
+    common:
+      schema: common
+      materialized: table
+
+    # ------------------
     # Staging
     # ------------------
     staging:
