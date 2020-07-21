@@ -30,7 +30,12 @@ env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 # CLONE_DATE will be used to set the timestamp of when clone should
 # tomorrow_ds -  the day after the execution date as YYYY-MM-DD
-pod_env_vars = {**gitlab_pod_env_vars, **{"CLONE_DATE": "{{ tomorrow_ds }}"}}
+pod_env_vars = {
+    "CLONE_DATE": "{{ tomorrow_ds }}",
+    "CLONE_NAME_DATE": "{{ ds_nodash }}"
+}
+
+pod_env_vars = {**gitlab_pod_env_vars, **pod_env_vars}
 logging.info(pod_env_vars)
 
 # Default arguments for the DAG
