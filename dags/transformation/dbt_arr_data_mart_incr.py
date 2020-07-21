@@ -49,9 +49,9 @@ dag = DAG(
     dag_id="dbt_arr_data_mart_incr",
     default_args=default_args,
     schedule_interval="0 7 * * 0",
-    description="This DAG runs arr_data_mart_incr model using DAG's execution date"
+    description="\nThis DAG runs arr_data_mart_incr model using DAG's execution date"
     " as input parameter for dbt model. The time used as input parameter "
-    "for the dbt model is set to 06:59 am UTC, which is EOD PST."
+    "for the dbt model is set to 06:59 am UTC, which is EOD PST.\n"
     " This way a dagrun generated any time given execution date will "
     "capture a snapshot of MRR data state as per dagrun's execution "
     "date at 06:59 am UTC. ",
