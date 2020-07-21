@@ -32,11 +32,11 @@ pod_env_vars = {**gitlab_pod_env_vars, **{}}
 
 # CLONE_DATE will be used to set the timestamp of when clone should
 # tomorrow_ds -  the day after the execution date as YYYY-MM-DD
-pod_env_vars.update({"CLONE_DATE": "{{ tomorrow_ds }}"})
+pod_env_vars.update({"CLONE_DATE": "{{ tomorrow_ds }}", })
 
 # Default arguments for the DAG
 default_args = {
-    "catchup": True,
+    "catchup": False,
     "depends_on_past": False,
     "on_failure_callback": slack_failed_task,
     "params": {"slack_channel_override": "#dbt-runs"},
@@ -46,15 +46,14 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    "dbt_arr_data_mart_backfill",
+    "dbt_arr_data_mart_incr",
     default_args=default_args,
     schedule_interval="0 7 * * 0",
 )
 
 dbt_cmd = f"""
     {dbt_install_deps_nosha_cmd} &&
-    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars '{{ valid_at : $CLONE_DATE 
-06:59:00 }}'; 
+    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars '{{{valid_at: $CLONE_DATE 06:59:00 }}}'; 
 """
 
 logging.info(dbt_cmd)
@@ -62,8 +61,8 @@ logging.info(dbt_cmd)
 dbt_poc = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
-    task_id="dbt-arr-data-mart-backfill",
-    name="dbt-arr-data-mart-backfill",
+    task_id="dbt-arr-data-mart-incr",
+    name="dbt-arr-data-mart-incr",
     secrets=[
         SALT,
         SALT_EMAIL,
