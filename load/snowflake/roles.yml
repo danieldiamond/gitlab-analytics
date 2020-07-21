@@ -39,7 +39,11 @@ roles:
         warehouses:
             - admin
         member_of:
-            - sysadmin
+            - useradmin
+
+    - useradmin:
+        warehouses:
+            - admin
 
     - sysadmin:
         warehouses:
@@ -1064,8 +1068,6 @@ roles:
             - analyst_xs
 
     - cmccarty:
-        member_of:
-            - securityadmin
         warehouses:
             - admin
 
@@ -1084,11 +1086,18 @@ roles:
             - postgres_pipeline
         warehouses:
             - analyst_xs
+
     - dknox:
         member_of:
             - analyst_engineering
         warehouses:
             - analyst_xs
+
+    - dparker:
+        member_of:
+            - reporter
+        warehouses:
+            - reporting
 
     - dtang:
         member_of:
@@ -1099,7 +1108,6 @@ roles:
     - dtownsend:
         member_of:
             - analyst_engineering
-            - dtownsend
 
     - eburke:
         member_of:
@@ -1288,6 +1296,10 @@ roles:
         warehouses:
             - reporting
 
+    - mjozenazemian:
+        warehouses:
+            - reporting
+
     - mpeychet:
         member_of:
             - analyst_growth
@@ -1298,7 +1310,6 @@ roles:
 
     - mriser:
         member_of:
-            - mriser
             - postgres_pipeline
         warehouses:
             - analyst_xs
@@ -1532,6 +1543,7 @@ users:
         can_login: yes
         member_of:
             - cmccarty
+            - securityadmin
 
     - cmestel:
         can_login: yes
@@ -1548,6 +1560,11 @@ users:
         member_of:
             - dknox
     
+    - dparker:
+        can_login: yes
+        member_of:
+            - dparker
+
     - dtang:
         can_login: yes
         member_of:
@@ -1690,6 +1707,12 @@ users:
         can_login: yes
         member_of:
             - mdewji
+            - securityadmin
+    
+    - mjozenazemian:
+        can_login: yes
+        member_of:
+            - mjozenazemian
             - securityadmin
 
     - mpeychet:

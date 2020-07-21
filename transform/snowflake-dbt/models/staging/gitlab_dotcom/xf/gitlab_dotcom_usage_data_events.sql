@@ -138,7 +138,7 @@
     "event_name": "epic_notes",
     "source_cte_name": "epic_notes",
     "user_column_name": "note_author_id",
-    "key_to_parent_project": "project_id",
+    "key_to_parent_group": "ultimate_parent_id",
     "primary_key": "author_id",
     "stage_name": "plan",
     "is_representative_of_stage": "False"
@@ -454,7 +454,7 @@ WITH gitlab_subscriptions AS (
 ), epic_notes AS (
 
     SELECT *
-    FROM {{ ref('gitlab_dotcom_notes') }}
+    FROM {{ ref('gitlab_dotcom_notes_xf') }}
     WHERE noteable_type = 'Epic'
 
 ), incident_labeled_issues AS (

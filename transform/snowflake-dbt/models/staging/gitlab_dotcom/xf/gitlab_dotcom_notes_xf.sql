@@ -45,9 +45,9 @@ WITH base AS (
             AND NOT internal_namespaces.namespace_is_internal
             THEN 'confidential - masked'
           ELSE {{field}}
-        END AS {{field}}
-        {% if not loop.last %} , {% endif %}
+        END AS {{field}},
       {% endfor %}
+      projects.ultimate_parent_id
     FROM base
       LEFT JOIN projects 
         ON base.project_id = projects.project_id

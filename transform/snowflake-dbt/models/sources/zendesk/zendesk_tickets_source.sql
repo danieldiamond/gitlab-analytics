@@ -28,6 +28,7 @@ renamed AS (
       satisfaction_rating['id']::VARCHAR      AS satisfaction_rating_id,
       satisfaction_rating['score']::VARCHAR   AS satisfaction_rating_score,
       via['channel']::VARCHAR                 AS submission_channel,
+      custom_fields::ARRAY                    AS ticket_custom_field_values,
 
       --dates
       updated_at::DATE                        AS date_updated
