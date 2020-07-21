@@ -79,7 +79,7 @@ models:
       description: This is calculated based on the difference between the month_date and the month prior.
 
 - name: hire_replan_xf
-  description: This provides a data model of the headcount and hire planned by month broken into 3 levels - company, division, and department. This combines the hire_plan_xf model for data between 2019.02 and 2020.04, and the rehire_plan has data from 2020.06 onwards..
+  description: This provides a data model of the headcount and hire planned by month broken into 3 levels - company, division, and department. This combines the hire_plan_xf model for data between 2019.02 and 2020.05, and uses rehire_plan from 2020.06 onwards. The headcount plan was changed in 2020 to account for COVID impact.
   columns:
     - name: month_date
       tests:
