@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import datetime
 
@@ -56,6 +57,9 @@ dbt_cmd = f"""
     dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars '{{ valid_at : $CLONE_DATE 
 06:59:00 }}'; 
 """
+
+logging.info(dbt_cmd)
+
 dbt_poc = KubernetesPodOperator(
     **gitlab_defaults,
     image=DBT_IMAGE,
