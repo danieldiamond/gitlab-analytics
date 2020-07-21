@@ -31,7 +31,7 @@ GIT_BRANCH = env["GIT_BRANCH"]
 # CLONE_DATE will be used to set the timestamp of when clone should
 # tomorrow_ds -  the day after the execution date as YYYY-MM-DD
 pod_env_vars = {
-    "CLONE_DATE": "{{ ds }}"
+    "CLONE_DATE": "{ valid_at: {{ ds }} }"
 }
 
 pod_env_vars = {**gitlab_pod_env_vars, **pod_env_vars}
@@ -56,7 +56,7 @@ dag = DAG(
 
 dbt_cmd = f"""
     {dbt_install_deps_nosha_cmd} &&
-    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars valid_at: "$CLONE_DATE"
+    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars "$CLONE_DATE"
 """
 
 logging.info(dbt_cmd)
