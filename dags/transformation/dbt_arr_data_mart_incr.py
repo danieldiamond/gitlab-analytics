@@ -53,7 +53,7 @@ dag = DAG(
 
 dbt_cmd = f"""
     {dbt_install_deps_nosha_cmd} &&
-    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars 'valid_at: "{{ tomorrow_ds }} 06:59:00"'; 
+    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars 'valid_at: "{{{ tomorrow_ds }}} 06:59:00"'; 
 """
 
 logging.info(dbt_cmd)
