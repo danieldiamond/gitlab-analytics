@@ -7,6 +7,8 @@ from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOpera
 from airflow_utils import (
     DBT_IMAGE,
     dbt_install_deps_nosha_cmd,
+    dbt_install_deps_cmd,
+    pull_commit_hash,
     gitlab_defaults,
     gitlab_pod_env_vars,
     slack_failed_task,
@@ -53,7 +55,8 @@ dag = DAG(
 )
 
 dbt_cmd = f"""
-    {dbt_install_deps_nosha_cmd} &&
+    {pull_commit_hash} &&
+    {dbt_install_deps_cmd} &&
     dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars '{{ valid_at : $CLONE_DATE 
 06:59:00 }}'; 
 """
