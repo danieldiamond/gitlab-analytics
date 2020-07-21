@@ -11,7 +11,6 @@ from airflow_utils import (
     gitlab_pod_env_vars,
     slack_failed_task,
     xs_warehouse,
-
 )
 from kube_secrets import (
     SALT,
@@ -33,9 +32,7 @@ pod_env_vars = {**gitlab_pod_env_vars, **{}}
 
 # CLONE_DATE will be used to set the timestamp of when clone should
 # tomorrow_ds -  the day after the execution date as YYYY-MM-DD
-pod_env_vars.update({
-    "CLONE_DATE": "{{ tomorrow_ds }}",
-})
+pod_env_vars.update({"CLONE_DATE": "{{ tomorrow_ds }}"})
 
 # Default arguments for the DAG
 default_args = {
@@ -49,7 +46,9 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    "dbt_arr_data_mart_backfill", default_args=default_args, schedule_interval="0 7 * * 0"
+    "dbt_arr_data_mart_backfill",
+    default_args=default_args,
+    schedule_interval="0 7 * * 0",
 )
 
 dbt_cmd = f"""
