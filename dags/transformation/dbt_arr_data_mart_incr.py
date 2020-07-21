@@ -25,14 +25,11 @@ from kube_secrets import (
     SNOWFLAKE_USER,
 )
 
-# Load the env vars into a dict and set Secrets
+# Load the env vars into a dict
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
-# CLONE_DATE will be used to set the timestamp of when clone should
-# tomorrow_ds -  the day after the execution date as YYYY-MM-DD
-pod_env_vars = {
-    "CLONE_DATE": "{ 'valid_at': '{{ ds }} 06:59:00' }"
-}
+# ds - Airflow macro template for the execution date as YYYY-MM-DD
+pod_env_vars = {"DBT_VARS": "{ 'valid_at': '{{ ds }} 06:59:00' }"}
 
 pod_env_vars = {**gitlab_pod_env_vars, **pod_env_vars}
 logging.info(pod_env_vars)
@@ -49,14 +46,20 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    "dbt_arr_data_mart_incr",
+    dag_id="dbt_arr_data_mart_incr",
     default_args=default_args,
     schedule_interval="0 7 * * 0",
+    description="This DAG runs arr_data_mart_incr model using DAG's execution date"
+    " as input parameter for dbt model. The time used as input parameter "
+    "for the dbt model is set to 06:59 am UTC, which is EOD PST."
+    " This way a dagrun generated any time given execution date will "
+    "capture a snapshot of MRR data state as per dagrun's execution "
+    "date at 06:59 am UTC. ",
 )
 
 dbt_cmd = f"""
     {dbt_install_deps_nosha_cmd} &&
-    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars "$CLONE_DATE"
+    dbt run --profiles-dir profile --target prod --models arr_data_mart_incr --vars "$DBT_VARS"
 """
 
 logging.info(dbt_cmd)
