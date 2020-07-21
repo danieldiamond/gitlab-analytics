@@ -118,6 +118,16 @@ models:
     # ------------------
     # Sources
     # ------------------
+
+    recipes:
+      database: "{{ env_var('SNOWFLAKE_RECIPE_DATABASE') }}"
+      normalization:
+        zendesk:
+          schema: zendesk
+    
+      transformation:
+        schema: transformed
+    
     sources:
 
       airflow:

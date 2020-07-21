@@ -147,6 +147,7 @@ echo "handbook goto alias successfully added"
 echo "export SNOWFLAKE_TRANSFORM_WAREHOUSE=ANALYST_XS" >> ~/.bash_profile
 echo "export SNOWFLAKE_LOAD_DATABASE=RAW" >> ~/.bash_profile
 echo "export SNOWFLAKE_SNAPSHOT_DATABASE='SNOWFLAKE'" >> ~/.bash_profile
+echo "export SNOWFLAKE_RECIPE_DATABASE='RECIPE_'$(whoami)" >> ~/.bash_profile
 echo "source ~/.bashrc" >> ~/.bash_profile
 echo "source ~/.bashrc"
 echo "source ~/.bash_profile"
