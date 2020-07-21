@@ -91,8 +91,7 @@ WITH greenhouse_openings AS (
       COALESCE(division_mapping.division, cost_center_mapping.division) AS division,
       greenhouse_hiring_manager.hiring_manager,
       greenhouse_opening_type.opening_type,
-      hires.employee_id,
-      hires.first_name || ' ' || hires.last_name                AS hire_name
+      hires.employee_id
     FROM greenhouse_openings
     LEFT JOIN greenhouse_jobs
       ON greenhouse_openings.job_id = greenhouse_jobs.job_id 

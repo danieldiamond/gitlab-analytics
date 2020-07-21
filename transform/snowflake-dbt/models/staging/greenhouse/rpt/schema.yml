@@ -23,7 +23,7 @@ models:
     description: Provides current job openings created in Greenhouse.
     columns: 
     - name: opening_id
-    - name: finance_id
+    - name: ghp_id
     - name: job_created_at
     - name: job_status
     - name: opening_id
