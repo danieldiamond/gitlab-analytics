@@ -58,13 +58,13 @@ WITH date_table AS (
       zuora_product.product_name,
       SUM(zuora_rev_sch.revenue_schedule_item_amount)         AS revenue_amt
     FROM zuora_rev_sch
-    LEFT JOIN zuora_accts
+    INNER JOIN zuora_accts
       ON zuora_rev_sch.account_id = zuora_accts.account_id
     LEFT JOIN zuora_contact
       ON COALESCE(zuora_accts.sold_to_contact_id ,zuora_accts.bill_to_contact_id) = zuora_contact.contact_id
     INNER JOIN zuora_rpc
       ON zuora_rev_sch.rate_plan_charge_id = zuora_rpc.rate_plan_charge_id
-    LEFT JOIN zuora_rp
+    INNER JOIN zuora_rp
       ON zuora_rp.rate_plan_id = zuora_rpc.rate_plan_id
     INNER JOIN zuora_acct_period
       ON zuora_acct_period.accounting_period_id = zuora_rev_sch.accounting_period_id
