@@ -120,10 +120,10 @@ models:
     # ------------------
 
     recipes:
-      database: "{{ env_var('SNOWFLAKE_RECIPE_DATABASE') }}"
-      normalization:
+      conformity:
+        database: "{{ env_var('SNOWFLAKE_CONFORMITY_DATABASE') }}"
         zendesk:
-          schema: zendesk
+          schema: "{{ env_var('CONFORMITY_RELEASE_STAGE') }}_zendesk"
     
       transformation:
         schema: transformed
