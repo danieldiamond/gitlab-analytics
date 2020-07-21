@@ -82,7 +82,7 @@ Putting it all together, the end result is a model with one row for every Charge
 
 {% docs zuora_monthly_recurring_revenue %}
 
-This model is built using the same logic as the Zuora UI out of the box MRR Trend Report. The report looks at the charges associated with subscriptions, along with their effective dates and subscription statuses, and calculates MRR. The Zuora rules engine calculates MRR using charges with effective start dates less than or equal to the first day of the month and with effective end dates greater than the first day of the month. The MRR total on the first of the month is considered the MRR from the prior month end.  
+This model is built using the same logic as the Zuora UI out of the box MRR Trend Report. The report looks at the charges associated with subscriptions, along with their effective dates and subscription statuses, and calculates MRR. 
 
 The below query will pull MRR by month. You can add additional dimensions to the query to build out your analysis.
 
