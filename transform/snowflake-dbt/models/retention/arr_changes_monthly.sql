@@ -262,7 +262,6 @@ WITH mrr_totals_levelled AS (
     LEFT JOIN annual_price_per_seat_change
       ON type_of_arr_change.sfdc_account_id = annual_price_per_seat_change.sfdc_account_id
       AND type_of_arr_change.arr_month = annual_price_per_seat_change.arr_month
-    ORDER BY 1,4,5
 
 )
 
