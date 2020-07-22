@@ -66,3 +66,5 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+WHERE is_deleted = FALSE
+  AND account_id NOT IN ({{ zuora_excluded_accounts() }})

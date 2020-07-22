@@ -23,5 +23,3 @@ SNOWFLAKE_TRANSFORM_WAREHOUSE=TRANSFORMING
 SNOWFLAKE_TRANSFORM_ROLE=SYSADMIN
 SNOWFLAKE_TIMEZONE=America/Los_Angeles
 ```
-
-Note: `SNOWFLAKE_SCHEMA` is not used right now, but will be in the [next iteration](https://gitlab.com/meltano/analytics/issues/715).
