@@ -153,7 +153,10 @@ models:
         +tags: ["product"]
         +materialized: table
         +schema: staging
-      
+
+      gitter:
+        +enabled: false
+
       google_analytics_360:
         +materialized: table
         +schema: google_analytics_360
@@ -234,6 +237,10 @@ models:
         +tags: ["product"]
         +materialized: table
         +schema: analytics
+
+      gitter:
+        +enabled: false
+        +materialized: table
 
       google_analytics_360:
         xf:
