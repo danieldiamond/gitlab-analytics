@@ -1084,6 +1084,10 @@ roles:
             - customers_db_sensitive
             - db_dumps
             - postgres_pipeline
+            - salesforce
+            - snowplow
+            - zendesk
+            - zuora
         warehouses:
             - analyst_xs
 
