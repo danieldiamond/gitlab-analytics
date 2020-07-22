@@ -1080,14 +1080,9 @@ roles:
 
     - datwood:
         member_of:
-            - analyst_core
+            - analyst_growth
             - customers_db_sensitive
-            - db_dumps
-            - postgres_pipeline
-            - salesforce
-            - snowplow
             - zendesk
-            - zuora
         warehouses:
             - analyst_xs
 
