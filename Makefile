@@ -83,7 +83,7 @@ update-containers:
 	@echo "Pulling latest containers for airflow-image, data-image and dbt-image..."
 	@docker pull registry.gitlab.com/gitlab-data/data-image/airflow-image:latest
 	@docker pull registry.gitlab.com/gitlab-data/data-image/data-image:latest
-	@docker pull registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
+	@docker pull registry.gitlab.com/gitlab-data/data-image/dbt-image:testing-repo-demo
 
 xenon:
 	@echo "Running Xenon..."

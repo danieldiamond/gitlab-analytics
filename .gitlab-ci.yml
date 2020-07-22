@@ -12,8 +12,8 @@ variables:
 stages:
   - ❄️ Snowflake
   - 🚂 Extract   # extract/extract-ci.yml
-  - ⚙️ dbt Run   # transform/snowflake-dbt/snowflake-dbt-ci.yml
-  - 🛠 dbt Misc  # transform/snowflake-dbt/snowflake-dbt-ci.yml
+  - ⚙️ dbt Run   # snowflake-dbt/snowflake-dbt-ci.yml
+  - 🛠 dbt Misc  # snowflake-dbt/snowflake-dbt-ci.yml
   - 📚 dbt Docs
   - 🐍 Python
   - 🛑 Snowflake Stop
@@ -22,7 +22,7 @@ stages:
 
 include:
   - "extract/extract-ci.yml"
-  - "transform/snowflake-dbt/snowflake-dbt-ci.yml"
+  - "snowflake-dbt/snowflake-dbt-ci.yml"
 
 
 # ======
@@ -193,7 +193,7 @@ permifrost_manual:
 
 .pages_job_template: &pages_job_template
   stage: 📚 dbt Docs
-  image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/dbt-image:testing-repo-demo
   variables:
     SNOWFLAKE_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
     SNOWFLAKE_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE
@@ -204,13 +204,13 @@ permifrost_manual:
     - export SNOWFLAKE_SNAPSHOT_DATABASE="SNOWFLAKE"
     - echo $SNOWFLAKE_SNAPSHOT_DATABASE
     - echo "SNOWFLAKE_DATABASE = $SNOWFLAKE_TRANSFORM_DATABASE"
-    - cd $CI_PROJECT_DIR/transform/snowflake-dbt/
+    - cd $CI_PROJECT_DIR/snowflake-dbt/
     - dbt deps --profiles-dir profile --target prod
     - dbt docs generate --profiles-dir profile --target prod
     - mkdir -p $CI_PROJECT_DIR/public/
     - cd target
     - cp *.json graph.gpickle $CI_PROJECT_DIR/public/
-    - cd $CI_PROJECT_DIR/transform/snowflake-dbt/docs/
+    - cd $CI_PROJECT_DIR/snowflake-dbt/docs/
     - cp index.html gitlab.css $CI_PROJECT_DIR/public/
   tags:
     - analytics

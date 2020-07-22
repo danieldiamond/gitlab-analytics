@@ -85,7 +85,7 @@ services:
           target: /usr/local/analytics
 
     dbt_image:
-      image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
+      image: registry.gitlab.com/gitlab-data/data-image/dbt-image:testing-repo-demo
       environment:
         DBT_PROFILES_DIR: /usr/local/dbt_profiles/
         SNOWFLAKE_SNAPSHOT_DATABASE: "SNOWFLAKE"
@@ -97,7 +97,7 @@ services:
         SALT_EMAIL: "cheese"
       restart: always
       command: bash -c "/bin/bash"
-      working_dir: /usr/local/analytics/transform/snowflake-dbt/
+      working_dir: /usr/local/analytics/snowflake-dbt/
       volumes:
         - type: bind
           source: .
