@@ -130,6 +130,11 @@ WITH source AS (
         lastactivitydate               AS last_activity_date,
         recordtypeid                   AS record_type_id
 
+        -- NF 20200722
+        start_date__c                  AS subscription_start_date
+        end_date__c                    AS subscription_end_date
+        true_up_value__c               AS true_up_value
+
       FROM source
   )
 
