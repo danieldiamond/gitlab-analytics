@@ -30,11 +30,7 @@ WITH charges_agg AS (
 
   SELECT
     --primary_key
-<<<<<<< HEAD
     {{ dbt_utils.surrogate_key(['reporting_month', 'subscription_name_slugify', 'product_category']) }}
-=======
-    {{ dbt_utils.surrogate_key('arr_month', 'subscription_name_slugify', 'product_category') }}
->>>>>>> master
                                  AS primary_key,
 
     --date info
