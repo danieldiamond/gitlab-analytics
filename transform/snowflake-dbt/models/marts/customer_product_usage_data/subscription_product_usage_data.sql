@@ -16,7 +16,7 @@ WITH customers_db_license_seat_links AS (
 ), gitlab_dotcom_memberships AS (
 
     SELECT *
-    FROM {{ ref('gitlab_dotcom_gitlab_memberships') }}
+    FROM {{ ref('gitlab_dotcom_memberships') }}
 
 ), zuora_rate_plan AS (
 
