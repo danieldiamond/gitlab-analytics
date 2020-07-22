@@ -11,10 +11,9 @@ WITH date_details AS (
      IFNULL(valid_to, CURRENT_TIMESTAMP) AS valid_to_
    FROM {{ ref('gitlab_dotcom_projects_snapshots_base') }}
    
-), project_snapshots_history AS (
+), project_snapshots_monthly AS (
   
     SELECT
-      date_details.date_actual                      AS date_actual,
       DATE_TRUNC('month', date_details.date_actual) AS snapshot_month,
       project_snapshots.project_id,
       project_snapshots.namespace_id,
@@ -23,17 +22,7 @@ WITH date_details AS (
     FROM project_snapshots
     INNER JOIN date_details
       ON date_details.date_actual BETWEEN project_snapshots.valid_from AND project_snapshots.valid_to_
-  
-), project_snapshots_monthly AS (
-    
-    SELECT
-      snapshot_month,
-      project_id,
-      namespace_id,
-      visibility_level,
-      shared_runners_enabled
-    FROM project_snapshots_history
-    QUALIFY ROW_NUMBER() OVER(PARTITION BY snapshot_month, project_id ORDER BY date_actual DESC) = 1
+    QUALIFY ROW_NUMBER() OVER(PARTITION BY snapshot_month, project_id ORDER BY valid_to_ DESC) = 1
   
 )
 
