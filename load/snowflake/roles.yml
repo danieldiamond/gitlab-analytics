@@ -1082,7 +1082,6 @@ roles:
         member_of:
             - analyst_growth
             - customers_db_sensitive
-            - zendesk
         warehouses:
             - analyst_xs
 
