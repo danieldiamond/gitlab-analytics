@@ -1,3 +1,5 @@
+{{ config(materialized='view') }}
+
 WITH namespace_snapshots_monthly AS (
 
     SELECT *

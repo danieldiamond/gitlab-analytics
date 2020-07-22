@@ -1,3 +1,5 @@
+{{ config(materialized='view') }}
+
 WITH date_details AS (
   
     SELECT *
