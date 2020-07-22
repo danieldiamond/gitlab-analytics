@@ -2,7 +2,7 @@ WITH date_details AS (
   
     SELECT *
     FROM {{ ref("date_details") }}
-    QUALIFY ROW_NUMBER() OVER(PARTITION BY first_day_of_month ORDER BY date_actual DESC) = 1
+    WHERE last_day_of_month = date_actual
      
 ), namespace_statistics_snapshots AS (
 
