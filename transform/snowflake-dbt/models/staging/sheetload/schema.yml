@@ -65,4 +65,4 @@ models:
 - name: sheetload_social_marketing_metrics
 - name: sheetload_values_certificate
 - name: sheetload_yc_companies
-    
+- name: sheetload_ic_collaboration_competency_source
