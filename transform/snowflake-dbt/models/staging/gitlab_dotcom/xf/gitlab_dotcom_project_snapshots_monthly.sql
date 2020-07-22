@@ -2,7 +2,6 @@ WITH date_details AS (
   
     SELECT *
     FROM {{ref("date_details")}}
-    WHERE date_day >= '2019-02-01'::DATE
     QUALIFY ROW_NUMBER() OVER(PARTITION BY first_day_of_month ORDER BY date_actual DESC) = 1
      
 ), project_snapshots AS (
