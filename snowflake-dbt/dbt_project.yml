@@ -118,7 +118,7 @@ models:
     # ------------------
     # Sources
     # ------------------
-    raw:
+    raw_transform:
 
       airflow:
         materialized: table
