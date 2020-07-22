@@ -1,6 +1,13 @@
 version: 2
 
 models:
+  - name: arr_changes_monthly
+    columns:
+        - name: primary_key
+          tests:
+              - not_null
+              - unique
+
   - name: current_arr_segmentation_all_levels
     description: '{{ doc("current_arr_segmentation_all_levels") }}'
     columns:
