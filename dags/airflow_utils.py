@@ -8,7 +8,7 @@ from airflow.contrib.kubernetes.pod import Resources
 from airflow.operators.slack_operator import SlackAPIPostOperator
 
 REPO = "https://gitlab.com/gitlab-data/analytics.git"
-DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:latest"
+DATA_IMAGE = "registry.gitlab.com/gitlab-data/data-image/data-image:testing-repo-demo"
 DBT_IMAGE = "registry.gitlab.com/gitlab-data/data-image/dbt-image:latest"
 PERMIFROST_IMAGE = "registry.gitlab.com/gitlab-data/permifrost:v0.1.1"
 
@@ -83,12 +83,11 @@ def slack_defaults(context, task_type):
     task_name = context["task"].task_id
     task_id = context["task_instance"].task_id
     execution_date_value = context["execution_date"]
-    execution_date_str = str(execution_date_value)
     execution_date_epoch = execution_date_value.strftime("%s")
     execution_date_pretty = execution_date_value.strftime(
         "%a, %b %d, %Y at %-I:%M %p UTC"
     )
-    task_instance = str(context["task_instance_key_str"])
+    analytics_slack_channel = "#analytics-pipelines"
 
     # Generate the link to the logs
     log_params = urllib.parse.urlencode(
@@ -102,7 +101,7 @@ def slack_defaults(context, task_type):
             slack_channel = "#data-lounge"
         else:
             slack_channel = dag_context.params.get(
-                "slack_channel_override", "#analytics-pipelines"
+                "slack_channel_override", analytics_slack_channel
             )
 
         color = "#1aaa55"
@@ -112,10 +111,10 @@ def slack_defaults(context, task_type):
 
     if task_type == "failure":
         if task_name == "dbt-source-freshness":
-            slack_channel = "#analytics-pipelines"
+            slack_channel = analytics_slack_channel
         else:
             slack_channel = dag_context.params.get(
-                "slack_channel_override", "#analytics-pipelines"
+                "slack_channel_override", analytics_slack_channel
             )
         color = "#a62d19"
         fallback = "An Airflow DAG has failed!"
