@@ -110,6 +110,9 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.is_web_portal_purchase,
       sfdc_opportunity.partner_initiated_opportunity,
       sfdc_opportunity.user_segment,
+      sfdc_opportunity.subscription_start_date,
+      sfdc_opportunity.subscription_end_date,
+      sfdc_opportunity.true_up_value,
 
       -- command plan fields
       sfdc_opportunity.cp_champion,
