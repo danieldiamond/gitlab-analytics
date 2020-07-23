@@ -28,7 +28,7 @@ WITH test AS (
     SELECT
       test.arr_month,
       test.sfdc_account_id,
-      ROUND((test.beg_plus_changes_arr - test.end_arr))                         AS arr_variance,
+      ROUND(test.beg_plus_changes_arr - test.end_arr)                           AS arr_variance,
       test.beg_plus_changes_quantity - test.end_quantity                        AS quanity_variance,
       ROUND(test.end_arr - mrr_totals_levelled.arr)                             AS mrr_totals_arr_variance,
       test.end_quantity - mrr_totals_levelled.quantity                          AS mrr_totals_quantity_variance
