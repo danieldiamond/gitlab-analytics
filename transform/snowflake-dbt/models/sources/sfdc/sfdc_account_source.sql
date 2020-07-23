@@ -38,7 +38,7 @@ WITH source AS (
       ultimate_parent_sales_segment_employees__c AS sales_segment,
       sales_segmentation_new__c                  AS account_segment,
       {{target.schema}}_staging.id15to18(substring(regexp_replace(ultimate_parent_account__c,
-                     '_HL_ENCODED_/|<a\\s+href="/', ''), 0, 15))                 
+                     '_HL_ENCODED_/|<a\\s+href="/', ''), 0, 15))
                                                  AS ultimate_parent_account_id,
       type                                       AS account_type,
       dfox_industry__c                           AS df_industry,
@@ -54,14 +54,15 @@ WITH source AS (
       sub_region__c                              AS account_sub_region,
       support_level__c                           AS support_level,
       named_account__c                           AS named_account,
-      billingcountry                             AS billing_country, 
-      billingpostalcode                          AS billing_postal_code, 
+      billingcountry                             AS billing_country,
+      billingpostalcode                          AS billing_postal_code,
       sdr_target_account__c::BOOLEAN             AS is_sdr_target_account,
 
       -- territory success planning fields
       atam_approved_next_owner__c                AS tsp_approved_next_owner,
       atam_next_owner_role__c                    AS tsp_next_owner_role,
       atam_next_owner_team__c                    AS tsp_next_owner_team,
+      atam_account_employees__c                  AS tsp_account_employees,
       jb_max_family_employees__c                 AS tsp_max_family_employees,
       jb_test_sales_segment__c                   AS tsp_test_sales_segment,
       atam_region__c                             AS tsp_region,
@@ -72,7 +73,7 @@ WITH source AS (
       atam_address_state__c                      AS tsp_address_state,
       atam_address_city__c                       AS tsp_address_city,
       atam_address_street__c                     AS tsp_address_street,
-      atam_address_postal_code__c                AS tsp_address_postal_code, 
+      atam_address_postal_code__c                AS tsp_address_postal_code,
 
       -- present state info
       health__c                                  AS health_score,
