@@ -41,9 +41,7 @@ WITH test AS (
 
 SELECT *
 FROM variance
-WHERE variance.arr_month < DATE_TRUNC('month', CURRENT_DATE)
-  AND (arr_variance != 0
-       OR quanity_variance !=0
-       OR mrr_totals_arr_variance != 0
-       OR mrr_totals_quantity_variance != 0
-       )
+WHERE arr_variance != 0
+  OR quanity_variance !=0
+  OR mrr_totals_arr_variance != 0
+  OR mrr_totals_quantity_variance != 0
