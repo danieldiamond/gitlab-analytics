@@ -203,6 +203,7 @@ SELECT
   limit,
   limit_based_plan,
   status,
+  status_based_plan,
   used_purchased,
   limit_purchased,
   status_purchased
