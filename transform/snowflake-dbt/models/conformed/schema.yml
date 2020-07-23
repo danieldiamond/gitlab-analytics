@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: dim_countries
+    description:
+
+  - name: dim_customers
+    description: Conformed customer dimension

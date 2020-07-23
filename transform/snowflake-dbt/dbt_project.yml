@@ -296,10 +296,17 @@ models:
           schema: analytics
 
     # ------------------
+    # Conformed dimensions
+    # ------------------
+    conformed:
+      schema: conformed
+      materialized: table
+
+    # ------------------
     # Marts
     # ------------------
     marts:  
-      
+      schema: analytics
       arr:  
         materialized: table  
 
