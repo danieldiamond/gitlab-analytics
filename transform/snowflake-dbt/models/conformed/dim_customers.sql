@@ -10,7 +10,7 @@ WITH customers_db_customers AS (
         customer_id         AS customer_db_customer_id,
         customer_created_at AS customer_db_created_at,
         sfdc_account_id
-    FROM {{ ref( 'customer_db_customers')  }}
+    FROM {{ ref( 'customers_db_customers')  }}
 
 ), sfdc_accounts AS (
 
@@ -50,8 +50,6 @@ SELECT
       'sfdc_account_id') }}               AS customer_id,
   customers_db_customers.customer_db_customer_id,
   sfdc_accounts.sfdc_account_id,
-  customers_db_customers.customer_db_created_at,
-  sfdc_accounts.sfdc_created_at
   sfdc_account.account_name               AS customer_name,
   ultimate_parent_account.account_id      AS ultimate_parent_account_id,
   ultimate_parent_account.account_name    AS ultimate_parent_account_name,
@@ -67,7 +65,9 @@ SELECT
     WHEN sfdc_account.is_deleted
       THEN master_records.sfdc_master_record_id
     ELSE NULL
-  END                                     AS merged_to_account_id
+  END                                     AS merged_to_account_id,
+  customers_db_customers.customer_db_created_at,
+  sfdc_accounts.sfdc_created_at
 FROM sfdc_account
 OUTER JOIN customers_db_customers
   ON customers_db_customers.sfdc_account_id = sfdc_accounts.sfdc_account_id
@@ -75,5 +75,3 @@ LEFT JOIN master_records
   ON sfdc_account.account_id = master_records.account_id
 LEFT JOIN ultimate_parent_account
   ON ultimate_parent_account.account_id = sfdc_account.ultimate_parent_account_id
-LEFT OUTER JOIN sfdc_users
-  ON sfdc_account.technical_account_manager_id = sfdc_users.id
