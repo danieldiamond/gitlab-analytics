@@ -35,7 +35,7 @@ WITH mrr_totals_levelled AS (
       SUM(quantity)                                                                     AS quantity,
       SUM(mrr*12)                                                                       AS arr
     FROM mrr_totals_levelled
-    GROUP BY 1,2,3,4,5,6,7,8,9
+    {{ dbt_utils.group_by(n=9) }}
 
 ), previous_next_month AS (--Calculate the previous and next month's values for the required fields to be used for analysis
 
