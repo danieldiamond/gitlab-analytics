@@ -48,7 +48,7 @@ default_args = {
 dag = DAG(
     dag_id="dbt_arr_data_mart_incr",
     default_args=default_args,
-    schedule_interval="0 7 * * 0",
+    schedule_interval="0 7 * * *",
     description="\nThis DAG runs arr_data_mart_incr model using DAG's execution date"
     " as input parameter for dbt model. The time used as input parameter "
     "for the dbt model is set to 06:59 am UTC, which is EOD PST.\n"
