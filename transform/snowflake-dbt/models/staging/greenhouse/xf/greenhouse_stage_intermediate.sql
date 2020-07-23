@@ -1,6 +1,7 @@
 {% set repeated_column_names = 
         "job_id,
         requisition_id,
+        is_prospect,
         current_stage_name,
         application_status,
         job_name,
