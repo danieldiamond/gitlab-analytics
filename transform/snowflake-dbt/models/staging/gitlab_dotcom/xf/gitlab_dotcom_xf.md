@@ -1,6 +1,6 @@
 {% docs gitlab_dotcom_ci_minutes_ui_namespace_replication %}
 
-This table replicates the proccess that the Gitlab UI uses to generate the CI minutes Usage Quota both for personal namespaces and top level group namespaces. The codebase logic used to build this model can be seen mapped in [this diagram](https://app.lucidchart.com/documents/edit/0b8b66e6-8536-4a5d-b992-9e324581187d/0_0?beaconFlowId=F44F367A15D2BC38).
+This table replicates the proccess that the Gitlab UI uses to generate the CI minutes Usage Quota both for personal namespaces and top level group namespaces. The codebase logic used to build this model can be seen mapped in [this diagram](https://app.lucidchart.com/documents/view/0b8b66e6-8536-4a5d-b992-9e324581187d/0_0).
 
 It also adds two additional columns which aren't calculated in the UI, which are `limit_based_plan` and `status_based_plan` which are independent of whether there aren't projects with `shared_runners_enabled` inside the namespaces and only take into account how many minutes have been used from the monthly quota based in the plan of the namespace.
 
