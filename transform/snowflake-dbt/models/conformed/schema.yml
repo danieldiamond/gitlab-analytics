@@ -2,7 +2,38 @@ version: 2
 
 models:
   - name: dim_countries
-    description:
 
   - name: dim_customers
-    description: Conformed customer dimension
+    description: '{{ doc("dim_customers") }}'
+    columns:
+      - name: customer_id
+        description: Internal DWH customer_id
+      - name: sfdc_account_id
+        description: account id from SFDC identifing the customer
+        tests:
+          - unique
+      - name: customer_name
+        description: account name from SFDC
+      - name: customer_country
+        description: billing country of SFDC account
+      - name: ultimate_parent_account_id
+        description: ultimate parent account id
+      - name: ultimate_parent_account_name
+        description: parent account name
+      - name: ultimate_parent_account_segment
+        description: Sales segment of the parent account
+      - name: ultimate_parent_billing_country
+        description: billing country of parent account
+      - name: record_type_id
+      - name: gitlab_entity
+        description: Gitlab entity that subcription was sold through
+      - name: federal_account
+      - name: gitlab_com_user
+      - name: account_owner
+      - name: account_owner_team
+      - name: account_type
+      - name: technical_account_manager
+      - name: is_deleted
+        description: flag indicating if account has been deleted
+      - name: merged_to_account_id
+        description: for deleted accounts this is the SFDC account they were merged to
