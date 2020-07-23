@@ -159,7 +159,7 @@ WITH project_snapshot_monthly AS (
                                                     AS monthly_minutes, 
       IFNULL(extra_shared_runners_minutes_limit, 0) AS purchased_minutes,
       IFF(purchased_minutes = 0, True, False)       AS no_minutes_purchased,
-          IFF(minutes_used <= monthly_minutes, True, False)
+      IFF(minutes_used <= monthly_minutes, True, False)
                                                     AS monthly_minutes_available,
       IFF(no_minutes_purchased OR monthly_minutes_available, 0, minutes_used - monthly_minutes)
                                                     AS purchased_minutes_used,
