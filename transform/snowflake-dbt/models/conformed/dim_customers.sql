@@ -10,12 +10,12 @@ WITH customers_db_customers AS (
         customer_id         AS customer_db_customer_id,
         customer_created_at AS customer_db_created_at,
         sfdc_account_id
-    FROM ref( {{ 'customer_db_customers' }} )
+    FROM {{ ref( 'customer_db_customers')  }}
 
 ), sfdc_accounts AS (
 
     SELECT *
-    FROM ref( {{ 'sfdc_account' }} )
+    FROM {{ ref( 'sfdc_account' ) }}
 
 ), ultimate_parent_account AS (
 
@@ -30,7 +30,7 @@ WITH customers_db_customers AS (
 ), deleted_accounts AS (
 
      SELECT *
-    FROM ref( {{ 'sfdc_deleted_accounts' }} )
+    FROM {{ ref('sfdc_deleted_accounts' ) }}
 
 ), master_records AS (
 
