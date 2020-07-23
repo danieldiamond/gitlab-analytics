@@ -2,16 +2,19 @@ WITH project_snapshot_monthly AS (
   
     SELECT *
     FROM {{ ref('gitlab_dotcom_project_snapshots_monthly') }}
+    WHERE snapshot_month >= '2020-07-01'
 
 ), namespace_lineage_monthly AS (
 
     SELECT *
     FROM {{ ref('gitlab_dotcom_namespace_lineage_monthly') }}
+    WHERE snapshot_month >= '2020-07-01'
 
 ), namespace_statistic_monthly AS (
   
     SELECT *
     FROM {{ ref('gitlab_dotcom_namespace_statistics_snapshots_monthly') }}
+    WHERE snapshot_month >= '2020-07-01'
 
 ), namespace_lineage_current AS (
 
@@ -28,6 +31,7 @@ WITH project_snapshot_monthly AS (
 
     SELECT *
     FROM {{ ref('gitlab_dotcom_namespace_snapshots_monthly') }}
+    WHERE snapshot_month >= '2020-07-01'
 
 ), namespace_statistic_current AS (
 
@@ -119,10 +123,10 @@ WITH project_snapshot_monthly AS (
 
     SELECT namespace_statistic_monthly_all.*
     FROM namespace_statistic_monthly_all
-    INNER JOIN namespace_snapshots_monthly
-      ON namespace_statistic_monthly_all.namespace_id = namespace_snapshots_monthly.namespace_id
-      AND namespace_statistic_monthly_all.snapshot_month = namespace_snapshots_monthly.snapshot_month
-      AND namespace_snapshots_monthly.parent_id IS NULL  -- Only top level namespaces
+    INNER JOIN namespace_snapshots_monthly_all
+      ON namespace_statistic_monthly_all.namespace_id = namespace_snapshots_monthly_all.namespace_id
+      AND namespace_statistic_monthly_all.snapshot_month = namespace_snapshots_monthly_all.snapshot_month
+      AND namespace_snapshots_monthly_all.parent_id IS NULL  -- Only top level namespaces
       
 ), ci_minutes_logic AS (
     
@@ -174,6 +178,8 @@ WITH project_snapshot_monthly AS (
           THEN IFF(monthly_minutes_used_up, 'Over Quota', 'Under Quota')
           ELSE 'Disabled'
       END                                           AS status,
+      IFF(monthly_minutes_used >= monthly_minutes, 'Over Quota', 'Under Quota')
+                                                    AS status_based_plan,
       purchased_minutes_used                        AS used_purchased,
       purchased_minutes                             AS limit_purchased,
       IFF(purchased_minutes_used_up, 'Over Quota', 'Under Quota')
