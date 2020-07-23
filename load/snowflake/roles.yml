@@ -1080,10 +1080,8 @@ roles:
 
     - datwood:
         member_of:
-            - analyst_core
+            - analyst_growth
             - customers_db_sensitive
-            - db_dumps
-            - postgres_pipeline
         warehouses:
             - analyst_xs
 
