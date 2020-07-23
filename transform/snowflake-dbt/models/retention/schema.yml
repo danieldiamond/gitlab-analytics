@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: arr_changes_monthly
+  - name: arr_changes_sfdc_account_monthly
     columns:
         - name: primary_key
           tests:

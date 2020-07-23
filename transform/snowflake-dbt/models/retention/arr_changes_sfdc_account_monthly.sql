@@ -267,3 +267,4 @@ WITH mrr_totals_levelled AS (
 
 SELECT *
 FROM final
+WHERE final.arr_month < DATE_TRUNC('month', CURRENT_DATE)
