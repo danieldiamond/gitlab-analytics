@@ -41,14 +41,15 @@ WITH mrr_totals_levelled AS (
 
     SELECT
       monthly_arr.*,
-       LAG(product_category) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month) AS previous_month_product_category,
-       LAG(delivery) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month) AS previous_month_delivery,
-       COALESCE(LAG(product_ranking) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),0) AS previous_month_product_ranking,
-       COALESCE(LAG(quantity) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),0) AS previous_month_quantity,
-       COALESCE(LAG(arr) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),0) AS previous_month_arr,
-       COALESCE(LEAD(quantity) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),0) AS next_month_quantity,
-       COALESCE(LEAD(arr) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),0) AS next_month_arr,
-       COALESCE(LEAD(arr_month) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),DATEADD('month',1,arr_month)) AS next_month_arr_month
+       LAG(product_category) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month)             AS previous_month_product_category,
+       LAG(delivery) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month)                     AS previous_month_delivery,
+       COALESCE(LAG(product_ranking) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),0)  AS previous_month_product_ranking,
+       COALESCE(LAG(quantity) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),0)         AS previous_month_quantity,
+       COALESCE(LAG(arr) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),0)              AS previous_month_arr,
+       COALESCE(LEAD(quantity) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),0)        AS next_month_quantity,
+       COALESCE(LEAD(arr) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),0)             AS next_month_arr,
+       COALESCE(LEAD(arr_month) OVER (PARTITION BY sfdc_account_id ORDER BY arr_month),DATEADD('month',1,arr_month))
+                                                                                                AS next_month_arr_month
      FROM monthly_arr
 
 ), combined_arr AS (--The mrr_totals_levelled model does not have a record for when a subscription churns. This CTE creates a churn record with $0 ARR.
