@@ -15,7 +15,7 @@ class QualtricsClient:
         self.api_token = api_token
         self.base_url = f"https://{qualtrics_data_center_id}.qualtrics.com/API/v3/"
 
-    def get(self, url_path, query_params):
+    def get(self, url_path, query_params={}):
         url = self.base_url + url_path
         headers = {"X-API-TOKEN": self.api_token}
         while True:
@@ -35,18 +35,21 @@ class QualtricsClient:
                 break
 
     def get_surveys(self):
-        return self.get("surveys", {})
+        return self.get("surveys")
 
     def get_distributions(self, survey_id):
         return self.get("distributions", {"surveyId": survey_id})
 
+    def get_mailing_lists(self):
+        return self.get("mailinglists")
+
     def get_contacts(self, directory_id, mailing_list_id):
         return self.get(
-            f"directories/{directory_id}/mailinglists/{mailing_list_id}/contacts", {}
+            f"directories/{directory_id}/mailinglists/{mailing_list_id}/contacts"
         )
 
     def get_questions(self, survey_id):
-        return self.get(f"survey-definitions/{survey_id}/questions", {})
+        return self.get(f"survey-definitions/{survey_id}/questions")
 
     def get_json_post_headers(self):
         return {"content-type": "application/json", "x-api-token": self.api_token}
