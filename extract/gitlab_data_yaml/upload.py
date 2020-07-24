@@ -14,7 +14,7 @@ if __name__ == "__main__":
     file_dict = dict(
         categories="categories",
         location_factors="location_factors",
-        roles="job_families"
+        roles="job_families",
         team="team",
     )
 
