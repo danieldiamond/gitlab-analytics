@@ -1312,12 +1312,6 @@ roles:
         warehouses:
             - analyst_xs
 
-    - mrodriguez:
-        member_of:
-            - reporter
-        warehouses:
-            - reporting
-
     - msendal:
         warehouses:
             - engineer_xs
@@ -1718,9 +1712,8 @@ users:
             - mriser
 
     - mrodriguez:
-        can_login: yes
-        member_of:
-            - mrodriguez
+        can_login: no
+        member_of: []
 
     - msendal:
         can_login: yes
