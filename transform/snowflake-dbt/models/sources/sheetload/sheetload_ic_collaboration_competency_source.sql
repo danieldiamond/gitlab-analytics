@@ -15,7 +15,7 @@ WITH source AS (
       "Timestamp"::TIMESTAMP::DATE                                                                 AS date_completed,
       "Score"                                                                                      AS score,
       "First_Name" ||' ' || "Last_Name"                                                            AS submitter_name,
-      "Email_address_(GitLab_team_members,_please_use_your_GitLab_email_address)"::STRING          AS submitter_email,
+      "Email_Address"::STRING          AS submitter_email,
       "_UPDATED_AT"                                                                                AS last_updated_at
     FROM source
 
