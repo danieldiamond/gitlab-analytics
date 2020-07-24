@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: subscription_product_usage_data
+    description: '{{ doc("subscription_product_usage_data") }}'
+    columns:
+      - name: delivery_group
+        tests: 
+          - not_null
+      - name: original_id
+        tests: 
+          - not_null
+      - name: subscription_id
+        tests:
+          - not_null
+          - unique
+      - name: subscription_name
+          - not_null
