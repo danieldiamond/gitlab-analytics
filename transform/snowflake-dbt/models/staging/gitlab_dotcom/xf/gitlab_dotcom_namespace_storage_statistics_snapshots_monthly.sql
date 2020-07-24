@@ -8,10 +8,10 @@ WITH date_details AS (
     
 ), namespace_statistics_snapshots AS (
 
-   SELECT
-     *,
-     IFNULL(valid_to, CURRENT_TIMESTAMP) AS valid_to_
-   FROM {{ ref('gitlab_dotcom_namespace_root_storage_statistics_snapshots_base') }}
+    SELECT
+      *,
+      IFNULL(valid_to, CURRENT_TIMESTAMP) AS valid_to_
+    FROM {{ ref('gitlab_dotcom_namespace_root_storage_statistics_snapshots_base') }}
 
 ), namespace_statistics_snapshots_monthly AS (
   
