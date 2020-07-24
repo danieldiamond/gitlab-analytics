@@ -8,6 +8,7 @@ This extractor queries the BambooHR API for 6 data sets:
     * EmploymentStatus
     * JobInfo
     * CustomBonus
+    * EmergencyContacts
 * Custom Report - https://www.bamboohr.com/api/documentation/employees.php
     * We pull a report that maps the employee number to the id
 
@@ -17,7 +18,7 @@ The dag that runs the job is in `/dags/bamboohr_extract.py`
 
 
 #### Create Table Command
-  
+ Needs to be run when adding new table to bamboohr extract
 ```sql
 CREATE OR REPLACE TABLE raw.bamboohr.employmentstatus (
   jsontext variant,
