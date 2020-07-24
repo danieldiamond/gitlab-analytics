@@ -1,6 +1,6 @@
 packages:
   - git: https://gitlab.com/gitlab-data/snowflake_spend.git
-    revision: v1.1.0
+    revision: v1.2.0
   - package: fishtown-analytics/audit_helper
     version: 0.1.0
   - package: fishtown-analytics/dbt_utils
