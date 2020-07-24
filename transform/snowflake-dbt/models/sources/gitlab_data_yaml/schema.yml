@@ -1,6 +1,9 @@
 version: 2
 
 models:
+  - name: categories_yaml_source
+    description: Emphemeral layer for extracting and cleaning data from [location_factors.yml file](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/data/categories.yml) in the GitLab Handbook.
+
   - name: location_factors_yaml_source
     description: Emphemeral layer for extracting and cleaning data from [location_factors.yml file](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/data/location_factors.yml) in the GitLab Handbook.
 
