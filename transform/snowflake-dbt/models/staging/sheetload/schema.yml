@@ -65,7 +65,6 @@ models:
 - name: sheetload_social_marketing_metrics
 - name: sheetload_values_certificate
 - name: sheetload_yc_companies
-- name: sheetload_ic_collaboration_competency
 
 - name: hire_plan_xf
   description: This provides a data model of the headcount and hire planned by month broken into 3 levels - company, division, and department. This is for 2019.02 through 2020.04.
