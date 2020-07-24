@@ -120,9 +120,11 @@ def qualtrics_loader(load_type: str):
         mailing_list for mailing_list in qualtrics_client.get_mailing_lists()
     ]
 
-    qualtrics_files_to_load = filter(
-        lambda file: should_file_be_processed(file, qualtrics_mailing_lists),
-        all_qualtrics_files_to_load,
+    qualtrics_files_to_load = list(
+        filter(
+            lambda file: should_file_be_processed(file, qualtrics_mailing_lists),
+            all_qualtrics_files_to_load,
+        )
     )
 
     info(f"Found {len(qualtrics_files_to_load)} files to process.")
