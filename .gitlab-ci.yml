@@ -193,7 +193,7 @@ permifrost_manual:
 
 .pages_job_template: &pages_job_template
   stage: 📚 dbt Docs
-  image: registry.gitlab.com/gitlab-data/data-image/dbt-image:94-upgrade-dbt-to-0-17-1
+  image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
   variables:
     SNOWFLAKE_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
     SNOWFLAKE_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE
