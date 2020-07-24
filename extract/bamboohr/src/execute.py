@@ -88,7 +88,7 @@ if __name__ == "__main__":
         json.dump(employees, outfile)
 
     test_extraction(
-        employees, "raw.bamboohr.directory", snowflake_engine, tables_to_skip_test_list
+        employees, f"{snowflake_load_database}.bamboohr.directory", snowflake_engine, tables_to_skip_test_list
     )
 
     snowflake_stage_load_copy_remove(
