@@ -5,6 +5,7 @@ Please complete all items. Ask questions in the #data slack channel
 --->
 
 ## Housekeeping 
+* [ ] Title the issue as "<ISO date> Data Triage" e.g. 2020-07-09 Data Triage
 * [ ] Assign this issue to both the Data Analyst and Data Engineer assigned to Triage 
 * [ ] [Add a weight to the issue](https://about.gitlab.com/handbook/business-ops/data-team/how-we-work/#issue-pointing)
 * [ ] Link any issues opened as a result of Data Triage to this `parent` issue. 
@@ -59,4 +60,4 @@ Please prioritize this issue since we dedicate a day from your milestone to this
 
 
 
-/label ~"workflow::In dev" ~"Housekeeping" ~"Data Team" ~"Documentation" ~"Triage"
+/label ~"workflow::In dev" ~"Housekeeping" ~"Data Team" ~"Documentation" ~"Triage" ~"Priority::1-Ops"

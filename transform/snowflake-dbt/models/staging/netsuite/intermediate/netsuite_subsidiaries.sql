@@ -1,11 +1,6 @@
-{{ config({
-    "materialized": "ephemeral"
-    })
-}}
-
 WITH source AS (
 
-    SELECT *
+    SELECT  {{ hash_sensitive_columns('netsuite_subsidiaries_source') }}
     FROM {{ ref('netsuite_subsidiaries_source') }}
 
 )

@@ -5,6 +5,18 @@ connection_info:
   database: GITLAB_COM_DB_NAME
   port: PG_PORT
 tables:
+  award_emoji:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , name
+      , user_id
+      , awardable_id
+      , awardable_type
+      FROM award_emoji
+    export_schema: 'gitlab_com'
+    export_table: 'award_emoji'
+    export_table_primary_key: id
   columns:
     import_db: GITLAB_DB
     import_schema: information_schema
@@ -333,7 +345,6 @@ tables:
       , entity_type
       , details
       , created_at
-      , updated_at
       FROM audit_events
       WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
@@ -1550,6 +1561,20 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'protected_branches'
     export_table_primary_key: id
+  prometheus_alerts:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , environment_id
+      , project_id
+      FROM prometheus_alerts
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'prometheus_alerts'
+    export_table_primary_key: id
   push_rules:
     import_db: GITLAB_DB
     import_query: >
@@ -1623,6 +1648,38 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'resource_weight_events'
+    export_table_primary_key: id
+  requirements:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , updated_at
+      , project_id
+      , author_id
+      , iid
+      , state
+      FROM requirements
+      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'requirements'
+    export_table_primary_key: id
+  requirements_management_test_reports:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , created_at
+      , requirement_id
+      , pipeline_id
+      , author_id
+      , state
+      , build_id
+      FROM requirements_management_test_reports
+      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'requirements_management_test_reports'
     export_table_primary_key: id
   saml_providers:
     import_db: GITLAB_DB

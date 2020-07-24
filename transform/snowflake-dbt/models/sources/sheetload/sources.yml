@@ -28,6 +28,7 @@ sources:
       - name: communication_certificate
       - name: company_call_attendance
       - name: compensation_certificate
+      - name: data_team_capacity
       - name: days_to_close
       - name: employee_location_factor
         freshness: null
@@ -66,3 +67,4 @@ sources:
         freshness: null
       - name: hire_replan  
         freshness: null
+

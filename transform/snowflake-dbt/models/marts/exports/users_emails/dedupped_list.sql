@@ -1,39 +1,39 @@
 WITH unioned_list as (
     SELECT
-        SAAS_FREE_USERS.*,
+        saas_free_users.*,
         'SaaS Free User' AS bucket
-    FROM FREE_GITLAB_COM__20200617 as SAAS_FREE_USERS  -- replace with saas_free_users table
+    FROM static.sensitive.free_gitlab_com__20200617 as saas_free_users
 
     UNION
 
     SELECT
-        SAAS_PAID_USERS.*,
+        saas_paid_users.*,
         'SaaS Paid User' AS bucket
-    FROM PAID_GITLAB_COM__20200617 as SAAS_PAID_USERS      -- replace with saas_paid_users table
+    FROM static.sensitive.paid_gitlab_com__20200617 as saas_paid_users
   
-    LEFT JOIN FREE_GITLAB_COM__20200617 as SAAS_FREE_USERS -- replace with saas_free_users table
-        ON SAAS_FREE_USERS.notification_email = SAAS_PAID_USERS.notification_email
-        AND SAAS_FREE_USERS.full_name = SAAS_PAID_USERS.full_name
+    LEFT JOIN static.sensitive.ree_gitlab_com__20200617 as saas_free_users
+        ON saas_free_users.notification_email = saas_paid_users.notification_email
+        AND saas_free_users.full_name = saas_paid_users.full_name
   
-    WHERE SAAS_FREE_USERS.NOTIFICATION_EMAIL IS NULL
+    WHERE saas_free_users.notification_email IS NULL
 
     UNION
 
     SELECT
-        SELF_MANAGED_PAID_USERS.*,
+        self_managed_paid_users.*,
         'Self-Managed' AS bucket
-    FROM SELF_MANAGED_GITLAB_COM__20200617 as SELF_MANAGED_PAID_USERS -- replace with self_managed_paid 
+    FROM static.sensitive.self_managed_gitlab_com__20200617 as self_managed_paid_users
   
-    LEFT JOIN PAID_GITLAB_COM__20200617 as SAAS_PAID_USERS     -- replace with saas_paid_users table
-        ON SAAS_PAID_USERS.NOTIFICATION_EMAIL = SELF_MANAGED_PAID_USERS.NOTIFICATION_EMAIL
-        AND SAAS_PAID_USERS.full_name         = SELF_MANAGED_PAID_USERS.full_name
+    LEFT JOIN static.sensitive.paid_gitlab_com__20200617 as saas_paid_users
+        ON saas_paid_users.notification_email = self_managed_paid_users.notification_email
+        AND saas_paid_users.full_name         = self_managed_paid_users.full_name
   
-    LEFT JOIN FREE_GITLAB_COM__20200617 as SAAS_FREE_USERS    -- replace with saas_free_users table
-        ON SAAS_FREE_USERS.NOTIFICATION_EMAIL = SELF_MANAGED_PAID_USERS.NOTIFICATION_EMAIL
-        AND SAAS_FREE_USERS.full_name         = SELF_MANAGED_PAID_USERS.full_name
+    LEFT JOIN static.sensitive.free_gitlab_com__20200617 as saas_free_users
+        ON saas_free_users.notification_email = self_managed_paid_users.notification_email
+        AND saas_free_users.full_name         = self_managed_paid_users.full_name
   
-    WHERE SAAS_FREE_USERS.NOTIFICATION_EMAIL IS NULL
-        AND SAAS_PAID_USERS.NOTIFICATION_EMAIL IS NULL
+    WHERE saas_free_users.notification_email IS NULL
+        AND saas_paid_users.notification_email IS NULL
 
 ), unioned_list_no_dup_state AS (
     

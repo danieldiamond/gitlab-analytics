@@ -80,25 +80,9 @@ Putting it all together, the end result is a model with one row for every Charge
 
 {% enddocs %}
 
-{% docs zuora_invoice_charges_mrr_amortized %}
-
-This model calculates MRR based on subscription charges that have been invoiced to the customer. The MRR calculated from invoices should match the MRR found from the subscription charges only and any variances should be investigated. The Zuora rules engine calculates MRR using charges with effective start dates less than or equal to the first day of the month and with effective end dates greater than the first day of the month. The MRR total on the first of the month is considered the MRR from the prior month end.
-
-The below query will pull MRR by month. You can add additional dimensions to the query to build out your analysis.
-
-SELECT
-  mrr_month,
-  SUM(mrr)  mrr
-FROM "ANALYTICS"."ANALYTICS"."ZUORA_INVOICE_CHARGES_MRR_AMORTIZED"
-WHERE mrr_month < DATE_TRUNC('month',CURRENT_DATE)
-GROUP BY 1
-ORDER BY 1 DESC
-
-{% enddocs %}
-
 {% docs zuora_monthly_recurring_revenue %}
 
-This model is built using the same logic as the Zuora UI out of the box MRR Trend Report. The report looks at the charges associated with subscriptions, along with their effective dates and subscription statuses, and calculates MRR. The Zuora rules engine calculates MRR using charges with effective start dates less than or equal to the first day of the month and with effective end dates greater than the first day of the month. The MRR total on the first of the month is considered the MRR from the prior month end.  
+This model is built using the same logic as the Zuora UI out of the box MRR Trend Report. The report looks at the charges associated with subscriptions, along with their effective dates and subscription statuses, and calculates MRR. 
 
 The below query will pull MRR by month. You can add additional dimensions to the query to build out your analysis.
 

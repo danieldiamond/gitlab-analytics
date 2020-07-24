@@ -35,7 +35,7 @@ WHERE hire_date IS NOT NULL
         AND locality IS NOT NULL
         AND LOWER(last_name) NOT LIKE '%test profile%'
         AND LOWER(last_name) != 'test-gitlab')
-  AND employee_id != 42039
+  AND employee_id NOT IN (42039, 42043)
 
 ---Note: the where clause is removing any test accounts and employee_id 42039 is also a test account
 
