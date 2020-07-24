@@ -122,11 +122,17 @@ class QualtricsClient:
 
     def upload_contacts_to_mailing_list(
         self, directory_id: str, mailing_list_id: str, contacts: List[Dict[Any, Any]]
-    ) -> None:
+    ) -> List[Dict[Any, Any]]:
+        """
+        Uploads contacts to the designated mailing list in the designated directory.
+        Returns a list of any contacts that 
+        """
+
         url = (
             self.base_url
             + f"directories/{directory_id}/mailinglists/{mailing_list_id}/contacts"
         )
+        failed_contacts = []
         for contact in contacts:
             contact = {k: v for k, v in contact.items() if v}
             if "email" not in contact:
@@ -139,7 +145,12 @@ class QualtricsClient:
                 response = requests.post(
                     url, headers=self.get_json_post_headers(), data=json.dumps(contact)
                 )
-            response.raise_for_status()
+            try:
+                response.raise_for_status()
+            except:
+                failed_contacts.append(contact)
+
+        return failed_contacts
 
     def create_mailing_list(
         self, directory_id: str, mailing_list_name: str, owner_id: str
