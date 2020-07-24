@@ -25,7 +25,7 @@ renamed AS (
         url                                     AS ticket_url,
         tags                                    AS ticket_tags,
         -- added ':score'
-        satisfaction_rating['score']::VARCHAR   AS satisfaction_rating_score,
+        -- satisfaction_rating['score']::VARCHAR   AS satisfaction_rating_score,
         via['channel']::VARCHAR                 AS submission_channel,
 
         --dates
