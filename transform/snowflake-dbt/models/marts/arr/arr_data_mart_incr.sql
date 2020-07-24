@@ -117,7 +117,7 @@ WITH fct_charges AS (
       SELECT
         '{{ var('valid_at') }}'::DATE AS snapshot_date,
         charges_agg.*,
-        dim_dates.date_actual  AS reporting_month
+        dim_dates.date_actual         AS arr_month
       FROM charges_agg
       INNER JOIN dim_dates
         ON charges_agg.effective_start_month <= dim_dates.date_actual
@@ -131,12 +131,12 @@ WITH fct_charges AS (
 
   SELECT
     --primary_key
-    {{ dbt_utils.surrogate_key('snapshot_date', 'reporting_month', 'subscription_name_slugify', 'product_category') }}
+    {{ dbt_utils.surrogate_key('snapshot_date', 'arr_month', 'subscription_name_slugify', 'product_category') }}
                                  AS primary_key,
 
     --date info
     snapshot_date,
-    reporting_month,
+    arr_month,
     subscription_start_month,
     subscription_end_month,
 
