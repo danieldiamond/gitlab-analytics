@@ -65,6 +65,7 @@ if __name__ == "__main__":
     bamboo = BambooAPI(subdomain="gitlab")
 
     config_dict = env.copy()
+    snowflake_load_database = config_dict["SNOWFLAKE_LOAD_DATABASE"]
 
     tables_to_skip_test_list = []
     if "BAMBOOHR_SKIP_TEST" in config_dict:
@@ -92,8 +93,8 @@ if __name__ == "__main__":
 
     snowflake_stage_load_copy_remove(
         "directory.json",
-        "raw.bamboohr.bamboohr_load",
-        "raw.bamboohr.directory",
+        f"{snowflake_load_database}.bamboohr.bamboohr_load",
+        f"{snowflake_load_database}.bamboohr.directory",
         snowflake_engine,
     )
 
@@ -116,13 +117,13 @@ if __name__ == "__main__":
             json.dump(data, outfile)
 
         test_extraction(
-            data, f"raw.bamboohr.{key}", snowflake_engine, tables_to_skip_test_list
+            data, f"{snowflake_load_database}.bamboohr.{key}", snowflake_engine, tables_to_skip_test_list
         )
 
         snowflake_stage_load_copy_remove(
             f"{key}.json",
-            "raw.bamboohr.bamboohr_load",
-            f"raw.bamboohr.{key}",
+            f"{snowflake_load_database}.bamboohr.bamboohr_load",
+            f"{snowflake_load_database}.bamboohr.{key}",
             snowflake_engine,
         )
 
@@ -140,7 +141,7 @@ if __name__ == "__main__":
 
         test_extraction(
             data["employees"],
-            f"raw.bamboohr.{key}",
+            f"{snowflake_load_database}.bamboohr.{key}",
             snowflake_engine,
             tables_to_skip_test_list,
             field_name="JSONTEXT:employees",
@@ -148,8 +149,8 @@ if __name__ == "__main__":
 
         snowflake_stage_load_copy_remove(
             f"{key}.json",
-            "raw.bamboohr.bamboohr_load",
-            f"raw.bamboohr.{key}",
+            f"{snowflake_load_database}.bamboohr.bamboohr_load",
+            f"{snowflake_load_database}.bamboohr.{key}",
             snowflake_engine,
         )
 
