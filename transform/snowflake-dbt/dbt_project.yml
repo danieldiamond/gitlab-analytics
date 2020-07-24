@@ -312,6 +312,10 @@ models:
 
         users_emails:
           enabled: false
+      
+      pumps:
+        materialized: view
+        schema: pumps
 
     # ------------------
     # Legacy Structure
