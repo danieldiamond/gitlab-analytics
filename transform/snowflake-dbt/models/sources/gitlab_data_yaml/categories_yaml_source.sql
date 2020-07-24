@@ -7,9 +7,9 @@ WITH source AS (
 
 ), intermediate AS (
 
-    SELECT d.value                          AS data_by_row,
-    date_trunc('day', uploaded_at)::date    AS snapshot_date,
-    rank
+    SELECT d.value                            AS data_by_row,
+      DATE_TRUNC('day', uploaded_at)::DATE    AS snapshot_date,
+      rank
     FROM source,
     LATERAL FLATTEN(INPUT => parse_json(jsontext), OUTER => TRUE) d
 
