@@ -1,7 +1,8 @@
+
 WITH source AS (
 
     SELECT *
-    FROM {{ ref('sheetload_kpi_status_source') }}
+    FROM {{ ref('sheetload_data_team_capacity') }}
 
 )
 

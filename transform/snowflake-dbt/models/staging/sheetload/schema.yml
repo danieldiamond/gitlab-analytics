@@ -42,6 +42,7 @@ models:
 - name: sheetload_communication_certificate
 - name: sheetload_company_call_attendance
 - name: sheetload_compensation_certificate
+- name: sheetload_data_team_capacity
 - name: sheetload_days_to_close
 - name: sheetload_gitlab_slack_stats
 - name: sheetload_google_referrals
