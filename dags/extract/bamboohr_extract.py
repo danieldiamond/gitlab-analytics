@@ -11,7 +11,7 @@ from airflow_utils import (
     clone_and_setup_extraction_cmd,
     gitlab_defaults,
     slack_failed_task,
-    gitlab_pod_env_vars
+    gitlab_pod_env_vars,
 )
 from kube_secrets import (
     BAMBOOHR_API_TOKEN,
