@@ -303,7 +303,7 @@ models:
       arr:  
         materialized: table
 
-      data_pipeline_health_dashboard:
+      pipeline_health_dashboard:
         materialized: table
         schema: analytics
 

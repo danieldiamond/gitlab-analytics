@@ -32,8 +32,9 @@ updated_date as
 select
         distinct
           db.date_day,
-          cd.num_rows as created_rows,
-          ud.num_rows as updated_rows
+          db.day_name,
+          ISNULL(cd.num_rows, 0) as created_subscriptions,
+          ISNULL(ud.num_rows, 0) as updated_subscriptions
 from dim_dates db
 left join created_date cd on cd.created_date = db.date_day
 left join updated_date ud on ud.updated_date = db.date_day
