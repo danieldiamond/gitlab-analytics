@@ -21,7 +21,7 @@ WITH data_team_capacity AS (
       data_team_capacity.capacity                         AS data_team_member_capacity
   FROM data_team_milestone_information
   LEFT JOIN data_team_capacity
-      ON data_team_capacity.milestone_id = data_team_milestone_information.milestone_id
+      ON data_team_milestone_information.milestone_id = data_team_capacity.milestone_id
 )
 
 SELECT * 
