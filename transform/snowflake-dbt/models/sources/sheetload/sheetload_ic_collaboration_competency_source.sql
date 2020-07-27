@@ -12,7 +12,7 @@ WITH source AS (
 ), renamed as (
 
     SELECT
-      "Timestamp"::TIMESTAMP::DATE                                                                 AS date_completed,
+      "Timestamp"::TIMESTAMP::DATE                                                                 AS completed_date,
       "Score"                                                                                      AS score,
       "First_Name" ||' ' || "Last_Name"                                                            AS submitter_name,
       "Email_Address"::STRING          AS submitter_email,
