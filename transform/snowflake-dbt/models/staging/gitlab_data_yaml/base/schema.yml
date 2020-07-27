@@ -1,6 +1,19 @@
 version: 2
 
 models:
+  - name: categories_yaml_historical
+    description: This is the base table built on the snapshots of the [categories.yml file](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/data/categories.yml) in the GitLab Handbook.
+    columns:
+      -   name: snapshot_date
+          tests:
+            - not_null
+  - name: categories_yaml_latest
+    description: This is the latest version of the [categories.yml file](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/data/categories.yml) in the GitLab Handbook, pulled from the historical base table.
+    columns:
+      -   name: snapshot_date
+          tests:
+            - not_null
+
   - name: location_factors_yaml_historical
     description: This is the base table built on the snapshots of the [location_factors.yml file](https://gitlab.com/gitlab-com/www-gitlab-com/blob/master/data/location_factors.yml) in the GitLab Handbook.
     columns:

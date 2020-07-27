@@ -12,7 +12,10 @@ from gitlabdata.orchestration_utils import (
 if __name__ == "__main__":
 
     file_dict = dict(
-        team="team", location_factors="location_factors", roles="job_families"
+        categories="categories",
+        location_factors="location_factors",
+        roles="job_families",
+        team="team",
     )
 
     logging.basicConfig(stream=sys.stdout, level=20)
