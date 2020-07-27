@@ -301,7 +301,11 @@ models:
     marts:  
       
       arr:  
-        materialized: table  
+        materialized: table
+
+      data_pipeline_health_dashboard:
+        materialized: table
+        schema: analytics
 
       product_kpis:
         materialized: table 

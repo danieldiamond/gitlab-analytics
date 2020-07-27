@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: accounts_new_updated
+  - name: subscriptions_new_updated
