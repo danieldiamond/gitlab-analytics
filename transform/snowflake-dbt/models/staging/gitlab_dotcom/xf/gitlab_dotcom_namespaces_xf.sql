@@ -54,6 +54,7 @@ projects AS (
       namespaces.lfs_enabled,
       namespaces.parent_id,
       namespaces.shared_runners_minutes_limit,
+      namespaces.extra_shared_runners_minutes_limit,
       namespaces.repository_size_limit,
       namespaces.does_require_two_factor_authentication,
       namespaces.two_factor_grace_period,
@@ -76,7 +77,7 @@ projects AS (
         ON namespaces.namespace_id = projects.namespace_id
       LEFT JOIN namespace_lineage
         ON namespaces.namespace_id = namespace_lineage.namespace_id
-    {{ dbt_utils.group_by(n=29) }}
+    {{ dbt_utils.group_by(n=30) }}
 )
 
 SELECT *

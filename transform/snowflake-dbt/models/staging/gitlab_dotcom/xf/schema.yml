@@ -14,6 +14,19 @@ models:
       - name: created_at
         tests:
           - not_null
+  
+  - name: gitlab_dotcom_ci_minutes_ui_namespace_replication
+    description: '{{ doc("gitlab_dotcom_ci_minutes_ui_namespace_replication") }}'
+    columns:
+      - name: snapshot_month
+        tests:
+          - not_null
+      - name: namespace_id
+        tests:
+          - not_null
+      - name: CONCAT(snapshot_month, namespace_id)
+        tests:
+          - unique
 
   - name: gitlab_dotcom_clusters_applications_cert_managers_xf
     columns:

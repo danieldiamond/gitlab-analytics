@@ -5,7 +5,7 @@ Please complete all items. Ask questions in the #data slack channel
 --->
 
 **Dashboard Link**:
-`WIP:` should be in the title and it should be in the `WIP` topic
+`Draft:` should be in the title and it should be in the `WIP` topic
 
 **Dashboard Name**:
 
@@ -28,16 +28,16 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
 ### Update to Existing Dashboard Submitter Checklist
 
 * Review Items
-   * [ ] `WIP:` should be in the title of the chart being added or updated
+   * [ ] `Draft:` should be in the title of the chart being added or updated
    * [ ] Has the DRI/Prioritization Owner approved the update?
    * [ ] Were updates made in accordance with the SQL style guide and Periscope visualization best practices included in the New Dashboard Submitter Checklist?
    * [ ] Have you evangelized the updates in the #data channel or other relevant slack channels?
-   * [ ] Remove `WIP:` from the title of the chart being added or updated
+   * [ ] Remove `Draft:` from the title of the chart being added or updated
    * [ ] Close this MR
 
 ### New Dashboard Submitter Checklist
 * Review Items
-   * [ ] `WIP:` should be in the title of the dashboard and the dashboard should be added to the `WIP` topic
+   * [ ] `Draft:` should be in the title of the dashboard and the dashboard should be added to the `WIP` topic
    * [ ] SQL formatted using [GitLab Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/platform/sql-style-guide/)
    * [ ] Python / R reviewed for content, formatting, and necessity, if relevant (Did you write Python or R?)
    * [ ] Filters, if relevant (Did you use filters?)
@@ -84,8 +84,8 @@ The DRI/prioritization owner can be found [here](https://about.gitlab.com/handbo
    * [ ] Text Tile for "What am I looking at?" and more detailed information, leveraging hyperlinks instead of URLs
    * [ ] Tooltips are used where appropriate and show relevant values
    * [ ] If this is a dashboard re-evaluation, check with the business logic owners if the new definitions are correct. 
-   * [ ] Remove `WIP:` from title
-   * [ ] Remove from `WIP` topic
+   * [ ] Remove `Draft:` from title
+   * [ ] Remove from `Draft` topic
    * [ ] Add approval badge
    * [ ] Request approval from stakeholder if applicable
    * [ ] Assign to reviewer on the data team. Use `@gitlab-data` on the dashboard if you don't know who to assign to  

@@ -108,7 +108,7 @@ Paste the results of dbt test here, including the command.
   - [ ] If not, an explanation has been provided.
 - [ ] This MR is ready for final review and merge.
 - [ ] All threads are resolved.
-- [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer.
+- [ ] Remove the `Draft:` prefix in the MR title before assigning to reviewer.
 - [ ] Assigned to reviewer.
 
 ## Reviewer Checklist

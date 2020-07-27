@@ -41,6 +41,7 @@ sources:
       - name: hire_forecast
       - name: hire_plan
         freshness: null
+      - name: ic_collaboration_competency
       - name: job_roles_prior_to_2020_02
         freshness: null
       - name: kpi_status
