@@ -21,7 +21,7 @@ The dag that runs the job is in `/dags/bamboohr_extract.py`
 #### Create Table Command
 Execute following command for creating new table in RAW database
 ```sql
-CREATE OR REPLACE TABLE raw.bamboohr.employmentstatus (
+CREATE OR REPLACE TABLE raw.bamboohr.<table_name> (
   jsontext variant,
   uploaded_at timestamp_ntz(9) default CAST(CURRENT_TIMESTAMP() AS TIMESTAMP_NTZ(9))
 );
