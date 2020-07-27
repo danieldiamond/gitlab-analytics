@@ -112,13 +112,18 @@ def qualtrics_loader(load_type: str):
 
     schema = "qualtrics_mailing_list"
 
-    qualtrics_client = QualtricsClient(
-        env["QUALTRICS_API_TOKEN"], env["QUALTRICS_DATA_CENTER"]
-    )
+    if not is_test:
+        qualtrics_client = QualtricsClient(
+            env["QUALTRICS_API_TOKEN"], env["QUALTRICS_DATA_CENTER"]
+        )
 
-    qualtrics_mailing_lists = [
-        mailing_list for mailing_list in qualtrics_client.get_mailing_lists()
-    ]
+        qualtrics_mailing_lists = [
+            mailing_list for mailing_list in qualtrics_client.get_mailing_lists()
+        ]
+
+    else:
+
+        qualtrics_mailing_lists = []
 
     qualtrics_files_to_load = list(
         filter(
