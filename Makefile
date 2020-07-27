@@ -45,7 +45,7 @@ cleanup:
 
 data-image:
 	@echo "Attaching to data-image and mounting repo..."
-	@docker-compose run data_image bash
+	@"$(DOCKER_RUN)" data_image bash
 
 dbt-docs:
 	@echo "Generating docs and spinning up the a webserver on port 8081..."

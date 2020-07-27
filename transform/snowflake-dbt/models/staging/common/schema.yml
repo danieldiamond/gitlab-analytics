@@ -1,14 +1,33 @@
 version: 2
 
 models:
-
   - name: dim_accounts
-    description: "Dimension table representing each individual account with details of person to bill for the account. Excludes deleted and test accounts"
+    description: '{{ doc("dim_accounts") }}'
     columns:
       - name: account_id
+        description: Unique id of the Zuora account
         tests:
           - not_null
           - unique
+      - name: crm_id
+        description: CRM account ID for the account
+      - name: account_number
+        description: A unique Zuora account number
+      - name: account_name
+        description: Zuora account name
+      - name: account_status
+        description: Status of the account in the system. Can be draft, active, cancelled.
+      - name: parent_id
+        description: Identifier of the parent customer account
+      - name: sfdc_account_code
+      - name: account_currency
+        description: A currency as defined in Billing Settings in the Zuora UI
+      - name: sold_to_country
+        description: The country of the sold to contact
+      - name: is_deleted
+        description: flag indicating if account has been deleted
+      - name: is_excluded
+        description: Field used to exclude test accounts from downstream models
 
   - name: dim_customers
     description: '{{ doc("dim_customers") }}'
@@ -20,19 +39,31 @@ models:
       - name: customer_name
         description: account name from SFDC
       - name: customer_country
-        description: billing country as in SFDC
+        description: billing country of SFDC account
       - name: ultimate_parent_account_id
         description: ultimate parent account id
       - name: ultimate_parent_account_name
         description: parent account name
-      - name: ultimate_parent_account_country
-        description: country of where the parent account is
+      - name: ultimate_parent_account_segment
+        description: Sales segment of the parent account
+      - name: ultimate_parent_billing_country
+        description: billing country of parent account
+      - name: record_type_id
+      - name: gitlab_entity
+        description: Gitlab entity that subcription was sold through
+      - name: federal_account
+      - name: gitlab_com_user
+      - name: account_owner
+      - name: account_owner_team
+      - name: account_type
+      - name: technical_account_manager
       - name: is_deleted
         description: flag indicating if account has been deleted
       - name: merged_to_account_id
         description: for deleted accounts this is the SFDC account they were merged to
 
   - name: dim_dates
+    description: '{{ doc("dim_dates") }}'
     columns:
       - name: date_id
         tests:
@@ -40,64 +71,113 @@ models:
           - unique
 
   - name: dim_subscriptions
-    description: "Dimension table representing subscription details as in Zuora"
+    description: '{{ doc("dim_subscriptions") }}'
     columns:
       - name: subscription_id
+        description: Unique identifier of a version of a subscription
         tests:
           - not_null
           - unique
       - name: subscription_status
+        description: The status of the subscription
         tests:
           - not_null
+      - name: crm_id
+        description: account id from SFDC identifing the customer
+      - name: account_id
+        description: The id of the Zuora account the subscription is associated with
+      - name: subscription_name_slugify
+        description: The unique identifier of the subscription
+      - name: subscription_version
+        description: The version number of the subscription
+      - name: is_auto_renew
+        description: Boolean field, if true, this subscription automatically renews at the end of the subscription term
+      - name: zuora_renewal_subscription_name
+        description: name of the linked subscription that renews the prior subscription in a lineage
+      - name: zuora_renewal_subscription_name_slugify
+        description: name of the linked subscription that renews the prior subscription in a lineage
+      - name: renewal_term
+        description: The length of the period for the subscription renewal term
+      - name: renewal_term_period_type
+        description: The period type for the subscription renewal term. This field is used with the renewal term field to specify the subscription renewal term.
+      - name: subscription_start_date
+        description: The date when the subscription term starts. This date is the same as the start date of the original term, which isn't necessarily the start date of the current or new term.
+      - name: subscription_end_date
+        description: The date when the subscription term ends, where the subscription ends at midnight the day before. For example, if the SubscriptionEndDate is 12/31/2016, the subscriptions ends at midnight (00:00:00 hours) on 12/30/2016. This date is the same as the term end date or the cancelation date, as appropriate.
+      - name: subscription_start_month
+        description: The month when the subscription term starts. This month is the same as the start month of the original term, which isn't necessarily the start month of the current or new term.
+      - name: subscription_end_month
+        description: The month when the subscription term ends. This month is the same as the term end month or the cancelation month, as appropriate.
 
   - name: dim_product_details
-    description: "Product related information."
+    description: '{{ doc("dim_product_details") }}'
     columns:
       - name: product_id
+        description: The ID of the product that contains the product rate plan.
         tests:
           - not_null
+      - name: product_name
+        description: The name of the product
       - name: is_reporter_license
         description: "Reporter licenses are in the Products with 'Additional Permission Types' in the name."
       - name: billing_list_price
+        description: The price of the tier if the charge is a flat fee, or the price of each unit in the tier if the charge model is tiered pricing.
         tests:
           - not_null
       - name: product_details_id
+        description: The unique ID of a product rate plan charge
         tests:
           - unique
           - not_null
       - name: product_rate_plan_name
+        description: The name of the product rate plan. The name doesn't have to be unique in a Product Catalog, but the name has to be unique within a product.
       - name: product_rate_plan_charge_name
-      - name: product_name
+        description: The name of the product rate plan charge
       - name: product_sku
+        description: The unique SKU for the product
       - name: product_category
+        description: Category of the product. Used by Zuora Quotes Guided Product Selector.
       - name: effective_start_date
+        description: The date when the product becomes available and can be subscribed to
       - name: effective_end_date
-      - name: billing_list_price
-    
+        description: The date when the product expires and can't be subscribed to anymore
+
+
   - name: fct_invoice_items
     description: '{{ doc("fct_invoice_items") }}'
     columns:
       - name: charge_id
+        description: The unique identifier of a verion of a rate plan charge associated with the invoice item
         tests:
           - not_null
       - name: invoice_item_id
+        description: unique invoice item id that identifies a line item on the invoice
         tests:
           - not_null
           - unique
       - name: invoice_id
+        description: The ID of the invoice that's associated with the invoice item
         tests:
           - not_null
       - name: invoice_number
+        description: The unique identification number of the invoice
       - name: invoice_account_id
+        description: The ID of the customer account associated with the invoice
       - name: invoice_date
+        description: The date the invoice was generated
       - name: service_start_date
+        description: The start date of the service period associated with this invoice item. If the associated charge is a one-time fee, then this date is the date of that charge.
       - name: service_end_date
+        description: The end date of the service period associated with this invoice item. Service ends one second before the date in this value.
       - name: invoice_amount_without_tax
+        description: The invoice amount excluding tax
       - name: invoice_item_charge_amount
+        description: The amount being charged for the invoice item. This amount doesn't include taxes regardless if the charge's tax mode is inclusive or exclusive.
       - name: invoice_item_unit_price
+        description: The per-unit price of the invoice item. Calculated from multiple fields in Product Rate Plan Charge and Product Rate Plan Charge Tier objects.
 
   - name: fct_invoice_items_agg
-    description: "Aggregate fact table with invoice items summarized on charge level"
+    description: Aggregate fact table with invoice items summarized on charge level
     columns:
       - name: charge_id
         tests:
@@ -105,12 +185,72 @@ models:
           - unique
 
   - name: fct_charges
-    description: "Factual table with all rate plan charges coming from subscriptions or an amendment to a subscription"
+    description: '{{ doc("fct_charges") }}'
     columns:
       - name: subscription_id
+        description: Unique identifier of a version of a subscription
         tests:
           - not_null
       - name: charge_id
+        description: The unique identifier of a verion of a rate plan charge
         tests:
           - not_null
           - unique
+      - name: product_details_id
+        description: The unique ID of a product rate plan charge
+      - name: rate_plan_charge_number
+        description: A unique number that identifies the charge
+      - name: rate_plan_charge_name
+        description: The name of the rate plan charge
+      - name: effective_start_month
+        description: Month when the segmented charge starts or started
+      - name: effective_end_month
+        description: Month when the segmented charge ends or ended
+      - name: effective_start_date_id
+        description: Id of the date when the segmented charge starts or started. Use this field to join to dim_dates on id.
+      - name: effective_end_date_id
+        description: Id of the date when the segmented charge ends or ended. Use this field to join to dim_dates on id.
+      - name: effective_start_month_id
+        description: Id of the month when the segmented charge starts or started. Use this field to join to dim_dates on id.
+      - name: effective_end_month_id
+        description: Id of the month when the segmented charge ends or ended. Use this field to join to dim_dates on id.
+      - name: unit_of_measure
+        description: Specifies the units to measure usage
+      - name: quantity
+        description: The default quantity of units
+      - name: mrr
+        description: Monthly recurring revenue (MRR) is the amount of recurring charges in a given month. The MRR calculation doesn't include one-time charges nor usage charges.
+      - name: delta_tcv
+        description: After an Amendment, the change in the total contract value (TCV) amount for this charge, compared with its previous value.
+      - name: rate_plan_name
+        description: The name of the rate plan
+      - name: product_category
+        description: Indicates product category such as Bronze, Silver, Gold, Starter, Premium, or Ultimate
+      - name: delivery
+        description: Indicates whether the product is SaaS, Self-Managed, or other
+      - name: service_type
+        description: Indicates whether the subscription is support service only or full service
+      - name: discount_level
+        description: Specifies if the discount applies to just the product rate plan, the entire subscription, or to any activity in the account.
+      - name: rate_plan_charge_segment
+        description: The identifying number of the subscription rate plan segment. Segments are numbered sequentially, starting with 1.
+      - name: rate_plan_charge_version
+        description: The version of the rate plan charge. Each time a charge is amended, Zuora creates a new version of the rate plan charge.
+      - name: charge_type
+        description: Specifies the type of charge
+
+  - name: dim_accounts_valid_at
+    description: Dimension table representing each individual account with details of person to bill for the account. Excludes deleted and test accounts. Required variable valid_at is timezone sensitive
+
+  - name: dim_subscriptions_valid_at
+    description: Parameterized model to recreate dimension table representing subscription details as in Zuora at given date. Required variable valid_at is timezone sensitive
+
+  - name: fct_charges_valid_at
+    description: Factual table with all rate plan charges coming from subscriptions or an amendment to a subscription. Required variable valid_at is timezone sensitive
+
+  - name: fct_invoice_items_agg_valid_at
+    description: Parameterized model to recreate aggregate fact table with invoice items summarized on charge level at given timestamp {valid_at}. Required variable valid_at is timezone sensitive
+
+  - name: dim_customers_valid_at
+    description: Parameterized model to recreate dimension table representing customer details as in SFDC at given date. Required variable valid_at is timezone sensitive
+

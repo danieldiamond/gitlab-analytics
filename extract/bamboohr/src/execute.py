@@ -46,6 +46,7 @@ def test_extraction(
     snowflake_latest_count = get_snowflake_latest_entry_count(
         snowflake_table, snowflake_engine, field_name
     )
+    snowflake_latest_count = float(snowflake_latest_count or 0)
     snowflake_difference_count = count_extracted - snowflake_latest_count
     if abs(snowflake_difference_count) > (
         ALLOWED_DATA_CHANGE_PER_EXTRACT * float(snowflake_latest_count)
@@ -65,7 +66,7 @@ if __name__ == "__main__":
     bamboo = BambooAPI(subdomain="gitlab")
 
     config_dict = env.copy()
-
+    snowflake_load_database = config_dict["SNOWFLAKE_LOAD_DATABASE"]
     tables_to_skip_test_list = []
     if "BAMBOOHR_SKIP_TEST" in config_dict:
         tables_to_skip_test_str = config_dict["BAMBOOHR_SKIP_TEST"]
@@ -87,13 +88,16 @@ if __name__ == "__main__":
         json.dump(employees, outfile)
 
     test_extraction(
-        employees, "raw.bamboohr.directory", snowflake_engine, tables_to_skip_test_list
+        employees,
+        f"{snowflake_load_database}.bamboohr.directory",
+        snowflake_engine,
+        tables_to_skip_test_list,
     )
 
     snowflake_stage_load_copy_remove(
         "directory.json",
-        "raw.bamboohr.bamboohr_load",
-        "raw.bamboohr.directory",
+        f"{snowflake_load_database}.bamboohr.bamboohr_load",
+        f"{snowflake_load_database}.bamboohr.directory",
         snowflake_engine,
     )
 
@@ -103,6 +107,7 @@ if __name__ == "__main__":
         jobinfo="jobInfo",
         employmentstatus="employmentStatus",
         custombonus="customBonus",
+        emergencyContacts="emergencyContacts",
     )
 
     for key, value in tabular_data.items():
@@ -115,13 +120,16 @@ if __name__ == "__main__":
             json.dump(data, outfile)
 
         test_extraction(
-            data, f"raw.bamboohr.{key}", snowflake_engine, tables_to_skip_test_list
+            data,
+            f"{snowflake_load_database}.bamboohr.{key}",
+            snowflake_engine,
+            tables_to_skip_test_list,
         )
 
         snowflake_stage_load_copy_remove(
             f"{key}.json",
-            "raw.bamboohr.bamboohr_load",
-            f"raw.bamboohr.{key}",
+            f"{snowflake_load_database}.bamboohr.bamboohr_load",
+            f"{snowflake_load_database}.bamboohr.{key}",
             snowflake_engine,
         )
 
@@ -139,7 +147,7 @@ if __name__ == "__main__":
 
         test_extraction(
             data["employees"],
-            f"raw.bamboohr.{key}",
+            f"{snowflake_load_database}.bamboohr.{key}",
             snowflake_engine,
             tables_to_skip_test_list,
             field_name="JSONTEXT:employees",
@@ -147,8 +155,8 @@ if __name__ == "__main__":
 
         snowflake_stage_load_copy_remove(
             f"{key}.json",
-            "raw.bamboohr.bamboohr_load",
-            f"raw.bamboohr.{key}",
+            f"{snowflake_load_database}.bamboohr.bamboohr_load",
+            f"{snowflake_load_database}.bamboohr.{key}",
             snowflake_engine,
         )
 

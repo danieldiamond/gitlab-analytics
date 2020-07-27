@@ -8,7 +8,6 @@ WITH employee_directory_intermediate AS (
 
    SELECT * FROM {{ref('employee_directory_intermediate')}}
 
-
 ), cleaned AS (
 
     SELECT
@@ -32,18 +31,20 @@ WITH employee_directory_intermediate AS (
            WHEN division = 'Customer Service' THEN 'Sales'
            ELSE nullif(division, '') END AS division,
       jobtitle_speciality,
+      job_role_modified,
       COALESCE (location_factor, hire_location_factor) AS location_factor,
       is_hire_date,
       is_termination_date,
       hire_date,
       cost_center,
-      layers
+      layers,
+      IFF(sales_geo_differential!='n/a - Comp Calc', TRUE, FALSE) AS exclude_from_location_factor
     FROM employee_directory_intermediate
 
 ), final AS (
 
     SELECT
-      {{ dbt_utils.surrogate_key('date_actual', 'employee_id') }} AS unique_key,
+      {{ dbt_utils.surrogate_key(['date_actual', 'employee_id']) }} AS unique_key,
       cleaned.*
     FROM cleaned
 

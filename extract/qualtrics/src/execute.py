@@ -38,19 +38,13 @@ def get_and_write_surveys(qualtrics_client: QualtricsClient) -> List[str]:
     return [survey["id"] for survey in surveys_to_write]
 
 
-def get_distributions(
-    qualtrics_client: QualtricsClient, survey_id: str, start: datetime, end: datetime
-):
+def get_distributions(qualtrics_client: QualtricsClient, survey_id: str):
     """
-    Gets all distributions with a send date in the interval [start, end) for the given survey id.
+    Gets all distributions for the given survey id.
     Returns the entire distribution object.
     """
     return [
-        distribution
-        for distribution in qualtrics_client.get_distributions(survey_id)
-        if timestamp_in_interval(
-            parse_string_to_timestamp(distribution["sendDate"]), start_time, end_time
-        )
+        distribution for distribution in qualtrics_client.get_distributions(survey_id)
     ]
 
 
@@ -64,13 +58,21 @@ if __name__ == "__main__":
     POOL_ID = config_dict["QUALTRICS_POOL_ID"]
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
-    distributions_to_write: List[Dict[Any, Any]] = []
+    all_distributions: List[Dict[Any, Any]] = []
     surveys_to_write: List[str] = get_and_write_surveys(client)
 
     for survey_id in surveys_to_write:
-        distributions_to_write = distributions_to_write + get_distributions(
-            client, survey_id, start_time, end_time
+        all_distributions = all_distributions + get_distributions(
+            client, survey_id
         )
+
+    distributions_to_write = [
+        distribution
+        for distribution in all_distributions
+        if timestamp_in_interval(
+            parse_string_to_timestamp(distribution["sendDate"]), start_time, end_time
+        )
+    ]
 
     contacts_to_write = []
     for distribution in distributions_to_write:
@@ -88,9 +90,9 @@ if __name__ == "__main__":
             snowflake_engine,
         )
 
-    if distributions_to_write:
+    if all_distributions:
         with open("distributions.json", "w") as out_file:
-            json.dump(distributions_to_write, out_file)
+            json.dump(all_distributions, out_file)
 
         snowflake_stage_load_copy_remove(
             "distributions.json",

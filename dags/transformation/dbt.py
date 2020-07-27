@@ -59,6 +59,7 @@ default_args = {
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
     "trigger_rule": TriggerRule.ALL_DONE,
+    "dagrun_timeout": timedelta(hours=6),
 }
 
 # Create the DAG
@@ -98,7 +99,7 @@ branching_dbt_run = BranchPythonOperator(
 dbt_non_product_models_command = f"""
     {pull_commit_hash} &&
     {dbt_install_deps_and_seed_cmd} &&
-    dbt run --profiles-dir profile --target prod --exclude tag:product snapshots --vars {xs_warehouse}; ret=$?;
+    dbt run --profiles-dir profile --target prod --exclude tag:product snapshots arr_data_mart_incr --vars {xs_warehouse}; ret=$?;
     python ../../orchestration/upload_dbt_file_to_snowflake.py results; exit $ret
 """
 

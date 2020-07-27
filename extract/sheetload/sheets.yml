@@ -109,12 +109,13 @@ sheets:
     tabs:
       - social_marketing_metrics
   - name: values_certificate
-    owner: '@parul'
+    owner: '@pluthra'
     tabs:
       - ally_certificate
       - communication_certificate
       - values_certificate
       - compensation_certificate
+      - ic_collaboration_competency
   - name: yc_companies
     owner: '@jeanpeguero'
     tabs:
@@ -126,4 +127,8 @@ sheets:
   - name: hire_replan 
     owner: '@pluthra'
     tabs:
-      - hire_replan     
+      - hire_replan
+  - name: data_team_capacity
+    owner: '@kathleentam'
+    tabs:
+      - data_team_capacity     

@@ -48,6 +48,7 @@ default_args = {
     "retries": 1,
     "retry_delay": timedelta(minutes=1),
     "start_date": datetime(2019, 1, 1),
+    "dagrun_timeout": timedelta(hours=2),
 }
 
 # Set the command for the container

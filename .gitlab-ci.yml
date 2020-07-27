@@ -173,7 +173,7 @@ yaml_validation:
 
 .permifrost: &permifrost
   stage: 🐍 Python
-  image: registry.gitlab.com/gitlab-data/permifrost:v0.1.0
+  image: registry.gitlab.com/gitlab-data/permifrost:v0.1.1
   tags:
     - analytics
   only:
@@ -261,4 +261,5 @@ schedule:run-triage:
       - gem install gitlab-triage
       - gitlab-triage --token $ANALYTICS_API_TOKEN --source projects --source-id $CI_PROJECT_PATH
     only:
-      - schedules
+      variables:
+        - $RUN_GITLAB_TRIAGE

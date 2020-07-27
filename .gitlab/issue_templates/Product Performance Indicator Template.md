@@ -4,7 +4,7 @@ This template is for defining a Product Performance Indicators.
 
 --->
 
-## ⭐️ Product Performance Indicators - WIP
+## ⭐️ Product Performance Indicators - Draft
 
 
 ### 📖 Background and Overview

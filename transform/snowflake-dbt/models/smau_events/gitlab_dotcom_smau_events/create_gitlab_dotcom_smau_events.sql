@@ -15,7 +15,7 @@ WITH mr_comment_added AS (
     note_author_id           AS user_id,
     TO_DATE(created_at)      AS event_date,
     'mr_comment_added'       AS event_type,
-    {{ dbt_utils.surrogate_key('event_date', 'event_type', 'note_id') }}
+    {{ dbt_utils.surrogate_key(['event_date', 'event_type', 'note_id']) }}
                              AS event_surrogate_key 
      
   FROM {{ref('gitlab_dotcom_notes')}}
@@ -30,7 +30,7 @@ WITH mr_comment_added AS (
     author_id                         AS user_id,
     TO_DATE(created_at) AS event_date,
     'mr_created'                      AS event_type,
-    {{ dbt_utils.surrogate_key('event_date', 'event_type', 'merge_request_id') }}
+    {{ dbt_utils.surrogate_key(['event_date', 'event_type', 'merge_request_id']) }}
                                       AS event_surrogate_key
     
   FROM {{ref('gitlab_dotcom_merge_requests_xf')}}
@@ -44,7 +44,7 @@ WITH mr_comment_added AS (
     note_author_id           AS user_id,
     TO_DATE(created_at) AS event_date,
     'snippet_comment_added'  AS event_type,
-    {{ dbt_utils.surrogate_key('event_date', 'event_type', 'note_id') }}
+    {{ dbt_utils.surrogate_key(['event_date', 'event_type', 'note_id']) }}
                              AS event_surrogate_key
   
   FROM {{ref('gitlab_dotcom_notes')}}

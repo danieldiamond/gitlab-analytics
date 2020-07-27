@@ -24,7 +24,8 @@ WITH source AS (
       uploaded_at::DATETIME                                           AS effective_date
     FROM source,
     LATERAL FLATTEN(INPUT => PARSE_JSON(jsontext['employees']), OUTER => true) d
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade, cost_center 
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade, cost_center,
+                                            jobtitle_speciality, gitlab_username, sales_geo_differential
             ORDER BY DATE_TRUNC(day,effective_date) ASC, DATE_TRUNC(hour, effective_date) DESC)=1  
 
 ), final AS (

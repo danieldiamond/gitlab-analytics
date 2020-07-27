@@ -37,6 +37,7 @@ default_args = {
     "sla": timedelta(hours=12),
     "sla_miss_callback": slack_failed_task,
     "start_date": datetime(2019, 1, 1, 0, 0, 0),
+    "dagrun_timeout": timedelta(hours=6),
 }
 
 # Create the DAG. Run daily at 04:05
