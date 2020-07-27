@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import datetime, timedelta
 
@@ -29,6 +30,7 @@ bamboo_hr_skip_tests = Variable.get("BAMBOOHR_SKIP_TEST", default_var=None)
 if bamboo_hr_skip_tests:
     pod_env_vars["BAMBOOHR_SKIP_TEST"] = bamboo_hr_skip_tests
 
+logging.info(pod_env_vars)
 # Default arguments for the DAG
 default_args = {
     "catchup": False,
@@ -53,6 +55,7 @@ bamboohr_extract_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
     python bamboohr/src/execute.py
 """
+
 # having both xcom flag flavors since we're in an airflow version where one is being deprecated
 bamboohr_extract = KubernetesPodOperator(
     **gitlab_defaults,
