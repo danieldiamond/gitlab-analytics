@@ -66,7 +66,6 @@ if __name__ == "__main__":
 
     config_dict = env.copy()
     snowflake_load_database = config_dict["SNOWFLAKE_LOAD_DATABASE"]
-    logging.info(config_dict)
     tables_to_skip_test_list = []
     if "BAMBOOHR_SKIP_TEST" in config_dict:
         tables_to_skip_test_str = config_dict["BAMBOOHR_SKIP_TEST"]
