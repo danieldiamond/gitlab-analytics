@@ -367,6 +367,7 @@ roles:
                 - raw.prometheus
                 - raw.snowplow
                 - raw.tap_postgres
+                - raw.qualtrics_mailing_list
             tables:
                 - raw.bamboohr.*
                 - raw.engineering_extracts.*
@@ -376,6 +377,7 @@ roles:
                 - raw.prometheus.*
                 - raw.snowplow.*
                 - raw.tap_postgres.*
+                - raw.qualtrics_mailing_list.*
         privileges:
             databases:
                 read:
