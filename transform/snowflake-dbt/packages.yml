@@ -6,6 +6,6 @@ packages:
   - package: fishtown-analytics/dbt_utils
     version: 0.4.1
   - package: fishtown-analytics/logging
-    version: 0.3.0
+    version: 0.4.0
   - package: fishtown-analytics/snowplow
     version: 0.10.0
