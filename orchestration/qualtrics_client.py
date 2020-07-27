@@ -16,6 +16,12 @@ class QualtricsClient:
         self.base_url = f"https://{qualtrics_data_center_id}.qualtrics.com/API/v3/"
 
     def get(self, url_path, query_params={}):
+        """
+        Should only be called within the qualtrics client.
+        Does a GET on the passed in url_path on the v3 API.  
+        Is a generator for the elements returned from the GET.  
+        Implemented as a generator in case there are multiple pages of results.
+        """
         url = self.base_url + url_path
         headers = {"X-API-TOKEN": self.api_token}
         while True:
@@ -35,20 +41,35 @@ class QualtricsClient:
                 break
 
     def get_surveys(self):
+        """
+        Returns a generator for visible surveys from Qualtrics.
+        """
         return self.get("surveys")
 
     def get_distributions(self, survey_id):
+        """
+        Returns a generator for visible distributions for a given survey.
+        """
         return self.get("distributions", {"surveyId": survey_id})
 
     def get_mailing_lists(self):
+        """
+        Returns a generator of all visible mailing lists in Qualtrics. 
+        """
         return self.get("mailinglists")
 
     def get_contacts(self, directory_id, mailing_list_id):
+        """
+        Returns a generator of all contacts within the given mailing list and directory.
+        """
         return self.get(
             f"directories/{directory_id}/mailinglists/{mailing_list_id}/contacts"
         )
 
     def get_questions(self, survey_id):
+        """
+        Returns a generator for all survey questions within the given survey.
+        """
         return self.get(f"survey-definitions/{survey_id}/questions")
 
     def get_json_post_headers(self):
@@ -125,7 +146,7 @@ class QualtricsClient:
     ) -> List[Dict[Any, Any]]:
         """
         Uploads contacts to the designated mailing list in the designated directory.
-        Returns a list of any contacts that 
+        Returns a list of any contacts that were not uploaded successfully.
         """
 
         url = (
@@ -155,6 +176,10 @@ class QualtricsClient:
     def create_mailing_list(
         self, directory_id: str, mailing_list_name: str, owner_id: str
     ) -> str:
+        """
+        Attempts to create a mailing list with the given name under the given directory and owner.
+        Raises an exception if a non-200 HTTP response results.
+        """
         url = self.base_url + f"directories/{directory_id}/mailinglists"
         request_body = {"name": mailing_list_name, "ownerId": owner_id.strip()}
         response = requests.post(
