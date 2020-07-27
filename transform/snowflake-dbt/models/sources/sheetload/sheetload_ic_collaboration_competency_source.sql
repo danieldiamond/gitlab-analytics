@@ -14,7 +14,7 @@ WITH source AS (
     SELECT
       "Timestamp"::TIMESTAMP::DATE                                                                 AS completed_date,
       "Score"                                                                                      AS score,
-      "First_Name" ||' ' || "Last_Name"                                                            AS submitter_name,
+      "First_Name" || ' ' || "Last_Name"                                                            AS submitter_name,
       "Email_Address"::STRING          AS submitter_email,
       "_UPDATED_AT"                                                                                AS last_updated_at
     FROM source
