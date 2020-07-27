@@ -16,9 +16,10 @@ The full JSON response is stored in a single row and column (JSONTEXT) with the 
 
 The dag that runs the job is in `/dags/bamboohr_extract.py`
 
+### Adding new Bamboo HR Tabular data
 
 #### Create Table Command
- Needs to be run when adding new table to bamboohr extract
+Execute following command for creating new table in RAW database
 ```sql
 CREATE OR REPLACE TABLE raw.bamboohr.employmentstatus (
   jsontext variant,
