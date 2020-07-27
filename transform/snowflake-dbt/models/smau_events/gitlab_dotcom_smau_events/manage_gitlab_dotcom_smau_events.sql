@@ -14,7 +14,7 @@ WITH project_created AS (
     creator_id                    AS user_id,
     TO_DATE(project_created_at)   AS event_date,
     'project_created'             AS event_type,
-    {{ dbt_utils.surrogate_key('event_date', 'event_type', 'project_id') }}
+    {{ dbt_utils.surrogate_key(['event_date', 'event_type', 'project_id']) }}
                                   AS event_surrogate_key
 
   FROM {{ref('gitlab_dotcom_projects_xf')}}
@@ -28,7 +28,7 @@ WITH project_created AS (
     user_id,
     TO_DATE(created_at)   AS event_date,
     'user_created'             AS event_type,
-    {{ dbt_utils.surrogate_key('event_date', 'event_type', 'user_id') }}
+    {{ dbt_utils.surrogate_key(['event_date', 'event_type', 'user_id']) }}
                                AS event_surrogate_key
 
   FROM {{ref('gitlab_dotcom_users_xf')}}

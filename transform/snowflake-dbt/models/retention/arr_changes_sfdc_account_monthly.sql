@@ -215,7 +215,7 @@ WITH mrr_totals_levelled AS (
 ), final AS (
 
     SELECT
-      {{ dbt_utils.surrogate_key('type_of_arr_change.arr_month', 'type_of_arr_change.sfdc_account_id') }} AS primary_key,
+      {{ dbt_utils.surrogate_key(['type_of_arr_change.arr_month', 'type_of_arr_change.sfdc_account_id']) }} AS primary_key,
       type_of_arr_change.arr_month,
       type_of_arr_change.months_since_sfdc_account_cohort_start,
       type_of_arr_change.quarters_since_sfdc_account_cohort_start,

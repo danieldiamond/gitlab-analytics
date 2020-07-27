@@ -26,9 +26,9 @@ WITH source AS (
 
 ), keyed AS (
 
-  SELECT {{ dbt_utils.surrogate_key('zendesk_sla_policy_id', 'filter_all_field', 'filter_all_operator',
+  SELECT {{ dbt_utils.surrogate_key(['zendesk_sla_policy_id', 'filter_all_field', 'filter_all_operator',
             'filter_all_value', 'filter_any_field', 'filter_any_operator', 'filter_any_value',
-          'policy_metrics_business_hours', 'policy_metrics_metric', 'policy_metrics_priority', 'policy_metrics_target') }} AS zendesk_sla_surrogate_key,
+          'policy_metrics_business_hours', 'policy_metrics_metric', 'policy_metrics_priority', 'policy_metrics_target']) }} AS zendesk_sla_surrogate_key,
         *
   FROM renamed
 

@@ -44,7 +44,7 @@ WITH employee_directory_intermediate AS (
 ), final AS (
 
     SELECT
-      {{ dbt_utils.surrogate_key('date_actual', 'employee_id') }} AS unique_key,
+      {{ dbt_utils.surrogate_key(['date_actual', 'employee_id']) }} AS unique_key,
       cleaned.*
     FROM cleaned
 

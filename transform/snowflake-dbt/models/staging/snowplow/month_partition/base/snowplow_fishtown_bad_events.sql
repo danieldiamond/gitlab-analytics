@@ -22,7 +22,7 @@ WITH base as (
       JSONTEXT[ 'failure_tstamp']::timestamp  AS failure_timestamp,
       'Fishtown'                              AS infra_source,
       uploaded_at,
-      {{ dbt_utils.surrogate_key('base64_event', 'failure_timestamp','error_array') }} 
+      {{ dbt_utils.surrogate_key(['base64_event', 'failure_timestamp','error_array']) }} 
                                               AS bad_event_surrogate
     FROM base
 
