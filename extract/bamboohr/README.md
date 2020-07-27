@@ -26,3 +26,8 @@ CREATE OR REPLACE TABLE raw.bamboohr.employmentstatus (
   uploaded_at timestamp_ntz(9) default CAST(CURRENT_TIMESTAMP() AS TIMESTAMP_NTZ(9))
 );
 ```
+
+#### Initial Load
+For the initial DAG run set Airflow Variable `BAMBOOHR_SKIP_TEST` with name of the new table. 
+This way the table will be excluded from extraction test that would fail the Dag Run and prevent new data from loading.
+Variable can be removed after initial successful run
