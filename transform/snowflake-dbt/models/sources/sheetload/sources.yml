@@ -42,6 +42,11 @@ sources:
       - name: hire_plan
         freshness: null
       - name: ic_collaboration_competency
+      - name: ic_results_competency
+      - name: ic_efficiency_competency
+      - name: ic_dib_comptency
+      - name: ic_iteration_competency
+      - name: ic_transparency_competency
       - name: job_roles_prior_to_2020_02
         freshness: null
       - name: kpi_status
