@@ -9,17 +9,17 @@ renamed AS (
 
     SELECT
 
-        --ids
-        id                                                  AS group_id,
+      --ids
+      id                                                  AS group_id,
 
-        --field
-        url                                                 AS group_url,
-        name                                                AS group_name,
-        deleted                                             AS is_deleted,
+      --field
+      url                                                 AS group_url,
+      name                                                AS group_name,
+      deleted                                             AS is_deleted,
 
-        --dates
-        created_at,
-        updated_at
+      --dates
+      created_at,
+      updated_at
 
     FROM source
 

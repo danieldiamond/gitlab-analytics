@@ -224,6 +224,7 @@ roles:
             - pmg
             - snowflake_db
             - zendesk
+            - zendesk_community
             - zuora
         privileges:
             databases:

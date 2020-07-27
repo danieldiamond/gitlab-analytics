@@ -8,7 +8,8 @@ WITH zendesk_community_tickets AS (
   SELECT
     ticket_id,
     solved_at,
-    LEAST(sla_reply_time_business_hours, sla_reply_time_calendar_hours) AS first_reply_time
+    sla_reply_time_business_hours,
+    sla_reply_time_calendar_hours
   FROM {{ref('zendesk_community_ticket_metrics')}}
 
 ), zendesk_community_organizations AS (
@@ -22,7 +23,8 @@ WITH zendesk_community_tickets AS (
 
 SELECT DISTINCT 
   zendesk_community_tickets.*,
-  zendesk_community_ticket_metrics.first_reply_time,
+  zendesk_community_ticket_metrics.sla_reply_time_business_hours,
+  zendesk_community_ticket_metrics.sla_reply_time_calendar_hours,
   zendesk_community_organizations.sfdc_account_id,
   zendesk_community_organizations.organization_market_segment,
   zendesk_community_organizations.organization_tags,

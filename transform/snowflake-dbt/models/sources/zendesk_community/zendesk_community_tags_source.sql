@@ -9,8 +9,8 @@ renamed AS (
 
     SELECT
 
-        count AS tag_count,
-        name  AS tag_name
+      count AS tag_count,
+      name  AS tag_name
 
     FROM source
 
