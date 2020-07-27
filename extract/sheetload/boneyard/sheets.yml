@@ -24,7 +24,7 @@ sheets:
     owner: '@rkohnke'
     tabs:
       - us_cities_latitude_longitude
-  - name: zuora_account_golden_records
+  - name: account_golden_records
     owner: '@rparker2'
     tabs:
-      - zuora_account_golden_records
+      - account_golden_records
