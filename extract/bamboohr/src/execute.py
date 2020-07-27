@@ -46,7 +46,8 @@ def test_extraction(
     snowflake_latest_count = get_snowflake_latest_entry_count(
         snowflake_table, snowflake_engine, field_name
     )
-    snowflake_difference_count = count_extracted - int(snowflake_latest_count or 0)
+    snowflake_latest_count = float(snowflake_latest_count or 0)
+    snowflake_difference_count = count_extracted - snowflake_latest_count
     if abs(snowflake_difference_count) > (
         ALLOWED_DATA_CHANGE_PER_EXTRACT * float(snowflake_latest_count)
     ):
