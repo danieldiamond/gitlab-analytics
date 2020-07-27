@@ -122,7 +122,7 @@ def qualtrics_loader(load_type: str):
         ]
 
     else:
-
+        qualtrics_client = None
         qualtrics_mailing_lists = []
 
     qualtrics_files_to_load = list(
