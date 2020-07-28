@@ -25,6 +25,21 @@ WITH stages AS (
     FROM {{ ref ('greenhouse_application_stages_source') }}
     WHERE stage_entered_on IS NOT NULL
     
+), stages_pivoted AS (
+
+    SELECT 
+      application_id,
+      {{ dbt_utils.pivot(
+          'stage_name_modified_with_underscores', 
+          dbt_utils.get_column_values(ref('greenhouse_application_stages_source'), 'stage_name_modified_with_underscores'),
+          agg = 'MAX',
+          then_value = 'stage_entered_on',
+          else_value = 'NULL',
+          quote_identifiers = TRUE
+      ) }}
+    FROM {{ref('greenhouse_application_stages_source')}}
+    GROUP BY application_id
+
 ), recruiting_xf AS (
 
     SELECT * 
@@ -164,14 +179,19 @@ WITH stages AS (
         is_milestone_stage,
         stage_entered_on,
         stage_exited_on,
-        DATE_TRUNC(MONTH,stage_entered_on)                                          AS month_stage_entered_on,
-        DATE_TRUNC(MONTH,stage_exited_on)                                           AS month_stage_exited_on,
-        DATEDIFF(DAY, stage_entered_on, COALESCE(stage_exited_on, CURRENT_DATE()))  AS days_in_stage,
-        DATEDIFF(DAY, min_stage_entered_on, max_stage_exited_on)                    AS days_in_pipeline,
-        row_number_stages_desc_updated                                              AS row_number_stages_desc,
         LEAD(application_stage) OVER 
             (PARTITION BY stage_order_revamped.application_id, stage_order_revamped.candidate_id 
                 ORDER BY row_number_stages_desc_updated DESC)                       AS next_stage,
+        LEAD(stage_entered_on) OVER 
+            (PARTITION BY stage_order_revamped.application_id, stage_order_revamped.candidate_id 
+                ORDER BY row_number_stages_desc DESC)                               AS next_stage_entered_on,                       
+        DATE_TRUNC(MONTH,stage_entered_on)                                          AS month_stage_entered_on,
+        DATE_TRUNC(MONTH,stage_exited_on)                                           AS month_stage_exited_on,
+        DATEDIFF(DAY, stage_entered_on, COALESCE(stage_exited_on, CURRENT_DATE()))  AS days_in_stage,
+        DATEDIFF(DAY, stage_entered_on, 
+            COALESCE(next_stage_entered_on, CURRENT_DATE()))                        AS days_between_stages,
+        DATEDIFF(DAY, min_stage_entered_on, max_stage_exited_on)                    AS days_in_pipeline,
+        row_number_stages_desc_updated                                              AS row_number_stages_desc,        
         IFF(row_number_stages_desc_updated = 1, TRUE, FALSE)                        AS is_current_stage,
 
         application_month,
@@ -194,18 +214,21 @@ WITH stages AS (
                 AND current_job_req_status = 'open'
                 AND application_status = 'active' 
               THEN TRUE 
-              ELSE FALSE END                                                        AS in_current_pipeline
+              ELSE FALSE END                                                        AS in_current_pipeline,
+        DATEDIFF(day, stages_pivoted.application_review, stages_pivoted.screen)     AS turn_time_app_review_to_screen,
+        DATEDIFF(day, stages_pivoted.screen, stages_pivoted.team_interview    )     AS turn_time_screen_to_interview,
+        DATEDIFF(day, stages_pivoted.team_interview, stages_pivoted.offer)          AS turn_time_interview_to_offer
     FROM stage_order_revamped
     LEFT JOIN stages_hit 
         ON stage_order_revamped.application_id = stages_hit.application_id
         AND stage_order_revamped.candidate_id = stages_hit.candidate_id
     LEFT JOIN hires_data 
       ON stage_order_revamped.application_id = hires_data.application_id
-      AND stage_order_revamped.candidate_id = hires_data.candidate_id    
+      AND stage_order_revamped.candidate_id = hires_data.candidate_id
+    LEFT JOIN stages_pivoted
+      ON stages_pivoted.application_id = stage_order_revamped.application_id 
     
 )
         
 SELECT *      
 FROM final
-
-
