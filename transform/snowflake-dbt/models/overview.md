@@ -2,7 +2,7 @@
 
 # Data Documentation for GitLab
 
-All other documentation is our handbook in the following links
+All other documentation is in our handbook in the following links:
 
 * [Data Team Handbook](https://about.gitlab.com/handbook/business-ops/data-team/)
 * [dbt Guide](https://about.gitlab.com/handbook/business-ops/data-team/platform/dbt-guide/)
