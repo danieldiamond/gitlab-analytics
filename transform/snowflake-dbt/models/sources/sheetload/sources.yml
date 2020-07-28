@@ -19,6 +19,7 @@ sources:
     tables:
       - name: abm_account_baselines
         freshness: null
+      - name: account_golden_records
       - name: abuse_mitigation
       - name: ally_certificate
       - name: calendar
@@ -67,4 +68,5 @@ sources:
         freshness: null
       - name: hire_replan  
         freshness: null
+
 

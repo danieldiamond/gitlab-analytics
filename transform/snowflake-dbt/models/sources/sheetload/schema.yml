@@ -278,3 +278,5 @@ models:
       tests:
       - not_null
     - name: capacity
+- name: sheetload_account_golden_records_source
+  description: Golden records (values unexpected to changed for a few accounts), currently based off zuora data
