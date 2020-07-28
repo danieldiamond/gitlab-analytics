@@ -19,5 +19,5 @@ WITH source AS (
 
 )
 
-SELECT DISTINCT *
+SELECT *
 FROM renamed
