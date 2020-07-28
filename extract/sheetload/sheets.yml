@@ -115,6 +115,7 @@ sheets:
       - communication_certificate
       - values_certificate
       - compensation_certificate
+      - ic_collaboration_competency
   - name: yc_companies
     owner: '@jeanpeguero'
     tabs:
