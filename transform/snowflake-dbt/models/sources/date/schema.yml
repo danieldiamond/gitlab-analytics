@@ -138,7 +138,7 @@ models:
             description: The name of the fiscal quarter, e.g 'FY20-Q1' for 2019-02-02
             tests:
                - not_null
-          - name: fiscal_quarter_number
+          - name: fiscal_quarter_number_absolute
             description: Monotonically increasing integer for each fiscal quarter. This allows for comparing the relative order of fiscal quarters.
             tests:
               - not_null   
