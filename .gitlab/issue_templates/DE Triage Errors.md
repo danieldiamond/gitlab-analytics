@@ -12,7 +12,7 @@ Urgency:
 - [ ] T2 - Resolution Required / Keep on Milestone
 - [ ] T3 - Backlog
 
-DRIs:
+DRIs:  <!-- Tag the engineer and analyst assigned DRI in https://about.gitlab.com/handbook/business-ops/data-team/organization/  -->
 - Data Analyst: 
 - Data Engineer: 
  
