@@ -292,7 +292,7 @@ roles:
             - analyst_marketing
             - boneyard
             - covid19
-            - customers_db_sensitive
+            - customers_db
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
@@ -580,7 +580,7 @@ roles:
                 read:
                     - covid19.public.jhu_covid_19
 
-    - customers_db_sensitive:
+    - customers_db:
         privileges:
             databases:
                 read:
@@ -588,9 +588,11 @@ roles:
             schemas:
                 read:
                     - analytics.analytics_sensitive
+                    - analytics.customers
             tables:
                 read:
                     - analytics.analytics_sensitive.customers_db_customers_pii
+                    - analytics.customers.*
 
     - date:
         privileges:
@@ -763,15 +765,12 @@ roles:
         privileges:
             databases:
                 read:
-                    - analytics
                     - raw
             schemas:
                 read:
-                    - analytics.customers
                     - raw.tap_postgres
             tables:
                 read:
-                    - analytics.customers.*
                     - raw.tap_postgres.*
 
     - public:
@@ -1083,7 +1082,7 @@ roles:
     - datwood:
         member_of:
             - analyst_growth
-            - customers_db_sensitive
+            - customers_db
         warehouses:
             - analyst_xs
 
@@ -1208,7 +1207,7 @@ roles:
         member_of:
             - analyst_finance
             - bamboohr
-            - customers_db_sensitive
+            - customers_db
         warehouses:
             - analyst_xs
             
@@ -1227,7 +1226,7 @@ roles:
     - jpeguero:
         member_of:
             - analyst_marketing
-            - customers_db_sensitive
+            - customers_db
             - netsuite
             - static_sensitive
         warehouses:
@@ -1258,7 +1257,7 @@ roles:
     - kaguilar:
         member_of:
             - analyst_engineering
-            - customers_db_sensitive
+            - customers_db
         warehouses:
             - analyst_xs
 
@@ -1362,7 +1361,7 @@ roles:
     - pluthra:
         member_of:
             - analyst_people
-            - customers_db_sensitive
+            - customers_db
         warehouses:
             - analyst_xs
 
