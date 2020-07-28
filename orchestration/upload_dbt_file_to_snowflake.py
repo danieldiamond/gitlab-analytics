@@ -1,4 +1,4 @@
-import json
+import logging
 import os
 import sys
 from os import environ as env
@@ -37,4 +37,8 @@ if __name__ == "__main__":
             f"{snowflake_database}.dbt.dbt_load",
             get_table_name(config_name, snowflake_database),
             snowflake_engine,
+        )
+    else:
+        logging.error(
+            f"Dbt File {file_name} is missing. Check if dbt run completed successfully"
         )
