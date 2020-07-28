@@ -31,9 +31,10 @@ if __name__ == "__main__":
     config_dict = env.copy()
     snowflake_database = config_dict["SNOWFLAKE_LOAD_DATABASE"].upper()
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
-    snowflake_stage_load_copy_remove(
-        file_name,
-        f"raw.dbt.dbt_load",
-        get_table_name(config_name, snowflake_database),
-        snowflake_engine,
-    )
+    if os.path.exists(file_name):
+        snowflake_stage_load_copy_remove(
+            file_name,
+            f"raw.dbt.dbt_load",
+            get_table_name(config_name, snowflake_database),
+            snowflake_engine,
+        )
