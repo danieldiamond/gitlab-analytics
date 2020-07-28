@@ -91,7 +91,7 @@ WITH stages AS (
       rejected_date                                                                   AS stage_exited_on,
       {{repeated_column_names}}
     FROM recruiting_xf 
-    WHERE application_status in ('hired', 'rejected')
+    WHERE application_status in ('rejected')
     
 ), all_stages AS (
 
