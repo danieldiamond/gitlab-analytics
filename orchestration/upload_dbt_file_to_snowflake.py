@@ -34,7 +34,7 @@ if __name__ == "__main__":
     if os.path.exists(file_name):
         snowflake_stage_load_copy_remove(
             file_name,
-            f"raw.dbt.dbt_load",
+            f"{snowflake_database}.dbt.dbt_load",
             get_table_name(config_name, snowflake_database),
             snowflake_engine,
         )
