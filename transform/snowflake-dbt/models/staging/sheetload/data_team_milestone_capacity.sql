@@ -5,7 +5,13 @@ WITH data_team_capacity AS (
   
 ), data_team_milestone_information AS (
   
-  SELECT DISTINCT namespace_id, milestone_id, milestone_title, start_date, due_date, milestone_status
+  SELECT DISTINCT 
+    namespace_id, 
+    milestone_id, 
+    milestone_title, 
+    milestone_status,   
+    start_date, 
+    due_date
   FROM {{ ref('gitlab_dotcom_milestones_xf') }}
   WHERE namespace_id = '4347861'
     AND start_date > '2020-06-30' 
