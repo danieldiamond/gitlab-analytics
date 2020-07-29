@@ -116,6 +116,7 @@ models:
         - name: month_stage_entered_on
         - name: month_stage_exited_on
         - name: days_in_stage
+        - name: days_between_stages
         - name: days_in_pipeline
         - name: row_number_stages_desc
         - name: next_stage
@@ -149,6 +150,13 @@ models:
         - name: hit_rejected 
         - name: candidate_dropout
         - name: in_current_pipeline
+        - name: turn_time_app_review_to_screen
+          description: Time in days between when an application was reviewed and screened
+        - name: turn_time_screen_to_interview
+          description: Time in days between screening and interview_to_hire
+        - name: turn_time_interview_to_offer
+          description: Time in days between interview and offer
+
   - name: greenhouse_stage_analysis
     description: Provides the state of all candidates in our recruiting pipeline. This model is used to understand movement through the pipeline, bottlenecks and performance. The fields are the same as greenhouse_stage_intermediate but we have removed application_id and candidate_id and changed dates to month format.
 
