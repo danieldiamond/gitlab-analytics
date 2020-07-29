@@ -33,8 +33,8 @@ SELECT
     DISTINCT
       db.date_day                       AS date_day,
       db.day_name                       AS day_name,
-      ISNULL(cd.num_rows, 0)            AS created_account,
-      ISNULL(ud.num_rows, 0)            AS updated_accounts
+      IFNULL(cd.num_rows, 0)            AS created_account,
+      IFNULL(ud.num_rows, 0)            AS updated_accounts
 FROM dim_dates db
 LEFT JOIN created_date cd
   ON cd.created_date = db.date_day
