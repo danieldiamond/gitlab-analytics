@@ -1008,11 +1008,11 @@ roles:
               schemas:
                   read:
                       - analytics.zendesk_community_relations
-                      - raw.zendesk_community_stitch
+                      - raw.zendesk_community_relations_stitch
               tables:
                   read:
                       - analytics.zendesk_community_relations.*
-                      - raw.zendesk_community_stitch.*
+                      - raw.zendesk_community_relations_stitch.*
 
     - zuora:
         warehouses:
@@ -1418,7 +1418,7 @@ roles:
                     - raw.stitch_google_sheets
                     - raw.version_db_dump_stitch
                     - raw.zendesk_stitch
-                    - raw.zendesk_community_stitch
+                    - raw.zendesk_community_relations_stitch
                     - raw.zuora_stitch
                 write:
                     - raw.license_db_dump
@@ -1426,7 +1426,7 @@ roles:
                     - raw.stitch_google_sheets
                     - raw.version_db_dump_stitch
                     - raw.zendesk_stitch
-                    - raw.zendesk_community_stitch
+                    - raw.zendesk_community_relations_stitch
                     - raw.zuora_stitch
             tables:
                 read:
@@ -1435,7 +1435,7 @@ roles:
                     - raw.stitch_google_sheets.*
                     - raw.version_db_dump_stitch.*
                     - raw.zendesk_stitch.*
-                    - raw.zendesk_community_stitch.*
+                    - raw.zendesk_community_relations_stitch.*
                     - raw.zuora_stitch.*
                 write:
                     - raw.license_db_dump.*
@@ -1443,7 +1443,7 @@ roles:
                     - raw.stitch_google_sheets.*
                     - raw.version_db_dump_stitch.*
                     - raw.zendesk_stitch.*
-                    - raw.zendesk_community_stitch.*
+                    - raw.zendesk_community_relations_stitch.*
                     - raw.zuora_stitch.*
     
     - target_snowflake:
