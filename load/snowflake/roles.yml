@@ -120,6 +120,7 @@ roles:
             - snowflake_db
             - version_db
             - zendesk
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -151,6 +152,7 @@ roles:
             - snowplow
             - version_db
             - zendesk
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -222,6 +224,7 @@ roles:
             - pmg
             - snowflake_db
             - zendesk
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -250,6 +253,7 @@ roles:
             - snowflake_db
             - version_db
             - zendesk
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -306,6 +310,7 @@ roles:
             - snowplow
             - version_db
             - zendesk
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -991,7 +996,24 @@ roles:
             tables:
                 read:
                     - analytics.zendesk.*
-                    - raw.zendesk_stitch.*  
+                    - raw.zendesk_stitch.*
+
+    - zendesk_community_relations:
+          warehouses:
+              - analyst_xs
+          privileges:
+              databases:
+                  read:
+                      - analytics
+                      - raw
+              schemas:
+                  read:
+                      - analytics.zendesk_community_relations
+                      - raw.zendesk_community_relations_stitch
+              tables:
+                  read:
+                      - analytics.zendesk_community_relations.*
+                      - raw.zendesk_community_relations_stitch.*
 
     - zuora:
         warehouses:
@@ -1397,6 +1419,7 @@ roles:
                     - raw.stitch_google_sheets
                     - raw.version_db_dump_stitch
                     - raw.zendesk_stitch
+                    - raw.zendesk_community_relations_stitch
                     - raw.zuora_stitch
                 write:
                     - raw.license_db_dump
@@ -1404,6 +1427,7 @@ roles:
                     - raw.stitch_google_sheets
                     - raw.version_db_dump_stitch
                     - raw.zendesk_stitch
+                    - raw.zendesk_community_relations_stitch
                     - raw.zuora_stitch
             tables:
                 read:
@@ -1412,6 +1436,7 @@ roles:
                     - raw.stitch_google_sheets.*
                     - raw.version_db_dump_stitch.*
                     - raw.zendesk_stitch.*
+                    - raw.zendesk_community_relations_stitch.*
                     - raw.zuora_stitch.*
                 write:
                     - raw.license_db_dump.*
@@ -1419,6 +1444,7 @@ roles:
                     - raw.stitch_google_sheets.*
                     - raw.version_db_dump_stitch.*
                     - raw.zendesk_stitch.*
+                    - raw.zendesk_community_relations_stitch.*
                     - raw.zuora_stitch.*
     
     - target_snowflake:

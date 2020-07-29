@@ -208,6 +208,9 @@ models:
       zendesk:
         +schema: zendesk
 
+      zendesk_community_relations:
+        +schema: zendesk_community_relations
+
       zuora:
         +schema: zuora
 
