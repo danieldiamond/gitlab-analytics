@@ -6,7 +6,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      {{ dbt_utils.surrogate_key('accounting_period_id', 'full_name') }}
+      {{ dbt_utils.surrogate_key(['accounting_period_id', 'full_name']) }}
                                                     AS accounting_period_unique_id,
       --Primary Key
       accounting_period_id::FLOAT                   AS accounting_period_id,

@@ -278,5 +278,19 @@ models:
       tests:
       - not_null
     - name: capacity
+- name: sheetload_ic_collaboration_competency_source
+  description: This is a list of all who have completed the IC collaboraiton competency knowledge assessment.
+- name: sheetload_ic_results_competency_source
+  description: This is a list of all who have completed the IC results competency knowledge assessment.
+- name: sheetload_ic_efficiency_competency_source
+  description: This is a list of all who have completed the IC efficiency competency knowledge assessment.
+- name: sheetload_ic_dib_comptency_source
+  description: This is a list of all who have completed the IC diversity, inclusion, and belonging competency knowledge assessment.
+- name: sheetload_ic_iteration_competency_source
+  description: This is a list of all who have completed the IC iteration competency knowledge assessment.
+- name: sheetload_ic_transparency_competency_source
+  description: This is a list of all who have completed the IC transparency competency knowledge assessment.
+
+
 - name: sheetload_account_golden_records_source
   description: Golden records (values unexpected to changed for a few accounts), currently based off zuora data
