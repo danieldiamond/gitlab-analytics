@@ -43,7 +43,7 @@ WITH source as (
                                  ,'Take Home Assessment'
                                  ,'Executive Interview'
                                  ,'Reference Check'
-                                 ,'Offer'), TRUE, FALSE)               AS is_milestone_stage
+                                 ,'Offer'), TRUE, FALSE)               AS is_milestone_stage                          
     FROM renamed
 
 )
