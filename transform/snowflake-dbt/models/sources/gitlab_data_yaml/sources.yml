@@ -16,6 +16,7 @@ sources:
         warn_after: {count: 8, period: hour}
 
     tables:
+      - name: categories
       - name: location_factors
       - name: roles
       - name: team

@@ -104,6 +104,9 @@ WITH source AS (
         opportunity_term__c            AS opportunity_term,
         pio__c                         AS partner_initiated_opportunity,
         user_segment_o__c              AS user_segment,
+        start_date__c                  AS subscription_start_date,
+        end_date__c                    AS subscription_end_date,
+        true_up_value__c               AS true_up_value,
 
         -- command plan fields
         fm_champion__c                 AS cp_champion,
@@ -129,6 +132,8 @@ WITH source AS (
         isdeleted                      AS is_deleted,
         lastactivitydate               AS last_activity_date,
         recordtypeid                   AS record_type_id
+
+
 
       FROM source
   )

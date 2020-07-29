@@ -6,15 +6,15 @@ WITH zuora_account AS (
 
     SELECT *
     FROM {{ ref('zuora_account_snapshots_source') }}
-    WHERE '{{ var('valid_at') }}'::DATE >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::DATE < {{ coalesce_to_infinity('dbt_valid_to') }}
+    WHERE '{{ var('valid_at') }}'::TIMESTAMP_TZ >= dbt_valid_from
+      AND '{{ var('valid_at') }}'::TIMESTAMP_TZ < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 ), zuora_contact AS (
 
     SELECT *
     FROM {{ ref('zuora_contact_snapshots_source') }}
-    WHERE '{{ var('valid_at') }}'::DATE >= dbt_valid_from
-      AND '{{ var('valid_at') }}'::DATE < {{ coalesce_to_infinity('dbt_valid_to') }}
+    WHERE '{{ var('valid_at') }}'::TIMESTAMP_TZ >= dbt_valid_from
+      AND '{{ var('valid_at') }}'::TIMESTAMP_TZ < {{ coalesce_to_infinity('dbt_valid_to') }}
 
 ), excluded_accounts AS (
 
@@ -43,3 +43,4 @@ SELECT
 FROM zuora_account
 LEFT JOIN zuora_contact
   ON COALESCE(zuora_account.sold_to_contact_id, zuora_account.bill_to_contact_id) = zuora_contact.contact_id
+WHERE zuora_account.is_deleted = FALSE

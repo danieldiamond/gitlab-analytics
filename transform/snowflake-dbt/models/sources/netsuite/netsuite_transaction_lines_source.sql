@@ -6,7 +6,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      {{ dbt_utils.surrogate_key('transaction_id', 'transaction_line_id') }}
+      {{ dbt_utils.surrogate_key(['transaction_id', 'transaction_line_id']) }}
                                         AS transaction_lines_unique_id,
       --Primary Key
       transaction_id::FLOAT             AS transaction_id,

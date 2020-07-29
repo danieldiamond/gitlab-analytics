@@ -39,7 +39,11 @@ roles:
         warehouses:
             - admin
         member_of:
-            - sysadmin
+            - useradmin
+
+    - useradmin:
+        warehouses:
+            - admin
 
     - sysadmin:
         warehouses:
@@ -288,7 +292,7 @@ roles:
             - analyst_marketing
             - boneyard
             - covid19
-            - customers_db_sensitive
+            - customers_db
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
@@ -363,6 +367,7 @@ roles:
                 - raw.prometheus
                 - raw.snowplow
                 - raw.tap_postgres
+                - raw.qualtrics_mailing_list
             tables:
                 - raw.bamboohr.*
                 - raw.engineering_extracts.*
@@ -372,6 +377,7 @@ roles:
                 - raw.prometheus.*
                 - raw.snowplow.*
                 - raw.tap_postgres.*
+                - raw.qualtrics_mailing_list.*
         privileges:
             databases:
                 read:
@@ -574,7 +580,7 @@ roles:
                 read:
                     - covid19.public.jhu_covid_19
 
-    - customers_db_sensitive:
+    - customers_db:
         privileges:
             databases:
                 read:
@@ -582,9 +588,23 @@ roles:
             schemas:
                 read:
                     - analytics.analytics_sensitive
+                    - analytics.customers
             tables:
                 read:
                     - analytics.analytics_sensitive.customers_db_customers_pii
+                    - analytics.customers.*
+
+    - date:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.date
+            tables:
+                read:
+                    - analytics.date.*
 
     - db_dumps:
         privileges:
@@ -732,10 +752,12 @@ roles:
                 read:
                     - raw.netsuite_fivetran
                     - analytics.netsuite
+                    - analytics.analytics_sensitive
             tables:
                 read:
                     - raw.netsuite_fivetran.*
                     - analytics.netsuite.*
+                    - analytics.analytics_sensitive.netsuite_*
 
     - postgres_pipeline:
         warehouses:
@@ -743,16 +765,17 @@ roles:
         privileges:
             databases:
                 read:
-                    - analytics
                     - raw
             schemas:
                 read:
-                    - analytics.customers
                     - raw.tap_postgres
             tables:
                 read:
-                    - analytics.customers.*
                     - raw.tap_postgres.*
+
+    - public:
+        member_of:
+          - date
 
     - qualtrics:
         warehouses:
@@ -826,12 +849,12 @@ roles:
                     - raw
             schemas:
                 read:
-                    - analytics.analytics_staging
+                    - analytics.analytics_sensitive
                     - analytics.sheetload
                     - raw.sheetload
             tables:
                 read:
-                    - analytics.analytics_staging.sheetload_*
+                    - analytics.analytics_sensitive.sheetload_*
                     - analytics.sheetload.*
                     - raw.sheetload.*  
 
@@ -869,10 +892,12 @@ roles:
                     - raw
             schemas:
                 read:
+                    - analytics.snowplow
                     - analytics.snowplow_*
                     - raw.snowplow
             tables:
                 read:
+                    - analytics.snowplow.*
                     - analytics.snowplow_*.*
                     - raw.snowplow.*
 
@@ -1044,8 +1069,6 @@ roles:
             - analyst_xs
 
     - cmccarty:
-        member_of:
-            - securityadmin
         warehouses:
             - admin
 
@@ -1058,17 +1081,22 @@ roles:
 
     - datwood:
         member_of:
-            - analyst_core
-            - customers_db_sensitive
-            - db_dumps
-            - postgres_pipeline
+            - analyst_growth
+            - customers_db
         warehouses:
             - analyst_xs
+
     - dknox:
         member_of:
             - analyst_engineering
         warehouses:
             - analyst_xs
+
+    - dparker:
+        member_of:
+            - reporter
+        warehouses:
+            - reporting
 
     - dtang:
         member_of:
@@ -1079,7 +1107,6 @@ roles:
     - dtownsend:
         member_of:
             - analyst_engineering
-            - dtownsend
 
     - eburke:
         member_of:
@@ -1180,7 +1207,7 @@ roles:
         member_of:
             - analyst_finance
             - bamboohr
-            - customers_db_sensitive
+            - customers_db
         warehouses:
             - analyst_xs
             
@@ -1199,7 +1226,7 @@ roles:
     - jpeguero:
         member_of:
             - analyst_marketing
-            - customers_db_sensitive
+            - customers_db
             - netsuite
             - static_sensitive
         warehouses:
@@ -1230,7 +1257,7 @@ roles:
     - kaguilar:
         member_of:
             - analyst_engineering
-            - customers_db_sensitive
+            - customers_db
         warehouses:
             - analyst_xs
 
@@ -1268,6 +1295,10 @@ roles:
         warehouses:
             - reporting
 
+    - mjozenazemian:
+        warehouses:
+            - reporting
+
     - mpeychet:
         member_of:
             - analyst_growth
@@ -1278,16 +1309,9 @@ roles:
 
     - mriser:
         member_of:
-            - mriser
             - postgres_pipeline
         warehouses:
             - analyst_xs
-
-    - mrodriguez:
-        member_of:
-            - reporter
-        warehouses:
-            - reporting
 
     - msendal:
         warehouses:
@@ -1308,6 +1332,12 @@ roles:
             - engineer_xl
             - loading
             - reporting
+
+    - nfiguera:
+        member_of:
+            - analyst_sales
+        warehouses:
+            - analyst_xs
 
     - parmstrong:
         warehouses:
@@ -1331,7 +1361,7 @@ roles:
     - pluthra:
         member_of:
             - analyst_people
-            - customers_db_sensitive
+            - customers_db
         warehouses:
             - analyst_xs
 
@@ -1346,12 +1376,6 @@ roles:
             - analyst_core
         warehouses:
             - analyst_xs
-
-    - sreddy:
-        member_of:
-            - product_manager
-        warehouses:
-            - reporting
 
     - ssichak:
         warehouses:
@@ -1506,6 +1530,7 @@ users:
         can_login: yes
         member_of:
             - cmccarty
+            - securityadmin
 
     - cmestel:
         can_login: yes
@@ -1522,6 +1547,11 @@ users:
         member_of:
             - dknox
     
+    - dparker:
+        can_login: yes
+        member_of:
+            - dparker
+
     - dtang:
         can_login: yes
         member_of:
@@ -1665,6 +1695,12 @@ users:
         member_of:
             - mdewji
             - securityadmin
+    
+    - mjozenazemian:
+        can_login: yes
+        member_of:
+            - mjozenazemian
+            - securityadmin
 
     - mpeychet:
         can_login: yes
@@ -1677,9 +1713,8 @@ users:
             - mriser
 
     - mrodriguez:
-        can_login: yes
-        member_of:
-            - mrodriguez
+        can_login: no
+        member_of: []
 
     - msendal:
         can_login: yes
@@ -1697,6 +1732,11 @@ users:
         member_of:
             - engineer
             - mwalker
+
+    - nfiguera:
+        can_login: yes
+        member_of:
+            - nfiguera
 
     - parmstrong:
         can_login: yes
@@ -1756,9 +1796,8 @@ users:
             - accountadmin
 
     - sreddy:
-        can_login: yes
-        member_of:
-            - sreddy
+        can_login: no
+        member_of: []
 
     - ssichak:
         can_login: yes

@@ -55,7 +55,7 @@ default_args = {
 
 # Create the DAG
 # Runs 3x per day
-dag = DAG("dbt_snapshots", default_args=default_args, schedule_interval="30 */8 * * *")
+dag = DAG("dbt_snapshots", default_args=default_args, schedule_interval="0 */8 * * *")
 
 # dbt-snapshot for daily tag
 dbt_snapshot_cmd = f"""

@@ -1,5 +1,7 @@
 version: 2
 models:
+- name: sheetload_abm_account_baselines
+- name: sheetload_abuse_mitigation
 - name: sheetload_ally_certificate
 - name: sheetload_calendar
 - name: sheetload_certificates_unioned
@@ -36,8 +38,72 @@ models:
   - name: last_updated_at
     tests:
     - not_null
+- name: sheetload_clari_forecast
 - name: sheetload_communication_certificate
+- name: sheetload_company_call_attendance
 - name: sheetload_compensation_certificate
+- name: sheetload_data_team_capacity
+- name: sheetload_days_to_close
+- name: sheetload_gitlab_slack_stats
+- name: sheetload_google_referrals
+- name: sheetload_headcount
+- name: sheetload_hire_plan
+- name: sheetload_hire_replan
+- name: sheetload_job_roles_prior_to_2020_02
+- name: sheetload_kpi_status
+- name: sheetload_linkedin_recruiter
+- name: sheetload_location_factor_targets
+- name: sheetload_manual_downgrade_dotcom_tracking
+- name: sheetload_marketing_core_users_from_docs_gitlab_com
+- name: sheetload_marketing_kpi_benchmarks
 - name: sheetload_osat
+- name: sheetload_planned_values
+- name: sheetload_procurement_cost_savings
+- name: sheetload_release_blog_posts
+- name: sheetload_rep_quotas_full_fy2020
+- name: sheetload_rep_quotas_full_ps_fy2020
+- name: sheetload_scalable_employment_values
+- name: sheetload_social_marketing_metrics
 - name: sheetload_values_certificate
-    
+- name: sheetload_yc_companies
+
+- name: hire_plan_xf
+  description: This provides a data model of the headcount and hire planned by month broken into 3 levels - company, division, and department. This is for 2019.02 through 2020.04.
+  columns:
+    - name: month_date
+    - name: breakout_type
+      description: Identifies if the plan is at a department or division level, or aggregated up to all company.
+    - name: department
+    - name: division
+    - name: planned_headcount
+    - name: planned_hires
+      description: This is calculated based on the difference between the month_date and the month prior.
+
+- name: hire_replan_xf
+  description: This provides a data model of the headcount and hire planned by month broken into 3 levels - company, division, and department. This combines the hire_plan_xf model for data between 2019.02 and 2020.05, and uses rehire_plan from 2020.06 onwards. The headcount plan was changed in 2020 to account for COVID impact.
+  columns:
+    - name: month_date
+      tests:
+        - not_null
+    - name: breakout_type
+      description: Identifies if the plan is at a department or division level, or aggregated up to all company.
+      tests:
+        - not_null
+    - name: department
+      tests:
+        - not_null
+    - name: division
+    - name: planned_headcount
+    - name: planned_hires
+      description: This is calculated based on the difference between the month_date and the month prior.  
+
+- name: data_team_milestone_capacity
+  description: This data model represents the capacity of each data team member per milestone. 
+  columns: 
+    - name: milestone_title
+    - name: milestone_start_date
+    - name: milestone_due_date
+    - name: milestone_status
+    - name: data_team_member_gitlab_handle
+    - name: data_team_member_capacity
+ 

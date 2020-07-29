@@ -23,7 +23,7 @@ models:
     description: Provides current job openings created in Greenhouse.
     columns: 
     - name: opening_id
-    - name: finance_id
+    - name: ghp_id
     - name: job_created_at
     - name: job_status
     - name: opening_id
@@ -32,6 +32,10 @@ models:
     - name: closing_date
     - name: job_title
     - name: department_name
+    - name: division
+    - name: hiring_manager
+    - name: opening_type
+    - name: employee_id
 
   - name: rpt_greenhouse_hired_employees_opening
     description: For all hired employees, this report provides the job opening id for the job they were hired for,  in addition to the job title, department, and division they were hired in. Note - we will only have data for candidates that have an associated candidate_id in bamboohr. This data started being captured late 2019-12.

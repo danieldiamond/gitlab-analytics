@@ -34,9 +34,8 @@ WITH source AS (
       effectivestartdate                                    AS effective_start_date,
       effectiveenddate                                      AS effective_end_date,
       date_trunc('month', effectivestartdate)::DATE         AS effective_start_month,
-      add_months(
-          date_trunc('month', effectiveenddate)::DATE, -1)::DATE    AS effective_end_month,
-      enddatecondition                                              AS end_date_condition,
+      date_trunc('month', effectiveenddate)::DATE           AS effective_end_month,
+      enddatecondition                                      AS end_date_condition,
 
       mrr,
       quantity                                              AS quantity,
