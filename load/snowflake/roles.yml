@@ -120,7 +120,7 @@ roles:
             - snowflake_db
             - version_db
             - zendesk
-            - zendesk_community
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -152,7 +152,7 @@ roles:
             - snowplow
             - version_db
             - zendesk
-            - zendesk_community
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -224,7 +224,7 @@ roles:
             - pmg
             - snowflake_db
             - zendesk
-            - zendesk_community
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -253,7 +253,7 @@ roles:
             - snowflake_db
             - version_db
             - zendesk
-            - zendesk_community
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -310,7 +310,7 @@ roles:
             - snowplow
             - version_db
             - zendesk
-            - zendesk_community
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -997,7 +997,7 @@ roles:
                     - analytics.zendesk.*
                     - raw.zendesk_stitch.*
 
-    - zendesk_community:
+    - zendesk_community_relations:
           warehouses:
               - analyst_xs
           privileges:
@@ -1007,11 +1007,11 @@ roles:
                       - raw
               schemas:
                   read:
-                      - analytics.zendesk_community
+                      - analytics.zendesk_community_relations
                       - raw.zendesk_community_stitch
               tables:
                   read:
-                      - analytics.zendesk_community.*
+                      - analytics.zendesk_community_relations.*
                       - raw.zendesk_community_stitch.*
 
     - zuora:

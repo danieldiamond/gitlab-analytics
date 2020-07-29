@@ -1,7 +1,7 @@
 version: 2
 
 models:
-    - name: zendesk_community_tickets_xf
+    - name: zendesk_community_relations_tickets_xf
       description: This model contains meta information on each ticket such as client information, ticket metrics, and whether or not the SLA was met. The operating metric can be found [here](https://about.gitlab.com/handbook/finance/operating-metrics/#service-level-agreement-sla). SLA's can be found [here](https://about.gitlab.com/support/).
       columns:
           - name: ticket_id
@@ -15,7 +15,7 @@ models:
           - name: organization_id
             tests:
               - relationships:
-                  to: ref('zendesk_community_organizations_source')
+                  to: ref('zendesk_community_relations_organizations_source')
                   field: organization_id
           - name: brand_id
           - name: group_id
@@ -23,7 +23,7 @@ models:
             tests:
               - not_null
               - relationships:
-                 to: ref('zendesk_community_users_source')
+                 to: ref('zendesk_community_relations_users_source')
                  field: user_id
           - name: submitter_id
             tests:

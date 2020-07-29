@@ -1,7 +1,7 @@
 version: 2
 
 models:
-    - name: zendesk_community_ticket_audits
+    - name: zendesk_community_relations_ticket_audits
       description: This is the base model for Zendesk ticket audit events.
       columns:
       - name: audit_id
@@ -10,7 +10,7 @@ models:
       - name: ticket_id
         tests:
             - not_null    
-    - name: zendesk_community_ticket_metrics
+    - name: zendesk_community_relations_ticket_metrics
       description: This is the base model for Zendesk ticket metrics.
       columns:
       - name: ticket_id
