@@ -179,6 +179,7 @@ roles:
             - boneyard
             - covid19
             - dbt_analytics
+            - dbt_analytics_clones
             - gitlab_data_yaml
             - license_db
             - netsuite
@@ -642,6 +643,20 @@ roles:
                     - analytics.analytics_meta.*
                     - analytics.analytics_staging.*
                     - raw.dbt.*
+
+    - dbt_analytics_clones:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.analytics_clones
+            tables:
+                read:
+                    - analytics.analytics_clones.*
 
     - dbt_analytics_sensitive:
         warehouses:
