@@ -12,9 +12,6 @@ sources:
       schema: false
       identifier: false
 
-    freshness:
-        warn_after: {count: 24, period: hour}
-
     tables:
       - name: customers_db_customers_snapshots
       - name: customers_db_orders_snapshots
@@ -32,7 +29,6 @@ sources:
       - name: sfdc_user_snapshots
       - name: sheetload_employee_location_factor_snapshots
         loaded_at_field: DATEADD(sec, dbt_updated_at, '1970-01-01')
-        freshness: null
       - name: zuora_account_snapshots
       - name: zuora_amendment_snapshots
       - name: zuora_contact_snapshots
