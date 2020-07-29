@@ -209,7 +209,7 @@ models:
         +schema: zendesk
 
       zendesk_community:
-        schema: zendesk_community
+        +schema: zendesk_community
 
       zuora:
         +schema: zuora
