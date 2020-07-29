@@ -1,7 +1,7 @@
 WITH source AS (
 
 	SELECT *
-	FROM {{ source('sheetload', 'ic_collaboration_competency') }}
+	FROM {{ ref('sheetload_ic_collaboration_competency_source') }}
 
 {{cleanup_certificates("'ic_collaboration_competency'",
 	"Email_Address")}}
