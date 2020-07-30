@@ -28,8 +28,9 @@ from kube_secrets import (
 # Load the env vars into a dict
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
-# schedule : “At minute 0 past hour 2, 11, 17, and 23 on every day-of-month
-# from 1 through 12 and on every day-of-week from Monday through Friday.”
+# schedule : “At minute 0 past hour 5, 11, 17, and 23 on 
+# every day-of-month from 1 through 12 and on 
+# every day-of-week from Monday through Friday.” 
 dag_schedule = "0 5,11,17,23 1-12 * 1-5"
 
 pod_env_vars = {**gitlab_pod_env_vars}
