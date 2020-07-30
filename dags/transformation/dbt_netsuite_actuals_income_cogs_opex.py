@@ -30,7 +30,7 @@ env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 # schedule : “At minute 0 past hour 2, 11, 17, and 23 on every day-of-month
 # from 1 through 12 and on every day-of-week from Monday through Friday.”
-dag_schedule =  "0 5,11,17,23 1-12 * 1-5"
+dag_schedule = "0 5,11,17,23 1-12 * 1-5"
 
 pod_env_vars = {**gitlab_pod_env_vars}
 
@@ -50,7 +50,7 @@ dag = DAG(
     default_args=default_args,
     schedule_interval=dag_schedule,
     description="\nThis DAG runs netsuite_actuals_income_cogs_opex model and "
-                "all parent models",
+    "all parent models",
 )
 
 dbt_cmd = f"""
