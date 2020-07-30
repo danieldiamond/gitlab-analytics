@@ -22,7 +22,7 @@ Closes #
 
 ### Schemas
 
-- [ ] If new schema in `ANALYTICS` db make sure to update `grant_usage_in_schemas.sql` macro
+- [ ] If new schema in `ANALYTICS` db make sure to update [`grant_usage_in_schemas.sql` macro](https://gitlab.com/gitlab-data/analytics/-/blob/master/transform/snowflake-dbt/macros/warehouse/grant_usage_to_schemas.sql)
 
 ### Warehouse
 
