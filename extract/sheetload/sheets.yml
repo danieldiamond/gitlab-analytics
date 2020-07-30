@@ -44,6 +44,10 @@ sheets:
     tabs:
       - hire_plan
       - hire_forecast
+  - name: infrastructure_missing_employees
+    owner: '@ken_aguilar'
+    tabs:
+      - infrastructure_missing_employees
   - name: job_roles_prior_to_2020_02
     owner: '@pluthra'
     tabs:
