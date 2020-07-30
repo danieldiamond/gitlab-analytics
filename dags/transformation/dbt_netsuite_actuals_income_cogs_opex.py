@@ -55,7 +55,7 @@ dag = DAG(
 
 dbt_cmd = f"""
     {dbt_install_deps_nosha_cmd} &&
-    dbt run --profiles-dir profile --target prod --models +actuals_income_cogs_opex
+    dbt run --profiles-dir profile --target prod --models +netsuite_actuals_income_cogs_opex
 """
 
 logging.info(dbt_cmd)
