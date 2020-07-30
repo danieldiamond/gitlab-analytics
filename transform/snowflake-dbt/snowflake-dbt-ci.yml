@@ -1,5 +1,5 @@
 .snowflake_dbt_jobs: &snowflake_dbt_jobs
-  image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/dbt-image:v0.0.9
   stage: ⚙️ dbt Run
   before_script:
     - cd transform/snowflake-dbt/
@@ -173,7 +173,7 @@
 
 .periscope_check: &periscope_check
   stage: 🛠 dbt Misc
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:v0.0.9
   tags:
     - analytics
   only:
