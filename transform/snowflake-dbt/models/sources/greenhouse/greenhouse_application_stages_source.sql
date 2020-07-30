@@ -27,7 +27,10 @@ WITH source as (
     SELECT 
       renamed.*,
       is_milestone_stage,
-      stage_name_modified
+      stage_name_modified,
+      IFF(stage_name_modified = 'Team Interview - Face to Face',
+            'team_interview',
+            LOWER(REPLACE(stage_name_modified, ' ', '_'))) AS stage_name_modified_with_underscores
     FROM renamed
     LEFT JOIN stage_dim 
       ON renamed.stage_id = stage_dim.stage_id

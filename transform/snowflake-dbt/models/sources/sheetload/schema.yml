@@ -268,7 +268,7 @@ models:
   description: This is based on the Finance Replan - R4QF.
   columns:
     - name: departments
-- name: sheetload_data_team_capacity
+- name: sheetload_data_team_capacity_source
   description: This sheet contains the capacity prediction from the Data Team. 
   columns:
     - name: milestone_id

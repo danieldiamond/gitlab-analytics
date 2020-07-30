@@ -20,6 +20,7 @@
       month_stage_entered_on,
       month_stage_exited_on,
       days_in_stage,
+      days_between_stages,
       days_in_pipeline,
       row_number_stages_desc,
       next_stage,
@@ -52,7 +53,10 @@
       hit_hired,
       hit_rejected,
       candidate_dropout,
-      in_current_pipeline
+      in_current_pipeline,
+      turn_time_app_review_to_screen,
+      turn_time_screen_to_interview,
+      turn_time_interview_to_offer
     FROM greenhouse_stage_intermediate
 
  )
