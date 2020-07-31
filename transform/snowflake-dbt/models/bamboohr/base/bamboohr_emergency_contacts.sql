@@ -7,9 +7,9 @@ WITH source AS (
 
 ), intermediate AS (
 
-      SELECT d.value AS data_by_row
-      FROM source,
-      LATERAL FLATTEN(INPUT => parse_json(jsontext), OUTER => true) d
+    SELECT d.value AS data_by_row
+    FROM source,
+    LATERAL FLATTEN(INPUT => parse_json(jsontext), OUTER => true) d
   
 ), renamed AS (
 
