@@ -53,7 +53,7 @@ def generate_dbt_command(vars_dict):
     dbt_generate_command = f"""
         {dbt_install_deps_nosha_cmd} &&
         export SNOWFLAKE_TRANSFORM_WAREHOUSE="TRANSFORMING_XL" &&
-        dbt run --profiles-dir profile --target prod --models snowplow --full-refresh --vars '{json_dict}'
+        dbt run --profiles-dir profile --target prod --models +snowplow --full-refresh --vars '{json_dict}'
         """
 
     return KubernetesPodOperator(
@@ -83,7 +83,7 @@ dummy_operator = DummyOperator(task_id="start", dag=dag)
 
 dbt_snowplow_combined_cmd = f"""
         {dbt_install_deps_nosha_cmd} &&
-        dbt run --profiles-dir profile --target prod --models snowplow_combined
+        dbt run --profiles-dir profile --target prod --models staging.snowplow.combined
         """
 
 dbt_snowplow_combined = KubernetesPodOperator(
