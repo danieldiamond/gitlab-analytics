@@ -537,10 +537,15 @@ models:
         tests:
           - not_null
           - unique
-          - relationships:
-              to: ref('gitlab_dotcom_namespaces')
-              field: namespace_id
-              severity: warn
+      - name: updated_at
+        tests: 
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: task_instance_name
+      - name: uploaded_at
+
   - name: gitlab_dotcom_environments
     description: Base model for GitLab.com environments.
     columns:
