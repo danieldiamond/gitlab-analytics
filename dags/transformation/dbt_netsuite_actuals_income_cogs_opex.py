@@ -1,9 +1,12 @@
 import logging
 import os
 from datetime import datetime
+from numpy import busday_count
 
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
+from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators.python_operator import BranchPythonOperator
 from airflow_utils import (
     DBT_IMAGE,
     dbt_install_deps_nosha_cmd,
@@ -44,22 +47,39 @@ default_args = {
     "start_date": datetime(2020, 7, 30, 0, 0, 0),
 }
 
+def return_branch_by_bday(**kwargs):
+    """
+    Returns name of task to be run based on the current business day in calendar month
+    """
+    bof = datetime.today().replace(day=1).date()
+    today = datetime.today().date()
+    if busday_count(bof, today) <= 8:
+        return 'dbt_poc'
+    else:
+        return 'do_nothing'
+
 # Create the DAG
 dag = DAG(
     dag_id="dbt_netsuite_actuals_income_cogs_opex",
     default_args=default_args,
     schedule_interval=dag_schedule,
     description="\nThis DAG runs netsuite_actuals_income_cogs_opex model and "
-    "all parent models",
+    "all parent models on business days 1-8",
 )
 
 dbt_cmd = f"""
-    [$(date +\%d) -le 12] &&
     {dbt_install_deps_nosha_cmd} &&
     dbt run --profiles-dir profile --target prod --models +netsuite_actuals_income_cogs_opex
 """
 
 logging.info(dbt_cmd)
+
+branching = BranchPythonOperator(
+        task_id='branching',
+        python_callable=return_branch_by_bday,
+        provide_context=True,
+        dag=dag,
+)
 
 dbt_poc = KubernetesPodOperator(
     **gitlab_defaults,
@@ -82,3 +102,14 @@ dbt_poc = KubernetesPodOperator(
     arguments=[dbt_cmd],
     dag=dag,
 )
+
+kick_off_dag = DummyOperator(task_id='run_this_first',
+                             dag=dag,
+                             )
+d = DummyOperator(task_id='do_nothing',
+                  dag=dag,
+                  )
+
+kick_off_dag >> branching
+branching >> d
+branching >> dbt_poc
