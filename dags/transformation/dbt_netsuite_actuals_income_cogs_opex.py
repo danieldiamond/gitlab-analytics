@@ -47,15 +47,16 @@ default_args = {
     "start_date": datetime(2020, 7, 30, 0, 0, 0),
 }
 
-
 def return_branch_by_bday(**kwargs):
     """
-    Returns name of task to be run based on the current business day in calendar month
+    Returns name of a task to be triggered by branching operator based on the current business day in the calendar month.
+    For business days 1-8 dbt-netsuite-actuals-income-cogs-opex will be triggered,
+    otherwise no operation will be performed
     """
-    bof = datetime.today().replace(day=1).date()
+    beg_of_month = datetime.today().replace(day=1).date()
     today = datetime.today().date()
-    if busday_count(bof, today) <= 8:
-        return "dbt_poc"
+    if busday_count(beg_of_month, today) > 8:
+        return "dbt-netsuite-actuals-income-cogs-opex"
     else:
         return "do_nothing"
 
@@ -106,8 +107,8 @@ dbt_poc = KubernetesPodOperator(
 )
 
 kick_off_dag = DummyOperator(task_id="run_this_first", dag=dag)
-d = DummyOperator(task_id="do_nothing", dag=dag)
+do_nothing = DummyOperator(task_id="do_nothing", dag=dag)
 
 kick_off_dag >> branching
-branching >> d
+branching >> do_nothing
 branching >> dbt_poc
