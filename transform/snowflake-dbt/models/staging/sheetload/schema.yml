@@ -49,6 +49,11 @@ models:
 - name: sheetload_headcount
 - name: sheetload_hire_plan
 - name: sheetload_hire_replan
+- name: sheetload_ic_dib_comptency
+- name: sheetload_ic_efficiency_competency
+- name: sheetload_ic_iteration_competency
+- name: sheetload_ic_results_competency
+- name: sheetload_ic_transparency_competency
 - name: sheetload_job_roles_prior_to_2020_02
 - name: sheetload_kpi_status
 - name: sheetload_linkedin_recruiter
@@ -66,6 +71,8 @@ models:
 - name: sheetload_social_marketing_metrics
 - name: sheetload_values_certificate
 - name: sheetload_yc_companies
+
+
 
 - name: hire_plan_xf
   description: This provides a data model of the headcount and hire planned by month broken into 3 levels - company, division, and department. This is for 2019.02 through 2020.04.

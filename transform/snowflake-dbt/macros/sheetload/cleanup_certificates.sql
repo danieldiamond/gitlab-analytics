@@ -3,7 +3,7 @@
 clean_score AS (
 
 	SELECT
-		date_completed,
+		completed_date,
 		submitter_name,
 		TRIM(SPLIT_PART(score, '/', 1))::NUMBER AS correct_responses,
 		TRIM(SPLIT_PART(score, '/', 2))::NUMBER AS total_responses,
