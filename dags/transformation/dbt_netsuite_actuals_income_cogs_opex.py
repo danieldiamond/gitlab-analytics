@@ -47,6 +47,7 @@ default_args = {
     "start_date": datetime(2020, 7, 30, 0, 0, 0),
 }
 
+
 def return_branch_by_bday(**kwargs):
     """
     Returns name of a task to be triggered by branching operator based on the current business day in the calendar month.
@@ -72,7 +73,8 @@ dag = DAG(
 
 dbt_cmd = f"""
     {dbt_install_deps_nosha_cmd} &&
-    dbt run --profiles-dir profile --target prod --models +netsuite_actuals_income_cogs_opex
+    dbt run --profiles-dir profile --target prod --models +netsuite_actuals_income_cogs_opex; ret=$?;
+    python ../../orchestration/upload_dbt_file_to_snowflake.py results; exit $ret
 """
 
 logging.info(dbt_cmd)
