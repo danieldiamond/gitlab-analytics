@@ -32,7 +32,7 @@ from kube_secrets import (
 env = os.environ.copy()
 GIT_BRANCH = env["GIT_BRANCH"]
 # schedule : “At minute 0 past hour 5, 11, 17, and 23 on
-# every day-of-week from Monday through Friday.” 
+# every day-of-week from Monday through Friday.”
 dag_schedule = "0 5,11,17,23 * * 1-5"
 
 pod_env_vars = {**gitlab_pod_env_vars}
@@ -47,6 +47,7 @@ default_args = {
     "start_date": datetime(2020, 7, 30, 0, 0, 0),
 }
 
+
 def return_branch_by_bday(**kwargs):
     """
     Returns name of task to be run based on the current business day in calendar month
@@ -54,9 +55,10 @@ def return_branch_by_bday(**kwargs):
     bof = datetime.today().replace(day=1).date()
     today = datetime.today().date()
     if busday_count(bof, today) <= 8:
-        return 'dbt_poc'
+        return "dbt_poc"
     else:
-        return 'do_nothing'
+        return "do_nothing"
+
 
 # Create the DAG
 dag = DAG(
@@ -75,10 +77,10 @@ dbt_cmd = f"""
 logging.info(dbt_cmd)
 
 branching = BranchPythonOperator(
-        task_id='branching',
-        python_callable=return_branch_by_bday,
-        provide_context=True,
-        dag=dag,
+    task_id="branching",
+    python_callable=return_branch_by_bday,
+    provide_context=True,
+    dag=dag,
 )
 
 dbt_poc = KubernetesPodOperator(
@@ -103,12 +105,8 @@ dbt_poc = KubernetesPodOperator(
     dag=dag,
 )
 
-kick_off_dag = DummyOperator(task_id='run_this_first',
-                             dag=dag,
-                             )
-d = DummyOperator(task_id='do_nothing',
-                  dag=dag,
-                  )
+kick_off_dag = DummyOperator(task_id="run_this_first", dag=dag)
+d = DummyOperator(task_id="do_nothing", dag=dag)
 
 kick_off_dag >> branching
 branching >> d
