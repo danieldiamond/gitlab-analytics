@@ -3,14 +3,12 @@ WITH zuora_subscription AS (
   SELECT *
   FROM {{ ref('zuora_subscription_source') }}
 
-),
-dim_dates AS (
+), dim_dates AS (
 
   SELECT *
   FROM {{ ref('dim_dates') }}
 
-),
-created_date AS (
+), created_date AS (
 
   SELECT
     CAST(created_date AS DATE)      AS created_date,
@@ -18,8 +16,7 @@ created_date AS (
   FROM zuora_subscription
   GROUP BY CAST(created_date AS DATE)
 
-),
-updated_date AS (
+), updated_date AS (
 
   SELECT
     CAST(updated_date AS DATE)      AS updated_date,
