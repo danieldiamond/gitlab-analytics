@@ -55,7 +55,7 @@ dag = DAG(
 
 dbt_cmd = f"""
     {dbt_install_deps_nosha_cmd} &&
-    $({{ next_ds }} +\%d) -le 12
+    [$(date +\%d) -le 12] &&
     dbt run --profiles-dir profile --target prod --models +netsuite_actuals_income_cogs_opex
 """
 
