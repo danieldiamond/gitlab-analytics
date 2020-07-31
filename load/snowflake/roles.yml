@@ -89,6 +89,7 @@ roles:
             - boneyard
             - covid19
             - dbt_analytics
+            - dbt_analytics_clones
             - gitlab_data_yaml
             - handbook
             - sheetload
@@ -179,7 +180,6 @@ roles:
             - boneyard
             - covid19
             - dbt_analytics
-            - dbt_analytics_clones
             - gitlab_data_yaml
             - license_db
             - netsuite
@@ -632,14 +632,12 @@ roles:
             schemas:
                 read:
                     - analytics.analytics
-                    - analytics.analytics_clones
                     - analytics.analytics_meta
                     - analytics.analytics_staging
                     - raw.dbt
             tables:
                 read:
                     - analytics.analytics.*
-                    - analytics.analytics_clones.*
                     - analytics.analytics_meta.*
                     - analytics.analytics_staging.*
                     - raw.dbt.*
