@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     credentials = json.loads(config_dict["GCP_BILLING_ACCOUNT_CREDENTIALS"])
 
-    bq = BigQueryClient()
+    bq = BigQueryClient(credentials)
 
     # Substringing cause their only needed for string operations in the next function
     start_time = config_dict["START_TIME"][0:10]
