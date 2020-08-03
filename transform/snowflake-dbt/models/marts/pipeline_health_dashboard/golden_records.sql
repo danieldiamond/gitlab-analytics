@@ -16,7 +16,6 @@ WITH account_records AS (
 )
 
 
-SELECT *,
-        getdate() as update_date
+SELECT *
 FROM account_records
 WHERE account_id NOT IN (SELECT DISTINCT ACCOUNT_ID FROM {{this}})
