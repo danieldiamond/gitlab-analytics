@@ -15,6 +15,13 @@ GCP_PRODUCTION_INSTANCE_NAME = Secret(
     "env", "GCP_PRODUCTION_INSTANCE_NAME", "airflow", "GCP_PRODUCTION_INSTANCE"
 )
 
+GCP_BILLING_ACCOUNT_CREDENTIALS = Secret(
+    "env",
+    "GCP_BILLING_ACCOUNT_CREDENTIALS",
+    "airflow",
+    "GCP_BILLING_ACCOUNT_CREDENTIALS",
+)
+
 # Stitch
 STITCH_CONFIG = Secret("volume", "/secrets", "airflow", "STITCH_CONFIG")
 

@@ -1,3 +1,4 @@
+import json
 from os import environ as env
 
 from pandas import DataFrame
@@ -51,6 +52,8 @@ def write_date_json(date: str, df: DataFrame) -> str:
 
 if __name__ == "__main__":
 
+    credentials = json.loads(config_dict["GCP_BILLING_ACCOUNT_CREDENTIALS"])
+
     bq = BigQueryClient()
 
     # Substringing cause their only needed for string operations in the next function
@@ -67,5 +70,8 @@ if __name__ == "__main__":
 
     for file_name in written_files:
         snowflake_stage_load_copy_remove(
-            file_name, "pmg.pmg_load", "pmg.paid_digital", snowflake_engine,
+            file_name,
+            "gcp_billing.gcp_billing_load",
+            "gcp_billing.gcp_billing_export_combined",
+            snowflake_engine,
         )
