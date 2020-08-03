@@ -312,8 +312,8 @@ models:
         +materialized: table
 
       pipeline_health_dashboard:
-        materialized: table
-        schema: analytics
+        +materialized: table
+        +schema: analytics
 
       product_kpis:
         +materialized: table
