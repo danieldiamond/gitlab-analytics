@@ -48,7 +48,7 @@ class BigQueryClient:
         return self.get_client_from_account_info(keyfile)
 
     def get_dataframe_from_sql(
-        self, sql_statement: str, project: str = None
+        self, sql_statement: str, job_config: QueryJobConfig = None, project: str = None
     ) -> pd.DataFrame:
         """
             Uses BigQuery client to query data and return result,
@@ -61,5 +61,7 @@ class BigQueryClient:
         """
 
         return (
-            self.bq_client.query(sql_statement, project=project).result().to_dataframe()
+            self.bq_client.query(sql_statement, job_config=job_config, project=project)
+            .result()
+            .to_dataframe()
         )

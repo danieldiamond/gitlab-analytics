@@ -1,4 +1,5 @@
 import json
+from google.cloud import bigquery
 from os import environ as env
 
 from pandas import DataFrame
@@ -68,7 +69,11 @@ if __name__ == "__main__":
 
     print(sql_statement)
 
-    df_result = bq.get_dataframe_from_sql(sql_statement, project="billing-tools-277316")
+    df_result = bq.get_dataframe_from_sql(
+        sql_statement,
+        project="billing-tools-277316",
+        job_config=bigquery.QueryJobConfig(use_legacy_sql=False),
+    )
 
     file_name = write_date_json(end_time, df_result)
 
