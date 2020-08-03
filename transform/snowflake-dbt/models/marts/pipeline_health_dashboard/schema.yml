@@ -13,5 +13,3 @@ models:
       - name: date_day
         tests:
           - not_null
-  - name: golden_records
-    description: '{{ doc("golden_records") }}'
