@@ -254,3 +254,5 @@ models:
   - name: dim_customers_valid_at
     description: Parameterized model to recreate dimension table representing customer details as in SFDC at given date. Required variable valid_at is timezone sensitive
 
+  - name: dim_license
+    description: '{{ doc("dim_licenses") }}'

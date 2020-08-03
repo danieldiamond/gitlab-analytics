@@ -76,3 +76,12 @@ Data comes from [Zuora Documentation](https://www.zuora.com/developer/api-refere
 Information on the Enterprise Dimensional Model can be found in the [handbook](https://about.gitlab.com/handbook/business-ops/data-team/platform/edw/)
 
 {% enddocs %}
+
+{% docs dim_licenses %}
+Dimensional table representing generated licenses and associated metadata.
+
+The grain of the table is a license_id.
+
+Information on the Enterprise Dimensional Model can be found in the [handbook](https://about.gitlab.com/handbook/business-ops/data-team/platform/edw/)
+
+{% enddocs %}
