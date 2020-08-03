@@ -45,6 +45,8 @@ def write_date_json(date: str, df: DataFrame) -> str:
 
     df.to_json(file_name, orient="records", date_format="iso")
 
+    print(df.to_json(orient="records", date_format="iso"))
+
     print(f"{file_name} written")
 
     return file_name
