@@ -9,8 +9,10 @@ WITH usage_data AS (
     SELECT
       *,
       REGEXP_REPLACE(NULLIF(version, ''), '\-.*')      AS cleaned_version,
-      IFF(version LIKE '%-pre%', TRUE, FALSE)::BOOLEAN AS is_pre_release,
-      IFF(version LIKE '%-rc%', TRUE, FALSE)::BOOLEAN  AS is_release_candidate,
+      IFF(
+          version LIKE '%-pre%' OR version LIKE '%-rc%', 
+          TRUE, FALSE
+      )::BOOLEAN                                       AS is_pre_release,
       IFF(edition = 'CE', 'CE', 'EE')                  AS main_edition,
       CASE
         WHEN edition IN ('CE', 'EE Free') THEN 'Core'
@@ -32,11 +34,10 @@ WITH usage_data AS (
       main_edition    AS edition,
       tier,
       cleaned_version AS version,
-      is_pre_release_version,
-      is_release_candidate,
+      is_pre_release,
       instance_user_count,
       license_plan,
-      license_trial   AS is_trial_license,
+      license_trial   AS is_trial,
       created_at,
       recorded_at,
       updated_at
