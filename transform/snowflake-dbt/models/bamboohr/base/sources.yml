@@ -26,4 +26,4 @@ sources:
       - name: job_info
         identifier: jobinfo
       - name: id_employee_number_mapping
-      - name: emergencycontacts
+      - name: EmergencyContacts
