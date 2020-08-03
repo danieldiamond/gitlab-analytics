@@ -28,12 +28,6 @@ models:
           - not_null
       - name: arr
         description: This is the correction for AAR in organization fields. Field key cannot be changed in Zendesk.
-    - name: zendesk_community_relations_satisfaction_ratings_source
-      columns:
-        - name: satisfaction_rating_id
-          tests:
-            - not_null
-            - unique
     - name: zendesk_community_relations_tags_source
       columns:
         - name: tag_name
