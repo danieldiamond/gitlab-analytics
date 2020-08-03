@@ -290,5 +290,3 @@ models:
   description: This is a list of all who have completed the IC iteration competency knowledge assessment.
 - name: sheetload_ic_transparency_competency_source
   description: This is a list of all who have completed the IC transparency competency knowledge assessment.
-- name: sheetload_account_golden_records_source
-  description: Golden records (values unexpected to changed for a few accounts), currently based off zuora data
