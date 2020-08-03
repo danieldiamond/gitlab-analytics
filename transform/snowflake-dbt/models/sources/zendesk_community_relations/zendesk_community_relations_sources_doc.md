@@ -15,7 +15,6 @@ See [the documentation](https://developer.zendesk.com/rest_api/docs/support/macr
 The organizations table contains information about the organizations your end-users belong to. [Link to Documentation](https://www.stitchdata.com/docs/integrations/saas/zendesk#organizations)
 
 {% enddocs %}
- 
 {% docs zendesk_community_relations_tags_desc %}
 See [the documentation](http://developer.zendesk.com/rest_api/docs/support/tags).
 {% enddocs %}
