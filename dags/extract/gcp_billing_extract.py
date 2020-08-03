@@ -45,7 +45,7 @@ dag = DAG(
 
 # don't add a newline at the end of this because it gets added to in the K8sPodOperator arguments
 billing_extract_command = (
-    f"{clone_and_setup_extraction_cmd} && python gcp_billing/src/execute.py"
+    f"{clone_and_setup_extraction_cmd} && python gcp_billing/src/extract_gcp_billing.py"
 )
 
 billing_operator = KubernetesPodOperator(
