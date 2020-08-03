@@ -64,11 +64,15 @@ if __name__ == "__main__":
 
     sql_statement = get_billing_data_query(start_time, end_time)
 
-    df_by_date = bq.get_dataframe_from_sql(
-        sql_statement, project="billing-tools-277316"
-    ).groupby("date")
+    df_result = bq.get_dataframe_from_sql(sql_statement, project="billing-tools-277316")
 
-    written_files = [write_date_json(date, df) for date, df in df_by_date]
+    df_result["date"] = df_result["export_time"].dt.date
+
+    df_by_date = df_result.groupby("date")
+
+    written_files = [
+        write_date_json(date, df.drop(columns=["date"])) for date, df in df_by_date
+    ]
 
     for file_name in written_files:
         snowflake_stage_load_copy_remove(
