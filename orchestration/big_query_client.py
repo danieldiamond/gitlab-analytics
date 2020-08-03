@@ -3,7 +3,7 @@ from logging import info
 from typing import Dict
 
 from google.oauth2 import service_account
-from google.cloud.bigquery import Client
+from google.cloud.bigquery import Client, QueryJobConfig
 from yaml import safe_load
 
 import pandas as pd
