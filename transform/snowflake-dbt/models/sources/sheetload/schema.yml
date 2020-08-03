@@ -91,7 +91,7 @@ models:
   - name: plan
     tests:
     - not_null
-- name: sheetload_infrastructure_missing_employees
+- name: sheetload_infrastructure_missing_employees_source
   description: This lists the missing Infrastructure employees from the MR Rate computation.
   columns:
   - name: employee_id
