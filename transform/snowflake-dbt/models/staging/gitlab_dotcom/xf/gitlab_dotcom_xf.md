@@ -18,6 +18,13 @@ This table is a daily aggregated table built on top of `gitlab_dotcom_usage_data
 
 {% enddocs %}
 
+{% docs gitlab_dotcom_elasticsearch_indexed_namespaces_current %}
+
+Only the most recent gitlab_dotcom elasticsearch_indexed_namespaces data.  
+Records that have been deleted in the source database have been filtered out.
+
+{% enddocs %}
+
 {% docs gitlab_dotcom_environments_xf %}
 
 This model anonymizes three fields: `environment_name`, `slug`, `external_url` based on the visibility of the projects the environments are associated to 
