@@ -64,7 +64,9 @@ if __name__ == "__main__":
 
     sql_statement = get_billing_data_query(start_time, end_time)
 
-    df_by_date = bq.get_dataframe_from_sql(sql_statement).groupby("date")
+    df_by_date = bq.get_dataframe_from_sql(
+        sql_statement, project="billing-tools-277316"
+    ).groupby("date")
 
     written_files = [write_date_json(date, df) for date, df in df_by_date]
 

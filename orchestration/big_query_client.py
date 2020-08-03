@@ -47,7 +47,9 @@ class BigQueryClient:
 
         return self.get_client_from_account_info(keyfile)
 
-    def get_dataframe_from_sql(self, sql_statement: str) -> pd.DataFrame:
+    def get_dataframe_from_sql(
+        self, sql_statement: str, project: str = None
+    ) -> pd.DataFrame:
         """
             Uses BigQuery client to query data and return result,
             Result is then converted to a dataframe and returned see documentation
@@ -58,4 +60,6 @@ class BigQueryClient:
         :return: Pandas dataframe
         """
 
-        return self.bq_client.query(sql_statement).result().to_dataframe()
+        return (
+            self.bq_client.query(sql_statement, project=project).result().to_dataframe()
+        )
