@@ -45,14 +45,12 @@ def write_date_json(date: str, df: DataFrame) -> str:
 
     info(f"{df.shape[0]} rows to write")
 
-    row_chunk_size = 1000
-    chunked_dfs = [
-        df[i : i + row_chunk_size] for i in range(0, df.shape[0], row_chunk_size)
-    ]
     file_names = []
 
-    for idx, chunk in enumerate(chunked_dfs):
-        file_name = f"gcp_billing_reporting_data_{date}_{idx}.json"
+    row_chunk_size = 10000
+    for i in range(0, df.shape[0], row_chunk_size):
+        chunk = df[i : i + row_chunk_size]
+        file_name = f"gcp_billing_reporting_data_{date}_{i//row_chunk_size}.json"
         info(f"Writing file {file_name}")
 
         chunk.to_json(file_name, orient="records", date_format="iso")
