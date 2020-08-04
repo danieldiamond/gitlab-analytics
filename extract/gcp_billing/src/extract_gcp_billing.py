@@ -41,7 +41,11 @@ def get_billing_data_query(start_date: str, end_date: str) -> str:
 
 
 def write_date_json(date: str, df: DataFrame) -> str:
-    """ Just here so we can log in the list comprehension """
+    """
+    Chunks the dataframe into 10,000 rows each
+    then writes each chunk locally.
+    Chunks to avoid any possible issue with Snowflake file size constraint.
+    """
 
     info(f"{df.shape[0]} rows to write")
 
@@ -67,7 +71,6 @@ if __name__ == "__main__":
 
     bq = BigQueryClient(credentials)
 
-    # Substringing cause their only needed for string operations in the next function
     start_time = config_dict["START_TIME"]
     end_time = config_dict["END_TIME"]
 

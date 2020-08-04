@@ -39,7 +39,7 @@ default_args = {
     "retry_delay": timedelta(minutes=1),
     "sla": timedelta(hours=24),
     "sla_miss_callback": slack_failed_task,
-    # PMG only have data from 2018-03, so only makes sense to take data from then.
+    # Only has data from March 2018
     "start_date": datetime(2018, 3, 27),
 }
 
