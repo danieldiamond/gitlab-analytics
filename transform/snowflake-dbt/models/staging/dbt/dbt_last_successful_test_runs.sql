@@ -2,7 +2,7 @@ WITH passing_tests AS (
     
     SELECT *
     FROM {{ ref('dbt_test_results') }}
-    WHERE is_passed_test
+    WHERE is_passed_test = True
     QUALIFY row_number() OVER (PARTITION BY test_id ORDER BY test_result_generated_at DESC) = 1
 
 ), failing_tests AS (
