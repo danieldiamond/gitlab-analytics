@@ -16,3 +16,4 @@ WITH source AS (
 
 SELECT *
 FROM renamed
+WHERE forecast IS NOT NULL
