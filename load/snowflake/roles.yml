@@ -1322,9 +1322,9 @@ roles:
             schemas:
                 read:
                     - analytics.analytics_sensitive
-            tables:
+            tables: # https://gitlab.com/gitlab-com/team-member-epics/access-requests/-/issues/6311
                 read:
-                    - analytics.analytics_sensitive.bamboohr_id_mapping_table
+                    - analytics.analytics_sensitive.bamboohr_id_mapping_table 
         warehouses:
             - analyst_xs
 
