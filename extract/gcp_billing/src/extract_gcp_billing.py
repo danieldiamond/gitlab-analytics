@@ -1,5 +1,6 @@
 import json
 from google.cloud import bigquery
+from logging import info
 from os import environ as env
 
 from pandas import DataFrame
@@ -41,16 +42,25 @@ def get_billing_data_query(start_date: str, end_date: str) -> str:
 
 def write_date_json(date: str, df: DataFrame) -> str:
     """ Just here so we can log in the list comprehension """
-    file_name = f"gcp_billing_reporting_data_{date}.json"
-    print(f"Writing file {file_name}")
 
-    df.to_json(file_name, orient="records", date_format="iso")
+    info(f"{df.shape[0]} rows to write")
 
-    print(df.to_json(orient="records", date_format="iso"))
+    row_chunk_size = 1000
+    chunked_dfs = [
+        df[i : i + row_chunk_size] for i in range(0, df.shape[0], row_chunk_size)
+    ]
+    file_names = []
 
-    print(f"{file_name} written")
+    for idx, chunk in enumerate(chunked_dfs):
+        file_name = f"gcp_billing_reporting_data_{date}_{idx}.json"
+        info(f"Writing file {file_name}")
 
-    return file_name
+        chunk.to_json(file_name, orient="records", date_format="iso")
+
+        info(f"{file_name} written")
+        file_names.append(file_name)
+
+    return file_names
 
 
 if __name__ == "__main__":
@@ -67,19 +77,18 @@ if __name__ == "__main__":
 
     sql_statement = get_billing_data_query(start_time, end_time)
 
-    print(sql_statement)
-
     df_result = bq.get_dataframe_from_sql(
         sql_statement,
         project="billing-tools-277316",
         job_config=bigquery.QueryJobConfig(use_legacy_sql=False),
     )
 
-    file_name = write_date_json(end_time, df_result)
+    file_names = write_date_json(end_time, df_result)
 
-    snowflake_stage_load_copy_remove(
-        file_name,
-        "gcp_billing.gcp_billing_load",
-        "gcp_billing.gcp_billing_export_combined",
-        snowflake_engine,
-    )
+    for file_name in file_names:
+        snowflake_stage_load_copy_remove(
+            file_name,
+            "gcp_billing.gcp_billing_load",
+            "gcp_billing.gcp_billing_export_combined",
+            snowflake_engine,
+        )
