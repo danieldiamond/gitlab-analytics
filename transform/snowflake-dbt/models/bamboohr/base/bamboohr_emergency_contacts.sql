@@ -1,7 +1,7 @@
 WITH source AS (
 
     SELECT *
-    FROM {{ source('bamboohr', 'EmergencyContacts') }}
+    FROM {{ source('bamboohr', 'emergency_contacts') }}
     ORDER BY uploaded_at DESC
     LIMIT 1
 
