@@ -1315,6 +1315,16 @@ roles:
     - lmai:
         member_of:
             - analyst_engineering
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.analytics_sensitive
+            tables:
+                read:
+                    - analytics.analytics_sensitive.bamboohr_id_mapping_table
         warehouses:
             - analyst_xs
 
