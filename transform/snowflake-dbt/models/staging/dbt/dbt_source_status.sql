@@ -1,7 +1,7 @@
 WITH dbt_source AS (
 
     SELECT *
-    FROM {{ ref('dbt_source') }}
+    FROM {{ ref('dbt_sources_source') }}
 
 ), current_state AS (
 
