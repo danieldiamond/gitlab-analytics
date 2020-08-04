@@ -113,6 +113,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.subscription_start_date,
       sfdc_opportunity.subscription_end_date,
       sfdc_opportunity.true_up_value,
+      sfdc_opportunity.order_type_live,
 
       -- command plan fields
       sfdc_opportunity.cp_champion,
