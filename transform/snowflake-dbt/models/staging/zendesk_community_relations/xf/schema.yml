@@ -44,7 +44,7 @@ models:
             tests:
               - not_null
               - accepted_values:
-                  values: ['web', 'api', 'twitter', 'facebook', 'mobile', 'email', 'sample_ticket']
+                  values: ['web', 'api', 'twitter', 'facebook', 'mobile', 'email', 'sample_ticket', 'any_channel']
           - name: first_reply_time
           - name: solved_at
           - name: sfdc_account_id
