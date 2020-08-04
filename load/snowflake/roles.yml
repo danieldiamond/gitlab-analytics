@@ -1938,7 +1938,7 @@ warehouses:
         size: x-small
 
     - reporting:
-        size: small
+        size: medium
 
     - stitch:
         size: x-small
