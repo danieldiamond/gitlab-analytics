@@ -59,7 +59,8 @@ dag = DAG(
 
 dbt_cmd = f"""
     {dbt_install_deps_nosha_cmd} &&
-    dbt run --profiles-dir profile --target prod --models +arr_data_mart_incr --vars "$DBT_VARS"
+    dbt run --profiles-dir profile --target prod --models +arr_data_mart_incr --vars "$DBT_VARS"; ret=$?;
+    python ../../orchestration/upload_dbt_file_to_snowflake.py results; exit $ret
 """
 
 logging.info(dbt_cmd)
