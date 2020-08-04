@@ -107,6 +107,7 @@ WITH source AS (
         start_date__c                  AS subscription_start_date,
         end_date__c                    AS subscription_end_date,
         true_up_value__c               AS true_up_value,
+        order_type_live__c             AS order_type_live,
 
         -- command plan fields
         fm_champion__c                 AS cp_champion,
