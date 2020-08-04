@@ -14,7 +14,7 @@ WITH passing_tests AS (
 
     SELECT *
     FROM passing_tests
-    WHERE test_id in (SELECT * FROM failing_tests)
+    WHERE test_id in (SELECT test_id FROM failing_tests)
 
 )
 
