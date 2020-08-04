@@ -140,4 +140,8 @@ sheets:
   - name: data_team_capacity
     owner: '@kathleentam'
     tabs:
-      - data_team_capacity     
+      - data_team_capacity
+  - name: account_golden_records
+    owner: '@paul_armstrong'
+    tabs:
+      - account_golden_records

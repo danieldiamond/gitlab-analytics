@@ -10,7 +10,7 @@ WITH source AS (
       uniquekey::INTEGER                AS primary_key,
       month::DATE                       AS month_of,
       NULLIF(function, '')              AS function,
-      NULLIF(employee_cnt::INTEGER, '') AS employee_count
+      TRY_TO_NUMBER(employee_cnt)       AS employee_count
     FROM source
 
 )

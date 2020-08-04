@@ -177,6 +177,8 @@ def chunk_and_upload(
     results_generator = query_results_generator(query, source_engine)
     upload_file_name = f"{target_table}_CHUNK.tsv.gz"
 
+    backfilled_rows = 0
+
     for idx, chunk_df in enumerate(results_generator):
         # If the table doesn't exist, it needs to send the first chunk to the dataframe_uploader
         if backfill:
@@ -188,6 +190,7 @@ def chunk_and_upload(
                 target_table,
                 rows_to_seed=rows_to_seed,
             )
+            backfilled_rows += chunk_df[:rows_to_seed].shape[0]
             chunk_df = chunk_df.iloc[rows_to_seed:]
         row_count = chunk_df.shape[0]
         rows_uploaded += row_count
@@ -195,11 +198,14 @@ def chunk_and_upload(
             upload_to_gcs(
                 advanced_metadata, chunk_df, upload_file_name + "." + str(idx)
             )
+        backfill = False
     if rows_uploaded > 0:
         trigger_snowflake_upload(
             target_engine, target_table, upload_file_name + "[.]\\\\d*", purge=True
         )
-    logging.info(f"Uploaded {rows_uploaded} total rows to table {target_table}.")
+    logging.info(
+        f"Uploaded {rows_uploaded + backfilled_rows} total rows to table {target_table}."
+    )
     target_engine.dispose()
     source_engine.dispose()
 

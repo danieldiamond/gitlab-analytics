@@ -346,7 +346,7 @@ tables:
       , details
       , created_at
       FROM audit_events
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+      WHERE created_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'audit_events'
@@ -768,17 +768,18 @@ tables:
     export_table: 'design_management_versions'
     export_table_primary_key: CONCAT(sha,'_', issue_id)
   elasticsearch_indexed_namespaces:
+    # want to treat this more as an SCD since rows are deleted and want to display current state
+    # see https://gitlab.com/gitlab-data/analytics/-/issues/5463#note_387839921
     import_db: GITLAB_DB
     import_query: >
       SELECT created_at
       , updated_at
       , namespace_id
       FROM elasticsearch_indexed_namespaces
-      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
-        AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'elasticsearch_indexed_namespaces'
     export_table_primary_key: namespace_id
+    advanced_metadata: true
   environments:
     import_db: GITLAB_DB
     import_query: >
@@ -1821,7 +1822,6 @@ tables:
     import_query: >
       SELECT id
       , type
-      , title
       , project_id
       , created_at
       , updated_at
