@@ -173,7 +173,7 @@ gitlab-org/container-registry,13831684
 gitlab-org/gitlab-ui,7071551
 gitlab-org/cluster-integration/cluster-applications,14404642
 gitlab-org/cluster-integration/gitlab-agent,19019153
-gitlab-org/configure/general, 13454093
+gitlab-org/configure/general,13454093
 gitlab-services/version-gitlab-com,6491770
 gitlab-org/security/gitlab-workhorse,15704133
 gitlab-org/security/gitaly,15685912
