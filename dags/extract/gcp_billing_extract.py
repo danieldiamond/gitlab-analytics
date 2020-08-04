@@ -39,7 +39,7 @@ default_args = {
 }
 
 dag = DAG(
-    "gcp_billing_extract", default_args=default_args, schedule_interval="0 1 * * *"
+    "gcp_billing_extract", default_args=default_args, schedule_interval="20 0/2 * * *"
 )
 
 
@@ -65,7 +65,7 @@ billing_operator = KubernetesPodOperator(
     env_vars={
         **pod_env_vars,
         "START_TIME": "{{ execution_date.isoformat() }}",
-        "END_TIME": "{{ yesterday_ds }}",
+        "END_TIME": "{{ next_execution_date.isoformat() }}",
     },
     affinity=get_affinity(False),
     tolerations=get_toleration(False),

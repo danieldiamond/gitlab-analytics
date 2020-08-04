@@ -36,7 +36,7 @@ def get_billing_data_query(start_date: str, end_date: str) -> str:
           invoice,
           cost_type
         FROM gitlab_com_billing.gcp_billing_export_combined
-        WHERE export_time >= '{end_date}' and export_time < '{start_date}'
+        WHERE export_time >= '{start_date}' and export_time < '{end_date}'
     """
 
 
@@ -68,8 +68,8 @@ if __name__ == "__main__":
     bq = BigQueryClient(credentials)
 
     # Substringing cause their only needed for string operations in the next function
-    start_time = config_dict["START_TIME"][0:10]
-    end_time = config_dict["END_TIME"][0:10]
+    start_time = config_dict["START_TIME"]
+    end_time = config_dict["END_TIME"]
 
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
