@@ -367,6 +367,7 @@ roles:
             schemas:
                 - raw.bamboohr
                 - raw.engineering_extracts
+                - raw.gcp_billing
                 - raw.gitlab_data_yaml
                 - raw.gitter
                 - raw.pmg
@@ -377,6 +378,7 @@ roles:
             tables:
                 - raw.bamboohr.*
                 - raw.engineering_extracts.*
+                - raw.gcp_billing.*
                 - raw.gitlab_data_yaml.*
                 - raw.gitter.*
                 - raw.pmg.*
