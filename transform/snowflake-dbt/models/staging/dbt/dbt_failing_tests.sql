@@ -2,21 +2,13 @@ WITH base AS (
 
     SELECT *
     FROM {{ ref('dbt_test_results') }}
+    QUALIFY row_number() OVER (PARTITION BY test_id ORDER BY test_result_generated_at DESC) = 1
 
 ), failures AS (
 
-    SELECT
-      test_name,
-      test_error,
-      test_result_generated_at
+    SELECT *
     FROM base
-    WHERE 
-      is_failed_test
-    AND test_result_generated_at = (
-        SELECT
-          MAX(test_result_generated_at)
-        FROM base
-    )
+    WHERE is_failed_test = True
 
 )
 

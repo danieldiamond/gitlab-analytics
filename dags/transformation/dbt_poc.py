@@ -48,7 +48,8 @@ dag = DAG(
 # dbt-poc
 dbt_poc_cmd = f"""
     {dbt_install_deps_and_seed_nosha_cmd} &&
-    dbt run --profiles-dir profile --target prod --models tag:poc
+    dbt run --profiles-dir profile --target prod --models tag:poc; ret=$?;
+    python ../../orchestration/upload_dbt_file_to_snowflake.py results; exit $ret
 """
 dbt_poc = KubernetesPodOperator(
     **gitlab_defaults,

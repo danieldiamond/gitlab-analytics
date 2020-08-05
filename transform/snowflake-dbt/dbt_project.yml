@@ -309,14 +309,18 @@ models:
     marts:  
       
       arr:  
-        +materialized: table  
+        +materialized: table
+
+      pipeline_health_dashboard:
+        materialized: table
+        schema: analytics
 
       product_kpis:
-        +materialized: table 
+        +materialized: table
 
       exports:
         +materialized: view
-        +schema: exports 
+        +schema: exports
 
         users_emails:
           enabled: false

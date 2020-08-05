@@ -16,6 +16,7 @@ sources:
     tables:
       - name: abm_account_baselines
       - name: abuse_mitigation
+      - name: account_golden_records
       - name: ally_certificate
       - name: calendar
       - name: clari_export_forecast_net_iacv
@@ -55,4 +56,5 @@ sources:
       - name: social_marketing_metrics
       - name: values_certificate
       - name: yc_companies
+
 
