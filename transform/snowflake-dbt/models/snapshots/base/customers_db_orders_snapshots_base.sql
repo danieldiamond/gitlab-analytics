@@ -13,7 +13,7 @@ WITH source AS (
 
   SELECT 
     dbt_scd_id::VARCHAR                             AS order_snapshot_id,
-    id::NUMBER                                     AS order_id,
+    id::NUMBER                                      AS order_id,
     customer_id::NUMBER                            AS customer_id,
     product_rate_plan_id::VARCHAR                   AS product_rate_plan_id,
     subscription_id::VARCHAR                        AS subscription_id,
