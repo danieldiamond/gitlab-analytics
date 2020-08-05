@@ -32,7 +32,7 @@ with raw_mrr_totals_levelled AS (
 ), list AS ( --get all the subscription + their lineage + the month we're looking for MRR for (12 month in the future)
 
        SELECT subscription_name_slugify   AS original_sub,
-                     c.value::VARCHAR      AS subscriptions_in_lineage,
+                     c.value::VARCHAR     AS subscriptions_in_lineage,
                      mrr_month            AS original_mrr_month,
                      dateadd('year', 1, mrr_month) AS retention_month
        FROM mrr_totals_levelled,
