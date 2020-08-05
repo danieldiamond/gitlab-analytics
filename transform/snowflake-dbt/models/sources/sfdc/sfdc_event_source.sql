@@ -21,7 +21,7 @@ WITH source AS (
       type::VARCHAR                         AS event_type,
       eventsubtype::VARCHAR                 AS event_sub_type,
       event_disposition__c::VARCHAR         AS event_disposition,
-      createddate::DATETIME                 AS created_at,
+      createddate::TIMESTAMP                 AS created_at,
 
       isdeleted::BOOLEAN                    AS is_deleted
 
