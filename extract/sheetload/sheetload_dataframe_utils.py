@@ -49,7 +49,6 @@ def dw_uploader(
     # Replace NULL values with None values which translates into NULL in SQL
     data.replace("", np.nan, inplace=True)
 
-
     # If the data isn't chunked, or this is the first iteration, drop table
     if not chunk and not truncate:
         table_changed = table_has_changed(data, engine, table)
