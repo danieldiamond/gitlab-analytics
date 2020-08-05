@@ -1324,7 +1324,7 @@ roles:
                     - analytics.analytics_sensitive
             tables: # https://gitlab.com/gitlab-com/team-member-epics/access-requests/-/issues/6311
                 read:
-                    - analytics.analytics_sensitive.bamboohr_id_mapping_table 
+                    - analytics.analytics_sensitive.bamboohr_id_employee_number_mapping 
         warehouses:
             - analyst_xs
 
