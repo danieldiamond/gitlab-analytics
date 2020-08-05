@@ -6,8 +6,8 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER           AS ci_build_id, 
-      project_id::INTEGER   AS project_id,
+      id::NUMBER           AS ci_build_id, 
+      project_id::NUMBER   AS project_id,
       name::VARCHAR         AS ci_build_name
 
     FROM source

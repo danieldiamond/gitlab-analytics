@@ -7,10 +7,10 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                       AS epic_issues_relation_id,
-      epic_id::INTEGER                  AS epic_id,
-      issue_id::INTEGER                 AS issue_id,
-      relative_position::INTEGER        AS epic_issue_relative_position
+      id::NUMBER                       AS epic_issues_relation_id,
+      epic_id::NUMBER                  AS epic_id,
+      issue_id::NUMBER                 AS issue_id,
+      relative_position::NUMBER        AS epic_issue_relative_position
 
     FROM source
 

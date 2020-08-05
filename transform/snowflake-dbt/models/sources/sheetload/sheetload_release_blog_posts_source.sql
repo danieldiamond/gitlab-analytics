@@ -6,10 +6,10 @@ with source as (
 ), renamed as (
 
     SELECT 
-      release::VARCHAR              AS release,
-      base_items::INTEGER           AS base_items,
-      bug_items::INTEGER            AS bug_items,
-      performance_items::INTEGER    AS performance_items
+      release::VARCHAR             AS release,
+      base_items::NUMBER           AS base_items,
+      bug_items::NUMBER            AS bug_items,
+      performance_items::NUMBER    AS performance_items
     FROM source
 
 )

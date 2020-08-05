@@ -8,16 +8,16 @@ WITH source AS (
 ), renamed AS (
   
     SELECT 
-      id::INTEGER               AS timelog_id,
+      id::NUMBER               AS timelog_id,
       created_at::TIMESTAMP     AS created_at,
       spent_at::TIMESTAMP       AS spent_at,
       updated_at::TIMESTAMP     AS updated_at,
       
-      time_spent::INTEGER       AS seconds_spent,
+      time_spent::NUMBER       AS seconds_spent,
       
-      issue_id::INTEGER         AS issue_id,
-      merge_request_id::INTEGER AS merge_request_id,
-      user_id::INTEGER          AS user_id  
+      issue_id::NUMBER         AS issue_id,
+      merge_request_id::NUMBER AS merge_request_id,
+      user_id::NUMBER          AS user_id  
     FROM source
     
 )

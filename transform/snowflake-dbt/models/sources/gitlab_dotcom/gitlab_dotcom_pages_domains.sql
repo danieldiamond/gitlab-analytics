@@ -8,8 +8,8 @@ WITH source AS (
   
     SELECT
     
-      id::INTEGER                             AS pages_domain_id,
-      project_id::INTEGER                     AS project_id,
+      id::NUMBER                             AS pages_domain_id,
+      project_id::NUMBER                     AS project_id,
       verified_at::TIMESTAMP                  AS verified_at,
       verification_code::VARCHAR              AS verification_code,
       enabled_until::TIMESTAMP                AS enabled_until,

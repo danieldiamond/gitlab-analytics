@@ -9,10 +9,10 @@ WITH source as (
     SELECT
 
     		--keys
-    		id::bigint 					      AS candidate_survey_id,
-    		organization_id::bigint	  AS organization_id,
-    		department_id::bigint     AS department_id,
-    		office_id::bigint			    AS office_id,
+    		id::NUMBER 					      AS candidate_survey_id,
+    		organization_id::NUMBER	  AS organization_id,
+    		department_id::NUMBER     AS department_id,
+    		office_id::NUMBER			    AS office_id,
 
    			--info
     		department_name::varchar	AS department_name,
