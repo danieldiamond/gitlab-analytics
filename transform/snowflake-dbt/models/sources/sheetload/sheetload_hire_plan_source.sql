@@ -9,7 +9,7 @@ WITH source AS (
     function::VARCHAR     AS function,
     department::VARCHAR   AS department,
     month_year::DATE      AS month_year,
-    plan::NUMBER         AS plan
+    plan::INTEGER         AS plan
   FROM source
 
 )

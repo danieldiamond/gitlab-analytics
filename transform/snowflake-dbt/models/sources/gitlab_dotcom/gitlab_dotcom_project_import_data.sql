@@ -8,8 +8,8 @@ WITH source AS (
 
     SELECT
 
-      id::NUMBER                      AS project_import_relation_id,
-      project_id::NUMBER              AS project_id
+      id::INTEGER                      AS project_import_relation_id,
+      project_id::INTEGER              AS project_id
 
     FROM source
 

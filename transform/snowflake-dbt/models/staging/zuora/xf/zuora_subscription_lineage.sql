@@ -14,7 +14,7 @@ flattening AS (
     subscription_name_slugify,
     subscription_name_slugify || ',' || array_to_string(ZUORA_RENEWAL_SUBSCRIPTION_NAME_SLUGIFY,','))
      							AS lineage,
-    renewal.value::VARCHAR 		AS ZUORA_RENEWAL_SUBSCRIPTION_NAME_SLUGIFY
+    renewal.value::string 		AS ZUORA_RENEWAL_SUBSCRIPTION_NAME_SLUGIFY
   FROM {{ref('zuora_subscription_intermediate')}},
     LATERAL flatten(input => zuora_renewal_subscription_name_slugify, OUTER => TRUE) renewal
 

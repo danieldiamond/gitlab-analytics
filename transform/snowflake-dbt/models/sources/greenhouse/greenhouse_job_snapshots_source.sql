@@ -8,16 +8,16 @@ WITH source as (
 	SELECT
 
 			--key
-    		job_id::NUMBER			AS job_id,
+    		job_id::bigint			AS job_id,
 
     		--info
     		date::date			    AS job_snapshot_date,
-    		hired_count::NUMBER 		AS hired_count,
-    		prospect_count::NUMBER AS prospect_count,
-    		new_today::NUMBER 			AS new_today,
-    		rejected_today::NUMBER AS rejected_today,
-    		advanced_today::NUMBER AS advanced_today,
-    		interviews_today::NUMBER AS interviews_today
+    		hired_count::int 		AS hired_count,
+    		prospect_count::int AS prospect_count,
+    		new_today::int 			AS new_today,
+    		rejected_today::int AS rejected_today,
+    		advanced_today::int AS advanced_today,
+    		interviews_today::int AS interviews_today
 
 	FROM source
 

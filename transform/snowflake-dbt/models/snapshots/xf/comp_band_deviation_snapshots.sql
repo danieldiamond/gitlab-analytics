@@ -32,7 +32,7 @@ WITH source AS (
   ), deduplicated AS (
 
     SELECT DISTINCT   
-      bamboo_employee_number::NUMBER                                       AS bamboo_employee_number,
+      bamboo_employee_number::BIGINT                                       AS bamboo_employee_number,
       IFF(CONTAINS(original_value_deviation_from_comp_calc,'%') = True,
           ROUND(deviation_from_comp_calc_cl/100::FLOAT, 2),
           ROUND(deviation_from_comp_calc_cl::FLOAT, 2))                    AS deviation_from_comp_calc,

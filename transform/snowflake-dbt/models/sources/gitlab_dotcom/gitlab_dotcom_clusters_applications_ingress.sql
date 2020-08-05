@@ -9,14 +9,14 @@ WITH source AS (
 renamed AS (
     
     SELECT
-      id::NUMBER              AS clusters_applications_ingress_id,
-      cluster_id::NUMBER      AS cluster_id,
+      id::INTEGER              AS clusters_applications_ingress_id,
+      cluster_id::INTEGER      AS cluster_id,
       created_at::TIMESTAMP    AS created_at,
       updated_at::TIMESTAMP    AS updated_at,
-      status::NUMBER          AS status,
+      status::INTEGER          AS status,
       version::VARCHAR         AS version,
       status_reason::VARCHAR   AS status_reason,
-      ingress_type::NUMBER    AS ingress_type
+      ingress_type::INTEGER    AS ingress_type
       --external_ip (hidden for sensitivity)
       --external_hostname (hidden for sensitivity)
     FROM source

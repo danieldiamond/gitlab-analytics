@@ -13,9 +13,9 @@ WITH source AS (
 
     SELECT DISTINCT
       dbt_scd_id::VARCHAR                AS license_snapshot_id,
-      id::NUMBER                        AS license_id,
+      id::INTEGER                        AS license_id,
       company::VARCHAR                   AS company,
-      users_count::NUMBER               AS users_count,
+      users_count::INTEGER               AS users_count,
       email::VARCHAR                     AS email,
       license_md5::VARCHAR               AS license_md5,
       expires_at::TIMESTAMP              AS license_expires_at,
@@ -23,8 +23,8 @@ WITH source AS (
       plan_name::VARCHAR                 AS plan_name,
       starts_at::TIMESTAMP               AS starts_at,
       zuora_subscription_id::VARCHAR     AS zuora_subscription_id,
-      previous_users_count::NUMBER      AS previous_users_count,
-      trueup_quantity::NUMBER           AS trueup_quantity,
+      previous_users_count::INTEGER      AS previous_users_count,
+      trueup_quantity::INTEGER           AS trueup_quantity,
       trueup_from::TIMESTAMP             AS trueup_from,
       trueup_to::TIMESTAMP               AS trueup_to,
       plan_code::VARCHAR                 AS plan_code,

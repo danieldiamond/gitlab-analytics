@@ -14,7 +14,7 @@ with source as (
 ), flattened as (
 
     SELECT subscription_name_slugify, 
-    		c.value::VARCHAR as subscriptions_in_lineage, 
+    		c.value::string as subscriptions_in_lineage, 
     		c.index as child_index
     FROM source,
     lateral flatten(input =>split(lineage, ',')) C

@@ -7,12 +7,12 @@ WITH source as (
 
 	SELECT
             --keys
-            stage_id::NUMBER    AS stage_snapshot_id,
-            job_id::NUMBER      AS job_id,
+            stage_id::bigint    AS stage_snapshot_id,
+            job_id::bigint      AS job_id,
 
             --info
             date::date          AS stage_snapshot_date,
-            active_count::NUMBER   AS stage_snapshot_active_count
+            active_count::int   AS stage_snapshot_active_count
 	FROM source
 
 )

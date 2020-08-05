@@ -6,7 +6,7 @@ WITH source AS (
 ), types_cast AS (
 
     SELECT
-      namespace_id::NUMBER           AS namespace_id,
+      namespace_id::INTEGER           AS namespace_id,
       created_at::TIMESTAMP           AS created_at,
       updated_at::TIMESTAMP           AS updated_at,
       _uploaded_at::NUMBER::TIMESTAMP AS uploaded_at,

@@ -117,7 +117,7 @@ WITH gitlab_issues AS (
       zendesk_tickets.sfdc_account_id
     FROM gitlab_issues_and_epics_zendesk_ticket_id_flattened
     INNER JOIN zendesk_tickets
-      ON gitlab_issues_and_epics_zendesk_ticket_id_flattened.zendesk_ticket_id::NUMBER = zendesk_tickets.ticket_id
+      ON gitlab_issues_and_epics_zendesk_ticket_id_flattened.zendesk_ticket_id::INTEGER = zendesk_tickets.ticket_id
     INNER JOIN sfdc_accounts
       ON zendesk_tickets.sfdc_account_id = sfdc_accounts.account_id
 

@@ -9,8 +9,8 @@ WITH source AS (
 
     SELECT
 
-      id::NUMBER                                              AS merge_request_metric_id,
-      merge_request_id::NUMBER                                AS merge_request_id,
+      id::INTEGER                                              AS merge_request_metric_id,
+      merge_request_id::INTEGER                                AS merge_request_id,
 
       latest_build_started_at::TIMESTAMP                       AS latest_build_started_at,
       latest_build_finished_at::TIMESTAMP                      AS latest_build_finished_at,
@@ -25,14 +25,14 @@ WITH source AS (
       first_approved_at::TIMESTAMP                             AS first_approved_at,
       first_reassigned_at::TIMESTAMP                           AS first_reassigned_at,
 
-      pipeline_id::NUMBER                                     AS pipeline_id,
-      merged_by_id::NUMBER                                    AS merged_by_id,
-      latest_closed_by_id::NUMBER                             AS latest_closed_by_id,
-      diff_size::NUMBER                                       AS diff_size,
-      modified_paths_size::NUMBER                             AS modified_paths_size,
-      commits_count::NUMBER                                   AS commits_count,
-      added_lines::NUMBER                                     AS added_lines,
-      removed_lines::NUMBER                                   AS removed_lines
+      pipeline_id::INTEGER                                     AS pipeline_id,
+      merged_by_id::INTEGER                                    AS merged_by_id,
+      latest_closed_by_id::INTEGER                             AS latest_closed_by_id,
+      diff_size::INTEGER                                       AS diff_size,
+      modified_paths_size::INTEGER                             AS modified_paths_size,
+      commits_count::INTEGER                                   AS commits_count,
+      added_lines::INTEGER                                     AS added_lines,
+      removed_lines::INTEGER                                   AS removed_lines
 
     FROM source
 

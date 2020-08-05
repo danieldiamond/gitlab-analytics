@@ -7,9 +7,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::NUMBER                                 AS design_id,
-      project_id::NUMBER                         AS project_id,
-      issue_id::NUMBER                           AS issue_id,
+      id::INTEGER                                 AS design_id,
+      project_id::INTEGER                         AS project_id,
+      issue_id::INTEGER                           AS issue_id,
       filename::VARCHAR                           AS design_filename
     FROM source
 

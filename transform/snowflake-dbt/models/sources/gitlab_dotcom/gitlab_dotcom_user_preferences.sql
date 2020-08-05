@@ -14,7 +14,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      user_id::NUMBER                    AS user_id,
+      user_id::INTEGER                    AS user_id,
       issue_notes_filter::VARCHAR         AS issue_notes_filter,
       merge_request_notes_filter::VARCHAR AS merge_request_notes_filter,
       created_at::TIMESTAMP               AS created_at,
@@ -36,7 +36,7 @@ WITH source AS (
       render_whitespace_in_code::BOOLEAN  AS render_whitespace_in_code,
       tab_width::VARCHAR                  AS tab_width,
       feature_filter_type::VARCHAR        AS feature_filter_type,
-      experience_level::NUMBER           AS experience_level
+      experience_level::INTEGER           AS experience_level
 
     FROM source
     QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY updated_at DESC) = 1

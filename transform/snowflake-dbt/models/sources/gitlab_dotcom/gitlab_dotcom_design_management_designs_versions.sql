@@ -9,8 +9,8 @@ WITH source AS (
     SELECT
       MD5(id)                                     AS design_version_id,
       design_id::VARCHAR                          AS design_id,
-      version_id::NUMBER                         AS version_id,
-      event::NUMBER                              AS event_type_id
+      version_id::INTEGER                         AS version_id,
+      event::INTEGER                              AS event_type_id
     FROM source
 
 )

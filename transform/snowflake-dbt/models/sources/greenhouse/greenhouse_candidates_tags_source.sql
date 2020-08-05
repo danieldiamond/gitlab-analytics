@@ -8,9 +8,9 @@ WITH source as (
 
     SELECT
 			--keys
-			  id::NUMBER 				    AS candidate_tag_id,
-    		tag_id::NUMBER			   AS tag_id,
-    		candidate_id::NUMBER	 AS candidate_id,
+			  id::bigint 				    AS candidate_tag_id,
+    		tag_id::bigint			   AS tag_id,
+    		candidate_id::bigint	 AS candidate_id,
 
     		--info
     		created_at::timestamp  AS candidate_tag_created_at,

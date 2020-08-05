@@ -7,9 +7,9 @@ WITH source AS (
 ), renamed AS (
 
   SELECT
-    id::NUMBER        AS board_label_relation_id,
-    board_id::NUMBER  AS board_id,
-    label_id::NUMBER  AS label_id
+    id::INTEGER        AS board_label_relation_id,
+    board_id::INTEGER  AS board_id,
+    label_id::INTEGER  AS label_id
 
   FROM source
 

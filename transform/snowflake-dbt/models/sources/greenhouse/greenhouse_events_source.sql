@@ -8,7 +8,7 @@ WITH source as (
 	SELECT
 
             --key
-            id::NUMBER      AS greenhouse_event_id,
+            id::bigint      AS greenhouse_event_id,
 
             --info
             name::varchar   AS greenhouse_event_name

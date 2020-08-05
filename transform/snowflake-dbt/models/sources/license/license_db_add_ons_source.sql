@@ -6,7 +6,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::NUMBER             AS add_on_id,
+      id::INTEGER             AS add_on_id,
       name::VARCHAR           AS add_on_name,
       code::VARCHAR           AS add_on_code,
       created_at::TIMESTAMP   AS created_at,

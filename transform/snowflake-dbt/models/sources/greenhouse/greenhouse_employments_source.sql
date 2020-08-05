@@ -7,7 +7,7 @@ WITH source as (
 
     SELECT
                 --key
-                candidate_id::NUMBER        AS candidate_id,
+                candidate_id::bigint        AS candidate_id,
 
                 --info
                 company_name::varchar       AS candidate_company_name,

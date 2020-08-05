@@ -9,7 +9,7 @@ WITH source as (
     SELECT
 
                 --key
-                candidate_id::NUMBER    AS candidate_id,
+                candidate_id::bigint    AS candidate_id,
 
                 --info
                 school_name::varchar    AS candidate_school_name,

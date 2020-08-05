@@ -7,7 +7,7 @@ WITH source AS (
 
     SELECT
       "Company_Name"::VARCHAR                         AS company_name,
-      "Total_Page_Count"::NUMBER                     AS total_page_count
+      "Total_Page_Count"::INTEGER                     AS total_page_count
     FROM source
 )
 

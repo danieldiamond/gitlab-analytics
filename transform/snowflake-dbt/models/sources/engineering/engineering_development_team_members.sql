@@ -26,7 +26,7 @@ WITH source AS (
       data_by_row['isManager']::BOOLEAN                     AS is_manager,
       data_by_row['level']::VARCHAR                         AS team_member_level,
       data_by_row['locality']::VARCHAR                      AS locality,
-      data_by_row['location_factor']::FLOAT PRECISION      AS location_factor,
+      data_by_row['location_factor']::DOUBLE PRECISION      AS location_factor,
       data_by_row['matchName']::VARCHAR                     AS match_name,
       data_by_row['name']::VARCHAR                          AS name,
       data_by_row['section']::VARCHAR                       AS development_section,

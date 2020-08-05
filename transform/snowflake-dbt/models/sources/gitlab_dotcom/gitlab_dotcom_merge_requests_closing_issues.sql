@@ -7,9 +7,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT DISTINCT 
-      id::NUMBER                AS merge_request_issue_relation_id,
-      merge_request_id::NUMBER  AS merge_request_id,
-      issue_id::NUMBER          AS issue_id,
+      id::INTEGER                AS merge_request_issue_relation_id,
+      merge_request_id::INTEGER  AS merge_request_id,
+      issue_id::INTEGER          AS issue_id,
       created_at::TIMESTAMP      AS created_at,
       updated_at::TIMESTAMP      AS updated_at
 

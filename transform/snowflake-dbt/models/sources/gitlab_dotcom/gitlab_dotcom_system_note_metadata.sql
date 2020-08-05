@@ -20,11 +20,11 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::NUMBER                           AS system_note_metadata_id,
-      note_id::NUMBER                      AS note_id,
-      commit_count::NUMBER                 AS commit_count,
+      id::INTEGER                           AS system_note_metadata_id,
+      note_id::INTEGER                      AS note_id,
+      commit_count::INTEGER                 AS commit_count,
       action::VARCHAR                       AS action_type,
-      description_version_id::NUMBER       AS description_version_id,
+      description_version_id::INTEGER       AS description_version_id,
       created_at::TIMESTAMP                 AS created_at,
       updated_at::TIMESTAMP                 AS updated_at
 

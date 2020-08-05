@@ -14,8 +14,8 @@ WITH source AS (
 ), renamed AS (
 
     SELECT 
-      data_by_row['id']::NUMBER              AS job_id,
-      data_by_row['employeeId']::NUMBER      AS employee_id,
+      data_by_row['id']::BIGINT              AS job_id,
+      data_by_row['employeeId']::BIGINT      AS employee_id,
       data_by_row['jobTitle']::VARCHAR       AS job_title,
       data_by_row['date']::DATE              AS effective_date,
       data_by_row['department']::VARCHAR     AS department,

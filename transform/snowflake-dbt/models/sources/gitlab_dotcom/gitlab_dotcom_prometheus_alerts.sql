@@ -7,10 +7,10 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::NUMBER                                     AS prometheus_alert_id,
+      id::INTEGER                                     AS prometheus_alert_id,
       created_at::TIMESTAMP                           AS created_at,
       updated_at::TIMESTAMP                           AS updated_at,
-      project_id::NUMBER                             AS project_id
+      project_id::INTEGER                             AS project_id
     FROM source
 
 )

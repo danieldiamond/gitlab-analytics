@@ -7,11 +7,11 @@ WITH source as (
 
 	SELECT
             --keys
-            job_id::NUMBER                  AS job_id,
-            stage_id::NUMBER                AS job_stage_id,
+            job_id::bigint                  AS job_id,
+            stage_id::bigint                AS job_stage_id,
 
             --info
-            "order"::NUMBER                    AS job_stage_order,
+            "order"::int                    AS job_stage_order,
             name::varchar                   AS job_stage_name,
             stage_alert_setting::varchar    AS job_stage_alert_setting,
             created_at::timestamp           AS job_stage_created_at,

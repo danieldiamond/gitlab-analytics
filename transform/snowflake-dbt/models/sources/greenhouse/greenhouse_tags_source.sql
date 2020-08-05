@@ -8,8 +8,8 @@ WITH source as (
 	SELECT
 
                 --keys
-                id::NUMBER                  AS tag_id,
-                organization_id::NUMBER     AS organization_id,
+                id::bigint                  AS tag_id,
+                organization_id::bigint     AS organization_id,
 
                 --info
                 name::varchar               AS tag_name,

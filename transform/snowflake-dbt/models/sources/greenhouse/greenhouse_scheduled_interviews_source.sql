@@ -8,10 +8,10 @@ WITH source as (
 	SELECT
 
             --keys
-            id::NUMBER                  AS scheduled_interview_id,
-            application_id::NUMBER      AS application_id,
-            interview_id::NUMBER        AS interview_id,
-            scheduled_by_id::NUMBER     AS interview_scheduled_by_id,
+            id::bigint                  AS scheduled_interview_id,
+            application_id::bigint      AS application_id,
+            interview_id::bigint        AS interview_id,
+            scheduled_by_id::bigint     AS interview_scheduled_by_id,
 
             --info
             status::varchar             AS scheduled_interview_status,

@@ -7,7 +7,7 @@
 WITH fishtown AS (
     
     SELECT 
-        nullif(jsontext['event_id']::VARCHAR, '') AS event_id
+        nullif(jsontext['event_id']::STRING, '') AS event_id
     FROM {{ ref('snowplow_fishtown_good_events_source') }}
 
 ), gitlab AS (

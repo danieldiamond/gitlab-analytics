@@ -8,9 +8,9 @@ WITH source AS (
 
     SELECT
 
-      id::NUMBER                                      AS namespace_statistics_id,
-      namespace_id::NUMBER                            AS namespace_id,
-      shared_runners_seconds::NUMBER                  AS shared_runners_seconds,
+      id::INTEGER                                      AS namespace_statistics_id,
+      namespace_id::INTEGER                            AS namespace_id,
+      shared_runners_seconds::INTEGER                  AS shared_runners_seconds,
       shared_runners_seconds_last_reset::TIMESTAMP     AS shared_runners_seconds_last_reset
 
     FROM source

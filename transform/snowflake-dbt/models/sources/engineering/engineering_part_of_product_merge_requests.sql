@@ -14,9 +14,9 @@ WITH source AS (
 ), renamed AS (
     
     SELECT 
-      jsontext['added_lines']::NUMBER      AS added_lines,
+      jsontext['added_lines']::BIGINT      AS added_lines,
       jsontext['real_size']::VARCHAR       AS real_size, --this occasionally has `+` - ie `374+`
-      jsontext['removed_lines']::NUMBER    AS removed_lines,
+      jsontext['removed_lines']::BIGINT    AS removed_lines,
       jsontext['plain_diff_path']::VARCHAR AS plain_diff_url_path
     FROM source
 

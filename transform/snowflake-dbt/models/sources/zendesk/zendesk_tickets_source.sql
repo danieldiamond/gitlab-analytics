@@ -15,7 +15,7 @@ renamed AS (
       group_id,
       requester_id,
       submitter_id,
-      ticket_form_id::NUMBER                  AS ticket_form_id,
+      ticket_form_id::BIGINT                  AS ticket_form_id,
 
       --fields
       status                                  AS ticket_status,

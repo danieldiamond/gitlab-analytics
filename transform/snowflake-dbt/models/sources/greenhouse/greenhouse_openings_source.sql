@@ -7,10 +7,10 @@ WITH source as (
 
 	SELECT
             --keys
-            id::NUMBER                      AS job_opening_id,
-            job_id::NUMBER                  AS job_id,
+            id::bigint                      AS job_opening_id,
+            job_id::bigint                  AS job_id,
             opening_id::varchar             AS opening_id,
-            hired_application_id::NUMBER    AS hired_application_id,
+            hired_application_id::bigint    AS hired_application_id,
 
             --info
             opened_at::timestamp            AS job_opened_at,

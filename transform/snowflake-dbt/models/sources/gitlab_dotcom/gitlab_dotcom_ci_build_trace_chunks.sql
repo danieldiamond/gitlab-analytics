@@ -6,7 +6,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      build_id::NUMBER     AS ci_build_id,
+      build_id::INTEGER     AS ci_build_id,
       chunk_index::VARCHAR  AS chunk_index,
       data_store::VARCHAR   AS data_store,
       raw_data::VARCHAR     AS raw_data

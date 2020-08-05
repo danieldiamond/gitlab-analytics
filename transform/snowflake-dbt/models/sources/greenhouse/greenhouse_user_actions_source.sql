@@ -8,9 +8,9 @@ WITH source as (
 	SELECT
 
                 --keys
-                id::NUMBER          AS user_action_id,
-                job_id::NUMBER      AS job_id,
-                user_id::NUMBER     AS user_id,
+                id::bigint          AS user_action_id,
+                job_id::bigint      AS job_id,
+                user_id::bigint     AS user_id,
 
                 --info
                 type::varchar       AS user_action_type

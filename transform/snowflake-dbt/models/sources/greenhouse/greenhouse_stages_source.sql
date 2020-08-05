@@ -8,12 +8,12 @@ WITH source as (
 	SELECT
 
             --keys
-            id::NUMBER                  AS stage_id,
-            organization_id::NUMBER     AS organization_id,
+            id::bigint                  AS stage_id,
+            organization_id::bigint     AS organization_id,
 
             --info
             name::varchar             	AS stage_name,
-            "order"::NUMBER                AS stage_order,
+            "order"::int                AS stage_order,
             active::boolean             AS is_active
 
 

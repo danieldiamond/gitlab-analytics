@@ -7,7 +7,7 @@ WITH source AS (
 ), renamed AS (
   
     SELECT
-      id::NUMBER                           AS protected_branch_id,
+      id::INTEGER                           AS protected_branch_id,
       name::VARCHAR                         AS protected_branch_name,
       project_id::VARCHAR                   AS project_id,
       created_at::TIMESTAMP                 AS created_at,

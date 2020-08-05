@@ -14,8 +14,8 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      data_by_row['employeeId']::NUMBER 		AS employee_id,
-      data_by_row['id']::NUMBER 				AS emergency_contact_id,
+      data_by_row['employeeId']::BIGINT 		AS employee_id,
+      data_by_row['id']::BIGINT 				AS emergency_contact_id,
 	  data_by_row['name']::VARCHAR 	            AS full_name,
       data_by_row['homePhone']::VARCHAR 		AS home_phone,
 	  data_by_row['mobilePhone']::VARCHAR 		AS mobile_phone,

@@ -8,10 +8,10 @@ WITH source AS (
 
     SELECT
 
-      id::NUMBER               AS subscription_id,
-      user_id::NUMBER          AS user_id,
-      subscribable_id::NUMBER  AS subscribable_id,
-      project_id::NUMBER       AS project_id,
+      id::INTEGER               AS subscription_id,
+      user_id::INTEGER          AS user_id,
+      subscribable_id::INTEGER  AS subscribable_id,
+      project_id::INTEGER       AS project_id,
       subscribable_type,
       subscribed::BOOLEAN       AS is_subscribed,
       created_at::TIMESTAMP     AS created_at,

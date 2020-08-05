@@ -7,9 +7,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::NUMBER                   AS ci_pipeline_schedule_variable_id,
+      id::INTEGER                   AS ci_pipeline_schedule_variable_id,
       key                           AS key,
-      pipeline_schedule_id::NUMBER AS ci_pipeline_schedule_id,
+      pipeline_schedule_id::INTEGER AS ci_pipeline_schedule_id,
       created_at::TIMESTAMP         AS created_at,
       updated_at::TIMESTAMP         AS updated_at,
       variable_type                 AS variable_type

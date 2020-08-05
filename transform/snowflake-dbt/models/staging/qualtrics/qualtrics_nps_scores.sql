@@ -15,7 +15,7 @@ trimmed AS (
     has_finished_survey,
     user_language,
     response_recorded_at,
-    MAX(IFF(question_id = 'QID172787673', question_response, NULL)::NUMBER)      AS nps_score,
+    MAX(IFF(question_id = 'QID172787673', question_response, NULL)::INTEGER)      AS nps_score,
     MAX(IFF(question_id = 'QID172787675_TEXT', question_response, NULL)::VARCHAR) AS nps_reason
 
   FROM answers

@@ -7,12 +7,12 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::NUMBER                AS eula_request_id,
-      eula_id::NUMBER           AS eula_id,
-      customer_id::NUMBER       AS customer_id,
+      id::INTEGER                AS eula_request_id,
+      eula_id::INTEGER           AS eula_id,
+      customer_id::INTEGER       AS customer_id,
       subscription_id::VARCHAR   AS zuora_subscription_id,
       subscription_name::VARCHAR AS zuora_subscription_name,
-      eula_type::NUMBER         AS eula_type,
+      eula_type::INTEGER         AS eula_type,
       accepted_at::TIMESTAMP     AS accepted_at,
       created_at::TIMESTAMP      AS created_at,
       updated_at::TIMESTAMP      AS updated_at

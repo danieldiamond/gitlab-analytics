@@ -17,7 +17,7 @@ WITH balance_sheet AS (
             WHEN balance_sheet_grouping_level_3 = '2-liabilities & equity'
               THEN actual_amount
           END)                                          AS total_liabilities_equity,
-      (total_assets - total_liabilities_equity)::NUMBER    AS balance_sheet_equation
+      (total_assets - total_liabilities_equity)::INT    AS balance_sheet_equation
     FROM balance_sheet
     GROUP BY 1
     ORDER BY 1

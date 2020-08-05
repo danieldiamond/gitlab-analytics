@@ -12,8 +12,8 @@ WITH source as (
 
 	SELECT
     		--keys
-    		application_id::NUMBER		    AS application_id,
-    		stage_id::NUMBER			    AS stage_id,
+    		application_id::bigint		    AS application_id,
+    		stage_id::bigint			    AS stage_id,
 
     		--info
     		entered_on::timestamp 		    AS stage_entered_on,

@@ -10,9 +10,9 @@ WITH source AS (
   
     SELECT
     
-      id::NUMBER           AS cluster_group_id,
-      cluster_id::NUMBER   AS cluster_id,
-      group_id::NUMBER     AS group_id
+      id::INTEGER           AS cluster_group_id,
+      cluster_id::INTEGER   AS cluster_id,
+      group_id::INTEGER     AS group_id
 
     FROM source
   

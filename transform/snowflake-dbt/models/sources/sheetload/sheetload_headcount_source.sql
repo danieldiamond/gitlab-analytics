@@ -7,7 +7,7 @@ WITH source AS (
 
 
     SELECT 
-      uniquekey::NUMBER                AS primary_key,
+      uniquekey::INTEGER                AS primary_key,
       month::DATE                       AS month_of,
       NULLIF(function, '')              AS function,
       TRY_TO_NUMBER(employee_cnt)       AS employee_count

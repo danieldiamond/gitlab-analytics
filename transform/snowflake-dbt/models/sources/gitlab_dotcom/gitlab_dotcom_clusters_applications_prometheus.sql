@@ -9,11 +9,11 @@ WITH source AS (
 renamed AS (
     
     SELECT
-      id::NUMBER              AS clusters_applications_prometheus_id,
-      cluster_id::NUMBER      AS cluster_id,
+      id::INTEGER              AS clusters_applications_prometheus_id,
+      cluster_id::INTEGER      AS cluster_id,
       created_at::TIMESTAMP    AS created_at,
       updated_at::TIMESTAMP    AS updated_at,
-      status::NUMBER          AS status,
+      status::INTEGER          AS status,
       version::VARCHAR         AS version,
       status_reason::VARCHAR   AS status_reason
     FROM source

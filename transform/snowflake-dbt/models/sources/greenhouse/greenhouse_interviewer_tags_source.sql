@@ -8,7 +8,7 @@ WITH source as (
 	SELECT
 
         --key
-        user_id::NUMBER         AS user_id,
+        user_id::bigint         AS user_id,
 
         --info
         tag::varchar            AS interviewer_tag,

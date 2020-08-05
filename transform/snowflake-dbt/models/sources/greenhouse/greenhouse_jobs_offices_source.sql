@@ -8,9 +8,9 @@ WITH source as (
 	SELECT
 
             --keys
-            id::NUMBER              AS job_office_id,
-            job_id::NUMBER          AS job_id,
-            office_id::NUMBER       AS office_id,
+            id::bigint              AS job_office_id,
+            job_id::bigint          AS job_id,
+            office_id::bigint       AS office_id,
 
             --info
             created_at::timestamp   AS job_office_created_at,

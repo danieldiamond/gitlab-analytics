@@ -16,7 +16,7 @@ renamed AS (
       --fields
       name                                                AS organization_name,
       tags                                                AS organization_tags,
-      organization_fields['aar']::NUMBER                 AS arr,
+      organization_fields['aar']::INTEGER                 AS arr,
       organization_fields['market_segment']::VARCHAR      AS organization_market_segment,
 
       --dates

@@ -7,9 +7,9 @@ WITH source as (
 
     SELECT
             --keys
-            id::NUMBER              AS candidate_id,
-            recruiter_id::NUMBER    AS candidate_recruiter_id,
-            coordinator_id::NUMBER  AS candidate_coordinator_id,
+            id::bigint              AS candidate_id,
+            recruiter_id::bigint    AS candidate_recruiter_id,
+            coordinator_id::bigint  AS candidate_coordinator_id,
 
             --info
             recruiter::varchar      AS candidate_recruiter,

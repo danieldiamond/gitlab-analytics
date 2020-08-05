@@ -9,9 +9,9 @@ WITH source AS (
 , renamed AS (
   
     SELECT
-      id::NUMBER           AS cluster_project_id,
-      cluster_id::NUMBER   AS cluster_id,
-      project_id::NUMBER   AS project_id
+      id::INTEGER           AS cluster_project_id,
+      cluster_id::INTEGER   AS cluster_id,
+      project_id::INTEGER   AS project_id
       
     FROM source
   

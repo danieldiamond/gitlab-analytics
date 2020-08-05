@@ -7,7 +7,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::NUMBER           AS eula_id,
+      id::INTEGER           AS eula_id,
       name::VARCHAR         AS eula_name,
       content::VARCHAR      AS eula_content,
       created_at::TIMESTAMP AS created_at,

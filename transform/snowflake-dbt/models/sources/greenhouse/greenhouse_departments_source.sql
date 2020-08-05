@@ -9,9 +9,9 @@ WITH source as (
     SELECT
 
                 --keys
-                id::NUMBER                  AS department_id,
-                organization_id::NUMBER     AS organization_id,
-                parent_id::NUMBER           AS parent_id,
+                id::bigint                  AS department_id,
+                organization_id::bigint     AS organization_id,
+                parent_id::bigint           AS parent_id,
 
                 --info
                 name::VARCHAR(100)          AS department_name,

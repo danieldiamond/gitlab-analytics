@@ -6,10 +6,10 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::NUMBER            AS granted_add_on_id,
-      license_id::NUMBER    AS license_id,
-      add_on_id::NUMBER     AS add_on_id,
-      quantity::NUMBER      AS quantity,
+      id::INTEGER            AS granted_add_on_id,
+      license_id::INTEGER    AS license_id,
+      add_on_id::INTEGER     AS add_on_id,
+      quantity::INTEGER      AS quantity,
       created_at::TIMESTAMP  AS created_at,
       updated_at::TIMESTAMP  AS updated_at
     FROM source

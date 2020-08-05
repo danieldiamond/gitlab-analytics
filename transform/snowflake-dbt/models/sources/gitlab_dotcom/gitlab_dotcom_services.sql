@@ -7,9 +7,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::NUMBER                            AS service_id,
+      id::INTEGER                            AS service_id,
       type::VARCHAR                          AS service_type,
-      project_id::NUMBER                    AS project_id,
+      project_id::INTEGER                    AS project_id,
       created_at::TIMESTAMP                  AS created_at,
       updated_at::TIMESTAMP                  AS updated_at,
       active::BOOLEAN                        AS is_active,

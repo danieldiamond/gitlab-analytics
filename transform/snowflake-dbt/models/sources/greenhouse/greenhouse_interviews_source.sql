@@ -8,8 +8,8 @@ WITH source as (
 	SELECT
 
 			--keys
-    		id::NUMBER				              AS interview_id,
-    		organization_id::NUMBER         AS organization_id,
+    		id::bigint				              AS interview_id,
+    		organization_id::bigint         AS organization_id,
 
     		--info
     		name::varchar			              AS interview_name,
