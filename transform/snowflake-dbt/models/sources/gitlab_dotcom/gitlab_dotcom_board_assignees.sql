@@ -7,9 +7,9 @@ WITH source AS (
 ), renamed AS (
 
   SELECT
-    id::INTEGER                 AS board_assignee_relation_id,
-    board_id::INTEGER           AS board_id,
-    assignee_id::INTEGER        AS board_assignee_id
+    id::NUMBER                 AS board_assignee_relation_id,
+    board_id::NUMBER           AS board_id,
+    assignee_id::NUMBER        AS board_assignee_id
 
   FROM source
 

@@ -7,9 +7,9 @@ WITH source AS (
 ), renamed AS (
 
   SELECT
-    id::INTEGER                   AS approver_group_id,
+    id::NUMBER                   AS approver_group_id,
     target_type::VARCHAR          AS target_type,
-    group_id::INTEGER             AS group_id,
+    group_id::NUMBER             AS group_id,
     created_at::TIMESTAMP         AS created_at,
     updated_at::TIMESTAMP         AS updated_at
 

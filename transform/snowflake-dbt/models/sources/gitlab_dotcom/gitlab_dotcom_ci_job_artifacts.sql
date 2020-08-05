@@ -19,9 +19,9 @@ WITH source AS (
 ), renamed AS (
 
   SELECT 
-    id::INTEGER           AS ci_job_artifact_id, 
-    project_id::INTEGER   AS project_id, 
-    job_id::INTEGER       AS ci_job_id, 
+    id::NUMBER           AS ci_job_artifact_id, 
+    project_id::NUMBER   AS project_id, 
+    job_id::NUMBER       AS ci_job_id, 
     file_type             AS file_type, 
     size                  AS size, 
     created_at::TIMESTAMP AS created_at, 

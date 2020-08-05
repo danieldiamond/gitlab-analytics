@@ -38,7 +38,7 @@ WITH unioned_list as (
 ), unioned_list_no_dup_state AS (
     
    SELECT  DISTINCT
-      user_id::INTEGER AS user_id,
+      user_id::NUMBER AS user_id,
       full_name,
       first_name,
       last_name,

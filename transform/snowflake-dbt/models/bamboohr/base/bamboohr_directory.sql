@@ -14,7 +14,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-        data_by_row['id']::bigint 						AS employee_id,
+        data_by_row['id']::NUMBER 						AS employee_id,
 				data_by_row['displayName']::varchar 	AS full_name,
         data_by_row['jobTitle']::varchar 			AS job_title,
 				data_by_row['supervisor']::varchar 		AS supervisor,

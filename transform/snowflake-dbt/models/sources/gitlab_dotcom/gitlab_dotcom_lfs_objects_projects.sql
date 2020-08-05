@@ -9,9 +9,9 @@ WITH source AS (
 , renamed AS (
   
     SELECT 
-      id::INTEGER              AS lfs_object_project_id,
-      lfs_object_id::INTEGER   AS lfs_object_id,
-      project_id::INTEGER      AS project_id,
+      id::NUMBER              AS lfs_object_project_id,
+      lfs_object_id::NUMBER   AS lfs_object_id,
+      project_id::NUMBER      AS project_id,
       created_at::TIMESTAMP    AS created_at,
       updated_at::TIMESTAMP    AS updated_at,
       repository_type::VARCHAR AS repository_type

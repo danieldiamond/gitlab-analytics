@@ -9,15 +9,15 @@ WITH source AS (
 renamed AS (
     
     SELECT
-      id::INTEGER                     AS clusters_applications_jupyter_id,
-      cluster_id::INTEGER             AS cluster_id,
+      id::NUMBER                     AS clusters_applications_jupyter_id,
+      cluster_id::NUMBER             AS cluster_id,
       created_at::TIMESTAMP           AS created_at,
       updated_at::TIMESTAMP           AS updated_at,
-      status::INTEGER                 AS status,
+      status::NUMBER                 AS status,
       version::VARCHAR                AS version,
       status_reason::VARCHAR          AS status_reason,
       --hostname::VARCHAR             AS hostname,
-      oauth_application_id::INTEGER   AS oauth_application_id
+      oauth_application_id::NUMBER   AS oauth_application_id
     FROM source
 
 )

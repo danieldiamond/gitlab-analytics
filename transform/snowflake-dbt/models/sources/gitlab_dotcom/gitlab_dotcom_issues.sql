@@ -15,14 +15,14 @@ WITH source AS (
 
     SELECT
 
-      id::INTEGER                                               AS issue_id,
-      iid::INTEGER                                              AS issue_iid,
-      author_id::INTEGER                                        AS author_id,
-      source.project_id::INTEGER                                AS project_id,
-      milestone_id::INTEGER                                     AS milestone_id,
-      updated_by_id::INTEGER                                    AS updated_by_id,
-      last_edited_by_id::INTEGER                                AS last_edited_by_id,
-      moved_to_id::INTEGER                                      AS moved_to_id,
+      id::NUMBER                                               AS issue_id,
+      iid::NUMBER                                              AS issue_iid,
+      author_id::NUMBER                                        AS author_id,
+      source.project_id::NUMBER                                AS project_id,
+      milestone_id::NUMBER                                     AS milestone_id,
+      updated_by_id::NUMBER                                    AS updated_by_id,
+      last_edited_by_id::NUMBER                                AS last_edited_by_id,
+      moved_to_id::NUMBER                                      AS moved_to_id,
       created_at::TIMESTAMP                                     AS created_at,
       updated_at::TIMESTAMP                                     AS updated_at,
       last_edited_at::TIMESTAMP                                 AS issue_last_edited_at,
@@ -39,12 +39,12 @@ WITH source AS (
       lock_version::NUMBER                                      AS lock_version,
       time_estimate::NUMBER                                     AS time_estimate,
       discussion_locked::BOOLEAN                                AS has_discussion_locked,
-      closed_by_id::INTEGER                                     AS closed_by_id,
-      relative_position::INTEGER                                AS relative_position,
+      closed_by_id::NUMBER                                     AS closed_by_id,
+      relative_position::NUMBER                                AS relative_position,
       service_desk_reply_to::VARCHAR                            AS service_desk_reply_to,
-      state_id::INTEGER                                         AS state_id,
-      duplicated_to_id::INTEGER                                 AS duplicated_to_id,
-      promoted_to_epic_id::INTEGER                              AS promoted_to_epic_id
+      state_id::NUMBER                                         AS state_id,
+      duplicated_to_id::NUMBER                                 AS duplicated_to_id,
+      promoted_to_epic_id::NUMBER                              AS promoted_to_epic_id
 
     FROM source
 

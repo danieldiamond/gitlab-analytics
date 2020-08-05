@@ -8,8 +8,8 @@ WITH source as (
 	SELECT
 
             --keys
-            scorecard_id::bigint                AS scorecard_id,
-            application_id::bigint              AS application_id,
+            scorecard_id::NUMBER                AS scorecard_id,
+            application_id::NUMBER              AS application_id,
 
             --info
             question::varchar                   AS scorecard_question,

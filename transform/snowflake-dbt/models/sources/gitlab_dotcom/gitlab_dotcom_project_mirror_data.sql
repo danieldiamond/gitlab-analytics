@@ -9,9 +9,9 @@ WITH source AS (
 
     SELECT
 
-      id::INTEGER                                     AS project_mirror_data_id,
-      project_id::INTEGER                             AS project_id,
-      retry_count::INTEGER                            AS retry_count,
+      id::NUMBER                                     AS project_mirror_data_id,
+      project_id::NUMBER                             AS project_id,
+      retry_count::NUMBER                            AS retry_count,
       last_update_started_at::TIMESTAMP               AS last_update_started_at,
       last_update_scheduled_at::TIMESTAMP             AS last_update_scheduled_at,
       next_execution_timestamp::TIMESTAMP             AS next_execution_timestamp

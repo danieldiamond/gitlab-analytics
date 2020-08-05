@@ -32,7 +32,7 @@ WITH source AS (
 ), unioned AS (
 
     SELECT 
-      bamboo_employee_number::BIGINT AS bamboo_employee_number,
+      bamboo_employee_number::NUMBER AS bamboo_employee_number,
       NULL                           AS locality,
       (location_factor::FLOAT)       AS location_factor,
       valid_from,

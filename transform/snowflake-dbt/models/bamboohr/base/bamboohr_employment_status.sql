@@ -14,8 +14,8 @@ WITH source AS (
 ), renamed as (
 
       SELECT
-            data_by_row['id']::BIGINT                             AS status_id,
-            data_by_row['employeeId']::BIGINT                     AS employee_id,
+            data_by_row['id']::NUMBER                             AS status_id,
+            data_by_row['employeeId']::NUMBER                     AS employee_id,
             data_by_row['date']::DATE                             AS effective_date,
             data_by_row['employmentStatus']::VARCHAR              AS employment_status, 
             nullif(data_by_row['terminationTypeId']::VARCHAR, '') AS termination_type
