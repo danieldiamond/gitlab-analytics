@@ -173,7 +173,7 @@ yaml_validation:
 
 .permifrost: &permifrost
   stage: 🐍 Python
-  image: registry.gitlab.com/gitlab-data/permifrost:v0.1.1
+  image: registry.gitlab.com/gitlab-data/permifrost:v0.2.0
   tags:
     - analytics
   only:
