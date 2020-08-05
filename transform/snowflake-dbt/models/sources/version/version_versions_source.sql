@@ -6,7 +6,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::NUMBER           AS id,
+      id::NUMBER            AS id,
       version::VARCHAR      AS version,
       vulnerable::BOOLEAN   AS is_vulnerable,
       created_at::TIMESTAMP AS created_at,
