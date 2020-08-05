@@ -47,7 +47,7 @@ def dw_uploader(
     data = data.infer_objects()
 
     # Replace NULL values with None values which translates into NULL in SQL
-    #data.replace([np.nan], [None], inplace=True)
+    data.replace("", np.nan, inplace=True)
 
 
     # If the data isn't chunked, or this is the first iteration, drop table
