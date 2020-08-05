@@ -22,7 +22,7 @@ with subscription as (
 ), arr AS
     (
       SELECT subscription.subscription_id,
-             SUM(rate_plan_charge.mrr*12::NUMERIC) AS current_arr
+             SUM(rate_plan_charge.mrr*12::NUMBER) AS current_arr
       FROM subscription
         JOIN account 
           ON subscription.account_id = account.account_id::TEXT
