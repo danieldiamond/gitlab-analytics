@@ -27,6 +27,6 @@ WITH
 /* Note: the primary key used is namespace_id, not subscription id.
    This matches our business use case better. */
 {{ scd_type_2(
-    primary_key_renamed='namespace_id', 
-    primary_key_raw='namespace_id'
+    primary_key_renamed='gitlab_subscription_id', 
+    primary_key_raw='id'
 ) }}
