@@ -3,7 +3,6 @@ from logging import error, info, basicConfig, getLogger, warning
 
 import numpy as np
 import pandas as pd
-from logging import error, info, basicConfig, getLogger, warning
 from sqlalchemy.engine.base import Engine
 
 from gitlabdata.orchestration_utils import (
