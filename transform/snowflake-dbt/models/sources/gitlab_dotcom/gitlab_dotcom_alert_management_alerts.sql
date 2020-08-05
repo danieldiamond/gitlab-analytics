@@ -8,10 +8,10 @@ WITH source AS (
 
     SELECT
         id::NUMBER                AS alert_management_alert_id,
-        created_at::TIMESTAMP_NTZ  AS created_at,
-        updated_at::TIMESTAMP_NTZ  AS updated_at,
-        started_at::TIMESTAMP_NTZ  AS started_at,
-        ended_at::TIMESTAMP_NTZ    AS ended_at,
+        created_at::TIMESTAMP  AS created_at,
+        updated_at::TIMESTAMP  AS updated_at,
+        started_at::TIMESTAMP  AS started_at,
+        ended_at::TIMESTAMP    AS ended_at,
         events::NUMBER            AS alert_management_alert_events,
         iid::NUMBER               AS alert_management_alert_iid,
         severity::NUMBER          AS severity_id,
