@@ -9,9 +9,9 @@ WITH source AS (
       sales_rep,
       type, 
       team,                                                 
-      fiscal_year::INT                                      AS fiscal_year,
+      fiscal_year::NUMBER                                      AS fiscal_year,
       ZEROIFNULL(NULLIF("PS_QUOTA",'')::NUMBER(16,5))      AS ps_quota, 
-      bamboo_employee_id::INT                               AS bamboo_employee_id
+      bamboo_employee_id::NUMBER                               AS bamboo_employee_id
     FROM source
       
 ) 

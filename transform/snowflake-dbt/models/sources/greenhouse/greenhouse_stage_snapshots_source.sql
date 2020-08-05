@@ -12,7 +12,7 @@ WITH source as (
 
             --info
             date::date          AS stage_snapshot_date,
-            active_count::int   AS stage_snapshot_active_count
+            active_count::NUMBER   AS stage_snapshot_active_count
 	FROM source
 
 )

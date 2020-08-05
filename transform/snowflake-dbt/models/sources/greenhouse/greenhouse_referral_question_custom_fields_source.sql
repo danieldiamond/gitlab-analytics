@@ -9,7 +9,7 @@ WITH source as (
 
    			--keys
    			person_id::bigint			    AS candidate_id,
-			  user_id::int					    AS user_id,
+			  user_id::NUMBER					    AS user_id,
 
    			--info
    			custom_field::varchar			AS referral_question_custom_field,

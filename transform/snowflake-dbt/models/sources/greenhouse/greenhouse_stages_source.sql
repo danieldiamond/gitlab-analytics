@@ -13,7 +13,7 @@ WITH source as (
 
             --info
             name::varchar             	AS stage_name,
-            "order"::int                AS stage_order,
+            "order"::NUMBER                AS stage_order,
             active::boolean             AS is_active
 
 

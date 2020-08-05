@@ -14,8 +14,8 @@ WITH source as (
             interview_id::bigint        AS interview_id,
 
             --info
-            "order"::int                AS interview_order,
-            estimated_duration::int     AS estimated_duration,
+            "order"::NUMBER                AS interview_order,
+            estimated_duration::NUMBER     AS estimated_duration,
             created_at::timestamp       AS interview_created_at,
             updated_at::timestamp       AS interview_updated_at
 
