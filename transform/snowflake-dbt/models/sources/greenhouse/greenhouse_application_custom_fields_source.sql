@@ -8,8 +8,8 @@ WITH source as (
     SELECT
 
             --keys
-            application_id::bigint                  AS application_id,
-            user_id::bigint                         AS user_id,
+            application_id::NUMBER                  AS application_id,
+            user_id::NUMBER                         AS user_id,
 
             --info
             custom_field::varchar                   AS  application_custom_field,

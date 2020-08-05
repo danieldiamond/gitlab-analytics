@@ -7,8 +7,8 @@ WITH source as (
 
     SELECT
             --keys
-            candidate_id::bigint                AS candidate_id,
-            user_id::bigint                     AS greenhouse_user_id,
+            candidate_id::NUMBER                AS candidate_id,
+            user_id::NUMBER                     AS greenhouse_user_id,
 
             --info
             custom_field::varchar               AS candidate_custom_field,

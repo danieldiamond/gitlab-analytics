@@ -7,8 +7,8 @@ WITH source as (
 
 	SELECT
             --keys
-            job_id::bigint                  AS job_id,
-            stage_id::bigint                AS job_stage_id,
+            job_id::NUMBER                  AS job_id,
+            stage_id::NUMBER                AS job_stage_id,
 
             --info
             "order"::NUMBER                    AS job_stage_order,

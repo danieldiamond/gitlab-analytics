@@ -8,7 +8,7 @@ WITH source as (
 	SELECT
 
    			--keys
-   			person_id::bigint			    AS candidate_id,
+   			person_id::NUMBER			    AS candidate_id,
 			  user_id::NUMBER					    AS user_id,
 
    			--info

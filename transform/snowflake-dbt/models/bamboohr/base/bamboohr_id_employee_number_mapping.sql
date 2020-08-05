@@ -8,8 +8,8 @@ WITH source AS (
 ), intermediate AS (
 
     SELECT 
-      NULLIF(d.value['employeeNumber'],'')::BIGINT                    AS employee_number,
-      d.value['id']::BIGINT                                           AS employee_id,
+      NULLIF(d.value['employeeNumber'],'')::NUMBER                    AS employee_number,
+      d.value['id']::NUMBER                                           AS employee_id,
       d.value['firstName']::VARCHAR                                   AS first_name,
       d.value['lastName']::VARCHAR                                    AS last_name,
       (CASE WHEN d.value['hireDate']=''
@@ -26,7 +26,7 @@ WITH source AS (
       d.value['customRegion']::VARCHAR                                AS region,
       d.value['ethnicity']::VARCHAR                                   AS ethnicity,
       d.value['gender']::VARCHAR                                      AS gender, 
-      d.value['customCandidateID']::BIGINT                            AS greenhouse_candidate_id
+      d.value['customCandidateID']::NUMBER                            AS greenhouse_candidate_id
     FROM source,
     LATERAL FLATTEN(INPUT => PARSE_JSON(jsontext['employees']), outer => true) d
 

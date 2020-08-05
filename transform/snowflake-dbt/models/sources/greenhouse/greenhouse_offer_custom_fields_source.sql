@@ -7,8 +7,8 @@ WITH source as (
 
 	SELECT
    			--keys
-   			offer_id::bigint				  AS offer_id,
-   			user_id::bigint					  AS user_id,
+   			offer_id::NUMBER				  AS offer_id,
+   			user_id::NUMBER					  AS user_id,
 
    			--info
    			custom_field::varchar			AS offer_custom_field,

@@ -8,7 +8,7 @@ WITH source as (
 	SELECT
 
 			--key
-    		job_id::bigint			AS job_id,
+    		job_id::NUMBER			AS job_id,
 
     		--info
     		date::date			    AS job_snapshot_date,

@@ -8,10 +8,10 @@ WITH source as (
 	SELECT
 
             --keys
-            id::bigint                  AS job_interview_id,
-            job_id::bigint              AS job_id,
-            stage_id::bigint            AS interview_stage_id,
-            interview_id::bigint        AS interview_id,
+            id::NUMBER                  AS job_interview_id,
+            job_id::NUMBER              AS job_id,
+            stage_id::NUMBER            AS interview_stage_id,
+            interview_id::NUMBER        AS interview_id,
 
             --info
             "order"::NUMBER                AS interview_order,
