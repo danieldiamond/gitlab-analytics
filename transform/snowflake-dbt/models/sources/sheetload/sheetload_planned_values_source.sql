@@ -32,7 +32,11 @@ WITH source AS (
       planned_pio_ent_us_west::INT          AS planned_pio_ent_us_west,
       planned_pio_ent_us_east::INT          AS planned_pio_ent_us_east,
       planned_pio_mm::INT                   AS planned_pio_mm,
-      planned_pio_smb::INT                  AS planned_pio_sbm
+      planned_pio_smb::INT                  AS planned_pio_smb,
+      planned_pio_amer::INT                 AS planned_pio_amer,
+      planned_pio_emea::INT                 AS planned_pio_emea,
+      planned_pio_apac::INT                 AS planned_pio_apac,
+      planned_pio_pubsec::INT               AS planned_pio_pubsec
 
     FROM source
 
